@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-97221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7DFE9E2783
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:32:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B412E9E266C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0517EBC11FA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A8BE161588
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29311F892C;
-	Tue,  3 Dec 2024 15:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2689A1F76D5;
+	Tue,  3 Dec 2024 16:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEUGmNCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mu06FOKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDAC1F76BB;
-	Tue,  3 Dec 2024 15:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2D91F12F7;
+	Tue,  3 Dec 2024 16:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239864; cv=none; b=Bi5/ER32BtXmtAxc2Y/pX7AuNTeebcnm5J5TirfieAh1E7hly/xQ6EtvWqye3u0wuyxITzN9xbfNbUWYALtOAZjSSnr6VgMAHVj9hA9fla6AeqrzumMmMmbJqXER7jOGRCTA9ciy9aZfBQcMmZ3OFi1xsr4qCPOdS4L8g6Suxic=
+	t=1733242098; cv=none; b=R5+3v8zoZ9y9JiIjPLjnVs2qK+P16XxnJSfrzUDtrEQ7iO2aEpf0dDIoDsMh6IvfapFcmB6VEtIUZ8UMeUT3kWab1+iohSNbKFFJLT7/tKIBbViUd7fyYommTyBPgLpqDXo1Fi0T7UKw2QRV7yZfhDo/89i9pfYdvwrJAn0afvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239864; c=relaxed/simple;
-	bh=RIwzQloxJ20xgEqR7TEZ5bb+7PVR0ZSzzD4gpw86b4g=;
+	s=arc-20240116; t=1733242098; c=relaxed/simple;
+	bh=7FQ82MbRvLK37NHaWaAJ94Prqk7Yvyb7bfEWslRSXTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhB/TfEeLXVK2pz5SZEzcQKlSYkueVAq4R6u7Y0DZeg1nWt7KsTBewAMohsXkU43aLbnLpWe89k2LV82ir3Y16uYarNvEs6HmuiGyhLGG4VJ1Qgv8vDQUi17bL1DCxaTd+7pwTiGaNBXzMmHyQ2zmrYqTb25lUpq9TyZ0qVafSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEUGmNCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAD7C4CECF;
-	Tue,  3 Dec 2024 15:31:03 +0000 (UTC)
+	 MIME-Version; b=CccNoQCGY1G6GIhWFfwy+YOkQvxwieIfSfoe75tWBJSq1v5zyTOpkF3uM6PJz6IozoU+grxsMadB2CLzNDCuAb4RDFX6RMXu4ZGXtBe6T9dLlSPOrb6b/Nh0sDc/GDajonNjzTaBhr/+5EHyTGdJZrl64PaW0xioetq8qx6LrAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mu06FOKq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A98C4CECF;
+	Tue,  3 Dec 2024 16:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239864;
-	bh=RIwzQloxJ20xgEqR7TEZ5bb+7PVR0ZSzzD4gpw86b4g=;
+	s=korg; t=1733242098;
+	bh=7FQ82MbRvLK37NHaWaAJ94Prqk7Yvyb7bfEWslRSXTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jEUGmNCpgVPHjhPMhv3Qy1KMYrzBo1QKPAIeCnpanQwQBi+KX3gYypfl9ktxPIbSJ
-	 9R/gG0oMljbDKFFVVtIeFLgXiMLqb2LZzNAHgSWxZ0lywLs9louXmxW32YwEKZEYxy
-	 QIYbjnxLAZXA8se6Xn8OIjWYeoIPjZ9/UX8sBlyc=
+	b=mu06FOKqCsXcsWe/0EvCx1yEzIJA56HThMKr2BSXmOxZfs7scDoZOBuW69U/eQRLa
+	 Kp+ngbCKn/MRTZwVFZpYxL6UVdSEWEb3zRdjjMYf9M3nmw/1xSHWQLgMgR/0u20tHk
+	 7R8dHkX1CTd5NAoygGzgNvvgI4fHIkSivvdcuuNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Wupeng <mawupeng1@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.11 761/817] ipc: fix memleak if msg_init_ns failed in create_ipc_ns
-Date: Tue,  3 Dec 2024 15:45:33 +0100
-Message-ID: <20241203144025.699323076@linuxfoundation.org>
+	Julien Panis <jpanis@baylibre.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 607/826] counter: ti-ecap-capture: Add check for clk_enable()
+Date: Tue,  3 Dec 2024 15:45:34 +0100
+Message-ID: <20241203144807.431579617@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Wupeng <mawupeng1@huawei.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit bc8f5921cd69188627c08041276238de222ab466 upstream.
+[ Upstream commit 1437d9f1c56fce9c24e566508bce1d218dd5497a ]
 
-Percpu memory allocation may failed during create_ipc_ns however this
-fail is not handled properly since ipc sysctls and mq sysctls is not
-released properly. Fix this by release these two resource when failure.
+Add check for the return value of clk_enable() in order to catch the
+potential exception.
 
-Here is the kmemleak stack when percpu failed:
-
-unreferenced object 0xffff88819de2a600 (size 512):
-  comm "shmem_2nstest", pid 120711, jiffies 4300542254
-  hex dump (first 32 bytes):
-    60 aa 9d 84 ff ff ff ff fc 18 48 b2 84 88 ff ff  `.........H.....
-    04 00 00 00 a4 01 00 00 20 e4 56 81 ff ff ff ff  ........ .V.....
-  backtrace (crc be7cba35):
-    [<ffffffff81b43f83>] __kmalloc_node_track_caller_noprof+0x333/0x420
-    [<ffffffff81a52e56>] kmemdup_noprof+0x26/0x50
-    [<ffffffff821b2f37>] setup_mq_sysctls+0x57/0x1d0
-    [<ffffffff821b29cc>] copy_ipcs+0x29c/0x3b0
-    [<ffffffff815d6a10>] create_new_namespaces+0x1d0/0x920
-    [<ffffffff815d7449>] copy_namespaces+0x2e9/0x3e0
-    [<ffffffff815458f3>] copy_process+0x29f3/0x7ff0
-    [<ffffffff8154b080>] kernel_clone+0xc0/0x650
-    [<ffffffff8154b6b1>] __do_sys_clone+0xa1/0xe0
-    [<ffffffff843df8ff>] do_syscall_64+0xbf/0x1c0
-    [<ffffffff846000b0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Link: https://lkml.kernel.org/r/20241023093129.3074301-1-mawupeng1@huawei.com
-Fixes: 72d1e611082e ("ipc/msg: mitigate the lock contention with percpu counter")
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
+Reviewed-by: Julien Panis <jpanis@baylibre.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20241104194059.47924-1-jiashengjiangcool@gmail.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- ipc/namespace.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/counter/ti-ecap-capture.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/ipc/namespace.c
-+++ b/ipc/namespace.c
-@@ -83,13 +83,15 @@ static struct ipc_namespace *create_ipc_
+diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
+index 675447315cafb..b119aeede693e 100644
+--- a/drivers/counter/ti-ecap-capture.c
++++ b/drivers/counter/ti-ecap-capture.c
+@@ -574,8 +574,13 @@ static int ecap_cnt_resume(struct device *dev)
+ {
+ 	struct counter_device *counter_dev = dev_get_drvdata(dev);
+ 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
++	int ret;
  
- 	err = msg_init_ns(ns);
- 	if (err)
--		goto fail_put;
-+		goto fail_ipc;
+-	clk_enable(ecap_dev->clk);
++	ret = clk_enable(ecap_dev->clk);
++	if (ret) {
++		dev_err(dev, "Cannot enable clock %d\n", ret);
++		return ret;
++	}
  
- 	sem_init_ns(ns);
- 	shm_init_ns(ns);
+ 	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
  
- 	return ns;
- 
-+fail_ipc:
-+	retire_ipc_sysctls(ns);
- fail_mq:
- 	retire_mq_sysctls(ns);
- 
+-- 
+2.43.0
+
 
 
 
