@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314199E2908
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3F49E28F0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2954EB616E6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:55:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72D5FB2702A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65481F76BF;
-	Tue,  3 Dec 2024 14:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989C31F75A2;
+	Tue,  3 Dec 2024 14:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnHLfDXH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDE7JM6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787291F7591;
-	Tue,  3 Dec 2024 14:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5685C1F7587;
+	Tue,  3 Dec 2024 14:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237687; cv=none; b=jyNTyl5dcva7rOwteapwFicy3QnF2VkWgsx5lEpx94yHlmbUr1NFqF10mVd7O+hQjddVPQ1ZMkFpuQBKgPvfqteEktboCS64wrH2c81GtS3xXgRV1rvI11ayoXWdaDw74RWx3Zkwdu81AUGhlLK/0vx/yN6dAAlp5y0Qgmh6Ll0=
+	t=1733237713; cv=none; b=vE6EqQTNDIFhuQGEQ6lCUIAq2lpkPovRAdS0oXuSZWKrfh1Hhp0X92cYc/n2lHp3HIQPRfF4wSflwBosbmEWY5ydjZNZkaqbp6xA79ne75gaVMYm0T83JI0WlLHuQEX+iiLiXcqMvnB35HNjAOMzfxmoEuih04vMw0ADn9R2RIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237687; c=relaxed/simple;
-	bh=UbmeL7w82q9B+bkd5AE67C37efUhQCPS0vcjPNlVQBo=;
+	s=arc-20240116; t=1733237713; c=relaxed/simple;
+	bh=b5yswftItLNH0NlyqxKjxWLDdEIG8vYwITiDAydC80s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjIaT7rAah8ucUfdAA4K7XnYpbwyQRLhDvaFuvw+FU5mt7+h5WFWjbgeUp1SVbEes+iNGL2U5r/2mIAMe8sCJ4zSf+/YLL9wN5poePd99HtQzTYA6Wq2AHTv4Q2PBo42EpR9aZNxZFR7qs5kzc/fYilS/IWgi/NmqKbSk+mV0Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnHLfDXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6B5C4CED8;
-	Tue,  3 Dec 2024 14:54:46 +0000 (UTC)
+	 MIME-Version; b=E/mEOglIrKt/1k2xAcx+oCfwUm0znmyzuY/jH91OLJcrHScSRj6+a/SHX4ZDKDS6N2rcOmHWN4xHzkHyMJokrzi2/N4yCOIaqmtbTYw2ibS5wZk/o0IB+Efv1khm+2fLjB/aiz5mzcguURJ8zCIB69c9XMSPcKCrmOhqC9OpnYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDE7JM6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C103C4CECF;
+	Tue,  3 Dec 2024 14:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237687;
-	bh=UbmeL7w82q9B+bkd5AE67C37efUhQCPS0vcjPNlVQBo=;
+	s=korg; t=1733237712;
+	bh=b5yswftItLNH0NlyqxKjxWLDdEIG8vYwITiDAydC80s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnHLfDXHMmKQJE7h7Kj/2ykDcT+9hS5ha6H86rxcUpFp34ilKu+pnaxFIJ0fngZ4J
-	 FEs1Bp4g7GBGGwwag/afDzH59QjdsSEizjDgfHxRFN9xoNh8Syf+K4FCgYv5wR4vEh
-	 H6jBnBbV4rwsfDW5BgTNnBl2LHZKzuy2lNQN0M0g=
+	b=yDE7JM6rtlrW7neN8aeWrfcatikEk8jVtD5I3AG2tcdOnldZvP8WSXs+hHqVAteqO
+	 t0l3JHK/KwRrECM3RF1gXI8HUG9oXs+QpcWUrriTFUshnTJ/IIt18YVqVN+OGvWgpE
+	 D8cUqeavGLukgbGGk4hUb1orBhUnr0rTHLg2fjZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eryk Zagorski <erykzagorski@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 042/817] ALSA: usb-audio: Fix Yamaha P-125 Quirk Entry
-Date: Tue,  3 Dec 2024 15:33:34 +0100
-Message-ID: <20241203143957.301917525@linuxfoundation.org>
+Subject: [PATCH 6.11 049/817] s390/facilities: Fix warning about shadow of global variable
+Date: Tue,  3 Dec 2024 15:33:41 +0100
+Message-ID: <20241203143957.584547311@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,54 +66,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eryk Zagorski <erykzagorski@gmail.com>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit 6f891ca15b017707840c9e7f5afd9fc6cfd7d8b1 ]
+[ Upstream commit 61997c1e947dbf8bc625ef86ceee00fdf2a5dba1 ]
 
-This patch switches the P-125 quirk entry to use a composite quirk as the
-P-125 supplies both MIDI and Audio like many of the other Yamaha
-keyboards
+Compiling the kernel with clang W=2 produces a warning that the
+parameter declarations in some routines would shadow the definition of
+the global variable stfle_fac_list. Address this warning by renaming the
+parameters to fac_list.
 
-Signed-off-by: Eryk Zagorski <erykzagorski@gmail.com>
-Link: https://patch.msgid.link/20241111164520.9079-2-erykzagorski@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 17e89e1340a3 ("s390/facilities: move stfl information from lowcore to global data")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/s390/include/asm/facility.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 24c981c9b2405..199d0603cf8e5 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -324,7 +324,6 @@ YAMAHA_DEVICE(0x105a, NULL),
- YAMAHA_DEVICE(0x105b, NULL),
- YAMAHA_DEVICE(0x105c, NULL),
- YAMAHA_DEVICE(0x105d, NULL),
--YAMAHA_DEVICE(0x1718, "P-125"),
+diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
+index 65ebf86506cde..48791a02cab1e 100644
+--- a/arch/s390/include/asm/facility.h
++++ b/arch/s390/include/asm/facility.h
+@@ -67,7 +67,7 @@ static inline int test_facility(unsigned long nr)
+ 	return __test_facility(nr, &stfle_fac_list);
+ }
+ 
+-static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
++static inline unsigned long __stfle_asm(u64 *fac_list, int size)
  {
- 	USB_DEVICE(0x0499, 0x1503),
- 	QUIRK_DRIVER_INFO {
-@@ -391,6 +390,19 @@ YAMAHA_DEVICE(0x1718, "P-125"),
- 		}
+ 	unsigned long reg0 = size - 1;
+ 
+@@ -75,7 +75,7 @@ static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
+ 		"	lgr	0,%[reg0]\n"
+ 		"	.insn	s,0xb2b00000,%[list]\n" /* stfle */
+ 		"	lgr	%[reg0],0\n"
+-		: [reg0] "+&d" (reg0), [list] "+Q" (*stfle_fac_list)
++		: [reg0] "+&d" (reg0), [list] "+Q" (*fac_list)
+ 		:
+ 		: "memory", "cc", "0");
+ 	return reg0;
+@@ -83,10 +83,10 @@ static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
+ 
+ /**
+  * stfle - Store facility list extended
+- * @stfle_fac_list: array where facility list can be stored
++ * @fac_list: array where facility list can be stored
+  * @size: size of passed in array in double words
+  */
+-static inline void __stfle(u64 *stfle_fac_list, int size)
++static inline void __stfle(u64 *fac_list, int size)
+ {
+ 	unsigned long nr;
+ 	u32 stfl_fac_list;
+@@ -95,20 +95,20 @@ static inline void __stfle(u64 *stfle_fac_list, int size)
+ 		"	stfl	0(0)\n"
+ 		: "=m" (get_lowcore()->stfl_fac_list));
+ 	stfl_fac_list = get_lowcore()->stfl_fac_list;
+-	memcpy(stfle_fac_list, &stfl_fac_list, 4);
++	memcpy(fac_list, &stfl_fac_list, 4);
+ 	nr = 4; /* bytes stored by stfl */
+ 	if (stfl_fac_list & 0x01000000) {
+ 		/* More facility bits available with stfle */
+-		nr = __stfle_asm(stfle_fac_list, size);
++		nr = __stfle_asm(fac_list, size);
+ 		nr = min_t(unsigned long, (nr + 1) * 8, size * 8);
  	}
- },
-+{
-+	USB_DEVICE(0x0499, 0x1718),
-+	QUIRK_DRIVER_INFO {
-+		/* .vendor_name = "Yamaha", */
-+		/* .product_name = "P-125", */
-+		QUIRK_DATA_COMPOSITE {
-+			{ QUIRK_DATA_STANDARD_AUDIO(1) },
-+			{ QUIRK_DATA_STANDARD_AUDIO(2) },
-+			{ QUIRK_DATA_MIDI_YAMAHA(3) },
-+			QUIRK_COMPOSITE_END
-+		}
-+	}
-+},
- YAMAHA_DEVICE(0x2000, "DGP-7"),
- YAMAHA_DEVICE(0x2001, "DGP-5"),
- YAMAHA_DEVICE(0x2002, NULL),
+-	memset((char *) stfle_fac_list + nr, 0, size * 8 - nr);
++	memset((char *)fac_list + nr, 0, size * 8 - nr);
+ }
+ 
+-static inline void stfle(u64 *stfle_fac_list, int size)
++static inline void stfle(u64 *fac_list, int size)
+ {
+ 	preempt_disable();
+-	__stfle(stfle_fac_list, size);
++	__stfle(fac_list, size);
+ 	preempt_enable();
+ }
+ 
 -- 
 2.43.0
 
