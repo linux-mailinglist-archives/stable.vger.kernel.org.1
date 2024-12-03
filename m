@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BC99E2540
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB339E221B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72444168374
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85BBD284679
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C0E81F429E;
-	Tue,  3 Dec 2024 15:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7B31F4707;
+	Tue,  3 Dec 2024 15:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkIeqVtN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGl+6cww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6551362;
-	Tue,  3 Dec 2024 15:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB08A1F472A;
+	Tue,  3 Dec 2024 15:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241209; cv=none; b=VLBKZo/cpZQBB9bYILuC4r5zmdvtYW8GuJTRqXhTh59TNvW5Fxz8RjXrWetKuoHQwup5+5ym5AZRgYdAtcFjtQxeKWuzdf3UmhWG1ZYHP5eZe6ktnFMBZKzEL5Kb8qRXpNWr5xz4u5msgZOkqFXlV1rGzuDl2OBadjOVtPODTnI=
+	t=1733239236; cv=none; b=i1sxOM5iFIFajoaSVEIsnx5ed2bIswFVJBiz9ZgTfVQ7Spa5Jk9GFkVhwdRDjbNNX63GLhqlIeXKB/xIwXVoPZyGB4HhzNp51HEG9p9kPbhN2raLaTEvGBhE+nCtVUjcj1+5TuKxFVAwkJtc0EYlDJJFi0GXOz9AsSCWbgMmmIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241209; c=relaxed/simple;
-	bh=cqe/XmjEytqzlGTJAPFcz9uJDTRnRm9+PE6oKgKU0xo=;
+	s=arc-20240116; t=1733239236; c=relaxed/simple;
+	bh=pLwoT2w4JfMAelBs7IBymBWhe05CRbeUkjLpoh+GkjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gnd8xBhFZPwyN6HFM0oN282erGE9nNi6VPQINolqUfjf8UcghD5T01/eXYbZJTbBa1uv+EL7J4loZAS6Ra1UODdDHFeqYxcNvpZq5mzEKmTXE1UnSoHi6s1+x4qp39/i08/OyX2Jf7FuVIPeA7kxT9UgZYW0gcYrocbg/cKjtRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkIeqVtN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C3BC4CECF;
-	Tue,  3 Dec 2024 15:53:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S7DDr3jlykUL163Uf5YGYDRU421IBoPMh8ns+FZ/XbwWiHlaKKGmiKU/rteZhq9oTY6rPr3JPv4Ygx+CwG0fYmCSC/5uyBRovj5xuXGwdyxN3LrzLfPmnvOcznk7O0gWq3g2wxjfIqFNhWVQ1N9Hz0AaCwRMSAETs7SAYkWtYqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGl+6cww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532DAC4CECF;
+	Tue,  3 Dec 2024 15:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241208;
-	bh=cqe/XmjEytqzlGTJAPFcz9uJDTRnRm9+PE6oKgKU0xo=;
+	s=korg; t=1733239236;
+	bh=pLwoT2w4JfMAelBs7IBymBWhe05CRbeUkjLpoh+GkjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZkIeqVtNLYm/Mp0AI08tsdDtWf143JZnJtn4N42zyiJHhZ8qm7DukMIUuzMjZgRln
-	 UotljfAxhcpnj2LxXRhF0bwpHrJiaR8ulinIjC+qXm1srlp3u0guoRq/2LoooE5FhK
-	 ccaCVI32bjH9/tbfrsMseGBuxPl6gjAmOyo5En/c=
+	b=FGl+6cwwoZ5rKMljUZSVQkq7wXru2PPGqYK91O/xRTvfavnlTApGHS78lnUE7Iquv
+	 EQ33jpzSrucEVfLw4TuWxE0HlYgarG3IRS1TA8jcF9dgCRpKXyJ8a32244ZBjXx4Wu
+	 y5d1H0B2RrjP7xeqE+r8VEo9vQtVoEGVhQNa3GiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 357/826] unicode: Fix utf8_load() error path
-Date: Tue,  3 Dec 2024 15:41:24 +0100
-Message-ID: <20241203144757.686719869@linuxfoundation.org>
+Subject: [PATCH 6.11 513/817] PCI: qcom-ep: Move controller cleanups to qcom_pcie_perst_deassert()
+Date: Tue,  3 Dec 2024 15:41:25 +0100
+Message-ID: <20241203144015.905688063@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,76 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Almeida <andrealmeid@igalia.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 156bb2c569cd869583c593d27a5bd69e7b2a4264 ]
+[ Upstream commit 7d7cf89b119af433354f865fc01017b9f8aa411a ]
 
-utf8_load() requests the symbol "utf8_data_table" and then checks if the
-requested UTF-8 version is supported. If it's unsupported, it tries to
-put the data table using symbol_put(). If an unsupported version is
-requested, symbol_put() fails like this:
+Currently, the endpoint cleanup function dw_pcie_ep_cleanup() and EPF
+deinit notify function pci_epc_deinit_notify() are called during the
+execution of qcom_pcie_perst_assert() i.e., when the host has asserted
+PERST#. But quickly after this step, refclk will also be disabled by the
+host.
 
- kernel BUG at kernel/module/main.c:786!
- RIP: 0010:__symbol_put+0x93/0xb0
- Call Trace:
-  <TASK>
-  ? __die_body.cold+0x19/0x27
-  ? die+0x2e/0x50
-  ? do_trap+0xca/0x110
-  ? do_error_trap+0x65/0x80
-  ? __symbol_put+0x93/0xb0
-  ? exc_invalid_op+0x51/0x70
-  ? __symbol_put+0x93/0xb0
-  ? asm_exc_invalid_op+0x1a/0x20
-  ? __pfx_cmp_name+0x10/0x10
-  ? __symbol_put+0x93/0xb0
-  ? __symbol_put+0x62/0xb0
-  utf8_load+0xf8/0x150
+All of the Qcom endpoint SoCs supported as of now depend on the refclk from
+the host for keeping the controller operational. Due to this limitation,
+any access to the hardware registers in the absence of refclk will result
+in a whole endpoint crash. Unfortunately, most of the controller cleanups
+require accessing the hardware registers (like eDMA cleanup performed in
+dw_pcie_ep_cleanup(), powering down MHI EPF etc...). So these cleanup
+functions are currently causing the crash in the endpoint SoC once host
+asserts PERST#.
 
-That happens because symbol_put() expects the unique string that
-identify the symbol, instead of a pointer to the loaded symbol. Fix that
-by using such string.
+One way to address this issue is by generating the refclk in the endpoint
+itself and not depending on the host. But that is not always possible as
+some of the endpoint designs do require the endpoint to consume refclk from
+the host (as I was told by the Qcom engineers).
 
-Fixes: 2b3d04787012 ("unicode: Add utf8-data module")
-Signed-off-by: André Almeida <andrealmeid@igalia.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20240902225511.757831-2-andrealmeid@igalia.com
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Thus, fix this crash by moving the controller cleanups to the start of
+the qcom_pcie_perst_deassert() function. qcom_pcie_perst_deassert() is
+called whenever the host has deasserted PERST# and it is guaranteed that
+the refclk would be active at this point. So at the start of this function
+(after enabling resources), the controller cleanup can be performed. Once
+finished, rest of the code execution for PERST# deassert can continue as
+usual.
+
+Fixes: 473b2cf9c4d1 ("PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers")
+Fixes: 570d7715eed8 ("PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API for drivers supporting PERST#")
+Link: https://lore.kernel.org/r/20240817-pci-qcom-ep-cleanup-v1-1-d6b958226559@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/unicode/utf8-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-qcom-ep.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/unicode/utf8-core.c b/fs/unicode/utf8-core.c
-index 8395066341a43..0400824ef4936 100644
---- a/fs/unicode/utf8-core.c
-+++ b/fs/unicode/utf8-core.c
-@@ -198,7 +198,7 @@ struct unicode_map *utf8_load(unsigned int version)
- 	return um;
+diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+index c8bb7cd89678f..a7f65d50d4ebb 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
++++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+@@ -395,6 +395,10 @@ static int qcom_pcie_perst_deassert(struct dw_pcie *pci)
+ 		return ret;
+ 	}
  
- out_symbol_put:
--	symbol_put(um->tables);
-+	symbol_put(utf8_data_table);
- out_free_um:
- 	kfree(um);
- 	return ERR_PTR(-EINVAL);
++	/* Perform cleanup that requires refclk */
++	pci_epc_deinit_notify(pci->ep.epc);
++	dw_pcie_ep_cleanup(&pci->ep);
++
+ 	/* Assert WAKE# to RC to indicate device is ready */
+ 	gpiod_set_value_cansleep(pcie_ep->wake, 1);
+ 	usleep_range(WAKE_DELAY_US, WAKE_DELAY_US + 500);
+@@ -534,8 +538,6 @@ static void qcom_pcie_perst_assert(struct dw_pcie *pci)
+ {
+ 	struct qcom_pcie_ep *pcie_ep = to_pcie_ep(pci);
+ 
+-	pci_epc_deinit_notify(pci->ep.epc);
+-	dw_pcie_ep_cleanup(&pci->ep);
+ 	qcom_pcie_disable_resources(pcie_ep);
+ 	pcie_ep->link_status = QCOM_PCIE_EP_LINK_DISABLED;
+ }
 -- 
 2.43.0
 
