@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-96766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444329E22D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15789E23EC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D68D1BA16A7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A70CF287566
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E8D1F757D;
-	Tue,  3 Dec 2024 15:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE9F1F8F16;
+	Tue,  3 Dec 2024 15:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnD/vnOE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIekWEdy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EBB1F669E;
-	Tue,  3 Dec 2024 15:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A481F4283;
+	Tue,  3 Dec 2024 15:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238531; cv=none; b=U3b9Q6DfTJ43BfnS/FkYfHchmM1EOepBQ1t5V0T+cHKqynbhZNsMsxTpWDhXyGJoW8sxsscm5vYKZ1RIukrZJeCSYF0BUvvIyXI+Wkyu/Xw+Jw71uJ7ELcZryP0Q0TUquTapvx/XLl6Gvnn38eQJIfj1mQnMjSaVNRIiwP8f2so=
+	t=1733240400; cv=none; b=ECuSK3bBuyG5lsqoN3azMfdkG1he+2g0v6JVKZt3YjfvhYKQFPeBw04lCckc1OHUmmM92b77Zc81vFASfJnrYJlXOKAU6LoNonXWYmhAI5cG+0JHw1pKSJevey+fb4rvHvpzaCR6Ez3VYoidObb4d2ZHw9fGJBBbW1soqjdNb0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238531; c=relaxed/simple;
-	bh=Ho6LJw+KVSO7LDP4gf9YU5JS3a7EDJNAEh04h757iV4=;
+	s=arc-20240116; t=1733240400; c=relaxed/simple;
+	bh=5UPqwYSVO21e99d+C5OKlPdPXZa5560epyHZrvvWO00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqISFjG2KfrTZczWxpMIDMVKIVGSWqg1ML2qdgIIBR7KvCLHr1F1ilmWIdK0GK8nZfFF7XdpaRZ2VOu0CntfpobDxRa6jcGw+7g5ezeGOXlA6f7L8IKmYBZCdCQ/7AnzAa5DLGHduWLYJlbtlFrwcWj0Ojpxea6ErSIN3Vhue+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnD/vnOE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FAEC4CECF;
-	Tue,  3 Dec 2024 15:08:51 +0000 (UTC)
+	 MIME-Version; b=pRLOlDM7xLC2RrKf9IuB+FqLFskQc2uvdg833cMLti6sKCFV/Y2dfoNVEHYVwq8ti8C2S4FBm6Yw2JUnpGXQGNal2vwGAYE5kHjuZQwzQyxe3aIw/SIpoXfoKuf7eZPjxMVZNYtPl3ZU8xBjv75amMRnYh0Aj3iEAasFsEJYsRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIekWEdy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB10C4CECF;
+	Tue,  3 Dec 2024 15:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238531;
-	bh=Ho6LJw+KVSO7LDP4gf9YU5JS3a7EDJNAEh04h757iV4=;
+	s=korg; t=1733240399;
+	bh=5UPqwYSVO21e99d+C5OKlPdPXZa5560epyHZrvvWO00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnD/vnOEcs/MK7uA6OBAWdVxDHjsyWcSkoR9iPPrg5RlQOCQZAIjB+We1023v49Jd
-	 O/HtuZ/5iCu+AinD7JM9b3JPRvXZNHTJ0C+t8ErlZ+/Y4Wh6f6K3dm7P4aPn7KXNKE
-	 vOLdt5EZiVOpr1pTDI0T7OyXoA6FcZDV2aOt2GDs=
+	b=SIekWEdyVKdY27VsVokokjR2EuQYM8wOAaC+JNQ0Cu+ckLH324bimXdUoxwRzEELj
+	 Jepym130AYymro2W9tLouS+YRTU40a8zW+JVX0sFkW/VJGUoc4brq0qXBD6dYUpS+I
+	 /PcH6SRoZEcOQmd+qCvXztj+a8e27apHfqLwi+m4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 278/817] selftests/bpf: Fix txmsg_redir of test_txmsg_pull in test_sockmap
-Date: Tue,  3 Dec 2024 15:37:30 +0100
-Message-ID: <20241203144006.658152272@linuxfoundation.org>
+Subject: [PATCH 6.12 124/826] media: i2c: vgxy61: Fix an error handling path in vgxy61_detect()
+Date: Tue,  3 Dec 2024 15:37:31 +0100
+Message-ID: <20241203144748.579701628@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit b29e231d66303c12b7b8ac3ac2a057df06b161e8 ]
+[ Upstream commit 0d5c92cde4d38825eeadf5b4e1534350f80a9924 ]
 
-txmsg_redir in "Test pull + redirect" case of test_txmsg_pull should be
-1 instead of 0.
+If cci_read() fails, 'st' is set to 0 in cci_read(), so we return success,
+instead of the expected error code.
 
-Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Link: https://lore.kernel.org/r/20241012203731.1248619-3-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fix it and return the expected error.
+
+Fixes: 9a6d7f2ba2b9 ("media: i2c: st-vgxy61: Convert to CCI register access helpers")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 2 +-
+ drivers/media/i2c/vgxy61.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 8249f3c1fbd65..075c93ed143e6 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -1606,7 +1606,7 @@ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
- 	test_send_large(opt, cgrp);
+diff --git a/drivers/media/i2c/vgxy61.c b/drivers/media/i2c/vgxy61.c
+index 409d2d4ffb4bb..d77468c8587bc 100644
+--- a/drivers/media/i2c/vgxy61.c
++++ b/drivers/media/i2c/vgxy61.c
+@@ -1617,7 +1617,7 @@ static int vgxy61_detect(struct vgxy61_dev *sensor)
  
- 	/* Test pull + redirect */
--	txmsg_redir = 0;
-+	txmsg_redir = 1;
- 	txmsg_start = 1;
- 	txmsg_end = 2;
- 	test_send(opt, cgrp);
+ 	ret = cci_read(sensor->regmap, VGXY61_REG_NVM, &st, NULL);
+ 	if (ret < 0)
+-		return st;
++		return ret;
+ 	if (st != VGXY61_NVM_OK)
+ 		dev_warn(&client->dev, "Bad nvm state got %u\n", (u8)st);
+ 
 -- 
 2.43.0
 
