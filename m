@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-97059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300DD9E22C1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8658C9E256D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D69F167909
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 453992865F6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E739B1F76C3;
-	Tue,  3 Dec 2024 15:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA471F76CA;
+	Tue,  3 Dec 2024 16:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjaeBtCC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VV/RHSrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42061F76AE;
-	Tue,  3 Dec 2024 15:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483C61F76B5;
+	Tue,  3 Dec 2024 16:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239402; cv=none; b=rAJzDhUlNpZnjHCMekhNT+VePzc7xGCBwDIfxMvBKGfJ2yy8XM6S0DCi63F/LoBO5v58YNNwbnOnxzhtZCrnaaPkw7oA10q0PVdpiMaGuTMRC0Dy9sgu9wCj5ASlhb5ah4s8rXdNWm0umwYj4RA9M4QwYGhZwEmF1TFuSRXsgFg=
+	t=1733241643; cv=none; b=MXSGgC4pHkduoSBf5AKmTz/NuNRovqrxz4wxu/kk4vBUNJFAYTB5J8iU5vUW2uxHaybUX8AigXKyYXAQ5eitkn1Kt1WHfZMq6ozx3285rQ3rI7oTKy+0erafRTsW9H12CQkCQSCo7zcV3pYuiwE+Sy1CynjaWIsp5hRSLMwyfxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239402; c=relaxed/simple;
-	bh=DOWoOYYz8eUKkeqID4x7n600w3F9JF0UNs9/ZMVOV94=;
+	s=arc-20240116; t=1733241643; c=relaxed/simple;
+	bh=VnFVG5KMrV8BWhDTHjSA+HxORKy8IHTlUbNw2ABaHG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfWgRPbfaKeD07a0LlvqVrUnLnlTXseiN9LgMNZ28a8y9vdLIckZTBfCqSDCCg8y+gEWUKZVSFmz4X7uEjdU1pKZvnLCCSPAD9wC+Rg5Ve2VkaPEH/74eT49VkCyVmGDVXI2yJhOQPAO/QEdnBDHyZg0Piyw2Gs8f8CCPsT5DGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjaeBtCC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FDCC4CECF;
-	Tue,  3 Dec 2024 15:23:21 +0000 (UTC)
+	 MIME-Version; b=IfphOubr3LWNvngg2YnvOB5xzbs0r1Xas2cPVxmnmHSS+j/ji0A4tFiOFwU/uzB0GMJAZglPALSEATcbUXv1LPV1fhWQn8tVpHbiqWEoqvQIUvgDHsam49XiAAMEKWAGd06552Q2UlnxuSmQxut2BGJhQb3Amph8+0I6KNtFfsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VV/RHSrp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A611AC4CECF;
+	Tue,  3 Dec 2024 16:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239402;
-	bh=DOWoOYYz8eUKkeqID4x7n600w3F9JF0UNs9/ZMVOV94=;
+	s=korg; t=1733241643;
+	bh=VnFVG5KMrV8BWhDTHjSA+HxORKy8IHTlUbNw2ABaHG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjaeBtCCpv7J2CTuvhQpYuPUGNXeJOE+w+drwC/sdjSi9uD2dokGGXhvB6FlUZVv0
-	 OFFvvtN/UG6HqIVHpmMPTphMlz64UK3XvM1uFxsidNNc+tCTE/OJib9nurpW/zRFqI
-	 zTvhrrkJi+oFY3mj9iHYg4WRMgkDNIV3FvLPz/a4=
+	b=VV/RHSrprmwN0DpWh0yErsYNz5R2Ypo9nyi1K/fJQZ5AFKYXUzbVbF8KM9m5LBVYa
+	 f+1aKY84IIWw7+y3++MdnJ5McVY3cfr56cDXFT0LvADwuKPbnaUAjgcIkiew3m7o71
+	 oi9NAJt9ly1Q7dv6XIFUfZBu8/xHvOBtMdgFe9xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com,
-	syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 601/817] USB: chaoskey: Fix possible deadlock chaoskey_list_lock
+Subject: [PATCH 6.12 446/826] RDMA/mlx5: Move events notifier registration to be after device registration
 Date: Tue,  3 Dec 2024 15:42:53 +0100
-Message-ID: <20241203144019.386746413@linuxfoundation.org>
+Message-ID: <20241203144801.158281812@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,156 +63,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit d73dc7b182be4238b75278bfae16afb4c5564a58 ]
+[ Upstream commit ede132a5cf559f3ab35a4c28bac4f4a6c20334d8 ]
 
-[Syzbot reported two possible deadlocks]
-The first possible deadlock is:
-WARNING: possible recursive locking detected
-6.12.0-rc1-syzkaller-00027-g4a9fe2a8ac53 #0 Not tainted
---------------------------------------------
-syz-executor363/2651 is trying to acquire lock:
-ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_release+0x15d/0x2c0 drivers/usb/misc/chaoskey.c:322
+Move pkey change work initialization and cleanup from device resources
+stage to notifier stage, since this is the stage which handles this work
+events.
 
-but task is already holding lock:
-ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_release+0x7f/0x2c0 drivers/usb/misc/chaoskey.c:299
+Fix a race between the device deregistration and pkey change work by moving
+MLX5_IB_STAGE_DEVICE_NOTIFIER to be after MLX5_IB_STAGE_IB_REG in order to
+ensure that the notifier is deregistered before the device during cleanup.
+Which ensures there are no works that are being executed after the
+device has already unregistered which can cause the panic below.
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 630071 Comm: kworker/1:2 Kdump: loaded Tainted: G W OE --------- --- 5.14.0-162.6.1.el9_1.x86_64 #1
+Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS 090008 02/27/2023
+Workqueue: events pkey_change_handler [mlx5_ib]
+RIP: 0010:setup_qp+0x38/0x1f0 [mlx5_ib]
+Code: ee 41 54 45 31 e4 55 89 f5 53 48 89 fb 48 83 ec 20 8b 77 08 65 48 8b 04 25 28 00 00 00 48 89 44 24 18 48 8b 07 48 8d 4c 24 16 <4c> 8b 38 49 8b 87 80 0b 00 00 4c 89 ff 48 8b 80 08 05 00 00 8b 40
+RSP: 0018:ffffbcc54068be20 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff954054494128 RCX: ffffbcc54068be36
+RDX: ffff954004934000 RSI: 0000000000000001 RDI: ffff954054494128
+RBP: 0000000000000023 R08: ffff954001be2c20 R09: 0000000000000001
+R10: ffff954001be2c20 R11: ffff9540260133c0 R12: 0000000000000000
+R13: 0000000000000023 R14: 0000000000000000 R15: ffff9540ffcb0905
+FS: 0000000000000000(0000) GS:ffff9540ffc80000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000010625c001 CR4: 00000000003706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+mlx5_ib_gsi_pkey_change+0x20/0x40 [mlx5_ib]
+process_one_work+0x1e8/0x3c0
+worker_thread+0x50/0x3b0
+? rescuer_thread+0x380/0x380
+kthread+0x149/0x170
+? set_kthread_struct+0x50/0x50
+ret_from_fork+0x22/0x30
+Modules linked in: rdma_ucm(OE) rdma_cm(OE) iw_cm(OE) ib_ipoib(OE) ib_cm(OE) ib_umad(OE) mlx5_ib(OE) mlx5_fwctl(OE) fwctl(OE) ib_uverbs(OE) mlx5_core(OE) mlxdevm(OE) ib_core(OE) mlx_compat(OE) psample mlxfw(OE) tls knem(OE) netconsole nfsv3 nfs_acl nfs lockd grace fscache netfs qrtr rfkill sunrpc intel_rapl_msr intel_rapl_common rapl hv_balloon hv_utils i2c_piix4 pcspkr joydev fuse ext4 mbcache jbd2 sr_mod sd_mod cdrom t10_pi sg ata_generic pci_hyperv pci_hyperv_intf hyperv_drm drm_shmem_helper drm_kms_helper hv_storvsc syscopyarea hv_netvsc sysfillrect sysimgblt hid_hyperv fb_sys_fops scsi_transport_fc hyperv_keyboard drm ata_piix crct10dif_pclmul crc32_pclmul crc32c_intel libata ghash_clmulni_intel hv_vmbus serio_raw [last unloaded: ib_core]
+CR2: 0000000000000000
+---[ end trace f6f8be4eae12f7bc ]---
 
-       CPU0
-       ----
-  lock(chaoskey_list_lock);
-  lock(chaoskey_list_lock);
-
- *** DEADLOCK ***
-
-The second possible deadlock is:
-WARNING: possible circular locking dependency detected
-6.12.0-rc1-syzkaller-00027-g4a9fe2a8ac53 #0 Not tainted
-------------------------------------------------------
-kworker/0:2/804 is trying to acquire lock:
-ffffffff899dadb0 (minor_rwsem){++++}-{3:3}, at: usb_deregister_dev+0x7c/0x1e0 drivers/usb/core/file.c:186
-
-but task is already holding lock:
-ffffffff89b120e8 (chaoskey_list_lock){+.+.}-{3:3}, at: chaoskey_disconnect+0xa8/0x2a0 drivers/usb/misc/chaoskey.c:235
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (chaoskey_list_lock){+.+.}-{3:3}:
-       __mutex_lock_common kernel/locking/mutex.c:608 [inline]
-       __mutex_lock+0x175/0x9c0 kernel/locking/mutex.c:752
-       chaoskey_open+0xdd/0x220 drivers/usb/misc/chaoskey.c:274
-       usb_open+0x186/0x220 drivers/usb/core/file.c:47
-       chrdev_open+0x237/0x6a0 fs/char_dev.c:414
-       do_dentry_open+0x6cb/0x1390 fs/open.c:958
-       vfs_open+0x82/0x3f0 fs/open.c:1088
-       do_open fs/namei.c:3774 [inline]
-       path_openat+0x1e6a/0x2d60 fs/namei.c:3933
-       do_filp_open+0x1dc/0x430 fs/namei.c:3960
-       do_sys_openat2+0x17a/0x1e0 fs/open.c:1415
-       do_sys_open fs/open.c:1430 [inline]
-       __do_sys_openat fs/open.c:1446 [inline]
-       __se_sys_openat fs/open.c:1441 [inline]
-       __x64_sys_openat+0x175/0x210 fs/open.c:1441
-       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-       do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (minor_rwsem){++++}-{3:3}:
-       check_prev_add kernel/locking/lockdep.c:3161 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3280 [inline]
-       validate_chain kernel/locking/lockdep.c:3904 [inline]
-       __lock_acquire+0x250b/0x3ce0 kernel/locking/lockdep.c:5202
-       lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5825
-       down_write+0x93/0x200 kernel/locking/rwsem.c:1577
-       usb_deregister_dev+0x7c/0x1e0 drivers/usb/core/file.c:186
-       chaoskey_disconnect+0xb7/0x2a0 drivers/usb/misc/chaoskey.c:236
-       usb_unbind_interface+0x1e8/0x970 drivers/usb/core/driver.c:461
-       device_remove drivers/base/dd.c:569 [inline]
-       device_remove+0x122/0x170 drivers/base/dd.c:561
-       __device_release_driver drivers/base/dd.c:1273 [inline]
-       device_release_driver_internal+0x44a/0x610 drivers/base/dd.c:1296
-       bus_remove_device+0x22f/0x420 drivers/base/bus.c:576
-       device_del+0x396/0x9f0 drivers/base/core.c:3864
-       usb_disable_device+0x36c/0x7f0 drivers/usb/core/message.c:1418
-       usb_disconnect+0x2e1/0x920 drivers/usb/core/hub.c:2304
-       hub_port_connect drivers/usb/core/hub.c:5361 [inline]
-       hub_port_connect_change drivers/usb/core/hub.c:5661 [inline]
-       port_event drivers/usb/core/hub.c:5821 [inline]
-       hub_event+0x1bed/0x4f40 drivers/usb/core/hub.c:5903
-       process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
-       process_scheduled_works kernel/workqueue.c:3310 [inline]
-       worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
-       kthread+0x2c1/0x3a0 kernel/kthread.c:389
-       ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(chaoskey_list_lock);
-                               lock(minor_rwsem);
-                               lock(chaoskey_list_lock);
-  lock(minor_rwsem);
-
- *** DEADLOCK ***
-[Analysis]
-The first is AA lock, it because wrong logic, it need a unlock.
-The second is AB lock, it needs to rearrange the order of lock usage.
-
-Fixes: 422dc0a4d12d ("USB: chaoskey: fail open after removal")
-Reported-by: syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com
-Reported-by: syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=685e14d04fe35692d3bc
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Tested-by: syzbot+685e14d04fe35692d3bc@syzkaller.appspotmail.com
-Reported-by: syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com
-Tested-by: syzbot+5f1ce62e956b7b19610e@syzkaller.appspotmail.com
-Tested-by: syzbot+1f8ca5ee82576ec01f12@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/tencent_84EB865C89862EC22EE94CB3A7C706C59206@qq.com
-Cc: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7722f47e71e5 ("IB/mlx5: Create GSI transmission QPs when P_Key table is changed")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://patch.msgid.link/d271ceeff0c08431b3cbbbb3e2d416f09b6d1621.1731496944.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/chaoskey.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c    | 40 +++++++++++++---------------
+ drivers/infiniband/hw/mlx5/mlx5_ib.h |  2 +-
+ 2 files changed, 20 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
-index e8b63df5f9759..225863321dc47 100644
---- a/drivers/usb/misc/chaoskey.c
-+++ b/drivers/usb/misc/chaoskey.c
-@@ -232,10 +232,10 @@ static void chaoskey_disconnect(struct usb_interface *interface)
- 	if (dev->hwrng_registered)
- 		hwrng_unregister(&dev->hwrng);
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 5fef9288699c6..ac20ab3bbabf4 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -2997,7 +2997,6 @@ int mlx5_ib_dev_res_srq_init(struct mlx5_ib_dev *dev)
+ static int mlx5_ib_dev_res_init(struct mlx5_ib_dev *dev)
+ {
+ 	struct mlx5_ib_resources *devr = &dev->devr;
+-	int port;
+ 	int ret;
  
--	mutex_lock(&chaoskey_list_lock);
- 	usb_deregister_dev(interface, &chaoskey_class);
+ 	if (!MLX5_CAP_GEN(dev->mdev, xrc))
+@@ -3013,10 +3012,6 @@ static int mlx5_ib_dev_res_init(struct mlx5_ib_dev *dev)
+ 		return ret;
+ 	}
  
- 	usb_set_intfdata(interface, NULL);
-+	mutex_lock(&chaoskey_list_lock);
- 	mutex_lock(&dev->lock);
+-	for (port = 0; port < ARRAY_SIZE(devr->ports); ++port)
+-		INIT_WORK(&devr->ports[port].pkey_change_work,
+-			  pkey_change_handler);
+-
+ 	mutex_init(&devr->cq_lock);
+ 	mutex_init(&devr->srq_lock);
  
- 	dev->present = false;
-@@ -319,7 +319,7 @@ static int chaoskey_release(struct inode *inode, struct file *file)
- bail:
- 	mutex_unlock(&dev->lock);
- destruction:
--	mutex_lock(&chaoskey_list_lock);
-+	mutex_unlock(&chaoskey_list_lock);
- 	usb_dbg(interface, "release success");
- 	return rv;
+@@ -3026,16 +3021,6 @@ static int mlx5_ib_dev_res_init(struct mlx5_ib_dev *dev)
+ static void mlx5_ib_dev_res_cleanup(struct mlx5_ib_dev *dev)
+ {
+ 	struct mlx5_ib_resources *devr = &dev->devr;
+-	int port;
+-
+-	/*
+-	 * Make sure no change P_Key work items are still executing.
+-	 *
+-	 * At this stage, the mlx5_ib_event should be unregistered
+-	 * and it ensures that no new works are added.
+-	 */
+-	for (port = 0; port < ARRAY_SIZE(devr->ports); ++port)
+-		cancel_work_sync(&devr->ports[port].pkey_change_work);
+ 
+ 	/* After s0/s1 init, they are not unset during the device lifetime. */
+ 	if (devr->s1) {
+@@ -4471,6 +4456,13 @@ static void mlx5_ib_stage_delay_drop_cleanup(struct mlx5_ib_dev *dev)
+ 
+ static int mlx5_ib_stage_dev_notifier_init(struct mlx5_ib_dev *dev)
+ {
++	struct mlx5_ib_resources *devr = &dev->devr;
++	int port;
++
++	for (port = 0; port < ARRAY_SIZE(devr->ports); ++port)
++		INIT_WORK(&devr->ports[port].pkey_change_work,
++			  pkey_change_handler);
++
+ 	dev->mdev_events.notifier_call = mlx5_ib_event;
+ 	mlx5_notifier_register(dev->mdev, &dev->mdev_events);
+ 
+@@ -4481,8 +4473,14 @@ static int mlx5_ib_stage_dev_notifier_init(struct mlx5_ib_dev *dev)
+ 
+ static void mlx5_ib_stage_dev_notifier_cleanup(struct mlx5_ib_dev *dev)
+ {
++	struct mlx5_ib_resources *devr = &dev->devr;
++	int port;
++
+ 	mlx5r_macsec_event_unregister(dev);
+ 	mlx5_notifier_unregister(dev->mdev, &dev->mdev_events);
++
++	for (port = 0; port < ARRAY_SIZE(devr->ports); ++port)
++		cancel_work_sync(&devr->ports[port].pkey_change_work);
  }
+ 
+ void mlx5_ib_data_direct_bind(struct mlx5_ib_dev *ibdev,
+@@ -4572,9 +4570,6 @@ static const struct mlx5_ib_profile pf_profile = {
+ 	STAGE_CREATE(MLX5_IB_STAGE_DEVICE_RESOURCES,
+ 		     mlx5_ib_dev_res_init,
+ 		     mlx5_ib_dev_res_cleanup),
+-	STAGE_CREATE(MLX5_IB_STAGE_DEVICE_NOTIFIER,
+-		     mlx5_ib_stage_dev_notifier_init,
+-		     mlx5_ib_stage_dev_notifier_cleanup),
+ 	STAGE_CREATE(MLX5_IB_STAGE_ODP,
+ 		     mlx5_ib_odp_init_one,
+ 		     mlx5_ib_odp_cleanup_one),
+@@ -4599,6 +4594,9 @@ static const struct mlx5_ib_profile pf_profile = {
+ 	STAGE_CREATE(MLX5_IB_STAGE_IB_REG,
+ 		     mlx5_ib_stage_ib_reg_init,
+ 		     mlx5_ib_stage_ib_reg_cleanup),
++	STAGE_CREATE(MLX5_IB_STAGE_DEVICE_NOTIFIER,
++		     mlx5_ib_stage_dev_notifier_init,
++		     mlx5_ib_stage_dev_notifier_cleanup),
+ 	STAGE_CREATE(MLX5_IB_STAGE_POST_IB_REG_UMR,
+ 		     mlx5_ib_stage_post_ib_reg_umr_init,
+ 		     NULL),
+@@ -4635,9 +4633,6 @@ const struct mlx5_ib_profile raw_eth_profile = {
+ 	STAGE_CREATE(MLX5_IB_STAGE_DEVICE_RESOURCES,
+ 		     mlx5_ib_dev_res_init,
+ 		     mlx5_ib_dev_res_cleanup),
+-	STAGE_CREATE(MLX5_IB_STAGE_DEVICE_NOTIFIER,
+-		     mlx5_ib_stage_dev_notifier_init,
+-		     mlx5_ib_stage_dev_notifier_cleanup),
+ 	STAGE_CREATE(MLX5_IB_STAGE_COUNTERS,
+ 		     mlx5_ib_counters_init,
+ 		     mlx5_ib_counters_cleanup),
+@@ -4659,6 +4654,9 @@ const struct mlx5_ib_profile raw_eth_profile = {
+ 	STAGE_CREATE(MLX5_IB_STAGE_IB_REG,
+ 		     mlx5_ib_stage_ib_reg_init,
+ 		     mlx5_ib_stage_ib_reg_cleanup),
++	STAGE_CREATE(MLX5_IB_STAGE_DEVICE_NOTIFIER,
++		     mlx5_ib_stage_dev_notifier_init,
++		     mlx5_ib_stage_dev_notifier_cleanup),
+ 	STAGE_CREATE(MLX5_IB_STAGE_POST_IB_REG_UMR,
+ 		     mlx5_ib_stage_post_ib_reg_umr_init,
+ 		     NULL),
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 23fd72f7f63df..29bde64ea1eac 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -972,7 +972,6 @@ enum mlx5_ib_stages {
+ 	MLX5_IB_STAGE_QP,
+ 	MLX5_IB_STAGE_SRQ,
+ 	MLX5_IB_STAGE_DEVICE_RESOURCES,
+-	MLX5_IB_STAGE_DEVICE_NOTIFIER,
+ 	MLX5_IB_STAGE_ODP,
+ 	MLX5_IB_STAGE_COUNTERS,
+ 	MLX5_IB_STAGE_CONG_DEBUGFS,
+@@ -981,6 +980,7 @@ enum mlx5_ib_stages {
+ 	MLX5_IB_STAGE_PRE_IB_REG_UMR,
+ 	MLX5_IB_STAGE_WHITELIST_UID,
+ 	MLX5_IB_STAGE_IB_REG,
++	MLX5_IB_STAGE_DEVICE_NOTIFIER,
+ 	MLX5_IB_STAGE_POST_IB_REG_UMR,
+ 	MLX5_IB_STAGE_DELAY_DROP,
+ 	MLX5_IB_STAGE_RESTRACK,
 -- 
 2.43.0
 
