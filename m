@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-97056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8049E2B27
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:42:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B49B9E28FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF147BA6AEC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0771BE4DEF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7741D1F75B7;
-	Tue,  3 Dec 2024 15:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D031E3DCF;
+	Tue,  3 Dec 2024 16:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rxhyb29C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvdZYP30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BF01F75A6;
-	Tue,  3 Dec 2024 15:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C412B23CE;
+	Tue,  3 Dec 2024 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239393; cv=none; b=qkMNVNTwxoBqJF+dwM53AquzZ434XRpA3tAJRP21ugf2X3aUC0+eBosgtZrgHdHzNKKm36ctsS8kHLabU/dhdqCq4bxU1vaAHUPwX+zk9CbqoYgl5RQloSFbFM7y0V+pwwPfRnlHoG8s6ndmJ0bYWIU/DHVZDHMtOacyhGCqVy4=
+	t=1733241646; cv=none; b=aLDP+H2owrx+bzxAmrfF+Yya6/AEkCuAPBjiDYn9R3wWWPOyXDd9p/483Lh/GIHNH1eyLe+bOn43+u/Ds4lufvDRR02Ru1m3Bs25oXH+x8AW+/318D3OWPjReolffcg5rGn6yxC0pNMoMacWrg/zXvHhubU27ZSrlmEIojznj0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239393; c=relaxed/simple;
-	bh=91MsCJW/VQlboIGmxd6XcKRpja4wDe+3sPH6yMMzQok=;
+	s=arc-20240116; t=1733241646; c=relaxed/simple;
+	bh=AKCiCPIiUjyxVEGge9QE52s2sA+/mm9zWJ49cMpS7Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDUJdfODRaZhVTgsZLmJ8vkGtY/6OjpzxLwtUJe8Hrs8mtjw81y0wu5VLWwQoNKv/DZE1MASmcUje6x7XQantJ9rFtbA1Fn8ROOBSDO+vh0wuGU9/Opo8rvFUzmwR6qvW2/Li7sR1vWgbvhFbhEj7ucJeoSpzk9I6V4TrK3ZUw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rxhyb29C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB36C4CED6;
-	Tue,  3 Dec 2024 15:23:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ChI7Mc5ZlcxDuv+4G243Mm++JO0kCkbUheHWK7iCSm47Mj/2jRZCLuh0QXTdd6woleKUgmmWl7dm/q4jImSk9WQ+9RsF2QEyt5THMSjCuHcY+eICgRERbT8RvGwnvLQrCojcT2SUj+RyWyDEd8LkrP26Vb0V298iT8QUWp4vMA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvdZYP30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F68C4CECF;
+	Tue,  3 Dec 2024 16:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239393;
-	bh=91MsCJW/VQlboIGmxd6XcKRpja4wDe+3sPH6yMMzQok=;
+	s=korg; t=1733241646;
+	bh=AKCiCPIiUjyxVEGge9QE52s2sA+/mm9zWJ49cMpS7Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rxhyb29C5pjEDXNfzogQGycbHroKSAt6cAptc8RzrOQu8Xpe5TWU2VNt4kvYBcVbb
-	 r//gV7MXVJAKTaIewz0IZ/PYolpMfCDbn55URDaFFVhwQf+M6p18ef3urO6lykMZRe
-	 VeA+6ZbT1Ku7oyTZmQ0IuaDcwbr4r8NgUv3d5RQw=
+	b=lvdZYP308vVWy4zieRTVXtZ0DRVa3rf1UxW/crdK92jGIVy2k9Osv7qTqJK3268zJ
+	 NplHW7PWK+/YHyvyJzNIONvTdajo/l8fdMydfczqbd10DYwJxJljl3QFtEm6rV7QJ4
+	 myjcksAxbKhIPNeWaGIPdUqY0V+nXmz8K2iwjPv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 598/817] usb: using mutex lock and supporting O_NONBLOCK flag in iowarrior_read()
-Date: Tue,  3 Dec 2024 15:42:50 +0100
-Message-ID: <20241203144019.268192078@linuxfoundation.org>
+Subject: [PATCH 6.12 447/826] clk: clk-apple-nco: Add NULL check in applnco_probe
+Date: Tue,  3 Dec 2024 15:42:54 +0100
+Message-ID: <20241203144801.196823752@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,133 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 44feafbaa66ec86232b123bb8437a6a262442025 ]
+[ Upstream commit 969c765e2b508cca9099d246c010a1e48dcfd089 ]
 
-iowarrior_read() uses the iowarrior dev structure, but does not use any
-lock on the structure. This can cause various bugs including data-races,
-so it is more appropriate to use a mutex lock to safely protect the
-iowarrior dev structure. When using a mutex lock, you should split the
-branch to prevent blocking when the O_NONBLOCK flag is set.
+Add NULL check in applnco_probe, to handle kernel NULL pointer
+dereference error.
 
-In addition, it is unnecessary to check for NULL on the iowarrior dev
-structure obtained by reading file->private_data. Therefore, it is
-better to remove the check.
-
-Fixes: 946b960d13c1 ("USB: add driver for iowarrior devices.")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://lore.kernel.org/r/20240919103403.3986-1-aha310510@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6641057d5dba ("clk: clk-apple-nco: Add driver for Apple NCO")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20241114072820.3071-1-hanchunchao@inspur.com
+Reviewed-by: Martin Povišer <povik+lin@cutebit.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/iowarrior.c | 46 ++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 10 deletions(-)
+ drivers/clk/clk-apple-nco.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
-index 6d28467ce3522..a513766b4985d 100644
---- a/drivers/usb/misc/iowarrior.c
-+++ b/drivers/usb/misc/iowarrior.c
-@@ -277,28 +277,45 @@ static ssize_t iowarrior_read(struct file *file, char __user *buffer,
- 	struct iowarrior *dev;
- 	int read_idx;
- 	int offset;
-+	int retval;
- 
- 	dev = file->private_data;
- 
-+	if (file->f_flags & O_NONBLOCK) {
-+		retval = mutex_trylock(&dev->mutex);
-+		if (!retval)
-+			return -EAGAIN;
-+	} else {
-+		retval = mutex_lock_interruptible(&dev->mutex);
-+		if (retval)
-+			return -ERESTARTSYS;
-+	}
+diff --git a/drivers/clk/clk-apple-nco.c b/drivers/clk/clk-apple-nco.c
+index 39472a51530a3..457a48d489412 100644
+--- a/drivers/clk/clk-apple-nco.c
++++ b/drivers/clk/clk-apple-nco.c
+@@ -297,6 +297,9 @@ static int applnco_probe(struct platform_device *pdev)
+ 		memset(&init, 0, sizeof(init));
+ 		init.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%s-%d", np->name, i);
++		if (!init.name)
++			return -ENOMEM;
 +
- 	/* verify that the device wasn't unplugged */
--	if (!dev || !dev->present)
--		return -ENODEV;
-+	if (!dev->present) {
-+		retval = -ENODEV;
-+		goto exit;
-+	}
- 
- 	dev_dbg(&dev->interface->dev, "minor %d, count = %zd\n",
- 		dev->minor, count);
- 
- 	/* read count must be packet size (+ time stamp) */
- 	if ((count != dev->report_size)
--	    && (count != (dev->report_size + 1)))
--		return -EINVAL;
-+	    && (count != (dev->report_size + 1))) {
-+		retval = -EINVAL;
-+		goto exit;
-+	}
- 
- 	/* repeat until no buffer overrun in callback handler occur */
- 	do {
- 		atomic_set(&dev->overflow_flag, 0);
- 		if ((read_idx = read_index(dev)) == -1) {
- 			/* queue empty */
--			if (file->f_flags & O_NONBLOCK)
--				return -EAGAIN;
-+			if (file->f_flags & O_NONBLOCK) {
-+				retval = -EAGAIN;
-+				goto exit;
-+			}
- 			else {
- 				//next line will return when there is either new data, or the device is unplugged
- 				int r = wait_event_interruptible(dev->read_wait,
-@@ -309,28 +326,37 @@ static ssize_t iowarrior_read(struct file *file, char __user *buffer,
- 								  -1));
- 				if (r) {
- 					//we were interrupted by a signal
--					return -ERESTART;
-+					retval = -ERESTART;
-+					goto exit;
- 				}
- 				if (!dev->present) {
- 					//The device was unplugged
--					return -ENODEV;
-+					retval = -ENODEV;
-+					goto exit;
- 				}
- 				if (read_idx == -1) {
- 					// Can this happen ???
--					return 0;
-+					retval = 0;
-+					goto exit;
- 				}
- 			}
- 		}
- 
- 		offset = read_idx * (dev->report_size + 1);
- 		if (copy_to_user(buffer, dev->read_queue + offset, count)) {
--			return -EFAULT;
-+			retval = -EFAULT;
-+			goto exit;
- 		}
- 	} while (atomic_read(&dev->overflow_flag));
- 
- 	read_idx = ++read_idx == MAX_INTERRUPT_BUFFER ? 0 : read_idx;
- 	atomic_set(&dev->read_idx, read_idx);
-+	mutex_unlock(&dev->mutex);
- 	return count;
-+
-+exit:
-+	mutex_unlock(&dev->mutex);
-+	return retval;
- }
- 
- /*
+ 		init.ops = &applnco_ops;
+ 		init.parent_data = &pdata;
+ 		init.num_parents = 1;
 -- 
 2.43.0
 
