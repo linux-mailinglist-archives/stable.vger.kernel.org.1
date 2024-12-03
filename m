@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5945E9E296B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:36:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5802E9E29AD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1198BE08E2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0587B268DA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4721C1F8ACB;
-	Tue,  3 Dec 2024 15:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0314F1F76D5;
+	Tue,  3 Dec 2024 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnPUOhFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfg2Y3Vd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A6D1F8925;
-	Tue,  3 Dec 2024 15:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B8A1F76CA;
+	Tue,  3 Dec 2024 15:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240720; cv=none; b=lz23bdi9/SE1rvN4yrrWtwpxhNI1RBZuTYBxY/HFtQBxHqrIw/y9nT/ONhk3SB7Gc2V/URtkJuov2qnVak/0UkmjOP4WGu10bKxkyGalgJv0EH33k8KNqHBSa/ElbDYgE6NB9yhAgMMSO2uw4NZjnspcVdDA27l32YzlTyCeeTA=
+	t=1733238802; cv=none; b=M5qYhDtzpqgz69vflDeUVFPuGwAXObTWkv6IUz0Yiyi7t2o6oTDcflOIK7D0e8d+nFYfHqNorY5r/6AFGuj98ZgCcJJ0Oiq1XRVjdcrkoSQU41j7BjZitYts9M2xgrD5oTSIafdhRPcFWLN0PNrnEWqOPpTaqf/9oEn+NRUU29g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240720; c=relaxed/simple;
-	bh=czYKVQGEpX79SOQIpFhJumVF3S1i7bGmhUaoUD7RVnM=;
+	s=arc-20240116; t=1733238802; c=relaxed/simple;
+	bh=cEkqAjkgqhBe9G2tv3shtJG0dOXUWJYtq1iuGAnHrSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=te8ZSTIZRBZArCuFPX5eWs05K742DgdnAcP2/d1JyCr0lrDvferyOtNySkeMwD6efptw4BQbg4PlIyA+4ZNGs2wteD6cX/F4aU8LdsuUMulXr+2D3dba6aWe6Iyi0TJv6XOsWwADY1rywL2AX4i1320HlloWRJscG4eBG5WItjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnPUOhFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D3DC4CECF;
-	Tue,  3 Dec 2024 15:45:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hiyGnlbNFr1vY/YD2JAtuPhwU3L3aVz4kKmzL60+ws32U0xrW67aZRdZR7mtmrysAweIAz6JCkUxb8ouUB6u1WwrqcrFIXTxngm7KEMAanLkApBYzngnmshJPPrgR+n2+YKvHWKAFziKUsf0wD7e0ijM3THSACHJllZdphWT+ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfg2Y3Vd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D549EC4CECF;
+	Tue,  3 Dec 2024 15:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240719;
-	bh=czYKVQGEpX79SOQIpFhJumVF3S1i7bGmhUaoUD7RVnM=;
+	s=korg; t=1733238802;
+	bh=cEkqAjkgqhBe9G2tv3shtJG0dOXUWJYtq1iuGAnHrSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vnPUOhFM5KZ0QQ6LwDeUVI6Jv61+4/x06yfT6BxoWrp7cO74fyZKS9pJhxNCDfFvm
-	 UjrQNckN1zk28qgUGu+bnIqhkaIHFqZ1rtUMHpm8N4Zg/DsqPRR0ea7ZHrxQfhKKR4
-	 frpdLxnqaKSFJhJRIFtLM4T22+X9R4PbkCd2rrgI=
+	b=dfg2Y3Vd0Is2mI+Vpbu8DMqp3PCVGAiaHm1+o6nfZF4OdYX3IgXrpK0fjRidH7vCn
+	 tKjV33xigR+rXXakX32sWBG5WftE+RR9GDasorqm+L2zXjoDRX1uKS7zGN0PxaxQ5z
+	 6o7fx5JKZnJdQ0WQVHFgcpUQqEsCWqVvysEomE4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 217/826] drm/bridge: anx7625: Drop EDID cache on bridge power off
-Date: Tue,  3 Dec 2024 15:39:04 +0100
-Message-ID: <20241203144752.205769882@linuxfoundation.org>
+Subject: [PATCH 6.11 374/817] unicode: Fix utf8_load() error path
+Date: Tue,  3 Dec 2024 15:39:06 +0100
+Message-ID: <20241203144010.443849009@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: André Almeida <andrealmeid@igalia.com>
 
-[ Upstream commit 00ae002116a14c2e6a342c4c9ae080cdbb9b4b21 ]
+[ Upstream commit 156bb2c569cd869583c593d27a5bd69e7b2a4264 ]
 
-The bridge might miss the display change events when it's powered off.
-This happens when a user changes the external monitor when the system
-is suspended and the embedded controller doesn't not wake AP up.
+utf8_load() requests the symbol "utf8_data_table" and then checks if the
+requested UTF-8 version is supported. If it's unsupported, it tries to
+put the data table using symbol_put(). If an unsupported version is
+requested, symbol_put() fails like this:
 
-It's also observed that one DP-to-HDMI bridge doesn't work correctly
-when there is no EDID read after it is powered on.
+ kernel BUG at kernel/module/main.c:786!
+ RIP: 0010:__symbol_put+0x93/0xb0
+ Call Trace:
+  <TASK>
+  ? __die_body.cold+0x19/0x27
+  ? die+0x2e/0x50
+  ? do_trap+0xca/0x110
+  ? do_error_trap+0x65/0x80
+  ? __symbol_put+0x93/0xb0
+  ? exc_invalid_op+0x51/0x70
+  ? __symbol_put+0x93/0xb0
+  ? asm_exc_invalid_op+0x1a/0x20
+  ? __pfx_cmp_name+0x10/0x10
+  ? __symbol_put+0x93/0xb0
+  ? __symbol_put+0x62/0xb0
+  utf8_load+0xf8/0x150
 
-Drop the cache to force an EDID read after system resume to fix this.
+That happens because symbol_put() expects the unique string that
+identify the symbol, instead of a pointer to the loaded symbol. Fix that
+by using such string.
 
-Fixes: 8bdfc5dae4e3 ("drm/bridge: anx7625: Add anx7625 MIPI DSI/DPI to DP")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240926092931.3870342-2-treapking@chromium.org
+Fixes: 2b3d04787012 ("unicode: Add utf8-data module")
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20240902225511.757831-2-andrealmeid@igalia.com
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/unicode/utf8-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index a2e9bb485c366..a2675b121fe44 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -2551,6 +2551,8 @@ static int __maybe_unused anx7625_runtime_pm_suspend(struct device *dev)
- 	mutex_lock(&ctx->lock);
+diff --git a/fs/unicode/utf8-core.c b/fs/unicode/utf8-core.c
+index 8395066341a43..0400824ef4936 100644
+--- a/fs/unicode/utf8-core.c
++++ b/fs/unicode/utf8-core.c
+@@ -198,7 +198,7 @@ struct unicode_map *utf8_load(unsigned int version)
+ 	return um;
  
- 	anx7625_stop_dp_work(ctx);
-+	if (!ctx->pdata.panel_bridge)
-+		anx7625_remove_edid(ctx);
- 	anx7625_power_standby(ctx);
- 
- 	mutex_unlock(&ctx->lock);
+ out_symbol_put:
+-	symbol_put(um->tables);
++	symbol_put(utf8_data_table);
+ out_free_um:
+ 	kfree(um);
+ 	return ERR_PTR(-EINVAL);
 -- 
 2.43.0
 
