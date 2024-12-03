@@ -1,168 +1,168 @@
-Return-Path: <stable+bounces-98126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355CA9E27C9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:41:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE229E2809
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE4CF2859FC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E35CD28B613
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6AA1F8ADD;
-	Tue,  3 Dec 2024 16:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FEA1F8AF9;
+	Tue,  3 Dec 2024 16:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ImoIQxh7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJo1JZl2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20FC1E3DD8
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 16:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A611F8927;
+	Tue,  3 Dec 2024 16:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733244082; cv=none; b=mFMDTt4y0jcRrl72IAkMoXTbY+GWQS+KD2r+2JkVOZHKwphc4Cx1j16BLFjSq9PLNb73rLLrganSua1kWEr2N9YIr/BeKyN87h+cQdd82vNucdLgrcsSH5uOInx7abae9T9+5mbIg8IzUvISuo0rJFSTcgOurS8143LOXeQRssA=
+	t=1733244584; cv=none; b=Tc8jlGPFlbHdpOSJoAhsiS49d8lHEgv7UmpiYnpXUl3hKRdYD03kMXUPedrsYHCrEm595gsK3CK4tAPqBZGNvWayS/tTPHnh2rs5bqFhBVnxk4NUYTh4EhI/qEO9IaLM8Q3/bpJLd24OXP2izlpCibjnFyU7hY+gLChpL9m1D4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733244082; c=relaxed/simple;
-	bh=lYbDR2oS7Lr5SDoN1wnli3FOgTY/tUQ6zhWZKZOdyow=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rHquesvOhP01Z9MXP93njiPmYcPiW4iFSYln5n35Rwf+BP0Kh71YQI7bp8XNt/yVk8NHw55ohcN8eU3tP2IqaNy7cXPanjOYJ5F52xeQB4Jq72pcrNzEl3FmKO/bVmZ7xR6luIgUSHEzya8hWI0J1KuRfhaUX9jWBcSSTmDO1mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ImoIQxh7; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53dde4f0f23so5772825e87.3
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 08:41:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733244079; x=1733848879; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R3cKcg9kF9rQPeRe4S6fxF/eadsgLyIFQpsrwW9a20M=;
-        b=ImoIQxh7nUBc5zE16H6St8zh7YdwHCTuoVetX+c/ZAKvzRSCcZ9oLEKaV+SkYclt0u
-         F2Hl2PyEoicz39fzpxddzAJKA5HRp5djWN2e0j7d9lzDmu+HOu4OodTHWeknppjoM9i1
-         KRA1514qpqrV8kCieco0wbUIN+j07argQW2w6zUIAoa95v4q0+UJm54ouJB8phun9yMl
-         AdvEFDf2ptrOKSSiXgYyfgjKLu9KQV1+rKbHKjsxyD+0Uhg0aPvlzZFr0f7O8nOZPc0w
-         A+gHbB127oCihcCf0GJtNOSL+a7pUx3np7OUrIJVQ8gzlzGHoiBGcdO6Er41AlTviqFW
-         FgQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733244079; x=1733848879;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=R3cKcg9kF9rQPeRe4S6fxF/eadsgLyIFQpsrwW9a20M=;
-        b=UGmBuPEcyiLrCYuhpjCS6SHROwrI0jcUMDKTzYVV9iqMqfFW/cTDzr+zjaTOb0jXGn
-         Iwlyx9Y6IKE0INZSDU4h645SHWJH8r7tcCxnBCfR1WW7+I2lc0Z41fC/CZILpqrGqBH4
-         ohFo1kJ2XFDM5adTeWtIDoGUqKVDKnhZ6DjWRg2L0CJhpTQywT1OlYJyBZxQ6jpB1EZZ
-         Xk1EBD7NrJ9480O5MiQsD2C1jNtkyLgkq8P5c3GREtaVrO6sT3KwmBqf+LXGf0X9K9zv
-         l5JM0bJ0aZLmJHNGc8dWW5GmmKIp18T9S4uRtdOrU3XEU+VHvhJZSLrL5OFOyPLmwWEQ
-         gNqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJTECoF/bW8ONdIHf6V6GbVfVEiJmuXnClvnBUyRX07QNYBuNHp19oVCJxLN/iAHwpx60jJiI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUNJ7ymSCcWryWoOsUJ0pYruX2dA6CCpxHWBiQqi8oRdzzFRSN
-	kVX7TaPkbukX3K2aP6t0K08K97UzU6J/tft+Z0N/cVDSsYPy3Qe/crvWvZcdX3M6v7o7F+swTy/
-	mcjesQBEwlz4m5se2v0u1DM/Z10+bOBEyhVHrcg==
-X-Gm-Gg: ASbGncsLR5TNi4nTaV1W7BpU1Gjn6Z1bRttkL7cjG5SCMwnZ0CpxVLpS9EUvcGkT4/4
-	cTayD2aObnU21w8keaHI85sYWgAEDoQI=
-X-Google-Smtp-Source: AGHT+IHW+vsl0mYcoay/ASPlsom23HgQ21s30uqyqy8EPOs30ZTnPyOxBXGCdO8xyntMRDTjm/dm7vKdQmuCRnMPcw4=
-X-Received: by 2002:a05:6512:3a8f:b0:53d:a9a4:73c1 with SMTP id
- 2adb3069b0e04-53e12a2186emr2033000e87.39.1733244078951; Tue, 03 Dec 2024
- 08:41:18 -0800 (PST)
+	s=arc-20240116; t=1733244584; c=relaxed/simple;
+	bh=1NqLuuLFwHm0v/yK7wKaDo26NhV34tP1XmqEcIsx8to=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mD9h7UD6u/SVh1n6rpkx+dx7F84ixxARhF848GzDZt4rxj2yHo0wy27BNgliFOsfF2YqBWHAGxsGzuSGfKkzzHsGvccGM0g4XQ/H7xzPG0xINDUYgU3YJtxauA6cGStuoTSvFyNvTlIvGBvwn3Q5r/PVZgEQ9Htlyay+hwPHMlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJo1JZl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CEBC4CECF;
+	Tue,  3 Dec 2024 16:49:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733244583;
+	bh=1NqLuuLFwHm0v/yK7wKaDo26NhV34tP1XmqEcIsx8to=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uJo1JZl25KEUEqfUZcLBB/tMBA0DqTkqNW9sWubx4kv7Y3pfx/lt5a+4iT+XQL0W5
+	 Txc43BClWHT6BKKuL7HBYTCMYPXmMS7V/t6cmHshp7VtgQnN9cAbB0LHUZCswVGJdc
+	 DKHlIUuRyXVLaOQJbpL0q6rHr6D89fQVmdPLC61hw3lsn1M1x4dlSb+hV5S6sxRry3
+	 dSuHczvq1DBSm+SCu7n4Y6K0QiEcqdGQo5ECPrRLkbwAiPNPYrO0tVEOabwTXRvjEs
+	 3C1LyxcAoye0/25Q7rKK6tt5+i3LvrKa24QHpz300wIipXPYveiVEftvQvo6EzBScm
+	 u870mSPB8nrlg==
+Date: Tue, 3 Dec 2024 16:49:39 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Chen-Yu Tsai <wenst@chromium.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: soc: fsl: cpm_qe: Limit matching to nodes
+ with "fsl,qe"
+Message-ID: <20241203-egotistic-certainly-116f38bd39b6@spud>
+References: <20241202045757.39244-1-wenst@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241127184506.962756-1-alexander.sverdlin@siemens.com>
-In-Reply-To: <20241127184506.962756-1-alexander.sverdlin@siemens.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 3 Dec 2024 17:41:07 +0100
-Message-ID: <CAMRc=MeSVHjsrU6tbGwcu_TqOh_Pw-8OLRcqcdkZDpDP9n4Z4w@mail.gmail.com>
-Subject: Re: [PATCH v2] gpio: omap: Silence lockdep "Invalid wait context"
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: linux-gpio@vger.kernel.org, Grygorii Strashko <grygorii.strashko@ti.com>, 
-	Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, linux-omap@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="5+M0C7v+8zXCbXJ/"
+Content-Disposition: inline
+In-Reply-To: <20241202045757.39244-1-wenst@chromium.org>
+
+
+--5+M0C7v+8zXCbXJ/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 27, 2024 at 7:45=E2=80=AFPM A. Sverdlin
-<alexander.sverdlin@siemens.com> wrote:
->
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
->
-> The problem apparetly has been known since the conversion to
-> raw_spin_lock() (commit 4dbada2be460
-> ("gpio: omap: use raw locks for locking")).
->
-> Symptom:
->
-> [ BUG: Invalid wait context ]
-> 5.10.214
-> -----------------------------
-> swapper/1 is trying to lock:
-> (enable_lock){....}-{3:3}, at: clk_enable_lock
-> other info that might help us debug this:
-> context-{5:5}
-> 2 locks held by swapper/1:
->  #0: (&dev->mutex){....}-{4:4}, at: device_driver_attach
->  #1: (&bank->lock){....}-{2:2}, at: omap_gpio_set_config
-> stack backtrace:
-> CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.214
-> Hardware name: Generic AM33XX (Flattened Device Tree)
-> unwind_backtrace
-> show_stack
-> __lock_acquire
-> lock_acquire.part.0
-> _raw_spin_lock_irqsave
-> clk_enable_lock
-> clk_enable
-> omap_gpio_set_config
-> gpio_keys_setup_key
-> gpio_keys_probe
-> platform_drv_probe
-> really_probe
-> driver_probe_device
-> device_driver_attach
-> __driver_attach
-> bus_for_each_dev
-> bus_add_driver
-> driver_register
-> do_one_initcall
-> do_initcalls
-> kernel_init_freeable
-> kernel_init
->
-> Reorder clk_enable()/clk_disable() calls in a way that they always happen
-> outside of raw_spin_lock'ed sections.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 4dbada2be460 ("gpio: omap: use raw locks for locking")
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+On Mon, Dec 02, 2024 at 12:57:55PM +0800, Chen-Yu Tsai wrote:
+> Otherwise the binding matches against random nodes with "simple-bus"
+> giving out all kinds of invalid warnings:
+>=20
+>     $ make CHECK_DTBS=3Dy mediatek/mt8188-evb.dtb
+>       SYNC    include/config/auto.conf.cmd
+>       UPD     include/config/kernel.release
+>       SCHEMA  Documentation/devicetree/bindings/processed-schema.json
+>       DTC [C] arch/arm64/boot/dts/mediatek/mt8188-evb.dtb
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: compatible:0: 'fsl,=
+qe' was expected
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: compatible: ['simpl=
+e-bus'] is too short
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000:compatible:0: 'fsl,qe-ic' was expected
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000:reg: [[0, 201326592, 0, 262144], [0, 201588736, 0, 2097152]] is t=
+oo long
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000:#interrupt-cells:0:0: 1 was expected
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: interrupt-controlle=
+r@c000000: '#redistributor-regions', 'ppi-partitions' do not match any of t=
+he regexes: 'pinctrl-[0-9]+'
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: 'reg' is a required=
+ property
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+>     arch/arm64/boot/dts/mediatek/mt8188-evb.dtb: soc: 'bus-frequency' is =
+a required property
+> 	    from schema $id: http://devicetree.org/schemas/soc/fsl/cpm_qe/fsl,qe=
+=2Eyaml#
+
+I'm curious why this is only coming up now, Rob applied this apparently
+in July.
+
+>=20
+> Fixes: ecbfc6ff94a2 ("dt-bindings: soc: fsl: cpm_qe: convert to yaml form=
+at")
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: <stable@vger.kernel.org> # v6.11+
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 > ---
-> Changelog:
-> v2: complete rework, I've totally missed the fact
->     clk_enable()/clk_disable() cannot avoid clk_enable_lock() even if the
->     clock is enabled; I had to extract all clk_*() calls out of
->     raw_spin_lock'ed sections
->
+>  .../devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml        | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml=
+ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> index 89cdf5e1d0a8..9e07a2c4d05b 100644
+> --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe.yaml
+> @@ -21,6 +21,14 @@ description: |
+>    The description below applies to the qe of MPC8360 and
+>    more nodes and properties would be extended in the future.
+> =20
+> +select:
+> +  properties:
+> +    compatible:
+> +      contains:
+> +        const: fsl,qe
+> +  required:
+> +    - compatible
+> +
+>  properties:
+>    compatible:
+>      items:
+> --=20
+> 2.47.0.338.g60cca15819-goog
+>=20
 
-This looks so much worse now. :(
+--5+M0C7v+8zXCbXJ/
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I refuse to believe this is the only way to fix it.
+-----BEGIN PGP SIGNATURE-----
 
-Would it be possible to wrap the logic that disables the clock
-depending on the return value of omap_gpio_dbck_enable() in some
-abstraction layer? Basing the behavior on the boolean return value of
-a function named omap_gpio_dbck_enable() makes very little sense when
-looking at it now and it will make even less a year from now.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ082owAKCRB4tDGHoIJi
+0s0HAQDAWUaDFTMODECrGoMpk/JQ6X3sb4Uok6Yl2lbO7EaJUwEAkJy4Xvisf0FS
+fWsESM6zpR0CkagNmMJ9ezdGDBwYAAE=
+=ZvIG
+-----END PGP SIGNATURE-----
 
-Could we add functions like omap_gpio_dbck_clk_enable() and
-omap_gpio_dbck_clk_disable() plus some state in the driver data set by
-omap_gpio_dbck_enable() which would be then read by
-omap_gpio_dbck_clk_disable() in order to determine whether to disable
-the clock or keep it going?
-
-Bart
+--5+M0C7v+8zXCbXJ/--
 
