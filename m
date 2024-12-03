@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E8B9E25B5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565A59E2333
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1092288411
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23172169F39
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20D71F76BF;
-	Tue,  3 Dec 2024 16:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD77F1F76AD;
+	Tue,  3 Dec 2024 15:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCU5GZnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHry7iT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1AD14A088;
-	Tue,  3 Dec 2024 16:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1DA1F757D;
+	Tue,  3 Dec 2024 15:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241823; cv=none; b=Q+hLbSs9GK9qu4V1dv9vOeOX3zxkE/z2Uz1fzrlppQ8lYzVbo9/YM2FdwCrKVkum85f44/3Yyl+dYAZgseR7c+xVSs6dEIbVppfnoH27hPnFbhwij/Ue6cihxy6jwYUFdVHEpzWb/MqrO/p5BUiN4e8h/wqLa8bpv+hQekpZW8c=
+	t=1733239730; cv=none; b=tVK3Q945cStnEuLavhISeGz7ti3tQSIUxffJ7AboG9OuNQJYegpuAoi1Qu6bsli2ylk4QJEyhzEs8BHFNsMwM8FuMEN0ppuFnpAfr3oSl08GzSr2RKkLLTpn+NtSTIxnilCWnQ+FK4niF6FxVnERs9k9d31X+seUHicV24Enlk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241823; c=relaxed/simple;
-	bh=Hg3kOUmmsXrH/AAcgVCgYN3GJWzmxBLa9J4bxitWVEM=;
+	s=arc-20240116; t=1733239730; c=relaxed/simple;
+	bh=yAuvc8XWjXOfnEMVElqkepamZtpjFj1Hs2JXvKNtHxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REOvck6QQ9TyM/J1DYU6yNg+whErwXAwLZi0f3eq81UNsTaLXEWqxUk9S781k2V1OHmHGBpvQA3+AOpoX0+u9utjjgsjz7RR7pHC8mS+NDGMQvrF5hFD+IUS81a60mXKKuvetA2gGIUAYgLGWuWNL0RhzhpSF5N1x+opBBaphik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCU5GZnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21C3C4CECF;
-	Tue,  3 Dec 2024 16:03:42 +0000 (UTC)
+	 MIME-Version; b=BlqXSts1cpf7kLrlbcIf5Wzzs8u7abIZS0ha1KbKQY9IUNGe/t4Hhj9k+rBwluPM9Odw4cCh1x0Nc37Wy9AKJ7wvhV3UVUyth95IYk4Y+C9f1n3+1v7zi/vYBQRXpKa4Inu6NXBYxQ43Vbzs1NNn/sJg0hRZNhfi/aIunV6INR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHry7iT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CDEC4CECF;
+	Tue,  3 Dec 2024 15:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241823;
-	bh=Hg3kOUmmsXrH/AAcgVCgYN3GJWzmxBLa9J4bxitWVEM=;
+	s=korg; t=1733239730;
+	bh=yAuvc8XWjXOfnEMVElqkepamZtpjFj1Hs2JXvKNtHxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCU5GZnJ66ThLldByKbygSHnYxUGglEF3UOlYARoFT8i/WsVvsNrEtD5hq5XelL9Y
-	 S7lmF1HtihDdunhMl66n0+51bX8mcXeadFlYhKIWL9J853Sca5KfKCYES1ErG0ly8Z
-	 xByF4EbV19mZPkr+bVY76rB87/NVJK0qf2Fk6QzU=
+	b=NHry7iT/MOqrzm2VGfYnIR2FWkL3O87zKNGGux6Z/T/KR651lm7+jtYP0DFBSrTSk
+	 d53YaJit6FEGnbHtKbXaVn/rGIR5+jhEcABqVcD0YE3tg6117qEozq1O7mk0DUSnMO
+	 SOpS085+iAiOb279LWicHSfCrTSGMnRgHTyp1WFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 528/826] svcrdma: fix miss destroy percpu_counter in svc_rdma_proc_init()
+	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com,
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.11 683/817] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
 Date: Tue,  3 Dec 2024 15:44:15 +0100
-Message-ID: <20241203144804.353452205@linuxfoundation.org>
+Message-ID: <20241203144022.629828107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit ce89e742a4c12b20f09a43fec1b21db33f2166cd ]
+commit 5c1b544563005a00591a3aa86ecff62ed4d11be3 upstream.
 
-There's issue as follows:
-RPC: Registered rdma transport module.
-RPC: Registered rdma backchannel transport module.
-RPC: Unregistered rdma transport module.
-RPC: Unregistered rdma backchannel transport module.
-BUG: unable to handle page fault for address: fffffbfff80c609a
-PGD 123fee067 P4D 123fee067 PUD 123fea067 PMD 10c624067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
-RIP: 0010:percpu_counter_destroy_many+0xf7/0x2a0
+Syzkaller reported a hung task with uevent_show() on stack trace. That
+specific issue was addressed by another commit [0], but even with that
+fix applied (for example, running v6.12-rc5) we face another type of hung
+task that comes from the same reproducer [1]. By investigating that, we
+could narrow it to the following path:
+
+(a) Syzkaller emulates a Realtek USB WiFi adapter using raw-gadget and
+dummy_hcd infrastructure.
+
+(b) During the probe of rtl8192cu, the driver ends-up performing an efuse
+read procedure (which is related to EEPROM load IIUC), and here lies the
+issue: the function read_efuse() calls read_efuse_byte() many times, as
+loop iterations depending on the efuse size (in our example, 512 in total).
+
+This procedure for reading efuse bytes relies in a loop that performs an
+I/O read up to *10k* times in case of failures. We measured the time of
+the loop inside read_efuse_byte() alone, and in this reproducer (which
+involves the dummy_hcd emulation layer), it takes 15 seconds each. As a
+consequence, we have the driver stuck in its probe routine for big time,
+exposing a stack trace like below if we attempt to reboot the system, for
+example:
+
+task:kworker/0:3 state:D stack:0 pid:662 tgid:662 ppid:2 flags:0x00004000
+Workqueue: usb_hub_wq hub_event
 Call Trace:
- <TASK>
- __die+0x1f/0x70
- page_fault_oops+0x2cd/0x860
- spurious_kernel_fault+0x36/0x450
- do_kern_addr_fault+0xca/0x100
- exc_page_fault+0x128/0x150
- asm_exc_page_fault+0x26/0x30
- percpu_counter_destroy_many+0xf7/0x2a0
- mmdrop+0x209/0x350
- finish_task_switch.isra.0+0x481/0x840
- schedule_tail+0xe/0xd0
- ret_from_fork+0x23/0x80
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+ __schedule+0xe22/0xeb6
+ schedule_timeout+0xe7/0x132
+ __wait_for_common+0xb5/0x12e
+ usb_start_wait_urb+0xc5/0x1ef
+ ? usb_alloc_urb+0x95/0xa4
+ usb_control_msg+0xff/0x184
+ _usbctrl_vendorreq_sync+0xa0/0x161
+ _usb_read_sync+0xb3/0xc5
+ read_efuse_byte+0x13c/0x146
+ read_efuse+0x351/0x5f0
+ efuse_read_all_map+0x42/0x52
+ rtl_efuse_shadow_map_update+0x60/0xef
+ rtl_get_hwinfo+0x5d/0x1c2
+ rtl92cu_read_eeprom_info+0x10a/0x8d5
+ ? rtl92c_read_chip_version+0x14f/0x17e
+ rtl_usb_probe+0x323/0x851
+ usb_probe_interface+0x278/0x34b
+ really_probe+0x202/0x4a4
+ __driver_probe_device+0x166/0x1b2
+ driver_probe_device+0x2f/0xd8
+ [...]
 
-If register_sysctl() return NULL, then svc_rdma_proc_cleanup() will not
-destroy the percpu counters which init in svc_rdma_proc_init().
-If CONFIG_HOTPLUG_CPU is enabled, residual nodes may be in the
-'percpu_counters' list. The above issue may occur once the module is
-removed. If the CONFIG_HOTPLUG_CPU configuration is not enabled, memory
-leakage occurs.
-To solve above issue just destroy all percpu counters when
-register_sysctl() return NULL.
+We propose hereby to drastically reduce the attempts of doing the I/O
+reads in case of failures, restricted to USB devices (given that
+they're inherently slower than PCIe ones). By retrying up to 10 times
+(instead of 10000), we got reponsiveness in the reproducer, while seems
+reasonable to believe that there's no sane USB device implementation in
+the field requiring this amount of retries at every I/O read in order
+to properly work. Based on that assumption, it'd be good to have it
+backported to stable but maybe not since driver implementation (the 10k
+number comes from day 0), perhaps up to 6.x series makes sense.
 
-Fixes: 1e7e55731628 ("svcrdma: Restore read and write stats")
-Fixes: 22df5a22462e ("svcrdma: Convert rdma_stat_sq_starve to a per-CPU counter")
-Fixes: df971cd853c0 ("svcrdma: Convert rdma_stat_recv to a per-CPU counter")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race")
+
+[1] A note about that: this syzkaller report presents multiple reproducers
+that differs by the type of emulated USB device. For this specific case,
+check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
+is available at https://syzkaller.appspot.com/text?tag=ReproC&x=1521fc83980000.
+
+Cc: stable@vger.kernel.org # v6.1+
+Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241101193412.1390391-1-gpiccoli@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/efuse.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma.c b/net/sunrpc/xprtrdma/svc_rdma.c
-index 58ae6ec4f25b4..415c0310101f0 100644
---- a/net/sunrpc/xprtrdma/svc_rdma.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma.c
-@@ -233,25 +233,34 @@ static int svc_rdma_proc_init(void)
+--- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
++++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+@@ -162,10 +162,19 @@ void efuse_write_1byte(struct ieee80211_
+ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
++	u16 max_attempts = 10000;
+ 	u32 value32;
+ 	u8 readbyte;
+ 	u16 retry;
  
- 	rc = percpu_counter_init(&svcrdma_stat_read, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err;
- 	rc = percpu_counter_init(&svcrdma_stat_recv, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_read;
- 	rc = percpu_counter_init(&svcrdma_stat_sq_starve, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_recv;
- 	rc = percpu_counter_init(&svcrdma_stat_write, 0, GFP_KERNEL);
- 	if (rc)
--		goto out_err;
-+		goto err_sq;
- 
- 	svcrdma_table_header = register_sysctl("sunrpc/svc_rdma",
- 					       svcrdma_parm_table);
-+	if (!svcrdma_table_header)
-+		goto err_write;
++	/*
++	 * In case of USB devices, transfer speeds are limited, hence
++	 * efuse I/O reads could be (way) slower. So, decrease (a lot)
++	 * the read attempts in case of failures.
++	 */
++	if (rtlpriv->rtlhal.interface == INTF_USB)
++		max_attempts = 10;
 +
- 	return 0;
+ 	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 1,
+ 		       (_offset & 0xff));
+ 	readbyte = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 2);
+@@ -178,7 +187,7 @@ void read_efuse_byte(struct ieee80211_hw
  
--out_err:
-+err_write:
-+	rc = -ENOMEM;
-+	percpu_counter_destroy(&svcrdma_stat_write);
-+err_sq:
- 	percpu_counter_destroy(&svcrdma_stat_sq_starve);
-+err_recv:
- 	percpu_counter_destroy(&svcrdma_stat_recv);
-+err_read:
- 	percpu_counter_destroy(&svcrdma_stat_read);
-+err:
- 	return rc;
- }
- 
--- 
-2.43.0
-
+ 	retry = 0;
+ 	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+-	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10000)) {
++	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < max_attempts)) {
+ 		value32 = rtl_read_dword(rtlpriv,
+ 					 rtlpriv->cfg->maps[EFUSE_CTRL]);
+ 		retry++;
 
 
 
