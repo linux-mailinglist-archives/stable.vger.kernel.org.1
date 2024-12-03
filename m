@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-97757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4BA9E25F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9ED9E22D3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3FB4B86C14
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1EFB16A7B2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED7B1F76DD;
-	Tue,  3 Dec 2024 16:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF3D1F7577;
+	Tue,  3 Dec 2024 15:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIb8rpAH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmNoVzdO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D851F76D7;
-	Tue,  3 Dec 2024 16:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4B81F756A;
+	Tue,  3 Dec 2024 15:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241633; cv=none; b=UImnNaqUI2/jJGM8biuR1c/QzZBYzX/TzszIT9dJYv/W+f5V8gvlNVbsvYUWfQ69sIXv2QBkhca/Kh09qkf3bQ7pWDel295ciEFYrjhCKe/WRSSGshp9VUfbMzyE6A23ZoBmuS/wHsxH9WV6L5TqOeJefh/C2RYoeqP4c0EB0VA=
+	t=1733239474; cv=none; b=IMK1USlN39EFH6yRaaZaXEdTe3JNfMCf2Zdv6bJ09o2P+/gOiyH3nFtXLABDUNRgy0/0cxNV+ToDMxuwUXoj2l+4e82rUSN3pOvHR/iaBizJxp9S8oX56z/U/YLDEXS6ZaYJQQWZ5EcKf5CovcXoV6a+Y3hW4VKD32TyW5tX/ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241633; c=relaxed/simple;
-	bh=jL84eRvLCvnuWLkDsDdOVtuIp7MiIv5FQI9LJAmtyZY=;
+	s=arc-20240116; t=1733239474; c=relaxed/simple;
+	bh=wwyrh390R9L9CnJ4Mu/xDRREYALoW3T48o3D3QS7DbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqiU9oYP++CaW7KHGrrVkSiU5G7s6IAJrdwKXX3PxXu3op1rQeBnIaUwCg3/8mhLthi4KfeqqmaqtOovW2DW560h8+qmP/QGI3D9spDztknijpZ61WFIvJRZBLgNxHNKw7FCXWju7BjDVN+i7IYj2OLhQlwgIGTF9nWI2okpehg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIb8rpAH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE3BC4CED6;
-	Tue,  3 Dec 2024 16:00:32 +0000 (UTC)
+	 MIME-Version; b=oMr0jATkr+OzZAFAqvpE+FNFymC5CVN2zXCIDyAWgRvibHljLoF/prHp39uc9RvyK4N3sNu5IAtS06xdlp8zfcG8whoQpbRHzNbYiiP3l5O007wdu9EoB883WMhfEFELmw/kTHd+OXozX+QpIyNA54c4ZwEzLXdHOJbvCaHsDhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmNoVzdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E91DC4CECF;
+	Tue,  3 Dec 2024 15:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241633;
-	bh=jL84eRvLCvnuWLkDsDdOVtuIp7MiIv5FQI9LJAmtyZY=;
+	s=korg; t=1733239474;
+	bh=wwyrh390R9L9CnJ4Mu/xDRREYALoW3T48o3D3QS7DbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIb8rpAH05veRbeT3rfUrIKr+TgxKNT+nPT9iJzuOYcCU1jYTQ9Tp5x6y4hftq9Qm
-	 BnVcVFEF2gh+DmOVOvmOgZpc1Y+3H8kcNyftlqwYv+XqyNBmZ3fJfuBoRS4/QkjoVS
-	 UhPOIxurx+quuFHU3+E+IS1dMxIfUOAfjmHwlUKk=
+	b=vmNoVzdOZQBE77kh4Mgbd4PotdXm7LHGiqdPJ+l6EIzzd1hgrOuehjk49yQUroUa9
+	 kOf4gsdHPZFJS8Yx1jWHj9ZjjI4ML5YNZn/HbYaeARgYwTLLJZm+LL+gruUCHgIdha
+	 rCLpeoW+mAyxFMyUEH6YuX7ECG0kFmSSfSNCFq+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fei Shao <fshao@chromium.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 472/826] dt-bindings: PCI: mediatek-gen3: Allow exact number of clocks only
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.11 627/817] xen: Fix the issue of resource not being properly released in xenbus_dev_probe()
 Date: Tue,  3 Dec 2024 15:43:19 +0100
-Message-ID: <20241203144802.175663710@linuxfoundation.org>
+Message-ID: <20241203144020.412390073@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fei Shao <fshao@chromium.org>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 5efa23224bf573d4bceb51bc646dd67b6ccb83b5 ]
+commit afc545da381ba0c651b2658966ac737032676f01 upstream.
 
-In MediaTek PCIe gen3 bindings, "clocks" accepts a range of 1-6 clocks
-across all SoCs. But in practice, each SoC requires a particular number of
-clocks as defined in "clock-names", and the length of "clocks" and
-"clock-names" can be inconsistent with current bindings.
+This patch fixes an issue in the function xenbus_dev_probe(). In the
+xenbus_dev_probe() function, within the if (err) branch at line 313, the
+program incorrectly returns err directly without releasing the resources
+allocated by err = drv->probe(dev, id). As the return value is non-zero,
+the upper layers assume the processing logic has failed. However, the probe
+operation was performed earlier without a corresponding remove operation.
+Since the probe actually allocates resources, failing to perform the remove
+operation could lead to problems.
 
-For example:
+To fix this issue, we followed the resource release logic of the
+xenbus_dev_remove() function by adding a new block fail_remove before the
+fail_put block. After entering the branch if (err) at line 313, the
+function will use a goto statement to jump to the fail_remove block,
+ensuring that the previously acquired resources are correctly released,
+thus preventing the reference count leak.
 
-  - MT8188, MT8192 and MT8195 all require 6 clocks, while the bindings
-    accept 4-6 clocks.
+This bug was identified by an experimental static analysis tool developed
+by our team. The tool specializes in analyzing reference count operations
+and detecting potential issues where resources are not properly managed.
+In this case, the tool flagged the missing release operation as a
+potential problem, which led to the development of this patch.
 
-  - MT7986 requires 4 clocks, while the bindings accept 4-6 clocks.
-
-Update minItems and maxItems properties for individual SoCs as needed to
-only accept the correct number of clocks.
-
-Fixes: c6abd0eadec6 ("dt-bindings: PCI: mediatek-gen3: Add support for Airoha EN7581")
-Link: https://lore.kernel.org/r/20240925110044.3678055-3-fshao@chromium.org
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../devicetree/bindings/pci/mediatek-pcie-gen3.yaml          | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/xen/xenbus/xenbus_probe.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/mediatek-pcie-gen3.yaml b/Documentation/devicetree/bindings/pci/mediatek-pcie-gen3.yaml
-index 898c1be2d6a43..f05aab2b1addc 100644
---- a/Documentation/devicetree/bindings/pci/mediatek-pcie-gen3.yaml
-+++ b/Documentation/devicetree/bindings/pci/mediatek-pcie-gen3.yaml
-@@ -149,7 +149,7 @@ allOf:
-     then:
-       properties:
-         clocks:
--          minItems: 4
-+          minItems: 6
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -313,7 +313,7 @@ int xenbus_dev_probe(struct device *_dev
+ 	if (err) {
+ 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
+ 		       dev->nodename);
+-		return err;
++		goto fail_remove;
+ 	}
  
-         clock-names:
-           items:
-@@ -178,7 +178,7 @@ allOf:
-     then:
-       properties:
-         clocks:
--          minItems: 4
-+          minItems: 6
+ 	dev->spurious_threshold = 1;
+@@ -322,6 +322,12 @@ int xenbus_dev_probe(struct device *_dev
+ 			 dev->nodename);
  
-         clock-names:
-           items:
-@@ -207,6 +207,7 @@ allOf:
-       properties:
-         clocks:
-           minItems: 4
-+          maxItems: 4
- 
-         clock-names:
-           items:
--- 
-2.43.0
-
+ 	return 0;
++fail_remove:
++	if (drv->remove) {
++		down(&dev->reclaim_sem);
++		drv->remove(dev);
++		up(&dev->reclaim_sem);
++	}
+ fail_put:
+ 	module_put(drv->driver.owner);
+ fail:
 
 
 
