@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8319E2511
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93FBA9E222D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 207182883C7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59ED82815C5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926391F75AE;
-	Tue,  3 Dec 2024 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340791F7572;
+	Tue,  3 Dec 2024 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUweB2Dc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OP9CLI7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D52E1AB6C9;
-	Tue,  3 Dec 2024 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58451F669E;
+	Tue,  3 Dec 2024 15:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241389; cv=none; b=FO6AvdMAlLKY+lz5f9NLwzB9z/w5ZJP2ZYNGKOnBp9FxyF4ZK8XNdNKwTf0MW4+wHYSbC9xiVTcuamw/Xu1z0+vjjK+4NeGRgqocKzpCUG8AmS8FsDIXumtN42xNvVVgqdRmB6t9NsN+JHgNCCd5wO3Rd3bz9PvRLURNrP+vLRU=
+	t=1733239283; cv=none; b=bp7FxOhvCejxbbF2yPqxbmMek8F9QQBAOmPpIJrLYQ1kxSZax8PitRPpoei/68+fdEsg1l4BnOSmhy2uYuMo/QivNtjbSplEPS2wyIBEXMgqN/6wqblhGwBtwOY7/hAm5uZVS91z1GipixS/QCNZ834vTLBD4RTWT+Bjv1qbyX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241389; c=relaxed/simple;
-	bh=xtPItZmzbK+QYfInGhsSrLOIBetwo2X3gA36DUtoq5E=;
+	s=arc-20240116; t=1733239283; c=relaxed/simple;
+	bh=N92WNBRrbF4+bA/CHPXqi3q/2wP7qJ7ujJbRNGSnyiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Kzd2ttwTkTDKzER6zRJcru+qzsmmGxcqXnsQCg6SaWcccreALhsrhZcIzOJeOkb9IPa6XUMMRN8qdQcmcbmG9u3WOfJjw/MP3QRIy1gGKJ2GZppbbVWWzA0e4dPlnR7PLUBVi6Z4qhPjk4E1r57eyS7jELLknb/4m/3NjsMxZRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUweB2Dc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0874C4CECF;
-	Tue,  3 Dec 2024 15:56:28 +0000 (UTC)
+	 MIME-Version; b=FCYOEkCbXrHh4HGX3NKYNGd50MnatArnWayPUai+vc31TIVm48N0VvMEU+6kTNnvDPSxs4EY62kNz+hpmZgyaRJPdnvwtBfkDDMpQptPiy94d8m4b6CsdZ2zIflaZOwIRfT8uykgqd1jejWdO+ybMPibBu2DDlemlswABHQYCIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OP9CLI7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F77C4CECF;
+	Tue,  3 Dec 2024 15:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241389;
-	bh=xtPItZmzbK+QYfInGhsSrLOIBetwo2X3gA36DUtoq5E=;
+	s=korg; t=1733239282;
+	bh=N92WNBRrbF4+bA/CHPXqi3q/2wP7qJ7ujJbRNGSnyiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUweB2DcWNPj9h4vaSS4yQ7wy2TMlB+K8vzxI5f5XOeMeyT0H2x0yh3RdP6Mw/z/c
-	 MuLEUWAL7aDDgahQi3UerlWY89DUWg/z8SLPB8FsVybIYw9tlyBzMdvIkrXQaI26Z2
-	 Fw3Tfe3cW4O4tpcEBa+pHgNP91wb7Ys5wT568/jc=
+	b=OP9CLI7/EIzNSjAmrlgxjLDN9kll8iN4oJbq+LA5cXT4MVlRzEZPn57w3Tuo2gUZK
+	 hfCjuvTbRIfA21wSpsG8TslawDTOND+tq8Fvix8j26DdLLofQiYTWbDIFblfGqByFj
+	 HksV+dB0D0PFoi3CpMRUGYXRD7Vb96VPNmzbgvWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Anup Patel <anup@brainfault.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 404/826] riscv: kvm: Fix out-of-bounds array access
-Date: Tue,  3 Dec 2024 15:42:11 +0100
-Message-ID: <20241203144759.520020155@linuxfoundation.org>
+Subject: [PATCH 6.11 560/817] LoongArch: Fix build failure with GCC 15 (-std=gnu23)
+Date: Tue,  3 Dec 2024 15:42:12 +0100
+Message-ID: <20241203144017.769527726@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 332fa4a802b16ccb727199da685294f85f9880cb ]
+[ Upstream commit 947d5d036c788156f09e83e7f16322ffe8124384 ]
 
-In kvm_riscv_vcpu_sbi_init() the entry->ext_idx can contain an
-out-of-bound index. This is used as a special marker for the base
-extensions, that cannot be disabled. However, when traversing the
-extensions, that special marker is not checked prior indexing the
-array.
+Whenever I try to build the kernel with upcoming GCC 15 which defaults
+to -std=gnu23 I get a build failure:
 
-Add an out-of-bounds check to the function.
+  CC      arch/loongarch/vdso/vgetcpu.o
+In file included from ./include/uapi/linux/posix_types.h:5,
+                 from ./include/uapi/linux/types.h:14,
+                 from ./include/linux/types.h:6,
+                 from ./include/linux/kasan-checks.h:5,
+                 from ./include/asm-generic/rwonce.h:26,
+                 from ./arch/loongarch/include/generated/asm/rwonce.h:1,
+                 from ./include/linux/compiler.h:317,
+                 from ./include/asm-generic/bug.h:5,
+                 from ./arch/loongarch/include/asm/bug.h:60,
+                 from ./include/linux/bug.h:5,
+                 from ./include/linux/mmdebug.h:5,
+                 from ./include/linux/mm.h:6,
+                 from ./arch/loongarch/include/asm/vdso.h:10,
+                 from arch/loongarch/vdso/vgetcpu.c:6:
+./include/linux/stddef.h:11:9: error: expected identifier before 'false'
+   11 |         false   = 0,
+      |         ^~~~~
+./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
+   35 | typedef _Bool                   bool;
+      |                                 ^~~~
+./include/linux/types.h:35:1: warning: useless type name in empty declaration
+   35 | typedef _Bool                   bool;
+      | ^~~~~~~
 
-Fixes: 56d8a385b605 ("RISC-V: KVM: Allow some SBI extensions to be disabled by default")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20241104191503.74725-1-bjorn@kernel.org
-Signed-off-by: Anup Patel <anup@brainfault.org>
+The kernel builds explicitly with -std=gnu11 in top Makefile, but
+arch/loongarch/vdso does not use KBUILD_CFLAGS from the rest of the
+kernel, just add -std=gnu11 flag to arch/loongarch/vdso/Makefile.
+
+By the way, commit e8c07082a810 ("Kbuild: move to -std=gnu11") did a
+similar change for arch/arm64/kernel/vdso32/Makefile.
+
+Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/vcpu_sbi.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/loongarch/vdso/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi.c b/arch/riscv/kvm/vcpu_sbi.c
-index 7de128be8db9b..6e704ed86a83a 100644
---- a/arch/riscv/kvm/vcpu_sbi.c
-+++ b/arch/riscv/kvm/vcpu_sbi.c
-@@ -486,19 +486,22 @@ void kvm_riscv_vcpu_sbi_init(struct kvm_vcpu *vcpu)
- 	struct kvm_vcpu_sbi_context *scontext = &vcpu->arch.sbi_context;
- 	const struct kvm_riscv_sbi_extension_entry *entry;
- 	const struct kvm_vcpu_sbi_extension *ext;
--	int i;
-+	int idx, i;
- 
- 	for (i = 0; i < ARRAY_SIZE(sbi_ext); i++) {
- 		entry = &sbi_ext[i];
- 		ext = entry->ext_ptr;
-+		idx = entry->ext_idx;
-+
-+		if (idx < 0 || idx >= ARRAY_SIZE(scontext->ext_status))
-+			continue;
- 
- 		if (ext->probe && !ext->probe(vcpu)) {
--			scontext->ext_status[entry->ext_idx] =
--				KVM_RISCV_SBI_EXT_STATUS_UNAVAILABLE;
-+			scontext->ext_status[idx] = KVM_RISCV_SBI_EXT_STATUS_UNAVAILABLE;
- 			continue;
- 		}
- 
--		scontext->ext_status[entry->ext_idx] = ext->default_disabled ?
-+		scontext->ext_status[idx] = ext->default_disabled ?
- 					KVM_RISCV_SBI_EXT_STATUS_DISABLED :
- 					KVM_RISCV_SBI_EXT_STATUS_ENABLED;
- 	}
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index d724d46b07c84..3e5e30125b212 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -18,7 +18,7 @@ ccflags-vdso := \
+ cflags-vdso := $(ccflags-vdso) \
+ 	-isystem $(shell $(CC) -print-file-name=include) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+-	-O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
++	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+ 	$(call cc-option, -fno-asynchronous-unwind-tables) \
+ 	$(call cc-option, -fno-stack-protector)
 -- 
 2.43.0
 
