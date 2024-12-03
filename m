@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD749E23F1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E099E214F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FFB728759C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C9C01698E4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172DB1FA161;
-	Tue,  3 Dec 2024 15:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9AA1F758E;
+	Tue,  3 Dec 2024 15:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gf3Y7Jno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx1a5cgx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C791B1DDC26;
-	Tue,  3 Dec 2024 15:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB4C1F7560;
+	Tue,  3 Dec 2024 15:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240429; cv=none; b=kOdlnRZHbKI1RMf33+QAzSe5A36/Zd16Hghwe7e8kFWg+G+LpbT5w4uga+KkL2hoVxdckcGiaA1JYD0dod9J6/BETjLAVp02XnI9kP1PyhU+6LRCxo6qWkvDqHG2s3HfT8TiaR0A+jLwyAKTJwl//d0zAYd+XOckaGrtEoM7ZgQ=
+	t=1733238462; cv=none; b=DXsSaZYxVZTx5JZkq2GnpaMP45pAHbDn2QmDGtHF3qHGDSLYlq1vJE8ztLW7nzcJA47RxxY/dcXQ2ebqj9TYNQoHNeKIyNWKhGuGzuC6bDexto/Qmeb11o0oJZJsE3qIcG9JweMqLHhmz7665c2RKXBsMG5ow8lbwxj842B8SIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240429; c=relaxed/simple;
-	bh=mr35+k15UdQV67AjyJCFOIzYWVOzeZd6NujJrIeRZoA=;
+	s=arc-20240116; t=1733238462; c=relaxed/simple;
+	bh=jJPLmHiJKpiFjHo4qmHwNMrfUEpk+ujnxJXKB0vrVUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YECWAnf5UfrE7b9lBkvLwC0gh5AofHPtOE+UEwNILDoD7hJc4qNV2k1AwXrXZ9V+cUx4D2j6KJRkqju2lW2glh7UQNAU76tgSL7bZ+L+osC6RtDN3rcFEgb6b+Kmx1fdvWxSCL3O6mg8KIA653lLLTiecX7kFeIeYENZ+wj3OYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gf3Y7Jno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50071C4CED8;
-	Tue,  3 Dec 2024 15:40:29 +0000 (UTC)
+	 MIME-Version; b=SoQtFd0GAeqiTbntDuyoms8hmfmnzQl439ZvhhiM8rXjm9KIQJZBduDyfB3Akmw8M78aoRKdiKX1fOP8ukEBeOBZFxTfvf9TfRJ/a1wHaQqw/poveCKnaQbCEYy29P/TR61h2ZeuxSvdn8B0jO8/qEsXBhkcAZDh+qGLetdf4EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx1a5cgx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D9AC4CED8;
+	Tue,  3 Dec 2024 15:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240429;
-	bh=mr35+k15UdQV67AjyJCFOIzYWVOzeZd6NujJrIeRZoA=;
+	s=korg; t=1733238462;
+	bh=jJPLmHiJKpiFjHo4qmHwNMrfUEpk+ujnxJXKB0vrVUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gf3Y7Jno+RBz8unKHJcMV9njXQsZCPzNGxm53tP1N/Cbnx4boIC9TgjpgCcaxF7zU
-	 roxLjCGnd6yF3ntaeBoYT/vI6rQqLzlv0Z9dyZ/NPxe9Aha56ZGbkD0wJOUgUmHZWx
-	 2kC3QcHwHmrEQpt9B078h3w1B5Fiyv9X1SCALnIY=
+	b=Wx1a5cgx8KySahvcRxLWIM3XPmCksr+95jve1wrjaOmSq19kXxPidojtc1Ml0Q5aF
+	 XMgD/sqGSCKmS2MnfjSLJE3nERHPMpA7/8o89t4WwUlB4O6wwaVZxCVJuYsqz8mksK
+	 0TqhAkEdWB/8Fc3/K1B2hGk3VCuWI1vWfqylM7rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Dipendra Khadka <kdipendra88@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/826] gpio: sloppy-logic-analyzer remove reference to rcu_momentary_dyntick_idle()
+Subject: [PATCH 6.11 286/817] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_common.c
 Date: Tue,  3 Dec 2024 15:37:38 +0100
-Message-ID: <20241203144748.851733836@linuxfoundation.org>
+Message-ID: <20241203144006.973432080@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srikar Dronamraju <srikar@linux.ibm.com>
+From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit a0b6594e411dcae0cc563f5157cf062e93603388 ]
+[ Upstream commit 0fbc7a5027c6f7f2c785adae3dcec22b2f2b69b3 ]
 
-There is one last reference to rcu_momentary_dyntick_idle() after
-commit 32a9f26e5e26 ("rcu: Rename rcu_momentary_dyntick_idle() into
-rcu_momentary_eqs()")
+Add error pointer check after calling otx2_mbox_get_rsp().
 
-Rename it for consistency.
-
-Fixes: 32a9f26e5e26 ("rcu: Rename rcu_momentary_dyntick_idle() into rcu_momentary_eqs()")
-Signed-off-by: Srikar Dronamraju <srikar@linux.ibm.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240925054619.568209-1-srikar@linux.ibm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: ab58a416c93f ("octeontx2-pf: cn10k: Get max mtu supported from admin function")
+Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/gpio/gpio-sloppy-logic-analyzer.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/gpio/gpio-sloppy-logic-analyzer.sh b/tools/gpio/gpio-sloppy-logic-analyzer.sh
-index ed21a110df5e5..3ef2278e49f91 100755
---- a/tools/gpio/gpio-sloppy-logic-analyzer.sh
-+++ b/tools/gpio/gpio-sloppy-logic-analyzer.sh
-@@ -113,7 +113,7 @@ init_cpu()
- 		taskset -p "$newmask" "$p" || continue
- 	done 2>/dev/null >/dev/null
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 87d5776e3b88e..7510a918d942c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -1837,6 +1837,10 @@ u16 otx2_get_max_mtu(struct otx2_nic *pfvf)
+ 	if (!rc) {
+ 		rsp = (struct nix_hw_info *)
+ 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp)) {
++			rc = PTR_ERR(rsp);
++			goto out;
++		}
  
--	# Big hammer! Working with 'rcu_momentary_dyntick_idle()' for a more fine-grained solution
-+	# Big hammer! Working with 'rcu_momentary_eqs()' for a more fine-grained solution
- 	# still printed warnings. Same for re-enabling the stall detector after sampling.
- 	echo 1 > /sys/module/rcupdate/parameters/rcu_cpu_stall_suppress
- 
+ 		/* HW counts VLAN insertion bytes (8 for double tag)
+ 		 * irrespective of whether SQE is requesting to insert VLAN
 -- 
 2.43.0
 
