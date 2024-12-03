@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF9D9E26F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:19:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC659E2132
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 755FABC708E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 411D3164A2C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297142036FD;
-	Tue,  3 Dec 2024 15:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875451F669E;
+	Tue,  3 Dec 2024 15:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KGOLMUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d95Elg5Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D908C1F893D;
-	Tue,  3 Dec 2024 15:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470101E3DF9;
+	Tue,  3 Dec 2024 15:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240269; cv=none; b=EFjLHIBWmRoAPQFMnEkN/62MtoxHogGycRM2jMexqGjBvK28LMbL3ALcsfeRDpW8z8im04dZpheHx9CVXZRnJTv1p+3dpzfN9N/7sYNIKxFF8yw4FgvTtRU2JBVBg3XuihL+F2R2gfqeLG+yiiuQT07t/hEgXietXgCacvDIebo=
+	t=1733238404; cv=none; b=pfRuQY5ioOLYdTQeOn5JM52rissigExXZ5zG1/TAxJDJWnJkqCFFU37v1k3ExaF0gJ7E4vFiN9bhhK7cUnLuHrsdWjBNAXVSjRq9NrX8VHYKG2C9yfHB8oynUQ7lwa5ge9PCgkwxJBUY2WxkI1tinpt+j9yMwsrs56L9XiPqd+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240269; c=relaxed/simple;
-	bh=DKUt3hOWurfpX9vxp/FPJ7EAdBuFKX0Pqtg5rsMSHnQ=;
+	s=arc-20240116; t=1733238404; c=relaxed/simple;
+	bh=8EXJr3xud3klhrVKmhD0+BXiAY87Is9TGdU8PvQN1Ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+2GBR9ytbT08XmzBUakJySHk8u6B8T9VdDnPsrGi/NgUF2zNMRuE/QwRmBFnV+sn92fNVBRP8VCB6xcy3r43KkTi5nuSwlI+Vlt/oobzN8Lay6zVzuDOqxq9P87inmv56IBnAGR16tPmwOHu+Lnti7p27RZhlPOrqzKURBFnY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KGOLMUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B94C4CECF;
-	Tue,  3 Dec 2024 15:37:49 +0000 (UTC)
+	 MIME-Version; b=Fh2wrq/07qKV+imrWK5ukFVJ9Z9cLR18SoRhHIkMVB8stx8jwjdiiVCshDVuObXkdAeL1uX62lhikxpPexjgeH8vXr1NKnniE+h5gYWqo4xKnmUZFbxbu0LQ1HsHFhYmfSOuQS8arReMU5aow/ZiaGbrXzXiBYS1KnlRPyDRgTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d95Elg5Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0871C4CECF;
+	Tue,  3 Dec 2024 15:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240269;
-	bh=DKUt3hOWurfpX9vxp/FPJ7EAdBuFKX0Pqtg5rsMSHnQ=;
+	s=korg; t=1733238404;
+	bh=8EXJr3xud3klhrVKmhD0+BXiAY87Is9TGdU8PvQN1Ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2KGOLMUh2J7eOQ8W3/4jXTiFdza0aSTlEtMWsaUcPrZnWBJP/RIYgEnD30FYsuDZ/
-	 QNnqBOvI+DtnWK96TOuoLDcOllaV1mmAvWjVZmYkq58tnjYp6e1LcR0UQI8cnr+W69
-	 +5cTzNCkedTL0V1ZR38D8sMB6e7RD/WdiQUrggFw=
+	b=d95Elg5ZHUsB6iWbZFsjy80kKIpzXD8WijctoHWtx6mFbnl7xgYix7A2uI2kLFq1s
+	 vTBJ/XTGZLGQo92S1zx6t19lBiNCbQ+eEvIaxyebfbAk019uFKx6kVEiPt1eltE3vz
+	 jdCnHFcw0tP/AUkrTYWKiw+nRDqI+F3TRJaJ9/5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/826] thermal/lib: Fix memory leak on error in thermal_genl_auto()
-Date: Tue,  3 Dec 2024 15:36:49 +0100
-Message-ID: <20241203144746.919454723@linuxfoundation.org>
+Subject: [PATCH 6.11 238/817] drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency
+Date: Tue,  3 Dec 2024 15:36:50 +0100
+Message-ID: <20241203144005.048854796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 7569406e95f2353070d88ebc88e8c13698542317 ]
+[ Upstream commit f673055a46784ccea04465b9213e999f7bc5187e ]
 
-The function thermal_genl_auto() does not free the allocated message
-in the error path. Fix that by putting a out label and jump to it
-which will free the message instead of directly returning an error.
+When drm/bridge-connector was moved to DRM_DISPLAY_HELPER not all
+users were updated. Add missing Kconfig selections.
 
-Fixes: 47c4b0de080a ("tools/lib/thermal: Add a thermal library")
-Reported-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/20241024105938.1095358-1-daniel.lezcano@linaro.org
-[ rjw: Fixed up the !msg error path, added Fixes tag ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 9da7ec9b19d8 ("drm/bridge-connector: move to DRM_DISPLAY_HELPER module")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Philipp Zabel <p.zabel@pengutronix.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240906063857.2223442-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/commands.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/imx/ipuv3/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/lib/thermal/commands.c b/tools/lib/thermal/commands.c
-index a9223df91dcf5..27b4442f0e347 100644
---- a/tools/lib/thermal/commands.c
-+++ b/tools/lib/thermal/commands.c
-@@ -279,6 +279,7 @@ static thermal_error_t thermal_genl_auto(struct thermal_handler *th, cmd_cb_t cm
- 					 struct cmd_param *param,
- 					 int cmd, int flags, void *arg)
- {
-+	thermal_error_t ret = THERMAL_ERROR;
- 	struct nl_msg *msg;
- 	void *hdr;
+diff --git a/drivers/gpu/drm/imx/ipuv3/Kconfig b/drivers/gpu/drm/imx/ipuv3/Kconfig
+index f083d313d1d3a..7a427551f4341 100644
+--- a/drivers/gpu/drm/imx/ipuv3/Kconfig
++++ b/drivers/gpu/drm/imx/ipuv3/Kconfig
+@@ -13,6 +13,7 @@ config DRM_IMX_PARALLEL_DISPLAY
+ 	tristate "Support for parallel displays"
+ 	depends on DRM_IMX
+ 	select DRM_BRIDGE
++	select DRM_BRIDGE_CONNECTOR
+ 	select DRM_PANEL_BRIDGE
+ 	select VIDEOMODE_HELPERS
  
-@@ -289,17 +290,19 @@ static thermal_error_t thermal_genl_auto(struct thermal_handler *th, cmd_cb_t cm
- 	hdr = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, thermal_cmd_ops.o_id,
- 			  0, flags, cmd, THERMAL_GENL_VERSION);
- 	if (!hdr)
--		return THERMAL_ERROR;
-+		goto out;
- 
- 	if (cmd_cb && cmd_cb(msg, param))
--		return THERMAL_ERROR;
-+		goto out;
- 
- 	if (nl_send_msg(th->sk_cmd, th->cb_cmd, msg, genl_handle_msg, arg))
--		return THERMAL_ERROR;
-+		goto out;
- 
-+	ret = THERMAL_SUCCESS;
-+out:
- 	nlmsg_free(msg);
- 
--	return THERMAL_SUCCESS;
-+	return ret;
- }
- 
- thermal_error_t thermal_cmd_get_tz(struct thermal_handler *th, struct thermal_zone **tz)
+@@ -31,6 +32,7 @@ config DRM_IMX_LDB
+ 	depends on COMMON_CLK
+ 	select MFD_SYSCON
+ 	select DRM_BRIDGE
++	select DRM_BRIDGE_CONNECTOR
+ 	select DRM_PANEL_BRIDGE
+ 	help
+ 	  Choose this to enable the internal LVDS Display Bridge (LDB)
 -- 
 2.43.0
 
