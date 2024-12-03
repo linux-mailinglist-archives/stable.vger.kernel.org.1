@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-97100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CD59E2283
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72ABD9E25F5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1862A285BF1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67F916DC95
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3312A1F76AA;
-	Tue,  3 Dec 2024 15:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840AF23CE;
+	Tue,  3 Dec 2024 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4KOapik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIRjvmFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E538D1F130F;
-	Tue,  3 Dec 2024 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DE61DE8A5;
+	Tue,  3 Dec 2024 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239522; cv=none; b=B8485CGs5BocRohGgeOsQHha2EDLZW0w4xZfgTLjWSJIYNaaLsE/TMlxcqtdcShknWGoQMxjLuHhZCXSDb08xtL8hD/2UWokSF6xpQ0CJvxZnsKt97hRgFF4SINiRvI1yaEQ5/SrL2xElx5882N89Of6LQt4M7U7b1+lVJJMbgE=
+	t=1733241677; cv=none; b=pfvUEhtfv1hZ6gO0KQoL3wBo8J66V+iT+Xw85m2D4w0JTJmDsmLQUSctejSit8QfaXB2tHKsAv2DjBpywdorAvnycs0ccEnOQ6+Ejvzi7mD+7cxQPvpSBhf0TSDeTg7NyZPaFHEMR5SWaGgh9J+7TSE7D4noUJjmxTp0g9Y7RPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239522; c=relaxed/simple;
-	bh=DqB0I+mD0HD01jyxxS8+1P0tQIHPEst5eUJ6TO9xrbI=;
+	s=arc-20240116; t=1733241677; c=relaxed/simple;
+	bh=5HtwjzeRBI2y2rv8c4BvgLf6NIrXKGXKG76XkZdQKn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UyiYapvD4BfhEROWFcE3wr+xrI5J2M6e0dM3M0BDmgDMsDo17ZeBamb7PXaXskw5X7icGEUOlnYerpFDpyqH6aaO0FNa9EXgxye88wIDjzSqH3Lp6MRRcaYb/8B1dZtSJ/Iasr4kDo9lv2xlSVBd9jZkHISni7rG3QwczamER2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4KOapik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1A6C4CECF;
-	Tue,  3 Dec 2024 15:25:21 +0000 (UTC)
+	 MIME-Version; b=klrW6oonjhRG94HlYoYjI8QOLvxkQbrJG6+Taw4HXzSw4MNLJ4VakbTWmkBSHMXEfK6u4tP6p/fTHVjT2mKrvQ+t1QLtSLLGd+yv/obVDUem7aZ8taPrs19Zfk8aKkjApsMfEBzcm+cWKeSCPjduw5unMBcLu/sa7BV2LNoSJU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIRjvmFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B36C4CEDA;
+	Tue,  3 Dec 2024 16:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239521;
-	bh=DqB0I+mD0HD01jyxxS8+1P0tQIHPEst5eUJ6TO9xrbI=;
+	s=korg; t=1733241677;
+	bh=5HtwjzeRBI2y2rv8c4BvgLf6NIrXKGXKG76XkZdQKn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m4KOapikuWVhdQokvA0GCF5zQKbYqjlNnp32cPn9V7rjYfC28fJ5D3fcJrGADB/+t
-	 jICcRN0uM6OUu+5uV4FMl1gKfLFUWn5M4Y1nEwyazeEyYkkGzMHsgHnLMKaY4xoa2c
-	 bXhkbN94Gc1nj22LtgCc5bHY2QyHqxWFntlua0fo=
+	b=vIRjvmFPKu3+vDoHeF+ieZJ8bObeEDpfhPJRdNOVymLFqZ7EllD2fOIc20XZrjANF
+	 xP+vtEQJ0KHcmv3wEgvo8GObjmHlnRDR2QokvVHQbboxEUo0lHXbeFCt0retIQ3fLt
+	 8DPBdRzIhd43p9CKiDtoSNT8TJWrT7lDKLeOlwAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.11 641/817] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
-Date: Tue,  3 Dec 2024 15:43:33 +0100
-Message-ID: <20241203144020.970866560@linuxfoundation.org>
+	Leo Yan <leo.yan@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 487/826] perf probe: Correct demangled symbols in C++ program
+Date: Tue,  3 Dec 2024 15:43:34 +0100
+Message-ID: <20241203144802.756059423@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Leo Yan <leo.yan@arm.com>
 
-commit 1157733344651ca505e259d6554591ff156922fa upstream.
+[ Upstream commit 314909f13cc12d47c468602c37dace512d225eeb ]
 
-An atomicity violation occurs when the validity of the variables
-da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
-assessment is not protected by a lock, the da7219 variable might still be
-in flux during the assessment, rendering this check invalid.
+An issue can be observed when probe C++ demangled symbol with steps:
 
-To fix this issue, we recommend adding a lock before the block
-if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
-the legitimacy check for da7219->clk_src and da7219->mclk_rate is
-protected by the lock, ensuring the validity of the check.
+  # nm test_cpp_mangle | grep print_data
+    0000000000000c94 t _GLOBAL__sub_I__Z10print_datai
+    0000000000000afc T _Z10print_datai
+    0000000000000b38 T _Z10print_dataR5Point
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations.
+  # perf probe -x /home/niayan01/test_cpp_mangle -F --demangle
+    ...
+    print_data(Point&)
+    print_data(int)
+    ...
 
-Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  # perf --debug verbose=3 probe -x test_cpp_mangle --add "test=print_data(int)"
+    probe-definition(0): test=print_data(int)
+    symbol:print_data(int) file:(null) line:0 offset:0 return:0 lazy:(null)
+    0 arguments
+    Open Debuginfo file: /home/niayan01/test_cpp_mangle
+    Try to find probe point from debuginfo.
+    Symbol print_data(int) address found : afc
+    Matched function: print_data [2ccf]
+    Probe point found: print_data+0
+    Found 1 probe_trace_events.
+    Opening /sys/kernel/tracing//uprobe_events write=1
+    Opening /sys/kernel/tracing//README write=0
+    Writing event: p:probe_test_cpp_mangle/test /home/niayan01/test_cpp_mangle:0xb38
+    ...
+
+When tried to probe symbol "print_data(int)", the log shows:
+
+    Symbol print_data(int) address found : afc
+
+The found address is 0xafc - which is right with verifying the output
+result from nm. Afterwards when write event, the command uses offset
+0xb38 in the last log, which is a wrong address.
+
+The dwarf_diename() gets a common function name, in above case, it
+returns string "print_data". As a result, the tool parses the offset
+based on the common name. This leads to probe at the wrong symbol
+"print_data(Point&)".
+
+To fix the issue, use the die_get_linkage_name() function to retrieve
+the distinct linkage name - this is the mangled name for the C++ case.
+Based on this unique name, the tool can get a correct offset for
+probing. Based on DWARF doc, it is possible the linkage name is missed
+in the DIE, it rolls back to use dwarf_diename().
+
+After:
+
+  # perf --debug verbose=3 probe -x test_cpp_mangle --add "test=print_data(int)"
+    probe-definition(0): test=print_data(int)
+    symbol:print_data(int) file:(null) line:0 offset:0 return:0 lazy:(null)
+    0 arguments
+    Open Debuginfo file: /home/niayan01/test_cpp_mangle
+    Try to find probe point from debuginfo.
+    Symbol print_data(int) address found : afc
+    Matched function: print_data [2d06]
+    Probe point found: print_data+0
+    Found 1 probe_trace_events.
+    Opening /sys/kernel/tracing//uprobe_events write=1
+    Opening /sys/kernel/tracing//README write=0
+    Writing event: p:probe_test_cpp_mangle/test /home/niayan01/test_cpp_mangle:0xafc
+    Added new event:
+      probe_test_cpp_mangle:test (on print_data(int) in /home/niayan01/test_cpp_mangle)
+
+    You can now use it in all perf tools, such as:
+
+            perf record -e probe_test_cpp_mangle:test -aR sleep 1
+
+  # perf --debug verbose=3 probe -x test_cpp_mangle --add "test2=print_data(Point&)"
+    probe-definition(0): test2=print_data(Point&)
+    symbol:print_data(Point&) file:(null) line:0 offset:0 return:0 lazy:(null)
+    0 arguments
+    Open Debuginfo file: /home/niayan01/test_cpp_mangle
+    Try to find probe point from debuginfo.
+    Symbol print_data(Point&) address found : b38
+    Matched function: print_data [2ccf]
+    Probe point found: print_data+0
+    Found 1 probe_trace_events.
+    Opening /sys/kernel/tracing//uprobe_events write=1
+    Parsing probe_events: p:probe_test_cpp_mangle/test /home/niayan01/test_cpp_mangle:0x0000000000000afc
+    Group:probe_test_cpp_mangle Event:test probe:p
+    Opening /sys/kernel/tracing//README write=0
+    Writing event: p:probe_test_cpp_mangle/test2 /home/niayan01/test_cpp_mangle:0xb38
+    Added new event:
+      probe_test_cpp_mangle:test2 (on print_data(Point&) in /home/niayan01/test_cpp_mangle)
+
+    You can now use it in all perf tools, such as:
+
+            perf record -e probe_test_cpp_mangle:test2 -aR sleep 1
+
+Fixes: fb1587d869a3 ("perf probe: List probes with line number and file name")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/r/20241012141432.877894-1-leo.yan@arm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/perf/util/probe-finder.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/da7219.c
-+++ b/sound/soc/codecs/da7219.c
-@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct
- 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
- 	int ret = 0;
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index d6b902899940b..a30f88ed03004 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -1587,8 +1587,21 @@ int debuginfo__find_probe_point(struct debuginfo *dbg, u64 addr,
  
--	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
-+	mutex_lock(&da7219->pll_lock);
+ 	/* Find a corresponding function (name, baseline and baseaddr) */
+ 	if (die_find_realfunc(&cudie, (Dwarf_Addr)addr, &spdie)) {
+-		/* Get function entry information */
+-		func = basefunc = dwarf_diename(&spdie);
++		/*
++		 * Get function entry information.
++		 *
++		 * As described in the document DWARF Debugging Information
++		 * Format Version 5, section 2.22 Linkage Names, "mangled names,
++		 * are used in various ways, ... to distinguish multiple
++		 * entities that have the same name".
++		 *
++		 * Firstly try to get distinct linkage name, if fail then
++		 * rollback to get associated name in DIE.
++		 */
++		func = basefunc = die_get_linkage_name(&spdie);
++		if (!func)
++			func = basefunc = dwarf_diename(&spdie);
 +
-+	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		return 0;
-+	}
- 
- 	if ((freq < 2000000) || (freq > 54000000)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
- 			freq);
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&da7219->pll_lock);
--
- 	switch (clk_id) {
- 	case DA7219_CLKSRC_MCLK_SQR:
- 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
+ 		if (!func ||
+ 		    die_entrypc(&spdie, &baseaddr) != 0 ||
+ 		    dwarf_decl_line(&spdie, &baseline) != 0) {
+-- 
+2.43.0
+
 
 
 
