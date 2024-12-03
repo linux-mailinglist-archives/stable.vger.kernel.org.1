@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-96742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E099E214F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B48229E2152
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C9C01698E4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 161AF169FAC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9AA1F758E;
-	Tue,  3 Dec 2024 15:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336491F76AC;
+	Tue,  3 Dec 2024 15:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx1a5cgx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSqKAtTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB4C1F7560;
-	Tue,  3 Dec 2024 15:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B961F76A4;
+	Tue,  3 Dec 2024 15:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238462; cv=none; b=DXsSaZYxVZTx5JZkq2GnpaMP45pAHbDn2QmDGtHF3qHGDSLYlq1vJE8ztLW7nzcJA47RxxY/dcXQ2ebqj9TYNQoHNeKIyNWKhGuGzuC6bDexto/Qmeb11o0oJZJsE3qIcG9JweMqLHhmz7665c2RKXBsMG5ow8lbwxj842B8SIM=
+	t=1733238477; cv=none; b=dBheOeO7jUJEoL4D623A1UFC1XvzECz2i3DP+JurPW1GK3ZmxkQB0qmOgyTMXq0NN8ZCYo25G2+3NYTHrPk7I0M+mrsiHMM4EaINDiCAArCKuXZ3Jiz8xKLzrZa+R8wyEB7sg51e6pF00BSQE7a+srmNTkQczWd5t2Ixf34fOKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238462; c=relaxed/simple;
-	bh=jJPLmHiJKpiFjHo4qmHwNMrfUEpk+ujnxJXKB0vrVUA=;
+	s=arc-20240116; t=1733238477; c=relaxed/simple;
+	bh=A6dt4J6RJhQb4J/YIfH3isNzsdT2EbpTLmBF6mjeJVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoQtFd0GAeqiTbntDuyoms8hmfmnzQl439ZvhhiM8rXjm9KIQJZBduDyfB3Akmw8M78aoRKdiKX1fOP8ukEBeOBZFxTfvf9TfRJ/a1wHaQqw/poveCKnaQbCEYy29P/TR61h2ZeuxSvdn8B0jO8/qEsXBhkcAZDh+qGLetdf4EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx1a5cgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D9AC4CED8;
-	Tue,  3 Dec 2024 15:07:41 +0000 (UTC)
+	 MIME-Version; b=feRpoyTbApn4hglGAAsfEqIGsdJE9uMvufCtVGvKzFEYuiWtDsb2GJfrZ92ksLC7fa5NIS+wo7KpighwmZiaqm/C7Ohd27iHw8SdxM350Tcqp5Mx/pW9GlWE+o9faRnwnrD4CM3jkVdMooPkbDvpKRLnPgpWjHRWfMhB4XcvhE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSqKAtTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66E06C4CED8;
+	Tue,  3 Dec 2024 15:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238462;
-	bh=jJPLmHiJKpiFjHo4qmHwNMrfUEpk+ujnxJXKB0vrVUA=;
+	s=korg; t=1733238476;
+	bh=A6dt4J6RJhQb4J/YIfH3isNzsdT2EbpTLmBF6mjeJVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wx1a5cgx8KySahvcRxLWIM3XPmCksr+95jve1wrjaOmSq19kXxPidojtc1Ml0Q5aF
-	 XMgD/sqGSCKmS2MnfjSLJE3nERHPMpA7/8o89t4WwUlB4O6wwaVZxCVJuYsqz8mksK
-	 0TqhAkEdWB/8Fc3/K1B2hGk3VCuWI1vWfqylM7rY=
+	b=uSqKAtTuvol4+UDasZIzCERsBRc95sZCqcOQWYIIxnxGuIknNIzei55CrEOF0lt8W
+	 NZcwrS4BnxjWbewkzVeeOay81Wc20HKkE7Z98D5TAEDy9ed9StEaIychXxv4zQ/dlb
+	 D1VUVtuwxQ8EPjq/kuWz5Pw+lIZgDtJEzkTLhx/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 286/817] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_common.c
-Date: Tue,  3 Dec 2024 15:37:38 +0100
-Message-ID: <20241203144006.973432080@linuxfoundation.org>
+Subject: [PATCH 6.11 290/817] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_dmac_flt.c
+Date: Tue,  3 Dec 2024 15:37:42 +0100
+Message-ID: <20241203144007.129561745@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -69,34 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit 0fbc7a5027c6f7f2c785adae3dcec22b2f2b69b3 ]
+[ Upstream commit f5b942e6c54b13246ee49d42dcfb71b7f29e3c64 ]
 
-Add error pointer check after calling otx2_mbox_get_rsp().
+Add error pointer checks after calling otx2_mbox_get_rsp().
 
-Fixes: ab58a416c93f ("octeontx2-pf: cn10k: Get max mtu supported from admin function")
+Fixes: 79d2be385e9e ("octeontx2-pf: offload DMAC filters to CGX/RPM block")
+Fixes: fa5e0ccb8f3a ("octeontx2-pf: Add support for exact match table.")
 Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c   | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 87d5776e3b88e..7510a918d942c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1837,6 +1837,10 @@ u16 otx2_get_max_mtu(struct otx2_nic *pfvf)
- 	if (!rc) {
- 		rsp = (struct nix_hw_info *)
- 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
+index 80d853b343f98..2046dd0da00d8 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
+@@ -28,6 +28,11 @@ static int otx2_dmacflt_do_add(struct otx2_nic *pf, const u8 *mac,
+ 	if (!err) {
+ 		rsp = (struct cgx_mac_addr_add_rsp *)
+ 			 otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
 +		if (IS_ERR(rsp)) {
-+			rc = PTR_ERR(rsp);
-+			goto out;
++			mutex_unlock(&pf->mbox.lock);
++			return PTR_ERR(rsp);
 +		}
++
+ 		*dmac_index = rsp->index;
+ 	}
  
- 		/* HW counts VLAN insertion bytes (8 for double tag)
- 		 * irrespective of whether SQE is requesting to insert VLAN
+@@ -200,6 +205,10 @@ int otx2_dmacflt_update(struct otx2_nic *pf, u8 *mac, u32 bit_pos)
+ 
+ 	rsp = (struct cgx_mac_addr_update_rsp *)
+ 		otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
++	if (IS_ERR(rsp)) {
++		rc = PTR_ERR(rsp);
++		goto out;
++	}
+ 
+ 	pf->flow_cfg->bmap_to_dmacindex[bit_pos] = rsp->index;
+ 
 -- 
 2.43.0
 
