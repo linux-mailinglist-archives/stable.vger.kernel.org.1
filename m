@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-97612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58B39E252F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B246A9E2241
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48DDD16EEE5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2B6C168A15
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4D41F76C2;
-	Tue,  3 Dec 2024 15:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38E81F75BB;
+	Tue,  3 Dec 2024 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8a4OwC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LTd/RefH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA6C1F754A;
-	Tue,  3 Dec 2024 15:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC041D9341;
+	Tue,  3 Dec 2024 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241115; cv=none; b=tq6Lrm905lvwHZ9Htmzw1DbrM49eSVJJ+cAuWn6j/TbT8pF2SsxJCgdnBYvyEf1sx1jqfYMOEl8If5VeDfvOPRP3EV53highx1THxIN/q6u/koNEpotU1uCCOy7k7VoX5w2ugKFruobE6mjl1eyS9GOVTKYzNNjxzDUZq10tVTo=
+	t=1733239039; cv=none; b=aXpV2uypsG5SEpnFhCjBDlLMkMlODCZE3ozaPG2lbsW8h/Nebzk/fik3Z1corPFC4NR5ILM6Kd6V4yUnvnYJNzkHNXqSxiDLOvsnxqTWFECZBsTFhWm4P9/P/bWmNW/G+wuqFh4d0XnLQQ67kKOrGf4OFmniEJl/8lpJNAtVxeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241115; c=relaxed/simple;
-	bh=027zST1bQEb3FKELCx310JRMakbtT+URtDuW+79LMK0=;
+	s=arc-20240116; t=1733239039; c=relaxed/simple;
+	bh=rDNCTsHOXLm4Q+uiqMd6W2qG1qqKikOebwQhoFMMEuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtAAYB4j58xqun42Tafpaf+Fqh/D2uGNeq5cblMQdKwLaQZiLfDMlgXd+yb8sv72BS16GLGZU6wCPEZgRWZqSTi3GjPkBiTGVQi0Jq+5fWgDzfh+6PKK5UBQ+Y8xX6gxaGsvSS7bQvDmIn1Z6LkKTvevxYKC96Cts54R+GxoS6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8a4OwC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BEBC4CECF;
-	Tue,  3 Dec 2024 15:51:54 +0000 (UTC)
+	 MIME-Version; b=GBt6ylMoG9euD1GwDV54inEpw6bCKLlUy3EMucYqEkc12c+UrMweAn/B2Otw7PP3l9AJyp8WiXuron1W5GO7RdW22vZ6aWcmgnSJ0cyNIQAemtTfqGWNbTo1pbvsE7GFTkT73EwykyCgnyt0p51g2T1bOuR386OZuqCn7dAy57E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LTd/RefH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E71C4CECF;
+	Tue,  3 Dec 2024 15:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241115;
-	bh=027zST1bQEb3FKELCx310JRMakbtT+URtDuW+79LMK0=;
+	s=korg; t=1733239039;
+	bh=rDNCTsHOXLm4Q+uiqMd6W2qG1qqKikOebwQhoFMMEuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8a4OwC0Yr6l/ywUnafkj0I+HnrH30UTJwtCsr4vhr/0Hp9dmcuqMkr1UYnkn2ZSv
-	 VKm2eRwkdrhOTDb0cdvRAbQS+DQ2aI4ANJ/AFjZhbP5rjAkUklLdU6HdYTdyqZKdHf
-	 xprI6bEsJQ8RSWvqfErzTo4JPUjJo521grOEGk6A=
+	b=LTd/RefHY9Q5L9CO3TCiYgHTs7dQ3nESPKNLJepIuuErO8HCmE9LpdXJa0vQsHAZh
+	 CyEiINctgpXA9DRruVmX+p6iHWnH5d+wFv64R/UxUCc9YIzU35dZ7UljM5pP8r5/LS
+	 YiuDccG0bfuHBd0wz22GFMQPuhktnlppzAnM4IwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 329/826] bpf: Use function pointers count as struct_ops links count
+Subject: [PATCH 6.11 484/817] gfs2: Fix unlinked inode cleanup
 Date: Tue,  3 Dec 2024 15:40:56 +0100
-Message-ID: <20241203144756.594364245@linuxfoundation.org>
+Message-ID: <20241203144014.764100129@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 821a3fa32bbe3bc0fa23b3189325d3720a49a24c ]
+[ Upstream commit 7c6f714d88475ceae5342264858a641eafa19632 ]
 
-Only function pointers in a struct_ops structure can be linked to bpf
-progs, so set the links count to the function pointers count, instead
-of the total members count in the structure.
+Before commit f0e56edc2ec7 ("gfs2: Split the two kinds of glock "delete"
+work"), function delete_work_func() was used to trigger the eviction of
+in-memory inodes from remote as well as deleting unlinked inodes at a
+later point.  These two kinds of work were then split into two kinds of
+work, and the two places in the code were deferred deletion of inodes is
+required accidentally ended up queuing the wrong kind of work.  This
+caused unlinked inodes to be left behind, which could in the worst case
+fill up filesystems and require a filesystem check to recover.
 
-Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/r/20241112145849.3436772-3-xukuohai@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 7c8ce4ffb684 ("bpf: Add kernel symbol for struct_ops trampoline")
+Fix that by queuing the right kind of work in try_rgrp_unlink() and
+gfs2_drop_inode().
+
+Fixes: f0e56edc2ec7 ("gfs2: Split the two kinds of glock "delete" work")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_struct_ops.c | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ fs/gfs2/glock.c | 2 +-
+ fs/gfs2/glock.h | 1 +
+ fs/gfs2/rgrp.c  | 2 +-
+ fs/gfs2/super.c | 2 +-
+ 4 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index fda3dd2ee9844..5058d1536c554 100644
---- a/kernel/bpf/bpf_struct_ops.c
-+++ b/kernel/bpf/bpf_struct_ops.c
-@@ -32,7 +32,7 @@ struct bpf_struct_ops_map {
- 	 * (in kvalue.data).
- 	 */
- 	struct bpf_link **links;
--	u32 links_cnt;
-+	u32 funcs_cnt;
- 	u32 image_pages_cnt;
- 	/* image_pages is an array of pages that has all the trampolines
- 	 * that stores the func args before calling the bpf_prog.
-@@ -481,11 +481,11 @@ static void bpf_struct_ops_map_put_progs(struct bpf_struct_ops_map *st_map)
- {
- 	u32 i;
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index b7f5347e4b41b..3af6120d55b51 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -1013,7 +1013,7 @@ bool gfs2_queue_try_to_evict(struct gfs2_glock *gl)
+ 				  &gl->gl_delete, 0);
+ }
  
--	for (i = 0; i < st_map->links_cnt; i++) {
--		if (st_map->links[i]) {
--			bpf_link_put(st_map->links[i]);
--			st_map->links[i] = NULL;
--		}
-+	for (i = 0; i < st_map->funcs_cnt; i++) {
-+		if (!st_map->links[i])
-+			break;
-+		bpf_link_put(st_map->links[i]);
-+		st_map->links[i] = NULL;
+-static bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later)
++bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later)
+ {
+ 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+ 	unsigned long delay;
+diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
+index adf0091cc98f9..63e101d448e96 100644
+--- a/fs/gfs2/glock.h
++++ b/fs/gfs2/glock.h
+@@ -245,6 +245,7 @@ static inline int gfs2_glock_nq_init(struct gfs2_glock *gl,
+ void gfs2_glock_cb(struct gfs2_glock *gl, unsigned int state);
+ void gfs2_glock_complete(struct gfs2_glock *gl, int ret);
+ bool gfs2_queue_try_to_evict(struct gfs2_glock *gl);
++bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later);
+ void gfs2_cancel_delete_work(struct gfs2_glock *gl);
+ void gfs2_flush_delete_work(struct gfs2_sbd *sdp);
+ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp);
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index 29c7728167652..5393031297153 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -1879,7 +1879,7 @@ static void try_rgrp_unlink(struct gfs2_rgrpd *rgd, u64 *last_unlinked, u64 skip
+ 		 */
+ 		ip = gl->gl_object;
+ 
+-		if (ip || !gfs2_queue_try_to_evict(gl))
++		if (ip || !gfs2_queue_verify_delete(gl, false))
+ 			gfs2_glock_put(gl);
+ 		else
+ 			found++;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 6678060ed4d2b..e22c1edc32b39 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1045,7 +1045,7 @@ static int gfs2_drop_inode(struct inode *inode)
+ 		struct gfs2_glock *gl = ip->i_iopen_gh.gh_gl;
+ 
+ 		gfs2_glock_hold(gl);
+-		if (!gfs2_queue_try_to_evict(gl))
++		if (!gfs2_queue_verify_delete(gl, true))
+ 			gfs2_glock_put_async(gl);
+ 		return 0;
  	}
- }
- 
-@@ -601,6 +601,7 @@ static long bpf_struct_ops_map_update_elem(struct bpf_map *map, void *key,
- 	int prog_fd, err;
- 	u32 i, trampoline_start, image_off = 0;
- 	void *cur_image = NULL, *image = NULL;
-+	struct bpf_link **plink;
- 
- 	if (flags)
- 		return -EINVAL;
-@@ -639,6 +640,7 @@ static long bpf_struct_ops_map_update_elem(struct bpf_map *map, void *key,
- 	udata = &uvalue->data;
- 	kdata = &kvalue->data;
- 
-+	plink = st_map->links;
- 	module_type = btf_type_by_id(btf_vmlinux, st_ops_ids[IDX_MODULE_ID]);
- 	for_each_member(i, t, member) {
- 		const struct btf_type *mtype, *ptype;
-@@ -714,7 +716,7 @@ static long bpf_struct_ops_map_update_elem(struct bpf_map *map, void *key,
- 		}
- 		bpf_link_init(&link->link, BPF_LINK_TYPE_STRUCT_OPS,
- 			      &bpf_struct_ops_link_lops, prog);
--		st_map->links[i] = &link->link;
-+		*plink++ = &link->link;
- 
- 		trampoline_start = image_off;
- 		err = bpf_struct_ops_prepare_trampoline(tlinks, link,
-@@ -895,6 +897,19 @@ static int bpf_struct_ops_map_alloc_check(union bpf_attr *attr)
- 	return 0;
- }
- 
-+static u32 count_func_ptrs(const struct btf *btf, const struct btf_type *t)
-+{
-+	int i;
-+	u32 count;
-+	const struct btf_member *member;
-+
-+	count = 0;
-+	for_each_member(i, t, member)
-+		if (btf_type_resolve_func_ptr(btf, member->type, NULL))
-+			count++;
-+	return count;
-+}
-+
- static struct bpf_map *bpf_struct_ops_map_alloc(union bpf_attr *attr)
- {
- 	const struct bpf_struct_ops_desc *st_ops_desc;
-@@ -961,9 +976,9 @@ static struct bpf_map *bpf_struct_ops_map_alloc(union bpf_attr *attr)
- 	map = &st_map->map;
- 
- 	st_map->uvalue = bpf_map_area_alloc(vt->size, NUMA_NO_NODE);
--	st_map->links_cnt = btf_type_vlen(t);
-+	st_map->funcs_cnt = count_func_ptrs(btf, t);
- 	st_map->links =
--		bpf_map_area_alloc(st_map->links_cnt * sizeof(struct bpf_links *),
-+		bpf_map_area_alloc(st_map->funcs_cnt * sizeof(struct bpf_link *),
- 				   NUMA_NO_NODE);
- 	if (!st_map->uvalue || !st_map->links) {
- 		ret = -ENOMEM;
-@@ -994,7 +1009,7 @@ static u64 bpf_struct_ops_map_mem_usage(const struct bpf_map *map)
- 	usage = sizeof(*st_map) +
- 			vt->size - sizeof(struct bpf_struct_ops_value);
- 	usage += vt->size;
--	usage += btf_type_vlen(vt) * sizeof(struct bpf_links *);
-+	usage += st_map->funcs_cnt * sizeof(struct bpf_link *);
- 	usage += PAGE_SIZE;
- 	return usage;
- }
 -- 
 2.43.0
 
