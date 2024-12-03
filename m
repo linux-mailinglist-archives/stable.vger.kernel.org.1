@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E455C9E2828
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F08C9E27BE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E692BE27CB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7521B34432
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037761F76A2;
-	Tue,  3 Dec 2024 15:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745B31F76C9;
+	Tue,  3 Dec 2024 15:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n41a6CK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sst8mQ4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E5A1F76AD;
-	Tue,  3 Dec 2024 15:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBD01F76C3;
+	Tue,  3 Dec 2024 15:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241008; cv=none; b=FfIKaaSLzQiUh/l11tUjLbj8+PoDe+zQp5yI+RCCpZ0/ATb9vsHU5LM6t+OBQnTmEWVmlPPBmVhv317wZ5bRllk1qnhuPAgWWlkC+iHLhNbJ3FYXWbk1D6+bGP1ec0yl1PEzbXttGACAID3s0rtF3YBW/XdABChCrUEsd6TgfVI=
+	t=1733238952; cv=none; b=s95JCL2tXUo5YiZOB/Q0wSuV3+AFkcsHJTugAX5U1I4eazNrEwE+atkyoVpn6RheLQWyRRAe1HLdA0JCkv8OyZ8PdTTCns+vqcqUKd8m9VcBb09TNobig3oZLPGVle2ZJaMNuAyJBoZyw9J5Lt0zAb6Pj2/DFJRLUZ+EGeTs094=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241008; c=relaxed/simple;
-	bh=Lo1OjfQGflfCl5E/LfGUki7VnnzVlQigi/DVSADHk7M=;
+	s=arc-20240116; t=1733238952; c=relaxed/simple;
+	bh=7uuhnjFi97tgybBbtyJNrqtIJPguL8hkHFeBui4lw1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sQScipywh/JishCrF5u2HzaD8XY50SPpTjuiixcYd5CFjwCyI+9EJd9xLmXTyjgfzRIVs/zWCWdwH2aMggrPYXdByj1An3760id9pZf18HOV8yDcsjJEvhbIobQKbBH9+liwS82cXBG4xxzLF+s5d3xLws9oojT0Dx0fMvp4Thk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n41a6CK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8779C4CECF;
-	Tue,  3 Dec 2024 15:50:07 +0000 (UTC)
+	 MIME-Version; b=AP4c/76ng3TKs7r/6htxynkCn26KTdtFETpY57SrwgdwkfQSrdenUL4ZTDdiFZnemq4gtEqLwwjnw/8s7FsQLlgO0TpfCZKNOKX3c6G4kM25sHkm2bL1LqFr2znpclYaesqQnEu4kd/tZ44JKA+AyLAyVb407V6ZUltmzr4Y95I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sst8mQ4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A985EC4CED8;
+	Tue,  3 Dec 2024 15:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241008;
-	bh=Lo1OjfQGflfCl5E/LfGUki7VnnzVlQigi/DVSADHk7M=;
+	s=korg; t=1733238952;
+	bh=7uuhnjFi97tgybBbtyJNrqtIJPguL8hkHFeBui4lw1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n41a6CK5yIRyNTYemOeJmg3s2FycA08Kklie1E1LOeL57io5NjKd4Xb2+BuHnlUBD
-	 La9F4m4ghv9ZAq8rntl3iSUmkd4k3RorQ/pknwaK2dM+ktdEyD6z11toUdjS48t+zt
-	 gthRZdPDoMraGOwMH5SL3JLvXPa6Mm5GIXAcoiig=
+	b=Sst8mQ4NbkP7zVuExCXMieu6IQs0+zimMN9VznPbjkSwuZu+pMabBuVJcNjUM8YvM
+	 zmMALxXAsfB3d+KvEWliOOrDG5He7AZthdGpNP4+D7T5/YtxMSU4DObRTY5OvJhLKL
+	 4cloVEoBl4QVZ7cydvEWzP8lykAYK1q94lmUCA0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	David Gow <davidgow@google.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 299/826] netfilter: nf_tables: must hold rcu read lock while iterating expression type list
+Subject: [PATCH 6.11 454/817] kunit: skb: use "gfp" variable instead of hardcoding GFP_KERNEL
 Date: Tue,  3 Dec 2024 15:40:26 +0100
-Message-ID: <20241203144755.429690406@linuxfoundation.org>
+Message-ID: <20241203144013.597294189@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ee666a541ed957937454d50afa4757924508cd74 ]
+[ Upstream commit fd0a5afb5455b4561bfc6dfb0c4b2d8226f9ccfe ]
 
-nft shell tests trigger:
- WARNING: suspicious RCU usage
- net/netfilter/nf_tables_api.c:3125 RCU-list traversed in non-reader section!!
- 1 lock held by nft/2068:
-  #0: ffff888106c6f8c8 (&nft_net->commit_mutex){+.+.}-{4:4}, at: nf_tables_valid_genid+0x3c/0xf0
+The intent here was clearly to use the gfp variable flags instead of
+hardcoding GFP_KERNEL.  All the callers pass GFP_KERNEL as the gfp
+flags so this doesn't affect runtime.
 
-But the transaction mutex doesn't protect this list, the nfnl subsystem
-mutex would, but we can't acquire it here without risk of ABBA
-deadlocks.
-
-Acquire the rcu read lock to avoid this issue.
-
-v3: add a comment that explains the ->inner_ops check implies
-expression is builtin and lack of a module owner reference is ok.
-
-Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: b3231d353a51 ("kunit: add a convenience allocation wrapper for SKBs")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ include/kunit/skbuff.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index deb4a91808598..895e23d0dc36d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3295,25 +3295,37 @@ int nft_expr_inner_parse(const struct nft_ctx *ctx, const struct nlattr *nla,
- 	if (!tb[NFTA_EXPR_DATA] || !tb[NFTA_EXPR_NAME])
- 		return -EINVAL;
+diff --git a/include/kunit/skbuff.h b/include/kunit/skbuff.h
+index 44d12370939a9..345e1e8f03123 100644
+--- a/include/kunit/skbuff.h
++++ b/include/kunit/skbuff.h
+@@ -29,7 +29,7 @@ static void kunit_action_kfree_skb(void *p)
+ static inline struct sk_buff *kunit_zalloc_skb(struct kunit *test, int len,
+ 					       gfp_t gfp)
+ {
+-	struct sk_buff *res = alloc_skb(len, GFP_KERNEL);
++	struct sk_buff *res = alloc_skb(len, gfp);
  
-+	rcu_read_lock();
-+
- 	type = __nft_expr_type_get(ctx->family, tb[NFTA_EXPR_NAME]);
--	if (!type)
--		return -ENOENT;
-+	if (!type) {
-+		err = -ENOENT;
-+		goto out_unlock;
-+	}
- 
--	if (!type->inner_ops)
--		return -EOPNOTSUPP;
-+	if (!type->inner_ops) {
-+		err = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
- 
- 	err = nla_parse_nested_deprecated(info->tb, type->maxattr,
- 					  tb[NFTA_EXPR_DATA],
- 					  type->policy, NULL);
- 	if (err < 0)
--		goto err_nla_parse;
-+		goto out_unlock;
- 
- 	info->attr = nla;
- 	info->ops = type->inner_ops;
- 
-+	/* No module reference will be taken on type->owner.
-+	 * Presence of type->inner_ops implies that the expression
-+	 * is builtin, so it cannot go away.
-+	 */
-+	rcu_read_unlock();
- 	return 0;
- 
--err_nla_parse:
-+out_unlock:
-+	rcu_read_unlock();
- 	return err;
- }
- 
+ 	if (!res || skb_pad(res, len))
+ 		return NULL;
 -- 
 2.43.0
 
