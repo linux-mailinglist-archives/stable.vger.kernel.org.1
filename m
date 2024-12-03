@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-96788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112259E2AE3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:31:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F37B59E2B99
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C898FB3853F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 888A1BE07F9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120A51F75B1;
-	Tue,  3 Dec 2024 15:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390061F8934;
+	Tue,  3 Dec 2024 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAFMK0hH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPgzl1nC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39421F8903;
-	Tue,  3 Dec 2024 15:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A451F6693;
+	Tue,  3 Dec 2024 15:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238594; cv=none; b=HIlkFoXpZ4q0XxpY43DfQjZagnr4fWNiSgo2TrxfQUcpU+5lzE72GAnZEV4v5CwyrxR4YoeseGQ61uowrv/ZfHIpE0zevxR3kxrp2WYWj7rQ9gvy+C4U2pVKhwt0P3lnOS74hf5jP5lwNw6YZBm9u3e1HkRSJRfFuZdEdXwZTbA=
+	t=1733240696; cv=none; b=bhFCKnY2JT6Jms3kKh6q278wYmKUQoz8i35DUcWDetC4CnW3xlFdI5cWy6m6pSN3l38fidLOCftiymmiYB65h2bBcXZP3fbKjvEWj9In7LprUSgNrW5w5gIYyNk++jn0li9LNF2Kytly4diCCsYmI1l3SG0T5eC76HptSKJVG8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238594; c=relaxed/simple;
-	bh=5NRdpnC+AkZanP54/CyF8cTITZSoPR1gilSHS82DCDA=;
+	s=arc-20240116; t=1733240696; c=relaxed/simple;
+	bh=HpyGsw22t0WrC8xPUdrZTKd/z+kljfkHRiirGgA2o80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QeOWKAcPoztNtBMaSjNGQZCEYKoeNufEYAn4DK1flzlIdQaG4dojR7J2DH0hi3rXAnwds8LhClBK1IQDotBOnDK/kby78YzCi8qRqufVQ2COrldw1n6dOgc/rvSsesMXnl7KaWUl7/FILj/OR2pWK1Ne3Dli6sBk9RQyMesngGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAFMK0hH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4843DC4CECF;
-	Tue,  3 Dec 2024 15:09:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fbx0zKSNTtitE1vbhDVRvpwMoiQHlKJEFvmoCNtwWGwbnfXfZBorxEE7vWBayBYYtMPGUaE29wyap+29PgLlfJlqKpwnUxfmorZv2p1k/QiQosV60p/WV6yKOYxytzG8yHbGoehduv4LgN6PUYtskyN68Shh+UOVMWy+mViD2yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPgzl1nC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CCDC4CECF;
+	Tue,  3 Dec 2024 15:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238594;
-	bh=5NRdpnC+AkZanP54/CyF8cTITZSoPR1gilSHS82DCDA=;
+	s=korg; t=1733240695;
+	bh=HpyGsw22t0WrC8xPUdrZTKd/z+kljfkHRiirGgA2o80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAFMK0hHawcMJRR0bfTktONxQ29jR8gQ7uQoN/TkXgi9A5ggnwuD5yIuAKYSkIWUg
-	 J0HCKLpxwby3eIjy/0HsCtvztL0HzIqd1RN+NBl3wy/Fzo3wyIfkuoPbycSBwZ1Jpe
-	 RHT+HdX1JrD3SwNeXGerUcUNd63D7c0TRFkT9HEE=
+	b=LPgzl1nCqT1wdksyXGAAReyC2tzzqIIwdQs2lDK57MuqGZQtoKN8B+laj9n2vgSQw
+	 iQ6oPMQpJedvfEULTCrJLGx3ryWx7kyNOAvPKKupFOK7oDNaEQaHNfealfL9SUUnzq
+	 TaWReD7N9sUbADWpvOW1BjxEZhLLqPKHyyTu4IcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Casey G Bowman <casey.g.bowman@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 331/817] bpf, sockmap: Several fixes to bpf_msg_push_data
-Date: Tue,  3 Dec 2024 15:38:23 +0100
-Message-ID: <20241203144008.739654415@linuxfoundation.org>
+Subject: [PATCH 6.12 178/826] platform/x86: asus-wmi: Fix inconsistent use of thermal policies
+Date: Tue,  3 Dec 2024 15:38:25 +0100
+Message-ID: <20241203144750.680615893@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,136 +62,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 15ab0548e3107665c34579ae523b2b6e7c22082a ]
+[ Upstream commit 895085ec3f2ed7a26389943729e2904df1f88dc0 ]
 
-Several fixes to bpf_msg_push_data,
-1. test_sockmap has tests where bpf_msg_push_data is invoked to push some
-data at the end of a message, but -EINVAL is returned. In this case, in
-bpf_msg_push_data, after the first loop, i will be set to msg->sg.end, add
-the logic to handle it.
-2. In the code block of "if (start - offset)", it's possible that "i"
-points to the last of sk_msg_elem. In this case, "sk_msg_iter_next(msg,
-end)" might still be called twice, another invoking is in "if (!copy)"
-code block, but actually only one is needed. Add the logic to handle it,
-and reconstruct the code to make the logic more clear.
+When changing the thermal policy using the platform profile API,
+a Vivobook thermal policy is stored in throttle_thermal_policy_mode.
 
-Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-7-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+However everywhere else a normal thermal policy is stored inside this
+variable, potentially confusing the platform profile.
+
+Fix this by always storing normal thermal policy values inside
+throttle_thermal_policy_mode and only do the conversion when writing
+the thermal policy to hardware. This also fixes the order in which
+throttle_thermal_policy_switch_next() steps through the thermal modes
+on Vivobook machines.
+
+Tested-by: Casey G Bowman <casey.g.bowman@intel.com>
+Fixes: bcbfcebda2cb ("platform/x86: asus-wmi: add support for vivobook fan profiles")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241107003811.615574-2-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 53 +++++++++++++++++++++++++++++------------------
- 1 file changed, 33 insertions(+), 20 deletions(-)
+ drivers/platform/x86/asus-wmi.c | 64 +++++++++++----------------------
+ 1 file changed, 21 insertions(+), 43 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index fe5ac8da5022f..b7597f8d4159c 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2794,7 +2794,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		sk_msg_iter_var_next(i);
- 	} while (i != msg->sg.end);
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index abdca3f05c5c1..89f5f44857d55 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -3696,10 +3696,28 @@ static int asus_wmi_custom_fan_curve_init(struct asus_wmi *asus)
+ /* Throttle thermal policy ****************************************************/
+ static int throttle_thermal_policy_write(struct asus_wmi *asus)
+ {
+-	u8 value = asus->throttle_thermal_policy_mode;
+ 	u32 retval;
++	u8 value;
+ 	int err;
  
--	if (start >= offset + l)
-+	if (start > offset + l)
- 		return -EINVAL;
- 
- 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
-@@ -2819,6 +2819,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 
- 		raw = page_address(page);
- 
-+		if (i == msg->sg.end)
-+			sk_msg_iter_var_prev(i);
- 		psge = sk_msg_elem(msg, i);
- 		front = start - offset;
- 		back = psge->length - front;
-@@ -2835,7 +2837,13 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		}
- 
- 		put_page(sg_page(psge));
--	} else if (start - offset) {
-+		new = i;
-+		goto place_new;
++	if (asus->throttle_thermal_policy_dev == ASUS_WMI_DEVID_THROTTLE_THERMAL_POLICY_VIVO) {
++		switch (asus->throttle_thermal_policy_mode) {
++		case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT:
++			value = ASUS_THROTTLE_THERMAL_POLICY_DEFAULT_VIVO;
++			break;
++		case ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST:
++			value = ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST_VIVO;
++			break;
++		case ASUS_THROTTLE_THERMAL_POLICY_SILENT:
++			value = ASUS_THROTTLE_THERMAL_POLICY_SILENT_VIVO;
++			break;
++		default:
++			return -EINVAL;
++		}
++	} else {
++		value = asus->throttle_thermal_policy_mode;
 +	}
 +
-+	if (start - offset) {
-+		if (i == msg->sg.end)
-+			sk_msg_iter_var_prev(i);
- 		psge = sk_msg_elem(msg, i);
- 		rsge = sk_msg_elem_cpy(msg, i);
+ 	err = asus_wmi_set_devstate(asus->throttle_thermal_policy_dev,
+ 				    value, &retval);
  
-@@ -2846,39 +2854,44 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		sk_msg_iter_var_next(i);
- 		sg_unmark_end(psge);
- 		sg_unmark_end(&rsge);
--		sk_msg_iter_next(msg, end);
- 	}
+@@ -3804,46 +3822,6 @@ static ssize_t throttle_thermal_policy_store(struct device *dev,
+ static DEVICE_ATTR_RW(throttle_thermal_policy);
  
- 	/* Slot(s) to place newly allocated data */
-+	sk_msg_iter_next(msg, end);
- 	new = i;
-+	sk_msg_iter_var_next(i);
-+
-+	if (i == msg->sg.end) {
-+		if (!rsge.length)
-+			goto place_new;
-+		sk_msg_iter_next(msg, end);
-+		goto place_new;
-+	}
- 
- 	/* Shift one or two slots as needed */
--	if (!copy) {
--		sge = sk_msg_elem_cpy(msg, i);
-+	sge = sk_msg_elem_cpy(msg, new);
-+	sg_unmark_end(&sge);
- 
-+	nsge = sk_msg_elem_cpy(msg, i);
-+	if (rsge.length) {
- 		sk_msg_iter_var_next(i);
--		sg_unmark_end(&sge);
-+		nnsge = sk_msg_elem_cpy(msg, i);
- 		sk_msg_iter_next(msg, end);
-+	}
- 
--		nsge = sk_msg_elem_cpy(msg, i);
-+	while (i != msg->sg.end) {
-+		msg->sg.data[i] = sge;
-+		sge = nsge;
-+		sk_msg_iter_var_next(i);
- 		if (rsge.length) {
--			sk_msg_iter_var_next(i);
-+			nsge = nnsge;
- 			nnsge = sk_msg_elem_cpy(msg, i);
--		}
+ /* Platform profile ***********************************************************/
+-static int asus_wmi_platform_profile_to_vivo(struct asus_wmi *asus, int mode)
+-{
+-	bool vivo;
 -
--		while (i != msg->sg.end) {
--			msg->sg.data[i] = sge;
--			sge = nsge;
--			sk_msg_iter_var_next(i);
--			if (rsge.length) {
--				nsge = nnsge;
--				nnsge = sk_msg_elem_cpy(msg, i);
--			} else {
--				nsge = sk_msg_elem_cpy(msg, i);
--			}
-+		} else {
-+			nsge = sk_msg_elem_cpy(msg, i);
- 		}
+-	vivo = asus->throttle_thermal_policy_dev == ASUS_WMI_DEVID_THROTTLE_THERMAL_POLICY_VIVO;
+-
+-	if (vivo) {
+-		switch (mode) {
+-		case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT:
+-			return ASUS_THROTTLE_THERMAL_POLICY_DEFAULT_VIVO;
+-		case ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST:
+-			return ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST_VIVO;
+-		case ASUS_THROTTLE_THERMAL_POLICY_SILENT:
+-			return ASUS_THROTTLE_THERMAL_POLICY_SILENT_VIVO;
+-		}
+-	}
+-
+-	return mode;
+-}
+-
+-static int asus_wmi_platform_profile_mode_from_vivo(struct asus_wmi *asus, int mode)
+-{
+-	bool vivo;
+-
+-	vivo = asus->throttle_thermal_policy_dev == ASUS_WMI_DEVID_THROTTLE_THERMAL_POLICY_VIVO;
+-
+-	if (vivo) {
+-		switch (mode) {
+-		case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT_VIVO:
+-			return ASUS_THROTTLE_THERMAL_POLICY_DEFAULT;
+-		case ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST_VIVO:
+-			return ASUS_THROTTLE_THERMAL_POLICY_OVERBOOST;
+-		case ASUS_THROTTLE_THERMAL_POLICY_SILENT_VIVO:
+-			return ASUS_THROTTLE_THERMAL_POLICY_SILENT;
+-		}
+-	}
+-
+-	return mode;
+-}
+-
+ static int asus_wmi_platform_profile_get(struct platform_profile_handler *pprof,
+ 					enum platform_profile_option *profile)
+ {
+@@ -3853,7 +3831,7 @@ static int asus_wmi_platform_profile_get(struct platform_profile_handler *pprof,
+ 	asus = container_of(pprof, struct asus_wmi, platform_profile_handler);
+ 	tp = asus->throttle_thermal_policy_mode;
+ 
+-	switch (asus_wmi_platform_profile_mode_from_vivo(asus, tp)) {
++	switch (tp) {
+ 	case ASUS_THROTTLE_THERMAL_POLICY_DEFAULT:
+ 		*profile = PLATFORM_PROFILE_BALANCED;
+ 		break;
+@@ -3892,7 +3870,7 @@ static int asus_wmi_platform_profile_set(struct platform_profile_handler *pprof,
+ 		return -EOPNOTSUPP;
  	}
  
-+place_new:
- 	/* Place newly allocated data buffer */
- 	sk_mem_charge(msg->sk, len);
- 	msg->sg.size += len;
+-	asus->throttle_thermal_policy_mode = asus_wmi_platform_profile_to_vivo(asus, tp);
++	asus->throttle_thermal_policy_mode = tp;
+ 	return throttle_thermal_policy_write(asus);
+ }
+ 
 -- 
 2.43.0
 
