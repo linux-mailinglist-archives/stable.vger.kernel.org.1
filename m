@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4529E240C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052609E2169
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C66128225C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12815BA1800
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7EE1F755B;
-	Tue,  3 Dec 2024 15:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BDF61F75A4;
+	Tue,  3 Dec 2024 15:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adSTNtOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VN0dC8sL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B48A1FE467;
-	Tue,  3 Dec 2024 15:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEB01E3DF9;
+	Tue,  3 Dec 2024 15:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240529; cv=none; b=VbCrIvpypKu08EqTVJuU7LLGhPwJIIV91JYHPiT+6eoaYdMnJHA2I7UtKaBCVmmOqLzT+/ihC3yv9AR0uPe/TyC0o5wKG+Z/4wvVcZb4FCNwmiHNjB3NqeOk2yyqODNHjCmc22dQNkFCubNZeKTGVSUh2ICyzqLiQnqZCRYgYqg=
+	t=1733238552; cv=none; b=eutSA+aOJscu3th6vevOuWSrLXJiUt9DXqBAatKXKUAUTySXL+q/MxhIVzgVlnlbLVBVC09KVVXGk0mALEdrhUww8Aqsdc9ISy4If91VizjkAh8mSJIQr5nzkdyc/n3uKa3gQcnu09DeH7cVUiplkmORqP+88RgixRUPVMimghs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240529; c=relaxed/simple;
-	bh=Tnd406yWuNk8qNx6PgxHsPGrWNQG3lnIbA/xCt/LLu8=;
+	s=arc-20240116; t=1733238552; c=relaxed/simple;
+	bh=gZCV5A3B3lQaVXsv9l3xK9PVjqN8CBpNdwXEeGFBMFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IU2uBdSbKhGljeiFWcjxJ0qtczNAZXyPUncbFrjZEvHsROJDk95bbWYKgH7XGQfwwvLWt8ACKZyD8qZEoHkAgGKgWfMd7g7LnGH2IAfY0S52uJGA+jr1Zjt+BZ/Kf6Uml24ggnhBd0Kbb+qzpYVuKtQF3T+zv/UZ3RTkkwTAjsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adSTNtOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1150BC4CECF;
-	Tue,  3 Dec 2024 15:42:08 +0000 (UTC)
+	 MIME-Version; b=oEZqMzrWTVtg0fPl5phXUpqOK+dHJwmnOyJKBGTmlP4l2RM5middz9eE3o329Mz+G8LnnWQXHO7wjyGbcL2mjQi6mlngtOFn/HP53oQiNp2AsHLpA78Vw8g6eLTz8R+S/v/O+IE28rcIop6Fprq6iWpiKRxfYBUp4vPSwWy+MFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VN0dC8sL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AE7C4CECF;
+	Tue,  3 Dec 2024 15:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240529;
-	bh=Tnd406yWuNk8qNx6PgxHsPGrWNQG3lnIbA/xCt/LLu8=;
+	s=korg; t=1733238551;
+	bh=gZCV5A3B3lQaVXsv9l3xK9PVjqN8CBpNdwXEeGFBMFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adSTNtOhTRkOc4PNpcG7QKhR+0SrG2c0Si07lTF090ypdfCNbvRLLJwIUq+6CZXKS
-	 ydRQPMykR3aqWXDnWIRaje5/8zGQybylP22vS+Qtq9nDxZQVc43Urh0IftKcuJAFQn
-	 WGOVKWp+H+rEzp5PQbOax6S00aL13W/sAaQtB87k=
+	b=VN0dC8sLk61QLsEdvgm0Lx6vLMZrei6UtWn79lZjH5BBzg/8dLthMqWItGsZINcxw
+	 eqSt3JdUqBksCYLE9tWzbFOfUmkA7Ipp8qVlUIOPBUsvD0Zdg2ZIBX18MVL3Soo+h5
+	 I9JvNC1WYAqlkx+3MqSfDafyVzrPGbC8o1A7LErw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 162/826] arm64: dts: mediatek: mt8183-kukui-jacuzzi: Fix DP bridge supply names
+Subject: [PATCH 6.11 317/817] netfilter: nf_tables: avoid false-positive lockdep splat on rule deletion
 Date: Tue,  3 Dec 2024 15:38:09 +0100
-Message-ID: <20241203144750.058122584@linuxfoundation.org>
+Message-ID: <20241203144008.192754075@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit c4e8cf13f1740037483565d5b802764e2426515b ]
+[ Upstream commit 9adbb4198bf6cf3634032871118a7052aeaa573f ]
 
-Some of the regulator supplies for the MIPI-DPI-to-DP bridge and their
-associated nodes are incorrectly named. In particular, the 1.0V supply
-was modeled as a 1.2V supply.
+On rule delete we get:
+ WARNING: suspicious RCU usage
+ net/netfilter/nf_tables_api.c:3420 RCU-list traversed in non-reader section!!
+ 1 lock held by iptables/134:
+   #0: ffff888008c4fcc8 (&nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid (include/linux/jiffies.h:101) nf_tables
 
-Fix all the incorrect names, and also fix the voltage of the 1.0V
-regulator.
+Code is fine, no other CPU can change the list because we're holding
+transaction mutex.
 
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20241030070224.1006331-3-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Pass the needed lockdep annotation to the iterator and fix
+two comments for functions that are no longer restricted to rcu-only
+context.
+
+This is enough to resolve rule delete, but there are several other
+missing annotations, added in followup-patches.
+
+Fixes: 28875945ba98 ("rcu: Add support for consolidated-RCU reader checking")
+Reported-by: Matthieu Baerts <matttbe@kernel.org>
+Tested-by: Matthieu Baerts <matttbe@kernel.org>
+Closes: https://lore.kernel.org/netfilter-devel/da27f17f-3145-47af-ad0f-7fd2a823623e@kernel.org/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    | 26 ++++++++++---------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ net/netfilter/nf_tables_api.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index 783c333107bcb..ac7ec0676e147 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -8,11 +8,13 @@
- #include <arm/cros-ec-keyboard.dtsi>
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 58503348ed3a3..18579897e7fe2 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3410,13 +3410,15 @@ void nft_expr_destroy(const struct nft_ctx *ctx, struct nft_expr *expr)
+  * Rules
+  */
  
- / {
--	pp1200_mipibrdg: pp1200-mipibrdg {
-+	pp1000_mipibrdg: pp1000-mipibrdg {
- 		compatible = "regulator-fixed";
--		regulator-name = "pp1200_mipibrdg";
-+		regulator-name = "pp1000_mipibrdg";
-+		regulator-min-microvolt = <1000000>;
-+		regulator-max-microvolt = <1000000>;
- 		pinctrl-names = "default";
--		pinctrl-0 = <&pp1200_mipibrdg_en>;
-+		pinctrl-0 = <&pp1000_mipibrdg_en>;
+-static struct nft_rule *__nft_rule_lookup(const struct nft_chain *chain,
++static struct nft_rule *__nft_rule_lookup(const struct net *net,
++					  const struct nft_chain *chain,
+ 					  u64 handle)
+ {
+ 	struct nft_rule *rule;
  
- 		enable-active-high;
- 		regulator-boot-on;
-@@ -24,7 +26,7 @@ pp1800_mipibrdg: pp1800-mipibrdg {
- 		compatible = "regulator-fixed";
- 		regulator-name = "pp1800_mipibrdg";
- 		pinctrl-names = "default";
--		pinctrl-0 = <&pp1800_lcd_en>;
-+		pinctrl-0 = <&pp1800_mipibrdg_en>;
+ 	// FIXME: this sucks
+-	list_for_each_entry_rcu(rule, &chain->rules, list) {
++	list_for_each_entry_rcu(rule, &chain->rules, list,
++				lockdep_commit_lock_is_held(net)) {
+ 		if (handle == rule->handle)
+ 			return rule;
+ 	}
+@@ -3424,13 +3426,14 @@ static struct nft_rule *__nft_rule_lookup(const struct nft_chain *chain,
+ 	return ERR_PTR(-ENOENT);
+ }
  
- 		enable-active-high;
- 		regulator-boot-on;
-@@ -46,11 +48,11 @@ pp3300_panel: pp3300-panel {
- 		gpio = <&pio 35 GPIO_ACTIVE_HIGH>;
- 	};
+-static struct nft_rule *nft_rule_lookup(const struct nft_chain *chain,
++static struct nft_rule *nft_rule_lookup(const struct net *net,
++					const struct nft_chain *chain,
+ 					const struct nlattr *nla)
+ {
+ 	if (nla == NULL)
+ 		return ERR_PTR(-EINVAL);
  
--	vddio_mipibrdg: vddio-mipibrdg {
-+	pp3300_mipibrdg: pp3300-mipibrdg {
- 		compatible = "regulator-fixed";
--		regulator-name = "vddio_mipibrdg";
-+		regulator-name = "pp3300_mipibrdg";
- 		pinctrl-names = "default";
--		pinctrl-0 = <&vddio_mipibrdg_en>;
-+		pinctrl-0 = <&pp3300_mipibrdg_en>;
+-	return __nft_rule_lookup(chain, be64_to_cpu(nla_get_be64(nla)));
++	return __nft_rule_lookup(net, chain, be64_to_cpu(nla_get_be64(nla)));
+ }
  
- 		enable-active-high;
- 		regulator-boot-on;
-@@ -146,9 +148,9 @@ anx_bridge: anx7625@58 {
- 		pinctrl-0 = <&anx7625_pins>;
- 		enable-gpios = <&pio 45 GPIO_ACTIVE_HIGH>;
- 		reset-gpios = <&pio 73 GPIO_ACTIVE_HIGH>;
--		vdd10-supply = <&pp1200_mipibrdg>;
-+		vdd10-supply = <&pp1000_mipibrdg>;
- 		vdd18-supply = <&pp1800_mipibrdg>;
--		vdd33-supply = <&vddio_mipibrdg>;
-+		vdd33-supply = <&pp3300_mipibrdg>;
+ static const struct nla_policy nft_rule_policy[NFTA_RULE_MAX + 1] = {
+@@ -3731,7 +3734,7 @@ static int nf_tables_dump_rules_done(struct netlink_callback *cb)
+ 	return 0;
+ }
  
- 		ports {
- 			#address-cells = <1>;
-@@ -391,14 +393,14 @@ &pio {
- 		"",
- 		"";
+-/* called with rcu_read_lock held */
++/* Caller must hold rcu read lock or transaction mutex */
+ static struct sk_buff *
+ nf_tables_getrule_single(u32 portid, const struct nfnl_info *info,
+ 			 const struct nlattr * const nla[], bool reset)
+@@ -3758,7 +3761,7 @@ nf_tables_getrule_single(u32 portid, const struct nfnl_info *info,
+ 		return ERR_CAST(chain);
+ 	}
  
--	pp1200_mipibrdg_en: pp1200-mipibrdg-en {
-+	pp1000_mipibrdg_en: pp1000-mipibrdg-en {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO54__FUNC_GPIO54>;
- 			output-low;
- 		};
- 	};
+-	rule = nft_rule_lookup(chain, nla[NFTA_RULE_HANDLE]);
++	rule = nft_rule_lookup(net, chain, nla[NFTA_RULE_HANDLE]);
+ 	if (IS_ERR(rule)) {
+ 		NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_HANDLE]);
+ 		return ERR_CAST(rule);
+@@ -4057,7 +4060,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
  
--	pp1800_lcd_en: pp1800-lcd-en {
-+	pp1800_mipibrdg_en: pp1800-mipibrdg-en {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO36__FUNC_GPIO36>;
- 			output-low;
-@@ -460,7 +462,7 @@ trackpad-int {
- 		};
- 	};
+ 	if (nla[NFTA_RULE_HANDLE]) {
+ 		handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_HANDLE]));
+-		rule = __nft_rule_lookup(chain, handle);
++		rule = __nft_rule_lookup(net, chain, handle);
+ 		if (IS_ERR(rule)) {
+ 			NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_HANDLE]);
+ 			return PTR_ERR(rule);
+@@ -4079,7 +4082,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
  
--	vddio_mipibrdg_en: vddio-mipibrdg-en {
-+	pp3300_mipibrdg_en: pp3300-mipibrdg-en {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO37__FUNC_GPIO37>;
- 			output-low;
+ 		if (nla[NFTA_RULE_POSITION]) {
+ 			pos_handle = be64_to_cpu(nla_get_be64(nla[NFTA_RULE_POSITION]));
+-			old_rule = __nft_rule_lookup(chain, pos_handle);
++			old_rule = __nft_rule_lookup(net, chain, pos_handle);
+ 			if (IS_ERR(old_rule)) {
+ 				NL_SET_BAD_ATTR(extack, nla[NFTA_RULE_POSITION]);
+ 				return PTR_ERR(old_rule);
+@@ -4296,7 +4299,7 @@ static int nf_tables_delrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 	if (chain) {
+ 		if (nla[NFTA_RULE_HANDLE]) {
+-			rule = nft_rule_lookup(chain, nla[NFTA_RULE_HANDLE]);
++			rule = nft_rule_lookup(info->net, chain, nla[NFTA_RULE_HANDLE]);
+ 			if (IS_ERR(rule)) {
+ 				if (PTR_ERR(rule) == -ENOENT &&
+ 				    NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_DESTROYRULE)
+@@ -8082,7 +8085,7 @@ static int nf_tables_dump_obj_done(struct netlink_callback *cb)
+ 	return 0;
+ }
+ 
+-/* called with rcu_read_lock held */
++/* Caller must hold rcu read lock or transaction mutex */
+ static struct sk_buff *
+ nf_tables_getobj_single(u32 portid, const struct nfnl_info *info,
+ 			const struct nlattr * const nla[], bool reset)
 -- 
 2.43.0
 
