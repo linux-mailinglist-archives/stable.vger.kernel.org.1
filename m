@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C719E232A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AF949E25F6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF38E169526
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E16ED288B9D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68851F759C;
-	Tue,  3 Dec 2024 15:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D4F1F890F;
+	Tue,  3 Dec 2024 16:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lR6A+bYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5tMRI8y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840D01F4276;
-	Tue,  3 Dec 2024 15:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A5B1F8934;
+	Tue,  3 Dec 2024 16:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239716; cv=none; b=Odkj80tdDn0GVBcK6IiB3u+yLQyGTivxh6qfiBhu97k9TOTGk8gYklbEjSiF+MhWH3iao2Ng5lmJdgVigc6mlZePt2DYYVxHpKXPWP3ZUgZq9+QrtsCC+9/RuSZQtP5D/wKul11qQ6lB/uRICrmS1wWiYbGmWuZuhptmtHlWCwM=
+	t=1733242021; cv=none; b=YjTsn5zWxCH8WNqcMwfWYqHE/DsGWK2AgiB+1tzYHqGT5RRhew715lMlseqg+oM/U/caNMhF7SXTFRPAwhQ60KHZ6fEgI1bOpkLpb492r18f7YBBZi+w1TovGdm5pSjzmF4w9GZJViqKSrt+XmXt08KMAAGtbUAPLfUHU90LxDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239716; c=relaxed/simple;
-	bh=BBHxwRwH7aJlHeyMmyA31+kGgspyYz5QTGZ2C2+h4+g=;
+	s=arc-20240116; t=1733242021; c=relaxed/simple;
+	bh=cfpgBeBWDVnt3UgyG386MX0x+1uUYHeAmO2wXqgHvFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMdcl9FIYihi/503a1QHKEHLD2NL73fsia+BS/N8+KnNllBMrXx6UTxgepigzR4F7rDUtGl+5dKHRCu6QuEQpCbmioF1D9ok4UzkLuEn41joyRVbo4B8ROkHujXcrYdkz8Ztfz5Ft3hHLRvolcUVsppJO4a0dzvCQ2JsYJVnCZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lR6A+bYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4389C4CECF;
-	Tue,  3 Dec 2024 15:28:35 +0000 (UTC)
+	 MIME-Version; b=szjQS+SM5J6x8B2n02pWPmlHIeGC7VncKUeli3lYR5z65c7la4GzglxzVSu+qnLcib+tihqsyT9t1c6Cri6c70fL/Bi754rHuh6lMDTKPwc4kAO8Yp3B4WsddE7xAMnmMwDEzHA6nbm/OL+pk1pDddNPwaEUnluCCqTAYFUo+L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5tMRI8y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26810C4CED6;
+	Tue,  3 Dec 2024 16:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239716;
-	bh=BBHxwRwH7aJlHeyMmyA31+kGgspyYz5QTGZ2C2+h4+g=;
+	s=korg; t=1733242021;
+	bh=cfpgBeBWDVnt3UgyG386MX0x+1uUYHeAmO2wXqgHvFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lR6A+bYhZqIhNW4coqVktRfG18D0Yqz4RaGKaU3uxEH2gTExA67/4pUETJeiHVUmX
-	 bFnjZ06uUH4y0gGzcELV9ORJeQ2ll3th953v8M1HMiMe439hys/28aKAwFbMLQfp3M
-	 nncRWZipTg5CqVkTitN0lSuoxDAinf1FB3h/mMDc=
+	b=H5tMRI8y4JuJnNdjMt5hw0FMc4gp6MCKuaXtnVu+rN7mgdhJddYoVCssrtszfcP6+
+	 kIWcGT+xOZZL+PftNJEi2lNQeI42FmuUpOFMvxMRk6FKt/kq8dxshEbtcc5xSeW7Eu
+	 JZYhdTK9UANCz11VMKQKgY0ajEFF7KeOZYCjrG3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.11 708/817] irqchip/irq-mvebu-sei: Move misplaced select() callback to SEI CP domain
+	Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 553/826] power: reset: ep93xx: add AUXILIARY_BUS dependency
 Date: Tue,  3 Dec 2024 15:44:40 +0100
-Message-ID: <20241203144023.619761295@linuxfoundation.org>
+Message-ID: <20241203144805.320718764@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 12aaf67584cf19dc84615b7aba272fe642c35b8b upstream.
+[ Upstream commit b6d445f6724deda3fd87fa33358009d947a64c5d ]
 
-Commit fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
-introduced in v6.11-rc1 broke Mavell Armada platforms (and possibly others)
-by incorrectly switching irq-mvebu-sei to MSI parent.
+This fails to link when compile-testing and the auxiliary bus is not built-in:
 
-In the above commit, msi_parent_ops is set for the sei->cp_domain, but
-rather than adding a .select method to mvebu_sei_cp_domain_ops (which is
-associated with sei->cp_domain), it was added to mvebu_sei_domain_ops which
-is associated with sei->sei_domain, which doesn't have any
-msi_parent_ops. This makes the call to msi_lib_irq_domain_select() always
-fail.
+x86_64-linux-ld: drivers/power/reset/ep93xx-restart.o: in function `ep93xx_reboot_driver_init':
+ep93xx-restart.c:(.init.text+0x11): undefined reference to `__auxiliary_driver_register'
+x86_64-linux-ld: drivers/power/reset/ep93xx-restart.o: in function `ep93xx_reboot_driver_exit':
+ep93xx-restart.c:(.exit.text+0x8): undefined reference to `auxiliary_driver_unregister'
 
-This bug manifests itself with the following kernel messages on Armada 8040
-based systems:
+Add the appropriate dependency.
 
- platform f21e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
- platform f41e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
-
-Move the select callback to mvebu_sei_cp_domain_ops to cure it.
-
-Fixes: fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/E1tE6bh-004CmX-QU@rmk-PC.armlinux.org.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9fa7cdb4368f ("power: reset: Add a driver for the ep93xx reset")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20241111104418.3891756-1-arnd@kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mvebu-sei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/reset/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-mvebu-sei.c b/drivers/irqchip/irq-mvebu-sei.c
-index f8c70f2d100a..065166ab5dbc 100644
---- a/drivers/irqchip/irq-mvebu-sei.c
-+++ b/drivers/irqchip/irq-mvebu-sei.c
-@@ -192,7 +192,6 @@ static void mvebu_sei_domain_free(struct irq_domain *domain, unsigned int virq,
- }
+diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
+index 389d5a193e5dc..f5fc33a8bf443 100644
+--- a/drivers/power/reset/Kconfig
++++ b/drivers/power/reset/Kconfig
+@@ -79,6 +79,7 @@ config POWER_RESET_EP93XX
+ 	bool "Cirrus EP93XX reset driver" if COMPILE_TEST
+ 	depends on MFD_SYSCON
+ 	default ARCH_EP93XX
++	select AUXILIARY_BUS
+ 	help
+ 	  This driver provides restart support for Cirrus EP93XX SoC.
  
- static const struct irq_domain_ops mvebu_sei_domain_ops = {
--	.select	= msi_lib_irq_domain_select,
- 	.alloc	= mvebu_sei_domain_alloc,
- 	.free	= mvebu_sei_domain_free,
- };
-@@ -306,6 +305,7 @@ static void mvebu_sei_cp_domain_free(struct irq_domain *domain,
- }
- 
- static const struct irq_domain_ops mvebu_sei_cp_domain_ops = {
-+	.select	= msi_lib_irq_domain_select,
- 	.alloc	= mvebu_sei_cp_domain_alloc,
- 	.free	= mvebu_sei_cp_domain_free,
- };
 -- 
-2.47.1
+2.43.0
 
 
 
