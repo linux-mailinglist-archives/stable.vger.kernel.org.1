@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-96508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9109E2108
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC089E203A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79EB0B6331D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B13AD28A29C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3151F7591;
-	Tue,  3 Dec 2024 14:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D467F1F758E;
+	Tue,  3 Dec 2024 14:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxBLHdCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbUqsYEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0936F1F7578;
-	Tue,  3 Dec 2024 14:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF631B3942;
+	Tue,  3 Dec 2024 14:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237727; cv=none; b=YII1GYjplCnuHd5K2uhMQWqajO932mLW4hOgqx1VgsLHsKcTdixmyxEj8I5bPs56ur+b4kgndkIjI8N3zfEVwVeVdwcHHa7zqo+B4JH3RSGasXcC/dmSl4+NP+yqnbRg2gUVxuIsscOG9Db0ZGesQ9PvBasPVkQZtkzuAIleM4c=
+	t=1733237733; cv=none; b=sj9wJaV3DvWmC6K5IsmW+Uo4eesowGOUX4QIxtqAxFUaKUTuxaEauXs9vD3CrlIxtUyZJmvdnvJa7VyZ2bKGzmGeZdei4CIX0hILsJTtkIzU9dwYQinxCsPhm53IOmjxYK7Aa+Ra4Q9ZYMsZnvMSrUZFYuK+mUOaGxFEbJgi+So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237727; c=relaxed/simple;
-	bh=9S47EnhrD4GH+7GhqQ654OtLGdfBzJhh+hQ8QH7onR0=;
+	s=arc-20240116; t=1733237733; c=relaxed/simple;
+	bh=zo/5GYt4MTNlaKKj1/KV61aS/pYExzHGUogRZhQ3yYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3J4PvRY3oyYYEQvPrxcdnOGUy7lMouWGI9oSYWxn40N04QnRs4MCfHRwFf6xzgNoCmuqP1L979jzt3ofEbv5G8F0ZLi9vbqIDJfJb5cHwBHqObFafV1QbBYwadoejoM3Cu0HYJIlimF2gg0RABnnhNV5qAuLNI7YAUXKdNM3k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxBLHdCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78464C4CECF;
-	Tue,  3 Dec 2024 14:55:26 +0000 (UTC)
+	 MIME-Version; b=llJlO2B51sBf82wMSBEcKmobT/j200YHexNmdBYGjE041rsk3MO2uEaq5GWj1tONG6d5mvu/7kSORAU+JKETCJsJNhKyJh2foUYTxhLSkCV8Yif+2fLaG7tHVvyEQQOS8tM/TE950EEneQJrFeP30QWeA3Z9IgcdGCSRA4WH7JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbUqsYEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F413FC4CECF;
+	Tue,  3 Dec 2024 14:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237726;
-	bh=9S47EnhrD4GH+7GhqQ654OtLGdfBzJhh+hQ8QH7onR0=;
+	s=korg; t=1733237733;
+	bh=zo/5GYt4MTNlaKKj1/KV61aS/pYExzHGUogRZhQ3yYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FxBLHdCrpBygR9I3GdbsTnOrbkMLAE/3k8IQ7ypBmbqg/msN119qBqmUlCzgrrrv8
-	 J4sYhMqCJm+uJYwXrF9D0yuh9pY0KSH0afI4j3BSPpaZ8i79xCqDu++lEhayZ8+zWW
-	 gWIOIUc/+nWgEn0YdCLwGyKX8/iOGKU5kOT+Rpis=
+	b=TbUqsYExO/d3fpIYrq86NriktLHyQEOvgLIPiRLY3SHVp82GAvvHGIDjKcZFAeVuu
+	 SpE1l9yVQo3JEHVJ7iDscTl8bPVpotnLCU/DAFmcr73D0pJiP/hqVE0jhp/ohMPHjZ
+	 /0+wS/YWITvw8VLiVvDj68hRm5NkdW/CuT7fe1sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mark Brown <broonie@kernel.org>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 052/817] kselftest/arm64: hwcap: fix f8dp2 cpuinfo name
-Date: Tue,  3 Dec 2024 15:33:44 +0100
-Message-ID: <20241203143957.703233446@linuxfoundation.org>
+Subject: [PATCH 6.11 054/817] kselftest/arm64: mte: fix printf type warnings about longs
+Date: Tue,  3 Dec 2024 15:33:46 +0100
+Message-ID: <20241203143957.786874645@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -69,35 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit b0d80dbc378d52155c9ecf9579986edccceed3aa ]
+[ Upstream commit 96dddb7b9406259baace9a1831e8da155311be6f ]
 
-The F8DP2 DPISA extension has a separate cpuinfo field, named
-accordingly.
-Change the erroneously placed name of "f8dp4" to "f8dp2".
+When checking MTE tags, we print some diagnostic messages when the tests
+fail. Some variables uses there are "longs", however we only use "%x"
+for the format specifier.
 
-Fixes: 44d10c27bd75 ("kselftest/arm64: Add 2023 DPISA hwcap test coverage")
+Update the format specifiers to "%lx", to match the variable types they
+are supposed to print.
+
+Fixes: f3b2a26ca78d ("kselftest/arm64: Verify mte tag inclusion via prctl")
 Signed-off-by: Andre Przywara <andre.przywara@arm.com>
 Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240816153251.2833702-3-andre.przywara@arm.com
+Link: https://lore.kernel.org/r/20240816153251.2833702-9-andre.przywara@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/abi/hwcap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/arm64/mte/check_tags_inclusion.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/abi/hwcap.c b/tools/testing/selftests/arm64/abi/hwcap.c
-index d8909b2b535a0..41c245478e412 100644
---- a/tools/testing/selftests/arm64/abi/hwcap.c
-+++ b/tools/testing/selftests/arm64/abi/hwcap.c
-@@ -484,7 +484,7 @@ static const struct hwcap_data {
- 		.name = "F8DP2",
- 		.at_hwcap = AT_HWCAP2,
- 		.hwcap_bit = HWCAP2_F8DP2,
--		.cpuinfo = "f8dp4",
-+		.cpuinfo = "f8dp2",
- 		.sigill_fn = f8dp2_sigill,
- 	},
- 	{
+diff --git a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
+index 2b1425b92b699..a3d1e23fe02af 100644
+--- a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
++++ b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
+@@ -65,7 +65,7 @@ static int check_single_included_tags(int mem_type, int mode)
+ 			ptr = mte_insert_tags(ptr, BUFFER_SIZE);
+ 			/* Check tag value */
+ 			if (MT_FETCH_TAG((uintptr_t)ptr) == tag) {
+-				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
++				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%x\n",
+ 					       MT_FETCH_TAG((uintptr_t)ptr),
+ 					       MT_INCLUDE_VALID_TAG(tag));
+ 				result = KSFT_FAIL;
+@@ -97,7 +97,7 @@ static int check_multiple_included_tags(int mem_type, int mode)
+ 			ptr = mte_insert_tags(ptr, BUFFER_SIZE);
+ 			/* Check tag value */
+ 			if (MT_FETCH_TAG((uintptr_t)ptr) < tag) {
+-				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
++				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%lx\n",
+ 					       MT_FETCH_TAG((uintptr_t)ptr),
+ 					       MT_INCLUDE_VALID_TAGS(excl_mask));
+ 				result = KSFT_FAIL;
 -- 
 2.43.0
 
