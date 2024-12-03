@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-97179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FD29E2336
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3529E25D8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B3AF16A53C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4492288A1C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80B51F75B6;
-	Tue,  3 Dec 2024 15:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764B31F76DE;
+	Tue,  3 Dec 2024 16:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eB//VaxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1njVtRxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755651E3DED;
-	Tue,  3 Dec 2024 15:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B6E1F7561;
+	Tue,  3 Dec 2024 16:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239742; cv=none; b=c3mN+qqucI07phU6WbkMXXKdfzevxhSztx1CnWC/hZx2Au3REMI9HRpQpN8Ul3thWsMaaI7ulR3febiwwe0My5MciPW5tLICtBKdEFbIdbUIUtlsqJDa2IGmQ9Ef2XOxeJZWj3w5mIrHyPQdF7BGr6s1cJ6j2hdrts7nhKx1nl0=
+	t=1733241923; cv=none; b=YFITTGbisUX+6jVGz8JH18sc5N5bPMnMZ1Fd4Id0WKVhxQXIFZmeFb6AqcxMctL600pMf60vXfMhI7+5XNqikkigmBivHN8OCoOz8hqew9N6HUwp7Bn6hQJxEQcNMcZAcHVtF7dyM9r74f7gluNUbGt2gDquR2vrgPCrYYo4D3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239742; c=relaxed/simple;
-	bh=eQFa/wfaRaEwFwuL9oZIFmxS5hnoKhx1NfV0GHfaLO0=;
+	s=arc-20240116; t=1733241923; c=relaxed/simple;
+	bh=8/g8ws4HK3YiibJJKfMQM9M5GQS0F0Jm7mNBfJCNI9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBHlthq9leG+HSe/4Mg8aYgeJ17EbAmcs3L30mvUWqUaSVlhSHJu+fel5GJBW9LGU1jxqL3TRwixpUNdGx7Dr2zyHS0l2WKRtUCVxbjPq/V+jlSQHlVmTdS7yjo+1Xvz/WYtqK9nf/h6dSdn6esjESC2N04TIMgHfFnpnRVCzwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eB//VaxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D35C4CED6;
-	Tue,  3 Dec 2024 15:29:01 +0000 (UTC)
+	 MIME-Version; b=t9jzcHmYTomBOCgq4SEP/I119sjW6CWmUpvXtBR2nDHqTxGmRk7FkX8pkX5Zcbg6xtWeY0wLXRudI1JNhxqffQGZp1WJIDhcMVvyBVrXGV0McYC6Vc/vAHkHtwPzavbReXdVIO4NHddr7nugMsVz8l93d7UovQH20khTVqWb76o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1njVtRxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39BDFC4CECF;
+	Tue,  3 Dec 2024 16:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239742;
-	bh=eQFa/wfaRaEwFwuL9oZIFmxS5hnoKhx1NfV0GHfaLO0=;
+	s=korg; t=1733241922;
+	bh=8/g8ws4HK3YiibJJKfMQM9M5GQS0F0Jm7mNBfJCNI9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eB//VaxQaftg+YDeOl32hZQQl3aiChCqW2JxslJ+VT2LnsgjJryveZhWv/kq84XWd
-	 k+WLG5mp/qO1P8oIHx+S6T/EMvWMuVQvfXlk/fN/LCP1QUta3QuVahha5/HC0TG5yN
-	 dc52RfXTxIOP04VVBM5zilKqdtD/Ji/koIz+PI8k=
+	b=1njVtRxaT4NWegPKGbA9aMeRifLk4fYIME/B3gDJ6SMowV2vydrvHxxpb6mIm1vc8
+	 zu5TKqE7rkh1iwKWTA02kB/gl8kVYtoEIVkXWJNi5pjTygdIw2oct4pHnvLPGGGeiD
+	 zIJGu2FTKiU87JJ4gZulRF2ch42SPsIxkh9dT+kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.11 711/817] um: ubd: Do not use drvdata in release
+	Salam Noureddine <noureddine@arista.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 556/826] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
 Date: Tue,  3 Dec 2024 15:44:43 +0100
-Message-ID: <20241203144023.743466615@linuxfoundation.org>
+Message-ID: <20241203144805.435307803@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +66,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-commit 5bee35e5389f450a7eea7318deb9073e9414d3b1 upstream.
+[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
 
-The drvdata is not available in release. Let's just use container_of()
-to get the ubd instance. Otherwise, removing a ubd device will result
-in a crash:
+The hardware on Broadcom 1G chipsets have a known limitation
+where they cannot handle DMA addresses that cross over 4GB.
+When such an address is encountered, the hardware sets the
+address overflow error bit in the DMA status register and
+triggers a reset.
 
-RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
-RSP: 00000000e2083bf0  EFLAGS: 00010246
-RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
-RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
-RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
-R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
-R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
-Kernel panic - not syncing: Segfault with no mm
-CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
-Workqueue: events mc_work_proc
-Stack:
- 00000000 604f7ef0 62c5d000 62405d20
- e2083c30 6002c776 6002c755 600e47ff
- e2083c60 6025ffe3 04208060 603d36e0
-Call Trace:
- [<6002c776>] ubd_device_release+0x21/0x55
- [<6002c755>] ? ubd_device_release+0x0/0x55
- [<600e47ff>] ? kfree+0x0/0x100
- [<6025ffe3>] device_release+0x70/0xba
- [<60381d6a>] kobject_put+0xb5/0xe2
- [<6026027b>] put_device+0x19/0x1c
- [<6026a036>] platform_device_put+0x26/0x29
- [<6026ac5a>] platform_device_unregister+0x2c/0x2e
- [<6002c52e>] ubd_remove+0xb8/0xd6
- [<6002bb74>] ? mconsole_reply+0x0/0x50
- [<6002b926>] mconsole_remove+0x160/0x1cc
- [<6002bbbc>] ? mconsole_reply+0x48/0x50
- [<6003379c>] ? um_set_signals+0x3b/0x43
- [<60061c55>] ? update_min_vruntime+0x14/0x70
- [<6006251f>] ? dequeue_task_fair+0x164/0x235
- [<600620aa>] ? update_cfs_group+0x0/0x40
- [<603a0e77>] ? __schedule+0x0/0x3ed
- [<60033761>] ? um_set_signals+0x0/0x43
- [<6002af6a>] mc_work_proc+0x77/0x91
- [<600520b4>] process_scheduled_works+0x1af/0x2c3
- [<6004ede3>] ? assign_work+0x0/0x58
- [<600527a1>] worker_thread+0x2f7/0x37a
- [<6004ee3b>] ? set_pf_worker+0x0/0x64
- [<6005765d>] ? arch_local_irq_save+0x0/0x2d
- [<60058e07>] ? kthread_exit+0x0/0x3a
- [<600524aa>] ? worker_thread+0x0/0x37a
- [<60058f9f>] kthread+0x130/0x135
- [<6002068e>] new_thread_handler+0x85/0xb6
+However, BCM57766 hardware is setting the overflow bit and
+triggering a reset in some cases when there is no actual
+underlying address overflow. The hardware team analyzed the
+issue and concluded that it is happening when the status
+block update has an address with higher (b16 to b31) bits
+as 0xffff following a previous update that had lowest bits
+as 0xffff.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Link: https://patch.msgid.link/20241104163203.435515-3-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To work around this bug in the BCM57766 hardware, set the
+coherent dma mask from the current 64b to 31b. This will
+ensure that upper bits of the status block DMA address are
+always at most 0x7fff, thus avoiding the improper overflow
+check described above. This work around is intended for only
+status block and ring memories and has no effect on TX and
+RX buffers as they do not require coherent memory.
+
+Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
+Reported-by: Salam Noureddine <noureddine@arista.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/tg3.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -779,7 +779,7 @@ static int ubd_open_dev(struct ubd *ubd_
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 3788159177417..d178138981a96 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -17801,6 +17801,9 @@ static int tg3_init_one(struct pci_dev *pdev,
+ 	} else
+ 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
  
- static void ubd_device_release(struct device *dev)
- {
--	struct ubd *ubd_dev = dev_get_drvdata(dev);
-+	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
- 
- 	blk_mq_free_tag_set(&ubd_dev->tag_set);
- 	*ubd_dev = ((struct ubd) DEFAULT_UBD);
++	if (tg3_asic_rev(tp) == ASIC_REV_57766)
++		persist_dma_mask = DMA_BIT_MASK(31);
++
+ 	/* Configure DMA attributes. */
+ 	if (dma_mask > DMA_BIT_MASK(32)) {
+ 		err = dma_set_mask(&pdev->dev, dma_mask);
+-- 
+2.43.0
+
 
 
 
