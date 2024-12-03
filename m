@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370349E2453
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C5C9E27B8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:39:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035F1169B79
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0D94B4607C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525B51F8937;
-	Tue,  3 Dec 2024 15:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBE61F7070;
+	Tue,  3 Dec 2024 15:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1332jkgy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ9lbsg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052531F892B;
-	Tue,  3 Dec 2024 15:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05801E3DF9;
+	Tue,  3 Dec 2024 15:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240287; cv=none; b=frnFa+cr/DgGb5T6IBWRbp7Q3F7VYl0oxU2w19opN4vaaGDrsPMBa6AqEIlP4Gn2N1yYxRpV65uRKICJ1+dUReIkJjo7YLvnprpQroEZAZyi5JIrv5q0KFmn/v6mBiKIWadoKRCiH3GGjWT1zOPow2XbD/2MxeFWbyjX2lMWRnY=
+	t=1733238427; cv=none; b=ZM7ei9VNDpxlsq++JvS1pg6HLLm2NP3B6CJopbu3GDEPMOwx20H8dNLC7Td407P9sLT8uJxBj1+PmoK3QxCchWp/ZtvvL/d61aLcgSZt/TjSu+Jmgq9Xy37QKqjWcd0mm1eXrK1YsATkuFzxnyGQSJ3f/W89sS0XDU97FdhLEDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240287; c=relaxed/simple;
-	bh=yPoJ3IG1OCaoBPL3CJyR+MHq92eDtwjh2zp85yLSIY4=;
+	s=arc-20240116; t=1733238427; c=relaxed/simple;
+	bh=8EDIDDnMEYXQuHG8OUmUXVcsCI1yy/aaN9vS3tXIJac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QtmEvQbzCuu0tjnwtvotpDyzJX+oSJsiyVnqzJHoM7EYiBNNBrCRn/QPXen4JRGp+bSqlw8lGwAakgnoPER2KD9TfWzTJDyDSPC91PGJChtPxCMnTigS3twlb+rK9UqoB8rhuioV79fMrASQLfcE5D5m3NNoESXtXC89fD9fJyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1332jkgy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AEFC4CECF;
-	Tue,  3 Dec 2024 15:38:06 +0000 (UTC)
+	 MIME-Version; b=rm/Dy1q3h8ARneE7vBv17RnrMGb366U4BNLC4Q7ZakU68KoY/AyJfpPxJhZBziZdSHJvZwKj8qck+ptJphmzfHRGCqFhf710sO3rE1yO0+Whnw5Dirx7ELh0KJ9fb9lPE65ySbTl2Z32Thr3Qje2I+yzB0y3ykgEmkv1/UlkkDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ9lbsg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D521C4CECF;
+	Tue,  3 Dec 2024 15:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240286;
-	bh=yPoJ3IG1OCaoBPL3CJyR+MHq92eDtwjh2zp85yLSIY4=;
+	s=korg; t=1733238427;
+	bh=8EDIDDnMEYXQuHG8OUmUXVcsCI1yy/aaN9vS3tXIJac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1332jkgyh6yPCttVaVM+flQKb82QShrQHELBbEYVquoywXuPVw7EKO4TMcFHICj5K
-	 WcBgCwohEXdsBkZfDef3/7G3MihH6GlTotTB0ozr+qvx0hjGVsKPc6puvOJGCRdeVH
-	 D6OiWZhahLuEMBhQ+ctrqMRjHauy4c3hVOsWZsjk=
+	b=SJ9lbsg8CsYVZq/YBQJirJ70VZsgL55V9eOp/S0I+js9HHS1F2AjGHHJAUrs6Y8Ky
+	 GE3ZgNge173HZaCFHMn+6q82w9cQjz+FWh+F7Ugtd/6+VFLR9g9dJerp2ROvhpmYFz
+	 LgG1Da39zMpIFjTkaOYc8iUpvp+T5EG8YBpsGCD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/826] time: Fix references to _msecs_to_jiffies() handling of values
+Subject: [PATCH 6.11 242/817] drm/amdgpu: Fix JPEG v4.0.3 register write
 Date: Tue,  3 Dec 2024 15:36:54 +0100
-Message-ID: <20241203144747.124192562@linuxfoundation.org>
+Message-ID: <20241203144005.212991437@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 92b043fd995a63a57aae29ff85a39b6f30cd440c ]
+[ Upstream commit 8c50bf9beb889fd2bdcbf95b27a5d101eede51fc ]
 
-The details about the handling of the "normal" values were moved
-to the _msecs_to_jiffies() helpers in commit ca42aaf0c861 ("time:
-Refactor msecs_to_jiffies"). However, the same commit still mentioned
-__msecs_to_jiffies() in the added documentation.
+EXTERNAL_REG_INTERNAL_OFFSET/EXTERNAL_REG_WRITE_ADDR should be used in
+pairs. If an external register shouldn't be written, both packets
+shouldn't be sent.
 
-Thus point to _msecs_to_jiffies() instead.
-
-Fixes: ca42aaf0c861 ("time: Refactor msecs_to_jiffies")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241025110141.157205-2-ojeda@kernel.org
+Fixes: a78b48146972 ("drm/amdgpu: Skip PCTL0_MMHUB_DEEPSLEEP_IB write in jpegv4.0.3 under SRIOV")
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Acked-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/jiffies.h | 2 +-
- kernel/time/time.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
-index 1220f0fbe5bf9..5d21dacd62bc7 100644
---- a/include/linux/jiffies.h
-+++ b/include/linux/jiffies.h
-@@ -502,7 +502,7 @@ static inline unsigned long _msecs_to_jiffies(const unsigned int m)
-  * - all other values are converted to jiffies by either multiplying
-  *   the input value by a factor or dividing it with a factor and
-  *   handling any 32-bit overflows.
-- *   for the details see __msecs_to_jiffies()
-+ *   for the details see _msecs_to_jiffies()
-  *
-  * msecs_to_jiffies() checks for the passed in value being a constant
-  * via __builtin_constant_p() allowing gcc to eliminate most of the
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index e1879ca321033..1ad88e97b4ebc 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -556,7 +556,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
-  * - all other values are converted to jiffies by either multiplying
-  *   the input value by a factor or dividing it with a factor and
-  *   handling any 32-bit overflows.
-- *   for the details see __msecs_to_jiffies()
-+ *   for the details see _msecs_to_jiffies()
-  *
-  * msecs_to_jiffies() checks for the passed in value being a constant
-  * via __builtin_constant_p() allowing gcc to eliminate most of the
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+index b55041f38cec9..0dbc16ec25c82 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -668,11 +668,12 @@ void jpeg_v4_0_3_dec_ring_insert_start(struct amdgpu_ring *ring)
+ 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
+ 			0, 0, PACKETJ_TYPE0));
+ 		amdgpu_ring_write(ring, 0x62a04); /* PCTL0_MMHUB_DEEPSLEEP_IB */
+-	}
+ 
+-	amdgpu_ring_write(ring, PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR,
+-		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, 0x80004000);
++		amdgpu_ring_write(ring,
++				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
++					  0, PACKETJ_TYPE0));
++		amdgpu_ring_write(ring, 0x80004000);
++	}
+ }
+ 
+ /**
+@@ -688,11 +689,12 @@ void jpeg_v4_0_3_dec_ring_insert_end(struct amdgpu_ring *ring)
+ 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
+ 			0, 0, PACKETJ_TYPE0));
+ 		amdgpu_ring_write(ring, 0x62a04);
+-	}
+ 
+-	amdgpu_ring_write(ring, PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR,
+-		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, 0x00004000);
++		amdgpu_ring_write(ring,
++				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
++					  0, PACKETJ_TYPE0));
++		amdgpu_ring_write(ring, 0x00004000);
++	}
+ }
+ 
+ /**
 -- 
 2.43.0
 
