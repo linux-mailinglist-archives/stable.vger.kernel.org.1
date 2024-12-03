@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-96559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC709E207C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5769E2067
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E17D628A576
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1342816778D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6121F76A4;
-	Tue,  3 Dec 2024 14:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6963C1F754C;
+	Tue,  3 Dec 2024 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxeDZYTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIlJsvrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F391F76AA;
-	Tue,  3 Dec 2024 14:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2842F1F669E;
+	Tue,  3 Dec 2024 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237907; cv=none; b=tD0J2V9MRfMpY5nyii1XvygT61lgPWerH3/CHBfumta7K2CS3r/azHXOzH9bGREpM1J1Oh158bBI8Wh5MBC7eVbR/Lu3dNNsBRj6zhjTOPC2idgSPkb6GU9EtBE6U72gPDrazoHjEp86UGuu9ocMnw32rI3aZlEzY9ciKb2DubM=
+	t=1733237806; cv=none; b=QqTaxN2KUh+9eDXJoIdL2DyWt6ZrgqdO6CU7ZLKVjwo/UpMSMcYDDMDgARFpuc9dIjMwy9vilECwnqQiwK614qQgjzq7kDA6Glty86WBxeLt+HaEtGyorx0UW6QSexoFQlSVhfuhNAILyLf3QhOANAEjm39e50Er07EwFRmdNOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237907; c=relaxed/simple;
-	bh=AoCH/3S++3kEvhmLP9EeY0/oFiAjCswvxMK1rpMI0T0=;
+	s=arc-20240116; t=1733237806; c=relaxed/simple;
+	bh=EQTOsZVFhUzK/TSHlrs5HdYCW6AShYi9RZLicdBe8mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lY3CPs11EjZW001u4uRGdsH3IErfgruS48bJBY6e7s+fhI6z6sl9WXoNcpSxSY8uOPoMBbeItcuR2vgYONBkiFcHAysN8okrNXoCLxyeoHz7xdBVPY0pMVAvlOH0jDV5g0115urnqkt3evocUmerf/5uld7XsZxSHBKLvNMHitI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxeDZYTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE358C4CED8;
-	Tue,  3 Dec 2024 14:58:26 +0000 (UTC)
+	 MIME-Version; b=ZQfDM7UKE5r/6bg1ciBDG3WZPSYsmEvRhZBeUym9D+0i23rZZ/iXBjK4/6znhe5h0BtQVm+4BpUOsrFKwBtquI+DOlolPiQozCy2G65CYh6c6w030zDGl+uSBwSFYozX5/urIg8+Q12z/EztvigBsmcRsIVywBEV/T3G4sgjMCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIlJsvrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90752C4CECF;
+	Tue,  3 Dec 2024 14:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237907;
-	bh=AoCH/3S++3kEvhmLP9EeY0/oFiAjCswvxMK1rpMI0T0=;
+	s=korg; t=1733237805;
+	bh=EQTOsZVFhUzK/TSHlrs5HdYCW6AShYi9RZLicdBe8mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxeDZYTnHhWMuYK152OAfJsyb1ID2z2MwrbtTIi1XJlfBKwT/ssvNtxFVgyYFoVLo
-	 byew2wW3kpqypgvHHo3ost8lk1FhVIO2NEU0G33FZIXT6jzKPt6QMnm9Ezb4qea9yk
-	 hYAMM9MFG7VBNgR+b8Xz+xvFt+jzeb1sJ3E5SUo4=
+	b=VIlJsvrxINohN7kF/GFxw7PwkNwIU+QDDWLXC11pGzzYYpP2MFS2h7cyTeOQa/CAK
+	 s+BeyqUbhftsSplsd4R+IHQmsuW5YCJGUEV+9K2h6YJTVH2AwCgP/mqoEfzKdqhHIS
+	 djY3gs17TQvXxnoS/NVwbTkxzkczEbJNW/3oDXEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Jan Stancek <jstancek@redhat.com>,
-	Li Wang <liwang@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Zizhi Wo <wozizhi@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 072/817] loop: fix type of block size
-Date: Tue,  3 Dec 2024 15:34:04 +0100
-Message-ID: <20241203143958.499557382@linuxfoundation.org>
+Subject: [PATCH 6.11 076/817] netfs/fscache: Add a memory barrier for FSCACHE_VOLUME_CREATING
+Date: Tue,  3 Dec 2024 15:34:08 +0100
+Message-ID: <20241203143958.658380208@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -72,75 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Wang <liwang@redhat.com>
+From: Zizhi Wo <wozizhi@huawei.com>
 
-[ Upstream commit 8e604cac499248c75ad3a26695a743ff879ded5c ]
+[ Upstream commit 22f9400a6f3560629478e0a64247b8fcc811a24d ]
 
-PAGE_SIZE may be 64K, and the max block size can be PAGE_SIZE, so any
-variable for holding block size can't be defined as 'unsigned short'.
+In fscache_create_volume(), there is a missing memory barrier between the
+bit-clearing operation and the wake-up operation. This may cause a
+situation where, after a wake-up, the bit-clearing operation hasn't been
+detected yet, leading to an indefinite wait. The triggering process is as
+follows:
 
-Unfortunately commit 473516b36193 ("loop: use the atomic queue limits
-update API") passes 'bsize' with type of 'unsigned short' to
-loop_reconfigure_limits(), and causes LTP/ioctl_loop06 test failure:
+  [cookie1]                [cookie2]                  [volume_work]
+fscache_perform_lookup
+  fscache_create_volume
+                        fscache_perform_lookup
+                          fscache_create_volume
+			                        fscache_create_volume_work
+                                                  cachefiles_acquire_volume
+                                                  clear_and_wake_up_bit
+    test_and_set_bit
+                            test_and_set_bit
+                              goto maybe_wait
+      goto no_wait
 
-  12 ioctl_loop06.c:76: TINFO: Using LOOP_SET_BLOCK_SIZE with arg > PAGE_SIZE
-  13 ioctl_loop06.c:59: TFAIL: Set block size succeed unexpectedly
-  ...
-  18 ioctl_loop06.c:76: TINFO: Using LOOP_CONFIGURE with block_size > PAGE_SIZE
-  19 ioctl_loop06.c:59: TFAIL: Set block size succeed unexpectedly
+In the above process, cookie1 and cookie2 has the same volume. When cookie1
+enters the -no_wait- process, it will clear the bit and wake up the waiting
+process. If a barrier is missing, it may cause cookie2 to remain in the
+-wait- process indefinitely.
 
-Fixes the issue by defining 'block size' variable with 'unsigned int', which is
-aligned with block layer's definition.
+In commit 3288666c7256 ("fscache: Use clear_and_wake_up_bit() in
+fscache_create_volume_work()"), barriers were added to similar operations
+in fscache_create_volume_work(), but fscache_create_volume() was missed.
 
-(improve commit log & add fixes tag)
+By combining the clear and wake operations into clear_and_wake_up_bit() to
+fix this issue.
 
-Fixes: 473516b36193 ("loop: use the atomic queue limits update API")
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Jan Stancek <jstancek@redhat.com>
-Signed-off-by: Li Wang <liwang@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241109022744.1126003-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: bfa22da3ed65 ("fscache: Provide and use cache methods to lookup/create/free a volume")
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+Link: https://lore.kernel.org/r/20241107110649.3980193-6-wozizhi@huawei.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/netfs/fscache_volume.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 78a7bb28defe4..86cc3b19faae8 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -173,7 +173,7 @@ static loff_t get_loop_size(struct loop_device *lo, struct file *file)
- static bool lo_bdev_can_use_dio(struct loop_device *lo,
- 		struct block_device *backing_bdev)
- {
--	unsigned short sb_bsize = bdev_logical_block_size(backing_bdev);
-+	unsigned int sb_bsize = bdev_logical_block_size(backing_bdev);
- 
- 	if (queue_logical_block_size(lo->lo_queue) < sb_bsize)
- 		return false;
-@@ -977,7 +977,7 @@ loop_set_status_from_info(struct loop_device *lo,
- 	return 0;
+diff --git a/fs/netfs/fscache_volume.c b/fs/netfs/fscache_volume.c
+index cb75c07b5281a..ced14ac78cc1c 100644
+--- a/fs/netfs/fscache_volume.c
++++ b/fs/netfs/fscache_volume.c
+@@ -322,8 +322,7 @@ void fscache_create_volume(struct fscache_volume *volume, bool wait)
+ 	}
+ 	return;
+ no_wait:
+-	clear_bit_unlock(FSCACHE_VOLUME_CREATING, &volume->flags);
+-	wake_up_bit(&volume->flags, FSCACHE_VOLUME_CREATING);
++	clear_and_wake_up_bit(FSCACHE_VOLUME_CREATING, &volume->flags);
  }
  
--static unsigned short loop_default_blocksize(struct loop_device *lo,
-+static unsigned int loop_default_blocksize(struct loop_device *lo,
- 		struct block_device *backing_bdev)
- {
- 	/* In case of direct I/O, match underlying block size */
-@@ -986,7 +986,7 @@ static unsigned short loop_default_blocksize(struct loop_device *lo,
- 	return SECTOR_SIZE;
- }
- 
--static int loop_reconfigure_limits(struct loop_device *lo, unsigned short bsize)
-+static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
- {
- 	struct file *file = lo->lo_backing_file;
- 	struct inode *inode = file->f_mapping->host;
+ /*
 -- 
 2.43.0
 
