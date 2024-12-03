@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-96619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055599E20D6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8429E20A6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F7071655B0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5DA6285594
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F231F7558;
-	Tue,  3 Dec 2024 15:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF74E1F757D;
+	Tue,  3 Dec 2024 15:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SSrA0UCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7ri2g5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A8E1F706C;
-	Tue,  3 Dec 2024 15:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFA51F7547;
+	Tue,  3 Dec 2024 15:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238105; cv=none; b=epWtlP0392Aik1T9DAcJHU4PmFbCW618KzoeRNvl/ca6z9I/WnXpEsBw/5lmR97zBidwkPCTYAOgVZfataf2IMTTnEzJM74T4Mg8ko8KeHf+JwTglQ/HsOJmA9ho86ZeC3qo514W0m/nS0/I9QwC/Zo8qwm3JWDUdc2TFQkCWLA=
+	t=1733238117; cv=none; b=hq4rmyQeYGzv/AB7P7a8ruJaExRJIa9wauG9YcHbwZD3GUWeOwiAwAkTiFBhRmbU3frJe5UxfBlvhvIoDb13siF+6t/kpN+0iWNtcjRZO+UDsAqU+ZKXyTrL/uvqflKII2z2ScK5IHd2cvaFbsTqYB8LHQj9lcCWVqAtWqNbp7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238105; c=relaxed/simple;
-	bh=PVLaqf1VR8y9SPbo7m0i+XeMCFhdmc+FUvfVEEBeG3k=;
+	s=arc-20240116; t=1733238117; c=relaxed/simple;
+	bh=5Bky5mgzTjkeuWFw8ywns6dLD4TYB4PNHRQKyUrkj5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oetwcqFFrJ9+PqQqfA65koaxc7QMjbv98sYxsVsD7AGAM08YydbwOG9nu4wlTIHdr4w2KL+VNpNMt56mglG4VZWgjgvhaUfHN7Y2D1BjwhPnniKvEDw9WSodCpveYOUyxvbmNuUihgq6kynGPIUhRM0l/lc9esW/oQibWLgiq+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SSrA0UCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D063C4CECF;
-	Tue,  3 Dec 2024 15:01:45 +0000 (UTC)
+	 MIME-Version; b=TTkAaxx7buTcOyXhEQD1BLoy1azKV1bwzm5EhIEJxSzGanu6cPoXL7wGBR+NbxXV6ksDm5j+F+k9rH+6C9pFE6MvQ3sM23Zx1GiLBHRmLH0t1H+iwBt5NNBRKxhQfY3tFmF5UDX1OEPfQAHgqezLV2QDxyU5If0IENtP6NUsnVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7ri2g5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4287C4CECF;
+	Tue,  3 Dec 2024 15:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238105;
-	bh=PVLaqf1VR8y9SPbo7m0i+XeMCFhdmc+FUvfVEEBeG3k=;
+	s=korg; t=1733238117;
+	bh=5Bky5mgzTjkeuWFw8ywns6dLD4TYB4PNHRQKyUrkj5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SSrA0UCa6/aqekZvONx9VxdFyTs5y5syVNBN/aIExKeLdT3SuyHa8nYnvtTyzkqcZ
-	 wfAxalnEshmn1j8picaHMYV8xXTmH6hvCS1Bhwrzmcf1Atk4hdW2hUIPfv+FKbK9xr
-	 Fd3qhFSDKbWiBXhxR8UOaI4ajJXcof36Ad8Y7V8E=
+	b=S7ri2g5DQ0wRTfXTRgX/psUjVnNntOKoYP8zZ2bQqln6htT0yCzNR7LSFFhsNfbuq
+	 C/otoFMFF25F48XfrxwC8tL2HDgSxa1KXFacAjkkErDw3v+UcLE2V5rCiwq+ua8pRV
+	 sRetXWi/2J7YyCrdEGYTf+HNh1Dnao3dMOjcrMCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 163/817] media: i2c: ds90ub960: Fix missing return check on ub960_rxport_read call
-Date: Tue,  3 Dec 2024 15:35:35 +0100
-Message-ID: <20241203144002.091207122@linuxfoundation.org>
+Subject: [PATCH 6.11 166/817] arm64: dts: qcom: x1e80100: Resize GIC Redistributor register region
+Date: Tue,  3 Dec 2024 15:35:38 +0100
+Message-ID: <20241203144002.207737672@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,37 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-[ Upstream commit 24ad2d1f773a11f69eecec3ec37ea3d76f2e9e7d ]
+[ Upstream commit 9ed1a2b8784262e85ec300792a1a37ebd8473be2 ]
 
-The function ub960_rxport_read is being called and afterwards ret is
-being checked for any failures, however ret is not being assigned to
-the return of the function call. Fix this by assigning ret to the
-return of the call which appears to be missing.
+Resize the GICR register region as it currently seeps into the CPU Control
+Processor mailbox RX region.
 
-Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Link: https://lore.kernel.org/r/20240612124056.39230-4-quic_sibis@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ds90ub960.c | 2 +-
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ds90ub960.c b/drivers/media/i2c/ds90ub960.c
-index ffe5f25f86476..58424d8f72af0 100644
---- a/drivers/media/i2c/ds90ub960.c
-+++ b/drivers/media/i2c/ds90ub960.c
-@@ -1286,7 +1286,7 @@ static int ub960_rxport_get_strobe_pos(struct ub960_data *priv,
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index bb2de6469972c..2a03581b0ab56 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -5363,7 +5363,7 @@ apps_smmu: iommu@15000000 {
+ 		intc: interrupt-controller@17000000 {
+ 			compatible = "arm,gic-v3";
+ 			reg = <0 0x17000000 0 0x10000>,     /* GICD */
+-			      <0 0x17080000 0 0x480000>;    /* GICR * 12 */
++			      <0 0x17080000 0 0x300000>;    /* GICR * 12 */
  
- 	clk_delay += v & UB960_IR_RX_ANA_STROBE_SET_CLK_DELAY_MASK;
- 
--	ub960_rxport_read(priv, nport, UB960_RR_SFILTER_STS_1, &v);
-+	ret = ub960_rxport_read(priv, nport, UB960_RR_SFILTER_STS_1, &v);
- 	if (ret)
- 		return ret;
+ 			interrupts = <GIC_PPI 9 IRQ_TYPE_LEVEL_HIGH>;
  
 -- 
 2.43.0
