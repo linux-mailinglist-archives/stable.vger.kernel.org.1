@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-97151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1859E2317
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:32:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700EA9E25C1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3251816429D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35B9F2888ED
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C361F1F7550;
-	Tue,  3 Dec 2024 15:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16F11F76D9;
+	Tue,  3 Dec 2024 16:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuobRWIs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkArPHkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E22646;
-	Tue,  3 Dec 2024 15:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6A523CE;
+	Tue,  3 Dec 2024 16:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239666; cv=none; b=aVirKdzXCthoGhVnJ7zrP/+KjF7wuhc6T0ywXdYBgoP2CAegV2dCyh8afiIbV/nyexLueMNSRO3nC69CWhGiX05IPkULtcMPHfyM3XKzbpgiBjSr1NTny/7EdnoehxXYJ4h1U27BVTvBJjNP635LQxg02RCoiyAILkhyX7YrDc0=
+	t=1733241866; cv=none; b=H33qh0kck73CuKFIvCoqoVvokG92wa5oClMQk6PKJFqPDLxPST05LBFGFxeklvHtlOSA7IvmGBKpWSxxQ0ZdzOycZyvF5aApRhsjTAaj7rjD+MKYom2MeQZKp+wONgJRsVmDgd5SYChAwN9otLcUc/DRjXUtZRNVI0HdQ3oifaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239666; c=relaxed/simple;
-	bh=Rsf/fGHwKCbF79M7MOFEwvFAMKYZQEh2ien2sj4efYw=;
+	s=arc-20240116; t=1733241866; c=relaxed/simple;
+	bh=JCfa3tgqE9sahJh4/FQ7mNktWUNB8vdrziI/lsxkysE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VhTyaSACuo1B1vdkD13gJAWC+HQlvM80EOeq5T+TkHBtyPnE/THq0S8M1udTHvBXHOuEMbGmH+H34s3JFnanBJO6vAyLC/foxJwwIekCap5bGjhencffb5FtkCjqadJVMjDlGTOrRJkeG3oIAHL0fC3cqWpL2OedQTnaKQYqi90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuobRWIs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC93C4CECF;
-	Tue,  3 Dec 2024 15:27:45 +0000 (UTC)
+	 MIME-Version; b=tcpDIsqPE1DmzG+PqooriBDMDy5Ew4htjGyNZfZ4CeoOPwsII21YXtvwtBQ6Z7DohsOksV7rDW5vXntbbeBQNEJqU+HcQPl/ANNJx3LkLqoEx1Gt6R/JyqMpiGERVv8P+Js3S8LZJdfJAoTVus7J6snLzfGk8grkWdqVNQFYuqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkArPHkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3784EC4CECF;
+	Tue,  3 Dec 2024 16:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239666;
-	bh=Rsf/fGHwKCbF79M7MOFEwvFAMKYZQEh2ien2sj4efYw=;
+	s=korg; t=1733241866;
+	bh=JCfa3tgqE9sahJh4/FQ7mNktWUNB8vdrziI/lsxkysE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HuobRWIsHwSNkrG1utLJuQx5YrMKjfyJJ8FOqfQvRzUOO/z6neJBS6Qdr+Jfa1Z8F
-	 pX3DEFMx71ydWV4tIucG8PAyjmglWrZCZBJMh/QRPJ/xkj7XbM9cVNDf1+lcyfLMhe
-	 YO7Wy6txcdbxyAjYN30a0s3PIZABBcftmw41yRD4=
+	b=QkArPHkhBAiCLWwWag7cJOCWPFrhkckCy3uwKXcV3pumAL9yY484+n/9C+uxeZ8Ci
+	 NtESm344AYiE8V3Wu3z036jUSGpyY/6Jon9t7V0WcipzhJG/Un9ESaLKspG9mF31DN
+	 15oiYQI/V/a5dXH3uy9v+B2HYu3F7CXdGRDebpUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 693/817] io_uring: fix corner case forgetting to vunmap
-Date: Tue,  3 Dec 2024 15:44:25 +0100
-Message-ID: <20241203144023.027006556@linuxfoundation.org>
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 539/826] vdpa/mlx5: Fix suboptimal range on iotlb iteration
+Date: Tue,  3 Dec 2024 15:44:26 +0100
+Message-ID: <20241203144804.780052724@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-commit 43eef70e7e2ac74e7767731dd806720c7fb5e010 upstream.
+[ Upstream commit 35025963326e44d8bced3eecd42d2f040f4f0024 ]
 
-io_pages_unmap() is a bit tricky in trying to figure whether the pages
-were previously vmap'ed or not. In particular If there is juts one page
-it belives there is no need to vunmap. Paired io_pages_map(), however,
-could've failed io_mem_alloc_compound() and attempted to
-io_mem_alloc_single(), which does vmap, and that leads to unpaired vmap.
+The starting iova address to iterate iotlb map entry within a range
+was set to an irrelevant value when passing to the itree_next()
+iterator, although luckily it doesn't affect the outcome of finding
+out the granule of the smallest iotlb map size. Fix the code to make
+it consistent with the following for-loop.
 
-The solution is to fail if io_mem_alloc_compound() can't allocate a
-single page. That's the easiest way to deal with it, and those two
-functions are getting removed soon, so no need to overcomplicate it.
-
-Cc: stable@vger.kernel.org
-Fixes: 3ab1db3c6039e ("io_uring: get rid of remap_pfn_range() for mapping rings/sqes")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/477e75a3907a2fe83249e49c0a92cd480b2c60e0.1732569842.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Message-Id: <20241021134040.975221-3-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/memmap.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/vdpa/mlx5/core/mr.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/io_uring/memmap.c
-+++ b/io_uring/memmap.c
-@@ -72,6 +72,8 @@ void *io_pages_map(struct page ***out_pa
- 	ret = io_mem_alloc_compound(pages, nr_pages, size, gfp);
- 	if (!IS_ERR(ret))
- 		goto done;
-+	if (nr_pages == 1)
-+		goto fail;
+diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
+index 7d0c83b5b0715..8455f08f5d406 100644
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -368,7 +368,6 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
+ 	unsigned long lgcd = 0;
+ 	int log_entity_size;
+ 	unsigned long size;
+-	u64 start = 0;
+ 	int err;
+ 	struct page *pg;
+ 	unsigned int nsg;
+@@ -379,10 +378,9 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
+ 	struct device *dma = mvdev->vdev.dma_dev;
  
- 	ret = io_mem_alloc_single(pages, nr_pages, size, gfp);
- 	if (!IS_ERR(ret)) {
-@@ -80,7 +82,7 @@ done:
- 		*npages = nr_pages;
- 		return ret;
+ 	for (map = vhost_iotlb_itree_first(iotlb, mr->start, mr->end - 1);
+-	     map; map = vhost_iotlb_itree_next(map, start, mr->end - 1)) {
++	     map; map = vhost_iotlb_itree_next(map, mr->start, mr->end - 1)) {
+ 		size = maplen(map, mr);
+ 		lgcd = gcd(lgcd, size);
+-		start += size;
  	}
--
-+fail:
- 	kvfree(pages);
- 	*out_pages = NULL;
- 	*npages = 0;
+ 	log_entity_size = ilog2(lgcd);
+ 
+-- 
+2.43.0
+
 
 
 
