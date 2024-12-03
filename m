@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-97888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F86E9E2B98
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:03:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4AC39E2A35
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F371EB33BDE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C66EB2FC53
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2111F76D1;
-	Tue,  3 Dec 2024 16:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C282F1F76BF;
+	Tue,  3 Dec 2024 16:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zObTingD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBEeIZwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581BD1E766E;
-	Tue,  3 Dec 2024 16:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827861F12F7;
+	Tue,  3 Dec 2024 16:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242076; cv=none; b=egabaEvk1gVutf4YhhezAeFhln37QpZ46278wiBf4ZefLm1M/Ep3W3RGk3qsNCOYj3dvg0SLfkI+pDnQfndcFfWwa30G9ZFJgSdW+fhDOrx6qHsa6s1RXvlRHzKovRPKr2P1WJXToBN3bUfXvZbRLIshz3ZRW13OV5vpNjEW/fY=
+	t=1733242095; cv=none; b=UNxeAi7g1vazO5hSQ8Dvc3h0RYOibsgHRLdjHy4v9vc3EbvWcjDqZQ8TQPffnETdyw96DEl4IzsooyiSgWGsCeCrtjHt7aQ8RO3yPupOrNrl0W7Cq6sSYv5uLcIUmXB+c2cglgIlhz1hMW3Ri5uQ7WnP6RSi6bnLdmM2oVS/HLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242076; c=relaxed/simple;
-	bh=Qyih0H2DS+4c+68XfnaWewQr+7K7Ssydk+tWRJ5DZi0=;
+	s=arc-20240116; t=1733242095; c=relaxed/simple;
+	bh=CtVHV8W9QN5zWTwzwNd/MMKnboFooHU2VHCPvffFFy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kOwSfnI8yNuOX0Y3dDmYgYJGcAAc1nlqoLCZfHv4NGyi3CNgXkuNdsSUYqp7BLYdJjyNtJ6o9p3NLCKik8GjbWAXZRv9gpxXauSXvgwdC+VdwAByIm24Snv0AfyKypohL3hhm4bFwhduU25nFBGi2+mnJAImdWskB0YxE6ZmxeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zObTingD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6833CC4CECF;
-	Tue,  3 Dec 2024 16:07:55 +0000 (UTC)
+	 MIME-Version; b=GvpQpbNXbGdB/1dVUo9etQ1Yr7WIYYDeE+Fd20OyK22gKAsBub60JuG5zieYFA5nMd8M2icN+mc6BFQhAwSW4H1RfjRKRe/E3R2eJj27y6lHhLAjR/smg8x2mBpfO7vttlTlJzqJytNTSwSGe99h1kPuQlsj58ukQHZs2Pfxm1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBEeIZwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47BEC4CEDE;
+	Tue,  3 Dec 2024 16:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242075;
-	bh=Qyih0H2DS+4c+68XfnaWewQr+7K7Ssydk+tWRJ5DZi0=;
+	s=korg; t=1733242095;
+	bh=CtVHV8W9QN5zWTwzwNd/MMKnboFooHU2VHCPvffFFy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zObTingDNv8840dEhmGlydvWdEpzU+6u6XRthD/lJZB1XUCsLc709VraxV4S0FISJ
-	 yW3PlbjVZ3dlDE341kOPSp8MUI2TXulN58nmxATJ9DaPubwt0hEYeDKXMvvYy6iv6I
-	 sEkbFClo9brKaILM48WnMpYC0puOhN560NhE8c1o=
+	b=VBEeIZwanV3oqYPoq6DJ/XacB3R0kIWcLVVUf6CPA14EtbAv+HD0NgZjPaEVRfn0J
+	 ZDSEzOa1Zttfgv9TFrvPQ/gIE1WXcJ58EFYICMCS8pkiUakNXBi6aNFcbcME5SnwNW
+	 8Rg4UeO8MDfdeDAoEPyaBb/eQzzA+1IaTGSnKSMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	William Breathitt Gray <wbg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 600/826] iio: adc: ad4000: fix reading unsigned data
-Date: Tue,  3 Dec 2024 15:45:27 +0100
-Message-ID: <20241203144807.162680908@linuxfoundation.org>
+Subject: [PATCH 6.12 606/826] counter: stm32-timer-cnt: Add check for clk_enable()
+Date: Tue,  3 Dec 2024 15:45:33 +0100
+Message-ID: <20241203144807.393267225@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,37 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 62dd96ac9cdf2814f41cfc55ecaf22a28aad6ccb ]
+[ Upstream commit 842c3755a6bfbfcafa4a1438078d2485a9eb1d87 ]
 
-Fix reading unsigned data from the AD4000 ADC via the _raw sysfs
-attribute by ensuring that *val is set before returning from
-ad4000_single_conversion(). This was not being set in any code path
-and was causing the attribute to return a random value.
+Add check for the return value of clk_enable() in order to catch the
+potential exception.
 
-Fixes: 938fd562b974 ("iio: adc: Add support for AD4000")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20241030-iio-adc-ad4000-fix-reading-unsigned-data-v1-1-2e28dd75fe29@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: c5b8425514da ("counter: stm32-timer-cnt: add power management support")
+Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Link: https://lore.kernel.org/r/20241104191825.40155-1-jiashengjiangcool@gmail.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad4000.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/counter/stm32-timer-cnt.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-index 6ea4912450849..fc9c9807f89d2 100644
---- a/drivers/iio/adc/ad4000.c
-+++ b/drivers/iio/adc/ad4000.c
-@@ -344,6 +344,8 @@ static int ad4000_single_conversion(struct iio_dev *indio_dev,
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 186e73d6ccb45..9c188d9edd89f 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -214,11 +214,17 @@ static int stm32_count_enable_write(struct counter_device *counter,
+ {
+ 	struct stm32_timer_cnt *const priv = counter_priv(counter);
+ 	u32 cr1;
++	int ret;
  
- 	if (chan->scan_type.sign == 's')
- 		*val = sign_extend32(sample, chan->scan_type.realbits - 1);
-+	else
-+		*val = sample;
+ 	if (enable) {
+ 		regmap_read(priv->regmap, TIM_CR1, &cr1);
+-		if (!(cr1 & TIM_CR1_CEN))
+-			clk_enable(priv->clk);
++		if (!(cr1 & TIM_CR1_CEN)) {
++			ret = clk_enable(priv->clk);
++			if (ret) {
++				dev_err(counter->parent, "Cannot enable clock %d\n", ret);
++				return ret;
++			}
++		}
  
- 	return IIO_VAL_INT;
- }
+ 		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+ 				   TIM_CR1_CEN);
+@@ -816,7 +822,11 @@ static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
+ 		return ret;
+ 
+ 	if (priv->enabled) {
+-		clk_enable(priv->clk);
++		ret = clk_enable(priv->clk);
++		if (ret) {
++			dev_err(dev, "Cannot enable clock %d\n", ret);
++			return ret;
++		}
+ 
+ 		/* Restore registers that may have been lost */
+ 		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
 -- 
 2.43.0
 
