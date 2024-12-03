@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7879E283C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:54:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7129E2561
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30151BA6BC1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70F4428834E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544861F76B7;
-	Tue,  3 Dec 2024 15:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0BC1F76AD;
+	Tue,  3 Dec 2024 15:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjshTyJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrTc0Xmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB7C1F76AD;
-	Tue,  3 Dec 2024 15:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FDE1F759C;
+	Tue,  3 Dec 2024 15:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239396; cv=none; b=akBaASfpXtv29hyWby7YIt59q7TuAc4SM5gNGnXVkE1MsghLi/Dr7i0f7Hd2QhtWsZLpV11yhcBqyGbIp8azcdof6F/+isFklAvnKTqOHfoVID8ufyEP1zG0TCHohAZM/cTlSUAdrMS5qo/JrISs/n4ANcj1MnHSjxH2sNJCRgI=
+	t=1733241592; cv=none; b=WufVJzwoqd6WWt9CgduchGMB2YXqqwBkHYdGcRBq8bz5vPuJy/0zUl/wknn/+s8+RiLgO6PgpdESKmZR6Wlj2a7LQj5/jEuiOlMe7XAydtYStab1H9Sel7P3jm1bSnjuGshnAzW+HnITne0/dDXnJqCBwP1yBJlaMehqTTceUuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239396; c=relaxed/simple;
-	bh=RrNLYDp50Ty7TgNsqnmYHB5rcCzpojr2fNgUJBIAQlU=;
+	s=arc-20240116; t=1733241592; c=relaxed/simple;
+	bh=SIRrYXvLjQWn1v1p+ceC7F9E+bDJyonw7zUTxFgGqNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSBQXvxVbzdFp55Ir5GriImE8j1TLob+guhFEukUwZp1nv511wCKOKpupInCS5XyrQ3HWxBLArVQjvHi0tNuXlhEoY0WvPZqdO6bcmUa8/KVWVeqIpKlXzrNvasCayhaniKaUSNVA9kFC9MzXSso0Ingrz5tlda9i3/aHiwG5ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjshTyJj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8982CC4CECF;
-	Tue,  3 Dec 2024 15:23:15 +0000 (UTC)
+	 MIME-Version; b=UHHqHop3PjTBoE71VIQc3lteJKZD4nYaIKMozfM33uNOMzqpZqibQyIVhHjktnKQXbs0nzIbosxdOnpMIjJMmihGSI3p+c9hR+oycGRtiS1YyplIG/mcoUrV95v1eggYDqufSQqCvnuH/8Q2xcaRzoM0tHE5ThLGxVOb14fj1gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrTc0Xmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D16AC4CECF;
+	Tue,  3 Dec 2024 15:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239395;
-	bh=RrNLYDp50Ty7TgNsqnmYHB5rcCzpojr2fNgUJBIAQlU=;
+	s=korg; t=1733241592;
+	bh=SIRrYXvLjQWn1v1p+ceC7F9E+bDJyonw7zUTxFgGqNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjshTyJjlFBl4KuB0a2xnvPig2A8xuXEj8XBeU+IhVHkTagjwU8+WKQ0inYYPK4Tz
-	 cic7Gry99qXA25dG/fO022A4iPfjeVFC8uMSPI4S0O2grA2jbbRPQ92tshQVsmJnmv
-	 5aYz4y43B2V7pdU2Vh3BhV9noa6YImfxekFfCkuc=
+	b=nrTc0Xmpgvji0J1czdRCOCuzg4Fj7c6R/yqHxyiSNT6HSFaa37jIhumD3kXYTxHDa
+	 46Wo1+yD0fUV+vhSQALqPPjgMGGJoFIpccf9BtgeXXA1kEj1PcD8z4jdgaqqm0LOJs
+	 jfqvj0Qs7MHI4hC1rg652OPxUx5GfiFATjUToe80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Zhang Zekun <zhangzekun11@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 599/817] usb: yurex: make waiting on yurex_write interruptible
+Subject: [PATCH 6.12 444/826] powerpc/kexec: Fix return of uninitialized variable
 Date: Tue,  3 Dec 2024 15:42:51 +0100
-Message-ID: <20241203144019.308230820@linuxfoundation.org>
+Message-ID: <20241203144801.080473786@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Zhang Zekun <zhangzekun11@huawei.com>
 
-[ Upstream commit e0aa9614ab0fd35b404e4b16ebe879f9fc152591 ]
+[ Upstream commit 83b5a407fbb73e6965adfb4bd0a803724bf87f96 ]
 
-The IO yurex_write() needs to wait for in order to have a device
-ready for writing again can take a long time time.
-Consequently the sleep is done in an interruptible state.
-Therefore others waiting for yurex_write() itself to finish should
-use mutex_lock_interruptible.
+of_property_read_u64() can fail and leave the variable uninitialized,
+which will then be used. Return error if reading the property failed.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 6bc235a2e24a5 ("USB: add driver for Meywa-Denki & Kayac YUREX")
-Rule: add
-Link: https://lore.kernel.org/stable/20240924084415.300557-1-oneukum%40suse.com
-Link: https://lore.kernel.org/r/20240924084415.300557-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2e6bd221d96f ("powerpc/kexec_file: Enable early kernel OPAL calls")
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240930075628.125138-1-zhangzekun11@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/iowarrior.c | 4 ----
- drivers/usb/misc/yurex.c     | 5 ++++-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ arch/powerpc/kexec/file_load_64.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
-index a513766b4985d..365c100693458 100644
---- a/drivers/usb/misc/iowarrior.c
-+++ b/drivers/usb/misc/iowarrior.c
-@@ -911,7 +911,6 @@ static int iowarrior_probe(struct usb_interface *interface,
- static void iowarrior_disconnect(struct usb_interface *interface)
- {
- 	struct iowarrior *dev = usb_get_intfdata(interface);
--	int minor = dev->minor;
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 9738adabeb1fe..dc65c13911577 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -736,13 +736,18 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 	if (dn) {
+ 		u64 val;
  
- 	usb_deregister_dev(interface, &iowarrior_class);
- 
-@@ -935,9 +934,6 @@ static void iowarrior_disconnect(struct usb_interface *interface)
- 		mutex_unlock(&dev->mutex);
- 		iowarrior_delete(dev);
- 	}
--
--	dev_info(&interface->dev, "I/O-Warror #%d now disconnected\n",
--		 minor - IOWARRIOR_MINOR_BASE);
- }
- 
- /* usb specific object needed to register this driver with the usb subsystem */
-diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
-index 7c12b937d0759..bd94bf078de3b 100644
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -441,7 +441,10 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
- 	if (count == 0)
- 		goto error;
- 
--	mutex_lock(&dev->io_mutex);
-+	retval = mutex_lock_interruptible(&dev->io_mutex);
-+	if (retval < 0)
-+		return -EINTR;
+-		of_property_read_u64(dn, "opal-base-address", &val);
++		ret = of_property_read_u64(dn, "opal-base-address", &val);
++		if (ret)
++			goto out;
 +
- 	if (dev->disconnected) {		/* already disconnected */
- 		mutex_unlock(&dev->io_mutex);
- 		retval = -ENODEV;
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_base", &val,
+ 						     sizeof(val), false);
+ 		if (ret)
+ 			goto out;
+ 
+-		of_property_read_u64(dn, "opal-entry-address", &val);
++		ret = of_property_read_u64(dn, "opal-entry-address", &val);
++		if (ret)
++			goto out;
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_entry", &val,
+ 						     sizeof(val), false);
+ 	}
 -- 
 2.43.0
 
