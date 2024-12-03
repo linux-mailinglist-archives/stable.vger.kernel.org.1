@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-98034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACA79E26FA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE419E2700
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4B1A162552
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 497F1163A7C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C711F8930;
-	Tue,  3 Dec 2024 16:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0407A1F8924;
+	Tue,  3 Dec 2024 16:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQ9TyLNY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Myamcn0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36FC1F8924;
-	Tue,  3 Dec 2024 16:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72EC1F7591;
+	Tue,  3 Dec 2024 16:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242572; cv=none; b=KPf2E6JJNIP9fAjMRsgHskm+V4mT30rqw8ZiCxNFWBgLToDMawIpJq5WCpSTgtZnJ+Cmp2UuhCm2m4D1solbn5jzgA7KQD8NByAOKZhkPJqggxYwQofwg//DP4tQ1adwFMkgcz2SpkdUM1etiB/UoRTniWfD/1Zb5hhTRWL0TBE=
+	t=1733242579; cv=none; b=RJFuWodwu2uXQF6frVl/E5eyS3/UvTPjY5ai8hHlpCMTmFQCPhLnZBN3DPJA93wvzsJBRcupd/1Qt0ldc5m8hmwOeHKOdftoi1QDzWbfb+W1qL2ePOfZDa6Oy1QdjPZ/6s4YTenGZYzR+/OCfjEhVwrL7n/KgcU6Rv2dTc90JKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242572; c=relaxed/simple;
-	bh=ZTnzsIAwmX9CBtkIXxpTaApL89RQeK+PDzlSdHqvQLo=;
+	s=arc-20240116; t=1733242579; c=relaxed/simple;
+	bh=3V7EMUvXTRQLmkhsMOIzP5GRSejVYor1E88Hpg8Dtmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPrz4F0HCl0yuSkdZnj2V5CR0061mxzbadqjHgomi+rdeQ/T4aZg5tQ4jro9f0tfiS9rQ0wafCS85jq+FVkYhP+K0rBpT8q8gerMu2j221MAg+VT80gSJj1XF5geG4yRbAp3iFgFQzgs/oghOJnk9exGqjYTzt5Vaizn/TpXerQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQ9TyLNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F68BC4CED6;
-	Tue,  3 Dec 2024 16:16:12 +0000 (UTC)
+	 MIME-Version; b=R1hU1K31i186lmsZXeRaCM7+2kb0OS1wLtqgwEPLaiS73jIoiPZq7yxv9KG0mbLGS0A807Ey9aJfj3jEaOhM67615QCcAkqX4Zx+6/QDH6UJ6Str/zquhMu0cnPS3jUa5S0ayCNiqdmZXVZwXj5vQb1LTadJ6fmJ8u+oaKl8T9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Myamcn0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2127FC4CECF;
+	Tue,  3 Dec 2024 16:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242572;
-	bh=ZTnzsIAwmX9CBtkIXxpTaApL89RQeK+PDzlSdHqvQLo=;
+	s=korg; t=1733242579;
+	bh=3V7EMUvXTRQLmkhsMOIzP5GRSejVYor1E88Hpg8Dtmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQ9TyLNYlys5N+QOfPMzP1/gmcsyTHIc/+DAGWix89fQsZR2E5lnlnS1kEAj/afs/
-	 sd510byeVegvepLwz8+zg2NwNMXWidgJ+5VwM79DPxxHqSdrpZPpuJkEQvGED2pyPs
-	 5lvVR8HjdxXkd9FcJcKLdwuesXbr3pe1jJruVfI8=
+	b=Myamcn0o4SSojk1Ugm48sO7XPu068w8ChCvHns+KLEomr/z338M7dRNZheUcVWsHm
+	 Ir5DIaJVNDW+/+bBRjrwGr2sqDmf21dVHiS6nAxUNJZQkG2qvHuxPEhGNiCoxeqdSh
+	 smd733VYZFGefdUfFvV4G958qeTk3/D39I2sy1Xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kailang Yang <kailang@realtek.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 744/826] ALSA: hda/realtek: Enable speaker pins for Medion E15443 platform
-Date: Tue,  3 Dec 2024 15:47:51 +0100
-Message-ID: <20241203144812.785454729@linuxfoundation.org>
+Subject: [PATCH 6.12 745/826] ALSA: hda/realtek: Set PCBeep to default value for ALC274
+Date: Tue,  3 Dec 2024 15:47:52 +0100
+Message-ID: <20241203144812.824910813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,52 +67,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Kailang Yang <kailang@realtek.com>
 
-commit 31917b7bd892de730ab67b215c62aeeea778112e upstream.
+commit 155699ccab7c78cbba69798242b68bc8ac66d5d2 upstream.
 
-Speaker has no sound for Medion E15443.
-Added another speaker pins for Medion E15443 platform.
+BIOS Enable PC beep path cause pop noise via speaker during boot time.
+Set to default value from driver will solve the issue.
 
 Signed-off-by: Kailang Yang <kailang@realtek.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/eac4f3aca2ab45e59ccd207a90ee60e9@realtek.com
+Link: https://lore.kernel.org/2721bb57e20a44c3826c473e933f9105@realtek.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -7773,6 +7773,7 @@ enum {
- 	ALC287_FIXUP_LENOVO_SSID_17AA3820,
- 	ALC245_FIXUP_CLEVO_NOISY_MIC,
- 	ALC269_FIXUP_VAIO_VJFH52_MIC_NO_PRESENCE,
-+	ALC233_FIXUP_MEDION_MTL_SPK,
- };
- 
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -10147,6 +10148,13 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
- 	},
-+	[ALC233_FIXUP_MEDION_MTL_SPK] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1b, 0x90170110 },
-+			{ }
-+		},
-+	},
- };
- 
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -11013,6 +11021,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
-+	SND_PCI_QUIRK(0x2782, 0x4900, "MEDION E15443", ALC233_FIXUP_MEDION_MTL_SPK),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+@@ -473,6 +473,8 @@ static void alc_fill_eapd_coef(struct hd
+ 		break;
+ 	case 0x10ec0234:
+ 	case 0x10ec0274:
++		alc_write_coef_idx(codec, 0x6e, 0x0c25);
++		fallthrough;
+ 	case 0x10ec0294:
+ 	case 0x10ec0700:
+ 	case 0x10ec0701:
 
 
 
