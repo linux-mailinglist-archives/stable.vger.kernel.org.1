@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931179E2198
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3619E27D4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:42:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 235E2167BA9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1452EBC82B3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BA01F75BB;
-	Tue,  3 Dec 2024 15:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C7F1FECCD;
+	Tue,  3 Dec 2024 15:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4bxW8Oo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEzeL/2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C701A1F6698;
-	Tue,  3 Dec 2024 15:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32591FECA2;
+	Tue,  3 Dec 2024 15:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238555; cv=none; b=knDCQIN7g5ZQTmJr+opwElnxS5bTsLD36eu6VhTR9NQgiuTsVyRZRCBc70LFRvOCx5FwPyUEDT6CCfnX33BJ6PcXqQxrT/IzRsqK/0vhUgXfgR2RrYGNKbFadwAUIKtrJ31rBWqgBMiWHWgUdE0tyKC/h4vAeQlCXzACCUWWMAk=
+	t=1733240536; cv=none; b=ApAi65xnCMj5uBkTjtAqv/4CghrSJ/jYtij35iTY4oAkB9EgjTRpPUJdmpKWRqGuT0mV26joE3Si86cSqKsfiqS6SBQoYQdOFI70E2m5+bdQ4p6n01jl3GDKxO3xuy8wJu9VDldwAvDTiPi+hgVS/NH3YFZ4OjXc8lxlNtfHc7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238555; c=relaxed/simple;
-	bh=83PavPr6ha6PBymCE9om9x8/mBt83KZefHw9PO/53s4=;
+	s=arc-20240116; t=1733240536; c=relaxed/simple;
+	bh=5j0lCSInyajRBKoXzGy0iKkSzTA84NW3X99UPb+9ht4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=expDGr6MA3fV1TV73DhiuhRo7h052HBLG4RF+HbyBMXczZOJcQwEuDZ2AJx9JrW4NE+hZCz1n9evLy8hHY5LMdIxnEqqolQBLKECMEey4T/i2MNtKBi7dbxwaR2SIjFogYc4rTSG5Fw//DXPpAIe8Zzcf5p6nCaLjibA97cFd8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4bxW8Oo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03168C4CECF;
-	Tue,  3 Dec 2024 15:09:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eu6MBK1qlFAUjSpbHciidS4QntPM+COHLHGRYACF65hD06piHUkatQQDsaNKzmkgPmpBUDUnFueEHKaA/Fhbwdval+gwKCGDyc7xoZga+Vy/ZyE3KlGU8yW4KVR5REdxMRbcmILCds98huSnR4NLqSlnc4igIXncTtGPUqA2Jok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEzeL/2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62497C4CECF;
+	Tue,  3 Dec 2024 15:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238554;
-	bh=83PavPr6ha6PBymCE9om9x8/mBt83KZefHw9PO/53s4=;
+	s=korg; t=1733240535;
+	bh=5j0lCSInyajRBKoXzGy0iKkSzTA84NW3X99UPb+9ht4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D4bxW8OojD3r3qGW4AzR1DJfdsPJ81MzSOGBz6UEb56B/rPLLy33s56qHJP5edeT+
-	 hpPfqyxcJ+h2d61hBauiRZgbXjCpQyTEi8mF/KFksKD5O3fXkVaXCYLjO8NZdxbIGS
-	 n94VJCXcqO1qohmLmyzv1d01Bpojo+JK4MjyOjFI=
+	b=kEzeL/2SsEMiUjVXYAJJVMcgKY4o5ZaPcrWk2stG3cvMvTLVIy2qwjF7WKnUtFQQX
+	 7yxo4vz9ZcmI/7kGCdKF5Ad6jMuNWfZ+8yfN1eA0UBd/XeWfEksWdFTipDfciJQF7I
+	 vtshJMzYlcqiGS1oL5jjvi9emxpR7mwXZmyj9OqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 318/817] netfilter: nf_tables: must hold rcu read lock while iterating expression type list
-Date: Tue,  3 Dec 2024 15:38:10 +0100
-Message-ID: <20241203144008.232386171@linuxfoundation.org>
+Subject: [PATCH 6.12 164/826] selftests/resctrl: Print accurate buffer size as part of MBM results
+Date: Tue,  3 Dec 2024 15:38:11 +0100
+Message-ID: <20241203144750.134351181@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-[ Upstream commit ee666a541ed957937454d50afa4757924508cd74 ]
+[ Upstream commit 1b4840395f08e9723a15fea42c2d31090e8375f3 ]
 
-nft shell tests trigger:
- WARNING: suspicious RCU usage
- net/netfilter/nf_tables_api.c:3125 RCU-list traversed in non-reader section!!
- 1 lock held by nft/2068:
-  #0: ffff888106c6f8c8 (&nft_net->commit_mutex){+.+.}-{4:4}, at: nf_tables_valid_genid+0x3c/0xf0
+By default the MBM test uses the "fill_buf" benchmark to keep reading
+from a buffer with size DEFAULT_SPAN while measuring memory bandwidth.
+User space can provide an alternate benchmark or amend the size of
+the buffer "fill_buf" should use.
 
-But the transaction mutex doesn't protect this list, the nfnl subsystem
-mutex would, but we can't acquire it here without risk of ABBA
-deadlocks.
+Analysis of the MBM measurements do not require that a buffer be used
+and thus do not require knowing the size of the buffer if it was used
+during testing. Even so, the buffer size is printed as informational
+as part of the MBM test results. What is printed as buffer size is
+hardcoded as DEFAULT_SPAN, even if the test relied on another benchmark
+(that may or may not use a buffer) or if user space amended the buffer
+size.
 
-Acquire the rcu read lock to avoid this issue.
+Ensure that accurate buffer size is printed when using "fill_buf"
+benchmark and omit the buffer size information if another benchmark
+is used.
 
-v3: add a comment that explains the ->inner_ops check implies
-expression is builtin and lack of a module owner reference is ok.
-
-Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: ecdbb911f22d ("selftests/resctrl: Add MBM test")
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ tools/testing/selftests/resctrl/mbm_test.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 18579897e7fe2..a7a1913aa2917 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3293,25 +3293,37 @@ int nft_expr_inner_parse(const struct nft_ctx *ctx, const struct nlattr *nla,
- 	if (!tb[NFTA_EXPR_DATA] || !tb[NFTA_EXPR_NAME])
- 		return -EINVAL;
+diff --git a/tools/testing/selftests/resctrl/mbm_test.c b/tools/testing/selftests/resctrl/mbm_test.c
+index 6b5a3b52d861b..cf08ba5e314e2 100644
+--- a/tools/testing/selftests/resctrl/mbm_test.c
++++ b/tools/testing/selftests/resctrl/mbm_test.c
+@@ -40,7 +40,8 @@ show_bw_info(unsigned long *bw_imc, unsigned long *bw_resc, size_t span)
+ 	ksft_print_msg("%s Check MBM diff within %d%%\n",
+ 		       ret ? "Fail:" : "Pass:", MAX_DIFF_PERCENT);
+ 	ksft_print_msg("avg_diff_per: %d%%\n", avg_diff_per);
+-	ksft_print_msg("Span (MB): %zu\n", span / MB);
++	if (span)
++		ksft_print_msg("Span (MB): %zu\n", span / MB);
+ 	ksft_print_msg("avg_bw_imc: %lu\n", avg_bw_imc);
+ 	ksft_print_msg("avg_bw_resc: %lu\n", avg_bw_resc);
  
-+	rcu_read_lock();
+@@ -138,15 +139,26 @@ static int mbm_run_test(const struct resctrl_test *test, const struct user_param
+ 		.setup		= mbm_setup,
+ 		.measure	= mbm_measure,
+ 	};
++	char *endptr = NULL;
++	size_t span = 0;
+ 	int ret;
+ 
+ 	remove(RESULT_FILE_NAME);
+ 
++	if (uparams->benchmark_cmd[0] && strcmp(uparams->benchmark_cmd[0], "fill_buf") == 0) {
++		if (uparams->benchmark_cmd[1] && *uparams->benchmark_cmd[1] != '\0') {
++			errno = 0;
++			span = strtoul(uparams->benchmark_cmd[1], &endptr, 10);
++			if (errno || *endptr != '\0')
++				return -EINVAL;
++		}
++	}
 +
- 	type = __nft_expr_type_get(ctx->family, tb[NFTA_EXPR_NAME]);
--	if (!type)
--		return -ENOENT;
-+	if (!type) {
-+		err = -ENOENT;
-+		goto out_unlock;
-+	}
+ 	ret = resctrl_val(test, uparams, uparams->benchmark_cmd, &param);
+ 	if (ret)
+ 		return ret;
  
--	if (!type->inner_ops)
--		return -EOPNOTSUPP;
-+	if (!type->inner_ops) {
-+		err = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
- 
- 	err = nla_parse_nested_deprecated(info->tb, type->maxattr,
- 					  tb[NFTA_EXPR_DATA],
- 					  type->policy, NULL);
- 	if (err < 0)
--		goto err_nla_parse;
-+		goto out_unlock;
- 
- 	info->attr = nla;
- 	info->ops = type->inner_ops;
- 
-+	/* No module reference will be taken on type->owner.
-+	 * Presence of type->inner_ops implies that the expression
-+	 * is builtin, so it cannot go away.
-+	 */
-+	rcu_read_unlock();
- 	return 0;
- 
--err_nla_parse:
-+out_unlock:
-+	rcu_read_unlock();
- 	return err;
- }
+-	ret = check_results(DEFAULT_SPAN);
++	ret = check_results(span);
+ 	if (ret && (get_vendor() == ARCH_INTEL))
+ 		ksft_print_msg("Intel MBM may be inaccurate when Sub-NUMA Clustering is enabled. Check BIOS configuration.\n");
  
 -- 
 2.43.0
