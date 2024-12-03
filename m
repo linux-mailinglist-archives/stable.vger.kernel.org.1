@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E839E24BC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 933409E216F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9504B16EED5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59212285907
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407705336E;
-	Tue,  3 Dec 2024 15:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A871F8AE8;
+	Tue,  3 Dec 2024 15:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9q2lHAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdPwc15A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11801DDC26;
-	Tue,  3 Dec 2024 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A6F1F8914;
+	Tue,  3 Dec 2024 15:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240679; cv=none; b=oBbH5shzQbSiArEGyKNajbCoRU4mENkC77m05IAklS9fxSU516cpmq956DGzcvs8GbsvvML2UVcNGUMrXqd1UfQNi8VbEB25Z0HjDHMYaDi/rB9Pr92qoCyWyzuN9h4hS1heFSQfz1GuaPYci+LbSbJScaJHpWDB6vkmm2e5fbE=
+	t=1733238589; cv=none; b=PJxSa2hmA9cLAeDyz5bIbsxMAHMtBZrWx8gNo/aRpbIJfcEGUTC2XIQ3sScJAlurRS3nRqnhv9BY+dUls6nehB8Xz2qYG2NwxT8t8BTlpFdFH2W26Un3kk67SFxHiXjQSDEOoYGzu8Tndy+eRnu3c6//sD/oEdIUC2u85x8EORg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240679; c=relaxed/simple;
-	bh=2TuqysjA7LLR6zW0R220kZynJE71eLKAwAj616Ptd8c=;
+	s=arc-20240116; t=1733238589; c=relaxed/simple;
+	bh=BRxQ2Gv6eoeyCg80UbGXHlzYeDoO28nLa53m4ZYmlHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ojspBwe7dlzclJ1c8rql5Y08+dXOtkhLSSgbqj+z0IVy9Qd6GLMrL/4sZGn1y6zQsvJA+TakaQik7z+imNo/xD1KJX645cZq0JPcB9Zv4AB9xh+0SxASmQ0fN7Nepq65qdYuHpnTNs2TUl71x+ailypJYgpBmwWEaCkxmgRifv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9q2lHAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A52C4CECF;
-	Tue,  3 Dec 2024 15:44:38 +0000 (UTC)
+	 MIME-Version; b=aN0+Tkl01prKOVeYREMpvYYPJg219lE5T+TfGj8x04UMm8h+i69GXN+hSdzgAq0bKWK2YMJ76E8B8bnPYB2MWR72iIn32ObyvR7ZMkP09KjuOwcXEn9zYYsXKisgggFmwh+ntJd+zIi3c1JhfaM5Y/EOlX3mWLA3NKiGW2BMI+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdPwc15A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82087C4CECF;
+	Tue,  3 Dec 2024 15:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240678;
-	bh=2TuqysjA7LLR6zW0R220kZynJE71eLKAwAj616Ptd8c=;
+	s=korg; t=1733238588;
+	bh=BRxQ2Gv6eoeyCg80UbGXHlzYeDoO28nLa53m4ZYmlHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9q2lHARaUfH8152vc2457IxWBS7iy7ZEFxXBPqRqcYBnf24VAWsPZWUSobgM+hQa
-	 bgxbb8GJDKLV/jU15g402schCb84AoVJmWxU/4hI677lNv4CxAT+MEthc1KMGXh1cU
-	 48nyrxHMgDDIAsrrN+/RuFlVCmBgS4SKRZwjWHCQ=
+	b=XdPwc15AK9pfUf9j06TFRCAHspogsrHwWy/W8bgAKDYiaRC4IvIJOEJucnlYVnZgn
+	 805PrOa3cAVrnJT3VrQ9Yg+Nrc5+bFFhObG+YzHCPgOUU0IUyQpu4jp66tDrZHXYRg
+	 6VmJRT3lic++NGaZKV5WOFt0VywrXISJ544si434=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri Fedrau <dima.fedrau@gmail.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 173/826] pwm: Assume a disabled PWM to emit a constant inactive output
-Date: Tue,  3 Dec 2024 15:38:20 +0100
-Message-ID: <20241203144750.487585842@linuxfoundation.org>
+Subject: [PATCH 6.11 329/817] selftests/bpf: Fix total_bytes in msg_loop_rx in test_sockmap
+Date: Tue,  3 Dec 2024 15:38:21 +0100
+Message-ID: <20241203144008.661847315@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit b2eaa1170e45dc18eb09dcc9abafbe9a7502e960 ]
+[ Upstream commit 523dffccbadea0cfd65f1ff04944b864c558c4a8 ]
 
-Some PWM hardwares (e.g. MC33XS2410) cannot implement a zero duty cycle
-but can instead disable the hardware which also results in a constant
-inactive output.
+total_bytes in msg_loop_rx should also take push into account, otherwise
+total_bytes will be a smaller value, which makes the msg_loop_rx end early.
 
-There are some checks (enabled with CONFIG_PWM_DEBUG) to help
-implementing a driver without violating the normal rounding rules. Make
-them less strict to let above described hardware pass without warning.
+Besides, total_bytes has already taken pop into account, so we don't need
+to subtract some bytes from iov_buf in sendmsg_test. The additional
+subtraction may make total_bytes a negative number, and msg_loop_rx will
+just end without checking anything.
 
-Reported-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-Link: https://lore.kernel.org/r/20241103205215.GA509903@debian
-Fixes: 3ad1f3a33286 ("pwm: Implement some checks for lowlevel drivers")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-Tested-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-Link: https://lore.kernel.org/r/20241105153521.1001864-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 18d4e900a450 ("bpf: Selftests, improve test_sockmap total bytes counter")
+Fixes: d69672147faa ("selftests, bpf: Add one test for sockmap with strparser")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-4-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 6e752e148b98c..210368099a064 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -75,7 +75,7 @@ static void pwm_apply_debug(struct pwm_device *pwm,
- 	    state->duty_cycle < state->period)
- 		dev_warn(pwmchip_parent(chip), ".apply ignored .polarity\n");
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 1d59bed90d80b..5f4558f1f0049 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -606,8 +606,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 		}
+ 		clock_gettime(CLOCK_MONOTONIC, &s->end);
+ 	} else {
++		float total_bytes, txmsg_pop_total, txmsg_push_total;
+ 		int slct, recvp = 0, recv, max_fd = fd;
+-		float total_bytes, txmsg_pop_total;
+ 		int fd_flags = O_NONBLOCK;
+ 		struct timeval timeout;
+ 		unsigned char k = 0;
+@@ -628,10 +628,14 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 		total_bytes = (float)iov_length * (float)cnt;
+ 		if (!opt->sendpage)
+ 			total_bytes *= (float)iov_count;
+-		if (txmsg_apply)
++		if (txmsg_apply) {
++			txmsg_push_total = txmsg_end_push * (total_bytes / txmsg_apply);
+ 			txmsg_pop_total = txmsg_pop * (total_bytes / txmsg_apply);
+-		else
++		} else {
++			txmsg_push_total = txmsg_end_push * cnt;
+ 			txmsg_pop_total = txmsg_pop * cnt;
++		}
++		total_bytes += txmsg_push_total;
+ 		total_bytes -= txmsg_pop_total;
+ 		err = clock_gettime(CLOCK_MONOTONIC, &s->start);
+ 		if (err < 0)
+@@ -800,8 +804,6 @@ static int sendmsg_test(struct sockmap_options *opt)
  
--	if (state->enabled &&
-+	if (state->enabled && s2.enabled &&
- 	    last->polarity == state->polarity &&
- 	    last->period > s2.period &&
- 	    last->period <= state->period)
-@@ -83,7 +83,11 @@ static void pwm_apply_debug(struct pwm_device *pwm,
- 			 ".apply didn't pick the best available period (requested: %llu, applied: %llu, possible: %llu)\n",
- 			 state->period, s2.period, last->period);
+ 	rxpid = fork();
+ 	if (rxpid == 0) {
+-		if (txmsg_pop || txmsg_start_pop)
+-			iov_buf -= (txmsg_pop - txmsg_start_pop + 1);
+ 		if (opt->drop_expected || txmsg_ktls_skb_drop)
+ 			_exit(0);
  
--	if (state->enabled && state->period < s2.period)
-+	/*
-+	 * Rounding period up is fine only if duty_cycle is 0 then, because a
-+	 * flat line doesn't have a characteristic period.
-+	 */
-+	if (state->enabled && s2.enabled && state->period < s2.period && s2.duty_cycle)
- 		dev_warn(pwmchip_parent(chip),
- 			 ".apply is supposed to round down period (requested: %llu, applied: %llu)\n",
- 			 state->period, s2.period);
-@@ -99,7 +103,7 @@ static void pwm_apply_debug(struct pwm_device *pwm,
- 			 s2.duty_cycle, s2.period,
- 			 last->duty_cycle, last->period);
- 
--	if (state->enabled && state->duty_cycle < s2.duty_cycle)
-+	if (state->enabled && s2.enabled && state->duty_cycle < s2.duty_cycle)
- 		dev_warn(pwmchip_parent(chip),
- 			 ".apply is supposed to round down duty_cycle (requested: %llu/%llu, applied: %llu/%llu)\n",
- 			 state->duty_cycle, state->period,
 -- 
 2.43.0
 
