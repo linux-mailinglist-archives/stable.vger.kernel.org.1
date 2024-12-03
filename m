@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319E19E2755
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:26:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 512CE9E2346
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C36D8B63AD8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7717CBA6ABB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225191F76BA;
-	Tue,  3 Dec 2024 15:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A66571F758E;
+	Tue,  3 Dec 2024 15:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5mcZZsB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8ZZfeFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CF71F76C6;
-	Tue,  3 Dec 2024 15:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632252D7BF;
+	Tue,  3 Dec 2024 15:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241518; cv=none; b=YddvUJ+ACJ5+le4O6y9Qdlur0Ru+W7NLnswoQai7gKf4jo+PhVy4B92qL815g0wXDpd4ZbTsyVnjnCc4uMWmYzpvWMBzCjtUryx3oeXwWBLWuN3FdCAOEDhrTlTU/cIws+kotWrgFv1tpgBVHM+7NjLrnvXK1/UeZrGpZdWIxPU=
+	t=1733239387; cv=none; b=rNamPA/6cfXWoNfqW4zS2sJt1T4ez4f2Q5d+eDEkFhvi96rKXguzulW8b4nQisyUjmG5CkzmOCTu81UBvbBkqA5V5K0cyo/nd5WlOCwTU3mlpxuyU9bW+OqIro3oA6VOoYD82U1wdEq7CdPEJmkkXHMzYbmx2QVlX+hk0U8yduE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241518; c=relaxed/simple;
-	bh=pRwoXjSCY7zWlM2Ex4QzqElNfSwwy5LjJ1+1GtJSyeU=;
+	s=arc-20240116; t=1733239387; c=relaxed/simple;
+	bh=iAzUJDARBT4JSsVYntW2EjoD6e3VQhH3f8Ry/4As74M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1AVGTKfRhEIzYpaEfmZWWdmm2iU7rAGArjvxFfnSRV24Jq5ojOYyQhV0kK/PWFNSJYwCpVyjvGMi3b+RMHMhGZXexyM4J2exdbeC3I2Oa2bFu8OwHGtTLH0jbn7+V00vt2OSoA7khgUhBrmkq83/VopqEW6AdAto+/eEwXKfsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5mcZZsB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31ACC4CECF;
-	Tue,  3 Dec 2024 15:58:37 +0000 (UTC)
+	 MIME-Version; b=HpII2zQVobTDQRg9EX4XeyJSjf0qwGuSYW+e15MwYf0IW0onHcwCjdfYETOw6AyYrLGJ2TXLOo3qtK/YGUBnotQfTtNeBAr+CuUtgOsT/W/nKzhN9VBCMYCDBipRKGoz5tqCnw/5fXHZEAP1EcN00Q/OioyCqpmm3Z6imLKWOPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8ZZfeFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E0FC4CECF;
+	Tue,  3 Dec 2024 15:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241518;
-	bh=pRwoXjSCY7zWlM2Ex4QzqElNfSwwy5LjJ1+1GtJSyeU=;
+	s=korg; t=1733239387;
+	bh=iAzUJDARBT4JSsVYntW2EjoD6e3VQhH3f8Ry/4As74M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5mcZZsBloWB3XrqusVrmE52ZCNyd5cto6OzcWnYO1vaZqC4qrQkrOPDt1wOwXjfp
-	 Sy7dep+gH5w1E1gGEioMsY3w15O452fxsu7XcsHAhQKhzt29D+jij8DoOlWJcC0dzr
-	 zQR79ak3hZukVpvgSjtL9xmRlPi6Z+NShbGEtGY8=
+	b=k8ZZfeFiEfAIFkWtglbw4btIiaum1XMixxwrAcMSpjAr/p/AQ9u7JuXyIQWXXIQBR
+	 aX0rvzv16+gFpNc94MXBIgB1NeWvopxWxblyV8h7vyrYPmwNgXoeCpgu1p0uuFS9qS
+	 e3oXLW3UUjS5dJ+q7hAh1Kvd1FTRD8a2cvUXAHvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 440/826] KVM: PPC: Book3S HV: Avoid returning to nested hypervisor on pending doorbells
-Date: Tue,  3 Dec 2024 15:42:47 +0100
-Message-ID: <20241203144800.925800267@linuxfoundation.org>
+Subject: [PATCH 6.11 596/817] ipmr: fix tables suspicious RCU usage
+Date: Tue,  3 Dec 2024 15:42:48 +0100
+Message-ID: <20241203144019.188950358@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 26686db69917399fa30e3b3135360771e90f83ec ]
+[ Upstream commit fc9c273d6daaa9866f349bbe8cae25c67764c456 ]
 
-Commit 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
-dropped the use of vcore->dpdes for msgsndp / SMT emulation. Prior to that
-commit, the below code at L1 level (see [1] for terminology) was
-responsible for setting vc->dpdes for the respective L2 vCPU:
+Similar to the previous patch, plumb the RCU lock inside
+the ipmr_get_table(), provided a lockless variant and apply
+the latter in the few spots were the lock is already held.
 
-if (!nested) {
-	kvmppc_core_prepare_to_enter(vcpu);
-	if (vcpu->arch.doorbell_request) {
-		vc->dpdes = 1;
-		smp_wmb();
-		vcpu->arch.doorbell_request = 0;
-	}
-
-L1 then sent vc->dpdes to L0 via kvmhv_save_hv_regs(), and while
-servicing H_ENTER_NESTED at L0, the below condition at L0 level made sure
-to abort and go back to L1 if vcpu->arch.doorbell_request = 1 so that L1
-sets vc->dpdes as per above if condition:
-
-} else if (vcpu->arch.pending_exceptions ||
-	   vcpu->arch.doorbell_request ||
-	   xive_interrupt_pending(vcpu)) {
-	vcpu->arch.ret = RESUME_HOST;
-	goto out;
-}
-
-This worked fine since vcpu->arch.doorbell_request was used more like a
-flag and vc->dpdes was used to pass around the doorbell state. But after
-Commit 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes"),
-vcpu->arch.doorbell_request is the only variable used to pass around
-doorbell state.
-With the plumbing for handling doorbells for nested guests updated to use
-vcpu->arch.doorbell_request over vc->dpdes, the above "else if" stops
-doorbells from working correctly as L0 aborts execution of L2 and
-instead goes back to L1.
-
-Remove vcpu->arch.doorbell_request from the above "else if" condition as
-it is no longer needed for L0 to correctly handle the doorbell status
-while running L2.
-
-[1] Terminology
-1. L0 : PowerNV linux running with HV privileges
-2. L1 : Pseries KVM guest running on top of L0
-2. L2 : Nested KVM guest running on top of L1
-
-Fixes: 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241109063301.105289-4-gautam@linux.ibm.com
+Fixes: 709b46e8d90b ("net: Add compat ioctl support for the ipv4 multicast ioctl SIOCGETSGCNT")
+Fixes: f0ad0860d01e ("ipv4: ipmr: support multiple tables")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/ipv4/ipmr.c | 42 +++++++++++++++++++++++++++++-------------
+ 1 file changed, 29 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index b4c5295bdc31b..59f67a44621b7 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4921,7 +4921,6 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
- 			lpcr &= ~LPCR_MER;
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 6c750bd13dd8d..035d6f0ff01ee 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -136,7 +136,7 @@ static struct mr_table *ipmr_mr_table_iter(struct net *net,
+ 	return ret;
+ }
+ 
+-static struct mr_table *ipmr_get_table(struct net *net, u32 id)
++static struct mr_table *__ipmr_get_table(struct net *net, u32 id)
+ {
+ 	struct mr_table *mrt;
+ 
+@@ -147,6 +147,16 @@ static struct mr_table *ipmr_get_table(struct net *net, u32 id)
+ 	return NULL;
+ }
+ 
++static struct mr_table *ipmr_get_table(struct net *net, u32 id)
++{
++	struct mr_table *mrt;
++
++	rcu_read_lock();
++	mrt = __ipmr_get_table(net, id);
++	rcu_read_unlock();
++	return mrt;
++}
++
+ static int ipmr_fib_lookup(struct net *net, struct flowi4 *flp4,
+ 			   struct mr_table **mrt)
+ {
+@@ -188,7 +198,7 @@ static int ipmr_rule_action(struct fib_rule *rule, struct flowi *flp,
+ 
+ 	arg->table = fib_rule_get_table(rule, arg);
+ 
+-	mrt = ipmr_get_table(rule->fr_net, arg->table);
++	mrt = __ipmr_get_table(rule->fr_net, arg->table);
+ 	if (!mrt)
+ 		return -EAGAIN;
+ 	res->mrt = mrt;
+@@ -314,6 +324,8 @@ static struct mr_table *ipmr_get_table(struct net *net, u32 id)
+ 	return net->ipv4.mrt;
+ }
+ 
++#define __ipmr_get_table ipmr_get_table
++
+ static int ipmr_fib_lookup(struct net *net, struct flowi4 *flp4,
+ 			   struct mr_table **mrt)
+ {
+@@ -402,7 +414,7 @@ static struct mr_table *ipmr_new_table(struct net *net, u32 id)
+ 	if (id != RT_TABLE_DEFAULT && id >= 1000000000)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	mrt = ipmr_get_table(net, id);
++	mrt = __ipmr_get_table(net, id);
+ 	if (mrt)
+ 		return mrt;
+ 
+@@ -1373,7 +1385,7 @@ int ip_mroute_setsockopt(struct sock *sk, int optname, sockptr_t optval,
+ 		goto out_unlock;
+ 	}
+ 
+-	mrt = ipmr_get_table(net, raw_sk(sk)->ipmr_table ? : RT_TABLE_DEFAULT);
++	mrt = __ipmr_get_table(net, raw_sk(sk)->ipmr_table ? : RT_TABLE_DEFAULT);
+ 	if (!mrt) {
+ 		ret = -ENOENT;
+ 		goto out_unlock;
+@@ -2261,11 +2273,13 @@ int ipmr_get_route(struct net *net, struct sk_buff *skb,
+ 	struct mr_table *mrt;
+ 	int err;
+ 
+-	mrt = ipmr_get_table(net, RT_TABLE_DEFAULT);
+-	if (!mrt)
++	rcu_read_lock();
++	mrt = __ipmr_get_table(net, RT_TABLE_DEFAULT);
++	if (!mrt) {
++		rcu_read_unlock();
+ 		return -ENOENT;
++	}
+ 
+-	rcu_read_lock();
+ 	cache = ipmr_cache_find(mrt, saddr, daddr);
+ 	if (!cache && skb->dev) {
+ 		int vif = ipmr_find_vif(mrt, skb->dev);
+@@ -2550,7 +2564,7 @@ static int ipmr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	grp = tb[RTA_DST] ? nla_get_in_addr(tb[RTA_DST]) : 0;
+ 	tableid = tb[RTA_TABLE] ? nla_get_u32(tb[RTA_TABLE]) : 0;
+ 
+-	mrt = ipmr_get_table(net, tableid ? tableid : RT_TABLE_DEFAULT);
++	mrt = __ipmr_get_table(net, tableid ? tableid : RT_TABLE_DEFAULT);
+ 	if (!mrt) {
+ 		err = -ENOENT;
+ 		goto errout_free;
+@@ -2604,7 +2618,7 @@ static int ipmr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (filter.table_id) {
+ 		struct mr_table *mrt;
+ 
+-		mrt = ipmr_get_table(sock_net(skb->sk), filter.table_id);
++		mrt = __ipmr_get_table(sock_net(skb->sk), filter.table_id);
+ 		if (!mrt) {
+ 			if (rtnl_msg_family(cb->nlh) != RTNL_FAMILY_IPMR)
+ 				return skb->len;
+@@ -2712,7 +2726,7 @@ static int rtm_to_ipmr_mfcc(struct net *net, struct nlmsghdr *nlh,
+ 			break;
  		}
- 	} else if (vcpu->arch.pending_exceptions ||
--		   vcpu->arch.doorbell_request ||
- 		   xive_interrupt_pending(vcpu)) {
- 		vcpu->arch.ret = RESUME_HOST;
+ 	}
+-	mrt = ipmr_get_table(net, tblid);
++	mrt = __ipmr_get_table(net, tblid);
+ 	if (!mrt) {
+ 		ret = -ENOENT;
  		goto out;
+@@ -2920,13 +2934,15 @@ static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+ 	struct net *net = seq_file_net(seq);
+ 	struct mr_table *mrt;
+ 
+-	mrt = ipmr_get_table(net, RT_TABLE_DEFAULT);
+-	if (!mrt)
++	rcu_read_lock();
++	mrt = __ipmr_get_table(net, RT_TABLE_DEFAULT);
++	if (!mrt) {
++		rcu_read_unlock();
+ 		return ERR_PTR(-ENOENT);
++	}
+ 
+ 	iter->mrt = mrt;
+ 
+-	rcu_read_lock();
+ 	return mr_vif_seq_start(seq, pos);
+ }
+ 
 -- 
 2.43.0
 
