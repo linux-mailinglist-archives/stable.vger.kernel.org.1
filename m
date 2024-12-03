@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A8D9E2340
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F129E2646
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE500160F3A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F069167FC6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9771F76C6;
-	Tue,  3 Dec 2024 15:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7FC1F76CA;
+	Tue,  3 Dec 2024 16:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWrSVOt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ead8uPpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7EB1F76BD;
-	Tue,  3 Dec 2024 15:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1907623CE;
+	Tue,  3 Dec 2024 16:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239759; cv=none; b=a65qcW8OLi1rGcWXz5qBLpUV0BX6EV90usUNgOdX3eLLx5X0i9D+njYONGX35kQc9GWx8E7T0NWuRzMY5xyktmKZdtMZEKDMhrBh3gxa8b6WjKPcEJV39D8Q46QNZEuMrKscYp8izBP35ZwSt5Ls5L/PEoJHziQdyNftrzWm+0Y=
+	t=1733241977; cv=none; b=nz50MaRIMZuIFUTYFr4wpNzwylrfzZ9MKhf9T+AWHtFzOKL8Zpt8hEbDhf1PCeIi7eJe1Yd7eILGVkOYXIqcYL4dDqrQt/GMRgZLqVDhq4uUEGYGsNZq0b20c21Ka7D5uMUWBz5xFtO6aJeGmvUVvqzMbOB3EjnDMMrTZRnRpsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239759; c=relaxed/simple;
-	bh=4bs83/DUFT+kfiggFzaW4uFAJOSww2jWzuDJnh7sAk4=;
+	s=arc-20240116; t=1733241977; c=relaxed/simple;
+	bh=0hFI8yLxfWkXjziMkvpMZNY/R+q0rt7cdCgGKzPM5M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQ8dj9TsPZYTvXJ+dDW+fgZ8X/dsWYb7JWaWjwHiGxiSaGRrO1MfobDz3tcqMwQNHLJ+NQ73HsF/Y75SHoQfXifamIeMV2M6j2MhSx3FKcckVhzvttg87g5O0t4nH7p/hOupZuMImyZ6XWGwzIjVDwbssqVxHsMmETBcQTwx9Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWrSVOt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53190C4CED8;
-	Tue,  3 Dec 2024 15:29:19 +0000 (UTC)
+	 MIME-Version; b=mDy7+aktrd7AntBUMMeRRCTsR79X6Sqn9lliyOEtEkGCnf/zUVsX3LcmOWj8J16EKlNhZ5c/o665YRrrp1j5CEKc3uwycxkjR3nfARKfZmfoNY+ogA9umivuzsZqbbrfOgEpJ5NjQltJDZY4/aVRus4JYuVC/WSo+LMkVEzRPFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ead8uPpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C946C4CECF;
+	Tue,  3 Dec 2024 16:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239759;
-	bh=4bs83/DUFT+kfiggFzaW4uFAJOSww2jWzuDJnh7sAk4=;
+	s=korg; t=1733241977;
+	bh=0hFI8yLxfWkXjziMkvpMZNY/R+q0rt7cdCgGKzPM5M8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWrSVOt2PJFxUJeRelr7h9Pn8N/0O6K43258xRkwR7RmpwyKPMT0i5arzyM5+wS4E
-	 T92LbLzmG9+9OjnLhyhrJJgUwRTPpGtCESY1Q5RAgKP7v4Bw7ppwOtGafTaj3CQZW1
-	 SMMctDid1vG6L8mj8nKYBAPdOxSMMiiqXTQxrV5k=
+	b=Ead8uPpFu7JBb3p7fm0Jl05SJout1+tknvpbRnlL4tIY7bfobyru+smPggrVzkSH1
+	 j93r4d3T5cf0mf6ttSg2Zz713VmkVwI2nNCKUING3FpW7QVZzUY5J95kBDz2A/E/n/
+	 7xNZz+qxvmBOlFA+0teAfnC5n2OroekQznLOyKAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <muchun.song@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 725/817] block: fix missing dispatching request when queue is started or unquiesced
-Date: Tue,  3 Dec 2024 15:44:57 +0100
-Message-ID: <20241203144024.294741982@linuxfoundation.org>
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 571/826] octeontx2-af: RPM: Fix low network performance
+Date: Tue,  3 Dec 2024 15:44:58 +0100
+Message-ID: <20241203144806.026039013@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-commit 2003ee8a9aa14d766b06088156978d53c2e9be3d upstream.
+[ Upstream commit d1e8884e050c1255a9ceb477f5ff926ee9214a23 ]
 
-Supposing the following scenario with a virtio_blk driver.
+Low network performance is observed even on RPMs with larger
+FIFO lengths.
 
-CPU0                    CPU1                    CPU2
+The cn10kb silicon has three RPM blocks with the following
+FIFO sizes:
 
-blk_mq_try_issue_directly()
-  __blk_mq_issue_directly()
-    q->mq_ops->queue_rq()
-      virtio_queue_rq()
-        blk_mq_stop_hw_queue()
-                                                virtblk_done()
-                        blk_mq_try_issue_directly()
-                          if (blk_mq_hctx_stopped())
-  blk_mq_request_bypass_insert()                  blk_mq_run_hw_queue()
-  blk_mq_run_hw_queue()     blk_mq_run_hw_queue()
-                            blk_mq_insert_request()
-                            return
+         --------------------
+         | RPM0  |   256KB  |
+         | RPM1  |   256KB  |
+         | RPM2  |   128KB  |
+         --------------------
 
-After CPU0 has marked the queue as stopped, CPU1 will see the queue is
-stopped. But before CPU1 puts the request on the dispatch list, CPU2
-receives the interrupt of completion of request, so it will run the
-hardware queue and marks the queue as non-stopped. Meanwhile, CPU1 also
-runs the same hardware queue. After both CPU1 and CPU2 complete
-blk_mq_run_hw_queue(), CPU1 just puts the request to the same hardware
-queue and returns. It misses dispatching a request. Fix it by running
-the hardware queue explicitly. And blk_mq_request_issue_directly()
-should handle a similar situation. Fix it as well.
+The current design stores the FIFO length in a common structure for all
+RPMs (mac_ops). As a result, the FIFO length of the last RPM is applied
+to all RPMs, leading to reduced network performance.
 
-Fixes: d964f04a8fde ("blk-mq: fix direct issue")
-Cc: stable@vger.kernel.org
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241014092934.53630-2-songmuchun@bytedance.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch resolved the problem by storing the fifo length in per MAC
+structure (cgx).
+
+Fixes: b9d0fedc6234 ("octeontx2-af: cn10kb: Add RPM_USX MAC support")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c         | 9 +++++++--
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.h         | 1 +
+ drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h | 5 ++++-
+ drivers/net/ethernet/marvell/octeontx2/af/rpm.c         | 6 +++---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c     | 9 ++++-----
+ 5 files changed, 19 insertions(+), 11 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2619,6 +2619,7 @@ static void blk_mq_try_issue_directly(st
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 27935c54b91bc..2f621714c54e6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -112,6 +112,11 @@ struct mac_ops *get_mac_ops(void *cgxd)
+ 	return ((struct cgx *)cgxd)->mac_ops;
+ }
  
- 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
- 		blk_mq_insert_request(rq, 0);
-+		blk_mq_run_hw_queue(hctx, false);
- 		return;
- 	}
++u32 cgx_get_fifo_len(void *cgxd)
++{
++	return ((struct cgx *)cgxd)->fifo_len;
++}
++
+ void cgx_write(struct cgx *cgx, u64 lmac, u64 offset, u64 val)
+ {
+ 	writeq(val, cgx->reg_base + (lmac << cgx->mac_ops->lmac_offset) +
+@@ -501,7 +506,7 @@ static u32 cgx_get_lmac_fifo_len(void *cgxd, int lmac_id)
+ 	u8 num_lmacs;
+ 	u32 fifo_len;
  
-@@ -2649,6 +2650,7 @@ static blk_status_t blk_mq_request_issue
+-	fifo_len = cgx->mac_ops->fifo_len;
++	fifo_len = cgx->fifo_len;
+ 	num_lmacs = cgx->mac_ops->get_nr_lmacs(cgx);
  
- 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
- 		blk_mq_insert_request(rq, 0);
-+		blk_mq_run_hw_queue(hctx, false);
- 		return BLK_STS_OK;
- 	}
+ 	switch (num_lmacs) {
+@@ -1764,7 +1769,7 @@ static void cgx_populate_features(struct cgx *cgx)
+ 	u64 cfg;
  
+ 	cfg = cgx_read(cgx, 0, CGX_CONST);
+-	cgx->mac_ops->fifo_len = FIELD_GET(CGX_CONST_RXFIFO_SIZE, cfg);
++	cgx->fifo_len = FIELD_GET(CGX_CONST_RXFIFO_SIZE, cfg);
+ 	cgx->max_lmac_per_mac = FIELD_GET(CGX_CONST_MAX_LMACS, cfg);
+ 
+ 	if (is_dev_rpm(cgx))
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
+index dc9ace30554af..f9cd4b58f0c02 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
+@@ -185,4 +185,5 @@ int cgx_lmac_get_pfc_frm_cfg(void *cgxd, int lmac_id, u8 *tx_pause,
+ int verify_lmac_fc_cfg(void *cgxd, int lmac_id, u8 tx_pause, u8 rx_pause,
+ 		       int pfvf_idx);
+ int cgx_lmac_reset(void *cgxd, int lmac_id, u8 pf_req_flr);
++u32 cgx_get_fifo_len(void *cgxd);
+ #endif /* CGX_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h b/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
+index 9ffc6790c5130..c43ff68ef1408 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
+@@ -72,7 +72,6 @@ struct mac_ops {
+ 	u8			irq_offset;
+ 	u8			int_ena_bit;
+ 	u8			lmac_fwi;
+-	u32			fifo_len;
+ 	bool			non_contiguous_serdes_lane;
+ 	/* RPM & CGX differs in number of Receive/transmit stats */
+ 	u8			rx_stats_cnt;
+@@ -142,6 +141,10 @@ struct cgx {
+ 	u8			lmac_count;
+ 	/* number of LMACs per MAC could be 4 or 8 */
+ 	u8			max_lmac_per_mac;
++	/* length of fifo varies depending on the number
++	 * of LMACS
++	 */
++	u32			fifo_len;
+ #define MAX_LMAC_COUNT		8
+ 	struct lmac             *lmac_idmap[MAX_LMAC_COUNT];
+ 	struct			work_struct cgx_cmd_work;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index 9e8c5e4389f8b..22dd50a3fcd3a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -480,7 +480,7 @@ u32 rpm_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	u8 num_lmacs;
+ 	u32 fifo_len;
+ 
+-	fifo_len = rpm->mac_ops->fifo_len;
++	fifo_len = rpm->fifo_len;
+ 	num_lmacs = rpm->mac_ops->get_nr_lmacs(rpm);
+ 
+ 	switch (num_lmacs) {
+@@ -533,9 +533,9 @@ u32 rpm2_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	 */
+ 	max_lmac = (rpm_read(rpm, 0, CGX_CONST) >> 24) & 0xFF;
+ 	if (max_lmac > 4)
+-		fifo_len = rpm->mac_ops->fifo_len / 2;
++		fifo_len = rpm->fifo_len / 2;
+ 	else
+-		fifo_len = rpm->mac_ops->fifo_len;
++		fifo_len = rpm->fifo_len;
+ 
+ 	if (lmac_id < 4) {
+ 		num_lmacs = hweight8(lmac_info & 0xF);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+index 266ecbc1b97a6..4dcd7bfcad4e4 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -923,13 +923,12 @@ int rvu_mbox_handler_cgx_features_get(struct rvu *rvu,
+ 
+ u32 rvu_cgx_get_fifolen(struct rvu *rvu)
+ {
+-	struct mac_ops *mac_ops;
+-	u32 fifo_len;
++	void *cgxd = rvu_first_cgx_pdata(rvu);
+ 
+-	mac_ops = get_mac_ops(rvu_first_cgx_pdata(rvu));
+-	fifo_len = mac_ops ? mac_ops->fifo_len : 0;
++	if (!cgxd)
++		return 0;
+ 
+-	return fifo_len;
++	return cgx_get_fifo_len(cgxd);
+ }
+ 
+ u32 rvu_cgx_get_lmac_fifolen(struct rvu *rvu, int cgx, int lmac)
+-- 
+2.43.0
+
 
 
 
