@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-97385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B064F9E2464
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C73E9E25EB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E3C516D493
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E6F9BC6D52
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26AAD1F8AC8;
-	Tue,  3 Dec 2024 15:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F92205E07;
+	Tue,  3 Dec 2024 15:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJqCgXPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfLXzSb0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ED81DFD91;
-	Tue,  3 Dec 2024 15:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C5D1F76B0;
+	Tue,  3 Dec 2024 15:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240332; cv=none; b=FGGM1RX2sI4S5BN/aEgWrsNhWAl3M+zFYszeuWe7it3AJDqgsup0yZlCwZ/XQmabKQi5XM6mjoTtqmur6w4F5Yr1cSnOuRIKGz6RgbKvjEdYe/3jeQwUbOoo8TK8DcuSsHOZY543s6KqlOP2jPiYZLaIc5ZUD5ESbLo9gZZmjgI=
+	t=1733240252; cv=none; b=FhFonZmm3U939G4GLXlVcD99f0yW5eKUMssBhQFRDKW5JZpPf+ifgtsAQwYbIFW8NrIO7rNh17qbfJrsvIwTMcTCbWnIEUI9reucLJqDqdDtyOm23rM2UeWMm3UZzc0Ylo3rJpBEL+9H9C+65a4WOF/9q08Jqz9lW6ZnREQcWWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240332; c=relaxed/simple;
-	bh=ByEpBofXjwP/wxm7st9UUvmjQJlTT2WAXHvYU094jKg=;
+	s=arc-20240116; t=1733240252; c=relaxed/simple;
+	bh=QnGtHT0vSrZP09lkM37ZP+X3HI1ADRn16q1AUYfY1YI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBZLYg44nxctZVxB8a9ZuiujzXef6bMhVwy2xzMnaxSUWhxa9GfUQZNlebSZzWswyAOk1BWig77Xcpywnfk3zVlIwqet114Sh8aHx+vSy3E57h5LbHIlP5u0k9GHE7zsUDKWwAVp9VTwC2TOgde0h2bgZ0yWl6wkTyGlaAVQxhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJqCgXPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BDDC4CECF;
-	Tue,  3 Dec 2024 15:38:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ienZ5pYPDCpaszw9VL2ERpEEiSHQDFi1pA1rebhEGorTsnzrHXqJHZv/tWa97oc3s/7+PUdEHR4JEO+mUSGm7IulmuvY4PUjBZ6s3FX3wpotJLv/KL+KMU4kwG20kSzfx+DRwO9FJmroUbBTSqbWppQFzARoiQW2bsvnCrEeXZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfLXzSb0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27D6C4CECF;
+	Tue,  3 Dec 2024 15:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240332;
-	bh=ByEpBofXjwP/wxm7st9UUvmjQJlTT2WAXHvYU094jKg=;
+	s=korg; t=1733240252;
+	bh=QnGtHT0vSrZP09lkM37ZP+X3HI1ADRn16q1AUYfY1YI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJqCgXPIcBZ/OTYTWU42Yql0HBZJb0ItJNxycB1szujMHTp+qjuhC7vvYsDQNSjuZ
-	 YfHEsS5v1hEHMUhl+M9fKSGtF80xKSeavrZOIUtYCZ/xB8fdhs2vFBSOIqp4j7/cgr
-	 GRf4i8L/YSdz8YlLoaYiC9o7p7OaGbZEctXGNam4=
+	b=IfLXzSb0eAy75hCMGmxTfJHqIUVP1SrWvezb+2ynQYC/M6GKWlK+FpdSrf1nVLeFB
+	 6yx5AjZsUkwY4ln0a+uBRYiLI5nJ59iQW7B/qVcy+BovPsbX0h1dtM4UP4TCiqW2yb
+	 dmUoxxvXWffqhensgp4askPmQaASFjbGf1v2Ki14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Chen Ridong <chenridong@huawei.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/826] hwmon: (nct6775-core) Fix overflows seen when writing limit attributes
-Date: Tue,  3 Dec 2024 15:36:39 +0100
-Message-ID: <20241203144746.281446863@linuxfoundation.org>
+Subject: [PATCH 6.12 076/826] crypto: caam - add error check to caam_rsa_set_priv_key_form
+Date: Tue,  3 Dec 2024 15:36:43 +0100
+Message-ID: <20241203144746.435739384@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -60,61 +62,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit 57ee12b6c514146c19b6a159013b48727a012960 ]
+[ Upstream commit b64140c74e954f1db6eae5548ca3a1f41b6fad79 ]
 
-DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
-number such as 18446744073709551615 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+The caam_rsa_set_priv_key_form did not check for memory allocation errors.
+Add the checks to the caam_rsa_set_priv_key_form functions.
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Fixes: c3963bc0a0cf ("hwmon: (nct6775) Split core and platform driver")
-Message-ID: <7d5084cea33f7c0fd0578c59adfff71f93de94d9.1731375425.git.xiaopei01@kylinos.cn>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 52e26d77b8b3 ("crypto: caam - add support for RSA key form 2")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Gaurav Jain <gaurav.jain@nxp.com>
+Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/crypto/caam/caampkc.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index 934fed3dd5866..ee04795b98aab 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -2878,8 +2878,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
- 	if (err < 0)
- 		return err;
+diff --git a/drivers/crypto/caam/caampkc.c b/drivers/crypto/caam/caampkc.c
+index 887a5f2fb9279..cb001aa1de661 100644
+--- a/drivers/crypto/caam/caampkc.c
++++ b/drivers/crypto/caam/caampkc.c
+@@ -984,7 +984,7 @@ static int caam_rsa_set_pub_key(struct crypto_akcipher *tfm, const void *key,
+ 	return -ENOMEM;
+ }
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0,
--			data->target_temp_mask);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, data->target_temp_mask * 1000), 1000);
+-static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
++static int caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
+ 				       struct rsa_key *raw_key)
+ {
+ 	struct caam_rsa_key *rsa_key = &ctx->key;
+@@ -994,7 +994,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
  
- 	mutex_lock(&data->update_lock);
- 	data->target_temp[nr] = val;
-@@ -2959,7 +2958,7 @@ store_temp_tolerance(struct device *dev, struct device_attribute *attr,
- 		return err;
+ 	rsa_key->p = caam_read_raw_data(raw_key->p, &p_sz);
+ 	if (!rsa_key->p)
+-		return;
++		return -ENOMEM;
+ 	rsa_key->p_sz = p_sz;
  
- 	/* Limit tolerance as needed */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, data->tolerance_mask);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, data->tolerance_mask * 1000), 1000);
+ 	rsa_key->q = caam_read_raw_data(raw_key->q, &q_sz);
+@@ -1029,7 +1029,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
  
- 	mutex_lock(&data->update_lock);
- 	data->temp_tolerance[index][nr] = val;
-@@ -3085,7 +3084,7 @@ store_weight_temp(struct device *dev, struct device_attribute *attr,
- 	if (err < 0)
- 		return err;
+ 	rsa_key->priv_form = FORM3;
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
+-	return;
++	return 0;
  
- 	mutex_lock(&data->update_lock);
- 	data->weight_temp[index][nr] = val;
+ free_dq:
+ 	kfree_sensitive(rsa_key->dq);
+@@ -1043,6 +1043,7 @@ static void caam_rsa_set_priv_key_form(struct caam_rsa_ctx *ctx,
+ 	kfree_sensitive(rsa_key->q);
+ free_p:
+ 	kfree_sensitive(rsa_key->p);
++	return -ENOMEM;
+ }
+ 
+ static int caam_rsa_set_priv_key(struct crypto_akcipher *tfm, const void *key,
+@@ -1088,7 +1089,9 @@ static int caam_rsa_set_priv_key(struct crypto_akcipher *tfm, const void *key,
+ 	rsa_key->e_sz = raw_key.e_sz;
+ 	rsa_key->n_sz = raw_key.n_sz;
+ 
+-	caam_rsa_set_priv_key_form(ctx, &raw_key);
++	ret = caam_rsa_set_priv_key_form(ctx, &raw_key);
++	if (ret)
++		goto err;
+ 
+ 	return 0;
+ 
 -- 
 2.43.0
 
