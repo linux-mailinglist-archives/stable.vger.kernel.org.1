@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7AE9E2B45
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:45:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3DF9E2A69
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14BD6BE36F8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D907FBA53A9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97FF1F76AB;
-	Tue,  3 Dec 2024 15:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C411F7561;
+	Tue,  3 Dec 2024 15:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdNkS7/5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPYmpb0y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956F81F754A;
-	Tue,  3 Dec 2024 15:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5A51EF0AE;
+	Tue,  3 Dec 2024 15:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241186; cv=none; b=bKZf4FtObcpH0Cf132DVoLjzqKja+X49uvbkjlJhUQ6k/OccN1swjmToxvO64bedmgToRMmAAj2TnJGkZqZtFv/qDLXBtKX0BqK8T9jpL+pkepf8Eva05Cbh6FtXEHYUpR89Mt+yF13XNwv1PeOcKznko0wi5nZ7s6tdDqvhYBo=
+	t=1733239245; cv=none; b=YUxAraW2W6TNuIR2rBdGVgFhrhSBOQZXhFyFFa+d79j1M32GPNoS8ZbfhXqbAn3nCEmuBmLk0wThI8BPyDggU7HThr3+D1jEWWid1fphXmLd9i+gDwxPciB0sMc9QBtq6zGBlukdY/AqUHKwhF6SC4GqwTGet24OIzKguK/ur1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241186; c=relaxed/simple;
-	bh=yZaoxfks6jFWJ89Hs5GFplxN89xlKmachmzNOnTEdsE=;
+	s=arc-20240116; t=1733239245; c=relaxed/simple;
+	bh=sk7oLW0krlDKf6VurJ75nkzqiBqw//+/PQons4MUPzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QjkSdXfoDqu8+twTDkDDKYmGmOegnEZ+Rmo/XhugnaaFwIVfqewS/VOnZIt55SjL+BEPpGhjPHk9O9cZ4g1FqrVIkB8rlZfzvySSGAIzBEX1lJwhR0Ur29FJHtcKgJoO4HJSJZpgyl8jDAHyUNW1IXEqeLG3F9TmPZa3UuTnTEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdNkS7/5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E36C4CECF;
-	Tue,  3 Dec 2024 15:53:05 +0000 (UTC)
+	 MIME-Version; b=QmxABHzyNb930OJPMMOrG0TY5Acv0uSLR107JtHT47pSQOHdrSCjQptyIAF31jRFqoYtTN1wi/ibnXeCRB8Gpb7Stbd1Rxvd7i7+ihmBnfmx9m9RRaNnvHabwLU+VQemNDeU6yunOBJwZ04b9hgSApdf6mIvFwP2q0TnlEd05aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPYmpb0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DD9C4CECF;
+	Tue,  3 Dec 2024 15:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241186;
-	bh=yZaoxfks6jFWJ89Hs5GFplxN89xlKmachmzNOnTEdsE=;
+	s=korg; t=1733239245;
+	bh=sk7oLW0krlDKf6VurJ75nkzqiBqw//+/PQons4MUPzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdNkS7/5nfD+i70ayq2Qpf43KvCFKhQ+prf6T0Dqi0Q8SSKMgxjTx23CQ5msPDPMH
-	 PaHrI3RHxsKvYMhxuyZEmP+B8pcpP6AuISaDKO9hGZF64WHePXndO7ehFH5vr2+MSt
-	 XgFVxrUI3ErB0Ndg3KdQDYOiDKlLZw/wLJJRREMQ=
+	b=vPYmpb0ymbjuI5eJK4i6Qc7IuLRi8QiVIyDWxm6rEDlYx9WRsSByG0G4G0RU8cNTp
+	 2PTzIYxLH+q+Xa7JwcLLnnjxcr2wWz4mJ04TIEGXuA0/pZjky4P+zdjbNw9MWtYlBn
+	 ojC0XUsjZMlPU4Sczjm9BiY8al9Bf+YvjYVsEqXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 350/826] dlm: fix dlm_recover_members refcount on error
-Date: Tue,  3 Dec 2024 15:41:17 +0100
-Message-ID: <20241203144757.416222170@linuxfoundation.org>
+Subject: [PATCH 6.11 506/817] perf ftrace latency: Fix unit on histogram first entry when using --use-nsec
+Date: Tue,  3 Dec 2024 15:41:18 +0100
+Message-ID: <20241203144015.624107960@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
 
-[ Upstream commit 200b977ebbc313a59174ba971006a231b3533dc5 ]
+[ Upstream commit 064d569e20e82c065b1dec9d20c29c7087bb1a00 ]
 
-If dlm_recover_members() fails we don't drop the references of the
-previous created root_list that holds and keep all rsbs alive during the
-recovery. It might be not an unlikely event because ping_members() could
-run into an -EINTR if another recovery progress was triggered again.
+The use_nsec arg wasn't being taken into account when printing the first
+histogram entry, fix it:
 
-Fixes: 3a747f4a2ee8 ("dlm: move rsb root_list to ls_recover() stack")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+  root@number:~# perf ftrace latency --use-nsec -T switch_mm_irqs_off -a sleep 2
+  #   DURATION     |      COUNT | GRAPH                                          |
+       0 - 1    us |          0 |                                                |
+       1 - 2    ns |          0 |                                                |
+       2 - 4    ns |          0 |                                                |
+       4 - 8    ns |          0 |                                                |
+       8 - 16   ns |          0 |                                                |
+      16 - 32   ns |          0 |                                                |
+      32 - 64   ns |        125 |                                                |
+      64 - 128  ns |        335 |                                                |
+     128 - 256  ns |       2155 | ####                                           |
+     256 - 512  ns |       9996 | ###################                            |
+     512 - 1024 ns |       4958 | #########                                      |
+       1 - 2    us |       4636 | #########                                      |
+       2 - 4    us |       1053 | ##                                             |
+       4 - 8    us |         15 |                                                |
+       8 - 16   us |          1 |                                                |
+      16 - 32   us |          0 |                                                |
+      32 - 64   us |          0 |                                                |
+      64 - 128  us |          0 |                                                |
+     128 - 256  us |          0 |                                                |
+     256 - 512  us |          0 |                                                |
+     512 - 1024 us |          0 |                                                |
+       1 - ...  ms |          0 |                                                |
+  root@number:~#
+
+After:
+
+  root@number:~# perf ftrace latency --use-nsec -T switch_mm_irqs_off -a sleep 2
+  #   DURATION     |      COUNT | GRAPH                                          |
+       0 - 1    ns |          0 |                                                |
+       1 - 2    ns |          0 |                                                |
+       2 - 4    ns |          0 |                                                |
+       4 - 8    ns |          0 |                                                |
+       8 - 16   ns |          0 |                                                |
+      16 - 32   ns |          0 |                                                |
+      32 - 64   ns |         19 |                                                |
+      64 - 128  ns |         94 |                                                |
+     128 - 256  ns |       2191 | ####                                           |
+     256 - 512  ns |       9719 | ####################                           |
+     512 - 1024 ns |       5330 | ###########                                    |
+       1 - 2    us |       4104 | ########                                       |
+       2 - 4    us |        807 | #                                              |
+       4 - 8    us |          9 |                                                |
+       8 - 16   us |          0 |                                                |
+      16 - 32   us |          0 |                                                |
+      32 - 64   us |          0 |                                                |
+      64 - 128  us |          0 |                                                |
+     128 - 256  us |          0 |                                                |
+     256 - 512  us |          0 |                                                |
+     512 - 1024 us |          0 |                                                |
+       1 - ...  ms |          0 |                                                |
+  root@number:~#
+
+Fixes: 84005bb6148618cc ("perf ftrace latency: Add -n/--use-nsec option")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/r/ZyE3frB-hMXHCnMO@x1
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/recoverd.c | 2 +-
+ tools/perf/builtin-ftrace.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/dlm/recoverd.c b/fs/dlm/recoverd.c
-index 34f4f9f49a6ce..12272a8f6d75f 100644
---- a/fs/dlm/recoverd.c
-+++ b/fs/dlm/recoverd.c
-@@ -151,7 +151,7 @@ static int ls_recover(struct dlm_ls *ls, struct dlm_recover *rv)
- 	error = dlm_recover_members(ls, rv, &neg);
- 	if (error) {
- 		log_rinfo(ls, "dlm_recover_members error %d", error);
--		goto fail;
-+		goto fail_root_list;
- 	}
+diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
+index eb30c8eca4887..8eab3cdb2c6de 100644
+--- a/tools/perf/builtin-ftrace.c
++++ b/tools/perf/builtin-ftrace.c
+@@ -771,7 +771,7 @@ static void display_histogram(int buckets[], bool use_nsec)
  
- 	dlm_recover_dir_nodeid(ls, &root_list);
+ 	bar_len = buckets[0] * bar_total / total;
+ 	printf("  %4d - %-4d %s | %10d | %.*s%*s |\n",
+-	       0, 1, "us", buckets[0], bar_len, bar, bar_total - bar_len, "");
++	       0, 1, use_nsec ? "ns" : "us", buckets[0], bar_len, bar, bar_total - bar_len, "");
+ 
+ 	for (i = 1; i < NUM_BUCKET - 1; i++) {
+ 		int start = (1 << (i - 1));
 -- 
 2.43.0
 
