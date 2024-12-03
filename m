@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-98075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308859E2723
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689709E283B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:54:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC8DC169097
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87350B3CF07
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064601F8ACF;
-	Tue,  3 Dec 2024 16:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CCD1F8AFB;
+	Tue,  3 Dec 2024 16:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5eH2G9F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODYH4Eyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A8814A088;
-	Tue,  3 Dec 2024 16:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F821F8AD6;
+	Tue,  3 Dec 2024 16:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242707; cv=none; b=ka6oFQmMNW30COch1mZuElzQPp8bcbQ6PPTu9syl+op8aEf3Ti0412c/uQSLADQv6GYtGu2ipvBjn6Ty7Jolk1TzpBr0cg+5xWkllkSmUO4x3U1kFxYgKrJ01foYvP1Z1vv8cqg52j+7PmyYGv+NqSJJ4tCi7muPv6rnq/a2mCs=
+	t=1733242717; cv=none; b=q+MGAoImEC8qVTD4kdy6jlHwj5qeSKP+uYS4NBNySBteebpzDwhXE7F9CACwnSUEdYbza24unJPMwwXnUmROdMwHJt6/nDnBQpl1Fph9tTKBiIw1vAc2o9pWzZXAHebgxRGkYhAvwUkgcVB+bEPL/gWva22l6y5EI8RWMDg3ia4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242707; c=relaxed/simple;
-	bh=vb9qe00pEsp6AzZfP4dGcWzcN7V7S/Nc/XG50OYeBGo=;
+	s=arc-20240116; t=1733242717; c=relaxed/simple;
+	bh=DGDwVgzNl3OSRYfY32HWIegXBFc6J72fvHzWvs9G5LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qA0k664SFB/GQWKVpPNbMWaWA/Kuw9LTwdkY15eBYBFk2d+5/ALBslBBStzde5Fbhu4d08sZSb/c0qwVLjPZIVkjGlVHLpm8nxjLqqlnFRmAgQIG+Sw16vS0/jsT6/dYUGd9TbqaYTWHH7RZTNrWzKKdQ0B6NnN6jLNpj8kuFVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5eH2G9F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B208C4CECF;
-	Tue,  3 Dec 2024 16:18:27 +0000 (UTC)
+	 MIME-Version; b=IWwfjkpmrYo11Yv80j5W79rtL7ZBJvyyZ0Q0hKo4uwUFQIK3X+TKXLofCPO/M8IAKEI01snPc1ZOaYaKZZUipLGpTaTpPWGxAzr969+fBS82c91lhzIH/lv44Oej7XKamyIUVaEIz4kxd/UI2KKC7DF/+V4UwUTQ4lZnQNvrrpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODYH4Eyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3607C4CECF;
+	Tue,  3 Dec 2024 16:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242707;
-	bh=vb9qe00pEsp6AzZfP4dGcWzcN7V7S/Nc/XG50OYeBGo=;
+	s=korg; t=1733242717;
+	bh=DGDwVgzNl3OSRYfY32HWIegXBFc6J72fvHzWvs9G5LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5eH2G9FWXzB4GO+V225OiAJHmWJgIQtQwZGCiC6sTSrBmisGcrSHDh87/yLLTcoV
-	 1sX8eqf5UOc7sH/GJDjQGq4Cbg9RMil5JOZ7dyfD2ltIRQosl2GN8cEF+vzbSwdOa2
-	 C9ourkbwiA3ngJdCPUi7NcXN1ZRgSHTyfTb8wUik=
+	b=ODYH4EyjuD/CnuYA5uraZRRV8C5OlZNPhWIPb3gwv09UtRwlib1h53BHyKTMrF3eg
+	 aEwYklcZpDaUZBv0OEFrii7sUTjRp20vpcBTFiUabCh4OjpbFw8ZSkauk/TqqkG/e9
+	 aCyBefeXsP6Ee+pA6Blh2rpW69UI9anLHBu+D4Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Aurich <paul@darkrain42.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 753/826] smb: Dont leak cfid when reconnect races with open_cached_dir
-Date: Tue,  3 Dec 2024 15:48:00 +0100
-Message-ID: <20241203144813.136194567@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Subject: [PATCH 6.12 756/826] usb: misc: ljca: set small runtime autosuspend delay
+Date: Tue,  3 Dec 2024 15:48:03 +0100
+Message-ID: <20241203144813.255487223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,227 +66,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Aurich <paul@darkrain42.org>
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-commit 7afb86733685c64c604d32faf00fa4a1f22c2ab1 upstream.
+commit 2481af79671a6603fce201cbbc48f31e488e9fae upstream.
 
-open_cached_dir() may either race with the tcon reconnection even before
-compound_send_recv() or directly trigger a reconnection via
-SMB2_open_init() or SMB_query_info_init().
+On some Lenovo platforms, the patch works around problems with ov2740
+sensor initialization, which manifest themself like below:
 
-The reconnection process invokes invalidate_all_cached_dirs() via
-cifs_mark_open_files_invalid(), which removes all cfids from the
-cfids->entries list but doesn't drop a ref if has_lease isn't true. This
-results in the currently-being-constructed cfid not being on the list,
-but still having a refcount of 2. It leaks if returned from
-open_cached_dir().
+[    4.540476] ov2740 i2c-INT3474:01: error -EIO: failed to find sensor
+[    4.542066] ov2740 i2c-INT3474:01: probe with driver ov2740 failed with error -5
 
-Fix this by setting cfid->has_lease when the ref is actually taken; the
-cfid will not be used by other threads until it has a valid time.
+or
 
-Addresses these kmemleaks:
+[    7.742633] ov2740 i2c-INT3474:01: chip id mismatch: 2740 != 0
+[    7.742638] ov2740 i2c-INT3474:01: error -ENXIO: failed to find sensor
 
-unreferenced object 0xffff8881090c4000 (size 1024):
-  comm "bash", pid 1860, jiffies 4295126592
-  hex dump (first 32 bytes):
-    00 01 00 00 00 00 ad de 22 01 00 00 00 00 ad de  ........".......
-    00 ca 45 22 81 88 ff ff f8 dc 4f 04 81 88 ff ff  ..E"......O.....
-  backtrace (crc 6f58c20f):
-    [<ffffffff8b895a1e>] __kmalloc_cache_noprof+0x2be/0x350
-    [<ffffffff8bda06e3>] open_cached_dir+0x993/0x1fb0
-    [<ffffffff8bdaa750>] cifs_readdir+0x15a0/0x1d50
-    [<ffffffff8b9a853f>] iterate_dir+0x28f/0x4b0
-    [<ffffffff8b9a9aed>] __x64_sys_getdents64+0xfd/0x200
-    [<ffffffff8cf6da05>] do_syscall_64+0x95/0x1a0
-    [<ffffffff8d00012f>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
-unreferenced object 0xffff8881044fdcf8 (size 8):
-  comm "bash", pid 1860, jiffies 4295126592
-  hex dump (first 8 bytes):
-    00 cc cc cc cc cc cc cc                          ........
-  backtrace (crc 10c106a9):
-    [<ffffffff8b89a3d3>] __kmalloc_node_track_caller_noprof+0x363/0x480
-    [<ffffffff8b7d7256>] kstrdup+0x36/0x60
-    [<ffffffff8bda0700>] open_cached_dir+0x9b0/0x1fb0
-    [<ffffffff8bdaa750>] cifs_readdir+0x15a0/0x1d50
-    [<ffffffff8b9a853f>] iterate_dir+0x28f/0x4b0
-    [<ffffffff8b9a9aed>] __x64_sys_getdents64+0xfd/0x200
-    [<ffffffff8cf6da05>] do_syscall_64+0x95/0x1a0
-    [<ffffffff8d00012f>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
+and also by random failures of video stream start.
 
-And addresses these BUG splats when unmounting the SMB filesystem:
+Issue can be reproduced by this script:
 
-BUG: Dentry ffff888140590ba0{i=1000000000080,n=/}  still in use (2) [unmount of cifs cifs]
-WARNING: CPU: 3 PID: 3433 at fs/dcache.c:1536 umount_check+0xd0/0x100
-Modules linked in:
-CPU: 3 UID: 0 PID: 3433 Comm: bash Not tainted 6.12.0-rc4-g850925a8133c-dirty #49
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:umount_check+0xd0/0x100
-Code: 8d 7c 24 40 e8 31 5a f4 ff 49 8b 54 24 40 41 56 49 89 e9 45 89 e8 48 89 d9 41 57 48 89 de 48 c7 c7 80 e7 db ac e8 f0 72 9a ff <0f> 0b 58 31 c0 5a 5b 5d 41 5c 41 5d 41 5e 41 5f e9 2b e5 5d 01 41
-RSP: 0018:ffff88811cc27978 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: ffff888140590ba0 RCX: ffffffffaaf20bae
-RDX: dffffc0000000000 RSI: 0000000000000008 RDI: ffff8881f6fb6f40
-RBP: ffff8881462ec000 R08: 0000000000000001 R09: ffffed1023984ee3
-R10: ffff88811cc2771f R11: 00000000016cfcc0 R12: ffff888134383e08
-R13: 0000000000000002 R14: ffff8881462ec668 R15: ffffffffaceab4c0
-FS:  00007f23bfa98740(0000) GS:ffff8881f6f80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000556de4a6f808 CR3: 0000000123c80000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- d_walk+0x6a/0x530
- shrink_dcache_for_umount+0x6a/0x200
- generic_shutdown_super+0x52/0x2a0
- kill_anon_super+0x22/0x40
- cifs_kill_sb+0x159/0x1e0
- deactivate_locked_super+0x66/0xe0
- cleanup_mnt+0x140/0x210
- task_work_run+0xfb/0x170
- syscall_exit_to_user_mode+0x29f/0x2b0
- do_syscall_64+0xa1/0x1a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f23bfb93ae7
-Code: ff ff ff ff c3 66 0f 1f 44 00 00 48 8b 0d 11 93 0d 00 f7 d8 64 89 01 b8 ff ff ff ff eb bf 0f 1f 44 00 00 b8 50 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e9 92 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffee9138598 EFLAGS: 00000246 ORIG_RAX: 0000000000000050
-RAX: 0000000000000000 RBX: 0000558f1803e9a0 RCX: 00007f23bfb93ae7
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: 0000558f1803e9a0
-RBP: 0000558f1803e600 R08: 0000000000000007 R09: 0000558f17fab610
-R10: d91d5ec34ab757b0 R11: 0000000000000246 R12: 0000000000000001
-R13: 0000000000000000 R14: 0000000000000015 R15: 0000000000000000
- </TASK>
-irq event stamp: 1163486
-hardirqs last  enabled at (1163485): [<ffffffffac98d344>] _raw_spin_unlock_irqrestore+0x34/0x60
-hardirqs last disabled at (1163486): [<ffffffffac97dcfc>] __schedule+0xc7c/0x19a0
-softirqs last  enabled at (1163482): [<ffffffffab79a3ee>] __smb_send_rqst+0x3de/0x990
-softirqs last disabled at (1163480): [<ffffffffac2314f1>] release_sock+0x21/0xf0
----[ end trace 0000000000000000 ]---
+n=0
+k=0
+while [ $n -lt 50 ] ; do
+	sudo modprobe -r ov2740
+	sleep `expr $RANDOM % 5`
+	sudo modprobe ov2740
+	if media-ctl -p  | grep -q ov2740 ; then
+		let k++
+	fi
+	let n++
+done
+echo Success rate $k/$n
 
-VFS: Busy inodes after unmount of cifs (cifs)
-------------[ cut here ]------------
-kernel BUG at fs/super.c:661!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 1 UID: 0 PID: 3433 Comm: bash Tainted: G        W          6.12.0-rc4-g850925a8133c-dirty #49
-Tainted: [W]=WARN
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:generic_shutdown_super+0x290/0x2a0
-Code: e8 15 7c f7 ff 48 8b 5d 28 48 89 df e8 09 7c f7 ff 48 8b 0b 48 89 ee 48 8d 95 68 06 00 00 48 c7 c7 80 7f db ac e8 00 69 af ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 90 90 90 90 90 90
-RSP: 0018:ffff88811cc27a50 EFLAGS: 00010246
-RAX: 000000000000003e RBX: ffffffffae994420 RCX: 0000000000000027
-RDX: 0000000000000000 RSI: ffffffffab06180e RDI: ffff8881f6eb18c8
-RBP: ffff8881462ec000 R08: 0000000000000001 R09: ffffed103edd6319
-R10: ffff8881f6eb18cb R11: 00000000016d3158 R12: ffff8881462ec9c0
-R13: ffff8881462ec050 R14: 0000000000000001 R15: 0000000000000000
-FS:  00007f23bfa98740(0000) GS:ffff8881f6e80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8364005d68 CR3: 0000000123c80000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- kill_anon_super+0x22/0x40
- cifs_kill_sb+0x159/0x1e0
- deactivate_locked_super+0x66/0xe0
- cleanup_mnt+0x140/0x210
- task_work_run+0xfb/0x170
- syscall_exit_to_user_mode+0x29f/0x2b0
- do_syscall_64+0xa1/0x1a0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7f23bfb93ae7
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:generic_shutdown_super+0x290/0x2a0
-Code: e8 15 7c f7 ff 48 8b 5d 28 48 89 df e8 09 7c f7 ff 48 8b 0b 48 89 ee 48 8d 95 68 06 00 00 48 c7 c7 80 7f db ac e8 00 69 af ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 90 90 90 90 90 90
-RSP: 0018:ffff88811cc27a50 EFLAGS: 00010246
-RAX: 000000000000003e RBX: ffffffffae994420 RCX: 0000000000000027
-RDX: 0000000000000000 RSI: ffffffffab06180e RDI: ffff8881f6eb18c8
-RBP: ffff8881462ec000 R08: 0000000000000001 R09: ffffed103edd6319
-R10: ffff8881f6eb18cb R11: 00000000016d3158 R12: ffff8881462ec9c0
-R13: ffff8881462ec050 R14: 0000000000000001 R15: 0000000000000000
-FS:  00007f23bfa98740(0000) GS:ffff8881f6e80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8364005d68 CR3: 0000000123c80000 CR4: 0000000000350ef0
+Without the patch, success rate is approximately 15 or 50 tries.
+With the patch it does not fail.
 
-This reproduces eventually with an SMB mount and two shells running
-these loops concurrently
+This problem is some hardware or firmware malfunction, that can not be
+easy debug and fix. While setting small autosuspend delay is not perfect
+workaround as user can configure it to any value, it will prevent
+the failures by default.
 
-- while true; do
-      cd ~; sleep 1;
-      for i in {1..3}; do cd /mnt/test/subdir;
-          echo $PWD; sleep 1; cd ..; echo $PWD; sleep 1;
-      done;
-      echo ...;
-  done
-- while true; do
-      iptables -F OUTPUT; mount -t cifs -a;
-      for _ in {0..2}; do ls /mnt/test/subdir/ | wc -l; done;
-      iptables -I OUTPUT -p tcp --dport 445 -j DROP;
-      sleep 10
-      echo "unmounting"; umount -l -t cifs -a; echo "done unmounting";
-      sleep 20
-      echo "recovering"; iptables -F OUTPUT;
-      sleep 10;
-  done
+Additionally setting small autosuspend delay should have positive effect
+on power consumption as for most ljca workloads device is used for just
+a few milliseconds flowed by long periods of at least 100ms of inactivity
+(usually more).
 
-Fixes: ebe98f1447bb ("cifs: enable caching of directories for which a lease is held")
-Fixes: 5c86919455c1 ("smb: client: fix use-after-free in smb2_query_info_compound()")
+Fixes: acd6199f195d ("usb: Add support for Intel LJCA device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paul Aurich <paul@darkrain42.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Hans de Goede <hdegoede@redhat.com> # ThinkPad X1 Yoga Gen 8, ov2740
+Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Link: https://lore.kernel.org/r/20241112075514.680712-2-stanislaw.gruszka@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c |   27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/usb/misc/usb-ljca.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -59,6 +59,16 @@ static struct cached_fid *find_or_create
- 	list_add(&cfid->entry, &cfids->entries);
- 	cfid->on_list = true;
- 	kref_get(&cfid->refcount);
+--- a/drivers/usb/misc/usb-ljca.c
++++ b/drivers/usb/misc/usb-ljca.c
+@@ -811,6 +811,14 @@ static int ljca_probe(struct usb_interfa
+ 	if (ret)
+ 		goto err_free;
+ 
 +	/*
-+	 * Set @cfid->has_lease to true during construction so that the lease
-+	 * reference can be put in cached_dir_lease_break() due to a potential
-+	 * lease break right after the request is sent or while @cfid is still
-+	 * being cached, or if a reconnection is triggered during construction.
-+	 * Concurrent processes won't be to use it yet due to @cfid->time being
-+	 * zero.
++	 * This works around problems with ov2740 initialization on some
++	 * Lenovo platforms. The autosuspend delay, has to be smaller than
++	 * the delay after setting the reset_gpio line in ov2740_resume().
++	 * Otherwise the sensor randomly fails to initialize.
 +	 */
-+	cfid->has_lease = true;
++	pm_runtime_set_autosuspend_delay(&usb_dev->dev, 10);
 +
- 	spin_unlock(&cfids->cfid_list_lock);
- 	return cfid;
- }
-@@ -176,12 +186,12 @@ replay_again:
- 		return -ENOENT;
- 	}
- 	/*
--	 * Return cached fid if it has a lease.  Otherwise, it is either a new
--	 * entry or laundromat worker removed it from @cfids->entries.  Caller
--	 * will put last reference if the latter.
-+	 * Return cached fid if it is valid (has a lease and has a time).
-+	 * Otherwise, it is either a new entry or laundromat worker removed it
-+	 * from @cfids->entries.  Caller will put last reference if the latter.
- 	 */
- 	spin_lock(&cfids->cfid_list_lock);
--	if (cfid->has_lease) {
-+	if (cfid->has_lease && cfid->time) {
- 		spin_unlock(&cfids->cfid_list_lock);
- 		*ret_cfid = cfid;
- 		kfree(utf16_path);
-@@ -267,15 +277,6 @@ replay_again:
+ 	usb_enable_autosuspend(usb_dev);
  
- 	smb2_set_related(&rqst[1]);
- 
--	/*
--	 * Set @cfid->has_lease to true before sending out compounded request so
--	 * its lease reference can be put in cached_dir_lease_break() due to a
--	 * potential lease break right after the request is sent or while @cfid
--	 * is still being cached.  Concurrent processes won't be to use it yet
--	 * due to @cfid->time being zero.
--	 */
--	cfid->has_lease = true;
--
- 	if (retries) {
- 		smb2_set_replay(server, &rqst[0]);
- 		smb2_set_replay(server, &rqst[1]);
+ 	return 0;
 
 
 
