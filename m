@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-96541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317FE9E215E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA8A9E218B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19D4AB8359A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D9EDB63534
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B0F1F6696;
-	Tue,  3 Dec 2024 14:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1481F7555;
+	Tue,  3 Dec 2024 14:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="df6b9Frs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhfsxVyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB63E1F4709;
-	Tue,  3 Dec 2024 14:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BF21F706C;
+	Tue,  3 Dec 2024 14:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237842; cv=none; b=h24/Blhl4PKff+93c47sCXtJ/f67lV+Ndf3VJqE18TjyBbA26Ynb+NH0xNihGf5OzE27C47xyzYxUybpiYuzUL1cU1lDEtSmhvbqzlNSRWgfob3c6DfhaIngCYTHorEHbIzF7vAGG99G2VghHuuZXh+Frv/Sj46/VOnck8OLAeU=
+	t=1733237904; cv=none; b=pblPoIMlKU2cGhvDfMh/YCZxb4REnQaHe08YYkZDepXgnhbE3N410+AdJ5kk6mZFo4ByIU33/7ZSaY8Unvbdw3KPGxT0V3FDMELeqr7jTDnXxjqObEZRMli3jz2O3QZOU3IpXSU1McblEwSG4/JVWbmk5w0k3pDUpQogk2RL5/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237842; c=relaxed/simple;
-	bh=okTR3qavnKt9NpcADArA5ywEG4QFJAlivnJ81YSiV+Q=;
+	s=arc-20240116; t=1733237904; c=relaxed/simple;
+	bh=hYBjyJfdc6GR+Ko6Bb8+mPTRWoeC5s94IG1jOlJ86Yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Swp41AOmeZAqfhgxPA0fy4rghUHcC83WfRUjsEdyMLHhIqggU9+6EYYjS9gmthePuZa3lTJzcPoP9KZQk9XHmgJlPLunuI2e9+fI86B/PZrMQ64ClqKdDligd0lagtB+pclkheI3b49DbARcXZXf1nbCfVU1A8pkimmmJvAUpZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=df6b9Frs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFADFC4CECF;
-	Tue,  3 Dec 2024 14:57:21 +0000 (UTC)
+	 MIME-Version; b=TkIPX1f/zAgvKM0iagKvss5EVyOr1/RKq6bpTALHon5WjBPpGe6vXOjiN0OnZJYUv+/VL68ewNKBtzmHiRXefW30VTQzykaRW0ZhAgfroWxz41h1K4D95i5C+MXtgma+3xdOS4Z/PuE9oeSLc3pri/Gw1tZKf1xH501g29EIoes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhfsxVyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3C8C4CECF;
+	Tue,  3 Dec 2024 14:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237842;
-	bh=okTR3qavnKt9NpcADArA5ywEG4QFJAlivnJ81YSiV+Q=;
+	s=korg; t=1733237904;
+	bh=hYBjyJfdc6GR+Ko6Bb8+mPTRWoeC5s94IG1jOlJ86Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=df6b9FrsjqnHMjwQe5daKk1xbaWCrlpOn5/cLUruDaJKjDvTAZF3YDpTCMI9jCtcx
-	 b9M0+Ql4+HqJJvyqUroCURCR+cgews6o/0RsljerzzZElZR7HaZo8Uf5nSANkT3vu4
-	 OXPftwEmrFNrCCsrBvUAsv2LG3SY18mIlrXvXOiM=
+	b=JhfsxVyKoKz8jaUatcDeFwgoaJcvvNkfk6rr9pm6qJOexLS9/1iOeTMOjyB2kdvGg
+	 ypi9bb1EP4zH8P/n94RwEm0mXAzVUla4pqlhwnjOqHok7jwfDTcBUHohhydTsVs9RL
+	 S0PU4WTmSCo23jq+iODbGsd/b5DlsJ1HCsJvq1IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Palmer <daniel@0x0f.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 068/817] m68k: mvme147: Fix SCSI controller IRQ numbers
-Date: Tue,  3 Dec 2024 15:34:00 +0100
-Message-ID: <20241203143958.343035460@linuxfoundation.org>
+Subject: [PATCH 6.11 071/817] acpi/arm64: Adjust error handling procedure in gtdt_parse_timer_block()
+Date: Tue,  3 Dec 2024 15:34:03 +0100
+Message-ID: <20241203143958.459757809@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,44 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Daniel Palmer <daniel@0x0f.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 47bc874427382018fa2e3e982480e156271eee70 ]
+[ Upstream commit 1a9de2f6fda69d5f105dd8af776856a66abdaa64 ]
 
-Sometime long ago the m68k IRQ code was refactored and the interrupt
-numbers for SCSI controller on this board ended up wrong, and it hasn't
-worked since.
+In case of error in gtdt_parse_timer_block() invalid 'gtdt_frame'
+will be used in 'do {} while (i-- >= 0 && gtdt_frame--);' statement block
+because do{} block will be executed even if 'i == 0'.
 
-The PCC adds 0x40 to the vector for its interrupts so they end up in
-the user interrupt range. Hence, the kernel number should be the kernel
-offset for user interrupt range + the PCC interrupt number.
+Adjust error handling procedure by replacing 'i-- >= 0' with 'i-- > 0'.
 
-Fixes: 200a3d352cd5 ("[PATCH] m68k: convert VME irq code")
-Signed-off-by: Daniel Palmer <daniel@0x0f.com>
-Reviewed-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/0e7636a21a0274eea35bfd5d874459d5078e97cc.1727926187.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240827101239.22020-1-amishin@t-argos.ru
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/include/asm/mvme147hw.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/arm64/gtdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/m68k/include/asm/mvme147hw.h b/arch/m68k/include/asm/mvme147hw.h
-index e28eb1c0e0bfb..dbf88059e47a4 100644
---- a/arch/m68k/include/asm/mvme147hw.h
-+++ b/arch/m68k/include/asm/mvme147hw.h
-@@ -93,8 +93,8 @@ struct pcc_regs {
- #define M147_SCC_B_ADDR		0xfffe3000
- #define M147_SCC_PCLK		5000000
+diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+index c0e77c1c8e09d..eb6c2d3603874 100644
+--- a/drivers/acpi/arm64/gtdt.c
++++ b/drivers/acpi/arm64/gtdt.c
+@@ -283,7 +283,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
+ 		if (frame->virt_irq > 0)
+ 			acpi_unregister_gsi(gtdt_frame->virtual_timer_interrupt);
+ 		frame->virt_irq = 0;
+-	} while (i-- >= 0 && gtdt_frame--);
++	} while (i-- > 0 && gtdt_frame--);
  
--#define MVME147_IRQ_SCSI_PORT	(IRQ_USER+0x45)
--#define MVME147_IRQ_SCSI_DMA	(IRQ_USER+0x46)
-+#define MVME147_IRQ_SCSI_PORT	(IRQ_USER + 5)
-+#define MVME147_IRQ_SCSI_DMA	(IRQ_USER + 6)
- 
- /* SCC interrupts, for MVME147 */
- 
+ 	return -EINVAL;
+ }
 -- 
 2.43.0
 
