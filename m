@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26AE9E211A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE309E2127
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C5B328592C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12E5E285F27
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214161F75B7;
-	Tue,  3 Dec 2024 15:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2F81F7584;
+	Tue,  3 Dec 2024 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVVVwnK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SurjCit8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8CB1F75A4;
-	Tue,  3 Dec 2024 15:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1831F7560;
+	Tue,  3 Dec 2024 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238447; cv=none; b=Rva9tHLzIANm4fH3hgV9/7cVIAX8PIf0bBN1nK2tWVyS/NTSWLRzqSeqifQp5ghAVKtbZOdqZofmqY7fJKyYMjNpjcv870L2s+RMTGcHeCdytzBRlKFFsUQAqGsMF38lyPwOjGLLvEwHcDJI2+3fqQiGPj+VumCmmldBczcyhL0=
+	t=1733238459; cv=none; b=dAZaS+CkH/GK7qdNc5vTRa9O9x8UKPqRQFLk9DEHn/4d7tDsxBLi2yJ9+VPZ6TJfsFRlMVZlOUBt7/WRo+f3zPxzfv/EDFW7EK7+YIiqvdUcgVGkaGuLkjHJeldbRgxblwO/Ezf+HLacV7/1p/PMVSd8BYe/k/o/fVY1LpzNQzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238447; c=relaxed/simple;
-	bh=/VYkdmWnIwG9xeoov34hp4NyiILoJ18s7TLMODw77Ps=;
+	s=arc-20240116; t=1733238459; c=relaxed/simple;
+	bh=FzKHRwArrEtrlS9QW0CDn7BzYiZQbbIXiGq2Hv2Vc6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NE5IE2B4uwNjKAU4Bd6xff9VKm1EOSc3P5sw3qGUL5gg2725C9Gf2n6qD27N9vvLMGNxStTExuMcF2Y81KUlj1Z8tfDE1SuryIC8x1prsm0w/4MFJ8zB4LElk6txIYsIt+AezJEqImI6aGUqEUImnlz8itKQVxlsgOP/L6+NVeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVVVwnK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E33C4CED8;
-	Tue,  3 Dec 2024 15:07:27 +0000 (UTC)
+	 MIME-Version; b=reyRxmjGQQUgT127W6f3nzcZ0a7YpwYb+pUqhVhkvu/1wqyEzi+oD9QaqMFDAnlSGXUevuUCyAQbQBiX1Wlj69s00XwtdmN0P57ofZ0PB30krJTYcMXSsY7JOr/2WZ6MIUgsQ9OtTvJxbJ8ohnLZ7cokDwpaJuV3Y00Q69CgSKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SurjCit8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECECDC4CED6;
+	Tue,  3 Dec 2024 15:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238447;
-	bh=/VYkdmWnIwG9xeoov34hp4NyiILoJ18s7TLMODw77Ps=;
+	s=korg; t=1733238459;
+	bh=FzKHRwArrEtrlS9QW0CDn7BzYiZQbbIXiGq2Hv2Vc6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVVVwnK2DLadhGL3frPfpS+99reo3ZhuflA52Wg44eD8Uqqbip7XvzNWDamre7OPd
-	 C7SRsWJ8Zl1pxZQaYSAOwJEcIFW8KQt4XQ6DVyzmMSX8GAmQS5Ws39FpMb4i6wE4LM
-	 5AxUyhGd4y4TaQ3JInyvruqwPufqdLf2rGvQHlH4=
+	b=SurjCit8x3fMPOXVpX8P7fESrw4SLlos8WsrXkJ/9QzuoRq4ev6nlymbqQgavuabw
+	 vsOAgGRJb1PKVvNPBfmLQ5hVL4oMumSDJ5p5OAGcPYZcVWZFmt8tHAAwOjHPi0QAp0
+	 yIMT5pGGJfCXFxL9N98f/A2tuJpObKrD/GphNCpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 281/817] drm: fsl-dcu: enable PIXCLK on LS1021A
-Date: Tue,  3 Dec 2024 15:37:33 +0100
-Message-ID: <20241203144006.774305975@linuxfoundation.org>
+Subject: [PATCH 6.11 285/817] drm/msm/dpu: drop LM_3 / LM_4 on MSM8998
+Date: Tue,  3 Dec 2024 15:37:37 +0100
+Message-ID: <20241203144006.933995995@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,86 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ffcde9e44d3e18fde3d18bfff8d9318935413bfd ]
+[ Upstream commit c59afe50773d5c972f6684f9bbd9a2ddb2fb92fa ]
 
-The PIXCLK needs to be enabled in SCFG before accessing certain DCU
-registers, or the access will hang. For simplicity, the PIXCLK is enabled
-unconditionally, resulting in increased power consumption.
+On the MSM8998 platform ther are no LM_3 and LM_4 blocks. Drop them from
+the MSM8998 catalog.
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Fixes: 109eee2f2a18 ("drm/layerscape: Add Freescale DCU DRM driver")
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240926055552.1632448-2-alexander.stein@ew.tq-group.com
+Fixes: 94391a14fc27 ("drm/msm/dpu1: Add MSM8998 to hw catalog")
+Reported-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/612585/
+Link: https://lore.kernel.org/r/20240905-dpu-fix-sdm845-catalog-v1-3-3363d03998bd@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/fsl-dcu/Kconfig           |  1 +
- drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 15 +++++++++++++++
- drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h |  3 +++
- 3 files changed, 19 insertions(+)
+ .../gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h  | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/fsl-dcu/Kconfig b/drivers/gpu/drm/fsl-dcu/Kconfig
-index 5ca71ef873259..c9ee98693b48a 100644
---- a/drivers/gpu/drm/fsl-dcu/Kconfig
-+++ b/drivers/gpu/drm/fsl-dcu/Kconfig
-@@ -8,6 +8,7 @@ config DRM_FSL_DCU
- 	select DRM_PANEL
- 	select REGMAP_MMIO
- 	select VIDEOMODE_HELPERS
-+	select MFD_SYSCON if SOC_LS1021A
- 	help
- 	  Choose this option if you have an Freescale DCU chipset.
- 	  If M is selected the module will be called fsl-dcu-drm.
-diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-index ab6c0c6cd0e2e..c4c3d41ee5309 100644
---- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-+++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
-@@ -100,6 +100,7 @@ static void fsl_dcu_irq_uninstall(struct drm_device *dev)
- static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
- {
- 	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
-+	struct regmap *scfg;
- 	int ret;
- 
- 	ret = fsl_dcu_drm_modeset_init(fsl_dev);
-@@ -108,6 +109,20 @@ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
- 		return ret;
- 	}
- 
-+	scfg = syscon_regmap_lookup_by_compatible("fsl,ls1021a-scfg");
-+	if (PTR_ERR(scfg) != -ENODEV) {
-+		/*
-+		 * For simplicity, enable the PIXCLK unconditionally,
-+		 * resulting in increased power consumption. Disabling
-+		 * the clock in PM or on unload could be implemented as
-+		 * a future improvement.
-+		 */
-+		ret = regmap_update_bits(scfg, SCFG_PIXCLKCR, SCFG_PIXCLKCR_PXCEN,
-+					 SCFG_PIXCLKCR_PXCEN);
-+		if (ret < 0)
-+			return dev_err_probe(dev->dev, ret, "failed to enable pixclk\n");
-+	}
-+
- 	ret = drm_vblank_init(dev, dev->mode_config.num_crtc);
- 	if (ret < 0) {
- 		dev_err(dev->dev, "failed to initialize vblank\n");
-diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
-index e2049a0e8a92a..566396013c04a 100644
---- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
-+++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.h
-@@ -160,6 +160,9 @@
- #define FSL_DCU_ARGB4444		12
- #define FSL_DCU_YUV422			14
- 
-+#define SCFG_PIXCLKCR			0x28
-+#define SCFG_PIXCLKCR_PXCEN		BIT(31)
-+
- #define VF610_LAYER_REG_NUM		9
- #define LS1021A_LAYER_REG_NUM		10
- 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
+index 1d3e9666c7411..64c94e919a698 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
+@@ -156,18 +156,6 @@ static const struct dpu_lm_cfg msm8998_lm[] = {
+ 		.sblk = &msm8998_lm_sblk,
+ 		.lm_pair = LM_5,
+ 		.pingpong = PINGPONG_2,
+-	}, {
+-		.name = "lm_3", .id = LM_3,
+-		.base = 0x47000, .len = 0x320,
+-		.features = MIXER_MSM8998_MASK,
+-		.sblk = &msm8998_lm_sblk,
+-		.pingpong = PINGPONG_NONE,
+-	}, {
+-		.name = "lm_4", .id = LM_4,
+-		.base = 0x48000, .len = 0x320,
+-		.features = MIXER_MSM8998_MASK,
+-		.sblk = &msm8998_lm_sblk,
+-		.pingpong = PINGPONG_NONE,
+ 	}, {
+ 		.name = "lm_5", .id = LM_5,
+ 		.base = 0x49000, .len = 0x320,
 -- 
 2.43.0
 
