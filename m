@@ -1,78 +1,62 @@
-Return-Path: <stable+bounces-96277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D799E1B00
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:32:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 236F49E1ACF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73D69B36D99
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:31:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57EDB3E520
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670FC1E2031;
-	Tue,  3 Dec 2024 10:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AFC1E25F8;
+	Tue,  3 Dec 2024 10:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b="1z6U+VJ2"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="tqaVNbPc"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound-ip168b.ess.barracuda.com (outbound-ip168b.ess.barracuda.com [209.222.82.102])
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030A01E22FC;
-	Tue,  3 Dec 2024 10:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=209.222.82.102
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733221905; cv=fail; b=nxNYy/Q927wVzHHFXJXxtPTPEl9dpLHwWK3aCVMxeQIGks6Lhu3XCJktnJgEiIR+qMSKZO7t1AddF/0R3Yc+gUhRlyaHQNdUx+tqnrds6EYBM038Sn8yampEF2sF6PukFjvs70uehYJ85Hi25Z46F+h7ZjInZ8y+xgDiw5jEl9w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733221905; c=relaxed/simple;
-	bh=nHOmP131y8Oa0pNAcfAJzQe30Jz/Aighg/q+swsXXwk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=buDmVRU8etU/urTEKOkL5xWrLC/Fj6NsO4eBkFR+sU+VSFIQO0XXZn35ufTIfFfprm4p0bZIwdLChJQcsD/okh5EkA8MiGgKUXwCPrkxhmsSUWZ+GvRCKQKghJvhhR08fldbT/qrSTRRzUHCQRSVYN5to/6uh8gYKRE3am5Q2xY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com; spf=pass smtp.mailfrom=ddn.com; dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b=1z6U+VJ2; arc=fail smtp.client-ip=209.222.82.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ddn.com
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2176.outbound.protection.outlook.com [104.47.59.176]) by mx-outbound43-165.us-east-2c.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Tue, 03 Dec 2024 10:31:10 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dmMDBqwW1p1iQDTdmZn7ydxhNfhdmOyaIVuwGcGuX3WGRV6WfZuc31AeR9fqRO2sXh5bGo+OTY+RNuq8VRnLD5gHhQ/GNeO7Mxe++Ei3Mow0CavEJMcesBEaXPTuj46cUweqqVVYT7kgNoqJPT+BZ7eeBhR5CzUz2bBfXb0reeoXi696t5anDI7ObCY9TZoCnyxdORynx6EC5s9Zk5sev76z7Zj70dCN6a3ngMTes07ZPWeaGmgnZ09DMAGyepFauF62PCsvq9q4XKUNvsfqRQIPp6qTVpYuElqHCelRJS7kv29nZzTh2/4nzKPvMAbIteffthVR+kAFPpKSOgqySw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wVm4H8RXRaqZ8LBjd2ZCTdPtiLPehx//xhmLmyaFlEE=;
- b=ina2YTmhmwDi1oCxjTENhC3Dz6IN7CAxOhxl4tAfMx85kXZ+Fbsq6rj7TugPILvOSPzMVS79pzaWp1+oTsYCEoLnu8IzjFO6ZtscfUoXiWm+PvhtKROJ69enaMR6CiUtF1fSjlb6RSeWyS6ByUMV3lO9MvR1SVEy0S+bthYORxeayjY7PhW/uV6U01efwFhbjwS5oSasXYao5fwpXYaC2DzDfAqNmIIEO9W7Bkw6lM/tXaNo2fguFk+7a8YRrWp8MdHXDOpRjKqyJTA+TQpl46gTiwLWuIQ1eDuXJzN5x/tr8R27JukX7kYdn+1kvPQ43ZaOSrx9WVD1AqTDn2MKRw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 50.222.100.11) smtp.rcpttodomain=ddn.com smtp.mailfrom=ddn.com; dmarc=pass
- (p=reject sp=reject pct=100) action=none header.from=ddn.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wVm4H8RXRaqZ8LBjd2ZCTdPtiLPehx//xhmLmyaFlEE=;
- b=1z6U+VJ2fSHHN1WCrLUMeXQUHHk449npu6OGEVvkPomK9LkkAxJ4Jtb+x85mObt21keZODnglEoXyFE9RpIz2wiJ16u+ZZKKiWs6kgqfwCMXZvZGTlxhkqxSXq7Mr2uXkJoWstS7d2pv2czi762mlX4LJA3zurFjUg99zgm226g=
-Received: from CH0PR13CA0005.namprd13.prod.outlook.com (2603:10b6:610:b1::10)
- by CO6PR19MB5402.namprd19.prod.outlook.com (2603:10b6:303:149::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Tue, 3 Dec
- 2024 10:31:07 +0000
-Received: from CH1PEPF0000A345.namprd04.prod.outlook.com
- (2603:10b6:610:b1:cafe::a0) by CH0PR13CA0005.outlook.office365.com
- (2603:10b6:610:b1::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.9 via Frontend Transport; Tue, 3
- Dec 2024 10:31:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 50.222.100.11)
- smtp.mailfrom=ddn.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=ddn.com;
-Received-SPF: Pass (protection.outlook.com: domain of ddn.com designates
- 50.222.100.11 as permitted sender) receiver=protection.outlook.com;
- client-ip=50.222.100.11; helo=uww-mrp-01.datadirectnet.com; pr=C
-Received: from uww-mrp-01.datadirectnet.com (50.222.100.11) by
- CH1PEPF0000A345.mail.protection.outlook.com (10.167.244.8) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.7
- via Frontend Transport; Tue, 3 Dec 2024 10:31:06 +0000
-Received: from localhost (unknown [10.68.0.8])
-	by uww-mrp-01.datadirectnet.com (Postfix) with ESMTP id 09A2E2D;
-	Tue,  3 Dec 2024 10:31:05 +0000 (UTC)
-From: Bernd Schubert <bschubert@ddn.com>
-Date: Tue, 03 Dec 2024 11:31:05 +0100
-Subject: [PATCH v2] io_uring: Change res2 parameter type in
- io_uring_cmd_done
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C491E2825;
+	Tue,  3 Dec 2024 10:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733222758; cv=none; b=adYID8UC5HSr8cimnnP3zPQv/xTslrIWUZamKTq8eD7vv9J/VlPHJdkvP5KCEsBzRpubDCuqGdHl2XuS+lk0Fe2VtmQMPyOBEujf43zw72EMVlJa7/TtaFIbqYYk0uuKSZfA6yz1yfgluhdGYZUWZz2rOKwiQvKupRsnrd3IZTA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733222758; c=relaxed/simple;
+	bh=UAN7dJJYBHqrrdv1gqBUohBZJi21Jc3c9XZjYqmVsUA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ivx4C3QWftn5G2LPm1ZfucRjWghgm2uppdV0bJbR2HiucLlzwjx3mWErdvyhRFHiQQvNJrmX9T9zm768KZNIX8Xv6/IKyhQj7XRPCF4/NSLz3KZqbKIEt/mhnC5i2fcE49PESjq5CA97D3R+OxN6hcClZtiXq67v/nHI4Dvez/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=tqaVNbPc; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=Cc:To:In-Reply-To:References:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=f4GQahu87vhd88hFE8JRJ4HYD1rmTxDILIyZYp/HAr0=; b=tqaVNbPcmZNh+77T/UilL7CrLP
+	hH97DpmQufsim5ee71fVIWWOPVc9PDHG+XRTv40HynXgbp34guCl4PRSYIEm41jsO9mlGc2CUexM+
+	caJFCKBIfL8am3OCGuYPMnyB9iyBp33SJrc2UvuT+gZHBMzPxltUdA91XVEsE0hsBOEe79BTBp/1P
+	5lJn2qKzt/+QXaQQ5RBMnffyYEzw34UbijAuQAzD1W2JW8vh5LzHsMXbDIurMsBdTBqvxkHOOvB1Z
+	SKWv4W31aByqTB+Heuw2UxesLhuYKfy5mJPCDYNbQw7nZVPuzMTTweXyDqoz7dBjYYAkTQEB+w1XF
+	EZKMvqGw==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <esben@geanix.com>)
+	id 1tIQPh-0001On-FH; Tue, 03 Dec 2024 11:45:53 +0100
+Received: from [185.17.218.86] (helo=localhost)
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <esben@geanix.com>)
+	id 1tIQPg-000L8G-2g;
+	Tue, 03 Dec 2024 11:45:53 +0100
+From: Esben Haabendal <esben@geanix.com>
+Date: Tue, 03 Dec 2024 11:45:31 +0100
+Subject: [PATCH 1/6] rtc: interface: Fix long-standing race when setting
+ alarm
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,164 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-io_uring_cmd_done-res2-as-u64-v2-1-5e59ae617151@ddn.com>
-X-B4-Tracking: v=1; b=H4sIAOjdTmcC/42NTQrCMBBGr1Jm7Yj5wVRX3kNKicmknUUTSWxRS
- u9u7AncfPC+xXsrFMpMBa7NCpkWLpxiBXlowI02DoTsK4M8SS3qIKd+zhyH3k2+9ykSZioSbcH
- 5rFEKYzVp87ioANXxzBT4vfvvXeWRyyvlz55bxO/917wIFGh0UEq1rVO+vXkfjy5N0G3b9gXyC
- z3GyAAAAA==
-X-Change-ID: 20241202-io_uring_cmd_done-res2-as-u64-217a4e47b93f
-To: Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>, 
- Kanchan Joshi <joshi.k@samsung.com>
-Cc: io-uring@vger.kernel.org, stable@vger.kernel.org, 
- Li Zetao <lizetao1@huawei.com>, Bernd Schubert <bschubert@ddn.com>
-X-Mailer: b4 0.15-dev-2a633
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733221865; l=2910;
- i=bschubert@ddn.com; s=20240529; h=from:subject:message-id;
- bh=nHOmP131y8Oa0pNAcfAJzQe30Jz/Aighg/q+swsXXwk=;
- b=0U6Vw6jig85BFWmh3BSXWa7em1TjIOR0bhui/6Y+pU7E+mEQLkmrrPQZ6UKEAWIRyf2JYnMBC
- XEvB3vBqXisBPKNwTeKWFKVAYbU0SpYWmZcps2N15ENRXRHztoP+2Au
-X-Developer-Key: i=bschubert@ddn.com; a=ed25519;
- pk=EZVU4bq64+flgoWFCVQoj0URAs3Urjno+1fIq9ZJx8Y=
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PEPF0000A345:EE_|CO6PR19MB5402:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2c9a0a2-414a-4e11-77a9-08dd138598b6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NXRsTjJFRmpnMFMrMGFTdy83MG9SVktHUHl4dHhKYUJKaVJzelZFS1BaVHhy?=
- =?utf-8?B?L0hVQUorNi9ZbVk1MGdvMldjOW9aY1Q5cWtRbU43K3RmSUVDVE4xcVFDRXZu?=
- =?utf-8?B?bUlBMlc0QjVtY1R2T0hPZzBFaWx2SFFLL1hlclRQbjFWRXdHdDNyN0VMckJZ?=
- =?utf-8?B?SWlIZW1aMzhqdm5Vand0Q3BPWkpad0lwaDM5alByTGVFV2VlQlJncHlRT0w1?=
- =?utf-8?B?UVN3dlM1c0t6YjJzaHJxREpPMEZyN0pqZnlLNk9udEU0QXdIS21CeXpKbjdo?=
- =?utf-8?B?UGVhakRlcUkwN3lQZ2FJM1M2ZWhCdE8waVRIaUJlV1VBTllvM3czdWVQaFha?=
- =?utf-8?B?Y2ZUcHA0Z3FFRC81T3FpQmU3THgycVVQL3Y0QzZMZHZaMGRvOUt1emFtT3k1?=
- =?utf-8?B?MnJMTy9oUlkweEo4ZzBQM1hVZGp3UWJLNVh1Z3ZkRk1lT0l4SXB4WUZ3QSsr?=
- =?utf-8?B?aWxpMXVzVzZTMjBWc0RDdnFhdlpJZkIzMFVZRitySEl3ZTh3UCs3dGdsbzR0?=
- =?utf-8?B?R3prTmpiVzZ2T2pwVDZyRGNIYWczRStNVENPckF1dDJpUWkxeGNTdlNrS3BK?=
- =?utf-8?B?cUdNYWtLQ2FWa21tR2NUZUIweDNpWUxBT1I1M0tUT0xTcTBybWkxN0ovbHZi?=
- =?utf-8?B?QUVzVlNVKzluSVJrNmFhcmExeTU4L29sUkR6a3RhVStKN2xuanhrTlRKeDBU?=
- =?utf-8?B?NEZPU3R0bktXand0MjQ0M2txQnRJSHBMZ3ZZOGNQY0dLQko2OENGanBTY21K?=
- =?utf-8?B?cDdPbzkvR2t5RUYzWEJIZHdwZU9VTFVuNjRZd3pTUGRmai9oU1ozSURFZUx5?=
- =?utf-8?B?SUIvQWFBSkE0RVZuYWZoYnMySkR5OHBackxVN0lVRFIxUTJVa3NyNTdDTndr?=
- =?utf-8?B?QkdVc2hEQVU4K2xISWdwaC90M01xQzFYaURCWFFtRUFvR1lNUU9WOVRwcFdh?=
- =?utf-8?B?Vi96aEJJdDJGNUNNalJwSkxuUzdvK0pieC9WY0xGSmN0NHZrSnFUNzJCWFkr?=
- =?utf-8?B?dzg0THo4dzM4bHNTZU53V3ptUGRPYm8vTHk5aTZ5OVhrTXZIeEVobG02WHRW?=
- =?utf-8?B?WHMyQUxybkJrZTZiakRaUUpFRG9QM0p6aThjQjBSMWRRQkF3a2xEcUlieEx0?=
- =?utf-8?B?TXZGRGpDUi9WV3pQcjBCY040eDVJU1p0dy8rMmpoSElodWNvanQvazJ6dTBz?=
- =?utf-8?B?TUY1bnFzd1dYTkY1c1pBY25uWUQ5Y2xZVEgxalRrODFrenN6V2xUUTBtNy9Z?=
- =?utf-8?B?SW82V0I3MVVyRkpZNFlxeXczUXQ5YVpWbWNZekJqMHhCekJ2VnRsYkdBYVp0?=
- =?utf-8?B?cEswU091WUNXTzkwNmpWZEExSmkyKzBoNHRoblRlVy9SaUVINnlaemkwMCta?=
- =?utf-8?B?U2pSSFRmdGwrZEhYaTAxTE5NNEErZVJQNStnMzl3NHg2Mkk1RkpoS3dDTWUx?=
- =?utf-8?B?VGRUTGQ2M2V6cFUzN1d6bjdad3V1QWhKRXcwSHlLOHF5VEpmcjljalBHZVV5?=
- =?utf-8?B?MDVaSld3MEszcWV0YjgzelJXbTd0YVVPWGJUNU9MOFJ5dGEzOHRQbU5zU0E3?=
- =?utf-8?B?b2FzeUVFUWRGZXZtTVU5cGR0NjQ0VWNFNWlQYkxJY1dsYW1jSDVBQjR0emZm?=
- =?utf-8?B?SUk4aUZnejBrNG9zWHFSUTEwUG5hL0tWLzd3R2dPUUtUelZYQTlDdHBNZHZ3?=
- =?utf-8?B?NFBEdjVKQ0o4MkJhRHo1YldvMlM2a25DUzM1S1BUTXhmUTN2NXJCRE10VTJh?=
- =?utf-8?B?ZkJmbkc1R0RXUGlBdjlqdFFhYWVnbXB5M2QvWWVqa2VKTVJoa1Z1TDNrS2dD?=
- =?utf-8?B?TkVzOTBvSlF2c1VOcWM0Wlpxcnk2U2xnU2F6SE0zMXVsQ2IvQS9JRXVFN2ww?=
- =?utf-8?B?MFNrUUMxblRUUGRoT3NFbUlHSW5pMm4wZm1RRDBoQU9OU1RWdlZmRXllelFD?=
- =?utf-8?Q?Zk1+S9oPDs3X9C0Wv3uslEnyi18U+lz2?=
-X-Forefront-Antispam-Report:
-	CIP:50.222.100.11;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:uww-mrp-01.datadirectnet.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	v3txr2d348mNjUEUZOxByHvdmNznyBC19QKedNgpOEzHz4T0PLPRP3ya6I9s8MGXVLxqvEzcGDy9Q7Kf0nKgTVV52KMv/zr9cMUwerzAwCQSAoAJajGsdYHrivrLD57lZcbZdn+pcHDUdHqJ/LAoX9Nk7VsPnHI0HAk/h4KSYqgemk1Inkg6lwibqRSI5Unh7ZFyn3dLfDGmPB8j4Nm8SWchhnUC69huadR6caV0LdLK77lN/Yp1WhIU2KbeD8f4Si+S1AjQ/QaKx/wEhntHq2gC4jV/NWTaD3L0Q7FqYXtpIPLfYcwrhZKM31gUnpq9HUr+CaaN/4jhnZm2MXFWaNSWiokKFWRcSFMIWTkuICPdwc4wd9r1YKkWO1nHAeC59oKkNiXIGkmkwKsVVJuk0U1RY+s+Sy8iICJaK18kgZbDel0FBd871jIMM1ADIaZJ87gDx2xkZcgmg0sXSPWs4hieocjRAwmrkiO1xW68zcKN0aLA9F9rGG/O94QXxz/cwFlx+vxNn1c5mR7P6mNUe2FyFuaR73Sv2bdxAhWwtSgpdO0eKcM15FUS3HdAbUCMoQW7vGTQrn1evcvEJxe0YJ7kCpShNSemn/4eDrKoIeHUJDVzH+Imw0U9Wt5pa5qc2y/79XXeKNkgWgmnafHoUw==
-X-OriginatorOrg: ddn.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 10:31:06.8276
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2c9a0a2-414a-4e11-77a9-08dd138598b6
-X-MS-Exchange-CrossTenant-Id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=753b6e26-6fd3-43e6-8248-3f1735d59bb4;Ip=[50.222.100.11];Helo=[uww-mrp-01.datadirectnet.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH1PEPF0000A345.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR19MB5402
-X-BESS-ID: 1733221870-111173-13374-2072-1
-X-BESS-VER: 2019.1_20241126.2220
-X-BESS-Apparent-Source-IP: 104.47.59.176
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVkYWJiZAVgZQ0MAyySDV1CzVIC
-	XN3MzYMM0iMc3S2NwsMSUpycLcyDhJqTYWAKvmSClBAAAA
-X-BESS-Outbound-Spam-Score: 0.50
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.260854 [from 
-	cloudscan19-146.us-east-2b.ess.aws.cudaops.com]
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------
-	0.50 BSF_RULE7568M          META: Custom Rule 7568M 
-	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.50 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_RULE7568M, BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status:1
+Message-Id: <20241203-rtc-uie-irq-fixes-v1-1-01286ecd9f3f@geanix.com>
+References: <20241203-rtc-uie-irq-fixes-v1-0-01286ecd9f3f@geanix.com>
+In-Reply-To: <20241203-rtc-uie-irq-fixes-v1-0-01286ecd9f3f@geanix.com>
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, Esben Haabendal <esben@geanix.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733222752; l=2485;
+ i=esben@geanix.com; s=20240523; h=from:subject:message-id;
+ bh=UAN7dJJYBHqrrdv1gqBUohBZJi21Jc3c9XZjYqmVsUA=;
+ b=Gioy18FoeQopz/OaoQ+E5tbVP+NcprFBYM1Wuwd8vtThzFcyh6O4hvETtrPhXzR2z1l7vN4hh
+ eN702yy0ltZAyvpluSKY5QQatXoRSASaJdKAcEkpnxBOS59ucOImBnP
+X-Developer-Key: i=esben@geanix.com; a=ed25519;
+ pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
+X-Authenticated-Sender: esben@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27476/Tue Dec  3 10:52:11 2024)
 
-Change the type of the res2 parameter in io_uring_cmd_done from ssize_t
-to u64. This aligns the parameter type with io_req_set_cqe32_extra,
-which expects u64 arguments.
-The change eliminates potential issues on 32-bit architectures where
-ssize_t might be 32-bit.
+As described in the old comment dating back to
+commit 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
+from 2010, we have been living with a race window when setting alarm
+with an expiry in the near future (i.e. next second).
+With 1 second resolution, it can happen that the second ticks after the
+check for the timer having expired, but before the alarm is actually set.
+When this happen, no alarm IRQ is generated, at least not with some RTC
+chips (isl12022 is an example of this).
 
-Only user of passing res2 is drivers/nvme/host/ioctl.c and it actually
-passes u64.
+With UIE RTC timer being implemented on top of alarm irq, being re-armed
+every second, UIE will occasionally fail to work, as an alarm irq lost
+due to this race will stop the re-arming loop.
 
-Fixes: ee692a21e9bf ("fs,io_uring: add infrastructure for uring-cmd")
+For now, I have limited the additional expiry check to only be done for
+alarms set to next seconds. I expect it should be good enough, although I
+don't know if we can now for sure that systems with loads could end up
+causing the same problems for alarms set 2 seconds or even longer in the
+future.
+
+I haven't been able to reproduce the problem with this check in place.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Tested-by: Li Zetao <lizetao1@huawei.com>
-Reviewed-by: Li Zetao <lizetao1@huawei.com>
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Esben Haabendal <esben@geanix.com>
 ---
-Changes in v2:
-- As suggested by Li Zetao, also update the type with CONFIG_IO_URING=n
-- Link to v1: https://lore.kernel.org/r/20241202-io_uring_cmd_done-res2-as-u64-v1-1-74f33388c3d8@ddn.com
----
- include/linux/io_uring/cmd.h | 4 ++--
- io_uring/uring_cmd.c         | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/rtc/interface.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/include/linux/io_uring/cmd.h b/include/linux/io_uring/cmd.h
-index 578a3fdf5c719cf45fd4b6f9c894204d6b4f946c..0d5448c0b86cdde2e9764842adebafa1f8f49e61 100644
---- a/include/linux/io_uring/cmd.h
-+++ b/include/linux/io_uring/cmd.h
-@@ -43,7 +43,7 @@ int io_uring_cmd_import_fixed(u64 ubuf, unsigned long len, int rw,
-  * Note: the caller should never hard code @issue_flags and is only allowed
-  * to pass the mask provided by the core io_uring code.
-  */
--void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret, ssize_t res2,
-+void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret, u64 res2,
- 			unsigned issue_flags);
+diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+index aaf76406cd7d7d2cfd5479fc1fc892fcb5efbb6b..e365e8fd166db31f8b44fac9fb923d36881b1394 100644
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -443,6 +443,29 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 	else
+ 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
  
- void __io_uring_cmd_do_in_task(struct io_uring_cmd *ioucmd,
-@@ -67,7 +67,7 @@ static inline int io_uring_cmd_import_fixed(u64 ubuf, unsigned long len, int rw,
- 	return -EOPNOTSUPP;
++	/*
++	 * Check for potential race described above. If the waiting for next
++	 * second, and the second just ticked since the check above, either
++	 *
++	 * 1) It ticked after the alarm was set, and an alarm irq should be
++	 *    generated.
++	 *
++	 * 2) It ticked before the alarm was set, and alarm irq most likely will
++	 * not be generated.
++	 *
++	 * While we cannot easily check for which of these two scenarios we
++	 * are in, we can return -ETIME to signal that the timer has already
++	 * expired, which is true in both cases.
++	 */
++	if ((scheduled - now) <= 1) {
++		err = __rtc_read_time(rtc, &tm);
++		if (err)
++			return err;
++		now = rtc_tm_to_time64(&tm);
++		if (scheduled <= now)
++			return -ETIME;
++	}
++
+ 	trace_rtc_set_alarm(rtc_tm_to_time64(&alarm->time), err);
+ 	return err;
  }
- static inline void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret,
--		ssize_t ret2, unsigned issue_flags)
-+		u64 ret2, unsigned issue_flags)
- {
- }
- static inline void __io_uring_cmd_do_in_task(struct io_uring_cmd *ioucmd,
-diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
-index d9fb2143f56ff5d13483687fa949c293f9b8dbef..af842e9b4eb975ba56aaeaaa0c2e207a7732beba 100644
---- a/io_uring/uring_cmd.c
-+++ b/io_uring/uring_cmd.c
-@@ -151,7 +151,7 @@ static inline void io_req_set_cqe32_extra(struct io_kiocb *req,
-  * Called by consumers of io_uring_cmd, if they originally returned
-  * -EIOCBQUEUED upon receiving the command.
-  */
--void io_uring_cmd_done(struct io_uring_cmd *ioucmd, ssize_t ret, ssize_t res2,
-+void io_uring_cmd_done(struct io_uring_cmd *ioucmd, ssize_t ret, u64 res2,
- 		       unsigned issue_flags)
- {
- 	struct io_kiocb *req = cmd_to_io_kiocb(ioucmd);
 
----
-base-commit: 7af08b57bcb9ebf78675c50069c54125c0a8b795
-change-id: 20241202-io_uring_cmd_done-res2-as-u64-217a4e47b93f
-
-Best regards,
 -- 
-Bernd Schubert <bschubert@ddn.com>
+2.47.1
 
 
