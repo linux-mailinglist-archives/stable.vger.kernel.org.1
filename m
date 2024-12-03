@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-96254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED539E1B29
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F069E1AEB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0E81B343BF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:05:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F106B62988
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3091DF74D;
-	Tue,  3 Dec 2024 10:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1671E0E1E;
+	Tue,  3 Dec 2024 10:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1b5hKFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JElFjEY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C61DDC2D
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1871E0E1A
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733220319; cv=none; b=j160OP20Okd+m51IVeRK8FF+f/me73tqyNWiVtBTJ814hPhEwkLaYa/l6JqJCFr3MBGavH2Toya5JF70yAzFrC5HMdlVMYrJwgryCAQxn/vSEOXVJC9w8D5cgn2eJ4H5S1+JLZGUn/JrQUeQoKY9Gngf6NBHJwVSjLWMWP6v3wY=
+	t=1733220633; cv=none; b=bdTL7nniMIfRAU/m/SMwHK4TA2bYEr7LvV/hFX7IXGbifLwabQDwocdcWl7lIEf9MP4h4cyEjFg4WOeB1ZJAj0i/+qdp0qxWXBuyxoDTGWgW21IxhEdqxR3cWBpGcRb0FtDMOABIbPPwSKY1s48YdFCSnqh9RAMppJ0qmqkRbvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733220319; c=relaxed/simple;
-	bh=aBzIhcch5F4j0ZG+noTjtPa4otNlLU30UTEWAH+bYgA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NFu7L8HG7CsqQsl3x/+O/SFcF/lmEOTgM6idcIGPz7UNF8wo/YitECVf4iIa3w4ovZj2zCGyhf3QEdzS44bzzq7W07Nf2HGEt0QQovOHMvncEqo2Yayy4tCHw+Sz/urXhSS866PipB8E3WJ4xsYrodSGJ3gVJNdIzm5+uLkH+Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1b5hKFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B7FC4CED8;
-	Tue,  3 Dec 2024 10:05:16 +0000 (UTC)
+	s=arc-20240116; t=1733220633; c=relaxed/simple;
+	bh=mDPF6EVzp0zKKlIiWy57RaV1jHh3p7tnHtaOJpMHJWg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YNaLRSMuAOumtaJETqsxysMkUuPnkim3iuEKbrNZFSkJXnC78dMY0eYVWqdf/ltmUHIldvUhpdl78mgEyKOZLaPo6Y66lUkLiyZJFsZu48nYGLzJOoyEovbHO9jEzA0hL2tyHPohCLyD5EYCjdhzcy9JeANKCkghbExKVpnsZIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JElFjEY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E822C4CED6;
+	Tue,  3 Dec 2024 10:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733220317;
-	bh=aBzIhcch5F4j0ZG+noTjtPa4otNlLU30UTEWAH+bYgA=;
+	s=korg; t=1733220633;
+	bh=mDPF6EVzp0zKKlIiWy57RaV1jHh3p7tnHtaOJpMHJWg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=x1b5hKFmqRM7gUeBpNypicA8hceLCoMrYzbT6JnzIiJJfJkR+9ZQ/YcuWEgM7eesY
-	 lzvO5Mg07Ch4XUCSiRJpFVnDU1QK0xnh0fR5u2ZtOfsSgf9dVNLspo4ZlNnMb6ETxC
-	 RgbuCtj3tdtgHxh5MMYN/oaB3oVETIVdv2Jq3UK4=
-Subject: FAILED: patch "[PATCH] serial: amba-pl011: Fix RX stall when DMA is used" failed to apply to 5.4-stable tree
-To: kkartik@nvidia.com,gregkh@linuxfoundation.org,linus.walleij@linaro.org
+	b=0JElFjEYtCgssmr1LblfGZRvd9TgiikiPNFZQpKf7iXfHLovqWfoFYYrGfRAHwjDi
+	 vMxj91y57xF+EEywijpXOcFMx7uH1XItH66FpYVCa1Bl/yhM6d4l6CShXk46pVoYJK
+	 mRLHKg8gOmy5zqfOAefnX72G5Zgu4U8801IyNn2o=
+Subject: FAILED: patch "[PATCH] block: fix missing dispatching request when queue is started" failed to apply to 5.15-stable tree
+To: muchun.song@linux.dev,axboe@kernel.dk,ming.lei@redhat.com,songmuchun@bytedance.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Dec 2024 11:04:58 +0100
-Message-ID: <2024120358-ungreased-creole-192e@gregkh>
+Date: Tue, 03 Dec 2024 11:10:24 +0100
+Message-ID: <2024120323-snowiness-subway-3844@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf
+git cherry-pick -x 2003ee8a9aa14d766b06088156978d53c2e9be3d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120358-ungreased-creole-192e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120323-snowiness-subway-3844@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,43 +77,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf Mon Sep 17 00:00:00 2001
-From: Kartik Rajput <kkartik@nvidia.com>
-Date: Wed, 13 Nov 2024 14:56:29 +0530
-Subject: [PATCH] serial: amba-pl011: Fix RX stall when DMA is used
+From 2003ee8a9aa14d766b06088156978d53c2e9be3d Mon Sep 17 00:00:00 2001
+From: Muchun Song <muchun.song@linux.dev>
+Date: Mon, 14 Oct 2024 17:29:32 +0800
+Subject: [PATCH] block: fix missing dispatching request when queue is started
+ or unquiesced
 
-Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
-also disables the RX DMA by clearing the RXDMAE bit of the DMACR
-register. However, to properly unthrottle RX when DMA is used, the
-function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
-the DMACR register, which it currently lacks. This causes RX to stall
-after the throttle API is called.
+Supposing the following scenario with a virtio_blk driver.
 
-Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
-used.
+CPU0                    CPU1                    CPU2
 
-Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
+blk_mq_try_issue_directly()
+  __blk_mq_issue_directly()
+    q->mq_ops->queue_rq()
+      virtio_queue_rq()
+        blk_mq_stop_hw_queue()
+                                                virtblk_done()
+                        blk_mq_try_issue_directly()
+                          if (blk_mq_hctx_stopped())
+  blk_mq_request_bypass_insert()                  blk_mq_run_hw_queue()
+  blk_mq_run_hw_queue()     blk_mq_run_hw_queue()
+                            blk_mq_insert_request()
+                            return
+
+After CPU0 has marked the queue as stopped, CPU1 will see the queue is
+stopped. But before CPU1 puts the request on the dispatch list, CPU2
+receives the interrupt of completion of request, so it will run the
+hardware queue and marks the queue as non-stopped. Meanwhile, CPU1 also
+runs the same hardware queue. After both CPU1 and CPU2 complete
+blk_mq_run_hw_queue(), CPU1 just puts the request to the same hardware
+queue and returns. It misses dispatching a request. Fix it by running
+the hardware queue explicitly. And blk_mq_request_issue_directly()
+should handle a similar situation. Fix it as well.
+
+Fixes: d964f04a8fde ("blk-mq: fix direct issue")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241014092934.53630-2-songmuchun@bytedance.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
-index 56e587b94823..2facdbcd73eb 100644
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1819,6 +1819,11 @@ static void pl011_unthrottle_rx(struct uart_port *port)
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 7d05a56e3639..5deb9dffca0a 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2647,6 +2647,7 @@ static void blk_mq_try_issue_directly(struct blk_mq_hw_ctx *hctx,
  
- 	pl011_write(uap->im, uap, REG_IMSC);
+ 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
+ 		blk_mq_insert_request(rq, 0);
++		blk_mq_run_hw_queue(hctx, false);
+ 		return;
+ 	}
  
-+	if (uap->using_rx_dma) {
-+		uap->dmacr |= UART011_RXDMAE;
-+		pl011_write(uap->dmacr, uap, REG_DMACR);
-+	}
-+
- 	uart_port_unlock_irqrestore(&uap->port, flags);
- }
+@@ -2677,6 +2678,7 @@ static blk_status_t blk_mq_request_issue_directly(struct request *rq, bool last)
+ 
+ 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
+ 		blk_mq_insert_request(rq, 0);
++		blk_mq_run_hw_queue(hctx, false);
+ 		return BLK_STS_OK;
+ 	}
  
 
 
