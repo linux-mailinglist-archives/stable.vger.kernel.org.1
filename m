@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7809E2A3E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E48529E291A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E6A5BA6D8A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F61FBA14FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475D61F7550;
-	Tue,  3 Dec 2024 15:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B631F75B4;
+	Tue,  3 Dec 2024 15:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWWuGRqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4xeh9J0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BF81F7071;
-	Tue,  3 Dec 2024 15:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353BD1F7063;
+	Tue,  3 Dec 2024 15:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239411; cv=none; b=EBpHQrCgQqNUBXCsuCHIQi6b0cCT7JvTtxUM4pfjj8o2SyakYx8BKY27D3J9veVVr6Mp60xDj0HmfvFwbXblfPPtjATBuDrOCenAP+v0cxao43VBijeeIBX/syiYQWrpl9RyuCn8y7sK6l4ZqoKSCKzj9eD4Awei0RuLYQN+Z6c=
+	t=1733241462; cv=none; b=TQ2EjP5CDe6LqWub4ckRMaGrVXADUAEIgA8g/y1CufLEfuOe4WAuAlqKK4SXihumeCDM7RFWA28SoF0unWOHvJBNDSFbu5IgsjB6MmmNX3k4NFoe6OqhKzq9hwGuF0wYCXHLYXHoypMW0B2HH3E8NPg4DrwjzBkrFDCnnkYexSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239411; c=relaxed/simple;
-	bh=mWf0K4SoUsBQOJhMx/GtPalo4rkKOS/i7AHJOivRZug=;
+	s=arc-20240116; t=1733241462; c=relaxed/simple;
+	bh=EUNnqQFjMX3T7sY9s6O8pm9Zqg1BDsKc43kqSrNZ3aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tX30J/P6TzINxTer7AyTa+I6EbHZCdD2H59iOVQODLM3eG5ZLhr7SqcW5MYNkWkGFEJgz4wMjwxUpOdxQa44CkXv32xhtVPDNHZ5J7XoTGUX5l999SVB3+vX4HGQ4P4mOWhistRFK0zdj9wGWC0mlWUb0YqJv5iPbm7GadDPQmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWWuGRqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78541C4CECF;
-	Tue,  3 Dec 2024 15:23:30 +0000 (UTC)
+	 MIME-Version; b=dWEZLeDuNbttxU0w940hNbfzDUwjlqpAbqJe57/meWyNsQjywEZnIzmKNqLbo76M002MTOLDZ+JiRHcovJZk5lPQIevxOWTSTB//y2Ok0u5vU1ZRo6o3NGcbLBcQgg5E8JcVdDuNeq9TJJBr8aQrVwBDqOhsLch4QMpdZ+QHE2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4xeh9J0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99ED5C4CECF;
+	Tue,  3 Dec 2024 15:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239410;
-	bh=mWf0K4SoUsBQOJhMx/GtPalo4rkKOS/i7AHJOivRZug=;
+	s=korg; t=1733241462;
+	bh=EUNnqQFjMX3T7sY9s6O8pm9Zqg1BDsKc43kqSrNZ3aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWWuGRqmfjdq+PC3NYUypZ2JDvUtPuWgu6VfhfEg6eUuXY5H+3wMoVQnkis41+vi+
-	 AkCR4lHolHZ6zk9Lic/kWnJ2h3UU7bxk/raFQNGWSBqxpjSDJPJa4RKdH5vKpolyeW
-	 WFlhDQKreVXJVJ5eM3FXx6pAa+2tAfIYbOPd5/bw=
+	b=P4xeh9J0qZVt04Gt+h4ES3W2WZIKISUCnc68u4300bZuUJRytltQb+JCnDEMbux67
+	 qT/WpT/uSzeD/Cd1WZOn37kO3brN8qZz7Hhmbloq5yKRefk0R7eOBRjDP48Prq/+0b
+	 E10l+wh60JYlTLnMb89F16bwiS16zzNW/CGxo7mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 577/817] net: stmmac: dwmac-socfpga: Set RX watchdog interrupt as broken
-Date: Tue,  3 Dec 2024 15:42:29 +0100
-Message-ID: <20241203144018.436819937@linuxfoundation.org>
+Subject: [PATCH 6.12 426/826] powerpc/fadump: allocate memory for additional parameters early
+Date: Tue,  3 Dec 2024 15:42:33 +0100
+Message-ID: <20241203144800.380586308@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
 
-[ Upstream commit 407618d66dba55e7db1278872e8be106808bbe91 ]
+[ Upstream commit f4892c68ecc1cf45e41a78820dd2eebccc945b66 ]
 
-On DWMAC3 and later, there's a RX Watchdog interrupt that's used for
-interrupt coalescing. It's known to be buggy on some platforms, and
-dwmac-socfpga appears to be one of them. Changing the interrupt
-coalescing from ethtool doesn't appear to have any effect here.
+Memory for passing additional parameters to fadump capture kernel
+is allocated during subsys_initcall level, using memblock. But
+as slab is already available by this time, allocation happens via
+the buddy allocator. This may work for radix MMU but is likely to
+fail in most cases for hash MMU as hash MMU needs this memory in
+the first memory block for it to be accessible in real mode in the
+capture kernel (second boot). So, allocate memory for additional
+parameters area as soon as MMU mode is obvious.
 
-Without disabling RIWT (Received Interrupt Watchdog Timer, I
-believe...), we observe latencies while receiving traffic that amount to
-around ~0.4ms. This was discovered with NTP but can be easily reproduced
-with a simple ping. Without this patch :
-
-64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.657 ms
-
-With this patch :
-
-64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.254 ms
-
-Fixes: 801d233b7302 ("net: stmmac: Add SOCFPGA glue driver")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20241122141256.764578-1-maxime.chevallier@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 683eab94da75 ("powerpc/fadump: setup additional parameters for dump capture kernel")
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Closes: https://lore.kernel.org/lkml/a70e4064-a040-447b-8556-1fd02f19383d@linux.vnet.ibm.com/T/#u
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241107055817.489795-1-sourabhjain@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/fadump.h |  2 ++
+ arch/powerpc/kernel/fadump.c      | 15 ++++++++++-----
+ arch/powerpc/kernel/prom.c        |  3 +++
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index fdb4c773ec98a..e897b49aa9e05 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -486,6 +486,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
- 	plat_dat->pcs_exit = socfpga_dwmac_pcs_exit;
- 	plat_dat->select_pcs = socfpga_dwmac_select_pcs;
+diff --git a/arch/powerpc/include/asm/fadump.h b/arch/powerpc/include/asm/fadump.h
+index 3638f04447f59..a48f54dde4f65 100644
+--- a/arch/powerpc/include/asm/fadump.h
++++ b/arch/powerpc/include/asm/fadump.h
+@@ -19,6 +19,7 @@ extern int is_fadump_active(void);
+ extern int should_fadump_crash(void);
+ extern void crash_fadump(struct pt_regs *, const char *);
+ extern void fadump_cleanup(void);
++void fadump_setup_param_area(void);
+ extern void fadump_append_bootargs(void);
  
-+	plat_dat->riwt_off = 1;
+ #else	/* CONFIG_FA_DUMP */
+@@ -26,6 +27,7 @@ static inline int is_fadump_active(void) { return 0; }
+ static inline int should_fadump_crash(void) { return 0; }
+ static inline void crash_fadump(struct pt_regs *regs, const char *str) { }
+ static inline void fadump_cleanup(void) { }
++static inline void fadump_setup_param_area(void) { }
+ static inline void fadump_append_bootargs(void) { }
+ #endif /* !CONFIG_FA_DUMP */
+ 
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index ac7b4e1645e55..6ab7934d719f7 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1577,6 +1577,12 @@ static void __init fadump_init_files(void)
+ 		return;
+ 	}
+ 
++	if (fw_dump.param_area) {
++		rc = sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr);
++		if (rc)
++			pr_err("unable to create bootargs_append sysfs file (%d)\n", rc);
++	}
 +
- 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
- 	if (ret)
- 		return ret;
+ 	debugfs_create_file("fadump_region", 0444, arch_debugfs_dir, NULL,
+ 			    &fadump_region_fops);
+ 
+@@ -1731,7 +1737,7 @@ static void __init fadump_process(void)
+  * Reserve memory to store additional parameters to be passed
+  * for fadump/capture kernel.
+  */
+-static void __init fadump_setup_param_area(void)
++void __init fadump_setup_param_area(void)
+ {
+ 	phys_addr_t range_start, range_end;
+ 
+@@ -1739,7 +1745,7 @@ static void __init fadump_setup_param_area(void)
+ 		return;
+ 
+ 	/* This memory can't be used by PFW or bootloader as it is shared across kernels */
+-	if (radix_enabled()) {
++	if (early_radix_enabled()) {
+ 		/*
+ 		 * Anywhere in the upper half should be good enough as all memory
+ 		 * is accessible in real mode.
+@@ -1767,12 +1773,12 @@ static void __init fadump_setup_param_area(void)
+ 						       COMMAND_LINE_SIZE,
+ 						       range_start,
+ 						       range_end);
+-	if (!fw_dump.param_area || sysfs_create_file(fadump_kobj, &bootargs_append_attr.attr)) {
++	if (!fw_dump.param_area) {
+ 		pr_warn("WARNING: Could not setup area to pass additional parameters!\n");
+ 		return;
+ 	}
+ 
+-	memset(phys_to_virt(fw_dump.param_area), 0, COMMAND_LINE_SIZE);
++	memset((void *)fw_dump.param_area, 0, COMMAND_LINE_SIZE);
+ }
+ 
+ /*
+@@ -1798,7 +1804,6 @@ int __init setup_fadump(void)
+ 	}
+ 	/* Initialize the kernel dump memory structure and register with f/w */
+ 	else if (fw_dump.reserve_dump_area_size) {
+-		fadump_setup_param_area();
+ 		fw_dump.ops->fadump_init_mem_struct(&fw_dump);
+ 		register_fadump();
+ 	}
+diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
+index 88cbe432cad59..e0059842a1c64 100644
+--- a/arch/powerpc/kernel/prom.c
++++ b/arch/powerpc/kernel/prom.c
+@@ -908,6 +908,9 @@ void __init early_init_devtree(void *params)
+ 
+ 	mmu_early_init_devtree();
+ 
++	/* Setup param area for passing additional parameters to fadump capture kernel. */
++	fadump_setup_param_area();
++
+ #ifdef CONFIG_PPC_POWERNV
+ 	/* Scan and build the list of machine check recoverable ranges */
+ 	of_scan_flat_dt(early_init_dt_scan_recoverable_ranges, NULL);
 -- 
 2.43.0
 
