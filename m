@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421199E2697
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1C79E2342
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEB0716960A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96FDE286E5E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1501F8AD8;
-	Tue,  3 Dec 2024 16:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EE01F9407;
+	Tue,  3 Dec 2024 15:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOa+jPm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdnqcX8j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6BA1F76D7;
-	Tue,  3 Dec 2024 16:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5887B1F759C;
+	Tue,  3 Dec 2024 15:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242217; cv=none; b=DZi0WQrp4vqX+/tcpUdMbJ4vsQegSwFh4iS/DRjXGB4z3299gD/jfRIWlLOPtbuJlCCBW03bWbvSpESgwdOxQWPWzfmfbVn6cx+8sEL4r/NTbqOjpU9oPTA+HiSi1uisiclRo3cPwLEKzuwvPnRVK4So/fxH4UyrycOEVJjEA3Q=
+	t=1733239966; cv=none; b=MUON2nDzDYfeHTZrpiRysETDbduoC7LfYytxGhop5nki4rHHtme7d63UDU8k+/A040B3v+ItkqZdNHiRQXEzxXhUERy7+7I9sIBhrXS8voG/cP6Qx7epoTm1T6ZYd2mQDAK5QwAQZ0ph7ccSnRGYwA32ProYfec7mRUeDjLeVfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242217; c=relaxed/simple;
-	bh=82Vqr2URXD8KYmGcQot8Q9/OUgBHCGXK5FJha1E3EXE=;
+	s=arc-20240116; t=1733239966; c=relaxed/simple;
+	bh=bqpo3tbcp1jZFa+MnelKu9aLLGrVihppMLuz+NA0PrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CKWHnQwUoA0o3pwqO+rRyfSsSJGFUkj084WnOr1x2BDNwrDyk/V+hO38nFeHjuwpLiRaGypBxnZBCeYOfq5zvBmeLC+nBiGDulBfPELoVlPF6gPS3CqtEHmYSIGC+i1saUDWegYVdSf5a7p4wiNbUgDPN+gyD+icbyRhAMGUxtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WOa+jPm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389A6C4CECF;
-	Tue,  3 Dec 2024 16:10:17 +0000 (UTC)
+	 MIME-Version; b=r9vUzwYBQTHDDkBjaAeYUSI4r6j41o73XZJGGosHoCae6uSQ20WcFgWdOe/nYQKFknJopF8ch8OdzsR1i/WMqcPm2dJEUGxcRwG5l2mCAn4+dOEkkzwTdkwF47eTV37FuABh81SxcLRKfJK9rBdqxlCsjJpAlcs/3XktD70NSyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdnqcX8j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53B4C4CECF;
+	Tue,  3 Dec 2024 15:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242217;
-	bh=82Vqr2URXD8KYmGcQot8Q9/OUgBHCGXK5FJha1E3EXE=;
+	s=korg; t=1733239966;
+	bh=bqpo3tbcp1jZFa+MnelKu9aLLGrVihppMLuz+NA0PrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOa+jPm6exBVUo4fJd0LLE1F3h9vozDfOyLPeqfIWc1StCbZPm8TjTi+KrpiBqxKc
-	 vHCdSNkwGaIpyXlqYexMFfNXK7GpHtgbZb/u/rHJTOMqrPr4imOwVZGsdig2DrjD+I
-	 ptcl72BAWDtJkNGdKpqjfguwQR7WcmgNeLTs2BNs=
+	b=fdnqcX8j1zwQYVLr1PlnRevtJ17hvUjAUsghl7baB7Vqrh6IpklsTdzHF5Q+v6whj
+	 y2PCs9k1hVP9Mt41EV4nm79f4KrP3lThIfV4u12Oj9x/TbAAryRl3y5dimiss0N4I2
+	 lusS9SpPF2CWKdAJFVOz9VOdzGh5w25klC40mUXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 641/826] KVM: x86/mmu: Skip the "try unsync" path iff the old SPTE was a leaf SPTE
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 796/817] rtc: ab-eoz9: dont fail temperature reads on undervoltage notification
 Date: Tue,  3 Dec 2024 15:46:08 +0100
-Message-ID: <20241203144808.755252704@linuxfoundation.org>
+Message-ID: <20241203144027.083419293@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-commit 2867eb782cf7f64c2ac427596133b6f9c3f64b7a upstream.
+[ Upstream commit e0779a0dcf41a6452ac0a169cd96863feb5787c7 ]
 
-Apply make_spte()'s optimization to skip trying to unsync shadow pages if
-and only if the old SPTE was a leaf SPTE, as non-leaf SPTEs in direct MMUs
-are always writable, i.e. could trigger a false positive and incorrectly
-lead to KVM creating a SPTE without write-protecting or marking shadow
-pages unsync.
+The undervoltage flags reported by the RTC are useful to know if the
+time and date are reliable after a reboot. Although the threshold VLOW1
+indicates that the thermometer has been shutdown and time compensation
+is off, it doesn't mean that the temperature readout is currently
+impossible.
 
-This bug only affects the TDP MMU, as the shadow MMU only overwrites a
-shadow-present SPTE when synchronizing SPTEs (and only 4KiB SPTEs can be
-unsync).  Specifically, mmu_set_spte() drops any non-leaf SPTEs *before*
-calling make_spte(), whereas the TDP MMU can do a direct replacement of a
-page table with the leaf SPTE.
+As the system is running, the RTC voltage is now fully established and
+we can read the temperature.
 
-Opportunistically update the comment to explain why skipping the unsync
-stuff is safe, as opposed to simply saying "it's someone else's problem".
-
-Cc: stable@vger.kernel.org
-Tested-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20241010182427.1434605-5-seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 67075b63cce2 ("rtc: add AB-RTCMC-32.768kHz-EOZ9 RTC support")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://lore.kernel.org/r/20241122101031.68916-3-maxime.chevallier@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu/spte.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/rtc/rtc-ab-eoz9.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/arch/x86/kvm/mmu/spte.c
-+++ b/arch/x86/kvm/mmu/spte.c
-@@ -226,12 +226,20 @@ bool make_spte(struct kvm_vcpu *vcpu, st
- 		spte |= PT_WRITABLE_MASK | shadow_mmu_writable_mask;
+diff --git a/drivers/rtc/rtc-ab-eoz9.c b/drivers/rtc/rtc-ab-eoz9.c
+index 02f7d07112877..e17bce9a27468 100644
+--- a/drivers/rtc/rtc-ab-eoz9.c
++++ b/drivers/rtc/rtc-ab-eoz9.c
+@@ -396,13 +396,6 @@ static int abeoz9z3_temp_read(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
  
- 		/*
--		 * Optimization: for pte sync, if spte was writable the hash
--		 * lookup is unnecessary (and expensive). Write protection
--		 * is responsibility of kvm_mmu_get_page / kvm_mmu_sync_roots.
--		 * Same reasoning can be applied to dirty page accounting.
-+		 * When overwriting an existing leaf SPTE, and the old SPTE was
-+		 * writable, skip trying to unsync shadow pages as any relevant
-+		 * shadow pages must already be unsync, i.e. the hash lookup is
-+		 * unnecessary (and expensive).
-+		 *
-+		 * The same reasoning applies to dirty page/folio accounting;
-+		 * KVM will mark the folio dirty using the old SPTE, thus
-+		 * there's no need to immediately mark the new SPTE as dirty.
-+		 *
-+		 * Note, both cases rely on KVM not changing PFNs without first
-+		 * zapping the old SPTE, which is guaranteed by both the shadow
-+		 * MMU and the TDP MMU.
- 		 */
--		if (is_writable_pte(old_spte))
-+		if (is_last_spte(old_spte, level) && is_writable_pte(old_spte))
- 			goto out;
- 
- 		/*
+-	if ((val & ABEOZ9_REG_CTRL_STATUS_V1F) ||
+-	    (val & ABEOZ9_REG_CTRL_STATUS_V2F)) {
+-		dev_err(dev,
+-			"thermometer might be disabled due to low voltage\n");
+-		return -EINVAL;
+-	}
+-
+ 	switch (attr) {
+ 	case hwmon_temp_input:
+ 		ret = regmap_read(regmap, ABEOZ9_REG_REG_TEMP, &val);
+-- 
+2.43.0
+
 
 
 
