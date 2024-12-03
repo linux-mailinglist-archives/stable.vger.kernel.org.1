@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-97094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5989E227A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4EF9E227C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FBD1285A72
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C60662857EB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EA11F6696;
-	Tue,  3 Dec 2024 15:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760C71F706C;
+	Tue,  3 Dec 2024 15:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3O9OO5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYMgxDiN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CBC1F130F;
-	Tue,  3 Dec 2024 15:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 353D31F130F;
+	Tue,  3 Dec 2024 15:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239504; cv=none; b=DVGrJqY1pWpvdXFaIrv+KyO8pDcKPpC4GnZEKiEt70tSHy/WLb7H4KuMdHzXvbADkvoKKT4Z4107c77a1ruzKXlNLsPwZjPFIYdoGsk3S9HxZJJPVMQ7Hz2nMluM5h2BP29w+QQnyLG4nw7jFBtC5hw+e6zYelUmfSCPoVrZgt4=
+	t=1733239513; cv=none; b=tHA3au01WhgpdESDcydks3DPx0Uqv3wbDzw9GJ5+qVf92m/EkPy/dwLVKI9rzsOyJRRhWKr5NC3Ywz7FHOFsoQm67OJp9lnnB8JEMbQMDNktSeccCowL4luTg8FAHOSylenGM7Yk7xLG1mUfNPTvxy72Hb3eXy2SC+7AIc8dwyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239504; c=relaxed/simple;
-	bh=HiMwcGwMMXkFO52suO5fHY/9FyRFeQQNCJnvUyOU0gg=;
+	s=arc-20240116; t=1733239513; c=relaxed/simple;
+	bh=eyaH8wYdGIG9NVksKN+r03K70zhu4pq5leNm/D3zb1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JN95mNUSAK50z3cO61tpxhNqLEG7Gf+FdQNsXekph90HSDgfFYGWSuH4py/Jm3lSkzIr8ATdjiBy7/E7MGlKo/ScOMTTJA6ViGa8UB+UO7o8YTcf5kRLMvY5unBpX92qqWasRK/ZLsJ/kvz5UyCpAcYrzXqiwxIO4pquVW/o+oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3O9OO5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37502C4CECF;
-	Tue,  3 Dec 2024 15:25:04 +0000 (UTC)
+	 MIME-Version; b=CnJKXYsOi1a+3diA6wK+hC0Awd7/Vj2+e2XsGoZlQxcw3LpsqirhBIsc4kWIF1wHG80CUq3xyZrLnxbrXjt1ksSUYsgw5sf5ekmoXjftpzL/5iHBnDMelPjlwm7RO1Yul3qUsZ3IejJ5yC3tm9WxRvLQR7I7jM4PhVA9W5P72z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYMgxDiN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA67C4CECF;
+	Tue,  3 Dec 2024 15:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239504;
-	bh=HiMwcGwMMXkFO52suO5fHY/9FyRFeQQNCJnvUyOU0gg=;
+	s=korg; t=1733239513;
+	bh=eyaH8wYdGIG9NVksKN+r03K70zhu4pq5leNm/D3zb1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3O9OO5shAKw5xd6jkoldyG6jpG9u2LHw1x8HqM2IftZBGn6H8EhczwKCsWqeCLjV
-	 76rtKIEDcu/kDkvMKxIBqxTWl7Vf0ea6K1qLDZZKxSU13BNpWsjC5RChTQ88SZXYXg
-	 woU94BARiSdVEYTxelhTE3yocMSvtg7cM7f2Bwjw=
+	b=xYMgxDiNLpZF6AkC7ZZsio1XtDpGknchGH6/Jy2gJFdghpZnC7u2bGypRW6kJvlm3
+	 Qbg1ivQU9J9+3cW7PhZBT2hS7zVOjkbeYjHiscIo/LC/g0f4WVCLyRsgoWRR/lt1KN
+	 BxgtS0vQZz+Nu7AIO7AeHDySr0YIjPf8ABgYGWDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.11 636/817] irqdomain: Always associate interrupts for legacy domains
-Date: Tue,  3 Dec 2024 15:43:28 +0100
-Message-ID: <20241203144020.767902982@linuxfoundation.org>
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.11 638/817] ext4: fix FS_IOC_GETFSMAP handling
+Date: Tue,  3 Dec 2024 15:43:30 +0100
+Message-ID: <20241203144020.853556336@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -65,86 +64,159 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 24d02c4e53e2f02da16b2ae8a1bc92553110ca25 upstream.
+commit 4a622e4d477bb12ad5ed4abbc7ad1365de1fa347 upstream.
 
-The unification of irq_domain_create_legacy() missed the fact that
-interrupts must be associated even when the Linux interrupt number provided
-in the first_irq argument is 0.
+The original implementation ext4's FS_IOC_GETFSMAP handling only
+worked when the range of queried blocks included at least one free
+(unallocated) block range.  This is because how the metadata blocks
+were emitted was as a side effect of ext4_mballoc_query_range()
+calling ext4_getfsmap_datadev_helper(), and that function was only
+called when a free block range was identified.  As a result, this
+caused generic/365 to fail.
 
-This breaks all call sites of irq_domain_create_legacy() which supply 0 as
-the first_irq argument.
+Fix this by creating a new function ext4_getfsmap_meta_helper() which
+gets called so that blocks before the first free block range in a
+block group can get properly reported.
 
-Enforce the association for legacy domains in __irq_domain_instantiate() to
-cure this.
-
-[ tglx: Massaged it slightly. ]
-
-Fixes: 70114e7f7585 ("irqdomain: Simplify simple and legacy domain creation")
-Reported-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by Matti Vaittinen <mazziesaccount@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Link: https://lore.kernel.org/all/c3379142-10bc-4f14-b8ac-a46927aeac38@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/irq/irqdomain.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ fs/ext4/fsmap.c   |   54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ fs/ext4/mballoc.c |   18 ++++++++++++++----
+ fs/ext4/mballoc.h |    1 +
+ 3 files changed, 68 insertions(+), 5 deletions(-)
 
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -300,7 +300,7 @@ static void irq_domain_instantiate_descs
+--- a/fs/ext4/fsmap.c
++++ b/fs/ext4/fsmap.c
+@@ -185,6 +185,56 @@ static inline ext4_fsblk_t ext4_fsmap_ne
+ 	return fmr->fmr_physical + fmr->fmr_length;
  }
  
- static struct irq_domain *__irq_domain_instantiate(const struct irq_domain_info *info,
--						   bool cond_alloc_descs)
-+						   bool cond_alloc_descs, bool force_associate)
++static int ext4_getfsmap_meta_helper(struct super_block *sb,
++				     ext4_group_t agno, ext4_grpblk_t start,
++				     ext4_grpblk_t len, void *priv)
++{
++	struct ext4_getfsmap_info *info = priv;
++	struct ext4_fsmap *p;
++	struct ext4_fsmap *tmp;
++	struct ext4_sb_info *sbi = EXT4_SB(sb);
++	ext4_fsblk_t fsb, fs_start, fs_end;
++	int error;
++
++	fs_start = fsb = (EXT4_C2B(sbi, start) +
++			  ext4_group_first_block_no(sb, agno));
++	fs_end = fs_start + EXT4_C2B(sbi, len);
++
++	/* Return relevant extents from the meta_list */
++	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
++		if (p->fmr_physical < info->gfi_next_fsblk) {
++			list_del(&p->fmr_list);
++			kfree(p);
++			continue;
++		}
++		if (p->fmr_physical <= fs_start ||
++		    p->fmr_physical + p->fmr_length <= fs_end) {
++			/* Emit the retained free extent record if present */
++			if (info->gfi_lastfree.fmr_owner) {
++				error = ext4_getfsmap_helper(sb, info,
++							&info->gfi_lastfree);
++				if (error)
++					return error;
++				info->gfi_lastfree.fmr_owner = 0;
++			}
++			error = ext4_getfsmap_helper(sb, info, p);
++			if (error)
++				return error;
++			fsb = p->fmr_physical + p->fmr_length;
++			if (info->gfi_next_fsblk < fsb)
++				info->gfi_next_fsblk = fsb;
++			list_del(&p->fmr_list);
++			kfree(p);
++			continue;
++		}
++	}
++	if (info->gfi_next_fsblk < fsb)
++		info->gfi_next_fsblk = fsb;
++
++	return 0;
++}
++
++
+ /* Transform a blockgroup's free record into a fsmap */
+ static int ext4_getfsmap_datadev_helper(struct super_block *sb,
+ 					ext4_group_t agno, ext4_grpblk_t start,
+@@ -539,6 +589,7 @@ static int ext4_getfsmap_datadev(struct
+ 		error = ext4_mballoc_query_range(sb, info->gfi_agno,
+ 				EXT4_B2C(sbi, info->gfi_low.fmr_physical),
+ 				EXT4_B2C(sbi, info->gfi_high.fmr_physical),
++				ext4_getfsmap_meta_helper,
+ 				ext4_getfsmap_datadev_helper, info);
+ 		if (error)
+ 			goto err;
+@@ -560,7 +611,8 @@ static int ext4_getfsmap_datadev(struct
+ 
+ 	/* Report any gaps at the end of the bg */
+ 	info->gfi_last = true;
+-	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster, 0, info);
++	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
++					     0, info);
+ 	if (error)
+ 		goto err;
+ 
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6998,13 +6998,14 @@ int
+ ext4_mballoc_query_range(
+ 	struct super_block		*sb,
+ 	ext4_group_t			group,
+-	ext4_grpblk_t			start,
++	ext4_grpblk_t			first,
+ 	ext4_grpblk_t			end,
++	ext4_mballoc_query_range_fn	meta_formatter,
+ 	ext4_mballoc_query_range_fn	formatter,
+ 	void				*priv)
  {
- 	struct irq_domain *domain;
- 	int err;
-@@ -336,8 +336,12 @@ static struct irq_domain *__irq_domain_i
- 	if (cond_alloc_descs && info->virq_base > 0)
- 		irq_domain_instantiate_descs(info);
+ 	void				*bitmap;
+-	ext4_grpblk_t			next;
++	ext4_grpblk_t			start, next;
+ 	struct ext4_buddy		e4b;
+ 	int				error;
  
--	/* Legacy interrupt domains have a fixed Linux interrupt number */
--	if (info->virq_base > 0) {
-+	/*
-+	 * Legacy interrupt domains have a fixed Linux interrupt number
-+	 * associated. Other interrupt domains can request association by
-+	 * providing a Linux interrupt number > 0.
-+	 */
-+	if (force_associate || info->virq_base > 0) {
- 		irq_domain_associate_many(domain, info->virq_base, info->hwirq_base,
- 					  info->size - info->hwirq_base);
- 	}
-@@ -360,7 +364,7 @@ err_domain_free:
-  */
- struct irq_domain *irq_domain_instantiate(const struct irq_domain_info *info)
- {
--	return __irq_domain_instantiate(info, false);
-+	return __irq_domain_instantiate(info, false, false);
- }
- EXPORT_SYMBOL_GPL(irq_domain_instantiate);
+@@ -7015,10 +7016,19 @@ ext4_mballoc_query_range(
  
-@@ -464,7 +468,7 @@ struct irq_domain *irq_domain_create_sim
- 		.ops		= ops,
- 		.host_data	= host_data,
- 	};
--	struct irq_domain *domain = __irq_domain_instantiate(&info, true);
-+	struct irq_domain *domain = __irq_domain_instantiate(&info, true, false);
+ 	ext4_lock_group(sb, group);
  
- 	return IS_ERR(domain) ? NULL : domain;
- }
-@@ -513,7 +517,7 @@ struct irq_domain *irq_domain_create_leg
- 		.ops		= ops,
- 		.host_data	= host_data,
- 	};
--	struct irq_domain *domain = irq_domain_instantiate(&info);
-+	struct irq_domain *domain = __irq_domain_instantiate(&info, false, true);
+-	start = max(e4b.bd_info->bb_first_free, start);
++	start = max(e4b.bd_info->bb_first_free, first);
+ 	if (end >= EXT4_CLUSTERS_PER_GROUP(sb))
+ 		end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
+-
++	if (meta_formatter && start != first) {
++		if (start > end)
++			start = end;
++		ext4_unlock_group(sb, group);
++		error = meta_formatter(sb, group, first, start - first,
++				       priv);
++		if (error)
++			goto out_unload;
++		ext4_lock_group(sb, group);
++	}
+ 	while (start <= end) {
+ 		start = mb_find_next_zero_bit(bitmap, end + 1, start);
+ 		if (start > end)
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -259,6 +259,7 @@ ext4_mballoc_query_range(
+ 	ext4_group_t			agno,
+ 	ext4_grpblk_t			start,
+ 	ext4_grpblk_t			end,
++	ext4_mballoc_query_range_fn	meta_formatter,
+ 	ext4_mballoc_query_range_fn	formatter,
+ 	void				*priv);
  
- 	return IS_ERR(domain) ? NULL : domain;
- }
 
 
 
