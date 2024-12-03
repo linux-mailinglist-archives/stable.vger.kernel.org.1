@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-97947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6DD9E2B28
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:42:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA9B9E2910
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:23:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D4C7BC07A7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1EF8B3BE85
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05241F8AC6;
-	Tue,  3 Dec 2024 16:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B8F1F8905;
+	Tue,  3 Dec 2024 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RStWqPO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dO5XSGt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF3B1F8AC0;
-	Tue,  3 Dec 2024 16:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA2F1F76DB;
+	Tue,  3 Dec 2024 16:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242275; cv=none; b=u31/Eei+Ugx4m56K944ig0sqjybc9INH/iZ+ss3bk1jVMiAESkcwK88StNKJClvsu4xZF72Gc/sewIKt76t/kfFgEcUPGolWvseBJqyhL4H5MDg0LbHo7A2GbCTg/xVQ+mqm4y/Bzmo3tXxwNkKofiSEnCgfb5GQUSp/dvN0WHU=
+	t=1733242302; cv=none; b=pumIeC+W7ltT72ihvw5arRhwcOqJGj21dWGnrkwFvmKM++X6WWkkKfIxL4uamC1R4kUvBnu2lRFZAiXCOpJhTwvRlLzyz6gYOQKX5xgGEMh9IRQbL740mrid3YWa2DtOa52G1FZn2qc5XqwP1NwmuKk9Go41Sgkk1GGS308981M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242275; c=relaxed/simple;
-	bh=tfZXUnRpHBaFR9Na4YjOiz/uZoypBkVQZQP5KPkEW0c=;
+	s=arc-20240116; t=1733242302; c=relaxed/simple;
+	bh=2xVGwk94yOV04Ij8NTRxV5HR98pTQJ08/WD9xWMt5uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iu4HnpjxjGbHZkTbaSJMMWt1ztKUJoJWOzdwjB8w3EJRZG0emo0vquuRxL9YtduG6IBMpYjmIVG07qUgpzRzQ2rPpBoIh1Dh9tjS/4Baf0QzLJv9XQoUjMc8OhVOzitd57wHZIZORhwa8O+M2HNenWwg/kSD6dvSSgFXnbKVEsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RStWqPO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D88C4CEDE;
-	Tue,  3 Dec 2024 16:11:14 +0000 (UTC)
+	 MIME-Version; b=c/wNyQXh5k4NwaoEjqq+vIzJSXEEjEzVKmtlCVOhsr65cqzA3xiyDEGuvIs9s85qOOIZCKHK3wdPOrqMFFpvnEw0Lmf85idPY5HFYxGNp7bX3hP3hifQO400PSgn1cDWb0EqKgmuzIEsbibB8t/sY898xC29EAAxcZNmw96iLTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dO5XSGt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBACFC4CECF;
+	Tue,  3 Dec 2024 16:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242275;
-	bh=tfZXUnRpHBaFR9Na4YjOiz/uZoypBkVQZQP5KPkEW0c=;
+	s=korg; t=1733242302;
+	bh=2xVGwk94yOV04Ij8NTRxV5HR98pTQJ08/WD9xWMt5uA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RStWqPO19BBh7pUejtRFWJukF7kT73HB1j+fvbX7JkQxv2TJHPUxmDLgfZAREiShj
-	 XnD6TGTk62YKBd4IMkCTR5L6zT7V9VW/KOErPFu8NGPhY5lVq6uPEn6OT7zjrsvKrq
-	 73dZwchMDyGPDyHJ413PDDFzzh/dRIvyAh8XshJ8=
+	b=dO5XSGt9Wph6aAKrySwzUEpXg3E/eP9X/No3HVWOK4/ewbaKeXhvFM2gY2JGGPBIw
+	 cVfnH2PtZJGJ4ocX9fYlQudr1DKQ36TCan3nWM8hZi6LOsE4yOJ5xtHnrRxrQKSQbK
+	 Sq0jb+PDfWf4QnEYADZxjX2LUd2NUUAfygNPWq+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 659/826] fsnotify: Fix ordering of iput() and watched_objects decrement
-Date: Tue,  3 Dec 2024 15:46:26 +0100
-Message-ID: <20241203144809.460050156@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Lennart Poettering <lennart@poettering.net>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 666/826] fcntl: make F_DUPFD_QUERY associative
+Date: Tue,  3 Dec 2024 15:46:33 +0100
+Message-ID: <20241203144809.734838096@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,61 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 21d1b618b6b9da46c5116c640ac4b1cc8d40d63a upstream.
+commit 2714b0d1f36999dbd99a3474a24e7301acbd74f1 upstream.
 
-Ensure the superblock is kept alive until we're done with iput().
-Holding a reference to an inode is not allowed unless we ensure the
-superblock stays alive, which fsnotify does by keeping the
-watched_objects count elevated, so iput() must happen before the
-watched_objects decrement.
-This can lead to a UAF of something like sb->s_fs_info in tmpfs, but the
-UAF is hard to hit because race orderings that oops are more likely, thanks
-to the CHECK_DATA_CORRUPTION() block in generic_shutdown_super().
+Currently when passing a closed file descriptor to
+fcntl(fd, F_DUPFD_QUERY, fd_dup) the order matters:
 
-Also, ensure that fsnotify_put_sb_watched_objects() doesn't call
-fsnotify_sb_watched_objects() on a superblock that may have already been
-freed, which would cause a UAF read of sb->s_fsnotify_info.
+    fd = open("/dev/null");
+    fd_dup = dup(fd);
 
-Cc: stable@kernel.org
-Fixes: d2f277e26f52 ("fsnotify: rename fsnotify_{get,put}_sb_connectors()")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+When we now close one of the file descriptors we get:
+
+    (1) fcntl(fd, fd_dup) // -EBADF
+    (2) fcntl(fd_dup, fd) // 0 aka not equal
+
+depending on which file descriptor is passed first. That's not a huge
+deal but it gives the api I slightly weird feel. Make it so that the
+order doesn't matter by requiring that both file descriptors are valid:
+
+(1') fcntl(fd, fd_dup) // -EBADF
+(2') fcntl(fd_dup, fd) // -EBADF
+
+Link: https://lore.kernel.org/r/20241008-duften-formel-251f967602d5@brauner
+Fixes: c62b758bae6a ("fcntl: add F_DUPFD_QUERY fcntl()")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-By: Lennart Poettering <lennart@poettering.net>
+Cc: stable@vger.kernel.org
+Reported-by: Lennart Poettering <lennart@poettering.net>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/notify/mark.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/fcntl.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/notify/mark.c
-+++ b/fs/notify/mark.c
-@@ -138,8 +138,11 @@ static void fsnotify_get_sb_watched_obje
- 
- static void fsnotify_put_sb_watched_objects(struct super_block *sb)
+--- a/fs/fcntl.c
++++ b/fs/fcntl.c
+@@ -397,6 +397,9 @@ static long f_dupfd_query(int fd, struct
  {
--	if (atomic_long_dec_and_test(fsnotify_sb_watched_objects(sb)))
--		wake_up_var(fsnotify_sb_watched_objects(sb));
-+	atomic_long_t *watched_objects = fsnotify_sb_watched_objects(sb);
+ 	CLASS(fd_raw, f)(fd);
+ 
++	if (fd_empty(f))
++		return -EBADF;
 +
-+	/* the superblock can go away after this decrement */
-+	if (atomic_long_dec_and_test(watched_objects))
-+		wake_up_var(watched_objects);
- }
- 
- static void fsnotify_get_inode_ref(struct inode *inode)
-@@ -150,8 +153,11 @@ static void fsnotify_get_inode_ref(struc
- 
- static void fsnotify_put_inode_ref(struct inode *inode)
- {
--	fsnotify_put_sb_watched_objects(inode->i_sb);
-+	/* read ->i_sb before the inode can go away */
-+	struct super_block *sb = inode->i_sb;
-+
- 	iput(inode);
-+	fsnotify_put_sb_watched_objects(sb);
- }
- 
- /*
+ 	/*
+ 	 * We can do the 'fdput()' immediately, as the only thing that
+ 	 * matters is the pointer value which isn't changed by the fdput.
 
 
 
