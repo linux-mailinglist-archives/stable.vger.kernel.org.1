@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-98036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE419E2700
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EF29E2701
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 497F1163A7C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F7516485E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0407A1F8924;
-	Tue,  3 Dec 2024 16:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E9331F8919;
+	Tue,  3 Dec 2024 16:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Myamcn0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Bn9mWTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72EC1F7591;
-	Tue,  3 Dec 2024 16:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD171F8907;
+	Tue,  3 Dec 2024 16:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242579; cv=none; b=RJFuWodwu2uXQF6frVl/E5eyS3/UvTPjY5ai8hHlpCMTmFQCPhLnZBN3DPJA93wvzsJBRcupd/1Qt0ldc5m8hmwOeHKOdftoi1QDzWbfb+W1qL2ePOfZDa6Oy1QdjPZ/6s4YTenGZYzR+/OCfjEhVwrL7n/KgcU6Rv2dTc90JKc=
+	t=1733242586; cv=none; b=MnQwZt7WuGk9vriB0d0utaiwBiS5zCBRYqxmnbcR8wxI5I7V+G7lQRhZ5pE4bXrhgOUgvH0DMJlrqQnPBvbySWC+dXwM3Yi863kOkgvznIRxO2MmIINUuceR8ujmwwlr6BQMRsL5HZrsxGvmoYGgWWtXvM91yY7nm/3gfb4OvhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242579; c=relaxed/simple;
-	bh=3V7EMUvXTRQLmkhsMOIzP5GRSejVYor1E88Hpg8Dtmk=;
+	s=arc-20240116; t=1733242586; c=relaxed/simple;
+	bh=LPdv59JMtj56EpbGdiZmMTT0Fqu4D6rNgzRsvavmcig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1hU1K31i186lmsZXeRaCM7+2kb0OS1wLtqgwEPLaiS73jIoiPZq7yxv9KG0mbLGS0A807Ey9aJfj3jEaOhM67615QCcAkqX4Zx+6/QDH6UJ6Str/zquhMu0cnPS3jUa5S0ayCNiqdmZXVZwXj5vQb1LTadJ6fmJ8u+oaKl8T9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Myamcn0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2127FC4CECF;
-	Tue,  3 Dec 2024 16:16:18 +0000 (UTC)
+	 MIME-Version; b=jRqSi/Ptium7+cFLz2G0nTOGBjI12BHYhiA5BA/QDNi9mIEVXIFDkfGNLC8ZwAwiq4DjG33RsLJX3RgLFk/ecoazotjMT2wCriIpUNCPwidMd7tVXbEj0cxabbXRORHaptURpW7lrjatstZeKPqL9Uj7R7dPGJp5Y5Z7VJMSgWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Bn9mWTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FE2C4CECF;
+	Tue,  3 Dec 2024 16:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242579;
-	bh=3V7EMUvXTRQLmkhsMOIzP5GRSejVYor1E88Hpg8Dtmk=;
+	s=korg; t=1733242586;
+	bh=LPdv59JMtj56EpbGdiZmMTT0Fqu4D6rNgzRsvavmcig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Myamcn0o4SSojk1Ugm48sO7XPu068w8ChCvHns+KLEomr/z338M7dRNZheUcVWsHm
-	 Ir5DIaJVNDW+/+bBRjrwGr2sqDmf21dVHiS6nAxUNJZQkG2qvHuxPEhGNiCoxeqdSh
-	 smd733VYZFGefdUfFvV4G958qeTk3/D39I2sy1Xs=
+	b=1Bn9mWTb3DgNTd2JKK+589gXxp2qF9z/E1p8rVg6LutzuS5gPHm9Xih6dwvJXC1b8
+	 i7I9ShSh+dH8jfpMvIQDrKN+YzMPIv6iYUJ6NisjHzCmCHoyPzoiuZbVwMgKDxpP+Y
+	 h6zEHwqXPiP5j8fZbJvUygRZecGOzRVn9kX5mkEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
+	Dirk Su <dirk.su@canonical.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 745/826] ALSA: hda/realtek: Set PCBeep to default value for ALC274
-Date: Tue,  3 Dec 2024 15:47:52 +0100
-Message-ID: <20241203144812.824910813@linuxfoundation.org>
+Subject: [PATCH 6.12 747/826] ALSA: hda/realtek: fix mute/micmute LEDs dont work for EliteBook X G1i
+Date: Tue,  3 Dec 2024 15:47:54 +0100
+Message-ID: <20241203144812.904332878@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,33 +65,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Dirk Su <dirk.su@canonical.com>
 
-commit 155699ccab7c78cbba69798242b68bc8ac66d5d2 upstream.
+commit 7ba81e4c3aa0ca25f06dc4456e7d36fa8e76385f upstream.
 
-BIOS Enable PC beep path cause pop noise via speaker during boot time.
-Set to default value from driver will solve the issue.
+HP EliteBook X G1i needs ALC285_FIXUP_HP_GPIO_LED quirk to
+make mic-mute/audio-mute working.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
+Signed-off-by: Dirk Su <dirk.su@canonical.com>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/2721bb57e20a44c3826c473e933f9105@realtek.com
+Link: https://patch.msgid.link/20241126060531.22759-1-dirk.su@canonical.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -473,6 +473,8 @@ static void alc_fill_eapd_coef(struct hd
- 		break;
- 	case 0x10ec0234:
- 	case 0x10ec0274:
-+		alc_write_coef_idx(codec, 0x6e, 0x0c25);
-+		fallthrough;
- 	case 0x10ec0294:
- 	case 0x10ec0700:
- 	case 0x10ec0701:
+@@ -10592,6 +10592,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8cdf, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ce0, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8d84, "HP EliteBook X G1i", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 
 
 
