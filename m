@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8429E2459
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E079E26F7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:19:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EB6416522E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6B29B8718A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCEE1F9F69;
-	Tue,  3 Dec 2024 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EFA1F7557;
+	Tue,  3 Dec 2024 15:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Na18e7Ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aK/nn6mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B7B81F75B3;
-	Tue,  3 Dec 2024 15:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4AF1F130E;
+	Tue,  3 Dec 2024 15:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240301; cv=none; b=bOF1wV55zER8yNFwQ5sfe09y5H5AzDgmjIx4Elp9ZZ0Hu4up2kU0h25xuA+C19sGFWWDVrB8krh3by8UNF31N0XWM+E8Pi06fdnTKApeLv82Puik6Ql6+ziek/bLeGYkycQSocMQoNdB8zQ/ey0tDdI81q9HROsJsV3x9DvJD30=
+	t=1733238346; cv=none; b=Lwh5GJx3iJrWumQhjFTfson0G4h38UkvjhNGZ2U9AdIAR4wY9pUaXtZXJxy4jwDL43+dy0n9nSzBWT+ELKrxa+7fvh7qPVLToJ7nnmntBtkO4iG4SMHM+3jmvc0cimSokS+U6LczmX8Fzha2xSAeWURNXc4BwMgYzV0fMCsJyaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240301; c=relaxed/simple;
-	bh=GJ5DFxm/A4rGnT7YEHeisu6v/IRRuHKhAyleN6Jx7cU=;
+	s=arc-20240116; t=1733238346; c=relaxed/simple;
+	bh=VOggt4QDtFxkeEoRfQz6p6cQwzEhO1AvuCfNqxxrzzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtSOVfZJfpc1R/6/KK7uWP6QVcEHGyzhgEfIhtpoDP2+IJn+O8JeYPzkyxQTHfY5X5Njv5642bKwUVL8L3idq6q3b8UVlgghbDqJMzXGWxQz7T7eT/yAm3PGQ3DaM9JdZBWFx+D0Z9Z+x1CJr80a+8E2gGnaln6kaYmzJ9ZZlIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Na18e7Ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA546C4CED6;
-	Tue,  3 Dec 2024 15:38:20 +0000 (UTC)
+	 MIME-Version; b=VLL+lfOArReBpRhCmdyRZyFLE972zED4eTfH1joGYQPwaNphFdqekEWcqff0VeqrDX/0p8HACjWhYPsLlBTRoZmQW1qUKVqI/2iXz7QgnJF14a2JsdVRJ3pxegZG5RjiDl4V/2SVWygbxodEX5JTMF+/7J3uBIcQs97fgxPsvII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aK/nn6mq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5355AC4CECF;
+	Tue,  3 Dec 2024 15:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240301;
-	bh=GJ5DFxm/A4rGnT7YEHeisu6v/IRRuHKhAyleN6Jx7cU=;
+	s=korg; t=1733238346;
+	bh=VOggt4QDtFxkeEoRfQz6p6cQwzEhO1AvuCfNqxxrzzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Na18e7YeZKzdZnLSaQN19Q/Z2ARs+iXrrcpCnbkfN6o+ruTWHnv4yfzWSh7WLOhaj
-	 E5T0oKtyKHYExo9uU0PyiNabq0VLtxumUi6+cDdKvNFb0lCdd3l4gBCnwYSD3qRrmn
-	 LeiGkarjC6iVnPETPGEZDqp835Tl5/XlL/GgX14Q=
+	b=aK/nn6mqD/0uZs1IV+EXj5tSWqjpfWbiY+0ExtIJMtmE6SREyNHV3GhVNn4LymE5s
+	 hxdWav9pfMkQLdy+/VUC+v4gRCFti5CWKHB9pe3qFIZ584j2cd+vR9kou5SGYycRUz
+	 GZXOMbvYbHqd03xsda8APOHqfEX6mrckI/1gn7Ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Jiaxin Yu <jiaxin.yu@mediatek.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/826] kcsan, seqlock: Fix incorrect assumption in read_seqbegin()
-Date: Tue,  3 Dec 2024 15:36:59 +0100
-Message-ID: <20241203144747.320285361@linuxfoundation.org>
+Subject: [PATCH 6.11 248/817] ASoC: dt-bindings: mt6359: Update generic node name and dmic-mode
+Date: Tue,  3 Dec 2024 15:37:00 +0100
+Message-ID: <20241203144005.451389369@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Macpaul Lin <macpaul.lin@mediatek.com>
 
-[ Upstream commit 183ec5f26b2fc97a4a9871865bfe9b33c41fddb2 ]
+[ Upstream commit 4649cbd97fdae5069e9a71cd7669b62b90e03669 ]
 
-During testing of the preceding changes, I noticed that in some cases,
-current->kcsan_ctx.in_flat_atomic remained true until task exit. This is
-obviously wrong, because _all_ accesses for the given task will be
-treated as atomic, resulting in false negatives i.e. missed data races.
+Some fix and updates in the following items:
+1. examples:
+   Update generic node name to 'audio-codec' to comply with the
+   coming change in 'mt6359.dtsi'. This change is necessary to fix the
+   dtbs_check error:
+   pmic: 'mt6359codec' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Debugging led to fs/dcache.c, where we can see this usage of seqlock:
+2. mediatek,dmic-mode:
+   After inspecting the .dts and .dtsi files using 'mt6359-codec', it was
+   discovered that the definitions of 'two wires' and 'one wire' are
+   inverted compared to the DT schema.
+   For example, the following boards using MT6359 PMIC:
+    - mt8192-asurada.dtsi
+    - mt8195-cherry.dtsi
+   These boards use the same definitions of 'dmic-mode' as other boards
+   using MT6358 PMIC. The meaning of '0' or '1' has been noted as comments
+   in the device trees.
 
-	struct dentry *d_lookup(const struct dentry *parent, const struct qstr *name)
-	{
-		struct dentry *dentry;
-		unsigned seq;
+   Upon examining the code in [1] and [2], it was confirmed that the
+   definitions of 'dmic-mode' are consistent between "MT6359 PMIC" and
+   "MT6358 PMIC". Therefore, the DT Schema should be correct as is.
 
-		do {
-			seq = read_seqbegin(&rename_lock);
-			dentry = __d_lookup(parent, name);
-			if (dentry)
-				break;
-		} while (read_seqretry(&rename_lock, seq));
-	[...]
+References:
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/mt6358.c#n1875
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/mt6359.c#L1515
 
-As can be seen, read_seqretry() is never called if dentry != NULL;
-consequently, current->kcsan_ctx.in_flat_atomic will never be reset to
-false by read_seqretry().
-
-Give up on the wrong assumption of "assume closing read_seqretry()", and
-rely on the already-present annotations in read_seqcount_begin/retry().
-
-Fixes: 88ecd153be95 ("seqlock, kcsan: Add annotations for KCSAN")
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241104161910.780003-6-elver@google.com
+Fixes: 539237d1c609 ("dt-bindings: mediatek: mt6359: add codec document")
+Signed-off-by: Jiaxin Yu <jiaxin.yu@mediatek.com>
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patch.msgid.link/20240930075451.14196-1-macpaul.lin@mediatek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/seqlock.h | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ Documentation/devicetree/bindings/sound/mt6359.yaml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/seqlock.h b/include/linux/seqlock.h
-index 45eee0e5dca01..5298765d6ca48 100644
---- a/include/linux/seqlock.h
-+++ b/include/linux/seqlock.h
-@@ -810,11 +810,7 @@ static __always_inline void write_seqcount_latch_end(seqcount_latch_t *s)
-  */
- static inline unsigned read_seqbegin(const seqlock_t *sl)
- {
--	unsigned ret = read_seqcount_begin(&sl->seqcount);
--
--	kcsan_atomic_next(0);  /* non-raw usage, assume closing read_seqretry() */
--	kcsan_flat_atomic_begin();
--	return ret;
-+	return read_seqcount_begin(&sl->seqcount);
- }
+diff --git a/Documentation/devicetree/bindings/sound/mt6359.yaml b/Documentation/devicetree/bindings/sound/mt6359.yaml
+index 23d411fc4200e..128698630c865 100644
+--- a/Documentation/devicetree/bindings/sound/mt6359.yaml
++++ b/Documentation/devicetree/bindings/sound/mt6359.yaml
+@@ -23,8 +23,8 @@ properties:
+       Indicates how many data pins are used to transmit two channels of PDM
+       signal. 0 means two wires, 1 means one wire. Default value is 0.
+     enum:
+-      - 0 # one wire
+-      - 1 # two wires
++      - 0 # two wires
++      - 1 # one wire
  
- /**
-@@ -830,12 +826,6 @@ static inline unsigned read_seqbegin(const seqlock_t *sl)
-  */
- static inline unsigned read_seqretry(const seqlock_t *sl, unsigned start)
- {
--	/*
--	 * Assume not nested: read_seqretry() may be called multiple times when
--	 * completing read critical section.
--	 */
--	kcsan_flat_atomic_end();
--
- 	return read_seqcount_retry(&sl->seqcount, start);
- }
+   mediatek,mic-type-0:
+     $ref: /schemas/types.yaml#/definitions/uint32
+@@ -53,9 +53,9 @@ additionalProperties: false
  
+ examples:
+   - |
+-    mt6359codec: mt6359codec {
+-      mediatek,dmic-mode = <0>;
+-      mediatek,mic-type-0 = <2>;
++    mt6359codec: audio-codec {
++        mediatek,dmic-mode = <0>;
++        mediatek,mic-type-0 = <2>;
+     };
+ 
+ ...
 -- 
 2.43.0
 
