@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35949E2532
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE51D9E224A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A7E228424A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 948A728199E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E108E1F75AE;
-	Tue,  3 Dec 2024 15:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27131F76AD;
+	Tue,  3 Dec 2024 15:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPwF1M5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to+/ef3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3951DE8A5;
-	Tue,  3 Dec 2024 15:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02831EF0AE;
+	Tue,  3 Dec 2024 15:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241480; cv=none; b=HA0xdqfl0IfTaatmweatNmCmug/gaz9NqdF61wsUbrZRQ/dPuihLfwtpcl5IoVRNNpGImJCBVRy9hdoKDA1EMRlWrWboFAoYAlMEAHb885NZgjJEO2uFiqR3O9ADIp7+pSBXMaTkxLlINxT8yM8WvFYj3n/uUCA6zdP861LAAwc=
+	t=1733239349; cv=none; b=rKFl8UjU4LKG92tWZe+8g7Byg0zd+J2J0vw5/gCnL1RMu5DJurzlDclmVdmPWep9zxhTuSrT4uHTuNm2hZ65Jd1dUSqZlcMVEKr3tcAB5DMkFneiIhtveRb7Vl3/0A0LhjFmvG3jh8FOpYy/o/U1lK8izYjh80BxSH8SFvu/xhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241480; c=relaxed/simple;
-	bh=DQrwxCp5iE1M1VXG/xFFYfkZBEv+kezv5BCGHkAh0e4=;
+	s=arc-20240116; t=1733239349; c=relaxed/simple;
+	bh=8SUbUUaam3sYXQwZNnDLoC2h9BMxZQa0pYZtU8jNKfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIO01uMrPUUhP1pTjpwoepyv8spzq5PygqFTpmsMvQ+HiCAMx07cuQOvbJ9qn1CCh9mW9uk45znPYzeRzQgbcBaorG6t7Quw/dpjjoTev6jWu4C5gHESaTGq24KqnzgITtLgVgKK24+EshPdzZqetehPFIJJDV61Jc/2y5sqaec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPwF1M5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB19CC4CECF;
-	Tue,  3 Dec 2024 15:57:59 +0000 (UTC)
+	 MIME-Version; b=iVun1O4XjQXh7b9LKqWWifZ06ApQu448L4vaDMS7Cw0eb3dcraTOh6Td3XpTJ11va5bL+jfszqdOvxKz03+2jXAUyG3DH1ApR/Dl+SUcefT27flZOe64VklQgIfcFc/hMbZjDhIv6JBwZO1FhpfP2e0qGz2vwvtQU8qq4Liyqu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to+/ef3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258D5C4CECF;
+	Tue,  3 Dec 2024 15:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241480;
-	bh=DQrwxCp5iE1M1VXG/xFFYfkZBEv+kezv5BCGHkAh0e4=;
+	s=korg; t=1733239349;
+	bh=8SUbUUaam3sYXQwZNnDLoC2h9BMxZQa0pYZtU8jNKfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sPwF1M5Am+J53oMZBiTnE+qtBpPjAtOzuPTqmj7MVNrinX0NTK6dsiRqYAMuVAzpH
-	 MJMk9fLBfduK7AaUVb6ky19+eWeThGbhQRYOgVv4GQ/jLJP/Y3zo033/40E1BX8sFe
-	 n017ZdPncNZwtjEap7TPW3QdpRfINW7NAI8rbo50=
+	b=to+/ef3Nw5B+MXOMwnvJwYgeriyV1u7Sg4KoC6QqIAIbvol1So6XfSFGHjpc6NcBv
+	 khQPqCkBxnoCCUr78qVep2gI/vSd6v3zmEGwJelse9oCEIUvdkJZJLZgKUMKgVY/UO
+	 NvcgsMz6TtEZKPs5MpWNz0N4IFbJUU3u8Xfw4gGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 429/826] RDMA/hns: Fix NULL pointer derefernce in hns_roce_map_mr_sg()
+Subject: [PATCH 6.11 584/817] net: hsr: fix hsr_init_sk() vs network/transport headers.
 Date: Tue,  3 Dec 2024 15:42:36 +0100
-Message-ID: <20241203144800.497627520@linuxfoundation.org>
+Message-ID: <20241203144018.717185279@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6b526d17eed850352d880b93b9bf20b93006bd92 ]
+[ Upstream commit 9cfb5e7f0ded2bfaabc270ceb5f91d13f0e805b9 ]
 
-ib_map_mr_sg() allows ULPs to specify NULL as the sg_offset argument.
-The driver needs to check whether it is a NULL pointer before
-dereferencing it.
+Following sequence in hsr_init_sk() is invalid :
 
-Fixes: d387d4b54eb8 ("RDMA/hns: Fix missing pagesize and alignment check in FRMR")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241108075743.2652258-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+    skb_reset_mac_header(skb);
+    skb_reset_mac_len(skb);
+    skb_reset_network_header(skb);
+    skb_reset_transport_header(skb);
+
+It is invalid because skb_reset_mac_len() needs the correct
+network header, which should be after the mac header.
+
+This patch moves the skb_reset_network_header()
+and skb_reset_transport_header() before
+the call to dev_hard_header().
+
+As a result skb->mac_len is no longer set to a value
+close to 65535.
+
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20241122171343.897551-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_mr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/hsr/hsr_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index b3f4327d0e64a..bf30b3a65a9ba 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -435,15 +435,16 @@ static int hns_roce_set_page(struct ib_mr *ibmr, u64 addr)
- }
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index 049e22bdaafb7..1f40259597bc0 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -266,6 +266,8 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
+ 	skb->dev = master->dev;
+ 	skb->priority = TC_PRIO_CONTROL;
  
- int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
--		       unsigned int *sg_offset)
-+		       unsigned int *sg_offset_p)
- {
-+	unsigned int sg_offset = sg_offset_p ? *sg_offset_p : 0;
- 	struct hns_roce_dev *hr_dev = to_hr_dev(ibmr->device);
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
- 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
- 	int ret, sg_num = 0;
++	skb_reset_network_header(skb);
++	skb_reset_transport_header(skb);
+ 	if (dev_hard_header(skb, skb->dev, ETH_P_PRP,
+ 			    hsr->sup_multicast_addr,
+ 			    skb->dev->dev_addr, skb->len) <= 0)
+@@ -273,8 +275,6 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
  
--	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
-+	if (!IS_ALIGNED(sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
- 	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
- 	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
- 		return sg_num;
-@@ -454,7 +455,7 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	if (!mr->page_list)
- 		return sg_num;
+ 	skb_reset_mac_header(skb);
+ 	skb_reset_mac_len(skb);
+-	skb_reset_network_header(skb);
+-	skb_reset_transport_header(skb);
  
--	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
-+	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset_p, hns_roce_set_page);
- 	if (sg_num < 1) {
- 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
- 			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
+ 	return skb;
+ out:
 -- 
 2.43.0
 
