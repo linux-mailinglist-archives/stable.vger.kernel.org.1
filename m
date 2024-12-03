@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B412E9E266C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237829E27AF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:38:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A8BE161588
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BCB1B3E30F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2689A1F76D5;
-	Tue,  3 Dec 2024 16:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8F21F8AC9;
+	Tue,  3 Dec 2024 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mu06FOKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WI5er7a4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2D91F12F7;
-	Tue,  3 Dec 2024 16:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD9C1F8AC1;
+	Tue,  3 Dec 2024 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242098; cv=none; b=R5+3v8zoZ9y9JiIjPLjnVs2qK+P16XxnJSfrzUDtrEQ7iO2aEpf0dDIoDsMh6IvfapFcmB6VEtIUZ8UMeUT3kWab1+iohSNbKFFJLT7/tKIBbViUd7fyYommTyBPgLpqDXo1Fi0T7UKw2QRV7yZfhDo/89i9pfYdvwrJAn0afvM=
+	t=1733239867; cv=none; b=bnxVJ4XyMd2lDKovJEtYzzZmgY54U00GiSipxh5yuxdtrx8oEnjN29vSeZ8OGfHI2c4LPOuJSWwyjiwyQYIY7cOUKqtTn8XBDe7uOG7kSErxJMiL+9vHNQfsk4aWSb4LadoemQ0RmD00RwykAFk23SKP21l7xhL63xkzR5jb5f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242098; c=relaxed/simple;
-	bh=7FQ82MbRvLK37NHaWaAJ94Prqk7Yvyb7bfEWslRSXTg=;
+	s=arc-20240116; t=1733239867; c=relaxed/simple;
+	bh=1/PF+ZX4fcflZlugDnz3ATpYV6rXdaPX/Rir10aa8dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CccNoQCGY1G6GIhWFfwy+YOkQvxwieIfSfoe75tWBJSq1v5zyTOpkF3uM6PJz6IozoU+grxsMadB2CLzNDCuAb4RDFX6RMXu4ZGXtBe6T9dLlSPOrb6b/Nh0sDc/GDajonNjzTaBhr/+5EHyTGdJZrl64PaW0xioetq8qx6LrAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mu06FOKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A98C4CECF;
-	Tue,  3 Dec 2024 16:08:18 +0000 (UTC)
+	 MIME-Version; b=Ugx2eGSfjgy74d/UHHZsDW1f5uIGpIgDa1XlQ6oXtjPiWrjylihn+J8z84vZn1Y6DeU/XTRuG6een0QXqgt69mxXG10cOX3dC+TTeZCx4Bjopdzm2zdtFBkc9UIiJYQd4UzQ9kOqFS3PGlR+VJl2w81tpwfDGsvf39n3YZpeFfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WI5er7a4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE587C4CEE4;
+	Tue,  3 Dec 2024 15:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242098;
-	bh=7FQ82MbRvLK37NHaWaAJ94Prqk7Yvyb7bfEWslRSXTg=;
+	s=korg; t=1733239867;
+	bh=1/PF+ZX4fcflZlugDnz3ATpYV6rXdaPX/Rir10aa8dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mu06FOKqCsXcsWe/0EvCx1yEzIJA56HThMKr2BSXmOxZfs7scDoZOBuW69U/eQRLa
-	 Kp+ngbCKn/MRTZwVFZpYxL6UVdSEWEb3zRdjjMYf9M3nmw/1xSHWQLgMgR/0u20tHk
-	 7R8dHkX1CTd5NAoygGzgNvvgI4fHIkSivvdcuuNU=
+	b=WI5er7a4hCRp4bBs8OJ4ocQUfC79UglF/EK5J8m7I51WTc8N/tseZAJ+WDt3b6XBV
+	 N6VxddjPi3KwejqNzkymukOvoRblYVe4rhB33vsUtOGPho4sr5L9t3qYvJmkrHthYT
+	 7ZX+5r2tymNg0siXQpsmUlAjBgyPlpoXThsriNEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Panis <jpanis@baylibre.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 607/826] counter: ti-ecap-capture: Add check for clk_enable()
+	Yuan Can <yuancan@huawei.com>,
+	James Ogletree <jogletre@opensource.cirrus.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.11 762/817] Input: cs40l50 - fix wrong usage of INIT_WORK()
 Date: Tue,  3 Dec 2024 15:45:34 +0100
-Message-ID: <20241203144807.431579617@linuxfoundation.org>
+Message-ID: <20241203144025.739181389@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 1437d9f1c56fce9c24e566508bce1d218dd5497a ]
+commit 5c822c0ce5cc83ed4cd8394f3dc46dae8d9a681d upstream.
 
-Add check for the return value of clk_enable() in order to catch the
-potential exception.
+In cs40l50_add(), the work_data is a local variable and the work_data.work
+should initialize with INIT_WORK_ONSTACK() instead of INIT_WORK().
+Small error in cs40l50_erase() also fixed in this commit.
 
-Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
-Reviewed-by: Julien Panis <jpanis@baylibre.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241104194059.47924-1-jiashengjiangcool@gmail.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c38fe1bb5d21 ("Input: cs40l50 - Add support for the CS40L50 haptic driver")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: James Ogletree <jogletre@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20241106013549.78142-1-yuancan@huawei.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/ti-ecap-capture.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/input/misc/cs40l50-vibra.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-index 675447315cafb..b119aeede693e 100644
---- a/drivers/counter/ti-ecap-capture.c
-+++ b/drivers/counter/ti-ecap-capture.c
-@@ -574,8 +574,13 @@ static int ecap_cnt_resume(struct device *dev)
- {
- 	struct counter_device *counter_dev = dev_get_drvdata(dev);
- 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
-+	int ret;
+diff --git a/drivers/input/misc/cs40l50-vibra.c b/drivers/input/misc/cs40l50-vibra.c
+index 03bdb7c26ec0..dce3b0ec8cf3 100644
+--- a/drivers/input/misc/cs40l50-vibra.c
++++ b/drivers/input/misc/cs40l50-vibra.c
+@@ -334,11 +334,12 @@ static int cs40l50_add(struct input_dev *dev, struct ff_effect *effect,
+ 	work_data.custom_len = effect->u.periodic.custom_len;
+ 	work_data.vib = vib;
+ 	work_data.effect = effect;
+-	INIT_WORK(&work_data.work, cs40l50_add_worker);
++	INIT_WORK_ONSTACK(&work_data.work, cs40l50_add_worker);
  
--	clk_enable(ecap_dev->clk);
-+	ret = clk_enable(ecap_dev->clk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable clock %d\n", ret);
-+		return ret;
-+	}
+ 	/* Push to the workqueue to serialize with playbacks */
+ 	queue_work(vib->vib_wq, &work_data.work);
+ 	flush_work(&work_data.work);
++	destroy_work_on_stack(&work_data.work);
  
- 	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
+ 	kfree(work_data.custom_data);
  
+@@ -467,11 +468,12 @@ static int cs40l50_erase(struct input_dev *dev, int effect_id)
+ 	work_data.vib = vib;
+ 	work_data.effect = &dev->ff->effects[effect_id];
+ 
+-	INIT_WORK(&work_data.work, cs40l50_erase_worker);
++	INIT_WORK_ONSTACK(&work_data.work, cs40l50_erase_worker);
+ 
+ 	/* Push to workqueue to serialize with playbacks */
+ 	queue_work(vib->vib_wq, &work_data.work);
+ 	flush_work(&work_data.work);
++	destroy_work_on_stack(&work_data.work);
+ 
+ 	return work_data.error;
+ }
 -- 
-2.43.0
+2.47.1
 
 
 
