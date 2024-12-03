@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198EE9E1F4E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B579E1F50
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDACD165457
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:34:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A163B16571D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0BC1F6684;
-	Tue,  3 Dec 2024 14:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E631F668D;
+	Tue,  3 Dec 2024 14:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFTyZruw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8JjcGVl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3888C1F667F;
-	Tue,  3 Dec 2024 14:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76741F6689;
+	Tue,  3 Dec 2024 14:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236436; cv=none; b=GZ6XAdI+zBDbHz4nSRwvcafn0w/Js2nw6kGnIiQnsxiz1BDfd9GKyujIVziok+mmLvDBrV+8VkHkakp0k0sXO2pPPaaQYLys0THIsPWAunCVEBaW1xJZDqrlATJzeirgMKLBDa5ZARv3E6JF5BGmCi4MYsaS4gDK0uCX6qLPoyY=
+	t=1733236442; cv=none; b=C7bDZlJDjt2RBqrPTX5bdgZBs4WhagbVMnci/51lKi/UVcrcLa6GJVYGAyGjfzkm4zpFb1dC4IfHNeMDv9pUrX+/TooC+kENlNO0+fA4XIIaFnQ+Xbbs1yMluJTaNLm1tyq6nWN6KPDjT2sQ3hyrBgyjlsdjLB2MsG38JxLdaEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236436; c=relaxed/simple;
-	bh=qjiWXOf14jkrnclnP5QjSZDvOXiq3v4IjFdHxZ3W//s=;
+	s=arc-20240116; t=1733236442; c=relaxed/simple;
+	bh=grMV6O1nEhehJ80B3QgPViw81jncGDotCASYyxG/n70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g2FgZtQ9MOAXj8Rr2HlabLH3Cet39X93GzW2ntGrrHacKHLLMKAtbFnJ92IbYpiz1pXuQ151MReLbZBI1rdmLL1XcX/EUJo3BV56nEUtB8spFF84UrZVvo1YMb+CC9tq9jTbEMp79kkc4yVf2tuOhmmDKk/5rLh/YvFFZZxGBgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFTyZruw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D9CC4CED8;
-	Tue,  3 Dec 2024 14:33:55 +0000 (UTC)
+	 MIME-Version; b=L9Tfvph8h+ueBNi1IF2hin/3UyhzfUqLPid2pMc1r2Bm3tSLV0eKhBX2r+kG/GQgycjrgC7oXoVBnlrOuMxPY4YIyPg/PD7yVvIdMqYGJ+o2L5nsobbHdUvL8sytZkiiP/hegvZHHuVXLUI5YNWtU/nplqnJjU5fX4IbWeIy8hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8JjcGVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AD1C4CECF;
+	Tue,  3 Dec 2024 14:34:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236435;
-	bh=qjiWXOf14jkrnclnP5QjSZDvOXiq3v4IjFdHxZ3W//s=;
+	s=korg; t=1733236442;
+	bh=grMV6O1nEhehJ80B3QgPViw81jncGDotCASYyxG/n70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aFTyZruwX6hW6QaeR93SQcy2UwAD4dJ5hrQ0JIRNL8+yANmv7SPKu34xpdSOVNXze
-	 F6kL2m7IL50HIE99kuL6Phq/sZ3ln/yBtgZ0KVkdtmgFfpKAmxKGdfOfORb5cTyF68
-	 LWuwulnFtWiJRgg1SnmGpxAfWaexL0BqW1FubmVM=
+	b=K8JjcGVlrrd9Kxud1zj89Eserf4vgyP5LS8Qua73cIr0KwzO2WR9Yff6qYccEZ1s2
+	 U4gGotjh5oecnSH3WBdhJLftiVdUdunFzzitFheIhMaiTpwg59Hgxzeb9VuA83/vD7
+	 lLDyvxeQ27tpU6gnDlNSoFNaZiK7h1VC4o0Eae5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
 	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 019/138] m68k: mvme16x: Add and use "mvme16x.h"
-Date: Tue,  3 Dec 2024 15:30:48 +0100
-Message-ID: <20241203141924.280943885@linuxfoundation.org>
+Subject: [PATCH 4.19 020/138] m68k: mvme147: Reinstate early console
+Date: Tue,  3 Dec 2024 15:30:49 +0100
+Message-ID: <20241203141924.317825243@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -60,78 +61,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit dcec33c1fc4ab63983d93ffb0d82b68fc5775b88 ]
+[ Upstream commit 077b33b9e2833ff25050d986178a2c4c4036cbac ]
 
-When building with W=1:
+Commit a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused
+functions"), removed the console functionality for the mvme147 instead
+of wiring it up to an early console.  Put the console write function
+back and wire it up like mvme16x does so it's possible to see Linux boot
+on this fine hardware once more.
 
-    arch/m68k/mvme16x/config.c:208:6: warning: no previous prototype for ‘mvme16x_cons_write’ [-Wmissing-prototypes]
-      208 | void mvme16x_cons_write(struct console *co, const char *str, unsigned count)
-	  |      ^~~~~~~~~~~~~~~~~~
-
-Fix this by introducing a new header file "mvme16x.h" for holding the
-prototypes of functions implemented in arch/m68k/mvme16x/.
-
+Fixes: a38eaa07a0ce ("m68k/mvme147: config.c - Remove unused functions")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Co-developed-by: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/a82e8f0068a8722996a0ccfe666abb5e0a5c120d.1730850684.git.fthain@linux-m68k.org
 Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/6200cc3b26fad215c4524748af04692e38c5ecd2.1694613528.git.geert@linux-m68k.org
-Stable-dep-of: 077b33b9e283 ("m68k: mvme147: Reinstate early console")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/kernel/early_printk.c | 4 ++--
- arch/m68k/mvme16x/config.c      | 2 ++
- arch/m68k/mvme16x/mvme16x.h     | 6 ++++++
- 3 files changed, 10 insertions(+), 2 deletions(-)
- create mode 100644 arch/m68k/mvme16x/mvme16x.h
+ arch/m68k/kernel/early_printk.c |  5 ++++-
+ arch/m68k/mvme147/config.c      | 30 ++++++++++++++++++++++++++++++
+ arch/m68k/mvme147/mvme147.h     |  6 ++++++
+ 3 files changed, 40 insertions(+), 1 deletion(-)
+ create mode 100644 arch/m68k/mvme147/mvme147.h
 
 diff --git a/arch/m68k/kernel/early_printk.c b/arch/m68k/kernel/early_printk.c
-index 7d3fe08a48eb0..3cc944df04f65 100644
+index 3cc944df04f65..f11ef9f1f56fc 100644
 --- a/arch/m68k/kernel/early_printk.c
 +++ b/arch/m68k/kernel/early_printk.c
-@@ -12,8 +12,8 @@
- #include <linux/string.h>
+@@ -13,6 +13,7 @@
  #include <asm/setup.h>
  
--extern void mvme16x_cons_write(struct console *co,
--			       const char *str, unsigned count);
-+
-+#include "../mvme16x/mvme16x.h"
+ 
++#include "../mvme147/mvme147.h"
+ #include "../mvme16x/mvme16x.h"
  
  asmlinkage void __init debug_cons_nputs(const char *s, unsigned n);
- 
-diff --git a/arch/m68k/mvme16x/config.c b/arch/m68k/mvme16x/config.c
-index 5feb3ab484d08..bb658e0a5be5a 100644
---- a/arch/m68k/mvme16x/config.c
-+++ b/arch/m68k/mvme16x/config.c
-@@ -38,6 +38,8 @@
+@@ -22,7 +23,9 @@ static void __ref debug_cons_write(struct console *c,
+ {
+ #if !(defined(CONFIG_SUN3) || defined(CONFIG_M68000) || \
+       defined(CONFIG_COLDFIRE))
+-	if (MACH_IS_MVME16x)
++	if (MACH_IS_MVME147)
++		mvme147_scc_write(c, s, n);
++	else if (MACH_IS_MVME16x)
+ 		mvme16x_cons_write(c, s, n);
+ 	else
+ 		debug_cons_nputs(s, n);
+diff --git a/arch/m68k/mvme147/config.c b/arch/m68k/mvme147/config.c
+index 93c68d2b8e0ea..36ff897765745 100644
+--- a/arch/m68k/mvme147/config.c
++++ b/arch/m68k/mvme147/config.c
+@@ -35,6 +35,7 @@
  #include <asm/machdep.h>
- #include <asm/mvme16xhw.h>
+ #include <asm/mvme147hw.h>
  
-+#include "mvme16x.h"
++#include "mvme147.h"
+ 
+ static void mvme147_get_model(char *model);
+ extern void mvme147_sched_init(irq_handler_t handler);
+@@ -164,3 +165,32 @@ int mvme147_hwclk(int op, struct rtc_time *t)
+ 	}
+ 	return 0;
+ }
 +
- extern t_bdid mvme_bdid;
- 
- static MK48T08ptr_t volatile rtc = (MK48T08ptr_t)MVME_RTC_BASE;
-diff --git a/arch/m68k/mvme16x/mvme16x.h b/arch/m68k/mvme16x/mvme16x.h
++static void scc_delay(void)
++{
++	__asm__ __volatile__ ("nop; nop;");
++}
++
++static void scc_write(char ch)
++{
++	do {
++		scc_delay();
++	} while (!(in_8(M147_SCC_A_ADDR) & BIT(2)));
++	scc_delay();
++	out_8(M147_SCC_A_ADDR, 8);
++	scc_delay();
++	out_8(M147_SCC_A_ADDR, ch);
++}
++
++void mvme147_scc_write(struct console *co, const char *str, unsigned int count)
++{
++	unsigned long flags;
++
++	local_irq_save(flags);
++	while (count--)	{
++		if (*str == '\n')
++			scc_write('\r');
++		scc_write(*str++);
++	}
++	local_irq_restore(flags);
++}
+diff --git a/arch/m68k/mvme147/mvme147.h b/arch/m68k/mvme147/mvme147.h
 new file mode 100644
-index 0000000000000..159c34b700394
+index 0000000000000..140bc98b0102a
 --- /dev/null
-+++ b/arch/m68k/mvme16x/mvme16x.h
++++ b/arch/m68k/mvme147/mvme147.h
 @@ -0,0 +1,6 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +
 +struct console;
 +
 +/* config.c */
-+void mvme16x_cons_write(struct console *co, const char *str, unsigned count);
++void mvme147_scc_write(struct console *co, const char *str, unsigned int count);
 -- 
 2.43.0
 
