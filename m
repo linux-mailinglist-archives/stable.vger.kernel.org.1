@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83CFF9E292D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6299E9E2A0D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:54:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B49EB3E415
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 903F7B2DFF3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10B41F75B5;
-	Tue,  3 Dec 2024 14:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2740E1F7548;
+	Tue,  3 Dec 2024 14:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyGSNxzN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8XBIRhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0341F75AF;
-	Tue,  3 Dec 2024 14:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DA71F6698;
+	Tue,  3 Dec 2024 14:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237891; cv=none; b=A8mGvmyw0uVJ+VjfRY3KWINHTtp5d1C5TauvQnQkvE+5wWW4XQuVRTwn+NiWZz8h59HDN0dgSWUdU6oa2AKmqZzM+tlfbDc+3k4CL4TKZy0i/UN6eC8ang5Qtdp/xIB36z2R/u3wpOjNnodtw72WecfUvpK2V901kaL77qCmCAk=
+	t=1733237933; cv=none; b=sGo/NTln29xG6pyWZGoVB68Cebn0LfSwk4AGcvGn7JfYV5ZaEMTH1qd0ytjdxiT7Ff3XXgP6fnQ6xFjZA4uPd+IkbFocZ9T6J47gLSe51Z6lxNmgVgxrl66gxVbeW2M8LgQOmp9ja3T7s+t5dRizKxLIKCeL/2BG1AZnPt0DIzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237891; c=relaxed/simple;
-	bh=xeHSGiZu4Y9YH8u7wKaLwD1Eu/3DYTTXRxo1M4yixcY=;
+	s=arc-20240116; t=1733237933; c=relaxed/simple;
+	bh=0FjO6V32k4rEnGmdMBWAXFSOkcEHGD3lHpsTCaslh0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rY7dmQLD72temD3FcqXI9bCvynh5LN9JDUoY3iq5Y/ehHU0aB3bw4UyWnoEWBkSpKLPH/iylcAbE3X+gEKub5dVa3hFq7Sn2RcwmMHcqUUA6ADssl2cRq6i6kcp9BnVVXGg2nxhlpDeoj7ZzZwRNB0xXPV37q9hpAwn1SBrmhgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyGSNxzN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BAFC4CECF;
-	Tue,  3 Dec 2024 14:58:10 +0000 (UTC)
+	 MIME-Version; b=u2cnGaP/s7ARCAuz/8c31Py6YlCtQhB4Crz1s58on8MQzHkRV3KCTSOHA8e8m6YUhlWc6YbqpvOI4VpCEAeetHJhbOuSRCuCPzOylXllE965FcbRlcDvTpAeq3ZnxGaaWta+Ap66KTIQsm6OjnS+/06icgmtrreeYcL/1VcJabM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8XBIRhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60151C4CECF;
+	Tue,  3 Dec 2024 14:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237891;
-	bh=xeHSGiZu4Y9YH8u7wKaLwD1Eu/3DYTTXRxo1M4yixcY=;
+	s=korg; t=1733237933;
+	bh=0FjO6V32k4rEnGmdMBWAXFSOkcEHGD3lHpsTCaslh0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yyGSNxzNOFpXf6bcIiabCBX9DNg3kj1Pbt98MVHtw8Ed2nVfbVrjdZoJZcoHkDQSz
-	 Zs2dJ/7kYBReCFk9tPBuOVaa+dbwC1jFw23V4zuNvlbOZkovFykYFCK58GLRHBYXu9
-	 YctiFqh3m6nezegU+fL3wzin/SsjVWWSgr9YaZ7M=
+	b=B8XBIRhRt7iuTETTKY7ENc8tRjZoyMurGuNRZGNrhWlqqLz1DOu9WlZTwgFX3SL8W
+	 dvEnU5svHs+39XKqZuJwJffi77W9YJl1DZrrKY622XJIRfXHFngZ3EYZM/U+RP8Wdw
+	 xEBEvI9wknsvm0MGqRjw8HYZ5d+DiF242BiPSW2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Orange Kao <orange@aiven.io>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 097/817] crypto: qat - remove faulty arbiter config reset
-Date: Tue,  3 Dec 2024 15:34:29 +0100
-Message-ID: <20241203143959.491426979@linuxfoundation.org>
+Subject: [PATCH 6.11 112/817] EDAC/igen6: Avoid segmentation fault on module unload
+Date: Tue,  3 Dec 2024 15:34:44 +0100
+Message-ID: <20241203144000.083541435@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,43 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ahsan Atta <ahsan.atta@intel.com>
+From: Orange Kao <orange@aiven.io>
 
-[ Upstream commit 70199359902f1c7187dcb28a1be679a7081de7cc ]
+[ Upstream commit fefaae90398d38a1100ccd73b46ab55ff4610fba ]
 
-Resetting the service arbiter config can cause potential issues
-related to response ordering and ring flow control check in the
-event of AER or device hang. This is because it results in changing
-the default response ring size from 32 bytes to 16 bytes. The service
-arbiter config reset also disables response ring flow control check.
-Thus, by removing this reset we can prevent the service arbiter from
-being configured inappropriately, which leads to undesired device
-behaviour in the event of errors.
+The segmentation fault happens because:
 
-Fixes: 7afa232e76ce ("crypto: qat - Intel(R) QAT DH895xcc accelerator")
-Signed-off-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+During modprobe:
+1. In igen6_probe(), igen6_pvt will be allocated with kzalloc()
+2. In igen6_register_mci(), mci->pvt_info will point to
+   &igen6_pvt->imc[mc]
+
+During rmmod:
+1. In mci_release() in edac_mc.c, it will kfree(mci->pvt_info)
+2. In igen6_remove(), it will kfree(igen6_pvt);
+
+Fix this issue by setting mci->pvt_info to NULL to avoid the double
+kfree.
+
+Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219360
+Signed-off-by: Orange Kao <orange@aiven.io>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20241104124237.124109-2-orange@aiven.io
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/edac/igen6_edac.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c b/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c
-index 65bd26b25abce..f93d9cca70cee 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_hw_arbiter.c
-@@ -90,10 +90,6 @@ void adf_exit_arb(struct adf_accel_dev *accel_dev)
+diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
+index 189a2fc29e74f..07dacf8c10be3 100644
+--- a/drivers/edac/igen6_edac.c
++++ b/drivers/edac/igen6_edac.c
+@@ -1245,6 +1245,7 @@ static int igen6_register_mci(int mc, u64 mchbar, struct pci_dev *pdev)
+ 	imc->mci = mci;
+ 	return 0;
+ fail3:
++	mci->pvt_info = NULL;
+ 	kfree(mci->ctl_name);
+ fail2:
+ 	edac_mc_free(mci);
+@@ -1269,6 +1270,7 @@ static void igen6_unregister_mcis(void)
  
- 	hw_data->get_arb_info(&info);
- 
--	/* Reset arbiter configuration */
--	for (i = 0; i < ADF_ARB_NUM; i++)
--		WRITE_CSR_ARB_SARCONFIG(csr, arb_off, i, 0);
--
- 	/* Unmap worker threads to service arbiters */
- 	for (i = 0; i < hw_data->num_engines; i++)
- 		WRITE_CSR_ARB_WT2SAM(csr, arb_off, wt_off, i, 0);
+ 		edac_mc_del_mc(mci->pdev);
+ 		kfree(mci->ctl_name);
++		mci->pvt_info = NULL;
+ 		edac_mc_free(mci);
+ 		iounmap(imc->window);
+ 	}
 -- 
 2.43.0
 
