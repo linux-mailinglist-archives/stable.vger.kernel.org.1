@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 059129E254E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC059E2161
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D70A8BC80F8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B661E283718
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257CE1FDE05;
-	Tue,  3 Dec 2024 15:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C425E1F759C;
+	Tue,  3 Dec 2024 15:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+7EKf8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxFKNf7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D898D1F755B;
-	Tue,  3 Dec 2024 15:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828D41F6698;
+	Tue,  3 Dec 2024 15:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240516; cv=none; b=pl3SGkW7zQxl2kzTDUgX+KudQDvqgG+K9GAKT1VaZ3ljHkHmq5BiLM07XwyvM0Sm9Tn0lzMOYlw/qRtojuv8KB8s9UQehwovQ6k8wUBXXQAtB8AL7tefsKKK6CDZTHerj/oW5gvZzTWQsa7rnO2yurf1fa0bUvx7cFgy/pDUHpA=
+	t=1733238540; cv=none; b=tXMk71Xws2g7yq4prvmzuiIYreH2V3zKIdX46VuH9+h/dBude/v/peR3D4pc3m0LM3nwOboj1qr7vfzC/6WWLjn9e2Lnwz441OUqq7WYKNE0bYkQpwgLGF0Wu1H/YTlsy/wdB851H9NSpm+so6AW5mj8IDkKhPLYTn4TrvEX5Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240516; c=relaxed/simple;
-	bh=jN7GbauvU5MuIU4nYfdVSu9v5UzspO05uaSCQDtDlaM=;
+	s=arc-20240116; t=1733238540; c=relaxed/simple;
+	bh=FtxPCOGjDhdugIGDpvJJ2UHITrwgm/wRab7tgg0deIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXEEKwK+SDk5auOGtRzqEezTJrIXwaHUPMrZK14AIyzZTrezLfIluukj5NVLeli6KLum4SMBwE/GX18eAysikB/BIqrYKr/FqISpJv9gx3BDYHM4TecGnYP4ha+tA+wgRK51zdqA2jKREftmXv2cKIv1SrhGLufuHvCqxnYMGyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+7EKf8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FBAC4CECF;
-	Tue,  3 Dec 2024 15:41:55 +0000 (UTC)
+	 MIME-Version; b=G5QhhnX0ccqmExFoUJmJOrfuMc6xE19SYnAPFwsrtXlq2FMXDBhduI1MwV+rxpvZ/ItBFCdKoTHD2413c3hqBeYJXoKxHJAvyikBuDOykNZz1DmQQage9/Ii+UL7vCUCWmCjEdQExWlbds+MbaJPUSRqC2mL6O+LePl7rL4YCIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxFKNf7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B621CC4CED8;
+	Tue,  3 Dec 2024 15:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240516;
-	bh=jN7GbauvU5MuIU4nYfdVSu9v5UzspO05uaSCQDtDlaM=;
+	s=korg; t=1733238540;
+	bh=FtxPCOGjDhdugIGDpvJJ2UHITrwgm/wRab7tgg0deIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+7EKf8bqcrmfUzt1smzQLrV9FY5XbOv7XIDII0c4XL79gUhdN5WFV0Du5V7EHv8C
-	 TnYeHhLcH4AgOLDcA5Yb086wP7yL+D9amckLt3R4PE6M2n5NxfjbtdO3JJAsJv2WYi
-	 gD4xU8ho5E6DLO9sf6v2tDiij377nx244G//EPLk=
+	b=yxFKNf7BrmyWQ4/aE13fw3XRfd4LjjT5VMgeydbozNG/ObbiWYxsPsmFjhJtxegiX
+	 BBrB88l/fMh0mdN7liZeg/QZZ6i4D7vykKjXZcPdBfzkIINvxFAs+KIkuu5BTDYFbP
+	 pMfdwN6gY5rSHe4fSEVurZvnq5srFWzo0WToEt7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 158/826] regmap: irq: Set lockdep class for hierarchical IRQ domains
+Subject: [PATCH 6.11 313/817] bpf: Support __nullable argument suffix for tp_btf
 Date: Tue,  3 Dec 2024 15:38:05 +0100
-Message-ID: <20241203144749.904553818@linuxfoundation.org>
+Message-ID: <20241203144008.034669365@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Philo Lu <lulie@linux.alibaba.com>
 
-[ Upstream commit 953e549471cabc9d4980f1da2e9fa79f4c23da06 ]
+[ Upstream commit 8aeaed21befc90f27f4fca6dd190850d97d2e9e3 ]
 
-Lockdep gives a false positive splat as it can't distinguish the lock
-which is taken by different IRQ descriptors from different IRQ chips
-that are organized in a way of a hierarchy:
+Pointers passed to tp_btf were trusted to be valid, but some tracepoints
+do take NULL pointer as input, such as trace_tcp_send_reset(). Then the
+invalid memory access cannot be detected by verifier.
 
-   ======================================================
-   WARNING: possible circular locking dependency detected
-   6.12.0-rc5-next-20241101-00148-g9fabf8160b53 #562 Tainted: G        W
-   ------------------------------------------------------
-   modprobe/141 is trying to acquire lock:
-   ffff899446947868 (intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock){+.+.}-{4:4}, at: regmap_update_bits_base+0x33/0x90
+This patch fix it by add a suffix "__nullable" to the unreliable
+argument. The suffix is shown in btf, and PTR_MAYBE_NULL will be added
+to nullable arguments. Then users must check the pointer before use it.
 
-   but task is already holding lock:
-   ffff899446947c68 (&d->lock){+.+.}-{4:4}, at: __setup_irq+0x682/0x790
+A problem here is that we use "btf_trace_##call" to search func_proto.
+As it is a typedef, argument names as well as the suffix are not
+recorded. To solve this, I use bpf_raw_event_map to find
+"__bpf_trace##template" from "btf_trace_##call", and then we can see the
+suffix.
 
-   which lock already depends on the new lock.
-
-   -> #3 (&d->lock){+.+.}-{4:4}:
-   -> #2 (&desc->request_mutex){+.+.}-{4:4}:
-   -> #1 (ipclock){+.+.}-{4:4}:
-   -> #0 (intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock){+.+.}-{4:4}:
-
-   Chain exists of:
-     intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock --> &desc->request_mutex --> &d->lock
-
-    Possible unsafe locking scenario:
-
-          CPU0                    CPU1
-          ----                    ----
-     lock(&d->lock);
-                                  lock(&desc->request_mutex);
-                                  lock(&d->lock);
-     lock(intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock);
-
-    *** DEADLOCK ***
-
-   3 locks held by modprobe/141:
-    #0: ffff8994419368f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xf6/0x250
-    #1: ffff89944690b250 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq+0x1a2/0x790
-    #2: ffff899446947c68 (&d->lock){+.+.}-{4:4}, at: __setup_irq+0x682/0x790
-
-Set a lockdep class when we map the IRQ so that it doesn't warn about
-a lockdep bug that doesn't exist.
-
-Fixes: 4af8be67fd99 ("regmap: Convert regmap_irq to use irq_domain")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20241101165553.4055617-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Philo Lu <lulie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240911033719.91468-2-lulie@linux.alibaba.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Stable-dep-of: cb4158ce8ec8 ("bpf: Mark raw_tp arguments with PTR_MAYBE_NULL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/bpf/btf.c      |  3 +++
+ kernel/bpf/verifier.c | 36 ++++++++++++++++++++++++++++++++----
+ 2 files changed, 35 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
-index a750e48a26b87..6981e5f974e9a 100644
---- a/drivers/base/regmap/regmap-irq.c
-+++ b/drivers/base/regmap/regmap-irq.c
-@@ -514,12 +514,16 @@ static irqreturn_t regmap_irq_thread(int irq, void *d)
- 		return IRQ_NONE;
- }
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 5f4f1d0bc23a4..76afa90814ddb 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6534,6 +6534,9 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
+ 	if (prog_args_trusted(prog))
+ 		info->reg_type |= PTR_TRUSTED;
  
-+static struct lock_class_key regmap_irq_lock_class;
-+static struct lock_class_key regmap_irq_request_class;
++	if (btf_param_match_suffix(btf, &args[arg], "__nullable"))
++		info->reg_type |= PTR_MAYBE_NULL;
 +
- static int regmap_irq_map(struct irq_domain *h, unsigned int virq,
- 			  irq_hw_number_t hw)
- {
- 	struct regmap_irq_chip_data *data = h->host_data;
+ 	if (tgt_prog) {
+ 		enum bpf_prog_type tgt_type;
  
- 	irq_set_chip_data(virq, data);
-+	irq_set_lockdep_class(virq, &regmap_irq_lock_class, &regmap_irq_request_class);
- 	irq_set_chip(virq, &data->irq_chip);
- 	irq_set_nested_thread(virq, 1);
- 	irq_set_parent(virq, data->irq);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 3bee91db81f0a..0481915e63c21 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -28,6 +28,8 @@
+ #include <linux/cpumask.h>
+ #include <linux/bpf_mem_alloc.h>
+ #include <net/xdp.h>
++#include <linux/trace_events.h>
++#include <linux/kallsyms.h>
+ 
+ #include "disasm.h"
+ 
+@@ -21308,11 +21310,13 @@ int bpf_check_attach_target(struct bpf_verifier_log *log,
+ {
+ 	bool prog_extension = prog->type == BPF_PROG_TYPE_EXT;
+ 	bool prog_tracing = prog->type == BPF_PROG_TYPE_TRACING;
++	char trace_symbol[KSYM_SYMBOL_LEN];
+ 	const char prefix[] = "btf_trace_";
++	struct bpf_raw_event_map *btp;
+ 	int ret = 0, subprog = -1, i;
+ 	const struct btf_type *t;
+ 	bool conservative = true;
+-	const char *tname;
++	const char *tname, *fname;
+ 	struct btf *btf;
+ 	long addr = 0;
+ 	struct module *mod = NULL;
+@@ -21443,10 +21447,34 @@ int bpf_check_attach_target(struct bpf_verifier_log *log,
+ 			return -EINVAL;
+ 		}
+ 		tname += sizeof(prefix) - 1;
+-		t = btf_type_by_id(btf, t->type);
+-		if (!btf_type_is_ptr(t))
+-			/* should never happen in valid vmlinux build */
++
++		/* The func_proto of "btf_trace_##tname" is generated from typedef without argument
++		 * names. Thus using bpf_raw_event_map to get argument names.
++		 */
++		btp = bpf_get_raw_tracepoint(tname);
++		if (!btp)
+ 			return -EINVAL;
++		fname = kallsyms_lookup((unsigned long)btp->bpf_func, NULL, NULL, NULL,
++					trace_symbol);
++		bpf_put_raw_tracepoint(btp);
++
++		if (fname)
++			ret = btf_find_by_name_kind(btf, fname, BTF_KIND_FUNC);
++
++		if (!fname || ret < 0) {
++			bpf_log(log, "Cannot find btf of tracepoint template, fall back to %s%s.\n",
++				prefix, tname);
++			t = btf_type_by_id(btf, t->type);
++			if (!btf_type_is_ptr(t))
++				/* should never happen in valid vmlinux build */
++				return -EINVAL;
++		} else {
++			t = btf_type_by_id(btf, ret);
++			if (!btf_type_is_func(t))
++				/* should never happen in valid vmlinux build */
++				return -EINVAL;
++		}
++
+ 		t = btf_type_by_id(btf, t->type);
+ 		if (!btf_type_is_func_proto(t))
+ 			/* should never happen in valid vmlinux build */
 -- 
 2.43.0
 
