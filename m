@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490DB9E275A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:27:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC52E9E25CC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 341DAB33952
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 710E5288924
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846351F7557;
-	Tue,  3 Dec 2024 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB3B1F76D7;
+	Tue,  3 Dec 2024 16:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAsrZ1ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Im3VYAki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B0E1F707A;
-	Tue,  3 Dec 2024 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264FA1F76D1;
+	Tue,  3 Dec 2024 16:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239597; cv=none; b=PsbBogAc2gstHK82yvcdHd2IghwWwoXCnL598B2dJN+SANvaYHsIgPoTX7DeZdHRrw/xYqnj5IZ0lSyiOk4D6nZZGqfcZUme3Lz36c5u+RMz/VJzTQt1NIm0nBfIPNFMj+/NKzK8DrbNMtILj9cabm/msRROpVvg+s4SGkJWc/c=
+	t=1733241892; cv=none; b=kGNQ0b+8KBn8ugvg5AdZTqU0k3Cp0sWN9dYYwXW+tp8Ki+tsdXmMFgueX8DWhj8m+mnStgTgmi4XN72R9udhysD1MJ0Pj95dxuACBkwQ9CsQA1SK2+nbhmplhIm8Bz3FzQHikfrw1FzLTXcv0vOQcdqaZgQeRigB5upLCbWNqqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239597; c=relaxed/simple;
-	bh=m9zedYvgZqm+jUD+9kQl36tBD5pHpDWe9qX/WH0fzJE=;
+	s=arc-20240116; t=1733241892; c=relaxed/simple;
+	bh=Wf7RgiQm9ztBAv8bV4XZMV4tpIlZ+W6cw6xrO5SkEAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqIqy84n3TztXbgIesq1j2F9OKxU/4PDwrad34gpRNgWatxJYMmTofR8MfNlkDdHgUocm8cjJ/KsYDzgoNMMod0F4T84AIKbjsVForMV1zBKeSYicp+RB9GU4d0Gfs8F0SQAmaTadAUfeX8G6iqGHOCfcV3827z0d4QDq8mFl1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAsrZ1ot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE29CC4CECF;
-	Tue,  3 Dec 2024 15:26:36 +0000 (UTC)
+	 MIME-Version; b=a3cL2hFpsfCyDp5SxNQjlQqJo3zQlyManJ8O29AAGnqAuuD00KEaEeWP8fYtdmOD5nf9psrZNB/rJlpr3/GS4LeGLdxLM5RhPPpUMbWvYrxZkEOgzpXH6w8XfACnZflw49yvp3y3/p+PHPbaZs+HOmmRDb+pcAAzqMbZlZSBos4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Im3VYAki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD26C4CECF;
+	Tue,  3 Dec 2024 16:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239597;
-	bh=m9zedYvgZqm+jUD+9kQl36tBD5pHpDWe9qX/WH0fzJE=;
+	s=korg; t=1733241892;
+	bh=Wf7RgiQm9ztBAv8bV4XZMV4tpIlZ+W6cw6xrO5SkEAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAsrZ1otBukzZytYzMAr+CpMSrBuCmaWViTojoQ+cQP0WPiVwvrDWP4FmjfPM4Kur
-	 dLtVuVh/+xJfxiT4Mai19mwyzOdv0Lwl25txypH3I72FGEz/fGttSfangY065nzvv4
-	 Xv/pLe8XvpEoaVntQKqS851Rk1k6qdDEUiPm66ck=
+	b=Im3VYAkitm8uZI01i0WOnwqo2pC+hmIFrT6eKBy9bC9ieVmTRRQiNig50ptJK5iQ2
+	 Saq1u4nl/BPSxl5/jLNtLGhNiLbLnY229EVrrfIuDE99lM4hdjInVg+irpq9QmNql4
+	 x2B0MXzp80/9YR61trMiDswdGC1qwpOSgQIcN0yM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anjelique Melendez <quic_amelende@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.11 668/817] pinctrl: qcom: spmi: fix debugfs drive strength
-Date: Tue,  3 Dec 2024 15:44:00 +0100
-Message-ID: <20241203144022.031672566@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 514/826] nfsd: drop inode parameter from nfsd4_change_attribute()
+Date: Tue,  3 Dec 2024 15:44:01 +0100
+Message-ID: <20241203144803.815182738@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 6bc0ebfb1d920f13c522545f114cdabb49e9408a upstream.
+[ Upstream commit f67eef8da0e8c54709fefdecd16ad8d70f0c9d20 ]
 
-Commit 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength
-mapping") fixed a long-standing issue in the Qualcomm SPMI PMIC gpio
-driver which had the 'low' and 'high' drive strength settings switched
-but failed to update the debugfs interface which still gets this wrong.
+The inode that nfs4_open_delegation() passes to this function is
+wrong, which throws off the result. The inode will end up getting a
+directory-style change attr instead of a regular-file-style one.
 
-Fix the debugfs code so that the exported values match the hardware
-settings.
+Fix up nfs4_delegation_stat() to fetch STATX_MODE, and then drop the
+inode parameter from nfsd4_change_attribute(), since it's no longer
+needed.
 
-Note that this probably means that most devicetrees that try to describe
-the firmware settings got this wrong if the settings were derived from
-debugfs. Before the above mentioned commit the settings would have
-actually matched the firmware settings even if they were described
-incorrectly, but now they are inverted.
-
-Fixes: 723e8462a4fe ("pinctrl: qcom: spmi-gpio: Fix the GPIO strength mapping")
-Fixes: eadff3024472 ("pinctrl: Qualcomm SPMI PMIC GPIO pin controller driver")
-Cc: Anjelique Melendez <quic_amelende@quicinc.com>
-Cc: stable@vger.kernel.org	# 3.19
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/20241025121622.1496-1-johan+linaro@kernel.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-gpio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |  5 ++---
+ fs/nfsd/nfs4xdr.c   |  2 +-
+ fs/nfsd/nfsfh.c     | 20 ++++++++++++--------
+ fs/nfsd/nfsfh.h     |  3 +--
+ 4 files changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-@@ -667,7 +667,7 @@ static void pmic_gpio_config_dbg_show(st
- 		"push-pull", "open-drain", "open-source"
- 	};
- 	static const char *const strengths[] = {
--		"no", "high", "medium", "low"
-+		"no", "low", "medium", "high"
- 	};
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 551d2958ec290..d3cfc64715399 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5957,7 +5957,7 @@ nfs4_delegation_stat(struct nfs4_delegation *dp, struct svc_fh *currentfh,
+ 	path.dentry = file_dentry(nf->nf_file);
  
- 	pad = pctldev->desc->pins[pin].drv_data;
+ 	rc = vfs_getattr(&path, stat,
+-			 (STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
++			 (STATX_MODE | STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
+ 			 AT_STATX_SYNC_AS_STAT);
+ 
+ 	nfsd_file_put(nf);
+@@ -6041,8 +6041,7 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
+ 		}
+ 		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
+ 		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
+-		dp->dl_cb_fattr.ncf_initial_cinfo =
+-			nfsd4_change_attribute(&stat, d_inode(currentfh->fh_dentry));
++		dp->dl_cb_fattr.ncf_initial_cinfo = nfsd4_change_attribute(&stat);
+ 		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
+ 	} else {
+ 		open->op_delegate_type = NFS4_OPEN_DELEGATE_READ;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index f118921250c31..8d25aef51ad15 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3040,7 +3040,7 @@ static __be32 nfsd4_encode_fattr4_change(struct xdr_stream *xdr,
+ 		return nfs_ok;
+ 	}
+ 
+-	c = nfsd4_change_attribute(&args->stat, d_inode(args->dentry));
++	c = nfsd4_change_attribute(&args->stat);
+ 	return nfsd4_encode_changeid4(xdr, c);
+ }
+ 
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index 40ad58a6a0361..96e19c50a5d7e 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -667,20 +667,18 @@ fh_update(struct svc_fh *fhp)
+ __be32 __must_check fh_fill_pre_attrs(struct svc_fh *fhp)
+ {
+ 	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
+-	struct inode *inode;
+ 	struct kstat stat;
+ 	__be32 err;
+ 
+ 	if (fhp->fh_no_wcc || fhp->fh_pre_saved)
+ 		return nfs_ok;
+ 
+-	inode = d_inode(fhp->fh_dentry);
+ 	err = fh_getattr(fhp, &stat);
+ 	if (err)
+ 		return err;
+ 
+ 	if (v4)
+-		fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
++		fhp->fh_pre_change = nfsd4_change_attribute(&stat);
+ 
+ 	fhp->fh_pre_mtime = stat.mtime;
+ 	fhp->fh_pre_ctime = stat.ctime;
+@@ -697,7 +695,6 @@ __be32 __must_check fh_fill_pre_attrs(struct svc_fh *fhp)
+ __be32 fh_fill_post_attrs(struct svc_fh *fhp)
+ {
+ 	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
+-	struct inode *inode = d_inode(fhp->fh_dentry);
+ 	__be32 err;
+ 
+ 	if (fhp->fh_no_wcc)
+@@ -713,7 +710,7 @@ __be32 fh_fill_post_attrs(struct svc_fh *fhp)
+ 	fhp->fh_post_saved = true;
+ 	if (v4)
+ 		fhp->fh_post_change =
+-			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
++			nfsd4_change_attribute(&fhp->fh_post_attr);
+ 	return nfs_ok;
+ }
+ 
+@@ -804,7 +801,14 @@ enum fsid_source fsid_source(const struct svc_fh *fhp)
+ 	return FSIDSOURCE_DEV;
+ }
+ 
+-/*
++/**
++ * nfsd4_change_attribute - Generate an NFSv4 change_attribute value
++ * @stat: inode attributes
++ *
++ * Caller must fill in @stat before calling, typically by invoking
++ * vfs_getattr() with STATX_MODE, STATX_CTIME, and STATX_CHANGE_COOKIE.
++ * Returns an unsigned 64-bit changeid4 value (RFC 8881 Section 3.2).
++ *
+  * We could use i_version alone as the change attribute.  However, i_version
+  * can go backwards on a regular file after an unclean shutdown.  On its own
+  * that doesn't necessarily cause a problem, but if i_version goes backwards
+@@ -821,13 +825,13 @@ enum fsid_source fsid_source(const struct svc_fh *fhp)
+  * assume that the new change attr is always logged to stable storage in some
+  * fashion before the results can be seen.
+  */
+-u64 nfsd4_change_attribute(const struct kstat *stat, const struct inode *inode)
++u64 nfsd4_change_attribute(const struct kstat *stat)
+ {
+ 	u64 chattr;
+ 
+ 	if (stat->result_mask & STATX_CHANGE_COOKIE) {
+ 		chattr = stat->change_cookie;
+-		if (S_ISREG(inode->i_mode) &&
++		if (S_ISREG(stat->mode) &&
+ 		    !(stat->attributes & STATX_ATTR_CHANGE_MONOTONIC)) {
+ 			chattr += (u64)stat->ctime.tv_sec << 30;
+ 			chattr += stat->ctime.tv_nsec;
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index 5b7394801dc42..876152a91f122 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -297,8 +297,7 @@ static inline void fh_clear_pre_post_attrs(struct svc_fh *fhp)
+ 	fhp->fh_pre_saved = false;
+ }
+ 
+-u64 nfsd4_change_attribute(const struct kstat *stat,
+-			   const struct inode *inode);
++u64 nfsd4_change_attribute(const struct kstat *stat);
+ __be32 __must_check fh_fill_pre_attrs(struct svc_fh *fhp);
+ __be32 fh_fill_post_attrs(struct svc_fh *fhp);
+ __be32 __must_check fh_fill_both_attrs(struct svc_fh *fhp);
+-- 
+2.43.0
+
 
 
 
