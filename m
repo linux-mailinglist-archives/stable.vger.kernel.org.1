@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01DAD9E263E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9124C9E22ED
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C7B916F496
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56D9C286B9B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4751F891C;
-	Tue,  3 Dec 2024 16:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD9B1F7071;
+	Tue,  3 Dec 2024 15:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZhVjX2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDjIEHtf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987F523CE;
-	Tue,  3 Dec 2024 16:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6A6646;
+	Tue,  3 Dec 2024 15:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241936; cv=none; b=nw/7/VT49FafWUAiDZbq9MGUhG0RRs08q6Ta4/Pf5w3lDkPFvbrSv91AlBRFuy9FS79YgH8n8h3A97Wvv7jqg1O6dy771qP9Uk85ojkLMhJA/eP5naMbD8tc1M8HsR0w0mAXzZTOkMevc9Mvnpnu31U9hWfDYKwV+FisLk7+71w=
+	t=1733239826; cv=none; b=AsC1F6NFIsUxsC9SpVE3LOzR831z0jdC7CxJN/7bhn+JNEGjm9dzui+ra0fIxFnpN9zbkL+Sg2tOMc/7z2DZLsnOQmzdNrilW/Jbm61nT7/m8uBzuHVjns5W2bKQpXTVjxQ2nJpIZE8MBE3pwdoduQ1kg1RkkkeGNkKOKDgwAIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241936; c=relaxed/simple;
-	bh=lygA2U4sZ93Ov89aWxS3ZShrHpSsefEBKdsFeRbmxA0=;
+	s=arc-20240116; t=1733239826; c=relaxed/simple;
+	bh=IvyaFagk1EquxhlXYpuzzRiCznZj1qdGzd6XDZVKNq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BAYaoa/LORHgIa0jEj8Z7fRuMuFpSjdWP2l8qPPOitwAd3uvHfbM3I6tSew9MheSXeOLpH+kZXEJUxY8FfobILwqXNzKyrGu9gnCk+oHZiEvpojWp1qLJaJ7i5QD80LrbbkPDD0/5gFzcrABZW8uipAh9oVDYMFvSpTmo/C9Z1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZhVjX2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B1DC4CECF;
-	Tue,  3 Dec 2024 16:05:35 +0000 (UTC)
+	 MIME-Version; b=PcsiMrOkAwkEN3+o7De1/CteOLMgp+9wUBdrYyxkalzVm4B8LKGM8WIDvMCio7e6ZnihChFoK9Nf90axXOA4e0VOk5vFi1vWvODBRXYluDs/kJI12fEuKjUPxpZGmqTEFCoIPo0h/AQrVfpGCHATpN1J09z6/NS6F57+DHdiD5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDjIEHtf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEA8C4CECF;
+	Tue,  3 Dec 2024 15:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241936;
-	bh=lygA2U4sZ93Ov89aWxS3ZShrHpSsefEBKdsFeRbmxA0=;
+	s=korg; t=1733239826;
+	bh=IvyaFagk1EquxhlXYpuzzRiCznZj1qdGzd6XDZVKNq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZhVjX2/zM9cFO/Df/8k46eODKg5DYRhIqz3IalU9JsbMy+rkp+4lOAbSGr0ZfdZ1
-	 8tFsSojD6DJWy/uliae16PtKVDJ3XhVlacWwLEQFU/8IedRGF4U/wRry+xtCFFvvfy
-	 fYZrNZfQiCm4HYwRmqWlWwH4o0OxbYrkzmh1DIF4=
+	b=YDjIEHtfNdlOhIxEacvSlKqfCWVoP9TQaG13Y53rsBKD9jZA/O9nHmAjFgkzIWkdC
+	 0fOVy1XkSuEp6A+MtZQdpyYJbnp9ETiGb9Q+j3xDVQ/Vp9L8Oz5mvJd2X7UwU2yZNb
+	 XzsrtNED78Uy8QLHShAfcEdxnZWuOLwgpnI8WOL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 560/826] exfat: fix file being changed by unaligned direct write
-Date: Tue,  3 Dec 2024 15:44:47 +0100
-Message-ID: <20241203144805.589341817@linuxfoundation.org>
+	Kartik Rajput <kkartik@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.11 716/817] serial: amba-pl011: Fix RX stall when DMA is used
+Date: Tue,  3 Dec 2024 15:44:48 +0100
+Message-ID: <20241203144023.940840262@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-[ Upstream commit 2e94e5bb94a3e641a25716a560bf474225fda83c ]
+commit 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf upstream.
 
-Unaligned direct writes are invalid and should return an error
-without making any changes, rather than extending ->valid_size
-and then returning an error. Therefore, alignment checking is
-required before extending ->valid_size.
+Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
+also disables the RX DMA by clearing the RXDMAE bit of the DMACR
+register. However, to properly unthrottle RX when DMA is used, the
+function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
+the DMACR register, which it currently lacks. This causes RX to stall
+after the throttle API is called.
 
-Fixes: 11a347fb6cef ("exfat: change to get file size from DataLength")
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Co-developed-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
+used.
+
+Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/file.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/tty/serial/amba-pl011.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/exfat/file.c b/fs/exfat/file.c
-index a25d7eb789f4c..fb38769c3e39d 100644
---- a/fs/exfat/file.c
-+++ b/fs/exfat/file.c
-@@ -584,6 +584,16 @@ static ssize_t exfat_file_write_iter(struct kiocb *iocb, struct iov_iter *iter)
- 	if (ret < 0)
- 		goto unlock;
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1819,6 +1819,11 @@ static void pl011_unthrottle_rx(struct u
  
-+	if (iocb->ki_flags & IOCB_DIRECT) {
-+		unsigned long align = pos | iov_iter_alignment(iter);
-+
-+		if (!IS_ALIGNED(align, i_blocksize(inode)) &&
-+		    !IS_ALIGNED(align, bdev_logical_block_size(inode->i_sb->s_bdev))) {
-+			ret = -EINVAL;
-+			goto unlock;
-+		}
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 
++	if (uap->using_rx_dma) {
++		uap->dmacr |= UART011_RXDMAE;
++		pl011_write(uap->dmacr, uap, REG_DMACR);
 +	}
 +
- 	if (pos > valid_size) {
- 		ret = exfat_extend_valid_size(file, pos);
- 		if (ret < 0 && ret != -ENOSPC) {
--- 
-2.43.0
-
+ 	uart_port_unlock_irqrestore(&uap->port, flags);
+ }
+ 
 
 
 
