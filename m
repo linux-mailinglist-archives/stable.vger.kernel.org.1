@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-96368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BF09E2660
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A5C9E23A6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2473B68356
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96ED9B27706
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AF91F4294;
-	Tue,  3 Dec 2024 14:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871551EF08A;
+	Tue,  3 Dec 2024 14:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXkAVeb0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmXgq9Nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BFA1F708A;
-	Tue,  3 Dec 2024 14:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4413D1F4711;
+	Tue,  3 Dec 2024 14:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236558; cv=none; b=SfJDtVnJ2am/DFgk3ba+zTtOm8TEA8G4alpVXn9iegFP5zn4KvmQeYxb7b4E8sdjVfvUl86kpDMcqjIimoN8koFWAaj7l8Q7UUC4LakneTMLFRZ7b9/RiNdXqmWgzTOCDYQlM2WiTXvZ2dZaXVXaYckAWT0X56M2OPnv8Qtup6s=
+	t=1733236612; cv=none; b=rFPCgfVUaJluKk1quUgEOWmnZoT00n3pY1eeG5zp9CPhBrhUKe4318zAXLUxdgMefj93wXYHu6VWACCGvbBGv994bMIVUrYuUUK2mm1w1mX6wL3BdARMA000zPB+legw7Z3ODqysqKHScxcmF8itx7ZiatMJShuwk8LitX1QEPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236558; c=relaxed/simple;
-	bh=Qdho3cMs8MRhGJB6X/coIjIN/ZrXXr0hdw41uGrP86g=;
+	s=arc-20240116; t=1733236612; c=relaxed/simple;
+	bh=0qxcbxSd0yd9XYvPtKKm7t2vaHeJl8KANkIqEOzsHIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RF9CJvymZ7aoG2M0xYXd/9IJoWt3J8KmW3SQ5y35lDmviqeO4uz6Sj1SyjuMqf61t1OEMAt1KE/2YB6ZtBY0Sp8uGefjiVZkIlKiAMEDV4VV13PalAI256aF7RRX2BPkTXYFqSQJduQv7Lxba96UTpcUDLEI6TKLRnoD7wtqWLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXkAVeb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F31EC4CECF;
-	Tue,  3 Dec 2024 14:35:57 +0000 (UTC)
+	 MIME-Version; b=IKZumwADUqoF4I5TfFVScmyLBpHGub3SaZN4WeaBzzLt81Rz+huTEik4/YPQiBAB4oI8a6qyJ/tN1ObJ3eZJwxmpLOjWyPEyN/rJu8SEtFoMOJC9cMjMBeGvKVqcATRoZkSMwEpspnVeUiaixm5PMXpA9+cwtUqMi5ccpP+FYwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmXgq9Nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDF5C4CECF;
+	Tue,  3 Dec 2024 14:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236557;
-	bh=Qdho3cMs8MRhGJB6X/coIjIN/ZrXXr0hdw41uGrP86g=;
+	s=korg; t=1733236611;
+	bh=0qxcbxSd0yd9XYvPtKKm7t2vaHeJl8KANkIqEOzsHIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXkAVeb0jATGaZrEIf0pJvkxtF9b/sEwvu7KY1JLr3z0L4tBm6+N3nSBqcTh7ui9Y
-	 FkXYxVHZS27epyqOrTnEI8MLPhJE5MtpqgkjCkzV344KvqwwBBoubmcA5AWEBSX7o9
-	 uriBI4ncZCZ17H7yP0pmBl+NLJTiRzWfrPy93yZw=
+	b=jmXgq9NfAd1YISfIsnc2skcowYjJjlNzE0wGfvKEATGzsIn/NwCG5fXQFr7wCjCz/
+	 SEL3gSLU4fvroV71D85LUiQDFcQ8arIQxYYca+QBhDCV0Kv68liWqj6GpujqlRKcvs
+	 e0IAcZN5T9sQ2iOk0Ego74eiBtpQoQCzVwD8HcqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 054/138] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
-Date: Tue,  3 Dec 2024 15:31:23 +0100
-Message-ID: <20241203141925.628103386@linuxfoundation.org>
+Subject: [PATCH 4.19 063/138] RDMA/bnxt_re: Check cqe flags to know imm_data vs inv_irkey
+Date: Tue,  3 Dec 2024 15:31:32 +0100
+Message-ID: <20241203141925.970229193@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -65,48 +67,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
+[ Upstream commit 808ca6de989c598bc5af1ae0ad971a66077efac0 ]
 
-The USB disconnect callback is supposed to be short and not too-long
-waiting.  OTOH, the current code uses snd_card_free() at
-disconnection, but this waits for the close of all used fds, hence it
-can take long.  It eventually blocks the upper layer USB ioctls, which
-may trigger a soft lockup.
+Invalidate rkey is cpu endian and immediate data is in big endian format.
+Both immediate data and invalidate the remote key returned by
+HW is in little endian format.
 
-An easy workaround is to replace snd_card_free() with
-snd_card_free_when_closed().  This variant returns immediately while
-the release of resources is done asynchronously by the card device
-release at the last close.
+While handling the commit in fixes tag, the difference between
+immediate data and invalidate rkey endianness was not considered.
 
-The loop of us122l->mmap_count check is dropped as well.  The check is
-useless for the asynchronous operation with *_when_closed().
+Without changes of this patch, Kernel ULP was failing while processing
+inv_rkey.
 
-Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
+dmesg log snippet -
+nvme nvme0: Bogus remote invalidation for rkey 0x2000019Fix in this patch
+
+Do endianness conversion based on completion queue entry flag.
+Also, the HW completions are already converted to host endianness in
+bnxt_qplib_cq_process_res_rc and bnxt_qplib_cq_process_res_ud and there
+is no need to convert it again in bnxt_re_poll_cq. Modified the union to
+hold the correct data type.
+
+Fixes: 95b087f87b78 ("bnxt_re: Fix imm_data endianness")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1730110014-20755-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/usx2y/us122l.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +++++--
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
-index 8082f7b077f18..eac2e4d0e7d94 100644
---- a/sound/usb/usx2y/us122l.c
-+++ b/sound/usb/usx2y/us122l.c
-@@ -649,10 +649,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
- 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
- 	usb_put_dev(us122l->dev);
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index e2c93a50fe762..9b6ebf6356983 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -3110,7 +3110,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *qp,
+ 	wc->byte_len = orig_cqe->length;
+ 	wc->qp = &qp1_qp->ib_qp;
  
--	while (atomic_read(&us122l->mmap_count))
--		msleep(500);
--
--	snd_card_free(card);
-+	snd_card_free_when_closed(card);
- }
- 
- static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
+-	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
++	wc->ex.imm_data = cpu_to_be32(orig_cqe->immdata);
+ 	wc->src_qp = orig_cqe->src_qp;
+ 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
+ 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
+@@ -3231,7 +3231,10 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
+ 				continue;
+ 			}
+ 			wc->qp = &qp->ib_qp;
+-			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
++			if (cqe->flags & CQ_RES_RC_FLAGS_IMM)
++				wc->ex.imm_data = cpu_to_be32(cqe->immdata);
++			else
++				wc->ex.invalidate_rkey = cqe->invrkey;
+ 			wc->src_qp = cqe->src_qp;
+ 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
+ 			wc->port_num = 1;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index aed0c53d84be2..6c0129231c07b 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -349,7 +349,7 @@ struct bnxt_qplib_cqe {
+ 	u32				length;
+ 	u64				wr_id;
+ 	union {
+-		__le32			immdata;
++		u32			immdata;
+ 		u32			invrkey;
+ 	};
+ 	u64				qp_handle;
 -- 
 2.43.0
 
