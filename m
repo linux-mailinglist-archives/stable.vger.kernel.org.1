@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549BD9E2222
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA4D9E24A3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8090161E5E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E4E287FBD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37B41F7540;
-	Tue,  3 Dec 2024 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696261F9EAC;
+	Tue,  3 Dec 2024 15:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3nSXZkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7AgJZ6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623E81F473A;
-	Tue,  3 Dec 2024 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BF71F76DA;
+	Tue,  3 Dec 2024 15:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238946; cv=none; b=S8i9P1jAXAZQBAFAE0IRgC6Qhi37o74eUmN7DWeVL3wGcPEFd0jv5tyiiPvi5bZ0LXEK4J2mSUmL5/NEyE/cQh+BTsDNdCmQRrd/MFclFHVSIeDKBYRyZAJlhApwsjPWLpB5lEIFr26kFujoNGVPjH4InT38hrjqqoA/WpxOnIA=
+	t=1733241002; cv=none; b=GBtTC+Errf2A1dwKKzxmTrJH7abMDMRp19KpBZ63op9RIzHi6adcscPgEPRntZzMr8SIT3cS5nQxS2G5eX7xnpDNIp+VcKnP+zQKkNNld/eNzvGMFmtlxDFufQLkuaO6zQc+VXClo03Pcqq8/tmc2MQd+3T911c0/vW8nYq9YNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238946; c=relaxed/simple;
-	bh=Q5SGKjJa/GIw4GfSEL5at/6irve++3Ve3TkP/drU29Q=;
+	s=arc-20240116; t=1733241002; c=relaxed/simple;
+	bh=GC71FsEjCPaNucQW8xQZT38VyUchD2e/tLUvdqhmCb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4ashZ5UfaPemy5rSRgkjR9SferkLhyUzTkosEb3a6wA1znXpPh+19iL/qrr1TfeD0VGG/MQj0IUTb2mtxEVTzyCa5Oxr++NLoCeqKu8pdvrSPFZt34jWjieaOVDvqB18YNc5R2RWTiRMewJITPAHLPZ+TUBALcdSNcdfY6WNLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3nSXZkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2AAC4CECF;
-	Tue,  3 Dec 2024 15:15:45 +0000 (UTC)
+	 MIME-Version; b=sm/8j1T5wkNS+ka8hGL0qWXVbpztw6h2sSv+qjAxxogmkdw5NPDJzTGpOl47+wDpU7Tw85LsmMjm7Bsp+5P5edyMox3AqBjhzTWpzN5wHeMZjr8Qn6lZgwCssf/sReF+tk7kyN967Ck8b1iNwJuaqj9vz22bOpj+r4Wvg0W1OwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7AgJZ6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0708CC4CEDA;
+	Tue,  3 Dec 2024 15:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238946;
-	bh=Q5SGKjJa/GIw4GfSEL5at/6irve++3Ve3TkP/drU29Q=;
+	s=korg; t=1733241001;
+	bh=GC71FsEjCPaNucQW8xQZT38VyUchD2e/tLUvdqhmCb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3nSXZkUhNhyL+C1vZT5JqpvuXylU+qOL3MM/OapxmFXaCiMMnCOtr5vKkGgS4wEA
-	 deDvFLsJzA0OJapBP60tqAIpkeQhcAikfWtNTQWmcn9ppDqNgSznNiOzaFV+8UHBmi
-	 DCCWY8iT+2AVZKLffgRcvHstI0nbrJI5GII7SZec=
+	b=z7AgJZ6P6ojkDaWrGlNVIseJkKNKkj3VtKshAMXqeOSzOMOUIA5ZALzD5K9eSHI+5
+	 goP7EhFwe+fyKxksboXhlzTkMuT+HBYnXxPBt6lOjfOeeltQhYZdPZN5ofAHZyVW2M
+	 Wjk7TpaNHFm8k1by6YNsKND+NcTtHHjB6P5BroM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Quentin Perret <qperret@google.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jonathan Gray <jsg@jsg.id.au>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 452/817] cpufreq: CPPC: Fix wrong return value in cppc_get_cpu_power()
+Subject: [PATCH 6.12 297/826] drm: use ATOMIC64_INIT() for atomic64_t
 Date: Tue,  3 Dec 2024 15:40:24 +0100
-Message-ID: <20241203144013.520834981@linuxfoundation.org>
+Message-ID: <20241203144755.352159829@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Jonathan Gray <jsg@jsg.id.au>
 
-[ Upstream commit b51eb0874d8170028434fbd259e80b78ed9b8eca ]
+[ Upstream commit 9877bb2775d020fb7000af5ca989331d09d0e372 ]
 
-cppc_get_cpu_power() return 0 if the policy is NULL. Then in
-em_create_perf_table(), the later zero check for power is not valid
-as power is uninitialized. As Quentin pointed out, kernel energy model
-core check the return value of active_power() first, so if the callback
-failed it should tell the core. So return -EINVAL to fix it.
+use ATOMIC64_INIT() not ATOMIC_INIT() for atomic64_t
 
-Fixes: a78e72075642 ("cpufreq: CPPC: Fix possible null-ptr-deref for cpufreq_cpu_get_raw()")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Quentin Perret <qperret@google.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 3f09a0cd4ea3 ("drm: Add common fdinfo helper")
+Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240111023045.50013-1-jsg@jsg.id.au
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ drivers/gpu/drm/drm_file.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 27508b396846e..6bea89bfe3e95 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -424,7 +424,7 @@ static int cppc_get_cpu_power(struct device *cpu_dev,
- 
- 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
- 	if (!policy)
--		return 0;
-+		return -EINVAL;
- 
- 	cpu_data = policy->driver_data;
- 	perf_caps = &cpu_data->perf_caps;
+diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
+index ad1dc638c83bb..ce82c9451dfe7 100644
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -129,7 +129,7 @@ bool drm_dev_needs_global_mutex(struct drm_device *dev)
+  */
+ struct drm_file *drm_file_alloc(struct drm_minor *minor)
+ {
+-	static atomic64_t ident = ATOMIC_INIT(0);
++	static atomic64_t ident = ATOMIC64_INIT(0);
+ 	struct drm_device *dev = minor->dev;
+ 	struct drm_file *file;
+ 	int ret;
 -- 
 2.43.0
 
