@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08B79E1FA4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:40:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74D19E1FC5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66C482819A7
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E144E165EE9
 	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618CA1F4283;
-	Tue,  3 Dec 2024 14:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284771F4704;
+	Tue,  3 Dec 2024 14:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPo79o1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnfY+d4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DED13BB24;
-	Tue,  3 Dec 2024 14:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CB41EE029;
+	Tue,  3 Dec 2024 14:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236819; cv=none; b=L4UJVUccCI1NMEBaa+/pW5XGDTbgNxK4iFHk8bbtM7nUvrRzdw+g7q/jPzFCJI9o5aUDUw1T0TQhHMVpaFWIIkABUzB9XX3Gsv5Iv8Ir5YMVx6IuUJgix9Ynphs+2cw+qinfMUohlglAzb69enI7zEdc09bDZS5iYXchurVEGcc=
+	t=1733236824; cv=none; b=hgvjcxJpQvEF0TdZb/wMWRPj8jQ28XCTq3MFnu3/MT+6EWbA978cbORLi8jIadnP0sUvZCczlUzgdsdcMYUTQuckq3S62WcgPrSIAXhWCDY9Jwj3Y7wPSueoYZTIfgr7+tmp7afuuViQbnL//6GJWcLCctC4gtaleT8ONErnTLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236819; c=relaxed/simple;
-	bh=kmXDzORr3Mf3OVL8xJtnYM7jNI85p+ad7XcDoAAm2vE=;
+	s=arc-20240116; t=1733236824; c=relaxed/simple;
+	bh=ysw/BybpdfYX9g4OBwDOTUKmFQEmmZNCLZB3r9UmRn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Di2mKCW5PqUhUUhHudDv7gyWN88kgGWmThyCZuEVCpTrgMov7waB0O7nKbJv0NgiVwRMPjdUvkIK4MDJu7ir2VHFx6k0ZG0DG9/Jcn51d+scvKWH4846OfMGhEGX//NQwhGl3n+AgIWlikk9qM7PFN3fdjkOK43Whr5ccU75Tvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPo79o1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B18C4CECF;
-	Tue,  3 Dec 2024 14:40:17 +0000 (UTC)
+	 MIME-Version; b=dBxbj6oSY6EmVIX32BpahZYRUnR92m/89Sl2iG4W1YSyVEo+G1guLddvqW9uShV1E7X2NwMkpd8f2S6pIuu/J1crgSp287y07oJhDy0S051jvIV6J75NJQ93nGYLKv2v4lnGlS6UtXTPiEHi0V+0Su+92nH6lDSjIPYyu1vO0eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnfY+d4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E2CC4CECF;
+	Tue,  3 Dec 2024 14:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236817;
-	bh=kmXDzORr3Mf3OVL8xJtnYM7jNI85p+ad7XcDoAAm2vE=;
+	s=korg; t=1733236824;
+	bh=ysw/BybpdfYX9g4OBwDOTUKmFQEmmZNCLZB3r9UmRn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPo79o1YqcOqrfb2nhixI+4dOnPpS5iPKsMMmav/lQO3/07jvUCptFKpc7Amywojd
-	 m1RqMwYGZce3Mc2iVQF2rscEaTZmeGE40giffHbvIEesbDU8Q8+ZfQs24aXkY3EED9
-	 uH/OYfqQQQ85orarD+9IjhqcoVHqUaH7gCSjAaN8=
+	b=AnfY+d4AlX1P/qrNMSOvDz2GRwgyp3qB0TR3uhdAIM2/62rQVybhtxl36ShvtcyZU
+	 NAA5cGe9uk3deKCIhjkmd9NOdNTAll/JOpm8UpfsdSTEm4OJm4T6ksFuG8T8DXvmWc
+	 6SXAGyEvYbZ8HLPP9RqudbGPkevaiB7ON1se3OQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lew <quic_clew@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 4.19 126/138] rpmsg: glink: Propagate TX failures in intentless mode as well
-Date: Tue,  3 Dec 2024 15:32:35 +0100
-Message-ID: <20241203141928.387213576@linuxfoundation.org>
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 127/138] um: Fix the return value of elf_core_copy_task_fpregs
+Date: Tue,  3 Dec 2024 15:32:36 +0100
+Message-ID: <20241203141928.425369167@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,57 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-commit 7a68f9fa97357a0f2073c9c31ed4101da4fce93e upstream.
+[ Upstream commit 865e3845eeaa21e9a62abc1361644e67124f1ec0 ]
 
-As support for splitting transmission over several messages using
-TX_DATA_CONT was introduced it does not immediately return the return
-value of qcom_glink_tx().
+This function is expected to return a boolean value, which should be
+true on success and false on failure.
 
-The result is that in the intentless case (i.e. intent == NULL), the
-code will continue to send all additional chunks. This is wasteful, and
-it's possible that the send operation could incorrectly indicate
-success, if the last chunk fits in the TX fifo.
-
-Fix the condition.
-
-Fixes: 8956927faed3 ("rpmsg: glink: Add TX_DATA_CONT command while sending")
-Reviewed-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230418163018.785524-2-quic_bjorande@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1254b12c93e ("uml: fix x86_64 core dump crash")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240913023302.130300-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/um/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1355,8 +1355,9 @@ static int __qcom_glink_send(struct glin
- 	ret = qcom_glink_tx(glink, &req, sizeof(req), data, chunk_size, wait);
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index c9d09d04d19df..83ae59f748e1f 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -396,6 +396,6 @@ int elf_core_copy_fpregs(struct task_struct *t, elf_fpregset_t *fpu)
+ {
+ 	int cpu = current_thread_info()->cpu;
  
- 	/* Mark intent available if we failed */
--	if (ret && intent) {
--		intent->in_use = false;
-+	if (ret) {
-+		if (intent)
-+			intent->in_use = false;
- 		return ret;
- 	}
+-	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu);
++	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu) == 0;
+ }
  
-@@ -1377,8 +1378,9 @@ static int __qcom_glink_send(struct glin
- 				    chunk_size, wait);
- 
- 		/* Mark intent available if we failed */
--		if (ret && intent) {
--			intent->in_use = false;
-+		if (ret) {
-+			if (intent)
-+				intent->in_use = false;
- 			break;
- 		}
- 	}
+-- 
+2.43.0
+
 
 
 
