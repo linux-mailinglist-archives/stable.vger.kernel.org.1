@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-97252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDB729E233B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D359E2631
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D03286E08
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AA13288EBA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01911F8EF3;
-	Tue,  3 Dec 2024 15:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56E21F76DB;
+	Tue,  3 Dec 2024 16:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXlbkGcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qp2a6upL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC931F75BD;
-	Tue,  3 Dec 2024 15:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8264B1F76AD;
+	Tue,  3 Dec 2024 16:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239951; cv=none; b=etAbjyCkOcDWfjXogwBIH1e9HSMkopt5lXArJKwEkt6aLFGNL5pRg0ZeBcKPvlwc5sybRF+jV8JZ/ywSA5Gxh57l/ZWXA5n8pcGRVsbWXgbXHVUxjgQhbjLE0rlMwSIVBnlF4rxlmfpBJEYXSg4s3YxjUF3zY0sVXsI9R7EZyoQ=
+	t=1733242204; cv=none; b=ZHQdHZULDd4Z2vbLbvvwuazsgA922J7R7UrRUnJ29vPCGepL9FDF3rQqGbjlLHNg/eh2Gpt0SrEP7tutN3gBlGDWj1Nh0GZJxR/1RmUXoME26f6mxEw90WffYPnKIOPQZLo1vSwmexZrueOlz+clOV/w7+pA20tV3aT6/jsDPB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239951; c=relaxed/simple;
-	bh=4DJXQxfBqdCn9uuqhzU3RoLvITM9SsTKuMSr7bf87eA=;
+	s=arc-20240116; t=1733242204; c=relaxed/simple;
+	bh=7mfXtonGRubR5iWSXS6l5ZRZugY5DcyBV0NAw2IeICE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fUgwZIthVKjhp1NUs4KsqEQkEz5hNYCUmwaHH8WQmM0sL/qoi6mDpelvqHDSDi2hC0NTSNPI1KFZgjegiVRWMIS4L+Bt3SNC7z8IzSrvmeZ5yKi5Wgtohs/0PlMYX5yr4hR8Pys3/Rpp3pGdR3y4SjX/BGmIGuMmMKXZw+gJijE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXlbkGcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27587C4CECF;
-	Tue,  3 Dec 2024 15:32:30 +0000 (UTC)
+	 MIME-Version; b=agW2Llegij2z17F3OHtOGN9eWNE2con1Ww/bCsUyZldgkg6ra01VMyZux66uhpzyfo5Z4MkhlQxNp1D9eol7Nopb6xZ67n+SpzkiqgbgZozZp7Vbth8dXDt2ddg/RkAqq4W3QgAm1ZNwF7mRE6jFh65vu80BEzaGsIsuLjjqy0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qp2a6upL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C0AC4CED8;
+	Tue,  3 Dec 2024 16:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239951;
-	bh=4DJXQxfBqdCn9uuqhzU3RoLvITM9SsTKuMSr7bf87eA=;
+	s=korg; t=1733242204;
+	bh=7mfXtonGRubR5iWSXS6l5ZRZugY5DcyBV0NAw2IeICE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mXlbkGcvR3boqMT7NnQO547KLz62RX7ZSq0j1ACmaX+tD9/i5M0HJuWbvNcZahMcV
-	 hG88raI0HlBxjXP3qYGKUkpdqd5BGZ5soqTTWG6vtWlirTHORnGQQhUHaMrxqTeAdi
-	 WhdSpnomOVN4O2X/FECXaPGMIwlTh8AOZLVIzcVg=
+	b=qp2a6upLXsppOJSq+xVSNiZddNo1mSyezSzqFS1HPAMinzy0kjX4dnvBf2rJdM/UX
+	 NfQ8WvvSdPZx0rpJ8Bl61VN5hmw8C5gNMYCOzHmwdoL79ZjIAeV2XadEaU5+F1jnKh
+	 o1kNTTx9KFyQCmkz/bONvCSftOIXzRegnqThau9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 791/817] perf/arm-cmn: Ensure port and device id bits are set properly
-Date: Tue,  3 Dec 2024 15:46:03 +0100
-Message-ID: <20241203144026.886892270@linuxfoundation.org>
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 637/826] ASoC: da7213: Populate max_register to regmap_config
+Date: Tue,  3 Dec 2024 15:46:04 +0100
+Message-ID: <20241203144808.600183718@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit dfdf714fed559c09021df1d2a4bb64c0ad5f53bc ]
+commit 9d4f9f6a7bb1afbde57d08c98f2db4ff019ee19d upstream.
 
-The portid_bits and deviceid_bits were set only for XP type nodes in
-the arm_cmn_discover() and it confused other nodes to find XP nodes.
-Copy the both bits from the XP nodes directly when it sets up a new
-node.
+On the Renesas RZ/G3S SMARC Carrier II board having a DA7212 codec (using
+da7213 driver) connected to one SSIF-2 available on the Renesas RZ/G3S SoC
+it has been discovered that using the runtime PM API for suspend/resume
+(as will be proposed in the following commits) leads to the codec not
+being propertly initialized after resume. This is because w/o
+max_register populated to regmap_config the regcache_rbtree_sync()
+breaks on base_reg > max condition and the regcache_sync_block() call is
+skipped.
 
-Fixes: e79634b53e39 ("perf/arm-cmn: Refactor node ID handling. Again.")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20241121001334.331334-1-namhyung@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ef5c2eba2412 ("ASoC: codecs: Add da7213 codec")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20241106081826.1211088-23-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/arm-cmn.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/da7213.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index 48863b31ccfb1..a2032d3979640 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2147,8 +2147,6 @@ static int arm_cmn_init_dtcs(struct arm_cmn *cmn)
- 			continue;
+--- a/sound/soc/codecs/da7213.c
++++ b/sound/soc/codecs/da7213.c
+@@ -2136,6 +2136,7 @@ static const struct regmap_config da7213
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
  
- 		xp = arm_cmn_node_to_xp(cmn, dn);
--		dn->portid_bits = xp->portid_bits;
--		dn->deviceid_bits = xp->deviceid_bits;
- 		dn->dtc = xp->dtc;
- 		dn->dtm = xp->dtm;
- 		if (cmn->multi_dtm)
-@@ -2379,6 +2377,8 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 			}
- 
- 			arm_cmn_init_node_info(cmn, reg & CMN_CHILD_NODE_ADDR, dn);
-+			dn->portid_bits = xp->portid_bits;
-+			dn->deviceid_bits = xp->deviceid_bits;
- 
- 			switch (dn->type) {
- 			case CMN_TYPE_DTC:
--- 
-2.43.0
-
++	.max_register = DA7213_TONE_GEN_OFF_PER,
+ 	.reg_defaults = da7213_reg_defaults,
+ 	.num_reg_defaults = ARRAY_SIZE(da7213_reg_defaults),
+ 	.volatile_reg = da7213_volatile_register,
 
 
 
