@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-97721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B039E2BB7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E089E2BF9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF0F4BE40D8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A13EBE5764
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F44F1F76AD;
-	Tue,  3 Dec 2024 15:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3FC1F75B9;
+	Tue,  3 Dec 2024 16:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIkavq03"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQshOzTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03C21F75AE;
-	Tue,  3 Dec 2024 15:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1B523CE;
+	Tue,  3 Dec 2024 16:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241505; cv=none; b=MEEKziiRamuAO5LWiwU/UPzBzjxB8ifARZ22pPAiyfcpfiTCceu+6Mu2IhNcZs+kmx8IQeNAVNnXvAURw8EngEGNT2ASWoyUhlUUixQ6h9DMnIMB06h/A/JFxmla2e5LexbPyXQADRp7H68rrL+spDxmaQmS3Bq5WYK6OlZMG3s=
+	t=1733241765; cv=none; b=nTHDwKooFOHJGWpNEhytoo3OLf7RcAjqpqPUFQBEqnHgehyltfHIo9vlw+DGElF6vVHDpnLAIAUUYyGfOfgPhFkS76OqsMTIsSPJNWoSm7n/PDh0zSwHhWrfKoQaPqiTqM8MciPsUxGMzd4MajVORtEnlW/IQrj6vGqvYfN5+uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241505; c=relaxed/simple;
-	bh=ael25QfdyRmdMYzNuAOub2aIEIb9wKH0ZBi1B3jXeSw=;
+	s=arc-20240116; t=1733241765; c=relaxed/simple;
+	bh=vP63hSB8AFewi9EoK0eGgNVAmTNCwb2VOo7RKUcUsSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZwNBus4/8iFNoWZp8HjQuhgzIGqXmJyJvRiNHAJuYZdDT8eID20nEnZ4QGg2VeLYiHcmpQG4JkkDDJqdqvueXNwiAfnHnIH65G5ZSnfEBlJG0wr8WifQdTb5zVdyjdbnauZDh3Sy35hYqHQn/vcjNAYnSq8eL5qhAryMSoAeSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIkavq03; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA46C4CECF;
-	Tue,  3 Dec 2024 15:58:25 +0000 (UTC)
+	 MIME-Version; b=pZWNDSHUtJ3/5lpa3adoBvAYjoIcR3HkYHn8ms8pyyr4b15s+t5agEMHpgL1A7NB1zPAOOlHXo92UJoGyucJQUaG6usISORmBu437vZFO5kb1k30sytgIB+je80PucRo/b0F9olxvP2QHt4vbks3IGmvrk+UasGxiw0lVt9431c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQshOzTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC18C4CECF;
+	Tue,  3 Dec 2024 16:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241505;
-	bh=ael25QfdyRmdMYzNuAOub2aIEIb9wKH0ZBi1B3jXeSw=;
+	s=korg; t=1733241765;
+	bh=vP63hSB8AFewi9EoK0eGgNVAmTNCwb2VOo7RKUcUsSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIkavq03RsEU0OCsDPP5tp7LKLn6WSoMF5FtZiNSRnO39g3qYK4uTGgA+gZHaatDB
-	 1EVgoUuklEIG/P6JK9FIujdc5zngv5uwTni1eNz0EyBJPlwbPNwX4t98N5Krr54dd3
-	 PkkIQESssdH2DyOGTK1eK0JaD7truxjekX8+4Vzk=
+	b=PQshOzTzjiAtROVpUXHLnvZwaJmpuxoq7hACMDeVN3AkGdI/Y4Q+gf8mAX6lcFfeJ
+	 BnmcWmjT2TUZO9zlf+/8sHJE6HMZToRRMIJcOEVx8MDJdzLBQE1k4Budq0XNru1NkB
+	 5nrXdG2whdHjHdlP+KH93HO/HthFgV7hyeEmTEOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	Cyril Hrubis <chrubis@suse.cz>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 437/826] iommu/tegra241-cmdqv: Fix alignment failure at max_n_shift
-Date: Tue,  3 Dec 2024 15:42:44 +0100
-Message-ID: <20241203144800.809722948@linuxfoundation.org>
+Subject: [PATCH 6.12 508/826] f2fs: fix to map blocks correctly for direct write
+Date: Tue,  3 Dec 2024 15:43:55 +0100
+Message-ID: <20241203144803.574860679@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,44 +68,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a3799717b881aa0f4e722afb70e7b8ba84ae4f36 ]
+[ Upstream commit 5dd00ebda337b9295e7027691fa70540da369ff2 ]
 
-When configuring a kernel with PAGE_SIZE=4KB, depending on its setting of
-CONFIG_CMA_ALIGNMENT, VCMDQ_LOG2SIZE_MAX=19 could fail the alignment test
-and trigger a WARN_ON:
-    WARNING: at drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c:3646
-    Call trace:
-     arm_smmu_init_one_queue+0x15c/0x210
-     tegra241_cmdqv_init_structures+0x114/0x338
-     arm_smmu_device_probe+0xb48/0x1d90
+f2fs_map_blocks() supports to map continuous holes or preallocated
+address, we should avoid setting F2FS_MAP_MAPPED for these cases
+only, otherwise, it may fail f2fs_iomap_begin(), and make direct
+write fallbacking to use buffered IO and flush, result in performance
+regression.
 
-Fix it by capping max_n_shift to CMDQ_MAX_SZ_SHIFT as SMMUv3 CMDQ does.
-
-Fixes: 918eb5c856f6 ("iommu/arm-smmu-v3: Add in-kernel support for NVIDIA Tegra241 (Grace) CMDQV")
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Link: https://lore.kernel.org/r/20241111030226.1940737-1-nicolinc@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 9f0f6bf42714 ("f2fs: support to map continuous holes or preallocated address")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202409122103.e45aa13b-oliver.sang@intel.com
+Cc: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 3 ++-
+ fs/f2fs/data.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-index a243c543598ce..6b479592140c4 100644
---- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-@@ -509,7 +509,8 @@ static int tegra241_vcmdq_alloc_smmu_cmdq(struct tegra241_vcmdq *vcmdq)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 9202082a3902c..3439f72052ee8 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1676,7 +1676,8 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
+ 		/* reserved delalloc block should be mapped for fiemap. */
+ 		if (blkaddr == NEW_ADDR)
+ 			map->m_flags |= F2FS_MAP_DELALLOC;
+-		if (flag != F2FS_GET_BLOCK_DIO || !is_hole)
++		/* DIO READ and hole case, should not map the blocks. */
++		if (!(flag == F2FS_GET_BLOCK_DIO && is_hole && !map->m_may_create))
+ 			map->m_flags |= F2FS_MAP_MAPPED;
  
- 	snprintf(name, 16, "vcmdq%u", vcmdq->idx);
- 
--	q->llq.max_n_shift = VCMDQ_LOG2SIZE_MAX;
-+	/* Queue size, capped to ensure natural alignment */
-+	q->llq.max_n_shift = min_t(u32, CMDQ_MAX_SZ_SHIFT, VCMDQ_LOG2SIZE_MAX);
- 
- 	/* Use the common helper to init the VCMDQ, and then... */
- 	ret = arm_smmu_init_one_queue(smmu, q, vcmdq->page0,
+ 		map->m_pblk = blkaddr;
 -- 
 2.43.0
 
