@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CE59E262C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 390709E2318
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7493A1688D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 146B8164AE1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289BB1F76AA;
-	Tue,  3 Dec 2024 16:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DD31F754A;
+	Tue,  3 Dec 2024 15:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZthUx7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td3ZBHkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB27F23CE;
-	Tue,  3 Dec 2024 16:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDD91F473A;
+	Tue,  3 Dec 2024 15:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241874; cv=none; b=uALzGwCKh0aTrlIZvfdp31YMtAGLYkQ9Nhxczkok3K4UdfMM7UO9zG7AusaMHklftiyFNX9no+G1eiAiJEzSfPS843jA3f3IE+QycPYDmr0ljog6STsxgLjlJnvJXVg7RmLJy2f4aKsN3tK5+jukNXPaKf+VVS4KUiLBA+h87xQ=
+	t=1733239672; cv=none; b=hWeEY2B21F6kHJcqgi54w1VzsCORPRPsMuLKl3wofrsL+W1I4YJJeC1R1le+OXG4BGHH2bPfpYm2gIwpGmU26Qma43TgHPsGtuqLhrQHV13aeNNqnbXpcVg2O9HmvFOhSjv6nEPDB1qN7sZzhJuAopaDnoZUroa1+3lL/EDmgkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241874; c=relaxed/simple;
-	bh=ogvCTtrrSN6ECBQamQ/csB2nojqI6n9cz3vYYpNuulI=;
+	s=arc-20240116; t=1733239672; c=relaxed/simple;
+	bh=I6Lkp9TdwxBdByviiV+HT4f04mJpkbp9yG/Jt4oqgL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvM4dlDhw7rpNUvEK/8GU3br6ml5z7+3HAc+xJFhJACBdJkK9euCfTx0NtOMyOYqEJUUGvXWV5rfWUsNCIQ3JHzRUxt0TtvEU6b6rAqr0lFx7mUvgbVMIqaod3AmQmlyD2S4EeJaeV3aGc/AhpHLznJKZXMtab30SKWVx/Qvwko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZthUx7s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA25C4CED6;
-	Tue,  3 Dec 2024 16:04:34 +0000 (UTC)
+	 MIME-Version; b=YEHwBnCCqoFOoerhaBlWdwk0H2zAlpeFWGGvzOuHAy08fkmGpFVBt0GO0cbW4ZD0NKK6LTJ3v3q6+U7IlS+p8F8+M4LVcXPmOx+cf5fFpAXTXCgtLZqVVQ9kGic+lHOJPQfxiDbKSBcY1KudyAALhxxAObtCquvJjXwLVOHa5ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td3ZBHkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19769C4CECF;
+	Tue,  3 Dec 2024 15:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241874;
-	bh=ogvCTtrrSN6ECBQamQ/csB2nojqI6n9cz3vYYpNuulI=;
+	s=korg; t=1733239672;
+	bh=I6Lkp9TdwxBdByviiV+HT4f04mJpkbp9yG/Jt4oqgL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZthUx7sC3SEyjvx5/4ghmpxvEnl+jGsuFASV1+upEK5OboR/2I2K/TzerZdUtCG2
-	 k9Z8/1we9ggoApSJe9nDEHtMtzpGPM2DlTXJAJWgBvfZKnl7SNsnGV3x1o/RBQego5
-	 Sd0Wv+EEj8pZxAZa0gB/KHEYo+JG2lMglN0K86gA=
+	b=Td3ZBHkrXQTq8if4idtrDriMHTHUv0eB8kCpYtr83koVD7twdIOv/PWklSGHXq6Uk
+	 tUXCGhZfTmmvxDj5FCjVgA9y76XqJXPGjjPX35av/wJSEszXahnWRQMz6QbkxktWB1
+	 pHsy1yQUXBG+VFrj5wj0DbpJDAV3SG71Q9oEd2kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 540/826] vfio/mlx5: Fix an unwind issue in mlx5vf_add_migration_pages()
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.11 695/817] blk-settings: round down io_opt to physical_block_size
 Date: Tue,  3 Dec 2024 15:44:27 +0100
-Message-ID: <20241203144804.818356336@linuxfoundation.org>
+Message-ID: <20241203144023.104081930@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 22e87bf3f77c18f5982c19ffe2732ef0c7a25f16 ]
+commit 9c0ba14828d64744ccd195c610594ba254a1a9ab upstream.
 
-Fix an unwind issue in mlx5vf_add_migration_pages().
+There was a bug report [1] where the user got a warning alignment
+inconsistency. The user has optimal I/O 16776704 (0xFFFE00) and physical
+block size 4096. Note that the optimal I/O size may be set by the DMA
+engines or SCSI controllers and they have no knowledge about the disks
+attached to them, so the situation with optimal I/O not aligned to
+physical block size may happen.
 
-If a set of pages is allocated but fails to be added to the SG table,
-they need to be freed to prevent a memory leak.
+This commit makes blk_validate_limits round down optimal I/O size to the
+physical block size of the block device.
 
-Any pages successfully added to the SG table will be freed as part of
-mlx5vf_free_data_buffer().
-
-Fixes: 6fadb021266d ("vfio/mlx5: Implement vfio_pci driver for mlx5 devices")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20241114095318.16556-2-yishaih@nvidia.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/dm-devel/1426ad71-79b4-4062-b2bf-84278be66a5d@redhat.com/T/ [1]
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: a23634644afc ("block: take io_opt and io_min into account for max_sectors")
+Cc: stable@vger.kernel.org	# v6.11+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/3dc0014b-9690-dc38-81c9-4a316a2d4fb2@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/mlx5/cmd.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ block/blk-settings.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/vfio/pci/mlx5/cmd.c b/drivers/vfio/pci/mlx5/cmd.c
-index 41a4b0cf42975..7527e277c8989 100644
---- a/drivers/vfio/pci/mlx5/cmd.c
-+++ b/drivers/vfio/pci/mlx5/cmd.c
-@@ -423,6 +423,7 @@ static int mlx5vf_add_migration_pages(struct mlx5_vhca_data_buffer *buf,
- 	unsigned long filled;
- 	unsigned int to_fill;
- 	int ret;
-+	int i;
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -250,6 +250,13 @@ static int blk_validate_limits(struct qu
+ 		lim->io_min = lim->physical_block_size;
  
- 	to_fill = min_t(unsigned int, npages, PAGE_SIZE / sizeof(*page_list));
- 	page_list = kvzalloc(to_fill * sizeof(*page_list), GFP_KERNEL_ACCOUNT);
-@@ -443,7 +444,7 @@ static int mlx5vf_add_migration_pages(struct mlx5_vhca_data_buffer *buf,
- 			GFP_KERNEL_ACCOUNT);
- 
- 		if (ret)
--			goto err;
-+			goto err_append;
- 		buf->allocated_length += filled * PAGE_SIZE;
- 		/* clean input for another bulk allocation */
- 		memset(page_list, 0, filled * sizeof(*page_list));
-@@ -454,6 +455,9 @@ static int mlx5vf_add_migration_pages(struct mlx5_vhca_data_buffer *buf,
- 	kvfree(page_list);
- 	return 0;
- 
-+err_append:
-+	for (i = filled - 1; i >= 0; i--)
-+		__free_page(page_list[i]);
- err:
- 	kvfree(page_list);
- 	return ret;
--- 
-2.43.0
-
+ 	/*
++	 * The optimal I/O size may not be aligned to physical block size
++	 * (because it may be limited by dma engines which have no clue about
++	 * block size of the disks attached to them), so we round it down here.
++	 */
++	lim->io_opt = round_down(lim->io_opt, lim->physical_block_size);
++
++	/*
+ 	 * max_hw_sectors has a somewhat weird default for historical reason,
+ 	 * but driver really should set their own instead of relying on this
+ 	 * value.
 
 
 
