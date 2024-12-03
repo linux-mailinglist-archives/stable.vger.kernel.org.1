@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5089E23F7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98BF9E2172
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52BE12876A3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FC52285AD8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B05D1F76BC;
-	Tue,  3 Dec 2024 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7861F9A88;
+	Tue,  3 Dec 2024 15:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waYlPoQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsb6OVz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5750E1EE001;
-	Tue,  3 Dec 2024 15:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC3B1F943D;
+	Tue,  3 Dec 2024 15:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240495; cv=none; b=f1ZOBZ2I9pZ8rsJTBezm4XEWjI+0G7qReXWdksMDtiNGSrYicGDtw3I4zUwd7LjxJfWg/BwkPR6F9fTtx9eqlCdKO8dT9l7KrBU29m6qfMSED9tUXQJC4i00TqYtIwU3lO2YmkL4shEloQh0gkKUltRH8uOu0xOwSSYECH1M80Y=
+	t=1733238618; cv=none; b=j8qwxKbQRZ9fcK9Ilq0UWyUQs7yZcrNLgTW8nI9RQXQBOdTLrv/EYiXdasWcZyvJwJaftO2HP50No1UEoGgmiWjpDJjaMOIj3B7zlDDDAhE/TN8sCRaAddYr3aJWJNMIHXGhrDiO7qG6bNYoXl0Q01LLEe1HPtPoPkwT6fUOmOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240495; c=relaxed/simple;
-	bh=GhKfncx4Pec4f0ZH/x8W5OLPMvoA93SrbcnD6yfQzXc=;
+	s=arc-20240116; t=1733238618; c=relaxed/simple;
+	bh=c/OpJUyZnScWW9eaDNXC9aeKsKSKiO3q8FWAmPMRQfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+y91JrJCS63FpZuXHFIOmlAkY+wTVARyJ294JrXVIY2BFpQGBozejF1rSFSJtwUBaoXi1UFCLs65l+rHIjThsAS6gbrbWiJ9JqtGyPddZXNHU1QKrnFs+bsxm6FmzOI9CX0oyd1JrhBpJ+PFmR1h3gaK8DHa0QZlFYhAva1cj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waYlPoQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9969C4CED6;
-	Tue,  3 Dec 2024 15:41:34 +0000 (UTC)
+	 MIME-Version; b=YeDZY06Q4yt0hqq/7r4DxHCLGB2iSPm9ARcDLGVlR4Y3r3Q10l/sGiR5OuY5SPx9IAv/vS2diIXs6yI1oY1ECxmtRjwgfWdRSX4PgWZxPGelVqjXUpwolUh8OFbNKtOLXtRziXt65yaRfifp4ZRDgtRdfWv2lkkXd9fAWEoMr0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsb6OVz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73767C4CED6;
+	Tue,  3 Dec 2024 15:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240495;
-	bh=GhKfncx4Pec4f0ZH/x8W5OLPMvoA93SrbcnD6yfQzXc=;
+	s=korg; t=1733238617;
+	bh=c/OpJUyZnScWW9eaDNXC9aeKsKSKiO3q8FWAmPMRQfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=waYlPoQ5vhBPgRGFf5R0Xt0zXAI/2Y+S4FOzPm0AR5dqgCxS/D7s+Sym/4chry4J9
-	 2HO/+YOp480TN+gFei4eabr2Vs/xnBllnJ+UoHgN61S7jy1zZUaQM4c488TUxtWj7D
-	 wFDp+Sgyfs+PCHaEJ/28Q0cK7KpKrbORRu/s8Wmo=
+	b=dsb6OVz8mEXyuwf3nQc7d1UbVpKVYz7Dg0EhtofE5iCtwe3I58z0G4ec0UTuEuZsP
+	 b/bRdO2JewZquWKF/N8hCoVckjhhiRYk5iGHF4VPywTGrr4DBuGlHFS9QxYQyfVg+u
+	 zhsaVVqmbOar/lNReokn0PBVJvaIcdi8lbK8lvOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/826] dt-bindings: cache: qcom,llcc: Fix X1E80100 reg entries
+Subject: [PATCH 6.11 308/817] drm/msm/dpu: cast crtc_clk calculation to u64 in _dpu_core_perf_calc_clk()
 Date: Tue,  3 Dec 2024 15:38:00 +0100
-Message-ID: <20241203144749.711482447@linuxfoundation.org>
+Message-ID: <20241203144007.839159904@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit f9759e2b57049f9c4ea8d7254ba6afcf6eb10cd6 ]
+[ Upstream commit 20c7b42d9dbd048019bfe0af39229e3014007a98 ]
 
-Document the missing Broadcast_AND region for x1e80100.
+There may be a potential integer overflow issue in
+_dpu_core_perf_calc_clk(). crtc_clk is defined as u64, while
+mode->vtotal, mode->hdisplay, and drm_mode_vrefresh(mode) are defined as
+a smaller data type. The result of the calculation will be limited to
+"int" in this case without correct casting. In screen with high
+resolution and high refresh rate, integer overflow may happen.
+So, we recommend adding an extra cast to prevent potential
+integer overflow.
 
-Fixes: e9ceb595c2d3 ("dt-bindings: cache: qcom,llcc: Add X1E80100 compatible")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410181235.L7MF7z48-lkp@intel.com/
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20241018-qcom-llcc-bindings-reg-ranges-fix-v1-1-88693cb7723b@linaro.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: c33b7c0389e1 ("drm/msm/dpu: add support for clk and bw scaling for display")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/622206/
+Link: https://lore.kernel.org/r/20241029194209.23684-1-zichenxie0106@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/cache/qcom,llcc.yaml  | 36 +++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/cache/qcom,llcc.yaml b/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
-index 68ea5f70b75f0..ee7edc6f60e2b 100644
---- a/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
-+++ b/Documentation/devicetree/bindings/cache/qcom,llcc.yaml
-@@ -39,11 +39,11 @@ properties:
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+index 68fae048a9a83..260accc151d4b 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+@@ -80,7 +80,7 @@ static u64 _dpu_core_perf_calc_clk(const struct dpu_perf_cfg *perf_cfg,
  
-   reg:
-     minItems: 2
--    maxItems: 9
-+    maxItems: 10
+ 	mode = &state->adjusted_mode;
  
-   reg-names:
-     minItems: 2
--    maxItems: 9
-+    maxItems: 10
+-	crtc_clk = mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
++	crtc_clk = (u64)mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
  
-   interrupts:
-     maxItems: 1
-@@ -134,6 +134,36 @@ allOf:
-               - qcom,qdu1000-llcc
-               - qcom,sc8180x-llcc
-               - qcom,sc8280xp-llcc
-+    then:
-+      properties:
-+        reg:
-+          items:
-+            - description: LLCC0 base register region
-+            - description: LLCC1 base register region
-+            - description: LLCC2 base register region
-+            - description: LLCC3 base register region
-+            - description: LLCC4 base register region
-+            - description: LLCC5 base register region
-+            - description: LLCC6 base register region
-+            - description: LLCC7 base register region
-+            - description: LLCC broadcast base register region
-+        reg-names:
-+          items:
-+            - const: llcc0_base
-+            - const: llcc1_base
-+            - const: llcc2_base
-+            - const: llcc3_base
-+            - const: llcc4_base
-+            - const: llcc5_base
-+            - const: llcc6_base
-+            - const: llcc7_base
-+            - const: llcc_broadcast_base
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-               - qcom,x1e80100-llcc
-     then:
-       properties:
-@@ -148,6 +178,7 @@ allOf:
-             - description: LLCC6 base register region
-             - description: LLCC7 base register region
-             - description: LLCC broadcast base register region
-+            - description: LLCC broadcast AND register region
-         reg-names:
-           items:
-             - const: llcc0_base
-@@ -159,6 +190,7 @@ allOf:
-             - const: llcc6_base
-             - const: llcc7_base
-             - const: llcc_broadcast_base
-+            - const: llcc_broadcast_and_base
- 
-   - if:
-       properties:
+ 	drm_atomic_crtc_for_each_plane(plane, crtc) {
+ 		pstate = to_dpu_plane_state(plane->state);
 -- 
 2.43.0
 
