@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-96279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236F49E1ACF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 360099E1B37
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57EDB3E520
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:46:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C00B62235
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AFC1E25F8;
-	Tue,  3 Dec 2024 10:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DEF1E3762;
+	Tue,  3 Dec 2024 10:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="tqaVNbPc"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="nTrt4M3C"
 X-Original-To: stable@vger.kernel.org
 Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C491E2825;
-	Tue,  3 Dec 2024 10:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD38E1E282D;
+	Tue,  3 Dec 2024 10:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733222758; cv=none; b=adYID8UC5HSr8cimnnP3zPQv/xTslrIWUZamKTq8eD7vv9J/VlPHJdkvP5KCEsBzRpubDCuqGdHl2XuS+lk0Fe2VtmQMPyOBEujf43zw72EMVlJa7/TtaFIbqYYk0uuKSZfA6yz1yfgluhdGYZUWZz2rOKwiQvKupRsnrd3IZTA=
+	t=1733222759; cv=none; b=AgnB3F6tR49YAW5P0g0tuuQLgubXm+YVLb/njrbxGrrPo0N4783sVd7yAm1dcuYM/Vuo6weVwNvNjbgwcOMY8+gQmehxzd9kmL/Z4G8pyWF1588wyj+DFsTrrJiX59ofNXOf9A7xvzmeiqzK8pIM/0/2ZqUMzuFKE8evfbvGIeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733222758; c=relaxed/simple;
-	bh=UAN7dJJYBHqrrdv1gqBUohBZJi21Jc3c9XZjYqmVsUA=;
+	s=arc-20240116; t=1733222759; c=relaxed/simple;
+	bh=9Dt96s2Bcm1MRb0U9H3U4fTwQJyZ4SwoQ7T4izq5lpw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ivx4C3QWftn5G2LPm1ZfucRjWghgm2uppdV0bJbR2HiucLlzwjx3mWErdvyhRFHiQQvNJrmX9T9zm768KZNIX8Xv6/IKyhQj7XRPCF4/NSLz3KZqbKIEt/mhnC5i2fcE49PESjq5CA97D3R+OxN6hcClZtiXq67v/nHI4Dvez/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=tqaVNbPc; arc=none smtp.client-ip=188.40.30.78
+	 In-Reply-To:To:Cc; b=MKAnvFYWcSIVCpR/I0gq25pgkwLCmslgRitYSe3UR4r9gfv5gEVDXWAVVgwe+gZkqi+Vv3k7+6wbjX5cfaG8c868QRTDXb6XAsDSVSYBybhgNORtBEF4Pgd6dCvlrhAuylmE2YYKg4XMrpwwg/wddGL0kR31lXExi5lF2baz1zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=nTrt4M3C; arc=none smtp.client-ip=188.40.30.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
@@ -36,27 +36,27 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
 	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=f4GQahu87vhd88hFE8JRJ4HYD1rmTxDILIyZYp/HAr0=; b=tqaVNbPcmZNh+77T/UilL7CrLP
-	hH97DpmQufsim5ee71fVIWWOPVc9PDHG+XRTv40HynXgbp34guCl4PRSYIEm41jsO9mlGc2CUexM+
-	caJFCKBIfL8am3OCGuYPMnyB9iyBp33SJrc2UvuT+gZHBMzPxltUdA91XVEsE0hsBOEe79BTBp/1P
-	5lJn2qKzt/+QXaQQ5RBMnffyYEzw34UbijAuQAzD1W2JW8vh5LzHsMXbDIurMsBdTBqvxkHOOvB1Z
-	SKWv4W31aByqTB+Heuw2UxesLhuYKfy5mJPCDYNbQw7nZVPuzMTTweXyDqoz7dBjYYAkTQEB+w1XF
-	EZKMvqGw==;
+	bh=q4sUFc93gmjBPZgy68yfM8oI42T2WlPXmr5pgphYQSI=; b=nTrt4M3CasJxXw6OBstUtotAwB
+	1WpkLzMA5oiU3Ba86Sa2CIFx8lJwxpKMWvAhVTsNWCxypFy4crjYZgHxUfIjloq0PSFz9Z6mLCja8
+	oq1Ce0VtkITV8dQ7PqrelwFvQHDwT+b1Ka3jhM/rn1oR5Lpws+Lo9izXljgMkZSYsre8Bx389bRnP
+	m1saEEoL2bDUQ9moGPwOIR5M3wyGvAH8jduBhN+/ibCY1f5PAQSQbspSClgVADFxNO5RNubN7YcRG
+	d8EkB38Vd+VTVd8H6GhekIHctrFkou6mPGf/KuaA5iKodR8RAy5PIHKzlCqZFJhYeKjFp9d/MmEEP
+	8YY/dTaw==;
 Received: from sslproxy06.your-server.de ([78.46.172.3])
 	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <esben@geanix.com>)
-	id 1tIQPh-0001On-FH; Tue, 03 Dec 2024 11:45:53 +0100
+	id 1tIQPj-0001Pu-Nv; Tue, 03 Dec 2024 11:45:55 +0100
 Received: from [185.17.218.86] (helo=localhost)
 	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <esben@geanix.com>)
-	id 1tIQPg-000L8G-2g;
-	Tue, 03 Dec 2024 11:45:53 +0100
+	id 1tIQPj-000LGA-0D;
+	Tue, 03 Dec 2024 11:45:55 +0100
 From: Esben Haabendal <esben@geanix.com>
-Date: Tue, 03 Dec 2024 11:45:31 +0100
-Subject: [PATCH 1/6] rtc: interface: Fix long-standing race when setting
- alarm
+Date: Tue, 03 Dec 2024 11:45:36 +0100
+Subject: [PATCH 6/6] rtc: interface: Ensure alarm irq is enabled when UIE
+ is enabled
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-rtc-uie-irq-fixes-v1-1-01286ecd9f3f@geanix.com>
+Message-Id: <20241203-rtc-uie-irq-fixes-v1-6-01286ecd9f3f@geanix.com>
 References: <20241203-rtc-uie-irq-fixes-v1-0-01286ecd9f3f@geanix.com>
 In-Reply-To: <20241203-rtc-uie-irq-fixes-v1-0-01286ecd9f3f@geanix.com>
 To: Alexandre Belloni <alexandre.belloni@bootlin.com>
@@ -73,77 +73,45 @@ Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, Esben Haabendal <esben@geanix.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733222752; l=2485;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733222752; l=1219;
  i=esben@geanix.com; s=20240523; h=from:subject:message-id;
- bh=UAN7dJJYBHqrrdv1gqBUohBZJi21Jc3c9XZjYqmVsUA=;
- b=Gioy18FoeQopz/OaoQ+E5tbVP+NcprFBYM1Wuwd8vtThzFcyh6O4hvETtrPhXzR2z1l7vN4hh
- eN702yy0ltZAyvpluSKY5QQatXoRSASaJdKAcEkpnxBOS59ucOImBnP
+ bh=9Dt96s2Bcm1MRb0U9H3U4fTwQJyZ4SwoQ7T4izq5lpw=;
+ b=r3Dyu5602AIrHx2dWjtPnTDJcvMVNYZzvLiEShal74iF5XFHfuxtkFwXBxg/GB5IcrPZAcp/Y
+ sUdFz60GGCoARdQ0Yvo2lFgP3OoUSFmijOQzgDAwUvHBkSD7c4NrMhn
 X-Developer-Key: i=esben@geanix.com; a=ed25519;
  pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
 X-Authenticated-Sender: esben@geanix.com
 X-Virus-Scanned: Clear (ClamAV 0.103.10/27476/Tue Dec  3 10:52:11 2024)
 
-As described in the old comment dating back to
-commit 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
-from 2010, we have been living with a race window when setting alarm
-with an expiry in the near future (i.e. next second).
-With 1 second resolution, it can happen that the second ticks after the
-check for the timer having expired, but before the alarm is actually set.
-When this happen, no alarm IRQ is generated, at least not with some RTC
-chips (isl12022 is an example of this).
+When setting a normal alarm, user-space is responsible for using
+RTC_AIE_ON/RTC_AIE_OFF to control if alarm irq should be enabled.
 
-With UIE RTC timer being implemented on top of alarm irq, being re-armed
-every second, UIE will occasionally fail to work, as an alarm irq lost
-due to this race will stop the re-arming loop.
+But when RTC_UIE_ON is used, interrupts must be so that the requested
+irq events are generated.
+When RTC_UIE_OFF is used, alarm irq is disabled if there are no other
+alarms queued, so this commit brings symmetry to that.
 
-For now, I have limited the additional expiry check to only be done for
-alarms set to next seconds. I expect it should be good enough, although I
-don't know if we can now for sure that systems with loads could end up
-causing the same problems for alarms set 2 seconds or even longer in the
-future.
-
-I haven't been able to reproduce the problem with this check in place.
-
-Cc: stable@vger.kernel.org
 Signed-off-by: Esben Haabendal <esben@geanix.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/rtc/interface.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/rtc/interface.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index aaf76406cd7d7d2cfd5479fc1fc892fcb5efbb6b..e365e8fd166db31f8b44fac9fb923d36881b1394 100644
+index e365e8fd166db31f8b44fac9fb923d36881b1394..39db12f267cc627febb78e67400aaf8fc3301b0c 100644
 --- a/drivers/rtc/interface.c
 +++ b/drivers/rtc/interface.c
-@@ -443,6 +443,29 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 	else
- 		err = rtc->ops->set_alarm(rtc->dev.parent, alarm);
- 
-+	/*
-+	 * Check for potential race described above. If the waiting for next
-+	 * second, and the second just ticked since the check above, either
-+	 *
-+	 * 1) It ticked after the alarm was set, and an alarm irq should be
-+	 *    generated.
-+	 *
-+	 * 2) It ticked before the alarm was set, and alarm irq most likely will
-+	 * not be generated.
-+	 *
-+	 * While we cannot easily check for which of these two scenarios we
-+	 * are in, we can return -ETIME to signal that the timer has already
-+	 * expired, which is true in both cases.
-+	 */
-+	if ((scheduled - now) <= 1) {
-+		err = __rtc_read_time(rtc, &tm);
+@@ -617,6 +617,10 @@ int rtc_update_irq_enable(struct rtc_device *rtc, unsigned int enabled)
+ 		rtc->uie_rtctimer.node.expires = ktime_add(now, onesec);
+ 		rtc->uie_rtctimer.period = ktime_set(1, 0);
+ 		err = rtc_timer_enqueue(rtc, &rtc->uie_rtctimer);
++		if (!err && rtc->ops && rtc->ops->alarm_irq_enable)
++			err = rtc->ops->alarm_irq_enable(rtc->dev.parent, 1);
 +		if (err)
-+			return err;
-+		now = rtc_tm_to_time64(&tm);
-+		if (scheduled <= now)
-+			return -ETIME;
-+	}
-+
- 	trace_rtc_set_alarm(rtc_tm_to_time64(&alarm->time), err);
- 	return err;
- }
++			goto out;
+ 	} else {
+ 		rtc_timer_remove(rtc, &rtc->uie_rtctimer);
+ 	}
 
 -- 
 2.47.1
