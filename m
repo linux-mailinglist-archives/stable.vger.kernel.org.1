@@ -1,165 +1,127 @@
-Return-Path: <stable+bounces-96240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E1B9E171D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:20:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8B59E1769
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:27:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19F6F165EB1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:27:09 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC111DF272;
+	Tue,  3 Dec 2024 09:27:10 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27DEA280F99
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:20:24 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940951DFDBB;
-	Tue,  3 Dec 2024 09:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tuRcgEr9"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D5C1DEFF6
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 09:19:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE0B1DF25E;
+	Tue,  3 Dec 2024 09:27:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733217594; cv=none; b=oToZYHPLVzy9GLNvRhSB98jH6s/o3qMxERapPR3abh0Uit2yKyi1KZBkINdK1+jWt7HoUTG/FdPusRWrX9vtirxcXMYw7ivAtu9MIe8M35YKOm0r1ZZcTS5SuXxWwyZbv4Pq1pvJ5nsEPwbqzs9OaIsRxdxbBzBQAUJi1LeWihI=
+	t=1733218030; cv=none; b=uxG4EhLEGKFdK1qdAjyx3PYl45nkMNKkK89Qr9fNstsEAkdu5rmfmCa50865hsteo0Apyy940VlL6O58KLuKyrsPfCJDgMqXjdm47U0A3WWsd0jIZEy86JKpANJEcyXdE6tbCgp8dkvbzWbSB5QajNveeM4XVNUa3fMDGd7yF6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733217594; c=relaxed/simple;
-	bh=eYuNbK80WRaAXbQTcnKblv8sx0lo50Hxsz+fIFYIPBs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=WO5WXO5JnCGwfoYCvDrtbwGx5NbmnfUKaNPwdTq6EY69P9I+EwKx0dOfW6FmIKZNqE9ZUv64Py/LmFFYRnFT2r91ZyZd8BvmBJiiqT+7VdeTMPkKpCMcRzAMhEElb12jZiE8jQzcGshSRConTZBWOzYzNqmWVS8MQEZ7ikjFP60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tuRcgEr9; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ffc76368c6so79478131fa.0
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 01:19:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733217591; x=1733822391; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8/FxCq/D+ZrwlBd1hxrnw2bJ03+PvBK8Cp4qmHys6u8=;
-        b=tuRcgEr9b3IchxC9FKSVGgv26qwo7cZ+VCvbhv8sBx61MPlvwfgPL9zjaN9TB4UVo6
-         eFCN1SNkAzUxTx5hH3dW7439AXzmda+i5C1ZCBWLvpj5CgInBZ2scNSyo/waexhDcqJm
-         qQ81PEK0S+De3w72bPk9TU/0n0ueFp6UbWs0HiSuNw1sONnxXrPklPMAQ51mBKI89Qmv
-         0oGHwcE7DIlBWvdV72UtKU5GuaUOLebmeZuWhEJOWFQFSVLUomACVgDrLwp8qTexProG
-         ObxLDzlZKX6RUkTwSb4Sq//IQV/eSZLgEPrfnV/MFjMXPJfjUytmEwKTbhlxGjbaAOHw
-         clJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733217591; x=1733822391;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8/FxCq/D+ZrwlBd1hxrnw2bJ03+PvBK8Cp4qmHys6u8=;
-        b=b24NW4zLWj+Gv5XgiGnKTlBsct/wMxGJu/+fuuCKxEhX5NZ4e7Zf1xPjkUZRHbJwv6
-         zMsx2KDGyKgzM5P3teEoepm2yyqkwNRHIM0HPTj/HvtPq5MRWTjcJFhO1ukxNLRu9zOL
-         g8wWez84KayYPh7nlRzSzCqKJYhqDnTHkS0WlkKIiEZ3xAKRwbrd/pjX2OIW6Ighhfh0
-         lhuJFItbaFMlJr9I7UUhjfObcGJOgAygSt3hc9Ncz7l1B5amVbL6cGBObLHJq7Ypg+EB
-         HXRg/lC3yR0e6KTIOsN0DggX2Bh4gY6UG0Yqs0EYSM9eVs4VfjuYCcYXx9RyPBizxj/9
-         1ujQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvvzP0s/SFkps2IwBuxJyjY+p1+56i4IazXadLBdiEfdL5j99hVFou/7g5wO9uk4+Sp5bA8ZE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCVipPUarc5jZ6Dze4HE0n8NbYvpy08KXmmJF5VgFryjFuC4M+
-	1QZjpcORyKKEQZurjFRElejqv/cMheflX1VsD80hnJZgmcKazIpF+ixFJSgL0T4=
-X-Gm-Gg: ASbGncsBBmEEf6WVTVQUhwYNSZ7uf0kRJsWE2ew17xA8ZsL6bLJ0aIdQkrXzYKYTFo0
-	0J57nacHrRgFTg+V3ELmr1q2vLP6fVbKYdkEDNiDbLsvDgm19FSeGRZrFAguvDBD2pWXV4AoqaB
-	96DQs6neFZaLxib5ieu8P2jPiGEypjK6LiqUBTAzcH0i3HRO3A6hsLcbDl67XQ/jOOuywEhirxv
-	ryMUWYB6FISokL3ldVJbRXy1VBYzYao8AOuobPn9AjQHTHKWmzcQvz200DxkjnC9QQYMB+QwAAv
-	uXyjISs=
-X-Google-Smtp-Source: AGHT+IEfXdjC8Yy7o9RHZ+7NgaXen0b0wo8Kg4Qe17WVjeTIs6uDHz7DGadVEYSDMKcH/M4MKy5dSA==
-X-Received: by 2002:a2e:a9a4:0:b0:2ff:5c17:d57d with SMTP id 38308e7fff4ca-30009c46730mr14340111fa.2.1733217590598;
-        Tue, 03 Dec 2024 01:19:50 -0800 (PST)
-Received: from [127.0.1.1] (217.97.33.231.ipv4.supernova.orange.pl. [217.97.33.231])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ffdfbb915esm15591811fa.19.2024.12.03.01.19.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 01:19:50 -0800 (PST)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Tue, 03 Dec 2024 10:19:30 +0100
-Subject: [PATCH 2/9] crypto: qce - unregister previously registered algos
- in error path
+	s=arc-20240116; t=1733218030; c=relaxed/simple;
+	bh=KTvn/Gjc1QNifOEf2fzkR5J6AXF3ghX35zNWUoTlCOY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=E6Sgz9qTa/SPpqHA1UFC5mAkTylKMRFt8JQ/dlfy3pTfQhTHvH9UaRvQoNRkigxZNvHBd7iclcznk5kNoHXCl4RFmWywhxh/rwnDD2TvUlqy1UqUFx3QoSynzv1ic76aPIp1hp0UAqHDEbzxnomO8rngw3/XNe7uRVjFnNBwoiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y2Zzh51CKz1JDTX;
+	Tue,  3 Dec 2024 17:26:56 +0800 (CST)
+Received: from kwepemd500011.china.huawei.com (unknown [7.221.188.45])
+	by mail.maildlp.com (Postfix) with ESMTPS id 208D01A0188;
+	Tue,  3 Dec 2024 17:27:03 +0800 (CST)
+Received: from kwepemd500012.china.huawei.com (7.221.188.25) by
+ kwepemd500011.china.huawei.com (7.221.188.45) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Tue, 3 Dec 2024 17:27:02 +0800
+Received: from kwepemd500012.china.huawei.com ([7.221.188.25]) by
+ kwepemd500012.china.huawei.com ([7.221.188.25]) with mapi id 15.02.1258.034;
+ Tue, 3 Dec 2024 17:27:02 +0800
+From: lizetao <lizetao1@huawei.com>
+To: Bernd Schubert <bschubert@ddn.com>
+CC: Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>,
+	Kanchan Joshi <joshi.k@samsung.com>, "io-uring@vger.kernel.org"
+	<io-uring@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] io_uring: Change res2 parameter type in io_uring_cmd_done
+Thread-Topic: [PATCH] io_uring: Change res2 parameter type in
+ io_uring_cmd_done
+Thread-Index: AQHbRMWpVSKVZoFu80ypzjGJCjeqXLLUPplg
+Date: Tue, 3 Dec 2024 09:27:02 +0000
+Message-ID: <ddf57e59ff2046e497125242f86aa9d7@huawei.com>
+References: <20241202-io_uring_cmd_done-res2-as-u64-v1-1-74f33388c3d8@ddn.com>
+In-Reply-To: <20241202-io_uring_cmd_done-res2-as-u64-v1-1-74f33388c3d8@ddn.com>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-crypto-qce-refactor-v1-2-c5901d2dd45c@linaro.org>
-References: <20241203-crypto-qce-refactor-v1-0-c5901d2dd45c@linaro.org>
-In-Reply-To: <20241203-crypto-qce-refactor-v1-0-c5901d2dd45c@linaro.org>
-To: Thara Gopinath <thara.gopinath@gmail.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- "David S. Miller" <davem@davemloft.net>, 
- Stanimir Varbanov <svarbanov@mm-sol.com>
-Cc: linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1343;
- i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=AfbQb2BovfoohKrly7MBshyETjFSgtG70aWbcVS1ssU=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBnTs0w6LMZ4oCMoqdYSOCLYwhUym1VRGdxxsqzH
- 49+cG0An+aJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCZ07NMAAKCRARpy6gFHHX
- crPMD/9LzRflfe82BvLf9MYfTWI3o+kFii09BTKW8IgEonlmbp5zrkjC2hAw1b93i2amJozgvK2
- /FHV7gZWxOnB12uKkpsZ4csxUxaDSmXGzP31RGwjaBZmK7nKfaO75mqWR7KKwKvMIabAgtWg2LQ
- UZqJ5dGd173VgDzctd5VrfOq+97489FaIu2wIuYSzMDOgLIagFZL4jcQBDsGl/9bujZPVeVFnVc
- GTz+8a+oYXDoC49AHHPjq2+t+HMX0CAhuGoqdmdD0Wn8TLP4zxZjXXmPR9H4jvH7x4xJAMl2MNH
- EGosLof58L7Zcvj4mbmyHsATV6B2pcv/znjfQoVWIIEFwBSlblaHcg9RQ76ndR88Oo09SEN3ECr
- Z8wssjPr2NPDeIC31PtjdA9GDGVl2YS4osgsGx6DM5TduXNkjXCHrPyssKD2EJuiMMcMgwrmmFZ
- TOVnOWnWRc8uXmhrmxJfPS2z5IDq+RZa3E3krJPRskqMUJgvbvG1tjc1UAu0QBMA1qydxotqleO
- 4k/DlSRU3PYjFFdFjoTePtfTszKuME+yO1JZKv0JqaWwCaoObhpwazXDgVpdKRk2IbhEpAtb7eG
- 8NpRB/zzb/gx1yd3gVXiOuzPYVMIjU72ZzGjKMzDVOJN47kZ5V7zWBgoAVoHo6JZGmsai7YvP+D
- wfWmRBvsBLW0ppQ==
-X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-
-If we encounter an error when registering alorithms with the crypto
-framework, we just bail out and don't unregister the ones we
-successfully registered in prior iterations of the loop.
-
-Add code that goes back over the algos and unregisters them before
-returning an error from qce_register_algs().
-
-Cc: stable@vger.kernel.org
-Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- drivers/crypto/qce/core.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/crypto/qce/core.c b/drivers/crypto/qce/core.c
-index 58ea93220f015..848e5e802b92b 100644
---- a/drivers/crypto/qce/core.c
-+++ b/drivers/crypto/qce/core.c
-@@ -51,16 +51,19 @@ static void qce_unregister_algs(struct qce_device *qce)
- static int qce_register_algs(struct qce_device *qce)
- {
- 	const struct qce_algo_ops *ops;
--	int i, ret = -ENODEV;
-+	int i, j, ret = -ENODEV;
- 
- 	for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
- 		ops = qce_ops[i];
- 		ret = ops->register_algs(qce);
--		if (ret)
--			break;
-+		if (ret) {
-+			for (j = i - 1; j >= 0; j--)
-+				ops->unregister_algs(qce);
-+			return ret;
-+		}
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- static int qce_handle_request(struct crypto_async_request *async_req)
-
--- 
-2.45.2
-
+SGksDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQmVybmQgU2NodWJl
+cnQgPGJzY2h1YmVydEBkZG4uY29tPg0KPiBTZW50OiBNb25kYXksIERlY2VtYmVyIDIsIDIwMjQg
+MTA6MjIgUE0NCj4gVG86IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5kaz47IFBhdmVsIEJlZ3Vu
+a292DQo+IDxhc21sLnNpbGVuY2VAZ21haWwuY29tPjsgS2FuY2hhbiBKb3NoaSA8am9zaGkua0Bz
+YW1zdW5nLmNvbT4NCj4gQ2M6IGlvLXVyaW5nQHZnZXIua2VybmVsLm9yZzsgQmVybmQgU2NodWJl
+cnQgPGJzY2h1YmVydEBkZG4uY29tPjsNCj4gc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBTdWJq
+ZWN0OiBbUEFUQ0hdIGlvX3VyaW5nOiBDaGFuZ2UgcmVzMiBwYXJhbWV0ZXIgdHlwZSBpbg0KPiBp
+b191cmluZ19jbWRfZG9uZQ0KPiANCj4gQ2hhbmdlIHRoZSB0eXBlIG9mIHRoZSByZXMyIHBhcmFt
+ZXRlciBpbiBpb191cmluZ19jbWRfZG9uZSBmcm9tIHNzaXplX3QgdG8NCj4gdTY0LiBUaGlzIGFs
+aWducyB0aGUgcGFyYW1ldGVyIHR5cGUgd2l0aCBpb19yZXFfc2V0X2NxZTMyX2V4dHJhLCB3aGlj
+aA0KPiBleHBlY3RzIHU2NCBhcmd1bWVudHMuDQo+IFRoZSBjaGFuZ2UgZWxpbWluYXRlcyBwb3Rl
+bnRpYWwgaXNzdWVzIG9uIDMyLWJpdCBhcmNoaXRlY3R1cmVzIHdoZXJlIHNzaXplX3QNCj4gbWln
+aHQgYmUgMzItYml0Lg0KPiANCj4gT25seSB1c2VyIG9mIHBhc3NpbmcgcmVzMiBpcyBkcml2ZXJz
+L252bWUvaG9zdC9pb2N0bC5jIGFuZCBpdCBhY3R1YWxseSBwYXNzZXMNCj4gdTY0Lg0KPiANCj4g
+Rml4ZXM6IGVlNjkyYTIxZTliZiAoImZzLGlvX3VyaW5nOiBhZGQgaW5mcmFzdHJ1Y3R1cmUgZm9y
+IHVyaW5nLWNtZCIpDQo+IFNpZ25lZC1vZmYtYnk6IEJlcm5kIFNjaHViZXJ0IDxic2NodWJlcnRA
+ZGRuLmNvbT4NCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gLS0tDQo+ICBpbmNsdWRl
+L2xpbnV4L2lvX3VyaW5nL2NtZC5oIHwgMiArLQ0KPiAgaW9fdXJpbmcvdXJpbmdfY21kLmMgICAg
+ICAgICB8IDIgKy0NCj4gIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
+aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvaW9fdXJpbmcvY21kLmgg
+Yi9pbmNsdWRlL2xpbnV4L2lvX3VyaW5nL2NtZC5oDQo+IGluZGV4DQo+IDU3OGEzZmRmNWM3MTlj
+ZjQ1ZmQ0YjZmOWM4OTQyMDRkNmI0Zjk0NmMuLjc1NjkxY2EyMDQzYWNkZjY4NzcwOWJiMmYyDQo+
+IDc4MjlhMWJjN2ExMTAzIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2lvX3VyaW5nL2Nt
+ZC5oDQo+ICsrKyBiL2luY2x1ZGUvbGludXgvaW9fdXJpbmcvY21kLmgNCj4gQEAgLTQzLDcgKzQz
+LDcgQEAgaW50IGlvX3VyaW5nX2NtZF9pbXBvcnRfZml4ZWQodTY0IHVidWYsIHVuc2lnbmVkDQo+
+IGxvbmcgbGVuLCBpbnQgcncsDQo+ICAgKiBOb3RlOiB0aGUgY2FsbGVyIHNob3VsZCBuZXZlciBo
+YXJkIGNvZGUgQGlzc3VlX2ZsYWdzIGFuZCBpcyBvbmx5IGFsbG93ZWQNCj4gICAqIHRvIHBhc3Mg
+dGhlIG1hc2sgcHJvdmlkZWQgYnkgdGhlIGNvcmUgaW9fdXJpbmcgY29kZS4NCj4gICAqLw0KPiAt
+dm9pZCBpb191cmluZ19jbWRfZG9uZShzdHJ1Y3QgaW9fdXJpbmdfY21kICpjbWQsIHNzaXplX3Qg
+cmV0LCBzc2l6ZV90IHJlczIsDQo+ICt2b2lkIGlvX3VyaW5nX2NtZF9kb25lKHN0cnVjdCBpb191
+cmluZ19jbWQgKmNtZCwgc3NpemVfdCByZXQsIHU2NCByZXMyLA0KPiAgCQkJdW5zaWduZWQgaXNz
+dWVfZmxhZ3MpOw0KPiANCj4gIHZvaWQgX19pb191cmluZ19jbWRfZG9faW5fdGFzayhzdHJ1Y3Qg
+aW9fdXJpbmdfY21kICppb3VjbWQsIGRpZmYgLS1naXQNCj4gYS9pb191cmluZy91cmluZ19jbWQu
+YyBiL2lvX3VyaW5nL3VyaW5nX2NtZC5jIGluZGV4DQo+IGQ5ZmIyMTQzZjU2ZmY1ZDEzNDgzNjg3
+ZmE5NDljMjkzZjliOGRiZWYuLmFmODQyZTliNGViOTc1YmE1NmFhZWFhYTANCj4gYzJlMjA3YTc3
+MzJiZWJhIDEwMDY0NA0KPiAtLS0gYS9pb191cmluZy91cmluZ19jbWQuYw0KPiArKysgYi9pb191
+cmluZy91cmluZ19jbWQuYw0KPiBAQCAtMTUxLDcgKzE1MSw3IEBAIHN0YXRpYyBpbmxpbmUgdm9p
+ZCBpb19yZXFfc2V0X2NxZTMyX2V4dHJhKHN0cnVjdA0KPiBpb19raW9jYiAqcmVxLA0KPiAgICog
+Q2FsbGVkIGJ5IGNvbnN1bWVycyBvZiBpb191cmluZ19jbWQsIGlmIHRoZXkgb3JpZ2luYWxseSBy
+ZXR1cm5lZA0KPiAgICogLUVJT0NCUVVFVUVEIHVwb24gcmVjZWl2aW5nIHRoZSBjb21tYW5kLg0K
+PiAgICovDQo+IC12b2lkIGlvX3VyaW5nX2NtZF9kb25lKHN0cnVjdCBpb191cmluZ19jbWQgKmlv
+dWNtZCwgc3NpemVfdCByZXQsIHNzaXplX3QNCj4gcmVzMiwNCj4gK3ZvaWQgaW9fdXJpbmdfY21k
+X2RvbmUoc3RydWN0IGlvX3VyaW5nX2NtZCAqaW91Y21kLCBzc2l6ZV90IHJldCwgdTY0DQo+ICty
+ZXMyLA0KPiAgCQkgICAgICAgdW5zaWduZWQgaXNzdWVfZmxhZ3MpDQo+ICB7DQo+ICAJc3RydWN0
+IGlvX2tpb2NiICpyZXEgPSBjbWRfdG9faW9fa2lvY2IoaW91Y21kKTsNCj4gDQo+IC0tLQ0KPiBi
+YXNlLWNvbW1pdDogN2FmMDhiNTdiY2I5ZWJmNzg2NzVjNTAwNjljNTQxMjVjMGE4Yjc5NQ0KPiBj
+aGFuZ2UtaWQ6IDIwMjQxMjAyLWlvX3VyaW5nX2NtZF9kb25lLXJlczItYXMtdTY0LTIxN2E0ZTQ3
+YjkzZg0KPiANCj4gQmVzdCByZWdhcmRzLA0KPiAtLQ0KPiBCZXJuZCBTY2h1YmVydCA8YnNjaHVi
+ZXJ0QGRkbi5jb20+DQo+IA0KDQpJIGhhdmUgYXBwbGllZCB0aGlzIHBhdGNoIHRvIHRoZSBsaW51
+eC1ibG9jay9mb3ItbmV4dCBicmFuY2ggYW5kIHRlc3RlZCBjb21waWxhdGlvbg0KdXNpbmcgdGhl
+IENPTkZJR19JT19VUklORz15IGFuZCBDT05GSUdfSU9fVVJJTkc9biBvcHRpb25zIHJlc3BlY3Rp
+dmVseS4NCkEgc21hbGwgc3VnZ2VzdGlvbiBpcyB0aGF0IHdoZW4gQ09ORklHX0lPX1VSSU5HPW4s
+IHRoZSByZXQyIHBhcmFtZXRlciB0eXBlIG9mIGlvX3VyaW5nX2NtZF9kb25lIGNhbg0KYWxzbyBi
+ZSBjaGFuZ2VkIHRvIHU2NC4NCg0KVGVzdGVkLWJ5OiBMaSBaZXRhbyA8bGl6ZXRhbzFAaHVhd2Vp
+LmNvbT4NClJldmlld2VkLWJ5OiBMaSBaZXRhbyA8bGl6ZXRhbzFAaHVhd2VpLmNvbT4NCg0KLS0N
+CkxpIFpldGFvDQo=
 
