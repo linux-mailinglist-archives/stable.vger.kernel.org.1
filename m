@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7D89E223A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C059E252A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64E71682E5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D90D16A8B5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E5A1F706C;
-	Tue,  3 Dec 2024 15:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278721F76D2;
+	Tue,  3 Dec 2024 15:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZZSw0hV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGTO6TjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30931F669E;
-	Tue,  3 Dec 2024 15:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73821DAC9F;
+	Tue,  3 Dec 2024 15:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239004; cv=none; b=PoAEV3Mdx47CGBRs8RfNFUp/SsV0nJATz+r7HCFg6Lsrh9D43y87Hi7ZDzszTtkABLl57amsaPBoLbht4qcE1lL4Ib4BXcpf4Z3tb7MBJGLdjE6wxTiXa+oEjn3wPCqhfu+Thc/6BTB2gMspdvp6b2xVmhCs7h7lG+WRQKHUUxw=
+	t=1733241067; cv=none; b=dyyMo/5UtfE+uxVYvgMD206r8TwvasaA04f3Z4PqBrQb6yl6Nw3zfILWKjnSOa9VprMbaNZ9eHg0B9tSh2r+5JseDxEFfRCiJIX+4LwkFVMhoAtI2TlURswsh3ypyU2tBTVKG4MugL6cxMfsTjBUzWpOVobi9vcoYk0TXd+jhio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239004; c=relaxed/simple;
-	bh=YoOeaXPXQm9H8tyh6PvE6Bayi4G7N+wpe0ShEkh3lFQ=;
+	s=arc-20240116; t=1733241067; c=relaxed/simple;
+	bh=ZAPbPNhvl6vIcOiCBBdy/vAaqcCyJBdNy6epXJFntrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lxs+ME3qQKI1XTl/cKlapeiJGLMzy8xOFxZDleSNtigerNMPni5oCA0MiVdc6mBelFydHCJ8usBDYin5ZrkcbU8qWy+5CGXxHJegxDWnOZ8WGXJJ6XzKEGmgHNot55MnQI93iKbprNk4MzSX49CpDaxGXCvaDH8X+30wPYhAfc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZZSw0hV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF22C4CECF;
-	Tue,  3 Dec 2024 15:16:44 +0000 (UTC)
+	 MIME-Version; b=IP6W5nY42KAnXB+bWKWYM7+K7P/Rp3aAoB7UvVIBTqyDqGIDhMF2BfEX5/j/G/XvCbV3tiaw7A4maeQHC1rKCXxrDuWlEZmIQR4LQXnKFfYdv40Q9FWcxymdYDUXyHFTy1VK3ANWDCNkIYbrj8NBJL0U3NOh6Nl4OG7igRCuDR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGTO6TjI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46214C4CECF;
+	Tue,  3 Dec 2024 15:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239004;
-	bh=YoOeaXPXQm9H8tyh6PvE6Bayi4G7N+wpe0ShEkh3lFQ=;
+	s=korg; t=1733241067;
+	bh=ZAPbPNhvl6vIcOiCBBdy/vAaqcCyJBdNy6epXJFntrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZZSw0hV17dtIgC39/xgB6ZEf45bT5P40wLndnaxudbRi9PZW+BGH0J4EPbId5jda
-	 DZIBErbZzNrb5q+XL4cO9c4UEC8LdQIOWXtqMnStdXLoAhwG7WeylGESS07qAPigSW
-	 inFh2PLkwjK4MJi0f7+sNkg4rMl+WNQNZNqX+v4c=
+	b=TGTO6TjIWLA5MEpl75m/vov2PKLH089Uc1atB1LfMmVkoERaHdk/xgKdOIKoMWVgl
+	 lH6euO7k3VuwngUEbJhQMPheSimPUp0fJyUjUSxKns3ALOkcjxmpjSAm4EqKix10Ri
+	 c/M+2EDhE+A37/CXknqJVEQZFMSy4841MEWRUlZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 470/817] clk: en7523: introduce chip_scu regmap
-Date: Tue,  3 Dec 2024 15:40:42 +0100
-Message-ID: <20241203144014.218671781@linuxfoundation.org>
+Subject: [PATCH 6.12 316/826] selftests: net: really check for bg process completion
+Date: Tue,  3 Dec 2024 15:40:43 +0100
+Message-ID: <20241203144756.089327146@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,175 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit f72fc22038dd544fa4d39c06e8c81c09c0041ed4 ]
+[ Upstream commit 52ed077aa6336dbef83a2d6d21c52d1706fb7f16 ]
 
-Introduce chip_scu regmap pointer since EN7581 SoC will access chip-scu
-memory area via a syscon node. Remove first memory region mapping
-for EN7581 SoC. This patch does not introduce any backward incompatibility
-since the dts for EN7581 SoC is not upstream yet.
+A recent refactor transformed the check for process completion
+in a true statement, due to a typo.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/20241112-clk-en7581-syscon-v2-4-8ada5e394ae4@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: f98eded9e9ab ("clk: en7523: fix estimation of fixed rate for EN7581")
+As a result, the relevant test-case is unable to catch the
+regression it was supposed to detect.
+
+Restore the correct condition.
+
+Fixes: 691bb4e49c98 ("selftests: net: avoid just another constant wait")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/0e6f213811f8e93a235307e683af8225cc6277ae.1730828007.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-en7523.c | 81 ++++++++++++++++++++++++++++++----------
- 1 file changed, 61 insertions(+), 20 deletions(-)
+ tools/testing/selftests/net/pmtu.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
-index da112c9fe8ef9..7f83cbce01eeb 100644
---- a/drivers/clk/clk-en7523.c
-+++ b/drivers/clk/clk-en7523.c
-@@ -3,8 +3,10 @@
- #include <linux/delay.h>
- #include <linux/clk-provider.h>
- #include <linux/io.h>
-+#include <linux/mfd/syscon.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
-+#include <linux/regmap.h>
- #include <linux/reset-controller.h>
- #include <dt-bindings/clock/en7523-clk.h>
- #include <dt-bindings/reset/airoha,en7581-reset.h>
-@@ -247,15 +249,11 @@ static const u16 en7581_rst_map[] = {
- 	[EN7581_XPON_MAC_RST]		= RST_NR_PER_BANK + 31,
- };
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index 569bce8b6383e..6c651c880fe83 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -2056,7 +2056,7 @@ check_running() {
+ 	pid=${1}
+ 	cmd=${2}
  
--static unsigned int en7523_get_base_rate(void __iomem *base, unsigned int i)
-+static u32 en7523_get_base_rate(const struct en_clk_desc *desc, u32 val)
- {
--	const struct en_clk_desc *desc = &en7523_base_clks[i];
--	u32 val;
--
- 	if (!desc->base_bits)
- 		return desc->base_value;
- 
--	val = readl(base + desc->base_reg);
- 	val >>= desc->base_shift;
- 	val &= (1 << desc->base_bits) - 1;
- 
-@@ -265,16 +263,11 @@ static unsigned int en7523_get_base_rate(void __iomem *base, unsigned int i)
- 	return desc->base_values[val];
+-	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "{cmd}" ]
++	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "${cmd}" ]
  }
  
--static u32 en7523_get_div(void __iomem *base, int i)
-+static u32 en7523_get_div(const struct en_clk_desc *desc, u32 val)
- {
--	const struct en_clk_desc *desc = &en7523_base_clks[i];
--	u32 reg, val;
--
- 	if (!desc->div_bits)
- 		return 1;
- 
--	reg = desc->div_reg ? desc->div_reg : desc->base_reg;
--	val = readl(base + reg);
- 	val >>= desc->div_shift;
- 	val &= (1 << desc->div_bits) - 1;
- 
-@@ -416,9 +409,12 @@ static void en7523_register_clocks(struct device *dev, struct clk_hw_onecell_dat
- 
- 	for (i = 0; i < ARRAY_SIZE(en7523_base_clks); i++) {
- 		const struct en_clk_desc *desc = &en7523_base_clks[i];
-+		u32 reg = desc->div_reg ? desc->div_reg : desc->base_reg;
-+		u32 val = readl(base + desc->base_reg);
- 
--		rate = en7523_get_base_rate(base, i);
--		rate /= en7523_get_div(base, i);
-+		rate = en7523_get_base_rate(desc, val);
-+		val = readl(base + reg);
-+		rate /= en7523_get_div(desc, val);
- 
- 		hw = clk_hw_register_fixed_rate(dev, desc->name, NULL, 0, rate);
- 		if (IS_ERR(hw)) {
-@@ -454,21 +450,66 @@ static int en7523_clk_hw_init(struct platform_device *pdev,
- 	return 0;
- }
- 
-+static void en7581_register_clocks(struct device *dev, struct clk_hw_onecell_data *clk_data,
-+				   struct regmap *map, void __iomem *base)
-+{
-+	struct clk_hw *hw;
-+	u32 rate;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(en7523_base_clks); i++) {
-+		const struct en_clk_desc *desc = &en7523_base_clks[i];
-+		u32 val, reg = desc->div_reg ? desc->div_reg : desc->base_reg;
-+		int err;
-+
-+		err = regmap_read(map, desc->base_reg, &val);
-+		if (err) {
-+			pr_err("Failed reading fixed clk rate %s: %d\n",
-+			       desc->name, err);
-+			continue;
-+		}
-+		rate = en7523_get_base_rate(desc, val);
-+
-+		err = regmap_read(map, reg, &val);
-+		if (err) {
-+			pr_err("Failed reading fixed clk div %s: %d\n",
-+			       desc->name, err);
-+			continue;
-+		}
-+		rate /= en7523_get_div(desc, val);
-+
-+		hw = clk_hw_register_fixed_rate(dev, desc->name, NULL, 0, rate);
-+		if (IS_ERR(hw)) {
-+			pr_err("Failed to register clk %s: %ld\n",
-+			       desc->name, PTR_ERR(hw));
-+			continue;
-+		}
-+
-+		clk_data->hws[desc->id] = hw;
-+	}
-+
-+	hw = en7523_register_pcie_clk(dev, base);
-+	clk_data->hws[EN7523_CLK_PCIE] = hw;
-+
-+	clk_data->num = EN7523_NUM_CLOCKS;
-+}
-+
- static int en7581_clk_hw_init(struct platform_device *pdev,
- 			      struct clk_hw_onecell_data *clk_data)
- {
--	void __iomem *base, *np_base;
-+	void __iomem *np_base;
-+	struct regmap *map;
- 	u32 val;
- 
--	base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(base))
--		return PTR_ERR(base);
-+	map = syscon_regmap_lookup_by_compatible("airoha,en7581-chip-scu");
-+	if (IS_ERR(map))
-+		return PTR_ERR(map);
- 
--	np_base = devm_platform_ioremap_resource(pdev, 1);
-+	np_base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(np_base))
- 		return PTR_ERR(np_base);
- 
--	en7523_register_clocks(&pdev->dev, clk_data, base, np_base);
-+	en7581_register_clocks(&pdev->dev, clk_data, map, np_base);
- 
- 	val = readl(np_base + REG_NP_SCU_SSTR);
- 	val &= ~(REG_PCIE_XSI0_SEL_MASK | REG_PCIE_XSI1_SEL_MASK);
-@@ -545,7 +586,7 @@ static int en7523_reset_register(struct platform_device *pdev,
- 	if (!soc_data->reset.idx_map_nr)
- 		return 0;
- 
--	base = devm_platform_ioremap_resource(pdev, 2);
-+	base = devm_platform_ioremap_resource(pdev, 1);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 
+ test_cleanup_vxlanX_exception() {
 -- 
 2.43.0
 
