@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30FB9E23E8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718C99E215F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8BA1287446
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3851E284A11
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0151F890F;
-	Tue,  3 Dec 2024 15:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25A51F7577;
+	Tue,  3 Dec 2024 15:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbSC/Ryw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xP/BbXnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8912E1F4283;
-	Tue,  3 Dec 2024 15:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719AB1F7558;
+	Tue,  3 Dec 2024 15:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240388; cv=none; b=Als/Qx9vHnxjCS36wiVb74QS6Lf0OJSg6YqHLJZXerN7tNPNRbqnfxDryRqDH+PJtmVVT2KnZoBl2Cum9LxTW6oOCBNcyKvfkuR4aN184NuPBPeCwUH54wO9ZbG1u/2SKjExl+YH4JHGhSAxrK4lowsy6u7+f4cXmFKWEPku9QU=
+	t=1733238526; cv=none; b=c7b61sirRlWDB2f0GhanME+RCs0exjVVK8kNQN/VJC5pOtQexL1X8ESN5xeLuayJFkD+Q1dVNayUBA9nt3SGNljoIbUH+luEGjGcl5FeFck6gVbokLQTzshkZeQACoiOOAsRNYzgxCsUwQb+rU5Ls+WOeSpSLCVCUuDELJx/jTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240388; c=relaxed/simple;
-	bh=LgIu/8dOZJOvUOfyCwYaV2sgLa9iCY8KtqQc3rYKkQQ=;
+	s=arc-20240116; t=1733238526; c=relaxed/simple;
+	bh=bz4Smlbl3M6EV3uk21VckcizgiQ4jX0JE5Qw5kierhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riFzRmrpFWCOrICM+bDk0P30twhMOyVtKca3zAPxF31gEIcT9T/mqofX+Uwns0hRsL0MaE3Z+2H5COEGT3JBMhgYxcR/1elS5AyKoxTfR2nUTVGTgL3B8XmXJ0iXe+nS9xGkSudmw2iHUWptXYxLh9o+0aKcjZGStwITsTUuVyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbSC/Ryw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104E9C4CECF;
-	Tue,  3 Dec 2024 15:39:47 +0000 (UTC)
+	 MIME-Version; b=aJgKR1d7X67En0HyQI6mE+99jox5z70xNH7P/O2zfPAtlUdxrQh5gt1NmtIhfsVN+qV3fNjDRBxCDKoVRmDmvAcexWL0X7hKINhCGLDPN2aEeEOV7PkmdCdq22QmnWjwq+0sWTvki2/B+r12IPNpGoaNNJrSnhDANyT2SY389CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xP/BbXnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9692CC4CED6;
+	Tue,  3 Dec 2024 15:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240388;
-	bh=LgIu/8dOZJOvUOfyCwYaV2sgLa9iCY8KtqQc3rYKkQQ=;
+	s=korg; t=1733238526;
+	bh=bz4Smlbl3M6EV3uk21VckcizgiQ4jX0JE5Qw5kierhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbSC/RywZzXzEDnYnaTURfHCyC4PVHuCxw9wG8QYu4m4xgUtBmePFJYXvCL52j+FD
-	 LZHvN4p2WHBb6XPeBKt+BYqA+3ZzDuhgjGFlO+4HYJ/vuISjVoWPwjV3qTyr94aToO
-	 p9LtJpryv9bDj0WuudalYRreUQXw33JVldf7MKHo=
+	b=xP/BbXnYtwWK05oebaTaL61yWu0P/4PxOhoxjRg1m7+4HVGbOv0SiKRVODdQLda8r
+	 js7XIQ+MURpufK0Vtfi0dZ4UbcbiqnDyoiNz8SsClNiARcjGS/kVU9loNy9IzFe2ab
+	 gDpxLR6bPUf9GPrPE/HCsCvK4dfzVhAHc2jg1gfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/826] efi/libstub: fix efi_parse_options() ignoring the default command line
+Subject: [PATCH 6.11 276/817] drm/bridge: tc358767: Fix link properties discovery
 Date: Tue,  3 Dec 2024 15:37:28 +0100
-Message-ID: <20241203144748.465088249@linuxfoundation.org>
+Message-ID: <20241203144006.578981392@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit aacfa0ef247b0130b7a98bb52378f8cd727a66ca ]
+[ Upstream commit 2d343723c7e1f9f6d64f721f07cfdfc2993758d1 ]
 
-efi_convert_cmdline() always returns a size of at least 1 because it
-counts the NUL terminator, so the "cmdline_size == 0" condition is never
-satisfied.
+When a display controller driver uses DRM_BRIDGE_ATTACH_NO_CONNECTOR,
+tc358767 will behave properly and skip the creation of the connector.
 
-Change it to check if the string starts with a NUL character to get the
-intended behavior: to use CONFIG_CMDLINE when load_options_size == 0.
+However, tc_get_display_props(), which is used to find out about the DP
+monitor and link, is only called from two places: .atomic_enable() and
+tc_connector_get_modes(). The latter is only used when tc358767 creates
+its own connector, i.e. when DRM_BRIDGE_ATTACH_NO_CONNECTOR is _not_
+set.
 
-Fixes: 60f38de7a8d4 ("efi/libstub: Unify command line param parsing")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Thus, the driver never finds out the link properties before get_edid()
+is called. With num_lanes of 0 and link_rate of 0 there are not many
+valid modes...
+
+Fix this by adding tc_get_display_props() call at the beginning of
+get_edid(), so that we have up to date information before looking at the
+modes.
+
+Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
+Closes: https://lore.kernel.org/all/24282420-b4dd-45b3-bb1c-fc37fe4a8205@siemens.com/
+Fixes: de5e6c027ae6 ("drm/bridge: tc358767: add drm_panel_bridge support")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Tested-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231108-tc358767-v2-2-25c5f70a2159@ideasonboard.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/efi-stub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/tc358767.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/firmware/efi/libstub/efi-stub.c b/drivers/firmware/efi/libstub/efi-stub.c
-index 958a680e0660d..2a1b43f9e0fa2 100644
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -129,7 +129,7 @@ efi_status_t efi_handle_cmdline(efi_loaded_image_t *image, char **cmdline_ptr)
+diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
+index b8b7a227addfb..c4cc7f90d112c 100644
+--- a/drivers/gpu/drm/bridge/tc358767.c
++++ b/drivers/gpu/drm/bridge/tc358767.c
+@@ -1695,6 +1695,13 @@ static const struct drm_edid *tc_edid_read(struct drm_bridge *bridge,
+ 					   struct drm_connector *connector)
+ {
+ 	struct tc_data *tc = bridge_to_tc(bridge);
++	int ret;
++
++	ret = tc_get_display_props(tc);
++	if (ret < 0) {
++		dev_err(tc->dev, "failed to read display props: %d\n", ret);
++		return 0;
++	}
  
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
- 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
--	    cmdline_size == 0) {
-+	    cmdline[0] == 0) {
- 		status = efi_parse_options(CONFIG_CMDLINE);
- 		if (status != EFI_SUCCESS) {
- 			efi_err("Failed to parse options\n");
+ 	return drm_edid_read_ddc(connector, &tc->aux.ddc);
+ }
 -- 
 2.43.0
 
