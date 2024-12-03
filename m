@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A5C9E23A6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 669209E2721
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96ED9B27706
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B26E1B365A8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871551EF08A;
-	Tue,  3 Dec 2024 14:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA4C1EE029;
+	Tue,  3 Dec 2024 14:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmXgq9Nf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxb3q551"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4413D1F4711;
-	Tue,  3 Dec 2024 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920C17BB16;
+	Tue,  3 Dec 2024 14:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236612; cv=none; b=rFPCgfVUaJluKk1quUgEOWmnZoT00n3pY1eeG5zp9CPhBrhUKe4318zAXLUxdgMefj93wXYHu6VWACCGvbBGv994bMIVUrYuUUK2mm1w1mX6wL3BdARMA000zPB+legw7Z3ODqysqKHScxcmF8itx7ZiatMJShuwk8LitX1QEPE=
+	t=1733236720; cv=none; b=lCg5aI0AmIXDbdE+LV+ZDMSf0b7J22t87asEO2yUJSIBSidujxDq1sJNbeGPBINmIdKgFqEKd8gtFMaD2QAUvHlWbnGzgka6T01DS0Ur2yth4KeD97saARtxyua7NDIiLdvEReLQvBS3UI0LxmjZSIni3Tcb8FW+rzhcu2wAp00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236612; c=relaxed/simple;
-	bh=0qxcbxSd0yd9XYvPtKKm7t2vaHeJl8KANkIqEOzsHIc=;
+	s=arc-20240116; t=1733236720; c=relaxed/simple;
+	bh=QCJ0UPd41nDl/rFDhOMEbkHy653/JVAEHmoVKousizs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKZumwADUqoF4I5TfFVScmyLBpHGub3SaZN4WeaBzzLt81Rz+huTEik4/YPQiBAB4oI8a6qyJ/tN1ObJ3eZJwxmpLOjWyPEyN/rJu8SEtFoMOJC9cMjMBeGvKVqcATRoZkSMwEpspnVeUiaixm5PMXpA9+cwtUqMi5ccpP+FYwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmXgq9Nf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FDF5C4CECF;
-	Tue,  3 Dec 2024 14:36:51 +0000 (UTC)
+	 MIME-Version; b=KjYwLM9wYv7Idy3EP+5Clu9/PsNYyqOqEbSh6j8RhQo10zfZuP4qeUGsaDeSXvM584M0bvU1cujnO0RQIIf2MPwMu/PASoDcpZEmZ8WtiS+7ySYWjokQDHBkC2yQOwU71okpEloUUiyEdp/9F7q0zCJ7ybIKH3+Zd0KSQlro59U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxb3q551; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F9BC4CECF;
+	Tue,  3 Dec 2024 14:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236611;
-	bh=0qxcbxSd0yd9XYvPtKKm7t2vaHeJl8KANkIqEOzsHIc=;
+	s=korg; t=1733236720;
+	bh=QCJ0UPd41nDl/rFDhOMEbkHy653/JVAEHmoVKousizs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmXgq9NfAd1YISfIsnc2skcowYjJjlNzE0wGfvKEATGzsIn/NwCG5fXQFr7wCjCz/
-	 SEL3gSLU4fvroV71D85LUiQDFcQ8arIQxYYca+QBhDCV0Kv68liWqj6GpujqlRKcvs
-	 e0IAcZN5T9sQ2iOk0Ego74eiBtpQoQCzVwD8HcqY=
+	b=wxb3q551YUbqV3qNnkU3ygiWkTDtAMexgXKQZ74pvx4qjHn6DtAs/9voPtyUYOiUD
+	 iSg+NkIPo54WArRNqekaFmp8aIUeJGjPwpBivXQVD/JC0xC761RO04cDbTjeuYBGx8
+	 h6tGAdQE6PFznqlAZLDBedX3yXIqtNZR23RYRUMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 063/138] RDMA/bnxt_re: Check cqe flags to know imm_data vs inv_irkey
-Date: Tue,  3 Dec 2024 15:31:32 +0100
-Message-ID: <20241203141925.970229193@linuxfoundation.org>
+Subject: [PATCH 4.19 067/138] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
+Date: Tue,  3 Dec 2024 15:31:36 +0100
+Message-ID: <20241203141926.121766633@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -67,78 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit 808ca6de989c598bc5af1ae0ad971a66077efac0 ]
+[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
 
-Invalidate rkey is cpu endian and immediate data is in big endian format.
-Both immediate data and invalidate the remote key returned by
-HW is in little endian format.
+Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
+memory sb_virt when it fails. Add dma_free_coherent() to free it. This
+is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
 
-While handling the commit in fixes tag, the difference between
-immediate data and invalidate rkey endianness was not considered.
-
-Without changes of this patch, Kernel ULP was failing while processing
-inv_rkey.
-
-dmesg log snippet -
-nvme nvme0: Bogus remote invalidation for rkey 0x2000019Fix in this patch
-
-Do endianness conversion based on completion queue entry flag.
-Also, the HW completions are already converted to host endianness in
-bnxt_qplib_cq_process_res_rc and bnxt_qplib_cq_process_res_ud and there
-is no need to convert it again in bnxt_re_poll_cq. Modified the union to
-hold the correct data type.
-
-Fixes: 95b087f87b78 ("bnxt_re: Fix imm_data endianness")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1730110014-20755-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +++++--
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/scsi/qedi/qedi_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index e2c93a50fe762..9b6ebf6356983 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3110,7 +3110,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *qp,
- 	wc->byte_len = orig_cqe->length;
- 	wc->qp = &qp1_qp->ib_qp;
- 
--	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
-+	wc->ex.imm_data = cpu_to_be32(orig_cqe->immdata);
- 	wc->src_qp = orig_cqe->src_qp;
- 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
- 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
-@@ -3231,7 +3231,10 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
- 				continue;
- 			}
- 			wc->qp = &qp->ib_qp;
--			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
-+			if (cqe->flags & CQ_RES_RC_FLAGS_IMM)
-+				wc->ex.imm_data = cpu_to_be32(cqe->immdata);
-+			else
-+				wc->ex.invalidate_rkey = cqe->invrkey;
- 			wc->src_qp = cqe->src_qp;
- 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
- 			wc->port_num = 1;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index aed0c53d84be2..6c0129231c07b 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -349,7 +349,7 @@ struct bnxt_qplib_cqe {
- 	u32				length;
- 	u64				wr_id;
- 	union {
--		__le32			immdata;
-+		u32			immdata;
- 		u32			invrkey;
- 	};
- 	u64				qp_handle;
+diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
+index 7a179cfc01ed2..15567e60216ec 100644
+--- a/drivers/scsi/qedi/qedi_main.c
++++ b/drivers/scsi/qedi/qedi_main.c
+@@ -357,6 +357,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
+ 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
+ 				       sb_id, QED_SB_TYPE_STORAGE);
+ 	if (ret) {
++		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
+ 		QEDI_ERR(&qedi->dbg_ctx,
+ 			 "Status block initialization failed for id = %d.\n",
+ 			  sb_id);
 -- 
 2.43.0
 
