@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2739E21C2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5CE9E262B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0415228566E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDC6BBE2863
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838881F8901;
-	Tue,  3 Dec 2024 15:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC391F76AD;
+	Tue,  3 Dec 2024 15:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0wuRn8S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10gAnD02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404561F76D9;
-	Tue,  3 Dec 2024 15:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99001DE8A5;
+	Tue,  3 Dec 2024 15:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238961; cv=none; b=ZIfAoPtVbBjjf886P+X40M9KWX4zWL64+sEud4C4A7t/gwq3+sMRf3rCLRTO6/iqtNIR2PKWzpbynad3nidqGAyiVPLFOiBZ5CPzCDTVVJdpY8t4AW7YyF0wZ7SDVsy93hFNXWQ88AmMZ+bmky43SqHvfRHYOl1W5lB+Ndjz32A=
+	t=1733241030; cv=none; b=uVxs7QH42TRBy0pymAGgIHBgPhwBrN5x00hp35WpA4QnmlWd5SqLk5NialM1//5918DmiaG700niMPhqSYh0pKcgvf0Da74WFPhenKaqG+AAW/mGx4cJGafgpoogcBVUzatYTQHDf8fUXPrluyNFh/+DvzIBKWgOOmier9ejt0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238961; c=relaxed/simple;
-	bh=T2BMUvY382bbht+/hlh8dmU1Rxi9QzISPZlj4K+VnfU=;
+	s=arc-20240116; t=1733241030; c=relaxed/simple;
+	bh=5AFZ5+CgfsHJ4mGoxwTgYa/oPWAFbQH4QlmAANNaxc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5F9EceezbdGR7ulm9kAPzh6OA12OATgI2TyVV9rF9DoKNwxagmT2AtLyoLf1uo/rVD25PTylznkkszrcb2xkQsRcpVSTYwtstno6C0q/RMMS0KCz8Jg+SgTY6UfOainRFNrrRt29sTVKmafc6R8z7QV5I2ykxSv0LjFC7KPTe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0wuRn8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0F8C4CECF;
-	Tue,  3 Dec 2024 15:16:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RKUZH9fq7rZBg0Z6dJIGtpe1tbbenvczy46m9EfvY3UULiRY1PvOBfxToXZ5H7mnS6fWB9TjIn/fhUeaVIuU2lmySGXEosp1YdhU26gs2A4lURqUL8Y9N7hlSEThasAVe/gntMkQ/IfIYq0QmSdyV4qBvkaqyXkOHW0waeUNjhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10gAnD02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF02C4CECF;
+	Tue,  3 Dec 2024 15:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238960;
-	bh=T2BMUvY382bbht+/hlh8dmU1Rxi9QzISPZlj4K+VnfU=;
+	s=korg; t=1733241030;
+	bh=5AFZ5+CgfsHJ4mGoxwTgYa/oPWAFbQH4QlmAANNaxc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0wuRn8SmB8gU678qU/1wbatftEtGk8Hr7m2+gdE03vRo4UkGcrd7l+nJ4jYL9k0I
-	 N09nISH3Pvzg+kj1Ynt2oKsIffrn81l+qsrK0wSElagzIQcoC/c7Hz3yP6hUdZyQWg
-	 Kz9juBELQQ9np90ojMICbmRyVsHr5tgNCu1qn05s=
+	b=10gAnD02xjaAh6upBZ1BvhMrsmOKxbgth8Jp33a8lFRctZp4FVC1eMpK0AeVtaPPR
+	 tE9UK/VBGV5AbsnUmarBahJ4B605e+CZxtUtSve0u9om0hocFK4hwqdxEk2nq4e47w
+	 FYnMFN0uZ2zCSryPulQkW7aApPbeja8cIVALNrc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 457/817] KVM: PPC: Book3S HV: Stop using vc->dpdes for nested KVM guests
-Date: Tue,  3 Dec 2024 15:40:29 +0100
-Message-ID: <20241203144013.713881519@linuxfoundation.org>
+Subject: [PATCH 6.12 303/826] drm/panfrost: Add missing OPP table refcnt decremental
+Date: Tue,  3 Dec 2024 15:40:30 +0100
+Message-ID: <20241203144755.583719360@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,117 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Adrián Larumbe <adrian.larumbe@collabora.com>
 
-[ Upstream commit 0d3c6b28896f9889c8864dab469e0343a0ad1c0c ]
+[ Upstream commit 043e8afebf6c19abde9da1ac3d5cbf8b7ac8393f ]
 
-commit 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
-introduced an optimization to use only vcpu->doorbell_request for SMT
-emulation for Power9 and above guests, but the code for nested guests
-still relies on the old way of handling doorbells, due to which an L2
-guest (see [1]) cannot be booted with XICS with SMT>1. The command to
-repro this issue is:
+Commit f11b0417eec2 ("drm/panfrost: Add fdinfo support GPU load metrics")
+retrieves the OPP for the maximum device clock frequency, but forgets to
+keep the reference count balanced by putting the returned OPP object. This
+eventually leads to an OPP core warning when removing the device.
 
-// To be run in L1
+Fix it by putting OPP objects as many times as they're retrieved.
 
-qemu-system-ppc64 \
-	-drive file=rhel.qcow2,format=qcow2 \
-	-m 20G \
-	-smp 8,cores=1,threads=8 \
-	-cpu  host \
-	-nographic \
-	-machine pseries,ic-mode=xics -accel kvm
+Also remove an unnecessary whitespace.
 
-Fix the plumbing to utilize vcpu->doorbell_request instead of vcore->dpdes
-for nested KVM guests on P9 and above.
-
-[1] Terminology
-1. L0 : PowerNV linux running with HV privileges
-2. L1 : Pseries KVM guest running on top of L0
-2. L2 : Nested KVM guest running on top of L1
-
-Fixes: 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241109063301.105289-3-gautam@linux.ibm.com
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Fixes: f11b0417eec2 ("drm/panfrost: Add fdinfo support GPU load metrics")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241105205458.1318989-1-adrian.larumbe@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c        |  9 +++++++++
- arch/powerpc/kvm/book3s_hv_nested.c | 14 ++++++++++----
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panfrost/panfrost_devfreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 0ed5c5c7a350d..ccc9a8431b944 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4303,6 +4303,15 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
- 	}
- 	hvregs.hdec_expiry = time_limit;
+diff --git a/drivers/gpu/drm/panfrost/panfrost_devfreq.c b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
+index 2d30da38c2c3e..3385fd3ef41a4 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_devfreq.c
++++ b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
+@@ -38,7 +38,7 @@ static int panfrost_devfreq_target(struct device *dev, unsigned long *freq,
+ 		return PTR_ERR(opp);
+ 	dev_pm_opp_put(opp);
  
-+	/*
-+	 * hvregs has the doorbell status, so zero it here which
-+	 * enables us to receive doorbells when H_ENTER_NESTED is
-+	 * in progress for this vCPU
-+	 */
-+
-+	if (vcpu->arch.doorbell_request)
-+		vcpu->arch.doorbell_request = 0;
-+
- 	/*
- 	 * When setting DEC, we must always deal with irq_work_raise
- 	 * via NMI vs setting DEC. The problem occurs right as we
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index 05f5220960c63..125440a606ee3 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -32,7 +32,7 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
- 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+-	err =  dev_pm_opp_set_rate(dev, *freq);
++	err = dev_pm_opp_set_rate(dev, *freq);
+ 	if (!err)
+ 		ptdev->pfdevfreq.current_frequency = *freq;
  
- 	hr->pcr = vc->pcr | PCR_MASK;
--	hr->dpdes = vc->dpdes;
-+	hr->dpdes = vcpu->arch.doorbell_request;
- 	hr->hfscr = vcpu->arch.hfscr;
- 	hr->tb_offset = vc->tb_offset;
- 	hr->dawr0 = vcpu->arch.dawr0;
-@@ -105,7 +105,7 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu,
- {
- 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
- 
--	hr->dpdes = vc->dpdes;
-+	hr->dpdes = vcpu->arch.doorbell_request;
- 	hr->purr = vcpu->arch.purr;
- 	hr->spurr = vcpu->arch.spurr;
- 	hr->ic = vcpu->arch.ic;
-@@ -143,7 +143,7 @@ static void restore_hv_regs(struct kvm_vcpu *vcpu, const struct hv_guest_state *
- 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
- 
- 	vc->pcr = hr->pcr | PCR_MASK;
--	vc->dpdes = hr->dpdes;
-+	vcpu->arch.doorbell_request = hr->dpdes;
- 	vcpu->arch.hfscr = hr->hfscr;
- 	vcpu->arch.dawr0 = hr->dawr0;
- 	vcpu->arch.dawrx0 = hr->dawrx0;
-@@ -170,7 +170,13 @@ void kvmhv_restore_hv_return_state(struct kvm_vcpu *vcpu,
- {
- 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
- 
--	vc->dpdes = hr->dpdes;
-+	/*
-+	 * This L2 vCPU might have received a doorbell while H_ENTER_NESTED was being handled.
-+	 * Make sure we preserve the doorbell if it was either:
-+	 *   a) Sent after H_ENTER_NESTED was called on this vCPU (arch.doorbell_request would be 1)
-+	 *   b) Doorbell was not handled and L2 exited for some other reason (hr->dpdes would be 1)
-+	 */
-+	vcpu->arch.doorbell_request = vcpu->arch.doorbell_request | hr->dpdes;
- 	vcpu->arch.hfscr = hr->hfscr;
- 	vcpu->arch.purr = hr->purr;
- 	vcpu->arch.spurr = hr->spurr;
+@@ -182,6 +182,7 @@ int panfrost_devfreq_init(struct panfrost_device *pfdev)
+ 	 * if any and will avoid a switch off by regulator_late_cleanup()
+ 	 */
+ 	ret = dev_pm_opp_set_opp(dev, opp);
++	dev_pm_opp_put(opp);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev, "Couldn't set recommended OPP\n");
+ 		return ret;
 -- 
 2.43.0
 
