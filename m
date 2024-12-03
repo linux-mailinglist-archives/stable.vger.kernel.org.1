@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE78A9E212C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9F69E2113
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73C9B286207
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E44062855F4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AEB1F75AE;
-	Tue,  3 Dec 2024 15:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311EB1F7070;
+	Tue,  3 Dec 2024 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EA9aYMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4wx1ULh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ABB1F7070;
-	Tue,  3 Dec 2024 15:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C3B1F7569;
+	Tue,  3 Dec 2024 15:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238471; cv=none; b=mFVJKEZCaQrxTKg1srRvSoLHE5jpLGC4Ohs1UcNREqTeifC5b0b81JUGY2bfyX3jIRWEtSzJf+iH5WIRj1qvWLAU7TYQa+6nLYSJ36y6Byh0ROEXkh3cCKStRHfTnlcLmikch1MttNawNP7RDcgqumm7qwNDYanH7zNaEIR24Pw=
+	t=1733238445; cv=none; b=LbpcDEVXfKPa7xHCJrjBGKUe5PXfxUmRsNxg8/XkOMAow0irbo5uCuIcT5MUq67pWkCxPv1QP0EzrPIIXxBTKpiCPhwy9GNthdXD8ykVaKj2oyf13AqZ1cx5w8JrjXDEyfWGu6GbsqRrDBpcq16iHLr8U3PeONCv81EXy70ods0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238471; c=relaxed/simple;
-	bh=cKq/fa7Do4iFuPilynyp5ztYzt3DFWBjJ4HG6izOWt0=;
+	s=arc-20240116; t=1733238445; c=relaxed/simple;
+	bh=jS5kBIbWgpRJ+u2icoy1SAsg6EKjFLueckwPcv73NhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SxUnILyPYl98zid9VN/juUS4sm9hONWRQ9PV1ITckfdrg9OSz0maJUXdhaIR4vZ6qyRUN1AkLAaYuygcSTIkTTaWUgtCVvCCcFWdfgfubtwGFEraNWrGGv63bNmf3cahzKr8TFeFxSEkDPaRzIgTXn8F0twoeCArZ11wvDawMJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EA9aYMf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856E0C4CECF;
-	Tue,  3 Dec 2024 15:07:50 +0000 (UTC)
+	 MIME-Version; b=pDcwk0hPS60H69GpYFiaKzpXfqGVL8hhbBL2XUij4D2OC3H0kG5oLWoYK2j6r/4CL0oo8esP+k0N6kG3nYSvFyjzbmz1bWes8GMKWhDjXhZDRHP1gximmz2XYrVe8yMULiITdzOEcxpHWbkwFwfyMBiATm4INK8HmKGwg3UhXu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4wx1ULh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAADC4CECF;
+	Tue,  3 Dec 2024 15:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238470;
-	bh=cKq/fa7Do4iFuPilynyp5ztYzt3DFWBjJ4HG6izOWt0=;
+	s=korg; t=1733238444;
+	bh=jS5kBIbWgpRJ+u2icoy1SAsg6EKjFLueckwPcv73NhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0EA9aYMfsw4hbySfgxJ6XMOnY5FjWUUq1lH71iwBby3PllnbQLeIDj9mOVjOgcp64
-	 8ksWkRdR6nbTbb0j1p19OjLva90mo+TcjgWtEduy1QPBptCnd9s6BUuqVdRCtGlXSA
-	 N9x/JA0EgQlK1NMuXnPFFMcft8xqitwkoIDlptsY=
+	b=W4wx1ULhQqPFk8SCO3muoUReKeYle9DtTRxMsx5BCWvyQIrO83sq5onJUolbEvtLh
+	 p8H76CaJxqT1/59VRjoq3WRNTvVdCpsfVIFEwFTeAWqPqwx5nQk/Si+Kmc62KNVuQ5
+	 STmqc++FI0CHcT1aCH514EPUP+pZG62HlnoKaq3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 271/817] libbpf: fix sym_is_subprog() logic for weak global subprogs
-Date: Tue,  3 Dec 2024 15:37:23 +0100
-Message-ID: <20241203144006.374872071@linuxfoundation.org>
+Subject: [PATCH 6.11 280/817] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_config_scan()
+Date: Tue,  3 Dec 2024 15:37:32 +0100
+Message-ID: <20241203144006.736003171@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,47 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Alper Nebi Yasak <alpernebiyasak@gmail.com>
 
-[ Upstream commit 4073213488be542f563eb4b2457ab4cbcfc2b738 ]
+[ Upstream commit d241a139c2e9f8a479f25c75ebd5391e6a448500 ]
 
-sym_is_subprog() is incorrectly rejecting relocations against *weak*
-global subprogs. Fix that by realizing that STB_WEAK is also a global
-function.
+Replace one-element array with a flexible-array member in `struct
+mwifiex_ie_types_wildcard_ssid_params` to fix the following warning
+on a MT8173 Chromebook (mt8173-elm-hana):
 
-While it seems like verifier doesn't support taking an address of
-non-static subprog right now, it's still best to fix support for it on
-libbpf side, otherwise users will get a very confusing error during BPF
-skeleton generation or static linking due to misinterpreted relocation:
+[  356.775250] ------------[ cut here ]------------
+[  356.784543] memcpy: detected field-spanning write (size 6) of single field "wildcard_ssid_tlv->ssid" at drivers/net/wireless/marvell/mwifiex/scan.c:904 (size 1)
+[  356.813403] WARNING: CPU: 3 PID: 742 at drivers/net/wireless/marvell/mwifiex/scan.c:904 mwifiex_scan_networks+0x4fc/0xf28 [mwifiex]
 
-  libbpf: prog 'handle_tp': bad map relo against 'foo' in section '.text'
-  Error: failed to open BPF object file: Relocation failed
+The "(size 6)" above is exactly the length of the SSID of the network
+this device was connected to. The source of the warning looks like:
 
-It's clearly not a map relocation, but is treated and reported as such
-without this fix.
+    ssid_len = user_scan_in->ssid_list[i].ssid_len;
+    [...]
+    memcpy(wildcard_ssid_tlv->ssid,
+           user_scan_in->ssid_list[i].ssid, ssid_len);
 
-Fixes: 53eddb5e04ac ("libbpf: Support subprog address relocation")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241009011554.880168-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+There is a #define WILDCARD_SSID_TLV_MAX_SIZE that uses sizeof() on this
+struct, but it already didn't account for the size of the one-element
+array, so it doesn't need to be changed.
+
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Signed-off-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241007222301.24154-1-alpernebiyasak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
+ drivers/net/wireless/marvell/mwifiex/fw.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 22b8317b57036..98a6cc304bb21 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -3985,7 +3985,7 @@ static bool sym_is_subprog(const Elf64_Sym *sym, int text_shndx)
- 		return true;
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 5b072120e3f21..324efd55c8e4f 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -842,7 +842,7 @@ struct mwifiex_ietypes_chanstats {
+ struct mwifiex_ie_types_wildcard_ssid_params {
+ 	struct mwifiex_ie_types_header header;
+ 	u8 max_ssid_length;
+-	u8 ssid[1];
++	u8 ssid[];
+ } __packed;
  
- 	/* global function */
--	return bind == STB_GLOBAL && type == STT_FUNC;
-+	return (bind == STB_GLOBAL || bind == STB_WEAK) && type == STT_FUNC;
- }
- 
- static int find_extern_btf_id(const struct btf *btf, const char *ext_name)
+ #define TSF_DATA_SIZE            8
 -- 
 2.43.0
 
