@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-97244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1153F9E237E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A53E9E2602
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50EA8168E9B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E312288C28
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B591F76C9;
-	Tue,  3 Dec 2024 15:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60421F76DD;
+	Tue,  3 Dec 2024 16:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGaDQR8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VK5IHfqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030701F754A;
-	Tue,  3 Dec 2024 15:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946BB1E766E;
+	Tue,  3 Dec 2024 16:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239932; cv=none; b=gJAtpo+I4QqgcOvswWmZ0gJTO4x33ok132yhnAQZYYzBMSjhUWvSnKu5zgz0KWtN8knzVkyqqcKlSNO+dj/F8TBxrEoO8EKjROetEJVbe8/SB3Juc3jZCY7Hgn+Aay4ftxxcIee+acwwCN1qnN3bQ3++LJan4TIolcou/OHbTQg=
+	t=1733242069; cv=none; b=m+3GbzJwXMfiidbvC+ETkneZAVZMr+/aOeujoE+HwEGEERCODOdeFd8y0azm1vH/byOcB35RrUzsGDDW2F8dlmpSB0LxKatl+cAsOGZ2/rHSpLxdZSSb3NoyQayetpKphEtZChLpSdKpLdt23YAP5Ul5eQ5eVSc7S8ChaLbMBJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239932; c=relaxed/simple;
-	bh=LtxPBs0DiyTl0eA05M0Rqe0BCYtlB6C9NzxMYf0Qv58=;
+	s=arc-20240116; t=1733242069; c=relaxed/simple;
+	bh=Z6PIrt9cCnmiIBIzVMvw4Y05rOQmzI8BoDkwNIcLUQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fdk06mcNqi24CiZs4lwAaz8Pd7C594yVN7XjQUTJNDPw/e1cjjtpzcMKtbyv0DnrDlwH7wE//SX8wouhPDpsBtadcBu8w38aZeeNHtBNasPQqRhrCZaKQZhzcb4MaGNwoyAzrvu8z97Sc7Joyq/m2i/QyjUguTh7TvGqm4LTVWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGaDQR8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC5DC4CECF;
-	Tue,  3 Dec 2024 15:32:10 +0000 (UTC)
+	 MIME-Version; b=ZJfEhj1l/7x6uzI3NS0HnPD30jzE60+F9obsZAHL3HYPO0i4Q8S11b2xiCeGxD89wX4bGOtYOPjnN9sleF2BrzHstci3o9Rxtt1QkLyE5EnbzFfJigWUntaPXBiIQWqhT/k+FpYOYDO2lNx/AU5qA0dfQHAbUHx4U2M8nocQpZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VK5IHfqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD0FC4CECF;
+	Tue,  3 Dec 2024 16:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239931;
-	bh=LtxPBs0DiyTl0eA05M0Rqe0BCYtlB6C9NzxMYf0Qv58=;
+	s=korg; t=1733242069;
+	bh=Z6PIrt9cCnmiIBIzVMvw4Y05rOQmzI8BoDkwNIcLUQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGaDQR8PTljUcSBDz3v8s3mg+0cK7NNqiuVkz65CY0A3AmYYVoaSKrQiM+edyrAFi
-	 +erRCTgzK1Cvm8Gmqp0X+kDW/yb9Bfxxf5siAFveO2w++lPDX1u/nIqhvuSwb55AHC
-	 A4zqUImqD9CU6cuS8HE2/vMj/JpHwGKcYap7aMEU=
+	b=VK5IHfqXW4fCMru8ih7EvAqc5pYKTUWIC0KDCIwBua37ixc04IHLiLNMCJB5KF9Yd
+	 ngay5ZPPSTLTXXbbUOgTHX+EOo3KC0UYSV96XTfMZTq+erynHT8EwZ14W+aWTudVNW
+	 E4lKZnir6EpLw6Fm9x9iVI06Cdzh5YBc2SMgot4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.11 752/817] usb: dwc3: ep0: Dont clear ep0 DWC3_EP_TRANSFER_STARTED
-Date: Tue,  3 Dec 2024 15:45:24 +0100
-Message-ID: <20241203144025.350477031@linuxfoundation.org>
+	Bjorn Andersson <andersson@kernel.org>,
+	Raviteja Laggyshetty <quic_rlaggysh@quicinc.com>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 598/826] interconnect: qcom: icc-rpmh: probe defer incase of missing QoS clock dependency
+Date: Tue,  3 Dec 2024 15:45:25 +0100
+Message-ID: <20241203144807.082973135@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Raviteja Laggyshetty <quic_rlaggysh@quicinc.com>
 
-commit 5d2fb074dea289c41f5aaf2c3f68286bee370634 upstream.
+[ Upstream commit 05123e3299dd6aa02508469b303262338c2a661c ]
 
-The driver cannot issue the End Transfer command to the SETUP transfer.
-Don't clear DWC3_EP_TRANSFER_STARTED flag to make sure that the driver
-won't send Start Transfer command again, which can cause no-resource
-error. For example this can occur if the host issues a reset to the
-device.
+Return -EPROBE_DEFER from interconnect provider incase probe defer is
+received from devm_clk_bulk_get_all(). This would help in reattempting
+the inteconnect driver probe, once the required QoS clocks are
+available.
 
-Cc: stable@vger.kernel.org
-Fixes: 76cb323f80ac ("usb: dwc3: ep0: clear all EP0 flags")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/d3d618185fd614bb7426352a9fc1199641d3b5f5.1731545781.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Raviteja Laggyshetty <quic_rlaggysh@quicinc.com>
+Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
+Fixes: 0a7be6b35da8 ("interconnect: qcom: icc-rpmh: Add QoS configuration support")
+Link: https://lore.kernel.org/r/20240911094516.16901-1-quic_rlaggysh@quicinc.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/ep0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/interconnect/qcom/icc-rpmh.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -232,7 +232,7 @@ void dwc3_ep0_stall_and_restart(struct d
- 	/* stall is always issued on EP0 */
- 	dep = dwc->eps[0];
- 	__dwc3_gadget_ep_set_halt(dep, 1, false);
--	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
-+	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED | DWC3_EP_TRANSFER_STARTED;
- 	dep->flags |= DWC3_EP_ENABLED;
- 	dwc->delayed_status = false;
+diff --git a/drivers/interconnect/qcom/icc-rpmh.c b/drivers/interconnect/qcom/icc-rpmh.c
+index f49a8e0cb03c0..adacd6f7d6a8f 100644
+--- a/drivers/interconnect/qcom/icc-rpmh.c
++++ b/drivers/interconnect/qcom/icc-rpmh.c
+@@ -311,6 +311,9 @@ int qcom_icc_rpmh_probe(struct platform_device *pdev)
+ 		}
  
+ 		qp->num_clks = devm_clk_bulk_get_all(qp->dev, &qp->clks);
++		if (qp->num_clks == -EPROBE_DEFER)
++			return dev_err_probe(dev, qp->num_clks, "Failed to get QoS clocks\n");
++
+ 		if (qp->num_clks < 0 || (!qp->num_clks && desc->qos_clks_required)) {
+ 			dev_info(dev, "Skipping QoS, failed to get clk: %d\n", qp->num_clks);
+ 			goto skip_qos_config;
+-- 
+2.43.0
+
 
 
 
