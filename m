@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-97436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF139E2921
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:26:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BC89E293C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D87BBC7D0C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 287B6B880DF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC3C1FBC90;
-	Tue,  3 Dec 2024 15:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19C61F76B5;
+	Tue,  3 Dec 2024 15:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbSi0MUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYPFpeG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20091EE001;
-	Tue,  3 Dec 2024 15:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F05D1F756A;
+	Tue,  3 Dec 2024 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240503; cv=none; b=QI9e7hIpY52KS5MQeSejXL6R9rlECgdc807zQpxQjTju9/60CAffaZBUKwPzETyOmfSkgbtoYrBC79T+IQvK3J+sQvSzie8o88eO0fqz8Rz+mZ6doYlLVNpsOew6lfxAQ4iM47EsDH0b2Th/FX7b3XCPQ8B55nsCwHrU7eXdmnU=
+	t=1733238486; cv=none; b=tvzmYQPxqcbDCDQv9ZGepU98x+Jm4yfssX5fTb7EG11hf3D+7q2fqTX2p15HXH4AkSxM5FWoL6reLNDH/2mZbeAOpEWiSKfZSK3yN162SPxCQFgeXwGVMrV0M7boJH3c8OfU1aizWWxxJZtbL7P4JNGv/2EhxECRQSvGN1FA9Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240503; c=relaxed/simple;
-	bh=vSsfiB8NjEv79jM0l7BEd3zU4MMO1n/Ii84xpv19dSM=;
+	s=arc-20240116; t=1733238486; c=relaxed/simple;
+	bh=ek8tEbnJb+jepy0CyTngRKbetNPmy4FiPPfe5IFTB48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XzIu0H7D+KxMt0EQV8S+OmlkF4veCo86+iBAR72q37KZOpwxy+XAwCoujpOgsaFARcDe8lNbGhtulQP41GT9E1Yco1nOK7/TYZlcXXdXvScSfUKsO8KSllBFmLKIvViU+WkNxl1xjMTatpKjcYEZtJuLdNFuTNX4/L012W8BIOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbSi0MUn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C635C4CED6;
-	Tue,  3 Dec 2024 15:41:41 +0000 (UTC)
+	 MIME-Version; b=GX4tHgbs8Kd3g6ae6RcCsLhmKpu2tfEyEimT4d2Ww5No0gajoAs51jKmxovq2mimRLaG5cp/WSkqFExG9EOjYvpxajfFQrzJk6xIQgywv7FxQftpjoSgP+NCsptnGyyNgR8mJfIY8XHSyeHl4eP6hjInRR1clnP5gOWtAQpTcAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYPFpeG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E654C4CECF;
+	Tue,  3 Dec 2024 15:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240502;
-	bh=vSsfiB8NjEv79jM0l7BEd3zU4MMO1n/Ii84xpv19dSM=;
+	s=korg; t=1733238485;
+	bh=ek8tEbnJb+jepy0CyTngRKbetNPmy4FiPPfe5IFTB48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbSi0MUn+XQLFrkkRu8dMEidpznrwJLTRpAvXbLc2Fg9o7vYh/hTxx6ircrQYGqkX
-	 bw0CySu+89mv8Jy6Odr2xTRVHf3sWGaXBrWMeBz8smhjuOX0m5ZkI02llzHO1cDBKd
-	 +3sIobrUxbnERGe0Mgz1TNcFWIxSqXmCD3lPxuHI=
+	b=bYPFpeG0FGADzdYawvlfFHW4zhoSe8wn1bns1B1w8YqbTNQ2b++TZhsrhUqu2QiHm
+	 v8MOfaRpboZRnOZQdYccia1W0uuSKqlniqRZtSCVaUpevixk7VzlY5izPtH5pJ3R20
+	 M3pyck1XVIW3mZg0jhOdElIG21VqPcaFWlDWcvbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Alastair Robertson <ajor@meta.com>,
+	Jonathan Wiepert <jwiepert@meta.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 137/826] regulator: rk808: Restrict DVS GPIOs to the RK808 variant only
-Date: Tue,  3 Dec 2024 15:37:44 +0100
-Message-ID: <20241203144749.087393560@linuxfoundation.org>
+Subject: [PATCH 6.11 293/817] libbpf: move global data mmap()ing into bpf_object__load()
+Date: Tue,  3 Dec 2024 15:37:45 +0100
+Message-ID: <20241203144007.253827782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +64,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragan Simic <dsimic@manjaro.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 0d214f27c0e3d9694284c95bac1502c2d247355b ]
+[ Upstream commit 137978f422516a128326df55c0ba23605f925e21 ]
 
-The rk808-regulator driver supports multiple PMIC variants from the Rockckip
-RK80x and RK81x series, but the DVS GPIOs are supported on the RK808 variant
-only, according to the DT bindings [1][2][3][4][5][6] and the datasheets for
-the supported PMIC variants. [7][8][9][10][11][12]
+Since BPF skeleton inception libbpf has been doing mmap()'ing of global
+data ARRAY maps in bpf_object__load_skeleton() API, which is used by
+code generated .skel.h files (i.e., by BPF skeletons only).
 
-Thus, change the probe path so the "dvs-gpios" property is checked for and
-its value possibly used only when the handled PMIC variant is RK808.  There's
-no point in doing that on the other PMIC variants, because they don't support
-the DVS GPIOs, and it goes against the DT bindings to allow a possible out-
-of-place "dvs-gpios" property to actually be handled in the driver.
+This is wrong because if BPF object is loaded through generic
+bpf_object__load() API, global data maps won't be re-mmap()'ed after
+load step, and memory pointers returned from bpf_map__initial_value()
+would be wrong and won't reflect the actual memory shared between BPF
+program and user space.
 
-This eliminates the following messages, emitted when the "dvs-gpios" property
-isn't found in the DT, from the kernel log on boards that actually don't use
-the RK808 variant, which may have provided a source of confusion:
+bpf_map__initial_value() return result is rarely used after load, so
+this went unnoticed for a really long time, until bpftrace project
+attempted to load BPF object through generic bpf_object__load() API and
+then used BPF subskeleton instantiated from such bpf_object. It turned
+out that .data/.rodata/.bss data updates through such subskeleton was
+"blackholed", all because libbpf wouldn't re-mmap() those maps during
+bpf_object__load() phase.
 
-  rk808-regulator rk808-regulator.2.auto: there is no dvs0 gpio
-  rk808-regulator rk808-regulator.2.auto: there is no dvs1 gpio
+Long story short, this step should be done by libbpf regardless of BPF
+skeleton usage, right after BPF map is created in the kernel. This patch
+moves this functionality into bpf_object__populate_internal_map() to
+achieve this. And bpf_object__load_skeleton() is now simple and almost
+trivial, only propagating these mmap()'ed pointers into user-supplied
+skeleton structs.
 
-Furthermore, demote these kernel messages to debug messages, because they are
-useful during the board bringup phase only.  Emitting them afterwards, on the
-boards that use the RK808 variant, but actually don't use the DVS0/1 GPIOs,
-clutters the kernel log a bit, while they provide no value and may actually
-cause false impression that some PMIC-related issues are present.
+We also do trivial adjustments to error reporting inside
+bpf_object__populate_internal_map() for consistency with the rest of
+libbpf's map-handling code.
 
-[1] Documentation/devicetree/bindings/mfd/rockchip,rk805.yaml
-[2] Documentation/devicetree/bindings/mfd/rockchip,rk806.yaml
-[3] Documentation/devicetree/bindings/mfd/rockchip,rk808.yaml
-[4] Documentation/devicetree/bindings/mfd/rockchip,rk816.yaml
-[5] Documentation/devicetree/bindings/mfd/rockchip,rk817.yaml
-[6] Documentation/devicetree/bindings/mfd/rockchip,rk818.yaml
-[7] https://rockchip.fr/RK805%20datasheet%20V1.2.pdf
-[8] https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401261533_Rockchip-RK806-1_C5156483.pdf
-[9] https://rockchip.fr/RK808%20datasheet%20V1.4.pdf
-[10] https://rockchip.fr/RK816%20datasheet%20V1.3.pdf
-[11] https://rockchip.fr/RK817%20datasheet%20V1.01.pdf
-[12] https://rockchip.fr/RK818%20datasheet%20V1.0.pdf
-
-Fixes: 11375293530b ("regulator: rk808: Add regulator driver for RK818")
-Reported-by: Diederik de Haas <didi.debian@cknow.org>
-Signed-off-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://patch.msgid.link/9a415c59699e76fc7b88a2552520a4ca2538f44e.1728902488.git.dsimic@manjaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Alastair Robertson <ajor@meta.com>
+Reported-by: Jonathan Wiepert <jwiepert@meta.com>
+Fixes: d66562fba1ce ("libbpf: Add BPF object skeleton support")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20241023043908.3834423-3-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/rk808-regulator.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ tools/lib/bpf/libbpf.c | 83 ++++++++++++++++++++----------------------
+ 1 file changed, 40 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
-index 01a8d04879184..37476d2558fda 100644
---- a/drivers/regulator/rk808-regulator.c
-+++ b/drivers/regulator/rk808-regulator.c
-@@ -1853,7 +1853,7 @@ static int rk808_regulator_dt_parse_pdata(struct device *dev,
- 		}
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 12d99b9ddb7c1..f1da986ab9217 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -5094,6 +5094,7 @@ bpf_object__populate_internal_map(struct bpf_object *obj, struct bpf_map *map)
+ 	enum libbpf_map_type map_type = map->libbpf_type;
+ 	char *cp, errmsg[STRERR_BUFSIZE];
+ 	int err, zero = 0;
++	size_t mmap_sz;
  
- 		if (!pdata->dvs_gpio[i]) {
--			dev_info(dev, "there is no dvs%d gpio\n", i);
-+			dev_dbg(dev, "there is no dvs%d gpio\n", i);
- 			continue;
- 		}
- 
-@@ -1889,12 +1889,6 @@ static int rk808_regulator_probe(struct platform_device *pdev)
- 	if (!pdata)
- 		return -ENOMEM;
- 
--	ret = rk808_regulator_dt_parse_pdata(&pdev->dev, regmap, pdata);
--	if (ret < 0)
--		return ret;
--
--	platform_set_drvdata(pdev, pdata);
--
- 	switch (rk808->variant) {
- 	case RK805_ID:
- 		regulators = rk805_reg;
-@@ -1905,6 +1899,11 @@ static int rk808_regulator_probe(struct platform_device *pdev)
- 		nregulators = ARRAY_SIZE(rk806_reg);
- 		break;
- 	case RK808_ID:
-+		/* DVS0/1 GPIOs are supported on the RK808 only */
-+		ret = rk808_regulator_dt_parse_pdata(&pdev->dev, regmap, pdata);
-+		if (ret < 0)
-+			return ret;
-+
- 		regulators = rk808_reg;
- 		nregulators = RK808_NUM_REGULATORS;
- 		break;
-@@ -1930,6 +1929,8 @@ static int rk808_regulator_probe(struct platform_device *pdev)
- 		return -EINVAL;
+ 	if (obj->gen_loader) {
+ 		bpf_gen__map_update_elem(obj->gen_loader, map - obj->maps,
+@@ -5107,8 +5108,8 @@ bpf_object__populate_internal_map(struct bpf_object *obj, struct bpf_map *map)
+ 	if (err) {
+ 		err = -errno;
+ 		cp = libbpf_strerror_r(err, errmsg, sizeof(errmsg));
+-		pr_warn("Error setting initial map(%s) contents: %s\n",
+-			map->name, cp);
++		pr_warn("map '%s': failed to set initial contents: %s\n",
++			bpf_map__name(map), cp);
+ 		return err;
  	}
  
-+	platform_set_drvdata(pdev, pdata);
+@@ -5118,11 +5119,43 @@ bpf_object__populate_internal_map(struct bpf_object *obj, struct bpf_map *map)
+ 		if (err) {
+ 			err = -errno;
+ 			cp = libbpf_strerror_r(err, errmsg, sizeof(errmsg));
+-			pr_warn("Error freezing map(%s) as read-only: %s\n",
+-				map->name, cp);
++			pr_warn("map '%s': failed to freeze as read-only: %s\n",
++				bpf_map__name(map), cp);
+ 			return err;
+ 		}
+ 	}
 +
- 	config.dev = &pdev->dev;
- 	config.driver_data = pdata;
- 	config.regmap = regmap;
++	/* Remap anonymous mmap()-ed "map initialization image" as
++	 * a BPF map-backed mmap()-ed memory, but preserving the same
++	 * memory address. This will cause kernel to change process'
++	 * page table to point to a different piece of kernel memory,
++	 * but from userspace point of view memory address (and its
++	 * contents, being identical at this point) will stay the
++	 * same. This mapping will be released by bpf_object__close()
++	 * as per normal clean up procedure.
++	 */
++	mmap_sz = bpf_map_mmap_sz(map);
++	if (map->def.map_flags & BPF_F_MMAPABLE) {
++		void *mmaped;
++		int prot;
++
++		if (map->def.map_flags & BPF_F_RDONLY_PROG)
++			prot = PROT_READ;
++		else
++			prot = PROT_READ | PROT_WRITE;
++		mmaped = mmap(map->mmaped, mmap_sz, prot, MAP_SHARED | MAP_FIXED, map->fd, 0);
++		if (mmaped == MAP_FAILED) {
++			err = -errno;
++			pr_warn("map '%s': failed to re-mmap() contents: %d\n",
++				bpf_map__name(map), err);
++			return err;
++		}
++		map->mmaped = mmaped;
++	} else if (map->mmaped) {
++		munmap(map->mmaped, mmap_sz);
++		map->mmaped = NULL;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -5439,8 +5472,7 @@ bpf_object__create_maps(struct bpf_object *obj)
+ 				err = bpf_object__populate_internal_map(obj, map);
+ 				if (err < 0)
+ 					goto err_out;
+-			}
+-			if (map->def.type == BPF_MAP_TYPE_ARENA) {
++			} else if (map->def.type == BPF_MAP_TYPE_ARENA) {
+ 				map->mmaped = mmap((void *)(long)map->map_extra,
+ 						   bpf_map_mmap_sz(map), PROT_READ | PROT_WRITE,
+ 						   map->map_extra ? MAP_SHARED | MAP_FIXED : MAP_SHARED,
+@@ -13876,46 +13908,11 @@ int bpf_object__load_skeleton(struct bpf_object_skeleton *s)
+ 	for (i = 0; i < s->map_cnt; i++) {
+ 		struct bpf_map_skeleton *map_skel = (void *)s->maps + i * s->map_skel_sz;
+ 		struct bpf_map *map = *map_skel->map;
+-		size_t mmap_sz = bpf_map_mmap_sz(map);
+-		int prot, map_fd = map->fd;
+-		void **mmaped = map_skel->mmaped;
+-
+-		if (!mmaped)
+-			continue;
+-
+-		if (!(map->def.map_flags & BPF_F_MMAPABLE)) {
+-			*mmaped = NULL;
+-			continue;
+-		}
+ 
+-		if (map->def.type == BPF_MAP_TYPE_ARENA) {
+-			*mmaped = map->mmaped;
++		if (!map_skel->mmaped)
+ 			continue;
+-		}
+-
+-		if (map->def.map_flags & BPF_F_RDONLY_PROG)
+-			prot = PROT_READ;
+-		else
+-			prot = PROT_READ | PROT_WRITE;
+ 
+-		/* Remap anonymous mmap()-ed "map initialization image" as
+-		 * a BPF map-backed mmap()-ed memory, but preserving the same
+-		 * memory address. This will cause kernel to change process'
+-		 * page table to point to a different piece of kernel memory,
+-		 * but from userspace point of view memory address (and its
+-		 * contents, being identical at this point) will stay the
+-		 * same. This mapping will be released by bpf_object__close()
+-		 * as per normal clean up procedure, so we don't need to worry
+-		 * about it from skeleton's clean up perspective.
+-		 */
+-		*mmaped = mmap(map->mmaped, mmap_sz, prot, MAP_SHARED | MAP_FIXED, map_fd, 0);
+-		if (*mmaped == MAP_FAILED) {
+-			err = -errno;
+-			*mmaped = NULL;
+-			pr_warn("failed to re-mmap() map '%s': %d\n",
+-				 bpf_map__name(map), err);
+-			return libbpf_err(err);
+-		}
++		*map_skel->mmaped = map->mmaped;
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
