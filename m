@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-97941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C02D9E2AB4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB799E29A8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C74B7B37981
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A397CB631EF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5D21F76DD;
-	Tue,  3 Dec 2024 16:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5C21F8905;
+	Tue,  3 Dec 2024 16:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgMfTt/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2lC0hdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2E91F7561;
-	Tue,  3 Dec 2024 16:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9B51F76DB;
+	Tue,  3 Dec 2024 16:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242255; cv=none; b=qMBGcvNXhSKnXEBgcgeQal+PG0glqkWvlx22AidrHHj5bjHm6aLTIfXMUC6E2u0wtcc8z04d46headNc0y5Q6bb1OUxKLTsiacKsGmSqiPIpVunNynY/zoe9xD2foTH+945pEAa4gDMLNE3FWGKUnjih+mrcf5IGrSVqgAjoLCc=
+	t=1733242149; cv=none; b=my0UzxVS6c18oG2mEuKwxCso7LE1EGtlWjDDaaDmhJ6dlQf2TN+Tr9+kH1+M/9pP6zC/ZG9ZN5DrVv9vz+0bGJ0Gx4w9oa3nb6Q+HNiXjPPNyaJETSKpRty3Wc4HppaxfhJc+/4B4v1N0SoMse8lP0nEdoe/Pchhuk+9fuuGedM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242255; c=relaxed/simple;
-	bh=VerR/C2MOWG1r8CPrdZEQdLNt2BhfUxd3yNgTEyjZkQ=;
+	s=arc-20240116; t=1733242149; c=relaxed/simple;
+	bh=aycgpjbKgoHQ5qLrlQR3M4/0lGkJGKEFk8UkXZv04JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrVKxuEOCIq8ZBH4wFcFDBus27vxHxL0M0xV1HPxPZqFIptUwKc7zS4GpjcEt9JleEgthldVKQOQaosjkF0X6fkVGiL8BnDS7NbBCzK10UqKpl63sg7VulM+cCmPuse1jP/am0e7z8cooMY7qpP2tXdMhAoAfHJ3t962DX0Js3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgMfTt/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F68CC4CECF;
-	Tue,  3 Dec 2024 16:10:54 +0000 (UTC)
+	 MIME-Version; b=p/F3VFB6lCpffuQMBTTgLU5kSY8ChYHXS8c9gcB+UxIvb2MJt2CuPMzuc2X7SKhowPjonZmpyhtFnDtTPoXGnni1IoEsm0HIIu3DLm3IVcyVm32QE07x/cI2/LRz+413S0SiOUx0jhS1k6fFXZvb5rjBLY3pCLgGC5as8V23YXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2lC0hdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB0CC4CED6;
+	Tue,  3 Dec 2024 16:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242255;
-	bh=VerR/C2MOWG1r8CPrdZEQdLNt2BhfUxd3yNgTEyjZkQ=;
+	s=korg; t=1733242149;
+	bh=aycgpjbKgoHQ5qLrlQR3M4/0lGkJGKEFk8UkXZv04JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OgMfTt/D0NwtItNhaSkxN5lic+87esYOz3EJhEg+huXMTYCLxo4hI4zJ/OOB5yXrP
-	 O9fMUsNBDYK+cxhbbJbbRRGDU40RlqgTHpV2GFQLWH8KolsquHlFHtSjH3354XfA5G
-	 Gifa/2xYF7DHnn6oAU/pjWMZch6m+b4LrgcvVGls=
+	b=A2lC0hdJug5PvmuUPlgNOsyvD54K9gMLbfbwvJGPS4qWMGr3QyJCAgylqxgYw2arc
+	 usFC5mpoJmesa8tzHQfkgUgrCRYfCCpgnCJLqWrPQXWhsK+JGi5Jd4+qzJKEnsMwyF
+	 xI7FxH2EUagAYov+vv6xWRCCMwnmx84FU1eRN//A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 621/826] s390/pci: Fix potential double remove of hotplug slot
-Date: Tue,  3 Dec 2024 15:45:48 +0100
-Message-ID: <20241203144807.976366989@linuxfoundation.org>
+	Xiuhong Wang <xiuhong.wang@unisoc.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Daniel Rosenberg <drosen@google.com>
+Subject: [PATCH 6.12 622/826] f2fs: fix fiemap failure issue when page size is 16KB
+Date: Tue,  3 Dec 2024 15:45:49 +0100
+Message-ID: <20241203144808.016638627@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,95 +68,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Xiuhong Wang <xiuhong.wang@unisoc.com>
 
-[ Upstream commit c4a585e952ca403a370586d3f16e8331a7564901 ]
+commit a7a7c1d423a6351a6541e95c797da5358e5ad1ea upstream.
 
-In commit 6ee600bfbe0f ("s390/pci: remove hotplug slot when releasing the
-device") the zpci_exit_slot() was moved from zpci_device_reserved() to
-zpci_release_device() with the intention of keeping the hotplug slot
-around until the device is actually removed.
+After enable 16K page size, an infinite loop may occur in
+fiemap (fm_length=UINT64_MAX) on a file, such as the 16KB
+scratch.img during the remount operation in Android.
 
-Now zpci_release_device() is only called once all references are
-dropped. Since the zPCI subsystem only drops its reference once the
-device is in the reserved state it follows that zpci_release_device()
-must only deal with devices in the reserved state. Despite that it
-contains code to tear down from both configured and standby state. For
-the standby case this already includes the removal of the hotplug slot
-so would cause a double removal if a device was ever removed in
-either configured or standby state.
+The condition for whether fiemap continues to map is to check
+whether the number of bytes corresponding to the next map.m_lblk
+exceeds blks_to_bytes(inode,max_inode_blocks(inode)) if there are HOLE.
+The latter does not take into account the maximum size of a file with 16KB
+page size, so the loop cannot be jumped out.
 
-Instead of causing a potential double removal in a case that should
-never happen explicitly WARN_ON() if a device in non-reserved state is
-released and get rid of the dead code cases.
+The following is the fail trace:
+When f2fs_map_blocks reaches map.m_lblk=3936, it needs to go to the
+first direct node block, so the map is 3936 + 4090 = 8026,
+The next map is the second direct node block, that is,
+8026 + 4090 = 12116,
+The next map is the first indirect node block, that is,
+12116 + 4090 * 4090 = 16740216,
+The next map is the second indirect node block, that is,
+16740216 + 4090 * 4090 = 33468316,
+The next map is the first double indirect node block, that is,
+33468316 + 4090 * 4090 * 4090 = 68451397316
+Since map.m_lblk represents the address of a block, which is 32
+bits, truncation will occur, that is, 68451397316 becomes
+4026887876, and the number of bytes corresponding to the block
+number does not exceed blks_to_bytes(inode,max_inode_blocks(inode)),
+so the loop will not be jumped out.
+The next time, it will be considered that it should still be a
+double indirect node block, that is,
+4026887876 + 4090 * 4090 * 4090 = 72444816876, which will be
+truncated to 3725340140, and the loop will not be jumped out.
 
-Fixes: 6ee600bfbe0f ("s390/pci: remove hotplug slot when releasing the device")
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Tested-by: Gerd Bayer <gbayer@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+156.374871: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 0, start blkaddr = 0x8e00, len = 0x200, flags = 2,seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.374916: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 512, start blkaddr = 0x0, len = 0x0, flags = 0 , seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.374920: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 513, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+......
+156.385747: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3935, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385752: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3936, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385755: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 8026, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385758: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 12116, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385761: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 16740216, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385764: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 33468316, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385767: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 4026887876, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385770: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3725340140, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385772: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 4026887876, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385775: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3725340140, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+
+Commit a6a010f5def5 ("f2fs: Restrict max filesize for 16K f2fs")
+has set the maximum allowed file size to (U32_MAX + 1) * F2FS_BLKSIZE,
+so max_file_blocks should be used here to limit it, that is,
+maxbytes defined above. And the max_inode_blocks function is not
+called by other functions except here, so cleanup it.
+
+Signed-off-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Daniel Rosenberg <drosen@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci.c | 34 +++++++++-------------------------
- 1 file changed, 9 insertions(+), 25 deletions(-)
+ fs/f2fs/data.c |   22 +---------------------
+ 1 file changed, 1 insertion(+), 21 deletions(-)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index be3299609f9b6..635fd8f2acbaa 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -917,10 +917,8 @@ void zpci_device_reserved(struct zpci_dev *zdev)
- void zpci_release_device(struct kref *kref)
- {
- 	struct zpci_dev *zdev = container_of(kref, struct zpci_dev, kref);
--	int ret;
- 
--	if (zdev->has_hp_slot)
--		zpci_exit_slot(zdev);
-+	WARN_ON(zdev->state != ZPCI_FN_STATE_RESERVED);
- 
- 	if (zdev->zbus->bus)
- 		zpci_bus_remove_device(zdev, false);
-@@ -928,28 +926,14 @@ void zpci_release_device(struct kref *kref)
- 	if (zdev_enabled(zdev))
- 		zpci_disable_device(zdev);
- 
--	switch (zdev->state) {
--	case ZPCI_FN_STATE_CONFIGURED:
--		ret = sclp_pci_deconfigure(zdev->fid);
--		zpci_dbg(3, "deconf fid:%x, rc:%d\n", zdev->fid, ret);
--		fallthrough;
--	case ZPCI_FN_STATE_STANDBY:
--		if (zdev->has_hp_slot)
--			zpci_exit_slot(zdev);
--		spin_lock(&zpci_list_lock);
--		list_del(&zdev->entry);
--		spin_unlock(&zpci_list_lock);
--		zpci_dbg(3, "rsv fid:%x\n", zdev->fid);
--		fallthrough;
--	case ZPCI_FN_STATE_RESERVED:
--		if (zdev->has_resources)
--			zpci_cleanup_bus_resources(zdev);
--		zpci_bus_device_unregister(zdev);
--		zpci_destroy_iommu(zdev);
--		fallthrough;
--	default:
--		break;
--	}
-+	if (zdev->has_hp_slot)
-+		zpci_exit_slot(zdev);
-+
-+	if (zdev->has_resources)
-+		zpci_cleanup_bus_resources(zdev);
-+
-+	zpci_bus_device_unregister(zdev);
-+	zpci_destroy_iommu(zdev);
- 	zpci_dbg(3, "rem fid:%x\n", zdev->fid);
- 	kfree_rcu(zdev, rcu);
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1902,25 +1902,6 @@ static int f2fs_xattr_fiemap(struct inod
+ 	return (err < 0 ? err : 0);
  }
--- 
-2.43.0
-
+ 
+-static loff_t max_inode_blocks(struct inode *inode)
+-{
+-	loff_t result = ADDRS_PER_INODE(inode);
+-	loff_t leaf_count = ADDRS_PER_BLOCK(inode);
+-
+-	/* two direct node blocks */
+-	result += (leaf_count * 2);
+-
+-	/* two indirect node blocks */
+-	leaf_count *= NIDS_PER_BLOCK;
+-	result += (leaf_count * 2);
+-
+-	/* one double indirect node block */
+-	leaf_count *= NIDS_PER_BLOCK;
+-	result += leaf_count;
+-
+-	return result;
+-}
+-
+ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		u64 start, u64 len)
+ {
+@@ -1993,8 +1974,7 @@ next:
+ 	if (!compr_cluster && !(map.m_flags & F2FS_MAP_FLAGS)) {
+ 		start_blk = next_pgofs;
+ 
+-		if (blks_to_bytes(inode, start_blk) < blks_to_bytes(inode,
+-						max_inode_blocks(inode)))
++		if (blks_to_bytes(inode, start_blk) < maxbytes)
+ 			goto prep_next;
+ 
+ 		flags |= FIEMAP_EXTENT_LAST;
 
 
 
