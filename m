@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-98115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028329E2964
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:35:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BAB9E2A27
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FF7AB2EA05
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C371B81877
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05D41F890F;
-	Tue,  3 Dec 2024 16:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B43C1AB6C9;
+	Tue,  3 Dec 2024 16:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtcwpBKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znMg5QCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDBA1AB6C9;
-	Tue,  3 Dec 2024 16:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485391F7567;
+	Tue,  3 Dec 2024 16:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242840; cv=none; b=fwovqzDtqoHEYn0W+aXZ+tmS1HkViLeEFpqObZLMBr0w4JPwtKuk567vZmXWXTqdfeKhhbDDYX6h505pkpXCRZemSOOS+N7o1iCjnlbbyn5b4U6CPinqzy03yb6T2nzqGRsZUu1MkzVBN89q5hXed8WhBhOT99Ymtq6yPk8OCPw=
+	t=1733242766; cv=none; b=CZxKrnhfbzLqnzwtSopxhpbXxTRM2jULRH3lLKsmRPbh6OofKqe02WsfyN6OX8PuKjE/4CmSjx7OLPSDKQ5V24AjgOZZdYnfaP47E3fXF2Jh6uRGWGCTTrlPYCzyJ2B3qhS/EYfvM4BFROzNSUjP8+gIKn4CTW+Yr2MBGjUMHl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242840; c=relaxed/simple;
-	bh=BI1D2HT1QgK1ufqc4VBLVxJXXGB1W3IVd6/WxsaZ4ZQ=;
+	s=arc-20240116; t=1733242766; c=relaxed/simple;
+	bh=mMFxzAZGKf87+0aALFVT1HkprTBzGZqJhKEzR57gH6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q9ELX9nMomLDESgoCnxN4Y+MRNJuj9aDvHHPZtexovhXo9mrSkbRvqPJmXhnRAv9hnx/Teu9rqtlhiUzxEwzRF0f3pSBrvhcR7UPNmgtqe89CUE7M6LXhG9Q+NNL7WFirHiFbiYco3KTz2sTOxsoDppwgtW32JpAK64Lf5SrZF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtcwpBKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1978C4CECF;
-	Tue,  3 Dec 2024 16:20:39 +0000 (UTC)
+	 MIME-Version; b=D++L1TZk10Hszsk2TpwMUD5n0F2W0qk+buROGXuKvrbK5TxGMTv/5zFlvOco5WIvURvvRGZ4AaJE5PRx2Onp8ZlsJAssbCTITBB0SQyDMSP28+UXySD5i6g07hsBOvlyzsbUwk4FpoMkT1k7cYd7FoBE2UBRK+bAF2EZoHW6PY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znMg5QCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACED2C4CECF;
+	Tue,  3 Dec 2024 16:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242840;
-	bh=BI1D2HT1QgK1ufqc4VBLVxJXXGB1W3IVd6/WxsaZ4ZQ=;
+	s=korg; t=1733242766;
+	bh=mMFxzAZGKf87+0aALFVT1HkprTBzGZqJhKEzR57gH6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtcwpBKy8tXoj9BSZoq/hMemOpVUwZSM56lX3r/6adwGXjQXDiBIGM/TSgoeejS+A
-	 o8CbV7JliNTvs0pNiVodxb5UAk45eKB2v0Sm+4zO3jCPjuDbDRNvyj4gyuWSkO2WTg
-	 M8LYOWUwifOdvr4jGw4Xz/VYpwaDfjV28CGO1VXQ=
+	b=znMg5QCWd6ueGoPjAOekApQ2wEjYEHNQ6Ld1YROiUy83cCYF3bkcdg7xmqPgAeQMz
+	 ag56pEDxlN5DepfjEGPEDrS2/13MLS2efzjL7K094gUnhxbi7ZWdogqFEofHz6tyRr
+	 i74z6AxCTsvfCTdVam7ooxAArklnrgEg81BM2xGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Qingfang Deng <qingfang.deng@siflower.com.cn>,
 	Zhihao Cheng <chengzhihao1@huawei.com>,
 	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 784/826] ubi: fastmap: Fix duplicate slab cache names while attaching
-Date: Tue,  3 Dec 2024 15:48:31 +0100
-Message-ID: <20241203144814.344900947@linuxfoundation.org>
+Subject: [PATCH 6.12 786/826] jffs2: fix use of uninitialized variable
+Date: Tue,  3 Dec 2024 15:48:33 +0100
+Message-ID: <20241203144814.421146924@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,102 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Qingfang Deng <qingfang.deng@siflower.com.cn>
 
-[ Upstream commit bcddf52b7a17adcebc768d26f4e27cf79adb424c ]
+[ Upstream commit 3ba44ee966bc3c41dd8a944f963466c8fcc60dc8 ]
 
-Since commit 4c39529663b9 ("slab: Warn on duplicate cache names when
-DEBUG_VM=y"), the duplicate slab cache names can be detected and a
-kernel WARNING is thrown out.
-In UBI fast attaching process, alloc_ai() could be invoked twice
-with the same slab cache name 'ubi_aeb_slab_cache', which will trigger
-following warning messages:
- kmem_cache of name 'ubi_aeb_slab_cache' already exists
- WARNING: CPU: 0 PID: 7519 at mm/slab_common.c:107
-          __kmem_cache_create_args+0x100/0x5f0
- Modules linked in: ubi(+) nandsim [last unloaded: nandsim]
- CPU: 0 UID: 0 PID: 7519 Comm: modprobe Tainted: G 6.12.0-rc2
- RIP: 0010:__kmem_cache_create_args+0x100/0x5f0
- Call Trace:
-   __kmem_cache_create_args+0x100/0x5f0
-   alloc_ai+0x295/0x3f0 [ubi]
-   ubi_attach+0x3c3/0xcc0 [ubi]
-   ubi_attach_mtd_dev+0x17cf/0x3fa0 [ubi]
-   ubi_init+0x3fb/0x800 [ubi]
-   do_init_module+0x265/0x7d0
-   __x64_sys_finit_module+0x7a/0xc0
+When building the kernel with -Wmaybe-uninitialized, the compiler
+reports this warning:
 
-The problem could be easily reproduced by loading UBI device by fastmap
-with CONFIG_DEBUG_VM=y.
-Fix it by using different slab names for alloc_ai() callers.
+In function 'jffs2_mark_erased_block',
+    inlined from 'jffs2_erase_pending_blocks' at fs/jffs2/erase.c:116:4:
+fs/jffs2/erase.c:474:9: warning: 'bad_offset' may be used uninitialized [-Wmaybe-uninitialized]
+  474 |         jffs2_erase_failed(c, jeb, bad_offset);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fs/jffs2/erase.c: In function 'jffs2_erase_pending_blocks':
+fs/jffs2/erase.c:402:18: note: 'bad_offset' was declared here
+  402 |         uint32_t bad_offset;
+      |                  ^~~~~~~~~~
 
-Fixes: d2158f69a7d4 ("UBI: Remove alloc_ai() slab name from parameter list")
-Fixes: fdf10ed710c0 ("ubi: Rework Fastmap attach base code")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+When mtd->point() is used, jffs2_erase_pending_blocks can return -EIO
+without initializing bad_offset, which is later used at the filebad
+label in jffs2_mark_erased_block.
+Fix it by initializing this variable.
+
+Fixes: 8a0f572397ca ("[JFFS2] Return values of jffs2_block_check_erase error paths")
+Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/ubi/attach.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/jffs2/erase.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mtd/ubi/attach.c b/drivers/mtd/ubi/attach.c
-index ae5abe492b52a..adc47b87b38a5 100644
---- a/drivers/mtd/ubi/attach.c
-+++ b/drivers/mtd/ubi/attach.c
-@@ -1447,7 +1447,7 @@ static int scan_all(struct ubi_device *ubi, struct ubi_attach_info *ai,
- 	return err;
- }
- 
--static struct ubi_attach_info *alloc_ai(void)
-+static struct ubi_attach_info *alloc_ai(const char *slab_name)
- {
- 	struct ubi_attach_info *ai;
- 
-@@ -1461,7 +1461,7 @@ static struct ubi_attach_info *alloc_ai(void)
- 	INIT_LIST_HEAD(&ai->alien);
- 	INIT_LIST_HEAD(&ai->fastmap);
- 	ai->volumes = RB_ROOT;
--	ai->aeb_slab_cache = kmem_cache_create("ubi_aeb_slab_cache",
-+	ai->aeb_slab_cache = kmem_cache_create(slab_name,
- 					       sizeof(struct ubi_ainf_peb),
- 					       0, 0, NULL);
- 	if (!ai->aeb_slab_cache) {
-@@ -1491,7 +1491,7 @@ static int scan_fast(struct ubi_device *ubi, struct ubi_attach_info **ai)
- 
- 	err = -ENOMEM;
- 
--	scan_ai = alloc_ai();
-+	scan_ai = alloc_ai("ubi_aeb_slab_cache_fastmap");
- 	if (!scan_ai)
- 		goto out;
- 
-@@ -1557,7 +1557,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
- 	int err;
- 	struct ubi_attach_info *ai;
- 
--	ai = alloc_ai();
-+	ai = alloc_ai("ubi_aeb_slab_cache");
- 	if (!ai)
- 		return -ENOMEM;
- 
-@@ -1575,7 +1575,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
- 		if (err > 0 || mtd_is_eccerr(err)) {
- 			if (err != UBI_NO_FASTMAP) {
- 				destroy_ai(ai);
--				ai = alloc_ai();
-+				ai = alloc_ai("ubi_aeb_slab_cache");
- 				if (!ai)
- 					return -ENOMEM;
- 
-@@ -1614,7 +1614,7 @@ int ubi_attach(struct ubi_device *ubi, int force_scan)
- 	if (ubi->fm && ubi_dbg_chk_fastmap(ubi)) {
- 		struct ubi_attach_info *scan_ai;
- 
--		scan_ai = alloc_ai();
-+		scan_ai = alloc_ai("ubi_aeb_slab_cache_dbg_chk_fastmap");
- 		if (!scan_ai) {
- 			err = -ENOMEM;
- 			goto out_wl;
+diff --git a/fs/jffs2/erase.c b/fs/jffs2/erase.c
+index acd32f05b5198..ef3a1e1b6cb06 100644
+--- a/fs/jffs2/erase.c
++++ b/fs/jffs2/erase.c
+@@ -338,10 +338,9 @@ static int jffs2_block_check_erase(struct jffs2_sb_info *c, struct jffs2_erasebl
+ 		} while(--retlen);
+ 		mtd_unpoint(c->mtd, jeb->offset, c->sector_size);
+ 		if (retlen) {
+-			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08tx\n",
+-				*wordebuf,
+-				jeb->offset +
+-				c->sector_size-retlen * sizeof(*wordebuf));
++			*bad_offset = jeb->offset + c->sector_size - retlen * sizeof(*wordebuf);
++			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08x\n",
++				*wordebuf, *bad_offset);
+ 			return -EIO;
+ 		}
+ 		return 0;
 -- 
 2.43.0
 
