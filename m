@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1FC9E27F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:45:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A19CF9E228B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5183CB307EE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 679CE285F8D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9626C1F76C6;
-	Tue,  3 Dec 2024 15:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB431F7585;
+	Tue,  3 Dec 2024 15:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yr1/pNpA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwQdcC1v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533631F75A5;
-	Tue,  3 Dec 2024 15:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBCE1F757D;
+	Tue,  3 Dec 2024 15:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241582; cv=none; b=mc9zUMcaudCdNsJa6RKZsKAFNTyAf4CmoID7AFg7kbaXpEK8BNUs2BU1B6QzvvB+Diagau9ZM/rbMT+b71rOR+VDH12sk4ePLN2mQtm7KkIE0C2+F5bTfY3SSAurEViehFca9kINw1G26wmLq2oi18e8fLghSCSBzoGD/mFjB30=
+	t=1733239530; cv=none; b=EQqvKaWAWoc3EcHGJafZFfFIxBm/Ww8w2tbmamFduWF2dJ66VRHSHA2mcP/PBwRsStr+rFOSbxWl56cG/guXHBTyKX45wGXPit4rEO8z5yW42ISvKSRiHqFWZ6Eo44kanfg3kdqv/DEQmuJSdr5XIZc0zGK00cjWxpUKchNbWbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241582; c=relaxed/simple;
-	bh=81TGApmyNmKVeF3658GjUJulMUhJB3BEbiJnbfOIlLg=;
+	s=arc-20240116; t=1733239530; c=relaxed/simple;
+	bh=tf6OoA5Km87pwR/SGca1DeqmzT7Oit/qui5I//Cno00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p4vxDEeatgxMaYeu9EFCeHCKWwwiR+EzBHkPdsN/JAb9THy65kwauVTB9/uQ6bAv3wpYNshIJIDLaXEEpgCV/m5V6EhugkM2nATql9V5BwTHrgr7KykYLWxqDS/Yx6s5fWWIFJLsU3Q/vRDGAIA+yllb2Ru7QGv7Qq+3rpXyNkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yr1/pNpA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5252C4CECF;
-	Tue,  3 Dec 2024 15:59:41 +0000 (UTC)
+	 MIME-Version; b=gFR5nsDXvKgLVugfEwBT+XQZhmz5M7FV7ycT3AaqU2bDLk1NFsPpiwXc0UTaRYlAUY+7phWeQTdqxkkPflLSVcVzmwmxSuJtpVy2j5NKZmOmyEm0Mhn9EleGwHDUuEyjeqXvKlCrb35t7ZpCpi1KiQ42NpFG8JoINZU24gTk2cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwQdcC1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E435AC4CECF;
+	Tue,  3 Dec 2024 15:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241582;
-	bh=81TGApmyNmKVeF3658GjUJulMUhJB3BEbiJnbfOIlLg=;
+	s=korg; t=1733239530;
+	bh=tf6OoA5Km87pwR/SGca1DeqmzT7Oit/qui5I//Cno00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yr1/pNpAiWlMIdAaKHTLT+nJwGOC3eZVObMaZu8gNxdZzGdF90Uf90vpEKoED5U1G
-	 uZQbEDi+CW9v/PIP5el/LjE7UH6z/wy8r/412khCbNf26oNFe8CAJmI+a1OnxkTA7o
-	 y9tkjTEzx1O/3Qdktu44jSdPx+dZcoMzJPc3Wyb0=
+	b=pwQdcC1vJMdwKE1N6tS5IhAn71FGhr12lyUnViwwY8VDgVSSwo39nlSK8FYFEwzwp
+	 W9og7qvLVHbO+F56RtyioL+FtUDrUkrnwjMAaWvtYdtztjJftGu4fL66kRMc61YjaH
+	 up9Co930Igb9jfZb4w0VvBZ9wxsFBMn/sSE6/gok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Wu Hoi Pok <wuhoipok@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 459/826] arm64: dts: qcom: sc8180x: Add a SoC-specific compatible to cpufreq-hw
+Subject: [PATCH 6.11 614/817] drm/radeon: add helper rdev_to_drm(rdev)
 Date: Tue,  3 Dec 2024 15:43:06 +0100
-Message-ID: <20241203144801.661375765@linuxfoundation.org>
+Message-ID: <20241203144019.900184194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Wu Hoi Pok <wuhoipok@gmail.com>
 
-[ Upstream commit 5df30684415d5a902f23862ab5bbed2a2df7fbf1 ]
+[ Upstream commit a6e23bec8ed184ed2a11080b28cdbd7a3024f0c0 ]
 
-Comply with bindings guidelines and get rid of errors such as:
+Add helper rdev_to_drm(rdev), similar to amdgpu, most function should
+access the "drm_device" with "rdev_to_drm(rdev)" instead, where amdgpu has
+"adev_to_drm(adev)". It also makes changing from "*drm_device" to "drm_device"
+in "radeon_devicce" later on easier.
 
-cpufreq@18323000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['qcom,cpufreq-hw'] is too short
-
-Fixes: 8575f197b077 ("arm64: dts: qcom: Introduce the SC8180x platform")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Tested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Wu Hoi Pok <wuhoipok@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 7037bb04265e ("drm/radeon: Fix spurious unplug event on radeon HDMI")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/radeon.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index 0e9429684dd97..60f71b4902615 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -3889,7 +3889,7 @@ lmh@18358800 {
- 		};
+diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
+index 0999c8eaae94a..ae35c102a487e 100644
+--- a/drivers/gpu/drm/radeon/radeon.h
++++ b/drivers/gpu/drm/radeon/radeon.h
+@@ -2476,6 +2476,11 @@ void r100_io_wreg(struct radeon_device *rdev, u32 reg, u32 v);
+ u32 cik_mm_rdoorbell(struct radeon_device *rdev, u32 index);
+ void cik_mm_wdoorbell(struct radeon_device *rdev, u32 index, u32 v);
  
- 		cpufreq_hw: cpufreq@18323000 {
--			compatible = "qcom,cpufreq-hw";
-+			compatible = "qcom,sc8180x-cpufreq-hw", "qcom,cpufreq-hw";
- 			reg = <0 0x18323000 0 0x1400>, <0 0x18325800 0 0x1400>;
- 			reg-names = "freq-domain0", "freq-domain1";
- 
++static inline struct drm_device *rdev_to_drm(struct radeon_device *rdev)
++{
++	return rdev->ddev;
++}
++
+ /*
+  * Cast helper
+  */
 -- 
 2.43.0
 
