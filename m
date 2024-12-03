@@ -1,115 +1,179 @@
-Return-Path: <stable+bounces-96302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7C999E1E1B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:47:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6179E1DAF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24D35B621C6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:49:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DAABB62FD9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB531F12ED;
-	Tue,  3 Dec 2024 12:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1411EC012;
+	Tue,  3 Dec 2024 12:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NtYb1fxE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k5EhhMPn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E661EBFFD;
-	Tue,  3 Dec 2024 12:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9304C13B2A8;
+	Tue,  3 Dec 2024 12:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733230090; cv=none; b=kllPGhv+VGIhflyide3WNmv2wasYqjI7AYRHz/Y8h2OPUHncgQ44ydqM47lr2wG2diNKRYhoGI8MQS9XX760q/Y/fMQfARSX6JZ98Rd0WpquxFEM5MPN5eRlvk6ZPGQNfpeD8z6Em/IOyiZQ0HhX3qz52oCRplBQ0JvgFlGBk1g=
+	t=1733230141; cv=none; b=oDcVjzaVsuL25WUXAO5oJhHbJnU+hMlS8YRWCcMfREkIE+0U5V5/0sYegGCwDQywmH2oCpGiESAxTOFO0hlZuRCyseqHJJJKygxtD5w7Z8uEQGcay5ziWkBOqqW1MtU9NNfTbC+1iHFweg8IwLHg0oR+E1+3Tz8gmAJtI2Q1ym8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733230090; c=relaxed/simple;
-	bh=LpOVQoMlpE/E8rUSHH5zwrqMIfcMHJ5yw+nwZF82uAs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LSOFRuVlfgQEOdfr/ruQZJcL2EkRGJf67m8O1UbaqQY9oCwy/dPy45psUnbDGcmrC8gGgt8bvdWDBXeaAaFaF2KsBXR4dknRJ0DMl3ZNNorEOs6XSYPBfL5jIrTNrrK2ih8BJDr/dx/Efp6dkG1GeQDqZF/IJzqrjJugHr90448=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NtYb1fxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACCCC4CED8;
-	Tue,  3 Dec 2024 12:48:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733230090;
-	bh=LpOVQoMlpE/E8rUSHH5zwrqMIfcMHJ5yw+nwZF82uAs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=NtYb1fxEkI2ZLYOEInRO4JT0N1O6Cp77u2HFOwEHVSmNmbf2mmBLUjqLFy5Muk8ls
-	 tNHX8UfGBS94tO5oQ6EBOqpHVic4wyRcZzBAGWRGaOGpA/vZR5IIWJQBIMREXyMRZw
-	 mS9c9iHlerOja+AAN72vQqTvDefMaHLfWQrRRL0TuN90LxRZXVQ9gzqM4fi2bGmjzo
-	 C8zJ+vR80iUumIGgA5JzJ7JDigny3VQEwpyYCsEBj/ULGyNMTwXHi3x/kRWP3cLMM/
-	 yK5BcRvwa6m/QbqpPjDA2DYQWy7xo/rfhkJ77rHu2whIUKlJyb32sI53o09uMIieiF
-	 eqDc1Vg8U5BJg==
-From: Mark Brown <broonie@kernel.org>
-Date: Tue, 03 Dec 2024 12:45:53 +0000
-Subject: [PATCH 1/6] arm64/sme: Flush foreign register state in
- do_sme_acc()
+	s=arc-20240116; t=1733230141; c=relaxed/simple;
+	bh=x79f+c+3iq1bx+rKcEWlbRI4VgwvmHa5W+XtZ2zIDvg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KRRtRaCN1Z68vDYeQFxBZs4jc8CKTaUP5AI+PL2MvqapqrTJSnEVS4rx/iJiWX3d+G3qylPAiXSgz9oJpTwUbd/ZrrWGtC4Nd3QACcA3CZarPRzzRDf+oqAQvZd+apypWRK3gOzsss8SM4HGLSo2Qu87MbI/LtgZjcASFNvCZ10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k5EhhMPn; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733230140; x=1764766140;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=x79f+c+3iq1bx+rKcEWlbRI4VgwvmHa5W+XtZ2zIDvg=;
+  b=k5EhhMPnp8qXSw/WPEEuPzNMFzUAgCF5hWkXlhCp2c3cKgFwkGzOOIFE
+   /PrEBYyvmG2RHja7rXvZFj0c0ry7BwTOyfyq2x1jxu6byDF8LD7VNHatT
+   leBVP9MNZwZXRNDGOcm7h5K8Ei4nIXdtROiNHB1/gjYf6r3mCfjiwinn9
+   OwgT/hfoGYIKImjJ82pbnNUUi9DjrSM45btBD9hxqRRigBZ6p2FvPVOpb
+   ivU3tq7iw/Jt+U3Csfvb4KXVDRu+8zaw8ASnvF52JcsI2I2ljQb4oBvkr
+   DdS4QwRqTw1a45X6IZq7s/ofRIzgB1aw7DBWZqWy7oYLg+HRqRUhGtB65
+   w==;
+X-CSE-ConnectionGUID: 6nnHXxdOS7er+h/pK7v+Ig==
+X-CSE-MsgGUID: LhBoEKyNQsW+b08YCsrwNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="55925899"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="55925899"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 04:48:59 -0800
+X-CSE-ConnectionGUID: z31j7FK4QoeBt1aP3Lfg7A==
+X-CSE-MsgGUID: qO8nMRooRdK84etLT1ahoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="93313995"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by orviesa010.jf.intel.com with SMTP; 03 Dec 2024 04:48:56 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 03 Dec 2024 14:48:55 +0200
+Date: Tue, 3 Dec 2024 14:48:54 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: =?utf-8?Q?=C5=81ukasz?= Bartosik <ukaszb@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Benson Leung <bleung@chromium.org>,
+	Jameson Thies <jthies@google.com>, linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: typec: ucsi: Fix completion notifications
+Message-ID: <Z07-NoXOTO0yJNKk@kuha.fi.intel.com>
+References: <20241203102318.3386345-1-ukaszb@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-arm64-sme-reenable-v1-1-d853479d1b77@kernel.org>
-References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
-In-Reply-To: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-9b746
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1524; i=broonie@kernel.org;
- h=from:subject:message-id; bh=LpOVQoMlpE/E8rUSHH5zwrqMIfcMHJ5yw+nwZF82uAs=;
- b=owGbwMvMwMWocq27KDak/QLjabUkhnS/fwxZFimK2tZr1lq9W90o8CI4fq/Sy1JJxgCOwmCpNZxB
- sv2djMYsDIxcDLJiiixrn2WsSg+X2Dr/0fxXMINYmUCmMHBxCsBE3vqz/9OzNm9XOHpxwU7GkkX7Wu
- 5sfHg6nbPpFfv2KXbJHOlHD36KPvRVi3nZzmsXpPz8TwtMn2rhv7XCyuXbmqqlvKunlnyc82Nf0skM
- YbtK48Atu47Paw5s6rjn0xHkJNNgdvJfCHP+TV1Z90l7C3/IvbEK2bnKjDH6u2ecUl/ocaF+ra21Bb
- YGtl9kn1xj5VbsU2yTeOK/xf77moPBv8xkvxzlcemVubFttVXYvdd/bVujl4rPfZFuVV5SxHbSV7mb
- t6rO3tkgNe6n5uSfj39G7Yxmar6g/7/OMHWJmFMgU/eUDxPXf0qb8ttUsbb8jfSfhBw7kTRR8ZKHc7
- tVl3hckAvtaf3To2sxx1y9INoJAA==
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241203102318.3386345-1-ukaszb@chromium.org>
 
-When do_sme_acc() runs with foreign FP state it does not do any updates of
-the task structure, relying on the next return to userspace to reload the
-register state appropriately, but leaves the task's last loaded CPU
-untouched. This means that if the task returns to userspace on the last
-CPU it ran on then the checks in fpsimd_bind_task_to_cpu() will incorrectly
-determine that the register state on the CPU is current and suppress reload
-of the floating point register state before returning to userspace. This
-will result in spurious warnings due to SME access traps occuring for the
-task after TIF_SME is set.
+On Tue, Dec 03, 2024 at 10:23:18AM +0000, Łukasz Bartosik wrote:
+> OPM                         PPM                         LPM
+>  |        1.send cmd         |                           |
+>  |-------------------------->|                           |
+>  |                           |--                         |
+>  |                           |  | 2.set busy bit in CCI  |
+>  |                           |<-                         |
+>  |      3.notify the OPM     |                           |
+>  |<--------------------------|                           |
+>  |                           | 4.send cmd to be executed |
+>  |                           |-------------------------->|
+>  |                           |                           |
+>  |                           |      5.cmd completed      |
+>  |                           |<--------------------------|
+>  |                           |                           |
+>  |                           |--                         |
+>  |                           |  | 6.set cmd completed    |
+>  |                           |<-       bit in CCI        |
+>  |                           |                           |
+>  |     7.notify the OPM      |                           |
+>  |<--------------------------|                           |
+>  |                           |                           |
+>  |   8.handle notification   |                           |
+>  |   from point 3, read CCI  |                           |
+>  |<--------------------------|                           |
+>  |                           |                           |
+> 
+> When the PPM receives command from the OPM (p.1) it sets the busy bit
+> in the CCI (p.2), sends notification to the OPM (p.3) and forwards the
+> command to be executed by the LPM (p.4). When the PPM receives command
+> completion from the LPM (p.5) it sets command completion bit in the CCI
+> (p.6) and sends notification to the OPM (p.7). If command execution by
+> the LPM is fast enough then when the OPM starts handling the notification
+> from p.3 in p.8 and reads the CCI value it will see command completion bit
+> set and will call complete(). Then complete() might be called again when
+> the OPM handles notification from p.7.
+> 
+> This fix replaces test_bit() with test_and_clear_bit()
+> in ucsi_notify_common() in order to call complete() only
+> once per request.
+> 
+> This fix also reinitializes completion variable in
+> ucsi_sync_control_common() before a command is sent.
+> 
+> Fixes: 584e8df58942 ("usb: typec: ucsi: extract common code for command handling")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
 
-Call fpsimd_flush_task_state() to invalidate the last loaded CPU
-recorded in the task, forcing detection of the task as foreign.
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com
 
-Fixes: 8bd7f91c03d8 ("arm64/sme: Implement traps and syscall handling for SME")
-Reported-by: Mark Rutlamd <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/kernel/fpsimd.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 8c4c1a2186cc510a7826d15ec36225857c07ed71..eca0b6a2fc6fa25d8c850a5b9e109b4d58809f54 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1460,6 +1460,8 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
- 		sme_set_vq(vq_minus_one);
- 
- 		fpsimd_bind_task_to_cpu();
-+	} else {
-+		fpsimd_flush_task_state(current);
- 	}
- 
- 	put_cpu_fpsimd_context();
+> ---
+> 
+> Changes in v2:
+> - Swapped points 7 and 8 in the commit description
+> in order to make diagram more clear. 
+> - Added reinitialization of completion variable
+> in the ucsi_sync_control_common().
+> ---
+> 
+>  drivers/usb/typec/ucsi/ucsi.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+> index c435c0835744..7a65a7672e18 100644
+> --- a/drivers/usb/typec/ucsi/ucsi.c
+> +++ b/drivers/usb/typec/ucsi/ucsi.c
+> @@ -46,11 +46,11 @@ void ucsi_notify_common(struct ucsi *ucsi, u32 cci)
+>  		ucsi_connector_change(ucsi, UCSI_CCI_CONNECTOR(cci));
+>  
+>  	if (cci & UCSI_CCI_ACK_COMPLETE &&
+> -	    test_bit(ACK_PENDING, &ucsi->flags))
+> +	    test_and_clear_bit(ACK_PENDING, &ucsi->flags))
+>  		complete(&ucsi->complete);
+>  
+>  	if (cci & UCSI_CCI_COMMAND_COMPLETE &&
+> -	    test_bit(COMMAND_PENDING, &ucsi->flags))
+> +	    test_and_clear_bit(COMMAND_PENDING, &ucsi->flags))
+>  		complete(&ucsi->complete);
+>  }
+>  EXPORT_SYMBOL_GPL(ucsi_notify_common);
+> @@ -65,6 +65,8 @@ int ucsi_sync_control_common(struct ucsi *ucsi, u64 command)
+>  	else
+>  		set_bit(COMMAND_PENDING, &ucsi->flags);
+>  
+> +	reinit_completion(&ucsi->complete);
+> +
+>  	ret = ucsi->ops->async_control(ucsi, command);
+>  	if (ret)
+>  		goto out_clear_bit;
+> -- 
+> 2.47.0.338.g60cca15819-goog
 
 -- 
-2.39.5
-
+heikki
 
