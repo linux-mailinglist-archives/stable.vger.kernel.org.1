@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-98066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548CF9E2907
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6632A9E2A15
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18B00BA42DE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82AA9C0090D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C945B1F890F;
-	Tue,  3 Dec 2024 16:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A28B1EE00B;
+	Tue,  3 Dec 2024 16:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QS1zi9FJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk834+vX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A8014A088;
-	Tue,  3 Dec 2024 16:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C396314A088;
+	Tue,  3 Dec 2024 16:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242678; cv=none; b=YymFeias5+M7eQVA9nrRjCXAV3uRm6OhTuVTSKnvMn764+9ogO0cOc1oi7Wq3mbXYB7+fvbJN4bM9WdudmadNwI09vdXrVCFjECVvOFe5YrIpupIiKR8KjJ8zSPtO1KRrqohSrZTJMcQF8ZgSAmQtIgxV46w8p3dCP2ALKbr490=
+	t=1733242684; cv=none; b=cNo3dRHz28hJz4zQ0/ISzuAnkL51DCKLbilI4DvP1OW2DATuVM/3YoD+FQxQBqKjcdqyDZ1G+hBkCfKT4zVyZooCejxbHrNfBCPAnSIeHJPWk3PdFmpEeLGn7RjwR6N3Lwk2gQQZZE+mDZFoK5jDWrTuISwODTVtR+YDtp1VT7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242678; c=relaxed/simple;
-	bh=61XCGufu5O6d81kVxa97J/xnoV3w8TjXyefDP3yq+h0=;
+	s=arc-20240116; t=1733242684; c=relaxed/simple;
+	bh=IEqozqj1PHEDxnZKDwQdTtHAsv8d8YS9h8uiMlTzuTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7j1JgKj2NvALB2nWFTD+TcQyTP5odob97W3JFj6fTUhSYcq803HNvqGL2m+ScjnMkcRkUc+QJoSEMhGbKqKi4GtFp1tpmVDxz/jrQZX2IiMH2ZsTVeqD9zCUsC/yBbuPUaahlXF+gtYc52qTmhb/QiKx75a+dUNqKJ198Cn910=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QS1zi9FJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E97ACC4CECF;
-	Tue,  3 Dec 2024 16:17:57 +0000 (UTC)
+	 MIME-Version; b=g9Jd+q4oHWsn4bCG9TTr3CcEMbreMjiNCKfkQvmJ/KkNy2ePqcF28yJhzxfo4ZFGr+b0EFBuuYHwPBOJ3swW3fVE4fwKJPwNx5jL3sxdObB75jQET0RVkDU2/2+pgnFNxu4saiNl0Wgwhma3dZs++ufPr2adNKKWJuw48PcHHu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk834+vX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49616C4CECF;
+	Tue,  3 Dec 2024 16:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242678;
-	bh=61XCGufu5O6d81kVxa97J/xnoV3w8TjXyefDP3yq+h0=;
+	s=korg; t=1733242684;
+	bh=IEqozqj1PHEDxnZKDwQdTtHAsv8d8YS9h8uiMlTzuTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QS1zi9FJiWOgHBfiTYXsmhyZAprooisU+gihMNJs4aFA8oVtgHv6Dk8R1YAmkHuTe
-	 Q5nRYt7r7EIysua1+2/7P+8a2VMKv/t7Hq4gC11yXXAfSPwjCiuS+yfN+6ZpHn+bdi
-	 3iyIWXFh4VpJLM6IPfNHZ11HxGcI2Y5o9xMVGY18=
+	b=Wk834+vXK+eqc/aKpU2mkx0j6vL96iSq70yn5oIYGuea6ZmYg4Z/x35kE5qSLjIXW
+	 z8nYiwxe27rRW02h9NUBp2DtFhHCPu1EASCKzz8PpIJkTsHt3iyFTwS5qNFkPgB3rx
+	 cXN7TZ3BEq9rGfjgmsfdcTIhR+pEYnjzWRWE4gxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 776/826] um: Always dump trace for specified task in show_stack
-Date: Tue,  3 Dec 2024 15:48:23 +0100
-Message-ID: <20241203144814.037299187@linuxfoundation.org>
+Subject: [PATCH 6.12 778/826] nfs/localio: must clear res.replen in nfs_local_read_done
+Date: Tue,  3 Dec 2024 15:48:25 +0100
+Message-ID: <20241203144814.113938942@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,35 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 0f659ff362eac69777c4c191b7e5ccb19d76c67d ]
+[ Upstream commit 650703bc4ed3edf841e851c99ab8e7ba9e5262a3 ]
 
-Currently, show_stack() always dumps the trace of the current task.
-However, it should dump the trace of the specified task if one is
-provided. Otherwise, things like running "echo t > sysrq-trigger"
-won't work as expected.
+Otherwise memory corruption can occur due to NFSv3 LOCALIO reads
+leaving garbage in res.replen:
+- nfs3_read_done() copies that into server->read_hdrsize; from there
+  nfs3_proc_read_setup() copies it to args.replen in new requests.
+- nfs3_xdr_enc_read3args() passes that to rpc_prepare_reply_pages()
+  which includes it in hdrsize for xdr_init_pages, so that rq_rcv_buf
+  contains a ridiculous len.
+- This is copied to rq_private_buf and xs_read_stream_request()
+  eventually passes the kvec to sock_recvmsg() which receives incoming
+  data into entirely the wrong place.
 
-Fixes: 970e51feaddb ("um: Add support for CONFIG_STACKTRACE")
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20241106103933.1132365-1-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This is easily reproduced with NFSv3 LOCALIO that is servicing reads
+when it is made to pivot back to using normal RPC.  This switch back
+to using normal NFSv3 with RPC can occur for a few reasons but this
+issue was exposed with a test that stops and then restarts the NFSv3
+server while LOCALIO is performing heavy read IO.
+
+Fixes: 70ba381e1a43 ("nfs: add LOCALIO support")
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Co-developed-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/sysrq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/localio.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/um/kernel/sysrq.c b/arch/um/kernel/sysrq.c
-index 4bb8622dc5122..e3b6a2fd75d99 100644
---- a/arch/um/kernel/sysrq.c
-+++ b/arch/um/kernel/sysrq.c
-@@ -52,5 +52,5 @@ void show_stack(struct task_struct *task, unsigned long *stack,
- 	}
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index 8f0ce82a677e1..637528e6368ef 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -354,6 +354,12 @@ nfs_local_read_done(struct nfs_local_kiocb *iocb, long status)
  
- 	printk("%sCall Trace:\n", loglvl);
--	dump_trace(current, &stackops, (void *)loglvl);
-+	dump_trace(task ?: current, &stackops, (void *)loglvl);
- }
+ 	nfs_local_pgio_done(hdr, status);
+ 
++	/*
++	 * Must clear replen otherwise NFSv3 data corruption will occur
++	 * if/when switching from LOCALIO back to using normal RPC.
++	 */
++	hdr->res.replen = 0;
++
+ 	if (hdr->res.count != hdr->args.count ||
+ 	    hdr->args.offset + hdr->res.count >= i_size_read(file_inode(filp)))
+ 		hdr->res.eof = true;
 -- 
 2.43.0
 
