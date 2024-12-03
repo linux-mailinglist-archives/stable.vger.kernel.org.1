@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567A09E2718
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3665D9E21E0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C18AB375FE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0388286B0E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8DF1F76AE;
-	Tue,  3 Dec 2024 15:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A7A1F6696;
+	Tue,  3 Dec 2024 15:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcKo03xv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yALdwC4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043D51AB6C9;
-	Tue,  3 Dec 2024 15:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56769646;
+	Tue,  3 Dec 2024 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241300; cv=none; b=dJFGSXxq968kKdAScl7EAOavVazpQ9evBglTe/Qe8I/dLldypnwtLvjz9ZIlL/MA+eY0Xl77p8Vrzy8sBMqskcE3vCrbI6AGcYXaQBb6TdFRJuJUcEKpJcdSpOm0od0fYy43KRVuA9hdtInflXcL5gR2dixbZXMpATDHgzYAZjM=
+	t=1733239080; cv=none; b=YtQj1tx0/v2KHfg4itKR+5QEGEhd6ZzTFmAUNOYxRx0pubHibz6mEfvQYSjRRpcAym0jXscZLUqa6lw6VMNW81rg5iN9wKGcCJ2ozOdWyHurjjQCgYxdHF8EHbELi6ftrpJC+T7jlKl6X2WAjr9NUJcew22/V/UWtXHf5jPoquQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241300; c=relaxed/simple;
-	bh=NAcn6fD6f6LuLLqy3a9zTjbuKv5PvP6UqyvR8PJPDyw=;
+	s=arc-20240116; t=1733239080; c=relaxed/simple;
+	bh=Pej+Z4lsAk2C5e+vev4Juylz8paaIAG9oNlbwZIIxYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRqKvY47aKVZpdakLPz45W3JFcTDlRnrBqh0uwN79luKn24SymQntIRvsxC24yDW5iwL3KLQuRrOZXV0lNsZTpKPHaV+ASMJZeemKz5ONOfaa5EeLDrU5szDvXYKtD/f3DcUuqn8IkRVTa8daIWxLZ6d8KlSQchAIjOZb/d12gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcKo03xv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E66C4CED8;
-	Tue,  3 Dec 2024 15:54:59 +0000 (UTC)
+	 MIME-Version; b=unVrDEnbAO8RiTfxhmb6/wmYiexXsETAPJAIGJF/eHFf19u7Wp1xVqMP+AqmA79XhZeLqEM45eUDug5o4OWsRQQRfkMzeMBGOIH3zrUuNBj0Y0YgcsJYiCUmm3DM1x1WiRDUs15rxcHcmYcj9MKhALqvH4bIOeRNNk/l/BaUgcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yALdwC4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C758C4CECF;
+	Tue,  3 Dec 2024 15:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241299;
-	bh=NAcn6fD6f6LuLLqy3a9zTjbuKv5PvP6UqyvR8PJPDyw=;
+	s=korg; t=1733239079;
+	bh=Pej+Z4lsAk2C5e+vev4Juylz8paaIAG9oNlbwZIIxYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcKo03xvIfh2rFJeWjUpcAt6STQY7bE2NLiza03q2oizlF1ipq9BvRg7bjkCvnkK/
-	 WU5MM111AXWg7r3c4lyoYakPTXRerzANFgycGEHW2dCHtHR5zj7PtEYZ7hz9TpmNFM
-	 c0ErNAJ5c/Y3MkyHHhwjLlb1hj4CUVpX+z583UiE=
+	b=yALdwC4soonAR24ZAJrGT4fO5zyYb8geP1FZtZlxw//8puLviPRg0GhkmSjdIivEP
+	 tsDCEyekLuid8FtaDOnfqvplnUihsYWqkmsf1S9yKODult+401vnHNiVQCVj0vuQAK
+	 1pBMkgh2KxFRLAlPpKuSS0c1/oln9Bd2pD6zVH+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Lu <chris.lu@mediatek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Daniel Rosenberg <drosen@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 339/826] Bluetooth: btmtk: adjust the position to init iso data anchor
-Date: Tue,  3 Dec 2024 15:41:06 +0100
-Message-ID: <20241203144756.986263365@linuxfoundation.org>
+Subject: [PATCH 6.11 495/817] f2fs: fix to account dirty data in __get_secs_required()
+Date: Tue,  3 Dec 2024 15:41:07 +0100
+Message-ID: <20241203144015.196321644@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Lu <chris.lu@mediatek.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 61c5a3def90ac729a538e5ca5ff7f461cff72776 ]
+[ Upstream commit 1acd73edbbfef2c3c5b43cba4006a7797eca7050 ]
 
-MediaTek iso data anchor init should be moved to where MediaTek
-claims iso data interface.
-If there is an unexpected BT usb disconnect during setup flow,
-it will cause a NULL pointer crash issue when releasing iso
-anchor since the anchor wasn't been init yet. Adjust the position
-to do iso data anchor init.
+It will trigger system panic w/ testcase in [1]:
 
-[   17.137991] pc : usb_kill_anchored_urbs+0x60/0x168
-[   17.137998] lr : usb_kill_anchored_urbs+0x44/0x168
-[   17.137999] sp : ffffffc0890cb5f0
-[   17.138000] x29: ffffffc0890cb5f0 x28: ffffff80bb6c2e80
-[   17.144081] gpio gpiochip0: registered chardev handle for 1 lines
-[   17.148421]  x27: 0000000000000000
-[   17.148422] x26: ffffffd301ff4298 x25: 0000000000000003 x24: 00000000000000f0
-[   17.148424] x23: 0000000000000000 x22: 00000000ffffffff x21: 0000000000000001
-[   17.148425] x20: ffffffffffffffd8 x19: ffffff80c0f25560 x18: 0000000000000000
-[   17.148427] x17: ffffffd33864e408 x16: ffffffd33808f7c8 x15: 0000000000200000
-[   17.232789] x14: e0cd73cf80ffffff x13: 50f2137c0a0338c9 x12: 0000000000000001
-[   17.239912] x11: 0000000080150011 x10: 0000000000000002 x9 : 0000000000000001
-[   17.247035] x8 : 0000000000000000 x7 : 0000000000008080 x6 : 8080000000000000
-[   17.254158] x5 : ffffffd33808ebc0 x4 : fffffffe033dcf20 x3 : 0000000080150011
-[   17.261281] x2 : ffffff8087a91400 x1 : 0000000000000000 x0 : ffffff80c0f25588
-[   17.268404] Call trace:
-[   17.270841]  usb_kill_anchored_urbs+0x60/0x168
-[   17.275274]  btusb_mtk_release_iso_intf+0x2c/0xd8 [btusb (HASH:5afe 6)]
-[   17.284226]  btusb_mtk_disconnect+0x14/0x28 [btusb (HASH:5afe 6)]
-[   17.292652]  btusb_disconnect+0x70/0x140 [btusb (HASH:5afe 6)]
-[   17.300818]  usb_unbind_interface+0xc4/0x240
-[   17.305079]  device_release_driver_internal+0x18c/0x258
-[   17.310296]  device_release_driver+0x1c/0x30
-[   17.314557]  bus_remove_device+0x140/0x160
-[   17.318643]  device_del+0x1c0/0x330
-[   17.322121]  usb_disable_device+0x80/0x180
-[   17.326207]  usb_disconnect+0xec/0x300
-[   17.329948]  hub_quiesce+0x80/0xd0
-[   17.333339]  hub_disconnect+0x44/0x190
-[   17.337078]  usb_unbind_interface+0xc4/0x240
-[   17.341337]  device_release_driver_internal+0x18c/0x258
-[   17.346551]  device_release_driver+0x1c/0x30
-[   17.350810]  usb_driver_release_interface+0x70/0x88
-[   17.355677]  proc_ioctl+0x13c/0x228
-[   17.359157]  proc_ioctl_default+0x50/0x80
-[   17.363155]  usbdev_ioctl+0x830/0xd08
-[   17.366808]  __arm64_sys_ioctl+0x94/0xd0
-[   17.370723]  invoke_syscall+0x6c/0xf8
-[   17.374377]  el0_svc_common+0x84/0xe0
-[   17.378030]  do_el0_svc+0x20/0x30
-[   17.381334]  el0_svc+0x34/0x60
-[   17.384382]  el0t_64_sync_handler+0x88/0xf0
-[   17.388554]  el0t_64_sync+0x180/0x188
-[   17.392208] Code: f9400677 f100a2f4 54fffea0 d503201f (b8350288)
-[   17.398289] ---[ end trace 0000000000000000 ]---
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:2752!
+RIP: 0010:new_curseg+0xc81/0x2110
+Call Trace:
+ f2fs_allocate_data_block+0x1c91/0x4540
+ do_write_page+0x163/0xdf0
+ f2fs_outplace_write_data+0x1aa/0x340
+ f2fs_do_write_data_page+0x797/0x2280
+ f2fs_write_single_data_page+0x16cd/0x2190
+ f2fs_write_cache_pages+0x994/0x1c80
+ f2fs_write_data_pages+0x9cc/0xea0
+ do_writepages+0x194/0x7a0
+ filemap_fdatawrite_wbc+0x12b/0x1a0
+ __filemap_fdatawrite_range+0xbb/0xf0
+ file_write_and_wait_range+0xa1/0x110
+ f2fs_do_sync_file+0x26f/0x1c50
+ f2fs_sync_file+0x12b/0x1d0
+ vfs_fsync_range+0xfa/0x230
+ do_fsync+0x3d/0x80
+ __x64_sys_fsync+0x37/0x50
+ x64_sys_call+0x1e88/0x20d0
+ do_syscall_64+0x4b/0x110
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: ceac1cb0259d ("Bluetooth: btusb: mediatek: add ISO data transmission functions")
-Signed-off-by: Chris Lu <chris.lu@mediatek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+The root cause is if checkpoint_disabling and lfs_mode are both on,
+it will trigger OPU for all overwritten data, it may cost more free
+segment than expected, so f2fs must account those data correctly to
+calculate cosumed free segments later, and return ENOSPC earlier to
+avoid run out of free segment during block allocation.
+
+[1] https://lore.kernel.org/fstests/20241015025106.3203676-1-chao@kernel.org/
+
+Fixes: 4354994f097d ("f2fs: checkpoint disabling")
+Cc: Daniel Rosenberg <drosen@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtk.c | 1 -
- drivers/bluetooth/btusb.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/segment.h | 35 +++++++++++++++++++++++++----------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 9bbf205021634..480e4adba9faa 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -1215,7 +1215,6 @@ static int btmtk_usb_isointf_init(struct hci_dev *hdev)
- 	struct sk_buff *skb;
- 	int err;
- 
--	init_usb_anchor(&btmtk_data->isopkt_anchor);
- 	spin_lock_init(&btmtk_data->isorxlock);
- 
- 	__set_mtk_intr_interface(hdev);
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index e9534fbc92e32..4ccaddb46ddd8 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2616,6 +2616,7 @@ static void btusb_mtk_claim_iso_intf(struct btusb_data *data)
- 	}
- 
- 	set_bit(BTMTK_ISOPKT_OVER_INTR, &btmtk_data->flags);
-+	init_usb_anchor(&btmtk_data->isopkt_anchor);
+diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
+index bfc01a521cb98..c3aeca7e0dde6 100644
+--- a/fs/f2fs/segment.h
++++ b/fs/f2fs/segment.h
+@@ -558,18 +558,21 @@ static inline int reserved_sections(struct f2fs_sb_info *sbi)
  }
  
- static void btusb_mtk_release_iso_intf(struct btusb_data *data)
+ static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi,
+-			unsigned int node_blocks, unsigned int dent_blocks)
++			unsigned int node_blocks, unsigned int data_blocks,
++			unsigned int dent_blocks)
+ {
+ 
+-	unsigned segno, left_blocks;
++	unsigned int segno, left_blocks, blocks;
+ 	int i;
+ 
+-	/* check current node sections in the worst case. */
+-	for (i = CURSEG_HOT_NODE; i <= CURSEG_COLD_NODE; i++) {
++	/* check current data/node sections in the worst case. */
++	for (i = CURSEG_HOT_DATA; i < NR_PERSISTENT_LOG; i++) {
+ 		segno = CURSEG_I(sbi, i)->segno;
+ 		left_blocks = CAP_BLKS_PER_SEC(sbi) -
+ 				get_ckpt_valid_blocks(sbi, segno, true);
+-		if (node_blocks > left_blocks)
++
++		blocks = i <= CURSEG_COLD_DATA ? data_blocks : node_blocks;
++		if (blocks > left_blocks)
+ 			return false;
+ 	}
+ 
+@@ -583,8 +586,9 @@ static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi,
+ }
+ 
+ /*
+- * calculate needed sections for dirty node/dentry
+- * and call has_curseg_enough_space
++ * calculate needed sections for dirty node/dentry and call
++ * has_curseg_enough_space, please note that, it needs to account
++ * dirty data as well in lfs mode when checkpoint is disabled.
+  */
+ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
+ 		unsigned int *lower_p, unsigned int *upper_p, bool *curseg_p)
+@@ -593,19 +597,30 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
+ 					get_pages(sbi, F2FS_DIRTY_DENTS) +
+ 					get_pages(sbi, F2FS_DIRTY_IMETA);
+ 	unsigned int total_dent_blocks = get_pages(sbi, F2FS_DIRTY_DENTS);
++	unsigned int total_data_blocks = 0;
+ 	unsigned int node_secs = total_node_blocks / CAP_BLKS_PER_SEC(sbi);
+ 	unsigned int dent_secs = total_dent_blocks / CAP_BLKS_PER_SEC(sbi);
++	unsigned int data_secs = 0;
+ 	unsigned int node_blocks = total_node_blocks % CAP_BLKS_PER_SEC(sbi);
+ 	unsigned int dent_blocks = total_dent_blocks % CAP_BLKS_PER_SEC(sbi);
++	unsigned int data_blocks = 0;
++
++	if (f2fs_lfs_mode(sbi) &&
++		unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
++		total_data_blocks = get_pages(sbi, F2FS_DIRTY_DATA);
++		data_secs = total_data_blocks / CAP_BLKS_PER_SEC(sbi);
++		data_blocks = total_data_blocks % CAP_BLKS_PER_SEC(sbi);
++	}
+ 
+ 	if (lower_p)
+-		*lower_p = node_secs + dent_secs;
++		*lower_p = node_secs + dent_secs + data_secs;
+ 	if (upper_p)
+ 		*upper_p = node_secs + dent_secs +
+-			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0);
++			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0) +
++			(data_blocks ? 1 : 0);
+ 	if (curseg_p)
+ 		*curseg_p = has_curseg_enough_space(sbi,
+-				node_blocks, dent_blocks);
++				node_blocks, data_blocks, dent_blocks);
+ }
+ 
+ static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
 -- 
 2.43.0
 
