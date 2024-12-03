@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-97551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD72A9E28EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C6A9E2ADB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:30:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF7E0BE16F2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70030B84C66
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B08C1F76A8;
-	Tue,  3 Dec 2024 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3681F76DD;
+	Tue,  3 Dec 2024 15:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifWxlS6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfUgBgic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4171A1F75B6;
-	Tue,  3 Dec 2024 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334C61F76BA;
+	Tue,  3 Dec 2024 15:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240901; cv=none; b=b4hEC8WltyGbPBsom0OB/101I9xlB6usibMKBRFh1+tlJx31y9RFLCNeO5K3x//a2/qtJpUOPLoAJnJO0/fUcMkn2NEsqg4On10nOQAXLbT6hJTZjUowlOer7nB0IpLxOmyGJDGo2Z03EFrzB+HtElAMIAKPdnsFssGr+m5Z+KU=
+	t=1733238808; cv=none; b=jnXhrmocYc5biGlkkZ+NgaSkwOMXGqXwUOVJd3Y/VVnahdqFIvjoxsjEHADDCT0JemAn9AjnLTgF4o5xhQ/rVj4oPTEfgfuSJSQnzxHEAP35ntXjHYALAq52UGYsff65bKnpXwrTngVDEMxvpgWVjrny/mRhlwrske5VtzTW5bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240901; c=relaxed/simple;
-	bh=uRCCnifIJFYXHFqDS0f1YkM6s9q5/Jp1mEaXXskG0mQ=;
+	s=arc-20240116; t=1733238808; c=relaxed/simple;
+	bh=TIOanA+WgY8YDCWCcYSWiW+TDBqu0SqAhcrPi1r5uB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M44gqUM9ofb56Gpibx75Xcdqwr+Y6A738gkfVQyqytmzPFBzk0OSxQHPDK9vChh1C4WBikYBkLwa6vKUgmT/Ht5jQ1IRvXbXnNAQBZVS3YNQsNDSfK5ooavlI3gi9ke8RC2h3up1SWim43mp5w18h7ZAUHqrrP5hrcaQgFOAd7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifWxlS6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73222C4CECF;
-	Tue,  3 Dec 2024 15:48:20 +0000 (UTC)
+	 MIME-Version; b=PJOqZlLRvqawHW+UuBEyds0u45E5Wbxaa8wMNDcN37AlyBViC0gxBbLFj6zV5XJRxp9O/98dk/2pRkc24ohcCfaXQqAwLV3UH2a5BqQNX/nv4v4qR6uuZzjRNp3LJw2mAsyleE1GcLGI3d1FZVEaiLcdTHNVsGiP2fxSApkJfs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfUgBgic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB91AC4CECF;
+	Tue,  3 Dec 2024 15:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240901;
-	bh=uRCCnifIJFYXHFqDS0f1YkM6s9q5/Jp1mEaXXskG0mQ=;
+	s=korg; t=1733238808;
+	bh=TIOanA+WgY8YDCWCcYSWiW+TDBqu0SqAhcrPi1r5uB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifWxlS6Z6gvlaeEe9CEXFuM7URWZApcKFVgWv9Caz4ULtKCVaiuC3nGEOM80Nge04
-	 eGLUz6LNXiEE48azDuAncUawrh9KY4SvfOcuQF2Du0F1WyoeU6hIw4L3DvMN0QLAay
-	 bVQl00m+i6/sAhVSYP7FzElA0MeBZpCfVXb1eYbU=
+	b=vfUgBgic2iRSOb5pJf6DTRsOJcR1PUmuWYc3Q3wBqZ+hXiK+jyiZuLzXZue5xd8eC
+	 RBD49kSJVbosWhS0qbFAiIp4c+ZUDcnyCYbaf85WBempLg3oJjHoe78M/5Vap6hG0v
+	 CbMIc6vAqxgmangxj/zsEJHIVOxQOXw5PCBG9GXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Chen Wang <unicorn_wang@outlook.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 241/826] drm/vc4: Correct generation check in vc4_hvs_lut_load
-Date: Tue,  3 Dec 2024 15:39:28 +0100
-Message-ID: <20241203144753.167018433@linuxfoundation.org>
+Subject: [PATCH 6.11 402/817] clk: sophgo: avoid integer overflow in sg2042_pll_recalc_rate()
+Date: Tue,  3 Dec 2024 15:39:34 +0100
+Message-ID: <20241203144011.565386363@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-[ Upstream commit 42aa18d1c3e7762bcebd89a5857ed7774e669d92 ]
+[ Upstream commit 00f8f70a0e8c6601861628be26270a0b6f4bbb34 ]
 
-Commit 24c5ed3ddf27 ("drm/vc4: Introduce generation number enum")
-incorrectly swapped a check of hvs->vc4->is_vc5 to
-hvs->vc4->gen == VC4_GEN_4 in vc4_hvs_lut_load, hence breaking
-loading the gamma look up table on Pi0-3.
+This was found by a static analyzer.
+There may be a potential integer overflow issue in
+sg2042_pll_recalc_rate(). numerator is defined as u64 while
+parent_rate is defined as unsigned long and ctrl_table.fbdiv
+is defined as unsigned int. On 32-bit machine, the result of
+the calculation will be limited to "u32" without correct casting.
+Integer overflow may occur on high-performance systems.
 
-Correct that conditional.
-
-Fixes: 24c5ed3ddf27 ("drm/vc4: Introduce generation number enum")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/dri-devel/37051126-3921-4afe-a936-5f828bff5752@samsung.com/
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008-drm-vc4-fixes-v1-3-9d0396ca9f42@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fixes: 48cf7e01386e ("clk: sophgo: Add SG2042 clock driver")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
+Link: https://lore.kernel.org/r/20241023145146.13130-1-zichenxie0106@gmail.com
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 2 +-
+ drivers/clk/sophgo/clk-sg2042-pll.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index f30022a360a8a..863539e1f7e04 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -224,7 +224,7 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
- 	if (!drm_dev_enter(drm, &idx))
- 		return;
+diff --git a/drivers/clk/sophgo/clk-sg2042-pll.c b/drivers/clk/sophgo/clk-sg2042-pll.c
+index ff9deeef509b8..1537f4f05860e 100644
+--- a/drivers/clk/sophgo/clk-sg2042-pll.c
++++ b/drivers/clk/sophgo/clk-sg2042-pll.c
+@@ -153,7 +153,7 @@ static unsigned long sg2042_pll_recalc_rate(unsigned int reg_value,
  
--	if (hvs->vc4->gen == VC4_GEN_4)
-+	if (hvs->vc4->gen != VC4_GEN_4)
- 		goto exit;
+ 	sg2042_pll_ctrl_decode(reg_value, &ctrl_table);
  
- 	/* The LUT memory is laid out with each HVS channel in order,
+-	numerator = parent_rate * ctrl_table.fbdiv;
++	numerator = (u64)parent_rate * ctrl_table.fbdiv;
+ 	denominator = ctrl_table.refdiv * ctrl_table.postdiv1 * ctrl_table.postdiv2;
+ 	do_div(numerator, denominator);
+ 	return numerator;
 -- 
 2.43.0
 
