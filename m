@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-96448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE1E9E2862
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:58:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2F49E2274
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C7AFB82231
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:41:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4907CB8179F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E041F667E;
-	Tue,  3 Dec 2024 14:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0691F667F;
+	Tue,  3 Dec 2024 14:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAve1XmV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBfaNx89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553871F6664;
-	Tue,  3 Dec 2024 14:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5AD1F1313;
+	Tue,  3 Dec 2024 14:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236849; cv=none; b=paYZ6ot7b9cDLH5ZKhx6becnKlrWSBx9HoOqghKoX9YfFHqEv9QWmMN/r9FTNaLbDT91mANpM7W3etdVO7LfspZRZMlYzr3uYPUGc8t9LwuEIL30ziscZc3gO8IFMX6e14y0W0hm5OM9rM6hY44HMcxON7RP1WQgfunCACgOr0k=
+	t=1733236770; cv=none; b=Tyto+GmYDA98LXZOfAPQQSWHSfEnR5g22a+2KNzrlGaCJUC2L7NZrY1ciBH/3swh60xloJE+2VFkWLgXSeL8aPcu45mYp1Zwfnpiwzd3WEDwu0jhtAcH9hLvRnYgmZrP9GfUyfSaISo9MWApWRBq3+x9h086TnQ9eWGCQZKf43I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236849; c=relaxed/simple;
-	bh=T4ogs0pIt26j/fagzUsHEqsoG/coqQYedfl94RGlCeE=;
+	s=arc-20240116; t=1733236770; c=relaxed/simple;
+	bh=wb4iDFw0dLaBm8jpxmOlAvRNAf2wy+VoV2ce5XiC+NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgtjHVU52RWAtlpoD7FCcxnd722croNa7UfHmqsIo5ib4LnajLoSLvPajk8vuMJ9Z1MLDnk/LV9a9n1XShNRHyP2UB3FeQGO+aiDizf8KLp1YQPT6400FM1YMU3shpp6gY4gWzJ9I7rmLdG+S8jPRNMgNu5sJEkCuWG0YrGlrt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAve1XmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB502C4CED6;
-	Tue,  3 Dec 2024 14:40:48 +0000 (UTC)
+	 MIME-Version; b=U/4dAv/31toreWTaRUeeXKcA+zMRT/6/bF/PzTLfjKhAtYgKepIZ3MkAlZFdPqB57ppc5XX1gtCB10iHNzWh0Kyuran+4r4Ma1Y2vXXFeXAfYGjGnTbfPsG28v1bA+weC+cr655rqRuZPi1+Mz4FP/VjPDnOIL9az1Ce7f8iLlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBfaNx89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43614C4CECF;
+	Tue,  3 Dec 2024 14:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236849;
-	bh=T4ogs0pIt26j/fagzUsHEqsoG/coqQYedfl94RGlCeE=;
+	s=korg; t=1733236770;
+	bh=wb4iDFw0dLaBm8jpxmOlAvRNAf2wy+VoV2ce5XiC+NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAve1XmVIuBM22pvrCrPhXy66BR4aTCH1BfxSd3NB3IpY22baxpJZ25LytUe4jukh
-	 IJwUMSNlf0OHhAZljORYYr45nNiIgLvHjVx+6KNO7s1ZOmPaaHYnB/Ard0CyWGuULB
-	 uKDCseuBFfWLCef47X/4NSbpAq2rgK6O1Zo5DBMU=
+	b=UBfaNx89wL6raJRVk2DqQqId3a0DoGdlIy9vPtHThLtGPVISSxKtCerOK2Oldhwo5
+	 xEtuxua+qDASQzUsjUIHGKSnZF4UoLXK7Btk2M9/HpSNaS84/s5dqsavSUtKhzphFC
+	 Grgye6WVA1HQCRIURyQdgRnRLgGDT1ZYJHWA/Fdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 4.19 103/138] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
-Date: Tue,  3 Dec 2024 15:32:12 +0100
-Message-ID: <20241203141927.504644768@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 4.19 113/138] ubi: wl: Put source PEB into correct list if trying locking LEB failed
+Date: Tue,  3 Dec 2024 15:32:22 +0100
+Message-ID: <20241203141927.889968512@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -65,62 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 1157733344651ca505e259d6554591ff156922fa upstream.
+commit d610020f030bec819f42de327c2bd5437d2766b3 upstream.
 
-An atomicity violation occurs when the validity of the variables
-da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
-assessment is not protected by a lock, the da7219 variable might still be
-in flux during the assessment, rendering this check invalid.
+During wear-leveing work, the source PEB will be moved into scrub list
+when source LEB cannot be locked in ubi_eba_copy_leb(), which is wrong
+for non-scrub type source PEB. The problem could bring extra and
+ineffective wear-leveing jobs, which makes more or less negative effects
+for the life time of flash. Specifically, the process is divided 2 steps:
+1. wear_leveling_worker // generate false scrub type PEB
+     ubi_eba_copy_leb // MOVE_RETRY is returned
+       leb_write_trylock // trylock failed
+     scrubbing = 1;
+     e1 is put into ubi->scrub
+2. wear_leveling_worker // schedule false scrub type PEB for wl
+     scrubbing = 1
+     e1 = rb_entry(rb_first(&ubi->scrub))
 
-To fix this issue, we recommend adding a lock before the block
-if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
-the legitimacy check for da7219->clk_src and da7219->mclk_rate is
-protected by the lock, ensuring the validity of the check.
+The problem can be reproduced easily by running fsstress on a small
+UBIFS partition(<64M, simulated by nandsim) for 5~10mins
+(CONFIG_MTD_UBI_FASTMAP=y,CONFIG_MTD_UBI_WL_THRESHOLD=50). Following
+message is shown:
+ ubi0: scrubbed PEB 66 (LEB 0:10), data moved to PEB 165
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations.
+Since scrub type source PEB has set variable scrubbing as '1', and
+variable scrubbing is checked before variable keep, so the problem can
+be fixed by setting keep variable as 1 directly if the source LEB cannot
+be locked.
 
-Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e801e128b220 ("UBI: fix missing scrub when there is a bit-flip")
+CC: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/da7219.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/mtd/ubi/wl.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/sound/soc/codecs/da7219.c
-+++ b/sound/soc/codecs/da7219.c
-@@ -1164,17 +1164,20 @@ static int da7219_set_dai_sysclk(struct
- 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
- 	int ret = 0;
- 
--	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
-+	mutex_lock(&da7219->pll_lock);
-+
-+	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		return 0;
-+	}
- 
- 	if ((freq < 2000000) || (freq > 54000000)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
- 			freq);
- 		return -EINVAL;
- 	}
- 
--	mutex_lock(&da7219->pll_lock);
--
- 	switch (clk_id) {
- 	case DA7219_CLKSRC_MCLK_SQR:
- 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -810,7 +810,14 @@ static int wear_leveling_worker(struct u
+ 			goto out_not_moved;
+ 		}
+ 		if (err == MOVE_RETRY) {
+-			scrubbing = 1;
++			/*
++			 * For source PEB:
++			 * 1. The scrubbing is set for scrub type PEB, it will
++			 *    be put back into ubi->scrub list.
++			 * 2. Non-scrub type PEB will be put back into ubi->used
++			 *    list.
++			 */
++			keep = 1;
+ 			dst_leb_clean = 1;
+ 			goto out_not_moved;
+ 		}
 
 
 
