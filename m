@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD4C9E2215
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE509E2592
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01CA728217D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C9D3162693
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CC21F76BD;
-	Tue,  3 Dec 2024 15:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FE81F7567;
+	Tue,  3 Dec 2024 15:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+/db+fG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orzD1hc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021051F76B5;
-	Tue,  3 Dec 2024 15:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D281DE8A5;
+	Tue,  3 Dec 2024 15:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239203; cv=none; b=NzPIFX4SMeCy7tF4wdSoa4ZGFCm4d8EivRCK6b9vDGc4ipK2EK2huc9bnUrQT1h8uJnIqbBUBUK2Xp720GhR5lk/6u4gzVVdE3rbDx3uviwzU7u6YWEBjVcrlZJWW6CylP9UAm+Heljw09QVH1wdba1Ybaf9oMsBPFFclX6I1VU=
+	t=1733241417; cv=none; b=MayDLhP5SO6jvUyOnrnfVBBmyefDBPpWejBwDtJZjq8/CZHUTcVOm3lKMw2bl8X0V0bY2c2cBY022w4Qi6qwA2FDU8VOmZMN5qW9JFlp1+ZKsEnKHO/yBYb8yjwG48dKIVxQaLR2NJXOmg0o49jIMXJbrK6nuaM90Clv3GzL6Is=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239203; c=relaxed/simple;
-	bh=p5Y9tbXR79kZwB/3eR3lvRGi+eIU/JIVwpemCfOsIlA=;
+	s=arc-20240116; t=1733241417; c=relaxed/simple;
+	bh=kmTkTDMAwRUl2mqBMssgrfS7IK2vqabIySMyRL0LjsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxg/YE02q7eEgWjaFRgDU4C9b+wuhnYcVpwnlskxl3vNKyzIPPYwbToAuXdRzrunL5JjsXYuYl1hgcMJU+r2ZbwKzK8ilE6idVRW0nAdnv10Fvst7VjSp8cWupoB5awHrCVORmwBaeeMP3PABnA5yDb2+5I9X0drzBZBkF+YpMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E+/db+fG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F56DC4CED6;
-	Tue,  3 Dec 2024 15:20:02 +0000 (UTC)
+	 MIME-Version; b=UdXITMstV2IPSSrEDycdzw/1/XDtye3n5lNJ96bYmZE+AbjPrkHvAJ5tpKbjPr18yzR/XroUWK0ZaVzR33Pg8iXAmKPK2AhpXtTyF9hbeRHKz614b+mvK3rr08YZPTIcDwmbllwc3cRNJiED3RHzLdbkRwUh0890dKm3X7mVK+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orzD1hc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467A1C4CECF;
+	Tue,  3 Dec 2024 15:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239202;
-	bh=p5Y9tbXR79kZwB/3eR3lvRGi+eIU/JIVwpemCfOsIlA=;
+	s=korg; t=1733241417;
+	bh=kmTkTDMAwRUl2mqBMssgrfS7IK2vqabIySMyRL0LjsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+/db+fGD2WBQPwb+tBkPOJXPC80nSx5H2kvG9SoSYsySPjokRm1gIOVuHmaLdTrP
-	 8fFKoa9FAuKZtkBS6PEfszrE+DcUKQKVbniD10lqvz2nTX/GM6a+RO09CeyUZucrCt
-	 qEg9X+mGHqhCOH1ns/a6ESCa1FgyvuxI2Ln8RlIc=
+	b=orzD1hc1kCWBjZAB8Vsj/jyHQO+cM/HASb5RCEFQfR3vpLxLLUFLycR3RhvAkWq03
+	 YMJgehuZie/9ny0PMdxkAP7xMuK56xRjLEhXa5Ge5RKLMpPSoXOhyr928cwFvESPfD
+	 +e4JetAJW6IkGvZI2MBKpfRNryhedBsPCBIvHxME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Dr. David Alan Gilbert" <linux@treblig.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 534/817] remoteproc: qcom: pas: Remove subdevs on the error path of adsp_probe()
-Date: Tue,  3 Dec 2024 15:41:46 +0100
-Message-ID: <20241203144016.744267884@linuxfoundation.org>
+Subject: [PATCH 6.12 380/826] mtd: rawnand: atmel: Fix possible memory leak
+Date: Tue,  3 Dec 2024 15:41:47 +0100
+Message-ID: <20241203144758.589476129@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 587b67cf62a91b10a47f41c20ed8ad71db375334 ]
+[ Upstream commit 6d734f1bfc336aaea91313a5632f2f197608fadd ]
 
-Current implementation of adsp_probe() in qcom_q6v5_pas.c does not
-remove the subdevs of adsp on the error path. Fix this bug by calling
-qcom_remove_{ssr,sysmon,pdm,smd,glink}_subdev(), qcom_q6v5_deinit(), and
-adsp_unassign_memory_region() appropriately.
+The pmecc "user" structure is allocated in atmel_pmecc_create_user() and
+was supposed to be freed with atmel_pmecc_destroy_user(), but this other
+helper is never called. One solution would be to find the proper
+location to call the destructor, but the trend today is to switch to
+device managed allocations, which in this case fits pretty well.
 
-Fixes: 4b48921a8f74 ("remoteproc: qcom: Use common SMD edge handler")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://lore.kernel.org/r/a1cabc64240022a7f1d5237aa2aa6f72d8fb7052.1731038950.git.joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Replace kzalloc() by devm_kzalloc() and drop the destructor entirely.
+
+Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
+Closes: https://lore.kernel.org/all/ZvmIvRJCf6VhHvpo@gallifrey/
+Fixes: f88fc122cc34 ("mtd: nand: Cleanup/rework the atmel_nand driver")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20241001203149.387655-1-miquel.raynal@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/raw/atmel/pmecc.c | 8 +-------
+ drivers/mtd/nand/raw/atmel/pmecc.h | 2 --
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index 88e7b84f223c0..65467876f09e2 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -759,16 +759,16 @@ static int adsp_probe(struct platform_device *pdev)
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
+index 4d7dc8a9c3738..a22aab4ed4e8a 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.c
++++ b/drivers/mtd/nand/raw/atmel/pmecc.c
+@@ -362,7 +362,7 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
+ 	size = ALIGN(size, sizeof(s32));
+ 	size += (req->ecc.strength + 1) * sizeof(s32) * 3;
  
- 	ret = adsp_init_clock(adsp);
- 	if (ret)
--		goto free_rproc;
-+		goto unassign_mem;
+-	user = kzalloc(size, GFP_KERNEL);
++	user = devm_kzalloc(pmecc->dev, size, GFP_KERNEL);
+ 	if (!user)
+ 		return ERR_PTR(-ENOMEM);
  
- 	ret = adsp_init_regulator(adsp);
- 	if (ret)
--		goto free_rproc;
-+		goto unassign_mem;
+@@ -408,12 +408,6 @@ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
+ }
+ EXPORT_SYMBOL_GPL(atmel_pmecc_create_user);
  
- 	ret = adsp_pds_attach(&pdev->dev, adsp->proxy_pds,
- 			      desc->proxy_pd_names);
- 	if (ret < 0)
--		goto free_rproc;
-+		goto unassign_mem;
- 	adsp->proxy_pd_count = ret;
- 
- 	ret = qcom_q6v5_init(&adsp->q6v5, pdev, rproc, desc->crash_reason_smem, desc->load_state,
-@@ -784,18 +784,28 @@ static int adsp_probe(struct platform_device *pdev)
- 					      desc->ssctl_id);
- 	if (IS_ERR(adsp->sysmon)) {
- 		ret = PTR_ERR(adsp->sysmon);
--		goto detach_proxy_pds;
-+		goto deinit_remove_pdm_smd_glink;
- 	}
- 
- 	qcom_add_ssr_subdev(rproc, &adsp->ssr_subdev, desc->ssr_name);
- 	ret = rproc_add(rproc);
- 	if (ret)
--		goto detach_proxy_pds;
-+		goto remove_ssr_sysmon;
- 
- 	return 0;
- 
-+remove_ssr_sysmon:
-+	qcom_remove_ssr_subdev(rproc, &adsp->ssr_subdev);
-+	qcom_remove_sysmon_subdev(adsp->sysmon);
-+deinit_remove_pdm_smd_glink:
-+	qcom_remove_pdm_subdev(rproc, &adsp->pdm_subdev);
-+	qcom_remove_smd_subdev(rproc, &adsp->smd_subdev);
-+	qcom_remove_glink_subdev(rproc, &adsp->glink_subdev);
-+	qcom_q6v5_deinit(&adsp->q6v5);
- detach_proxy_pds:
- 	adsp_pds_detach(adsp, adsp->proxy_pds, adsp->proxy_pd_count);
-+unassign_mem:
-+	adsp_unassign_memory_region(adsp);
- free_rproc:
- 	device_init_wakeup(adsp->dev, false);
- 
+-void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user)
+-{
+-	kfree(user);
+-}
+-EXPORT_SYMBOL_GPL(atmel_pmecc_destroy_user);
+-
+ static int get_strength(struct atmel_pmecc_user *user)
+ {
+ 	const int *strengths = user->pmecc->caps->strengths;
+diff --git a/drivers/mtd/nand/raw/atmel/pmecc.h b/drivers/mtd/nand/raw/atmel/pmecc.h
+index 7851c05126cf1..cc0c5af1f4f1a 100644
+--- a/drivers/mtd/nand/raw/atmel/pmecc.h
++++ b/drivers/mtd/nand/raw/atmel/pmecc.h
+@@ -55,8 +55,6 @@ struct atmel_pmecc *devm_atmel_pmecc_get(struct device *dev);
+ struct atmel_pmecc_user *
+ atmel_pmecc_create_user(struct atmel_pmecc *pmecc,
+ 			struct atmel_pmecc_user_req *req);
+-void atmel_pmecc_destroy_user(struct atmel_pmecc_user *user);
+-
+ void atmel_pmecc_reset(struct atmel_pmecc *pmecc);
+ int atmel_pmecc_enable(struct atmel_pmecc_user *user, int op);
+ void atmel_pmecc_disable(struct atmel_pmecc_user *user);
 -- 
 2.43.0
 
