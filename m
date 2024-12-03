@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F159E2AAB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:20:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE789E2A7A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE7DFBC6A3E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D70CB38CA7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D14E204F87;
-	Tue,  3 Dec 2024 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78521F706B;
+	Tue,  3 Dec 2024 15:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xcagixMC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIxoJJji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F7B1F7558;
-	Tue,  3 Dec 2024 15:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F03F1F130E;
+	Tue,  3 Dec 2024 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240215; cv=none; b=OTM54/rnU6RfMTWm4IptJ3G7GriuccCpxDQgqS6mlt9ZBECPyn1F8iERDQNNA1fYpybGPn69gGRwJ4KhUh2gtNLmGFc2m+y/JKWRYp+kmn+Me+w9qSMg5SVaeOQyY3j70zO45iCQ1aR5ANDOiv/ib8vr7mjPQcUN+sCeRGXwvWw=
+	t=1733238329; cv=none; b=oAv1Pp5Fd97cgmUqB5bw3OS7ZJf7r09jw3vSBSqzfnJnS/3jI2H1JEROaHZ2aeDu9xUnDZoq4wXr9Z7naURi3+K2+bu9wwBvLstbZhtRErki6+CNeZHj8RlVKIp7z3vAJ/6ccDHoWDsOKEdG5HE8sCuqMHIcrL8jrBJeE0i5B6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240215; c=relaxed/simple;
-	bh=h4n9EDO8V3RGnsfmGzgIoOaOp205xC3v3OttUMtYrr4=;
+	s=arc-20240116; t=1733238329; c=relaxed/simple;
+	bh=Xbj/6BoB6sNe01sqMKmRgtfH0dme84auy2T6y03IuJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5arzfG36gIf1zudvNZ034IPWIJ65O4E/G1HWpkVeSVr+9n8PlopiOQQyYcjV6ljZ3TaaPkuKRD0YuKmfTBCT8kuXRkB+68KCpa49ijObg1psHQMR7TN4Mm0RBWbG2YqcUwY/awSNCY5aPb1OH872W1UqxlEoHp3pYAI5a0Jlc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xcagixMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6F0C4CECF;
-	Tue,  3 Dec 2024 15:36:54 +0000 (UTC)
+	 MIME-Version; b=YypFDAocPbvPtVjuoQnoFEO/7lp5OXhZlC2PCajflwSUU07nqt6JU7s46hJ37bP17aUpGU2AplhdMPCa9+PdSoLGhA+QkzsH3ykK+fPDmXohPIVNsTDOGy3F0WtqOjwqlb3WYK52eYRqUAFjOC1N/E1bxKMNyh7R3SasXeagiMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIxoJJji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF79C4CECF;
+	Tue,  3 Dec 2024 15:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240214;
-	bh=h4n9EDO8V3RGnsfmGzgIoOaOp205xC3v3OttUMtYrr4=;
+	s=korg; t=1733238326;
+	bh=Xbj/6BoB6sNe01sqMKmRgtfH0dme84auy2T6y03IuJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xcagixMCbYr0Supl4t4F0Lk0zVNzqSjqAp/+6nKnF0DmrgfVDwiBSvgNOt6usYohG
-	 yXHQe71n6+oQBsa4M+JUoqv19JOk+IJuDcxitPrNupF4pzc19/hAwxE73ZOosVd9PL
-	 q+W/dajbt6Q2V+EYZ+j0vi26q9KzVenaHwyxzeyM=
+	b=BIxoJJjiS3Dsb8KnWFXzczmRZqje4gjs8P4z0d3i6iCOn7U99k5FP4J/1BVNvECr8
+	 HBuamwJ4/6npsdpHu8vjaDk3j8Uv+fB564TxCCq8ILBlbMKeKMwLV0MG1rqCNgu3WJ
+	 MDYBIk7JtyVsJr4yzquQan/GI9EpaDNKTi83bOe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/826] s390/syscalls: Avoid creation of arch/arch/ directory
-Date: Tue,  3 Dec 2024 15:36:02 +0100
-Message-ID: <20241203144744.833275275@linuxfoundation.org>
+Subject: [PATCH 6.11 210/817] media: atomisp: Add check for rgby_data memory allocation failure
+Date: Tue,  3 Dec 2024 15:36:22 +0100
+Message-ID: <20241203144003.943768267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Li Huafei <lihuafei1@huawei.com>
 
-[ Upstream commit 0708967e2d56e370231fd07defa0d69f9ad125e8 ]
+[ Upstream commit ed61c59139509f76d3592683c90dc3fdc6e23cd6 ]
 
-Building the kernel with ARCH=s390 creates a weird arch/arch/ directory.
+In ia_css_3a_statistics_allocate(), there is no check on the allocation
+result of the rgby_data memory. If rgby_data is not successfully
+allocated, it may trigger the assert(host_stats->rgby_data) assertion in
+ia_css_s3a_hmem_decode(). Adding a check to fix this potential issue.
 
-  $ find arch/arch
-  arch/arch
-  arch/arch/s390
-  arch/arch/s390/include
-  arch/arch/s390/include/generated
-  arch/arch/s390/include/generated/asm
-  arch/arch/s390/include/generated/uapi
-  arch/arch/s390/include/generated/uapi/asm
-
-The root cause is 'targets' in arch/s390/kernel/syscalls/Makefile,
-where the relative path is incorrect.
-
-Strictly speaking, 'targets' was not necessary in the first place
-because this Makefile uses 'filechk' instead of 'if_changed'.
-
-However, this commit keeps it, as it will be useful when converting
-'filechk' to 'if_changed' later.
-
-Fixes: 5c75824d915e ("s390/syscalls: add Makefile to generate system call header files")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20241111134603.2063226-1-masahiroy@kernel.org
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20241104145051.3088231-1-lihuafei1@huawei.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/syscalls/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/atomisp/pci/sh_css_params.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/s390/kernel/syscalls/Makefile b/arch/s390/kernel/syscalls/Makefile
-index 1bb78b9468e8a..e85c14f9058b9 100644
---- a/arch/s390/kernel/syscalls/Makefile
-+++ b/arch/s390/kernel/syscalls/Makefile
-@@ -12,7 +12,7 @@ kapi-hdrs-y := $(kapi)/unistd_nr.h
- uapi-hdrs-y := $(uapi)/unistd_32.h
- uapi-hdrs-y += $(uapi)/unistd_64.h
+diff --git a/drivers/staging/media/atomisp/pci/sh_css_params.c b/drivers/staging/media/atomisp/pci/sh_css_params.c
+index 232744973ab88..b1feb6f6ebe89 100644
+--- a/drivers/staging/media/atomisp/pci/sh_css_params.c
++++ b/drivers/staging/media/atomisp/pci/sh_css_params.c
+@@ -4181,6 +4181,8 @@ ia_css_3a_statistics_allocate(const struct ia_css_3a_grid_info *grid)
+ 		goto err;
+ 	/* No weighted histogram, no structure, treat the histogram data as a byte dump in a byte array */
+ 	me->rgby_data = kvmalloc(sizeof_hmem(HMEM0_ID), GFP_KERNEL);
++	if (!me->rgby_data)
++		goto err;
  
--targets += $(addprefix ../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
-+targets += $(addprefix ../../../../,$(gen-y) $(kapi-hdrs-y) $(uapi-hdrs-y))
- 
- PHONY += kapi uapi
- 
+ 	IA_CSS_LEAVE("return=%p", me);
+ 	return me;
 -- 
 2.43.0
 
