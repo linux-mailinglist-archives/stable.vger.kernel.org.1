@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D439E21EC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2A89E289A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C31C280EB3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB910BE2DF2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AE71F1317;
-	Tue,  3 Dec 2024 15:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D671F76DE;
+	Tue,  3 Dec 2024 15:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sK/yxWsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIlKkKbl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEEA646;
-	Tue,  3 Dec 2024 15:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FE91DAC9F;
+	Tue,  3 Dec 2024 15:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239114; cv=none; b=WXJ4N2LQdDNV3ZX7FBKDTlGuhUCWD1pQHhgCikqa5bii9h1RIaMGzKyMhVqhJHMukS0ih/IBh4aNLT1Z1t9oXnYQg2dPQy62f0osBh5NlJmAVreuXXbjY14lU9GEsHoMKPkt+3emlmHlt17zGuhSqp4GXLqG1y/lvcK5c1ajoX8=
+	t=1733241088; cv=none; b=IOIr10E8j2E2PnQEPjT4Wh8fuuCimALVkEtliwV/KfKLUU6YxOJOIeqJa81539PsuMpEXWUZsYPeWSWZncjQFL78LVu5YzScG2RNNtudGRJt0DqpCQOXNDc1JeWNBQv1DjA3O1uzA8BgM31ym4CiS/NdB+xcpK+ynQZRF2yAyls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239114; c=relaxed/simple;
-	bh=7d5Xo2tH+Zcn9LcjK5emNjcyduZizoTj8FtfblQcNC8=;
+	s=arc-20240116; t=1733241088; c=relaxed/simple;
+	bh=QHIAxF2TproiPMc5J5qA6NxEaJMDDpKY6w3zuD4GCno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rlMnEWoSxTf3Qe00rjVWcFHt5tqdaEYrhLD2xKOs3N53ewgPO1IcWuF/5zU35u+yeIWTse5BOeh0MfK/YoPj3FgGtHgiWbZC8rKDXR8jr65yXz9MyUO4Mj1aAnNhP/cL8UeCX5sQmDmfmnOBpKesnyGywt3hoQ0Z/O9QuqnucWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sK/yxWsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396E5C4CECF;
-	Tue,  3 Dec 2024 15:18:34 +0000 (UTC)
+	 MIME-Version; b=qhxu7AHto1xHgk8Gw9NM69wIiSq7ujwZrAIqH+7bzncGHRkYXY95O+7fOKQCQN/d16GRsp9At5rRcvw1wK8npHEA2kZzLfCJUW7TEoXbiH00XO99amWL93lDddfxUOCVQx98aE+nRgf0FlefqtaBuOJzX9eso35GGzhwS1Rg+aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIlKkKbl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC77C4CECF;
+	Tue,  3 Dec 2024 15:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239114;
-	bh=7d5Xo2tH+Zcn9LcjK5emNjcyduZizoTj8FtfblQcNC8=;
+	s=korg; t=1733241088;
+	bh=QHIAxF2TproiPMc5J5qA6NxEaJMDDpKY6w3zuD4GCno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sK/yxWsXB2R5nWR5Fdr3tjhfm7h5FOCCD01c235CGtMextn939Jv5VR+Ba7hHtt36
-	 CVAmgFe0rGDVIncDCA/u+Ubu0/BwizcBkHqWUwwwb4jh7yyMt0y4256LVjgG41Elkn
-	 M+tMz7NN4IAibsrJubFFkjy0zzOK2necRABjdL+A=
+	b=HIlKkKbla8ZJXFXiW5mAqHUUDs8kBTp2AGVzbZxKBQE5AyV/2EELghejYS5KB9O/n
+	 PWo9T8ZbLgydi8/lXSv/dwVIoMH/y44tTGYpFMI61bAaKHmqwRJ3sIRNT6WiJoPyaw
+	 q1rxkFPrlLTrckvVb3I7wNd8oK7hM2cEwAXnPmDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Aurich <paul@darkrain42.org>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Yuan Can <yuancan@huawei.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 477/817] smb: cached directories can be more than root file handle
+Subject: [PATCH 6.12 322/826] drm/amdkfd: Fix wrong usage of INIT_WORK()
 Date: Tue,  3 Dec 2024 15:40:49 +0100
-Message-ID: <20241203144014.489115530@linuxfoundation.org>
+Message-ID: <20241203144756.322856913@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Aurich <paul@darkrain42.org>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 128630e1dbec8074c7707aad107299169047e68f ]
+[ Upstream commit 21cae8debc6a1d243f64fa82cd1b41cb612b5c61 ]
 
-Update this log message since cached fids may represent things other
-than the root of a mount.
+In kfd_procfs_show(), the sdma_activity_work_handler is a local variable
+and the sdma_activity_work_handler.sdma_activity_work should initialize
+with INIT_WORK_ONSTACK() instead of INIT_WORK().
 
-Fixes: e4029e072673 ("cifs: find and use the dentry for cached non-root directories also")
-Signed-off-by: Paul Aurich <paul@darkrain42.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 32cb59f31362 ("drm/amdkfd: Track SDMA utilization per process")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index 0ff2491c311d8..adcba13352045 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -401,7 +401,7 @@ int open_cached_dir_by_dentry(struct cifs_tcon *tcon,
- 	spin_lock(&cfids->cfid_list_lock);
- 	list_for_each_entry(cfid, &cfids->entries, entry) {
- 		if (dentry && cfid->dentry == dentry) {
--			cifs_dbg(FYI, "found a cached root file handle by dentry\n");
-+			cifs_dbg(FYI, "found a cached file handle by dentry\n");
- 			kref_get(&cfid->refcount);
- 			*ret_cfid = cfid;
- 			spin_unlock(&cfids->cfid_list_lock);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 6bab6fc6a35d6..ff34bb1ac9db7 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -341,8 +341,8 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
+ 							      attr_sdma);
+ 		struct kfd_sdma_activity_handler_workarea sdma_activity_work_handler;
+ 
+-		INIT_WORK(&sdma_activity_work_handler.sdma_activity_work,
+-					kfd_sdma_activity_worker);
++		INIT_WORK_ONSTACK(&sdma_activity_work_handler.sdma_activity_work,
++				  kfd_sdma_activity_worker);
+ 
+ 		sdma_activity_work_handler.pdd = pdd;
+ 		sdma_activity_work_handler.sdma_activity_counter = 0;
+@@ -350,6 +350,7 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
+ 		schedule_work(&sdma_activity_work_handler.sdma_activity_work);
+ 
+ 		flush_work(&sdma_activity_work_handler.sdma_activity_work);
++		destroy_work_on_stack(&sdma_activity_work_handler.sdma_activity_work);
+ 
+ 		return snprintf(buffer, PAGE_SIZE, "%llu\n",
+ 				(sdma_activity_work_handler.sdma_activity_counter)/
 -- 
 2.43.0
 
