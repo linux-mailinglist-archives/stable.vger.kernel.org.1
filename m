@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BA39E2216
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1779E24AC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0598016101B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33143287F8B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4B81F891F;
-	Tue,  3 Dec 2024 15:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BD11F8935;
+	Tue,  3 Dec 2024 15:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUBnZdr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQt43J5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCF01F756E;
-	Tue,  3 Dec 2024 15:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042561F892C;
+	Tue,  3 Dec 2024 15:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238897; cv=none; b=P33lwdoWxgqtybWWIeUX4cvj1bEwGDfPuqVuEb9bSwYqW1ajuLB4WS1OeYV+od6B6w5UWXNY+FqLcAc8EEkhm9VT8dstFjCm1yUwz1YRx4Rz8E+qwz+felcmCsQ1eusWVXIRu49hdqAHLsVCgQTiO0drT+mfbanSm8R4Px91mjc=
+	t=1733241051; cv=none; b=mU08Fy5F/Xb8WqBPaoGwKzob+W0WhKfBoGHHNey0yhuMjjq2UweGCmO/cRM6Nvh+DiayJTaUSWWKfJJS5bg6zY0386+fU4JL2nwA1zOkn5io1vb1m1NuizdZLaSi8XUM5NUPccYOhAURLoQUbBFlHmez4Gp7sg0r9ixZaHOClEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238897; c=relaxed/simple;
-	bh=HEd0KZ4/jnEnbBL6N9WdLGYWCsyte9HycRPZepQFjGA=;
+	s=arc-20240116; t=1733241051; c=relaxed/simple;
+	bh=W2nX2w9c05IoDRLyPNbu2QXhXlZPg7h0+glWOxbFrkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daApUy+iFoJ4Br/xNR9etyF58MMgrqrwmWZyT9apRR+DlGWOratwwGGpxFtrL7OB+XAkOBLezk84O9qUfbDO0aqWXFJSYOYVkvE4PhgzjtKBVo4Jvn7UobKWmdglysmyqaa2X6hC2fOz1u4HLBK8ixbHMV39ESkKUIpwM/Mp1Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUBnZdr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52E3C4CECF;
-	Tue,  3 Dec 2024 15:14:56 +0000 (UTC)
+	 MIME-Version; b=FQa4XAF/K4I3OuqjySVmwEaYXYIMMAeJotmn7ul4hO5pD1F6Ar0mOYV6nt6DwuSSrVaFqCjJDxl3/sLoiCY3oYZZSXiWbQ61/89RaZijYrepKYWp8nFkVlBD7yiMhMeLVMoJ34LsqfL84VSYtVUwB2uIIsonykuEfGgQijj3UdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQt43J5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7DFC4CECF;
+	Tue,  3 Dec 2024 15:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238897;
-	bh=HEd0KZ4/jnEnbBL6N9WdLGYWCsyte9HycRPZepQFjGA=;
+	s=korg; t=1733241050;
+	bh=W2nX2w9c05IoDRLyPNbu2QXhXlZPg7h0+glWOxbFrkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUBnZdr0zgZAjPlcpzzI5A1YdPxmHhc405HVEiCr7h1D8ZCQWPoQYtZkfULtbI5rY
-	 y9WMWUyX+BsReSD1BV4Wu/1srAQtJnKwdOoBSlqIsTKieSqB3/Ccmfv1t7YDAHoj/P
-	 Ecg8fqKrnSG40t7id5bhQS4eN1C8fJnaSOgLcRaI=
+	b=wQt43J5pxYxMO2Wdz9cnayEpPdKyKY19T+X37kNXtdo/KyuiyYeV5NXcXhwaZ/toi
+	 khSkQFXNExc/l4V5sP3BRh0p3u7OILl8xaxx/URCp1GfpAznHu2KxPKK9NL1Vuwmxf
+	 wA23okpZQUh06X+PchxIli9jLiT0tijMbG5emoyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 434/817] leds: max5970: Fix unreleased fwnode_handle in probe function
+Subject: [PATCH 6.12 279/826] drm/msm/gpu: Check the status of registration to PM QoS
 Date: Tue,  3 Dec 2024 15:40:06 +0100
-Message-ID: <20241203144012.823492299@linuxfoundation.org>
+Message-ID: <20241203144754.657608223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Lukasz Luba <lukasz.luba@arm.com>
 
-[ Upstream commit 02f58f97419c828f58e30f24f54395ac9be159c0 ]
+[ Upstream commit 8f32ddd87e499ba6d2dc74ce30b6932baf1e1fc3 ]
 
-An object initialized via device_get_named_child_node() requires calls
-to fwnode_handle_put() when it is no longer required to avoid leaking
-memory.
+There is a need to check the returned value of the registration function.
+In case of returned error, print that and stop the init process.
 
-Add the automatic cleanup facility for 'led_node' to ensure that
-fwnode_handle_put() is called in all execution paths.
-
-Fixes: 736214b4b02a ("leds: max5970: Add support for max5970")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20241031-max5970-of_node_put-v2-1-0ffe1f1d3bc9@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 7c0ffcd40b16 ("drm/msm/gpu: Respect PM QoS constraints")
+Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/620336/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-max5970.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_gpu_devfreq.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-max5970.c b/drivers/leds/leds-max5970.c
-index 56a584311581a..285074c53b234 100644
---- a/drivers/leds/leds-max5970.c
-+++ b/drivers/leds/leds-max5970.c
-@@ -45,7 +45,7 @@ static int max5970_led_set_brightness(struct led_classdev *cdev,
- 
- static int max5970_led_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/msm/msm_gpu_devfreq.c b/drivers/gpu/drm/msm/msm_gpu_devfreq.c
+index ea70c1c32d940..6970b0f7f457c 100644
+--- a/drivers/gpu/drm/msm/msm_gpu_devfreq.c
++++ b/drivers/gpu/drm/msm/msm_gpu_devfreq.c
+@@ -140,6 +140,7 @@ void msm_devfreq_init(struct msm_gpu *gpu)
  {
--	struct fwnode_handle *led_node, *child;
-+	struct fwnode_handle *child;
- 	struct device *dev = &pdev->dev;
- 	struct regmap *regmap;
- 	struct max5970_led *ddata;
-@@ -55,7 +55,8 @@ static int max5970_led_probe(struct platform_device *pdev)
- 	if (!regmap)
- 		return -ENODEV;
+ 	struct msm_gpu_devfreq *df = &gpu->devfreq;
+ 	struct msm_drm_private *priv = gpu->dev->dev_private;
++	int ret;
  
--	led_node = device_get_named_child_node(dev->parent, "leds");
-+	struct fwnode_handle *led_node __free(fwnode_handle) =
-+		device_get_named_child_node(dev->parent, "leds");
- 	if (!led_node)
- 		return -ENODEV;
+ 	/* We need target support to do devfreq */
+ 	if (!gpu->funcs->gpu_busy)
+@@ -156,8 +157,12 @@ void msm_devfreq_init(struct msm_gpu *gpu)
+ 
+ 	mutex_init(&df->lock);
+ 
+-	dev_pm_qos_add_request(&gpu->pdev->dev, &df->boost_freq,
+-			       DEV_PM_QOS_MIN_FREQUENCY, 0);
++	ret = dev_pm_qos_add_request(&gpu->pdev->dev, &df->boost_freq,
++				     DEV_PM_QOS_MIN_FREQUENCY, 0);
++	if (ret < 0) {
++		DRM_DEV_ERROR(&gpu->pdev->dev, "Couldn't initialize QoS\n");
++		return;
++	}
+ 
+ 	msm_devfreq_profile.initial_freq = gpu->fast_rate;
  
 -- 
 2.43.0
