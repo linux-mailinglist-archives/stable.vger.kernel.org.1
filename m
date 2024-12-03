@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-96557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA8A9E2087
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC709E207C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A1C616853E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E17D628A576
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7C51F7569;
-	Tue,  3 Dec 2024 14:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6121F76A4;
+	Tue,  3 Dec 2024 14:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sj6nVPdw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxeDZYTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6101F7550;
-	Tue,  3 Dec 2024 14:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F391F76AA;
+	Tue,  3 Dec 2024 14:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237901; cv=none; b=fBNX2qXbuLY/QG8Ix4aWHsEfjds3scIw5Zt5r+aMVyMMSDGFYCRMQdVD5wfm1/VfKXHNkzngnb/q2DUyGn3hm7g2PlqnmG2pUXCicY+yawaYLvoQjGYU9MQeqhZ8eEDhpSuDoot9rf8oTc4TVxlmNEiCAHz16X0xqYKPUOpqExo=
+	t=1733237907; cv=none; b=tD0J2V9MRfMpY5nyii1XvygT61lgPWerH3/CHBfumta7K2CS3r/azHXOzH9bGREpM1J1Oh158bBI8Wh5MBC7eVbR/Lu3dNNsBRj6zhjTOPC2idgSPkb6GU9EtBE6U72gPDrazoHjEp86UGuu9ocMnw32rI3aZlEzY9ciKb2DubM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237901; c=relaxed/simple;
-	bh=VEJ/n+iOM0IVS9OVUO18QOccQmCffkCMUBWNtIefUV8=;
+	s=arc-20240116; t=1733237907; c=relaxed/simple;
+	bh=AoCH/3S++3kEvhmLP9EeY0/oFiAjCswvxMK1rpMI0T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCUyeilFEOBw3Oye22b5PuzBI0Ee+3beTIOVQEsthBMv+o6Zl9JXIBfb4V0eqnxkFTfQNd+PZTJtw135WPjcxu4Iamksd9fFwnRybaRk2WN80qo2BUo3xizrPqADccZjuk0oImuoCmZ1W42nE363JaUvZVMq2zSdSru2cqXfJ6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sj6nVPdw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B52C4CECF;
-	Tue,  3 Dec 2024 14:58:20 +0000 (UTC)
+	 MIME-Version; b=lY3CPs11EjZW001u4uRGdsH3IErfgruS48bJBY6e7s+fhI6z6sl9WXoNcpSxSY8uOPoMBbeItcuR2vgYONBkiFcHAysN8okrNXoCLxyeoHz7xdBVPY0pMVAvlOH0jDV5g0115urnqkt3evocUmerf/5uld7XsZxSHBKLvNMHitI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxeDZYTn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE358C4CED8;
+	Tue,  3 Dec 2024 14:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237900;
-	bh=VEJ/n+iOM0IVS9OVUO18QOccQmCffkCMUBWNtIefUV8=;
+	s=korg; t=1733237907;
+	bh=AoCH/3S++3kEvhmLP9EeY0/oFiAjCswvxMK1rpMI0T0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sj6nVPdw7jLg/Ts18P/8IIfp4fd/qf1JiYB+gnE+tKuMkHSQy0cTKR7Q+z14+Q+EP
-	 DXPzzdiPe7mShiZz2iPadW1PSCixKlilg4tC8dVvtzVP5ZW23hrQqXqTbLmMAJXJDJ
-	 Cbi8qwTIbsCEydvaY6A1bvPStCqQD2jPQP+HFKJc=
+	b=rxeDZYTnHhWMuYK152OAfJsyb1ID2z2MwrbtTIi1XJlfBKwT/ssvNtxFVgyYFoVLo
+	 byew2wW3kpqypgvHHo3ost8lk1FhVIO2NEU0G33FZIXT6jzKPt6QMnm9Ezb4qea9yk
+	 hYAMM9MFG7VBNgR+b8Xz+xvFt+jzeb1sJ3E5SUo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jan Stancek <jstancek@redhat.com>,
+	Li Wang <liwang@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 070/817] arm64: fix .data.rel.ro size assertion when CONFIG_LTO_CLANG
-Date: Tue,  3 Dec 2024 15:34:02 +0100
-Message-ID: <20241203143958.421146807@linuxfoundation.org>
+Subject: [PATCH 6.11 072/817] loop: fix type of block size
+Date: Tue,  3 Dec 2024 15:34:04 +0100
+Message-ID: <20241203143958.499557382@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,54 +72,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Li Wang <liwang@redhat.com>
 
-[ Upstream commit 340fd66c856651d8c1d29f392dd26ad674d2db0e ]
+[ Upstream commit 8e604cac499248c75ad3a26695a743ff879ded5c ]
 
-Commit be2881824ae9 ("arm64/build: Assert for unwanted sections")
-introduced an assertion to ensure that the .data.rel.ro section does
-not exist.
+PAGE_SIZE may be 64K, and the max block size can be PAGE_SIZE, so any
+variable for holding block size can't be defined as 'unsigned short'.
 
-However, this check does not work when CONFIG_LTO_CLANG is enabled,
-because .data.rel.ro matches the .data.[0-9a-zA-Z_]* pattern in the
-DATA_MAIN macro.
+Unfortunately commit 473516b36193 ("loop: use the atomic queue limits
+update API") passes 'bsize' with type of 'unsigned short' to
+loop_reconfigure_limits(), and causes LTP/ioctl_loop06 test failure:
 
-Move the ASSERT() above the RW_DATA() line.
+  12 ioctl_loop06.c:76: TINFO: Using LOOP_SET_BLOCK_SIZE with arg > PAGE_SIZE
+  13 ioctl_loop06.c:59: TFAIL: Set block size succeed unexpectedly
+  ...
+  18 ioctl_loop06.c:76: TINFO: Using LOOP_CONFIGURE with block_size > PAGE_SIZE
+  19 ioctl_loop06.c:59: TFAIL: Set block size succeed unexpectedly
 
-Fixes: be2881824ae9 ("arm64/build: Assert for unwanted sections")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241106161843.189927-1-masahiroy@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes the issue by defining 'block size' variable with 'unsigned int', which is
+aligned with block layer's definition.
+
+(improve commit log & add fixes tag)
+
+Fixes: 473516b36193 ("loop: use the atomic queue limits update API")
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Jan Stancek <jstancek@redhat.com>
+Signed-off-by: Li Wang <liwang@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241109022744.1126003-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/vmlinux.lds.S | 6 +++---
+ drivers/block/loop.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index 55a8e310ea12c..d294c1ea8391b 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -288,6 +288,9 @@ SECTIONS
- 	__initdata_end = .;
- 	__init_end = .;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 78a7bb28defe4..86cc3b19faae8 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -173,7 +173,7 @@ static loff_t get_loop_size(struct loop_device *lo, struct file *file)
+ static bool lo_bdev_can_use_dio(struct loop_device *lo,
+ 		struct block_device *backing_bdev)
+ {
+-	unsigned short sb_bsize = bdev_logical_block_size(backing_bdev);
++	unsigned int sb_bsize = bdev_logical_block_size(backing_bdev);
  
-+	.data.rel.ro : { *(.data.rel.ro) }
-+	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
-+
- 	_data = .;
- 	_sdata = .;
- 	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
-@@ -344,9 +347,6 @@ SECTIONS
- 		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
- 	}
- 	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
--
--	.data.rel.ro : { *(.data.rel.ro) }
--	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
+ 	if (queue_logical_block_size(lo->lo_queue) < sb_bsize)
+ 		return false;
+@@ -977,7 +977,7 @@ loop_set_status_from_info(struct loop_device *lo,
+ 	return 0;
  }
  
- #include "image-vars.h"
+-static unsigned short loop_default_blocksize(struct loop_device *lo,
++static unsigned int loop_default_blocksize(struct loop_device *lo,
+ 		struct block_device *backing_bdev)
+ {
+ 	/* In case of direct I/O, match underlying block size */
+@@ -986,7 +986,7 @@ static unsigned short loop_default_blocksize(struct loop_device *lo,
+ 	return SECTOR_SIZE;
+ }
+ 
+-static int loop_reconfigure_limits(struct loop_device *lo, unsigned short bsize)
++static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
+ {
+ 	struct file *file = lo->lo_backing_file;
+ 	struct inode *inode = file->f_mapping->host;
 -- 
 2.43.0
 
