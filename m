@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-96926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973D59E21CA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E239E2717
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C218285BBE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F291B35BF0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F36B1F75A8;
-	Tue,  3 Dec 2024 15:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB471F7577;
+	Tue,  3 Dec 2024 15:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNxRQZjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfoHkI6K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B692D7BF;
-	Tue,  3 Dec 2024 15:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCB42D7BF;
+	Tue,  3 Dec 2024 15:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238999; cv=none; b=HdtvohbUlhkEk8XPmrZeGaCqalKRTCArAS/KUIGFNPZA+nLL0tJHcYCuwfMTRUguSlpredQ7xGFmYT5roU8U+Qwh9Vz+RpP0+XdNX7gqPwEfuSZE+vmM8FbkM8AaeKoCSQI+C2ybNdaxJc9joZcxRhJ0owObY3/hRLKgGdLAfEA=
+	t=1733239014; cv=none; b=cQ1GTFZWD9TEkLoijHXKFQL5/GumCn+PFMxRiwEOQ3vidfZi8CfX/SIjbciC7r6PYyEtfrrWKn/O1ABcSsh+pZWsq9iFHDI4fUYFAiDdrYC07PuSFo0IpkVnUNec2bV6CQDXMk9MiNxaUZBQ+U9HuSh5h0fQ4nGhlKYGbYR0wjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238999; c=relaxed/simple;
-	bh=KP2FjRCaZR0Ke94YqrpTHKC2eTpVvVTELUmmKFMUp7A=;
+	s=arc-20240116; t=1733239014; c=relaxed/simple;
+	bh=mdd7uhlHeB9cufuZuyNp4lZ0szW4IsQYE4XWi2o0g/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilEr5roaWiRRL2lSXe10chION6HmaS/EJlnhph5XFSZxD808Gsih2oqwq0hsnLCLXHj+J/RrgP4EquNrdYREdLW6jFZ1qb0PdkGUp6vhFoaNkn15UNA2fye/3hSCug93Ppa17qDN8ol5mB/VnKHA9By9sNM3v5eiIyay5BbYgVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNxRQZjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A29C4CECF;
-	Tue,  3 Dec 2024 15:16:38 +0000 (UTC)
+	 MIME-Version; b=K4esQ6pQ+AJchk3MFwc7cvsGKsVGzaNT7dvq1FTI91fNOVQkbyXrZsa1uYTgbj3nOa/7aTyVKOuJS6UI7Otvi/vwANDpwXx4SEQOwsO3Cc8EFekChQyih1fzso7EZaDJ/oKuvAKoM5aFA2GqztQhDnzy7+XJp3kJH65mamUQeiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfoHkI6K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC16C4CECF;
+	Tue,  3 Dec 2024 15:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238998;
-	bh=KP2FjRCaZR0Ke94YqrpTHKC2eTpVvVTELUmmKFMUp7A=;
+	s=korg; t=1733239013;
+	bh=mdd7uhlHeB9cufuZuyNp4lZ0szW4IsQYE4XWi2o0g/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iNxRQZjg3Xg6ecJ7td1gGRrHyWX+0mw9t5HC8bgqj/ItbDmFa7WpfBkUZHsAZblGm
-	 9nP/ylOFJbCImhMQyW4cfndVmYLx0sIJHNopvPIsS4ZOYGkeAbp56WYOfAKdqgw0HY
-	 ScvC0oXhrScwyzF1D8tCzSqXHyP20AGssEunqd3Q=
+	b=nfoHkI6KmSeW2zDdrjv+Ssikfc2DlEidgIiyVWo/AlTHkDF1sQKtra4iOvImXJDGz
+	 N+Ut/js8aYEXoosnGUGcuBtIqJKvNtugZdxcQ9Lt9dGkegihZEX6/sIxpvgdlKoEy6
+	 KzWHNIAEMnTyYctkwH3tjnhvEqKfWh8kYRYMZfj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Douglas Gilbert <dgilbert@interlog.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 442/817] scsi: sg: Enable runtime power management
-Date: Tue,  3 Dec 2024 15:40:14 +0100
-Message-ID: <20241203144013.133397214@linuxfoundation.org>
+Subject: [PATCH 6.11 443/817] x86/tdx: Introduce wrappers to read and write TD metadata
+Date: Tue,  3 Dec 2024 15:40:15 +0100
+Message-ID: <20241203144013.172307784@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,72 +68,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit 4045de893f691f75193c606aec440c365cf7a7be ]
+[ Upstream commit 5081e8fadb809253c911b349b01d87c5b4e3fec5 ]
 
-In 2010, runtime power management support was implemented in the SCSI
-core.  The description of patch "[SCSI] implement runtime Power
-Management" mentions that the sg driver is skipped but not why. This
-patch enables runtime power management even if an instance of the sg
-driver is held open.  Enabling runtime PM for the sg driver is safe
-because all interactions of the sg driver with the SCSI device pass
-through the block layer (blk_execute_rq_nowait()) and the block layer
-already supports runtime PM.
+The TDG_VM_WR TDCALL is used to ask the TDX module to change some
+TD-specific VM configuration. There is currently only one user in the
+kernel of this TDCALL leaf.  More will be added shortly.
 
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: Douglas Gilbert <dgilbert@interlog.com>
-Fixes: bc4f24014de5 ("[SCSI] implement runtime Power Management")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20241030220310.1373569-1-bvanassche@acm.org
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Refactor to make way for more users of TDG_VM_WR who will need to modify
+other TD configuration values.
+
+Add a wrapper for the TDG_VM_RD TDCALL that requests TD-specific
+metadata from the TDX module. There are currently no users for
+TDG_VM_RD. Mark it as __maybe_unused until the first user appears.
+
+This is preparation for enumeration and enabling optional TD features.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Link: https://lore.kernel.org/all/20241104103803.195705-2-kirill.shutemov%40linux.intel.com
+Stable-dep-of: f65aa0ad79fc ("x86/tdx: Dynamically disable SEPT violations from causing #VEs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ arch/x86/coco/tdx/tdx.c           | 32 ++++++++++++++++++++++++++-----
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ 2 files changed, 28 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index baf870a03ecf6..9e6eebf307d3a 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -307,10 +307,6 @@ sg_open(struct inode *inode, struct file *filp)
- 	if (retval)
- 		goto sg_put;
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 327c45c5013fe..c74bb9e7d7a35 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -78,6 +78,32 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+ }
  
--	retval = scsi_autopm_get_device(device);
--	if (retval)
--		goto sdp_put;
--
- 	/* scsi_block_when_processing_errors() may block so bypass
- 	 * check if O_NONBLOCK. Permits SCSI commands to be issued
- 	 * during error recovery. Tread carefully. */
-@@ -318,7 +314,7 @@ sg_open(struct inode *inode, struct file *filp)
- 	      scsi_block_when_processing_errors(device))) {
- 		retval = -ENXIO;
- 		/* we are in error recovery for this device */
--		goto error_out;
-+		goto sdp_put;
- 	}
++/* Read TD-scoped metadata */
++static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++	};
++	u64 ret;
++
++	ret = __tdcall_ret(TDG_VM_RD, &args);
++	*value = args.r8;
++
++	return ret;
++}
++
++/* Write TD-scoped metadata */
++static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++		.r8 = value,
++		.r9 = mask,
++	};
++
++	return __tdcall(TDG_VM_WR, &args);
++}
++
+ /**
+  * tdx_mcall_get_report0() - Wrapper to get TDREPORT0 (a.k.a. TDREPORT
+  *                           subtype 0) using TDG.MR.REPORT TDCALL.
+@@ -929,10 +955,6 @@ static void tdx_kexec_finish(void)
  
- 	mutex_lock(&sdp->open_rel_lock);
-@@ -371,8 +367,6 @@ sg_open(struct inode *inode, struct file *filp)
- 	}
- error_mutex_locked:
- 	mutex_unlock(&sdp->open_rel_lock);
--error_out:
--	scsi_autopm_put_device(device);
- sdp_put:
- 	kref_put(&sdp->d_ref, sg_device_destroy);
- 	scsi_device_put(device);
-@@ -392,7 +386,6 @@ sg_release(struct inode *inode, struct file *filp)
- 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
+ void __init tdx_early_init(void)
+ {
+-	struct tdx_module_args args = {
+-		.rdx = TDCS_NOTIFY_ENABLES,
+-		.r9 = -1ULL,
+-	};
+ 	u64 cc_mask;
+ 	u32 eax, sig[3];
  
- 	mutex_lock(&sdp->open_rel_lock);
--	scsi_autopm_put_device(sdp->device);
- 	kref_put(&sfp->f_ref, sg_remove_sfp);
- 	sdp->open_cnt--;
+@@ -951,7 +973,7 @@ void __init tdx_early_init(void)
+ 	cc_set_mask(cc_mask);
  
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+-	tdcall(TDG_VM_WR, &args);
++	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
+ 
+ 	/*
+ 	 * All bits above GPA width are reserved and kernel treats shared bit
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index fdfd41511b021..7e12cfa28bec9 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -16,6 +16,7 @@
+ #define TDG_VP_VEINFO_GET		3
+ #define TDG_MR_REPORT			4
+ #define TDG_MEM_PAGE_ACCEPT		6
++#define TDG_VM_RD			7
+ #define TDG_VM_WR			8
+ 
+ /* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
 -- 
 2.43.0
 
