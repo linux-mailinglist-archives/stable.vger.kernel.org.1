@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-97195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2919E28F3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:19:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D38329E2AED
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6149EB272AE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FA9EBA5C7C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E071F759C;
-	Tue,  3 Dec 2024 15:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495821F76BF;
+	Tue,  3 Dec 2024 16:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMKD2Zgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MccE3ISl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026F41E3DED;
-	Tue,  3 Dec 2024 15:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071521F76AD;
+	Tue,  3 Dec 2024 16:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239789; cv=none; b=hRkfIBJQK0bp8IQLa/iY+TyHUoOu1kRL4r6+p7230vkj60ULfkLAF1Uo99YrOBX5K9pQXgxOHzQ10ZocwbzNBxvQ+uDNDu35AIc55y8xBw3tqBJEvej0mv3MlM6ATmPbOnZkCbdOTfB6CCZHABMHQ6yX2KSNBVmaCDL5PftyEGQ=
+	t=1733242102; cv=none; b=t45HyhyGlk1nJCiziMTyEQmyutr62uWD6sOZZqEJymPfmTfIVJ3UufCi1j8+SSrAfvjyZ18JHfLbrJQWfdbdygofcXB18KPUyooFxvk4j7ohA+UyByYgCBPitwjQBJy5Ocg8d5r6OhrNDQT6Mpe1YS6Wgv61MNnvGuLq4fI6K94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239789; c=relaxed/simple;
-	bh=q1TaoJjEBE1aoArFdkovdaXNF/zzYkDPap7NdnntcZo=;
+	s=arc-20240116; t=1733242102; c=relaxed/simple;
+	bh=oj0BEKeV8TbzCXMKvar+d7ph1mrP2Q9V1D5opZ5IL/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=baUvZg7C9TrtFIs6rdkxN4fTbnmPIAQWe5bVOif1f7QGmtWD0TiS99jCsJu5FPoSS1J9xGGVe5IKEqvUxCwgjm7CSAJfWOG5TQ8YnRjmsSc3hus1G1XilaGzGST362kBIEHEhecrK8WPNx3P2ccphkhAlLdFYqLh4k8VfynwbuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMKD2Zgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5D0C4CECF;
-	Tue,  3 Dec 2024 15:29:48 +0000 (UTC)
+	 MIME-Version; b=dSyPoJV8AIFora+LrE0hyo5at+c3vnMLtmPtjN0zV0jcF6LAMwVzpb0B2991wpL8bjSBfGwVsYqum07Ay419kohcPkqxPadgZ7r0YSp+OORwzv1HqzcdTCQkZ06/xz9Mscb1vidTpLLr2K54iqYkGmFekfwfMui4VQ+2vq9D7FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MccE3ISl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AA5C4CECF;
+	Tue,  3 Dec 2024 16:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239788;
-	bh=q1TaoJjEBE1aoArFdkovdaXNF/zzYkDPap7NdnntcZo=;
+	s=korg; t=1733242101;
+	bh=oj0BEKeV8TbzCXMKvar+d7ph1mrP2Q9V1D5opZ5IL/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMKD2Zgbi9HGD+zGqU9bILZOZvow42XZl2WoGSlbUVIOTxLoiNfwrK0VwmN+hLQri
-	 qEDRFrfdaLnVdDS9+4aJUB97mKFoyFKZ1dwY+GH+8DWvKhQOagYJ7kwLoK83gc9n6R
-	 ThAo50yi56UYT2vvPsQUOTMjelsoCIEMvMBF3SYM=
+	b=MccE3ISlL+p19tPqx5wnrN3y3yUEy5wApnI7BPj/cNFlP8cOP3cu/B8XDI+H2pSod
+	 9EM/KLxaILWg5h2H3fRQ6eU0+0t5faPgbfS8pUDnpwhTadczcT29t41Rt2In775yIb
+	 VHYaTKwZHzge23QjuSbyapXkDsMTnfXbOEn7P4JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.11 734/817] arm64: dts: mediatek: mt8186-corsola-voltorb: Merge speaker codec nodes
-Date: Tue,  3 Dec 2024 15:45:06 +0100
-Message-ID: <20241203144024.649554755@linuxfoundation.org>
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 581/826] bnxt_en: Refactor bnxt_ptp_init()
+Date: Tue,  3 Dec 2024 15:45:08 +0100
+Message-ID: <20241203144806.413388296@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +65,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Michael Chan <michael.chan@broadcom.com>
 
-commit 26ea2459d1724406bf0b342df6b4b1f002d7f8e3 upstream.
+[ Upstream commit 1e9614cd956268e10a669c0593e7e54d03d0c087 ]
 
-The Voltorb device uses a speaker codec different from the original
-Corsola device. When the Voltorb device tree was first added, the new
-codec was added as a separate node when it should have just replaced the
-existing one.
+Instead of passing the 2nd parameter phc_cfg to bnxt_ptp_init().
+Store it in bp->ptp_cfg so that the caller doesn't need to know what
+the value should be.
 
-Merge the two nodes. The only differences are the compatible string and
-the GPIO line property name. This keeps the device node path for the
-speaker codec the same across the MT8186 Chromebook line. Also rename
-the related labels and node names from having rt1019p to speaker codec.
+In the next patch, we'll need to call bnxt_ptp_init() in bnxt_resume()
+and this will make it easier.
 
-Cc: stable@vger.kernel.org # v6.11+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20241018082113.1297268-1-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 3661c05c54e8 ("bnxt_en: Unregister PTP during PCI shutdown and suspend")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/mediatek/mt8186-corsola-voltorb.dtsi  | 21 +++++--------------
- .../boot/dts/mediatek/mt8186-corsola.dtsi     |  8 +++----
- 2 files changed, 9 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 6 +++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h | 3 ++-
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
-index 52ec58128d56..b495a241b443 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
-@@ -10,12 +10,6 @@
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 913acd80d6483..015ad2b0bcd1c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -9053,7 +9053,6 @@ static int __bnxt_hwrm_ptp_qcfg(struct bnxt *bp)
+ 	struct hwrm_port_mac_ptp_qcfg_output *resp;
+ 	struct hwrm_port_mac_ptp_qcfg_input *req;
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+-	bool phc_cfg;
+ 	u8 flags;
+ 	int rc;
  
- / {
- 	chassis-type = "laptop";
--
--	max98360a: max98360a {
--		compatible = "maxim,max98360a";
--		sdmode-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
--		#sound-dai-cells = <0>;
--	};
- };
+@@ -9100,8 +9099,9 @@ static int __bnxt_hwrm_ptp_qcfg(struct bnxt *bp)
+ 		rc = -ENODEV;
+ 		goto exit;
+ 	}
+-	phc_cfg = (flags & PORT_MAC_PTP_QCFG_RESP_FLAGS_RTC_CONFIGURED) != 0;
+-	rc = bnxt_ptp_init(bp, phc_cfg);
++	ptp->rtc_configured =
++		(flags & PORT_MAC_PTP_QCFG_RESP_FLAGS_RTC_CONFIGURED) != 0;
++	rc = bnxt_ptp_init(bp);
+ 	if (rc)
+ 		netdev_warn(bp->dev, "PTP initialization failed.\n");
+ exit:
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index fa514be876502..781225d3ba8ff 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -1024,7 +1024,7 @@ static void bnxt_ptp_free(struct bnxt *bp)
+ 	}
+ }
  
- &cpu6 {
-@@ -59,19 +53,14 @@ &cluster1_opp_15 {
- 	opp-hz = /bits/ 64 <2200000000>;
- };
+-int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
++int bnxt_ptp_init(struct bnxt *bp)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+ 	int rc;
+@@ -1047,7 +1047,7 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
  
--&rt1019p{
--	status = "disabled";
--};
--
- &sound {
- 	compatible = "mediatek,mt8186-mt6366-rt5682s-max98360-sound";
--	status = "okay";
-+};
+ 	if (BNXT_PTP_USE_RTC(bp)) {
+ 		bnxt_ptp_timecounter_init(bp, false);
+-		rc = bnxt_ptp_init_rtc(bp, phc_cfg);
++		rc = bnxt_ptp_init_rtc(bp, ptp->rtc_configured);
+ 		if (rc)
+ 			goto out;
+ 	} else {
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+index f322466ecad35..61e89bb2d2690 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+@@ -133,6 +133,7 @@ struct bnxt_ptp_cfg {
+ 					 BNXT_PTP_MSG_PDELAY_REQ |	\
+ 					 BNXT_PTP_MSG_PDELAY_RESP)
+ 	u8			tx_tstamp_en:1;
++	u8			rtc_configured:1;
+ 	int			rx_filter;
+ 	u32			tstamp_filters;
  
--	spk-hdmi-playback-dai-link {
--		codec {
--			sound-dai = <&it6505dptx>, <&max98360a>;
--		};
--	};
-+&speaker_codec {
-+	compatible = "maxim,max98360a";
-+	sdmode-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
-+	/delete-property/ sdb-gpios;
- };
- 
- &spmi {
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-index 682c6ad2574d..0c0b3ac59745 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
-@@ -259,15 +259,15 @@ spk-hdmi-playback-dai-link {
- 			mediatek,clk-provider = "cpu";
- 			/* RT1019P and IT6505 connected to the same I2S line */
- 			codec {
--				sound-dai = <&it6505dptx>, <&rt1019p>;
-+				sound-dai = <&it6505dptx>, <&speaker_codec>;
- 			};
- 		};
- 	};
- 
--	rt1019p: speaker-codec {
-+	speaker_codec: speaker-codec {
- 		compatible = "realtek,rt1019p";
- 		pinctrl-names = "default";
--		pinctrl-0 = <&rt1019p_pins_default>;
-+		pinctrl-0 = <&speaker_codec_pins_default>;
- 		#sound-dai-cells = <0>;
- 		sdb-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
- 	};
-@@ -1179,7 +1179,7 @@ pins {
- 		};
- 	};
- 
--	rt1019p_pins_default: rt1019p-default-pins {
-+	speaker_codec_pins_default: speaker-codec-default-pins {
- 		pins-sdb {
- 			pinmux = <PINMUX_GPIO150__FUNC_GPIO150>;
- 			output-low;
+@@ -180,6 +181,6 @@ void bnxt_tx_ts_cmp(struct bnxt *bp, struct bnxt_napi *bnapi,
+ 		    struct tx_ts_cmp *tscmp);
+ void bnxt_ptp_rtc_timecounter_init(struct bnxt_ptp_cfg *ptp, u64 ns);
+ int bnxt_ptp_init_rtc(struct bnxt *bp, bool phc_cfg);
+-int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg);
++int bnxt_ptp_init(struct bnxt *bp);
+ void bnxt_ptp_clear(struct bnxt *bp);
+ #endif
 -- 
-2.47.1
+2.43.0
 
 
 
