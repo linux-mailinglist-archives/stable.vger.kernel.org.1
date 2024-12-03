@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-97090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68309E2A18
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE5B79E2A68
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:07:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF4BEB2B88A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A329BC21E9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386C31F6696;
-	Tue,  3 Dec 2024 15:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C431F76A4;
+	Tue,  3 Dec 2024 16:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEd+VJDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jBdxLYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C101F4709;
-	Tue,  3 Dec 2024 15:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C0C23CE;
+	Tue,  3 Dec 2024 16:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239492; cv=none; b=kCFuWT6NSW6qmmg58AU9gFbOf5L2Yh9hPmkW+XTIjP+E68yWmkH115HVQIyJGyIRQOnotuTl9Tq51DI0Mn9aJiTKtQMLzAguxVPgcedN3ziUKRrJq97Qn+koaWRVdusXxQumJLCnlM9nKgPi9GFmE+zGLNI6BSVJmCfP4eEEUwc=
+	t=1733241774; cv=none; b=DSLuZobjQ25eCRdX2uLBt8s1ahCAla6wrGhUlcO8rOInkFvWUu7gNTvM2vdU6GkeqZrl2pnOssPwPcsfaBjoqiF0xgmn0WCltwZkniGEDykgq0QMq3VOQBCuuTn97J0ay1kiSld5lEBjB2zlCkqok1RM37vUssE4xnaWWDEfGo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239492; c=relaxed/simple;
-	bh=5lYFef9aGlUGvus0y5sJC3uT7GT9lPng+hIafjRDvG4=;
+	s=arc-20240116; t=1733241774; c=relaxed/simple;
+	bh=T/4HU6OWKt+WJdSqN9GghWypeEwp2jm3ZyGP8kGRv54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+KLRAcP304auKRtujAfoAycVjmiw6+DiwF2woXroTKAZ7fcqi+jkDvs3PWCC7yaVbBnX4LtFvz7Jf7TO7m5FRmluBq+SPfRyb9sSr+JpnzxDIR4dYqi/QPLeY9bfRKS609WooZMFR3GR0t6NnJ0H6ka48siS4i522Fv0B5j3pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aEd+VJDT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B85C4CECF;
-	Tue,  3 Dec 2024 15:24:51 +0000 (UTC)
+	 MIME-Version; b=Uw5Ez1PMeciZaER1wPH7rUxUeFUZLlRb1e4gbhA28pPRmNaxSwIdRn6tCSRtLf1567tUYSi+1/tTCP0S40OEpMByY9de662yF9cL1V7m/pFN4/KVav2KS4IHk/M0/2cWvYufQPgEO33XrYW9Q7hwurj9zF/ZknGX6eC5FTOjFs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jBdxLYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59463C4CECF;
+	Tue,  3 Dec 2024 16:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239491;
-	bh=5lYFef9aGlUGvus0y5sJC3uT7GT9lPng+hIafjRDvG4=;
+	s=korg; t=1733241774;
+	bh=T/4HU6OWKt+WJdSqN9GghWypeEwp2jm3ZyGP8kGRv54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEd+VJDTs2sn0+05Sh0xxSs7X35Ml7LXO8g3uM4FqYPmQsszjwq5upOK4b67wBFOQ
-	 1tX/3srb/4r67npoyIejfsltrqaHT4cqFUNH/mb+/oiDczf/fVC16Y7BANxO3Ca5L2
-	 DzT+038WlRsXaoUD7jv8E1Jivf+zozkZbKDd1iec=
+	b=2jBdxLYeJ6XOZV0QK1UZz82Vl0vSvRMc/cYUiqfCqqdpPuzicft3NF+csrYM3ouWS
+	 ZGe3GtCRBHcQICZ3HX4wOTRXPjpdBiabvBBckWnWPTt7NSYSeGnlZ/Ox8df0sCMGmn
+	 qVRd47Z0CUTDLBPNbjympr+nENEcQF2Yo12xPGVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.11 632/817] dm-cache: fix warnings about duplicate slab caches
-Date: Tue,  3 Dec 2024 15:43:24 +0100
-Message-ID: <20241203144020.606728862@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 481/826] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
+Date: Tue,  3 Dec 2024 15:43:28 +0100
+Message-ID: <20241203144802.526196739@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,187 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 346dbf1b1345476a6524512892cceb931bee3039 upstream.
+[ Upstream commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa ]
 
-The commit 4c39529663b9 adds a warning about duplicate cache names if
-CONFIG_DEBUG_VM is selected. These warnings are triggered by the dm-cache
-code.
+There's issue as follows when concurrently installing the f2fs.ko
+module and mounting the f2fs file system:
+KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
+Call Trace:
+ <TASK>
+ f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
+ __get_meta_page+0x1d4/0x920 [f2fs]
+ get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
+ validate_checkpoint+0xac/0x290 [f2fs]
+ f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
+ f2fs_fill_super+0x1007/0x39b0 [f2fs]
+ mount_bdev+0x183/0x250
+ legacy_get_tree+0xf4/0x1e0
+ vfs_get_tree+0x88/0x340
+ do_new_mount+0x283/0x5e0
+ path_mount+0x2b2/0x15b0
+ __x64_sys_mount+0x1fe/0x270
+ do_syscall_64+0x5f/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-The dm-cache code allocates a slab cache for each device. This commit
-changes it to allocate just one slab cache in the module init function.
+Above issue happens as the biset of the f2fs file system is not
+initialized before register "f2fs_fs_type".
+To address above issue just register "f2fs_fs_type" at the last in
+init_f2fs_fs(). Ensure that all f2fs file system resources are
+initialized.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: 4c39529663b9 ("slab: Warn on duplicate cache names when DEBUG_VM=y")
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f543805fcd60 ("f2fs: introduce private bioset")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-background-tracker.c |   25 ++++++-------------------
- drivers/md/dm-cache-background-tracker.h |    8 ++++++++
- drivers/md/dm-cache-target.c             |   25 ++++++++++++++++++++-----
- 3 files changed, 34 insertions(+), 24 deletions(-)
+ fs/f2fs/super.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/md/dm-cache-background-tracker.c
-+++ b/drivers/md/dm-cache-background-tracker.c
-@@ -11,12 +11,6 @@
- 
- #define DM_MSG_PREFIX "dm-background-tracker"
- 
--struct bt_work {
--	struct list_head list;
--	struct rb_node node;
--	struct policy_work work;
--};
--
- struct background_tracker {
- 	unsigned int max_work;
- 	atomic_t pending_promotes;
-@@ -26,10 +20,10 @@ struct background_tracker {
- 	struct list_head issued;
- 	struct list_head queued;
- 	struct rb_root pending;
--
--	struct kmem_cache *work_cache;
- };
- 
-+struct kmem_cache *btracker_work_cache = NULL;
-+
- struct background_tracker *btracker_create(unsigned int max_work)
- {
- 	struct background_tracker *b = kmalloc(sizeof(*b), GFP_KERNEL);
-@@ -48,12 +42,6 @@ struct background_tracker *btracker_crea
- 	INIT_LIST_HEAD(&b->queued);
- 
- 	b->pending = RB_ROOT;
--	b->work_cache = KMEM_CACHE(bt_work, 0);
--	if (!b->work_cache) {
--		DMERR("couldn't create mempool for background work items");
--		kfree(b);
--		b = NULL;
--	}
- 
- 	return b;
- }
-@@ -66,10 +54,9 @@ void btracker_destroy(struct background_
- 	BUG_ON(!list_empty(&b->issued));
- 	list_for_each_entry_safe (w, tmp, &b->queued, list) {
- 		list_del(&w->list);
--		kmem_cache_free(b->work_cache, w);
-+		kmem_cache_free(btracker_work_cache, w);
- 	}
- 
--	kmem_cache_destroy(b->work_cache);
- 	kfree(b);
- }
- EXPORT_SYMBOL_GPL(btracker_destroy);
-@@ -180,7 +167,7 @@ static struct bt_work *alloc_work(struct
- 	if (max_work_reached(b))
- 		return NULL;
- 
--	return kmem_cache_alloc(b->work_cache, GFP_NOWAIT);
-+	return kmem_cache_alloc(btracker_work_cache, GFP_NOWAIT);
- }
- 
- int btracker_queue(struct background_tracker *b,
-@@ -203,7 +190,7 @@ int btracker_queue(struct background_tra
- 		 * There was a race, we'll just ignore this second
- 		 * bit of work for the same oblock.
- 		 */
--		kmem_cache_free(b->work_cache, w);
-+		kmem_cache_free(btracker_work_cache, w);
- 		return -EINVAL;
- 	}
- 
-@@ -244,7 +231,7 @@ void btracker_complete(struct background
- 	update_stats(b, &w->work, -1);
- 	rb_erase(&w->node, &b->pending);
- 	list_del(&w->list);
--	kmem_cache_free(b->work_cache, w);
-+	kmem_cache_free(btracker_work_cache, w);
- }
- EXPORT_SYMBOL_GPL(btracker_complete);
- 
---- a/drivers/md/dm-cache-background-tracker.h
-+++ b/drivers/md/dm-cache-background-tracker.h
-@@ -26,6 +26,14 @@
-  * protected with a spinlock.
-  */
- 
-+struct bt_work {
-+	struct list_head list;
-+	struct rb_node node;
-+	struct policy_work work;
-+};
-+
-+extern struct kmem_cache *btracker_work_cache;
-+
- struct background_work;
- struct background_tracker;
- 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -10,6 +10,7 @@
- #include "dm-bio-record.h"
- #include "dm-cache-metadata.h"
- #include "dm-io-tracker.h"
-+#include "dm-cache-background-tracker.h"
- 
- #include <linux/dm-io.h>
- #include <linux/dm-kcopyd.h>
-@@ -2263,7 +2264,7 @@ static int parse_cache_args(struct cache
- 
- /*----------------------------------------------------------------*/
- 
--static struct kmem_cache *migration_cache;
-+static struct kmem_cache *migration_cache = NULL;
- 
- #define NOT_CORE_OPTION 1
- 
-@@ -3449,22 +3450,36 @@ static int __init dm_cache_init(void)
- 	int r;
- 
- 	migration_cache = KMEM_CACHE(dm_cache_migration, 0);
--	if (!migration_cache)
--		return -ENOMEM;
-+	if (!migration_cache) {
-+		r = -ENOMEM;
-+		goto err;
-+	}
-+
-+	btracker_work_cache = kmem_cache_create("dm_cache_bt_work",
-+		sizeof(struct bt_work), __alignof__(struct bt_work), 0, NULL);
-+	if (!btracker_work_cache) {
-+		r = -ENOMEM;
-+		goto err;
-+	}
- 
- 	r = dm_register_target(&cache_target);
- 	if (r) {
--		kmem_cache_destroy(migration_cache);
--		return r;
-+		goto err;
- 	}
- 
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 87ab5696bd482..8d4ecb2e855e6 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4991,9 +4991,6 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_init_shrinker();
+ 	if (err)
+ 		goto free_sysfs;
+-	err = register_filesystem(&f2fs_fs_type);
+-	if (err)
+-		goto free_shrinker;
+ 	f2fs_create_root_stats();
+ 	err = f2fs_init_post_read_processing();
+ 	if (err)
+@@ -5016,7 +5013,12 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
++	err = register_filesystem(&f2fs_fs_type);
++	if (err)
++		goto free_casefold_cache;
  	return 0;
-+
-+err:
-+	kmem_cache_destroy(migration_cache);
-+	kmem_cache_destroy(btracker_work_cache);
-+	return r;
- }
++free_casefold_cache:
++	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+ 	f2fs_destroy_compress_cache();
+ free_compress_mempool:
+@@ -5031,8 +5033,6 @@ static int __init init_f2fs_fs(void)
+ 	f2fs_destroy_post_read_processing();
+ free_root_stats:
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+-free_shrinker:
+ 	f2fs_exit_shrinker();
+ free_sysfs:
+ 	f2fs_exit_sysfs();
+@@ -5056,6 +5056,7 @@ static int __init init_f2fs_fs(void)
  
- static void __exit dm_cache_exit(void)
+ static void __exit exit_f2fs_fs(void)
  {
- 	dm_unregister_target(&cache_target);
- 	kmem_cache_destroy(migration_cache);
-+	kmem_cache_destroy(btracker_work_cache);
- }
- 
- module_init(dm_cache_init);
++	unregister_filesystem(&f2fs_fs_type);
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+@@ -5064,7 +5065,6 @@ static void __exit exit_f2fs_fs(void)
+ 	f2fs_destroy_iostat_processing();
+ 	f2fs_destroy_post_read_processing();
+ 	f2fs_destroy_root_stats();
+-	unregister_filesystem(&f2fs_fs_type);
+ 	f2fs_exit_shrinker();
+ 	f2fs_exit_sysfs();
+ 	f2fs_destroy_garbage_collection_cache();
+-- 
+2.43.0
+
 
 
 
