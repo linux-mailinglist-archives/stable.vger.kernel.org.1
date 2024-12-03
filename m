@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C982E9E210D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1259E20E4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2902916800C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C205A286E9B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF961F7572;
-	Tue,  3 Dec 2024 15:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6F71F7070;
+	Tue,  3 Dec 2024 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlCIVhN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPAvPYuq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA8A1F6696;
-	Tue,  3 Dec 2024 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CFF1F7564;
+	Tue,  3 Dec 2024 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238269; cv=none; b=E0vLhU4yTtoAA4lfCY1gw0W1OdyRckw2R9bv7swZGOWfb0fA+DLzp2RPspXbj0/RkrleB1QO5Eg4+5joEXcYffeq9wedB0K7/CN7ppkoA+brKbC/gZ81HGtOA/NgymfpF+aVp1gWPx+rInQxqMv78BfupB2W6IKkJBNxX5mHdDo=
+	t=1733238275; cv=none; b=aDV6qJqsKjC0I+FZzCO72fbx2gZaAYFK931v3WNYakkCwpTfShtRAsnB1Bmn49WKRPFiV+y6mFPz1EbpR2Dq1fOJJrT3CglL9/oY0rRXlbcA8/dvFzzlNilL+3dKIuXMPwLw2mN+aqRLZBrrRW2IwoD29GaQ28JrNOlaeKig01M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238269; c=relaxed/simple;
-	bh=Wx06nkl92CPnKM/yH3J/c/Zg7TytkGd7kcx36PNJS08=;
+	s=arc-20240116; t=1733238275; c=relaxed/simple;
+	bh=rcNk6mfx7qQgMb3H+8bPY1B+wF2NYRjo0KwcM8xmNAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2G3+Om5ebWoaa/BfGrPHBPNV5/1sBbDRi39S20lfSmGuLx+XvunzVvlPT6AO2f1cEYDVJJpBzQ8J5L5p/vo+1Qqn5SJKsMido2F31Fq9A2FjYmRn9fxFu/sCmZwi4hwkz2DBtO8PRRE5KpWuAqIfri+kmcIwVQVsqf/P3A2pEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlCIVhN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C0BC4CECF;
-	Tue,  3 Dec 2024 15:04:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jRs6+fw0TYGeqFX2WitYYYvrH5txU665Ab/eoLUX8Q9nPy8/O5lppxxQLuov4/EJqyPcnKSRUKrEBG0r8GTpRDYBnkMftJupCKGEHd6UR7LP7kyYSw9uXYK8HwPRGTa5e/E34PwGl1G1NJl3k23pcCugQPnZFDXDdD/Waz5dQ1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPAvPYuq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D3EC4CECF;
+	Tue,  3 Dec 2024 15:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238269;
-	bh=Wx06nkl92CPnKM/yH3J/c/Zg7TytkGd7kcx36PNJS08=;
+	s=korg; t=1733238275;
+	bh=rcNk6mfx7qQgMb3H+8bPY1B+wF2NYRjo0KwcM8xmNAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RlCIVhN8UZFzTQtM6qbBoYP9yTIUllxr+/yTuXuAQniEuePcNMY0SfX9atI7UlpaA
-	 joBBBTVn6oSIAQFqTPxv9gkN2NqYCHxqaarl3nJj46DlEk0sunI9wCFr7TGTZypzbr
-	 tKcfW7TR6VAW3umTgmv7TdiqAGhzkRZf969s4kMU=
+	b=wPAvPYuqJzqNgiaJpWz3oR60ow2e29mqr5du5UuTpc3dK2bFsXdCpAzTQLirH5P1i
+	 wUpfj7woJUbTWmpDQDDVc/bjFFE1RkXgm0FpertNLt9lEqvptIr+geayCJkxERGC41
+	 yClY1OnoO3+HEKB1Q0py0SlLzgHWc0lzeCS9ZQmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Jeongjun Park <aha310510@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 221/817] drm/vc4: hvs: Correct logic on stopping an HVS channel
-Date: Tue,  3 Dec 2024 15:36:33 +0100
-Message-ID: <20241203144004.376558869@linuxfoundation.org>
+Subject: [PATCH 6.11 222/817] wifi: ath9k: add range check for conn_rsp_epid in htc_connect_service()
+Date: Tue,  3 Dec 2024 15:36:34 +0100
+Message-ID: <20241203144004.415212411@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -60,59 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 7ab6512e7942889c0962588355cb92424a690be6 ]
+[ Upstream commit 8619593634cbdf5abf43f5714df49b04e4ef09ab ]
 
-When factoring out __vc4_hvs_stop_channel, the logic got inverted from
-	if (condition)
-	  // stop channel
-to
-	if (condition)
-	  goto out
-	//stop channel
-	out:
-and also changed the exact register writes used to stop the channel.
+I found the following bug in my fuzzer:
 
-Correct the logic so that the channel is actually stopped, and revert
-to the original register writes.
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc_hst.c:26:51
+  index 255 is out of range for type 'htc_endpoint [22]'
+  CPU: 0 UID: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.11.0-rc6-dirty #14
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  Workqueue: events request_firmware_work_func
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x180/0x1b0
+   __ubsan_handle_out_of_bounds+0xd4/0x130
+   htc_issue_send.constprop.0+0x20c/0x230
+   ? _raw_spin_unlock_irqrestore+0x3c/0x70
+   ath9k_wmi_cmd+0x41d/0x610
+   ? mark_held_locks+0x9f/0xe0
+   ...
 
-Fixes: 6d01a106b4c8 ("drm/vc4: crtc: Move HVS init and close to a function")
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-32-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Since this bug has been confirmed to be caused by insufficient verification
+of conn_rsp_epid, I think it would be appropriate to add a range check for
+conn_rsp_epid to htc_connect_service() to prevent the bug from occurring.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240909103855.68006-1-aha310510@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_hst.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 3e72219a6a75f..27c8fb9efa854 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -420,13 +420,11 @@ void vc4_hvs_stop_channel(struct vc4_hvs *hvs, unsigned int chan)
- 	if (!drm_dev_enter(drm, &idx))
- 		return;
+diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+index eb631fd3336d8..b5257b2b4aa52 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_hst.c
++++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+@@ -294,6 +294,9 @@ int htc_connect_service(struct htc_target *target,
+ 		return -ETIMEDOUT;
+ 	}
  
--	if (HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_ENABLE)
-+	if (!(HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_ENABLE))
- 		goto out;
- 
--	HVS_WRITE(SCALER_DISPCTRLX(chan),
--		  HVS_READ(SCALER_DISPCTRLX(chan)) | SCALER_DISPCTRLX_RESET);
--	HVS_WRITE(SCALER_DISPCTRLX(chan),
--		  HVS_READ(SCALER_DISPCTRLX(chan)) & ~SCALER_DISPCTRLX_ENABLE);
-+	HVS_WRITE(SCALER_DISPCTRLX(chan), SCALER_DISPCTRLX_RESET);
-+	HVS_WRITE(SCALER_DISPCTRLX(chan), 0);
- 
- 	/* Once we leave, the scaler should be disabled and its fifo empty. */
- 	WARN_ON_ONCE(HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_RESET);
++	if (target->conn_rsp_epid < 0 || target->conn_rsp_epid >= ENDPOINT_MAX)
++		return -EINVAL;
++
+ 	*conn_rsp_epid = target->conn_rsp_epid;
+ 	return 0;
+ err:
 -- 
 2.43.0
 
