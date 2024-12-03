@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BD19E232D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817EF9E2626
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61092285AB2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 414F7288DD3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24841F76A2;
-	Tue,  3 Dec 2024 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2730F1F759C;
+	Tue,  3 Dec 2024 16:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+JEYRzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQ4QQOpb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ABF1DFD91;
-	Tue,  3 Dec 2024 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66D21F7594;
+	Tue,  3 Dec 2024 16:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239940; cv=none; b=RDmbtD4LUggtYyiIsLJdeZXSUkQ4h+wmD9yzPYVvAG6VS2HIk5x3gve6BsOI3qwPY12xozfLLltXbvWGGXbfkA8PfAanW8Lz15lm9jSM4/1OPObdQuP983LvJEX/uD2TkLnNJzyRBOFIlayJdFN0jhPQlArB+Hy5HBeexH6asEw=
+	t=1733242159; cv=none; b=EVVgfNhQG4Zh2oya4qw97KSL8ejNZicYBEi4K1fk7CAy4pv9CUg3Plxi4InIyjTNKhLIREWMUcLVtY5vRzyHcM34Aef3BMKXJofEKTbzRpOEDDmnbXtRrjlwDPtsrp1QKsIoh0jnPVeJkb1RAMQORtq7HKZ066zyxsIFb3Pfn2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239940; c=relaxed/simple;
-	bh=bLFi9niiZ796hqo8zl50pEqBFEKr3clwxj7YeMvK45E=;
+	s=arc-20240116; t=1733242159; c=relaxed/simple;
+	bh=8tyyT+evIR4e7wp61MVBVLfNrBjUFjMLmI+c5Jmv7bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdZIlH6wBN6/eMX7faz0S9TVFXWNptKE/+DDNcA9ssEIMKBSF7vaJkO+wIJJfBQtt0zAPb+lhNp5tVaKPoLDDgY0nmaJ0BhrEeWSse5FydqZtasKpRqH4j0LED041LL/rkyPv8fA61wCR4z3y4vXcbFQCfXWkDAGix7G71vXnaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+JEYRzi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FE4C4CECF;
-	Tue,  3 Dec 2024 15:32:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u2ImS8/cf6kfI7sHR35rnS+CWdYPCYcDM3zXRP2TzV6yOoxJdNBwpt6kFa4PTjhCHahtVU1/rTnpEvWfux5CygYhXgd0PXN0O//IyBiMf0ISVWTPalsSyZFFCDIshwXmNZT5c5Skc7WKb3zb1sczF+7qXJVQfSz2K4hjdcVhK2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQ4QQOpb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46240C4CECF;
+	Tue,  3 Dec 2024 16:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239940;
-	bh=bLFi9niiZ796hqo8zl50pEqBFEKr3clwxj7YeMvK45E=;
+	s=korg; t=1733242159;
+	bh=8tyyT+evIR4e7wp61MVBVLfNrBjUFjMLmI+c5Jmv7bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+JEYRziUQ8+xiEKuIn6UoeYIXky5Xdl9zzaSp3OAEOiGxnjNK2cRg6jB2SqeCatz
-	 lV0vShjJfqmTVWsfqt/uMViyM2jfp125TwfToulhEysj6Cpil9qFa1Gekmlrj31RR0
-	 ncNreTwdsBjNnpOfJLEO8/R0l3iYC92CSpM9XWj0=
+	b=uQ4QQOpbAU6q4Eczm17CvhMIPQnCkKB+EV5Z7tAL6RGlX9J7fQGgMQjJrd8l44zGs
+	 dmn1xWbZzlSFOa3nHEUV6f8NkbjVDPFTnnkz9qRV1ufg1bGoqptR0gbNoEOFVCv1Y0
+	 5YT0ZPcxpSd5i+5+QdMYNer3/cTSx7n+ndsXbhIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 779/817] rtc: rzn1: fix BCD to rtc_time conversion errors
-Date: Tue,  3 Dec 2024 15:45:51 +0100
-Message-ID: <20241203144026.420961629@linuxfoundation.org>
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	stable@kernel.org,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 625/826] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
+Date: Tue,  3 Dec 2024 15:45:52 +0100
+Message-ID: <20241203144808.133087714@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Benoît Sevens <bsevens@google.com>
 
-[ Upstream commit 55727188dfa3572aecd946e58fab9e4a64f06894 ]
+commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
 
-tm_mon describes months from 0 to 11, but the register contains BCD from
-1 to 12. tm_year contains years since 1900, but the BCD contains 20XX.
-Apply the offsets when converting these numbers.
+A bogus device can provide a bNumConfigurations value that exceeds the
+initial value used in usb_get_configuration for allocating dev->config.
 
-Fixes: deeb4b5393e1 ("rtc: rzn1: Add new RTC driver")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20241113113032.27409-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can lead to out-of-bounds accesses later, e.g. in
+usb_destroy_configuration.
+
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-rzn1.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/usb/quirks.c |   27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/rtc/rtc-rzn1.c b/drivers/rtc/rtc-rzn1.c
-index 56ebbd4d04814..8570c8e63d70c 100644
---- a/drivers/rtc/rtc-rzn1.c
-+++ b/drivers/rtc/rtc-rzn1.c
-@@ -111,8 +111,8 @@ static int rzn1_rtc_read_time(struct device *dev, struct rtc_time *tm)
- 	tm->tm_hour = bcd2bin(tm->tm_hour);
- 	tm->tm_wday = bcd2bin(tm->tm_wday);
- 	tm->tm_mday = bcd2bin(tm->tm_mday);
--	tm->tm_mon = bcd2bin(tm->tm_mon);
--	tm->tm_year = bcd2bin(tm->tm_year);
-+	tm->tm_mon = bcd2bin(tm->tm_mon) - 1;
-+	tm->tm_year = bcd2bin(tm->tm_year) + 100;
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -555,6 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
  
- 	return 0;
- }
-@@ -128,8 +128,8 @@ static int rzn1_rtc_set_time(struct device *dev, struct rtc_time *tm)
- 	tm->tm_hour = bin2bcd(tm->tm_hour);
- 	tm->tm_wday = bin2bcd(rzn1_rtc_tm_to_wday(tm));
- 	tm->tm_mday = bin2bcd(tm->tm_mday);
--	tm->tm_mon = bin2bcd(tm->tm_mon);
--	tm->tm_year = bin2bcd(tm->tm_year);
-+	tm->tm_mon = bin2bcd(tm->tm_mon + 1);
-+	tm->tm_year = bin2bcd(tm->tm_year - 100);
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -566,10 +567,14 @@ static int snd_usb_extigy_boot_quirk(str
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&dev->descriptor, sizeof(dev->descriptor));
+-		config = dev->actconfig;
++				&new_device_descriptor, sizeof(new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++				new_device_descriptor.bNumConfigurations);
++		else
++			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -901,6 +906,7 @@ static void mbox2_setup_48_24_magic(stru
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -936,10 +942,14 @@ static int snd_usb_mbox2_boot_quirk(stru
+ 	dev_dbg(&dev->dev, "device initialised!\n");
  
- 	val = readl(rtc->base + RZN1_RTC_CTL2);
- 	if (!(val & RZN1_RTC_CTL2_STOPPED)) {
--- 
-2.43.0
-
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
+@@ -1249,6 +1259,7 @@ static void mbox3_setup_defaults(struct
+ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	int descriptor_size;
+ 
+@@ -1262,10 +1273,14 @@ static int snd_usb_mbox3_boot_quirk(stru
+ 	dev_dbg(&dev->dev, "MBOX3: device initialised!\n");
+ 
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "MBOX3: error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "MBOX3: error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
 
 
 
