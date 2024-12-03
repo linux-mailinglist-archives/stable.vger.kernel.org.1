@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6873B9E2BEF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:22:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01829E2BF8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57C1CB66A3E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 159F5B2AF0E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753891F8918;
-	Tue,  3 Dec 2024 16:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964F71F76CA;
+	Tue,  3 Dec 2024 16:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeoyX5/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0tI5nGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FCA1F76B5;
-	Tue,  3 Dec 2024 16:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D8F23CE;
+	Tue,  3 Dec 2024 16:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241933; cv=none; b=CCGXybdpMwtKQpW7GvdqevJYP4a5yVvxqoBxVOLm50NH2QEocaLiWXdZzY6ELOvxUt00FeS+klII/FG85d+Tz+KhXxNLY8C7HIexzNBE/7tWqu5TVueEUZHAJwN57q42ovbG8X/cvZxGjKD4mmFkXCuLNix9HCsUnebl/uo2hAk=
+	t=1733241970; cv=none; b=VbiE8Q/GKTbvqza4P15lq6DCfS0useM112lsZzxPPN++iEtuzq612MY8/f9N+N3I98yIbQxZbCmt749kMCrqfqGPB4zjuMfWuklK9XkMl+PtPjgA4hZukdTF0jh1Vj06q5gOnf0rkAPTbo75VGBfgXoy7gXWlcYKu3Cb9wrm5eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241933; c=relaxed/simple;
-	bh=zkHcSAexWKBtFfgRirqIl8k5Cq4FynIUWuT+AzAjNVg=;
+	s=arc-20240116; t=1733241970; c=relaxed/simple;
+	bh=yfae5t2PM2KFj7Y+tf25kEW0Gheg/a7pS3rvPp8O37U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRdCUtSJ5BPZb4ixzhbxARZx78REycULXJ0uSfBH7bcZZCA/3jPJ86COnofHIZ9sr99gAF0QMpixSXlZqINVvC7zFDuUuGKJnZ/slgKYIVIlO1+AiejNG4lUykBZD0o6441i74/+0VnwU++nf8fzlmhDa8Dn41zIUQmeh8rc6qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeoyX5/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C0EC4CECF;
-	Tue,  3 Dec 2024 16:05:32 +0000 (UTC)
+	 MIME-Version; b=T4N15FfdStYRYxDi/KqSOV9lRruAHPyxAzPhpciAOfCIitWgLoOo3kxSN5TmackJfS0hzRdxV8hQ4lRtXZL9KydVLLOpytFyparCGu9vIBCn4fovaEOfm32c+UPRCe2T3BeIDymh84CYk3v/HTM1oAGgb925FeRe/SnwWsQIINo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0tI5nGG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77E9C4CECF;
+	Tue,  3 Dec 2024 16:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241932;
-	bh=zkHcSAexWKBtFfgRirqIl8k5Cq4FynIUWuT+AzAjNVg=;
+	s=korg; t=1733241970;
+	bh=yfae5t2PM2KFj7Y+tf25kEW0Gheg/a7pS3rvPp8O37U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HeoyX5/DnlmqiasKwej/C1z435/bGaf/RzTLzy6w5UiFup7qSjVyV/sLyGJNZdS84
-	 LK3u0LTpxEY9Ct+qIx3ldWUNZ8Uh5MabmB8Ut1Xhhsn+nKYOJ0L7f3HMR5zGy4ZS3v
-	 k7jvCTtlfDyTdr+bZlpeYTOygiEiQrtP45o6hTAY=
+	b=X0tI5nGGT7vr4AZf/GA5qvO4J7rXwE06bsy1tuyAWTo9BUQXgGBBxsotpiswlotvl
+	 dT1KyJaeEvaPQXQblkrl1jBe0IyTw8bwsH71doSCOJkOsiURAxcZ1SrziygGzf7Hcw
+	 Rxpg/5js26U144IWOci2ZTlVT6sSWWdyRqdMmiU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d4373fa8042c06cefa84@syzkaller.appspotmail.com,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 559/826] netlink: fix false positive warning in extack during dumps
-Date: Tue,  3 Dec 2024 15:44:46 +0100
-Message-ID: <20241203144805.551446111@linuxfoundation.org>
+Subject: [PATCH 6.12 569/826] net: stmmac: dwmac-socfpga: Set RX watchdog interrupt as broken
+Date: Tue,  3 Dec 2024 15:44:56 +0100
+Message-ID: <20241203144805.945850583@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,114 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 3bf39fa849ab8ed52abb6715922e6102d3df9f97 ]
+[ Upstream commit 407618d66dba55e7db1278872e8be106808bbe91 ]
 
-Commit under fixes extended extack reporting to dumps.
-It works under normal conditions, because extack errors are
-usually reported during ->start() or the first ->dump(),
-it's quite rare that the dump starts okay but fails later.
-If the dump does fail later, however, the input skb will
-already have the initiating message pulled, so checking
-if bad attr falls within skb->data will fail.
+On DWMAC3 and later, there's a RX Watchdog interrupt that's used for
+interrupt coalescing. It's known to be buggy on some platforms, and
+dwmac-socfpga appears to be one of them. Changing the interrupt
+coalescing from ethtool doesn't appear to have any effect here.
 
-Switch the check to using nlh, which is always valid.
+Without disabling RIWT (Received Interrupt Watchdog Timer, I
+believe...), we observe latencies while receiving traffic that amount to
+around ~0.4ms. This was discovered with NTP but can be easily reproduced
+with a simple ping. Without this patch :
 
-syzbot found a way to hit that scenario by filling up
-the receive queue. In this case we initiate a dump
-but don't call ->dump() until there is read space for
-an skb.
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.657 ms
 
-WARNING: CPU: 1 PID: 5845 at net/netlink/af_netlink.c:2210 netlink_ack_tlv_fill+0x1a8/0x560 net/netlink/af_netlink.c:2209
-RIP: 0010:netlink_ack_tlv_fill+0x1a8/0x560 net/netlink/af_netlink.c:2209
-Call Trace:
- <TASK>
- netlink_dump_done+0x513/0x970 net/netlink/af_netlink.c:2250
- netlink_dump+0x91f/0xe10 net/netlink/af_netlink.c:2351
- netlink_recvmsg+0x6bb/0x11d0 net/netlink/af_netlink.c:1983
- sock_recvmsg_nosec net/socket.c:1051 [inline]
- sock_recvmsg+0x22f/0x280 net/socket.c:1073
- __sys_recvfrom+0x246/0x3d0 net/socket.c:2267
- __do_sys_recvfrom net/socket.c:2285 [inline]
- __se_sys_recvfrom net/socket.c:2281 [inline]
- __x64_sys_recvfrom+0xde/0x100 net/socket.c:2281
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7ff37dd17a79
+With this patch :
 
-Reported-by: syzbot+d4373fa8042c06cefa84@syzkaller.appspotmail.com
-Fixes: 8af4f60472fc ("netlink: support all extack types in dumps")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20241119224432.1713040-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+64 bytes from 192.168.5.2: icmp_seq=1 ttl=64 time=0.254 ms
+
+Fixes: 801d233b7302 ("net: stmmac: Add SOCFPGA glue driver")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20241122141256.764578-1-maxime.chevallier@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index f84aad420d446..775d707ec708a 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2176,9 +2176,14 @@ netlink_ack_tlv_len(struct netlink_sock *nlk, int err,
- 	return tlvlen;
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index fdb4c773ec98a..e897b49aa9e05 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -486,6 +486,8 @@ static int socfpga_dwmac_probe(struct platform_device *pdev)
+ 	plat_dat->pcs_exit = socfpga_dwmac_pcs_exit;
+ 	plat_dat->select_pcs = socfpga_dwmac_select_pcs;
  
-+static bool nlmsg_check_in_payload(const struct nlmsghdr *nlh, const void *addr)
-+{
-+	return !WARN_ON(addr < nlmsg_data(nlh) ||
-+			addr - (const void *) nlh >= nlh->nlmsg_len);
-+}
++	plat_dat->riwt_off = 1;
 +
- static void
--netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
--		     const struct nlmsghdr *nlh, int err,
-+netlink_ack_tlv_fill(struct sk_buff *skb, const struct nlmsghdr *nlh, int err,
- 		     const struct netlink_ext_ack *extack)
- {
- 	if (extack->_msg)
-@@ -2190,9 +2195,7 @@ netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
- 	if (!err)
- 		return;
- 
--	if (extack->bad_attr &&
--	    !WARN_ON((u8 *)extack->bad_attr < in_skb->data ||
--		     (u8 *)extack->bad_attr >= in_skb->data + in_skb->len))
-+	if (extack->bad_attr && nlmsg_check_in_payload(nlh, extack->bad_attr))
- 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_OFFS,
- 				    (u8 *)extack->bad_attr - (const u8 *)nlh));
- 	if (extack->policy)
-@@ -2201,9 +2204,7 @@ netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
- 	if (extack->miss_type)
- 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_MISS_TYPE,
- 				    extack->miss_type));
--	if (extack->miss_nest &&
--	    !WARN_ON((u8 *)extack->miss_nest < in_skb->data ||
--		     (u8 *)extack->miss_nest > in_skb->data + in_skb->len))
-+	if (extack->miss_nest && nlmsg_check_in_payload(nlh, extack->miss_nest))
- 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_MISS_NEST,
- 				    (u8 *)extack->miss_nest - (const u8 *)nlh));
- }
-@@ -2232,7 +2233,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
- 	if (extack_len) {
- 		nlh->nlmsg_flags |= NLM_F_ACK_TLVS;
- 		if (skb_tailroom(skb) >= extack_len) {
--			netlink_ack_tlv_fill(cb->skb, skb, cb->nlh,
-+			netlink_ack_tlv_fill(skb, cb->nlh,
- 					     nlk->dump_done_errno, extack);
- 			nlmsg_end(skb, nlh);
- 		}
-@@ -2491,7 +2492,7 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
- 	}
- 
- 	if (tlvlen)
--		netlink_ack_tlv_fill(in_skb, skb, nlh, err, extack);
-+		netlink_ack_tlv_fill(skb, nlh, err, extack);
- 
- 	nlmsg_end(skb, rep);
- 
+ 	ret = stmmac_dvr_probe(&pdev->dev, plat_dat, &stmmac_res);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
