@@ -1,265 +1,134 @@
-Return-Path: <stable+bounces-96209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB029E1645
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:51:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7AB9E164F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F656281F72
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 08:51:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 446AF2815DB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 08:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257D81DC734;
-	Tue,  3 Dec 2024 08:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C83F1DDC0B;
+	Tue,  3 Dec 2024 08:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+ectPvJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2808C11;
-	Tue,  3 Dec 2024 08:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4071DB527
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 08:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733215915; cv=none; b=bFrx7YU9emfJrD0Opxb/2tPErb9Zn2m78DFrVmwNNwr/DHBJ2IiqlaXgxeorjeOv0XHoZScVYZ7OqeD7dYeg4qM56Kjd1eTMum89VTTQ3XfSpyR1sMq4UqTBCm1m+0z3BB7zZ07KZyipbjKlzTWTk5jakFDs+Jyv4DWN5oADaWY=
+	t=1733215979; cv=none; b=l2fcfEOQi6e4NbA0tstSxVOPY0wYi4B88wZ9QArE0rfWlkG37TXTC94AG31tgfBRxe4VCwKeiOTm6hX31G2lquEYnVn6zXindOSGxqt13mJHguXbIcVVTkMFLIfvGUsj3tPm53+KF5/4HErEPSxJx2XAJ8lSWTZzLLhx23rimgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733215915; c=relaxed/simple;
-	bh=9a4HS1lGr3UMK6mdUPo5Xx1GNq7+BWdWa6MBtV1k8f4=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=joCVuNrfdpZlkWbz7xUwu8kSqNVKTjIGr/jwtn7oqYKxMZLhlWdMIi82s7Xz9x8Zl6rbVgwIO2k8sKeipYuE2yfHGUx1Hw8KVyMMYmSWI82ReqbXCSyOhnj+PxiXLslIMDqbH/U/5RlgQioxqGt72Niieu7tAVrSmj3iNomOxk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Bx366ixk5n8I9PAA--.49532S3;
-	Tue, 03 Dec 2024 16:51:46 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowMBxP+Gexk5ntqFzAA--.34411S3;
-	Tue, 03 Dec 2024 16:51:45 +0800 (CST)
-Subject: Re: [PATCH 2/2] LoongArch: KVM: Protect kvm_io_bus_{read,write}()
- with SRCU
-To: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini
- <pbonzini@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
- Tianrui Zhao <zhaotianrui@loongson.cn>
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
-References: <20241203065058.4164631-1-chenhuacai@loongson.cn>
- <20241203065058.4164631-2-chenhuacai@loongson.cn>
-From: bibo mao <maobibo@loongson.cn>
-Message-ID: <99ccaf01-9176-20c3-2463-148cb5cafcea@loongson.cn>
-Date: Tue, 3 Dec 2024 16:51:05 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1733215979; c=relaxed/simple;
+	bh=EEn7tsEFgg4wqQP4BnALVPmlZxWL+9Ew1gsW51jhNi8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qveb31VienyV3gmoDUIUEL/1edbuRj/zmXifJW0PVN3VdlVXWh7crQyyyMIysJGk2igcYWNVx1vhdW328dWDoNUb1+AkHN4ir4/cOqIDMJ8FPHsuZO3rcJCxa1D8cEBjz52JcsOQi/Wodg2VZBhMwZAc/nR5RlEzoFXxHAKiRbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+ectPvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F36DC4CED8;
+	Tue,  3 Dec 2024 08:52:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733215978;
+	bh=EEn7tsEFgg4wqQP4BnALVPmlZxWL+9Ew1gsW51jhNi8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=B+ectPvJnBJ+ZIbK2rXfPmrIqxNOYEwe7+Pwg//oP5Msdh2NXF6LPyCnErLAaJydd
+	 850iGMUJHC//i4loDmtBNjt3ye0OvQAtxtyittqJfO9SvbwoUuNB1wjbhjCRSsiIL7
+	 PsugJ8yyjWTyRhc0P3x/PwG1MJ8Za2uB5U5u3xVA=
+Subject: FAILED: patch "[PATCH] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device" failed to apply to 5.15-stable tree
+To: jiangkunkun@huawei.com,jingzhangos@google.com,lishusen2@huawei.com,oliver.upton@linux.dev
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 03 Dec 2024 09:52:47 +0100
+Message-ID: <2024120347-pursuable-garment-d644@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241203065058.4164631-2-chenhuacai@loongson.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMBxP+Gexk5ntqFzAA--.34411S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW3Ar1rCFWkCr47Jr43CF48AFc_yoW3JF1rpr
-	yruay3uw4rJr97ZwnrAr1qvr1Yq3yv9F1UJrykJFWrGr1jvrn8JF48trW7ZFy5Kw1rCa1x
-	XF1fJr1Ykr1jywcCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	XVWUAwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4s2-UUUUU
+
+
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x e9649129d33dca561305fc590a7c4ba8c3e5675a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120347-pursuable-garment-d644@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
 
 
 
-On 2024/12/3 下午2:50, Huacai Chen wrote:
-> When we enable lockdep we get such a warning:
-> 
->   =============================
->   WARNING: suspicious RCU usage
->   6.12.0-rc7+ #1891 Tainted: G        W
->   -----------------------------
->   arch/loongarch/kvm/../../../virt/kvm/kvm_main.c:5945 suspicious rcu_dereference_check() usage!
->   other info that might help us debug this:
->   rcu_scheduler_active = 2, debug_locks = 1
->   1 lock held by qemu-system-loo/948:
->    #0: 90000001184a00a8 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0xf4/0xe20 [kvm]
->   stack backtrace:
->   CPU: 2 UID: 0 PID: 948 Comm: qemu-system-loo Tainted: G        W          6.12.0-rc7+ #1891
->   Tainted: [W]=WARN
->   Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
->   Stack : 0000000000000089 9000000005a0db9c 90000000071519c8 900000012c578000
->           900000012c57b940 0000000000000000 900000012c57b948 9000000007e53788
->           900000000815bcc8 900000000815bcc0 900000012c57b7b0 0000000000000001
->           0000000000000001 4b031894b9d6b725 0000000005dec000 9000000100427b00
->           00000000000003d2 0000000000000001 000000000000002d 0000000000000003
->           0000000000000030 00000000000003b4 0000000005dec000 0000000000000000
->           900000000806d000 9000000007e53788 00000000000000b4 0000000000000004
->           0000000000000004 0000000000000000 0000000000000000 9000000107baf600
->           9000000008916000 9000000007e53788 9000000005924778 000000001fe001e5
->           00000000000000b0 0000000000000007 0000000000000000 0000000000071c1d
->           ...
->   Call Trace:
->   [<9000000005924778>] show_stack+0x38/0x180
->   [<90000000071519c4>] dump_stack_lvl+0x94/0xe4
->   [<90000000059eb754>] lockdep_rcu_suspicious+0x194/0x240
->   [<ffff80000221f47c>] kvm_io_bus_read+0x19c/0x1e0 [kvm]
->   [<ffff800002225118>] kvm_emu_mmio_read+0xd8/0x440 [kvm]
->   [<ffff8000022254bc>] kvm_handle_read_fault+0x3c/0xe0 [kvm]
->   [<ffff80000222b3c8>] kvm_handle_exit+0x228/0x480 [kvm]
-> 
-> Fix it by protecting kvm_io_bus_{read,write}() with SRCU.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
->   arch/loongarch/kvm/exit.c     | 31 +++++++++++++++++++++----------
->   arch/loongarch/kvm/intc/ipi.c |  6 +++++-
->   2 files changed, 26 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/loongarch/kvm/exit.c b/arch/loongarch/kvm/exit.c
-> index 69f3e3782cc9..a7893bd01e73 100644
-> --- a/arch/loongarch/kvm/exit.c
-> +++ b/arch/loongarch/kvm/exit.c
-> @@ -156,7 +156,7 @@ static int kvm_handle_csr(struct kvm_vcpu *vcpu, larch_inst inst)
->   
->   int kvm_emu_iocsr(larch_inst inst, struct kvm_run *run, struct kvm_vcpu *vcpu)
->   {
-> -	int ret;
-> +	int idx, ret;
->   	unsigned long *val;
->   	u32 addr, rd, rj, opcode;
->   
-> @@ -167,7 +167,6 @@ int kvm_emu_iocsr(larch_inst inst, struct kvm_run *run, struct kvm_vcpu *vcpu)
->   	rj = inst.reg2_format.rj;
->   	opcode = inst.reg2_format.opcode;
->   	addr = vcpu->arch.gprs[rj];
-> -	ret = EMULATE_DO_IOCSR;
->   	run->iocsr_io.phys_addr = addr;
->   	run->iocsr_io.is_write = 0;
->   	val = &vcpu->arch.gprs[rd];
-> @@ -207,20 +206,28 @@ int kvm_emu_iocsr(larch_inst inst, struct kvm_run *run, struct kvm_vcpu *vcpu)
->   	}
->   
->   	if (run->iocsr_io.is_write) {
-> -		if (!kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val))
-> +		idx = srcu_read_lock(&vcpu->kvm->srcu);
-> +		ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val);
-> +		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-> +		if (ret == 0)
->   			ret = EMULATE_DONE;
-> -		else
-> +		else {
-> +			ret = EMULATE_DO_IOCSR;
->   			/* Save data and let user space to write it */
->   			memcpy(run->iocsr_io.data, val, run->iocsr_io.len);
-> -
-> +		}
->   		trace_kvm_iocsr(KVM_TRACE_IOCSR_WRITE, run->iocsr_io.len, addr, val);
->   	} else {
-> -		if (!kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val))
-> +		idx = srcu_read_lock(&vcpu->kvm->srcu);
-> +		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, run->iocsr_io.len, val);
-> +		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-> +		if (ret == 0)
->   			ret = EMULATE_DONE;
-> -		else
-> +		else {
-> +			ret = EMULATE_DO_IOCSR;
->   			/* Save register id for iocsr read completion */
->   			vcpu->arch.io_gpr = rd;
-> -
-> +		}
->   		trace_kvm_iocsr(KVM_TRACE_IOCSR_READ, run->iocsr_io.len, addr, NULL);
->   	}
->   
-> @@ -359,7 +366,7 @@ static int kvm_handle_gspr(struct kvm_vcpu *vcpu)
->   
->   int kvm_emu_mmio_read(struct kvm_vcpu *vcpu, larch_inst inst)
->   {
-> -	int ret;
-> +	int idx, ret;
->   	unsigned int op8, opcode, rd;
->   	struct kvm_run *run = vcpu->run;
->   
-> @@ -464,8 +471,10 @@ int kvm_emu_mmio_read(struct kvm_vcpu *vcpu, larch_inst inst)
->   		 * it need not return to user space to handle the mmio
->   		 * exception.
->   		 */
-> +		idx = srcu_read_lock(&vcpu->kvm->srcu);
->   		ret = kvm_io_bus_read(vcpu, KVM_MMIO_BUS, vcpu->arch.badv,
->   				      run->mmio.len, &vcpu->arch.gprs[rd]);
-> +		srcu_read_unlock(&vcpu->kvm->srcu, idx);
->   		if (!ret) {
->   			update_pc(&vcpu->arch);
->   			vcpu->mmio_needed = 0;
-> @@ -531,7 +540,7 @@ int kvm_complete_mmio_read(struct kvm_vcpu *vcpu, struct kvm_run *run)
->   
->   int kvm_emu_mmio_write(struct kvm_vcpu *vcpu, larch_inst inst)
->   {
-> -	int ret;
-> +	int idx, ret;
->   	unsigned int rd, op8, opcode;
->   	unsigned long curr_pc, rd_val = 0;
->   	struct kvm_run *run = vcpu->run;
-> @@ -631,7 +640,9 @@ int kvm_emu_mmio_write(struct kvm_vcpu *vcpu, larch_inst inst)
->   		 * it need not return to user space to handle the mmio
->   		 * exception.
->   		 */
-> +		idx = srcu_read_lock(&vcpu->kvm->srcu);
->   		ret = kvm_io_bus_write(vcpu, KVM_MMIO_BUS, vcpu->arch.badv, run->mmio.len, data);
-> +		srcu_read_unlock(&vcpu->kvm->srcu, idx);
->   		if (!ret)
->   			return EMULATE_DONE;
->   
-> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-> index a233a323e295..4b7ff20ed438 100644
-> --- a/arch/loongarch/kvm/intc/ipi.c
-> +++ b/arch/loongarch/kvm/intc/ipi.c
-> @@ -98,7 +98,7 @@ static void write_mailbox(struct kvm_vcpu *vcpu, int offset, uint64_t data, int
->   
->   static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
->   {
-> -	int i, ret;
-> +	int i, idx, ret;
->   	uint32_t val = 0, mask = 0;
->   
->   	/*
-> @@ -107,7 +107,9 @@ static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
->   	 */
->   	if ((data >> 27) & 0xf) {
->   		/* Read the old val */
-> +		srcu_read_unlock(&vcpu->kvm->srcu, idx);
-here should be idx = srcu_read_lock(&vcpu->kvm->srcu) ?
+thanks,
 
->   		ret = kvm_io_bus_read(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
-> +		srcu_read_unlock(&vcpu->kvm->srcu, idx);
->   		if (unlikely(ret)) {
->   			kvm_err("%s: : read date from addr %llx failed\n", __func__, addr);
->   			return ret;
-> @@ -121,7 +123,9 @@ static int send_ipi_data(struct kvm_vcpu *vcpu, gpa_t addr, uint64_t data)
->   		val &= mask;
->   	}
->   	val |= ((uint32_t)(data >> 32) & ~mask);
-> +	srcu_read_unlock(&vcpu->kvm->srcu, idx);
-here should be idx = srcu_read_lock(&vcpu->kvm->srcu)
+greg k-h
 
->   	ret = kvm_io_bus_write(vcpu, KVM_IOCSR_BUS, addr, sizeof(val), &val);
-> +	srcu_read_unlock(&vcpu->kvm->srcu, idx);
->   	if (unlikely(ret))
->   		kvm_err("%s: : write date to addr %llx failed\n", __func__, addr);
->   
-> 
-otherwise looks good to me.
+------------------ original commit in Linus's tree ------------------
 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+From e9649129d33dca561305fc590a7c4ba8c3e5675a Mon Sep 17 00:00:00 2001
+From: Kunkun Jiang <jiangkunkun@huawei.com>
+Date: Thu, 7 Nov 2024 13:41:36 -0800
+Subject: [PATCH] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+
+vgic_its_save_device_tables will traverse its->device_list to
+save DTE for each device. vgic_its_restore_device_tables will
+traverse each entry of device table and check if it is valid.
+Restore if valid.
+
+But when MAPD unmaps a device, it does not invalidate the
+corresponding DTE. In the scenario of continuous saves
+and restores, there may be a situation where a device's DTE
+is not saved but is restored. This is unreasonable and may
+cause restore to fail. This patch clears the corresponding
+DTE when MAPD unmaps a device.
+
+Cc: stable@vger.kernel.org
+Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
+Co-developed-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with entry write helper]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 68ba7e2453cd..b77fa99eafed 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -1139,9 +1139,11 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+ 	bool valid = its_cmd_get_validbit(its_cmd);
+ 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
+ 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
++	int dte_esz = vgic_its_get_abi(its)->dte_esz;
+ 	struct its_device *device;
++	gpa_t gpa;
+ 
+-	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
++	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
+ 		return E_ITS_MAPD_DEVICE_OOR;
+ 
+ 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
+@@ -1162,7 +1164,7 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+ 	 * is an error, so we are done in any case.
+ 	 */
+ 	if (!valid)
+-		return 0;
++		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
+ 
+ 	device = vgic_its_alloc_device(its, device_id, itt_addr,
+ 				       num_eventid_bits);
 
 
