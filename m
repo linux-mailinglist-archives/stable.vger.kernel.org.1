@@ -1,81 +1,50 @@
-Return-Path: <stable+bounces-96299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227E39E1DA9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:35:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C999E1E1B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A089B3083B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:14:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24D35B621C6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 301BA1E7674;
-	Tue,  3 Dec 2024 12:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB531F12ED;
+	Tue,  3 Dec 2024 12:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="khGvRRRA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NtYb1fxE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698541E5713
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 12:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E661EBFFD;
+	Tue,  3 Dec 2024 12:48:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733228038; cv=none; b=htB0ysZhpDvjy4trklVAusPiH9AVKTLqLtmvlXpiFzNzmmF61D7FcA4MWTQ2WwB53meVTLUlkFqjm1Vrzc4/q97rv4ThNG199apHTuxsVJOAy0gm8BmjkScNAWMaoMl3KssA/sNPF93Rn6NINDSi7rRM5yrEEe04Jwzu9U6UJFE=
+	t=1733230090; cv=none; b=kllPGhv+VGIhflyide3WNmv2wasYqjI7AYRHz/Y8h2OPUHncgQ44ydqM47lr2wG2diNKRYhoGI8MQS9XX760q/Y/fMQfARSX6JZ98Rd0WpquxFEM5MPN5eRlvk6ZPGQNfpeD8z6Em/IOyiZQ0HhX3qz52oCRplBQ0JvgFlGBk1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733228038; c=relaxed/simple;
-	bh=iFlGn8SYSQnS21b00+qwUeC5W1YHrazBnqPMlae/vqI=;
+	s=arc-20240116; t=1733230090; c=relaxed/simple;
+	bh=LpOVQoMlpE/E8rUSHH5zwrqMIfcMHJ5yw+nwZF82uAs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jMQDunGK36/CdlB/D+NcdolKvW0fSN+AC+P5HAlth6iEmJXYFcGMPpgX+K+s4AAp1GnhtGuJlzX7VsdbRLwstXUGmxzX2LlWZ5cTr6TF/MlT9pH7HytBsG8qeYbZPBl93ILKfnAaDjQzn8JLL5fDEtqu3UR2SINgNGGV0TCu3Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=khGvRRRA; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5cf9ef18ae9so11280660a12.1
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 04:13:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733228034; x=1733832834; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6M6cTvNs7V+xqyuwhG0n9JcP4Mq9Zi3RChVjlFoyS9c=;
-        b=khGvRRRAuNhL0sFxFwZ1GIr6iN0J48Tf1EGXnGIpl2PvHS3hcKrs+Fz90LAuHhJwrY
-         CgLfQd0nwXAUibnGIr/VXfwPGhxqadRmsnAcj7kWsDmIdllpaJRBPZGjjVtsIUMpAo1j
-         y9/j4Lty94OzD1gyWyAcLgOFMcnmfM5lLLa9tFp/+Vk+GhrhjWren83wh2m9havX5KbR
-         VUzP36rz8ngoAqsydUZncGi3qD9WJ4ibNtJIuN5qLUPzyTTrmJlnEINBij6UUILxVvw4
-         2DhrELvbXpSTBcjGRx1viwnt0lWX6OcT0EeI3ka0MVXfHzCHDG1ZTGNI8rwfz/7tmfO+
-         xo8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733228034; x=1733832834;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6M6cTvNs7V+xqyuwhG0n9JcP4Mq9Zi3RChVjlFoyS9c=;
-        b=gjxkOjECcnjLTEJ6AZS5rs+gDSySS+HdAxdeSoqjy1WI9alSvN4eo5lnNns8BF+Y3q
-         /exb9csaDtHA4pBz+6iWcR0xoX5Np2wdRdqrAF6vulTnCLqnVZLmDG1+dVPsh9JK6vZK
-         yKBv4XgQrugwFIRgJYST3UZTjx4HPRFzwLef/6aSvDnYRd2y5RalW2jr/CYGF8HiieJZ
-         owo+GZ2z6ZNsWp11Ig5yKXGwkmvk5jxyvAXMRjes0lms+lqOaQdkw726azckCGNmR+UU
-         Z2Q1QV8j+WBrs7C1Y7saCR+3U6pDqfxHZUJrG7AF/SYAbOag92Wf5gNe5clIH9HlHY/G
-         HUjg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZrRzyLLZx6Fu2kV8DxaHF/Z2hitr7rePpI+Ba8043VytaFMwpnRmnhBkJJ0kSguyazx5dSsA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+LZpUG5P/OFhXWNErsRXvcUYks7pIZyctHmlrbod5y11qupd1
-	gAjlsAbm2TNCwAn/VjVu/Td4Qx1QdpfiS4lkO/bT1gZa4I0qlJL8gvlm/w+ecaQ=
-X-Gm-Gg: ASbGnctIcXiIjOKgGLgfowZp+wqnrXg1qy3hAQPe1CJrgL4t3u7LyxcUxzPAMJeRsc+
-	Fla7QKsAh7sNul9rEfdaRbx4CtethfiZ//uC+XTIbdhShAyjgv1Gnynm1ScGMoT2XiFPOw8eIkY
-	tPqcC4z5UiDt06aTBA/cMLtBWqVN6K8KZEOHV33qx4MeXdhywFRWnBNMnYYcUJE6YGTQFVeogAZ
-	q77SRrMwMOXI589ak6dXT8+yX/+MXBE+R03zBTeu9z/jwzyaQuEzOLHHQJVhCIFSC7ueOFgwlBX
-	h5R/04+WSoRU56l776NgEbqIP+ycGaZ9AQ==
-X-Google-Smtp-Source: AGHT+IFmVCN79AgO12dD2PdCbqVnKblHT8yfYp2CBGY/43ZxpcqEVT7DluzFyun9DnuIF1YW27jRrA==
-X-Received: by 2002:a17:906:d54b:b0:aa5:3fe7:4475 with SMTP id a640c23a62f3a-aa59453454fmr3031209566b.11.1733228033761;
-        Tue, 03 Dec 2024 04:13:53 -0800 (PST)
-Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5996c245bsm607603766b.8.2024.12.03.04.13.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 04:13:53 -0800 (PST)
-From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Date: Tue, 03 Dec 2024 12:13:53 +0000
-Subject: [PATCH v2 5/8] phy: exynos5-usbdrd: gs101: ensure power is gated
- to SS phy in phy_exit()
+	 In-Reply-To:To:Cc; b=LSOFRuVlfgQEOdfr/ruQZJcL2EkRGJf67m8O1UbaqQY9oCwy/dPy45psUnbDGcmrC8gGgt8bvdWDBXeaAaFaF2KsBXR4dknRJ0DMl3ZNNorEOs6XSYPBfL5jIrTNrrK2ih8BJDr/dx/Efp6dkG1GeQDqZF/IJzqrjJugHr90448=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NtYb1fxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACCCC4CED8;
+	Tue,  3 Dec 2024 12:48:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733230090;
+	bh=LpOVQoMlpE/E8rUSHH5zwrqMIfcMHJ5yw+nwZF82uAs=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=NtYb1fxEkI2ZLYOEInRO4JT0N1O6Cp77u2HFOwEHVSmNmbf2mmBLUjqLFy5Muk8ls
+	 tNHX8UfGBS94tO5oQ6EBOqpHVic4wyRcZzBAGWRGaOGpA/vZR5IIWJQBIMREXyMRZw
+	 mS9c9iHlerOja+AAN72vQqTvDefMaHLfWQrRRL0TuN90LxRZXVQ9gzqM4fi2bGmjzo
+	 C8zJ+vR80iUumIGgA5JzJ7JDigny3VQEwpyYCsEBj/ULGyNMTwXHi3x/kRWP3cLMM/
+	 yK5BcRvwa6m/QbqpPjDA2DYQWy7xo/rfhkJ77rHu2whIUKlJyb32sI53o09uMIieiF
+	 eqDc1Vg8U5BJg==
+From: Mark Brown <broonie@kernel.org>
+Date: Tue, 03 Dec 2024 12:45:53 +0000
+Subject: [PATCH 1/6] arm64/sme: Flush foreign register state in
+ do_sme_acc()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,77 +52,64 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241203-gs101-phy-lanes-orientation-phy-v2-5-40dcf1b7670d@linaro.org>
-References: <20241203-gs101-phy-lanes-orientation-phy-v2-0-40dcf1b7670d@linaro.org>
-In-Reply-To: <20241203-gs101-phy-lanes-orientation-phy-v2-0-40dcf1b7670d@linaro.org>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Peter Griffin <peter.griffin@linaro.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Sam Protsenko <semen.protsenko@linaro.org>, 
- Will McVicker <willmcvicker@google.com>, Roy Luo <royluo@google.com>, 
- kernel-team@android.com, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- stable@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.13.0
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241203-arm64-sme-reenable-v1-1-d853479d1b77@kernel.org>
+References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
+In-Reply-To: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-9b746
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1524; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=LpOVQoMlpE/E8rUSHH5zwrqMIfcMHJ5yw+nwZF82uAs=;
+ b=owGbwMvMwMWocq27KDak/QLjabUkhnS/fwxZFimK2tZr1lq9W90o8CI4fq/Sy1JJxgCOwmCpNZxB
+ sv2djMYsDIxcDLJiiixrn2WsSg+X2Dr/0fxXMINYmUCmMHBxCsBE3vqz/9OzNm9XOHpxwU7GkkX7Wu
+ 5sfHg6nbPpFfv2KXbJHOlHD36KPvRVi3nZzmsXpPz8TwtMn2rhv7XCyuXbmqqlvKunlnyc82Nf0skM
+ YbtK48Atu47Paw5s6rjn0xHkJNNgdvJfCHP+TV1Z90l7C3/IvbEK2bnKjDH6u2ecUl/ocaF+ra21Bb
+ YGtl9kn1xj5VbsU2yTeOK/xf77moPBv8xkvxzlcemVubFttVXYvdd/bVujl4rPfZFuVV5SxHbSV7mb
+ t6rO3tkgNe6n5uSfj39G7Yxmar6g/7/OMHWJmFMgU/eUDxPXf0qb8ttUsbb8jfSfhBw7kTRR8ZKHc7
+ tVl3hckAvtaf3To2sxx1y9INoJAA==
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-We currently don't gate the power to the SS phy in phy_exit().
+When do_sme_acc() runs with foreign FP state it does not do any updates of
+the task structure, relying on the next return to userspace to reload the
+register state appropriately, but leaves the task's last loaded CPU
+untouched. This means that if the task returns to userspace on the last
+CPU it ran on then the checks in fpsimd_bind_task_to_cpu() will incorrectly
+determine that the register state on the CPU is current and suppress reload
+of the floating point register state before returning to userspace. This
+will result in spurious warnings due to SME access traps occuring for the
+task after TIF_SME is set.
 
-Shuffle the code slightly to ensure the power is gated to the SS phy as
-well.
+Call fpsimd_flush_task_state() to invalidate the last loaded CPU
+recorded in the task, forcing detection of the task as foreign.
 
-Fixes: 32267c29bc7d ("phy: exynos5-usbdrd: support Exynos USBDRD 3.1 combo phy (HS & SS)")
-CC: stable@vger.kernel.org # 6.11+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-
+Fixes: 8bd7f91c03d8 ("arm64/sme: Implement traps and syscall handling for SME")
+Reported-by: Mark Rutlamd <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
 ---
-v2:
-* add cc-stable and fixes tags (Krzysztof)
-* collect tags
----
- drivers/phy/samsung/phy-exynos5-usbdrd.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/kernel/fpsimd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-index 2a724d362c2d..c1ce6fdeef31 100644
---- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
-+++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-@@ -1296,14 +1296,17 @@ static int exynos5_usbdrd_gs101_phy_exit(struct phy *phy)
- 	struct exynos5_usbdrd_phy *phy_drd = to_usbdrd_phy(inst);
- 	int ret;
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 8c4c1a2186cc510a7826d15ec36225857c07ed71..eca0b6a2fc6fa25d8c850a5b9e109b4d58809f54 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1460,6 +1460,8 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
+ 		sme_set_vq(vq_minus_one);
  
-+	if (inst->phy_cfg->id == EXYNOS5_DRDPHY_UTMI) {
-+		ret = exynos850_usbdrd_phy_exit(phy);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	exynos5_usbdrd_phy_isol(inst, true);
-+
- 	if (inst->phy_cfg->id != EXYNOS5_DRDPHY_UTMI)
- 		return 0;
+ 		fpsimd_bind_task_to_cpu();
++	} else {
++		fpsimd_flush_task_state(current);
+ 	}
  
--	ret = exynos850_usbdrd_phy_exit(phy);
--	if (ret)
--		return ret;
--
--	exynos5_usbdrd_phy_isol(inst, true);
- 	return regulator_bulk_disable(phy_drd->drv_data->n_regulators,
- 				      phy_drd->regulators);
- }
+ 	put_cpu_fpsimd_context();
 
 -- 
-2.47.0.338.g60cca15819-goog
+2.39.5
 
 
