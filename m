@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A91F9E23EF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556139E2680
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 575A1BC2DF6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:35:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5472B167144
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE461FC7E4;
-	Tue,  3 Dec 2024 15:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CEA61F76DD;
+	Tue,  3 Dec 2024 16:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRV3isAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nd7eOmR0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873791FC115;
-	Tue,  3 Dec 2024 15:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A67B1F7594;
+	Tue,  3 Dec 2024 16:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239972; cv=none; b=ePZ31FfA0zGxMpuQ+b1v8pp8bhNWrRv4W5rjKkgiRYNXS6i0gkqH0p1I970IyNiEKQPo7h9WGKsoS2vQds/FJD++LVPkTTe4g/kcss1i3ZA4E5YIyhc70GLEd3eU+qoJ8cnzN8JqrQAonEl37WU+DtrY2ylfrfCVSJgxXumX55E=
+	t=1733242163; cv=none; b=N1T5knhbGawdNQmsznZA4SGUNk83GxDZYLrjPGIRfwY/WQD1XTetUEh4VGss+GtSzcdg5uLw8k2qptDskCImLGtHPs8vRfy3jDQD3gdNfUKP5Tkt/jC1qNO3jrclJGXAFYwBydUacaaRJJsZIJGvqKS57BWOGdw8Ej+LHpAw15Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239972; c=relaxed/simple;
-	bh=AAYAHHfqNkUliyOh3kJgoBN7XMP93QSDeMQsEKyAbYc=;
+	s=arc-20240116; t=1733242163; c=relaxed/simple;
+	bh=43HlLxf8r9McxXEq4EYFM4jcW/C0+ox97PiGNn9bb34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QRhVKq80cvDS5bWR1U9xtbIO3/dHNCx/kxIgEzfIko1SQHroTrfWcCtXZelGeol2uMSFBOM83rRdLwkpnS+7MngyA8p1LprcdG0F7SmG9OZWmoZapaJH8DhCr+s6YunEZGoHzwG2gjLcLSpbSlpNWE8B8fzC03I1KhebOwCWoIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRV3isAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AC2C4CED6;
-	Tue,  3 Dec 2024 15:32:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pw3ae/gbKlb2esQLZBdxmGkEv2Fl3zXkzq/n65xOKJPCl+3fCfyojqYfgKRt1X6MVto/ZUGQ9hpVbDCuSiiRF3e3iwdUkim057TAD9/Mgn2+Id6QrSFOQL7zO05je12jCYORLsfa7DYMWWCL5OTPhnDGlfyda3Y+KoqG/c5sk4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nd7eOmR0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE4AC4CECF;
+	Tue,  3 Dec 2024 16:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239972;
-	bh=AAYAHHfqNkUliyOh3kJgoBN7XMP93QSDeMQsEKyAbYc=;
+	s=korg; t=1733242163;
+	bh=43HlLxf8r9McxXEq4EYFM4jcW/C0+ox97PiGNn9bb34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRV3isAFWU1cxqt0iJHzl8ofof+fRVnM93c5EBRkLhMzpqVTTXfEpWtTcVMmFg2qY
-	 5H25uM8zqi7IiG4Jg1A//JNhSHu36XMIPTrm8oByvoaYN9KfcXpDrJ7PH/ciASUBvf
-	 A/rK2dtFsOiZolS3KVdCHLSjVqy+xe0unodCWR/Y=
+	b=Nd7eOmR0iZZBJdhpVvnafsXUqTPkL6pUPongxmyJoeOEzhohm/R6JfwSL9Q4IY9y+
+	 qI99nsdvhITx4sHcatutbnM8dr97gbShZnnW9+36Pn2VQJtj3yCaGIQS3VPQuQGlyo
+	 l0nEF1z1aBxFZ0zmmPq9MW9z4ZDKS8Vmlr61+p4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Raits <igor@gooddata.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 780/817] Revert "nfs: dont reuse partially completed requests in nfs_lock_and_join_requests"
-Date: Tue,  3 Dec 2024 15:45:52 +0100
-Message-ID: <20241203144026.460504654@linuxfoundation.org>
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 626/826] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+Date: Tue,  3 Dec 2024 15:45:53 +0100
+Message-ID: <20241203144808.171907382@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,124 +59,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 66f9dac9077c9c063552e465212abeb8f97d28a7 ]
+commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6 upstream.
 
-This reverts commit b571cfcb9dcac187c6d967987792d37cb0688610.
+The current USB-audio driver code doesn't check bLength of each
+descriptor at traversing for clock descriptors.  That is, when a
+device provides a bogus descriptor with a shorter bLength, the driver
+might hit out-of-bounds reads.
 
-This patch appears to assume that if one request is complete, then the
-others will complete too before unlocking. That is not a valid
-assumption, since other requests could hit a non-fatal error or a short
-write that would cause them not to complete.
+For addressing it, this patch adds sanity checks to the validator
+functions for the clock descriptor traversal.  When the descriptor
+length is shorter than expected, it's skipped in the loop.
 
-Reported-by: Igor Raits <igor@gooddata.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219508
-Fixes: b571cfcb9dca ("nfs: don't reuse partially completed requests in nfs_lock_and_join_requests")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For the clock source and clock multiplier descriptors, we can just
+check bLength against the sizeof() of each descriptor type.
+OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
+of bNrInPins elements and two more fields at its tail, hence those
+have to be checked in addition to the sizeof() check.
+
+Reported-by: Benoît Sevens <bsevens@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
+Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/write.c | 49 +++++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 20 deletions(-)
+ sound/usb/clock.c |   24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index d074d0ceb4f01..1e2b9ee4222e7 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -144,6 +144,31 @@ static void nfs_io_completion_put(struct nfs_io_completion *ioc)
- 		kref_put(&ioc->refcount, nfs_io_completion_release);
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -36,6 +36,12 @@ union uac23_clock_multiplier_desc {
+ 	struct uac_clock_multiplier_descriptor v3;
+ };
+ 
++/* check whether the descriptor bLength has the minimal length */
++#define DESC_LENGTH_CHECK(p, proto) \
++	((proto) == UAC_VERSION_3 ? \
++	 ((p)->v3.bLength >= sizeof((p)->v3)) :	\
++	 ((p)->v2.bLength >= sizeof((p)->v2)))
++
+ #define GET_VAL(p, proto, field) \
+ 	((proto) == UAC_VERSION_3 ? (p)->v3.field : (p)->v2.field)
+ 
+@@ -58,6 +64,8 @@ static bool validate_clock_source(void *
+ {
+ 	union uac23_clock_source_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
  }
  
-+static void
-+nfs_page_set_inode_ref(struct nfs_page *req, struct inode *inode)
-+{
-+	if (!test_and_set_bit(PG_INODE_REF, &req->wb_flags)) {
-+		kref_get(&req->wb_kref);
-+		atomic_long_inc(&NFS_I(inode)->nrequests);
-+	}
-+}
-+
-+static int
-+nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
-+{
-+	int ret;
-+
-+	if (!test_bit(PG_REMOVE, &req->wb_flags))
-+		return 0;
-+	ret = nfs_page_group_lock(req);
-+	if (ret)
-+		return ret;
-+	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
-+		nfs_page_set_inode_ref(req, inode);
-+	nfs_page_group_unlock(req);
-+	return 0;
-+}
-+
- /**
-  * nfs_folio_find_head_request - find head request associated with a folio
-  * @folio: pointer to folio
-@@ -540,7 +565,6 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
- 	struct inode *inode = folio->mapping->host;
- 	struct nfs_page *head, *subreq;
- 	struct nfs_commit_info cinfo;
--	bool removed;
- 	int ret;
+@@ -65,13 +73,27 @@ static bool validate_clock_selector(void
+ {
+ 	union uac23_clock_selector_desc *cs = p;
  
- 	/*
-@@ -565,18 +589,18 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
- 		goto retry;
- 	}
+-	return GET_VAL(cs, proto, bClockID) == id;
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
++	if (GET_VAL(cs, proto, bClockID) != id)
++		return false;
++	/* additional length check for baCSourceID array (in bNrInPins size)
++	 * and two more fields (which sizes depend on the protocol)
++	 */
++	if (proto == UAC_VERSION_3)
++		return cs->v3.bLength >= sizeof(cs->v3) + cs->v3.bNrInPins +
++			4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
++	else
++		return cs->v2.bLength >= sizeof(cs->v2) + cs->v2.bNrInPins +
++			1 /* bmControls */ + 1 /* iClockSelector */;
+ }
  
--	ret = nfs_page_group_lock(head);
-+	ret = nfs_cancel_remove_inode(head, inode);
- 	if (ret < 0)
- 		goto out_unlock;
+ static bool validate_clock_multiplier(void *p, int id, int proto)
+ {
+ 	union uac23_clock_multiplier_desc *cs = p;
  
--	removed = test_bit(PG_REMOVE, &head->wb_flags);
-+	ret = nfs_page_group_lock(head);
-+	if (ret < 0)
-+		goto out_unlock;
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
  
- 	/* lock each request in the page group */
- 	for (subreq = head->wb_this_page;
- 	     subreq != head;
- 	     subreq = subreq->wb_this_page) {
--		if (test_bit(PG_REMOVE, &subreq->wb_flags))
--			removed = true;
- 		ret = nfs_page_group_lock_subreq(head, subreq);
- 		if (ret < 0)
- 			goto out_unlock;
-@@ -584,21 +608,6 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
- 
- 	nfs_page_group_unlock(head);
- 
--	/*
--	 * If PG_REMOVE is set on any request, I/O on that request has
--	 * completed, but some requests were still under I/O at the time
--	 * we locked the head request.
--	 *
--	 * In that case the above wait for all requests means that all I/O
--	 * has now finished, and we can restart from a clean slate.  Let the
--	 * old requests go away and start from scratch instead.
--	 */
--	if (removed) {
--		nfs_unroll_locks(head, head);
--		nfs_unlock_and_release_request(head);
--		goto retry;
--	}
--
- 	nfs_init_cinfo_from_inode(&cinfo, inode);
- 	nfs_join_page_group(head, &cinfo, inode);
- 	return head;
--- 
-2.43.0
-
 
 
 
