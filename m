@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-97759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB989E27E7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:44:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 555559E22D6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E77CBE4D7C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2390160134
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9721F76AA;
-	Tue,  3 Dec 2024 16:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDAE1F7557;
+	Tue,  3 Dec 2024 15:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSA8A04M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzLajudk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D8B1DE8A5;
-	Tue,  3 Dec 2024 16:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C183F1F6696;
+	Tue,  3 Dec 2024 15:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241639; cv=none; b=BIdasHuASPeKrI4Q04Am1XzCeYMTyCTZJIbtPLIBq7GM65McF7v/w7LfvpISCT+6ABL5L2nJexCvUfoz4gS2EbLYcQfF9zR83Rx2Nu7nTbH9hiKIjVrmOQEpQoYg+aNsnynIhzQab/tqdymHoIyAks1EtWp8YUZGx/pCMncFMLc=
+	t=1733239483; cv=none; b=WqTrklmkaNU1JHNxA5U0urNrjTHqyvH0RFR7yydhQDYOBnoL0bnfCWfky0pvXYQcOsGPIRYZBRgHA6v80O3m/8V6xpxBcmlmgkCEPYa44O1YzhKe1g77XQtR4t2GwpxoiQIl7tgfUCA0IuUzacRWR4l8kq1+oAOofD0pLKT8s7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241639; c=relaxed/simple;
-	bh=RfEeNoP2ThHN5hwXj36cNd7N0CaTxOpkPhYehgrXj4A=;
+	s=arc-20240116; t=1733239483; c=relaxed/simple;
+	bh=Td8qliLq6kYdQJMfbavyDCIesQC3qppJrzOaS9CDxi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Efn03SDrfaHlwk3CfvA7bH0+fG6aWq97ZeV72r4MvrcfrHrmdQNuyciIhk3JdY08nQ85qd2XIb21cka/jtOhDerYuvrs0yih4bfMoqRWjpSQEo/oOkIcTsCjF9W01OSVn4WJDihmA3pCAdJOS+UQfVVpmX+J/p4zuwptsQ1TzM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSA8A04M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46862C4CECF;
-	Tue,  3 Dec 2024 16:00:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y+KYS9iaRua1pQa6srEp8Bakeh5T1e0Qb9+L1R2C6x74Nfbgpvvc3tBs6fuFBR1zf73lpKiMybAmAmV+Pa1sbAQHEM85nTYvW8sw3OZx9MLt8pDTjHUkxaOl3e/2iOgBPWZqcQJgGY7Tkw/LrdQsTncw19TI+sF14UddzzgYn9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzLajudk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC245C4CECF;
+	Tue,  3 Dec 2024 15:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241639;
-	bh=RfEeNoP2ThHN5hwXj36cNd7N0CaTxOpkPhYehgrXj4A=;
+	s=korg; t=1733239483;
+	bh=Td8qliLq6kYdQJMfbavyDCIesQC3qppJrzOaS9CDxi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSA8A04MqAjyv/00E8FF9YXotVhtuvP424q5KOjX+PsorMkYsDV+0xXv4qyNpvK6C
-	 Ab9O+ABHDhfC92uyAZ7IcxAYjsES2Pv2vb8dTuvB9Cx/QfmCSR+FF+AU9ww8P64fqx
-	 RWJu5g4COHbIXwneenGEvRKWPfHDToYLAcVlm1Uk=
+	b=TzLajudkJ64BA5ojyRwDHdfk6tD3inkAb60TrWuWiXSHM35QEr9fXq90OdxaDe93f
+	 i9AkuEB0nFcCZ9JfRrjuRNe/iG6cbh1GUwAzgVr7+ew9uS3R1rL12qyv484EKr5tjw
+	 S0lSHvBpmHZZxgbNqxBszXnUteEkFRzfc+Sb3PgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Sandipan Das <sandipan.das@amd.com>,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 474/826] perf jevents: Dont stop at the first matched pmu when searching a events table
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 629/817] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
 Date: Tue,  3 Dec 2024 15:43:21 +0100
-Message-ID: <20241203144802.253432526@linuxfoundation.org>
+Message-ID: <20241203144020.489362889@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +59,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 8d7f85e323ea402005fa83ddbdf5d00292d77098 ]
+commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6 upstream.
 
-The "perf all PMU test" fails on a Coffee Lake machine.
+The current USB-audio driver code doesn't check bLength of each
+descriptor at traversing for clock descriptors.  That is, when a
+device provides a bogus descriptor with a shorter bLength, the driver
+might hit out-of-bounds reads.
 
-The failure is caused by the below change in the commit e2641db83f18
-("perf vendor events: Add/update skylake events/metrics").
+For addressing it, this patch adds sanity checks to the validator
+functions for the clock descriptor traversal.  When the descriptor
+length is shorter than expected, it's skipped in the loop.
 
-+    {
-+        "BriefDescription": "This 48-bit fixed counter counts the UCLK cycles",
-+        "Counter": "FIXED",
-+        "EventCode": "0xff",
-+        "EventName": "UNC_CLOCK.SOCKET",
-+        "PerPkg": "1",
-+        "PublicDescription": "This 48-bit fixed counter counts the UCLK cycles.",
-+        "Unit": "cbox_0"
-     }
+For the clock source and clock multiplier descriptors, we can just
+check bLength against the sizeof() of each descriptor type.
+OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
+of bNrInPins elements and two more fields at its tail, hence those
+have to be checked in addition to the sizeof() check.
 
-The other cbox events have the unit name "CBOX", while the fixed counter
-has a unit name "cbox_0". So the events_table will maintain separate
-entries for cbox and cbox_0.
-
-The perf_pmus__print_pmu_events() calculates the total number of events,
-allocate an aliases buffer, store all the events into the buffer, sort,
-and print all the aliases one by one.
-
-The problem is that the calculated total number of events doesn't match
-the stored events in the aliases buffer.
-
-The perf_pmu__num_events() is used to calculate the number of events. It
-invokes the pmu_events_table__num_events() to go through the entire
-events_table to find all events. Because of the
-pmu_uncore_alias_match(), the suffix of uncore PMU will be ignored. So
-the events for cbox and cbox_0 are all counted.
-
-When storing events into the aliases buffer, the
-perf_pmu__for_each_event() only process the events for cbox.
-
-Since a bigger buffer was allocated, the last entry are all 0.
-When printing all the aliases, null will be outputted, and trigger the
-failure.
-
-The mismatch was introduced from the commit e3edd6cf6399 ("perf
-pmu-events: Reduce processed events by passing PMU"). The
-pmu_events_table__for_each_event() stops immediately once a pmu is set.
-But for uncore, especially this case, the method is wrong and mismatch
-what perf does in the perf_pmu__num_events().
-
-With the patch,
-$ perf list pmu | grep -A 1 clock.socket
-   unc_clock.socket
-        [This 48-bit fixed counter counts the UCLK cycles. Unit: uncore_cbox_0
-$ perf test "perf all PMU test"
-  107: perf all PMU test                                               : Ok
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/all/202407101021.2c8baddb-oliver.sang@intel.com/
-Fixes: e3edd6cf6399 ("perf pmu-events: Reduce processed events by passing PMU")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Benjamin Gray <bgray@linux.ibm.com>
-Cc: Xu Yang <xu.yang_2@nxp.com>
-Cc: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241001021431.814811-1-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Benoît Sevens <bsevens@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
+Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/pmu-events/empty-pmu-events.c | 2 +-
- tools/perf/pmu-events/jevents.py         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/clock.c |   24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/empty-pmu-events.c b/tools/perf/pmu-events/empty-pmu-events.c
-index c592079982fbd..873e9fb2041f0 100644
---- a/tools/perf/pmu-events/empty-pmu-events.c
-+++ b/tools/perf/pmu-events/empty-pmu-events.c
-@@ -380,7 +380,7 @@ int pmu_events_table__for_each_event(const struct pmu_events_table *table,
-                         continue;
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -36,6 +36,12 @@ union uac23_clock_multiplier_desc {
+ 	struct uac_clock_multiplier_descriptor v3;
+ };
  
-                 ret = pmu_events_table__for_each_event_pmu(table, table_pmu, fn, data);
--                if (pmu || ret)
-+                if (ret)
-                         return ret;
-         }
-         return 0;
-diff --git a/tools/perf/pmu-events/jevents.py b/tools/perf/pmu-events/jevents.py
-index bb0a5d92df4a1..d46a22fb5573d 100755
---- a/tools/perf/pmu-events/jevents.py
-+++ b/tools/perf/pmu-events/jevents.py
-@@ -930,7 +930,7 @@ int pmu_events_table__for_each_event(const struct pmu_events_table *table,
-                         continue;
++/* check whether the descriptor bLength has the minimal length */
++#define DESC_LENGTH_CHECK(p, proto) \
++	((proto) == UAC_VERSION_3 ? \
++	 ((p)->v3.bLength >= sizeof((p)->v3)) :	\
++	 ((p)->v2.bLength >= sizeof((p)->v2)))
++
+ #define GET_VAL(p, proto, field) \
+ 	((proto) == UAC_VERSION_3 ? (p)->v3.field : (p)->v2.field)
  
-                 ret = pmu_events_table__for_each_event_pmu(table, table_pmu, fn, data);
--                if (pmu || ret)
-+                if (ret)
-                         return ret;
-         }
-         return 0;
--- 
-2.43.0
-
+@@ -58,6 +64,8 @@ static bool validate_clock_source(void *
+ {
+ 	union uac23_clock_source_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
+ 
+@@ -65,13 +73,27 @@ static bool validate_clock_selector(void
+ {
+ 	union uac23_clock_selector_desc *cs = p;
+ 
+-	return GET_VAL(cs, proto, bClockID) == id;
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
++	if (GET_VAL(cs, proto, bClockID) != id)
++		return false;
++	/* additional length check for baCSourceID array (in bNrInPins size)
++	 * and two more fields (which sizes depend on the protocol)
++	 */
++	if (proto == UAC_VERSION_3)
++		return cs->v3.bLength >= sizeof(cs->v3) + cs->v3.bNrInPins +
++			4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
++	else
++		return cs->v2.bLength >= sizeof(cs->v2) + cs->v2.bNrInPins +
++			1 /* bmControls */ + 1 /* iClockSelector */;
+ }
+ 
+ static bool validate_clock_multiplier(void *p, int id, int proto)
+ {
+ 	union uac23_clock_multiplier_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
+ 
 
 
 
