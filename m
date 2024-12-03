@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-97811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40C09E261A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7041D9E2836
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:53:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9E8C165C68
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 377B8BA8136
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F501F7561;
-	Tue,  3 Dec 2024 16:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E4F1E3DED;
+	Tue,  3 Dec 2024 15:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJZtaMUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhJUBaVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE0A14A088;
-	Tue,  3 Dec 2024 16:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6237A1F758E;
+	Tue,  3 Dec 2024 15:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241810; cv=none; b=UpV2lfsb1HQBtzRn+KswmNd9O+0GPDTtZB1ZjJ3fKnvWGODsW5I5cNkFrtd0Z2TdBVm2RC9xPNJnHHAXo2Ii5ZTZshetwHHEW/Ka+ndvBs1gD+KVNyurXyvVa758j9zXgNCg1V9FEbwmaPsNeoimHdWp9S9nfqF2RubwCIH5SSs=
+	t=1733239707; cv=none; b=kgV3Aqwjtc8DTNHlgSBgKOPns6eoXZkhOybmahLX35BhOaihS4GLKt8caDK2mGMkakiQ0iyOHPd6hoaW6ZJ1SYAovLe/cxX6rvXE8k5dI0tBMxLBI5CtCnVZS+KP3WgHpTLJFq5B/LsBElLLz0TNp6RGGKQBQBWNpaJdpH40EUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241810; c=relaxed/simple;
-	bh=Id9aPw737/wrRWqS39KeRQ6Me5yHvz29Bf+o3RcDgJU=;
+	s=arc-20240116; t=1733239707; c=relaxed/simple;
+	bh=ZyEIT+K8SQErRj8cljgDLy97UEoqQ/53Blp1UWf3lWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=REb6GVM1Ra3yQM45RY+OgzPhe7byv1r+kt9uY4S0fLmCs8dbG8tXS8gTw7OIXz3ZDsneV3j6Hk3eNZbehn9+nXx+AHyUHLqH0PQ25G9vooASF5b/J36gn/6+O4x84sZpN8IzzLZLOfWEk76EEn1Gz71TDJk9EGhEv+jZqccyeRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJZtaMUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E04BC4CECF;
-	Tue,  3 Dec 2024 16:03:29 +0000 (UTC)
+	 MIME-Version; b=bZd4v6PmcZLtItJXYhLfo691CkU5vd/hON/9C4LIMrJYyP1H2F2p0eQS3AH/Q5Pq/EvJcurTam2UkST/6tidGgdhmGXo0Hj4+79p4Q9GM2PvOh2h6XqI9PvVzdEc6n6H2YVMmK59jfeY83t94MA8ASk7qd4OdaR7D8yhs9mVCRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhJUBaVM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1E3C4CECF;
+	Tue,  3 Dec 2024 15:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241810;
-	bh=Id9aPw737/wrRWqS39KeRQ6Me5yHvz29Bf+o3RcDgJU=;
+	s=korg; t=1733239707;
+	bh=ZyEIT+K8SQErRj8cljgDLy97UEoqQ/53Blp1UWf3lWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJZtaMUpsJ3mUmVHbx7ZTcjQ1x1c7XmpqXli0G/1Ta+aDGcga+iq5xbdkQsozqho0
-	 9k9ri+TRmAEKugbkEKiLYBYFWXHx+lOLWv9ymxJVP0Cw/ur8cZEmyqU+Y5TUTugL6n
-	 Wewj0CvkqLEIbelZdUqAhv6lLV4pW51z4DiGfGDI=
+	b=GhJUBaVMw59nzRvprg3RHU0b88hhXZ/hmKnB9x9cuiBnvjRzbbG8k1Uhmj9ODOd9V
+	 FBeoe72TOJLjwWlbBjB+40UM8OWZzww/Ohu+AbKrVnJ0tche8K0SexhNJTXbOaSGdo
+	 gnyQC9o8046HiwcmW8mp3pO+ggLea1oW7GNtGIPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 524/826] PCI: endpoint: epf-mhi: Avoid NULL dereference if DT lacks mmio
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.11 679/817] usb: xhci: Fix TD invalidation under pending Set TR Dequeue
 Date: Tue,  3 Dec 2024 15:44:11 +0100
-Message-ID: <20241203144804.199543251@linuxfoundation.org>
+Message-ID: <20241203144022.469369753@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +59,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 5089b3d874e9933d9842e90410d3af1520494757 ]
+commit 484c3bab2d5dfa13ff659a51a06e9a393141eefc upstream.
 
-If platform_get_resource_byname() fails and returns NULL because DT lacks
-an 'mmio' property for the MHI endpoint, dereferencing res->start will
-cause a NULL pointer access. Add a check to prevent it.
+xhci_invalidate_cancelled_tds() may not work correctly if the hardware
+is modifying endpoint or stream contexts at the same time by executing
+a Set TR Dequeue command. And even if it worked, it would be unable to
+queue Set TR Dequeue for the next stream, failing to clear xHC cache.
 
-Fixes: 1bf5f25324f7 ("PCI: endpoint: Add PCI Endpoint function driver for MHI bus")
-Link: https://lore.kernel.org/r/20241105120735.1240728-1-quic_zhonhan@quicinc.com
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-[kwilczynski: error message update per the review feedback]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On stream endpoints, a chain of Set TR Dequeue commands may take some
+time to execute and we may want to cancel more TDs during this time.
+Currently this leads to Stop Endpoint completion handler calling this
+function without testing for SET_DEQ_PENDING, which will trigger the
+aforementioned problems when it happens.
+
+On all endpoints, a halt condition causes Reset Endpoint to be queued
+and an error status given to the class driver, which may unlink more
+URBs in response. Stop Endpoint is queued and its handler may execute
+concurrently with Set TR Dequeue queued by Reset Endpoint handler.
+
+(Reset Endpoint handler calls this function too, but there seems to
+be no possibility of it running concurrently with Set TR Dequeue).
+
+Fix xhci_invalidate_cancelled_tds() to work correctly under a pending
+Set TR Dequeue. Bail out of the function when SET_DEQ_PENDING is set,
+then make the completion handler call the function again and also call
+xhci_giveback_invalidated_tds(), which needs to be called next.
+
+This seems to fix another potential bug, where the handler would call
+xhci_invalidate_cancelled_tds(), which may clear some deferred TDs if
+a sanity check fails, and the TDs wouldn't be given back promptly.
+
+Said sanity check seems to be wrong and prone to false positives when
+the endpoint halts, but fixing it is beyond the scope of this change,
+besides ensuring that cleared TDs are given back properly.
+
+Fixes: 5ceac4402f5d ("xhci: Handle TD clearing for multiple streams case")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-33-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-mhi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/host/xhci-ring.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-index 7d070b1def116..54286a40bdfbf 100644
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -867,12 +867,18 @@ static int pci_epf_mhi_bind(struct pci_epf *epf)
- {
- 	struct pci_epf_mhi *epf_mhi = epf_get_drvdata(epf);
- 	struct pci_epc *epc = epf->epc;
-+	struct device *dev = &epf->dev;
- 	struct platform_device *pdev = to_platform_device(epc->dev.parent);
- 	struct resource *res;
- 	int ret;
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -973,6 +973,13 @@ static int xhci_invalidate_cancelled_tds
+ 	unsigned int		slot_id = ep->vdev->slot_id;
+ 	int			err;
  
- 	/* Get MMIO base address from Endpoint controller */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mmio");
-+	if (!res) {
-+		dev_err(dev, "Failed to get \"mmio\" resource\n");
-+		return -ENODEV;
-+	}
++	/*
++	 * This is not going to work if the hardware is changing its dequeue
++	 * pointers as we look at them. Completion handler will call us later.
++	 */
++	if (ep->ep_state & SET_DEQ_PENDING)
++		return 0;
 +
- 	epf_mhi->mmio_phys = res->start;
- 	epf_mhi->mmio_size = resource_size(res);
+ 	xhci = ep->xhci;
  
--- 
-2.43.0
-
+ 	list_for_each_entry_safe(td, tmp_td, &ep->cancelled_td_list, cancelled_td_list) {
+@@ -1359,7 +1366,6 @@ static void xhci_handle_cmd_set_deq(stru
+ 	struct xhci_ep_ctx *ep_ctx;
+ 	struct xhci_slot_ctx *slot_ctx;
+ 	struct xhci_td *td, *tmp_td;
+-	bool deferred = false;
+ 
+ 	ep_index = TRB_TO_EP_INDEX(le32_to_cpu(trb->generic.field[3]));
+ 	stream_id = TRB_TO_STREAM_ID(le32_to_cpu(trb->generic.field[2]));
+@@ -1460,8 +1466,6 @@ static void xhci_handle_cmd_set_deq(stru
+ 			xhci_dbg(ep->xhci, "%s: Giveback cancelled URB %p TD\n",
+ 				 __func__, td->urb);
+ 			xhci_td_cleanup(ep->xhci, td, ep_ring, td->status);
+-		} else if (td->cancel_status == TD_CLEARING_CACHE_DEFERRED) {
+-			deferred = true;
+ 		} else {
+ 			xhci_dbg(ep->xhci, "%s: Keep cancelled URB %p TD as cancel_status is %d\n",
+ 				 __func__, td->urb, td->cancel_status);
+@@ -1472,11 +1476,15 @@ cleanup:
+ 	ep->queued_deq_seg = NULL;
+ 	ep->queued_deq_ptr = NULL;
+ 
+-	if (deferred) {
+-		/* We have more streams to clear */
++	/* Check for deferred or newly cancelled TDs */
++	if (!list_empty(&ep->cancelled_td_list)) {
+ 		xhci_dbg(ep->xhci, "%s: Pending TDs to clear, continuing with invalidation\n",
+ 			 __func__);
+ 		xhci_invalidate_cancelled_tds(ep);
++		/* Try to restart the endpoint if all is done */
++		ring_doorbell_for_active_rings(xhci, slot_id, ep_index);
++		/* Start giving back any TDs invalidated above */
++		xhci_giveback_invalidated_tds(ep);
+ 	} else {
+ 		/* Restart any rings with pending URBs */
+ 		xhci_dbg(ep->xhci, "%s: All TDs cleared, ring doorbell\n", __func__);
 
 
 
