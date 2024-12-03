@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804969E25A9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807759E223C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4B32162AA9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46B7028222E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578EC1F7591;
-	Tue,  3 Dec 2024 15:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0E41F890D;
+	Tue,  3 Dec 2024 15:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlzvHmGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtpUikYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150001DE8A5;
-	Tue,  3 Dec 2024 15:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03281F8906;
+	Tue,  3 Dec 2024 15:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241474; cv=none; b=bx9SRZsX1tRU/+rlpdiSndnkKAp5EXSTQzsDlAeL7nyzfCtddqy2zU3kFlTl7rE/OL9HqkRS0PUUfHdQNdHiChO0vRgve94a9CCHWPYQGIMFs+h9NnqkMiR1bEoa5L6Fzs5X0M0pVxQV2JM8cGE5dKQnfkmKrYEAn/q+ziD33rc=
+	t=1733239301; cv=none; b=I4IkrylsMRfNS/uTUkr+OqHpn8AI3tzbM/TTDuDfp2cYDTlUn1OjJbpKqUMT00iE4rGBqnAdxLMWdg2l4UTASWKwB5RKlndKyhkODBpoceR8O+1reKwJqAHl8BRb2yziOTIgTM+zQf9KkUkWKARyNnMansVPJCv7g9BZYNyMfjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241474; c=relaxed/simple;
-	bh=ZHSWK5nk19Q6Fub71iNiOiLCOvXyHna796nh8p71usM=;
+	s=arc-20240116; t=1733239301; c=relaxed/simple;
+	bh=iT/jDgojwaqU8cg7hOy6cE+HIOHZyDSHu6mFBPEdfYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVwKxvqiIPIHlwpjKyqXXfPjYl+XlVm6gnTnD5mmpkcd96dELSQoIVCLA+elcsWGixrdalwEQWwV5f2um5eB6C4Jkud1T5XkixyxkhCMaBOdQHLExsyfaghFjSiYLuBHgOHZgPCEfsn9OVXQLvwai4+MSlp693sp/foSDSKRc4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlzvHmGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491D9C4CECF;
-	Tue,  3 Dec 2024 15:57:53 +0000 (UTC)
+	 MIME-Version; b=Ou7Gx4hzu2djyNdbhOCE2hiEC81J9U6KEfNFIaskQKtN+UI9UR5J3wgWQS3WZnTGKKSlDzKZsaX8BShTKTV8VsSWqlz8hlatEcv8B5SHMOKtcIAt0f/FC0IEWW4jomLjh9uI2xnEpwYOo2t162g/sPAVAtS50hTecLPQ7iBkOrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtpUikYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5443C4CECF;
+	Tue,  3 Dec 2024 15:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241473;
-	bh=ZHSWK5nk19Q6Fub71iNiOiLCOvXyHna796nh8p71usM=;
+	s=korg; t=1733239300;
+	bh=iT/jDgojwaqU8cg7hOy6cE+HIOHZyDSHu6mFBPEdfYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlzvHmGdnsOEh2x1dSvWnowZHGbBPkTqxXM9WL1Tv8WqaWW5sQdcdCelpZcChWeNp
-	 A3F15EdBfiKbrf2GTS0EXNK13p4HKwTg61GjcYCdU6r2LhbP56qiMtbeLvVg6oo2Yi
-	 DpVYURFyWkvMJ7gEtpH3lQ1yTRM20xUZG5/THJbA=
+	b=xtpUikYzp16m9uO8ApQnTTFOQF/olyB2EYcDAkUsnzbkbvuUjcGI5xu+shLOdgaax
+	 P9chf3ZT7HREJSxljIt+B8qxUKuQ8Uc4qaKYvQu/DXo4P/VJA+9SYDRXaUiPWXq/Ba
+	 8q9vOtJsgovRtx1AhCBrJaY9v7TIEJI719pOSqAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenzhong Duan <zhenzhong.duan@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	John Efstathiades <john.efstathiades@pebblebay.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 410/826] iommu/vt-d: Fix checks and print in dmar_fault_dump_ptes()
-Date: Tue,  3 Dec 2024 15:42:17 +0100
-Message-ID: <20241203144759.755372899@linuxfoundation.org>
+Subject: [PATCH 6.11 566/817] net: usb: lan78xx: Fix double free issue with interrupt buffer allocation
+Date: Tue,  3 Dec 2024 15:42:18 +0100
+Message-ID: <20241203144018.003206421@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,133 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 6ceb93f952f6ca34823ce3650c902c31b8385b40 ]
+[ Upstream commit 03819abbeb11117dcbba40bfe322b88c0c88a6b6 ]
 
-There are some issues in dmar_fault_dump_ptes():
+In lan78xx_probe(), the buffer `buf` was being freed twice: once
+implicitly through `usb_free_urb(dev->urb_intr)` with the
+`URB_FREE_BUFFER` flag and again explicitly by `kfree(buf)`. This caused
+a double free issue.
 
-1. return value of phys_to_virt() is used for checking if an entry is
-   present.
-2. dump is confusing, e.g., "pasid table entry is not present", confusing
-   by unpresent pasid table vs. unpresent pasid table entry. Current code
-   means the former.
-3. pgtable_walk() is called without checking if page table is present.
+To resolve this, reordered `kmalloc()` and `usb_alloc_urb()` calls to
+simplify the initialization sequence and removed the redundant
+`kfree(buf)`.  Now, `buf` is allocated after `usb_alloc_urb()`, ensuring
+it is correctly managed by  `usb_fill_int_urb()` and freed by
+`usb_free_urb()` as intended.
 
-Fix 1 by checking present bit of an entry before dump a lower level entry.
-Fix 2 by removing "entry" string, e.g., "pasid table is not present".
-Fix 3 by checking page table present before walk.
-
-Take issue 3 for example, before fix:
-
-[  442.240357] DMAR: pasid dir entry: 0x000000012c83e001
-[  442.246661] DMAR: pasid table entry[0]: 0x0000000000000000
-[  442.253429] DMAR: pasid table entry[1]: 0x0000000000000000
-[  442.260203] DMAR: pasid table entry[2]: 0x0000000000000000
-[  442.266969] DMAR: pasid table entry[3]: 0x0000000000000000
-[  442.273733] DMAR: pasid table entry[4]: 0x0000000000000000
-[  442.280479] DMAR: pasid table entry[5]: 0x0000000000000000
-[  442.287234] DMAR: pasid table entry[6]: 0x0000000000000000
-[  442.293989] DMAR: pasid table entry[7]: 0x0000000000000000
-[  442.300742] DMAR: PTE not present at level 2
-
-After fix:
-...
-[  357.241214] DMAR: pasid table entry[6]: 0x0000000000000000
-[  357.248022] DMAR: pasid table entry[7]: 0x0000000000000000
-[  357.254824] DMAR: scalable mode page table is not present
-
-Fixes: 914ff7719e8a ("iommu/vt-d: Dump DMAR translation structure when DMA fault occurs")
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Link: https://lore.kernel.org/r/20241024092146.715063-2-zhenzhong.duan@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: a6df95cae40b ("lan78xx: Fix memory allocation bug")
+Cc: John Efstathiades <john.efstathiades@pebblebay.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241116130558.1352230-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/net/usb/lan78xx.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index e860bc9439a28..29c4a3bf3acd0 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -737,11 +737,11 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
- 	pr_info("Dump %s table entries for IOVA 0x%llx\n", iommu->name, addr);
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 8adf77e3557e7..094a47b8b97eb 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -4414,29 +4414,30 @@ static int lan78xx_probe(struct usb_interface *intf,
  
- 	/* root entry dump */
--	rt_entry = &iommu->root_entry[bus];
--	if (!rt_entry) {
--		pr_info("root table entry is not present\n");
-+	if (!iommu->root_entry) {
-+		pr_info("root table is not present\n");
- 		return;
- 	}
-+	rt_entry = &iommu->root_entry[bus];
- 
- 	if (sm_supported(iommu))
- 		pr_info("scalable mode root entry: hi 0x%016llx, low 0x%016llx\n",
-@@ -752,7 +752,7 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
- 	/* context entry dump */
- 	ctx_entry = iommu_context_addr(iommu, bus, devfn, 0);
- 	if (!ctx_entry) {
--		pr_info("context table entry is not present\n");
-+		pr_info("context table is not present\n");
- 		return;
- 	}
- 
-@@ -761,17 +761,23 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
- 
- 	/* legacy mode does not require PASID entries */
- 	if (!sm_supported(iommu)) {
-+		if (!context_present(ctx_entry)) {
-+			pr_info("legacy mode page table is not present\n");
-+			return;
-+		}
- 		level = agaw_to_level(ctx_entry->hi & 7);
- 		pgtable = phys_to_virt(ctx_entry->lo & VTD_PAGE_MASK);
- 		goto pgtable_walk;
- 	}
- 
--	/* get the pointer to pasid directory entry */
--	dir = phys_to_virt(ctx_entry->lo & VTD_PAGE_MASK);
--	if (!dir) {
--		pr_info("pasid directory entry is not present\n");
-+	if (!context_present(ctx_entry)) {
-+		pr_info("pasid directory table is not present\n");
- 		return;
- 	}
+ 	period = ep_intr->desc.bInterval;
+ 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr);
+-	buf = kmalloc(maxp, GFP_KERNEL);
+-	if (!buf) {
 +
-+	/* get the pointer to pasid directory entry */
-+	dir = phys_to_virt(ctx_entry->lo & VTD_PAGE_MASK);
-+
- 	/* For request-without-pasid, get the pasid from context entry */
- 	if (intel_iommu_sm && pasid == IOMMU_PASID_INVALID)
- 		pasid = IOMMU_NO_PASID;
-@@ -783,7 +789,7 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
- 	/* get the pointer to the pasid table entry */
- 	entries = get_pasid_table_from_pde(pde);
- 	if (!entries) {
--		pr_info("pasid table entry is not present\n");
-+		pr_info("pasid table is not present\n");
- 		return;
++	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
++	if (!dev->urb_intr) {
+ 		ret = -ENOMEM;
+ 		goto out5;
  	}
- 	index = pasid & PASID_PTE_MASK;
-@@ -791,6 +797,11 @@ void dmar_fault_dump_ptes(struct intel_iommu *iommu, u16 source_id,
- 	for (i = 0; i < ARRAY_SIZE(pte->val); i++)
- 		pr_info("pasid table entry[%d]: 0x%016llx\n", i, pte->val[i]);
  
-+	if (!pasid_pte_is_present(pte)) {
-+		pr_info("scalable mode page table is not present\n");
-+		return;
-+	}
+-	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
+-	if (!dev->urb_intr) {
++	buf = kmalloc(maxp, GFP_KERNEL);
++	if (!buf) {
+ 		ret = -ENOMEM;
+-		goto out6;
+-	} else {
+-		usb_fill_int_urb(dev->urb_intr, dev->udev,
+-				 dev->pipe_intr, buf, maxp,
+-				 intr_complete, dev, period);
+-		dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
++		goto free_urbs;
+ 	}
+ 
++	usb_fill_int_urb(dev->urb_intr, dev->udev,
++			 dev->pipe_intr, buf, maxp,
++			 intr_complete, dev, period);
++	dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
 +
- 	if (pasid_pte_get_pgtt(pte) == PASID_ENTRY_PGTT_FL_ONLY) {
- 		level = pte->val[2] & BIT_ULL(2) ? 5 : 4;
- 		pgtable = phys_to_virt(pte->val[2] & VTD_PAGE_MASK);
+ 	dev->maxpacket = usb_maxpacket(dev->udev, dev->pipe_out);
+ 
+ 	/* Reject broken descriptors. */
+ 	if (dev->maxpacket == 0) {
+ 		ret = -ENODEV;
+-		goto out6;
++		goto free_urbs;
+ 	}
+ 
+ 	/* driver requires remote-wakeup capability during autosuspend. */
+@@ -4444,7 +4445,7 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ 	ret = lan78xx_phy_init(dev);
+ 	if (ret < 0)
+-		goto out7;
++		goto free_urbs;
+ 
+ 	ret = register_netdev(netdev);
+ 	if (ret != 0) {
+@@ -4466,10 +4467,8 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ out8:
+ 	phy_disconnect(netdev->phydev);
+-out7:
++free_urbs:
+ 	usb_free_urb(dev->urb_intr);
+-out6:
+-	kfree(buf);
+ out5:
+ 	lan78xx_unbind(dev, intf);
+ out4:
 -- 
 2.43.0
 
