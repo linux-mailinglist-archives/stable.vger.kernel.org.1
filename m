@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-97194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3279B9E2344
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882EB9E25F8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 043A3161D38
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49371287DCD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513491F75A4;
-	Tue,  3 Dec 2024 15:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A781F76D7;
+	Tue,  3 Dec 2024 16:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ve9SbF4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTwpVVEA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE4D1F7561;
-	Tue,  3 Dec 2024 15:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855921F76BF;
+	Tue,  3 Dec 2024 16:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239786; cv=none; b=A47JE9WqOqNIykZ266sG5J3oN/dHiJQjyrXwJwFiF4SzXmpT/r+WuCWNylgdCz0D6Mqu8W4sgaLLYXSS4RRWpsaAmUJOF58XOd5IUcOUnts4PrkD4vsi9z99c8W/7ghYXx2NSR0DcquEqgOzRmoF6zlaXEUvDNkIR3DJ3L4Q/wA=
+	t=1733242028; cv=none; b=MHE5VgT16MfDl3WZhPenkx+GKRNQbIp4l108ZEAXR+kHSukSAt2cGLlEflg7MpgMW+wtB/m6nGkQFxeEt4A20hWohdlZgfqHj7MJxJSlPC7X3/l5k0KG9sHkzpEawF9qvkmflROJg+lIrpXgAJAYEybYR9P+AHLS88XJNbl/hBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239786; c=relaxed/simple;
-	bh=VieyEjkqRe5/uCiX0HHCQ0ISjexRBYyrHwQBxSoHFUY=;
+	s=arc-20240116; t=1733242028; c=relaxed/simple;
+	bh=+NqvCWQDgmfggBAwdQy+p9jf1g7oSwXhXFoOPITfJGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhXWeEhWe2HjR/ilalyTRx4b9sV1MmWswCfM9WEqteDYRnmYQQhV8nML0Ra8v7w7djejEAcyLefK502goiEfyWUDmPaB555QjBpVJ0xgGSygFqWMoVmOvpxo9tFOik8wtfma0k8ZIVG31IEGkJvgsKjEyn8c/51WbgozUGS5V7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ve9SbF4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AABCC4CECF;
-	Tue,  3 Dec 2024 15:29:45 +0000 (UTC)
+	 MIME-Version; b=lzkNiUyxm6u9BmYT5jGG/qMyraqaFy27aQ6D20+FzTSkCWrAQ3dS0Jiz+iGXPX3GM6fF9u7bN5ziSkDUdIIqvTKs0QjY7UiW3R71Ur/dwPeuzimgS7wgHWjk5Yc2EZfF8YWTSHCzgN1Bn06ImXgtJYykcIh7dG2jtXmshxXYVF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTwpVVEA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECA3C4CECF;
+	Tue,  3 Dec 2024 16:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239785;
-	bh=VieyEjkqRe5/uCiX0HHCQ0ISjexRBYyrHwQBxSoHFUY=;
+	s=korg; t=1733242028;
+	bh=+NqvCWQDgmfggBAwdQy+p9jf1g7oSwXhXFoOPITfJGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ve9SbF4HfOqlwIdQq6xfkg5tBJ8MsW0402aEFlPiKmhKWNY2b9frP8pg5jlVOxQec
-	 hw5L/1nEjbauuzy1Goyo6RmrSaXWFPgEA3LT5uofbLuv/FT3WaJAfA0jNpvqSv031G
-	 bLMfi+hjSzubAV+52CdqLjX1uR1kOiiKIyNCMvJI=
+	b=HTwpVVEAYPRQVW5wEehnaGdx44dkqtDA6Nx/Zrhz+e7CTFprCR74cYbztMotlh+Im
+	 2mVeU+mTzI6ZQ2ZDc2CSgEBFUx+d9jnogZ+9nE4lAfMxPs+3tLdl527H3ReiNuSjiF
+	 btr62+R/8PBl4W0OmXCbqel9YozZE8opt0NClXH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.11 733/817] media: intel/ipu6: do not handle interrupts when device is disabled
-Date: Tue,  3 Dec 2024 15:45:05 +0100
-Message-ID: <20241203144024.609226406@linuxfoundation.org>
+	David Wei <dw@davidwei.uk>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 579/826] bnxt_en: Fix queue start to update vnic RSS table
+Date: Tue,  3 Dec 2024 15:45:06 +0100
+Message-ID: <20241203144806.336118675@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +66,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit 1429826883bb18847092b2e04c6598ef34bae1d4 upstream.
+[ Upstream commit 5ac066b7b062ee753a14557ea11bdc62364c8090 ]
 
-Some IPU6 devices have shared interrupts. We need to handle properly
-case when interrupt is triggered from other device on shared irq line
-and IPU6 itself disabled. In such case we get 0xffffffff from
-ISR_STATUS register and handle all irq's cases, for what we are not
-not prepared and usually hang the whole system.
+HWRM_RING_FREE followed by a HWRM_RING_ALLOC is not guaranteed to
+have the same FW ring ID as before.  So we must reinitialize the
+RSS table with the correct ring IDs.  Otherwise, traffic may not
+resume properly if the restarted ring ID is stale.  Since this
+feature is only supported on P5_PLUS chips, we call
+bnxt_vnic_set_rss_p5() to update the HW RSS table.
 
-To avoid the issue use pm_runtime_get_if_active() to check if
-the device is enabled and prevent suspending it when we handle irq
-until the end of irq. Additionally use synchronize_irq() in suspend
-
-Fixes: ab29a2478e70 ("media: intel/ipu6: add IPU6 buttress interface driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Hans de Goede <hdegoede@redhat.com> # ThinkPad X1 Yoga Gen 8, ov2740
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2d694c27d32e ("bnxt_en: implement netdev_queue_mgmt_ops")
+Cc: David Wei <dw@davidwei.uk>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-buttress.c |   13 +++++++++----
- drivers/media/pci/intel/ipu6/ipu6.c          |    3 +++
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/media/pci/intel/ipu6/ipu6-buttress.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
-@@ -346,12 +346,16 @@ irqreturn_t ipu6_buttress_isr(int irq, v
- 	u32 disable_irqs = 0;
- 	u32 irq_status;
- 	u32 i, count = 0;
-+	int active;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 20a8cb26bc0a6..908ce838eedbb 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15231,6 +15231,13 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
  
--	pm_runtime_get_noresume(&isp->pdev->dev);
-+	active = pm_runtime_get_if_active(&isp->pdev->dev);
-+	if (!active)
-+		return IRQ_NONE;
- 
- 	irq_status = readl(isp->base + reg_irq_sts);
--	if (!irq_status) {
--		pm_runtime_put_noidle(&isp->pdev->dev);
-+	if (irq_status == 0 || WARN_ON_ONCE(irq_status == 0xffffffffu)) {
-+		if (active > 0)
-+			pm_runtime_put_noidle(&isp->pdev->dev);
- 		return IRQ_NONE;
- 	}
- 
-@@ -427,7 +431,8 @@ irqreturn_t ipu6_buttress_isr(int irq, v
- 		writel(BUTTRESS_IRQS & ~disable_irqs,
- 		       isp->base + BUTTRESS_REG_ISR_ENABLE);
- 
--	pm_runtime_put(&isp->pdev->dev);
-+	if (active > 0)
-+		pm_runtime_put(&isp->pdev->dev);
- 
- 	return ret;
- }
---- a/drivers/media/pci/intel/ipu6/ipu6.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6.c
-@@ -758,6 +758,9 @@ static void ipu6_pci_reset_done(struct p
-  */
- static int ipu6_suspend(struct device *dev)
- {
-+	struct pci_dev *pdev = to_pci_dev(dev);
+ 	for (i = 0; i <= BNXT_VNIC_NTUPLE; i++) {
+ 		vnic = &bp->vnic_info[i];
 +
-+	synchronize_irq(pdev->irq);
- 	return 0;
- }
- 
++		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
++		if (rc) {
++			netdev_err(bp->dev, "hwrm vnic %d set rss failure rc: %d\n",
++				   vnic->vnic_id, rc);
++			return rc;
++		}
+ 		vnic->mru = bp->dev->mtu + ETH_HLEN + VLAN_HLEN;
+ 		bnxt_hwrm_vnic_update(bp, vnic,
+ 				      VNIC_UPDATE_REQ_ENABLES_MRU_VALID);
+-- 
+2.43.0
+
 
 
 
