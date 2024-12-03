@@ -1,132 +1,130 @@
-Return-Path: <stable+bounces-98161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF299E2A8A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:14:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B3E9E2B97
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:03:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7EBE2816BE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:14:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13708163201
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8AC21FC7DB;
-	Tue,  3 Dec 2024 18:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2B91FECB7;
+	Tue,  3 Dec 2024 19:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M4xOX2qv"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916131FA840;
-	Tue,  3 Dec 2024 18:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5429D1FC7EF;
+	Tue,  3 Dec 2024 19:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733249640; cv=none; b=IEhnqZOKG4cq66xRcSXBbDq5sKZMxaKD0D7LvRm336C0HQd8EI/I0yguD46ElEjEa3UKYy+eHvv0kY8MFIFtWka6MpyzZo3/Mgssh9hjiPN2XRQm/Hdjaj9RP7OTkLUnVxApcVHypf7smJx1ijjb51Afv83o1loYXRA7if98hCU=
+	t=1733252597; cv=none; b=ul4wu3Vllpvg8PJZAI/qbjh0nSYtspoBDpRctDPmmV/V0JJGdgGZB/PYq10pgb1gkT2edboqBOXzdjZJSOKPiY52LpMdSmPlECZviBgqecENCG9Fk8kcHCZK4vB6YILz4laIgxvfgUh1+YSySP6e4HFcvRofYFHP2TqFKaeLVKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733249640; c=relaxed/simple;
-	bh=goNbn9LHti/OQqu0NtqUuzDIMzdSZPos2x6hTQxj6QY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VduThITVyL7SFGvb8Uj35cRf8IhiCyEYHp1h73NdMBCOTrDB7QP3uSfsKB78AbFySI6079wPN1s+TJgIPjuRA5AOOw7ZzWFDhDOYQUlcaDcUO2sz7Y7kG5HWibtucY0C9cokrDivGn2H0bwEmv9d7liV/dhyILYNM79yU04VHDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 1935C1C00A0; Tue,  3 Dec 2024 19:13:51 +0100 (CET)
-Date: Tue, 3 Dec 2024 19:13:50 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
-Message-ID: <Z09KXnGlTJZBpA90@duo.ucw.cz>
-References: <20241203141923.524658091@linuxfoundation.org>
+	s=arc-20240116; t=1733252597; c=relaxed/simple;
+	bh=eijrbAe3pZqlViuINmabDVrHYMVGawiSwmMh9zjp4eU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jVfMNCI2QkYeFzubXIQv33J0xX+shouAcRQUdKs+UGxx2KO82nS/NK6qWpENAB4WTFjNcgVhZm9qIYAPGUi3zjHzHWEFCN59aUh9yb1gP9z3NcSMPrKUQ8pHNuZoXkjnJSPIMgAGwGufCfvKRAAD2Ct0hbIozF4D9mtQLZ0qcOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M4xOX2qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0B7C4CED6;
+	Tue,  3 Dec 2024 19:03:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733252596;
+	bh=eijrbAe3pZqlViuINmabDVrHYMVGawiSwmMh9zjp4eU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=M4xOX2qvVUnVLmMBciJn/ktir9cYv44PQgN516P1RUy/hPZeRytnnVwufr9xCirtN
+	 L6zCvXUtA0hCxoxiHFGoFlRNuy2LURLASnKomgcf3JbfAYcAit3FgiUPW9KAUKkqVU
+	 OO6GIRcXSxn8trEcptZ09FAOK2BdsqOPLLs4jpjQKpDudO+FnHeNQWlzmc9XtlWZuy
+	 KNrNEq15+0bxzTIJJ9qAyAGvCh+fFTGp6gghmLFLZCtq2Y1Jd9kiYhmkegjDnHQr1f
+	 hZeMLJ7T2GV9snlpAedM7OzOiWRKh0Je1Zj7P+UNLm2YfdGDK10JlY4CPlnwhTemWw
+	 bGAddOoecVgYw==
+Received: from ip-185-104-136-29.ptr.icomera.net ([185.104.136.29] helo=localhost.localdomain)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1tIYB0-000CK2-FB;
+	Tue, 03 Dec 2024 19:03:14 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Cc: Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	stable@vger.kernel.org,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>
+Subject: [PATCH] KVM: arm64: Do not allow ID_AA64MMFR0_EL1.ASIDbits to be overridden
+Date: Tue,  3 Dec 2024 19:02:36 +0000
+Message-ID: <20241203190236.505759-1-maz@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="9dKgCbh+6g0xCEEa"
-Content-Disposition: inline
-In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 185.104.136.29
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, joey.gouly@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, catalin.marinas@arm.com, stable@vger.kernel.org, will@kernel.org, mark.rutland@arm.com, james.morse@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+Catalin reports that a hypervisor lying to a guest about the size
+of the ASID field may result in unexpected issues:
 
---9dKgCbh+6g0xCEEa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+- if the underlying HW does only supports 8 bit ASIDs, the ASID
+  field in a TLBI VAE1* operation is only 8 bits, and the HW will
+  ignore the other 8 bits
 
-Hi!
+- if on the contrary the HW is 16 bit capable, the ASID field
+  in the same TLBI operation is always 16 bits, irrespective of
+  the value of TCR_ELx.AS.
 
-> ------------------
-> Note, this is the LAST 4.19.y kernel to be released.  After this one, it
-> is end-of-life.  It's been 6 years, everyone should have moved off of it
-> by now.
-> ------------------
+This could lead to missed invalidations if the guest was lead to
+assume that the HW had 8 bit ASIDs while they really are 16 bit wide.
 
-Releasing 130 patches as end-of-life kernel is not good idea. There
-may be regression hiding between them...
+In order to avoid any potential disaster that would be hard to debug,
+prenent the migration between a host with 8 bit ASIDs to one with
+wider ASIDs (the converse was obviously always forbidden). This is
+also consistent with what we already do for VMIDs.
 
-> This is the start of the stable review cycle for the 4.19.325 release.
-> There are 138 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+If it becomes absolutely mandatory to support such a migration path
+in the future, we will have to trap and emulate all TLBIs, something
+that nobody should look forward to.
 
-Build fails:
+Fixes: d5a32b60dc18 ("KVM: arm64: Allow userspace to change ID_AA64MMFR{0-2}_EL1")
+Reported-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+---
+ arch/arm64/kvm/sys_regs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/853242=
-3815
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index a26f02ec8748..b1918adbd0aa 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -2674,7 +2674,8 @@ static const struct sys_reg_desc sys_reg_descs[] = {
+ 	ID_WRITABLE(ID_AA64MMFR0_EL1, ~(ID_AA64MMFR0_EL1_RES0 |
+ 					ID_AA64MMFR0_EL1_TGRAN4_2 |
+ 					ID_AA64MMFR0_EL1_TGRAN64_2 |
+-					ID_AA64MMFR0_EL1_TGRAN16_2)),
++					ID_AA64MMFR0_EL1_TGRAN16_2 |
++					ID_AA64MMFR0_EL1_ASIDBITS)),
+ 	ID_WRITABLE(ID_AA64MMFR1_EL1, ~(ID_AA64MMFR1_EL1_RES0 |
+ 					ID_AA64MMFR1_EL1_HCX |
+ 					ID_AA64MMFR1_EL1_TWED |
+-- 
+2.43.0
 
-  CC      drivers/pinctrl/uniphier/pinctrl-uniphier-pro4.o
-3895
-  CC      drivers/pci/of.o
-3896
-drivers/rtc/rtc-st-lpc.c: In function 'st_rtc_probe':
-3897
-drivers/rtc/rtc-st-lpc.c:233:11: error: 'IRQF_NO_AUTOEN' undeclared (first =
-use in this function); did you mean 'IRQ_NOAUTOEN'?
-3898
-           IRQF_NO_AUTOEN, pdev->name, rtc);
-3899
-           ^~~~~~~~~~~~~~
-3900
-           IRQ_NOAUTOEN
-3901
-drivers/rtc/rtc-st-lpc.c:233:11: note: each undeclared identifier is report=
-ed only once for each function it appears in
-3902
-  CC      drivers/pci/quirks.o
-3903
-make[2]: *** [scripts/Makefile.build:303: drivers/rtc/rtc-st-lpc.o] Error 1
-3904
-make[1]: *** [scripts/Makefile.build:544: drivers/rtc] Error 2
-3905
-make[1]: *** Waiting for unfinished jobs....
-3906
-  CC      drivers/pinctrl/uniphier/pinctrl-uniphier-sld8.o
-3907
-  CC      drivers/soc/renesas/r8a7743-sysc.o
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---9dKgCbh+6g0xCEEa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ09KXgAKCRAw5/Bqldv6
-8igyAKC2pyBC6fWNiQh0OKW85uIIN0WbqACgwLulzTAF14u09GS4SkD6suO2gvs=
-=6DTu
------END PGP SIGNATURE-----
-
---9dKgCbh+6g0xCEEa--
 
