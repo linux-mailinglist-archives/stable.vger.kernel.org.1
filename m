@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383B19E2261
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C72D9E2463
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F1CBB84465
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 882EAB306DF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35CB1D9341;
-	Tue,  3 Dec 2024 14:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75B71F756B;
+	Tue,  3 Dec 2024 14:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybk8leD6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Hqy8R+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1051F7566;
-	Tue,  3 Dec 2024 14:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CF81D9341;
+	Tue,  3 Dec 2024 14:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237917; cv=none; b=XFHtXbPskSIbUWfScdyHWdRQV5ye+NSONfMG0TdkN7d79IX+/vsgw1r9id0squkV7EUNOBAvK42IB2UfH7l88J4p4lJjpp5SU7k1TG3Tx0fSf2+A0p3feoNh5GS6D29YRNZAVoT1zgml5WzMraLedC5XvA792lWUDQ8NY62l+tg=
+	t=1733237835; cv=none; b=mEuluxTUthw9fL2NM6hcyT0Z3PyakRTE6VfSIVQioKPe7tz5avh+1yYtoDpG49ImlwUETRePjuwl7E3dOw2d47Ifjl8SNP3CrqeZZ0Ggd9k6cugsjQ0zZIeXYdNA660zecKCykH0zHvEA++1dClD+8ZbQ2mbH/Rq5WqSsDPxvJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237917; c=relaxed/simple;
-	bh=5h3qzxqtn8GWbD9sGxr2whoexmQLzrprfiR8K8ILSrs=;
+	s=arc-20240116; t=1733237835; c=relaxed/simple;
+	bh=9lItkkIlQBqTSdakFh0E8sapzoBh66Q6el1lFSYF+mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lp6TrmC+xFfy12BAUbWJjIo3CAWwyhL1sIoAjlgGW1X8s/MfbrjLz8p5VhdPY9i6M6CiFmoO8IH4OUtz80jHP8jzZ37tODbeBgXHlP2+RxO/LOmRvWG9K9evSKXLmRYRYWUCCrJPhlRPK7wuV8X0tI+b7rSE6yv6VwNsBl7zkr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybk8leD6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA48C4CECF;
-	Tue,  3 Dec 2024 14:58:36 +0000 (UTC)
+	 MIME-Version; b=rI1eJairg9b2FPG6XPvmYda/j9kx/tXLD+ok8AHpzOZpTWLek96X4O3+zFQK+Y1arSmWW5f97+vrvdiVWS/4Y6px9uvCzmleILQ8C9n2SPZqC3GGCFeaRUDHbkGADuLv/xH3J0TJ7W+23LEYOzcRrTdZCKjhs/sBQggiJfzAQXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Hqy8R+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16559C4CECF;
+	Tue,  3 Dec 2024 14:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237917;
-	bh=5h3qzxqtn8GWbD9sGxr2whoexmQLzrprfiR8K8ILSrs=;
+	s=korg; t=1733237835;
+	bh=9lItkkIlQBqTSdakFh0E8sapzoBh66Q6el1lFSYF+mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybk8leD6g68Lgx2mbrV0Nv20J3WRuLBYvEd3NikyPiZNRg+ip2jpTrbv1KSzNr71O
-	 y0UoDRLQKUrRkLjrBUrg7Kz0V2v6Y/lYJg/0gAFx9WDKHq3QKzeNZu3Nv9lBbVQbNm
-	 pWA9ngiTGbWRxXBxhIL7Y9JLvbTKl2OpAio1moMA=
+	b=0Hqy8R+qpPbsmvkB9RFbZmHjD/7mCJvYosBg7z2sHY1rsN7CTgPOTiN1UsAXqKdWI
+	 2HSxzZfuL/gApPD3miRcn6Q5RtvT6qS7f8qKefNaBxZIFk+ixo6Kx4BkqPWN35IN97
+	 nlZll0+V2nCiMyAr987TOYdRfuFTvf1jThfq+EbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 075/817] cachefiles: Fix NULL pointer dereference in object->file
-Date: Tue,  3 Dec 2024 15:34:07 +0100
-Message-ID: <20241203143958.618567015@linuxfoundation.org>
+Subject: [PATCH 6.11 084/817] ext4: remove array of buffer_heads from mext_page_mkuptodate()
+Date: Tue,  3 Dec 2024 15:34:16 +0100
+Message-ID: <20241203143958.978059527@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,142 +66,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 31ad74b20227ce6b40910ff78b1c604e42975cf1 ]
+[ Upstream commit a40759fb16ae839f8c769174fde017564ea564ff ]
 
-At present, the object->file has the NULL pointer dereference problem in
-ondemand-mode. The root cause is that the allocated fd and object->file
-lifetime are inconsistent, and the user-space invocation to anon_fd uses
-object->file. Following is the process that triggers the issue:
+Iterate the folio's list of buffer_heads twice instead of keeping
+an array of pointers.  This solves a too-large-array-for-stack problem
+on architectures with a ridiculoously large PAGE_SIZE and prepares
+ext4 to support larger folios.
 
-	  [write fd]				[umount]
-cachefiles_ondemand_fd_write_iter
-				       fscache_cookie_state_machine
-					 cachefiles_withdraw_cookie
-  if (!file) return -ENOBUFS
-					   cachefiles_clean_up_object
-					     cachefiles_unmark_inode_in_use
-					     fput(object->file)
-					     object->file = NULL
-  // file NULL pointer dereference!
-  __cachefiles_write(..., file, ...)
-
-Fix this issue by add an additional reference count to the object->file
-before write/llseek, and decrement after it finished.
-
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Link: https://lore.kernel.org/r/20241107110649.3980193-5-wozizhi@huawei.com
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://patch.msgid.link/20240718223005.568869-3-willy@infradead.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 2f3d93e210b9 ("ext4: fix race in buffer_head read fault injection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/interface.c | 14 ++++++++++----
- fs/cachefiles/ondemand.c  | 30 ++++++++++++++++++++++++------
- 2 files changed, 34 insertions(+), 10 deletions(-)
+ fs/ext4/move_extent.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/fs/cachefiles/interface.c b/fs/cachefiles/interface.c
-index 35ba2117a6f65..3e63cfe158747 100644
---- a/fs/cachefiles/interface.c
-+++ b/fs/cachefiles/interface.c
-@@ -327,6 +327,8 @@ static void cachefiles_commit_object(struct cachefiles_object *object,
- static void cachefiles_clean_up_object(struct cachefiles_object *object,
- 				       struct cachefiles_cache *cache)
- {
-+	struct file *file;
-+
- 	if (test_bit(FSCACHE_COOKIE_RETIRED, &object->cookie->flags)) {
- 		if (!test_bit(CACHEFILES_OBJECT_USING_TMPFILE, &object->flags)) {
- 			cachefiles_see_object(object, cachefiles_obj_see_clean_delete);
-@@ -342,10 +344,14 @@ static void cachefiles_clean_up_object(struct cachefiles_object *object,
- 	}
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index 7a80c32fd7326..42b52b6491a03 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -165,15 +165,14 @@ mext_folio_double_lock(struct inode *inode1, struct inode *inode2,
+ 	return 0;
+ }
  
- 	cachefiles_unmark_inode_in_use(object, object->file);
--	if (object->file) {
--		fput(object->file);
--		object->file = NULL;
+-/* Force page buffers uptodate w/o dropping page's lock */
+-static int
+-mext_page_mkuptodate(struct folio *folio, unsigned from, unsigned to)
++/* Force folio buffers uptodate w/o dropping folio's lock */
++static int mext_page_mkuptodate(struct folio *folio, size_t from, size_t to)
+ {
+ 	struct inode *inode = folio->mapping->host;
+ 	sector_t block;
+-	struct buffer_head *bh, *head, *arr[MAX_BUF_PER_PAGE];
++	struct buffer_head *bh, *head;
+ 	unsigned int blocksize, block_start, block_end;
+-	int i, nr = 0;
++	int nr = 0;
+ 	bool partial = false;
+ 
+ 	BUG_ON(!folio_test_locked(folio));
+@@ -214,20 +213,23 @@ mext_page_mkuptodate(struct folio *folio, unsigned from, unsigned to)
+ 			continue;
+ 		}
+ 		ext4_read_bh_nowait(bh, 0, NULL);
+-		BUG_ON(nr >= MAX_BUF_PER_PAGE);
+-		arr[nr++] = bh;
++		nr++;
+ 	}
+ 	/* No io required */
+ 	if (!nr)
+ 		goto out;
+ 
+-	for (i = 0; i < nr; i++) {
+-		bh = arr[i];
++	bh = head;
++	do {
++		if (bh_offset(bh) + blocksize <= from)
++			continue;
++		if (bh_offset(bh) > to)
++			break;
+ 		wait_on_buffer(bh);
+ 		if (buffer_uptodate(bh))
+ 			continue;
+ 		return -EIO;
 -	}
-+
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	object->file = NULL;
-+	spin_unlock(&object->lock);
-+
-+	if (file)
-+		fput(file);
- }
- 
- /*
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 38ca6dce8ef29..fe3de9ad57bf6 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -60,20 +60,26 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- {
- 	struct cachefiles_object *object = kiocb->ki_filp->private_data;
- 	struct cachefiles_cache *cache = object->volume->cache;
--	struct file *file = object->file;
-+	struct file *file;
- 	size_t len = iter->count, aligned_len = len;
- 	loff_t pos = kiocb->ki_pos;
- 	const struct cred *saved_cred;
- 	int ret;
- 
--	if (!file)
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	if (!file) {
-+		spin_unlock(&object->lock);
- 		return -ENOBUFS;
-+	}
-+	get_file(file);
-+	spin_unlock(&object->lock);
- 
- 	cachefiles_begin_secure(cache, &saved_cred);
- 	ret = __cachefiles_prepare_write(object, file, &pos, &aligned_len, len, true);
- 	cachefiles_end_secure(cache, saved_cred);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
- 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
- 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
-@@ -82,6 +88,8 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- 		kiocb->ki_pos += ret;
- 	}
- 
-+out:
-+	fput(file);
- 	return ret;
- }
- 
-@@ -89,12 +97,22 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
- 					    int whence)
- {
- 	struct cachefiles_object *object = filp->private_data;
--	struct file *file = object->file;
-+	struct file *file;
-+	loff_t ret;
- 
--	if (!file)
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	if (!file) {
-+		spin_unlock(&object->lock);
- 		return -ENOBUFS;
-+	}
-+	get_file(file);
-+	spin_unlock(&object->lock);
- 
--	return vfs_llseek(file, pos, whence);
-+	ret = vfs_llseek(file, pos, whence);
-+	fput(file);
-+
-+	return ret;
- }
- 
- static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
++	} while ((bh = bh->b_this_page) != head);
+ out:
+ 	if (!partial)
+ 		folio_mark_uptodate(folio);
 -- 
 2.43.0
 
