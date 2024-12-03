@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A45C9E297E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:39:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1739E2ADA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64BCBBA2BF9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90950B86CA2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A781FC7E7;
-	Tue,  3 Dec 2024 15:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF561EE001;
+	Tue,  3 Dec 2024 15:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAN7Wbqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oS0OW9iH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75D91F8AE4;
-	Tue,  3 Dec 2024 15:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976C72500B8;
+	Tue,  3 Dec 2024 15:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238705; cv=none; b=r3bpI16Ps4bqVCxNj/+c89Bofgqg08qMDssOpLkZF3682NmrpfiRCyWpeiouOWFU9nITxGO/1StpRMLcMoA6Z5uQt0Q4PmjX71nnYNZCSc67XBW5BGbv21zkigxzX9tWjh5Tf03mJks+ty4Nm+6Yv9Zo59ybTvE8W67zcV/1U7Y=
+	t=1733240716; cv=none; b=CeNI0MeUqEvk0/nqouHVO2eI8vW8y80tP0DFw67Wpt6bClTQWR64s17OxN4MUUKkUkTorR0+39tvjHFFU6DsQob7kBexWU8lR6fLhBFHYQZBbDIL4ScBXqPpCqg94sIvVC5BAGxzOnn4h/8CmWLgUHvMlgKXNSvyhQyRXHLSfq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238705; c=relaxed/simple;
-	bh=Xm88Ur5L8mrH08Q9LcS+tcl2j8CBilFPBbsnI6EKXRs=;
+	s=arc-20240116; t=1733240716; c=relaxed/simple;
+	bh=kO+rBg74bKNdxAkJjGa9HKCGrvsmpkx81E9JTIW1foI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9lr9nh07t6BiDkjeIS5ljkE4Qxt9iJK/fWgLGbxL9+7L0FOnB04IP4dTPsc8isGpqyL8WIBVI9CmbDHpHDrA/9jyAkOwUpqAyY1PyKVmfv5eNwpJnEZWYqjV9TGjDQBvfdpIOcUxETY85OnvRx0fsSVOANMh5cnYsTZok6gScU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAN7Wbqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6FEC4CECF;
-	Tue,  3 Dec 2024 15:11:44 +0000 (UTC)
+	 MIME-Version; b=MZ8zijs0lc3/83EdvNGDnH7BFFu4MDgApThIY+/1gC2rO9/BcVk43/yXMOz1jmhBfWbMOyp3xif38JcuUFacJPycqaqiHpdx/v4AtshhE/sChdrKi8O3AjTXsBoWzCMCRcc4uc3wByjE8uiKluxzMwdwydtOvIHaVQL58VWcip4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oS0OW9iH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEC6C4CECF;
+	Tue,  3 Dec 2024 15:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238704;
-	bh=Xm88Ur5L8mrH08Q9LcS+tcl2j8CBilFPBbsnI6EKXRs=;
+	s=korg; t=1733240716;
+	bh=kO+rBg74bKNdxAkJjGa9HKCGrvsmpkx81E9JTIW1foI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAN7WbqtVflOYtetahlL1IjbddHZj1/FL9Xuhb8Zivot9XGpkakIYMvblksoC0wUC
-	 auEQT+M00k1IggZc2m4SyEHL/JJwZ6skrRACgr25aptmFR41gYUQM99a3QySFQS0j8
-	 3j3yiTEO0YVhg+BQnoZtUiDof2tGdurzJ02Trj5g=
+	b=oS0OW9iH9tyM79da7s255dQoXZKlGzi0DqGPmniGFyvCG8/uQD9XIfPVy1B6tpsBh
+	 Hp6Io9aRHN+FZcCCXEwtP9Kbm/MxlgPNbKIFkW5l6+aMQVFM1qoDw7wbAFgyYWtl5J
+	 60fpsQOnKwrjdiVx63xB1afI+dVm2L3xQblmXnoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 368/817] eth: fbnic: dont disable the PCI device twice
-Date: Tue,  3 Dec 2024 15:39:00 +0100
-Message-ID: <20241203144010.206426810@linuxfoundation.org>
+Subject: [PATCH 6.12 216/826] ASoC: fsl-asoc-card: Add missing handling of {hp,mic}-dt-gpios
+Date: Tue,  3 Dec 2024 15:39:03 +0100
+Message-ID: <20241203144752.167228531@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 62e9c00ea868ceb71156c517747dc69316c25bf1 ]
+[ Upstream commit cfd1054c65eefec30972416a83eb62920bc1ff8d ]
 
-We use pcim_enable_device(), there is no need to call pci_disable_device().
+The DT bindings deprecated the "hp-det-gpio" and "mic-det-gpio"
+properties in favor of "hp-det-gpios" and "mic-det-gpios", but the
+driver was never updated to support the latter.
 
-Fixes: 546dd90be979 ("eth: fbnic: Add scaffolding for Meta's NIC driver")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241115014809.754860-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Even before, there existed users of "hp-det-gpios" and "mic-det-gpios".
+While this may have been handled fine by the ASoC core, this was missed
+by the Freescale-specific part.
+
+Fixes: 4189b54220e5af15 ("ASoC: dt-bindings: fsl-asoc-card: convert to YAML")
+Fixes: 40ba2eda0a7b727f ("arm64: dts: imx8mm-nitrogen-r2: add audio")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://patch.msgid.link/dbcb5bfea005a468ec6dc38374fe6d02bc693c22.1727438777.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c | 2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/fsl/fsl-asoc-card.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-index a4809fe0fc249..268489b15616f 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
-@@ -319,7 +319,6 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- free_irqs:
- 	fbnic_free_irqs(fbd);
- free_fbd:
--	pci_disable_device(pdev);
- 	fbnic_devlink_free(fbd);
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index f6c3aeff0d8ea..a0c2ce84c32b1 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -1033,14 +1033,15 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	}
  
- 	return err;
-@@ -349,7 +348,6 @@ static void fbnic_remove(struct pci_dev *pdev)
- 	fbnic_fw_disable_mbx(fbd);
- 	fbnic_free_irqs(fbd);
+ 	/*
+-	 * Properties "hp-det-gpio" and "mic-det-gpio" are optional, and
++	 * Properties "hp-det-gpios" and "mic-det-gpios" are optional, and
+ 	 * simple_util_init_jack() uses these properties for creating
+ 	 * Headphone Jack and Microphone Jack.
+ 	 *
+ 	 * The notifier is initialized in snd_soc_card_jack_new(), then
+ 	 * snd_soc_jack_notifier_register can be called.
+ 	 */
+-	if (of_property_read_bool(np, "hp-det-gpio")) {
++	if (of_property_read_bool(np, "hp-det-gpios") ||
++	    of_property_read_bool(np, "hp-det-gpio") /* deprecated */) {
+ 		ret = simple_util_init_jack(&priv->card, &priv->hp_jack,
+ 					    1, NULL, "Headphone Jack");
+ 		if (ret)
+@@ -1049,7 +1050,8 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 		snd_soc_jack_notifier_register(&priv->hp_jack.jack, &hp_jack_nb);
+ 	}
  
--	pci_disable_device(pdev);
- 	fbnic_devlink_free(fbd);
- }
- 
+-	if (of_property_read_bool(np, "mic-det-gpio")) {
++	if (of_property_read_bool(np, "mic-det-gpios") ||
++	    of_property_read_bool(np, "mic-det-gpio") /* deprecated */) {
+ 		ret = simple_util_init_jack(&priv->card, &priv->mic_jack,
+ 					    0, NULL, "Mic Jack");
+ 		if (ret)
 -- 
 2.43.0
 
