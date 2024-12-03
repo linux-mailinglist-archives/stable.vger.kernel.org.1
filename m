@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-97124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2444C9E28B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:08:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF669E2A78
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92BA5B64F88
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66826BE5F49
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365411F7547;
-	Tue,  3 Dec 2024 15:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE98C1F76BF;
+	Tue,  3 Dec 2024 16:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNmc/Udg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNvuDR5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E959B1F473A;
-	Tue,  3 Dec 2024 15:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D0F1F76BA;
+	Tue,  3 Dec 2024 16:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239589; cv=none; b=e5FgRNUiHPnmryPnWRsFEroqM6gZn2WOlPsXABTh9RnXzW1OTESZOaw/fMAPTQgkYWEeYd49HndYjtkCYrW0sPWEH5EKZ+DlLAuhDUPZo6+8QkcigvLu2YHjJVEP2iPSDEk73QsLbrs/vL+Dzi26BniKmXL4EZcsqkK6Xt1cjKM=
+	t=1733241902; cv=none; b=uUFPGykKBKmR39a1k+F1QxNFNmMWl/XYq8WYogtNFMkC2jC+E5Si6obxQWtgLjjCNYJCSxZswkWO3YjyOpL6q7lMMgW86kuYUQkHprDSXhQBjKa3oeXD0/Ihnhphyj7AbTkcp17UXxePHqYxiG7ue/SrC8yrIlEeDlcwLPzpyZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239589; c=relaxed/simple;
-	bh=+/Zq15sZbPJ4K0nbp8GzbQUAjpQcc8UAt7QM5rtdzcE=;
+	s=arc-20240116; t=1733241902; c=relaxed/simple;
+	bh=fXI3p9BxCMSVeMyPIf4elOKeIKHPVtBfY7tGEVYDmnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYrdRrf+Jai8d0CRgGyoiWNCVK8Eg3kwZ0RtV8eBgm0KI21OTiCtIxfFa+VZYhBflox3bfLM+tQov8It59euCYKlAX4Q995GQsyTcLGir2iPJju51qB7yS+bMAUFUR+/F07tjIhrk76SeexyQKCoO7DezajDFluLWRH2wV03L7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNmc/Udg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80A5C4CECF;
-	Tue,  3 Dec 2024 15:26:27 +0000 (UTC)
+	 MIME-Version; b=V2xU9PkS66iKPVV9zvgTgzv8Mn66592+UlL/2YG89N5QkzY6ltNHEDnR5LGNBAeaYfVgcbNF5umPuDkjeNN0UbREKj//k/L2LBjb2ZOEW9P60u9ikOtppl61t72gTU+0bywlehBF5sB/NYwoUzA1GuzYEBq8gXtjE5sIlI6TmxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNvuDR5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDA9C4CECF;
+	Tue,  3 Dec 2024 16:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239588;
-	bh=+/Zq15sZbPJ4K0nbp8GzbQUAjpQcc8UAt7QM5rtdzcE=;
+	s=korg; t=1733241902;
+	bh=fXI3p9BxCMSVeMyPIf4elOKeIKHPVtBfY7tGEVYDmnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WNmc/UdgYndti/+iTcbnUNvXvfgd0Qoem6iHYdmoIlF7eZfVCnllJQmJl7EqsYEWa
-	 SJJzixNN4CyrC+5flssf/pVzDuZMrxL0H86lVJOOR2pO9Enn12rArkQfydkymrXEt2
-	 15dcZayLBmCvnsGJ2T3qftRnNRT8k9ExxobUqJho=
+	b=QNvuDR5S1Uby2jenPlqfQ71jGwhT/toiys0IXrlnBH+UppCo6FV96h9ospEKYnJkZ
+	 x1VdqNbDkiOUy4QL3a1PvBpDLQ4UfzfUrLiRZBSaDeYxr3OQ5kOT6DItrwvCbfm5X2
+	 uNjA/ui89T5GSyVujgWl6LGLimTZQjIhvq/+KcgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
-	Lin Feng <linf@wangsu.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.11 665/817] tty: ldsic: fix tty_ldisc_autoload sysctls proc_handler
-Date: Tue,  3 Dec 2024 15:43:57 +0100
-Message-ID: <20241203144021.915430464@linuxfoundation.org>
+	Benjamin Peterson <benjamin@engflow.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 517/826] perf trace: Do not lose last events in a race
+Date: Tue,  3 Dec 2024 15:44:04 +0100
+Message-ID: <20241203144803.930449363@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +72,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+From: Benjamin Peterson <benjamin@engflow.com>
 
-commit 635a9fca54f4f4148be1ae1c7c6bd37af80f5773 upstream.
+[ Upstream commit 3fd7c36973a250e17a4ee305a31545a9426021f4 ]
 
-Commit 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of
-ldiscs") introduces the tty_ldisc_autoload sysctl with the wrong
-proc_handler. .extra1 and .extra2 parameters are set to avoid other values
-thant SYSCTL_ZERO or SYSCTL_ONE to be set but proc_dointvec do not uses
-them.
+If a perf trace event selector specifies a maximum number of events to output
+(i.e., "/nr=N/" syntax), the event printing handler, trace__event_handler,
+disables the event selector after the maximum number events are
+printed.
 
-This commit fixes this by using proc_dointvec_minmax instead of
-proc_dointvec.
+Furthermore, trace__event_handler checked if the event selector was
+disabled before doing any work. This avoided exceeding the maximum
+number of events to print if more events were in the buffer before the
+selector was disabled.
 
-Fixes: 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of ldiscs")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
-Reviewed-by: Lin Feng <linf@wangsu.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20241112131357.49582-4-nicolas.bouchinet@clip-os.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the event selector can be disabled for reasons other than
+exceeding the maximum number of events. In particular, when the traced
+subprocess exits, the main loop disables all event selectors. This meant
+the last events of a traced subprocess might be lost to the printing
+handler's short-circuiting logic.
+
+This nondeterministic problem could be seen by running the following many times:
+
+  $ perf trace -e syscalls:sys_enter_exit_group true
+
+trace__event_handler should simply check for exceeding the maximum number of
+events to print rather than the state of the event selector.
+
+Fixes: a9c5e6c1e9bff42c ("perf trace: Introduce per-event maximum number of events property")
+Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
+Tested-by: Howard Chu <howardchu95@gmail.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241107232128.108981-1-benjamin@engflow.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_io.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-trace.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -3631,7 +3631,7 @@ static struct ctl_table tty_table[] = {
- 		.data		= &tty_ldisc_autoload,
- 		.maxlen		= sizeof(tty_ldisc_autoload),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
- 		.extra1		= SYSCTL_ZERO,
- 		.extra2		= SYSCTL_ONE,
- 	},
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index f724a595d7411..6fc437be662a1 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -3096,13 +3096,8 @@ static int trace__event_handler(struct trace *trace, struct evsel *evsel,
+ {
+ 	struct thread *thread;
+ 	int callchain_ret = 0;
+-	/*
+-	 * Check if we called perf_evsel__disable(evsel) due to, for instance,
+-	 * this event's max_events having been hit and this is an entry coming
+-	 * from the ring buffer that we should discard, since the max events
+-	 * have already been considered/printed.
+-	 */
+-	if (evsel->disabled)
++
++	if (evsel->nr_events_printed >= evsel->max_events)
+ 		return 0;
+ 
+ 	thread = machine__findnew_thread(trace->host, sample->pid, sample->tid);
+-- 
+2.43.0
+
 
 
 
