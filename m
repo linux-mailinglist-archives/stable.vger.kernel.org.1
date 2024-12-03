@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-96586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F289E9E209C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDE89E20B0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC38A168672
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2FD4B84CDF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288CD1F75B2;
-	Tue,  3 Dec 2024 15:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4962D1F6698;
+	Tue,  3 Dec 2024 15:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyhnQiio"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CugzjO6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FAB1DE2A1;
-	Tue,  3 Dec 2024 15:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E1F1DA4E;
+	Tue,  3 Dec 2024 15:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238001; cv=none; b=AX6S/729Gt97nE1YGv8niuC9BexqulVptnkMghNauZyq21VHvZGRSQIBhnL6d9SDePoLsJpzZUcSz3yjcCTwlNfZ76g7XWDeKzGWbeyAxvVKolBepKTJFqLZQ3Teyxnw+9fXnCfbHY5AH/71iXKhD9KfmyHYkU3bCE1Mkkg8994=
+	t=1733238018; cv=none; b=qstMrWIwTTtsKGfQOUlr/IlTLz/jXFK5NLgHFtkrvqkboe6lruic8iKQcwzAw9V+yF6QT8bowKFeDJG40PCAe+6H2U2fsagC0/OhmithcvI8hp3j4tyrvpHBGo5vdhu2Y7zUB/nsqX1UtZKEKB3y4i+y+5tp+SdcxpyzVFUFW0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238001; c=relaxed/simple;
-	bh=jE7E3HKo319g+UOAe1WMpIAugO5uNnDF2S0MrEVNCdg=;
+	s=arc-20240116; t=1733238018; c=relaxed/simple;
+	bh=6mWMaXo83ANg7XNK7cjO19cKZ1xfrfdACqrHv/oL0os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGXs6vtPBRnM+MXELeuydpGMofvb59gSxmayx/J20I8cjN43H14fWxlfH1lruTaZDKlBzLeWD88pUA2OPD6lTly8to+nIvFH2k9flf/eMMgPgJCb8W+mvSRxRMzYJnDOmZGuO5tam3vR/n8JNtV4NaSe0QHML+73y3LKRAYhDmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyhnQiio; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4647AC4CECF;
-	Tue,  3 Dec 2024 15:00:01 +0000 (UTC)
+	 MIME-Version; b=ocItknDEUX5GaJRNIEfcF+qAo+vztz1jy8SiI/gRAa1rGryYQClXh1Ru8CDFcehl3VSDWFBiYIJFMOX4sRJroLJo6+DgNMWDT/FyFQkmtlPr8m1hA2R9kE++nmmLeaUNz2c5vk702z078nmrh89iEYm7ifKlkINImjz2slNKtS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CugzjO6t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7E6C4CECF;
+	Tue,  3 Dec 2024 15:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238001;
-	bh=jE7E3HKo319g+UOAe1WMpIAugO5uNnDF2S0MrEVNCdg=;
+	s=korg; t=1733238017;
+	bh=6mWMaXo83ANg7XNK7cjO19cKZ1xfrfdACqrHv/oL0os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyhnQiio1ZswJVPSNK9bw3dW0gyM0BMw3Y6YW8i4TOE/xfBdL6eF+5vM14UH5nxhG
-	 LAUYTr3+Xa/73TvVf/AS4pHDZuZP2vuPpPx8xrUTsQyHhVCk3n259rv3ELCuy0FEbC
-	 sOvqjnr8e2TqOFTkp0xzIR+u6uNbStBp0wswEjjs=
+	b=CugzjO6tqNVduTA43l4veDsZvY8coD4LVoJRS52lpbF5j4o+s4FJzoM3favy8jOzj
+	 4nwXVfRa8eF6U/Rtx+a6hyXQnsS23u+bQl3mCq/B96VSYFst6NMuuR0tlpO3hzTOvW
+	 oYfg4z4suOWAoUoYQPLt0JA+0DZcJhcWQWK3CiFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
+	Priyanka Singh <priyanka.singh@nxp.com>,
+	Li Yang <leoyang.li@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 103/817] thermal: core: Fix race between zone registration and system suspend
-Date: Tue,  3 Dec 2024 15:34:35 +0100
-Message-ID: <20241203143959.727978046@linuxfoundation.org>
+Subject: [PATCH 6.11 104/817] EDAC/fsl_ddr: Fix bad bit shift operations
+Date: Tue,  3 Dec 2024 15:34:36 +0100
+Message-ID: <20241203143959.767964107@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,90 +68,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Priyanka Singh <priyanka.singh@nxp.com>
 
-[ Upstream commit cdf771ab476bd9acb0948f3088a277d5c3cacc6b ]
+[ Upstream commit 9ec22ac4fe766c6abba845290d5139a3fbe0153b ]
 
-If the registration of a thermal zone takes place at the time when
-system suspend is started, thermal_pm_notify() can run before the new
-thermal zone is added to thermal_tz_list and its "suspended" flag will
-not be set.  Consequently, if __thermal_zone_device_update() is called
-for that thermal zone, it will not return early as expected which may
-cause some destructive interference with the system suspend or resume
-flow to occur.
+Fix undefined behavior caused by left-shifting a negative value in the
+expression:
 
-To avoid that, make thermal_zone_init_complete() introduced previously
-set the "suspended" flag for new thermal zones if it runs during system
-suspend or resume.
+    cap_high ^ (1 << (bad_data_bit - 32))
 
-Fixes: 4e814173a8c4 ("thermal: core: Fix thermal zone suspend-resume synchronization")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/8490245.NyiUUSuA9g@rjwysocki.net
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+The variable bad_data_bit ranges from 0 to 63. When it is less than 32,
+bad_data_bit - 32 becomes negative, and left-shifting by a negative
+value in C is undefined behavior.
+
+Fix this by combining cap_high and cap_low into a 64-bit variable.
+
+  [ bp: Massage commit message, simplify error bits handling. ]
+
+Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
+Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
+Signed-off-by: Li Yang <leoyang.li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241016-imx95_edac-v3-3-86ae6fc2756a@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/edac/fsl_ddr_edac.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 91512a8cb49d9..a674469adad19 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -40,6 +40,8 @@ static DEFINE_MUTEX(thermal_governor_lock);
- 
- static struct thermal_governor *def_governor;
- 
-+static bool thermal_pm_suspended;
+diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
+index d148d262d0d4d..339d94b3d04c7 100644
+--- a/drivers/edac/fsl_ddr_edac.c
++++ b/drivers/edac/fsl_ddr_edac.c
+@@ -328,21 +328,25 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
+ 	 * TODO: Add support for 32-bit wide buses
+ 	 */
+ 	if ((err_detect & DDR_EDE_SBE) && (bus_width == 64)) {
++		u64 cap = (u64)cap_high << 32 | cap_low;
++		u32 s = syndrome;
 +
- /*
-  * Governor section: set of functions to handle thermal governors
-  *
-@@ -1356,6 +1358,14 @@ static void thermal_zone_init_complete(struct thermal_zone_device *tz)
- 	mutex_lock(&tz->lock);
+ 		sbe_ecc_decode(cap_high, cap_low, syndrome,
+ 				&bad_data_bit, &bad_ecc_bit);
  
- 	tz->state &= ~TZ_STATE_FLAG_INIT;
-+	/*
-+	 * If system suspend or resume is in progress at this point, the
-+	 * new thermal zone needs to be marked as suspended because
-+	 * thermal_pm_notify() has run already.
-+	 */
-+	if (thermal_pm_suspended)
-+		tz->state |= TZ_STATE_FLAG_SUSPENDED;
+-		if (bad_data_bit != -1)
+-			fsl_mc_printk(mci, KERN_ERR,
+-				"Faulty Data bit: %d\n", bad_data_bit);
+-		if (bad_ecc_bit != -1)
+-			fsl_mc_printk(mci, KERN_ERR,
+-				"Faulty ECC bit: %d\n", bad_ecc_bit);
++		if (bad_data_bit >= 0) {
++			fsl_mc_printk(mci, KERN_ERR, "Faulty Data bit: %d\n", bad_data_bit);
++			cap ^= 1ULL << bad_data_bit;
++		}
 +
- 	__thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
++		if (bad_ecc_bit >= 0) {
++			fsl_mc_printk(mci, KERN_ERR, "Faulty ECC bit: %d\n", bad_ecc_bit);
++			s ^= 1 << bad_ecc_bit;
++		}
  
- 	mutex_unlock(&tz->lock);
-@@ -1544,10 +1554,10 @@ thermal_zone_device_register_with_trips(const char *type,
- 		}
+ 		fsl_mc_printk(mci, KERN_ERR,
+ 			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
+-			cap_high ^ (1 << (bad_data_bit - 32)),
+-			cap_low ^ (1 << bad_data_bit),
+-			syndrome ^ (1 << bad_ecc_bit));
++			upper_32_bits(cap), lower_32_bits(cap), s);
  	}
  
--	mutex_unlock(&thermal_list_lock);
--
- 	thermal_zone_init_complete(tz);
- 
-+	mutex_unlock(&thermal_list_lock);
-+
- 	thermal_notify_tz_create(tz);
- 
- 	thermal_debug_tz_add(tz);
-@@ -1768,6 +1778,8 @@ static int thermal_pm_notify(struct notifier_block *nb,
- 	case PM_SUSPEND_PREPARE:
- 		mutex_lock(&thermal_list_lock);
- 
-+		thermal_pm_suspended = true;
-+
- 		list_for_each_entry(tz, &thermal_tz_list, node)
- 			thermal_zone_pm_prepare(tz);
- 
-@@ -1778,6 +1790,8 @@ static int thermal_pm_notify(struct notifier_block *nb,
- 	case PM_POST_SUSPEND:
- 		mutex_lock(&thermal_list_lock);
- 
-+		thermal_pm_suspended = false;
-+
- 		list_for_each_entry(tz, &thermal_tz_list, node)
- 			thermal_zone_pm_complete(tz);
- 
+ 	fsl_mc_printk(mci, KERN_ERR,
 -- 
 2.43.0
 
