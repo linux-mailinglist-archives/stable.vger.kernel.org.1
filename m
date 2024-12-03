@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9DC9E2187
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BD59E2208
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34202855F6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E845167C6B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECEC1FA82E;
-	Tue,  3 Dec 2024 15:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD261F8938;
+	Tue,  3 Dec 2024 15:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoDiw4tb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2/K3J58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA381F756E;
-	Tue,  3 Dec 2024 15:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DC71F76AE;
+	Tue,  3 Dec 2024 15:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238711; cv=none; b=DEUmKVJar3UaKHyY+h7F4MNmcwjT//e/kaF9SEGkpsfEqpL5e29iVoTlYI74CKDPQebeumgI68ogKPF9/tVn8wQcwPj0Q0r8JaAkqjNlzlVhHZUjsqtrbn0v4LYg/6XM5WijFuEEWg1qSgEoMtesJJjKLC4jHgrwDbiGO9x0f5M=
+	t=1733238834; cv=none; b=rJNofidZneg7cuu5KG4v437Ymm1zUZqlaXdu1CreZeUC2i3+mEfd9LuAF+ibIiASy+rM6qiqnECGfpxonzJeub1TJyjd5k07L2fiIBkyBZRMrN/FYaXnC/YxYy9KCzSwp2pyYOAvEn2XaX9EPr0Lu/9uvjyqRvhDdox7ApThi1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238711; c=relaxed/simple;
-	bh=wiT4tEs9M5Bvfs3jfcPbfIwTVDwbq38f5BNOBKDc7GQ=;
+	s=arc-20240116; t=1733238834; c=relaxed/simple;
+	bh=FB3FYtlH7LU3zjJUVWEhukKa+klV9idxKu9045lc0hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVs4+fChHR0ZpW99o5wBSxK4qr4t8PXB2CfaQsnlD8CST2vrF5xfJr/BRTRk/C9VoIFet3ldzxUxAXwkCgWdOjnNu987f3E/GwGHRX+S0PAHmXzOxfogdHXMG+ERZ89n74RQM1C4MtZZnkg8Md2+82RY3mb8r5ObhlpPG8fDC5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoDiw4tb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36538C4CECF;
-	Tue,  3 Dec 2024 15:11:50 +0000 (UTC)
+	 MIME-Version; b=e26bifwJ4osblv09NLnQ3u5PFMpII+AzSIETv/OAlmTMMo3GPCE11sGieQgVqpNQuRM4k/WxWudqypYxNfJibyhVdDTyuusta+jt9m7IrVO269KISNLqcsAXoc/N/4e0W2FCC89AX6PsxpkkAThbSPtwXh3Myjmv7YcJOeY6zg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2/K3J58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99556C4CECF;
+	Tue,  3 Dec 2024 15:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238710;
-	bh=wiT4tEs9M5Bvfs3jfcPbfIwTVDwbq38f5BNOBKDc7GQ=;
+	s=korg; t=1733238834;
+	bh=FB3FYtlH7LU3zjJUVWEhukKa+klV9idxKu9045lc0hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BoDiw4tbegngi57d+QjJDA/eOGbxhO93DkEtOPjucUuXL2ktNYiU9exyTJikSNUjt
-	 avlmoDJMqEOahqQOypcF6+Kg5jtrbK/FgjSFjuPEjJo17VwNhWyIfopqdtHNxy1B8p
-	 Nia2r5fgA49/O0Z4oChBhIXNoBSnHMoqRGmjWDN8=
+	b=I2/K3J58jS++wLoSjl1zgEUPawQup6AgXy14XA1rN92mMnWQEWyH9pRNih9xfIFLs
+	 33Uug1y6gL5EKfBdVzFG+nIE9/503I+8ry5qGxlx7E+tdgCf8ZaKqGhwz6WMyGOFwx
+	 miNxbLyA5/nLUB+Fw7eAy3ClEGQXx5U1X0PPalRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Breno Leitao <leitao@debian.org>,
+	Michal Kubiak <michal.kubiak@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 370/817] net: txgbe: fix null pointer to pcs
-Date: Tue,  3 Dec 2024 15:39:02 +0100
-Message-ID: <20241203144010.283781512@linuxfoundation.org>
+Subject: [PATCH 6.11 371/817] netpoll: Use rcu_access_pointer() in netpoll_poll_lock
+Date: Tue,  3 Dec 2024 15:39:03 +0100
+Message-ID: <20241203144010.322478612@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,35 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiawen Wu <jiawenwu@trustnetic.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 2160428bcb20f2f70a72ee84aba91a1264dc4ff3 ]
+[ Upstream commit a57d5a72f8dec7db8a79d0016fb0a3bdecc82b56 ]
 
-For 1000BASE-X or SGMII interface mode, the PCS also need to be selected.
-Only return null pointer when there is a copper NIC with external PHY.
+The ndev->npinfo pointer in netpoll_poll_lock() is RCU-protected but is
+being accessed directly for a NULL check. While no RCU read lock is held
+in this context, we should still use proper RCU primitives for
+consistency and correctness.
 
-Fixes: 02b2a6f91b90 ("net: txgbe: support copper NIC with external PHY")
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20241115073508.1130046-1-jiawenwu@trustnetic.com
+Replace the direct NULL check with rcu_access_pointer(), which is the
+appropriate primitive when only checking for NULL without dereferencing
+the pointer. This function provides the necessary ordering guarantees
+without requiring RCU read-side protection.
+
+Fixes: bea3348eef27 ("[NET]: Make NAPI polling independent of struct net_device objects.")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://patch.msgid.link/20241118-netpoll_rcu-v1-2-a1888dcb4a02@debian.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 2 +-
+ include/linux/netpoll.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index 119cbd3466011..6544910535898 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -162,7 +162,7 @@ static struct phylink_pcs *txgbe_phylink_mac_select(struct phylink_config *confi
- 	struct wx *wx = phylink_to_wx(config);
- 	struct txgbe *txgbe = wx->priv;
+diff --git a/include/linux/netpoll.h b/include/linux/netpoll.h
+index bd19c4b91e312..3ddf205b7e2c3 100644
+--- a/include/linux/netpoll.h
++++ b/include/linux/netpoll.h
+@@ -71,7 +71,7 @@ static inline void *netpoll_poll_lock(struct napi_struct *napi)
+ {
+ 	struct net_device *dev = napi->dev;
  
--	if (interface == PHY_INTERFACE_MODE_10GBASER)
-+	if (wx->media_type != sp_media_copper)
- 		return &txgbe->xpcs->pcs;
+-	if (dev && dev->npinfo) {
++	if (dev && rcu_access_pointer(dev->npinfo)) {
+ 		int owner = smp_processor_id();
  
- 	return NULL;
+ 		while (cmpxchg(&napi->poll_owner, -1, owner) != -1)
 -- 
 2.43.0
 
