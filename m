@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-98001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D051C9E268F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42E59E2694
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96ED72891B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9C3828922F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450351F8926;
-	Tue,  3 Dec 2024 16:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877201F8910;
+	Tue,  3 Dec 2024 16:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QN1bia37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7akQOBm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10241F8907;
-	Tue,  3 Dec 2024 16:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446E31F76BF;
+	Tue,  3 Dec 2024 16:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242463; cv=none; b=cpfZxErtA6+w7ZiNZa5u3FbZLN/tNRCiIzs7JchkColZrNsoCDwt5KNPAIF2dNdEvFMtf0vfElEIRRbAn3kFST8n5AxdvIiQPgwL6Hbgo3mO3Bd/KqaEScgv1h46+Cl/gKXrVAaBM3PA9qClsakWlXdoO70OEr1HfglkCiUVWw4=
+	t=1733242479; cv=none; b=OMxdbTmnttHoKyWIqZYmXoFSkZDEIUrcUuBldDwj2XCDDodVs069klXyXk37krHIIfXQ3Ep1EhkV/gjgmfvOAuhqIfnQBEb2t2Itu9AVlu/wNmfhszuqXMyDUTWyI4jdnrDH60C0xZzFqMXzJcSGjTuBKFQ+G4uuq5ywj+arkjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242463; c=relaxed/simple;
-	bh=QFmQ53cfupUsiD+aHBkjYKLbmUt9GMETG3sZiY8mW68=;
+	s=arc-20240116; t=1733242479; c=relaxed/simple;
+	bh=boloXJbE19sBiKTRSUjA0UZcU4rReThFa/FQSIfY2fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5dAZToz99Aq3A9ai2KXlccouyFuA7owXfxAmjQmXinDuYVuxKzDLu9qOGwk8Rp2j1urTlolvWq9vgbMO7s1L1F2Re0cjfjirWWQ8c7r9MiZHJxtucPdlzvXKmAyyIOEQQ3AQjG5x5Oj9Kb4aMTVKcs7vcP0t/rwvOedLblOmGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QN1bia37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B01C4CECF;
-	Tue,  3 Dec 2024 16:14:22 +0000 (UTC)
+	 MIME-Version; b=Mr+5WrYAemgRG+gdtZbL8jXmyNxZv1n/bFGmGNB3pHPRbRhfIWlXNbzr3+r/kdzhDJBdcbvOW8nblfqwGz889sjGX3Xa72hr8OLrsSlPHyioYAVVBgB0YjClMxSlWMYUim08c3kXwQMp3aXqmg8IpoWh7a3pr97/W8fbZHua7Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7akQOBm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAC9C4CECF;
+	Tue,  3 Dec 2024 16:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242462;
-	bh=QFmQ53cfupUsiD+aHBkjYKLbmUt9GMETG3sZiY8mW68=;
+	s=korg; t=1733242479;
+	bh=boloXJbE19sBiKTRSUjA0UZcU4rReThFa/FQSIfY2fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QN1bia37EqwZPBg3so0TY6QBVD6BND9+NG+1o7dY501jSfYferKiIJ9AUmlKCA320
-	 a2K8WvSMAh2jSElbfNYs397yDFRc/XzLac7i4jPwl3adS2wmVZR7eCiBmRpx3Cb6gM
-	 o6OtXLrGiyi8ZQk50AfR2EvW0/bdmkHG/LB3PojA=
+	b=V7akQOBm7W+/4pxf6bMoVqZ6G4xOFWjhTCYXsq5IN8K8CcdU4dycb+hPUxK67nlsx
+	 IQpeW+g0xy76Gv5coWwDPifz9NVGwVSXhqfmLGJ+WIc1SfCCfplGl3WPPCCSyqTx7x
+	 Pz2AZrVgpvGL0wWW4xqPdxkHoLdjlZYKGzRLgo4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH 6.12 684/826] wifi: ath12k: fix crash when unbinding
-Date: Tue,  3 Dec 2024 15:46:51 +0100
-Message-ID: <20241203144810.440112375@linuxfoundation.org>
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.12 685/826] wifi: brcmfmac: release root node in all execution paths
+Date: Tue,  3 Dec 2024 15:46:52 +0100
+Message-ID: <20241203144810.478086300@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,49 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 1304446f67863385dc4c914b6e0194f6664ee764 upstream.
+commit 2e19a3b590ebf2e351fc9d0e7c323430e65b6b6d upstream.
 
-If there is an error during some initialization related to firmware,
-the function ath12k_dp_cc_cleanup is called to release resources.
-However this is released again when the device is unbinded (ath12k_pci),
-and we get:
-BUG: kernel NULL pointer dereference, address: 0000000000000020
-at RIP: 0010:ath12k_dp_cc_cleanup.part.0+0xb6/0x500 [ath12k]
-Call Trace:
-ath12k_dp_cc_cleanup
-ath12k_dp_free
-ath12k_core_deinit
-ath12k_pci_remove
-...
+The fixed patch introduced an additional condition to enter the scope
+where the 'root' device_node is released (!settings->board_type,
+currently 'err'), which avoid decrementing the refcount with a call to
+of_node_put() if that second condition is not satisfied.
 
-The issue is always reproducible from a VM because the MSI addressing
-initialization is failing.
+Move the call to of_node_put() to the point where 'root' is no longer
+required to avoid leaking the resource if err is not zero.
 
-In order to fix the issue, just set to NULL the released structure in
-ath12k_dp_cc_cleanup at the end.
-
-cc: stable@vger.kernel.org
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://patch.msgid.link/20241017181004.199589-2-jtornosm@redhat.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: stable@vger.kernel.org
+Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1247,6 +1247,7 @@ static void ath12k_dp_cc_cleanup(struct
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -110,9 +110,8 @@ void brcmf_of_probe(struct device *dev,
+ 		}
+ 		strreplace(board_type, '/', '-');
+ 		settings->board_type = board_type;
+-
+-		of_node_put(root);
  	}
++	of_node_put(root);
  
- 	kfree(dp->spt_info);
-+	dp->spt_info = NULL;
- }
- 
- static void ath12k_dp_reoq_lut_cleanup(struct ath12k_base *ab)
+ 	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+ 		return;
 
 
 
