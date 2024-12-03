@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-96417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A379E1F98
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5269B9E1F8B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 696C9284967
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3957166C1E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DFA1F6689;
-	Tue,  3 Dec 2024 14:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BB91F6678;
+	Tue,  3 Dec 2024 14:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXdJeAHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOA5/9GR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7015D1F4711;
-	Tue,  3 Dec 2024 14:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772B61F4704;
+	Tue,  3 Dec 2024 14:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236734; cv=none; b=t8eYnIHiOiHegtXzWHiROWOHpW36iS25eNwhGOZE3ojpHhY+Rw6qH83DxMXoUA79PkYP8cciaG75SKsvQoNh61uhoP3jbvSeQzLqDOY8On3yx3jjTaCySlgrBVO0g0G7+pUSfyFlv9fEX3nzif2ltOf7e92aPB2EqlT+sEbc69U=
+	t=1733236615; cv=none; b=rbaCg59QKzLgc0iz5CktEdo/cJG4g3WWvkCooec285IBBd2sdWsD2Y5Rgci7tBWhRRBkjIhcW+YS4jSIyGo8Tb8jALWUuiWlNfImgA2ks1J8oWlKVaXlsUx9YDP4b1a6ZgLFHIVw/S2aHjIsLltFIMk0hhUFLPQwekkItVVgk1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236734; c=relaxed/simple;
-	bh=hA7zEwO88XNaySpAo4S/GmpjRg0LSqx79DILYU8mZ7I=;
+	s=arc-20240116; t=1733236615; c=relaxed/simple;
+	bh=gELBxtVtXdOBlYYehwNiTsat4Kdg8UaxNwJQjaVj9iY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NVGCKmeGSZvmt1xorAACnoqvjMsSkJcjWpC7GyPfEAVcsCI+9Fe0TfZ/4dUme5iFY1j4T2m8jzQlFK/nKiaztjZqNh6NtkYdHkkpQsNd0h+6BrLlbKqsLTHCExEDhhTWOSIc9KVwjCasdntQCkBMd3yWElRexxYamgVp/0IBvRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXdJeAHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F0AC4CECF;
-	Tue,  3 Dec 2024 14:38:53 +0000 (UTC)
+	 MIME-Version; b=g0tQr5YQFB6Jp9aRj2knFUw72FiDjn5nybz++Yfc9p+DnCqZafupbXrsTZIcRIx2NgoeXlXf2YsxZBA6RtU/+YIdWw8Bm7gj78r2UD9EM5YjIIQefVx3lm0RfNejgOjptNr6cxZZhigvb0clWPCOICA+HyK1u519/Ht6dxs4FNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOA5/9GR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55A9C4CECF;
+	Tue,  3 Dec 2024 14:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236734;
-	bh=hA7zEwO88XNaySpAo4S/GmpjRg0LSqx79DILYU8mZ7I=;
+	s=korg; t=1733236615;
+	bh=gELBxtVtXdOBlYYehwNiTsat4Kdg8UaxNwJQjaVj9iY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXdJeAHgZ+8yCAnCloAd59QF8c/surj9hCIewYz+3EXXIhqe2/2ZI5ZjMVrtcyQjb
-	 NKDWHtAARJcclMcVuKEPEKo6fI4QwJhlEKnQOVb0gPlVtfoqwilQyLxATyq3Fu7Ve7
-	 ZYrfCTGNy/Y8Y2eCEhmvcUMldvcH6d2sw7/0+ZaI=
+	b=mOA5/9GRrqUJ7a287k5uIofz2ZYn6lIANKg00AFoTCGIHgtJ60vm6DYBMpWDgrbdo
+	 XAQzvV5AFNJ2gRcJPg5xygg+pCRX2U6KMzvlFRLJ1UegDPkSfsUJqcuE+NJC6+QFU2
+	 dWLhgLFmYDFndsB7OJkw9EZ03QwUL1V0r/oo0/bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Alexandru Ardelean <alexandru.ardelean@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 071/138] fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()
-Date: Tue,  3 Dec 2024 15:31:40 +0100
-Message-ID: <20241203141926.277422588@linuxfoundation.org>
+Subject: [PATCH 4.19 072/138] dt-bindings: clock: adi,axi-clkgen: convert old binding to yaml format
+Date: Tue,  3 Dec 2024 15:31:41 +0100
+Message-ID: <20241203141926.317754506@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -67,41 +69,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Alexandru Ardelean <alexandru.ardelean@analog.com>
 
-[ Upstream commit f89d17ae2ac42931be2a0153fecbf8533280c927 ]
+[ Upstream commit bd91abb218e0ac4a7402d6c25d383e2a706bb511 ]
 
-When information such as info->screen_base is not ready, calling
-sh7760fb_free_mem() does not release memory correctly. Call
-dma_free_coherent() instead.
+This change converts the old binding for the AXI clkgen driver to a yaml
+format.
 
-Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+As maintainers, added:
+ - Lars-Peter Clausen <lars@metafoo.de> - as original author of driver &
+   binding
+ - Michael Hennerich <michael.hennerich@analog.com> - as supporter of
+   Analog Devices drivers
+
+Acked-by: Michael Hennerich <michael.hennerich@analog.com>
+Acked-by: Lars-Peter Clausen <lars@metafoo.de>
+Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Link: https://lore.kernel.org/r/20201013143421.84188-1-alexandru.ardelean@analog.com
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: 47f3f5a82a31 ("dt-bindings: clock: axi-clkgen: include AXI clk")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh7760fb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../bindings/clock/adi,axi-clkgen.yaml        | 53 +++++++++++++++++++
+ .../devicetree/bindings/clock/axi-clkgen.txt  | 25 ---------
+ 2 files changed, 53 insertions(+), 25 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+ delete mode 100644 Documentation/devicetree/bindings/clock/axi-clkgen.txt
 
-diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
-index c8ba3aeb32778..d4ef70b178859 100644
---- a/drivers/video/fbdev/sh7760fb.c
-+++ b/drivers/video/fbdev/sh7760fb.c
-@@ -412,12 +412,11 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
- 		vram = PAGE_SIZE;
- 
- 	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
+diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+new file mode 100644
+index 0000000000000..0d06387184d68
+--- /dev/null
++++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+@@ -0,0 +1,53 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/clock/adi,axi-clkgen.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Binding for Analog Devices AXI clkgen pcore clock generator
++
++maintainers:
++  - Lars-Peter Clausen <lars@metafoo.de>
++  - Michael Hennerich <michael.hennerich@analog.com>
++
++description: |
++  The axi_clkgen IP core is a software programmable clock generator,
++  that can be synthesized on various FPGA platforms.
++
++  Link: https://wiki.analog.com/resources/fpga/docs/axi_clkgen
++
++properties:
++  compatible:
++    enum:
++      - adi,axi-clkgen-2.00.a
++
++  clocks:
++    description:
++      Specifies the reference clock(s) from which the output frequency is
++      derived. This must either reference one clock if only the first clock
++      input is connected or two if both clock inputs are connected.
++    minItems: 1
++    maxItems: 2
++
++  '#clock-cells':
++    const: 0
++
++  reg:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - '#clock-cells'
++
++additionalProperties: false
++
++examples:
++  - |
++    clock-controller@ff000000 {
++      compatible = "adi,axi-clkgen-2.00.a";
++      #clock-cells = <0>;
++      reg = <0xff000000 0x1000>;
++      clocks = <&osc 1>;
++    };
+diff --git a/Documentation/devicetree/bindings/clock/axi-clkgen.txt b/Documentation/devicetree/bindings/clock/axi-clkgen.txt
+deleted file mode 100644
+index aca94fe9416f0..0000000000000
+--- a/Documentation/devicetree/bindings/clock/axi-clkgen.txt
++++ /dev/null
+@@ -1,25 +0,0 @@
+-Binding for the axi-clkgen clock generator
 -
- 	if (!fbmem)
- 		return -ENOMEM;
- 
- 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
--		sh7760fb_free_mem(info);
-+		dma_free_coherent(info->device, vram, fbmem, par->fbdma);
- 		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
- 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
- 		return -ENOMEM;
+-This binding uses the common clock binding[1].
+-
+-[1] Documentation/devicetree/bindings/clock/clock-bindings.txt
+-
+-Required properties:
+-- compatible : shall be "adi,axi-clkgen-1.00.a" or "adi,axi-clkgen-2.00.a".
+-- #clock-cells : from common clock binding; Should always be set to 0.
+-- reg : Address and length of the axi-clkgen register set.
+-- clocks : Phandle and clock specifier for the parent clock(s). This must
+-	either reference one clock if only the first clock input is connected or two
+-	if both clock inputs are connected. For the later case the clock connected
+-	to the first input must be specified first.
+-
+-Optional properties:
+-- clock-output-names : From common clock binding.
+-
+-Example:
+-	clock@ff000000 {
+-		compatible = "adi,axi-clkgen";
+-		#clock-cells = <0>;
+-		reg = <0xff000000 0x1000>;
+-		clocks = <&osc 1>;
+-	};
 -- 
 2.43.0
 
