@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB32A9E24B8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C20F9E2231
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1D802876E3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A07F516643C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FEE1F7071;
-	Tue,  3 Dec 2024 15:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689841F6696;
+	Tue,  3 Dec 2024 15:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V36soB1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5+uAp6/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EE11DAC9F;
-	Tue,  3 Dec 2024 15:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23537646;
+	Tue,  3 Dec 2024 15:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241098; cv=none; b=ZdJS06ZW+ji//lvIck4anbooWxGo/SGiwC6ueOrHt4ABQvx5fRtwhvA7dagCLRjNZWa07wbonjjyja4SnG2y4H2+4+iwq2piaIKlaGnkzULfoL7HJTx1CcOOxsOGqNxHrMQbPtlRFupjCpkVQm+n+/lsBjP84d2erDmZbLDBFZw=
+	t=1733238978; cv=none; b=JDgzW8BS16a5cPBDMOLMI05jbU2WH7bIr8QA880T7teemImKqfwRmur/W5d4lDrMeU422xgOfaDnJ0AMd8lhFlSwGHgHLtBlOORHh9ReJ0h4F4J17RaMR/mWKGaICJTmb7Ne1OdCnIAHvkfLAhaa2PyrrCjC2TwuQuZoX3AJnUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241098; c=relaxed/simple;
-	bh=OQLcV5tDi+mScSdkvL25dJ0M5x01c00xawrmXaAWryQ=;
+	s=arc-20240116; t=1733238978; c=relaxed/simple;
+	bh=6StEq2IYly367fzpQMcTFrnX1/Q0miHZ51VhaHq9BUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVsOlzfGMa49OzvtGPoaIIOJhngSH9vQyhnabXPyuki66MAUuwW3Xxr2tTuS/UUimCk7VEQjm6rXr8S3gIfpsEA6A1WqKUHDDtqoBX4xWjHQVEiNvEP3Gl5MkusILKq/apUrE6xE22P434e5BdgexGzvOealsojBifYKKglgRMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V36soB1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FF2C4CECF;
-	Tue,  3 Dec 2024 15:51:37 +0000 (UTC)
+	 MIME-Version; b=Yrk4NaW7pJwc+oVsxi2b2Ql0AD5wNGf6+3gHmQuiVJ6DDBNJbm0uKa1F7cwAFwV/J1HG40iQzEQ2T7AY/wm18I/o+0otTP1ysMTRMmlYUzuQBQqc5rEj46nr8eW9A4skvUc4X/gN7eMVm04pQDzfESqaMwRPjSJRjQHLHEZ7Aq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5+uAp6/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7CAC4CECF;
+	Tue,  3 Dec 2024 15:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241098;
-	bh=OQLcV5tDi+mScSdkvL25dJ0M5x01c00xawrmXaAWryQ=;
+	s=korg; t=1733238978;
+	bh=6StEq2IYly367fzpQMcTFrnX1/Q0miHZ51VhaHq9BUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V36soB1xDs+4Zj+cONgUMunAGwQdDgU5XUjlYRTBMsrpqa1Q0JhPUG5lMEdN8RR0g
-	 p0UtGD7s8E/W/l6nXs7TMcIOCoEhtM0Hh/gmAxy8amPgXiY7sKZl4x4RjUs5B1z6hT
-	 IsJS/Qav5qkV8KzzXhp6tJSWTWItplEhX7Jage+s=
+	b=l5+uAp6/J+vkr9gNmYjSwr4H43h91+k0DQTO158JpFC/ZK9ME0tk865RZ42c9sQKz
+	 PREOWTBhS7pzZX9e18/6SUzfbQCbMJw/zjiuSpfajMzRJgOSxtBF7xHwEygPRhzJdb
+	 rHT/kwWgTcSbuxU0FMWmot4ZoBM2IWpfWaJjvE6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Ge <gehao@kylinos.cn>,
-	Eric Sandeen <sandeen@redhat.com>,
-	Jan Kara <jack@suse.cz>,
+	Zhang Zekun <zhangzekun11@huawei.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 307/826] isofs: avoid memory leak in iocharset
+Subject: [PATCH 6.11 462/817] powerpc/kexec: Fix return of uninitialized variable
 Date: Tue,  3 Dec 2024 15:40:34 +0100
-Message-ID: <20241203144755.738977655@linuxfoundation.org>
+Message-ID: <20241203144013.908848194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Zhang Zekun <zhangzekun11@huawei.com>
 
-[ Upstream commit 0b5bbeee4de616a268db77e2f40f19ab010a367b ]
+[ Upstream commit 83b5a407fbb73e6965adfb4bd0a803724bf87f96 ]
 
-A memleak was found as below:
+of_property_read_u64() can fail and leave the variable uninitialized,
+which will then be used. Return error if reading the property failed.
 
-unreferenced object 0xffff0000d10164d8 (size 8):
-  comm "pool-udisksd", pid 108217, jiffies 4295408555
-  hex dump (first 8 bytes):
-    75 74 66 38 00 cc cc cc                          utf8....
-  backtrace (crc de430d31):
-    [<ffff800081046e6c>] kmemleak_alloc+0xb8/0xc8
-    [<ffff8000803e6c3c>] __kmalloc_node_track_caller_noprof+0x380/0x474
-    [<ffff800080363b74>] kstrdup+0x70/0xfc
-    [<ffff80007bb3c6a4>] isofs_parse_param+0x228/0x2c0 [isofs]
-    [<ffff8000804d7f68>] vfs_parse_fs_param+0xf4/0x164
-    [<ffff8000804d8064>] vfs_parse_fs_string+0x8c/0xd4
-    [<ffff8000804d815c>] vfs_parse_monolithic_sep+0xb0/0xfc
-    [<ffff8000804d81d8>] generic_parse_monolithic+0x30/0x3c
-    [<ffff8000804d8bfc>] parse_monolithic_mount_data+0x40/0x4c
-    [<ffff8000804b6a64>] path_mount+0x6c4/0x9ec
-    [<ffff8000804b6e38>] do_mount+0xac/0xc4
-    [<ffff8000804b7494>] __arm64_sys_mount+0x16c/0x2b0
-    [<ffff80008002b8dc>] invoke_syscall+0x7c/0x104
-    [<ffff80008002ba44>] el0_svc_common.constprop.1+0xe0/0x104
-    [<ffff80008002ba94>] do_el0_svc+0x2c/0x38
-    [<ffff800081041108>] el0_svc+0x3c/0x1b8
-
-The opt->iocharset is freed inside the isofs_fill_super function,
-But there may be situations where it's not possible to
-enter this function.
-
-For example, in the get_tree_bdev_flags function,when
-encountering the situation where "Can't mount, would change RO state,"
-In such a case, isofs_fill_super will not have the opportunity
-to be called,which means that opt->iocharset will not have the chance
-to be freed,ultimately leading to a memory leak.
-
-Let's move the memory freeing of opt->iocharset into
-isofs_free_fc function.
-
-Fixes: 1b17a46c9243 ("isofs: convert isofs to use the new mount API")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Reviewed-by: Eric Sandeen <sandeen@redhat.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241106082841.51773-1-hao.ge@linux.dev
+Fixes: 2e6bd221d96f ("powerpc/kexec_file: Enable early kernel OPAL calls")
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20240930075628.125138-1-zhangzekun11@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/inode.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kexec/file_load_64.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index f50311a6b4299..47038e6608123 100644
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -948,8 +948,6 @@ static int isofs_fill_super(struct super_block *s, struct fs_context *fc)
- 		goto out_no_inode;
- 	}
+diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
+index 9738adabeb1fe..dc65c13911577 100644
+--- a/arch/powerpc/kexec/file_load_64.c
++++ b/arch/powerpc/kexec/file_load_64.c
+@@ -736,13 +736,18 @@ int setup_purgatory_ppc64(struct kimage *image, const void *slave_code,
+ 	if (dn) {
+ 		u64 val;
  
--	kfree(opt->iocharset);
--
- 	return 0;
- 
- 	/*
-@@ -987,7 +985,6 @@ static int isofs_fill_super(struct super_block *s, struct fs_context *fc)
- 	brelse(bh);
- 	brelse(pri_bh);
- out_freesbi:
--	kfree(opt->iocharset);
- 	kfree(sbi);
- 	s->s_fs_info = NULL;
- 	return error;
-@@ -1528,7 +1525,10 @@ static int isofs_get_tree(struct fs_context *fc)
- 
- static void isofs_free_fc(struct fs_context *fc)
- {
--	kfree(fc->fs_private);
-+	struct isofs_options *opt = fc->fs_private;
+-		of_property_read_u64(dn, "opal-base-address", &val);
++		ret = of_property_read_u64(dn, "opal-base-address", &val);
++		if (ret)
++			goto out;
 +
-+	kfree(opt->iocharset);
-+	kfree(opt);
- }
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_base", &val,
+ 						     sizeof(val), false);
+ 		if (ret)
+ 			goto out;
  
- static const struct fs_context_operations isofs_context_ops = {
+-		of_property_read_u64(dn, "opal-entry-address", &val);
++		ret = of_property_read_u64(dn, "opal-entry-address", &val);
++		if (ret)
++			goto out;
+ 		ret = kexec_purgatory_get_set_symbol(image, "opal_entry", &val,
+ 						     sizeof(val), false);
+ 	}
 -- 
 2.43.0
 
