@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-97514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A789E28E1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD72A9E28EA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C401DBE0F2D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF7E0BE16F2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC31E1FA16E;
-	Tue,  3 Dec 2024 15:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B08C1F76A8;
+	Tue,  3 Dec 2024 15:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5GnHrGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifWxlS6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0891FA17C;
-	Tue,  3 Dec 2024 15:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4171A1F75B6;
+	Tue,  3 Dec 2024 15:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240776; cv=none; b=DqetdYbKj3LtVPZapLkYEslvzbHo+VwdPfRRRqGqvRuQ9Cm0MmDs65sbFahFUkUYVkxqbMUJeZE5bryxBjvBndLjCr8T2LjBB8dk2/XP1XrB1XExKYTy71WegBMNVbwViUM76EYjBnKnDk0g/EMeGnwM2si4UAmR1NtZW+M3FX0=
+	t=1733240901; cv=none; b=b4hEC8WltyGbPBsom0OB/101I9xlB6usibMKBRFh1+tlJx31y9RFLCNeO5K3x//a2/qtJpUOPLoAJnJO0/fUcMkn2NEsqg4On10nOQAXLbT6hJTZjUowlOer7nB0IpLxOmyGJDGo2Z03EFrzB+HtElAMIAKPdnsFssGr+m5Z+KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240776; c=relaxed/simple;
-	bh=F2m0CodRo/bM43n8L8Nr/1vJCS76okz6AH5JhkfWxro=;
+	s=arc-20240116; t=1733240901; c=relaxed/simple;
+	bh=uRCCnifIJFYXHFqDS0f1YkM6s9q5/Jp1mEaXXskG0mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRVKzny36ues1vglEGXwKnLo/k6LxEGNZiQa1X2F/7SNEHUMp819UvjFTBZFmapUKiMGjLtqvK3z+DK7HcccS20vj0XxeuRtkwdYCOHJMfLgX0S1lxwgfIQdtYDgF9Da1Ou0+LoeNetaYYQut6GHP4Hbvwjjsdwkd8sU2fAvy9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5GnHrGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE91AC4CED6;
-	Tue,  3 Dec 2024 15:46:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M44gqUM9ofb56Gpibx75Xcdqwr+Y6A738gkfVQyqytmzPFBzk0OSxQHPDK9vChh1C4WBikYBkLwa6vKUgmT/Ht5jQ1IRvXbXnNAQBZVS3YNQsNDSfK5ooavlI3gi9ke8RC2h3up1SWim43mp5w18h7ZAUHqrrP5hrcaQgFOAd7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifWxlS6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73222C4CECF;
+	Tue,  3 Dec 2024 15:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240776;
-	bh=F2m0CodRo/bM43n8L8Nr/1vJCS76okz6AH5JhkfWxro=;
+	s=korg; t=1733240901;
+	bh=uRCCnifIJFYXHFqDS0f1YkM6s9q5/Jp1mEaXXskG0mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5GnHrGT2Gf72TotJ18Al6738RCfNqtLWU7jAztDv8jgqYVbJH7u8/jmqumMHrfJt
-	 IkpP01qMvyLSxGwSlh5rv0x/4LelajCXkOVkxyzgJU5wGW65w9d8Gdau2Ezp5rQTuK
-	 H6skBdHm5XnriCd78BgzhHVLnS6AwMHFTdFD4Ew8=
+	b=ifWxlS6Z6gvlaeEe9CEXFuM7URWZApcKFVgWv9Caz4ULtKCVaiuC3nGEOM80Nge04
+	 eGLUz6LNXiEE48azDuAncUawrh9KY4SvfOcuQF2Du0F1WyoeU6hIw4L3DvMN0QLAay
+	 bVQl00m+i6/sAhVSYP7FzElA0MeBZpCfVXb1eYbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/826] bpf: Fix the xdp_adjust_tail sample prog issue
-Date: Tue,  3 Dec 2024 15:39:18 +0100
-Message-ID: <20241203144752.759710110@linuxfoundation.org>
+Subject: [PATCH 6.12 241/826] drm/vc4: Correct generation check in vc4_hvs_lut_load
+Date: Tue,  3 Dec 2024 15:39:28 +0100
+Message-ID: <20241203144753.167018433@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -60,45 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Dave Stevenson <dave.stevenson@raspberrypi.com>
 
-[ Upstream commit 4236f114a3ffbbfd217436c08852e94cae372f57 ]
+[ Upstream commit 42aa18d1c3e7762bcebd89a5857ed7774e669d92 ]
 
-During the xdp_adjust_tail test, probabilistic failure occurs and SKB package
-is discarded by the kernel. After checking the issues by tracking SKB package,
-it is identified that they were caused by checksum errors. Refer to checksum
-of the arch/arm64/include/asm/checksum.h for fixing.
+Commit 24c5ed3ddf27 ("drm/vc4: Introduce generation number enum")
+incorrectly swapped a check of hvs->vc4->is_vc5 to
+hvs->vc4->gen == VC4_GEN_4 in vc4_hvs_lut_load, hence breaking
+loading the gamma look up table on Pi0-3.
 
-v2: Based on Alexei Starovoitov's suggestions, it is necessary to keep the code
- implementation consistent.
+Correct that conditional.
 
-Fixes: c6ffd1ff7856 (bpf: add bpf_xdp_adjust_tail sample prog)
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240930024115.52841-1-chenyuan_fl@163.com
+Fixes: 24c5ed3ddf27 ("drm/vc4: Introduce generation number enum")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/dri-devel/37051126-3921-4afe-a936-5f828bff5752@samsung.com/
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008-drm-vc4-fixes-v1-3-9d0396ca9f42@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/xdp_adjust_tail_kern.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vc4/vc4_hvs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/bpf/xdp_adjust_tail_kern.c b/samples/bpf/xdp_adjust_tail_kern.c
-index ffdd548627f0a..da67bcad1c638 100644
---- a/samples/bpf/xdp_adjust_tail_kern.c
-+++ b/samples/bpf/xdp_adjust_tail_kern.c
-@@ -57,6 +57,7 @@ static __always_inline void swap_mac(void *data, struct ethhdr *orig_eth)
+diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
+index f30022a360a8a..863539e1f7e04 100644
+--- a/drivers/gpu/drm/vc4/vc4_hvs.c
++++ b/drivers/gpu/drm/vc4/vc4_hvs.c
+@@ -224,7 +224,7 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
+ 	if (!drm_dev_enter(drm, &idx))
+ 		return;
  
- static __always_inline __u16 csum_fold_helper(__u32 csum)
- {
-+	csum = (csum & 0xffff) + (csum >> 16);
- 	return ~((csum & 0xffff) + (csum >> 16));
- }
+-	if (hvs->vc4->gen == VC4_GEN_4)
++	if (hvs->vc4->gen != VC4_GEN_4)
+ 		goto exit;
  
+ 	/* The LUT memory is laid out with each HVS channel in order,
 -- 
 2.43.0
 
