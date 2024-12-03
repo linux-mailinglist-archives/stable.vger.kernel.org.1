@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-96967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21FD09E21ED
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288A39E252B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC2962817AC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D681816EDB4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893191F1317;
-	Tue,  3 Dec 2024 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CDA1F8907;
+	Tue,  3 Dec 2024 15:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Im9JsHSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyXPEky2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EB71DA3D;
-	Tue,  3 Dec 2024 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86991DAC9F;
+	Tue,  3 Dec 2024 15:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239123; cv=none; b=aHA5zNyJR2qbNqBjpPRa9CgBymOMjEZ4ZXmD9ECDXroipk0Cz9OLoqJSc7hOf+puhtqBpPrUNH9OyS4UEfUaDA7sI6YzC2qb6/OsW4HG0RBy7uz5LojXIcOaC88MVMccm14dr1+qJbfOEJQwIyHvxcdUmnY88Zydjo+UiqRj1EQ=
+	t=1733241101; cv=none; b=dwtL3HB/SXh2DD0rEvORjRpAWxt8s8n/s5eCWB56BFAju/dJk4doZ6ys6P/2p/LsGqSL6Xf17R3eUnDpfhKEz1C5JAvH4SuG9SypppJYpd+Ps4K0VM3x6Qxh60espHHSPFHWbSfthQzDgI0ZpfANvcE3zMOoq7xgmzE0IHQUXHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239123; c=relaxed/simple;
-	bh=+in8l7teeCs+1YZbnT0/HxwOyK5f1zVRtN/ohigswck=;
+	s=arc-20240116; t=1733241101; c=relaxed/simple;
+	bh=QoiQAj+wL0l6d5ggwjSK5ucxrROsOeQKUaZlsdO43qM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqLTa+97wyYuZICErirHe+Rw0kx4U52bkDiauAB4yYrf1ZO6Ufd8Pp+Bzmh95fXUtEeQeoQNeGKG0LXinab9i9nBl0ANvf2e7EWU5TDeVaENHaggWdgtPjTnjdSO6oU8/tGN66Sf4QI4JyFDD0VEFh0d+EHGvFMmrW05BjdJatQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Im9JsHSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCC8C4CECF;
-	Tue,  3 Dec 2024 15:18:42 +0000 (UTC)
+	 MIME-Version; b=A+2EhirU1sHK8LJrc2MYPOxNjCjpn0VLQJ2D/+wdfXmUaD3itoEcgUvGC96B51vxJmfe6E1GBi/TLbuAwwkYHx98uTtiUJLJBHbhjuvVrs4sOVpFjpkJOfyIYEXjP/jjbzk92ZaTWNbUQFOdCTzmbQ7Ym3seXrRQcDs/xaJHMGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyXPEky2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4370EC4CECF;
+	Tue,  3 Dec 2024 15:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239123;
-	bh=+in8l7teeCs+1YZbnT0/HxwOyK5f1zVRtN/ohigswck=;
+	s=korg; t=1733241101;
+	bh=QoiQAj+wL0l6d5ggwjSK5ucxrROsOeQKUaZlsdO43qM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Im9JsHSUnxHMkzwQR3PJCs0QLVyIplClMYzJrNV3arJnWCcECwcyK5aA6hMOnrPVC
-	 TsGJcl49dFErDZP/f0Z7hbZi00yrsKUNpfgTtHYQ2zk001m2AzL9cqS5C0w83E0HHr
-	 6Mu0JW0DV5N/EHSFPKzClSMCve3h2EFsX2WQHW3c=
+	b=QyXPEky2zIs4R2zzPohB9zakROcoaI8ebHyL2zm3NOsmZnQCudq4NwH6GfEiHPADR
+	 HmI2TTy89LN0HfbZ2P2t4vaRoPFt/ePlhNe1rcI2cB77LwUraF+y7UNWHIWP2gth6w
+	 TppnCWLUn8U8h4VN8wzaZbnb5TvdFDpLP4YdD3Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Viktor Malik <vmalik@redhat.com>,
+	Philo Lu <lulie@linux.alibaba.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 480/817] x86: fix off-by-one in access_ok()
+Subject: [PATCH 6.12 325/826] selftests/bpf: skip the timer_lockup test for single-CPU nodes
 Date: Tue,  3 Dec 2024 15:40:52 +0100
-Message-ID: <20241203144014.608019904@linuxfoundation.org>
+Message-ID: <20241203144756.439080241@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +65,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 573f45a9f9a47fed4c7957609689b772121b33d7 ]
+[ Upstream commit 937a1c29a287e8f48c4cea714c76a13e14d989ac ]
 
-When the size isn't a small constant, __access_ok() will call
-valid_user_address() with the address after the last byte of the user
-buffer.
+The timer_lockup test needs 2 CPUs to work, on single-CPU nodes it fails
+to set thread affinity to CPU 1 since it doesn't exist:
 
-It is valid for a buffer to end with the last valid user address so
-valid_user_address() must allow accesses to the base of the guard page.
+    # ./test_progs -t timer_lockup
+    test_timer_lockup:PASS:timer_lockup__open_and_load 0 nsec
+    test_timer_lockup:PASS:pthread_create thread1 0 nsec
+    test_timer_lockup:PASS:pthread_create thread2 0 nsec
+    timer_lockup_thread:PASS:cpu affinity 0 nsec
+    timer_lockup_thread:FAIL:cpu affinity unexpected error: 22 (errno 0)
+    test_timer_lockup:PASS: 0 nsec
+    #406     timer_lockup:FAIL
 
-[ This introduces an off-by-one in the other direction for the plain
-  non-sized accesses, but since we have that guard region that is a
-  whole page, those checks "allowing" accesses to that guard region
-  don't really matter. The access will fault anyway, whether to the
-  guard page or if the address has been masked to all ones - Linus ]
+Skip the test if only 1 CPU is available.
 
-Fixes: 86e6b1547b3d0 ("x86: fix user address masking non-canonical speculation issue")
-Signed-off-by: David Laight <david.laight@aculab.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Fixes: 50bd5a0c658d1 ("selftests/bpf: Add timer lockup selftest")
+Tested-by: Philo Lu <lulie@linux.alibaba.com>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20241107115231.75200-1-vmalik@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/timer_lockup.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index c472282ab40fd..fd89f1c65c947 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2374,12 +2374,12 @@ void __init arch_cpu_finalize_init(void)
- 	alternative_instructions();
+diff --git a/tools/testing/selftests/bpf/prog_tests/timer_lockup.c b/tools/testing/selftests/bpf/prog_tests/timer_lockup.c
+index 871d16cb95cfd..1a2f99596916f 100644
+--- a/tools/testing/selftests/bpf/prog_tests/timer_lockup.c
++++ b/tools/testing/selftests/bpf/prog_tests/timer_lockup.c
+@@ -5,6 +5,7 @@
+ #include <test_progs.h>
+ #include <pthread.h>
+ #include <network_helpers.h>
++#include <sys/sysinfo.h>
  
- 	if (IS_ENABLED(CONFIG_X86_64)) {
--		unsigned long USER_PTR_MAX = TASK_SIZE_MAX-1;
-+		unsigned long USER_PTR_MAX = TASK_SIZE_MAX;
+ #include "timer_lockup.skel.h"
  
- 		/*
- 		 * Enable this when LAM is gated on LASS support
- 		if (cpu_feature_enabled(X86_FEATURE_LAM))
--			USER_PTR_MAX = (1ul << 63) - PAGE_SIZE - 1;
-+			USER_PTR_MAX = (1ul << 63) - PAGE_SIZE;
- 		 */
- 		runtime_const_init(ptr, USER_PTR_MAX);
+@@ -52,6 +53,11 @@ void test_timer_lockup(void)
+ 	pthread_t thrds[2];
+ 	void *ret;
  
++	if (get_nprocs() < 2) {
++		test__skip();
++		return;
++	}
++
+ 	skel = timer_lockup__open_and_load();
+ 	if (!ASSERT_OK_PTR(skel, "timer_lockup__open_and_load"))
+ 		return;
 -- 
 2.43.0
 
