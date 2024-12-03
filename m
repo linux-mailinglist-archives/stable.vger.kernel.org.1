@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669209E2721
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D270C9E2730
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:22:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B26E1B365A8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33F82B814CA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA4C1EE029;
-	Tue,  3 Dec 2024 14:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23EA1F6684;
+	Tue,  3 Dec 2024 14:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxb3q551"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmHGaxEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920C17BB16;
-	Tue,  3 Dec 2024 14:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA3617BB16;
+	Tue,  3 Dec 2024 14:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236720; cv=none; b=lCg5aI0AmIXDbdE+LV+ZDMSf0b7J22t87asEO2yUJSIBSidujxDq1sJNbeGPBINmIdKgFqEKd8gtFMaD2QAUvHlWbnGzgka6T01DS0Ur2yth4KeD97saARtxyua7NDIiLdvEReLQvBS3UI0LxmjZSIni3Tcb8FW+rzhcu2wAp00=
+	t=1733236727; cv=none; b=XwYGZR/x5sMD9DEvTcSJAy9JMRlwKAwzjdLYpLlwePtQKyQXZSLwGOimw1IW/Krpz7sU2xQnQ3W4SVkXobE6OG/oo7PDkgGKHd2nDqdjdVzlzTDfX/LyJ7sZ2Wkrf4TjFti70RdH1tdf8GL744P3dKmnNrN3frhlxPYmcEofViU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236720; c=relaxed/simple;
-	bh=QCJ0UPd41nDl/rFDhOMEbkHy653/JVAEHmoVKousizs=;
+	s=arc-20240116; t=1733236727; c=relaxed/simple;
+	bh=usJyrJcHqEtR/rtAMBNxmqa/rdqO5ntMEZw8iozPfgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjYwLM9wYv7Idy3EP+5Clu9/PsNYyqOqEbSh6j8RhQo10zfZuP4qeUGsaDeSXvM584M0bvU1cujnO0RQIIf2MPwMu/PASoDcpZEmZ8WtiS+7ySYWjokQDHBkC2yQOwU71okpEloUUiyEdp/9F7q0zCJ7ybIKH3+Zd0KSQlro59U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxb3q551; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F9BC4CECF;
-	Tue,  3 Dec 2024 14:38:39 +0000 (UTC)
+	 MIME-Version; b=m+oJDNEOj9Gu6X3QiXkBcU/1x/gCu/35TUv9RIVCGABoEBP+wcjIJxtTjQ80WWIVqQh01TBd+BPkXkfszzq+35vd9fly15TPmS0AaV1Jm5HXsnW1Z3f5gZAnZih+K2WeKYeGMG0t9JpGtFSc1lhLdO6l6o5k64hT3/Kn8x1vheE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmHGaxEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C224CC4CED8;
+	Tue,  3 Dec 2024 14:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236720;
-	bh=QCJ0UPd41nDl/rFDhOMEbkHy653/JVAEHmoVKousizs=;
+	s=korg; t=1733236727;
+	bh=usJyrJcHqEtR/rtAMBNxmqa/rdqO5ntMEZw8iozPfgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxb3q551YUbqV3qNnkU3ygiWkTDtAMexgXKQZ74pvx4qjHn6DtAs/9voPtyUYOiUD
-	 iSg+NkIPo54WArRNqekaFmp8aIUeJGjPwpBivXQVD/JC0xC761RO04cDbTjeuYBGx8
-	 h6tGAdQE6PFznqlAZLDBedX3yXIqtNZR23RYRUMg=
+	b=rmHGaxEEHRMAS6twSJ9/ACUVe6bZmxhv5KeW4fTAF2M343nJtmEhoAlw4kPPbpHVR
+	 Sxb1tfSsbHErBlzD1zV2nlS3/s4/z+U7GuCsI7koCUC1iuSIP/kCLs2B2gkEBWJUbz
+	 eLccRoYA8VxlWZanJh8mOtMqG/vvU8VnSEiqxF1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Michal Suchanek <msuchanek@suse.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 067/138] scsi: qedi: Fix a possible memory leak in qedi_alloc_and_init_sb()
-Date: Tue,  3 Dec 2024 15:31:36 +0100
-Message-ID: <20241203141926.121766633@linuxfoundation.org>
+Subject: [PATCH 4.19 069/138] powerpc/sstep: make emulate_vsx_load and emulate_vsx_store static
+Date: Tue,  3 Dec 2024 15:31:38 +0100
+Message-ID: <20241203141926.199948314@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,35 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Michal Suchanek <msuchanek@suse.de>
 
-[ Upstream commit 95bbdca4999bc59a72ebab01663d421d6ce5775d ]
+[ Upstream commit a26c4dbb3d9c1821cb0fc11cb2dbc32d5bf3463b ]
 
-Hook "qedi_ops->common->sb_init = qed_sb_init" does not release the DMA
-memory sb_virt when it fails. Add dma_free_coherent() to free it. This
-is the same way as qedr_alloc_mem_sb() and qede_alloc_mem_sb().
+These functions are not used outside of sstep.c
 
-Fixes: ace7f46ba5fd ("scsi: qedi: Add QLogic FastLinQ offload iSCSI driver framework.")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Link: https://lore.kernel.org/r/20241026125711.484-3-thunder.leizhen@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 350779a29f11 ("powerpc: Handle most loads and stores in instruction emulation code")
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241001130356.14664-1-msuchanek@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedi/qedi_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/include/asm/sstep.h |  5 -----
+ arch/powerpc/lib/sstep.c         | 12 ++++--------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index 7a179cfc01ed2..15567e60216ec 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -357,6 +357,7 @@ static int qedi_alloc_and_init_sb(struct qedi_ctx *qedi,
- 	ret = qedi_ops->common->sb_init(qedi->cdev, sb_info, sb_virt, sb_phys,
- 				       sb_id, QED_SB_TYPE_STORAGE);
- 	if (ret) {
-+		dma_free_coherent(&qedi->pdev->dev, sizeof(*sb_virt), sb_virt, sb_phys);
- 		QEDI_ERR(&qedi->dbg_ctx,
- 			 "Status block initialization failed for id = %d.\n",
- 			  sb_id);
+diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
+index 4547891a684be..b1449ed56fce2 100644
+--- a/arch/powerpc/include/asm/sstep.h
++++ b/arch/powerpc/include/asm/sstep.h
+@@ -164,9 +164,4 @@ extern int emulate_step(struct pt_regs *regs, unsigned int instr);
+  */
+ extern int emulate_loadstore(struct pt_regs *regs, struct instruction_op *op);
+ 
+-extern void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-			     const void *mem, bool cross_endian);
+-extern void emulate_vsx_store(struct instruction_op *op,
+-			      const union vsx_reg *reg, void *mem,
+-			      bool cross_endian);
+ extern int emulate_dcbz(unsigned long ea, struct pt_regs *regs);
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index 3da6290e3cccb..8c645e0072c6f 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -667,8 +667,8 @@ static nokprobe_inline int emulate_stq(struct pt_regs *regs, unsigned long ea,
+ #endif /* __powerpc64 */
+ 
+ #ifdef CONFIG_VSX
+-void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+-		      const void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
++					     const void *mem, bool rev)
+ {
+ 	int size, read_size;
+ 	int i, j;
+@@ -748,11 +748,9 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_load);
+-NOKPROBE_SYMBOL(emulate_vsx_load);
+ 
+-void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+-		       void *mem, bool rev)
++static nokprobe_inline void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
++					      void *mem, bool rev)
+ {
+ 	int size, write_size;
+ 	int i, j;
+@@ -824,8 +822,6 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
+ 		break;
+ 	}
+ }
+-EXPORT_SYMBOL_GPL(emulate_vsx_store);
+-NOKPROBE_SYMBOL(emulate_vsx_store);
+ 
+ static nokprobe_inline int do_vsx_load(struct instruction_op *op,
+ 				       unsigned long ea, struct pt_regs *regs,
 -- 
 2.43.0
 
