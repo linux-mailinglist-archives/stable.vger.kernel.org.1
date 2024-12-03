@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-97192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629DE9E2802
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:48:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286F19E2655
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D832BB2E2AB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 005EA165F31
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EC91F7566;
-	Tue,  3 Dec 2024 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE86F1F890B;
+	Tue,  3 Dec 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkA16h/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOy05BBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B211F7071;
-	Tue,  3 Dec 2024 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A947923CE;
+	Tue,  3 Dec 2024 16:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239780; cv=none; b=SkuHol1039jk5uWL7FI5EWXCefq3ZHpgElHeU+GognUD3hKVFNYJbcVDWyCc4F+Tb0l7R2Lv/8cP5AJRt57IT77Sgn2ntn2SC9qCObHT2GgTTDxxCzSlN2sUXl9LTZPuTCt4xpfSlo11R0eXKw4X8dE+im4SIOmN6cdXlugFVRw=
+	t=1733241997; cv=none; b=KwQkVkQLtzrbPd5FsuFcACRAItxsJLXG1C1QnbWd82ZFnrz7Ev8xNPRT4IGhgGDWMlsUOJrp5/WyDvNSgPPseMmQY2jJKFWu1n3BeYdbB0u+o70eRqxlN4xmIAn+3OayLuaiZ6rr9NYumX1oPegSXRk200WW11IsyP9VX8LLA0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239780; c=relaxed/simple;
-	bh=yC6R2z8Vt6Z2Xy0Q/sSRuGLtpiiNRBUs27wecehka/s=;
+	s=arc-20240116; t=1733241997; c=relaxed/simple;
+	bh=xUQnrTEYIdYpbUAhV0LaMNk7oMH3W7q99GvsgNloTfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bhmM78ze2YMceL4Vj2TaK9J7iVcOXGbVBvTV4W8xWhwX8LTY3Jvvv0I8swYPivKe478eNGq07ZhOjT/AJW8N2ikfEhaITqdUwhpuASPPLn8gwqFfXMAV5WUhP4r7ldto8R5wsklCYJUZask4f2eh063PPJCXpGdMfrAXb7YKN0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkA16h/T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F37C4CED8;
-	Tue,  3 Dec 2024 15:29:39 +0000 (UTC)
+	 MIME-Version; b=uddaX46707J49VxqANIlzWKzYrvACje5LOnQDC1SF/Bvb+F7Ny7HOjl/RWYJFY7yDeDqvWUqucTXXAGTBJmT4qY1tWsUxdOagaN9CwVCWPru5fYeHDCxs6GGg0fqdVLDZLS7lxs6GkNfPakYj+AhoeB5fh+78QghBDtCjSNBcDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOy05BBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C0DC4CED6;
+	Tue,  3 Dec 2024 16:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239780;
-	bh=yC6R2z8Vt6Z2Xy0Q/sSRuGLtpiiNRBUs27wecehka/s=;
+	s=korg; t=1733241997;
+	bh=xUQnrTEYIdYpbUAhV0LaMNk7oMH3W7q99GvsgNloTfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkA16h/TNpUBmp++hy+/LE6FzW4g/M2G7D3rJHEc8i2C/9ag8iICsyvqDs3SZL82/
-	 mTqAN5sznE/7Mip9T9JsQASdWSBxCXA8TVLce1p0arLDNc1Rp5yqfIwRrMefe4BqWa
-	 dlEFKqZoPobqbJa43J1j5BTa6eKh+yl5C3JIgQ4M=
+	b=zOy05BBwygPGq8rajKQVOfNBmHzMaXn7JRiOYKX0cjUZOv4pIIwPIFWemji55PVy7
+	 Jbr1rEOxL9pp75Xg8mzvqFF1x9v7f/pujUFdt/fXdGBLnc4oUIimvEXp1eEOEW04Wn
+	 V7R4sbOUfGjajcobSVevptoXsAe1eFPjMOodJW9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Peter=20Gro=C3=9Fe?= <pegro@friiks.de>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.11 731/817] i40e: Fix handling changed priv flags
+	Eric Dumazet <edumazet@google.com>,
+	George McCollister <george.mccollister@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 576/826] net: hsr: fix hsr_init_sk() vs network/transport headers.
 Date: Tue,  3 Dec 2024 15:45:03 +0100
-Message-ID: <20241203144024.529646559@linuxfoundation.org>
+Message-ID: <20241203144806.221246659@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Große <pegro@friiks.de>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ea301aec8bb718b02b68761d2229fc12c9fefa29 upstream.
+[ Upstream commit 9cfb5e7f0ded2bfaabc270ceb5f91d13f0e805b9 ]
 
-After assembling the new private flags on a PF, the operation to determine
-the changed flags uses the wrong bitmaps. Instead of xor-ing orig_flags
-with new_flags, it uses the still unchanged pf->flags, thus changed_flags
-is always 0.
+Following sequence in hsr_init_sk() is invalid :
 
-Fix it by using the correct bitmaps.
+    skb_reset_mac_header(skb);
+    skb_reset_mac_len(skb);
+    skb_reset_network_header(skb);
+    skb_reset_transport_header(skb);
 
-The issue was discovered while debugging why disabling source pruning
-stopped working with release 6.7. Although the new flags will be copied to
-pf->flags later on in that function, disabling source pruning requires
-a reset of the PF, which was skipped due to this bug.
+It is invalid because skb_reset_mac_len() needs the correct
+network header, which should be after the mac header.
 
-Disabling source pruning:
-$ sudo ethtool --set-priv-flags eno1 disable-source-pruning on
-$ sudo ethtool --show-priv-flags eno1
-Private flags for eno1:
-MFP                   : off
-total-port-shutdown   : off
-LinkPolling           : off
-flow-director-atr     : on
-veb-stats             : off
-hw-atr-eviction       : off
-link-down-on-close    : off
-legacy-rx             : off
-disable-source-pruning: on
-disable-fw-lldp       : off
-rs-fec                : off
-base-r-fec            : off
-vf-vlan-pruning       : off
+This patch moves the skb_reset_network_header()
+and skb_reset_transport_header() before
+the call to dev_hard_header().
 
-Regarding reproducing:
+As a result skb->mac_len is no longer set to a value
+close to 65535.
 
-I observed the issue with a rather complicated lab setup, where
- * two VLAN interfaces are created on eno1
- * each with a different MAC address assigned
- * each moved into a separate namespace
- * both VLANs are bridged externally, so they form a single layer 2 network
-
-The external bridge is done via a channel emulator adding packet loss and
-delay and the application in the namespaces tries to send/receive traffic
-and measure the performance. Sender and receiver are separated by
-namespaces, yet the network card "sees its own traffic" send back to it.
-To make that work, source pruning has to be disabled.
-
-Cc: stable@vger.kernel.org
-Fixes: 70756d0a4727 ("i40e: Use DECLARE_BITMAP for flags and hw_features fields in i40e_pf")
-Signed-off-by: Peter Große <pegro@friiks.de>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20241113210705.1296408-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: George McCollister <george.mccollister@gmail.com>
+Link: https://patch.msgid.link/20241122171343.897551-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/hsr/hsr_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -5303,7 +5303,7 @@ static int i40e_set_priv_flags(struct ne
- 	}
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index ebdfd5b64e17a..f630d6645636d 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -268,6 +268,8 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
+ 	skb->dev = master->dev;
+ 	skb->priority = TC_PRIO_CONTROL;
  
- flags_complete:
--	bitmap_xor(changed_flags, pf->flags, orig_flags, I40E_PF_FLAGS_NBITS);
-+	bitmap_xor(changed_flags, new_flags, orig_flags, I40E_PF_FLAGS_NBITS);
++	skb_reset_network_header(skb);
++	skb_reset_transport_header(skb);
+ 	if (dev_hard_header(skb, skb->dev, ETH_P_PRP,
+ 			    hsr->sup_multicast_addr,
+ 			    skb->dev->dev_addr, skb->len) <= 0)
+@@ -275,8 +277,6 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
  
- 	if (test_bit(I40E_FLAG_FW_LLDP_DIS, changed_flags))
- 		reset_needed = I40E_PF_RESET_AND_REBUILD_FLAG;
+ 	skb_reset_mac_header(skb);
+ 	skb_reset_mac_len(skb);
+-	skb_reset_network_header(skb);
+-	skb_reset_transport_header(skb);
+ 
+ 	return skb;
+ out:
+-- 
+2.43.0
+
 
 
 
