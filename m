@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5FC9E245B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D709E2854
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:57:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0606C16E255
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 822A0B87255
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425C91F76BA;
-	Tue,  3 Dec 2024 15:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14F41F7576;
+	Tue,  3 Dec 2024 15:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZLh4HCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwQbi3oI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CFE1F75BB;
-	Tue,  3 Dec 2024 15:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F95C1F429B;
+	Tue,  3 Dec 2024 15:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240310; cv=none; b=utHMxXMhKWoP5v77po+BT4y3xtfJtijGpEUmHHwO7DcoUY3+hSaRODAlbcrLdDlPfZQeS5xoc0X/IktVtvRpzqY1I7QIE+hUhyTosyjsjKmNTpzBwB8g2Gx6pINiqUAEV4HHktc8DRQT2cfrtdosQNfDiIOMU7qyDuSR2OmDp0c=
+	t=1733238355; cv=none; b=IuV9TJIGJj8nU6aA6D10EByELA5PuqzPEoV3JeA+1vAA4xSqKq0TopRjcqPrhxddJHTMVxjlV4+CarFdOXI8euuL05j6dojAxAPpRluGx1m2BXykWMT+ayKPQH+IiOSUHAEh0ACQg1NbBD29I0SU6PaRG6adTjqT/dfXs1qjeSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240310; c=relaxed/simple;
-	bh=s1YNYW/fLp+knmiI8YEkokoc4ovIRFXtzneL9n86CBk=;
+	s=arc-20240116; t=1733238355; c=relaxed/simple;
+	bh=H0r7p4wmzQMfdamX3XbzIVBZrLwPIrp7J8fRj5oTRgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uAm6J/tR6awIZRjBVcavjgeb6eQX0z0uaF2KEALpd0StXygfmeh0nMmH6dbxCLgzlZyvF7yv2oNH+TAmg8W+ftc1nQ5ASXD5uDlJtZaAEwBkJDDkEa42NIrQMIxh7F+X97QpwcpG5jt75zKkH12YJlAO+cIrteBiCRFU4KGfpM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZLh4HCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C20DC4CECF;
-	Tue,  3 Dec 2024 15:38:29 +0000 (UTC)
+	 MIME-Version; b=Vbwb+3HNCyMnou9fJ+iJ5HqbMiazzk+pdsXKonewoXvZ5MJXncmwyAmoqf5UsoHV2iqjMK1jISMW+EkEeY5m5Lf+bGulhhrL3L4zC9GHNsaGX3QerG0b4OmsGA/xl8uGUdrMgYtFxsME34OzUEdEBkYrapdaCGtvi0KMAcTAkPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwQbi3oI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0996EC4CECF;
+	Tue,  3 Dec 2024 15:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240309;
-	bh=s1YNYW/fLp+knmiI8YEkokoc4ovIRFXtzneL9n86CBk=;
+	s=korg; t=1733238355;
+	bh=H0r7p4wmzQMfdamX3XbzIVBZrLwPIrp7J8fRj5oTRgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZLh4HCawyVbWO64eA4hA5agAN95BGlt3wLZQVa7QAv28xEJpEmkbXH2DbX1j+/cv
-	 skauKf8yopa3gnAQgJZHGhjeIw6m3NfeQ5fHWHK0Ves0pPWQ++64DjaJ+v7KibJYaV
-	 Y+nhxAtJ4qmv02TFRM6eRhYRZTJ586euN357rdEM=
+	b=XwQbi3oIYKcu3Y0wu4RWZk4pUj7UVVrBp0mm2Xgqs5wEDImRqBxLIPWAo2M15qX0Q
+	 ElNZ3r5Oil+poGOCizEN8XAAE3PigO/NiEUa7yBIgU9Pz+svAGf8wV4GPvtl8EgXA0
+	 9QCElCEZLFbXSU6Dc+7sIiIEMZqcvfvNvRYQBPic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Eder Zulian <ezulian@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 095/826] rust: helpers: Avoid raw_spin_lock initialization for PREEMPT_RT
-Date: Tue,  3 Dec 2024 15:37:02 +0100
-Message-ID: <20241203144747.437570172@linuxfoundation.org>
+Subject: [PATCH 6.11 251/817] drm/bridge: it6505: Drop EDID cache on bridge power off
+Date: Tue,  3 Dec 2024 15:37:03 +0100
+Message-ID: <20241203144005.569344869@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,91 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eder Zulian <ezulian@redhat.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 5c2e7736e20d9b348a44cafbfa639fe2653fbc34 ]
+[ Upstream commit 574c558ddb68591c9a4b7a95e45e935ab22c0fc6 ]
 
-When PREEMPT_RT=y, spin locks are mapped to rt_mutex types, so using
-spinlock_check() + __raw_spin_lock_init() to initialize spin locks is
-incorrect, and would cause build errors.
+The bridge might miss the display change events when it's powered off.
+This happens when a user changes the external monitor when the system
+is suspended and the embedded controller doesn't not wake AP up.
 
-Introduce __spin_lock_init() to initialize a spin lock with lockdep
-rquired information for PREEMPT_RT builds, and use it in the Rust
-helper.
+It's also observed that one DP-to-HDMI bridge doesn't work correctly
+when there is no EDID read after it is powered on.
 
-Fixes: d2d6422f8bd1 ("x86: Allow to enable PREEMPT_RT.")
-Closes: https://lore.kernel.org/oe-kbuild-all/202409251238.vetlgXE9-lkp@intel.com/
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Eder Zulian <ezulian@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Tested-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20241107163223.2092690-2-ezulian@redhat.com
+Drop the cache to force an EDID read after system resume to fix this.
+
+Fixes: 11feaef69d0c ("drm/bridge: it6505: Add caching for EDID")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240926092931.3870342-3-treapking@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/spinlock_rt.h | 15 +++++++--------
- rust/helpers/spinlock.c     |  8 ++++++--
- 2 files changed, 13 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/spinlock_rt.h b/include/linux/spinlock_rt.h
-index babc3e0287791..6175cd682ca0d 100644
---- a/include/linux/spinlock_rt.h
-+++ b/include/linux/spinlock_rt.h
-@@ -16,22 +16,21 @@ static inline void __rt_spin_lock_init(spinlock_t *lock, const char *name,
- }
- #endif
- 
--#define spin_lock_init(slock)					\
-+#define __spin_lock_init(slock, name, key, percpu)		\
- do {								\
--	static struct lock_class_key __key;			\
--								\
- 	rt_mutex_base_init(&(slock)->lock);			\
--	__rt_spin_lock_init(slock, #slock, &__key, false);	\
-+	__rt_spin_lock_init(slock, name, key, percpu);		\
- } while (0)
- 
--#define local_spin_lock_init(slock)				\
-+#define _spin_lock_init(slock, percpu)				\
- do {								\
- 	static struct lock_class_key __key;			\
--								\
--	rt_mutex_base_init(&(slock)->lock);			\
--	__rt_spin_lock_init(slock, #slock, &__key, true);	\
-+	__spin_lock_init(slock, #slock, &__key, percpu);	\
- } while (0)
- 
-+#define spin_lock_init(slock)		_spin_lock_init(slock, false)
-+#define local_spin_lock_init(slock)	_spin_lock_init(slock, true)
-+
- extern void rt_spin_lock(spinlock_t *lock) __acquires(lock);
- extern void rt_spin_lock_nested(spinlock_t *lock, int subclass)	__acquires(lock);
- extern void rt_spin_lock_nest_lock(spinlock_t *lock, struct lockdep_map *nest_lock) __acquires(lock);
-diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-index acc1376b833c7..92f7fc4184253 100644
---- a/rust/helpers/spinlock.c
-+++ b/rust/helpers/spinlock.c
-@@ -7,10 +7,14 @@ void rust_helper___spin_lock_init(spinlock_t *lock, const char *name,
- 				  struct lock_class_key *key)
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 1e1c06fdf2064..bb449efac2f4e 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -3101,6 +3101,8 @@ static __maybe_unused int it6505_bridge_suspend(struct device *dev)
  {
- #ifdef CONFIG_DEBUG_SPINLOCK
-+# if defined(CONFIG_PREEMPT_RT)
-+	__spin_lock_init(lock, name, key, false);
-+# else /*!CONFIG_PREEMPT_RT */
- 	__raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
--#else
-+# endif /* CONFIG_PREEMPT_RT */
-+#else /* !CONFIG_DEBUG_SPINLOCK */
- 	spin_lock_init(lock);
--#endif
-+#endif /* CONFIG_DEBUG_SPINLOCK */
+ 	struct it6505 *it6505 = dev_get_drvdata(dev);
+ 
++	it6505_remove_edid(it6505);
++
+ 	return it6505_poweroff(it6505);
  }
  
- void rust_helper_spin_lock(spinlock_t *lock)
 -- 
 2.43.0
 
