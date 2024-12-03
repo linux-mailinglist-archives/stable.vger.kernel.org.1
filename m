@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B4B9E2871
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:00:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C17AA9E23D8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 907BBB83ACB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41238B3C5F5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917CD1F7550;
-	Tue,  3 Dec 2024 14:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCA51F7585;
+	Tue,  3 Dec 2024 14:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJtF+iqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDbnnC/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460411F76B1;
-	Tue,  3 Dec 2024 14:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3991F4283;
+	Tue,  3 Dec 2024 14:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237861; cv=none; b=M96sCQ0PjkdKg7W+Azpqb7zhZtdfOuFu+dMDtTa61hogcK6owFfsdemKSCluVmlL8C8M8p3sx6jHLffdeUdkAMP+X0ai2srGALLhPq1W20WjXkI00W7mL0Ax1PkDUm4E1e4Va+UMMGMoxpEoLDddGUy432JRtPDQjVdFOLlEfWA=
+	t=1733237871; cv=none; b=bxk0c1nXIlNIlJ1t/01DlsH47hlusiFbU/U9fo+O+ceT0OMVZOnrgCt5GsxzTkCXbI1aSiNl/Eg2yrrGUh46yRZrKU8TghHVsKPFrsJ6Qe7gTAQ7M1BGfJ0/0j3JI61Dampso/3FFwNscBaRULUQQKxEQug9u/JkgF78OeRhz/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237861; c=relaxed/simple;
-	bh=QWR9z0dsQhz/+TybN7in/G2YbwQ3sZpvLa38XNlY4gA=;
+	s=arc-20240116; t=1733237871; c=relaxed/simple;
+	bh=DzkyBjfzY1D0GLhdWadJrm9ljIbkWKkW0Rlh25Uw7lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZObcVZw/dFq+WxaVzuwHHhLJ3W8IX+jBxJ8F0iRs67BAHLxQ1o/eWDlVpOGULQ3t4YEq02cty+9SzxZUMJerb8G8oRjyq1GEq4/92BWvJ/3qfxrkh9HZENovXHho54tILRnhr4WbJOV7yf/YnVQOQ0Kvq4uO1SbutK7WhbiQylk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJtF+iqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A847BC4CECF;
-	Tue,  3 Dec 2024 14:57:40 +0000 (UTC)
+	 MIME-Version; b=u5uDVV733TSxnElZtpMStz5eLofH0vLjA2kI48vDEIkOFXKMAY3p50rZWHVXhFdt50kfPZuwzqWxkkUuybComG66RVBd0IiV0b5UNhhDju8nCokGcbg2Xsa6l5O+iOy+x5UF8ZSOu56ksPnyrRvNiEct1bRmU/ocheJGxJieJas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDbnnC/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8931AC4CECF;
+	Tue,  3 Dec 2024 14:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237861;
-	bh=QWR9z0dsQhz/+TybN7in/G2YbwQ3sZpvLa38XNlY4gA=;
+	s=korg; t=1733237871;
+	bh=DzkyBjfzY1D0GLhdWadJrm9ljIbkWKkW0Rlh25Uw7lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJtF+iqwo7cu5vzhNIzZ/wig++AHpr/bSt0bMynTTEP4klL6eZc7LvJl9OJ+1qSEh
-	 h8rWSySk98WBGe2ROcwInaSggDUay4U60QcFP65WZJAm4w+FhiTJFCJ1VHjR1XeOri
-	 hnI1OsNiZGwggZuAjVYWPjKvO9EAcURHMdg1Gecg=
+	b=FDbnnC/6cBpOulGASa7jdj8JPb/+iMPh/fHEcflvaMJpjeCRAJhe+Jlufm+T/9y/8
+	 gAQ0liwjcFQJOc2QAoabbaYZNpHZ1xPcxDAmqUpFNdWg3lZ0MC7qdCyIrunIQnXz5p
+	 1kPkEdOkTBYijpTGgSYDoUvWe7IPVVN4FPMGpotc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Danny Tsen <dtsen@linux.ibm.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 089/817] crypto: caam - Fix the pointer passed to caam_qi_shutdown()
-Date: Tue,  3 Dec 2024 15:34:21 +0100
-Message-ID: <20241203143959.174989918@linuxfoundation.org>
+Subject: [PATCH 6.11 092/817] crypto: powerpc/p10-aes-gcm - Add dependency on CRYPTO_SIMDand re-enable CRYPTO_AES_GCM_P10
+Date: Tue,  3 Dec 2024 15:34:24 +0100
+Message-ID: <20241203143959.293289937@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,38 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Danny Tsen <dtsen@linux.ibm.com>
 
-[ Upstream commit ad980b04f51f7fb503530bd1cb328ba5e75a250e ]
+[ Upstream commit 8b6c1e466eecab70c2ed686f636d56eda19f4cd6 ]
 
-The type of the last parameter given to devm_add_action_or_reset() is
-"struct caam_drv_private *", but in caam_qi_shutdown(), it is casted to
-"struct device *".
+Added CRYPTO_SIMD for CRYPTO_AES_GCM_P10.
 
-Pass the correct parameter to devm_add_action_or_reset() so that the
-resources are released as expected.
+Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
 
-Fixes: f414de2e2fff ("crypto: caam - use devres to de-initialize QI")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/qi.c | 2 +-
+ arch/powerpc/crypto/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/caam/qi.c b/drivers/crypto/caam/qi.c
-index ba8fb5d8a7b26..dcb9069a254c7 100644
---- a/drivers/crypto/caam/qi.c
-+++ b/drivers/crypto/caam/qi.c
-@@ -793,7 +793,7 @@ int caam_qi_init(struct platform_device *caam_pdev)
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 46a4c85e85e24..951a437264611 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -107,12 +107,12 @@ config CRYPTO_AES_PPC_SPE
  
- 	caam_debugfs_qi_init(ctrlpriv);
- 
--	err = devm_add_action_or_reset(qidev, caam_qi_shutdown, ctrlpriv);
-+	err = devm_add_action_or_reset(qidev, caam_qi_shutdown, qidev);
- 	if (err)
- 		goto fail2;
- 
+ config CRYPTO_AES_GCM_P10
+ 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+-	depends on BROKEN
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_AEAD
+ 	select CRYPTO_SKCIPHER
++	select CRYPTO_SIMD
+ 	help
+ 	  AEAD cipher: AES cipher algorithms (FIPS-197)
+ 	  GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
 -- 
 2.43.0
 
