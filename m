@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-96591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEDE89E20B0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B2A9E20A1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2FD4B84CDF
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D0CF165CE4
 	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4962D1F6698;
-	Tue,  3 Dec 2024 15:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B1D1F7547;
+	Tue,  3 Dec 2024 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CugzjO6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kzvb2gxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E1F1DA4E;
-	Tue,  3 Dec 2024 15:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8401DA4E;
+	Tue,  3 Dec 2024 15:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238018; cv=none; b=qstMrWIwTTtsKGfQOUlr/IlTLz/jXFK5NLgHFtkrvqkboe6lruic8iKQcwzAw9V+yF6QT8bowKFeDJG40PCAe+6H2U2fsagC0/OhmithcvI8hp3j4tyrvpHBGo5vdhu2Y7zUB/nsqX1UtZKEKB3y4i+y+5tp+SdcxpyzVFUFW0U=
+	t=1733238024; cv=none; b=CBPPyUMiM+hqJvT53718A5mM9CIScwu3nlMPoQo1i9pjVucWJhANdXikzzyAJKypnk8Xc5mVOcuaK7TpJ/qPhHXcrD0nDqHorGtBJRm1fmhle1BD36kWq3JTjlj2hWo8RsPrwpdHIN1bDYrnVgkgj9OM9TIiLr+FkYhRsay+kao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238018; c=relaxed/simple;
-	bh=6mWMaXo83ANg7XNK7cjO19cKZ1xfrfdACqrHv/oL0os=;
+	s=arc-20240116; t=1733238024; c=relaxed/simple;
+	bh=UyLc1KWnJOr8gc/r5FHWTli30Xvx3zdoBeaFhFTtJfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ocItknDEUX5GaJRNIEfcF+qAo+vztz1jy8SiI/gRAa1rGryYQClXh1Ru8CDFcehl3VSDWFBiYIJFMOX4sRJroLJo6+DgNMWDT/FyFQkmtlPr8m1hA2R9kE++nmmLeaUNz2c5vk702z078nmrh89iEYm7ifKlkINImjz2slNKtS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CugzjO6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7E6C4CECF;
-	Tue,  3 Dec 2024 15:00:16 +0000 (UTC)
+	 MIME-Version; b=SG+6pGjFx5kbNd8v61NTKfZyIkSjKIKPlMS2+/yc75N5V9dSxzGG8fqYvPZXeeh4CsKvorOFtBTnjD+E9f3feZYh/SciyCe8ixH5TWiIhzpU94tkVTmq8i8ndIka7IczR4T75fRJuBRG9CeE8o8jrGr8iBNCTWFlK+sUOV3YOow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kzvb2gxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E396AC4CECF;
+	Tue,  3 Dec 2024 15:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238017;
-	bh=6mWMaXo83ANg7XNK7cjO19cKZ1xfrfdACqrHv/oL0os=;
+	s=korg; t=1733238024;
+	bh=UyLc1KWnJOr8gc/r5FHWTli30Xvx3zdoBeaFhFTtJfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CugzjO6tqNVduTA43l4veDsZvY8coD4LVoJRS52lpbF5j4o+s4FJzoM3favy8jOzj
-	 4nwXVfRa8eF6U/Rtx+a6hyXQnsS23u+bQl3mCq/B96VSYFst6NMuuR0tlpO3hzTOvW
-	 oYfg4z4suOWAoUoYQPLt0JA+0DZcJhcWQWK3CiFM=
+	b=Kzvb2gxTtAuyzIqdpvi0T4hTvD1R04B5byjJWZIRYvFE7jN5RhbvvjBijXlFJSEKg
+	 ltNgRqAlLY1n+sm6sTE78Cwigucbcko3H94R1FTQSqjurNLkGS1FrDzNOh8fMfYKFH
+	 gDoAmqWd5ZolqCOzIQRuL9qlAra+mZLozd/2wrUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Priyanka Singh <priyanka.singh@nxp.com>,
-	Li Yang <leoyang.li@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Diego Garcia Rodriguez <diego.garcia.rodriguez@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 104/817] EDAC/fsl_ddr: Fix bad bit shift operations
-Date: Tue,  3 Dec 2024 15:34:36 +0100
-Message-ID: <20241203143959.767964107@linuxfoundation.org>
+Subject: [PATCH 6.11 106/817] EDAC/{skx_common,i10nm}: Fix incorrect far-memory error source indicator
+Date: Tue,  3 Dec 2024 15:34:38 +0100
+Message-ID: <20241203143959.846732811@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,73 +67,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Priyanka Singh <priyanka.singh@nxp.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 9ec22ac4fe766c6abba845290d5139a3fbe0153b ]
+[ Upstream commit a36667037a0c0e36c59407f8ae636295390239a5 ]
 
-Fix undefined behavior caused by left-shifting a negative value in the
-expression:
+The Granite Rapids CPUs with Flat2LM memory configurations may
+mistakenly report near-memory errors as far-memory errors, resulting
+in the invalid decoded ADXL results:
 
-    cap_high ^ (1 << (bad_data_bit - 32))
+  EDAC skx: Bad imc -1
 
-The variable bad_data_bit ranges from 0 to 63. When it is less than 32,
-bad_data_bit - 32 becomes negative, and left-shifting by a negative
-value in C is undefined behavior.
+Fix this incorrect far-memory error source indicator by prefetching the
+decoded far-memory controller ID, and adjust the error source indicator
+to near-memory if the far-memory controller ID is invalid.
 
-Fix this by combining cap_high and cap_low into a 64-bit variable.
-
-  [ bp: Massage commit message, simplify error bits handling. ]
-
-Fixes: ea2eb9a8b620 ("EDAC, fsl-ddr: Separate FSL DDR driver from MPC85xx")
-Signed-off-by: Priyanka Singh <priyanka.singh@nxp.com>
-Signed-off-by: Li Yang <leoyang.li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241016-imx95_edac-v3-3-86ae6fc2756a@nxp.com
+Fixes: ba987eaaabf9 ("EDAC/i10nm: Add Intel Granite Rapids server support")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Diego Garcia Rodriguez <diego.garcia.rodriguez@intel.com>
+Link: https://lore.kernel.org/r/20241015072236.24543-3-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/fsl_ddr_edac.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/edac/i10nm_base.c |  1 +
+ drivers/edac/skx_common.c | 23 +++++++++++++++++++++++
+ drivers/edac/skx_common.h |  1 +
+ 3 files changed, 25 insertions(+)
 
-diff --git a/drivers/edac/fsl_ddr_edac.c b/drivers/edac/fsl_ddr_edac.c
-index d148d262d0d4d..339d94b3d04c7 100644
---- a/drivers/edac/fsl_ddr_edac.c
-+++ b/drivers/edac/fsl_ddr_edac.c
-@@ -328,21 +328,25 @@ static void fsl_mc_check(struct mem_ctl_info *mci)
- 	 * TODO: Add support for 32-bit wide buses
- 	 */
- 	if ((err_detect & DDR_EDE_SBE) && (bus_width == 64)) {
-+		u64 cap = (u64)cap_high << 32 | cap_low;
-+		u32 s = syndrome;
-+
- 		sbe_ecc_decode(cap_high, cap_low, syndrome,
- 				&bad_data_bit, &bad_ecc_bit);
+diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
+index 24dd896d9a9d5..4e98fe16f0913 100644
+--- a/drivers/edac/i10nm_base.c
++++ b/drivers/edac/i10nm_base.c
+@@ -1089,6 +1089,7 @@ static int __init i10nm_init(void)
+ 		return -ENODEV;
  
--		if (bad_data_bit != -1)
--			fsl_mc_printk(mci, KERN_ERR,
--				"Faulty Data bit: %d\n", bad_data_bit);
--		if (bad_ecc_bit != -1)
--			fsl_mc_printk(mci, KERN_ERR,
--				"Faulty ECC bit: %d\n", bad_ecc_bit);
-+		if (bad_data_bit >= 0) {
-+			fsl_mc_printk(mci, KERN_ERR, "Faulty Data bit: %d\n", bad_data_bit);
-+			cap ^= 1ULL << bad_data_bit;
-+		}
-+
-+		if (bad_ecc_bit >= 0) {
-+			fsl_mc_printk(mci, KERN_ERR, "Faulty ECC bit: %d\n", bad_ecc_bit);
-+			s ^= 1 << bad_ecc_bit;
-+		}
+ 	cfg = (struct res_config *)id->driver_data;
++	skx_set_res_cfg(cfg);
+ 	res_cfg = cfg;
  
- 		fsl_mc_printk(mci, KERN_ERR,
- 			"Expected Data / ECC:\t%#8.8x_%08x / %#2.2x\n",
--			cap_high ^ (1 << (bad_data_bit - 32)),
--			cap_low ^ (1 << bad_data_bit),
--			syndrome ^ (1 << bad_ecc_bit));
-+			upper_32_bits(cap), lower_32_bits(cap), s);
+ 	rc = skx_get_hi_lo(0x09a2, off, &tolm, &tohm);
+diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
+index 42266120ef427..0b8aaf5f77d9f 100644
+--- a/drivers/edac/skx_common.c
++++ b/drivers/edac/skx_common.c
+@@ -47,6 +47,7 @@ static skx_show_retry_log_f skx_show_retry_rd_err_log;
+ static u64 skx_tolm, skx_tohm;
+ static LIST_HEAD(dev_edac_list);
+ static bool skx_mem_cfg_2lm;
++static struct res_config *skx_res_cfg;
+ 
+ int skx_adxl_get(void)
+ {
+@@ -135,6 +136,22 @@ static bool skx_adxl_decode(struct decoded_addr *res, enum error_source err_src)
+ 		return false;
  	}
  
- 	fsl_mc_printk(mci, KERN_ERR,
++	/*
++	 * GNR with a Flat2LM memory configuration may mistakenly classify
++	 * a near-memory error(DDR5) as a far-memory error(CXL), resulting
++	 * in the incorrect selection of decoded ADXL components.
++	 * To address this, prefetch the decoded far-memory controller ID
++	 * and adjust the error source to near-memory if the far-memory
++	 * controller ID is invalid.
++	 */
++	if (skx_res_cfg && skx_res_cfg->type == GNR && err_src == ERR_SRC_2LM_FM) {
++		res->imc = (int)adxl_values[component_indices[INDEX_MEMCTRL]];
++		if (res->imc == -1) {
++			err_src = ERR_SRC_2LM_NM;
++			edac_dbg(0, "Adjust the error source to near-memory.\n");
++		}
++	}
++
+ 	res->socket  = (int)adxl_values[component_indices[INDEX_SOCKET]];
+ 	if (err_src == ERR_SRC_2LM_NM) {
+ 		res->imc     = (adxl_nm_bitmap & BIT_NM_MEMCTRL) ?
+@@ -191,6 +208,12 @@ void skx_set_mem_cfg(bool mem_cfg_2lm)
+ }
+ EXPORT_SYMBOL_GPL(skx_set_mem_cfg);
+ 
++void skx_set_res_cfg(struct res_config *cfg)
++{
++	skx_res_cfg = cfg;
++}
++EXPORT_SYMBOL_GPL(skx_set_res_cfg);
++
+ void skx_set_decode(skx_decode_f decode, skx_show_retry_log_f show_retry_log)
+ {
+ 	driver_decode = decode;
+diff --git a/drivers/edac/skx_common.h b/drivers/edac/skx_common.h
+index 58b8ac62becf5..5a7111791c109 100644
+--- a/drivers/edac/skx_common.h
++++ b/drivers/edac/skx_common.h
+@@ -241,6 +241,7 @@ int skx_adxl_get(void);
+ void skx_adxl_put(void);
+ void skx_set_decode(skx_decode_f decode, skx_show_retry_log_f show_retry_log);
+ void skx_set_mem_cfg(bool mem_cfg_2lm);
++void skx_set_res_cfg(struct res_config *cfg);
+ 
+ int skx_get_src_id(struct skx_dev *d, int off, u8 *id);
+ int skx_get_node_id(struct skx_dev *d, u8 *id);
 -- 
 2.43.0
 
