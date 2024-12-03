@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9AA9E20EE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308409E20C0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 833EF166217
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA61228668F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B821F669E;
-	Tue,  3 Dec 2024 15:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F6D1F6696;
+	Tue,  3 Dec 2024 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+4AlJN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLQRkDaQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EEE1DA4E;
-	Tue,  3 Dec 2024 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8CC1DA4E;
+	Tue,  3 Dec 2024 15:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238195; cv=none; b=j/csgNHf9U1q8ha/LEs2KTvfB/kY9pnjaDQ1DFA5icCnDX8yttdOwaWh7PrdkBWKltvRoa1RvEtF2cSYe9LohwEm4QxxqascmLF4jAWH/dadg6KDMZt6B0+6ehpee2Fjc19tofgTP3XJHKnVr5CJQ6OPaeIPOuFQc5pHrmplIQc=
+	t=1733238202; cv=none; b=neCj0jYPFvau8GB4T1JjTLLgZa9qjk+/led3eqHhedGKNWGJ4F1dITipelSkey6eDc4ioOIe+ykTVcvFmluc1IWx/tCI30xBmPu07928+cyBuY3w6eh2/XdZdB8UFOMJH0vOGOwnJkoeYhls1mPDFZgpB8RjFqWCBzWdHDRIDv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238195; c=relaxed/simple;
-	bh=C3peOVNc0EkB97m/okxQ77xZcb3/cKDpDCI75bJjKhg=;
+	s=arc-20240116; t=1733238202; c=relaxed/simple;
+	bh=EvZN41rEKYFxwlyI+8HdS/MHeMeSK1LPS57TZC2q5QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDbq7uXcmBIlzivilIQkpxR+5ow4I2ATTgg7Y+M06TvQVGRYHYwnQdqqZ/PjACT+AsTi8rBngUnuxwOOwCGKaUegl7ZVULKqmP9XQF81s8znEYODTxDw/7EzCFBFgXSOIYOeW/F32VYqGu+Ys1S61OMtvOKSzh3PrjJmKANZN8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+4AlJN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504F3C4CECF;
-	Tue,  3 Dec 2024 15:03:15 +0000 (UTC)
+	 MIME-Version; b=QJqDGDZ1oTrV0F3rzHI8Ec11eX5oY1tUtBNYDfbA9IRcWOvj6SSjAc67HVJ5Un3Ubrc4F7fovJpSPCayjOxLvKBi8QgLmx7KBLiMFBa3v+/3EilBHz1DM5H+/3UTfaaVr+O5SbAmZYRxqvdeL70UavrCHeVdRVHl2TmrP3MuUhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLQRkDaQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8F0C4CECF;
+	Tue,  3 Dec 2024 15:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238195;
-	bh=C3peOVNc0EkB97m/okxQ77xZcb3/cKDpDCI75bJjKhg=;
+	s=korg; t=1733238201;
+	bh=EvZN41rEKYFxwlyI+8HdS/MHeMeSK1LPS57TZC2q5QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+4AlJN8DEB+zX4V6G0EhXzNkBNtk1KJqKI7u3JSc/y/mpJBblJPb0hpcgu2tl/Qo
-	 LqnjhsB2sfYQfxsy5AyE1p8ntIhMwsTkjZMUfdHYS0z0X/atHnv+l5YWn97ot/8qJL
-	 PhA0aN8bHWlSqB6E+w0aO4IKiY2oFPeFLVm4a6KY=
+	b=pLQRkDaQcPo6YqPfzYaXR3oS9Hilzrmy4CnNcgBt4bEjKhpVQOabTHvxJorBJg3mz
+	 exSn+Qr8n1SCsWOCp2s7L7Uap0we9aTce2tZ2msG74QJAZ6OwY8E/Yhtda6WtRDKoC
+	 QrLZT9SfmVYBXrierx0d6sCDL9nUqGYO19WNw/5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 194/817] regmap: irq: Set lockdep class for hierarchical IRQ domains
-Date: Tue,  3 Dec 2024 15:36:06 +0100
-Message-ID: <20241203144003.312362986@linuxfoundation.org>
+Subject: [PATCH 6.11 196/817] arm64: dts: imx8mn-tqma8mqnl-mba8mx-usbot: fix coexistence of output-low and output-high in GPIO
+Date: Tue,  3 Dec 2024 15:36:08 +0100
+Message-ID: <20241203144003.389861066@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,83 +67,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 953e549471cabc9d4980f1da2e9fa79f4c23da06 ]
+[ Upstream commit c771d311b1901cd4679c8fc7f89a882fe07cf4a0 ]
 
-Lockdep gives a false positive splat as it can't distinguish the lock
-which is taken by different IRQ descriptors from different IRQ chips
-that are organized in a way of a hierarchy:
+Fix the issue where both 'output-low' and 'output-high' exist under GPIO
+hog nodes  (rst_usb_hub_hog and sel_usb_hub_hog) when applying device
+tree overlays. Since /delete-property/ is not supported in the overlays,
+setting 'output-low' results in both properties being present. The
+workaround is to disable these hogs and create new ones with 'output-low'
+as needed.
 
-   ======================================================
-   WARNING: possible circular locking dependency detected
-   6.12.0-rc5-next-20241101-00148-g9fabf8160b53 #562 Tainted: G        W
-   ------------------------------------------------------
-   modprobe/141 is trying to acquire lock:
-   ffff899446947868 (intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock){+.+.}-{4:4}, at: regmap_update_bits_base+0x33/0x90
+Fix below CHECK_DTBS warning:
+arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtb: sel-usb-hub-hog:
+   {'output-low': True, 'gpio-hog': True, 'gpios': [[1, 0]], 'output-high': True, 'phandle': 108, '$nodename': ['sel-usb-hub-hog']}
+       is valid under each of {'required': ['output-low']}, {'required': ['output-high']
 
-   but task is already holding lock:
-   ffff899446947c68 (&d->lock){+.+.}-{4:4}, at: __setup_irq+0x682/0x790
-
-   which lock already depends on the new lock.
-
-   -> #3 (&d->lock){+.+.}-{4:4}:
-   -> #2 (&desc->request_mutex){+.+.}-{4:4}:
-   -> #1 (ipclock){+.+.}-{4:4}:
-   -> #0 (intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock){+.+.}-{4:4}:
-
-   Chain exists of:
-     intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock --> &desc->request_mutex --> &d->lock
-
-    Possible unsafe locking scenario:
-
-          CPU0                    CPU1
-          ----                    ----
-     lock(&d->lock);
-                                  lock(&desc->request_mutex);
-                                  lock(&d->lock);
-     lock(intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock);
-
-    *** DEADLOCK ***
-
-   3 locks held by modprobe/141:
-    #0: ffff8994419368f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xf6/0x250
-    #1: ffff89944690b250 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq+0x1a2/0x790
-    #2: ffff899446947c68 (&d->lock){+.+.}-{4:4}, at: __setup_irq+0x682/0x790
-
-Set a lockdep class when we map the IRQ so that it doesn't warn about
-a lockdep bug that doesn't exist.
-
-Fixes: 4af8be67fd99 ("regmap: Convert regmap_irq to use irq_domain")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20241101165553.4055617-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3f6fc30abebc ("arm64: dts: imx8mn: tqma8mqnl-mba8mx: Add USB DR overlay")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../imx8mn-tqma8mqnl-mba8mx-usbotg.dtso       | 29 +++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
-index d3ec1345b5b53..250b2cc1e5d87 100644
---- a/drivers/base/regmap/regmap-irq.c
-+++ b/drivers/base/regmap/regmap-irq.c
-@@ -514,12 +514,16 @@ static irqreturn_t regmap_irq_thread(int irq, void *d)
- 		return IRQ_NONE;
- }
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
+index 96db07fc9bece..1f2a0fe70a0a2 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
++++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
+@@ -29,12 +29,37 @@ usb_dr_connector: endpoint {
+ 	};
+ };
  
-+static struct lock_class_key regmap_irq_lock_class;
-+static struct lock_class_key regmap_irq_request_class;
++/*
++ * rst_usb_hub_hog and sel_usb_hub_hog have property 'output-high',
++ * dt overlay don't support /delete-property/. Both 'output-low' and
++ * 'output-high' will be exist under hog nodes if overlay file set
++ * 'output-low'. Workaround is disable these hog and create new hog with
++ * 'output-low'.
++ */
 +
- static int regmap_irq_map(struct irq_domain *h, unsigned int virq,
- 			  irq_hw_number_t hw)
- {
- 	struct regmap_irq_chip_data *data = h->host_data;
+ &rst_usb_hub_hog {
+-	output-low;
++	status = "disabled";
++};
++
++&expander0 {
++	rst-usb-low-hub-hog {
++		gpio-hog;
++		gpios = <13 0>;
++		output-low;
++		line-name = "RST_USB_HUB#";
++	};
+ };
  
- 	irq_set_chip_data(virq, data);
-+	irq_set_lockdep_class(virq, &regmap_irq_lock_class, &regmap_irq_request_class);
- 	irq_set_chip(virq, &data->irq_chip);
- 	irq_set_nested_thread(virq, 1);
- 	irq_set_parent(virq, data->irq);
+ &sel_usb_hub_hog {
+-	output-low;
++	status = "disabled";
++};
++
++&gpio2 {
++	sel-usb-low-hub-hog {
++		gpio-hog;
++		gpios = <1 GPIO_ACTIVE_HIGH>;
++		output-low;
++	};
+ };
+ 
+ &usbotg1 {
 -- 
 2.43.0
 
