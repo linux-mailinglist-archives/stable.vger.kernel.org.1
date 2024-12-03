@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-96606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C0C9E2939
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:27:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A990F9E2AAD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7D17B630F1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06C8EBC5224
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A321F706C;
-	Tue,  3 Dec 2024 15:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4FE20B1E1;
+	Tue,  3 Dec 2024 15:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDzE9sqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kwkRie9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DF633FE;
-	Tue,  3 Dec 2024 15:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4823E20ADFF;
+	Tue,  3 Dec 2024 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238067; cv=none; b=KofNsUlsLIG36XcEXlN139PJx+m3tzVefNQIScTfFVOEk8Bf2RI+9fYRLnP4XaQB6xTqpfYM4NPF2xr+OOyGhmoSAQDpetAWNH/uVw+bQCRrokD3mH3ocDRXUC1iwNO1HVpkGrKWy8zuH1aqviYS2Lq8/Kv7QW/htG0sSE+ZJd0=
+	t=1733240059; cv=none; b=SpqON+ChfxB1XqYMokyXr7SiEDFral8cmL+kdcBBIBA7EaSML/cvy9ZXKF1QUfxNKYM8msWiCWu9Orje9KIW9JN658RT6bU6qE/92V58UVCTO6Xi2ODyAGqJtjvy39lklcwiyNeb5a7c7IrrtA0ADM5Ot2M6YtBxnGXzgsRBipQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238067; c=relaxed/simple;
-	bh=owJY75CRqf06rHN05ueIbosMqrZuFBNRxJAaznAqx/s=;
+	s=arc-20240116; t=1733240059; c=relaxed/simple;
+	bh=gK2cAcKu57kF9+NHEHxVTly0BgXhtalABh/zVpetF04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uH20CmejYCUkR4DWT1yVA6HphmoLDbBajzrstXYk3DJiq36/F2XzLxl5O/2SkpoMRqShMoojDZGtwNbVLxB5NXz1dXvhcS3fhoecbGkveitMKfeg56zPkQcvHc3iS7/m10J6nG61tw4VoEPyPAinRnTunTJc/9lpHg8gtw9cS6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDzE9sqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8986C4CECF;
-	Tue,  3 Dec 2024 15:01:06 +0000 (UTC)
+	 MIME-Version; b=qn+FGn1MUbZc/P859cxJfX+zoOAF4vTzM5sSodQIL2o/wG+hdXOmUaNgDI8FTF8CqUxJZSPCqDO/NDnWH+8Ie4lUpugvJ+eS4kiFH4Jdjx79ClZ49lmwH0GAvVB6WIEhqAQvCEIhoZzJB0x2doY+MYtGIzdulphGPQQvhyg/l3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kwkRie9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77F3AC4CECF;
+	Tue,  3 Dec 2024 15:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238067;
-	bh=owJY75CRqf06rHN05ueIbosMqrZuFBNRxJAaznAqx/s=;
+	s=korg; t=1733240058;
+	bh=gK2cAcKu57kF9+NHEHxVTly0BgXhtalABh/zVpetF04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDzE9sqJnQ+VqutGmqKfmsMAwnmNwBS49hceg6RuOgMw3J0u3aCgG7RQd6QENdWPU
-	 duCwIHGBC0mt8DufW0SkGf+KL0SYbk4QQjELJABh8vijU3QIYb7DWfIWTSAUzYUvoO
-	 odPVBoDnOoq8bboscMrRal9AVMuv9uFmynlGCQI8=
+	b=2kwkRie9ZsSvbc1qYPiQ/MbCIIux8xaRPI9HMW7El17JgOESvpK5eB9cMfcE7I6sK
+	 /OvfquDXRnJnAmWpcBy/jjtPIVN56Fl/rrWDTbydY5HjYSwohHWzITc06f9UUoQkmg
+	 cUf9taXaYSFz8wURaah99e8C0jm6ifk7XQm2bbHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 151/817] soc: qcom: geni-se: fix array underflow in geni_se_clk_tbl_get()
-Date: Tue,  3 Dec 2024 15:35:23 +0100
-Message-ID: <20241203144001.620275524@linuxfoundation.org>
+Subject: [PATCH 6.12 001/826] MAINTAINERS: appoint myself the XFS maintainer for 6.12 LTS
+Date: Tue,  3 Dec 2024 15:35:28 +0100
+Message-ID: <20241203144743.497996068@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 78261cb08f06c93d362cab5c5034bf5899bc7552 ]
+I'm appointing myself to be responsible for getting after people to
+submit their upstream bug fixes with the appropriate Fixes tags and to
+cc stable; to find whatever slips through the cracks; and to keep an eye
+on the automatic QA of all that stuff.
 
-This loop is supposed to break if the frequency returned from
-clk_round_rate() is the same as on the previous iteration.  However,
-that check doesn't make sense on the first iteration through the loop.
-It leads to reading before the start of these->clk_perf_tbl[] array.
-
-Fixes: eddac5af0654 ("soc: qcom: Add GENI based QUP Wrapper driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/8cd12678-f44a-4b16-a579-c8f11175ee8c@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.12
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qcom-geni-se.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ MAINTAINERS | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
-index 2e8f24d5da80b..4cb959106efa9 100644
---- a/drivers/soc/qcom/qcom-geni-se.c
-+++ b/drivers/soc/qcom/qcom-geni-se.c
-@@ -585,7 +585,8 @@ int geni_se_clk_tbl_get(struct geni_se *se, unsigned long **tbl)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index b878ddc99f94e..23d89f2a3008e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25358,8 +25358,7 @@ F:	include/xen/arm/swiotlb-xen.h
+ F:	include/xen/swiotlb-xen.h
  
- 	for (i = 0; i < MAX_CLK_PERF_LEVEL; i++) {
- 		freq = clk_round_rate(se->clk, freq + 1);
--		if (freq <= 0 || freq == se->clk_perf_tbl[i - 1])
-+		if (freq <= 0 ||
-+		    (i > 0 && freq == se->clk_perf_tbl[i - 1]))
- 			break;
- 		se->clk_perf_tbl[i] = freq;
- 	}
+ XFS FILESYSTEM
+-M:	Carlos Maiolino <cem@kernel.org>
+-R:	Darrick J. Wong <djwong@kernel.org>
++M:	Darrick J. Wong <djwong@kernel.org>
+ L:	linux-xfs@vger.kernel.org
+ S:	Supported
+ W:	http://xfs.org/
 -- 
 2.43.0
 
