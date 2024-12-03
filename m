@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 971229E261E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3279B9E2344
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A46E288D7F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 043A3161D38
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2671F76BF;
-	Tue,  3 Dec 2024 16:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513491F75A4;
+	Tue,  3 Dec 2024 15:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrNrwsBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ve9SbF4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD07A1F12F7;
-	Tue,  3 Dec 2024 16:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE4D1F7561;
+	Tue,  3 Dec 2024 15:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242142; cv=none; b=eIR79XEvGxsLSY42eS+O/npOPYlqXWgsNEnvRd/TEub8WaFOaGwkhuqwfWEZ8od4Sk1ARaJ2KJQHUpCFk74SBl80u6Y1dfUjRlclyUWAYyAvdshyWJFoxTpqUyj7Hin+mbkPfxI9QLoLvW2ugwV1Da26vFW97JEiz5hKogqgSTQ=
+	t=1733239786; cv=none; b=A47JE9WqOqNIykZ266sG5J3oN/dHiJQjyrXwJwFiF4SzXmpT/r+WuCWNylgdCz0D6Mqu8W4sgaLLYXSS4RRWpsaAmUJOF58XOd5IUcOUnts4PrkD4vsi9z99c8W/7ghYXx2NSR0DcquEqgOzRmoF6zlaXEUvDNkIR3DJ3L4Q/wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242142; c=relaxed/simple;
-	bh=Eo/kUvmhHG7DeT4kh/PRIfA4pasyiCzsFyTx6qWfwWs=;
+	s=arc-20240116; t=1733239786; c=relaxed/simple;
+	bh=VieyEjkqRe5/uCiX0HHCQ0ISjexRBYyrHwQBxSoHFUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBBqDvvHOHaqw3H+loLM1/RKX8wMMRGDFu9VwE0abBPmJArFWYdcJh2ZJlN2d4QbauTJwgCHLHkBpU2uXjKoPaFT3RCZpDLmP7qYOdm5q5ZzWIavSoXr8bnonNkvk4HRPlgbUZOD6uBizG2KxYfXLy5V1b5kZ7oG6tZ1vwti4WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrNrwsBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6E2C4CECF;
-	Tue,  3 Dec 2024 16:09:01 +0000 (UTC)
+	 MIME-Version; b=PhXWeEhWe2HjR/ilalyTRx4b9sV1MmWswCfM9WEqteDYRnmYQQhV8nML0Ra8v7w7djejEAcyLefK502goiEfyWUDmPaB555QjBpVJ0xgGSygFqWMoVmOvpxo9tFOik8wtfma0k8ZIVG31IEGkJvgsKjEyn8c/51WbgozUGS5V7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ve9SbF4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AABCC4CECF;
+	Tue,  3 Dec 2024 15:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242142;
-	bh=Eo/kUvmhHG7DeT4kh/PRIfA4pasyiCzsFyTx6qWfwWs=;
+	s=korg; t=1733239785;
+	bh=VieyEjkqRe5/uCiX0HHCQ0ISjexRBYyrHwQBxSoHFUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrNrwsBp7d3qVIl+edAgivEDwe9bLB2a84m8oa7LwArh/Vf+SOEozpqHeUqY3izP7
-	 ocsP/YS563B13KyRa4bCtRsW4gBnM2S479GhUD3HJZED/RrS7dwibNkmM/Lmtp4h9E
-	 NnKSHWe6AEYhQMdWR5dqi4nlDt4xS1miVHYRX/Xo=
+	b=Ve9SbF4HfOqlwIdQq6xfkg5tBJ8MsW0402aEFlPiKmhKWNY2b9frP8pg5jlVOxQec
+	 hw5L/1nEjbauuzy1Goyo6RmrSaXWFPgEA3LT5uofbLuv/FT3WaJAfA0jNpvqSv031G
+	 bLMfi+hjSzubAV+52CdqLjX1uR1kOiiKIyNCMvJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Shravya KN <shravya.k-n@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 578/826] bnxt_en: Set backplane link modes correctly for ethtool
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.11 733/817] media: intel/ipu6: do not handle interrupts when device is disabled
 Date: Tue,  3 Dec 2024 15:45:05 +0100
-Message-ID: <20241203144806.298033972@linuxfoundation.org>
+Message-ID: <20241203144024.609226406@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-[ Upstream commit 5007991670941c132fb3bc0484c009cf4bcea30f ]
+commit 1429826883bb18847092b2e04c6598ef34bae1d4 upstream.
 
-Use the return value from bnxt_get_media() to determine the port and
-link modes.  bnxt_get_media() returns the proper BNXT_MEDIA_KR when
-the PHY is backplane.  This will correct the ethtool settings for
-backplane devices.
+Some IPU6 devices have shared interrupts. We need to handle properly
+case when interrupt is triggered from other device on shared irq line
+and IPU6 itself disabled. In such case we get 0xffffffff from
+ISR_STATUS register and handle all irq's cases, for what we are not
+not prepared and usually hang the whole system.
 
-Fixes: 5d4e1bf60664 ("bnxt_en: extend media types to supported and autoneg modes")
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To avoid the issue use pm_runtime_get_if_active() to check if
+the device is enabled and prevent suspending it when we handle irq
+until the end of irq. Additionally use synchronize_irq() in suspend
+
+Fixes: ab29a2478e70 ("media: intel/ipu6: add IPU6 buttress interface driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Tested-by: Hans de Goede <hdegoede@redhat.com> # ThinkPad X1 Yoga Gen 8, ov2740
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/pci/intel/ipu6/ipu6-buttress.c |   13 +++++++++----
+ drivers/media/pci/intel/ipu6/ipu6.c          |    3 +++
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index f71cc8188b4e5..20ba14eb87e00 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -2838,19 +2838,24 @@ static int bnxt_get_link_ksettings(struct net_device *dev,
+--- a/drivers/media/pci/intel/ipu6/ipu6-buttress.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
+@@ -346,12 +346,16 @@ irqreturn_t ipu6_buttress_isr(int irq, v
+ 	u32 disable_irqs = 0;
+ 	u32 irq_status;
+ 	u32 i, count = 0;
++	int active;
+ 
+-	pm_runtime_get_noresume(&isp->pdev->dev);
++	active = pm_runtime_get_if_active(&isp->pdev->dev);
++	if (!active)
++		return IRQ_NONE;
+ 
+ 	irq_status = readl(isp->base + reg_irq_sts);
+-	if (!irq_status) {
+-		pm_runtime_put_noidle(&isp->pdev->dev);
++	if (irq_status == 0 || WARN_ON_ONCE(irq_status == 0xffffffffu)) {
++		if (active > 0)
++			pm_runtime_put_noidle(&isp->pdev->dev);
+ 		return IRQ_NONE;
  	}
  
- 	base->port = PORT_NONE;
--	if (link_info->media_type == PORT_PHY_QCFG_RESP_MEDIA_TYPE_TP) {
-+	if (media == BNXT_MEDIA_TP) {
- 		base->port = PORT_TP;
- 		linkmode_set_bit(ETHTOOL_LINK_MODE_TP_BIT,
- 				 lk_ksettings->link_modes.supported);
- 		linkmode_set_bit(ETHTOOL_LINK_MODE_TP_BIT,
- 				 lk_ksettings->link_modes.advertising);
-+	} else if (media == BNXT_MEDIA_KR) {
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_Backplane_BIT,
-+				 lk_ksettings->link_modes.supported);
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_Backplane_BIT,
-+				 lk_ksettings->link_modes.advertising);
- 	} else {
- 		linkmode_set_bit(ETHTOOL_LINK_MODE_FIBRE_BIT,
- 				 lk_ksettings->link_modes.supported);
- 		linkmode_set_bit(ETHTOOL_LINK_MODE_FIBRE_BIT,
- 				 lk_ksettings->link_modes.advertising);
+@@ -427,7 +431,8 @@ irqreturn_t ipu6_buttress_isr(int irq, v
+ 		writel(BUTTRESS_IRQS & ~disable_irqs,
+ 		       isp->base + BUTTRESS_REG_ISR_ENABLE);
  
--		if (link_info->media_type == PORT_PHY_QCFG_RESP_MEDIA_TYPE_DAC)
-+		if (media == BNXT_MEDIA_CR)
- 			base->port = PORT_DA;
- 		else
- 			base->port = PORT_FIBRE;
--- 
-2.43.0
-
+-	pm_runtime_put(&isp->pdev->dev);
++	if (active > 0)
++		pm_runtime_put(&isp->pdev->dev);
+ 
+ 	return ret;
+ }
+--- a/drivers/media/pci/intel/ipu6/ipu6.c
++++ b/drivers/media/pci/intel/ipu6/ipu6.c
+@@ -758,6 +758,9 @@ static void ipu6_pci_reset_done(struct p
+  */
+ static int ipu6_suspend(struct device *dev)
+ {
++	struct pci_dev *pdev = to_pci_dev(dev);
++
++	synchronize_irq(pdev->irq);
+ 	return 0;
+ }
+ 
 
 
 
