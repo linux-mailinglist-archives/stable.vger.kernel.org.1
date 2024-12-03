@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-97579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DDD9E2946
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:29:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D449E2ABB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:23:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B2A9B474F1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AA36B388CC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727C71F8F0D;
-	Tue,  3 Dec 2024 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433B11F76BD;
+	Tue,  3 Dec 2024 15:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHXC2YAn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFD5ppp5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293401F8EE9;
-	Tue,  3 Dec 2024 15:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E1A1DDC26;
+	Tue,  3 Dec 2024 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240998; cv=none; b=h//LThhEzvMZauAuH60eD04beBZXQ0Krg/P/mG4t+IO/FpSv+dudP6v0MqZW6nsiyho5uQHqbqwzOZJgvA/D164txjrX1Xa4IiHPgDrg/QKqIAiBNeJNW558NJEeLvqGor4uV3RWyYmXNBTe8FJN1uugpig5cYUItYWQjEX4nRU=
+	t=1733241034; cv=none; b=PwsRUeAwzbs8GJTdqJ5etUymPyeKi/ae1Nf4jp6WkxCYzRAZlKLB/CwVRPkLYOiAm4jloOznJC/FaqCxi6J3dFOvUJfKvTrkem/ocnTcvnd80berEJkTDI2XRjsNUo7bN4IxgA+beZ6sRT2KwLN1QIKtchTUMTDnAr+7cYyK17k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240998; c=relaxed/simple;
-	bh=CLE+aQlB8c1vasU679MJjLhlzKS19bbJ5gGu4wN6Um8=;
+	s=arc-20240116; t=1733241034; c=relaxed/simple;
+	bh=VjV/ZSLD1iCtTN/i40m5LzwLYTejgMrstvKnBzVPjCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HttDSBSOsqWuCgf6aWc5jl4MlNMRWm1oQKVMjqaekZsxS4OhHkgV75E5vIvM3KVJXG8XwxipNIkSOzoIPzSx401JYBqIivb0zdLUaq2JGBoJBaWGS9b+6HK75FQi1YpNZBejHFj109rjGwQaPQkFVhkDqY+igj40PqnKfvxbBGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHXC2YAn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54202C4CED6;
-	Tue,  3 Dec 2024 15:49:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sUGZfgmdcy9aWhXUPkVNK12LcOIELFrSC370DsK+/DYub7Lsouqgsa5dtzaEviU4C1REvzczdCLt78jR+rpu5BtAzn6waUq8fGK525u/q760c5GC6XKPHYFUoEKJMPWzE6g3isgGXIQPeffbkjNfSCE4PzLQ+RYWzQXaOai4rsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFD5ppp5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3D4C4CED8;
+	Tue,  3 Dec 2024 15:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240998;
-	bh=CLE+aQlB8c1vasU679MJjLhlzKS19bbJ5gGu4wN6Um8=;
+	s=korg; t=1733241033;
+	bh=VjV/ZSLD1iCtTN/i40m5LzwLYTejgMrstvKnBzVPjCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHXC2YAna+Y65IEGKie/tcS7TFPMGNTgv8WxqxGdxpVvliiqs1V3tTGBMBzW8nRe5
-	 zYVrJTAjj0hcZHO/giTaXqJAgtHwTmlBJtECyUYMxXqIgE/bnXBLnj1PXM/hyMVvsT
-	 fg4VxtBXPjh+YV6pVjnN70t6+eUmPr8rQjkiMl9w=
+	b=xFD5ppp5JmXGSSMw9SxGjduoCaNx21ONP18/iWlc2Rv6/D0KhLFY3M2wVC3OAHPTj
+	 qYvWwyeYYa3CT2iqjJFGFM7iZa4f1D38J5iQtDdsWfeRyZgjp7UgLXXflvgQZUpVIa
+	 pbpk+ZCo4zC0GLbnVRv3kgtifY16T2uQrCw4nBCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Steven Price <steven.price@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 296/826] bpf: Mark raw_tp arguments with PTR_MAYBE_NULL
-Date: Tue,  3 Dec 2024 15:40:23 +0100
-Message-ID: <20241203144755.312452757@linuxfoundation.org>
+Subject: [PATCH 6.12 304/826] drm/panthor: introduce job cycle and timestamp accounting
+Date: Tue,  3 Dec 2024 15:40:31 +0100
+Message-ID: <20241203144755.622603788@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -62,366 +62,545 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Adrián Larumbe <adrian.larumbe@collabora.com>
 
-[ Upstream commit cb4158ce8ec8a5bb528cc1693356a5eb8058094d ]
+[ Upstream commit f8ff51a4708451763e6cfa36cc83dea8513d3318 ]
 
-Arguments to a raw tracepoint are tagged as trusted, which carries the
-semantics that the pointer will be non-NULL.  However, in certain cases,
-a raw tracepoint argument may end up being NULL. More context about this
-issue is available in [0].
+Enable calculations of job submission times in clock cycles and wall
+time. This is done by expanding the boilerplate command stream when running
+a job to include instructions that compute said times right before and
+after a user CS.
 
-Thus, there is a discrepancy between the reality, that raw_tp arguments
-can actually be NULL, and the verifier's knowledge, that they are never
-NULL, causing explicit NULL checks to be deleted, and accesses to such
-pointers potentially crashing the kernel.
+A separate kernel BO is created per queue to store those values. Jobs can
+access their sampled data through an index different from that of the
+queue's ringbuffer. The reason for this is saving memory on the profiling
+information kernel BO, since the amount of simultaneous profiled jobs we
+can write into the queue's ringbuffer might be much smaller than for
+regular jobs, as the former take more CSF instructions.
 
-To fix this, mark raw_tp arguments as PTR_MAYBE_NULL, and then special
-case the dereference and pointer arithmetic to permit it, and allow
-passing them into helpers/kfuncs; these exceptions are made for raw_tp
-programs only. Ensure that we don't do this when ref_obj_id > 0, as in
-that case this is an acquired object and doesn't need such adjustment.
+This commit is done in preparation for enabling DRM fdinfo support in the
+Panthor driver, which depends on the numbers calculated herein.
 
-The reason we do mask_raw_tp_trusted_reg logic is because other will
-recheck in places whether the register is a trusted_reg, and then
-consider our register as untrusted when detecting the presence of the
-PTR_MAYBE_NULL flag.
+A profile mode mask has been added that will in a future commit allow UM to
+toggle performance metric sampling behaviour, which is disabled by default
+to save power. When a ringbuffer CS is constructed, timestamp and cycling
+sampling instructions are added depending on the enabled flags in the
+profiling mask.
 
-To allow safe dereference, we enable PROBE_MEM marking when we see loads
-into trusted pointers with PTR_MAYBE_NULL.
+A helper was provided that calculates the number of instructions for a
+given set of enablement mask, and these are passed as the number of credits
+when initialising a DRM scheduler job.
 
-While trusted raw_tp arguments can also be passed into helpers or kfuncs
-where such broken assumption may cause issues, a future patch set will
-tackle their case separately, as PTR_TO_BTF_ID (without PTR_TRUSTED) can
-already be passed into helpers and causes similar problems. Thus, they
-are left alone for now.
-
-It is possible that these checks also permit passing non-raw_tp args
-that are trusted PTR_TO_BTF_ID with null marking. In such a case,
-allowing dereference when pointer is NULL expands allowed behavior, so
-won't regress existing programs, and the case of passing these into
-helpers is the same as above and will be dealt with later.
-
-Also update the failure case in tp_btf_nullable selftest to capture the
-new behavior, as the verifier will no longer cause an error when
-directly dereference a raw tracepoint argument marked as __nullable.
-
-  [0]: https://lore.kernel.org/bpf/ZrCZS6nisraEqehw@jlelli-thinkpadt14gen4.remote.csb
-
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Reported-by: Juri Lelli <juri.lelli@redhat.com>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Fixes: 3f00c5239344 ("bpf: Allow trusted pointers to be passed to KF_TRUSTED_ARGS kfuncs")
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20241104171959.2938862-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923230912.2207320-2-adrian.larumbe@collabora.com
+Stable-dep-of: 21c23e4b64e3 ("drm/panthor: Fix OPP refcnt leaks in devfreq initialisation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h                           |  6 ++
- kernel/bpf/btf.c                              |  5 +-
- kernel/bpf/verifier.c                         | 79 +++++++++++++++++--
- .../bpf/progs/test_tp_btf_nullable.c          |  6 +-
- 4 files changed, 87 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/panthor/panthor_device.h |  22 ++
+ drivers/gpu/drm/panthor/panthor_sched.c  | 333 +++++++++++++++++++----
+ 2 files changed, 306 insertions(+), 49 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index bdadb0bb6cecd..e863b5d06043a 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -3461,4 +3461,10 @@ static inline bool bpf_is_subprog(const struct bpf_prog *prog)
- 	return prog->aux->func_idx != 0;
- }
+diff --git a/drivers/gpu/drm/panthor/panthor_device.h b/drivers/gpu/drm/panthor/panthor_device.h
+index e388c0472ba78..a48e30d0af309 100644
+--- a/drivers/gpu/drm/panthor/panthor_device.h
++++ b/drivers/gpu/drm/panthor/panthor_device.h
+@@ -66,6 +66,25 @@ struct panthor_irq {
+ 	atomic_t suspended;
+ };
  
-+static inline bool bpf_prog_is_raw_tp(const struct bpf_prog *prog)
-+{
-+	return prog->type == BPF_PROG_TYPE_TRACING &&
-+	       prog->expected_attach_type == BPF_TRACE_RAW_TP;
-+}
-+
- #endif /* _LINUX_BPF_H */
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 5cd1c7a23848c..346826e3c933d 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -6564,7 +6564,10 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
- 	if (prog_args_trusted(prog))
- 		info->reg_type |= PTR_TRUSTED;
- 
--	if (btf_param_match_suffix(btf, &args[arg], "__nullable"))
-+	/* Raw tracepoint arguments always get marked as maybe NULL */
-+	if (bpf_prog_is_raw_tp(prog))
-+		info->reg_type |= PTR_MAYBE_NULL;
-+	else if (btf_param_match_suffix(btf, &args[arg], "__nullable"))
- 		info->reg_type |= PTR_MAYBE_NULL;
- 
- 	if (tgt_prog) {
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 011b4a86e2b3b..71a1877aac687 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -418,6 +418,25 @@ static struct btf_record *reg_btf_record(const struct bpf_reg_state *reg)
- 	return rec;
- }
- 
-+static bool mask_raw_tp_reg_cond(const struct bpf_verifier_env *env, struct bpf_reg_state *reg) {
-+	return reg->type == (PTR_TO_BTF_ID | PTR_TRUSTED | PTR_MAYBE_NULL) &&
-+	       bpf_prog_is_raw_tp(env->prog) && !reg->ref_obj_id;
-+}
-+
-+static bool mask_raw_tp_reg(const struct bpf_verifier_env *env, struct bpf_reg_state *reg)
-+{
-+	if (!mask_raw_tp_reg_cond(env, reg))
-+		return false;
-+	reg->type &= ~PTR_MAYBE_NULL;
-+	return true;
-+}
-+
-+static void unmask_raw_tp_reg(struct bpf_reg_state *reg, bool result)
-+{
-+	if (result)
-+		reg->type |= PTR_MAYBE_NULL;
-+}
-+
- static bool subprog_is_global(const struct bpf_verifier_env *env, int subprog)
- {
- 	struct bpf_func_info_aux *aux = env->prog->aux->func_info_aux;
-@@ -6595,6 +6614,7 @@ static int check_ptr_to_btf_access(struct bpf_verifier_env *env,
- 	const char *field_name = NULL;
- 	enum bpf_type_flag flag = 0;
- 	u32 btf_id = 0;
-+	bool mask;
- 	int ret;
- 
- 	if (!env->allow_ptr_leaks) {
-@@ -6666,7 +6686,21 @@ static int check_ptr_to_btf_access(struct bpf_verifier_env *env,
- 
- 	if (ret < 0)
- 		return ret;
--
-+	/* For raw_tp progs, we allow dereference of PTR_MAYBE_NULL
-+	 * trusted PTR_TO_BTF_ID, these are the ones that are possibly
-+	 * arguments to the raw_tp. Since internal checks in for trusted
-+	 * reg in check_ptr_to_btf_access would consider PTR_MAYBE_NULL
-+	 * modifier as problematic, mask it out temporarily for the
-+	 * check. Don't apply this to pointers with ref_obj_id > 0, as
-+	 * those won't be raw_tp args.
-+	 *
-+	 * We may end up applying this relaxation to other trusted
-+	 * PTR_TO_BTF_ID with maybe null flag, since we cannot
-+	 * distinguish PTR_MAYBE_NULL tagged for arguments vs normal
-+	 * tagging, but that should expand allowed behavior, and not
-+	 * cause regression for existing behavior.
-+	 */
-+	mask = mask_raw_tp_reg(env, reg);
- 	if (ret != PTR_TO_BTF_ID) {
- 		/* just mark; */
- 
-@@ -6727,8 +6761,13 @@ static int check_ptr_to_btf_access(struct bpf_verifier_env *env,
- 		clear_trusted_flags(&flag);
- 	}
- 
--	if (atype == BPF_READ && value_regno >= 0)
-+	if (atype == BPF_READ && value_regno >= 0) {
- 		mark_btf_ld_reg(env, regs, value_regno, ret, reg->btf, btf_id, flag);
-+		/* We've assigned a new type to regno, so don't undo masking. */
-+		if (regno == value_regno)
-+			mask = false;
-+	}
-+	unmask_raw_tp_reg(reg, mask);
- 
- 	return 0;
- }
-@@ -7103,7 +7142,7 @@ static int check_mem_access(struct bpf_verifier_env *env, int insn_idx, u32 regn
- 		if (!err && t == BPF_READ && value_regno >= 0)
- 			mark_reg_unknown(env, regs, value_regno);
- 	} else if (base_type(reg->type) == PTR_TO_BTF_ID &&
--		   !type_may_be_null(reg->type)) {
-+		   (mask_raw_tp_reg_cond(env, reg) || !type_may_be_null(reg->type))) {
- 		err = check_ptr_to_btf_access(env, regs, regno, off, size, t,
- 					      value_regno);
- 	} else if (reg->type == CONST_PTR_TO_MAP) {
-@@ -8796,6 +8835,7 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 	enum bpf_reg_type type = reg->type;
- 	u32 *arg_btf_id = NULL;
- 	int err = 0;
-+	bool mask;
- 
- 	if (arg_type == ARG_DONTCARE)
- 		return 0;
-@@ -8836,11 +8876,11 @@ static int check_func_arg(struct bpf_verifier_env *env, u32 arg,
- 	    base_type(arg_type) == ARG_PTR_TO_SPIN_LOCK)
- 		arg_btf_id = fn->arg_btf_id[arg];
- 
-+	mask = mask_raw_tp_reg(env, reg);
- 	err = check_reg_type(env, regno, arg_type, arg_btf_id, meta);
--	if (err)
--		return err;
- 
--	err = check_func_arg_reg_off(env, reg, regno, arg_type);
-+	err = err ?: check_func_arg_reg_off(env, reg, regno, arg_type);
-+	unmask_raw_tp_reg(reg, mask);
- 	if (err)
- 		return err;
- 
-@@ -9635,14 +9675,17 @@ static int btf_check_func_arg_match(struct bpf_verifier_env *env, int subprog,
- 				return ret;
- 		} else if (base_type(arg->arg_type) == ARG_PTR_TO_BTF_ID) {
- 			struct bpf_call_arg_meta meta;
-+			bool mask;
- 			int err;
- 
- 			if (register_is_null(reg) && type_may_be_null(arg->arg_type))
- 				continue;
- 
- 			memset(&meta, 0, sizeof(meta)); /* leave func_id as zero */
-+			mask = mask_raw_tp_reg(env, reg);
- 			err = check_reg_type(env, regno, arg->arg_type, &arg->btf_id, &meta);
- 			err = err ?: check_func_arg_reg_off(env, reg, regno, arg->arg_type);
-+			unmask_raw_tp_reg(reg, mask);
- 			if (err)
- 				return err;
- 		} else {
-@@ -11957,6 +12000,7 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_kfunc_call_
- 		enum bpf_arg_type arg_type = ARG_DONTCARE;
- 		u32 regno = i + 1, ref_id, type_size;
- 		bool is_ret_buf_sz = false;
-+		bool mask = false;
- 		int kf_arg_type;
- 
- 		t = btf_type_skip_modifiers(btf, args[i].type, NULL);
-@@ -12015,12 +12059,15 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_kfunc_call_
- 			return -EINVAL;
- 		}
- 
-+		mask = mask_raw_tp_reg(env, reg);
- 		if ((is_kfunc_trusted_args(meta) || is_kfunc_rcu(meta)) &&
- 		    (register_is_null(reg) || type_may_be_null(reg->type)) &&
- 			!is_kfunc_arg_nullable(meta->btf, &args[i])) {
- 			verbose(env, "Possibly NULL pointer passed to trusted arg%d\n", i);
-+			unmask_raw_tp_reg(reg, mask);
- 			return -EACCES;
- 		}
-+		unmask_raw_tp_reg(reg, mask);
- 
- 		if (reg->ref_obj_id) {
- 			if (is_kfunc_release(meta) && meta->ref_obj_id) {
-@@ -12078,16 +12125,24 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_kfunc_call_
- 			if (!is_kfunc_trusted_args(meta) && !is_kfunc_rcu(meta))
- 				break;
- 
-+			/* Allow passing maybe NULL raw_tp arguments to
-+			 * kfuncs for compatibility. Don't apply this to
-+			 * arguments with ref_obj_id > 0.
-+			 */
-+			mask = mask_raw_tp_reg(env, reg);
- 			if (!is_trusted_reg(reg)) {
- 				if (!is_kfunc_rcu(meta)) {
- 					verbose(env, "R%d must be referenced or trusted\n", regno);
-+					unmask_raw_tp_reg(reg, mask);
- 					return -EINVAL;
- 				}
- 				if (!is_rcu_reg(reg)) {
- 					verbose(env, "R%d must be a rcu pointer\n", regno);
-+					unmask_raw_tp_reg(reg, mask);
- 					return -EINVAL;
- 				}
- 			}
-+			unmask_raw_tp_reg(reg, mask);
- 			fallthrough;
- 		case KF_ARG_PTR_TO_CTX:
- 		case KF_ARG_PTR_TO_DYNPTR:
-@@ -12110,7 +12165,9 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_kfunc_call_
- 
- 		if (is_kfunc_release(meta) && reg->ref_obj_id)
- 			arg_type |= OBJ_RELEASE;
-+		mask = mask_raw_tp_reg(env, reg);
- 		ret = check_func_arg_reg_off(env, reg, regno, arg_type);
-+		unmask_raw_tp_reg(reg, mask);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -12287,6 +12344,7 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_kfunc_call_
- 			ref_tname = btf_name_by_offset(btf, ref_t->name_off);
- 			fallthrough;
- 		case KF_ARG_PTR_TO_BTF_ID:
-+			mask = mask_raw_tp_reg(env, reg);
- 			/* Only base_type is checked, further checks are done here */
- 			if ((base_type(reg->type) != PTR_TO_BTF_ID ||
- 			     (bpf_type_has_unsafe_modifiers(reg->type) && !is_rcu_reg(reg))) &&
-@@ -12295,9 +12353,11 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_kfunc_call_
- 				verbose(env, "expected %s or socket\n",
- 					reg_type_str(env, base_type(reg->type) |
- 							  (type_flag(reg->type) & BPF_REG_TRUSTED_MODIFIERS)));
-+				unmask_raw_tp_reg(reg, mask);
- 				return -EINVAL;
- 			}
- 			ret = process_kf_arg_ptr_to_btf_id(env, reg, ref_t, ref_tname, ref_id, meta, i);
-+			unmask_raw_tp_reg(reg, mask);
- 			if (ret < 0)
- 				return ret;
- 			break;
-@@ -13267,7 +13327,7 @@ static int sanitize_check_bounds(struct bpf_verifier_env *env,
-  */
- static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
- 				   struct bpf_insn *insn,
--				   const struct bpf_reg_state *ptr_reg,
-+				   struct bpf_reg_state *ptr_reg,
- 				   const struct bpf_reg_state *off_reg)
- {
- 	struct bpf_verifier_state *vstate = env->cur_state;
-@@ -13281,6 +13341,7 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
- 	struct bpf_sanitize_info info = {};
- 	u8 opcode = BPF_OP(insn->code);
- 	u32 dst = insn->dst_reg;
-+	bool mask;
- 	int ret;
- 
- 	dst_reg = &regs[dst];
-@@ -13307,11 +13368,14 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
- 		return -EACCES;
- 	}
- 
-+	mask = mask_raw_tp_reg(env, ptr_reg);
- 	if (ptr_reg->type & PTR_MAYBE_NULL) {
- 		verbose(env, "R%d pointer arithmetic on %s prohibited, null-check it first\n",
- 			dst, reg_type_str(env, ptr_reg->type));
-+		unmask_raw_tp_reg(ptr_reg, mask);
- 		return -EACCES;
- 	}
-+	unmask_raw_tp_reg(ptr_reg, mask);
- 
- 	switch (base_type(ptr_reg->type)) {
- 	case PTR_TO_CTX:
-@@ -19852,6 +19916,7 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
- 		 * for this case.
- 		 */
- 		case PTR_TO_BTF_ID | MEM_ALLOC | PTR_UNTRUSTED:
-+		case PTR_TO_BTF_ID | PTR_TRUSTED | PTR_MAYBE_NULL:
- 			if (type == BPF_READ) {
- 				if (BPF_MODE(insn->code) == BPF_MEM)
- 					insn->code = BPF_LDX | BPF_PROBE_MEM |
-diff --git a/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c b/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c
-index bba3e37f749b8..5aaf2b065f86c 100644
---- a/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c
-+++ b/tools/testing/selftests/bpf/progs/test_tp_btf_nullable.c
-@@ -7,7 +7,11 @@
- #include "bpf_misc.h"
- 
- SEC("tp_btf/bpf_testmod_test_nullable_bare")
--__failure __msg("R1 invalid mem access 'trusted_ptr_or_null_'")
-+/* This used to be a failure test, but raw_tp nullable arguments can now
-+ * directly be dereferenced, whether they have nullable annotation or not,
-+ * and don't need to be explicitly checked.
++/**
++ * enum panthor_device_profiling_mode - Profiling state
 + */
-+__success
- int BPF_PROG(handle_tp_btf_nullable_bare1, struct bpf_testmod_test_read_ctx *nullable_ctx)
++enum panthor_device_profiling_flags {
++	/** @PANTHOR_DEVICE_PROFILING_DISABLED: Profiling is disabled. */
++	PANTHOR_DEVICE_PROFILING_DISABLED = 0,
++
++	/** @PANTHOR_DEVICE_PROFILING_CYCLES: Sampling job cycles. */
++	PANTHOR_DEVICE_PROFILING_CYCLES = BIT(0),
++
++	/** @PANTHOR_DEVICE_PROFILING_TIMESTAMP: Sampling job timestamp. */
++	PANTHOR_DEVICE_PROFILING_TIMESTAMP = BIT(1),
++
++	/** @PANTHOR_DEVICE_PROFILING_ALL: Sampling everything. */
++	PANTHOR_DEVICE_PROFILING_ALL =
++	PANTHOR_DEVICE_PROFILING_CYCLES |
++	PANTHOR_DEVICE_PROFILING_TIMESTAMP,
++};
++
+ /**
+  * struct panthor_device - Panthor device
+  */
+@@ -162,6 +181,9 @@ struct panthor_device {
+ 		 */
+ 		struct page *dummy_latest_flush;
+ 	} pm;
++
++	/** @profile_mask: User-set profiling flags for job accounting. */
++	u32 profile_mask;
+ };
+ 
+ /**
+diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+index 9929e22f4d8d2..20135a9bc026e 100644
+--- a/drivers/gpu/drm/panthor/panthor_sched.c
++++ b/drivers/gpu/drm/panthor/panthor_sched.c
+@@ -93,6 +93,9 @@
+ #define MIN_CSGS				3
+ #define MAX_CSG_PRIO				0xf
+ 
++#define NUM_INSTRS_PER_CACHE_LINE		(64 / sizeof(u64))
++#define MAX_INSTRS_PER_JOB			24
++
+ struct panthor_group;
+ 
+ /**
+@@ -476,6 +479,18 @@ struct panthor_queue {
+ 		 */
+ 		struct list_head in_flight_jobs;
+ 	} fence_ctx;
++
++	/** @profiling: Job profiling data slots and access information. */
++	struct {
++		/** @slots: Kernel BO holding the slots. */
++		struct panthor_kernel_bo *slots;
++
++		/** @slot_count: Number of jobs ringbuffer can hold at once. */
++		u32 slot_count;
++
++		/** @seqno: Index of the next available profiling information slot. */
++		u32 seqno;
++	} profiling;
+ };
+ 
+ /**
+@@ -662,6 +677,18 @@ struct panthor_group {
+ 	struct list_head wait_node;
+ };
+ 
++struct panthor_job_profiling_data {
++	struct {
++		u64 before;
++		u64 after;
++	} cycles;
++
++	struct {
++		u64 before;
++		u64 after;
++	} time;
++};
++
+ /**
+  * group_queue_work() - Queue a group work
+  * @group: Group to queue the work for.
+@@ -775,6 +802,15 @@ struct panthor_job {
+ 
+ 	/** @done_fence: Fence signaled when the job is finished or cancelled. */
+ 	struct dma_fence *done_fence;
++
++	/** @profiling: Job profiling information. */
++	struct {
++		/** @mask: Current device job profiling enablement bitmask. */
++		u32 mask;
++
++		/** @slot: Job index in the profiling slots BO. */
++		u32 slot;
++	} profiling;
+ };
+ 
+ static void
+@@ -839,6 +875,7 @@ static void group_free_queue(struct panthor_group *group, struct panthor_queue *
+ 
+ 	panthor_kernel_bo_destroy(queue->ringbuf);
+ 	panthor_kernel_bo_destroy(queue->iface.mem);
++	panthor_kernel_bo_destroy(queue->profiling.slots);
+ 
+ 	/* Release the last_fence we were holding, if any. */
+ 	dma_fence_put(queue->fence_ctx.last_fence);
+@@ -1989,8 +2026,6 @@ tick_ctx_init(struct panthor_scheduler *sched,
+ 	}
+ }
+ 
+-#define NUM_INSTRS_PER_SLOT		16
+-
+ static void
+ group_term_post_processing(struct panthor_group *group)
  {
- 	return nullable_ctx->len;
+@@ -2829,65 +2864,198 @@ static void group_sync_upd_work(struct work_struct *work)
+ 	group_put(group);
+ }
+ 
+-static struct dma_fence *
+-queue_run_job(struct drm_sched_job *sched_job)
++struct panthor_job_ringbuf_instrs {
++	u64 buffer[MAX_INSTRS_PER_JOB];
++	u32 count;
++};
++
++struct panthor_job_instr {
++	u32 profile_mask;
++	u64 instr;
++};
++
++#define JOB_INSTR(__prof, __instr) \
++	{ \
++		.profile_mask = __prof, \
++		.instr = __instr, \
++	}
++
++static void
++copy_instrs_to_ringbuf(struct panthor_queue *queue,
++		       struct panthor_job *job,
++		       struct panthor_job_ringbuf_instrs *instrs)
++{
++	u64 ringbuf_size = panthor_kernel_bo_size(queue->ringbuf);
++	u64 start = job->ringbuf.start & (ringbuf_size - 1);
++	u64 size, written;
++
++	/*
++	 * We need to write a whole slot, including any trailing zeroes
++	 * that may come at the end of it. Also, because instrs.buffer has
++	 * been zero-initialised, there's no need to pad it with 0's
++	 */
++	instrs->count = ALIGN(instrs->count, NUM_INSTRS_PER_CACHE_LINE);
++	size = instrs->count * sizeof(u64);
++	WARN_ON(size > ringbuf_size);
++	written = min(ringbuf_size - start, size);
++
++	memcpy(queue->ringbuf->kmap + start, instrs->buffer, written);
++
++	if (written < size)
++		memcpy(queue->ringbuf->kmap,
++		       &instrs->buffer[written / sizeof(u64)],
++		       size - written);
++}
++
++struct panthor_job_cs_params {
++	u32 profile_mask;
++	u64 addr_reg; u64 val_reg;
++	u64 cycle_reg; u64 time_reg;
++	u64 sync_addr; u64 times_addr;
++	u64 cs_start; u64 cs_size;
++	u32 last_flush; u32 waitall_mask;
++};
++
++static void
++get_job_cs_params(struct panthor_job *job, struct panthor_job_cs_params *params)
+ {
+-	struct panthor_job *job = container_of(sched_job, struct panthor_job, base);
+ 	struct panthor_group *group = job->group;
+ 	struct panthor_queue *queue = group->queues[job->queue_idx];
+ 	struct panthor_device *ptdev = group->ptdev;
+ 	struct panthor_scheduler *sched = ptdev->scheduler;
+-	u32 ringbuf_size = panthor_kernel_bo_size(queue->ringbuf);
+-	u32 ringbuf_insert = queue->iface.input->insert & (ringbuf_size - 1);
+-	u64 addr_reg = ptdev->csif_info.cs_reg_count -
+-		       ptdev->csif_info.unpreserved_cs_reg_count;
+-	u64 val_reg = addr_reg + 2;
+-	u64 sync_addr = panthor_kernel_bo_gpuva(group->syncobjs) +
+-			job->queue_idx * sizeof(struct panthor_syncobj_64b);
+-	u32 waitall_mask = GENMASK(sched->sb_slot_count - 1, 0);
+-	struct dma_fence *done_fence;
+-	int ret;
+ 
+-	u64 call_instrs[NUM_INSTRS_PER_SLOT] = {
+-		/* MOV32 rX+2, cs.latest_flush */
+-		(2ull << 56) | (val_reg << 48) | job->call_info.latest_flush,
++	params->addr_reg = ptdev->csif_info.cs_reg_count -
++			   ptdev->csif_info.unpreserved_cs_reg_count;
++	params->val_reg = params->addr_reg + 2;
++	params->cycle_reg = params->addr_reg;
++	params->time_reg = params->val_reg;
+ 
+-		/* FLUSH_CACHE2.clean_inv_all.no_wait.signal(0) rX+2 */
+-		(36ull << 56) | (0ull << 48) | (val_reg << 40) | (0 << 16) | 0x233,
++	params->sync_addr = panthor_kernel_bo_gpuva(group->syncobjs) +
++			    job->queue_idx * sizeof(struct panthor_syncobj_64b);
++	params->times_addr = panthor_kernel_bo_gpuva(queue->profiling.slots) +
++			     (job->profiling.slot * sizeof(struct panthor_job_profiling_data));
++	params->waitall_mask = GENMASK(sched->sb_slot_count - 1, 0);
+ 
+-		/* MOV48 rX:rX+1, cs.start */
+-		(1ull << 56) | (addr_reg << 48) | job->call_info.start,
++	params->cs_start = job->call_info.start;
++	params->cs_size = job->call_info.size;
++	params->last_flush = job->call_info.latest_flush;
+ 
+-		/* MOV32 rX+2, cs.size */
+-		(2ull << 56) | (val_reg << 48) | job->call_info.size,
++	params->profile_mask = job->profiling.mask;
++}
+ 
+-		/* WAIT(0) => waits for FLUSH_CACHE2 instruction */
+-		(3ull << 56) | (1 << 16),
++#define JOB_INSTR_ALWAYS(instr) \
++	JOB_INSTR(PANTHOR_DEVICE_PROFILING_DISABLED, (instr))
++#define JOB_INSTR_TIMESTAMP(instr) \
++	JOB_INSTR(PANTHOR_DEVICE_PROFILING_TIMESTAMP, (instr))
++#define JOB_INSTR_CYCLES(instr) \
++	JOB_INSTR(PANTHOR_DEVICE_PROFILING_CYCLES, (instr))
+ 
++static void
++prepare_job_instrs(const struct panthor_job_cs_params *params,
++		   struct panthor_job_ringbuf_instrs *instrs)
++{
++	const struct panthor_job_instr instr_seq[] = {
++		/* MOV32 rX+2, cs.latest_flush */
++		JOB_INSTR_ALWAYS((2ull << 56) | (params->val_reg << 48) | params->last_flush),
++		/* FLUSH_CACHE2.clean_inv_all.no_wait.signal(0) rX+2 */
++		JOB_INSTR_ALWAYS((36ull << 56) | (0ull << 48) | (params->val_reg << 40) |
++				 (0 << 16) | 0x233),
++		/* MOV48 rX:rX+1, cycles_offset */
++		JOB_INSTR_CYCLES((1ull << 56) | (params->cycle_reg << 48) |
++				 (params->times_addr +
++				  offsetof(struct panthor_job_profiling_data, cycles.before))),
++		/* STORE_STATE cycles */
++		JOB_INSTR_CYCLES((40ull << 56) | (params->cycle_reg << 40) | (1ll << 32)),
++		/* MOV48 rX:rX+1, time_offset */
++		JOB_INSTR_TIMESTAMP((1ull << 56) | (params->time_reg << 48) |
++				    (params->times_addr +
++				     offsetof(struct panthor_job_profiling_data, time.before))),
++		/* STORE_STATE timer */
++		JOB_INSTR_TIMESTAMP((40ull << 56) | (params->time_reg << 40) | (0ll << 32)),
++		/* MOV48 rX:rX+1, cs.start */
++		JOB_INSTR_ALWAYS((1ull << 56) | (params->addr_reg << 48) | params->cs_start),
++		/* MOV32 rX+2, cs.size */
++		JOB_INSTR_ALWAYS((2ull << 56) | (params->val_reg << 48) | params->cs_size),
++		/* WAIT(0) => waits for FLUSH_CACHE2 instruction */
++		JOB_INSTR_ALWAYS((3ull << 56) | (1 << 16)),
+ 		/* CALL rX:rX+1, rX+2 */
+-		(32ull << 56) | (addr_reg << 40) | (val_reg << 32),
+-
++		JOB_INSTR_ALWAYS((32ull << 56) | (params->addr_reg << 40) |
++				 (params->val_reg << 32)),
++		/* MOV48 rX:rX+1, cycles_offset */
++		JOB_INSTR_CYCLES((1ull << 56) | (params->cycle_reg << 48) |
++				 (params->times_addr +
++				  offsetof(struct panthor_job_profiling_data, cycles.after))),
++		/* STORE_STATE cycles */
++		JOB_INSTR_CYCLES((40ull << 56) | (params->cycle_reg << 40) | (1ll << 32)),
++		/* MOV48 rX:rX+1, time_offset */
++		JOB_INSTR_TIMESTAMP((1ull << 56) | (params->time_reg << 48) |
++			  (params->times_addr +
++			   offsetof(struct panthor_job_profiling_data, time.after))),
++		/* STORE_STATE timer */
++		JOB_INSTR_TIMESTAMP((40ull << 56) | (params->time_reg << 40) | (0ll << 32)),
+ 		/* MOV48 rX:rX+1, sync_addr */
+-		(1ull << 56) | (addr_reg << 48) | sync_addr,
+-
++		JOB_INSTR_ALWAYS((1ull << 56) | (params->addr_reg << 48) | params->sync_addr),
+ 		/* MOV48 rX+2, #1 */
+-		(1ull << 56) | (val_reg << 48) | 1,
+-
++		JOB_INSTR_ALWAYS((1ull << 56) | (params->val_reg << 48) | 1),
+ 		/* WAIT(all) */
+-		(3ull << 56) | (waitall_mask << 16),
+-
++		JOB_INSTR_ALWAYS((3ull << 56) | (params->waitall_mask << 16)),
+ 		/* SYNC_ADD64.system_scope.propage_err.nowait rX:rX+1, rX+2*/
+-		(51ull << 56) | (0ull << 48) | (addr_reg << 40) | (val_reg << 32) | (0 << 16) | 1,
++		JOB_INSTR_ALWAYS((51ull << 56) | (0ull << 48) | (params->addr_reg << 40) |
++				 (params->val_reg << 32) | (0 << 16) | 1),
++		/* ERROR_BARRIER, so we can recover from faults at job boundaries. */
++		JOB_INSTR_ALWAYS((47ull << 56)),
++	};
++	u32 pad;
+ 
+-		/* ERROR_BARRIER, so we can recover from faults at job
+-		 * boundaries.
+-		 */
+-		(47ull << 56),
++	instrs->count = 0;
++
++	/* NEED to be cacheline aligned to please the prefetcher. */
++	static_assert(sizeof(instrs->buffer) % 64 == 0,
++		      "panthor_job_ringbuf_instrs::buffer is not aligned on a cacheline");
++
++	/* Make sure we have enough storage to store the whole sequence. */
++	static_assert(ALIGN(ARRAY_SIZE(instr_seq), NUM_INSTRS_PER_CACHE_LINE) ==
++		      ARRAY_SIZE(instrs->buffer),
++		      "instr_seq vs panthor_job_ringbuf_instrs::buffer size mismatch");
++
++	for (u32 i = 0; i < ARRAY_SIZE(instr_seq); i++) {
++		/* If the profile mask of this instruction is not enabled, skip it. */
++		if (instr_seq[i].profile_mask &&
++		    !(instr_seq[i].profile_mask & params->profile_mask))
++			continue;
++
++		instrs->buffer[instrs->count++] = instr_seq[i].instr;
++	}
++
++	pad = ALIGN(instrs->count, NUM_INSTRS_PER_CACHE_LINE);
++	memset(&instrs->buffer[instrs->count], 0,
++	       (pad - instrs->count) * sizeof(instrs->buffer[0]));
++	instrs->count = pad;
++}
++
++static u32 calc_job_credits(u32 profile_mask)
++{
++	struct panthor_job_ringbuf_instrs instrs;
++	struct panthor_job_cs_params params = {
++		.profile_mask = profile_mask,
+ 	};
+ 
+-	/* Need to be cacheline aligned to please the prefetcher. */
+-	static_assert(sizeof(call_instrs) % 64 == 0,
+-		      "call_instrs is not aligned on a cacheline");
++	prepare_job_instrs(&params, &instrs);
++	return instrs.count;
++}
++
++static struct dma_fence *
++queue_run_job(struct drm_sched_job *sched_job)
++{
++	struct panthor_job *job = container_of(sched_job, struct panthor_job, base);
++	struct panthor_group *group = job->group;
++	struct panthor_queue *queue = group->queues[job->queue_idx];
++	struct panthor_device *ptdev = group->ptdev;
++	struct panthor_scheduler *sched = ptdev->scheduler;
++	struct panthor_job_ringbuf_instrs instrs;
++	struct panthor_job_cs_params cs_params;
++	struct dma_fence *done_fence;
++	int ret;
+ 
+ 	/* Stream size is zero, nothing to do except making sure all previously
+ 	 * submitted jobs are done before we signal the
+@@ -2914,17 +3082,23 @@ queue_run_job(struct drm_sched_job *sched_job)
+ 		       queue->fence_ctx.id,
+ 		       atomic64_inc_return(&queue->fence_ctx.seqno));
+ 
+-	memcpy(queue->ringbuf->kmap + ringbuf_insert,
+-	       call_instrs, sizeof(call_instrs));
++	job->profiling.slot = queue->profiling.seqno++;
++	if (queue->profiling.seqno == queue->profiling.slot_count)
++		queue->profiling.seqno = 0;
++
++	job->ringbuf.start = queue->iface.input->insert;
++
++	get_job_cs_params(job, &cs_params);
++	prepare_job_instrs(&cs_params, &instrs);
++	copy_instrs_to_ringbuf(queue, job, &instrs);
++
++	job->ringbuf.end = job->ringbuf.start + (instrs.count * sizeof(u64));
+ 
+ 	panthor_job_get(&job->base);
+ 	spin_lock(&queue->fence_ctx.lock);
+ 	list_add_tail(&job->node, &queue->fence_ctx.in_flight_jobs);
+ 	spin_unlock(&queue->fence_ctx.lock);
+ 
+-	job->ringbuf.start = queue->iface.input->insert;
+-	job->ringbuf.end = job->ringbuf.start + sizeof(call_instrs);
+-
+ 	/* Make sure the ring buffer is updated before the INSERT
+ 	 * register.
+ 	 */
+@@ -3017,6 +3191,33 @@ static const struct drm_sched_backend_ops panthor_queue_sched_ops = {
+ 	.free_job = queue_free_job,
+ };
+ 
++static u32 calc_profiling_ringbuf_num_slots(struct panthor_device *ptdev,
++					    u32 cs_ringbuf_size)
++{
++	u32 min_profiled_job_instrs = U32_MAX;
++	u32 last_flag = fls(PANTHOR_DEVICE_PROFILING_ALL);
++
++	/*
++	 * We want to calculate the minimum size of a profiled job's CS,
++	 * because since they need additional instructions for the sampling
++	 * of performance metrics, they might take up further slots in
++	 * the queue's ringbuffer. This means we might not need as many job
++	 * slots for keeping track of their profiling information. What we
++	 * need is the maximum number of slots we should allocate to this end,
++	 * which matches the maximum number of profiled jobs we can place
++	 * simultaneously in the queue's ring buffer.
++	 * That has to be calculated separately for every single job profiling
++	 * flag, but not in the case job profiling is disabled, since unprofiled
++	 * jobs don't need to keep track of this at all.
++	 */
++	for (u32 i = 0; i < last_flag; i++) {
++		min_profiled_job_instrs =
++			min(min_profiled_job_instrs, calc_job_credits(BIT(i)));
++	}
++
++	return DIV_ROUND_UP(cs_ringbuf_size, min_profiled_job_instrs * sizeof(u64));
++}
++
+ static struct panthor_queue *
+ group_create_queue(struct panthor_group *group,
+ 		   const struct drm_panthor_queue_create *args)
+@@ -3070,9 +3271,35 @@ group_create_queue(struct panthor_group *group,
+ 		goto err_free_queue;
+ 	}
+ 
++	queue->profiling.slot_count =
++		calc_profiling_ringbuf_num_slots(group->ptdev, args->ringbuf_size);
++
++	queue->profiling.slots =
++		panthor_kernel_bo_create(group->ptdev, group->vm,
++					 queue->profiling.slot_count *
++					 sizeof(struct panthor_job_profiling_data),
++					 DRM_PANTHOR_BO_NO_MMAP,
++					 DRM_PANTHOR_VM_BIND_OP_MAP_NOEXEC |
++					 DRM_PANTHOR_VM_BIND_OP_MAP_UNCACHED,
++					 PANTHOR_VM_KERNEL_AUTO_VA);
++
++	if (IS_ERR(queue->profiling.slots)) {
++		ret = PTR_ERR(queue->profiling.slots);
++		goto err_free_queue;
++	}
++
++	ret = panthor_kernel_bo_vmap(queue->profiling.slots);
++	if (ret)
++		goto err_free_queue;
++
++	/*
++	 * Credit limit argument tells us the total number of instructions
++	 * across all CS slots in the ringbuffer, with some jobs requiring
++	 * twice as many as others, depending on their profiling status.
++	 */
+ 	ret = drm_sched_init(&queue->scheduler, &panthor_queue_sched_ops,
+ 			     group->ptdev->scheduler->wq, 1,
+-			     args->ringbuf_size / (NUM_INSTRS_PER_SLOT * sizeof(u64)),
++			     args->ringbuf_size / sizeof(u64),
+ 			     0, msecs_to_jiffies(JOB_TIMEOUT_MS),
+ 			     group->ptdev->reset.wq,
+ 			     NULL, "panthor-queue", group->ptdev->base.dev);
+@@ -3380,6 +3607,7 @@ panthor_job_create(struct panthor_file *pfile,
+ {
+ 	struct panthor_group_pool *gpool = pfile->groups;
+ 	struct panthor_job *job;
++	u32 credits;
+ 	int ret;
+ 
+ 	if (qsubmit->pad)
+@@ -3438,9 +3666,16 @@ panthor_job_create(struct panthor_file *pfile,
+ 		}
+ 	}
+ 
++	job->profiling.mask = pfile->ptdev->profile_mask;
++	credits = calc_job_credits(job->profiling.mask);
++	if (credits == 0) {
++		ret = -EINVAL;
++		goto err_put_job;
++	}
++
+ 	ret = drm_sched_job_init(&job->base,
+ 				 &job->group->queues[job->queue_idx]->entity,
+-				 1, job->group);
++				 credits, job->group);
+ 	if (ret)
+ 		goto err_put_job;
+ 
 -- 
 2.43.0
 
