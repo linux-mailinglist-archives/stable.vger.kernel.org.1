@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C5C9E27B8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:39:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891E49E23D4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0D94B4607C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FBD8287559
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBE61F7070;
-	Tue,  3 Dec 2024 15:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3642B1F892B;
+	Tue,  3 Dec 2024 15:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ9lbsg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvyzHKSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05801E3DF9;
-	Tue,  3 Dec 2024 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31281F76BB;
+	Tue,  3 Dec 2024 15:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238427; cv=none; b=ZM7ei9VNDpxlsq++JvS1pg6HLLm2NP3B6CJopbu3GDEPMOwx20H8dNLC7Td407P9sLT8uJxBj1+PmoK3QxCchWp/ZtvvL/d61aLcgSZt/TjSu+Jmgq9Xy37QKqjWcd0mm1eXrK1YsATkuFzxnyGQSJ3f/W89sS0XDU97FdhLEDs=
+	t=1733240290; cv=none; b=Muc9YTePLTcli/OPqvNf0auBJ/JnRH1rrjFlOqwyIuqq3BKaSOtvHuVZ65bJ967+Jebh0sDclOHyW88PQljGht9keM2WfrgkSiT7niP6mwSM64eBGsSP2fOYTnyabBF3xnMccUeEoGLFqSvl5HSkMpDgYjLIttE1WsHEhTCJ72I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238427; c=relaxed/simple;
-	bh=8EDIDDnMEYXQuHG8OUmUXVcsCI1yy/aaN9vS3tXIJac=;
+	s=arc-20240116; t=1733240290; c=relaxed/simple;
+	bh=VOPlqoMUFwO10iTe/Z4xDOYNn/x24KZXfEYwPPB8wS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rm/Dy1q3h8ARneE7vBv17RnrMGb366U4BNLC4Q7ZakU68KoY/AyJfpPxJhZBziZdSHJvZwKj8qck+ptJphmzfHRGCqFhf710sO3rE1yO0+Whnw5Dirx7ELh0KJ9fb9lPE65ySbTl2Z32Thr3Qje2I+yzB0y3ykgEmkv1/UlkkDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ9lbsg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D521C4CECF;
-	Tue,  3 Dec 2024 15:07:06 +0000 (UTC)
+	 MIME-Version; b=AMZL4Nn84HnpvjXcM52vamDVwYqlyQeRBkpwolinKylRpcRfflWgnFVj8pYHx2MfgauKGl3gJlctYETjLH4UEXJuigfG3nhWfBB7liCXKwt6pgclSfSUBhrj0UsP757aNJw9SUsVvcHMm3HqeSIT6eORRhb92FSg+IpKzBeTXjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvyzHKSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C809C4CED6;
+	Tue,  3 Dec 2024 15:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238427;
-	bh=8EDIDDnMEYXQuHG8OUmUXVcsCI1yy/aaN9vS3tXIJac=;
+	s=korg; t=1733240289;
+	bh=VOPlqoMUFwO10iTe/Z4xDOYNn/x24KZXfEYwPPB8wS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJ9lbsg8CsYVZq/YBQJirJ70VZsgL55V9eOp/S0I+js9HHS1F2AjGHHJAUrs6Y8Ky
-	 GE3ZgNge173HZaCFHMn+6q82w9cQjz+FWh+F7Ugtd/6+VFLR9g9dJerp2ROvhpmYFz
-	 LgG1Da39zMpIFjTkaOYc8iUpvp+T5EG8YBpsGCD4=
+	b=FvyzHKSGueqMDO38j4YHT6PAavPdj1LfPyVT5svRbNXZGcUu5wEgr+vzBvEaVHTzF
+	 bslFmkDOb1+jvrCSIycG86HaP3UYyhmfEq5hoxze9TmDXs10MD5x8JAgeC7CPLNQwu
+	 GZwYRaEv5E0Jirlxfkx7rFLgYGH43vnYukMNdmf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 242/817] drm/amdgpu: Fix JPEG v4.0.3 register write
-Date: Tue,  3 Dec 2024 15:36:54 +0100
-Message-ID: <20241203144005.212991437@linuxfoundation.org>
+Subject: [PATCH 6.12 088/826] timers: Add missing READ_ONCE() in __run_timer_base()
+Date: Tue,  3 Dec 2024 15:36:55 +0100
+Message-ID: <20241203144747.163662096@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 8c50bf9beb889fd2bdcbf95b27a5d101eede51fc ]
+[ Upstream commit 1d4199cbbe95efaba51304cfd844bd0ccd224e61 ]
 
-EXTERNAL_REG_INTERNAL_OFFSET/EXTERNAL_REG_WRITE_ADDR should be used in
-pairs. If an external register shouldn't be written, both packets
-shouldn't be sent.
+__run_timer_base() checks base::next_expiry without holding
+base::lock. That can race with a remote CPU updating next_expiry under the
+lock. This is an intentional and harmless data race, but lacks a
+READ_ONCE(), so KCSAN complains about this.
 
-Fixes: a78b48146972 ("drm/amdgpu: Skip PCTL0_MMHUB_DEEPSLEEP_IB write in jpegv4.0.3 under SRIOV")
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Acked-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add the missing READ_ONCE(). All other places are covered already.
+
+Fixes: 79f8b28e85f8 ("timers: Annotate possible non critical data race of next_expiry")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/all/87a5emyqk0.ffs@tglx
+Closes: https://lore.kernel.org/oe-lkp/202410301205.ef8e9743-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ kernel/time/timer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
-index b55041f38cec9..0dbc16ec25c82 100644
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
-@@ -668,11 +668,12 @@ void jpeg_v4_0_3_dec_ring_insert_start(struct amdgpu_ring *ring)
- 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
- 			0, 0, PACKETJ_TYPE0));
- 		amdgpu_ring_write(ring, 0x62a04); /* PCTL0_MMHUB_DEEPSLEEP_IB */
--	}
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 0fc9d066a7be4..7835f9b376e76 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -2422,7 +2422,8 @@ static inline void __run_timers(struct timer_base *base)
  
--	amdgpu_ring_write(ring, PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR,
--		0, 0, PACKETJ_TYPE0));
--	amdgpu_ring_write(ring, 0x80004000);
-+		amdgpu_ring_write(ring,
-+				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
-+					  0, PACKETJ_TYPE0));
-+		amdgpu_ring_write(ring, 0x80004000);
-+	}
- }
+ static void __run_timer_base(struct timer_base *base)
+ {
+-	if (time_before(jiffies, base->next_expiry))
++	/* Can race against a remote CPU updating next_expiry under the lock */
++	if (time_before(jiffies, READ_ONCE(base->next_expiry)))
+ 		return;
  
- /**
-@@ -688,11 +689,12 @@ void jpeg_v4_0_3_dec_ring_insert_end(struct amdgpu_ring *ring)
- 		amdgpu_ring_write(ring, PACKETJ(regUVD_JRBC_EXTERNAL_REG_INTERNAL_OFFSET,
- 			0, 0, PACKETJ_TYPE0));
- 		amdgpu_ring_write(ring, 0x62a04);
--	}
- 
--	amdgpu_ring_write(ring, PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR,
--		0, 0, PACKETJ_TYPE0));
--	amdgpu_ring_write(ring, 0x00004000);
-+		amdgpu_ring_write(ring,
-+				  PACKETJ(JRBC_DEC_EXTERNAL_REG_WRITE_ADDR, 0,
-+					  0, PACKETJ_TYPE0));
-+		amdgpu_ring_write(ring, 0x00004000);
-+	}
- }
- 
- /**
+ 	timer_base_lock_expiry(base);
 -- 
 2.43.0
 
