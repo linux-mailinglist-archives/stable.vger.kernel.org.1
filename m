@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404BC9E2166
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67749E240D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05320285531
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95440286429
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40DF1F76CD;
-	Tue,  3 Dec 2024 15:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D0F1F75B9;
+	Tue,  3 Dec 2024 15:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atfsKJTM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIvpYTa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12141F76A8;
-	Tue,  3 Dec 2024 15:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D541F12E0;
+	Tue,  3 Dec 2024 15:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238560; cv=none; b=mjeNRPSXoUERzLelIHYdB6SgMf9aMBmgtKnJIBtf0YOd7QYYiICjXnR6SjZe9l8r8iaYEK2RuIEwitshBPyPHaneWM1ejc8FqeAysqcSPD9iQsGihwfLcPVDVSC66QbUoIs0MCZwgEdtip8fHShwEPIkLvoRCSubyQ4qKGVWbC4=
+	t=1733240542; cv=none; b=HOtHRwuwX+K2QBULn6YRZGKb0GJoU6Hs7AhlJjXWILEG8ZV9Y9vNG+Aif1ob8QEDLKopqv1b1IMEap0C1+uNbCUXrAVVEKW09eTCl+AhDaMkD+xmKrxuwayWjtxDbUDbzcwXBpYvdJ+t8I6v0QoaAyaAx6zWCjmb6a3tW9zeyoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238560; c=relaxed/simple;
-	bh=BjHL9RdsdcW5agsf0UAN7dIbGBpNmGhy+NaPLVGNFxg=;
+	s=arc-20240116; t=1733240542; c=relaxed/simple;
+	bh=+bcj5i4X3c1DBXReS/sZmUuIEWGiGXyyqX4Lj43b/o0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dn90Ox/S7gLE7zYvEWP/9vPMdxbMypiLGQdZ9hsAyXtgSz6wbQetyybjwYkP07GrrX4I/AjcFHprk4MhXuO7vbhaLmS7a+ZA2y2Do63ZfMgMfEfnjZND+XoueZDiiyvXyrcErkAwBZVTxO0HsxuTYmGuZAzKsVlu3K90BI6u+GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atfsKJTM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83FEC4CED8;
-	Tue,  3 Dec 2024 15:09:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N9BTd1z+tnr2pieemLTdPO+logfuVbL97uQS8s6PV8DF8d5Z+WdIcYqAkqTHWyq2RaudL38vSJSarvB2JeHx5DMeZFzh2rtqNto+JBNKHqP+QfmfvVb1vMrXWpTk6PsppWyuJvkzcflr/PWYWPOjHJOhr1EeADA7YJw6vRc0nzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIvpYTa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEBBC4CECF;
+	Tue,  3 Dec 2024 15:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238560;
-	bh=BjHL9RdsdcW5agsf0UAN7dIbGBpNmGhy+NaPLVGNFxg=;
+	s=korg; t=1733240542;
+	bh=+bcj5i4X3c1DBXReS/sZmUuIEWGiGXyyqX4Lj43b/o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atfsKJTMYtMaUgiW1GVwnjBE9kYN2mZkpANX/FlshWTP4BJ+4WubaQl3oim2RN9kj
-	 kSh4yNAUkC/f5UCj09D2YvJC6MW7I3UOmaieP1/w/bnDugKTb83FaZUEXwsoFRDVNb
-	 BZlIaR5fGsiwb1KcEp1swh7oyMP5gAzl+DazyoJY=
+	b=cIvpYTa0HqazX5mjn3dMY0kdwDNu/G9Xr+gLAt0cLIp1Og8z1sOLTEA0EG2a6NcfG
+	 ceslYkV6jxs9WWetg9wJvMnibz8jOoq5Wlj77rIEzOaGx2l0eBnxG8EmEStaWZctzu
+	 2nZz4SJp3xb2eg0XCAZtQ9IReb4AYgWwT2Be8wAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurice Lambert <mauricelambert434@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 320/817] netlink: typographical error in nlmsg_type constants definition
+Subject: [PATCH 6.12 165/826] selftests/resctrl: Fix memory overflow due to unhandled wraparound
 Date: Tue,  3 Dec 2024 15:38:12 +0100
-Message-ID: <20241203144008.309339085@linuxfoundation.org>
+Message-ID: <20241203144750.173349749@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurice Lambert <mauricelambert434@gmail.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-[ Upstream commit 84bfbfbbd32aee136afea4b6bf82581dce79c305 ]
+[ Upstream commit caf02626b2bf164a02c808240f19dbf97aced664 ]
 
-This commit fix a typographical error in netlink nlmsg_type constants definition in the include/uapi/linux/rtnetlink.h at line 177. The definition is RTM_NEWNVLAN RTM_NEWVLAN instead of RTM_NEWVLAN RTM_NEWVLAN.
+alloc_buffer() allocates and initializes (with random data) a
+buffer of requested size. The initialization starts from the beginning
+of the allocated buffer and incrementally assigns sizeof(uint64_t) random
+data to each cache line. The initialization uses the size of the
+buffer to control the initialization flow, decrementing the amount of
+buffer needing to be initialized after each iteration.
 
-Signed-off-by: Maurice Lambert <mauricelambert434@gmail.com>
-Fixes: 8dcea187088b ("net: bridge: vlan: add rtm definitions and dump support")
-Link: https://patch.msgid.link/20241103223950.230300-1-mauricelambert434@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The size of the buffer is stored in an unsigned (size_t) variable s64
+and the test "s64 > 0" is used to decide if initialization is complete.
+The problem is that decrementing the buffer size may wrap around
+if the buffer size is not divisible by "CL_SIZE / sizeof(uint64_t)"
+resulting in the "s64 > 0" test being true and memory beyond the buffer
+"initialized".
+
+Use a signed value for the buffer size to support all buffer sizes.
+
+Fixes: a2561b12fe39 ("selftests/resctrl: Add built in benchmark")
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/rtnetlink.h | 2 +-
+ tools/testing/selftests/resctrl/fill_buf.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
-index 3b687d20c9ed3..db7254d52d935 100644
---- a/include/uapi/linux/rtnetlink.h
-+++ b/include/uapi/linux/rtnetlink.h
-@@ -174,7 +174,7 @@ enum {
- #define RTM_GETLINKPROP	RTM_GETLINKPROP
+diff --git a/tools/testing/selftests/resctrl/fill_buf.c b/tools/testing/selftests/resctrl/fill_buf.c
+index ae120f1735c0b..34e5df721430e 100644
+--- a/tools/testing/selftests/resctrl/fill_buf.c
++++ b/tools/testing/selftests/resctrl/fill_buf.c
+@@ -127,7 +127,7 @@ unsigned char *alloc_buffer(size_t buf_size, int memflush)
+ {
+ 	void *buf = NULL;
+ 	uint64_t *p64;
+-	size_t s64;
++	ssize_t s64;
+ 	int ret;
  
- 	RTM_NEWVLAN = 112,
--#define RTM_NEWNVLAN	RTM_NEWVLAN
-+#define RTM_NEWVLAN	RTM_NEWVLAN
- 	RTM_DELVLAN,
- #define RTM_DELVLAN	RTM_DELVLAN
- 	RTM_GETVLAN,
+ 	ret = posix_memalign(&buf, PAGE_SIZE, buf_size);
 -- 
 2.43.0
 
