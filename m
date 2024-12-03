@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471269E2909
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B109E2993
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 761D3B33E95
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A57DABA17D1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468011F76C7;
-	Tue,  3 Dec 2024 15:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F08A1F75AE;
+	Tue,  3 Dec 2024 15:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvyRok9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G15k2Utj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D341F759C;
-	Tue,  3 Dec 2024 15:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE081F4709;
+	Tue,  3 Dec 2024 15:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240523; cv=none; b=YTnPLXYJo+7Eqh4LQLnFxM5MKaflmaH6siYHSvA62WfAljb5J0VABvBOimEAuhR9392p5LcC6+LuXA67dOkYKapOaI57LKTfVzRkV3koZ+nwDASiXeKlRppBGwSlbQDyaFUlT+QmyqxO7DCERjgNInia6rCvwnD2uPE1tdq2hs8=
+	t=1733238548; cv=none; b=a8Zgh66ARmy4MZXjguCQfkrDiUpcZepGyzjH2KGRvsxHiSd38PU6yuiW/6m8/tQQdruuC1cGkdBIEmX+JGLgpdBquJERDdfc8Fqtdx6UnUFbktKAYvMKA3oqzA9XVLZl9XE8s8KjUAFCznO3RNcdzYM9cj1l5Q1tcmRkzaaMYxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240523; c=relaxed/simple;
-	bh=mHJ1SmiOHaYQsb5g4ORYkG+GivuKDFtE1+k5FzAk06g=;
+	s=arc-20240116; t=1733238548; c=relaxed/simple;
+	bh=+9AJIQi1cW03YDZbrFKHhtm4rYXHnn89PezIjIeIGbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQJg6HQLdqtX6UZ5KYIeby4Al5whw/1rQXTyCO6UnRSh5BHpySqQIWqARylQcfdUXJOKh/PeRSdgaxEE6SKrJEKVdS6mCCIJYIZ8MNxtPGEBMWK7RxF3bchYmxKZEPPyLPtnjRuKDuDJUlOiOUwZgeBuLlJDdOAdUKi4f80JQfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvyRok9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A1DC4CECF;
-	Tue,  3 Dec 2024 15:42:02 +0000 (UTC)
+	 MIME-Version; b=AEIRXWtmcygTqgCZqjwQtp4UF3urt3WdHXILmBm2KPoID6zlLgy/2b46j3UknWFUQ5tY2Pz+Uyy8xEvFkEkLQA4Bx4qAdc4N+mHU+WB52lMtXQu6jcgY8OkAIJnlMBbJGI+lH/ACVW3aUSV4xOanx5w/WN8pwPC4hQhQWg+GBIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G15k2Utj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A58C4CECF;
+	Tue,  3 Dec 2024 15:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240522;
-	bh=mHJ1SmiOHaYQsb5g4ORYkG+GivuKDFtE1+k5FzAk06g=;
+	s=korg; t=1733238548;
+	bh=+9AJIQi1cW03YDZbrFKHhtm4rYXHnn89PezIjIeIGbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvyRok9sRIWrXZ+0AYckHy1w77Brw0L9jDxAqtExFZEeFlV0qJJhdLUxrLoexg4y2
-	 jpPtpske39nld+qzxMghHsIqCpnAFaZwlyKuAxokTz3uTBy+T7L4r4Vw0cdvGlSU2u
-	 WoYtBKfkRZfzOuCrscpQ1HF4vKSmxCVi7IkgFLVc=
+	b=G15k2Utj5U/Q9mpTjlgmKR8U84j+kuiBotsMGzbtKF2B7tW5Yx7XJFG/KHCCWdQcf
+	 UFHZhDSI4irsadW572DgLOwKHhiJCOeymvTfLmLAa3leUa/p3ZhvKWn0AlaoXTcYJS
+	 QjyJ23aKfUCNOk8vtJOy1hsK+GkwuDsPXss9fJr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Jonathan Gray <jsg@jsg.id.au>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 160/826] arm64: dts: imx8mn-tqma8mqnl-mba8mx-usbot: fix coexistence of output-low and output-high in GPIO
-Date: Tue,  3 Dec 2024 15:38:07 +0100
-Message-ID: <20241203144749.982355444@linuxfoundation.org>
+Subject: [PATCH 6.11 316/817] drm: use ATOMIC64_INIT() for atomic64_t
+Date: Tue,  3 Dec 2024 15:38:08 +0100
+Message-ID: <20241203144008.153148401@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jonathan Gray <jsg@jsg.id.au>
 
-[ Upstream commit c771d311b1901cd4679c8fc7f89a882fe07cf4a0 ]
+[ Upstream commit 9877bb2775d020fb7000af5ca989331d09d0e372 ]
 
-Fix the issue where both 'output-low' and 'output-high' exist under GPIO
-hog nodes  (rst_usb_hub_hog and sel_usb_hub_hog) when applying device
-tree overlays. Since /delete-property/ is not supported in the overlays,
-setting 'output-low' results in both properties being present. The
-workaround is to disable these hogs and create new ones with 'output-low'
-as needed.
+use ATOMIC64_INIT() not ATOMIC_INIT() for atomic64_t
 
-Fix below CHECK_DTBS warning:
-arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtb: sel-usb-hub-hog:
-   {'output-low': True, 'gpio-hog': True, 'gpios': [[1, 0]], 'output-high': True, 'phandle': 108, '$nodename': ['sel-usb-hub-hog']}
-       is valid under each of {'required': ['output-low']}, {'required': ['output-high']
-
-Fixes: 3f6fc30abebc ("arm64: dts: imx8mn: tqma8mqnl-mba8mx: Add USB DR overlay")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 3f09a0cd4ea3 ("drm: Add common fdinfo helper")
+Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240111023045.50013-1-jsg@jsg.id.au
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../imx8mn-tqma8mqnl-mba8mx-usbotg.dtso       | 29 +++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-index 96db07fc9bece..1f2a0fe70a0a2 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-tqma8mqnl-mba8mx-usbotg.dtso
-@@ -29,12 +29,37 @@ usb_dr_connector: endpoint {
- 	};
- };
- 
-+/*
-+ * rst_usb_hub_hog and sel_usb_hub_hog have property 'output-high',
-+ * dt overlay don't support /delete-property/. Both 'output-low' and
-+ * 'output-high' will be exist under hog nodes if overlay file set
-+ * 'output-low'. Workaround is disable these hog and create new hog with
-+ * 'output-low'.
-+ */
-+
- &rst_usb_hub_hog {
--	output-low;
-+	status = "disabled";
-+};
-+
-+&expander0 {
-+	rst-usb-low-hub-hog {
-+		gpio-hog;
-+		gpios = <13 0>;
-+		output-low;
-+		line-name = "RST_USB_HUB#";
-+	};
- };
- 
- &sel_usb_hub_hog {
--	output-low;
-+	status = "disabled";
-+};
-+
-+&gpio2 {
-+	sel-usb-low-hub-hog {
-+		gpio-hog;
-+		gpios = <1 GPIO_ACTIVE_HIGH>;
-+		output-low;
-+	};
- };
- 
- &usbotg1 {
+diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
+index f917b259b3342..26fc813d37edf 100644
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -138,7 +138,7 @@ bool drm_dev_needs_global_mutex(struct drm_device *dev)
+  */
+ struct drm_file *drm_file_alloc(struct drm_minor *minor)
+ {
+-	static atomic64_t ident = ATOMIC_INIT(0);
++	static atomic64_t ident = ATOMIC64_INIT(0);
+ 	struct drm_device *dev = minor->dev;
+ 	struct drm_file *file;
+ 	int ret;
 -- 
 2.43.0
 
