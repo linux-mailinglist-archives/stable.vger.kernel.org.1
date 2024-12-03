@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CEF9E24BA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6211D9E217F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750FE1683D4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 291232852D8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063E51F76D7;
-	Tue,  3 Dec 2024 15:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F37A1FAC34;
+	Tue,  3 Dec 2024 15:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwS3Ipjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYhjxsR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B900E1F7591;
-	Tue,  3 Dec 2024 15:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3041F76DE;
+	Tue,  3 Dec 2024 15:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240668; cv=none; b=Q8IFO0bJ8wpd7OW7NYJXW1/pZaqxN7/sC+nm8nK5XdRaJzgEFYwDevsgCIedkcosqgYBWHgGsIS2SnmWiPXPMGUqlhHRanAnVntOm/SA42bdPOobZK/EkQsYmu+hUJe4xsx74+kT7CAfjs0EGBqwfq2c+Z5u6dmtxgSeiUWaeow=
+	t=1733238661; cv=none; b=H0IJ8hbMrcDTUxe8CDiRuTrSICOUV0rVeqtDCLvElX3xw++nMRwwCwkxrNCr/ignzkIrWverBbz/KLcldGw1W+z+w9TVimQfPK/eKI2sSuNeBNx4FIAMJu9Cof5OoTKIO4pXsO/LrlSMqJbCdCB85M0DTyI8eidkyYOtY/2jmqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240668; c=relaxed/simple;
-	bh=jcFXFzkKbUFjMnYL98pz+Qdwcf54qXh4XQq7FP86gtE=;
+	s=arc-20240116; t=1733238661; c=relaxed/simple;
+	bh=A1tpWOEgmJ1MSkCLR3O+5YhQ1nqT0RZMUoYRE+4J4t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YkGH34pBFKXT8z5aW5eznEcHPe9bKWwgKVUJcve7yonVXy/jsL/I5ouA7wkjdF4oR/mCZ3y/vqb7oOfNvGRfh+0g6O4BHwf2twoTAVNkmbXtSfeh/kTU6b1nwlp+b+hbOIyakhSNtDA6jWvGLLbbqiEuqC4xO78q4oY8grSlzjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwS3Ipjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7D2C4CECF;
-	Tue,  3 Dec 2024 15:44:27 +0000 (UTC)
+	 MIME-Version; b=CsFhUHZhjJiw4HqWU6RbaRIghF7AJiGE60XJsD9jgaiweB7mmsoyqybmXqVA84i+mvCK9N+Qa9fTLI9mmUZEmA/tZ9iDkJ/jqMiDnx6jWnwaYoVCHXbZUDGKcQjVGducbZKtEwR32NMQubV7d3AG6sHHLfpKjtIfxZ901ZM8UWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYhjxsR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C991AC4CECF;
+	Tue,  3 Dec 2024 15:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240668;
-	bh=jcFXFzkKbUFjMnYL98pz+Qdwcf54qXh4XQq7FP86gtE=;
+	s=korg; t=1733238661;
+	bh=A1tpWOEgmJ1MSkCLR3O+5YhQ1nqT0RZMUoYRE+4J4t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwS3IpjjeTUNJnNVIoZzE28rfJ2p+e3YH0MJxYTYktAHyjw+Q9ltkABIQKm9Mbyub
-	 56dqkX/hoPBrNkwpdofa07jJ3Q2MmZVYj0h/8jeZAt038l0vpcag2rKEtk6u4WbowW
-	 cyMrUEvCcic0URwt71Eelah1gZ95e5srlxyvEhu4=
+	b=BYhjxsR6KjjW8d6y4u5z07AIIGm6ne6xKaXYzECXzT69qIrGLT9KdtROOHYW8hK3k
+	 4+Yy5mreL7ZupCyFo1T9m81jDwSU+utdsN3+puok16LrBdNagj1ElzgiViBcJ9OQqb
+	 BPjWzjucpLCq+vvR1Ath/V0aPLGLkvUnPcVuZ10c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Chris Healy <cphealy@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Guan Jing <guanjing@cmss.chinamobile.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 200/826] drm/imx: ldb: drop custom EDID support
+Subject: [PATCH 6.11 355/817] selftests: netfilter: Fix missing return values in conntrack_dump_flush
 Date: Tue,  3 Dec 2024 15:38:47 +0100
-Message-ID: <20241203144751.548273138@linuxfoundation.org>
+Message-ID: <20241203144009.689695081@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: guanjing <guanjing@cmss.chinamobile.com>
 
-[ Upstream commit aed7b500315004a917463d571fa9cd12e0e94370 ]
+[ Upstream commit 041bd1e4f2d82859690cd8b41c35f0f9404c3770 ]
 
-Bindings for the imx-ldb never allowed specifying the EDID in DT. None
-of the existing DT files use it. Drop it now in favour of using debugfs
-overrides or the drm.edid_firmware support.
+Fix the bug of some functions were missing return values.
 
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Tested-by: Chris Healy <cphealy@gmail.com>
-Tested-by: Philipp Zabel <p.zabel@pengutronix.de> # on imx6q-nitrogen6x
-Link: https://patchwork.freedesktop.org/patch/msgid/20240602-drm-imx-cleanup-v3-5-e549e2a43100@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Stable-dep-of: f673055a4678 ("drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency")
+Fixes: eff3c558bb7e ("netfilter: ctnetlink: support filtering by zone")
+Signed-off-by: Guan Jing <guanjing@cmss.chinamobile.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 29 +++++++++++------------------
- 1 file changed, 11 insertions(+), 18 deletions(-)
+ .../testing/selftests/net/netfilter/conntrack_dump_flush.c  | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-index 793dfb1a3ed00..1924d8921c620 100644
---- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-+++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
-@@ -72,7 +72,6 @@ struct imx_ldb_channel {
- 	struct device_node *child;
- 	struct i2c_adapter *ddc;
- 	int chno;
--	const struct drm_edid *drm_edid;
- 	struct drm_display_mode mode;
- 	int mode_valid;
- 	u32 bus_format;
-@@ -142,14 +141,17 @@ static int imx_ldb_connector_get_modes(struct drm_connector *connector)
- 	if (num_modes > 0)
- 		return num_modes;
+diff --git a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
+index dc056fec993bd..7e8ffe6b95a45 100644
+--- a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
++++ b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
+@@ -43,6 +43,8 @@ static int build_cta_tuple_v4(struct nlmsghdr *nlh, int type,
+ 	mnl_attr_nest_end(nlh, nest_proto);
  
--	if (!imx_ldb_ch->drm_edid && imx_ldb_ch->ddc) {
--		imx_ldb_ch->drm_edid = drm_edid_read_ddc(connector,
--							 imx_ldb_ch->ddc);
--		drm_edid_connector_update(connector, imx_ldb_ch->drm_edid);
--	}
-+	if (imx_ldb_ch->ddc) {
-+		const struct drm_edid *edid = drm_edid_read_ddc(connector,
-+								imx_ldb_ch->ddc);
- 
--	if (imx_ldb_ch->drm_edid)
--		num_modes = drm_edid_connector_add_modes(connector);
-+		if (edid) {
-+			drm_edid_connector_update(connector, edid);
-+			drm_edid_free(edid);
+ 	mnl_attr_nest_end(nlh, nest);
 +
-+			return drm_edid_connector_add_modes(connector);
-+		}
-+	}
++	return 0;
+ }
  
- 	if (imx_ldb_ch->mode_valid) {
- 		struct drm_display_mode *mode;
-@@ -566,18 +568,10 @@ static int imx_ldb_panel_ddc(struct device *dev,
- 	}
+ static int build_cta_tuple_v6(struct nlmsghdr *nlh, int type,
+@@ -71,6 +73,8 @@ static int build_cta_tuple_v6(struct nlmsghdr *nlh, int type,
+ 	mnl_attr_nest_end(nlh, nest_proto);
  
- 	if (!channel->ddc) {
--		const void *edidp;
--		int edid_len;
--
- 		/* if no DDC available, fallback to hardcoded EDID */
- 		dev_dbg(dev, "no ddc available\n");
+ 	mnl_attr_nest_end(nlh, nest);
++
++	return 0;
+ }
  
--		edidp = of_get_property(child, "edid", &edid_len);
--		if (edidp) {
--			channel->drm_edid = drm_edid_alloc(edidp, edid_len);
--			if (!channel->drm_edid)
--				return -ENOMEM;
--		} else if (!channel->panel) {
-+		if (!channel->panel) {
- 			/* fallback to display-timings node */
- 			ret = of_get_drm_display_mode(child,
- 						      &channel->mode,
-@@ -744,7 +738,6 @@ static void imx_ldb_remove(struct platform_device *pdev)
- 	for (i = 0; i < 2; i++) {
- 		struct imx_ldb_channel *channel = &imx_ldb->channel[i];
+ static int build_cta_proto(struct nlmsghdr *nlh)
+@@ -90,6 +94,8 @@ static int build_cta_proto(struct nlmsghdr *nlh)
+ 	mnl_attr_nest_end(nlh, nest_proto);
  
--		drm_edid_free(channel->drm_edid);
- 		i2c_put_adapter(channel->ddc);
- 	}
+ 	mnl_attr_nest_end(nlh, nest);
++
++	return 0;
+ }
  
+ static int conntrack_data_insert(struct mnl_socket *sock, struct nlmsghdr *nlh,
 -- 
 2.43.0
 
