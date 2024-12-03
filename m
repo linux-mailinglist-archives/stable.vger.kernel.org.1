@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-96985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F31719E220F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F129C9E27E4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B614028485A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:19:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D481B65CA8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA161F7585;
-	Tue,  3 Dec 2024 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D181F75B4;
+	Tue,  3 Dec 2024 15:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MY0ON7sk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/riABZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D661F757D;
-	Tue,  3 Dec 2024 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99C81DE8A5;
+	Tue,  3 Dec 2024 15:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239185; cv=none; b=n4xelzXK7idpxvrpVKA6e+Pt0WM1iGWOqQ5SI9/5LBzwq/NeIWhWgJaccL61J3DvS8UPBtxPUmMlVUc7ZiZ8XgxuEJhOd2eYBnh6Kvp/I0b6jIoizDeVYfN7enqs6YAwWlNvslrBclJFocnw06d4yGkd9wFHXDcyG7MD8RhdpUo=
+	t=1733241427; cv=none; b=nWiLOa3Vn73fKKdZ2A5QSz5u1W1wZZ3N8LCCw24alcLdUwC3dVGcVyjSnVNGfikwKAi2Gy35Dv7jqhNICcd5v/AxoJm8QbG/J0rkPIJvMyMFPTQa2qBZjJOCTmgPR3Gzy6KqEkOLCmey6lDQMzImFT180B3f2tb1PJlNOTNg7NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239185; c=relaxed/simple;
-	bh=Zk43yiDi11BH8CoH/1nI8IZAjEzFbZLZGHl+Wd1EZgk=;
+	s=arc-20240116; t=1733241427; c=relaxed/simple;
+	bh=rXD/CcM9gUjpi6lH8egGPHhEQ3bvx+lFDdfBxgqsK10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YnpTSH259kw2F6gy7aPaPrHoi7l897FVJZaTwaeMQGdiC0FeS13Nx17/2MIWNkUDre0Wx1JABApRNpeHF9NHYwMdWikg2zfAyNCG9Mq3V2g9zNgFuQprXDO8SmsEUpuaeT5E1n0VLvfUFl7WWGDN+bPxZlAJ+aIxlF7GZTH85Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MY0ON7sk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05954C4CED9;
-	Tue,  3 Dec 2024 15:19:44 +0000 (UTC)
+	 MIME-Version; b=DWz/5Crpefv/GP7yWPrvuOzCJMd7GEcUcT2XUOK7GWiWAWmJhMqWAMjSX9fMNkXvzzSQVwD6RJqPmv37i3JvSKE1QBCAB1WA94Ur51N9bHKRmT9aNsQhQLxpMDR3670B615qMTe5p42fEFE+aT+b0n0N3pEGClRRhu67mZ0mZu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/riABZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49092C4CECF;
+	Tue,  3 Dec 2024 15:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239185;
-	bh=Zk43yiDi11BH8CoH/1nI8IZAjEzFbZLZGHl+Wd1EZgk=;
+	s=korg; t=1733241427;
+	bh=rXD/CcM9gUjpi6lH8egGPHhEQ3bvx+lFDdfBxgqsK10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MY0ON7skKg7EqJco9RkAh5bb69YLaeJGDBGCNE48i9TUnT8sPgNTYK6Z0VZDUdT44
-	 vTxpmltYD3UZABBFWiYYmB27lGtNzvrxcaoMoazTGN117kCDcZNCRPSFRYUR3UQoep
-	 25/rePHIXSGzaKKcHU5oHV5lJQ9hhnfBV/iMenXc=
+	b=W/riABZxWZPJOx28UU9oGWRP/SVDAjG/2/fd2qNeusCNOP4zXMtgc08NrTTl7On+z
+	 8mQv8kFzaXdB11vuI2uJvqfGcjvZap2jtY7d1H9PAy4twLypGUlXsGrl3xjbUGP35w
+	 Ioww1TCAFLiTYpGftVLrrFVJARNIzR4OZu4Fwz28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Zhang Ning <zhangn1985@outlook.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 528/817] svcrdma: Address an integer overflow
+Subject: [PATCH 6.12 373/826] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for TMU device
 Date: Tue,  3 Dec 2024 15:41:40 +0100
-Message-ID: <20241203144016.508940460@linuxfoundation.org>
+Message-ID: <20241203144758.314437922@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +64,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 3c63d8946e578663b868cb9912dac616ea68bfd0 ]
+[ Upstream commit 9b79d59e6b2b515eb9a22bc469ef7b8f0904fc73 ]
 
-Dan Carpenter reports:
-> Commit 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data
-> structure") from Jun 22, 2020 (linux-next), leads to the following
-> Smatch static checker warning:
->
->	net/sunrpc/xprtrdma/svc_rdma_recvfrom.c:498 xdr_check_write_chunk()
->	warn: potential user controlled sizeof overflow 'segcount * 4 * 4'
->
-> net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
->     488 static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
->     489 {
->     490         u32 segcount;
->     491         __be32 *p;
->     492
->     493         if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
->                                                               ^^^^^^^^
->
->     494                 return false;
->     495
->     496         /* A bogus segcount causes this buffer overflow check to fail. */
->     497         p = xdr_inline_decode(&rctxt->rc_stream,
-> --> 498                               segcount * rpcrdma_segment_maxsz * sizeof(*p));
->
->
-> segcount is an untrusted u32.  On 32bit systems anything >= SIZE_MAX / 16 will
-> have an integer overflow and some those values will be accepted by
-> xdr_inline_decode().
+While design wise the idea of converting the driver to use
+the hierarchy of the IRQ chips is correct, the implementation
+has (inherited) flaws. This was unveiled when platform_get_irq()
+had started WARN() on IRQ 0 that is supposed to be a Linux
+IRQ number (also known as vIRQ).
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data structure")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Rework the driver to respect IRQ domain when creating each MFD
+device separately, as the domain is not the same for all of them.
+
+Fixes: 957ae5098185 ("platform/x86: Add Whiskey Cove PMIC TMU support")
+Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
+Reported-by: Zhang Ning <zhangn1985@outlook.com>
+Closes: https://lore.kernel.org/r/TY2PR01MB3322FEDCDC048B7D3794F922CDBA2@TY2PR01MB3322.jpnprd01.prod.outlook.com
+Tested-by: Zhang Ning <zhangn1985@outlook.com>
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20241005193029.1929139-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mfd/intel_soc_pmic_bxtwc.c     | 31 ++++++++++++++------------
+ drivers/platform/x86/intel/bxtwc_tmu.c | 22 +++++-------------
+ 2 files changed, 23 insertions(+), 30 deletions(-)
 
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-index d72953f292582..69d497a0ca204 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -493,7 +493,13 @@ static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
- 	if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
- 		return false;
+diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
+index d72995a9e8207..628108dcf5454 100644
+--- a/drivers/mfd/intel_soc_pmic_bxtwc.c
++++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
+@@ -245,12 +245,6 @@ static struct mfd_cell bxt_wc_dev[] = {
+ 		.num_resources = ARRAY_SIZE(bcu_resources),
+ 		.resources = bcu_resources,
+ 	},
+-	{
+-		.name = "bxt_wcove_tmu",
+-		.num_resources = ARRAY_SIZE(tmu_resources),
+-		.resources = tmu_resources,
+-	},
+-
+ 	{
+ 		.name = "bxt_wcove_gpio",
+ 		.num_resources = ARRAY_SIZE(gpio_resources),
+@@ -261,6 +255,14 @@ static struct mfd_cell bxt_wc_dev[] = {
+ 	},
+ };
  
--	/* A bogus segcount causes this buffer overflow check to fail. */
-+	/* Before trusting the segcount value enough to use it in
-+	 * a computation, perform a simple range check. This is an
-+	 * arbitrary but sensible limit (ie, not architectural).
-+	 */
-+	if (unlikely(segcount > RPCSVC_MAXPAGES))
-+		return false;
++static const struct mfd_cell bxt_wc_tmu_dev[] = {
++	{
++		.name = "bxt_wcove_tmu",
++		.num_resources = ARRAY_SIZE(tmu_resources),
++		.resources = tmu_resources,
++	},
++};
 +
- 	p = xdr_inline_decode(&rctxt->rc_stream,
- 			      segcount * rpcrdma_segment_maxsz * sizeof(*p));
- 	return p != NULL;
+ static struct mfd_cell bxt_wc_chgr_dev[] = {
+ 	{
+ 		.name = "bxt_wcove_usbc",
+@@ -489,6 +491,15 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to add IRQ chip\n");
+ 
++	ret = bxtwc_add_chained_devices(pmic, bxt_wc_tmu_dev, ARRAY_SIZE(bxt_wc_tmu_dev),
++					pmic->irq_chip_data,
++					BXTWC_TMU_LVL1_IRQ,
++					IRQF_ONESHOT,
++					&bxtwc_regmap_irq_chip_tmu,
++					&pmic->irq_chip_data_tmu);
++	if (ret)
++		return ret;
++
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+ 					 BXTWC_PWRBTN_LVL1_IRQ,
+ 					 IRQF_ONESHOT,
+@@ -497,14 +508,6 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
+ 
+-	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+-					 BXTWC_TMU_LVL1_IRQ,
+-					 IRQF_ONESHOT,
+-					 &bxtwc_regmap_irq_chip_tmu,
+-					 &pmic->irq_chip_data_tmu);
+-	if (ret)
+-		return dev_err_probe(dev, ret, "Failed to add TMU IRQ chip\n");
+-
+ 	/* Add chained IRQ handler for BCU IRQs */
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+ 					 BXTWC_BCU_LVL1_IRQ,
+diff --git a/drivers/platform/x86/intel/bxtwc_tmu.c b/drivers/platform/x86/intel/bxtwc_tmu.c
+index d0e2a3c293b0b..9ac801b929b93 100644
+--- a/drivers/platform/x86/intel/bxtwc_tmu.c
++++ b/drivers/platform/x86/intel/bxtwc_tmu.c
+@@ -48,9 +48,8 @@ static irqreturn_t bxt_wcove_tmu_irq_handler(int irq, void *data)
+ static int bxt_wcove_tmu_probe(struct platform_device *pdev)
+ {
+ 	struct intel_soc_pmic *pmic = dev_get_drvdata(pdev->dev.parent);
+-	struct regmap_irq_chip_data *regmap_irq_chip;
+ 	struct wcove_tmu *wctmu;
+-	int ret, virq, irq;
++	int ret;
+ 
+ 	wctmu = devm_kzalloc(&pdev->dev, sizeof(*wctmu), GFP_KERNEL);
+ 	if (!wctmu)
+@@ -59,27 +58,18 @@ static int bxt_wcove_tmu_probe(struct platform_device *pdev)
+ 	wctmu->dev = &pdev->dev;
+ 	wctmu->regmap = pmic->regmap;
+ 
+-	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
+-		return irq;
++	wctmu->irq = platform_get_irq(pdev, 0);
++	if (wctmu->irq < 0)
++		return wctmu->irq;
+ 
+-	regmap_irq_chip = pmic->irq_chip_data_tmu;
+-	virq = regmap_irq_get_virq(regmap_irq_chip, irq);
+-	if (virq < 0) {
+-		dev_err(&pdev->dev,
+-			"failed to get virtual interrupt=%d\n", irq);
+-		return virq;
+-	}
+-
+-	ret = devm_request_threaded_irq(&pdev->dev, virq,
++	ret = devm_request_threaded_irq(&pdev->dev, wctmu->irq,
+ 					NULL, bxt_wcove_tmu_irq_handler,
+ 					IRQF_ONESHOT, "bxt_wcove_tmu", wctmu);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "request irq failed: %d,virq: %d\n",
+-							ret, virq);
++			ret, wctmu->irq);
+ 		return ret;
+ 	}
+-	wctmu->irq = virq;
+ 
+ 	/* Unmask TMU second level Wake & System alarm */
+ 	regmap_update_bits(wctmu->regmap, BXTWC_MTMUIRQ_REG,
 -- 
 2.43.0
 
