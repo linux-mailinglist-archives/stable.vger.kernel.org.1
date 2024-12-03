@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-96763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267D49E215C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E279E24E0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1249284A32
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E31DBC327B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06421F8934;
-	Tue,  3 Dec 2024 15:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8531F8919;
+	Tue,  3 Dec 2024 15:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3TgIZk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPRtp03F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3A61F7558;
-	Tue,  3 Dec 2024 15:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E101F890C;
+	Tue,  3 Dec 2024 15:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238523; cv=none; b=LcwokU4NfbSlSlM/iYJtZxo96kyf6YYDApyivMiefjt5WL1oIfnXdExjMc9LC9FUoPITmD4vCdtw2N0ui0nTffka1Pt1Fsr3uG+buWj57w9mITH+JImvhgWq2W9aCLEUGS8S2GhLeRYJwOe0rKBV42gkmNPeS7GLEtJiFRWudCE=
+	t=1733240385; cv=none; b=i3CfWiFlspXHd7hnqZGHpZ44SfIYKo6KJ12WPw5m7PUW1TAcEDIdnjdBy+waiRNka6j3tGJGGgUuKWSaXUjN9YMgUhfCx5xVzoI6HplbtHSBkmbYkJoaH1Y7QymyWtglPGwkkXkuElgsHt94YNqiVxJ8OZG4iZAiVvmgkN5zwIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238523; c=relaxed/simple;
-	bh=vk94M8PKiEOX5QXek4pypW2pb2QX/x0aSLlUmKudfJs=;
+	s=arc-20240116; t=1733240385; c=relaxed/simple;
+	bh=6aWq1PgLmmZL3C3N3k1X/LQmynZy6JZsFLXRNIFnzeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt98z9J5F4nD/NtbB3vsWRkFKcoQIbOykyeA9dIj0I8O6K18+q00V3Szhs3N05DX6yRZp2UQkAdrtdtQzFO0anSJvvEILu5v/WUdGMCspwIK7q3+GpyH+wRkvx96P/FT9ikQvzbXe36doYMkCozgC+QDBL5B526KaMPPkWlDZJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3TgIZk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B7EC4CED6;
-	Tue,  3 Dec 2024 15:08:42 +0000 (UTC)
+	 MIME-Version; b=gH+3rr5oaFe0L1pW6crNKT2SqLXAOjQrZk1wzZFaYHDWNWgsu+SK11TzgHjRInBWdeL8QJtZiRtax4ygEgXfD4XKZJrwsXFXR4Q3UTHx5F4NjwrnvfAjSzVWsN3G9w2wrJiKMs0uBFn6usxWGK7DC51JNdsTP4yCjNT9aPXDA0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPRtp03F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E2CC4CECF;
+	Tue,  3 Dec 2024 15:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238523;
-	bh=vk94M8PKiEOX5QXek4pypW2pb2QX/x0aSLlUmKudfJs=;
+	s=korg; t=1733240385;
+	bh=6aWq1PgLmmZL3C3N3k1X/LQmynZy6JZsFLXRNIFnzeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3TgIZk50RdwMn4l0MeEZEJ7b/IbKlFHR2KkBvxvC4kLLGsz653Ojt81/119r4frd
-	 1+F1WDH9hotY4YVx5S49buLjtefX2NJs0o3ne9ZxSeKIV8dFCZgozptb6oavNkFPBb
-	 zQKrE9aHv5/XoYXdbhVu21WiQOxjpvkpSWPP3Ay4=
+	b=DPRtp03FbZq4gQbAui7N1cQoH/+n12EwwbH0lPIWPSkWrmJEzasPjcXEiJtSJV5zo
+	 M/nxBSgEjnC9CV9ibm2CdYI5BOmWyVc9P1LawXQ7uigEtrtOWOT3cBs0CEHatioq9i
+	 VV1aCxgTfuUVJqr8xfZIRv1bDFzo7FDjoFvIHfcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 275/817] netdevsim: copy addresses for both in and out paths
+Subject: [PATCH 6.12 120/826] openrisc: Implement fixmap to fix earlycon
 Date: Tue,  3 Dec 2024 15:37:27 +0100
-Message-ID: <20241203144006.539967053@linuxfoundation.org>
+Message-ID: <20241203144748.427486402@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Stafford Horne <shorne@gmail.com>
 
-[ Upstream commit 2cf567f421dbfe7e53b7e5ddee9400da10efb75d ]
+[ Upstream commit 1037d186edfc551fa7ba2d4336e74e7575a07a65 ]
 
-The current code only copies the address for the in path, leaving the out
-path address set to 0. This patch corrects the issue by copying the addresses
-for both the in and out paths. Before this patch:
+With commit 53c98e35dcbc ("openrisc: mm: remove unneeded early ioremap
+code") it was commented that early ioremap was not used in OpenRISC.  I
+acked this but was wrong, earlycon was using it.  Earlycon setup now
+fails with the below trace:
 
-  # cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-  SA count=2 tx=20
-  sa[0] tx ipaddr=0.0.0.0
-  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-  sa[1] rx ipaddr=192.168.0.1
-  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+    Kernel command line: earlycon
+    ------------[ cut here ]------------
+    WARNING: CPU: 0 PID: 0 at mm/ioremap.c:23
+    generic_ioremap_prot+0x118/0x130
+    Modules linked in:
+    CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted
+    6.11.0-rc5-00001-gce02fd891c38-dirty #141
+    Call trace:
+    [<(ptrval)>] dump_stack_lvl+0x7c/0x9c
+    [<(ptrval)>] dump_stack+0x1c/0x2c
+    [<(ptrval)>] __warn+0xb4/0x108
+    [<(ptrval)>] ? generic_ioremap_prot+0x118/0x130
+    [<(ptrval)>] warn_slowpath_fmt+0x60/0x98
+    [<(ptrval)>] generic_ioremap_prot+0x118/0x130
+    [<(ptrval)>] ioremap_prot+0x20/0x30
+    [<(ptrval)>] of_setup_earlycon+0xd4/0x2e0
+    [<(ptrval)>] early_init_dt_scan_chosen_stdout+0x18c/0x1c8
+    [<(ptrval)>] param_setup_earlycon+0x3c/0x60
+    [<(ptrval)>] do_early_param+0xb0/0x118
+    [<(ptrval)>] parse_args+0x184/0x4b8
+    [<(ptrval)>] ? start_kernel+0x0/0x78c
+    [<(ptrval)>] parse_early_options+0x40/0x50
+    [<(ptrval)>] ? do_early_param+0x0/0x118
+    [<(ptrval)>] parse_early_param+0x48/0x68
+    [<(ptrval)>] ? start_kernel+0x318/0x78c
+    [<(ptrval)>] ? start_kernel+0x0/0x78c
+    ---[ end trace 0000000000000000 ]---
 
-After this patch:
+To fix this we could either implement early_ioremap again or implement
+fixmap.  In this patch we choose the later option of implementing basic
+fixmap support.
 
-  = cat /sys/kernel/debug/netdevsim/netdevsim0/ports/0/ipsec
-  SA count=2 tx=20
-  sa[0] tx ipaddr=192.168.0.2
-  sa[0]    spi=0x00000100 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[0]    key=0x3167608a ca4f1397 43565909 941fa627
-  sa[1] rx ipaddr=192.168.0.1
-  sa[1]    spi=0x00000101 proto=0x32 salt=0x0adecc3a crypt=1
-  sa[1]    key=0x3167608a ca4f1397 43565909 941fa627
+While fixing this we also remove the old FIX_IOREMAP slots that were
+used by early ioremap code.  That code was also removed by commit
+53c98e35dcbc ("openrisc: mm: remove unneeded early ioremap code") but
+these definitions were not cleaned up.
 
-Fixes: 7699353da875 ("netdevsim: add ipsec offload testing")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://patch.msgid.link/20241010040027.21440-3-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 53c98e35dcbc ("openrisc: mm: remove unneeded early ioremap code")
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/ipsec.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/openrisc/Kconfig              |  3 +++
+ arch/openrisc/include/asm/fixmap.h | 21 ++++-------------
+ arch/openrisc/mm/init.c            | 37 ++++++++++++++++++++++++++++++
+ 3 files changed, 45 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
-index f0d58092e7e96..3612b0633bd17 100644
---- a/drivers/net/netdevsim/ipsec.c
-+++ b/drivers/net/netdevsim/ipsec.c
-@@ -176,14 +176,13 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs,
- 		return ret;
- 	}
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index 69c0258700b28..3279ef457c573 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -65,6 +65,9 @@ config STACKTRACE_SUPPORT
+ config LOCKDEP_SUPPORT
+ 	def_bool  y
  
--	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
-+	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN)
- 		sa.rx = true;
++config FIX_EARLYCON_MEM
++	def_bool y
++
+ menu "Processor type and features"
  
--		if (xs->props.family == AF_INET6)
--			memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
--		else
--			memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
--	}
-+	if (xs->props.family == AF_INET6)
-+		memcpy(sa.ipaddr, &xs->id.daddr.a6, 16);
+ choice
+diff --git a/arch/openrisc/include/asm/fixmap.h b/arch/openrisc/include/asm/fixmap.h
+index ecdb98a5839f7..aaa6a26a3e921 100644
+--- a/arch/openrisc/include/asm/fixmap.h
++++ b/arch/openrisc/include/asm/fixmap.h
+@@ -26,29 +26,18 @@
+ #include <linux/bug.h>
+ #include <asm/page.h>
+ 
+-/*
+- * On OpenRISC we use these special fixed_addresses for doing ioremap
+- * early in the boot process before memory initialization is complete.
+- * This is used, in particular, by the early serial console code.
+- *
+- * It's not really 'fixmap', per se, but fits loosely into the same
+- * paradigm.
+- */
+ enum fixed_addresses {
+-	/*
+-	 * FIX_IOREMAP entries are useful for mapping physical address
+-	 * space before ioremap() is useable, e.g. really early in boot
+-	 * before kmalloc() is working.
+-	 */
+-#define FIX_N_IOREMAPS  32
+-	FIX_IOREMAP_BEGIN,
+-	FIX_IOREMAP_END = FIX_IOREMAP_BEGIN + FIX_N_IOREMAPS - 1,
++	FIX_EARLYCON_MEM_BASE,
+ 	__end_of_fixed_addresses
+ };
+ 
+ #define FIXADDR_SIZE		(__end_of_fixed_addresses << PAGE_SHIFT)
+ /* FIXADDR_BOTTOM might be a better name here... */
+ #define FIXADDR_START		(FIXADDR_TOP - FIXADDR_SIZE)
++#define FIXMAP_PAGE_IO		PAGE_KERNEL_NOCACHE
++
++extern void __set_fixmap(enum fixed_addresses idx,
++			 phys_addr_t phys, pgprot_t flags);
+ 
+ #include <asm-generic/fixmap.h>
+ 
+diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
+index 1dcd78c8f0e99..d0cb1a0126f95 100644
+--- a/arch/openrisc/mm/init.c
++++ b/arch/openrisc/mm/init.c
+@@ -207,6 +207,43 @@ void __init mem_init(void)
+ 	return;
+ }
+ 
++static int __init map_page(unsigned long va, phys_addr_t pa, pgprot_t prot)
++{
++	p4d_t *p4d;
++	pud_t *pud;
++	pmd_t *pmd;
++	pte_t *pte;
++
++	p4d = p4d_offset(pgd_offset_k(va), va);
++	pud = pud_offset(p4d, va);
++	pmd = pmd_offset(pud, va);
++	pte = pte_alloc_kernel(pmd, va);
++
++	if (pte == NULL)
++		return -ENOMEM;
++
++	if (pgprot_val(prot))
++		set_pte_at(&init_mm, va, pte, pfn_pte(pa >> PAGE_SHIFT, prot));
 +	else
-+		memcpy(&sa.ipaddr[3], &xs->id.daddr.a4, 4);
- 
- 	/* the preparations worked, so save the info */
- 	memcpy(&ipsec->sa[sa_idx], &sa, sizeof(sa));
++		pte_clear(&init_mm, va, pte);
++
++	local_flush_tlb_page(NULL, va);
++	return 0;
++}
++
++void __init __set_fixmap(enum fixed_addresses idx,
++			 phys_addr_t phys, pgprot_t prot)
++{
++	unsigned long address = __fix_to_virt(idx);
++
++	if (idx >= __end_of_fixed_addresses) {
++		BUG();
++		return;
++	}
++
++	map_page(address, phys, prot);
++}
++
+ static const pgprot_t protection_map[16] = {
+ 	[VM_NONE]					= PAGE_NONE,
+ 	[VM_READ]					= PAGE_READONLY_X,
 -- 
 2.43.0
 
