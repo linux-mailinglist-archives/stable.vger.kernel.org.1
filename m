@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-97809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BDD79E28AD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 134999E28DF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 918CFB3F65E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65BAAB351C8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256BA1F76A4;
-	Tue,  3 Dec 2024 16:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B715C1F7071;
+	Tue,  3 Dec 2024 15:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3eRN1IN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3PgYNgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D725F14A088;
-	Tue,  3 Dec 2024 16:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75892646;
+	Tue,  3 Dec 2024 15:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241803; cv=none; b=gbEak4lBZuVFK5rUoDaO0ecjR7b2EzqYtrYI8WVepOnVmnjChBKNSqJtc7afw7XNMB89S3Q0FKtd1jJam9aHbTU5Qr5pwV9ft7Ww+EG5/nP+xmSQMo1yjVqSvVL9YRlIgMzXv0p/HFC2hmAmVTOLPfsHEa9pmxW6wqOinVERKvk=
+	t=1733239675; cv=none; b=TMzNjnkGJXKHMY9zxwL8w37Kvu8oFl4vfL3Slrfu/ME6zrUqaw2f6vOG1wCRRT6psZlkB0x0vAcRPBD1E5cHENHbFUNI6NWqLCSlD6md2L6OR/OxT4dC2HfHtP1RnW3YnK2H6rgGoenIN23xDmK5kjoNLa7qLpB/jasxRyCEZTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241803; c=relaxed/simple;
-	bh=s/01cRAyXFeeo1kI7/75JJgyvX1DpU1/VTAxSmUNXA0=;
+	s=arc-20240116; t=1733239675; c=relaxed/simple;
+	bh=8aFQ5BG0dj24QlLXTTTuqPT9ZH2MSkjgJj6u/n2jutM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Co7SPBhIKrppn/Zei72sI0IcvmD+dHM/mgt9IQGJuDOX9FOvltEVmXssTRDXRn0iiJigTsNP9zM3XRoPL4BcQ1ZvwrrVfBTdCF2Pm4yX41zkiexgS3VTYhGaZUCmA2Xds5X6qONDjqXLROeHV2Th+2rI+QHaIuBK7ZakC2mrR54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3eRN1IN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53057C4CECF;
-	Tue,  3 Dec 2024 16:03:23 +0000 (UTC)
+	 MIME-Version; b=GrZofJRN5AicHksd5O1PoYL0huWhJw+yKiHxBfY/7nBtDLGUwqeQmwbL97lIbX9Y5wy7Tcx8vReksl/iemAnktcaktb54a9mzuqkY0JgBxphz510gBc79l++hWVhdiNgD/a2dn10ntZ4zOP+j2tsJ+eezlhDCthHjLOMDnRLdfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3PgYNgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1082C4CECF;
+	Tue,  3 Dec 2024 15:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241803;
-	bh=s/01cRAyXFeeo1kI7/75JJgyvX1DpU1/VTAxSmUNXA0=;
+	s=korg; t=1733239675;
+	bh=8aFQ5BG0dj24QlLXTTTuqPT9ZH2MSkjgJj6u/n2jutM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3eRN1INi2YE3ew6NrEwQgOuSxHSi0UJcWTMy5BrjWupw56rp0mQ2IqoOuXcoSYd8
-	 j7zylYhQ9vAmaFDv04EHopIKAxv2xVCfxIV6+cadoDjdpEp6OijkAqUxcjbR2R58iR
-	 CfyVIqnFolt26QslP19xqvABsTq56tqr/DhPaxVc=
+	b=H3PgYNgE8m6ckcsZwJrOV2btlJzICJQnCNQmnA70gR4/n6bMLAhiK0PbbDw4sUvvJ
+	 lLNZ2ZwSKmxUNZ2ilYaU9tk5hrKWH5b/+u6wY+JkPUsODMSlfMvSzY8WoqVEDvRxAx
+	 dq3qalLBhQVupiYyNnwXEEEZ6kka8kdXczxVLokY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 522/826] rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length
-Date: Tue,  3 Dec 2024 15:44:09 +0100
-Message-ID: <20241203144804.123342435@linuxfoundation.org>
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.11 678/817] usb: xhci: Limit Stop Endpoint retries
+Date: Tue,  3 Dec 2024 15:44:10 +0100
+Message-ID: <20241203144022.421972082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 06c59d97f63c1b8af521fa5aef8a716fb988b285 ]
+commit 42b7581376015c1bbcbe5831f043cd0ac119d028 upstream.
 
-The name len field of the CMD_OPEN packet is only 16-bits and the upper
-16-bits of "param2" are a different "prio" field, which can be nonzero in
-certain situations, and CMD_OPEN packets can be unexpectedly dropped
-because of this.
+Some host controllers fail to atomically transition an endpoint to the
+Running state on a doorbell ring and enter a hidden "Restarting" state,
+which looks very much like Stopped, with the important difference that
+it will spontaneously transition to Running anytime soon.
 
-Fix this by masking out the upper 16 bits of param2.
+A Stop Endpoint command queued in the Restarting state typically fails
+with Context State Error and the completion handler sees the Endpoint
+Context State as either still Stopped or already Running. Even a case
+of Halted was observed, when an error occurred right after the restart.
 
-Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241007235935.6216-1-jonathan@marek.ca
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The Halted state is already recovered from by resetting the endpoint.
+The Running state is handled by retrying Stop Endpoint.
+
+The Stopped state was recognized as a problem on NEC controllers and
+worked around also by retrying, because the endpoint soon restarts and
+then stops for good. But there is a risk: the command may fail if the
+endpoint is "stopped for good" already, and retries will fail forever.
+
+The possibility of this was not realized at the time, but a number of
+cases were discovered later and reproduced. Some proved difficult to
+deal with, and it is outright impossible to predict if an endpoint may
+fail to ever start at all due to a hardware bug. One such bug (albeit
+on ASM3142, not on NEC) was found to be reliably triggered simply by
+toggling an AX88179 NIC up/down in a tight loop for a few seconds.
+
+An endless retries storm is quite nasty. Besides putting needless load
+on the xHC and CPU, it causes URBs never to be given back, paralyzing
+the device and connection/disconnection logic for the whole bus if the
+device is unplugged. User processes waiting for URBs become unkillable,
+drivers and kworker threads lock up and xhci_hcd cannot be reloaded.
+
+For peace of mind, impose a timeout on Stop Endpoint retries in this
+case. If they don't succeed in 100ms, consider the endpoint stopped
+permanently for some reason and just give back the unlinked URBs. This
+failure case is rare already and work is under way to make it rarer.
+
+Start this work today by also handling one simple case of race with
+Reset Endpoint, because it costs just two lines to implement.
+
+Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
+CC: stable@vger.kernel.org
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20241106101459.775897-32-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-ring.c |   28 ++++++++++++++++++++++++----
+ drivers/usb/host/xhci.c      |    2 ++
+ drivers/usb/host/xhci.h      |    1 +
+ 3 files changed, 27 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index d3af1dfa3c7d7..a2f9d85c7156d 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1204,7 +1204,8 @@ void qcom_glink_native_rx(struct qcom_glink *glink)
- 			ret = qcom_glink_rx_open_ack(glink, param1);
- 			break;
- 		case GLINK_CMD_OPEN:
--			ret = qcom_glink_rx_defer(glink, param2);
-+			/* upper 16 bits of param2 are the "prio" field */
-+			ret = qcom_glink_rx_defer(glink, param2 & 0xffff);
- 			break;
- 		case GLINK_CMD_TX_DATA:
- 		case GLINK_CMD_TX_DATA_CONT:
--- 
-2.43.0
-
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -52,6 +52,7 @@
+  *   endpoint rings; it generates events on the event ring for these.
+  */
+ 
++#include <linux/jiffies.h>
+ #include <linux/scatterlist.h>
+ #include <linux/slab.h>
+ #include <linux/dma-mapping.h>
+@@ -1151,16 +1152,35 @@ static void xhci_handle_cmd_stop_ep(stru
+ 			return;
+ 		case EP_STATE_STOPPED:
+ 			/*
+-			 * NEC uPD720200 sometimes sets this state and fails with
+-			 * Context Error while continuing to process TRBs.
+-			 * Be conservative and trust EP_CTX_STATE on other chips.
++			 * Per xHCI 4.6.9, Stop Endpoint command on a Stopped
++			 * EP is a Context State Error, and EP stays Stopped.
++			 *
++			 * But maybe it failed on Halted, and somebody ran Reset
++			 * Endpoint later. EP state is now Stopped and EP_HALTED
++			 * still set because Reset EP handler will run after us.
++			 */
++			if (ep->ep_state & EP_HALTED)
++				break;
++			/*
++			 * On some HCs EP state remains Stopped for some tens of
++			 * us to a few ms or more after a doorbell ring, and any
++			 * new Stop Endpoint fails without aborting the restart.
++			 * This handler may run quickly enough to still see this
++			 * Stopped state, but it will soon change to Running.
++			 *
++			 * Assume this bug on unexpected Stop Endpoint failures.
++			 * Keep retrying until the EP starts and stops again, on
++			 * chips where this is known to help. Wait for 100ms.
+ 			 */
+ 			if (!(xhci->quirks & XHCI_NEC_HOST))
+ 				break;
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+-			xhci_dbg(xhci, "Stop ep completion ctx error, ep is running\n");
++			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
++					GET_EP_CTX_STATE(ep_ctx));
+ 
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command) {
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -8,6 +8,7 @@
+  * Some code borrowed from the Linux EHCI driver.
+  */
+ 
++#include <linux/jiffies.h>
+ #include <linux/pci.h>
+ #include <linux/iommu.h>
+ #include <linux/iopoll.h>
+@@ -1777,6 +1778,7 @@ static int xhci_urb_dequeue(struct usb_h
+ 			ret = -ENOMEM;
+ 			goto done;
+ 		}
++		ep->stop_time = jiffies;
+ 		ep->ep_state |= EP_STOP_CMD_PENDING;
+ 		xhci_queue_stop_endpoint(xhci, command, urb->dev->slot_id,
+ 					 ep_index, 0);
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -690,6 +690,7 @@ struct xhci_virt_ep {
+ 	/* Bandwidth checking storage */
+ 	struct xhci_bw_info	bw_info;
+ 	struct list_head	bw_endpoint_list;
++	unsigned long		stop_time;
+ 	/* Isoch Frame ID checking storage */
+ 	int			next_frame_id;
+ 	/* Use new Isoch TRB layout needed for extended TBC support */
 
 
 
