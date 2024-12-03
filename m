@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-96483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 336749E201A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0654A9E201E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC588288673
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C011C288B58
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01261EF093;
-	Tue,  3 Dec 2024 14:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8514C1F7586;
+	Tue,  3 Dec 2024 14:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzOWj+Ew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+7jbYpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1681B3942;
-	Tue,  3 Dec 2024 14:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408BA1F7577;
+	Tue,  3 Dec 2024 14:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237646; cv=none; b=eDpjQ4r+oan9bLa2OB4wJaMh1WeES34CFu8myMqIu1z6j1Jtiv5C0DMAvXdk52D9eKdZTxTcRLLS+SgWB6CoG3KBsS9C1cZpMl8jSBz0/r8z5SRxZrw0/8fGqFiynU3QDFsSEw8v30tCcKF1peDxb5hln250gQp4XBKU1OlaWyg=
+	t=1733237653; cv=none; b=rRARXy1yPCXpJFwg0WWF9ZTdx5oDlTIX7yjG5cfj5dpP+2eL1stVgwLjjlXdhVjR6Liggi6RjA1qSY28NVEm7OjOrbA0XLFBpzdzNsOfYs8/K9fi/u6dosmTWZR61dplWvGfR9SWgVYMRN3Ha865spEkZ+fUyhHZIrfnYpMAX1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237646; c=relaxed/simple;
-	bh=5aJXnushaqZS6fvFxaUXSecc0+OFOIMw9FfWTMh/pzg=;
+	s=arc-20240116; t=1733237653; c=relaxed/simple;
+	bh=25UlqxkYvc6vFTj0+F2sUStePqcCGFtFshYGzfX5ZVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqoo8MPJ4OlBzvDdipGAToavi2xVToEJ82qKCoC6R7LfDOnzGPqhjUsUzV2iDm6x3KYv/puBdUuqAH63j8EhDVPjnknI1zVT9Yg0fhJXf3lpGT6Fk/jLBxGK+vWSNqBnrwh/HMNGdjvHMH+VotulM/HkSF5iPlrfSAfHpFSq8iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzOWj+Ew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852D4C4CECF;
-	Tue,  3 Dec 2024 14:54:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DR/jesybvIB8HV74zOQGtm+lUu5g0Es+Q6DFKzQ2X5OmmZUfM/vIX6GbMeVI3PVBMmU1k4oZ3LTQGXD5Ypq2CMbHu6f/ZkNtQspyhAPQ8kdOk87zk5isneVz6Eet1QV4jPs/Jl2NUn4id46fb9muJf6rJ1hk3wYVok28foBfsDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+7jbYpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63211C4CED6;
+	Tue,  3 Dec 2024 14:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237646;
-	bh=5aJXnushaqZS6fvFxaUXSecc0+OFOIMw9FfWTMh/pzg=;
+	s=korg; t=1733237652;
+	bh=25UlqxkYvc6vFTj0+F2sUStePqcCGFtFshYGzfX5ZVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uzOWj+EwH9uXFLV9jEG1hb/FUNNjaRBHDi/9t6fZVLU8SFz177srZ3cyYw+M9D/GF
-	 cWcpsoB/sMu2WTc0s0wZmxLSn0/9dqVLPiJCjKPKhN+0gDdqSTJAe5hQOsmPZkPE6z
-	 VVKKxF3n92sX+LB3CqC9okSCNfdMJbHLwEjl6omU=
+	b=A+7jbYpSKF4s+Dkg84C6qV6hL6v4nuhCzR4+9lr/aOYabHIbGxCa8RhxwG//W2bEd
+	 c9B57mYwLfAjAV3vDgyydfGubSyy9US7Z7DjJIf3gFGprRtrV+JuVXxnyAZ6m1r0xU
+	 1Bd1h4Bj9aw8xLyKamT70ApQ2Q5TONOJQ7w+bIxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	=?UTF-8?q?Alexander=20H=C3=B6lzl?= <alexander.hoelzl@gmx.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 029/817] tools/lib/thermal: Remove the thermal.h soft link when doing make clean
-Date: Tue,  3 Dec 2024 15:33:21 +0100
-Message-ID: <20241203143956.787173082@linuxfoundation.org>
+Subject: [PATCH 6.11 030/817] can: j1939: fix error in J1939 documentation.
+Date: Tue,  3 Dec 2024 15:33:22 +0100
+Message-ID: <20241203143956.826090251@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -60,42 +62,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+From: Alexander Hölzl <alexander.hoelzl@gmx.net>
 
-[ Upstream commit c5426dcc5a3a064bbd2de383e29035a14fe933e0 ]
+[ Upstream commit b6ec62e01aa4229bc9d3861d1073806767ea7838 ]
 
-Run "make -C tools thermal" can create a soft link for thermal.h in
-tools/include/uapi/linux.  Just rm it when make clean.
+The description of PDU1 format usage mistakenly referred to PDU2 format.
 
-Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Link: https://lore.kernel.org/r/20240912045031.18426-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Alexander Hölzl <alexander.hoelzl@gmx.net>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20241023145257.82709-1-alexander.hoelzl@gmx.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/thermal/Makefile | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/networking/j1939.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/thermal/Makefile b/tools/lib/thermal/Makefile
-index 2d0d255fd0e1c..8890fd57b110c 100644
---- a/tools/lib/thermal/Makefile
-+++ b/tools/lib/thermal/Makefile
-@@ -121,7 +121,9 @@ all: fixdep
+diff --git a/Documentation/networking/j1939.rst b/Documentation/networking/j1939.rst
+index e4bd7aa1f5aa9..544bad175aae2 100644
+--- a/Documentation/networking/j1939.rst
++++ b/Documentation/networking/j1939.rst
+@@ -121,7 +121,7 @@ format, the Group Extension is set in the PS-field.
  
- clean:
- 	$(call QUIET_CLEAN, libthermal) $(RM) $(LIBTHERMAL_A) \
--                *.o *~ *.a *.so *.so.$(VERSION) *.so.$(LIBTHERMAL_VERSION) .*.d .*.cmd LIBTHERMAL-CFLAGS $(LIBTHERMAL_PC)
-+                *.o *~ *.a *.so *.so.$(VERSION) *.so.$(LIBTHERMAL_VERSION) \
-+                .*.d .*.cmd LIBTHERMAL-CFLAGS $(LIBTHERMAL_PC) \
-+                $(srctree)/tools/$(THERMAL_UAPI)
+ On the other hand, when using PDU1 format, the PS-field contains a so-called
+ Destination Address, which is _not_ part of the PGN. When communicating a PGN
+-from user space to kernel (or vice versa) and PDU2 format is used, the PS-field
++from user space to kernel (or vice versa) and PDU1 format is used, the PS-field
+ of the PGN shall be set to zero. The Destination Address shall be set
+ elsewhere.
  
- $(LIBTHERMAL_PC):
- 	$(QUIET_GEN)sed -e "s|@PREFIX@|$(prefix)|" \
 -- 
 2.43.0
 
