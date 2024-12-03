@@ -1,242 +1,339 @@
-Return-Path: <stable+bounces-98122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9ED9E2716
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F029E27D8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B57A2849B6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBBC9B2B1B7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2181F892F;
-	Tue,  3 Dec 2024 16:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0BE1F7557;
+	Tue,  3 Dec 2024 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mePVtEbc"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="b8lBP5ig"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2082.outbound.protection.outlook.com [40.107.94.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAFD1F890F;
-	Tue,  3 Dec 2024 16:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242864; cv=none; b=VWhPiYolTcNdIE+EHKV3zYeo9BvVtgWWvQ8zRIs+ADKdOW3YZ2b5JDZS0qlBnENAtLsmEI930gjOdBgNvAjD2Z+5Zs9QV2ids0pzRU5BP3hacM2Sa3DxuDvlctyDgRe8vmW4/wFrCIkecDNBx7vZ2hbeahUmITnFZmjJhFMJ0dg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242864; c=relaxed/simple;
-	bh=s7Ltby4c0atloth4amTImZXmnuojwGJhLXkDHNePl/o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=meMMk3hXB6exz73royVsbE4WYwSvhEZdp0YuwDlKzDOmZw/7pCKmCe6and2sITfJ5Khr5BOfnX0oIWBtBtaBkdrYMD3cb1hKd14CnSgblF30m0oFH2ZVkmR9VnMsdF0YqIa0O2zAh6IGEVIMBC27i8sGQOOYMK7jNoIiRxMEZg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mePVtEbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6330C4CECF;
-	Tue,  3 Dec 2024 16:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242864;
-	bh=s7Ltby4c0atloth4amTImZXmnuojwGJhLXkDHNePl/o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mePVtEbcpDiOeIDEvFyIIHnvzW5L2S4hjH5MojGollKSic7KGa+tWQhK/MevLHbet
-	 1/07msJRq9qkNetVnNBu/TtvFoNesJKSkolQEbxdQwSkUFGCagmkFfMLHn3CyZ5y6M
-	 gDUVlgFwRzSo6VA44ANLyPKWy+xzsly7Ibse4EyY=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 825/826] block: always verify unfreeze lock on the owner task
-Date: Tue,  3 Dec 2024 15:49:12 +0100
-Message-ID: <20241203144815.935274788@linuxfoundation.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EF71DE2A1
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 14:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733237696; cv=fail; b=g8JbbMcUIw5x+HhfHgsNj2tU8VEMLu4GnHMXNKOJ0dE1a0aYkbTgUYN4ap08w02uHvn4uits3WGeULz8nWM8g2+nLi58NWf7f9HJZ9pqnCbhFHytwslvX5F9m8EEwme2ElxMGL07ui+ZwkXhkyXXUId/kqFqPzGphRWADR+xYFE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733237696; c=relaxed/simple;
+	bh=+fPctxVV7VDtYFJvMUhjEj/wTgHria0R97n3udAGRY8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qJPiCLaTbgYD2B/1niFtJgPTxIrlceOT98g4qPP7au4i++B+gq3WPaxfRXCYBTgoAh8Ms+InyrbjqKM0256P2mM8wnJvQ0lcRj65iDuwQwVrFiEx3kHFkcFn3iFtlruBVOagiUGa6VaC17axn8xS/jddDgCbwh1sa/MIoSZut+g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=b8lBP5ig; arc=fail smtp.client-ip=40.107.94.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xp0g67c2rjYUGcLTzBUmKVNeDst8PsKWXNUaYAfyNoKtmujCt9ct7B+2FYDN//imvKHZ0UFG8QB4PCgcwqfuHztiwJ0TNUSfN+nQxG/A5bem4SH6qx7K+DaIjBCnEcakhly2OMUY7BGInOkRu+m439saMm5MoSatyU78M8y779BRp1foZAOzfhY0pZYa/bkhKgI0lq6zXMTUh3rlVpQmB1+sNK+uQI/k0VU7/729RIFQRB2n8yDT52KqbQs5fZpdgSrc7VOHzHcDCm55BkLJT8/2kq4R74EorsqU3Qczd3QxNz+HO+TzzFauaCfX1XpX3B3BaP2IayNh6adZz4Staw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=t4DAjVwDk3fUkkg8/w3/maHZWAuk5MBrBoovzXDeUZY=;
+ b=p9PNEaMSTH4aEFQCComXLf0ahRYPnuWztb1ebTTNVYatpdgl2xnPpx0Dy/tSAyD3GzgPcw4I4lch4JNWx69Wbs4iDE3IZL0TX8uFJscsfqks5gVzPximacEI2hg7oj9NhAVQ9u+4OhRSFeXKFAXcp6YQg+n5kt6zS7cppwIKgHrJdozCNEHe740b/SbyCEtCuPaVOHFtApfhJBZGEO0Akq4l6VtmkWb/ucC4KvNPW+wkxbKyumOOTMdduQfBSAMTlSsURlnCm770O0KbJvmYI/ofLqjTIgCWwhx4Vque8/r0cfaeECnDUX6hcI4IkhQlTSCk1QsqYUd07/BEy3p+6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=t4DAjVwDk3fUkkg8/w3/maHZWAuk5MBrBoovzXDeUZY=;
+ b=b8lBP5igivLuTNGc8Pl2SujRPIpCSAKu2Gy/3xxvT4Nhx1FjX2DXUWWButW42vQnL9t6W1suWERcrRE9s3L9cpzgZJ/iYQQLwb86eBPjVIrGr9jZ/AhxBTLnhLjnbjQjduiOkbL8OWMk7T8qSiphOBizqD7auE2TokjD20f5+CQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by PH7PR12MB6737.namprd12.prod.outlook.com (2603:10b6:510:1a8::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Tue, 3 Dec
+ 2024 14:54:48 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%5]) with mapi id 15.20.8207.017; Tue, 3 Dec 2024
+ 14:54:48 +0000
+Message-ID: <01a8faae-6a3f-4328-862f-d18046ed982d@amd.com>
+Date: Tue, 3 Dec 2024 15:54:41 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amdgpu: Make the submission path memory reclaim safe
+To: Oleksandr Natalenko <oleksandr@natalenko.name>,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ Tvrtko Ursulin <tursulin@igalia.com>
+Cc: kernel-dev@igalia.com, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ stable@vger.kernel.org, Matthew Brost <matthew.brost@intel.com>,
+ Danilo Krummrich <dakr@kernel.org>, Philipp Stanner <pstanner@redhat.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Tejun Heo <tj@kernel.org>
+References: <20241113134838.52608-1-tursulin@igalia.com>
+ <2757527.mvXUDI8C0e@natalenko.name>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <2757527.mvXUDI8C0e@natalenko.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR2P281CA0049.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:92::9) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|PH7PR12MB6737:EE_
+X-MS-Office365-Filtering-Correlation-Id: 74e3b87d-0d23-4479-6899-08dd13aa6eac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?T2VqUjJwa1g3SDY1RmNrbXBNV2xnemZQOUE1amdFZzdFMDdaQUlTUys1OVpM?=
+ =?utf-8?B?d1FOb0NzNjBCZUNGTndXTDJPOXF5Y1d1TUl5MDg4cWJjSjFWcEVWL09OL0dY?=
+ =?utf-8?B?YmJiQXNMVVMzbkdpeHJxK29uanlsTjJldVllSm05YldZMzBqV2lST3d6MVlW?=
+ =?utf-8?B?ZHZvV2JLOWswNkJYQVhKaGpSeXlUUTBVVWs5dHVCS2JJbnB3eFo2N2J0U3Zm?=
+ =?utf-8?B?UzIzUmZLd0Z2THdGSGFiWFY5TS9uWnM3eE5Cbng5TzFXK3MwaXRCUkpPYnRW?=
+ =?utf-8?B?QUxPSjhaQVJ2d3NWWTdhRlNoM0ZZU28rNlpzYVQ0WCt3YS9maG95SklGYU5o?=
+ =?utf-8?B?SDlwa3JJM0tjMlRGT2lyU0JrTzRSK2lOWU1YMDVGbGthSHA2Vk9mZVpiakdB?=
+ =?utf-8?B?TDJ6UWM2SDhGaEkzTlVCaEw5bGRVZUhwMUpoSWFIVGh1MzJnanVXYStnMEda?=
+ =?utf-8?B?d1d3Nit5K0ZobnhwQ3ZqRnRsdmdnQWRZRG03cUp0TWxnRTFmcWlHd0w0bDcz?=
+ =?utf-8?B?T1BEK0J3SXlicmUxbTE3eEV0ZFovTEcxU3krWHIrRFduWnFybExDWVVacTR4?=
+ =?utf-8?B?enAxMThkRGFQN1ErSE80cytVKy80bDJ5SnRBYXNhSGw3TktRQXZkejVZa3pa?=
+ =?utf-8?B?cXNqTDMyQ0htTFF3eWdaWXU0K0FmVGdmdVd4ZlZqQlVNMXl2ckJyUHB3SDBZ?=
+ =?utf-8?B?Znh0UHBJZWQwanpPQ2RmNVU1S1dSVERmMWJUeERYczV5KzJaQ3JETVkzeWZP?=
+ =?utf-8?B?amVUSE9GVGZSQjFUcHJiTGU0dlV2aUQ2RDdkUk1yeU5FbS9qUTB1NnRBZURi?=
+ =?utf-8?B?V0ZZQkdSUVdPTVF3UGZSREJ3QWxtWExvbGpKV1RzUDRTNUVPbGNtUVJIU21T?=
+ =?utf-8?B?NFh5anpwYzNYTGlvZWg0SUo5K3RQK1lzYVdXWEp0dlIwSnJuOWcwdGhZV05n?=
+ =?utf-8?B?SEF4WWVvUGhORDlIYVprb0tySmVLNHZ1RklBQmdjQktxNy9PMlpsNDV1K200?=
+ =?utf-8?B?SXhpTWt1YUhVcEI5OUhaZ0pITnJ1S3hTdW1Wa01HRmd2ZkptTkZUYkRob2FV?=
+ =?utf-8?B?MTR6NVRsQXpKR1BIWmpBN0VMTzliTHU1NGxZU1owM1EycmhFRlpTaHc1dWt5?=
+ =?utf-8?B?QmN0QnYreEVqUDlVbVlhUzYzWkFXNzlYdXpSbzFwc2c5ZnVaandHRnBPK1pz?=
+ =?utf-8?B?MnBCenRsV2FNQ2U2UjlWSTg1WDV0S0dTeENYZ3duWkh1dGNVSTlNT2c4TUwv?=
+ =?utf-8?B?c21QRmlpTWxvenUwSW0yeWoxcHJ3S2xJK2V0UHpCV0w2cTdyRXdXMnFBdjN5?=
+ =?utf-8?B?RjJZWHMzbDREbVYzYTNuSnRrc0J6K1NNY3hBV1A4VmY1TDIyc3dCMURvelhD?=
+ =?utf-8?B?MUt1eGlQNDdMNDB3VzNNQURrRWt5K1gxQVRTMjhzUVJobEFVTHc4VHpEcm1z?=
+ =?utf-8?B?Z3JOVUJYQm8yVThZa2tHQWpvNlF0aXpkYWRqSkp3RHNtKy96c3MvdG11cTV4?=
+ =?utf-8?B?cjJYcFRaT3ZwbmlZdHN2K1BVK1BTSXR5ajhvVFZadTR2R3BkZkhxUDJmWTIw?=
+ =?utf-8?B?bms4WXozSkl1dkcyUGZrRDFZaDlwUWt5REk4UUF3VlduU1QvUm9ZYkY4Sm5K?=
+ =?utf-8?B?Rk15ekY5SFFjZUNsZHZac2pGN3Rvb05zY0o2RzFwSVpwd1dkYkU0VVI4dGxG?=
+ =?utf-8?B?cnVOZmpMVWk2akVLNXBEVmE2cjR0VjJBemhOV3VGZ1poZXdMdDFXdTBwNy82?=
+ =?utf-8?B?QnV2R2dxTmZhYXhTa2I3SC9jQ1ZSY0lvbTdWdWQ2c3ZabStDKzgrRHp3V0pG?=
+ =?utf-8?B?dDZnQXBTcmV6bGVnTUNYQT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WWZhMWhSeUVrbU5BY2VVdFlVMmZMdWtnY25ZV2U5ekNYWERmVE9UZmIvL3Rx?=
+ =?utf-8?B?ZkxpZjBDMmQxcEVOR1U4Zld0cHRLSFJmTU9LT0hwRnFjYWo3MHJmZVZCT1RP?=
+ =?utf-8?B?MEZnSVZzQmZZalhuRGFFSUtFS1crTzBnNm9acndldzRJZm9nZE1QQ09BQll6?=
+ =?utf-8?B?eEhobjV3bEpZU25jMXJrUmdsUVdOLys0MSswWXlCcExoMk9FSGRTazRXL1VD?=
+ =?utf-8?B?aG5qL3N5cjIrd2Y4dTdhRFN4dkdFN3R2RXBkK2dKMElSTm15anJjaDRMN0lE?=
+ =?utf-8?B?VlRnSEs5WU9jd0RGamlrOEF5a05GN0JiT25lcnZHZHFTckt6aTM3bmoyQ01Q?=
+ =?utf-8?B?K1hvS2pwTm1HLzdvVWVmZGNpOWMrMlI1VzdRQVJ4RWVFSW5QdHBrLy9VdjdO?=
+ =?utf-8?B?czhtbjI0SVQrSFlZUjFFRndmc3pxdWtyVXQrdXZ5VzVlUWNmYU84bm94NjVU?=
+ =?utf-8?B?VXZxUGlwcUFzQVFkdEQ2ajN3K1Ird1VJaXFsbzBMQmlHTncxdTVtYnE4cUZp?=
+ =?utf-8?B?ZjZNQVlVMlE0eWp0SzhTeHlRWkJmSzAyWUROb0VCSEt0bjZ5eTRydVV4Ym9G?=
+ =?utf-8?B?V09EK2w4Y2lNMGZiU2JUZGJadXJnQ054czRxQmplbWN3SXF0MDQ3TUFqZkt5?=
+ =?utf-8?B?VWw4NVRHVlN3dFhidHZIMzhCcmJ5dExxNTJYcTgvSXp3bUFDQjVibTBrUjVD?=
+ =?utf-8?B?b1I3am5IcGVQS25ncURraGxjZHM1dnFLUXNmUDF2STFSRE5CeGFXb0VQd3JL?=
+ =?utf-8?B?eEhHNW5vR0UvZmVzenA4Y1Y1dXhUMGZPekRtRmhaVC83UjU0U21GUHlOaXBq?=
+ =?utf-8?B?Ky9aSHpSQ041UEt1OTRDa3ZndHo4bjhkRmxoVEdUdFJ6T3lZVTZhTmxnUXI3?=
+ =?utf-8?B?ajNXR25Yei9WdFpJRFpLSXA1VG5TaXhxb3VXM0JUTjFkSnZ4NXZ1Qjc5OUNZ?=
+ =?utf-8?B?YkpVclpaYWl4aXVrdGNJMFZjWlVuYWIvYXkvMmZ6eTFTOTNGdmpYOFVLOElr?=
+ =?utf-8?B?NHhUT0ZSdFA3VjlyaHVOL2U1ZWtEVkM5SVpYekxqMHJGckVnTnNNSG05RExR?=
+ =?utf-8?B?MU1raWE4ZS9uNy9uVzUwdit2dmFtNWs4bXl5L29ERUtranRxNVkxMmk4UGdD?=
+ =?utf-8?B?ZUYrdTVIekFpZUpqcXZsUkd6QlVVanY2WW5JblNWK3V5TERpbXVORi9FM2lY?=
+ =?utf-8?B?RlZMTWhoQzZ6Q0lkUUtGVnpaZjQrZlZJdC81Rm84dE8wR2VhQUNRUWh6bTIr?=
+ =?utf-8?B?OWpRazNGUUs2a3R4LzFBVDhjMUg4MkhGRTJDNUIzdlRlVEZGKzU1RFFvamxJ?=
+ =?utf-8?B?UU1FMWY4WU9ta2hMNlFXMWdGbXNuMEFhSFdUa2FHdHZIamVWODVUa0Jyclp1?=
+ =?utf-8?B?WjJTK0xSL2Exb0QyckNndlBLNDFhT1g5N0pYYnRTSy93REpZZ2toTXpISEpz?=
+ =?utf-8?B?ZUV2b2lVUWVRZDhId2kxQTJ1MVVpNGx2c0hUTVNabk9MUmYwdmRMVS9ET1Vt?=
+ =?utf-8?B?QlluQ0ZKMjliL0ZRZ2Q2dVFybWlxK0lQSTdoRUdLRE02c1duYjdhUEdxWjJv?=
+ =?utf-8?B?aGxSM3FSUnB1SEFyN2dPZVowajcwT2JiQzRINWx0c1ZqYWI5blZkd2MzNjY0?=
+ =?utf-8?B?d2VyNDdZbzdESytJcXY4VlNueUNwSkVjalVJK2FmWHdETTBwdmVzM25wd0NU?=
+ =?utf-8?B?cTJIQkliVzBWUlpDWkYxa2R5VWZjbWM1b1FCWE1ndjM0d2FMeThuQ1laREYr?=
+ =?utf-8?B?RHN4UXBsUGZTVFNaUUxOYmJDanVZRCtRSTFVTGY1YzA2NGQ2YlhXOHNaSThM?=
+ =?utf-8?B?VjdFbXF0TGVsS0pOMGFCUFhEVVJNVGdLTEN6VnJ0RTJ0b2c3VjYreVpqa012?=
+ =?utf-8?B?RGJkdGlaVEk3WG82QmFISUMrSWdZZ0o1RTBWMWFWYXR3cC9vUWpXcnVVQ21S?=
+ =?utf-8?B?RW5mSVdwZTdCM3hILytJQmFTaXQzK3NXVVlxOUdGZldxRUFFUm56dmVDSlp4?=
+ =?utf-8?B?cDE3bU5tU1d3Rm1sS00vY1FCNmo2MWs0ZkN4TkRQQ2htMkpaekNoRVhYR0Za?=
+ =?utf-8?B?VVczKy9yRjQwQkU2Z0FMNnNnN0VFV1l1NXBqcVNzclVUV0UxT0VOaDcwb1BR?=
+ =?utf-8?Q?G6edJd9kC6hRVxB5viow7j2Gx?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74e3b87d-0d23-4479-6899-08dd13aa6eac
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2024 14:54:48.1235
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: qT2Q/EdiCllQ8umhbCkeZYH9ygBYv/nmjq4IAcQZc/nUm7EfOlxjkSEdeIvdMwPJ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6737
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+Am 03.12.24 um 15:24 schrieb Oleksandr Natalenko:
+> On středa 13. listopadu 2024 14:48:38, středoevropský standardní čas Tvrtko Ursulin wrote:
+>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>
+>> As commit 746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+>> points out, ever since
+>> a6149f039369 ("drm/sched: Convert drm scheduler to use a work queue rather than kthread"),
+>> any workqueue flushing done from the job submission path must only
+>> involve memory reclaim safe workqueues to be safe against reclaim
+>> deadlocks.
+>>
+>> This is also pointed out by workqueue sanity checks:
+>>
+>>   [ ] workqueue: WQ_MEM_RECLAIM sdma0:drm_sched_run_job_work [gpu_sched] is flushing !WQ_MEM_RECLAIM events:amdgpu_device_delay_enable_gfx_off [amdgpu]
+>> ...
+>>   [ ] Workqueue: sdma0 drm_sched_run_job_work [gpu_sched]
+>> ...
+>>   [ ] Call Trace:
+>>   [ ]  <TASK>
+>> ...
+>>   [ ]  ? check_flush_dependency+0xf5/0x110
+>> ...
+>>   [ ]  cancel_delayed_work_sync+0x6e/0x80
+>>   [ ]  amdgpu_gfx_off_ctrl+0xab/0x140 [amdgpu]
+>>   [ ]  amdgpu_ring_alloc+0x40/0x50 [amdgpu]
+>>   [ ]  amdgpu_ib_schedule+0xf4/0x810 [amdgpu]
+>>   [ ]  ? drm_sched_run_job_work+0x22c/0x430 [gpu_sched]
+>>   [ ]  amdgpu_job_run+0xaa/0x1f0 [amdgpu]
+>>   [ ]  drm_sched_run_job_work+0x257/0x430 [gpu_sched]
+>>   [ ]  process_one_work+0x217/0x720
+>> ...
+>>   [ ]  </TASK>
+>>
+>> Fix this by creating a memory reclaim safe driver workqueue and make the
+>> submission path use it.
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>> References: 746ae46c1113 ("drm/sched: Mark scheduler work queues with WQ_MEM_RECLAIM")
+>> Fixes: a6149f039369 ("drm/sched: Convert drm scheduler to use a work queue rather than kthread")
+>> Cc: stable@vger.kernel.org
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+>> Cc: Danilo Krummrich <dakr@kernel.org>
+>> Cc: Philipp Stanner <pstanner@redhat.com>
+>> Cc: Alex Deucher <alexander.deucher@amd.com>
+>> Cc: Christian König <christian.koenig@amd.com>
+>> ---
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  2 ++
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 25 +++++++++++++++++++++++++
+>>   drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c |  5 +++--
+>>   3 files changed, 30 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>> index 7645e498faa4..a6aad687537e 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+>> @@ -268,6 +268,8 @@ extern int amdgpu_agp;
+>>   
+>>   extern int amdgpu_wbrf;
+>>   
+>> +extern struct workqueue_struct *amdgpu_reclaim_wq;
+>> +
+>>   #define AMDGPU_VM_MAX_NUM_CTX			4096
+>>   #define AMDGPU_SG_THRESHOLD			(256*1024*1024)
+>>   #define AMDGPU_WAIT_IDLE_TIMEOUT_IN_MS	        3000
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>> index 38686203bea6..f5b7172e8042 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+>> @@ -255,6 +255,8 @@ struct amdgpu_watchdog_timer amdgpu_watchdog_timer = {
+>>   	.period = 0x0, /* default to 0x0 (timeout disable) */
+>>   };
+>>   
+>> +struct workqueue_struct *amdgpu_reclaim_wq;
+>> +
+>>   /**
+>>    * DOC: vramlimit (int)
+>>    * Restrict the total amount of VRAM in MiB for testing.  The default is 0 (Use full VRAM).
+>> @@ -2971,6 +2973,21 @@ static struct pci_driver amdgpu_kms_pci_driver = {
+>>   	.dev_groups = amdgpu_sysfs_groups,
+>>   };
+>>   
+>> +static int amdgpu_wq_init(void)
+>> +{
+>> +	amdgpu_reclaim_wq =
+>> +		alloc_workqueue("amdgpu-reclaim", WQ_MEM_RECLAIM, 0);
+>> +	if (!amdgpu_reclaim_wq)
+>> +		return -ENOMEM;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static void amdgpu_wq_fini(void)
+>> +{
+>> +	destroy_workqueue(amdgpu_reclaim_wq);
+>> +}
+>> +
+>>   static int __init amdgpu_init(void)
+>>   {
+>>   	int r;
+>> @@ -2978,6 +2995,10 @@ static int __init amdgpu_init(void)
+>>   	if (drm_firmware_drivers_only())
+>>   		return -EINVAL;
+>>   
+>> +	r = amdgpu_wq_init();
+>> +	if (r)
+>> +		goto error_wq;
+>> +
+>>   	r = amdgpu_sync_init();
+>>   	if (r)
+>>   		goto error_sync;
+>> @@ -3006,6 +3027,9 @@ static int __init amdgpu_init(void)
+>>   	amdgpu_sync_fini();
+>>   
+>>   error_sync:
+>> +	amdgpu_wq_fini();
+>> +
+>> +error_wq:
+>>   	return r;
+>>   }
+>>   
+>> @@ -3017,6 +3041,7 @@ static void __exit amdgpu_exit(void)
+>>   	amdgpu_acpi_release();
+>>   	amdgpu_sync_fini();
+>>   	amdgpu_fence_slab_fini();
+>> +	amdgpu_wq_fini();
+>>   	mmu_notifier_synchronize();
+>>   	amdgpu_xcp_drv_release();
+>>   }
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>> index 2f3f09dfb1fd..f8fd71d9382f 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+>> @@ -790,8 +790,9 @@ void amdgpu_gfx_off_ctrl(struct amdgpu_device *adev, bool enable)
+>>   						AMD_IP_BLOCK_TYPE_GFX, true))
+>>   					adev->gfx.gfx_off_state = true;
+>>   			} else {
+>> -				schedule_delayed_work(&adev->gfx.gfx_off_delay_work,
+>> -					      delay);
+>> +				queue_delayed_work(amdgpu_reclaim_wq,
+>> +						   &adev->gfx.gfx_off_delay_work,
+>> +						   delay);
+>>   			}
+>>   		}
+>>   	} else {
+> I can confirm this fixed the warning for me.
+>
+> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+>
+> What's the fate of this submission?
 
-------------------
+It turned out that the warning is actually a false negative.
 
-From: Ming Lei <ming.lei@redhat.com>
+E.g. the warning shouldn't be printed in the first place.
 
-commit 6a78699838a0ddeed3620ddf50c1521f1fe1e811 upstream.
+Tvrtko pinged the relevant maintainer, but for far I haven't seen a reply.
 
-commit f1be1788a32e ("block: model freeze & enter queue as lock for
-supporting lockdep") tries to apply lockdep for verifying freeze &
-unfreeze. However, the verification is only done the outmost freeze and
-unfreeze. This way is actually not correct because q->mq_freeze_depth
-still may drop to zero on other task instead of the freeze owner task.
+Regards,
+Christian.
 
-Fix this issue by always verifying the last unfreeze lock on the owner
-task context, and make sure both the outmost freeze & unfreeze are
-verified in the current task.
-
-Fixes: f1be1788a32e ("block: model freeze & enter queue as lock for supporting lockdep")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241031133723.303835-4-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- block/blk-core.c       |    2 -
- block/blk-mq.c         |   62 ++++++++++++++++++++++++++++++++++++++++++-------
- block/blk.h            |    3 +-
- include/linux/blkdev.h |    4 +++
- 4 files changed, 61 insertions(+), 10 deletions(-)
-
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -287,7 +287,7 @@ bool blk_queue_start_drain(struct reques
- 	 * entering queue, so we call blk_freeze_queue_start() to
- 	 * prevent I/O from crossing blk_queue_enter().
- 	 */
--	bool freeze = __blk_freeze_queue_start(q);
-+	bool freeze = __blk_freeze_queue_start(q, current);
- 	if (queue_is_mq(q))
- 		blk_mq_wake_waiters(q);
- 	/* Make blk_queue_enter() reexamine the DYING flag. */
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -120,20 +120,66 @@ void blk_mq_in_flight_rw(struct request_
- 	inflight[1] = mi.inflight[1];
- }
- 
--bool __blk_freeze_queue_start(struct request_queue *q)
-+#ifdef CONFIG_LOCKDEP
-+static bool blk_freeze_set_owner(struct request_queue *q,
-+				 struct task_struct *owner)
- {
--	int freeze;
-+	if (!owner)
-+		return false;
-+
-+	if (!q->mq_freeze_depth) {
-+		q->mq_freeze_owner = owner;
-+		q->mq_freeze_owner_depth = 1;
-+		return true;
-+	}
-+
-+	if (owner == q->mq_freeze_owner)
-+		q->mq_freeze_owner_depth += 1;
-+	return false;
-+}
-+
-+/* verify the last unfreeze in owner context */
-+static bool blk_unfreeze_check_owner(struct request_queue *q)
-+{
-+	if (!q->mq_freeze_owner)
-+		return false;
-+	if (q->mq_freeze_owner != current)
-+		return false;
-+	if (--q->mq_freeze_owner_depth == 0) {
-+		q->mq_freeze_owner = NULL;
-+		return true;
-+	}
-+	return false;
-+}
-+
-+#else
-+
-+static bool blk_freeze_set_owner(struct request_queue *q,
-+				 struct task_struct *owner)
-+{
-+	return false;
-+}
-+
-+static bool blk_unfreeze_check_owner(struct request_queue *q)
-+{
-+	return false;
-+}
-+#endif
-+
-+bool __blk_freeze_queue_start(struct request_queue *q,
-+			      struct task_struct *owner)
-+{
-+	bool freeze;
- 
- 	mutex_lock(&q->mq_freeze_lock);
-+	freeze = blk_freeze_set_owner(q, owner);
- 	if (++q->mq_freeze_depth == 1) {
- 		percpu_ref_kill(&q->q_usage_counter);
- 		mutex_unlock(&q->mq_freeze_lock);
- 		if (queue_is_mq(q))
- 			blk_mq_run_hw_queues(q, false);
--		freeze = true;
- 	} else {
- 		mutex_unlock(&q->mq_freeze_lock);
--		freeze = false;
- 	}
- 
- 	return freeze;
-@@ -141,7 +187,7 @@ bool __blk_freeze_queue_start(struct req
- 
- void blk_freeze_queue_start(struct request_queue *q)
- {
--	if (__blk_freeze_queue_start(q))
-+	if (__blk_freeze_queue_start(q, current))
- 		blk_freeze_acquire_lock(q, false, false);
- }
- EXPORT_SYMBOL_GPL(blk_freeze_queue_start);
-@@ -190,7 +236,7 @@ EXPORT_SYMBOL_GPL(blk_mq_freeze_queue);
- 
- bool __blk_mq_unfreeze_queue(struct request_queue *q, bool force_atomic)
- {
--	int unfreeze = false;
-+	bool unfreeze;
- 
- 	mutex_lock(&q->mq_freeze_lock);
- 	if (force_atomic)
-@@ -200,8 +246,8 @@ bool __blk_mq_unfreeze_queue(struct requ
- 	if (!q->mq_freeze_depth) {
- 		percpu_ref_resurrect(&q->q_usage_counter);
- 		wake_up_all(&q->mq_freeze_wq);
--		unfreeze = true;
- 	}
-+	unfreeze = blk_unfreeze_check_owner(q);
- 	mutex_unlock(&q->mq_freeze_lock);
- 
- 	return unfreeze;
-@@ -223,7 +269,7 @@ EXPORT_SYMBOL_GPL(blk_mq_unfreeze_queue)
-  */
- void blk_freeze_queue_start_non_owner(struct request_queue *q)
- {
--	__blk_freeze_queue_start(q);
-+	__blk_freeze_queue_start(q, NULL);
- }
- EXPORT_SYMBOL_GPL(blk_freeze_queue_start_non_owner);
- 
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -38,7 +38,8 @@ void blk_free_flush_queue(struct blk_flu
- void blk_freeze_queue(struct request_queue *q);
- bool __blk_mq_unfreeze_queue(struct request_queue *q, bool force_atomic);
- bool blk_queue_start_drain(struct request_queue *q);
--bool __blk_freeze_queue_start(struct request_queue *q);
-+bool __blk_freeze_queue_start(struct request_queue *q,
-+			      struct task_struct *owner);
- int __bio_queue_enter(struct request_queue *q, struct bio *bio);
- void submit_bio_noacct_nocheck(struct bio *bio);
- void bio_await_chain(struct bio *bio);
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -572,6 +572,10 @@ struct request_queue {
- 	struct throtl_data *td;
- #endif
- 	struct rcu_head		rcu_head;
-+#ifdef CONFIG_LOCKDEP
-+	struct task_struct	*mq_freeze_owner;
-+	int			mq_freeze_owner_depth;
-+#endif
- 	wait_queue_head_t	mq_freeze_wq;
- 	/*
- 	 * Protect concurrent access to q_usage_counter by
-
+>
+> Thank you.
+>
 
 
