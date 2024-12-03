@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93DB9E236D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 599D49E2297
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38D70B800D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21286B80236
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC801F7589;
-	Tue,  3 Dec 2024 14:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09EB1F6674;
+	Tue,  3 Dec 2024 14:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGidVHdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPj+4zKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3A41F669E;
-	Tue,  3 Dec 2024 14:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8F41F706A;
+	Tue,  3 Dec 2024 14:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236570; cv=none; b=YCDoNOi5UFiruztkS201Z6X80p/yYIT5wKnf0tbdUE7vh4M4Yzu8E5kSMNQ3HZsat4m5gWoN2ATR91s72z0ZNZu1bW3bYC3Bc1+FpDn6GepRzxaenunWf5bYihhxB1PfluLZAIBEaRU1aZNrjUYW7IiWcbeEXgHLJfftnNsBLQc=
+	t=1733236591; cv=none; b=cNeGNghZTdlug4jOrpLADbrKrYEdGzoBFWGtdVxAxkI4u5MhyBkfjIB9S091pN18l30X8RTcrkLs3yRlVpcvxZ7GPqq0FVmMF9BJM/Xump14IYVKqBJKRbkM+EvzXhUa5+mxn82jOMig6DRh/adIYlw7hard1FbAJpHV1damphs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236570; c=relaxed/simple;
-	bh=XbCaeUpmgzYDoIZ0PYspWPLSqdU71pcwvFR8nmH873E=;
+	s=arc-20240116; t=1733236591; c=relaxed/simple;
+	bh=qVztrk/BZK3Nm7mSUVxID7RUlwuMHo99WkVgcYbNU3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkTPUoYOJ1k2PKJrrdLqVBNmsWDRbaQ2D5aNfHWWErYWIY/PzCiRXxZNteutnDbi0pbtxjatnWIY51lcPThb+/029HhTb8xJNNvlRJBOa04ex67yhiLwafHUUWGi4PJSXuxVHosFL9apqtg8DR1InBFH+09FI+GurdoZpMAf4qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jGidVHdD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB29C4CECF;
-	Tue,  3 Dec 2024 14:36:09 +0000 (UTC)
+	 MIME-Version; b=Txtmy+ItB7vU0q7C0LJfvtEf8oKwdbF8QuiDS2WLNCVxEQPkdU9xnCutKgUh0r5WwJ2WK8jnEknw0isRfyd5C9x/syWq3XmGcEIAjevAVKMKFm9UdR+RRpYE5ZM8uf+aU0sJ64jR2ChIsw0yFDhE0AExvDLb8Ud8Jo0zr2yy0XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPj+4zKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D48C4CECF;
+	Tue,  3 Dec 2024 14:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236570;
-	bh=XbCaeUpmgzYDoIZ0PYspWPLSqdU71pcwvFR8nmH873E=;
+	s=korg; t=1733236591;
+	bh=qVztrk/BZK3Nm7mSUVxID7RUlwuMHo99WkVgcYbNU3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGidVHdDff9+geLFuCcWOp5bJZRuP4xtArEq1eofrFKy4TqmnXY5cwevzcBRLJJLp
-	 LOtKB47i3DLZQTWWD/ik1JiGhoXhdkvKl+JBHUbOEh/LMkLwqwISYSrxA8SSIAIwJ4
-	 rhGO8qIwfPCq9sIwRgI63uLgCuuGSVokA58xXw8I=
+	b=rPj+4zKArkopVR/RtcqOPqLJaZfO5v0pG1+dbwuY2OetFj/LhGFwntvdBGFglJo1E
+	 62mkijgSoAMNv0PIalMP26x4ocbSyBfstTZKZrT7UVLNI5ESyONp7jWzOf7CNeytEy
+	 Zri4ctqYO/PgzOXXrQRRButQghxA+HPq2e+WI5qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 031/138] soc: qcom: geni-se: fix array underflow in geni_se_clk_tbl_get()
-Date: Tue,  3 Dec 2024 15:31:00 +0100
-Message-ID: <20241203141924.747441123@linuxfoundation.org>
+Subject: [PATCH 4.19 033/138] ARM: dts: cubieboard4: Fix DCDC5 regulator constraints
+Date: Tue,  3 Dec 2024 15:31:02 +0100
+Message-ID: <20241203141924.823129598@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,38 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit 78261cb08f06c93d362cab5c5034bf5899bc7552 ]
+[ Upstream commit dd36ad71ad65968f97630808bc8d605c929b128e ]
 
-This loop is supposed to break if the frequency returned from
-clk_round_rate() is the same as on the previous iteration.  However,
-that check doesn't make sense on the first iteration through the loop.
-It leads to reading before the start of these->clk_perf_tbl[] array.
+The DCDC5 voltage rail in the X-Powers AXP809 PMIC has a resolution of
+50mV, so the currently enforced limits of 1.475 and 1.525 volts cannot
+be set, when the existing regulator value is beyond this range.
 
-Fixes: eddac5af0654 ("soc: qcom: Add GENI based QUP Wrapper driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/8cd12678-f44a-4b16-a579-c8f11175ee8c@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This will lead to the whole regulator driver to give up and fail
+probing, which in turn will hang the system, as essential devices depend
+on the PMIC.
+In this case a bug in U-Boot set the voltage to 1.75V (meant for DCDC4),
+and the AXP driver's attempt to correct this lead to this error:
+==================
+[    4.447653] axp20x-rsb sunxi-rsb-3a3: AXP20X driver loaded
+[    4.450066] vcc-dram: Bringing 1750000uV into 1575000-1575000uV
+[    4.460272] vcc-dram: failed to apply 1575000-1575000uV constraint: -EINVAL
+[    4.474788] axp20x-regulator axp20x-regulator.0: Failed to register dcdc5
+[    4.482276] axp20x-regulator axp20x-regulator.0: probe with driver axp20x-regulator failed with error -22
+==================
+
+Set the limits to values that can be programmed, so any correction will
+be successful.
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Fixes: 1e1dea72651b ("ARM: dts: sun9i: cubieboard4: Add AXP809 PMIC device node and regulators")
+Link: https://patch.msgid.link/20241007222916.19013-1-andre.przywara@arm.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/qcom-geni-se.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/sun9i-a80-cubieboard4.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/qcom-geni-se.c b/drivers/soc/qcom/qcom-geni-se.c
-index 7369b061929bb..4e1c6c5ea9c92 100644
---- a/drivers/soc/qcom/qcom-geni-se.c
-+++ b/drivers/soc/qcom/qcom-geni-se.c
-@@ -542,7 +542,8 @@ int geni_se_clk_tbl_get(struct geni_se *se, unsigned long **tbl)
+diff --git a/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts b/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
+index 85da85faf869a..0e37ae46348ad 100644
+--- a/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
++++ b/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
+@@ -253,8 +253,8 @@ reg_dcdc4: dcdc4 {
  
- 	for (i = 0; i < MAX_CLK_PERF_LEVEL; i++) {
- 		freq = clk_round_rate(se->clk, freq + 1);
--		if (freq <= 0 || freq == se->clk_perf_tbl[i - 1])
-+		if (freq <= 0 ||
-+		    (i > 0 && freq == se->clk_perf_tbl[i - 1]))
- 			break;
- 		se->clk_perf_tbl[i] = freq;
- 	}
+ 			reg_dcdc5: dcdc5 {
+ 				regulator-always-on;
+-				regulator-min-microvolt = <1425000>;
+-				regulator-max-microvolt = <1575000>;
++				regulator-min-microvolt = <1450000>;
++				regulator-max-microvolt = <1550000>;
+ 				regulator-name = "vcc-dram";
+ 			};
+ 
 -- 
 2.43.0
 
