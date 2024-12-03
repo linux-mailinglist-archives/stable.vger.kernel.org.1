@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D90A9E22D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E8B9E25B5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E72302867EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1092288411
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AA41F8909;
-	Tue,  3 Dec 2024 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20D71F76BF;
+	Tue,  3 Dec 2024 16:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cuyAQhh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCU5GZnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AD91F8904;
-	Tue,  3 Dec 2024 15:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1AD14A088;
+	Tue,  3 Dec 2024 16:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239728; cv=none; b=D+4foNQsaEKyHE1AeaCan08YWXAbAPlcxJJhVB6Ft0uppzrNnZPLCJELlrcPzDExpSTNTIxMYAhYpH66eX9fhtTA0a4B7j5wnzuGzDVOyzuO9CT2ckSqzwQSbM4OQJj/AIILNE3NWE0mbfCn8snLxFqNNKIDj6qb3AM7nzwQVfA=
+	t=1733241823; cv=none; b=Q+hLbSs9GK9qu4V1dv9vOeOX3zxkE/z2Uz1fzrlppQ8lYzVbo9/YM2FdwCrKVkum85f44/3Yyl+dYAZgseR7c+xVSs6dEIbVppfnoH27hPnFbhwij/Ue6cihxy6jwYUFdVHEpzWb/MqrO/p5BUiN4e8h/wqLa8bpv+hQekpZW8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239728; c=relaxed/simple;
-	bh=iQkgJ4rhBkBvmuOuAW7cPL/Sz4NzFc+OyScisMdIZp4=;
+	s=arc-20240116; t=1733241823; c=relaxed/simple;
+	bh=Hg3kOUmmsXrH/AAcgVCgYN3GJWzmxBLa9J4bxitWVEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMZDqHx36cfXvn1KIyKODDUOTKD7H7cH4s72HEO69+U+VdKHc/iG4GYA/AUKTEP7mrlpK6qHqn6NXpluvDvIXvaUx2SDTX8/B4UvuOttz0l3GpLUUWVMOt6IFDbJ/q1EzUWs4csAdEpHE395gQqALMmOEMe3ijF76LFuemGfMro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cuyAQhh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDA9C4CED9;
-	Tue,  3 Dec 2024 15:28:47 +0000 (UTC)
+	 MIME-Version; b=REOvck6QQ9TyM/J1DYU6yNg+whErwXAwLZi0f3eq81UNsTaLXEWqxUk9S781k2V1OHmHGBpvQA3+AOpoX0+u9utjjgsjz7RR7pHC8mS+NDGMQvrF5hFD+IUS81a60mXKKuvetA2gGIUAYgLGWuWNL0RhzhpSF5N1x+opBBaphik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCU5GZnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21C3C4CECF;
+	Tue,  3 Dec 2024 16:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239727;
-	bh=iQkgJ4rhBkBvmuOuAW7cPL/Sz4NzFc+OyScisMdIZp4=;
+	s=korg; t=1733241823;
+	bh=Hg3kOUmmsXrH/AAcgVCgYN3GJWzmxBLa9J4bxitWVEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0cuyAQhh7gaYo6eTB99cQ4lpdvwyqXVbTjYYIY+Mh1j5+siKx9FnkNsJZR7Q0WZe8
-	 cqhkFeUGQiGvBdoS21Rr2a5h1Bdj7H3OQqka4OcmuHQrzvlRE6iFxtRFXjbhioeCSV
-	 +2V51aWhGTeXoUpKQoFS4twIEzUEEWiTd/4s1i2I=
+	b=cCU5GZnJ66ThLldByKbygSHnYxUGglEF3UOlYARoFT8i/WsVvsNrEtD5hq5XelL9Y
+	 S7lmF1HtihDdunhMl66n0+51bX8mcXeadFlYhKIWL9J853Sca5KfKCYES1ErG0ly8Z
+	 xByF4EbV19mZPkr+bVY76rB87/NVJK0qf2Fk6QzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH 6.11 682/817] wifi: ath12k: fix warning when unbinding
-Date: Tue,  3 Dec 2024 15:44:14 +0100
-Message-ID: <20241203144022.587475691@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 528/826] svcrdma: fix miss destroy percpu_counter in svc_rdma_proc_init()
+Date: Tue,  3 Dec 2024 15:44:15 +0100
+Message-ID: <20241203144804.353452205@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit ca68ce0d9f4bcd032fd1334441175ae399642a06 upstream.
+[ Upstream commit ce89e742a4c12b20f09a43fec1b21db33f2166cd ]
 
-If there is an error during some initialization related to firmware,
-the buffers dp->tx_ring[i].tx_status are released.
-However this is released again when the device is unbinded (ath12k_pci),
-and we get:
-WARNING: CPU: 0 PID: 2098 at mm/slub.c:4689 free_large_kmalloc+0x4d/0x80
+There's issue as follows:
+RPC: Registered rdma transport module.
+RPC: Registered rdma backchannel transport module.
+RPC: Unregistered rdma transport module.
+RPC: Unregistered rdma backchannel transport module.
+BUG: unable to handle page fault for address: fffffbfff80c609a
+PGD 123fee067 P4D 123fee067 PUD 123fea067 PMD 10c624067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
+RIP: 0010:percpu_counter_destroy_many+0xf7/0x2a0
 Call Trace:
-free_large_kmalloc
-ath12k_dp_free
-ath12k_core_deinit
-ath12k_pci_remove
-...
+ <TASK>
+ __die+0x1f/0x70
+ page_fault_oops+0x2cd/0x860
+ spurious_kernel_fault+0x36/0x450
+ do_kern_addr_fault+0xca/0x100
+ exc_page_fault+0x128/0x150
+ asm_exc_page_fault+0x26/0x30
+ percpu_counter_destroy_many+0xf7/0x2a0
+ mmdrop+0x209/0x350
+ finish_task_switch.isra.0+0x481/0x840
+ schedule_tail+0xe/0xd0
+ ret_from_fork+0x23/0x80
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-The issue is always reproducible from a VM because the MSI addressing
-initialization is failing.
+If register_sysctl() return NULL, then svc_rdma_proc_cleanup() will not
+destroy the percpu counters which init in svc_rdma_proc_init().
+If CONFIG_HOTPLUG_CPU is enabled, residual nodes may be in the
+'percpu_counters' list. The above issue may occur once the module is
+removed. If the CONFIG_HOTPLUG_CPU configuration is not enabled, memory
+leakage occurs.
+To solve above issue just destroy all percpu counters when
+register_sysctl() return NULL.
 
-In order to fix the issue, just set the buffers to NULL after releasing in
-order to avoid the double free.
-
-cc: stable@vger.kernel.org
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://patch.msgid.link/20241017181004.199589-3-jtornosm@redhat.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e7e55731628 ("svcrdma: Restore read and write stats")
+Fixes: 22df5a22462e ("svcrdma: Convert rdma_stat_sq_starve to a per-CPU counter")
+Fixes: df971cd853c0 ("svcrdma: Convert rdma_stat_recv to a per-CPU counter")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sunrpc/xprtrdma/svc_rdma.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1282,8 +1282,10 @@ void ath12k_dp_free(struct ath12k_base *
+diff --git a/net/sunrpc/xprtrdma/svc_rdma.c b/net/sunrpc/xprtrdma/svc_rdma.c
+index 58ae6ec4f25b4..415c0310101f0 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma.c
++++ b/net/sunrpc/xprtrdma/svc_rdma.c
+@@ -233,25 +233,34 @@ static int svc_rdma_proc_init(void)
  
- 	ath12k_dp_rx_reo_cmd_list_cleanup(ab);
+ 	rc = percpu_counter_init(&svcrdma_stat_read, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err;
+ 	rc = percpu_counter_init(&svcrdma_stat_recv, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err_read;
+ 	rc = percpu_counter_init(&svcrdma_stat_sq_starve, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err_recv;
+ 	rc = percpu_counter_init(&svcrdma_stat_write, 0, GFP_KERNEL);
+ 	if (rc)
+-		goto out_err;
++		goto err_sq;
  
--	for (i = 0; i < ab->hw_params->max_tx_ring; i++)
-+	for (i = 0; i < ab->hw_params->max_tx_ring; i++) {
- 		kfree(dp->tx_ring[i].tx_status);
-+		dp->tx_ring[i].tx_status = NULL;
-+	}
+ 	svcrdma_table_header = register_sysctl("sunrpc/svc_rdma",
+ 					       svcrdma_parm_table);
++	if (!svcrdma_table_header)
++		goto err_write;
++
+ 	return 0;
  
- 	ath12k_dp_rx_free(ab);
- 	/* Deinit any SOC level resource */
+-out_err:
++err_write:
++	rc = -ENOMEM;
++	percpu_counter_destroy(&svcrdma_stat_write);
++err_sq:
+ 	percpu_counter_destroy(&svcrdma_stat_sq_starve);
++err_recv:
+ 	percpu_counter_destroy(&svcrdma_stat_recv);
++err_read:
+ 	percpu_counter_destroy(&svcrdma_stat_read);
++err:
+ 	return rc;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
