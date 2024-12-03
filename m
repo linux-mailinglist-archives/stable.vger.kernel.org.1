@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-96751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE9C9E2154
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD8A9E282B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:52:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A57016A2B5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:09:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 428F6B34CA8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22361F76BB;
-	Tue,  3 Dec 2024 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A191FECD8;
+	Tue,  3 Dec 2024 15:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/4jhs/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fA5FL+au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C61D1F76B6;
-	Tue,  3 Dec 2024 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851271F9EC0;
+	Tue,  3 Dec 2024 15:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238488; cv=none; b=kJhiJoIsAiL7CADS4FSTncl4L1PoChBSUEK/BIVmol+D22iDKfik2wRHZoUqMk7aIKyWF6iiwybjoV8ZEPC3o1vCWrnOEyvISdziL7KaO5jCud4+FSq/wVTY2xoJ2ps5dyj5mswZiedd8zDXntPKZS+2vOWQYVFwAh51a7+Iqmw=
+	t=1733240558; cv=none; b=Svvukb+zTHeR0M5JySTAEMFpWLV3OxFTsJUTaN1SGUaGk1FD+CaTCDLRYjF47aM077Zub9czg2B+TsNIhg2eXfOf8LOSK4Qw8NastsE2yLmp3Uw4vNE99Eq2JID8gAxeBDaewJmeExVcuNqbSCLG2KaoxaCc5OuBYYojVBZdx0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238488; c=relaxed/simple;
-	bh=WG2Xq6pn5Ar0RD9H62OaGpEAfT2Wa1B81PVl/G2XCtQ=;
+	s=arc-20240116; t=1733240558; c=relaxed/simple;
+	bh=of4jIEJ13ulclsTkVCjnqMNs8ri6kv9m70D7kQyHGMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJkb4zgVXSfE37PQ8u408URJOxEKBNYKPKAANpbA1B3yy8fEMOOfaFUXNzFgMqyd1AXgD7LJgcAm7X0UTiKmjC6fQjawuhUnb1kOqsEmWvfQmFtB4NIkx4nW+zOnkNtGL14+tY4+1yxG31Sz4gbeYT57OQmCcW/JQKVsTX3+B0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/4jhs/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24672C4CECF;
-	Tue,  3 Dec 2024 15:08:07 +0000 (UTC)
+	 MIME-Version; b=Fw7wBaixlqGQifH1mkNJYtYPCLQfb3YK7TnCq6nxYD3ZlGGHKm3fkw244Eu90uXGMx5JR4SmTvbOz+8E299iHjLF0J0sO4PeaiqiEz2BW8zv0KvJZLWSMePy7ii9VLBtJ/mCv1RgMIlQzGY5eEwwzD1cvjqGv+oBAVR4x/dUBNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fA5FL+au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCB9C4CECF;
+	Tue,  3 Dec 2024 15:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238488;
-	bh=WG2Xq6pn5Ar0RD9H62OaGpEAfT2Wa1B81PVl/G2XCtQ=;
+	s=korg; t=1733240558;
+	bh=of4jIEJ13ulclsTkVCjnqMNs8ri6kv9m70D7kQyHGMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/4jhs/RVJI+A9SFi0DWxJaFVRFw8sY6Z8QbbJcV25YZqWP3bU1COsz/KGwTrWeaa
-	 CC6u7AJSOABdmbUDSzU6PWBBWH+DyA1oV+ucGfedSieS+B/w/Hle0SruOD3VsE1vEt
-	 3P5iqFXoCwJgLhnfYz+RZw5Miyo4rmmRCagMPDRg=
+	b=fA5FL+au/V3f65EpE1lAL9KyHQjJdhyE+bN9d6At0w4N8FNo3SpIp8uwlk8taqMBt
+	 05VtCLa0sKWAquSlH0JwlMUb/DOnRqDz0iiTIZUVldSfp/8EoamOziqZvWSEu3Qroc
+	 Wq+vkgsR1oSsa/+DU787Vl8kHbBmXmWcY/4MyGSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Price <steven.price@arm.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
+	Michael Riesch <michael.riesch@wolfvision.net>,
+	Muhammed Efe Cetin <efectn@6tel.net>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 294/817] drm/panfrost: Remove unused id_mask from struct panfrost_model
-Date: Tue,  3 Dec 2024 15:37:46 +0100
-Message-ID: <20241203144007.293014689@linuxfoundation.org>
+Subject: [PATCH 6.12 140/826] arm64: dts: rockchip: Remove enable-active-low from two boards
+Date: Tue,  3 Dec 2024 15:37:47 +0100
+Message-ID: <20241203144749.204262342@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Price <steven.price@arm.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 581d1f8248550f2b67847e6d84f29fbe3751ea0a ]
+[ Upstream commit 4a9d7e6596f90631f21bca9cb46c6de05d8e86d4 ]
 
-The id_mask field of struct panfrost_model has never been used.
+The 'enable-active-low' property is not a valid, because it is the
+default behaviour of the fixed regulator.
 
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-Signed-off-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241025140008.385081-1-steven.price@arm.com
+Only 'enable-active-high' is valid, and when this property is absent
+the fixed regulator will act as active low by default.
+
+Both the rk3588-orange-pi-5 and the Wolfvision pf5 io expander overlay
+smuggled those enable-active-low properties in, so remove them to
+make dtbscheck happier.
+
+Fixes: 28799a7734a0 ("arm64: dts: rockchip: add wolfvision pf5 io expander board")
+Cc: Michael Riesch <michael.riesch@wolfvision.net>
+Fixes: b6bc755d806e ("arm64: dts: rockchip: Add Orange Pi 5")
+Cc: Muhammed Efe Cetin <efectn@6tel.net>
+
+Reviewed-by: Michael Riesch <michael.riesch@wolfvision.net>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20241008203940.2573684-10-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_gpu.c | 1 -
- 1 file changed, 1 deletion(-)
+ .../boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso     | 1 -
+ arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts              | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-index fd8e44992184f..b52dd510e0367 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-@@ -177,7 +177,6 @@ static void panfrost_gpu_init_quirks(struct panfrost_device *pfdev)
- struct panfrost_model {
- 	const char *name;
- 	u32 id;
--	u32 id_mask;
- 	u64 features;
- 	u64 issues;
- 	struct {
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
+index ebcaeafc3800d..fa61633aea152 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
++++ b/arch/arm64/boot/dts/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
+@@ -49,7 +49,6 @@ vcc1v8_eth: vcc1v8-eth-regulator {
+ 
+ 	vcc3v3_eth: vcc3v3-eth-regulator {
+ 		compatible = "regulator-fixed";
+-		enable-active-low;
+ 		gpio = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vcc3v3_eth_enn>;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
+index feea6b20a6bf5..6b77be6432495 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3588s-orangepi-5.dts
+@@ -71,7 +71,6 @@ vcc5v0_sys: vcc5v0-sys-regulator {
+ 
+ 	vcc_3v3_sd_s0: vcc-3v3-sd-s0-regulator {
+ 		compatible = "regulator-fixed";
+-		enable-active-low;
+ 		gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;
+ 		regulator-name = "vcc_3v3_sd_s0";
+ 		regulator-boot-on;
 -- 
 2.43.0
 
