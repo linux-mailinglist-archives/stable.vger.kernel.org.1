@@ -1,66 +1,53 @@
-Return-Path: <stable+bounces-96894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081EC9E299D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FF99E2A37
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:03:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF675BA3AC6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A9F1B67853
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4633D1F8927;
-	Tue,  3 Dec 2024 15:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189651F892E;
+	Tue,  3 Dec 2024 15:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwEMPqcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6Ugq2Ry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042F41F756E;
-	Tue,  3 Dec 2024 15:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C913B1DA3D;
+	Tue,  3 Dec 2024 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238906; cv=none; b=DntMPgMnpq8KSg7lN/h4ty+KRhJEMQSSkSxDKu0EaMsF7Ty2uyfKgwQ5L9isVrGM2FOPS7uMPbakwy9gS8PKSgrTWit7D8mOi7W/iAYkdMUGf4SxMNzIzdLzjpne03y+3GIYRg3DwDklKpJSPiLNga6VtwMWIz9NdwWpulyz4TM=
+	t=1733238911; cv=none; b=Ta5cRqGqcFNIZ5XHBxQsbZFSLnNxYXPtamgeBrgGx47gBCJ+cZj6SNVRkj9MesclU0Q7R2cLky7lnI4K8DIAOJd9Dgv9XCX/mP76u0OmAgfjdchy23bIoh0MR1tq+I/6aKZAYBlT/fIyh6nXQwcEqo8YTp2smeWysUlJwdyUYAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238906; c=relaxed/simple;
-	bh=Yq4XZbw/YIbEC1HyUvxOmK8mbvJVQVYYaKI8AJXWAcs=;
+	s=arc-20240116; t=1733238911; c=relaxed/simple;
+	bh=mr8zoU5Y3VIsCfnyFLUiI3vfnUpXDOCpLuvzssCmdzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UofmI+jZgDoyUpAk7uW4ue1p5qdibmyaHepL1x94i2mUUbNrTG5tIS/ZoP47Kgu8Xt/weCDAw0q8YP0v3mSB7KVS8rn7qZvLtn0TfEsVKu/Py1v9rTqugpk9tzPeJA3OaDccZk45FykY6AumLAM1RYlYeCDCyCBaf6X2L7F4+l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwEMPqcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E1DC4CECF;
-	Tue,  3 Dec 2024 15:15:05 +0000 (UTC)
+	 MIME-Version; b=FtpKxozLYdE6KgJHp/pvUczBkHObw7IKqwAfdPWIlRDv+TT+ljj96MLxvK3JlPOXc0j5Zod57u5K7LamQKMlhy4WyKXa9CZJTG6+QKQ9rP2nBzFDUz/ls6KRDkvi8k3Usyp4w1y59h3wcQeS+MDDpew6Hg7AfsZ95uHaw+xh+60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6Ugq2Ry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BFE1C4CECF;
+	Tue,  3 Dec 2024 15:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238905;
-	bh=Yq4XZbw/YIbEC1HyUvxOmK8mbvJVQVYYaKI8AJXWAcs=;
+	s=korg; t=1733238911;
+	bh=mr8zoU5Y3VIsCfnyFLUiI3vfnUpXDOCpLuvzssCmdzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwEMPqcNeO0ofaQ3i+77xfgFSEIR5kxhCm0zvybJDvD5t4Oj3kcchsNm0fMM6fTNR
-	 W+spMjY5RQBR2IGQXvl8CcK39dEE9aCG9/YVq5N+Xl4SrHu30aKBpzKTbPSr9Ymppm
-	 GkARElL/5UsRxTnMG+tkBVKuczpcGr4jykurFEpg=
+	b=Z6Ugq2RyjVGiOOhndkLqTEXXqoMyJzWrnlq5/bJx6NnY/vHGJ0mmhqINQjaBoOb8O
+	 ThRD/7VsJ+qYmLfwrcI1JBmZ4DXUi4ty2pCT/MCaYsq8QDkFQtHShwNC8W64mr0Rs9
+	 3sy1fi+zksBEgnb0eUWx4zjnJMs/wFVw0erEHOJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Koschel <jakobkoschel@gmail.com>,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	"Brian Johannesmeyer" <bjohannesmeyer@gmail.com>,
-	Cristiano Giuffrida <c.giuffrida@vu.nl>,
-	"Bos, H.J." <h.j.bos@vu.nl>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Baoquan He <bhe@redhat.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Yan Zhen <yanzhen@vivo.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Ye Bin <yebin10@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 436/817] fs/proc/kcore.c: fix coccinelle reported ERROR instances
-Date: Tue,  3 Dec 2024 15:40:08 +0100
-Message-ID: <20241203144012.900794111@linuxfoundation.org>
+Subject: [PATCH 6.11 438/817] scsi: bfa: Fix use-after-free in bfad_im_module_exit()
+Date: Tue,  3 Dec 2024 15:40:10 +0100
+Message-ID: <20241203144012.977985124@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -79,77 +66,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 82e33f249f1126cf3c5f39a31b850d485ac33bc3 ]
+[ Upstream commit 178b8f38932d635e90f5f0e9af1986c6f4a89271 ]
 
-Coccinelle complains about the nested reuse of the pointer `iter' with
-different pointer type:
+BUG: KASAN: slab-use-after-free in __lock_acquire+0x2aca/0x3a20
+Read of size 8 at addr ffff8881082d80c8 by task modprobe/25303
 
-./fs/proc/kcore.c:515:26-30: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:534:23-27: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:550:40-44: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:568:27-31: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:581:28-32: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:599:27-31: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:607:38-42: ERROR: invalid reference to the index variable of the iterator on line 499
-./fs/proc/kcore.c:614:26-30: ERROR: invalid reference to the index variable of the iterator on line 499
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x95/0xe0
+ print_report+0xcb/0x620
+ kasan_report+0xbd/0xf0
+ __lock_acquire+0x2aca/0x3a20
+ lock_acquire+0x19b/0x520
+ _raw_spin_lock+0x2b/0x40
+ attribute_container_unregister+0x30/0x160
+ fc_release_transport+0x19/0x90 [scsi_transport_fc]
+ bfad_im_module_exit+0x23/0x60 [bfa]
+ bfad_init+0xdb/0xff0 [bfa]
+ do_one_initcall+0xdc/0x550
+ do_init_module+0x22d/0x6b0
+ load_module+0x4e96/0x5ff0
+ init_module_from_file+0xcd/0x130
+ idempotent_init_module+0x330/0x620
+ __x64_sys_finit_module+0xb3/0x110
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-Replacing `struct kcore_list *iter' with `struct kcore_list *tmp' doesn't change the
-scope and the functionality is the same and coccinelle seems happy.
+Allocated by task 25303:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x7f/0x90
+ fc_attach_transport+0x4f/0x4740 [scsi_transport_fc]
+ bfad_im_module_init+0x17/0x80 [bfa]
+ bfad_init+0x23/0xff0 [bfa]
+ do_one_initcall+0xdc/0x550
+ do_init_module+0x22d/0x6b0
+ load_module+0x4e96/0x5ff0
+ init_module_from_file+0xcd/0x130
+ idempotent_init_module+0x330/0x620
+ __x64_sys_finit_module+0xb3/0x110
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-NOTE: There was an issue with using `struct kcore_list *pos' as the nested iterator.
-      The build did not work!
+Freed by task 25303:
+ kasan_save_stack+0x24/0x50
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x38/0x50
+ kfree+0x212/0x480
+ bfad_im_module_init+0x7e/0x80 [bfa]
+ bfad_init+0x23/0xff0 [bfa]
+ do_one_initcall+0xdc/0x550
+ do_init_module+0x22d/0x6b0
+ load_module+0x4e96/0x5ff0
+ init_module_from_file+0xcd/0x130
+ idempotent_init_module+0x330/0x620
+ __x64_sys_finit_module+0xb3/0x110
+ do_syscall_64+0xc1/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-[akpm@linux-foundation.org: s/tmp/pos/]
-Link: https://lkml.kernel.org/r/20241029054651.86356-2-mtodorovac69@gmail.com
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
-Link: https://lkml.kernel.org/r/20220331223700.902556-1-jakobkoschel@gmail.com
-Fixes: 04d168c6d42d ("fs/proc/kcore.c: remove check of list iterator against head past the loop body")
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: "Brian Johannesmeyer" <bjohannesmeyer@gmail.com>
-Cc: Cristiano Giuffrida <c.giuffrida@vu.nl>
-Cc: "Bos, H.J." <h.j.bos@vu.nl>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Yang Li <yang.lee@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Yan Zhen <yanzhen@vivo.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Above issue happens as follows:
+
+bfad_init
+  error = bfad_im_module_init()
+    fc_release_transport(bfad_im_scsi_transport_template);
+  if (error)
+    goto ext;
+
+ext:
+  bfad_im_module_exit();
+    fc_release_transport(bfad_im_scsi_transport_template);
+    --> Trigger double release
+
+Don't call bfad_im_module_exit() if bfad_im_module_init() failed.
+
+Fixes: 7725ccfda597 ("[SCSI] bfa: Brocade BFA FC SCSI driver")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/r/20241023011809.63466-1-yebin@huaweicloud.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/kcore.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/scsi/bfa/bfad.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
-index 13a041ef0c4e9..7e4afd7409a66 100644
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -493,13 +493,13 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
- 		 * the previous entry, search for a matching entry.
- 		 */
- 		if (!m || start < m->addr || start >= m->addr + m->size) {
--			struct kcore_list *iter;
-+			struct kcore_list *pos;
+diff --git a/drivers/scsi/bfa/bfad.c b/drivers/scsi/bfa/bfad.c
+index 62cb7a864fd53..70c7515a822f5 100644
+--- a/drivers/scsi/bfa/bfad.c
++++ b/drivers/scsi/bfa/bfad.c
+@@ -1693,9 +1693,8 @@ bfad_init(void)
  
- 			m = NULL;
--			list_for_each_entry(iter, &kclist_head, list) {
--				if (start >= iter->addr &&
--				    start < iter->addr + iter->size) {
--					m = iter;
-+			list_for_each_entry(pos, &kclist_head, list) {
-+				if (start >= pos->addr &&
-+				    start < pos->addr + pos->size) {
-+					m = pos;
- 					break;
- 				}
- 			}
+ 	error = bfad_im_module_init();
+ 	if (error) {
+-		error = -ENOMEM;
+ 		printk(KERN_WARNING "bfad_im_module_init failure\n");
+-		goto ext;
++		return -ENOMEM;
+ 	}
+ 
+ 	if (strcmp(FCPI_NAME, " fcpim") == 0)
 -- 
 2.43.0
 
