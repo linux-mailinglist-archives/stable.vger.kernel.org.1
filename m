@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-96353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586909E1F6E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:36:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B109E1F6F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAD6281A03
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B92B62818D0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A291C1F7090;
-	Tue,  3 Dec 2024 14:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3021F667A;
+	Tue,  3 Dec 2024 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtabtsP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1zepymF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2431F667A;
-	Tue,  3 Dec 2024 14:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A413A1F7060;
+	Tue,  3 Dec 2024 14:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236508; cv=none; b=RXyzmDP4dSGNRrnJWY3v18wHQk79gCl/fCo7pNSRK9/PzoInZnniSgBfaBe+SaakFFzlep6kWwuEfDij1Q+Xrwmbnn7R8Rp611l7A4dB/9n+m8v4H+aim+otH+F3BfmMDj3TDMv2rRh7cwNOsf8CRZdhROwJJasb8IL1SIKmqBo=
+	t=1733236513; cv=none; b=LruKKQP3sajKzTbr+36yin/LDT4HM/LiSD6a4EIn655R8zLT9bAMaL1LN9cEHN8PXcRX+5JPWhOmxxHKhwmW0YeIbpnvzV6blAWdSYyO+m6xmsCa+WAy4k3u8NdkpwEo75IcPGOjIb75eTwxrlAYC2zETky5mYMGvu1hQpKO5CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236508; c=relaxed/simple;
-	bh=IrC4dveQN9KRatx/AZdOfqFrPYuHXVcpZ7cL1048L+U=;
+	s=arc-20240116; t=1733236513; c=relaxed/simple;
+	bh=4e+atGT+razKs3WZZUPJBMpKSHnke8gLiE3jwDra9+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/J7ug8NuyLxGB1wH9jxcGznHzZ2WEkt0PrfJ5V6Q9DgXO+mvDsBLhp3+dJ0K4QVS1FV7HMqYEmh9kCpPVHveeyz60aVQliJHZ9q+Ii4P22LxzMrfrIiBr0dNIpTBnvIDjUQvTiT4x/Gv4M4jgtYZ4Bm/ukTXOJGD9rg4S6KgAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtabtsP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A173C4CED8;
-	Tue,  3 Dec 2024 14:35:06 +0000 (UTC)
+	 MIME-Version; b=tY/wHK4RUgsyhjHOu7VFnA/g63kJH55QtbY2zoWgIbrp0FO5FeDXkPATtZ0SQN3Kvxy0tFFxq2YVQFYgZtWS/xKy5L0Fgb6KqDLO0fHiObVGL9RP9i+LBQSuyGPRBQagMgMYdUCTjeH4tvIOcjIU9/I9JlOLGPXCJjrLQTxBxsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1zepymF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23623C4CED6;
+	Tue,  3 Dec 2024 14:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236506;
-	bh=IrC4dveQN9KRatx/AZdOfqFrPYuHXVcpZ7cL1048L+U=;
+	s=korg; t=1733236513;
+	bh=4e+atGT+razKs3WZZUPJBMpKSHnke8gLiE3jwDra9+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wtabtsP3FSkgNLsP3UCgeEL7003Eks7C9czLVVnCP1uDUen9eQrg2JXcht2yLGUNM
-	 l6N5LGtlWdM8b52F3oS9I0AIEpgTYgjBtrxXEsmPBRxBItaj5jSaXPIRSprzs84kpu
-	 MNkvBcAEH5WlOeAwIX+qj35SYaLF8M6hoe5wvpL4=
+	b=A1zepymFj8jObzZ3Qyfb7mqGQm70anPqH1aSGk8J6BTmJcvf+Sk3JR4qJTS9SjRN4
+	 M9kEJFw/5UGzSsTvQ/BguxJKOxhE1HwH6/fWzwx7/ZuZZgyK4h7Ocbic3DOorLGx4v
+	 BUMDPmaRCHJheZvwm+hYhOEyEzPdDv0z7nqy9kP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Chen <chenyuan@kylinos.cn>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+	Matthew Auld <matthew.william.auld@gmail.com>,
+	Jason Ekstrand <jason.ekstrand@intel.com>,
+	Kenneth Graunke <kenneth@whitecape.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 040/138] bpf: Fix the xdp_adjust_tail sample prog issue
-Date: Tue,  3 Dec 2024 15:31:09 +0100
-Message-ID: <20241203141925.092340932@linuxfoundation.org>
+Subject: [PATCH 4.19 042/138] drm/i915/gtt: Enable full-ppgtt by default everywhere
+Date: Tue,  3 Dec 2024 15:31:11 +0100
+Message-ID: <20241203141925.168805464@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,39 +70,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuan Chen <chenyuan@kylinos.cn>
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-[ Upstream commit 4236f114a3ffbbfd217436c08852e94cae372f57 ]
+[ Upstream commit 79556df293b2efbb3ccebb6db02120d62e348b44 ]
 
-During the xdp_adjust_tail test, probabilistic failure occurs and SKB package
-is discarded by the kernel. After checking the issues by tracking SKB package,
-it is identified that they were caused by checksum errors. Refer to checksum
-of the arch/arm64/include/asm/checksum.h for fixing.
+We should we have all the kinks worked out and full-ppgtt now works
+reliably on gen7 (Ivybridge, Valleyview/Baytrail and Haswell). If we can
+let userspace have full control over their own ppgtt, it makes softpinning
+far more effective, in turn making GPU dispatch far more efficient by
+virtue of better mm segregation.  On the other hand, switching over to a
+different GTT for every client does incur noticeable overhead, but only
+for very lightweight tasks.
 
-v2: Based on Alexei Starovoitov's suggestions, it is necessary to keep the code
- implementation consistent.
-
-Fixes: c6ffd1ff7856 (bpf: add bpf_xdp_adjust_tail sample prog)
-Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240930024115.52841-1-chenyuan_fl@163.com
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Cc: Matthew Auld <matthew.william.auld@gmail.com>
+Reviewed-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Jason Ekstrand <jason.ekstrand@intel.com>
+Cc: Kenneth Graunke <kenneth@whitecape.org>
+Acked-by: Kenneth Graunke <kenneth@whitecape.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20180717095751.1034-1-chris@chris-wilson.co.uk
+Stable-dep-of: ffcde9e44d3e ("drm: fsl-dcu: enable PIXCLK on LS1021A")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/xdp_adjust_tail_kern.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/i915_gem_gtt.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/samples/bpf/xdp_adjust_tail_kern.c b/samples/bpf/xdp_adjust_tail_kern.c
-index 411fdb21f8bcf..9783754bdd8bb 100644
---- a/samples/bpf/xdp_adjust_tail_kern.c
-+++ b/samples/bpf/xdp_adjust_tail_kern.c
-@@ -54,6 +54,7 @@ static __always_inline void swap_mac(void *data, struct ethhdr *orig_eth)
+diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c b/drivers/gpu/drm/i915/i915_gem_gtt.c
+index d4c6aa7fbac8d..0b5b45fe0fe78 100644
+--- a/drivers/gpu/drm/i915/i915_gem_gtt.c
++++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
+@@ -180,13 +180,11 @@ int intel_sanitize_enable_ppgtt(struct drm_i915_private *dev_priv,
+ 		return 0;
+ 	}
  
- static __always_inline __u16 csum_fold_helper(__u32 csum)
- {
-+	csum = (csum & 0xffff) + (csum >> 16);
- 	return ~((csum & 0xffff) + (csum >> 16));
+-	if (HAS_LOGICAL_RING_CONTEXTS(dev_priv)) {
+-		if (has_full_48bit_ppgtt)
+-			return 3;
++	if (has_full_48bit_ppgtt)
++		return 3;
+ 
+-		if (has_full_ppgtt)
+-			return 2;
+-	}
++	if (has_full_ppgtt)
++		return 2;
+ 
+ 	return 1;
  }
- 
 -- 
 2.43.0
 
