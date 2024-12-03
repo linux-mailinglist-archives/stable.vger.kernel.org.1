@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883129E21D3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3DD9E2193
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3048169A6F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53D3F1678FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AE41FA17C;
-	Tue,  3 Dec 2024 15:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9947B1F7578;
+	Tue,  3 Dec 2024 15:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avvhULlu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+g1x70R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456E61F8913;
-	Tue,  3 Dec 2024 15:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567FE1E3DF9;
+	Tue,  3 Dec 2024 15:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238632; cv=none; b=Nzx68fblT28hs7hXrtGDF++K3xyfqQVdOA9ee+ovzGgCb280QPI+MMnhpRv0jghoVqrgysdHqn++1m9R70Cui8tOtCfLMoK9hw38BXDeIuxijh1wJnIw/aVHyzC/+YvGLSz61fsCz8KWk6UI6o7cXNoX8kjA/yaLJ1u/VsOVrSw=
+	t=1733238537; cv=none; b=CblF14+NJnfuFMPQXCb9hKUSag8/MQjRbmeJyqbuwfbnuPjL1XwbKk+8QkepN46tIqP1lU9V7T6248xhe4biPrWtCd1/Y5AwgKf6uB9d/N0F/n55hfVWaF7dL2cZ4kNoNffm4QCO6wDiU7O+qvCC8nZvQHcOLtKd6/i0OME4Wd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238632; c=relaxed/simple;
-	bh=L4mOVFBq88Rc1rYey/V0Ena49ThaSAVK0COnJy4ETi4=;
+	s=arc-20240116; t=1733238537; c=relaxed/simple;
+	bh=od1wB/T3OwXLZAdyLGXccPPtSQEi/TBgR5YsgUfZQ8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuntLTyyQ7Zdy6Z/4EQ5tsnc4b/G7H4f6zFvXtk2+xe+xJE9aRWOGV+uBSjJzjTn8a+mG4etMVu0h5tvo4hPYRYUHS4zV0bo8MyiwZjdz8WOrJdzH+E3YMss63gVBmmtz+YN1OCXaQd+1qYiQYxOVCD1xoFPPzszXMV7mGrUoq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avvhULlu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5448C4CECF;
-	Tue,  3 Dec 2024 15:10:31 +0000 (UTC)
+	 MIME-Version; b=oDeUynRPSs9Wa69aneRczJrHMv6263sXMjy6/Dh0Eg6cZJViMiCHBMsfVxCMKxxiLLacr1M/tl8teVOQbPLDEC7qq3gAQb0wqqoCWfd9tGVqycgyxqZbu20FsnibDyiSoAH4M21siLq9wFOZP3KADEhdZveybgHSE5ATCBokr+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+g1x70R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4379C4CECF;
+	Tue,  3 Dec 2024 15:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238632;
-	bh=L4mOVFBq88Rc1rYey/V0Ena49ThaSAVK0COnJy4ETi4=;
+	s=korg; t=1733238537;
+	bh=od1wB/T3OwXLZAdyLGXccPPtSQEi/TBgR5YsgUfZQ8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avvhULlued8VTZoQDQ/EBZ8SfpM+mCHGb5ofBvRJVTDPp9EqF5S4uduc5L41R4TJu
-	 ORl1XAq5j802wfs4lrEm2l1p36eRHJh77VGypKHdlK3ZqYxIND4h0Ka64GpTN5ySHA
-	 U8IxmdQzUEM9oB5tqK/Ftv+UdOoStAzc//oMvdvw=
+	b=f+g1x70RFROlqo+VneTQ4h8+cO0ggHFHdkQLQBV1L4H4i0y61m860dECZycubF/A5
+	 LQdcd2gG3+ItwHygM9ZJ2FcbqhYiZEBR3zT+yk1apEoWK/0i3n6AfiUxOUWgNnN8cd
+	 wQ4FLVSSgz2Ic7u9w1lUdJdysrZ0sgStbZ8zOSHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Huafei <lihuafei1@huawei.com>,
-	Lyude Paul <lyude@redhat.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 303/817] drm/nouveau/gr/gf100: Fix missing unlock in gf100_gr_chan_new()
-Date: Tue,  3 Dec 2024 15:37:55 +0100
-Message-ID: <20241203144007.644004019@linuxfoundation.org>
+Subject: [PATCH 6.11 304/817] drm: zynqmp_kms: Unplug DRM device before removal
+Date: Tue,  3 Dec 2024 15:37:56 +0100
+Message-ID: <20241203144007.682507233@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,39 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit a2f599046c671d6b46d93aed95b37241ce4504cf ]
+[ Upstream commit 2e07c88914fc5289c21820b1aa94f058feb38197 ]
 
-When the call to gf100_grctx_generate() fails, unlock gr->fecs.mutex
-before returning the error.
+Prevent userspace accesses to the DRM device from causing
+use-after-frees by unplugging the device before we remove it. This
+causes any further userspace accesses to result in an error without
+further calls into this driver's internals.
 
-Fixes smatch warning:
-
-drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c:480 gf100_gr_chan_new() warn: inconsistent returns '&gr->fecs.mutex'.
-
-Fixes: ca081fff6ecc ("drm/nouveau/gr/gf100-: generate golden context during first object alloc")
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241026173844.2392679-1-lihuafei1@huawei.com
+Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
+Closes: https://lore.kernel.org/dri-devel/4d8f4c9b-2efb-4774-9a37-2f257f79b2c9@linux.dev/
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240809193600.3360015-2-sean.anderson@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xlnx/zynqmp_kms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c b/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
-index 060c74a80eb14..3ea447f6a45b5 100644
---- a/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/engine/gr/gf100.c
-@@ -443,6 +443,7 @@ gf100_gr_chan_new(struct nvkm_gr *base, struct nvkm_chan *fifoch,
- 		ret = gf100_grctx_generate(gr, chan, fifoch->inst);
- 		if (ret) {
- 			nvkm_error(&base->engine.subdev, "failed to construct context\n");
-+			mutex_unlock(&gr->fecs.mutex);
- 			return ret;
- 		}
- 	}
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_kms.c b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+index bd1368df78703..4556af2faa0f1 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
+@@ -536,7 +536,7 @@ void zynqmp_dpsub_drm_cleanup(struct zynqmp_dpsub *dpsub)
+ {
+ 	struct drm_device *drm = &dpsub->drm->dev;
+ 
+-	drm_dev_unregister(drm);
++	drm_dev_unplug(drm);
+ 	drm_atomic_helper_shutdown(drm);
+ 	drm_encoder_cleanup(&dpsub->drm->encoder);
+ 	drm_kms_helper_poll_fini(drm);
 -- 
 2.43.0
 
