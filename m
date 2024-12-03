@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-97250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D0F9E2380
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2069E2687
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D257CBC234E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4A8F167BC8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFED51F76D9;
-	Tue,  3 Dec 2024 15:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2831F76D5;
+	Tue,  3 Dec 2024 16:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p2slvs3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLhMZxwX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBE21F75BC;
-	Tue,  3 Dec 2024 15:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA4181ADA;
+	Tue,  3 Dec 2024 16:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239948; cv=none; b=HMs3NqFraS35M1VJYjytkVw7iNQPcKe7PF3ZlU4oD2iTBjN4Z/qe2q1fqCKPQoRW8Ka/ic1OG+GhqNjGk40ZjKlAZsLJcQotsPT1PaI5Tbxea9AEAbyHBziR/HaBX/wvY6uJHSWSwmKfOOjLSn/1vLKISeYVqyTRC2aVesGSrzo=
+	t=1733242201; cv=none; b=d1AzCRAyfSB/Ocb+Qc4zR9Fz05S+oDENkuqFbDxK2TlPKM3xpSPhx8IFZ7aJH67SUSIPjxw1XMrVcuM+EMP22+/v+1SxeYMKHc467eHGYD5LpC1jRWvLPTRJk1+okE/Dv060PTtcI3wcD7AZbIsOiqEZk5flGojjD4pCNtLU1cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239948; c=relaxed/simple;
-	bh=Xstw2aQRCmccQVywYSgEcDemEq/1Pur7OXSmZpBnr1M=;
+	s=arc-20240116; t=1733242201; c=relaxed/simple;
+	bh=AsapXsjjmKTXufkMfE4cN3ca0FZ1VkHhSQE1JY9LonI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljH7kS831+jToowZeN7ZId7IJpM85R9pRQ6EfZX73jugAOt5d/amTo7sBiET6O61BV8iOm4PEZEI5Kkk0AbmGF/LopEbhNmDUj/KqJ/qKRPHzKgKKtrgkVa9TH5GmcxzM/x9Zj54TC0M2UEeWo7nz3VTEw+CbWDzEhNgzaGCkHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p2slvs3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D43C4CED9;
-	Tue,  3 Dec 2024 15:32:28 +0000 (UTC)
+	 MIME-Version; b=GbeNcwU87lZ3iS6r2wAoAOw/0Unjz/aUYu7dUs96ZR+7Pgs7Lm8J2hHbj6ToNWFyOrm318wPhhI7L6VRZxa+dT2cs+7jgz7TGA2+LwtkHOyZnY2gd/6H9OBLwDVEaOvGAu4lo+1oVQLsyWvUCiBfP7CZiYRXKIWwFJQiz0xnmPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLhMZxwX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13DBC4CECF;
+	Tue,  3 Dec 2024 16:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239948;
-	bh=Xstw2aQRCmccQVywYSgEcDemEq/1Pur7OXSmZpBnr1M=;
+	s=korg; t=1733242201;
+	bh=AsapXsjjmKTXufkMfE4cN3ca0FZ1VkHhSQE1JY9LonI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p2slvs3QJbSCNKwKXoCtl46wWxS0MsPDMe5FrJkX3SW9y7v6U/OezXHM3fx/jHujN
-	 CepLTS6rQqEUfGbwZFKKttc5UpCyF9uBBh6zor+3FNCF1to+1LGfhM68UwBFtBN3kq
-	 JASsqrAfymaH/VP8+4jRlw0Icuk+diWHwKpGmJ/Q=
+	b=zLhMZxwX67KQrttNuBILkT+y7eq3A/OFJXhtTKVo6RS6gUz7Ro06+xDINgTJpQo5m
+	 giPNJoZN3a7dXO7jyJepN08doeCi3g4vzsfgnU93ddXF14dK/fNewrvTf9zC71SToZ
+	 vxjli5It5+q7gfghU0v7H3oY8g/5tpdDwtXNJtPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Thelen <gthelen@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Tuan Phan <tuanphan@os.amperecomputing.com>,
-	Chun-Tse Shao <ctshao@google.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 790/817] perf/arm-smmuv3: Fix lockdep assert in ->event_init()
-Date: Tue,  3 Dec 2024 15:46:02 +0100
-Message-ID: <20241203144026.848238728@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 636/826] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
+Date: Tue,  3 Dec 2024 15:46:03 +0100
+Message-ID: <20241203144808.560885413@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chun-Tse Shao <ctshao@google.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-[ Upstream commit 02a55f2743012a8089f09f6867220c3d57f16564 ]
+commit 1157733344651ca505e259d6554591ff156922fa upstream.
 
-Same as
-https://lore.kernel.org/all/20240514180050.182454-1-namhyung@kernel.org/,
-we should skip `for_each_sibling_event()` for group leader since it
-doesn't have the ctx yet.
+An atomicity violation occurs when the validity of the variables
+da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
+assessment is not protected by a lock, the da7219 variable might still be
+in flux during the assessment, rendering this check invalid.
 
-Fixes: f3c0eba28704 ("perf: Add a few assertions")
-Reported-by: Greg Thelen <gthelen@google.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Tuan Phan <tuanphan@os.amperecomputing.com>
-Signed-off-by: Chun-Tse Shao <ctshao@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241108050806.3730811-1-ctshao@google.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this issue, we recommend adding a lock before the block
+if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
+the legitimacy check for da7219->clk_src and da7219->mclk_rate is
+protected by the lock, ensuring the validity of the check.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
+
+Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/arm_smmuv3_pmu.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ sound/soc/codecs/da7219.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/perf/arm_smmuv3_pmu.c b/drivers/perf/arm_smmuv3_pmu.c
-index d5fa92ba83739..dabdb9f7bb82c 100644
---- a/drivers/perf/arm_smmuv3_pmu.c
-+++ b/drivers/perf/arm_smmuv3_pmu.c
-@@ -431,6 +431,17 @@ static int smmu_pmu_event_init(struct perf_event *event)
- 			return -EINVAL;
+--- a/sound/soc/codecs/da7219.c
++++ b/sound/soc/codecs/da7219.c
+@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct
+ 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
+ 	int ret = 0;
+ 
+-	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
++	mutex_lock(&da7219->pll_lock);
++
++	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		return 0;
++	}
+ 
+ 	if ((freq < 2000000) || (freq > 54000000)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
+ 			freq);
+ 		return -EINVAL;
  	}
  
-+	/*
-+	 * Ensure all events are on the same cpu so all events are in the
-+	 * same cpu context, to avoid races on pmu_enable etc.
-+	 */
-+	event->cpu = smmu_pmu->on_cpu;
-+
-+	hwc->idx = -1;
-+
-+	if (event->group_leader == event)
-+		return 0;
-+
- 	for_each_sibling_event(sibling, event->group_leader) {
- 		if (is_software_event(sibling))
- 			continue;
-@@ -442,14 +453,6 @@ static int smmu_pmu_event_init(struct perf_event *event)
- 			return -EINVAL;
- 	}
- 
--	hwc->idx = -1;
+-	mutex_lock(&da7219->pll_lock);
 -
--	/*
--	 * Ensure all events are on the same cpu so all events are in the
--	 * same cpu context, to avoid races on pmu_enable etc.
--	 */
--	event->cpu = smmu_pmu->on_cpu;
--
- 	return 0;
- }
- 
--- 
-2.43.0
-
+ 	switch (clk_id) {
+ 	case DA7219_CLKSRC_MCLK_SQR:
+ 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
 
 
 
