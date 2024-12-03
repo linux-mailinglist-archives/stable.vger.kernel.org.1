@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63D19E2936
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:27:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FBED9E28F1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51D5EBC63A2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7D28B85AE8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14701FCFD3;
-	Tue,  3 Dec 2024 15:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402881F706B;
+	Tue,  3 Dec 2024 15:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c08tLfuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkDL1PJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9A21FCF72;
-	Tue,  3 Dec 2024 15:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0E91E3DF9;
+	Tue,  3 Dec 2024 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240131; cv=none; b=BVoibvuM1ZZ/nPtRjqt4/p9isamDIvoZ/FOVoZzn/y+L4ps3WJdVTWWRSLoOaW/MItgcvZmk3rdU/+eULbazDUuYkf9P7QA4GSsAWtA6RMdDHHztekTnMrvy68s4Z2bSHmYjUXugFhK/g+f6pMS9sKLz9qqKzlH9SXAK3xeBrSU=
+	t=1733238100; cv=none; b=DLDWgOQdh7Dmj0B98SX+jXOGn9SecEgwYqajqiMtIii/JT12thWg3iGmToB0NfGrAjfZSTM8iXaajBgDe2cqIJUihN8hxM6MRRXfVEsLjC9CxOgZanIa4odaxJnGZDjjZGfV3/ckmHbtbypsJwTPL9sJNpVPaQO37/hAakddKSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240131; c=relaxed/simple;
-	bh=YKEcBRPbL08zVB+eghihwRrT1utGxznmLQyRlwQOqQs=;
+	s=arc-20240116; t=1733238100; c=relaxed/simple;
+	bh=0NSrUHNecNOh5B2Ox25E4d+VGQnx4Xin0QRV2j446Ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bn1IjqRdrCT7HL+3zB4nfm2FYXYHF9VrWYSC+BDJhl+cFKc9d6PkE6Pmvjxj+7kITT2jq3XiV/oxj+iZn6TpUAy9Qjv7BsU3AzeaasKK2hYrHNhMkba2enO3Nl58xU95aleVbeIGnn0SaieUUygNu+wvRHLQO7prmhwj/bHKGqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c08tLfuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C96C4CECF;
-	Tue,  3 Dec 2024 15:35:30 +0000 (UTC)
+	 MIME-Version; b=e9GeEX4/RwA/8cIz/CAdEk5qaiFFhPe7mAxPQ+ViiUszWLSkkPCz/kPKwY7c+GYW07gkwxrs7Pku1J6RE959I0Rpab4vRwSHYR/sduSWLBA2XdljFvIYpGPu+gPn8aYbFPU13PV1Snd4daLcjtadE01kTXctsLaDZeZwAkwiwno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkDL1PJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7387DC4CECF;
+	Tue,  3 Dec 2024 15:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240131;
-	bh=YKEcBRPbL08zVB+eghihwRrT1utGxznmLQyRlwQOqQs=;
+	s=korg; t=1733238099;
+	bh=0NSrUHNecNOh5B2Ox25E4d+VGQnx4Xin0QRV2j446Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c08tLfuCV+g0rfiL592mMU9Lrhn/oQpcH8sz3EEHUcaMeo/g+3GFE6lTvTSqIm1ai
-	 taGCwwhfSWO/5Ku9+LhBh03CeMsBhpcqJkvvqrmbxRa2EbDBUNtg2TSMKAycvghb6C
-	 22GbU6rhf1V2oQaR2xjCA2+s7iaYehl7gHJznHk4=
+	b=ZkDL1PJa42ZwzExu9dMNNgKac0/1g6aj91B88r6kQT7HYDSwHamrKGnQoi97aoekp
+	 YAdD4W0kzFshN4rjuRxoc0L+gD5GvIfCR3f2HPvqDPot1unv/wCLUNd/zqa10LYf2N
+	 NWV33TExe/kK10pjBMbjLLYVmMNVR9XqUxHS3d+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/826] s390/facilities: Fix warning about shadow of global variable
-Date: Tue,  3 Dec 2024 15:35:31 +0100
-Message-ID: <20241203144743.615942614@linuxfoundation.org>
+Subject: [PATCH 6.11 161/817] tpm: fix signed/unsigned bug when checking event logs
+Date: Tue,  3 Dec 2024 15:35:33 +0100
+Message-ID: <20241203144002.011492906@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerd Bayer <gbayer@linux.ibm.com>
+From: Gregory Price <gourry@gourry.net>
 
-[ Upstream commit 61997c1e947dbf8bc625ef86ceee00fdf2a5dba1 ]
+[ Upstream commit e6d654e9f5a97742cfe794b1c4bb5d3fb2d25e98 ]
 
-Compiling the kernel with clang W=2 produces a warning that the
-parameter declarations in some routines would shadow the definition of
-the global variable stfle_fac_list. Address this warning by renaming the
-parameters to fac_list.
+A prior bugfix that fixes a signed/unsigned error causes
+another signed unsigned error.
 
-Fixes: 17e89e1340a3 ("s390/facilities: move stfl information from lowcore to global data")
-Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+A situation where log_tbl->size is invalid can cause the
+size passed to memblock_reserve to become negative.
+
+log_size from the main event log is an unsigned int, and
+the code reduces to the following
+
+u64 value = (int)unsigned_value;
+
+This results in sign extension, and the value sent to
+memblock_reserve becomes effectively negative.
+
+Fixes: be59d57f9806 ("efi/tpm: Fix sanity check of unsigned tbl_size being less than zero")
+Signed-off-by: Gregory Price <gourry@gourry.net>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/facility.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/firmware/efi/tpm.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/s390/include/asm/facility.h b/arch/s390/include/asm/facility.h
-index 715bcf8fb69a5..5f5b1aa6c2331 100644
---- a/arch/s390/include/asm/facility.h
-+++ b/arch/s390/include/asm/facility.h
-@@ -88,7 +88,7 @@ static __always_inline bool test_facility(unsigned long nr)
- 	return __test_facility(nr, &stfle_fac_list);
- }
- 
--static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
-+static inline unsigned long __stfle_asm(u64 *fac_list, int size)
+diff --git a/drivers/firmware/efi/tpm.c b/drivers/firmware/efi/tpm.c
+index e8d69bd548f3f..9c3613e6af158 100644
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -40,7 +40,8 @@ int __init efi_tpm_eventlog_init(void)
  {
- 	unsigned long reg0 = size - 1;
+ 	struct linux_efi_tpm_eventlog *log_tbl;
+ 	struct efi_tcg2_final_events_table *final_tbl;
+-	int tbl_size;
++	unsigned int tbl_size;
++	int final_tbl_size;
+ 	int ret = 0;
  
-@@ -96,7 +96,7 @@ static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
- 		"	lgr	0,%[reg0]\n"
- 		"	.insn	s,0xb2b00000,%[list]\n" /* stfle */
- 		"	lgr	%[reg0],0\n"
--		: [reg0] "+&d" (reg0), [list] "+Q" (*stfle_fac_list)
-+		: [reg0] "+&d" (reg0), [list] "+Q" (*fac_list)
- 		:
- 		: "memory", "cc", "0");
- 	return reg0;
-@@ -104,10 +104,10 @@ static inline unsigned long __stfle_asm(u64 *stfle_fac_list, int size)
- 
- /**
-  * stfle - Store facility list extended
-- * @stfle_fac_list: array where facility list can be stored
-+ * @fac_list: array where facility list can be stored
-  * @size: size of passed in array in double words
-  */
--static inline void __stfle(u64 *stfle_fac_list, int size)
-+static inline void __stfle(u64 *fac_list, int size)
- {
- 	unsigned long nr;
- 	u32 stfl_fac_list;
-@@ -116,20 +116,20 @@ static inline void __stfle(u64 *stfle_fac_list, int size)
- 		"	stfl	0(0)\n"
- 		: "=m" (get_lowcore()->stfl_fac_list));
- 	stfl_fac_list = get_lowcore()->stfl_fac_list;
--	memcpy(stfle_fac_list, &stfl_fac_list, 4);
-+	memcpy(fac_list, &stfl_fac_list, 4);
- 	nr = 4; /* bytes stored by stfl */
- 	if (stfl_fac_list & 0x01000000) {
- 		/* More facility bits available with stfle */
--		nr = __stfle_asm(stfle_fac_list, size);
-+		nr = __stfle_asm(fac_list, size);
- 		nr = min_t(unsigned long, (nr + 1) * 8, size * 8);
+ 	if (efi.tpm_log == EFI_INVALID_TABLE_ADDR) {
+@@ -80,26 +81,26 @@ int __init efi_tpm_eventlog_init(void)
+ 		goto out;
  	}
--	memset((char *) stfle_fac_list + nr, 0, size * 8 - nr);
-+	memset((char *)fac_list + nr, 0, size * 8 - nr);
- }
  
--static inline void stfle(u64 *stfle_fac_list, int size)
-+static inline void stfle(u64 *fac_list, int size)
- {
- 	preempt_disable();
--	__stfle(stfle_fac_list, size);
-+	__stfle(fac_list, size);
- 	preempt_enable();
- }
+-	tbl_size = 0;
++	final_tbl_size = 0;
+ 	if (final_tbl->nr_events != 0) {
+ 		void *events = (void *)efi.tpm_final_log
+ 				+ sizeof(final_tbl->version)
+ 				+ sizeof(final_tbl->nr_events);
  
+-		tbl_size = tpm2_calc_event_log_size(events,
+-						    final_tbl->nr_events,
+-						    log_tbl->log);
++		final_tbl_size = tpm2_calc_event_log_size(events,
++							  final_tbl->nr_events,
++							  log_tbl->log);
+ 	}
+ 
+-	if (tbl_size < 0) {
++	if (final_tbl_size < 0) {
+ 		pr_err(FW_BUG "Failed to parse event in TPM Final Events Log\n");
+ 		ret = -EINVAL;
+ 		goto out_calc;
+ 	}
+ 
+ 	memblock_reserve(efi.tpm_final_log,
+-			 tbl_size + sizeof(*final_tbl));
+-	efi_tpm_final_log_size = tbl_size;
++			 final_tbl_size + sizeof(*final_tbl));
++	efi_tpm_final_log_size = final_tbl_size;
+ 
+ out_calc:
+ 	early_memunmap(final_tbl, sizeof(*final_tbl));
 -- 
 2.43.0
 
