@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DB59E2256
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672239E2648
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:11:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A75EC166A1D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 903D2B447FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA7B1EE001;
-	Tue,  3 Dec 2024 15:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C461F76DA;
+	Tue,  3 Dec 2024 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeC585D+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNvnDDom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B88E646;
-	Tue,  3 Dec 2024 15:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C58153800;
+	Tue,  3 Dec 2024 15:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239132; cv=none; b=F7hCdxno0DLjQ5xCL8sC47AARuKgGaFrsEwNGx5e35a2dD3wy6RGj5FzF4HM1jNgpfccvmoJh4Oay6WtxsqYUeUboGaiaqM2s7JyKJuP6A0IF5n0hw1dVdZuRwkzMD5h5AM7E4WXbrgX8QXgumsvuj2IQMWCPytkpmaizFC3yDg=
+	t=1733241078; cv=none; b=PcXfICtybCjhvRTc+iPy5P7a9btqQj6vPSvuACdSOCDCsT5P77MjQ5JuBAf2G2LZfjIJqHbQo0BD51DyHfvY2UI2eNBVzbzOebKkUA9kaumIInZERdQ0CN2hGEJr1OPAFFp7XSms0Wtxy7vYoclEUcUdF2QazeIUGgyhB4Qr9Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239132; c=relaxed/simple;
-	bh=LtqxKH5NRHcKDixSFTde9uHOIaxX5MnKqTqaUdz3vMM=;
+	s=arc-20240116; t=1733241078; c=relaxed/simple;
+	bh=O3kqrkvIRdTv8jk4Cirs6th06/lcV97ZJ3Qc1zmCUZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVxnq1mAYZyiz+rhdK4GlJu1TK1eHj4oYHOrIl8oa5ponlVGXcP6HTQyXEONFB5d0sCuOQtLqp+YmIaDyI75M5UANLDm+TTeWj/sE3fG3ogKJSkPhdw/7avoBoTepwUFYF1StErLkQktiAju4NgNkDynvXaQHzYGZA2B+EO6P5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeC585D+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96FA4C4CECF;
-	Tue,  3 Dec 2024 15:18:51 +0000 (UTC)
+	 MIME-Version; b=Ab0wnkNndJQh0geKO2yikxC7foU01xeONU1BVxh7vV8IJYCkuuSwEravVKqnaikUPWoq6V2BLSSXhriMoSSHqP264UlRixVV81XrVwlXicYuxuan7htbLJT6XXfJVipwtlbd89ya3vcX0ppa7Yhz+d9lYD/jiOHmt2XT0MYtSOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNvnDDom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993EEC4CECF;
+	Tue,  3 Dec 2024 15:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239132;
-	bh=LtqxKH5NRHcKDixSFTde9uHOIaxX5MnKqTqaUdz3vMM=;
+	s=korg; t=1733241078;
+	bh=O3kqrkvIRdTv8jk4Cirs6th06/lcV97ZJ3Qc1zmCUZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeC585D+A6EcsWmFiHjuCdD2wOcdBFUr8k3j/BufS+aJlrm9gf+JwntcFlv3j9Jox
-	 0ytiyL54WTOhyB6iix0FuDBVT2PLfRk9R9bdL/sdLWzSv2EmPAtwFXIfV5vJkP4nFA
-	 ALGoHkHSA0REd3YL/h7w9bHkrJgqLgKY+QKOxnx8=
+	b=QNvnDDomzg92Fgbr68NZNJb8TegxepA10783eRk/qZ8ge+V4s9Zajm9a/TiT1tPun
+	 xCEr2aKNc+2/hmQDZFQlN6MjQOE1+A6FfoqZVUSkMKCXYmB/ZYbeR9GkoQEmZr0h8p
+	 YByR2UXgNaM3Rzy9EczK6HUdjzRdkcsJo2wnKrS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 473/817] clk: clk-axi-clkgen: make sure to enable the AXI bus clock
-Date: Tue,  3 Dec 2024 15:40:45 +0100
-Message-ID: <20241203144014.333929509@linuxfoundation.org>
+Subject: [PATCH 6.12 319/826] wifi: iwlwifi: mvm: tell iwlmei when we finished suspending
+Date: Tue,  3 Dec 2024 15:40:46 +0100
+Message-ID: <20241203144756.205934131@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit c64ef7e4851d1a9abbb7f7833e4936973ac5ba79 ]
+[ Upstream commit d1a54ec21b8e7bca59141ff1ac6ce73e07d744f2 ]
 
-In order to access the registers of the HW, we need to make sure that
-the AXI bus clock is enabled. Hence let's increase the number of clocks
-by one.
+Since we no longer shut down the device in suspend, we also no longer
+call iwl_mvm_mei_device_state() and this is a problem because iwlmei
+expects this to be called when it runs its own suspend sequence. It
+checks mei->device_down in iwl_mei_remove() which is called upon
+suspend.
 
-In order to keep backward compatibility and make sure old DTs still work
-we check if clock-names is available or not. If it is, then we can
-disambiguate between really having the AXI clock or a parent clock and
-so we can enable the bus clock. If not, we fallback to what was done
-before and don't explicitly enable the AXI bus clock.
+Fix this by telling iwlmei when we're done accessing the device.
+When we'll wake up, the device should be untouched if CSME didn't use it
+during the suspend time. If CSME used it, we'll notice it through the
+CSR_FUNC_SCRATCH register.
 
-Note that if clock-names is given, the axi clock must be the last one in
-the phandle array (also enforced in the DT bindings) so that we can reuse
-as much code as possible.
-
-Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-2-bc5e0733ad76@analog.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: e8bb19c1d590 ("wifi: iwlwifi: support fast resume")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241028135215.525287b90af2.Ibf183824471ea5580d9276d104444e53191e6900@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-axi-clkgen.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/clk-axi-clkgen.c b/drivers/clk/clk-axi-clkgen.c
-index bf4d8ddc93aea..934e53a96ddda 100644
---- a/drivers/clk/clk-axi-clkgen.c
-+++ b/drivers/clk/clk-axi-clkgen.c
-@@ -7,6 +7,7 @@
-  */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index eee7a385d9467..d37d83d246354 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1237,6 +1237,7 @@ int __iwl_mvm_mac_start(struct iwl_mvm *mvm)
+ 	fast_resume = mvm->fast_resume;
  
- #include <linux/platform_device.h>
-+#include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/slab.h>
- #include <linux/io.h>
-@@ -512,6 +513,7 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 	struct clk_init_data init;
- 	const char *parent_names[2];
- 	const char *clk_name;
-+	struct clk *axi_clk;
- 	unsigned int i;
- 	int ret;
+ 	if (fast_resume) {
++		iwl_mvm_mei_device_state(mvm, true);
+ 		ret = iwl_mvm_fast_resume(mvm);
+ 		if (ret) {
+ 			iwl_mvm_stop_device(mvm);
+@@ -1377,10 +1378,13 @@ void __iwl_mvm_mac_stop(struct iwl_mvm *mvm, bool suspend)
+ 		iwl_mvm_rm_aux_sta(mvm);
  
-@@ -528,8 +530,24 @@ static int axi_clkgen_probe(struct platform_device *pdev)
- 		return PTR_ERR(axi_clkgen->base);
- 
- 	init.num_parents = of_clk_get_parent_count(pdev->dev.of_node);
--	if (init.num_parents < 1 || init.num_parents > 2)
--		return -EINVAL;
-+
-+	axi_clk = devm_clk_get_enabled(&pdev->dev, "s_axi_aclk");
-+	if (!IS_ERR(axi_clk)) {
-+		if (init.num_parents < 2 || init.num_parents > 3)
-+			return -EINVAL;
-+
-+		init.num_parents -= 1;
+ 	if (suspend &&
+-	    mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000)
++	    mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000) {
+ 		iwl_mvm_fast_suspend(mvm);
+-	else
++		/* From this point on, we won't touch the device */
++		iwl_mvm_mei_device_state(mvm, false);
 +	} else {
-+		/*
-+		 * Legacy... So that old DTs which do not have clock-names still
-+		 * work. In this case we don't explicitly enable the AXI bus
-+		 * clock.
-+		 */
-+		if (PTR_ERR(axi_clk) != -ENOENT)
-+			return PTR_ERR(axi_clk);
-+		if (init.num_parents < 1 || init.num_parents > 2)
-+			return -EINVAL;
+ 		iwl_mvm_stop_device(mvm);
 +	}
  
- 	for (i = 0; i < init.num_parents; i++) {
- 		parent_names[i] = of_clk_get_parent_name(pdev->dev.of_node, i);
+ 	iwl_mvm_async_handlers_purge(mvm);
+ 	/* async_handlers_list is empty and will stay empty: HW is stopped */
 -- 
 2.43.0
 
