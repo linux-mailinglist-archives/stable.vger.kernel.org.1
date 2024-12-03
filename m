@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-97099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3489E22DE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C339E27E5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:44:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D83316B9D9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D41B1BA69E2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2281F473A;
-	Tue,  3 Dec 2024 15:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753471F75B4;
+	Tue,  3 Dec 2024 16:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqQcQ2Xb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHeYpVTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0A31F757E;
-	Tue,  3 Dec 2024 15:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB881E009A;
+	Tue,  3 Dec 2024 16:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239519; cv=none; b=BRtWwE0r0qdtr4H+ExN3HYepLurXRzGhhadr66eFqv9ADrsdXROfH77b1uQ0eJgjoEIIttqgvKdr/Q45ldPUqMGwhgwYiSpEh9+iiKXlxnRBg3ftoO/BCKyZABESXRsDvH6yfxcum93P+WqmapoFlOGWiOenkSlSXXn1QEn+OVw=
+	t=1733241674; cv=none; b=GFX3VrFo6x4sDaGxjVW7H72BOUXVtUU+Pb38w1TJI8nxKAJcE94Z0GIw05xPIYQSCBEQkOP21Cfmn6buQzw50Td9EQbTkqtsiUOnb24GpZsJLBgywyZJ72kg9F6F3pS4f15IuKYJoZWcAkhimhGQnOdJOIdPUZM2w+NiSmkgKAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239519; c=relaxed/simple;
-	bh=/o4M9X3REStnwPdw3qdSSCp73PHPipLB05JPu5aYbf8=;
+	s=arc-20240116; t=1733241674; c=relaxed/simple;
+	bh=9fN5vHCe/9ZS64L20Db9D/97GVPCKN1Jjjx3M4SNKz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c66yqK9IPkKQUbRgarvNWD8pjzfNe8vU8lYkbdFcVZL1SCPtQLz0LIvK+oP7juiN5H+bdix/o4q5xSasboyAsaYikefJ81oRM+kAR9iCnzj4d2TCoOxTi8ho1KzqeSGR5tfW5SflKWBQUoXz48pbU8sy2gbwfoRlKWq9ls7DYAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqQcQ2Xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A65AC4CECF;
-	Tue,  3 Dec 2024 15:25:18 +0000 (UTC)
+	 MIME-Version; b=oyhPNmkUcpa8gDn4Z13iTFWJzxV0wmWZkRHqIjz22gZTMCorFZL5L8JBvwsJwIE22gKKpOxNFhmV/cy5GL7EuGehz8aE3SPHGEfW3JRgtFHvigx+7hfxNJ8Yf8EfURuB3kOdHwf6bcvBE9xAhnfASnLwoae+Gr6jFMudKIXxHY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHeYpVTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F242AC4CECF;
+	Tue,  3 Dec 2024 16:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239518;
-	bh=/o4M9X3REStnwPdw3qdSSCp73PHPipLB05JPu5aYbf8=;
+	s=korg; t=1733241673;
+	bh=9fN5vHCe/9ZS64L20Db9D/97GVPCKN1Jjjx3M4SNKz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqQcQ2XbbNEuycFuUa0susHiyGbtXrST0YeKKec9+GRoK5k9khrx2my1s7dVq5DoI
-	 ck9h3OtvGttMHfEyC5S3x+jJuiR9RwcmhLQ6ssEQS7fEs/JKFrEovBiQHRwUwOEwch
-	 WagIw65/+Xn5R1yZQmQpvRb358y+DUr0XRAM+w2Y=
+	b=sHeYpVTlM26wqEOOlb+Rp/oyB08MiJB6e/w1lSm225hSzifz3lrJlq4QcdLIYJmCy
+	 dD0e+RMlhuPyHJDjk+FoLXCRlObECD/yg5JKytDGNpKN9q1Dot0k30dNiu2gWF+2Ul
+	 x8OK244cQjVAOyBMam3rgzR1wvC57UvQPTsdjPyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Zverev <ilya@zverev.info>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.11 640/817] ASoC: amd: yc: Add a quirk for microfone on Lenovo ThinkPad P14s Gen 5 21MES00B00
-Date: Tue,  3 Dec 2024 15:43:32 +0100
-Message-ID: <20241203144020.930860329@linuxfoundation.org>
+	Ian Rogers <irogers@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Hemant Kumar <hemant@linux.vnet.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 486/826] perf probe: Fix libdw memory leak
+Date: Tue,  3 Dec 2024 15:43:33 +0100
+Message-ID: <20241203144802.718027288@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +69,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Zverev <ilya@zverev.info>
+From: Ian Rogers <irogers@google.com>
 
-commit b682aa788e5f9f1ddacdfbb453e49fd3f4e83721 upstream.
+[ Upstream commit 4585038b8e186252141ef86e9f0d8e97f11dce8d ]
 
-New ThinkPads need new quirk entries. Ilya has tested this one.
-Laptop product id is 21MES00B00, though the shorthand 21ME works.
+Add missing dwarf_cfi_end to free memory associated with probe_finder
+cfi_eh which is allocated and owned via a call to
+dwarf_getcfi_elf. Confusingly cfi_dbg shouldn't be freed as its memory
+is owned by the passed in debuginfo struct. Add comments to highlight
+this.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219533
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Zverev <ilya@zverev.info>
-Link: https://patch.msgid.link/20241127134420.14471-1-ilya@zverev.info
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This addresses leak sanitizer issues seen in:
+tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+
+Fixes: 270bde1e76f4 ("perf probe: Search both .eh_frame and .debug_frame sections for probe location")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Hemant Kumar <hemant@linux.vnet.ibm.com>
+Link: https://lore.kernel.org/r/20241016235622.52166-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/perf/util/probe-finder.c | 4 ++++
+ tools/perf/util/probe-finder.h | 4 ++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -245,6 +245,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
- 		}
- 	},
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index 630e16c54ed5c..d6b902899940b 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -1379,6 +1379,10 @@ int debuginfo__find_trace_events(struct debuginfo *dbg,
+ 	if (ret >= 0 && tf.pf.skip_empty_arg)
+ 		ret = fill_empty_trace_arg(pev, tf.tevs, tf.ntevs);
+ 
++#if _ELFUTILS_PREREQ(0, 142)
++	dwarf_cfi_end(tf.pf.cfi_eh);
++#endif
++
+ 	if (ret < 0 || tf.ntevs == 0) {
+ 		for (i = 0; i < tf.ntevs; i++)
+ 			clear_probe_trace_event(&tf.tevs[i]);
+diff --git a/tools/perf/util/probe-finder.h b/tools/perf/util/probe-finder.h
+index 3add5ff516e12..724db829b49e0 100644
+--- a/tools/perf/util/probe-finder.h
++++ b/tools/perf/util/probe-finder.h
+@@ -64,9 +64,9 @@ struct probe_finder {
+ 
+ 	/* For variable searching */
+ #if _ELFUTILS_PREREQ(0, 142)
+-	/* Call Frame Information from .eh_frame */
++	/* Call Frame Information from .eh_frame. Owned by this struct. */
+ 	Dwarf_CFI		*cfi_eh;
+-	/* Call Frame Information from .debug_frame */
++	/* Call Frame Information from .debug_frame. Not owned. */
+ 	Dwarf_CFI		*cfi_dbg;
+ #endif
+ 	Dwarf_Op		*fb_ops;	/* Frame base attribute */
+-- 
+2.43.0
+
 
 
 
