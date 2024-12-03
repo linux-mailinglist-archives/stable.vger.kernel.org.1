@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-97797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E089E2BF9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:25:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD069E2BB3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A13EBE5764
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1795B3D940
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3FC1F75B9;
-	Tue,  3 Dec 2024 16:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1C11F76B5;
+	Tue,  3 Dec 2024 16:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQshOzTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpdlNrUR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1B523CE;
-	Tue,  3 Dec 2024 16:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAB523CE;
+	Tue,  3 Dec 2024 16:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241765; cv=none; b=nTHDwKooFOHJGWpNEhytoo3OLf7RcAjqpqPUFQBEqnHgehyltfHIo9vlw+DGElF6vVHDpnLAIAUUYyGfOfgPhFkS76OqsMTIsSPJNWoSm7n/PDh0zSwHhWrfKoQaPqiTqM8MciPsUxGMzd4MajVORtEnlW/IQrj6vGqvYfN5+uo=
+	t=1733241857; cv=none; b=VKVfvmEOcHlodYWgrqGFb4gwGKQ/E2yOSgJ54QhB18c6JK5zzwD6ESnU1suDmhZS7cVMkSmlvzzcOmlAFDJOfTyabIbjwIdq/hrxUrTZ114lfdwJVgRSTUfYv5/w7v9hpO3JtaYd/1g7orDq7555xELk8yAmfwDiEWe7K5WeYk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241765; c=relaxed/simple;
-	bh=vP63hSB8AFewi9EoK0eGgNVAmTNCwb2VOo7RKUcUsSY=;
+	s=arc-20240116; t=1733241857; c=relaxed/simple;
+	bh=izbBIK3zoOFaNIysmynFRtanAdmxCZUrFKtA9klKzkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZWNDSHUtJ3/5lpa3adoBvAYjoIcR3HkYHn8ms8pyyr4b15s+t5agEMHpgL1A7NB1zPAOOlHXo92UJoGyucJQUaG6usISORmBu437vZFO5kb1k30sytgIB+je80PucRo/b0F9olxvP2QHt4vbks3IGmvrk+UasGxiw0lVt9431c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQshOzTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC18C4CECF;
-	Tue,  3 Dec 2024 16:02:44 +0000 (UTC)
+	 MIME-Version; b=X++yEw440Nss0rG814ev8K3q2szlrLpUuhX8DfOjmPgtZE6EiCAnuZoQZ56ACCmMx48u6r9NcSKBsp2Nd8HfHdncakQf5VMkLE7/gF/r+ypLQBPEkRuXwjnEVs/usuUu3OL8rbMvw+pZhpJ2lwhD8bZ137H7ZBRnNSDsvobjoCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpdlNrUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC95C4CECF;
+	Tue,  3 Dec 2024 16:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241765;
-	bh=vP63hSB8AFewi9EoK0eGgNVAmTNCwb2VOo7RKUcUsSY=;
+	s=korg; t=1733241856;
+	bh=izbBIK3zoOFaNIysmynFRtanAdmxCZUrFKtA9klKzkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQshOzTzjiAtROVpUXHLnvZwaJmpuxoq7hACMDeVN3AkGdI/Y4Q+gf8mAX6lcFfeJ
-	 BnmcWmjT2TUZO9zlf+/8sHJE6HMZToRRMIJcOEVx8MDJdzLBQE1k4Budq0XNru1NkB
-	 5nrXdG2whdHjHdlP+KH93HO/HthFgV7hyeEmTEOw=
+	b=YpdlNrURQDeZP7jEQignj8NpIAeSMoNBH5rmzls+6R7hQVYwDt3opUNgGqn1PZNGG
+	 yI5zFPZ62vnNWKP2gT8C0zRavavugbqQbht3PsY70XVTbjTaawlNqJnVXI8mDCxgz1
+	 FqbJDbKkUbn9nSRMuowMBsObSHja/X8WAZYVh1Pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Cyril Hrubis <chrubis@suse.cz>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 508/826] f2fs: fix to map blocks correctly for direct write
-Date: Tue,  3 Dec 2024 15:43:55 +0100
-Message-ID: <20241203144803.574860679@linuxfoundation.org>
+Subject: [PATCH 6.12 537/826] phy: airoha: Fix REG_CSR_2L_JCPLL_SDM_HREN config in airoha_pcie_phy_init_ssc_jcpll()
+Date: Tue,  3 Dec 2024 15:44:24 +0100
+Message-ID: <20241203144804.703125661@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,41 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 5dd00ebda337b9295e7027691fa70540da369ff2 ]
+[ Upstream commit 6fd016c965d241673a2e62afbf9eeb4bcbfbbe45 ]
 
-f2fs_map_blocks() supports to map continuous holes or preallocated
-address, we should avoid setting F2FS_MAP_MAPPED for these cases
-only, otherwise, it may fail f2fs_iomap_begin(), and make direct
-write fallbacking to use buffered IO and flush, result in performance
-regression.
+Fix typo configuring REG_CSR_2L_JCPLL_SDM_HREN register in
+airoha_pcie_phy_init_ssc_jcpll routine.
 
-Fixes: 9f0f6bf42714 ("f2fs: support to map continuous holes or preallocated address")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202409122103.e45aa13b-oliver.sang@intel.com
-Cc: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: d7d2818b9383 ("phy: airoha: Add PCIe PHY driver for EN7581 SoC.")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20240918-airoha-en7581-phy-fixes-v1-3-8291729a87f8@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/phy/phy-airoha-pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 9202082a3902c..3439f72052ee8 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -1676,7 +1676,8 @@ int f2fs_map_blocks(struct inode *inode, struct f2fs_map_blocks *map, int flag)
- 		/* reserved delalloc block should be mapped for fiemap. */
- 		if (blkaddr == NEW_ADDR)
- 			map->m_flags |= F2FS_MAP_DELALLOC;
--		if (flag != F2FS_GET_BLOCK_DIO || !is_hole)
-+		/* DIO READ and hole case, should not map the blocks. */
-+		if (!(flag == F2FS_GET_BLOCK_DIO && is_hole && !map->m_may_create))
- 			map->m_flags |= F2FS_MAP_MAPPED;
- 
- 		map->m_pblk = blkaddr;
+diff --git a/drivers/phy/phy-airoha-pcie.c b/drivers/phy/phy-airoha-pcie.c
+index 9a7ce65f87f05..56e9ade8a9fd3 100644
+--- a/drivers/phy/phy-airoha-pcie.c
++++ b/drivers/phy/phy-airoha-pcie.c
+@@ -802,7 +802,7 @@ static void airoha_pcie_phy_init_ssc_jcpll(struct airoha_pcie_phy *pcie_phy)
+ 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SDM_IFM,
+ 				   CSR_2L_PXP_JCPLL_SDM_IFM);
+ 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SDM_HREN,
+-				   REG_CSR_2L_JCPLL_SDM_HREN);
++				   CSR_2L_PXP_JCPLL_SDM_HREN);
+ 	airoha_phy_csr_2l_clear_bits(pcie_phy, REG_CSR_2L_JCPLL_RST_DLY,
+ 				     CSR_2L_PXP_JCPLL_SDM_DI_EN);
+ 	airoha_phy_csr_2l_set_bits(pcie_phy, REG_CSR_2L_JCPLL_SSC,
 -- 
 2.43.0
 
