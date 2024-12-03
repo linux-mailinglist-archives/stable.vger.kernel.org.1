@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A197C9E1FB1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A539D9E1FC6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE7B5163252
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82D46B817EF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB571F7081;
-	Tue,  3 Dec 2024 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CDA1E4A9;
+	Tue,  3 Dec 2024 14:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yidqXFCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eT70xml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0B61F7074;
-	Tue,  3 Dec 2024 14:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B3E1EE029;
+	Tue,  3 Dec 2024 14:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236769; cv=none; b=dqinAzzxC1uGOvKKcSe6OOntdXEY9M7f84kaPqhoqCNNOzI4tBNmCWKzaMIdnVB2zk0vVbERTqcvf6fN+jrVnBkvMrSm89/OGYxTTuidlQWbicuGxEY9yV/Vyy/VrZcJcN/NnSsqORmCXfDbAUZGL1cJO/hJU6OiyzGJ5dIQJJM=
+	t=1733236775; cv=none; b=PdHIZ3rCStOIdta3X179/9NNzVosxBuDUyzr2aDCcHUp7pA8YFbGFBB48u6QNnCC2+fe3Q1FT9XQXYjLkLEaEtxI/CZJ1mEyZCyFChaakmcGoxNu0CQpKEht9gXjtnnj9BvoP9B/LmlTjWeDu2Zj7QpPH3C6j6LM+9YlGbaKm28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236769; c=relaxed/simple;
-	bh=NSuo9D6AoKF1221hExFw51CjWhTO1/upi1N/76BYjnw=;
+	s=arc-20240116; t=1733236775; c=relaxed/simple;
+	bh=rtW3Nt225JR0qRex2+PmlXQdutBbQhnmZJR3BYrmm9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hI1NhcfmzP0VkITuMB4WgVDm0RAdROjA/g3TE8wH2IlxlSC1hAt+PpcHVdLx7YviIzZJSxkUJFhbQ8c+mTizIN3nuH1PdankvkEuH3OywlAZ2Ys/ntzRlvdSIGDeziO6xQR0Z/wHpsz0tkf3LdecjDdb3ULsh0A6Sxw53ZyFs3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yidqXFCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E16C4CECF;
-	Tue,  3 Dec 2024 14:39:26 +0000 (UTC)
+	 MIME-Version; b=AbAwJ4kFflXKzOzpa+7dlAYuxVpt6D2jfI+kyKqLlCQp40aruMvC+MtQnhlv0mQFRDhqUv+DK9d92T7qtLZG4CaqJo/tl+eQEPbz0yCAHJzwqs8o4XdO1OWAzpxOxMZgK4jy4y8qWcJDb+EWojX0i58G9n+dM/WCSfl0WZrjJZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eT70xml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908B7C4CECF;
+	Tue,  3 Dec 2024 14:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236767;
-	bh=NSuo9D6AoKF1221hExFw51CjWhTO1/upi1N/76BYjnw=;
+	s=korg; t=1733236774;
+	bh=rtW3Nt225JR0qRex2+PmlXQdutBbQhnmZJR3BYrmm9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yidqXFCuyrF/NT2aqT+tdXb5UpYM39qDdwOk+z4hCPEhE5SRbq2KsmUgPg+ZWz8fx
-	 9DZeCPkYA35vYnbzkODXjvkwErl7O5lbTs3BfqK6kvnOOaXT6fbTdZ3/0nEhkdstru
-	 Z1GkXjWLPouhHclzcx2M1Y1Fq+FJ9rRRet6klAgM=
+	b=0eT70xmlZ6MdBM7rE8AgOByVXqkZGZi86700nB1SiQcebl/fvfEJvsXBSzDwq24Cj
+	 tIv+VcP7oFAIG0JUrJcpW1OJSrvJjbsB6W4ro/UsqOroyiK0OySOz3sqX9wXKTXNqb
+	 +zq0XAt6aL0qGXpBlmR9rf1N9wK2nHucyDgqSU2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Subject: [PATCH 4.19 112/138] spi: Fix acpi deferred irq probe
-Date: Tue,  3 Dec 2024 15:32:21 +0100
-Message-ID: <20241203141927.850260472@linuxfoundation.org>
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 4.19 114/138] um: ubd: Do not use drvdata in release
+Date: Tue,  3 Dec 2024 15:32:23 +0100
+Message-ID: <20241203141927.927867215@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -61,68 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-commit d24cfee7f63d6b44d45a67c5662bd1cc48e8b3ca upstream.
+commit 5bee35e5389f450a7eea7318deb9073e9414d3b1 upstream.
 
-When probing spi device take care of deferred probe of ACPI irq gpio
-similar like for OF/DT case.
+The drvdata is not available in release. Let's just use container_of()
+to get the ubd instance. Otherwise, removing a ubd device will result
+in a crash:
 
->From practical standpoint this fixes issue with vsc-tp driver on
-Dell XP 9340 laptop, which try to request interrupt with spi->irq
-equal to -EPROBE_DEFER and fail to probe with the following error:
+RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
+RSP: 00000000e2083bf0  EFLAGS: 00010246
+RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
+RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
+RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
+R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
+R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
+Workqueue: events mc_work_proc
+Stack:
+ 00000000 604f7ef0 62c5d000 62405d20
+ e2083c30 6002c776 6002c755 600e47ff
+ e2083c60 6025ffe3 04208060 603d36e0
+Call Trace:
+ [<6002c776>] ubd_device_release+0x21/0x55
+ [<6002c755>] ? ubd_device_release+0x0/0x55
+ [<600e47ff>] ? kfree+0x0/0x100
+ [<6025ffe3>] device_release+0x70/0xba
+ [<60381d6a>] kobject_put+0xb5/0xe2
+ [<6026027b>] put_device+0x19/0x1c
+ [<6026a036>] platform_device_put+0x26/0x29
+ [<6026ac5a>] platform_device_unregister+0x2c/0x2e
+ [<6002c52e>] ubd_remove+0xb8/0xd6
+ [<6002bb74>] ? mconsole_reply+0x0/0x50
+ [<6002b926>] mconsole_remove+0x160/0x1cc
+ [<6002bbbc>] ? mconsole_reply+0x48/0x50
+ [<6003379c>] ? um_set_signals+0x3b/0x43
+ [<60061c55>] ? update_min_vruntime+0x14/0x70
+ [<6006251f>] ? dequeue_task_fair+0x164/0x235
+ [<600620aa>] ? update_cfs_group+0x0/0x40
+ [<603a0e77>] ? __schedule+0x0/0x3ed
+ [<60033761>] ? um_set_signals+0x0/0x43
+ [<6002af6a>] mc_work_proc+0x77/0x91
+ [<600520b4>] process_scheduled_works+0x1af/0x2c3
+ [<6004ede3>] ? assign_work+0x0/0x58
+ [<600527a1>] worker_thread+0x2f7/0x37a
+ [<6004ee3b>] ? set_pf_worker+0x0/0x64
+ [<6005765d>] ? arch_local_irq_save+0x0/0x2d
+ [<60058e07>] ? kthread_exit+0x0/0x3a
+ [<600524aa>] ? worker_thread+0x0/0x37a
+ [<60058f9f>] kthread+0x130/0x135
+ [<6002068e>] new_thread_handler+0x85/0xb6
 
-vsc-tp spi-INTC10D0:00: probe with driver vsc-tp failed with error -22
-
-Suggested-by: Hans de Goede <hdegoede@redhat.com>
-Fixes: 33ada67da352 ("ACPI / spi: attach GPIO IRQ from ACPI description to SPI device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com> # Dell XPS9320, ov01a10
-Link: https://patch.msgid.link/20241122094224.226773-1-stanislaw.gruszka@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-3-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/um/drivers/ubd_kern.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -358,6 +358,16 @@ static int spi_drv_probe(struct device *
- 			spi->irq = 0;
- 	}
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -854,7 +854,7 @@ static int ubd_open_dev(struct ubd *ubd_
  
-+	if (has_acpi_companion(dev) && spi->irq < 0) {
-+		struct acpi_device *adev = to_acpi_device_node(dev->fwnode);
-+
-+		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
-+		if (spi->irq == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+		if (spi->irq < 0)
-+			spi->irq = 0;
-+	}
-+
- 	ret = dev_pm_domain_attach(dev, true);
- 	if (ret)
- 		return ret;
-@@ -1843,9 +1853,6 @@ static acpi_status acpi_register_spi_dev
- 	acpi_set_modalias(adev, acpi_device_hid(adev), spi->modalias,
- 			  sizeof(spi->modalias));
+ static void ubd_device_release(struct device *dev)
+ {
+-	struct ubd *ubd_dev = dev_get_drvdata(dev);
++	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
  
--	if (spi->irq < 0)
--		spi->irq = acpi_dev_gpio_irq_get(adev, 0);
--
- 	acpi_device_set_enumerated(adev);
- 
- 	adev->power.flags.ignore_parent = true;
+ 	blk_cleanup_queue(ubd_dev->queue);
+ 	*ubd_dev = ((struct ubd) DEFAULT_UBD);
 
 
 
