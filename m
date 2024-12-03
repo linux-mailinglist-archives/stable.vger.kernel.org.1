@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-96810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8E99E217E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CEF9E24BA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8A68284DF5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750FE1683D4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941041FAC30;
-	Tue,  3 Dec 2024 15:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063E51F76D7;
+	Tue,  3 Dec 2024 15:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kdx/5zV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwS3Ipjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F37E1FA82E;
-	Tue,  3 Dec 2024 15:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B900E1F7591;
+	Tue,  3 Dec 2024 15:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238658; cv=none; b=MK6KHfdGrWNsVODaR2GajV4Nnz0XCylSO37gVQp1yq1u4R0CWlRbdanYWNTZSJ9msQAu7pBLTa9Y7jK4Oq1/GTVNY8QmZp+b7HqSiARWh3kUL1CyLIBPKQGTjOVZ4JaSmo4OA9jDGCn09T7lguUK8vjTPqaLKHtCBC4ZNUaGPEw=
+	t=1733240668; cv=none; b=Q8IFO0bJ8wpd7OW7NYJXW1/pZaqxN7/sC+nm8nK5XdRaJzgEFYwDevsgCIedkcosqgYBWHgGsIS2SnmWiPXPMGUqlhHRanAnVntOm/SA42bdPOobZK/EkQsYmu+hUJe4xsx74+kT7CAfjs0EGBqwfq2c+Z5u6dmtxgSeiUWaeow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238658; c=relaxed/simple;
-	bh=zqr/zuLYxCXJ4mHhvJwNzfk/MMWCR0YP7KHKpzqtSlk=;
+	s=arc-20240116; t=1733240668; c=relaxed/simple;
+	bh=jcFXFzkKbUFjMnYL98pz+Qdwcf54qXh4XQq7FP86gtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWVKCQOwIzzq5XUPKonXMh9CAfvAYnf4gawA62KjI4eeZee6XOKJVtVY/k31WVymgqmxONjRSl72laZk/q2/zupCLwY8+uDX9U8t+vrAVjVHPl4UqqMcniWlv0g59DmcKwVf/XQ+8XL1eop3SymP1QCQvRcbXxzL0g97EPa1Wxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kdx/5zV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC209C4CECF;
-	Tue,  3 Dec 2024 15:10:57 +0000 (UTC)
+	 MIME-Version; b=YkGH34pBFKXT8z5aW5eznEcHPe9bKWwgKVUJcve7yonVXy/jsL/I5ouA7wkjdF4oR/mCZ3y/vqb7oOfNvGRfh+0g6O4BHwf2twoTAVNkmbXtSfeh/kTU6b1nwlp+b+hbOIyakhSNtDA6jWvGLLbbqiEuqC4xO78q4oY8grSlzjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwS3Ipjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7D2C4CECF;
+	Tue,  3 Dec 2024 15:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238658;
-	bh=zqr/zuLYxCXJ4mHhvJwNzfk/MMWCR0YP7KHKpzqtSlk=;
+	s=korg; t=1733240668;
+	bh=jcFXFzkKbUFjMnYL98pz+Qdwcf54qXh4XQq7FP86gtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kdx/5zV7lGmWMtSDmXr2wlYcK7uF00FNkwSj7KVSfDHRBHxewFXumrGm9g6SMFnc0
-	 rdPDsimx9MBrpIzfuk68yVyCjWrsAptwxf4lmwLz3aezQYwr7/vKjN/B0OBe94zUSZ
-	 SDpKkwmXrgIxyS944ap/R1D1xsjjONnLo4ZbAiUI=
+	b=OwS3IpjjeTUNJnNVIoZzE28rfJ2p+e3YH0MJxYTYktAHyjw+Q9ltkABIQKm9Mbyub
+	 56dqkX/hoPBrNkwpdofa07jJ3Q2MmZVYj0h/8jeZAt038l0vpcag2rKEtk6u4WbowW
+	 cyMrUEvCcic0URwt71Eelah1gZ95e5srlxyvEhu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Chris Healy <cphealy@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 354/817] i2c: dev: Fix memory leak when underlying adapter does not support I2C
-Date: Tue,  3 Dec 2024 15:38:46 +0100
-Message-ID: <20241203144009.650085137@linuxfoundation.org>
+Subject: [PATCH 6.12 200/826] drm/imx: ldb: drop custom EDID support
+Date: Tue,  3 Dec 2024 15:38:47 +0100
+Message-ID: <20241203144751.548273138@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 48730a9d04ffccda541602d722d1ff81920a85d8 ]
+[ Upstream commit aed7b500315004a917463d571fa9cd12e0e94370 ]
 
-Early return in i2cdev_ioctl_rdwr() failed to free the memory allocated
-by the caller. Move freeing the memory to the function where it has been
-allocated to prevent similar leaks in the future.
+Bindings for the imx-ldb never allowed specifying the EDID in DT. None
+of the existing DT files use it. Drop it now in favour of using debugfs
+overrides or the drm.edid_firmware support.
 
-Fixes: 97ca843f6ad3 ("i2c: dev: Check for I2C_FUNC_I2C before calling i2c_transfer")
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-[wsa: replaced '== NULL' with '!']
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Tested-by: Chris Healy <cphealy@gmail.com>
+Tested-by: Philipp Zabel <p.zabel@pengutronix.de> # on imx6q-nitrogen6x
+Link: https://patchwork.freedesktop.org/patch/msgid/20240602-drm-imx-cleanup-v3-5-e549e2a43100@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: f673055a4678 ("drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-dev.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/i2c/i2c-dev.c b/drivers/i2c/i2c-dev.c
-index f4fb212b7f392..db5f1498e8690 100644
---- a/drivers/i2c/i2c-dev.c
-+++ b/drivers/i2c/i2c-dev.c
-@@ -251,10 +251,8 @@ static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
- 		return -EOPNOTSUPP;
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+index 793dfb1a3ed00..1924d8921c620 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+@@ -72,7 +72,6 @@ struct imx_ldb_channel {
+ 	struct device_node *child;
+ 	struct i2c_adapter *ddc;
+ 	int chno;
+-	const struct drm_edid *drm_edid;
+ 	struct drm_display_mode mode;
+ 	int mode_valid;
+ 	u32 bus_format;
+@@ -142,14 +141,17 @@ static int imx_ldb_connector_get_modes(struct drm_connector *connector)
+ 	if (num_modes > 0)
+ 		return num_modes;
  
- 	data_ptrs = kmalloc_array(nmsgs, sizeof(u8 __user *), GFP_KERNEL);
--	if (data_ptrs == NULL) {
--		kfree(msgs);
-+	if (!data_ptrs)
- 		return -ENOMEM;
+-	if (!imx_ldb_ch->drm_edid && imx_ldb_ch->ddc) {
+-		imx_ldb_ch->drm_edid = drm_edid_read_ddc(connector,
+-							 imx_ldb_ch->ddc);
+-		drm_edid_connector_update(connector, imx_ldb_ch->drm_edid);
 -	}
++	if (imx_ldb_ch->ddc) {
++		const struct drm_edid *edid = drm_edid_read_ddc(connector,
++								imx_ldb_ch->ddc);
  
- 	res = 0;
- 	for (i = 0; i < nmsgs; i++) {
-@@ -302,7 +300,6 @@ static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
- 		for (j = 0; j < i; ++j)
- 			kfree(msgs[j].buf);
- 		kfree(data_ptrs);
--		kfree(msgs);
- 		return res;
+-	if (imx_ldb_ch->drm_edid)
+-		num_modes = drm_edid_connector_add_modes(connector);
++		if (edid) {
++			drm_edid_connector_update(connector, edid);
++			drm_edid_free(edid);
++
++			return drm_edid_connector_add_modes(connector);
++		}
++	}
+ 
+ 	if (imx_ldb_ch->mode_valid) {
+ 		struct drm_display_mode *mode;
+@@ -566,18 +568,10 @@ static int imx_ldb_panel_ddc(struct device *dev,
  	}
  
-@@ -316,7 +313,6 @@ static noinline int i2cdev_ioctl_rdwr(struct i2c_client *client,
- 		kfree(msgs[i].buf);
+ 	if (!channel->ddc) {
+-		const void *edidp;
+-		int edid_len;
+-
+ 		/* if no DDC available, fallback to hardcoded EDID */
+ 		dev_dbg(dev, "no ddc available\n");
+ 
+-		edidp = of_get_property(child, "edid", &edid_len);
+-		if (edidp) {
+-			channel->drm_edid = drm_edid_alloc(edidp, edid_len);
+-			if (!channel->drm_edid)
+-				return -ENOMEM;
+-		} else if (!channel->panel) {
++		if (!channel->panel) {
+ 			/* fallback to display-timings node */
+ 			ret = of_get_drm_display_mode(child,
+ 						      &channel->mode,
+@@ -744,7 +738,6 @@ static void imx_ldb_remove(struct platform_device *pdev)
+ 	for (i = 0; i < 2; i++) {
+ 		struct imx_ldb_channel *channel = &imx_ldb->channel[i];
+ 
+-		drm_edid_free(channel->drm_edid);
+ 		i2c_put_adapter(channel->ddc);
  	}
- 	kfree(data_ptrs);
--	kfree(msgs);
- 	return res;
- }
  
-@@ -446,6 +442,7 @@ static long i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 	case I2C_RDWR: {
- 		struct i2c_rdwr_ioctl_data rdwr_arg;
- 		struct i2c_msg *rdwr_pa;
-+		int res;
- 
- 		if (copy_from_user(&rdwr_arg,
- 				   (struct i2c_rdwr_ioctl_data __user *)arg,
-@@ -467,7 +464,9 @@ static long i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 		if (IS_ERR(rdwr_pa))
- 			return PTR_ERR(rdwr_pa);
- 
--		return i2cdev_ioctl_rdwr(client, rdwr_arg.nmsgs, rdwr_pa);
-+		res = i2cdev_ioctl_rdwr(client, rdwr_arg.nmsgs, rdwr_pa);
-+		kfree(rdwr_pa);
-+		return res;
- 	}
- 
- 	case I2C_SMBUS: {
-@@ -540,7 +539,7 @@ static long compat_i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned lo
- 		struct i2c_rdwr_ioctl_data32 rdwr_arg;
- 		struct i2c_msg32 __user *p;
- 		struct i2c_msg *rdwr_pa;
--		int i;
-+		int i, res;
- 
- 		if (copy_from_user(&rdwr_arg,
- 				   (struct i2c_rdwr_ioctl_data32 __user *)arg,
-@@ -573,7 +572,9 @@ static long compat_i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned lo
- 			};
- 		}
- 
--		return i2cdev_ioctl_rdwr(client, rdwr_arg.nmsgs, rdwr_pa);
-+		res = i2cdev_ioctl_rdwr(client, rdwr_arg.nmsgs, rdwr_pa);
-+		kfree(rdwr_pa);
-+		return res;
- 	}
- 	case I2C_SMBUS: {
- 		struct i2c_smbus_ioctl_data32	data32;
 -- 
 2.43.0
 
