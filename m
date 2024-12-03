@@ -1,112 +1,115 @@
-Return-Path: <stable+bounces-98127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337519E2BF6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:24:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA3A9E2BED
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19E17BC1DDE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26C20B3E99D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1641FAC4F;
-	Tue,  3 Dec 2024 16:45:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HP7WJfHY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03981F76DD;
+	Tue,  3 Dec 2024 17:00:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3841FA84F;
-	Tue,  3 Dec 2024 16:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B851F8AE4;
+	Tue,  3 Dec 2024 17:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733244346; cv=none; b=t4U2TH2LIrE3UFC6HAZr58cJcDKk4a9K11UkSr18ytOOBLpW3bCpZQC5gbxuDAgRIGDYn19k4o6CnyvvSXUoP2nDgasUklmjvGcRyhO6l+KnmXfSyMuZbojZ23viRpK5+eXSjNPkT04LTerbA8/Hn05kzjrmBCOIbvwr3xMWqSA=
+	t=1733245215; cv=none; b=nOR2Mn4mi5uvukOf/P8TN6/pmIkZleMLfeN8qLmvkDfQiPy5/sfVS4puRI49VP0Ogq6j9YcqFwr8OvvNSXZ+ITBem/Jip/V8fil4LR8VErOzFgjaCdoo+8GgLrssbKUYELUyI+RCRMBMiJdGOhJ7y4ryQb4KHuy0dr5kfsVa0rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733244346; c=relaxed/simple;
-	bh=BA76lR64G5jRwbmzef8LeHyHC95CSwPtwI8o3wr8d7w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KVuxDt8SvRdbrfvLlUUeDhTsZXXD2PZzeNeWDU6mdqwF1Ndmrt/bMPTCE7/IhrfOjBDeIkoIXNUEcNL5OzIiaPVy1ZjumcJIrobpjLuM3G8qpmP2W973ekDuZcPYGFjA1IYKW2nUubownMykDIC0e2IsaYCN+6a3/TB+V2wgGw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HP7WJfHY; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1kn7esNHtCHkPR0o4sIQLKTBnvYJD1ZCR1/40e9RrWY=;
-	t=1733244345; x=1734453945; b=HP7WJfHYLdEgvw3B2UEcvhqocbS7w0bxsER1u/qJLQpfefd
-	MjdpsUTtxuuNIGTKU1QHZzqipnRImGzrrJhSLpSUWaGhwzXuj7DvZS2kBmICFOWDyBys+FnKZ63jr
-	y9aT40VmNZERooPO6tbmugA5386+8U5JwPp11CDsb+S+Xstvfqy9m73ecNGaHvQiDHEVVaA+l7wPU
-	6aAhowpvX/e9QmtSgfTOBhzxjFbulk/ICwdL7dj1PJ17N5FIb6v8twBu11Q2yU4w2VnQ6kYJBHKQR
-	oXIUSVLKcK6j0oOQ7MjYvVkm9IyA1Xwawee5MniDRQ49EMHr42asK/AMUubP53fA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tIW1s-000000035wi-0cie;
-	Tue, 03 Dec 2024 17:45:40 +0100
-Message-ID: <dcbf9bee124097e131a11f744b32bbeabc250c98.camel@sipsolutions.net>
-Subject: Re: [PATCH] net: wireless: sme: Initialize n_channels before
- accessing channels in cfg80211_conn_scan
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, Haoyu Li
-	 <lihaoyu499@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva"
- <gustavoars@kernel.org>,  Jeff Johnson <quic_jjohnson@quicinc.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hardening@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 03 Dec 2024 17:45:39 +0100
-In-Reply-To: <238df0b9-d1db-4f72-8238-828ea20ad1d9@embeddedor.com>
-References: <20241203152049.348806-1-lihaoyu499@gmail.com>
-	 <fa9ef37903db0f81654451104b1407f60f85ce5d.camel@sipsolutions.net>
-	 <238df0b9-d1db-4f72-8238-828ea20ad1d9@embeddedor.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1733245215; c=relaxed/simple;
+	bh=K6Mo9QA394RSuqUOSYgaqvfgpcWPJYZdHRg2BCGaixk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oHde8DbxelOAYjOXmMeDuyWPJGtw9UR0Uhc7svcQB+H2am4xCTuayTQa3P2GFgvNNlznRqA6DNsjYSA97BkSKvxoCznQa3RYNioyt3FdsK9LaBfnOJaMxYz1czkG/wsPup8LR7ltnrkAI9LYGIjIfsz6Npxx77aTWNW3kw/uAOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 529A7FEC;
+	Tue,  3 Dec 2024 09:00:39 -0800 (PST)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 64CCD3F58B;
+	Tue,  3 Dec 2024 09:00:10 -0800 (PST)
+Date: Tue, 3 Dec 2024 17:00:08 +0000
+From: Dave Martin <Dave.Martin@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/6] arm64/sme: Flush foreign register state in
+ do_sme_acc()
+Message-ID: <Z085GKS8jzEhcZdW@e133380.arm.com>
+References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
+ <20241203-arm64-sme-reenable-v1-1-d853479d1b77@kernel.org>
+ <Z08khk6Mg6+T6VV9@e133380.arm.com>
+ <9365be76-8da6-47ce-b88e-dfa244b9e5b7@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9365be76-8da6-47ce-b88e-dfa244b9e5b7@sirena.org.uk>
 
-On Tue, 2024-12-03 at 10:20 -0600, Gustavo A. R. Silva wrote:
->=20
-> "Right now, any addition of a counted_by annotation must also
-> include an open-coded assignment of the counter variable after
-> the allocation:
->=20
->    p =3D alloc(p, array, how_many);
->    p->counter =3D how_many;
+On Tue, Dec 03, 2024 at 04:00:45PM +0000, Mark Brown wrote:
+> On Tue, Dec 03, 2024 at 03:32:22PM +0000, Dave Martin wrote:
+> > On Tue, Dec 03, 2024 at 12:45:53PM +0000, Mark Brown wrote:
+> 
+> > > @@ -1460,6 +1460,8 @@ void do_sme_acc(unsigned long esr, struct pt_regs *regs)
+> > >  		sme_set_vq(vq_minus_one);
+> > >  
+> > >  		fpsimd_bind_task_to_cpu();
+> > > +	} else {
+> > > +		fpsimd_flush_task_state(current);
+> 
+> > TIF_FOREIGN_FPSTATE is (or was) a cache of the task<->CPU binding that
+> > you're clobbering here.
+> 
+> > So, this fpsimd_flush_task_state() should have no effect unless
+> > TIF_FOREIGN_FPSTATE is already wrong?  I'm wondering if the apparent
+> > need for this means that there is an undiagnosed bug elsewhere.
+> 
+> > (My understanding is based on FPSIMD/SVE; I'm less familiar with the
+> > SME changes, so I may be missing something important here.)
+> 
+> It's to ensure that the last recorded CPU for the current task is
+> invalid so that if the state was loaded on another CPU and we switch
+> back to that CPU we reload the state from memory, we need to at least
+> trigger configuration of the SME VL.
 
-Not sure where you copied that from, but quite obviously Kees didn't
-follow that guidance in e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
-cfg80211_scan_request with __counted_by"), otherwise we wouldn't have
-this patch.
+OK, so the logic here is something like:
 
->   -- Built-in Function: TYPE __builtin_counted_by_ref (PTR)
+Disregarding SME, the FPSIMD/SVE regs are up to date, which is fine
+because SME is trapped.
 
-Even with that though, we still have to actually implement it, and make
-sure we use struct_size everywhere when we allocate these things... In
-fact we probably need a new allocation function, not just struct_size,
-but rather kzalloc_struct_size(...) or so.
+When we take the SME trap, we suddenly have some work to do in order to
+make sure that the SME-specific parts of the register state are up to
+date, so we need to mark the state as stale before setting TIF_SME and
+returning.
 
-Which e3eac9f32ec0 didn't do, and which anyway we still don't do e.g. in
-nl80211_trigger_scan() because we have multiple variable things in the
-allocation, so we *can't*.
+fpsimd_flush_task_state() means that we do the necessary work when re-
+entering userspace, but is there a problem with simply marking all the
+FPSIMD/vector state as stale?  If FPSR or FPCR is dirty for example, it
+now looks like they won't get written back to thread struct if there is
+a context switch before current re-enters userspace?
 
-That therefore doesn't even help here.
+Maybe the other flags distinguish these cases -- I haven't fully got my
+head around it.
 
-So that's not a very convincing argument. In a way moving again to "you
-need the newest unreleased compiler" makes it *worse*, not *better*?
 
-But of course if you do that now it'll basically mean again nobody is
-running it and you get to kick the can further down the road ... I still
-think it's a failed experiment. It didn't do any good here as far as I
-can tell, and we've spent a ton of time on it.
+(Actually, the ARM ARM says (IMHTLZ) that toggling PSTATE.SM by any
+means causes FPSR to become 0x800009f.  I'm not sure where that fits in
+-- do we handle that anywhere?  I guess the "soft" SM toggling via
+ptrace, signal delivery or maybe exec, ought to set this?  Not sure how
+that interacts with the expected behaviour of the fenv(3) API...  Hmm.
+I see no corresponding statement about FPCR.)
 
-johannes
-
+Cheers
+---Dave
 
