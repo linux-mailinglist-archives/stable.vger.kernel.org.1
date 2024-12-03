@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-96998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799A39E2279
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C4A89E2621
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611DB1616F4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B1C3B3B591
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C79F1F7071;
-	Tue,  3 Dec 2024 15:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1A01AB6C9;
+	Tue,  3 Dec 2024 15:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvCUF1Uj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVZS5JnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3851EF0AE;
-	Tue,  3 Dec 2024 15:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA07B1362;
+	Tue,  3 Dec 2024 15:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239228; cv=none; b=VqnK7XfJCzZAwI4oDXq7b9UUJcLsYtI9Z+gxE8aRKAKxSWlF6AkG7BmQ1HZLPE2pJP5cvMLdK8W1xO1eXpBY9pH6KMA4hcotKCzQSyHzma3pTh6W277ZU2OZtij2gjgS0HTREIrriOAa8Osn1qcSx9vmj/y/bzOp2bS6hokXk/c=
+	t=1733241205; cv=none; b=VOCqFPjvMXcrZoQGbNzvp0XRpqyHc0EYDd4vyx8tj2NOR2L0b87kIlGEvpjqxS6Yps7YYCAiqBaV8CS7htVfbfV4mKEwwb2mSOMCJBYwXGCicmqIExAgJogzFJS26GRXLxunCmO6q/fQsUu6KSrLiyzyZVdO8c6Qwf+R7NABXRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239228; c=relaxed/simple;
-	bh=UXgjru7CPt9c8NYYmHcKd0y/k0hAFrYc+H5AE1J4h9I=;
+	s=arc-20240116; t=1733241205; c=relaxed/simple;
+	bh=EBPPLs+3Tk2NieRrst7nTGMo9DOs3NCny5qgSNXTHIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZDZzw5XsTgdV/H5xbiowTh4P1ka/5MKyPyE1fIHAlEeN6NdbK5fq2Uy6ve2E2hZ8TjTeG9rItcCKfV/Tx432J7NrENgpjhNLnped6o26gdIdjwd3Vv6bLnsbJnZIKZ2zxtXvCli5+K/F5fpWru9Sg1haQA1q15ouby1ooFPfa0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvCUF1Uj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8E4C4CECF;
-	Tue,  3 Dec 2024 15:20:27 +0000 (UTC)
+	 MIME-Version; b=tdBMUtfDWXsHwFVZGDbD0rOoUw+iXatZ5Yu+HGd1LY977G9+Ti81h3FsJfER4ZBCJhUHorVAA6lFhhDJjndogOWiry8+/x0B+00u9+K05NrrJjUXgRFDIITEnxBaNiA20pLlfgEM08aCB0bUhh8j0IYu6/q/hNZhhXzTGawhXrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVZS5JnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1E6C4CECF;
+	Tue,  3 Dec 2024 15:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239228;
-	bh=UXgjru7CPt9c8NYYmHcKd0y/k0hAFrYc+H5AE1J4h9I=;
+	s=korg; t=1733241205;
+	bh=EBPPLs+3Tk2NieRrst7nTGMo9DOs3NCny5qgSNXTHIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvCUF1UjviPe+BTRuxXy5TFrw+eyqdAxMlIg1YExa08D5i9QF/ujSm1ur+xtSVbmi
-	 DlkSddVM0cA5UDhqkZNEAlO6cTtaynkVJ5INu/Z1dDYsmP3Wey0JwM+bb+mv0tJAMY
-	 Vwht9Z/DAptrTQOiCbvmoWLiPCj5jG9SaMMLTB1Q=
+	b=nVZS5JnZZath3xitHIzzxAyi5nzRLDTK6OqzGeBAYGSlSi+hz+SdejOTNEf8BLORs
+	 aduhbs2YUvSaby7ftug3pO3SvudsLwotE28nBbw4YdkS2i74VBiyDVH3CLB5fCZXOw
+	 czSG4eqn2POWU03nhwiBvDKGlB+OaMHDqT39/mAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeng Heng <zengheng4@huawei.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 510/817] f2fs: Fix not used variable index
-Date: Tue,  3 Dec 2024 15:41:22 +0100
-Message-ID: <20241203144015.780930860@linuxfoundation.org>
+Subject: [PATCH 6.12 356/826] bpf: fix recursive lock when verdict program return SK_PASS
+Date: Tue,  3 Dec 2024 15:41:23 +0100
+Message-ID: <20241203144757.648240628@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Jiayuan Chen <mrpre@163.com>
 
-[ Upstream commit 0c3a38a4b442893f8baca72e44a2a27d52d6cc75 ]
+[ Upstream commit 8ca2a1eeadf09862190b2810697702d803ceef2d ]
 
-Fix the following compilation warning:
-fs/f2fs/data.c:2391:10: warning: variable ‘index’ set but not used
-[-Wunused-but-set-variable]
- 2391 |  pgoff_t index;
+When the stream_verdict program returns SK_PASS, it places the received skb
+into its own receive queue, but a recursive lock eventually occurs, leading
+to an operating system deadlock. This issue has been present since v6.9.
 
-Only define and set the variable index when the CONFIG_F2FS_FS_COMPRESSION
-is enabled.
+'''
+sk_psock_strp_data_ready
+    write_lock_bh(&sk->sk_callback_lock)
+    strp_data_ready
+      strp_read_sock
+        read_sock -> tcp_read_sock
+          strp_recv
+            cb.rcv_msg -> sk_psock_strp_read
+              # now stream_verdict return SK_PASS without peer sock assign
+              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
+              sk_psock_verdict_apply
+                sk_psock_skb_ingress_self
+                  sk_psock_skb_ingress_enqueue
+                    sk_psock_data_ready
+                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
 
-Fixes: db92e6c729d8 ("f2fs: convert f2fs_mpage_readpages() to use folio")
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+'''
+
+This topic has been discussed before, but it has not been fixed.
+Previous discussion:
+https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
+
+Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
+Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
+Signed-off-by: Jiayuan Chen <mrpre@163.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c |    4 ++--
+ net/core/skmsg.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2354,10 +2354,10 @@ static int f2fs_mpage_readpages(struct i
- 		.nr_cpages = 0,
- 	};
- 	pgoff_t nc_cluster_idx = NULL_CLUSTER;
-+	pgoff_t index;
- #endif
- 	unsigned nr_pages = rac ? readahead_count(rac) : 1;
- 	unsigned max_nr_pages = nr_pages;
--	pgoff_t index;
- 	int ret = 0;
- 
- 	map.m_pblk = 0;
-@@ -2375,9 +2375,9 @@ static int f2fs_mpage_readpages(struct i
- 			prefetchw(&folio->flags);
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index b1dcbd3be89e1..e90fbab703b2d 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1117,9 +1117,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
+ 		if (tls_sw_has_ctx_rx(sk)) {
+ 			psock->saved_data_ready(sk);
+ 		} else {
+-			write_lock_bh(&sk->sk_callback_lock);
++			read_lock_bh(&sk->sk_callback_lock);
+ 			strp_data_ready(&psock->strp);
+-			write_unlock_bh(&sk->sk_callback_lock);
++			read_unlock_bh(&sk->sk_callback_lock);
  		}
- 
-+#ifdef CONFIG_F2FS_FS_COMPRESSION
- 		index = folio_index(folio);
- 
--#ifdef CONFIG_F2FS_FS_COMPRESSION
- 		if (!f2fs_compressed_file(inode))
- 			goto read_single_page;
- 
+ 	}
+ 	rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
