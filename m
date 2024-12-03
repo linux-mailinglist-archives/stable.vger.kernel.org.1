@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFC19E2443
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 306D39E21F7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 047732879AA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A3F316BE20
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174D21FA825;
-	Tue,  3 Dec 2024 15:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45EAA1F75A6;
+	Tue,  3 Dec 2024 15:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C1ny/lrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWccPuyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C954B1FA17C;
-	Tue,  3 Dec 2024 15:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043921E3DF9;
+	Tue,  3 Dec 2024 15:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240779; cv=none; b=ucC/y68hKhh5reCClVYb+ep3fjpEeztxxfm8Q6svjcG49JRv4RlJSoW44pXkqUeLn60WI03gCVT2ft5FKwYjRjr3203zeuQwC1jpdD6KN98RgeHrGbOVQEmBXJ/3eZUZshlG1hYZZn28yVPqRrLaU4GFTOAwCp1xlJUrN6L4rJc=
+	t=1733238754; cv=none; b=bLwyYsJuRnJ90kiHHll4hO/9U9xQOrMlJltGd27zPrwRzhrFmAZcehVScstsq9VSSQlXFAprAaEIpBQJME2FWKyjpddQI294QfrJmt1n8bM3qPEQalNK6mFugZlQ8tGWrh0zDhhAddFj9Cvjnm02aIK2K/orfasNCMyWqaPGmjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240779; c=relaxed/simple;
-	bh=3+TsdbzfHIy1UiNjlQTOyK2hNccZLsdHfld9RX8/J38=;
+	s=arc-20240116; t=1733238754; c=relaxed/simple;
+	bh=wRG26OxrXHMt4k4DJ0auu5dpn4lmQaprRpkkc0SxVb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjdmKq81VT3t9urquTCy8uNDyOzt6bxaIMnmSr0e/AD29flZjgvpt7UUtZKGp/dU1PENj5bwJH5FlBBILmNfQxdnNRRmWxjKfvisz6n112E/jPAZf8OY0oFoN4kdPIzsRyKEY3sy5Tg5jdma8W/HQDhR+v7KqHirWoERS8nSgAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C1ny/lrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B79C4CED6;
-	Tue,  3 Dec 2024 15:46:19 +0000 (UTC)
+	 MIME-Version; b=uRM6we+MfKJLUGaXAXSkLy2HOxGQ5WGhEfmiOztiI2oKh74cB09QG8K7MTSIqQQpiK8+AwWCgDP5vQFTOYkPzUI6CO5UsXl2+W2lXK6B8jpTDx34Ms54/eOOC0UCvZ342m9CWheA+VyuZVEqNuEjHvWHWyQ1KDGCZekdfsdLrsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWccPuyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811F9C4CECF;
+	Tue,  3 Dec 2024 15:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240779;
-	bh=3+TsdbzfHIy1UiNjlQTOyK2hNccZLsdHfld9RX8/J38=;
+	s=korg; t=1733238753;
+	bh=wRG26OxrXHMt4k4DJ0auu5dpn4lmQaprRpkkc0SxVb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1ny/lrmKMgjtnc3AJPuGtDjDXSTS78wz5btoO4My/Uae6rQiqCMUhUFVu9d7uxdi
-	 +VjtmUdAc8M+7jyEu3ewngmCTNljLf+MWF2dRT0SR5eEhBdZ3NlOVyEU7LkNDbE1TK
-	 9Mcoz3Zo+4amrOizRbHttL8QDf4oiU2jlq1/VV5k=
+	b=MWccPuyJJI01memIQZTgyIsmzyB4EwFh7d/Rowlf0f5o89robAA3jF6iERx/rnReW
+	 uVtsZiTO5+Y3p7vPv4WVWxtvv6PpPMxsH+LryO7iW0ZnrAlU4gwxzqCbzgpOG9A6Qs
+	 wVmo9rIjvgnJW/QzBDtXRx93XIjThgjGNdRW2zho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Daniel Xu <dxu@dxuuu.xyz>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 232/826] selftests/bpf: Fix backtrace printing for selftests crashes
+Subject: [PATCH 6.11 387/817] mfd: da9052-spi: Change read-mask to write-mask
 Date: Tue,  3 Dec 2024 15:39:19 +0100
-Message-ID: <20241203144752.799536142@linuxfoundation.org>
+Message-ID: <20241203144010.977648238@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-[ Upstream commit 5bf1557e3d6a69113649d831276ea2f97585fc33 ]
+[ Upstream commit 2e3378f6c79a1b3f7855ded1ef306ea4406352ed ]
 
-test_progs uses glibc specific functions backtrace() and
-backtrace_symbols_fd() to print backtrace in case of SIGSEGV.
+Driver has mixed up the R/W bit.
+The LSB bit is set on write rather than read.
+Change it to avoid nasty things to happen.
 
-Recent commit (see fixes) updated test_progs.c to define stub versions
-of the same functions with attriubte "weak" in order to allow linking
-test_progs against musl libc. Unfortunately this broke the backtrace
-handling for glibc builds.
-
-As it turns out, glibc defines backtrace() and backtrace_symbols_fd()
-as weak:
-
-  $ llvm-readelf --symbols /lib64/libc.so.6 \
-     | grep -P '( backtrace_symbols_fd| backtrace)$'
-  4910: 0000000000126b40   161 FUNC    WEAK   DEFAULT    16 backtrace
-  6843: 0000000000126f90   852 FUNC    WEAK   DEFAULT    16 backtrace_symbols_fd
-
-So does test_progs:
-
- $ llvm-readelf --symbols test_progs \
-    | grep -P '( backtrace_symbols_fd| backtrace)$'
-  2891: 00000000006ad190    15 FUNC    WEAK   DEFAULT    13 backtrace
- 11215: 00000000006ad1a0    41 FUNC    WEAK   DEFAULT    13 backtrace_symbols_fd
-
-In such situation dynamic linker is not obliged to favour glibc
-implementation over the one defined in test_progs.
-
-Compiling with the following simple modification to test_progs.c
-demonstrates the issue:
-
-  $ git diff
-  ...
-  \--- a/tools/testing/selftests/bpf/test_progs.c
-  \+++ b/tools/testing/selftests/bpf/test_progs.c
-  \@@ -1817,6 +1817,7 @@ int main(int argc, char **argv)
-          if (err)
-                  return err;
-
-  +       *(int *)0xdeadbeef  = 42;
-          err = cd_flavor_subdir(argv[0]);
-          if (err)
-                  return err;
-
-  $ ./test_progs
-  [0]: Caught signal #11!
-  Stack trace:
-  <backtrace not supported>
-  Segmentation fault (core dumped)
-
-Resolve this by hiding stub definitions behind __GLIBC__ macro check
-instead of using "weak" attribute.
-
-Fixes: c9a83e76b5a9 ("selftests/bpf: Fix compile if backtrace support missing in libc")
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Tony Ambardar <tony.ambardar@gmail.com>
-Reviewed-by: Tony Ambardar <tony.ambardar@gmail.com>
-Acked-by: Daniel Xu <dxu@dxuuu.xyz>
-Link: https://lore.kernel.org/bpf/20241003210307.3847907-1-eddyz87@gmail.com
+Fixes: e9e9d3973594 ("mfd: da9052: Avoid setting read_flag_mask for da9052-i2c driver")
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Link: https://lore.kernel.org/r/20240925-da9052-v2-1-f243e4505b07@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_progs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/mfd/da9052-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_progs.c b/tools/testing/selftests/bpf/test_progs.c
-index c7a70e1a1085a..fa829a7854f24 100644
---- a/tools/testing/selftests/bpf/test_progs.c
-+++ b/tools/testing/selftests/bpf/test_progs.c
-@@ -20,11 +20,13 @@
+diff --git a/drivers/mfd/da9052-spi.c b/drivers/mfd/da9052-spi.c
+index be5f2b34e18ae..80fc5c0cac2fb 100644
+--- a/drivers/mfd/da9052-spi.c
++++ b/drivers/mfd/da9052-spi.c
+@@ -37,7 +37,7 @@ static int da9052_spi_probe(struct spi_device *spi)
+ 	spi_set_drvdata(spi, da9052);
  
- #include "network_helpers.h"
- 
-+/* backtrace() and backtrace_symbols_fd() are glibc specific,
-+ * use header file when glibc is available and provide stub
-+ * implementations when another libc implementation is used.
-+ */
- #ifdef __GLIBC__
- #include <execinfo.h> /* backtrace */
--#endif
--
--/* Default backtrace funcs if missing at link */
-+#else
- __weak int backtrace(void **buffer, int size)
- {
- 	return 0;
-@@ -34,6 +36,7 @@ __weak void backtrace_symbols_fd(void *const *buffer, int size, int fd)
- {
- 	dprintf(fd, "<backtrace not supported>\n");
- }
-+#endif /*__GLIBC__ */
- 
- int env_verbosity = 0;
- 
+ 	config = da9052_regmap_config;
+-	config.read_flag_mask = 1;
++	config.write_flag_mask = 1;
+ 	config.reg_bits = 7;
+ 	config.pad_bits = 1;
+ 	config.val_bits = 8;
 -- 
 2.43.0
 
