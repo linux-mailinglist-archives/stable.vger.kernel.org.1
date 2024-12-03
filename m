@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-97314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAD49E275D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:27:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68E39E23CA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22DE7B2C4C6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB942874D1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CAE1FCFCC;
-	Tue,  3 Dec 2024 15:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BE8205AD0;
+	Tue,  3 Dec 2024 15:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xX+HZ6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GL81Q+bc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBCB1FCD17;
-	Tue,  3 Dec 2024 15:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C23D204F84;
+	Tue,  3 Dec 2024 15:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240128; cv=none; b=gucjWBsTF6Rznu0P0h0Ktqt9EUTiEYJoBD/bt+PUrLtAH4LDnN9rLUjNOVm5yzpxU9ojdQozt8cVQ0fnAZfCp5GGv+ESw6WUVYvUiHc03evIFT/84VAoc0M89pbijCDuyTfErmGumRZfYD6wUZ72asYEHemghx0l0yrmk+Rd63E=
+	t=1733240246; cv=none; b=e7v5/Z3rS6KCR3oOASn1Y5k7iSMzs937v6zmC8FNgb3XHsRL7EwbJs0qk5Iv52kWvqdBaRvWJEKTAIvTuj/ZaWHG9fgzoFtgPhJbwQOSlqbzfOFmU41syLLcfO8L81sYpEyUw5CV+PWDmP8WAhwMni81poCM1H4hrSQfn8/YdTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240128; c=relaxed/simple;
-	bh=rY7/XT9DF1vdJ/cB0sdwW8B/9EwbsYTAC6tMq2eYK7A=;
+	s=arc-20240116; t=1733240246; c=relaxed/simple;
+	bh=aOue+mhFXTb0ZsrGbKxmnrDIlIQjRhZN5B+qbvGfQk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ksmtS1aAPUJE3nwcemco3LpvzpWNTtfAEuNcY8gtkYcfqCzxNNoprjWfwXzMDZOJGvylEUZphsNZ1+kTrG4lzdQ5H5s2G8Y3kEtP4KOfWFIcg8GBu16Lo2H7gApGWYqYcmVrzPOB3bjBETNIunxGI9Kxje4L6R0WJv7PJ3YmjhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xX+HZ6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE348C4CECF;
-	Tue,  3 Dec 2024 15:35:27 +0000 (UTC)
+	 MIME-Version; b=YPhI6V5jPCZ/BFbyuSMUAewmSNgrf5j2xM6KyDCk/vY32IGt7mGXUATI1JjPnTF2EzwvwbGLjSOSlYFiLeUCSO8TavDt8k7z8fq7aNYGIRVu9zUdvIwkXDITFtbWJgQsMvP1oTUoSqcNMKOGL2eKOqHhijLFvxjJic//SHP3zAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GL81Q+bc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC56C4CECF;
+	Tue,  3 Dec 2024 15:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240128;
-	bh=rY7/XT9DF1vdJ/cB0sdwW8B/9EwbsYTAC6tMq2eYK7A=;
+	s=korg; t=1733240246;
+	bh=aOue+mhFXTb0ZsrGbKxmnrDIlIQjRhZN5B+qbvGfQk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xX+HZ6AtrrfahOTDP3dl26UWZbF+Pn/TNA9OJIVoyidI0T4Okt2iAk7af1yOrykV
-	 3KMsYUkQu2TskY3+EcBIIyRBHOSSnq2dsJ5TrjchyscFkWcHOyOjGxjUuIE7CSf2PM
-	 Oa5mfpl6YIWvwmbzPI3DYndkvo7FPWT+CnzcUZF8=
+	b=GL81Q+bcEzAhOC3aEB6VQZVUSM15S0Ac6Yiw6HSY8rMKMeKeP/eSKmkhaHluBjyCZ
+	 a3hy4RYA36NiWpdxk5X82Ksb6EhEPmItdqTG4jr+UDdB5jQ2oEeA9bKaZzZoDDb4QR
+	 EKxoqvou0mnSu5ZTGD8nW7pA+1UHZWM5EYSGcNIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Howells <dhowells@redhat.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/826] cachefiles: Fix NULL pointer dereference in object->file
-Date: Tue,  3 Dec 2024 15:35:58 +0100
-Message-ID: <20241203144744.673375262@linuxfoundation.org>
+Subject: [PATCH 6.12 032/826] netfs/fscache: Add a memory barrier for FSCACHE_VOLUME_CREATING
+Date: Tue,  3 Dec 2024 15:35:59 +0100
+Message-ID: <20241203144744.711400036@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -69,140 +69,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Zizhi Wo <wozizhi@huawei.com>
 
-[ Upstream commit 31ad74b20227ce6b40910ff78b1c604e42975cf1 ]
+[ Upstream commit 22f9400a6f3560629478e0a64247b8fcc811a24d ]
 
-At present, the object->file has the NULL pointer dereference problem in
-ondemand-mode. The root cause is that the allocated fd and object->file
-lifetime are inconsistent, and the user-space invocation to anon_fd uses
-object->file. Following is the process that triggers the issue:
+In fscache_create_volume(), there is a missing memory barrier between the
+bit-clearing operation and the wake-up operation. This may cause a
+situation where, after a wake-up, the bit-clearing operation hasn't been
+detected yet, leading to an indefinite wait. The triggering process is as
+follows:
 
-	  [write fd]				[umount]
-cachefiles_ondemand_fd_write_iter
-				       fscache_cookie_state_machine
-					 cachefiles_withdraw_cookie
-  if (!file) return -ENOBUFS
-					   cachefiles_clean_up_object
-					     cachefiles_unmark_inode_in_use
-					     fput(object->file)
-					     object->file = NULL
-  // file NULL pointer dereference!
-  __cachefiles_write(..., file, ...)
+  [cookie1]                [cookie2]                  [volume_work]
+fscache_perform_lookup
+  fscache_create_volume
+                        fscache_perform_lookup
+                          fscache_create_volume
+			                        fscache_create_volume_work
+                                                  cachefiles_acquire_volume
+                                                  clear_and_wake_up_bit
+    test_and_set_bit
+                            test_and_set_bit
+                              goto maybe_wait
+      goto no_wait
 
-Fix this issue by add an additional reference count to the object->file
-before write/llseek, and decrement after it finished.
+In the above process, cookie1 and cookie2 has the same volume. When cookie1
+enters the -no_wait- process, it will clear the bit and wake up the waiting
+process. If a barrier is missing, it may cause cookie2 to remain in the
+-wait- process indefinitely.
 
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+In commit 3288666c7256 ("fscache: Use clear_and_wake_up_bit() in
+fscache_create_volume_work()"), barriers were added to similar operations
+in fscache_create_volume_work(), but fscache_create_volume() was missed.
+
+By combining the clear and wake operations into clear_and_wake_up_bit() to
+fix this issue.
+
+Fixes: bfa22da3ed65 ("fscache: Provide and use cache methods to lookup/create/free a volume")
 Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Link: https://lore.kernel.org/r/20241107110649.3980193-5-wozizhi@huawei.com
-Reviewed-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20241107110649.3980193-6-wozizhi@huawei.com
+Acked-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/interface.c | 14 ++++++++++----
- fs/cachefiles/ondemand.c  | 30 ++++++++++++++++++++++++------
- 2 files changed, 34 insertions(+), 10 deletions(-)
+ fs/netfs/fscache_volume.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/cachefiles/interface.c b/fs/cachefiles/interface.c
-index 35ba2117a6f65..3e63cfe158747 100644
---- a/fs/cachefiles/interface.c
-+++ b/fs/cachefiles/interface.c
-@@ -327,6 +327,8 @@ static void cachefiles_commit_object(struct cachefiles_object *object,
- static void cachefiles_clean_up_object(struct cachefiles_object *object,
- 				       struct cachefiles_cache *cache)
- {
-+	struct file *file;
-+
- 	if (test_bit(FSCACHE_COOKIE_RETIRED, &object->cookie->flags)) {
- 		if (!test_bit(CACHEFILES_OBJECT_USING_TMPFILE, &object->flags)) {
- 			cachefiles_see_object(object, cachefiles_obj_see_clean_delete);
-@@ -342,10 +344,14 @@ static void cachefiles_clean_up_object(struct cachefiles_object *object,
+diff --git a/fs/netfs/fscache_volume.c b/fs/netfs/fscache_volume.c
+index cb75c07b5281a..ced14ac78cc1c 100644
+--- a/fs/netfs/fscache_volume.c
++++ b/fs/netfs/fscache_volume.c
+@@ -322,8 +322,7 @@ void fscache_create_volume(struct fscache_volume *volume, bool wait)
  	}
- 
- 	cachefiles_unmark_inode_in_use(object, object->file);
--	if (object->file) {
--		fput(object->file);
--		object->file = NULL;
--	}
-+
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	object->file = NULL;
-+	spin_unlock(&object->lock);
-+
-+	if (file)
-+		fput(file);
+ 	return;
+ no_wait:
+-	clear_bit_unlock(FSCACHE_VOLUME_CREATING, &volume->flags);
+-	wake_up_bit(&volume->flags, FSCACHE_VOLUME_CREATING);
++	clear_and_wake_up_bit(FSCACHE_VOLUME_CREATING, &volume->flags);
  }
  
  /*
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 38ca6dce8ef29..fe3de9ad57bf6 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -60,20 +60,26 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- {
- 	struct cachefiles_object *object = kiocb->ki_filp->private_data;
- 	struct cachefiles_cache *cache = object->volume->cache;
--	struct file *file = object->file;
-+	struct file *file;
- 	size_t len = iter->count, aligned_len = len;
- 	loff_t pos = kiocb->ki_pos;
- 	const struct cred *saved_cred;
- 	int ret;
- 
--	if (!file)
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	if (!file) {
-+		spin_unlock(&object->lock);
- 		return -ENOBUFS;
-+	}
-+	get_file(file);
-+	spin_unlock(&object->lock);
- 
- 	cachefiles_begin_secure(cache, &saved_cred);
- 	ret = __cachefiles_prepare_write(object, file, &pos, &aligned_len, len, true);
- 	cachefiles_end_secure(cache, saved_cred);
- 	if (ret < 0)
--		return ret;
-+		goto out;
- 
- 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
- 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
-@@ -82,6 +88,8 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
- 		kiocb->ki_pos += ret;
- 	}
- 
-+out:
-+	fput(file);
- 	return ret;
- }
- 
-@@ -89,12 +97,22 @@ static loff_t cachefiles_ondemand_fd_llseek(struct file *filp, loff_t pos,
- 					    int whence)
- {
- 	struct cachefiles_object *object = filp->private_data;
--	struct file *file = object->file;
-+	struct file *file;
-+	loff_t ret;
- 
--	if (!file)
-+	spin_lock(&object->lock);
-+	file = object->file;
-+	if (!file) {
-+		spin_unlock(&object->lock);
- 		return -ENOBUFS;
-+	}
-+	get_file(file);
-+	spin_unlock(&object->lock);
- 
--	return vfs_llseek(file, pos, whence);
-+	ret = vfs_llseek(file, pos, whence);
-+	fput(file);
-+
-+	return ret;
- }
- 
- static long cachefiles_ondemand_fd_ioctl(struct file *filp, unsigned int ioctl,
 -- 
 2.43.0
 
