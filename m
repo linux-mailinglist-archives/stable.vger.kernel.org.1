@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-97922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DEF9E2686
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A1C9E2385
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2C28167AD9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CD39169D31
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6DB1F76D5;
-	Tue,  3 Dec 2024 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA811F8AF8;
+	Tue,  3 Dec 2024 15:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkV2oRso"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfN2xV7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4566A1F76AD;
-	Tue,  3 Dec 2024 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4BA1F75BC;
+	Tue,  3 Dec 2024 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242194; cv=none; b=B/RQdJUV76yLrnObEZSqGIL8K09Xw4Ps8Whe9PrdKmA4QEkPHvTUq1L9cuHEzMdWIKcu4P89/GqVp/cmiyqZfHduSuXettdQ2fC5XvTCTv4yNmq0ctjm8KAf5yAfhDK8HiPxjPvwH21+gmajdLM2S3ukQytolhuGILJoA70mWbE=
+	t=1733239945; cv=none; b=gsdSF/uc4anbPGsfpP55ieYpRjX9pxCURUYQWCfO90AQGKANGRc2f3nyJ9jpEsNqiC8Mxz7/TN9ts6aTsRPmcgywzVDJxStIvgpVX81nrDBe5PtXalWyhXix+3StelELQ3jNftZJ9EvzUlCfxq2r39z0lVMY3r+Umy4pdNrutmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242194; c=relaxed/simple;
-	bh=Eoyka4hCb/yjSaTsFgmc0SEQP5gZ75B0nBdCDOTWvDg=;
+	s=arc-20240116; t=1733239945; c=relaxed/simple;
+	bh=h++HOUxONkOieDi95IVxqsfyoLjWpI8zicyQgU32/FI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQfzFi9ScUryRwlWCl9RSueCIp4MOVOCwylpuvtNHROOTeGw8mH0qF8kM5MnXrQ0laP6e6Eoqh+C/H7YXTC2aoprh+759/kz5PYEWKvwuoZtENQpMJfK2b1oFsC5Sa+ZPiZ8IitfjLJC7WQSMXe2UXNNj2MdIsGmnhIRTyyrQk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkV2oRso; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4A8C4CECF;
-	Tue,  3 Dec 2024 16:09:53 +0000 (UTC)
+	 MIME-Version; b=Tt5S9DfpcO+3KSILfph/wlTkpiuWU3oiZmFtb1Ssq1vBT8QRGaY3rAMNO4YDiskMqOmLvqNgLLDfCWp3Qow8mPQbyFR9VXeb8FPWT1R0bw9/YIBrADZWrJL74fMrb4d+ZgxCIhlrA2iA1MiCVKpYfCIaq5fJ45qrZYlN8yGrm+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfN2xV7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64831C4CED6;
+	Tue,  3 Dec 2024 15:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242194;
-	bh=Eoyka4hCb/yjSaTsFgmc0SEQP5gZ75B0nBdCDOTWvDg=;
+	s=korg; t=1733239945;
+	bh=h++HOUxONkOieDi95IVxqsfyoLjWpI8zicyQgU32/FI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkV2oRso3jZVvAgez2r3HZRzUR7cv7zKXehV5TGPQq9+7L3Ed2dzzvk8zCz1s4MMf
-	 MC60RJsdLWUfle1CKgj9mu15XBPmzFB6pWydUtqLLbToBI2sdGiGnib8QuIh+dGYSk
-	 +ofsSlQR0HGocqe6I1u1tBxBkwaa2/77WXK1n3PQ=
+	b=bfN2xV7ttOREt8a9eOmCpPiheKVTCVRHzWv5Q41URKRugaWwqb7r5BHqbkfGhzwfK
+	 4C5bXjRkKkPrlscHkO8ExFlKqtRCVQ9LcKnEjz2ez9+HUZ+KwztNWWwVOHYcH7VPRr
+	 wDzZw75l1iHK8Z5rczokuBahshdeMC7BoDyktQaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <ancowi69@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>
-Subject: [PATCH 6.12 634/826] jfs: xattr: check invalid xattr size more strictly
+	Alex Zenla <alex@edera.dev>,
+	Alexander Merritt <alexander@edera.dev>,
+	Ariadne Conill <ariadne@ariadne.space>,
+	Juergen Gross <jgross@suse.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 789/817] 9p/xen: fix release of IRQ
 Date: Tue,  3 Dec 2024 15:46:01 +0100
-Message-ID: <20241203144808.484615336@linuxfoundation.org>
+Message-ID: <20241203144026.809675376@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <ancowi69@gmail.com>
+From: Alex Zenla <alex@edera.dev>
 
-commit d9f9d96136cba8fedd647d2c024342ce090133c2 upstream.
+[ Upstream commit e43c608f40c065b30964f0a806348062991b802d ]
 
-Commit 7c55b78818cf ("jfs: xattr: fix buffer overflow for invalid xattr")
-also addresses this issue but it only fixes it for positive values, while
-ea_size is an integer type and can take negative values, e.g. in case of
-a corrupted filesystem. This still breaks validation and would overflow
-because of implicit conversion from int to size_t in print_hex_dump().
+Kernel logs indicate an IRQ was double-freed.
 
-Fix this issue by clamping the ea_size value instead.
+Pass correct device ID during IRQ release.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 71ebd71921e45 ("xen/9pfs: connect to the backend")
+Signed-off-by: Alex Zenla <alex@edera.dev>
+Signed-off-by: Alexander Merritt <alexander@edera.dev>
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241121225100.5736-1-alexander@edera.dev>
+[Dominique: remove confusing variable reset to 0]
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/xattr.c |    2 +-
+ net/9p/trans_xen.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jfs/xattr.c
-+++ b/fs/jfs/xattr.c
-@@ -559,7 +559,7 @@ static int ea_get(struct inode *inode, s
- 
-       size_check:
- 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
--		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
-+		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
- 
- 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
- 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 0304e8a1616d8..b9ff69c7522a1 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -286,7 +286,7 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+ 		if (!priv->rings[i].intf)
+ 			break;
+ 		if (priv->rings[i].irq > 0)
+-			unbind_from_irqhandler(priv->rings[i].irq, priv->dev);
++			unbind_from_irqhandler(priv->rings[i].irq, ring);
+ 		if (priv->rings[i].data.in) {
+ 			for (j = 0;
+ 			     j < (1 << priv->rings[i].intf->ring_order);
+-- 
+2.43.0
+
 
 
 
