@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC019E244F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF9E9E2135
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CED2616E05C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A5B9165453
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C900208983;
-	Tue,  3 Dec 2024 15:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275C01F669E;
+	Tue,  3 Dec 2024 15:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UOF4PQX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iuCqY5h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9E1207A3E;
-	Tue,  3 Dec 2024 15:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D901A1F706B;
+	Tue,  3 Dec 2024 15:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240275; cv=none; b=EsL6481fuAatCMffxvyDFVV6THj2UZde5OTIl98ciFxbRiTOJPX6XR4scNvSHLgTGO7qZSgFOusCW+sUvOmEfjIQtU0Hm36Q2X8lEjfESqxjeObiZ0BxV5t8fonprcluVFf1USuTM7kjjWqVO5ZnvV/nWH3/60k1gXRjU69fRvY=
+	t=1733238418; cv=none; b=T6XU/a5NMqHIekulJDbo+n8GMpwkM2jxWekqryfdCsE/l5E0qNEDXoIVzsuX23sKPUH5ZjNQNr2UpNyjD7AQRV8umjkYb1IYqKsmOYkOpCVrxR88Uv0BHNV4wve3Gmf0tVbUQb9KDaVk+YqMGS8QgAUZARzipcbiPyKdjEFWe7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240275; c=relaxed/simple;
-	bh=ZztubcMau+UPILwEb6c/l9cWh2YAt+BSXHvD5QJNfvs=;
+	s=arc-20240116; t=1733238418; c=relaxed/simple;
+	bh=x5IxqqW8Mc5rhppTTlNvo5Y8m/0aP6UeWiDR4YQoQjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2LuCx5A1wOp7aj+KbATL0A5/iP/8jR0hhjQ7+5yFD85/1CVN2nBUPYaM5/hUOg5N6mM6MG0OQ2VrE2zILhiGxKo6dow9dxYEF8GaPY9Rp9LPqWzbGN4EqVHc01IMxHU9UF/u4LICc9qZE0CaBAhmD25tOEjSq6IIp3ICaIrkXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UOF4PQX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C496C4CECF;
-	Tue,  3 Dec 2024 15:37:54 +0000 (UTC)
+	 MIME-Version; b=bDHSgG54ClNFSbZBBOgu2WRt/lTa6JnDVRipttPlM+W4rsYrtpVt6FSQDJgJKSHk+VB5pEC5JOGn/sZLJwiQnmImeKAZ9tRLmqvQp/iqHEhJMNOeQKokwkcRrjLZ4Ybgn8MMY+cuc+R5zixSS9kpck0CpP5xk+d4Larqp1J7JxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iuCqY5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641BAC4CECF;
+	Tue,  3 Dec 2024 15:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240275;
-	bh=ZztubcMau+UPILwEb6c/l9cWh2YAt+BSXHvD5QJNfvs=;
+	s=korg; t=1733238418;
+	bh=x5IxqqW8Mc5rhppTTlNvo5Y8m/0aP6UeWiDR4YQoQjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1UOF4PQX0TYSGBzTKykNMU+s/6XqMY45V5e6U/l6aZx61pUTOvBp6f7fZKT1D7ibA
-	 NuBXJnAVVW6MmORsH29vU/uRdoakmp60jIj1PMZ2oReyXurNfXNAL5v8/rxIMyD1re
-	 ixg6841hCzkf68QGUnGylGBsHA7xM9EW1Dn4L3qM=
+	b=2iuCqY5hgKRZme6PCgM1jHA9BazcXzZmOFj8zT72OstHcTwsdayQy6ImGamdlyjKH
+	 wH++IXV0jaLYBzo9iaW6wBkBQVbHmscMYbxTBIBdQOpqoPC8KrHHOQxCpUbGs014MH
+	 UA71QFbI+NZ4JBTCaYdD5WXah1+IRVmcfu/YvMKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Will Deacon <will@kernel.org>,
-	Brian Johannesmeyer <bjohannesmeyer@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Stefan Hansson <newbyte@postmarketos.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/826] Revert "scripts/faddr2line: Check only two symbols when calculating symbol size"
+Subject: [PATCH 6.11 239/817] drm/panel: nt35510: Make new commands optional
 Date: Tue,  3 Dec 2024 15:36:51 +0100
-Message-ID: <20241203144747.004525728@linuxfoundation.org>
+Message-ID: <20241203144005.088316883@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 56ac7bd2c58a4e93d19f0ccb181035d075b315d3 ]
+[ Upstream commit 2418aa8516b26c5e332a1a8c216d4d620f965a56 ]
 
-This reverts commit c02904f05ff805d6c0631634d5751ebd338f75ec.
+The commit introducing the Frida display started to write the
+SETVCMOFF registers unconditionally, and some (not all!) Hydis
+display seem to be affected by ghosting after the commit.
 
-Such commit assumed that only two symbols are relevant for the symbol
-size calculation. However, this can lead to an incorrect symbol size
-calculation when there are mapping symbols emitted by readelf.
+Make SETVCMOFF optional and only send these commands on the
+Frida display for now.
 
-For instance, when feeding 'update_irq_load_avg+0x1c/0x1c4', faddr2line
-might need to process the following readelf lines:
-
- 784284: ffffffc0081cca30   428 FUNC    GLOBAL DEFAULT     2 update_irq_load_avg
-  87319: ffffffc0081ccb0c     0 NOTYPE  LOCAL  DEFAULT     2 $x.62522
-  87321: ffffffc0081ccbdc     0 NOTYPE  LOCAL  DEFAULT     2 $x.62524
-  87323: ffffffc0081ccbe0     0 NOTYPE  LOCAL  DEFAULT     2 $x.62526
-  87325: ffffffc0081ccbe4     0 NOTYPE  LOCAL  DEFAULT     2 $x.62528
-  87327: ffffffc0081ccbe8     0 NOTYPE  LOCAL  DEFAULT     2 $x.62530
-  87329: ffffffc0081ccbec     0 NOTYPE  LOCAL  DEFAULT     2 $x.62532
-  87331: ffffffc0081ccbf0     0 NOTYPE  LOCAL  DEFAULT     2 $x.62534
-  87332: ffffffc0081ccbf4     0 NOTYPE  LOCAL  DEFAULT     2 $x.62535
- 783403: ffffffc0081ccbf4   424 FUNC    GLOBAL DEFAULT     2 sched_pelt_multiplier
-
-The symbol size of 'update_irq_load_avg' should be calculated with the
-address of 'sched_pelt_multiplier', after skipping the mapping symbols
-seen in between. However, the offending commit cuts the list short and
-faddr2line incorrectly assumes 'update_irq_load_avg' is the last symbol
-in the section, resulting in:
-
-  $ scripts/faddr2line vmlinux update_irq_load_avg+0x1c/0x1c4
-  skipping update_irq_load_avg address at 0xffffffc0081cca4c due to size mismatch (0x1c4 != 0x3ff9a59988)
-  no match for update_irq_load_avg+0x1c/0x1c4
-
-After reverting the commit the issue is resolved:
-
-  $ scripts/faddr2line vmlinux update_irq_load_avg+0x1c/0x1c4
-  update_irq_load_avg+0x1c/0x1c4:
-  cpu_of at kernel/sched/sched.h:1109
-  (inlined by) update_irq_load_avg at kernel/sched/pelt.c:481
-
-Fixes: c02904f05ff8 ("scripts/faddr2line: Check only two symbols when calculating symbol size")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Acked-by: Brian Johannesmeyer <bjohannesmeyer@gmail.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reported-by: Stefan Hansson <newbyte@postmarketos.org>
+Fixes: 219a1f49094f ("drm/panel: nt35510: support FRIDA FRD400B25025-A-CTK")
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Tested-by: Stefan Hansson <newbyte@postmarketos.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240908-fix-nt35510-v2-1-d4834b9cdb9b@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/faddr2line | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-novatek-nt35510.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/scripts/faddr2line b/scripts/faddr2line
-index fe0cc45f03be1..1fa6beef9f978 100755
---- a/scripts/faddr2line
-+++ b/scripts/faddr2line
-@@ -252,7 +252,7 @@ __faddr2line() {
- 				found=2
- 				break
- 			fi
--		done < <(echo "${ELF_SYMS}" | sed 's/\[.*\]//' | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2 | ${GREP} -A1 --no-group-separator " ${sym_name}$")
-+		done < <(echo "${ELF_SYMS}" | sed 's/\[.*\]//' | ${AWK} -v sec=$sym_sec '$7 == sec' | sort --key=2)
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt35510.c b/drivers/gpu/drm/panel/panel-novatek-nt35510.c
+index d3bfdfc9cff64..f54e0fa429378 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt35510.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt35510.c
+@@ -38,6 +38,7 @@
  
- 		if [[ $found = 0 ]]; then
- 			warn "can't find symbol: sym_name: $sym_name sym_sec: $sym_sec sym_addr: $sym_addr sym_elf_size: $sym_elf_size"
+ #define NT35510_CMD_CORRECT_GAMMA BIT(0)
+ #define NT35510_CMD_CONTROL_DISPLAY BIT(1)
++#define NT35510_CMD_SETVCMOFF BIT(2)
+ 
+ #define MCS_CMD_MAUCCTR		0xF0 /* Manufacturer command enable */
+ #define MCS_CMD_READ_ID1	0xDA
+@@ -721,11 +722,13 @@ static int nt35510_setup_power(struct nt35510 *nt)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = nt35510_send_long(nt, dsi, NT35510_P1_SETVCMOFF,
+-				NT35510_P1_VCMOFF_LEN,
+-				nt->conf->vcmoff);
+-	if (ret)
+-		return ret;
++	if (nt->conf->cmds & NT35510_CMD_SETVCMOFF) {
++		ret = nt35510_send_long(nt, dsi, NT35510_P1_SETVCMOFF,
++					NT35510_P1_VCMOFF_LEN,
++					nt->conf->vcmoff);
++		if (ret)
++			return ret;
++	}
+ 
+ 	/* Typically 10 ms */
+ 	usleep_range(10000, 20000);
+@@ -1319,7 +1322,7 @@ static const struct nt35510_config nt35510_frida_frd400b25025 = {
+ 	},
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
+ 			MIPI_DSI_MODE_LPM,
+-	.cmds = NT35510_CMD_CONTROL_DISPLAY,
++	.cmds = NT35510_CMD_CONTROL_DISPLAY | NT35510_CMD_SETVCMOFF,
+ 	/* 0x03: AVDD = 6.2V */
+ 	.avdd = { 0x03, 0x03, 0x03 },
+ 	/* 0x46: PCK = 2 x Hsync, BTP = 2.5 x VDDB */
 -- 
 2.43.0
 
