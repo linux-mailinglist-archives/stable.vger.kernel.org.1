@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-97248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1EE19E2331
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 268159E2685
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A74285E59
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66543167729
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517B31F8AD5;
-	Tue,  3 Dec 2024 15:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3204A81ADA;
+	Tue,  3 Dec 2024 16:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYlKil8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haiPUUKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6401F76D2;
-	Tue,  3 Dec 2024 15:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24B61F12F7;
+	Tue,  3 Dec 2024 16:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239943; cv=none; b=XNuGl3S/ShuDZ1Qv1sKVbkH+B0fdLdmO98VAzuk8IqfjX4pE22ouNswydJVp92g+DreVsoSaStmI6XBRVirgzaoz4NWzliHEF5Fwd+2QCmonatOjjRa92wkaeiFb1JlylB1XAn2jeJGCzwpqA6y6Xn8edDj8Z+kJlOYnuINw+0s=
+	t=1733242191; cv=none; b=DwrDbMeaatjQ7e68LLDGNvSKfoG0gvNKEK/zVYTfehOt4vLLFe9loHsIzFZ2viiE3cBFV5COQuKC1fcxlgXZFAgSfz4IUuLapBBQm0P5/JsxODmAtKmTYyfLDYgiKip1HwmsjvQyURnjXvPHjhALZODu2FLN4EXbguZ7k8fL0YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239943; c=relaxed/simple;
-	bh=9Hize2eSJnfn/d46YI+fxUcc148VadctsKOheqWIRTc=;
+	s=arc-20240116; t=1733242191; c=relaxed/simple;
+	bh=5EaBEboskAQ6m+RCSjedVR20IWQQh86vPr2LgNo3v30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ne1cg1Usfj035nEKQTWvgi+TZEHYi9Gtj1aoML63UakXiQT1I5+swrUp/yZwJYxWFe/mHfRj3ajmzKkGhSTRxkPSSQDJYkuR6mORKzLnl/Eb16I+oEOxnR/PR22Nb/x1zbDeMHToOQ5QS87APl9Cf0/4yYxtNPRp28avPaPCMzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYlKil8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C68C4CED8;
-	Tue,  3 Dec 2024 15:32:22 +0000 (UTC)
+	 MIME-Version; b=s5SKHadDDDj2ZblOb2oh+JZAzNnOUg3ppQYIkKttNNQh69KsiqiLX6YgHfkJdX0C2qJw/dcYC+lrm+ZdHec9j8NTI5nsQZz29YFzunfBYQhLgzeJZt4y71hvmafktK7wtun+ArGRUs3j0dUnUsU4t3e3h8OYLZI1Zo8fB/MKI1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haiPUUKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE3CC4CECF;
+	Tue,  3 Dec 2024 16:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239942;
-	bh=9Hize2eSJnfn/d46YI+fxUcc148VadctsKOheqWIRTc=;
+	s=korg; t=1733242190;
+	bh=5EaBEboskAQ6m+RCSjedVR20IWQQh86vPr2LgNo3v30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYlKil8le02o8XcvNn/JxcXD8nBW7RHnNwYY6aLYCodhOXdKirjmjGW9smQ70PERY
-	 uUjkWYAfNHLtUVaeTO/RaGopfRS7pwMSMGtvCmYqYQkhnjiPAX77ZJWoCATSfsPYPF
-	 J/+QJcn4en6AKa0lIwsYDZsv/6b8jblF9aWpjaQ8=
+	b=haiPUUKmZrOWFceslGMJVKTVigzYToO5K5eY3Vx7gjyTKwH8x9Scewx8r7Y6BzWrt
+	 CRqa8PBlyotA7MF+anUuI3hsYpCuA5RYnjJVP6jTQnQEBoykhwNI3IfNhu3hjkKilg
+	 V+EBCOhxCyY2u/y4znZSWmFm5x4wEDrwseB/044Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Zenla <alex@edera.dev>,
-	Alexander Merritt <alexander@edera.dev>,
-	Ariadne Conill <ariadne@ariadne.space>,
-	Juergen Gross <jgross@suse.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 788/817] 9p/xen: fix init sequence
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 633/826] docs: media: update location of the media patches
 Date: Tue,  3 Dec 2024 15:46:00 +0100
-Message-ID: <20241203144026.771450313@linuxfoundation.org>
+Message-ID: <20241203144808.446618402@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Zenla <alex@edera.dev>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
+commit 72ad4ff638047bbbdf3232178fea4bec1f429319 upstream.
 
-Large amount of mount hangs observed during hotplugging of 9pfs devices. The
-9pfs Xen driver attempts to initialize itself more than once, causing the
-frontend and backend to disagree: the backend listens on a channel that the
-frontend does not send on, resulting in stalled processing.
+Due to recent changes on the way we're maintaining media, the
+location of the main tree was updated.
 
-Only allow initialization of 9p frontend once.
+Change docs accordingly.
 
-Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
-Signed-off-by: Alex Zenla <alex@edera.dev>
-Signed-off-by: Alexander Merritt <alexander@edera.dev>
-Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241119211633.38321-1-alexander@edera.dev>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/trans_xen.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/media/building.rst |    2 +-
+ Documentation/admin-guide/media/saa7134.rst  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index dfdbe1ca53387..0304e8a1616d8 100644
---- a/net/9p/trans_xen.c
-+++ b/net/9p/trans_xen.c
-@@ -465,6 +465,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 		goto error;
- 	}
+--- a/Documentation/admin-guide/media/building.rst
++++ b/Documentation/admin-guide/media/building.rst
+@@ -15,7 +15,7 @@ Please notice, however, that, if:
  
-+	xenbus_switch_state(dev, XenbusStateInitialised);
- 	return 0;
+ you should use the main media development tree ``master`` branch:
  
-  error_xenbus:
-@@ -512,8 +513,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
- 		break;
+-    https://git.linuxtv.org/media_tree.git/
++    https://git.linuxtv.org/media.git/
  
- 	case XenbusStateInitWait:
--		if (!xen_9pfs_front_init(dev))
--			xenbus_switch_state(dev, XenbusStateInitialised);
-+		if (dev->state != XenbusStateInitialising)
-+			break;
-+
-+		xen_9pfs_front_init(dev);
- 		break;
+ In this case, you may find some useful information at the
+ `LinuxTv wiki pages <https://linuxtv.org/wiki>`_:
+--- a/Documentation/admin-guide/media/saa7134.rst
++++ b/Documentation/admin-guide/media/saa7134.rst
+@@ -67,7 +67,7 @@ Changes / Fixes
+ Please mail to linux-media AT vger.kernel.org unified diffs against
+ the linux media git tree:
  
- 	case XenbusStateConnected:
--- 
-2.43.0
-
+-    https://git.linuxtv.org/media_tree.git/
++    https://git.linuxtv.org/media.git/
+ 
+ This is done by committing a patch at a clone of the git tree and
+ submitting the patch using ``git send-email``. Don't forget to
 
 
 
