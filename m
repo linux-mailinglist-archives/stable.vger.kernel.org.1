@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-98106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4468D9E2B80
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 192389E29E8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:48:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEF22B472CD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95B69B86676
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD691F892E;
-	Tue,  3 Dec 2024 16:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62281F892E;
+	Tue,  3 Dec 2024 16:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifWVTw1t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtL8VCx8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7AD1AB6C9;
-	Tue,  3 Dec 2024 16:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C531F76D1;
+	Tue,  3 Dec 2024 16:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242810; cv=none; b=AeXUdhccmWBm/qVtIvyLdRvXD2S/oZWwLP4Ux5lRuS8SKbTONG9CcvfMMaisKwKC/HoPeLawv4IDYcxBBSJYBftNOidv44oEpXhy3tgihhQKm4h+FLpN+zxW/xWPUJ9PzNvEoeBmFLc8HMSSL9uH47Z3ohfPpn9wGWXkRpYxKLU=
+	t=1733242867; cv=none; b=oH8FY+VhK8BG9tz898e7VK4BFZJjuzhrCYnQuvpIVOG7LddPouqv4xvwbj+sqAuuSRQiSwyNjSfWy/NzUvFBzlLSQ3t/8UNTN4qZqCp6gziBqruOXZsDfCppOZl1cXLgdN2ckdvC15iXQMLV5LPxuFQ4okQblvE0pirOJoNgW2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242810; c=relaxed/simple;
-	bh=dl5Xq0CjSigA7PNgk6z6NkfHFaP0C78bQf0C5OOj9qU=;
+	s=arc-20240116; t=1733242867; c=relaxed/simple;
+	bh=SCbRFYA1M03yGQOLK7SJuki27Chq8PYvSqz125QU4t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nfO+D/aCbb+WtDluyOXZcbYS3ttY+QnIFOjCg7b0TSQ57BQbUdXTajGL85xDGKlwIJfndX/aQF8Dukk5AA8iObO4ERDDlJ03d5vqgC4oFR4nl6wiLvbpjErQ7h6jVVuF7hL/CyaC7jlVRriBV8Hl7GPFxb6ooW4l/3lneQPdISU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifWVTw1t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84367C4CECF;
-	Tue,  3 Dec 2024 16:20:09 +0000 (UTC)
+	 MIME-Version; b=K7dsEi5Hereoq/D9PVcNRQMbKvmPloJywF70R0blixjAFBEX9vR7ViZUJLRI4Q7tw9wCd1ICjxDFHclXFTCck7GdqIwI6qcsuRHJ/gOJv0jW/y9FrqWRY+9w+PCQdy3M9pM1UXLcofKX2nyJX9R9U/sQhMAno1sfqBiA/xczKF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtL8VCx8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D22C4CECF;
+	Tue,  3 Dec 2024 16:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242810;
-	bh=dl5Xq0CjSigA7PNgk6z6NkfHFaP0C78bQf0C5OOj9qU=;
+	s=korg; t=1733242867;
+	bh=SCbRFYA1M03yGQOLK7SJuki27Chq8PYvSqz125QU4t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifWVTw1tsDdWC6N3OvfEL0biaySNctX3jnbk5WOJKNmafW0nYax3w8keuPx8JETrf
-	 G4Ok9cZ/t+1TQOJEY6gBOCh05Pl+4tPa/rh1WmriqOcecK583Uah7eoUg2DPD4R3M+
-	 9fsXfaxdUc71t66o0nX2dSoXPEof+r0qiRp8pems=
+	b=FtL8VCx8AF8Rxl6n0T5lqxYIT6GNZ5FsvQhDSCZyq3nhKLE7HTsLksbohyIHR9Adl
+	 sfJ4ZzUiD9/JW2c6vR7p+QeF8QO0BLcPuj/auASmBjlkV0Lhe5DjKONEXP+1PU9dRX
+	 /TqXiPZspMmN+n0cu60Q5kIV2DTBQpbYKdJv/zLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Liu Jian <liujian56@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 815/826] sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport
-Date: Tue,  3 Dec 2024 15:49:02 +0100
-Message-ID: <20241203144815.546326607@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Lai Yi <yi1.lai@linux.intel.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 826/826] block: dont verify IO lock for freeze/unfreeze in elevator_init_mq()
+Date: Tue,  3 Dec 2024 15:49:13 +0100
+Message-ID: <20241203144815.973544410@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,39 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Liu Jian <liujian56@huawei.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 4db9ad82a6c823094da27de4825af693a3475d51 ]
+commit 357e1b7f730bd85a383e7afa75a3caba329c5707 upstream.
 
-Since transport->sock has been set to NULL during reset transport,
-XPRT_SOCK_UPD_TIMEOUT also needs to be cleared. Otherwise, the
-xs_tcp_set_socket_timeouts() may be triggered in xs_tcp_send_request()
-to dereference the transport->sock that has been set to NULL.
+elevator_init_mq() is only called at the entry of add_disk_fwnode() when
+disk IO isn't allowed yet.
 
-Fixes: 7196dbb02ea0 ("SUNRPC: Allow changing of the TCP timeout parameters on the fly")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Liu Jian <liujian56@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So not verify io lock(q->io_lockdep_map) for freeze & unfreeze in
+elevator_init_mq().
+
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reported-by: Lai Yi <yi1.lai@linux.intel.com>
+Fixes: f1be1788a32e ("block: model freeze & enter queue as lock for supporting lockdep")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241031133723.303835-5-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtsock.c | 1 +
- 1 file changed, 1 insertion(+)
+ block/elevator.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 1326fbf45a347..539cdda2093e5 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -1198,6 +1198,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
- 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
-+	clear_bit(XPRT_SOCK_UPD_TIMEOUT, &transport->sock_state);
- }
+--- a/block/elevator.c
++++ b/block/elevator.c
+@@ -598,13 +598,19 @@ void elevator_init_mq(struct request_que
+ 	 * drain any dispatch activities originated from passthrough
+ 	 * requests, then no need to quiesce queue which may add long boot
+ 	 * latency, especially when lots of disks are involved.
++	 *
++	 * Disk isn't added yet, so verifying queue lock only manually.
+ 	 */
+-	blk_mq_freeze_queue(q);
++	blk_freeze_queue_start_non_owner(q);
++	blk_freeze_acquire_lock(q, true, false);
++	blk_mq_freeze_queue_wait(q);
++
+ 	blk_mq_cancel_work_sync(q);
  
- static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
--- 
-2.43.0
-
+ 	err = blk_mq_init_sched(q, e);
+ 
+-	blk_mq_unfreeze_queue(q);
++	blk_unfreeze_release_lock(q, true, false);
++	blk_mq_unfreeze_queue_non_owner(q);
+ 
+ 	if (err) {
+ 		pr_warn("\"%s\" elevator initialization failed, "
 
 
 
