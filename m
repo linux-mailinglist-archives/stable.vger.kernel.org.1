@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B99C9E20EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 624B29E20BA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B894C168969
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 274612864E3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840AE1F7558;
-	Tue,  3 Dec 2024 15:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F141F755B;
+	Tue,  3 Dec 2024 15:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcZ2Uy9D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCfktJue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418071F7065;
-	Tue,  3 Dec 2024 15:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B751E3DF9;
+	Tue,  3 Dec 2024 15:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238172; cv=none; b=UT2JiIx4bKapFBFZbyY0lkeJMBL4qhMjDBJDbju8UwsSHoFhPQfbdMdEMuwpQwhmhtkXYXeQSxpyfzXwBqePwcuFaKHzestlBP4Z1hOx7XFj+0Lc4gihEDK/rxfp2Mx4WfBLa6TteWI4iE2aTB2T6On5UPOrB+1Qz+zGt0Ynv1M=
+	t=1733238178; cv=none; b=ovTJVTXlHZNPYEu79RziLf8z+QXedBzks+eq6kB0/7i7a4Et4dGDx725jhtFZTeECQjvty0ZYcjBToBUq/TevRZ1bamvpRwjdpL2iyEuutlEVGpdRf3ZnKf5prqABe5xQOxa85es86hhc4T7FdS+IftysuJ3DPlxnSOeFGJdUQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238172; c=relaxed/simple;
-	bh=Z7EN+wLUSjuTe7Dxo7IEfEkT+/tq78SU2lrBlJ5H5iI=;
+	s=arc-20240116; t=1733238178; c=relaxed/simple;
+	bh=/hLnpbk7yzQ6RpYABG7VOSQ6hTh+s7Htlnwz4KHDick=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PBf8CvIjRrWxFibQmHIek2shEdTACF3VgVhi8XwjkJouPnxCIK3muE1mmGgH6aKjhybcMP+BH+yJax5YqmEaqGZIi9vWXxWGTCNI9xxFjn2fba6hbm4/3VZ8Bx1Ig631jD8UJuSBR8WyDeIDf2NJrW/a0SYUnT9bP0+Cd7pi1C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcZ2Uy9D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCB1C4CECF;
-	Tue,  3 Dec 2024 15:02:51 +0000 (UTC)
+	 MIME-Version; b=cypSvorsg+NWEnyVYlNXKAmcGy7HteKUFEwZlRLWSCKs3jWfihGR2KrT/IrXkctx980MvOIjZrh/+CRUC2OnIC743KXQ7jeADPwNczAbxzftVvs4qjfSPJQ0Ay4YwsZWAnkU7qRYF51BXp8YNcOU3PGaiozCK8Gv3ECVip7WXn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCfktJue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8264DC4CECF;
+	Tue,  3 Dec 2024 15:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238172;
-	bh=Z7EN+wLUSjuTe7Dxo7IEfEkT+/tq78SU2lrBlJ5H5iI=;
+	s=korg; t=1733238177;
+	bh=/hLnpbk7yzQ6RpYABG7VOSQ6hTh+s7Htlnwz4KHDick=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BcZ2Uy9DzhT3uoRnby+H9uCnGWE+IxxU2+KzEdrj0eNr8BWNmT/CoW9NSecgXakKS
-	 SwiLZrdT8k5E6moebG1hK5b2uX3MYJqwRXdXqw00FAboubUh7nMJV1aUThiQ4BWVzc
-	 4AYdTwTDViROSF5b2o/2t1ih5b6NHBSu3JE7xlGA=
+	b=TCfktJuehFA43CyWX954y27FquqCbCVsLM5rfBrEbcaRljX4nQZHZuWedULZYdDCk
+	 yPtqORoJuoz/mrYoodQecodWlnQr5Oui6twJhU8Ra2q8/7XABeYSyZwZYEUEhTkEZz
+	 qbXHFXLwZkc5FDgU/7/4VmJsd+HsjuKPR3/u+Ri0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 187/817] watchdog: Add HAS_IOPORT dependency for SBC8360 and SBC7240
-Date: Tue,  3 Dec 2024 15:35:59 +0100
-Message-ID: <20241203144003.030612953@linuxfoundation.org>
+Subject: [PATCH 6.11 188/817] arm64: dts: qcom: x1e80100: Update C4/C5 residency/exit numbers
+Date: Tue,  3 Dec 2024 15:36:00 +0100
+Message-ID: <20241203144003.074926976@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,51 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit d4d3125a3452a54acca69050be67b87ee2900e77 ]
+[ Upstream commit 2e65616ef07fa4c72c3898b22e5bede7d468cf32 ]
 
-Both drivers use I/O port accesses without declaring a dependency on
-CONFIG_HAS_IOPORT. For sbc8360_wdt this causes a compile error on UML
-once inb()/outb() helpers become conditional.
+Update the numbers based on the information found in the DSDT.
 
-For sbc7240_wdt this causes no such errors with UML because this driver
-depends on both x86_32 and !UML. Nevertheless add HAS_IOPORT as
-a dependency for both drivers to be explicit and drop the !UML
-dependency for sbc7240_wdt as it is now redundant since UML implies no
-HAS_IOPORT.
-
-Fixes: 52df67b6b313 ("watchdog: add HAS_IOPORT dependencies")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: af16b00578a7 ("arm64: dts: qcom: Add base X1E80100 dtsi and the QCP dts")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20240716-topic-h_bits-v1-2-f6c5d3ff982c@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index bae1d97cce89b..8a48113ec2ace 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -1500,7 +1500,7 @@ config 60XX_WDT
+diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+index 2a03581b0ab56..db0304c564980 100644
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -278,8 +278,8 @@ CLUSTER_C4: cpu-sleep-0 {
+ 				idle-state-name = "ret";
+ 				arm,psci-suspend-param = <0x00000004>;
+ 				entry-latency-us = <180>;
+-				exit-latency-us = <320>;
+-				min-residency-us = <1000>;
++				exit-latency-us = <500>;
++				min-residency-us = <600>;
+ 			};
+ 		};
  
- config SBC8360_WDT
- 	tristate "SBC8360 Watchdog Timer"
--	depends on X86_32
-+	depends on X86_32 && HAS_IOPORT
- 	help
- 
- 	  This is the driver for the hardware watchdog on the SBC8360 Single
-@@ -1513,7 +1513,7 @@ config SBC8360_WDT
- 
- config SBC7240_WDT
- 	tristate "SBC Nano 7240 Watchdog Timer"
--	depends on X86_32 && !UML
-+	depends on X86_32 && HAS_IOPORT
- 	help
- 	  This is the driver for the hardware watchdog found on the IEI
- 	  single board computers EPIC Nano 7240 (and likely others). This
+@@ -298,7 +298,7 @@ CLUSTER_CL5: cluster-sleep-1 {
+ 				idle-state-name = "ret-pll-off";
+ 				arm,psci-suspend-param = <0x01000054>;
+ 				entry-latency-us = <2200>;
+-				exit-latency-us = <2500>;
++				exit-latency-us = <4000>;
+ 				min-residency-us = <7000>;
+ 			};
+ 		};
 -- 
 2.43.0
 
