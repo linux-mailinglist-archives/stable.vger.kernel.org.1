@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960189E222A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395549E250F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BF99284AB2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDE6C287CA7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F16E1F76A1;
-	Tue,  3 Dec 2024 15:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F721AB6C9;
+	Tue,  3 Dec 2024 15:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTwMfnoX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ2plNIq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6B71F75BC;
-	Tue,  3 Dec 2024 15:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594431DE8A5;
+	Tue,  3 Dec 2024 15:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239271; cv=none; b=KlsxlK0/YNkFvNj51uhNCqWy2FSLvOeJ5syQPhipwOWPHDClGt8GcxpVNH+duC5pvTqImx5VSyn5R/XeODb+nAsWwtqNBDOiteidr+pVPm1ASbeFAINdgeRZSTVUNNhGiOTmByl7BMoQPSXCW5ceUOyOKXmKB4UwKcJf/8yfOHE=
+	t=1733241379; cv=none; b=CZZ4bzhYEWgz8w3XliSQAE8FjT1YxdGygq3XCyiEziwcq96eUDmm9HkGzqGUFBfkxKWdPtpNEIs2aO9k2QexRMjVFOjgV41P+Xum3SRzGK+pJLRwSKP51AzF/6NS7JEl512QhnPxclxTlXiln3OcD43EoG0jH2PFfhBl9CbLKzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239271; c=relaxed/simple;
-	bh=zw1/m7qi+mr60LtK2kb/5L3sWLrv60zFpID40NcOtTo=;
+	s=arc-20240116; t=1733241379; c=relaxed/simple;
+	bh=ZZazt/HE9JX8FfkHgdleV4HCxWiDQosW5myW7Ixi+2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hmUe0wRYHIzOxJCFbsmZm88fs9hmw+lY9ChTWShOP1uV1Di/G5XLSehJJyyzQwpBie8ec5XSs8jcHGXe8MKv9VRA8IDBEoMWji7UV0tKOgUoQbndkbmh2Yj7jtBr83dBrtj3dS7pmo2Z4hqyGH4r0PlO6OMIHDkLvssTXCsFFm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTwMfnoX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57CBC4CECF;
-	Tue,  3 Dec 2024 15:21:10 +0000 (UTC)
+	 MIME-Version; b=NbHbXnctEq6L1tTYASMxoBZd3YxlcVARhdMFCO/c2ygvnHWwvtVeA2H6KTSKtdKuoPWuU4HZDsZmCJ91H6nDtWCpR51uTG66Iw0+W2owE1rW7diMWLj78/azymDC9d5KABXHb1SZraJnsCkLj2y2c9Q9++DP6YjC0a1m1R1u7JA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZ2plNIq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCA6C4CECF;
+	Tue,  3 Dec 2024 15:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239271;
-	bh=zw1/m7qi+mr60LtK2kb/5L3sWLrv60zFpID40NcOtTo=;
+	s=korg; t=1733241378;
+	bh=ZZazt/HE9JX8FfkHgdleV4HCxWiDQosW5myW7Ixi+2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTwMfnoXKRZzQ8lPoZkGArr7GUnybixvKhSqRJwHDL3MOVnkKTOC/XLF0aY6ZO3p3
-	 JrfVzxx9UcgXwHV6d/95xUSNtE8KpMhFuy96S1GU5pTMbN3BBpLupFcMNiJEM+eaPk
-	 wpjf40eoNT//enqfg+4YaSqYARjg+I5shX5J65i4=
+	b=cZ2plNIqWDb7QTb6oH6aHFEJP3mvoScEcKXH5Ek+lmuPHiloON1SdrHgqqBCLo7WW
+	 57g3T0xIvGIGV1yP+BCE5UNyyyIhzGs/VxpVanZAg8LWIN4aZKlvaWM+TflD7YkkGn
+	 ioFY0VXnVzGtrmyH9elBAFQUOypvxH3zN72kaEwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Chiara Meiohas <cmeiohas@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 557/817] gpio: zevio: Add missed label initialisation
+Subject: [PATCH 6.12 402/826] RDMA/mlx5: Ensure active slave attachment to the bond IB device
 Date: Tue,  3 Dec 2024 15:42:09 +0100
-Message-ID: <20241203144017.653077075@linuxfoundation.org>
+Message-ID: <20241203144759.443488969@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Chiara Meiohas <cmeiohas@nvidia.com>
 
-[ Upstream commit 5bbed54ba66925ebca19092d0750630f943d7bf2 ]
+[ Upstream commit 0bd2c61df95321e1ec123017cd8657360d15a24e ]
 
-Initialise the GPIO chip label correctly as it was done by
-of_mm_gpiochip_add_data() before the below mentioned change.
+Fix a race condition when creating a lag bond in active backup
+mode where after the bond creation the backup slave was
+attached to the IB device, instead of the active slave.
+This caused stale entries in the GID table, as the gid updating
+mechanism relies on ib_device_get_netdev(), which would return
+the backup slave.
 
-Fixes: cf8f4462e5fa ("gpio: zevio: drop of_gpio.h header")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241118092729.516736-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Send an MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE
+event when activating the lag, additionally to when modifying
+the lag. This ensures that eventually the active netdevice is
+stored in the bond IB device.
+When handling this event remove the GIDs of the previously
+attached netdevice in this port and rescan the GIDs of the
+newly attached netdevice.
+
+This ensures that eventually the active slave netdevice is
+correctly stored in the IB device port. While there might be
+a brief moment where the backup slave GIDs appear in the GID
+table, it will eventually stabilize with the correct GIDs
+(of the bond and the active slave).
+
+Fixes: 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and get_netdev functions")
+Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
+Link: https://patch.msgid.link/91fc2cb24f63add266a528c1c702668a80416d9f.1730381292.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-zevio.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/infiniband/hw/mlx5/main.c             | 28 ++++++++++++-------
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 11 ++++++++
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpio/gpio-zevio.c b/drivers/gpio/gpio-zevio.c
-index 2de61337ad3b5..d7230fd83f5d6 100644
---- a/drivers/gpio/gpio-zevio.c
-+++ b/drivers/gpio/gpio-zevio.c
-@@ -11,6 +11,7 @@
- #include <linux/io.h>
- #include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 32e57cc343361..5fef9288699c6 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -3211,12 +3211,14 @@ static int lag_event(struct notifier_block *nb, unsigned long event, void *data)
+ 	struct mlx5_ib_dev *dev = container_of(nb, struct mlx5_ib_dev,
+ 					       lag_events);
+ 	struct mlx5_core_dev *mdev = dev->mdev;
++	struct ib_device *ibdev = &dev->ib_dev;
++	struct net_device *old_ndev = NULL;
+ 	struct mlx5_ib_port *port;
+ 	struct net_device *ndev;
+-	int  i, err;
+-	int portnum;
++	u32 portnum = 0;
++	int ret = 0;
++	int i;
  
-@@ -169,6 +170,7 @@ static const struct gpio_chip zevio_gpio_chip = {
- /* Initialization */
- static int zevio_gpio_probe(struct platform_device *pdev)
- {
-+	struct device *dev = &pdev->dev;
- 	struct zevio_gpio *controller;
- 	int status, i;
- 
-@@ -180,6 +182,10 @@ static int zevio_gpio_probe(struct platform_device *pdev)
- 	controller->chip = zevio_gpio_chip;
- 	controller->chip.parent = &pdev->dev;
- 
-+	controller->chip.label = devm_kasprintf(dev, GFP_KERNEL, "%pfw", dev_fwnode(dev));
-+	if (!controller->chip.label)
-+		return -ENOMEM;
+-	portnum = 0;
+ 	switch (event) {
+ 	case MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE:
+ 		ndev = data;
+@@ -3232,18 +3234,24 @@ static int lag_event(struct notifier_block *nb, unsigned long event, void *data)
+ 					}
+ 				}
+ 			}
+-			err = ib_device_set_netdev(&dev->ib_dev, ndev,
+-						   portnum + 1);
+-			if (err)
+-				return err;
+-			/* Rescan gids after new netdev assignment */
+-			rdma_roce_rescan_device(&dev->ib_dev);
++			old_ndev = ib_device_get_netdev(ibdev, portnum + 1);
++			ret = ib_device_set_netdev(ibdev, ndev, portnum + 1);
++			if (ret)
++				goto out;
 +
- 	controller->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(controller->regs))
- 		return dev_err_probe(&pdev->dev, PTR_ERR(controller->regs),
++			if (old_ndev)
++				roce_del_all_netdev_gids(ibdev, portnum + 1,
++							 old_ndev);
++			rdma_roce_rescan_port(ibdev, portnum + 1);
+ 		}
+ 		break;
+ 	default:
+ 		return NOTIFY_DONE;
+ 	}
+-	return NOTIFY_OK;
++
++out:
++	dev_put(old_ndev);
++	return notifier_from_errno(ret);
+ }
+ 
+ static void mlx5e_lag_event_register(struct mlx5_ib_dev *dev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index d661267d98ffc..7f68468c2e759 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -919,6 +919,7 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
+ {
+ 	struct mlx5_core_dev *dev0 = ldev->pf[MLX5_LAG_P1].dev;
+ 	struct lag_tracker tracker = { };
++	struct net_device *ndev;
+ 	bool do_bond, roce_lag;
+ 	int err;
+ 	int i;
+@@ -982,6 +983,16 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
+ 				return;
+ 			}
+ 		}
++		if (tracker.tx_type == NETDEV_LAG_TX_TYPE_ACTIVEBACKUP) {
++			ndev = mlx5_lag_active_backup_get_netdev(dev0);
++			/** Only sriov and roce lag should have tracker->TX_type
++			 *  set so no need to check the mode
++			 */
++			blocking_notifier_call_chain(&dev0->priv.lag_nh,
++						     MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE,
++						     ndev);
++			dev_put(ndev);
++		}
+ 	} else if (mlx5_lag_should_modify_lag(ldev, do_bond)) {
+ 		mlx5_modify_lag(ldev, &tracker);
+ 	} else if (mlx5_lag_should_disable_lag(ldev, do_bond)) {
 -- 
 2.43.0
 
