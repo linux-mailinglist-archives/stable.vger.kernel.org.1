@@ -1,168 +1,81 @@
-Return-Path: <stable+bounces-96309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917FB9E1D43
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:14:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A85C9E1D61
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:19:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51B06283760
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 13:14:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 114CD1652C0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 13:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1974D1EE036;
-	Tue,  3 Dec 2024 13:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A671F131B;
+	Tue,  3 Dec 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="LAayiy7q"
+	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="lFWipe3S"
 X-Original-To: stable@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625D21B0F39
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 13:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22131EF0A9;
+	Tue,  3 Dec 2024 13:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.235.159.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733231681; cv=none; b=GFAQnZ501XAQ7ShFPJ1waDdPWue+D9Bil9QaWrE8JJ2YCREPEbyiTMR9buunsNdjMvJx9W+aOFho4rHcw/HlFxI/hewjQQNyXoHEhzSjr672U+t9FvZizZqBl646EmwEepHwTAZHTetjtJD1AfgPt9gDrC+RcWj2BAORKahCJTA=
+	t=1733231914; cv=none; b=raE2H9Yy1LX1XPHerw5AckYzE58jLETAcn86cY6JBriL84I4KLdhmcLwzBLaTNDVPdi41xBKIRo5jdtqSLoD3lSPJbrcuStGz9bj+4eQOEBuhMeDPSj4MVjvML7Sd/KX0tHNS2sFUnXaAuQt4Wh4m6wCc53PgEDwHrinnrwRmEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733231681; c=relaxed/simple;
-	bh=R9wjQxLHnh9MCYkoa9/5GAlgdqfEmAhvBuy38flYIbA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U0bDOYhUCe5tvvnSV3wisExzqC7PRkC+ZmnZqB+XXDFcASX4IBLvGASCiLJTSrFiPNFe6kWdvF5tw9i9rwOBkWnHFVAy6+eS22C926x3S0s+6CSRw8h8CeZKPUn23sWKW6m78ce9eyCxl9so8JsTrd8qxQGzCkNbCU3PUW9+wJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=LAayiy7q; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=LAayiy7q;
-	dkim-atps=neutral
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 11DAA4C8
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 22:14:33 +0900 (JST)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-21547722a22so49586625ad.2
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 05:14:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1733231672; x=1733836472; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qTgFAUWmOx2CtV94fUahIjI61rn2jl+/rJHyu2/g+Xs=;
-        b=LAayiy7qUqLO4UBnGLJoPzVyEFQ7uL15c/EPEjK+leNYaXOOEniHN3fVKknzpM2fR3
-         l439bwq1OQ4Pj6L6K7GRhraO3qZEAjyFysMoIx5NmMowtZGn0Cqb6CTzPhGRgwEcvBxo
-         bsxbZntMJt+ZxAwMRz+9ZQgmzLKlC5HM9aIrdVpF1kzQdUfiGtzFKoLeL6LX54W0/3Dg
-         FfpWzRKe/PYniIMOgCrgI5LBbYfzOUmHuV9LwejahkRL/BOphQPKB+EmxL3AME085GXf
-         bR2txRBk/BDKAQFIFbssdjTfThUk5VNFH1IRqgixUIX045gebeA2HM2aisj9UPAjNic/
-         B6Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733231672; x=1733836472;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qTgFAUWmOx2CtV94fUahIjI61rn2jl+/rJHyu2/g+Xs=;
-        b=Qx+3KcqslisFGcm3KcRtHY9qbfxG69tLNFfO+mC3QX834ctO2xHj9i15vRbUPGQtsB
-         S5/amNKr3NCRViFunCZTAgabYH40fSvx+p6IfE8OkKNHpBWjkuRIOOZsbkJMv5LWHdiW
-         uzizl5T+rhI7PFWKSgrRLJzoIGgKPT24ycv6Sv7BlnIYrntrjVoJWom6XfuPmq96mLmh
-         UoQjWCcw5g0yCkB9kAjOXgSSeIyjKhzLrB7zGDExeOgPMC945khhqV4oiN24PI0VGv9J
-         fQ5u6jfKcY+vw0yw1UWrvHC0Dha5S2PXJH0MeaBK/NgBwQRwBTS1254kZNRoN++fMCIR
-         Ku2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUxtKU6BhRNkOx4kVYHTtnjztHJjzWA5ZOsdYFHFndORH52qLmBGAhTFnQQbn2sGzdKLQNYyxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+NmIfz43r65BzDMskf0WECtq9kLu01QjMbHg6ffmLRwELIfgr
-	y6GaYcT2IDmhXwplBFy1oJDNQ+KnvoA9UuXL5/ye1Csx2RydlA8SnoxrR2bIKNdm5Dpb9gP0AVM
-	mlIUqq+aIuFdQXaSy0QjnoybRyd+ig8kd3e4Zkm0/rGcLa0u37UfD4I0=
-X-Gm-Gg: ASbGncvBwW+5LI0XKTnTUgnxzZhzApLl54DME91yqw9JGsZeve1C75PoIv4TIsQzSof
-	hlGVHmM0Yqj0QK+2wLPcr8hyRQOGo1GmsnRG4JCFhy/oKRqchkxy6hbpniYOE4PqJIhA6xViXzD
-	pYD+j2ZoJlXJf4zcwMYQn+wjEeB4hWjWW6oR1PdvPfPhYhQWJ2aOo+ptebEb0dtVCvrSaMBoxPl
-	p59pdEac392Ft89oKy3yRKIh3NcuvtX8pFuuM5pNU6/dTAbPNhPD9tqLoJqxUYsjXHmcw8JsD/R
-	cd7cUFyaw+lAi6sMABumSzrnB3n1aNHaKQ==
-X-Received: by 2002:a17:903:22cb:b0:215:94eb:ada8 with SMTP id d9443c01a7336-215bd26a30amr30756755ad.51.1733231672034;
-        Tue, 03 Dec 2024 05:14:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFi8YdzPeQ8tKvgYIo711a5eTzDv9gQAvy3Di8eBCEMJXtRmjzXlBTMFJHzTrwQxS4epjiUZg==
-X-Received: by 2002:a17:903:22cb:b0:215:94eb:ada8 with SMTP id d9443c01a7336-215bd26a30amr30756405ad.51.1733231671662;
-        Tue, 03 Dec 2024 05:14:31 -0800 (PST)
-Received: from localhost (117.209.187.35.bc.googleusercontent.com. [35.187.209.117])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21521905f2bsm95147905ad.93.2024.12.03.05.14.30
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 03 Dec 2024 05:14:31 -0800 (PST)
-Date: Tue, 3 Dec 2024 22:14:19 +0900
-From: 'Dominique MARTINET' <dominique.martinet@atmark-techno.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: David Laight <David.Laight@aculab.com>,
-	Oliver Neukum <oneukum@suse.com>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Greg Thelen <gthelen@google.com>,
-	John Sperbeck <jsperbeck@google.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH net] net: usb: usbnet: fix name regression
-Message-ID: <Z08EKwZ3DNb11x_B@atmark-techno.com>
-References: <20241017071849.389636-1-oneukum@suse.com>
- <Z00udyMgW6XnAw6h@atmark-techno.com>
- <e53631b5108b4d0fb796da2a56bc137f@AcuMS.aculab.com>
- <Z01xo_7lbjTVkLRt@atmark-techno.com>
- <20241202065600.4d98a3fe@kernel.org>
- <Z05FQ-Z6yv16lSnY@atmark-techno.com>
- <20241202162653.62e420c5@kernel.org>
- <Z05cdCEgqyea-qBD@atmark-techno.com>
- <20241202182935.75e8850c@kernel.org>
+	s=arc-20240116; t=1733231914; c=relaxed/simple;
+	bh=arkZn71AicmvNfXlYC9WFWkRS7Fpcj8pueowc+tjBhs=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=HtZ8UX5ao7RVSINJpfcPS00XvasZo0HcTTGZmHu/6k5+KWXTDTINW+kr8USM9kiAU+IttwcyDWsc8PyajNM7I4n6wbDNk8sjJVweR0MTcb1EhsVRPxzT3wom18uTh7QqIro6nFIhJ9AeniSc5iRZ4LOJtjEOxhHzTXb5LBuylb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=lFWipe3S; arc=none smtp.client-ip=167.235.159.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+Message-ID: <1037557ef401a66691a4b1e765eec2e2@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1733231908;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n52tYw9Pih3oWwVRYAf7wVYscUliGktjGFz4U8In5Ds=;
+	b=lFWipe3SGDa6s+W30iuE9oKcOQd1NN1i8GuDZhdFFYD+VSXlDpFS0FDbof6GvTUx7ZLOUK
+	zMTkXobdk1934CiES920BXIaIw3qAhay62NeMuYNRJrz1o4Zq5r/oft1egavBqMLq661MZ
+	ieo6uFMvsa/0en/IWw7ESsxnAAaX0AGNHRvMg2gK9u5Lzi/Wwt+a3BUxDDvRqEJhy5YSLd
+	lkRw3VYLcRyNU9CfxfOcLjDPNUTpovd4QOoxQ6FFwgQwHtT4aXB4zyHDCQTbk5zyxeLuSP
+	bMDJla89w0egPVVzdBDhw5f3Aogk3rzw6tLBrpXXelHv+ymL0ojqw6hA5c6cUA==
+From: Paulo Alcantara <pc@manguebit.com>
+To: Michael Krause <mk-debian@galax.is>, Salvatore Bonaccorso
+ <carnil@debian.org>, gregkh@linuxfoundation.org, Steve French
+ <stfrench@microsoft.com>, Michael <mk-debian@galax.is>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-cifs@vger.kernel.org
+Subject: Re: backporting 24a9799aa8ef ("smb: client: fix UAF in
+ smb2_reconnect_server()") to older stable series
+In-Reply-To: <2e1ad828-24b3-488d-881e-69232c8c6062@galax.is>
+References: <2024040834-magazine-audience-8aa4@gregkh>
+ <Z0rZFrZ0Cz3LJEbI@eldamar.lan>
+ <2e1ad828-24b3-488d-881e-69232c8c6062@galax.is>
+Date: Tue, 03 Dec 2024 10:18:25 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241202182935.75e8850c@kernel.org>
+Content-Type: text/plain
 
-Jakub Kicinski wrote on Mon, Dec 02, 2024 at 06:29:35PM -0800:
-> > Half of the reason I sent the mail in the first place is I don't
-> > understand what commit 8a7d12d674ac ("net: usb: usbnet: fix name
-> > regression") actually fixes: the commit message desribes something about
-> > mac address not being set before bind() but the code does not change
-> > what address is looked at (net->dev_addr), just which bits of the
-> > address is checked; and I don't see what which bytes are being looked at
-> > changing has anything to do with the "fixed" commit bab8eb0dd4cb9 ("usbnet:
-> > modern method to get random MAC")
-> 
-> We moved where the random address is assigned, we used to assign random
-> (local) addr at init, now we assign it after calling ->bind().
-> 
-> Previously we checked "if local" as a shorthand for checking "if driver
-> updated". This check should really have been "if addr == node_id".
+Michael Krause <mk-debian@galax.is> writes:
 
-Ok, so a zero address here means a driver didn't set it, because the
-ex-"node_id" address was no longer set at this point, and these would
-fail the 0x2 check that worked previously...
+> On 11/30/24 10:21 AM, Salvatore Bonaccorso wrote:
+>> Michael, did a manual backport of 24a9799aa8ef ("smb: client: fix UAF
+>> in smb2_reconnect_server()") which seems in fact to solve the issue.
+>> 
+>> Michael, can you please post your backport here for review from Paulo
+>> and Steve?
+>
+> Of course, attached.
+>
+> Now I really hope I didn't screw it up :)
 
-The third time's a charm, the ordering part of the message just clicked
-for me, thank you for putting up with me.
-
-
-> > As far as I understand, !is_local_ether_addr (mac[0] & 0x2) implies
-> > !is_zero_ether_addr (all bits of mac or'd), so that'd get us back to
-> > exactly the old check.
-> 
-> Let the compiler discover that, this is control path code, so write
-> it for the human reader... The condition we want is "driver did not
-> initialize the MAC address, or it initialized it to a local MAC
-> address".
-
-(I was reading that '&& !' wrong here, having the check negated in the
-helper is much more clear and it's required to keep the two anyway...)
-
-
-> > Or if we go with the local address version, something like the
-> > following?
-> [...]
-> 
-> Up to you if you want to send this.
-
-Thank you; after thinking it through today I think it won't hurt further
-to send so I did.
-Almost everyone involved is in Cc, but for follow-up it is here:
-https://lore.kernel.org/r/20241203130457.904325-1-asmadeus@codewreck.org
-
-
-Thanks,
--- 
-Dominique
+LGTM.  Thanks Michael for the backport.
 
