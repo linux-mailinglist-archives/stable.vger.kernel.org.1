@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-97631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065259E24D4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5539E21EA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAD05287FEB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724D6280793
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9AD1F75A5;
-	Tue,  3 Dec 2024 15:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBFE1F4707;
+	Tue,  3 Dec 2024 15:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sk692lxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdBIObeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D0A1AB6C9;
-	Tue,  3 Dec 2024 15:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675EE646;
+	Tue,  3 Dec 2024 15:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241178; cv=none; b=KzalIMO5zQYB0xLVMpCJU6CpUKnjzonPxGZGHgAlgs4CQgimFCZBmfqc0+7oeMAded2TVeJ5B4GNg86YjlRoPqE79MSAwaLvHYDG6KNO6pgMB1zTjDnpayEWuXFgsgIXFv9UL0oT2xjuKNafS0x5ObXHHBu8uU2YJyKA4iC5TFM=
+	t=1733239109; cv=none; b=YPD35ulRBXm7BTH98DOkPUeKnCc6QK6D2rHLQbc/zUk7j03b5qcta8ugR44sm9+sXsGYkOm7lCB+NoPG+Vu2A/S3yPbzYHrWNSnRUrcxRwdTVq2/nB4fcGbno+hpfEl1dGGwAA+dfRmEN6byMINERuyjKO7xA9oqeEm/ommIYmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241178; c=relaxed/simple;
-	bh=EXKEXzIXQv4qbHqap2BQKroLWs+oYuFmYsU66558f8Y=;
+	s=arc-20240116; t=1733239109; c=relaxed/simple;
+	bh=f0/qRd4HClbfi6FMmanKgJM8VBBGZYwqfBF//O/PMcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6pETKIsqccaiZxVOFzZigoQQPAtvCxAFfnFBYnl1hPvplvyRDBo3O9KnYdzprdGuGwHEsEvvKucYMO9omprAg+vyjhTekEsz2pmg6gxp9+GBie1RYN5Nxmy5QMX+uUB3wafzz37NjhjH8EQt6yP2GP0iCmWMglR0clTXh1en6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk692lxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7269FC4CECF;
-	Tue,  3 Dec 2024 15:52:57 +0000 (UTC)
+	 MIME-Version; b=Z7kgBO1YDrQKtwW2WSyqSeDeVIVdvzg3sG4PgZYYfJqUuHDjEjJ0p2n8/0FSg1G35xwqDgiNnmX26ChI1udEsukNCT7+3ZtrN9eJ3RLem7fdDXyAg2BD0GVYnFFvmdwJD3VUqRCGMRS8JmgP1JUuzq7VefRam0OteM9hP4njSrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdBIObeU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8ECC4CED6;
+	Tue,  3 Dec 2024 15:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241177;
-	bh=EXKEXzIXQv4qbHqap2BQKroLWs+oYuFmYsU66558f8Y=;
+	s=korg; t=1733239108;
+	bh=f0/qRd4HClbfi6FMmanKgJM8VBBGZYwqfBF//O/PMcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sk692lxvR2r+IR9HFbgDXefq8Sx7lAT/XFxpGYFDopvuz0iDSCIozEFoNb0Znd61v
-	 v8u91uwfLXTCjloH2K+f7q28zl93Otvhh8NOh5gnu6F2orZF6B0D9wyaw22m5JHAo7
-	 vn6vjQIl1+naPNbKMYRQPTaxLB3gIZjdcoX3otUM=
+	b=LdBIObeUoJ0AlzYy3FDQv2fXICWrTGKMMwAh4TxSrqD2cO8vbJj28sWjwcIgY3+hY
+	 E/cYq3uXZzJbnqVIEJ4pkDxPaaP1G00vk341RHrbSEcyHh1XHpeEno3YN86jI4mTWH
+	 2rkRUARXdQhBRcQhG2SoM101s2MKxgDDJ48AL8kA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	sesse@google.com,
+	kjain@linux.ibm.com,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 349/826] erofs: handle NONHEAD !delta[1] lclusters gracefully
+Subject: [PATCH 6.11 504/817] perf disasm: Use disasm_line__free() to properly free disasm_line
 Date: Tue,  3 Dec 2024 15:41:16 +0100
-Message-ID: <20241203144757.377810749@linuxfoundation.org>
+Message-ID: <20241203144015.547319634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Li Huafei <lihuafei1@huawei.com>
 
-[ Upstream commit 0bc8061ffc733a0a246b8689b2d32a3e9204f43c ]
+[ Upstream commit b4e0e9a1e30059f4523c9b6a1f8045ad89b5db8a ]
 
-syzbot reported a WARNING in iomap_iter_done:
- iomap_fiemap+0x73b/0x9b0 fs/iomap/fiemap.c:80
- ioctl_fiemap fs/ioctl.c:220 [inline]
+The structure disasm_line contains members that require dynamically
+allocated memory and need to be freed correctly using
+disasm_line__free().
 
-Generally, NONHEAD lclusters won't have delta[1]==0, except for crafted
-images and filesystems created by pre-1.0 mkfs versions.
+This patch fixes the incorrect release in
+symbol__disassemble_capstone().
 
-Previously, it would immediately bail out if delta[1]==0, which led to
-inadequate decompressed lengths (thus FIEMAP is impacted).  Treat it as
-delta[1]=1 to work around these legacy mkfs versions.
-
-`lclusterbits > 14` is illegal for compact indexes, error out too.
-
-Reported-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/67373c0c.050a0220.2a2fcc.0079.GAE@google.com
-Tested-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
-Fixes: d95ae5e25326 ("erofs: add support for the full decompressed length")
-Fixes: 001b8ccd0650 ("erofs: fix compact 4B support for 16k block size")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241115173651.3339514-1-hsiangkao@linux.alibaba.com
+Fixes: 6d17edc113de ("perf annotate: Use libcapstone to disassemble")
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: sesse@google.com
+Cc: kjain@linux.ibm.com
+Link: https://lore.kernel.org/r/20241019154157.282038-1-lihuafei1@huawei.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zmap.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ tools/perf/util/disasm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index a076cca1f5473..4535f2f0a0147 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -219,7 +219,7 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
- 	unsigned int amortizedshift;
- 	erofs_off_t pos;
- 
--	if (lcn >= totalidx)
-+	if (lcn >= totalidx || vi->z_logical_clusterbits > 14)
- 		return -EINVAL;
- 
- 	m->lcn = lcn;
-@@ -390,7 +390,7 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
- 	u64 lcn = m->lcn, headlcn = map->m_la >> lclusterbits;
- 	int err;
- 
--	do {
-+	while (1) {
- 		/* handle the last EOF pcluster (no next HEAD lcluster) */
- 		if ((lcn << lclusterbits) >= inode->i_size) {
- 			map->m_llen = inode->i_size - map->m_la;
-@@ -402,14 +402,16 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
- 			return err;
- 
- 		if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
--			DBG_BUGON(!m->delta[1] &&
--				  m->clusterofs != 1 << lclusterbits);
-+			/* work around invalid d1 generated by pre-1.0 mkfs */
-+			if (unlikely(!m->delta[1])) {
-+				m->delta[1] = 1;
-+				DBG_BUGON(1);
-+			}
- 		} else if (m->type == Z_EROFS_LCLUSTER_TYPE_PLAIN ||
- 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD1 ||
- 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
--			/* go on until the next HEAD lcluster */
- 			if (lcn != headlcn)
--				break;
-+				break;	/* ends at the next HEAD lcluster */
- 			m->delta[1] = 1;
- 		} else {
- 			erofs_err(inode->i_sb, "unknown type %u @ lcn %llu of nid %llu",
-@@ -418,8 +420,7 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
- 			return -EOPNOTSUPP;
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index 766cbd005f32a..c2ce33e447e35 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -1391,7 +1391,7 @@ static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
+ 		 */
+ 		list_for_each_entry_safe(dl, tmp, &notes->src->source, al.node) {
+ 			list_del(&dl->al.node);
+-			free(dl);
++			disasm_line__free(dl);
  		}
- 		lcn += m->delta[1];
--	} while (m->delta[1]);
--
-+	}
- 	map->m_llen = (lcn << lclusterbits) + m->clusterofs - map->m_la;
- 	return 0;
- }
+ 	}
+ 	count = -1;
 -- 
 2.43.0
 
