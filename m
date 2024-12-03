@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-96732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F19219E23CC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317F99E23D6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7782B2432D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAEE628754F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7AB1E3DF9;
-	Tue,  3 Dec 2024 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C788C1F8933;
+	Tue,  3 Dec 2024 15:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCgcXs2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tr6bhjOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5721F6691;
-	Tue,  3 Dec 2024 15:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F891F76B0;
+	Tue,  3 Dec 2024 15:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238433; cv=none; b=tlfS8cqpv4s2vBXp2/q8iyLMq9Q+8eLE+F/yT9VG+5gIRbqrGC+djVlmHGEKebNREaLc731FQ5hONjxliINybSxmXug5eVJRXXNB9bo0DUzIEgyXi82VJ9uH2EV4E9mDCLIgSBkRUJ3bfKBOfZK4GKy157j6xJB+8rDypObu+Hc=
+	t=1733240295; cv=none; b=TxeXKIm5oNGYGnbM86E60xUqnmC7VzImodndEnve+5fntjxXFtEgwjoe+vDmIzOXGcpB+cAJBDKg6jdy4hF/1dexeFk6J7M25mBpJa6+U88UdStvBPPtMILC9rPv/b0SeeV6I/4z7GPe4UVMBnEJvSfe9O6gtb9mHhbD+zhNRBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238433; c=relaxed/simple;
-	bh=w1aczvYXMK6AC50lmmcKXOTZ4WI8xw+3kyHmBNhce4U=;
+	s=arc-20240116; t=1733240295; c=relaxed/simple;
+	bh=ldoZ9royYJbGmmM7AvVZ14/cVcsG7rmn+w+URmNBW1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBiKmZD5wnYzTyxeUZHeZe/m66+f27LwEGfXhK5Ya+yCB2nm3j2fBj21LUu4iQfws5SMCpRBCJd9TogzYJuV37gtRc2I1S0MC/ldziQ4KptF8tHyv9KgF1YO9YIuVq60SuN/CzvGnfLrCofs684oUA0KMAmFa9l9jJX1egMe6sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCgcXs2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C466FC4CECF;
-	Tue,  3 Dec 2024 15:07:12 +0000 (UTC)
+	 MIME-Version; b=H7dkLx4vN/xP1UY5rdBVb/6BDxWTSnR/8NlbUDe6qs3FUDn2rCfLqZcW19OdC/mhpWAEL4TNahHaDA2gnrA73y8ULnCJnsXD3hYhfnJ9LUsajV5O/q1APqWAy7XaPX7P+UIWUPib2h16Ik1srS6qr2MlPjMQYB7nupjYZjsr2yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tr6bhjOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11291C4CECF;
+	Tue,  3 Dec 2024 15:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238433;
-	bh=w1aczvYXMK6AC50lmmcKXOTZ4WI8xw+3kyHmBNhce4U=;
+	s=korg; t=1733240295;
+	bh=ldoZ9royYJbGmmM7AvVZ14/cVcsG7rmn+w+URmNBW1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCgcXs2zB/yL64M4CWvQcu9hittYoqSZ0/DKIs2sWa3D8RhFPscf7+gqHhEf8mzcx
-	 E2D5NUxQiMgOi734RSREHa0utX7t1Jz3ohdw4G4mLaaREfmq/YVh8l6PpnkgTqL5ac
-	 ejXIX7CWIHu+gjz0BqnGtPj2tyhlpVINXLlnvdwA=
+	b=Tr6bhjOXNJyyO/1sVdvqfEPAhJ7Ub856m00NJE36aRXIRhDnaU4zLot2Sq4c/z1/F
+	 3pqgZMSQIigqlBwymQRZzwILEr2ytfrCkAyMk0vRXjRirawL7l4WbVvm8ONYm4q4ZN
+	 PWlKfWIP+STIn1aYjfGR3UsJ5PmM1yFwivbasiOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 244/817] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss2
-Date: Tue,  3 Dec 2024 15:36:56 +0100
-Message-ID: <20241203144005.291547730@linuxfoundation.org>
+Subject: [PATCH 6.12 090/826] locking/atomic/x86: Use ALT_OUTPUT_SP() for __arch_{,try_}cmpxchg64_emu()
+Date: Tue,  3 Dec 2024 15:36:57 +0100
+Message-ID: <20241203144747.242117438@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 52db16ec5bae7bd027804265b968259d1a6c3970 ]
+[ Upstream commit 25cf4fbb596d730476afcc0fb87a9d708db14078 ]
 
-In supported_vht_mcs_rate_nss2, the rate for MCS9 & VHT20 is defined as
-{1560, 1733}, this does not align with firmware's definition and therefore
-fails the verification in ath10k_mac_get_rate_flags_vht():
+x86_32 __arch_{,try_}cmpxchg64_emu()() macros use CALL instruction
+inside asm statement. Use ALT_OUTPUT_SP() macro to add required
+dependence on %esp register.
 
-	invalid vht params rate 1730 100kbps nss 2 mcs 9
-
-and:
-
-	invalid vht params rate 1920 100kbps nss 2 mcs 9
-
-Change it to {1730,  1920} to align with firmware to fix the issue.
-
-Since ath10k_hw_params::supports_peer_stats_info is enabled only for
-QCA6174, this change does not affect other chips.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
-
-Fixes: 3344b99d69ab ("ath10k: add bitrate parse for peer stats info")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/lkml/fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13 9360
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240711020344.98040-3-quic_bqiang@quicinc.com
+Fixes: 79e1dd05d1a2 ("x86: Provide an alternative() based cmpxchg64()")
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241103160954.3329-2-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/cmpxchg_32.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 3c34f3d8e5554..e62b251405fc0 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -9136,7 +9136,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss2[
- 	{6,  {5265, 5850}, {2430, 2700}, {1170, 1300} },
- 	{7,  {5850, 6500}, {2700, 3000}, {1300, 1444} },
- 	{8,  {7020, 7800}, {3240, 3600}, {1560, 1733} },
--	{9,  {7800, 8667}, {3600, 4000}, {1560, 1733} }
-+	{9,  {7800, 8667}, {3600, 4000}, {1730, 1920} }
- };
- 
- static void ath10k_mac_get_rate_flags_ht(struct ath10k *ar, u32 rate, u8 nss, u8 mcs,
+diff --git a/arch/x86/include/asm/cmpxchg_32.h b/arch/x86/include/asm/cmpxchg_32.h
+index 62cef2113ca74..fd1282a783ddb 100644
+--- a/arch/x86/include/asm/cmpxchg_32.h
++++ b/arch/x86/include/asm/cmpxchg_32.h
+@@ -94,7 +94,7 @@ static __always_inline bool __try_cmpxchg64_local(volatile u64 *ptr, u64 *oldp,
+ 	asm volatile(ALTERNATIVE(_lock_loc				\
+ 				 "call cmpxchg8b_emu",			\
+ 				 _lock "cmpxchg8b %a[ptr]", X86_FEATURE_CX8) \
+-		     : "+a" (o.low), "+d" (o.high)			\
++		     : ALT_OUTPUT_SP("+a" (o.low), "+d" (o.high))	\
+ 		     : "b" (n.low), "c" (n.high), [ptr] "S" (_ptr)	\
+ 		     : "memory");					\
+ 									\
+@@ -123,8 +123,8 @@ static __always_inline u64 arch_cmpxchg64_local(volatile u64 *ptr, u64 old, u64
+ 				 "call cmpxchg8b_emu",			\
+ 				 _lock "cmpxchg8b %a[ptr]", X86_FEATURE_CX8) \
+ 		     CC_SET(e)						\
+-		     : CC_OUT(e) (ret),					\
+-		       "+a" (o.low), "+d" (o.high)			\
++		     : ALT_OUTPUT_SP(CC_OUT(e) (ret),			\
++				     "+a" (o.low), "+d" (o.high))	\
+ 		     : "b" (n.low), "c" (n.high), [ptr] "S" (_ptr)	\
+ 		     : "memory");					\
+ 									\
 -- 
 2.43.0
 
