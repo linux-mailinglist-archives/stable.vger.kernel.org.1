@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-97827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A898E9E25BE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CAE9E25CA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EFA02888BE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37DB82889F7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD92E1F76B5;
-	Tue,  3 Dec 2024 16:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B4E1F76BF;
+	Tue,  3 Dec 2024 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1gKWlRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHALDG0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6816123CE;
-	Tue,  3 Dec 2024 16:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8641823CE;
+	Tue,  3 Dec 2024 16:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241863; cv=none; b=tGFxmM4NXgxumiTo5VVtJlZLyzX5ONRQ9w0NvyJujX4+cl1bx/x7dC4nxTKf8yoekBzy9jkIQQHTC3aADkLUW0PdxGA13i7/S7oxZos93VrJrCIV25T5rlCnyBdpIWaP8DrJu7OwgBQWWMvZhtG3RgfzCgbYd2WFzl4+hsANurI=
+	t=1733241888; cv=none; b=qHkq8LlkoNNlyd9Cx1oE/YfhtEm71hZt6L8VHZmPOrnoBpOaeplgHkz9T1f51bkK/FaYrpOUxFDnvFJ1jrrHET9xZ2FTY0+knPUAT7D01nDKZrV2oGHErvKYqANkiBuo3KHa7MFy25Tk0AFR+7JVR5yu2M8X8WPYpIl4lHHlbTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241863; c=relaxed/simple;
-	bh=kPBA1uGXckS3skb4j5MBMZfRIEk4RHoHqbIXz3T9tqA=;
+	s=arc-20240116; t=1733241888; c=relaxed/simple;
+	bh=PfWCZpqWlwY33BPic0cW9bdU0kAcfBG63b3ErhJ0bqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOQic6XTICufgRyyldUH/3BhFzvNezcm/8fqUDz3DcgQCghTqrQaUl5wkJty/UrqSALDf9q3duECSDc8a1jyGhMsmEtHHdANz1yGHQAfIjwOK4ksPpT+hYMXwgmNl0B2amPDkZDCMVvEs1qEK9UdnK8ePGW6Vd9crEP92I5MKuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1gKWlRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4E0C4CECF;
-	Tue,  3 Dec 2024 16:04:22 +0000 (UTC)
+	 MIME-Version; b=I2yK8jJJ2F/42o16tkmCGzH19fGKE5Ty7Z/HJuiA0YRgVeHc5QOCBvmKQfTC1TjmiGQH4mnhsdlsEDvHjLp3k06PCDb08Jdby9bl9yKKGnAymtyOJ7vz+W5RZB05r1+Ralv/R6Ky8LGTTyovtvL5tslsxtvsFmEPlLSO2x3wpP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHALDG0O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3116C4CECF;
+	Tue,  3 Dec 2024 16:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241863;
-	bh=kPBA1uGXckS3skb4j5MBMZfRIEk4RHoHqbIXz3T9tqA=;
+	s=korg; t=1733241888;
+	bh=PfWCZpqWlwY33BPic0cW9bdU0kAcfBG63b3ErhJ0bqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1gKWlRHBZYBenWn5blUhI8iJOfNaD749znasEqofWKF7H0esKt7j2XvV0F4PU5tY
-	 506bdcyggB3ZKJ7tJ7yv5mxdWMC1x155CileYr2IqdQSrcTP487nVwJkHpLZYc2gTO
-	 esw/kNdOk6UbiEWsVtEWikNpsCCLNArE65AIP6ak=
+	b=KHALDG0ODvRWwqvLZRryGj+8hz3+pQWGoLcyOVfyygBzAz7C6WbzgWwcoB3Msu4+q
+	 9LN7kdKMb0M9E09h1RayN5lS9rt3zNXk1GdXn5ECUL7YogTzkgG7ywz5pAOJXkXAN7
+	 IWPLpHCt2YetaXGX1dEGdJ7ZHST0oq128j1o27Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	Greg Ungerer <gerg@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-kernel@vger.kernel.org,
-	Antonio Quartulli <antonio@mandelbit.com>,
-	Greg Ungerer <gerg@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 512/826] m68k: coldfire/device.c: only build FEC when HW macros are defined
-Date: Tue,  3 Dec 2024 15:43:59 +0100
-Message-ID: <20241203144803.729180619@linuxfoundation.org>
+Subject: [PATCH 6.12 513/826] svcrdma: Address an integer overflow
+Date: Tue,  3 Dec 2024 15:44:00 +0100
+Message-ID: <20241203144803.768272966@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -70,75 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Antonio Quartulli <antonio@mandelbit.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 63a24cf8cc330e5a68ebd2e20ae200096974c475 ]
+[ Upstream commit 3c63d8946e578663b868cb9912dac616ea68bfd0 ]
 
-When CONFIG_FEC is set (due to COMPILE_TEST) along with
-CONFIG_M54xx, coldfire/device.c has compile errors due to
-missing MCFEC_* and MCF_IRQ_FEC_* symbols.
+Dan Carpenter reports:
+> Commit 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data
+> structure") from Jun 22, 2020 (linux-next), leads to the following
+> Smatch static checker warning:
+>
+>	net/sunrpc/xprtrdma/svc_rdma_recvfrom.c:498 xdr_check_write_chunk()
+>	warn: potential user controlled sizeof overflow 'segcount * 4 * 4'
+>
+> net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+>     488 static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
+>     489 {
+>     490         u32 segcount;
+>     491         __be32 *p;
+>     492
+>     493         if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
+>                                                               ^^^^^^^^
+>
+>     494                 return false;
+>     495
+>     496         /* A bogus segcount causes this buffer overflow check to fail. */
+>     497         p = xdr_inline_decode(&rctxt->rc_stream,
+> --> 498                               segcount * rpcrdma_segment_maxsz * sizeof(*p));
+>
+>
+> segcount is an untrusted u32.  On 32bit systems anything >= SIZE_MAX / 16 will
+> have an integer overflow and some those values will be accepted by
+> xdr_inline_decode().
 
-Make the whole FEC blocks dependent on having the HW macros
-defined, rather than on CONFIG_FEC itself.
-
-This fix is very similar to commit e6e1e7b19fa1 ("m68k: coldfire/device.c: only build for MCF_EDMA when h/w macros are defined")
-
-Fixes: b7ce7f0d0efc ("m68knommu: merge common ColdFire FEC platform setup code")
-To: Greg Ungerer <gerg@linux-m68k.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 78147ca8b4a9 ("svcrdma: Add a "parsed chunk list" data structure")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/coldfire/device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/sunrpc/xprtrdma/svc_rdma_recvfrom.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
-index 7dab46728aeda..b6958ec2a220c 100644
---- a/arch/m68k/coldfire/device.c
-+++ b/arch/m68k/coldfire/device.c
-@@ -93,7 +93,7 @@ static struct platform_device mcf_uart = {
- 	.dev.platform_data	= mcf_uart_platform_data,
- };
+diff --git a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+index ae3fb9bc8a216..292022f0976e1 100644
+--- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
+@@ -493,7 +493,13 @@ static bool xdr_check_write_chunk(struct svc_rdma_recv_ctxt *rctxt)
+ 	if (xdr_stream_decode_u32(&rctxt->rc_stream, &segcount))
+ 		return false;
  
--#if IS_ENABLED(CONFIG_FEC)
-+#ifdef MCFFEC_BASE0
- 
- #ifdef CONFIG_M5441x
- #define FEC_NAME	"enet-fec"
-@@ -145,6 +145,7 @@ static struct platform_device mcf_fec0 = {
- 		.platform_data		= FEC_PDATA,
- 	}
- };
-+#endif /* MCFFEC_BASE0 */
- 
- #ifdef MCFFEC_BASE1
- static struct resource mcf_fec1_resources[] = {
-@@ -182,7 +183,6 @@ static struct platform_device mcf_fec1 = {
- 	}
- };
- #endif /* MCFFEC_BASE1 */
--#endif /* CONFIG_FEC */
- 
- #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
- /*
-@@ -624,12 +624,12 @@ static struct platform_device mcf_flexcan0 = {
- 
- static struct platform_device *mcf_devices[] __initdata = {
- 	&mcf_uart,
--#if IS_ENABLED(CONFIG_FEC)
-+#ifdef MCFFEC_BASE0
- 	&mcf_fec0,
-+#endif
- #ifdef MCFFEC_BASE1
- 	&mcf_fec1,
- #endif
--#endif
- #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
- 	&mcf_qspi,
- #endif
+-	/* A bogus segcount causes this buffer overflow check to fail. */
++	/* Before trusting the segcount value enough to use it in
++	 * a computation, perform a simple range check. This is an
++	 * arbitrary but sensible limit (ie, not architectural).
++	 */
++	if (unlikely(segcount > RPCSVC_MAXPAGES))
++		return false;
++
+ 	p = xdr_inline_decode(&rctxt->rc_stream,
+ 			      segcount * rpcrdma_segment_maxsz * sizeof(*p));
+ 	return p != NULL;
 -- 
 2.43.0
 
