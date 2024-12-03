@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33299E22F5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D719E25D5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13D94166B35
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F31E3167F25
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAEF1F7557;
-	Tue,  3 Dec 2024 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBEC1F76AE;
+	Tue,  3 Dec 2024 15:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISY1BV6g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv479cjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCD01F707A;
-	Tue,  3 Dec 2024 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B06E1F75B4;
+	Tue,  3 Dec 2024 15:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239542; cv=none; b=PYil72Ynuhp2YaAklvvhCpD8krBdDJfyD4OoAYHQS2qm1QpUGbjx6555Zt/fATu4WgCPv2jjAc+mTlYPNnR4ZKFKZ1/RZgRckdQ2j8sKSLkuXyu7oxVON/dWC7UBsUncSa0nqKy7ao4+zYj7hfU2MhN6xFKyjvjH7pH8esy6Am4=
+	t=1733241561; cv=none; b=rq7mT0bvPNjSGAHdL9vsN3UkPhNocp8yQMLgkRzV+p7LNPMmF1s8JwU6jyz3i9E5KupS6ZPqLNZVELMsOUG/EilHUvB21Aha5VKHsf5oQkns4DuQ05grd1a8qeMr+0a9BlJAWqSc1y8KS7Wzt0LBeZt6oN4W5cxtyWzM+1GF3sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239542; c=relaxed/simple;
-	bh=dnQBWLH5WsqBRwrYt8M0wEiDOhRKvqr4cN1ob/LMVvk=;
+	s=arc-20240116; t=1733241561; c=relaxed/simple;
+	bh=TTpN1/Gse/VDQ6AGj9R6kkXwBubFyjm0+mRyTXu/BSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPYft0P6RlPiW+0wKT64XUZulMDx7gsb7CYWtrbZzNFnfcHAwslDkZNmifvAQsu/YPaqX9ja16AvsFG3+f6Q/wNUovZ6bM/U5F8t4Ts4RWXE+yZdJH50X94w6/bAn0OkWm0qlnUAFcNdmJWh+7O9JeS/DoFZlvdX+cyNAEsEacM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISY1BV6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB918C4CECF;
-	Tue,  3 Dec 2024 15:25:41 +0000 (UTC)
+	 MIME-Version; b=nSyvLsnEzC9BsolAY2ZXdNG7U6uciDj0MsMSpGvF7gqLKC256hIlE3JJDq7nwkDlJ0MJY47yPwEVUeWmHgyWVTdDJ6Aort6b8fdK45b7SpDrpC3JdHDUGlwIN51/goh1Zw71iRRoeimqHe558ZDmMqLP7m4adESsJtISvluDe4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jv479cjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2635EC4CECF;
+	Tue,  3 Dec 2024 15:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239542;
-	bh=dnQBWLH5WsqBRwrYt8M0wEiDOhRKvqr4cN1ob/LMVvk=;
+	s=korg; t=1733241561;
+	bh=TTpN1/Gse/VDQ6AGj9R6kkXwBubFyjm0+mRyTXu/BSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISY1BV6gQy/7JoZGUATwLvIdKzBQwhO4oj82VsZ9Qsgqe9/8hNkCbcajdwEQlNK5g
-	 pTCtQEvRu0s8/0rf2Gf5+KNlS4DRgZ5x2R7dq5ZZCY1awnMy+E5gnqWDhChCIRPlWj
-	 JMYErbgLbcyW5Ax9Y9SjPnV4TtcTEP5of/NRqtLI=
+	b=jv479cjSJm2NRwVeY4Hf/4LVvLC76QVbSQsngFGXsVclTCvuvs5aeLb6cy+ih35hD
+	 8ioIhlIqgmnf6sFpssyQqYI2CZfF7PUhx9/d1uwUpYqKBOGe4MGh07QJxHNrlUcht1
+	 UVszwZX/rL7+RplZNucQV90pMuYWU65GxfWBmngA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 608/817] counter: stm32-timer-cnt: Add check for clk_enable()
+Subject: [PATCH 6.12 453/826] clk: en7523: fix estimation of fixed rate for EN7581
 Date: Tue,  3 Dec 2024 15:43:00 +0100
-Message-ID: <20241203144019.665824104@linuxfoundation.org>
+Message-ID: <20241203144801.429990583@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 842c3755a6bfbfcafa4a1438078d2485a9eb1d87 ]
+[ Upstream commit f98eded9e9ab048c88ff59c5523e703a6ced5523 ]
 
-Add check for the return value of clk_enable() in order to catch the
-potential exception.
+Introduce en7581_base_clks array in order to define per-SoC fixed-rate
+clock parameters and fix wrong parameters for emi, npu and crypto EN7581
+clocks
 
-Fixes: c5b8425514da ("counter: stm32-timer-cnt: add power management support")
-Fixes: ad29937e206f ("counter: Add STM32 Timer quadrature encoder")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241104191825.40155-1-jiashengjiangcool@gmail.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Fixes: 66bc47326ce2 ("clk: en7523: Add EN7581 support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20241112-clk-en7581-syscon-v2-5-8ada5e394ae4@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/stm32-timer-cnt.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/clk/clk-en7523.c | 105 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 103 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index 186e73d6ccb45..9c188d9edd89f 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -214,11 +214,17 @@ static int stm32_count_enable_write(struct counter_device *counter,
- {
- 	struct stm32_timer_cnt *const priv = counter_priv(counter);
- 	u32 cr1;
-+	int ret;
+diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
+index 7f83cbce01eeb..fdd8ea989ed24 100644
+--- a/drivers/clk/clk-en7523.c
++++ b/drivers/clk/clk-en7523.c
+@@ -37,6 +37,7 @@
+ #define REG_NP_SCU_SSTR			0x9c
+ #define REG_PCIE_XSI0_SEL_MASK		GENMASK(14, 13)
+ #define REG_PCIE_XSI1_SEL_MASK		GENMASK(12, 11)
++#define REG_CRYPTO_CLKSRC2		0x20c
  
- 	if (enable) {
- 		regmap_read(priv->regmap, TIM_CR1, &cr1);
--		if (!(cr1 & TIM_CR1_CEN))
--			clk_enable(priv->clk);
-+		if (!(cr1 & TIM_CR1_CEN)) {
-+			ret = clk_enable(priv->clk);
-+			if (ret) {
-+				dev_err(counter->parent, "Cannot enable clock %d\n", ret);
-+				return ret;
-+			}
-+		}
+ #define REG_RST_CTRL2			0x00
+ #define REG_RST_CTRL1			0x04
+@@ -89,6 +90,10 @@ static const u32 emi_base[] = { 333000000, 400000000 };
+ static const u32 bus_base[] = { 500000000, 540000000 };
+ static const u32 slic_base[] = { 100000000, 3125000 };
+ static const u32 npu_base[] = { 333000000, 400000000, 500000000 };
++/* EN7581 */
++static const u32 emi7581_base[] = { 540000000, 480000000, 400000000, 300000000 };
++static const u32 npu7581_base[] = { 800000000, 750000000, 720000000, 600000000 };
++static const u32 crypto_base[] = { 540000000, 480000000 };
  
- 		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
- 				   TIM_CR1_CEN);
-@@ -816,7 +822,11 @@ static int __maybe_unused stm32_timer_cnt_resume(struct device *dev)
- 		return ret;
+ static const struct en_clk_desc en7523_base_clks[] = {
+ 	{
+@@ -186,6 +191,102 @@ static const struct en_clk_desc en7523_base_clks[] = {
+ 	}
+ };
  
- 	if (priv->enabled) {
--		clk_enable(priv->clk);
-+		ret = clk_enable(priv->clk);
-+		if (ret) {
-+			dev_err(dev, "Cannot enable clock %d\n", ret);
-+			return ret;
-+		}
++static const struct en_clk_desc en7581_base_clks[] = {
++	{
++		.id = EN7523_CLK_GSW,
++		.name = "gsw",
++
++		.base_reg = REG_GSW_CLK_DIV_SEL,
++		.base_bits = 1,
++		.base_shift = 8,
++		.base_values = gsw_base,
++		.n_base_values = ARRAY_SIZE(gsw_base),
++
++		.div_bits = 3,
++		.div_shift = 0,
++		.div_step = 1,
++		.div_offset = 1,
++	}, {
++		.id = EN7523_CLK_EMI,
++		.name = "emi",
++
++		.base_reg = REG_EMI_CLK_DIV_SEL,
++		.base_bits = 2,
++		.base_shift = 8,
++		.base_values = emi7581_base,
++		.n_base_values = ARRAY_SIZE(emi7581_base),
++
++		.div_bits = 3,
++		.div_shift = 0,
++		.div_step = 1,
++		.div_offset = 1,
++	}, {
++		.id = EN7523_CLK_BUS,
++		.name = "bus",
++
++		.base_reg = REG_BUS_CLK_DIV_SEL,
++		.base_bits = 1,
++		.base_shift = 8,
++		.base_values = bus_base,
++		.n_base_values = ARRAY_SIZE(bus_base),
++
++		.div_bits = 3,
++		.div_shift = 0,
++		.div_step = 1,
++		.div_offset = 1,
++	}, {
++		.id = EN7523_CLK_SLIC,
++		.name = "slic",
++
++		.base_reg = REG_SPI_CLK_FREQ_SEL,
++		.base_bits = 1,
++		.base_shift = 0,
++		.base_values = slic_base,
++		.n_base_values = ARRAY_SIZE(slic_base),
++
++		.div_reg = REG_SPI_CLK_DIV_SEL,
++		.div_bits = 5,
++		.div_shift = 24,
++		.div_val0 = 20,
++		.div_step = 2,
++	}, {
++		.id = EN7523_CLK_SPI,
++		.name = "spi",
++
++		.base_reg = REG_SPI_CLK_DIV_SEL,
++
++		.base_value = 400000000,
++
++		.div_bits = 5,
++		.div_shift = 8,
++		.div_val0 = 40,
++		.div_step = 2,
++	}, {
++		.id = EN7523_CLK_NPU,
++		.name = "npu",
++
++		.base_reg = REG_NPU_CLK_DIV_SEL,
++		.base_bits = 2,
++		.base_shift = 8,
++		.base_values = npu7581_base,
++		.n_base_values = ARRAY_SIZE(npu7581_base),
++
++		.div_bits = 3,
++		.div_shift = 0,
++		.div_step = 1,
++		.div_offset = 1,
++	}, {
++		.id = EN7523_CLK_CRYPTO,
++		.name = "crypto",
++
++		.base_reg = REG_CRYPTO_CLKSRC2,
++		.base_bits = 1,
++		.base_shift = 0,
++		.base_values = crypto_base,
++		.n_base_values = ARRAY_SIZE(crypto_base),
++	}
++};
++
+ static const u16 en7581_rst_ofs[] = {
+ 	REG_RST_CTRL2,
+ 	REG_RST_CTRL1,
+@@ -457,8 +558,8 @@ static void en7581_register_clocks(struct device *dev, struct clk_hw_onecell_dat
+ 	u32 rate;
+ 	int i;
  
- 		/* Restore registers that may have been lost */
- 		regmap_write(priv->regmap, TIM_SMCR, priv->bak.smcr);
+-	for (i = 0; i < ARRAY_SIZE(en7523_base_clks); i++) {
+-		const struct en_clk_desc *desc = &en7523_base_clks[i];
++	for (i = 0; i < ARRAY_SIZE(en7581_base_clks); i++) {
++		const struct en_clk_desc *desc = &en7581_base_clks[i];
+ 		u32 val, reg = desc->div_reg ? desc->div_reg : desc->base_reg;
+ 		int err;
+ 
 -- 
 2.43.0
 
