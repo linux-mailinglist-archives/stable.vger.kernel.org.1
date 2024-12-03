@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63469E2ABC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:23:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1F29E2B08
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32BB8B274B6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B326DB2D87B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28781F76AB;
-	Tue,  3 Dec 2024 15:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9441F8909;
+	Tue,  3 Dec 2024 16:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkp8bEss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EE0EAaMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1511F75BD;
-	Tue,  3 Dec 2024 15:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C821F75AC;
+	Tue,  3 Dec 2024 16:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239954; cv=none; b=SWbYf5SatO9NfNhxOrIwnPbyjbDzohJ6TC7FpCtnYzixZfnerb4O9igcpce26o4kqpf29qyj26KtROnyc+SlmaJOkAVgTJ2gO+K+fd2r96EkF/qh3sseHqKT/rE7toCjS07gZ9mfL7EmdweMT++DEkwJKeioxQidgR/fZadMKTQ=
+	t=1733242225; cv=none; b=V0aLvGrFcGw7SIqGs3zc/aUjAAsDcnRwgBWL5qjHt1klZadBJPEsCtwAmQZeI4ghXPHyHPBXvFLGkGMZ94eYq1siHbekNdlIbd/dGwKP/g9aq5akSrcuGWz2URWtO1nOh4NyZiOwSlz8iDgnrpEhkaaxnZZe/3qSvgu54X8omzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239954; c=relaxed/simple;
-	bh=CVFR8I6D0u/NPtGeV6I28NXnzmsACJF/lJmx9aL0JJ4=;
+	s=arc-20240116; t=1733242225; c=relaxed/simple;
+	bh=WQLyL4cPxbTGi/OTGCtE9scf/5jrgdXJml20qbhKHok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tF+f3b2wMeOt8l1uSZzwMLMPtFnU3/zpx1UFc9nTzB1uV+RReNTJxfw/wtTPxOzk4RrVkOf8cc8QebZpKR8lfSua0JSxZxUiIGyRFPgRoyQl8ovD8nSicqzTlr5UCE1+QrZxdCJs7yMOxQnOu4SkF4T3T9cJizn+XN+XNqtgB04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkp8bEss; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05988C4CED6;
-	Tue,  3 Dec 2024 15:32:33 +0000 (UTC)
+	 MIME-Version; b=nLbsylsYhvJpGGQTv9pzhbrdN7aSh3lobIVKjsRj3bpyeE4/IG8FRUVzYxhFGFZ23u7vScgptHXPXF1wWN02U9RIsCocIBv8qQXZI7FE7SRl00x9TUHq0To7BtafvCJnJv+ODg+71BxiO6NurVG/M3d6dqgJkSQHhI3sxuWmKHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EE0EAaMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EB3C4CECF;
+	Tue,  3 Dec 2024 16:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239954;
-	bh=CVFR8I6D0u/NPtGeV6I28NXnzmsACJF/lJmx9aL0JJ4=;
+	s=korg; t=1733242224;
+	bh=WQLyL4cPxbTGi/OTGCtE9scf/5jrgdXJml20qbhKHok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkp8bEssTwreM7d9CUP1fMS8Lf1l0AeqS3p7U8v5EChisyqAUs8dX5aqppKbbAuEM
-	 KbWzeNBJuFNjlCQgguC3OBXc56OSUZW0hiE3y5xp0hwh79GINM/x4jrxzzrNof8RYs
-	 S9QTq9mGobJSRbr0dpOROXLPa4RrJtZ4nDYPqP2Y=
+	b=EE0EAaMsjVJ+sR4xVoLWANNJEQ0lrYWR8ix3LeCLSfrzkvpanRe1iSFJA1rvuGgtC
+	 JwDga4e5SgdJ1QHXxGcOAZmBTEiczNV9msJ9vMbGzM7oY7+VCzI6zs+KWDTNX9p7E2
+	 itBJ5M2Z7n45rdZSJixto+JKp0q0wXYmdKk9cQ8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 792/817] smb: client: disable directory caching when dir_cache_timeout is zero
-Date: Tue,  3 Dec 2024 15:46:04 +0100
-Message-ID: <20241203144026.926206577@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.12 642/826] KVM: x86: add back X86_LOCAL_APIC dependency
+Date: Tue,  3 Dec 2024 15:46:09 +0100
+Message-ID: <20241203144808.793325198@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit ceaf1451990e3ea7fb50aebb5a149f57945f6e9f ]
+commit 1331343af6f502aecd274d522dd34bf7c965f484 upstream.
 
-Setting dir_cache_timeout to zero should disable the caching of
-directory contents. Currently, even when dir_cache_timeout is zero,
-some caching related functions are still invoked, which is unintended
-behavior.
+Enabling KVM now causes a build failure on x86-32 if X86_LOCAL_APIC
+is disabled:
 
-Fix the issue by setting tcon->nohandlecache to true when
-dir_cache_timeout is zero, ensuring that directory handle caching
-is properly disabled.
+arch/x86/kvm/svm/svm.c: In function 'svm_emergency_disable_virtualization_cpu':
+arch/x86/kvm/svm/svm.c:597:9: error: 'kvm_rebooting' undeclared (first use in this function); did you mean 'kvm_irq_routing'?
+  597 |         kvm_rebooting = true;
+      |         ^~~~~~~~~~~~~
+      |         kvm_irq_routing
+arch/x86/kvm/svm/svm.c:597:9: note: each undeclared identifier is reported only once for each function it appears in
+make[6]: *** [scripts/Makefile.build:221: arch/x86/kvm/svm/svm.o] Error 1
+In file included from include/linux/rculist.h:11,
+                 from include/linux/hashtable.h:14,
+                 from arch/x86/kvm/svm/avic.c:18:
+arch/x86/kvm/svm/avic.c: In function 'avic_pi_update_irte':
+arch/x86/kvm/svm/avic.c:909:38: error: 'struct kvm' has no member named 'irq_routing'
+  909 |         irq_rt = srcu_dereference(kvm->irq_routing, &kvm->irq_srcu);
+      |                                      ^~
+include/linux/rcupdate.h:538:17: note: in definition of macro '__rcu_dereference_check'
+  538 |         typeof(*p) *local = (typeof(*p) *__force)READ_ONCE(p); \
 
-Fixes: 238b351d0935 ("smb3: allow controlling length of time directory entries are cached with dir leases")
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the dependency to the same place as before.
+
+Fixes: ea4290d77bda ("KVM: x86: leave kvm.ko out of the build if no vendor module is requested")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410060426.e9Xsnkvi-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Sean Christopherson <seanjc@google.com>
+[sean: add Cc to stable, tweak shortlog scope]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20241118172002.1633824-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c | 2 +-
+ arch/x86/kvm/Kconfig |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index be0f91000171b..9cf87ba0fb8c9 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2601,7 +2601,7 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -19,7 +19,6 @@ if VIRTUALIZATION
  
- 	if (ses->server->dialect >= SMB20_PROT_ID &&
- 	    (ses->server->capabilities & SMB2_GLOBAL_CAP_DIRECTORY_LEASING))
--		nohandlecache = ctx->nohandlecache;
-+		nohandlecache = ctx->nohandlecache || !dir_cache_timeout;
- 	else
- 		nohandlecache = true;
- 	tcon = tcon_info_alloc(!nohandlecache, netfs_trace_tcon_ref_new);
--- 
-2.43.0
-
+ config KVM_X86
+ 	def_tristate KVM if KVM_INTEL || KVM_AMD
+-	depends on X86_LOCAL_APIC
+ 	select KVM_COMMON
+ 	select KVM_GENERIC_MMU_NOTIFIER
+ 	select HAVE_KVM_IRQCHIP
+@@ -50,6 +49,7 @@ config KVM_X86
+ 
+ config KVM
+ 	tristate "Kernel-based Virtual Machine (KVM) support"
++	depends on X86_LOCAL_APIC
+ 	help
+ 	  Support hosting fully virtualized guest machines using hardware
+ 	  virtualization extensions.  You will need a fairly recent
 
 
 
