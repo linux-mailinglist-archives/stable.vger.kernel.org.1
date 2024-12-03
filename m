@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67749E240D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AABD9E2167
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95440286429
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EBE5285D7C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D0F1F75B9;
-	Tue,  3 Dec 2024 15:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2E41F76B7;
+	Tue,  3 Dec 2024 15:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIvpYTa0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUVHjpB7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D541F12E0;
-	Tue,  3 Dec 2024 15:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E8B1F76CA;
+	Tue,  3 Dec 2024 15:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240542; cv=none; b=HOtHRwuwX+K2QBULn6YRZGKb0GJoU6Hs7AhlJjXWILEG8ZV9Y9vNG+Aif1ob8QEDLKopqv1b1IMEap0C1+uNbCUXrAVVEKW09eTCl+AhDaMkD+xmKrxuwayWjtxDbUDbzcwXBpYvdJ+t8I6v0QoaAyaAx6zWCjmb6a3tW9zeyoM=
+	t=1733238563; cv=none; b=cq0JvGJMnqdo/tMYq4/KZnSSCgHxMUOAYWYqAQwVYehKb70bqVXcN9P8AtNTczOAitbtGkkx4kucd7AhSPKKWxF+HjtzR/8RYCBKcXDaMR+jSmP2f0R/dxkdsZgJFV/V+015tBHUuo2jLpWK/pnGVzVocWdahRo6xa8kzRsQYRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240542; c=relaxed/simple;
-	bh=+bcj5i4X3c1DBXReS/sZmUuIEWGiGXyyqX4Lj43b/o0=;
+	s=arc-20240116; t=1733238563; c=relaxed/simple;
+	bh=L/33UZ92W2W14930ugjSgG/UpC96lIzscLTVE76Sphk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N9BTd1z+tnr2pieemLTdPO+logfuVbL97uQS8s6PV8DF8d5Z+WdIcYqAkqTHWyq2RaudL38vSJSarvB2JeHx5DMeZFzh2rtqNto+JBNKHqP+QfmfvVb1vMrXWpTk6PsppWyuJvkzcflr/PWYWPOjHJOhr1EeADA7YJw6vRc0nzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIvpYTa0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEBBC4CECF;
-	Tue,  3 Dec 2024 15:42:21 +0000 (UTC)
+	 MIME-Version; b=WTr0vQQXz+PvaTjbAj/qPhtl95pwoi5jSM5mJR2LJg85oZkf0MSHxrVnSExbqprbobKWmwqR5oqlibgBeB6IhyDDlfhG1iyhap1syN9Kru88nopT7Ttb32rQDWLgY27/+cbFjiJJOvefrSGWa2LiFWCihu0JCvoyxl+CKWhsaUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUVHjpB7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8BAC4CECF;
+	Tue,  3 Dec 2024 15:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240542;
-	bh=+bcj5i4X3c1DBXReS/sZmUuIEWGiGXyyqX4Lj43b/o0=;
+	s=korg; t=1733238563;
+	bh=L/33UZ92W2W14930ugjSgG/UpC96lIzscLTVE76Sphk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cIvpYTa0HqazX5mjn3dMY0kdwDNu/G9Xr+gLAt0cLIp1Og8z1sOLTEA0EG2a6NcfG
-	 ceslYkV6jxs9WWetg9wJvMnibz8jOoq5Wlj77rIEzOaGx2l0eBnxG8EmEStaWZctzu
-	 2nZz4SJp3xb2eg0XCAZtQ9IReb4AYgWwT2Be8wAI=
+	b=mUVHjpB7MJgIWrThgZeCrSwjy5Tz3kKXSbDTiiM3UeLh6Qb1c6DwiI/u5+lbNSrb5
+	 N717ZN4FLMxnSKBiM2wWFz657WYj/+fIsxjrzarTjsa4Kdojh72L3imj2zM7h4HIVY
+	 kN48rImFSUuY0zcA9azYSliYWu4aQaF65yCdS5iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/826] selftests/resctrl: Fix memory overflow due to unhandled wraparound
-Date: Tue,  3 Dec 2024 15:38:12 +0100
-Message-ID: <20241203144750.173349749@linuxfoundation.org>
+Subject: [PATCH 6.11 321/817] wifi: rtw89: coex: check NULL return of kmalloc in btc_fw_set_monreg()
+Date: Tue,  3 Dec 2024 15:38:13 +0100
+Message-ID: <20241203144008.348423734@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinette Chatre <reinette.chatre@intel.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit caf02626b2bf164a02c808240f19dbf97aced664 ]
+[ Upstream commit 81df5ed446b448bdc327b7c7f0b50121fc1f4aa2 ]
 
-alloc_buffer() allocates and initializes (with random data) a
-buffer of requested size. The initialization starts from the beginning
-of the allocated buffer and incrementally assigns sizeof(uint64_t) random
-data to each cache line. The initialization uses the size of the
-buffer to control the initialization flow, decrementing the amount of
-buffer needing to be initialized after each iteration.
+kmalloc may fail, return value might be NULL and will cause
+NULL pointer dereference. Add check NULL return of kmalloc in
+btc_fw_set_monreg().
 
-The size of the buffer is stored in an unsigned (size_t) variable s64
-and the test "s64 > 0" is used to decide if initialization is complete.
-The problem is that decrementing the buffer size may wrap around
-if the buffer size is not divisible by "CL_SIZE / sizeof(uint64_t)"
-resulting in the "s64 > 0" test being true and memory beyond the buffer
-"initialized".
-
-Use a signed value for the buffer size to support all buffer sizes.
-
-Fixes: a2561b12fe39 ("selftests/resctrl: Add built in benchmark")
-Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Fixes: b952cb0a6e2d ("wifi: rtw89: coex: Add register monitor report v7 format")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/516a91f3997534f708af43c7592cbafdd53dd599.1730253508.git.xiaopei01@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/fill_buf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/coex.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/resctrl/fill_buf.c b/tools/testing/selftests/resctrl/fill_buf.c
-index ae120f1735c0b..34e5df721430e 100644
---- a/tools/testing/selftests/resctrl/fill_buf.c
-+++ b/tools/testing/selftests/resctrl/fill_buf.c
-@@ -127,7 +127,7 @@ unsigned char *alloc_buffer(size_t buf_size, int memflush)
- {
- 	void *buf = NULL;
- 	uint64_t *p64;
--	size_t s64;
-+	ssize_t s64;
- 	int ret;
- 
- 	ret = posix_memalign(&buf, PAGE_SIZE, buf_size);
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index 24929ef534e08..3f4754b7c9d09 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -2449,6 +2449,8 @@ static void btc_fw_set_monreg(struct rtw89_dev *rtwdev)
+ 	if (ver->fcxmreg == 7) {
+ 		sz = struct_size(v7, regs, n);
+ 		v7 = kmalloc(sz, GFP_KERNEL);
++		if (!v7)
++			return;
+ 		v7->type = RPT_EN_MREG;
+ 		v7->fver = ver->fcxmreg;
+ 		v7->len = n;
+@@ -2463,6 +2465,8 @@ static void btc_fw_set_monreg(struct rtw89_dev *rtwdev)
+ 	} else {
+ 		sz = struct_size(v1, regs, n);
+ 		v1 = kmalloc(sz, GFP_KERNEL);
++		if (!v1)
++			return;
+ 		v1->fver = ver->fcxmreg;
+ 		v1->reg_num = n;
+ 		memcpy(v1->regs, chip->mon_reg, flex_array_size(v1, regs, n));
 -- 
 2.43.0
 
