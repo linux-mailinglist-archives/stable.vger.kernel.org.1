@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-97845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0B19E2793
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:34:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3C79E234A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0490EBE63B4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF0116BCEB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD5B1F893B;
-	Tue,  3 Dec 2024 16:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70E01F76A8;
+	Tue,  3 Dec 2024 15:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwjFFqUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWHjmPuV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3141F8936;
-	Tue,  3 Dec 2024 16:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6387A1F7071;
+	Tue,  3 Dec 2024 15:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241929; cv=none; b=TIjU6r/u6t/S4OrmcnCdppZE6SGMS0OopLJq6X9/w632XNPVMStHJ1wUXJ2sPBGXL7bVjY2Ma0RPeJ4CcdTBQxR4wHxlvIc8DkDqTzvEfdbe+wWIELx7/BEy2lN1084xpFvEeZ1PFd7RCNHpJxxhR85U6kjG3P/kg+k7Q9PBoTU=
+	t=1733239806; cv=none; b=sgHuMuwpT8eFj4919/Np7Gah+89sCgAxW2n+zrlmWZq2Vb5Ahhe3FIzgPpUf6+4gB9zFTXBUcf08KHKqNmyHxARO2kpgEZNCMZYeNZ1vPV/03AfoYCHO3MvIyr6/NabbFIQNEuKagIskGdmilIaW1mYg4IW9tKtSiEXu83jLrvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241929; c=relaxed/simple;
-	bh=xbZskeGz/+s1ppbZVZ5PtuX6eGvkS2oow1kPsSHlVdc=;
+	s=arc-20240116; t=1733239806; c=relaxed/simple;
+	bh=qlBZwscEI1hOXVmyfy7SEAVEBf0Vi9+9u88RNTl82fw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6ulruwMwxTmypVCCXWojUFS0yQA1e/yP6rywjPW9qeE1o7puUQzFyRv+Txr/Me0cRO/2IUQTXKEHDD5eOMBjZR77WPJHlSWUScyNxaj9Kfuj9ofhIC2fCBeMrrnA+Pts/9zGf1WzVQHZ8bwwrn0I/YslcIzERf9BoiPbKWcY7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwjFFqUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FD3C4CECF;
-	Tue,  3 Dec 2024 16:05:28 +0000 (UTC)
+	 MIME-Version; b=qGb2M5+is6YOhxEGY+Ys2YrSGoLaaqdrZ967vdcA3CDiBiKjKnzIdwvTdb9zkNHC7di0JuCce6Xfql9ZwHUxZQJa2jRkfmyzDmeyEv8ItIF23diF4jytc88mBPFj7l0kGOODdiCte1wJ16yLfDe14C27/rI2UrVJ45Ti9JzzhiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWHjmPuV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA7AC4CECF;
+	Tue,  3 Dec 2024 15:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241929;
-	bh=xbZskeGz/+s1ppbZVZ5PtuX6eGvkS2oow1kPsSHlVdc=;
+	s=korg; t=1733239806;
+	bh=qlBZwscEI1hOXVmyfy7SEAVEBf0Vi9+9u88RNTl82fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwjFFqUq6J5iA92hcNNzHPId8OBfvs1YOXDgvYgnB6EH1m74ZEc0r+cDZ4D54/iwx
-	 et78dr+A9H7hob/FlJ1sC4aJ+YA2lvKnpcuB2cn1NSsYwzzC0bO8ahyn/AXTmb6szF
-	 F7RqM02s9nhvIbch8I8IgDnX1i8i5zCn3ZV/HhAY=
+	b=zWHjmPuVRdqXuPxtI74TbZNX3UMfS9wAWdJMEH9KpiPxMgNBkp430lre4nwJBIn3+
+	 pRxgpXsYXkVuV55scURN/Ocw3Bzz+7cxREljjgZaP87PcnrFFDDkxcm4Lxv/boxmDi
+	 KHJ1Edp+JGazVvFBqE+lRI/YL0e/WyrsWhIVNxZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 558/826] net: microchip: vcap: Add typegroup table terminators in kunit tests
+	Michal Simek <michal.simek@amd.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 6.11 713/817] dt-bindings: serial: rs485: Fix rs485-rts-delay property
 Date: Tue,  3 Dec 2024 15:44:45 +0100
-Message-ID: <20241203144805.512840151@linuxfoundation.org>
+Message-ID: <20241203144023.823560058@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,139 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit f164b296638d1eb1fb1c537e93ab5c8b49966546 ]
+commit 12b3642b6c242061d3ba84e6e3050c3141ded14c upstream.
 
-VCAP API unit tests fail randomly with errors such as
+Code expects array only with 2 items which should be checked.
+But also item checking is not working as it should likely because of
+incorrect items description.
 
-   # vcap_api_iterator_init_test: EXPECTATION FAILED at drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c:387
-   Expected 134 + 7 == iter.offset, but
-       134 + 7 == 141 (0x8d)
-       iter.offset == 17214 (0x433e)
-   # vcap_api_iterator_init_test: EXPECTATION FAILED at drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c:388
-   Expected 5 == iter.reg_idx, but
-       iter.reg_idx == 702 (0x2be)
-   # vcap_api_iterator_init_test: EXPECTATION FAILED at drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c:389
-   Expected 11 == iter.reg_bitpos, but
-       iter.reg_bitpos == 15 (0xf)
-   # vcap_api_iterator_init_test: pass:0 fail:1 skip:0 total:1
-
-Comments in the code state that "A typegroup table ends with an all-zero
-terminator". Add the missing terminators.
-
-Some of the typegroups did have a terminator of ".offset = 0, .width = 0,
-.value = 0,". Replace those terminators with "{ }" (no trailing ',') for
-consistency and to excplicitly state "this is a terminator".
-
-Fixes: 67d637516fa9 ("net: microchip: sparx5: Adding KUNIT test for the VCAP API")
-Cc: Steen Hegelund <steen.hegelund@microchip.com>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20241119213202.2884639-1-linux@roeck-us.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d50f974c4f7f ("dt-bindings: serial: Convert rs485 bindings to json-schema")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/820c639b9e22fe037730ed44d1b044cdb6d28b75.1726480384.git.michal.simek@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/microchip/vcap/vcap_api_kunit.c    | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ Documentation/devicetree/bindings/serial/rs485.yaml |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-index 7251121ab196e..16eb3de60eb6d 100644
---- a/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-+++ b/drivers/net/ethernet/microchip/vcap/vcap_api_kunit.c
-@@ -366,12 +366,13 @@ static void vcap_api_iterator_init_test(struct kunit *test)
- 	struct vcap_typegroup typegroups[] = {
- 		{ .offset = 0, .width = 2, .value = 2, },
- 		{ .offset = 156, .width = 1, .value = 0, },
--		{ .offset = 0, .width = 0, .value = 0, },
-+		{ }
- 	};
- 	struct vcap_typegroup typegroups2[] = {
- 		{ .offset = 0, .width = 3, .value = 4, },
- 		{ .offset = 49, .width = 2, .value = 0, },
- 		{ .offset = 98, .width = 2, .value = 0, },
-+		{ }
- 	};
+--- a/Documentation/devicetree/bindings/serial/rs485.yaml
++++ b/Documentation/devicetree/bindings/serial/rs485.yaml
+@@ -18,16 +18,15 @@ properties:
+     description: prop-encoded-array <a b>
+     $ref: /schemas/types.yaml#/definitions/uint32-array
+     items:
+-      items:
+-        - description: Delay between rts signal and beginning of data sent in
+-            milliseconds. It corresponds to the delay before sending data.
+-          default: 0
+-          maximum: 100
+-        - description: Delay between end of data sent and rts signal in milliseconds.
+-            It corresponds to the delay after sending data and actual release
+-            of the line.
+-          default: 0
+-          maximum: 100
++      - description: Delay between rts signal and beginning of data sent in
++          milliseconds. It corresponds to the delay before sending data.
++        default: 0
++        maximum: 100
++      - description: Delay between end of data sent and rts signal in milliseconds.
++          It corresponds to the delay after sending data and actual release
++          of the line.
++        default: 0
++        maximum: 100
  
- 	vcap_iter_init(&iter, 52, typegroups, 86);
-@@ -399,6 +400,7 @@ static void vcap_api_iterator_next_test(struct kunit *test)
- 		{ .offset = 147, .width = 3, .value = 0, },
- 		{ .offset = 196, .width = 2, .value = 0, },
- 		{ .offset = 245, .width = 1, .value = 0, },
-+		{ }
- 	};
- 	int idx;
- 
-@@ -433,7 +435,7 @@ static void vcap_api_encode_typegroups_test(struct kunit *test)
- 		{ .offset = 147, .width = 3, .value = 5, },
- 		{ .offset = 196, .width = 2, .value = 2, },
- 		{ .offset = 245, .width = 5, .value = 27, },
--		{ .offset = 0, .width = 0, .value = 0, },
-+		{ }
- 	};
- 
- 	vcap_encode_typegroups(stream, 49, typegroups, false);
-@@ -463,6 +465,7 @@ static void vcap_api_encode_bit_test(struct kunit *test)
- 		{ .offset = 147, .width = 3, .value = 5, },
- 		{ .offset = 196, .width = 2, .value = 2, },
- 		{ .offset = 245, .width = 1, .value = 0, },
-+		{ }
- 	};
- 
- 	vcap_iter_init(&iter, 49, typegroups, 44);
-@@ -489,7 +492,7 @@ static void vcap_api_encode_field_test(struct kunit *test)
- 		{ .offset = 147, .width = 3, .value = 5, },
- 		{ .offset = 196, .width = 2, .value = 2, },
- 		{ .offset = 245, .width = 5, .value = 27, },
--		{ .offset = 0, .width = 0, .value = 0, },
-+		{ }
- 	};
- 	struct vcap_field rf = {
- 		.type = VCAP_FIELD_U32,
-@@ -538,7 +541,7 @@ static void vcap_api_encode_short_field_test(struct kunit *test)
- 		{ .offset = 0, .width = 3, .value = 7, },
- 		{ .offset = 21, .width = 2, .value = 3, },
- 		{ .offset = 42, .width = 1, .value = 1, },
--		{ .offset = 0, .width = 0, .value = 0, },
-+		{ }
- 	};
- 	struct vcap_field rf = {
- 		.type = VCAP_FIELD_U32,
-@@ -608,7 +611,7 @@ static void vcap_api_encode_keyfield_test(struct kunit *test)
- 	struct vcap_typegroup tgt[] = {
- 		{ .offset = 0, .width = 2, .value = 2, },
- 		{ .offset = 156, .width = 1, .value = 1, },
--		{ .offset = 0, .width = 0, .value = 0, },
-+		{ }
- 	};
- 
- 	vcap_test_api_init(&admin);
-@@ -671,7 +674,7 @@ static void vcap_api_encode_max_keyfield_test(struct kunit *test)
- 	struct vcap_typegroup tgt[] = {
- 		{ .offset = 0, .width = 2, .value = 2, },
- 		{ .offset = 156, .width = 1, .value = 1, },
--		{ .offset = 0, .width = 0, .value = 0, },
-+		{ }
- 	};
- 	u32 keyres[] = {
- 		0x928e8a84,
-@@ -732,7 +735,7 @@ static void vcap_api_encode_actionfield_test(struct kunit *test)
- 		{ .offset = 0, .width = 2, .value = 2, },
- 		{ .offset = 21, .width = 1, .value = 1, },
- 		{ .offset = 42, .width = 1, .value = 0, },
--		{ .offset = 0, .width = 0, .value = 0, },
-+		{ }
- 	};
- 
- 	vcap_encode_actionfield(&rule, &caf, &rf, tgt);
--- 
-2.43.0
-
+   rs485-rts-active-high:
+     description: drive RTS high when sending (this is the default).
 
 
 
