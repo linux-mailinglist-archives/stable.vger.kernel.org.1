@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-96322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9BF39E2345
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F27E89E2799
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:35:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5389FB2689C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:33:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF5C0B34944
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBB11F1313;
-	Tue,  3 Dec 2024 14:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE041F6690;
+	Tue,  3 Dec 2024 14:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQ54r1a2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0F5PRaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648773BB24;
-	Tue,  3 Dec 2024 14:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D001F4704;
+	Tue,  3 Dec 2024 14:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236396; cv=none; b=WdPNZhe8wmT2GX3dMWkr+6x8OUEZ6OikWv86usRfLp1JRn28weIjLLTggmPXzFjSMT7FfPSIbeQNI9gjetwNK69W+Y0D16dlUFHzeUeHZrQiDWr2u6XKwHU/+bLjjqbSGrTz+dQps3t6EGfAjngc4ZAioqOXtEvaSl1XSmrPL10=
+	t=1733236475; cv=none; b=uU/YAELDGYrvMoXMTcYKCSSbE+S7ZkjntYsxeBPnR/qqWTEBK3Yc1uqi0lkp6IFwHne7UXsAgKzUw8vbH5Vxa/0jSJepQINd1CKLNlG0V5fvuuKQYcNJZ70zVMebL+dwsMVQk77a40RqndqI3agSzUKrZP/BGhRnJLO6kYB6oos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236396; c=relaxed/simple;
-	bh=gg7mnNVWzAOE1DNxi7ful6QkRKwAey+owIxwO3I+mLA=;
+	s=arc-20240116; t=1733236475; c=relaxed/simple;
+	bh=dJXwlaMXF7GbIvxmuryaf7sGgNOqlk6z6UiXyA0IdNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkMwS0ayjj1BpSnZFRT8IRM+KT3kuQ7Kk6djw6CrxPC/POGjADOYfxYogzK5FVMmTuMrgTlzw6sV9OqSg7CNGqb+ELH3la2cbL14N3eGMAQr6sLpeRAtvXp92tK3kaTC130KriMZXzo9LRZzbCDbavs2Py7XLAIgNZtCNeJLW8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQ54r1a2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FE0C4CECF;
-	Tue,  3 Dec 2024 14:33:15 +0000 (UTC)
+	 MIME-Version; b=GraeHw95+moQfk+wcmOwudQydfJKK2kHIjEsq0hM4FjbEjP7uUQUy9AIL103h/wW3hk3Dso3QClX6UX+s7BEXB/r2ut6oibubIgFi8YbiqBR2IiDwNYDM1+5USWOrZA3hbIy5toeGpKAYN+b7V5kSNmo5esgCLPHsZLTjkiAGTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0F5PRaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 258A8C4CECF;
+	Tue,  3 Dec 2024 14:34:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236395;
-	bh=gg7mnNVWzAOE1DNxi7ful6QkRKwAey+owIxwO3I+mLA=;
+	s=korg; t=1733236475;
+	bh=dJXwlaMXF7GbIvxmuryaf7sGgNOqlk6z6UiXyA0IdNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQ54r1a2DIfHrebQux9t6Vfpq9JeXlASbOFCBqao+1GXcHCIkj/fL6A1tSiNmIOkR
-	 UOHKzM/EiI1dXHiYhpQZZ1ZTKjTGsnnKA2zh2f+jsguY077zkAeT4zGEWxpsSFlGM0
-	 V1cRSB/lY1zfqtcaSXpWQcUhs5MFzhwHg6e5WS88=
+	b=S0F5PRaTHwIB241Snf2DEoF810FT09aJLrU71+DYoyo8kqVVxI6pfGUcxojOWvLiI
+	 XLoEROzI3LjyX2WdoifLbmKeioR06UIBXXOtSVjpGtpB3rYqFJb9ugv8WhXVqFsEvp
+	 vgyn7owmlz6CdoU65fiaenS5rmMqkie/KqEcQWHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 001/138] netlink: terminate outstanding dump on socket close
-Date: Tue,  3 Dec 2024 15:30:30 +0100
-Message-ID: <20241203141923.586600123@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Tejun Heo <tj@kernel.org>,
+	Ubisectech Sirius <bugreport@valiantsec.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 005/138] nilfs2: fix null-ptr-deref in block_dirty_buffer tracepoint
+Date: Tue,  3 Dec 2024 15:30:34 +0100
+Message-ID: <20241203141923.741863321@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -68,136 +67,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 1904fb9ebf911441f90a68e96b22aa73e4410505 ]
+commit 2026559a6c4ce34db117d2db8f710fe2a9420d5a upstream.
 
-Netlink supports iterative dumping of data. It provides the families
-the following ops:
- - start - (optional) kicks off the dumping process
- - dump  - actual dump helper, keeps getting called until it returns 0
- - done  - (optional) pairs with .start, can be used for cleanup
-The whole process is asynchronous and the repeated calls to .dump
-don't actually happen in a tight loop, but rather are triggered
-in response to recvmsg() on the socket.
+When using the "block:block_dirty_buffer" tracepoint, mark_buffer_dirty()
+may cause a NULL pointer dereference, or a general protection fault when
+KASAN is enabled.
 
-This gives the user full control over the dump, but also means that
-the user can close the socket without getting to the end of the dump.
-To make sure .start is always paired with .done we check if there
-is an ongoing dump before freeing the socket, and if so call .done.
+This happens because, since the tracepoint was added in
+mark_buffer_dirty(), it references the dev_t member bh->b_bdev->bd_dev
+regardless of whether the buffer head has a pointer to a block_device
+structure.
 
-The complication is that sockets can get freed from BH and .done
-is allowed to sleep. So we use a workqueue to defer the call, when
-needed.
+In the current implementation, nilfs_grab_buffer(), which grabs a buffer
+to read (or create) a block of metadata, including b-tree node blocks,
+does not set the block device, but instead does so only if the buffer is
+not in the "uptodate" state for each of its caller block reading
+functions.  However, if the uptodate flag is set on a folio/page, and the
+buffer heads are detached from it by try_to_free_buffers(), and new buffer
+heads are then attached by create_empty_buffers(), the uptodate flag may
+be restored to each buffer without the block device being set to
+bh->b_bdev, and mark_buffer_dirty() may be called later in that state,
+resulting in the bug mentioned above.
 
-Unfortunately this does not work correctly. What we defer is not
-the cleanup but rather releasing a reference on the socket.
-We have no guarantee that we own the last reference, if someone
-else holds the socket they may release it in BH and we're back
-to square one.
+Fix this issue by making nilfs_grab_buffer() always set the block device
+of the super block structure to the buffer head, regardless of the state
+of the buffer's uptodate flag.
 
-The whole dance, however, appears to be unnecessary. Only the user
-can interact with dumps, so we can clean up when socket is closed.
-And close always happens in process context. Some async code may
-still access the socket after close, queue notification skbs to it etc.
-but no dumps can start, end or otherwise make progress.
-
-Delete the workqueue and flush the dump state directly from the release
-handler. Note that further cleanup is possible in -next, for instance
-we now always call .done before releasing the main module reference,
-so dump doesn't have to take a reference of its own.
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Fixes: ed5d7788a934 ("netlink: Do not schedule work from sk_destruct")
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241106015235.2458807-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241106160811.3316-3-konishi.ryusuke@gmail.com
+Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Ubisectech Sirius <bugreport@valiantsec.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c |   31 ++++++++-----------------------
- net/netlink/af_netlink.h |    2 --
- 2 files changed, 8 insertions(+), 25 deletions(-)
+ fs/nilfs2/btnode.c  |    2 --
+ fs/nilfs2/gcinode.c |    4 +---
+ fs/nilfs2/mdt.c     |    1 -
+ fs/nilfs2/page.c    |    1 +
+ 4 files changed, 2 insertions(+), 6 deletions(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -393,15 +393,6 @@ static void netlink_skb_set_owner_r(stru
- 
- static void netlink_sock_destruct(struct sock *sk)
- {
--	struct netlink_sock *nlk = nlk_sk(sk);
--
--	if (nlk->cb_running) {
--		if (nlk->cb.done)
--			nlk->cb.done(&nlk->cb);
--		module_put(nlk->cb.module);
--		kfree_skb(nlk->cb.skb);
--	}
--
- 	skb_queue_purge(&sk->sk_receive_queue);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
-@@ -414,14 +405,6 @@ static void netlink_sock_destruct(struct
- 	WARN_ON(nlk_sk(sk)->groups);
- }
- 
--static void netlink_sock_destruct_work(struct work_struct *work)
--{
--	struct netlink_sock *nlk = container_of(work, struct netlink_sock,
--						work);
--
--	sk_free(&nlk->sk);
--}
--
- /* This lock without WQ_FLAG_EXCLUSIVE is good on UP and it is _very_ bad on
-  * SMP. Look, when several writers sleep and reader wakes them up, all but one
-  * immediately hit write lock and grab all the cpus. Exclusive sleep solves
-@@ -738,12 +721,6 @@ static void deferred_put_nlk_sk(struct r
- 	if (!refcount_dec_and_test(&sk->sk_refcnt))
- 		return;
- 
--	if (nlk->cb_running && nlk->cb.done) {
--		INIT_WORK(&nlk->work, netlink_sock_destruct_work);
--		schedule_work(&nlk->work);
--		return;
--	}
--
- 	sk_free(sk);
- }
- 
-@@ -793,6 +770,14 @@ static int netlink_release(struct socket
- 				NETLINK_URELEASE, &n);
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -68,7 +68,6 @@ nilfs_btnode_create_block(struct address
+ 		goto failed;
+ 	}
+ 	memset(bh->b_data, 0, i_blocksize(inode));
+-	bh->b_bdev = inode->i_sb->s_bdev;
+ 	bh->b_blocknr = blocknr;
+ 	set_buffer_mapped(bh);
+ 	set_buffer_uptodate(bh);
+@@ -133,7 +132,6 @@ int nilfs_btnode_submit_block(struct add
+ 		goto found;
+ 	}
+ 	set_buffer_mapped(bh);
+-	bh->b_bdev = inode->i_sb->s_bdev;
+ 	bh->b_blocknr = pblocknr; /* set block address for read */
+ 	bh->b_end_io = end_buffer_read_sync;
+ 	get_bh(bh);
+--- a/fs/nilfs2/gcinode.c
++++ b/fs/nilfs2/gcinode.c
+@@ -83,10 +83,8 @@ int nilfs_gccache_submit_read_data(struc
+ 		goto out;
  	}
  
-+	/* Terminate any outstanding dump */
-+	if (nlk->cb_running) {
-+		if (nlk->cb.done)
-+			nlk->cb.done(&nlk->cb);
-+		module_put(nlk->cb.module);
-+		kfree_skb(nlk->cb.skb);
-+	}
-+
- 	module_put(nlk->module);
+-	if (!buffer_mapped(bh)) {
+-		bh->b_bdev = inode->i_sb->s_bdev;
++	if (!buffer_mapped(bh))
+ 		set_buffer_mapped(bh);
+-	}
+ 	bh->b_blocknr = pbn;
+ 	bh->b_end_io = end_buffer_read_sync;
+ 	get_bh(bh);
+--- a/fs/nilfs2/mdt.c
++++ b/fs/nilfs2/mdt.c
+@@ -89,7 +89,6 @@ static int nilfs_mdt_create_block(struct
+ 	if (buffer_uptodate(bh))
+ 		goto failed_bh;
  
- 	if (netlink_is_kernel(sk)) {
---- a/net/netlink/af_netlink.h
-+++ b/net/netlink/af_netlink.h
-@@ -4,7 +4,6 @@
+-	bh->b_bdev = sb->s_bdev;
+ 	err = nilfs_mdt_insert_new_block(inode, block, bh, init_block);
+ 	if (likely(!err)) {
+ 		get_bh(bh);
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -63,6 +63,7 @@ struct buffer_head *nilfs_grab_buffer(st
+ 		put_page(page);
+ 		return NULL;
+ 	}
++	bh->b_bdev = inode->i_sb->s_bdev;
+ 	return bh;
+ }
  
- #include <linux/rhashtable.h>
- #include <linux/atomic.h>
--#include <linux/workqueue.h>
- #include <net/sock.h>
- 
- /* flags */
-@@ -45,7 +44,6 @@ struct netlink_sock {
- 
- 	struct rhash_head	node;
- 	struct rcu_head		rcu;
--	struct work_struct	work;
- };
- 
- static inline struct netlink_sock *nlk_sk(struct sock *sk)
 
 
 
