@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-96342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8059E20DA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313C89E1F61
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:35:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD152B67434
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:35:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBECC283ED8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431821F7586;
-	Tue,  3 Dec 2024 14:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5296717BB16;
+	Tue,  3 Dec 2024 14:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWLj6t+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OedCTkEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC21F4704;
-	Tue,  3 Dec 2024 14:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1033D1F666F;
+	Tue,  3 Dec 2024 14:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236469; cv=none; b=ecc8fo1oIqtciPnsKp77ZF7i+z3q/Lmt87Y+4TEUHtIP0558SeYyepuzTrwvW3qBq6JnYcLorGzF0zxie107ZAxnABAGDnP0CCjwt/uYDLH9JbkPE+FPZDYD0/QvbdrGusxIwCAd+xhxmPA1G4mzZwrFTSykdh0Xb8Y0EkLg+Z8=
+	t=1733236479; cv=none; b=U3blMDczCaLw8WFwhba72FnqgVYt5KZYRXSFqrkBTQSJx2TC//UOHXF0ZFBB5o3NNKOBIM9JaBcYse2csBHDxk18Ygc7Ip+2tbau9efWHXKVF1ME9HHHlR4v2pY+xmEMvE1AD+rBkOMJOJOKB/QvUqk+CfpLrbztC9Yr4Bc3Eas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236469; c=relaxed/simple;
-	bh=l3SSTw7sKger6gL8jC52YdKytIssH2zVNZIfTVcGQCc=;
+	s=arc-20240116; t=1733236479; c=relaxed/simple;
+	bh=VBkkYDm1aRzmF1dSwgKuphZxxLqM0mtu5UchqJD/92U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm5v5E6Elw+xlisonTi+ys/IIbwoDEzuJ/QXsT+5ln58i2Uu/+n0bPNZnTnVJ3LnG6FbKZRs+3KHdKSKqd54vAwqld77RN80UwCDrZtMFEV/MjZ3XoqYvrYUEs7xZpAf3VjC/Uw1WlhmKV/D78wRnDoHNHdoJFJWU1iseL8sR1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWLj6t+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3BFC4CEDD;
-	Tue,  3 Dec 2024 14:34:28 +0000 (UTC)
+	 MIME-Version; b=IguYSfPy/EmD5mzT/VdoU5kJfmlMnPGtxgE52JTjdPv9M5KPaiqH9ei6U8wTi+u0SIGa6ARpCCoxg83wXGVl1griYUOrdKoF1FzmY5h2eYpufoNN8kcshztRYpozdNiTPYMEFGZSKXvPkjSQdVU1xu6dBropvYcJV0IuXtvsraE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OedCTkEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751EFC4CECF;
+	Tue,  3 Dec 2024 14:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236468;
-	bh=l3SSTw7sKger6gL8jC52YdKytIssH2zVNZIfTVcGQCc=;
+	s=korg; t=1733236478;
+	bh=VBkkYDm1aRzmF1dSwgKuphZxxLqM0mtu5UchqJD/92U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWLj6t+cjsSohDem7EF6+wpU9yAsvivbpZ5IRINacTEww33ELZs7cNOWIzqVqY8Ix
-	 6DcgTK2uHI+gLpRq/F8IQmNQiAWdXVOmyNv2oFGjHO8CFGm6cb7gCqUiq3alz9QBA1
-	 CH+4hrZsljpQZtSMyI5tRyPEBtQgUCmQ8CVoDGKY=
+	b=OedCTkECGyyaT85+xa3779hRktNJU70p2PwCiMqN/TvGImUxFFQ7kYTpV/LG33R70
+	 21kqut7WOfC8RhSvLB3hsKB9sgH5HObKVaVZUzD88B4j6EvfuWoInfGSVOPnhHN6HI
+	 90y4XUKZYW7B4pNStxNhx2bfnayHmwWx0ojUAdoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Ubisectech Sirius <bugreport@valiantsec.com>,
-	syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 003/138] nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
-Date: Tue,  3 Dec 2024 15:30:32 +0100
-Message-ID: <20241203141923.664304136@linuxfoundation.org>
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 006/138] Revert "mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K"
+Date: Tue,  3 Dec 2024 15:30:35 +0100
+Message-ID: <20241203141923.779882913@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -68,64 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Aurelien Jarno <aurelien@aurel32.net>
 
-commit cd45e963e44b0f10d90b9e6c0e8b4f47f3c92471 upstream.
+commit 1635e407a4a64d08a8517ac59ca14ad4fc785e75 upstream.
 
-Patch series "nilfs2: fix null-ptr-deref bugs on block tracepoints".
+The commit 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages
+bigger than 4K") increased the max_req_size, even for 4K pages, causing
+various issues:
+- Panic booting the kernel/rootfs from an SD card on Rockchip RK3566
+- Panic booting the kernel/rootfs from an SD card on StarFive JH7100
+- "swiotlb buffer is full" and data corruption on StarFive JH7110
 
-This series fixes null pointer dereference bugs that occur when using
-nilfs2 and two block-related tracepoints.
+At this stage no fix have been found, so it's probably better to just
+revert the change.
 
+This reverts commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890.
 
-This patch (of 2):
-
-It has been reported that when using "block:block_touch_buffer"
-tracepoint, touch_buffer() called from __nilfs_get_folio_block() causes a
-NULL pointer dereference, or a general protection fault when KASAN is
-enabled.
-
-This happens because since the tracepoint was added in touch_buffer(), it
-references the dev_t member bh->b_bdev->bd_dev regardless of whether the
-buffer head has a pointer to a block_device structure.  In the current
-implementation, the block_device structure is set after the function
-returns to the caller.
-
-Here, touch_buffer() is used to mark the folio/page that owns the buffer
-head as accessed, but the common search helper for folio/page used by the
-caller function was optimized to mark the folio/page as accessed when it
-was reimplemented a long time ago, eliminating the need to call
-touch_buffer() here in the first place.
-
-So this solves the issue by eliminating the touch_buffer() call itself.
-
-Link: https://lkml.kernel.org/r/20241106160811.3316-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20241106160811.3316-2-konishi.ryusuke@gmail.com
-Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: Ubisectech Sirius <bugreport@valiantsec.com>
-Closes: https://lkml.kernel.org/r/86bd3013-887e-4e38-960f-ca45c657f032.bugreport@valiantsec.com
-Reported-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9982fb8d18eba905abe2
-Tested-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Sam Protsenko <semen.protsenko@linaro.org>
+Fixes: 8396c793ffdf ("mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K")
+Closes: https://lore.kernel.org/linux-mmc/614692b4-1dbe-31b8-a34d-cb6db1909bb7@w6rz.net/
+Closes: https://lore.kernel.org/linux-mmc/CAC8uq=Ppnmv98mpa1CrWLawWoPnu5abtU69v-=G-P7ysATQ2Pw@mail.gmail.com/
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Message-ID: <20241110114700.622372-1-aurelien@aurel32.net>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/page.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/mmc/host/dw_mmc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/page.c
-+++ b/fs/nilfs2/page.c
-@@ -39,7 +39,6 @@ __nilfs_get_page_block(struct page *page
- 	first_block = (unsigned long)index << (PAGE_SHIFT - blkbits);
- 	bh = nilfs_page_get_nth_block(page, block - first_block);
- 
--	touch_buffer(bh);
- 	wait_on_buffer(bh);
- 	return bh;
- }
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2857,8 +2857,8 @@ static int dw_mci_init_slot(struct dw_mc
+ 	if (host->use_dma == TRANS_MODE_IDMAC) {
+ 		mmc->max_segs = host->ring_size;
+ 		mmc->max_blk_size = 65535;
+-		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
+-		mmc->max_seg_size = mmc->max_req_size;
++		mmc->max_seg_size = 0x1000;
++		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
+ 		mmc->max_blk_count = mmc->max_req_size / 512;
+ 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
+ 		mmc->max_segs = 64;
 
 
 
