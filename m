@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-97126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D14C9E2299
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A898E9E25BE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:04:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0089E2845CE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EFA02888BE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7516E1F7547;
-	Tue,  3 Dec 2024 15:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD92E1F76B5;
+	Tue,  3 Dec 2024 16:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ae2cNmE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1gKWlRH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330111F473A;
-	Tue,  3 Dec 2024 15:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6816123CE;
+	Tue,  3 Dec 2024 16:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239594; cv=none; b=Cg582qJ8HXU/7LYIC+2IPhsWBA0WT1T9S4oxiw30jApKAn+thZxh4G4mCgpkSrVir7trINvbebiyXJHJtQ3zffFP2iyiS4Gn9gNsHaFoB/TQ64FL6LmZ83GBlEHJYKeOcoZpr/4YjJPE8QhUchwHLVfsPrFGe+RpxbNH155xieQ=
+	t=1733241863; cv=none; b=tGFxmM4NXgxumiTo5VVtJlZLyzX5ONRQ9w0NvyJujX4+cl1bx/x7dC4nxTKf8yoekBzy9jkIQQHTC3aADkLUW0PdxGA13i7/S7oxZos93VrJrCIV25T5rlCnyBdpIWaP8DrJu7OwgBQWWMvZhtG3RgfzCgbYd2WFzl4+hsANurI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239594; c=relaxed/simple;
-	bh=tsd2vyf0dMHA1r4GdT5ewEypEAfbt6yTMcJaD7bSFXw=;
+	s=arc-20240116; t=1733241863; c=relaxed/simple;
+	bh=kPBA1uGXckS3skb4j5MBMZfRIEk4RHoHqbIXz3T9tqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mf6dM7Bqf4OOOrp3dCu/NaVvUMPdBtXXr7WPOH3nnMoPQHJUUZ2g+OurAMxV3AjCZXlKRTTjBB4k08hVaB4sbMCVH7IN/SU8MJ/JAj0iQvVTgfv5OmfJyoN67D2lOXqAyThW0NA7TmzAVog96+Nd1AeAsLcXST8GtxjRSPGVDiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ae2cNmE3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D81DC4CED6;
-	Tue,  3 Dec 2024 15:26:33 +0000 (UTC)
+	 MIME-Version; b=eOQic6XTICufgRyyldUH/3BhFzvNezcm/8fqUDz3DcgQCghTqrQaUl5wkJty/UrqSALDf9q3duECSDc8a1jyGhMsmEtHHdANz1yGHQAfIjwOK4ksPpT+hYMXwgmNl0B2amPDkZDCMVvEs1qEK9UdnK8ePGW6Vd9crEP92I5MKuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1gKWlRH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4E0C4CECF;
+	Tue,  3 Dec 2024 16:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239594;
-	bh=tsd2vyf0dMHA1r4GdT5ewEypEAfbt6yTMcJaD7bSFXw=;
+	s=korg; t=1733241863;
+	bh=kPBA1uGXckS3skb4j5MBMZfRIEk4RHoHqbIXz3T9tqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ae2cNmE3l11OJqZ5beQ7jnj2GSrP6ldmDRU6xiPMtfmzJ7sNd8cFfBgzECfdjLqak
-	 6OmjvuLoB6DHJQ+hMQwlA4h/PR6NvraJt5KxyL+Xl/z8S9CXnK41UAZi22QtNlJUX8
-	 uSXAhd8Bhl43aCOLkFrRc9RMHIe2GCdaJ3zxnvqo=
+	b=o1gKWlRHBZYBenWn5blUhI8iJOfNaD749znasEqofWKF7H0esKt7j2XvV0F4PU5tY
+	 506bdcyggB3ZKJ7tJ7yv5mxdWMC1x155CileYr2IqdQSrcTP487nVwJkHpLZYc2gTO
+	 esw/kNdOk6UbiEWsVtEWikNpsCCLNArE65AIP6ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Subject: [PATCH 6.11 667/817] tools/nolibc: s390: include std.h
+	linux-m68k@lists.linux-m68k.org,
+	linux-kernel@vger.kernel.org,
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Greg Ungerer <gerg@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 512/826] m68k: coldfire/device.c: only build FEC when HW macros are defined
 Date: Tue,  3 Dec 2024 15:43:59 +0100
-Message-ID: <20241203144021.992691816@linuxfoundation.org>
+Message-ID: <20241203144803.729180619@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Antonio Quartulli <antonio@mandelbit.com>
 
-commit 711b5875814b2a0e9a5aaf7a85ba7c80f5a389b1 upstream.
+[ Upstream commit 63a24cf8cc330e5a68ebd2e20ae200096974c475 ]
 
-arch-s390.h uses types from std.h, but does not include it.
-Depending on the inclusion order the compilation can fail.
-Include std.h explicitly to avoid these errors.
+When CONFIG_FEC is set (due to COMPILE_TEST) along with
+CONFIG_M54xx, coldfire/device.c has compile errors due to
+missing MCFEC_* and MCF_IRQ_FEC_* symbols.
 
-Fixes: 404fa87c0eaf ("tools/nolibc: s390: provide custom implementation for sys_fork")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20240927-nolibc-s390-std-h-v1-1-30442339a6b9@linutronix.de
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make the whole FEC blocks dependent on having the HW macros
+defined, rather than on CONFIG_FEC itself.
+
+This fix is very similar to commit e6e1e7b19fa1 ("m68k: coldfire/device.c: only build for MCF_EDMA when h/w macros are defined")
+
+Fixes: b7ce7f0d0efc ("m68knommu: merge common ColdFire FEC platform setup code")
+To: Greg Ungerer <gerg@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/arch-s390.h |    1 +
- 1 file changed, 1 insertion(+)
+ arch/m68k/coldfire/device.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/tools/include/nolibc/arch-s390.h
-+++ b/tools/include/nolibc/arch-s390.h
-@@ -10,6 +10,7 @@
+diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
+index 7dab46728aeda..b6958ec2a220c 100644
+--- a/arch/m68k/coldfire/device.c
++++ b/arch/m68k/coldfire/device.c
+@@ -93,7 +93,7 @@ static struct platform_device mcf_uart = {
+ 	.dev.platform_data	= mcf_uart_platform_data,
+ };
  
- #include "compiler.h"
- #include "crt.h"
-+#include "std.h"
+-#if IS_ENABLED(CONFIG_FEC)
++#ifdef MCFFEC_BASE0
  
- /* Syscalls for s390:
-  *   - registers are 64-bit
+ #ifdef CONFIG_M5441x
+ #define FEC_NAME	"enet-fec"
+@@ -145,6 +145,7 @@ static struct platform_device mcf_fec0 = {
+ 		.platform_data		= FEC_PDATA,
+ 	}
+ };
++#endif /* MCFFEC_BASE0 */
+ 
+ #ifdef MCFFEC_BASE1
+ static struct resource mcf_fec1_resources[] = {
+@@ -182,7 +183,6 @@ static struct platform_device mcf_fec1 = {
+ 	}
+ };
+ #endif /* MCFFEC_BASE1 */
+-#endif /* CONFIG_FEC */
+ 
+ #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
+ /*
+@@ -624,12 +624,12 @@ static struct platform_device mcf_flexcan0 = {
+ 
+ static struct platform_device *mcf_devices[] __initdata = {
+ 	&mcf_uart,
+-#if IS_ENABLED(CONFIG_FEC)
++#ifdef MCFFEC_BASE0
+ 	&mcf_fec0,
++#endif
+ #ifdef MCFFEC_BASE1
+ 	&mcf_fec1,
+ #endif
+-#endif
+ #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
+ 	&mcf_qspi,
+ #endif
+-- 
+2.43.0
+
 
 
 
