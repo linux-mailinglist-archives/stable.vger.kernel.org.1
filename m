@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-97969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FCF9E2BC3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:15:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4135A9E2BEC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20389B4549C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44685BE05C2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD8C1F76D5;
-	Tue,  3 Dec 2024 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68FD1F8918;
+	Tue,  3 Dec 2024 16:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eD2l81Xn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yu4lbTlk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0727181ADA;
-	Tue,  3 Dec 2024 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736DF1F76D2;
+	Tue,  3 Dec 2024 16:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242356; cv=none; b=OJU9xTfc2yLHRBxwF4g/fkmwRGE/F3d/kGPBQ2BcHQv/8ULP+o+PjkI0iEKz0SJlCvWXo3SOPZhtsasKqtz1j8sAbcS5gEUcbdxPJUvoIwy8SoT6BNWFq91hE88DUjhzmxsKLq7+mzLgZnvm8kNGH6ZXZvX7DiMGCkcKr2hcyPo=
+	t=1733242453; cv=none; b=OJxTJN2W9gCbFr5svi2dmCFmias0wQjmUDyI0QuheWZJhzQYRGRJPXdnf6T64H1jKb8fwXmDVXHpWjpe6GhBpL1HDK3EqPrG2zB3yNBzNvd5ZXJpYcu2WROHK3ctkv3xbdRQJeSXebzoWb5nhWeRbgGHtftgOtqAPYslEB4zx9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242356; c=relaxed/simple;
-	bh=GpbVGP02BYd2VBcBZ57sjvxQiiuG+LnTgN7Goo+7YS0=;
+	s=arc-20240116; t=1733242453; c=relaxed/simple;
+	bh=+6Vsu1Sim6MeL6gtf+7GO1j5oDHjZOhVI1Hm8r+8K/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIR+KL5pco8oYAY5Hu644GHaQxuxm4GQFIP3ABUEfE5jx9DJHQxDC+R3cgLLRw3haPHX6FHxKt7I3wmTvYDHvk+U/UZa+yiruYBHlNqLQj7kMG6GBTaibT0w5NAEyge2Dvt9Gffo7t3eqgBC5Lo/Nev12Gq+Zj6uEWwXW/t4y+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eD2l81Xn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FADC4CECF;
-	Tue,  3 Dec 2024 16:12:35 +0000 (UTC)
+	 MIME-Version; b=CpIjTHMXQzvPWTAokrqvSmDO+fId2SgNKB+AqqjFHutEPvR+l5P8r5ffOU/BpQEKJtkJjST3oo46FauygdriditiW+mghuqclrfWbGA/hmi2ErTrPIfneknAu9/mjAwLl413fXK7yYzLBR7x8xIgo8Pvp+OMEAd19YhAS0iO94k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yu4lbTlk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62A9C4CECF;
+	Tue,  3 Dec 2024 16:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242355;
-	bh=GpbVGP02BYd2VBcBZ57sjvxQiiuG+LnTgN7Goo+7YS0=;
+	s=korg; t=1733242453;
+	bh=+6Vsu1Sim6MeL6gtf+7GO1j5oDHjZOhVI1Hm8r+8K/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eD2l81XnC6tLCia4Km7bkbK8Y/kUi0LLsGkwlryrUDML1mvkSRkABCX79Ve4UBAYR
-	 wW/VRp4JcwEGIyCOvRO9dUlFxq/ILvyZxwOWMQ9fP5rg4TxnvOp4uWgzqs9XtU+roO
-	 5yrg9K0nmeGSlBJq4skwd6GX2wC09grO3UAXFYJQ=
+	b=yu4lbTlkId0r3GFz22sTHRtVAwSzH/pMozuGZH4G4be+Xq6APHqChg+o77B6dpxuE
+	 jLHI1+4EyDWp7Vcc0Q2cChbdTEabOy6sBespkdxKhXlPo2b6eFjvZqF3AESO1Mcjm6
+	 jWsRH6HRnqR9CYJETxiq/C65BvB9l3dfnFKynFlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.12 679/826] usb: xhci: Avoid queuing redundant Stop Endpoint commands
-Date: Tue,  3 Dec 2024 15:46:46 +0100
-Message-ID: <20241203144810.241003267@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.12 708/826] ubi: wl: Put source PEB into correct list if trying locking LEB failed
+Date: Tue,  3 Dec 2024 15:47:15 +0100
+Message-ID: <20241203144811.377515022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,112 +65,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 474538b8dd1cd9c666e56cfe8ef60fbb0fb513f4 upstream.
+commit d610020f030bec819f42de327c2bd5437d2766b3 upstream.
 
-Stop Endpoint command on an already stopped endpoint fails and may be
-misinterpreted as a known hardware bug by the completion handler. This
-results in an unnecessary delay with repeated retries of the command.
+During wear-leveing work, the source PEB will be moved into scrub list
+when source LEB cannot be locked in ubi_eba_copy_leb(), which is wrong
+for non-scrub type source PEB. The problem could bring extra and
+ineffective wear-leveing jobs, which makes more or less negative effects
+for the life time of flash. Specifically, the process is divided 2 steps:
+1. wear_leveling_worker // generate false scrub type PEB
+     ubi_eba_copy_leb // MOVE_RETRY is returned
+       leb_write_trylock // trylock failed
+     scrubbing = 1;
+     e1 is put into ubi->scrub
+2. wear_leveling_worker // schedule false scrub type PEB for wl
+     scrubbing = 1
+     e1 = rb_entry(rb_first(&ubi->scrub))
 
-Avoid queuing this command when endpoint state flags indicate that it's
-stopped or halted and the command will fail. If commands are pending on
-the endpoint, their completion handlers will process cancelled TDs so
-it's done. In case of waiting for external operations like clearing TT
-buffer, the endpoint is stopped and cancelled TDs can be processed now.
+The problem can be reproduced easily by running fsstress on a small
+UBIFS partition(<64M, simulated by nandsim) for 5~10mins
+(CONFIG_MTD_UBI_FASTMAP=y,CONFIG_MTD_UBI_WL_THRESHOLD=50). Following
+message is shown:
+ ubi0: scrubbed PEB 66 (LEB 0:10), data moved to PEB 165
 
-This eliminates practically all unnecessary retries because an endpoint
-with pending URBs is maintained in Running state by the driver, unless
-aforementioned commands or other operations are pending on it. This is
-guaranteed by xhci_ring_ep_doorbell() and by the fact that it is called
-every time any of those operations completes.
+Since scrub type source PEB has set variable scrubbing as '1', and
+variable scrubbing is checked before variable keep, so the problem can
+be fixed by setting keep variable as 1 directly if the source LEB cannot
+be locked.
 
-The only known exceptions are hardware bugs (the endpoint never starts
-at all) and Stream Protocol errors not associated with any TRB, which
-cause an endpoint reset not followed by restart. Sounds like a bug.
-
-Generally, these retries are only expected to happen when the endpoint
-fails to start for unknown/no reason, which is a worse problem itself,
-and fixing the bug eliminates the retries too.
-
-All cases were tested and found to work as expected. SET_DEQ_PENDING
-was produced by patching uvcvideo to unlink URBs in 100us intervals,
-which then runs into this case very often. EP_HALTED was produced by
-restarting 'cat /dev/ttyUSB0' on a serial dongle with broken cable.
-EP_CLEARING_TT by the same, with the dongle on an external hub.
-
-Fixes: fd9d55d190c0 ("xhci: retry Stop Endpoint on buggy NEC controllers")
+Fixes: e801e128b220 ("UBI: fix missing scrub when there is a bit-flip")
 CC: stable@vger.kernel.org
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-34-mathias.nyman@linux.intel.com
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |   13 +++++++++++++
- drivers/usb/host/xhci.c      |   19 +++++++++++++++----
- drivers/usb/host/xhci.h      |    1 +
- 3 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/mtd/ubi/wl.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1070,6 +1070,19 @@ static int xhci_invalidate_cancelled_tds
- }
- 
- /*
-+ * Erase queued TDs from transfer ring(s) and give back those the xHC didn't
-+ * stop on. If necessary, queue commands to move the xHC off cancelled TDs it
-+ * stopped on. Those will be given back later when the commands complete.
-+ *
-+ * Call under xhci->lock on a stopped endpoint.
-+ */
-+void xhci_process_cancelled_tds(struct xhci_virt_ep *ep)
-+{
-+	xhci_invalidate_cancelled_tds(ep);
-+	xhci_giveback_invalidated_tds(ep);
-+}
-+
-+/*
-  * Returns the TD the endpoint ring halted on.
-  * Only call for non-running rings without streams.
-  */
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1769,10 +1769,21 @@ static int xhci_urb_dequeue(struct usb_h
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -846,7 +846,14 @@ static int wear_leveling_worker(struct u
+ 			goto out_not_moved;
  		}
- 	}
- 
--	/* Queue a stop endpoint command, but only if this is
--	 * the first cancellation to be handled.
--	 */
--	if (!(ep->ep_state & EP_STOP_CMD_PENDING)) {
-+	/* These completion handlers will sort out cancelled TDs for us */
-+	if (ep->ep_state & (EP_STOP_CMD_PENDING | EP_HALTED | SET_DEQ_PENDING)) {
-+		xhci_dbg(xhci, "Not queuing Stop Endpoint on slot %d ep %d in state 0x%x\n",
-+				urb->dev->slot_id, ep_index, ep->ep_state);
-+		goto done;
-+	}
-+
-+	/* In this case no commands are pending but the endpoint is stopped */
-+	if (ep->ep_state & EP_CLEARING_TT) {
-+		/* and cancelled TDs can be given back right away */
-+		xhci_dbg(xhci, "Invalidating TDs instantly on slot %d ep %d in state 0x%x\n",
-+				urb->dev->slot_id, ep_index, ep->ep_state);
-+		xhci_process_cancelled_tds(ep);
-+	} else {
-+		/* Otherwise, queue a new Stop Endpoint command */
- 		command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 		if (!command) {
- 			ret = -ENOMEM;
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1915,6 +1915,7 @@ void xhci_ring_doorbell_for_active_rings
- void xhci_cleanup_command_queue(struct xhci_hcd *xhci);
- void inc_deq(struct xhci_hcd *xhci, struct xhci_ring *ring);
- unsigned int count_trbs(u64 addr, u64 len);
-+void xhci_process_cancelled_tds(struct xhci_virt_ep *ep);
- 
- /* xHCI roothub code */
- void xhci_set_link_state(struct xhci_hcd *xhci, struct xhci_port *port,
+ 		if (err == MOVE_RETRY) {
+-			scrubbing = 1;
++			/*
++			 * For source PEB:
++			 * 1. The scrubbing is set for scrub type PEB, it will
++			 *    be put back into ubi->scrub list.
++			 * 2. Non-scrub type PEB will be put back into ubi->used
++			 *    list.
++			 */
++			keep = 1;
+ 			dst_leb_clean = 1;
+ 			goto out_not_moved;
+ 		}
 
 
 
