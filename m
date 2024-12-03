@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E779E2426
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F899E2520
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F199E168D3B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C73B2B8C5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EE01F8923;
-	Tue,  3 Dec 2024 15:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DFB1F756A;
+	Tue,  3 Dec 2024 15:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdsCi4jN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQZgdkE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966C91FCFEF;
-	Tue,  3 Dec 2024 15:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7631F6696;
+	Tue,  3 Dec 2024 15:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240142; cv=none; b=dmG2LF3IJ0sNu6DSTl23mP3u21OzCifc9Aa59GgoanCFGO5Vtg02Sk/Bk84PvJTMlUg0nLfCCFjcLZT7rDGfwrdwu2tV7YcnqdcTOY8a5+vbwz2H6KNqgmAcSDiqzD1XK9cdj+W4Qsp3CTRQaRX6C5qcwu7ZVbEkKwJdSvtSd0U=
+	t=1733238111; cv=none; b=UnoVT+KRWcSGFyys/ANbNgIAv7hPkIKQHB2KEo8MCAac/A1JypmVCYUeDFmQ1UV0wRQ0DIlrVgJiqsT4VnY0WpaHBw3fPkiQA9BTad5AN+kkO9f5EWUivitZd154rcaIHQCeo9VU3UilAUd5OgvHuqrSjnh7m1DFLL8yZEoGof0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240142; c=relaxed/simple;
-	bh=GwDdxsrwgjMFuP3o1lhGwvmR3kNsmCz6j06TUOHIemg=;
+	s=arc-20240116; t=1733238111; c=relaxed/simple;
+	bh=UIMYncGROH0B3g8x7PF2Uzl2L2cJfIvXJR+Nd/+yGKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuhXJFzGu11hdtozxQm6rpsUNMyk5TUqPy/j7X8rL5sLs+nhLWYuPt/FaFWi4ePltFb2lHFLvdKm8VnttkbyNZbCHcpk19rQ3z7C9Lrp2w4moUOyjGMFeVkJ14yv98KzxfvVoFOgjA+c/Dz3+tXPdGPXS73CepidhvBSE7KY93s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdsCi4jN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19FE9C4CED8;
-	Tue,  3 Dec 2024 15:35:41 +0000 (UTC)
+	 MIME-Version; b=cbQt7nsPQs2tmy4oqN21BGuKDptjB8F7cVtZYGyKZidMLYTfUVoRy0EhP3s/kiClHaZe8HV5bFHAS0cxkEanFGkFuccBctsQ4zVEYtzbEDc7/4Gmn3cI30LqXDUUs5OhF5SMXX7iJSU3B9GTyaStfOo6rybF2GE2AnQ++D7w1+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQZgdkE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223FBC4CECF;
+	Tue,  3 Dec 2024 15:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240142;
-	bh=GwDdxsrwgjMFuP3o1lhGwvmR3kNsmCz6j06TUOHIemg=;
+	s=korg; t=1733238111;
+	bh=UIMYncGROH0B3g8x7PF2Uzl2L2cJfIvXJR+Nd/+yGKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdsCi4jNFKw2KKZvOvMs+JV+jU/HAW7f9sA34rDCXzltH/ahpRTgA7Y+vO2vnmtuO
-	 otteUYqnTGpUkWxKgIT5ZqFc+7LPGV4Vginrr+liFc3iWa8Q3+rSVWIKlS4pGM/nk6
-	 wcFiDwzq4rRnbNoL9LfdQNlokIFpk/4lYsWsj/Nk=
+	b=eQZgdkE533knvf+KiC/qhRTLmFTqs5XwRL/LZT6q++CmWcbpBy+HoVhpq9FCsqR6F
+	 1Q7iqJYl+aByZDfyqoiZEVyOtjcJHTpg8KsH1oG1Zu2XdZJ/uLHWr0xog7E3/VeKnB
+	 go3xFdXCCvyUhULgPJai15DNos+EsaHLLVZ1Fcvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Hsin-Te Yuan <yuanhsinte@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/826] kselftest/arm64: hwcap: fix f8dp2 cpuinfo name
-Date: Tue,  3 Dec 2024 15:35:35 +0100
-Message-ID: <20241203144743.770801781@linuxfoundation.org>
+Subject: [PATCH 6.11 164/817] arm64: dts: mt8183: krane: Fix the address of eeprom at i2c4
+Date: Tue,  3 Dec 2024 15:35:36 +0100
+Message-ID: <20241203144002.129489857@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Hsin-Te Yuan <yuanhsinte@chromium.org>
 
-[ Upstream commit b0d80dbc378d52155c9ecf9579986edccceed3aa ]
+[ Upstream commit e9c60c34948662b5d47573490ee538439b29e462 ]
 
-The F8DP2 DPISA extension has a separate cpuinfo field, named
-accordingly.
-Change the erroneously placed name of "f8dp4" to "f8dp2".
+The address of eeprom should be 50.
 
-Fixes: 44d10c27bd75 ("kselftest/arm64: Add 2023 DPISA hwcap test coverage")
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240816153251.2833702-3-andre.przywara@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
+Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/20240909-eeprom-v1-1-1ed2bc5064f4@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/abi/hwcap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/arm64/abi/hwcap.c b/tools/testing/selftests/arm64/abi/hwcap.c
-index f2d6007a2b983..7e95ba5fd4962 100644
---- a/tools/testing/selftests/arm64/abi/hwcap.c
-+++ b/tools/testing/selftests/arm64/abi/hwcap.c
-@@ -490,7 +490,7 @@ static const struct hwcap_data {
- 		.name = "F8DP2",
- 		.at_hwcap = AT_HWCAP2,
- 		.hwcap_bit = HWCAP2_F8DP2,
--		.cpuinfo = "f8dp4",
-+		.cpuinfo = "f8dp2",
- 		.sigill_fn = f8dp2_sigill,
- 	},
- 	{
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
+index 0f5fa893a7742..8b56b8564ed7a 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
+@@ -88,9 +88,9 @@ &i2c4 {
+ 	clock-frequency = <400000>;
+ 	vbus-supply = <&mt6358_vcn18_reg>;
+ 
+-	eeprom@54 {
++	eeprom@50 {
+ 		compatible = "atmel,24c32";
+-		reg = <0x54>;
++		reg = <0x50>;
+ 		pagesize = <32>;
+ 		vcc-supply = <&mt6358_vcn18_reg>;
+ 	};
 -- 
 2.43.0
 
