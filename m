@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35D89E2B90
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:01:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA1D9E28EF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20AB9BC74E5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEF79B44212
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C4C1F8905;
-	Tue,  3 Dec 2024 15:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4341F7547;
+	Tue,  3 Dec 2024 15:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0xM8czs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eN/S9yoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B333A1F75B6;
-	Tue,  3 Dec 2024 15:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3987D1F6696;
+	Tue,  3 Dec 2024 15:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240341; cv=none; b=Q7vhijMNs2aqoolzS1F8YHTK938Se71Zo4kOXj8ZwD2GhmF6/aSzkKuCk2rY+WCbvtDWuXtygKOsPBT1s2HhAZ5ji6z3FV7oAR8pix6p/KCK04qCWaL6mb4dlXm7DqnFKehNfWVAPZqQjqSD4TC52bnt1WTZ7XUuy8xdlPXraCc=
+	t=1733238436; cv=none; b=raXHjxg37tmxRmPDuO9c5vSvKGd1KM7s0NwbRvUj7WKvE+rGMM3LKEIqg+iSz6ai1wZoGDzHowZ2EZPP4XhLf55dPG/fth0fr4WFX7B1Z34EaGw0WM3o3dTDvjY8/lIBCCURsC8fK4wljhBfmwlZDpNOvaLcoHBLVRxVEu91ASs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240341; c=relaxed/simple;
-	bh=b/g/SE+hY0qETJU0oA4ooderHt8plLrbZrenvo8NFyg=;
+	s=arc-20240116; t=1733238436; c=relaxed/simple;
+	bh=CbeNjIpIEhNF9LtjpwICx7eo348Af4ViQR9V8ycQ39Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDSDygtKUVpLdGV4tUZdX++jlU0QSmLd6n9dBYX7FgOi2RXRP6kEfhNYo39ZtOJT1HY7jSAo6gYw1WOqPDLgqbyD2gi6cnQ2DIIqQY6WCvgc3AUnV8jNOC6iRYKglLF+JrH4VJZ3yANr7fTgDVMXa1zeaU/XJuMZ2/tQhaKHvPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0xM8czs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2BDC4CECF;
-	Tue,  3 Dec 2024 15:39:01 +0000 (UTC)
+	 MIME-Version; b=TGHR73bUCilqoFHZNs2I5w8YaZydAc6UetcIIoiLlJlKXWhjfYbWCDWCg3jR4hGhSQjUBtfZC5HLRZgSlQmMMgf1isMD68cs+4wzVaL7Xp2P2W4wUcGA9bsEs4bFUSjU5GrE5k+sIqTVEBwrUIgABJFJnbaljtfUJZrAu2lKS8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eN/S9yoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00E5C4CECF;
+	Tue,  3 Dec 2024 15:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240341;
-	bh=b/g/SE+hY0qETJU0oA4ooderHt8plLrbZrenvo8NFyg=;
+	s=korg; t=1733238436;
+	bh=CbeNjIpIEhNF9LtjpwICx7eo348Af4ViQR9V8ycQ39Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k0xM8czs8u9wTNC1/SQkyoxD4RC5dnTZOwSjc69ooVXlmfHxKzb7AM1ZEYjp2NZ4r
-	 FD53nQhxcPAXsgQYYz/nCcZsbviJJAQ8Vo5X5XN9jKXay0IJPx6H9d8f/cUexLnK53
-	 25d37P4iNo7oPJ6n7+YYAHD1sv6kK04DA8qH2S6w=
+	b=eN/S9yoGWF54rhxJV8O9WsLg82S3o9WZKRMeDFm4yIxECTCGeJC6NVzbTvpuriF6H
+	 KMUe7RAe387mCeoudyfAYpdPMb2lce5VTIsDI4bpbwQ25ureMRiHMspcEVaf/U/AW1
+	 NypAXI5Kkfki1w9c28NChy/FM/LmvqZPw9bBlekQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Chris Healy <cphealy@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/826] thermal: testing: Initialize some variables annoteded with _free()
-Date: Tue,  3 Dec 2024 15:36:42 +0100
-Message-ID: <20241203144746.397366112@linuxfoundation.org>
+Subject: [PATCH 6.11 235/817] drm/imx: ldb: drop custom DDC bus support
+Date: Tue,  3 Dec 2024 15:36:47 +0100
+Message-ID: <20241203144004.925450944@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0104dcdaad3a7afd141e79a5fb817a92ada910ac ]
+[ Upstream commit b2f3418b516e3485a14f10bfc09f20211dedc156 ]
 
-Variables annotated with __free() need to be initialized if the function
-can return before they get updated for the first time or the attempt to
-free the memory pointed to by them upon function return may crash the
-kernel.
+None of the boards ever supported by the upstream kernel used the custom
+DDC bus support with the LDB connector. If a need arises to do so, one
+should use panel-simple and its DDC bus code. Drop ddc-i2c-bus support
+from the imx-ldb driver.
 
-Fix this issue in some places in the thermal testing code.
-
-Fixes: f6a034f2df42 ("thermal: Introduce a debugfs-based testing facility")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/12576267.O9o76ZdvQC@rjwysocki.net
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Tested-by: Chris Healy <cphealy@gmail.com>
+Tested-by: Philipp Zabel <p.zabel@pengutronix.de> # on imx6q-nitrogen6x
+Link: https://patchwork.freedesktop.org/patch/msgid/20240602-drm-imx-cleanup-v3-6-e549e2a43100@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: f673055a4678 ("drm/imx: Add missing DRM_BRIDGE_CONNECTOR dependency")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/testing/zone.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/imx/ipuv3/imx-ldb.c | 73 ++++-------------------------
+ 1 file changed, 10 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/thermal/testing/zone.c b/drivers/thermal/testing/zone.c
-index 452c3fa2b2bc5..1f01f49527031 100644
---- a/drivers/thermal/testing/zone.c
-+++ b/drivers/thermal/testing/zone.c
-@@ -185,7 +185,7 @@ static void tt_add_tz_work_fn(struct work_struct *work)
- int tt_add_tz(void)
- {
- 	struct tt_thermal_zone *tt_zone __free(kfree);
--	struct tt_work *tt_work __free(kfree);
-+	struct tt_work *tt_work __free(kfree) = NULL;
- 	int ret;
+diff --git a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+index 1924d8921c620..3f669604377e7 100644
+--- a/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
++++ b/drivers/gpu/drm/imx/ipuv3/imx-ldb.c
+@@ -25,7 +25,6 @@
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
+-#include <drm/drm_edid.h>
+ #include <drm/drm_managed.h>
+ #include <drm/drm_of.h>
+ #include <drm/drm_panel.h>
+@@ -70,7 +69,6 @@ struct imx_ldb_channel {
+ 	struct drm_bridge *bridge;
  
- 	tt_zone = kzalloc(sizeof(*tt_zone), GFP_KERNEL);
-@@ -237,7 +237,7 @@ static void tt_zone_unregister_tz(struct tt_thermal_zone *tt_zone)
+ 	struct device_node *child;
+-	struct i2c_adapter *ddc;
+ 	int chno;
+ 	struct drm_display_mode mode;
+ 	int mode_valid;
+@@ -141,18 +139,6 @@ static int imx_ldb_connector_get_modes(struct drm_connector *connector)
+ 	if (num_modes > 0)
+ 		return num_modes;
  
- int tt_del_tz(const char *arg)
- {
--	struct tt_work *tt_work __free(kfree);
-+	struct tt_work *tt_work __free(kfree) = NULL;
- 	struct tt_thermal_zone *tt_zone, *aux;
- 	int ret;
- 	int id;
-@@ -336,8 +336,8 @@ static void tt_zone_add_trip_work_fn(struct work_struct *work)
- int tt_zone_add_trip(const char *arg)
- {
- 	struct tt_thermal_zone *tt_zone __free(put_tt_zone) = NULL;
-+	struct tt_trip *tt_trip __free(kfree) = NULL;
- 	struct tt_work *tt_work __free(kfree);
--	struct tt_trip *tt_trip __free(kfree);
- 	int id;
+-	if (imx_ldb_ch->ddc) {
+-		const struct drm_edid *edid = drm_edid_read_ddc(connector,
+-								imx_ldb_ch->ddc);
+-
+-		if (edid) {
+-			drm_edid_connector_update(connector, edid);
+-			drm_edid_free(edid);
+-
+-			return drm_edid_connector_add_modes(connector);
+-		}
+-	}
+-
+ 	if (imx_ldb_ch->mode_valid) {
+ 		struct drm_display_mode *mode;
  
- 	tt_work = kzalloc(sizeof(*tt_work), GFP_KERNEL);
-@@ -392,7 +392,7 @@ static struct thermal_zone_device_ops tt_zone_ops = {
+@@ -481,10 +467,9 @@ static int imx_ldb_register(struct drm_device *drm,
+ 		 */
+ 		drm_connector_helper_add(connector,
+ 					 &imx_ldb_connector_helper_funcs);
+-		drm_connector_init_with_ddc(drm, connector,
+-					    &imx_ldb_connector_funcs,
+-					    DRM_MODE_CONNECTOR_LVDS,
+-					    imx_ldb_ch->ddc);
++		drm_connector_init(drm, connector,
++				   &imx_ldb_connector_funcs,
++				   DRM_MODE_CONNECTOR_LVDS);
+ 		drm_connector_attach_encoder(connector, encoder);
+ 	}
  
- static int tt_zone_register_tz(struct tt_thermal_zone *tt_zone)
+@@ -551,39 +536,6 @@ static const struct of_device_id imx_ldb_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, imx_ldb_dt_ids);
+ 
+-static int imx_ldb_panel_ddc(struct device *dev,
+-		struct imx_ldb_channel *channel, struct device_node *child)
+-{
+-	struct device_node *ddc_node;
+-	int ret;
+-
+-	ddc_node = of_parse_phandle(child, "ddc-i2c-bus", 0);
+-	if (ddc_node) {
+-		channel->ddc = of_find_i2c_adapter_by_node(ddc_node);
+-		of_node_put(ddc_node);
+-		if (!channel->ddc) {
+-			dev_warn(dev, "failed to get ddc i2c adapter\n");
+-			return -EPROBE_DEFER;
+-		}
+-	}
+-
+-	if (!channel->ddc) {
+-		/* if no DDC available, fallback to hardcoded EDID */
+-		dev_dbg(dev, "no ddc available\n");
+-
+-		if (!channel->panel) {
+-			/* fallback to display-timings node */
+-			ret = of_get_drm_display_mode(child,
+-						      &channel->mode,
+-						      &channel->bus_flags,
+-						      OF_USE_NATIVE_MODE);
+-			if (!ret)
+-				channel->mode_valid = 1;
+-		}
+-	}
+-	return 0;
+-}
+-
+ static int imx_ldb_bind(struct device *dev, struct device *master, void *data)
  {
--	struct thermal_trip *trips __free(kfree);
-+	struct thermal_trip *trips __free(kfree) = NULL;
- 	struct thermal_zone_device *tz;
- 	struct tt_trip *tt_trip;
- 	int i;
+ 	struct drm_device *drm = data;
+@@ -694,11 +646,15 @@ static int imx_ldb_probe(struct platform_device *pdev)
+ 		if (ret && ret != -ENODEV)
+ 			goto free_child;
+ 
+-		/* panel ddc only if there is no bridge */
+-		if (!channel->bridge) {
+-			ret = imx_ldb_panel_ddc(dev, channel, child);
++		if (!channel->bridge && !channel->panel) {
++			ret = of_get_drm_display_mode(child,
++						      &channel->mode,
++						      &channel->bus_flags,
++						      OF_USE_NATIVE_MODE);
+ 			if (ret)
+ 				goto free_child;
++
++			channel->mode_valid = 1;
+ 		}
+ 
+ 		bus_format = of_get_bus_format(dev, child);
+@@ -732,15 +688,6 @@ static int imx_ldb_probe(struct platform_device *pdev)
+ 
+ static void imx_ldb_remove(struct platform_device *pdev)
+ {
+-	struct imx_ldb *imx_ldb = platform_get_drvdata(pdev);
+-	int i;
+-
+-	for (i = 0; i < 2; i++) {
+-		struct imx_ldb_channel *channel = &imx_ldb->channel[i];
+-
+-		i2c_put_adapter(channel->ddc);
+-	}
+-
+ 	component_del(&pdev->dev, &imx_ldb_ops);
+ }
+ 
 -- 
 2.43.0
 
