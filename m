@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B07D9E24EB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E699E25AC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA22FB3929F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:54:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34D26B34214
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C301F6698;
-	Tue,  3 Dec 2024 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A721B3942;
+	Tue,  3 Dec 2024 14:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dL1KYkkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzldpT0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAEC1F755C;
-	Tue,  3 Dec 2024 14:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28D31F666B;
+	Tue,  3 Dec 2024 14:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237669; cv=none; b=FwzHAAi0IDXga1m4Qzqgc27DQlQM9kJzCFz5QpFXxFVUcYp4aPBFu3VYQzub24/xXRFNX2cjLPLi2fXf3zY+1Z4YwHYhZtNIIdRtOkO6YkoMATFEjhJMZ8DBLkkaP5enEzJ9NjIg3HAA9XXfYTeyj0DkeNGUgY1sx8Ye2W7JtIg=
+	t=1733237575; cv=none; b=qJIwjvBYLPDeGDlfVOAsgYSLClLQiPAny9FWeJtARu7lUfpK3QXMj+EQpuTJUXUf9ah6/2JKsWV0Fa9kgzbY0e6R+TCBOrJRTiYJ8DNbl3Jm8rOIaIxAmbFsmBvlqWMNcfOYINadm7PbbD1k/3hqmcnyI0oHaIorSlJttFEkl9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237669; c=relaxed/simple;
-	bh=i+1RWF9cPGB27xeX/mjeTVHmbZFqYSrPoZRxfWkoCRc=;
+	s=arc-20240116; t=1733237575; c=relaxed/simple;
+	bh=+1/0ic0j8oG8AZAD1mNfhcQiOivNWz91+NLJq/BoUq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WmKGU6xdXe4xCbFMbFq7ITdKy98Thz5x58VlyxnAOxypLmpIzh7i8fJ/+Hk33SSBym568Pp03fDp9+Ef/xhaQTbTEwS1o0TJhcfcwi7COM46xHZRc8+YRajFSM2uj7IhMfpSFXYYVhq8pjVei+veaxsi/z9hbcJBXOeJ0S5xagw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dL1KYkkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6ED3C4CECF;
-	Tue,  3 Dec 2024 14:54:28 +0000 (UTC)
+	 MIME-Version; b=eLT8nGR+COafJyd9FhEaBJt+oW38KnTWqWHlV1C9Dt5GPfEYgX59qot9sNJRX92lsKsAHsB2p+a1SYBNrnza9CVqm/+ztfFqvKE5H3f4qdoVxQUBLrmXFfP9/knK6ltVHbFwpRcZreTNgNxPwXuc4IjrDw6UiDJ5Pba72BoYpLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzldpT0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0041C4CECF;
+	Tue,  3 Dec 2024 14:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237669;
-	bh=i+1RWF9cPGB27xeX/mjeTVHmbZFqYSrPoZRxfWkoCRc=;
+	s=korg; t=1733237575;
+	bh=+1/0ic0j8oG8AZAD1mNfhcQiOivNWz91+NLJq/BoUq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dL1KYkklUj2pRYb6tHqCNF4G4uJJ6DAz5AadubMWpYd5QHy2WxbEoxb+MgIDnWS1D
-	 /RiwQiUnA2aO6Dyln/jnQrvVC+0BQtBnoe+m7x3q2tt6lvzn95Su7rHAY/8anZ6oo2
-	 1oLDeNVI+vyTaeJ6ze5xteaVo9Gegl0tkrWvDRbQ=
+	b=hzldpT0btIlAkLk3JEykaIQpBGQ2FCwU54Rxagrzmny9WH30KAN+FRaz////L4pXl
+	 e35u3oa9kOCPArhJleOzBoFZUKu7btU3pgWXQolciarMohPbM3mpePNmRm697QbvGD
+	 PU6B4N+lxv4BNk1Ub+G8k45g55RcyIjx88gZbJkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 007/817] ASoC: Intel: bytcr_rt5640: Add support for non ACPI instantiated codec
-Date: Tue,  3 Dec 2024 15:32:59 +0100
-Message-ID: <20241203143955.914498596@linuxfoundation.org>
+Subject: [PATCH 6.11 011/817] wifi: iwlwifi: mvm: SAR table alignment
+Date: Tue,  3 Dec 2024 15:33:03 +0100
+Message-ID: <20241203143956.075193929@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -60,94 +61,195 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit d48696b915527b5bcdd207a299aec03fb037eb17 ]
+[ Upstream commit 32d95ab330069f9c551b8e99770bb4e799730b55 ]
 
-On some x86 Bay Trail tablets which shipped with Android as factory OS,
-the DSDT is so broken that the codec needs to be manually instantatiated
-by the special x86-android-tablets.ko "fixup" driver for cases like this.
+SAR table format in ACPI and local data base are different,
+So modified code to read data properly.
 
-This means that the codec-dev cannot be retrieved through its ACPI fwnode,
-add support to the bytcr_rt5640 machine driver for such manually
-instantiated rt5640 i2c_clients.
-
-An example of a tablet which needs this is the Vexia EDU ATLA 10 tablet,
-which has been distributed to schools in the Spanish Andalucía region.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241024211615.79518-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241010140328.f077aced4dee.I4dc618f12d01f7ad19f9f8881f6e09eea77e9a14@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 33 ++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 96 ++++++++++++--------
+ 1 file changed, 58 insertions(+), 38 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 4479825c08b5e..ba4293ae7c24f 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -17,6 +17,7 @@
- #include <linux/acpi.h>
- #include <linux/clk.h>
- #include <linux/device.h>
-+#include <linux/device/bus.h>
- #include <linux/dmi.h>
- #include <linux/gpio/consumer.h>
- #include <linux/gpio/machine.h>
-@@ -32,6 +33,8 @@
- #include "../atom/sst-atom-controls.h"
- #include "../common/soc-intel-quirks.h"
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index a7cea0a55b35a..0bc32291815e1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -429,38 +429,28 @@ int iwl_acpi_get_eckv(struct iwl_fw_runtime *fwrt, u32 *extl_clk)
+ 	return ret;
+ }
  
-+#define BYT_RT5640_FALLBACK_CODEC_DEV_NAME	"i2c-rt5640"
-+
- enum {
- 	BYT_RT5640_DMIC1_MAP,
- 	BYT_RT5640_DMIC2_MAP,
-@@ -1698,9 +1701,33 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+-static int iwl_acpi_sar_set_profile(union acpi_object *table,
+-				    struct iwl_sar_profile *profile,
+-				    bool enabled, u8 num_chains,
+-				    u8 num_sub_bands)
++static int
++iwl_acpi_parse_chains_table(union acpi_object *table,
++			    struct iwl_sar_profile_chain *chains,
++			    u8 num_chains, u8 num_sub_bands)
+ {
+-	int i, j, idx = 0;
+-
+-	/*
+-	 * The table from ACPI is flat, but we store it in a
+-	 * structured array.
+-	 */
+-	for (i = 0; i < BIOS_SAR_MAX_CHAINS_PER_PROFILE; i++) {
+-		for (j = 0; j < BIOS_SAR_MAX_SUB_BANDS_NUM; j++) {
++	for (u8 chain = 0; chain < num_chains; chain++) {
++		for (u8 subband = 0; subband < BIOS_SAR_MAX_SUB_BANDS_NUM;
++		     subband++) {
+ 			/* if we don't have the values, use the default */
+-			if (i >= num_chains || j >= num_sub_bands) {
+-				profile->chains[i].subbands[j] = 0;
++			if (subband >= num_sub_bands) {
++				chains[chain].subbands[subband] = 0;
++			} else if (table->type != ACPI_TYPE_INTEGER ||
++				   table->integer.value > U8_MAX) {
++				return -EINVAL;
+ 			} else {
+-				if (table[idx].type != ACPI_TYPE_INTEGER ||
+-				    table[idx].integer.value > U8_MAX)
+-					return -EINVAL;
+-
+-				profile->chains[i].subbands[j] =
+-					table[idx].integer.value;
+-
+-				idx++;
++				chains[chain].subbands[subband] =
++					table->integer.value;
++				table++;
+ 			}
+ 		}
+ 	}
  
- 	codec_dev = acpi_get_first_physical_node(adev);
- 	acpi_dev_put(adev);
--	if (!codec_dev)
--		return -EPROBE_DEFER;
--	priv->codec_dev = get_device(codec_dev);
+-	/* Only if all values were valid can the profile be enabled */
+-	profile->enabled = enabled;
+-
+ 	return 0;
+ }
+ 
+@@ -543,9 +533,11 @@ int iwl_acpi_get_wrds_table(struct iwl_fw_runtime *fwrt)
+ 	/* The profile from WRDS is officially profile 1, but goes
+ 	 * into sar_profiles[0] (because we don't have a profile 0).
+ 	 */
+-	ret = iwl_acpi_sar_set_profile(table, &fwrt->sar_profiles[0],
+-				       flags & IWL_SAR_ENABLE_MSK,
+-				       num_chains, num_sub_bands);
++	ret = iwl_acpi_parse_chains_table(table, fwrt->sar_profiles[0].chains,
++					  num_chains, num_sub_bands);
++	if (!ret && flags & IWL_SAR_ENABLE_MSK)
++		fwrt->sar_profiles[0].enabled = true;
 +
-+	if (codec_dev) {
-+		priv->codec_dev = get_device(codec_dev);
-+	} else {
-+		/*
-+		 * Special case for Android tablets where the codec i2c_client
-+		 * has been manually instantiated by x86_android_tablets.ko due
-+		 * to a broken DSDT.
-+		 */
-+		codec_dev = bus_find_device_by_name(&i2c_bus_type, NULL,
-+					BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
-+		if (!codec_dev)
-+			return -EPROBE_DEFER;
+ out_free:
+ 	kfree(data);
+ 	return ret;
+@@ -557,7 +549,7 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 	bool enabled;
+ 	int i, n_profiles, tbl_rev, pos;
+ 	int ret = 0;
+-	u8 num_chains, num_sub_bands;
++	u8 num_sub_bands;
+ 
+ 	data = iwl_acpi_get_object(fwrt->dev, ACPI_EWRD_METHOD);
+ 	if (IS_ERR(data))
+@@ -573,7 +565,6 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 			goto out_free;
+ 		}
+ 
+-		num_chains = ACPI_SAR_NUM_CHAINS_REV2;
+ 		num_sub_bands = ACPI_SAR_NUM_SUB_BANDS_REV2;
+ 
+ 		goto read_table;
+@@ -589,7 +580,6 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 			goto out_free;
+ 		}
+ 
+-		num_chains = ACPI_SAR_NUM_CHAINS_REV1;
+ 		num_sub_bands = ACPI_SAR_NUM_SUB_BANDS_REV1;
+ 
+ 		goto read_table;
+@@ -605,7 +595,6 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 			goto out_free;
+ 		}
+ 
+-		num_chains = ACPI_SAR_NUM_CHAINS_REV0;
+ 		num_sub_bands = ACPI_SAR_NUM_SUB_BANDS_REV0;
+ 
+ 		goto read_table;
+@@ -637,23 +626,54 @@ int iwl_acpi_get_ewrd_table(struct iwl_fw_runtime *fwrt)
+ 	/* the tables start at element 3 */
+ 	pos = 3;
+ 
++	BUILD_BUG_ON(ACPI_SAR_NUM_CHAINS_REV0 != ACPI_SAR_NUM_CHAINS_REV1);
++	BUILD_BUG_ON(ACPI_SAR_NUM_CHAINS_REV2 != 2 * ACPI_SAR_NUM_CHAINS_REV0);
 +
-+		if (!i2c_verify_client(codec_dev)) {
-+			dev_err(dev, "Error '%s' is not an i2c_client\n",
-+				BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
-+			put_device(codec_dev);
-+		}
++	/* parse non-cdb chains for all profiles */
+ 	for (i = 0; i < n_profiles; i++) {
+ 		union acpi_object *table = &wifi_pkg->package.elements[pos];
 +
-+		/* fixup codec name */
-+		strscpy(byt_rt5640_codec_name, BYT_RT5640_FALLBACK_CODEC_DEV_NAME,
-+			sizeof(byt_rt5640_codec_name));
+ 		/* The EWRD profiles officially go from 2 to 4, but we
+ 		 * save them in sar_profiles[1-3] (because we don't
+ 		 * have profile 0).  So in the array we start from 1.
+ 		 */
+-		ret = iwl_acpi_sar_set_profile(table,
+-					       &fwrt->sar_profiles[i + 1],
+-					       enabled, num_chains,
+-					       num_sub_bands);
++		ret = iwl_acpi_parse_chains_table(table,
++						  fwrt->sar_profiles[i + 1].chains,
++						  ACPI_SAR_NUM_CHAINS_REV0,
++						  num_sub_bands);
+ 		if (ret < 0)
+-			break;
++			goto out_free;
+ 
+ 		/* go to the next table */
+-		pos += num_chains * num_sub_bands;
++		pos += ACPI_SAR_NUM_CHAINS_REV0 * num_sub_bands;
+ 	}
+ 
++	/* non-cdb table revisions */
++	if (tbl_rev < 2)
++		goto set_enabled;
 +
-+		/* bus_find_device() returns a reference no need to get() */
-+		priv->codec_dev = codec_dev;
++	/* parse cdb chains for all profiles */
++	for (i = 0; i < n_profiles; i++) {
++		struct iwl_sar_profile_chain *chains;
++		union acpi_object *table;
++
++		table = &wifi_pkg->package.elements[pos];
++		chains = &fwrt->sar_profiles[i + 1].chains[ACPI_SAR_NUM_CHAINS_REV0];
++		ret = iwl_acpi_parse_chains_table(table,
++						  chains,
++						  ACPI_SAR_NUM_CHAINS_REV0,
++						  num_sub_bands);
++		if (ret < 0)
++			goto out_free;
++
++		/* go to the next table */
++		pos += ACPI_SAR_NUM_CHAINS_REV0 * num_sub_bands;
 +	}
- 
- 	/*
- 	 * swap SSP0 if bytcr is detected
++
++set_enabled:
++	for (i = 0; i < n_profiles; i++)
++		fwrt->sar_profiles[i + 1].enabled = enabled;
++
+ out_free:
+ 	kfree(data);
+ 	return ret;
 -- 
 2.43.0
 
