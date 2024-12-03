@@ -1,117 +1,178 @@
-Return-Path: <stable+bounces-97763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36629E25EE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F7E616D890
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:51 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C321A1F76D2;
-	Tue,  3 Dec 2024 16:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzTiOEur"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D689E259A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8022A1F76A4;
-	Tue,  3 Dec 2024 16:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9235E288042
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:33 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B081F8919;
+	Tue,  3 Dec 2024 16:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hw5MMwwd"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-qt1-f195.google.com (mail-qt1-f195.google.com [209.85.160.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F461F75B9;
+	Tue,  3 Dec 2024 16:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241650; cv=none; b=cEaX++lH7D97Tzy5FBm6S8gGyOk0Qmawi7DehKyoXGxxM3FmSmKpqPUwGr2W+mADFD3nc13GXr+fpAiCP/t7rI+dPcnpqJW5T6aKLyno5S/CDzZqa1Jmjy++nHf83+MDX7yhXL2K7pMXwpB4usXkwUp4AvQtdZr0hw1rwmjtqE8=
+	t=1733241742; cv=none; b=nqswRvjvMmfJ8SuknJnVO/GvknQdv5ryzjXxK2rOHGygIJejFXy8d+w3f7+bogaZhSMOoRJdJoBHYB1pQZx2Puvv9TOOSvjqBakOJwEuAJr7kod/iAxphdijpipTMSoZFfijycfNff0SnyAee3t/Yyorfe7uJrPI0lY4EtgH1ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241650; c=relaxed/simple;
-	bh=AoSfdUmW3Qz5Qt+tAkE3FSMWGkGJm0lI7MA7iR7Z2XI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pl4zFG9UXXGbmncXU3rLZJYV7T/cDOZ6cR7HqKMmeaklqud46YGZFLHyRAEWBt29stOt5DUiUNfUFi1HTXPyQexvwnK6nOgD9Sl2AaNI9SZa2ipKipjD1A+jAJ4CqzQiRIbHYE9pHs+JzkZY/7lhUKQpyE/XzSCZckrKZj7M2cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzTiOEur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4CBC4CECF;
-	Tue,  3 Dec 2024 16:00:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733241650;
-	bh=AoSfdUmW3Qz5Qt+tAkE3FSMWGkGJm0lI7MA7iR7Z2XI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fzTiOEurjyVeVI5dFKRU9eRnhBKoYPc9hLs95uUzANDHYMGm0wnLAdMIGbVc7pJU1
-	 513WZCumFL/KcT+McSJuLydoIrU1mwtHGc9Z4pF/Km4XqtEow8ZF49H+WJtMsFU4FJ
-	 RHz8IrQNgttya/E4TBzT4YQARJQf91ZPn/DlJG1DfSzzIhEjMdCvrrpVkmRrWntr9D
-	 FQROKR7Je54MYvOA745ZfZ7f+IAn7InbXkbQd4Mz+h0andR0LtMnEEai5pQmbevFAn
-	 GKfK1ZnJFTQ1B0cFhrjGOZj2xQZnuCqYZ14KK3a1jFcVX13vQNxiyo3saljahpKVs2
-	 nwI52REa3QzJQ==
-Date: Tue, 3 Dec 2024 16:00:45 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1733241742; c=relaxed/simple;
+	bh=GChH/jFCdkIBNyblvULtWTux4IPlCojVUfqnBTARLcg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nKrmauBcIq2MqZX/6SjOkzwqmw9zazt8JoFn0ZnUZ0+VXjbMXaVC2s4iMCgIpCT/+6JskcLhUZZbA2tYxBCl5HIyKkzaxiwAht1bvn+C5EkVmrkJ/vQ6+HNU59mA4z/Sdg7WJsz+9Ym4ydFDAbwN1YgFfdGuyxl65InZ6XBuMz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hw5MMwwd; arc=none smtp.client-ip=209.85.160.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f195.google.com with SMTP id d75a77b69052e-4668f208f10so42556821cf.3;
+        Tue, 03 Dec 2024 08:02:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733241739; x=1733846539; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+WTzDeex6MvV2fYh0DDtmM+R3bGWHPFsxwrTc0tB2Uk=;
+        b=hw5MMwwdaMmckAb70vhL6gF2HOgDzfU7SF4NwC//02/bG2oy3/icEDCM5wKyyzxbpY
+         UIVdtpdtsIOKm1PgMfyjD/Qvg4WOCh6HBIeOOlD7ipeATUwZ3Vk9VY3ppol1YNkXwJnx
+         2h72CDqoLHZ5VdQkSX59czxE1QRCMeLh58uSEtFNQR2kmxsHCELwdu2V5DkBZBunC36G
+         sLHVOkWMj+85hY/vja/DlJjmIin2Q2zJ4GuT/okiUnX6MBWhzEQxhAF+YsMiTH2uPj/V
+         8k11HNn50aLdigbwVsc4seMk+BK8x0r/jiKu9h9MuIeFbrZKtbZsfS2AMJcxRzoJ45jv
+         7lUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733241739; x=1733846539;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+WTzDeex6MvV2fYh0DDtmM+R3bGWHPFsxwrTc0tB2Uk=;
+        b=rXDEFUazvj+ufSMel9u7+Y+HOUOFRcXMWyjsxSumn777F4vMvT3Qw81kEr2Q1OnPXj
+         KvterSNrbOLTlQg11LoSyhQSkBYSa5sTy8+gAa7XfVs8PU4d/snF869u0KyCKOim2ITF
+         o8F/smcleGDblcBvJ52lOd35JQUn6nrxVQHuHycGC3WCwZj4ADDXJVPGK6obUuM3bfC8
+         onzHjQ8lBpRhBy2ISIfqWsrTb4DYn17Q+iOPuka6Zs4CBv8IIA/n0FH3n5d8G7h1Frgo
+         1Mg1P7iThO0ybEb82SVsWwX/ZIaX5YiWDWpYpvtb5JGoGMRSsa606VHCcyKerSWrC0E9
+         uuJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWg6CGIZ/7NvjBT2tmaNbR/vIwpcj8hOpo8h4X0ARE3Wq1YyQSRIYjN0/BEd0hBnO7ekeo/X9qvNECbHA==@vger.kernel.org, AJvYcCXcLS7r2+3dcwuDTy2f7mrrRiC7oio4aYclyUPS/mTL8wGUeMxuyVwq9ambhflibueEWv4K/A9D@vger.kernel.org
+X-Gm-Message-State: AOJu0YwAU6ajYQrRNAb7IzkswaqR89z7ZMORew2DlSl9Cx7//cCAuN46
+	mrBdKYj5PE+CSxnaRkE18O0oX5IojBL502UUdIb2TjLu1nn/Nu8l
+X-Gm-Gg: ASbGncu3oH7w+CuDsCgL748ukAusOkfPcRqbNkK2rAldQttribgx1TJkQvvbzrnBsEM
+	meIkkypzbEoyAugg2ZKSHiMJsXQUzVvtAJkGjhpuOQv0W30iFe/SrvfAo8EzMD7FhAVrmgXqNVx
+	5oImbwob7/Pnv4og0kB2ZI7xP08VbpNBr/fS8g7I7fghiw7aAzf3atUYTBdeKFXgVAo93ARp3kP
+	stOP6u8Xy7a3KUl5YjzW9n/VrjlaVFX+LqK4gwGyIQAX6ev/KLS1JoPsTzyDp3Ikk5A/spAqqwP
+	yUAZQU4G49Ofv+KKrnx7TJi+DUtDm/+YizvWYoWLKqTaMss1e5JkXVStW0U=
+X-Google-Smtp-Source: AGHT+IGDeeGWcRCTKyUCOq7c8fevpRJKKIBDhzv1JtFZuhU7+1av0GGQHLhd5L0WUnUDcgzYEzYebw==
+X-Received: by 2002:ac8:5a8b:0:b0:466:ad0d:f0ca with SMTP id d75a77b69052e-4670c6c5432mr40809661cf.50.1733241739116;
+        Tue, 03 Dec 2024 08:02:19 -0800 (PST)
+Received: from localhost.localdomain (host-36-26.ilcul54.champaign.il.us.clients.pavlovmedia.net. [68.180.36.26])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-466c42319b6sm62809341cf.77.2024.12.03.08.02.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 08:02:18 -0800 (PST)
+From: Gax-c <zichenxie0106@gmail.com>
+To: maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	thierry.reding@gmail.com,
+	mperttunen@nvidia.com,
+	jonathanh@nvidia.com,
+	kraxel@redhat.com,
+	gurchetansingh@chromium.org,
+	olvaffe@gmail.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	mst@redhat.com,
+	airlied@redhat.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-tegra@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Zichen Xie <zichenxie0106@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/6] arm64/sme: Flush foreign register state in
- do_sme_acc()
-Message-ID: <9365be76-8da6-47ce-b88e-dfa244b9e5b7@sirena.org.uk>
-References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
- <20241203-arm64-sme-reenable-v1-1-d853479d1b77@kernel.org>
- <Z08khk6Mg6+T6VV9@e133380.arm.com>
+Subject: [PATCH] drm: cast calculation to __u64 to fix potential integer overflow
+Date: Tue,  3 Dec 2024 10:02:00 -0600
+Message-Id: <20241203160159.8129-1-zichenxie0106@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="V8rFlpgqAXwiQFZA"
-Content-Disposition: inline
-In-Reply-To: <Z08khk6Mg6+T6VV9@e133380.arm.com>
-X-Cookie: Alimony is the high cost of leaving.
+Content-Transfer-Encoding: 8bit
 
+From: Zichen Xie <zichenxie0106@gmail.com>
 
---V8rFlpgqAXwiQFZA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Like commit b0b0d811eac6 ("drm/mediatek: Fix coverity issue with
+unintentional integer overflow"), directly multiply pitch and
+height may lead to integer overflow. Add a cast to avoid it.
 
-On Tue, Dec 03, 2024 at 03:32:22PM +0000, Dave Martin wrote:
-> On Tue, Dec 03, 2024 at 12:45:53PM +0000, Mark Brown wrote:
+Fixes: 6d1782919dc9 ("drm/cma: Introduce drm_gem_cma_dumb_create_internal()")
+Fixes: dc5698e80cf7 ("Add virtio gpu driver.")
+Fixes: dc6057ecb39e ("drm/tegra: gem: dumb: pitch and size are outputs")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/gpu/drm/drm_gem_dma_helper.c | 6 +++---
+ drivers/gpu/drm/tegra/gem.c          | 2 +-
+ drivers/gpu/drm/virtio/virtgpu_gem.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-> > @@ -1460,6 +1460,8 @@ void do_sme_acc(unsigned long esr, struct pt_regs=
- *regs)
-> >  		sme_set_vq(vq_minus_one);
-> > =20
-> >  		fpsimd_bind_task_to_cpu();
-> > +	} else {
-> > +		fpsimd_flush_task_state(current);
+diff --git a/drivers/gpu/drm/drm_gem_dma_helper.c b/drivers/gpu/drm/drm_gem_dma_helper.c
+index 870b90b78bc4..020c3b17fc02 100644
+--- a/drivers/gpu/drm/drm_gem_dma_helper.c
++++ b/drivers/gpu/drm/drm_gem_dma_helper.c
+@@ -272,8 +272,8 @@ int drm_gem_dma_dumb_create_internal(struct drm_file *file_priv,
+ 	if (args->pitch < min_pitch)
+ 		args->pitch = min_pitch;
+ 
+-	if (args->size < args->pitch * args->height)
+-		args->size = args->pitch * args->height;
++	if (args->size < (__u64)args->pitch * args->height)
++		args->size = (__u64)args->pitch * args->height;
+ 
+ 	dma_obj = drm_gem_dma_create_with_handle(file_priv, drm, args->size,
+ 						 &args->handle);
+@@ -306,7 +306,7 @@ int drm_gem_dma_dumb_create(struct drm_file *file_priv,
+ 	struct drm_gem_dma_object *dma_obj;
+ 
+ 	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
+-	args->size = args->pitch * args->height;
++	args->size = (__u64)args->pitch * args->height;
+ 
+ 	dma_obj = drm_gem_dma_create_with_handle(file_priv, drm, args->size,
+ 						 &args->handle);
+diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
+index d275404ad0e9..a84acdbbbe3f 100644
+--- a/drivers/gpu/drm/tegra/gem.c
++++ b/drivers/gpu/drm/tegra/gem.c
+@@ -548,7 +548,7 @@ int tegra_bo_dumb_create(struct drm_file *file, struct drm_device *drm,
+ 	struct tegra_bo *bo;
+ 
+ 	args->pitch = round_up(min_pitch, tegra->pitch_align);
+-	args->size = args->pitch * args->height;
++	args->size = (__u64)args->pitch * args->height;
+ 
+ 	bo = tegra_bo_create_with_handle(file, drm, args->size, 0,
+ 					 &args->handle);
+diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
+index 7db48d17ee3a..d5407316b12e 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_gem.c
++++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
+@@ -72,7 +72,7 @@ int virtio_gpu_mode_dumb_create(struct drm_file *file_priv,
+ 		return -EINVAL;
+ 
+ 	pitch = args->width * 4;
+-	args->size = pitch * args->height;
++	args->size = (__u64)pitch * args->height;
+ 	args->size = ALIGN(args->size, PAGE_SIZE);
+ 
+ 	params.format = virtio_gpu_translate_format(DRM_FORMAT_HOST_XRGB8888);
+-- 
+2.34.1
 
-> TIF_FOREIGN_FPSTATE is (or was) a cache of the task<->CPU binding that
-> you're clobbering here.
-
-> So, this fpsimd_flush_task_state() should have no effect unless
-> TIF_FOREIGN_FPSTATE is already wrong?  I'm wondering if the apparent
-> need for this means that there is an undiagnosed bug elsewhere.
-
-> (My understanding is based on FPSIMD/SVE; I'm less familiar with the
-> SME changes, so I may be missing something important here.)
-
-It's to ensure that the last recorded CPU for the current task is
-invalid so that if the state was loaded on another CPU and we switch
-back to that CPU we reload the state from memory, we need to at least
-trigger configuration of the SME VL.
-
---V8rFlpgqAXwiQFZA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdPKy0ACgkQJNaLcl1U
-h9CH2gf/QFro82I1W2CYtFjXn3+fT0ntbUwmrgC4GyyCfObCK/FCTSG8n1F6oA8B
-bFtwo5vwtVL1WnIIrzpO3LZUDRM/JPWIEms7dN9s+90ruai9tA4ckWDlA4Ej06fF
-l/8heEM3xi34XzzNdqDTEWnxp4fWJaxXWA+2DMpR0FFMyxCNlaem5EA2M+6O7mcO
-gjrleyVIoTZk37u8nOpJvdK6UMKl8pkwjCL1S8sPtFYLOmXprCXeNE6IdHf3KNqx
-90n/MEAqqJc/tKXJHKAbZCSGVeClNFzXOLVksv4MCy+vYO2usa2MLDez64z3Q5Z3
-MFjHni48OLHEmbCTivMMycStc4sWMg==
-=Go4M
------END PGP SIGNATURE-----
-
---V8rFlpgqAXwiQFZA--
 
