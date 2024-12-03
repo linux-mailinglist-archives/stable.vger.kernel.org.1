@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F659E260D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:08:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6EF9E235F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:36:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BC13288CA2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8749216181F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1FE81ADA;
-	Tue,  3 Dec 2024 16:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77581F8926;
+	Tue,  3 Dec 2024 15:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGek2T1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rduzKhku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19421F12F7;
-	Tue,  3 Dec 2024 16:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A9A1F76DD;
+	Tue,  3 Dec 2024 15:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242092; cv=none; b=TASO8AQXQIsfeUoDP/bWb7t8G/DrnvTuDMEBtRb0tpkH7lFmUkF3HYWL3WUMvU0SX1s4CB53wFGQeQ9LomnUZHjwMCtohg28AF1IpmuHYJW0syvEYKWFT14kFjJxQLpudfnS4R+kTqGI1B1bIrxGkXs97Sw+TOZDzp0lWv5Ph8U=
+	t=1733239861; cv=none; b=VVOqhwzIwZQ3DmsmqCFzac7GM04BRS98pbEmZfWjbh2pDl1ZY3nsMpPLTVm/JJjALoXCSQ0bK71tnC4pL0xvqO4NIrBDhH6Hq1LAujyInMVdbUdNh+z1x2Uve6C/H5lreRVwWJGu0pa/OG1O5qFeT9V75PYEL6qavTqzFCt9eiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242092; c=relaxed/simple;
-	bh=iYgUN5Ia7Xy0H5rKrb1mXYMmxqEvYMTAYnjEmrGpODs=;
+	s=arc-20240116; t=1733239861; c=relaxed/simple;
+	bh=g8u2DpNO+lJhiGoZQTmDzGjh0VMZe0Nr4UDJiJ5sazA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFqvdbgDz9Ju8ROMKAcsVYW1FTU70iSMMtxtrvGmLa4jKjDwqRkJEEIgJzMg/Se431EGtdPvuWcK/NXYDnGpjrhGw5DbC9Nxjx2Jwf79aEdjULpNZz8KAVVPIixk8MpwQQtoHeDTd1aKeK8zpoiQQZT1FEUgkWgo/ZPAuIIuNP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGek2T1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7C8C4CECF;
-	Tue,  3 Dec 2024 16:08:11 +0000 (UTC)
+	 MIME-Version; b=ceRyFBnbDlEzlBjHk649mpX7pEYi0bed/tdvqwPl0m6w7icLHz+A/IWkDpDD/MftLR2/hgUmTAcrs8BjnYGvtvUa2yToiyu3DjMQaV2GD5O+7i/lkHpVbsvWRlwiPTYxpE0+iqYHwuQ5RVSXk0D26gEI8QK4f/oeV4++S8cf8uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rduzKhku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B8CC4CED6;
+	Tue,  3 Dec 2024 15:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242091;
-	bh=iYgUN5Ia7Xy0H5rKrb1mXYMmxqEvYMTAYnjEmrGpODs=;
+	s=korg; t=1733239861;
+	bh=g8u2DpNO+lJhiGoZQTmDzGjh0VMZe0Nr4UDJiJ5sazA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGek2T1aksltRPXwR5v0XpyrIL5y2Oegkwgmlr4iAcV8ec3n/+OuH5BL5dw/wz4pi
-	 Mvhe5yKeszBiayBUvb6rUjMAuBPl2f3ZGGoXJXivkJOPR7Z5d6xpCm18F+zMax+Atm
-	 jaq3e4rALh+2FIFXRowYXfqqnmOPDECvdD0xjIxk=
+	b=rduzKhkuJJXTOb0uoExhpr+XM9SvC6IzsNP+gxNxMp+pxjBSq7e6TEways4xCnCah
+	 JQhXnMGspscyjaTsKl180e91jqcLiV4K+nH4lLu86/7qqVJ79wrBaoGqhUjmgZ7GxP
+	 vvQCMF1+5dnhWmNSyZOTvZnRt22CBV/wTNmD21ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 605/826] phy: realtek: usb: fix NULL deref in rtk_usb3phy_probe
+	syzbot+33379ce4ac76acf7d0c7@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.11 760/817] f2fs: fix to do sanity check on node blkaddr in truncate_node()
 Date: Tue,  3 Dec 2024 15:45:32 +0100
-Message-ID: <20241203144807.355106862@linuxfoundation.org>
+Message-ID: <20241203144025.660554146@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit bf373d2919d98f3d1fe1b19a0304f72fe74386d9 ]
+commit 6babe00ccd34fc65b78ef8b99754e32b4385f23d upstream.
 
-In rtk_usb3phy_probe() devm_kzalloc() may return NULL
-but this returned value is not checked.
+syzbot reports a f2fs bug as below:
 
-Fixes: adda6e82a7de ("phy: realtek: usb: Add driver for the Realtek SoC USB 3.0 PHY")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://lore.kernel.org/r/20241025070744.149070-1-hanchunchao@inspur.com
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:2534!
+RIP: 0010:f2fs_invalidate_blocks+0x35f/0x370 fs/f2fs/segment.c:2534
+Call Trace:
+ truncate_node+0x1ae/0x8c0 fs/f2fs/node.c:909
+ f2fs_remove_inode_page+0x5c2/0x870 fs/f2fs/node.c:1288
+ f2fs_evict_inode+0x879/0x15c0 fs/f2fs/inode.c:856
+ evict+0x4e8/0x9b0 fs/inode.c:723
+ f2fs_handle_failed_inode+0x271/0x2e0 fs/f2fs/inode.c:986
+ f2fs_create+0x357/0x530 fs/f2fs/namei.c:394
+ lookup_open fs/namei.c:3595 [inline]
+ open_last_lookups fs/namei.c:3694 [inline]
+ path_openat+0x1c03/0x3590 fs/namei.c:3930
+ do_filp_open+0x235/0x490 fs/namei.c:3960
+ do_sys_openat2+0x13e/0x1d0 fs/open.c:1415
+ do_sys_open fs/open.c:1430 [inline]
+ __do_sys_openat fs/open.c:1446 [inline]
+ __se_sys_openat fs/open.c:1441 [inline]
+ __x64_sys_openat+0x247/0x2a0 fs/open.c:1441
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0010:f2fs_invalidate_blocks+0x35f/0x370 fs/f2fs/segment.c:2534
+
+The root cause is: on a fuzzed image, blkaddr in nat entry may be
+corrupted, then it will cause system panic when using it in
+f2fs_invalidate_blocks(), to avoid this, let's add sanity check on
+nat blkaddr in truncate_node().
+
+Reported-by: syzbot+33379ce4ac76acf7d0c7@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/0000000000009a6cd706224ca720@google.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/realtek/phy-rtk-usb3.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/node.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/phy/realtek/phy-rtk-usb3.c b/drivers/phy/realtek/phy-rtk-usb3.c
-index dfcf4b921bba6..96af483e5444b 100644
---- a/drivers/phy/realtek/phy-rtk-usb3.c
-+++ b/drivers/phy/realtek/phy-rtk-usb3.c
-@@ -577,6 +577,8 @@ static int rtk_usb3phy_probe(struct platform_device *pdev)
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -905,6 +905,16 @@ static int truncate_node(struct dnode_of
+ 	if (err)
+ 		return err;
  
- 	rtk_phy->dev			= &pdev->dev;
- 	rtk_phy->phy_cfg = devm_kzalloc(dev, sizeof(*phy_cfg), GFP_KERNEL);
-+	if (!rtk_phy->phy_cfg)
-+		return -ENOMEM;
- 
- 	memcpy(rtk_phy->phy_cfg, phy_cfg, sizeof(*phy_cfg));
- 
--- 
-2.43.0
-
++	if (ni.blk_addr != NEW_ADDR &&
++		!f2fs_is_valid_blkaddr(sbi, ni.blk_addr, DATA_GENERIC_ENHANCE)) {
++		f2fs_err_ratelimited(sbi,
++			"nat entry is corrupted, run fsck to fix it, ino:%u, "
++			"nid:%u, blkaddr:%u", ni.ino, ni.nid, ni.blk_addr);
++		set_sbi_flag(sbi, SBI_NEED_FSCK);
++		f2fs_handle_error(sbi, ERROR_INCONSISTENT_NAT);
++		return -EFSCORRUPTED;
++	}
++
+ 	/* Deallocate node address */
+ 	f2fs_invalidate_blocks(sbi, ni.blk_addr);
+ 	dec_valid_node_count(sbi, dn->inode, dn->nid == dn->inode->i_ino);
 
 
 
