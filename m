@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753CF9E25B2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20F9A9E23E6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85BDBB2E847
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DACDE287501
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1615E1F8ADF;
-	Tue,  3 Dec 2024 15:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434091F7591;
+	Tue,  3 Dec 2024 15:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xnx81w6/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdAByqR+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61201F75B6;
-	Tue,  3 Dec 2024 15:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34AC1F890F;
+	Tue,  3 Dec 2024 15:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240347; cv=none; b=DiedvScP7LP9BkpnNf1vkT/jbXbFkpgHPTarjLH2kz1RAIMMwwqbz26kkTYfl4hLHr5WuNREP6XhqjURP63jgzMhkfUpXrb52iEamLyjABBdCyQrMZK/qdpfxTp8gHovXEH8ETct9nRus/FDMbIVAcxqh5V/1ImCOp/Hibq8VrA=
+	t=1733240382; cv=none; b=n+1MDWPshR0+TdaA9AGL0xfsNyhJ4J9VlCmBoFhotP2HsAXIB8SNcHnMTb21TJmDJ6cCEHYilPYwuvTkObtDF9lRiqrOCxqELIgfn8nfC2N8pvPcty8xvC+7cAQlpjzOO2oHTnLLOvMIifsSaoJxmrropT4NT7nDyHt/TMCfvGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240347; c=relaxed/simple;
-	bh=ED7ZUML4X87RKZYqkb58ISYC5k1b1DYII43hTUeR2aQ=;
+	s=arc-20240116; t=1733240382; c=relaxed/simple;
+	bh=xFMUJJ1MT/TXIsJZqWJPJPJnHHRLFeonZq9OEQ9ss+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3DQbNLn3lL3VgV0Ca3h+/d3TY9+d615Vh/Q38T9cjabD8Homl0je2SNytlf5i9/bCzjnDwXl2jSgCMX0OAJ+JoRzkUQp47DYcjJ/WwYHDtmavCTS5KX8Gq3OPDM8y6jwSBNZtr4Ka0USsutAa3hWAidU1QgtuYxg0wq+2ol/6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xnx81w6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16453C4CECF;
-	Tue,  3 Dec 2024 15:39:06 +0000 (UTC)
+	 MIME-Version; b=CTVFJWm8d3eVeKcd9uuFtL4pQV3WXoZMYRQE+PRPwc+LV6zilhAw4Jvduh/6p5F70GdPkSNnMTJHMgy2uPP+36gsQ3g5LqgIJKB5bOoKzTvmGSS4V3OS28BsipzTS3Kp5SkhWwlPkSk2PhT1BGcsUJJFKXfCYYrJ89ymvFqmsOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdAByqR+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE4EC4CECF;
+	Tue,  3 Dec 2024 15:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240347;
-	bh=ED7ZUML4X87RKZYqkb58ISYC5k1b1DYII43hTUeR2aQ=;
+	s=korg; t=1733240381;
+	bh=xFMUJJ1MT/TXIsJZqWJPJPJnHHRLFeonZq9OEQ9ss+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xnx81w6/CyuFP0fi2pXS+ertABA9IVXWB3phAHNvM0R+F2TQKvRo4kgtQZLRGDJDa
-	 4fHip9L2tkGuNd8h8jalsUhkhtmlkOIwrPNvqpDvS4rpJFsDGw5ALUhsRsLhGGcx2U
-	 YnVuYzFpTCbBciC85IgTjEKRgcbEGxCJNEj92PKE=
+	b=EdAByqR+fM7wpzPgqf0qTzBPbtnrLZD8/FEWKRr8i9t6EVb8sFE/gl5miqt4gK+oD
+	 0//1WOSYhSuDr/oiotLAk0lJGrPSprzCqvLLmI/ye+L2/N0FkFrlU+95FBH5c8C7FK
+	 RBuX/9psjUUvTSRArF0FwfYszlulQlhO4EvNPeYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 101/826] arm64: dts: qcom: qcs6390-rb3gen2: use modem.mbn for modem DSP
-Date: Tue,  3 Dec 2024 15:37:08 +0100
-Message-ID: <20241203144747.673340864@linuxfoundation.org>
+Subject: [PATCH 6.12 102/826] ARM: dts: renesas: genmai: Fix partition size for QSPI NOR Flash
+Date: Tue,  3 Dec 2024 15:37:09 +0100
+Message-ID: <20241203144747.712537520@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,37 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 6317aad0e1525f3e3609d9a0fea762a37799943a ]
+[ Upstream commit 48e17816c3effa3545e21cd4f7d5a00c55c17a18 ]
 
-Newer boards should always use squashed MBN firmware instead of split
-MDT+bNN. Use qcom/qcs6490/modem.mbn as the firmware for the modem on
-RB3gen2.
+Second partition was too large, looks like two digits got mixed up.
+Fixes:
 
-Fixes: ac6d35b9b74c ("arm64: dts: qcom: qcs6490-rb3gen2: Enable various remoteprocs")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Link: https://lore.kernel.org/r/20240907-rb3g2-fixes-v1-1-eb9da98e9f80@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+mtd: partition "user1" extends beyond the end of device "18000000.flash" -- size truncated to 0x4000000
+
+Fixes: 30e0a8cf886c ("ARM: dts: renesas: genmai: Add FLASH nodes")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20240914182948.94031-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts | 2 +-
+ arch/arm/boot/dts/renesas/r7s72100-genmai.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
-index 0d45662b8028b..5d0167fbc7098 100644
---- a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
-+++ b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
-@@ -707,7 +707,7 @@ &remoteproc_cdsp {
- };
+diff --git a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+index 29ba098f5dd5e..28e703e0f152b 100644
+--- a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
++++ b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+@@ -53,7 +53,7 @@ partition@0 {
  
- &remoteproc_mpss {
--	firmware-name = "qcom/qcs6490/modem.mdt";
-+	firmware-name = "qcom/qcs6490/modem.mbn";
- 	status = "okay";
- };
- 
+ 			partition@4000000 {
+ 				label = "user1";
+-				reg = <0x04000000 0x40000000>;
++				reg = <0x04000000 0x04000000>;
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
