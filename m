@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-97525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA62E9E24DD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B129E23E3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D76116F4D4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11B2FBA2AC5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B0A1F76D1;
-	Tue,  3 Dec 2024 15:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA091FC0FC;
+	Tue,  3 Dec 2024 15:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6/Q4leD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RondncGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5347781ADA;
-	Tue,  3 Dec 2024 15:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD371FC0E5;
+	Tue,  3 Dec 2024 15:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240814; cv=none; b=J0uJi7JgOFEa+vLVgOBppMoHNXYyS0Em0AcXNtoh5b2Yo8nqJ+WRpok93cGJMG8s1gmp7FgUb8GDVR0gYYD3zwj6sqGp+q7audYhSGkQq0QFI/P/83i+styojbikF+Zl7r2eZe+tNhOY0gOZfa32eWANsN4qFBIh1qtfc+ogWzQ=
+	t=1733238693; cv=none; b=mONHlKwpc+32tbXCGThGa20CiZjzBdcS7z3Rb/jhmpyDdAynLxRZPaqVyTBOtXj5sS1EJmYhhTRepnsRIjSpsvtnZ/aJVw2X7DQL/MKwIrrzAk53oZdwR/Tvpfe5BXP1LdR3iridVWPPzZIogCDKHqrsDihmNdn60NsGfzgQVEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240814; c=relaxed/simple;
-	bh=itLgebOXWVwGG34DbezLCY6r/tYxMqmYMmTpP7jgZfE=;
+	s=arc-20240116; t=1733238693; c=relaxed/simple;
+	bh=7zvJxPrMAvc4+T9t2X/SbjniyGb00yOmm/rrjlyysO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmDpqYHKf0zlmuM7PasOKtWJwtqlFOThIWZJVMT7JbNINRdQw1Wu52y3oKDXEidlfFK6aPxuar69f8GcronLN8426yf7yXYB+AaHEJWLJJtYGkmtrcj3npzmlrib2N8SfOPqTinTZvnllilnLuKuySFp1wyngUFHS2cRBK15m5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6/Q4leD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EC0C4CECF;
-	Tue,  3 Dec 2024 15:46:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=StbQPSd6ZIsK9bBL9Sv3APd7d5+8FYdYPZXuG/ofLvjOK/aXmWuuqT4N9CbSPCnOYOPfQsWnaL7yLpdFPNgIcOiVo+odxmnOT9RgZwh2s+ZnPCF0WdjvpdCKMShdsTFfgfPVH42J3qO28/T9PI3lv/Q9zvLHaN3wk8p/HTe1Gi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RondncGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4671C4CECF;
+	Tue,  3 Dec 2024 15:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240814;
-	bh=itLgebOXWVwGG34DbezLCY6r/tYxMqmYMmTpP7jgZfE=;
+	s=korg; t=1733238693;
+	bh=7zvJxPrMAvc4+T9t2X/SbjniyGb00yOmm/rrjlyysO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6/Q4leDGVUIl2LxdYi3jrt+Dctz7hcynMEMJijTb4KB8VAO/Nmm828vZVmfjs0Ta
-	 SNVZiNs8YEn02o6C/cx0WDYzLA2BK8J6LbJkTDtbqbyRJV3uHBAdVspxqNFSMzQe12
-	 6MFwcV4yCeYdol1foTA3xDjhJV9ZBuxmKq/zWEHk=
+	b=RondncGncgbRKW8lLrpWvqZcT4PPIOEJL76LeSQ/C18dQFrTHQs/zafG8Ica+6PlD
+	 fLq8hD/xwD3Y3gpdB8vdErJcRVktPrL7X8SmUUKujqv+1pTlP/YEVMkbKEqblG5yaf
+	 MpJ1/uuvW1sFmb1MbuC5WrlOSxMbrTRB7/cSjS6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Felix Maurer <fmaurer@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/826] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss2
+Subject: [PATCH 6.11 365/817] xsk: Free skb when TX metadata options are invalid
 Date: Tue,  3 Dec 2024 15:38:57 +0100
-Message-ID: <20241203144751.937205330@linuxfoundation.org>
+Message-ID: <20241203144010.088639518@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Felix Maurer <fmaurer@redhat.com>
 
-[ Upstream commit 52db16ec5bae7bd027804265b968259d1a6c3970 ]
+[ Upstream commit 0c0d0f42ffa6ac94cd79893b7ed419c15e1b45de ]
 
-In supported_vht_mcs_rate_nss2, the rate for MCS9 & VHT20 is defined as
-{1560, 1733}, this does not align with firmware's definition and therefore
-fails the verification in ath10k_mac_get_rate_flags_vht():
+When a new skb is allocated for transmitting an xsk descriptor, i.e., for
+every non-multibuf descriptor or the first frag of a multibuf descriptor,
+but the descriptor is later found to have invalid options set for the TX
+metadata, the new skb is never freed. This can leak skbs until the send
+buffer is full which makes sending more packets impossible.
 
-	invalid vht params rate 1730 100kbps nss 2 mcs 9
+Fix this by freeing the skb in the error path if we are currently dealing
+with the first frag, i.e., an skb allocated in this iteration of
+xsk_build_skb.
 
-and:
-
-	invalid vht params rate 1920 100kbps nss 2 mcs 9
-
-Change it to {1730,  1920} to align with firmware to fix the issue.
-
-Since ath10k_hw_params::supports_peer_stats_info is enabled only for
-QCA6174, this change does not affect other chips.
-
-Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
-
-Fixes: 3344b99d69ab ("ath10k: add bitrate parse for peer stats info")
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Closes: https://lore.kernel.org/lkml/fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de/
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13 9360
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240711020344.98040-3-quic_bqiang@quicinc.com
+Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
+Reported-by: Michal Schmidt <mschmidt@redhat.com>
+Signed-off-by: Felix Maurer <fmaurer@redhat.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/edb9b00fb19e680dff5a3350cd7581c5927975a8.1731581697.git.fmaurer@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xdp/xsk.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index ef303deb67cca..6b467696bc982 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -9136,7 +9136,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss2[
- 	{6,  {5265, 5850}, {2430, 2700}, {1170, 1300} },
- 	{7,  {5850, 6500}, {2700, 3000}, {1300, 1444} },
- 	{8,  {7020, 7800}, {3240, 3600}, {1560, 1733} },
--	{9,  {7800, 8667}, {3600, 4000}, {1560, 1733} }
-+	{9,  {7800, 8667}, {3600, 4000}, {1730, 1920} }
- };
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 7e16336044b2d..6c042e03dad3c 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -675,6 +675,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 		len = desc->len;
  
- static void ath10k_mac_get_rate_flags_ht(struct ath10k *ar, u32 rate, u8 nss, u8 mcs,
+ 		if (!skb) {
++			first_frag = true;
++
+ 			hr = max(NET_SKB_PAD, L1_CACHE_ALIGN(dev->needed_headroom));
+ 			tr = dev->needed_tailroom;
+ 			skb = sock_alloc_send_skb(&xs->sk, hr + len + tr, 1, &err);
+@@ -685,12 +687,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 			skb_put(skb, len);
+ 
+ 			err = skb_store_bits(skb, 0, buffer, len);
+-			if (unlikely(err)) {
+-				kfree_skb(skb);
++			if (unlikely(err))
+ 				goto free_err;
+-			}
+-
+-			first_frag = true;
+ 		} else {
+ 			int nr_frags = skb_shinfo(skb)->nr_frags;
+ 			struct page *page;
+@@ -758,6 +756,9 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
+ 	return skb;
+ 
+ free_err:
++	if (first_frag && skb)
++		kfree_skb(skb);
++
+ 	if (err == -EOVERFLOW) {
+ 		/* Drop the packet */
+ 		xsk_set_destructor_arg(xs->skb);
 -- 
 2.43.0
 
