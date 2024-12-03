@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-97189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C069E27BB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:40:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FAB9E22DD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15CDEB427FE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EFA286BE9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 090D81F7554;
-	Tue,  3 Dec 2024 15:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B761F707A;
+	Tue,  3 Dec 2024 15:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akFngOh0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2VqMBlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F421EF0AC;
-	Tue,  3 Dec 2024 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A266C1E3DED;
+	Tue,  3 Dec 2024 15:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239771; cv=none; b=MosalfSpTNVJdBim7x+gpAAosCQbfoRsFrz7jLxa/BvDPPJHGeA5ObngEQE40CJ2YaSNVPEKQAywDTVUZSAxzVmdJxEZgYz2rABhNuP3akTHm9pJo9aSqftKxJlZ9QLdEx90JiVJJ7NzM+O6Vo7wQ/5JnvHGAarvFouByIa6Tpg=
+	t=1733239777; cv=none; b=OcYJ4qZ+hz+WBNdVOUQuLaWS51+2hvD77DhFYf0TF7ZXggTecRqbB7rlcXNX5+VyQYpxKLwlrzpKVzq4zpT5xUQmTzO1//AX+zW6tzIpX2XYx5JRnT5K1EWT1kgvv4fWrXnzIO1hPC9an2AofA24NP8QcXxIjDde8/MGRU9/6cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239771; c=relaxed/simple;
-	bh=2jhjPke+roiIqQPyAo3IHbRR7QrYnRBQ5uQEjjEGWNg=;
+	s=arc-20240116; t=1733239777; c=relaxed/simple;
+	bh=C4maR7kgHtkNXnqBKG90L37B2KDHZPP6dXrL0l73LyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOsQ3+Kt76UsysdGrn6iVZRk+0vWB3xh9dmS3nBdAFa/Njo/fo0CjWLlbKcJZBHUYGMFpAltE2kfg8sKc6kt1b+y8rnq8t/aW6L/2WxchpY/RV25CbKcGKhkMl0vVUQytYF2h/Ea2Bp7th7YaAZjTzSAaUnZ+66WA1aIy22VzMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akFngOh0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E315EC4CECF;
-	Tue,  3 Dec 2024 15:29:30 +0000 (UTC)
+	 MIME-Version; b=cHYWVVwh0O8LGNBAbbactlhAEa7x65tnn2sb4puj/bdKUpyEM+t8GQ0wSw3yDt4uXRduEUSQ6tMkTIKTOxgMT3AiOYSUEdH7BJfKSspot91dRWnJaLFJ9+6TqYHPrUghx7x2JSfimix/8D4ZzcSwYmx6GoD7R2wIwFhII00EbPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2VqMBlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCCCC4CECF;
+	Tue,  3 Dec 2024 15:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239771;
-	bh=2jhjPke+roiIqQPyAo3IHbRR7QrYnRBQ5uQEjjEGWNg=;
+	s=korg; t=1733239777;
+	bh=C4maR7kgHtkNXnqBKG90L37B2KDHZPP6dXrL0l73LyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akFngOh06s+1+zVWqXHyBV6y+Pu8GcdYU+n2KPS0WqQwbk+wlNBVltoAT2fwrwliq
-	 IT5SLAcaPIvEQgCk5LwgEiv3He14+884w0uQMWOwVax9YTZmvNJTR31zfDH5GhlJdQ
-	 j7wTGnBposIAriy2INuNLhGreNModNjsL2w6Rsgk=
+	b=X2VqMBlRCZ2uKTIVBlEdsK/rJC2C4zfdymdHh0l1gNahkJ3tZfd7U1ZaKxtGjp9/4
+	 EPX1YTaEP2hf+VtJM+D3GMffaWcYcUeZklxvXjIooV5c2vdG2ub5DFDwo3HX/808uh
+	 Ws1xRVaToIzzhu6sp4VginbRMpgZTl6GPIL4kysk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziwei Xiao <ziweixiao@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.11 729/817] gve: Flow steering trigger reset only for timeout error
-Date: Tue,  3 Dec 2024 15:45:01 +0100
-Message-ID: <20241203144024.450261241@linuxfoundation.org>
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.11 730/817] HID: wacom: Interpret tilt data from Intuos Pro BT as signed values
+Date: Tue,  3 Dec 2024 15:45:02 +0100
+Message-ID: <20241203144024.489193331@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,42 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ziwei Xiao <ziweixiao@google.com>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-commit 8ffade77b6337a8767fae9820d57d7a6413dd1a1 upstream.
+commit 49a397ad24ee5e2c53a59dada2780d7e71bd3f77 upstream.
 
-When configuring flow steering rules, the driver is currently going
-through a reset for all errors from the device. Instead, the driver
-should only reset when there's a timeout error from the device.
+The tilt data contained in the Bluetooth packets of an Intuos Pro are
+supposed to be interpreted as signed values. Simply casting the values
+to type `char` is not guaranteed to work since it is implementation-
+defined whether it is signed or unsigned. At least one user has noticed
+the data being reported incorrectly on their system. To ensure that the
+data is interpreted properly, we specifically cast to `signed char`
+instead.
 
-Fixes: 57718b60df9b ("gve: Add flow steering adminq commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Signed-off-by: Jeroen de Borst <jeroendb@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20241113175930.2585680-1-jeroendb@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/linuxwacom/input-wacom/issues/445
+Fixes: 4922cd26f03c ("HID: wacom: Support 2nd-gen Intuos Pro's Bluetooth classic interface")
+CC: stable@vger.kernel.org # 4.11+
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_adminq.c |    4 ++--
+ drivers/hid/wacom_wac.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -1208,10 +1208,10 @@ gve_adminq_configure_flow_rule(struct gv
- 			sizeof(struct gve_adminq_configure_flow_rule),
- 			flow_rule_cmd);
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1353,9 +1353,9 @@ static void wacom_intuos_pro2_bt_pen(str
+ 					rotation -= 1800;
  
--	if (err) {
-+	if (err == -ETIME) {
- 		dev_err(&priv->pdev->dev, "Timeout to configure the flow rule, trigger reset");
- 		gve_reset(priv, true);
--	} else {
-+	} else if (!err) {
- 		priv->flow_rules_cache.rules_cache_synced = false;
- 	}
- 
+ 				input_report_abs(pen_input, ABS_TILT_X,
+-						 (char)frame[7]);
++						 (signed char)frame[7]);
+ 				input_report_abs(pen_input, ABS_TILT_Y,
+-						 (char)frame[8]);
++						 (signed char)frame[8]);
+ 				input_report_abs(pen_input, ABS_Z, rotation);
+ 				input_report_abs(pen_input, ABS_WHEEL,
+ 						 get_unaligned_le16(&frame[11]));
 
 
 
