@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-97640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C749E250E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C0C9E221C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2394CB41A09
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EA33284B99
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68D41F7071;
-	Tue,  3 Dec 2024 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B921F75B3;
+	Tue,  3 Dec 2024 15:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o07k9ku2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdOKMpjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D7F1AB6C9;
-	Tue,  3 Dec 2024 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60261F706C;
+	Tue,  3 Dec 2024 15:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241212; cv=none; b=cTldrDgDKHh+If901aaXVYP8ZNfMX6zDxVQ0hG1kDgOJElDkqe1ErjhHFIhOZKUPue/HsuX5N54hYvXq//pSbwFEl5RNnk0KUQvQjQ35P3oBc+6eesbcE4V98v9+rOygkhYxGJHfPz6wQ3rfRkKX6gltXfUF7/hb5gSOnnyh1RA=
+	t=1733239239; cv=none; b=ORZYDx1bMa67s6VRODP9zs+tHYjDZ7VlWkG33/HOifA1m7XovjYpvpI+xrpHV68ICNc45MYU7qfqYBuMorF5dOH2nqSz1pWJA6HJBQBIvhvRLfXPTyAJoSbcCzRNH5UwmavaMpI82h1bV88lLOnOen/5vGVxSNYsugFqTjuU77A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241212; c=relaxed/simple;
-	bh=2hOh0Ue2TdcWuLwUNIoYEZYwVR6sIutjX06vWztoSpY=;
+	s=arc-20240116; t=1733239239; c=relaxed/simple;
+	bh=oBJX2Ax1+uHJs9Z8ydbI3YLaYkV+n6xPJlD83+UzH80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pda0pZh34aMWMxIyS6uKqUX0z5AI9K4hmVTzEPA7wbeiHpfpSWxdq2F5NQ/LmCLPqaobsNb0Hp8Z5KWMyI2nsJ1OkaHFL5DJzlcvPzvF2H4lgJAzrE2abtIDQFg8j/3scHiSprL/7HfqEKfeUljR8qNwQ89MrBAfSv7t6bttBzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o07k9ku2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB59AC4CECF;
-	Tue,  3 Dec 2024 15:53:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GDSntduRwZMu1OwnXC5uaHk8rKqclQC9HsHPJ4WjIRayOAYed2tKcIj75cb4O4fwgVtK1rVZWw4d/AWxdVjHMVEA27u20D9XLa8Lem3S8R+gBLHPw2CxX0DrwA2QlwwP/2EpibxT8Ari1zrAfe32l+cHt7VAaA+1CTAIPXh/Lws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdOKMpjv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31357C4CECF;
+	Tue,  3 Dec 2024 15:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241212;
-	bh=2hOh0Ue2TdcWuLwUNIoYEZYwVR6sIutjX06vWztoSpY=;
+	s=korg; t=1733239239;
+	bh=oBJX2Ax1+uHJs9Z8ydbI3YLaYkV+n6xPJlD83+UzH80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o07k9ku28ENOSKTgZWvAEKcbdIzv3jk+mMPSlby3TwFk4NbKUpogFWveFmR+j8FCD
-	 7qTeJBoMIzkut34nySlm2N5AmVwYzr4beYMj0nWGji2T2HQyPgAhH7UBBcyzICQ45o
-	 0Zy3zEWqTMYfcK5qcl5OEarcbB1W54qTVBGtreqI=
+	b=pdOKMpjvPK3yLxuXzVmsdpjNfc6VjW88lopGNQuMZVbJWO6x0wywgHROjm11JTXTS
+	 RfjrN40oTARWoOtwljoaO/tDyqOOudS00euvgOi84UTo2c0gagJoyofb9m1/re1aBQ
+	 W2Xow6zXVqsIZY/04wsTYIkY2FbDS6K8sH+6hTHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Zeng Heng <zengheng4@huawei.com>,
-	Ionela Voinescu <ionela.voinescu@arm.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	linux-tegra@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 358/826] cppc_cpufreq: Use desired perf if feedback ctrs are 0 or unchanged
-Date: Tue,  3 Dec 2024 15:41:25 +0100
-Message-ID: <20241203144757.725441659@linuxfoundation.org>
+Subject: [PATCH 6.11 514/817] PCI: tegra194: Move controller cleanups to pex_ep_event_pex_rst_deassert()
+Date: Tue,  3 Dec 2024 15:41:26 +0100
+Message-ID: <20241203144015.944054616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Zhan <zhanjie9@hisilicon.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit c47195631960b626058c335aec31f186fa854f97 ]
+[ Upstream commit 40e2125381dc11379112485e3eefdd25c6df5375 ]
 
-The CPPC performance feedback counters could be 0 or unchanged when the
-target cpu is in a low-power idle state, e.g. power-gated or clock-gated.
+Currently, the endpoint cleanup function dw_pcie_ep_cleanup() and EPF
+deinit notify function pci_epc_deinit_notify() are called during the
+execution of pex_ep_event_pex_rst_assert() i.e., when the host has asserted
+PERST#. But quickly after this step, refclk will also be disabled by the
+host.
 
-When the counters are 0, cppc_cpufreq_get_rate() returns 0 KHz, which makes
-cpufreq_online() get a false error and fail to generate a cpufreq policy.
+All of the tegra194 endpoint SoCs supported as of now depend on the refclk
+from the host for keeping the controller operational. Due to this
+limitation, any access to the hardware registers in the absence of refclk
+will result in a whole endpoint crash. Unfortunately, most of the
+controller cleanups require accessing the hardware registers (like eDMA
+cleanup performed in dw_pcie_ep_cleanup(), etc...). So these cleanup
+functions can cause the crash in the endpoint SoC once host asserts PERST#.
 
-When the counters are unchanged, the existing cppc_perf_from_fbctrs()
-returns a cached desired perf, but some platforms may update the real
-frequency back to the desired perf reg.
+One way to address this issue is by generating the refclk in the endpoint
+itself and not depending on the host. But that is not always possible as
+some of the endpoint designs do require the endpoint to consume refclk from
+the host.
 
-For the above cases in cppc_cpufreq_get_rate(), get the latest desired perf
-from the CPPC reg to reflect the frequency because some platforms may
-update the actual frequency back there; if failed, use the cached desired
-perf.
+Thus, fix this crash by moving the controller cleanups to the start of
+the pex_ep_event_pex_rst_deassert() function. This function is called
+whenever the host has deasserted PERST# and it is guaranteed that the
+refclk would be active at this point. So at the start of this function
+(after enabling resources) the controller cleanup can be performed. Once
+finished, rest of the code execution for PERST# deassert can continue as
+usual.
 
-Fixes: 6a4fec4f6d30 ("cpufreq: cppc: cppc_cpufreq_get_rate() returns zero in all error cases.")
-Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
-Reviewed-by: Zeng Heng <zengheng4@huawei.com>
-Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
-Reviewed-by: Huisong Li <lihuisong@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 473b2cf9c4d1 ("PCI: endpoint: Introduce 'epc_deinit' event and notify the EPF drivers")
+Fixes: 570d7715eed8 ("PCI: dwc: ep: Introduce dw_pcie_ep_cleanup() API for drivers supporting PERST#")
+Link: https://lore.kernel.org/r/20240817-pci-qcom-ep-cleanup-v1-2-d6b958226559@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Vidya Sagar <vidyas@nvidia.com>
+Cc: linux-tegra@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 57 +++++++++++++++++++++++++++-------
- 1 file changed, 46 insertions(+), 11 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index 2b8708475ac77..1a8f95e6cc8d0 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 4bf7b433417a3..d68dd18ed43cb 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -1709,9 +1709,6 @@ static void pex_ep_event_pex_rst_assert(struct tegra_pcie_dw *pcie)
+ 	if (ret)
+ 		dev_err(pcie->dev, "Failed to go Detect state: %d\n", ret);
  
- 	perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
- 				     &fb_ctrs);
-+	if (!perf)
-+		return;
-+
- 	cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
- 
- 	perf <<= SCHED_CAPACITY_SHIFT;
-@@ -724,13 +727,31 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
- 	delta_delivered = get_delta(fb_ctrs_t1->delivered,
- 				    fb_ctrs_t0->delivered);
- 
--	/* Check to avoid divide-by zero and invalid delivered_perf */
-+	/*
-+	 * Avoid divide-by zero and unchanged feedback counters.
-+	 * Leave it for callers to handle.
-+	 */
- 	if (!delta_reference || !delta_delivered)
--		return cpu_data->perf_ctrls.desired_perf;
-+		return 0;
- 
- 	return (reference_perf * delta_delivered) / delta_reference;
- }
- 
-+static int cppc_get_perf_ctrs_sample(int cpu,
-+				     struct cppc_perf_fb_ctrs *fb_ctrs_t0,
-+				     struct cppc_perf_fb_ctrs *fb_ctrs_t1)
-+{
-+	int ret;
-+
-+	ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t0);
-+	if (ret)
-+		return ret;
-+
-+	udelay(2); /* 2usec delay between sampling */
-+
-+	return cppc_get_perf_ctrs(cpu, fb_ctrs_t1);
-+}
-+
- static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
- {
- 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
-@@ -746,18 +767,32 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
- 
- 	cpufreq_cpu_put(policy);
- 
--	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
--	if (ret)
--		return 0;
+-	pci_epc_deinit_notify(pcie->pci.ep.epc);
+-	dw_pcie_ep_cleanup(&pcie->pci.ep);
 -
--	udelay(2); /* 2usec delay between sampling */
--
--	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
--	if (ret)
--		return 0;
-+	ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
-+	if (ret) {
-+		if (ret == -EFAULT)
-+			/* Any of the associated CPPC regs is 0. */
-+			goto out_invalid_counters;
-+		else
-+			return 0;
-+	}
+ 	reset_control_assert(pcie->core_rst);
  
- 	delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
- 					       &fb_ctrs_t1);
-+	if (!delivered_perf)
-+		goto out_invalid_counters;
-+
-+	return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-+
-+out_invalid_counters:
-+	/*
-+	 * Feedback counters could be unchanged or 0 when a cpu enters a
-+	 * low-power idle state, e.g. clock-gated or power-gated.
-+	 * Use desired perf for reflecting frequency.  Get the latest register
-+	 * value first as some platforms may update the actual delivered perf
-+	 * there; if failed, resort to the cached desired perf.
-+	 */
-+	if (cppc_get_desired_perf(cpu, &delivered_perf))
-+		delivered_perf = cpu_data->perf_ctrls.desired_perf;
+ 	tegra_pcie_disable_phy(pcie);
+@@ -1790,6 +1787,10 @@ static void pex_ep_event_pex_rst_deassert(struct tegra_pcie_dw *pcie)
+ 		goto fail_phy;
+ 	}
  
- 	return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
- }
++	/* Perform cleanup that requires refclk */
++	pci_epc_deinit_notify(pcie->pci.ep.epc);
++	dw_pcie_ep_cleanup(&pcie->pci.ep);
++
+ 	/* Clear any stale interrupt statuses */
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L0);
+ 	appl_writel(pcie, 0xFFFFFFFF, APPL_INTR_STATUS_L1_0_0);
 -- 
 2.43.0
 
