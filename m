@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-97753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FF79E25E3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AC79E226E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:24:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E023016D3A3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6726D28531F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35B21DE8A5;
-	Tue,  3 Dec 2024 16:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188271F473A;
+	Tue,  3 Dec 2024 15:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suAc4sJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8W/1KOm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE5323CE;
-	Tue,  3 Dec 2024 16:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1CE1EE001;
+	Tue,  3 Dec 2024 15:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241619; cv=none; b=ZMlJlBbSYzJUKtc54nOtZLMAgiuaoMzIPpv9DkHjIH2QIpOE7ZQ9DSbgOPU3L1ArAxKlrUUqKMJ+NkPdAkJl7toQjBU2WH+J+wI4J0ZXpuJzzUN3P9oSiXFMyT7jBa9hnqJ7XDFsmWGnE4Q/TyxQ2q9oAxg+LxHlQ0s26ZzYRtU=
+	t=1733239468; cv=none; b=QLn9kA1JsVofXuHKzpcqXnYGoqIXhgHIuK7prTunFfBjmAk+HKD21EHsfsRs3jZqZ6QzoiDk0J/DEXsAixmFZoBxcFh5yBWtaI6sSaI9KV9pc5JkjjBi40dFAPs2GnjV2HRmsnZVkr5LMRvpd9O9wGvtSK+9fVWyMeMZ79Fy268=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241619; c=relaxed/simple;
-	bh=2qP7msLqtb+debtNjPcjVXXWSsqf39qridvVWfuc0gw=;
+	s=arc-20240116; t=1733239468; c=relaxed/simple;
+	bh=L4txhazBCD/sbpctuQ1DjYAJBFd/5zR6qDPDzE8UANM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVucPqTG/fgUjGNU4+vg3WEO0PSf5SFhrDJxED9iDgGLW38vXf0Bny9OFRK3c2qkrrg2V7jQ7j0gemCaQcYH8mmOnYCXzfvISnLp6ErjBR2bwjMNrSSNcgfurbVASqW8NWoB/G9FWqhS2JqFhnz4NnvZSeVucYj3qzu8EEUMymc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suAc4sJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A287C4CECF;
-	Tue,  3 Dec 2024 16:00:18 +0000 (UTC)
+	 MIME-Version; b=DXAckZ16R9MHnvdthQLrFSlarqZiXnGd1qmQ83BjEI/rJWke1ZRqByWIsj5jYdYvXWtsS571D7xO467r9ijNuZy2yy6iFoe7HArqGx+MElU6tg3yQbycT6HJ6BVH4jl5J8Ymk6FbHGI0N/sr5LGCRZOkde3uFPhx8MoV3l9YHt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8W/1KOm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52969C4CECF;
+	Tue,  3 Dec 2024 15:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241619;
-	bh=2qP7msLqtb+debtNjPcjVXXWSsqf39qridvVWfuc0gw=;
+	s=korg; t=1733239468;
+	bh=L4txhazBCD/sbpctuQ1DjYAJBFd/5zR6qDPDzE8UANM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=suAc4sJJ34C5SoK8w/s7TsPuRnBT64wWS0grlVtbMp7Jhve10aLyeY1dek3VHU0l+
-	 yoUzd7hsbo3ogcte+zdE+Fnc2NmXcxBARx6uUqb/aeJ37seez9ZNhAn0gzvFvHAZmT
-	 IVW3k9C1AWF1ds71r6IfjKwcNLFnq6ktZ/5E2qZI=
+	b=t8W/1KOmLdHMrUiyWkTpOkQUbUkl1DEgYiuYy7ku5OJ0YMFNE1/uQ2t0xoeibF0JZ
+	 zldkbRl6K+q9BsxOyhhlshVIQCu4MbQTFd1odfKWbJIwYWuJzcw5I5bfSxC4rXiviJ
+	 PmzV9OYCVBhegFAfIh636SN76T1FFVO5QiusFmVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 469/826] gfs2: Fix unlinked inode cleanup
-Date: Tue,  3 Dec 2024 15:43:16 +0100
-Message-ID: <20241203144802.058675458@linuxfoundation.org>
+Subject: [PATCH 6.11 625/817] s390/pci: Fix potential double remove of hotplug slot
+Date: Tue,  3 Dec 2024 15:43:17 +0100
+Message-ID: <20241203144020.332902806@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 7c6f714d88475ceae5342264858a641eafa19632 ]
+[ Upstream commit c4a585e952ca403a370586d3f16e8331a7564901 ]
 
-Before commit f0e56edc2ec7 ("gfs2: Split the two kinds of glock "delete"
-work"), function delete_work_func() was used to trigger the eviction of
-in-memory inodes from remote as well as deleting unlinked inodes at a
-later point.  These two kinds of work were then split into two kinds of
-work, and the two places in the code were deferred deletion of inodes is
-required accidentally ended up queuing the wrong kind of work.  This
-caused unlinked inodes to be left behind, which could in the worst case
-fill up filesystems and require a filesystem check to recover.
+In commit 6ee600bfbe0f ("s390/pci: remove hotplug slot when releasing the
+device") the zpci_exit_slot() was moved from zpci_device_reserved() to
+zpci_release_device() with the intention of keeping the hotplug slot
+around until the device is actually removed.
 
-Fix that by queuing the right kind of work in try_rgrp_unlink() and
-gfs2_drop_inode().
+Now zpci_release_device() is only called once all references are
+dropped. Since the zPCI subsystem only drops its reference once the
+device is in the reserved state it follows that zpci_release_device()
+must only deal with devices in the reserved state. Despite that it
+contains code to tear down from both configured and standby state. For
+the standby case this already includes the removal of the hotplug slot
+so would cause a double removal if a device was ever removed in
+either configured or standby state.
 
-Fixes: f0e56edc2ec7 ("gfs2: Split the two kinds of glock "delete" work")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Instead of causing a potential double removal in a case that should
+never happen explicitly WARN_ON() if a device in non-reserved state is
+released and get rid of the dead code cases.
+
+Fixes: 6ee600bfbe0f ("s390/pci: remove hotplug slot when releasing the device")
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Tested-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 2 +-
- fs/gfs2/glock.h | 1 +
- fs/gfs2/rgrp.c  | 2 +-
- fs/gfs2/super.c | 2 +-
- 4 files changed, 4 insertions(+), 3 deletions(-)
+ arch/s390/pci/pci.c | 34 +++++++++-------------------------
+ 1 file changed, 9 insertions(+), 25 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 509115202ccf9..a51fe42732c4c 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -1013,7 +1013,7 @@ bool gfs2_queue_try_to_evict(struct gfs2_glock *gl)
- 				  &gl->gl_delete, 0);
- }
- 
--static bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later)
-+bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later)
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 759983d0e63ed..827b4c7b4688c 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -918,10 +918,8 @@ void zpci_device_reserved(struct zpci_dev *zdev)
+ void zpci_release_device(struct kref *kref)
  {
- 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
- 	unsigned long delay;
-diff --git a/fs/gfs2/glock.h b/fs/gfs2/glock.h
-index adf0091cc98f9..63e101d448e96 100644
---- a/fs/gfs2/glock.h
-+++ b/fs/gfs2/glock.h
-@@ -245,6 +245,7 @@ static inline int gfs2_glock_nq_init(struct gfs2_glock *gl,
- void gfs2_glock_cb(struct gfs2_glock *gl, unsigned int state);
- void gfs2_glock_complete(struct gfs2_glock *gl, int ret);
- bool gfs2_queue_try_to_evict(struct gfs2_glock *gl);
-+bool gfs2_queue_verify_delete(struct gfs2_glock *gl, bool later);
- void gfs2_cancel_delete_work(struct gfs2_glock *gl);
- void gfs2_flush_delete_work(struct gfs2_sbd *sdp);
- void gfs2_gl_hash_clear(struct gfs2_sbd *sdp);
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index 29c7728167652..5393031297153 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -1879,7 +1879,7 @@ static void try_rgrp_unlink(struct gfs2_rgrpd *rgd, u64 *last_unlinked, u64 skip
- 		 */
- 		ip = gl->gl_object;
+ 	struct zpci_dev *zdev = container_of(kref, struct zpci_dev, kref);
+-	int ret;
  
--		if (ip || !gfs2_queue_try_to_evict(gl))
-+		if (ip || !gfs2_queue_verify_delete(gl, false))
- 			gfs2_glock_put(gl);
- 		else
- 			found++;
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 6678060ed4d2b..e22c1edc32b39 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1045,7 +1045,7 @@ static int gfs2_drop_inode(struct inode *inode)
- 		struct gfs2_glock *gl = ip->i_iopen_gh.gh_gl;
+-	if (zdev->has_hp_slot)
+-		zpci_exit_slot(zdev);
++	WARN_ON(zdev->state != ZPCI_FN_STATE_RESERVED);
  
- 		gfs2_glock_hold(gl);
--		if (!gfs2_queue_try_to_evict(gl))
-+		if (!gfs2_queue_verify_delete(gl, true))
- 			gfs2_glock_put_async(gl);
- 		return 0;
- 	}
+ 	if (zdev->zbus->bus)
+ 		zpci_bus_remove_device(zdev, false);
+@@ -929,28 +927,14 @@ void zpci_release_device(struct kref *kref)
+ 	if (zdev_enabled(zdev))
+ 		zpci_disable_device(zdev);
+ 
+-	switch (zdev->state) {
+-	case ZPCI_FN_STATE_CONFIGURED:
+-		ret = sclp_pci_deconfigure(zdev->fid);
+-		zpci_dbg(3, "deconf fid:%x, rc:%d\n", zdev->fid, ret);
+-		fallthrough;
+-	case ZPCI_FN_STATE_STANDBY:
+-		if (zdev->has_hp_slot)
+-			zpci_exit_slot(zdev);
+-		spin_lock(&zpci_list_lock);
+-		list_del(&zdev->entry);
+-		spin_unlock(&zpci_list_lock);
+-		zpci_dbg(3, "rsv fid:%x\n", zdev->fid);
+-		fallthrough;
+-	case ZPCI_FN_STATE_RESERVED:
+-		if (zdev->has_resources)
+-			zpci_cleanup_bus_resources(zdev);
+-		zpci_bus_device_unregister(zdev);
+-		zpci_destroy_iommu(zdev);
+-		fallthrough;
+-	default:
+-		break;
+-	}
++	if (zdev->has_hp_slot)
++		zpci_exit_slot(zdev);
++
++	if (zdev->has_resources)
++		zpci_cleanup_bus_resources(zdev);
++
++	zpci_bus_device_unregister(zdev);
++	zpci_destroy_iommu(zdev);
+ 	zpci_dbg(3, "rem fid:%x\n", zdev->fid);
+ 	kfree_rcu(zdev, rcu);
+ }
 -- 
 2.43.0
 
