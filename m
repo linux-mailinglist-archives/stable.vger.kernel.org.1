@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-96847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1C09E26D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:17:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46EE49E2436
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95620B65E0B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C24C287838
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27C21F76A2;
-	Tue,  3 Dec 2024 15:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEBA1F8925;
+	Tue,  3 Dec 2024 15:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/RpNlT1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWQiyeAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A170D1F75A8;
-	Tue,  3 Dec 2024 15:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9761E5711;
+	Tue,  3 Dec 2024 15:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238765; cv=none; b=qFVS96gJYbeK6bHYiOB+xlOGAc7UTiMWLg6dq6hCDeCaUaZxd8viMBwa5VVJm4EfG6VrssgZI34XuCLuYuqMEIMJ/FTyVrJHwnmjiZnBZ8g0neJ4qF+z861sWNOauVEN/WJiuu8JN7YuBDi7pnMAytb7lnwikP7jvjz0uhy/Seg=
+	t=1733240723; cv=none; b=WZcXUCtEReptKaj/YuDCGT01TpZbP2MrOw0PZRNzR/pxdArirVCnOQxDSMmg2sxN0xVpGar+VrDxKnMdR6CsR8bENVPmZyAPIFmhCjijF7dRlQsQv2NBsPAWSd/elSi4D7vLry8wYOG07KMJgpw+ax/7+CccVJ0WITJCeSJFzQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238765; c=relaxed/simple;
-	bh=xmObi7tLLuetvRIBhtWv4JZZZUi2VMiWQ/Pok2uLb1k=;
+	s=arc-20240116; t=1733240723; c=relaxed/simple;
+	bh=z4ETVYUTa6lNwZ39kk86YuNs0/S9juK4KXfcsEOfO8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmWrQYJdyaOiWpmabOrg0zuzMAWgfq9rQ+F7AcMvbiJNjiB/oZ4mxu1RcOwe/ExbWsoAx3cs61o8xwBe1VPlj93ReiKnVklSjcsm7dWlnRJXmwWTaYbKFQMOQ0ZS37GVBPEXqzcWkxBWAl3NWAntmH2sP9LH4EFs45jwqg9NVKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/RpNlT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 299C4C4CECF;
-	Tue,  3 Dec 2024 15:12:44 +0000 (UTC)
+	 MIME-Version; b=fvK/1WCrKA2LnDI+kz+o7+5H5vMvp0lBFel2u2aF9/aGmjf2QyyQ6+zeenZt1gTm36sS9lpiAQl1m0xp9Xs9fgoH3IlsNTuxYaB4oVM1kz28xnksU6Y02dtWYkjrh4L7eg7JJgDzrqcQUrEY48DQN23NLZ+lQ3kFt6/XB5CJ2OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWQiyeAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F5CC4CECF;
+	Tue,  3 Dec 2024 15:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238765;
-	bh=xmObi7tLLuetvRIBhtWv4JZZZUi2VMiWQ/Pok2uLb1k=;
+	s=korg; t=1733240723;
+	bh=z4ETVYUTa6lNwZ39kk86YuNs0/S9juK4KXfcsEOfO8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/RpNlT1JZVnV86bByNyIFDArJ678HOlx7vCi+lHIbivOWS08sYjhM6Wm+YUzImdl
-	 PXMMNHfYk/gQxcOoLs0WkEQ4hJyzSy8NnjvvnDsnLAoSdFWcYXxsmKuYuwrKTNvnhp
-	 8AcbCV7ZbvED7m7bMOLpB8xTqK3ghLHK7IjuC86k=
+	b=kWQiyeAoiO0f6RQUpmsE99YVjObat3my+NYkMAPNEsbvwljIywKE0nGcOKA6DyKkQ
+	 jxDy5cyfXFkZQFK34UleOiJhgJfRG2BIMj2OnIIJI9vMo6GelCwsaDOqEy2po9/yLd
+	 2jI3d6yrFJmVV9jjJv4kjHTvuRbCV+Fmzy/bLSDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <vincent.whitchurch@datadoghq.com>,
-	Jiayuan Chen <mrpre@163.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 373/817] bpf: fix recursive lock when verdict program return SK_PASS
+Subject: [PATCH 6.12 218/826] drm/bridge: it6505: Drop EDID cache on bridge power off
 Date: Tue,  3 Dec 2024 15:39:05 +0100
-Message-ID: <20241203144010.405279897@linuxfoundation.org>
+Message-ID: <20241203144752.244515371@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <mrpre@163.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 8ca2a1eeadf09862190b2810697702d803ceef2d ]
+[ Upstream commit 574c558ddb68591c9a4b7a95e45e935ab22c0fc6 ]
 
-When the stream_verdict program returns SK_PASS, it places the received skb
-into its own receive queue, but a recursive lock eventually occurs, leading
-to an operating system deadlock. This issue has been present since v6.9.
+The bridge might miss the display change events when it's powered off.
+This happens when a user changes the external monitor when the system
+is suspended and the embedded controller doesn't not wake AP up.
 
-'''
-sk_psock_strp_data_ready
-    write_lock_bh(&sk->sk_callback_lock)
-    strp_data_ready
-      strp_read_sock
-        read_sock -> tcp_read_sock
-          strp_recv
-            cb.rcv_msg -> sk_psock_strp_read
-              # now stream_verdict return SK_PASS without peer sock assign
-              __SK_PASS = sk_psock_map_verd(SK_PASS, NULL)
-              sk_psock_verdict_apply
-                sk_psock_skb_ingress_self
-                  sk_psock_skb_ingress_enqueue
-                    sk_psock_data_ready
-                      read_lock_bh(&sk->sk_callback_lock) <= dead lock
+It's also observed that one DP-to-HDMI bridge doesn't work correctly
+when there is no EDID read after it is powered on.
 
-'''
+Drop the cache to force an EDID read after system resume to fix this.
 
-This topic has been discussed before, but it has not been fixed.
-Previous discussion:
-https://lore.kernel.org/all/6684a5864ec86_403d20898@john.notmuch
-
-Fixes: 6648e613226e ("bpf, skmsg: Fix NULL pointer dereference in sk_psock_skb_ingress_enqueue")
-Reported-by: Vincent Whitchurch <vincent.whitchurch@datadoghq.com>
-Signed-off-by: Jiayuan Chen <mrpre@163.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20241118030910.36230-2-mrpre@163.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 11feaef69d0c ("drm/bridge: it6505: Add caching for EDID")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240926092931.3870342-3-treapking@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/ite-it6505.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index bbf40b9997138..846fd672f0e52 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1117,9 +1117,9 @@ static void sk_psock_strp_data_ready(struct sock *sk)
- 		if (tls_sw_has_ctx_rx(sk)) {
- 			psock->saved_data_ready(sk);
- 		} else {
--			write_lock_bh(&sk->sk_callback_lock);
-+			read_lock_bh(&sk->sk_callback_lock);
- 			strp_data_ready(&psock->strp);
--			write_unlock_bh(&sk->sk_callback_lock);
-+			read_unlock_bh(&sk->sk_callback_lock);
- 		}
- 	}
- 	rcu_read_unlock();
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 87b8545fccc0a..e3a9832c742cb 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -3107,6 +3107,8 @@ static __maybe_unused int it6505_bridge_suspend(struct device *dev)
+ {
+ 	struct it6505 *it6505 = dev_get_drvdata(dev);
+ 
++	it6505_remove_edid(it6505);
++
+ 	return it6505_poweroff(it6505);
+ }
+ 
 -- 
 2.43.0
 
