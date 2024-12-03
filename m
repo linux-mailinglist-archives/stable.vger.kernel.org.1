@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACA59E2698
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD6A9E2322
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:32:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231DF1698B3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65B4328486E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA151F8925;
-	Tue,  3 Dec 2024 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A4A1F755B;
+	Tue,  3 Dec 2024 15:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FtG5/kH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qskBcW44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1F61F76D7;
-	Tue,  3 Dec 2024 16:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D91B1F76DE;
+	Tue,  3 Dec 2024 15:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242221; cv=none; b=iizIjOa+v8Btbh0nYFfUBdNh+wOq+xRZTtuCwOKd7whj8D+6bWcAIBPTUOg60d29wBwD8npFkoa8ePcmtBtC6ohXO4Xmw9lLTWglU/TbOMATeQHja+g3PUk7q03aqSJ7+DIcySzX4FONjdF2chhOYocmRVF4OQtKiK7gEzdLHQ8=
+	t=1733239897; cv=none; b=gPaJ80qEzLLmyFRQYq2C1gxkCpk07rwjNXF7EVsc2+FWWWdt6Zu9SXsb12FMg2r6aweqFJWaxILsrnciXuWn+5Fjj336WKxPGMipl3D2egF70d4Pe/zqPUBRm/dUE5X3uH01FrPhC/g9ou19eQn6Tyfy0ykrntHOgVwTLfindFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242221; c=relaxed/simple;
-	bh=92Sh+qUsR8EvdT80wUVF5lsWU1mIhbu2WvzHXzg8bBQ=;
+	s=arc-20240116; t=1733239897; c=relaxed/simple;
+	bh=v8GLLvtzfjVVUdRHIvRVHaLVaxx1sFJBSfpqAtBPXCo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L3L7QUJgEcgSGXFiPjgVIi722tWGFjiRf7KLtXNS3J0+OAJcA+VLc+7g9hC61u0NDrjr11pDHZonGiSNhK3xTpax7a3+BWkV4IPL2mnIbsvkYBZgroF2zxy7j2jTlnNpZuC6RT/KS6a7bj3ZZemffXncfqM5KUIObM343q1MRJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FtG5/kH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8266EC4CECF;
-	Tue,  3 Dec 2024 16:10:20 +0000 (UTC)
+	 MIME-Version; b=OUGtt1gBwi8t3FyKpqMsXWLNbT7IMRWOIocBvvGkivw+h8s+qE/tL5Pi0UC8lT6He+Y/YnpQLRgkTU72awYpJkioy+U5yevGheVdxt9g90kXY4lGmmv0iU5Zp8bhnhWuKWLJWiduGWt4ujqrvA5vrqPg+kNOuc0g26Avf+TBa5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qskBcW44; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F87CC4CED6;
+	Tue,  3 Dec 2024 15:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242221;
-	bh=92Sh+qUsR8EvdT80wUVF5lsWU1mIhbu2WvzHXzg8bBQ=;
+	s=korg; t=1733239897;
+	bh=v8GLLvtzfjVVUdRHIvRVHaLVaxx1sFJBSfpqAtBPXCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FtG5/kHXmfKtmBEkUG2X1kysW2oSCEXvii2NLyXQX+wzqbZQPLkt69o77bw3dZ6a
-	 pPNcd7zU4fyuCCdWr6n5YcofXR5ql1JuIgPKDhuLQ0HId+5oBHWXG+Ti5BR9v95qjM
-	 taV0icqWInN+vmeyRZwET7fQG8qSzZsucY5zMvQc=
+	b=qskBcW44XnBoOc7ssbL6DdFOoTGGP5EnuLlvhb0EGUgPLugDieF9N9hxwVJwT9WJX
+	 0pMSBQLnIMvjzktMUgGZk1o4gfRb/GU+IkU7q1sZLGvrhUBpVql03LlLW9P6y8/LPt
+	 hH6gSsUrwi2Xuw7xu+eCA8DkPU/qy6drLhRFwQoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 615/826] ASoC: imx-audmix: Add NULL check in imx_audmix_probe
-Date: Tue,  3 Dec 2024 15:45:42 +0100
-Message-ID: <20241203144807.743601816@linuxfoundation.org>
+Subject: [PATCH 6.11 771/817] rtc: st-lpc: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  3 Dec 2024 15:45:43 +0100
+Message-ID: <20241203144026.109745363@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit e038f43edaf0083f6aa7c9415d86cf28dfd152f9 ]
+[ Upstream commit b6cd7adec0cf03f0aefc55676e71dd721cbc71a8 ]
 
-devm_kasprintf() can return a NULL pointer on failure,but this
-returned value in imx_audmix_probe() is not checked.
-Add NULL check in imx_audmix_probe(), to handle kernel NULL
-pointer dereference error.
+If request_irq() fails in st_rtc_probe(), there is no need to enable
+the irq, and if it succeeds, disable_irq() after request_irq() still has
+a time gap in which interrupts can come.
 
-Fixes: 05d996e11348 ("ASoC: imx-audmix: Split capture device for audmix")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Link: https://patch.msgid.link/20241118084553.4195-1-hanchunchao@inspur.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
+request IRQ.
+
+Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240912033727.3013951-1-ruanjinjie@huawei.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/imx-audmix.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/rtc/rtc-st-lpc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-index 6fbcf33fd0dea..8e7b75cf64db4 100644
---- a/sound/soc/fsl/imx-audmix.c
-+++ b/sound/soc/fsl/imx-audmix.c
-@@ -275,6 +275,9 @@ static int imx_audmix_probe(struct platform_device *pdev)
- 		/* Add AUDMIX Backend */
- 		be_name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 					 "audmix-%d", i);
-+		if (!be_name)
-+			return -ENOMEM;
-+
- 		priv->dai[num_dai + i].cpus	= &dlc[1];
- 		priv->dai[num_dai + i].codecs	= &snd_soc_dummy_dlc;
+diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
+index d492a2d26600c..c6d4522411b31 100644
+--- a/drivers/rtc/rtc-st-lpc.c
++++ b/drivers/rtc/rtc-st-lpc.c
+@@ -218,15 +218,14 @@ static int st_rtc_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
+-	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler, 0,
+-			       pdev->name, rtc);
++	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler,
++			       IRQF_NO_AUTOEN, pdev->name, rtc);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to request irq %i\n", rtc->irq);
+ 		return ret;
+ 	}
+ 
+ 	enable_irq_wake(rtc->irq);
+-	disable_irq(rtc->irq);
+ 
+ 	rtc->clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(rtc->clk))
 -- 
 2.43.0
 
