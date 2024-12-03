@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 363C99E2433
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45859E23F5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 581C3165CA3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DF57B86815
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA8820010B;
-	Tue,  3 Dec 2024 15:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26E81F7584;
+	Tue,  3 Dec 2024 15:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYQCSKa7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOCRNAsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDCC41FF5F9;
-	Tue,  3 Dec 2024 15:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1081F130E;
+	Tue,  3 Dec 2024 15:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240169; cv=none; b=G84ixPdC4LECeoVExrr43chaaBCTd7lgsBAt8IvI7ZYRkvWBQLI+NErNfPFAMD3wL79wmyjTVC4jKtC6sjBU1+4sWN9C1yPUcvMR9lstjXEEQ95eJ3jffhcvmfQYphAAqxFzYGlnDWoLK3O2k3OZO+hp7KVwEvrACjXzX4Gwue4=
+	t=1733238241; cv=none; b=OD/OpetPLWUsOb8O6a5J+IEmEjFGdgULggJ4CBbZjDepIAOoNthyuZWA71oLuKPA3lyl0XFmRlTWm1QR9p/1JOMd2KSl7CYvBpIdP/gx9uzErtVy1Le8rXTI+CLVUq334QdSmkrh6+tFg0rDUBBcbNj3uA1Dz/0z/KkJ+ckS3HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240169; c=relaxed/simple;
-	bh=fwwlWtjbPxxnuFgIUKHk5Khl/PL83S20D+ekPLrMJiQ=;
+	s=arc-20240116; t=1733238241; c=relaxed/simple;
+	bh=Xz8aWCWxwblNrrGWRoqxpjrQ7gjC+r8xroB0hQXyebo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6wChAIk8QswDjmNsuUrjVFS0K027PEZD2v3+Qwflx0lW92SU4OlVuhgZoK9Zj7miTQiinm+mE/AYtbYivv6a41S1mndRvRA1ivOH/kyHihv/9tJ7MQdNptnIElFMjDmBokDQq1/T6qjz81CGW9urDFsZ1ICD6uEzyh9oy4HFfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYQCSKa7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC35C4CECF;
-	Tue,  3 Dec 2024 15:36:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kgBs56BCvOV3j9Dh+I/miL4J5ih5ndXAbmfx5GyORkj0f7n5V+A4o1O1GWMyNgmCAZp/8IdNLCTkIK6g8/dpa2qkjMB1jqkEuNJPuYTS2nr2p0dx6UCeVFInGVXGgF9+8DwZ0wg3ai/FrNAonfoAUMNWsiAEgJldx02tqbCG/i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOCRNAsd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DC7C4CECF;
+	Tue,  3 Dec 2024 15:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240168;
-	bh=fwwlWtjbPxxnuFgIUKHk5Khl/PL83S20D+ekPLrMJiQ=;
+	s=korg; t=1733238241;
+	bh=Xz8aWCWxwblNrrGWRoqxpjrQ7gjC+r8xroB0hQXyebo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYQCSKa7JusFTv9Wy+/lM5DYHLh3j7ngJzybStieS4Roj60F+TZSNryjYPPaMxDx3
-	 t4MILMRqA3DiPKYMmSi68pIDkyv771pPsgfGdO5drSp1aUFboYG/2TJEb/vdVzim0v
-	 Nw7e1VfAHnIGBv8k1KHQcCzqM4/sTJ843+tyB6yY=
+	b=BOCRNAsdGsPetOuKJ9PV4/Sq+YErL8J6/eYxO8ogwWko6WT0Mrly/EUr4V0UK6H9B
+	 zUCejRw054a0FwYUEZH3qsOm+7n1QSPmT/9jotVJY9OOvrP4DkxG5q4I9+13Q0nRSw
+	 n0ZVDfHfoMlcNygoQgUd2471NuBTsYPkVggOMaPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/826] firmware: google: Unregister driver_info on failure
-Date: Tue,  3 Dec 2024 15:36:14 +0100
-Message-ID: <20241203144745.299546716@linuxfoundation.org>
+Subject: [PATCH 6.11 203/817] selftests/resctrl: Protect against array overrun during iMC config parsing
+Date: Tue,  3 Dec 2024 15:36:15 +0100
+Message-ID: <20241203144003.669334514@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Reinette Chatre <reinette.chatre@intel.com>
 
-[ Upstream commit 32b0901e141f6d4cf49d820b53eb09b88b1f72f7 ]
+[ Upstream commit 48ed4e799e8fbebae838dca404a8527763d41191 ]
 
-When platform_device_register_full() returns error, the gsmi_init() returns
-without unregister gsmi_driver_info, fix by add missing
-platform_driver_unregister() when platform_device_register_full() failed.
+The MBM and MBA tests need to discover the event and umask with which to
+configure the performance event used to measure read memory bandwidth.
+This is done by parsing the
+/sys/bus/event_source/devices/uncore_imc_<imc instance>/events/cas_count_read
+file for each iMC instance that contains the formatted
+output: "event=<event>,umask=<umask>"
 
-Fixes: 8942b2d5094b ("gsmi: Add GSMI commands to log S0ix info")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Link: https://lore.kernel.org/r/20241015131344.20272-1-yuancan@huawei.com
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Parsing of cas_count_read contents is done by initializing an array of
+MAX_TOKENS elements with tokens (deliminated by "=,") from this file.
+Remove the unnecessary append of a delimiter to the string needing to be
+parsed. Per the strtok() man page: "delimiter bytes at the start or end of
+the string are ignored". This has no impact on the token placement within
+the array.
+
+After initialization, the actual event and umask is determined by
+parsing the tokens directly following the "event" and "umask" tokens
+respectively.
+
+Iterating through the array up to index "i < MAX_TOKENS" but then
+accessing index "i + 1" risks array overrun during the final iteration.
+Avoid array overrun by ensuring that the index used within for
+loop will always be valid.
+
+Fixes: 1d3f08687d76 ("selftests/resctrl: Read memory bandwidth from perf IMC counter and from resctrl file system")
+Signed-off-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/google/gsmi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/resctrl/resctrl_val.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/google/gsmi.c b/drivers/firmware/google/gsmi.c
-index d304913314e49..24e666d5c3d1a 100644
---- a/drivers/firmware/google/gsmi.c
-+++ b/drivers/firmware/google/gsmi.c
-@@ -918,7 +918,8 @@ static __init int gsmi_init(void)
- 	gsmi_dev.pdev = platform_device_register_full(&gsmi_dev_info);
- 	if (IS_ERR(gsmi_dev.pdev)) {
- 		printk(KERN_ERR "gsmi: unable to register platform device\n");
--		return PTR_ERR(gsmi_dev.pdev);
-+		ret = PTR_ERR(gsmi_dev.pdev);
-+		goto out_unregister;
- 	}
+diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
+index 8c275f6b4dd77..f118f659e8960 100644
+--- a/tools/testing/selftests/resctrl/resctrl_val.c
++++ b/tools/testing/selftests/resctrl/resctrl_val.c
+@@ -83,13 +83,12 @@ void get_event_and_umask(char *cas_count_cfg, int count, bool op)
+ 	char *token[MAX_TOKENS];
+ 	int i = 0;
  
- 	/* SMI access needs to be serialized */
-@@ -1056,10 +1057,11 @@ static __init int gsmi_init(void)
- 	gsmi_buf_free(gsmi_dev.name_buf);
- 	kmem_cache_destroy(gsmi_dev.mem_pool);
- 	platform_device_unregister(gsmi_dev.pdev);
--	pr_info("gsmi: failed to load: %d\n", ret);
-+out_unregister:
- #ifdef CONFIG_PM
- 	platform_driver_unregister(&gsmi_driver_info);
- #endif
-+	pr_info("gsmi: failed to load: %d\n", ret);
- 	return ret;
- }
+-	strcat(cas_count_cfg, ",");
+ 	token[0] = strtok(cas_count_cfg, "=,");
  
+ 	for (i = 1; i < MAX_TOKENS; i++)
+ 		token[i] = strtok(NULL, "=,");
+ 
+-	for (i = 0; i < MAX_TOKENS; i++) {
++	for (i = 0; i < MAX_TOKENS - 1; i++) {
+ 		if (!token[i])
+ 			break;
+ 		if (strcmp(token[i], "event") == 0) {
 -- 
 2.43.0
 
