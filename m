@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CACF9E27F1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:45:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 100C29E2221
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:21:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCCADBE24D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:50:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07B1161C79
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79541F8AE7;
-	Tue,  3 Dec 2024 15:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FC61F758E;
+	Tue,  3 Dec 2024 15:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q61xdFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ADjSKTo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7626A1F75A4;
-	Tue,  3 Dec 2024 15:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AB21F755B;
+	Tue,  3 Dec 2024 15:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240991; cv=none; b=jDYnPmV66uARBEKRW6mt7iAGndFuSYvpvE+t4zR2DLzU1txgJpINL5Yva+N3uv0z9Ms2X260OoYgysHUbpAIkENGAPj93j7Bx2D+jH7cljETrHump8/o1P3xy5lOspT4e3Zjxl1U+SQvOonzR4VPbXa58OAjyccbltNSrJvrqhw=
+	t=1733238937; cv=none; b=sAwGKZuHKML0WfhQQx3PVNLjCK0my9j/bOQy1QsqgnIRCwbxyWkpzEW60tf1oqUCrmU6v9kFJt58dWvijjMk625L4XHSituSCYNPFEjFLHTa7ebybEQ0QdnC/49sg8zJtRNsTIOEVGuNw2+b4zdDszfI2E4UKUARfHz2ZSWG9sM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240991; c=relaxed/simple;
-	bh=jhE5V6I82iy0zSk2sGzWJ4he4XTauOnCneDAkapjlrw=;
+	s=arc-20240116; t=1733238937; c=relaxed/simple;
+	bh=zUBWXUfItIZD/eK/qveOVV2bpkRCulgLTrozK2k2ZLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+Ql12KTOV6KpOknn0mcam/ZQvWGPLwlTcR1VQ9FgE5MTVIayYIds2FsbFetShC7bNnS81W3sFe4hU3teOIUTODGSw7yThcsoszAH5oc/55fYepn9UOt9Es0tbE+ChCFZOE6W0r1CDlYPqAIqsqiN/LACg9/POL4crw80yNUf2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q61xdFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74460C4CED6;
-	Tue,  3 Dec 2024 15:49:50 +0000 (UTC)
+	 MIME-Version; b=OFh/qigc0uPXCA9Mps9pDyItsfYd0wxF0qwa8thUBdn3+eVJF74HfQTaBRYcGbUfYk7FxXHHz2bLykTAKwJKbkdAraxENn2ZfHyjLv37B5KL/hm4jbxdb632cDdlZ5hQm0jEYhC6MGwjiHPulK3d3G4yt8vECXLPW/o5CNBnIR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ADjSKTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A37C4CECF;
+	Tue,  3 Dec 2024 15:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240990;
-	bh=jhE5V6I82iy0zSk2sGzWJ4he4XTauOnCneDAkapjlrw=;
+	s=korg; t=1733238937;
+	bh=zUBWXUfItIZD/eK/qveOVV2bpkRCulgLTrozK2k2ZLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1q61xdFmDmCbOKX5CdlXWOt6FQj2oZWdYIokfXPSsrTKVbcqG0BZIdtp1vHiqeX3V
-	 Rcki5/rtb45ov/OdzucYy/xY6vmhAnTv4RWx5ye2tilwUFBEXYuj1FpdQ7fBNAoc36
-	 q0ShR3yTyRc0ETUo/JN00cOEXJypS5UI5Mh3zOv0=
+	b=2ADjSKTon2rGMb3umi/KZRC/VEA/UBxYE4oSPNQ8EzREqnF4sxjvGHpN5JzXgwSpX
+	 nMKlP2rfQUZ9vQ+F8PnS1FJOz5s/dmjnEuhzo115KBZgr5fB8OqAh1KyAhAuPcMwPa
+	 Ij283mttviRxZOolKGTpxJjCWavhssguED9hF6Lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Li Huafei <lihuafei1@huawei.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 294/826] drm/amdgpu: Fix the memory allocation issue in amdgpu_discovery_get_nps_info()
+Subject: [PATCH 6.11 449/817] RDMA/hns: Fix NULL pointer derefernce in hns_roce_map_mr_sg()
 Date: Tue,  3 Dec 2024 15:40:21 +0100
-Message-ID: <20241203144755.234486791@linuxfoundation.org>
+Message-ID: <20241203144013.404117153@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit a1144da794adedb9447437c57d69add56494309d ]
+[ Upstream commit 6b526d17eed850352d880b93b9bf20b93006bd92 ]
 
-Fix two issues with memory allocation in amdgpu_discovery_get_nps_info()
-for mem_ranges:
+ib_map_mr_sg() allows ULPs to specify NULL as the sg_offset argument.
+The driver needs to check whether it is a NULL pointer before
+dereferencing it.
 
- - Add a check for allocation failure to avoid dereferencing a null
-   pointer.
-
- - As suggested by Christophe, use kvcalloc() for memory allocation,
-   which checks for multiplication overflow.
-
-Additionally, assign the output parameters nps_type and range_cnt after
-the kvcalloc() call to prevent modifying the output parameters in case
-of an error return.
-
-Fixes: b194d21b9bcc ("drm/amdgpu: Use NPS ranges from discovery table")
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d387d4b54eb8 ("RDMA/hns: Fix missing pagesize and alignment check in FRMR")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241108075743.2652258-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-index 4bd61c169ca8d..ca8091fd3a24f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -1757,11 +1757,13 @@ int amdgpu_discovery_get_nps_info(struct amdgpu_device *adev,
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index b3f4327d0e64a..bf30b3a65a9ba 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -435,15 +435,16 @@ static int hns_roce_set_page(struct ib_mr *ibmr, u64 addr)
+ }
  
- 	switch (le16_to_cpu(nps_info->v1.header.version_major)) {
- 	case 1:
-+		mem_ranges = kvcalloc(nps_info->v1.count,
-+				      sizeof(*mem_ranges),
-+				      GFP_KERNEL);
-+		if (!mem_ranges)
-+			return -ENOMEM;
- 		*nps_type = nps_info->v1.nps_type;
- 		*range_cnt = nps_info->v1.count;
--		mem_ranges = kvzalloc(
--			*range_cnt * sizeof(struct amdgpu_gmc_memrange),
--			GFP_KERNEL);
- 		for (i = 0; i < *range_cnt; i++) {
- 			mem_ranges[i].base_address =
- 				nps_info->v1.instance_info[i].base_address;
+ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+-		       unsigned int *sg_offset)
++		       unsigned int *sg_offset_p)
+ {
++	unsigned int sg_offset = sg_offset_p ? *sg_offset_p : 0;
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(ibmr->device);
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+ 	int ret, sg_num = 0;
+ 
+-	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
++	if (!IS_ALIGNED(sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
+ 	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
+ 	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
+ 		return sg_num;
+@@ -454,7 +455,7 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	if (!mr->page_list)
+ 		return sg_num;
+ 
+-	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
++	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset_p, hns_roce_set_page);
+ 	if (sg_num < 1) {
+ 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
+ 			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
 -- 
 2.43.0
 
