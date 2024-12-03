@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EC19E24A5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2739E21C2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A073282C92
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0415228566E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1BA1F75B1;
-	Tue,  3 Dec 2024 15:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838881F8901;
+	Tue,  3 Dec 2024 15:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUAPF4F/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0wuRn8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D491DDC26;
-	Tue,  3 Dec 2024 15:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404561F76D9;
+	Tue,  3 Dec 2024 15:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241027; cv=none; b=EkCxt+J40Dy6maFQJAMFLq4HWw6aAuFIfEQbQeEOhHcHeuo8xLZ2rzgg53upPfGVHnU6PzcOe0oiuTIBqsdGI78sIgp61jh1Wkg6niYFSK1FmgAidu7V4FRZP+i0blaUGd2Y+SZS4ZNMB5O5u1WPBxi9mcKxNv+rBqeoAXoM4pE=
+	t=1733238961; cv=none; b=ZIfAoPtVbBjjf886P+X40M9KWX4zWL64+sEud4C4A7t/gwq3+sMRf3rCLRTO6/iqtNIR2PKWzpbynad3nidqGAyiVPLFOiBZ5CPzCDTVVJdpY8t4AW7YyF0wZ7SDVsy93hFNXWQ88AmMZ+bmky43SqHvfRHYOl1W5lB+Ndjz32A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241027; c=relaxed/simple;
-	bh=ns86m1wj9DL9HTZ9Ar5ygHJlO7uakSEZu7IiE+Bgk/Y=;
+	s=arc-20240116; t=1733238961; c=relaxed/simple;
+	bh=T2BMUvY382bbht+/hlh8dmU1Rxi9QzISPZlj4K+VnfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfBmFyFxlz1WQIT4RhKYEy4VAK49WGVkZf3shRRMlc+lomr+Z3G1s8DFx4/x0rqXNBh8LF/gHI5LpEOjYwrVAWtkSndJ1JW8FMHRFcGH9nQhxFCKJW8kY9itaGm0rvwoVmY9fhW39Nsqc8xuzriggUpbxTMmWuudkdb8lIVA5HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUAPF4F/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2D9C4CECF;
-	Tue,  3 Dec 2024 15:50:26 +0000 (UTC)
+	 MIME-Version; b=X5F9EceezbdGR7ulm9kAPzh6OA12OATgI2TyVV9rF9DoKNwxagmT2AtLyoLf1uo/rVD25PTylznkkszrcb2xkQsRcpVSTYwtstno6C0q/RMMS0KCz8Jg+SgTY6UfOainRFNrrRt29sTVKmafc6R8z7QV5I2ykxSv0LjFC7KPTe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0wuRn8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0F8C4CECF;
+	Tue,  3 Dec 2024 15:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241027;
-	bh=ns86m1wj9DL9HTZ9Ar5ygHJlO7uakSEZu7IiE+Bgk/Y=;
+	s=korg; t=1733238960;
+	bh=T2BMUvY382bbht+/hlh8dmU1Rxi9QzISPZlj4K+VnfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUAPF4F/vt3v+DNWFZry4tVqsH5LUeu9cytg2B6/HRJtXcHUjbWgCVS/EQ4LIutI7
-	 /A7JV8G4YAZsnd4TslC8wOKDqE3yv53A+wCqY9bdiCG9FbM6zSAd52oPUA9HQaSfc+
-	 0R1aaMLjmjStTVCghb4n1cNgqJ0rCOKnEqCcUQ/w=
+	b=H0wuRn8SmB8gU678qU/1wbatftEtGk8Hr7m2+gdE03vRo4UkGcrd7l+nJ4jYL9k0I
+	 N09nISH3Pvzg+kj1Ynt2oKsIffrn81l+qsrK0wSElagzIQcoC/c7Hz3yP6hUdZyQWg
+	 Kz9juBELQQ9np90ojMICbmRyVsHr5tgNCu1qn05s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Gautam Menghani <gautam@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 302/826] wifi: rtw89: coex: check NULL return of kmalloc in btc_fw_set_monreg()
+Subject: [PATCH 6.11 457/817] KVM: PPC: Book3S HV: Stop using vc->dpdes for nested KVM guests
 Date: Tue,  3 Dec 2024 15:40:29 +0100
-Message-ID: <20241203144755.544185936@linuxfoundation.org>
+Message-ID: <20241203144013.713881519@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Gautam Menghani <gautam@linux.ibm.com>
 
-[ Upstream commit 81df5ed446b448bdc327b7c7f0b50121fc1f4aa2 ]
+[ Upstream commit 0d3c6b28896f9889c8864dab469e0343a0ad1c0c ]
 
-kmalloc may fail, return value might be NULL and will cause
-NULL pointer dereference. Add check NULL return of kmalloc in
-btc_fw_set_monreg().
+commit 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
+introduced an optimization to use only vcpu->doorbell_request for SMT
+emulation for Power9 and above guests, but the code for nested guests
+still relies on the old way of handling doorbells, due to which an L2
+guest (see [1]) cannot be booted with XICS with SMT>1. The command to
+repro this issue is:
 
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Fixes: b952cb0a6e2d ("wifi: rtw89: coex: Add register monitor report v7 format")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/516a91f3997534f708af43c7592cbafdd53dd599.1730253508.git.xiaopei01@kylinos.cn
+// To be run in L1
+
+qemu-system-ppc64 \
+	-drive file=rhel.qcow2,format=qcow2 \
+	-m 20G \
+	-smp 8,cores=1,threads=8 \
+	-cpu  host \
+	-nographic \
+	-machine pseries,ic-mode=xics -accel kvm
+
+Fix the plumbing to utilize vcpu->doorbell_request instead of vcore->dpdes
+for nested KVM guests on P9 and above.
+
+[1] Terminology
+1. L0 : PowerNV linux running with HV privileges
+2. L1 : Pseries KVM guest running on top of L0
+2. L2 : Nested KVM guest running on top of L1
+
+Fixes: 6398326b9ba1 ("KVM: PPC: Book3S HV P9: Stop using vc->dpdes")
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/20241109063301.105289-3-gautam@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/kvm/book3s_hv.c        |  9 +++++++++
+ arch/powerpc/kvm/book3s_hv_nested.c | 14 ++++++++++----
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 8c2db2a493c8b..8d54d71fcf539 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -2492,6 +2492,8 @@ static void btc_fw_set_monreg(struct rtw89_dev *rtwdev)
- 	if (ver->fcxmreg == 7) {
- 		sz = struct_size(v7, regs, n);
- 		v7 = kmalloc(sz, GFP_KERNEL);
-+		if (!v7)
-+			return;
- 		v7->type = RPT_EN_MREG;
- 		v7->fver = ver->fcxmreg;
- 		v7->len = n;
-@@ -2506,6 +2508,8 @@ static void btc_fw_set_monreg(struct rtw89_dev *rtwdev)
- 	} else {
- 		sz = struct_size(v1, regs, n);
- 		v1 = kmalloc(sz, GFP_KERNEL);
-+		if (!v1)
-+			return;
- 		v1->fver = ver->fcxmreg;
- 		v1->reg_num = n;
- 		memcpy(v1->regs, chip->mon_reg, flex_array_size(v1, regs, n));
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 0ed5c5c7a350d..ccc9a8431b944 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -4303,6 +4303,15 @@ static int kvmhv_vcpu_entry_p9_nested(struct kvm_vcpu *vcpu, u64 time_limit, uns
+ 	}
+ 	hvregs.hdec_expiry = time_limit;
+ 
++	/*
++	 * hvregs has the doorbell status, so zero it here which
++	 * enables us to receive doorbells when H_ENTER_NESTED is
++	 * in progress for this vCPU
++	 */
++
++	if (vcpu->arch.doorbell_request)
++		vcpu->arch.doorbell_request = 0;
++
+ 	/*
+ 	 * When setting DEC, we must always deal with irq_work_raise
+ 	 * via NMI vs setting DEC. The problem occurs right as we
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index 05f5220960c63..125440a606ee3 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -32,7 +32,7 @@ void kvmhv_save_hv_regs(struct kvm_vcpu *vcpu, struct hv_guest_state *hr)
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+ 	hr->pcr = vc->pcr | PCR_MASK;
+-	hr->dpdes = vc->dpdes;
++	hr->dpdes = vcpu->arch.doorbell_request;
+ 	hr->hfscr = vcpu->arch.hfscr;
+ 	hr->tb_offset = vc->tb_offset;
+ 	hr->dawr0 = vcpu->arch.dawr0;
+@@ -105,7 +105,7 @@ static void save_hv_return_state(struct kvm_vcpu *vcpu,
+ {
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+-	hr->dpdes = vc->dpdes;
++	hr->dpdes = vcpu->arch.doorbell_request;
+ 	hr->purr = vcpu->arch.purr;
+ 	hr->spurr = vcpu->arch.spurr;
+ 	hr->ic = vcpu->arch.ic;
+@@ -143,7 +143,7 @@ static void restore_hv_regs(struct kvm_vcpu *vcpu, const struct hv_guest_state *
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+ 	vc->pcr = hr->pcr | PCR_MASK;
+-	vc->dpdes = hr->dpdes;
++	vcpu->arch.doorbell_request = hr->dpdes;
+ 	vcpu->arch.hfscr = hr->hfscr;
+ 	vcpu->arch.dawr0 = hr->dawr0;
+ 	vcpu->arch.dawrx0 = hr->dawrx0;
+@@ -170,7 +170,13 @@ void kvmhv_restore_hv_return_state(struct kvm_vcpu *vcpu,
+ {
+ 	struct kvmppc_vcore *vc = vcpu->arch.vcore;
+ 
+-	vc->dpdes = hr->dpdes;
++	/*
++	 * This L2 vCPU might have received a doorbell while H_ENTER_NESTED was being handled.
++	 * Make sure we preserve the doorbell if it was either:
++	 *   a) Sent after H_ENTER_NESTED was called on this vCPU (arch.doorbell_request would be 1)
++	 *   b) Doorbell was not handled and L2 exited for some other reason (hr->dpdes would be 1)
++	 */
++	vcpu->arch.doorbell_request = vcpu->arch.doorbell_request | hr->dpdes;
+ 	vcpu->arch.hfscr = hr->hfscr;
+ 	vcpu->arch.purr = hr->purr;
+ 	vcpu->arch.spurr = hr->spurr;
 -- 
 2.43.0
 
