@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAA39E231E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:32:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D55819E25DD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23043166832
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AD38288999
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659E11E3DED;
-	Tue,  3 Dec 2024 15:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C9D1F8905;
+	Tue,  3 Dec 2024 16:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGwxjxcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHb4k7/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2188E1F473A;
-	Tue,  3 Dec 2024 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89B11F76B5;
+	Tue,  3 Dec 2024 16:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239690; cv=none; b=H1qJGviJUumCkjwBjojuPbbz/+ztfJd4t/1RRD5qJ6/q22QtXdyYLziBWSZwkXwr9JmXPuc9uM5rXf6JZL7W59RirHVAviuEak3QfRPoKD4I3GQw89d3vZwwA5SOM045qAPWBCAgHwjPkKm2eivyaBhjV7Ct8QeHd6/upPIZtUY=
+	t=1733241949; cv=none; b=E0zuXzztQvXxoXH+IR+4ztxB1sNva6/ObZicv3CvRAHIwQeUEB4THoljm44JoqjsygpnXAsIhTgXOw/BuPsLPKPmH6cJJGx9Ln4TwwJH9iGtCL/kUjWxxkFsd1epMVksFFR1jmsUqip5QA5K1ZKI3V83/WxyaWxlTtBrKJ08yFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239690; c=relaxed/simple;
-	bh=Tk/95r+tOWcB5XeKgwR45WqTlIhRw3i3WabM+2BVkkw=;
+	s=arc-20240116; t=1733241949; c=relaxed/simple;
+	bh=vfXTd2RT0WnqIL0FOq6OrbPC3y0j3M4VlKfoLaSegUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qLkmfVsAL8nG/TrwTsASoIiykIQGcfFkmQDy/5exFdE9YzWnkw+8yYlpQ68ImcrYIOSU69b69bny++lZqDiXLDd5Qx5HjmTWF1+ncmtqJjkRHJeFUBS2df4x/gwJp6urlYx8wHycYcLwhfLSLJGILiz+yg+KsnQKJjFP+4UfyIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGwxjxcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50420C4CECF;
-	Tue,  3 Dec 2024 15:28:09 +0000 (UTC)
+	 MIME-Version; b=ECpgYj8iJsVCQZBWb3SamkSFiG7f86Kw08vGM/0vCpo8sZmT7a8gqPkh9dS0/dcsKrUN+vAeuIKS4rFqepOQNbPc6l9pT94ox68MRkPmCT3XJi3muHRbIrW2HsFp1tJZ9hbUP+tSAiTU5Sa6M4cP+Gg2F0c8/psTwuUO/NYFkKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHb4k7/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B377C4CECF;
+	Tue,  3 Dec 2024 16:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239689;
-	bh=Tk/95r+tOWcB5XeKgwR45WqTlIhRw3i3WabM+2BVkkw=;
+	s=korg; t=1733241949;
+	bh=vfXTd2RT0WnqIL0FOq6OrbPC3y0j3M4VlKfoLaSegUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGwxjxcfu5OlxYLJl2YMTMHefgdGtxsn8BLwTutG5YYkw/WkXufYrAln5um55rrnJ
-	 2sDTaUq0lu8dJ+lsRhlDhuGuTZNhU308V+u9BTb6a5K3fqMO2SooC4TFac8mZmRSae
-	 exptIZm7FhPdNYuvR8Vp/wg7gFDlxIinTktTYwzg=
+	b=lHb4k7/dBMBkDt2JMQtylDAHvHV6M2Dr5QejS7rd+n3UqrzobNF6Ryzvw9ecTj4eB
+	 iSqUd23A28oofkj5Fn+e4e3yno7VbcD7THnYKuEBZ+63Ikbsi7U8BPPuCjiMyYEaI/
+	 1LX/e4KFrjfQ/fdlRPcA4GB/lD7+kHrVyObhpSGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.11 700/817] cpufreq: mediatek-hw: Fix wrong return value in mtk_cpufreq_get_cpu_power()
-Date: Tue,  3 Dec 2024 15:44:32 +0100
-Message-ID: <20241203144023.303162816@linuxfoundation.org>
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 546/826] LoongArch: Fix build failure with GCC 15 (-std=gnu23)
+Date: Tue,  3 Dec 2024 15:44:33 +0100
+Message-ID: <20241203144805.049764788@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 172bf5ed04cb6c9e66d58de003938ed5c8756570 upstream.
+[ Upstream commit 947d5d036c788156f09e83e7f16322ffe8124384 ]
 
-mtk_cpufreq_get_cpu_power() return 0 if the policy is NULL. Then in
-em_create_perf_table(), the later zero check for power is not invalid
-as power is uninitialized. As Lukasz suggested, it must return -EINVAL when
-the 'policy' is not found. So return -EINVAL to fix it.
+Whenever I try to build the kernel with upcoming GCC 15 which defaults
+to -std=gnu23 I get a build failure:
 
-Cc: stable@vger.kernel.org
-Fixes: 4855e26bcf4d ("cpufreq: mediatek-hw: Add support for CPUFREQ HW")
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Suggested-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  CC      arch/loongarch/vdso/vgetcpu.o
+In file included from ./include/uapi/linux/posix_types.h:5,
+                 from ./include/uapi/linux/types.h:14,
+                 from ./include/linux/types.h:6,
+                 from ./include/linux/kasan-checks.h:5,
+                 from ./include/asm-generic/rwonce.h:26,
+                 from ./arch/loongarch/include/generated/asm/rwonce.h:1,
+                 from ./include/linux/compiler.h:317,
+                 from ./include/asm-generic/bug.h:5,
+                 from ./arch/loongarch/include/asm/bug.h:60,
+                 from ./include/linux/bug.h:5,
+                 from ./include/linux/mmdebug.h:5,
+                 from ./include/linux/mm.h:6,
+                 from ./arch/loongarch/include/asm/vdso.h:10,
+                 from arch/loongarch/vdso/vgetcpu.c:6:
+./include/linux/stddef.h:11:9: error: expected identifier before 'false'
+   11 |         false   = 0,
+      |         ^~~~~
+./include/linux/types.h:35:33: error: two or more data types in declaration specifiers
+   35 | typedef _Bool                   bool;
+      |                                 ^~~~
+./include/linux/types.h:35:1: warning: useless type name in empty declaration
+   35 | typedef _Bool                   bool;
+      | ^~~~~~~
+
+The kernel builds explicitly with -std=gnu11 in top Makefile, but
+arch/loongarch/vdso does not use KBUILD_CFLAGS from the rest of the
+kernel, just add -std=gnu11 flag to arch/loongarch/vdso/Makefile.
+
+By the way, commit e8c07082a810 ("Kbuild: move to -std=gnu11") did a
+similar change for arch/arm64/kernel/vdso32/Makefile.
+
+Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/mediatek-cpufreq-hw.c |    2 +-
+ arch/loongarch/vdso/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/mediatek-cpufreq-hw.c
-+++ b/drivers/cpufreq/mediatek-cpufreq-hw.c
-@@ -62,7 +62,7 @@ mtk_cpufreq_get_cpu_power(struct device
- 
- 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
- 	if (!policy)
--		return 0;
-+		return -EINVAL;
- 
- 	data = policy->driver_data;
- 
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index 40c1175823d61..fdde1bcd4e266 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -19,7 +19,7 @@ ccflags-vdso := \
+ cflags-vdso := $(ccflags-vdso) \
+ 	-isystem $(shell $(CC) -print-file-name=include) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
+-	-O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
++	-std=gnu11 -O2 -g -fno-strict-aliasing -fno-common -fno-builtin \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+ 	$(call cc-option, -fno-asynchronous-unwind-tables) \
+ 	$(call cc-option, -fno-stack-protector)
+-- 
+2.43.0
+
 
 
 
