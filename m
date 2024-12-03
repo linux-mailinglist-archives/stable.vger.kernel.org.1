@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-97918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 506139E2683
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EE19E2331
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE287167736
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A74285E59
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CB31F76BF;
-	Tue,  3 Dec 2024 16:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517B31F8AD5;
+	Tue,  3 Dec 2024 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwsR9hy/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYlKil8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B291E47AD;
-	Tue,  3 Dec 2024 16:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6401F76D2;
+	Tue,  3 Dec 2024 15:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242180; cv=none; b=Hig4Sm64EVWjVMv/HAqk5MCApikAENuCEGJxD75ePW3q0nUHXlXP7S1Rt5T7R6+ITeYtV0dLtnqK5EcPYleZRh2wP3Lx1lh+AOWQn6SjnzNRcME772WVI5Gx4XhBGAecer2jCMoMb1o5Ya+C70qU23seXIDV0Ou1N3iKkvIhl2M=
+	t=1733239943; cv=none; b=XNuGl3S/ShuDZ1Qv1sKVbkH+B0fdLdmO98VAzuk8IqfjX4pE22ouNswydJVp92g+DreVsoSaStmI6XBRVirgzaoz4NWzliHEF5Fwd+2QCmonatOjjRa92wkaeiFb1JlylB1XAn2jeJGCzwpqA6y6Xn8edDj8Z+kJlOYnuINw+0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242180; c=relaxed/simple;
-	bh=p9F93CV40hJwpqqzrYUSrG9Q7t0ERecpOOzVmcFxFdU=;
+	s=arc-20240116; t=1733239943; c=relaxed/simple;
+	bh=9Hize2eSJnfn/d46YI+fxUcc148VadctsKOheqWIRTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mtg65w3zFqpMSnD7d296pB6VQ4B84BRmUjTIv9ex5Gwond+Lqpe/5gGjntPlmjNHOfWBhJHc8zGIHMxSjENR2Xw6IY0HRW0Qa3OEX13sshKacrSbWCa1+GSTEG8xMXKPhEaqM9BOCE1XglFXL0DjgEzeD1/M7+y8cxfP152yC/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwsR9hy/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB98C4CECF;
-	Tue,  3 Dec 2024 16:09:39 +0000 (UTC)
+	 MIME-Version; b=ne1cg1Usfj035nEKQTWvgi+TZEHYi9Gtj1aoML63UakXiQT1I5+swrUp/yZwJYxWFe/mHfRj3ajmzKkGhSTRxkPSSQDJYkuR6mORKzLnl/Eb16I+oEOxnR/PR22Nb/x1zbDeMHToOQ5QS87APl9Cf0/4yYxtNPRp28avPaPCMzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYlKil8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C68C4CED8;
+	Tue,  3 Dec 2024 15:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242180;
-	bh=p9F93CV40hJwpqqzrYUSrG9Q7t0ERecpOOzVmcFxFdU=;
+	s=korg; t=1733239942;
+	bh=9Hize2eSJnfn/d46YI+fxUcc148VadctsKOheqWIRTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwsR9hy/iIkDfnuaC0c1uKuGQWLEKzH1mTsLC/nZ/VeHZLAbyZoVB4FPzmom4phki
-	 SG4hOjrW7swUqDDypB3r1tswDqGbyIc2UcS1CkUMzc4Jy75pLGCsM9TODixvWMSB7s
-	 5XcT5MpdDfpaXrynwftrkIDy+5HrMGx5rqjsv1r0=
+	b=VYlKil8le02o8XcvNn/JxcXD8nBW7RHnNwYY6aLYCodhOXdKirjmjGW9smQ70PERY
+	 uUjkWYAfNHLtUVaeTO/RaGopfRS7pwMSMGtvCmYqYQkhnjiPAX77ZJWoCATSfsPYPF
+	 J/+QJcn4en6AKa0lIwsYDZsv/6b8jblF9aWpjaQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 631/826] ext4: fix FS_IOC_GETFSMAP handling
-Date: Tue,  3 Dec 2024 15:45:58 +0100
-Message-ID: <20241203144808.368720386@linuxfoundation.org>
+	Alex Zenla <alex@edera.dev>,
+	Alexander Merritt <alexander@edera.dev>,
+	Ariadne Conill <ariadne@ariadne.space>,
+	Juergen Gross <jgross@suse.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 788/817] 9p/xen: fix init sequence
+Date: Tue,  3 Dec 2024 15:46:00 +0100
+Message-ID: <20241203144026.771450313@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,163 +65,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Alex Zenla <alex@edera.dev>
 
-commit 4a622e4d477bb12ad5ed4abbc7ad1365de1fa347 upstream.
+[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
 
-The original implementation ext4's FS_IOC_GETFSMAP handling only
-worked when the range of queried blocks included at least one free
-(unallocated) block range.  This is because how the metadata blocks
-were emitted was as a side effect of ext4_mballoc_query_range()
-calling ext4_getfsmap_datadev_helper(), and that function was only
-called when a free block range was identified.  As a result, this
-caused generic/365 to fail.
+Large amount of mount hangs observed during hotplugging of 9pfs devices. The
+9pfs Xen driver attempts to initialize itself more than once, causing the
+frontend and backend to disagree: the backend listens on a channel that the
+frontend does not send on, resulting in stalled processing.
 
-Fix this by creating a new function ext4_getfsmap_meta_helper() which
-gets called so that blocks before the first free block range in a
-block group can get properly reported.
+Only allow initialization of 9p frontend once.
 
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
+Signed-off-by: Alex Zenla <alex@edera.dev>
+Signed-off-by: Alexander Merritt <alexander@edera.dev>
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241119211633.38321-1-alexander@edera.dev>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/fsmap.c   |   54 +++++++++++++++++++++++++++++++++++++++++++++++++++++-
- fs/ext4/mballoc.c |   18 ++++++++++++++----
- fs/ext4/mballoc.h |    1 +
- 3 files changed, 68 insertions(+), 5 deletions(-)
+ net/9p/trans_xen.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/fsmap.c
-+++ b/fs/ext4/fsmap.c
-@@ -185,6 +185,56 @@ static inline ext4_fsblk_t ext4_fsmap_ne
- 	return fmr->fmr_physical + fmr->fmr_length;
- }
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index dfdbe1ca53387..0304e8a1616d8 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -465,6 +465,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
+ 	}
  
-+static int ext4_getfsmap_meta_helper(struct super_block *sb,
-+				     ext4_group_t agno, ext4_grpblk_t start,
-+				     ext4_grpblk_t len, void *priv)
-+{
-+	struct ext4_getfsmap_info *info = priv;
-+	struct ext4_fsmap *p;
-+	struct ext4_fsmap *tmp;
-+	struct ext4_sb_info *sbi = EXT4_SB(sb);
-+	ext4_fsblk_t fsb, fs_start, fs_end;
-+	int error;
++	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
+ 
+  error_xenbus:
+@@ -512,8 +513,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
+ 		break;
+ 
+ 	case XenbusStateInitWait:
+-		if (!xen_9pfs_front_init(dev))
+-			xenbus_switch_state(dev, XenbusStateInitialised);
++		if (dev->state != XenbusStateInitialising)
++			break;
 +
-+	fs_start = fsb = (EXT4_C2B(sbi, start) +
-+			  ext4_group_first_block_no(sb, agno));
-+	fs_end = fs_start + EXT4_C2B(sbi, len);
-+
-+	/* Return relevant extents from the meta_list */
-+	list_for_each_entry_safe(p, tmp, &info->gfi_meta_list, fmr_list) {
-+		if (p->fmr_physical < info->gfi_next_fsblk) {
-+			list_del(&p->fmr_list);
-+			kfree(p);
-+			continue;
-+		}
-+		if (p->fmr_physical <= fs_start ||
-+		    p->fmr_physical + p->fmr_length <= fs_end) {
-+			/* Emit the retained free extent record if present */
-+			if (info->gfi_lastfree.fmr_owner) {
-+				error = ext4_getfsmap_helper(sb, info,
-+							&info->gfi_lastfree);
-+				if (error)
-+					return error;
-+				info->gfi_lastfree.fmr_owner = 0;
-+			}
-+			error = ext4_getfsmap_helper(sb, info, p);
-+			if (error)
-+				return error;
-+			fsb = p->fmr_physical + p->fmr_length;
-+			if (info->gfi_next_fsblk < fsb)
-+				info->gfi_next_fsblk = fsb;
-+			list_del(&p->fmr_list);
-+			kfree(p);
-+			continue;
-+		}
-+	}
-+	if (info->gfi_next_fsblk < fsb)
-+		info->gfi_next_fsblk = fsb;
-+
-+	return 0;
-+}
-+
-+
- /* Transform a blockgroup's free record into a fsmap */
- static int ext4_getfsmap_datadev_helper(struct super_block *sb,
- 					ext4_group_t agno, ext4_grpblk_t start,
-@@ -539,6 +589,7 @@ static int ext4_getfsmap_datadev(struct
- 		error = ext4_mballoc_query_range(sb, info->gfi_agno,
- 				EXT4_B2C(sbi, info->gfi_low.fmr_physical),
- 				EXT4_B2C(sbi, info->gfi_high.fmr_physical),
-+				ext4_getfsmap_meta_helper,
- 				ext4_getfsmap_datadev_helper, info);
- 		if (error)
- 			goto err;
-@@ -560,7 +611,8 @@ static int ext4_getfsmap_datadev(struct
++		xen_9pfs_front_init(dev);
+ 		break;
  
- 	/* Report any gaps at the end of the bg */
- 	info->gfi_last = true;
--	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster, 0, info);
-+	error = ext4_getfsmap_datadev_helper(sb, end_ag, last_cluster + 1,
-+					     0, info);
- 	if (error)
- 		goto err;
- 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6999,13 +6999,14 @@ int
- ext4_mballoc_query_range(
- 	struct super_block		*sb,
- 	ext4_group_t			group,
--	ext4_grpblk_t			start,
-+	ext4_grpblk_t			first,
- 	ext4_grpblk_t			end,
-+	ext4_mballoc_query_range_fn	meta_formatter,
- 	ext4_mballoc_query_range_fn	formatter,
- 	void				*priv)
- {
- 	void				*bitmap;
--	ext4_grpblk_t			next;
-+	ext4_grpblk_t			start, next;
- 	struct ext4_buddy		e4b;
- 	int				error;
- 
-@@ -7016,10 +7017,19 @@ ext4_mballoc_query_range(
- 
- 	ext4_lock_group(sb, group);
- 
--	start = max(e4b.bd_info->bb_first_free, start);
-+	start = max(e4b.bd_info->bb_first_free, first);
- 	if (end >= EXT4_CLUSTERS_PER_GROUP(sb))
- 		end = EXT4_CLUSTERS_PER_GROUP(sb) - 1;
--
-+	if (meta_formatter && start != first) {
-+		if (start > end)
-+			start = end;
-+		ext4_unlock_group(sb, group);
-+		error = meta_formatter(sb, group, first, start - first,
-+				       priv);
-+		if (error)
-+			goto out_unload;
-+		ext4_lock_group(sb, group);
-+	}
- 	while (start <= end) {
- 		start = mb_find_next_zero_bit(bitmap, end + 1, start);
- 		if (start > end)
---- a/fs/ext4/mballoc.h
-+++ b/fs/ext4/mballoc.h
-@@ -259,6 +259,7 @@ ext4_mballoc_query_range(
- 	ext4_group_t			agno,
- 	ext4_grpblk_t			start,
- 	ext4_grpblk_t			end,
-+	ext4_mballoc_query_range_fn	meta_formatter,
- 	ext4_mballoc_query_range_fn	formatter,
- 	void				*priv);
- 
+ 	case XenbusStateConnected:
+-- 
+2.43.0
+
 
 
 
