@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-96402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710DF9E2925
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:26:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3CA9E2999
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:42:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F35C3B80D89
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:38:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B547B243D0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA1F1F7087;
-	Tue,  3 Dec 2024 14:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA291F7551;
+	Tue,  3 Dec 2024 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9+QDeel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mu4KSEBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4D41F668A;
-	Tue,  3 Dec 2024 14:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6331F7065;
+	Tue,  3 Dec 2024 14:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236677; cv=none; b=P51rtbxkv3PDUBC/lYveU3kp0Vhl1oZhKC8MG9Bu7KS51gDP37EaARzErCxnkDEKkTR2mfnJJsdK50EBrYprxEV035dwdZeT6TbPzWQL7v1mbmPXWH1uWP9t3b2OYq/DlnqY9Y0Vh7mokOFFD3n+XIHV13HLWRFlG7z+OR/ofbA=
+	t=1733237663; cv=none; b=DbFzckNi4Bp+EiBQSLPd+fheV4cveeT+FrUqgjhx7BRHduk8guqGUz7xYcGhiar9/2dIuQ1B1s4CMrBVgiUh/dr1yz6h+ggTJP08dnJKVJbXYgp0Oo7qSFqUphUh5wmZ7KCxkrP3mHOKXChE8IMyEzotukhC39r0GioYIMEUqsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236677; c=relaxed/simple;
-	bh=Wy3qPFCtKj5qqYB73URvatoVL38Oa/a9ag+tK3qe9c4=;
+	s=arc-20240116; t=1733237663; c=relaxed/simple;
+	bh=cE/AvZSQTdZPK4+CYb7hGOzKyRaPT5j8li/aZjl7VCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFpoEKTaNHsYHLDJqv353XASoZO+JpX+ScNa7rc1uNv2x83qh/vZAKkRV/t2hDDx/AB+1RqPJ5esprmu2u9UZHpsVzjxseCAquBx4VaFILWLqwutTAG/uxkEjlyFMZmDgTBFd1UouYTRIWBMc3JKHdgkM4YRJudIA4Ccpfe7Te0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9+QDeel; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD3EC4CED6;
-	Tue,  3 Dec 2024 14:37:56 +0000 (UTC)
+	 MIME-Version; b=qhmKnbIF9tL9F/KHrhHqa4jvHGixzev0bansejbaX6SsOU7Db18jusj2oceA5vb23igAYYTT6aUvEO4oJKAG5goUdnwyuWXKLJ6YASw/bPuJXCUGIk477WywtfSviG0ftzpHpBgOHq0bxXwqgDQ0uJvEJDmPYi0E0tlE4qNGAEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mu4KSEBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65521C4CECF;
+	Tue,  3 Dec 2024 14:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236676;
-	bh=Wy3qPFCtKj5qqYB73URvatoVL38Oa/a9ag+tK3qe9c4=;
+	s=korg; t=1733237662;
+	bh=cE/AvZSQTdZPK4+CYb7hGOzKyRaPT5j8li/aZjl7VCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r9+QDeel3rbX+Eqixxo5pVeVr8pTJigXpOZH7EczXdDhTgzupTbSZOGZ4UbhDQodz
-	 k9Mz6y3/rhoNHRhuDnSLu6ymnsc11l1f3dJhmtHG4ZoZ071NkBmRw8nE0kRLkm/H5r
-	 GCQNypblIYn/wMTFhJW0YJZuYY3H2DjU8rZEVsOU=
+	b=mu4KSEBUPKwWPnD5VXFJwNj/ilCldT+s0RSHSOGtEBu/z6Gwuij0+Kk0gXJRy2r4z
+	 +N5xOF1AvJOYhDRl2uBes5wh/paCENiGlasrQOAwsP3QB2JoCOwjTW/OGzX5bRk84r
+	 yfZIgSLfUFoJUeEA1mYdwaXpwVwB7V2WsM90WRw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 088/138] power: supply: core: Remove might_sleep() from power_supply_put()
-Date: Tue,  3 Dec 2024 15:31:57 +0100
-Message-ID: <20241203141926.935109617@linuxfoundation.org>
+Subject: [PATCH 6.11 005/817] spi: stm32: fix missing device mode capability in stm32mp25
+Date: Tue,  3 Dec 2024 15:32:57 +0100
+Message-ID: <20241203143955.833261521@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
-References: <20241203141923.524658091@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit f6da4553ff24a5d1c959c9627c965323adc3d307 ]
+[ Upstream commit b5a468199b995bd8ee3c26f169a416a181210c9e ]
 
-The put_device() call in power_supply_put() may call
-power_supply_dev_release(). The latter function does not sleep so
-power_supply_put() doesn't sleep either. Hence, remove the might_sleep()
-call from power_supply_put(). This patch suppresses false positive
-complaints about calling a sleeping function from atomic context if
-power_supply_put() is called from atomic context.
+The STM32MP25 SOC has capability to behave in device mode however
+missing .has_device_mode within its stm32mp25_spi_cfg structure leads
+to not being able to enable the device mode.
 
-Cc: Kyle Tso <kyletso@google.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Fixes: 1a352462b537 ("power_supply: Add power_supply_put for decrementing device reference counter")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240917193914.47566-1-bvanassche@acm.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://patch.msgid.link/20241009-spi-mp25-device-fix-v1-1-8e5ca7db7838@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/power_supply_core.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/spi/spi-stm32.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index 3715a6c2955b2..b89d89455bcb3 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -482,8 +482,6 @@ EXPORT_SYMBOL_GPL(power_supply_get_by_name);
-  */
- void power_supply_put(struct power_supply *psy)
- {
--	might_sleep();
--
- 	atomic_dec(&psy->use_cnt);
- 	put_device(&psy->dev);
- }
+diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+index 4c4ff074e3f6f..fc72a89fb3a7b 100644
+--- a/drivers/spi/spi-stm32.c
++++ b/drivers/spi/spi-stm32.c
+@@ -2044,6 +2044,7 @@ static const struct stm32_spi_cfg stm32mp25_spi_cfg = {
+ 	.baud_rate_div_max = STM32H7_SPI_MBR_DIV_MAX,
+ 	.has_fifo = true,
+ 	.prevent_dma_burst = true,
++	.has_device_mode = true,
+ };
+ 
+ static const struct of_device_id stm32_spi_of_match[] = {
 -- 
 2.43.0
 
