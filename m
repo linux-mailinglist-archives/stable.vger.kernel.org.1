@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-97875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD0B9E2663
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC36D9E22E6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D70B16D99F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DDFE286C04
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605241F8902;
-	Tue,  3 Dec 2024 16:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D021F7063;
+	Tue,  3 Dec 2024 15:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMaX4pFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch+6mSuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE591F76BF;
-	Tue,  3 Dec 2024 16:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102682500DA;
+	Tue,  3 Dec 2024 15:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242032; cv=none; b=k2iDTUU7ue6iwtYcVjefohACQ1Nral+WGBY8mABnPe2NnK8z08gpXRzkeE71spSeTko9IJextAs8hgivKXxOF2wjDgcp2CF/fFk2cUwNjsHlbc8GFGT/1qXxgaBpFnEdFX8AnZYBFtQUm58uvYMzZBwdWo/wZAoih63eCRqCZ9I=
+	t=1733239818; cv=none; b=UKo4JWICswnzKj6Pcp1b8ofB+PKFjNN6XUYnCzOT9g4K0inOPqQvU+hDmWzXphFRXPwgBsJvGzE+dBmGCYJysGmMP2eC3OabCjABWIiCQhWlNpE4blUBOvFC0jT+P/POo0dUR8JrJuuNdT0/u+jPeO+M7J3KuU8jVrzKcbc2wUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242032; c=relaxed/simple;
-	bh=lV0eZaTXVpSSNwVhWNkWfPT39l5mxLsAQ/ntGb3AfhI=;
+	s=arc-20240116; t=1733239818; c=relaxed/simple;
+	bh=GzpamVJDRwCJtB/2Js73c9DhbY9DgtPdzctbh8M29tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3XvrT6fMVBDXpPZBwQWj/pWkcmYRzncBULf8tFosMxwfD23aiR+tiSlmpNYbSoRUJN8tA09Y234B4kDnYId8rDIbvmRkoKJuxOZcMK8D76RRE4stlpSEnriNdq30cCoCHL63QMWsbSxplfSk5YjABYeLeq3hm5unR1gw8gnibE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMaX4pFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D16BC4CECF;
-	Tue,  3 Dec 2024 16:07:10 +0000 (UTC)
+	 MIME-Version; b=Ct+aOPxDtzDAFxjvR48Kft4+QnUBu5WuBB3eb/cRWCfcG8gvUjyTdeMIgAN0sdy4F0zRXlc50t8WN+O2LREJTtYQCj9Pe0KdjJJEf3mcvHKgiPL8r8zSlMmLYHvSCWGF8u6WIlW89OoAY6IW/Y0GRLuIxDh5Pb0yTkrs0fuoOyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch+6mSuw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C506C4CECF;
+	Tue,  3 Dec 2024 15:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242031;
-	bh=lV0eZaTXVpSSNwVhWNkWfPT39l5mxLsAQ/ntGb3AfhI=;
+	s=korg; t=1733239817;
+	bh=GzpamVJDRwCJtB/2Js73c9DhbY9DgtPdzctbh8M29tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMaX4pFMW0FcrwF8Kz7S05sicxrGyPFOnWfPmShc1L5G9aGPH1TgjMY/5exsBBaE3
-	 OX3itmrKuFiGwJR/8mElA6hehM74sCEOyiaNP9yEG009qzmpIg8dexEv720MELeWEW
-	 4H2/8iK/0w0Biwu2Arr2WoQKs1axFN4KkRDLfnZg=
+	b=Ch+6mSuwnymqaxsTEVp1jMZ5MUZTjkONOn+6BP9pkK40zzSOa+oNUojggE5GVjGBo
+	 MLm1SIz+7diT77TLzyrsqhFvh8zCzR1XMSfqKAycg4m00NCmqmrv4GMG4p0ZafMVa/
+	 kAj3wCSh67IDi+YRTa9Fc07hPpodflx8OC3/pSSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 588/826] ip6mr: fix tables suspicious RCU usage
+	Dinesh Kumar <desikumar81@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.11 743/817] ALSA: hda/realtek: Fix Internal Speaker and Mic boost of Infinix Y4 Max
 Date: Tue,  3 Dec 2024 15:45:15 +0100
-Message-ID: <20241203144806.686563766@linuxfoundation.org>
+Message-ID: <20241203144024.999982669@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,145 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Dinesh Kumar <desikumar81@gmail.com>
 
-[ Upstream commit f1553c9894b4dbeb10a2ab15ab1aa113b3b4047c ]
+commit 5ebe792a5139f1ce6e4aed22bef12e7e2660df96 upstream.
 
-Several places call ip6mr_get_table() with no RCU nor RTNL lock.
-Add RCU protection inside such helper and provide a lockless variant
-for the few callers that already acquired the relevant lock.
+Internal Speaker of Infinix Y4 Max remains muted due to incorrect
+Pin configuration, and the Internal Mic records high noise. This patch
+corrects the Pin configuration for the Internal Speaker and limits
+the Internal Mic boost.
+HW Probe for device: https://linux-hardware.org/?probe=6d4386c347
+Test: Internal Speaker works fine, Mic has low noise.
 
-Note that some users additionally reference the table outside the RCU
-lock. That is actually safe as the table deletion can happen only
-after all table accesses are completed.
-
-Fixes: e2d57766e674 ("net: Provide compat support for SIOCGETMIFCNT_IN6 and SIOCGETSGCNT_IN6.")
-Fixes: d7c31cbde4bc ("net: ip6mr: add RTM_GETROUTE netlink op")
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dinesh Kumar <desikumar81@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241125092842.13208-1-desikumar81@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6mr.c | 38 +++++++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 2ce4ae0d8dc3b..d5057401701c1 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -125,7 +125,7 @@ static struct mr_table *ip6mr_mr_table_iter(struct net *net,
- 	return ret;
- }
- 
--static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
-+static struct mr_table *__ip6mr_get_table(struct net *net, u32 id)
- {
- 	struct mr_table *mrt;
- 
-@@ -136,6 +136,16 @@ static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
- 	return NULL;
- }
- 
-+static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
-+{
-+	struct mr_table *mrt;
-+
-+	rcu_read_lock();
-+	mrt = __ip6mr_get_table(net, id);
-+	rcu_read_unlock();
-+	return mrt;
-+}
-+
- static int ip6mr_fib_lookup(struct net *net, struct flowi6 *flp6,
- 			    struct mr_table **mrt)
- {
-@@ -177,7 +187,7 @@ static int ip6mr_rule_action(struct fib_rule *rule, struct flowi *flp,
- 
- 	arg->table = fib_rule_get_table(rule, arg);
- 
--	mrt = ip6mr_get_table(rule->fr_net, arg->table);
-+	mrt = __ip6mr_get_table(rule->fr_net, arg->table);
- 	if (!mrt)
- 		return -EAGAIN;
- 	res->mrt = mrt;
-@@ -304,6 +314,8 @@ static struct mr_table *ip6mr_get_table(struct net *net, u32 id)
- 	return net->ipv6.mrt6;
- }
- 
-+#define __ip6mr_get_table ip6mr_get_table
-+
- static int ip6mr_fib_lookup(struct net *net, struct flowi6 *flp6,
- 			    struct mr_table **mrt)
- {
-@@ -382,7 +394,7 @@ static struct mr_table *ip6mr_new_table(struct net *net, u32 id)
- {
- 	struct mr_table *mrt;
- 
--	mrt = ip6mr_get_table(net, id);
-+	mrt = __ip6mr_get_table(net, id);
- 	if (mrt)
- 		return mrt;
- 
-@@ -411,13 +423,15 @@ static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
- 	struct net *net = seq_file_net(seq);
- 	struct mr_table *mrt;
- 
--	mrt = ip6mr_get_table(net, RT6_TABLE_DFLT);
--	if (!mrt)
-+	rcu_read_lock();
-+	mrt = __ip6mr_get_table(net, RT6_TABLE_DFLT);
-+	if (!mrt) {
-+		rcu_read_unlock();
- 		return ERR_PTR(-ENOENT);
-+	}
- 
- 	iter->mrt = mrt;
- 
--	rcu_read_lock();
- 	return mr_vif_seq_start(seq, pos);
- }
- 
-@@ -2275,11 +2289,13 @@ int ip6mr_get_route(struct net *net, struct sk_buff *skb, struct rtmsg *rtm,
- 	struct mfc6_cache *cache;
- 	struct rt6_info *rt = dst_rt6_info(skb_dst(skb));
- 
--	mrt = ip6mr_get_table(net, RT6_TABLE_DFLT);
--	if (!mrt)
-+	rcu_read_lock();
-+	mrt = __ip6mr_get_table(net, RT6_TABLE_DFLT);
-+	if (!mrt) {
-+		rcu_read_unlock();
- 		return -ENOENT;
-+	}
- 
--	rcu_read_lock();
- 	cache = ip6mr_cache_find(mrt, &rt->rt6i_src.addr, &rt->rt6i_dst.addr);
- 	if (!cache && skb->dev) {
- 		int vif = ip6mr_find_vif(mrt, skb->dev);
-@@ -2559,7 +2575,7 @@ static int ip6mr_rtm_getroute(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 		grp = nla_get_in6_addr(tb[RTA_DST]);
- 	tableid = tb[RTA_TABLE] ? nla_get_u32(tb[RTA_TABLE]) : 0;
- 
--	mrt = ip6mr_get_table(net, tableid ?: RT_TABLE_DEFAULT);
-+	mrt = __ip6mr_get_table(net, tableid ?: RT_TABLE_DEFAULT);
- 	if (!mrt) {
- 		NL_SET_ERR_MSG_MOD(extack, "MR table does not exist");
- 		return -ENOENT;
-@@ -2606,7 +2622,7 @@ static int ip6mr_rtm_dumproute(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (filter.table_id) {
- 		struct mr_table *mrt;
- 
--		mrt = ip6mr_get_table(sock_net(skb->sk), filter.table_id);
-+		mrt = __ip6mr_get_table(sock_net(skb->sk), filter.table_id);
- 		if (!mrt) {
- 			if (rtnl_msg_family(cb->nlh) != RTNL_FAMILY_IP6MR)
- 				return skb->len;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7534,6 +7534,7 @@ enum {
+ 	ALC269_FIXUP_THINKPAD_ACPI,
+ 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
+ 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
++	ALC269VC_FIXUP_INFINIX_Y4_MAX,
+ 	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
+ 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
+@@ -7992,6 +7993,15 @@ static const struct hda_fixup alc269_fix
+ 		.chained = true,
+ 		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
+ 	},
++	[ALC269VC_FIXUP_INFINIX_Y4_MAX] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x1b, 0x90170150 }, /* use as internal speaker */
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
++	},
+ 	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -11017,6 +11027,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
+ 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
++	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
+ 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
 
 
 
