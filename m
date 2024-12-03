@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-98058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D598C9E26D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:17:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BB19E2722
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:21:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE512893C8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5665B168819
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E601F892C;
-	Tue,  3 Dec 2024 16:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33C11E2613;
+	Tue,  3 Dec 2024 16:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IESEXvWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdGnKhMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FC11EE00B;
-	Tue,  3 Dec 2024 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF5B1F9A94;
+	Tue,  3 Dec 2024 16:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242654; cv=none; b=UwHakh6BjBJzOe8NvlCndg7tjx8OMhaEFm4KhQ1sH6x89YQkCJfBfCVYnystnagju1zWqj4ygom+1HfpBKluuQhtuC7SyaMCS0bf7pjoz3uPff4tV5WUowBzhECXrLiSf1K4Pay1KFZFMl1Tns5+fkLQaNpkNxqaxAEAMYsVZUw=
+	t=1733242688; cv=none; b=JB3/XWIpOs3UHOUtBNAU+cBKumpvPMfnruwCtB1i2PypHR/Eai3f6i9EDVRsMFtjX3y4T2EtNSvzGJ8TJhDqeG5hYFxu++/knYyLPv6a37kTOQiPPazjZ37Z3I+74dG7jW23nxuCBNRr3uNSznWBXytFNSdsNEwAGzJvHfp62tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242654; c=relaxed/simple;
-	bh=J0zhvZQO9vHFYyKPPrLuDoUHcggAqMugTQGSxwNvQp0=;
+	s=arc-20240116; t=1733242688; c=relaxed/simple;
+	bh=vjSoRr/ljWFK04RfUFGxqGWtgspNiqVh4HiWJj4OVr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqlitO37vY3ShvVBxNmroG4wAYAmPnGFQLsO9Uu2b/8ETxgViL3WeSud6ojxJMfZE54108AXY6aPln33b723qfZw36qm6O4b7g+J6OyBFkT5q/VFU1yF0/0mQaNxdFsp3H7pVRRW7nnQ9YsxRGElZp+E5KiNsh8xU1LVYUMxMuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IESEXvWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764DCC4CECF;
-	Tue,  3 Dec 2024 16:17:33 +0000 (UTC)
+	 MIME-Version; b=TzVLskOCHth5ypZWoqbKJMqW7bhaEnB8uuLJn1aDRefN1xj9uBOYUexjMH2pNoB4Tgl/inj4jAHgQnLdCTWfDBRLVHkye/epPkkG74tm/4mnRrpvumMhlc8sLY7BITYgQQGnE7JtlRyMQlc5NOhIAakVCJjwxTU45u0aNn1diKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdGnKhMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B64C4CECF;
+	Tue,  3 Dec 2024 16:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242653;
-	bh=J0zhvZQO9vHFYyKPPrLuDoUHcggAqMugTQGSxwNvQp0=;
+	s=korg; t=1733242687;
+	bh=vjSoRr/ljWFK04RfUFGxqGWtgspNiqVh4HiWJj4OVr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IESEXvWlA0ahzzEOINP4YFlZvIOPm6Fdtx6ivc9StoW7QS3hs/TKRy8DeU3DS0sq9
-	 ivihDmLcfMx6AFGv0URVLSllX4s5Cx/d3p2iibYHRCBpZmqWxilgJuelBkZRzuLDD0
-	 Hl2mFzYpYPnZ+WxLrEnSSuhaqqGw2W0dwRHO3GI0=
+	b=jdGnKhMnIIGnnjYWN2eNUGqwxqzHEa+qzqmNWUxtcjkyC0gtxuFNEKgSGJ+L1r0c9
+	 f8Qi4y8k1UlvtnL/YkRwV/WOAK/Yygo3r5+F2s74SjQx4VmsgYAtYB2G2uxZCbf7C5
+	 245TgqZxUis8j+Vb8I2IQjb+139I/Wr6gBQjpoHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 751/826] smb3: request handle caching when caching directories
-Date: Tue,  3 Dec 2024 15:47:58 +0100
-Message-ID: <20241203144813.058814558@linuxfoundation.org>
+Subject: [PATCH 6.12 752/826] smb: client: handle max length for SMB symlinks
+Date: Tue,  3 Dec 2024 15:47:59 +0100
+Message-ID: <20241203144813.097373708@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -64,34 +66,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 9ed9d83a51a9636d367c796252409e7b2f4de4d4 upstream.
+commit 0812340811e45ec4039d409049be53056182a552 upstream.
 
-This client was only requesting READ caching, not READ and HANDLE caching
-in the LeaseState on the open requests we send for directories.  To
-delay closing a handle (e.g. for caching directory contents) we should
-be requesting HANDLE as well as READ (as we already do for deferred
-close of files).   See MS-SMB2 3.3.1.4 e.g.
+We can't use PATH_MAX for SMB symlinks because
 
+  (1) Windows Server will fail FSCTL_SET_REPARSE_POINT with
+      STATUS_IO_REPARSE_DATA_INVALID when input buffer is larger than
+      16K, as specified in MS-FSA 2.1.5.10.37.
+
+  (2) The client won't be able to parse large SMB responses that
+      includes SMB symlink path within SMB2_CREATE or SMB2_IOCTL
+      responses.
+
+Fix this by defining a maximum length value (4060) for SMB symlinks
+that both client and server can handle.
+
+Cc: David Howells <dhowells@redhat.com>
 Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/reparse.c |    5 ++++-
+ fs/smb/client/reparse.h |    2 ++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4080,7 +4080,7 @@ map_oplock_to_lease(u8 oplock)
- 	if (oplock == SMB2_OPLOCK_LEVEL_EXCLUSIVE)
- 		return SMB2_LEASE_WRITE_CACHING_LE | SMB2_LEASE_READ_CACHING_LE;
- 	else if (oplock == SMB2_OPLOCK_LEVEL_II)
--		return SMB2_LEASE_READ_CACHING_LE;
-+		return SMB2_LEASE_READ_CACHING_LE | SMB2_LEASE_HANDLE_CACHING_LE;
- 	else if (oplock == SMB2_OPLOCK_LEVEL_BATCH)
- 		return SMB2_LEASE_HANDLE_CACHING_LE | SMB2_LEASE_READ_CACHING_LE |
- 		       SMB2_LEASE_WRITE_CACHING_LE;
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -35,6 +35,9 @@ int smb2_create_reparse_symlink(const un
+ 	u16 len, plen;
+ 	int rc = 0;
+ 
++	if (strlen(symname) > REPARSE_SYM_PATH_MAX)
++		return -ENAMETOOLONG;
++
+ 	sym = kstrdup(symname, GFP_KERNEL);
+ 	if (!sym)
+ 		return -ENOMEM;
+@@ -64,7 +67,7 @@ int smb2_create_reparse_symlink(const un
+ 	if (rc < 0)
+ 		goto out;
+ 
+-	plen = 2 * UniStrnlen((wchar_t *)path, PATH_MAX);
++	plen = 2 * UniStrnlen((wchar_t *)path, REPARSE_SYM_PATH_MAX);
+ 	len = sizeof(*buf) + plen * 2;
+ 	buf = kzalloc(len, GFP_KERNEL);
+ 	if (!buf) {
+--- a/fs/smb/client/reparse.h
++++ b/fs/smb/client/reparse.h
+@@ -12,6 +12,8 @@
+ #include "fs_context.h"
+ #include "cifsglob.h"
+ 
++#define REPARSE_SYM_PATH_MAX 4060
++
+ /*
+  * Used only by cifs.ko to ignore reparse points from files when client or
+  * server doesn't support FSCTL_GET_REPARSE_POINT.
 
 
 
