@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53479E232B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4409E2635
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37F451695FE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D130169BD2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511EB1F7071;
-	Tue,  3 Dec 2024 15:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522571F76D9;
+	Tue,  3 Dec 2024 16:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0M5M+9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfdY1the"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5EB1F4276;
-	Tue,  3 Dec 2024 15:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C6F1F76D7;
+	Tue,  3 Dec 2024 16:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239719; cv=none; b=rNDbTBwR0XvSlpQWGv+v43MATU2CQ3Kxb58ZI1tDhcdSY1DNFI0OVEJqAXkmwgDUQun570TMqmFNzXU3pMqNPZ4D8RoU7FzYWPiAoLT4sD4c1h1ib6CL7bIIS/psNTX5JLCSq/y+TYrf2KLPCJN/XWOqo6FSsnehsk7guKMiyVc=
+	t=1733241916; cv=none; b=g8gPVp5mxManhaGlsnOdAYZK4Rp53wyMRj7mDi7f2rJTRYmTAF26hVDzLpnGFTKEYEuaR6WUBIr8qPG2KyTSmlZkxlmWgycO2MDz+PjN+54GvW8jcM+/2OU0juTBA+SG4/MbPcTpMgjSGIQzidf8rym3hsc3lXhkrEw+KZfAlg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239719; c=relaxed/simple;
-	bh=Zp+a4CpZPzKlldtacAmbQor+hiRiFHCDJmuKG64y3RU=;
+	s=arc-20240116; t=1733241916; c=relaxed/simple;
+	bh=FnuyJTtBRQOtmzXdswAv2DgSA724ndbaLQGki8MBQ/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJvPsGvYVJ/HYCP4KlYSwE2/rqUqsUTwK+ZBajTroVLW89PhmUgRsGbA/9/ZaF8Nz6XDTIrHaM/xfXVGTqpKd9g5A/Ck51xgHLBSa/lf9+z5WnO+61XZNZXThsGD5cCQz758M1nr5uMi7YCdcw6A9LIcQgKN92LJmiTSa8zT7fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0M5M+9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DB2C4CECF;
-	Tue,  3 Dec 2024 15:28:38 +0000 (UTC)
+	 MIME-Version; b=X4YYPC2FbhJ4IYUKa5rZmjqYI9N5FCwuAMolUwkkivkT6CCI53pDeAquNx6LEcJ7ZtRU4vO11avRnMzjXKQKpc9swjI8p4nX09Gpsy+ojm8AqgXnPpsUg3WRGVFUIiyYcfvu9uUr/1MMd7lOy/0sc08buD956j0BDk8ffUv3wYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfdY1the; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71522C4CEDE;
+	Tue,  3 Dec 2024 16:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239718;
-	bh=Zp+a4CpZPzKlldtacAmbQor+hiRiFHCDJmuKG64y3RU=;
+	s=korg; t=1733241915;
+	bh=FnuyJTtBRQOtmzXdswAv2DgSA724ndbaLQGki8MBQ/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0M5M+9zFRy74Tk/Iyr+HwXUmWL+/mXIhG7b/CJblEHVmbFaMUwFcCqZxYoe1Fsm1
-	 ecWY2rXOhwZ0xT4eauUHnYnQx/E1tRU8P9Cbz4o6VK2AGnMPIdb3unodv/6rRP6Xfp
-	 sg3dsla2githr3Yp0o/vAy1YFJ2TbbtxFMWU4ESE=
+	b=vfdY1theglrByuhcgatO8VllMxFHFa1NAA2Y8Ggum+ed07ET6NxvPJ7Wf1/3698Mv
+	 uBBPIlbOSoRBjxB1RX9HxHgtd/uT8xiCvIHg/+91oQT2I4fGLLRPylCEiGda92+bFP
+	 d6UUKAxyfzNHaE96gqcjxAhIRG8ewUcvLOHLzOlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.11 709/817] x86/CPU/AMD: Terminate the erratum_1386_microcode array
+	John Efstathiades <john.efstathiades@pebblebay.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 554/826] net: usb: lan78xx: Fix double free issue with interrupt buffer allocation
 Date: Tue,  3 Dec 2024 15:44:41 +0100
-Message-ID: <20241203144023.658546165@linuxfoundation.org>
+Message-ID: <20241203144805.358784028@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit ff6cdc407f4179748f4673c39b0921503199a0ad upstream.
+[ Upstream commit 03819abbeb11117dcbba40bfe322b88c0c88a6b6 ]
 
-The erratum_1386_microcode array requires an empty entry at the end.
-Otherwise x86_match_cpu_with_stepping() will continue iterate the array after
-it ended.
+In lan78xx_probe(), the buffer `buf` was being freed twice: once
+implicitly through `usb_free_urb(dev->urb_intr)` with the
+`URB_FREE_BUFFER` flag and again explicitly by `kfree(buf)`. This caused
+a double free issue.
 
-Add an empty entry to erratum_1386_microcode to its end.
+To resolve this, reordered `kmalloc()` and `usb_alloc_urb()` calls to
+simplify the initialization sequence and removed the redundant
+`kfree(buf)`.  Now, `buf` is allocated after `usb_alloc_urb()`, ensuring
+it is correctly managed by  `usb_fill_int_urb()` and freed by
+`usb_free_urb()` as intended.
 
-Fixes: 29ba89f189528 ("x86/CPU/AMD: Improve the erratum 1386 workaround")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241126134722.480975-1-bigeasy@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a6df95cae40b ("lan78xx: Fix memory allocation bug")
+Cc: John Efstathiades <john.efstathiades@pebblebay.com>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241116130558.1352230-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/amd.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/lan78xx.c | 29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 823f44f7bc94..d8408aafeed9 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -798,6 +798,7 @@ static void init_amd_bd(struct cpuinfo_x86 *c)
- static const struct x86_cpu_desc erratum_1386_microcode[] = {
- 	AMD_CPU_DESC(0x17,  0x1, 0x2, 0x0800126e),
- 	AMD_CPU_DESC(0x17, 0x31, 0x0, 0x08301052),
-+	{},
- };
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 8adf77e3557e7..094a47b8b97eb 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -4414,29 +4414,30 @@ static int lan78xx_probe(struct usb_interface *intf,
  
- static void fix_erratum_1386(struct cpuinfo_x86 *c)
+ 	period = ep_intr->desc.bInterval;
+ 	maxp = usb_maxpacket(dev->udev, dev->pipe_intr);
+-	buf = kmalloc(maxp, GFP_KERNEL);
+-	if (!buf) {
++
++	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
++	if (!dev->urb_intr) {
+ 		ret = -ENOMEM;
+ 		goto out5;
+ 	}
+ 
+-	dev->urb_intr = usb_alloc_urb(0, GFP_KERNEL);
+-	if (!dev->urb_intr) {
++	buf = kmalloc(maxp, GFP_KERNEL);
++	if (!buf) {
+ 		ret = -ENOMEM;
+-		goto out6;
+-	} else {
+-		usb_fill_int_urb(dev->urb_intr, dev->udev,
+-				 dev->pipe_intr, buf, maxp,
+-				 intr_complete, dev, period);
+-		dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
++		goto free_urbs;
+ 	}
+ 
++	usb_fill_int_urb(dev->urb_intr, dev->udev,
++			 dev->pipe_intr, buf, maxp,
++			 intr_complete, dev, period);
++	dev->urb_intr->transfer_flags |= URB_FREE_BUFFER;
++
+ 	dev->maxpacket = usb_maxpacket(dev->udev, dev->pipe_out);
+ 
+ 	/* Reject broken descriptors. */
+ 	if (dev->maxpacket == 0) {
+ 		ret = -ENODEV;
+-		goto out6;
++		goto free_urbs;
+ 	}
+ 
+ 	/* driver requires remote-wakeup capability during autosuspend. */
+@@ -4444,7 +4445,7 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ 	ret = lan78xx_phy_init(dev);
+ 	if (ret < 0)
+-		goto out7;
++		goto free_urbs;
+ 
+ 	ret = register_netdev(netdev);
+ 	if (ret != 0) {
+@@ -4466,10 +4467,8 @@ static int lan78xx_probe(struct usb_interface *intf,
+ 
+ out8:
+ 	phy_disconnect(netdev->phydev);
+-out7:
++free_urbs:
+ 	usb_free_urb(dev->urb_intr);
+-out6:
+-	kfree(buf);
+ out5:
+ 	lan78xx_unbind(dev, intf);
+ out4:
 -- 
-2.47.1
+2.43.0
 
 
 
