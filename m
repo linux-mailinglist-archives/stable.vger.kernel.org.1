@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-97917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E179E29AE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:43:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A01089E2AC6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80A2AB2B6D1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6148BC4B47
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A53E1F75BC;
-	Tue,  3 Dec 2024 16:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75F61F8938;
+	Tue,  3 Dec 2024 15:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFOxOhhj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRB2pwMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8371E47AD;
-	Tue,  3 Dec 2024 16:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628051F76CE;
+	Tue,  3 Dec 2024 15:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242177; cv=none; b=NagrPyuqgXO9vzecocX+8Fi6i4blayXXQW0v1FF69IUt/SE6CwrbWu9OVXTh4YVTL2ym61yjehGWkHPRlz/FCcYOzyXrB0JfdxFFzE/HkzIR5HKcYvS4mrnfJw7KtZRYMXoqBc688dNVqO8FKJ2ae3TKxGstl+GQjkGCgWq5sqI=
+	t=1733240030; cv=none; b=sbRTxWsq1/CqoNoCLjDMswVo+ZBG5Gps81ICzCJK3m0EFRXxrWkn/LCc0OZRBGZfhZNW8C4KQ1L6JhFAUKY86LDjNGaWtlHLIzYhIV5bFBu95xwZ1dREnkdV57PFtFwYhTPWNF6QsuGTVxehDiGiObYzI6bBSHf4y+cvfKBv9QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242177; c=relaxed/simple;
-	bh=bhhPza1q5qMjj5FAomk8U9TqPpuj+CkCs47hlSh6kn4=;
+	s=arc-20240116; t=1733240030; c=relaxed/simple;
+	bh=1O3BT5oXPx8uAOaNSrB+QMyWNf4ZeMbGntQL4Fuz1Wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZRlH1O/tZ8Z7cF3UkWFfeZRnFAz5HIB+yCONYUotc0S5RMAt/e7TeJCh4c/KP96ap1DOMf6T9SURBtQJabbTst393T8MQr1HUl6hNLdS4qvrhUpeapfNA2tmfXrv7//5/WXcrmkAvdIE2Z1BFKiZ3WhtDBv50ZGB5/a2IiI2Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFOxOhhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B8CC4CECF;
-	Tue,  3 Dec 2024 16:09:36 +0000 (UTC)
+	 MIME-Version; b=ciSahJzM3Lusb8oeRKx+7HXRKwjkNCc80jbmnwCKYH2D3nnb4LtOVPyEy20FPxFo35Dh0aB60Oo3U6wcP03bcr9+Y+DMzS73Miz/QiHihfPfi4p+0qJxPKv/Svx+V9ma+ZevLag+ayMumoy6BCNOVfyVcVSTAo8R7sYvfcx935M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRB2pwMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B299C4CECF;
+	Tue,  3 Dec 2024 15:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242176;
-	bh=bhhPza1q5qMjj5FAomk8U9TqPpuj+CkCs47hlSh6kn4=;
+	s=korg; t=1733240030;
+	bh=1O3BT5oXPx8uAOaNSrB+QMyWNf4ZeMbGntQL4Fuz1Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFOxOhhjgikEqGhrGdXQub6qGnX5xbl7uBVui08xckYeyC9dpKxIY72UdgSY5aL1G
-	 swk8ktyHJzrtv+FPBj94XoYPvQTwKZHGwljprtlSos4cVN1S3WC2VJqHbmYj4ZJYrh
-	 2Q0Ly8FZh6Rie5GXohPhmT7fJBqyKlyiAYUlzInk=
+	b=DRB2pwMnOLEhaB+iEh2M43LZt1WHTCr6iGr/gEgb8tMt3WrQlQ1OOtiPlCjNirLyT
+	 +5QLa+CFa5CjGU1zBmC8bwjCyW3cyzfeZFk6FZ5ThnA8JthNLZW6zKrwwPBPtUICVy
+	 b7CYJAVmBBHdeph1mEGApJjZBk/Xf7XXn2BDQEdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.12 630/826] ext4: supress data-race warnings in ext4_free_inodes_{count,set}()
-Date: Tue,  3 Dec 2024 15:45:57 +0100
-Message-ID: <20241203144808.330322344@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 786/817] block: return unsigned int from bdev_io_min
+Date: Tue,  3 Dec 2024 15:45:58 +0100
+Message-ID: <20241203144026.693706582@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 902cc179c931a033cd7f4242353aa2733bf8524c upstream.
+[ Upstream commit 46fd48ab3ea3eb3bb215684bd66ea3d260b091a9 ]
 
-find_group_other() and find_group_orlov() read *_lo, *_hi with
-ext4_free_inodes_count without additional locking. This can cause
-data-race warning, but since the lock is held for most writes and free
-inodes value is generally not a problem even if it is incorrect, it is
-more appropriate to use READ_ONCE()/WRITE_ONCE() than to add locking.
+The underlying limit is defined as an unsigned int, so return that from
+bdev_io_min as well.
 
-==================================================================
-BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
-
-write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
- ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
- __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
- ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
- vfs_symlink+0xca/0x1d0 fs/namei.c:4615
- do_symlinkat+0xe3/0x340 fs/namei.c:4641
- __do_sys_symlinkat fs/namei.c:4657 [inline]
- __se_sys_symlinkat fs/namei.c:4654 [inline]
- __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
- x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
- ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
- find_group_other fs/ext4/ialloc.c:594 [inline]
- __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
- ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
- vfs_symlink+0xca/0x1d0 fs/namei.c:4615
- do_symlinkat+0xe3/0x340 fs/namei.c:4641
- __do_sys_symlinkat fs/namei.c:4657 [inline]
- __se_sys_symlinkat fs/namei.c:4654 [inline]
- __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
- x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Link: https://patch.msgid.link/20241003125337.47283-1-aha310510@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ac481c20ef8f ("block: Topology ioctls")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241119072602.1059488-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/blkdev.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -353,9 +353,9 @@ __u32 ext4_free_group_clusters(struct su
- __u32 ext4_free_inodes_count(struct super_block *sb,
- 			      struct ext4_group_desc *bg)
- {
--	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
-+	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
- 		(EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT ?
--		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : 0);
-+		 (__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index a6e42a823b71e..7e35d9ebdc374 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1255,7 +1255,7 @@ static inline unsigned int queue_io_min(const struct request_queue *q)
+ 	return q->limits.io_min;
  }
  
- __u32 ext4_used_dirs_count(struct super_block *sb,
-@@ -409,9 +409,9 @@ void ext4_free_group_clusters_set(struct
- void ext4_free_inodes_set(struct super_block *sb,
- 			  struct ext4_group_desc *bg, __u32 count)
+-static inline int bdev_io_min(struct block_device *bdev)
++static inline unsigned int bdev_io_min(struct block_device *bdev)
  {
--	bg->bg_free_inodes_count_lo = cpu_to_le16((__u16)count);
-+	WRITE_ONCE(bg->bg_free_inodes_count_lo, cpu_to_le16((__u16)count));
- 	if (EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT)
--		bg->bg_free_inodes_count_hi = cpu_to_le16(count >> 16);
-+		WRITE_ONCE(bg->bg_free_inodes_count_hi, cpu_to_le16(count >> 16));
+ 	return queue_io_min(bdev_get_queue(bdev));
  }
- 
- void ext4_used_dirs_set(struct super_block *sb,
+-- 
+2.43.0
+
 
 
 
