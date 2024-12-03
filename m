@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-96995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27369E2277
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276A89E25D2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADAC816BA6D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20B48B62171
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AAD1F7572;
-	Tue,  3 Dec 2024 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D8A1F7567;
+	Tue,  3 Dec 2024 15:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8/RNEVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKyyKJoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18541F759C;
-	Tue,  3 Dec 2024 15:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743C8381B1;
+	Tue,  3 Dec 2024 15:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239215; cv=none; b=uCBfZDe/rZoHIIz7eGYb2ap/lcYXcfqvwg1K8aB1t0tJubt6Gwtg+ZsHEWeyV+tdjy9KCqwAtwws7CIT5NrwnftyC5727YDUwGsxmIfpXig+c8SkqICKl3UuOU5WyRR9/fetMgeSscFLaPRwRRYw30yPKSugRpkbL42ZaSMTwro=
+	t=1733241424; cv=none; b=WdLUJL8v7dfKvxek196zohm6mVymEhYq4VVmaArRTS+tmmGwMCjkpSSEIL0FHaw430thneysrLNbto6GyrW5HwlqmJzPWcIhanyKOkgRf9jzUjha8fu1SQsif31XXkI/si+KEO2GJo8CuwsM+1E4YeAmmjqaXuqS4KLyxfaFiXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239215; c=relaxed/simple;
-	bh=xH7IvMOzHJWSvSIZuShZieSrvJQEvza0anuamhC8dZc=;
+	s=arc-20240116; t=1733241424; c=relaxed/simple;
+	bh=fV+eB8NILSqPvqZQcX3Ro6ZXASyJ9FD5ADQr0VHaph0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l2G5p4tgfn2Nz2UP7ks8FhV3zJQotOvelY1V6QuKrIWOhss6uhrRlIoMHHsP74jFZ49WA34JnbDc7lxekLAPpzG4iCXWShuR6orskewk+I8XZyqdJCbFaKtPSUeHxFoT5XMBpmH1JX4ZxhLyGMTpFAcrAeFUQlH/M/ArhimAA4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8/RNEVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A97C4CECF;
-	Tue,  3 Dec 2024 15:20:14 +0000 (UTC)
+	 MIME-Version; b=G1MvREVaY9PyV7LYOCHQA3GcZZu13dLWgT7/WwOTstHsFA5az37SL5SPiGYybTkD+ESeuvDTjoJc1ljQg7zrU55gXciKkb8nBk0lKwa7mPe8hTNryJwvWnYke3IJVj4a3ZogpfhTbmP9hxtGMuDo/LJFWfMjkxlcQEN6tmmJwH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKyyKJoh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D655AC4CECF;
+	Tue,  3 Dec 2024 15:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239214;
-	bh=xH7IvMOzHJWSvSIZuShZieSrvJQEvza0anuamhC8dZc=;
+	s=korg; t=1733241424;
+	bh=fV+eB8NILSqPvqZQcX3Ro6ZXASyJ9FD5ADQr0VHaph0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8/RNEVy65bRv1VVbSCQPhyjbZAJ3DSt6HxPF193vHiS11SAdI691kNPSSFfmctWY
-	 avmbrsosXYjNcS2AuS6pF5Ulo3RHtq7MeHmIp6eJfG0w8GkkGasWSls4R6VzqUMp9H
-	 BJPebpihEgXw92ZJHTHTw/hoaVFW44mM409TipvY=
+	b=dKyyKJohmOjYBuPie1k2wSunLsvr2xdCi6j/yjA3WvNtCLNcIoayCTqKTNksNjKOx
+	 v32fUrFT1KHkpDeh6mUF+lQvwKZ846/2WCvs6vbtuCK5ev4altcBZcc54i/S+Zv/Yv
+	 iHwVXAf7ppQe8OGzTSABopR4zv4ostUd26QmTtNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Marek <jonathan@marek.ca>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Disha Goel <disgoel@linux.ibm.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 537/817] rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length
+Subject: [PATCH 6.12 382/826] powerpc/mm/fault: Fix kfence page fault reporting
 Date: Tue,  3 Dec 2024 15:41:49 +0100
-Message-ID: <20241203144016.862432492@linuxfoundation.org>
+Message-ID: <20241203144758.668516296@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Marek <jonathan@marek.ca>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 06c59d97f63c1b8af521fa5aef8a716fb988b285 ]
+[ Upstream commit 06dbbb4d5f7126b6307ab807cbf04ecfc459b933 ]
 
-The name len field of the CMD_OPEN packet is only 16-bits and the upper
-16-bits of "param2" are a different "prio" field, which can be nonzero in
-certain situations, and CMD_OPEN packets can be unexpectedly dropped
-because of this.
+copy_from_kernel_nofault() can be called when doing read of /proc/kcore.
+/proc/kcore can have some unmapped kfence objects which when read via
+copy_from_kernel_nofault() can cause page faults. Since *_nofault()
+functions define their own fixup table for handling fault, use that
+instead of asking kfence to handle such faults.
 
-Fix this by masking out the upper 16 bits of param2.
+Hence we search the exception tables for the nip which generated the
+fault. If there is an entry then we let the fixup table handler handle the
+page fault by returning an error from within ___do_page_fault().
 
-Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
-Signed-off-by: Jonathan Marek <jonathan@marek.ca>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241007235935.6216-1-jonathan@marek.ca
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This can be easily triggered if someone tries to do dd from /proc/kcore.
+eg. dd if=/proc/kcore of=/dev/null bs=1M
+
+Some example false negatives:
+
+  ===============================
+  BUG: KFENCE: invalid read in copy_from_kernel_nofault+0x9c/0x1a0
+  Invalid read at 0xc0000000fdff0000:
+   copy_from_kernel_nofault+0x9c/0x1a0
+   0xc00000000665f950
+   read_kcore_iter+0x57c/0xa04
+   proc_reg_read_iter+0xe4/0x16c
+   vfs_read+0x320/0x3ec
+   ksys_read+0x90/0x154
+   system_call_exception+0x120/0x310
+   system_call_vectored_common+0x15c/0x2ec
+
+  BUG: KFENCE: use-after-free read in copy_from_kernel_nofault+0x9c/0x1a0
+  Use-after-free read at 0xc0000000fe050000 (in kfence-#2):
+   copy_from_kernel_nofault+0x9c/0x1a0
+   0xc00000000665f950
+   read_kcore_iter+0x57c/0xa04
+   proc_reg_read_iter+0xe4/0x16c
+   vfs_read+0x320/0x3ec
+   ksys_read+0x90/0x154
+   system_call_exception+0x120/0x310
+   system_call_vectored_common+0x15c/0x2ec
+
+Fixes: 90cbac0e995d ("powerpc: Enable KFENCE for PPC32")
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reported-by: Disha Goel <disgoel@linux.ibm.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/a411788081d50e3b136c6270471e35aba3dfafa3.1729271995.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/fault.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index d877a1a1aeb4b..c7f91a82e634f 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1117,7 +1117,8 @@ void qcom_glink_native_rx(struct qcom_glink *glink)
- 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
- 			break;
- 		case GLINK_CMD_OPEN:
--			ret = qcom_glink_rx_defer(glink, param2);
-+			/* upper 16 bits of param2 are the "prio" field */
-+			ret = qcom_glink_rx_defer(glink, param2 & 0xffff);
- 			break;
- 		case GLINK_CMD_TX_DATA:
- 		case GLINK_CMD_TX_DATA_CONT:
+diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
+index 81c77ddce2e30..c156fe0d53c37 100644
+--- a/arch/powerpc/mm/fault.c
++++ b/arch/powerpc/mm/fault.c
+@@ -439,10 +439,16 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
+ 	/*
+ 	 * The kernel should never take an execute fault nor should it
+ 	 * take a page fault to a kernel address or a page fault to a user
+-	 * address outside of dedicated places
++	 * address outside of dedicated places.
++	 *
++	 * Rather than kfence directly reporting false negatives, search whether
++	 * the NIP belongs to the fixup table for cases where fault could come
++	 * from functions like copy_from_kernel_nofault().
+ 	 */
+ 	if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write))) {
+-		if (kfence_handle_page_fault(address, is_write, regs))
++		if (is_kfence_address((void *)address) &&
++		    !search_exception_tables(instruction_pointer(regs)) &&
++		    kfence_handle_page_fault(address, is_write, regs))
+ 			return 0;
+ 
+ 		return SIGSEGV;
 -- 
 2.43.0
 
