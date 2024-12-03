@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394789E220A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776909E2460
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E6DF167D40
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CEF0287B40
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F1261F8AC1;
-	Tue,  3 Dec 2024 15:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC441F8928;
+	Tue,  3 Dec 2024 15:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oO2N8p5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHHjl8gl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE38A1F893B;
-	Tue,  3 Dec 2024 15:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B22A2C80;
+	Tue,  3 Dec 2024 15:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238839; cv=none; b=SL2nkTPw1MQTQX/y+xHKvBXS5vC0RDFndYkjfcuep2Q9oglH34zX8H4FeBsH3Bsse7R/R+5utuJ/YCMYc2bXJKJDg+hQdBLhKRRT6LhHrWjcd4I0Lkxbu3+U+3uzdLPvk+ZrJE+4PIMCJ8NuLrJlX/JYkNQp6OFmvi9ST08uuXg=
+	t=1733240873; cv=none; b=hdXxH8Xx/XEpbyVnQCDrnTA6kzcgLalm0kpEcVtnUBOlpzoxrW19a04MfHO9ehfVNsxZlZocweafTtHgu28zOwiGA9WJkbg7IehhYHr4ds7xtBWBHjy+7eGYVJZm9GGnZfcEP4ddYRvuj/VhHUJcdOQRd5fI1bSIzNK+KK+dlYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238839; c=relaxed/simple;
-	bh=1d6aBCRAsLl9TN0rvC1ZIzZWYaXvMMW9Dd3UgP3qizU=;
+	s=arc-20240116; t=1733240873; c=relaxed/simple;
+	bh=Y69Zt9wdGIT5xkFRAUY6TfWdJqrqo4lubwAXQDBcr28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bmEv5rGoDqlnHA0xJavKGaJ9iX0OrVitL0J9iAKvdRoBhzMCP87S08FAMONZoTPeu3788UKvxxZRfPtAu64IMQsl74y0sfLQyDD573P3sAe4wtp9bOPGi5wmhc12RddFCpyXkTuX1X5yQfFz/Yjr6xZyFq0XjvSkmwlCSUzAbvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oO2N8p5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4780BC4CECF;
-	Tue,  3 Dec 2024 15:13:59 +0000 (UTC)
+	 MIME-Version; b=amhSRDKufy8jGDPU3iqe/91bUVMqukuYLYKpn3r53PEvxldr4LM2aSmn5WdXnSA6J1n1gZ2YJhKn8hpWNGiSq73ghMipcWmhsgyiOjhmjPDfFqdL1ey2TNmX2tsEb4hm7TP8u9QM/p4agk790CqyGP2+mo7rTQqVoEY9O2gSbjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHHjl8gl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE3DC4CECF;
+	Tue,  3 Dec 2024 15:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238839;
-	bh=1d6aBCRAsLl9TN0rvC1ZIzZWYaXvMMW9Dd3UgP3qizU=;
+	s=korg; t=1733240873;
+	bh=Y69Zt9wdGIT5xkFRAUY6TfWdJqrqo4lubwAXQDBcr28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oO2N8p5GW6LJWV8jtIg6jaK8K4ZyRuvEyTEghe7Uw1p2CWV/Kxk5cHvSQZKvUZXO/
-	 owTC5/WBqkFRZlz9YFUiigWnD3VyDTm/nUg8bJrE+CbFDBGBjA2NtPNPJt3krWDTyb
-	 XTJXybh959VzdVzQCSIW7lHVJ/xVXytiX6tlFU/o=
+	b=OHHjl8glEQE47Ehqrqqo/YIBzV4M7+PWxjxxuEeQGsBYMdKwZ+FKKMTLUQE7PHa5b
+	 PW+FTAIQhljK4TKle+qSU2pFMnfnFNzxBuGGlOA/QPd9t0LYOMLo0SYDtou6zrTFfH
+	 NpnyapQ3C4naXLHIExRPqOA/yhbum3FVD5a7bSBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuyu Li <liyuyu6@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dipendra Khadka <kdipendra88@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 415/817] RDMA/hns: Modify debugfs name
+Subject: [PATCH 6.12 260/826] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_ethtool.c
 Date: Tue,  3 Dec 2024 15:39:47 +0100
-Message-ID: <20241203144012.078909914@linuxfoundation.org>
+Message-ID: <20241203144753.906683303@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuyu Li <liyuyu6@huawei.com>
+From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit 370a9351bf84afc5a56a3f02ba3805bbfcb53c32 ]
+[ Upstream commit e26f8eac6bb20b20fdb8f7dc695711ebce4c7c5c ]
 
-The sub-directory of hns_roce debugfs is named after the device's
-kernel name currently, but it will be inconvenient to use when
-the device is renamed.
+Add error pointer check after calling otx2_mbox_get_rsp().
 
-Modify the name to pci name as users can always easily find the
-correspondence between an RDMA device and its pci name.
-
-Fixes: eb7854d63db5 ("RDMA/hns: Support SW stats with debugfs")
-Signed-off-by: Yuyu Li <liyuyu6@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241024124000.2931869-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
+Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
+Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_debugfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_debugfs.c b/drivers/infiniband/hw/hns/hns_roce_debugfs.c
-index e8febb40f6450..b869cdc541189 100644
---- a/drivers/infiniband/hw/hns/hns_roce_debugfs.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_debugfs.c
-@@ -5,6 +5,7 @@
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 32468c663605e..5197ce816581e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -343,6 +343,11 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pause_frm_cfg *)
+ 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp)) {
++			mutex_unlock(&pfvf->mbox.lock);
++			return;
++		}
++
+ 		pause->rx_pause = rsp->rx_pause;
+ 		pause->tx_pause = rsp->tx_pause;
+ 	}
+@@ -1072,6 +1077,11 @@ static int otx2_set_fecparam(struct net_device *netdev,
  
- #include <linux/debugfs.h>
- #include <linux/device.h>
-+#include <linux/pci.h>
- 
- #include "hns_roce_device.h"
- 
-@@ -86,7 +87,7 @@ void hns_roce_register_debugfs(struct hns_roce_dev *hr_dev)
- {
- 	struct hns_roce_dev_debugfs *dbgfs = &hr_dev->dbgfs;
- 
--	dbgfs->root = debugfs_create_dir(dev_name(&hr_dev->ib_dev.dev),
-+	dbgfs->root = debugfs_create_dir(pci_name(hr_dev->pci_dev),
- 					 hns_roce_dbgfs_root);
- 
- 	create_sw_stat_debugfs(hr_dev, dbgfs->root);
+ 	rsp = (struct fec_mode *)otx2_mbox_get_rsp(&pfvf->mbox.mbox,
+ 						   0, &req->hdr);
++	if (IS_ERR(rsp)) {
++		err = PTR_ERR(rsp);
++		goto end;
++	}
++
+ 	if (rsp->fec >= 0)
+ 		pfvf->linfo.fec = rsp->fec;
+ 	else
 -- 
 2.43.0
 
