@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84899E2296
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C149E25F9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9817F285E0B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1E9164CC4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091FB1F7557;
-	Tue,  3 Dec 2024 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E081F759C;
+	Tue,  3 Dec 2024 16:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckjRTZpu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4yw5vH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0A41F473A;
-	Tue,  3 Dec 2024 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F4223CE;
+	Tue,  3 Dec 2024 16:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239576; cv=none; b=X89hUsajP3iKhdKtZKg26HRw5UrdkKU9qd0802NZpPJKJDvdGA+qW3kWklJZZ3AJoQ4zGbFrJkhcsKw7s8/VGqJgF/MFMElm5GsS8qWAqoypXOaNiDfMX0ppEAdIAJOjoqzzymUmAcKk9bAilwjJm+52d3Q2PPiAOQAnpo//xU0=
+	t=1733241684; cv=none; b=ZLEWGpZpm3ojTo595KPyTgSoERGrSCzg56aZ5czG2M7fjOTUzJVuslXs9JLkZC/pRs34JiU3Sx4rjJXGLWQ5BnyQVhlQ9GFe02bM7JcyCRx3hHZBSzLbQYBPJ4fF7PrkFancjWDPTP2c7hy0yuvUs0oR4wtlD2fKYvrWOPVOlUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239576; c=relaxed/simple;
-	bh=HeP3tSVro3OTqy9Zl0sT/uDGfi1t33sfig9tx131F1M=;
+	s=arc-20240116; t=1733241684; c=relaxed/simple;
+	bh=ob1TD0dRfB1ZyHqnmV615dqdwClBeFlk9zBTTV8w/uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+/maleB0qx0ugRS1NrPM+XOqdPr9FUiQcVhEiCL/kksCI9IfnwF+05j9sAM9T/TCf+oPmDAZBv3356qM2AKDc/VlyDVrc3mPWxiGcd25FHZvpmAEeRY7Qdldol8v/RI3Jtrzk98HdcZkLaNCCkz/yONiurC8Gu6OfPqcGFhWUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckjRTZpu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488E0C4CECF;
-	Tue,  3 Dec 2024 15:26:16 +0000 (UTC)
+	 MIME-Version; b=VmdK8VA08O3PRf+yGdXUpd5O/aLpFeHd0/rNJgJeseDMSnnfcDvGKsrC+Ab0RLGu7tzyMD8u6QYu3RrjBwHSoVuu3ekENvQW2J5VdI1v4guIzhXVvSTX8swe1DjErwlRTXqw3spdkTmfHTlKtr2wlp8Is7UjwaU6AVJ6zN7bD7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4yw5vH1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A22C4CECF;
+	Tue,  3 Dec 2024 16:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239576;
-	bh=HeP3tSVro3OTqy9Zl0sT/uDGfi1t33sfig9tx131F1M=;
+	s=korg; t=1733241683;
+	bh=ob1TD0dRfB1ZyHqnmV615dqdwClBeFlk9zBTTV8w/uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckjRTZpu5k3KMxR8cenzm1xAL800sLkRPvnkFuM0DYbUAmw//mSOW43+JulSze9BR
-	 rV8GFM7QYL5THwLFhTMEoMMZcP/kfVWiyztfMxvqmGlkYzuSuOp3LBf9ASux2MrEyv
-	 MZNl7azckfqBEKDaTF2TKk4ZS19uSdoh3cANU99Q=
+	b=z4yw5vH10nCV2H6guXVOx6rmySJjYkd5pLHJ430g6AccEeEzdISyEieTZOJuhKQRw
+	 zZmDozWQPN4TAfAz56faQVpBVTr6kAmkIJ97zTf6fV7z5fdeSFEWgMJn2+Y4tv+F2c
+	 g5GFI9NOttIH0j+AcWbjOg0SyYOPvKaCH5kD2RAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.11 644/817] crypto: x86/aegis128 - access 32-bit arguments as 32-bit
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 489/826] rust: macros: fix documentation of the paste! macro
 Date: Tue,  3 Dec 2024 15:43:36 +0100
-Message-ID: <20241203144021.088943560@linuxfoundation.org>
+Message-ID: <20241203144802.832437468@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 3b2f2d22fb424e9bebda4dbf6676cbfc7f9f62cd upstream.
+[ Upstream commit 15541c9263ce34ff95a06bc68f45d9bc5c990bcd ]
 
-Fix the AEGIS assembly code to access 'unsigned int' arguments as 32-bit
-values instead of 64-bit, since the upper bits of the corresponding
-64-bit registers are not guaranteed to be zero.
+One of the example in this section uses a curious mix of the constant
+and function declaration syntaxes; fix it.
 
-Note: there haven't been any reports of this bug actually causing
-incorrect behavior.  Neither gcc nor clang guarantee zero-extension to
-64 bits, but zero-extension is likely to happen in practice because most
-instructions that operate on 32-bit registers zero-extend to 64 bits.
-
-Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: 823d4737d4c2 ("rust: macros: add `paste!` proc macro")
+Link: https://lore.kernel.org/r/20241019072208.1016707-1-pbonzini@redhat.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/aegis128-aesni-asm.S |   29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ rust/macros/lib.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/crypto/aegis128-aesni-asm.S
-+++ b/arch/x86/crypto/aegis128-aesni-asm.S
-@@ -21,7 +21,7 @@
- #define T1	%xmm7
- 
- #define STATEP	%rdi
--#define LEN	%rsi
-+#define LEN	%esi
- #define SRC	%rdx
- #define DST	%rcx
- 
-@@ -76,32 +76,32 @@ SYM_FUNC_START_LOCAL(__load_partial)
- 	xor %r9d, %r9d
- 	pxor MSG, MSG
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1, %r8
- 	jz .Lld_partial_1
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1E, %r8
- 	add SRC, %r8
- 	mov (%r8), %r9b
- 
- .Lld_partial_1:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x2, %r8
- 	jz .Lld_partial_2
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1C, %r8
- 	add SRC, %r8
- 	shl $0x10, %r9
- 	mov (%r8), %r9w
- 
- .Lld_partial_2:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x4, %r8
- 	jz .Lld_partial_4
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x18, %r8
- 	add SRC, %r8
- 	shl $32, %r9
-@@ -111,11 +111,11 @@ SYM_FUNC_START_LOCAL(__load_partial)
- .Lld_partial_4:
- 	movq %r9, MSG
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x8, %r8
- 	jz .Lld_partial_8
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x10, %r8
- 	add SRC, %r8
- 	pslldq $8, MSG
-@@ -139,7 +139,7 @@ SYM_FUNC_END(__load_partial)
-  *   %r10
-  */
- SYM_FUNC_START_LOCAL(__store_partial)
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	mov DST, %r9
- 
- 	movq T0, %r10
-@@ -677,7 +677,7 @@ SYM_TYPED_FUNC_START(crypto_aegis128_aes
- 	call __store_partial
- 
- 	/* mask with byte count: */
--	movq LEN, T0
-+	movd LEN, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
-@@ -702,7 +702,8 @@ SYM_FUNC_END(crypto_aegis128_aesni_dec_t
- 
- /*
-  * void crypto_aegis128_aesni_final(void *state, void *tag_xor,
-- *                                  u64 assoclen, u64 cryptlen);
-+ *                                  unsigned int assoclen,
-+ *                                  unsigned int cryptlen);
-  */
- SYM_FUNC_START(crypto_aegis128_aesni_final)
- 	FRAME_BEGIN
-@@ -715,8 +716,8 @@ SYM_FUNC_START(crypto_aegis128_aesni_fin
- 	movdqu 0x40(STATEP), STATE4
- 
- 	/* prepare length block: */
--	movq %rdx, MSG
--	movq %rcx, T0
-+	movd %edx, MSG
-+	movd %ecx, T0
- 	pslldq $8, T0
- 	pxor T0, MSG
- 	psllq $3, MSG /* multiply by 8 (to get bit count) */
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index a626b1145e5c4..90e2202ba4d5a 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -359,7 +359,7 @@ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
+ /// macro_rules! pub_no_prefix {
+ ///     ($prefix:ident, $($newname:ident),+) => {
+ ///         kernel::macros::paste! {
+-///             $(pub(crate) const fn [<$newname:lower:span>]: u32 = [<$prefix $newname:span>];)+
++///             $(pub(crate) const fn [<$newname:lower:span>]() -> u32 { [<$prefix $newname:span>] })+
+ ///         }
+ ///     };
+ /// }
+-- 
+2.43.0
+
 
 
 
