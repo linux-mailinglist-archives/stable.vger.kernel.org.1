@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-97152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0F19E2A1E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8725E9E2B62
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BB28B37150
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE01BB43296
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15511F7071;
-	Tue,  3 Dec 2024 15:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1561F7071;
+	Tue,  3 Dec 2024 15:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObP5gCEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5WVP7tq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B6B1E3DED;
-	Tue,  3 Dec 2024 15:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B17A646;
+	Tue,  3 Dec 2024 15:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239669; cv=none; b=H8wJ9wWCHhl5to9YwvkLiiGk3jfQKl9wIq6zMTEdufIsjAK4bcvNEmWE3w6Wn0ZrI1OsW90NxkYEjon4Il4cnSWnEUSPzfpkFxTVcZAos+80cFJQzafAHiHW2lC9qo2NqqTK8AudbE8IKvmhAINZkniXfylR2FZZWSTLJRCBoyM=
+	t=1733239681; cv=none; b=Qf5OY3H33vpaX1ijoHaEqcYOiriCb8CjCgQ3KhSgDITMv2d7HX1lwa1zGI5V9QB95+VqcoT/kbRLZnN3jzBr1EpqYQLp7r4pPqUMyQbpY+NAWYLWDg6m/rfhUHOt2mMKhn3IlstPZi87mNZ3c7aKBTgkFMH7EiyAHEMy/ALY+Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239669; c=relaxed/simple;
-	bh=OreZVNfYjjGaIf+cJZCw2YvmzIUc5s8ELOHDG1EPUJA=;
+	s=arc-20240116; t=1733239681; c=relaxed/simple;
+	bh=DMVyc2aaorqUuzI56dBPzB7Q2mNN5+vgnD9g9dNfm7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHo7m36HQl7KTe80pvXPqTNJPofklpqScAliyRTwDBZ7BmylfnmIsPkOt6Lqj+4S1+LzXEorxdAGBhDxJmbsEVKuNXci7kB1y21oLuxm/wU63Le8t9aCWx+w6Y90NouRYibCep1TkXL39Q+l4apyG9M6bLq5ZOi/R+YP6YFy9wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObP5gCEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBFAEC4CECF;
-	Tue,  3 Dec 2024 15:27:48 +0000 (UTC)
+	 MIME-Version; b=lxiWYSvWM+mVDDtlYXXQrLhxG0VedQELqMUh7232AwYogQIv+guhz5d2DfswQH4bUaJl0DXDbOlcZOfEbRbPAqXp/QOlkvSqOvzCYR543HGKifkbiHJ21h+8K0sNRfWlmDYtaq4/6OMXG5Za8928dI4zZSwPAJ/V4H4Z6QcWwQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5WVP7tq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7234C4CECF;
+	Tue,  3 Dec 2024 15:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239669;
-	bh=OreZVNfYjjGaIf+cJZCw2YvmzIUc5s8ELOHDG1EPUJA=;
+	s=korg; t=1733239681;
+	bh=DMVyc2aaorqUuzI56dBPzB7Q2mNN5+vgnD9g9dNfm7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObP5gCEB574UnTgQ6f5am2h3zFTK15lY4XFsmda5XGyQN5DaXlMCw3h6zTgkWeE43
-	 yPlkmDNfI1WtGEhWGfIjIK3aPB7l9ro14rgqhqhCwtd71Kz2OO8KHJmKnj4Pl3NS+2
-	 c7F3QNjORPfHqFdRWWgfw3i/lo/M1KRERxBZjqGE=
+	b=U5WVP7tqpdvpn6Yw9g0zmgD0uteHMBRu6LIUgg9QjeHyHqZShE0RrKxpzUoerHfxs
+	 C/c7qbTijtnDXGiY4fzvv5M64V+V1cXOa7s8nhOeQFUJM48BvFdPp1hCBor78fkf+4
+	 dK9h4+1lvAKe/IJ5oK5A1nOEgZQ02H/IuUP2t2w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2159cbb522b02847c053@syzkaller.appspotmail.com,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 694/817] io_uring: check for overflows in io_pin_pages
-Date: Tue,  3 Dec 2024 15:44:26 +0100
-Message-ID: <20241203144023.065506618@linuxfoundation.org>
+	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.11 697/817] netfilter: ipset: add missing range check in bitmap_ip_uadt
+Date: Tue,  3 Dec 2024 15:44:29 +0100
+Message-ID: <20241203144023.184740369@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,51 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 0c0a4eae26ac78379d0c1db053de168a8febc6c9 upstream.
+commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
 
-WARNING: CPU: 0 PID: 5834 at io_uring/memmap.c:144 io_pin_pages+0x149/0x180 io_uring/memmap.c:144
-CPU: 0 UID: 0 PID: 5834 Comm: syz-executor825 Not tainted 6.12.0-next-20241118-syzkaller #0
-Call Trace:
- <TASK>
- __io_uaddr_map+0xfb/0x2d0 io_uring/memmap.c:183
- io_rings_map io_uring/io_uring.c:2611 [inline]
- io_allocate_scq_urings+0x1c0/0x650 io_uring/io_uring.c:3470
- io_uring_create+0x5b5/0xc00 io_uring/io_uring.c:3692
- io_uring_setup io_uring/io_uring.c:3781 [inline]
- ...
- </TASK>
+When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+the values of ip and ip_to are slightly swapped. Therefore, the range check
+for ip should be done later, but this part is missing and it seems that the
+vulnerability occurs.
 
-io_pin_pages()'s uaddr parameter came directly from the user and can be
-garbage. Don't just add size to it as it can overflow.
+So we should add missing range checks and remove unnecessary range checks.
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+2159cbb522b02847c053@syzkaller.appspotmail.com
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/1b7520ddb168e1d537d64be47414a0629d0d8f8f.1732581026.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/memmap.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/io_uring/memmap.c
-+++ b/io_uring/memmap.c
-@@ -137,7 +137,12 @@ struct page **io_pin_pages(unsigned long
- 	struct page **pages;
- 	int ret;
+--- a/net/netfilter/ipset/ip_set_bitmap_ip.c
++++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
+ 		if (ret)
+ 			return ret;
+-		if (ip > ip_to) {
++		if (ip > ip_to)
+ 			swap(ip, ip_to);
+-			if (ip < map->first_ip)
+-				return -IPSET_ERR_BITMAP_RANGE;
+-		}
+ 	} else if (tb[IPSET_ATTR_CIDR]) {
+ 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
  
--	end = (uaddr + len + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	if (check_add_overflow(uaddr, len, &end))
-+		return ERR_PTR(-EOVERFLOW);
-+	if (check_add_overflow(end, PAGE_SIZE - 1, &end))
-+		return ERR_PTR(-EOVERFLOW);
-+
-+	end = end >> PAGE_SHIFT;
- 	start = uaddr >> PAGE_SHIFT;
- 	nr_pages = end - start;
- 	if (WARN_ON_ONCE(!nr_pages))
+@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ip_to = ip;
+ 	}
+ 
+-	if (ip_to > map->last_ip)
++	if (ip < map->first_ip || ip_to > map->last_ip)
+ 		return -IPSET_ERR_BITMAP_RANGE;
+ 
+ 	for (; !before(ip_to, ip); ip += map->hosts) {
 
 
 
