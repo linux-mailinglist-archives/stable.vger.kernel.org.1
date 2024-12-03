@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-96749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3A59E2131
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 934BA9E2499
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:50:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C54B1286425
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:09:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349C916E737
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A171F76AE;
-	Tue,  3 Dec 2024 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A232C1FE473;
+	Tue,  3 Dec 2024 15:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRPbwV3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIcSFFIX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A471F4709;
-	Tue,  3 Dec 2024 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2D21F75B9;
+	Tue,  3 Dec 2024 15:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238482; cv=none; b=Os7y2swyeeAhjK1JLoLvl29QbG3wmOpKZwfVEni2a23qsKoNnD5ZHHBQm8vGAWwcCFkbxVuGZg/KJueDILcsDwlqcoo90mFrGbnLw+KvxAFKgkpBNkOtNUZFMjEoqZCiYPAKb3XgYeHLW9YszEAE/TxcnMpkYFssnS6vuXD550M=
+	t=1733240539; cv=none; b=q8TSk6oI189qlZoAj0FRJl9c6JnwE1c2/D7UAPCuXurL1XYNpZTHnoDKqrNUlfj8hL5CePUqaaWC+3nafv35xeLVYlIZMtNDmeVyJvSw23rLQA91yNdWVB41wWBMu2Td2tHMDntOGbZNR3nyUDncCHXr3XJgN8D3aQeUHAW/wl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238482; c=relaxed/simple;
-	bh=u0GrJHKpZqckOYvKxfQzGldbDiFfcrjLfqdrS8+os0Y=;
+	s=arc-20240116; t=1733240539; c=relaxed/simple;
+	bh=pdRSffNzWLh4z0oF7Hsk29xA2n0P5KSJ6ccxsYYB9CQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKDCC64R5KBSr3oiXutT9cZqUV4KoiFUQumPG4WRyOWy56u33zTnP5fS30sojhnHj3C7UwJUYSolfIoxwB1EhfVlKi9eHV7JHsjOjt4F5o2+3768Z6CglS69twaqax7IYHoDuV2XBy5+XNr1WBpSYOZXY8r4Z+WpLnR+0igJEnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRPbwV3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3C3C4CECF;
-	Tue,  3 Dec 2024 15:08:01 +0000 (UTC)
+	 MIME-Version; b=ho1Py9s/IfBmFveUX6aR2QPPxfrvm+oX3bOjSS0kMe6cZl/CqQ1XI/R0u4G6aVb+8wkhYo4/Ht4RC7E/myq8nWdC9oi9WaMb762pKhClsjcwBWPynwYVMEIVs3cPe6Odtrk65GAHIpIs8UWBNBoPh4p4H/o2e1qGKevU1KJII2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIcSFFIX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C153AC4CECF;
+	Tue,  3 Dec 2024 15:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238482;
-	bh=u0GrJHKpZqckOYvKxfQzGldbDiFfcrjLfqdrS8+os0Y=;
+	s=korg; t=1733240539;
+	bh=pdRSffNzWLh4z0oF7Hsk29xA2n0P5KSJ6ccxsYYB9CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRPbwV3GroelHSlkVezKedi/nxXMDm0tlKIRnLEEysNJPD4SJgUI46ud/atzlh5bL
-	 OzKD+JPXYQUbobBvH6a+VIu6kmHzt5CIvzC+s/Wmy2EbSzz98x9LPEZpwoPyCnaIdV
-	 MMMwvGwVt0lJ2Ta7uijST2p5GDO3sAGeWdwxMoX4=
+	b=DIcSFFIX4cxwdSa1QcknI9IO1MjU64+yaS5wVBygHfozKtBzgyP9JOI4ggSn690Zu
+	 QOQa9Cl9ZhYABNJ3KZvsL1vyv31WDukiTGTs/sYW99D8tRoN6h0YVBIaatVICd/ZeP
+	 HfXQK19v7NabirtogaDf6vk9VZuk6Umbbn+g8z4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 292/817] selftests/bpf: fix test_spin_lock_fail.cs global vars usage
-Date: Tue,  3 Dec 2024 15:37:44 +0100
-Message-ID: <20241203144007.208539286@linuxfoundation.org>
+Subject: [PATCH 6.12 138/826] power: sequencing: make the QCom PMU pwrseq driver depend on CONFIG_OF
+Date: Tue,  3 Dec 2024 15:37:45 +0100
+Message-ID: <20241203144749.126059720@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 1b2bfc29695d273492c3dd8512775261f3272686 ]
+[ Upstream commit f82bf3c5796e1630d553669fb451e6c9d4070512 ]
 
-Global variables of special types (like `struct bpf_spin_lock`) make
-underlying ARRAY maps non-mmapable. To make this work with libbpf's
-mmaping logic, application is expected to declare such special variables
-as static, so libbpf doesn't even attempt to mmap() such ARRAYs.
+This driver uses various OF-specific functions and depends on phandle
+parsing. There's no reason to make it available to non-OF systems so add
+a relevant dependency switch to its Kconfig entry.
 
-test_spin_lock_fail.c didn't follow this rule, but given it relied on
-this test to trigger failures, this went unnoticed, as we never got to
-the step of mmap()'ing these ARRAY maps.
-
-It is fragile and relies on specific sequence of libbpf steps, which are
-an internal implementation details.
-
-Fix the test by marking lockA and lockB as static.
-
-Fixes: c48748aea4f8 ("selftests/bpf: Add failure test cases for spin lock pairing")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241023043908.3834423-2-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 2f1630f437df ("power: pwrseq: add a driver for the PMU module on the QCom WCN chipsets")
+Link: https://lore.kernel.org/r/20241004130449.51725-1-brgl@bgdev.pl
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/test_spin_lock_fail.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/sequencing/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c b/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c
-index 43f40c4fe241a..1c8b678e2e9a3 100644
---- a/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c
-+++ b/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c
-@@ -28,8 +28,8 @@ struct {
- 	},
- };
- 
--SEC(".data.A") struct bpf_spin_lock lockA;
--SEC(".data.B") struct bpf_spin_lock lockB;
-+static struct bpf_spin_lock lockA SEC(".data.A");
-+static struct bpf_spin_lock lockB SEC(".data.B");
- 
- SEC("?tc")
- int lock_id_kptr_preserve(void *ctx)
+diff --git a/drivers/power/sequencing/Kconfig b/drivers/power/sequencing/Kconfig
+index c9f1cdb665248..ddcc42a984921 100644
+--- a/drivers/power/sequencing/Kconfig
++++ b/drivers/power/sequencing/Kconfig
+@@ -16,6 +16,7 @@ if POWER_SEQUENCING
+ config POWER_SEQUENCING_QCOM_WCN
+ 	tristate "Qualcomm WCN family PMU driver"
+ 	default m if ARCH_QCOM
++	depends on OF
+ 	help
+ 	  Say Y here to enable the power sequencing driver for Qualcomm
+ 	  WCN Bluetooth/WLAN chipsets.
 -- 
 2.43.0
 
