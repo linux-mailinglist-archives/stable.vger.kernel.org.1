@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-96943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAFF39E2295
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBB19E24C3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4E3EBA45B4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4954285B4F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8573E1F76A1;
-	Tue,  3 Dec 2024 15:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E991F7591;
+	Tue,  3 Dec 2024 15:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPU9ezAd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYP2dFTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442CE2D7BF;
-	Tue,  3 Dec 2024 15:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D4C153800;
+	Tue,  3 Dec 2024 15:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239048; cv=none; b=bR4okW9116QgtrwMJ5aisiVtVnjdrXACoeIQGiLq8DiAQOZM+g9+F31/C6C6fypPY93gQ7LcygqVkKcyvaLKcggEn3tAYHPqB3QSc0YMfWQfF4AMk2ZI4eifIvX59cs/tdqS6YMwkS1hDzX9+DecqM3Dq6s94WTRDr1Kza3v0nA=
+	t=1733241126; cv=none; b=qX9I9wumNbcIT0BHEYUBPHVym5wcCjkHr3TUC0BX5InVCbl8lYO3iCqL+7O+6rcTjQUy97SI8myD89c34EAlp2UhmFO7jVj4vaPR6h1857N5tt7RBlEexK/3RHw7+2ctxZ5avf/Xpmvupop2hFPX9g5za3HkQtvsdozrJjr0d1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239048; c=relaxed/simple;
-	bh=+tt5QQkJX7L9GrHRINGKyxNs5/IZQbv/2U87v0NTy38=;
+	s=arc-20240116; t=1733241126; c=relaxed/simple;
+	bh=aRY7GYAUGa2hjtulzrM66B99NMvUmxjZ5GVGTM5hb5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jo8KFmZ/qnsxzTHXqyXdh4u9KngkAHRKIhVVREeOQgQadingIq4NGv72U9pcdig+ecaAyCmSCiHPG8XR1M7ZRd0pw30X5dqnxOrwVrKcFjNDxAqdSLS/xBXq3bGCTTXj5UmsIBDRaLzCTErIw3n0C8tPKcvuVe5JmzAqGD8otVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPU9ezAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD69C4CECF;
-	Tue,  3 Dec 2024 15:17:27 +0000 (UTC)
+	 MIME-Version; b=o1q10+EYsgS2tmahqnUJZYIsye0WR3wvvL2PfZDnSXuXlbqDcP8+fj7tInF7U+tJ/AHl2v5uvMD/G1xdgb7zHyCcDoaTt/L5JBsbaRgkacPq6yQ5UJGG1wEF26gj2DpWOb4n11xJJLd7oDvZC+Do3xCCZeQGK4bAdyBdwXiwMgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYP2dFTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549ECC4CECF;
+	Tue,  3 Dec 2024 15:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239048;
-	bh=+tt5QQkJX7L9GrHRINGKyxNs5/IZQbv/2U87v0NTy38=;
+	s=korg; t=1733241125;
+	bh=aRY7GYAUGa2hjtulzrM66B99NMvUmxjZ5GVGTM5hb5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPU9ezAdctCRCwDL5UHhth7hNp/Yafcr2KATFpSAdTUP4fJaBChvHZmr9TfTdBxH3
-	 WXaNSbUOS0dEW+ph0M3ze9OULQ1CkZZrFEOpAYI0Xaf0KxHpP8o0XNFHUxYx2P8YjX
-	 GF+AaqJsRubgB1vQKBg7p/KDVkYvK09JznBEXp00=
+	b=mYP2dFTVqzpmQ9JOfJoaWt1d5PnojCMXu6xxO7jEOfNN87CKKoTX3iLHzFk/XwkuB
+	 qpWWT7ImUGBB3/BIYMnqPzpWDk8axU086gvWpro2kuGDWXX0YI9tvrPUtgMKq0Uw5n
+	 ukG8zlwCpyV0vTPlMnPy/T6zH+zqwPtWwUqql7l8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Thomas Falcon <thomas.falcon@intel.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 487/817] perf mem: Fix printing PERF_MEM_LVLNUM_{L2_MHB|MSC}
+Subject: [PATCH 6.12 332/826] ALSA: us122l: Use snd_card_free_when_closed() at disconnection
 Date: Tue,  3 Dec 2024 15:40:59 +0100
-Message-ID: <20241203144014.882073888@linuxfoundation.org>
+Message-ID: <20241203144756.710955281@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Falcon <thomas.falcon@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4f23fc34cc68812c68c3a3dec15e26e87565f430 ]
+[ Upstream commit b7df09bb348016943f56b09dcaafe221e3f73947 ]
 
-With commit 8ec9497d3ef34 ("tools/include: Sync uapi/linux/perf.h
-with the kernel sources"), 'perf mem report' gives an incorrect memory
-access string.
-...
-0.02%	1	3644	L5 hit	[.] 0x0000000000009b0e	mlc	[.] 0x00007fce43f59480
-...
+The USB disconnect callback is supposed to be short and not too-long
+waiting.  OTOH, the current code uses snd_card_free() at
+disconnection, but this waits for the close of all used fds, hence it
+can take long.  It eventually blocks the upper layer USB ioctls, which
+may trigger a soft lockup.
 
-This occurs because, if no entry exists in mem_lvlnum, perf_mem__lvl_scnprintf
-will default to 'L%d, lvl', which in this case for PERF_MEM_LVLNUM_L2_MHB is 0x05.
-Add entries for PERF_MEM_LVLNUM_L2_MHB and PERF_MEM_LVLNUM_MSC to mem_lvlnum,
-so that the correct strings are printed.
-...
-0.02%	1	3644	L2 MHB hit	[.] 0x0000000000009b0e	mlc	[.] 0x00007fce43f59480
-...
+An easy workaround is to replace snd_card_free() with
+snd_card_free_when_closed().  This variant returns immediately while
+the release of resources is done asynchronously by the card device
+release at the last close.
 
-Fixes: 8ec9497d3ef34 ("tools/include: Sync uapi/linux/perf.h with the kernel sources")
-Suggested-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Thomas Falcon <thomas.falcon@intel.com>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Link: https://lore.kernel.org/r/20240926144040.77897-1-thomas.falcon@intel.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+The loop of us122l->mmap_count check is dropped as well.  The check is
+useless for the asynchronous operation with *_when_closed().
+
+Fixes: 030a07e44129 ("ALSA: Add USB US122L driver")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241113111042.15058-3-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/mem-events.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/usb/usx2y/us122l.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/mem-events.c b/tools/perf/util/mem-events.c
-index 051feb93ed8d4..bf5090f5220bb 100644
---- a/tools/perf/util/mem-events.c
-+++ b/tools/perf/util/mem-events.c
-@@ -366,6 +366,12 @@ static const char * const mem_lvl[] = {
- };
+diff --git a/sound/usb/usx2y/us122l.c b/sound/usb/usx2y/us122l.c
+index 1be0e980feb95..ca5fac03ec798 100644
+--- a/sound/usb/usx2y/us122l.c
++++ b/sound/usb/usx2y/us122l.c
+@@ -606,10 +606,7 @@ static void snd_us122l_disconnect(struct usb_interface *intf)
+ 	usb_put_intf(usb_ifnum_to_if(us122l->dev, 1));
+ 	usb_put_dev(us122l->dev);
  
- static const char * const mem_lvlnum[] = {
-+	[PERF_MEM_LVLNUM_L1] = "L1",
-+	[PERF_MEM_LVLNUM_L2] = "L2",
-+	[PERF_MEM_LVLNUM_L3] = "L3",
-+	[PERF_MEM_LVLNUM_L4] = "L4",
-+	[PERF_MEM_LVLNUM_L2_MHB] = "L2 MHB",
-+	[PERF_MEM_LVLNUM_MSC] = "Memory-side Cache",
- 	[PERF_MEM_LVLNUM_UNC] = "Uncached",
- 	[PERF_MEM_LVLNUM_CXL] = "CXL",
- 	[PERF_MEM_LVLNUM_IO] = "I/O",
-@@ -448,7 +454,7 @@ int perf_mem__lvl_scnprintf(char *out, size_t sz, const struct mem_info *mem_inf
- 		if (mem_lvlnum[lvl])
- 			l += scnprintf(out + l, sz - l, mem_lvlnum[lvl]);
- 		else
--			l += scnprintf(out + l, sz - l, "L%d", lvl);
-+			l += scnprintf(out + l, sz - l, "Unknown level %d", lvl);
+-	while (atomic_read(&us122l->mmap_count))
+-		msleep(500);
+-
+-	snd_card_free(card);
++	snd_card_free_when_closed(card);
+ }
  
- 		l += scnprintf(out + l, sz - l, " %s", hit_miss);
- 		return l;
+ static int snd_us122l_suspend(struct usb_interface *intf, pm_message_t message)
 -- 
 2.43.0
 
