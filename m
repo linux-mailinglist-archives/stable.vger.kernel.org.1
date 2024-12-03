@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D2A9E2425
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E679E2461
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A6EDB86D5B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2022116A8E7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B951F759C;
-	Tue,  3 Dec 2024 15:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6EF1F754A;
+	Tue,  3 Dec 2024 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJFqKsWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7m7U4qN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023BE1F7587;
-	Tue,  3 Dec 2024 15:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07FC21DFD91;
+	Tue,  3 Dec 2024 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238287; cv=none; b=E441V43ijYxLEz0/zpO8L3yD+NaAHMN5Hiauchfswmz4mTUoy3HfXeSzI5ZPU2lSTZKCCF3CIKXD1fJvkR+k2BwsYwz4PMKwoOsp8U8MptQzSTj24FRfA5sa5OWx4CWVAVN5RbefIYUOTERcip0yD9lyPwX+xg696m1yyJ31SZo=
+	t=1733240330; cv=none; b=EJg/lxEH7AwK7BX/2f4WjMnitJjJ+FZ2ggs3enbPPlZscY+BWkCwTiCFhtv1861e/oPggrCBOef2B/QuKRLi4Qb/gQc2etTBX1OaQ4RxeY9f7wTsWMIq+jhVOtMOvrMcBErTJCrHw18DZP/7uIfhfZ8h4WG1DeiEdlMSyrecMDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238287; c=relaxed/simple;
-	bh=hN4mUQBu9ip7sdkzz2f+kftMv5RgjNatBGfYtZPgUY4=;
+	s=arc-20240116; t=1733240330; c=relaxed/simple;
+	bh=5Ff2ASPgN7kZjlcuHKl1QGvrmOxDNLz7fNAvG7VBUr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfJR8ORgV/jWtvXeMFLdHMl3M3XC0Bm1l4dH4ehWeAanwnWCbCN8ILl/HTaD5e8bogmo8s+SDfqb6CFhIhINhuMKopfrcqFcpcyaHYdPcpLZxWR94NyBuADTMzVIIzXPsF94UhMoyI8bHMgnfWSaYwwos+KsLeR33sDYFGbcuBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJFqKsWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2D8C4CECF;
-	Tue,  3 Dec 2024 15:04:46 +0000 (UTC)
+	 MIME-Version; b=Js+xbz6V4lf7GRcYrZrgTdvcVbgvqlSjP6j0b9q+m3oSUFes1HiYLT4/4jH9Fz/SbOYzLUQ0mibT0tRmr1sau3OePRRQdgTWW1Qlw/Q3gyTHR3kCk7VUFzEUBxU66eAIrba17Hi+74GnYnl+ShSAMKJDq+KW92u9Ja71/u3SVLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7m7U4qN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811F6C4CECF;
+	Tue,  3 Dec 2024 15:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238286;
-	bh=hN4mUQBu9ip7sdkzz2f+kftMv5RgjNatBGfYtZPgUY4=;
+	s=korg; t=1733240329;
+	bh=5Ff2ASPgN7kZjlcuHKl1QGvrmOxDNLz7fNAvG7VBUr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJFqKsWg7lSnAFs6t8nQwIY1x7Y/Q1I5zV3Vba8X5E4Ey4Qdi8VNHSGdjaV9WszIL
-	 r+M5b6BFqmBqeYXeUo6QkdAXtFsBq3ZmKa7hYJlKvDXRw+JQgY7M4GAE0z/M4dIInB
-	 mlGQTuSbVQtpL4lXtkzOV45E/cCc31nvmdkdM5pA=
+	b=K7m7U4qNun5s4FmBwGccOOT+YYFIxMP2VUuaJdfZUjequiJ9D5wMCMBNkIPlSRzpJ
+	 AFyDyVrq+ruaPchlUbtUl5loVZEXyFBFIAzpr3y2lwShAgUH63L3aSvDDdddxOP518
+	 wrW1YEQ6wLUCT9S1j9JOum24FsRLCy40akui5lZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Jerome Brunet <jbrunet@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 226/817] wifi: p54: Use IRQF_NO_AUTOEN flag in request_irq()
+Subject: [PATCH 6.12 071/826] hwmon: (pmbus/core) clear faults after setting smbalert mask
 Date: Tue,  3 Dec 2024 15:36:38 +0100
-Message-ID: <20241203144004.570580301@linuxfoundation.org>
+Message-ID: <20241203144746.242537714@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit bcd1371bd85e560ccc9159b7747f94bfe43b77a6 ]
+[ Upstream commit 509c3a362675bc995771df74d545548f98e37621 ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+pmbus_write_smbalert_mask() ignores the errors if the chip can't set
+smbalert mask the standard way. It is not necessarily a problem for the irq
+support if the chip is otherwise properly setup but it may leave an
+uncleared fault behind.
 
-Fixes: cd8d3d321285 ("p54spi: p54spi driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240910124314.698896-2-ruanjinjie@huawei.com
+pmbus_core will pick the fault on the next register_check(). The register
+check will fails regardless of the actual register support by the chip.
+
+This leads to missing attributes or debugfs entries for chips that should
+provide them.
+
+We cannot rely on register_check() as PMBUS_SMBALERT_MASK may be read-only.
+
+Unconditionally clear the page fault after setting PMBUS_SMBALERT_MASK to
+avoid the problem.
+
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 221819ca4c36 ("hwmon: (pmbus/core) Add interrupt support")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Message-ID: <20241105-tps25990-v4-5-0e312ac70b62@baylibre.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intersil/p54/p54spi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/hwmon/pmbus/pmbus_core.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intersil/p54/p54spi.c b/drivers/net/wireless/intersil/p54/p54spi.c
-index d33a994906a7b..27f44a9f0bc1f 100644
---- a/drivers/net/wireless/intersil/p54/p54spi.c
-+++ b/drivers/net/wireless/intersil/p54/p54spi.c
-@@ -624,7 +624,7 @@ static int p54spi_probe(struct spi_device *spi)
- 	gpio_direction_input(p54spi_gpio_irq);
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index ce7fd4ca9d89b..a68b0a98e8d4d 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -3279,7 +3279,17 @@ static int pmbus_regulator_notify(struct pmbus_data *data, int page, int event)
  
- 	ret = request_irq(gpio_to_irq(p54spi_gpio_irq),
--			  p54spi_interrupt, 0, "p54spi",
-+			  p54spi_interrupt, IRQF_NO_AUTOEN, "p54spi",
- 			  priv->spi);
- 	if (ret < 0) {
- 		dev_err(&priv->spi->dev, "request_irq() failed");
-@@ -633,8 +633,6 @@ static int p54spi_probe(struct spi_device *spi)
+ static int pmbus_write_smbalert_mask(struct i2c_client *client, u8 page, u8 reg, u8 val)
+ {
+-	return _pmbus_write_word_data(client, page, PMBUS_SMBALERT_MASK, reg | (val << 8));
++	int ret;
++
++	ret = _pmbus_write_word_data(client, page, PMBUS_SMBALERT_MASK, reg | (val << 8));
++
++	/*
++	 * Clear fault systematically in case writing PMBUS_SMBALERT_MASK
++	 * is not supported by the chip.
++	 */
++	pmbus_clear_fault_page(client, page);
++
++	return ret;
+ }
  
- 	irq_set_irq_type(gpio_to_irq(p54spi_gpio_irq), IRQ_TYPE_EDGE_RISING);
- 
--	disable_irq(gpio_to_irq(p54spi_gpio_irq));
--
- 	INIT_WORK(&priv->work, p54spi_work);
- 	init_completion(&priv->fw_comp);
- 	INIT_LIST_HEAD(&priv->tx_pending);
+ static irqreturn_t pmbus_fault_handler(int irq, void *pdata)
 -- 
 2.43.0
 
