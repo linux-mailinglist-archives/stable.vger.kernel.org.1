@@ -1,61 +1,53 @@
-Return-Path: <stable+bounces-97727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3FA9E2ACF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:28:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C689E28B3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0766B32F12
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B00FB38F06
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0745A1F76BE;
-	Tue,  3 Dec 2024 15:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD34D1F76B5;
+	Tue,  3 Dec 2024 15:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ublVlR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAsqwfg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66751F8928;
-	Tue,  3 Dec 2024 15:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E2D1F76A8;
+	Tue,  3 Dec 2024 15:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241525; cv=none; b=hI/5ej9D4IGTDJv+IytdspjiLDKNLbNw06fSxilrGnglAmb+Ll5jLnOfUJaBZCpICNsUHxuFOAh80EaJAuv5nPtHfK40tz8XkSygv6xgqSQTBmHC93vjfe+4CL98e5vMXPKt0s2V9sZBeyWUGgGtB3MHemcT9lRosAuNlhqL3PI=
+	t=1733241532; cv=none; b=ZvRWLctl0BEQMx4CvY7qMJZVHqkk/eWJs1E8Dw7NefTI15ta5Uwo3znN+pftFxOdhX0uCHhsZl2EVAJtW9V77nFpUo3yIHcrrH20IE305zZDse5ZtiwdWvFYCSrgmYeke0lWTDEF2THTkbsTn4S2L91z22cFjA6wkKie8BTUCYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241525; c=relaxed/simple;
-	bh=anm7Q1qTF7s27tXR9zP6HVZ7dXoXg5uNQXzlsZ42xec=;
+	s=arc-20240116; t=1733241532; c=relaxed/simple;
+	bh=p7WpSkre8fqytHaI5HVW7apqlG+jwu/vUONlQUPjTUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bV3hNrJT5ffT5SCjf2EzFaSSIlzjKHqWzL29jWk6b/ZrG9Y/6/ubwzf4XxVAzy8qEep0bZR+PkOzxCGFNiiwhm5okX4PlsIVciRDsoavG9zRDMsCeOGnD6Tuqk2vgwkoiQ4uHwxI6W7zfFHePh3z7ZALx6SDbBD8VXKGSxyq6oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ublVlR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91C0C4CED6;
-	Tue,  3 Dec 2024 15:58:44 +0000 (UTC)
+	 MIME-Version; b=sl3tMatzu9NfH6ymCYryvgkQBLI8d+8GVcJ8cGQ26hKZFU8EjLP7yIOK/are4fesU0vL02b8qhIg9Rb1A7Z8plxaZlEq9+rABW+Or5l6z9VEWKPcNRLROJEalWtd6Z4ca0H1px/ulTrxQa8HB59HePQFgE9cKP05JLcIM1dApGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAsqwfg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF8F1C4CECF;
+	Tue,  3 Dec 2024 15:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241525;
-	bh=anm7Q1qTF7s27tXR9zP6HVZ7dXoXg5uNQXzlsZ42xec=;
+	s=korg; t=1733241532;
+	bh=p7WpSkre8fqytHaI5HVW7apqlG+jwu/vUONlQUPjTUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ublVlR6VPkIMGgqzUkRfr9KhbzsNel/EjixUJ2/+yGnK/2HJ7b6lTqcET+RuBCk9
-	 /+AnMrUwgWC3EZ+vOemNdpFqMifhtlZqC/Vd8EqJTwY64l9O5QIy0Dep6pptZDPOsu
-	 qVcfGhGhpTN7obufFDp7nvvOWrJ4NxZblp/dLciM=
+	b=TAsqwfg/SMJuny6aHiSWGY7io5UMkMtdLax4taAvxwMsdx/TQhMN/v7cONqK0Oy4g
+	 EuqfCrT08w5sjcGg36WRnRD2ucnNEsTc99k6EWewZYC4tu8boXgGzFVa+B2mrDaGlR
+	 fwSNFTzRwx9gskO3xt4zMu/L/Jt5YwvXBPu05Jno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamir Duberstein <tamird@gmail.com>,
-	Andy Whitcroft <apw@canonical.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Joe Perches <joe@perches.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Philippe Schenker <philippe.schenker@toradex.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 412/826] checkpatch: always parse orig_commit in fixes tag
-Date: Tue,  3 Dec 2024 15:42:19 +0100
-Message-ID: <20241203144759.832203632@linuxfoundation.org>
+Subject: [PATCH 6.12 414/826] leds: max5970: Fix unreleased fwnode_handle in probe function
+Date: Tue,  3 Dec 2024 15:42:21 +0100
+Message-ID: <20241203144759.909442801@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,121 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 2f07b652384969f5d0b317e1daa5f2eb967bc73d ]
+[ Upstream commit 02f58f97419c828f58e30f24f54395ac9be159c0 ]
 
-Do not require the presence of `$balanced_parens` to get the commit SHA;
-this allows a `Fixes: deadbeef` tag to get a correct suggestion rather
-than a suggestion containing a reference to HEAD.
+An object initialized via device_get_named_child_node() requires calls
+to fwnode_handle_put() when it is no longer required to avoid leaking
+memory.
 
-Given this patch:
+Add the automatic cleanup facility for 'led_node' to ensure that
+fwnode_handle_put() is called in all execution paths.
 
-: From: Tamir Duberstein <tamird@gmail.com>
-: Subject: Test patch
-: Date: Fri, 25 Oct 2024 19:30:51 -0400
-:
-: This is a test patch.
-:
-: Fixes: bd17e036b495
-: Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-: --- /dev/null
-: +++ b/new-file
-: @@ -0,0 +1 @@
-: +Test.
-
-Before:
-
-WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: c10a7d25e68f ("Test patch")'
-
-After:
-
-WARNING: Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' - ie: 'Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")'
-
-The prior behavior incorrectly suggested the patch's own SHA and title
-line rather than the referenced commit's.  This fixes that.
-
-Ironically this:
-
-Fixes: bd17e036b495 ("checkpatch: warn for non-standard fixes tag style")
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-Cc: Andy Whitcroft <apw@canonical.com>
-Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
-Cc: Joe Perches <joe@perches.com>
-Cc: Louis Peens <louis.peens@corigine.com>
-Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Cc: Philippe Schenker <philippe.schenker@toradex.com>
-Cc: Simon Horman <horms@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 736214b4b02a ("leds: max5970: Add support for max5970")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20241031-max5970-of_node_put-v2-1-0ffe1f1d3bc9@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/checkpatch.pl | 37 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 21 deletions(-)
+ drivers/leds/leds-max5970.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 4427572b24771..b03d526e4c454 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3209,36 +3209,31 @@ sub process {
+diff --git a/drivers/leds/leds-max5970.c b/drivers/leds/leds-max5970.c
+index 56a584311581a..285074c53b234 100644
+--- a/drivers/leds/leds-max5970.c
++++ b/drivers/leds/leds-max5970.c
+@@ -45,7 +45,7 @@ static int max5970_led_set_brightness(struct led_classdev *cdev,
  
- # Check Fixes: styles is correct
- 		if (!$in_header_lines &&
--		    $line =~ /^\s*fixes:?\s*(?:commit\s*)?[0-9a-f]{5,}\b/i) {
--			my $orig_commit = "";
--			my $id = "0123456789ab";
--			my $title = "commit title";
--			my $tag_case = 1;
--			my $tag_space = 1;
--			my $id_length = 1;
--			my $id_case = 1;
-+		    $line =~ /^\s*(fixes:?)\s*(?:commit\s*)?([0-9a-f]{5,40})(?:\s*($balanced_parens))?/i) {
-+			my $tag = $1;
-+			my $orig_commit = $2;
-+			my $title;
- 			my $title_has_quotes = 0;
- 			$fixes_tag = 1;
--
--			if ($line =~ /(\s*fixes:?)\s+([0-9a-f]{5,})\s+($balanced_parens)/i) {
--				my $tag = $1;
--				$orig_commit = $2;
--				$title = $3;
--
--				$tag_case = 0 if $tag eq "Fixes:";
--				$tag_space = 0 if ($line =~ /^fixes:? [0-9a-f]{5,} ($balanced_parens)/i);
--
--				$id_length = 0 if ($orig_commit =~ /^[0-9a-f]{12}$/i);
--				$id_case = 0 if ($orig_commit !~ /[A-F]/);
--
-+			if (defined $3) {
- 				# Always strip leading/trailing parens then double quotes if existing
--				$title = substr($title, 1, -1);
-+				$title = substr($3, 1, -1);
- 				if ($title =~ /^".*"$/) {
- 					$title = substr($title, 1, -1);
- 					$title_has_quotes = 1;
- 				}
-+			} else {
-+				$title = "commit title"
- 			}
+ static int max5970_led_probe(struct platform_device *pdev)
+ {
+-	struct fwnode_handle *led_node, *child;
++	struct fwnode_handle *child;
+ 	struct device *dev = &pdev->dev;
+ 	struct regmap *regmap;
+ 	struct max5970_led *ddata;
+@@ -55,7 +55,8 @@ static int max5970_led_probe(struct platform_device *pdev)
+ 	if (!regmap)
+ 		return -ENODEV;
  
-+
-+			my $tag_case = not ($tag eq "Fixes:");
-+			my $tag_space = not ($line =~ /^fixes:? [0-9a-f]{5,40} ($balanced_parens)/i);
-+
-+			my $id_length = not ($orig_commit =~ /^[0-9a-f]{12}$/i);
-+			my $id_case = not ($orig_commit !~ /[A-F]/);
-+
-+			my $id = "0123456789ab";
- 			my ($cid, $ctitle) = git_commit_info($orig_commit, $id,
- 							     $title);
+-	led_node = device_get_named_child_node(dev->parent, "leds");
++	struct fwnode_handle *led_node __free(fwnode_handle) =
++		device_get_named_child_node(dev->parent, "leds");
+ 	if (!led_node)
+ 		return -ENODEV;
  
 -- 
 2.43.0
