@@ -1,151 +1,112 @@
-Return-Path: <stable+bounces-96296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BE59E1BCE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 13:16:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBB59E1B9F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 13:04:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00AEBB3F10D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:52:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2382C1617B0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE0C1E47B8;
-	Tue,  3 Dec 2024 11:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84871E47C2;
+	Tue,  3 Dec 2024 12:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mygRsT0g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IRvg8noI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F9A1DA0F5
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 11:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A351E0493;
+	Tue,  3 Dec 2024 12:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733226645; cv=none; b=q5Ht+cjiNf219eAaz3XDOaNjHLbvDoP1V7eSyz4nd3kHwjPoh6LLYHADrvEoex4whB+4acUWXP39aoZsfIf5f+kqebporWz86A9ihpEUqKe0KEz7e5CdShh0bZbXWofJACYxD4ghEH1hyUzXN0VARBHXW9CW960Fpu7qHGUWZvo=
+	t=1733227470; cv=none; b=RMXm45w6zwhsQee3YYpPzFBTmwtkG5gkDd7tacdCBCRfxOnjuuK++P4fUVJqVQv99KQ8mlbxGNT8L0wQtlH4wqGOoaUpvX8aAtOc5/gADATa/VawdXbWcYookixDHO7gYVP7LQR93Q1A7UrdyciCkJGJNxVZAyLohBPZQ1NEs+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733226645; c=relaxed/simple;
-	bh=VmRVHJ89hHaC702KNj5DVwjGknfJqcSrEMUZ3plgFAw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q+mx1HO3fggjcyLO48gvQk9j61swegVHGRDF3f5KnClJuLDdrCgICyUO4ia0SIwG3cMBCT/us/y81xpwqqnWb7xmz0WEa/Oxpf+Mp18x8oz7c73uUqFkB+BQU7C9ViekfT/a9M8UcYsPqt5BjizrA2FdCAwYiNUrYXe9WrjmZvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mygRsT0g; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e396c98af45so4830899276.1
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 03:50:43 -0800 (PST)
+	s=arc-20240116; t=1733227470; c=relaxed/simple;
+	bh=FEiLx00zqYf4+51Ik7ASoOyO046tjcnO+cRI+fUxJlA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WlZL5ZEH/UD3Iwbp2ZgHcO7CAq0uz9MTOryvDGgk0z6Al8j+XBOH2v8nqcYWeO0qODFDcK4JmWWKaCa2R6vkKh2psEJNptdTpcTjCyf+2wQA7yphPiaWVyY0tgYv2OkSzxdbFB5J7+btnWy/YQaECCzuUMYXwYwVbDOdG0Ao7aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IRvg8noI; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa549f2f9d2so669717766b.3;
+        Tue, 03 Dec 2024 04:04:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733226643; x=1733831443; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iFlYiwHjDzAWalA/ssIPWrafHRu3dey++ZE5NO1gWmM=;
-        b=mygRsT0gAYQ65F7Nq4GW4iAoPj6H7u+hmFZlJbJmbd6Jr1azQSUP0Ey5E/w0b8wF1o
-         ISzUu0xGHVbt/RjudldUIzaW1VXlPPOpgHE0xmQg0ICWKZ/FQ1Hsu8Xdba4SUi0oXPHH
-         Dy6UDOV6yURIxFu4urEyVnvA1d/6H9GbekoB+27jEtJmKnX/Bdaztbx16jQAc/RxpwSk
-         kqBSIVyg0Mw48Pjf9Db2yEGYrYimWRBOvW4+TUFKEpbIcXHpV8PYjNiYdbjDHB+KXmbo
-         Dfsdlp/PAesrcOYnV2RBV4JVjWURpWxyQWq+mOgdxF0gn8W5c9Lf28YnOfl6p7+erzNg
-         slQw==
+        d=gmail.com; s=20230601; t=1733227467; x=1733832267; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DdFGz1GNvwzX3FJYNRanwNsMLzriIeqibMElvzGNDoo=;
+        b=IRvg8noIVekIE5KeRZ38qkRm+8niaBlikr0R1tyO9r1GkYbVlfMfV5k7+sEG9mSfzg
+         KcV5oh0sGmxa1NlMHumk4GGJHaURugxfkflFkSglod8b+b9BlRNIajWgCnX3EP3cXhtj
+         X9z83Q8IOXybcd/xhdKJW5g/9iGCD0RA+s8fokj6uh6NzIB9HPuZIMfOUkQt2fsiQa0y
+         BoJjKLAZRwfKVD19H4ksTjHEDOSizlqqkB7AxpJDMpPQS1lpIwrzKVvaO6EgT06U5fOC
+         xdIQTdIrQAJLRgkZ5p+pVTN2KKsYSIEcNRFBP+0/g3pCQDErYh0J2V7rHO0YmZktZTln
+         HRzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733226643; x=1733831443;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iFlYiwHjDzAWalA/ssIPWrafHRu3dey++ZE5NO1gWmM=;
-        b=n7OPnF869/l7nrJYy2UJ5Po/zTAKOZFQzfMn9nAf0EBDFwt2ZAxbbbARwGq//RIxhs
-         baOIJQv9tEzy17rfo3gMqKYc25wkXglIbPwe9FEIvAmmEmw6n9FkiBP5ZJA4fE5SLs2z
-         47V9QBVOjTMWnelmE+xto1ynrR2dOOPPmCpFPlirBHxtXAd9+EcaXIKZST8M3G4p3/nm
-         FFP13axjWP9iC4x9cL6mjJWPSDwwxU3InqyS9MQuGotc7BdHIPwgnifd8Sp8CeFlX/8q
-         CCXkodBx6S6qZQJwrJclKxZWEvnTP8uua8PZ5BryvFV3d3EgnBthEJsAOfCw2Xe7pIZG
-         QipQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU26NnDVy/2htWvBQwcsB/hex7+fdLiMMOXfgqyVFW7B+RQj47JI7PU0GzwF5repxWlVhihn7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHDcd1yHnXo2uyZPHOGZCG3r2zPwAEaVRp6W3NJUMHT0kDvkvL
-	7ciOSgVbMp0nTWcgAgc/Mb5WsLkNYtVojwcXwSknhh+ZCf/YNcihdobVYSeem73fArYO/v9pNV2
-	+RomMFEZgSfflF/ZceIL01Z9FPzjtec9BDqi/Vg==
-X-Gm-Gg: ASbGncsE6/ehJJuRFmyImQzqWsiMFZv9rjwqi6RT0UbW6v6Z/sDYxEAYvLW3EKRTuXb
-	v5jBZQ8o81Y0F3bViuFblFajJOSDo8Q==
-X-Google-Smtp-Source: AGHT+IFyTnURgL93B+5dKdQPXnHOV8tQW0IsxTMXNH0c/0ZmEOV3U3JgbfPlCK64NvS19G7Z6OStEBzOxJ2NzXELGWo=
-X-Received: by 2002:a05:6902:f89:b0:e30:e39b:9d72 with SMTP id
- 3f1490d57ef6-e39d3a2a894mr2330987276.16.1733226643017; Tue, 03 Dec 2024
- 03:50:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733227467; x=1733832267;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DdFGz1GNvwzX3FJYNRanwNsMLzriIeqibMElvzGNDoo=;
+        b=PoSGXjPbZ1RO1Orxs6Bl/ZitiZB4lzCgCmDrdZWVAilqle35ewZjVm/vJpnR6LSvrj
+         CLM9M6VY0LBDf54vgM6b49FajCHUsd1TiC5vh7mReK/JPI5G4ws9hASyrHhhNJC0rLwZ
+         LQfDPlIysNtfJ1slM7WvKnh8BNQ9Wbcw0ss7OEIppk0zlADZjCq2+hRmOeh5y/Xi7XJY
+         msbmQS8wdk4xxX55Z9tFCsDyK40AUCuIKycJglDiPU4zRCpo6++9UviUgFn+SuyVxNDR
+         IpclAGmA/i5UqiRsLTjj/GPyUGHgAoHzRUeyf1DbIlZEbpRQM0n7b7Ed0QWtF1iEwT/I
+         O/EA==
+X-Forwarded-Encrypted: i=1; AJvYcCViT7nNBsOoFmCHYYDvU2VymWDUk4nU5bqCU58C5J3xN1AJJnXHMg+AazP1QUYw5LlI9IvzbZA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxO9xJYDRXH4KLZzrDTcqG2WdxCZhrLzTa0K3HWfoeDm4bmJEhw
+	Lix1jD/5r0un3ffjdq4HBdz7bnTGt/pA9URhvdK5ch1DK7TJQHN30wXZYQ==
+X-Gm-Gg: ASbGnct/KDnCg3OIGf7Zb4+dP4YRQTNRXoT/hZ8LJkF6PS8bbbNDfqt7hqrasE33kqw
+	Vm8ogwp17dWJlW+5JM4cK36OFbvt6Q1iZB2Gvy3Qs3tNGSk8Jz5fEyaPm24t1nqFps6sQhbB2EX
+	HEoBKBuVcvNhDHBRQNRjsOnuWzFuQxz6LbJCCMd92uocPQXnOeLjv0jPXG1QMymYNKvPv/4d5Ap
+	7UrpqNqTTM+/BDpOiHF0ylPr/PpL7Ma2nQMrsBgDOlE/ETFGQH9fmYsFcMUDg==
+X-Google-Smtp-Source: AGHT+IFFAQkr1ErihNvl9V76tIRJQVSJ3c0SYsmQ1aGe2ujcXBz43wzm1KQfi/ymtbdHl5j/Q22log==
+X-Received: by 2002:a17:906:bfea:b0:aa5:3853:5535 with SMTP id a640c23a62f3a-aa5f7eef1fdmr162439966b.38.1733227467171;
+        Tue, 03 Dec 2024 04:04:27 -0800 (PST)
+Received: from [192.168.42.213] ([163.114.131.193])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa599953d53sm611295766b.181.2024.12.03.04.04.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Dec 2024 04:04:26 -0800 (PST)
+Message-ID: <b21af3fd-09de-48e2-a21c-318f23344528@gmail.com>
+Date: Tue, 3 Dec 2024 12:05:23 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203102318.3386345-1-ukaszb@chromium.org>
-In-Reply-To: <20241203102318.3386345-1-ukaszb@chromium.org>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 3 Dec 2024 13:50:34 +0200
-Message-ID: <CAA8EJpqnOm0y5T+jAZJGL4FLzUz+jp+_ieaOC4j3av+tHaoJ_Q@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: typec: ucsi: Fix completion notifications
-To: =?UTF-8?Q?=C5=81ukasz_Bartosik?= <ukaszb@chromium.org>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>, Benson Leung <bleung@chromium.org>, 
-	Jameson Thies <jthies@google.com>, linux-usb@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] io_uring: Change res2 parameter type in
+ io_uring_cmd_done
+To: Bernd Schubert <bschubert@ddn.com>, Jens Axboe <axboe@kernel.dk>,
+ Kanchan Joshi <joshi.k@samsung.com>
+Cc: io-uring@vger.kernel.org, stable@vger.kernel.org,
+ Li Zetao <lizetao1@huawei.com>
+References: <20241203-io_uring_cmd_done-res2-as-u64-v2-1-5e59ae617151@ddn.com>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <20241203-io_uring_cmd_done-res2-as-u64-v2-1-5e59ae617151@ddn.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 3 Dec 2024 at 12:23, =C5=81ukasz Bartosik <ukaszb@chromium.org> wro=
-te:
->
-> OPM                         PPM                         LPM
->  |        1.send cmd         |                           |
->  |-------------------------->|                           |
->  |                           |--                         |
->  |                           |  | 2.set busy bit in CCI  |
->  |                           |<-                         |
->  |      3.notify the OPM     |                           |
->  |<--------------------------|                           |
->  |                           | 4.send cmd to be executed |
->  |                           |-------------------------->|
->  |                           |                           |
->  |                           |      5.cmd completed      |
->  |                           |<--------------------------|
->  |                           |                           |
->  |                           |--                         |
->  |                           |  | 6.set cmd completed    |
->  |                           |<-       bit in CCI        |
->  |                           |                           |
->  |     7.notify the OPM      |                           |
->  |<--------------------------|                           |
->  |                           |                           |
->  |   8.handle notification   |                           |
->  |   from point 3, read CCI  |                           |
->  |<--------------------------|                           |
->  |                           |                           |
->
-> When the PPM receives command from the OPM (p.1) it sets the busy bit
-> in the CCI (p.2), sends notification to the OPM (p.3) and forwards the
-> command to be executed by the LPM (p.4). When the PPM receives command
-> completion from the LPM (p.5) it sets command completion bit in the CCI
-> (p.6) and sends notification to the OPM (p.7). If command execution by
-> the LPM is fast enough then when the OPM starts handling the notification
-> from p.3 in p.8 and reads the CCI value it will see command completion bi=
-t
-> set and will call complete(). Then complete() might be called again when
-> the OPM handles notification from p.7.
->
-> This fix replaces test_bit() with test_and_clear_bit()
-> in ucsi_notify_common() in order to call complete() only
-> once per request.
->
-> This fix also reinitializes completion variable in
-> ucsi_sync_control_common() before a command is sent.
+On 12/3/24 10:31, Bernd Schubert wrote:
+> Change the type of the res2 parameter in io_uring_cmd_done from ssize_t
+> to u64. This aligns the parameter type with io_req_set_cqe32_extra,
+> which expects u64 arguments.
+> The change eliminates potential issues on 32-bit architectures where
+> ssize_t might be 32-bit.
+> 
+> Only user of passing res2 is drivers/nvme/host/ioctl.c and it actually
+> passes u64.
 
-Thank you!
+LGTM. We can also convert all parameters to match the ABI, i.e.
+io_uring_cqe::res is s32, "ssize_t ret" is just truncated.
 
->
-> Fixes: 584e8df58942 ("usb: typec: ucsi: extract common code for command h=
-andling")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: =C5=81ukasz Bartosik <ukaszb@chromium.org>
-> ---
+-- 
+Pavel Begunkov
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
---=20
-With best wishes
-Dmitry
 
