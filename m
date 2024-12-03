@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759C09E24F9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA74A9E2201
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F505161E69
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71FF5169207
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C091F1304;
-	Tue,  3 Dec 2024 15:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5EC1F76D0;
+	Tue,  3 Dec 2024 15:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqcnEBV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFYIKgv3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3073B1DAC9F;
-	Tue,  3 Dec 2024 15:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C44B1F75B1;
+	Tue,  3 Dec 2024 15:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240932; cv=none; b=NoHOfzssQXlgTTToDU0YDgqJSeMLvoc6p6RnqjoMqE3d9IlLw1IfIDSdo/HCvUzW8yt71zSHPbqUeav7QwMcZQhfszEghUNRTu9Yw0zyDhcpMKmV4d8Bf422cyWisT/aOlxANiHiXQK+dNoeriiZ8ik0y3br2e8kF8U8sWYEit8=
+	t=1733238811; cv=none; b=UEc1depx1jI8A8wvwxLGLYegQHHdEUoM71hJYYiiGMHOJYq52i/dnHP7Fd0iO6tZGqQHcjwLefvuZXu/XQQmIJVbp51kH5tdIVl7CnlSY4oktx/J2TxEzMh+rnl0NVB+ImQu68RF7vUycL9txD08SsZE0frEj6YVOiP/VEdXGuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240932; c=relaxed/simple;
-	bh=WHP5ugFvhtq3mxEKIeH4R+fJhYMqo0ucgtassGmMl9A=;
+	s=arc-20240116; t=1733238811; c=relaxed/simple;
+	bh=qiAv7pDJdGlkP+xljQSOSQo0xOcJsk++TIm4nYqNjeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZYrFmPNS+skP77HukZe97dx+HPCQh3WRX9DEy2LV4y9q1478Lx6Ik47p93mm+D3X8dTQn31oPGSdnFaOdsO1+uGrK4CQlCxeU2ee+w7/41Pgp1maLIGPsbXOm6EW6Oavm/kAr5rYS3EVIJzzNqlUlygGwkJqv2K7NkJGof3skk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqcnEBV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC078C4CECF;
-	Tue,  3 Dec 2024 15:48:51 +0000 (UTC)
+	 MIME-Version; b=KI4T77JAX4RV3Lvy2XTu0WiY5B58IDjYdz2jyDTYHHGxpzLiFJt/dqqMgl3kR1K4zCO2Wg7ao8z+uq/F8erhEOaX80w27IMpT6O8HdhdVrcrf7XNxB4wr9YcLcxhvKYZ/uTlSj21O6il9isF383L8WG0u68Jf1DcC0AEAR8meeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFYIKgv3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97960C4CECF;
+	Tue,  3 Dec 2024 15:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240932;
-	bh=WHP5ugFvhtq3mxEKIeH4R+fJhYMqo0ucgtassGmMl9A=;
+	s=korg; t=1733238811;
+	bh=qiAv7pDJdGlkP+xljQSOSQo0xOcJsk++TIm4nYqNjeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqcnEBV1bmiuopi0ldePr0IqGbuzcSRoEk7kY8tcQYXeeAOfW0ghp3i2okuGe6w8r
-	 /XMkowGlYSA3dBjqhZIV0FosjyrzXvAPk+yAfLjMq2ZJgTOjkJ/BrdbIitGKYTx29l
-	 vKq6F/jArbBW+m7M4f0Pjvj1P2Hv+VMmMZy6HILw=
+	b=LFYIKgv3GChGXgenjd7C4rnqA6BDmQeHfzV2GzNo4iBqAvy+Zj33u0gwpNKlxmrzo
+	 ccrXiT2fKVYRAg3D4btoUpaeDmXntlPcX5kNpVRfyQ4FRsWXOYqE3mAGl5pgfOXYKn
+	 K0Fb61txE8lFBm1jFatmwTptF6na6jVFyodsi3hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 247/826] drm/bridge: tc358767: Fix link properties discovery
-Date: Tue,  3 Dec 2024 15:39:34 +0100
-Message-ID: <20241203144753.400663430@linuxfoundation.org>
+Subject: [PATCH 6.11 403/817] mtd: spi-nor: spansion: Use nor->addr_nbytes in octal DTR mode in RD_ANY_REG_OP
+Date: Tue,  3 Dec 2024 15:39:35 +0100
+Message-ID: <20241203144011.603782056@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
 
-[ Upstream commit 2d343723c7e1f9f6d64f721f07cfdfc2993758d1 ]
+[ Upstream commit b61c35e3404557779ec427c077f7a9f057bb053d ]
 
-When a display controller driver uses DRM_BRIDGE_ATTACH_NO_CONNECTOR,
-tc358767 will behave properly and skip the creation of the connector.
+In octal DTR mode, RD_ANY_REG_OP needs to use 4-byte address regardless
+of flash's internal address mode. Use nor->addr_nbytes which is set to 4
+during setup.
 
-However, tc_get_display_props(), which is used to find out about the DP
-monitor and link, is only called from two places: .atomic_enable() and
-tc_connector_get_modes(). The latter is only used when tc358767 creates
-its own connector, i.e. when DRM_BRIDGE_ATTACH_NO_CONNECTOR is _not_
-set.
-
-Thus, the driver never finds out the link properties before get_edid()
-is called. With num_lanes of 0 and link_rate of 0 there are not many
-valid modes...
-
-Fix this by adding tc_get_display_props() call at the beginning of
-get_edid(), so that we have up to date information before looking at the
-modes.
-
-Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
-Closes: https://lore.kernel.org/all/24282420-b4dd-45b3-bb1c-fc37fe4a8205@siemens.com/
-Fixes: de5e6c027ae6 ("drm/bridge: tc358767: add drm_panel_bridge support")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Tested-by: Jan Kiszka <jan.kiszka@siemens.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231108-tc358767-v2-2-25c5f70a2159@ideasonboard.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: eff9604390d6 ("mtd: spi-nor: spansion: add octal DTR support in RD_ANY_REG_OP")
+Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+Link: https://lore.kernel.org/r/20241016000837.17951-1-Takahiro.Kuwano@infineon.com
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358767.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/spi-nor/spansion.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
-index f3afdab55c113..47189587643a1 100644
---- a/drivers/gpu/drm/bridge/tc358767.c
-+++ b/drivers/gpu/drm/bridge/tc358767.c
-@@ -1714,6 +1714,13 @@ static const struct drm_edid *tc_edid_read(struct drm_bridge *bridge,
- 					   struct drm_connector *connector)
- {
- 	struct tc_data *tc = bridge_to_tc(bridge);
-+	int ret;
-+
-+	ret = tc_get_display_props(tc);
-+	if (ret < 0) {
-+		dev_err(tc->dev, "failed to read display props: %d\n", ret);
-+		return 0;
-+	}
+diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
+index 6cc237c24e072..020994374ea13 100644
+--- a/drivers/mtd/spi-nor/spansion.c
++++ b/drivers/mtd/spi-nor/spansion.c
+@@ -106,6 +106,7 @@ static int cypress_nor_sr_ready_and_clear_reg(struct spi_nor *nor, u64 addr)
+ 	int ret;
  
- 	return drm_edid_read_ddc(connector, &tc->aux.ddc);
- }
+ 	if (nor->reg_proto == SNOR_PROTO_8_8_8_DTR) {
++		op.addr.nbytes = nor->addr_nbytes;
+ 		op.dummy.nbytes = params->rdsr_dummy;
+ 		op.data.nbytes = 2;
+ 	}
 -- 
 2.43.0
 
