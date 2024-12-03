@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-97135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768D09E22A1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2919E2335
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CC7D2856D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:27:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0021016A3B3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44891F754A;
-	Tue,  3 Dec 2024 15:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D025E1F75A4;
+	Tue,  3 Dec 2024 15:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8cAGWLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4tZtYxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83DD81E3DED;
-	Tue,  3 Dec 2024 15:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B44E1F7540;
+	Tue,  3 Dec 2024 15:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239620; cv=none; b=TKZLSfBGtWBO11oKDzL4ISfoZFLH5RUX3oHnJI1WTqY8w2/XV17uE2qzP1IBp7d9+fPVCrCcAXxRwv6+PDtdeWKTrbvT5wdlCAYSmZkeD6OJKWt/brzftwIo9DaYVnjQCCqZqkmg17dmjD3U/HjxQUmD9W5IJnZVhs9AQBf7qPA=
+	t=1733239739; cv=none; b=QlytzD+6dfCDizJEC5PbsP4mHsEzReOTjXFR5vUN+Pr6eYTzbf+AODesXMq1vC1Q3beEjhzlpz7UGSEdojA8jSj3P/Xvl7JrLS2CMjqmBEpKX8hv9b05vEF763VvnWk+5UU2F6tK375FtvjVICE0Q2CJefPsQtd0tdNvOPD8W24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239620; c=relaxed/simple;
-	bh=oM57isJKgwn6LDLeWJPM+YMVegMtFEpcseXAIZvrZxU=;
+	s=arc-20240116; t=1733239739; c=relaxed/simple;
+	bh=Yy1ceF9Gx3YUC+c1aQdrONCxCgF1cvM6XV8D4pKvq9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VakXPEYFkMFVClcRg+Elb+cyVz1N3xP7X6aYQi7K8mFpiWE5cF8B77nRGg65o7BH8Zd1rCP8m/FgGWdc+rdIiA0zGS2DO4xWBnlxIV6eYsdMz4beQro2etQaFDjLpjG9Vf2vSd5AQCX7amvjT8vtNvmeWxMEKIaFkFtND+XYlAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X8cAGWLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1CFC4CED6;
-	Tue,  3 Dec 2024 15:26:59 +0000 (UTC)
+	 MIME-Version; b=QX/d0LDcVCLP429r+Ay42RKaxImwzxSXnBwo9etfsjOa2DQ3vac1imXyCHu8aAxAYL4ljDAhorcB2u5fV/v6jDG6dZCypb3Am+G+BWAqZZyJ7REBvemJt/+07yXCMExUDU/QEQWi31a+SlngolixwdTFBGnvPXxh96seIBRPJdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4tZtYxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE96BC4CECF;
+	Tue,  3 Dec 2024 15:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239620;
-	bh=oM57isJKgwn6LDLeWJPM+YMVegMtFEpcseXAIZvrZxU=;
+	s=korg; t=1733239739;
+	bh=Yy1ceF9Gx3YUC+c1aQdrONCxCgF1cvM6XV8D4pKvq9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X8cAGWLYCwOQ2iiOZjIjCWMtTwuyJoaTlt+xTY4IaAvsKLyxOkTVZyX2RyC7zMymI
-	 cV4JARMXHdxR6X46CZ1iYpcqsNXfIHHP13+AtjhC3Agorex3egRu+5a3rO88z6xdr5
-	 KCAhScSDc+YWUtKdq9KRBMWSBRmoU9bEQRVOL8JU=
+	b=u4tZtYxjsSY2expKTkqZxfABCyRxqBnbViifW3+y9L1lSsw02w2upsy2aDAYNI9Ky
+	 OVHCXIz3bCT2XY3ag0of8mumsmAUuz/qcIeHK97XpFOJVBdw8+GTPQJkYVrgumCKuX
+	 6Ig+AVtO7NegpOwjD0wj58OyQ6EnXBKgW4+iwEpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kuangyi Chiang <ki.chiang65@gmail.com>,
 	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.11 675/817] xhci: Dont perform Soft Retry for Etron xHCI host
-Date: Tue,  3 Dec 2024 15:44:07 +0100
-Message-ID: <20241203144022.306403716@linuxfoundation.org>
+Subject: [PATCH 6.11 676/817] xhci: Dont issue Reset Device command to Etron xHCI host
+Date: Tue,  3 Dec 2024 15:44:08 +0100
+Message-ID: <20241203144022.344921348@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,45 +67,96 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-commit e735e957f2b9cfe4be486e0304732ec36928591f upstream.
+commit 76d98856b1c6d06ce18f32c20527a4f9d283e660 upstream.
 
-Since commit f8f80be501aa ("xhci: Use soft retry to recover faster from
-transaction errors"), unplugging USB device while enumeration results in
-errors like this:
+Sometimes the hub driver does not recognize the USB device connected
+to the external USB2.0 hub when the system resumes from S4.
 
-[ 364.855321] xhci_hcd 0000:0b:00.0: ERROR Transfer event for disabled endpoint slot 5 ep 2
-[ 364.864622] xhci_hcd 0000:0b:00.0: @0000002167656d70 67f03000 00000021 0c000000 05038001
-[ 374.934793] xhci_hcd 0000:0b:00.0: Abort failed to stop command ring: -110
-[ 374.958793] xhci_hcd 0000:0b:00.0: xHCI host controller not responding, assume dead
-[ 374.967590] xhci_hcd 0000:0b:00.0: HC died; cleaning up
-[ 374.973984] xhci_hcd 0000:0b:00.0: Timeout while waiting for configure endpoint command
+After the SetPortFeature(PORT_RESET) request is completed, the hub
+driver calls the HCD reset_device callback, which will issue a Reset
+Device command and free all structures associated with endpoints
+that were disabled.
 
-Seems that Etorn xHCI host can not perform Soft Retry correctly, apply
-XHCI_NO_SOFT_RETRY quirk to disable Soft Retry and then issue is gone.
+This happens when the xHCI driver issue a Reset Device command to
+inform the Etron xHCI host that the USB device associated with a
+device slot has been reset. Seems that the Etron xHCI host can not
+perform this command correctly, affecting the USB device.
 
-This patch depends on commit a4a251f8c235 ("usb: xhci: do not perform
-Soft Retry for some xHCI hosts").
+To work around this, the xHCI driver should obtain a new device slot
+with reference to commit 651aaf36a7d7 ("usb: xhci: Handle USB transaction
+error on address command"), which is another way to inform the Etron
+xHCI host that the USB device has been reset.
 
-Fixes: f8f80be501aa ("xhci: Use soft retry to recover faster from transaction errors")
+Add a new XHCI_ETRON_HOST quirk flag to invoke the workaround in
+xhci_discover_or_reset_device().
+
+Fixes: 2a8f82c4ceaf ("USB: xhci: Notify the xHC when a device is reset.")
 Cc: stable@vger.kernel.org
 Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20241106101459.775897-21-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20241106101459.775897-19-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  drivers/usb/host/xhci-pci.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci.c     |   19 +++++++++++++++++++
+ drivers/usb/host/xhci.h     |    1 +
+ 3 files changed, 21 insertions(+)
 
 --- a/drivers/usb/host/xhci-pci.c
 +++ b/drivers/usb/host/xhci-pci.c
-@@ -405,6 +405,7 @@ static void xhci_pci_quirks(struct devic
+@@ -403,6 +403,7 @@ static void xhci_pci_quirks(struct devic
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+ 	    (pdev->device == PCI_DEVICE_ID_EJ168 ||
  	     pdev->device == PCI_DEVICE_ID_EJ188)) {
++		xhci->quirks |= XHCI_ETRON_HOST;
  		xhci->quirks |= XHCI_RESET_ON_RESUME;
  		xhci->quirks |= XHCI_BROKEN_STREAMS;
-+		xhci->quirks |= XHCI_NO_SOFT_RETRY;
- 	}
+ 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3692,6 +3692,8 @@ void xhci_free_device_endpoint_resources
+ 				xhci->num_active_eps);
+ }
  
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
++static void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev);
++
+ /*
+  * This submits a Reset Device Command, which will set the device state to 0,
+  * set the device address to 0, and disable all the endpoints except the default
+@@ -3762,6 +3764,23 @@ static int xhci_discover_or_reset_device
+ 						SLOT_STATE_DISABLED)
+ 		return 0;
+ 
++	if (xhci->quirks & XHCI_ETRON_HOST) {
++		/*
++		 * Obtaining a new device slot to inform the xHCI host that
++		 * the USB device has been reset.
++		 */
++		ret = xhci_disable_slot(xhci, udev->slot_id);
++		xhci_free_virt_device(xhci, udev->slot_id);
++		if (!ret) {
++			ret = xhci_alloc_dev(hcd, udev);
++			if (ret == 1)
++				ret = 0;
++			else
++				ret = -EINVAL;
++		}
++		return ret;
++	}
++
+ 	trace_xhci_discover_or_reset_device(slot_ctx);
+ 
+ 	xhci_dbg(xhci, "Resetting device with slot ID %u\n", slot_id);
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1629,6 +1629,7 @@ struct xhci_hcd {
+ #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
++#define XHCI_ETRON_HOST	BIT_ULL(49)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 
 
 
