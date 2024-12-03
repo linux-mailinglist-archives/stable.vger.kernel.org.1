@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E9C9E20A9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FF59E20AC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB076286190
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDEE92861AE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622AE1F706C;
-	Tue,  3 Dec 2024 15:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3218A1F7065;
+	Tue,  3 Dec 2024 15:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC7C2gSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIcnptIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA641E3DF9;
-	Tue,  3 Dec 2024 15:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65B033FE;
+	Tue,  3 Dec 2024 15:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238129; cv=none; b=ewUligtchBWLD1VFvfR5DOSlr8aSvsXkU/6zFiO8+oqVFi/akdpxP41NDycu44nPerZFfVcgq8V3UsOkgCbmXETZtvPLpbifNYd1HgpZufG6qrm8dzPSvrPBnpK8uxY93KrB0oJ9lWVdB4wLGfog7oQpVjGm6nLSTMT9M7lg6gk=
+	t=1733238141; cv=none; b=YDwTPXrvwV0lzsx6PIdmWH/ymsphdt4/njUTJEFXD8wptYe8ftV8LS2D9xdehez0aKZ7ELEhljrXcVI8IgWZBV2eCDw41t0lMZrXgD/yi6QRzDlALdAOWxKas7BduXNuJBvJ8gexEcMw/IlPeIBJ4KP+BImbF/g7JlxMhrdXmk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238129; c=relaxed/simple;
-	bh=yZInF49Hx/0QmFyGUbZCSxC9Y/1/c43iJQYXxEY7IuE=;
+	s=arc-20240116; t=1733238141; c=relaxed/simple;
+	bh=9pDLS6NzoRt4DRxLfIXChlb5msUlud5+91TRQgVu2RM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i5sGi0GLg8JoRWUOF273VERNPK1BkICFWdGZcLs9ya0xXg2naY7iZ8hnuof3sSUvFRruwwv2/fN3ZYfTOatvRCJDBe/F8omnf/VpsBA0kKNjABN0AcKM5Tt+J5popvFQbEzKVEjqCWrr7ZcHWexZMLlP5LYHkfQa3o0trM5cMrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC7C2gSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8732EC4CECF;
-	Tue,  3 Dec 2024 15:02:08 +0000 (UTC)
+	 MIME-Version; b=Yg00FDZ3499y1buhpvz4qTJwdVOzwmHRFqFwg2wvz4wF0YSt8c1wWrDCXoLvKATAZDTFfWYc/XT1wGih8IQ8SKMGsJha4V4DZ98QdL8XkST2hXR0hhsD60uc0uMgPaLtICSqwCPj0Cw0UGxecLeu5hKES5aqKc4gjn69l3FM2Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIcnptIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CA2C4CECF;
+	Tue,  3 Dec 2024 15:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238128;
-	bh=yZInF49Hx/0QmFyGUbZCSxC9Y/1/c43iJQYXxEY7IuE=;
+	s=korg; t=1733238137;
+	bh=9pDLS6NzoRt4DRxLfIXChlb5msUlud5+91TRQgVu2RM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IC7C2gSBrg7BxwrQBqBkav1oMDjPDY08/RIijnV7n7l2rZEIIkUvYEqxOk93xYpl9
-	 MvM5OXIOnrIT+VyDNRRBYsOChO7vVJRY+ECjNMIM+OX0JIimGCosngOU54b/GtiofV
-	 3MXUGqV/nOzUYluSQj7rrQpOpfRTwZ8KkRd9F4Cc=
+	b=tIcnptIMSlaQ74aaF66LyseN9aBFugjf0l/5NUmmb0+w54474HVwmobdKL+hNSAjM
+	 99u07ECGue9gQwZAp/B8VYGmbbvI7xvA9lAKKqLomEbJv+tF6YjIHsotcObQfu7yni
+	 iVmwb1/3mk0FWd4fgbXHcVn5cQBaLmmas+hSbgEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Min-Hua Chen <minhuadotchen@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 140/817] regulator: qcom-smd: make smd_vreg_rpm static
-Date: Tue,  3 Dec 2024 15:35:12 +0100
-Message-ID: <20241203144001.187897750@linuxfoundation.org>
+Subject: [PATCH 6.11 143/817] ARM: dts: renesas: genmai: Fix partition size for QSPI NOR Flash
+Date: Tue,  3 Dec 2024 15:35:15 +0100
+Message-ID: <20241203144001.307606267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,42 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Min-Hua Chen <minhuadotchen@gmail.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 18be43aca2c0ec475037923a8086d0a29fcc9d16 ]
+[ Upstream commit 48e17816c3effa3545e21cd4f7d5a00c55c17a18 ]
 
-Since smd_vreg_rpm is used only in
-drivers/regulator/qcom_smd-regulator.c, make it static and fix the
-following sparse warning:
+Second partition was too large, looks like two digits got mixed up.
+Fixes:
 
-drivers/regulator/qcom_smd-regulator.c:14:21: sparse: warning:
-symbol 'smd_vreg_rpm' was not declared. Should it be static?
+mtd: partition "user1" extends beyond the end of device "18000000.flash" -- size truncated to 0x4000000
 
-No functional changes intended.
-
-Fixes: 5df3b41bd6b5 ("regulator: qcom_smd: Keep one rpm handle for all vregs")
-Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patch.msgid.link/20240926231038.31916-1-minhuadotchen@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 30e0a8cf886c ("ARM: dts: renesas: genmai: Add FLASH nodes")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20240914182948.94031-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/qcom_smd-regulator.c | 2 +-
+ arch/arm/boot/dts/renesas/r7s72100-genmai.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/qcom_smd-regulator.c b/drivers/regulator/qcom_smd-regulator.c
-index 3b7e06b9f5ce9..678428ab42215 100644
---- a/drivers/regulator/qcom_smd-regulator.c
-+++ b/drivers/regulator/qcom_smd-regulator.c
-@@ -11,7 +11,7 @@
- #include <linux/regulator/of_regulator.h>
- #include <linux/soc/qcom/smd-rpm.h>
+diff --git a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+index 29ba098f5dd5e..28e703e0f152b 100644
+--- a/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
++++ b/arch/arm/boot/dts/renesas/r7s72100-genmai.dts
+@@ -53,7 +53,7 @@ partition@0 {
  
--struct qcom_smd_rpm *smd_vreg_rpm;
-+static struct qcom_smd_rpm *smd_vreg_rpm;
- 
- struct qcom_rpm_reg {
- 	struct device *dev;
+ 			partition@4000000 {
+ 				label = "user1";
+-				reg = <0x04000000 0x40000000>;
++				reg = <0x04000000 0x04000000>;
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
