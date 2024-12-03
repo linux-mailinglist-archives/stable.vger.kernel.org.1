@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20449E2831
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:52:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA169E21FC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2102B396D8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4529167A96
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0C51F8905;
-	Tue,  3 Dec 2024 15:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6916B1F76B5;
+	Tue,  3 Dec 2024 15:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLy1HYgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyiOsMeH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D006E5336E;
-	Tue,  3 Dec 2024 15:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B491E3DF9;
+	Tue,  3 Dec 2024 15:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240827; cv=none; b=YVheBtCGh+MfQg6kpxOgQSO45x5fBbhxWWm4wqZoyPTbJ8Zq+/NJfvmGZnqWe+SY5CR0orOubD0PbuAsXQfQXEpXLNJuINvgPErXthRx8y3A90KpkSHsbN/BpG2U4D3oxSXPDtli1r6h8OcZbuEbgFjMB3ItFmF6+repE4bv28g=
+	t=1733238782; cv=none; b=k6B4IZj+jg2YaPCX43q3h6U80OCZkFy3cR5cYpfFsaDxka4mQHGc4r0MA09y39e6Lkn4Cp3soOk362oWY3ye03vcFcgEzH1NX87OltPJ3LwLMA2774WwKH5ZmNPADCaFCk2/WCJ1wxJzeHBHe7Mb5goEdGf2AZBLCFgex7QGf+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240827; c=relaxed/simple;
-	bh=kqkJ366qg2BY6Z0cR5+B56q3CXP07dL2FD5nsWM/+pU=;
+	s=arc-20240116; t=1733238782; c=relaxed/simple;
+	bh=1E+YfR9w/BaOiH+2dxh95YF7mUL2ZTo78V3mAaehRjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JJB0ARHXHvhFTVdbOzkARef8skVrGwITwBq8Ufvu2ZK6GBGcVxKRDXvAxnwhd2y/psgmIZ9YHPTbHiJL+wU0wJL3cbJzo73tV3DpCymS9SP7COfhjU1Ff09OYGPKb+FEpXvsSrq7M2+tEgyrv+zULUoWytRrea7HuCszXbJ4SlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLy1HYgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEB6C4CECF;
-	Tue,  3 Dec 2024 15:47:07 +0000 (UTC)
+	 MIME-Version; b=rIeof8rMqougaOOQX2oMOdta3ZiJIBvXXmXefCSbXEdJ5DjZVWzQ1xQW9NLXku2ybhSqTG/Y9w+FmjTAnuXfM/8vfdYchv2JM8+kNEPHpBJ4WwwLzytPCXE0U54Z5CiRu4bm/SvHnShw5qXMBHDYm7tGwigjDUH4ecZ2rwcCA98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyiOsMeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A88C4CECF;
+	Tue,  3 Dec 2024 15:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240827;
-	bh=kqkJ366qg2BY6Z0cR5+B56q3CXP07dL2FD5nsWM/+pU=;
+	s=korg; t=1733238782;
+	bh=1E+YfR9w/BaOiH+2dxh95YF7mUL2ZTo78V3mAaehRjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zLy1HYgbbQZEzePqIPkiGcSxbsaCD0JWTRBm1pN5SKQjmExStvR30lXQWASl1xNPx
-	 T87AfrvlcblaLsFSxCD4wqpfsXzZUO60DzQyda64z/v1K9uvb0eNr0d9sJ59Ea+Vvw
-	 gksmSnxvkfPNCbjRBu1g4qYIRjDyvPFHpxjBCT6c=
+	b=fyiOsMeHHfZkCgYkNSU1PuBZf/omn5rOOLkXcsPf6vI0207dvQKOrOHXYBgXUGvMv
+	 66F1oL4IUUTHQzwLSeYqTdl4bTGVQo9y71UcNtw30Ii0pbHUHkeBHpp7a7hsh5sQt9
+	 082SvNe1ObOqm5i8jkM+T8MYx4aZsRw3WoEafmNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/826] drm/vc4: Match drm_dev_enter and exit calls in vc4_hvs_lut_load
+Subject: [PATCH 6.11 394/817] regmap: Allow setting IRQ domain name suffix
 Date: Tue,  3 Dec 2024 15:39:26 +0100
-Message-ID: <20241203144753.089465155@linuxfoundation.org>
+Message-ID: <20241203144011.252382309@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit cf1c87d978d47339a39bfa7a6133ecd3f8f87525 ]
+[ Upstream commit dde286ee57704226b500cb9eb59547fec07aad3d ]
 
-Commit 52efe364d196 ("drm/vc4: hvs: Don't write gamma luts on 2711")
-added a return path to vc4_hvs_lut_load that had called
-drm_dev_enter, but not drm_dev_exit.
+When multiple IRQ domains are created from the same device-tree node they
+will get the same name based on the device-tree path. This will cause a
+naming collision in debugFS when IRQ domain specific entries are created.
 
-Ensure we call drm_dev_exit.
+The regmap-IRQ creates per instance IRQ domains. This will lead to a
+domain name conflict when a device which provides more than one
+interrupt line uses the regmap-IRQ.
 
-Fixes: 52efe364d196 ("drm/vc4: hvs: Don't write gamma luts on 2711")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/dri-devel/37051126-3921-4afe-a936-5f828bff5752@samsung.com/
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241008-drm-vc4-fixes-v1-1-9d0396ca9f42@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Add support for specifying an IRQ domain name suffix when creating a
+regmap-IRQ controller.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://patch.msgid.link/776bc4996969e5081bcf61b9bdb5517e537147a3.1723120028.git.mazziesaccount@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 3727c0b4ff6b ("mfd: intel_soc_pmic_bxtwc: Fix IRQ domain names duplication")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/regmap/regmap-irq.c | 37 ++++++++++++++++++++++----------
+ include/linux/regmap.h           |  4 ++++
+ 2 files changed, 30 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 3787c070d15e3..15e4c888c4afd 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -225,7 +225,7 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
- 		return;
- 
- 	if (hvs->vc4->gen == VC4_GEN_4)
--		return;
-+		goto exit;
- 
- 	/* The LUT memory is laid out with each HVS channel in order,
- 	 * each of which takes 256 writes for R, 256 for G, then 256
-@@ -242,6 +242,7 @@ static void vc4_hvs_lut_load(struct vc4_hvs *hvs,
- 	for (i = 0; i < crtc->gamma_size; i++)
- 		HVS_WRITE(SCALER_GAMDATA, vc4_crtc->lut_b[i]);
- 
-+exit:
- 	drm_dev_exit(idx);
+diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
+index 250b2cc1e5d87..6981e5f974e9a 100644
+--- a/drivers/base/regmap/regmap-irq.c
++++ b/drivers/base/regmap/regmap-irq.c
+@@ -612,6 +612,30 @@ int regmap_irq_set_type_config_simple(unsigned int **buf, unsigned int type,
  }
+ EXPORT_SYMBOL_GPL(regmap_irq_set_type_config_simple);
  
++static int regmap_irq_create_domain(struct fwnode_handle *fwnode, int irq_base,
++				    const struct regmap_irq_chip *chip,
++				    struct regmap_irq_chip_data *d)
++{
++	struct irq_domain_info info = {
++		.fwnode = fwnode,
++		.size = chip->num_irqs,
++		.hwirq_max = chip->num_irqs,
++		.virq_base = irq_base,
++		.ops = &regmap_domain_ops,
++		.host_data = d,
++		.name_suffix = chip->domain_suffix,
++	};
++
++	d->domain = irq_domain_instantiate(&info);
++	if (IS_ERR(d->domain)) {
++		dev_err(d->map->dev, "Failed to create IRQ domain\n");
++		return PTR_ERR(d->domain);
++	}
++
++	return 0;
++}
++
++
+ /**
+  * regmap_add_irq_chip_fwnode() - Use standard regmap IRQ controller handling
+  *
+@@ -860,18 +884,9 @@ int regmap_add_irq_chip_fwnode(struct fwnode_handle *fwnode,
+ 		}
+ 	}
+ 
+-	if (irq_base)
+-		d->domain = irq_domain_create_legacy(fwnode, chip->num_irqs,
+-						     irq_base, 0,
+-						     &regmap_domain_ops, d);
+-	else
+-		d->domain = irq_domain_create_linear(fwnode, chip->num_irqs,
+-						     &regmap_domain_ops, d);
+-	if (!d->domain) {
+-		dev_err(map->dev, "Failed to create IRQ domain\n");
+-		ret = -ENOMEM;
++	ret = regmap_irq_create_domain(fwnode, irq_base, chip, d);
++	if (ret)
+ 		goto err_alloc;
+-	}
+ 
+ 	ret = request_threaded_irq(irq, NULL, regmap_irq_thread,
+ 				   irq_flags | IRQF_ONESHOT,
+diff --git a/include/linux/regmap.h b/include/linux/regmap.h
+index 122e38161acb8..f9ccad32fc5cb 100644
+--- a/include/linux/regmap.h
++++ b/include/linux/regmap.h
+@@ -1521,6 +1521,9 @@ struct regmap_irq_chip_data;
+  * struct regmap_irq_chip - Description of a generic regmap irq_chip.
+  *
+  * @name:        Descriptive name for IRQ controller.
++ * @domain_suffix: Name suffix to be appended to end of IRQ domain name. Needed
++ *		   when multiple regmap-IRQ controllers are created from same
++ *		   device.
+  *
+  * @main_status: Base main status register address. For chips which have
+  *		 interrupts arranged in separate sub-irq blocks with own IRQ
+@@ -1606,6 +1609,7 @@ struct regmap_irq_chip_data;
+  */
+ struct regmap_irq_chip {
+ 	const char *name;
++	const char *domain_suffix;
+ 
+ 	unsigned int main_status;
+ 	unsigned int num_main_status_bits;
 -- 
 2.43.0
 
