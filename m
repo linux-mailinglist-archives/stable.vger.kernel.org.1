@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-97943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F999E269F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C95729E27DB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:43:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D28216CF5E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6F86B445E3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A2A1F75AC;
-	Tue,  3 Dec 2024 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E108520A5F3;
+	Tue,  3 Dec 2024 15:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xazpxW9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylxcHFR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91EF81ADA;
-	Tue,  3 Dec 2024 16:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1B620A5EA;
+	Tue,  3 Dec 2024 15:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242261; cv=none; b=C4yn5Coe4IvW6d2nALNWM1AGigmD3RadsA8ChVyAHs6xvter/ayxLI7IspSSXURrZshF5mu6oSwS57XtY7OSc3wubw3viPIkpyooh4pEdkMuvGEeJmkJHiUtf5t4ZJSXkordkNk+q+BIp88D3F2KYGvVpNNGDha5sjXV2gUBxnM=
+	t=1733239986; cv=none; b=qn9pJjXjzklP/W6tI+Hqfm/VveTfUbu8BJqEjlsYgKcMWnSAXwvS1huOM0hacBQhp6lOJYF3A3vaq3k0v0JnZG5SlxPDBSyo/MHfsOhNENgOiUWDJY7UszRkzbkc/j22qYK9BBiFuRYOCW/LYgEn5CfVUHUhA88uTuO0ND0lYu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242261; c=relaxed/simple;
-	bh=BGo/k75ilDtKhGO9TzvSXzzzq2/UMRfULU7Or+we0Vk=;
+	s=arc-20240116; t=1733239986; c=relaxed/simple;
+	bh=I0uSYGxJRaWxfHgndYmwtokuYRQxAX/ligTSWELhSKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqi+5Y3H01Q7tdMQ6pt+S2zX/ljPW9LBLe7d5ra/9hB1MoCs0LNa60tQFxuTe6CM93JjvrzJTOdkBMldT/I6lWaKIAJHVju7FtQDzn7qnXYqD4N9WWGys/UDI3zCihFhFPvQzjRKvtr8bSELeKwrdX51WHHE0lVUgVMHFyYik+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xazpxW9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4516BC4CECF;
-	Tue,  3 Dec 2024 16:11:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=egQxmcMeonHioX3k9Dzrg0Eyveov3UYlCEZRjNuQ2ATp5N6Hbn6HGa4pYiexwz6R4eBt1nnEII26vakXFCbBJViYXfzcTi5Z1i4esDioh3Bww3QZ2Y722r1CNfQj9Ti1B8mwBdcnAvPYJRdVPC6tDXGvceNXcM0swyM6W2ZdBNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylxcHFR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24180C4CED6;
+	Tue,  3 Dec 2024 15:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242261;
-	bh=BGo/k75ilDtKhGO9TzvSXzzzq2/UMRfULU7Or+we0Vk=;
+	s=korg; t=1733239986;
+	bh=I0uSYGxJRaWxfHgndYmwtokuYRQxAX/ligTSWELhSKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xazpxW9S94DpuKSqBGhBEd7ovIEA7bC6Yk5jtGhfmKrWTWo+qeRNq0tl2vK+T2f+9
-	 /N5IxKn17ld3NLdYDNBVW91QteXm9Sf1scmWqmHVj2mmo+YBxW9oIHCDS2NHNDcyTK
-	 lSGL6vPpy/ZBHCvAQPj2NVIULaxU+hIRPCRivJbw=
+	b=ylxcHFR6JCerOJqlm9Giy0KTHuIV1kGz/P8HE0SgM47b1bV+MxXxCcOUmQFTorBg7
+	 ZrL5sUqNqgp8vbisUX6kH+B/U8ULgjfeRyHyp3S3Ywmg75bNA0hi5NT1FpSYNQT4pr
+	 L/YYBCD01QmD3GueOA96wdjMabjG2EaX9uitSxxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 647/826] Revert "KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata handling out of setup_vmcs_config()"
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 802/817] modpost: remove incorrect code in do_eisa_entry()
 Date: Tue,  3 Dec 2024 15:46:14 +0100
-Message-ID: <20241203144808.986402378@linuxfoundation.org>
+Message-ID: <20241203144027.715407979@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,149 +59,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 85434c3c73fcad58870016ddfe5eaa5036672675 upstream.
+[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
 
-Revert back to clearing VM_{ENTRY,EXIT}_LOAD_IA32_PERF_GLOBAL_CTRL in KVM's
-golden VMCS config, as applying the workaround during vCPU creation is
-pointless and broken.  KVM *unconditionally* clears the controls in the
-values returned by vmx_vmentry_ctrl() and vmx_vmexit_ctrl(), as KVM loads
-PERF_GLOBAL_CTRL if and only if its necessary to do so.  E.g. if KVM wants
-to run the guest with the same PERF_GLOBAL_CTRL as the host, then there's
-no need to re-load the MSR on entry and exit.
+This function contains multiple bugs after the following commits:
 
-Even worse, the buggy commit failed to apply the erratum where it's
-actually needed, add_atomic_switch_msr().  As a result, KVM completely
-ignores the erratum for all intents and purposes, i.e. uses the flawed
-VMCS controls to load PERF_GLOBAL_CTRL.
+ - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+ - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
 
-To top things off, the patch was intended to be dropped, as the premise
-of an L1 VMM being able to pivot on FMS is flawed, and KVM can (and now
-does) fully emulate the controls in software.  Simply revert the commit,
-as all upstream supported kernels that have the buggy commit should also
-have commit f4c93d1a0e71 ("KVM: nVMX: Always emulate PERF_GLOBAL_CTRL
-VM-Entry/VM-Exit controls"), i.e. the (likely theoretical) live migration
-concern is a complete non-issue.
+Commit ac551828993e inserted the following code to do_eisa_entry():
 
-Opportunistically drop the manual "kvm: " scope from the warning about
-the erratum, as KVM now uses pr_fmt() to provide the correct scope (v6.1
-kernels and earlier don't, but the erratum only applies to CPUs that are
-15+ years old; it's not worth a separate patch).
+    else
+            strcat(alias, "*");
 
-This reverts commit 9d78d6fb186bc4aff41b5d6c4726b76649d3cb53.
+This is incorrect because 'alias' is uninitialized. If it is not
+NULL-terminated, strcat() could cause a buffer overrun.
 
-Link: https://lore.kernel.org/all/YtnZmCutdd5tpUmz@google.com
-Fixes: 9d78d6fb186b ("KVM: VMX: Move LOAD_IA32_PERF_GLOBAL_CTRL errata handling out of setup_vmcs_config()")
-Cc: stable@vger.kernel.org
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Maxim Levitsky <mlevitsk@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Message-ID: <20241119011433.1797921-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Even if 'alias' happens to be zero-filled, it would output:
+
+    MODULE_ALIAS("*");
+
+This would match anything. As a result, the module could be loaded by
+any unrelated uevent from an unrelated subsystem.
+
+Commit ac551828993e introduced another bug.            
+
+Prior to that commit, the conditional check was:
+
+    if (eisa->sig[0])
+
+This checked if the first character of eisa_device_id::sig was not '\0'.
+
+However, commit ac551828993e changed it as follows:
+
+    if (sig[0])
+
+sig[0] is NOT the first character of the eisa_device_id::sig. The
+type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
+'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
+address, which never becomes NULL.
+
+The correct conversion would have been:
+
+    if ((*sig)[0])
+
+However, this if-conditional was meaningless because the earlier change
+in commit ac551828993e was incorrect.
+
+This commit removes the entire incorrect code, which should never have
+been executed.
+
+Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c |   54 +++++++++++++++++++------------------------------
- 1 file changed, 21 insertions(+), 33 deletions(-)
+ scripts/mod/file2alias.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -2551,28 +2551,6 @@ static bool cpu_has_sgx(void)
- 	return cpuid_eax(0) >= 0x12 && (cpuid_eax(0x12) & BIT(0));
- }
- 
--/*
-- * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
-- * can't be used due to errata where VM Exit may incorrectly clear
-- * IA32_PERF_GLOBAL_CTRL[34:32]. Work around the errata by using the
-- * MSR load mechanism to switch IA32_PERF_GLOBAL_CTRL.
-- */
--static bool cpu_has_perf_global_ctrl_bug(void)
--{
--	switch (boot_cpu_data.x86_vfm) {
--	case INTEL_NEHALEM_EP:	/* AAK155 */
--	case INTEL_NEHALEM:	/* AAP115 */
--	case INTEL_WESTMERE:	/* AAT100 */
--	case INTEL_WESTMERE_EP:	/* BC86,AAY89,BD102 */
--	case INTEL_NEHALEM_EX:	/* BA97 */
--		return true;
--	default:
--		break;
--	}
--
--	return false;
--}
--
- static int adjust_vmx_controls(u32 ctl_min, u32 ctl_opt, u32 msr, u32 *result)
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 5d1c61fa5a550..bcb5a7e20775e 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -809,10 +809,7 @@ static int do_eisa_entry(const char *filename, void *symval,
+ 		char *alias)
  {
- 	u32 vmx_msr_low, vmx_msr_high;
-@@ -2732,6 +2710,27 @@ static int setup_vmcs_config(struct vmcs
- 		_vmexit_control &= ~x_ctrl;
- 	}
- 
-+	/*
-+	 * Some cpus support VM_{ENTRY,EXIT}_IA32_PERF_GLOBAL_CTRL but they
-+	 * can't be used due to an errata where VM Exit may incorrectly clear
-+	 * IA32_PERF_GLOBAL_CTRL[34:32].  Workaround the errata by using the
-+	 * MSR load mechanism to switch IA32_PERF_GLOBAL_CTRL.
-+	 */
-+	switch (boot_cpu_data.x86_vfm) {
-+	case INTEL_NEHALEM_EP:	/* AAK155 */
-+	case INTEL_NEHALEM:	/* AAP115 */
-+	case INTEL_WESTMERE:	/* AAT100 */
-+	case INTEL_WESTMERE_EP:	/* BC86,AAY89,BD102 */
-+	case INTEL_NEHALEM_EX:	/* BA97 */
-+		_vmentry_control &= ~VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL;
-+		_vmexit_control &= ~VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL;
-+		pr_warn_once("VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL "
-+			     "does not work properly. Using workaround\n");
-+		break;
-+	default:
-+		break;
-+	}
-+
- 	rdmsrl(MSR_IA32_VMX_BASIC, basic_msr);
- 
- 	/* IA-32 SDM Vol 3B: VMCS size is never greater than 4kB. */
-@@ -4422,9 +4421,6 @@ static u32 vmx_vmentry_ctrl(void)
- 			  VM_ENTRY_LOAD_IA32_EFER |
- 			  VM_ENTRY_IA32E_MODE);
- 
--	if (cpu_has_perf_global_ctrl_bug())
--		vmentry_ctrl &= ~VM_ENTRY_LOAD_IA32_PERF_GLOBAL_CTRL;
--
- 	return vmentry_ctrl;
+ 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
+-	if (sig[0])
+-		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+-	else
+-		strcat(alias, "*");
++	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+ 	return 1;
  }
  
-@@ -4442,10 +4438,6 @@ static u32 vmx_vmexit_ctrl(void)
- 	if (vmx_pt_mode_is_system())
- 		vmexit_ctrl &= ~(VM_EXIT_PT_CONCEAL_PIP |
- 				 VM_EXIT_CLEAR_IA32_RTIT_CTL);
--
--	if (cpu_has_perf_global_ctrl_bug())
--		vmexit_ctrl &= ~VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL;
--
- 	/* Loading of EFER and PERF_GLOBAL_CTRL are toggled dynamically */
- 	return vmexit_ctrl &
- 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
-@@ -8400,10 +8392,6 @@ __init int vmx_hardware_setup(void)
- 	if (setup_vmcs_config(&vmcs_config, &vmx_capability) < 0)
- 		return -EIO;
- 
--	if (cpu_has_perf_global_ctrl_bug())
--		pr_warn_once("VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL "
--			     "does not work properly. Using workaround\n");
--
- 	if (boot_cpu_has(X86_FEATURE_NX))
- 		kvm_enable_efer_bits(EFER_NX);
- 
+-- 
+2.43.0
+
 
 
 
