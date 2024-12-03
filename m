@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC879E2528
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBAF9E22C7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34E8D2850CA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7A0016865A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C834C1F76BF;
-	Tue,  3 Dec 2024 15:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A51F81F7576;
+	Tue,  3 Dec 2024 15:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrYRUlFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CztdAxxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C481F76AD;
-	Tue,  3 Dec 2024 15:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642FC1EE001;
+	Tue,  3 Dec 2024 15:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241455; cv=none; b=F9bccfh89KYGh1DQpFh0f5KcZi50pyVtl4AH0zglW1AVSG3n40k04RWGZckJkUivmdnvPEXAGEHd/ZPu6IHtEOKH1j3FCRxu0ie7psjWa5r93n2sFIzU/5CYJgdf0WWjE4L7Sc6gWvrzFCjAbPHjHP8N4lIgcyfmJETKeET1V9M=
+	t=1733239428; cv=none; b=iRNJJJewUKNRI/atVqkktrA35LZSbwv8Z69XTJYTLWi7lycuqMWyz4IisG9J9hDNSLBDNMFZyR4ig/GVzzbKEuPN/eUolAy5XhoL4j6XdprXSLxsmTnUDaUJBScAD6x2IoYfU66OM+0mUjq5CAZljDTPL4UnQZjXwk6xt/qtAkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241455; c=relaxed/simple;
-	bh=w+m0hTEQ6SbdrO/7YI04de2311h7X9oZLv7+o2YuLjs=;
+	s=arc-20240116; t=1733239428; c=relaxed/simple;
+	bh=zDO2GTZF3K2xyTavnCyTjEbAJ9OtNPor3thcdHznIr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArwJr4xHd8sCLRSIK5EhAk+B+rJ4Ay7wKt0LVhBpdyGac0YVO/hA1Yat0EyuF/wfHOx1S3VGvX3XuCILCTropQ8kZ4l3rsu/34lsj8CM0NWhywMLDTUTJP6JzLAPSXKGDlWL561rN93Yuc7LStgnORTsU4IxpqokH646MIHqrt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrYRUlFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A372C4CECF;
-	Tue,  3 Dec 2024 15:57:34 +0000 (UTC)
+	 MIME-Version; b=LkCbuTS7nZblAkKpX2DfSk0yQKBjnFEWCYjQLBfUqb1OcP/en27bmzqmWA9Qo0MTxFj3LncMNATrZ30etdsvJSh98VS4ezujU+GIOah5syA9VFoK8vAFcdObt5lPEqgepW1agr3dIzAf28B7d3HPxqeWkdopn+MW5AbqPkCLytw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CztdAxxi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9548C4CECF;
+	Tue,  3 Dec 2024 15:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241455;
-	bh=w+m0hTEQ6SbdrO/7YI04de2311h7X9oZLv7+o2YuLjs=;
+	s=korg; t=1733239428;
+	bh=zDO2GTZF3K2xyTavnCyTjEbAJ9OtNPor3thcdHznIr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrYRUlFBH9aHnQu7MGFy+iOTiSgxTktMrNfFP8ROSqxzEsyssbfcVkG7GFwXJ6rIT
-	 wrv0FoCVNyx3ls+pBdW2yjePNLRenjro+OJpo67JGKCh+Xd4qbtRFksjUHaP+wnkXS
-	 JkhASR+7jvxieqUeUzEGYuoGrtGMAvkdLuO+aWxc=
+	b=CztdAxxiPTxrjbpnAFHtIv3BjkwZSC1N1nrvzqs8MNJ0cHhd5XyRgb9sBXwF3FJ7H
+	 Jfset+Sw8aXGoDZeH92fW/4iILQELucjR5EaYD+eQQmInS1JFCY0SjZTCCXqPJ//Yu
+	 UMX79r/HlDz5iAc6NY9OoJnITHKvNRGWBA8Ljyy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 424/826] x86/tdx: Rename tdx_parse_tdinfo() to tdx_setup()
+Subject: [PATCH 6.11 579/817] octeontx2-af: RPM: Fix low network performance
 Date: Tue,  3 Dec 2024 15:42:31 +0100
-Message-ID: <20241203144800.300948295@linuxfoundation.org>
+Message-ID: <20241203144018.516870781@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit b064043d9565786b385f85e6436ca5716bbd5552 ]
+[ Upstream commit d1e8884e050c1255a9ceb477f5ff926ee9214a23 ]
 
-Rename tdx_parse_tdinfo() to tdx_setup() and move setting NOTIFY_ENABLES
-there.
+Low network performance is observed even on RPMs with larger
+FIFO lengths.
 
-The function will be extended to adjust TD configuration.
+The cn10kb silicon has three RPM blocks with the following
+FIFO sizes:
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/20241104103803.195705-3-kirill.shutemov%40linux.intel.com
-Stable-dep-of: f65aa0ad79fc ("x86/tdx: Dynamically disable SEPT violations from causing #VEs")
+         --------------------
+         | RPM0  |   256KB  |
+         | RPM1  |   256KB  |
+         | RPM2  |   128KB  |
+         --------------------
+
+The current design stores the FIFO length in a common structure for all
+RPMs (mac_ops). As a result, the FIFO length of the last RPM is applied
+to all RPMs, leading to reduced network performance.
+
+This patch resolved the problem by storing the fifo length in per MAC
+structure (cgx).
+
+Fixes: b9d0fedc6234 ("octeontx2-af: cn10kb: Add RPM_USX MAC support")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/tdx/tdx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c         | 9 +++++++--
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.h         | 1 +
+ drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h | 5 ++++-
+ drivers/net/ethernet/marvell/octeontx2/af/rpm.c         | 6 +++---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c     | 9 ++++-----
+ 5 files changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c74bb9e7d7a35..28b321a95a5e8 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -194,7 +194,7 @@ static void __noreturn tdx_panic(const char *msg)
- 		__tdx_hypercall(&args);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 27935c54b91bc..2f621714c54e6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -112,6 +112,11 @@ struct mac_ops *get_mac_ops(void *cgxd)
+ 	return ((struct cgx *)cgxd)->mac_ops;
  }
  
--static void tdx_parse_tdinfo(u64 *cc_mask)
-+static void tdx_setup(u64 *cc_mask)
++u32 cgx_get_fifo_len(void *cgxd)
++{
++	return ((struct cgx *)cgxd)->fifo_len;
++}
++
+ void cgx_write(struct cgx *cgx, u64 lmac, u64 offset, u64 val)
  {
- 	struct tdx_module_args args = {};
- 	unsigned int gpa_width;
-@@ -219,6 +219,9 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
- 	gpa_width = args.rcx & GENMASK(5, 0);
- 	*cc_mask = BIT_ULL(gpa_width - 1);
+ 	writeq(val, cgx->reg_base + (lmac << cgx->mac_ops->lmac_offset) +
+@@ -501,7 +506,7 @@ static u32 cgx_get_lmac_fifo_len(void *cgxd, int lmac_id)
+ 	u8 num_lmacs;
+ 	u32 fifo_len;
  
-+	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
-+	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+
- 	/*
- 	 * The kernel can not handle #VE's when accessing normal kernel
- 	 * memory.  Ensure that no #VE will be delivered for accesses to
-@@ -969,11 +972,11 @@ void __init tdx_early_init(void)
- 	setup_force_cpu_cap(X86_FEATURE_TSC_RELIABLE);
+-	fifo_len = cgx->mac_ops->fifo_len;
++	fifo_len = cgx->fifo_len;
+ 	num_lmacs = cgx->mac_ops->get_nr_lmacs(cgx);
  
- 	cc_vendor = CC_VENDOR_INTEL;
--	tdx_parse_tdinfo(&cc_mask);
--	cc_set_mask(cc_mask);
+ 	switch (num_lmacs) {
+@@ -1764,7 +1769,7 @@ static void cgx_populate_features(struct cgx *cgx)
+ 	u64 cfg;
  
--	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
--	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+	/* Configure the TD */
-+	tdx_setup(&cc_mask);
-+
-+	cc_set_mask(cc_mask);
+ 	cfg = cgx_read(cgx, 0, CGX_CONST);
+-	cgx->mac_ops->fifo_len = FIELD_GET(CGX_CONST_RXFIFO_SIZE, cfg);
++	cgx->fifo_len = FIELD_GET(CGX_CONST_RXFIFO_SIZE, cfg);
+ 	cgx->max_lmac_per_mac = FIELD_GET(CGX_CONST_MAX_LMACS, cfg);
  
- 	/*
- 	 * All bits above GPA width are reserved and kernel treats shared bit
+ 	if (is_dev_rpm(cgx))
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
+index dc9ace30554af..f9cd4b58f0c02 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.h
+@@ -185,4 +185,5 @@ int cgx_lmac_get_pfc_frm_cfg(void *cgxd, int lmac_id, u8 *tx_pause,
+ int verify_lmac_fc_cfg(void *cgxd, int lmac_id, u8 tx_pause, u8 rx_pause,
+ 		       int pfvf_idx);
+ int cgx_lmac_reset(void *cgxd, int lmac_id, u8 pf_req_flr);
++u32 cgx_get_fifo_len(void *cgxd);
+ #endif /* CGX_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h b/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
+index 9ffc6790c5130..c43ff68ef1408 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
+@@ -72,7 +72,6 @@ struct mac_ops {
+ 	u8			irq_offset;
+ 	u8			int_ena_bit;
+ 	u8			lmac_fwi;
+-	u32			fifo_len;
+ 	bool			non_contiguous_serdes_lane;
+ 	/* RPM & CGX differs in number of Receive/transmit stats */
+ 	u8			rx_stats_cnt;
+@@ -142,6 +141,10 @@ struct cgx {
+ 	u8			lmac_count;
+ 	/* number of LMACs per MAC could be 4 or 8 */
+ 	u8			max_lmac_per_mac;
++	/* length of fifo varies depending on the number
++	 * of LMACS
++	 */
++	u32			fifo_len;
+ #define MAX_LMAC_COUNT		8
+ 	struct lmac             *lmac_idmap[MAX_LMAC_COUNT];
+ 	struct			work_struct cgx_cmd_work;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index 9e8c5e4389f8b..22dd50a3fcd3a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -480,7 +480,7 @@ u32 rpm_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	u8 num_lmacs;
+ 	u32 fifo_len;
+ 
+-	fifo_len = rpm->mac_ops->fifo_len;
++	fifo_len = rpm->fifo_len;
+ 	num_lmacs = rpm->mac_ops->get_nr_lmacs(rpm);
+ 
+ 	switch (num_lmacs) {
+@@ -533,9 +533,9 @@ u32 rpm2_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	 */
+ 	max_lmac = (rpm_read(rpm, 0, CGX_CONST) >> 24) & 0xFF;
+ 	if (max_lmac > 4)
+-		fifo_len = rpm->mac_ops->fifo_len / 2;
++		fifo_len = rpm->fifo_len / 2;
+ 	else
+-		fifo_len = rpm->mac_ops->fifo_len;
++		fifo_len = rpm->fifo_len;
+ 
+ 	if (lmac_id < 4) {
+ 		num_lmacs = hweight8(lmac_info & 0xF);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+index 266ecbc1b97a6..4dcd7bfcad4e4 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -923,13 +923,12 @@ int rvu_mbox_handler_cgx_features_get(struct rvu *rvu,
+ 
+ u32 rvu_cgx_get_fifolen(struct rvu *rvu)
+ {
+-	struct mac_ops *mac_ops;
+-	u32 fifo_len;
++	void *cgxd = rvu_first_cgx_pdata(rvu);
+ 
+-	mac_ops = get_mac_ops(rvu_first_cgx_pdata(rvu));
+-	fifo_len = mac_ops ? mac_ops->fifo_len : 0;
++	if (!cgxd)
++		return 0;
+ 
+-	return fifo_len;
++	return cgx_get_fifo_len(cgxd);
+ }
+ 
+ u32 rvu_cgx_get_lmac_fifolen(struct rvu *rvu, int cgx, int lmac)
 -- 
 2.43.0
 
