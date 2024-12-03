@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-97688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04C69E2510
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712F79E224E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A53F1288366
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75830BA59DF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228B21DE8A5;
-	Tue,  3 Dec 2024 15:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F761F706C;
+	Tue,  3 Dec 2024 15:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEZrLwtU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnOT8F7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B021AB6C9;
-	Tue,  3 Dec 2024 15:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B741EF0AE;
+	Tue,  3 Dec 2024 15:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241385; cv=none; b=DZg6C2ku4gqnipYyEusH2csQ7/0wwI1Zmd2T2eGuTDPpQ8VAcZ4pD/oKEy1MSXHHZReGY9R11SFi7cVrv+sJavbHnKhpUCEfMKSxCKNshDhrdebHayJ/Qzt+x765afNfEEqL+nB0kj0SmQGgh+7YDFpv0afzGb0zMEynyIZD0lk=
+	t=1733239277; cv=none; b=h2C4kFawvatghOOAti9q6/1rMeorCmrUAJO+8KDN6Ww8/1PiBHeZBWJh+Md2l4o80/FivN1yeS5rsUMAx068hKWH4b7CUGdH7nS+SbHg3V6b8/YDnE+GZatokIKH5SLyVNebY2UOakBChri3emyIuZdGANTSlZae5AGGCqZbRtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241385; c=relaxed/simple;
-	bh=J8JllLVVJKA0eHIWAGthMypUMFsasO8NpGZAgtZz+lM=;
+	s=arc-20240116; t=1733239277; c=relaxed/simple;
+	bh=+Nq4My9g1vdyzSL1StkGEF63W3Q2D94lemKMk22LqOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6yqIfrhl5IjoKJo8XNlH4NX8VWljmtcRW+g5GTcX+PCgR6Md4piAUB4ZktGykn0EDgEEHW1Zha/3XJVChSwX6B3kP1PyL/K0sZ9ZEOTnywzHLoGx6ptpYm9HoLsL2zC+wcUgviNkY+MVhTIKpgLCmtfkfWpZTuhG2+aKvmrQTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEZrLwtU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D5EC4CECF;
-	Tue,  3 Dec 2024 15:56:25 +0000 (UTC)
+	 MIME-Version; b=bzMk+PeIsSxVwy8ESkSXNSMpwDJk0t5dnSCv+/T5zVplNlK69mqOQci2x9tpftfjj7ecNRdXkh5rPJDasjIXYZaeE5RQfNmr5TcO4UXC5YG8jCmhncAs4AE3K29Vv656o547J4LSNXB0nsinaRP0f7EijR5tHaD2qQLi5SfdmEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnOT8F7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9696CC4CECF;
+	Tue,  3 Dec 2024 15:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241385;
-	bh=J8JllLVVJKA0eHIWAGthMypUMFsasO8NpGZAgtZz+lM=;
+	s=korg; t=1733239277;
+	bh=+Nq4My9g1vdyzSL1StkGEF63W3Q2D94lemKMk22LqOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEZrLwtU5sU47rk1uhMH8AHuwX0EmfVg6xz2CN2KKycouU4BfR8c7o9EjhbvANQAw
-	 +2SS9N5+4wcUmv5c63kbLbEkYztJzAgaoN3U04Vi8UGE0399xNwo78MgRGg2dggAMH
-	 OLX2HUaI9Kf7N5BDWz4xhMYPgnw1689sqMyQOBQE=
+	b=SnOT8F7Aud95pFIoEo7AS3SlIZzeNN64Nc4L6ktcHtDhKduwiecgpVTHmAaG+Ocvh
+	 t042K0zjSC1u1KrFX0sVQq0Y53Bwcqtv81KVyyOY7WMR8wp8UDjvHjyFn/lSVOezbA
+	 AdvhMeIPMcUIhbE8N/f3eyYEd7xPAdypliegv1wQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Vincent Chen <vincent.chen@sifive.com>,
-	Anup Patel <anup@brainfault.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Eric Sandeen <sandeen@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 403/826] RISC-V: KVM: Fix APLIC in_clrip and clripnum write emulation
-Date: Tue,  3 Dec 2024 15:42:10 +0100
-Message-ID: <20241203144759.481767092@linuxfoundation.org>
+Subject: [PATCH 6.11 559/817] fs_parser: update mount_api doc to match function signature
+Date: Tue,  3 Dec 2024 15:42:11 +0100
+Message-ID: <20241203144017.730779526@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +68,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 60821fb4dd7345e5662094accf0a52845306de8c ]
+[ Upstream commit c66f759832a83cb273ba5a55c66dcc99384efa74 ]
 
-In the section "4.7 Precise effects on interrupt-pending bits"
-of the RISC-V AIA specification defines that:
+Add the missing 'name' parameter to the mount_api documentation for
+fs_validate_description().
 
-"If the source mode is Level1 or Level0 and the interrupt domain
-is configured in MSI delivery mode (domaincfg.DM = 1):
-The pending bit is cleared whenever the rectified input value is
-low, when the interrupt is forwarded by MSI, or by a relevant
-write to an in_clrip register or to clripnum."
-
-Update the aplic_write_pending() to match the spec.
-
-Fixes: d8dd9f113e16 ("RISC-V: KVM: Fix APLIC setipnum_le/be write emulation")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Vincent Chen <vincent.chen@sifive.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://lore.kernel.org/r/20241029085542.30541-1-yongxuan.wang@sifive.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+Fixes: 96cafb9ccb15 ("fs_parser: remove fs_parameter_description name field")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20241125215021.231758-1-rdunlap@infradead.org
+Cc: Eric Sandeen <sandeen@redhat.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/aia_aplic.c | 3 ++-
+ Documentation/filesystems/mount_api.rst | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
-index da6ff1bade0df..f59d1c0c8c43a 100644
---- a/arch/riscv/kvm/aia_aplic.c
-+++ b/arch/riscv/kvm/aia_aplic.c
-@@ -143,7 +143,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
- 	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
- 	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
- 		if (!pending)
--			goto skip_write_pending;
-+			goto noskip_write_pending;
- 		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
- 		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
- 			goto skip_write_pending;
-@@ -152,6 +152,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
- 			goto skip_write_pending;
- 	}
+diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
+index 317934c9e8fca..d92c276f1575a 100644
+--- a/Documentation/filesystems/mount_api.rst
++++ b/Documentation/filesystems/mount_api.rst
+@@ -770,7 +770,8 @@ process the parameters it is given.
  
-+noskip_write_pending:
- 	if (pending)
- 		irqd->state |= APLIC_IRQ_STATE_PENDING;
- 	else
+    * ::
+ 
+-       bool fs_validate_description(const struct fs_parameter_description *desc);
++       bool fs_validate_description(const char *name,
++                                    const struct fs_parameter_description *desc);
+ 
+      This performs some validation checks on a parameter description.  It
+      returns true if the description is good and false if it is not.  It will
 -- 
 2.43.0
 
