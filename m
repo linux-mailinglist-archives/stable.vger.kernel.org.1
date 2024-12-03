@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-96863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD3E9E2204
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6449E243C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E57E516790A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50F182878B4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950E91F890A;
-	Tue,  3 Dec 2024 15:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285B21F8F04;
+	Tue,  3 Dec 2024 15:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6pSHTrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJIveJ2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2CD1F76BA;
-	Tue,  3 Dec 2024 15:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6191F8AEF;
+	Tue,  3 Dec 2024 15:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238817; cv=none; b=FL+cxjElNqk/G54YLszW0LmqWDNH9GQ/fCBic6cTZFkDbvQNCkLlytkCNScMlMy73wqFNlDRwEyNr99QVAotwczatvCQpgjWAjdiQve4W9MiGfyEzy9BQuPwOEOzgSj28sg7Af+uiL8PsTCP5sdZRHzLP4oX/PIa6DjcMPWXbAg=
+	t=1733240738; cv=none; b=DmJuYUUTSmqQAA1/SivhedVEzrDXeIUk11zlrBPvPJ0YiOSY5tXRy4Ao0cIXSauljCqwrAT3aw9cMzt1y5e4EsN1KowfVk1VnIOQVAodZZmis4Ch0Uc82U+7IC3mWyRslVx7Q7NX8I3l2xMR4Dwken90MFj6YJ5vObYb2P+1FIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238817; c=relaxed/simple;
-	bh=sVJslK/sFIuPpSE+z90dA8ENT/GzFO8LQGhePOROnHU=;
+	s=arc-20240116; t=1733240738; c=relaxed/simple;
+	bh=sibBjDl2k/e07GGTXMAHkkKVjgAVVSiFhzOskMSD6WU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAsmxmOkSf+AgZgbCZjygR+qKnBo88mTiTFAXWNfId5Y/+wMm+EnE/4XB/UUbrpFzh62B1QlQcSBdnVxeD4Mzm1HgdW6sf/eLJnAfSOXBBFP8bCIDUepETHu+8WIaRraaTFc65vZkBtEFLO91WvwAnG3xeasSI+Efs1t5X98WxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6pSHTrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A41C4CECF;
-	Tue,  3 Dec 2024 15:13:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UCOlI6R/Ps5kKqi+w7W3/Slqo2AUwx+SLr0fi0BNF+JHZE1ZvRmP8dYxVqi5m6mcKqeWUMXojW42IlS0YL/6AS+zMFAv5dP98ka9eUgmnc+4GeTPUOxi6cV9V/XMxuyRatPsmGzN7JJoKRa14iBA67/dtUAXLTlngNQrHqdaQxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJIveJ2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AC3C4CECF;
+	Tue,  3 Dec 2024 15:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238816;
-	bh=sVJslK/sFIuPpSE+z90dA8ENT/GzFO8LQGhePOROnHU=;
+	s=korg; t=1733240738;
+	bh=sibBjDl2k/e07GGTXMAHkkKVjgAVVSiFhzOskMSD6WU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6pSHTrmJ5saNoLlk8ecRLL1nOMYn0HMcnwAEaDdgSrY4gsefx0fK3ycmvH+/r2V1
-	 can+BSxlRw67zfsKPZokPk/OAlt4AoYKp4VEKYcIhAAN2Go9Nfw4cu6hDH46QKVaW+
-	 +JxeUjPGkBjux8rYNsGZuXGHacOOjww38sl0HIb4=
+	b=uJIveJ2pUA6Ory2mXb2KRlT3/jd+DHjY2Sc+abSF4ap6NUf8IbgjtM05hTlUiwRQM
+	 r7LBGO3TghOoc0MhIUyzCFLSrgRUAaF8hrfoQjy/eTVg1lQFHEoQ7UXaRw1qtXIE1O
+	 5eKUHAwPB0OY3qAStE6HkD3+avYmb0JdaWkXp2YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Zhan <zhanjie9@hisilicon.com>,
-	Zeng Heng <zengheng4@huawei.com>,
-	Ionela Voinescu <ionela.voinescu@arm.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 375/817] cppc_cpufreq: Use desired perf if feedback ctrs are 0 or unchanged
-Date: Tue,  3 Dec 2024 15:39:07 +0100
-Message-ID: <20241203144010.482901328@linuxfoundation.org>
+Subject: [PATCH 6.12 221/826] selftests/bpf: Fix uprobe_multi compilation error
+Date: Tue,  3 Dec 2024 15:39:08 +0100
+Message-ID: <20241203144752.362144939@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Zhan <zhanjie9@hisilicon.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit c47195631960b626058c335aec31f186fa854f97 ]
+[ Upstream commit c27d8235ba97139d7a085367ff57773902eb3fc5 ]
 
-The CPPC performance feedback counters could be 0 or unchanged when the
-target cpu is in a low-power idle state, e.g. power-gated or clock-gated.
+When building selftests, the following was seen:
 
-When the counters are 0, cppc_cpufreq_get_rate() returns 0 KHz, which makes
-cpufreq_online() get a false error and fail to generate a cpufreq policy.
+uprobe_multi.c: In function ‘trigger_uprobe’:
+uprobe_multi.c:108:40: error: ‘MADV_PAGEOUT’ undeclared (first use in this function)
+  108 |                 madvise(addr, page_sz, MADV_PAGEOUT);
+      |                                        ^~~~~~~~~~~~
+uprobe_multi.c:108:40: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [Makefile:850: bpf-next/tools/testing/selftests/bpf/uprobe_multi] Error 1
 
-When the counters are unchanged, the existing cppc_perf_from_fbctrs()
-returns a cached desired perf, but some platforms may update the real
-frequency back to the desired perf reg.
+...even with updated UAPI headers. It seems the above value is
+defined in UAPI <linux/mman.h> but including that file triggers
+other redefinition errors.  Simplest solution is to add a
+guarded definition, as was done for MADV_POPULATE_READ.
 
-For the above cases in cppc_cpufreq_get_rate(), get the latest desired perf
-from the CPPC reg to reflect the frequency because some platforms may
-update the actual frequency back there; if failed, use the cached desired
-perf.
-
-Fixes: 6a4fec4f6d30 ("cpufreq: cppc: cppc_cpufreq_get_rate() returns zero in all error cases.")
-Signed-off-by: Jie Zhan <zhanjie9@hisilicon.com>
-Reviewed-by: Zeng Heng <zengheng4@huawei.com>
-Reviewed-by: Ionela Voinescu <ionela.voinescu@arm.com>
-Reviewed-by: Huisong Li <lihuisong@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 3c217a182018 ("selftests/bpf: add build ID tests")
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/bpf/20240926144948.172090-1-alan.maguire@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cppc_cpufreq.c | 57 +++++++++++++++++++++++++++-------
- 1 file changed, 46 insertions(+), 11 deletions(-)
+ tools/testing/selftests/bpf/uprobe_multi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-index bafa32dd375d5..357dc7f4a98ce 100644
---- a/drivers/cpufreq/cppc_cpufreq.c
-+++ b/drivers/cpufreq/cppc_cpufreq.c
-@@ -118,6 +118,9 @@ static void cppc_scale_freq_workfn(struct kthread_work *work)
+diff --git a/tools/testing/selftests/bpf/uprobe_multi.c b/tools/testing/selftests/bpf/uprobe_multi.c
+index c7828b13e5ffd..dd38dc68f6359 100644
+--- a/tools/testing/selftests/bpf/uprobe_multi.c
++++ b/tools/testing/selftests/bpf/uprobe_multi.c
+@@ -12,6 +12,10 @@
+ #define MADV_POPULATE_READ 22
+ #endif
  
- 	perf = cppc_perf_from_fbctrs(cpu_data, &cppc_fi->prev_perf_fb_ctrs,
- 				     &fb_ctrs);
-+	if (!perf)
-+		return;
++#ifndef MADV_PAGEOUT
++#define MADV_PAGEOUT 21
++#endif
 +
- 	cppc_fi->prev_perf_fb_ctrs = fb_ctrs;
- 
- 	perf <<= SCHED_CAPACITY_SHIFT;
-@@ -724,13 +727,31 @@ static int cppc_perf_from_fbctrs(struct cppc_cpudata *cpu_data,
- 	delta_delivered = get_delta(fb_ctrs_t1->delivered,
- 				    fb_ctrs_t0->delivered);
- 
--	/* Check to avoid divide-by zero and invalid delivered_perf */
-+	/*
-+	 * Avoid divide-by zero and unchanged feedback counters.
-+	 * Leave it for callers to handle.
-+	 */
- 	if (!delta_reference || !delta_delivered)
--		return cpu_data->perf_ctrls.desired_perf;
-+		return 0;
- 
- 	return (reference_perf * delta_delivered) / delta_reference;
- }
- 
-+static int cppc_get_perf_ctrs_sample(int cpu,
-+				     struct cppc_perf_fb_ctrs *fb_ctrs_t0,
-+				     struct cppc_perf_fb_ctrs *fb_ctrs_t1)
-+{
-+	int ret;
-+
-+	ret = cppc_get_perf_ctrs(cpu, fb_ctrs_t0);
-+	if (ret)
-+		return ret;
-+
-+	udelay(2); /* 2usec delay between sampling */
-+
-+	return cppc_get_perf_ctrs(cpu, fb_ctrs_t1);
-+}
-+
- static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+ int __attribute__((weak)) uprobe(void)
  {
- 	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
-@@ -746,18 +767,32 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
- 
- 	cpufreq_cpu_put(policy);
- 
--	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t0);
--	if (ret)
--		return 0;
--
--	udelay(2); /* 2usec delay between sampling */
--
--	ret = cppc_get_perf_ctrs(cpu, &fb_ctrs_t1);
--	if (ret)
--		return 0;
-+	ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
-+	if (ret) {
-+		if (ret == -EFAULT)
-+			/* Any of the associated CPPC regs is 0. */
-+			goto out_invalid_counters;
-+		else
-+			return 0;
-+	}
- 
- 	delivered_perf = cppc_perf_from_fbctrs(cpu_data, &fb_ctrs_t0,
- 					       &fb_ctrs_t1);
-+	if (!delivered_perf)
-+		goto out_invalid_counters;
-+
-+	return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
-+
-+out_invalid_counters:
-+	/*
-+	 * Feedback counters could be unchanged or 0 when a cpu enters a
-+	 * low-power idle state, e.g. clock-gated or power-gated.
-+	 * Use desired perf for reflecting frequency.  Get the latest register
-+	 * value first as some platforms may update the actual delivered perf
-+	 * there; if failed, resort to the cached desired perf.
-+	 */
-+	if (cppc_get_desired_perf(cpu, &delivered_perf))
-+		delivered_perf = cpu_data->perf_ctrls.desired_perf;
- 
- 	return cppc_perf_to_khz(&cpu_data->perf_caps, delivered_perf);
- }
+ 	return 0;
 -- 
 2.43.0
 
