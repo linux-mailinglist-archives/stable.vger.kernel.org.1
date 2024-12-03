@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-98068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6632A9E2A15
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B6A99E29BF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:45:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82AA9C0090D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3C0AC00CDA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A28B1EE00B;
-	Tue,  3 Dec 2024 16:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA3F1F893D;
+	Tue,  3 Dec 2024 16:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk834+vX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lW4YvRKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C396314A088;
-	Tue,  3 Dec 2024 16:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D05FD1F892E;
+	Tue,  3 Dec 2024 16:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242684; cv=none; b=cNo3dRHz28hJz4zQ0/ISzuAnkL51DCKLbilI4DvP1OW2DATuVM/3YoD+FQxQBqKjcdqyDZ1G+hBkCfKT4zVyZooCejxbHrNfBCPAnSIeHJPWk3PdFmpEeLGn7RjwR6N3Lwk2gQQZZE+mDZFoK5jDWrTuISwODTVtR+YDtp1VT7A=
+	t=1733242694; cv=none; b=HxOjrr7klzhAdM5EQ90UQWdQVBUXim/Y8d19ef7RqXs25KPcQUOYYpAHAhbtGCcBLCZyXk22M5bi2bzi3nnQJSYl/7pqIFY/fs0r/n6ZzKr0chrS4g1xrgtlcENd98A362slWhUKXmmb365d071dPoFungHmPypneyrIci9Zdsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242684; c=relaxed/simple;
-	bh=IEqozqj1PHEDxnZKDwQdTtHAsv8d8YS9h8uiMlTzuTg=;
+	s=arc-20240116; t=1733242694; c=relaxed/simple;
+	bh=aQ087rllGSsPxNhyK11/q7sQNHDpjztEADyfP8hBYzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9Jd+q4oHWsn4bCG9TTr3CcEMbreMjiNCKfkQvmJ/KkNy2ePqcF28yJhzxfo4ZFGr+b0EFBuuYHwPBOJ3swW3fVE4fwKJPwNx5jL3sxdObB75jQET0RVkDU2/2+pgnFNxu4saiNl0Wgwhma3dZs++ufPr2adNKKWJuw48PcHHu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk834+vX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49616C4CECF;
-	Tue,  3 Dec 2024 16:18:04 +0000 (UTC)
+	 MIME-Version; b=YcOef6X/2md3Hn/hygV9u5CPeVpuO7SDH2KVGqkgABoXDExe6S9BGGI9oLTsRa2L4QNhvj7jGp36klS6DYuqKn49KWpQlY2oic4c/3fj3w2vgXUOarZSd5mYm5KMiDXcoJTtpYyWJs8XsWDu9ar1Yu+H27WPwymXpsxJslN9r+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lW4YvRKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AC0C4CECF;
+	Tue,  3 Dec 2024 16:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242684;
-	bh=IEqozqj1PHEDxnZKDwQdTtHAsv8d8YS9h8uiMlTzuTg=;
+	s=korg; t=1733242694;
+	bh=aQ087rllGSsPxNhyK11/q7sQNHDpjztEADyfP8hBYzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wk834+vXK+eqc/aKpU2mkx0j6vL96iSq70yn5oIYGuea6ZmYg4Z/x35kE5qSLjIXW
-	 z8nYiwxe27rRW02h9NUBp2DtFhHCPu1EASCKzz8PpIJkTsHt3iyFTwS5qNFkPgB3rx
-	 cXN7TZ3BEq9rGfjgmsfdcTIhR+pEYnjzWRWE4gxc=
+	b=lW4YvRKPuzZrBqU6BD+9pRfpVXBUm4lyxWNEX8mcz8oyQVvWhJWOM+V2f5rxmGH6X
+	 Bs9sbEjD57fxdAtGsv3dW3ZOuBZ/6TOaGywaCrm0vgNM6iFmcuIsoSHsUS6od0fBeP
+	 Q23KtwIEgMC4MvUCiJfFd4mO9vRlc8ZOz8ZmbjIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeremy Gebben <jgebben@sweptlaser.com>,
+	Nobuhiro Iwamatsu <iwamatsu@nigauri.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 778/826] nfs/localio: must clear res.replen in nfs_local_read_done
-Date: Tue,  3 Dec 2024 15:48:25 +0100
-Message-ID: <20241203144814.113938942@linuxfoundation.org>
+Subject: [PATCH 6.12 780/826] rtc: abx80x: Fix WDT bit position of the status register
+Date: Tue,  3 Dec 2024 15:48:27 +0100
+Message-ID: <20241203144814.190695635@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,55 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
 
-[ Upstream commit 650703bc4ed3edf841e851c99ab8e7ba9e5262a3 ]
+[ Upstream commit 10e078b273ee7a2b8b4f05a64ac458f5e652d18d ]
 
-Otherwise memory corruption can occur due to NFSv3 LOCALIO reads
-leaving garbage in res.replen:
-- nfs3_read_done() copies that into server->read_hdrsize; from there
-  nfs3_proc_read_setup() copies it to args.replen in new requests.
-- nfs3_xdr_enc_read3args() passes that to rpc_prepare_reply_pages()
-  which includes it in hdrsize for xdr_init_pages, so that rq_rcv_buf
-  contains a ridiculous len.
-- This is copied to rq_private_buf and xs_read_stream_request()
-  eventually passes the kvec to sock_recvmsg() which receives incoming
-  data into entirely the wrong place.
+The WDT bit in the status register is 5, not 6. This fixes from 6 to 5.
 
-This is easily reproduced with NFSv3 LOCALIO that is servicing reads
-when it is made to pivot back to using normal RPC.  This switch back
-to using normal NFSv3 with RPC can occur for a few reasons but this
-issue was exposed with a test that stops and then restarts the NFSv3
-server while LOCALIO is performing heavy read IO.
-
-Fixes: 70ba381e1a43 ("nfs: add LOCALIO support")
-Reported-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: NeilBrown <neilb@suse.de>
-Co-developed-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Link: https://abracon.com/Support/AppsManuals/Precisiontiming/AB08XX-Application-Manual.pdf
+Link: https://www.microcrystal.com/fileadmin/Media/Products/RTC/App.Manual/RV-1805-C3_App-Manual.pdf
+Fixes: 749e36d0a0d7 ("rtc: abx80x: add basic watchdog support")
+Cc: Jeremy Gebben <jgebben@sweptlaser.com>
+Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
+Link: https://lore.kernel.org/r/20241008041737.1640633-1-iwamatsu@nigauri.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/localio.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/rtc/rtc-abx80x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
-index 8f0ce82a677e1..637528e6368ef 100644
---- a/fs/nfs/localio.c
-+++ b/fs/nfs/localio.c
-@@ -354,6 +354,12 @@ nfs_local_read_done(struct nfs_local_kiocb *iocb, long status)
+diff --git a/drivers/rtc/rtc-abx80x.c b/drivers/rtc/rtc-abx80x.c
+index 1298962402ff4..3fee27914ba80 100644
+--- a/drivers/rtc/rtc-abx80x.c
++++ b/drivers/rtc/rtc-abx80x.c
+@@ -39,7 +39,7 @@
+ #define ABX8XX_REG_STATUS	0x0f
+ #define ABX8XX_STATUS_AF	BIT(2)
+ #define ABX8XX_STATUS_BLF	BIT(4)
+-#define ABX8XX_STATUS_WDT	BIT(6)
++#define ABX8XX_STATUS_WDT	BIT(5)
  
- 	nfs_local_pgio_done(hdr, status);
- 
-+	/*
-+	 * Must clear replen otherwise NFSv3 data corruption will occur
-+	 * if/when switching from LOCALIO back to using normal RPC.
-+	 */
-+	hdr->res.replen = 0;
-+
- 	if (hdr->res.count != hdr->args.count ||
- 	    hdr->args.offset + hdr->res.count >= i_size_read(file_inode(filp)))
- 		hdr->res.eof = true;
+ #define ABX8XX_REG_CTRL1	0x10
+ #define ABX8XX_CTRL_WRITE	BIT(0)
 -- 
 2.43.0
 
