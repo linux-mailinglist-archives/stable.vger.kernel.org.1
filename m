@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BACC9E1F7E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327B99E1F7B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5261F165C30
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E40DF28303D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAAD1F6680;
-	Tue,  3 Dec 2024 14:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EE01F707D;
+	Tue,  3 Dec 2024 14:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxkIsP1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JG86vYhE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431E91EF08A;
-	Tue,  3 Dec 2024 14:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025091F6698;
+	Tue,  3 Dec 2024 14:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236534; cv=none; b=sh2mSE8CAVQjoi+Bbmdsy4//zT/bFx6rXWlfKZnbMaIcwZ/LtYiaOYM8H3k8tywkfRdF7nB9eNKexBqtREcpdA0oaCVPdyl1+dkZAKKsG0bbN7oG4hAkBhgP+BJ4643p/uQXd3fi/puWVCXu72W48X/M0HBfrc6DeBRwEKINyig=
+	t=1733236588; cv=none; b=kDPdYGMV5u9ovliDfwReg0JCOkyJ0uSsG7m9cCORoZsXozTXACBgNSKn3bFInOk46xhP3Ktu3t3Of9U4e+JSfLS0FIk+Pt0j3EErM+4z/xNXlaDEn781Yv1HmTjIyg8H2QC2hPpNYgJvkgAd+c3hXlA1nQRask68My6k09nYnR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236534; c=relaxed/simple;
-	bh=MbMYqC7h2ro6GoH/iiSnoJyzFGpzOPLWHXtwwQ451lQ=;
+	s=arc-20240116; t=1733236588; c=relaxed/simple;
+	bh=8UIKQwA/+tZopp8hVBrA6ngJgdGKUkv1ItXGl7qdqME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deviw0XJf0L91T93jaWs3OFjLzbHwQU73RaPjovyjDPfSmvNy7OZWk8duwYEIicldwL4slrH5TKDBFpzO5fhG1pqpHjE5FOXsZCvFKU1oU0FPeA545bmODm1xiJTR+XSxBGOUTTxrfqCXWy3pnHEuXuAJ7nCiomSAXds6pNMifw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxkIsP1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A427CC4CED8;
-	Tue,  3 Dec 2024 14:35:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gLU91hjNpGgUY4bYO4qgbT8DfNFpH0y7sSlXqwmOxtgykmSmTYkFOTu0IRSzTeaxI8ZuC0D1N8Lv9Ehs394e5aEXisyWZvQMEBlXAGZxuMBAbSyurcQcvkmuaW4ElW8Ey82ZIQBrb0k6hY1yyAAu4qCgEFmADhtLaVGOhjEucEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JG86vYhE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6891CC4CED8;
+	Tue,  3 Dec 2024 14:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236534;
-	bh=MbMYqC7h2ro6GoH/iiSnoJyzFGpzOPLWHXtwwQ451lQ=;
+	s=korg; t=1733236587;
+	bh=8UIKQwA/+tZopp8hVBrA6ngJgdGKUkv1ItXGl7qdqME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HxkIsP1Gh0vU3mCtr0Urx2ow4ijCYJpORdtKUQU8XHp/zpp9p0lVjX4aRuXiN4sEm
-	 FqwnZHmzDZFVGvCvKHZ2KcDPe9quiGz1hLPbcSyBsjeVMvpT74WTKRJ8CJAdGKPxWF
-	 f0jx3QHbyX/WICEt2hyEUjswyhpJ7MmVQ/+eLe/A=
+	b=JG86vYhEg30H4s1LHh+vd5IdFnDszRLs7GbefO9JMHeb0VGhN9a4t13+7g8yeiiR5
+	 xULE70Pjq8B95RzjP/6T2GhJdWAFdOP39DbBqjJUpcKnnpYfU5PI4sLRI5Dw2k9tSs
+	 XCT8i0TjeRDQdrVr+J8tZofN8QbXW506HDA7o0iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 030/138] soc: ti: smartreflex: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Tue,  3 Dec 2024 15:30:59 +0100
-Message-ID: <20241203141924.708187589@linuxfoundation.org>
+Subject: [PATCH 4.19 032/138] mmc: mmc_spi: drop buggy snprintf()
+Date: Tue,  3 Dec 2024 15:31:01 +0100
+Message-ID: <20241203141924.785040768@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -60,49 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 16a0a69244240cfa32c525c021c40f85e090557a ]
+[ Upstream commit 328bda09cc91b3d93bc64f4a4dadc44313dd8140 ]
 
-If request_irq() fails in sr_late_init(), there is no need to enable
-the irq, and if it succeeds, disable_irq() after request_irq() still has
-a time gap in which interrupts can come.
+GCC 13 complains about the truncated output of snprintf():
 
-request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
-request IRQ.
+drivers/mmc/host/mmc_spi.c: In function ‘mmc_spi_response_get’:
+drivers/mmc/host/mmc_spi.c:227:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |                                                                ^
+drivers/mmc/host/mmc_spi.c:227:9: note: ‘snprintf’ output between 26 and 43 bytes into a destination of size 32
+  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  228 |                 cmd->opcode, maptype(cmd));
 
-Fixes: 1279ba5916f6 ("OMAP3+: SR: disable interrupt by default")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240912034147.3014213-1-ruanjinjie@huawei.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Drop it and fold the string it generates into the only place where it's
+emitted - the dev_dbg() call at the end of the function.
+
+Fixes: 15a0580ced08 ("mmc_spi host driver")
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20241008160134.69934-1-brgl@bgdev.pl
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/avs/smartreflex.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/mmc_spi.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/power/avs/smartreflex.c b/drivers/power/avs/smartreflex.c
-index 5ac122cd25b8c..015a406d67b8d 100644
---- a/drivers/power/avs/smartreflex.c
-+++ b/drivers/power/avs/smartreflex.c
-@@ -217,10 +217,10 @@ static int sr_late_init(struct omap_sr *sr_info)
+diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
+index 24795454d1066..008a47842de0a 100644
+--- a/drivers/mmc/host/mmc_spi.c
++++ b/drivers/mmc/host/mmc_spi.c
+@@ -269,10 +269,6 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
+ 	u8 	leftover = 0;
+ 	unsigned short rotator;
+ 	int 	i;
+-	char	tag[32];
+-
+-	snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
+-		cmd->opcode, maptype(cmd));
  
- 	if (sr_class->notify && sr_class->notify_flags && sr_info->irq) {
- 		ret = devm_request_irq(&sr_info->pdev->dev, sr_info->irq,
--				       sr_interrupt, 0, sr_info->name, sr_info);
-+				       sr_interrupt, IRQF_NO_AUTOEN,
-+				       sr_info->name, sr_info);
- 		if (ret)
- 			goto error;
--		disable_irq(sr_info->irq);
+ 	/* Except for data block reads, the whole response will already
+ 	 * be stored in the scratch buffer.  It's somewhere after the
+@@ -422,8 +418,9 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
  	}
  
- 	if (pdata && pdata->enable_on_init)
+ 	if (value < 0)
+-		dev_dbg(&host->spi->dev, "%s: resp %04x %08x\n",
+-			tag, cmd->resp[0], cmd->resp[1]);
++		dev_dbg(&host->spi->dev,
++			"  ... CMD%d response SPI_%s: resp %04x %08x\n",
++			cmd->opcode, maptype(cmd), cmd->resp[0], cmd->resp[1]);
+ 
+ 	/* disable chipselect on errors and some success cases */
+ 	if (value >= 0 && cs_on)
 -- 
 2.43.0
 
