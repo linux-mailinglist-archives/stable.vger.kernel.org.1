@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611CD9E25DB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498109E2268
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:24:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18E3516A89B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109072855A2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFE51F76AB;
-	Tue,  3 Dec 2024 15:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70E11F7547;
+	Tue,  3 Dec 2024 15:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYZEdGQ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Snb8Roh1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6011362;
-	Tue,  3 Dec 2024 15:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949CB1F472A;
+	Tue,  3 Dec 2024 15:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241595; cv=none; b=eJft3TX08jr2RM0Rn0/lRjg6P+X9YkgsmqeGU75xvSSOddJ0ACFw5vJq/ITyibv3de34buOCOtAW6KG8czY0+7ke0I6QLIdF1V9CbSJm668/X7NcwVoAzLnMTJm9apkHyIcEgSWMd1TPPn5KMBu+VGr+LpeVgWkQqQkAbnAwbto=
+	t=1733239448; cv=none; b=uBVPfhZi82P8e6NgqRE5bMacrG2LMsUGLtV6JZA2EJ2dokwmF7Ypu8wjYv5wA5QyxNQr0lix6LRF6B50kbqpr3lUXuTyPtATAJeWYvm2kxrCjAKG/fgncN/rT0qfUtOXz3kZRv7adWBvD6FznHitUJd69N+/kpqDzSCAILMS+Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241595; c=relaxed/simple;
-	bh=FO+JjVIhGJn9W5Kf8aRmZ5gml1VgAQQGgW6fryQVTgk=;
+	s=arc-20240116; t=1733239448; c=relaxed/simple;
+	bh=YzScBklpA51fFJpIZQuXIiEEE3KM6bVASi/hgfh5Mm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUouFfXxaB7j73G7KzwztDZaNeOI/CS3v1o9GSf0HbSOo+XwxLN3gFOpR/exJyJ4VJAohqXFxyUig6OkovLYi8m6P8Qg/050OfM9iKgPLs0OOjtu5uWERGvDdJ7pCd/oPnV5duSParxW09H2cLW3iRphhJ7RieSz5dKyDUZy+Sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iYZEdGQ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6415C4CECF;
-	Tue,  3 Dec 2024 15:59:54 +0000 (UTC)
+	 MIME-Version; b=ViYOE3ay9vNkX/7jjNA/gDkvpAWG+C1IeL3gCLMry/2YpyvtiKb22T/GBbS4qP9YNjQoSngCP3//VRheO4aKXyBnO3L06mBsgZiI15T4yFL/svz+PbEd7rpCiMufH3pDix8j0q1kVxzbXfwJr9jnNWNYyZD/oY2t3GT4IR23bLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Snb8Roh1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEAAC4CECF;
+	Tue,  3 Dec 2024 15:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241595;
-	bh=FO+JjVIhGJn9W5Kf8aRmZ5gml1VgAQQGgW6fryQVTgk=;
+	s=korg; t=1733239448;
+	bh=YzScBklpA51fFJpIZQuXIiEEE3KM6bVASi/hgfh5Mm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iYZEdGQ9hcc50brNVejB60arhWm1ibjw68aZhssft1MjePHmsCYfdbTwlHpOwvdPz
-	 sZJonbtYuvYQ1SqhTRJNSb0Xzs+6LmNW5G7M6HzAQUx8j2YlF9rRVJR9A7RzKovTp6
-	 Mx/BWRZ3ARMT2w1k7GQ1z8hLNMxt58NxbdFnWDbY=
+	b=Snb8Roh1JbxbLq4iKh+NkrGl1GqS3x6zPfksNpjjEJz0nKbQ5HojwahtbiRlbHJ/4
+	 6WXHAt3c+Qd7uGhO7AYffumaWRu6RUea/mCRT2zJDPlIWGcXAr61eigR9YFuHfxb1I
+	 4rXJV2YOPxnDjfxC693Jmzi6ltT7CE05dyEEIMiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Aurich <paul@darkrain42.org>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Zicheng Qu <quzicheng@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 462/826] smb: cached directories can be more than root file handle
-Date: Tue,  3 Dec 2024 15:43:09 +0100
-Message-ID: <20241203144801.786392780@linuxfoundation.org>
+Subject: [PATCH 6.11 618/817] drm/amd/display: Fix null check for pipe_ctx->plane_state in hwss_setup_dpp
+Date: Tue,  3 Dec 2024 15:43:10 +0100
+Message-ID: <20241203144020.057254132@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Aurich <paul@darkrain42.org>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit 128630e1dbec8074c7707aad107299169047e68f ]
+[ Upstream commit 2bc96c95070571c6c824e0d4c7783bee25a37876 ]
 
-Update this log message since cached fids may represent things other
-than the root of a mount.
+This commit addresses a null pointer dereference issue in
+hwss_setup_dpp(). The issue could occur when pipe_ctx->plane_state is
+null. The fix adds a check to ensure `pipe_ctx->plane_state` is not null
+before accessing. This prevents a null pointer dereference.
 
-Fixes: e4029e072673 ("cifs: find and use the dentry for cached non-root directories also")
-Signed-off-by: Paul Aurich <paul@darkrain42.org>
-Reviewed-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 0baae6246307 ("drm/amd/display: Refactor fast update to use new HWSS build sequence")
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index 0ff2491c311d8..adcba13352045 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -401,7 +401,7 @@ int open_cached_dir_by_dentry(struct cifs_tcon *tcon,
- 	spin_lock(&cfids->cfid_list_lock);
- 	list_for_each_entry(cfid, &cfids->entries, entry) {
- 		if (dentry && cfid->dentry == dentry) {
--			cifs_dbg(FYI, "found a cached root file handle by dentry\n");
-+			cifs_dbg(FYI, "found a cached file handle by dentry\n");
- 			kref_get(&cfid->refcount);
- 			*ret_cfid = cfid;
- 			spin_unlock(&cfids->cfid_list_lock);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+index 4a88412fdfab1..29ef24f9a40f2 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+@@ -881,6 +881,9 @@ void hwss_setup_dpp(union block_sequence_params *params)
+ 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
+ 	struct dc_plane_state *plane_state = pipe_ctx->plane_state;
+ 
++	if (!plane_state)
++		return;
++
+ 	if (dpp && dpp->funcs->dpp_setup) {
+ 		// program the input csc
+ 		dpp->funcs->dpp_setup(dpp,
 -- 
 2.43.0
 
