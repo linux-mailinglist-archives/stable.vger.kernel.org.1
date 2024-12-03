@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-96712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7C19E2A43
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:04:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F7D9E2B5E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACEAAB66D0B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F71FBA1F30
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387B91F706B;
-	Tue,  3 Dec 2024 15:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AACE1FA84F;
+	Tue,  3 Dec 2024 15:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GibygePt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pB7F+l3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97BB33FE;
-	Tue,  3 Dec 2024 15:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA19E1FA240;
+	Tue,  3 Dec 2024 15:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238370; cv=none; b=VIcDprzV4jhoGBqAmlX//IjmbGanCWou+xE2+zqFKn+e10WxIb4I7kIW5gj/YWXHlz4sVp+vePeBUKKd0B6kBzMnCFYtM52y5iaEE4/o+rwmjxVuM/tDWda6nyIEiMZajdbnVNqbu+MAxdfi+wNH6ME9gwq1y7aSW4GE5X9E6RE=
+	t=1733240461; cv=none; b=ClNEK7fRX7yvC/AwOI5dGMYJ1aYMz1xpOm9wZXoGT6AZDx2sXdJOCm/4WKTQnx0zXHcvsIde/7IfgtUsczcfebqiB+W9Cim4GDOvs1d/yYqVOA1DkPQpLH0ZANOzJcjHyq5hZZabt4+LoL4Uyd83OhFkdDjYyPYlZuL3jR0MHKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238370; c=relaxed/simple;
-	bh=86tUrF5NbiKsN5q/zT0Q5yMNZAHRHrp5/kD5f+IgFHg=;
+	s=arc-20240116; t=1733240461; c=relaxed/simple;
+	bh=byJSuX5boShDdOdMGGrCTIlF5r+PbfqwWH5/p5qjpgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qm8hVlxIgrhwitpY9PmAbLJwRvbL/uFHQ7tm/0dqtn25WHZY8rpDxqIMBKEqcw1kfN8MmCINtowaU1Q6+0GHF8cN1gbYouARGikgoPz/FYKx5BKqtfNMnnOWtyUiwQEmlvEoFTEC5NqzzOBZOLe16JgcwNCaeqbQ0ysXpjqQGZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GibygePt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A7BC4CECF;
-	Tue,  3 Dec 2024 15:06:09 +0000 (UTC)
+	 MIME-Version; b=sO4CexFXHzwUfjwz21p4i7WKKYBnzE7h3SmtUcsJIRRX9K1aU/tJmqE1TNAAI3+UPRtd92pcOXUomQkILZCgXU6LbikkVeXpufTjJsR9vrimAlmA5gkyTNqhTi/xUTMGdfvzbUnqMYkuO6du2Mlx5RXvQivbc6Gwq7Zrl0uisBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pB7F+l3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B60C4CED6;
+	Tue,  3 Dec 2024 15:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238369;
-	bh=86tUrF5NbiKsN5q/zT0Q5yMNZAHRHrp5/kD5f+IgFHg=;
+	s=korg; t=1733240461;
+	bh=byJSuX5boShDdOdMGGrCTIlF5r+PbfqwWH5/p5qjpgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GibygePtgIIrNLLc9ZFblizOp6vVSVh2oDYUg5HQsmShR27UBih53b2XCmIf1m8jH
-	 ibRtXTuopVCiUBHSSPhdZkUbd7F5Xuo7rPcd5Y+L2oDXt7hPyaz1irfUBPEDMmg+Jc
-	 fmLflE7h3DKXd5+NPmApIK88txxjokYd2KDO5q7A=
+	b=pB7F+l3UB8VYGnn+OT5z2fGHAsj3O1jMBTwmBAi/p170i/r4iIpzlao+7Hn+WDprU
+	 95iSpko70QWL62qW2Tl42ZArAcqtQC32VyrR5xDRIf0v9po/sKbwkG7Yy/NU9FMBIO
+	 hTvCDLzy24q0cuGseZ09RZyqtI1LDUW49OxQ6yrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 255/817] wifi: rtl8xxxu: Perform update_beacon_work when beaconing is enabled
+Subject: [PATCH 6.12 100/826] spi: spi-fsl-lpspi: Use IRQF_NO_AUTOEN flag in request_irq()
 Date: Tue,  3 Dec 2024 15:37:07 +0100
-Message-ID: <20241203144005.724396321@linuxfoundation.org>
+Message-ID: <20241203144747.633988959@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaistra <martin.kaistra@linutronix.de>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit d7063ed6758c62e00a2f56467ded85a021fac67a ]
+[ Upstream commit 003c7e01916c5e2af95add9b0cbda2e6163873e8 ]
 
-In STA+AP concurrent mode, performing a scan operation on one vif
-temporarily stops beacons on the other. When the scan is completed,
-beacons are enabled again with BSS_CHANGED_BEACON_ENABLED.
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-We can observe that no beacons are being sent when just
-rtl8xxxu_start_tx_beacon() is being called.
-
-Thus, also perform update_beacon_work in order to restore beaconing.
-
-Fixes: cde8848cad0b ("wifi: rtl8xxxu: Add beacon functions")
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240930084955.455241-1-martin.kaistra@linutronix.de
+Fixes: 9728fb3ce117 ("spi: lpspi: disable lpspi module irq in DMA mode")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240906022828.891812-1-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-fsl-lpspi.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 043fa364e7014..a7e74ece2b4d1 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -5058,10 +5058,12 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
+index 977e8b55c82b7..9573b8fa4fbfc 100644
+--- a/drivers/spi/spi-fsl-lpspi.c
++++ b/drivers/spi/spi-fsl-lpspi.c
+@@ -891,7 +891,7 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
- 	if (changed & BSS_CHANGED_BEACON_ENABLED) {
--		if (bss_conf->enable_beacon)
-+		if (bss_conf->enable_beacon) {
- 			rtl8xxxu_start_tx_beacon(priv);
--		else
-+			schedule_delayed_work(&priv->update_beacon_work, 0);
-+		} else {
- 			rtl8xxxu_stop_tx_beacon(priv);
-+		}
- 	}
+-	ret = devm_request_irq(&pdev->dev, irq, fsl_lpspi_isr, 0,
++	ret = devm_request_irq(&pdev->dev, irq, fsl_lpspi_isr, IRQF_NO_AUTOEN,
+ 			       dev_name(&pdev->dev), fsl_lpspi);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "can't get irq%d: %d\n", irq, ret);
+@@ -948,14 +948,10 @@ static int fsl_lpspi_probe(struct platform_device *pdev)
+ 	ret = fsl_lpspi_dma_init(&pdev->dev, fsl_lpspi, controller);
+ 	if (ret == -EPROBE_DEFER)
+ 		goto out_pm_get;
+-	if (ret < 0)
++	if (ret < 0) {
+ 		dev_warn(&pdev->dev, "dma setup error %d, use pio\n", ret);
+-	else
+-		/*
+-		 * disable LPSPI module IRQ when enable DMA mode successfully,
+-		 * to prevent the unexpected LPSPI module IRQ events.
+-		 */
+-		disable_irq(irq);
++		enable_irq(irq);
++	}
  
- 	if (changed & BSS_CHANGED_BEACON)
+ 	ret = devm_spi_register_controller(&pdev->dev, controller);
+ 	if (ret < 0) {
 -- 
 2.43.0
 
