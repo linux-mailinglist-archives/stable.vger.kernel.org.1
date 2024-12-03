@@ -1,118 +1,134 @@
-Return-Path: <stable+bounces-96214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A199E1661
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:55:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8209E176C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5642820E0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 08:55:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9974CB31F09
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 08:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A5B1DDC0B;
-	Tue,  3 Dec 2024 08:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7604192D64;
+	Tue,  3 Dec 2024 08:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OeqyQDyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/feum/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D041DDC39
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 08:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FB71CABA
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 08:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733216080; cv=none; b=kJVl4PoCHgP9E3EYv0DWt5kypQDEbbBW61uQKfE2sqNCkKCoKfrgX0iG2inoZEtIvvEUrBLM/ROHMiiHxRNEbjWhyFICd68vp+kg6vYYmCRnvIDCfbSG0IWf2ea/z7QU6szzO+atsi3ugdY4H7F90MTzS0XCmL1GmW6OVXL4rTg=
+	t=1733215970; cv=none; b=NMgvf7uCVzevNTvYnBp6mw8HElyjIt8RylLkDHtZ7Y4BV2/Ika27KrnJsT9EEwB2TLWH+kvoiRNuDSquFy5QtLdX4opMMB1RTdmfwAfcQv9cO/psrPf6kFezKGPdXeGp40iio7SVgDx0NoTn8jUPNN/vRJakiqUQ+7H4a2u4Nys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733216080; c=relaxed/simple;
-	bh=N4zaKnNhIyGxQ6pszPAxv5TiSj2jbfEgmeYQpRYudEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ydkof7yScHY05HI4gYmPE94O5E3BA+4dzYR6C2dANMOTGWkFOpwFsr6UioRiWUYFrmyEKcTZ8fRNIcKrfBR8DL1CvlTSuAn24C7BqL4j2qIrvMFC5YylLHFW0GlXg9TTE/mJI1z/uHoOjx/GzUlqclHbIuZ1hWZrKIRgZA+a2ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OeqyQDyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F23EC4CECF;
-	Tue,  3 Dec 2024 08:54:39 +0000 (UTC)
+	s=arc-20240116; t=1733215970; c=relaxed/simple;
+	bh=Zk+IsV37ir3CWKrVUTjjz45NOQBYjbXla9clvT7zxSM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eneUKJm2oapKg7j2lzpiOleAqLjsuCBZuXUl9m3/BNZ3rIJfp1ZlEJ8t2mGxkVtlnZOziNSTZlxFqC2AE/KjFOSeiCWTdmRWPtNZ4kAwz/UgvlVkEmFv+sY+/39YShwgdNj9NJkJq/nKqWnBq3vYeyM8FjHPuk3l8eXSLMFQc9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/feum/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8506CC4CED6;
+	Tue,  3 Dec 2024 08:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733216080;
-	bh=N4zaKnNhIyGxQ6pszPAxv5TiSj2jbfEgmeYQpRYudEY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OeqyQDytJyWCbZqOdklSYs0cpa/xDtdTHaJBuih18OBlhpJO3KB5Ti/L63lN2oPk+
-	 HAKELK8wSyIMrPC8erWfW0heMYZ18jx6/vN7KnFpof2KAxnEoM1FbVBW0FGFnwSN+I
-	 9nde5SILKq8Ck8pnpbP2UOeMJmPsPVeq1OAkjyHo=
-Date: Tue, 3 Dec 2024 09:54:37 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
-	linux-stable <stable@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: Re: stable-rc: queue: v5.15:
- drivers/clocksource/timer-ti-dm-systimer.c:691:39: error: expected '=', ',',
- ';', 'asm' or '__attribute__' before '__free'
-Message-ID: <2024120330-concave-favorite-8428@gregkh>
-References: <CA+G9fYtQ+8vKa1F1kmjBCH0kDR2PkPRVgDuqCg_X6kKeaYjuyA@mail.gmail.com>
- <e58b3f28-7347-4f89-8f1e-a4f05e5f3ae0@gmail.com>
+	s=korg; t=1733215970;
+	bh=Zk+IsV37ir3CWKrVUTjjz45NOQBYjbXla9clvT7zxSM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=V/feum/fEh4ajb2c61K+N9TFBAhV5rKNDnc+FpF8eP+Tkvf+xUhOiFMUkE51PkTqV
+	 JRZRk70vVfWacpigtqNVzIk6hwsygwumw07S8rk994xOQuqPZPoo2dWti7T7sILqzM
+	 aJMYripL+rbe4T/gAYgGnHNP0pS1Oxh8OrW5rq4k=
+Subject: FAILED: patch "[PATCH] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device" failed to apply to 6.1-stable tree
+To: jiangkunkun@huawei.com,jingzhangos@google.com,lishusen2@huawei.com,oliver.upton@linux.dev
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 03 Dec 2024 09:52:46 +0100
+Message-ID: <2024120346-busload-asleep-c2d8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e58b3f28-7347-4f89-8f1e-a4f05e5f3ae0@gmail.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 02, 2024 at 08:08:07PM +0100, Javier Carrasco wrote:
-> On 02/12/2024 19:43, Naresh Kamboju wrote:
-> > The arm queues build gcc-12 defconfig-lkftconfig failed on the
-> > Linux stable-rc queue 5.15 for the arm architectures.
-> > 
-> > arm
-> > * arm, build
-> >  - build/gcc-12-defconfig-lkftconfig
-> > 
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > Build errors:
-> > ------
-> > drivers/clocksource/timer-ti-dm-systimer.c: In function
-> > 'dmtimer_percpu_quirk_init':
-> > drivers/clocksource/timer-ti-dm-systimer.c:691:39: error: expected
-> > '=', ',', ';', 'asm' or '__attribute__' before '__free'
-> >   691 |         struct device_node *arm_timer __free(device_node) =
-> >       |                                       ^~~~~~
-> > drivers/clocksource/timer-ti-dm-systimer.c:691:39: error: implicit
-> > declaration of function '__free'; did you mean 'kfree'?
-> > [-Werror=implicit-function-declaration]
-> >   691 |         struct device_node *arm_timer __free(device_node) =
-> >       |                                       ^~~~~~
-> >       |                                       kfree
-> > drivers/clocksource/timer-ti-dm-systimer.c:691:46: error:
-> > 'device_node' undeclared (first use in this function)
-> >   691 |         struct device_node *arm_timer __free(device_node) =
-> >       |                                              ^~~~~~~~~~~
-> > drivers/clocksource/timer-ti-dm-systimer.c:691:46: note: each
-> > undeclared identifier is reported only once for each function it
-> > appears in
-> > drivers/clocksource/timer-ti-dm-systimer.c:694:36: error: 'arm_timer'
-> > undeclared (first use in this function); did you mean 'add_timer'?
-> >   694 |         if (of_device_is_available(arm_timer)) {
-> >       |                                    ^~~~~~~~~
-> >       |                                    add_timer
-> > cc1: some warnings being treated as errors
-> > 
-> 
-> The __free() macro is defined in include/linux/cleanup.h, and that
-> header does not exist in v5.15. It was introduced with v6.1, and older
-> kernels can't profit from it.
-> 
-> That means that this patch does not apply in its current form for v5.15.
-> If someone wants to backport it, calls to of_node_put() have to be added
-> to the early returns.
 
-Now dropped, thanks.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x e9649129d33dca561305fc590a7c4ba8c3e5675a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120346-busload-asleep-c2d8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e9649129d33dca561305fc590a7c4ba8c3e5675a Mon Sep 17 00:00:00 2001
+From: Kunkun Jiang <jiangkunkun@huawei.com>
+Date: Thu, 7 Nov 2024 13:41:36 -0800
+Subject: [PATCH] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+
+vgic_its_save_device_tables will traverse its->device_list to
+save DTE for each device. vgic_its_restore_device_tables will
+traverse each entry of device table and check if it is valid.
+Restore if valid.
+
+But when MAPD unmaps a device, it does not invalidate the
+corresponding DTE. In the scenario of continuous saves
+and restores, there may be a situation where a device's DTE
+is not saved but is restored. This is unreasonable and may
+cause restore to fail. This patch clears the corresponding
+DTE when MAPD unmaps a device.
+
+Cc: stable@vger.kernel.org
+Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
+Co-developed-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Shusen Li <lishusen2@huawei.com>
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with entry write helper]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 68ba7e2453cd..b77fa99eafed 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -1139,9 +1139,11 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+ 	bool valid = its_cmd_get_validbit(its_cmd);
+ 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
+ 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
++	int dte_esz = vgic_its_get_abi(its)->dte_esz;
+ 	struct its_device *device;
++	gpa_t gpa;
+ 
+-	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
++	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
+ 		return E_ITS_MAPD_DEVICE_OOR;
+ 
+ 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
+@@ -1162,7 +1164,7 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+ 	 * is an error, so we are done in any case.
+ 	 */
+ 	if (!valid)
+-		return 0;
++		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
+ 
+ 	device = vgic_its_alloc_device(its, device_id, itt_addr,
+ 				       num_eventid_bits);
+
 
