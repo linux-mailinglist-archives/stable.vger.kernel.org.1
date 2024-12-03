@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-96971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42499E2A06
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D50DC9E2ABF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:24:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80770B31150
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805F5B41D67
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F561F4707;
-	Tue,  3 Dec 2024 15:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D601F7561;
+	Tue,  3 Dec 2024 15:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mBb3s3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4Wg3jVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EF81EF0AE;
-	Tue,  3 Dec 2024 15:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B801362;
+	Tue,  3 Dec 2024 15:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239134; cv=none; b=WXmnBsJDFTppPP29Ff/NDJMzrdb3OjpmWdexkv/7UaRcH00XQzqZ1+2BSbgYSWDbD8Y+u/TBg6N8fW3AT2iNrnxFnqfICKc+6BfkoFGI85x/SRch5tMQRp/nab6pQxDBzwUqrOtNo5R6TwBi/PP9Q3qoZ1judi+8fYvplLGKHTc=
+	t=1733241202; cv=none; b=LBXupTlYoiHvjRq1zedi3BVFmxnsYqR55d0JhG9mbwKsWMlwZcd7g12BaQahPdI9n5QB32ksiVPXsGbuDjPTOxDW65/lJFtOGZ5g+YuFCqQqj5+VZTMEF6tM+1xiZylDcNk7XTWMWgUCiMm86Cg6Xmz/ksbnWdpn867mhZ2/BT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239134; c=relaxed/simple;
-	bh=Zx9S6Rn3cOD6OHZFJG5cU6hWdq2809rAnz3aMFugPHg=;
+	s=arc-20240116; t=1733241202; c=relaxed/simple;
+	bh=nmkRZY21Ni+3miFmnql1q8z4+eZpLH2L4bw2jBWBlN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhBPf6ntkKpflpvGbocZ5TvG6/9CrRLqIQtyHb8U8YLhvUfeTkUmL3LGW59NOCi9VCPMEeu6+kgRYMfImdZp1zEXCWYVWl3gaMoR4hcwtOdUIUsjT7UmsyBInP8UiyvOysQbVjLGuUQMnA6UpHOz6hIQXW5tT0gqk/ueYcSCHLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mBb3s3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE53C4CED6;
-	Tue,  3 Dec 2024 15:18:54 +0000 (UTC)
+	 MIME-Version; b=seO7Q05wLeAqxOEflqkFQWB3MH3gVz41+3db8SWz6q57qnuOcKlvBIpPRXkh6FYsVsbwJRMmO3HoAuL6NKKpfVaF7y1U9LUveqmrmHAxSVmPV4jNO42Hx6btLtyNcgy97etVrH3/Q/LpkCdT9huxbPdSNa5B59IXc0Nluaws1EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4Wg3jVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6592C4CECF;
+	Tue,  3 Dec 2024 15:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239134;
-	bh=Zx9S6Rn3cOD6OHZFJG5cU6hWdq2809rAnz3aMFugPHg=;
+	s=korg; t=1733241202;
+	bh=nmkRZY21Ni+3miFmnql1q8z4+eZpLH2L4bw2jBWBlN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0mBb3s3HfKRluyT3YIbJvwOBBYvlYFmsnYXV/4Qrf4xiQcNHAVWMIEP/xV0NPYmno
-	 DuLM4JRB2Kziwzxb7zQqTD2iyT2GVzA6/04yXHBH2CaFheQ8uisRZZBw+OiROIqP1G
-	 hXtWT5w+pBJppxBOJMoGHOeAIuxwF3Yr7vrtm7YU=
+	b=a4Wg3jVCIhaR8KTRV1pk8w3112sebpfZu3OhlLuvgYSMvCuaUVaX+eeSA75odKasZ
+	 PKV4Eg5lU5hIsGAeg8nCIKzhzOddn0DI6ndKZHGnj3DnHI5Dt1OkYHc59SgrnjZyG8
+	 XRFqFMYmRdhaiqRkaT1f/HchzAoHFpnkojq0w8MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 507/817] i3c: master: Remove i3c_dev_disable_ibi_locked(olddev) on device hotjoin
-Date: Tue,  3 Dec 2024 15:41:19 +0100
-Message-ID: <20241203144015.662302125@linuxfoundation.org>
+Subject: [PATCH 6.12 355/826] wireguard: selftests: load nf_conntrack if not present
+Date: Tue,  3 Dec 2024 15:41:22 +0100
+Message-ID: <20241203144757.609278010@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 36faa04ce3d9c962b4b29d285ad07ca29e2988e4 ]
+[ Upstream commit 0290abc9860917f1ee8b58309c2bbd740a39ee8e ]
 
-When a new device hotjoins, a new dynamic address is assigned.
-i3c_master_add_i3c_dev_locked() identifies that the device was previously
-attached to the bus and locates the olddev.
+Some distros may not load nf_conntrack by default, which will cause
+subsequent nf_conntrack sets to fail. Load this module if it is not
+already loaded.
 
-i3c_master_add_i3c_dev_locked()
-{
-    ...
-    olddev = i3c_master_search_i3c_dev_duplicate(newdev);
-    ...
-    if (olddev) {
-        ...
-        i3c_dev_disable_ibi_locked(olddev);
-        ^^^^^^
-        The olddev should not receive any commands on the i3c bus as it
-        does not exist and has been assigned a new address. This will
-        result in NACK or timeout. So remove it.
-    }
-
-    i3c_dev_free_ibi_locked(olddev);
-    ^^^^^^^^
-    This function internally calls i3c_dev_disable_ibi_locked() function
-    causing to send DISEC command with old Address.
-
-    The olddev should not receive any commands on the i3c bus as it
-    does not exist and has been assigned a new address. This will
-    result in NACK or timeout. So, update the olddev->ibi->enabled
-    flag to false to avoid DISEC with OldAddr.
-}
-
-Include part of Ravindra Yashvant Shinde's work:
-https://lore.kernel.org/linux-i3c/20240820151917.3904956-1-ravindra.yashvant.shinde@nxp.com/T/#u
-
-Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys entry")
-Co-developed-by: Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>
-Signed-off-by: Ravindra Yashvant Shinde <ravindra.yashvant.shinde@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241001162232.223724-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+[ Jason: add [[ -e ... ]] check so this works in the qemu harness. ]
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20241117212030.629159-4-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/testing/selftests/wireguard/netns.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 7028f03c2c42e..82f031928e413 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2039,11 +2039,16 @@ int i3c_master_add_i3c_dev_locked(struct i3c_master_controller *master,
- 			ibireq.max_payload_len = olddev->ibi->max_payload_len;
- 			ibireq.num_slots = olddev->ibi->num_slots;
+diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
+index 405ff262ca93d..55500f901fbc3 100755
+--- a/tools/testing/selftests/wireguard/netns.sh
++++ b/tools/testing/selftests/wireguard/netns.sh
+@@ -332,6 +332,7 @@ waitiface $netns1 vethc
+ waitiface $netns2 veths
  
--			if (olddev->ibi->enabled) {
-+			if (olddev->ibi->enabled)
- 				enable_ibi = true;
--				i3c_dev_disable_ibi_locked(olddev);
--			}
--
-+			/*
-+			 * The olddev should not receive any commands on the
-+			 * i3c bus as it does not exist and has been assigned
-+			 * a new address. This will result in NACK or timeout.
-+			 * So, update the olddev->ibi->enabled flag to false
-+			 * to avoid DISEC with OldAddr.
-+			 */
-+			olddev->ibi->enabled = false;
- 			i3c_dev_free_ibi_locked(olddev);
- 		}
- 		mutex_unlock(&olddev->ibi_lock);
+ n0 bash -c 'printf 1 > /proc/sys/net/ipv4/ip_forward'
++[[ -e /proc/sys/net/netfilter/nf_conntrack_udp_timeout ]] || modprobe nf_conntrack
+ n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout'
+ n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout_stream'
+ n0 iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -d 10.0.0.0/24 -j SNAT --to 10.0.0.1
 -- 
 2.43.0
 
