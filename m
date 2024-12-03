@@ -1,127 +1,171 @@
-Return-Path: <stable+bounces-96241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8B59E1769
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:27:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DCF19E179D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19F6F165EB1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:27:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 095DA162119
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC111DF272;
-	Tue,  3 Dec 2024 09:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDF51DF26C;
+	Tue,  3 Dec 2024 09:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="RNJplb1y";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ep3/xxhN"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE0B1DF25E;
-	Tue,  3 Dec 2024 09:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2691DEFEA;
+	Tue,  3 Dec 2024 09:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733218030; cv=none; b=uxG4EhLEGKFdK1qdAjyx3PYl45nkMNKkK89Qr9fNstsEAkdu5rmfmCa50865hsteo0Apyy940VlL6O58KLuKyrsPfCJDgMqXjdm47U0A3WWsd0jIZEy86JKpANJEcyXdE6tbCgp8dkvbzWbSB5QajNveeM4XVNUa3fMDGd7yF6o=
+	t=1733218262; cv=none; b=VvuVCeSpNMYMxGAdyVPhu985CF9KTCFzeJuyjgulVxMgNAlCV00O4cKM4dNkeJByC6azNdmcqi7et9JS9zOGz9O1p5U63pstlxTLzjqJEAVfgevdy55oOSgGyWO5wlz7y72W36hAWWWLnU5j6tg4wzSHkM7dAK9V1QgCK2BwLis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733218030; c=relaxed/simple;
-	bh=KTvn/Gjc1QNifOEf2fzkR5J6AXF3ghX35zNWUoTlCOY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=E6Sgz9qTa/SPpqHA1UFC5mAkTylKMRFt8JQ/dlfy3pTfQhTHvH9UaRvQoNRkigxZNvHBd7iclcznk5kNoHXCl4RFmWywhxh/rwnDD2TvUlqy1UqUFx3QoSynzv1ic76aPIp1hp0UAqHDEbzxnomO8rngw3/XNe7uRVjFnNBwoiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y2Zzh51CKz1JDTX;
-	Tue,  3 Dec 2024 17:26:56 +0800 (CST)
-Received: from kwepemd500011.china.huawei.com (unknown [7.221.188.45])
-	by mail.maildlp.com (Postfix) with ESMTPS id 208D01A0188;
-	Tue,  3 Dec 2024 17:27:03 +0800 (CST)
-Received: from kwepemd500012.china.huawei.com (7.221.188.25) by
- kwepemd500011.china.huawei.com (7.221.188.45) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Tue, 3 Dec 2024 17:27:02 +0800
-Received: from kwepemd500012.china.huawei.com ([7.221.188.25]) by
- kwepemd500012.china.huawei.com ([7.221.188.25]) with mapi id 15.02.1258.034;
- Tue, 3 Dec 2024 17:27:02 +0800
-From: lizetao <lizetao1@huawei.com>
-To: Bernd Schubert <bschubert@ddn.com>
-CC: Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>,
-	Kanchan Joshi <joshi.k@samsung.com>, "io-uring@vger.kernel.org"
-	<io-uring@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] io_uring: Change res2 parameter type in io_uring_cmd_done
-Thread-Topic: [PATCH] io_uring: Change res2 parameter type in
- io_uring_cmd_done
-Thread-Index: AQHbRMWpVSKVZoFu80ypzjGJCjeqXLLUPplg
-Date: Tue, 3 Dec 2024 09:27:02 +0000
-Message-ID: <ddf57e59ff2046e497125242f86aa9d7@huawei.com>
-References: <20241202-io_uring_cmd_done-res2-as-u64-v1-1-74f33388c3d8@ddn.com>
-In-Reply-To: <20241202-io_uring_cmd_done-res2-as-u64-v1-1-74f33388c3d8@ddn.com>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1733218262; c=relaxed/simple;
+	bh=v3UR4n3upO1L3GtOj7I7EX/ml6xx42eddSbkQxGVPzA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jucJts6YI07jWrUOLLdnL24TkjZFYtQR3iI/mvX/QGfAMuzjmV7Znx8GRcsknWMII3gNs+9DeuoKSwtHLiRXkS6HFDUDIbOn2dEh125N7pJSDliJmYRRnfnHLCBelPXhXLJJVJZWPMOxZ1/3p0/Osco98wV6D8rB8J/WTkHMdYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=RNJplb1y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ep3/xxhN; arc=none smtp.client-ip=202.12.124.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 18D5D1D40988;
+	Tue,  3 Dec 2024 04:30:57 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Tue, 03 Dec 2024 04:30:57 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	coelacanthus.name; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:message-id:mime-version:reply-to:subject:subject:to:to; s=fm2;
+	 t=1733218256; x=1733221856; bh=9Whz9OzImmI197gBlbvEhE00BE9mdgVf
+	ySVnOACTR9Y=; b=RNJplb1yrN00f7zdFJdcu6N7y5hK1UMRnFRIDc4o6KCa4+De
+	ORA2IlbnFsh7hdJRe3sFZRhKsdNYK0MNGJFsxumrcH3SE3XbqiVxannw8oZnL0c/
+	WHviJmqp7NY82KIdRTJ3mqeqtmdXUmsbvQvQx9RjNeQa9oBPg4XHU/V7OiIPSg8H
+	DAfdYqL+mxVovbI+6ey0r1YTWN68weWPbpCcJzQ2JGRw6s/PY2NdVOJb3fipkg9o
+	7jRPs0GlHN6VvOjddBgoEsnf1pG58asUhLX0xZqQh2roThopvhFGA38Gy3eB+li0
+	zgCsdlirWllX/N3UvsYnz9IynuGK5SmC3KeiJA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1733218256; x=1733221856; bh=9Whz9OzImmI197gBlbvEhE00BE9m
+	dgVfySVnOACTR9Y=; b=ep3/xxhN56CEHoJQrzbZHejN1asBPwqo7/vdAJjsxVRv
+	xFpCJBpkaYWoz69zOkIRVLQ210jLUh9Gsyo/lsPDaWgD7HrM7U36B+kYKv/+0qmP
+	sinTW5YCqO8Z8kuohlWdYzob9fqazOKhlvbqoTuD9FLemzdvhUB6TCeVTmMTKC2j
+	EYFViZFZ0D83aheL/4b7giDv6A/inHSGdbztRBPbO1Hwa0iY+zmkoBZzI6eTZ6Fi
+	6gIGip7jV4/B0hjelDhAq+bV8wS0EVhlWiTcUgq9t0fym5vcqJfoN/cuKM/nR8O5
+	37ujKRya7M/LsrIcr6AfQ3foVBjJEEShJMpNbJvf8A==
+X-ME-Sender: <xms:zc9OZ90xpeteE_hY16-W3ByxLs9wco_EGSUkaSV8I3YIJKZim75P9w>
+    <xme:zc9OZ0Hl1KV3lBxqwY9PqVUYfHdgyqn7kMYlaZFM40N3h46H9uyT7X0-4nwRv32SG
+    2T2gz613wZL5dwDEiw>
+X-ME-Received: <xmr:zc9OZ95a6o7_TcMJPg8mo5D4Yt1YJbO0Rx5XIudTYudBxBsOkZRXWa2u3RMOCw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddriedvgddthecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfh
+    rhhomhepvegvlhgvshhtvgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthhhushdrnh
+    grmhgvqeenucggtffrrghtthgvrhhnpeduveelffdvkeekkedvgeeugfdutdekteeuudfh
+    leffhffhffeihfetjefhleehueenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuhifuhestgho
+    vghlrggtrghnthhhuhhsrdhnrghmvgdpnhgspghrtghpthhtohepvdejpdhmohguvgepsh
+    hmthhpohhuthdprhgtphhtthhopehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgv
+    pdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpth
+    htohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgruhhlrdifrghl
+    mhhslhgvhiesshhifhhivhgvrdgtohhmpdhrtghpthhtohepghhuohhrvghnsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepiihihigrohesughishhrohhothdrohhrghdprhgtphhtthhopehlihhnuhigqdhksh
+    gvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhguvhes
+    shhtrhgrtggvrdhioh
+X-ME-Proxy: <xmx:zc9OZ62Q9_RVpr9UReo8VK9HZLHaSnOWWl5lXLbg2bniUpu9OCwjog>
+    <xmx:zc9OZwHMI1vHVnWtFO5ACJjizWuM9d_z5UxXdmF7ug0mcDoBc_dQBQ>
+    <xmx:zc9OZ79eWWeaKPnQDQzr34y_Op-wE6uAvbAnWqc8S_vu3xpFqGa3qw>
+    <xmx:zc9OZ9mC3rhFgNhp0oLV_JAUEcnGq0GwFNemt54juzHUulkN480rew>
+    <xmx:0M9OZwUEnubuc9QGHm8_txPbk40pvTI1l3D5IixhIfiMpCosaBwOVzOU>
+Feedback-ID: i95c648bc:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Dec 2024 04:30:52 -0500 (EST)
+From: Celeste Liu <uwu@coelacanthus.name>
+Subject: [PATCH v2 0/2] riscv/ptrace: add new regset to access original a0
+ register
+Date: Tue, 03 Dec 2024 17:30:03 +0800
+Message-Id: <20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJvPTmcC/32NQQ6CMBBFr0Jm7RhaJYIr72FYlOkIk2ghHawaw
+ t2tHMDle8l/fwHlKKxwLhaInERlDBnsrgAaXOgZxWcGW9qjsaXBKEoJA78wcq88o69s0zWVdb7
+ 0kGdT5Ju8t+S1zTyIzmP8bA/J/OyfWDJokOoDVbXriE7dhUa+O3JhHp66D+7B0K7r+gVGqTKju
+ AAAAA==
+X-Change-ID: 20241201-riscv-new-regset-d529b952ad0d
+To: Oleg Nesterov <oleg@redhat.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>, 
+ Andrea Bolognani <abologna@redhat.com>, 
+ =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>, 
+ Charlie Jenkins <charlie@rivosinc.com>, Quan Zhou <zhouquan@iscas.ac.cn>, 
+ Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>, 
+ Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>, 
+ Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, stable@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Celeste Liu <uwu@coelacanthus.name>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1306; i=uwu@coelacanthus.name;
+ h=from:subject:message-id; bh=v3UR4n3upO1L3GtOj7I7EX/ml6xx42eddSbkQxGVPzA=;
+ b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGdL/zR1nEExOVj0Udc7NZ5BrYLlLjpzZj4c9vS5aL8
+ CVtijVnm9tRysIgxsUgK6bIklfC8pPz0tnuvR3bu2DmsDKBDGHg4hSAiSSIMvz3nbjSK/59vqDt
+ hI11mxh7W2f3MOr1rPQN5Hv9YYLhv9p6hv9OIfuPB6UvXO9h3JgQERqzOq7qhWqKfPzcnctKbxr
+ 0dbEDAJu6Rqg=
+X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
+ fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 
-SGksDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQmVybmQgU2NodWJl
-cnQgPGJzY2h1YmVydEBkZG4uY29tPg0KPiBTZW50OiBNb25kYXksIERlY2VtYmVyIDIsIDIwMjQg
-MTA6MjIgUE0NCj4gVG86IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5kaz47IFBhdmVsIEJlZ3Vu
-a292DQo+IDxhc21sLnNpbGVuY2VAZ21haWwuY29tPjsgS2FuY2hhbiBKb3NoaSA8am9zaGkua0Bz
-YW1zdW5nLmNvbT4NCj4gQ2M6IGlvLXVyaW5nQHZnZXIua2VybmVsLm9yZzsgQmVybmQgU2NodWJl
-cnQgPGJzY2h1YmVydEBkZG4uY29tPjsNCj4gc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiBTdWJq
-ZWN0OiBbUEFUQ0hdIGlvX3VyaW5nOiBDaGFuZ2UgcmVzMiBwYXJhbWV0ZXIgdHlwZSBpbg0KPiBp
-b191cmluZ19jbWRfZG9uZQ0KPiANCj4gQ2hhbmdlIHRoZSB0eXBlIG9mIHRoZSByZXMyIHBhcmFt
-ZXRlciBpbiBpb191cmluZ19jbWRfZG9uZSBmcm9tIHNzaXplX3QgdG8NCj4gdTY0LiBUaGlzIGFs
-aWducyB0aGUgcGFyYW1ldGVyIHR5cGUgd2l0aCBpb19yZXFfc2V0X2NxZTMyX2V4dHJhLCB3aGlj
-aA0KPiBleHBlY3RzIHU2NCBhcmd1bWVudHMuDQo+IFRoZSBjaGFuZ2UgZWxpbWluYXRlcyBwb3Rl
-bnRpYWwgaXNzdWVzIG9uIDMyLWJpdCBhcmNoaXRlY3R1cmVzIHdoZXJlIHNzaXplX3QNCj4gbWln
-aHQgYmUgMzItYml0Lg0KPiANCj4gT25seSB1c2VyIG9mIHBhc3NpbmcgcmVzMiBpcyBkcml2ZXJz
-L252bWUvaG9zdC9pb2N0bC5jIGFuZCBpdCBhY3R1YWxseSBwYXNzZXMNCj4gdTY0Lg0KPiANCj4g
-Rml4ZXM6IGVlNjkyYTIxZTliZiAoImZzLGlvX3VyaW5nOiBhZGQgaW5mcmFzdHJ1Y3R1cmUgZm9y
-IHVyaW5nLWNtZCIpDQo+IFNpZ25lZC1vZmYtYnk6IEJlcm5kIFNjaHViZXJ0IDxic2NodWJlcnRA
-ZGRuLmNvbT4NCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gLS0tDQo+ICBpbmNsdWRl
-L2xpbnV4L2lvX3VyaW5nL2NtZC5oIHwgMiArLQ0KPiAgaW9fdXJpbmcvdXJpbmdfY21kLmMgICAg
-ICAgICB8IDIgKy0NCj4gIDIgZmlsZXMgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAyIGRlbGV0
-aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvaW9fdXJpbmcvY21kLmgg
-Yi9pbmNsdWRlL2xpbnV4L2lvX3VyaW5nL2NtZC5oDQo+IGluZGV4DQo+IDU3OGEzZmRmNWM3MTlj
-ZjQ1ZmQ0YjZmOWM4OTQyMDRkNmI0Zjk0NmMuLjc1NjkxY2EyMDQzYWNkZjY4NzcwOWJiMmYyDQo+
-IDc4MjlhMWJjN2ExMTAzIDEwMDY0NA0KPiAtLS0gYS9pbmNsdWRlL2xpbnV4L2lvX3VyaW5nL2Nt
-ZC5oDQo+ICsrKyBiL2luY2x1ZGUvbGludXgvaW9fdXJpbmcvY21kLmgNCj4gQEAgLTQzLDcgKzQz
-LDcgQEAgaW50IGlvX3VyaW5nX2NtZF9pbXBvcnRfZml4ZWQodTY0IHVidWYsIHVuc2lnbmVkDQo+
-IGxvbmcgbGVuLCBpbnQgcncsDQo+ICAgKiBOb3RlOiB0aGUgY2FsbGVyIHNob3VsZCBuZXZlciBo
-YXJkIGNvZGUgQGlzc3VlX2ZsYWdzIGFuZCBpcyBvbmx5IGFsbG93ZWQNCj4gICAqIHRvIHBhc3Mg
-dGhlIG1hc2sgcHJvdmlkZWQgYnkgdGhlIGNvcmUgaW9fdXJpbmcgY29kZS4NCj4gICAqLw0KPiAt
-dm9pZCBpb191cmluZ19jbWRfZG9uZShzdHJ1Y3QgaW9fdXJpbmdfY21kICpjbWQsIHNzaXplX3Qg
-cmV0LCBzc2l6ZV90IHJlczIsDQo+ICt2b2lkIGlvX3VyaW5nX2NtZF9kb25lKHN0cnVjdCBpb191
-cmluZ19jbWQgKmNtZCwgc3NpemVfdCByZXQsIHU2NCByZXMyLA0KPiAgCQkJdW5zaWduZWQgaXNz
-dWVfZmxhZ3MpOw0KPiANCj4gIHZvaWQgX19pb191cmluZ19jbWRfZG9faW5fdGFzayhzdHJ1Y3Qg
-aW9fdXJpbmdfY21kICppb3VjbWQsIGRpZmYgLS1naXQNCj4gYS9pb191cmluZy91cmluZ19jbWQu
-YyBiL2lvX3VyaW5nL3VyaW5nX2NtZC5jIGluZGV4DQo+IGQ5ZmIyMTQzZjU2ZmY1ZDEzNDgzNjg3
-ZmE5NDljMjkzZjliOGRiZWYuLmFmODQyZTliNGViOTc1YmE1NmFhZWFhYTANCj4gYzJlMjA3YTc3
-MzJiZWJhIDEwMDY0NA0KPiAtLS0gYS9pb191cmluZy91cmluZ19jbWQuYw0KPiArKysgYi9pb191
-cmluZy91cmluZ19jbWQuYw0KPiBAQCAtMTUxLDcgKzE1MSw3IEBAIHN0YXRpYyBpbmxpbmUgdm9p
-ZCBpb19yZXFfc2V0X2NxZTMyX2V4dHJhKHN0cnVjdA0KPiBpb19raW9jYiAqcmVxLA0KPiAgICog
-Q2FsbGVkIGJ5IGNvbnN1bWVycyBvZiBpb191cmluZ19jbWQsIGlmIHRoZXkgb3JpZ2luYWxseSBy
-ZXR1cm5lZA0KPiAgICogLUVJT0NCUVVFVUVEIHVwb24gcmVjZWl2aW5nIHRoZSBjb21tYW5kLg0K
-PiAgICovDQo+IC12b2lkIGlvX3VyaW5nX2NtZF9kb25lKHN0cnVjdCBpb191cmluZ19jbWQgKmlv
-dWNtZCwgc3NpemVfdCByZXQsIHNzaXplX3QNCj4gcmVzMiwNCj4gK3ZvaWQgaW9fdXJpbmdfY21k
-X2RvbmUoc3RydWN0IGlvX3VyaW5nX2NtZCAqaW91Y21kLCBzc2l6ZV90IHJldCwgdTY0DQo+ICty
-ZXMyLA0KPiAgCQkgICAgICAgdW5zaWduZWQgaXNzdWVfZmxhZ3MpDQo+ICB7DQo+ICAJc3RydWN0
-IGlvX2tpb2NiICpyZXEgPSBjbWRfdG9faW9fa2lvY2IoaW91Y21kKTsNCj4gDQo+IC0tLQ0KPiBi
-YXNlLWNvbW1pdDogN2FmMDhiNTdiY2I5ZWJmNzg2NzVjNTAwNjljNTQxMjVjMGE4Yjc5NQ0KPiBj
-aGFuZ2UtaWQ6IDIwMjQxMjAyLWlvX3VyaW5nX2NtZF9kb25lLXJlczItYXMtdTY0LTIxN2E0ZTQ3
-YjkzZg0KPiANCj4gQmVzdCByZWdhcmRzLA0KPiAtLQ0KPiBCZXJuZCBTY2h1YmVydCA8YnNjaHVi
-ZXJ0QGRkbi5jb20+DQo+IA0KDQpJIGhhdmUgYXBwbGllZCB0aGlzIHBhdGNoIHRvIHRoZSBsaW51
-eC1ibG9jay9mb3ItbmV4dCBicmFuY2ggYW5kIHRlc3RlZCBjb21waWxhdGlvbg0KdXNpbmcgdGhl
-IENPTkZJR19JT19VUklORz15IGFuZCBDT05GSUdfSU9fVVJJTkc9biBvcHRpb25zIHJlc3BlY3Rp
-dmVseS4NCkEgc21hbGwgc3VnZ2VzdGlvbiBpcyB0aGF0IHdoZW4gQ09ORklHX0lPX1VSSU5HPW4s
-IHRoZSByZXQyIHBhcmFtZXRlciB0eXBlIG9mIGlvX3VyaW5nX2NtZF9kb25lIGNhbg0KYWxzbyBi
-ZSBjaGFuZ2VkIHRvIHU2NC4NCg0KVGVzdGVkLWJ5OiBMaSBaZXRhbyA8bGl6ZXRhbzFAaHVhd2Vp
-LmNvbT4NClJldmlld2VkLWJ5OiBMaSBaZXRhbyA8bGl6ZXRhbzFAaHVhd2VpLmNvbT4NCg0KLS0N
-CkxpIFpldGFvDQo=
+The orig_a0 is missing in struct user_regs_struct of riscv, and there is
+no way to add it without breaking UAPI. (See Link tag below)
+
+Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
+access original a0 register from userspace via ptrace API.
+
+Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
+
+Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+---
+Changes in v2:
+- Fix integer width.
+- Add selftest.
+- Link to v1: https://lore.kernel.org/r/20241201-riscv-new-regset-v1-1-c83c58abcc7b@coelacanthus.name
+
+---
+Celeste Liu (1):
+      riscv/ptrace: add new regset to access original a0 register
+
+Charlie Jenkins (1):
+      riscv: selftests: Add a ptrace test to verify syscall parameter modification
+
+ arch/riscv/kernel/ptrace.c                   |  32 +++++++
+ include/uapi/linux/elf.h                     |   1 +
+ tools/testing/selftests/riscv/abi/.gitignore |   1 +
+ tools/testing/selftests/riscv/abi/Makefile   |   5 +-
+ tools/testing/selftests/riscv/abi/ptrace.c   | 134 +++++++++++++++++++++++++++
+ 5 files changed, 172 insertions(+), 1 deletion(-)
+---
+base-commit: 0e287d31b62bb53ad81d5e59778384a40f8b6f56
+change-id: 20241201-riscv-new-regset-d529b952ad0d
+
+Best regards,
+-- 
+Celeste Liu <uwu@coelacanthus.name>
+
 
