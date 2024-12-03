@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-97924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2069E2687
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB729E233B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4A8F167BC8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D03286E08
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F2831F76D5;
-	Tue,  3 Dec 2024 16:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01911F8EF3;
+	Tue,  3 Dec 2024 15:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLhMZxwX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXlbkGcv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA4181ADA;
-	Tue,  3 Dec 2024 16:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC931F75BD;
+	Tue,  3 Dec 2024 15:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242201; cv=none; b=d1AzCRAyfSB/Ocb+Qc4zR9Fz05S+oDENkuqFbDxK2TlPKM3xpSPhx8IFZ7aJH67SUSIPjxw1XMrVcuM+EMP22+/v+1SxeYMKHc467eHGYD5LpC1jRWvLPTRJk1+okE/Dv060PTtcI3wcD7AZbIsOiqEZk5flGojjD4pCNtLU1cQ=
+	t=1733239951; cv=none; b=etAbjyCkOcDWfjXogwBIH1e9HSMkopt5lXArJKwEkt6aLFGNL5pRg0ZeBcKPvlwc5sybRF+jV8JZ/ywSA5Gxh57l/ZWXA5n8pcGRVsbWXgbXHVUxjgQhbjLE0rlMwSIVBnlF4rxlmfpBJEYXSg4s3YxjUF3zY0sVXsI9R7EZyoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242201; c=relaxed/simple;
-	bh=AsapXsjjmKTXufkMfE4cN3ca0FZ1VkHhSQE1JY9LonI=;
+	s=arc-20240116; t=1733239951; c=relaxed/simple;
+	bh=4DJXQxfBqdCn9uuqhzU3RoLvITM9SsTKuMSr7bf87eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbeNcwU87lZ3iS6r2wAoAOw/0Unjz/aUYu7dUs96ZR+7Pgs7Lm8J2hHbj6ToNWFyOrm318wPhhI7L6VRZxa+dT2cs+7jgz7TGA2+LwtkHOyZnY2gd/6H9OBLwDVEaOvGAu4lo+1oVQLsyWvUCiBfP7CZiYRXKIWwFJQiz0xnmPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLhMZxwX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13DBC4CECF;
-	Tue,  3 Dec 2024 16:10:00 +0000 (UTC)
+	 MIME-Version; b=fUgwZIthVKjhp1NUs4KsqEQkEz5hNYCUmwaHH8WQmM0sL/qoi6mDpelvqHDSDi2hC0NTSNPI1KFZgjegiVRWMIS4L+Bt3SNC7z8IzSrvmeZ5yKi5Wgtohs/0PlMYX5yr4hR8Pys3/Rpp3pGdR3y4SjX/BGmIGuMmMKXZw+gJijE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXlbkGcv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27587C4CECF;
+	Tue,  3 Dec 2024 15:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242201;
-	bh=AsapXsjjmKTXufkMfE4cN3ca0FZ1VkHhSQE1JY9LonI=;
+	s=korg; t=1733239951;
+	bh=4DJXQxfBqdCn9uuqhzU3RoLvITM9SsTKuMSr7bf87eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zLhMZxwX67KQrttNuBILkT+y7eq3A/OFJXhtTKVo6RS6gUz7Ro06+xDINgTJpQo5m
-	 giPNJoZN3a7dXO7jyJepN08doeCi3g4vzsfgnU93ddXF14dK/fNewrvTf9zC71SToZ
-	 vxjli5It5+q7gfghU0v7H3oY8g/5tpdDwtXNJtPg=
+	b=mXlbkGcvR3boqMT7NnQO547KLz62RX7ZSq0j1ACmaX+tD9/i5M0HJuWbvNcZahMcV
+	 hG88raI0HlBxjXP3qYGKUkpdqd5BGZ5soqTTWG6vtWlirTHORnGQQhUHaMrxqTeAdi
+	 WhdSpnomOVN4O2X/FECXaPGMIwlTh8AOZLVIzcVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 636/826] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
+	Namhyung Kim <namhyung@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 791/817] perf/arm-cmn: Ensure port and device id bits are set properly
 Date: Tue,  3 Dec 2024 15:46:03 +0100
-Message-ID: <20241203144808.560885413@linuxfoundation.org>
+Message-ID: <20241203144026.886892270@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 1157733344651ca505e259d6554591ff156922fa upstream.
+[ Upstream commit dfdf714fed559c09021df1d2a4bb64c0ad5f53bc ]
 
-An atomicity violation occurs when the validity of the variables
-da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire
-assessment is not protected by a lock, the da7219 variable might still be
-in flux during the assessment, rendering this check invalid.
+The portid_bits and deviceid_bits were set only for XP type nodes in
+the arm_cmn_discover() and it confused other nodes to find XP nodes.
+Copy the both bits from the XP nodes directly when it sets up a new
+node.
 
-To fix this issue, we recommend adding a lock before the block
-if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that
-the legitimacy check for da7219->clk_src and da7219->mclk_rate is
-protected by the lock, ensuring the validity of the check.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations.
-
-Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Link: https://patch.msgid.link/20240930101216.23723-1-chenqiuji666@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e79634b53e39 ("perf/arm-cmn: Refactor node ID handling. Again.")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20241121001334.331334-1-namhyung@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/perf/arm-cmn.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/da7219.c
-+++ b/sound/soc/codecs/da7219.c
-@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct
- 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
- 	int ret = 0;
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index 48863b31ccfb1..a2032d3979640 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -2147,8 +2147,6 @@ static int arm_cmn_init_dtcs(struct arm_cmn *cmn)
+ 			continue;
  
--	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
-+	mutex_lock(&da7219->pll_lock);
-+
-+	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		return 0;
-+	}
+ 		xp = arm_cmn_node_to_xp(cmn, dn);
+-		dn->portid_bits = xp->portid_bits;
+-		dn->deviceid_bits = xp->deviceid_bits;
+ 		dn->dtc = xp->dtc;
+ 		dn->dtm = xp->dtm;
+ 		if (cmn->multi_dtm)
+@@ -2379,6 +2377,8 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 			}
  
- 	if ((freq < 2000000) || (freq > 54000000)) {
-+		mutex_unlock(&da7219->pll_lock);
- 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
- 			freq);
- 		return -EINVAL;
- 	}
+ 			arm_cmn_init_node_info(cmn, reg & CMN_CHILD_NODE_ADDR, dn);
++			dn->portid_bits = xp->portid_bits;
++			dn->deviceid_bits = xp->deviceid_bits;
  
--	mutex_lock(&da7219->pll_lock);
--
- 	switch (clk_id) {
- 	case DA7219_CLKSRC_MCLK_SQR:
- 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
+ 			switch (dn->type) {
+ 			case CMN_TYPE_DTC:
+-- 
+2.43.0
+
 
 
 
