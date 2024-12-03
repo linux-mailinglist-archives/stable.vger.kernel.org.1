@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-97205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC36D9E22E6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727A79E2797
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:34:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DDFE286C04
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 273B9B65E0F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D021F7063;
-	Tue,  3 Dec 2024 15:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988A51F76AF;
+	Tue,  3 Dec 2024 15:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch+6mSuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0ouJBck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102682500DA;
-	Tue,  3 Dec 2024 15:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C261F75B6;
+	Tue,  3 Dec 2024 15:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239818; cv=none; b=UKo4JWICswnzKj6Pcp1b8ofB+PKFjNN6XUYnCzOT9g4K0inOPqQvU+hDmWzXphFRXPwgBsJvGzE+dBmGCYJysGmMP2eC3OabCjABWIiCQhWlNpE4blUBOvFC0jT+P/POo0dUR8JrJuuNdT0/u+jPeO+M7J3KuU8jVrzKcbc2wUA=
+	t=1733239937; cv=none; b=EU0L/MPuTZiDAWiWWcihLnttr409GPRw6/o0+jlHDkhZmtvfrw56QVTM5D7m2lJIGkVlDEzfeEhdsOZPDKa6lvBIk/c9D110YZDDN2UIly1nBe2GlE3aHhpFip6QWrl++e+lFR4AOAZADLGcLoi68JgtgJnaQAr4EWyaUZPmOWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239818; c=relaxed/simple;
-	bh=GzpamVJDRwCJtB/2Js73c9DhbY9DgtPdzctbh8M29tc=;
+	s=arc-20240116; t=1733239937; c=relaxed/simple;
+	bh=zjcOsR6rMimwhWPN5RCKsOk2nUpPJU0UvYgWvEkRWWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ct+aOPxDtzDAFxjvR48Kft4+QnUBu5WuBB3eb/cRWCfcG8gvUjyTdeMIgAN0sdy4F0zRXlc50t8WN+O2LREJTtYQCj9Pe0KdjJJEf3mcvHKgiPL8r8zSlMmLYHvSCWGF8u6WIlW89OoAY6IW/Y0GRLuIxDh5Pb0yTkrs0fuoOyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch+6mSuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C506C4CECF;
-	Tue,  3 Dec 2024 15:30:17 +0000 (UTC)
+	 MIME-Version; b=IEl1oCItFVl8pQCS/k2wHaExEUS5O0q7eKJzs4oTVTXN/avK5FmkzD1Y+SHdKmOI/3Bp4ZEPZZPBdc5FBU3A3LcrIzGZM5AuwEmUpG2RXvNhgfptUUGw9fNEI1ekly1idD8YiaUtfnPcxV/kevWGPOu2EkQfngyExdxSd7tsIjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0ouJBck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67C0C4CECF;
+	Tue,  3 Dec 2024 15:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239817;
-	bh=GzpamVJDRwCJtB/2Js73c9DhbY9DgtPdzctbh8M29tc=;
+	s=korg; t=1733239937;
+	bh=zjcOsR6rMimwhWPN5RCKsOk2nUpPJU0UvYgWvEkRWWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ch+6mSuwnymqaxsTEVp1jMZ5MUZTjkONOn+6BP9pkK40zzSOa+oNUojggE5GVjGBo
-	 MLm1SIz+7diT77TLzyrsqhFvh8zCzR1XMSfqKAycg4m00NCmqmrv4GMG4p0ZafMVa/
-	 kAj3wCSh67IDi+YRTa9Fc07hPpodflx8OC3/pSSQ=
+	b=s0ouJBckEh/aV8v+FoW4dvHbbPuvLYH93Fa5fO8dejxKhAJ6DyPqfYe1LyhsPbcYb
+	 WzEThGTy9BSpSBEOZWzP4rSK1RNXV/pCage0+r/3HF+PhycbwQLWfhmQBM/d8kHil8
+	 5LzTeJWRDrM+j84z5bnVTahi4/UP8u1Zj2SNUSLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinesh Kumar <desikumar81@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 743/817] ALSA: hda/realtek: Fix Internal Speaker and Mic boost of Infinix Y4 Max
-Date: Tue,  3 Dec 2024 15:45:15 +0100
-Message-ID: <20241203144024.999982669@linuxfoundation.org>
+Subject: [PATCH 6.11 744/817] ALSA: hda/realtek: Apply quirk for Medion E15433
+Date: Tue,  3 Dec 2024 15:45:16 +0100
+Message-ID: <20241203144025.038871639@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -65,57 +64,29 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dinesh Kumar <desikumar81@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 5ebe792a5139f1ce6e4aed22bef12e7e2660df96 upstream.
+commit ca0f79f0286046f6a91c099dc941cf7afae198d6 upstream.
 
-Internal Speaker of Infinix Y4 Max remains muted due to incorrect
-Pin configuration, and the Internal Mic records high noise. This patch
-corrects the Pin configuration for the Internal Speaker and limits
-the Internal Mic boost.
-HW Probe for device: https://linux-hardware.org/?probe=6d4386c347
-Test: Internal Speaker works fine, Mic has low noise.
+Medion E15433 laptop wich ALC269VC (SSID 2782:1705) needs the same
+workaround for the missing speaker as another model.
 
-Signed-off-by: Dinesh Kumar <desikumar81@gmail.com>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1233298
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241125092842.13208-1-desikumar81@gmail.com
+Link: https://patch.msgid.link/20241128072646.15659-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -7534,6 +7534,7 @@ enum {
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
- 	ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13,
-+	ALC269VC_FIXUP_INFINIX_Y4_MAX,
- 	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
-@@ -7992,6 +7993,15 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
- 	},
-+	[ALC269VC_FIXUP_INFINIX_Y4_MAX] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1b, 0x90170150 }, /* use as internal speaker */
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC269_FIXUP_LIMIT_INT_MIC_BOOST
-+	},
- 	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -11017,6 +11027,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x2782, 0x0214, "VAIO VJFE-CL", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+@@ -11028,6 +11028,7 @@ static const struct snd_pci_quirk alc269
  	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
  	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
-+	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
+ 	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
++	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
  	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
  	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
  	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
