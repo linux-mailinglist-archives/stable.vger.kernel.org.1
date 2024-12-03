@@ -1,121 +1,82 @@
-Return-Path: <stable+bounces-96179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EADD9E1119
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 03:10:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2229E1126
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 03:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E743D1647F2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 02:10:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37A281648C3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 02:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E48C12CD88;
-	Tue,  3 Dec 2024 02:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A92B139D1B;
+	Tue,  3 Dec 2024 02:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JIW+0wl6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEz+fq96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036C219E4;
-	Tue,  3 Dec 2024 02:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCCD17555;
+	Tue,  3 Dec 2024 02:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733191819; cv=none; b=FqbzwyQ1T/AYsWQOyum3/hcnL3pqFJv6I9FJU7LzA2xwIcsZaR3EWesihESuaPHbs1qmkA+cHDJQece+URt+O52rYW+ZLlrKZKmzXpQkAvsmMWImADbNbl6dsqtGvRj4vYd551LKuj95KRy5Pi9EawRvj+XG8HS04cGrr3yeLQQ=
+	t=1733192087; cv=none; b=eEDk7zltUWyDsKAN4rla+Z8JQX0rrN6PZR8FQVECBeBL1YTxU1M2VpJ+1pRxrU8IAY94gYfP3sYWWorxIoY/+3+iTokuOsl0EALIpkFNpyysaDKWETeh/gd+FfqCNNtVty9TpkGeJN0g1bzAlvjdL+YdobKpMSj/AY5NV5pLzsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733191819; c=relaxed/simple;
-	bh=VCw0se1R4PfQJFWrA7XvWz6U4ulPMrfws62VNJxPBjQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=g+23C4B86JPHX7UBp9VeqfBErDENdXe/RdnP1sK/9dG+A0P/u8IQzIXXrTHPWGaNyyQUC6eHcPir49AEX9vTXlTgkiwnq/bbW7F8v1tYnynNuQ5SpTpQwK98fY7MQuVver1gIqBZb8j/hkadYfNGjl64rYWvDRTnRz8W9KwAZ1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JIW+0wl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA07C4CED2;
-	Tue,  3 Dec 2024 02:10:19 +0000 (UTC)
+	s=arc-20240116; t=1733192087; c=relaxed/simple;
+	bh=qgAqukm3lu8OrdWEasFNywW+NrV2YcDLOcq2wJiovf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bAT6kmduAfXX6gU2pHCsxxkp/60Uy+kB9fBHa1CB78WN+rNKQx0VdDMLrK5yUZRK5Fw5LgJCdmLTc/OHVVRekbhvj0+6JMw9OWHJni0tRuithtlMnTRazTxe+yeUwQc0gSuV8nZ1EHdyfXPuujQeRh4T36/0HK9IgKC5JqRM+EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEz+fq96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6AAC4CED1;
+	Tue,  3 Dec 2024 02:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733191819;
-	bh=VCw0se1R4PfQJFWrA7XvWz6U4ulPMrfws62VNJxPBjQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=JIW+0wl6bIuoLaJml0J5K8aUbsp9YtRiSxHEu0lf4l+tzQqGnZY4FJ70sSMFhR0Lw
-	 EhcJ3/SAoxEnlOjUy7gb3tzkrtQx49sQq3wzqpodhOXg/Vewm3ytS7GgsBKQPo6DMw
-	 WPFjZRX3zNippafRbpBuX9tGzjiYlP8LET1dVXlzBdasNnvGiu2SOEb+Q/eHyhB3vF
-	 T1b2YM0U1oFnhCzU1Z1K5pbmRYzU5Q48EtuCdwoFxxiME3t+kU8KXoyhE6avEiBldw
-	 lx+Bd9vB1SJWKKdUYiOgbADOSelxOoqirf+xjvpbcMnA+VotdBWiQWYAqfR+SP+3Tj
-	 ta5dfJ6/s0/nQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7194D3806656;
-	Tue,  3 Dec 2024 02:10:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1733192087;
+	bh=qgAqukm3lu8OrdWEasFNywW+NrV2YcDLOcq2wJiovf4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=EEz+fq964EOVNbd6Fb3AN/6rRy6Z3kwlhZtfoi3o1bdjkvPISqDZjucCQG6lI7kZw
+	 WeQ/OQVeI/AJxxJLiw96qOvlil/atm4JGQO8sSCnGGjwKyQ4X8y3gm5A7D1FNSbf7q
+	 8nzB3RqbBKIYFTOAqjokXVRIEmGBD7vFg/vdcpiwGM+HdQQZCHL9vxwrSpEXTGcgXk
+	 6TBCoDADoaavXZOQ0b94I4noV70w6uhDJ2SA2XAMgpA2DyX4RW+hHA1JWbNK7BVQdE
+	 PIXFZMh8aasIH76K5qu5kz7nggac9eRQE9PJa7p/1I8hD9KftURBN48RVq7L+yTKUo
+	 FauxnDNC8FPNw==
+Date: Mon, 2 Dec 2024 18:14:45 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jason Wang <jasowang@redhat.com>
+Cc: Koichiro Den <koichiro.den@canonical.com>,
+ virtualization@lists.linux.dev, mst@redhat.com, xuanzhuo@linux.alibaba.com,
+ eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, jiri@resnulli.us,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net-next] virtio_net: drop netdev_tx_reset_queue() from
+ virtnet_enable_queue_pair()
+Message-ID: <20241202181445.0da50076@kernel.org>
+In-Reply-To: <CACGkMEtmH9ukthh+DGCP5cJDrR=o9ML_1tF8nfS-rFa+NrijdA@mail.gmail.com>
+References: <20241130181744.3772632-1-koichiro.den@canonical.com>
+	<CACGkMEtmH9ukthh+DGCP5cJDrR=o9ML_1tF8nfS-rFa+NrijdA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 01/15] can: dev: can_set_termination(): allow sleeping
- GPIOs
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173319183325.3990091.10550590586093973028.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Dec 2024 02:10:33 +0000
-References: <20241202090040.1110280-2-mkl@pengutronix.de>
-In-Reply-To: <20241202090040.1110280-2-mkl@pengutronix.de>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- linux-can@vger.kernel.org, kernel@pengutronix.de, nb@tipi-net.de,
- l.sanfilippo@kunbus.com, stable@vger.kernel.org, l.goehrs@pengutronix.de
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Marc Kleine-Budde <mkl@pengutronix.de>:
-
-On Mon,  2 Dec 2024 09:55:35 +0100 you wrote:
-> In commit 6e86a1543c37 ("can: dev: provide optional GPIO based
-> termination support") GPIO based termination support was added.
+On Mon, 2 Dec 2024 12:22:53 +0800 Jason Wang wrote:
+> > Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
+> > Cc: <stable@vger.kernel.org> # v6.11+
+> > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>  
 > 
-> For no particular reason that patch uses gpiod_set_value() to set the
-> GPIO. This leads to the following warning, if the systems uses a
-> sleeping GPIO, i.e. behind an I2C port expander:
-> 
-> [...]
+> Acked-by: Jason Wang <jasowang@redhat.com>
 
-Here is the summary with links:
-  - [net,01/15] can: dev: can_set_termination(): allow sleeping GPIOs
-    https://git.kernel.org/netdev/net/c/ee1dfbdd8b4b
-  - [net,02/15] can: gs_usb: add usb endpoint address detection at driver probe step
-    https://git.kernel.org/netdev/net/c/889b2ae9139a
-  - [net,03/15] can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
-    https://git.kernel.org/netdev/net/c/9e66242504f4
-  - [net,04/15] can: sun4i_can: sun4i_can_err(): call can_change_state() even if cf is NULL
-    https://git.kernel.org/netdev/net/c/ee6bf3677ae0
-  - [net,05/15] can: hi311x: hi3110_can_ist(): fix potential use-after-free
-    https://git.kernel.org/netdev/net/c/9ad86d377ef4
-  - [net,06/15] can: hi311x: hi3110_can_ist(): update state error statistics if skb allocation fails
-    https://git.kernel.org/netdev/net/c/ef5034aed9e0
-  - [net,07/15] can: m_can: m_can_handle_lec_err(): fix {rx,tx}_errors statistics
-    https://git.kernel.org/netdev/net/c/988d4222bf90
-  - [net,08/15] can: ifi_canfd: ifi_canfd_handle_lec_err(): fix {rx,tx}_errors statistics
-    https://git.kernel.org/netdev/net/c/bb03d568bb21
-  - [net,09/15] can: hi311x: hi3110_can_ist(): fix {rx,tx}_errors statistics
-    https://git.kernel.org/netdev/net/c/3e4645931655
-  - [net,10/15] can: sja1000: sja1000_err(): fix {rx,tx}_errors statistics
-    https://git.kernel.org/netdev/net/c/2c4ef3af4b02
-  - [net,11/15] can: sun4i_can: sun4i_can_err(): fix {rx,tx}_errors statistics
-    https://git.kernel.org/netdev/net/c/595a81988a6f
-  - [net,12/15] can: ems_usb: ems_usb_rx_err(): fix {rx,tx}_errors statistics
-    https://git.kernel.org/netdev/net/c/72a7e2e74b30
-  - [net,13/15] can: f81604: f81604_handle_can_bus_errors(): fix {rx,tx}_errors statistics
-    https://git.kernel.org/netdev/net/c/d7b916540c2b
-  - [net,14/15] can: mcp251xfd: mcp251xfd_get_tef_len(): work around erratum DS80000789E 6.
-    https://git.kernel.org/netdev/net/c/30447a1bc0e0
-  - [net,15/15] can: j1939: j1939_session_new(): fix skb reference counting
-    https://git.kernel.org/netdev/net/c/a8c695005bfe
+I see Tx skb flush in:
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+virtnet_freeze() -> remove_vq_common() -> free_unused_bufs() -> virtnet_sq_free_unused_buf()
 
-
+do we need to reset the BQL state in that case?
+Rule of thumb is netdev_tx_reset_queue() should follow any flush
+(IOW skb freeing not followed by netdev_tx_completed_queue()).
 
