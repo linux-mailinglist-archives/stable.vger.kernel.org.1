@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276A89E25D2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D209E23FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20B48B62171
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27CCEB3E79A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D8A1F7567;
-	Tue,  3 Dec 2024 15:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8DF1F75A6;
+	Tue,  3 Dec 2024 15:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKyyKJoh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xx5UBhgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743C8381B1;
-	Tue,  3 Dec 2024 15:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD9C1F757E;
+	Tue,  3 Dec 2024 15:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241424; cv=none; b=WdLUJL8v7dfKvxek196zohm6mVymEhYq4VVmaArRTS+tmmGwMCjkpSSEIL0FHaw430thneysrLNbto6GyrW5HwlqmJzPWcIhanyKOkgRf9jzUjha8fu1SQsif31XXkI/si+KEO2GJo8CuwsM+1E4YeAmmjqaXuqS4KLyxfaFiXA=
+	t=1733239217; cv=none; b=W5VY0FEFyUesnDC8Yd/EPhEHnO4Tj8Y5Ky1kOS/Exvn8CEAWqz4aIuZCEuiGEJVqfWWN7+6GV7QB4SBGXioLqXpfdUPvCXxPqCWZ82+P9Sx613XjVopotTwqRwtH/9vZtx7FYFjIAC2tSMRPkh4jce/tTF5te16gi4dueexhkrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241424; c=relaxed/simple;
-	bh=fV+eB8NILSqPvqZQcX3Ro6ZXASyJ9FD5ADQr0VHaph0=;
+	s=arc-20240116; t=1733239217; c=relaxed/simple;
+	bh=ueeSfx+oqPOB9zDTYjcGDhtjm3Z3W+HisNoiTBorL+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1MvREVaY9PyV7LYOCHQA3GcZZu13dLWgT7/WwOTstHsFA5az37SL5SPiGYybTkD+ESeuvDTjoJc1ljQg7zrU55gXciKkb8nBk0lKwa7mPe8hTNryJwvWnYke3IJVj4a3ZogpfhTbmP9hxtGMuDo/LJFWfMjkxlcQEN6tmmJwH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKyyKJoh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D655AC4CECF;
-	Tue,  3 Dec 2024 15:57:03 +0000 (UTC)
+	 MIME-Version; b=hQP7V+1c7DP4hJG1wQQqghNVdgRIYCeK97qK+tIyeLExeC4CL+0zMeJ4ieSxYwqx5M+tRcsQihTicBFXBvKHtGMxeCJClbVThR7IlBP0wtc5+pzinCV8E0xLKSG303lviWOTK15KLmmyny3LF1gD3N2vCzETNkxhF8hPZa/XKds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xx5UBhgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA8AC4CECF;
+	Tue,  3 Dec 2024 15:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241424;
-	bh=fV+eB8NILSqPvqZQcX3Ro6ZXASyJ9FD5ADQr0VHaph0=;
+	s=korg; t=1733239217;
+	bh=ueeSfx+oqPOB9zDTYjcGDhtjm3Z3W+HisNoiTBorL+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKyyKJohmOjYBuPie1k2wSunLsvr2xdCi6j/yjA3WvNtCLNcIoayCTqKTNksNjKOx
-	 v32fUrFT1KHkpDeh6mUF+lQvwKZ846/2WCvs6vbtuCK5ev4altcBZcc54i/S+Zv/Yv
-	 iHwVXAf7ppQe8OGzTSABopR4zv4ostUd26QmTtNM=
+	b=xx5UBhgDFzIBFb1U99NcZ8W7dFrmUjimmCT6zwPcAAa019jkbWQEGMNGtNYXGx4aM
+	 2VHGoM5dTrmjj05lEsatqBKW3+hjbL9VlXm5ljdvIfNdylE2RBMGzud7sFdOssRQRf
+	 7GVrQkrLDBDLT4c3dPSM6o3YYnNhwABoMEzCZATU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 382/826] powerpc/mm/fault: Fix kfence page fault reporting
-Date: Tue,  3 Dec 2024 15:41:49 +0100
-Message-ID: <20241203144758.668516296@linuxfoundation.org>
+Subject: [PATCH 6.11 538/817] remoteproc: qcom_q6v5_mss: Re-order writes to the IMEM region
+Date: Tue,  3 Dec 2024 15:41:50 +0100
+Message-ID: <20241203144016.903523296@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-[ Upstream commit 06dbbb4d5f7126b6307ab807cbf04ecfc459b933 ]
+[ Upstream commit 7b22b7719fc17d5979a991c918c868ab041be5c8 ]
 
-copy_from_kernel_nofault() can be called when doing read of /proc/kcore.
-/proc/kcore can have some unmapped kfence objects which when read via
-copy_from_kernel_nofault() can cause page faults. Since *_nofault()
-functions define their own fixup table for handling fault, use that
-instead of asking kfence to handle such faults.
+Any write access to the IMEM region when the Q6 is setting up XPU
+protection on it will result in a XPU violation. Fix this by ensuring
+IMEM writes related to the MBA post-mortem logs happen before the Q6
+is brought out of reset.
 
-Hence we search the exception tables for the nip which generated the
-fault. If there is an entry then we let the fixup table handler handle the
-page fault by returning an error from within ___do_page_fault().
-
-This can be easily triggered if someone tries to do dd from /proc/kcore.
-eg. dd if=/proc/kcore of=/dev/null bs=1M
-
-Some example false negatives:
-
-  ===============================
-  BUG: KFENCE: invalid read in copy_from_kernel_nofault+0x9c/0x1a0
-  Invalid read at 0xc0000000fdff0000:
-   copy_from_kernel_nofault+0x9c/0x1a0
-   0xc00000000665f950
-   read_kcore_iter+0x57c/0xa04
-   proc_reg_read_iter+0xe4/0x16c
-   vfs_read+0x320/0x3ec
-   ksys_read+0x90/0x154
-   system_call_exception+0x120/0x310
-   system_call_vectored_common+0x15c/0x2ec
-
-  BUG: KFENCE: use-after-free read in copy_from_kernel_nofault+0x9c/0x1a0
-  Use-after-free read at 0xc0000000fe050000 (in kfence-#2):
-   copy_from_kernel_nofault+0x9c/0x1a0
-   0xc00000000665f950
-   read_kcore_iter+0x57c/0xa04
-   proc_reg_read_iter+0xe4/0x16c
-   vfs_read+0x320/0x3ec
-   ksys_read+0x90/0x154
-   system_call_exception+0x120/0x310
-   system_call_vectored_common+0x15c/0x2ec
-
-Fixes: 90cbac0e995d ("powerpc: Enable KFENCE for PPC32")
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/a411788081d50e3b136c6270471e35aba3dfafa3.1729271995.git.ritesh.list@gmail.com
+Fixes: 318130cc9362 ("remoteproc: qcom_q6v5_mss: Add MBA log extraction support")
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240819073020.3291287-1-quic_sibis@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/fault.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/remoteproc/qcom_q6v5_mss.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 81c77ddce2e30..c156fe0d53c37 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -439,10 +439,16 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
- 	/*
- 	 * The kernel should never take an execute fault nor should it
- 	 * take a page fault to a kernel address or a page fault to a user
--	 * address outside of dedicated places
-+	 * address outside of dedicated places.
-+	 *
-+	 * Rather than kfence directly reporting false negatives, search whether
-+	 * the NIP belongs to the fixup table for cases where fault could come
-+	 * from functions like copy_from_kernel_nofault().
- 	 */
- 	if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write))) {
--		if (kfence_handle_page_fault(address, is_write, regs))
-+		if (is_kfence_address((void *)address) &&
-+		    !search_exception_tables(instruction_pointer(regs)) &&
-+		    kfence_handle_page_fault(address, is_write, regs))
- 			return 0;
+diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
+index 2a42215ce8e07..32c3531b20c70 100644
+--- a/drivers/remoteproc/qcom_q6v5_mss.c
++++ b/drivers/remoteproc/qcom_q6v5_mss.c
+@@ -1162,6 +1162,9 @@ static int q6v5_mba_load(struct q6v5 *qproc)
+ 		goto disable_active_clks;
+ 	}
  
- 		return SIGSEGV;
++	if (qproc->has_mba_logs)
++		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
++
+ 	writel(qproc->mba_phys, qproc->rmb_base + RMB_MBA_IMAGE_REG);
+ 	if (qproc->dp_size) {
+ 		writel(qproc->mba_phys + SZ_1M, qproc->rmb_base + RMB_PMI_CODE_START_REG);
+@@ -1172,9 +1175,6 @@ static int q6v5_mba_load(struct q6v5 *qproc)
+ 	if (ret)
+ 		goto reclaim_mba;
+ 
+-	if (qproc->has_mba_logs)
+-		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
+-
+ 	ret = q6v5_rmb_mba_wait(qproc, 0, 5000);
+ 	if (ret == -ETIMEDOUT) {
+ 		dev_err(qproc->dev, "MBA boot timed out\n");
 -- 
 2.43.0
 
