@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-97685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32D39E2A8C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:14:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30239E29F0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:49:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7153EB2612C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3DC7B36CB6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EDF1F7567;
-	Tue,  3 Dec 2024 15:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BE21F7591;
+	Tue,  3 Dec 2024 15:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh6GbNd/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6+VriQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2131381B1;
-	Tue,  3 Dec 2024 15:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 315F71DE8A5;
+	Tue,  3 Dec 2024 15:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241375; cv=none; b=iqegYm77ijHfTp3Japy8pWYaWXrpv92MYRnRu2G7yb6IbGsw/xazhydvU6iF/wLfXnAWUjmuiBTYkX08uQDvKMj+DQRYY6YSRqiuMcKE6YLCMy43ZAkRlJjuFvleE/3S7V1J8Nz5OmcqWiaRTK0C/NSfdnVBfi6jaQqU+b8rubE=
+	t=1733241393; cv=none; b=i+nfan4EjGkOQWd6o8EyvW8YTRHbUsaqu7S7pbqSNXH/CF4Xe1qn7MHM1FmuLyay44sIjONhR/TBqCXiVIu3/AB6+T6uHeqVSqAZ4+7IceCRaz/M7l9/EWqcD6IOrfYX1f5LqdbQ+scCNJN8ibhtuWZtxiExW9cGoobWomyzWUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241375; c=relaxed/simple;
-	bh=uaYRdsTZgZ6+T3/uyECI12KQyiG411jzlva6IBZeoFw=;
+	s=arc-20240116; t=1733241393; c=relaxed/simple;
+	bh=JFCe6ui0fJM8Wpsf7XsAfpxSkQxuxiaZf3Sk68sE0fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uA1xVqFELhOLg6hzM+EMCATrGoA1rvteLH9ib9KEBb2zsZR8bS/BmhgoX6cRyGhlUIDjjdKo2vbVoV2x3tF0pAozwvzb5cFctRcjU9LVEdye97YZh1ZBDIww9fWgaTtt9tz59bgMXgFI4OXABySXH9muuYB1v9aHIhG+Fm2q0r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh6GbNd/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B81C4CECF;
-	Tue,  3 Dec 2024 15:56:14 +0000 (UTC)
+	 MIME-Version; b=t8w/uD0z+BcjCgPi6txFVrNU+EjkL6n892H7KhZfBIZ7FD9unrutnzkR3tXhrMnoN9PvPZKTNK3+svcQGR8OkNEyTMXZOL1W/JrhqR/4sLh9clNHf6pFhD/zQz8RMkyL9h7+bp0nC/8NH6cAoMux1UhT3wPxviZeygZ6OJghN/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6+VriQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326E3C4CECF;
+	Tue,  3 Dec 2024 15:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241375;
-	bh=uaYRdsTZgZ6+T3/uyECI12KQyiG411jzlva6IBZeoFw=;
+	s=korg; t=1733241392;
+	bh=JFCe6ui0fJM8Wpsf7XsAfpxSkQxuxiaZf3Sk68sE0fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yh6GbNd/8rTMS9HXj9C+UPmE7cO4EDKHfIFPh/2gcm/o65MXRMvmA2cLHZs555Fr0
-	 89x/srfZh7XAq9N1BoWZPla1qOpXyix7PNGdw5K2DrA4PD3tQzYjZTLL39NhFws3TZ
-	 hDDKShLY6SaeizpKCc1/6PGpVuW7DjhscPgdEvNY=
+	b=A6+VriQkxMXc9wjyO5Kfq4N0wDU93DoNf06vj6BG5H1wJulSVf9dMoerjrCftC5vB
+	 H8Rm2JJ5UiVJjvZEoBJc4H1MlFVNuLlu6qwvpSbxnqpz9K6I6bQDz9OAa/Pnx9DFQa
+	 ZUwJ3glwxgVlbufY0Z53lcuedtimQVxMOvWQgE8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 401/826] RDMA/core: Implement RoCE GID port rescan and export delete function
-Date: Tue,  3 Dec 2024 15:42:08 +0100
-Message-ID: <20241203144759.403526678@linuxfoundation.org>
+Subject: [PATCH 6.12 405/826] clk: imx: lpcg-scu: SW workaround for errata (e10858)
+Date: Tue,  3 Dec 2024 15:42:12 +0100
+Message-ID: <20241203144759.559757837@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,98 +66,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit af7a35bf6c36a77624d3abe46b3830b7c2a5f20c ]
+[ Upstream commit 5ee063fac85656bea9cfe3570af147ba1701ba18 ]
 
-rdma_roce_rescan_port() scans all network devices in
-the system and adds the gids if relevant to the RoCE device
-port. When not in bonding mode it adds the GIDs of the
-netdevice in this port. When in bonding mode it adds the
-GIDs of both the port's netdevice and the bond master
-netdevice.
+Back-to-back LPCG writes can be ignored by the LPCG register due to
+a HW bug. The writes need to be separated by at least 4 cycles of
+the gated clock. See https://www.nxp.com.cn/docs/en/errata/IMX8_1N94W.pdf
 
-Export roce_del_all_netdev_gids(), which  removes all GIDs
-associated with a specific netdevice for a given port.
+The workaround is implemented as follows:
+1. For clocks running greater than or equal to 24MHz, a read
+followed by the write will provide sufficient delay.
+2. For clocks running below 24MHz, add a delay of 4 clock cylces
+after the write to the LPCG register.
 
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Link: https://patch.msgid.link/674d498da4637a1503ff1367e28bd09ff942fd5e.1730381292.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 0bd2c61df953 ("RDMA/mlx5: Ensure active slave attachment to the bond IB device")
+Fixes: 2f77296d3df9 ("clk: imx: add lpcg clock support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20241027-imx-clk-v1-v3-1-89152574d1d7@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/roce_gid_mgmt.c | 30 +++++++++++++++++++++----
- include/rdma/ib_verbs.h                 |  3 +++
- 2 files changed, 29 insertions(+), 4 deletions(-)
+ drivers/clk/imx/clk-lpcg-scu.c | 37 ++++++++++++++++++++++++++--------
+ 1 file changed, 29 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/core/roce_gid_mgmt.c b/drivers/infiniband/core/roce_gid_mgmt.c
-index d5131b3ba8ab0..a9f2c6b1b29ed 100644
---- a/drivers/infiniband/core/roce_gid_mgmt.c
-+++ b/drivers/infiniband/core/roce_gid_mgmt.c
-@@ -515,6 +515,27 @@ void rdma_roce_rescan_device(struct ib_device *ib_dev)
- }
- EXPORT_SYMBOL(rdma_roce_rescan_device);
+diff --git a/drivers/clk/imx/clk-lpcg-scu.c b/drivers/clk/imx/clk-lpcg-scu.c
+index dd5abd09f3e20..620afdf8dc03e 100644
+--- a/drivers/clk/imx/clk-lpcg-scu.c
++++ b/drivers/clk/imx/clk-lpcg-scu.c
+@@ -6,10 +6,12 @@
  
-+/**
-+ * rdma_roce_rescan_port - Rescan all of the network devices in the system
-+ * and add their gids if relevant to the port of the RoCE device.
-+ *
-+ * @ib_dev: IB device
-+ * @port: Port number
-+ */
-+void rdma_roce_rescan_port(struct ib_device *ib_dev, u32 port)
+ #include <linux/bits.h>
+ #include <linux/clk-provider.h>
++#include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
++#include <linux/units.h>
+ 
+ #include "clk-scu.h"
+ 
+@@ -41,6 +43,29 @@ struct clk_lpcg_scu {
+ 
+ #define to_clk_lpcg_scu(_hw) container_of(_hw, struct clk_lpcg_scu, hw)
+ 
++/* e10858 -LPCG clock gating register synchronization errata */
++static void lpcg_e10858_writel(unsigned long rate, void __iomem *reg, u32 val)
 +{
-+	struct net_device *ndev = NULL;
++	writel(val, reg);
 +
-+	if (rdma_protocol_roce(ib_dev, port)) {
-+		ndev = ib_device_get_netdev(ib_dev, port);
-+		if (!ndev)
-+			return;
-+		enum_all_gids_of_dev_cb(ib_dev, port, ndev, ndev);
-+		dev_put(ndev);
++	if (rate >= 24 * HZ_PER_MHZ || rate == 0) {
++		/*
++		 * The time taken to access the LPCG registers from the AP core
++		 * through the interconnect is longer than the minimum delay
++		 * of 4 clock cycles required by the errata.
++		 * Adding a readl will provide sufficient delay to prevent
++		 * back-to-back writes.
++		 */
++		readl(reg);
++	} else {
++		/*
++		 * For clocks running below 24MHz, wait a minimum of
++		 * 4 clock cycles.
++		 */
++		ndelay(4 * (DIV_ROUND_UP(1000 * HZ_PER_MHZ, rate)));
 +	}
 +}
-+EXPORT_SYMBOL(rdma_roce_rescan_port);
 +
- static void callback_for_addr_gid_device_scan(struct ib_device *device,
- 					      u32 port,
- 					      struct net_device *rdma_ndev,
-@@ -575,16 +596,17 @@ static void handle_netdev_upper(struct ib_device *ib_dev, u32 port,
- 	}
- }
- 
--static void _roce_del_all_netdev_gids(struct ib_device *ib_dev, u32 port,
--				      struct net_device *event_ndev)
-+void roce_del_all_netdev_gids(struct ib_device *ib_dev,
-+			      u32 port, struct net_device *ndev)
+ static int clk_lpcg_scu_enable(struct clk_hw *hw)
  {
--	ib_cache_gid_del_all_netdev_gids(ib_dev, port, event_ndev);
-+	ib_cache_gid_del_all_netdev_gids(ib_dev, port, ndev);
- }
-+EXPORT_SYMBOL(roce_del_all_netdev_gids);
+ 	struct clk_lpcg_scu *clk = to_clk_lpcg_scu(hw);
+@@ -57,7 +82,8 @@ static int clk_lpcg_scu_enable(struct clk_hw *hw)
+ 		val |= CLK_GATE_SCU_LPCG_HW_SEL;
  
- static void del_netdev_upper_ips(struct ib_device *ib_dev, u32 port,
- 				 struct net_device *rdma_ndev, void *cookie)
+ 	reg |= val << clk->bit_idx;
+-	writel(reg, clk->reg);
++
++	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
+ 
+ 	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
+ 
+@@ -74,7 +100,7 @@ static void clk_lpcg_scu_disable(struct clk_hw *hw)
+ 
+ 	reg = readl_relaxed(clk->reg);
+ 	reg &= ~(CLK_GATE_SCU_LPCG_MASK << clk->bit_idx);
+-	writel(reg, clk->reg);
++	lpcg_e10858_writel(clk_hw_get_rate(hw), clk->reg, reg);
+ 
+ 	spin_unlock_irqrestore(&imx_lpcg_scu_lock, flags);
+ }
+@@ -145,13 +171,8 @@ static int __maybe_unused imx_clk_lpcg_scu_resume(struct device *dev)
  {
--	handle_netdev_upper(ib_dev, port, cookie, _roce_del_all_netdev_gids);
-+	handle_netdev_upper(ib_dev, port, cookie, roce_del_all_netdev_gids);
- }
+ 	struct clk_lpcg_scu *clk = dev_get_drvdata(dev);
  
- static void add_netdev_upper_ips(struct ib_device *ib_dev, u32 port,
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index 9cb8b5fe7eee4..67551133b5228 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -4734,6 +4734,9 @@ ib_get_vector_affinity(struct ib_device *device, int comp_vector)
-  * @device:         the rdma device
-  */
- void rdma_roce_rescan_device(struct ib_device *ibdev);
-+void rdma_roce_rescan_port(struct ib_device *ib_dev, u32 port);
-+void roce_del_all_netdev_gids(struct ib_device *ib_dev,
-+			      u32 port, struct net_device *ndev);
+-	/*
+-	 * FIXME: Sometimes writes don't work unless the CPU issues
+-	 * them twice
+-	 */
+-
+-	writel(clk->state, clk->reg);
+ 	writel(clk->state, clk->reg);
++	lpcg_e10858_writel(0, clk->reg, clk->state);
+ 	dev_dbg(dev, "restore lpcg state 0x%x\n", clk->state);
  
- struct ib_ucontext *ib_uverbs_get_ucontext_file(struct ib_uverbs_file *ufile);
- 
+ 	return 0;
 -- 
 2.43.0
 
