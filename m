@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-96992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BDC9E25FB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7FC9E2596
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 142CFBA50F9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B614162963
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FBC1F76B7;
-	Tue,  3 Dec 2024 15:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B461F75AE;
+	Tue,  3 Dec 2024 15:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmFZdxUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2E/IoKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6549B1F7566;
-	Tue,  3 Dec 2024 15:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884FA1DE8A5;
+	Tue,  3 Dec 2024 15:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239206; cv=none; b=ZBYRWZVahXgtX8rN85haAI96KuhmAJPNm+LFTKOEupl1ejQjzQh4bWJa7anR9Umz3EM2iA+/sJCELLKN4Yc87+F9xg1vVtYAnu1+ca/ahb/xZQrdeVWsMjXs0r+Pm3zwgUvM4QH7TdklV/EMltqrheiLwozhBTUiWnwDOFEbImY=
+	t=1733241421; cv=none; b=edJlJ6XD4hvT55ciByRoSDvqFTYvUHIEYZGObP1rtM7tvhfNMNFqnL2UjShbR/iW7M3JiZrUSSVOEP2i8gQtY5ECmwFrcrVNRE9fA2u/LDVvkO/ihABbpx/v8i9JcI8JnL1yq6CBd/OGNn2zXFyuzb+6PUvYzL8NNRhNSo1T6jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239206; c=relaxed/simple;
-	bh=ytCMnM81aM0eHn3W9OueEmiS2Tr56KEZr8sp4vg5uzQ=;
+	s=arc-20240116; t=1733241421; c=relaxed/simple;
+	bh=H4FYbATxyIzIaG4z2Qq9+JnBHKDJv+XiA+6fjkIWe4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeVzV+01CVJFjWqzfUEIB7XeH8uqeGdGBOMtALcjTGiq43ALuHZiu70cmEaW+lgI9jTeMHZl0RL2rosRA5O11836fEUO8II+hMJGfkPoh9gMO7XArMwk/NJtiO0HtDTcyLaeq+HbKCQG6PwV1naw1kcvi5T+6Xu40Q1nA4KB3K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmFZdxUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7877EC4CECF;
-	Tue,  3 Dec 2024 15:20:05 +0000 (UTC)
+	 MIME-Version; b=ExwLzNh2StuAkj4cXtxXdBr/1sBw/SJ9FoFHj5XNteWTzJpv90QseEZJemGGukRyMWpIvNYR1hDNI35rJbFOPMdcgx9S3FQZNE5mHmfixY28Vz/q9Gd80YxdWerhN1uUuLed2e4vh18sq1XcmK0cjWrecLjRX5nlBiVtA2NxQh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2E/IoKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2B4C4CECF;
+	Tue,  3 Dec 2024 15:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239205;
-	bh=ytCMnM81aM0eHn3W9OueEmiS2Tr56KEZr8sp4vg5uzQ=;
+	s=korg; t=1733241421;
+	bh=H4FYbATxyIzIaG4z2Qq9+JnBHKDJv+XiA+6fjkIWe4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SmFZdxUfc3LENEG+SuuJksCClIhoo2ovwI9GOGmQBqDFbqg5neosk3V66FGfX7Xeo
-	 4QvPmYwuib/lHKECTj8kcYAbXh4J84rQNgEqFTTOQmty0ttq7nx+uloMFOqq66Fea2
-	 qBED27r4pOQPWnzURObj6q4hIfsTLpaUyrY/F9ZU=
+	b=e2E/IoKo0PqVHK+A/amH/AKxj26Kw3djxHs1Xs8EaV7mxVpq7loMws8GkyiFLhRvN
+	 bIUdRRtFfIEZZZGJw0GraCkYEYOFKkgxydaV0cTIdzZbueQ90Sr5eTB6JIcQM6EGsf
+	 OA1ckGV/mu9c0KY6PhF/YkXr0O1hTtbnTL8CIv4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 535/817] remoteproc: qcom: adsp: Remove subdevs on the error path of adsp_probe()
-Date: Tue,  3 Dec 2024 15:41:47 +0100
-Message-ID: <20241203144016.783299532@linuxfoundation.org>
+Subject: [PATCH 6.12 381/826] clk: Allow kunit tests to run without OF_OVERLAY enabled
+Date: Tue,  3 Dec 2024 15:41:48 +0100
+Message-ID: <20241203144758.628744574@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Stephen Boyd <sboyd@kernel.org>
 
-[ Upstream commit fe80d3205e91e36e67f4d3d6c326793298d15766 ]
+[ Upstream commit 94e6fdd028a12ff2abe7d915f8b6bbdb923cc04d ]
 
-Current implementation of adsp_probe() in qcom_q6v5_adsp.c and does not
-remove the subdevs of adsp on the error path. Fix this bug by calling
-qcom_remove_{ssr,sysmon,pdm,smd,glink}_subdev(), and qcom_q6v5_deinit()
-appropriately.
+Some configurations want to enable CONFIG_KUNIT without enabling
+CONFIG_OF_OVERLAY. The kunit overlay code already skips if
+CONFIG_OF_OVERLAY isn't enabled, so these selects here aren't really
+doing anything besides making it easier to run the tests without them
+skipping. Remove the select and move the config setting to the
+drivers/clk/.kunitconfig file so that the clk tests can be run with or
+without CONFIG_OF_OVERLAY set to test either behavior.
 
-Fixes: dc160e449122 ("remoteproc: qcom: Introduce Non-PAS ADSP PIL driver")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Link: https://lore.kernel.org/r/fed3df4219543d46b88bacf87990d947f3fac8d7.1731038950.git.joe@pf.is.s.u-tokyo.ac.jp
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5776526beb95 ("clk: Add KUnit tests for clk fixed rate basic type")
+Fixes: 274aff8711b2 ("clk: Add KUnit tests for clks registered with struct clk_parent_data")
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20241016212738.897691-1-sboyd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_adsp.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/clk/.kunitconfig | 1 +
+ drivers/clk/Kconfig      | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_adsp.c b/drivers/remoteproc/qcom_q6v5_adsp.c
-index 572dcb0f055b7..223f6ca0745d3 100644
---- a/drivers/remoteproc/qcom_q6v5_adsp.c
-+++ b/drivers/remoteproc/qcom_q6v5_adsp.c
-@@ -734,15 +734,22 @@ static int adsp_probe(struct platform_device *pdev)
- 					      desc->ssctl_id);
- 	if (IS_ERR(adsp->sysmon)) {
- 		ret = PTR_ERR(adsp->sysmon);
--		goto disable_pm;
-+		goto deinit_remove_glink_pdm_ssr;
- 	}
- 
- 	ret = rproc_add(rproc);
- 	if (ret)
--		goto disable_pm;
-+		goto remove_sysmon;
- 
- 	return 0;
- 
-+remove_sysmon:
-+	qcom_remove_sysmon_subdev(adsp->sysmon);
-+deinit_remove_glink_pdm_ssr:
-+	qcom_q6v5_deinit(&adsp->q6v5);
-+	qcom_remove_glink_subdev(rproc, &adsp->glink_subdev);
-+	qcom_remove_pdm_subdev(rproc, &adsp->pdm_subdev);
-+	qcom_remove_ssr_subdev(rproc, &adsp->ssr_subdev);
- disable_pm:
- 	qcom_rproc_pds_detach(adsp);
- 
+diff --git a/drivers/clk/.kunitconfig b/drivers/clk/.kunitconfig
+index 54ece92070552..08e26137f3d9c 100644
+--- a/drivers/clk/.kunitconfig
++++ b/drivers/clk/.kunitconfig
+@@ -1,5 +1,6 @@
+ CONFIG_KUNIT=y
+ CONFIG_OF=y
++CONFIG_OF_OVERLAY=y
+ CONFIG_COMMON_CLK=y
+ CONFIG_CLK_KUNIT_TEST=y
+ CONFIG_CLK_FIXED_RATE_KUNIT_TEST=y
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 299bc678ed1b9..0fe07a594b4e1 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -517,7 +517,6 @@ config CLK_KUNIT_TEST
+ 	tristate "Basic Clock Framework Kunit Tests" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+ 	default KUNIT_ALL_TESTS
+-	select OF_OVERLAY if OF
+ 	select DTC
+ 	help
+ 	  Kunit tests for the common clock framework.
+@@ -526,7 +525,6 @@ config CLK_FIXED_RATE_KUNIT_TEST
+ 	tristate "Basic fixed rate clk type KUnit test" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+ 	default KUNIT_ALL_TESTS
+-	select OF_OVERLAY if OF
+ 	select DTC
+ 	help
+ 	  KUnit tests for the basic fixed rate clk type.
 -- 
 2.43.0
 
