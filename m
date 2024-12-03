@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95EED9E24C1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF1ED9E21E6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DB0C166056
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908EE16BB4C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D791DF981;
-	Tue,  3 Dec 2024 15:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEAD1FC7E4;
+	Tue,  3 Dec 2024 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YF1vgC/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swisdcfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052702500B8;
-	Tue,  3 Dec 2024 15:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6981F891C;
+	Tue,  3 Dec 2024 15:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240710; cv=none; b=F9nhqCIMKyH7ZJxdMFcAzSAYFqsvr06gmKWwn25FVpZkDOmm7Ak0aAdso9JqIo/Geo/ig+IDQC2SwJNGbOBrcIIjDualv3cBdtj7BInJWU8uOspg/uxv7A47O8Un7DGHXvEroGYIlz/NN11OKyHAXiIdsEXizUcsDd0W2S+BYws=
+	t=1733238707; cv=none; b=uDud1gP2wZ9bj+FHwleztQjn3azpXHKEBFFVSoqksdqoNLjpVc0xIwPFq9u0lzJWRTeJk+wiOvjv3bbrEcRsa8asNdXj/FVupMHe+IJ0Rw/PszNfGGdF6fJwc+MNg6jJlHk1BQFdT9bk1BvfNMPnQZXDe1j2mX01hXIG43io4oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240710; c=relaxed/simple;
-	bh=blz9RiiFqwRCqdwSra6G21ac7jZRz39HoDp9q9inDCM=;
+	s=arc-20240116; t=1733238707; c=relaxed/simple;
+	bh=gP8F0LARCHC3uTsUfMP9j55oO/HcdU0OtS0khg/57OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAyOwOaK/b17kEv8Kh3x7kQXBGiZ9Zgl8gwiuljZB9NpeQspsKCtk3M7AZHb5yANVqxdhSycIVl8LX6Q8Db0muV90sYV4P+jm17BVs9l/COMiwnCnCwMXR+SbR4KM8XOiHIdR/V4VuU2VJ3szbAxMcyQVsAxqpMA1UIBQQTa9AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YF1vgC/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14078C4CECF;
-	Tue,  3 Dec 2024 15:45:08 +0000 (UTC)
+	 MIME-Version; b=pAU2+vunwPXsEFAQfRolFWaMhiT9uLSgoSZ4eEPuCHGXXDT2iOr3BhsqAYLsX5E2vNcvs8leiegF6jVfSYLHrjCa6W/aNlBnw4b+r7wQy37KpKyGhGiUq+5//TNDR2cNWgE+alKdPYdW+JuBrW8T4LcFckBoS53sIvKHawc4e8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swisdcfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7B4C4CECF;
+	Tue,  3 Dec 2024 15:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240709;
-	bh=blz9RiiFqwRCqdwSra6G21ac7jZRz39HoDp9q9inDCM=;
+	s=korg; t=1733238707;
+	bh=gP8F0LARCHC3uTsUfMP9j55oO/HcdU0OtS0khg/57OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YF1vgC/h2hdlO1i2TUlH+dsJgEfx2kQP2B7/JadX51mxmqe4jOkIkN5c6Ljpqg+IW
-	 J5IDc0/81GIKsriqf5bFCQVvnZzyMAU/5U3q83ASJZNkp8hpq8WwISMIj1UMOjPPul
-	 idI8SOC+4cUBgmE3C5t0HNgIgUOoB2WvDep0dyLM=
+	b=swisdcfC1hAGQF8CCaXa4xL/jAnL8PU0yPj0sXjBtuI1PDXxYVdKfZ1BExIC6J99y
+	 sxJkocxG6+ihUHtTwig6ABdPQr4Egl+YV7r5/z7yBWHhz7ntuLxIgGG7eW/gLTlzK8
+	 v0FsGpbw30fS1cPa/HOej/M22oOK77br4fKkaHzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxin Yu <jiaxin.yu@mediatek.com>,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 214/826] ASoC: dt-bindings: mt6359: Update generic node name and dmic-mode
+Subject: [PATCH 6.11 369/817] net: txgbe: remove GPIO interrupt controller
 Date: Tue,  3 Dec 2024 15:39:01 +0100
-Message-ID: <20241203144752.091864378@linuxfoundation.org>
+Message-ID: <20241203144010.245486288@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,345 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Macpaul Lin <macpaul.lin@mediatek.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 4649cbd97fdae5069e9a71cd7669b62b90e03669 ]
+[ Upstream commit e867ed3ac8aa50945170723a450b5c068a56339a ]
 
-Some fix and updates in the following items:
-1. examples:
-   Update generic node name to 'audio-codec' to comply with the
-   coming change in 'mt6359.dtsi'. This change is necessary to fix the
-   dtbs_check error:
-   pmic: 'mt6359codec' does not match any of the regexes: 'pinctrl-[0-9]+'
+Since the GPIO interrupt controller is always not working properly, we need
+to constantly add workaround to cope with hardware deficiencies. So just
+remove GPIO interrupt controller, and let the SFP driver poll the GPIO
+status.
 
-2. mediatek,dmic-mode:
-   After inspecting the .dts and .dtsi files using 'mt6359-codec', it was
-   discovered that the definitions of 'two wires' and 'one wire' are
-   inverted compared to the DT schema.
-   For example, the following boards using MT6359 PMIC:
-    - mt8192-asurada.dtsi
-    - mt8195-cherry.dtsi
-   These boards use the same definitions of 'dmic-mode' as other boards
-   using MT6358 PMIC. The meaning of '0' or '1' has been noted as comments
-   in the device trees.
-
-   Upon examining the code in [1] and [2], it was confirmed that the
-   definitions of 'dmic-mode' are consistent between "MT6359 PMIC" and
-   "MT6358 PMIC". Therefore, the DT Schema should be correct as is.
-
-References:
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/mt6358.c#n1875
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/sound/soc/codecs/mt6359.c#L1515
-
-Fixes: 539237d1c609 ("dt-bindings: mediatek: mt6359: add codec document")
-Signed-off-by: Jiaxin Yu <jiaxin.yu@mediatek.com>
-Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20240930075451.14196-1-macpaul.lin@mediatek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b4a2496c17ed ("net: txgbe: fix GPIO interrupt blocking")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20241115071527.1129458-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/sound/mt6359.yaml | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../net/ethernet/wangxun/txgbe/txgbe_irq.c    |  24 +--
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |   1 -
+ .../net/ethernet/wangxun/txgbe/txgbe_phy.c    | 166 ------------------
+ .../net/ethernet/wangxun/txgbe/txgbe_phy.h    |   2 -
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   7 +-
+ 5 files changed, 4 insertions(+), 196 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/mt6359.yaml b/Documentation/devicetree/bindings/sound/mt6359.yaml
-index 23d411fc4200e..128698630c865 100644
---- a/Documentation/devicetree/bindings/sound/mt6359.yaml
-+++ b/Documentation/devicetree/bindings/sound/mt6359.yaml
-@@ -23,8 +23,8 @@ properties:
-       Indicates how many data pins are used to transmit two channels of PDM
-       signal. 0 means two wires, 1 means one wire. Default value is 0.
-     enum:
--      - 0 # one wire
--      - 1 # two wires
-+      - 0 # two wires
-+      - 1 # one wire
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+index a4cf682dca650..0ee73a265545c 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_irq.c
+@@ -72,14 +72,6 @@ int txgbe_request_queue_irqs(struct wx *wx)
+ 	return err;
+ }
  
-   mediatek,mic-type-0:
-     $ref: /schemas/types.yaml#/definitions/uint32
-@@ -53,9 +53,9 @@ additionalProperties: false
+-static int txgbe_request_gpio_irq(struct txgbe *txgbe)
+-{
+-	txgbe->gpio_irq = irq_find_mapping(txgbe->misc.domain, TXGBE_IRQ_GPIO);
+-	return request_threaded_irq(txgbe->gpio_irq, NULL,
+-				    txgbe_gpio_irq_handler,
+-				    IRQF_ONESHOT, "txgbe-gpio-irq", txgbe);
+-}
+-
+ static int txgbe_request_link_irq(struct txgbe *txgbe)
+ {
+ 	txgbe->link_irq = irq_find_mapping(txgbe->misc.domain, TXGBE_IRQ_LINK);
+@@ -149,11 +141,6 @@ static irqreturn_t txgbe_misc_irq_thread_fn(int irq, void *data)
+ 	u32 eicr;
  
- examples:
-   - |
--    mt6359codec: mt6359codec {
--      mediatek,dmic-mode = <0>;
--      mediatek,mic-type-0 = <2>;
-+    mt6359codec: audio-codec {
-+        mediatek,dmic-mode = <0>;
-+        mediatek,mic-type-0 = <2>;
-     };
+ 	eicr = wx_misc_isb(wx, WX_ISB_MISC);
+-	if (eicr & TXGBE_PX_MISC_GPIO) {
+-		sub_irq = irq_find_mapping(txgbe->misc.domain, TXGBE_IRQ_GPIO);
+-		handle_nested_irq(sub_irq);
+-		nhandled++;
+-	}
+ 	if (eicr & (TXGBE_PX_MISC_ETH_LK | TXGBE_PX_MISC_ETH_LKDN |
+ 		    TXGBE_PX_MISC_ETH_AN)) {
+ 		sub_irq = irq_find_mapping(txgbe->misc.domain, TXGBE_IRQ_LINK);
+@@ -179,7 +166,6 @@ static void txgbe_del_irq_domain(struct txgbe *txgbe)
  
- ...
+ void txgbe_free_misc_irq(struct txgbe *txgbe)
+ {
+-	free_irq(txgbe->gpio_irq, txgbe);
+ 	free_irq(txgbe->link_irq, txgbe);
+ 	free_irq(txgbe->misc.irq, txgbe);
+ 	txgbe_del_irq_domain(txgbe);
+@@ -191,7 +177,7 @@ int txgbe_setup_misc_irq(struct txgbe *txgbe)
+ 	struct wx *wx = txgbe->wx;
+ 	int hwirq, err;
+ 
+-	txgbe->misc.nirqs = 2;
++	txgbe->misc.nirqs = 1;
+ 	txgbe->misc.domain = irq_domain_add_simple(NULL, txgbe->misc.nirqs, 0,
+ 						   &txgbe_misc_irq_domain_ops, txgbe);
+ 	if (!txgbe->misc.domain)
+@@ -216,20 +202,14 @@ int txgbe_setup_misc_irq(struct txgbe *txgbe)
+ 	if (err)
+ 		goto del_misc_irq;
+ 
+-	err = txgbe_request_gpio_irq(txgbe);
+-	if (err)
+-		goto free_msic_irq;
+-
+ 	err = txgbe_request_link_irq(txgbe);
+ 	if (err)
+-		goto free_gpio_irq;
++		goto free_msic_irq;
+ 
+ 	wx->misc_irq_domain = true;
+ 
+ 	return 0;
+ 
+-free_gpio_irq:
+-	free_irq(txgbe->gpio_irq, txgbe);
+ free_msic_irq:
+ 	free_irq(txgbe->misc.irq, txgbe);
+ del_misc_irq:
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 93180225a6f14..f774502680364 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -82,7 +82,6 @@ static void txgbe_up_complete(struct wx *wx)
+ {
+ 	struct net_device *netdev = wx->netdev;
+ 
+-	txgbe_reinit_gpio_intr(wx);
+ 	wx_control_hw(wx, true);
+ 	wx_configure_vectors(wx);
+ 
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index 5f502265f0a63..119cbd3466011 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -358,169 +358,8 @@ static int txgbe_gpio_direction_out(struct gpio_chip *chip, unsigned int offset,
+ 	return 0;
+ }
+ 
+-static void txgbe_gpio_irq_ack(struct irq_data *d)
+-{
+-	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+-	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+-	struct wx *wx = gpiochip_get_data(gc);
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&wx->gpio_lock, flags);
+-	wr32(wx, WX_GPIO_EOI, BIT(hwirq));
+-	raw_spin_unlock_irqrestore(&wx->gpio_lock, flags);
+-}
+-
+-static void txgbe_gpio_irq_mask(struct irq_data *d)
+-{
+-	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+-	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+-	struct wx *wx = gpiochip_get_data(gc);
+-	unsigned long flags;
+-
+-	gpiochip_disable_irq(gc, hwirq);
+-
+-	raw_spin_lock_irqsave(&wx->gpio_lock, flags);
+-	wr32m(wx, WX_GPIO_INTMASK, BIT(hwirq), BIT(hwirq));
+-	raw_spin_unlock_irqrestore(&wx->gpio_lock, flags);
+-}
+-
+-static void txgbe_gpio_irq_unmask(struct irq_data *d)
+-{
+-	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+-	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+-	struct wx *wx = gpiochip_get_data(gc);
+-	unsigned long flags;
+-
+-	gpiochip_enable_irq(gc, hwirq);
+-
+-	raw_spin_lock_irqsave(&wx->gpio_lock, flags);
+-	wr32m(wx, WX_GPIO_INTMASK, BIT(hwirq), 0);
+-	raw_spin_unlock_irqrestore(&wx->gpio_lock, flags);
+-}
+-
+-static void txgbe_toggle_trigger(struct gpio_chip *gc, unsigned int offset)
+-{
+-	struct wx *wx = gpiochip_get_data(gc);
+-	u32 pol, val;
+-
+-	pol = rd32(wx, WX_GPIO_POLARITY);
+-	val = rd32(wx, WX_GPIO_EXT);
+-
+-	if (val & BIT(offset))
+-		pol &= ~BIT(offset);
+-	else
+-		pol |= BIT(offset);
+-
+-	wr32(wx, WX_GPIO_POLARITY, pol);
+-}
+-
+-static int txgbe_gpio_set_type(struct irq_data *d, unsigned int type)
+-{
+-	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+-	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+-	struct wx *wx = gpiochip_get_data(gc);
+-	u32 level, polarity, mask;
+-	unsigned long flags;
+-
+-	mask = BIT(hwirq);
+-
+-	if (type & IRQ_TYPE_LEVEL_MASK) {
+-		level = 0;
+-		irq_set_handler_locked(d, handle_level_irq);
+-	} else {
+-		level = mask;
+-		irq_set_handler_locked(d, handle_edge_irq);
+-	}
+-
+-	if (type == IRQ_TYPE_EDGE_RISING || type == IRQ_TYPE_LEVEL_HIGH)
+-		polarity = mask;
+-	else
+-		polarity = 0;
+-
+-	raw_spin_lock_irqsave(&wx->gpio_lock, flags);
+-
+-	wr32m(wx, WX_GPIO_INTEN, mask, mask);
+-	wr32m(wx, WX_GPIO_INTTYPE_LEVEL, mask, level);
+-	if (type == IRQ_TYPE_EDGE_BOTH)
+-		txgbe_toggle_trigger(gc, hwirq);
+-	else
+-		wr32m(wx, WX_GPIO_POLARITY, mask, polarity);
+-
+-	raw_spin_unlock_irqrestore(&wx->gpio_lock, flags);
+-
+-	return 0;
+-}
+-
+-static const struct irq_chip txgbe_gpio_irq_chip = {
+-	.name = "txgbe-gpio-irq",
+-	.irq_ack = txgbe_gpio_irq_ack,
+-	.irq_mask = txgbe_gpio_irq_mask,
+-	.irq_unmask = txgbe_gpio_irq_unmask,
+-	.irq_set_type = txgbe_gpio_set_type,
+-	.flags = IRQCHIP_IMMUTABLE,
+-	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+-};
+-
+-irqreturn_t txgbe_gpio_irq_handler(int irq, void *data)
+-{
+-	struct txgbe *txgbe = data;
+-	struct wx *wx = txgbe->wx;
+-	irq_hw_number_t hwirq;
+-	unsigned long gpioirq;
+-	struct gpio_chip *gc;
+-	unsigned long flags;
+-
+-	gpioirq = rd32(wx, WX_GPIO_INTSTATUS);
+-
+-	gc = txgbe->gpio;
+-	for_each_set_bit(hwirq, &gpioirq, gc->ngpio) {
+-		int gpio = irq_find_mapping(gc->irq.domain, hwirq);
+-		struct irq_data *d = irq_get_irq_data(gpio);
+-		u32 irq_type = irq_get_trigger_type(gpio);
+-
+-		txgbe_gpio_irq_ack(d);
+-		handle_nested_irq(gpio);
+-
+-		if ((irq_type & IRQ_TYPE_SENSE_MASK) == IRQ_TYPE_EDGE_BOTH) {
+-			raw_spin_lock_irqsave(&wx->gpio_lock, flags);
+-			txgbe_toggle_trigger(gc, hwirq);
+-			raw_spin_unlock_irqrestore(&wx->gpio_lock, flags);
+-		}
+-	}
+-
+-	return IRQ_HANDLED;
+-}
+-
+-void txgbe_reinit_gpio_intr(struct wx *wx)
+-{
+-	struct txgbe *txgbe = wx->priv;
+-	irq_hw_number_t hwirq;
+-	unsigned long gpioirq;
+-	struct gpio_chip *gc;
+-	unsigned long flags;
+-
+-	/* for gpio interrupt pending before irq enable */
+-	gpioirq = rd32(wx, WX_GPIO_INTSTATUS);
+-
+-	gc = txgbe->gpio;
+-	for_each_set_bit(hwirq, &gpioirq, gc->ngpio) {
+-		int gpio = irq_find_mapping(gc->irq.domain, hwirq);
+-		struct irq_data *d = irq_get_irq_data(gpio);
+-		u32 irq_type = irq_get_trigger_type(gpio);
+-
+-		txgbe_gpio_irq_ack(d);
+-
+-		if ((irq_type & IRQ_TYPE_SENSE_MASK) == IRQ_TYPE_EDGE_BOTH) {
+-			raw_spin_lock_irqsave(&wx->gpio_lock, flags);
+-			txgbe_toggle_trigger(gc, hwirq);
+-			raw_spin_unlock_irqrestore(&wx->gpio_lock, flags);
+-		}
+-	}
+-}
+-
+ static int txgbe_gpio_init(struct txgbe *txgbe)
+ {
+-	struct gpio_irq_chip *girq;
+ 	struct gpio_chip *gc;
+ 	struct device *dev;
+ 	struct wx *wx;
+@@ -550,11 +389,6 @@ static int txgbe_gpio_init(struct txgbe *txgbe)
+ 	gc->direction_input = txgbe_gpio_direction_in;
+ 	gc->direction_output = txgbe_gpio_direction_out;
+ 
+-	girq = &gc->irq;
+-	gpio_irq_chip_set_chip(girq, &txgbe_gpio_irq_chip);
+-	girq->default_type = IRQ_TYPE_NONE;
+-	girq->handler = handle_bad_irq;
+-
+ 	ret = devm_gpiochip_add_data(dev, gc, wx);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h
+index 8a026d804fe24..3938985355ed6 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.h
+@@ -4,8 +4,6 @@
+ #ifndef _TXGBE_PHY_H_
+ #define _TXGBE_PHY_H_
+ 
+-irqreturn_t txgbe_gpio_irq_handler(int irq, void *data);
+-void txgbe_reinit_gpio_intr(struct wx *wx);
+ irqreturn_t txgbe_link_irq_handler(int irq, void *data);
+ int txgbe_init_phy(struct txgbe *txgbe);
+ void txgbe_remove_phy(struct txgbe *txgbe);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 959102c4c3797..8ea413a7abe9d 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -75,8 +75,7 @@
+ #define TXGBE_PX_MISC_IEN_MASK                            \
+ 	(TXGBE_PX_MISC_ETH_LKDN | TXGBE_PX_MISC_DEV_RST | \
+ 	 TXGBE_PX_MISC_ETH_EVENT | TXGBE_PX_MISC_ETH_LK | \
+-	 TXGBE_PX_MISC_ETH_AN | TXGBE_PX_MISC_INT_ERR |   \
+-	 TXGBE_PX_MISC_GPIO)
++	 TXGBE_PX_MISC_ETH_AN | TXGBE_PX_MISC_INT_ERR)
+ 
+ /* Port cfg registers */
+ #define TXGBE_CFG_PORT_ST                       0x14404
+@@ -313,8 +312,7 @@ struct txgbe_nodes {
+ };
+ 
+ enum txgbe_misc_irqs {
+-	TXGBE_IRQ_GPIO = 0,
+-	TXGBE_IRQ_LINK,
++	TXGBE_IRQ_LINK = 0,
+ 	TXGBE_IRQ_MAX
+ };
+ 
+@@ -335,7 +333,6 @@ struct txgbe {
+ 	struct clk_lookup *clock;
+ 	struct clk *clk;
+ 	struct gpio_chip *gpio;
+-	unsigned int gpio_irq;
+ 	unsigned int link_irq;
+ 
+ 	/* flow director */
 -- 
 2.43.0
 
