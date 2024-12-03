@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C149E25F9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4721E9E2843
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:55:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1E9164CC4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A2F7B3935B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E081F759C;
-	Tue,  3 Dec 2024 16:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0FC1F7540;
+	Tue,  3 Dec 2024 15:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4yw5vH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8TPcF+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F4223CE;
-	Tue,  3 Dec 2024 16:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF011F473A;
+	Tue,  3 Dec 2024 15:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241684; cv=none; b=ZLEWGpZpm3ojTo595KPyTgSoERGrSCzg56aZ5czG2M7fjOTUzJVuslXs9JLkZC/pRs34JiU3Sx4rjJXGLWQ5BnyQVhlQ9GFe02bM7JcyCRx3hHZBSzLbQYBPJ4fF7PrkFancjWDPTP2c7hy0yuvUs0oR4wtlD2fKYvrWOPVOlUE=
+	t=1733239608; cv=none; b=XGLuzIdtfeepkligtopfSuVyE6OzeMHMAm+q7FqgMFdUSZ5dtM37QTvdJrqrlyLHgf0bYik4ZrZdiLferqpIEIygLzRD8qbK4GyhR3K8iuMuaBbdVInvm3U3PsjIHy/w7/IoKTOsuomuqB2wkgMeH2SjEEnYrgM192Ae7ZhuwyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241684; c=relaxed/simple;
-	bh=ob1TD0dRfB1ZyHqnmV615dqdwClBeFlk9zBTTV8w/uE=;
+	s=arc-20240116; t=1733239608; c=relaxed/simple;
+	bh=tND0Z5nxZk4GPzN0NINDBHsPKblSNIiEM7JGZX5p7h8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmdK8VA08O3PRf+yGdXUpd5O/aLpFeHd0/rNJgJeseDMSnnfcDvGKsrC+Ab0RLGu7tzyMD8u6QYu3RrjBwHSoVuu3ekENvQW2J5VdI1v4guIzhXVvSTX8swe1DjErwlRTXqw3spdkTmfHTlKtr2wlp8Is7UjwaU6AVJ6zN7bD7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4yw5vH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A22C4CECF;
-	Tue,  3 Dec 2024 16:01:23 +0000 (UTC)
+	 MIME-Version; b=AnA+c9TFOzwG2fpGpB1fEVyCn2uVl4eL5DX6thyynLdHBqV2i5kWcbNQFv/JmJVLOAUp/GTadifvyhBRpexrQ1N5DuqMsmPZ+v5eVm4lO8Xw9+jCNqADW7z9q8Zvk2jrVLLiEoIWguIrhQfgzrCsZk0erVTReXBC2SUHLsF4P0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8TPcF+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A9AC4CECF;
+	Tue,  3 Dec 2024 15:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241683;
-	bh=ob1TD0dRfB1ZyHqnmV615dqdwClBeFlk9zBTTV8w/uE=;
+	s=korg; t=1733239608;
+	bh=tND0Z5nxZk4GPzN0NINDBHsPKblSNIiEM7JGZX5p7h8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4yw5vH10nCV2H6guXVOx6rmySJjYkd5pLHJ430g6AccEeEzdISyEieTZOJuhKQRw
-	 zZmDozWQPN4TAfAz56faQVpBVTr6kAmkIJ97zTf6fV7z5fdeSFEWgMJn2+Y4tv+F2c
-	 g5GFI9NOttIH0j+AcWbjOg0SyYOPvKaCH5kD2RAY=
+	b=c8TPcF+wVrS6gNcklNt6aYJPGzHfTYjghQ0L/5yjV1iuKMiJ5EkTbh3M3wZDk5YVE
+	 TRtPBaJoZ542Sz/i7UGeSGj3TSv3wuJLjBMen59tLObRol0YUazKX1x88P9IRBS2kN
+	 dS+yl22uBOYMubfI4Ycg3XFXJCQgPb0Lwlr668Oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 489/826] rust: macros: fix documentation of the paste! macro
-Date: Tue,  3 Dec 2024 15:43:36 +0100
-Message-ID: <20241203144802.832437468@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Luca Boccassi <bluca@debian.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.11 645/817] KVM: x86: switch hugepage recovery thread to vhost_task
+Date: Tue,  3 Dec 2024 15:43:37 +0100
+Message-ID: <20241203144021.133588029@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,339 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-[ Upstream commit 15541c9263ce34ff95a06bc68f45d9bc5c990bcd ]
+commit d96c77bd4eeba469bddbbb14323d2191684da82a upstream.
 
-One of the example in this section uses a curious mix of the constant
-and function declaration syntaxes; fix it.
+kvm_vm_create_worker_thread() is meant to be used for kthreads that
+can consume significant amounts of CPU time on behalf of a VM or in
+response to how the VM behaves (for example how it accesses its memory).
+Therefore it wants to charge the CPU time consumed by that work to
+the VM's container.
 
+However, because of these threads, cgroups which have kvm instances
+inside never complete freezing.  This can be trivially reproduced:
+
+  root@test ~# mkdir /sys/fs/cgroup/test
+  root@test ~# echo $$ > /sys/fs/cgroup/test/cgroup.procs
+  root@test ~# qemu-system-x86_64 -nographic -enable-kvm
+
+and in another terminal:
+
+  root@test ~# echo 1 > /sys/fs/cgroup/test/cgroup.freeze
+  root@test ~# cat /sys/fs/cgroup/test/cgroup.events
+  populated 1
+  frozen 0
+
+The cgroup freezing happens in the signal delivery path but
+kvm_nx_huge_page_recovery_worker, while joining non-root cgroups, never
+calls into the signal delivery path and thus never gets frozen. Because
+the cgroup freezer determines whether a given cgroup is frozen by
+comparing the number of frozen threads to the total number of threads
+in the cgroup, the cgroup never becomes frozen and users waiting for
+the state transition may hang indefinitely.
+
+Since the worker kthread is tied to a user process, it's better if
+it behaves similarly to user tasks as much as possible, including
+being able to send SIGSTOP and SIGCONT.  In fact, vhost_task is all
+that kvm_vm_create_worker_thread() wanted to be and more: not only it
+inherits the userspace process's cgroups, it has other niceties like
+being parented properly in the process tree.  Use it instead of the
+homegrown alternative.
+
+Incidentally, the new code is also better behaved when you flip recovery
+back and forth to disabled and back to enabled.  If your recovery period
+is 1 minute, it will run the next recovery after 1 minute independent
+of how many times you flipped the parameter.
+
+(Commit message based on emails from Tejun).
+
+Reported-by: Tejun Heo <tj@kernel.org>
+Reported-by: Luca Boccassi <bluca@debian.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Tested-by: Luca Boccassi <bluca@debian.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Fixes: 823d4737d4c2 ("rust: macros: add `paste!` proc macro")
-Link: https://lore.kernel.org/r/20241019072208.1016707-1-pbonzini@redhat.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/macros/lib.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/kvm_host.h |    4 +
+ arch/x86/kvm/Kconfig            |    1 
+ arch/x86/kvm/mmu/mmu.c          |   68 ++++++++++++--------------
+ include/linux/kvm_host.h        |    6 --
+ virt/kvm/kvm_main.c             |  103 ----------------------------------------
+ 5 files changed, 35 insertions(+), 147 deletions(-)
 
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index a626b1145e5c4..90e2202ba4d5a 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -359,7 +359,7 @@ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
- /// macro_rules! pub_no_prefix {
- ///     ($prefix:ident, $($newname:ident),+) => {
- ///         kernel::macros::paste! {
--///             $(pub(crate) const fn [<$newname:lower:span>]: u32 = [<$prefix $newname:span>];)+
-+///             $(pub(crate) const fn [<$newname:lower:span>]() -> u32 { [<$prefix $newname:span>] })+
- ///         }
- ///     };
- /// }
--- 
-2.43.0
-
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -26,6 +26,7 @@
+ #include <linux/irqbypass.h>
+ #include <linux/hyperv.h>
+ #include <linux/kfifo.h>
++#include <linux/sched/vhost_task.h>
+ 
+ #include <asm/apic.h>
+ #include <asm/pvclock-abi.h>
+@@ -1445,7 +1446,8 @@ struct kvm_arch {
+ 	bool sgx_provisioning_allowed;
+ 
+ 	struct kvm_x86_pmu_event_filter __rcu *pmu_event_filter;
+-	struct task_struct *nx_huge_page_recovery_thread;
++	struct vhost_task *nx_huge_page_recovery_thread;
++	u64 nx_huge_page_last;
+ 
+ #ifdef CONFIG_X86_64
+ 	/* The number of TDP MMU pages across all roots. */
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -29,6 +29,7 @@ config KVM
+ 	select HAVE_KVM_IRQ_BYPASS
+ 	select HAVE_KVM_IRQ_ROUTING
+ 	select HAVE_KVM_READONLY_MEM
++	select VHOST_TASK
+ 	select KVM_ASYNC_PF
+ 	select USER_RETURN_NOTIFIER
+ 	select KVM_MMIO
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7160,7 +7160,7 @@ static int set_nx_huge_pages(const char
+ 			kvm_mmu_zap_all_fast(kvm);
+ 			mutex_unlock(&kvm->slots_lock);
+ 
+-			wake_up_process(kvm->arch.nx_huge_page_recovery_thread);
++			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
+ 		}
+ 		mutex_unlock(&kvm_lock);
+ 	}
+@@ -7306,7 +7306,7 @@ static int set_nx_huge_pages_recovery_pa
+ 		mutex_lock(&kvm_lock);
+ 
+ 		list_for_each_entry(kvm, &vm_list, vm_list)
+-			wake_up_process(kvm->arch.nx_huge_page_recovery_thread);
++			vhost_task_wake(kvm->arch.nx_huge_page_recovery_thread);
+ 
+ 		mutex_unlock(&kvm_lock);
+ 	}
+@@ -7409,62 +7409,56 @@ static void kvm_recover_nx_huge_pages(st
+ 	srcu_read_unlock(&kvm->srcu, rcu_idx);
+ }
+ 
+-static long get_nx_huge_page_recovery_timeout(u64 start_time)
++static void kvm_nx_huge_page_recovery_worker_kill(void *data)
+ {
+-	bool enabled;
+-	uint period;
+-
+-	enabled = calc_nx_huge_pages_recovery_period(&period);
+-
+-	return enabled ? start_time + msecs_to_jiffies(period) - get_jiffies_64()
+-		       : MAX_SCHEDULE_TIMEOUT;
+ }
+ 
+-static int kvm_nx_huge_page_recovery_worker(struct kvm *kvm, uintptr_t data)
++static bool kvm_nx_huge_page_recovery_worker(void *data)
+ {
+-	u64 start_time;
++	struct kvm *kvm = data;
++	bool enabled;
++	uint period;
+ 	long remaining_time;
+ 
+-	while (true) {
+-		start_time = get_jiffies_64();
+-		remaining_time = get_nx_huge_page_recovery_timeout(start_time);
+-
+-		set_current_state(TASK_INTERRUPTIBLE);
+-		while (!kthread_should_stop() && remaining_time > 0) {
+-			schedule_timeout(remaining_time);
+-			remaining_time = get_nx_huge_page_recovery_timeout(start_time);
+-			set_current_state(TASK_INTERRUPTIBLE);
+-		}
+-
+-		set_current_state(TASK_RUNNING);
+-
+-		if (kthread_should_stop())
+-			return 0;
++	enabled = calc_nx_huge_pages_recovery_period(&period);
++	if (!enabled)
++		return false;
+ 
+-		kvm_recover_nx_huge_pages(kvm);
++	remaining_time = kvm->arch.nx_huge_page_last + msecs_to_jiffies(period)
++		- get_jiffies_64();
++	if (remaining_time > 0) {
++		schedule_timeout(remaining_time);
++		/* check for signals and come back */
++		return true;
+ 	}
++
++	__set_current_state(TASK_RUNNING);
++	kvm_recover_nx_huge_pages(kvm);
++	kvm->arch.nx_huge_page_last = get_jiffies_64();
++	return true;
+ }
+ 
+ int kvm_mmu_post_init_vm(struct kvm *kvm)
+ {
+-	int err;
+-
+ 	if (nx_hugepage_mitigation_hard_disabled)
+ 		return 0;
+ 
+-	err = kvm_vm_create_worker_thread(kvm, kvm_nx_huge_page_recovery_worker, 0,
+-					  "kvm-nx-lpage-recovery",
+-					  &kvm->arch.nx_huge_page_recovery_thread);
+-	if (!err)
+-		kthread_unpark(kvm->arch.nx_huge_page_recovery_thread);
++	kvm->arch.nx_huge_page_last = get_jiffies_64();
++	kvm->arch.nx_huge_page_recovery_thread = vhost_task_create(
++		kvm_nx_huge_page_recovery_worker, kvm_nx_huge_page_recovery_worker_kill,
++		kvm, "kvm-nx-lpage-recovery");
+ 
+-	return err;
++	if (!kvm->arch.nx_huge_page_recovery_thread)
++		return -ENOMEM;
++
++	vhost_task_start(kvm->arch.nx_huge_page_recovery_thread);
++	return 0;
+ }
+ 
+ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
+ {
+ 	if (kvm->arch.nx_huge_page_recovery_thread)
+-		kthread_stop(kvm->arch.nx_huge_page_recovery_thread);
++		vhost_task_stop(kvm->arch.nx_huge_page_recovery_thread);
+ }
+ 
+ #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -2370,12 +2370,6 @@ static inline int kvm_arch_vcpu_run_pid_
+ }
+ #endif /* CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE */
+ 
+-typedef int (*kvm_vm_thread_fn_t)(struct kvm *kvm, uintptr_t data);
+-
+-int kvm_vm_create_worker_thread(struct kvm *kvm, kvm_vm_thread_fn_t thread_fn,
+-				uintptr_t data, const char *name,
+-				struct task_struct **thread_ptr);
+-
+ #ifdef CONFIG_KVM_XFER_TO_GUEST_WORK
+ static inline void kvm_handle_signal_exit(struct kvm_vcpu *vcpu)
+ {
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -6573,106 +6573,3 @@ void kvm_exit(void)
+ 	kvm_irqfd_exit();
+ }
+ EXPORT_SYMBOL_GPL(kvm_exit);
+-
+-struct kvm_vm_worker_thread_context {
+-	struct kvm *kvm;
+-	struct task_struct *parent;
+-	struct completion init_done;
+-	kvm_vm_thread_fn_t thread_fn;
+-	uintptr_t data;
+-	int err;
+-};
+-
+-static int kvm_vm_worker_thread(void *context)
+-{
+-	/*
+-	 * The init_context is allocated on the stack of the parent thread, so
+-	 * we have to locally copy anything that is needed beyond initialization
+-	 */
+-	struct kvm_vm_worker_thread_context *init_context = context;
+-	struct task_struct *parent;
+-	struct kvm *kvm = init_context->kvm;
+-	kvm_vm_thread_fn_t thread_fn = init_context->thread_fn;
+-	uintptr_t data = init_context->data;
+-	int err;
+-
+-	err = kthread_park(current);
+-	/* kthread_park(current) is never supposed to return an error */
+-	WARN_ON(err != 0);
+-	if (err)
+-		goto init_complete;
+-
+-	err = cgroup_attach_task_all(init_context->parent, current);
+-	if (err) {
+-		kvm_err("%s: cgroup_attach_task_all failed with err %d\n",
+-			__func__, err);
+-		goto init_complete;
+-	}
+-
+-	set_user_nice(current, task_nice(init_context->parent));
+-
+-init_complete:
+-	init_context->err = err;
+-	complete(&init_context->init_done);
+-	init_context = NULL;
+-
+-	if (err)
+-		goto out;
+-
+-	/* Wait to be woken up by the spawner before proceeding. */
+-	kthread_parkme();
+-
+-	if (!kthread_should_stop())
+-		err = thread_fn(kvm, data);
+-
+-out:
+-	/*
+-	 * Move kthread back to its original cgroup to prevent it lingering in
+-	 * the cgroup of the VM process, after the latter finishes its
+-	 * execution.
+-	 *
+-	 * kthread_stop() waits on the 'exited' completion condition which is
+-	 * set in exit_mm(), via mm_release(), in do_exit(). However, the
+-	 * kthread is removed from the cgroup in the cgroup_exit() which is
+-	 * called after the exit_mm(). This causes the kthread_stop() to return
+-	 * before the kthread actually quits the cgroup.
+-	 */
+-	rcu_read_lock();
+-	parent = rcu_dereference(current->real_parent);
+-	get_task_struct(parent);
+-	rcu_read_unlock();
+-	cgroup_attach_task_all(parent, current);
+-	put_task_struct(parent);
+-
+-	return err;
+-}
+-
+-int kvm_vm_create_worker_thread(struct kvm *kvm, kvm_vm_thread_fn_t thread_fn,
+-				uintptr_t data, const char *name,
+-				struct task_struct **thread_ptr)
+-{
+-	struct kvm_vm_worker_thread_context init_context = {};
+-	struct task_struct *thread;
+-
+-	*thread_ptr = NULL;
+-	init_context.kvm = kvm;
+-	init_context.parent = current;
+-	init_context.thread_fn = thread_fn;
+-	init_context.data = data;
+-	init_completion(&init_context.init_done);
+-
+-	thread = kthread_run(kvm_vm_worker_thread, &init_context,
+-			     "%s-%d", name, task_pid_nr(current));
+-	if (IS_ERR(thread))
+-		return PTR_ERR(thread);
+-
+-	/* kthread_run is never supposed to return NULL */
+-	WARN_ON(thread == NULL);
+-
+-	wait_for_completion(&init_context.init_done);
+-
+-	if (!init_context.err)
+-		*thread_ptr = thread;
+-
+-	return init_context.err;
+-}
 
 
 
