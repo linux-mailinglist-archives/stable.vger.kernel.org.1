@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-97777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDE7F9E27CD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:41:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE1D9E25FE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14BD4BA296C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2F85161D39
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EB11F76A4;
-	Tue,  3 Dec 2024 16:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E60B1F76A4;
+	Tue,  3 Dec 2024 16:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDxV79Cd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09AFT2iP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2471B23CE;
-	Tue,  3 Dec 2024 16:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF91E23CE;
+	Tue,  3 Dec 2024 16:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241697; cv=none; b=uBMLehwZyFYr7FfuRFfsiHoql2aSZrVDMYJqLw17zznPZ/E5Ndlqznwt33MF5EOcnsDfd0dQrVnNx6gBZcZdnIPMsEYIQd7BUxaPF5lCHmVXwd8o+wAhXs/o0PW3pNKQmJSbOBCHe7a8vhqHxxynO1xKSTXg18lOqusSKu8/aFw=
+	t=1733241708; cv=none; b=Rk+6CcEd/wkTxw1DofW0kTd5unlIJaMxm1DXdqnAMjsZqNN7nqw3ckhYyR3q9uo1NjX0hSJ6n0xLo5YKCXWr0nHOhOFGUVuUExeLfo+0PEY9UQZc51STE7AGFCV3oK2JAPtjqfcsib2SOugTdOo1PuB4XII0Lw5VxtnSXrjeR/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241697; c=relaxed/simple;
-	bh=VjEQ1oOZOUJZ13WSIws48NRIcpTkp9Z5gnq7w3Hbzoo=;
+	s=arc-20240116; t=1733241708; c=relaxed/simple;
+	bh=NVyKa+/g9WhrBwwe1x52gME02tkaEmex1b57eMbZ+dE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUaLdh+uWZ4GuJ1TKn0VLju5l5NTfimQ4e1prkvnvnQ+o1Nx3Cdz3jHluu6IeqL/NypQKSinPsUthDUcr9FyGVmaVpJoIxBBBfrXDtV3JA5bEtsixvC9Or+AbmvvMowg1pPBK48rkJ7dUfDdRLYRfTRX29/4U4AnB95+7Eu/W7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDxV79Cd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8171CC4CECF;
-	Tue,  3 Dec 2024 16:01:36 +0000 (UTC)
+	 MIME-Version; b=YRDD+m2HKJooyS5RuCMmGK8HJVwGHYs2cWdRVhkO4qSR0HnFrEXVmPRTMsu3Ya+X0A09Pjx6wHh/1spe3/cf5VPG7Kq8EEHEwUrODV7FVlKPWuiEyqUvvFur7BlG/18NaAgISPiiiG/L4Jtzs33XRzDnilJYdyVDIIBIxP63KJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09AFT2iP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F234C4CECF;
+	Tue,  3 Dec 2024 16:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241697;
-	bh=VjEQ1oOZOUJZ13WSIws48NRIcpTkp9Z5gnq7w3Hbzoo=;
+	s=korg; t=1733241707;
+	bh=NVyKa+/g9WhrBwwe1x52gME02tkaEmex1b57eMbZ+dE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDxV79CdRhjNnrpGbyQyh0caKqOuJqIeFaBtYXi5o91WxXSVNVSNaa1mIzNPZ6547
-	 EKwLSdrqx+69YIBqOT6oOWdJgZI9q5UW/vX3B53eS7S5mXheP6O2TO45UibuirPRoO
-	 rLvbmNEctGjZVsc9AXfsRpE8dTGzOhQ+Rnnp3cJc=
+	b=09AFT2iPyixwdQBupjKIG7xSSEvupLpve3+uAGiI6Q+O4UTM2f59C7TNqGMWEWX29
+	 NHjcvOmENr+kjYcSeUw4//jCtDfq7+D1oGYB8WI2UoxIDoLBbjLGvCRaPAUWTUMUsU
+	 XX+1zs82OPA3LYgqL7LUGm0cXZ8mp4mBhgOzA1Y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Huafei <lihuafei1@huawei.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	sesse@google.com,
-	kjain@linux.ibm.com,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
 	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 493/826] perf disasm: Fix not cleaning up disasm_line in symbol__disassemble_raw()
-Date: Tue,  3 Dec 2024 15:43:40 +0100
-Message-ID: <20241203144802.987227906@linuxfoundation.org>
+Subject: [PATCH 6.12 495/826] perf ftrace latency: Fix unit on histogram first entry when using --use-nsec
+Date: Tue,  3 Dec 2024 15:43:42 +0100
+Message-ID: <20241203144803.064353147@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -69,39 +67,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
 
-[ Upstream commit 150dab31d5609f896fbfaa06b442ca314da79858 ]
+[ Upstream commit 064d569e20e82c065b1dec9d20c29c7087bb1a00 ]
 
-In symbol__disassemble_raw(), the created disasm_line should be
-discarded before returning an error. When creating disasm_line fails,
-break the loop and then release the created lines.
+The use_nsec arg wasn't being taken into account when printing the first
+histogram entry, fix it:
 
-Fixes: 0b971e6bf1c3 ("perf annotate: Add support to capture and parse raw instruction in powerpc using dso__data_read_offset utility")
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Tested-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: sesse@google.com
-Cc: kjain@linux.ibm.com
-Link: https://lore.kernel.org/r/20241019154157.282038-3-lihuafei1@huawei.com
+  root@number:~# perf ftrace latency --use-nsec -T switch_mm_irqs_off -a sleep 2
+  #   DURATION     |      COUNT | GRAPH                                          |
+       0 - 1    us |          0 |                                                |
+       1 - 2    ns |          0 |                                                |
+       2 - 4    ns |          0 |                                                |
+       4 - 8    ns |          0 |                                                |
+       8 - 16   ns |          0 |                                                |
+      16 - 32   ns |          0 |                                                |
+      32 - 64   ns |        125 |                                                |
+      64 - 128  ns |        335 |                                                |
+     128 - 256  ns |       2155 | ####                                           |
+     256 - 512  ns |       9996 | ###################                            |
+     512 - 1024 ns |       4958 | #########                                      |
+       1 - 2    us |       4636 | #########                                      |
+       2 - 4    us |       1053 | ##                                             |
+       4 - 8    us |         15 |                                                |
+       8 - 16   us |          1 |                                                |
+      16 - 32   us |          0 |                                                |
+      32 - 64   us |          0 |                                                |
+      64 - 128  us |          0 |                                                |
+     128 - 256  us |          0 |                                                |
+     256 - 512  us |          0 |                                                |
+     512 - 1024 us |          0 |                                                |
+       1 - ...  ms |          0 |                                                |
+  root@number:~#
+
+After:
+
+  root@number:~# perf ftrace latency --use-nsec -T switch_mm_irqs_off -a sleep 2
+  #   DURATION     |      COUNT | GRAPH                                          |
+       0 - 1    ns |          0 |                                                |
+       1 - 2    ns |          0 |                                                |
+       2 - 4    ns |          0 |                                                |
+       4 - 8    ns |          0 |                                                |
+       8 - 16   ns |          0 |                                                |
+      16 - 32   ns |          0 |                                                |
+      32 - 64   ns |         19 |                                                |
+      64 - 128  ns |         94 |                                                |
+     128 - 256  ns |       2191 | ####                                           |
+     256 - 512  ns |       9719 | ####################                           |
+     512 - 1024 ns |       5330 | ###########                                    |
+       1 - 2    us |       4104 | ########                                       |
+       2 - 4    us |        807 | #                                              |
+       4 - 8    us |          9 |                                                |
+       8 - 16   us |          0 |                                                |
+      16 - 32   us |          0 |                                                |
+      32 - 64   us |          0 |                                                |
+      64 - 128  us |          0 |                                                |
+     128 - 256  us |          0 |                                                |
+     256 - 512  us |          0 |                                                |
+     512 - 1024 us |          0 |                                                |
+       1 - ...  ms |          0 |                                                |
+  root@number:~#
+
+Fixes: 84005bb6148618cc ("perf ftrace latency: Add -n/--use-nsec option")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Gabriele Monaco <gmonaco@redhat.com>
+Link: https://lore.kernel.org/r/ZyE3frB-hMXHCnMO@x1
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/disasm.c | 2 +-
+ tools/perf/builtin-ftrace.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
-index 5d5fcc4dee078..648e8d87ef194 100644
---- a/tools/perf/util/disasm.c
-+++ b/tools/perf/util/disasm.c
-@@ -1785,7 +1785,7 @@ static int symbol__disassemble_raw(char *filename, struct symbol *sym,
- 		sprintf(args->line, "%x", line[i]);
- 		dl = disasm_line__new(args);
- 		if (dl == NULL)
--			goto err;
-+			break;
+diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
+index abcdc49b7a987..272d3c70810e7 100644
+--- a/tools/perf/builtin-ftrace.c
++++ b/tools/perf/builtin-ftrace.c
+@@ -815,7 +815,7 @@ static void display_histogram(int buckets[], bool use_nsec)
  
- 		annotation_line__add(&dl->al, &notes->src->source);
- 		offset += 4;
+ 	bar_len = buckets[0] * bar_total / total;
+ 	printf("  %4d - %-4d %s | %10d | %.*s%*s |\n",
+-	       0, 1, "us", buckets[0], bar_len, bar, bar_total - bar_len, "");
++	       0, 1, use_nsec ? "ns" : "us", buckets[0], bar_len, bar, bar_total - bar_len, "");
+ 
+ 	for (i = 1; i < NUM_BUCKET - 1; i++) {
+ 		int start = (1 << (i - 1));
 -- 
 2.43.0
 
