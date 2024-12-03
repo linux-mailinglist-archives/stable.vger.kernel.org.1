@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-98047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C704F9E2B65
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:53:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 841EA9E28F8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F7D0B60D13
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 692E4B47DF1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC271F8925;
-	Tue,  3 Dec 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B961F8ADC;
+	Tue,  3 Dec 2024 16:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRdzYulc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGvkX4o6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1FA1F893B;
-	Tue,  3 Dec 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E761E25E3;
+	Tue,  3 Dec 2024 16:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242617; cv=none; b=QfKMFSHy66NDSUCK4NzUexn99ik3eIFyIeAgrHk5/BsljsvlmBQyVH21p3E3LOhIjwNaWkIfzeu2qYELNy4RYq519r5X1BfBZgPKFN/YAtGim3FDWHJdbgCAAHRFcekTZVy+PR9xWjUf7bA4dDyGR+AxaeNwO7ip89ZMP+b8Tj4=
+	t=1733242711; cv=none; b=Mys2s/MBg3HuRnRdhQq/a+Qb3cxsQSOxWMibGsDHF9THiREI9V7/ELoGkrvAFMxDOEaSzx3SC5w8injmuwylSe5Xioc+Zrfz9WQp7eompgqEk92FzsKl8jKZoIjFIS6OxSTg8OHeIdLeh60dIx3Vi9/oaX8nOrGFLlXz+yi3S14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242617; c=relaxed/simple;
-	bh=DNjoKT/GT+PIa7BYqi5WSQDCNrqH5bSqa5zcJURqyS4=;
+	s=arc-20240116; t=1733242711; c=relaxed/simple;
+	bh=Yrf5ZlKKk9Wt6rRae3EpCFiARyXdOeH5n4py6s0htw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/NFxWKK1MHpUblpAAWMy+cmJLa9NWHvjYhqnqqYHYuG9lyAVebsqxbki1yPcMcJmuy/2zzRGOFiif2zbk4zrPmq7sFZDXV3Q0EWBqsKRHYiEPF2LtIXtME8RQIWE4M5+b6l3WfyjjMPPeSEqgqnDQaG7fABPv8WymMM+JDgFG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRdzYulc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9704C4CED6;
-	Tue,  3 Dec 2024 16:16:56 +0000 (UTC)
+	 MIME-Version; b=j5O3bDxNwQNhMJ09oCanfs2MZGAvcyqMvHpErPpxiB2g9r+KZMAEhRv7+BtuI9xjvHoMNKTMoUFiYYk+jFfJWvedDxgA0JzaAo9uI5J2ViPTiF/2/rJH9XEL4OLRg0wfM1sl193C0LBvBV7slHDtIclnN3wpVqIf2fJgupbUPqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGvkX4o6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82188C4CECF;
+	Tue,  3 Dec 2024 16:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242617;
-	bh=DNjoKT/GT+PIa7BYqi5WSQDCNrqH5bSqa5zcJURqyS4=;
+	s=korg; t=1733242711;
+	bh=Yrf5ZlKKk9Wt6rRae3EpCFiARyXdOeH5n4py6s0htw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRdzYulcEc4Wm34dehh0wzfp1+bUkRhBF8FvC8/iX4nBUkJey4WOHVStpWn32Miq7
-	 t/YHMti7tYUsgWRWh2wE2nVcofBxA/kaTHGz3I6lFgcTxrRy86WCFTrXC/mFcCf5R9
-	 fcd7UiNsT/Hf3iYV3Ze1r8vuV0jB5BadfQEQ5Z+I=
+	b=GGvkX4o6FZ/0e8zqRcvE+KZPIFPK3E6aGcAObmjW7UtZh2fIzmts7Yc9U78xjQDSj
+	 lEROQw3yesJplI5YzuC9BM1rNZy8avDvLFIIaP/qKlyHibnKMnnWrheP+gVGT5nmMJ
+	 W92rYFlouzb2xsxTfb12qj22e0/f8Y2YxRuDqY18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Shin <jaeshin@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Paul Aurich <paul@darkrain42.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 750/826] smb: client: fix use-after-free of signing key
-Date: Tue,  3 Dec 2024 15:47:57 +0100
-Message-ID: <20241203144813.020085739@linuxfoundation.org>
+Subject: [PATCH 6.12 754/826] smb: prevent use-after-free due to open_cached_dir error paths
+Date: Tue,  3 Dec 2024 15:48:01 +0100
+Message-ID: <20241203144813.176433056@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,159 +65,247 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Paul Aurich <paul@darkrain42.org>
 
-commit 343d7fe6df9e247671440a932b6a73af4fa86d95 upstream.
+commit a9685b409a03b73d2980bbfa53eb47555802d0a9 upstream.
 
-Customers have reported use-after-free in @ses->auth_key.response with
-SMB2.1 + sign mounts which occurs due to following race:
+If open_cached_dir() encounters an error parsing the lease from the
+server, the error handling may race with receiving a lease break,
+resulting in open_cached_dir() freeing the cfid while the queued work is
+pending.
 
-task A                         task B
-cifs_mount()
- dfs_mount_share()
-  get_session()
-   cifs_mount_get_session()    cifs_send_recv()
-    cifs_get_smb_ses()          compound_send_recv()
-     cifs_setup_session()        smb2_setup_request()
-      kfree_sensitive()           smb2_calc_signature()
-                                   crypto_shash_setkey() *UAF*
+Update open_cached_dir() to drop refs rather than directly freeing the
+cfid.
 
-Fix this by ensuring that we have a valid @ses->auth_key.response by
-checking whether @ses->ses_status is SES_GOOD or SES_EXITING with
-@ses->ses_lock held.  After commit 24a9799aa8ef ("smb: client: fix UAF
-in smb2_reconnect_server()"), we made sure to call ->logoff() only
-when @ses was known to be good (e.g. valid ->auth_key.response), so
-it's safe to access signing key when @ses->ses_status == SES_EXITING.
+Have cached_dir_lease_break(), cfids_laundromat_worker(), and
+invalidate_all_cached_dirs() clear has_lease immediately while still
+holding cfids->cfid_list_lock, and then use this to also simplify the
+reference counting in cfids_laundromat_worker() and
+invalidate_all_cached_dirs().
+
+Fixes this KASAN splat (which manually injects an error and lease break
+in open_cached_dir()):
+
+==================================================================
+BUG: KASAN: slab-use-after-free in smb2_cached_lease_break+0x27/0xb0
+Read of size 8 at addr ffff88811cc24c10 by task kworker/3:1/65
+
+CPU: 3 UID: 0 PID: 65 Comm: kworker/3:1 Not tainted 6.12.0-rc6-g255cf264e6e5-dirty #87
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+Workqueue: cifsiod smb2_cached_lease_break
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x77/0xb0
+ print_report+0xce/0x660
+ kasan_report+0xd3/0x110
+ smb2_cached_lease_break+0x27/0xb0
+ process_one_work+0x50a/0xc50
+ worker_thread+0x2ba/0x530
+ kthread+0x17c/0x1c0
+ ret_from_fork+0x34/0x60
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 2464:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0xaa/0xb0
+ open_cached_dir+0xa7d/0x1fb0
+ smb2_query_path_info+0x43c/0x6e0
+ cifs_get_fattr+0x346/0xf10
+ cifs_get_inode_info+0x157/0x210
+ cifs_revalidate_dentry_attr+0x2d1/0x460
+ cifs_getattr+0x173/0x470
+ vfs_statx_path+0x10f/0x160
+ vfs_statx+0xe9/0x150
+ vfs_fstatat+0x5e/0xc0
+ __do_sys_newfstatat+0x91/0xf0
+ do_syscall_64+0x95/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Freed by task 2464:
+ kasan_save_stack+0x33/0x60
+ kasan_save_track+0x14/0x30
+ kasan_save_free_info+0x3b/0x60
+ __kasan_slab_free+0x51/0x70
+ kfree+0x174/0x520
+ open_cached_dir+0x97f/0x1fb0
+ smb2_query_path_info+0x43c/0x6e0
+ cifs_get_fattr+0x346/0xf10
+ cifs_get_inode_info+0x157/0x210
+ cifs_revalidate_dentry_attr+0x2d1/0x460
+ cifs_getattr+0x173/0x470
+ vfs_statx_path+0x10f/0x160
+ vfs_statx+0xe9/0x150
+ vfs_fstatat+0x5e/0xc0
+ __do_sys_newfstatat+0x91/0xf0
+ do_syscall_64+0x95/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Last potentially related work creation:
+ kasan_save_stack+0x33/0x60
+ __kasan_record_aux_stack+0xad/0xc0
+ insert_work+0x32/0x100
+ __queue_work+0x5c9/0x870
+ queue_work_on+0x82/0x90
+ open_cached_dir+0x1369/0x1fb0
+ smb2_query_path_info+0x43c/0x6e0
+ cifs_get_fattr+0x346/0xf10
+ cifs_get_inode_info+0x157/0x210
+ cifs_revalidate_dentry_attr+0x2d1/0x460
+ cifs_getattr+0x173/0x470
+ vfs_statx_path+0x10f/0x160
+ vfs_statx+0xe9/0x150
+ vfs_fstatat+0x5e/0xc0
+ __do_sys_newfstatat+0x91/0xf0
+ do_syscall_64+0x95/0x1a0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The buggy address belongs to the object at ffff88811cc24c00
+ which belongs to the cache kmalloc-1k of size 1024
+The buggy address is located 16 bytes inside of
+ freed 1024-byte region [ffff88811cc24c00, ffff88811cc25000)
 
 Cc: stable@vger.kernel.org
-Reported-by: Jay Shin <jaeshin@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Paul Aurich <paul@darkrain42.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2proto.h     |    2 -
- fs/smb/client/smb2transport.c |   56 ++++++++++++++++++++++++++++++------------
- 2 files changed, 40 insertions(+), 18 deletions(-)
+ fs/smb/client/cached_dir.c |   70 ++++++++++++++++++---------------------------
+ 1 file changed, 29 insertions(+), 41 deletions(-)
 
---- a/fs/smb/client/smb2proto.h
-+++ b/fs/smb/client/smb2proto.h
-@@ -37,8 +37,6 @@ extern struct mid_q_entry *smb2_setup_re
- 					      struct smb_rqst *rqst);
- extern struct mid_q_entry *smb2_setup_async_request(
- 			struct TCP_Server_Info *server, struct smb_rqst *rqst);
--extern struct cifs_ses *smb2_find_smb_ses(struct TCP_Server_Info *server,
--					   __u64 ses_id);
- extern struct cifs_tcon *smb2_find_smb_tcon(struct TCP_Server_Info *server,
- 						__u64 ses_id, __u32  tid);
- extern int smb2_calc_signature(struct smb_rqst *rqst,
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -74,7 +74,7 @@ err:
- 
- 
- static
--int smb2_get_sign_key(__u64 ses_id, struct TCP_Server_Info *server, u8 *key)
-+int smb3_get_sign_key(__u64 ses_id, struct TCP_Server_Info *server, u8 *key)
- {
- 	struct cifs_chan *chan;
- 	struct TCP_Server_Info *pserver;
-@@ -168,16 +168,41 @@ smb2_find_smb_ses_unlocked(struct TCP_Se
- 	return NULL;
- }
- 
--struct cifs_ses *
--smb2_find_smb_ses(struct TCP_Server_Info *server, __u64 ses_id)
-+static int smb2_get_sign_key(struct TCP_Server_Info *server,
-+			     __u64 ses_id, u8 *key)
- {
- 	struct cifs_ses *ses;
-+	int rc = -ENOENT;
-+
-+	if (SERVER_IS_CHAN(server))
-+		server = server->primary_server;
- 
- 	spin_lock(&cifs_tcp_ses_lock);
--	ses = smb2_find_smb_ses_unlocked(server, ses_id);
--	spin_unlock(&cifs_tcp_ses_lock);
-+	list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+		if (ses->Suid != ses_id)
-+			continue;
- 
--	return ses;
-+		rc = 0;
-+		spin_lock(&ses->ses_lock);
-+		switch (ses->ses_status) {
-+		case SES_EXITING: /* SMB2_LOGOFF */
-+		case SES_GOOD:
-+			if (likely(ses->auth_key.response)) {
-+				memcpy(key, ses->auth_key.response,
-+				       SMB2_NTLMV2_SESSKEY_SIZE);
-+			} else {
-+				rc = -EIO;
-+			}
-+			break;
-+		default:
-+			rc = -EAGAIN;
-+			break;
-+		}
-+		spin_unlock(&ses->ses_lock);
-+		break;
-+	}
-+	spin_unlock(&cifs_tcp_ses_lock);
-+	return rc;
- }
- 
- static struct cifs_tcon *
-@@ -236,14 +261,16 @@ smb2_calc_signature(struct smb_rqst *rqs
- 	unsigned char *sigptr = smb2_signature;
- 	struct kvec *iov = rqst->rq_iov;
- 	struct smb2_hdr *shdr = (struct smb2_hdr *)iov[0].iov_base;
--	struct cifs_ses *ses;
- 	struct shash_desc *shash = NULL;
- 	struct smb_rqst drqst;
-+	__u64 sid = le64_to_cpu(shdr->SessionId);
-+	u8 key[SMB2_NTLMV2_SESSKEY_SIZE];
- 
--	ses = smb2_find_smb_ses(server, le64_to_cpu(shdr->SessionId));
--	if (unlikely(!ses)) {
--		cifs_server_dbg(FYI, "%s: Could not find session\n", __func__);
--		return -ENOENT;
-+	rc = smb2_get_sign_key(server, sid, key);
-+	if (unlikely(rc)) {
-+		cifs_server_dbg(FYI, "%s: [sesid=0x%llx] couldn't find signing key: %d\n",
-+				__func__, sid, rc);
-+		return rc;
- 	}
- 
- 	memset(smb2_signature, 0x0, SMB2_HMACSHA256_SIZE);
-@@ -260,8 +287,7 @@ smb2_calc_signature(struct smb_rqst *rqs
- 		shash = server->secmech.hmacsha256;
- 	}
- 
--	rc = crypto_shash_setkey(shash->tfm, ses->auth_key.response,
--			SMB2_NTLMV2_SESSKEY_SIZE);
-+	rc = crypto_shash_setkey(shash->tfm, key, sizeof(key));
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -348,6 +348,7 @@ oshr_free:
+ 	SMB2_query_info_free(&rqst[1]);
+ 	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
+ 	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
++out:
  	if (rc) {
- 		cifs_server_dbg(VFS,
- 				"%s: Could not update with response\n",
-@@ -303,8 +329,6 @@ smb2_calc_signature(struct smb_rqst *rqs
- out:
- 	if (allocate_crypto)
- 		cifs_free_hash(&shash);
--	if (ses)
--		cifs_put_smb_ses(ses);
- 	return rc;
+ 		spin_lock(&cfids->cfid_list_lock);
+ 		if (cfid->on_list) {
+@@ -359,23 +360,14 @@ oshr_free:
+ 			/*
+ 			 * We are guaranteed to have two references at this
+ 			 * point. One for the caller and one for a potential
+-			 * lease. Release the Lease-ref so that the directory
+-			 * will be closed when the caller closes the cached
+-			 * handle.
++			 * lease. Release one here, and the second below.
+ 			 */
+ 			cfid->has_lease = false;
+-			spin_unlock(&cfids->cfid_list_lock);
+ 			kref_put(&cfid->refcount, smb2_close_cached_fid);
+-			goto out;
+ 		}
+ 		spin_unlock(&cfids->cfid_list_lock);
+-	}
+-out:
+-	if (rc) {
+-		if (cfid->is_open)
+-			SMB2_close(0, cfid->tcon, cfid->fid.persistent_fid,
+-				   cfid->fid.volatile_fid);
+-		free_cached_dir(cfid);
++
++		kref_put(&cfid->refcount, smb2_close_cached_fid);
+ 	} else {
+ 		*ret_cfid = cfid;
+ 		atomic_inc(&tcon->num_remote_opens);
+@@ -513,25 +505,24 @@ void invalidate_all_cached_dirs(struct c
+ 		cfids->num_entries--;
+ 		cfid->is_open = false;
+ 		cfid->on_list = false;
+-		/* To prevent race with smb2_cached_lease_break() */
+-		kref_get(&cfid->refcount);
++		if (cfid->has_lease) {
++			/*
++			 * The lease was never cancelled from the server,
++			 * so steal that reference.
++			 */
++			cfid->has_lease = false;
++		} else
++			kref_get(&cfid->refcount);
+ 	}
+ 	spin_unlock(&cfids->cfid_list_lock);
+ 
+ 	list_for_each_entry_safe(cfid, q, &entry, entry) {
+ 		list_del(&cfid->entry);
+ 		cancel_work_sync(&cfid->lease_break);
+-		if (cfid->has_lease) {
+-			/*
+-			 * We lease was never cancelled from the server so we
+-			 * need to drop the reference.
+-			 */
+-			spin_lock(&cfids->cfid_list_lock);
+-			cfid->has_lease = false;
+-			spin_unlock(&cfids->cfid_list_lock);
+-			kref_put(&cfid->refcount, smb2_close_cached_fid);
+-		}
+-		/* Drop the extra reference opened above*/
++		/*
++		 * Drop the ref-count from above, either the lease-ref (if there
++		 * was one) or the extra one acquired.
++		 */
+ 		kref_put(&cfid->refcount, smb2_close_cached_fid);
+ 	}
+ }
+@@ -542,9 +533,6 @@ smb2_cached_lease_break(struct work_stru
+ 	struct cached_fid *cfid = container_of(work,
+ 				struct cached_fid, lease_break);
+ 
+-	spin_lock(&cfid->cfids->cfid_list_lock);
+-	cfid->has_lease = false;
+-	spin_unlock(&cfid->cfids->cfid_list_lock);
+ 	kref_put(&cfid->refcount, smb2_close_cached_fid);
  }
  
-@@ -570,7 +594,7 @@ smb3_calc_signature(struct smb_rqst *rqs
- 	struct smb_rqst drqst;
- 	u8 key[SMB3_SIGN_KEY_SIZE];
- 
--	rc = smb2_get_sign_key(le64_to_cpu(shdr->SessionId), server, key);
-+	rc = smb3_get_sign_key(le64_to_cpu(shdr->SessionId), server, key);
- 	if (unlikely(rc)) {
- 		cifs_server_dbg(FYI, "%s: Could not get signing key\n", __func__);
- 		return rc;
+@@ -562,6 +550,7 @@ int cached_dir_lease_break(struct cifs_t
+ 		    !memcmp(lease_key,
+ 			    cfid->fid.lease_key,
+ 			    SMB2_LEASE_KEY_SIZE)) {
++			cfid->has_lease = false;
+ 			cfid->time = 0;
+ 			/*
+ 			 * We found a lease remove it from the list
+@@ -639,8 +628,14 @@ static void cfids_laundromat_worker(stru
+ 			cfid->on_list = false;
+ 			list_move(&cfid->entry, &entry);
+ 			cfids->num_entries--;
+-			/* To prevent race with smb2_cached_lease_break() */
+-			kref_get(&cfid->refcount);
++			if (cfid->has_lease) {
++				/*
++				 * Our lease has not yet been cancelled from the
++				 * server. Steal that reference.
++				 */
++				cfid->has_lease = false;
++			} else
++				kref_get(&cfid->refcount);
+ 		}
+ 	}
+ 	spin_unlock(&cfids->cfid_list_lock);
+@@ -652,17 +647,10 @@ static void cfids_laundromat_worker(stru
+ 		 * with it.
+ 		 */
+ 		cancel_work_sync(&cfid->lease_break);
+-		if (cfid->has_lease) {
+-			/*
+-			 * Our lease has not yet been cancelled from the server
+-			 * so we need to drop the reference.
+-			 */
+-			spin_lock(&cfids->cfid_list_lock);
+-			cfid->has_lease = false;
+-			spin_unlock(&cfids->cfid_list_lock);
+-			kref_put(&cfid->refcount, smb2_close_cached_fid);
+-		}
+-		/* Drop the extra reference opened above */
++		/*
++		 * Drop the ref-count from above, either the lease-ref (if there
++		 * was one) or the extra one acquired.
++		 */
+ 		kref_put(&cfid->refcount, smb2_close_cached_fid);
+ 	}
+ 	queue_delayed_work(cifsiod_wq, &cfids->laundromat_work,
 
 
 
