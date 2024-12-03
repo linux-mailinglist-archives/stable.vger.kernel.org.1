@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CB39E2868
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:59:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDB69E23E1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5968FB3F0FF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005A3287557
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8001F7581;
-	Tue,  3 Dec 2024 15:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5798B1F76D2;
+	Tue,  3 Dec 2024 15:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyBdJKhO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQrFAXN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B2533FE;
-	Tue,  3 Dec 2024 15:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C461F754A;
+	Tue,  3 Dec 2024 15:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238281; cv=none; b=BVM6VsChLH5dJQcGsuv2kzz6IxjQahSLmkYHj4o5hOeYDctBmjxIyknMFxcDorpw0Lxnbdg1pmIUSteMjn9BpsBpwvBOTDhAwvG8IxavQxvTnMmm7YAsoyPBFeI8p7L1BqMpc5M/7r2gbNKjEGB0p9o+5wvIRDORsIy1yhAr3t8=
+	t=1733240327; cv=none; b=aVGdrhgLXmrXaDH8Lj1Vi8JndZIBs1ySW6mB+rdXZla9W9GW+C/p7keweas6cmOz1aNxjwRfiRQFGl265bXD7issqmT7PznsV9rnhPNIEtL9by+0BZpzVf7ok9DPL+QAYHrYufUuQaFj/i8dg0Q81XiUiBmnFCjf0HuwFwq4DOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238281; c=relaxed/simple;
-	bh=kYa4Bf3THBCzxVIaOl+VB7yDYDxoVvTnvC6uJ7WexcM=;
+	s=arc-20240116; t=1733240327; c=relaxed/simple;
+	bh=mVrY+ksnOlUGkJ0lviqsOKO9VLd+8YP9ZLpIoYDqd70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHHL3FIxy58OUqG8/foqRaLsqXfZxK5FGKOQaM4SIOvMY2oMscpY2W4HJ/IpmQnJWQRJL+WfI6ikotwSQYH4aTK8oiIe04Mp+iMqhRi1eoRmCl7GcBvJcYTUGxV7viHqCB/6QCXhL54Vb43oznZblWU1oDp0XCvAD4vB2f6LrGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyBdJKhO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EC6C4CECF;
-	Tue,  3 Dec 2024 15:04:40 +0000 (UTC)
+	 MIME-Version; b=rVcV0KUZK++ZBXVrWmgCgoR99/KTdiFL3XzrYtIDdJrkJrNl+ZcsokINfGkTwD2YzwGZ17OEEohN0sTnWCrAjV+6htEdNQD+NBFJPE/mdK7qDivOwLW6sL1wO8Yi8zTqwiizPOimqmWXCPH224cUT4i5FiR70E2UpsH8fUvzg3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQrFAXN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED01C4CECF;
+	Tue,  3 Dec 2024 15:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238281;
-	bh=kYa4Bf3THBCzxVIaOl+VB7yDYDxoVvTnvC6uJ7WexcM=;
+	s=korg; t=1733240327;
+	bh=mVrY+ksnOlUGkJ0lviqsOKO9VLd+8YP9ZLpIoYDqd70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XyBdJKhOsD9kjCHFLEEhebtcISQveAf+jDoBEyoH7L/Io4Y80sErncvQOls8nNUja
-	 yZYP0QSX/Iqus/N+RF3GsmJNA94xhNpKZQXsf0B3vpbyhgK9keWEGlVpX0rGluknAq
-	 GatwvitoZ5xPNbVX82gxTFzFQ/uoU5W/7OCz7mg0=
+	b=pQrFAXN3KzsRm+5tvQTWq59OTSkidrrIiznY2rRQPoxm3CNHqR5Iw4HVczK64Z27h
+	 2xpyhbR85dZjd0UhTpMFQm1JWeKfcd2IAxwampSJZqpRwqRiRyXdUMbyqXZGmZ2bvq
+	 1K12H92aV2z5tVi+32DXBQ4n95ycHM36VizgDVSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 224/817] drm/omap: Fix locking in omap_gem_new_dmabuf()
-Date: Tue,  3 Dec 2024 15:36:36 +0100
-Message-ID: <20241203144004.492615382@linuxfoundation.org>
+Subject: [PATCH 6.12 070/826] rcu/nocb: Fix missed RCU barrier on deoffloading
+Date: Tue,  3 Dec 2024 15:36:37 +0100
+Message-ID: <20241203144746.203957774@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit e6a1c4037227539373c8cf484ace83833e2ad6a2 ]
+[ Upstream commit 2996980e20b7a54a1869df15b3445374b850b155 ]
 
-omap_gem_new_dmabuf() creates the new gem object, and then takes and
-holds the omap_obj->lock for the rest of the function. This has two
-issues:
+Currently, running rcutorture test with torture_type=rcu fwd_progress=8
+n_barrier_cbs=8 nocbs_nthreads=8 nocbs_toggle=100 onoff_interval=60
+test_boost=2, will trigger the following warning:
 
-- omap_gem_free_object(), which is called in the error paths, also takes
-  the same lock, leading to deadlock
-- Even if the above wouldn't happen, in the error cases
-  omap_gem_new_dmabuf() still unlocks omap_obj->lock, even after the
-  omap_obj has already been freed.
+	WARNING: CPU: 19 PID: 100 at kernel/rcu/tree_nocb.h:1061 rcu_nocb_rdp_deoffload+0x292/0x2a0
+	RIP: 0010:rcu_nocb_rdp_deoffload+0x292/0x2a0
+	 Call Trace:
+	  <TASK>
+	  ? __warn+0x7e/0x120
+	  ? rcu_nocb_rdp_deoffload+0x292/0x2a0
+	  ? report_bug+0x18e/0x1a0
+	  ? handle_bug+0x3d/0x70
+	  ? exc_invalid_op+0x18/0x70
+	  ? asm_exc_invalid_op+0x1a/0x20
+	  ? rcu_nocb_rdp_deoffload+0x292/0x2a0
+	  rcu_nocb_cpu_deoffload+0x70/0xa0
+	  rcu_nocb_toggle+0x136/0x1c0
+	  ? __pfx_rcu_nocb_toggle+0x10/0x10
+	  kthread+0xd1/0x100
+	  ? __pfx_kthread+0x10/0x10
+	  ret_from_fork+0x2f/0x50
+	  ? __pfx_kthread+0x10/0x10
+	  ret_from_fork_asm+0x1a/0x30
+	  </TASK>
 
-Furthermore, I don't think there's any reason to take the lock at all,
-as the object was just created and not yet shared with anyone else.
+CPU0                               CPU2                          CPU3
+//rcu_nocb_toggle             //nocb_cb_wait                   //rcutorture
 
-To fix all this, drop taking the lock.
+// deoffload CPU1             // process CPU1's rdp
+rcu_barrier()
+    rcu_segcblist_entrain()
+        rcu_segcblist_add_len(1);
+        // len == 2
+        // enqueue barrier
+        // callback to CPU1's
+        // rdp->cblist
+                             rcu_do_batch()
+                                 // invoke CPU1's rdp->cblist
+                                 // callback
+                                 rcu_barrier_callback()
+                                                             rcu_barrier()
+                                                               mutex_lock(&rcu_state.barrier_mutex);
+                                                               // still see len == 2
+                                                               // enqueue barrier callback
+                                                               // to CPU1's rdp->cblist
+                                                               rcu_segcblist_entrain()
+                                                                   rcu_segcblist_add_len(1);
+                                                                   // len == 3
+                                 // decrement len
+                                 rcu_segcblist_add_len(-2);
+                             kthread_parkme()
 
-Fixes: 3cbd0c587b12 ("drm/omap: gem: Replace struct_mutex usage with omap_obj private lock")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/511b99d7-aade-4f92-bd3e-63163a13d617@stanley.mountain/
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240806-omapdrm-misc-fixes-v1-3-15d31aea0831@ideasonboard.com
+// CPU1's rdp->cblist len == 1
+// Warn because there is
+// still a pending barrier
+// trigger warning
+WARN_ON_ONCE(rcu_segcblist_n_cbs(&rdp->cblist));
+cpus_read_unlock();
+
+                                                                // wait CPU1 to comes online and
+                                                                // invoke barrier callback on
+                                                                // CPU1 rdp's->cblist
+                                                                wait_for_completion(&rcu_state.barrier_completion);
+// deoffload CPU4
+cpus_read_lock()
+  rcu_barrier()
+    mutex_lock(&rcu_state.barrier_mutex);
+    // block on barrier_mutex
+    // wait rcu_barrier() on
+    // CPU3 to unlock barrier_mutex
+    // but CPU3 unlock barrier_mutex
+    // need to wait CPU1 comes online
+    // when CPU1 going online will block on cpus_write_lock
+
+The above scenario will not only trigger a WARN_ON_ONCE(), but also
+trigger a deadlock.
+
+Thanks to nocb locking, a second racing rcu_barrier() on an offline CPU
+will either observe the decremented callback counter down to 0 and spare
+the callback enqueue, or rcuo will observe the new callback and keep
+rdp->nocb_cb_sleep to false.
+
+Therefore check rdp->nocb_cb_sleep before parking to make sure no
+further rcu_barrier() is waiting on the rdp.
+
+Fixes: 1fcb932c8b5c ("rcu/nocb: Simplify (de-)offloading state machine")
+Suggested-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/omapdrm/omap_gem.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ kernel/rcu/tree_nocb.h | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-index fdae677558f3e..b9c67e4ca3605 100644
---- a/drivers/gpu/drm/omapdrm/omap_gem.c
-+++ b/drivers/gpu/drm/omapdrm/omap_gem.c
-@@ -1402,8 +1402,6 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
- 
- 	omap_obj = to_omap_bo(obj);
- 
--	mutex_lock(&omap_obj->lock);
--
- 	omap_obj->sgt = sgt;
- 
- 	if (omap_gem_sgt_is_contiguous(sgt, size)) {
-@@ -1418,21 +1416,17 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
- 		pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
- 		if (!pages) {
- 			omap_gem_free_object(obj);
--			obj = ERR_PTR(-ENOMEM);
--			goto done;
-+			return ERR_PTR(-ENOMEM);
- 		}
- 
- 		omap_obj->pages = pages;
- 		ret = drm_prime_sg_to_page_array(sgt, pages, npages);
- 		if (ret) {
- 			omap_gem_free_object(obj);
--			obj = ERR_PTR(-ENOMEM);
--			goto done;
-+			return ERR_PTR(-ENOMEM);
- 		}
- 	}
- 
--done:
--	mutex_unlock(&omap_obj->lock);
- 	return obj;
- }
- 
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 16865475120ba..2605dd234a13c 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -891,7 +891,18 @@ static void nocb_cb_wait(struct rcu_data *rdp)
+ 	swait_event_interruptible_exclusive(rdp->nocb_cb_wq,
+ 					    nocb_cb_wait_cond(rdp));
+ 	if (kthread_should_park()) {
+-		kthread_parkme();
++		/*
++		 * kthread_park() must be preceded by an rcu_barrier().
++		 * But yet another rcu_barrier() might have sneaked in between
++		 * the barrier callback execution and the callbacks counter
++		 * decrement.
++		 */
++		if (rdp->nocb_cb_sleep) {
++			rcu_nocb_lock_irqsave(rdp, flags);
++			WARN_ON_ONCE(rcu_segcblist_n_cbs(&rdp->cblist));
++			rcu_nocb_unlock_irqrestore(rdp, flags);
++			kthread_parkme();
++		}
+ 	} else if (READ_ONCE(rdp->nocb_cb_sleep)) {
+ 		WARN_ON(signal_pending(current));
+ 		trace_rcu_nocb_wake(rcu_state.name, rdp->cpu, TPS("WokeEmpty"));
 -- 
 2.43.0
 
