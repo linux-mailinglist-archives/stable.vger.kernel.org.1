@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-97417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5AC9E295D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:33:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF139E2921
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44231B35AC0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D87BBC7D0C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9421FA17D;
-	Tue,  3 Dec 2024 15:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EC3C1FBC90;
+	Tue,  3 Dec 2024 15:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neeyKlHU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbSi0MUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCBF1FA174;
-	Tue,  3 Dec 2024 15:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20091EE001;
+	Tue,  3 Dec 2024 15:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240439; cv=none; b=OIGKr25aPekioyzjgRkR8Eu/TAD3w2KnH/EfIwCQyLw03bXTG2TyWbnDnW/GND844hvRSWgzgH0xCy8rgcQqKx/FafGcdcx0w/huPBKNTdi0hhVKSGyMFpVfKmIUqk7bVRyBi5tOGDBpczeg3nkViihDlSKroB4QzfUEaT22d0w=
+	t=1733240503; cv=none; b=QI9e7hIpY52KS5MQeSejXL6R9rlECgdc807zQpxQjTju9/60CAffaZBUKwPzETyOmfSkgbtoYrBC79T+IQvK3J+sQvSzie8o88eO0fqz8Rz+mZ6doYlLVNpsOew6lfxAQ4iM47EsDH0b2Th/FX7b3XCPQ8B55nsCwHrU7eXdmnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240439; c=relaxed/simple;
-	bh=ve/xHqJHe+Z8AMdJyRoBYKUEZLpvse36nACSSRHh/mA=;
+	s=arc-20240116; t=1733240503; c=relaxed/simple;
+	bh=vSsfiB8NjEv79jM0l7BEd3zU4MMO1n/Ii84xpv19dSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/q2P+z35vrA8GsgzgD5W+DEhhoIXUZZTl/0XVjBfWfxYYBqN40Ou1HKh3xOaJ5sHUChU2VCPTFd6RFLKbXUH2W1QFlXIehtM29BX6oIwTHQzLIeDHoGzGQDG9XpeQnalY3JcJNAd3a/FiSqUMCpn+iWLFEsdoUkVaxb03ZnjhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neeyKlHU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65716C4CECF;
-	Tue,  3 Dec 2024 15:40:38 +0000 (UTC)
+	 MIME-Version; b=XzIu0H7D+KxMt0EQV8S+OmlkF4veCo86+iBAR72q37KZOpwxy+XAwCoujpOgsaFARcDe8lNbGhtulQP41GT9E1Yco1nOK7/TYZlcXXdXvScSfUKsO8KSllBFmLKIvViU+WkNxl1xjMTatpKjcYEZtJuLdNFuTNX4/L012W8BIOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbSi0MUn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C635C4CED6;
+	Tue,  3 Dec 2024 15:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240438;
-	bh=ve/xHqJHe+Z8AMdJyRoBYKUEZLpvse36nACSSRHh/mA=;
+	s=korg; t=1733240502;
+	bh=vSsfiB8NjEv79jM0l7BEd3zU4MMO1n/Ii84xpv19dSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neeyKlHU0tFFHsazRAjwSKobKFL5cT0zqBNDOXvlQmpcSsv7FjSKihXNz2R8sPCIE
-	 px1JGPqHgUNmwNrjKq44pruOgEEbMYcDKgcGi8tAihIWEqCUBGJr93vWo2E8NFnLhN
-	 8qjhoZcw9uGEq9rdzuct7CU+7Yzk/c++XYKSPV0I=
+	b=wbSi0MUn+XQLFrkkRu8dMEidpznrwJLTRpAvXbLc2Fg9o7vYh/hTxx6ircrQYGqkX
+	 bw0CySu+89mv8Jy6Odr2xTRVHf3sWGaXBrWMeBz8smhjuOX0m5ZkI02llzHO1cDBKd
+	 +3sIobrUxbnERGe0Mgz1TNcFWIxSqXmCD3lPxuHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fei Shao <fshao@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 134/826] arm64: dts: mediatek: mt8195-cherry: Use correct audio codec DAI
-Date: Tue,  3 Dec 2024 15:37:41 +0100
-Message-ID: <20241203144748.969863171@linuxfoundation.org>
+Subject: [PATCH 6.12 137/826] regulator: rk808: Restrict DVS GPIOs to the RK808 variant only
+Date: Tue,  3 Dec 2024 15:37:44 +0100
+Message-ID: <20241203144749.087393560@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,60 +67,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fei Shao <fshao@chromium.org>
+From: Dragan Simic <dsimic@manjaro.org>
 
-[ Upstream commit 7d5794e6d964940e46286fadbe69a3245fa51e44 ]
+[ Upstream commit 0d214f27c0e3d9694284c95bac1502c2d247355b ]
 
-The RT5682i and RT5682s drivers describe two DAIs: AIF1 supports both
-playback and capture, while AIF2 supports capture only.
+The rk808-regulator driver supports multiple PMIC variants from the Rockckip
+RK80x and RK81x series, but the DVS GPIOs are supported on the RK808 variant
+only, according to the DT bindings [1][2][3][4][5][6] and the datasheets for
+the supported PMIC variants. [7][8][9][10][11][12]
 
-Cherry doesn't specify which DAI to use. Although this doesn't cause
-real issues because AIF1 happens to be the first DAI, it should be
-corrected:
-    codec@1a: #sound-dai-cells: 1 was expected
+Thus, change the probe path so the "dvs-gpios" property is checked for and
+its value possibly used only when the handled PMIC variant is RK808.  There's
+no point in doing that on the other PMIC variants, because they don't support
+the DVS GPIOs, and it goes against the DT bindings to allow a possible out-
+of-place "dvs-gpios" property to actually be handled in the driver.
 
-Update #sound-dai-cells to 1 and adjust DAI link usages accordingly.
+This eliminates the following messages, emitted when the "dvs-gpios" property
+isn't found in the DT, from the kernel log on boards that actually don't use
+the RK808 variant, which may have provided a source of confusion:
 
-Fixes: 87728e3ccf35 ("arm64: dts: mediatek: mt8195-cherry: Specify sound DAI links and routing")
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Link: https://lore.kernel.org/r/20241021114318.1358681-1-fshao@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+  rk808-regulator rk808-regulator.2.auto: there is no dvs0 gpio
+  rk808-regulator rk808-regulator.2.auto: there is no dvs1 gpio
+
+Furthermore, demote these kernel messages to debug messages, because they are
+useful during the board bringup phase only.  Emitting them afterwards, on the
+boards that use the RK808 variant, but actually don't use the DVS0/1 GPIOs,
+clutters the kernel log a bit, while they provide no value and may actually
+cause false impression that some PMIC-related issues are present.
+
+[1] Documentation/devicetree/bindings/mfd/rockchip,rk805.yaml
+[2] Documentation/devicetree/bindings/mfd/rockchip,rk806.yaml
+[3] Documentation/devicetree/bindings/mfd/rockchip,rk808.yaml
+[4] Documentation/devicetree/bindings/mfd/rockchip,rk816.yaml
+[5] Documentation/devicetree/bindings/mfd/rockchip,rk817.yaml
+[6] Documentation/devicetree/bindings/mfd/rockchip,rk818.yaml
+[7] https://rockchip.fr/RK805%20datasheet%20V1.2.pdf
+[8] https://wmsc.lcsc.com/wmsc/upload/file/pdf/v2/lcsc/2401261533_Rockchip-RK806-1_C5156483.pdf
+[9] https://rockchip.fr/RK808%20datasheet%20V1.4.pdf
+[10] https://rockchip.fr/RK816%20datasheet%20V1.3.pdf
+[11] https://rockchip.fr/RK817%20datasheet%20V1.01.pdf
+[12] https://rockchip.fr/RK818%20datasheet%20V1.0.pdf
+
+Fixes: 11375293530b ("regulator: rk808: Add regulator driver for RK818")
+Reported-by: Diederik de Haas <didi.debian@cknow.org>
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://patch.msgid.link/9a415c59699e76fc7b88a2552520a4ca2538f44e.1728902488.git.dsimic@manjaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/regulator/rk808-regulator.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-index 75d56b2d5a3d3..2c7b2223ee76b 100644
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -438,7 +438,7 @@ audio_codec: codec@1a {
- 		/* Realtek RT5682i or RT5682s, sharing the same configuration */
- 		reg = <0x1a>;
- 		interrupts-extended = <&pio 89 IRQ_TYPE_EDGE_BOTH>;
--		#sound-dai-cells = <0>;
-+		#sound-dai-cells = <1>;
- 		realtek,jd-src = <1>;
+diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
+index 01a8d04879184..37476d2558fda 100644
+--- a/drivers/regulator/rk808-regulator.c
++++ b/drivers/regulator/rk808-regulator.c
+@@ -1853,7 +1853,7 @@ static int rk808_regulator_dt_parse_pdata(struct device *dev,
+ 		}
  
- 		AVDD-supply = <&mt6359_vio18_ldo_reg>;
-@@ -1181,7 +1181,7 @@ hs-playback-dai-link {
- 		link-name = "ETDM1_OUT_BE";
- 		mediatek,clk-provider = "cpu";
- 		codec {
--			sound-dai = <&audio_codec>;
-+			sound-dai = <&audio_codec 0>;
- 		};
- 	};
+ 		if (!pdata->dvs_gpio[i]) {
+-			dev_info(dev, "there is no dvs%d gpio\n", i);
++			dev_dbg(dev, "there is no dvs%d gpio\n", i);
+ 			continue;
+ 		}
  
-@@ -1189,7 +1189,7 @@ hs-capture-dai-link {
- 		link-name = "ETDM2_IN_BE";
- 		mediatek,clk-provider = "cpu";
- 		codec {
--			sound-dai = <&audio_codec>;
-+			sound-dai = <&audio_codec 0>;
- 		};
- 	};
+@@ -1889,12 +1889,6 @@ static int rk808_regulator_probe(struct platform_device *pdev)
+ 	if (!pdata)
+ 		return -ENOMEM;
  
+-	ret = rk808_regulator_dt_parse_pdata(&pdev->dev, regmap, pdata);
+-	if (ret < 0)
+-		return ret;
+-
+-	platform_set_drvdata(pdev, pdata);
+-
+ 	switch (rk808->variant) {
+ 	case RK805_ID:
+ 		regulators = rk805_reg;
+@@ -1905,6 +1899,11 @@ static int rk808_regulator_probe(struct platform_device *pdev)
+ 		nregulators = ARRAY_SIZE(rk806_reg);
+ 		break;
+ 	case RK808_ID:
++		/* DVS0/1 GPIOs are supported on the RK808 only */
++		ret = rk808_regulator_dt_parse_pdata(&pdev->dev, regmap, pdata);
++		if (ret < 0)
++			return ret;
++
+ 		regulators = rk808_reg;
+ 		nregulators = RK808_NUM_REGULATORS;
+ 		break;
+@@ -1930,6 +1929,8 @@ static int rk808_regulator_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
+ 
++	platform_set_drvdata(pdev, pdata);
++
+ 	config.dev = &pdev->dev;
+ 	config.driver_data = pdata;
+ 	config.regmap = regmap;
 -- 
 2.43.0
 
