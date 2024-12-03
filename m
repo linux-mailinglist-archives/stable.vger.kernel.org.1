@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DA99E23C9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:42:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6573F9E243B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 215652873B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:42:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66C8EB347E1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155BD205ADC;
-	Tue,  3 Dec 2024 15:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5291F7065;
+	Tue,  3 Dec 2024 15:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVS+Iqea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1A1zg6Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8568205AD5;
-	Tue,  3 Dec 2024 15:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC61233FE;
+	Tue,  3 Dec 2024 15:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240240; cv=none; b=fJHPNHKQP9IJRq4M7NxO5mmolGLfxMG8UNC5XPQLggKec8jfxmXmSdv7wZ2/Cx1kSug1UyXmrRQ1JTdtxX6ie6UJBYhQAaXSXVAa3ezUx2MoBTl/eBaSxTN9JshFV8R7oi+ao8duC1ECxDl1St+XWk8+zr34fYjGi/j1e5QZYjg=
+	t=1733238198; cv=none; b=bphFG4dEoDS3+XpLipxR/dBasv28QvENu2+iNXtedodyilhwngm8DkIQxAWaMIQqkbecmukU6d5iHqmBLEo2SX8fgABIjg3IQE+98CX3codidB6YLLng27Ym7GFe+2mNwk+gF6bx56FpafoPK7yCdgQVnemaTCnvn7992HVqroU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240240; c=relaxed/simple;
-	bh=DmKdxU/mMeTQA79jza+fwWy/dN7Ml2py2q26tIxGgRM=;
+	s=arc-20240116; t=1733238198; c=relaxed/simple;
+	bh=Rc3KydQtoykGm/n2lRNvQXMhMGTd/Cul19dPgtCiwSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxpEJK1YEoEufuw/Bo21d4X16blsU53xmeaL/d1LEUXQNVtWgkAMe+pOXyPspdftMpcYE79SFQxa1BcoIjAmQTU9MmeetI8hIIkvZ8h1OxydhPo8rlzTsKVuwtFOKYClN4jcf9niDE5f/NAaK6QRX9+czTm623ul7/QrMU3NAlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVS+Iqea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53921C4CED6;
-	Tue,  3 Dec 2024 15:37:20 +0000 (UTC)
+	 MIME-Version; b=QjQzpYqLkWPVZt9oe9Vf4mhdac3NH+KxJtKUcTEH/pER+mUGsz43MhAA63eaQZzxulaVyEY5udiu8y6wLfWBk6oaTbLMhYVgFlVcA3jA7vcNpCHkiPfKrpOuLBZCfJoNimKfusbSRmk8P44USGlYuhqmCQQ+QHjHS3Y1qv88bag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1A1zg6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39947C4CECF;
+	Tue,  3 Dec 2024 15:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240240;
-	bh=DmKdxU/mMeTQA79jza+fwWy/dN7Ml2py2q26tIxGgRM=;
+	s=korg; t=1733238198;
+	bh=Rc3KydQtoykGm/n2lRNvQXMhMGTd/Cul19dPgtCiwSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kVS+IqeaKutt7sunWmePzVppjWboIoaa5whDIMjsUXKmoCgQP7Sljf6FR/c72ga84
-	 SbgWMHXN7kx5o/PEpzWpOfdtoj6gR8cBcmyiqeaohEHeIAb/jF5gKhvEX7TQEyqsyB
-	 A09pPx+e3AVo4kchjNcPAvEXTxLEWxE/pA0nM144=
+	b=q1A1zg6YKb/9EH2XrWH+1lveh08mYYMKNHDBFC2KUU4GDKUKDcKnRShrgcd9RzzPV
+	 eCZi5fRrQdbzvV5ElhSMc76QJvwdiF7k475TGa1NRopdDV5qEDnOUH3k91Ojev5pKh
+	 +7ixocsDa+r5ceC25CWWHsAsITbXUDnGo3SvfYXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomas Paukrt <tomaspaukrt@email.cz>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/826] crypto: mxs-dcp - Fix AES-CBC with hardware-bound keys
+Subject: [PATCH 6.11 195/817] arm64: dts: renesas: hihope: Drop #sound-dai-cells
 Date: Tue,  3 Dec 2024 15:36:07 +0100
-Message-ID: <20241203144745.028557510@linuxfoundation.org>
+Message-ID: <20241203144003.350855838@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Paukrt <tomaspaukrt@email.cz>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 0dbb6854ca14933e194e8e46c894ca7bff95d0f3 ]
+[ Upstream commit 9cc926e3fab42dd292219796cfc94e41f4ab749d ]
 
-Fix passing an initialization vector in the payload field which
-is necessary for AES in CBC mode even with hardware-bound keys.
+"#sound-dai-cells" is required if the board is using "simple-card".
+However, the HiHope board uses "audio-graph", thus remove the unneeded
+`#sound-dai-cells`.
 
-Fixes: 3d16af0b4cfa ("crypto: mxs-dcp: Add support for hardware-bound keys")
-Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Commit 9e72606cd2db ("arm64: dts: renesas: #sound-dai-cells is used when
+simple-card") updated the comment regarding usage of "#sound-dai-cells"
+in the SoC DTSI but missed to remove "#sound-dai-cells" from board DTS
+files.
+
+Fixes: 9e72606cd2db ("arm64: dts: renesas: #sound-dai-cells is used when simple-card")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/20241010135332.710648-1-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/mxs-dcp.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/renesas/hihope-rev2.dtsi | 3 ---
+ arch/arm64/boot/dts/renesas/hihope-rev4.dtsi | 3 ---
+ 2 files changed, 6 deletions(-)
 
-diff --git a/drivers/crypto/mxs-dcp.c b/drivers/crypto/mxs-dcp.c
-index c82775dbb557a..77a6301f37f0a 100644
---- a/drivers/crypto/mxs-dcp.c
-+++ b/drivers/crypto/mxs-dcp.c
-@@ -225,21 +225,22 @@ static int mxs_dcp_start_dma(struct dcp_async_ctx *actx)
- static int mxs_dcp_run_aes(struct dcp_async_ctx *actx,
- 			   struct skcipher_request *req, int init)
- {
--	dma_addr_t key_phys = 0;
--	dma_addr_t src_phys, dst_phys;
-+	dma_addr_t key_phys, src_phys, dst_phys;
- 	struct dcp *sdcp = global_sdcp;
- 	struct dcp_dma_desc *desc = &sdcp->coh->desc[actx->chan];
- 	struct dcp_aes_req_ctx *rctx = skcipher_request_ctx(req);
- 	bool key_referenced = actx->key_referenced;
- 	int ret;
+diff --git a/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi b/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi
+index 8e2db1d6ca81e..25c55b32aafe5 100644
+--- a/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi
++++ b/arch/arm64/boot/dts/renesas/hihope-rev2.dtsi
+@@ -69,9 +69,6 @@ &rcar_sound {
  
--	if (!key_referenced) {
-+	if (key_referenced)
-+		key_phys = dma_map_single(sdcp->dev, sdcp->coh->aes_key + AES_KEYSIZE_128,
-+					  AES_KEYSIZE_128, DMA_TO_DEVICE);
-+	else
- 		key_phys = dma_map_single(sdcp->dev, sdcp->coh->aes_key,
- 					  2 * AES_KEYSIZE_128, DMA_TO_DEVICE);
--		ret = dma_mapping_error(sdcp->dev, key_phys);
--		if (ret)
--			return ret;
--	}
-+	ret = dma_mapping_error(sdcp->dev, key_phys);
-+	if (ret)
-+		return ret;
+ 	status = "okay";
  
- 	src_phys = dma_map_single(sdcp->dev, sdcp->coh->aes_in_buf,
- 				  DCP_BUF_SZ, DMA_TO_DEVICE);
-@@ -300,7 +301,10 @@ static int mxs_dcp_run_aes(struct dcp_async_ctx *actx,
- err_dst:
- 	dma_unmap_single(sdcp->dev, src_phys, DCP_BUF_SZ, DMA_TO_DEVICE);
- err_src:
--	if (!key_referenced)
-+	if (key_referenced)
-+		dma_unmap_single(sdcp->dev, key_phys, AES_KEYSIZE_128,
-+				 DMA_TO_DEVICE);
-+	else
- 		dma_unmap_single(sdcp->dev, key_phys, 2 * AES_KEYSIZE_128,
- 				 DMA_TO_DEVICE);
- 	return ret;
+-	/* Single DAI */
+-	#sound-dai-cells = <0>;
+-
+ 	rsnd_port: port {
+ 		rsnd_endpoint: endpoint {
+ 			remote-endpoint = <&dw_hdmi0_snd_in>;
+diff --git a/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi b/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi
+index 66f3affe04697..deb69c2727756 100644
+--- a/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi
++++ b/arch/arm64/boot/dts/renesas/hihope-rev4.dtsi
+@@ -84,9 +84,6 @@ &rcar_sound {
+ 	pinctrl-names = "default";
+ 	status = "okay";
+ 
+-	/* Single DAI */
+-	#sound-dai-cells = <0>;
+-
+ 	/* audio_clkout0/1/2/3 */
+ 	#clock-cells = <1>;
+ 	clock-frequency = <12288000 11289600>;
 -- 
 2.43.0
 
