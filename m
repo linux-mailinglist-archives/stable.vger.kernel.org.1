@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-97594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFAD69E2527
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:57:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C7C39E247D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E90D1166457
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42AB4287CBB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0CA1F8916;
-	Tue,  3 Dec 2024 15:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B590A1F756A;
+	Tue,  3 Dec 2024 15:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToCwri37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkEgXvtP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14BA1DAC9F;
-	Tue,  3 Dec 2024 15:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BD4153800;
+	Tue,  3 Dec 2024 15:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241054; cv=none; b=nM/DaYVpEJvCLRGTXo3PcjPMQZMDgFrAs+HBiYtRNTEbfReiUo4wMx2n6QWmiAzcCQblE92Z+jDaxpPv5F8BiQ3e/sBOZV8wZyGlUHe94ZED9oLJ9w8xkUuQgvkOTaZ11cJpTjc99T7b+zb1DF1mTtKSFB6nQyd1DxdoQQSoHf4=
+	t=1733240942; cv=none; b=GtXRuaZDVjOaEAwm3PNCcMYwOadL4NjBnXH82Ih7SoOrLjD1c7sjaMRr4I37FM5bVvUResOBV4nxrlbNJCNC5dINbWCJbwJ2E03lCDoH85i3YJ1v5cqSsYitgCwxr8GYYYfHVChYFKnugJIOJkeM9LMasoINqR2cGCDPGIb4rOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241054; c=relaxed/simple;
-	bh=hwTSditoq2gjqULLpMNipxrabK/7z5Jn3No4dTS1ZLg=;
+	s=arc-20240116; t=1733240942; c=relaxed/simple;
+	bh=pIBVjTzuRx/ZawJF0ypHRope5VOdStqmeRFaW6MPiks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPKS8PUDRYiUuuPJMKElmIfCU5f8ePvKwKd9gGT1zgJ8NUpz/DxHnt9VjLfYxO0rdIa2QAUz9yHcrUg3oPtBlxBkhhkRAEXdD/OZ0lvj0OTzfHa+TuaEA9NdSf/ljsUvwrlgitqXkzCVdvAf9PomrW5LsvzNpeBaPz/O0kw/z3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToCwri37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BB8C4CED6;
-	Tue,  3 Dec 2024 15:50:53 +0000 (UTC)
+	 MIME-Version; b=W1ppzNoIRTJ0RzTU3TKng2kv637Y+mZzHUMSJXvjAjBu1dkWoqudYsHb+Dx535ATEyRu++MdzdO2K7flMQUVg6UFbDd66N5UNE4qN0OREdc9iKRRcgFef/eFvG97sU3Shk0w2opw2yZSCFgKHVWvsnoFusa5NG/+TPWyntQzmOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkEgXvtP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBF8C4CECF;
+	Tue,  3 Dec 2024 15:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241054;
-	bh=hwTSditoq2gjqULLpMNipxrabK/7z5Jn3No4dTS1ZLg=;
+	s=korg; t=1733240942;
+	bh=pIBVjTzuRx/ZawJF0ypHRope5VOdStqmeRFaW6MPiks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToCwri37DaH+fT0zhRqk4mai2ncHPwQxaPb38/O2GBEFcZvUCqF6YV6ReMdzlbnUd
-	 ycKGOEKZnEp28MdXI2oJUwY9Fes0vnk4oZQWQhFdjv0OGJlH7gXS1Vlpglkol4oNfQ
-	 n/Zzr38DOwiIodF6VGdUZale2pm8CaTNF/OMpixg=
+	b=lkEgXvtP4nRafIdOeKW+g00c1WPt8I1OqZShHsOYNDvmNQ4uWC69cymZt9kjubolQ
+	 +DkWFD08aSgOA9W0DqXCSnkjnAB2ARevj5/uNU+fQBClr4Ho0P4M/j+kKWPsdkoTe9
+	 /GJ0W10jWHUHdLsdG8UUjXqZhiEomcBzYsi0bvU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+	Sui Jingfeng <sui.jingfeng@linux.dev>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 280/826] drm/xe/hdcp: Fix gsc structure check in fw check status
-Date: Tue,  3 Dec 2024 15:40:07 +0100
-Message-ID: <20241203144754.695147102@linuxfoundation.org>
+Subject: [PATCH 6.12 281/826] drm/etnaviv: Request pages from DMA32 zone on addressing_limited
+Date: Tue,  3 Dec 2024 15:40:08 +0100
+Message-ID: <20241203144754.732887287@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,36 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Suraj Kandpal <suraj.kandpal@intel.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 182a32bcc223203c57761889fac7fa2dbb34684b ]
+[ Upstream commit 13c96ac9a3f0f1c7ba1ff0656ea508e7fa065e7e ]
 
-Fix the condition for gsc structure validity in
-gsc_cs_status_check(). It needs to be an OR and not an AND
-condition
+Remove __GFP_HIGHMEM when requesting a page from DMA32 zone,
+and since all vivante GPUs in the system will share the same
+DMA constraints, move the check of whether to get a page from
+DMA32 to etnaviv_bind().
 
-Fixes: b4224f6bae38 ("drm/xe/hdcp: Check GSC structure validity")
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241025160834.8785-1-suraj.kandpal@intel.com
+Fixes: b72af445cd38 ("drm/etnaviv: request pages from DMA32 zone when needed")
+Suggested-by: Sui Jingfeng <sui.jingfeng@linux.dev>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/display/xe_hdcp_gsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_drv.c | 10 ++++++++++
+ drivers/gpu/drm/etnaviv/etnaviv_gpu.c |  8 --------
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-index 6619a40aed153..f4332f06b6c80 100644
---- a/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-+++ b/drivers/gpu/drm/xe/display/xe_hdcp_gsc.c
-@@ -42,7 +42,7 @@ bool intel_hdcp_gsc_check_status(struct xe_device *xe)
- 	struct xe_gsc *gsc = &gt->uc.gsc;
- 	bool ret = true;
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+index 6500f3999c5fa..19ec67a5a918e 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
+@@ -538,6 +538,16 @@ static int etnaviv_bind(struct device *dev)
+ 	priv->num_gpus = 0;
+ 	priv->shm_gfp_mask = GFP_HIGHUSER | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
  
--	if (!gsc && !xe_uc_fw_is_enabled(&gsc->fw)) {
-+	if (!gsc || !xe_uc_fw_is_enabled(&gsc->fw)) {
- 		drm_dbg_kms(&xe->drm,
- 			    "GSC Components not ready for HDCP2.x\n");
- 		return false;
++	/*
++	 * If the GPU is part of a system with DMA addressing limitations,
++	 * request pages for our SHM backend buffers from the DMA32 zone to
++	 * hopefully avoid performance killing SWIOTLB bounce buffering.
++	 */
++	if (dma_addressing_limited(dev)) {
++		priv->shm_gfp_mask |= GFP_DMA32;
++		priv->shm_gfp_mask &= ~__GFP_HIGHMEM;
++	}
++
+ 	priv->cmdbuf_suballoc = etnaviv_cmdbuf_suballoc_new(drm->dev);
+ 	if (IS_ERR(priv->cmdbuf_suballoc)) {
+ 		dev_err(drm->dev, "Failed to create cmdbuf suballocator\n");
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+index 7c7f97793ddd0..5e753dd42f721 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
+@@ -839,14 +839,6 @@ int etnaviv_gpu_init(struct etnaviv_gpu *gpu)
+ 	if (ret)
+ 		goto fail;
+ 
+-	/*
+-	 * If the GPU is part of a system with DMA addressing limitations,
+-	 * request pages for our SHM backend buffers from the DMA32 zone to
+-	 * hopefully avoid performance killing SWIOTLB bounce buffering.
+-	 */
+-	if (dma_addressing_limited(gpu->dev))
+-		priv->shm_gfp_mask |= GFP_DMA32;
+-
+ 	/* Create buffer: */
+ 	ret = etnaviv_cmdbuf_init(priv->cmdbuf_suballoc, &gpu->buffer,
+ 				  PAGE_SIZE);
 -- 
 2.43.0
 
