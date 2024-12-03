@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-97042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7993A9E22AD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA09F9E25AB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD0C8169564
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A11B164C91
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019F31F473A;
-	Tue,  3 Dec 2024 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4261F75BC;
+	Tue,  3 Dec 2024 15:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3M4Ti2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MROrYuGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C0F1F472A;
-	Tue,  3 Dec 2024 15:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6889E1DE8A5;
+	Tue,  3 Dec 2024 15:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239352; cv=none; b=DZOTFgB/+n1HbAsGe0tuTuH0/ywhD+FPTH24jwHDfP3MP2nY1eFTKl1m1uHKaM/vX9hIvyYVwK3Y/rq7WOt++buuU9qpbQcboNoPJ1k8B99oZ6eSPvlVT9SRLRy58d79Sbxsbza9wOvHVFeZMmEDG+exsSL0x+o0SFTz6nauMtg=
+	t=1733241483; cv=none; b=qCBhb3jNk1d22EULx4+m0yE32/NZS9B3+Zzc/yefjLLHNqh/LZB9zKtwdubkJm6mtTH9scI98I8q1YdW6I6ab1nbrdg9HOQu9l4tp6XvGkz6gKxH/uKdaLlbLyNV1jBNI1l+jFeJlS2W31ofD68mqKKe5PY5hHWyrHhr+WZ8SQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239352; c=relaxed/simple;
-	bh=7zR5pL9dfzETqB6YOBwkQj6KUYcN4gIjKjAVzAScQ+g=;
+	s=arc-20240116; t=1733241483; c=relaxed/simple;
+	bh=hU8ng9lI51nVh2xg1Lm1g78jEFoRQFzeHrZjkacWiZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWp6eDb7aFEgrutw51i/eIp5IzD5oqbwI1mYOeLY3Cnw5PkjlKITaiBnewYmCAh/oY9zC2syd1+OfVeQpIFpE5eS9aDoZuzNwdAav6FAUD4O4GM45B0v+QNfccTldIV8J6BsfiBjkzAk6UmypODLVz9waWP0aUSapQUBHnOdQnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3M4Ti2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6C4C4CECF;
-	Tue,  3 Dec 2024 15:22:31 +0000 (UTC)
+	 MIME-Version; b=VvwJigi6ZnTEmtvjv46ZlPScbVjXoiFY1Xlz1IH9l89OiIUWuy3xCj3v6uMX4tWAjd8jgg0qmofHDll1gTOWzh8twJkBpBiEAZWjaZr623Ma6X6M6nNjpuhL25qc97+F2HCSijwgRqVQu60VTHtFv+h3Sw7sE26s9KE55W5/n4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MROrYuGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA66BC4CECF;
+	Tue,  3 Dec 2024 15:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239352;
-	bh=7zR5pL9dfzETqB6YOBwkQj6KUYcN4gIjKjAVzAScQ+g=;
+	s=korg; t=1733241483;
+	bh=hU8ng9lI51nVh2xg1Lm1g78jEFoRQFzeHrZjkacWiZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m3M4Ti2B65I0XJzN3WsuZp4ubxhrlHlTsy1YdjrSlHR/MT4V+fii5PdVoJupxcriK
-	 mNzbDJ4A0Seoq6DoBQqvIzZI+KkpinHAkFtySwc2vzK7PJDQCdebN41UgLUsmpHFF+
-	 WfZLqv5y5xdTi9golJGHVGfGfEhBb6MhVhMjWMi0=
+	b=MROrYuGslW/QPoECUYBOE2lH8us9o36bKlaAO3jhqQ8tZYAZe87xHT5mXA37XmLd4
+	 L+9x52SL6m6CS/PXWBJpeEiZTQo8p6Rmt5QMG9Zadg3jM3RcXW0h4ITSNS3lQcQ7HC
+	 x4tMP1P2We90uWXPp3KVTdslkskd2bdjxgnm/Cfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 585/817] bnxt_en: Reserve rings after PCIe AER recovery if NIC interface is down
+Subject: [PATCH 6.12 430/826] cpufreq: loongson3: Check for error code from devm_mutex_init() call
 Date: Tue,  3 Dec 2024 15:42:37 +0100
-Message-ID: <20241203144018.756165838@linuxfoundation.org>
+Message-ID: <20241203144800.535863043@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 5311598f7f3293683cdc761df71ae3469327332c ]
+[ Upstream commit db01e46689e9a986ca6b5d2f41b57d7a81551a4f ]
 
-After successful PCIe AER recovery, FW will reset all resource
-reservations.  If it is IF_UP, the driver will call bnxt_open() and
-all resources will be reserved again.  It it is IF_DOWN, we should
-call bnxt_reserve_rings() so that we can reserve resources including
-RoCE resources to allow RoCE to resume after AER.  Without this
-patch, RoCE fails to resume in this IF_DOWN scenario.
+Even if it's not critical, the avoidance of checking the error code
+from devm_mutex_init() call today diminishes the point of using devm
+variant of it. Tomorrow it may even leak something. Add the missed
+check.
 
-Later, if it becomes IF_UP, bnxt_open() will see that resources have
-been reserved and will not reserve again.
-
-Fixes: fb1e6e562b37 ("bnxt_en: Fix AER recovery.")
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ccf51454145b ("cpufreq: Add Loongson-3 CPUFreq driver support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/cpufreq/loongson3_cpufreq.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 103e6aa604c33..4facf0368564b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -16171,8 +16171,12 @@ static void bnxt_io_resume(struct pci_dev *pdev)
- 	rtnl_lock();
+diff --git a/drivers/cpufreq/loongson3_cpufreq.c b/drivers/cpufreq/loongson3_cpufreq.c
+index 6b5e6798d9a28..a923e196ec86e 100644
+--- a/drivers/cpufreq/loongson3_cpufreq.c
++++ b/drivers/cpufreq/loongson3_cpufreq.c
+@@ -346,8 +346,11 @@ static int loongson3_cpufreq_probe(struct platform_device *pdev)
+ {
+ 	int i, ret;
  
- 	err = bnxt_hwrm_func_qcaps(bp);
--	if (!err && netif_running(netdev))
--		err = bnxt_open(netdev);
-+	if (!err) {
-+		if (netif_running(netdev))
-+			err = bnxt_open(netdev);
-+		else
-+			err = bnxt_reserve_rings(bp, true);
+-	for (i = 0; i < MAX_PACKAGES; i++)
+-		devm_mutex_init(&pdev->dev, &cpufreq_mutex[i]);
++	for (i = 0; i < MAX_PACKAGES; i++) {
++		ret = devm_mutex_init(&pdev->dev, &cpufreq_mutex[i]);
++		if (ret)
++			return ret;
 +	}
  
- 	if (!err)
- 		netif_device_attach(netdev);
+ 	ret = do_service_request(0, 0, CMD_GET_VERSION, 0, 0);
+ 	if (ret <= 0)
 -- 
 2.43.0
 
