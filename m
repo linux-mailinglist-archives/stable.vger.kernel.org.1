@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-98045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8BC9E26C0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:17:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C919E269A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0F8128207C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 611552892EB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA87D1F8936;
-	Tue,  3 Dec 2024 16:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D319B1F757E;
+	Tue,  3 Dec 2024 16:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NN0e/QMp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mmh7GsoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D201EE00B;
-	Tue,  3 Dec 2024 16:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6941F8905;
+	Tue,  3 Dec 2024 16:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242610; cv=none; b=QbuCqvKJy8rreLu2mflROcY0TerEAgDzIIca+AB3FVsx5BTB+h7vNsINQ1glc1jngSYvz+c7h+vAKzQwYpn4wv1qssjqtosSaoEitLD36DQWGtQG4idXepR6v+rdTjhoLuxzrcxKlwY37w7FBx6XrX/5y3tZy6Fsn6dmXS/5JwE=
+	t=1733242506; cv=none; b=OOEkAyhjSnHJnAwChdt1Y59Fz6WCmdoXzmmjEzo9N0v9JvHd6kdkI2RZd9CnDeMvCreMWyRivWOCLjgDpZzDvsaUiJlYF8FxLuh0pXOdmVO2R6+Vo858pth1cTTsK7445vXYkj6FoiGk9Z+W3ETwjQCd135FrbMauIt0Jo+Wn98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242610; c=relaxed/simple;
-	bh=neF6z0mJRfuyA3cna/mWo6YL8EfheWMLxBYlWzLGkGI=;
+	s=arc-20240116; t=1733242506; c=relaxed/simple;
+	bh=KGHRqexlZLxkQwzak2lddvbZ+M+Eb7NbwE9IGcGeWF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HklAfV4a6uDCg9e0gzXLhP3AHm4ReOs0azTULJ3I9v8gVL5/2X/+CW2SCLjo5hOJr0G51jCuS+RtPWzPpFVUj911j3XKv/+GqNPLdk4F5n9xIiDbFR/WecoggOLFQ8e4vxN3h101MTXBTVjtuiCA/c1i0RcljfJ3qQFyLaVSvM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NN0e/QMp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C75C4CECF;
-	Tue,  3 Dec 2024 16:16:49 +0000 (UTC)
+	 MIME-Version; b=WVCRZfiLJv3ep+56YigtVSLF60Wb6Vk/bwicsLKQJQB9mb9RjP168mtQO0WEaxYMGi4DXL1Do6H0SFCyWerU/w6zIGa9lvjAdVMjkeJZl6XsJ5bzRnNHnRDQAy+W3aRBK/eJlYKE+xdgoWABmQN4LmdRXkOx/JdTAVUbcTkxH5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mmh7GsoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E25C4CECF;
+	Tue,  3 Dec 2024 16:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242610;
-	bh=neF6z0mJRfuyA3cna/mWo6YL8EfheWMLxBYlWzLGkGI=;
+	s=korg; t=1733242505;
+	bh=KGHRqexlZLxkQwzak2lddvbZ+M+Eb7NbwE9IGcGeWF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NN0e/QMpyIKpxOHdjPQQobprNtjE+GZMs8zvI+KknWHND7UWJd/tobKHD7AlcVFEp
-	 MMvI5F82maph2i4siQn3cXpLhI5rXvG9JtVY6Ninbr0rxnM+OYpzV6n3hnJMsohpQp
-	 itYBiavm6NqRLKCjNGOGnpP4LVUWNjw2yJ/h2Rvs=
+	b=Mmh7GsoUSswmW4Kv3G+OlN1BSbDNYh90JksfiVhVolGmYo6SsPLtlR50bZsN/+ajg
+	 rtDkBTJsAfjp1R9ODQySVIDa5+RE2K30FpUgruB+YSI/ySOVf/ugSHVShRCrET25hF
+	 8A6MYVgOkHEyN3M5tIJ6uTBTwDgYdksuT04Togtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Muchun Song <songmuchun@bytedance.com>,
 	Ming Lei <ming.lei@redhat.com>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 724/826] block: fix missing dispatching request when queue is started or unquiesced
-Date: Tue,  3 Dec 2024 15:47:31 +0100
-Message-ID: <20241203144812.004788757@linuxfoundation.org>
+Subject: [PATCH 6.12 725/826] block: fix ordering between checking QUEUE_FLAG_QUIESCED request adding
+Date: Tue,  3 Dec 2024 15:47:32 +0100
+Message-ID: <20241203144812.043852203@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -69,65 +69,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Muchun Song <songmuchun@bytedance.com>
 
-commit 2003ee8a9aa14d766b06088156978d53c2e9be3d upstream.
+commit 6bda857bcbb86fb9d0e54fbef93a093d51172acc upstream.
 
-Supposing the following scenario with a virtio_blk driver.
+Supposing the following scenario.
 
-CPU0                    CPU1                    CPU2
+CPU0                        CPU1
 
-blk_mq_try_issue_directly()
-  __blk_mq_issue_directly()
-    q->mq_ops->queue_rq()
-      virtio_queue_rq()
-        blk_mq_stop_hw_queue()
-                                                virtblk_done()
-                        blk_mq_try_issue_directly()
-                          if (blk_mq_hctx_stopped())
-  blk_mq_request_bypass_insert()                  blk_mq_run_hw_queue()
-  blk_mq_run_hw_queue()     blk_mq_run_hw_queue()
-                            blk_mq_insert_request()
-                            return
+blk_mq_insert_request()     1) store
+                            blk_mq_unquiesce_queue()
+                            blk_queue_flag_clear()                3) store
+                              blk_mq_run_hw_queues()
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+blk_mq_run_hw_queue()
+  if (blk_queue_quiesced()) 2) load
+    return
+  blk_mq_sched_dispatch_requests()
 
-After CPU0 has marked the queue as stopped, CPU1 will see the queue is
-stopped. But before CPU1 puts the request on the dispatch list, CPU2
-receives the interrupt of completion of request, so it will run the
-hardware queue and marks the queue as non-stopped. Meanwhile, CPU1 also
-runs the same hardware queue. After both CPU1 and CPU2 complete
-blk_mq_run_hw_queue(), CPU1 just puts the request to the same hardware
-queue and returns. It misses dispatching a request. Fix it by running
-the hardware queue explicitly. And blk_mq_request_issue_directly()
-should handle a similar situation. Fix it as well.
+The full memory barrier should be inserted between 1) and 2), as well as
+between 3) and 4) to make sure that either CPU0 sees QUEUE_FLAG_QUIESCED
+is cleared or CPU1 sees dispatch list or setting of bitmap of software
+queue. Otherwise, either CPU will not rerun the hardware queue causing
+starvation.
 
-Fixes: d964f04a8fde ("blk-mq: fix direct issue")
+So the first solution is to 1) add a pair of memory barrier to fix the
+problem, another solution is to 2) use hctx->queue->queue_lock to
+synchronize QUEUE_FLAG_QUIESCED. Here, we chose 2) to fix it since
+memory barrier is not easy to be maintained.
+
+Fixes: f4560ffe8cec ("blk-mq: use QUEUE_FLAG_QUIESCED to quiesce queue")
 Cc: stable@vger.kernel.org
 Cc: Muchun Song <muchun.song@linux.dev>
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241014092934.53630-2-songmuchun@bytedance.com
+Link: https://lore.kernel.org/r/20241014092934.53630-3-songmuchun@bytedance.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c |    2 ++
- 1 file changed, 2 insertions(+)
+ block/blk-mq.c |   49 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 35 insertions(+), 14 deletions(-)
 
 --- a/block/blk-mq.c
 +++ b/block/blk-mq.c
-@@ -2620,6 +2620,7 @@ static void blk_mq_try_issue_directly(st
+@@ -2200,6 +2200,24 @@ void blk_mq_delay_run_hw_queue(struct bl
+ }
+ EXPORT_SYMBOL(blk_mq_delay_run_hw_queue);
  
- 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
- 		blk_mq_insert_request(rq, 0);
-+		blk_mq_run_hw_queue(hctx, false);
- 		return;
- 	}
++static inline bool blk_mq_hw_queue_need_run(struct blk_mq_hw_ctx *hctx)
++{
++	bool need_run;
++
++	/*
++	 * When queue is quiesced, we may be switching io scheduler, or
++	 * updating nr_hw_queues, or other things, and we can't run queue
++	 * any more, even blk_mq_hctx_has_pending() can't be called safely.
++	 *
++	 * And queue will be rerun in blk_mq_unquiesce_queue() if it is
++	 * quiesced.
++	 */
++	__blk_mq_run_dispatch_ops(hctx->queue, false,
++		need_run = !blk_queue_quiesced(hctx->queue) &&
++		blk_mq_hctx_has_pending(hctx));
++	return need_run;
++}
++
+ /**
+  * blk_mq_run_hw_queue - Start to run a hardware queue.
+  * @hctx: Pointer to the hardware queue to run.
+@@ -2220,20 +2238,23 @@ void blk_mq_run_hw_queue(struct blk_mq_h
  
-@@ -2650,6 +2651,7 @@ static blk_status_t blk_mq_request_issue
+ 	might_sleep_if(!async && hctx->flags & BLK_MQ_F_BLOCKING);
  
- 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
- 		blk_mq_insert_request(rq, 0);
-+		blk_mq_run_hw_queue(hctx, false);
- 		return BLK_STS_OK;
- 	}
+-	/*
+-	 * When queue is quiesced, we may be switching io scheduler, or
+-	 * updating nr_hw_queues, or other things, and we can't run queue
+-	 * any more, even __blk_mq_hctx_has_pending() can't be called safely.
+-	 *
+-	 * And queue will be rerun in blk_mq_unquiesce_queue() if it is
+-	 * quiesced.
+-	 */
+-	__blk_mq_run_dispatch_ops(hctx->queue, false,
+-		need_run = !blk_queue_quiesced(hctx->queue) &&
+-		blk_mq_hctx_has_pending(hctx));
+-
+-	if (!need_run)
+-		return;
++	need_run = blk_mq_hw_queue_need_run(hctx);
++	if (!need_run) {
++		unsigned long flags;
++
++		/*
++		 * Synchronize with blk_mq_unquiesce_queue(), because we check
++		 * if hw queue is quiesced locklessly above, we need the use
++		 * ->queue_lock to make sure we see the up-to-date status to
++		 * not miss rerunning the hw queue.
++		 */
++		spin_lock_irqsave(&hctx->queue->queue_lock, flags);
++		need_run = blk_mq_hw_queue_need_run(hctx);
++		spin_unlock_irqrestore(&hctx->queue->queue_lock, flags);
++
++		if (!need_run)
++			return;
++	}
  
+ 	if (async || !cpumask_test_cpu(raw_smp_processor_id(), hctx->cpumask)) {
+ 		blk_mq_delay_run_hw_queue(hctx, 0);
 
 
 
