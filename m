@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D24C69E24DA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 312CF9E227B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93C38288035
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53A8216BE04
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461EC1F7060;
-	Tue,  3 Dec 2024 15:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A511F6696;
+	Tue,  3 Dec 2024 15:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XExL3+ip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygLselBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0091C1EF080;
-	Tue,  3 Dec 2024 15:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9C91EF0AE;
+	Tue,  3 Dec 2024 15:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241219; cv=none; b=syrRBaSPa3O0YXpdro3C8dEvipyIw7icCiJp7Z0alY+WI6rJng9pOetH8xDBRK1u1bV4ZKB1E3Efz/9waZqwa/73w8Y9IwSfGGaTlBGUkMAFt6h2Aq+DmFHuaOvWIFL2PfKpVfIR6FNntz+Xd7x4dqC3U1RNIfdCtCCbTkK1SL0=
+	t=1733239242; cv=none; b=SsHIlevND7G0bcsxgiPEaX7lpIn8hiuLj3Yvk7JqHM47k9l6/kVNSoTW7qod5wdL0EJo1MHCsd66feSf+RlOIJFk8bFusP0cevKT4TX+Y4GZYmiixvizhFczrkeZTTc7cUgriuFJ4QVejav8SeeAgLPYcptgYYckMlscUXTvulM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241219; c=relaxed/simple;
-	bh=hDzzc+bgyGIslIEWCsdxsIhsmNS/Hgu8bboMYEQQ3IQ=;
+	s=arc-20240116; t=1733239242; c=relaxed/simple;
+	bh=jB6HgUnNLybZXzF8IfUtyauEmGmOCskZW0NcE4Iilq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cjw3XovKrZHNOvyrKvRaqPFliz1+GeRwf474UdafF6lykNPlM9fN+BQAismNaUhsBOVOdmIIXK1lCBUwl+ZKJPLHxZqp+ILBM7ITmeAAlwO2xP2eVnZZaPK0LaRBCWlos7ptUDpPUMdb8HZzspbXJOQPlOYMSG6OKyzzCQkbKRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XExL3+ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279B6C4CED6;
-	Tue,  3 Dec 2024 15:53:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hOKeecFbujQSJtBkRgNRO5eRp3JG/+0U3H17Hea9uaDoIZBsLfm145PRpyYJ0iLCeTRl8ueJxnkjijKPVGvGr0XYddQzBja4NN7Di/6W3MOpy6Wo4JcZXqGhlZyrQnrb5xP6+QD51Gvxl52K0aJjV1bI050RC/wtG2EzBJCQyOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygLselBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070E4C4CECF;
+	Tue,  3 Dec 2024 15:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241218;
-	bh=hDzzc+bgyGIslIEWCsdxsIhsmNS/Hgu8bboMYEQQ3IQ=;
+	s=korg; t=1733239242;
+	bh=jB6HgUnNLybZXzF8IfUtyauEmGmOCskZW0NcE4Iilq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XExL3+ip9s/D3B/9T/WJHwTtG4ozHfFZwlvM3PwTTOE33Y/giCZjf30kqFVieiLy/
-	 O2eqOn6cnz1Fy8M5X7JmMGxvBTFHpHrNwHYjOTj17ELOBXGMafLFaCG24QEZkeLO+X
-	 3XwOVgJilTXJPrXiaOjsRvtavVth7XNkQTVR7FXI=
+	b=ygLselBTsLSqRKUzlubyjBjCKyTxfFcikyyaX3Br8LA+lOcxgehqOXUqWhy0RdyqZ
+	 4uIo8ZYn7oXSJwX/S9uAO4GNPYwZ94zDDdT/0HQpg20yzgp3MHvaH9vlqOZ9UG3Bnj
+	 XJKWkQ/Qxg4HUe8frDf27rhTt7VVKmZHcPJfEm7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Thomas Richard <thomas.richard@bootlin.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 359/826] RDMA/core: Provide rdma_user_mmap_disassociate() to disassociate mmap pages
-Date: Tue,  3 Dec 2024 15:41:26 +0100
-Message-ID: <20241203144757.763691802@linuxfoundation.org>
+Subject: [PATCH 6.11 515/817] PCI: cadence: Extract link setup sequence from cdns_pcie_host_setup()
+Date: Tue,  3 Dec 2024 15:41:27 +0100
+Message-ID: <20241203144015.999138513@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,186 +61,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Thomas Richard <thomas.richard@bootlin.com>
 
-[ Upstream commit 51976c6cd786151b6a1bdf8b8b3334beac0ba99c ]
+[ Upstream commit d1b6f2e2ce4d8b17d9f3558c98a1517b864bfd03 ]
 
-Provide a new api rdma_user_mmap_disassociate() for drivers to
-disassociate mmap pages for a device.
+The function cdns_pcie_host_setup() mixes probe structure and link setup.
 
-Since drivers can now disassociate mmaps by calling this api,
-introduce a new disassociation_lock to specifically prevent
-races between this disassociation process and new mmaps. And
-thus the old hw_destroy_rwsem is not needed in this api.
+The link setup must be done during the resume sequence. So extract it from
+cdns_pcie_host_setup() and create a dedicated function.
 
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20240927103323.1897094-2-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 615b94746a54 ("RDMA/hns: Disassociate mmap pages for all uctx when HW is being reset")
+Link: https://lore.kernel.org/linux-pci/20240102-j7200-pcie-s2r-v7-1-a2f9156da6c3@bootlin.com
+Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Stable-dep-of: 22a9120479a4 ("PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS milliseconds")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs.h      |  2 ++
- drivers/infiniband/core/uverbs_main.c | 43 +++++++++++++++++++++++++--
- include/rdma/ib_verbs.h               |  8 +++++
- 3 files changed, 51 insertions(+), 2 deletions(-)
+ .../controller/cadence/pcie-cadence-host.c    | 39 ++++++++++++-------
+ drivers/pci/controller/cadence/pcie-cadence.h |  6 +++
+ 2 files changed, 32 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/infiniband/core/uverbs.h b/drivers/infiniband/core/uverbs.h
-index 821d93c8f7123..dfd2e5a86e6fe 100644
---- a/drivers/infiniband/core/uverbs.h
-+++ b/drivers/infiniband/core/uverbs.h
-@@ -160,6 +160,8 @@ struct ib_uverbs_file {
- 	struct page *disassociate_page;
- 
- 	struct xarray		idr;
-+
-+	struct mutex disassociation_lock;
- };
- 
- struct ib_uverbs_event {
-diff --git a/drivers/infiniband/core/uverbs_main.c b/drivers/infiniband/core/uverbs_main.c
-index 94454186ed81d..85cfc790a7bb3 100644
---- a/drivers/infiniband/core/uverbs_main.c
-+++ b/drivers/infiniband/core/uverbs_main.c
-@@ -76,6 +76,7 @@ static dev_t dynamic_uverbs_dev;
- static DEFINE_IDA(uverbs_ida);
- static int ib_uverbs_add_one(struct ib_device *device);
- static void ib_uverbs_remove_one(struct ib_device *device, void *client_data);
-+static struct ib_client uverbs_client;
- 
- static char *uverbs_devnode(const struct device *dev, umode_t *mode)
- {
-@@ -217,6 +218,7 @@ void ib_uverbs_release_file(struct kref *ref)
- 
- 	if (file->disassociate_page)
- 		__free_pages(file->disassociate_page, 0);
-+	mutex_destroy(&file->disassociation_lock);
- 	mutex_destroy(&file->umap_lock);
- 	mutex_destroy(&file->ucontext_lock);
- 	kfree(file);
-@@ -698,8 +700,13 @@ static int ib_uverbs_mmap(struct file *filp, struct vm_area_struct *vma)
- 		ret = PTR_ERR(ucontext);
- 		goto out;
- 	}
-+
-+	mutex_lock(&file->disassociation_lock);
-+
- 	vma->vm_ops = &rdma_umap_ops;
- 	ret = ucontext->device->ops.mmap(ucontext, vma);
-+
-+	mutex_unlock(&file->disassociation_lock);
- out:
- 	srcu_read_unlock(&file->device->disassociate_srcu, srcu_key);
- 	return ret;
-@@ -721,6 +728,8 @@ static void rdma_umap_open(struct vm_area_struct *vma)
- 	/* We are racing with disassociation */
- 	if (!down_read_trylock(&ufile->hw_destroy_rwsem))
- 		goto out_zap;
-+	mutex_lock(&ufile->disassociation_lock);
-+
- 	/*
- 	 * Disassociation already completed, the VMA should already be zapped.
- 	 */
-@@ -732,10 +741,12 @@ static void rdma_umap_open(struct vm_area_struct *vma)
- 		goto out_unlock;
- 	rdma_umap_priv_init(priv, vma, opriv->entry);
- 
-+	mutex_unlock(&ufile->disassociation_lock);
- 	up_read(&ufile->hw_destroy_rwsem);
- 	return;
- 
- out_unlock:
-+	mutex_unlock(&ufile->disassociation_lock);
- 	up_read(&ufile->hw_destroy_rwsem);
- out_zap:
- 	/*
-@@ -819,7 +830,7 @@ void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile)
- {
- 	struct rdma_umap_priv *priv, *next_priv;
- 
--	lockdep_assert_held(&ufile->hw_destroy_rwsem);
-+	mutex_lock(&ufile->disassociation_lock);
- 
- 	while (1) {
- 		struct mm_struct *mm = NULL;
-@@ -845,8 +856,10 @@ void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile)
- 			break;
- 		}
- 		mutex_unlock(&ufile->umap_lock);
--		if (!mm)
-+		if (!mm) {
-+			mutex_unlock(&ufile->disassociation_lock);
- 			return;
-+		}
- 
- 		/*
- 		 * The umap_lock is nested under mmap_lock since it used within
-@@ -876,7 +889,31 @@ void uverbs_user_mmap_disassociate(struct ib_uverbs_file *ufile)
- 		mmap_read_unlock(mm);
- 		mmput(mm);
- 	}
-+
-+	mutex_unlock(&ufile->disassociation_lock);
-+}
-+
-+/**
-+ * rdma_user_mmap_disassociate() - Revoke mmaps for a device
-+ * @device: device to revoke
-+ *
-+ * This function should be called by drivers that need to disable mmaps for the
-+ * device, for instance because it is going to be reset.
-+ */
-+void rdma_user_mmap_disassociate(struct ib_device *device)
-+{
-+	struct ib_uverbs_device *uverbs_dev =
-+		ib_get_client_data(device, &uverbs_client);
-+	struct ib_uverbs_file *ufile;
-+
-+	mutex_lock(&uverbs_dev->lists_mutex);
-+	list_for_each_entry(ufile, &uverbs_dev->uverbs_file_list, list) {
-+		if (ufile->ucontext)
-+			uverbs_user_mmap_disassociate(ufile);
-+	}
-+	mutex_unlock(&uverbs_dev->lists_mutex);
+diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
+index 5b14f7ee3c798..93d9922730af5 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence-host.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
+@@ -497,6 +497,30 @@ static int cdns_pcie_host_init(struct device *dev,
+ 	return cdns_pcie_host_init_address_translation(rc);
  }
-+EXPORT_SYMBOL(rdma_user_mmap_disassociate);
  
- /*
-  * ib_uverbs_open() does not need the BKL:
-@@ -947,6 +984,8 @@ static int ib_uverbs_open(struct inode *inode, struct file *filp)
- 	mutex_init(&file->umap_lock);
- 	INIT_LIST_HEAD(&file->umaps);
- 
-+	mutex_init(&file->disassociation_lock);
-+
- 	filp->private_data = file;
- 	list_add_tail(&file->list, &dev->uverbs_file_list);
- 	mutex_unlock(&dev->lists_mutex);
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index aa8ede439905c..9cb8b5fe7eee4 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -2948,6 +2948,14 @@ int rdma_user_mmap_entry_insert_range(struct ib_ucontext *ucontext,
- 				      size_t length, u32 min_pgoff,
- 				      u32 max_pgoff);
- 
-+#if IS_ENABLED(CONFIG_INFINIBAND_USER_ACCESS)
-+void rdma_user_mmap_disassociate(struct ib_device *device);
-+#else
-+static inline void rdma_user_mmap_disassociate(struct ib_device *device)
++int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc)
 +{
-+}
-+#endif
++	struct cdns_pcie *pcie = &rc->pcie;
++	struct device *dev = rc->pcie.dev;
++	int ret;
 +
- static inline int
- rdma_user_mmap_entry_insert_exact(struct ib_ucontext *ucontext,
- 				  struct rdma_user_mmap_entry *entry,
++	if (rc->quirk_detect_quiet_flag)
++		cdns_pcie_detect_quiet_min_delay_set(&rc->pcie);
++
++	cdns_pcie_host_enable_ptm_response(pcie);
++
++	ret = cdns_pcie_start_link(pcie);
++	if (ret) {
++		dev_err(dev, "Failed to start link\n");
++		return ret;
++	}
++
++	ret = cdns_pcie_host_start_link(rc);
++	if (ret)
++		dev_dbg(dev, "PCIe link never came up\n");
++
++	return 0;
++}
++
+ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ {
+ 	struct device *dev = rc->pcie.dev;
+@@ -533,20 +557,9 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ 		return PTR_ERR(rc->cfg_base);
+ 	rc->cfg_res = res;
+ 
+-	if (rc->quirk_detect_quiet_flag)
+-		cdns_pcie_detect_quiet_min_delay_set(&rc->pcie);
+-
+-	cdns_pcie_host_enable_ptm_response(pcie);
+-
+-	ret = cdns_pcie_start_link(pcie);
+-	if (ret) {
+-		dev_err(dev, "Failed to start link\n");
+-		return ret;
+-	}
+-
+-	ret = cdns_pcie_host_start_link(rc);
++	ret = cdns_pcie_host_link_setup(rc);
+ 	if (ret)
+-		dev_dbg(dev, "PCIe link never came up\n");
++		return ret;
+ 
+ 	for (bar = RP_BAR0; bar <= RP_NO_BAR; bar++)
+ 		rc->avail_ib_bar[bar] = true;
+diff --git a/drivers/pci/controller/cadence/pcie-cadence.h b/drivers/pci/controller/cadence/pcie-cadence.h
+index 7a66a2f815dce..1d37d5f9f811c 100644
+--- a/drivers/pci/controller/cadence/pcie-cadence.h
++++ b/drivers/pci/controller/cadence/pcie-cadence.h
+@@ -521,10 +521,16 @@ static inline bool cdns_pcie_link_up(struct cdns_pcie *pcie)
+ }
+ 
+ #ifdef CONFIG_PCIE_CADENCE_HOST
++int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc);
+ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc);
+ void __iomem *cdns_pci_map_bus(struct pci_bus *bus, unsigned int devfn,
+ 			       int where);
+ #else
++static inline int cdns_pcie_host_link_setup(struct cdns_pcie_rc *rc)
++{
++	return 0;
++}
++
+ static inline int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
+ {
+ 	return 0;
 -- 
 2.43.0
 
