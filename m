@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-96404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78B49E1F9C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01579E1FA2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6862F1683C7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:38:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A964D165A62
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471821F667E;
-	Tue,  3 Dec 2024 14:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63451F756B;
+	Tue,  3 Dec 2024 14:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMl2nt33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7gJUhjC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014F71F7083;
-	Tue,  3 Dec 2024 14:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C6F1F6694;
+	Tue,  3 Dec 2024 14:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236684; cv=none; b=mhQa1Kqjwq+b0NbuZJVCAW71NpgLwCZHnhTsKquS876xmAL6xlS6+EhZ+i4MNjdbNM+DmFY8lafNVxmTGqWyTlRsPYOLD1tp1hwXtgAJDOfxp8mBb22nIK7Zwh9VkBL3f7TjSLRamLIXKF/mEOhCagMHIZClZHE/R/qxsf5FbqA=
+	t=1733236695; cv=none; b=vCUBV3VdNfgHilkaMjrG5RULA7eG7RF1PGMJqkcKxrB5Q1tvhMQ4whPvWkq5u3kj5S0Q0OlSA11SqBIh3q2KyvFIquLizq6ybRTeA5Nhld/sFYsUumQN5VgghctFAkmF+DPSPCiQsSfKtqd9jjtZ6be+FVFupBynTucyh4TYqMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236684; c=relaxed/simple;
-	bh=8iG6recOp/mrJwroUt+8EJqpY68oKGIqjw/CoPubGOo=;
+	s=arc-20240116; t=1733236695; c=relaxed/simple;
+	bh=rAkKprn/TSbaHjnqTaZw/w199xV9PR4Py0yfCzjSOkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J51qduCPQhS6cAnxZBaOBivoayCCq7s3KjrK3m/7wdypzsnjkiPq0VKZhrUJFoH5QR0l/gsmyLUtVwLduB05UUmZzBeabYrE8z8kWNJQ6+6a3SfB7sTyxulRy/dxX1yOstTYp6oHuDTt876TV4bcOOlIxZY7tNUp6kBbnRMVuHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMl2nt33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B298C4CECF;
-	Tue,  3 Dec 2024 14:38:03 +0000 (UTC)
+	 MIME-Version; b=aAXBSBcFWvBF3PxH0PRtIC69ogulCFjRSubXhRFEzxrVXn6Q7JtjEM2M7z43CAWLAKHtlLPqQHUV6Sohzah1J6lyXcprtoIXhYAQXeTpTcarWgOHqQT+9eq/IgrZQQipdlzVCA3ZSeAmnBu/FTsZ4zQbjD/r9E4DVV3pCQFZmzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7gJUhjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82623C4CECF;
+	Tue,  3 Dec 2024 14:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236683;
-	bh=8iG6recOp/mrJwroUt+8EJqpY68oKGIqjw/CoPubGOo=;
+	s=korg; t=1733236695;
+	bh=rAkKprn/TSbaHjnqTaZw/w199xV9PR4Py0yfCzjSOkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMl2nt33gzk274NP4nVGelluPcSvDEUoI1ZcI91ItsYgvMPjFWbYDgzYye9/iZ5Yt
-	 5B+wT1Vl5O8G0+fZi/IK6yZCJmv7YOoKLox5SZbypAwffxLw5nqoXfNMs1yM7ND5UD
-	 F5Y4Ql3LuTATfxYosBnYSDoRQ0BgBR0loZDjOzKM=
+	b=r7gJUhjCPKTMXtn1BSLN9eFJ1FYFo/mXckj4KYlMsB0gkyVaen4ID7WwPtyPEA2aN
+	 HoRwExHDy4mmpbUdkwZ1WUxdhgeCEs/SrwlJJ992/kK0FBzXq/jx1YEoZV6bJf9G3j
+	 ahJ2A5SEeWBdTWoQlV5yA8RNWaT8GR3ZldpYNAec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salam Noureddine <noureddine@arista.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michal Kubiak <michal.kubiak@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vitalii Mordan <mordan@ispras.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 090/138] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
-Date: Tue,  3 Dec 2024 15:31:59 +0100
-Message-ID: <20241203141927.011890456@linuxfoundation.org>
+Subject: [PATCH 4.19 092/138] marvell: pxa168_eth: fix call balance of pep->clk handling routines
+Date: Tue,  3 Dec 2024 15:32:01 +0100
+Message-ID: <20241203141927.087895689@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -70,59 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
+[ Upstream commit b032ae57d4fe2b2445e3bc190db6fcaa8c102f68 ]
 
-The hardware on Broadcom 1G chipsets have a known limitation
-where they cannot handle DMA addresses that cross over 4GB.
-When such an address is encountered, the hardware sets the
-address overflow error bit in the DMA status register and
-triggers a reset.
+If the clock pep->clk was not enabled in pxa168_eth_probe,
+it should not be disabled in any path.
 
-However, BCM57766 hardware is setting the overflow bit and
-triggering a reset in some cases when there is no actual
-underlying address overflow. The hardware team analyzed the
-issue and concluded that it is happening when the status
-block update has an address with higher (b16 to b31) bits
-as 0xffff following a previous update that had lowest bits
-as 0xffff.
+Conversely, if it was enabled in pxa168_eth_probe, it must be disabled
+in all error paths to ensure proper cleanup.
 
-To work around this bug in the BCM57766 hardware, set the
-coherent dma mask from the current 64b to 31b. This will
-ensure that upper bits of the status block DMA address are
-always at most 0x7fff, thus avoiding the improper overflow
-check described above. This work around is intended for only
-status block and ring memories and has no effect on TX and
-RX buffers as they do not require coherent memory.
+Use the devm_clk_get_enabled helper function to ensure proper call balance
+for pep->clk.
 
-Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
-Reported-by: Salam Noureddine <noureddine@arista.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
-Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Klever.
+
+Fixes: a49f37eed22b ("net: add Fast Ethernet driver for PXA168.")
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Link: https://patch.msgid.link/20241121200658.2203871-1-mordan@ispras.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/marvell/pxa168_eth.c | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index af0186a527a36..d7419c65d9e38 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -17866,6 +17866,9 @@ static int tg3_init_one(struct pci_dev *pdev,
- 	} else
- 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
+diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
+index 0d6a4e47e7a50..962d7046801cf 100644
+--- a/drivers/net/ethernet/marvell/pxa168_eth.c
++++ b/drivers/net/ethernet/marvell/pxa168_eth.c
+@@ -1417,18 +1417,15 @@ static int pxa168_eth_probe(struct platform_device *pdev)
  
-+	if (tg3_asic_rev(tp) == ASIC_REV_57766)
-+		persist_dma_mask = DMA_BIT_MASK(31);
-+
- 	/* Configure DMA attributes. */
- 	if (dma_mask > DMA_BIT_MASK(32)) {
- 		err = pci_set_dma_mask(pdev, dma_mask);
+ 	printk(KERN_NOTICE "PXA168 10/100 Ethernet Driver\n");
+ 
+-	clk = devm_clk_get(&pdev->dev, NULL);
++	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "Fast Ethernet failed to get clock\n");
++		dev_err(&pdev->dev, "Fast Ethernet failed to get and enable clock\n");
+ 		return -ENODEV;
+ 	}
+-	clk_prepare_enable(clk);
+ 
+ 	dev = alloc_etherdev(sizeof(struct pxa168_eth_private));
+-	if (!dev) {
+-		err = -ENOMEM;
+-		goto err_clk;
+-	}
++	if (!dev)
++		return -ENOMEM;
+ 
+ 	platform_set_drvdata(pdev, dev);
+ 	pep = netdev_priv(dev);
+@@ -1541,8 +1538,6 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+ 	mdiobus_free(pep->smi_bus);
+ err_netdev:
+ 	free_netdev(dev);
+-err_clk:
+-	clk_disable_unprepare(clk);
+ 	return err;
+ }
+ 
 -- 
 2.43.0
 
