@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95779E2565
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86899E22AB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A09B116BB5F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4D01692C2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0728E1F75AE;
-	Tue,  3 Dec 2024 15:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB421F76AA;
+	Tue,  3 Dec 2024 15:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liWZkmJI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtoMcDaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78141AB6C9;
-	Tue,  3 Dec 2024 15:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB5A1EF0AE;
+	Tue,  3 Dec 2024 15:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241313; cv=none; b=Th6lbE9pik1LavPjMQ4iYzzv70VhIY9xc/R2cpxH0xRsUOABtIUdmk7wK4jak3DJbXLJ1AMEVyxMeBZ9ncDzCVO0xvZxIrHwki6IrEcaIb1V2C5ab5yzim1PZMPXZjrX1m4bijD7PuPJHZhisifgeNIr6uQHEU5Fx6acdK//ba4=
+	t=1733239343; cv=none; b=IZbVYmAub9ZWrj9H9eSV0cuBbOsfDS8glLvLFXz/zKTdhdJhj0Ah/BtMwK74TkXqsY0+cbFF2NqYIwh0lgTmelrZwub2vP3nM6WJ5loiwwUNKP5qPByc/y5sC+iaTNDLQM3gcvZOvhhENvcG7J48cSjH9LLuzO9HzuI0O4369rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241313; c=relaxed/simple;
-	bh=NZih0Jo1W02L4TzidHQPIzoY4U6h5A0z99eCmlz5Cks=;
+	s=arc-20240116; t=1733239343; c=relaxed/simple;
+	bh=Od3nrKjAaffNDou8ObsEJx4Ytq/nFFF9xESNocKVTPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSLG0eWISmnvETdtklRzDYIhfBcJg/m3Fs7VPr/zI8V800XJvpvaid8zbbwQBqFD2sNtLp4Gct0wVJSdxDw88EQvmxtIZVbAoLetNBte/ZmJzH9IL5rSoUZWZwsvppgH3ire/pGZyzGqGYbOpdG4w24hiU/wd8KZ3RY3kWwXsN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liWZkmJI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246A7C4CECF;
-	Tue,  3 Dec 2024 15:55:12 +0000 (UTC)
+	 MIME-Version; b=P5bqW2G0kxmIPsl6vlsRfPYYmYIgFqtq3T95B4SNtejB/IRZRq5OWXx1HKamauMXBib/7faZnpx/h70ckE7RkMoCg4pa40qyA64aOAm/DlSZTTRurG/pBVZXfPHSLaRMBe39n6F+BMSYbLyMCBNtqUrdzKBtz9RSurhEYiIOnZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtoMcDaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57407C4CECF;
+	Tue,  3 Dec 2024 15:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241313;
-	bh=NZih0Jo1W02L4TzidHQPIzoY4U6h5A0z99eCmlz5Cks=;
+	s=korg; t=1733239343;
+	bh=Od3nrKjAaffNDou8ObsEJx4Ytq/nFFF9xESNocKVTPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=liWZkmJI5llewzrvs8PuiHST9QSZDHNwjIQlD+eXaHmXUmyalKbuAV59XOMoWKu08
-	 HynaK26ORniEabtNFI4oM96rP9fwwd/BZ+UzhfoJDpIl8lVEpaydOtuIvjYfSnolYR
-	 XdRS33CYvJYs8ZmOS1OT1m9oxWpa0oo4eFKW5rQY=
+	b=mtoMcDaInTfpQdYCnXJ2b95z0+qyYQDYbCp+IkKmTK71sBxJYfd01CIPmIhd8oaRE
+	 ixni7qyQQ86e/uPsM6sVyvLZJvtql42+0E9nf3FM/lTQ02uFkbrKFSTk8pnihmLK3h
+	 3rUQyYLp9ZMVb99nLbjB9mzIZCTLHWcDycUW80ZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takahiro Kuwano <Takahiro.Kuwano@infineon.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 385/826] mtd: spi-nor: spansion: Use nor->addr_nbytes in octal DTR mode in RD_ANY_REG_OP
+Subject: [PATCH 6.11 540/817] NFSD: Prevent NULL dereference in nfsd4_process_cb_update()
 Date: Tue,  3 Dec 2024 15:41:52 +0100
-Message-ID: <20241203144758.782946716@linuxfoundation.org>
+Message-ID: <20241203144016.983100814@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit b61c35e3404557779ec427c077f7a9f057bb053d ]
+[ Upstream commit 1e02c641c3a43c88cecc08402000418e15578d38 ]
 
-In octal DTR mode, RD_ANY_REG_OP needs to use 4-byte address regardless
-of flash's internal address mode. Use nor->addr_nbytes which is set to 4
-during setup.
+@ses is initialized to NULL. If __nfsd4_find_backchannel() finds no
+available backchannel session, setup_callback_client() will try to
+dereference @ses and segfault.
 
-Fixes: eff9604390d6 ("mtd: spi-nor: spansion: add octal DTR support in RD_ANY_REG_OP")
-Signed-off-by: Takahiro Kuwano <Takahiro.Kuwano@infineon.com>
-Link: https://lore.kernel.org/r/20241016000837.17951-1-Takahiro.Kuwano@infineon.com
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Fixes: dcbeaa68dbbd ("nfsd4: allow backchannel recovery")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/spi-nor/spansion.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4callback.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mtd/spi-nor/spansion.c b/drivers/mtd/spi-nor/spansion.c
-index d6c92595f6bc9..5a88a6096ca8c 100644
---- a/drivers/mtd/spi-nor/spansion.c
-+++ b/drivers/mtd/spi-nor/spansion.c
-@@ -106,6 +106,7 @@ static int cypress_nor_sr_ready_and_clear_reg(struct spi_nor *nor, u64 addr)
- 	int ret;
- 
- 	if (nor->reg_proto == SNOR_PROTO_8_8_8_DTR) {
-+		op.addr.nbytes = nor->addr_nbytes;
- 		op.dummy.nbytes = params->rdsr_dummy;
- 		op.data.nbytes = 2;
+diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
+index d756f443fc444..e6183097517ff 100644
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1455,6 +1455,8 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
+ 		ses = c->cn_session;
  	}
+ 	spin_unlock(&clp->cl_lock);
++	if (!c)
++		return;
+ 
+ 	err = setup_callback_client(clp, &conn, ses);
+ 	if (err) {
 -- 
 2.43.0
 
