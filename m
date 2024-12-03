@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 683219E2104
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE15F9E2107
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9D2281267
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3CFA2851B1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8491F7070;
-	Tue,  3 Dec 2024 15:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C401F669E;
+	Tue,  3 Dec 2024 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIkDuaA4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/Hpksy4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEB51F130D;
-	Tue,  3 Dec 2024 15:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D071F6691;
+	Tue,  3 Dec 2024 15:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238398; cv=none; b=JvRDXpWQdNbxk3ZPUo0h+ZtVod4ng1oHKIA65f0jrBhNMHeowfwtYdq8DXFruKWu0Kjz8vJni1jBGMwOjuhgGrDxbNFk+FCGoRoDb3STUQD+GSlCd2RJaQDMtjYTzCBJbw6cx/sILd02KMBFBeTQhcD8sba1ImvuaWqk4Ud7uE4=
+	t=1733238410; cv=none; b=AyTkf2i/Bld95Tu8yngWNiCkpqf5ZQbX/xRrnzRwN3Ued+LSxx24PsQ1Mc3TzWdSK3C8KATmMO86u7NmY3k8nSfsn6gqBQN8Y3BuZUuuS7kZJTAWOmRIVKr8VbF2e5vxU7YEhbsp1n7hqr4vnrpBEl9wdkmQCP4L6C6KpEDIkuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238398; c=relaxed/simple;
-	bh=ZEgsIZSmcZda1OnLNl3sp15rodN4WuMKWSL3Ivj+bVk=;
+	s=arc-20240116; t=1733238410; c=relaxed/simple;
+	bh=sBoytRqrIwhY0oLFAfFu+SHL83DYdCvxYYy30r2k5Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dk/VGohMs9ctEWohQXF40bVhM54P/GDW+pWsjfImNd567DXkFQPp6BufQC07HyBsdwX8h4H13p/l8bKSmi8Xps41T0/BYx1XoR6ZSQobF/OrOLQm8vxs+WH7BUky3hCPOAmSwky0MdBUGT/jFnoZ6MXQSiVADHZpPUByfLQDY0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIkDuaA4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE24EC4CECF;
-	Tue,  3 Dec 2024 15:06:37 +0000 (UTC)
+	 MIME-Version; b=Qx+ZX6RrUZkksmPVOWcpo0eSbb9iC++9UGlapqvpLo74KUst1DtPLRcmZrkUO6BJo1TTSvbrQlvbcr8gHj9fD6euskUxKsRm7Ctd/Os/Mqx3rGzvl5dvNcV1plaNI6YMsr/vYfRz7S2+K+HgzFLy9FxqEQNfO5caX059QUocnq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/Hpksy4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93662C4CECF;
+	Tue,  3 Dec 2024 15:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238398;
-	bh=ZEgsIZSmcZda1OnLNl3sp15rodN4WuMKWSL3Ivj+bVk=;
+	s=korg; t=1733238410;
+	bh=sBoytRqrIwhY0oLFAfFu+SHL83DYdCvxYYy30r2k5Hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PIkDuaA4YdT90flIzum44+UcHJAw9bXNbU+qT4dLnBcQNeRAOZfg0RD8i4fJvrkIr
-	 oWv3J30EKFag5N437ew+MDrz95iD31wcBO2HQAEaEMch57d7cksncuPNRPPSR1w2kc
-	 TuQASmLtNBgExsDgsY7rE88qxq44ARUen8JzCBf0=
+	b=r/Hpksy43RqPPq9MsV0X0g8HBy6aZkhngnOgHhADj1Dt+uBcGaBrxcX6ewKjbuuGH
+	 LNPzUunh/jl5FYGcqD3WzFSyJESMVa+fhYWnitdCk1wHDD/eYAzb/qcZt+LSE9b3f3
+	 33ET/rIZSMPKUdGv+aDTiFzEa6CT3W1A6+DSYMpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Dom Cobley <popcornmix@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 263/817] selftests/bpf: add missing header include for htons
-Date: Tue,  3 Dec 2024 15:37:15 +0100
-Message-ID: <20241203144006.054994774@linuxfoundation.org>
+Subject: [PATCH 6.11 266/817] drm/vc4: hdmi: Increase audio MAI fifo dreq threshold
+Date: Tue,  3 Dec 2024 15:37:18 +0100
+Message-ID: <20241203144006.173732389@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -60,52 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+From: Dom Cobley <popcornmix@gmail.com>
 
-[ Upstream commit bc9b3fb827fceec4e05564d6e668280f4470ab5b ]
+[ Upstream commit 59f8b2b7fb8e460881d21c7d5b32604993973879 ]
 
-Including the network_helpers.h header in tests can lead to the following
-build error:
+Now we wait for write responses and have a burst
+size of 4, we can set the fifo threshold much higher.
 
-./network_helpers.h: In function ‘csum_tcpudp_magic’:
-./network_helpers.h:116:14: error: implicit declaration of function \
-  ‘htons’ [-Werror=implicit-function-declaration]
-  116 |         s += htons(proto + len);
+Set it to 28 (of the 32 entry size) to keep fifo
+fuller and reduce chance of underflow.
 
-The error is avoided in many cases thanks to some other headers included
-earlier and bringing in arpa/inet.h (ie: test_progs.h).
-
-Make sure that test_progs build success does not depend on header ordering
-by adding the missing header include in network_helpers.h
-
-Fixes: f6642de0c3e9 ("selftests/bpf: Add csum helpers")
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Link: https://lore.kernel.org/r/20241008-network_helpers_fix-v1-1-2c2ae03df7ef@bootlin.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Dom Cobley <popcornmix@gmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-8-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Stable-dep-of: cf1c87d978d4 ("drm/vc4: Match drm_dev_enter and exit calls in vc4_hvs_lut_load")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/network_helpers.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/network_helpers.h b/tools/testing/selftests/bpf/network_helpers.h
-index 91763fbe58d27..7b05fc3fedb06 100644
---- a/tools/testing/selftests/bpf/network_helpers.h
-+++ b/tools/testing/selftests/bpf/network_helpers.h
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef __NETWORK_HELPERS_H
- #define __NETWORK_HELPERS_H
-+#include <arpa/inet.h>
- #include <sys/socket.h>
- #include <sys/types.h>
- #include <linux/types.h>
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 9b2b07104a7ac..2b8e1642f9cf4 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2051,6 +2051,7 @@ static int vc4_hdmi_audio_prepare(struct device *dev, void *data,
+ 	struct vc4_hdmi *vc4_hdmi = dev_get_drvdata(dev);
+ 	struct drm_device *drm = vc4_hdmi->connector.dev;
+ 	struct drm_connector *connector = &vc4_hdmi->connector;
++	struct vc4_dev *vc4 = to_vc4_dev(drm);
+ 	unsigned int sample_rate = params->sample_rate;
+ 	unsigned int channels = params->channels;
+ 	unsigned long flags;
+@@ -2108,11 +2109,18 @@ static int vc4_hdmi_audio_prepare(struct device *dev, void *data,
+ 					     VC4_HDMI_AUDIO_PACKET_CEA_MASK);
+ 
+ 	/* Set the MAI threshold */
+-	HDMI_WRITE(HDMI_MAI_THR,
+-		   VC4_SET_FIELD(0x08, VC4_HD_MAI_THR_PANICHIGH) |
+-		   VC4_SET_FIELD(0x08, VC4_HD_MAI_THR_PANICLOW) |
+-		   VC4_SET_FIELD(0x06, VC4_HD_MAI_THR_DREQHIGH) |
+-		   VC4_SET_FIELD(0x08, VC4_HD_MAI_THR_DREQLOW));
++	if (vc4->is_vc5)
++		HDMI_WRITE(HDMI_MAI_THR,
++			   VC4_SET_FIELD(0x10, VC4_HD_MAI_THR_PANICHIGH) |
++			   VC4_SET_FIELD(0x10, VC4_HD_MAI_THR_PANICLOW) |
++			   VC4_SET_FIELD(0x1c, VC4_HD_MAI_THR_DREQHIGH) |
++			   VC4_SET_FIELD(0x1c, VC4_HD_MAI_THR_DREQLOW));
++	else
++		HDMI_WRITE(HDMI_MAI_THR,
++			   VC4_SET_FIELD(0x8, VC4_HD_MAI_THR_PANICHIGH) |
++			   VC4_SET_FIELD(0x8, VC4_HD_MAI_THR_PANICLOW) |
++			   VC4_SET_FIELD(0x6, VC4_HD_MAI_THR_DREQHIGH) |
++			   VC4_SET_FIELD(0x8, VC4_HD_MAI_THR_DREQLOW));
+ 
+ 	HDMI_WRITE(HDMI_MAI_CONFIG,
+ 		   VC4_HDMI_MAI_CONFIG_BIT_REVERSE |
 -- 
 2.43.0
 
