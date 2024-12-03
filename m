@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-97864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132CB9E2B61
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:52:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2919E28F3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:19:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C43E2BE68F5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6149EB272AE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A9F1F76DE;
-	Tue,  3 Dec 2024 16:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E071F759C;
+	Tue,  3 Dec 2024 15:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTa65SOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMKD2Zgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3251A23CE;
-	Tue,  3 Dec 2024 16:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026F41E3DED;
+	Tue,  3 Dec 2024 15:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241994; cv=none; b=qS3ettTHqT3ynTv6Nx75Wuk1jeGFiZYxHfpMPSo7h6Gi6MrLC3gLQT16Z/LQLwL0H7Gsh87hPfrfm74yzZy/Hr0uBb/wzyRbxqNbJtJWnv2j220dlrMGDani970Uoweo+Xu++/cMAhzd8Izp1o1Nk262RR4Me1KGF8YAEIsuNV8=
+	t=1733239789; cv=none; b=hRkfIBJQK0bp8IQLa/iY+TyHUoOu1kRL4r6+p7230vkj60ULfkLAF1Uo99YrOBX5K9pQXgxOHzQ10ZocwbzNBxvQ+uDNDu35AIc55y8xBw3tqBJEvej0mv3MlM6ATmPbOnZkCbdOTfB6CCZHABMHQ6yX2KSNBVmaCDL5PftyEGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241994; c=relaxed/simple;
-	bh=2FYK1ONZUuE3hw46bOXum9v4bV2bxeaJohu87y9aqCA=;
+	s=arc-20240116; t=1733239789; c=relaxed/simple;
+	bh=q1TaoJjEBE1aoArFdkovdaXNF/zzYkDPap7NdnntcZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HVzMA6xCY37bW4YUb7e5ebnyxaesLWamXDmzVjbgSD9WAsTNlQmcgDBJGoR1suWGmsDsZoaDrd2xzo08Zeq5K7POk5osKb7i9Lpojr/xWH7RuztgBcfa2kZQB1j7BYOg1CTvnnApaeX0UTV7qqev1sogLEbqZr53gKI1M2VV75U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTa65SOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947C7C4CECF;
-	Tue,  3 Dec 2024 16:06:33 +0000 (UTC)
+	 MIME-Version; b=baUvZg7C9TrtFIs6rdkxN4fTbnmPIAQWe5bVOif1f7QGmtWD0TiS99jCsJu5FPoSS1J9xGGVe5IKEqvUxCwgjm7CSAJfWOG5TQ8YnRjmsSc3hus1G1XilaGzGST362kBIEHEhecrK8WPNx3P2ccphkhAlLdFYqLh4k8VfynwbuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMKD2Zgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5D0C4CECF;
+	Tue,  3 Dec 2024 15:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241994;
-	bh=2FYK1ONZUuE3hw46bOXum9v4bV2bxeaJohu87y9aqCA=;
+	s=korg; t=1733239788;
+	bh=q1TaoJjEBE1aoArFdkovdaXNF/zzYkDPap7NdnntcZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTa65SOfWfwwzv2GrB1HDKczAe7L9aukP08Ge9Wg2FlwRVtJZVc+uXp9z87xq+M4V
-	 aLAMHcvJrPtrp3uv1P6YXoYtQ2kbuWyQRTogT+Jq1S61Jk71QHoAx3H88RlGdlM0Sx
-	 mKl+cwfRElvviw9GTjZPtU7RKYlZ3vA//7PUkqvc=
+	b=iMKD2Zgbi9HGD+zGqU9bILZOZvow42XZl2WoGSlbUVIOTxLoiNfwrK0VwmN+hLQri
+	 qEDRFrfdaLnVdDS9+4aJUB97mKFoyFKZ1dwY+GH+8DWvKhQOagYJ7kwLoK83gc9n6R
+	 ThAo50yi56UYT2vvPsQUOTMjelsoCIEMvMBF3SYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 575/826] spi: atmel-quadspi: Fix register name in verbose logging function
-Date: Tue,  3 Dec 2024 15:45:02 +0100
-Message-ID: <20241203144806.180283165@linuxfoundation.org>
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.11 734/817] arm64: dts: mediatek: mt8186-corsola-voltorb: Merge speaker codec nodes
+Date: Tue,  3 Dec 2024 15:45:06 +0100
+Message-ID: <20241203144024.649554755@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +59,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 2ac40e6d0ccdd93031f8b1af61b0fe5cdd704923 ]
+commit 26ea2459d1724406bf0b342df6b4b1f002d7f8e3 upstream.
 
-`atmel_qspi_reg_name()` is used for pretty-printing register offsets
-for verbose logging of register accesses. However, due to a typo
-(likely a copy-paste error), QSPI_RD's offset prints as "MR", the
-name of the previous register. Fix this typo.
+The Voltorb device uses a speaker codec different from the original
+Corsola device. When the Voltorb device tree was first added, the new
+codec was added as a separate node when it should have just replaced the
+existing one.
 
-Fixes: c528ecfbef04 ("spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Alexander Dahl <ada@thorsis.com>
-Link: https://patch.msgid.link/20241122141302.2599636-1-csokas.bence@prolan.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Merge the two nodes. The only differences are the compatible string and
+the GPIO line property name. This keeps the device node path for the
+speaker codec the same across the MT8186 Chromebook line. Also rename
+the related labels and node names from having rt1019p to speaker codec.
+
+Cc: stable@vger.kernel.org # v6.11+
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241018082113.1297268-1-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/atmel-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dts/mediatek/mt8186-corsola-voltorb.dtsi  | 21 +++++--------------
+ .../boot/dts/mediatek/mt8186-corsola.dtsi     |  8 +++----
+ 2 files changed, 9 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 95cdfc28361ef..caecb2ad2a150 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -183,7 +183,7 @@ static const char *atmel_qspi_reg_name(u32 offset, char *tmp, size_t sz)
- 	case QSPI_MR:
- 		return "MR";
- 	case QSPI_RD:
--		return "MR";
-+		return "RD";
- 	case QSPI_TD:
- 		return "TD";
- 	case QSPI_SR:
+diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
+index 52ec58128d56..b495a241b443 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola-voltorb.dtsi
+@@ -10,12 +10,6 @@
+ 
+ / {
+ 	chassis-type = "laptop";
+-
+-	max98360a: max98360a {
+-		compatible = "maxim,max98360a";
+-		sdmode-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
+-		#sound-dai-cells = <0>;
+-	};
+ };
+ 
+ &cpu6 {
+@@ -59,19 +53,14 @@ &cluster1_opp_15 {
+ 	opp-hz = /bits/ 64 <2200000000>;
+ };
+ 
+-&rt1019p{
+-	status = "disabled";
+-};
+-
+ &sound {
+ 	compatible = "mediatek,mt8186-mt6366-rt5682s-max98360-sound";
+-	status = "okay";
++};
+ 
+-	spk-hdmi-playback-dai-link {
+-		codec {
+-			sound-dai = <&it6505dptx>, <&max98360a>;
+-		};
+-	};
++&speaker_codec {
++	compatible = "maxim,max98360a";
++	sdmode-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
++	/delete-property/ sdb-gpios;
+ };
+ 
+ &spmi {
+diff --git a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
+index 682c6ad2574d..0c0b3ac59745 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8186-corsola.dtsi
+@@ -259,15 +259,15 @@ spk-hdmi-playback-dai-link {
+ 			mediatek,clk-provider = "cpu";
+ 			/* RT1019P and IT6505 connected to the same I2S line */
+ 			codec {
+-				sound-dai = <&it6505dptx>, <&rt1019p>;
++				sound-dai = <&it6505dptx>, <&speaker_codec>;
+ 			};
+ 		};
+ 	};
+ 
+-	rt1019p: speaker-codec {
++	speaker_codec: speaker-codec {
+ 		compatible = "realtek,rt1019p";
+ 		pinctrl-names = "default";
+-		pinctrl-0 = <&rt1019p_pins_default>;
++		pinctrl-0 = <&speaker_codec_pins_default>;
+ 		#sound-dai-cells = <0>;
+ 		sdb-gpios = <&pio 150 GPIO_ACTIVE_HIGH>;
+ 	};
+@@ -1179,7 +1179,7 @@ pins {
+ 		};
+ 	};
+ 
+-	rt1019p_pins_default: rt1019p-default-pins {
++	speaker_codec_pins_default: speaker-codec-default-pins {
+ 		pins-sdb {
+ 			pinmux = <PINMUX_GPIO150__FUNC_GPIO150>;
+ 			output-low;
 -- 
-2.43.0
+2.47.1
 
 
 
