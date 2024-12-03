@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-97202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA149E22E3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:30:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2689D9E2677
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:13:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E60F1286D07
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C33A163D98
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8621F755B;
-	Tue,  3 Dec 2024 15:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188571F76AD;
+	Tue,  3 Dec 2024 16:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6gdIvv8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F065wzl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0762500DA;
-	Tue,  3 Dec 2024 15:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9ED74BE1;
+	Tue,  3 Dec 2024 16:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239809; cv=none; b=L1n4K1ooY7xNbqohgfAQGfeC4F0OYdmNArqB8S+5hn0n3VnxKIcDtZWYcjF8XoU9ejsUExDVFyWDNT3iJ5K/J4pjVcrtJpPpgUTu+5omguYZ+CojVR3uyJE9YiPiH9zaxyt2/GFqZlfGqZp3ByV1nWhur6h4nl/CarEA87aOAM4=
+	t=1733242127; cv=none; b=T2/nc1wVKTURNJCVoYeWbqcYid+2etoyUx++K9ZYpAq6CSkVVU1O4t79B9b1vxS/pIo6fj8/dSms6qFpS5i5Oczh3IH3WecBdaYjA9J6sjv7u59yBf9BpxYCMagN628/y84AnjcjsRM/YITHPncLKya9JTDY6Sx7bU34L5ySkYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239809; c=relaxed/simple;
-	bh=VKyB55eRUQOrhXpuDYVzKsyK+OCJl9/Hti7WlMJZEuI=;
+	s=arc-20240116; t=1733242127; c=relaxed/simple;
+	bh=B+EPGesaW7Ysa4RAkwOa0ePrFs0wWNyRasCT+b2jCiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6DvzAaJtFaIAVwgyaw4ESnTr1ZWOupAGCrAJCgp1hqURMCjEWb1ug9IDS7w8dfd9UL3QGct0qmgtB5A1EzWkC+r1IwICrrVxaSSaT876UP+bcKBwsECqBJ1FH28zAlPjk1QzZGd8n0mcwl8J7n3mTjy8E+cWf7SFVlmggqkTqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6gdIvv8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88F0C4CECF;
-	Tue,  3 Dec 2024 15:30:08 +0000 (UTC)
+	 MIME-Version; b=CzVlABaSRgRjj9sHRONY/M4rxEVlSOaa6mZwJ7BMLeQ8iBCKePDHdbeke5MNtu2FoMIZDyj2AKpv7QL8bIPnyw2SjJfV1Addpm5E346RKIgqy16GMNM7eZcL5kx2c05S5BiCBh5c7rk2qspJCPvE/RpsMrr2aPwoAP8B4sw85OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F065wzl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53361C4CECF;
+	Tue,  3 Dec 2024 16:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239809;
-	bh=VKyB55eRUQOrhXpuDYVzKsyK+OCJl9/Hti7WlMJZEuI=;
+	s=korg; t=1733242127;
+	bh=B+EPGesaW7Ysa4RAkwOa0ePrFs0wWNyRasCT+b2jCiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6gdIvv85GpkdKHDJBi2tYoEF4Phuv0LyNT3P1JCEv3WS9EAOb0EQgEOMuRwnXtPF
-	 jbmwcF1sjh8ulooJD3YqdA8Nvs97yW3EqfKfIF3aK1b1DQtghGHUDUDk6wNYaEsssb
-	 49yC5mW+e974tgPWScid1oWIY0VPtAOE09xqxCoU=
+	b=F065wzl1Wf8DfQjtp3K8obChAHdN08ZDfouV1dMGATQK+yGqetG8yuKz+ih67hpwI
+	 ZNnBjm6IzsnFAefE3oRtVUWn3Un12gOkmkqHKMWXJhrWTEs1W6g7ZQx3Rz4W0ykQgF
+	 KN2jPr331OWfZPVZoo6JnZk9/kk6QkjNU6Thq9Xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.11 740/817] ALSA: pcm: Add sanity NULL check for the default mmap fault handler
+	David Wei <dw@davidwei.uk>,
+	Michal Luczaj <mhal@rbox.co>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 585/826] llc: Improve setsockopt() handling of malformed user input
 Date: Tue,  3 Dec 2024 15:45:12 +0100
-Message-ID: <20241203144024.882717934@linuxfoundation.org>
+Message-ID: <20241203144806.569877571@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit d2913a07d9037fe7aed4b7e680684163eaed6bc4 upstream.
+[ Upstream commit 1465036b10be4b8b00eb31c879e86de633ad74c1 ]
 
-A driver might allow the mmap access before initializing its
-runtime->dma_area properly.  Add a proper NULL check before passing to
-virt_to_page() for avoiding a panic.
+copy_from_sockptr() is used incorrectly: return value is the number of
+bytes that could not be copied. Since it's deprecated, switch to
+copy_safe_from_sockptr().
 
-Reported-by: syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241120141104.7060-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note: Keeping the `optlen != sizeof(int)` check as copy_safe_from_sockptr()
+by itself would also accept optlen > sizeof(int). Which would allow a more
+lenient handling of inputs.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: David Wei <dw@davidwei.uk>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm_native.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/llc/af_llc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -3789,9 +3789,11 @@ static vm_fault_t snd_pcm_mmap_data_faul
- 		return VM_FAULT_SIGBUS;
- 	if (substream->ops->page)
- 		page = substream->ops->page(substream, offset);
--	else if (!snd_pcm_get_dma_buf(substream))
-+	else if (!snd_pcm_get_dma_buf(substream)) {
-+		if (WARN_ON_ONCE(!runtime->dma_area))
-+			return VM_FAULT_SIGBUS;
- 		page = virt_to_page(runtime->dma_area + offset);
--	else
-+	} else
- 		page = snd_sgbuf_get_page(snd_pcm_get_dma_buf(substream), offset);
- 	if (!page)
- 		return VM_FAULT_SIGBUS;
+diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+index 4eb52add7103b..0259cde394ba0 100644
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -1098,7 +1098,7 @@ static int llc_ui_setsockopt(struct socket *sock, int level, int optname,
+ 	lock_sock(sk);
+ 	if (unlikely(level != SOL_LLC || optlen != sizeof(int)))
+ 		goto out;
+-	rc = copy_from_sockptr(&opt, optval, sizeof(opt));
++	rc = copy_safe_from_sockptr(&opt, sizeof(opt), optval, optlen);
+ 	if (rc)
+ 		goto out;
+ 	rc = -EINVAL;
+-- 
+2.43.0
+
 
 
 
