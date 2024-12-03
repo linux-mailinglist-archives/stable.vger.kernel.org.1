@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-96799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45BB9E2176
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7749E248F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:50:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79732283FD6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D456016BAD2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F52B1FA174;
-	Tue,  3 Dec 2024 15:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531D61FBEA5;
+	Tue,  3 Dec 2024 15:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YstJM8wM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLoaGC7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0271F8905;
-	Tue,  3 Dec 2024 15:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF301F942C;
+	Tue,  3 Dec 2024 15:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238628; cv=none; b=nz6Kk6cl96xDZib/FmcZ2gIRZuKGGJbJJJGy3xLUL4H65t0Frk36v5GXYGE+6jbT0s0EmazezweVVrLQNHoIFfgzmJETaLugI2PwVwSQoYLR3e81i7Swu+RAuiXKa7SnMD27vDH8uRW0qSu7DJW6yR+45hBdz58BZ4MQYXTRvhY=
+	t=1733240513; cv=none; b=j39PADZNP7cLFL+0kFI7Jh1tHrBijsmUks+hbOveEPHKjcA5uU6jExlSSt+St4bfLDTDz0Rh8RJ40ydEFna5/phr5EmF/XDXMj/rrJViuNWdrSWbhSPWPOfZWsa9n1ZBTcXGhKFR7QNyJFwuxf/Q29rKrUJrEWjfNL3ujiwcsIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238628; c=relaxed/simple;
-	bh=i5Nb/ytEBxSrfBGPE4JkxWUFfbWtAkqdAYMrNHSxWOQ=;
+	s=arc-20240116; t=1733240513; c=relaxed/simple;
+	bh=6UF5Son06q/cgyf2rDZVWOm8qp/iPmp1z13Oev6y5B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DFB9dgwcpFrN7L0RYTjkSSb5fqz2ar7cq+Iy1LvfUsXyXkj24z1nDwTEtmvr5sS3MvqEt+Juqe3hSgvozCnyjG85MdiKDGoWUXzKljvGdTKxqPqwqiAWzVmbujNfhebkF4pOg7sQuG9hrGMlgDsXNOSEY2CAFKfFZazOkKPlL2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YstJM8wM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AB7C4CECF;
-	Tue,  3 Dec 2024 15:10:25 +0000 (UTC)
+	 MIME-Version; b=osQ/y8gHvGZAiVFjGOSp8EcufbajXyYvx+Unr6NfWxi8wSy7/fpH6Mxko+PeOr4wJFbopPmXlkDj9qWRQSJ/A+Eeiome2Irm+SCIc/NLtj5aVptR/4ZeTPGvZvvMenpnzwWnkUxpIINKIblqomzTfj1/h3asOTXmdOUOwTjPg90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLoaGC7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826B6C4CECF;
+	Tue,  3 Dec 2024 15:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238626;
-	bh=i5Nb/ytEBxSrfBGPE4JkxWUFfbWtAkqdAYMrNHSxWOQ=;
+	s=korg; t=1733240512;
+	bh=6UF5Son06q/cgyf2rDZVWOm8qp/iPmp1z13Oev6y5B0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YstJM8wMiPbzayScCSEtYdAxDIGpoygVW7t03nljFmatTbgmD8Vs/Req3sCVuh/iC
-	 wdBrfqyAZRsZZpd2ULHpNFq23hs0Qgsyk3+urBWbgsVZOQgUTL0zWTyvpD4c0Z2VcL
-	 71bzR112QFUoxDsYGI/JWqu+ImuKykbfHJ9+TUdY=
+	b=CLoaGC7AlvUrjqgJZPvZ2Ony4OVe54nmJPyxvI8BC80NUJ9ou/io7/CmD3eA6OBrR
+	 btLdzAVCb5q1jpmSf8BhvsXD/yHjpvLJN7uzb04gnK/KJrJbo8VL8yftR8qSOGoo4M
+	 Wb2lJJ2pPNDYYgO8UPAEE66NjZk5Cdj8CrnaTWTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 311/817] drm/vkms: Drop unnecessary call to drm_crtc_cleanup()
-Date: Tue,  3 Dec 2024 15:38:03 +0100
-Message-ID: <20241203144007.956049390@linuxfoundation.org>
+Subject: [PATCH 6.12 157/826] =?UTF-8?q?spi:=20zynqmp-gqspi:=20Undo=20runtime=20PM=20changes=20?= =?UTF-8?q?at=20driver=20exit=20time=E2=80=8B?=
+Date: Tue,  3 Dec 2024 15:38:04 +0100
+Message-ID: <20241203144749.866731522@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 1d43dddd7c38ea1aa93f78f7ee10087afb0a561f ]
+[ Upstream commit 2219576883e709737f3100aa9ded84976be49bd7 ]
 
-CRTC creation uses drmm_crtc_init_with_planes(), which automatically
-handles cleanup. However, an unnecessary call to drm_crtc_cleanup() is
-still present in the vkms_output_init() error path.
+It's important to undo pm_runtime_use_autosuspend() with
+pm_runtime_dont_use_autosuspend() at driver exit time.
 
-Fixes: 99cc528ebe92 ("drm/vkms: Use drmm_crtc_init_with_planes()")
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241031183835.3633-1-jose.exposito89@gmail.com
-Acked-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+So, call pm_runtime_dont_use_autosuspend() at driver exit time
+to fix it.
+
+Fixes: 9e3a000362ae ("spi: zynqmp: Add pm runtime support")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240920091135.2741574-1-ruanjinjie@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vkms/vkms_output.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-zynqmp-gqspi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/vkms/vkms_output.c b/drivers/gpu/drm/vkms/vkms_output.c
-index 5ce70dd946aa6..24589b947dea3 100644
---- a/drivers/gpu/drm/vkms/vkms_output.c
-+++ b/drivers/gpu/drm/vkms/vkms_output.c
-@@ -84,7 +84,7 @@ int vkms_output_init(struct vkms_device *vkmsdev, int index)
- 				 DRM_MODE_CONNECTOR_VIRTUAL);
- 	if (ret) {
- 		DRM_ERROR("Failed to init connector\n");
--		goto err_connector;
-+		return ret;
- 	}
+diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
+index fcd0ca9966841..b9df39e06e7cd 100644
+--- a/drivers/spi/spi-zynqmp-gqspi.c
++++ b/drivers/spi/spi-zynqmp-gqspi.c
+@@ -1351,6 +1351,7 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
  
- 	drm_connector_helper_add(connector, &vkms_conn_helper_funcs);
-@@ -119,8 +119,5 @@ int vkms_output_init(struct vkms_device *vkmsdev, int index)
- err_encoder:
- 	drm_connector_cleanup(connector);
+ clk_dis_all:
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
+@@ -1379,6 +1380,7 @@ static void zynqmp_qspi_remove(struct platform_device *pdev)
+ 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
  
--err_connector:
--	drm_crtc_cleanup(crtc);
--
- 	return ret;
- }
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+ 	pm_runtime_set_suspended(&pdev->dev);
+ 	clk_disable_unprepare(xqspi->refclk);
 -- 
 2.43.0
 
