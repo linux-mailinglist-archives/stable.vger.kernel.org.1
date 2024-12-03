@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-97070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658379E299C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:43:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B629E2B12
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ACB6B3396F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26612B33C28
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8682A1F7585;
-	Tue,  3 Dec 2024 15:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC322D7BF;
+	Tue,  3 Dec 2024 15:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEew3VWE"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AB6d9LRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439231EE001;
-	Tue,  3 Dec 2024 15:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B86D1F75A4;
+	Tue,  3 Dec 2024 15:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239434; cv=none; b=nhkUh1gg9azlVHBnVTOzCA63ADYpxPcaX/cj7tes4Qf5PHz2KINU/dfneoahd1sb+VtCKRKbk/6s232ONoVOimkqL545l/8g1oKYC+4TTz+Ieq6cg4p3rXQTh+3ENil9DBXV9JNbDv+kUp+AZZbWgfJBio1KqqVy/pH8OeZmx50=
+	t=1733239440; cv=none; b=bsxYGUsE/N/xgFrEktEJp77lNaE946Jvj/jIQweQLGvOpFMwo/lZEsv3JTyCSbIb3uk/kAu5UnahK8WfpaHb8u3P0M/g1TANp/2kDb978phX5zYKB58uO9CRfIqia5bigHfKmd3r0Y1HdMm9hWJ9ZKHSGgT/TC7pS2pmeKw8VBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239434; c=relaxed/simple;
-	bh=wIXKvz5J16sADYSBhks38KM1wWtFdr7LmRhtDyO6Uxk=;
+	s=arc-20240116; t=1733239440; c=relaxed/simple;
+	bh=wfIOiBmG+EyBddZHyDJUKkHC/SxxwZ7Y6U+1NJQ9A6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c36P+F0ol/nbsA8ja37sPl0CjLvou5rn+ZW9AVWrKx9qg0TeIbc9VLf557m0GBHwODdfEU0oGJ7RZocDjM8As99gs0HrP8nFMgY6Y94p1pRcPfzIwkw2dmqNUQJYvsWQEO67Em/Kn3LxF1fAFBDvTP/ezIWX5/Tc8wC/jaUdhp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEew3VWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF347C4CECF;
-	Tue,  3 Dec 2024 15:23:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GPq6dcxcV8eDVjQh7YB82U3dHYDojGGPqJg0EAsrZw+1CMtTt7H8C1Wnovhp27Gti6xyDH0znV10od20i9f0SJfzQT7/FyoYFcrbEtKl0oaYEmtx3a2rjzT9c/uNZroIGn5G3vu6D4dFvoFXfIOiufOkq+Il4JRb/7vk55+nr/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AB6d9LRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F28C4CECF;
+	Tue,  3 Dec 2024 15:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239434;
-	bh=wIXKvz5J16sADYSBhks38KM1wWtFdr7LmRhtDyO6Uxk=;
+	s=korg; t=1733239439;
+	bh=wfIOiBmG+EyBddZHyDJUKkHC/SxxwZ7Y6U+1NJQ9A6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AEew3VWEkB9DkwcNb/tsDva8wHXWu8ffWUIn6OGjAaCDQpL04JttvSfUVv4ODt0g0
-	 ID/3FDbee0nQwiyECs6BNkEiPwmw5uBZF9pYm6UCRfwZulvjxuB4Uzgy7ih/nRsO7U
-	 eaOUPB/QbpFdcttOQb/ASUHLq5lu6A3zK8mlqjvw=
+	b=AB6d9LRz5neY8gdKI2dPtvagaovp5OEbv6S7UG+V6DpA07rigfODd+/ECtwubFY/I
+	 av5vBoitZrN6p0MtSmA+Sttt/6orWzxrlVTafaB1sdohCqa5uaiqE8WAE2qR1ZoAD2
+	 CE84Hh/H5m5m8X2u63AmuIKru4MtvkVvnbHv4QYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>,
+	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 581/817] octeontx2-af: RPM: fix stale FCFEC counters
-Date: Tue,  3 Dec 2024 15:42:33 +0100
-Message-ID: <20241203144018.599247908@linuxfoundation.org>
+Subject: [PATCH 6.11 583/817] spi: atmel-quadspi: Fix register name in verbose logging function
+Date: Tue,  3 Dec 2024 15:42:35 +0100
+Message-ID: <20241203144018.677798022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -60,94 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit 6fc2164108462b913a1290fa2c44054c70b060ef ]
+[ Upstream commit 2ac40e6d0ccdd93031f8b1af61b0fe5cdd704923 ]
 
-The corrected words register(FCFECX_VL0_CCW_LO)/Uncorrected words
-register (FCFECX_VL0_NCCW_LO) of FCFEC counter has different LMAC
-offset which needs to be accessed differently.
+`atmel_qspi_reg_name()` is used for pretty-printing register offsets
+for verbose logging of register accesses. However, due to a typo
+(likely a copy-paste error), QSPI_RD's offset prints as "MR", the
+name of the previous register. Fix this typo.
 
-Fixes: 84ad3642115d ("octeontx2-af: Add FEC stats for RPM/RPM_USX block")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c528ecfbef04 ("spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses")
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Reviewed-by: Alexander Dahl <ada@thorsis.com>
+Link: https://patch.msgid.link/20241122141302.2599636-1-csokas.bence@prolan.hu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rpm.c   | 24 +++++++++----------
- .../net/ethernet/marvell/octeontx2/af/rpm.h   | 10 ++++----
- 2 files changed, 17 insertions(+), 17 deletions(-)
+ drivers/spi/atmel-quadspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-index 70629f94c27ef..e97fcc51d7f24 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-@@ -704,27 +704,27 @@ int rpm_get_fec_stats(void *rpmd, int lmac_id, struct cgx_fec_stats_rsp *rsp)
- 	 */
- 	mutex_lock(&rpm->lock);
- 	if (rpm->lmac_idmap[lmac_id]->link_info.fec == OTX2_FEC_BASER) {
--		val_lo = rpm_read(rpm, lmac_id, RPMX_MTI_FCFECX_VL0_CCW_LO);
--		val_hi = rpm_read(rpm, lmac_id, RPMX_MTI_FCFECX_CW_HI);
-+		val_lo = rpm_read(rpm, 0, RPMX_MTI_FCFECX_VL0_CCW_LO(lmac_id));
-+		val_hi = rpm_read(rpm, 0, RPMX_MTI_FCFECX_CW_HI(lmac_id));
- 		rsp->fec_corr_blks = (val_hi << 16 | val_lo);
- 
--		val_lo = rpm_read(rpm, lmac_id, RPMX_MTI_FCFECX_VL0_NCCW_LO);
--		val_hi = rpm_read(rpm, lmac_id, RPMX_MTI_FCFECX_CW_HI);
-+		val_lo = rpm_read(rpm, 0, RPMX_MTI_FCFECX_VL0_NCCW_LO(lmac_id));
-+		val_hi = rpm_read(rpm, 0, RPMX_MTI_FCFECX_CW_HI(lmac_id));
- 		rsp->fec_uncorr_blks = (val_hi << 16 | val_lo);
- 
- 		/* 50G uses 2 Physical serdes lines */
- 		if (rpm->lmac_idmap[lmac_id]->link_info.lmac_type_id ==
- 		    LMAC_MODE_50G_R) {
--			val_lo = rpm_read(rpm, lmac_id,
--					  RPMX_MTI_FCFECX_VL1_CCW_LO);
--			val_hi = rpm_read(rpm, lmac_id,
--					  RPMX_MTI_FCFECX_CW_HI);
-+			val_lo = rpm_read(rpm, 0,
-+					  RPMX_MTI_FCFECX_VL1_CCW_LO(lmac_id));
-+			val_hi = rpm_read(rpm, 0,
-+					  RPMX_MTI_FCFECX_CW_HI(lmac_id));
- 			rsp->fec_corr_blks += (val_hi << 16 | val_lo);
- 
--			val_lo = rpm_read(rpm, lmac_id,
--					  RPMX_MTI_FCFECX_VL1_NCCW_LO);
--			val_hi = rpm_read(rpm, lmac_id,
--					  RPMX_MTI_FCFECX_CW_HI);
-+			val_lo = rpm_read(rpm, 0,
-+					  RPMX_MTI_FCFECX_VL1_NCCW_LO(lmac_id));
-+			val_hi = rpm_read(rpm, 0,
-+					  RPMX_MTI_FCFECX_CW_HI(lmac_id));
- 			rsp->fec_uncorr_blks += (val_hi << 16 | val_lo);
- 		}
- 	} else {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-index a5773fbacaff8..5194fec4c3b8e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-@@ -91,11 +91,11 @@
- #define RPMX_MTI_RSFEC_STAT_FAST_DATA_HI_CDC            0x40000
- #define RPMX_MTI_RSFEC_STAT_COUNTER_CAPTURE_2		0x40050
- #define RPMX_MTI_RSFEC_STAT_COUNTER_CAPTURE_3		0x40058
--#define RPMX_MTI_FCFECX_VL0_CCW_LO			0x38618
--#define RPMX_MTI_FCFECX_VL0_NCCW_LO			0x38620
--#define RPMX_MTI_FCFECX_VL1_CCW_LO			0x38628
--#define RPMX_MTI_FCFECX_VL1_NCCW_LO			0x38630
--#define RPMX_MTI_FCFECX_CW_HI				0x38638
-+#define RPMX_MTI_FCFECX_VL0_CCW_LO(a)			(0x38618 + ((a) * 0x40))
-+#define RPMX_MTI_FCFECX_VL0_NCCW_LO(a)			(0x38620 + ((a) * 0x40))
-+#define RPMX_MTI_FCFECX_VL1_CCW_LO(a)			(0x38628 + ((a) * 0x40))
-+#define RPMX_MTI_FCFECX_VL1_NCCW_LO(a)			(0x38630 + ((a) * 0x40))
-+#define RPMX_MTI_FCFECX_CW_HI(a)			(0x38638 + ((a) * 0x40))
- 
- /* CN10KB CSR Declaration */
- #define  RPM2_CMRX_SW_INT				0x1b0
+diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+index 9ea91432c11d8..e583146bf8504 100644
+--- a/drivers/spi/atmel-quadspi.c
++++ b/drivers/spi/atmel-quadspi.c
+@@ -183,7 +183,7 @@ static const char *atmel_qspi_reg_name(u32 offset, char *tmp, size_t sz)
+ 	case QSPI_MR:
+ 		return "MR";
+ 	case QSPI_RD:
+-		return "MR";
++		return "RD";
+ 	case QSPI_TD:
+ 		return "TD";
+ 	case QSPI_SR:
 -- 
 2.43.0
 
