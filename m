@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661AC9E1FB6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E209E1FAB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C533282CA1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:41:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B74168AE6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40531F7071;
-	Tue,  3 Dec 2024 14:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487051F7062;
+	Tue,  3 Dec 2024 14:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POGDlYVp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmJMolLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902C31F6694;
-	Tue,  3 Dec 2024 14:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037BC1F6690;
+	Tue,  3 Dec 2024 14:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236859; cv=none; b=rXnkB73KkOfBPGfdEoi2jVA8QZD90uRbVuuhEoRDwPfHx5Shw7V/DUqGdZLBsx/SRXGBBb0WvnTT6Eift++kC97Rf0wcgWBkou8gq1qN8CKNhgoJJfYVCWy1bmXJba09JJhCJnCUwADRqxxvv81qw4Y5xg1QQ0idN0ZHXdu3thg=
+	t=1733236745; cv=none; b=eEKUBxw/fJYbvc37iNz274g6/IELWzxCrZMXV8OMkMEdcigKmfEfs1h2ol2kBpbK+K8KVAeg+kmCEjcJn2JvdSHFCVjy2ZLxsxHB3CSohoyVrwcMIaVLMDpJFHQk3x4sND9TN9k3E1pQNMt8W5XBO5ybKP6+xuhE7G0JH2xuqhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236859; c=relaxed/simple;
-	bh=JWV0DudX3T1vszGge4i21KpBqfUVUMVeNyGEIPL8D8k=;
+	s=arc-20240116; t=1733236745; c=relaxed/simple;
+	bh=NAdCKOdaCrMpvNaBi4Tq5SwTsP+1BniSQWZ4NO0f8e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bNA6UXDoNfZx3x6lNNRoDcqqcw6NF4Ely4FquvjtbYmPBIVMkjX7s6ahPtuo1GM/JPqbaKjZPuiHcrysQZO6i6pdTsyU0sRqTzP4V1LH0mcSOS0R5FnN2L5ejocmou0kceCY5cYq6Czy9ilICoL3e/JkY25XQKc7kMVW/1yoq2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POGDlYVp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C8DC4CECF;
-	Tue,  3 Dec 2024 14:40:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E4Xte15y+YksbTJkaotMPfCGP15aPBowz5DWC7CHwycmPVCzu6mNFgdrVJcVYq0RK6PDSfhD4N9nT2R6B2lmhj88XggrwIjGhyV5RcFmt3asw+uYkk1iJVMc9kufxMH/pcKvQJpbGpQz7CqoFHKGbJYFeT8/8pQOiAo9HRVqoUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmJMolLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397E3C4CECF;
+	Tue,  3 Dec 2024 14:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236859;
-	bh=JWV0DudX3T1vszGge4i21KpBqfUVUMVeNyGEIPL8D8k=;
+	s=korg; t=1733236744;
+	bh=NAdCKOdaCrMpvNaBi4Tq5SwTsP+1BniSQWZ4NO0f8e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POGDlYVpZbzNU6kbNs3eDHavpuPlqIQg8bb+MZyQCIACSlEmOtFu3B6GK3TfeZMDl
-	 mMJ9YdV3KjgBpv52PEFhC4a2YaAfwMgfpYxWDI/NnmSH1VRYjQA/YFTM8fy1oyEtKK
-	 pX14TiVN3cFCrDPDqeRal8NrRLyP15oABAW3tzaM=
+	b=wmJMolLdoRes7Pbaf+7w8boSwUQ5700fKLovWzSjmOwVaZm/d3oviT2iBVU96Kux6
+	 nJXm3+dXGXHYcjOZTAWTDGfICOf4u3VfwlxdN+9fhH0BA9pfX8MrQuyLGNorkNnZFJ
+	 Xyo1KjrsDECF8tAR0/SfHkKBAYJ0QGS2jvDeIaqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrej Shadura <andrew.shadura@collabora.co.uk>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Aleksei Vetrov <vvvvvv@google.com>
-Subject: [PATCH 4.19 106/138] Bluetooth: Fix type of len in rfcomm_sock_getsockopt{,_old}()
-Date: Tue,  3 Dec 2024 15:32:15 +0100
-Message-ID: <20241203141927.620456702@linuxfoundation.org>
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	stable@kernel.org,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 107/138] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
+Date: Tue,  3 Dec 2024 15:32:16 +0100
+Message-ID: <20241203141927.657608678@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -61,90 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrej Shadura <andrew.shadura@collabora.co.uk>
+From: Benoît Sevens <bsevens@google.com>
 
-commit 5fe6caa62b07fd39cd6a28acc8f92ba2955e11a6 upstream.
+commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
 
-Commit 9bf4e919ccad worked around an issue introduced after an innocuous
-optimisation change in LLVM main:
+A bogus device can provide a bNumConfigurations value that exceeds the
+initial value used in usb_get_configuration for allocating dev->config.
 
-> len is defined as an 'int' because it is assigned from
-> '__user int *optlen'. However, it is clamped against the result of
-> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
-> platforms). This is done with min_t() because min() requires compatible
-> types, which results in both len and the result of sizeof() being casted
-> to 'unsigned int', meaning len changes signs and the result of sizeof()
-> is truncated. From there, len is passed to copy_to_user(), which has a
-> third parameter type of 'unsigned long', so it is widened and changes
-> signs again. This excessive casting in combination with the KCSAN
-> instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
-> call, failing the build.
+This can lead to out-of-bounds accesses later, e.g. in
+usb_destroy_configuration.
 
-The same issue occurs in rfcomm in functions rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old.
-
-Change the type of len to size_t in both rfcomm_sock_getsockopt and
-rfcomm_sock_getsockopt_old and replace min_t() with min().
-
-Cc: stable@vger.kernel.org
-Co-authored-by: Aleksei Vetrov <vvvvvv@google.com>
-Improves: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_getsockopt_old()")
-Link: https://github.com/ClangBuiltLinux/linux/issues/2007
-Link: https://github.com/llvm/llvm-project/issues/85647
-Signed-off-by: Andrej Shadura <andrew.shadura@collabora.co.uk>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/rfcomm/sock.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ sound/usb/quirks.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -736,7 +736,8 @@ static int rfcomm_sock_getsockopt_old(st
- 	struct sock *l2cap_sk;
- 	struct l2cap_conn *conn;
- 	struct rfcomm_conninfo cinfo;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
- 	u32 opt;
- 
- 	BT_DBG("sk %p", sk);
-@@ -790,7 +791,7 @@ static int rfcomm_sock_getsockopt_old(st
- 		cinfo.hci_handle = conn->hcon->handle;
- 		memcpy(cinfo.dev_class, conn->hcon->dev_class, 3);
- 
--		len = min_t(unsigned int, len, sizeof(cinfo));
-+		len = min(len, sizeof(cinfo));
- 		if (copy_to_user(optval, (char *) &cinfo, len))
- 			err = -EFAULT;
- 
-@@ -809,7 +810,8 @@ static int rfcomm_sock_getsockopt(struct
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -596,6 +596,7 @@ int snd_usb_create_quirk(struct snd_usb_
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
  {
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
--	int len, err = 0;
-+	int err = 0;
-+	size_t len;
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
  
- 	BT_DBG("sk %p", sk);
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -607,10 +608,14 @@ static int snd_usb_extigy_boot_quirk(str
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&dev->descriptor, sizeof(dev->descriptor));
+-		config = dev->actconfig;
++				&new_device_descriptor, sizeof(new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++				new_device_descriptor.bNumConfigurations);
++		else
++			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -826,6 +831,7 @@ static void mbox2_setup_48_24_magic(stru
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -861,10 +867,14 @@ static int snd_usb_mbox2_boot_quirk(stru
+ 	dev_dbg(&dev->dev, "device initialised!\n");
  
-@@ -834,7 +836,7 @@ static int rfcomm_sock_getsockopt(struct
- 		sec.level = rfcomm_pi(sk)->sec_level;
- 		sec.key_size = 0;
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
  
--		len = min_t(unsigned int, len, sizeof(sec));
-+		len = min(len, sizeof(sec));
- 		if (copy_to_user(optval, (char *) &sec, len))
- 			err = -EFAULT;
- 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
 
 
 
