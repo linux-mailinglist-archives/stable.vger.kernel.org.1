@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-97923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8F69E293A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:28:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E63469E2ABC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:23:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 676B2B83F75
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32BB8B274B6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCFE1F76AD;
-	Tue,  3 Dec 2024 16:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28781F76AB;
+	Tue,  3 Dec 2024 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d98btQ5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkp8bEss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2E41E47AD;
-	Tue,  3 Dec 2024 16:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1511F75BD;
+	Tue,  3 Dec 2024 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242197; cv=none; b=E5xs9r3Pez4/uchC6X+a9XMKaYGaCaoONncyp2B1QWT0NVTr5ja1LmoP0oNuRMpUqi734A82wFF2YXKV5hrcmEi2jedZ7O94UZTf7QUFgx3WchPIu7mnqanSie2x82OEVFG+J/AuTnmvNOSW7UrK5deyGiy1Bh3SUFpYdN2SwU4=
+	t=1733239954; cv=none; b=SWbYf5SatO9NfNhxOrIwnPbyjbDzohJ6TC7FpCtnYzixZfnerb4O9igcpce26o4kqpf29qyj26KtROnyc+SlmaJOkAVgTJ2gO+K+fd2r96EkF/qh3sseHqKT/rE7toCjS07gZ9mfL7EmdweMT++DEkwJKeioxQidgR/fZadMKTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242197; c=relaxed/simple;
-	bh=WrZZOcoKYU7WATi4dsRh1Qys29707DNIQSkmPpcGdzI=;
+	s=arc-20240116; t=1733239954; c=relaxed/simple;
+	bh=CVFR8I6D0u/NPtGeV6I28NXnzmsACJF/lJmx9aL0JJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQxwuYrtfnr4r6V8vWorC1ZrIs6hPOI9nt0ADY9UcDceRNPO1o3Xgpod76DF21VQNYL5e4lvNPOB09lIaRfXIozsFCiLaidFUWAsqeakGmZsd1th032l16q7EXJnsSd2LNl9rCXlF7xprA7Mkitq8VPOyL07cjBKfmXQcshDYGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d98btQ5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D491C4CECF;
-	Tue,  3 Dec 2024 16:09:56 +0000 (UTC)
+	 MIME-Version; b=tF+f3b2wMeOt8l1uSZzwMLMPtFnU3/zpx1UFc9nTzB1uV+RReNTJxfw/wtTPxOzk4RrVkOf8cc8QebZpKR8lfSua0JSxZxUiIGyRFPgRoyQl8ovD8nSicqzTlr5UCE1+QrZxdCJs7yMOxQnOu4SkF4T3T9cJizn+XN+XNqtgB04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkp8bEss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05988C4CED6;
+	Tue,  3 Dec 2024 15:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242197;
-	bh=WrZZOcoKYU7WATi4dsRh1Qys29707DNIQSkmPpcGdzI=;
+	s=korg; t=1733239954;
+	bh=CVFR8I6D0u/NPtGeV6I28NXnzmsACJF/lJmx9aL0JJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d98btQ5xTaGs8a+DJWUVfqEsjIJ5PYAirEnpDWFySm6LlNODYKk3iDrnTjkAKy7vh
-	 wrGIHBHnUeNxNxGryNWrd4/5RyBsdtyHyhQXwAU0h4QMjE/chakE+QZEm7aYGQ4ocf
-	 6LAXZnPanF9yDmSi9L+DbABzf3melEQNrKOYh9fc=
+	b=qkp8bEssTwreM7d9CUP1fMS8Lf1l0AeqS3p7U8v5EChisyqAUs8dX5aqppKbbAuEM
+	 KbWzeNBJuFNjlCQgguC3OBXc56OSUZW0hiE3y5xp0hwh79GINM/x4jrxzzrNof8RYs
+	 S9QTq9mGobJSRbr0dpOROXLPa4RrJtZ4nDYPqP2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Zverev <ilya@zverev.info>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 635/826] ASoC: amd: yc: Add a quirk for microfone on Lenovo ThinkPad P14s Gen 5 21MES00B00
-Date: Tue,  3 Dec 2024 15:46:02 +0100
-Message-ID: <20241203144808.522462311@linuxfoundation.org>
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 792/817] smb: client: disable directory caching when dir_cache_timeout is zero
+Date: Tue,  3 Dec 2024 15:46:04 +0100
+Message-ID: <20241203144026.926206577@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Zverev <ilya@zverev.info>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-commit b682aa788e5f9f1ddacdfbb453e49fd3f4e83721 upstream.
+[ Upstream commit ceaf1451990e3ea7fb50aebb5a149f57945f6e9f ]
 
-New ThinkPads need new quirk entries. Ilya has tested this one.
-Laptop product id is 21MES00B00, though the shorthand 21ME works.
+Setting dir_cache_timeout to zero should disable the caching of
+directory contents. Currently, even when dir_cache_timeout is zero,
+some caching related functions are still invoked, which is unintended
+behavior.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219533
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Zverev <ilya@zverev.info>
-Link: https://patch.msgid.link/20241127134420.14471-1-ilya@zverev.info
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the issue by setting tcon->nohandlecache to true when
+dir_cache_timeout is zero, ensuring that directory handle caching
+is properly disabled.
+
+Fixes: 238b351d0935 ("smb3: allow controlling length of time directory entries are cached with dir leases")
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/smb/client/connect.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -245,6 +245,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21ME"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
- 		}
- 	},
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index be0f91000171b..9cf87ba0fb8c9 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2601,7 +2601,7 @@ cifs_get_tcon(struct cifs_ses *ses, struct smb3_fs_context *ctx)
+ 
+ 	if (ses->server->dialect >= SMB20_PROT_ID &&
+ 	    (ses->server->capabilities & SMB2_GLOBAL_CAP_DIRECTORY_LEASING))
+-		nohandlecache = ctx->nohandlecache;
++		nohandlecache = ctx->nohandlecache || !dir_cache_timeout;
+ 	else
+ 		nohandlecache = true;
+ 	tcon = tcon_info_alloc(!nohandlecache, netfs_trace_tcon_ref_new);
+-- 
+2.43.0
+
 
 
 
