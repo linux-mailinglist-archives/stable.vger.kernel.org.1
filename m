@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817EF9E2626
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:09:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A91F9E23EF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 414F7288DD3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 575A1BC2DF6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2730F1F759C;
-	Tue,  3 Dec 2024 16:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE461FC7E4;
+	Tue,  3 Dec 2024 15:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQ4QQOpb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRV3isAF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66D21F7594;
-	Tue,  3 Dec 2024 16:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873791FC115;
+	Tue,  3 Dec 2024 15:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242159; cv=none; b=EVVgfNhQG4Zh2oya4qw97KSL8ejNZicYBEi4K1fk7CAy4pv9CUg3Plxi4InIyjTNKhLIREWMUcLVtY5vRzyHcM34Aef3BMKXJofEKTbzRpOEDDmnbXtRrjlwDPtsrp1QKsIoh0jnPVeJkb1RAMQORtq7HKZ066zyxsIFb3Pfn2g=
+	t=1733239972; cv=none; b=ePZ31FfA0zGxMpuQ+b1v8pp8bhNWrRv4W5rjKkgiRYNXS6i0gkqH0p1I970IyNiEKQPo7h9WGKsoS2vQds/FJD++LVPkTTe4g/kcss1i3ZA4E5YIyhc70GLEd3eU+qoJ8cnzN8JqrQAonEl37WU+DtrY2ylfrfCVSJgxXumX55E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242159; c=relaxed/simple;
-	bh=8tyyT+evIR4e7wp61MVBVLfNrBjUFjMLmI+c5Jmv7bk=;
+	s=arc-20240116; t=1733239972; c=relaxed/simple;
+	bh=AAYAHHfqNkUliyOh3kJgoBN7XMP93QSDeMQsEKyAbYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u2ImS8/cf6kfI7sHR35rnS+CWdYPCYcDM3zXRP2TzV6yOoxJdNBwpt6kFa4PTjhCHahtVU1/rTnpEvWfux5CygYhXgd0PXN0O//IyBiMf0ISVWTPalsSyZFFCDIshwXmNZT5c5Skc7WKb3zb1sczF+7qXJVQfSz2K4hjdcVhK2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQ4QQOpb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46240C4CECF;
-	Tue,  3 Dec 2024 16:09:19 +0000 (UTC)
+	 MIME-Version; b=QRhVKq80cvDS5bWR1U9xtbIO3/dHNCx/kxIgEzfIko1SQHroTrfWcCtXZelGeol2uMSFBOM83rRdLwkpnS+7MngyA8p1LprcdG0F7SmG9OZWmoZapaJH8DhCr+s6YunEZGoHzwG2gjLcLSpbSlpNWE8B8fzC03I1KhebOwCWoIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRV3isAF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AC2C4CED6;
+	Tue,  3 Dec 2024 15:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242159;
-	bh=8tyyT+evIR4e7wp61MVBVLfNrBjUFjMLmI+c5Jmv7bk=;
+	s=korg; t=1733239972;
+	bh=AAYAHHfqNkUliyOh3kJgoBN7XMP93QSDeMQsEKyAbYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQ4QQOpbAU6q4Eczm17CvhMIPQnCkKB+EV5Z7tAL6RGlX9J7fQGgMQjJrd8l44zGs
-	 dmn1xWbZzlSFOa3nHEUV6f8NkbjVDPFTnnkz9qRV1ufg1bGoqptR0gbNoEOFVCv1Y0
-	 5YT0ZPcxpSd5i+5+QdMYNer3/cTSx7n+ndsXbhIY=
+	b=zRV3isAFWU1cxqt0iJHzl8ofof+fRVnM93c5EBRkLhMzpqVTTXfEpWtTcVMmFg2qY
+	 5H25uM8zqi7IiG4Jg1A//JNhSHu36XMIPTrm8oByvoaYN9KfcXpDrJ7PH/ciASUBvf
+	 A/rK2dtFsOiZolS3KVdCHLSjVqy+xe0unodCWR/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	stable@kernel.org,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 625/826] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
+	Igor Raits <igor@gooddata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 780/817] Revert "nfs: dont reuse partially completed requests in nfs_lock_and_join_requests"
 Date: Tue,  3 Dec 2024 15:45:52 +0100
-Message-ID: <20241203144808.133087714@linuxfoundation.org>
+Message-ID: <20241203144026.460504654@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,110 +60,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Sevens <bsevens@google.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
+[ Upstream commit 66f9dac9077c9c063552e465212abeb8f97d28a7 ]
 
-A bogus device can provide a bNumConfigurations value that exceeds the
-initial value used in usb_get_configuration for allocating dev->config.
+This reverts commit b571cfcb9dcac187c6d967987792d37cb0688610.
 
-This can lead to out-of-bounds accesses later, e.g. in
-usb_destroy_configuration.
+This patch appears to assume that if one request is complete, then the
+others will complete too before unlocking. That is not a valid
+assumption, since other requests could hit a non-fatal error or a short
+write that would cause them not to complete.
 
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Igor Raits <igor@gooddata.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219508
+Fixes: b571cfcb9dca ("nfs: don't reuse partially completed requests in nfs_lock_and_join_requests")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ fs/nfs/write.c | 49 +++++++++++++++++++++++++++++--------------------
+ 1 file changed, 29 insertions(+), 20 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -555,6 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index d074d0ceb4f01..1e2b9ee4222e7 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -144,6 +144,31 @@ static void nfs_io_completion_put(struct nfs_io_completion *ioc)
+ 		kref_put(&ioc->refcount, nfs_io_completion_release);
+ }
  
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -566,10 +567,14 @@ static int snd_usb_extigy_boot_quirk(str
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&dev->descriptor, sizeof(dev->descriptor));
--		config = dev->actconfig;
-+				&new_device_descriptor, sizeof(new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+				new_device_descriptor.bNumConfigurations);
-+		else
-+			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -901,6 +906,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -936,10 +942,14 @@ static int snd_usb_mbox2_boot_quirk(stru
- 	dev_dbg(&dev->dev, "device initialised!\n");
++static void
++nfs_page_set_inode_ref(struct nfs_page *req, struct inode *inode)
++{
++	if (!test_and_set_bit(PG_INODE_REF, &req->wb_flags)) {
++		kref_get(&req->wb_kref);
++		atomic_long_inc(&NFS_I(inode)->nrequests);
++	}
++}
++
++static int
++nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
++{
++	int ret;
++
++	if (!test_bit(PG_REMOVE, &req->wb_flags))
++		return 0;
++	ret = nfs_page_group_lock(req);
++	if (ret)
++		return ret;
++	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
++		nfs_page_set_inode_ref(req, inode);
++	nfs_page_group_unlock(req);
++	return 0;
++}
++
+ /**
+  * nfs_folio_find_head_request - find head request associated with a folio
+  * @folio: pointer to folio
+@@ -540,7 +565,6 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
+ 	struct inode *inode = folio->mapping->host;
+ 	struct nfs_page *head, *subreq;
+ 	struct nfs_commit_info cinfo;
+-	bool removed;
+ 	int ret;
  
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&dev->descriptor, sizeof(dev->descriptor));
--	config = dev->actconfig;
-+		&new_device_descriptor, sizeof(new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+			new_device_descriptor.bNumConfigurations);
-+	else
-+		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 	/*
+@@ -565,18 +589,18 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
+ 		goto retry;
+ 	}
  
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
-@@ -1249,6 +1259,7 @@ static void mbox3_setup_defaults(struct
- static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
- 	int descriptor_size;
+-	ret = nfs_page_group_lock(head);
++	ret = nfs_cancel_remove_inode(head, inode);
+ 	if (ret < 0)
+ 		goto out_unlock;
  
-@@ -1262,10 +1273,14 @@ static int snd_usb_mbox3_boot_quirk(stru
- 	dev_dbg(&dev->dev, "MBOX3: device initialised!\n");
+-	removed = test_bit(PG_REMOVE, &head->wb_flags);
++	ret = nfs_page_group_lock(head);
++	if (ret < 0)
++		goto out_unlock;
  
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&dev->descriptor, sizeof(dev->descriptor));
--	config = dev->actconfig;
-+		&new_device_descriptor, sizeof(new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "MBOX3: error usb_get_descriptor: %d\n", err);
-+	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		dev_dbg(&dev->dev, "MBOX3: error too large bNumConfigurations: %d\n",
-+			new_device_descriptor.bNumConfigurations);
-+	else
-+		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 	/* lock each request in the page group */
+ 	for (subreq = head->wb_this_page;
+ 	     subreq != head;
+ 	     subreq = subreq->wb_this_page) {
+-		if (test_bit(PG_REMOVE, &subreq->wb_flags))
+-			removed = true;
+ 		ret = nfs_page_group_lock_subreq(head, subreq);
+ 		if (ret < 0)
+ 			goto out_unlock;
+@@ -584,21 +608,6 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
  
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
+ 	nfs_page_group_unlock(head);
+ 
+-	/*
+-	 * If PG_REMOVE is set on any request, I/O on that request has
+-	 * completed, but some requests were still under I/O at the time
+-	 * we locked the head request.
+-	 *
+-	 * In that case the above wait for all requests means that all I/O
+-	 * has now finished, and we can restart from a clean slate.  Let the
+-	 * old requests go away and start from scratch instead.
+-	 */
+-	if (removed) {
+-		nfs_unroll_locks(head, head);
+-		nfs_unlock_and_release_request(head);
+-		goto retry;
+-	}
+-
+ 	nfs_init_cinfo_from_inode(&cinfo, inode);
+ 	nfs_join_page_group(head, &cinfo, inode);
+ 	return head;
+-- 
+2.43.0
+
 
 
 
