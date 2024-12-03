@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-96350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF39D9E1F6B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:36:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BACC9E1F7E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F6C283ED8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5261F165C30
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F831F75BE;
-	Tue,  3 Dec 2024 14:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAAD1F6680;
+	Tue,  3 Dec 2024 14:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hy1pBSdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxkIsP1G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B631F7548;
-	Tue,  3 Dec 2024 14:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431E91EF08A;
+	Tue,  3 Dec 2024 14:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236496; cv=none; b=FJMhCkSKQo2BXyDLxnG+bBRZanSW/PiNYbQSLZw3Tj1vEV4BxojwMOEv6tNMXTzq+KO4Cq+x0zfOBuFV/uvNllI/xyjxf5xDRUjd+/YvbQDrxMvBanMFcSWBYQNgOBdGPheDzXowYEe58h4rzu2yz1TMZmI8Ev7BIcJK6ZMkez0=
+	t=1733236534; cv=none; b=sh2mSE8CAVQjoi+Bbmdsy4//zT/bFx6rXWlfKZnbMaIcwZ/LtYiaOYM8H3k8tywkfRdF7nB9eNKexBqtREcpdA0oaCVPdyl1+dkZAKKsG0bbN7oG4hAkBhgP+BJ4643p/uQXd3fi/puWVCXu72W48X/M0HBfrc6DeBRwEKINyig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236496; c=relaxed/simple;
-	bh=mbCtnilK72EPOtw+J5FOmQmy7k91Whe2hfd6oD2jBZk=;
+	s=arc-20240116; t=1733236534; c=relaxed/simple;
+	bh=MbMYqC7h2ro6GoH/iiSnoJyzFGpzOPLWHXtwwQ451lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCseRwpO/2GeWjKgSKp4yxYga0r4PcH+L3hgkzBmdxsuQkXdLfr9EQm+Rb2OBByynMzmEYFMCLp+FAwKhJDprLiuiOabvdSGqc5vMjuB81nxO4JA1jq37XFYmQG3fcDc5ft5xJgdVmnDt4PsdZS5IUjWsvjIs3UcdgBqJh6qDXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hy1pBSdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152AAC4CECF;
-	Tue,  3 Dec 2024 14:34:55 +0000 (UTC)
+	 MIME-Version; b=deviw0XJf0L91T93jaWs3OFjLzbHwQU73RaPjovyjDPfSmvNy7OZWk8duwYEIicldwL4slrH5TKDBFpzO5fhG1pqpHjE5FOXsZCvFKU1oU0FPeA545bmODm1xiJTR+XSxBGOUTTxrfqCXWy3pnHEuXuAJ7nCiomSAXds6pNMifw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxkIsP1G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A427CC4CED8;
+	Tue,  3 Dec 2024 14:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236496;
-	bh=mbCtnilK72EPOtw+J5FOmQmy7k91Whe2hfd6oD2jBZk=;
+	s=korg; t=1733236534;
+	bh=MbMYqC7h2ro6GoH/iiSnoJyzFGpzOPLWHXtwwQ451lQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hy1pBSdheUMQiO7hnTnERwEiSXozn1LjSM1YGyOdGzqdSP31EdGgmNsDkaZ0W8y+r
-	 klWDSXfeGYXKX3xqkR9xGTDWj3aU2GMYy/aIXgvhlYaMZu4oPVPee0kBR2m3exX7NA
-	 9QIzSrbqxJ85KsZUm2cHk9nuSVMrvROxAi8Li8GQ=
+	b=HxkIsP1Gh0vU3mCtr0Urx2ow4ijCYJpORdtKUQU8XHp/zpp9p0lVjX4aRuXiN4sEm
+	 FqwnZHmzDZFVGvCvKHZ2KcDPe9quiGz1hLPbcSyBsjeVMvpT74WTKRJ8CJAdGKPxWF
+	 f0jx3QHbyX/WICEt2hyEUjswyhpJ7MmVQ/+eLe/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 029/138] time: Fix references to _msecs_to_jiffies() handling of values
-Date: Tue,  3 Dec 2024 15:30:58 +0100
-Message-ID: <20241203141924.667915131@linuxfoundation.org>
+Subject: [PATCH 4.19 030/138] soc: ti: smartreflex: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue,  3 Dec 2024 15:30:59 +0100
+Message-ID: <20241203141924.708187589@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,53 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 92b043fd995a63a57aae29ff85a39b6f30cd440c ]
+[ Upstream commit 16a0a69244240cfa32c525c021c40f85e090557a ]
 
-The details about the handling of the "normal" values were moved
-to the _msecs_to_jiffies() helpers in commit ca42aaf0c861 ("time:
-Refactor msecs_to_jiffies"). However, the same commit still mentioned
-__msecs_to_jiffies() in the added documentation.
+If request_irq() fails in sr_late_init(), there is no need to enable
+the irq, and if it succeeds, disable_irq() after request_irq() still has
+a time gap in which interrupts can come.
 
-Thus point to _msecs_to_jiffies() instead.
+request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
+request IRQ.
 
-Fixes: ca42aaf0c861 ("time: Refactor msecs_to_jiffies")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241025110141.157205-2-ojeda@kernel.org
+Fixes: 1279ba5916f6 ("OMAP3+: SR: disable interrupt by default")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240912034147.3014213-1-ruanjinjie@huawei.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/jiffies.h | 2 +-
- kernel/time/time.c      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/avs/smartreflex.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
-index fa928242567db..add50d10f4102 100644
---- a/include/linux/jiffies.h
-+++ b/include/linux/jiffies.h
-@@ -349,7 +349,7 @@ static inline unsigned long _msecs_to_jiffies(const unsigned int m)
-  * - all other values are converted to jiffies by either multiplying
-  *   the input value by a factor or dividing it with a factor and
-  *   handling any 32-bit overflows.
-- *   for the details see __msecs_to_jiffies()
-+ *   for the details see _msecs_to_jiffies()
-  *
-  * msecs_to_jiffies() checks for the passed in value being a constant
-  * via __builtin_constant_p() allowing gcc to eliminate most of the
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index f7d4fa5ddb9e2..4087cf51142c0 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -576,7 +576,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
-  * - all other values are converted to jiffies by either multiplying
-  *   the input value by a factor or dividing it with a factor and
-  *   handling any 32-bit overflows.
-- *   for the details see __msecs_to_jiffies()
-+ *   for the details see _msecs_to_jiffies()
-  *
-  * msecs_to_jiffies() checks for the passed in value being a constant
-  * via __builtin_constant_p() allowing gcc to eliminate most of the
+diff --git a/drivers/power/avs/smartreflex.c b/drivers/power/avs/smartreflex.c
+index 5ac122cd25b8c..015a406d67b8d 100644
+--- a/drivers/power/avs/smartreflex.c
++++ b/drivers/power/avs/smartreflex.c
+@@ -217,10 +217,10 @@ static int sr_late_init(struct omap_sr *sr_info)
+ 
+ 	if (sr_class->notify && sr_class->notify_flags && sr_info->irq) {
+ 		ret = devm_request_irq(&sr_info->pdev->dev, sr_info->irq,
+-				       sr_interrupt, 0, sr_info->name, sr_info);
++				       sr_interrupt, IRQF_NO_AUTOEN,
++				       sr_info->name, sr_info);
+ 		if (ret)
+ 			goto error;
+-		disable_irq(sr_info->irq);
+ 	}
+ 
+ 	if (pdata && pdata->enable_on_init)
 -- 
 2.43.0
 
