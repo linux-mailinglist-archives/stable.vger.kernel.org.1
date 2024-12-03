@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-97628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1835C9E24D2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4302B9E24B1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D16A6287F20
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 088E428745F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2131F429E;
-	Tue,  3 Dec 2024 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4A61F76D0;
+	Tue,  3 Dec 2024 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSmO3RMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LLlx0Qr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B16C1EE001;
-	Tue,  3 Dec 2024 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B01C1DAC9F;
+	Tue,  3 Dec 2024 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241168; cv=none; b=Vj746vbTjxVbXVggM5pAcBO0aC0SiO/YtM8AmOAPku40xf+RUUzlfAgVuFeCWDOimaxu3WITT+YY2JHww1Jk4lpaj9wMMxpwWFMYsmCD5JO+icUK/4rlH92h/uaQFmuDAWAJLLPFq8iO4VgHQyB4lN9wWRK/INVadLhmwzOtdeA=
+	t=1733241064; cv=none; b=pOyJ29s1nMKttmk5UQDKFyacy1kXYY4s/2EJQTwUTrezKcy+AjpDLpu1cFL46ciHTE60/Pf6B/BzGCZ6CIzav1AI66SI/K+28eVExDZRedHPRJ4ZzmvFhFvtuMtzVGneW0fgMyi9bcxqErYefx0gg24tvUn8LTH59eJSObPBaJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241168; c=relaxed/simple;
-	bh=gOPIpZFXWU3tAccK9tWQRkkUgxbkOXYHkCVWVDnSf9M=;
+	s=arc-20240116; t=1733241064; c=relaxed/simple;
+	bh=pONlpk/VK1SszHYALSu3xDTg07Xey3M7DuBkzdDv9DM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHzeF/5r8j1h2/4ma5riuukBKCCY/GHQ3hQDxp7FhT0d8WUSQWEXrba6fPNAE1iv6kfu5QLeGB/chtxhp3s2qAToEDqfUxSL9psL/Q9Vg6BSTS5IAA7217H4SjRCSxaQCoQsKTxsaW5chtpRVwWmow07/1MzTc5W3KAWFOJ51jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSmO3RMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BDDC4CECF;
-	Tue,  3 Dec 2024 15:52:47 +0000 (UTC)
+	 MIME-Version; b=sVYc7zKrId7yG29kVk0gDSw438B2v5Yc0Jt0G/Dcx7dhr7pPOjqSbwMAekSF+711untwUfJEVYffWUW50BN0C3q4qPo9JvvWKLZ17wBEjit3oVgn+tN1TnqqPdXnjXl1R7zmuHUB+MBIBbs5oSwyto19L1pUFJPBUluWzQ6ayoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LLlx0Qr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1B6C4CED6;
+	Tue,  3 Dec 2024 15:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241168;
-	bh=gOPIpZFXWU3tAccK9tWQRkkUgxbkOXYHkCVWVDnSf9M=;
+	s=korg; t=1733241064;
+	bh=pONlpk/VK1SszHYALSu3xDTg07Xey3M7DuBkzdDv9DM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSmO3RMiZh/Sjv5Mo0Y0HJvjxm4BIg/8ulxfaxFwfVbcyYmW2d/tnLjDxRClFBThh
-	 LNkOk2Iod7DpaexxAZpYLkYG08uzYXNJFY+VOUS9l8CwqrKicRdaUphumdR35Cernw
-	 YMEqxYDz6Gn5k3BEO1LEKVzCxfdEYoXin6dJQdO8=
+	b=1LLlx0QrqQbEmQA1oFi1YNEqlQF0THOG39pr9CSc5QLH/PHJ8T+CZESLBsVtncs3g
+	 24bHNx08WNUTTQ2cPejnhofRyJ2KS7rgkobGZcpooJ4MyXHiF1nIKM1XG/Lo5zJvoz
+	 ygCwlmpqnfGJ6DlrbwvSNtn9gEkzKYLigpw+sYGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 314/826] bpf, sockmap: Fix sk_msg_reset_curr
-Date: Tue,  3 Dec 2024 15:40:41 +0100
-Message-ID: <20241203144756.011879797@linuxfoundation.org>
+Subject: [PATCH 6.12 315/826] ipv6: release nexthop on device removal
+Date: Tue,  3 Dec 2024 15:40:42 +0100
+Message-ID: <20241203144756.050355278@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,68 +68,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 955afd57dc4bf7e8c620a0a9e3af3c881c2c6dff ]
+[ Upstream commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe ]
 
-Found in the test_txmsg_pull in test_sockmap,
-```
-txmsg_cork = 512; // corking is importrant here
-opt->iov_length = 3;
-opt->iov_count = 1;
-opt->rate = 512; // sendmsg will be invoked 512 times
-```
-The first sendmsg will send an sk_msg with size 3, and bpf_msg_pull_data
-will be invoked the first time. sk_msg_reset_curr will reset the copybreak
-from 3 to 0. In the second sendmsg, since we are in the stage of corking,
-psock->cork will be reused in func sk_msg_alloc. msg->sg.copybreak is 0
-now, the second msg will overwrite the first msg. As a result, we could
-not pass the data integrity test.
+The CI is hitting some aperiodic hangup at device removal time in the
+pmtu.sh self-test:
 
-The same problem happens in push and pop test. Thus, fix sk_msg_reset_curr
-to restore the correct copybreak.
+unregister_netdevice: waiting for veth_A-R1 to become free. Usage count = 6
+ref_tracker: veth_A-R1@ffff888013df15d8 has 1/5 users at
+	dst_init+0x84/0x4a0
+	dst_alloc+0x97/0x150
+	ip6_dst_alloc+0x23/0x90
+	ip6_rt_pcpu_alloc+0x1e6/0x520
+	ip6_pol_route+0x56f/0x840
+	fib6_rule_lookup+0x334/0x630
+	ip6_route_output_flags+0x259/0x480
+	ip6_dst_lookup_tail.constprop.0+0x5c2/0x940
+	ip6_dst_lookup_flow+0x88/0x190
+	udp_tunnel6_dst_lookup+0x2a7/0x4c0
+	vxlan_xmit_one+0xbde/0x4a50 [vxlan]
+	vxlan_xmit+0x9ad/0xf20 [vxlan]
+	dev_hard_start_xmit+0x10e/0x360
+	__dev_queue_xmit+0xf95/0x18c0
+	arp_solicit+0x4a2/0xe00
+	neigh_probe+0xaa/0xf0
 
-Fixes: bb9aefde5bba ("bpf: sockmap, updating the sg structure should also update curr")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-9-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+While the first suspect is the dst_cache, explicitly tracking the dst
+owing the last device reference via probes proved such dst is held by
+the nexthop in the originating fib6_info.
+
+Similar to commit f5b51fe804ec ("ipv6: route: purge exception on
+removal"), we need to explicitly release the originating fib info when
+disconnecting a to-be-removed device from a live ipv6 dst: move the
+fib6_info cleanup into ip6_dst_ifdown().
+
+Tested running:
+
+./pmtu.sh cleanup_ipv6_exception
+
+in a tight loop for more than 400 iterations with no spat, running an
+unpatched kernel  I observed a splat every ~10 iterations.
+
+Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/604c45c188c609b732286b47ac2a451a40f6cf6d.1730828007.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ net/ipv6/route.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 60c6e1e4662bd..9a459213d283f 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2621,18 +2621,16 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
- 
- static void sk_msg_reset_curr(struct sk_msg *msg)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index b4251915585f7..76bea6db59764 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -374,6 +374,7 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
  {
--	u32 i = msg->sg.start;
--	u32 len = 0;
--
--	do {
--		len += sk_msg_elem(msg, i)->length;
--		sk_msg_iter_var_next(i);
--		if (len >= msg->sg.size)
--			break;
--	} while (i != msg->sg.end);
-+	if (!msg->sg.size) {
-+		msg->sg.curr = msg->sg.start;
-+		msg->sg.copybreak = 0;
-+	} else {
-+		u32 i = msg->sg.end;
+ 	struct rt6_info *rt = dst_rt6_info(dst);
+ 	struct inet6_dev *idev = rt->rt6i_idev;
++	struct fib6_info *from;
  
--	msg->sg.curr = i;
--	msg->sg.copybreak = 0;
-+		sk_msg_iter_var_prev(i);
-+		msg->sg.curr = i;
-+		msg->sg.copybreak = msg->sg.data[i].length;
-+	}
+ 	if (idev && idev->dev != blackhole_netdev) {
+ 		struct inet6_dev *blackhole_idev = in6_dev_get(blackhole_netdev);
+@@ -383,6 +384,8 @@ static void ip6_dst_ifdown(struct dst_entry *dst, struct net_device *dev)
+ 			in6_dev_put(idev);
+ 		}
+ 	}
++	from = unrcu_pointer(xchg(&rt->from, NULL));
++	fib6_info_release(from);
  }
  
- static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
+ static bool __rt6_check_expired(const struct rt6_info *rt)
+@@ -1455,7 +1458,6 @@ static DEFINE_SPINLOCK(rt6_exception_lock);
+ static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
+ 				 struct rt6_exception *rt6_ex)
+ {
+-	struct fib6_info *from;
+ 	struct net *net;
+ 
+ 	if (!bucket || !rt6_ex)
+@@ -1467,8 +1469,6 @@ static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
+ 	/* purge completely the exception to allow releasing the held resources:
+ 	 * some [sk] cache may keep the dst around for unlimited time
+ 	 */
+-	from = unrcu_pointer(xchg(&rt6_ex->rt6i->from, NULL));
+-	fib6_info_release(from);
+ 	dst_dev_put(&rt6_ex->rt6i->dst);
+ 
+ 	hlist_del_rcu(&rt6_ex->hlist);
 -- 
 2.43.0
 
