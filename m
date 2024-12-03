@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-96366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965AC9E1F77
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F36A9E1F79
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B59828175F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 205D0282400
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A85B1F7584;
-	Tue,  3 Dec 2024 14:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42401F708A;
+	Tue,  3 Dec 2024 14:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxYE8yYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwE765qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BA51F754D;
-	Tue,  3 Dec 2024 14:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DC63BB24;
+	Tue,  3 Dec 2024 14:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236551; cv=none; b=gXDELqgbrpVLN35lZPT1lePzPHqmqrzqeamgnwZcRLao2YC0+EoCEyg98VX9lG5Sc+0PAzAxXiSIIboGK8kIR7mkRwsIH5EHYgbrLdsW/oldLXFNcJerI8cINnGRpILy3xStLcxK/gFoi+//Hk6jrR91D2lMXVC3FVqUxg+BseM=
+	t=1733236561; cv=none; b=TBajncayHAMjPrJcZW2RISj3BPOnOsRu5GPaNAIivPdinWpiLyiSEUsClrJDHDOmzcqxfXAFgUloCM8cqhvM24tsWrYyJwEp0/d8ssntcUeX834OQsczJyy877LnuYsiEEajGwoEzd75lcbQdcQG6NDVzZPdECtXGQdsXY0Dogs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236551; c=relaxed/simple;
-	bh=l+wChceFfx08qyPoR1tem/Ejfw5mobnhyG51CGvye+E=;
+	s=arc-20240116; t=1733236561; c=relaxed/simple;
+	bh=pa/G1cV992cvaQE46W/rxeCGjCf+tukeBhtdDLDFWaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4B94JJNH206AcVrt6MkUCrFX7+D0BGZalfVxjlLI0WUZbcZ34a2gXbxLaTqzT1fDWNf6Ap/GX3oV2kPOB0/bo1rnLFqoxL7Wqm+jTHVjXWlxR4rz//uOfYIMeAiXiI6PcKoLlKR8fQpkyCbM4NV5+1xHocnvWI9gY+hW6j0RVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxYE8yYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F876C4CECF;
-	Tue,  3 Dec 2024 14:35:50 +0000 (UTC)
+	 MIME-Version; b=YaOGgyIOpRGpR5pgLsmD7Lhq9tTCQZ/QVREseOEWGerE3BFFU1+spbUqUM8J3mmNFprhEK4eM+kR7igi349TyuQ3Mytffjc6x3BHdX2oXtBwmb6afmEZNbVnxIi19Pc+jVd5XXeLndNwkybOi5UMkwgJ+scMMBotoYhMVGz6ucg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwE765qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9217BC4CECF;
+	Tue,  3 Dec 2024 14:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236550;
-	bh=l+wChceFfx08qyPoR1tem/Ejfw5mobnhyG51CGvye+E=;
+	s=korg; t=1733236561;
+	bh=pa/G1cV992cvaQE46W/rxeCGjCf+tukeBhtdDLDFWaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YxYE8yYULn2wkKe0ZA8lKfFjYoee1N8i4qcYUoDqnY55otVoEixWL0KKhjXkLne8E
-	 vaYR4cBXuS9oR3YVaDyuQxqDTCYlF7SyoUHkBZZjYioNNx3sgd9SPX4ZuVBTDrTQeI
-	 iqW4nvrjmdwWLYR2T20y66wp/mVE28APD2LKYxz8=
+	b=rwE765qwKXauL5eKMfyEofEfcQFj2ZL2QH/ra2zJuc6fLVpbp9tW5zIdlwUkpm9NG
+	 2tnQwtpki2uHm2/yyQeDXn16ezEzB/eJENika3h4Lzj5vDfXSTHZcvpzNC9FzAEMrx
+	 p8L9YPG3iIW6y7466SNDPQQmnp+yuC10DIcvWniE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/138] drm/etnaviv: hold GPU lock across perfmon sampling
-Date: Tue,  3 Dec 2024 15:31:21 +0100
-Message-ID: <20241203141925.551204168@linuxfoundation.org>
+Subject: [PATCH 4.19 055/138] ALSA: caiaq: Use snd_card_free_when_closed() at disconnection
+Date: Tue,  3 Dec 2024 15:31:24 +0100
+Message-ID: <20241203141925.665276104@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,76 +65,166 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 37dc4737447a7667f8e9ec790dac251da057eb27 ]
+[ Upstream commit b04dcbb7f7b1908806b7dc22671cdbe78ff2b82c ]
 
-The perfmon sampling mutates shared GPU state (e.g. VIVS_HI_CLOCK_CONTROL
-to select the pipe for the perf counter reads). To avoid clashing with
-other functions mutating the same state (e.g. etnaviv_gpu_update_clock)
-the perfmon sampling needs to hold the GPU lock.
+The USB disconnect callback is supposed to be short and not too-long
+waiting.  OTOH, the current code uses snd_card_free() at
+disconnection, but this waits for the close of all used fds, hence it
+can take long.  It eventually blocks the upper layer USB ioctls, which
+may trigger a soft lockup.
 
-Fixes: 68dc0b295dcb ("drm/etnaviv: use 'sync points' for performance monitor requests")
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+An easy workaround is to replace snd_card_free() with
+snd_card_free_when_closed().  This variant returns immediately while
+the release of resources is done asynchronously by the card device
+release at the last close.
+
+This patch also splits the code to the disconnect and the free phases;
+the former is called immediately at the USB disconnect callback while
+the latter is called from the card destructor.
+
+Fixes: 523f1dce3743 ("[ALSA] Add Native Instrument usb audio device support")
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241113111042.15058-5-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ sound/usb/caiaq/audio.c  | 10 ++++++++--
+ sound/usb/caiaq/audio.h  |  1 +
+ sound/usb/caiaq/device.c | 19 +++++++++++++++----
+ sound/usb/caiaq/input.c  | 12 +++++++++---
+ sound/usb/caiaq/input.h  |  1 +
+ 5 files changed, 34 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index ef82ad6251077..dec636b96531b 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -1237,6 +1237,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+diff --git a/sound/usb/caiaq/audio.c b/sound/usb/caiaq/audio.c
+index c6108a3d7f8f8..9c6a2295d45af 100644
+--- a/sound/usb/caiaq/audio.c
++++ b/sound/usb/caiaq/audio.c
+@@ -890,14 +890,20 @@ int snd_usb_caiaq_audio_init(struct snd_usb_caiaqdev *cdev)
+ 	return 0;
+ }
+ 
+-void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev)
++void snd_usb_caiaq_audio_disconnect(struct snd_usb_caiaqdev *cdev)
  {
- 	u32 val;
+ 	struct device *dev = caiaqdev_to_dev(cdev);
  
-+	mutex_lock(&gpu->lock);
+ 	dev_dbg(dev, "%s(%p)\n", __func__, cdev);
+ 	stream_stop(cdev);
++}
 +
- 	/* disable clock gating */
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
-@@ -1248,6 +1250,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
- 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
- 
- 	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_PRE);
++void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev)
++{
++	struct device *dev = caiaqdev_to_dev(cdev);
 +
-+	mutex_unlock(&gpu->lock);
++	dev_dbg(dev, "%s(%p)\n", __func__, cdev);
+ 	free_urbs(cdev->data_urbs_in);
+ 	free_urbs(cdev->data_urbs_out);
+ 	kfree(cdev->data_cb_info);
  }
- 
- static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
-@@ -1257,13 +1261,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	unsigned int i;
- 	u32 val;
- 
--	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
 -
--	for (i = 0; i < submit->nr_pmrs; i++) {
--		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+	mutex_lock(&gpu->lock);
+diff --git a/sound/usb/caiaq/audio.h b/sound/usb/caiaq/audio.h
+index 869bf6264d6a0..07f5d064456cf 100644
+--- a/sound/usb/caiaq/audio.h
++++ b/sound/usb/caiaq/audio.h
+@@ -3,6 +3,7 @@
+ #define CAIAQ_AUDIO_H
  
--		*pmr->bo_vma = pmr->sequence;
--	}
-+	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
+ int snd_usb_caiaq_audio_init(struct snd_usb_caiaqdev *cdev);
++void snd_usb_caiaq_audio_disconnect(struct snd_usb_caiaqdev *cdev);
+ void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev);
  
- 	/* disable debug register */
- 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
-@@ -1274,6 +1274,14 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
- 	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
+ #endif /* CAIAQ_AUDIO_H */
+diff --git a/sound/usb/caiaq/device.c b/sound/usb/caiaq/device.c
+index d55ca48de3ea3..4df7f37aa670b 100644
+--- a/sound/usb/caiaq/device.c
++++ b/sound/usb/caiaq/device.c
+@@ -402,6 +402,17 @@ static void setup_card(struct snd_usb_caiaqdev *cdev)
+ 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
+ }
+ 
++static void card_free(struct snd_card *card)
++{
++	struct snd_usb_caiaqdev *cdev = caiaqdev(card);
 +
-+	mutex_unlock(&gpu->lock);
++#ifdef CONFIG_SND_USB_CAIAQ_INPUT
++	snd_usb_caiaq_input_free(cdev);
++#endif
++	snd_usb_caiaq_audio_free(cdev);
++	usb_reset_device(cdev->chip.dev);
++}
 +
-+	for (i = 0; i < submit->nr_pmrs; i++) {
-+		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+
-+		*pmr->bo_vma = pmr->sequence;
-+	}
+ static int create_card(struct usb_device *usb_dev,
+ 		       struct usb_interface *intf,
+ 		       struct snd_card **cardp)
+@@ -515,6 +526,7 @@ static int init_card(struct snd_usb_caiaqdev *cdev)
+ 		       cdev->vendor_name, cdev->product_name, usbpath);
+ 
+ 	setup_card(cdev);
++	card->private_free = card_free;
+ 	return 0;
+ 
+  err_kill_urb:
+@@ -560,15 +572,14 @@ static void snd_disconnect(struct usb_interface *intf)
+ 	snd_card_disconnect(card);
+ 
+ #ifdef CONFIG_SND_USB_CAIAQ_INPUT
+-	snd_usb_caiaq_input_free(cdev);
++	snd_usb_caiaq_input_disconnect(cdev);
+ #endif
+-	snd_usb_caiaq_audio_free(cdev);
++	snd_usb_caiaq_audio_disconnect(cdev);
+ 
+ 	usb_kill_urb(&cdev->ep1_in_urb);
+ 	usb_kill_urb(&cdev->midi_out_urb);
+ 
+-	snd_card_free(card);
+-	usb_reset_device(interface_to_usbdev(intf));
++	snd_card_free_when_closed(card);
  }
  
  
+diff --git a/sound/usb/caiaq/input.c b/sound/usb/caiaq/input.c
+index 19951e1dbbb01..a01a242f5c995 100644
+--- a/sound/usb/caiaq/input.c
++++ b/sound/usb/caiaq/input.c
+@@ -842,15 +842,21 @@ int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev)
+ 	return ret;
+ }
+ 
+-void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev)
++void snd_usb_caiaq_input_disconnect(struct snd_usb_caiaqdev *cdev)
+ {
+ 	if (!cdev || !cdev->input_dev)
+ 		return;
+ 
+ 	usb_kill_urb(cdev->ep4_in_urb);
++	input_unregister_device(cdev->input_dev);
++}
++
++void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev)
++{
++	if (!cdev || !cdev->input_dev)
++		return;
++
+ 	usb_free_urb(cdev->ep4_in_urb);
+ 	cdev->ep4_in_urb = NULL;
+-
+-	input_unregister_device(cdev->input_dev);
+ 	cdev->input_dev = NULL;
+ }
+diff --git a/sound/usb/caiaq/input.h b/sound/usb/caiaq/input.h
+index c42891e7be884..fbe267f85d025 100644
+--- a/sound/usb/caiaq/input.h
++++ b/sound/usb/caiaq/input.h
+@@ -4,6 +4,7 @@
+ 
+ void snd_usb_caiaq_input_dispatch(struct snd_usb_caiaqdev *cdev, char *buf, unsigned int len);
+ int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev);
++void snd_usb_caiaq_input_disconnect(struct snd_usb_caiaqdev *cdev);
+ void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev);
+ 
+ #endif
 -- 
 2.43.0
 
