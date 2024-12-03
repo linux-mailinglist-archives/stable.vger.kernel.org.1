@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9A79E250C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D369E2811
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CDA287A47
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67A26B84558
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CE81F75A5;
-	Tue,  3 Dec 2024 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3421F76B7;
+	Tue,  3 Dec 2024 15:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcP/mjoC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqYwLlwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A48381B1;
-	Tue,  3 Dec 2024 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497431F75B7;
+	Tue,  3 Dec 2024 15:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241372; cv=none; b=FWlKNl6V3F4Msx/fvm6lahlKL/DRP2t44/1bkkcmwQGGXbhrgiZS5lqx+f2mT3kpGz0q2TvxE3vrfLs1hjcU2UMAFszTS2/5gGr/mIFH5ZIwbEgSNAk6mK/8XGnPNxn7pZFuBt71EXWrrZqIcMTwSP6I9qdfevyepEcH8tQL7ak=
+	t=1733239268; cv=none; b=YmOcnNeJGF/r3DfHHFZUjujgczfWp/QlSwoU0GsSJp+gqMKZmORbDF1sYbPytR8eyWXujUcHF+ht149odH4Iu8AvTTUs3AEuxUHVXNvdi/J6K9GsqZLRYV2GPL1Zb7WYCRTd8A8QQJeLxlx/5LBppHwDdoH5btWrYAat5YKKw2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241372; c=relaxed/simple;
-	bh=gBQDiQVHs0w7N4iCuPeWs5knZG7qUTQ4VycGtLXoBKA=;
+	s=arc-20240116; t=1733239268; c=relaxed/simple;
+	bh=SVwssaSOts8tWeYSUyIv/QbT0Qz9LCftd4Xy9VqLcFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1T/Rt5tDGHuKdfN9KCTFukHQjxNVRs10A1ebFwl65yyKse74hLS9HRvSMyphgN9fPlGI6eygHOqzb/0GUAp5QJnqn+c3zoTB1bZB88D3LONTV08zmNC5vu5Ln5QUQnaQVOJ4fUDEQaimqWyicLncVkJOYo5NKrtigrefix9omM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcP/mjoC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E243DC4CECF;
-	Tue,  3 Dec 2024 15:56:11 +0000 (UTC)
+	 MIME-Version; b=q1eQI0v2Z2sCDoGNA/+MzKT9K7jedhImFklkSgF+tyFX6l62qsLU3nI3rRVLN9WwfSUPFyhxsoQnrhYMHL669/TO6vbk/AtaMVqtjFBDg7DyG/WpWuS4b+B+88h67GdqvEFVoFxP3soKNC4yPweW5Ys/grUDKR4nPsu6bkOD/Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqYwLlwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47FAC4CEDA;
+	Tue,  3 Dec 2024 15:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241372;
-	bh=gBQDiQVHs0w7N4iCuPeWs5knZG7qUTQ4VycGtLXoBKA=;
+	s=korg; t=1733239268;
+	bh=SVwssaSOts8tWeYSUyIv/QbT0Qz9LCftd4Xy9VqLcFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcP/mjoCFWe8/nowtnXDNDkbFRWHbl9EbvZR/1q133zPOCgyQXnao1h51FRiguiof
-	 Qv8AwSFD46RUaZKLmXEpRDngsVGDytfKFixWOrtxGK6EUHAo+pRIV+9UM/RM1z7eXX
-	 9YwuhYuuBlpq3bP/uTjQHQ2s6bo/XoU+LTYeJd9A=
+	b=NqYwLlwlUNuRQf2AV0i5y2IP6irnloD/2BPguS27KR1Abx5E1uwNbdUut8XCriVVa
+	 S7adjeREO4fzkuXlrQFWSSMpqvE2E5dEFfHS1P5CE5QjgR2Q8Rl+ec+6c2r/UDO6Av
+	 HBOFndugiJaF9kCRoThJfjCBSbbTgHZ2UGEGuWcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chiara Meiohas <cmeiohas@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 400/826] RDMA/mlx5: Call dev_put() after the blocking notifier
-Date: Tue,  3 Dec 2024 15:42:07 +0100
-Message-ID: <20241203144759.365282965@linuxfoundation.org>
+Subject: [PATCH 6.11 556/817] selftests/mount_setattr: Fix failures on 64K PAGE_SIZE kernels
+Date: Tue,  3 Dec 2024 15:42:08 +0100
+Message-ID: <20241203144017.614773752@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chiara Meiohas <cmeiohas@nvidia.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 6d9c7b272966f13ebbf39687620f395d97f4d15d ]
+[ Upstream commit f13242a46438e690067a4bf47068fde4d5719947 ]
 
-Move dev_put() call to occur directly after the blocking
-notifier, instead of within the event handler.
+Currently the mount_setattr_test fails on machines with a 64K PAGE_SIZE,
+with errors such as:
 
-Fixes: 8d159eb2117b ("RDMA/mlx5: Use IB set_netdev and get_netdev functions")
-Signed-off-by: Chiara Meiohas <cmeiohas@nvidia.com>
-Link: https://patch.msgid.link/342ff94b3dcbb07da1c7dab862a73933d604b717.1730381292.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+  #  RUN           mount_setattr_idmapped.invalid_fd_negative ...
+  mkfs.ext4: No space left on device while writing out and closing file system
+  # mount_setattr_test.c:1055:invalid_fd_negative:Expected system("mkfs.ext4 -q /mnt/C/ext4.img") (256) == 0 (0)
+  # invalid_fd_negative: Test terminated by assertion
+  #          FAIL  mount_setattr_idmapped.invalid_fd_negative
+  not ok 12 mount_setattr_idmapped.invalid_fd_negative
+
+The code creates a 100,000 byte tmpfs:
+
+	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
+			"size=100000,mode=700"), 0);
+
+And then a little later creates a 2MB ext4 filesystem in that tmpfs:
+
+	ASSERT_EQ(ftruncate(img_fd, 1024 * 2048), 0);
+	ASSERT_EQ(system("mkfs.ext4 -q /mnt/C/ext4.img"), 0);
+
+At first glance it seems like that should never work, after all 2MB is
+larger than 100,000 bytes. However the filesystem image doesn't actually
+occupy 2MB on "disk" (actually RAM, due to tmpfs). On 4K kernels the
+ext4.img uses ~84KB of actual space (according to du), which just fits.
+
+However on 64K PAGE_SIZE kernels the ext4.img takes at least 256KB,
+which is too large to fit in the tmpfs, hence the errors.
+
+It seems fraught to rely on the ext4.img taking less space on disk than
+the allocated size, so instead create the tmpfs with a size of 2MB. With
+that all 21 tests pass on 64K PAGE_SIZE kernels.
+
+Fixes: 01eadc8dd96d ("tests: add mount_setattr() selftests")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20241115134114.1219555-1-mpe@ellerman.id.au
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c                 | 1 -
- drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 1 +
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mount_setattr/mount_setattr_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 4999239c8f413..32e57cc343361 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -3234,7 +3234,6 @@ static int lag_event(struct notifier_block *nb, unsigned long event, void *data)
- 			}
- 			err = ib_device_set_netdev(&dev->ib_dev, ndev,
- 						   portnum + 1);
--			dev_put(ndev);
- 			if (err)
- 				return err;
- 			/* Rescan gids after new netdev assignment */
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 8577db3308cc5..d661267d98ffc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -516,6 +516,7 @@ void mlx5_modify_lag(struct mlx5_lag *ldev,
- 		blocking_notifier_call_chain(&dev0->priv.lag_nh,
- 					     MLX5_DRIVER_EVENT_ACTIVE_BACKUP_LAG_CHANGE_LOWERSTATE,
- 					     ndev);
-+		dev_put(ndev);
- 	}
- }
+diff --git a/tools/testing/selftests/mount_setattr/mount_setattr_test.c b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+index c6a8c732b8021..304e6422a1f1c 100644
+--- a/tools/testing/selftests/mount_setattr/mount_setattr_test.c
++++ b/tools/testing/selftests/mount_setattr/mount_setattr_test.c
+@@ -1026,7 +1026,7 @@ FIXTURE_SETUP(mount_setattr_idmapped)
+ 			"size=100000,mode=700"), 0);
+ 
+ 	ASSERT_EQ(mount("testing", "/mnt", "tmpfs", MS_NOATIME | MS_NODEV,
+-			"size=100000,mode=700"), 0);
++			"size=2m,mode=700"), 0);
+ 
+ 	ASSERT_EQ(mkdir("/mnt/A", 0777), 0);
  
 -- 
 2.43.0
