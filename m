@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-96348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BFE69E1F66
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9432D9E1F40
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 580B1283F3D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A0F1283698
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DA11F75B7;
-	Tue,  3 Dec 2024 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1B91F6666;
+	Tue,  3 Dec 2024 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIBxEvlr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xE2kFPn2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA591F75B4;
-	Tue,  3 Dec 2024 14:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBB71F470B;
+	Tue,  3 Dec 2024 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236489; cv=none; b=nIXwjAGoj502JeWQmoh0jvBoW/Gqp7tmyR1E974Yj2I2E4HbkH39j3zAaAzPEpEoO+DRhD4puIpBDgnDk9++fSCviRh7dETkF574iVpEJF/A9x/L1VdAKN8l+6elUr15JqsUUHsN3VEzuHjRophnxDvbwloCJ2smwBqsjZYaUF8=
+	t=1733236408; cv=none; b=pdA5gGJEnG5A/BW9+zhRlCfuJV20vzXwzeo8JD7EoncN2BBylCLq4n2ACq9ouhBAe/i17DsBOetA7FfxDaYVKx+sncHDVTrLfavBOrTTKvJoQYitYcBle8o9y1aTAGrN4QKNHMpMCsFTUYFZVzCNfsJK489z8Sv9XVKfYw+K4Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236489; c=relaxed/simple;
-	bh=Retbowbg0+PANAm9cBOd7SCIxotV6aPkXTCVN5SoVXc=;
+	s=arc-20240116; t=1733236408; c=relaxed/simple;
+	bh=Mq8jK9szGMq5tPpRdayk7czjMaG8DYlA/HaTfUIqop4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzHRM6a5xfmDcqU8/C0JuRsMIdhZrB4pj63W/ov5qGaCmllekRufSRRxxWBbS2btF2GY9XiQ6D5pTmsrG1xLM9UnPZ23IjmkWn3V1m0DScZ+CP6/Vtbzf03NnhnwWrHGht5yOX04PxoA70ckLTqFN45GAQ72q1Tzc8Yx4M3A0ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIBxEvlr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E51AC4CECF;
-	Tue,  3 Dec 2024 14:34:48 +0000 (UTC)
+	 MIME-Version; b=cKsrzavdl3T5hGTJ4jjzj11I36/dUBYygqtswYS7IofJt3FreX7lZmswGZagNPjfDA0ZIKM1pSr88cGnF4FmeO3Ac8kFs9Fz8uUE07NCOGha+R15EaOiVIpKYZ204GF561a0hixGwwKaw9jNCvdhslhBfYfkL0TIywGiXQ7vElU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xE2kFPn2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A53C4CECF;
+	Tue,  3 Dec 2024 14:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236489;
-	bh=Retbowbg0+PANAm9cBOd7SCIxotV6aPkXTCVN5SoVXc=;
+	s=korg; t=1733236408;
+	bh=Mq8jK9szGMq5tPpRdayk7czjMaG8DYlA/HaTfUIqop4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIBxEvlr3JMJcn13TC6asmP9QTTJvki/dqWInEJlBbd3YUjnX6hhLl5g4tShfIPfa
-	 48y9Pah3mNYJZoMXwgQ4EAV5VjptIcc4NpH/n09EsT5CAB044KyrCJqIjSUjjLzed3
-	 OjNYpqWWCVV1xC208BfCN6dhnzf77mwK+LiwwU1Q=
+	b=xE2kFPn2eEneUW/ZVbB19CeIwz26a38xBRs6YEo+DJw7sIDPBfkXTu4E2ky4pSWCq
+	 db/WUBEBBM2Cj7kRdQxzuSATHHrMDPePeRXA0k/n6Xa02HrBaQOrIwSVAAxHbKcDtv
+	 utNQSJuhlQ2Zqg+5QhjRSyoQ9JVh40S+48o5K+cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeongjun Park <aha310510@gmail.com>,
-	Yu Zhao <yuzhao@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 009/138] mm: revert "mm: shmem: fix data-race in shmem_getattr()"
-Date: Tue,  3 Dec 2024 15:30:38 +0100
-Message-ID: <20241203141923.895517299@linuxfoundation.org>
+	Ben Greear <greearb@candelatech.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 011/138] mac80211: fix user-power when emulating chanctx
+Date: Tue,  3 Dec 2024 15:30:40 +0100
+Message-ID: <20241203141923.972570527@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -68,43 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Ben Greear <greearb@candelatech.com>
 
-commit d1aa0c04294e29883d65eac6c2f72fe95cc7c049 upstream.
+[ Upstream commit 9b15c6cf8d2e82c8427cd06f535d8de93b5b995c ]
 
-Revert d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()") as
-suggested by Chuck [1].  It is causing deadlocks when accessing tmpfs over
-NFS.
+ieee80211_calc_hw_conf_chan was ignoring the configured
+user_txpower.  If it is set, use it to potentially decrease
+txpower as requested.
 
-As Hugh commented, "added just to silence a syzbot sanitizer splat: added
-where there has never been any practical problem".
-
-Link: https://lkml.kernel.org/r/ZzdxKF39VEmXSSyN@tissot.1015granger.net [1]
-Fixes: d949d1d14fa2 ("mm: shmem: fix data-race in shmem_getattr()")
-Acked-by: Hugh Dickins <hughd@google.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+Link: https://patch.msgid.link/20241010203954.1219686-1-greearb@candelatech.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c |    2 --
- 1 file changed, 2 deletions(-)
+ net/mac80211/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1014,9 +1014,7 @@ static int shmem_getattr(const struct pa
- 		shmem_recalc_inode(inode);
- 		spin_unlock_irq(&info->lock);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index e8c4e9c0c5a09..71d10bdee4309 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -140,6 +140,8 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
  	}
--	inode_lock_shared(inode);
- 	generic_fillattr(inode, stat);
--	inode_unlock_shared(inode);
  
- 	if (is_huge_enabled(sb_info))
- 		stat->blksize = HPAGE_PMD_SIZE;
+ 	power = ieee80211_chandef_max_power(&chandef);
++	if (local->user_power_level != IEEE80211_UNSET_POWER_LEVEL)
++		power = min(local->user_power_level, power);
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
+-- 
+2.43.0
+
 
 
 
