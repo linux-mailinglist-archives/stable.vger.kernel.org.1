@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE859E2BC1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:14:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813139E2C03
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:28:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C11F1B684B6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:09:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0BD1BE7461
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDD11F75BC;
-	Tue,  3 Dec 2024 16:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5841F76BF;
+	Tue,  3 Dec 2024 16:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNiZj6GN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdsXxwvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4E21E47AD;
-	Tue,  3 Dec 2024 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3F081ADA;
+	Tue,  3 Dec 2024 16:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242183; cv=none; b=USgM3rG0NBubBXo+91Jptk4mXC4PGbfHRocpo4XneFy9HaQU0nNPIQ7wA+soMZvFzvMNZI+R7BPE7VmFKwARK+7THwSUz8kgMLggrBpnRaxoAUDRragLwBCaHKY4U5OvWEDD4exG+rNFvBtiARXBnDH6KZ2UiZnTgm/NjW8KRrs=
+	t=1733242241; cv=none; b=NTnOqJhxMLFOlqC4T/OjBdjCqLrOaYApMXxWEFgY0U15eijbhtmzdAGzobufDAYFNccHuPck0SF6tpvga2n2haPRMEfxGXKBnuglWRnTDmIs3SiKg/ij/3MQEvy5DL4XWAEcJLgTZrzKmzCx1vjpgV9yFXSs8NAxQAUK/sfLTdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242183; c=relaxed/simple;
-	bh=UObyBiRxMIyGIitS+Sd9G3/rUnsAsOz6B+EQrALmWsc=;
+	s=arc-20240116; t=1733242241; c=relaxed/simple;
+	bh=3YqjeaJYLo4yG4zBgvDjUifmJzVybl1rg5iHsy5GL+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDoFNMIt1dB69Y6YIG8wWkqrHt5ecLULm3NqiOJP6a2EE92qw/2Tju4uV8bDhjL6aBQ8X8R4bHkN94NZdeWD9lUUgjXNQFYhGEECh+0LRgTsk8/zRcnXs7zvnhF6hUj2GWBgajxfjbCPWMCyxMdQ0DUtWwoY6xkGI1NYBjIzIdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vNiZj6GN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394DFC4CECF;
-	Tue,  3 Dec 2024 16:09:43 +0000 (UTC)
+	 MIME-Version; b=l9OyDkIKvluROGKPWRalx4Kv7gGALHqSMmh+6iR6QkHS0Yy5szU+3fSBGKK/EonoWqimO8w7UvWdiRdxLHPdsQn1QtBrw9I/ZA3KmAXTCd+EYCDiBTmd8peCRpWhwbpO5chvSsSBIK6eGUOhACkuwo3hkhT9Pi7ZVGbr5Pr75yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdsXxwvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBFDC4CECF;
+	Tue,  3 Dec 2024 16:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242183;
-	bh=UObyBiRxMIyGIitS+Sd9G3/rUnsAsOz6B+EQrALmWsc=;
+	s=korg; t=1733242241;
+	bh=3YqjeaJYLo4yG4zBgvDjUifmJzVybl1rg5iHsy5GL+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vNiZj6GN3TRMMzWvdyamXbLmBiRp0y/ppONCoqFUJ+RQAaA2RnzrdjIlNBQXhjFtZ
-	 PAGnpAQtEqMwE2F2xx1FDojMaPkVmtOgG4wocj5ue6CoCD9WHVV+7A/t2xIG9aEipC
-	 w+wVTNfJbRg0FCIY/fynqs6poGSEO3yQ2Ln83bGw=
+	b=PdsXxwvPrRAs89JqjRXnez6FDo47BMGGeqzeqUl40B06Ts3qHVKfUYZ5G0Cir1y5p
+	 ai/Ql+d9bPy75nK6QhhGQ6tMe3+grZ1KnQ1tTGs1X/NpH75siVEKuZonmtSTKyUq18
+	 q9PwFuaf6CjQ2DtqLu2BmPNPoWDFZJK+DAT7a3Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Zicheng Qu <quzicheng@huawei.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	chao liu <liuzgyid@outlook.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 614/826] drm/amd/display: Fix null check for pipe_ctx->plane_state in hwss_setup_dpp
-Date: Tue,  3 Dec 2024 15:45:41 +0100
-Message-ID: <20241203144807.703627436@linuxfoundation.org>
+Subject: [PATCH 6.12 617/826] apparmor: fix Do simple duplicate message elimination
+Date: Tue,  3 Dec 2024 15:45:44 +0100
+Message-ID: <20241203144807.822510245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,38 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zicheng Qu <quzicheng@huawei.com>
+From: chao liu <liuzgyid@outlook.com>
 
-[ Upstream commit 2bc96c95070571c6c824e0d4c7783bee25a37876 ]
+[ Upstream commit 9b897132424fe76bf6c61f22f9cf12af7f1d1e6a ]
 
-This commit addresses a null pointer dereference issue in
-hwss_setup_dpp(). The issue could occur when pipe_ctx->plane_state is
-null. The fix adds a check to ensure `pipe_ctx->plane_state` is not null
-before accessing. This prevents a null pointer dereference.
+Multiple profiles shared 'ent->caps', so some logs missed.
 
-Fixes: 0baae6246307 ("drm/amd/display: Refactor fast update to use new HWSS build sequence")
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0ed3b28ab8bf ("AppArmor: mediation of non file objects")
+Signed-off-by: chao liu <liuzgyid@outlook.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c | 3 +++
- 1 file changed, 3 insertions(+)
+ security/apparmor/capability.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
-index 7ee2be8f82c46..bb766c2a74176 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
-@@ -881,6 +881,9 @@ void hwss_setup_dpp(union block_sequence_params *params)
- 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
- 	struct dc_plane_state *plane_state = pipe_ctx->plane_state;
- 
-+	if (!plane_state)
-+		return;
-+
- 	if (dpp && dpp->funcs->dpp_setup) {
- 		// program the input csc
- 		dpp->funcs->dpp_setup(dpp,
+diff --git a/security/apparmor/capability.c b/security/apparmor/capability.c
+index 9934df16c8431..bf7df60868308 100644
+--- a/security/apparmor/capability.c
++++ b/security/apparmor/capability.c
+@@ -96,6 +96,8 @@ static int audit_caps(struct apparmor_audit_data *ad, struct aa_profile *profile
+ 		return error;
+ 	} else {
+ 		aa_put_profile(ent->profile);
++		if (profile != ent->profile)
++			cap_clear(ent->caps);
+ 		ent->profile = aa_get_profile(profile);
+ 		cap_raise(ent->caps, cap);
+ 	}
 -- 
 2.43.0
 
