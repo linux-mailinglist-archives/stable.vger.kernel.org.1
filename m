@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-96822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B129E23E3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B9D9E2450
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:48:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11B2FBA2AC5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6D25287A5F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA091FC0FC;
-	Tue,  3 Dec 2024 15:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7581F76D7;
+	Tue,  3 Dec 2024 15:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RondncGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq2zjCP7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD371FC0E5;
-	Tue,  3 Dec 2024 15:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4991F76BB;
+	Tue,  3 Dec 2024 15:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238693; cv=none; b=mONHlKwpc+32tbXCGThGa20CiZjzBdcS7z3Rb/jhmpyDdAynLxRZPaqVyTBOtXj5sS1EJmYhhTRepnsRIjSpsvtnZ/aJVw2X7DQL/MKwIrrzAk53oZdwR/Tvpfe5BXP1LdR3iridVWPPzZIogCDKHqrsDihmNdn60NsGfzgQVEU=
+	t=1733240817; cv=none; b=Y738moErLUtzhDkbKMDSHn9qbSbxqvvW1JiQpn4/Q4c/JyGsG1sUZFyDz/pdO69Zsxhrd1TidZ/T+IcGQ+9hMjUbr8b9bvqgY/swo7NlWJCu5wJF74QJf8AO9CFb9PyNsnZFZkx5c+HxwxjKb652yWO6Yo8I9lwfnFX/a19tmwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238693; c=relaxed/simple;
-	bh=7zvJxPrMAvc4+T9t2X/SbjniyGb00yOmm/rrjlyysO0=;
+	s=arc-20240116; t=1733240817; c=relaxed/simple;
+	bh=zHcj86wVVzvCDemB9Isy6WEyp1few/9PC+Gqw1EtAFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=StbQPSd6ZIsK9bBL9Sv3APd7d5+8FYdYPZXuG/ofLvjOK/aXmWuuqT4N9CbSPCnOYOPfQsWnaL7yLpdFPNgIcOiVo+odxmnOT9RgZwh2s+ZnPCF0WdjvpdCKMShdsTFfgfPVH42J3qO28/T9PI3lv/Q9zvLHaN3wk8p/HTe1Gi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RondncGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4671C4CECF;
-	Tue,  3 Dec 2024 15:11:32 +0000 (UTC)
+	 MIME-Version; b=p1Fv+0dwMpckDHHParXVlmHa0nPZ+vn5KaKQaqDep5DtcZBNjwTKvXewo16fi6JwUYh7Esb9Uv2t4PEvmUWZv6nrp/FQo8Ij49UIL1r2Qcr5EiVeEVKaNeaa/g10yP6hod2pasPSdkasN4wplwTQhhgHpGiKsY7CCdxl4Pusngs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq2zjCP7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5C1C4CECF;
+	Tue,  3 Dec 2024 15:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238693;
-	bh=7zvJxPrMAvc4+T9t2X/SbjniyGb00yOmm/rrjlyysO0=;
+	s=korg; t=1733240817;
+	bh=zHcj86wVVzvCDemB9Isy6WEyp1few/9PC+Gqw1EtAFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RondncGncgbRKW8lLrpWvqZcT4PPIOEJL76LeSQ/C18dQFrTHQs/zafG8Ica+6PlD
-	 fLq8hD/xwD3Y3gpdB8vdErJcRVktPrL7X8SmUUKujqv+1pTlP/YEVMkbKEqblG5yaf
-	 MpJ1/uuvW1sFmb1MbuC5WrlOSxMbrTRB7/cSjS6o=
+	b=Lq2zjCP7htLD4EsDCFNDfXjQSO20gGv1o8Ag1baXemRg58afJdLgSMEUDyfUD2f5B
+	 DCuNewTalzpJcljdCsjAQIRjNhPAcIL21u9jdC/16NvOI7lQRlBeJ5dOyXhYFd1Id3
+	 G9lKNzxEvp7RISLdJ3/nurZlR1dpcxwTgY1qUtcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Felix Maurer <fmaurer@redhat.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 365/817] xsk: Free skb when TX metadata options are invalid
-Date: Tue,  3 Dec 2024 15:38:57 +0100
-Message-ID: <20241203144010.088639518@linuxfoundation.org>
+Subject: [PATCH 6.12 211/826] wifi: ath12k: Skip Rx TID cleanup for self peer
+Date: Tue,  3 Dec 2024 15:38:58 +0100
+Message-ID: <20241203144751.976760433@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Maurer <fmaurer@redhat.com>
+From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
 
-[ Upstream commit 0c0d0f42ffa6ac94cd79893b7ed419c15e1b45de ]
+[ Upstream commit 1a0c640ce1cdcde3eb131a0c1e70ca1ed7cf27cb ]
 
-When a new skb is allocated for transmitting an xsk descriptor, i.e., for
-every non-multibuf descriptor or the first frag of a multibuf descriptor,
-but the descriptor is later found to have invalid options set for the TX
-metadata, the new skb is never freed. This can leak skbs until the send
-buffer is full which makes sending more packets impossible.
+During peer create, dp setup for the peer is done where Rx TID is
+updated for all the TIDs. Peer object for self peer will not go through
+dp setup.
 
-Fix this by freeing the skb in the error path if we are currently dealing
-with the first frag, i.e., an skb allocated in this iteration of
-xsk_build_skb.
+When core halts, dp cleanup is done for all the peers. While cleanup,
+rx_tid::ab is accessed which causes below stack trace for self peer.
 
-Fixes: 48eb03dd2630 ("xsk: Add TX timestamp and TX checksum offload support")
-Reported-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Felix Maurer <fmaurer@redhat.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/edb9b00fb19e680dff5a3350cd7581c5927975a8.1731581697.git.fmaurer@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+WARNING: CPU: 6 PID: 12297 at drivers/net/wireless/ath/ath12k/dp_rx.c:851
+Call Trace:
+__warn+0x7b/0x1a0
+ath12k_dp_rx_frags_cleanup+0xd2/0xe0 [ath12k]
+report_bug+0x10b/0x200
+handle_bug+0x3f/0x70
+exc_invalid_op+0x13/0x60
+asm_exc_invalid_op+0x16/0x20
+ath12k_dp_rx_frags_cleanup+0xd2/0xe0 [ath12k]
+ath12k_dp_rx_frags_cleanup+0xca/0xe0 [ath12k]
+ath12k_dp_rx_peer_tid_cleanup+0x39/0xa0 [ath12k]
+ath12k_mac_peer_cleanup_all+0x61/0x100 [ath12k]
+ath12k_core_halt+0x3b/0x100 [ath12k]
+ath12k_core_reset+0x494/0x4c0 [ath12k]
+
+sta object in peer will be updated when remote peer is created. Hence
+use peer::sta to detect the self peer and skip the cleanup.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240905042851.2282306-1-quic_rgnanase@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 7e16336044b2d..6c042e03dad3c 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -675,6 +675,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 		len = desc->len;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 137394c364603..6d0784a21558e 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -917,7 +917,10 @@ void ath12k_mac_peer_cleanup_all(struct ath12k *ar)
  
- 		if (!skb) {
-+			first_frag = true;
+ 	spin_lock_bh(&ab->base_lock);
+ 	list_for_each_entry_safe(peer, tmp, &ab->peers, list) {
+-		ath12k_dp_rx_peer_tid_cleanup(ar, peer);
++		/* Skip Rx TID cleanup for self peer */
++		if (peer->sta)
++			ath12k_dp_rx_peer_tid_cleanup(ar, peer);
 +
- 			hr = max(NET_SKB_PAD, L1_CACHE_ALIGN(dev->needed_headroom));
- 			tr = dev->needed_tailroom;
- 			skb = sock_alloc_send_skb(&xs->sk, hr + len + tr, 1, &err);
-@@ -685,12 +687,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 			skb_put(skb, len);
- 
- 			err = skb_store_bits(skb, 0, buffer, len);
--			if (unlikely(err)) {
--				kfree_skb(skb);
-+			if (unlikely(err))
- 				goto free_err;
--			}
--
--			first_frag = true;
- 		} else {
- 			int nr_frags = skb_shinfo(skb)->nr_frags;
- 			struct page *page;
-@@ -758,6 +756,9 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 	return skb;
- 
- free_err:
-+	if (first_frag && skb)
-+		kfree_skb(skb);
-+
- 	if (err == -EOVERFLOW) {
- 		/* Drop the packet */
- 		xsk_set_destructor_arg(xs->skb);
+ 		list_del(&peer->list);
+ 		kfree(peer);
+ 	}
 -- 
 2.43.0
 
