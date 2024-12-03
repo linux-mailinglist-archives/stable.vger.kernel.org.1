@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437669E2562
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 622D09E2252
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA40E16B49E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBF8169C6E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909491F75B4;
-	Tue,  3 Dec 2024 15:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951AD1F669E;
+	Tue,  3 Dec 2024 15:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAMLxq6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Upb70AuW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB2B1AB6C9;
-	Tue,  3 Dec 2024 15:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520141EF0AE;
+	Tue,  3 Dec 2024 15:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241293; cv=none; b=LKbouImkrWwMWnLpZGbje/T7A8E3vN+xZlms8FC1oAPWMyle1R+B9E0XhGXStDYP8y9OJFAruuvoXtqd3IN5CV7bx91xANxoE69e8EQLyYYJAAel0/ByTIxIkLxbh7ir02xdF3bs2GEtQCsGSO5TS5NLHHr0H2pKzVT4EOveXJs=
+	t=1733239100; cv=none; b=kgx6Gx+Peb5RrugYtUk5uL/V5TKZHK2CbG6+KHfyDlitpbQ74OIFiN5ws+iYB45xp1Hy08Ut+5V04RHaPFvZrXY5Ey6l1NGnCQ9OSb3vf9enoVcdUUShBC7BPPxEuEZs4l/a+Mqcs24Buc09+mabwH5uHkUsFGHz1sBUCulAqYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241293; c=relaxed/simple;
-	bh=goEJOB3gllb1QBBWbA3fXTcKfIeOJFmEsxMPNinP/pM=;
+	s=arc-20240116; t=1733239100; c=relaxed/simple;
+	bh=TKSiAtq8QDrx1mS0nB2rwy+QNDJYgfEFJ4ahD8NYhTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=my1JtC/Fv/SeGMNNAjbWnntYO22pvTkcUEwSPBB/oOYoynBwZNXp6xPYaDW5g6P1B7Jk3WF4wsUBIVv+Rl7/6vtnm8PScnygg97RxH1cdoZU4VlCTM+ZghCTVZZogqAummdbDv5gr5tySH5nlBmVelS/pD+Jo2p89/eV+7m9N6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAMLxq6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55574C4CED6;
-	Tue,  3 Dec 2024 15:54:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BkD+hZrK/SuOYl/FiM21ll5aYpfTTr7i88Ldonn8fIHDK9p1l6oQEH0lkZ8k6YquxeeJPhieKUXnMpvaFHSCtgs9ZjBujY5kUxPJA3bdFdyJJuSmVaz5ho5+1xqjV2T+gJO1r6quKTvg9c1Fqzz+IApgFo1g+ofj77nEXter8ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Upb70AuW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87B9C4CECF;
+	Tue,  3 Dec 2024 15:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241292;
-	bh=goEJOB3gllb1QBBWbA3fXTcKfIeOJFmEsxMPNinP/pM=;
+	s=korg; t=1733239100;
+	bh=TKSiAtq8QDrx1mS0nB2rwy+QNDJYgfEFJ4ahD8NYhTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAMLxq6UQBlY7lPbXpebV/hl38arAfm5FXGctXqQKEGckDzNDg27JwZZ1djuAl4gr
-	 AnVFaKYf4jETio6fCrr4kPCa7aUP3PJ9qHM1kZ1CVfKPbusjYv/G31EvKZfLminPcN
-	 hpKRUdfML5TfBwMAumsvNoJlABdgINsspjsDgdc4=
+	b=Upb70AuWYHKU4CnXY4aD7EjFM60/3ntY0I1O6xbDd+f73iE+p7bIZ7dxGxtOKhaEf
+	 bsIHxYnKD4mpm1p2byqwDL42IgiW2XOdcZioRfmmaMeTeDopllmaKslsow1omhvzJS
+	 A2khJq6r0UNJkFmc0B0f/VvzD+PGzSC7cDOWk3zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0b1279812c46e48bb0c1@syzkaller.appspotmail.com,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 347/826] erofs: fix file-backed mounts over FUSE
+Subject: [PATCH 6.11 502/817] PCI: cpqphp: Fix PCIBIOS_* return value confusion
 Date: Tue,  3 Dec 2024 15:41:14 +0100
-Message-ID: <20241203144757.296721196@linuxfoundation.org>
+Message-ID: <20241203144015.469179577@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 3a23787ca8756920d65fda39f41353a4be1d1642 ]
+[ Upstream commit e2226dbc4a4919d9c8bd9293299b532090bdf020 ]
 
-syzbot reported a null-ptr-deref in fuse_read_args_fill:
- fuse_read_folio+0xb0/0x100 fs/fuse/file.c:905
- filemap_read_folio+0xc6/0x2a0 mm/filemap.c:2367
- do_read_cache_folio+0x263/0x5c0 mm/filemap.c:3825
- read_mapping_folio include/linux/pagemap.h:1011 [inline]
- erofs_bread+0x34d/0x7e0 fs/erofs/data.c:41
- erofs_read_superblock fs/erofs/super.c:281 [inline]
- erofs_fc_fill_super+0x2b9/0x2500 fs/erofs/super.c:625
+Code in and related to PCI_RefinedAccessConfig() has three types of return
+type confusion:
 
-Unlike most filesystems, some network filesystems and FUSE need
-unavoidable valid `file` pointers for their read I/Os [1].
-Anyway, those use cases need to be supported too.
+ - PCI_RefinedAccessConfig() tests pci_bus_read_config_dword() return value
+   against -1.
 
-[1] https://docs.kernel.org/filesystems/vfs.html
+ - PCI_RefinedAccessConfig() returns both -1 and PCIBIOS_* return codes.
 
-Reported-by: syzbot+0b1279812c46e48bb0c1@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/6727bbdf.050a0220.3c8d68.0a7e.GAE@google.com
-Fixes: fb176750266a ("erofs: add file-backed mount support")
-Tested-by: syzbot+0b1279812c46e48bb0c1@syzkaller.appspotmail.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20241114234905.1873723-1-hsiangkao@linux.alibaba.com
+ - Callers of PCI_RefinedAccessConfig() only test for -1.
+
+Make PCI_RefinedAccessConfig() return PCIBIOS_* codes consistently and
+adapt callers accordingly.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/r/20241022091140.3504-2-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/data.c     | 10 ++++++----
- fs/erofs/internal.h |  1 +
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/pci/hotplug/cpqphp_pci.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-index 61debd799cf90..fa51437e1d99d 100644
---- a/fs/erofs/data.c
-+++ b/fs/erofs/data.c
-@@ -38,7 +38,7 @@ void *erofs_bread(struct erofs_buf *buf, erofs_off_t offset,
- 	}
- 	if (!folio || !folio_contains(folio, index)) {
- 		erofs_put_metabuf(buf);
--		folio = read_mapping_folio(buf->mapping, index, NULL);
-+		folio = read_mapping_folio(buf->mapping, index, buf->file);
- 		if (IS_ERR(folio))
- 			return folio;
- 	}
-@@ -61,9 +61,11 @@ void erofs_init_metabuf(struct erofs_buf *buf, struct super_block *sb)
+diff --git a/drivers/pci/hotplug/cpqphp_pci.c b/drivers/pci/hotplug/cpqphp_pci.c
+index 718bc6cf12cb3..974c7db3265b5 100644
+--- a/drivers/pci/hotplug/cpqphp_pci.c
++++ b/drivers/pci/hotplug/cpqphp_pci.c
+@@ -135,11 +135,13 @@ int cpqhp_unconfigure_device(struct pci_func *func)
+ static int PCI_RefinedAccessConfig(struct pci_bus *bus, unsigned int devfn, u8 offset, u32 *value)
  {
- 	struct erofs_sb_info *sbi = EROFS_SB(sb);
+ 	u32 vendID = 0;
++	int ret;
  
--	if (erofs_is_fileio_mode(sbi))
--		buf->mapping = file_inode(sbi->fdev)->i_mapping;
--	else if (erofs_is_fscache_mode(sb))
-+	buf->file = NULL;
-+	if (erofs_is_fileio_mode(sbi)) {
-+		buf->file = sbi->fdev;		/* some fs like FUSE needs it */
-+		buf->mapping = buf->file->f_mapping;
-+	} else if (erofs_is_fscache_mode(sb))
- 		buf->mapping = sbi->s_fscache->inode->i_mapping;
- 	else
- 		buf->mapping = sb->s_bdev->bd_mapping;
-diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
-index 4efd578d7c627..9b03c8f323a76 100644
---- a/fs/erofs/internal.h
-+++ b/fs/erofs/internal.h
-@@ -221,6 +221,7 @@ enum erofs_kmap_type {
+-	if (pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID) == -1)
+-		return -1;
++	ret = pci_bus_read_config_dword(bus, devfn, PCI_VENDOR_ID, &vendID);
++	if (ret != PCIBIOS_SUCCESSFUL)
++		return PCIBIOS_DEVICE_NOT_FOUND;
+ 	if (PCI_POSSIBLE_ERROR(vendID))
+-		return -1;
++		return PCIBIOS_DEVICE_NOT_FOUND;
+ 	return pci_bus_read_config_dword(bus, devfn, offset, value);
+ }
  
- struct erofs_buf {
- 	struct address_space *mapping;
-+	struct file *file;
- 	struct page *page;
- 	void *base;
- 	enum erofs_kmap_type kmap_type;
+@@ -202,13 +204,15 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
+ {
+ 	u16 tdevice;
+ 	u32 work;
++	int ret;
+ 	u8 tbus;
+ 
+ 	ctrl->pci_bus->number = bus_num;
+ 
+ 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
+ 		/* Scan for access first */
+-		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
++		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
++		if (ret)
+ 			continue;
+ 		dbg("Looking for nonbridge bus_num %d dev_num %d\n", bus_num, tdevice);
+ 		/* Yep we got one. Not a bridge ? */
+@@ -220,7 +224,8 @@ static int PCI_ScanBusForNonBridge(struct controller *ctrl, u8 bus_num, u8 *dev_
+ 	}
+ 	for (tdevice = 0; tdevice < 0xFF; tdevice++) {
+ 		/* Scan for access first */
+-		if (PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work) == -1)
++		ret = PCI_RefinedAccessConfig(ctrl->pci_bus, tdevice, 0x08, &work);
++		if (ret)
+ 			continue;
+ 		dbg("Looking for bridge bus_num %d dev_num %d\n", bus_num, tdevice);
+ 		/* Yep we got one. bridge ? */
 -- 
 2.43.0
 
