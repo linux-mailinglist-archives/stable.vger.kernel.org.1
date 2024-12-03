@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0269E2890
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:03:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D93A09E2265
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:24:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0943BE3BD2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18E5B169239
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF77F1F7591;
-	Tue,  3 Dec 2024 15:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D8E1F706C;
+	Tue,  3 Dec 2024 15:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voGPtClF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8j2I6t9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2AF1AB6C9;
-	Tue,  3 Dec 2024 15:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6334A1F4709;
+	Tue,  3 Dec 2024 15:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241303; cv=none; b=Y/QpuktFqA34rAGJfqtQLvXFWiWWVZ+6cvpF1esaBXvVunzrDtI4f5Togr0tI1GL1mtGZmieG08l5khkM9BR5LuEYllle33dr8US5skFKFWBdx/seUG9ZF4Ksc1qEW8eXK1arx8zwftR33P7fZr1gXW07M6fPz+gZwKwPvMue6Q=
+	t=1733239188; cv=none; b=PStlk4Vu1n0bThXMozmnNrunPRY3rINhN38YrVGmEAz3QpbIZmtoCEubZsHPZhyBHp46j00R7VwJ8Sp9xTPDLhmVlJXg16cDWyDkCDjKyJo7t6Fpe3k6QPSg999o9OdVlaUfXeetZvDrgBhAnjPUvaUnIL7U9nbLubEX8mD4vT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241303; c=relaxed/simple;
-	bh=/qc8Ye9K0eF6UK1GiAwa5Jd2W5/R6ew5DTx8mT66png=;
+	s=arc-20240116; t=1733239188; c=relaxed/simple;
+	bh=k2k89T8FGBNbxys5lyW2amJLv70Ob9g9RhLnvKpruE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPft7h8dm3/6HtFyW+OMA0RC0YthMpka46jVwrIKFLy9mLUyru4/t7IRdnc2pdDG2TwvDZjMvJnlv+HQwQbAmgkYfcsaY1cqh/m/n2QkajzzLg0TVKBs7+U54UM9JiMQ/o9A16pUZQARktKEeRywMAO/374Auwy7S7iNTEfmLdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voGPtClF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE8DC4CECF;
-	Tue,  3 Dec 2024 15:55:02 +0000 (UTC)
+	 MIME-Version; b=LrSWAAxXoOF4GENxywWC9yhgLWUWohTBgrlDnXYobRJiHuDtcrw9kBkA6PaW/u8ZUSstTTat3kZPLq5UrEK7J+39O92w1ckD9klGNbhJSR/8RWjwTJ88R+I9KYWS79hGU9yUkoqS2bxRbzRfDvT2nTBmvZcpEBz7C5BiPR6j6Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8j2I6t9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5F9C4CECF;
+	Tue,  3 Dec 2024 15:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241303;
-	bh=/qc8Ye9K0eF6UK1GiAwa5Jd2W5/R6ew5DTx8mT66png=;
+	s=korg; t=1733239188;
+	bh=k2k89T8FGBNbxys5lyW2amJLv70Ob9g9RhLnvKpruE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=voGPtClFFxitZmtuKfkT14ZvYUBBFnLxMc6005X7IbvPQ7+2AvjCGDNyesnNhiVCz
-	 gzwl/Rn2lb5RyB4mSQ292CyO8Ry6Zrizh0BwXVquUYddEA2XIVawGnkMm6byDNRKor
-	 FharQu77K4JNPjhST8h85xVcPfcjZ12aRFN3jYdc=
+	b=N8j2I6t96ISqc8VmeRNHpplb6pZ7yLoxhEVA1yWrrs06RUKDE8lrI7Cha3UFer2Nw
+	 xu0Ir9xMDpfPPMtvKH2n6aMPvzNs/FhS+WViBs3pCgpMqjYGmY6g/DZH93chAJ/sUz
+	 No1IR7oLdQnomli4Edh3a7eh9gOhbMEhaMHUCubk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 374/826] mfd: intel_soc_pmic_bxtwc: Use IRQ domain for PMIC devices
+Subject: [PATCH 6.11 529/817] nfsd: drop inode parameter from nfsd4_change_attribute()
 Date: Tue,  3 Dec 2024 15:41:41 +0100
-Message-ID: <20241203144758.354536381@linuxfoundation.org>
+Message-ID: <20241203144016.548590564@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 0350d783ab888cb1cb48ced36cc28b372723f1a4 ]
+[ Upstream commit f67eef8da0e8c54709fefdecd16ad8d70f0c9d20 ]
 
-While design wise the idea of converting the driver to use
-the hierarchy of the IRQ chips is correct, the implementation
-has (inherited) flaws. This was unveiled when platform_get_irq()
-had started WARN() on IRQ 0 that is supposed to be a Linux
-IRQ number (also known as vIRQ).
+The inode that nfs4_open_delegation() passes to this function is
+wrong, which throws off the result. The inode will end up getting a
+directory-style change attr instead of a regular-file-style one.
 
-Rework the driver to respect IRQ domain when creating each MFD
-device separately, as the domain is not the same for all of them.
+Fix up nfs4_delegation_stat() to fetch STATX_MODE, and then drop the
+inode parameter from nfsd4_change_attribute(), since it's no longer
+needed.
 
-Fixes: 57129044f504 ("mfd: intel_soc_pmic_bxtwc: Use chained IRQs for second level IRQ chips")
-Tested-by: Zhang Ning <zhangn1985@outlook.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241005193029.1929139-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel_soc_pmic_bxtwc.c | 54 +++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 24 deletions(-)
+ fs/nfsd/nfs4state.c |  5 ++---
+ fs/nfsd/nfs4xdr.c   |  2 +-
+ fs/nfsd/nfsfh.c     | 20 ++++++++++++--------
+ fs/nfsd/nfsfh.h     |  3 +--
+ 4 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
-index 628108dcf5454..fefbeb4164fde 100644
---- a/drivers/mfd/intel_soc_pmic_bxtwc.c
-+++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
-@@ -230,21 +230,11 @@ static const struct resource tmu_resources[] = {
- };
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index d96d8cfd1ff86..e2903f4cc3ada 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5955,7 +5955,7 @@ nfs4_delegation_stat(struct nfs4_delegation *dp, struct svc_fh *currentfh,
+ 	path.dentry = file_dentry(nf->nf_file);
  
- static struct mfd_cell bxt_wc_dev[] = {
--	{
--		.name = "bxt_wcove_gpadc",
--		.num_resources = ARRAY_SIZE(adc_resources),
--		.resources = adc_resources,
--	},
- 	{
- 		.name = "bxt_wcove_thermal",
- 		.num_resources = ARRAY_SIZE(thermal_resources),
- 		.resources = thermal_resources,
- 	},
--	{
--		.name = "bxt_wcove_bcu",
--		.num_resources = ARRAY_SIZE(bcu_resources),
--		.resources = bcu_resources,
--	},
- 	{
- 		.name = "bxt_wcove_gpio",
- 		.num_resources = ARRAY_SIZE(gpio_resources),
-@@ -263,6 +253,22 @@ static const struct mfd_cell bxt_wc_tmu_dev[] = {
- 	},
- };
+ 	rc = vfs_getattr(&path, stat,
+-			 (STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
++			 (STATX_MODE | STATX_SIZE | STATX_CTIME | STATX_CHANGE_COOKIE),
+ 			 AT_STATX_SYNC_AS_STAT);
  
-+static const struct mfd_cell bxt_wc_bcu_dev[] = {
-+	{
-+		.name = "bxt_wcove_bcu",
-+		.num_resources = ARRAY_SIZE(bcu_resources),
-+		.resources = bcu_resources,
-+	},
-+};
-+
-+static const struct mfd_cell bxt_wc_adc_dev[] = {
-+	{
-+		.name = "bxt_wcove_gpadc",
-+		.num_resources = ARRAY_SIZE(adc_resources),
-+		.resources = adc_resources,
-+	},
-+};
-+
- static struct mfd_cell bxt_wc_chgr_dev[] = {
- 	{
- 		.name = "bxt_wcove_usbc",
-@@ -508,23 +514,23 @@ static int bxtwc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
+ 	nfsd_file_put(nf);
+@@ -6039,8 +6039,7 @@ nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp,
+ 		}
+ 		open->op_delegate_type = NFS4_OPEN_DELEGATE_WRITE;
+ 		dp->dl_cb_fattr.ncf_cur_fsize = stat.size;
+-		dp->dl_cb_fattr.ncf_initial_cinfo =
+-			nfsd4_change_attribute(&stat, d_inode(currentfh->fh_dentry));
++		dp->dl_cb_fattr.ncf_initial_cinfo = nfsd4_change_attribute(&stat);
+ 		trace_nfsd_deleg_write(&dp->dl_stid.sc_stateid);
+ 	} else {
+ 		open->op_delegate_type = NFS4_OPEN_DELEGATE_READ;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index ebbae04837ef0..6bf37124e389f 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3040,7 +3040,7 @@ static __be32 nfsd4_encode_fattr4_change(struct xdr_stream *xdr,
+ 		return nfs_ok;
+ 	}
  
--	/* Add chained IRQ handler for BCU IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_BCU_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_bcu,
--					 &pmic->irq_chip_data_bcu);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_bcu_dev, ARRAY_SIZE(bxt_wc_bcu_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_BCU_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_bcu,
-+					&pmic->irq_chip_data_bcu);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add BUC IRQ chip\n");
-+		return ret;
+-	c = nfsd4_change_attribute(&args->stat, d_inode(args->dentry));
++	c = nfsd4_change_attribute(&args->stat);
+ 	return nfsd4_encode_changeid4(xdr, c);
+ }
  
--	/* Add chained IRQ handler for ADC IRQs */
--	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
--					 BXTWC_ADC_LVL1_IRQ,
--					 IRQF_ONESHOT,
--					 &bxtwc_regmap_irq_chip_adc,
--					 &pmic->irq_chip_data_adc);
-+	ret = bxtwc_add_chained_devices(pmic, bxt_wc_adc_dev, ARRAY_SIZE(bxt_wc_adc_dev),
-+					pmic->irq_chip_data,
-+					BXTWC_ADC_LVL1_IRQ,
-+					IRQF_ONESHOT,
-+					&bxtwc_regmap_irq_chip_adc,
-+					&pmic->irq_chip_data_adc);
- 	if (ret)
--		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
-+		return ret;
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index dd4e11a703aa6..85fd4d1b15620 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -618,20 +618,18 @@ fh_update(struct svc_fh *fhp)
+ __be32 __must_check fh_fill_pre_attrs(struct svc_fh *fhp)
+ {
+ 	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
+-	struct inode *inode;
+ 	struct kstat stat;
+ 	__be32 err;
  
- 	ret = bxtwc_add_chained_devices(pmic, bxt_wc_chgr_dev, ARRAY_SIZE(bxt_wc_chgr_dev),
- 					pmic->irq_chip_data,
+ 	if (fhp->fh_no_wcc || fhp->fh_pre_saved)
+ 		return nfs_ok;
+ 
+-	inode = d_inode(fhp->fh_dentry);
+ 	err = fh_getattr(fhp, &stat);
+ 	if (err)
+ 		return err;
+ 
+ 	if (v4)
+-		fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
++		fhp->fh_pre_change = nfsd4_change_attribute(&stat);
+ 
+ 	fhp->fh_pre_mtime = stat.mtime;
+ 	fhp->fh_pre_ctime = stat.ctime;
+@@ -648,7 +646,6 @@ __be32 __must_check fh_fill_pre_attrs(struct svc_fh *fhp)
+ __be32 fh_fill_post_attrs(struct svc_fh *fhp)
+ {
+ 	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
+-	struct inode *inode = d_inode(fhp->fh_dentry);
+ 	__be32 err;
+ 
+ 	if (fhp->fh_no_wcc)
+@@ -664,7 +661,7 @@ __be32 fh_fill_post_attrs(struct svc_fh *fhp)
+ 	fhp->fh_post_saved = true;
+ 	if (v4)
+ 		fhp->fh_post_change =
+-			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
++			nfsd4_change_attribute(&fhp->fh_post_attr);
+ 	return nfs_ok;
+ }
+ 
+@@ -755,7 +752,14 @@ enum fsid_source fsid_source(const struct svc_fh *fhp)
+ 	return FSIDSOURCE_DEV;
+ }
+ 
+-/*
++/**
++ * nfsd4_change_attribute - Generate an NFSv4 change_attribute value
++ * @stat: inode attributes
++ *
++ * Caller must fill in @stat before calling, typically by invoking
++ * vfs_getattr() with STATX_MODE, STATX_CTIME, and STATX_CHANGE_COOKIE.
++ * Returns an unsigned 64-bit changeid4 value (RFC 8881 Section 3.2).
++ *
+  * We could use i_version alone as the change attribute.  However, i_version
+  * can go backwards on a regular file after an unclean shutdown.  On its own
+  * that doesn't necessarily cause a problem, but if i_version goes backwards
+@@ -772,13 +776,13 @@ enum fsid_source fsid_source(const struct svc_fh *fhp)
+  * assume that the new change attr is always logged to stable storage in some
+  * fashion before the results can be seen.
+  */
+-u64 nfsd4_change_attribute(const struct kstat *stat, const struct inode *inode)
++u64 nfsd4_change_attribute(const struct kstat *stat)
+ {
+ 	u64 chattr;
+ 
+ 	if (stat->result_mask & STATX_CHANGE_COOKIE) {
+ 		chattr = stat->change_cookie;
+-		if (S_ISREG(inode->i_mode) &&
++		if (S_ISREG(stat->mode) &&
+ 		    !(stat->attributes & STATX_ATTR_CHANGE_MONOTONIC)) {
+ 			chattr += (u64)stat->ctime.tv_sec << 30;
+ 			chattr += stat->ctime.tv_nsec;
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index 6ebdf7ea27bfd..c3da6d194b5fb 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -293,8 +293,7 @@ static inline void fh_clear_pre_post_attrs(struct svc_fh *fhp)
+ 	fhp->fh_pre_saved = false;
+ }
+ 
+-u64 nfsd4_change_attribute(const struct kstat *stat,
+-			   const struct inode *inode);
++u64 nfsd4_change_attribute(const struct kstat *stat);
+ __be32 __must_check fh_fill_pre_attrs(struct svc_fh *fhp);
+ __be32 fh_fill_post_attrs(struct svc_fh *fhp);
+ __be32 __must_check fh_fill_both_attrs(struct svc_fh *fhp);
 -- 
 2.43.0
 
