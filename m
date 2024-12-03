@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B60E9E2B5C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C719E2958
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90FFCB6191C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59ECBB3AF6B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB1B1F76B5;
-	Tue,  3 Dec 2024 16:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6957C1F754A;
+	Tue,  3 Dec 2024 15:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTyjpEH0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsGchAXc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A3B1F76A4;
-	Tue,  3 Dec 2024 16:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2878E1F473A;
+	Tue,  3 Dec 2024 15:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241738; cv=none; b=cRAPMxClBCsVutUpEmFKWSOIE0EriLtld0rEeZNb59Y0kFWBsZeMpFz4nKgbQZ2sBgoYE3lkLQf0NHciOw7T9z/5zxe0mhItAj7vSQ/zMKBeDYLvx1RTuT+Q8rLa5u+PJCk9Wo5yTXK03YWXqoDZ277hnQoUp3fNHlZO1vemakY=
+	t=1733239571; cv=none; b=Xeqh9k63ceVjvMYpuVlKTCKXDEOG0wXL7zJDFxM+iQbCgoqQTZdoRcPH+9WLvQogBZKT72CheUlW3NpTYcOZ05++9eYn5TU5kqr1qWqjQGy75KhtugB8A1z6EszVMJUuRa95g8tsAWsUkcNhZSaSshFoYZLr2sX4Ev+V8BDo2dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241738; c=relaxed/simple;
-	bh=IG433edcuEtlHaqbUXwUEf46RKYOLHCPKKdQjP/eohw=;
+	s=arc-20240116; t=1733239571; c=relaxed/simple;
+	bh=yd5QCcFtEvqm9mYI2S/IVvdCMAdy/GLl6p4Vx0nNOLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7VgJvNgwfczKHIIJnKjBktc1UcrKepxlG1/jtaYZRPI+4+Oy8GJrKh2zvpqXjpQaxc4Q0vFqLBjEH2yBTIvvbpoPdjK9Qg72d3IGWfhtM7fz6vDZmN+1mTVEJHOOM0BdLFiLiCN43ra+FxRVxlkDznKVEYbW6t4amqJARB6H/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTyjpEH0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9362AC4CECF;
-	Tue,  3 Dec 2024 16:02:17 +0000 (UTC)
+	 MIME-Version; b=e0AWycfogZTOaT8fpufjQCOTpEaCGO9Wz6rU7V+NoObLM4IIz3gY075xzQdqBzvmbkVgF2/8gjTba/LfZES8WDfwTFtq05GY8iV73ioV8baRQF6Lwk6yU/jDGW+66UluBm7CvgVsJAwqru0+t6ihj0Ib3ZWuviAkvOb5qO2QXlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsGchAXc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4965C4CECF;
+	Tue,  3 Dec 2024 15:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241738;
-	bh=IG433edcuEtlHaqbUXwUEf46RKYOLHCPKKdQjP/eohw=;
+	s=korg; t=1733239571;
+	bh=yd5QCcFtEvqm9mYI2S/IVvdCMAdy/GLl6p4Vx0nNOLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTyjpEH0LY3NI839V/ED5/3nSVdX/gcNPXKoHvPijQedsDUlPeo9S2MLsV+5xVPf6
-	 RGmu2M0FDCW+3p5Y/nmMGaJ2nSTHhukMC7Q2YWp1vKhX5h1PtOv/VKCuL1Qk4OXfLm
-	 7KWN2BC5gv+CVGtvqwBNAxnySxzK5RvE1Cz6AsPs=
+	b=fsGchAXcfqaApMbcsRLdU4Vr6nlYkcnj8cDEOcnW3I6j0vD+DHxEbPzn5CVkL9Vu0
+	 WKeStn3wLWJLE+EMkAYnBvj5QPlZ2srnQ2gd1jVhmQ0lN0qutKXTy5ORQNMDM2q8yd
+	 GatjdQWd+dbfWFaJiFzJoW9VC0DVzWzp2/jvq+Ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 501/826] f2fs: fix to avoid use GC_AT when setting gc_mode as GC_URGENT_LOW or GC_URGENT_MID
-Date: Tue,  3 Dec 2024 15:43:48 +0100
-Message-ID: <20241203144803.299351845@linuxfoundation.org>
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.11 660/817] fsnotify: fix sending inotify event with unexpected filename
+Date: Tue,  3 Dec 2024 15:43:52 +0100
+Message-ID: <20241203144021.720490929@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 296b8cb34e65fa93382cf919be5a056f719c9a26 ]
+commit aa52c54da40d9eee3ba87c05cdcb0cd07c04fa13 upstream.
 
-If gc_mode is set to GC_URGENT_LOW or GC_URGENT_MID, cost benefit GC
-approach should be used, but if ATGC is enabled at the same time,
-Age-threshold approach will be selected, which can only do amount of
-GC and it is much less than the numbers of CB approach.
+We got a report that adding a fanotify filsystem watch prevents tail -f
+from receiving events.
 
-some traces:
-  f2fs_gc-254:48-396     [007] ..... 2311600.684028: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1053, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
-  f2fs_gc-254:48-396     [007] ..... 2311600.684527: f2fs_get_victim: dev = (254,48), type = No TYPE, policy = (Background GC, LFS-mode, Age-threshold), victim = 10, cost = 4294364975, ofs_unit = 1, pre_victim_secno = -1, prefree = 0, free = 44898
-  f2fs_gc-254:48-396     [007] ..... 2311600.714835: f2fs_gc_end: dev = (254,48), ret = 0, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
-  f2fs_gc-254:48-396     [007] ..... 2311600.714843: f2fs_background_gc: dev = (254,48), wait_ms = 50, prefree = 0, free = 44898
-  f2fs_gc-254:48-396     [007] ..... 2311600.771785: f2fs_gc_begin: dev = (254,48), gc_type = Background GC, no_background_GC = 0, nr_free_secs = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:
-  f2fs_gc-254:48-396     [007] ..... 2311600.772275: f2fs_gc_end: dev = (254,48), ret = -61, seg_freed = 0, sec_freed = 0, nodes = 1562, dents = 2, imeta = 18, free_sec:44898, free_seg:44898, rsv_seg:239, prefree_seg:0
+Reproducer:
 
-Fixes: 0e5e81114de1 ("f2fs: add GC_URGENT_LOW mode in gc_urgent")
-Fixes: d98af5f45520 ("f2fs: introduce gc_urgent_mid mode")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. Create 3 windows / login sessions. Become root in each session.
+2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
+3. In the first window, run: fsnotifywait -S -m /boot
+4. In the second window, run: echo data >> /boot/foo
+5. In the third window, run: tail -f /boot/foo
+6. Go back to the second window and run: echo more data >> /boot/foo
+7. Observe that the tail command doesn't show the new data.
+8. In the first window, hit control-C to interrupt fsnotifywait.
+9. In the second window, run: echo still more data >> /boot/foo
+10. Observe that the tail command in the third window has now printed
+the missing data.
+
+When stracing tail, we observed that when fanotify filesystem mark is
+set, tail does get the inotify event, but the event is receieved with
+the filename:
+
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
+50) = 32
+
+This is unexpected, because tail is watching the file itself and not its
+parent and is inconsistent with the inotify event received by tail when
+fanotify filesystem mark is not set:
+
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) = 16
+
+The inteference between different fsnotify groups was caused by the fact
+that the mark on the sb requires the filename, so the filename is passed
+to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
+not passing the filename to groups (such as inotify) that are interested
+in the filename only when the parent is watching.
+
+But the logic was incorrect for the case that no group is watching the
+parent, some groups are watching the sb and some watching the inode.
+
+Reported-by: Miklos Szeredi <miklos@szeredi.hu>
+Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with watched parent")
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-fs-f2fs | 7 +++++--
- fs/f2fs/gc.c                            | 2 ++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ fs/notify/fsnotify.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-fs-f2fs b/Documentation/ABI/testing/sysfs-fs-f2fs
-index fdedf1ea944ba..513296bb6f297 100644
---- a/Documentation/ABI/testing/sysfs-fs-f2fs
-+++ b/Documentation/ABI/testing/sysfs-fs-f2fs
-@@ -311,10 +311,13 @@ Description:	Do background GC aggressively when set. Set to 0 by default.
- 		GC approach and turns SSR mode on.
- 		gc urgent low(2): lowers the bar of checking I/O idling in
- 		order to process outstanding discard commands and GC a
--		little bit aggressively. uses cost benefit GC approach.
-+		little bit aggressively. always uses cost benefit GC approach,
-+		and will override age-threshold GC approach if ATGC is enabled
-+		at the same time.
- 		gc urgent mid(3): does GC forcibly in a period of given
- 		gc_urgent_sleep_time and executes a mid level of I/O idling check.
--		uses cost benefit GC approach.
-+		always uses cost benefit GC approach, and will override
-+		age-threshold GC approach if ATGC is enabled at the same time.
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -333,16 +333,19 @@ static int fsnotify_handle_event(struct
+ 	if (!inode_mark)
+ 		return 0;
  
- What:		/sys/fs/f2fs/<disk>/gc_urgent_sleep_time
- Date:		August 2017
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 9322a7200e310..e0469316c7cd4 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -257,6 +257,8 @@ static int select_gc_type(struct f2fs_sb_info *sbi, int gc_type)
- 
- 	switch (sbi->gc_mode) {
- 	case GC_IDLE_CB:
-+	case GC_URGENT_LOW:
-+	case GC_URGENT_MID:
- 		gc_mode = GC_CB;
- 		break;
- 	case GC_IDLE_GREEDY:
--- 
-2.43.0
-
+-	if (mask & FS_EVENT_ON_CHILD) {
+-		/*
+-		 * Some events can be sent on both parent dir and child marks
+-		 * (e.g. FS_ATTRIB).  If both parent dir and child are
+-		 * watching, report the event once to parent dir with name (if
+-		 * interested) and once to child without name (if interested).
+-		 * The child watcher is expecting an event without a file name
+-		 * and without the FS_EVENT_ON_CHILD flag.
+-		 */
+-		mask &= ~FS_EVENT_ON_CHILD;
++	/*
++	 * Some events can be sent on both parent dir and child marks (e.g.
++	 * FS_ATTRIB).  If both parent dir and child are watching, report the
++	 * event once to parent dir with name (if interested) and once to child
++	 * without name (if interested).
++	 *
++	 * In any case regardless whether the parent is watching or not, the
++	 * child watcher is expecting an event without the FS_EVENT_ON_CHILD
++	 * flag. The file name is expected if and only if this is a directory
++	 * event.
++	 */
++	mask &= ~FS_EVENT_ON_CHILD;
++	if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
+ 		dir = NULL;
+ 		name = NULL;
+ 	}
 
 
 
