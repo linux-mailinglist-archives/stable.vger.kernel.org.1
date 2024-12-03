@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72C29E241A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:46:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1689E2170
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D3802871A3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6674285A9B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030D1203704;
-	Tue,  3 Dec 2024 15:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC9C1F8F18;
+	Tue,  3 Dec 2024 15:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn9pqW2G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYUREeJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46C72036E9;
-	Tue,  3 Dec 2024 15:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C82A1EF0AE;
+	Tue,  3 Dec 2024 15:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240586; cv=none; b=XTz7Uhd6E1qyYQM40uvpjPchq516qvRJh14KGkElYAv6oi1o8PNdB/evsX+0pNFA/pmZp0VEKda0JJ4iPw9in0uX4nTHkBBq6ANKo93RhIhbB4iTOS+ka5NXuseDwYfQalYLJqdzrw86/H/3fK0lAENSiotE3V6GIny9t3jBG3s=
+	t=1733238609; cv=none; b=YUdR7fjKrHSKKsGuw1Y8S9yAyfdjyZ+SS9/Vv+gf4RKWxH02a2GHiUklgGacXM94TnHYNblpoIE/7SAAaIqGs0XWUdM3eI7f71VxppL/+MI2IhEu5lSMqL3F+OX0Z4DwOLtqqE3rLzm3+14cxqKnqpBT7JHc7cRrZ9l3AZiEqB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240586; c=relaxed/simple;
-	bh=ywqUev0QsxqmZG4xTEtcCvRnrX8ZXkTc/Dd9VXn95ho=;
+	s=arc-20240116; t=1733238609; c=relaxed/simple;
+	bh=unMCCYITmU+2foaVoQJhueOjbatJZ+lqSCr3ZBjs2UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aH71twlKnRjTRLBT3yByP6quQ0oaLGv8KMbIIRHcSnKSEvLdbk+K1xIfnRyzLEl/5aDONQDr2s+cuWX8v2AJq7y0VbUtziF4A1M1OxmOeeWhbWEEoYSyWgd1LEgWmOO4pfCj50lq3hqln7xks0VQ/82Tv+PgvmtG2w3pQulSudk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn9pqW2G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E06C4CED8;
-	Tue,  3 Dec 2024 15:43:05 +0000 (UTC)
+	 MIME-Version; b=gJQuA4QSiMIhKZfR/zJdXx0sHRrjUujlN8whPMHQh3qub/iTcGBkH/pxTGZ9VziDCiv90i18aUPmMzu2nZjpK0Gp696rZgFKhpbwrod2Izbs1yqHWgiHk/xSA//B3iRY3rvJJzO6ajCCwdwaIRmbYxDZbNZC0FYIIADnBeLIPbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYUREeJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85DAC4CECF;
+	Tue,  3 Dec 2024 15:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240586;
-	bh=ywqUev0QsxqmZG4xTEtcCvRnrX8ZXkTc/Dd9VXn95ho=;
+	s=korg; t=1733238609;
+	bh=unMCCYITmU+2foaVoQJhueOjbatJZ+lqSCr3ZBjs2UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fn9pqW2Gs5Ymk41hEx9JeLjPJ/E/ORz+F+ynTBmxz3v89Ni3/pt+VRZYr/hrlJbsh
-	 7a4ncTmCoxDy4C+h/lF/IjqE8pOvLYg3Hgyx6NU6Ld/3xtl3Nhq0K5v2He/UGCg3NM
-	 YyAVV8fbWa/mcZthqgliBT0VsJpfPqKThb3uHG7s=
+	b=vYUREeJsq4w9MJBlgObkNwI6IxUyfuZ+iSLqn1hghQKzMwjq8801uUy5heTN3saHt
+	 i6wB5hTXtFNVs5p0GgVC8b+KAc+CXsv1qhaPgqHYQ520cnD1E2Iu0MTeNXmDswOZC2
+	 U7R1d21wfi4m85OM/8hakaHhHYsl7ENEqZ9Xw0jM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 179/826] platform/x86/intel/pmt: allow user offset for PMT callbacks
-Date: Tue,  3 Dec 2024 15:38:26 +0100
-Message-ID: <20241203144750.719165384@linuxfoundation.org>
+Subject: [PATCH 6.11 335/817] selftests: net: really check for bg process completion
+Date: Tue,  3 Dec 2024 15:38:27 +0100
+Message-ID: <20241203144008.895656091@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael J. Ruhl <michael.j.ruhl@intel.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 0c32840763b1579c923b4216c18bb756ca4ba473 ]
+[ Upstream commit 52ed077aa6336dbef83a2d6d21c52d1706fb7f16 ]
 
-Usage of the telem sysfs file allows for partial reads at an offset.
-The current callback method returns the buffer starting from offset 0
-only.
+A recent refactor transformed the check for process completion
+in a true statement, due to a typo.
 
-Include the requested offset in the callback and update the necessary
-address calculations with the offset.
+As a result, the relevant test-case is unable to catch the
+regression it was supposed to detect.
 
-Note: offset addition is moved from the caller to the local usage. For
-non-callback usage this is unchanged behavior.
+Restore the correct condition.
 
-Fixes: e92affc74cd8 ("platform/x86/intel/vsec: Add PMT read callbacks")
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Link: https://lore.kernel.org/r/20241114130358.2467787-2-michael.j.ruhl@intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 691bb4e49c98 ("selftests: net: avoid just another constant wait")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/0e6f213811f8e93a235307e683af8225cc6277ae.1730828007.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmt/class.c     | 8 +++++---
- drivers/platform/x86/intel/pmt/class.h     | 2 +-
- drivers/platform/x86/intel/pmt/telemetry.c | 2 +-
- include/linux/intel_vsec.h                 | 3 ++-
- 4 files changed, 9 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/pmtu.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/pmt/class.c b/drivers/platform/x86/intel/pmt/class.c
-index c04bb7f97a4db..c3ca2ac91b056 100644
---- a/drivers/platform/x86/intel/pmt/class.c
-+++ b/drivers/platform/x86/intel/pmt/class.c
-@@ -59,10 +59,12 @@ pmt_memcpy64_fromio(void *to, const u64 __iomem *from, size_t count)
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index 5175c0c83a238..d5af6099d6477 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -2062,7 +2062,7 @@ check_running() {
+ 	pid=${1}
+ 	cmd=${2}
+ 
+-	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "{cmd}" ]
++	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "${cmd}" ]
  }
  
- int pmt_telem_read_mmio(struct pci_dev *pdev, struct pmt_callbacks *cb, u32 guid, void *buf,
--			void __iomem *addr, u32 count)
-+			void __iomem *addr, loff_t off, u32 count)
- {
- 	if (cb && cb->read_telem)
--		return cb->read_telem(pdev, guid, buf, count);
-+		return cb->read_telem(pdev, guid, buf, off, count);
-+
-+	addr += off;
- 
- 	if (guid == GUID_SPR_PUNIT)
- 		/* PUNIT on SPR only supports aligned 64-bit read */
-@@ -96,7 +98,7 @@ intel_pmt_read(struct file *filp, struct kobject *kobj,
- 		count = entry->size - off;
- 
- 	count = pmt_telem_read_mmio(entry->ep->pcidev, entry->cb, entry->header.guid, buf,
--				    entry->base + off, count);
-+				    entry->base, off, count);
- 
- 	return count;
- }
-diff --git a/drivers/platform/x86/intel/pmt/class.h b/drivers/platform/x86/intel/pmt/class.h
-index a267ac9644230..b2006d57779d6 100644
---- a/drivers/platform/x86/intel/pmt/class.h
-+++ b/drivers/platform/x86/intel/pmt/class.h
-@@ -62,7 +62,7 @@ struct intel_pmt_namespace {
- };
- 
- int pmt_telem_read_mmio(struct pci_dev *pdev, struct pmt_callbacks *cb, u32 guid, void *buf,
--			void __iomem *addr, u32 count);
-+			void __iomem *addr, loff_t off, u32 count);
- bool intel_pmt_is_early_client_hw(struct device *dev);
- int intel_pmt_dev_create(struct intel_pmt_entry *entry,
- 			 struct intel_pmt_namespace *ns,
-diff --git a/drivers/platform/x86/intel/pmt/telemetry.c b/drivers/platform/x86/intel/pmt/telemetry.c
-index c9feac859e574..0cea617c6c2e2 100644
---- a/drivers/platform/x86/intel/pmt/telemetry.c
-+++ b/drivers/platform/x86/intel/pmt/telemetry.c
-@@ -219,7 +219,7 @@ int pmt_telem_read(struct telem_endpoint *ep, u32 id, u64 *data, u32 count)
- 	if (offset + NUM_BYTES_QWORD(count) > size)
- 		return -EINVAL;
- 
--	pmt_telem_read_mmio(ep->pcidev, ep->cb, ep->header.guid, data, ep->base + offset,
-+	pmt_telem_read_mmio(ep->pcidev, ep->cb, ep->header.guid, data, ep->base, offset,
- 			    NUM_BYTES_QWORD(count));
- 
- 	return ep->present ? 0 : -EPIPE;
-diff --git a/include/linux/intel_vsec.h b/include/linux/intel_vsec.h
-index 11ee185566c31..b94beab64610b 100644
---- a/include/linux/intel_vsec.h
-+++ b/include/linux/intel_vsec.h
-@@ -74,10 +74,11 @@ enum intel_vsec_quirks {
-  * @pdev:  PCI device reference for the callback's use
-  * @guid:  ID of data to acccss
-  * @data:  buffer for the data to be copied
-+ * @off:   offset into the requested buffer
-  * @count: size of buffer
-  */
- struct pmt_callbacks {
--	int (*read_telem)(struct pci_dev *pdev, u32 guid, u64 *data, u32 count);
-+	int (*read_telem)(struct pci_dev *pdev, u32 guid, u64 *data, loff_t off, u32 count);
- };
- 
- /**
+ test_cleanup_vxlanX_exception() {
 -- 
 2.43.0
 
