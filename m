@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-97802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBAE9E2AAC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:21:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0934B9E2954
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0049AB855BD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:03:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBD26B835D4
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 841C81F7561;
-	Tue,  3 Dec 2024 16:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A631F76BA;
+	Tue,  3 Dec 2024 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuX+1dHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSj7V6D8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C2E23CE;
-	Tue,  3 Dec 2024 16:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ED31E009A;
+	Tue,  3 Dec 2024 16:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241781; cv=none; b=c3jAAmYyHz5wcb+ySVuUjamp3mq7ROJrOb1gdHWSeEGWs1RcEhz7XfU9sipuRrowSovUO6yIfoqKpnSH0Goo131JtwVN86dyRIf3oelv6TPUktzo82pGtLrtcrc8hlVtFgsEMcWkFyay+iv36tNHIvACgzcjJw71AgZipIw6vc8=
+	t=1733241670; cv=none; b=qijms5S+0MTMuzos09KoiXnKcRw9uUMbT+eS3Tk9jCqPk9ePhOp7/jvJV2dHUQQZad1xonZvuoXfUycCPP/qRsiGBdwvOqLzTacq8g28cbsgvpORSPeb214sCyNJzVnNsyKjgs2CLpJcKwPNLVeKx4hX4LurHK0/AcoHQ1VY/4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241781; c=relaxed/simple;
-	bh=Nf6WWX7lcjPlB2CwgHv+PZ7f3JN9EgS/R9DYjyQkygQ=;
+	s=arc-20240116; t=1733241670; c=relaxed/simple;
+	bh=cIEcAL8IOvh3p4/JE/mvc3sRXcgvukVkHPlDvoPgaAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LbD16E7ZbRwm3jofa5kJA7glSfnblB4K1ybVNcMM7QS0RpgKytCjYfVHwqxEFZhmdnGkwjSgk2UoBd3DPEVeKUlBdAiNTZNMd/2gVrYbgC79UMhNZqWqH8X/0G36Jg1kfRvb0IMsvfHO6CG8auuSE5V6Whr0GY24VYQ2sXj355Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GuX+1dHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E5EC4CECF;
-	Tue,  3 Dec 2024 16:03:00 +0000 (UTC)
+	 MIME-Version; b=FwlPn23OKEKOTrVFjm2B7CL7GrvbZt7cDNyl1bTurr/j7/Ns1wRdMIO2h5bRXWydZO1+iIXuCNFwjjs19RH70jD7yY1QHoUdfRG6R5amPSmTbbCAHMkSO4juMZ35A+0N4q/gurh24ZgOryYnBzRCJzn3jFXeiSlEBxwLeyyvOqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSj7V6D8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FADC4CECF;
+	Tue,  3 Dec 2024 16:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241781;
-	bh=Nf6WWX7lcjPlB2CwgHv+PZ7f3JN9EgS/R9DYjyQkygQ=;
+	s=korg; t=1733241670;
+	bh=cIEcAL8IOvh3p4/JE/mvc3sRXcgvukVkHPlDvoPgaAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuX+1dHQNTKEIEVFlch3sIUjD4/Oi3qfbvDMJg84CjmJ/sw7X5WgtLj0mb4b+yxvg
-	 h2JddpMTKq7E1q9bT4c+ur4mgy5Xd6uXKbMojhMTHWJUj/1xOiVraBlFHcXTiBzfXt
-	 YTnQeTxfGcfF46DpOwmZBsIy83a2+LFAjGaeZupc=
+	b=KSj7V6D8/6zZAfOsAe8kSnmly3D9VzvgTN9mp9YADpCsJnZdjnxLiq5EQ7AMjc7Bq
+	 4iBJptEokneK2IcHo72pCeM8Vap9yVjtVae3/pTbaIm31v51FcWjKg0zHRP/zBxaEF
+	 9ZimUlZtF/d78HMC9A/J8D8dV3PVHAvErsWP6/mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Rosenberg <drosen@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Hemant Kumar <hemant@linux.vnet.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 483/826] f2fs: fix to account dirty data in __get_secs_required()
-Date: Tue,  3 Dec 2024 15:43:30 +0100
-Message-ID: <20241203144802.603424150@linuxfoundation.org>
+Subject: [PATCH 6.12 485/826] perf disasm: Fix capstone memory leak
+Date: Tue,  3 Dec 2024 15:43:32 +0100
+Message-ID: <20241203144802.679932775@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,130 +74,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 1acd73edbbfef2c3c5b43cba4006a7797eca7050 ]
+[ Upstream commit 1280f012e06e1555de47e3c3a9be898d8cbda5fb ]
 
-It will trigger system panic w/ testcase in [1]:
+The insn argument passed to cs_disasm needs freeing. To support
+accurately having count, add an additional free_count variable.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.c:2752!
-RIP: 0010:new_curseg+0xc81/0x2110
-Call Trace:
- f2fs_allocate_data_block+0x1c91/0x4540
- do_write_page+0x163/0xdf0
- f2fs_outplace_write_data+0x1aa/0x340
- f2fs_do_write_data_page+0x797/0x2280
- f2fs_write_single_data_page+0x16cd/0x2190
- f2fs_write_cache_pages+0x994/0x1c80
- f2fs_write_data_pages+0x9cc/0xea0
- do_writepages+0x194/0x7a0
- filemap_fdatawrite_wbc+0x12b/0x1a0
- __filemap_fdatawrite_range+0xbb/0xf0
- file_write_and_wait_range+0xa1/0x110
- f2fs_do_sync_file+0x26f/0x1c50
- f2fs_sync_file+0x12b/0x1d0
- vfs_fsync_range+0xfa/0x230
- do_fsync+0x3d/0x80
- __x64_sys_fsync+0x37/0x50
- x64_sys_call+0x1e88/0x20d0
- do_syscall_64+0x4b/0x110
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The root cause is if checkpoint_disabling and lfs_mode are both on,
-it will trigger OPU for all overwritten data, it may cost more free
-segment than expected, so f2fs must account those data correctly to
-calculate cosumed free segments later, and return ENOSPC earlier to
-avoid run out of free segment during block allocation.
-
-[1] https://lore.kernel.org/fstests/20241015025106.3203676-1-chao@kernel.org/
-
-Fixes: 4354994f097d ("f2fs: checkpoint disabling")
-Cc: Daniel Rosenberg <drosen@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: c5d60de1813a ("perf annotate: Add support to use libcapstone in powerpc")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Hemant Kumar <hemant@linux.vnet.ibm.com>
+Link: https://lore.kernel.org/r/20241016235622.52166-2-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.h | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ tools/perf/util/disasm.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/segment.h b/fs/f2fs/segment.h
-index 71adb4a43bec5..51b2b8c5c749c 100644
---- a/fs/f2fs/segment.h
-+++ b/fs/f2fs/segment.h
-@@ -559,18 +559,21 @@ static inline int reserved_sections(struct f2fs_sb_info *sbi)
- }
+diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+index f05ba7739c1e9..2c8063660f2e8 100644
+--- a/tools/perf/util/disasm.c
++++ b/tools/perf/util/disasm.c
+@@ -1627,12 +1627,12 @@ static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
+ 	u64 start = map__rip_2objdump(map, sym->start);
+ 	u64 len;
+ 	u64 offset;
+-	int i, count;
++	int i, count, free_count;
+ 	bool is_64bit = false;
+ 	bool needs_cs_close = false;
+ 	u8 *buf = NULL;
+ 	csh handle;
+-	cs_insn *insn;
++	cs_insn *insn = NULL;
+ 	char disasm_buf[512];
+ 	struct disasm_line *dl;
  
- static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi,
--			unsigned int node_blocks, unsigned int dent_blocks)
-+			unsigned int node_blocks, unsigned int data_blocks,
-+			unsigned int dent_blocks)
- {
+@@ -1664,7 +1664,7 @@ static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
  
--	unsigned segno, left_blocks;
-+	unsigned int segno, left_blocks, blocks;
- 	int i;
+ 	needs_cs_close = true;
  
--	/* check current node sections in the worst case. */
--	for (i = CURSEG_HOT_NODE; i <= CURSEG_COLD_NODE; i++) {
-+	/* check current data/node sections in the worst case. */
-+	for (i = CURSEG_HOT_DATA; i < NR_PERSISTENT_LOG; i++) {
- 		segno = CURSEG_I(sbi, i)->segno;
- 		left_blocks = CAP_BLKS_PER_SEC(sbi) -
- 				get_ckpt_valid_blocks(sbi, segno, true);
--		if (node_blocks > left_blocks)
-+
-+		blocks = i <= CURSEG_COLD_DATA ? data_blocks : node_blocks;
-+		if (blocks > left_blocks)
- 			return false;
+-	count = cs_disasm(handle, buf, len, start, len, &insn);
++	free_count = count = cs_disasm(handle, buf, len, start, len, &insn);
+ 	for (i = 0, offset = 0; i < count; i++) {
+ 		int printed;
+ 
+@@ -1702,8 +1702,11 @@ static int symbol__disassemble_capstone(char *filename, struct symbol *sym,
  	}
  
-@@ -584,8 +587,9 @@ static inline bool has_curseg_enough_space(struct f2fs_sb_info *sbi,
- }
- 
- /*
-- * calculate needed sections for dirty node/dentry
-- * and call has_curseg_enough_space
-+ * calculate needed sections for dirty node/dentry and call
-+ * has_curseg_enough_space, please note that, it needs to account
-+ * dirty data as well in lfs mode when checkpoint is disabled.
-  */
- static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 		unsigned int *lower_p, unsigned int *upper_p, bool *curseg_p)
-@@ -594,19 +598,30 @@ static inline void __get_secs_required(struct f2fs_sb_info *sbi,
- 					get_pages(sbi, F2FS_DIRTY_DENTS) +
- 					get_pages(sbi, F2FS_DIRTY_IMETA);
- 	unsigned int total_dent_blocks = get_pages(sbi, F2FS_DIRTY_DENTS);
-+	unsigned int total_data_blocks = 0;
- 	unsigned int node_secs = total_node_blocks / CAP_BLKS_PER_SEC(sbi);
- 	unsigned int dent_secs = total_dent_blocks / CAP_BLKS_PER_SEC(sbi);
-+	unsigned int data_secs = 0;
- 	unsigned int node_blocks = total_node_blocks % CAP_BLKS_PER_SEC(sbi);
- 	unsigned int dent_blocks = total_dent_blocks % CAP_BLKS_PER_SEC(sbi);
-+	unsigned int data_blocks = 0;
-+
-+	if (f2fs_lfs_mode(sbi) &&
-+		unlikely(is_sbi_flag_set(sbi, SBI_CP_DISABLED))) {
-+		total_data_blocks = get_pages(sbi, F2FS_DIRTY_DATA);
-+		data_secs = total_data_blocks / CAP_BLKS_PER_SEC(sbi);
-+		data_blocks = total_data_blocks % CAP_BLKS_PER_SEC(sbi);
+ out:
+-	if (needs_cs_close)
++	if (needs_cs_close) {
+ 		cs_close(&handle);
++		if (free_count > 0)
++			cs_free(insn, free_count);
 +	}
+ 	free(buf);
+ 	return count < 0 ? count : 0;
  
- 	if (lower_p)
--		*lower_p = node_secs + dent_secs;
-+		*lower_p = node_secs + dent_secs + data_secs;
- 	if (upper_p)
- 		*upper_p = node_secs + dent_secs +
--			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0);
-+			(node_blocks ? 1 : 0) + (dent_blocks ? 1 : 0) +
-+			(data_blocks ? 1 : 0);
- 	if (curseg_p)
- 		*curseg_p = has_curseg_enough_space(sbi,
--				node_blocks, dent_blocks);
-+				node_blocks, data_blocks, dent_blocks);
- }
- 
- static inline bool has_not_enough_free_secs(struct f2fs_sb_info *sbi,
 -- 
 2.43.0
 
