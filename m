@@ -1,245 +1,109 @@
-Return-Path: <stable+bounces-98169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B004D9E2D38
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 21:36:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB959E2DB3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 21:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E0D2825DF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:36:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72DED281356
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60CFB189F56;
-	Tue,  3 Dec 2024 20:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3BD208978;
+	Tue,  3 Dec 2024 20:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="gTLWXnnR"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="LAy3oHOW"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BD21DB34E;
-	Tue,  3 Dec 2024 20:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9161207A2E
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 20:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733258174; cv=none; b=WJEICjFaSumciJuHLNysgZPDScIS9afielHPTvbaBZOXhC1LsB2mCVVR3mltBA1X9zPBQnS3w327dgrfgeoULBQYfdk8AHLQJQWv18KF55ehTwHITISY89mbvzvvFQb2onLSEkGAZ8/a87za5CXb4ZVPQdGznDI1k84aJLbtOb4=
+	t=1733259352; cv=none; b=UBIkzMOTgnDm60nrg3DYgLe7uw1RB/D7P7vO1/f7WAqx6F1de8mKuCLiUt1COki92Qmwk7PbJSBf4fsNjtZClSYugL3ZadrSkNC0xTIbhbgfVtVOmnrMZElDyxHBzlkz2AVoqDygCtgBbZha9x0CXk5KviDqb6RWlS0sem+m/d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733258174; c=relaxed/simple;
-	bh=4Waxk1OrNO6GTFs5DQaMfzgQ3SOLEn10SlKSkxh4Wqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A1ouv4HwwpJiNwBBtTMd1dxxxwIj/DgSQWnAJkxIoqIaxteAGiktmQDEk5IwNT7uat2411Tla86cs0q7x1/4zHxhbU7U+Ojhb28TCQrMx6T15ZqlFfKZE+J1PhpyPdv1qVWr9tlVBE8WXmZgryi41Rwv50KAWEOZVaxrV2nLYPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=gTLWXnnR; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 64865670;
-	Tue,  3 Dec 2024 21:35:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1733258141;
-	bh=4Waxk1OrNO6GTFs5DQaMfzgQ3SOLEn10SlKSkxh4Wqw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gTLWXnnRHlD/aULJBcJfMgCX1Aiwui4OhNloCG5ZGnfFARmqFxHR5mzxT6hbVfzpH
-	 EYHQ7g3jUTm3SBXv6E2+ToDBIuzzix6Tgx8XzJ+PfyrXFc0rmGvwc+6PR5VdxyWliP
-	 Ybne+jhjC04jfD25h2XPbWrp4bBXafcWw6U5wv40=
-Date: Tue, 3 Dec 2024 22:35:57 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v5 2/5] media: uvcvideo: Remove dangling pointers
-Message-ID: <20241203203557.GC5196@pendragon.ideasonboard.com>
-References: <20241202-uvc-fix-async-v5-0-6658c1fe312b@chromium.org>
- <20241202-uvc-fix-async-v5-2-6658c1fe312b@chromium.org>
+	s=arc-20240116; t=1733259352; c=relaxed/simple;
+	bh=eLcYDxcnynl1D64i+3DMguwY4XPCJg81k3dnaDdJIbc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jB/0esxYvnfMejJQ2/oG8iq8HuDx6jDpA4pn1jHGy26LTD2eF3auCE4vbjaS4QeeSmmdhNlHwJE++pliZAhQFHH/uMvtMDTPC26Jq7GC6MLJ8ZtyWpngqQ9TpkDR97aemvbHMy5j9S8rukvcmNJP0dRp8AZGUWC4S7Y+6pNbVVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=LAy3oHOW; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ffc76368c6so92801631fa.0
+        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 12:55:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733259349; x=1733864149; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=itGnniQM+p/vJK3/mgQYD2qiAW1SyPNKjRN6TdQ/bi4=;
+        b=LAy3oHOW7689Xu8hkfLCcn/zdcmseTsoMEnlCZ55MSsgTS7beqYRu9VZKYxsFKtIjj
+         FozwZoBjThDrIw0DMmLViENMn34PLHJZ7FG4MaPOFBQgyzLoQthiRq2AHWqfGri4Qrwt
+         NIQdwjswkT+lLmXOLWsbXiqpaTavzzp7uWpkbrvCCYsNc6pdwrrBTBn8eXCmGuqUs6uY
+         f7IO756gTnoHWjbL6JttF0Kah6WP1hgIN30nZPCqZBkF+FHU52CuTrb02Jj+tTdCiYoV
+         3gig1jSpXZgdmASm/jh9nv6YuoGIB051fVOFwq2R1nGu2res8qWcKFtehClksOvU8umq
+         1ULg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733259349; x=1733864149;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=itGnniQM+p/vJK3/mgQYD2qiAW1SyPNKjRN6TdQ/bi4=;
+        b=cumXRBVXWqeKN9zDBnrpDM3imToOuq8fBvwj4IxSCOx9huW10Njf+PfMHs84Objvko
+         1PHaRrKDuMBeMyqtcGCrREH7cjT7zAtyuoaLVllTb7iVJLcOXHCDEog9HVgQj9350H3e
+         4VWAZ5DI6Tb25BHOsrUF3FSnIAkw5fXLPaUk+YadC8bkoeJdzb2obKa2AA92dZvCav4Z
+         wYxLmULr3jGFirNMaM/ArTD0M+iIKdEeQU+m+Hyo15d/UFg2oBJ5WGviTe62Xm2VrH7S
+         qaa6EjWLiuF8bTQBTjlVT2oqwQL0Qm22lNEPnZ4mJ1U1F1tATt7jonmNsx00h3PQjSke
+         qGww==
+X-Forwarded-Encrypted: i=1; AJvYcCXZZtppSbB0ou2Sd+lho0Hv2e3i3q1gRHu9C55A7bBDRrriT33gkU2ywakRPG+5NLb83mqiMGk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzduY7gsZt8tMRB2G4qtGNKNf9Gd1EF958yGLWMC1Yuz72EtfRi
+	omWPuGhhKCwYg2oyCn/DufhGP1rV3bRxOXbE5OJWq7g2j4eeXn7D5Vj9HComPE/wqh6WUHv9Btd
+	+6gz9+kqnNzO7Tl4W3vwdMAEmjyTcrILEx81D+A==
+X-Gm-Gg: ASbGnctDwhg3Oxq5ZwPx7qlYxkx11Luf3V+m9b0ujmI9VBp5EnAqBMeDBduQ7PZStHq
+	f1Wt4QLWTIV276vTtEieNg84jOlWAcuw=
+X-Google-Smtp-Source: AGHT+IG067Jk4LL3da1h5lHM6wFo0Vn15+FnIBImO91v0eGyNeKMO06aLWq6wdCh9MkvyOn+7a+4HaMe26FA43Y2k1A=
+X-Received: by 2002:a05:651c:19ac:b0:2ff:c8a1:c4c9 with SMTP id
+ 38308e7fff4ca-30009c46233mr36458081fa.1.1733259348900; Tue, 03 Dec 2024
+ 12:55:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241202-uvc-fix-async-v5-2-6658c1fe312b@chromium.org>
+References: <20241203-crypto-qce-refactor-v1-0-c5901d2dd45c@linaro.org> <20241203173503.GA1510@sol.localdomain>
+In-Reply-To: <20241203173503.GA1510@sol.localdomain>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 3 Dec 2024 21:55:37 +0100
+Message-ID: <CAMRc=MfGWOPogAqpC6vifQC3BYfSVqpVC80X1SL9XWypPLZPzg@mail.gmail.com>
+Subject: Re: [PATCH 0/9] crypto: qce - refactor the driver
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>, Stanimir Varbanov <svarbanov@mm-sol.com>, linux-crypto@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Ricardo,
+On Tue, Dec 3, 2024 at 6:35=E2=80=AFPM Eric Biggers <ebiggers@kernel.org> w=
+rote:
+>
+> On Tue, Dec 03, 2024 at 10:19:28AM +0100, Bartosz Golaszewski wrote:
+> > This driver will soon be getting more features so show it some
+> > refactoring love in the meantime. Switching to using a workqueue and
+> > sleeping locks improves cryptsetup benchmark results for AES encryption=
+.
+>
+> What is motivating this work?  I thought this driver is useless because A=
+RMv8 CE
+> is an order of magnitude faster.
+>
 
-Thank you for the patch.
+We'll be extending support for this IP with some additional features
+soon like using device unique keys etc. This is just some refreshment
+of this module.
 
-On Mon, Dec 02, 2024 at 02:24:36PM +0000, Ricardo Ribalda wrote:
-> When an async control is written, we copy a pointer to the file handle
-> that started the operation. That pointer will be used when the device is
-> done. Which could be anytime in the future.
-> 
-> If the user closes that file descriptor, its structure will be freed,
-> and there will be one dangling pointer per pending async control, that
-> the driver will try to use.
-> 
-> Clean all the dangling pointers during release().
-> 
-> To avoid adding a performance penalty in the most common case (no async
-> operation), a counter has been introduced with some logic to make sure
-> that it is properly handled.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: e5225c820c05 ("media: uvcvideo: Send a control event when a Control Change interrupt arrives")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
->  drivers/media/usb/uvc/uvc_ctrl.c | 52 ++++++++++++++++++++++++++++++++++++++--
->  drivers/media/usb/uvc/uvc_v4l2.c |  2 ++
->  drivers/media/usb/uvc/uvcvideo.h |  9 ++++++-
->  3 files changed, 60 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
-> index 9a80a7d8e73a..af1e38f5c6e9 100644
-> --- a/drivers/media/usb/uvc/uvc_ctrl.c
-> +++ b/drivers/media/usb/uvc/uvc_ctrl.c
-> @@ -1579,6 +1579,37 @@ static void uvc_ctrl_send_slave_event(struct uvc_video_chain *chain,
->  	uvc_ctrl_send_event(chain, handle, ctrl, mapping, val, changes);
->  }
->  
-> +static void uvc_ctrl_get_handle(struct uvc_fh *handle, struct uvc_control *ctrl)
-> +{
-> +	lockdep_assert_held(&handle->chain->ctrl_mutex);
-> +
-> +	if (ctrl->handle)
-> +		dev_warn_ratelimited(&handle->stream->dev->udev->dev,
-> +				     "UVC non compliance: Setting an async control with a pending operation.");
-> +
-> +	if (handle == ctrl->handle)
-> +		return;
-> +
-> +	if (ctrl->handle)
-> +		ctrl->handle->pending_async_ctrls--;
-> +
-> +	ctrl->handle = handle;
-> +	handle->pending_async_ctrls++;
-> +}
-> +
-> +static void uvc_ctrl_put_handle(struct uvc_fh *handle, struct uvc_control *ctrl)
-> +{
-> +	lockdep_assert_held(&handle->chain->ctrl_mutex);
-> +
-> +	if (ctrl->handle != handle) /* Nothing to do here.*/
-> +		return;
-> +
-> +	ctrl->handle = NULL;
-> +	if (WARN_ON(!handle->pending_async_ctrls))
-> +		return;
-> +	handle->pending_async_ctrls--;
-> +}
-
-get/put have strong connotations in the kernel, related to acquiring a
-reference to a given object, and releasing it. The usage here is
-different, and I think it makes the usage below confusing. I prefer the
-original single function.
-
-> +
->  void uvc_ctrl_status_event(struct uvc_video_chain *chain,
->  			   struct uvc_control *ctrl, const u8 *data)
->  {
-> @@ -1589,7 +1620,8 @@ void uvc_ctrl_status_event(struct uvc_video_chain *chain,
->  	mutex_lock(&chain->ctrl_mutex);
->  
->  	handle = ctrl->handle;
-> -	ctrl->handle = NULL;
-> +	if (handle)
-> +		uvc_ctrl_put_handle(handle, ctrl);
->  
->  	list_for_each_entry(mapping, &ctrl->info.mappings, list) {
->  		s32 value = __uvc_ctrl_get_value(mapping, data);
-> @@ -1865,7 +1897,7 @@ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
->  
->  		if (!rollback && handle &&
->  		    ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
-> -			ctrl->handle = handle;
-> +			uvc_ctrl_get_handle(handle, ctrl);
->  	}
->  
->  	return 0;
-> @@ -2774,6 +2806,22 @@ int uvc_ctrl_init_device(struct uvc_device *dev)
->  	return 0;
->  }
->  
-> +void uvc_ctrl_cleanup_fh(struct uvc_fh *handle)
-> +{
-> +	struct uvc_entity *entity;
-> +
-> +	guard(mutex)(&handle->chain->ctrl_mutex);
-> +
-> +	if (!handle->pending_async_ctrls)
-> +		return;
-> +
-> +	list_for_each_entry(entity, &handle->chain->dev->entities, list)
-
-	list_for_each_entry(entity, &handle->chain->dev->entities, list) {
-
-> +		for (unsigned int i = 0; i < entity->ncontrols; ++i)
-> +			uvc_ctrl_put_handle(handle, &entity->controls[i]);
-
-	}
-
-> +
-> +	WARN_ON(handle->pending_async_ctrls);
-> +}
-> +
->  /*
->   * Cleanup device controls.
->   */
-> diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-> index 97c5407f6603..b425306a3b8c 100644
-> --- a/drivers/media/usb/uvc/uvc_v4l2.c
-> +++ b/drivers/media/usb/uvc/uvc_v4l2.c
-> @@ -652,6 +652,8 @@ static int uvc_v4l2_release(struct file *file)
->  
->  	uvc_dbg(stream->dev, CALLS, "%s\n", __func__);
->  
-> +	uvc_ctrl_cleanup_fh(handle);
-> +
->  	/* Only free resources if this is a privileged handle. */
->  	if (uvc_has_privileges(handle))
->  		uvc_queue_release(&stream->queue);
-> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-> index 07f9921d83f2..92ecdd188587 100644
-> --- a/drivers/media/usb/uvc/uvcvideo.h
-> +++ b/drivers/media/usb/uvc/uvcvideo.h
-> @@ -337,7 +337,11 @@ struct uvc_video_chain {
->  	struct uvc_entity *processing;		/* Processing unit */
->  	struct uvc_entity *selector;		/* Selector unit */
->  
-> -	struct mutex ctrl_mutex;		/* Protects ctrl.info */
-> +	struct mutex ctrl_mutex;		/*
-> +						 * Protects ctrl.info,
-> +						 * ctrl.handle and
-> +						 * uvc_fh.pending_async_ctrls
-> +						 */
->  
->  	struct v4l2_prio_state prio;		/* V4L2 priority state */
->  	u32 caps;				/* V4L2 chain-wide caps */
-> @@ -612,6 +616,7 @@ struct uvc_fh {
->  	struct uvc_video_chain *chain;
->  	struct uvc_streaming *stream;
->  	enum uvc_handle_state state;
-> +	unsigned int pending_async_ctrls;
->  };
->  
->  struct uvc_driver {
-> @@ -797,6 +802,8 @@ int uvc_ctrl_is_accessible(struct uvc_video_chain *chain, u32 v4l2_id,
->  int uvc_xu_ctrl_query(struct uvc_video_chain *chain,
->  		      struct uvc_xu_control_query *xqry);
->  
-> +void uvc_ctrl_cleanup_fh(struct uvc_fh *handle);
-> +
->  /* Utility functions */
->  struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
->  					    u8 epaddr);
-> 
-
--- 
-Regards,
-
-Laurent Pinchart
+Bartosz
 
