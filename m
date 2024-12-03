@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF639E25D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:05:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769689E2302
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:31:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0632328899F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 096D7166B80
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB1D1F76D7;
-	Tue,  3 Dec 2024 16:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0551F7550;
+	Tue,  3 Dec 2024 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSfYYCtR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/dgz/MS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6757B1F76BF;
-	Tue,  3 Dec 2024 16:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0BC1F473A;
+	Tue,  3 Dec 2024 15:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241909; cv=none; b=bSnXbdkaYoNdyawd8lx2m2Iaie4w3HuJnsuJmdQS8Rt58q6bDTfbgHBQYqVCFf07V3Nig+4UthvjoXWY00BRE9r9nZ7ppsxccJpGIfAmGbRMAZx47pHKfb+wO6d1TWFTc3RdKvQN3F6TyrQqYPAHHv5IKiaUMsrGFGAmLqzHX78=
+	t=1733239585; cv=none; b=HImlDvwhWNgTu7twXqacgum3yxz2P74BEyFfOg3rfPFpktk7+de3LBiQtK7H15c/cRxMnJUwNa/nNRFRJy0hr5NGfcZyxMVTJk5M9sKU/0uDafY3VoTIqDm9SaZoSN4xtGCVddNFYhzuJejNhhC66qnlyDIjpKsh1HynFBicio0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241909; c=relaxed/simple;
-	bh=9pUFYdokfSy2BuCb9iOZeJjy8zHMCsGIRksDYDf/3J8=;
+	s=arc-20240116; t=1733239585; c=relaxed/simple;
+	bh=BcVr/HrpGq7WS0ToFatRR3kb1L1RiTwJZAtyiyQ7JyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWJmR8y6CNia1i7oUfbrNd3TeiuTNFRfJHVdSMYlZxYMgsNfMrAx4DQ/IljiNTNK96Bv2PVhgxjW3zouxdN4O1kSx+7QFv8+GpyJTnVjqFAmUwC73HmAGRJq6Sml4t6ndAxmVC9+JbAlWRcMN9GD5twTXOatqLldnQkcVwww+6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSfYYCtR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FF7C4CECF;
-	Tue,  3 Dec 2024 16:05:08 +0000 (UTC)
+	 MIME-Version; b=mKsgWA2BfBTthvAhL0vc2j3UWM27iSy/jIZUI9Kl7iRGX8zuTSTE1cohIdZJp2+obPkKdRMnvh3Om9WM9jCFkjkimuR6yLDfTqr49upwSXA+8GG8OXxeK+hptMhHnDAzPzcaflWKNj9+o/TIF4LLWCI29EDouxT8VIp3I+oD+s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/dgz/MS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9759C4CECF;
+	Tue,  3 Dec 2024 15:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241909;
-	bh=9pUFYdokfSy2BuCb9iOZeJjy8zHMCsGIRksDYDf/3J8=;
+	s=korg; t=1733239585;
+	bh=BcVr/HrpGq7WS0ToFatRR3kb1L1RiTwJZAtyiyQ7JyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSfYYCtRc4d931K98DX2f1v1rMWrjD8G3kj8OoL6SzCdZeVuGzJGf5NnQ3mjXngbF
-	 WJ5BCNzPHUr0rzI33NlzEQ8dVvWSJcQ0pHDtV+28uk7JsgFRAmB52dgqZfx5x/XQBj
-	 MCMEdHORKdWhoOC33A/HLBh4mQeOwmwPMCBTshAU=
+	b=L/dgz/MSuyMTbMwyK6TcsH2ekR7Npx5ml4e0T27m9/sq/BCQN888fN6UQ9nhWWtgu
+	 dElui3nYJ3SME3REIPjkgzfOb3sPFQInrwBTgOg2OBpSVaRsyvqTWcXOoD6gpYE8pz
+	 9eUNaNln0pQnHJ2lksDgj1cXtqRRBLnOrgSeZ5PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinsu Lee <jinsu1.lee@samsung.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 509/826] f2fs: fix to avoid forcing direct write to use buffered IO on inline_data inode
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.11 664/817] iio: dac: adi-axi-dac: fix wrong register bitfield
 Date: Tue,  3 Dec 2024 15:43:56 +0100
-Message-ID: <20241203144803.613254430@linuxfoundation.org>
+Message-ID: <20241203144021.877105030@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-[ Upstream commit 26e6f59d0bbaac76fa3413462d780bd2b5f9f653 ]
+commit 70602f529e4d76798c95aeed5ce2a8d36263abe5 upstream.
 
-Jinsu Lee reported a performance regression issue, after commit
-5c8764f8679e ("f2fs: fix to force buffered IO on inline_data
-inode"), we forced direct write to use buffered IO on inline_data
-inode, it will cause performace regression due to memory copy
-and data flush.
+Fix ADI_DAC_R1_MODE of AXI_DAC_REG_CNTRL_2.
 
-It's fine to not force direct write to use buffered IO, as it
-can convert inline inode before committing direct write IO.
+Both generic DAC and ad3552r DAC IPs docs are reporting
+bit 5 for it.
 
-Fixes: 5c8764f8679e ("f2fs: fix to force buffered IO on inline_data inode")
-Reported-by: Jinsu Lee <jinsu1.lee@samsung.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/af03dd2c-e361-4f80-b2fd-39440766cf6e@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://wiki.analog.com/resources/fpga/docs/axi_dac_ip
+Fixes: 4e3949a192e4 ("iio: dac: add support for AXI DAC IP core")
+Cc: stable@vger.kernel.org
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20241008-wip-bl-ad3552r-axi-v0-iio-testing-v5-1-3d410944a63d@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/dac/adi-axi-dac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index b96403ab7a925..71ddecaf771f8 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -863,7 +863,11 @@ static bool f2fs_force_buffered_io(struct inode *inode, int rw)
- 		return true;
- 	if (f2fs_compressed_file(inode))
- 		return true;
--	if (f2fs_has_inline_data(inode))
-+	/*
-+	 * only force direct read to use buffered IO, for direct write,
-+	 * it expects inline data conversion before committing IO.
-+	 */
-+	if (f2fs_has_inline_data(inode) && rw == READ)
- 		return true;
- 
- 	/* disallow direct IO if any of devices has unaligned blksize */
+diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+index 0cb00f3bec04..b8b4171b8043 100644
+--- a/drivers/iio/dac/adi-axi-dac.c
++++ b/drivers/iio/dac/adi-axi-dac.c
+@@ -46,7 +46,7 @@
+ #define AXI_DAC_REG_CNTRL_1		0x0044
+ #define   AXI_DAC_SYNC			BIT(0)
+ #define AXI_DAC_REG_CNTRL_2		0x0048
+-#define	  ADI_DAC_R1_MODE		BIT(4)
++#define	  ADI_DAC_R1_MODE		BIT(5)
+ #define AXI_DAC_DRP_STATUS		0x0074
+ #define   AXI_DAC_DRP_LOCKED		BIT(17)
+ /* DAC Channel controls */
 -- 
-2.43.0
+2.47.1
 
 
 
