@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A20F9E291F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F619E28BC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9BA3BC457D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D084BBE7D7B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D11120A5F7;
-	Tue,  3 Dec 2024 15:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01FD1E3DF9;
+	Tue,  3 Dec 2024 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GVTVbgoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/F+Yc07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA551F9F69;
-	Tue,  3 Dec 2024 15:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE091F890B;
+	Tue,  3 Dec 2024 16:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239990; cv=none; b=VVzMYc1IbNH7L4iWY7oscuy4rqS6BwQsrybLEjTa2t4a9G/FYBOL5y2+dxCTAUak4BYx80zhcAkKcMsAhsyxNkn/A6V9F08sP8W8XhKpTrcowpRak/O7/Q35yTnqbp5EXEPdO5eFJ32sQq8lCohMVwwmZRflBd4B+gbl7fhgPmw=
+	t=1733242371; cv=none; b=bn73pD0dMfhTN/6XPPO8ZTY+dzNWBj/Ek/7hbwKm1s12wX++i55EuTbkqzKNhqOP/mCCCavaceyirez86n34IRqh7+LyZmJCyebXQZXHswGegmNp9XuQzy2XXq+RSLHClKM9axnkHw7BAVn+xapmsGVbjUNaytMai2MHM2IPLjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239990; c=relaxed/simple;
-	bh=lwKpGtQNgmHJIxGoUg8Jd/AzY2P0+VusoE6OF3u2vYw=;
+	s=arc-20240116; t=1733242371; c=relaxed/simple;
+	bh=VrqVsFCNQnMWtpl71w1Y9BtKcGZVXSVHEKZP8PMcGMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2Yw90oizDp928JIBdDR+PjeljvYooul/O5AZPT3PBwmKS8BW9nrtz6TdKwjeE/AukJwAst3iE3IYS2/1LitMPWvocItHBfZQpb+oldPPQfAomfL+nNY0Kb//EF1MMqAl57n3kqjL7/xoDRFWe3vBspd/i3TxtrIrOEJroFqOrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GVTVbgoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D8BC4CECF;
-	Tue,  3 Dec 2024 15:33:08 +0000 (UTC)
+	 MIME-Version; b=cNsXNAx06uno5Sqwf8sj6DePdRYN4qLa9sc0GH970Si0bb/5nvZIHBDlw2t4Bnxa2djwlBVeDoJRTLcXXbfQUppdBklOjrOI0aCJ0qlEo8F/xBECaS+JW+d86Xi2jU3EvWKV98UDhyVOinY6VGDab29ok5uTVJfPBcbFgAYNqy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/F+Yc07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B39C4CECF;
+	Tue,  3 Dec 2024 16:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239989;
-	bh=lwKpGtQNgmHJIxGoUg8Jd/AzY2P0+VusoE6OF3u2vYw=;
+	s=korg; t=1733242371;
+	bh=VrqVsFCNQnMWtpl71w1Y9BtKcGZVXSVHEKZP8PMcGMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GVTVbgoWp6WK6KMIKDD3cretLCknq9EB9+5pwr5CZWegOBRqda3ao0FiceGY2ZaN1
-	 DVLkY5kJWso/095KZi6xRSYVE4+iRk7vmC7tVOdJfW/J75/dY4fDomiAUWcWQDTPNx
-	 BVJqH43J08WmjhMBXSvxBniPrM0adZqDOnnb1u9E=
+	b=E/F+Yc07ZtnuOXILyGEMrIWKyXUOPNZkmRxCHkdoNxzxbvRQssyNh5FZTSDuxxLuQ
+	 Coz51fSjJ7QktT3xbpDMQ6Hg/rFun/AAwO8THTNm1u+gOtDcAg8K8EbqCij9WlUj0/
+	 T9fDKWE5AjfypNHZyDm70Q/JZgX8XSyccYhsZNZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 803/817] cifs: during remount, make sure passwords are in sync
-Date: Tue,  3 Dec 2024 15:46:15 +0100
-Message-ID: <20241203144027.790527267@linuxfoundation.org>
+	Kunkun Jiang <jiangkunkun@huawei.com>,
+	Jing Zhang <jingzhangos@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.12 651/826] KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
+Date: Tue,  3 Dec 2024 15:46:18 +0100
+Message-ID: <20241203144809.147730390@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,171 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Jing Zhang <jingzhangos@google.com>
 
-[ Upstream commit 0f0e357902957fba28ed31bde0d6921c6bd1485d ]
+commit 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022 upstream.
 
-This fixes scenarios where remount can overwrite the only currently
-working password, breaking reconnect.
+In all the vgic_its_save_*() functinos, they do not check whether
+the data length is 8 bytes before calling vgic_write_guest_lock.
+This patch adds the check. To prevent the kernel from being blown up
+when the fault occurs, KVM_BUG_ON() is used. And the other BUG_ON()s
+are replaced together.
 
-We recently introduced a password2 field in both ses and ctx structs.
-This was done so as to allow the client to rotate passwords for a mount
-without any downtime. However, when the client transparently handles
-password rotation, it can swap the values of the two password fields
-in the ses struct, but not in smb3_fs_context struct that hangs off
-cifs_sb. This can lead to a situation where a remount unintentionally
-overwrites a working password in the ses struct.
-
-In order to fix this, we first get the passwords in ctx struct
-in-sync with ses struct, before replacing them with what the passwords
-that could be passed as a part of remount.
-
-Also, in order to avoid race condition between smb2_reconnect and
-smb3_reconfigure, we make sure to lock session_mutex before changing
-password and password2 fields of the ses structure.
-
-Fixes: 35f834265e0d ("smb3: fix broken reconnect when password changing on the server by allowing password rotation")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with the new entry read/write helpers]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-4-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/fs_context.c | 83 +++++++++++++++++++++++++++++++++-----
- fs/smb/client/fs_context.h |  1 +
- 2 files changed, 75 insertions(+), 9 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c |   20 ++++++++------------
+ arch/arm64/kvm/vgic/vgic.h     |   23 +++++++++++++++++++++++
+ 2 files changed, 31 insertions(+), 12 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 4069b69fbc7e0..e84660b48d533 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -890,12 +890,37 @@ do {									\
- 	cifs_sb->ctx->field = NULL;					\
- } while (0)
- 
-+int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
-+{
-+	if (ses->password &&
-+	    cifs_sb->ctx->password &&
-+	    strcmp(ses->password, cifs_sb->ctx->password)) {
-+		kfree_sensitive(cifs_sb->ctx->password);
-+		cifs_sb->ctx->password = kstrdup(ses->password, GFP_KERNEL);
-+		if (!cifs_sb->ctx->password)
-+			return -ENOMEM;
-+	}
-+	if (ses->password2 &&
-+	    cifs_sb->ctx->password2 &&
-+	    strcmp(ses->password2, cifs_sb->ctx->password2)) {
-+		kfree_sensitive(cifs_sb->ctx->password2);
-+		cifs_sb->ctx->password2 = kstrdup(ses->password2, GFP_KERNEL);
-+		if (!cifs_sb->ctx->password2) {
-+			kfree_sensitive(cifs_sb->ctx->password);
-+			cifs_sb->ctx->password = NULL;
-+			return -ENOMEM;
-+		}
-+	}
-+	return 0;
-+}
-+
- static int smb3_reconfigure(struct fs_context *fc)
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -2090,7 +2090,6 @@ static int scan_its_table(struct vgic_it
+ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
+ 			      struct its_ite *ite, gpa_t gpa, int ite_esz)
  {
- 	struct smb3_fs_context *ctx = smb3_fc2context(fc);
- 	struct dentry *root = fc->root;
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(root->d_sb);
- 	struct cifs_ses *ses = cifs_sb_master_tcon(cifs_sb)->ses;
-+	char *new_password = NULL, *new_password2 = NULL;
- 	bool need_recon = false;
- 	int rc;
+-	struct kvm *kvm = its->dev->kvm;
+ 	u32 next_offset;
+ 	u64 val;
  
-@@ -915,21 +940,61 @@ static int smb3_reconfigure(struct fs_context *fc)
- 	STEAL_STRING(cifs_sb, ctx, UNC);
- 	STEAL_STRING(cifs_sb, ctx, source);
- 	STEAL_STRING(cifs_sb, ctx, username);
+@@ -2099,7 +2098,8 @@ static int vgic_its_save_ite(struct vgic
+ 	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
+ 		ite->collection->collection_id;
+ 	val = cpu_to_le64(val);
+-	return vgic_write_guest_lock(kvm, gpa, &val, ite_esz);
 +
- 	if (need_recon == false)
- 		STEAL_STRING_SENSITIVE(cifs_sb, ctx, password);
- 	else  {
--		kfree_sensitive(ses->password);
--		ses->password = kstrdup(ctx->password, GFP_KERNEL);
--		if (!ses->password)
--			return -ENOMEM;
--		kfree_sensitive(ses->password2);
--		ses->password2 = kstrdup(ctx->password2, GFP_KERNEL);
--		if (!ses->password2) {
--			kfree_sensitive(ses->password);
--			ses->password = NULL;
-+		if (ctx->password) {
-+			new_password = kstrdup(ctx->password, GFP_KERNEL);
-+			if (!new_password)
-+				return -ENOMEM;
-+		} else
-+			STEAL_STRING_SENSITIVE(cifs_sb, ctx, password);
-+	}
-+
-+	/*
-+	 * if a new password2 has been specified, then reset it's value
-+	 * inside the ses struct
-+	 */
-+	if (ctx->password2) {
-+		new_password2 = kstrdup(ctx->password2, GFP_KERNEL);
-+		if (!new_password2) {
-+			kfree_sensitive(new_password);
- 			return -ENOMEM;
- 		}
-+	} else
-+		STEAL_STRING_SENSITIVE(cifs_sb, ctx, password2);
-+
-+	/*
-+	 * we may update the passwords in the ses struct below. Make sure we do
-+	 * not race with smb2_reconnect
-+	 */
-+	mutex_lock(&ses->session_mutex);
-+
-+	/*
-+	 * smb2_reconnect may swap password and password2 in case session setup
-+	 * failed. First get ctx passwords in sync with ses passwords. It should
-+	 * be okay to do this even if this function were to return an error at a
-+	 * later stage
-+	 */
-+	rc = smb3_sync_session_ctx_passwords(cifs_sb, ses);
-+	if (rc)
-+		return rc;
-+
-+	/*
-+	 * now that allocations for passwords are done, commit them
-+	 */
-+	if (new_password) {
-+		kfree_sensitive(ses->password);
-+		ses->password = new_password;
- 	}
-+	if (new_password2) {
-+		kfree_sensitive(ses->password2);
-+		ses->password2 = new_password2;
-+	}
-+
-+	mutex_unlock(&ses->session_mutex);
-+
- 	STEAL_STRING(cifs_sb, ctx, domainname);
- 	STEAL_STRING(cifs_sb, ctx, nodename);
- 	STEAL_STRING(cifs_sb, ctx, iocharset);
-diff --git a/fs/smb/client/fs_context.h b/fs/smb/client/fs_context.h
-index cf577ec0dd0ac..bbd2063ab838d 100644
---- a/fs/smb/client/fs_context.h
-+++ b/fs/smb/client/fs_context.h
-@@ -298,6 +298,7 @@ static inline struct smb3_fs_context *smb3_fc2context(const struct fs_context *f
++	return vgic_its_write_entry_lock(its, gpa, val, ite_esz);
  }
  
- extern int smb3_fs_context_dup(struct smb3_fs_context *new_ctx, struct smb3_fs_context *ctx);
-+extern int smb3_sync_session_ctx_passwords(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses);
- extern void smb3_update_mnt_flags(struct cifs_sb_info *cifs_sb);
+ /**
+@@ -2243,7 +2243,6 @@ static int vgic_its_restore_itt(struct v
+ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
+ 			     gpa_t ptr, int dte_esz)
+ {
+-	struct kvm *kvm = its->dev->kvm;
+ 	u64 val, itt_addr_field;
+ 	u32 next_offset;
+ 
+@@ -2254,7 +2253,8 @@ static int vgic_its_save_dte(struct vgic
+ 	       (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
+ 		(dev->num_eventid_bits - 1));
+ 	val = cpu_to_le64(val);
+-	return vgic_write_guest_lock(kvm, ptr, &val, dte_esz);
++
++	return vgic_its_write_entry_lock(its, ptr, val, dte_esz);
+ }
+ 
+ /**
+@@ -2441,7 +2441,8 @@ static int vgic_its_save_cte(struct vgic
+ 	       ((u64)collection->target_addr << KVM_ITS_CTE_RDBASE_SHIFT) |
+ 	       collection->collection_id);
+ 	val = cpu_to_le64(val);
+-	return vgic_write_guest_lock(its->dev->kvm, gpa, &val, esz);
++
++	return vgic_its_write_entry_lock(its, gpa, val, esz);
+ }
  
  /*
--- 
-2.43.0
-
+@@ -2457,8 +2458,7 @@ static int vgic_its_restore_cte(struct v
+ 	u64 val;
+ 	int ret;
+ 
+-	BUG_ON(esz > sizeof(val));
+-	ret = kvm_read_guest_lock(kvm, gpa, &val, esz);
++	ret = vgic_its_read_entry_lock(its, gpa, &val, esz);
+ 	if (ret)
+ 		return ret;
+ 	val = le64_to_cpu(val);
+@@ -2496,7 +2496,6 @@ static int vgic_its_save_collection_tabl
+ 	u64 baser = its->baser_coll_table;
+ 	gpa_t gpa = GITS_BASER_ADDR_48_to_52(baser);
+ 	struct its_collection *collection;
+-	u64 val;
+ 	size_t max_size, filled = 0;
+ 	int ret, cte_esz = abi->cte_esz;
+ 
+@@ -2520,10 +2519,7 @@ static int vgic_its_save_collection_tabl
+ 	 * table is not fully filled, add a last dummy element
+ 	 * with valid bit unset
+ 	 */
+-	val = 0;
+-	BUG_ON(cte_esz > sizeof(val));
+-	ret = vgic_write_guest_lock(its->dev->kvm, gpa, &val, cte_esz);
+-	return ret;
++	return vgic_its_write_entry_lock(its, gpa, 0, cte_esz);
+ }
+ 
+ /*
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -146,6 +146,29 @@ static inline int vgic_write_guest_lock(
+ 	return ret;
+ }
+ 
++static inline int vgic_its_read_entry_lock(struct vgic_its *its, gpa_t eaddr,
++					   u64 *eval, unsigned long esize)
++{
++	struct kvm *kvm = its->dev->kvm;
++
++	if (KVM_BUG_ON(esize != sizeof(*eval), kvm))
++		return -EINVAL;
++
++	return kvm_read_guest_lock(kvm, eaddr, eval, esize);
++
++}
++
++static inline int vgic_its_write_entry_lock(struct vgic_its *its, gpa_t eaddr,
++					    u64 eval, unsigned long esize)
++{
++	struct kvm *kvm = its->dev->kvm;
++
++	if (KVM_BUG_ON(esize != sizeof(eval), kvm))
++		return -EINVAL;
++
++	return vgic_write_guest_lock(kvm, eaddr, &eval, esize);
++}
++
+ /*
+  * This struct provides an intermediate representation of the fields contained
+  * in the GICH_VMCR and ICH_VMCR registers, such that code exporting the GIC
 
 
 
