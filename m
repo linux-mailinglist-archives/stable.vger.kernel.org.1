@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678959E2B75
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:57:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBDF9E2A00
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E42E1BC70A8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:43:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E6E7B34405
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CE4208977;
-	Tue,  3 Dec 2024 15:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9311E3DF9;
+	Tue,  3 Dec 2024 15:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXVFyYxU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Md88ROnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ED51F893D;
-	Tue,  3 Dec 2024 15:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B581F6696;
+	Tue,  3 Dec 2024 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240272; cv=none; b=Tx6SQnDk0Twwk7LS0S2jvw9yuIXegwAOFi52cz/BM6Cho8tvSzdvDQj6f2Uq4tewxwvxWq9CAsUVV4eQGc02QhoLJ8syQGxcf1jJv6CPYcrqCVzLw+RTcPkufbkJF0T4on+VKD2LEBT10kTAkqv/eD1Vp5EJ1cGSIbTSp2t4GeU=
+	t=1733238421; cv=none; b=XKI+Y+179m2ojAgYM06Pri/8xrfKKO6Vylpieztr0jiBovop+tpn0+GTFIDUGMu3gH7k7vgxjNQs5+YI1PczjtStbgQ7A8+ZpWqRhi1H666BSQEAB24A4OLydpC4bBxMF9toKgfpfElpk7Z/VZsKXy8oT6qesG/+bZF8X1fBCwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240272; c=relaxed/simple;
-	bh=MB2BBAjxas9KjuctjAh0zhVo92DAlUxkjqbF+kRQ8/w=;
+	s=arc-20240116; t=1733238421; c=relaxed/simple;
+	bh=uydgzF2MRWGqM83i5H9eiQomqbpErSLMs8eDn3/Ls7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEsL1NYBwtWinuVhdEDeZ1IlmlrYmnxyV1/SDJVl0mGBcv59x5Og8TZT3wRanHW1Ud0cmzQ2O3Ot/zQHRMNNpi/8J/vFkkXqbpRBkzaEahCpoj+9Dk8E9am8OJlQUCl3NqGHOJJ2KJGBMPBhW3pda+pPOdJmbIDU4Tga5p/zuyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXVFyYxU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE87C4CECF;
-	Tue,  3 Dec 2024 15:37:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Imo54cVA9KLnqswK3nLNvM45OXMdDglhhtH+Xy1ZVLW7RB6rAFYejRT8jtuN/k4rA6i44tYB4p44KzxUDq/LpkxZ3TtAa2rCFlTnchJcFqKxLuP6MuZzscPPdYOODC9oXFk2LtXMk4p88i/6DZ3MsPYhTfrTyQPSNk0uGyxa1dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Md88ROnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5493EC4CED6;
+	Tue,  3 Dec 2024 15:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240272;
-	bh=MB2BBAjxas9KjuctjAh0zhVo92DAlUxkjqbF+kRQ8/w=;
+	s=korg; t=1733238421;
+	bh=uydgzF2MRWGqM83i5H9eiQomqbpErSLMs8eDn3/Ls7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXVFyYxULOz497h291bj1NC2qozUSoS/MaKkr+DRd/hTkfBtvONU4huxR8eYZ13o1
-	 C42jQMm8zB78bkdtFo0miMQIcEX29k7hZ1j94vZpgbBh4j5bGzYL93KufoByr/0HXV
-	 rkEobNF9B433U6yWviIWKTsX3OTVhPNckgvcb9hY=
+	b=Md88ROnqXJJ2Nce62nioJUcQpiDUTAM3ZzJCfRr5GIAYJkRi+8tEaCZcqvTNK6ske
+	 GnKTRcge2g9z4auZ/VAqUWTyCRP6AmZVCLsO5veNCQSTKQueOU6JL2GXXOdIwGStcZ
+	 VDvtl3bi19uSes9xnzaFZB0vd7c3kPz8cPGpMXuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian@huaweicloud.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/826] x86/unwind/orc: Fix unwind for newly forked tasks
-Date: Tue,  3 Dec 2024 15:36:50 +0100
-Message-ID: <20241203144746.960179988@linuxfoundation.org>
+Subject: [PATCH 6.11 240/817] drm/v3d: Address race-condition in MMU flush
+Date: Tue,  3 Dec 2024 15:36:52 +0100
+Message-ID: <20241203144005.126942864@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian@huaweicloud.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 3bf19a0fb690022ec22ce87a5afeb1030cbcb56c ]
+[ Upstream commit cf1becb7f996a0a23ea2c270cf6bb0911ec3ca1a ]
 
-When arch_stack_walk_reliable() is called to unwind for newly forked
-tasks, the return value is negative which means the call stack is
-unreliable. This obviously does not meet expectations.
+We must first flush the MMU cache and then, flush the TLB, not the other
+way around. Currently, we can see a race condition between the MMU cache
+and the TLB when running multiple rendering processes at the same time.
+This is evidenced by MMU errors triggered by the IRQ.
 
-The root cause is that after commit 3aec4ecb3d1f ("x86: Rewrite
- ret_from_fork() in C"), the 'ret_addr' of newly forked task is changed
-to 'ret_from_fork_asm' (see copy_thread()), then at the start of the
-unwind, it is incorrectly interprets not as a "signal" one because
-'ret_from_fork' is still used to determine the initial "signal" (see
-__unwind_start()). Then the address gets incorrectly decremented in the
-call to orc_find() (see unwind_next_frame()) and resulting in the
-incorrect ORC data.
+Fix the MMU flush order by flushing the MMU cache and then the TLB.
+Also, in order to address the race condition, wait for the MMU cache flush
+to finish before starting the TLB flush.
 
-To fix it, check 'ret_from_fork_asm' rather than 'ret_from_fork' in
-__unwind_start().
-
-Fixes: 3aec4ecb3d1f ("x86: Rewrite ret_from_fork() in C")
-Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923141348.2422499-2-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/unwind_orc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_mmu.c | 29 ++++++++++-------------------
+ 1 file changed, 10 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/kernel/unwind_orc.c b/arch/x86/kernel/unwind_orc.c
-index d00c28aaa5be4..d4705a348a804 100644
---- a/arch/x86/kernel/unwind_orc.c
-+++ b/arch/x86/kernel/unwind_orc.c
-@@ -723,7 +723,7 @@ void __unwind_start(struct unwind_state *state, struct task_struct *task,
- 		state->sp = task->thread.sp + sizeof(*frame);
- 		state->bp = READ_ONCE_NOCHECK(frame->bp);
- 		state->ip = READ_ONCE_NOCHECK(frame->ret_addr);
--		state->signal = (void *)state->ip == ret_from_fork;
-+		state->signal = (void *)state->ip == ret_from_fork_asm;
+diff --git a/drivers/gpu/drm/v3d/v3d_mmu.c b/drivers/gpu/drm/v3d/v3d_mmu.c
+index 14f3af40d6f6d..e36ec3343b06e 100644
+--- a/drivers/gpu/drm/v3d/v3d_mmu.c
++++ b/drivers/gpu/drm/v3d/v3d_mmu.c
+@@ -32,32 +32,23 @@ static int v3d_mmu_flush_all(struct v3d_dev *v3d)
+ {
+ 	int ret;
+ 
+-	/* Make sure that another flush isn't already running when we
+-	 * start this one.
+-	 */
+-	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
+-			 V3D_MMU_CTL_TLB_CLEARING), 100);
+-	if (ret)
+-		dev_err(v3d->drm.dev, "TLB clear wait idle pre-wait failed\n");
+-
+-	V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL) |
+-		  V3D_MMU_CTL_TLB_CLEAR);
+-
+-	V3D_WRITE(V3D_MMUC_CONTROL,
+-		  V3D_MMUC_CONTROL_FLUSH |
++	V3D_WRITE(V3D_MMUC_CONTROL, V3D_MMUC_CONTROL_FLUSH |
+ 		  V3D_MMUC_CONTROL_ENABLE);
+ 
+-	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
+-			 V3D_MMU_CTL_TLB_CLEARING), 100);
++	ret = wait_for(!(V3D_READ(V3D_MMUC_CONTROL) &
++			 V3D_MMUC_CONTROL_FLUSHING), 100);
+ 	if (ret) {
+-		dev_err(v3d->drm.dev, "TLB clear wait idle failed\n");
++		dev_err(v3d->drm.dev, "MMUC flush wait idle failed\n");
+ 		return ret;
  	}
  
- 	if (get_stack_info((unsigned long *)state->sp, state->task,
+-	ret = wait_for(!(V3D_READ(V3D_MMUC_CONTROL) &
+-			 V3D_MMUC_CONTROL_FLUSHING), 100);
++	V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL) |
++		  V3D_MMU_CTL_TLB_CLEAR);
++
++	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
++			 V3D_MMU_CTL_TLB_CLEARING), 100);
+ 	if (ret)
+-		dev_err(v3d->drm.dev, "MMUC flush wait idle failed\n");
++		dev_err(v3d->drm.dev, "MMU TLB clear wait idle failed\n");
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
