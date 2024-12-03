@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670A59E22D7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:29:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8789E25E0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D27B2869DD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A153C283569
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4441F7561;
-	Tue,  3 Dec 2024 15:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE6D1F76BF;
+	Tue,  3 Dec 2024 16:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RH47K67N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIsPXf4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC47C1F4276;
-	Tue,  3 Dec 2024 15:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7AC23CE;
+	Tue,  3 Dec 2024 16:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239753; cv=none; b=t2Skcm0JSieImBFvsIMS8zcq8HaWlPRIv0EJpYtsR3DhfnOoisuUo7n1BOKlo3Pe+2qia4HxUzC+3Xc1fht9UzMMG/u+0nuEHwVveunnvCc/ONvWtZ8EWonodj+LqnCdznHIbnF7E6Yf/+iFW6iLa4qTimwUuM8b4nH+dchQEJ0=
+	t=1733241967; cv=none; b=C+u/o7S8tnm4aMKb5KK4YsU4j1ZsTeYwfkavLfmSX3WcTeyYwzY+aXaRzRKj7EPqcPTWrSD2IYgnNphQ4l0njJoN41C2K/TqU3f6SL8hzML3lLmwCn2b2JsJubMbGF9OgKikQaVFGzuLdRJzL2qgdD+08sryPigllyza0KXS57M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239753; c=relaxed/simple;
-	bh=b1knLTPChvlM6wXQlx1U923DsNzi3jyRU+KqOkCNRoY=;
+	s=arc-20240116; t=1733241967; c=relaxed/simple;
+	bh=lDucHwG40H5o48dLime2YrQk5J9sj9YJaWfCQk2MUnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LS6fxyUHX4k45iDm8daJRpHtKskX5UhLclE00wseqC4mOcAirAempYGFts57rvK2RHYBmMQlqKM5S2Bw6Q1sJRZkrhzDNavbRG45BYihgOxO3h3Sauyqon0eyA1vXR1ovLx8Y7FcWPzdpt7WOg6d5xhpX2ZZ9gwyeduScpZzJ3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RH47K67N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D1EC4CECF;
-	Tue,  3 Dec 2024 15:29:13 +0000 (UTC)
+	 MIME-Version; b=ONI38pwAfNnpny5mU7B0xM+WjgZKnMeqH/P8CkJxOan6umj4yvj62NnCApZj2gfR5y6KxGxh2p0xBCuW6d9Hj/1aFkrJF4CUsrDFczgpWox+H8hF0Ga8ufRdIbjj1IvbRvT9JuQQ64W6+lNSYtuJHKWvhTJThDGF7zYUSkdxmSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIsPXf4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59E39C4CECF;
+	Tue,  3 Dec 2024 16:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239753;
-	bh=b1knLTPChvlM6wXQlx1U923DsNzi3jyRU+KqOkCNRoY=;
+	s=korg; t=1733241966;
+	bh=lDucHwG40H5o48dLime2YrQk5J9sj9YJaWfCQk2MUnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RH47K67N7fVnFhUckADOtYTJAwMiNde5uxHMyr86a5ziqMaGOqZ8MDKtXzpYUtmWt
-	 4BT5uqP8gu81nK+GlWj+3ZUwuj27x7RfJ1IBc9DvJ/1MBBIbVT1h4g1WcpwIHiKv+k
-	 nR7ZE8PqUzJ20DMUQSEobUY8Pz9titNg5tdafMfI=
+	b=zIsPXf4+F1cEFhH9npGgUx/FCKi4VBw4oqP7gi9j0p2UdiyFSXAauUipmfdzJlhwF
+	 6EAaCmhglv9NqVUogxDbOHjM4JC0zvEIwkMwuVGJVZtZSl+KoMpecaCDZ46Eh47Wc8
+	 HjwRNkPwuPrPXhd1KsKBttIbAAmGOHLm854AI8Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 723/817] ublk: fix ublk_ch_mmap() for 64K page size
+	Vitalii Mordan <mordan@ispras.ru>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 568/826] marvell: pxa168_eth: fix call balance of pep->clk handling routines
 Date: Tue,  3 Dec 2024 15:44:55 +0100
-Message-ID: <20241203144024.216546635@linuxfoundation.org>
+Message-ID: <20241203144805.906365339@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-commit d369735e02ef122d19d4c3d093028da0eb400636 upstream.
+[ Upstream commit b032ae57d4fe2b2445e3bc190db6fcaa8c102f68 ]
 
-In ublk_ch_mmap(), queue id is calculated in the following way:
+If the clock pep->clk was not enabled in pxa168_eth_probe,
+it should not be disabled in any path.
 
-	(vma->vm_pgoff << PAGE_SHIFT) / `max_cmd_buf_size`
+Conversely, if it was enabled in pxa168_eth_probe, it must be disabled
+in all error paths to ensure proper cleanup.
 
-'max_cmd_buf_size' is equal to
+Use the devm_clk_get_enabled helper function to ensure proper call balance
+for pep->clk.
 
-	`UBLK_MAX_QUEUE_DEPTH * sizeof(struct ublksrv_io_desc)`
+Found by Linux Verification Center (linuxtesting.org) with Klever.
 
-and UBLK_MAX_QUEUE_DEPTH is 4096 and part of UAPI, so 'max_cmd_buf_size'
-is always page aligned in 4K page size kernel. However, it isn't true in
-64K page size kernel.
-
-Fixes the issue by always rounding up 'max_cmd_buf_size' with PAGE_SIZE.
-
-Cc: stable@vger.kernel.org
-Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241111110718.1394001-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a49f37eed22b ("net: add Fast Ethernet driver for PXA168.")
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Link: https://patch.msgid.link/20241121200658.2203871-1-mordan@ispras.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/pxa168_eth.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -664,12 +664,21 @@ static inline char *ublk_queue_cmd_buf(s
- 	return ublk_get_queue(ub, q_id)->io_cmd_buf;
+diff --git a/drivers/net/ethernet/marvell/pxa168_eth.c b/drivers/net/ethernet/marvell/pxa168_eth.c
+index 1a59c952aa01c..45f115e41857b 100644
+--- a/drivers/net/ethernet/marvell/pxa168_eth.c
++++ b/drivers/net/ethernet/marvell/pxa168_eth.c
+@@ -1394,18 +1394,15 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+ 
+ 	printk(KERN_NOTICE "PXA168 10/100 Ethernet Driver\n");
+ 
+-	clk = devm_clk_get(&pdev->dev, NULL);
++	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "Fast Ethernet failed to get clock\n");
++		dev_err(&pdev->dev, "Fast Ethernet failed to get and enable clock\n");
+ 		return -ENODEV;
+ 	}
+-	clk_prepare_enable(clk);
+ 
+ 	dev = alloc_etherdev(sizeof(struct pxa168_eth_private));
+-	if (!dev) {
+-		err = -ENOMEM;
+-		goto err_clk;
+-	}
++	if (!dev)
++		return -ENOMEM;
+ 
+ 	platform_set_drvdata(pdev, dev);
+ 	pep = netdev_priv(dev);
+@@ -1523,8 +1520,6 @@ static int pxa168_eth_probe(struct platform_device *pdev)
+ 	mdiobus_free(pep->smi_bus);
+ err_netdev:
+ 	free_netdev(dev);
+-err_clk:
+-	clk_disable_unprepare(clk);
+ 	return err;
  }
  
-+static inline int __ublk_queue_cmd_buf_size(int depth)
-+{
-+	return round_up(depth * sizeof(struct ublksrv_io_desc), PAGE_SIZE);
-+}
-+
- static inline int ublk_queue_cmd_buf_size(struct ublk_device *ub, int q_id)
- {
- 	struct ublk_queue *ubq = ublk_get_queue(ub, q_id);
+@@ -1542,7 +1537,6 @@ static void pxa168_eth_remove(struct platform_device *pdev)
+ 	if (dev->phydev)
+ 		phy_disconnect(dev->phydev);
  
--	return round_up(ubq->q_depth * sizeof(struct ublksrv_io_desc),
--			PAGE_SIZE);
-+	return __ublk_queue_cmd_buf_size(ubq->q_depth);
-+}
-+
-+static int ublk_max_cmd_buf_size(void)
-+{
-+	return __ublk_queue_cmd_buf_size(UBLK_MAX_QUEUE_DEPTH);
- }
- 
- static inline bool ublk_queue_can_use_recovery_reissue(
-@@ -1322,7 +1331,7 @@ static int ublk_ch_mmap(struct file *fil
- {
- 	struct ublk_device *ub = filp->private_data;
- 	size_t sz = vma->vm_end - vma->vm_start;
--	unsigned max_sz = UBLK_MAX_QUEUE_DEPTH * sizeof(struct ublksrv_io_desc);
-+	unsigned max_sz = ublk_max_cmd_buf_size();
- 	unsigned long pfn, end, phys_off = vma->vm_pgoff << PAGE_SHIFT;
- 	int q_id, ret = 0;
- 
+-	clk_disable_unprepare(pep->clk);
+ 	mdiobus_unregister(pep->smi_bus);
+ 	mdiobus_free(pep->smi_bus);
+ 	unregister_netdev(dev);
+-- 
+2.43.0
+
 
 
 
