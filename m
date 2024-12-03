@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-97717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262D49E274D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:24:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402509E224C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42590BE21EA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:58:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 002CD28138E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0519B1F75B4;
-	Tue,  3 Dec 2024 15:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820C71F758E;
+	Tue,  3 Dec 2024 15:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDoT5LOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUxnndmx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DA11DE8A5;
-	Tue,  3 Dec 2024 15:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C791F75A4;
+	Tue,  3 Dec 2024 15:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241492; cv=none; b=N1kKBBw/hoyo4ZCHvVSDdZ7WWU/2pC5NmIM2r7R7g598ZHg8M742JHeieDoMrQBEjWhGVtUjYzOXMUSqTu/qJ2vuHJFuvVNAA9eRV29Cj9zF1d6aa3DrxBNV3J0vfp7//V3gVkFVq2iJSCqrOeFF17I7y4sOFgce2O8lC91wFrU=
+	t=1733239361; cv=none; b=ULoNLMvmTFpg3Oa4RRk0d6Q3eE5tRnK01cT3230wu+/mcTl1WJmYR5wznnygK3PcR7tS7o8VPl5N1wTwJSak1F0d4V4f6WMFsz9j4M7cuzWzpN998NooTeVanlUPe8ap1BPmG0XdbLaBgz4vIX8At0/DiG/3hcCQsvPXV77Eu50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241492; c=relaxed/simple;
-	bh=mhnAR0J3uPZ+nIhD+A/zrrYYWKByWi+KaGQRLxwia28=;
+	s=arc-20240116; t=1733239361; c=relaxed/simple;
+	bh=r0VpottgaB3WGH3U7a6/TXlPr7BziLH2LIGq9b7nXgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCi+tnCQkZJj4KKk1nSzbBahb5aJJv5tR4qeHB4KN6h2WUB8zQ0ukOkcgRvetBDslVdTOn4fUO5oRaiPGNdINrzq0ZFTKbBG59vxSXfHuWQE2v2XcJNvTKJXFk+QBCTSlv1dM5pAcuJUzJg2uVeWJZNQwy3o3D9AKXJprE0pOEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDoT5LOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04DA5C4CECF;
-	Tue,  3 Dec 2024 15:58:12 +0000 (UTC)
+	 MIME-Version; b=RsTIcerpeNYY+qhv6n9xgBKAcND/ynxGhL29V6yTgNSsEwQ962VTCk/5WHW0vfsr9iF1GLwwbCAyHXqLUJJbIkL3TOMbtJrix7/pws130r3rUkgDtPPjOtopKUyCmsHDdf88fm7gj/0+BvY6eGEUyVCMs6UqRuxFyy4cp/x3cEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUxnndmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDFFC4CEDE;
+	Tue,  3 Dec 2024 15:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241492;
-	bh=mhnAR0J3uPZ+nIhD+A/zrrYYWKByWi+KaGQRLxwia28=;
+	s=korg; t=1733239361;
+	bh=r0VpottgaB3WGH3U7a6/TXlPr7BziLH2LIGq9b7nXgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDoT5LOxjsQWJUJub4cwGF00w7qoMxyuADAk64IoSjuoUB+upCzSAkuezVyvPyC5G
-	 8MTni7njW/5c1ijEsmbvZWY1gwRxf+DowoJonVoLNOa29QqJBvAdJ3uDU0NR7SJJXB
-	 oCmit4vE5EkG24IxVtXIhwM7He6uJS7p/x88mSv0=
+	b=dUxnndmx7o7djfMphldRdyclx1PjqS4unENxWPD6m4EjH7a4dvjvD++Gf936vp5dJ
+	 iesjekCthA76WC14wAOT+7/TknvBTWKw9/cELaXbn86+ngbgnPQDokY34NyDq9NxYh
+	 sTaGnGT2JnbxNqdy1XWPWXUkrQn1w0z/VQPPrxu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Shi <alexs@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Hu Haowen <2023002089@link.tyut.edu.cn>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Marco Elver <elver@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 433/826] kasan: move checks to do_strncpy_from_user
+Subject: [PATCH 6.11 588/817] bnxt_en: Refactor bnxt_ptp_init()
 Date: Tue,  3 Dec 2024 15:42:40 +0100
-Message-ID: <20241203144800.653416172@linuxfoundation.org>
+Message-ID: <20241203144018.876179033@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,87 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit ae193dd79398970ee760e0c8129ac42ef8f5c6ff ]
+[ Upstream commit 1e9614cd956268e10a669c0593e7e54d03d0c087 ]
 
-Patch series "kasan: migrate the last module test to kunit", v4.
+Instead of passing the 2nd parameter phc_cfg to bnxt_ptp_init().
+Store it in bp->ptp_cfg so that the caller doesn't need to know what
+the value should be.
 
-copy_user_test() is the last KUnit-incompatible test with
-CONFIG_KASAN_MODULE_TEST requirement, which we are going to migrate to
-KUnit framework and delete the former test and Kconfig as well.
+In the next patch, we'll need to call bnxt_ptp_init() in bnxt_resume()
+and this will make it easier.
 
-In this patch series:
-
-	- [1/3] move kasan_check_write() and check_object_size() to
-		do_strncpy_from_user() to cover with KASAN checks with
-		multiple conditions	in strncpy_from_user().
-
-	- [2/3] migrated copy_user_test() to KUnit, where we can also test
-		strncpy_from_user() due to [1/4].
-
-		KUnits have been tested on:
-		- x86_64 with CONFIG_KASAN_GENERIC. Passed
-		- arm64 with CONFIG_KASAN_SW_TAGS. 1 fail. See [1]
-		- arm64 with CONFIG_KASAN_HW_TAGS. 1 fail. See [1]
-		[1] https://lore.kernel.org/linux-mm/CACzwLxj21h7nCcS2-KA_q7ybe+5pxH0uCDwu64q_9pPsydneWQ@mail.gmail.com/
-
-	- [3/3] delete CONFIG_KASAN_MODULE_TEST and documentation occurrences.
-
-This patch (of 3):
-
-Since in the commit 2865baf54077("x86: support user address masking
-instead of non-speculative conditional") do_strncpy_from_user() is called
-from multiple places, we should sanitize the kernel *dst memory and size
-which were done in strncpy_from_user() previously.
-
-Link: https://lkml.kernel.org/r/20241016131802.3115788-1-snovitoll@gmail.com
-Link: https://lkml.kernel.org/r/20241016131802.3115788-2-snovitoll@gmail.com
-Fixes: 2865baf54077 ("x86: support user address masking instead of non-speculative conditional")
-Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Hu Haowen <2023002089@link.tyut.edu.cn>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marco Elver <elver@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 3661c05c54e8 ("bnxt_en: Unregister PTP during PCI shutdown and suspend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/strncpy_from_user.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 6 +++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h | 3 ++-
+ 3 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
-index 989a12a678721..6dc234913dd58 100644
---- a/lib/strncpy_from_user.c
-+++ b/lib/strncpy_from_user.c
-@@ -120,6 +120,9 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
- 	if (unlikely(count <= 0))
- 		return 0;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index bc0592ae6c4ba..f999c10cefac6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -9008,7 +9008,6 @@ static int __bnxt_hwrm_ptp_qcfg(struct bnxt *bp)
+ 	struct hwrm_port_mac_ptp_qcfg_output *resp;
+ 	struct hwrm_port_mac_ptp_qcfg_input *req;
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+-	bool phc_cfg;
+ 	u8 flags;
+ 	int rc;
  
-+	kasan_check_write(dst, count);
-+	check_object_size(dst, count, false);
-+
- 	if (can_do_masked_user_access()) {
- 		long retval;
+@@ -9055,8 +9054,9 @@ static int __bnxt_hwrm_ptp_qcfg(struct bnxt *bp)
+ 		rc = -ENODEV;
+ 		goto exit;
+ 	}
+-	phc_cfg = (flags & PORT_MAC_PTP_QCFG_RESP_FLAGS_RTC_CONFIGURED) != 0;
+-	rc = bnxt_ptp_init(bp, phc_cfg);
++	ptp->rtc_configured =
++		(flags & PORT_MAC_PTP_QCFG_RESP_FLAGS_RTC_CONFIGURED) != 0;
++	rc = bnxt_ptp_init(bp);
+ 	if (rc)
+ 		netdev_warn(bp->dev, "PTP initialization failed.\n");
+ exit:
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index fa514be876502..781225d3ba8ff 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -1024,7 +1024,7 @@ static void bnxt_ptp_free(struct bnxt *bp)
+ 	}
+ }
  
-@@ -142,8 +145,6 @@ long strncpy_from_user(char *dst, const char __user *src, long count)
- 		if (max > count)
- 			max = count;
+-int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
++int bnxt_ptp_init(struct bnxt *bp)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+ 	int rc;
+@@ -1047,7 +1047,7 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
  
--		kasan_check_write(dst, count);
--		check_object_size(dst, count, false);
- 		if (user_read_access_begin(src, max)) {
- 			retval = do_strncpy_from_user(dst, src, count, max);
- 			user_read_access_end();
+ 	if (BNXT_PTP_USE_RTC(bp)) {
+ 		bnxt_ptp_timecounter_init(bp, false);
+-		rc = bnxt_ptp_init_rtc(bp, phc_cfg);
++		rc = bnxt_ptp_init_rtc(bp, ptp->rtc_configured);
+ 		if (rc)
+ 			goto out;
+ 	} else {
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+index f322466ecad35..61e89bb2d2690 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+@@ -133,6 +133,7 @@ struct bnxt_ptp_cfg {
+ 					 BNXT_PTP_MSG_PDELAY_REQ |	\
+ 					 BNXT_PTP_MSG_PDELAY_RESP)
+ 	u8			tx_tstamp_en:1;
++	u8			rtc_configured:1;
+ 	int			rx_filter;
+ 	u32			tstamp_filters;
+ 
+@@ -180,6 +181,6 @@ void bnxt_tx_ts_cmp(struct bnxt *bp, struct bnxt_napi *bnapi,
+ 		    struct tx_ts_cmp *tscmp);
+ void bnxt_ptp_rtc_timecounter_init(struct bnxt_ptp_cfg *ptp, u64 ns);
+ int bnxt_ptp_init_rtc(struct bnxt *bp, bool phc_cfg);
+-int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg);
++int bnxt_ptp_init(struct bnxt *bp);
+ void bnxt_ptp_clear(struct bnxt *bp);
+ #endif
 -- 
 2.43.0
 
