@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1689E2112
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6059E20E5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 744681665E0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:04:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE0A2816E7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2AE1F7584;
-	Tue,  3 Dec 2024 15:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57451F7547;
+	Tue,  3 Dec 2024 15:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6afqiPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zr7SJ/rj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA6333FE;
-	Tue,  3 Dec 2024 15:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BDF1E3DF9;
+	Tue,  3 Dec 2024 15:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238284; cv=none; b=cui+TCWIOSLu+dXHPfj7Ce7LUKHAs4Vidznl8PvJbUVX7R4QZdVBzyLNeRIQhBksHMnezUxP03GY8bRhWhVBCNDH/vBKfVaov6vpKExtNy/m8k7VZ+DHjMPjOIEixCfPvO1NacdZTOYN74yAwc8qV4ZVF2KvizbJWLmXoyd2d5A=
+	t=1733238292; cv=none; b=U9gFXzaAbDtytlvyEnhjanAWeR9hfGYaabg8vOOwaX/Z0FL+eOXl7RaLgS7kjZebSRaJdXCHf1/bHVM3j64HRoj6p1LY7bSPZJBHJA8b4yAtzEu+jMh6F7BRhoDM4ShSycceRtiDJ7PD30fzjYqw0TtxrO7zaJBDC0HTq5JbzJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238284; c=relaxed/simple;
-	bh=E5tcVZ7NW0rr/t+oDv86GOOGm6g6zlI46PTePiEqOs4=;
+	s=arc-20240116; t=1733238292; c=relaxed/simple;
+	bh=/r2nAlp19P3DL20NaxOwqJlGC9a9QWGF53ej400YsfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TgDGz9634RDMMzEQz8YiZZPnahCoJ8c4CIcikWm829tJPESehaob1KAGuy9JRYLabdU2+aQrErIr4iGfrHPiprorroi+Gc3wSUGneYkE0AvWvHCawLlEdNMtXYMCJ75cySTLsuK9SvtOIbTIIeTDZkAdUlyQmUUw6WpbIoyOXKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6afqiPU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988F6C4CECF;
-	Tue,  3 Dec 2024 15:04:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WfT4t4yDi38d+fF2H1XkDLHLBTDJ1JITvFqCVjaLWTKe9XVISibXrzS85qx6RCGcOKXGNmsdit8tLrXv+u845t+lsjjnmy0+gxe80kStWALsN+7VaYvFcuFIVcDZPT37xo5ujclAwHMn9M535GCOQlDWPRPhqELm5rG5jQm7cNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zr7SJ/rj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E0FC4CECF;
+	Tue,  3 Dec 2024 15:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238284;
-	bh=E5tcVZ7NW0rr/t+oDv86GOOGm6g6zlI46PTePiEqOs4=;
+	s=korg; t=1733238292;
+	bh=/r2nAlp19P3DL20NaxOwqJlGC9a9QWGF53ej400YsfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6afqiPUFBCBBcHBBKj6/iyQeLotqyODea2EGJvK8gdtycsXrfbWi1YSVo/NrCkng
-	 JBw6Z5/0fVDqBNMTXh+APaAOa7bOK5SUvWsPoL9QEMTH1Hb1qvPxL92Cn5dtmbEw3r
-	 +GaB1OHbx8AAT5epCru4hkCt8F9/Xu+1HZlOK71g=
+	b=zr7SJ/rjRn1fIuR8iTrdggLQwqpcY8JZ9Dr594gN61p+Jw3t+NhDzuwR0QFgk3uaf
+	 myWjuG9L8SIEJB4G3f6Dn9MyEEh73lnxKCo8FjGbECLTxXD+hkBaVENxPgvWtKsodA
+	 KrZ9uYhb0BBlnO9UdB2l3xNxSJp6Bxxh3OsoGPio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Huan Yang <link@vivo.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 225/817] drm/v3d: Appease lockdep while updating GPU stats
-Date: Tue,  3 Dec 2024 15:36:37 +0100
-Message-ID: <20241203144004.531420403@linuxfoundation.org>
+Subject: [PATCH 6.11 228/817] udmabuf: change folios array from kmalloc to kvmalloc
+Date: Tue,  3 Dec 2024 15:36:40 +0100
+Message-ID: <20241203144004.648775877@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,157 +68,142 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Huan Yang <link@vivo.com>
 
-[ Upstream commit 06c3c406850e5495bb56ccf624d0c9477e1ba901 ]
+[ Upstream commit 1c0844c6184e658064e14c4335885785ad3bf84b ]
 
-Lockdep thinks our seqcount_t usage is unsafe because the update path can
-be both from irq and worker context:
+When PAGE_SIZE 4096, MAX_PAGE_ORDER 10, 64bit machine,
+page_alloc only support 4MB.
+If above this, trigger this warn and return NULL.
 
- [ ] ================================
- [ ] WARNING: inconsistent lock state
- [ ] 6.10.3-v8-16k-numa #159 Tainted: G        WC
- [ ] --------------------------------
- [ ] inconsistent {HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage.
- [ ] swapper/0/0 [HC1[1]:SC0[0]:HE0:SE1] takes:
- [ ] ffff80003d7c08d0 (&v3d_priv->stats[i].lock){?.+.}-{0:0}, at: v3d_irq+0xc8/0x660 [v3d]
- [ ] {HARDIRQ-ON-W} state was registered at:
- [ ]   lock_acquire+0x1f8/0x328
- [ ]   v3d_job_start_stats.isra.0+0xd8/0x218 [v3d]
- [ ]   v3d_bin_job_run+0x23c/0x388 [v3d]
- [ ]   drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
- [ ]   process_one_work+0x62c/0xb48
- [ ]   worker_thread+0x468/0x5b0
- [ ]   kthread+0x1c4/0x1e0
- [ ]   ret_from_fork+0x10/0x20
- [ ] irq event stamp: 337094
- [ ] hardirqs last  enabled at (337093): [<ffffc0008144ce7c>] default_idle_call+0x11c/0x140
- [ ] hardirqs last disabled at (337094): [<ffffc0008144a354>] el1_interrupt+0x24/0x58
- [ ] softirqs last  enabled at (337082): [<ffffc00080061d90>] handle_softirqs+0x4e0/0x538
- [ ] softirqs last disabled at (337073): [<ffffc00080010364>] __do_softirq+0x1c/0x28
- [ ]
-                other info that might help us debug this:
- [ ]  Possible unsafe locking scenario:
+udmabuf can change size limit, if change it to 3072(3GB), and then alloc
+3GB udmabuf, will fail create.
 
- [ ]        CPU0
- [ ]        ----
- [ ]   lock(&v3d_priv->stats[i].lock);
- [ ]   <Interrupt>
- [ ]     lock(&v3d_priv->stats[i].lock);
- [ ]
-                *** DEADLOCK ***
+[ 4080.876581] ------------[ cut here ]------------
+[ 4080.876843] WARNING: CPU: 3 PID: 2015 at mm/page_alloc.c:4556 __alloc_pages+0x2c8/0x350
+[ 4080.878839] RIP: 0010:__alloc_pages+0x2c8/0x350
+[ 4080.879470] Call Trace:
+[ 4080.879473]  <TASK>
+[ 4080.879473]  ? __alloc_pages+0x2c8/0x350
+[ 4080.879475]  ? __warn.cold+0x8e/0xe8
+[ 4080.880647]  ? __alloc_pages+0x2c8/0x350
+[ 4080.880909]  ? report_bug+0xff/0x140
+[ 4080.881175]  ? handle_bug+0x3c/0x80
+[ 4080.881556]  ? exc_invalid_op+0x17/0x70
+[ 4080.881559]  ? asm_exc_invalid_op+0x1a/0x20
+[ 4080.882077]  ? udmabuf_create+0x131/0x400
 
- [ ] no locks held by swapper/0/0.
- [ ]
-               stack backtrace:
- [ ] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        WC         6.10.3-v8-16k-numa #159
- [ ] Hardware name: Raspberry Pi 5 Model B Rev 1.0 (DT)
- [ ] Call trace:
- [ ]  dump_backtrace+0x170/0x1b8
- [ ]  show_stack+0x20/0x38
- [ ]  dump_stack_lvl+0xb4/0xd0
- [ ]  dump_stack+0x18/0x28
- [ ]  print_usage_bug+0x3cc/0x3f0
- [ ]  mark_lock+0x4d0/0x968
- [ ]  __lock_acquire+0x784/0x18c8
- [ ]  lock_acquire+0x1f8/0x328
- [ ]  v3d_job_update_stats+0xec/0x2e0 [v3d]
- [ ]  v3d_irq+0xc8/0x660 [v3d]
- [ ]  __handle_irq_event_percpu+0x1f8/0x488
- [ ]  handle_irq_event+0x88/0x128
- [ ]  handle_fasteoi_irq+0x298/0x408
- [ ]  generic_handle_domain_irq+0x50/0x78
+Because MAX_PAGE_ORDER, kmalloc can max alloc 4096 * (1 << 10), 4MB
+memory, each array entry is pointer(8byte), so can save 524288 pages(2GB).
 
-But it is a false positive because all the queue-stats pairs have their
-own lock and jobs are also one at a time.
+Further more, costly order(order 3) may not be guaranteed that it can be
+applied for, due to fragmentation.
 
-Nevertheless we can appease lockdep by disabling local interrupts to make
-it see lock usage is consistent.
+This patch change udmabuf array use kvmalloc_array, this can fallback
+alloc into vmalloc, which can guarantee allocation for any size and does
+not affect the performance of kmalloc allocations.
 
-Cc: Maíra Canal <mcanal@igalia.com>
-Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240813102505.80512-2-tursulin@igalia.com
+Signed-off-by: Huan Yang <link@vivo.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240918025238.2957823-3-link@vivo.com
+Stable-dep-of: 18d7de823b71 ("udmabuf: fix vmap_udmabuf error page set")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c | 46 +++++++++++++++++++++++++++++----
- 1 file changed, 41 insertions(+), 5 deletions(-)
+ drivers/dma-buf/udmabuf.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index ad1e6236ff6ff..255bd9100c78a 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -133,8 +133,31 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
- 	struct v3d_stats *global_stats = &v3d->queue[queue].stats;
- 	struct v3d_stats *local_stats = &file->stats[queue];
- 	u64 now = local_clock();
--
--	preempt_disable();
-+	unsigned long flags;
-+
-+	/*
-+	 * We only need to disable local interrupts to appease lockdep who
-+	 * otherwise would think v3d_job_start_stats vs v3d_stats_update has an
-+	 * unsafe in-irq vs no-irq-off usage problem. This is a false positive
-+	 * because all the locks are per queue and stats type, and all jobs are
-+	 * completely one at a time serialised. More specifically:
-+	 *
-+	 * 1. Locks for GPU queues are updated from interrupt handlers under a
-+	 *    spin lock and started here with preemption disabled.
-+	 *
-+	 * 2. Locks for CPU queues are updated from the worker with preemption
-+	 *    disabled and equally started here with preemption disabled.
-+	 *
-+	 * Therefore both are consistent.
-+	 *
-+	 * 3. Because next job can only be queued after the previous one has
-+	 *    been signaled, and locks are per queue, there is also no scope for
-+	 *    the start part to race with the update part.
-+	 */
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_save(flags);
-+	else
-+		preempt_disable();
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index 047c3cd2cefff..bc94c194e172d 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -80,7 +80,7 @@ static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
  
- 	write_seqcount_begin(&local_stats->lock);
- 	local_stats->start_ns = now;
-@@ -144,7 +167,10 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
- 	global_stats->start_ns = now;
- 	write_seqcount_end(&global_stats->lock);
+ 	dma_resv_assert_held(buf->resv);
  
--	preempt_enable();
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_restore(flags);
-+	else
-+		preempt_enable();
+-	pages = kmalloc_array(ubuf->pagecount, sizeof(*pages), GFP_KERNEL);
++	pages = kvmalloc_array(ubuf->pagecount, sizeof(*pages), GFP_KERNEL);
+ 	if (!pages)
+ 		return -ENOMEM;
+ 
+@@ -88,7 +88,7 @@ static int vmap_udmabuf(struct dma_buf *buf, struct iosys_map *map)
+ 		pages[pg] = &ubuf->folios[pg]->page;
+ 
+ 	vaddr = vm_map_ram(pages, ubuf->pagecount, -1);
+-	kfree(pages);
++	kvfree(pages);
+ 	if (!vaddr)
+ 		return -EINVAL;
+ 
+@@ -196,8 +196,8 @@ static void release_udmabuf(struct dma_buf *buf)
+ 		put_sg_table(dev, ubuf->sg, DMA_BIDIRECTIONAL);
+ 
+ 	unpin_all_folios(&ubuf->unpin_list);
+-	kfree(ubuf->offsets);
+-	kfree(ubuf->folios);
++	kvfree(ubuf->offsets);
++	kvfree(ubuf->folios);
+ 	kfree(ubuf);
  }
  
- static void
-@@ -165,11 +191,21 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
- 	struct v3d_stats *global_stats = &v3d->queue[queue].stats;
- 	struct v3d_stats *local_stats = &file->stats[queue];
- 	u64 now = local_clock();
-+	unsigned long flags;
-+
-+	/* See comment in v3d_job_start_stats() */
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_save(flags);
-+	else
-+		preempt_disable();
+@@ -322,14 +322,14 @@ static long udmabuf_create(struct miscdevice *device,
+ 	if (!ubuf->pagecount)
+ 		goto err;
  
--	preempt_disable();
- 	v3d_stats_update(local_stats, now);
- 	v3d_stats_update(global_stats, now);
--	preempt_enable();
-+
-+	if (IS_ENABLED(CONFIG_LOCKDEP))
-+		local_irq_restore(flags);
-+	else
-+		preempt_enable();
+-	ubuf->folios = kmalloc_array(ubuf->pagecount, sizeof(*ubuf->folios),
+-				    GFP_KERNEL);
++	ubuf->folios = kvmalloc_array(ubuf->pagecount, sizeof(*ubuf->folios),
++				      GFP_KERNEL);
+ 	if (!ubuf->folios) {
+ 		ret = -ENOMEM;
+ 		goto err;
+ 	}
+-	ubuf->offsets = kcalloc(ubuf->pagecount, sizeof(*ubuf->offsets),
+-				GFP_KERNEL);
++	ubuf->offsets = kvcalloc(ubuf->pagecount, sizeof(*ubuf->offsets),
++				 GFP_KERNEL);
+ 	if (!ubuf->offsets) {
+ 		ret = -ENOMEM;
+ 		goto err;
+@@ -343,7 +343,7 @@ static long udmabuf_create(struct miscdevice *device,
+ 			goto err;
+ 
+ 		pgcnt = list[i].size >> PAGE_SHIFT;
+-		folios = kmalloc_array(pgcnt, sizeof(*folios), GFP_KERNEL);
++		folios = kvmalloc_array(pgcnt, sizeof(*folios), GFP_KERNEL);
+ 		if (!folios) {
+ 			ret = -ENOMEM;
+ 			goto err;
+@@ -353,7 +353,7 @@ static long udmabuf_create(struct miscdevice *device,
+ 		ret = memfd_pin_folios(memfd, list[i].offset, end,
+ 				       folios, pgcnt, &pgoff);
+ 		if (ret <= 0) {
+-			kfree(folios);
++			kvfree(folios);
+ 			if (!ret)
+ 				ret = -EINVAL;
+ 			goto err;
+@@ -382,7 +382,7 @@ static long udmabuf_create(struct miscdevice *device,
+ 			}
+ 		}
+ 
+-		kfree(folios);
++		kvfree(folios);
+ 		fput(memfd);
+ 		memfd = NULL;
+ 	}
+@@ -398,8 +398,8 @@ static long udmabuf_create(struct miscdevice *device,
+ 	if (memfd)
+ 		fput(memfd);
+ 	unpin_all_folios(&ubuf->unpin_list);
+-	kfree(ubuf->offsets);
+-	kfree(ubuf->folios);
++	kvfree(ubuf->offsets);
++	kvfree(ubuf->folios);
+ 	kfree(ubuf);
+ 	return ret;
  }
- 
- static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
 -- 
 2.43.0
 
