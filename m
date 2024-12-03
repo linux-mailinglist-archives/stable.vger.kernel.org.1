@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-96596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17D39E20A5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1CF9E2092
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66A8A16660B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF853168740
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770E31F7558;
-	Tue,  3 Dec 2024 15:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01541F7578;
+	Tue,  3 Dec 2024 14:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZoR15qaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKVSNrpi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FF033FE;
-	Tue,  3 Dec 2024 15:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC0B1F669E;
+	Tue,  3 Dec 2024 14:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238035; cv=none; b=H0D6BylZySHwQC138QVXQRdSD7GZSSxUx9CRx1e380eB+ZKRCBPizVv+rkLbc/SUers0xrbJDNRImTahzZtcbW2uieSEi1fVc/u/BVM1U6e27PuO40XhlJudmRGT4C1A+fUho4rHL7iZhPCLRRtQ9sFrwVPU4+pLdZ86fageC1c=
+	t=1733237927; cv=none; b=Y6fW2HCiySSbxJ8v3xr1Lpp+9mpcuu32Whh4zYVidI/LSRcz/RelVBksKyxmiETnDi/mhjjIP36JP39D9/3194VEyFk9gfBYvdF00livgpqgj9k/NxSW24ahgilgpXe8TJ9nCgKCLgSraY0V/GqU72fClEkeRIeyjzJXQYtI+eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238035; c=relaxed/simple;
-	bh=cJ+XkqpUwNutlNYpvrJZhwCx8dlIVvNNSqEiEl4638U=;
+	s=arc-20240116; t=1733237927; c=relaxed/simple;
+	bh=hM0PEXOsNxq7N09uICdvfC/W4d0rV/Mxw8XxYPePOdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFirXhYzY0JwlXkuaQXoeJYP0E8bWjXOmCUbGN59t5X7jWEe4/NLdT13hRGWOg7rI448Yjzbe6vb3Mr6tMY2VkziOTQExj+UOOxnEScxGq1RYLAggO0UOJXIwHvcSOj5LL4W8Bp6dnL4SZVlilmtwIxhKufJh+DMXcihWGKtPWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZoR15qaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B349C4CECF;
-	Tue,  3 Dec 2024 15:00:34 +0000 (UTC)
+	 MIME-Version; b=azQ/NKzuBqnedgtHqDgh9X8nQHacLJButgy9+aRS+pDJ1Hg9OmsCn9W3M1m6McYSL+/aNEAUIyRTGgxLBbqhs/eMCS54Amce75GZ6fy3mpAi+iI4GtT3L6bqFbKYarN3Sd+ES2PP/a8F2DkA5kuWm2wh1EGWdYcHz2K3VDp9BjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKVSNrpi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE980C4CECF;
+	Tue,  3 Dec 2024 14:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238034;
-	bh=cJ+XkqpUwNutlNYpvrJZhwCx8dlIVvNNSqEiEl4638U=;
+	s=korg; t=1733237927;
+	bh=hM0PEXOsNxq7N09uICdvfC/W4d0rV/Mxw8XxYPePOdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZoR15qaOwmffilybpArPKKbqbnPyPD32Xj72HYIKEmm4hAUlTRYOJAcrtbLcm+SXV
-	 61icsKIbQvDnkMFktUzhiNuUxQSGJa+X2Gwxk84wRjpVv8Mrwg1OepwVZIJpA+sMBF
-	 hqG+j/G2y1ecSValcta7iWuZPVHf05zEM+b8FG9U=
+	b=JKVSNrpiQSt3BRRn/VGIA48mOFeeI9IxqU0xPJzySib+kS4GHyQJXRub3cXwtEw/2
+	 WI1bB3VOh8ZFUdX1CpRRb7ZnJsech/DPhWjj8N3/U3Pj1Z5O2m15N2Pz/H266kchWN
+	 8sXZ7E3GrF1NpD004rDl30zfZKRpM5S34zYZSIKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 109/817] cpufreq/amd-pstate: Dont update CPPC request in amd_pstate_cpu_boost_update()
-Date: Tue,  3 Dec 2024 15:34:41 +0100
-Message-ID: <20241203143959.965874942@linuxfoundation.org>
+Subject: [PATCH 6.11 110/817] amd-pstate: Set min_perf to nominal_perf for active mode performance gov
+Date: Tue,  3 Dec 2024 15:34:42 +0100
+Message-ID: <20241203144000.005547826@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,66 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 67c08d303e0a1a5665b3f198037c9fae2d808090 ]
+[ Upstream commit 0c411b39e4f4ce8861301fa201cb4f817751311e ]
 
-When boost is changed the CPPC value is changed in amd_pstate_cpu_boost_update()
-but then changed again when refresh_frequency_limits() and all it's callbacks
-occur.  The first is a pointless write, so instead just update the limits for
-the policy and let the policy refresh anchor everything properly.
+The amd-pstate driver sets CPPC_REQ.min_perf to CPPC_REQ.max_perf when
+in active mode with performance governor. Typically CPPC_REQ.max_perf
+is set to CPPC.highest_perf. This causes frequency throttling on
+power-limited platforms which causes performance regressions on
+certain classes of workloads.
 
-Fixes: c8c68c38b56f ("cpufreq: amd-pstate: initialize core precision boost state")
-Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-Tested-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-Link: https://lore.kernel.org/r/20241012174519.897-2-mario.limonciello@amd.com
+Hence, set the CPPC_REQ.min_perf to the CPPC.nominal_perf or
+CPPC_REQ.max_perf, whichever is lower of the two.
+
+Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20241021101836.9047-2-gautham.shenoy@amd.com
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 929b9097a6c17..62ae4ff290379 100644
+index 62ae4ff290379..c2d650ac0a9f1 100644
 --- a/drivers/cpufreq/amd-pstate.c
 +++ b/drivers/cpufreq/amd-pstate.c
-@@ -698,34 +698,12 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
- static int amd_pstate_cpu_boost_update(struct cpufreq_policy *policy, bool on)
- {
- 	struct amd_cpudata *cpudata = policy->driver_data;
--	struct cppc_perf_ctrls perf_ctrls;
--	u32 highest_perf, nominal_perf, nominal_freq, max_freq;
-+	u32 nominal_freq, max_freq;
- 	int ret = 0;
+@@ -1584,7 +1584,7 @@ static void amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
+ 	value = READ_ONCE(cpudata->cppc_req_cached);
  
--	highest_perf = READ_ONCE(cpudata->highest_perf);
--	nominal_perf = READ_ONCE(cpudata->nominal_perf);
- 	nominal_freq = READ_ONCE(cpudata->nominal_freq);
- 	max_freq = READ_ONCE(cpudata->max_freq);
+ 	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE)
+-		min_perf = max_perf;
++		min_perf = min(cpudata->nominal_perf, max_perf);
  
--	if (boot_cpu_has(X86_FEATURE_CPPC)) {
--		u64 value = READ_ONCE(cpudata->cppc_req_cached);
--
--		value &= ~GENMASK_ULL(7, 0);
--		value |= on ? highest_perf : nominal_perf;
--		WRITE_ONCE(cpudata->cppc_req_cached, value);
--
--		wrmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, value);
--	} else {
--		perf_ctrls.max_perf = on ? highest_perf : nominal_perf;
--		ret = cppc_set_perf(cpudata->cpu, &perf_ctrls);
--		if (ret) {
--			cpufreq_cpu_release(policy);
--			pr_debug("Failed to set max perf on CPU:%d. ret:%d\n",
--				cpudata->cpu, ret);
--			return ret;
--		}
--	}
--
- 	if (on)
- 		policy->cpuinfo.max_freq = max_freq;
- 	else if (policy->cpuinfo.max_freq > nominal_freq * 1000)
+ 	/* Initial min/max values for CPPC Performance Controls Register */
+ 	value &= ~AMD_CPPC_MIN_PERF(~0L);
 -- 
 2.43.0
 
