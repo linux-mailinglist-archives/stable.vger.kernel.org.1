@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-96653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DF69E20F1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:05:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E49E19E20D5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D11A1685FC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 255F3B39F4C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89271F130D;
-	Tue,  3 Dec 2024 15:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B531F706B;
+	Tue,  3 Dec 2024 15:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoZYM8MQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnyrqK3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6615133FE;
-	Tue,  3 Dec 2024 15:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D56B1F130E;
+	Tue,  3 Dec 2024 15:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238204; cv=none; b=sZ4ULPQmsIaDH66oHE3HcuXTVxWxkt+gMAyltSl1KNoLsChG5ieMAdymMiUR5uX3l/3w+Ycq6LNZ2zsnELGjCTX41FMHlMGtIvbCukxxxyW87A8lVsJtBFQwVjYLaN+aNRqEJnv2dVjiQn0pqo4crqNgJCmfsroI6FT67YuCRT4=
+	t=1733238210; cv=none; b=eNJOsuRkFQhAQwv4syOpvy0N4BvYK8geSRjMHKaGvMZxod5KL7lhI2Pyv0/GishKSJ9DWuiskG50RbT56GOJCFguH8wpoaQfHSN3Ois16VlY90pxaVDj2gzGnpS+S9ehBLJzmy6Lk8DZkPTBr6xHUGZNAnRYpRLwkhYzjS/k90M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238204; c=relaxed/simple;
-	bh=qy//g9q45qzI57+dQD2LPUn+4i+zlYToPxx1Ij8XTak=;
+	s=arc-20240116; t=1733238210; c=relaxed/simple;
+	bh=soNMo/FtRvZEvEN/mkmq5twAiJJdXaczcjmUgH2I49E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTuox6YX0KhSoDEYXggIPaj3JyluLesUROtDwKRxKWBISivHPIVXAhJ/Yo4FFTtEQ5EvYoGPW10iTflTelB5oxryqRiB+rdPSSKGU2c95M7CY2M1/1wGNENP79bnX3ML7+yz3mjvfw5hv4NXGHqzadItS5Qr/YzAxzLJJz1HG6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoZYM8MQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE752C4CECF;
-	Tue,  3 Dec 2024 15:03:23 +0000 (UTC)
+	 MIME-Version; b=ZOVTFJmu/5Z7Q4N8zduuBJWsT7BqnSUMqMVl9Tvhrt5/vDcQjxVkTD+wWUP30RihWDM7t/ypdMC4J9Mp4MG66DKHnUuCsO55QKV1qorN4DcKfZmzIuxC/AkdhJLLMrdsz6oxvRe+GpQB5kCgEOaP8Hw2N+sCr25LspZMT8G/4cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnyrqK3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC60C4CECF;
+	Tue,  3 Dec 2024 15:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238204;
-	bh=qy//g9q45qzI57+dQD2LPUn+4i+zlYToPxx1Ij8XTak=;
+	s=korg; t=1733238210;
+	bh=soNMo/FtRvZEvEN/mkmq5twAiJJdXaczcjmUgH2I49E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EoZYM8MQvkYwmeKK/bJ59tYO1CxEfdUkpCRSDkAcJydurzmcoEwpXwIRIq84S214q
-	 CQMqnvmRJXPRWG99g3R62zWwOQ1xMhWgRssc1IKya+hl8UQ2/m51+sJfTLTZ/nsw5X
-	 ax8KYTtrYYKfHYHRnuMK2L4hLWafYj9q6Z/6G4+o=
+	b=SnyrqK3KRc6/bqHq/QE4A6pzRAlklGL4TgFGHUzE0v6s20Y5zB5SlIP7tFFHOS0sW
+	 YCQPa6Uk/r7+H9w0rDwN5zW/Pg8ParCPnGoKXtvYnAF9WGZ7U8oYSrMXzbEXcdFx1F
+	 0Ge70tUk0JuirM3Hw4zMN4LgSjrt9hHBf5S3xzPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 197/817] arm64: dts: mediatek: Add ADC node on MT6357, MT6358, MT6359 PMICs
-Date: Tue,  3 Dec 2024 15:36:09 +0100
-Message-ID: <20241203144003.429982858@linuxfoundation.org>
+Subject: [PATCH 6.11 198/817] arm64: dts: mediatek: mt6358: fix dtbs_check error
+Date: Tue,  3 Dec 2024 15:36:10 +0100
+Message-ID: <20241203144003.468554280@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -65,73 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Macpaul Lin <macpaul.lin@mediatek.com>
 
-[ Upstream commit b0a4ce81f327eae06c1088f1a437edc48a94a3e8 ]
+[ Upstream commit 76ab2ae0ab9ebb2d70e6ee8a9f59911621192c37 ]
 
-Add support for the ADC on MT6357/8/9 and keep it default enabled
-as this IP is always present on those PMICs.
-Users may use different IIO channels depending on board-specific
-routing.
+Fix DTBS check errors for 'mt6358codec' and 'mt6358regulator':
 
-Link: https://lore.kernel.org/r/20240604123008.327424-6-angelogioacchino.delregno@collabora.com
+Error message is:
+pmic: 'mt6358codec' and 'mt6358regulator' does not match any of the
+regexes: 'pinctrl-[0-9]+'.
+Rename these two device node to generic 'audio-codec' and 'regulators'.
+
+Fixes: 9f8872221674 ("arm64: dts: mt6358: add PMIC MT6358 related nodes")
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Link: https://lore.kernel.org/r/20241029064647.13370-1-macpaul.lin@mediatek.com
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Stable-dep-of: 76ab2ae0ab9e ("arm64: dts: mediatek: mt6358: fix dtbs_check error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt6357.dtsi | 5 +++++
- arch/arm64/boot/dts/mediatek/mt6358.dtsi | 5 +++++
- arch/arm64/boot/dts/mediatek/mt6359.dtsi | 5 +++++
- 3 files changed, 15 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt6358.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt6357.dtsi b/arch/arm64/boot/dts/mediatek/mt6357.dtsi
-index 3330a03c2f745..5fafa842d312f 100644
---- a/arch/arm64/boot/dts/mediatek/mt6357.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6357.dtsi
-@@ -10,6 +10,11 @@ &pwrap {
- 	mt6357_pmic: pmic {
- 		compatible = "mediatek,mt6357";
- 
-+		pmic_adc: adc {
-+			compatible = "mediatek,mt6357-auxadc";
-+			#io-channel-cells = <1>;
-+		};
-+
- 		regulators {
- 			mt6357_vproc_reg: buck-vproc {
- 				regulator-name = "vproc";
 diff --git a/arch/arm64/boot/dts/mediatek/mt6358.dtsi b/arch/arm64/boot/dts/mediatek/mt6358.dtsi
-index a1b96013f8141..641d452fbc083 100644
+index 641d452fbc083..e23672a2eea4a 100644
 --- a/arch/arm64/boot/dts/mediatek/mt6358.dtsi
 +++ b/arch/arm64/boot/dts/mediatek/mt6358.dtsi
-@@ -10,6 +10,11 @@ pmic: pmic {
- 		interrupt-controller;
- 		#interrupt-cells = <2>;
- 
-+		pmic_adc: adc {
-+			compatible = "mediatek,mt6358-auxadc";
-+			#io-channel-cells = <1>;
-+		};
-+
- 		mt6358codec: mt6358codec {
- 			compatible = "mediatek,mt6358-sound";
- 			mediatek,dmic-mode = <0>; /* two-wires */
-diff --git a/arch/arm64/boot/dts/mediatek/mt6359.dtsi b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-index df3e822232d34..8e1b8c85c6ede 100644
---- a/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt6359.dtsi
-@@ -9,6 +9,11 @@ pmic: pmic {
- 		interrupt-controller;
- 		#interrupt-cells = <2>;
- 
-+		pmic_adc: adc {
-+			compatible = "mediatek,mt6359-auxadc";
-+			#io-channel-cells = <1>;
-+		};
-+
- 		mt6359codec: mt6359codec {
+@@ -15,12 +15,12 @@ pmic_adc: adc {
+ 			#io-channel-cells = <1>;
  		};
  
+-		mt6358codec: mt6358codec {
++		mt6358codec: audio-codec {
+ 			compatible = "mediatek,mt6358-sound";
+ 			mediatek,dmic-mode = <0>; /* two-wires */
+ 		};
+ 
+-		mt6358regulator: mt6358regulator {
++		mt6358regulator: regulators {
+ 			compatible = "mediatek,mt6358-regulator";
+ 
+ 			mt6358_vdram1_reg: buck_vdram1 {
 -- 
 2.43.0
 
