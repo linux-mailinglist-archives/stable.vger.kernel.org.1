@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD209E2B2A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:43:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01229E2A45
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A68E6B39B96
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CC91B39D5E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369D41F8F0D;
-	Tue,  3 Dec 2024 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C651F7558;
+	Tue,  3 Dec 2024 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPrW7dnp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKzmebcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E657A1F7060;
-	Tue,  3 Dec 2024 15:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1510F1F6691;
+	Tue,  3 Dec 2024 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240376; cv=none; b=brdtnk9GuO8P33IKlRoObns74CSJchqCyzeHF9150yCQsZGtq+FCXZoz6bNwSj8OgCD3u+G09Tdih3/dvTpBcOrpG2S0Z2gjZmAYMuF4xp4yRr/2ax/Vzxw9CHjanHg44PWk9D0PkK8UDsgSCbQGTrVaWRgqsY4tPrHBMENjMEg=
+	t=1733238442; cv=none; b=Yn8OIpF5YDAyhnBBfsjyDOQP95eiTAJpDiIHhRDKbFX/oCt1MgESL8vsK7LY5MmNo6spZk06IgZUDLiZQsaInhWZunMXrviXcOFA5P3YVCwACcRcvDFoblIw3zNYFnreNjGLN51fbKe6IaPDSTHRAiG1UNlBjWQUXvHxowW360o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240376; c=relaxed/simple;
-	bh=U3yUetKsjXekdg2csgr/vom8q+lxVTUrLe+9+EPZPbY=;
+	s=arc-20240116; t=1733238442; c=relaxed/simple;
+	bh=FNxd6J1liP/EgOIXfpDvfYUNDCWE0mDjcWPMzsCujTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5kxKc4mzOkuA7wxMsxvQqZ46+t3d0sJQd3ubCxKRAHDDMmkZgX2MGPFNjw+BbqL6TG2uC7idpyH4WsyNBIlttmJN2o5qC6u0YwSRAdDE5JLmgZ9mOKW2vx2fgnCDVozBiFERoCR+sXwzmrKwKq1flnSbgMy4wsJwsO6w8EbC9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPrW7dnp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A18C4CECF;
-	Tue,  3 Dec 2024 15:39:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jq5u+CT9gMhxdSa88Q8pfkdb5LH+gDXna9NZO27cRmErm/S6MYsZ3Mxn19Ku7FnPhPPG+E7ZKwBVhiF59ZtvNsANaVYWlFHozUXpB+Ba33HP+JMfTVHF7G/cYJiYacNxI9Zuubt+NM4NkX2HBcBNhl38wrxjGpY0DZw3YHCTmeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKzmebcC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86838C4CECF;
+	Tue,  3 Dec 2024 15:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240375;
-	bh=U3yUetKsjXekdg2csgr/vom8q+lxVTUrLe+9+EPZPbY=;
+	s=korg; t=1733238441;
+	bh=FNxd6J1liP/EgOIXfpDvfYUNDCWE0mDjcWPMzsCujTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPrW7dnpT+wq7bFnGyh9EVO/8IRCIt6YXmt5B1wNOIU8fn2MpsBSdGoDp6xXXLRhq
-	 FeHpTyR8UKsin3Ni7eBM2uHa9sv/uJAAoRaP8DQ9hVJa4NoMP2MAt8B8T6jO4i9HA0
-	 JhIlgC69inUW8nzrobHE2FpMAT6aldTIYGB79Vs8=
+	b=CKzmebcC+SV4iu+4ZgXIIXFpXX/HfuYHEAM0/Z3PJJQY4Oy+kUDBCliiB8d6NBru9
+	 15+TvXkDF+ukmOzoOLnzzjNQ7+fOFq22YbgrkKpM17vGnBjt1r9Wxe+Kc/Au/PE72W
+	 DGymgov21t4YZxtR9F91My4ffctBr2lia0f+m3OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Marek Vasut <marex@denx.de>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 118/826] arm64: dts: qcom: x1e80100-slim7x: Drop orientation-switch from USB SS[0-1] QMP PHYs
-Date: Tue,  3 Dec 2024 15:37:25 +0100
-Message-ID: <20241203144748.346990975@linuxfoundation.org>
+Subject: [PATCH 6.11 279/817] wifi: wilc1000: Set MAC after operation mode
+Date: Tue,  3 Dec 2024 15:37:31 +0100
+Message-ID: <20241203144006.697127461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit eb2dd93d03b16ed0e8b09311f8d35cc5a691a9b7 ]
+[ Upstream commit 29dd3e48b9bd88bf65a1e760126fa18d1def7b30 ]
 
-The orientation-switch is already set in the x1e80100 SoC dtsi,
-so drop from Slim 7X dts.
+It seems it is necessary to set WILC MAC address after operation mode,
+otherwise the MAC address of the WILC MAC is reset back to what is in
+nvmem. This causes a failure to associate with AP after the WILC MAC
+address was overridden by userspace.
 
-Fixes: 45247fe17db2 ("arm64: dts: qcom: x1e80100: add Lenovo Thinkpad Yoga slim 7x devicetree")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20241014-x1e80100-dts-drop-orientation-switch-v1-1-26afa6d4afd9@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Test case:
+"
+ap$ cat << EOF > hostap.conf
+interface=wlan0
+ssid=ssid
+hw_mode=g
+channel=6
+wpa=2
+wpa_passphrase=pass
+wpa_key_mgmt=WPA-PSK
+EOF
+ap$ hostapd -d hostap.conf
+ap$ ifconfig wlan0 10.0.0.1
+"
+
+"
+sta$ ifconfig wlan0 hw ether 00:11:22:33:44:55
+sta$ wpa_supplicant -i wlan0 -c <(wpa_passphrase ssid pass)
+sta$ ifconfig wlan0 10.0.0.2
+sta$ ping 10.0.0.1 # fails without this patch
+"
+
+AP still indicates SA with original MAC address from nvmem without this patch:
+"
+nl80211: RX frame da=ff:ff:ff:ff:ff:ff sa=60:01:23:45:67:89 bssid=ff:ff:ff:ff:ff:ff ...
+                                          ^^^^^^^^^^^^^^^^^
+"
+
+Fixes: 83d9b54ee5d4 ("wifi: wilc1000: read MAC address from fuse at probe")
+Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241003132504.52233-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/wireless/microchip/wilc1000/netdev.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-index 0cdaff9c8cf0f..f22e5c840a2e5 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-+++ b/arch/arm64/boot/dts/qcom/x1e80100-lenovo-yoga-slim7x.dts
-@@ -898,8 +898,6 @@ &usb_1_ss0_qmpphy {
- 	vdda-phy-supply = <&vreg_l3e_1p2>;
- 	vdda-pll-supply = <&vreg_l1j_0p8>;
+diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
+index 9ecf3fb29b558..8bc127c5a538c 100644
+--- a/drivers/net/wireless/microchip/wilc1000/netdev.c
++++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
+@@ -608,6 +608,9 @@ static int wilc_mac_open(struct net_device *ndev)
+ 		return ret;
+ 	}
  
--	orientation-switch;
++	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
++				vif->idx);
++
+ 	netdev_dbg(ndev, "Mac address: %pM\n", ndev->dev_addr);
+ 	ret = wilc_set_mac_address(vif, ndev->dev_addr);
+ 	if (ret) {
+@@ -618,9 +621,6 @@ static int wilc_mac_open(struct net_device *ndev)
+ 		return ret;
+ 	}
+ 
+-	wilc_set_operation_mode(vif, wilc_get_vif_idx(vif), vif->iftype,
+-				vif->idx);
 -
- 	status = "okay";
- };
- 
-@@ -932,8 +930,6 @@ &usb_1_ss1_qmpphy {
- 	vdda-phy-supply = <&vreg_l3e_1p2>;
- 	vdda-pll-supply = <&vreg_l2d_0p9>;
- 
--	orientation-switch;
--
- 	status = "okay";
- };
- 
+ 	mgmt_regs.interface_stypes = vif->mgmt_reg_stypes;
+ 	/* so we detect a change */
+ 	vif->mgmt_reg_stypes = 0;
 -- 
 2.43.0
 
