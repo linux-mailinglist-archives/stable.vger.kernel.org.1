@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-98145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FFD9E2D11
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 21:29:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8499E2C19
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA063B2888C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:13:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01E6FB2D866
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A225F1FC7E4;
-	Tue,  3 Dec 2024 18:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8D11F8EE3;
+	Tue,  3 Dec 2024 18:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OX27v3md"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nz3sDZkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632371FC7DB
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 18:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611271F8901
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 18:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733249589; cv=none; b=nlov2znz/el89ahlVlLs4s19gaYFV//MvJXvd2UK5xRzO9VkLNMVzGx8ktt2Pu1ahq/nvbOJtr+8ICGpL/dLgQ1Q4jR2TP4lLvYknez/BRuqpp+ORgqsF2D+kcpntZCkQ3rzEv4shyReRQk0z2Njp/QdEIROAs+PJfDCeATuoCU=
+	t=1733249596; cv=none; b=qq4BBoxIIKLiyneL2WeTeqIJIkPztapqMZZLJErLhMeDE6+rQxRgTSWWPGvE4103pmfgAp4Mxt9HuwKzzYctfvZQgFlUXBfWAk2skimAPSRfgEl/KmZYkLDrB8pEVfA5lQeox0sUhrsM4xXMGIE1Yc6hvQyaqB6NpgzR5B+Um3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733249589; c=relaxed/simple;
-	bh=1cXnosBnv28vQDSUelihnaI0LMUFMS6ZF8S5yo3Z6Vs=;
+	s=arc-20240116; t=1733249596; c=relaxed/simple;
+	bh=r4vqq3LmqkBJTPhcu2ZhTbA1wuYSSU6amBnSA3V/Lbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JgiyVyTNvLESqBJLg1zJ6+hb6jyCKz94Fq+cAGutOLw/IDwB+ZQOfMJfbnjz7xjaTqby86EZDNyFYQoaJQ/dnZ6awA7/HEtQvDcgMpHx0hAcceTmec5NG8JbS5v5+ha08YgoI3qr1JB185bnJDR7J8UJJGnNJD+VlJ4ypAMLGoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OX27v3md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D8DC4CECF;
-	Tue,  3 Dec 2024 18:13:08 +0000 (UTC)
+	 MIME-Version; b=nPbmmSK+1bcHPQIc1TQCCTqJDUZ4PdZiZovQON3+tIQMT3/2/+paEnU5TKKe3Ma+1zjHaAEhNuSEFPDoqR4XsUU2fZisgWXL6XG8W1gevPV45IyCZzy0lNR3Kf0eeROWDaC/RRxfDpa69ogwAtAG36AIjso67mrKzsuEd+g50gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nz3sDZkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0250C4CECF;
+	Tue,  3 Dec 2024 18:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733249589;
-	bh=1cXnosBnv28vQDSUelihnaI0LMUFMS6ZF8S5yo3Z6Vs=;
+	s=k20201202; t=1733249596;
+	bh=r4vqq3LmqkBJTPhcu2ZhTbA1wuYSSU6amBnSA3V/Lbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OX27v3md4clnlykqjnLivfn1bo+c2GI5YWfVmbpA9hK2DOExC60AeRVzRNNE8Ndln
-	 AN3+rTZq+a65hIAv+dKQLA1BbO5REioPlOqoa/5Wq8yhT5tqp54O6uQP8XLyZaRNvq
-	 0qvRXYZ5CimKGAUcw62wQyV3As95PTK510NvPRtf6p1OwntlOjyhjvgyHX6cyteO/t
-	 qY3gKI4CsS+pisibqvmtQteQzZ3B0bPVR9pknaKAdXxyryhgeBM1+9ulnWtBFV3DH0
-	 T2uQHKWk3awElx6b3FnlgaBXDG9NxfmCtj04xyrEpk68gn/AFAa09vHFo8aMgnbaIk
-	 wt9BOJF7yB3AQ==
+	b=Nz3sDZkWfiXuKWomxr5mgNd9Sbm7QYKSTEgDZ/+sY9Ar2PzWTYl/8u+0PchwNdsBF
+	 X/V5zvKgqkldHeX5T70ozbyGCBQWXV43Cxt8xVYWgqZ7MClfmFJP/oV3w5ApTpTSsM
+	 qnQ1YFmyzzvpuA5yhLI2FsrpYXadXGpKgjBGjtlqFdyQdcqoTsxsJq2szChPSyDx0A
+	 YuWMDJ1KFAmjAC5H4DzV70kk6Tmy4zf99SqIiNw4GOm/qhiPuJ8Mi6D2WBeZ969iwD
+	 A0u4bn5yHGDEUDI3Yxk7aycpGi3imtdNnEkCe3pQJgOjd2XmEJbZeVk8/LeTQ9PkFA
+	 ANfFcHtmg5sUw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
+Cc: mingli.yu@eng.windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/2] drm/amd/display: Skip Invalid Streams from DSC Policy
-Date: Tue,  3 Dec 2024 13:13:07 -0500
-Message-ID: <20241202133950-efd84bdcc903fe92@stable.kernel.org>
+Subject: Re: [PATCH 5.15] drm/amd/pm: Fix negative array index read
+Date: Tue,  3 Dec 2024 13:13:14 -0500
+Message-ID: <20241203122342-a4a1aad7c4357eae@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241202172833.985253-1-alexander.deucher@amd.com>
+In-Reply-To:  <20241203070534.1915215-1-mingli.yu@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,46 +63,57 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: 9afeda04964281e9f708b92c2a9c4f8a1387b46e
+Found matching upstream commit: c8c19ebf7c0b202a6a2d37a52ca112432723db5f
 
 WARNING: Author mismatch between patch and found commit:
-Backport author: Alex Deucher <alexander.deucher@amd.com>
-Commit author: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Backport author: <mingli.yu@eng.windriver.com>
+Commit author: Jesse Zhang <jesse.zhang@amd.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (different SHA1: d3c4a1c71521)
+6.12.y | Present (exact SHA1)
+6.11.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 4711b1347cb9)
+6.1.y | Present (different SHA1: 60f4a4bc3329)
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  9afeda0496428 ! 1:  e77a231c8dcab drm/amd/display: Skip Invalid Streams from DSC Policy
+1:  c8c19ebf7c0b2 ! 1:  3574a55cbee45 drm/amd/pm: Fix negative array index read
     @@ Commit message
-         Streams with invalid new connector state should be elimiated from
-         dsc policy.
-     
-    +    Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3405
-         Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-         Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-         Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-         Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+         Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+         Reviewed-by: Tim Huang <Tim.Huang@amd.com>
          Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-    +    (cherry picked from commit 9afeda04964281e9f708b92c2a9c4f8a1387b46e)
-    +    Cc: stable@vger.kernel.org
+    +    [Don't intruduce the change for navi10_emit_clk_levels which doesn't exist]
+    +    Signed-off-by: Mingli Yu <mingli.yu@windriver.com>
      
-      ## drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c ##
-     @@ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c: static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+      ## drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c ##
+     @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_get_current_clk_freq_by_table(struct smu_context *smu,
+    @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_get_current_c
+      }
+      
+      static inline bool navi10_od_feature_is_supported(struct smu_11_0_overdrive_table *od_table, enum SMU_11_0_ODFEATURE_CAP cap)
+    -@@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_emit_clk_levels(struct smu_context *smu,
+    - 		if (ret)
+    - 			return ret;
+    - 
+    --		if (!navi10_is_support_fine_grained_dpm(smu, clk_type)) {
+    -+		ret = navi10_is_support_fine_grained_dpm(smu, clk_type);
+    -+		if (ret < 0)
+    -+			return ret;
+    -+
+    -+		if (!ret) {
+    - 			for (i = 0; i < count; i++) {
+    - 				ret = smu_v11_0_get_dpm_freq_by_index(smu,
+    - 								      clk_type, i, &value);
+     @@ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c: static int navi10_print_clk_levels(struct smu_context *smu,
+      		if (ret)
+      			return size;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
-| stable/linux-6.11.y       |  Success    |  Success   |
-| stable/linux-6.6.y        |  Failed     |  N/A       |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
-| stable/linux-4.19.y       |  Failed     |  N/A       |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
