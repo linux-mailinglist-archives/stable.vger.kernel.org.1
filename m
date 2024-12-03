@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF949E25F6
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53479E232B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:33:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E16ED288B9D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:07:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37F451695FE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D4F1F890F;
-	Tue,  3 Dec 2024 16:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511EB1F7071;
+	Tue,  3 Dec 2024 15:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5tMRI8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0M5M+9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A5B1F8934;
-	Tue,  3 Dec 2024 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5EB1F4276;
+	Tue,  3 Dec 2024 15:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242021; cv=none; b=YjTsn5zWxCH8WNqcMwfWYqHE/DsGWK2AgiB+1tzYHqGT5RRhew715lMlseqg+oM/U/caNMhF7SXTFRPAwhQ60KHZ6fEgI1bOpkLpb492r18f7YBBZi+w1TovGdm5pSjzmF4w9GZJViqKSrt+XmXt08KMAAGtbUAPLfUHU90LxDI=
+	t=1733239719; cv=none; b=rNDbTBwR0XvSlpQWGv+v43MATU2CQ3Kxb58ZI1tDhcdSY1DNFI0OVEJqAXkmwgDUQun570TMqmFNzXU3pMqNPZ4D8RoU7FzYWPiAoLT4sD4c1h1ib6CL7bIIS/psNTX5JLCSq/y+TYrf2KLPCJN/XWOqo6FSsnehsk7guKMiyVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242021; c=relaxed/simple;
-	bh=cfpgBeBWDVnt3UgyG386MX0x+1uUYHeAmO2wXqgHvFE=;
+	s=arc-20240116; t=1733239719; c=relaxed/simple;
+	bh=Zp+a4CpZPzKlldtacAmbQor+hiRiFHCDJmuKG64y3RU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=szjQS+SM5J6x8B2n02pWPmlHIeGC7VncKUeli3lYR5z65c7la4GzglxzVSu+qnLcib+tihqsyT9t1c6Cri6c70fL/Bi754rHuh6lMDTKPwc4kAO8Yp3B4WsddE7xAMnmMwDEzHA6nbm/OL+pk1pDddNPwaEUnluCCqTAYFUo+L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5tMRI8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26810C4CED6;
-	Tue,  3 Dec 2024 16:07:00 +0000 (UTC)
+	 MIME-Version; b=bJvPsGvYVJ/HYCP4KlYSwE2/rqUqsUTwK+ZBajTroVLW89PhmUgRsGbA/9/ZaF8Nz6XDTIrHaM/xfXVGTqpKd9g5A/Ck51xgHLBSa/lf9+z5WnO+61XZNZXThsGD5cCQz758M1nr5uMi7YCdcw6A9LIcQgKN92LJmiTSa8zT7fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0M5M+9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DB2C4CECF;
+	Tue,  3 Dec 2024 15:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242021;
-	bh=cfpgBeBWDVnt3UgyG386MX0x+1uUYHeAmO2wXqgHvFE=;
+	s=korg; t=1733239718;
+	bh=Zp+a4CpZPzKlldtacAmbQor+hiRiFHCDJmuKG64y3RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5tMRI8y4JuJnNdjMt5hw0FMc4gp6MCKuaXtnVu+rN7mgdhJddYoVCssrtszfcP6+
-	 kIWcGT+xOZZL+PftNJEi2lNQeI42FmuUpOFMvxMRk6FKt/kq8dxshEbtcc5xSeW7Eu
-	 JZYhdTK9UANCz11VMKQKgY0ajEFF7KeOZYCjrG3g=
+	b=A0M5M+9zFRy74Tk/Iyr+HwXUmWL+/mXIhG7b/CJblEHVmbFaMUwFcCqZxYoe1Fsm1
+	 ecWY2rXOhwZ0xT4eauUHnYnQx/E1tRU8P9Cbz4o6VK2AGnMPIdb3unodv/6rRP6Xfp
+	 sg3dsla2githr3Yp0o/vAy1YFJ2TbbtxFMWU4ESE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 553/826] power: reset: ep93xx: add AUXILIARY_BUS dependency
-Date: Tue,  3 Dec 2024 15:44:40 +0100
-Message-ID: <20241203144805.320718764@linuxfoundation.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.11 709/817] x86/CPU/AMD: Terminate the erratum_1386_microcode array
+Date: Tue,  3 Dec 2024 15:44:41 +0100
+Message-ID: <20241203144023.658546165@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit b6d445f6724deda3fd87fa33358009d947a64c5d ]
+commit ff6cdc407f4179748f4673c39b0921503199a0ad upstream.
 
-This fails to link when compile-testing and the auxiliary bus is not built-in:
+The erratum_1386_microcode array requires an empty entry at the end.
+Otherwise x86_match_cpu_with_stepping() will continue iterate the array after
+it ended.
 
-x86_64-linux-ld: drivers/power/reset/ep93xx-restart.o: in function `ep93xx_reboot_driver_init':
-ep93xx-restart.c:(.init.text+0x11): undefined reference to `__auxiliary_driver_register'
-x86_64-linux-ld: drivers/power/reset/ep93xx-restart.o: in function `ep93xx_reboot_driver_exit':
-ep93xx-restart.c:(.exit.text+0x8): undefined reference to `auxiliary_driver_unregister'
+Add an empty entry to erratum_1386_microcode to its end.
 
-Add the appropriate dependency.
-
-Fixes: 9fa7cdb4368f ("power: reset: Add a driver for the ep93xx reset")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20241111104418.3891756-1-arnd@kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 29ba89f189528 ("x86/CPU/AMD: Improve the erratum 1386 workaround")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241126134722.480975-1-bigeasy@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/reset/Kconfig | 1 +
+ arch/x86/kernel/cpu/amd.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
-index 389d5a193e5dc..f5fc33a8bf443 100644
---- a/drivers/power/reset/Kconfig
-+++ b/drivers/power/reset/Kconfig
-@@ -79,6 +79,7 @@ config POWER_RESET_EP93XX
- 	bool "Cirrus EP93XX reset driver" if COMPILE_TEST
- 	depends on MFD_SYSCON
- 	default ARCH_EP93XX
-+	select AUXILIARY_BUS
- 	help
- 	  This driver provides restart support for Cirrus EP93XX SoC.
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 823f44f7bc94..d8408aafeed9 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -798,6 +798,7 @@ static void init_amd_bd(struct cpuinfo_x86 *c)
+ static const struct x86_cpu_desc erratum_1386_microcode[] = {
+ 	AMD_CPU_DESC(0x17,  0x1, 0x2, 0x0800126e),
+ 	AMD_CPU_DESC(0x17, 0x31, 0x0, 0x08301052),
++	{},
+ };
  
+ static void fix_erratum_1386(struct cpuinfo_x86 *c)
 -- 
-2.43.0
+2.47.1
 
 
 
