@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-98151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E2F9E2A80
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:13:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885FD9E2A83
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:13:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1813284E67
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:13:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EF65162716
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3457B1FC7EC;
-	Tue,  3 Dec 2024 18:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB05E1FA840;
+	Tue,  3 Dec 2024 18:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GN9peWlo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k6JK7eSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65441F8EE3
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 18:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA8D1F8901
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 18:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733249603; cv=none; b=LJ1WwUh6yntm2k22IavTCV2jRygxTxwZKdrnwOrl4mPR2XH/uHE8PBTIg19WEZxmnxa5yFhGUPs9eYK9joTipKTxxBOIqf0bQ1BZw3R2BIe3sY7QtUhww2zU9SOi7LxSBLXr5adp9QJWFSg2bOsQcASLNRiRpK7CXu5C03JPVLI=
+	t=1733249607; cv=none; b=rF4FSEc8T+QOpUHBGgD0Vlo6H/uo/XEgRP3j4OA2HwSKjfzJXX+4EEIUp/VMMOmTQDen9Y7hBhsuQWN5qW5r64caklGlW+szZfL87JLp6HoUfBfaQ2qE2NVtrp+zAY25cVBaU8w7+wN4tGiIhi9L3ROYkvJqL9r/iACFB2RczhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733249603; c=relaxed/simple;
-	bh=qyGiwptkESZqOcrcdSsgb0wWefGfSB8D+7FW+S/t/Jg=;
+	s=arc-20240116; t=1733249607; c=relaxed/simple;
+	bh=hxnUm/j0nhk6tjiUgYpCJgKggKo1qSZ4bYT3GQ9rZKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iuBD8URimFw7J08iH8NjnVIVPuMf/1Rw1AKJBD6vtx+r0+H/y6TzgcJpnDAME5CuJYu2u7af7YwvPmASX7ewyrOvmr9pP60R1/wCsueDvgO1tmHwKAC/wI/H04F4kHQDX7AqwmyWWhGFhu6sS79lmaQYAoOPZtLzvMROBxSg/ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GN9peWlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C58AC4CECF;
-	Tue,  3 Dec 2024 18:13:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ceENgyKR+IDTEqrp141HlOIu69ga7RruMhoHdk5/V/wx5TfUNADSuamD7apn9BTBqsFHqNgDecMVdeFfhLaDsxGGSXWhSrB1mATUxFZ36lPiEtX4cjYGpHoiEeetLuHxTxohFTxLrPtBXua7hhywu8GDjy4FnMOujIQ8uF8VW+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k6JK7eSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E120C4CECF;
+	Tue,  3 Dec 2024 18:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733249602;
-	bh=qyGiwptkESZqOcrcdSsgb0wWefGfSB8D+7FW+S/t/Jg=;
+	s=k20201202; t=1733249607;
+	bh=hxnUm/j0nhk6tjiUgYpCJgKggKo1qSZ4bYT3GQ9rZKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GN9peWloTqDtidCu7sYeeBR1+pFgOJvBWshS40jPLTBsA0+yP9lxg2RutoN4usQYL
-	 stpz2O5QTb0TYfpOM0HIWjlXcAABsC1kdWwUJMTrUG+mv4OkF+GBKrIH1aot0weYEw
-	 FUy2eRxNcHeUyb40LAuKEx7gA9sza77vlHYEde6paPc7zLiiq6ck+Z5OH7Z7MBh4bf
-	 ZCpkiLvz/wsebDrmnc6bxHxKL5eO0A68p7pJ7mZ/ABeifpXVFMWxgl8keuL4ewu5GX
-	 blmZxR+OEhxksuMlWlO7ldGCvApms8QgV+8sL5/2LD/rKg7gf5IXDDqvqPx3F4UU17
-	 0++PHafuDOOow==
+	b=k6JK7eSAjF2QntXNFFiTqcj8Kc3gOBmh8q2HbIO0r9Sqgjmv4fu7XOOHBRIWL/712
+	 d3imy4GgnhCbJHdir/EygVjiJUbIkfLAyQt1jAZ3oW5xDIiy6Q5aac5rOTqnEAJhlK
+	 J9HF8ei9RX+W6/WFIq7LNe57Ws9+kVVr5oDjBUrsAMrwdq504e+edWmT2tTdT140An
+	 PIiJMUZ8P3+0vccU/Vy4DSYDt/kuS4KzAYvrHsF+b+QBWG+3Oy5XuuOWUJ3zz7JJFV
+	 bu/hgWzMUG1atUsKDq0BzWkX8xm98oKTYnoT7pelJl8tk7CiK6nt1Vi13xA3THuxq/
+	 fpXJ2ZotmlzmQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 v3 2/3] net: fec: refactor PPS channel configuration
-Date: Tue,  3 Dec 2024 13:13:20 -0500
-Message-ID: <20241202130945-a900ad2d7ca76def@stable.kernel.org>
+Subject: Re: [PATCH 6.11 v3 1/3] dt-bindings: net: fec: add pps channel property
+Date: Tue,  3 Dec 2024 13:13:25 -0500
+Message-ID: <20241202124104-7afaadbc4cd7d174@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241202155800.3564611-3-csokas.bence@prolan.hu>
+In-Reply-To:  <20241202155713.3564460-2-csokas.bence@prolan.hu>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,7 +64,7 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: bf8ca67e21671e7a56e31da45360480b28f185f1
+Found matching upstream commit: 1aa772be0444a2bd06957f6d31865e80e6ae4244
 
 WARNING: Author mismatch between patch and found commit:
 Backport author: =?UTF-8?q?Cs=C3=B3k=C3=A1s=2C=20Bence?= <csokas.bence@prolan.hu>
@@ -73,24 +73,26 @@ Commit author: Francesco Dolcini <francesco.dolcini@toradex.com>
 
 Status in newer kernel trees:
 6.12.y | Not found
+6.11.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  bf8ca67e21671 ! 1:  e7045250bbe8e net: fec: refactor PPS channel configuration
+1:  1aa772be0444a ! 1:  15b5ce86bd18b dt-bindings: net: fec: add pps channel property
     @@ Commit message
-         Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
+         Acked-by: Conor Dooley <conor.dooley@microchip.com>
          Signed-off-by: Paolo Abeni <pabeni@redhat.com>
      
-    +    (cherry picked from commit bf8ca67e21671e7a56e31da45360480b28f185f1)
+    +    (cherry picked from commit 1aa772be0444a2bd06957f6d31865e80e6ae4244)
+    +    Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
     +
-      ## drivers/net/ethernet/freescale/fec_ptp.c ##
-     @@
-      #define FEC_CC_MULT	(1 << 31)
+      ## Documentation/devicetree/bindings/net/fsl,fec.yaml ##
+     @@ Documentation/devicetree/bindings/net/fsl,fec.yaml: properties:
+          description:
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.11.y       |  Success    |  Success   |
 
