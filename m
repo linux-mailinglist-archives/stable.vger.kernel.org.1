@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35829E23DF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:43:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6BF9E26A9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:16:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6021611D2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3FD816EDE0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873A21FA272;
-	Tue,  3 Dec 2024 15:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589A11F890F;
+	Tue,  3 Dec 2024 16:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeDKm4ht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyTrcEdO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450421F8AF4;
-	Tue,  3 Dec 2024 15:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1622C1E3DF9;
+	Tue,  3 Dec 2024 16:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240050; cv=none; b=tLYNFMWjXAolJFJZoqUqipGwi2B2TAM/xAMtJFzXwpIM3KVYKnUuoa7CZEEURMvCjemfAx0Bbf+tFuTygiJID1UeigEyrcsY/sY6B5q6Z1IpeSjHwxq2Rks4GO6nR8q83C2tiDr4Bx3LKvCJRq49rCH57OqTQVCSM2z803mEIrI=
+	t=1733242289; cv=none; b=XajkcEhvFyQ8p7vDu4p8IKUod/bSbXodwmBuMovtOrdwNas11TfdG7G42oKiylvJGi/hP2Cy0eEyyg1PsTIrvTBi5j2QhkPyxJbp0NIt+bbejMihy1aUs3UUzGNhbxFVuzFYxM1Ne0OZk4T3kx5xcTDn1p6qaIV+ax2QeFIwVjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240050; c=relaxed/simple;
-	bh=cmQI48wx34cOO2hJVPybgupZVKVS4WXIB++8TOjCql8=;
+	s=arc-20240116; t=1733242289; c=relaxed/simple;
+	bh=VhOL3uUxkGJZx4TC2Kg6173cHoozm7UNZWT7d7WbnjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQ25xFpP3Zdn5WbJEsHdg/dGsw1qPbHLJVqcxNrrPCAnze9rbkO2KTB1vfGOwwPc0auoSH2CBwsh9SVtperKVpfcLqIZ1dl2tgTCCzvkq65wRwnoQA+mOYd8P5hXo9YdvbZ7hCaouP2wFLtjv368eFLfX41LlGs2aOJYY1WsiO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeDKm4ht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28DAC4CED6;
-	Tue,  3 Dec 2024 15:34:09 +0000 (UTC)
+	 MIME-Version; b=dvwhL/YY6u/5xl8nzMzL6OaLyxEVj6ksXqqCjwyw4XTftnMpXBmthtn0AwzVhweGCrXvjseA883WUcVlK8ZYSvqcGpcgjDfGz/fXg4eEgPMJ7Wmy78xgvNxQ/oodQTptEXYB9yky0gCf/iD/xr0b2Tos/OGP+YdcsZGfh4/2N6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyTrcEdO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0D8C4CECF;
+	Tue,  3 Dec 2024 16:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240050;
-	bh=cmQI48wx34cOO2hJVPybgupZVKVS4WXIB++8TOjCql8=;
+	s=korg; t=1733242288;
+	bh=VhOL3uUxkGJZx4TC2Kg6173cHoozm7UNZWT7d7WbnjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeDKm4htxUawn3b+LdabkdXQyWIeMNvALBxbpLar2ilV8jltXJqXxxroN8DzWTZuq
-	 3++QvEV1ajK3YF8TPnJAlXFw74WxGPmY12nIPwAapUxS2bapJ9jdPcLTXz/jvjpdfI
-	 O86x2U6sDgO5HPZnzldm2+WsLDtrEnN6j+hPspc4=
+	b=vyTrcEdOerbjd4tBDty9m2SuoirfziBdN7ElTGyf+7UTCc2EfvSUEMvncJRztf4CX
+	 oWpS2DwO5q8qhx75Gf807oiw5+vOHGC0p6eGQt6sKe24l04bz9JmkZO5wLNebz83++
+	 +Dj2t+JkV3y/3W7ZMQtuz8NQVEPljnX3OlqcUsOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Lai Yi <yi1.lai@linux.intel.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.11 817/817] block: dont verify IO lock for freeze/unfreeze in elevator_init_mq()
-Date: Tue,  3 Dec 2024 15:46:29 +0100
-Message-ID: <20241203144028.347617923@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Lin Feng <linf@wangsu.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.12 663/826] tty: ldsic: fix tty_ldisc_autoload sysctls proc_handler
+Date: Tue,  3 Dec 2024 15:46:30 +0100
+Message-ID: <20241203144809.617878204@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-commit 357e1b7f730bd85a383e7afa75a3caba329c5707 upstream.
+commit 635a9fca54f4f4148be1ae1c7c6bd37af80f5773 upstream.
 
-elevator_init_mq() is only called at the entry of add_disk_fwnode() when
-disk IO isn't allowed yet.
+Commit 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of
+ldiscs") introduces the tty_ldisc_autoload sysctl with the wrong
+proc_handler. .extra1 and .extra2 parameters are set to avoid other values
+thant SYSCTL_ZERO or SYSCTL_ONE to be set but proc_dointvec do not uses
+them.
 
-So not verify io lock(q->io_lockdep_map) for freeze & unfreeze in
-elevator_init_mq().
+This commit fixes this by using proc_dointvec_minmax instead of
+proc_dointvec.
 
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reported-by: Lai Yi <yi1.lai@linux.intel.com>
-Fixes: f1be1788a32e ("block: model freeze & enter queue as lock for supporting lockdep")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241031133723.303835-5-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 7c0cca7c847e ("tty: ldisc: add sysctl to prevent autoloading of ldiscs")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Reviewed-by: Lin Feng <linf@wangsu.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20241112131357.49582-4-nicolas.bouchinet@clip-os.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/elevator.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/tty/tty_io.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/elevator.c
-+++ b/block/elevator.c
-@@ -598,13 +598,19 @@ void elevator_init_mq(struct request_que
- 	 * drain any dispatch activities originated from passthrough
- 	 * requests, then no need to quiesce queue which may add long boot
- 	 * latency, especially when lots of disks are involved.
-+	 *
-+	 * Disk isn't added yet, so verifying queue lock only manually.
- 	 */
--	blk_mq_freeze_queue(q);
-+	blk_freeze_queue_start_non_owner(q);
-+	blk_freeze_acquire_lock(q, true, false);
-+	blk_mq_freeze_queue_wait(q);
-+
- 	blk_mq_cancel_work_sync(q);
- 
- 	err = blk_mq_init_sched(q, e);
- 
--	blk_mq_unfreeze_queue(q);
-+	blk_unfreeze_release_lock(q, true, false);
-+	blk_mq_unfreeze_queue_non_owner(q);
- 
- 	if (err) {
- 		pr_warn("\"%s\" elevator initialization failed, "
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -3631,7 +3631,7 @@ static struct ctl_table tty_table[] = {
+ 		.data		= &tty_ldisc_autoload,
+ 		.maxlen		= sizeof(tty_ldisc_autoload),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
+ 		.extra1		= SYSCTL_ZERO,
+ 		.extra2		= SYSCTL_ONE,
+ 	},
 
 
 
