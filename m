@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-98062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCA79E28AE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC419E2B09
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74F54B31A07
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B129BB4231C
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196E01F892E;
-	Tue,  3 Dec 2024 16:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2653D1F8930;
+	Tue,  3 Dec 2024 16:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFrDpwJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6aQp/RF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD47D1E2613;
-	Tue,  3 Dec 2024 16:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D091F892F;
+	Tue,  3 Dec 2024 16:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242666; cv=none; b=LdshrcVKUCm6ajWZj6FWwqqCXbuJp5S5VqTXFQkV7QHlrm1eSFXPKNrAj+agvo3N8u8/ueztc5/6hpOEcppMTCd1V6qy4EcRuZu6OAfhhG3+RDudILtPeIhmstEYSJXdh2d1LCBAD4jZyx308PxkVDe0aVU16izqFkOGOEl5ucs=
+	t=1733242675; cv=none; b=kAzRkLlDK5hQsgHzMUpprcNXaRzjN3Sun0xSAv0Deq2bOU6CZMU+AJPX7Q/NfuGn+JGF5XmzbQ7NotzeGW6pOxpSqNjhb9FlgSubLVp6WeQUv8EfZSFg5JlB6TCHQ/9RhVq/SmRkXyt08h+F0tudL9UaV37WEILeGjPD3PG2wYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242666; c=relaxed/simple;
-	bh=de7KA7KFVKzwdbE20mBstCiI9sI2s/2FWz34UiBzd8U=;
+	s=arc-20240116; t=1733242675; c=relaxed/simple;
+	bh=p+qpcbUKEpWeSO7Ws2fgdMdEIoF6CSAd+pnUBK+NPDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fN4Apj4WwChlUvzoDUiY1ve3Pw3L47/Xfh/JnWR4+Qk0ML9MkBUrdJXQ+bG9+E5eF6Y+7GzvKWuFDNR73Hh0aTVF4MfmVxepg88Z4eOCERf93n7wTuqBqZQVDyjILT++LZ1ilBEYgzGKs8+KJGUezR03CfrFWwk2k4JrtFzHmDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFrDpwJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFDFC4CECF;
-	Tue,  3 Dec 2024 16:17:45 +0000 (UTC)
+	 MIME-Version; b=aP6KRkdEDtcbPTMq97Qj5ROs6+zpM42MAOKssvkL6q10U0CcMVOG2QXUYt6oue1fbobyv1fEw65btHMUCxTJZsaIWRz8a+JEPWMe8JjdC5SmrAcveE0yT+j6+ZsI+DBx/eSwwlFzX3XXYSIQVbXVhIRyL6NAwAr+XaiqG6wJtcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6aQp/RF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAF6C4CECF;
+	Tue,  3 Dec 2024 16:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242666;
-	bh=de7KA7KFVKzwdbE20mBstCiI9sI2s/2FWz34UiBzd8U=;
+	s=korg; t=1733242675;
+	bh=p+qpcbUKEpWeSO7Ws2fgdMdEIoF6CSAd+pnUBK+NPDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFrDpwJ7yh4rMj8jqgPP97C+n8BSO4rXb9QrwhrNhri+Jm+QL2+bGSyO2pjaM2X9E
-	 KJaSrVvwy/T4S673l3MGg+57r+tchD7itPg4RnBIeJ6Gn9eUWffYSr1U+RXgK1H/hi
-	 1XS90umd8HWl3Mc5tPJpxZm9Mx7mPaQu/grQpUvg=
+	b=H6aQp/RF3eX2uOcsVjcsu1npQ2Pb0hFqz+snTApZsb/+MSus89htWQtM2+evc9w5M
+	 M0efpbtFhDiWndtVTvX9jubt1fobXtTrmLUq/E1KhBShYe4DEQk5lwZ06zLChx1psJ
+	 gLAdZdNviw3w/ncBdwOcyCXdywZYDcQRMKeHwJgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 772/826] um: Fix potential integer overflow during physmem setup
-Date: Tue,  3 Dec 2024 15:48:19 +0100
-Message-ID: <20241203144813.881864424@linuxfoundation.org>
+Subject: [PATCH 6.12 775/826] um: ubd: Initialize ubds disk pointer in ubd_add
+Date: Tue,  3 Dec 2024 15:48:22 +0100
+Message-ID: <20241203144813.999139955@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -68,46 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
+[ Upstream commit df700802abcac3c7c4a4ced099aa42b9a144eea8 ]
 
-This issue happens when the real map size is greater than LONG_MAX,
-which can be easily triggered on UML/i386.
+Currently, the initialization of the disk pointer in the ubd structure
+is missing. It should be initialized with the allocated gendisk pointer
+in ubd_add().
 
-Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
+Fixes: 32621ad7a7ea ("ubd: remove the ubd_gendisk array")
 Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-2-tiwei.btw@antgroup.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/physmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/um/drivers/ubd_kern.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
-index fb2adfb499452..ee693e0b2b58b 100644
---- a/arch/um/kernel/physmem.c
-+++ b/arch/um/kernel/physmem.c
-@@ -81,10 +81,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 			  unsigned long len, unsigned long long highmem)
- {
- 	unsigned long reserve = reserve_end - start;
--	long map_size = len - reserve;
-+	unsigned long map_size = len - reserve;
- 	int err;
+diff --git a/arch/um/drivers/ubd_kern.c b/arch/um/drivers/ubd_kern.c
+index 119df76627002..2bfb17373244b 100644
+--- a/arch/um/drivers/ubd_kern.c
++++ b/arch/um/drivers/ubd_kern.c
+@@ -898,6 +898,8 @@ static int ubd_add(int n, char **error_out)
+ 	if (err)
+ 		goto out_cleanup_disk;
  
--	if(map_size <= 0) {
-+	if (len <= reserve) {
- 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
- 			reserve, len);
- 		exit(1);
-@@ -95,7 +95,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
- 			    map_size, 1, 1, 1);
- 	if (err < 0) {
--		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
-+		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
- 			"failed - errno = %d\n", map_size,
- 			(void *) reserve_end, err);
- 		exit(1);
++	ubd_dev->disk = disk;
++
+ 	return 0;
+ 
+ out_cleanup_disk:
 -- 
 2.43.0
 
