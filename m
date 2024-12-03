@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE5B79E2A68
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:07:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE8E9E28EC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A329BC21E9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B511B366DD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C431F76A4;
-	Tue,  3 Dec 2024 16:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3771F7071;
+	Tue,  3 Dec 2024 15:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jBdxLYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHvd0BLk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C0C23CE;
-	Tue,  3 Dec 2024 16:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4C01F130F;
+	Tue,  3 Dec 2024 15:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241774; cv=none; b=DSLuZobjQ25eCRdX2uLBt8s1ahCAla6wrGhUlcO8rOInkFvWUu7gNTvM2vdU6GkeqZrl2pnOssPwPcsfaBjoqiF0xgmn0WCltwZkniGEDykgq0QMq3VOQBCuuTn97J0ay1kiSld5lEBjB2zlCkqok1RM37vUssE4xnaWWDEfGo0=
+	t=1733239508; cv=none; b=FBX/g9AV5YXZA6huWqqYDneC3wcRvhry6OCVBgzWwChxU8isyZLIqbo97z27uoAmz6oxTBQKhMXYqZCkkoXkVwpom4IsYc8vLg5PbUfTjRcBsBHDo6ManM+Q4n1+0iWZOvdqpT1iRC9L7YBSmJZI+Vcg1Q7ESf9T0i0Rayw6I2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241774; c=relaxed/simple;
-	bh=T/4HU6OWKt+WJdSqN9GghWypeEwp2jm3ZyGP8kGRv54=;
+	s=arc-20240116; t=1733239508; c=relaxed/simple;
+	bh=XKB+ovzRG8tuDflkS/JlsXyMp/gu/Fr31hG7kn/7GSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uw5Ez1PMeciZaER1wPH7rUxUeFUZLlRb1e4gbhA28pPRmNaxSwIdRn6tCSRtLf1567tUYSi+1/tTCP0S40OEpMByY9de662yF9cL1V7m/pFN4/KVav2KS4IHk/M0/2cWvYufQPgEO33XrYW9Q7hwurj9zF/ZknGX6eC5FTOjFs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jBdxLYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59463C4CECF;
-	Tue,  3 Dec 2024 16:02:54 +0000 (UTC)
+	 MIME-Version; b=QqT/+m4b/El1Bwzj1Dqk3H8Gv3/5Je6nCM/uDBYf0N33atCXbLH+4pSWCFdzvTaR2Zy8KkxfeYuSSzOlqgHv5HNId/iyIaqMMam7EuaHWkcSi5hN2X5cfjOZF5FhwJWmWYknzqEoLDFTifkvC4O+LwAIEbekcz5FSxD4AFAOQKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHvd0BLk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253D5C4CECF;
+	Tue,  3 Dec 2024 15:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241774;
-	bh=T/4HU6OWKt+WJdSqN9GghWypeEwp2jm3ZyGP8kGRv54=;
+	s=korg; t=1733239507;
+	bh=XKB+ovzRG8tuDflkS/JlsXyMp/gu/Fr31hG7kn/7GSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jBdxLYeJ6XOZV0QK1UZz82Vl0vSvRMc/cYUiqfCqqdpPuzicft3NF+csrYM3ouWS
-	 ZGe3GtCRBHcQICZ3HX4wOTRXPjpdBiabvBBckWnWPTt7NSYSeGnlZ/Ox8df0sCMGmn
-	 qVRd47Z0CUTDLBPNbjympr+nENEcQF2Yo12xPGVY=
+	b=yHvd0BLkJB8Y7xt73c3iBKVIec0sJEpA7Zoi7WDeI2l/UOwLw0vD5nDpAP7cRrf15
+	 N3YNlCCZr17W/hwDoXspUWd4U9qPUg0C66gt29xK+2qEWGz8+26mq6kxHw3nj7OTcA
+	 cpFaeJCCGz6Cku4+ooMwSK70YnquD4gqG2/KKUp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 481/826] f2fs: fix null-ptr-deref in f2fs_submit_page_bio()
-Date: Tue,  3 Dec 2024 15:43:28 +0100
-Message-ID: <20241203144802.526196739@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.11 637/817] ext4: supress data-race warnings in ext4_free_inodes_{count,set}()
+Date: Tue,  3 Dec 2024 15:43:29 +0100
+Message-ID: <20241203144020.806593923@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit b7d0a97b28083084ebdd8e5c6bccd12e6ec18faa ]
+commit 902cc179c931a033cd7f4242353aa2733bf8524c upstream.
 
-There's issue as follows when concurrently installing the f2fs.ko
-module and mounting the f2fs file system:
-KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
-RIP: 0010:__bio_alloc+0x2fb/0x6c0 [f2fs]
-Call Trace:
- <TASK>
- f2fs_submit_page_bio+0x126/0x8b0 [f2fs]
- __get_meta_page+0x1d4/0x920 [f2fs]
- get_checkpoint_version.constprop.0+0x2b/0x3c0 [f2fs]
- validate_checkpoint+0xac/0x290 [f2fs]
- f2fs_get_valid_checkpoint+0x207/0x950 [f2fs]
- f2fs_fill_super+0x1007/0x39b0 [f2fs]
- mount_bdev+0x183/0x250
- legacy_get_tree+0xf4/0x1e0
- vfs_get_tree+0x88/0x340
- do_new_mount+0x283/0x5e0
- path_mount+0x2b2/0x15b0
- __x64_sys_mount+0x1fe/0x270
- do_syscall_64+0x5f/0x170
+find_group_other() and find_group_orlov() read *_lo, *_hi with
+ext4_free_inodes_count without additional locking. This can cause
+data-race warning, but since the lock is held for most writes and free
+inodes value is generally not a problem even if it is incorrect, it is
+more appropriate to use READ_ONCE()/WRITE_ONCE() than to add locking.
+
+==================================================================
+BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
+
+write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
+ ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
+ __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Above issue happens as the biset of the f2fs file system is not
-initialized before register "f2fs_fs_type".
-To address above issue just register "f2fs_fs_type" at the last in
-init_f2fs_fs(). Ensure that all f2fs file system resources are
-initialized.
+read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
+ ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
+ find_group_other fs/ext4/ialloc.c:594 [inline]
+ __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
+ ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
+ vfs_symlink+0xca/0x1d0 fs/namei.c:4615
+ do_symlinkat+0xe3/0x340 fs/namei.c:4641
+ __do_sys_symlinkat fs/namei.c:4657 [inline]
+ __se_sys_symlinkat fs/namei.c:4654 [inline]
+ __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
+ x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: f543805fcd60 ("f2fs: introduce private bioset")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Link: https://patch.msgid.link/20241003125337.47283-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/ext4/super.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 87ab5696bd482..8d4ecb2e855e6 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4991,9 +4991,6 @@ static int __init init_f2fs_fs(void)
- 	err = f2fs_init_shrinker();
- 	if (err)
- 		goto free_sysfs;
--	err = register_filesystem(&f2fs_fs_type);
--	if (err)
--		goto free_shrinker;
- 	f2fs_create_root_stats();
- 	err = f2fs_init_post_read_processing();
- 	if (err)
-@@ -5016,7 +5013,12 @@ static int __init init_f2fs_fs(void)
- 	err = f2fs_create_casefold_cache();
- 	if (err)
- 		goto free_compress_cache;
-+	err = register_filesystem(&f2fs_fs_type);
-+	if (err)
-+		goto free_casefold_cache;
- 	return 0;
-+free_casefold_cache:
-+	f2fs_destroy_casefold_cache();
- free_compress_cache:
- 	f2fs_destroy_compress_cache();
- free_compress_mempool:
-@@ -5031,8 +5033,6 @@ static int __init init_f2fs_fs(void)
- 	f2fs_destroy_post_read_processing();
- free_root_stats:
- 	f2fs_destroy_root_stats();
--	unregister_filesystem(&f2fs_fs_type);
--free_shrinker:
- 	f2fs_exit_shrinker();
- free_sysfs:
- 	f2fs_exit_sysfs();
-@@ -5056,6 +5056,7 @@ static int __init init_f2fs_fs(void)
- 
- static void __exit exit_f2fs_fs(void)
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -353,9 +353,9 @@ __u32 ext4_free_group_clusters(struct su
+ __u32 ext4_free_inodes_count(struct super_block *sb,
+ 			      struct ext4_group_desc *bg)
  {
-+	unregister_filesystem(&f2fs_fs_type);
- 	f2fs_destroy_casefold_cache();
- 	f2fs_destroy_compress_cache();
- 	f2fs_destroy_compress_mempool();
-@@ -5064,7 +5065,6 @@ static void __exit exit_f2fs_fs(void)
- 	f2fs_destroy_iostat_processing();
- 	f2fs_destroy_post_read_processing();
- 	f2fs_destroy_root_stats();
--	unregister_filesystem(&f2fs_fs_type);
- 	f2fs_exit_shrinker();
- 	f2fs_exit_sysfs();
- 	f2fs_destroy_garbage_collection_cache();
--- 
-2.43.0
-
+-	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
++	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
+ 		(EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT ?
+-		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : 0);
++		 (__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
+ }
+ 
+ __u32 ext4_used_dirs_count(struct super_block *sb,
+@@ -409,9 +409,9 @@ void ext4_free_group_clusters_set(struct
+ void ext4_free_inodes_set(struct super_block *sb,
+ 			  struct ext4_group_desc *bg, __u32 count)
+ {
+-	bg->bg_free_inodes_count_lo = cpu_to_le16((__u16)count);
++	WRITE_ONCE(bg->bg_free_inodes_count_lo, cpu_to_le16((__u16)count));
+ 	if (EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT)
+-		bg->bg_free_inodes_count_hi = cpu_to_le16(count >> 16);
++		WRITE_ONCE(bg->bg_free_inodes_count_hi, cpu_to_le16(count >> 16));
+ }
+ 
+ void ext4_used_dirs_set(struct super_block *sb,
 
 
 
