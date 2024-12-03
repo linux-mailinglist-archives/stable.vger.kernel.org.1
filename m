@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-97997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29CC9E26D4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:17:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD939E2691
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:14:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AA1D167178
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F312891F2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9701F8AC8;
-	Tue,  3 Dec 2024 16:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CEF51F8932;
+	Tue,  3 Dec 2024 16:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVBPU9ul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNKmJYPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186991F8AC1;
-	Tue,  3 Dec 2024 16:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1AE1F8907;
+	Tue,  3 Dec 2024 16:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242450; cv=none; b=WfeIg0GCIKJI7o7O5JMYAaXBCqtJ1ai5E87Dw4aaM0SO5fWc6cc1NhbDWQ0b3rohTcbswDQDKdOio2Sru3c6yvgu+xn9LYuC+ezVeALU7WINRRG7K2A54auG4/usc3OkeDRHXbrGmWMgyA/i60CzylGvCDgr55NBBOY+BzIofC8=
+	t=1733242466; cv=none; b=igWLdNcoScJ5MmuHtwmLx6rZ66ynL9LgQkT22xPU9akZgk4wB2v4SBgQBA5KHthhqVDevowt9Yiexq74SJ5SbI2z9C3TITP5W+Ki14n1ywkg6K9ZY9QME5M3XguAd4o8kvy4rYAd3fl49JeLVOEVsO9EfeP0a1XMnMMRiUjuflE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242450; c=relaxed/simple;
-	bh=/IdRcZXmv0p69h2srg6/cN7kkmBHpczsbV2flJikA0s=;
+	s=arc-20240116; t=1733242466; c=relaxed/simple;
+	bh=ZoErjDthbfqxKHOVpqMBvnofjxSV1kq+PXpAVX4NEbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNu4U7YvXxYUA0A/8q+o0xFR49pEE+IMawhfH6Y7Jtt0utJJ0WzO7N1bUZ1ZQSpPrWdp7FZYHLiDM4OweKShFV7KOeONVwfW5JJBu+P4qTRCP1SAArEkSDxEX6fb0tfjpyQy8haJhf8EFyWeust6ePUJKJuFO1ZYASircCroo88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVBPU9ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87291C4CED6;
-	Tue,  3 Dec 2024 16:14:09 +0000 (UTC)
+	 MIME-Version; b=DHXAjINhXuv4zjXkfKVT5Opd1ddtWplHjaNBs8JHc7LqjDMCvdDkO2YdWPFHDhAsd0Kv7ULigAluXASLh4VeeQyO5TDFY0IHNplP2qIT0TCbCYonzYsxLeLhvqVYgYsh5gnrbKXX9s78Hga7QVDxLRfgoDmfpiyfoSAmMst92t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNKmJYPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE701C4CECF;
+	Tue,  3 Dec 2024 16:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242450;
-	bh=/IdRcZXmv0p69h2srg6/cN7kkmBHpczsbV2flJikA0s=;
+	s=korg; t=1733242466;
+	bh=ZoErjDthbfqxKHOVpqMBvnofjxSV1kq+PXpAVX4NEbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVBPU9ulZFdj3Gp70bkW4PfrpkkNiesQ+/sBdYqWEUnNf+8YIF6/UzysgYPr6bVT+
-	 SfUMk/9RTf5vQINcLxIl0BsxaviHjqqYxl85XqHnGBl7j2m0VIcu67m1qBifqV9hgZ
-	 SEvBhf7Ii2T+RbBUMcwcBRDcdKKlRxSWCJurnK0M=
+	b=pNKmJYPwsrj95tLn7nzXMP7FZzHnBDf7BocZz0XVgGJ8e+Qx3G3UdjPH+GcwT38Mn
+	 ju0fBD2qY1sfvs0FcHWRN+gJFdvaWaZLvclAh+ExWNkCnaQjnnDprQsepH4fRx7b7/
+	 Fdc/O/OZRl7hz+GtwqrKbW7fxBW20jS0NU676Wic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.12 707/826] x86/CPU/AMD: Terminate the erratum_1386_microcode array
-Date: Tue,  3 Dec 2024 15:47:14 +0100
-Message-ID: <20241203144811.339229999@linuxfoundation.org>
+	Michal Simek <michal.simek@amd.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 6.12 711/826] dt-bindings: serial: rs485: Fix rs485-rts-delay property
+Date: Tue,  3 Dec 2024 15:47:18 +0100
+Message-ID: <20241203144811.495675096@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,36 +65,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Michal Simek <michal.simek@amd.com>
 
-commit ff6cdc407f4179748f4673c39b0921503199a0ad upstream.
+commit 12b3642b6c242061d3ba84e6e3050c3141ded14c upstream.
 
-The erratum_1386_microcode array requires an empty entry at the end.
-Otherwise x86_match_cpu_with_stepping() will continue iterate the array after
-it ended.
+Code expects array only with 2 items which should be checked.
+But also item checking is not working as it should likely because of
+incorrect items description.
 
-Add an empty entry to erratum_1386_microcode to its end.
-
-Fixes: 29ba89f189528 ("x86/CPU/AMD: Improve the erratum 1386 workaround")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20241126134722.480975-1-bigeasy@linutronix.de
+Fixes: d50f974c4f7f ("dt-bindings: serial: Convert rs485 bindings to json-schema")
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/820c639b9e22fe037730ed44d1b044cdb6d28b75.1726480384.git.michal.simek@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |    1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/serial/rs485.yaml |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -798,6 +798,7 @@ static void init_amd_bd(struct cpuinfo_x
- static const struct x86_cpu_desc erratum_1386_microcode[] = {
- 	AMD_CPU_DESC(0x17,  0x1, 0x2, 0x0800126e),
- 	AMD_CPU_DESC(0x17, 0x31, 0x0, 0x08301052),
-+	{},
- };
+--- a/Documentation/devicetree/bindings/serial/rs485.yaml
++++ b/Documentation/devicetree/bindings/serial/rs485.yaml
+@@ -18,16 +18,15 @@ properties:
+     description: prop-encoded-array <a b>
+     $ref: /schemas/types.yaml#/definitions/uint32-array
+     items:
+-      items:
+-        - description: Delay between rts signal and beginning of data sent in
+-            milliseconds. It corresponds to the delay before sending data.
+-          default: 0
+-          maximum: 100
+-        - description: Delay between end of data sent and rts signal in milliseconds.
+-            It corresponds to the delay after sending data and actual release
+-            of the line.
+-          default: 0
+-          maximum: 100
++      - description: Delay between rts signal and beginning of data sent in
++          milliseconds. It corresponds to the delay before sending data.
++        default: 0
++        maximum: 100
++      - description: Delay between end of data sent and rts signal in milliseconds.
++          It corresponds to the delay after sending data and actual release
++          of the line.
++        default: 0
++        maximum: 100
  
- static void fix_erratum_1386(struct cpuinfo_x86 *c)
+   rs485-rts-active-high:
+     description: drive RTS high when sending (this is the default).
 
 
 
