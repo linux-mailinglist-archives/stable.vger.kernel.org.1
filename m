@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-97294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAB09E23ED
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F119E2390
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:39:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA2E16BB16
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1719287157
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF77E1F9403;
-	Tue,  3 Dec 2024 15:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313BB1F9437;
+	Tue,  3 Dec 2024 15:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdfRE8aO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTg8hgYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFF51F8907;
-	Tue,  3 Dec 2024 15:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19221F8907;
+	Tue,  3 Dec 2024 15:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240073; cv=none; b=ZYW7FH4s/8zQ3hos1AWa/Rb4ZGY02yPA9FVIs38QZqnMLKyHGs/nlS4M0jUGKyxTsBhUUV/wv5eS0QRX7RbxaTgj5NwXnuK1fInErr+hzbT4A6Vuu7ZmJwTtYjaswXlfkYIdOKRDPc7AvPl0eXsP+ZSOF2qO74scmbbguxaJ88Q=
+	t=1733240080; cv=none; b=lIJxdJuyADouCEu4kPdxD69JN/zQRSn6tcl8V4fh3QfkM6DAKpnSb2gv5/7AGMVq8xhJ07/OMSUGIsvJJB1rbtNsYS9dFhdInGxLM8MwexQzD6G7gM64QsKSRICQGQddgfX1i+O0Z4vOWh6jJec1UxCuO5ll+C4gCtcfBJCiZe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240073; c=relaxed/simple;
-	bh=zhoKENNa80HehLkrK7GzHotJAW6fpZlWGL1DpoMFcVw=;
+	s=arc-20240116; t=1733240080; c=relaxed/simple;
+	bh=N06vjeda1RmHdOZ2jXblchq/UnMw1WX/1jTjL9ekx/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQdFmUv/X92zNQ4T1M31/KN6JHKZzgmQQWmaCEnfT3AxKUKeG0Uq5fmRF8BZbfv+LL1mY28MClTukk4++hCwsoHWXfdYrKv7t1ilvA0GFm+huygtUKTBayfCFZTnAsj6xFpWdmom0PHQ72hAzKTo1fUwsBnpU9Un99Ip0B7Qr84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdfRE8aO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314DCC4CECF;
-	Tue,  3 Dec 2024 15:34:33 +0000 (UTC)
+	 MIME-Version; b=Mu3ukzoE+8jkFAwNqQ4+gNdzvWxs6Vw7Gbh2uYKKp4kzPMn4W3oxQiUZg6R/BTbcthASnTh4EBAOkOXpPyKme6VOG8W7gZxxHFnw/bEl5nY9FRg16vPTiLBj6OPPtVRyhHPYL0UuKtNrGoob/dLdQ4QOTFcYNZetZvxSZEMQE18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTg8hgYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5F8C4CECF;
+	Tue,  3 Dec 2024 15:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240073;
-	bh=zhoKENNa80HehLkrK7GzHotJAW6fpZlWGL1DpoMFcVw=;
+	s=korg; t=1733240079;
+	bh=N06vjeda1RmHdOZ2jXblchq/UnMw1WX/1jTjL9ekx/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdfRE8aOjlsJGN4Zj78W+dgP/kSl+ClC7to15dCcHHW7EMS7aHt3dFB00B5B1YDzn
-	 Jz4OB9t2yjQKOUO5Woqv5teIYIKsPgZbc8vbv2iGdi+IMw6IKdy6Dw6NqUEFufA/Qg
-	 a0KveJnFB/6Z3OSj3vsfIAbXdFNHJb7V+1PRvm7g=
+	b=eTg8hgYerOO0+1/Q90Jhpq9NUoBbb7HAGSuK+rqlCuz3P26j7mbw0++vZGxKC9NxK
+	 +8zUSbB2AtWYOEDMuw8w7//WGAuDpmWhZXzjr6s9hdsCRMuODA+h5L12+YyhHupp6s
+	 woRMhNYUaFYLqMGY2V3SoL7SGCQTf1nCAQc/AeAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 014/826] s390/pageattr: Implement missing kernel_page_present()
-Date: Tue,  3 Dec 2024 15:35:41 +0100
-Message-ID: <20241203144744.011534438@linuxfoundation.org>
+Subject: [PATCH 6.12 016/826] brd: defer automatic disk creation until module initialization succeeds
+Date: Tue,  3 Dec 2024 15:35:43 +0100
+Message-ID: <20241203144744.088495701@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,66 +68,206 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit 2835f8bf5530750c3381166005934f996a83ad05 ]
+[ Upstream commit 826cc42adf44930a633d11a5993676d85ddb0842 ]
 
-kernel_page_present() was intentionally not implemented when adding
-ARCH_HAS_SET_DIRECT_MAP support, since it was only used for suspend/resume
-which is not supported anymore on s390.
+My colleague Wupeng found the following problems during fault injection:
 
-A new bpf use case led to a compile error specific to s390. Even though
-this specific use case went away implement kernel_page_present(), so that
-the API is complete and potential future users won't run into this problem.
+BUG: unable to handle page fault for address: fffffbfff809d073
+PGD 6e648067 P4D 123ec8067 PUD 123ec4067 PMD 100e38067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 5 UID: 0 PID: 755 Comm: modprobe Not tainted 6.12.0-rc3+ #17
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.16.1-2.fc37 04/01/2014
+RIP: 0010:__asan_load8+0x4c/0xa0
+...
+Call Trace:
+ <TASK>
+ blkdev_put_whole+0x41/0x70
+ bdev_release+0x1a3/0x250
+ blkdev_release+0x11/0x20
+ __fput+0x1d7/0x4a0
+ task_work_run+0xfc/0x180
+ syscall_exit_to_user_mode+0x1de/0x1f0
+ do_syscall_64+0x6b/0x170
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Reported-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://lore.kernel.org/all/045de961-ac69-40cc-b141-ab70ec9377ec@iogearbox.net
-Fixes: 0490d6d7ba0a ("s390/mm: enable ARCH_HAS_SET_DIRECT_MAP")
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+loop_init() is calling loop_add() after __register_blkdev() succeeds and
+is ignoring disk_add() failure from loop_add(), for loop_add() failure
+is not fatal and successfully created disks are already visible to
+bdev_open().
+
+brd_init() is currently calling brd_alloc() before __register_blkdev()
+succeeds and is releasing successfully created disks when brd_init()
+returns an error. This can cause UAF for the latter two case:
+
+case 1:
+    T1:
+modprobe brd
+  brd_init
+    brd_alloc(0) // success
+      add_disk
+        disk_scan_partitions
+          bdev_file_open_by_dev // alloc file
+          fput // won't free until back to userspace
+    brd_alloc(1) // failed since mem alloc error inject
+  // error path for modprobe will release code segment
+  // back to userspace
+  __fput
+    blkdev_release
+      bdev_release
+        blkdev_put_whole
+          bdev->bd_disk->fops->release // fops is freed now, UAF!
+
+case 2:
+    T1:                            T2:
+modprobe brd
+  brd_init
+    brd_alloc(0) // success
+                                   open(/dev/ram0)
+    brd_alloc(1) // fail
+  // error path for modprobe
+
+                                   close(/dev/ram0)
+                                   ...
+                                   /* UAF! */
+                                   bdev->bd_disk->fops->release
+
+Fix this problem by following what loop_init() does. Besides,
+reintroduce brd_devices_mutex to help serialize modifications to
+brd_list.
+
+Fixes: 7f9b348cb5e9 ("brd: convert to blk_alloc_disk/blk_cleanup_disk")
+Reported-by: Wupeng Ma <mawupeng1@huawei.com>
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20241030034914.907829-1-yangerkun@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/set_memory.h |  1 +
- arch/s390/mm/pageattr.c            | 15 +++++++++++++++
- 2 files changed, 16 insertions(+)
+ drivers/block/brd.c | 66 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 44 insertions(+), 22 deletions(-)
 
-diff --git a/arch/s390/include/asm/set_memory.h b/arch/s390/include/asm/set_memory.h
-index 06fbabe2f66c9..cb4cc0f59012f 100644
---- a/arch/s390/include/asm/set_memory.h
-+++ b/arch/s390/include/asm/set_memory.h
-@@ -62,5 +62,6 @@ __SET_MEMORY_FUNC(set_memory_4k, SET_MEMORY_4K)
+diff --git a/drivers/block/brd.c b/drivers/block/brd.c
+index 2fd1ed1017481..5a95671d81515 100644
+--- a/drivers/block/brd.c
++++ b/drivers/block/brd.c
+@@ -316,8 +316,40 @@ __setup("ramdisk_size=", ramdisk_size);
+  * (should share code eventually).
+  */
+ static LIST_HEAD(brd_devices);
++static DEFINE_MUTEX(brd_devices_mutex);
+ static struct dentry *brd_debugfs_dir;
  
- int set_direct_map_invalid_noflush(struct page *page);
- int set_direct_map_default_noflush(struct page *page);
-+bool kernel_page_present(struct page *page);
- 
- #endif
-diff --git a/arch/s390/mm/pageattr.c b/arch/s390/mm/pageattr.c
-index 5f805ad42d4c3..aec9eb16b6f7b 100644
---- a/arch/s390/mm/pageattr.c
-+++ b/arch/s390/mm/pageattr.c
-@@ -406,6 +406,21 @@ int set_direct_map_default_noflush(struct page *page)
- 	return __set_memory((unsigned long)page_to_virt(page), 1, SET_MEMORY_DEF);
- }
- 
-+bool kernel_page_present(struct page *page)
++static struct brd_device *brd_find_or_alloc_device(int i)
 +{
-+	unsigned long addr;
-+	unsigned int cc;
++	struct brd_device *brd;
 +
-+	addr = (unsigned long)page_address(page);
-+	asm volatile(
-+		"	lra	%[addr],0(%[addr])\n"
-+		"	ipm	%[cc]\n"
-+		: [cc] "=d" (cc), [addr] "+a" (addr)
-+		:
-+		: "cc");
-+	return (cc >> 28) == 0;
++	mutex_lock(&brd_devices_mutex);
++	list_for_each_entry(brd, &brd_devices, brd_list) {
++		if (brd->brd_number == i) {
++			mutex_unlock(&brd_devices_mutex);
++			return ERR_PTR(-EEXIST);
++		}
++	}
++
++	brd = kzalloc(sizeof(*brd), GFP_KERNEL);
++	if (!brd) {
++		mutex_unlock(&brd_devices_mutex);
++		return ERR_PTR(-ENOMEM);
++	}
++	brd->brd_number	= i;
++	list_add_tail(&brd->brd_list, &brd_devices);
++	mutex_unlock(&brd_devices_mutex);
++	return brd;
 +}
 +
- #if defined(CONFIG_DEBUG_PAGEALLOC) || defined(CONFIG_KFENCE)
++static void brd_free_device(struct brd_device *brd)
++{
++	mutex_lock(&brd_devices_mutex);
++	list_del(&brd->brd_list);
++	mutex_unlock(&brd_devices_mutex);
++	kfree(brd);
++}
++
+ static int brd_alloc(int i)
+ {
+ 	struct brd_device *brd;
+@@ -340,14 +372,9 @@ static int brd_alloc(int i)
+ 					  BLK_FEAT_NOWAIT,
+ 	};
  
- static void ipte_range(pte_t *pte, unsigned long address, int nr)
+-	list_for_each_entry(brd, &brd_devices, brd_list)
+-		if (brd->brd_number == i)
+-			return -EEXIST;
+-	brd = kzalloc(sizeof(*brd), GFP_KERNEL);
+-	if (!brd)
+-		return -ENOMEM;
+-	brd->brd_number		= i;
+-	list_add_tail(&brd->brd_list, &brd_devices);
++	brd = brd_find_or_alloc_device(i);
++	if (IS_ERR(brd))
++		return PTR_ERR(brd);
+ 
+ 	xa_init(&brd->brd_pages);
+ 
+@@ -378,8 +405,7 @@ static int brd_alloc(int i)
+ out_cleanup_disk:
+ 	put_disk(disk);
+ out_free_dev:
+-	list_del(&brd->brd_list);
+-	kfree(brd);
++	brd_free_device(brd);
+ 	return err;
+ }
+ 
+@@ -398,8 +424,7 @@ static void brd_cleanup(void)
+ 		del_gendisk(brd->brd_disk);
+ 		put_disk(brd->brd_disk);
+ 		brd_free_pages(brd);
+-		list_del(&brd->brd_list);
+-		kfree(brd);
++		brd_free_device(brd);
+ 	}
+ }
+ 
+@@ -426,16 +451,6 @@ static int __init brd_init(void)
+ {
+ 	int err, i;
+ 
+-	brd_check_and_reset_par();
+-
+-	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
+-
+-	for (i = 0; i < rd_nr; i++) {
+-		err = brd_alloc(i);
+-		if (err)
+-			goto out_free;
+-	}
+-
+ 	/*
+ 	 * brd module now has a feature to instantiate underlying device
+ 	 * structure on-demand, provided that there is an access dev node.
+@@ -451,11 +466,18 @@ static int __init brd_init(void)
+ 	 *	dynamically.
+ 	 */
+ 
++	brd_check_and_reset_par();
++
++	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
++
+ 	if (__register_blkdev(RAMDISK_MAJOR, "ramdisk", brd_probe)) {
+ 		err = -EIO;
+ 		goto out_free;
+ 	}
+ 
++	for (i = 0; i < rd_nr; i++)
++		brd_alloc(i);
++
+ 	pr_info("brd: module loaded\n");
+ 	return 0;
+ 
 -- 
 2.43.0
 
