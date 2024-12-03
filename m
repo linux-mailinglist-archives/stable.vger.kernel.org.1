@@ -1,88 +1,99 @@
-Return-Path: <stable+bounces-96220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDC19E18D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:07:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D649E18F6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5CEBB2AEA7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:11:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0F1EB37ED2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BFB1DE3A7;
-	Tue,  3 Dec 2024 09:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56351DE3CF;
+	Tue,  3 Dec 2024 09:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9k9Z3QO"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="TrHsJBIr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856CD16EBE9
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 09:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C765416EBE9;
+	Tue,  3 Dec 2024 09:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733217070; cv=none; b=VFYMn2OarGJRU+aC3ORw0i7m8q9bYglmjW/lZxNGml/BzCk2U6SEDfIjvBF5RTFHVJ0C94chYSWRf7DHSonJ7S8xvwaSOZJ5FvOllIWonTAJZjHP7/kz3oLTUhT/idcuAsXy1+MCxTf+Ie09s4PQUMGyCRnL5e2AZk9tjIgb2os=
+	t=1733217085; cv=none; b=EOFn0J5zsqQumIp/HkiSpMsF8a6B1+Yeopp9UWrTfRVOA4LhQUhgrtBoAJ1pb8Q8xO7oWQ9UnQYadkHqFcS0X53hhXOR9tcSoZwv/cRdRGC9Sn3unPxxTZS5NyqdxxrCuBOa26ZPRlNWDgtlST7QsBu0hztRTxK8UQ9WTOiX+FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733217070; c=relaxed/simple;
-	bh=rRVF4h2gsRpUCs4y153rMNNlRAfwgDlBWdEo9cpBaq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KgPpKRezIKd0ZQEelQvveZWyZoB3FkMvzm4TVUPJYuVrF8Jxs+oIdzZ2j75ut+Guv2FJ0DvdxVm+GNjSZClem0/sIaH0A16bt8phYSU1nkt5NuytcjJECD+nZPW/1mXeE/7t50xYnABaCJl76qTH1vDs78CZALNIR8RTn7IgXWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9k9Z3QO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E853EC4CECF;
-	Tue,  3 Dec 2024 09:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733217070;
-	bh=rRVF4h2gsRpUCs4y153rMNNlRAfwgDlBWdEo9cpBaq4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u9k9Z3QO8mA9oFgLqHKvJzEGwLe4xMn98ZKX3SKDiEgsoAyVvuxWXi46MQvHL5xtC
-	 /dtTmgjHSWEEj/xW/0lQFYdtjf+mxCEd4mUjrR7rlFc5MWK8QIrDRN89r1x1GJc/Bl
-	 0XV+ztVOoiOR8yKwz1Z6uuq1Ks7PtL5HoKZti7Ww=
-Date: Tue, 3 Dec 2024 10:11:07 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?B?Q3Pza+FzLA==?= Bence <csokas.bence@prolan.hu>
-Cc: stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Sasha Levin <sashal@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH 6.11 v3 3/3] net: fec: make PPS channel configurable
-Message-ID: <2024120358-saloon-diligent-2647@gregkh>
-References: <20241202155713.3564460-1-csokas.bence@prolan.hu>
- <20241202155713.3564460-4-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1733217085; c=relaxed/simple;
+	bh=4z9wjMw37079j2r6buoMpzHyFC0KucYZv+vs9hrEA/E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k+WDWMd+YSP0/Mz/dmCWHpPqrDI4bXrG52kwzRxP5ivC3PnsSlfse1WRYplX2CRzEdtpMRYtHRpcywsvyWRTIi1cqU9I8Rwewm9j7qFHaBK1MmEKvFqGuCO0cMQYVThktIEwqDsDONwCrGaE+F96XwLEgVX3kcMXJvSEA9FEt7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=TrHsJBIr; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1733217081;
+	bh=4z9wjMw37079j2r6buoMpzHyFC0KucYZv+vs9hrEA/E=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TrHsJBIrhKoyAXs2t27PWe6JrA4sJubI0VZ+lfObSmLFwW/otfwIiCH/fgoy8dXZ3
+	 2E85Vyg+ilRC0a40QiXQD2beli51yd8OtB5jy7vrdbSVmKaC4/I745iWJRYlJoGlcw
+	 tj/rxrCUneW7twPwuqKmGTlcCFMdqOzv/h+TaHPxtuMihU2Nz/tVcSKGdkDFiqrg1k
+	 iPypeQta1oGG+AjXVZB5okA74vyKCXcJiy5RSZxHImbWyi2xImRcSeJdPw0rgpSwOW
+	 SgbRVmtqthdAxZkroxMu19GOyGO3aAQ9n7gtkkL538F5xCS3YRacoE93aYt6R84D88
+	 5t92VNze4Etiw==
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7601117E14D7;
+	Tue,  3 Dec 2024 10:11:21 +0100 (CET)
+Message-ID: <a06f1b59-7f50-41c0-94b4-9c7ebefdc58f@collabora.com>
+Date: Tue, 3 Dec 2024 10:11:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 2/2] arm64: dts: mediatek: mt8195-cherry: Mark USB 3.0
+ on xhci1 as disabled
+To: Chen-Yu Tsai <wenst@chromium.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Matthias Brugger <matthias.bgg@gmail.com>, devicetree@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, Koichiro Den
+ <koichiro.den@canonical.com>,
+ =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>
+References: <20241202081624.156285-1-wenst@chromium.org>
+ <20241202081624.156285-2-wenst@chromium.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <20241202081624.156285-2-wenst@chromium.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241202155713.3564460-4-csokas.bence@prolan.hu>
 
-On Mon, Dec 02, 2024 at 04:57:13PM +0100, Csókás, Bence wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+Il 02/12/24 09:16, Chen-Yu Tsai ha scritto:
+> [ Upstream commit 09d385679487c58f0859c1ad4f404ba3df2f8830 ]
 > 
-> Depending on the SoC where the FEC is integrated into the PPS channel
-> might be routed to different timer instances. Make this configurable
-> from the devicetree.
+> USB 3.0 on xhci1 is not used, as the controller shares the same PHY as
+> pcie1. The latter is enabled to support the M.2 PCIe WLAN card on this
+> design.
 > 
-> When the related DT property is not present fallback to the previous
-> default and use channel 0.
+> Mark USB 3.0 as disabled on this controller using the
+> "mediatek,u3p-dis-msk" property.
 > 
-> Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> Tested-by: Rafael Beims <rafael.beims@toradex.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> 
-> (cherry picked from commit 566c2d83887f0570056833102adc5b88e681b0c7)
-> Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+> Reported-by: NÃ­colas F. R. A. Prado <nfraprado@collabora.com> #KernelCI
+> Closes: https://lore.kernel.org/all/9fce9838-ef87-4d1b-b3df-63e1ddb0ec51@notapiano/
+> Fixes: b6267a396e1c ("arm64: dts: mediatek: cherry: Enable T-PHYs and USB XHCI controllers")
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/r/20240731034411.371178-2-wenst@chromium.org
+> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 
-Again, no blank lines.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-thanks,
 
-greg k-h
 
