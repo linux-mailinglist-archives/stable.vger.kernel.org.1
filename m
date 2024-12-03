@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-97975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3449E2B0F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:39:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997AD9E29FA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51143B6813C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C775BC48AA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82B51F76DB;
-	Tue,  3 Dec 2024 16:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0611F76B9;
+	Tue,  3 Dec 2024 15:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPO/cOk9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MviLk6pX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6630081ADA;
-	Tue,  3 Dec 2024 16:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1E01F754A;
+	Tue,  3 Dec 2024 15:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242378; cv=none; b=f9ebOHK7aOSGTkDdKYv+VDElrSRwkve13Nvmmw2pvqWK3ui3fgvnUCv0mtWYbjhpuViT9AQ75ypZYFd7S3nECkKfv6ivO4zppSLnzqv2qCtfMISnC2Mv48/k3179WrtPiaM6vmqD/FeV4D8eQmcjBiWmyGgoQarw2Z24d107llQ=
+	t=1733240013; cv=none; b=p0quO+GV7k7zeSeZinu14UInjOKfbVrj+zCjuuzE1pkbqbEI4eEB+phZTukQdBpEagwHs10/0FEyvdqimRVJVtWNfeDr4p/sQLhN1c5Yp02O1c7pl+TlVk0SlTVhtCZLSqVL0VD/NOGGPVmxCdhhIoBnEwtEuhvjXZHdX0l0v8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242378; c=relaxed/simple;
-	bh=8OA7DPLX3LjFGEUS2R1J17JOwHlF1ZKrwQjhWlFUdgo=;
+	s=arc-20240116; t=1733240013; c=relaxed/simple;
+	bh=HMrgQSSBpCT/A6no28pVBK9BfX0NB2ad2BevloRquJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVl+oX9nLc6pfs27/KFUIyadkvJwpT0pQFcgtgw+84xoGdDUEhHApswWx87xFhP6/pFgVkh8zwbiO+eaE5hY+Ln5997ZU5VuuVaXc+n/JNGOcNo1+mZbedRINLlfe+zAgZCF6v/8IgcsvzdAzHuCb6YcQwmckb+9XYxHsmTjpo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPO/cOk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFABDC4CECF;
-	Tue,  3 Dec 2024 16:12:57 +0000 (UTC)
+	 MIME-Version; b=UmRsrIm47aUKECoBye0dKYZDsGlmB5ovLWSv5W+uaXqn1nSrG7QjpnBKoXSbslv3sA4ChB4Wkxpl6NH/Kp5PT31UAr73z4AQROoKipR8rhXFQKvjcWdnGvvly/mJmdFuq7Hb4djML+ersyhhKgiaQlEXtThzUbXCJch88q5p4K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MviLk6pX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B2DC4CECF;
+	Tue,  3 Dec 2024 15:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242378;
-	bh=8OA7DPLX3LjFGEUS2R1J17JOwHlF1ZKrwQjhWlFUdgo=;
+	s=korg; t=1733240012;
+	bh=HMrgQSSBpCT/A6no28pVBK9BfX0NB2ad2BevloRquJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPO/cOk9Uh8UvbJK0IF650t1sp4I8FtmEutkcb+uGuMN8OhBGyZY0UUIqjk11pIXa
-	 vQf6uv1E99W1HhUfsppUtgxkLZZ3v8egHr5qppmAwnKReAdnx863dx/KxBk00X0P6t
-	 nk0LzoswTxm64cRITZSohcn3+GWZyAUMawPeV6gs=
+	b=MviLk6pXXC6EXVXzjaF4zVGA1rvZ64O4BIpA+TDfpseCVnDswiiTWgQYQhOYvZDUl
+	 ls0mOhns1DPqMyNgqaTnKLKnerZGCOB01Jg+D5NyS63g+USbX9ZCODRQ0rakOKkquJ
+	 bMoOJH603WYcoDR5FbiEEfR9bwaEyFsqB9G85FRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	kernel test robot <oliver.sang@intel.com>,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.12 653/826] Compiler Attributes: disable __counted_by for clang < 19.1.3
-Date: Tue,  3 Dec 2024 15:46:20 +0100
-Message-ID: <20241203144809.226660268@linuxfoundation.org>
+	Benjamin Coddington <bcodding@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 810/817] nfs/blocklayout: Limit repeat device registration on failure
+Date: Tue,  3 Dec 2024 15:46:22 +0100
+Message-ID: <20241203144028.070920557@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,141 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Hendrik Farr <kernel@jfarr.cc>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-commit f06e108a3dc53c0f5234d18de0bd224753db5019 upstream.
+[ Upstream commit 614733f9441ed53bb442d4734112ec1e24bd6da7 ]
 
-This patch disables __counted_by for clang versions < 19.1.3 because
-of the two issues listed below. It does this by introducing
-CONFIG_CC_HAS_COUNTED_BY.
+Every pNFS SCSI IO wants to do LAYOUTGET, then within the layout find the
+device which can drive GETDEVINFO, then finally may need to prep the device
+with a reservation.  This slow work makes a mess of IO latencies if one of
+the later steps is going to fail for awhile.
 
-1. clang < 19.1.2 has a bug that can lead to __bdos returning 0:
-https://github.com/llvm/llvm-project/pull/110497
+If we're unable to register a SCSI device, ensure we mark the device as
+unavailable so that it will timeout and be re-added via GETDEVINFO.  This
+avoids repeated doomed attempts to register a device in the IO path.
 
-2. clang < 19.1.3 has a bug that can lead to __bdos being off by 4:
-https://github.com/llvm/llvm-project/pull/112636
+Add some clarifying comments as well.
 
-Fixes: c8248faf3ca2 ("Compiler Attributes: counted_by: Adjust name and identifier expansion")
-Cc: stable@vger.kernel.org # 6.6.x: 16c31dd7fdf6: Compiler Attributes: counted_by: bump min gcc version
-Cc: stable@vger.kernel.org # 6.6.x: 2993eb7a8d34: Compiler Attributes: counted_by: fixup clang URL
-Cc: stable@vger.kernel.org # 6.6.x: 231dc3f0c936: lkdtm/bugs: Improve warning message for compilers without counted_by support
-Cc: stable@vger.kernel.org # 6.6.x
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://lore.kernel.org/all/20240913164630.GA4091534@thelio-3990X/
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202409260949.a1254989-oliver.sang@intel.com
-Link: https://lore.kernel.org/all/Zw8iawAF5W2uzGuh@archlinux/T/#m204c09f63c076586a02d194b87dffc7e81b8de7b
-Suggested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Jan Hendrik Farr <kernel@jfarr.cc>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://lore.kernel.org/r/20241029140036.577804-2-kernel@jfarr.cc
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d869da91cccb ("nfs/blocklayout: Fix premature PR key unregistration")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/lkdtm/bugs.c           |    2 +-
- include/linux/compiler_attributes.h |   13 -------------
- include/linux/compiler_types.h      |   19 +++++++++++++++++++
- init/Kconfig                        |    9 +++++++++
- lib/overflow_kunit.c                |    2 +-
- 5 files changed, 30 insertions(+), 15 deletions(-)
+ fs/nfs/blocklayout/blocklayout.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/lkdtm/bugs.c
-+++ b/drivers/misc/lkdtm/bugs.c
-@@ -445,7 +445,7 @@ static void lkdtm_FAM_BOUNDS(void)
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index 0becdec129704..47189476b5538 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -571,19 +571,32 @@ bl_find_get_deviceid(struct nfs_server *server,
+ 	if (!node)
+ 		return ERR_PTR(-ENODEV);
  
- 	pr_err("FAIL: survived access of invalid flexible array member index!\n");
++	/*
++	 * Devices that are marked unavailable are left in the cache with a
++	 * timeout to avoid sending GETDEVINFO after every LAYOUTGET, or
++	 * constantly attempting to register the device.  Once marked as
++	 * unavailable they must be deleted and never reused.
++	 */
+ 	if (test_bit(NFS_DEVICEID_UNAVAILABLE, &node->flags)) {
+ 		unsigned long end = jiffies;
+ 		unsigned long start = end - PNFS_DEVICE_RETRY_TIMEOUT;
  
--	if (!__has_attribute(__counted_by__))
-+	if (!IS_ENABLED(CONFIG_CC_HAS_COUNTED_BY))
- 		pr_warn("This is expected since this %s was built with a compiler that does not support __counted_by\n",
- 			lkdtm_kernel_info);
- 	else if (IS_ENABLED(CONFIG_UBSAN_BOUNDS))
---- a/include/linux/compiler_attributes.h
-+++ b/include/linux/compiler_attributes.h
-@@ -95,19 +95,6 @@
- #endif
+ 		if (!time_in_range(node->timestamp_unavailable, start, end)) {
++			/* Uncork subsequent GETDEVINFO operations for this device */
+ 			nfs4_delete_deviceid(node->ld, node->nfs_client, id);
+ 			goto retry;
+ 		}
+ 		goto out_put;
+ 	}
  
- /*
-- * Optional: only supported since gcc >= 15
-- * Optional: only supported since clang >= 18
-- *
-- *   gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108896
-- * clang: https://github.com/llvm/llvm-project/pull/76348
-- */
--#if __has_attribute(__counted_by__)
--# define __counted_by(member)		__attribute__((__counted_by__(member)))
--#else
--# define __counted_by(member)
--#endif
--
--/*
-  * Optional: not supported by gcc
-  * Optional: only supported since clang >= 14.0
-  *
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -324,6 +324,25 @@ struct ftrace_likely_data {
- #endif
+-	if (!bl_register_dev(container_of(node, struct pnfs_block_dev, node)))
++	if (!bl_register_dev(container_of(node, struct pnfs_block_dev, node))) {
++		/*
++		 * If we cannot register, treat this device as transient:
++		 * Make a negative cache entry for the device
++		 */
++		nfs4_mark_deviceid_unavailable(node);
+ 		goto out_put;
++	}
  
- /*
-+ * Optional: only supported since gcc >= 15
-+ * Optional: only supported since clang >= 18
-+ *
-+ *   gcc: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=108896
-+ * clang: https://github.com/llvm/llvm-project/pull/76348
-+ *
-+ * __bdos on clang < 19.1.2 can erroneously return 0:
-+ * https://github.com/llvm/llvm-project/pull/110497
-+ *
-+ * __bdos on clang < 19.1.3 can be off by 4:
-+ * https://github.com/llvm/llvm-project/pull/112636
-+ */
-+#ifdef CONFIG_CC_HAS_COUNTED_BY
-+# define __counted_by(member)		__attribute__((__counted_by__(member)))
-+#else
-+# define __counted_by(member)
-+#endif
-+
-+/*
-  * Apply __counted_by() when the Endianness matches to increase test coverage.
-  */
- #ifdef __LITTLE_ENDIAN
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -120,6 +120,15 @@ config CC_HAS_ASM_INLINE
- config CC_HAS_NO_PROFILE_FN_ATTR
- 	def_bool $(success,echo '__attribute__((no_profile_instrument_function)) int x();' | $(CC) -x c - -c -o /dev/null -Werror)
+ 	return node;
  
-+config CC_HAS_COUNTED_BY
-+	# TODO: when gcc 15 is released remove the build test and add
-+	# a gcc version check
-+	def_bool $(success,echo 'struct flex { int count; int array[] __attribute__((__counted_by__(count))); };' | $(CC) $(CLANG_FLAGS) -x c - -c -o /dev/null -Werror)
-+	# clang needs to be at least 19.1.3 to avoid __bdos miscalculations
-+	# https://github.com/llvm/llvm-project/pull/110497
-+	# https://github.com/llvm/llvm-project/pull/112636
-+	depends on !(CC_IS_CLANG && CLANG_VERSION < 190103)
-+
- config PAHOLE_VERSION
- 	int
- 	default $(shell,$(srctree)/scripts/pahole-version.sh $(PAHOLE))
---- a/lib/overflow_kunit.c
-+++ b/lib/overflow_kunit.c
-@@ -1187,7 +1187,7 @@ static void DEFINE_FLEX_test(struct kuni
- {
- 	/* Using _RAW_ on a __counted_by struct will initialize "counter" to zero */
- 	DEFINE_RAW_FLEX(struct foo, two_but_zero, array, 2);
--#if __has_attribute(__counted_by__)
-+#ifdef CONFIG_CC_HAS_COUNTED_BY
- 	int expected_raw_size = sizeof(struct foo);
- #else
- 	int expected_raw_size = sizeof(struct foo) + 2 * sizeof(s16);
+-- 
+2.43.0
+
 
 
 
