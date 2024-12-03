@@ -1,319 +1,220 @@
-Return-Path: <stable+bounces-96244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7469E17A4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:32:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0F39E18A9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 11:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DAF02836C3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:32:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81E4FB2C0C8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 09:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033431E0092;
-	Tue,  3 Dec 2024 09:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34761E04A8;
+	Tue,  3 Dec 2024 09:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="xzlU2rr4";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zjkgOXnp"
+	dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b="WvAQLTs7";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iXnTSKvt"
 X-Original-To: stable@vger.kernel.org
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCFA1DFE2E;
-	Tue,  3 Dec 2024 09:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6881442F4;
+	Tue,  3 Dec 2024 09:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733218271; cv=none; b=YDxi05oe9WWOcc7n/xwgz7PMZlc0zU631gDoZfU8OX0ZvS3qWtHRBfVNCrxS5w0rmml2BQjzFpUM92f2dkAzdQvA49WaLFIpX+d0m0VFE0AbC7KBYhOMNfbeRCE528rxTgcOnN6DnO+2QR8jkbsDbk2mj6bHJ8JyJRDFNdChnbE=
+	t=1733218412; cv=none; b=nH+FKdL9ZZFXMYrdfvQqT0HO0TXeAMOY5vQxxeHAmkMiFXuQHAUY8lLjKm3N9PREKBtjnfGxwEhpDOGF5HKDhmUaFPqHOtC/BEAUZauZfJlpmtPqPfEN4NXDgZ1UTgVtM/7HtzLGfOlTbUtFkyJg1bBNwF9WNHQU2QyaoDbAXZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733218271; c=relaxed/simple;
-	bh=ijW1XBZ6BKgXVL8bvx+ZSEL8ENP617QINtcS391/r/8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oP08mi7BD21EuLTtTqQwSyREvonXYLFUx0+/e0/MbuOfI93y7xQwWQWoaGdxk2iP5/fxYTSzljS5yu6rPspt7C1ZPYuOh5TMWNzW6Xd/7+7oKkCnVYrIx075QOUckZFbbfq9TTxOQAo9hWmRn548ltHb7PDCekszCPLPYfnravY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=xzlU2rr4; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zjkgOXnp; arc=none smtp.client-ip=202.12.124.137
+	s=arc-20240116; t=1733218412; c=relaxed/simple;
+	bh=uj/70SSRLyXMGGkQOVe84vbojjG91b9R3AToTITuTxU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FBOfz+7F/y9ZucX3k63Er9XLzuUJMuBC0n0ny8wsf7ptp72B5mqED3WCJXP03bt+hEGdaM1dM3a0xC3eJNQRHlTXhK0VV4J9CB44SzU5eMlByStiUPDUSHYFm67Y8wPKPbNiIKJ3FWhZVvtfffJTbcfzsoyzWI1fW8A0jrTOq4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name; spf=pass smtp.mailfrom=coelacanthus.name; dkim=pass (2048-bit key) header.d=coelacanthus.name header.i=@coelacanthus.name header.b=WvAQLTs7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iXnTSKvt; arc=none smtp.client-ip=202.12.124.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=coelacanthus.name
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=coelacanthus.name
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 3AFBB1D40996;
-	Tue,  3 Dec 2024 04:31:08 -0500 (EST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id 8B69A1D40959;
+	Tue,  3 Dec 2024 04:33:29 -0500 (EST)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 03 Dec 2024 04:31:08 -0500
+  by phl-compute-05.internal (MEProxy); Tue, 03 Dec 2024 04:33:30 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	coelacanthus.name; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1733218268; x=1733221868; bh=TH5iUDtcVd
-	8w2RV5/BeTBVj9JapPNqfFOxuzY/m1AcE=; b=xzlU2rr4ohSa6VQcSxOxkMbISJ
-	VqUnzWbMC2LFTIzpVR0w2szczBLATRHV5rCCJazN9RIFuYBcDRASVWcq4xeN3/Pc
-	Ilong4t7YBu5KMLah/22yGCXn5EzpNWc6wDuyl8Xom+ploCaOcNo8xccpfGSynBr
-	pPQRXvdhprvngNIPgq3b/oufCEcjERNwFHVdOoldJCA1BqpSanWWtjWT7vuM2/Rf
-	fl3Eyijrnyc6bLS0EC1Mte2DLG7Yt/RKLGJ28BIMwJpUxSjcGMiwr/9SIwJceanK
-	LR0kxxI6AWLwKF3/owfuagxLcABmE/dFKAMdUX4qs17tq5l1Mse5yFgUFzPg==
+	:subject:to:to; s=fm2; t=1733218409; x=1733222009; bh=xJ2Db/Ov44
+	qvxA3KXnEDiMcsG53llto9u0HWU/q9HkQ=; b=WvAQLTs7qmbrdJoKTR7pT9Gk0X
+	h8Wt+cN8Eigwdz/zwoocQWTRceUGUqzpLzMDvdMZD2blBS9yqi5xPJJ7kn77hbuM
+	S0N2gd4UXEwndzrM/3d4uXRCcuGhkUKddRaOJQe83quDf1qVd15gTa2kzPxhLSwG
+	AAqLw1ThH8Vhw1qyeLPFfdkjhD7HJbPnpLHkufhUReh45+jVSgYUxntuUGyN2X4V
+	bThU0mpQ+V7dX+1VgJujgrMgkm6WGkF8VOJ6j3BenlnlRB/YbH02DQvu4HJGo37R
+	JHdJnjLoWa/U2Dsgq8vkyfa0qxtnqjJ+fjzZzUSqfAhjx2IRZsXJ8HG7CycQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733218268; x=
-	1733221868; bh=TH5iUDtcVd8w2RV5/BeTBVj9JapPNqfFOxuzY/m1AcE=; b=z
-	jkgOXnpDfYS+02R02SbuT0WWLpWVlRqUFduyqhIALXWk5meNkCdBpbV0/QE9fOiV
-	nZQJszso81VuWM9c04ZnuseMb44mevydzWFNPtJqikkZ9SP0w76jVS0RCM5/1Zz+
-	DE/V+VBhO9WOQP0GofMo6mIGJxR4Asa8KkBE+oARPadljojA4vEiDoKkfMJCMlm9
-	P/hFel/DtHpk6HcDfZDyvh1FCdWcBEO0I17d1RMFnLjESsRpl5qhnhQrsKThOQqj
-	6oe21Hddj/utXn2kK+qTGjHmSemKTWnYMclt+YxT7FM7GFeQLrMVdDhgycTlDYzH
-	yrRGN2uE9IdQ4N0j98iGA==
-X-ME-Sender: <xms:289OZ6YxUqtZ4nLMEwXh9wmuSeGQxZdyxPx9x1-R5jwMMVW52kgXfw>
-    <xme:289OZ9ZjmMsCNaqy7dQwpKHHo3qzwRtAaAOmjavdeUH5DrkJqkTnxr2_NJ472hG1B
-    jgslR1uaFg2w-5oBsk>
-X-ME-Received: <xmr:289OZ08ePS4DuxbI5LZp9XUXH9JUd4MgzUm4vq03Ym_EZnYzSNIPwolKQYZ0yg>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1733218409; x=
+	1733222009; bh=xJ2Db/Ov44qvxA3KXnEDiMcsG53llto9u0HWU/q9HkQ=; b=i
+	XnTSKvtGHIpxehz+s85uxS1tTOYzjr1V1erjrk4LyK8OI1X16CrO+iW8MlL8aR4F
+	sLeL7cUtJAlQDrsqE4WLu/fmxblT+a0HTSyfQcRv9FHuJHGKHn5tcIB0t1udgW/N
+	izHwXOrhxXjRArHGY1GVkZqqTT15LISIZz0FDre9Z5cC+xavQxVdRSXFPumP7OnS
+	Han8EOQVVpm/XaFxPNwT1lNLgtyH41nb8tyT7e7li95Ybf3ZnOce3eWiVKJtD0fv
+	rPw7XbjBA3xeLShRERRM9Rw4M+3XKnq2Fe4WUb659cl0EBzIzFJ6LxKLpS/IX6D2
+	8OH5iLEQ+4gS8EAJhO/OQ==
+X-ME-Sender: <xms:aNBOZ8UGnFGJQQsZjROnxI2b6OsLsdEcJfRvqN0Av2PaWFjNn0WMFg>
+    <xme:aNBOZwn8FUnSMAO0EWvJpynSopqWnChNlQ2WpL16OaSWRJGcX9392_6H_E03bZ1x6
+    MBbll8VGcAGPzBn3vc>
+X-ME-Received: <xmr:aNBOZwa-ePyj9U_G5_DbxqO07QtPpbCKlQshb5HyV1gQ6ewCh6ek_0k4Wkb7X8fm>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddriedvgddthecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
     tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeen
+    hsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttddvjeen
     ucfhrhhomhepvegvlhgvshhtvgcunfhiuhcuoehufihusegtohgvlhgrtggrnhhthhhush
-    drnhgrmhgvqeenucggtffrrghtthgvrhhnpeeiteejtdevjeffgfehkeegfeelkeekvdeh
-    tdegleevhfetheejheejiedtjeegteenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
-    grmhepmhgrihhlfhhrohhmpehufihusegtohgvlhgrtggrnhhthhhushdrnhgrmhgvpdhn
-    sggprhgtphhtthhopedvjedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuhifuh
-    estghovghlrggtrghnthhhuhhsrdhnrghmvgdprhgtphhtthhopehsthgrsghlvgesvhhg
-    vghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehprghulhdrfigrlhhmshhlvgihsehsihhfihhvvgdrtghomhdp
-    rhgtphhtthhopehguhhorhgvnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvvg
-    hssehkvghrnhgvlhdrohhrghdprhgtphhtthhopeiiihihrghoseguihhsrhhoohhtrdho
-    rhhgpdhrtghpthhtoheplhhinhhugidqkhhsvghlfhhtvghsthesvhhgvghrrdhkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopehlughvsehsthhrrggtvgdrihho
-X-ME-Proxy: <xmx:289OZ8pN-FCRZc4sGgaC4WramLJIfgz1njg2B1isPd_4bDaIrqZzaw>
-    <xmx:289OZ1pfGK6C3ziS_3nd33hqP71LwYdnI8k6ZXupekBUlmwADPiF1Q>
-    <xmx:289OZ6QR6nlXZknV4ASVHLZGV3_-jGiWTV_-mqYSPb6KdCKl4Whg2A>
-    <xmx:289OZ1psUCKzgB0eQwNOXu7mR6adV2B4yQz-FAWf_qCpjDwRYT2IgA>
-    <xmx:289OZ_ZTNMCuBG7cgx5WSL06wz1YcKQGWts4VuXZX1ueKnSMGp1Q4ZQ1>
+    drnhgrmhgvqeenucggtffrrghtthgvrhhnpeefffdujedtleetieffleehjeffudetfeeg
+    hfdtieeiheevueeggfeuiefgvdekvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgne
+    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepuhifuhes
+    tghovghlrggtrghnthhhuhhsrdhnrghmvgdpnhgspghrtghpthhtohepvddvpdhmohguvg
+    epshhmthhpohhuthdprhgtphhtthhopegsjhhorhhnsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopeholhgvghesrhgvughhrghtrdgtohhmpdhrtghpthhtohepphgruhhlrdifrg
+    hlmhhslhgvhiesshhifhhivhgvrdgtohhmpdhrtghpthhtohepphgrlhhmvghrsegurggs
+    sggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvg
+    guuhdprhgtphhtthhopegvsghivgguvghrmhesgihmihhsshhiohhnrdgtohhmpdhrtghp
+    thhtohepkhgvvghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesghhhih
+    htihdrfhhrpdhrtghpthhtoheplhguvhesshhtrhgrtggvrdhioh
+X-ME-Proxy: <xmx:aNBOZ7W4jaAO2ZuFeZpscEzIWD3-MO-O1HsyKE6tEEFMKi_e7qLEXA>
+    <xmx:aNBOZ2kHaimsqIMzYn33Z31vm5tVMDL2-uL_gnV9BhBzZRcRIv7nXQ>
+    <xmx:aNBOZwcagEhNRduqG_tkWd84hbhDdHp93F6PeXbDasHXflV0NeaBsg>
+    <xmx:aNBOZ4Hw_niN3Yl89uG1lOy8CSoOCDNI_PT518u96vHW9wPFtTnZFA>
+    <xmx:adBOZ8r3BwPgZGS6lksVdAMfUEbOrqdnYmTLpekK8qtEdmdbotQT2MAv>
 Feedback-ID: i95c648bc:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Dec 2024 04:31:05 -0500 (EST)
-From: Celeste Liu <uwu@coelacanthus.name>
-Date: Tue, 03 Dec 2024 17:30:05 +0800
-Subject: [PATCH v2 2/2] riscv: selftests: Add a ptrace test to verify
- syscall parameter modification
+ 3 Dec 2024 04:33:21 -0500 (EST)
+Message-ID: <31d48f53-eaf0-445e-b9e3-7c56070ff6ad@coelacanthus.name>
+Date: Tue, 3 Dec 2024 17:33:17 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-riscv-new-regset-v2-2-d37da8c0cba6@coelacanthus.name>
-References: <20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name>
-In-Reply-To: <20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name>
-To: Oleg Nesterov <oleg@redhat.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>, 
- Andrea Bolognani <abologna@redhat.com>, 
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@kernel.org>, 
- Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>, 
- Charlie Jenkins <charlie@rivosinc.com>, Quan Zhou <zhouquan@iscas.ac.cn>, 
- Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>, 
- Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>, 
- Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, stable@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Celeste Liu <uwu@coelacanthus.name>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5295; i=uwu@coelacanthus.name;
- h=from:subject:message-id; bh=RyjBj4yqY/cnYg3J7doc5uv1ZKvB6VdgX8fYxV3Chig=;
- b=owJ4nJvAy8zAJeafov85RWVtBeNptSSGdL/zJ9qO8P6x3TXF5oxE8YH8p38CcwSX8i+8s9py0
- fsfT7r3XYnvKGVhEONikBVTZMkrYfnJeels996O7V0wc1iZQIYwcHEKwESO9zH8z768W5XxtXWQ
- Vd3MvL6tb6X6EhZWSzZ/OSGQZm/0+n7LI4Z/umbeB/ZzX/4WulioQH3HUSZFxvjP+l+UCuMusYl
- khdnxAQC3SUvH
-X-Developer-Key: i=uwu@coelacanthus.name; a=openpgp;
- fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] riscv/ptrace: add new regset to get original a0 register
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, "Dmitry V. Levin" <ldv@strace.io>,
+ Andrea Bolognani <abologna@redhat.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Ron Economos <re@w6rz.net>,
+ Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>,
+ Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>,
+ Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20241201-riscv-new-regset-v1-1-c83c58abcc7b@coelacanthus.name>
+ <87v7w22ip6.fsf@all.your.base.are.belong.to.us>
+From: Celeste Liu <uwu@coelacanthus.name>
+Content-Language: en-GB-large
+In-Reply-To: <87v7w22ip6.fsf@all.your.base.are.belong.to.us>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Charlie Jenkins <charlie@rivosinc.com>
+On 2024-12-02 23:44, Björn Töpel wrote:
 
-This test checks that orig_a0 allows a syscall argument to be modified,
-and that changing a0 does not change the syscall argument.
+> Thanks for working on this!
+> 
+> Celeste Liu <uwu@coelacanthus.name> writes:
+> 
+>> The orig_a0 is missing in struct user_regs_struct of riscv, and there is
+>> no way to add it without breaking UAPI. (See Link tag below)
+>>
+>> Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
+>> access original a0 register from userspace via ptrace API.
+>>
+>> Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
+>> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
+>> ---
+>>  arch/riscv/kernel/ptrace.c | 33 +++++++++++++++++++++++++++++++++
+>>  include/uapi/linux/elf.h   |  1 +
+>>  2 files changed, 34 insertions(+)
+>>
+>> diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
+>> index ea67e9fb7a583683b922fe2c017ea61f3bc848db..faa46de9000376eb445a32d43a40210d7b846844 100644
+>> --- a/arch/riscv/kernel/ptrace.c
+>> +++ b/arch/riscv/kernel/ptrace.c
+>> @@ -31,6 +31,7 @@ enum riscv_regset {
+>>  #ifdef CONFIG_RISCV_ISA_SUPM
+>>  	REGSET_TAGGED_ADDR_CTRL,
+>>  #endif
+>> +	REGSET_ORIG_A0,
+>>  };
+>>  
+>>  static int riscv_gpr_get(struct task_struct *target,
+>> @@ -184,6 +185,30 @@ static int tagged_addr_ctrl_set(struct task_struct *target,
+>>  }
+>>  #endif
+>>  
+>> +static int riscv_orig_a0_get(struct task_struct *target,
+>> +			     const struct user_regset *regset,
+>> +			     struct membuf to)
+> 
+> Use full 100 chars!
 
-Cc: stable@vger.kernel.org
-Co-developed-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
-Co-developed-by: Celeste Liu <uwu@coelacanthus.name>
-Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
----
- tools/testing/selftests/riscv/abi/.gitignore |   1 +
- tools/testing/selftests/riscv/abi/Makefile   |   5 +-
- tools/testing/selftests/riscv/abi/ptrace.c   | 134 +++++++++++++++++++++++++++
- 3 files changed, 139 insertions(+), 1 deletion(-)
+Linux code style prefer 80 limit.
 
-diff --git a/tools/testing/selftests/riscv/abi/.gitignore b/tools/testing/selftests/riscv/abi/.gitignore
-index b38358f91c4d2240ae64892871d9ca98bda1ae58..378c605919a3b3d58eec2701eb7af430cfe315d6 100644
---- a/tools/testing/selftests/riscv/abi/.gitignore
-+++ b/tools/testing/selftests/riscv/abi/.gitignore
-@@ -1 +1,2 @@
- pointer_masking
-+ptrace
-diff --git a/tools/testing/selftests/riscv/abi/Makefile b/tools/testing/selftests/riscv/abi/Makefile
-index ed82ff9c664e7eb3f760cbab81fb957ff72579c5..3f74d059dfdcbce4d45d8ff618781ccea1419061 100644
---- a/tools/testing/selftests/riscv/abi/Makefile
-+++ b/tools/testing/selftests/riscv/abi/Makefile
-@@ -2,9 +2,12 @@
- 
- CFLAGS += -I$(top_srcdir)/tools/include
- 
--TEST_GEN_PROGS := pointer_masking
-+TEST_GEN_PROGS := pointer_masking ptrace
- 
- include ../../lib.mk
- 
- $(OUTPUT)/pointer_masking: pointer_masking.c
- 	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
-+
-+$(OUTPUT)/ptrace: ptrace.c
-+	$(CC) -static -o$@ $(CFLAGS) $(LDFLAGS) $^
-diff --git a/tools/testing/selftests/riscv/abi/ptrace.c b/tools/testing/selftests/riscv/abi/ptrace.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..d192764b428d1f1c442f3957c6fedeb01a48d556
---- /dev/null
-+++ b/tools/testing/selftests/riscv/abi/ptrace.c
-@@ -0,0 +1,134 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+#include <fcntl.h>
-+#include <signal.h>
-+#include <errno.h>
-+#include <sys/types.h>
-+#include <sys/ptrace.h>
-+#include <sys/stat.h>
-+#include <sys/user.h>
-+#include <sys/wait.h>
-+#include <sys/uio.h>
-+#include <linux/elf.h>
-+#include <linux/unistd.h>
-+#include <asm/ptrace.h>
-+
-+#include "../../kselftest_harness.h"
-+
-+#define ORIG_A0_MODIFY      0x01
-+#define A0_MODIFY           0x02
-+#define A0_OLD              0x03
-+#define A0_NEW              0x04
-+
-+#define perr_and_exit(fmt, ...)						\
-+	({								\
-+		char buf[256];						\
-+		snprintf(buf, sizeof(buf), "%s:%d:" fmt ": %m\n",	\
-+			__func__, __LINE__, ##__VA_ARGS__);		\
-+		perror(buf);						\
-+		exit(-1);						\
-+	})
-+
-+static inline void resume_and_wait_tracee(pid_t pid, int flag)
-+{
-+	int status;
-+
-+	if (ptrace(flag, pid, 0, 0))
-+		perr_and_exit("failed to resume the tracee %d\n", pid);
-+
-+	if (waitpid(pid, &status, 0) != pid)
-+		perr_and_exit("failed to wait for the tracee %d\n", pid);
-+}
-+
-+static void ptrace_test(int opt, int *result)
-+{
-+	int status;
-+	pid_t pid;
-+	struct user_regs_struct regs;
-+	struct iovec iov = {
-+		.iov_base = &regs,
-+		.iov_len = sizeof(regs),
-+	};
-+
-+	unsigned long orig_a0;
-+	struct iovec a0_iov = {
-+		.iov_base = &orig_a0,
-+		.iov_len = sizeof(orig_a0),
-+	};
-+
-+	pid = fork();
-+	if (pid == 0) {
-+		/* Mark oneself being traced */
-+		long val = ptrace(PTRACE_TRACEME, 0, 0, 0);
-+
-+		if (val)
-+			perr_and_exit("failed to request for tracer to trace me: %ld\n", val);
-+
-+		kill(getpid(), SIGSTOP);
-+
-+		/* Perform exit syscall that will be intercepted */
-+		exit(A0_OLD);
-+	}
-+
-+	if (pid < 0)
-+		exit(1);
-+
-+	if (waitpid(pid, &status, 0) != pid)
-+		perr_and_exit("failed to wait for the tracee %d\n", pid);
-+
-+	/* Stop at the entry point of the syscall */
-+	resume_and_wait_tracee(pid, PTRACE_SYSCALL);
-+
-+	/* Check tracee regs before the syscall */
-+	if (ptrace(PTRACE_GETREGSET, pid, NT_PRSTATUS, &iov))
-+		perr_and_exit("failed to get tracee registers\n");
-+	if (ptrace(PTRACE_GETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
-+		perr_and_exit("failed to get tracee registers\n");
-+	if (orig_a0 != A0_OLD)
-+		perr_and_exit("unexpected orig_a0: 0x%lx\n", orig_a0);
-+
-+	/* Modify a0/orig_a0 for the syscall */
-+	switch (opt) {
-+	case A0_MODIFY:
-+		regs.a0 = A0_NEW;
-+		break;
-+	case ORIG_A0_MODIFY:
-+		orig_a0 = A0_NEW;
-+		break;
-+	}
-+
-+	if (ptrace(PTRACE_SETREGSET, pid, NT_RISCV_ORIG_A0, &a0_iov))
-+		perr_and_exit("failed to set tracee registers\n");
-+
-+	/* Resume the tracee */
-+	ptrace(PTRACE_CONT, pid, 0, 0);
-+	if (waitpid(pid, &status, 0) != pid)
-+		perr_and_exit("failed to wait for the tracee\n");
-+
-+	*result = WEXITSTATUS(status);
-+}
-+
-+TEST(ptrace_modify_a0)
-+{
-+	int result;
-+
-+	ptrace_test(A0_MODIFY, &result);
-+
-+	/* The modification of a0 cannot affect the first argument of the syscall */
-+	EXPECT_EQ(A0_OLD, result);
-+}
-+
-+TEST(ptrace_modify_orig_a0)
-+{
-+	int result;
-+
-+	ptrace_test(ORIG_A0_MODIFY, &result);
-+
-+	/* Only modify orig_a0 to change the first argument of the syscall */
-+	EXPECT_EQ(A0_NEW, result);
-+}
-+
-+TEST_HARNESS_MAIN
+> 
+>> +{
+>> +	return membuf_store(&to, task_pt_regs(target)->orig_a0);
+>> +}
+>> +
+>> +static int riscv_orig_a0_set(struct task_struct *target,
+>> +			     const struct user_regset *regset,
+>> +			     unsigned int pos, unsigned int count,
+>> +			     const void *kbuf, const void __user *ubuf)
+> 
+> Dito!
+> 
+>> +{
+>> +	int orig_a0 = task_pt_regs(target)->orig_a0;
+> 
+> 64b regs on RV64.
 
--- 
-2.47.0
+Oh, my bad.
+
+> 
+>> +	int ret;
+>> +
+>> +	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &orig_a0, 0, -1);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	task_pt_regs(target)->orig_a0 = orig_a0;
+>> +	return ret;
+>> +}
+>> +
+>> +
+> 
+> Multiple blanks.
+> 
+>>  static const struct user_regset riscv_user_regset[] = {
+>>  	[REGSET_X] = {
+>>  		.core_note_type = NT_PRSTATUS,
+>> @@ -224,6 +249,14 @@ static const struct user_regset riscv_user_regset[] = {
+>>  		.set = tagged_addr_ctrl_set,
+>>  	},
+>>  #endif
+>> +	[REGSET_ORIG_A0] = {
+>> +		.core_note_type = NT_RISCV_ORIG_A0,
+>> +		.n = 1,
+>> +		.size = sizeof(elf_greg_t),
+>> +		.align = sizeof(elf_greg_t),
+> 
+> ...and sizeof(elf_greg_t) is 64b in RV64 -- mismatch above.
+
+v2 has been sent.
+
+> 
+> 
+> Björn
 
 
