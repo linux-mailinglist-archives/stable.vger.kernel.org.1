@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC299E2AF7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:33:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A789E28E1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4495BA5948
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C401DBE0F2D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E6C1F8911;
-	Tue,  3 Dec 2024 15:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC31E1FA16E;
+	Tue,  3 Dec 2024 15:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GvccMvxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5GnHrGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EA51F8926;
-	Tue,  3 Dec 2024 15:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0891FA17C;
+	Tue,  3 Dec 2024 15:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240766; cv=none; b=TP81vhadnv7mr7UxLaGFFm8cggRE3L7TvlL05GHyNO3p8wKKg3I+5GFKCzC73keN+Hc3wE0iczaOS1J+j40//uKPYGq6JnGayw8gVVkA5BTkA4Dlu3dhuyi6cRuQQCtMHEFYJOo3hk1KKXjPAO09PZbzAv1vNeLRliLW5SsDzwY=
+	t=1733240776; cv=none; b=DqetdYbKj3LtVPZapLkYEslvzbHo+VwdPfRRRqGqvRuQ9Cm0MmDs65sbFahFUkUYVkxqbMUJeZE5bryxBjvBndLjCr8T2LjBB8dk2/XP1XrB1XExKYTy71WegBMNVbwViUM76EYjBnKnDk0g/EMeGnwM2si4UAmR1NtZW+M3FX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240766; c=relaxed/simple;
-	bh=5rJh/ZeeMQdgZ+w+LgAAZvXZrfr8c5gEGlAexdyioNw=;
+	s=arc-20240116; t=1733240776; c=relaxed/simple;
+	bh=F2m0CodRo/bM43n8L8Nr/1vJCS76okz6AH5JhkfWxro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PnY2khhwwh+nYmHrTkoOTJbJeeit+go8brCll8VudwO8m24XrMQ0wNLwaow2CYLo2BZa02YeDU3k7SggLEsIlKQ/9WrzenSxCICdAXAetnJBSIND0u85Y4iTFOVPK0glt0keHl2/xzpNBzZDDZjMUQ7d2pQUUfRqpWfDV+JcwsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GvccMvxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3CBC4CED6;
-	Tue,  3 Dec 2024 15:46:05 +0000 (UTC)
+	 MIME-Version; b=DRVKzny36ues1vglEGXwKnLo/k6LxEGNZiQa1X2F/7SNEHUMp819UvjFTBZFmapUKiMGjLtqvK3z+DK7HcccS20vj0XxeuRtkwdYCOHJMfLgX0S1lxwgfIQdtYDgF9Da1Ou0+LoeNetaYYQut6GHP4Hbvwjjsdwkd8sU2fAvy9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5GnHrGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE91AC4CED6;
+	Tue,  3 Dec 2024 15:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240766;
-	bh=5rJh/ZeeMQdgZ+w+LgAAZvXZrfr8c5gEGlAexdyioNw=;
+	s=korg; t=1733240776;
+	bh=F2m0CodRo/bM43n8L8Nr/1vJCS76okz6AH5JhkfWxro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GvccMvxSMO4K69ApcahgXfmN6hYJmks4Cfc3goCk0WG90dotxiFGd9+rNCLkXz+9J
-	 iwgwBGPRw8DNRQ4WVbF/hICpbag0z1AhmrKcpKyrtX6vFpZLVZBKNQGKS52tSQBZNe
-	 WKaalYrPXnJF/kHNxazlWgMsiUUPLblVkK90QJrc=
+	b=E5GnHrGT2Gf72TotJ18Al6738RCfNqtLWU7jAztDv8jgqYVbJH7u8/jmqumMHrfJt
+	 IkpP01qMvyLSxGwSlh5rv0x/4LelajCXkOVkxyzgJU5wGW65w9d8Gdau2Ezp5rQTuK
+	 H6skBdHm5XnriCd78BgzhHVLnS6AwMHFTdFD4Ew8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Yuan Chen <chenyuan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 228/826] wifi: ath12k: fix one more memcpy size error
-Date: Tue,  3 Dec 2024 15:39:15 +0100
-Message-ID: <20241203144752.631636405@linuxfoundation.org>
+Subject: [PATCH 6.12 231/826] bpf: Fix the xdp_adjust_tail sample prog issue
+Date: Tue,  3 Dec 2024 15:39:18 +0100
+Message-ID: <20241203144752.759710110@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,49 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Yuan Chen <chenyuan@kylinos.cn>
 
-[ Upstream commit 19c23eb61fa4c802e6e0aaf74d6f7dcbe99f0ba3 ]
+[ Upstream commit 4236f114a3ffbbfd217436c08852e94cae372f57 ]
 
-A previous patch addressed a fortified-memcpy warning on older compilers,
-but there is still a warning on gcc-14 in some configurations:
+During the xdp_adjust_tail test, probabilistic failure occurs and SKB package
+is discarded by the kernel. After checking the issues by tracking SKB package,
+it is identified that they were caused by checksum errors. Refer to checksum
+of the arch/arm64/include/asm/checksum.h for fixing.
 
-In file included from include/linux/string.h:390,
-                 from drivers/net/wireless/ath/ath12k/wow.c:7:
-drivers/net/wireless/ath/ath12k/wow.c: In function 'ath12k_wow_convert_8023_to_80211.isra':
-include/linux/fortify-string.h:114:33: error: '__builtin_memcpy' accessing 18446744073709551610 or more bytes at offsets 0 and 0 overlaps 9223372036854775797 bytes at offset -9223372036854775803 [-Werror=restrict]
-include/linux/fortify-string.h:679:26: note: in expansion of macro '__fortify_memcpy_chk'
-  679 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
-      |                          ^~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/ath/ath12k/wow.c:199:25: note: in expansion of macro 'memcpy'
-  199 |                         memcpy(pat + a3_ofs - pkt_ofs,
-      |                         ^~~~~~
+v2: Based on Alexei Starovoitov's suggestions, it is necessary to keep the code
+ implementation consistent.
 
-Address this the same way as the other two, using size_add().
-
-Fixes: b49991d83bba ("wifi: ath12k: fix build vs old compiler")
-Fixes: 4a3c212eee0e ("wifi: ath12k: add basic WoW functionalities")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241004095420.637091-1-arnd@kernel.org
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Fixes: c6ffd1ff7856 (bpf: add bpf_xdp_adjust_tail sample prog)
+Signed-off-by: Yuan Chen <chenyuan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240930024115.52841-1-chenyuan_fl@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wow.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ samples/bpf/xdp_adjust_tail_kern.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
-index 9b8684abbe40a..3624180b25b97 100644
---- a/drivers/net/wireless/ath/ath12k/wow.c
-+++ b/drivers/net/wireless/ath/ath12k/wow.c
-@@ -191,7 +191,7 @@ ath12k_wow_convert_8023_to_80211(struct ath12k *ar,
- 			memcpy(bytemask, eth_bytemask, eth_pat_len);
+diff --git a/samples/bpf/xdp_adjust_tail_kern.c b/samples/bpf/xdp_adjust_tail_kern.c
+index ffdd548627f0a..da67bcad1c638 100644
+--- a/samples/bpf/xdp_adjust_tail_kern.c
++++ b/samples/bpf/xdp_adjust_tail_kern.c
+@@ -57,6 +57,7 @@ static __always_inline void swap_mac(void *data, struct ethhdr *orig_eth)
  
- 			pat_len = eth_pat_len;
--		} else if (eth_pkt_ofs + eth_pat_len < prot_ofs) {
-+		} else if (size_add(eth_pkt_ofs, eth_pat_len) < prot_ofs) {
- 			memcpy(pat, eth_pat, ETH_ALEN - eth_pkt_ofs);
- 			memcpy(bytemask, eth_bytemask, ETH_ALEN - eth_pkt_ofs);
+ static __always_inline __u16 csum_fold_helper(__u32 csum)
+ {
++	csum = (csum & 0xffff) + (csum >> 16);
+ 	return ~((csum & 0xffff) + (csum >> 16));
+ }
  
 -- 
 2.43.0
