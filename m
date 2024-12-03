@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A19CF9E228B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD519E2560
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 679CE285F8D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63484287B2F
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB431F7585;
-	Tue,  3 Dec 2024 15:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64A91F76B5;
+	Tue,  3 Dec 2024 15:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwQdcC1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="poAINTmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBCE1F757D;
-	Tue,  3 Dec 2024 15:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AF41F75B4;
+	Tue,  3 Dec 2024 15:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239530; cv=none; b=EQqvKaWAWoc3EcHGJafZFfFIxBm/Ww8w2tbmamFduWF2dJ66VRHSHA2mcP/PBwRsStr+rFOSbxWl56cG/guXHBTyKX45wGXPit4rEO8z5yW42ISvKSRiHqFWZ6Eo44kanfg3kdqv/DEQmuJSdr5XIZc0zGK00cjWxpUKchNbWbA=
+	t=1733241585; cv=none; b=c4q56BMSw/WaCLg/t6R/ybcs9MQpiy+Eur1KX1m4ACG57ZmkVPJPOwRq7pNkKA12XDRVunjlju9I/4OiAfIdQ5sPITU1knPplFXXaULPKvGxBSHO5xqhLRcz9aeq1uTa74b+B7qhAQls+ukOVWD633d+ysHwVqIJWbmtBwmqUHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239530; c=relaxed/simple;
-	bh=tf6OoA5Km87pwR/SGca1DeqmzT7Oit/qui5I//Cno00=;
+	s=arc-20240116; t=1733241585; c=relaxed/simple;
+	bh=GUtQlEST33PzsFC1jwBaUD+Ixcd9DUtuEirMd3d8PKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFR5nsDXvKgLVugfEwBT+XQZhmz5M7FV7ycT3AaqU2bDLk1NFsPpiwXc0UTaRYlAUY+7phWeQTdqxkkPflLSVcVzmwmxSuJtpVy2j5NKZmOmyEm0Mhn9EleGwHDUuEyjeqXvKlCrb35t7ZpCpi1KiQ42NpFG8JoINZU24gTk2cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwQdcC1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E435AC4CECF;
-	Tue,  3 Dec 2024 15:25:29 +0000 (UTC)
+	 MIME-Version; b=tvHOytkFeGB6byZKhPEILkrJMS4aqttKpp2uf1hM2K+dCtzk1c1zSxheVWcUd2zsYfZJsTtR8ulntnxMVRvbe3ixkBdjLLW/5VvtapyNsmeH5CLGpyJ5+/dELPWFpapIJOjiovJ1EHIlHniu471pkU0SznPPurjczcGfFKUQbqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=poAINTmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064A0C4CECF;
+	Tue,  3 Dec 2024 15:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239530;
-	bh=tf6OoA5Km87pwR/SGca1DeqmzT7Oit/qui5I//Cno00=;
+	s=korg; t=1733241585;
+	bh=GUtQlEST33PzsFC1jwBaUD+Ixcd9DUtuEirMd3d8PKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwQdcC1vJMdwKE1N6tS5IhAn71FGhr12lyUnViwwY8VDgVSSwo39nlSK8FYFEwzwp
-	 W9og7qvLVHbO+F56RtyioL+FtUDrUkrnwjMAaWvtYdtztjJftGu4fL66kRMc61YjaH
-	 up9Co930Igb9jfZb4w0VvBZ9wxsFBMn/sSE6/gok=
+	b=poAINTmPws9/ccxnQNSmoukqy4FB0ykxjUY9h6AahY3ZbgaAKv3Tatn+tLVF3Oik0
+	 mFM9agHRLbAGPUrxJUoe4kERsZJWqRx9sD42LilC2EfiAzPxSUzmLlxxA+d6enKHXf
+	 jMMWihYSi2VxKeUS8FZVy7mBHmdUmQgz/XOw9wnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Wu Hoi Pok <wuhoipok@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 614/817] drm/radeon: add helper rdev_to_drm(rdev)
-Date: Tue,  3 Dec 2024 15:43:06 +0100
-Message-ID: <20241203144019.900184194@linuxfoundation.org>
+Subject: [PATCH 6.12 460/826] pinctrl: k210: Undef K210_PC_DEFAULT
+Date: Tue,  3 Dec 2024 15:43:07 +0100
+Message-ID: <20241203144801.700387122@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wu Hoi Pok <wuhoipok@gmail.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-[ Upstream commit a6e23bec8ed184ed2a11080b28cdbd7a3024f0c0 ]
+[ Upstream commit 7e86490c5dee5c41a55f32d0dc34269e200e6909 ]
 
-Add helper rdev_to_drm(rdev), similar to amdgpu, most function should
-access the "drm_device" with "rdev_to_drm(rdev)" instead, where amdgpu has
-"adev_to_drm(adev)". It also makes changing from "*drm_device" to "drm_device"
-in "radeon_devicce" later on easier.
+When the temporary macro K210_PC_DEFAULT is not needed anymore,
+use its name in the #undef statement instead of
+the incorrect "DEFAULT" name.
 
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Tested-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Wu Hoi Pok <wuhoipok@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 7037bb04265e ("drm/radeon: Fix spurious unplug event on radeon HDMI")
+Fixes: d4c34d09ab03 ("pinctrl: Add RISC-V Canaan Kendryte K210 FPIOA driver")
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/20241113071201.5440-1-zhangjiao2@cmss.chinamobile.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/pinctrl-k210.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
-index 0999c8eaae94a..ae35c102a487e 100644
---- a/drivers/gpu/drm/radeon/radeon.h
-+++ b/drivers/gpu/drm/radeon/radeon.h
-@@ -2476,6 +2476,11 @@ void r100_io_wreg(struct radeon_device *rdev, u32 reg, u32 v);
- u32 cik_mm_rdoorbell(struct radeon_device *rdev, u32 index);
- void cik_mm_wdoorbell(struct radeon_device *rdev, u32 index, u32 v);
+diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
+index 0f6b55fec31de..a71805997b028 100644
+--- a/drivers/pinctrl/pinctrl-k210.c
++++ b/drivers/pinctrl/pinctrl-k210.c
+@@ -183,7 +183,7 @@ static const u32 k210_pinconf_mode_id_to_mode[] = {
+ 	[K210_PC_DEFAULT_INT13] = K210_PC_MODE_IN | K210_PC_PU,
+ };
  
-+static inline struct drm_device *rdev_to_drm(struct radeon_device *rdev)
-+{
-+	return rdev->ddev;
-+}
-+
+-#undef DEFAULT
++#undef K210_PC_DEFAULT
+ 
  /*
-  * Cast helper
-  */
+  * Pin functions configuration information.
 -- 
 2.43.0
 
