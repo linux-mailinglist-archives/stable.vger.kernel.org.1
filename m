@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721749E283D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:54:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 821499E2881
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E1B4B3035B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77D37B84B7D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DB51F7548;
-	Tue,  3 Dec 2024 14:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AA41F75A0;
+	Tue,  3 Dec 2024 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASqwdT1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sy+syXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C5D1F4709;
-	Tue,  3 Dec 2024 14:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203EB1DE2A1;
+	Tue,  3 Dec 2024 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237979; cv=none; b=XxrG4IFQGaBCvnfV3V9XCdUhYCZXlIP7VMAZRnqm6qyeDlvnV0VKi4xRQFo8Ed3Gt+/OgSOHasSexyIECgVjY7zpu/UBXYHOor1QS532hCwCs5rkESDrR45EKMJp6j5dLJQf6Pp0djquf7H8MAXKYBSMZ9aDQxaVXLUmIhkgVb4=
+	t=1733237995; cv=none; b=XPzimqNGbtdnaTX9i7GFYwY6Z6uomp+y/6QQV3pu6pE39q5J04rtUWwmKSk04iZJ2ahoiL1SR64xXFcWkz3D5ic/AWIikYtjPmu2pzDSFHPqrRCt1VSYjhoEhOVuzRC1Z1eC41OGAhRqs7WwSaNudZgJ3apNgVyyCBG8Npn7/Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237979; c=relaxed/simple;
-	bh=j7tgS2RjnBN5Y2Vd9RuMBCEc+ZFyNwe14gY5r2haIuw=;
+	s=arc-20240116; t=1733237995; c=relaxed/simple;
+	bh=32cWlKg3XTfNhNgHscPX3zVtf+xrl5MHTHOTSsPfFTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3OrYSLfV6rULWH/zlUy2qEIBXZzQKRtV9/ZgGgCXei5ivj0V/IH5BdEKBrsVnDczkt5Gwrb5sEY1/nRZTqN8W2TGs1Ktw2guQdfMcaBTFUwPse/xDRtvSC6vKvbzfQ13d9ZTYXWdGijpZjcjKUG9N9pg+Pw5RbRp1DS/XevRTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASqwdT1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CD2C4CECF;
-	Tue,  3 Dec 2024 14:59:38 +0000 (UTC)
+	 MIME-Version; b=JBvqsJL9sCdbbqtuOlzKevHr6eIt1YQf41GtCa6cGuvKzXS4lVzSJmYI7xYoz3Yut/xi0uNXRIkuH++znUgy4sAsFXATqqfhS9a0+cz71x26wJrWZLiSFmhgoKTXE6O6DENU9RDPJkv7Gb93KzIBnTNs2TZyrQaoJO19rjVM8Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sy+syXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99FDDC4CECF;
+	Tue,  3 Dec 2024 14:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237978;
-	bh=j7tgS2RjnBN5Y2Vd9RuMBCEc+ZFyNwe14gY5r2haIuw=;
+	s=korg; t=1733237995;
+	bh=32cWlKg3XTfNhNgHscPX3zVtf+xrl5MHTHOTSsPfFTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASqwdT1rWdb7Jcbux83S3c+l2wJXaY7bL3Buavd79kX9oCktULHdKOgNeDyXdZ8WX
-	 sVXJug/WhWH8F/LEMvWOe7BPpN07cU7JiLanVdymDwCN6JL/T4W/3l/JRJL96W7gRF
-	 Ivm0n6Yg4JPj6jxy2e+kSis8laN1C/+420PRBGAg=
+	b=1sy+syXvDDXsBj96gxCU5EzsIZlpEHNK2ncQSN4uIJOP3DT2kbjzEv9Zp0cOOIE64
+	 wyW06ARmqP5df1dEcIFLRzvU7REX6/CIQOnynwR8sgl0X7Wzwd+ziCY4BvgHmEeswc
+	 LFPzObpeWZHm4Hwg1MnOS4AF82BdEbX0r3zgJlaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 123/817] crypto: bcm - add error check in the ahash_hmac_init function
-Date: Tue,  3 Dec 2024 15:34:55 +0100
-Message-ID: <20241203144000.516451796@linuxfoundation.org>
+Subject: [PATCH 6.11 128/817] thermal/lib: Fix memory leak on error in thermal_genl_auto()
+Date: Tue,  3 Dec 2024 15:35:00 +0100
+Message-ID: <20241203144000.712519624@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,45 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-[ Upstream commit 19630cf57233e845b6ac57c9c969a4888925467b ]
+[ Upstream commit 7569406e95f2353070d88ebc88e8c13698542317 ]
 
-The ahash_init functions may return fails. The ahash_hmac_init should
-not return ok when ahash_init returns error. For an example, ahash_init
-will return -ENOMEM when allocation memory is error.
+The function thermal_genl_auto() does not free the allocated message
+in the error path. Fix that by putting a out label and jump to it
+which will free the message instead of directly returning an error.
 
-Fixes: 9d12ba86f818 ("crypto: brcm - Add Broadcom SPU driver")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 47c4b0de080a ("tools/lib/thermal: Add a thermal library")
+Reported-by: Lukasz Luba <lukasz.luba@arm.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Link: https://patch.msgid.link/20241024105938.1095358-1-daniel.lezcano@linaro.org
+[ rjw: Fixed up the !msg error path, added Fixes tag ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/bcm/cipher.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/lib/thermal/commands.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/bcm/cipher.c b/drivers/crypto/bcm/cipher.c
-index 1a3ecd44cbaf6..20f6453670aa4 100644
---- a/drivers/crypto/bcm/cipher.c
-+++ b/drivers/crypto/bcm/cipher.c
-@@ -2415,6 +2415,7 @@ static int ahash_hmac_setkey(struct crypto_ahash *ahash, const u8 *key,
- 
- static int ahash_hmac_init(struct ahash_request *req)
+diff --git a/tools/lib/thermal/commands.c b/tools/lib/thermal/commands.c
+index a9223df91dcf5..27b4442f0e347 100644
+--- a/tools/lib/thermal/commands.c
++++ b/tools/lib/thermal/commands.c
+@@ -279,6 +279,7 @@ static thermal_error_t thermal_genl_auto(struct thermal_handler *th, cmd_cb_t cm
+ 					 struct cmd_param *param,
+ 					 int cmd, int flags, void *arg)
  {
-+	int ret;
- 	struct iproc_reqctx_s *rctx = ahash_request_ctx(req);
- 	struct crypto_ahash *tfm = crypto_ahash_reqtfm(req);
- 	struct iproc_ctx_s *ctx = crypto_ahash_ctx(tfm);
-@@ -2424,7 +2425,9 @@ static int ahash_hmac_init(struct ahash_request *req)
- 	flow_log("ahash_hmac_init()\n");
++	thermal_error_t ret = THERMAL_ERROR;
+ 	struct nl_msg *msg;
+ 	void *hdr;
  
- 	/* init the context as a hash */
--	ahash_init(req);
-+	ret = ahash_init(req);
-+	if (ret)
-+		return ret;
+@@ -289,17 +290,19 @@ static thermal_error_t thermal_genl_auto(struct thermal_handler *th, cmd_cb_t cm
+ 	hdr = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, thermal_cmd_ops.o_id,
+ 			  0, flags, cmd, THERMAL_GENL_VERSION);
+ 	if (!hdr)
+-		return THERMAL_ERROR;
++		goto out;
  
- 	if (!spu_no_incr_hash(ctx)) {
- 		/* SPU-M can do incr hashing but needs sw for outer HMAC */
+ 	if (cmd_cb && cmd_cb(msg, param))
+-		return THERMAL_ERROR;
++		goto out;
+ 
+ 	if (nl_send_msg(th->sk_cmd, th->cb_cmd, msg, genl_handle_msg, arg))
+-		return THERMAL_ERROR;
++		goto out;
+ 
++	ret = THERMAL_SUCCESS;
++out:
+ 	nlmsg_free(msg);
+ 
+-	return THERMAL_SUCCESS;
++	return ret;
+ }
+ 
+ thermal_error_t thermal_cmd_get_tz(struct thermal_handler *th, struct thermal_zone **tz)
 -- 
 2.43.0
 
