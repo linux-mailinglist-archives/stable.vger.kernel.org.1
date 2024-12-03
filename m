@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC6A9E24E9
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6231E9E220D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E858F161044
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87D5016C082
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92921F893B;
-	Tue,  3 Dec 2024 15:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2831F8903;
+	Tue,  3 Dec 2024 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wDZ2BFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G962QwcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B9A1F7558;
-	Tue,  3 Dec 2024 15:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E741F7545;
+	Tue,  3 Dec 2024 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240883; cv=none; b=TWLO3q8I/ykJwcF/Ah+OIeCP5oDS0yokj0KQl9a5I82fHMjmbci18QJwi5nYTk2+rBYiFmBg3wuT96ufEG28X5ZGe4mJjGBthOY3fXyo31Phzsxdy+8EfLjVPuvunQzj+Shd7IeeQant/bEAYF2kDJiV2C6/1OYCb7vcougLba0=
+	t=1733238851; cv=none; b=JiiVfw1g/VGqG+bQw/14y2ch2Ua9Xc6T102yVhE3FkTYX2/6Ngzo51jQtcibUgcaB1kAjyPzKu7uVSr9wGqJS7hLnAHnt+wWcnYu3GyCL5QJPdcyXttwYcl3udVibpLXqXZ/wzAkx9dq6ATw4fJNpeyupwJPKfrCNSuPrh1Onvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240883; c=relaxed/simple;
-	bh=m4FsGhTn9NoH2Wu41xm9AMt4q8sCNu3SQhy8gpWKMUM=;
+	s=arc-20240116; t=1733238851; c=relaxed/simple;
+	bh=Rk6spVUrNA4T/YakNZ/5VzWzPcmbpetTvxq8vy7GyoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGnaWW5mKFc4DwIhu4S/IJVOGpvjDyWxqRzYsSpcrFl1GLa73YyXUY5pQdqocwYDvYWh98KfQw+MePafNE4guZWL+CT2YVLT6t4IoudZMb0LkVNJWU6+VoEnHyXgkdoNE6ovFaRDqQ2p5Ee2TeC8rKEH0rAkfFyebelBbWRnJ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wDZ2BFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB518C4CECF;
-	Tue,  3 Dec 2024 15:48:02 +0000 (UTC)
+	 MIME-Version; b=rghz5521BJf3Q7RnZOqwyy5bbbb61Ojhk2TWbDDRzJbUhMlaHFyFhJAvIeOnET8w0olcJXqJCS3ORMzMZIFjTH+vCiAf5vufSiXpYjO07E7olfw88nWi/BqZgrwhdD3cUoEStR7uIPV50dvVTYZRxKLfXz7BGCwdQEauiRQpujU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G962QwcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A17C4CECF;
+	Tue,  3 Dec 2024 15:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240883;
-	bh=m4FsGhTn9NoH2Wu41xm9AMt4q8sCNu3SQhy8gpWKMUM=;
+	s=korg; t=1733238851;
+	bh=Rk6spVUrNA4T/YakNZ/5VzWzPcmbpetTvxq8vy7GyoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wDZ2BFsQiK3EyWVaf1KY1cwRrU0xeYS3q1L/WlkDwi7HohlFB5tz+buwdo2bCROr
-	 fDy/gvyMjaxxBRk97+tXEJ3DqCiMF6GiEVqfEpTrDg/X4OxnGRa2Di2UVNvTry8eXJ
-	 sLcAkoybPyijbCghzW+w7Ex0Hm0YXCdgfiOmdGyA=
+	b=G962QwcUrmXSG91B6qN9Iq/tVvQJAXs27z2VK+m41pEybO1OQ0hNeJuVG9ne8Ftxv
+	 LQwZvhGJhmI2dVHdTZMGXnMsh9sERihIxWkVJMiqWjVBfdOBvXcoaiVfhC6bEMT9vL
+	 yxQdBFPTld31uGjEOKKSso/aVWW4uxAWiEgpUX2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dipendra Khadka <kdipendra88@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 263/826] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_dmac_flt.c
-Date: Tue,  3 Dec 2024 15:39:50 +0100
-Message-ID: <20241203144754.022506213@linuxfoundation.org>
+Subject: [PATCH 6.11 419/817] RDMA/bnxt_re: Check cqe flags to know imm_data vs inv_irkey
+Date: Tue,  3 Dec 2024 15:39:51 +0100
+Message-ID: <20241203144012.235108418@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipendra Khadka <kdipendra88@gmail.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit f5b942e6c54b13246ee49d42dcfb71b7f29e3c64 ]
+[ Upstream commit 808ca6de989c598bc5af1ae0ad971a66077efac0 ]
 
-Add error pointer checks after calling otx2_mbox_get_rsp().
+Invalidate rkey is cpu endian and immediate data is in big endian format.
+Both immediate data and invalidate the remote key returned by
+HW is in little endian format.
 
-Fixes: 79d2be385e9e ("octeontx2-pf: offload DMAC filters to CGX/RPM block")
-Fixes: fa5e0ccb8f3a ("octeontx2-pf: Add support for exact match table.")
-Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+While handling the commit in fixes tag, the difference between
+immediate data and invalidate rkey endianness was not considered.
+
+Without changes of this patch, Kernel ULP was failing while processing
+inv_rkey.
+
+dmesg log snippet -
+nvme nvme0: Bogus remote invalidation for rkey 0x2000019Fix in this patch
+
+Do endianness conversion based on completion queue entry flag.
+Also, the HW completions are already converted to host endianness in
+bnxt_qplib_cq_process_res_rc and bnxt_qplib_cq_process_res_ud and there
+is no need to convert it again in bnxt_re_poll_cq. Modified the union to
+hold the correct data type.
+
+Fixes: 95b087f87b78 ("bnxt_re: Fix imm_data endianness")
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://patch.msgid.link/1730110014-20755-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c   | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +++++--
+ drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
-index 80d853b343f98..2046dd0da00d8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
-@@ -28,6 +28,11 @@ static int otx2_dmacflt_do_add(struct otx2_nic *pf, const u8 *mac,
- 	if (!err) {
- 		rsp = (struct cgx_mac_addr_add_rsp *)
- 			 otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
-+		if (IS_ERR(rsp)) {
-+			mutex_unlock(&pf->mbox.lock);
-+			return PTR_ERR(rsp);
-+		}
-+
- 		*dmac_index = rsp->index;
- 	}
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 982e85ba211bc..1ec7c563a5e59 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -3584,7 +3584,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *gsi_sqp,
+ 	wc->byte_len = orig_cqe->length;
+ 	wc->qp = &gsi_qp->ib_qp;
  
-@@ -200,6 +205,10 @@ int otx2_dmacflt_update(struct otx2_nic *pf, u8 *mac, u32 bit_pos)
- 
- 	rsp = (struct cgx_mac_addr_update_rsp *)
- 		otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
-+	if (IS_ERR(rsp)) {
-+		rc = PTR_ERR(rsp);
-+		goto out;
-+	}
- 
- 	pf->flow_cfg->bmap_to_dmacindex[bit_pos] = rsp->index;
- 
+-	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
++	wc->ex.imm_data = cpu_to_be32(orig_cqe->immdata);
+ 	wc->src_qp = orig_cqe->src_qp;
+ 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
+ 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
+@@ -3729,7 +3729,10 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
+ 				 (unsigned long)(cqe->qp_handle),
+ 				 struct bnxt_re_qp, qplib_qp);
+ 			wc->qp = &qp->ib_qp;
+-			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
++			if (cqe->flags & CQ_RES_RC_FLAGS_IMM)
++				wc->ex.imm_data = cpu_to_be32(cqe->immdata);
++			else
++				wc->ex.invalidate_rkey = cqe->invrkey;
+ 			wc->src_qp = cqe->src_qp;
+ 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
+ 			wc->port_num = 1;
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+index 389862df818d9..010b07e87acb8 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
++++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
+@@ -390,7 +390,7 @@ struct bnxt_qplib_cqe {
+ 	u16				cfa_meta;
+ 	u64				wr_id;
+ 	union {
+-		__le32			immdata;
++		u32			immdata;
+ 		u32			invrkey;
+ 	};
+ 	u64				qp_handle;
 -- 
 2.43.0
 
