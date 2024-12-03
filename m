@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95729E27DB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:43:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46CDA9E26AD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:16:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6F86B445E3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:37:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5C5165743
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E108520A5F3;
-	Tue,  3 Dec 2024 15:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F5A1F8926;
+	Tue,  3 Dec 2024 16:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylxcHFR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lo74uq7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1B620A5EA;
-	Tue,  3 Dec 2024 15:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49C31F76DB;
+	Tue,  3 Dec 2024 16:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239986; cv=none; b=qn9pJjXjzklP/W6tI+Hqfm/VveTfUbu8BJqEjlsYgKcMWnSAXwvS1huOM0hacBQhp6lOJYF3A3vaq3k0v0JnZG5SlxPDBSyo/MHfsOhNENgOiUWDJY7UszRkzbkc/j22qYK9BBiFuRYOCW/LYgEn5CfVUHUhA88uTuO0ND0lYu8=
+	t=1733242299; cv=none; b=hVE2FZ84+sPCSil1PREZ//RmeQr3kZmgoNnVwrlWeNKPO7GHAeQpNDIo2P0bf+uaZDg9P/D7O2n32IPuEqpIiD7+zfUc8hT+OPyCEjiccLU6lc6ZOWQw6l1aKKiWqNC8qSR9GeGYmQpUn4kmV36Se0UctxrmUr8Ntk4+HtBPA5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239986; c=relaxed/simple;
-	bh=I0uSYGxJRaWxfHgndYmwtokuYRQxAX/ligTSWELhSKE=;
+	s=arc-20240116; t=1733242299; c=relaxed/simple;
+	bh=RAryz1SnyftrszJlSYJxnDdLxkM+vkSL/25VooaeqeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=egQxmcMeonHioX3k9Dzrg0Eyveov3UYlCEZRjNuQ2ATp5N6Hbn6HGa4pYiexwz6R4eBt1nnEII26vakXFCbBJViYXfzcTi5Z1i4esDioh3Bww3QZ2Y722r1CNfQj9Ti1B8mwBdcnAvPYJRdVPC6tDXGvceNXcM0swyM6W2ZdBNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylxcHFR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24180C4CED6;
-	Tue,  3 Dec 2024 15:33:05 +0000 (UTC)
+	 MIME-Version; b=NGQf7kjcvbkuBJC5IBrtuHlqtuOzEf5rikULLppyZ0u4Qlxk9qP68uRr3AsIJhYWXkMSOX9Ztx6Qc9K4o36pKqZkWBWxgH1SnxB0HliUrumWxSv3WDfdICyjPX6MSiJ1LwMVm++dA076q2bLiOC7sKNrl7m8QLOeDidLjVP+CWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lo74uq7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E20C4CECF;
+	Tue,  3 Dec 2024 16:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239986;
-	bh=I0uSYGxJRaWxfHgndYmwtokuYRQxAX/ligTSWELhSKE=;
+	s=korg; t=1733242298;
+	bh=RAryz1SnyftrszJlSYJxnDdLxkM+vkSL/25VooaeqeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylxcHFR6JCerOJqlm9Giy0KTHuIV1kGz/P8HE0SgM47b1bV+MxXxCcOUmQFTorBg7
-	 ZrL5sUqNqgp8vbisUX6kH+B/U8ULgjfeRyHyp3S3Ywmg75bNA0hi5NT1FpSYNQT4pr
-	 L/YYBCD01QmD3GueOA96wdjMabjG2EaX9uitSxxM=
+	b=Lo74uq7L0yLLlvXI0pA1Uqph7PzSLsLrwnl+vlZHG43q0+AbdEspSe5aGwJR0xfJQ
+	 +7pccpNeJxjXS6Kvl3eDj2ezY2Rtfu3CB5ZQQJTwudsNs9rJcJQanLru3pqBL+A7jj
+	 lDvqK2MbUv+X8PaP+ghMPBKjVX9JZau5O87YG26s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 802/817] modpost: remove incorrect code in do_eisa_entry()
-Date: Tue,  3 Dec 2024 15:46:14 +0100
-Message-ID: <20241203144027.715407979@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.12 648/826] KVM: arm64: Dont retire aborted MMIO instruction
+Date: Tue,  3 Dec 2024 15:46:15 +0100
+Message-ID: <20241203144809.025241646@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,91 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
+commit e735a5da64420a86be370b216c269b5dd8e830e2 upstream.
 
-This function contains multiple bugs after the following commits:
+Returning an abort to the guest for an unsupported MMIO access is a
+documented feature of the KVM UAPI. Nevertheless, it's clear that this
+plumbing has seen limited testing, since userspace can trivially cause a
+WARN in the MMIO return:
 
- - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
- - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+  WARNING: CPU: 0 PID: 30558 at arch/arm64/include/asm/kvm_emulate.h:536 kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
+  Call trace:
+   kvm_handle_mmio_return+0x46c/0x5c4 arch/arm64/include/asm/kvm_emulate.h:536
+   kvm_arch_vcpu_ioctl_run+0x98/0x15b4 arch/arm64/kvm/arm.c:1133
+   kvm_vcpu_ioctl+0x75c/0xa78 virt/kvm/kvm_main.c:4487
+   __do_sys_ioctl fs/ioctl.c:51 [inline]
+   __se_sys_ioctl fs/ioctl.c:893 [inline]
+   __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
+   __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+   invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+   el0_svc_common+0x1e0/0x23c arch/arm64/kernel/syscall.c:132
+   do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+   el0_svc+0x38/0x68 arch/arm64/kernel/entry-common.c:712
+   el0t_64_sync_handler+0x90/0xfc arch/arm64/kernel/entry-common.c:730
+   el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
 
-Commit ac551828993e inserted the following code to do_eisa_entry():
+The splat is complaining that KVM is advancing PC while an exception is
+pending, i.e. that KVM is retiring the MMIO instruction despite a
+pending synchronous external abort. Womp womp.
 
-    else
-            strcat(alias, "*");
+Fix the glaring UAPI bug by skipping over all the MMIO emulation in
+case there is a pending synchronous exception. Note that while userspace
+is capable of pending an asynchronous exception (SError, IRQ, or FIQ),
+it is still safe to retire the MMIO instruction in this case as (1) they
+are by definition asynchronous, and (2) KVM relies on hardware support
+for pending/delivering these exceptions instead of the software state
+machine for advancing PC.
 
-This is incorrect because 'alias' is uninitialized. If it is not
-NULL-terminated, strcat() could cause a buffer overrun.
-
-Even if 'alias' happens to be zero-filled, it would output:
-
-    MODULE_ALIAS("*");
-
-This would match anything. As a result, the module could be loaded by
-any unrelated uevent from an unrelated subsystem.
-
-Commit ac551828993e introduced another bug.            
-
-Prior to that commit, the conditional check was:
-
-    if (eisa->sig[0])
-
-This checked if the first character of eisa_device_id::sig was not '\0'.
-
-However, commit ac551828993e changed it as follows:
-
-    if (sig[0])
-
-sig[0] is NOT the first character of the eisa_device_id::sig. The
-type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
-'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
-address, which never becomes NULL.
-
-The correct conversion would have been:
-
-    if ((*sig)[0])
-
-However, this if-conditional was meaningless because the earlier change
-in commit ac551828993e was incorrect.
-
-This commit removes the entire incorrect code, which should never have
-been executed.
-
-Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
-Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: da345174ceca ("KVM: arm/arm64: Allow user injection of external data aborts")
+Reported-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20241025203106.3529261-2-oliver.upton@linux.dev
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/mod/file2alias.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/arm64/kvm/mmio.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 5d1c61fa5a550..bcb5a7e20775e 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -809,10 +809,7 @@ static int do_eisa_entry(const char *filename, void *symval,
- 		char *alias)
- {
- 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
--	if (sig[0])
--		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
--	else
--		strcat(alias, "*");
-+	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
- 	return 1;
+--- a/arch/arm64/kvm/mmio.c
++++ b/arch/arm64/kvm/mmio.c
+@@ -72,6 +72,31 @@ unsigned long kvm_mmio_read_buf(const vo
+ 	return data;
  }
  
--- 
-2.43.0
-
++static bool kvm_pending_sync_exception(struct kvm_vcpu *vcpu)
++{
++	if (!vcpu_get_flag(vcpu, PENDING_EXCEPTION))
++		return false;
++
++	if (vcpu_el1_is_32bit(vcpu)) {
++		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
++		case unpack_vcpu_flag(EXCEPT_AA32_UND):
++		case unpack_vcpu_flag(EXCEPT_AA32_IABT):
++		case unpack_vcpu_flag(EXCEPT_AA32_DABT):
++			return true;
++		default:
++			return false;
++		}
++	} else {
++		switch (vcpu_get_flag(vcpu, EXCEPT_MASK)) {
++		case unpack_vcpu_flag(EXCEPT_AA64_EL1_SYNC):
++		case unpack_vcpu_flag(EXCEPT_AA64_EL2_SYNC):
++			return true;
++		default:
++			return false;
++		}
++	}
++}
++
+ /**
+  * kvm_handle_mmio_return -- Handle MMIO loads after user space emulation
+  *			     or in-kernel IO emulation
+@@ -84,8 +109,11 @@ int kvm_handle_mmio_return(struct kvm_vc
+ 	unsigned int len;
+ 	int mask;
+ 
+-	/* Detect an already handled MMIO return */
+-	if (unlikely(!vcpu->mmio_needed))
++	/*
++	 * Detect if the MMIO return was already handled or if userspace aborted
++	 * the MMIO access.
++	 */
++	if (unlikely(!vcpu->mmio_needed || kvm_pending_sync_exception(vcpu)))
+ 		return 1;
+ 
+ 	vcpu->mmio_needed = 0;
 
 
 
