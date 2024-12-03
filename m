@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17FA9E24A0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FF09E27EE
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:45:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A17ED16181F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B3AAB2F3CB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE6B1FBEA9;
-	Tue,  3 Dec 2024 15:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20F51F8AD6;
+	Tue,  3 Dec 2024 15:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOg+XS8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvCkLvCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9611F76DD;
-	Tue,  3 Dec 2024 15:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF901F75B1;
+	Tue,  3 Dec 2024 15:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240583; cv=none; b=SqkP6B9rp4QVvuuM9D8KESpKB1jNHm23ajoGqpGJCSTSyecxM4X02YjMJZZAMQxIJqZwUvx/Z1i166xwwbnprlvmbiKfeYrI1vikU83fgnqT/S97Vc3gVAZ+mxUQE11UnZxXDN57wAQ6OSneMZCmJU3xucw+Xx+vrblfhsJb/ws=
+	t=1733238577; cv=none; b=opjdpIh8dANQJWc7GT8jSoPYYXpsiQAFYI60nM3aQmODQkqN3fORwg2r2Kp8eq6WdUG+dDOBBOGmscsqsAVmHhb2euo5PK+KG9teELfC+kqGTV3igQJodYmEaKRWjEV4B84Of5vkowwAPJ+9oOQXiwHqvJIYtNsmUVnr/VP5gLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240583; c=relaxed/simple;
-	bh=7IPqBk2bwOHmly9nY8+JOJ2jD4bMGPi9rZSCkcEvxeE=;
+	s=arc-20240116; t=1733238577; c=relaxed/simple;
+	bh=DzJd1Wc6oJPQhltAQ8pIb64iuWbDdHPosU7Qj3cdZj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZC/PpeYu6IGFz3BfzOHITdzs4SwdHkuW3S2CHOSul9ZspD/xxRaAtp8qjQHWbUdkrQbnvGIZd42QDXd9ufLTSh8XMJYHLX3sRj6AgkrbJcaUX+WxQodOZu7spMgymZvg3jXQ1QwwvB7Ozv/8PDsObC/1OoZRvtUlcz2JYxA5yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOg+XS8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB565C4CECF;
-	Tue,  3 Dec 2024 15:43:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OnN8PBghEvencWeLA6WwwwP3bSMzSMsbiCf4fIXpwj2oc1f985ffArr2VBj7DP7g4grfpbzSeyQvhC/euOdCch3k+A9Wnsm8LYCpE/xByyZpiWXS6IG3jtWaGMbDc1JJPEBwEiMio83eDmX9bmBi2Gy4w4mcAeACoJfkpAos1E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvCkLvCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253E2C4CECF;
+	Tue,  3 Dec 2024 15:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240583;
-	bh=7IPqBk2bwOHmly9nY8+JOJ2jD4bMGPi9rZSCkcEvxeE=;
+	s=korg; t=1733238577;
+	bh=DzJd1Wc6oJPQhltAQ8pIb64iuWbDdHPosU7Qj3cdZj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOg+XS8UMWfTOFATFgG9vNxQ8VJRaQbj4/xizoDRIwz1VPixmpa6uPqULR/rUSACE
-	 016tynYNn53/zJoMHzlnXIyhUTihOZZ7DFipbFQWaalL5+gv38llZdQs/9HPD2MoEM
-	 RP6Jj330mAVnFevYA0CfuvP1mmwZoqQJWFeYAZpM=
+	b=tvCkLvCTZDogw71kfI+79HTQTDwskT4C9lfOlYtYxrsLuNO4Bh403RXaKf0e0xwui
+	 Nx/fIikHmaGUanpVFaXPx8pRh4wR6lJzHovn9CmlttOqly4g3qLViCVg8ItAhFMUm0
+	 7zDX5vZklujVlrDfm1q/1p1MR5umpTtwtEXJ1dzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 170/826] media: ipu6: remove architecture DMA ops dependency in Kconfig
+Subject: [PATCH 6.11 325/817] drm/panthor: Fix OPP refcnt leaks in devfreq initialisation
 Date: Tue,  3 Dec 2024 15:38:17 +0100
-Message-ID: <20241203144750.364244185@linuxfoundation.org>
+Message-ID: <20241203144008.503562126@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Adrián Larumbe <adrian.larumbe@collabora.com>
 
-[ Upstream commit c8e9120c2065868d97e9e94bceee777e5db08c3e ]
+[ Upstream commit 21c23e4b64e360d74d31b480f0572c2add0e8558 ]
 
-IPU6 driver doesn't override the dma_ops of device now, it doesn't
-depends on the ARCH_HAS_DMA_OPS, so remove the dependency in Kconfig.
+Rearrange lookup of recommended OPP for the Mali GPU device and its refcnt
+decremental to make sure no OPP object leaks happen in the error path.
 
-Fixes: de6c85bf918e ("dma-mapping: clearly mark DMA ops as an architecture feature")
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Fixes: fac9b22df4b1 ("drm/panthor: Add the devfreq logical block")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241105205458.1318989-2-adrian.larumbe@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/Kconfig | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/gpu/drm/panthor/panthor_devfreq.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/pci/intel/ipu6/Kconfig b/drivers/media/pci/intel/ipu6/Kconfig
-index 49e4fb696573f..a4537818a58c0 100644
---- a/drivers/media/pci/intel/ipu6/Kconfig
-+++ b/drivers/media/pci/intel/ipu6/Kconfig
-@@ -4,12 +4,6 @@ config VIDEO_INTEL_IPU6
- 	depends on VIDEO_DEV
- 	depends on X86 && X86_64 && HAS_DMA
- 	depends on IPU_BRIDGE || !IPU_BRIDGE
--	#
--	# This driver incorrectly tries to override the dma_ops.  It should
--	# never have done that, but for now keep it working on architectures
--	# that use dma ops
--	#
--	depends on ARCH_HAS_DMA_OPS
- 	select AUXILIARY_BUS
- 	select IOMMU_IOVA
- 	select VIDEO_V4L2_SUBDEV_API
+diff --git a/drivers/gpu/drm/panthor/panthor_devfreq.c b/drivers/gpu/drm/panthor/panthor_devfreq.c
+index 9d0f891b9b534..ecc7a52bd688e 100644
+--- a/drivers/gpu/drm/panthor/panthor_devfreq.c
++++ b/drivers/gpu/drm/panthor/panthor_devfreq.c
+@@ -163,13 +163,6 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
+ 
+ 	cur_freq = clk_get_rate(ptdev->clks.core);
+ 
+-	opp = devfreq_recommended_opp(dev, &cur_freq, 0);
+-	if (IS_ERR(opp))
+-		return PTR_ERR(opp);
+-
+-	panthor_devfreq_profile.initial_freq = cur_freq;
+-	ptdev->current_frequency = cur_freq;
+-
+ 	/* Regulator coupling only takes care of synchronizing/balancing voltage
+ 	 * updates, but the coupled regulator needs to be enabled manually.
+ 	 *
+@@ -200,18 +193,24 @@ int panthor_devfreq_init(struct panthor_device *ptdev)
+ 		return ret;
+ 	}
+ 
++	opp = devfreq_recommended_opp(dev, &cur_freq, 0);
++	if (IS_ERR(opp))
++		return PTR_ERR(opp);
++
++	panthor_devfreq_profile.initial_freq = cur_freq;
++	ptdev->current_frequency = cur_freq;
++
+ 	/*
+ 	 * Set the recommend OPP this will enable and configure the regulator
+ 	 * if any and will avoid a switch off by regulator_late_cleanup()
+ 	 */
+ 	ret = dev_pm_opp_set_opp(dev, opp);
++	dev_pm_opp_put(opp);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev, "Couldn't set recommended OPP\n");
+ 		return ret;
+ 	}
+ 
+-	dev_pm_opp_put(opp);
+-
+ 	/* Find the fastest defined rate  */
+ 	opp = dev_pm_opp_find_freq_floor(dev, &freq);
+ 	if (IS_ERR(opp))
 -- 
 2.43.0
 
