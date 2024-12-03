@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599D49E2297
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153A09E27FF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21286B80236
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:37:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E828B67D37
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A09EB1F6674;
-	Tue,  3 Dec 2024 14:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72451F668D;
+	Tue,  3 Dec 2024 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPj+4zKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pqyNwYCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8F41F706A;
-	Tue,  3 Dec 2024 14:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823E61F667A;
+	Tue,  3 Dec 2024 14:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236591; cv=none; b=cNeGNghZTdlug4jOrpLADbrKrYEdGzoBFWGtdVxAxkI4u5MhyBkfjIB9S091pN18l30X8RTcrkLs3yRlVpcvxZ7GPqq0FVmMF9BJM/Xump14IYVKqBJKRbkM+EvzXhUa5+mxn82jOMig6DRh/adIYlw7hard1FbAJpHV1damphs=
+	t=1733236510; cv=none; b=Rn46/5ZQRbDgiu/xUmz8iGDhVXRKW2urE0+mPC5P1WQH6I2kFQYlhdzHGCFtM7uB6qwqYsIGimm15m4eagCHsi2OLIqwg3yFVi+duyC9RRyzMLQnsA44KXhxf7xcD/HTenThcxX6wL+3+HpyHBr25Ti/uPZJ7ot8MLONf93Ciok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236591; c=relaxed/simple;
-	bh=qVztrk/BZK3Nm7mSUVxID7RUlwuMHo99WkVgcYbNU3I=;
+	s=arc-20240116; t=1733236510; c=relaxed/simple;
+	bh=IUcmelc1S6rD2JDiGOJeO9Yek7qiKhXWXUSSEomreqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Txtmy+ItB7vU0q7C0LJfvtEf8oKwdbF8QuiDS2WLNCVxEQPkdU9xnCutKgUh0r5WwJ2WK8jnEknw0isRfyd5C9x/syWq3XmGcEIAjevAVKMKFm9UdR+RRpYE5ZM8uf+aU0sJ64jR2ChIsw0yFDhE0AExvDLb8Ud8Jo0zr2yy0XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPj+4zKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D48C4CECF;
-	Tue,  3 Dec 2024 14:36:30 +0000 (UTC)
+	 MIME-Version; b=EBjAi+WDmjF1rHtZqMEHCDBnbxRle+bOyw73J9NhdKM6eXK8iSnB6jk1+2EE9pkbtNU6jVRdaq+op0pm2Ef6OFZpKbqeZoYNR+1PjFLf/S+Ry6cDebYNatXm5JYrQumeFf/XOpmi+Zbf6Di+jXwJnIB6kCDbjqT/ftQFj78RAt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pqyNwYCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0B1C4CECF;
+	Tue,  3 Dec 2024 14:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236591;
-	bh=qVztrk/BZK3Nm7mSUVxID7RUlwuMHo99WkVgcYbNU3I=;
+	s=korg; t=1733236510;
+	bh=IUcmelc1S6rD2JDiGOJeO9Yek7qiKhXWXUSSEomreqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPj+4zKArkopVR/RtcqOPqLJaZfO5v0pG1+dbwuY2OetFj/LhGFwntvdBGFglJo1E
-	 62mkijgSoAMNv0PIalMP26x4ocbSyBfstTZKZrT7UVLNI5ESyONp7jWzOf7CNeytEy
-	 Zri4ctqYO/PgzOXXrQRRButQghxA+HPq2e+WI5qM=
+	b=pqyNwYCmPgWPNnpQbXtKYeckw8+qrtvmP8JE1RMtZzzRqrmtEWuZzRAP9/+tNA0tq
+	 tfKiwQ6SBaxr+uFJIuD3NPQUn7bQhpkLDi00cYxTtIpX0Ek/q00PedSaBtST6vfWGW
+	 Um5MWl3ambmLxye4SnLrk6rcJ1hXKlhdW6g05E7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+	Alper Nebi Yasak <alpernebiyasak@gmail.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 033/138] ARM: dts: cubieboard4: Fix DCDC5 regulator constraints
-Date: Tue,  3 Dec 2024 15:31:02 +0100
-Message-ID: <20241203141924.823129598@linuxfoundation.org>
+Subject: [PATCH 4.19 041/138] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_config_scan()
+Date: Tue,  3 Dec 2024 15:31:10 +0100
+Message-ID: <20241203141925.130681082@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -66,54 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Alper Nebi Yasak <alpernebiyasak@gmail.com>
 
-[ Upstream commit dd36ad71ad65968f97630808bc8d605c929b128e ]
+[ Upstream commit d241a139c2e9f8a479f25c75ebd5391e6a448500 ]
 
-The DCDC5 voltage rail in the X-Powers AXP809 PMIC has a resolution of
-50mV, so the currently enforced limits of 1.475 and 1.525 volts cannot
-be set, when the existing regulator value is beyond this range.
+Replace one-element array with a flexible-array member in `struct
+mwifiex_ie_types_wildcard_ssid_params` to fix the following warning
+on a MT8173 Chromebook (mt8173-elm-hana):
 
-This will lead to the whole regulator driver to give up and fail
-probing, which in turn will hang the system, as essential devices depend
-on the PMIC.
-In this case a bug in U-Boot set the voltage to 1.75V (meant for DCDC4),
-and the AXP driver's attempt to correct this lead to this error:
-==================
-[    4.447653] axp20x-rsb sunxi-rsb-3a3: AXP20X driver loaded
-[    4.450066] vcc-dram: Bringing 1750000uV into 1575000-1575000uV
-[    4.460272] vcc-dram: failed to apply 1575000-1575000uV constraint: -EINVAL
-[    4.474788] axp20x-regulator axp20x-regulator.0: Failed to register dcdc5
-[    4.482276] axp20x-regulator axp20x-regulator.0: probe with driver axp20x-regulator failed with error -22
-==================
+[  356.775250] ------------[ cut here ]------------
+[  356.784543] memcpy: detected field-spanning write (size 6) of single field "wildcard_ssid_tlv->ssid" at drivers/net/wireless/marvell/mwifiex/scan.c:904 (size 1)
+[  356.813403] WARNING: CPU: 3 PID: 742 at drivers/net/wireless/marvell/mwifiex/scan.c:904 mwifiex_scan_networks+0x4fc/0xf28 [mwifiex]
 
-Set the limits to values that can be programmed, so any correction will
-be successful.
+The "(size 6)" above is exactly the length of the SSID of the network
+this device was connected to. The source of the warning looks like:
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Fixes: 1e1dea72651b ("ARM: dts: sun9i: cubieboard4: Add AXP809 PMIC device node and regulators")
-Link: https://patch.msgid.link/20241007222916.19013-1-andre.przywara@arm.com
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+    ssid_len = user_scan_in->ssid_list[i].ssid_len;
+    [...]
+    memcpy(wildcard_ssid_tlv->ssid,
+           user_scan_in->ssid_list[i].ssid, ssid_len);
+
+There is a #define WILDCARD_SSID_TLV_MAX_SIZE that uses sizeof() on this
+struct, but it already didn't account for the size of the one-element
+array, so it doesn't need to be changed.
+
+Fixes: 5e6e3a92b9a4 ("wireless: mwifiex: initial commit for Marvell mwifiex driver")
+Signed-off-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241007222301.24154-1-alpernebiyasak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/sun9i-a80-cubieboard4.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/fw.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts b/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
-index 85da85faf869a..0e37ae46348ad 100644
---- a/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
-+++ b/arch/arm/boot/dts/sun9i-a80-cubieboard4.dts
-@@ -253,8 +253,8 @@ reg_dcdc4: dcdc4 {
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index bfa482cf464ff..c8bf6e559dc56 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -853,7 +853,7 @@ struct mwifiex_ietypes_chanstats {
+ struct mwifiex_ie_types_wildcard_ssid_params {
+ 	struct mwifiex_ie_types_header header;
+ 	u8 max_ssid_length;
+-	u8 ssid[1];
++	u8 ssid[];
+ } __packed;
  
- 			reg_dcdc5: dcdc5 {
- 				regulator-always-on;
--				regulator-min-microvolt = <1425000>;
--				regulator-max-microvolt = <1575000>;
-+				regulator-min-microvolt = <1450000>;
-+				regulator-max-microvolt = <1550000>;
- 				regulator-name = "vcc-dram";
- 			};
- 
+ #define TSF_DATA_SIZE            8
 -- 
 2.43.0
 
