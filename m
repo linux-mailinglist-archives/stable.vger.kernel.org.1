@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4D29E2245
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD8F9E2556
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D489428145B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3C4A287B59
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13FD1F754A;
-	Tue,  3 Dec 2024 15:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FF21F8918;
+	Tue,  3 Dec 2024 15:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/Upwo/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgstWbFE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07DA1F7540;
-	Tue,  3 Dec 2024 15:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F571F8ACD;
+	Tue,  3 Dec 2024 15:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239317; cv=none; b=qu1nCLJaw2+ayY4VEV7+ajlA9BlzJ1voNTfh7EGShX160YxCD4msf6u0I/av1SaMn5p+Zxcz16MKjKEhqrkYdvFVK8KmiEvWrJOtgWepqEcfZYQIOf6fuJsXb9cuz8bAG8+GrxZsGiF+NG8I/ci0HdgNuCVXohb34K1Srn/BVbQ=
+	t=1733241543; cv=none; b=TCRX2ddso/+uMorZqG/rhVrtkVZrFC2MiKSKnUnoDb5lXXb1lbJC6Yt/YYjncouPJ2MHEknz3ODsCmr2Eozt6pvkohkhU7FGPuF+djZeVsm+7eSUj7z0SQX2ow7qSS0A3GfRu4c1iAj8uuVvWPrE8XVVlvq8OkzYuTgI5fhFh6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239317; c=relaxed/simple;
-	bh=8fYsBnv2xFzHRLibtieA4ZlfX0oSbCBCRh9CUzvMORs=;
+	s=arc-20240116; t=1733241543; c=relaxed/simple;
+	bh=A5Z+y5HZjofbeUhAz83I+lmWGqu7AuodNG/I+QZncZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNdfdA/ydx05etJDcSAyhhdRffRiYDRIGjDi2Gp4p4PJDkb7uIHzCJAcfs8dmb9NFo3Bkc8eHGR1ygdl2iu+6zyHa3PLR8CRSqFeskSlMNEHkbdHFQHK48UosqSKUXnQQsX/t2ksbW3gS5dUEgHo9ufnLBI4d78AIQfA3hWXPtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/Upwo/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284EAC4CECF;
-	Tue,  3 Dec 2024 15:21:56 +0000 (UTC)
+	 MIME-Version; b=jHq2FziwLa8gz5XHa9xQF0++HXO7t/UIOKT0pHskg09RUc9/ck30q/eNy1LsKKuxrBkgvo8sj41KrinCjUoWcbV/fegF7n6syAkfxgkIzWMCQRTMUDl/CigmMr8JdqlwwmoOolANwrov5lcY9kFLs2RVgS4e0kBjrESkK9/VFLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dgstWbFE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D07C4CED6;
+	Tue,  3 Dec 2024 15:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239317;
-	bh=8fYsBnv2xFzHRLibtieA4ZlfX0oSbCBCRh9CUzvMORs=;
+	s=korg; t=1733241542;
+	bh=A5Z+y5HZjofbeUhAz83I+lmWGqu7AuodNG/I+QZncZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/Upwo/3oLlgPy4kJhyOUuK7AZCv9CcV3bAy4OKTPhMqkYqqdjkVy8SpsH6gu+NnZ
-	 t5FRCBXCE9Dgsi86a/NbSEued4Ap/s55+i2N0fXa9Tf6OS4AEaTyu6NBypOarVZkPI
-	 0hT9YAZ/QuMm6AY+NBCPd2EgfDdqWrjYyOTihCyA=
+	b=dgstWbFEzmRe5DSZYL1nSiMQu8QS37X7SFHK6p7O/HPQWEs7rZlvM7be9CeTDjipO
+	 3MI3QHumARJxqRFtFUry2terC6yrZkZUG8scvOfEG3jrvlQ9YS6LLERkWCcP0glw3k
+	 cjN1i2aEKiJrzCZG7qnqsGWkXdszuFxX7T4iIp+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d4373fa8042c06cefa84@syzkaller.appspotmail.com,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Baolin Liu <liubaolin@kylinos.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 571/817] netlink: fix false positive warning in extack during dumps
-Date: Tue,  3 Dec 2024 15:42:23 +0100
-Message-ID: <20241203144018.202156079@linuxfoundation.org>
+Subject: [PATCH 6.12 417/826] scsi: target: Fix incorrect function name in pscsi_create_type_disk()
+Date: Tue,  3 Dec 2024 15:42:24 +0100
+Message-ID: <20241203144800.026236455@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Baolin Liu <liubaolin@kylinos.cn>
 
-[ Upstream commit 3bf39fa849ab8ed52abb6715922e6102d3df9f97 ]
+[ Upstream commit da5aeca99dd0b6c7bf6679382756ea6bda195f72 ]
 
-Commit under fixes extended extack reporting to dumps.
-It works under normal conditions, because extack errors are
-usually reported during ->start() or the first ->dump(),
-it's quite rare that the dump starts okay but fails later.
-If the dump does fail later, however, the input skb will
-already have the initiating message pulled, so checking
-if bad attr falls within skb->data will fail.
+In pr_err(), bdev_open_by_path() should be renamed to
+bdev_file_open_by_path()
 
-Switch the check to using nlh, which is always valid.
-
-syzbot found a way to hit that scenario by filling up
-the receive queue. In this case we initiate a dump
-but don't call ->dump() until there is read space for
-an skb.
-
-WARNING: CPU: 1 PID: 5845 at net/netlink/af_netlink.c:2210 netlink_ack_tlv_fill+0x1a8/0x560 net/netlink/af_netlink.c:2209
-RIP: 0010:netlink_ack_tlv_fill+0x1a8/0x560 net/netlink/af_netlink.c:2209
-Call Trace:
- <TASK>
- netlink_dump_done+0x513/0x970 net/netlink/af_netlink.c:2250
- netlink_dump+0x91f/0xe10 net/netlink/af_netlink.c:2351
- netlink_recvmsg+0x6bb/0x11d0 net/netlink/af_netlink.c:1983
- sock_recvmsg_nosec net/socket.c:1051 [inline]
- sock_recvmsg+0x22f/0x280 net/socket.c:1073
- __sys_recvfrom+0x246/0x3d0 net/socket.c:2267
- __do_sys_recvfrom net/socket.c:2285 [inline]
- __se_sys_recvfrom net/socket.c:2281 [inline]
- __x64_sys_recvfrom+0xde/0x100 net/socket.c:2281
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7ff37dd17a79
-
-Reported-by: syzbot+d4373fa8042c06cefa84@syzkaller.appspotmail.com
-Fixes: 8af4f60472fc ("netlink: support all extack types in dumps")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20241119224432.1713040-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 034f0cf8fdf9 ("target: port block device access to file")
+Signed-off-by: Baolin Liu <liubaolin@kylinos.cn>
+Link: https://lore.kernel.org/r/20241030021800.234980-1-liubaolin12138@163.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/target/target_core_pscsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index f84aad420d446..775d707ec708a 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2176,9 +2176,14 @@ netlink_ack_tlv_len(struct netlink_sock *nlk, int err,
- 	return tlvlen;
- }
- 
-+static bool nlmsg_check_in_payload(const struct nlmsghdr *nlh, const void *addr)
-+{
-+	return !WARN_ON(addr < nlmsg_data(nlh) ||
-+			addr - (const void *) nlh >= nlh->nlmsg_len);
-+}
-+
- static void
--netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
--		     const struct nlmsghdr *nlh, int err,
-+netlink_ack_tlv_fill(struct sk_buff *skb, const struct nlmsghdr *nlh, int err,
- 		     const struct netlink_ext_ack *extack)
- {
- 	if (extack->_msg)
-@@ -2190,9 +2195,7 @@ netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
- 	if (!err)
- 		return;
- 
--	if (extack->bad_attr &&
--	    !WARN_ON((u8 *)extack->bad_attr < in_skb->data ||
--		     (u8 *)extack->bad_attr >= in_skb->data + in_skb->len))
-+	if (extack->bad_attr && nlmsg_check_in_payload(nlh, extack->bad_attr))
- 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_OFFS,
- 				    (u8 *)extack->bad_attr - (const u8 *)nlh));
- 	if (extack->policy)
-@@ -2201,9 +2204,7 @@ netlink_ack_tlv_fill(struct sk_buff *in_skb, struct sk_buff *skb,
- 	if (extack->miss_type)
- 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_MISS_TYPE,
- 				    extack->miss_type));
--	if (extack->miss_nest &&
--	    !WARN_ON((u8 *)extack->miss_nest < in_skb->data ||
--		     (u8 *)extack->miss_nest > in_skb->data + in_skb->len))
-+	if (extack->miss_nest && nlmsg_check_in_payload(nlh, extack->miss_nest))
- 		WARN_ON(nla_put_u32(skb, NLMSGERR_ATTR_MISS_NEST,
- 				    (u8 *)extack->miss_nest - (const u8 *)nlh));
- }
-@@ -2232,7 +2233,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
- 	if (extack_len) {
- 		nlh->nlmsg_flags |= NLM_F_ACK_TLVS;
- 		if (skb_tailroom(skb) >= extack_len) {
--			netlink_ack_tlv_fill(cb->skb, skb, cb->nlh,
-+			netlink_ack_tlv_fill(skb, cb->nlh,
- 					     nlk->dump_done_errno, extack);
- 			nlmsg_end(skb, nlh);
- 		}
-@@ -2491,7 +2492,7 @@ void netlink_ack(struct sk_buff *in_skb, struct nlmsghdr *nlh, int err,
+diff --git a/drivers/target/target_core_pscsi.c b/drivers/target/target_core_pscsi.c
+index 440e07b1d5cdb..287ac5b0495f9 100644
+--- a/drivers/target/target_core_pscsi.c
++++ b/drivers/target/target_core_pscsi.c
+@@ -369,7 +369,7 @@ static int pscsi_create_type_disk(struct se_device *dev, struct scsi_device *sd)
+ 	bdev_file = bdev_file_open_by_path(dev->udev_path,
+ 				BLK_OPEN_WRITE | BLK_OPEN_READ, pdv, NULL);
+ 	if (IS_ERR(bdev_file)) {
+-		pr_err("pSCSI: bdev_open_by_path() failed\n");
++		pr_err("pSCSI: bdev_file_open_by_path() failed\n");
+ 		scsi_device_put(sd);
+ 		return PTR_ERR(bdev_file);
  	}
- 
- 	if (tlvlen)
--		netlink_ack_tlv_fill(in_skb, skb, nlh, err, extack);
-+		netlink_ack_tlv_fill(skb, nlh, err, extack);
- 
- 	nlmsg_end(skb, rep);
- 
 -- 
 2.43.0
 
