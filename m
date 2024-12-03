@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308A79E2410
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:45:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED569E21A3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4CD828699E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DD1616A03E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7157E1F75A6;
-	Tue,  3 Dec 2024 15:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB8E91F8906;
+	Tue,  3 Dec 2024 15:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCjw6MOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRMDtkYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4001F12E0;
-	Tue,  3 Dec 2024 15:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6B11F7540;
+	Tue,  3 Dec 2024 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240549; cv=none; b=Zqrf08e2NWw3VXmcoYa9CC+JCriRmYlrgL3oODGM/0kB/wtwH8slp6Q2MNiQiVIvvaueZazWOPvC09SkkwCAEOOoB+wpuWg/LQwo35flkuqvdOmOPiOJs5FOb30bUSfNtfqMIJTumtk3A6Lff+I5HE9e5sdfteMboevW3wY1TuM=
+	t=1733238568; cv=none; b=edCLCio8HG2VvHHQdl3gY1dOg0zm3jo7Rn9sr5PYUOx4D6Xr8tNDPcCY7kH4bmFCbqT2WRES4cC8qHYav2Q+ioER99XVATgUqDglbDllL6Q4WM8uzbiEW9dN/ATDNLJa8xTTu/6LTI9FQg4RdeAD89PRlEwPKXH30PiiF6+9Y2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240549; c=relaxed/simple;
-	bh=WigICqfbVrM9NEpgcZhxulR8ruVQtHU+1fcv9kMT4cg=;
+	s=arc-20240116; t=1733238568; c=relaxed/simple;
+	bh=boSsZ5KS+dMxat4ZTPPEis6WHQYi/cxBmen1GhorAF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4527bLF2ZgLGN5lizgZRZsrRk4SITBZQvGbk0M2a2Vgau1ef7bLZwfCslbGY4l4awLLpgYXS1c48QCH8iFBZ9AxMbg/f0r9Ptd+DBk+kCZpj5wJWnIklgkd5ZT96GuMWMPKOB/vw5c7vsS6dAGx1B2Fg7ivcFjxM5EZ8J8D9Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCjw6MOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E2CC4CECF;
-	Tue,  3 Dec 2024 15:42:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ElRHi2DamebkK2o7dpCVVNbLt+Y+v69JlLVD4FOk1cApUuV8QQYH4m6GfCURg/r+iAod1AEdyCMy0IXXR6AnZrmI1YrMmCS4nP5m9eN/NZmysJBpVxrt9l0sFqRQNSMvVbdtpRsT9MfTy32WsRAze8idFrgjqALJgIaNGsU97hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRMDtkYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84ECFC4CECF;
+	Tue,  3 Dec 2024 15:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240549;
-	bh=WigICqfbVrM9NEpgcZhxulR8ruVQtHU+1fcv9kMT4cg=;
+	s=korg; t=1733238565;
+	bh=boSsZ5KS+dMxat4ZTPPEis6WHQYi/cxBmen1GhorAF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCjw6MODKn62iIstvKy2Tjj5ohuB0WTdMImx/HGgJlcJKxfA6aVT1iJ2MN+7gxkXw
-	 Ro6Y6eWM9VXshYRPLGwA+hc0+PJi8dbr93bwObaoTgux5TOlLJT7dYXfDJL88NN01g
-	 NXiyljPk9ILRfARkaGOmbYFhUNE/F3JTr6oZZWJ8=
+	b=nRMDtkYLAzpJdHIwOVXAct/L0t2PEY9CdUMFHoEaeNNhkp4QVFPM5agCHJXrnHueq
+	 62rCO1uSVnVIdpejI1nZF0F5OCzunONknGTyar41uIRtJyq17E92jhx5eYpGq/r8Uy
+	 +28vOxCWgD8OHKNhwOmDcM1rL4tOqK8Z1sv1HRVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Qiu <luoqiu@kylinsec.com.cn>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 167/826] firmware: arm_scpi: Check the DVFS OPP count returned by the firmware
+Subject: [PATCH 6.11 322/817] drm/panfrost: Add missing OPP table refcnt decremental
 Date: Tue,  3 Dec 2024 15:38:14 +0100
-Message-ID: <20241203144750.249237259@linuxfoundation.org>
+Message-ID: <20241203144008.388135577@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,97 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Qiu <luoqiu@kylinsec.com.cn>
+From: Adrián Larumbe <adrian.larumbe@collabora.com>
 
-[ Upstream commit 109aa654f85c5141e813b2cd1bd36d90be678407 ]
+[ Upstream commit 043e8afebf6c19abde9da1ac3d5cbf8b7ac8393f ]
 
-Fix a kernel crash with the below call trace when the SCPI firmware
-returns OPP count of zero.
+Commit f11b0417eec2 ("drm/panfrost: Add fdinfo support GPU load metrics")
+retrieves the OPP for the maximum device clock frequency, but forgets to
+keep the reference count balanced by putting the returned OPP object. This
+eventually leads to an OPP core warning when removing the device.
 
-dvfs_info.opp_count may be zero on some platforms during the reboot
-test, and the kernel will crash after dereferencing the pointer to
-kcalloc(info->count, sizeof(*opp), GFP_KERNEL).
+Fix it by putting OPP objects as many times as they're retrieved.
 
-  |  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000028
-  |  Mem abort info:
-  |    ESR = 0x96000004
-  |    Exception class = DABT (current EL), IL = 32 bits
-  |    SET = 0, FnV = 0
-  |    EA = 0, S1PTW = 0
-  |  Data abort info:
-  |    ISV = 0, ISS = 0x00000004
-  |    CM = 0, WnR = 0
-  |  user pgtable: 4k pages, 48-bit VAs, pgdp = 00000000faefa08c
-  |  [0000000000000028] pgd=0000000000000000
-  |  Internal error: Oops: 96000004 [#1] SMP
-  |  scpi-hwmon: probe of PHYT000D:00 failed with error -110
-  |  Process systemd-udevd (pid: 1701, stack limit = 0x00000000aaede86c)
-  |  CPU: 2 PID: 1701 Comm: systemd-udevd Not tainted 4.19.90+ #1
-  |  Hardware name: PHYTIUM LTD Phytium FT2000/4/Phytium FT2000/4, BIOS
-  |  pstate: 60000005 (nZCv daif -PAN -UAO)
-  |  pc : scpi_dvfs_recalc_rate+0x40/0x58 [clk_scpi]
-  |  lr : clk_register+0x438/0x720
-  |  Call trace:
-  |   scpi_dvfs_recalc_rate+0x40/0x58 [clk_scpi]
-  |   devm_clk_hw_register+0x50/0xa0
-  |   scpi_clk_ops_init.isra.2+0xa0/0x138 [clk_scpi]
-  |   scpi_clocks_probe+0x528/0x70c [clk_scpi]
-  |   platform_drv_probe+0x58/0xa8
-  |   really_probe+0x260/0x3d0
-  |   driver_probe_device+0x12c/0x148
-  |   device_driver_attach+0x74/0x98
-  |   __driver_attach+0xb4/0xe8
-  |   bus_for_each_dev+0x88/0xe0
-  |   driver_attach+0x30/0x40
-  |   bus_add_driver+0x178/0x2b0
-  |   driver_register+0x64/0x118
-  |   __platform_driver_register+0x54/0x60
-  |   scpi_clocks_driver_init+0x24/0x1000 [clk_scpi]
-  |   do_one_initcall+0x54/0x220
-  |   do_init_module+0x54/0x1c8
-  |   load_module+0x14a4/0x1668
-  |   __se_sys_finit_module+0xf8/0x110
-  |   __arm64_sys_finit_module+0x24/0x30
-  |   el0_svc_common+0x78/0x170
-  |   el0_svc_handler+0x38/0x78
-  |   el0_svc+0x8/0x340
-  |  Code: 937d7c00 a94153f3 a8c27bfd f9400421 (b8606820)
-  |  ---[ end trace 06feb22469d89fa8 ]---
-  |  Kernel panic - not syncing: Fatal exception
-  |  SMP: stopping secondary CPUs
-  |  Kernel Offset: disabled
-  |  CPU features: 0x10,a0002008
-  |  Memory Limit: none
+Also remove an unnecessary whitespace.
 
-Fixes: 8cb7cf56c9fe ("firmware: add support for ARM System Control and Power Interface(SCPI) protocol")
-Signed-off-by: Luo Qiu <luoqiu@kylinsec.com.cn>
-Message-Id: <55A2F7A784391686+20241101032115.275977-1-luoqiu@kylinsec.com.cn>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Fixes: f11b0417eec2 ("drm/panfrost: Add fdinfo support GPU load metrics")
+Reviewed-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Steven Price <steven.price@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241105205458.1318989-1-adrian.larumbe@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/panfrost/panfrost_devfreq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
-index 94a6b4e667de1..f4d47577f83ee 100644
---- a/drivers/firmware/arm_scpi.c
-+++ b/drivers/firmware/arm_scpi.c
-@@ -630,6 +630,9 @@ static struct scpi_dvfs_info *scpi_dvfs_get_info(u8 domain)
- 	if (ret)
- 		return ERR_PTR(ret);
+diff --git a/drivers/gpu/drm/panfrost/panfrost_devfreq.c b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
+index 2d30da38c2c3e..3385fd3ef41a4 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_devfreq.c
++++ b/drivers/gpu/drm/panfrost/panfrost_devfreq.c
+@@ -38,7 +38,7 @@ static int panfrost_devfreq_target(struct device *dev, unsigned long *freq,
+ 		return PTR_ERR(opp);
+ 	dev_pm_opp_put(opp);
  
-+	if (!buf.opp_count)
-+		return ERR_PTR(-ENOENT);
-+
- 	info = kmalloc(sizeof(*info), GFP_KERNEL);
- 	if (!info)
- 		return ERR_PTR(-ENOMEM);
+-	err =  dev_pm_opp_set_rate(dev, *freq);
++	err = dev_pm_opp_set_rate(dev, *freq);
+ 	if (!err)
+ 		ptdev->pfdevfreq.current_frequency = *freq;
+ 
+@@ -182,6 +182,7 @@ int panfrost_devfreq_init(struct panfrost_device *pfdev)
+ 	 * if any and will avoid a switch off by regulator_late_cleanup()
+ 	 */
+ 	ret = dev_pm_opp_set_opp(dev, opp);
++	dev_pm_opp_put(opp);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(dev, "Couldn't set recommended OPP\n");
+ 		return ret;
 -- 
 2.43.0
 
