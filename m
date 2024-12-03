@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-96333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E199E1F4F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:34:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8059E20DA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:04:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BBD816558A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:34:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD152B67434
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C60B1F472D;
-	Tue,  3 Dec 2024 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431821F7586;
+	Tue,  3 Dec 2024 14:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JgfuLVIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWLj6t+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA8C17BB16;
-	Tue,  3 Dec 2024 14:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC21F4704;
+	Tue,  3 Dec 2024 14:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733236439; cv=none; b=YzpLTsHYKqZrXoP7f3NdhIh2MHsVUGIbSWhd0VHf1dc0jsTEv5Po99VOu3a9lV1qHyPdUM4wuV0qaXmUkcskj8aEnBj9XgzcRhN1zH2WGCpkLgflpULyUSOWOENdFE+WBqK/6Nhy3yHv4WZHCWzbjY/YiiNIaQxNV86v/oBCO5g=
+	t=1733236469; cv=none; b=ecc8fo1oIqtciPnsKp77ZF7i+z3q/Lmt87Y+4TEUHtIP0558SeYyepuzTrwvW3qBq6JnYcLorGzF0zxie107ZAxnABAGDnP0CCjwt/uYDLH9JbkPE+FPZDYD0/QvbdrGusxIwCAd+xhxmPA1G4mzZwrFTSykdh0Xb8Y0EkLg+Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733236439; c=relaxed/simple;
-	bh=L0sHNGIRXC0zZ0sNBxHPGWXB6dNaCbpWOpGdUciD/Kk=;
+	s=arc-20240116; t=1733236469; c=relaxed/simple;
+	bh=l3SSTw7sKger6gL8jC52YdKytIssH2zVNZIfTVcGQCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nmERnOaZOM6wdpVgLDbTDYTG++s/D8JZ8jUbmBj4CBcvrgCaGgEi4WiN1x4nUrj9KIkBF5bPPPCgrVv5m0+ftfr0Ojx2ANvSENYuhPLNjKpnTouHC8ASBjsFMIeKfv2LP3J6fwQRAO1P9kMq1x/g7KzmUgeBeCebXBiIqpzFH4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JgfuLVIH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE31FC4CECF;
-	Tue,  3 Dec 2024 14:33:58 +0000 (UTC)
+	 MIME-Version; b=Bm5v5E6Elw+xlisonTi+ys/IIbwoDEzuJ/QXsT+5ln58i2Uu/+n0bPNZnTnVJ3LnG6FbKZRs+3KHdKSKqd54vAwqld77RN80UwCDrZtMFEV/MjZ3XoqYvrYUEs7xZpAf3VjC/Uw1WlhmKV/D78wRnDoHNHdoJFJWU1iseL8sR1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWLj6t+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3BFC4CEDD;
+	Tue,  3 Dec 2024 14:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733236439;
-	bh=L0sHNGIRXC0zZ0sNBxHPGWXB6dNaCbpWOpGdUciD/Kk=;
+	s=korg; t=1733236468;
+	bh=l3SSTw7sKger6gL8jC52YdKytIssH2zVNZIfTVcGQCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JgfuLVIHaJMRq8hr38a7gFS74a7WtsnezGqAPYOk8oLJSKMxxRDLTolpreGFpKuS+
-	 Kazre0Gun29ZfB+FWjwBsnloRBAGq0UUVESj53Fg5svLNRRgHKFIZTdh86bzEkN1GW
-	 6We9TxdcsfNH5BBjlATw7qqx5vZMvfokYP/20Wsg=
+	b=dWLj6t+cjsSohDem7EF6+wpU9yAsvivbpZ5IRINacTEww33ELZs7cNOWIzqVqY8Ix
+	 6DcgTK2uHI+gLpRq/F8IQmNQiAWdXVOmyNv2oFGjHO8CFGm6cb7gCqUiq3alz9QBA1
+	 CH+4hrZsljpQZtSMyI5tRyPEBtQgUCmQ8CVoDGKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Mark Fasheh <mark@fasheh.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Ubisectech Sirius <bugreport@valiantsec.com>,
+	syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com,
+	Tejun Heo <tj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 002/138] ocfs2: uncache inode which has failed entering the group
-Date: Tue,  3 Dec 2024 15:30:31 +0100
-Message-ID: <20241203141923.624974232@linuxfoundation.org>
+Subject: [PATCH 4.19 003/138] nilfs2: fix null-ptr-deref in block_touch_buffer tracepoint
+Date: Tue,  3 Dec 2024 15:30:32 +0100
+Message-ID: <20241203141923.664304136@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
 References: <20241203141923.524658091@linuxfoundation.org>
@@ -72,92 +68,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 737f34137844d6572ab7d473c998c7f977ff30eb upstream.
+commit cd45e963e44b0f10d90b9e6c0e8b4f47f3c92471 upstream.
 
-Syzbot has reported the following BUG:
+Patch series "nilfs2: fix null-ptr-deref bugs on block tracepoints".
 
-kernel BUG at fs/ocfs2/uptodate.c:509!
-...
-Call Trace:
- <TASK>
- ? __die_body+0x5f/0xb0
- ? die+0x9e/0xc0
- ? do_trap+0x15a/0x3a0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? do_error_trap+0x1dc/0x2c0
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? __pfx_do_error_trap+0x10/0x10
- ? handle_invalid_op+0x34/0x40
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ? exc_invalid_op+0x38/0x50
- ? asm_exc_invalid_op+0x1a/0x20
- ? ocfs2_set_new_buffer_uptodate+0x2e/0x160
- ? ocfs2_set_new_buffer_uptodate+0x144/0x160
- ? ocfs2_set_new_buffer_uptodate+0x145/0x160
- ocfs2_group_add+0x39f/0x15a0
- ? __pfx_ocfs2_group_add+0x10/0x10
- ? __pfx_lock_acquire+0x10/0x10
- ? mnt_get_write_access+0x68/0x2b0
- ? __pfx_lock_release+0x10/0x10
- ? rcu_read_lock_any_held+0xb7/0x160
- ? __pfx_rcu_read_lock_any_held+0x10/0x10
- ? smack_log+0x123/0x540
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x68/0x2b0
- ? mnt_get_write_access+0x226/0x2b0
- ocfs2_ioctl+0x65e/0x7d0
- ? __pfx_ocfs2_ioctl+0x10/0x10
- ? smack_file_ioctl+0x29e/0x3a0
- ? __pfx_smack_file_ioctl+0x10/0x10
- ? lockdep_hardirqs_on_prepare+0x43d/0x780
- ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
- ? __pfx_ocfs2_ioctl+0x10/0x10
- __se_sys_ioctl+0xfb/0x170
- do_syscall_64+0xf3/0x230
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-...
- </TASK>
+This series fixes null pointer dereference bugs that occur when using
+nilfs2 and two block-related tracepoints.
 
-When 'ioctl(OCFS2_IOC_GROUP_ADD, ...)' has failed for the particular
-inode in 'ocfs2_verify_group_and_input()', corresponding buffer head
-remains cached and subsequent call to the same 'ioctl()' for the same
-inode issues the BUG() in 'ocfs2_set_new_buffer_uptodate()' (trying
-to cache the same buffer head of that inode). Fix this by uncaching
-the buffer head with 'ocfs2_remove_from_cache()' on error path in
-'ocfs2_group_add()'.
 
-Link: https://lkml.kernel.org/r/20241114043844.111847-1-dmantipov@yandex.ru
-Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=453873f1588c2d75b447
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
+This patch (of 2):
+
+It has been reported that when using "block:block_touch_buffer"
+tracepoint, touch_buffer() called from __nilfs_get_folio_block() causes a
+NULL pointer dereference, or a general protection fault when KASAN is
+enabled.
+
+This happens because since the tracepoint was added in touch_buffer(), it
+references the dev_t member bh->b_bdev->bd_dev regardless of whether the
+buffer head has a pointer to a block_device structure.  In the current
+implementation, the block_device structure is set after the function
+returns to the caller.
+
+Here, touch_buffer() is used to mark the folio/page that owns the buffer
+head as accessed, but the common search helper for folio/page used by the
+caller function was optimized to mark the folio/page as accessed when it
+was reimplemented a long time ago, eliminating the need to call
+touch_buffer() here in the first place.
+
+So this solves the issue by eliminating the touch_buffer() call itself.
+
+Link: https://lkml.kernel.org/r/20241106160811.3316-1-konishi.ryusuke@gmail.com
+Link: https://lkml.kernel.org/r/20241106160811.3316-2-konishi.ryusuke@gmail.com
+Fixes: 5305cb830834 ("block: add block_{touch|dirty}_buffer tracepoint")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: Ubisectech Sirius <bugreport@valiantsec.com>
+Closes: https://lkml.kernel.org/r/86bd3013-887e-4e38-960f-ca45c657f032.bugreport@valiantsec.com
+Reported-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9982fb8d18eba905abe2
+Tested-by: syzbot+9982fb8d18eba905abe2@syzkaller.appspotmail.com
+Cc: Tejun Heo <tj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/resize.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nilfs2/page.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -582,6 +582,8 @@ out_commit:
- 	ocfs2_commit_trans(osb, handle);
+--- a/fs/nilfs2/page.c
++++ b/fs/nilfs2/page.c
+@@ -39,7 +39,6 @@ __nilfs_get_page_block(struct page *page
+ 	first_block = (unsigned long)index << (PAGE_SHIFT - blkbits);
+ 	bh = nilfs_page_get_nth_block(page, block - first_block);
  
- out_free_group_bh:
-+	if (ret < 0)
-+		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
- 	brelse(group_bh);
- 
- out_unlock:
+-	touch_buffer(bh);
+ 	wait_on_buffer(bh);
+ 	return bh;
+ }
 
 
 
