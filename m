@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DE39E2897
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:04:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B409E231B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E431BBE6DE0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:08:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDE0328141B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D47A1F76DB;
-	Tue,  3 Dec 2024 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13791F8EF3;
+	Tue,  3 Dec 2024 15:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oq7FM9/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK+ZumqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116EC1F759C;
-	Tue,  3 Dec 2024 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1CF1F76AC;
+	Tue,  3 Dec 2024 15:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242112; cv=none; b=ZfEjybaOLmfanPVFnEWmZgUwhJhKfI8VMmnemEhCKdcc1IgyYV7dIveO2hVSzyHcrOUtSVAmPlEo2UVe/8uc0MxDcD31ID+ua+aY9fhP+ZilPhJ5sQwIBuGO0WkyRBxdU1evwSA8AdgwlZ/AHT+wQqxUCvox0xwQlW56DwGH1vo=
+	t=1733239882; cv=none; b=QFA2/jKiVAkfix5CvmsFHfbzgMZQuFaK7eGU+g6TLZdc4C8RDIpILK8jY81ltbho92rApWOUPoesOuT8fjIpfLcJPZDIJOV38JG1UBdzNvYYLySHTsXYlG5HJQlpagsW9LGHSGplWAay1Djq181x/8DMlds5JeYunSVkTWhHiTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242112; c=relaxed/simple;
-	bh=Ve5u589QsnB78UVBIoTInF688eA3BFs/TuPFW82Yo44=;
+	s=arc-20240116; t=1733239882; c=relaxed/simple;
+	bh=JSqXZ9QKCMP/cE8kb6gyR1xnW1DYXq726pDxmIIIT/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=egtbWTswBrVntkn46cNGKuexeGrQtsg/aKoss3Wm2LTlGNQnLGjnUI1Jv/D2PJ5Cequbi2hFu81lbuHgx5XB0VyyOeVcxAEMBDbJ0Z/YymW2BWdQLa7bNcRcsgZCHdVjprXmqu0QJNIQoLmk/ygpJpwP3VgbHoEzs/qpbEBPjog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oq7FM9/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DD2C4CECF;
-	Tue,  3 Dec 2024 16:08:31 +0000 (UTC)
+	 MIME-Version; b=QXa7xz2VbINUPQ3KphuVVtIiULVTK0YOJbEWtkw65V8+12srKVG3ajpwj/VmtNileisJLOmRe0TGxKKjF7f0UOIz2pceKMH8YyZwLDt6OthDv2onKyycWPL+k2Goj2ePpmE05YsKBZFOghDrbD0pyrEbacb8u36zWyNCPVNOH3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK+ZumqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0AAC4CECF;
+	Tue,  3 Dec 2024 15:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242111;
-	bh=Ve5u589QsnB78UVBIoTInF688eA3BFs/TuPFW82Yo44=;
+	s=korg; t=1733239882;
+	bh=JSqXZ9QKCMP/cE8kb6gyR1xnW1DYXq726pDxmIIIT/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oq7FM9/RUHIVvfLRSjFdWi5pLTUVECqq2TYYBna4shcVeON+LhzXIfDomDYfN4xpb
-	 FKJJhn+Me9yVKhaQZYNlinP2bQsL4+riBTcEqTaTMkuoggQmK0PHNjn4ApYnDfbYxE
-	 LinNRXXAbQpEI1+J/0MKooL6KFjv5lDI7TtVX6Y8=
+	b=PK+ZumqPDzFuOz9NOlSlkMn9L12fTpE55jrwXU5Jp6QIqajXU7EhHI2qlURMAPGRZ
+	 LPZBZQsl9sxWqWt3ckk17kfMKCESbx49pqYE4SzNNuimzxBcF6GzYLedi68AIuJt81
+	 XbXR6aMykChPKqx1ktMIh51yVSL7CXPAC9906aSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Russ Weight <russ.weight@linux.dev>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 610/826] firmware_loader: Fix possible resource leak in fw_log_firmware_info()
-Date: Tue,  3 Dec 2024 15:45:37 +0100
-Message-ID: <20241203144807.548028933@linuxfoundation.org>
+Subject: [PATCH 6.11 766/817] um: Fix the return value of elf_core_copy_task_fpregs
+Date: Tue,  3 Dec 2024 15:45:38 +0100
+Message-ID: <20241203144025.911597041@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 369a9c046c2fdfe037f05b43b84c386bdbccc103 ]
+[ Upstream commit 865e3845eeaa21e9a62abc1361644e67124f1ec0 ]
 
-The alg instance should be released under the exception path, otherwise
-there may be resource leak here.
+This function is expected to return a boolean value, which should be
+true on success and false on failure.
 
-To mitigate this, free the alg instance with crypto_free_shash when kmalloc
-fails.
-
-Fixes: 02fe26f25325 ("firmware_loader: Add debug message with checksum for FW file")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Reviewed-by: Russ Weight <russ.weight@linux.dev>
-Link: https://lore.kernel.org/r/20241016110335.3677924-1-cuigaosheng1@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1254b12c93e ("uml: fix x86_64 core dump crash")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240913023302.130300-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/firmware_loader/main.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/um/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
-index 324a9a3c087aa..c6664a7879697 100644
---- a/drivers/base/firmware_loader/main.c
-+++ b/drivers/base/firmware_loader/main.c
-@@ -829,19 +829,18 @@ static void fw_log_firmware_info(const struct firmware *fw, const char *name, st
- 	shash->tfm = alg;
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index f36b63f53babd..d3786577c6fbf 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -292,6 +292,6 @@ int elf_core_copy_task_fpregs(struct task_struct *t, elf_fpregset_t *fpu)
+ {
+ 	int cpu = current_thread_info()->cpu;
  
- 	if (crypto_shash_digest(shash, fw->data, fw->size, sha256buf) < 0)
--		goto out_shash;
-+		goto out_free;
- 
- 	for (int i = 0; i < SHA256_DIGEST_SIZE; i++)
- 		sprintf(&outbuf[i * 2], "%02x", sha256buf[i]);
- 	outbuf[SHA256_BLOCK_SIZE] = 0;
- 	dev_dbg(device, "Loaded FW: %s, sha256: %s\n", name, outbuf);
- 
--out_shash:
--	crypto_free_shash(alg);
- out_free:
- 	kfree(shash);
- 	kfree(outbuf);
- 	kfree(sha256buf);
-+	crypto_free_shash(alg);
+-	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu);
++	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu) == 0;
  }
- #else
- static void fw_log_firmware_info(const struct firmware *fw, const char *name,
+ 
 -- 
 2.43.0
 
