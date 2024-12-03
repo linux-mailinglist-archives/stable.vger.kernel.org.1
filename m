@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C169E2578
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:01:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D84899E2296
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1BF2888DB
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9817F285E0B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4421F75AC;
-	Tue,  3 Dec 2024 16:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091FB1F7557;
+	Tue,  3 Dec 2024 15:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGMhmm8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckjRTZpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0CF1DE8A5;
-	Tue,  3 Dec 2024 16:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0A41F473A;
+	Tue,  3 Dec 2024 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241680; cv=none; b=nDnxihiM3aC6zzl4+M9nC1qHAf2TJxfXpGEx4IcWZs2F2QXHjVL06VA0NrRZVIqJgp77S/Oi9vs+3rRHmjQuK6OpQbk6hVNdzBX8cxqnE2jUpmEprSPXPuuw/GDrioW69O2mTzfkIMbFJCWRa6TfXJkdixyOEQacR/e14gAT6Kw=
+	t=1733239576; cv=none; b=X89hUsajP3iKhdKtZKg26HRw5UrdkKU9qd0802NZpPJKJDvdGA+qW3kWklJZZ3AJoQ4zGbFrJkhcsKw7s8/VGqJgF/MFMElm5GsS8qWAqoypXOaNiDfMX0ppEAdIAJOjoqzzymUmAcKk9bAilwjJm+52d3Q2PPiAOQAnpo//xU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241680; c=relaxed/simple;
-	bh=SC6qY179a8toCe4YFsv6z1vKE0MRX6+xxJZdFBnJ3mM=;
+	s=arc-20240116; t=1733239576; c=relaxed/simple;
+	bh=HeP3tSVro3OTqy9Zl0sT/uDGfi1t33sfig9tx131F1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/xWdPomAgeHJoookMdtIL6WpnxZBYbaV8lmdrJ5KLuMH2A3q+ZlddD0EONJkGQHHQIrXwmHTHoOcz2MLyBAddhmxTNsR3qAS/WbepFnFfAHYr7r8yWaI4qnQxwAwrn3GcZm1FvkaFlPoiktMX3y0rcsSUvrjhzunG+y/sLzxw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGMhmm8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE53C4CECF;
-	Tue,  3 Dec 2024 16:01:19 +0000 (UTC)
+	 MIME-Version; b=o+/maleB0qx0ugRS1NrPM+XOqdPr9FUiQcVhEiCL/kksCI9IfnwF+05j9sAM9T/TCf+oPmDAZBv3356qM2AKDc/VlyDVrc3mPWxiGcd25FHZvpmAEeRY7Qdldol8v/RI3Jtrzk98HdcZkLaNCCkz/yONiurC8Gu6OfPqcGFhWUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckjRTZpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488E0C4CECF;
+	Tue,  3 Dec 2024 15:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241680;
-	bh=SC6qY179a8toCe4YFsv6z1vKE0MRX6+xxJZdFBnJ3mM=;
+	s=korg; t=1733239576;
+	bh=HeP3tSVro3OTqy9Zl0sT/uDGfi1t33sfig9tx131F1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGMhmm8KFtnEJCPw8GAIGYLmvuo3h7tGsjvbd4Lp+1swuTtule083WbXJXg7N3rye
-	 gc/qQFREOthmvu4xIYR4Q0irlQNTEpiwSVN7SEYFO+ExnOcWnxXUVGB0z8xXLpbhSN
-	 LcklYDWwDLFnP+eTinAnxCnNSI6YEZhdnBn4RXSg=
+	b=ckjRTZpu5k3KMxR8cenzm1xAL800sLkRPvnkFuM0DYbUAmw//mSOW43+JulSze9BR
+	 rV8GFM7QYL5THwLFhTMEoMMZcP/kfVWiyztfMxvqmGlkYzuSuOp3LBf9ASux2MrEyv
+	 MZNl7azckfqBEKDaTF2TKk4ZS19uSdoh3cANU99Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yutaro Ohno <yutaro.ono.418@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 488/826] rust: kernel: fix THIS_MODULE header path in ThisModule doc comment
-Date: Tue,  3 Dec 2024 15:43:35 +0100
-Message-ID: <20241203144802.794718972@linuxfoundation.org>
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.11 644/817] crypto: x86/aegis128 - access 32-bit arguments as 32-bit
+Date: Tue,  3 Dec 2024 15:43:36 +0100
+Message-ID: <20241203144021.088943560@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yutaro Ohno <yutaro.ono.418@gmail.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 8b55dc8610acf816a66373be53ca6e3bbe2d313a ]
+commit 3b2f2d22fb424e9bebda4dbf6676cbfc7f9f62cd upstream.
 
-The doc comment for `ThisModule` incorrectly states the C header file
-for `THIS_MODULE` as `include/linux/export.h`, while the correct path is
-`include/linux/init.h`. This is because `THIS_MODULE` was moved in
-commit 5b20755b7780 ("init: move THIS_MODULE from <linux/export.h> to
-<linux/init.h>").
+Fix the AEGIS assembly code to access 'unsigned int' arguments as 32-bit
+values instead of 64-bit, since the upper bits of the corresponding
+64-bit registers are not guaranteed to be zero.
 
-Update the doc comment for `ThisModule` to reflect the correct header
-file path for `THIS_MODULE`.
+Note: there haven't been any reports of this bug actually causing
+incorrect behavior.  Neither gcc nor clang guarantee zero-extension to
+64 bits, but zero-extension is likely to happen in practice because most
+instructions that operate on 32-bit registers zero-extend to 64 bits.
 
-Fixes: 5b20755b7780 ("init: move THIS_MODULE from <linux/export.h> to <linux/init.h>")
-Signed-off-by: Yutaro Ohno <yutaro.ono.418@gmail.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/ZxXDZwxWgoEiIYkj@ohnotp
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/lib.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/crypto/aegis128-aesni-asm.S |   29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index b5f4b3ce6b482..032c9089e6862 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -83,7 +83,7 @@ pub trait Module: Sized + Sync + Send {
+--- a/arch/x86/crypto/aegis128-aesni-asm.S
++++ b/arch/x86/crypto/aegis128-aesni-asm.S
+@@ -21,7 +21,7 @@
+ #define T1	%xmm7
  
- /// Equivalent to `THIS_MODULE` in the C API.
- ///
--/// C header: [`include/linux/export.h`](srctree/include/linux/export.h)
-+/// C header: [`include/linux/init.h`](srctree/include/linux/init.h)
- pub struct ThisModule(*mut bindings::module);
+ #define STATEP	%rdi
+-#define LEN	%rsi
++#define LEN	%esi
+ #define SRC	%rdx
+ #define DST	%rcx
  
- // SAFETY: `THIS_MODULE` may be used from all threads within a module.
--- 
-2.43.0
-
+@@ -76,32 +76,32 @@ SYM_FUNC_START_LOCAL(__load_partial)
+ 	xor %r9d, %r9d
+ 	pxor MSG, MSG
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x1, %r8
+ 	jz .Lld_partial_1
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x1E, %r8
+ 	add SRC, %r8
+ 	mov (%r8), %r9b
+ 
+ .Lld_partial_1:
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x2, %r8
+ 	jz .Lld_partial_2
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x1C, %r8
+ 	add SRC, %r8
+ 	shl $0x10, %r9
+ 	mov (%r8), %r9w
+ 
+ .Lld_partial_2:
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x4, %r8
+ 	jz .Lld_partial_4
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x18, %r8
+ 	add SRC, %r8
+ 	shl $32, %r9
+@@ -111,11 +111,11 @@ SYM_FUNC_START_LOCAL(__load_partial)
+ .Lld_partial_4:
+ 	movq %r9, MSG
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x8, %r8
+ 	jz .Lld_partial_8
+ 
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	and $0x10, %r8
+ 	add SRC, %r8
+ 	pslldq $8, MSG
+@@ -139,7 +139,7 @@ SYM_FUNC_END(__load_partial)
+  *   %r10
+  */
+ SYM_FUNC_START_LOCAL(__store_partial)
+-	mov LEN, %r8
++	mov LEN, %r8d
+ 	mov DST, %r9
+ 
+ 	movq T0, %r10
+@@ -677,7 +677,7 @@ SYM_TYPED_FUNC_START(crypto_aegis128_aes
+ 	call __store_partial
+ 
+ 	/* mask with byte count: */
+-	movq LEN, T0
++	movd LEN, T0
+ 	punpcklbw T0, T0
+ 	punpcklbw T0, T0
+ 	punpcklbw T0, T0
+@@ -702,7 +702,8 @@ SYM_FUNC_END(crypto_aegis128_aesni_dec_t
+ 
+ /*
+  * void crypto_aegis128_aesni_final(void *state, void *tag_xor,
+- *                                  u64 assoclen, u64 cryptlen);
++ *                                  unsigned int assoclen,
++ *                                  unsigned int cryptlen);
+  */
+ SYM_FUNC_START(crypto_aegis128_aesni_final)
+ 	FRAME_BEGIN
+@@ -715,8 +716,8 @@ SYM_FUNC_START(crypto_aegis128_aesni_fin
+ 	movdqu 0x40(STATEP), STATE4
+ 
+ 	/* prepare length block: */
+-	movq %rdx, MSG
+-	movq %rcx, T0
++	movd %edx, MSG
++	movd %ecx, T0
+ 	pslldq $8, T0
+ 	pxor T0, MSG
+ 	psllq $3, MSG /* multiply by 8 (to get bit count) */
 
 
 
