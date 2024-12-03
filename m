@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0175B9E25E7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA469E22C0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62F5616BA21
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:00:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EA72161A27
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB961F76A4;
-	Tue,  3 Dec 2024 16:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920671F76B2;
+	Tue,  3 Dec 2024 15:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glcXP92p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLAwgB8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83781E3DCF;
-	Tue,  3 Dec 2024 16:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4BC1F130F;
+	Tue,  3 Dec 2024 15:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241630; cv=none; b=kkhrnesbCesulxIZmRFZeLser7QVbrPR+1gcSefKHpMa2OThbFeCDZGhlMBCvpMgVoB49Jqwa4AM6Sv3oGlzB8097lYYiVwuBDn2lA5qk4tx57cH9oIl1+ngz2JewznoIoMljkq952Dw0+eQaXonMLDl0CJd26Y//K/TpJemK08=
+	t=1733239400; cv=none; b=dX2XtdzhVPtRPBJIb58s0kWKPcbufkcMHJnqaJnv8wzELKNxDNzAf03uhriW+G/cnv876t90Mz4nXbKIrOepWhgdHnrM3ICTjcxIX1paLxGW2CkDXi285fXGoJI2XNohdv8K6m2BxoRa3WrT7G12anWLZXBsiXtQAeQG7V1H/bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241630; c=relaxed/simple;
-	bh=C6vp2ZumRNQSrx522167lTCUN6OothOBf29x/Qoow6s=;
+	s=arc-20240116; t=1733239400; c=relaxed/simple;
+	bh=Qr7lkMzIAiAgk0jGPu+zlXJUv+8JzEquUCMLqbT3CGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZ8y8jz/J8wU03CJBMf3UpQpHjYEifh+yagQYzjod7GNNIeMcEgSj+CaEm/hQ36hOzGtlbHVE/21PMJeN/Jd94e0so/dLWhlaIy+QUDBgI1UgahTHliKxr2SP4mLJqDQht+Hm/ncoAMVSxJ0lc2bBc/LIDUMjmx7F6e7jbkFtjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glcXP92p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F03DC4CED6;
-	Tue,  3 Dec 2024 16:00:28 +0000 (UTC)
+	 MIME-Version; b=iFBUL+Z+t2Mz5VnToMEN8DJ8U7frQqsYXVnAePRBb3hUAwKywFLqPVa806uAih5likwb+I1aRCQ1BQhVNRRORx2vYAchEuyXYTafXZ5awaGnvQBGNiumQ8cbx1cgOJtZ55ByNHoUBMTSlXQJmXUuV4daclW0vtEA2u+NQ54om+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLAwgB8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E539C4CECF;
+	Tue,  3 Dec 2024 15:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241629;
-	bh=C6vp2ZumRNQSrx522167lTCUN6OothOBf29x/Qoow6s=;
+	s=korg; t=1733239398;
+	bh=Qr7lkMzIAiAgk0jGPu+zlXJUv+8JzEquUCMLqbT3CGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glcXP92pH9VzyBOeGR2p9nL2nKlWs+pUw77Ox3L+WLVvncK6oCf7m4E3+Qs8hqTrh
-	 OoRhxNLf4/T1Bq2uUw/V1a0FvNKhLBJLi2mqMml3Xf+OEAaceTbwKmPJ2jptHqMc8q
-	 IJo4FnzF8QrYMAiKhTrz0GritMBBX+eQUPRkDC+4=
+	b=NLAwgB8cp/GeT8xEBf08EN/06DnsBxcm8SYmsxG6JWEvuRtT5mKeX7mMFiP21MvM/
+	 vjS9lksm/fqWqFiOR1JTnA/BIgRoL9YzMF4cJJjKtWSAUvbRMEQ+cHT3kTOahaXvKM
+	 7U9NL9k1Boehx0/O1thjQFmKYmxosjg/f58TnVdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+	Oliver Neukum <oneukum@suse.com>,
+	syzbot+422188bce66e76020e55@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 445/826] fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()
+Subject: [PATCH 6.11 600/817] USB: chaoskey: fail open after removal
 Date: Tue,  3 Dec 2024 15:42:52 +0100
-Message-ID: <20241203144801.119527223@linuxfoundation.org>
+Message-ID: <20241203144019.347320268@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit f89d17ae2ac42931be2a0153fecbf8533280c927 ]
+[ Upstream commit 422dc0a4d12d0b80dd3aab3fe5943f665ba8f041 ]
 
-When information such as info->screen_base is not ready, calling
-sh7760fb_free_mem() does not release memory correctly. Call
-dma_free_coherent() instead.
+chaoskey_open() takes the lock only to increase the
+counter of openings. That means that the mutual exclusion
+with chaoskey_disconnect() cannot prevent an increase
+of the counter and chaoskey_open() returning a success.
 
-Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+If that race is hit, chaoskey_disconnect() will happily
+free all resources associated with the device after
+it has dropped the lock, as it has read the counter
+as zero.
+
+To prevent this race chaoskey_open() has to check
+the presence of the device under the lock.
+However, the current per device lock cannot be used,
+because it is a part of the data structure to be
+freed. Hence an additional global mutex is needed.
+The issue is as old as the driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reported-by: syzbot+422188bce66e76020e55@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=422188bce66e76020e55
+Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
+Rule: add
+Link: https://lore.kernel.org/stable/20241002132201.552578-1-oneukum%40suse.com
+Link: https://lore.kernel.org/r/20241002132201.552578-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh7760fb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/misc/chaoskey.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
-index 3d2a27fefc874..130adef2e4686 100644
---- a/drivers/video/fbdev/sh7760fb.c
-+++ b/drivers/video/fbdev/sh7760fb.c
-@@ -409,12 +409,11 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
- 		vram = PAGE_SIZE;
+diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
+index 6fb5140e29b9d..e8b63df5f9759 100644
+--- a/drivers/usb/misc/chaoskey.c
++++ b/drivers/usb/misc/chaoskey.c
+@@ -27,6 +27,8 @@ static struct usb_class_driver chaoskey_class;
+ static int chaoskey_rng_read(struct hwrng *rng, void *data,
+ 			     size_t max, bool wait);
  
- 	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
++static DEFINE_MUTEX(chaoskey_list_lock);
++
+ #define usb_dbg(usb_if, format, arg...) \
+ 	dev_dbg(&(usb_if)->dev, format, ## arg)
+ 
+@@ -230,6 +232,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
+ 	if (dev->hwrng_registered)
+ 		hwrng_unregister(&dev->hwrng);
+ 
++	mutex_lock(&chaoskey_list_lock);
+ 	usb_deregister_dev(interface, &chaoskey_class);
+ 
+ 	usb_set_intfdata(interface, NULL);
+@@ -244,6 +247,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
+ 	} else
+ 		mutex_unlock(&dev->lock);
+ 
++	mutex_unlock(&chaoskey_list_lock);
+ 	usb_dbg(interface, "disconnect done");
+ }
+ 
+@@ -251,6 +255,7 @@ static int chaoskey_open(struct inode *inode, struct file *file)
+ {
+ 	struct chaoskey *dev;
+ 	struct usb_interface *interface;
++	int rv = 0;
+ 
+ 	/* get the interface from minor number and driver information */
+ 	interface = usb_find_interface(&chaoskey_driver, iminor(inode));
+@@ -266,18 +271,23 @@ static int chaoskey_open(struct inode *inode, struct file *file)
+ 	}
+ 
+ 	file->private_data = dev;
++	mutex_lock(&chaoskey_list_lock);
+ 	mutex_lock(&dev->lock);
+-	++dev->open;
++	if (dev->present)
++		++dev->open;
++	else
++		rv = -ENODEV;
+ 	mutex_unlock(&dev->lock);
++	mutex_unlock(&chaoskey_list_lock);
+ 
+-	usb_dbg(interface, "open success");
+-	return 0;
++	return rv;
+ }
+ 
+ static int chaoskey_release(struct inode *inode, struct file *file)
+ {
+ 	struct chaoskey *dev = file->private_data;
+ 	struct usb_interface *interface;
++	int rv = 0;
+ 
+ 	if (dev == NULL)
+ 		return -ENODEV;
+@@ -286,14 +296,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
+ 
+ 	usb_dbg(interface, "release");
+ 
++	mutex_lock(&chaoskey_list_lock);
+ 	mutex_lock(&dev->lock);
+ 
+ 	usb_dbg(interface, "open count at release is %d", dev->open);
+ 
+ 	if (dev->open <= 0) {
+ 		usb_dbg(interface, "invalid open count (%d)", dev->open);
+-		mutex_unlock(&dev->lock);
+-		return -ENODEV;
++		rv = -ENODEV;
++		goto bail;
+ 	}
+ 
+ 	--dev->open;
+@@ -302,13 +313,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
+ 		if (dev->open == 0) {
+ 			mutex_unlock(&dev->lock);
+ 			chaoskey_free(dev);
+-		} else
+-			mutex_unlock(&dev->lock);
+-	} else
+-		mutex_unlock(&dev->lock);
 -
- 	if (!fbmem)
- 		return -ENOMEM;
++			goto destruction;
++		}
++	}
++bail:
++	mutex_unlock(&dev->lock);
++destruction:
++	mutex_lock(&chaoskey_list_lock);
+ 	usb_dbg(interface, "release success");
+-	return 0;
++	return rv;
+ }
  
- 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
--		sh7760fb_free_mem(info);
-+		dma_free_coherent(info->device, vram, fbmem, par->fbdma);
- 		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
- 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
- 		return -ENOMEM;
+ static void chaos_read_callback(struct urb *urb)
 -- 
 2.43.0
 
