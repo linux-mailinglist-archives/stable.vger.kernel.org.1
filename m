@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-97320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DD89E2B6C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:54:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E83509E28EB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28F89B385CF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:41:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E04ABC3A94
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C305B1FDE14;
-	Tue,  3 Dec 2024 15:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D872E1F8AEF;
+	Tue,  3 Dec 2024 15:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8yAlib9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLaq7hMF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCC91F759C;
-	Tue,  3 Dec 2024 15:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948141F8907;
+	Tue,  3 Dec 2024 15:34:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240145; cv=none; b=VuiB35YiLVgAu9h6Gw/QoyXPeXFUOB/ipKIxdUIuCGYZvvTFHudrAsaV8qzoERfEPks1d68VUs9dSNIpvKG3CKC4/nK6pTjlgohnmqa5wCw4DQ97uQKWVqhJW7JMkwlxt24Uojtr+HmClgSyidzgAWCn/gIuQfHumPczvclI/ss=
+	t=1733240076; cv=none; b=jj5Dhwr03j3WLRoGUJwAY9WtWmOLE75nUMdZ3OWClTJwoWQZLkVGEMaSdoQ9P5KkUmklfiaXKJ9tH4PtzjAGpEt/0Oyb73cl02dCn9F3HdZDSK3tJr3YQPzyLWmDAkOMH/3gmWos3wZ3jpUef69lHxqcsVmBI1sQ7xZSdNFAVKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240145; c=relaxed/simple;
-	bh=5UoqKI7czbvj7eB9J+Sl2DPH8tW1ZBUPnZSdliQTGLg=;
+	s=arc-20240116; t=1733240076; c=relaxed/simple;
+	bh=b7ONXl88BlyZevUL1zbxgfBiIt4XkCEdtJZKQ1umO6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kk5Uma94OQsuBcC0UEAQJnLD7YVcUauGRMi9kxZpdRh4LF6ms+os41/bQyYOFB4ynfCna1ppdKyK/lNKaCTqO/Y18teDBHP4EbMYkcZxFXTEi9FHkk01HBIBa/UayrxoOL17XH5d6Du8yDDAIwV5ZyXq36beAiqVenSZKOSAagA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8yAlib9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A95C4CECF;
-	Tue,  3 Dec 2024 15:35:44 +0000 (UTC)
+	 MIME-Version; b=aOWJb79huwmD5c/UWKzM5sLV7R10mQ+/ms+DGKFVt84Son/LOptFimPJv85pLWpsikI4NDadaox5lhGC4HwwK6WdeCgfBvjum1wFk2q/cfYZqdE93x030J5yjSo5fiJGyS/L630Lg4Y4PJzAgkRt8Y49vl49Iw/PgnwKvUs9kmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLaq7hMF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1961CC4CECF;
+	Tue,  3 Dec 2024 15:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240145;
-	bh=5UoqKI7czbvj7eB9J+Sl2DPH8tW1ZBUPnZSdliQTGLg=;
+	s=korg; t=1733240076;
+	bh=b7ONXl88BlyZevUL1zbxgfBiIt4XkCEdtJZKQ1umO6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8yAlib9vXNIGYm9gSUrMT899lMi4lOPZM1RqII2fdVNnmK3Uke40/FapQeJdCCPE
-	 k3XmXOx6rgVYuFiFQZcXLyFH1Zi5fphlyz3wby0CZDBq3gjqfyZ1oxcCLaqIYsRoLo
-	 O+U1hbyjwVmxIe4gb8ffprkNskRxUbUYy8XW/IPY=
+	b=yLaq7hMFiFvt+onTIlus3ja6y95nw/08ftNdmcmaWpT9JMH1fbk4n071Fm76Q7/Tl
+	 V/wtNgmnk5T5y04RHhpfS3uPNe4OoEt/IFXrlDq/u6yCjyJX3h/VvDaOIhbxzmKm7n
+	 qMpOak1cDzZPfTnkoPwLGYJ5FNpa4RVwPQufuz+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/826] kselftest/arm64: mte: fix printf type warnings about __u64
-Date: Tue,  3 Dec 2024 15:35:36 +0100
-Message-ID: <20241203144743.809005594@linuxfoundation.org>
+Subject: [PATCH 6.12 015/826] x86/pvh: Call C code via the kernel virtual mapping
+Date: Tue,  3 Dec 2024 15:35:42 +0100
+Message-ID: <20241203144744.049989549@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,57 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 7e893dc81de3e342156389ea0b83ec7d07f25281 ]
+[ Upstream commit e8fbc0d9cab6c1ee6403f42c0991b0c1d5dbc092 ]
 
-When printing the signal context's PC, we use a "%lx" format specifier,
-which matches the common userland (glibc's) definition of uint64_t as an
-"unsigned long". However the structure in question is defined in a
-kernel uapi header, which uses a self defined __u64 type, and the arm64
-kernel headers define this using "int-ll64.h", so it becomes an
-"unsigned long long". This mismatch leads to the usual compiler warning.
+Calling C code via a different mapping than it was linked at is
+problematic, because the compiler assumes that RIP-relative and absolute
+symbol references are interchangeable. GCC in particular may use
+RIP-relative per-CPU variable references even when not using -fpic.
 
-The common fix would be to use "PRIx64", but because this is defined by
-the userland's toolchain libc headers, it wouldn't match as well. Since
-we know the exact type of __u64, just use "%llx" here instead, to silence
-this warning.
+So call xen_prepare_pvh() via its kernel virtual mapping on x86_64, so
+that those RIP-relative references produce the correct values. This
+matches the pre-existing behavior for i386, which also invokes
+xen_prepare_pvh() via the kernel virtual mapping before invoking
+startup_32 with paging disabled again.
 
-This also fixes a more severe typo: "$lx" is not a valid format
-specifier.
-
-Fixes: 191e678bdc9b ("kselftest/arm64: Log unexpected asynchronous MTE faults")
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240816153251.2833702-7-andre.przywara@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 7243b93345f7 ("xen/pvh: Bootstrap PVH guest")
+Tested-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Message-ID: <20241009160438.3884381-8-ardb+git@google.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/mte/mte_common_util.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/platform/pvh/head.S | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/arm64/mte/mte_common_util.c b/tools/testing/selftests/arm64/mte/mte_common_util.c
-index 00ffd34c66d30..1120f5aa76550 100644
---- a/tools/testing/selftests/arm64/mte/mte_common_util.c
-+++ b/tools/testing/selftests/arm64/mte/mte_common_util.c
-@@ -38,7 +38,7 @@ void mte_default_handler(int signum, siginfo_t *si, void *uc)
- 			if (cur_mte_cxt.trig_si_code == si->si_code)
- 				cur_mte_cxt.fault_valid = true;
- 			else
--				ksft_print_msg("Got unexpected SEGV_MTEAERR at pc=$lx, fault addr=%lx\n",
-+				ksft_print_msg("Got unexpected SEGV_MTEAERR at pc=%llx, fault addr=%lx\n",
- 					       ((ucontext_t *)uc)->uc_mcontext.pc,
- 					       addr);
- 			return;
-@@ -64,7 +64,7 @@ void mte_default_handler(int signum, siginfo_t *si, void *uc)
- 			exit(1);
- 		}
- 	} else if (signum == SIGBUS) {
--		ksft_print_msg("INFO: SIGBUS signal at pc=%lx, fault addr=%lx, si_code=%lx\n",
-+		ksft_print_msg("INFO: SIGBUS signal at pc=%llx, fault addr=%lx, si_code=%x\n",
- 				((ucontext_t *)uc)->uc_mcontext.pc, addr, si->si_code);
- 		if ((cur_mte_cxt.trig_range >= 0 &&
- 		     addr >= MT_CLEAR_TAG(cur_mte_cxt.trig_addr) &&
+diff --git a/arch/x86/platform/pvh/head.S b/arch/x86/platform/pvh/head.S
+index 64fca49cd88ff..ce4fd8d33da46 100644
+--- a/arch/x86/platform/pvh/head.S
++++ b/arch/x86/platform/pvh/head.S
+@@ -172,7 +172,14 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
+ 	movq %rbp, %rbx
+ 	subq $_pa(pvh_start_xen), %rbx
+ 	movq %rbx, phys_base(%rip)
+-	call xen_prepare_pvh
++
++	/* Call xen_prepare_pvh() via the kernel virtual mapping */
++	leaq xen_prepare_pvh(%rip), %rax
++	subq phys_base(%rip), %rax
++	addq $__START_KERNEL_map, %rax
++	ANNOTATE_RETPOLINE_SAFE
++	call *%rax
++
+ 	/*
+ 	 * Clear phys_base.  __startup_64 will *add* to its value,
+ 	 * so reset to 0.
 -- 
 2.43.0
 
