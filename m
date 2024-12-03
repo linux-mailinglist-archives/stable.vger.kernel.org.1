@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-97616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582BE9E24C4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2CC09E21D9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19D91281D17
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:52:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B78312864A3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EECD1F76A2;
-	Tue,  3 Dec 2024 15:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFE51F4707;
+	Tue,  3 Dec 2024 15:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIy0qQcM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nz2uIxUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD6D153800;
-	Tue,  3 Dec 2024 15:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D400646;
+	Tue,  3 Dec 2024 15:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241129; cv=none; b=loT1I4hFVSUkopFhpX01181BKGN7rLSE715ZXTWwukgtkxvCBZBXJByLq/iWVOgs02j36cQXJTnYxDLwW3NQcjn05lUTEOSTC4GTa2DIH2tywriDkViKPCivJoclk6WHUUpvxOvE6EUrnnzA1SnYiumnhEMgsEsAlQaiN4I6qiA=
+	t=1733239056; cv=none; b=aXvu0X11msAb/OB2OHb4t76VtiCTXvcyO0Vhq9wHoRedOf7gfujZuMuthvOSHv+A0WtAQDyeebaIXtAoZtz1iAE6ZOG5UurVbzCE8M+dMWufkiJiGHOsyLzuh2Lks4hSPpAxEDgqEnaCbEHRLRgDkXX7cTF7Q/Xc+Ca7E6HVCz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241129; c=relaxed/simple;
-	bh=vPT9EObjnq8bp30v20yXh2Qy4gX4x+swrKmnmLVwTB4=;
+	s=arc-20240116; t=1733239056; c=relaxed/simple;
+	bh=YzOxTzHLuly8saaU/2bDvODXWjLvO0plTdjEM3R3AXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCeQQaJADymfrQEMU+nNfr8AaOl86fBngiKaZrIpwm1IGHfjseSmtxaiQ0G90XmdvlznkSNP6VOWNBrIfWBuQNxATuJwXUl6I5i28Urd9fqdVt90S9cGOfn6R+vZsaMn3tINfXj+wgyP5V5xjJ8bmL+U+D0O1BZhufa30KK3jOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIy0qQcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98212C4CECF;
-	Tue,  3 Dec 2024 15:52:08 +0000 (UTC)
+	 MIME-Version; b=lfQu/pdvuDwWWn+QjlhSTl24QWC8WEscjSDNgTnnM+c5zipfvyfdRH7nAlE5IayJRrwD1TprGzK1ZBgy1qSN20Ajo8h9xR3GgHMrXso7a7F1Q9wrWh8lFqgmB5pkJ2YYmBgx4CU6fsmR7CssAhar1s1GYzIIRwiYNPLhE8FcJdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nz2uIxUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7147C4CED9;
+	Tue,  3 Dec 2024 15:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241129;
-	bh=vPT9EObjnq8bp30v20yXh2Qy4gX4x+swrKmnmLVwTB4=;
+	s=korg; t=1733239056;
+	bh=YzOxTzHLuly8saaU/2bDvODXWjLvO0plTdjEM3R3AXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AIy0qQcMvLgC+6aggomulmIM4R5knfOyQKPM2Hc1dZzEQy7EDdDvNjPXqwoXsXZeL
-	 ZmGiSt2UhIkQ472WFLuvlB8hzpg5cY4kjCpOmlQld20F1p5rK/FNMt3wjnlaw4Ovn2
-	 62oRM95TNTIMukPA7xAU5H+gt9+aNWFw9FFstQ4k=
+	b=nz2uIxUyxjuEQ2jeD3rnMznZWLCsWgRwHKKZ0zzIMhGixkKhfPDG7SfCQjrRCkwAJ
+	 QzYeeSYrmfAfVj8dl2uNSZpmvVxbS8V9kD+dGdUjA+hXxuOkqt7fXznPgOpeXTot2m
+	 Lhlg2ONzMyCXJWvyAKk/ocAmP/OMF9eQVp9zfsrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Todd Kjos <tkjos@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 333/826] ALSA: caiaq: Use snd_card_free_when_closed() at disconnection
+Subject: [PATCH 6.11 488/817] PCI: Fix reset_method_store() memory leak
 Date: Tue,  3 Dec 2024 15:41:00 +0100
-Message-ID: <20241203144756.750140507@linuxfoundation.org>
+Message-ID: <20241203144014.921245566@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Todd Kjos <tkjos@google.com>
 
-[ Upstream commit b04dcbb7f7b1908806b7dc22671cdbe78ff2b82c ]
+[ Upstream commit 2985b1844f3f3447f2d938eff1ef6762592065a5 ]
 
-The USB disconnect callback is supposed to be short and not too-long
-waiting.  OTOH, the current code uses snd_card_free() at
-disconnection, but this waits for the close of all used fds, hence it
-can take long.  It eventually blocks the upper layer USB ioctls, which
-may trigger a soft lockup.
+In reset_method_store(), a string is allocated via kstrndup() and assigned
+to the local "options". options is then used in with strsep() to find
+spaces:
 
-An easy workaround is to replace snd_card_free() with
-snd_card_free_when_closed().  This variant returns immediately while
-the release of resources is done asynchronously by the card device
-release at the last close.
+  while ((name = strsep(&options, " ")) != NULL) {
 
-This patch also splits the code to the disconnect and the free phases;
-the former is called immediately at the USB disconnect callback while
-the latter is called from the card destructor.
+If there are no remaining spaces, then options is set to NULL by strsep(),
+so the subsequent kfree(options) doesn't free the memory allocated via
+kstrndup().
 
-Fixes: 523f1dce3743 ("[ALSA] Add Native Instrument usb audio device support")
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20241113111042.15058-5-tiwai@suse.de
+Fix by using a separate tmp_options to iterate with strsep() so options is
+preserved.
+
+Link: https://lore.kernel.org/r/20241001231147.3583649-1-tkjos@google.com
+Fixes: d88f521da3ef ("PCI: Allow userspace to query and set device reset mechanism")
+Signed-off-by: Todd Kjos <tkjos@google.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/audio.c  | 10 ++++++++--
- sound/usb/caiaq/audio.h  |  1 +
- sound/usb/caiaq/device.c | 19 +++++++++++++++----
- sound/usb/caiaq/input.c  | 12 +++++++++---
- sound/usb/caiaq/input.h  |  1 +
- 5 files changed, 34 insertions(+), 9 deletions(-)
+ drivers/pci/pci.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/caiaq/audio.c b/sound/usb/caiaq/audio.c
-index 772c0ecb70773..05f964347ed6c 100644
---- a/sound/usb/caiaq/audio.c
-+++ b/sound/usb/caiaq/audio.c
-@@ -858,14 +858,20 @@ int snd_usb_caiaq_audio_init(struct snd_usb_caiaqdev *cdev)
- 	return 0;
- }
- 
--void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev)
-+void snd_usb_caiaq_audio_disconnect(struct snd_usb_caiaqdev *cdev)
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 51407c376a222..1a720cae37a1e 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5233,7 +5233,7 @@ static ssize_t reset_method_store(struct device *dev,
+ 				  const char *buf, size_t count)
  {
- 	struct device *dev = caiaqdev_to_dev(cdev);
+ 	struct pci_dev *pdev = to_pci_dev(dev);
+-	char *options, *name;
++	char *options, *tmp_options, *name;
+ 	int m, n;
+ 	u8 reset_methods[PCI_NUM_RESET_METHODS] = { 0 };
  
- 	dev_dbg(dev, "%s(%p)\n", __func__, cdev);
- 	stream_stop(cdev);
-+}
-+
-+void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev)
-+{
-+	struct device *dev = caiaqdev_to_dev(cdev);
-+
-+	dev_dbg(dev, "%s(%p)\n", __func__, cdev);
- 	free_urbs(cdev->data_urbs_in);
- 	free_urbs(cdev->data_urbs_out);
- 	kfree(cdev->data_cb_info);
- }
--
-diff --git a/sound/usb/caiaq/audio.h b/sound/usb/caiaq/audio.h
-index 869bf6264d6a0..07f5d064456cf 100644
---- a/sound/usb/caiaq/audio.h
-+++ b/sound/usb/caiaq/audio.h
-@@ -3,6 +3,7 @@
- #define CAIAQ_AUDIO_H
+@@ -5253,7 +5253,8 @@ static ssize_t reset_method_store(struct device *dev,
+ 		return -ENOMEM;
  
- int snd_usb_caiaq_audio_init(struct snd_usb_caiaqdev *cdev);
-+void snd_usb_caiaq_audio_disconnect(struct snd_usb_caiaqdev *cdev);
- void snd_usb_caiaq_audio_free(struct snd_usb_caiaqdev *cdev);
+ 	n = 0;
+-	while ((name = strsep(&options, " ")) != NULL) {
++	tmp_options = options;
++	while ((name = strsep(&tmp_options, " ")) != NULL) {
+ 		if (sysfs_streq(name, ""))
+ 			continue;
  
- #endif /* CAIAQ_AUDIO_H */
-diff --git a/sound/usb/caiaq/device.c b/sound/usb/caiaq/device.c
-index b5cbf1f195c48..dfd820483849e 100644
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -376,6 +376,17 @@ static void setup_card(struct snd_usb_caiaqdev *cdev)
- 		dev_err(dev, "Unable to set up control system (ret=%d)\n", ret);
- }
- 
-+static void card_free(struct snd_card *card)
-+{
-+	struct snd_usb_caiaqdev *cdev = caiaqdev(card);
-+
-+#ifdef CONFIG_SND_USB_CAIAQ_INPUT
-+	snd_usb_caiaq_input_free(cdev);
-+#endif
-+	snd_usb_caiaq_audio_free(cdev);
-+	usb_reset_device(cdev->chip.dev);
-+}
-+
- static int create_card(struct usb_device *usb_dev,
- 		       struct usb_interface *intf,
- 		       struct snd_card **cardp)
-@@ -489,6 +500,7 @@ static int init_card(struct snd_usb_caiaqdev *cdev)
- 		       cdev->vendor_name, cdev->product_name, usbpath);
- 
- 	setup_card(cdev);
-+	card->private_free = card_free;
- 	return 0;
- 
-  err_kill_urb:
-@@ -534,15 +546,14 @@ static void snd_disconnect(struct usb_interface *intf)
- 	snd_card_disconnect(card);
- 
- #ifdef CONFIG_SND_USB_CAIAQ_INPUT
--	snd_usb_caiaq_input_free(cdev);
-+	snd_usb_caiaq_input_disconnect(cdev);
- #endif
--	snd_usb_caiaq_audio_free(cdev);
-+	snd_usb_caiaq_audio_disconnect(cdev);
- 
- 	usb_kill_urb(&cdev->ep1_in_urb);
- 	usb_kill_urb(&cdev->midi_out_urb);
- 
--	snd_card_free(card);
--	usb_reset_device(interface_to_usbdev(intf));
-+	snd_card_free_when_closed(card);
- }
- 
- 
-diff --git a/sound/usb/caiaq/input.c b/sound/usb/caiaq/input.c
-index 84f26dce7f5d0..a9130891bb696 100644
---- a/sound/usb/caiaq/input.c
-+++ b/sound/usb/caiaq/input.c
-@@ -829,15 +829,21 @@ int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev)
- 	return ret;
- }
- 
--void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev)
-+void snd_usb_caiaq_input_disconnect(struct snd_usb_caiaqdev *cdev)
- {
- 	if (!cdev || !cdev->input_dev)
- 		return;
- 
- 	usb_kill_urb(cdev->ep4_in_urb);
-+	input_unregister_device(cdev->input_dev);
-+}
-+
-+void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev)
-+{
-+	if (!cdev || !cdev->input_dev)
-+		return;
-+
- 	usb_free_urb(cdev->ep4_in_urb);
- 	cdev->ep4_in_urb = NULL;
--
--	input_unregister_device(cdev->input_dev);
- 	cdev->input_dev = NULL;
- }
-diff --git a/sound/usb/caiaq/input.h b/sound/usb/caiaq/input.h
-index c42891e7be884..fbe267f85d025 100644
---- a/sound/usb/caiaq/input.h
-+++ b/sound/usb/caiaq/input.h
-@@ -4,6 +4,7 @@
- 
- void snd_usb_caiaq_input_dispatch(struct snd_usb_caiaqdev *cdev, char *buf, unsigned int len);
- int snd_usb_caiaq_input_init(struct snd_usb_caiaqdev *cdev);
-+void snd_usb_caiaq_input_disconnect(struct snd_usb_caiaqdev *cdev);
- void snd_usb_caiaq_input_free(struct snd_usb_caiaqdev *cdev);
- 
- #endif
 -- 
 2.43.0
 
