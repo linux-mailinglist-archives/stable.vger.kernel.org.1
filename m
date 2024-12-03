@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-98070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1BB9E26E2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B1A9E26E7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA06D2894F0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AEB8289514
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F065A1F8937;
-	Tue,  3 Dec 2024 16:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3982B1F892E;
+	Tue,  3 Dec 2024 16:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4x59m7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drwG0jjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3BC1F890F;
-	Tue,  3 Dec 2024 16:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB34B1E25E3;
+	Tue,  3 Dec 2024 16:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242691; cv=none; b=tYjRV7v9KWzTuCoF3v12ZotPs0ocbXY3kk5NmMMz9FfBvmf5ZUyU0/v5r3EdfAJItBlrTa6dizcR6o6Z8GNnJFpQKvz8gWAEHTvxOijhi75Y8xALCPKjLZBDlFVVMVsecia6RyvxM/zGWZblgO2YmR1QA8BL/E9B4YsDiutgLWo=
+	t=1733242698; cv=none; b=kMbUiGCr6y5gYxPQyKCtvWXsvaAN71EA6ZXXqr60Xw792sc1lZQJixrVh+7MXTYpljGwiNojgl0awRR3rFIq2HIY9517+u6Po6YvWugX+hteV/YsPzLwoRimPPNs9N+HewxH15FKxhMkmB28vtv7jiWKt6v0yPwhOcT4Fen0Ac4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242691; c=relaxed/simple;
-	bh=apjnivYS//GBG9KUvmVg6dnCKzn7lCz0lq0gSqWXKeY=;
+	s=arc-20240116; t=1733242698; c=relaxed/simple;
+	bh=6NjPCCT2CQG9rOWLDdccTyX+imP1sc8mAxDpXz3v0RM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e6r71v+UeuuQMWzCSN8qGoI3hQLQs7xmWr/qJqA8D1+AnENbBCtfGo1qqElmT/eJ81LqLMkVUOjrk+vPBTjndJpyTkQS0s1lFXVWkugF35yxqJ+zhu+W/AcCurqWDXeSAykoj3/TzOqLrjCOy98ImfkJS9D9CeG2ciJp6ppuSio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4x59m7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82BEC4CED6;
-	Tue,  3 Dec 2024 16:18:10 +0000 (UTC)
+	 MIME-Version; b=bfZ/LteojLS34ATSrKjfECvZh/fX92tE4pEl4REi22OPZ6RQKyeYEZzyuRlH1fvvQyg2sZIl0eAlibsDfoqtFHMni920uUP9kWbe46MivVoYblOCYeO7vIOYZn/Xmryvg8jwDNjilkfD93U5D7igQT+Xnw0I5zn634y7/6RHwyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drwG0jjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313BCC4CECF;
+	Tue,  3 Dec 2024 16:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242691;
-	bh=apjnivYS//GBG9KUvmVg6dnCKzn7lCz0lq0gSqWXKeY=;
+	s=korg; t=1733242697;
+	bh=6NjPCCT2CQG9rOWLDdccTyX+imP1sc8mAxDpXz3v0RM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4x59m7RlPyXoKljZCoOSHkJUV8MAfKkeS1xnKS015jCtlbowpPYV8Kyjoro+f0zX
-	 sgzWQdKp+CVNhlVYFVs9Y2yFwkV6OP7XNsUcEhf/ubtj1njVmJLcLMicCIGqZdBWd5
-	 7emjVPJ/qji18rPmwFZIuAXxgaCa1HRQ/uZ3Glec=
+	b=drwG0jjLalLgoThjbjZrSP5gl3xMxvhfCY21SXuO8eO7D3xkv+x7M1so2lpFZ+M/y
+	 MgQABxm2hME6f+TuTWs61Jgjbt9Co8eWwZOMMALWtP/0eRiSu/DxZLPA20chrxbJlh
+	 +oCfF2rMlN16uJikmxm5skrMTt4ENQDYNtKUCZt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Yongliang Gao <leonylgao@tencent.com>,
+	Jingqun Li <jingqunli@tencent.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 779/826] rtc: st-lpc: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Tue,  3 Dec 2024 15:48:26 +0100
-Message-ID: <20241203144814.152282304@linuxfoundation.org>
+Subject: [PATCH 6.12 781/826] rtc: check if __rtc_read_time was successful in rtc_timer_do_work()
+Date: Tue,  3 Dec 2024 15:48:28 +0100
+Message-ID: <20241203144814.228757419@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -66,48 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Yongliang Gao <leonylgao@tencent.com>
 
-[ Upstream commit b6cd7adec0cf03f0aefc55676e71dd721cbc71a8 ]
+[ Upstream commit e8ba8a2bc4f60a1065f23d6a0e7cbea945a0f40d ]
 
-If request_irq() fails in st_rtc_probe(), there is no need to enable
-the irq, and if it succeeds, disable_irq() after request_irq() still has
-a time gap in which interrupts can come.
+If the __rtc_read_time call fails,, the struct rtc_time tm; may contain
+uninitialized data, or an illegal date/time read from the RTC hardware.
 
-request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
-request IRQ.
+When calling rtc_tm_to_ktime later, the result may be a very large value
+(possibly KTIME_MAX). If there are periodic timers in rtc->timerqueue,
+they will continually expire, may causing kernel softlockup.
 
-Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240912033727.3013951-1-ruanjinjie@huawei.com
+Fixes: 6610e0893b8b ("RTC: Rework RTC code to use timerqueue for events")
+Signed-off-by: Yongliang Gao <leonylgao@tencent.com>
+Acked-by: Jingqun Li <jingqunli@tencent.com>
+Link: https://lore.kernel.org/r/20241011043153.3788112-1-leonylgao@gmail.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-st-lpc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/rtc/interface.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
-index d492a2d26600c..c6d4522411b31 100644
---- a/drivers/rtc/rtc-st-lpc.c
-+++ b/drivers/rtc/rtc-st-lpc.c
-@@ -218,15 +218,14 @@ static int st_rtc_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+index cca650b2e0b94..aaf76406cd7d7 100644
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -904,13 +904,18 @@ void rtc_timer_do_work(struct work_struct *work)
+ 	struct timerqueue_node *next;
+ 	ktime_t now;
+ 	struct rtc_time tm;
++	int err;
  
--	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler, 0,
--			       pdev->name, rtc);
-+	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler,
-+			       IRQF_NO_AUTOEN, pdev->name, rtc);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to request irq %i\n", rtc->irq);
- 		return ret;
- 	}
+ 	struct rtc_device *rtc =
+ 		container_of(work, struct rtc_device, irqwork);
  
- 	enable_irq_wake(rtc->irq);
--	disable_irq(rtc->irq);
- 
- 	rtc->clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(rtc->clk))
+ 	mutex_lock(&rtc->ops_lock);
+ again:
+-	__rtc_read_time(rtc, &tm);
++	err = __rtc_read_time(rtc, &tm);
++	if (err) {
++		mutex_unlock(&rtc->ops_lock);
++		return;
++	}
+ 	now = rtc_tm_to_ktime(tm);
+ 	while ((next = timerqueue_getnext(&rtc->timerqueue))) {
+ 		if (next->expires > now)
 -- 
 2.43.0
 
