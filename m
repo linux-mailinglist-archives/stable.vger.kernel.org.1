@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-97452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9A39E2662
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:12:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70989E2432
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FE8AB27223
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7D2B2877B6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824D91FECA2;
-	Tue,  3 Dec 2024 15:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37E31F8937;
+	Tue,  3 Dec 2024 15:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUIsLhO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMYXFwAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9261F75A4;
-	Tue,  3 Dec 2024 15:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A0A1F76BC;
+	Tue,  3 Dec 2024 15:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240552; cv=none; b=ezdFXDh4iCd9OgXtZTIF7H2rYXfImAXE7MWJjDgA312LRFaKXjzWinC2dzA9gIeJ6YYBRua7Pka2WVBq/LUQsYxpoutJFdqxXWkOK44AaEBOkb4u8no+ByVIGjaqOz4Myk9+fONtXOV4U4lQtW849KdzNzlvTMMew7FmdjszMCs=
+	t=1733240699; cv=none; b=P4RXKzEXZVXlqp33vW6qbBLjD2rG/hznAsC2GUI7q045tHkq7KKlJ1DYkqhe3ca84ezz0XSwYRZw2PLy3BchXKL8li+jLPXlgfr+pv/P8XPRyNrMgFd15vF5XG44E5D0461Dam0parTpQ158KfAjl4OcUXtxd4uoAwpZ0Rz67O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240552; c=relaxed/simple;
-	bh=DRdeuVY9+R7Xk6sIek5ata+mWhXnA+wPB16qDVXgsio=;
+	s=arc-20240116; t=1733240699; c=relaxed/simple;
+	bh=XJB/As0qdVJbcWG/CgUg3+YVtYqQc9iMcmHrVQCeM0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyXKOUHKAabKcdrPsrpY6z0dpdOmfS0vsViudV1Y9oPIagCe/LbvDRh9U3RvyLJgpPblXpbtMylHpiiNOfOtvhcCUxjH4LF2RpFpR/JMcoAir6/4N4KfE1l2snXj/WdZMGBo1Zto8ZblFH6Y9fUDxoA1+Ey+cQt/7+l5EeoIATk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUIsLhO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBC4C4CECF;
-	Tue,  3 Dec 2024 15:42:31 +0000 (UTC)
+	 MIME-Version; b=B7GK1oAgqs7p+mHR6GMzAZnDlRNdmc2R12QBododq13djqUlVdCsw7uz4QCTJ122vGS1W0cg4ef+8PE8cVqWAKUkQ3FR3Hhwe2giKxwx1Jk3ni+a6UB03ouUq8rO+i55y/mdPaGRDniu3ipDYI4Xl3OVhXhKerDsh9XYTirV7W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMYXFwAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCB9C4CECF;
+	Tue,  3 Dec 2024 15:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240552;
-	bh=DRdeuVY9+R7Xk6sIek5ata+mWhXnA+wPB16qDVXgsio=;
+	s=korg; t=1733240699;
+	bh=XJB/As0qdVJbcWG/CgUg3+YVtYqQc9iMcmHrVQCeM0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUIsLhO1cmQs99szkS3DRIvVkTYQMvKlFMsdnwHfB1BQQY5R2/D0KY7AV7W9Zaowb
-	 XAQWPz774R/2bGTFfdMBOXLjhApTsbtsYcV4jmj/n+Z2eiA4wCzS18r+Gt45nT+o14
-	 6RYozAF5skrBSfl7L/7Li/KKL0lit/qCx0G0HRuM=
+	b=SMYXFwAfLZD8oDZUlZ7/vnPo+Rt5FwRvw6CssZE1yyE2bkJ03k1a4pVNb06QCB1MG
+	 qGv6+1AGtnqVSJe0Ekyx6QdnxuQN35Mi5mZBfA6U63oIArNajFarihtSNuylVD6iQd
+	 pjItRwv6e5mgieK7Ip06RxvISvvTEA+KU2frqfx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Bingbu Cao <bingbu.cao@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 168/826] media: ipu6: Fix DMA and physical address debugging messages for 32-bit
-Date: Tue,  3 Dec 2024 15:38:15 +0100
-Message-ID: <20241203144750.287040084@linuxfoundation.org>
+Subject: [PATCH 6.12 169/826] media: ipu6: not override the dma_ops of device in driver
+Date: Tue,  3 Dec 2024 15:38:16 +0100
+Message-ID: <20241203144750.325120408@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -67,117 +68,667 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit 199c204bcc732ec18dbaec2b9d6445addbd376ea ]
+[ Upstream commit daabc5c64703432c4a8798421a3588c2c142c51b ]
 
-Fix printing DMA and physical address printing on 32-bit platforms, by
-using correct types. Also cast DMA_BIT_MASK() result to dma_addr_t to make
-Clang happy.
+DMA ops are a helper for architectures and not for drivers to override the
+DMA implementation. Driver should not override the DMA implementation.
 
+This patch removes the dma_ops override from auxiliary device and adds
+driver-internal helpers that use the actual DMA mapping APIs.
+
+Fixes: 9163d83573e4 ("media: intel/ipu6: add IPU6 DMA mapping API and MMU table")
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+[Sakari Ailus: Fix the commit message a little.]
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Stable-dep-of: daabc5c64703 ("media: ipu6: not override the dma_ops of device in driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-dma.c |  7 ++++---
- drivers/media/pci/intel/ipu6/ipu6-mmu.c | 28 +++++++++++++++----------
- 2 files changed, 21 insertions(+), 14 deletions(-)
+ drivers/media/pci/intel/ipu6/ipu6-bus.c      |   6 -
+ drivers/media/pci/intel/ipu6/ipu6-buttress.c |  21 +-
+ drivers/media/pci/intel/ipu6/ipu6-cpd.c      |  18 +-
+ drivers/media/pci/intel/ipu6/ipu6-dma.c      | 195 +++++++++----------
+ drivers/media/pci/intel/ipu6/ipu6-dma.h      |  34 +++-
+ drivers/media/pci/intel/ipu6/ipu6-fw-com.c   |  14 +-
+ 6 files changed, 156 insertions(+), 132 deletions(-)
 
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-dma.c b/drivers/media/pci/intel/ipu6/ipu6-dma.c
-index 92530a1cc90f5..801f6bd00a891 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-dma.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-dma.c
-@@ -428,11 +428,12 @@ static int ipu6_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-bus.c b/drivers/media/pci/intel/ipu6/ipu6-bus.c
+index 149ec098cdbfe..37d88ddb6ee7c 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-bus.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-bus.c
+@@ -94,8 +94,6 @@ ipu6_bus_initialize_device(struct pci_dev *pdev, struct device *parent,
+ 	if (!adev)
+ 		return ERR_PTR(-ENOMEM);
  
- 	iova_addr = iova->pfn_lo;
- 	for_each_sg(sglist, sg, count, i) {
-+		phys_addr_t iova_pa;
- 		int ret;
+-	adev->dma_mask = DMA_BIT_MASK(isp->secure_mode ? IPU6_MMU_ADDR_BITS :
+-				      IPU6_MMU_ADDR_BITS_NON_SECURE);
+ 	adev->isp = isp;
+ 	adev->ctrl = ctrl;
+ 	adev->pdata = pdata;
+@@ -106,10 +104,6 @@ ipu6_bus_initialize_device(struct pci_dev *pdev, struct device *parent,
  
--		dev_dbg(dev, "mapping entry %d: iova 0x%llx phy %pad size %d\n",
--			i, PFN_PHYS(iova_addr), &sg_dma_address(sg),
--			sg_dma_len(sg));
-+		iova_pa = PFN_PHYS(iova_addr);
-+		dev_dbg(dev, "mapping entry %d: iova %pap phy %pap size %d\n",
-+			i, &iova_pa, &sg_dma_address(sg), sg_dma_len(sg));
+ 	auxdev->dev.parent = parent;
+ 	auxdev->dev.release = ipu6_bus_release;
+-	auxdev->dev.dma_ops = &ipu6_dma_ops;
+-	auxdev->dev.dma_mask = &adev->dma_mask;
+-	auxdev->dev.dma_parms = pdev->dev.dma_parms;
+-	auxdev->dev.coherent_dma_mask = adev->dma_mask;
  
- 		ret = ipu6_mmu_map(mmu->dmap->mmu_info, PFN_PHYS(iova_addr),
- 				   sg_dma_address(sg),
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-mmu.c b/drivers/media/pci/intel/ipu6/ipu6-mmu.c
-index c3a20507d6dbc..57298ac73d072 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-mmu.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-mmu.c
-@@ -97,13 +97,15 @@ static void page_table_dump(struct ipu6_mmu_info *mmu_info)
- 	for (l1_idx = 0; l1_idx < ISP_L1PT_PTES; l1_idx++) {
- 		u32 l2_idx;
- 		u32 iova = (phys_addr_t)l1_idx << ISP_L1PT_SHIFT;
-+		phys_addr_t l2_phys;
+ 	ret = auxiliary_device_init(auxdev);
+ 	if (ret < 0) {
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-buttress.c b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
+index e47f84c30e10d..d66db537be4a6 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-buttress.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-buttress.c
+@@ -24,6 +24,7 @@
  
- 		if (mmu_info->l1_pt[l1_idx] == mmu_info->dummy_l2_pteval)
- 			continue;
-+
-+		l2_phys = TBL_PHYS_ADDR(mmu_info->l1_pt[l1_idx];)
- 		dev_dbg(mmu_info->dev,
--			"l1 entry %u; iovas 0x%8.8x-0x%8.8x, at %pa\n",
--			l1_idx, iova, iova + ISP_PAGE_SIZE,
--			TBL_PHYS_ADDR(mmu_info->l1_pt[l1_idx]));
-+			"l1 entry %u; iovas 0x%8.8x-0x%8.8x, at %pap\n",
-+			l1_idx, iova, iova + ISP_PAGE_SIZE, &l2_phys);
+ #include "ipu6.h"
+ #include "ipu6-bus.h"
++#include "ipu6-dma.h"
+ #include "ipu6-buttress.h"
+ #include "ipu6-platform-buttress-regs.h"
  
- 		for (l2_idx = 0; l2_idx < ISP_L2PT_PTES; l2_idx++) {
- 			u32 *l2_pt = mmu_info->l2_pts[l1_idx];
-@@ -227,7 +229,7 @@ static u32 *alloc_l1_pt(struct ipu6_mmu_info *mmu_info)
+@@ -553,6 +554,7 @@ int ipu6_buttress_map_fw_image(struct ipu6_bus_device *sys,
+ 			       const struct firmware *fw, struct sg_table *sgt)
+ {
+ 	bool is_vmalloc = is_vmalloc_addr(fw->data);
++	struct pci_dev *pdev = sys->isp->pdev;
+ 	struct page **pages;
+ 	const void *addr;
+ 	unsigned long n_pages;
+@@ -588,14 +590,20 @@ int ipu6_buttress_map_fw_image(struct ipu6_bus_device *sys,
+ 		goto out;
  	}
  
- 	mmu_info->l1_pt_dma = dma >> ISP_PADDR_SHIFT;
--	dev_dbg(mmu_info->dev, "l1 pt %p mapped at %llx\n", pt, dma);
-+	dev_dbg(mmu_info->dev, "l1 pt %p mapped at %pad\n", pt, &dma);
- 
- 	return pt;
- 
-@@ -330,8 +332,8 @@ static int __ipu6_mmu_map(struct ipu6_mmu_info *mmu_info, unsigned long iova,
- 	u32 iova_end = ALIGN(iova + size, ISP_PAGE_SIZE);
- 
- 	dev_dbg(mmu_info->dev,
--		"mapping iova 0x%8.8x--0x%8.8x, size %zu at paddr 0x%10.10llx\n",
--		iova_start, iova_end, size, paddr);
-+		"mapping iova 0x%8.8x--0x%8.8x, size %zu at paddr %pap\n",
-+		iova_start, iova_end, size, &paddr);
- 
- 	return l2_map(mmu_info, iova_start, paddr, size);
- }
-@@ -361,10 +363,13 @@ static size_t l2_unmap(struct ipu6_mmu_info *mmu_info, unsigned long iova,
- 	for (l2_idx = (iova_start & ISP_L2PT_MASK) >> ISP_L2PT_SHIFT;
- 	     (iova_start & ISP_L1PT_MASK) + (l2_idx << ISP_PAGE_SHIFT)
- 		     < iova_start + size && l2_idx < ISP_L2PT_PTES; l2_idx++) {
-+		phys_addr_t pteval;
+-	ret = dma_map_sgtable(&sys->auxdev.dev, sgt, DMA_TO_DEVICE, 0);
+-	if (ret < 0) {
+-		ret = -ENOMEM;
++	ret = dma_map_sgtable(&pdev->dev, sgt, DMA_TO_DEVICE, 0);
++	if (ret) {
++		sg_free_table(sgt);
++		goto out;
++	}
 +
- 		l2_pt = mmu_info->l2_pts[l1_idx];
-+		pteval = TBL_PHYS_ADDR(l2_pt[l2_idx]);
- 		dev_dbg(mmu_info->dev,
--			"unmap l2 index %u with pteval 0x%10.10llx\n",
--			l2_idx, TBL_PHYS_ADDR(l2_pt[l2_idx]));
-+			"unmap l2 index %u with pteval 0x%p\n",
-+			l2_idx, &pteval);
- 		l2_pt[l2_idx] = mmu_info->dummy_page_pteval;
++	ret = ipu6_dma_map_sgtable(sys, sgt, DMA_TO_DEVICE, 0);
++	if (ret) {
++		dma_unmap_sgtable(&pdev->dev, sgt, DMA_TO_DEVICE, 0);
+ 		sg_free_table(sgt);
+ 		goto out;
+ 	}
  
- 		clflush_cache_range((void *)&l2_pt[l2_idx],
-@@ -525,9 +530,10 @@ static struct ipu6_mmu_info *ipu6_mmu_alloc(struct ipu6_device *isp)
- 		return NULL;
+-	dma_sync_sgtable_for_device(&sys->auxdev.dev, sgt, DMA_TO_DEVICE);
++	ipu6_dma_sync_sgtable(sys, sgt);
  
- 	mmu_info->aperture_start = 0;
--	mmu_info->aperture_end = DMA_BIT_MASK(isp->secure_mode ?
--					      IPU6_MMU_ADDR_BITS :
--					      IPU6_MMU_ADDR_BITS_NON_SECURE);
-+	mmu_info->aperture_end =
-+		(dma_addr_t)DMA_BIT_MASK(isp->secure_mode ?
-+					 IPU6_MMU_ADDR_BITS :
-+					 IPU6_MMU_ADDR_BITS_NON_SECURE);
- 	mmu_info->pgsize_bitmap = SZ_4K;
- 	mmu_info->dev = &isp->pdev->dev;
+ out:
+ 	kfree(pages);
+@@ -607,7 +615,10 @@ EXPORT_SYMBOL_NS_GPL(ipu6_buttress_map_fw_image, INTEL_IPU6);
+ void ipu6_buttress_unmap_fw_image(struct ipu6_bus_device *sys,
+ 				  struct sg_table *sgt)
+ {
+-	dma_unmap_sgtable(&sys->auxdev.dev, sgt, DMA_TO_DEVICE, 0);
++	struct pci_dev *pdev = sys->isp->pdev;
++
++	ipu6_dma_unmap_sgtable(sys, sgt, DMA_TO_DEVICE, 0);
++	dma_unmap_sgtable(&pdev->dev, sgt, DMA_TO_DEVICE, 0);
+ 	sg_free_table(sgt);
+ }
+ EXPORT_SYMBOL_NS_GPL(ipu6_buttress_unmap_fw_image, INTEL_IPU6);
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-cpd.c b/drivers/media/pci/intel/ipu6/ipu6-cpd.c
+index 715b21ab4b8e9..21c1c128a7eaa 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-cpd.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-cpd.c
+@@ -15,6 +15,7 @@
+ #include "ipu6.h"
+ #include "ipu6-bus.h"
+ #include "ipu6-cpd.h"
++#include "ipu6-dma.h"
  
+ /* 15 entries + header*/
+ #define MAX_PKG_DIR_ENT_CNT		16
+@@ -162,7 +163,6 @@ int ipu6_cpd_create_pkg_dir(struct ipu6_bus_device *adev, const void *src)
+ {
+ 	dma_addr_t dma_addr_src = sg_dma_address(adev->fw_sgt.sgl);
+ 	const struct ipu6_cpd_ent *ent, *man_ent, *met_ent;
+-	struct device *dev = &adev->auxdev.dev;
+ 	struct ipu6_device *isp = adev->isp;
+ 	unsigned int man_sz, met_sz;
+ 	void *pkg_dir_pos;
+@@ -175,8 +175,8 @@ int ipu6_cpd_create_pkg_dir(struct ipu6_bus_device *adev, const void *src)
+ 	met_sz = met_ent->len;
+ 
+ 	adev->pkg_dir_size = PKG_DIR_SIZE + man_sz + met_sz;
+-	adev->pkg_dir = dma_alloc_attrs(dev, adev->pkg_dir_size,
+-					&adev->pkg_dir_dma_addr, GFP_KERNEL, 0);
++	adev->pkg_dir = ipu6_dma_alloc(adev, adev->pkg_dir_size,
++				       &adev->pkg_dir_dma_addr, GFP_KERNEL, 0);
+ 	if (!adev->pkg_dir)
+ 		return -ENOMEM;
+ 
+@@ -198,8 +198,8 @@ int ipu6_cpd_create_pkg_dir(struct ipu6_bus_device *adev, const void *src)
+ 					 met_ent->len);
+ 	if (ret) {
+ 		dev_err(&isp->pdev->dev, "Failed to parse module data\n");
+-		dma_free_attrs(dev, adev->pkg_dir_size,
+-			       adev->pkg_dir, adev->pkg_dir_dma_addr, 0);
++		ipu6_dma_free(adev, adev->pkg_dir_size,
++			      adev->pkg_dir, adev->pkg_dir_dma_addr, 0);
+ 		return ret;
+ 	}
+ 
+@@ -211,8 +211,8 @@ int ipu6_cpd_create_pkg_dir(struct ipu6_bus_device *adev, const void *src)
+ 	pkg_dir_pos += man_sz;
+ 	memcpy(pkg_dir_pos, src + met_ent->offset, met_sz);
+ 
+-	dma_sync_single_range_for_device(dev, adev->pkg_dir_dma_addr,
+-					 0, adev->pkg_dir_size, DMA_TO_DEVICE);
++	ipu6_dma_sync_single(adev, adev->pkg_dir_dma_addr,
++			     adev->pkg_dir_size);
+ 
+ 	return 0;
+ }
+@@ -220,8 +220,8 @@ EXPORT_SYMBOL_NS_GPL(ipu6_cpd_create_pkg_dir, INTEL_IPU6);
+ 
+ void ipu6_cpd_free_pkg_dir(struct ipu6_bus_device *adev)
+ {
+-	dma_free_attrs(&adev->auxdev.dev, adev->pkg_dir_size, adev->pkg_dir,
+-		       adev->pkg_dir_dma_addr, 0);
++	ipu6_dma_free(adev, adev->pkg_dir_size, adev->pkg_dir,
++		      adev->pkg_dir_dma_addr, 0);
+ }
+ EXPORT_SYMBOL_NS_GPL(ipu6_cpd_free_pkg_dir, INTEL_IPU6);
+ 
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-dma.c b/drivers/media/pci/intel/ipu6/ipu6-dma.c
+index 801f6bd00a891..b71f66bd8c1fd 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-dma.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-dma.c
+@@ -39,8 +39,7 @@ static struct vm_info *get_vm_info(struct ipu6_mmu *mmu, dma_addr_t iova)
+ 	return NULL;
+ }
+ 
+-static void __dma_clear_buffer(struct page *page, size_t size,
+-			       unsigned long attrs)
++static void __clear_buffer(struct page *page, size_t size, unsigned long attrs)
+ {
+ 	void *ptr;
+ 
+@@ -56,8 +55,7 @@ static void __dma_clear_buffer(struct page *page, size_t size,
+ 		clflush_cache_range(ptr, size);
+ }
+ 
+-static struct page **__dma_alloc_buffer(struct device *dev, size_t size,
+-					gfp_t gfp, unsigned long attrs)
++static struct page **__alloc_buffer(size_t size, gfp_t gfp, unsigned long attrs)
+ {
+ 	int count = PHYS_PFN(size);
+ 	int array_size = count * sizeof(struct page *);
+@@ -86,7 +84,7 @@ static struct page **__dma_alloc_buffer(struct device *dev, size_t size,
+ 				pages[i + j] = pages[i] + j;
+ 		}
+ 
+-		__dma_clear_buffer(pages[i], PAGE_SIZE << order, attrs);
++		__clear_buffer(pages[i], PAGE_SIZE << order, attrs);
+ 		i += 1 << order;
+ 		count -= 1 << order;
+ 	}
+@@ -100,29 +98,26 @@ static struct page **__dma_alloc_buffer(struct device *dev, size_t size,
+ 	return NULL;
+ }
+ 
+-static void __dma_free_buffer(struct device *dev, struct page **pages,
+-			      size_t size, unsigned long attrs)
++static void __free_buffer(struct page **pages, size_t size, unsigned long attrs)
+ {
+ 	int count = PHYS_PFN(size);
+ 	unsigned int i;
+ 
+ 	for (i = 0; i < count && pages[i]; i++) {
+-		__dma_clear_buffer(pages[i], PAGE_SIZE, attrs);
++		__clear_buffer(pages[i], PAGE_SIZE, attrs);
+ 		__free_pages(pages[i], 0);
+ 	}
+ 
+ 	kvfree(pages);
+ }
+ 
+-static void ipu6_dma_sync_single_for_cpu(struct device *dev,
+-					 dma_addr_t dma_handle,
+-					 size_t size,
+-					 enum dma_data_direction dir)
++void ipu6_dma_sync_single(struct ipu6_bus_device *sys, dma_addr_t dma_handle,
++			  size_t size)
+ {
+ 	void *vaddr;
+ 	u32 offset;
+ 	struct vm_info *info;
+-	struct ipu6_mmu *mmu = to_ipu6_bus_device(dev)->mmu;
++	struct ipu6_mmu *mmu = sys->mmu;
+ 
+ 	info = get_vm_info(mmu, dma_handle);
+ 	if (WARN_ON(!info))
+@@ -135,10 +130,10 @@ static void ipu6_dma_sync_single_for_cpu(struct device *dev,
+ 	vaddr = info->vaddr + offset;
+ 	clflush_cache_range(vaddr, size);
+ }
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_sync_single, INTEL_IPU6);
+ 
+-static void ipu6_dma_sync_sg_for_cpu(struct device *dev,
+-				     struct scatterlist *sglist,
+-				     int nents, enum dma_data_direction dir)
++void ipu6_dma_sync_sg(struct ipu6_bus_device *sys, struct scatterlist *sglist,
++		      int nents)
+ {
+ 	struct scatterlist *sg;
+ 	int i;
+@@ -146,14 +141,22 @@ static void ipu6_dma_sync_sg_for_cpu(struct device *dev,
+ 	for_each_sg(sglist, sg, nents, i)
+ 		clflush_cache_range(page_to_virt(sg_page(sg)), sg->length);
+ }
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_sync_sg, INTEL_IPU6);
+ 
+-static void *ipu6_dma_alloc(struct device *dev, size_t size,
+-			    dma_addr_t *dma_handle, gfp_t gfp,
+-			    unsigned long attrs)
++void ipu6_dma_sync_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt)
+ {
+-	struct ipu6_mmu *mmu = to_ipu6_bus_device(dev)->mmu;
+-	struct pci_dev *pdev = to_ipu6_bus_device(dev)->isp->pdev;
++	ipu6_dma_sync_sg(sys, sgt->sgl, sgt->orig_nents);
++}
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_sync_sgtable, INTEL_IPU6);
++
++void *ipu6_dma_alloc(struct ipu6_bus_device *sys, size_t size,
++		     dma_addr_t *dma_handle, gfp_t gfp,
++		     unsigned long attrs)
++{
++	struct device *dev = &sys->auxdev.dev;
++	struct pci_dev *pdev = sys->isp->pdev;
+ 	dma_addr_t pci_dma_addr, ipu6_iova;
++	struct ipu6_mmu *mmu = sys->mmu;
+ 	struct vm_info *info;
+ 	unsigned long count;
+ 	struct page **pages;
+@@ -173,7 +176,7 @@ static void *ipu6_dma_alloc(struct device *dev, size_t size,
+ 	if (!iova)
+ 		goto out_kfree;
+ 
+-	pages = __dma_alloc_buffer(dev, size, gfp, attrs);
++	pages = __alloc_buffer(size, gfp, attrs);
+ 	if (!pages)
+ 		goto out_free_iova;
+ 
+@@ -227,7 +230,7 @@ static void *ipu6_dma_alloc(struct device *dev, size_t size,
+ 		ipu6_mmu_unmap(mmu->dmap->mmu_info, ipu6_iova, PAGE_SIZE);
+ 	}
+ 
+-	__dma_free_buffer(dev, pages, size, attrs);
++	__free_buffer(pages, size, attrs);
+ 
+ out_free_iova:
+ 	__free_iova(&mmu->dmap->iovad, iova);
+@@ -236,13 +239,13 @@ static void *ipu6_dma_alloc(struct device *dev, size_t size,
+ 
+ 	return NULL;
+ }
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_alloc, INTEL_IPU6);
+ 
+-static void ipu6_dma_free(struct device *dev, size_t size, void *vaddr,
+-			  dma_addr_t dma_handle,
+-			  unsigned long attrs)
++void ipu6_dma_free(struct ipu6_bus_device *sys, size_t size, void *vaddr,
++		   dma_addr_t dma_handle, unsigned long attrs)
+ {
+-	struct ipu6_mmu *mmu = to_ipu6_bus_device(dev)->mmu;
+-	struct pci_dev *pdev = to_ipu6_bus_device(dev)->isp->pdev;
++	struct ipu6_mmu *mmu = sys->mmu;
++	struct pci_dev *pdev = sys->isp->pdev;
+ 	struct iova *iova = find_iova(&mmu->dmap->iovad, PHYS_PFN(dma_handle));
+ 	dma_addr_t pci_dma_addr, ipu6_iova;
+ 	struct vm_info *info;
+@@ -281,7 +284,7 @@ static void ipu6_dma_free(struct device *dev, size_t size, void *vaddr,
+ 	ipu6_mmu_unmap(mmu->dmap->mmu_info, PFN_PHYS(iova->pfn_lo),
+ 		       PFN_PHYS(iova_size(iova)));
+ 
+-	__dma_free_buffer(dev, pages, size, attrs);
++	__free_buffer(pages, size, attrs);
+ 
+ 	mmu->tlb_invalidate(mmu);
+ 
+@@ -289,13 +292,14 @@ static void ipu6_dma_free(struct device *dev, size_t size, void *vaddr,
+ 
+ 	kfree(info);
+ }
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_free, INTEL_IPU6);
+ 
+-static int ipu6_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+-			 void *addr, dma_addr_t iova, size_t size,
+-			 unsigned long attrs)
++int ipu6_dma_mmap(struct ipu6_bus_device *sys, struct vm_area_struct *vma,
++		  void *addr, dma_addr_t iova, size_t size,
++		  unsigned long attrs)
+ {
+-	struct ipu6_mmu *mmu = to_ipu6_bus_device(dev)->mmu;
+-	size_t count = PHYS_PFN(PAGE_ALIGN(size));
++	struct ipu6_mmu *mmu = sys->mmu;
++	size_t count = PFN_UP(size);
+ 	struct vm_info *info;
+ 	size_t i;
+ 	int ret;
+@@ -323,18 +327,17 @@ static int ipu6_dma_mmap(struct device *dev, struct vm_area_struct *vma,
+ 	return 0;
+ }
+ 
+-static void ipu6_dma_unmap_sg(struct device *dev,
+-			      struct scatterlist *sglist,
+-			      int nents, enum dma_data_direction dir,
+-			      unsigned long attrs)
++void ipu6_dma_unmap_sg(struct ipu6_bus_device *sys, struct scatterlist *sglist,
++		       int nents, enum dma_data_direction dir,
++		       unsigned long attrs)
+ {
+-	struct pci_dev *pdev = to_ipu6_bus_device(dev)->isp->pdev;
+-	struct ipu6_mmu *mmu = to_ipu6_bus_device(dev)->mmu;
++	struct device *dev = &sys->auxdev.dev;
++	struct ipu6_mmu *mmu = sys->mmu;
+ 	struct iova *iova = find_iova(&mmu->dmap->iovad,
+ 				      PHYS_PFN(sg_dma_address(sglist)));
+-	int i, npages, count;
+ 	struct scatterlist *sg;
+ 	dma_addr_t pci_dma_addr;
++	unsigned int i;
+ 
+ 	if (!nents)
+ 		return;
+@@ -342,31 +345,15 @@ static void ipu6_dma_unmap_sg(struct device *dev,
+ 	if (WARN_ON(!iova))
+ 		return;
+ 
+-	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+-		ipu6_dma_sync_sg_for_cpu(dev, sglist, nents, DMA_BIDIRECTIONAL);
+-
+-	/* get the nents as orig_nents given by caller */
+-	count = 0;
+-	npages = iova_size(iova);
+-	for_each_sg(sglist, sg, nents, i) {
+-		if (sg_dma_len(sg) == 0 ||
+-		    sg_dma_address(sg) == DMA_MAPPING_ERROR)
+-			break;
+-
+-		npages -= PHYS_PFN(PAGE_ALIGN(sg_dma_len(sg)));
+-		count++;
+-		if (npages <= 0)
+-			break;
+-	}
+-
+ 	/*
+ 	 * Before IPU6 mmu unmap, return the pci dma address back to sg
+ 	 * assume the nents is less than orig_nents as the least granule
+ 	 * is 1 SZ_4K page
+ 	 */
+-	dev_dbg(dev, "trying to unmap concatenated %u ents\n", count);
+-	for_each_sg(sglist, sg, count, i) {
+-		dev_dbg(dev, "ipu unmap sg[%d] %pad\n", i, &sg_dma_address(sg));
++	dev_dbg(dev, "trying to unmap concatenated %u ents\n", nents);
++	for_each_sg(sglist, sg, nents, i) {
++		dev_dbg(dev, "unmap sg[%d] %pad size %u\n", i,
++			&sg_dma_address(sg), sg_dma_len(sg));
+ 		pci_dma_addr = ipu6_mmu_iova_to_phys(mmu->dmap->mmu_info,
+ 						     sg_dma_address(sg));
+ 		dev_dbg(dev, "return pci_dma_addr %pad back to sg[%d]\n",
+@@ -380,23 +367,21 @@ static void ipu6_dma_unmap_sg(struct device *dev,
+ 		       PFN_PHYS(iova_size(iova)));
+ 
+ 	mmu->tlb_invalidate(mmu);
+-
+-	dma_unmap_sg_attrs(&pdev->dev, sglist, nents, dir, attrs);
+-
+ 	__free_iova(&mmu->dmap->iovad, iova);
+ }
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_unmap_sg, INTEL_IPU6);
+ 
+-static int ipu6_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+-			   int nents, enum dma_data_direction dir,
+-			   unsigned long attrs)
++int ipu6_dma_map_sg(struct ipu6_bus_device *sys, struct scatterlist *sglist,
++		    int nents, enum dma_data_direction dir,
++		    unsigned long attrs)
+ {
+-	struct ipu6_mmu *mmu = to_ipu6_bus_device(dev)->mmu;
+-	struct pci_dev *pdev = to_ipu6_bus_device(dev)->isp->pdev;
++	struct device *dev = &sys->auxdev.dev;
++	struct ipu6_mmu *mmu = sys->mmu;
+ 	struct scatterlist *sg;
+ 	struct iova *iova;
+ 	size_t npages = 0;
+ 	unsigned long iova_addr;
+-	int i, count;
++	int i;
+ 
+ 	for_each_sg(sglist, sg, nents, i) {
+ 		if (sg->offset) {
+@@ -406,18 +391,12 @@ static int ipu6_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 		}
+ 	}
+ 
+-	dev_dbg(dev, "pci_dma_map_sg trying to map %d ents\n", nents);
+-	count  = dma_map_sg_attrs(&pdev->dev, sglist, nents, dir, attrs);
+-	if (count <= 0) {
+-		dev_err(dev, "pci_dma_map_sg %d ents failed\n", nents);
+-		return 0;
+-	}
+-
+-	dev_dbg(dev, "pci_dma_map_sg %d ents mapped\n", count);
+-
+-	for_each_sg(sglist, sg, count, i)
++	for_each_sg(sglist, sg, nents, i)
+ 		npages += PHYS_PFN(PAGE_ALIGN(sg_dma_len(sg)));
+ 
++	dev_dbg(dev, "dmamap trying to map %d ents %zu pages\n",
++		nents, npages);
++
+ 	iova = alloc_iova(&mmu->dmap->iovad, npages,
+ 			  PHYS_PFN(dma_get_mask(dev)), 0);
+ 	if (!iova)
+@@ -427,7 +406,7 @@ static int ipu6_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 		iova->pfn_hi);
+ 
+ 	iova_addr = iova->pfn_lo;
+-	for_each_sg(sglist, sg, count, i) {
++	for_each_sg(sglist, sg, nents, i) {
+ 		phys_addr_t iova_pa;
+ 		int ret;
+ 
+@@ -446,25 +425,48 @@ static int ipu6_dma_map_sg(struct device *dev, struct scatterlist *sglist,
+ 		iova_addr += PHYS_PFN(PAGE_ALIGN(sg_dma_len(sg)));
+ 	}
+ 
+-	if ((attrs & DMA_ATTR_SKIP_CPU_SYNC) == 0)
+-		ipu6_dma_sync_sg_for_cpu(dev, sglist, nents, DMA_BIDIRECTIONAL);
++	dev_dbg(dev, "dmamap %d ents %zu pages mapped\n", nents, npages);
+ 
+-	return count;
++	return nents;
+ 
+ out_fail:
+-	ipu6_dma_unmap_sg(dev, sglist, i, dir, attrs);
++	ipu6_dma_unmap_sg(sys, sglist, i, dir, attrs);
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_map_sg, INTEL_IPU6);
++
++int ipu6_dma_map_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt,
++			 enum dma_data_direction dir, unsigned long attrs)
++{
++	int nents;
++
++	nents = ipu6_dma_map_sg(sys, sgt->sgl, sgt->nents, dir, attrs);
++	if (nents < 0)
++		return nents;
++
++	sgt->nents = nents;
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_map_sgtable, INTEL_IPU6);
++
++void ipu6_dma_unmap_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt,
++			    enum dma_data_direction dir, unsigned long attrs)
++{
++	ipu6_dma_unmap_sg(sys, sgt->sgl, sgt->nents, dir, attrs);
++}
++EXPORT_SYMBOL_NS_GPL(ipu6_dma_unmap_sgtable, INTEL_IPU6);
+ 
+ /*
+  * Create scatter-list for the already allocated DMA buffer
+  */
+-static int ipu6_dma_get_sgtable(struct device *dev, struct sg_table *sgt,
+-				void *cpu_addr, dma_addr_t handle, size_t size,
+-				unsigned long attrs)
++int ipu6_dma_get_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt,
++			 void *cpu_addr, dma_addr_t handle, size_t size,
++			 unsigned long attrs)
+ {
+-	struct ipu6_mmu *mmu = to_ipu6_bus_device(dev)->mmu;
++	struct device *dev = &sys->auxdev.dev;
++	struct ipu6_mmu *mmu = sys->mmu;
+ 	struct vm_info *info;
+ 	int n_pages;
+ 	int ret = 0;
+@@ -484,20 +486,7 @@ static int ipu6_dma_get_sgtable(struct device *dev, struct sg_table *sgt,
+ 	ret = sg_alloc_table_from_pages(sgt, info->pages, n_pages, 0, size,
+ 					GFP_KERNEL);
+ 	if (ret)
+-		dev_warn(dev, "IPU6 get sgt table failed\n");
++		dev_warn(dev, "get sgt table failed\n");
+ 
+ 	return ret;
+ }
+-
+-const struct dma_map_ops ipu6_dma_ops = {
+-	.alloc = ipu6_dma_alloc,
+-	.free = ipu6_dma_free,
+-	.mmap = ipu6_dma_mmap,
+-	.map_sg = ipu6_dma_map_sg,
+-	.unmap_sg = ipu6_dma_unmap_sg,
+-	.sync_single_for_cpu = ipu6_dma_sync_single_for_cpu,
+-	.sync_single_for_device = ipu6_dma_sync_single_for_cpu,
+-	.sync_sg_for_cpu = ipu6_dma_sync_sg_for_cpu,
+-	.sync_sg_for_device = ipu6_dma_sync_sg_for_cpu,
+-	.get_sgtable = ipu6_dma_get_sgtable,
+-};
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-dma.h b/drivers/media/pci/intel/ipu6/ipu6-dma.h
+index 847ea5b7c925c..b51244add9e61 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-dma.h
++++ b/drivers/media/pci/intel/ipu6/ipu6-dma.h
+@@ -5,7 +5,13 @@
+ #define IPU6_DMA_H
+ 
+ #include <linux/dma-map-ops.h>
++#include <linux/dma-mapping.h>
+ #include <linux/iova.h>
++#include <linux/iova.h>
++#include <linux/scatterlist.h>
++#include <linux/types.h>
++
++#include "ipu6-bus.h"
+ 
+ struct ipu6_mmu_info;
+ 
+@@ -14,6 +20,30 @@ struct ipu6_dma_mapping {
+ 	struct iova_domain iovad;
+ };
+ 
+-extern const struct dma_map_ops ipu6_dma_ops;
+-
++void ipu6_dma_sync_single(struct ipu6_bus_device *sys, dma_addr_t dma_handle,
++			  size_t size);
++void ipu6_dma_sync_sg(struct ipu6_bus_device *sys, struct scatterlist *sglist,
++		      int nents);
++void ipu6_dma_sync_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt);
++void *ipu6_dma_alloc(struct ipu6_bus_device *sys, size_t size,
++		     dma_addr_t *dma_handle, gfp_t gfp,
++		     unsigned long attrs);
++void ipu6_dma_free(struct ipu6_bus_device *sys, size_t size, void *vaddr,
++		   dma_addr_t dma_handle, unsigned long attrs);
++int ipu6_dma_mmap(struct ipu6_bus_device *sys, struct vm_area_struct *vma,
++		  void *addr, dma_addr_t iova, size_t size,
++		  unsigned long attrs);
++int ipu6_dma_map_sg(struct ipu6_bus_device *sys, struct scatterlist *sglist,
++		    int nents, enum dma_data_direction dir,
++		    unsigned long attrs);
++void ipu6_dma_unmap_sg(struct ipu6_bus_device *sys, struct scatterlist *sglist,
++		       int nents, enum dma_data_direction dir,
++		       unsigned long attrs);
++int ipu6_dma_map_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt,
++			 enum dma_data_direction dir, unsigned long attrs);
++void ipu6_dma_unmap_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt,
++			    enum dma_data_direction dir, unsigned long attrs);
++int ipu6_dma_get_sgtable(struct ipu6_bus_device *sys, struct sg_table *sgt,
++			 void *cpu_addr, dma_addr_t handle, size_t size,
++			 unsigned long attrs);
+ #endif /* IPU6_DMA_H */
+diff --git a/drivers/media/pci/intel/ipu6/ipu6-fw-com.c b/drivers/media/pci/intel/ipu6/ipu6-fw-com.c
+index 0b33fe9e703dc..7d3d9314cb306 100644
+--- a/drivers/media/pci/intel/ipu6/ipu6-fw-com.c
++++ b/drivers/media/pci/intel/ipu6/ipu6-fw-com.c
+@@ -12,6 +12,7 @@
+ #include <linux/types.h>
+ 
+ #include "ipu6-bus.h"
++#include "ipu6-dma.h"
+ #include "ipu6-fw-com.h"
+ 
+ /*
+@@ -88,7 +89,6 @@ struct ipu6_fw_com_context {
+ 	void *dma_buffer;
+ 	dma_addr_t dma_addr;
+ 	unsigned int dma_size;
+-	unsigned long attrs;
+ 
+ 	struct ipu6_fw_sys_queue *input_queue;	/* array of host to SP queues */
+ 	struct ipu6_fw_sys_queue *output_queue;	/* array of SP to host */
+@@ -164,7 +164,6 @@ void *ipu6_fw_com_prepare(struct ipu6_fw_com_cfg *cfg,
+ 	struct ipu6_fw_com_context *ctx;
+ 	struct device *dev = &adev->auxdev.dev;
+ 	size_t sizeall, offset;
+-	unsigned long attrs = 0;
+ 	void *specific_host_addr;
+ 	unsigned int i;
+ 
+@@ -206,9 +205,8 @@ void *ipu6_fw_com_prepare(struct ipu6_fw_com_cfg *cfg,
+ 
+ 	sizeall += sizeinput + sizeoutput;
+ 
+-	ctx->dma_buffer = dma_alloc_attrs(dev, sizeall, &ctx->dma_addr,
+-					  GFP_KERNEL, attrs);
+-	ctx->attrs = attrs;
++	ctx->dma_buffer = ipu6_dma_alloc(adev, sizeall, &ctx->dma_addr,
++					 GFP_KERNEL, 0);
+ 	if (!ctx->dma_buffer) {
+ 		dev_err(dev, "failed to allocate dma memory\n");
+ 		kfree(ctx);
+@@ -239,6 +237,8 @@ void *ipu6_fw_com_prepare(struct ipu6_fw_com_cfg *cfg,
+ 		memcpy(specific_host_addr, cfg->specific_addr,
+ 		       cfg->specific_size);
+ 
++	ipu6_dma_sync_single(adev, ctx->config_vied_addr, sizeall);
++
+ 	/* initialize input queues */
+ 	offset += specific_size;
+ 	res.reg = SYSCOM_QPR_BASE_REG;
+@@ -315,8 +315,8 @@ int ipu6_fw_com_release(struct ipu6_fw_com_context *ctx, unsigned int force)
+ 	if (!force && !ctx->cell_ready(ctx->adev))
+ 		return -EBUSY;
+ 
+-	dma_free_attrs(&ctx->adev->auxdev.dev, ctx->dma_size,
+-		       ctx->dma_buffer, ctx->dma_addr, ctx->attrs);
++	ipu6_dma_free(ctx->adev, ctx->dma_size,
++		      ctx->dma_buffer, ctx->dma_addr, 0);
+ 	kfree(ctx);
+ 	return 0;
+ }
 -- 
 2.43.0
 
