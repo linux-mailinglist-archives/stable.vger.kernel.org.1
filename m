@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-98109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C829E2708
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7789E270A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45C15289788
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5586289756
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043B1F8937;
-	Tue,  3 Dec 2024 16:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB121F893B;
+	Tue,  3 Dec 2024 16:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOFJsxDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsbJj4aX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297C81E25E3;
-	Tue,  3 Dec 2024 16:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8F41AB6C9;
+	Tue,  3 Dec 2024 16:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242820; cv=none; b=Nk+2WKH2NqY7+WFfXEKMbEzW/K5cLwanxWLloY2Xim1UyAOBQUhGwHV3NXd/6FV9mvLDQONg3vmeowDas0X2WTyei2v1byn+dRKrgkupfc1+VtWZpJJ9Vfx/utPwu6irXTOcjPaDiGwA3rEICLyS2AftjKvW9PBFVpGiZ9owDEQ=
+	t=1733242827; cv=none; b=fUng4C+HDhASSwBSACuXj8W4jmybTCvGw5876wnnF09ylO9Oe4Jo6tNJHv0xj28QDF0Vb+Smh+oGJhgszOa5ne9L3TsZDlfVAG1/UJPpBNLGpgBjZoF6qEQnwP0TDaIyHItdxC2iWzXPJRy63oAO6JqunjbdtPk/6ISZn2pWj9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242820; c=relaxed/simple;
-	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
+	s=arc-20240116; t=1733242827; c=relaxed/simple;
+	bh=OTexgQ5/kTOJ4trrURVidr2BU+e/5tdemti/Pobzg0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/aIDDktOsfOc8Fbwj+4q4IfV4fxM48YK9GSqYnDwIf4Y/RMcgMFlILGgaR6/EmB/n6idDkseWJjFnUlbHrSDV6KWWobtdMxEg/U1Z5H5Y9qd/Nca6BZkX6a+pwDsDiZPY/zkTLMx1MyUOg3yh2+Sz5xlemUVTwooCBH8lnBZF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOFJsxDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C58DC4CECF;
-	Tue,  3 Dec 2024 16:20:19 +0000 (UTC)
+	 MIME-Version; b=n4AvdMTHkSJyAQa2ROk+yJKu6I0nBHYIHLpc7ovOkTjeSC47WEDCYclBd+hroz/G3ElBGJ5IH8XAPo/bPUtfMbGmQmB7zl7tj67xDpAbz14bjCdJqbOgMtUD4yqu+3iGvrtxAnf0rMmzCbL58dI7ontj7jI6G9mjiKK0N5IN2o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsbJj4aX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B57C4CECF;
+	Tue,  3 Dec 2024 16:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242820;
-	bh=Qy+BAYcRHE2O6cAvWjZgLj0PVfvbFtLF0E0wQ3KkLmQ=;
+	s=korg; t=1733242826;
+	bh=OTexgQ5/kTOJ4trrURVidr2BU+e/5tdemti/Pobzg0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOFJsxDv/bNxXo+4JozOQECQ3aJAhC5s8mMxYwZGVIwOM3XG2qIaUktictBi1g20l
-	 ik565XTYeqv+yBKbk8jhbKi4RdZPxZ6wz3wEV2w0yQ86agjlrtJFaqPuPUAED9QgLk
-	 lgXASGBM7LEKi+ns2CwTeQMZ7eO9/K7wHnTQ4RF4=
+	b=lsbJj4aXTYkgvwZ1sLytK+lIB4yKnzWNZJIRD05Jp1C+UT8m40PJwsF9yL1t5TKKw
+	 uGEXwkvHESjEbYK9VvVk0FrjNFiFN1+UefnfEpbmYztS4S2u1gTzG5UaM6cNCB1OGk
+	 waIa/LERh48RyBYhqIWkvOfS/o0TtY7Buf9i5o+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Igor Raits <igor@gooddata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 788/826] net/9p/usbg: fix handling of the failed kzalloc() memory allocation
-Date: Tue,  3 Dec 2024 15:48:35 +0100
-Message-ID: <20241203144814.499396037@linuxfoundation.org>
+Subject: [PATCH 6.12 790/826] Revert "nfs: dont reuse partially completed requests in nfs_lock_and_join_requests"
+Date: Tue,  3 Dec 2024 15:48:37 +0100
+Message-ID: <20241203144814.578185616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -72,50 +66,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit ff1060813d9347e8c45c8b8cff93a4dfdb6726ad ]
+[ Upstream commit 66f9dac9077c9c063552e465212abeb8f97d28a7 ]
 
-On the linux-next, next-20241108 vanilla kernel, the coccinelle tool gave the
-following error report:
+This reverts commit b571cfcb9dcac187c6d967987792d37cb0688610.
 
-./net/9p/trans_usbg.c:912:5-11: ERROR: allocation function on line 911 returns
-NULL not ERR_PTR on failure
+This patch appears to assume that if one request is complete, then the
+others will complete too before unlocking. That is not a valid
+assumption, since other requests could hit a non-fatal error or a short
+write that would cause them not to complete.
 
-kzalloc() failure is fixed to handle the NULL return case on the memory exhaustion.
-
-Fixes: a3be076dc174d ("net/9p/usbg: Add new usb gadget function transport")
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>
-Cc: Latchesar Ionkov <lucho@ionkov.net>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: v9fs@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Message-ID: <20241109211840.721226-2-mtodorovac69@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Reported-by: Igor Raits <igor@gooddata.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219508
+Fixes: b571cfcb9dca ("nfs: don't reuse partially completed requests in nfs_lock_and_join_requests")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_usbg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/write.c | 49 +++++++++++++++++++++++++++++--------------------
+ 1 file changed, 29 insertions(+), 20 deletions(-)
 
-diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
-index 975b76839dca1..6b694f117aef2 100644
---- a/net/9p/trans_usbg.c
-+++ b/net/9p/trans_usbg.c
-@@ -909,9 +909,9 @@ static struct usb_function_instance *usb9pfs_alloc_instance(void)
- 	usb9pfs_opts->buflen = DEFAULT_BUFLEN;
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index ead2dc55952db..82ae2b85d393c 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -144,6 +144,31 @@ static void nfs_io_completion_put(struct nfs_io_completion *ioc)
+ 		kref_put(&ioc->refcount, nfs_io_completion_release);
+ }
  
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (IS_ERR(dev)) {
-+	if (!dev) {
- 		kfree(usb9pfs_opts);
--		return ERR_CAST(dev);
-+		return ERR_PTR(-ENOMEM);
++static void
++nfs_page_set_inode_ref(struct nfs_page *req, struct inode *inode)
++{
++	if (!test_and_set_bit(PG_INODE_REF, &req->wb_flags)) {
++		kref_get(&req->wb_kref);
++		atomic_long_inc(&NFS_I(inode)->nrequests);
++	}
++}
++
++static int
++nfs_cancel_remove_inode(struct nfs_page *req, struct inode *inode)
++{
++	int ret;
++
++	if (!test_bit(PG_REMOVE, &req->wb_flags))
++		return 0;
++	ret = nfs_page_group_lock(req);
++	if (ret)
++		return ret;
++	if (test_and_clear_bit(PG_REMOVE, &req->wb_flags))
++		nfs_page_set_inode_ref(req, inode);
++	nfs_page_group_unlock(req);
++	return 0;
++}
++
+ /**
+  * nfs_folio_find_head_request - find head request associated with a folio
+  * @folio: pointer to folio
+@@ -540,7 +565,6 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
+ 	struct inode *inode = folio->mapping->host;
+ 	struct nfs_page *head, *subreq;
+ 	struct nfs_commit_info cinfo;
+-	bool removed;
+ 	int ret;
+ 
+ 	/*
+@@ -565,18 +589,18 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
+ 		goto retry;
  	}
  
- 	usb9pfs_opts->dev = dev;
+-	ret = nfs_page_group_lock(head);
++	ret = nfs_cancel_remove_inode(head, inode);
+ 	if (ret < 0)
+ 		goto out_unlock;
+ 
+-	removed = test_bit(PG_REMOVE, &head->wb_flags);
++	ret = nfs_page_group_lock(head);
++	if (ret < 0)
++		goto out_unlock;
+ 
+ 	/* lock each request in the page group */
+ 	for (subreq = head->wb_this_page;
+ 	     subreq != head;
+ 	     subreq = subreq->wb_this_page) {
+-		if (test_bit(PG_REMOVE, &subreq->wb_flags))
+-			removed = true;
+ 		ret = nfs_page_group_lock_subreq(head, subreq);
+ 		if (ret < 0)
+ 			goto out_unlock;
+@@ -584,21 +608,6 @@ static struct nfs_page *nfs_lock_and_join_requests(struct folio *folio)
+ 
+ 	nfs_page_group_unlock(head);
+ 
+-	/*
+-	 * If PG_REMOVE is set on any request, I/O on that request has
+-	 * completed, but some requests were still under I/O at the time
+-	 * we locked the head request.
+-	 *
+-	 * In that case the above wait for all requests means that all I/O
+-	 * has now finished, and we can restart from a clean slate.  Let the
+-	 * old requests go away and start from scratch instead.
+-	 */
+-	if (removed) {
+-		nfs_unroll_locks(head, head);
+-		nfs_unlock_and_release_request(head);
+-		goto retry;
+-	}
+-
+ 	nfs_init_cinfo_from_inode(&cinfo, inode);
+ 	nfs_join_page_group(head, &cinfo, inode);
+ 	return head;
 -- 
 2.43.0
 
