@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-96488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3CA9E2999
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:42:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6069E2980
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:39:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B547B243D0
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:54:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFD3AB2E9A9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA291F7551;
-	Tue,  3 Dec 2024 14:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4DB1F7585;
+	Tue,  3 Dec 2024 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mu4KSEBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aodkao23"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6331F7065;
-	Tue,  3 Dec 2024 14:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DC51F757D;
+	Tue,  3 Dec 2024 14:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237663; cv=none; b=DbFzckNi4Bp+EiBQSLPd+fheV4cveeT+FrUqgjhx7BRHduk8guqGUz7xYcGhiar9/2dIuQ1B1s4CMrBVgiUh/dr1yz6h+ggTJP08dnJKVJbXYgp0Oo7qSFqUphUh5wmZ7KCxkrP3mHOKXChE8IMyEzotukhC39r0GioYIMEUqsU=
+	t=1733237572; cv=none; b=AFnl1M5f4NTNZ4ej3stR0SoDq51teAe94oa1iB/g882LdVVekWetDENyNzRLxuvV1h+OdsbJQrTMg3LYkMfFAWoOHRHQYbt97pXDfG6a/BvXjoGyPzKGaSVbFM9WrWO0PPN6IrWToySTiHn2F1LZOun9Qwk2AA1ZXy82TfZO+GA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237663; c=relaxed/simple;
-	bh=cE/AvZSQTdZPK4+CYb7hGOzKyRaPT5j8li/aZjl7VCU=;
+	s=arc-20240116; t=1733237572; c=relaxed/simple;
+	bh=m0vIrncE88i1VZ+5cw9rFpyTi8yYbpAgF9Kq78XjQbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhmKnbIF9tL9F/KHrhHqa4jvHGixzev0bansejbaX6SsOU7Db18jusj2oceA5vb23igAYYTT6aUvEO4oJKAG5goUdnwyuWXKLJ6YASw/bPuJXCUGIk477WywtfSviG0ftzpHpBgOHq0bxXwqgDQ0uJvEJDmPYi0E0tlE4qNGAEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mu4KSEBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65521C4CECF;
-	Tue,  3 Dec 2024 14:54:22 +0000 (UTC)
+	 MIME-Version; b=mQ7YAMfeuCdmsbbpIRT/9K2c5iVyUcYc58xyHE5uN3NDwjNK5dMSthcllPd/PnBlW1n1mQOIheLjYJJXL/7vguEG0ANSaH1aaQnsl2RlsLYG+l/4mZKKnYDlCJUi9btnBbr8wEievp9M+hO+OottEaTlaJ1z8OW84Z0zgAQo1S8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aodkao23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB750C4CECF;
+	Tue,  3 Dec 2024 14:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237662;
-	bh=cE/AvZSQTdZPK4+CYb7hGOzKyRaPT5j8li/aZjl7VCU=;
+	s=korg; t=1733237572;
+	bh=m0vIrncE88i1VZ+5cw9rFpyTi8yYbpAgF9Kq78XjQbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mu4KSEBUPKwWPnD5VXFJwNj/ilCldT+s0RSHSOGtEBu/z6Gwuij0+Kk0gXJRy2r4z
-	 +N5xOF1AvJOYhDRl2uBes5wh/paCENiGlasrQOAwsP3QB2JoCOwjTW/OGzX5bRk84r
-	 yfZIgSLfUFoJUeEA1mYdwaXpwVwB7V2WsM90WRw8=
+	b=aodkao23r4smNhvNqCWHomf/JfE+t7i8AIpxa5k1ikakcQtGfSZKUhtZH4TTJuAMU
+	 CfPu1BdKV2K3OkqGL6FKQb1+fSS289I053jXUAcE80ht5j+r7KsJRvYeKa8alCFKGX
+	 7FT3qtZES9nz8N4G7uHhrH8USuQLDt/PxujL28mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 005/817] spi: stm32: fix missing device mode capability in stm32mp25
-Date: Tue,  3 Dec 2024 15:32:57 +0100
-Message-ID: <20241203143955.833261521@linuxfoundation.org>
+Subject: [PATCH 6.11 010/817] wifi: iwlwifi: mvm: Use the sync timepoint API in suspend
+Date: Tue,  3 Dec 2024 15:33:02 +0100
+Message-ID: <20241203143956.034362333@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -66,34 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit b5a468199b995bd8ee3c26f169a416a181210c9e ]
+[ Upstream commit 9715246ca0bfc9feaec1b4ff5b3d38de65a7025d ]
 
-The STM32MP25 SOC has capability to behave in device mode however
-missing .has_device_mode within its stm32mp25_spi_cfg structure leads
-to not being able to enable the device mode.
+When starting the suspend flow, HOST_D3_START triggers an _async_
+firmware dump collection for debugging purposes. The async worker
+may race with suspend flow and fail to get NIC access, resulting in
+the following warning:
+"Timeout waiting for hardware access (CSR_GP_CNTRL 0xffffffff)"
 
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Link: https://patch.msgid.link/20241009-spi-mp25-device-fix-v1-1-8e5ca7db7838@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix this by switching to the sync version to ensure the dump
+completes before proceeding with the suspend flow, avoiding
+potential race issues.
+
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241010140328.9aae318cd593.I4b322009f39489c0b1d8893495c887870f73ed9c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/fw/init.c | 4 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c  | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
-index 4c4ff074e3f6f..fc72a89fb3a7b 100644
---- a/drivers/spi/spi-stm32.c
-+++ b/drivers/spi/spi-stm32.c
-@@ -2044,6 +2044,7 @@ static const struct stm32_spi_cfg stm32mp25_spi_cfg = {
- 	.baud_rate_div_max = STM32H7_SPI_MBR_DIV_MAX,
- 	.has_fifo = true,
- 	.prevent_dma_burst = true,
-+	.has_device_mode = true,
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/init.c b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+index d8b083be5b6b5..de87e0e3e0725 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/init.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+@@ -39,10 +39,12 @@ void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_runtime_init);
  
- static const struct of_device_id stm32_spi_of_match[] = {
++/* Assumes the appropriate lock is held by the caller */
+ void iwl_fw_runtime_suspend(struct iwl_fw_runtime *fwrt)
+ {
+ 	iwl_fw_suspend_timestamp(fwrt);
+-	iwl_dbg_tlv_time_point(fwrt, IWL_FW_INI_TIME_POINT_HOST_D3_START, NULL);
++	iwl_dbg_tlv_time_point_sync(fwrt, IWL_FW_INI_TIME_POINT_HOST_D3_START,
++				    NULL);
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_runtime_suspend);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 99a541d442bb1..f4f87edb86e5c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -1398,7 +1398,9 @@ int iwl_mvm_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wowlan)
+ 
+ 	iwl_mvm_pause_tcm(mvm, true);
+ 
++	mutex_lock(&mvm->mutex);
+ 	iwl_fw_runtime_suspend(&mvm->fwrt);
++	mutex_unlock(&mvm->mutex);
+ 
+ 	return __iwl_mvm_suspend(hw, wowlan, false);
+ }
 -- 
 2.43.0
 
