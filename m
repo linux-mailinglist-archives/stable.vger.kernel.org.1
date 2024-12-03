@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38399E228F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04C69E2510
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:56:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 763021633EE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A53F1288366
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CBA81F75BC;
-	Tue,  3 Dec 2024 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228B21DE8A5;
+	Tue,  3 Dec 2024 15:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5By8HVV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEZrLwtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F37A1F707A;
-	Tue,  3 Dec 2024 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B021AB6C9;
+	Tue,  3 Dec 2024 15:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239274; cv=none; b=EMIztT0ZJlHB/i/yKrSa4zdRVEQJMk5lmFqurg1YlR9HQu6hoyPk4xzriuyhvIEHfDFVf2qhMBTqcMM9cd2AlDVEEHh2ip0o+zlFVpYtpOiXpfXkSTZqQZ3/w4bnA/8vXC1bhujswFGaI2TbHpXarYA2flqPa4eOP7VXN71EvOo=
+	t=1733241385; cv=none; b=DZg6C2ku4gqnipYyEusH2csQ7/0wwI1Zmd2T2eGuTDPpQ8VAcZ4pD/oKEy1MSXHHZReGY9R11SFi7cVrv+sJavbHnKhpUCEfMKSxCKNshDhrdebHayJ/Qzt+x765afNfEEqL+nB0kj0SmQGgh+7YDFpv0afzGb0zMEynyIZD0lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239274; c=relaxed/simple;
-	bh=cBMWcoYm3YCSk5VIA4j99ydugbJM1IhOXqaazW3/gDQ=;
+	s=arc-20240116; t=1733241385; c=relaxed/simple;
+	bh=J8JllLVVJKA0eHIWAGthMypUMFsasO8NpGZAgtZz+lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvcwtkhxEUM17JgO3M/nH5j9iElbovHAC0gYMUCO+SmjLTpeMkFRpM9xFa0aGEQyMNtanFhw9r77by8I3wsS/6iSvsiWAl0Qe+T5pKN7O4/flfTtGOelC5Vp4eiDN7AoelBqfkioMWQwZ6tQvYMWvOBrgI2PzGSXWppz+CpTy+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5By8HVV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7350C4CECF;
-	Tue,  3 Dec 2024 15:21:13 +0000 (UTC)
+	 MIME-Version; b=a6yqIfrhl5IjoKJo8XNlH4NX8VWljmtcRW+g5GTcX+PCgR6Md4piAUB4ZktGykn0EDgEEHW1Zha/3XJVChSwX6B3kP1PyL/K0sZ9ZEOTnywzHLoGx6ptpYm9HoLsL2zC+wcUgviNkY+MVhTIKpgLCmtfkfWpZTuhG2+aKvmrQTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEZrLwtU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D5EC4CECF;
+	Tue,  3 Dec 2024 15:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239274;
-	bh=cBMWcoYm3YCSk5VIA4j99ydugbJM1IhOXqaazW3/gDQ=;
+	s=korg; t=1733241385;
+	bh=J8JllLVVJKA0eHIWAGthMypUMFsasO8NpGZAgtZz+lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5By8HVV9zIDEJh2sZ6ZRbUgUqYlJTjEp7u6RE2h10/MmzlmdT7HmQnRkAagNFdtJ
-	 q5KpelFg73Obj4WGKM+S3ZXzXwHY1rgfDQ1qyVa/pPLpES5qf3kJwl96/gF1T0OTws
-	 6qjXpZOvRDgb6q3jpcONFZ/i02pjAtvEkLw27nNM=
+	b=VEZrLwtU5sU47rk1uhMH8AHuwX0EmfVg6xz2CN2KKycouU4BfR8c7o9EjhbvANQAw
+	 +2SS9N5+4wcUmv5c63kbLbEkYztJzAgaoN3U04Vi8UGE0399xNwo78MgRGg2dggAMH
+	 OLX2HUaI9Kf7N5BDWz4xhMYPgnw1689sqMyQOBQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avihai Horon <avihaih@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Vincent Chen <vincent.chen@sifive.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 558/817] vfio/pci: Properly hide first-in-list PCIe extended capability
+Subject: [PATCH 6.12 403/826] RISC-V: KVM: Fix APLIC in_clrip and clripnum write emulation
 Date: Tue,  3 Dec 2024 15:42:10 +0100
-Message-ID: <20241203144017.692120854@linuxfoundation.org>
+Message-ID: <20241203144759.481767092@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-[ Upstream commit fe4bf8d0b6716a423b16495d55b35d3fe515905d ]
+[ Upstream commit 60821fb4dd7345e5662094accf0a52845306de8c ]
 
-There are cases where a PCIe extended capability should be hidden from
-the user. For example, an unknown capability (i.e., capability with ID
-greater than PCI_EXT_CAP_ID_MAX) or a capability that is intentionally
-chosen to be hidden from the user.
+In the section "4.7 Precise effects on interrupt-pending bits"
+of the RISC-V AIA specification defines that:
 
-Hiding a capability is done by virtualizing and modifying the 'Next
-Capability Offset' field of the previous capability so it points to the
-capability after the one that should be hidden.
+"If the source mode is Level1 or Level0 and the interrupt domain
+is configured in MSI delivery mode (domaincfg.DM = 1):
+The pending bit is cleared whenever the rectified input value is
+low, when the interrupt is forwarded by MSI, or by a relevant
+write to an in_clrip register or to clripnum."
 
-The special case where the first capability in the list should be hidden
-is handled differently because there is no previous capability that can
-be modified. In this case, the capability ID and version are zeroed
-while leaving the next pointer intact. This hides the capability and
-leaves an anchor for the rest of the capability list.
+Update the aplic_write_pending() to match the spec.
 
-However, today, hiding the first capability in the list is not done
-properly if the capability is unknown, as struct
-vfio_pci_core_device->pci_config_map is set to the capability ID during
-initialization but the capability ID is not properly checked later when
-used in vfio_config_do_rw(). This leads to the following warning [1] and
-to an out-of-bounds access to ecap_perms array.
-
-Fix it by checking cap_id in vfio_config_do_rw(), and if it is greater
-than PCI_EXT_CAP_ID_MAX, use an alternative struct perm_bits for direct
-read only access instead of the ecap_perms array.
-
-Note that this is safe since the above is the only case where cap_id can
-exceed PCI_EXT_CAP_ID_MAX (except for the special capabilities, which
-are already checked before).
-
-[1]
-
-WARNING: CPU: 118 PID: 5329 at drivers/vfio/pci/vfio_pci_config.c:1900 vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
-CPU: 118 UID: 0 PID: 5329 Comm: simx-qemu-syste Not tainted 6.12.0+ #1
-(snip)
-Call Trace:
- <TASK>
- ? show_regs+0x69/0x80
- ? __warn+0x8d/0x140
- ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
- ? report_bug+0x18f/0x1a0
- ? handle_bug+0x63/0xa0
- ? exc_invalid_op+0x19/0x70
- ? asm_exc_invalid_op+0x1b/0x20
- ? vfio_pci_config_rw+0x395/0x430 [vfio_pci_core]
- ? vfio_pci_config_rw+0x244/0x430 [vfio_pci_core]
- vfio_pci_rw+0x101/0x1b0 [vfio_pci_core]
- vfio_pci_core_read+0x1d/0x30 [vfio_pci_core]
- vfio_device_fops_read+0x27/0x40 [vfio]
- vfs_read+0xbd/0x340
- ? vfio_device_fops_unl_ioctl+0xbb/0x740 [vfio]
- ? __rseq_handle_notify_resume+0xa4/0x4b0
- __x64_sys_pread64+0x96/0xc0
- x64_sys_call+0x1c3d/0x20d0
- do_syscall_64+0x4d/0x120
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Tested-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20241124142739.21698-1-avihaih@nvidia.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: d8dd9f113e16 ("RISC-V: KVM: Fix APLIC setipnum_le/be write emulation")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Vincent Chen <vincent.chen@sifive.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://lore.kernel.org/r/20241029085542.30541-1-yongxuan.wang@sifive.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_config.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ arch/riscv/kvm/aia_aplic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
-index 97422aafaa7b5..ea2745c1ac5e6 100644
---- a/drivers/vfio/pci/vfio_pci_config.c
-+++ b/drivers/vfio/pci/vfio_pci_config.c
-@@ -313,6 +313,10 @@ static int vfio_virt_config_read(struct vfio_pci_core_device *vdev, int pos,
- 	return count;
- }
+diff --git a/arch/riscv/kvm/aia_aplic.c b/arch/riscv/kvm/aia_aplic.c
+index da6ff1bade0df..f59d1c0c8c43a 100644
+--- a/arch/riscv/kvm/aia_aplic.c
++++ b/arch/riscv/kvm/aia_aplic.c
+@@ -143,7 +143,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
+ 	if (sm == APLIC_SOURCECFG_SM_LEVEL_HIGH ||
+ 	    sm == APLIC_SOURCECFG_SM_LEVEL_LOW) {
+ 		if (!pending)
+-			goto skip_write_pending;
++			goto noskip_write_pending;
+ 		if ((irqd->state & APLIC_IRQ_STATE_INPUT) &&
+ 		    sm == APLIC_SOURCECFG_SM_LEVEL_LOW)
+ 			goto skip_write_pending;
+@@ -152,6 +152,7 @@ static void aplic_write_pending(struct aplic *aplic, u32 irq, bool pending)
+ 			goto skip_write_pending;
+ 	}
  
-+static struct perm_bits direct_ro_perms = {
-+	.readfn = vfio_direct_config_read,
-+};
-+
- /* Default capability regions to read-only, no-virtualization */
- static struct perm_bits cap_perms[PCI_CAP_ID_MAX + 1] = {
- 	[0 ... PCI_CAP_ID_MAX] = { .readfn = vfio_direct_config_read }
-@@ -1897,9 +1901,17 @@ static ssize_t vfio_config_do_rw(struct vfio_pci_core_device *vdev, char __user
- 		cap_start = *ppos;
- 	} else {
- 		if (*ppos >= PCI_CFG_SPACE_SIZE) {
--			WARN_ON(cap_id > PCI_EXT_CAP_ID_MAX);
-+			/*
-+			 * We can get a cap_id that exceeds PCI_EXT_CAP_ID_MAX
-+			 * if we're hiding an unknown capability at the start
-+			 * of the extended capability list.  Use default, ro
-+			 * access, which will virtualize the id and next values.
-+			 */
-+			if (cap_id > PCI_EXT_CAP_ID_MAX)
-+				perm = &direct_ro_perms;
-+			else
-+				perm = &ecap_perms[cap_id];
- 
--			perm = &ecap_perms[cap_id];
- 			cap_start = vfio_find_cap_start(vdev, *ppos);
- 		} else {
- 			WARN_ON(cap_id > PCI_CAP_ID_MAX);
++noskip_write_pending:
+ 	if (pending)
+ 		irqd->state |= APLIC_IRQ_STATE_PENDING;
+ 	else
 -- 
 2.43.0
 
