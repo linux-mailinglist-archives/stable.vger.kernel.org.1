@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-97491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B947C9E24BF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F25609E23E5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:44:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78F91651F3
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9310BA21BC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A661F891C;
-	Tue,  3 Dec 2024 15:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9991F8AED;
+	Tue,  3 Dec 2024 15:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxy+AbQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYctji09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB24E1F8909;
-	Tue,  3 Dec 2024 15:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E5F1F75B3;
+	Tue,  3 Dec 2024 15:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240693; cv=none; b=dLBXgYeyZK6KJfG1Akkk2fxl6CVJjGF4n9BjU4JPdPDPk8b2I5b6d1hXQAqSXndm/gz6ILL7pmxBwfsU9wjCJUu9098jTJr7jF6k5WoagtWyNVsKs8Ln/kb25m1ugutyAeqYVm74COlROdpFmKsMqXIisntECDsAsmrHz6uasko=
+	t=1733238597; cv=none; b=Yidfk8pbMk0F4JS83BfWIqj4AHFxrEY7v5z2ZN6aRC1vvIjhx6ld883oKieu5A3n4Y/uHsCbEc5OO+HogGA12F4r9f/tt37MhoIBrNQPXoRFVsL511CWzM9E8iQAlpKrhkbJt4iMh3+Wdjdj/t6eCIyDSGDgoPjan8swVc0yhZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240693; c=relaxed/simple;
-	bh=idLx6VznlGyNI1fGaXM+Gi77YsPLVfOq1IQFSxoZbYo=;
+	s=arc-20240116; t=1733238597; c=relaxed/simple;
+	bh=g3fs/sGJxCYeuWFBmT0lei6/+yRheIxl36sTxJ6Qtoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJb6kbsmJtutMlur3WlvTbt2Vtb01teaEB754yN1mGgktBPexCPpQe1yFSoG6KDbJRdswOUMMKaqsI26ChDcwZ1QOIA9NbMERXjnkW2SjjkW5i83FLDs716oPbIF24IpWVqFMVyxlE93SGCBbQSlCWV9329UCn0F4XUQlMTZ/3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxy+AbQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1501DC4CECF;
-	Tue,  3 Dec 2024 15:44:51 +0000 (UTC)
+	 MIME-Version; b=jW5nzF8plzEouY6KA8M/4NdXpbg7nT7aAesb90gqp6w6/5U8pU5tDLh5Ow6+eFIHwce/s1CMZ7BirGL2px42PJvsW5E5vfDRam7MUAdmV7Q0uCaYMEfpuOh3DJsFAPjp57eiZH/vhpB33/j0Bd7QVmp0BCb1SfGFWRlMDgaofmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYctji09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEF2C4CECF;
+	Tue,  3 Dec 2024 15:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240692;
-	bh=idLx6VznlGyNI1fGaXM+Gi77YsPLVfOq1IQFSxoZbYo=;
+	s=korg; t=1733238597;
+	bh=g3fs/sGJxCYeuWFBmT0lei6/+yRheIxl36sTxJ6Qtoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxy+AbQ2pCLBu0DxE/ef8m6fsHewmqWf2wLtrKeuo4qhUTLXKQgNBdQq3K2QCYf4L
-	 6jCnEaOEcktt+Rc515Pp0etbynrT9bQumLmq26mVYkPUze8T1c6l2kiUdiwOU5MplI
-	 NyKUThEfa6HSZKQjYEWHp9VmieKCB7fLwyjPZHTg=
+	b=DYctji095ELsTIJYRnAC4Jqk1CJafPtYWTniL4VJRgMMvpL2ZrC/MPT+//DzzsVyl
+	 KuynC4B7CWAi++fghUSYPEx2Lq7Y1m3l/WAmQfyIdCrSnT78RulRgrc0bd9s0f3bb9
+	 +CAR7zGNNKlDySS4ZV/Sz256xehOew+vJmdbPA6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 177/826] HID: hyperv: streamline driver probe to avoid devres issues
+Subject: [PATCH 6.11 332/817] bpf, sockmap: Several fixes to bpf_msg_pop_data
 Date: Tue,  3 Dec 2024 15:38:24 +0100
-Message-ID: <20241203144750.642272591@linuxfoundation.org>
+Message-ID: <20241203144008.778179367@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,184 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 66ef47faa90d838cda131fe1f7776456cc3b59f2 ]
+[ Upstream commit 5d609ba262475db450ba69b8e8a557bd768ac07a ]
 
-It was found that unloading 'hid_hyperv' module results in a devres
-complaint:
+Several fixes to bpf_msg_pop_data,
+1. In sk_msg_shift_left, we should put_page
+2. if (len == 0), return early is better
+3. pop the entire sk_msg (last == msg->sg.size) should be supported
+4. Fix for the value of variable "a"
+5. In sk_msg_shift_left, after shifting, i has already pointed to the next
+element. Addtional sk_msg_iter_var_next may result in BUG.
 
- ...
- hv_vmbus: unregistering driver hid_hyperv
- ------------[ cut here ]------------
- WARNING: CPU: 2 PID: 3983 at drivers/base/devres.c:691 devres_release_group+0x1f2/0x2c0
- ...
- Call Trace:
-  <TASK>
-  ? devres_release_group+0x1f2/0x2c0
-  ? __warn+0xd1/0x1c0
-  ? devres_release_group+0x1f2/0x2c0
-  ? report_bug+0x32a/0x3c0
-  ? handle_bug+0x53/0xa0
-  ? exc_invalid_op+0x18/0x50
-  ? asm_exc_invalid_op+0x1a/0x20
-  ? devres_release_group+0x1f2/0x2c0
-  ? devres_release_group+0x90/0x2c0
-  ? rcu_is_watching+0x15/0xb0
-  ? __pfx_devres_release_group+0x10/0x10
-  hid_device_remove+0xf5/0x220
-  device_release_driver_internal+0x371/0x540
-  ? klist_put+0xf3/0x170
-  bus_remove_device+0x1f1/0x3f0
-  device_del+0x33f/0x8c0
-  ? __pfx_device_del+0x10/0x10
-  ? cleanup_srcu_struct+0x337/0x500
-  hid_destroy_device+0xc8/0x130
-  mousevsc_remove+0xd2/0x1d0 [hid_hyperv]
-  device_release_driver_internal+0x371/0x540
-  driver_detach+0xc5/0x180
-  bus_remove_driver+0x11e/0x2a0
-  ? __mutex_unlock_slowpath+0x160/0x5e0
-  vmbus_driver_unregister+0x62/0x2b0 [hv_vmbus]
-  ...
-
-And the issue seems to be that the corresponding devres group is not
-allocated. Normally, devres_open_group() is called from
-__hid_device_probe() but Hyper-V HID driver overrides 'hid_dev->driver'
-with 'mousevsc_hid_driver' stub and basically re-implements
-__hid_device_probe() by calling hid_parse() and hid_hw_start() but not
-devres_open_group(). hid_device_probe() does not call __hid_device_probe()
-for it. Later, when the driver is removed, hid_device_remove() calls
-devres_release_group() as it doesn't check whether hdev->driver was
-initially overridden or not.
-
-The issue seems to be related to the commit 62c68e7cee33 ("HID: ensure
-timely release of driver-allocated resources") but the commit itself seems
-to be correct.
-
-Fix the issue by dropping the 'hid_dev->driver' override and using
-hid_register_driver()/hid_unregister_driver() instead. Alternatively, it
-would have been possible to rely on the default handling but
-HID_CONNECT_DEFAULT implies HID_CONNECT_HIDRAW and it doesn't seem to work
-for mousevsc as-is.
-
-Fixes: 62c68e7cee33 ("HID: ensure timely release of driver-allocated resources")
-Suggested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20241106222520.527076-8-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-hyperv.c | 58 ++++++++++++++++++++++++++++------------
- 1 file changed, 41 insertions(+), 17 deletions(-)
+ net/core/filter.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-hyperv.c b/drivers/hid/hid-hyperv.c
-index f33485d83d24f..0fb210e40a412 100644
---- a/drivers/hid/hid-hyperv.c
-+++ b/drivers/hid/hid-hyperv.c
-@@ -422,6 +422,25 @@ static int mousevsc_hid_raw_request(struct hid_device *hid,
- 	return 0;
- }
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b7597f8d4159c..3c136631fda89 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2920,8 +2920,10 @@ static const struct bpf_func_proto bpf_msg_push_data_proto = {
  
-+static int mousevsc_hid_probe(struct hid_device *hid_dev, const struct hid_device_id *id)
-+{
-+	int ret;
-+
-+	ret = hid_parse(hid_dev);
-+	if (ret) {
-+		hid_err(hid_dev, "parse failed\n");
-+		return ret;
-+	}
-+
-+	ret = hid_hw_start(hid_dev, HID_CONNECT_HIDINPUT | HID_CONNECT_HIDDEV);
-+	if (ret) {
-+		hid_err(hid_dev, "hw start failed\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct hid_ll_driver mousevsc_ll_driver = {
- 	.parse = mousevsc_hid_parse,
- 	.open = mousevsc_hid_open,
-@@ -431,7 +450,16 @@ static const struct hid_ll_driver mousevsc_ll_driver = {
- 	.raw_request = mousevsc_hid_raw_request,
- };
+ static void sk_msg_shift_left(struct sk_msg *msg, int i)
+ {
++	struct scatterlist *sge = sk_msg_elem(msg, i);
+ 	int prev;
  
--static struct hid_driver mousevsc_hid_driver;
-+static const struct hid_device_id mousevsc_devices[] = {
-+	{ HID_DEVICE(BUS_VIRTUAL, HID_GROUP_ANY, 0x045E, 0x0621) },
-+	{ }
-+};
-+
-+static struct hid_driver mousevsc_hid_driver = {
-+	.name = "hid-hyperv",
-+	.id_table = mousevsc_devices,
-+	.probe = mousevsc_hid_probe,
-+};
++	put_page(sg_page(sge));
+ 	do {
+ 		prev = i;
+ 		sk_msg_iter_var_next(i);
+@@ -2958,6 +2960,9 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 	if (unlikely(flags))
+ 		return -EINVAL;
  
- static int mousevsc_probe(struct hv_device *device,
- 			const struct hv_vmbus_device_id *dev_id)
-@@ -473,7 +501,6 @@ static int mousevsc_probe(struct hv_device *device,
++	if (unlikely(len == 0))
++		return 0;
++
+ 	/* First find the starting scatterlist element */
+ 	i = msg->sg.start;
+ 	do {
+@@ -2970,7 +2975,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 	} while (i != msg->sg.end);
+ 
+ 	/* Bounds checks: start and pop must be inside message */
+-	if (start >= offset + l || last >= msg->sg.size)
++	if (start >= offset + l || last > msg->sg.size)
+ 		return -EINVAL;
+ 
+ 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
+@@ -2999,12 +3004,12 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 	 */
+ 	if (start != offset) {
+ 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
+-		int a = start;
++		int a = start - offset;
+ 		int b = sge->length - pop - a;
+ 
+ 		sk_msg_iter_var_next(i);
+ 
+-		if (pop < sge->length - a) {
++		if (b > 0) {
+ 			if (space) {
+ 				sge->length = a;
+ 				sk_msg_shift_right(msg, i);
+@@ -3023,7 +3028,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				if (unlikely(!page))
+ 					return -ENOMEM;
+ 
+-				sge->length = a;
+ 				orig = sg_page(sge);
+ 				from = sg_virt(sge);
+ 				to = page_address(page);
+@@ -3033,7 +3037,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 				put_page(orig);
+ 			}
+ 			pop = 0;
+-		} else if (pop >= sge->length - a) {
++		} else {
+ 			pop -= (sge->length - a);
+ 			sge->length = a;
+ 		}
+@@ -3067,7 +3071,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
+ 			pop -= sge->length;
+ 			sk_msg_shift_left(msg, i);
+ 		}
+-		sk_msg_iter_var_next(i);
  	}
  
- 	hid_dev->ll_driver = &mousevsc_ll_driver;
--	hid_dev->driver = &mousevsc_hid_driver;
- 	hid_dev->bus = BUS_VIRTUAL;
- 	hid_dev->vendor = input_dev->hid_dev_info.vendor;
- 	hid_dev->product = input_dev->hid_dev_info.product;
-@@ -488,20 +515,6 @@ static int mousevsc_probe(struct hv_device *device,
- 	if (ret)
- 		goto probe_err2;
- 
--
--	ret = hid_parse(hid_dev);
--	if (ret) {
--		hid_err(hid_dev, "parse failed\n");
--		goto probe_err2;
--	}
--
--	ret = hid_hw_start(hid_dev, HID_CONNECT_HIDINPUT | HID_CONNECT_HIDDEV);
--
--	if (ret) {
--		hid_err(hid_dev, "hw start failed\n");
--		goto probe_err2;
--	}
--
- 	device_init_wakeup(&device->device, true);
- 
- 	input_dev->connected = true;
-@@ -579,12 +592,23 @@ static struct  hv_driver mousevsc_drv = {
- 
- static int __init mousevsc_init(void)
- {
--	return vmbus_driver_register(&mousevsc_drv);
-+	int ret;
-+
-+	ret = hid_register_driver(&mousevsc_hid_driver);
-+	if (ret)
-+		return ret;
-+
-+	ret = vmbus_driver_register(&mousevsc_drv);
-+	if (ret)
-+		hid_unregister_driver(&mousevsc_hid_driver);
-+
-+	return ret;
- }
- 
- static void __exit mousevsc_exit(void)
- {
- 	vmbus_driver_unregister(&mousevsc_drv);
-+	hid_unregister_driver(&mousevsc_hid_driver);
- }
- 
- MODULE_LICENSE("GPL");
+ 	sk_mem_uncharge(msg->sk, len - pop);
 -- 
 2.43.0
 
