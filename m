@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326189E2A6C
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:08:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A701F9E2AAF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 490A5B38805
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:25:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDC8EB3D4A8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14FE1F7547;
-	Tue,  3 Dec 2024 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762CC1F76CD;
+	Tue,  3 Dec 2024 15:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTtdG3a/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UicNByDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B581F472A;
-	Tue,  3 Dec 2024 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330F71F76AC;
+	Tue,  3 Dec 2024 15:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239510; cv=none; b=rSZ30rB4uzIzF0kyTrygp47Lx/6hSKiaioKrJcA58wwLlyNitfDPEmRC2AUFA1PTmbWz52X4U2gHCdS30YqynC6GWzRL1dxlvbDdDPFLSgD0+/1BN7aOe/zr7AHP0oKhHzbG2K/QLhivZww+JIesMQqmx5jiymCnNHWgubAHGLc=
+	t=1733241572; cv=none; b=r/KpoTBRG7xKWsmklZDHx4rZYkOnrdzPtHKbVLxatwOgctguEJm2zL4cyhNahLMb0MA6FGEPeL060KtC2/UCnCLrt2Z67b8Q+EEehEsOAgnfkgh5WE/r9E+GbdPHzNsb1WEY8juPktkYX8BfpUtjReQziUTgnx9HqqE8Z7dg2gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239510; c=relaxed/simple;
-	bh=eGciI+ZMTTs+2HA7z+tD0sFJeyLmLtwP7vWWyyURaR8=;
+	s=arc-20240116; t=1733241572; c=relaxed/simple;
+	bh=E/KODC6UUTbsEb7XlyyMp9ItEy6++eekQ58uWYWcDCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvcCntVPdhi51qMMMiH4cKWnm6YTpKum97p29VIuCUV56P5Tf7TOwvcd9WNYb4n+s2jNnB4gS2t3F6R8N42Mwv8G1BuBZvIYTCoVjK6XQyJJlJjJNlTqYtLYqVejZvE+Rqkkw5hNt1WXEJ7ECphYAFOjMhQcgtFEt1HZxM+zmos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTtdG3a/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A1BC4CECF;
-	Tue,  3 Dec 2024 15:25:09 +0000 (UTC)
+	 MIME-Version; b=gig5u2S9AqEXAUP3g7KxEXszyzqUqNwfZxqyly04A8lf3M/nmH24Kvh2ZAvAdjZJIEdXaiUcWnHlI2ytHfVYypBsdmlz1eR/eCdZxP+OXEGT3Zc1nh614blQUQ4onKNONwoXwmEN5p7p/S1TjNPXax7gkhiPW/G4xw99/MYuSAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UicNByDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95428C4CECF;
+	Tue,  3 Dec 2024 15:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239510;
-	bh=eGciI+ZMTTs+2HA7z+tD0sFJeyLmLtwP7vWWyyURaR8=;
+	s=korg; t=1733241572;
+	bh=E/KODC6UUTbsEb7XlyyMp9ItEy6++eekQ58uWYWcDCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTtdG3a/ZYaWQKU7zyhOi+YDNsL4aRZY7qpB97ZZBtAKZ6Spml+N/nhqDWi/bsh4J
-	 bcuAVE/taRVvWO7lav6cHKhfVDYnY8aksXtHhSEyqmGzaFrOpYuOjWMMCV6uqaRCWC
-	 D5yx6xwP6j/0PHWYTUa9JKml9RQmMKuy/oxU/orw=
+	b=UicNByDixBrHE478dSTNuNW7dNZA1oLDGWkooYzovUQ9nN9/QDHML8qextHpVmLFI
+	 w1rh8YEof/GgLJUd0eOe9YUaPao+J7WtADTZ++sQ4rvljaT8iUflwd9R8eCEQiR8vL
+	 WmFVOXXTK/YCOAmN3xXvy6OsDlqsFfEJkf6eFCK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 611/817] usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
+Subject: [PATCH 6.12 456/826] zram: permit only one post-processing operation at a time
 Date: Tue,  3 Dec 2024 15:43:03 +0100
-Message-ID: <20241203144019.782907270@linuxfoundation.org>
+Message-ID: <20241203144801.545319356@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit e56aac6e5a25630645607b6856d4b2a17b2311a5 ]
+[ Upstream commit 58652f2b6d21f2874c9f060165ec7e03e8b1fc71 ]
 
-The "command" variable can be controlled by the user via debugfs.  The
-worry is that if con_index is zero then "&uc->ucsi->connector[con_index
-- 1]" would be an array underflow.
+Both recompress and writeback soon will unlock slots during processing,
+which makes things too complex wrt possible race-conditions.  We still
+want to clear PP_SLOT in slot_free, because this is how we figure out that
+slot that was selected for post-processing has been released under us and
+when we start post-processing we check if slot still has PP_SLOT set.  At
+the same time, theoretically, we can have something like this:
 
-Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/c69ef0b3-61b0-4dde-98dd-97b97f81d912@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU0			    CPU1
+
+recompress
+scan slots
+set PP_SLOT
+unlock slot
+			slot_free
+			clear PP_SLOT
+
+			allocate PP_SLOT
+			writeback
+			scan slots
+			set PP_SLOT
+			unlock slot
+select PP-slot
+test PP_SLOT
+
+So recompress will not detect that slot has been re-used and re-selected
+for concurrent writeback post-processing.
+
+Make sure that we only permit on post-processing operation at a time.  So
+now recompress and writeback post-processing don't race against each
+other, we only need to handle slot re-use (slot_free and write), which is
+handled individually by each pp operation.
+
+Having recompress and writeback competing for the same slots is not
+exactly good anyway (can't imagine anyone doing that).
+
+Link: https://lkml.kernel.org/r/20240917021020.883356-3-senozhatsky@chromium.org
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: f364cdeb3893 ("zram: fix NULL pointer in comp_algorithm_show()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_ccg.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ Documentation/admin-guide/blockdev/zram.rst |  2 ++
+ drivers/block/zram/zram_drv.c               | 16 ++++++++++++++++
+ drivers/block/zram/zram_drv.h               |  1 +
+ 3 files changed, 19 insertions(+)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
-index 763ff99f000d9..14c2dc9255b54 100644
---- a/drivers/usb/typec/ucsi/ucsi_ccg.c
-+++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
-@@ -644,6 +644,10 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
- 	    uc->has_multiple_dp) {
- 		con_index = (uc->last_cmd_sent >> 16) &
- 			UCSI_CMD_CONNECTOR_MASK;
-+		if (con_index == 0) {
-+			ret = -EINVAL;
-+			goto unlock;
-+		}
- 		con = &uc->ucsi->connector[con_index - 1];
- 		ucsi_ccg_update_set_new_cam_cmd(uc, con, &command);
- 	}
-@@ -651,6 +655,7 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command)
- 	ret = ucsi_sync_control_common(ucsi, command);
+diff --git a/Documentation/admin-guide/blockdev/zram.rst b/Documentation/admin-guide/blockdev/zram.rst
+index 678d70d6e1c3a..714a5171bfc0b 100644
+--- a/Documentation/admin-guide/blockdev/zram.rst
++++ b/Documentation/admin-guide/blockdev/zram.rst
+@@ -47,6 +47,8 @@ The list of possible return codes:
+ -ENOMEM	  zram was not able to allocate enough memory to fulfil your
+ 	  needs.
+ -EINVAL	  invalid input has been provided.
++-EAGAIN	  re-try operation later (e.g. when attempting to run recompress
++	  and writeback simultaneously).
+ ========  =============================================================
  
- 	pm_runtime_put_sync(uc->dev);
-+unlock:
- 	mutex_unlock(&uc->lock);
+ If you use 'echo', the returned value is set by the 'echo' utility,
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index ad9c9bc3ccfc5..b742dc246b0c1 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -626,6 +626,12 @@ static ssize_t writeback_store(struct device *dev,
+ 		goto release_init_lock;
+ 	}
+ 
++	/* Do not permit concurrent post-processing actions. */
++	if (atomic_xchg(&zram->pp_in_progress, 1)) {
++		up_read(&zram->init_lock);
++		return -EAGAIN;
++	}
++
+ 	if (!zram->backing_dev) {
+ 		ret = -ENODEV;
+ 		goto release_init_lock;
+@@ -752,6 +758,7 @@ static ssize_t writeback_store(struct device *dev,
+ 		free_block_bdev(zram, blk_idx);
+ 	__free_page(page);
+ release_init_lock:
++	atomic_set(&zram->pp_in_progress, 0);
+ 	up_read(&zram->init_lock);
  
  	return ret;
+@@ -1881,6 +1888,12 @@ static ssize_t recompress_store(struct device *dev,
+ 		goto release_init_lock;
+ 	}
+ 
++	/* Do not permit concurrent post-processing actions. */
++	if (atomic_xchg(&zram->pp_in_progress, 1)) {
++		up_read(&zram->init_lock);
++		return -EAGAIN;
++	}
++
+ 	if (algo) {
+ 		bool found = false;
+ 
+@@ -1948,6 +1961,7 @@ static ssize_t recompress_store(struct device *dev,
+ 	__free_page(page);
+ 
+ release_init_lock:
++	atomic_set(&zram->pp_in_progress, 0);
+ 	up_read(&zram->init_lock);
+ 	return ret;
+ }
+@@ -2144,6 +2158,7 @@ static void zram_reset_device(struct zram *zram)
+ 	zram->disksize = 0;
+ 	zram_destroy_comps(zram);
+ 	memset(&zram->stats, 0, sizeof(zram->stats));
++	atomic_set(&zram->pp_in_progress, 0);
+ 	reset_bdev(zram);
+ 
+ 	comp_algorithm_set(zram, ZRAM_PRIMARY_COMP, default_compressor);
+@@ -2381,6 +2396,7 @@ static int zram_add(void)
+ 	zram->disk->fops = &zram_devops;
+ 	zram->disk->private_data = zram;
+ 	snprintf(zram->disk->disk_name, 16, "zram%d", device_id);
++	atomic_set(&zram->pp_in_progress, 0);
+ 
+ 	/* Actual capacity set using sysfs (/sys/block/zram<id>/disksize */
+ 	set_capacity(zram->disk, 0);
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index cfc8c059db636..8acf9d2ee42b8 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -139,5 +139,6 @@ struct zram {
+ #ifdef CONFIG_ZRAM_MEMORY_TRACKING
+ 	struct dentry *debugfs_dir;
+ #endif
++	atomic_t pp_in_progress;
+ };
+ #endif
 -- 
 2.43.0
 
