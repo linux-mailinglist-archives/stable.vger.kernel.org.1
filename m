@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4889E269B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF2E9E2371
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A87C316BF29
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D937A16749B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566FA1F8919;
-	Tue,  3 Dec 2024 16:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C949A1F9F69;
+	Tue,  3 Dec 2024 15:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHxhaCBB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3fJSjQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C5E81ADA;
-	Tue,  3 Dec 2024 16:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E261F75A8;
+	Tue,  3 Dec 2024 15:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242245; cv=none; b=ZwNlICPj77y1mQDGszlbTa1qSUuNcRD7HpPmuiGRi7g+31xUa/sdacKr55DWrJ/IZnFmzVW2GNcJ3hKd7VfTaENtbqe6OKc0dOals5dEn6d/C4wgqifHfM56l3A83AyDtrv45TRT+KupCQ3cWfEKx5p6JaSyGwUUNJofHe4++18=
+	t=1733239908; cv=none; b=kITygiZHYCc/FLXyRLRCRstne0tYmICkTlur/56XgLHWkp472+f3UDDimQeelH7/ytFGq2tXdQDV/pmqzhPU5JMiDpxMqjSQ+CzQK+fDTqp9aFrF78YDbGZV9gQr+tbAc+gcIxDAZpXeghADdjlhODL79nKs3UjDKSKn0jSlVjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242245; c=relaxed/simple;
-	bh=VEZEAUpfmbEC6+YHmAvJcDEx63bLyVPhyQ/gb/tK3eo=;
+	s=arc-20240116; t=1733239908; c=relaxed/simple;
+	bh=ZKSyxQSjNQ2dM5CbD2KiomQt/uve8oWpIYhfdCyT6Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJkUnuptZ+DVf7UogaUwyuM7yjUo3WKaq4NwBWa0bHWfW6ZK9cRNVn1bzwgMisR58KigZScgL8ysQOn4oXlEVpMcJUSlRVW7IZLFBR9R1yqDuKQusWPYm4j5tGpyrcqclmXBP/ueC2w+bpx8GzwvFjDilaIdCpsclnLFYWlZEl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHxhaCBB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7574FC4CECF;
-	Tue,  3 Dec 2024 16:10:44 +0000 (UTC)
+	 MIME-Version; b=cf4Sd1XcisB1t+kKoubwa6IeIA6io/v1dlqM05v5mFqSVhOKmvtgMNQzG4jCSX3FeNSswZ/ydqTFChSwdk4tkgxpPOWmOGgO9I8nNXDh40h2df2AhpGJh8GusIzXqlJLl4va10JC9PveZT9IwyKprUmD9RN+uP6W+41ZIeOER9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3fJSjQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E751C4CED8;
+	Tue,  3 Dec 2024 15:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242244;
-	bh=VEZEAUpfmbEC6+YHmAvJcDEx63bLyVPhyQ/gb/tK3eo=;
+	s=korg; t=1733239908;
+	bh=ZKSyxQSjNQ2dM5CbD2KiomQt/uve8oWpIYhfdCyT6Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHxhaCBBS2pBJlUdNm85ogkT4RaeJQ2MZok9jpUhed07NX6RlE83d/YEPHUxTSgyc
-	 6iWjF5UWcwI3Tm8oT7Q/sS6cX97+snbrbppdaykAZMGiewv5274OHRTZ/9i0zJxugl
-	 KJDmGDkxLdu4yOCviCQPWXaLJYiHXvflGdcmKuBA=
+	b=i3fJSjQL0lnjnBgvz2nstjAK7mknhXNOM1ecRSyMeCTVNu1bhAgS+/ZVed6JcFCC8
+	 2XfO30tRy7j4OjFAvEAiwxP5ot+V33Wg0S30rnj286uLU4nSPMwB7rjD7PDRL+oCzc
+	 PtYvrFSZjneA9M0DuYRx9UCGKgZS5xIFvVN1b8Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zichen Xie <zichenxie0106@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 618/826] ALSA: core: Fix possible NULL dereference caused by kunit_kzalloc()
-Date: Tue,  3 Dec 2024 15:45:45 +0100
-Message-ID: <20241203144807.860982126@linuxfoundation.org>
+Subject: [PATCH 6.11 774/817] ubi: fastmap: wl: Schedule fm_work if wear-leveling pool is empty
+Date: Tue,  3 Dec 2024 15:45:46 +0100
+Message-ID: <20241203144026.225993604@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 9ad467a2b2716d4ed12f003b041aa6c776a13ff5 ]
+[ Upstream commit c4595fe394a289927077e3da561db27811919ee0 ]
 
-kunit_kzalloc() may return a NULL pointer, dereferencing it without
-NULL check may lead to NULL dereference.
-Add NULL checks for all the kunit_kzalloc() in sound_kunit.c
+Since commit 14072ee33d5a ("ubi: fastmap: Check wl_pool for free peb
+before wear leveling"), wear_leveling_worker() won't schedule fm_work
+if wear-leveling pool is empty, which could temporarily disable the
+wear-leveling until the fastmap is updated(eg. pool becomes empty).
+Fix it by scheduling fm_work if wl_pool is empty during wear-leveing.
 
-Fixes: 3e39acf56ede ("ALSA: core: Add sound core KUnit test")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Link: https://patch.msgid.link/20241126192448.12645-1-zichenxie0106@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 14072ee33d5a ("ubi: fastmap: Check wl_pool for free peb before wear leveling")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/sound_kunit.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/mtd/ubi/fastmap-wl.c | 19 ++++++++++++++++---
+ drivers/mtd/ubi/wl.c         |  2 +-
+ drivers/mtd/ubi/wl.h         |  3 ++-
+ 3 files changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/sound/core/sound_kunit.c b/sound/core/sound_kunit.c
-index bfed1a25fc8f7..84e337ecbddd0 100644
---- a/sound/core/sound_kunit.c
-+++ b/sound/core/sound_kunit.c
-@@ -172,6 +172,7 @@ static void test_format_fill_silence(struct kunit *test)
- 	u32 i, j;
- 
- 	buffer = kunit_kzalloc(test, SILENCE_BUFFER_SIZE, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, buffer);
- 
- 	for (i = 0; i < ARRAY_SIZE(buf_samples); i++) {
- 		for (j = 0; j < ARRAY_SIZE(valid_fmt); j++)
-@@ -208,8 +209,12 @@ static void test_playback_avail(struct kunit *test)
- 	struct snd_pcm_runtime *r = kunit_kzalloc(test, sizeof(*r), GFP_KERNEL);
- 	u32 i;
- 
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r);
-+
- 	r->status = kunit_kzalloc(test, sizeof(*r->status), GFP_KERNEL);
- 	r->control = kunit_kzalloc(test, sizeof(*r->control), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->status);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->control);
- 
- 	for (i = 0; i < ARRAY_SIZE(p_avail_data); i++) {
- 		r->buffer_size = p_avail_data[i].buffer_size;
-@@ -232,8 +237,12 @@ static void test_capture_avail(struct kunit *test)
- 	struct snd_pcm_runtime *r = kunit_kzalloc(test, sizeof(*r), GFP_KERNEL);
- 	u32 i;
- 
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r);
-+
- 	r->status = kunit_kzalloc(test, sizeof(*r->status), GFP_KERNEL);
- 	r->control = kunit_kzalloc(test, sizeof(*r->control), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->status);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, r->control);
- 
- 	for (i = 0; i < ARRAY_SIZE(c_avail_data); i++) {
- 		r->buffer_size = c_avail_data[i].buffer_size;
-@@ -247,6 +256,7 @@ static void test_capture_avail(struct kunit *test)
- static void test_card_set_id(struct kunit *test)
+diff --git a/drivers/mtd/ubi/fastmap-wl.c b/drivers/mtd/ubi/fastmap-wl.c
+index 2a9cc9413c427..9bdb6525f1281 100644
+--- a/drivers/mtd/ubi/fastmap-wl.c
++++ b/drivers/mtd/ubi/fastmap-wl.c
+@@ -346,14 +346,27 @@ int ubi_wl_get_peb(struct ubi_device *ubi)
+  * WL sub-system.
+  *
+  * @ubi: UBI device description object
++ * @need_fill: whether to fill wear-leveling pool when no PEBs are found
+  */
+-static struct ubi_wl_entry *next_peb_for_wl(struct ubi_device *ubi)
++static struct ubi_wl_entry *next_peb_for_wl(struct ubi_device *ubi,
++					    bool need_fill)
  {
- 	struct snd_card *card = kunit_kzalloc(test, sizeof(*card), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, card);
+ 	struct ubi_fm_pool *pool = &ubi->fm_wl_pool;
+ 	int pnum;
  
- 	snd_card_set_id(card, VALID_NAME);
- 	KUNIT_EXPECT_STREQ(test, card->id, VALID_NAME);
-@@ -280,6 +290,7 @@ static void test_pcm_format_name(struct kunit *test)
- static void test_card_add_component(struct kunit *test)
- {
- 	struct snd_card *card = kunit_kzalloc(test, sizeof(*card), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, card);
+-	if (pool->used == pool->size)
++	if (pool->used == pool->size) {
++		if (need_fill && !ubi->fm_work_scheduled) {
++			/*
++			 * We cannot update the fastmap here because this
++			 * function is called in atomic context.
++			 * Let's fail here and refill/update it as soon as
++			 * possible.
++			 */
++			ubi->fm_work_scheduled = 1;
++			schedule_work(&ubi->fm_work);
++		}
+ 		return NULL;
++	}
  
- 	snd_component_add(card, TEST_FIRST_COMPONENT);
- 	KUNIT_ASSERT_STREQ(test, card->components, TEST_FIRST_COMPONENT);
+ 	pnum = pool->pebs[pool->used];
+ 	return ubi->lookuptbl[pnum];
+@@ -375,7 +388,7 @@ static bool need_wear_leveling(struct ubi_device *ubi)
+ 	if (!ubi->used.rb_node)
+ 		return false;
+ 
+-	e = next_peb_for_wl(ubi);
++	e = next_peb_for_wl(ubi, false);
+ 	if (!e) {
+ 		if (!ubi->free.rb_node)
+ 			return false;
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index 8a26968aba11f..fbd399cf65033 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -683,7 +683,7 @@ static int wear_leveling_worker(struct ubi_device *ubi, struct ubi_work *wrk,
+ 	ubi_assert(!ubi->move_to_put);
+ 
+ #ifdef CONFIG_MTD_UBI_FASTMAP
+-	if (!next_peb_for_wl(ubi) ||
++	if (!next_peb_for_wl(ubi, true) ||
+ #else
+ 	if (!ubi->free.rb_node ||
+ #endif
+diff --git a/drivers/mtd/ubi/wl.h b/drivers/mtd/ubi/wl.h
+index 7b6715ef6d4a3..a69169c35e310 100644
+--- a/drivers/mtd/ubi/wl.h
++++ b/drivers/mtd/ubi/wl.h
+@@ -5,7 +5,8 @@
+ static void update_fastmap_work_fn(struct work_struct *wrk);
+ static struct ubi_wl_entry *find_anchor_wl_entry(struct rb_root *root);
+ static struct ubi_wl_entry *get_peb_for_wl(struct ubi_device *ubi);
+-static struct ubi_wl_entry *next_peb_for_wl(struct ubi_device *ubi);
++static struct ubi_wl_entry *next_peb_for_wl(struct ubi_device *ubi,
++					    bool need_fill);
+ static bool need_wear_leveling(struct ubi_device *ubi);
+ static void ubi_fastmap_close(struct ubi_device *ubi);
+ static inline void ubi_fastmap_init(struct ubi_device *ubi, int *count)
 -- 
 2.43.0
 
