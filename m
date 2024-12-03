@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A249E24D8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:53:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC529E2289
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:25:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36945167C08
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:48:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F614BA322B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AD11F76BE;
-	Tue,  3 Dec 2024 15:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A436D1F75B9;
+	Tue,  3 Dec 2024 15:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrAB5aWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frZ/EK4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066E781ADA;
-	Tue,  3 Dec 2024 15:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E081F7540;
+	Tue,  3 Dec 2024 15:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240797; cv=none; b=sa/TvwLnDtWtArY0Etiiawv0a9xdQUZlix8rkbNH96LuC1h3xg3UCDjBJd0wFBNTAHbvGEbkEmC7aNBmP1/JsDMHCS2mYJLz6JW4BUnur5uE9SC7xSrrha8JwUGl40RU9ZZd1UeZaEMm5E3LsBxUsJ6Y/IUCSI0Uf1LjuFAh/0I=
+	t=1733238771; cv=none; b=VMElIt0rnWtS98tkdd1H1abYdKV47a6JBKD6rIYIb384RWJe2OMnKivd5o9owFIgQ7ScFokL9O/0HRu5Bn+NRCxwwwcpOdDTS/caMKGjV7TFl6/J7bGjMLf0RzFo4q0AGl3QqmjPnFEAbWNE5TeFYf+Fh1Ad8Zh52KyDh2HGJmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240797; c=relaxed/simple;
-	bh=ykAUMsd1nYidCPqeNBafXCzkz75HNkQqs8jTXTYVq6Q=;
+	s=arc-20240116; t=1733238771; c=relaxed/simple;
+	bh=ktEugaCFHSyfOc7QNGw26R+zuwMd/EweQLDwsDmSePA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vE2Ub6ms1Lp1nxuMmbJaaoAQnZg1iwWCB2tSrOwTf7koK6gDQlf79kpvV8HaRiYcD5gcfKOxd8jAs8rMfWFMJFufbIMpDt2gMj/2puqPpGpHRO4LrWRSWi/OjzvqC2U7kBJrylzIfgU9Fvl83fBLcDQk3XVv93z71niECDIDzgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrAB5aWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6980CC4CECF;
-	Tue,  3 Dec 2024 15:46:36 +0000 (UTC)
+	 MIME-Version; b=aN72otZyroQQU6P2q3USB9RyM6+co2dcnk13wJQNGTkxsbmQuGnzebxXHhfJmp5TbceEsyaGSExu28uLmf10V/q+qqNCSBPyb3votEHDV7G4i0DWl+1knB/zdIWVBVozDtCOsTmNJGRVDWLeP7zSmYvqju9Ip3MNQ5Egm13UrjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frZ/EK4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9E7C4CECF;
+	Tue,  3 Dec 2024 15:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240796;
-	bh=ykAUMsd1nYidCPqeNBafXCzkz75HNkQqs8jTXTYVq6Q=;
+	s=korg; t=1733238771;
+	bh=ktEugaCFHSyfOc7QNGw26R+zuwMd/EweQLDwsDmSePA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrAB5aWdM2ReSwhhLeCzS5pvTFmhXDWq9gcvAd2ER2dZrhioODiEkkil+dzAcAeoB
-	 HZrYVr6vCRG1nD1e/zdtgi7m6m0QaBw6BuyajqxDaYyn5fC2E++TJgmYRs1PpLxmC0
-	 +9+df5u+VqW5X+WDmO9UvwBZ+yMej0SelsHytk9Y=
+	b=frZ/EK4MHHG+IWoPyXkI+1zG4J/7IsDRsZPy2F9iQK/o4aVR/vr+U+roHh2odKeUI
+	 KJyStXkWNahgzZnZcQs7c9Dr0w/dg4XdFwOjSJMimq3g8LPIdn6X5Jc143kR1MFEZd
+	 0MXhADbXCEBM6uSryKpFvxnYj7FsriTckEuY0OuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 236/826] ice: consistently use q_idx in ice_vc_cfg_qs_msg()
-Date: Tue,  3 Dec 2024 15:39:23 +0100
-Message-ID: <20241203144752.964587448@linuxfoundation.org>
+Subject: [PATCH 6.11 392/817] irqdomain: Cleanup domain name allocation
+Date: Tue,  3 Dec 2024 15:39:24 +0100
+Message-ID: <20241203144011.174520900@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit a884c304e18a40e1c7a6525a9274e64c2c061c3f ]
+[ Upstream commit 1bf2c92829274e7c815d06d7b3196a967ff70917 ]
 
-The ice_vc_cfg_qs_msg() function is used to configure VF queues in response
-to a VIRTCHNL_OP_CONFIG_VSI_QUEUES command.
+irq_domain_set_name() is truly unreadable gunk. Clean it up before adding
+more.
 
-The virtchnl command contains an array of queue pair data for configuring
-Tx and Rx queues. This data includes a queue ID. When configuring the
-queues, the driver generally uses this queue ID to determine which Tx and
-Rx ring to program. However, a handful of places use the index into the
-queue pair data from the VF. While most VF implementations appear to send
-this data in order, it is not mandated by the virtchnl and it is not
-verified that the queue pair data comes in order.
-
-Fix the driver to consistently use the q_idx field instead of the 'i'
-iterator value when accessing the rings. For the Rx case, introduce a local
-ring variable to keep lines short.
-
-Fixes: 7ad15440acf8 ("ice: Refactor VIRTCHNL_OP_CONFIG_VSI_QUEUES handling")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://lore.kernel.org/all/874j7uvkbm.ffs@tglx
+Stable-dep-of: 3727c0b4ff6b ("mfd: intel_soc_pmic_bxtwc: Fix IRQ domain names duplication")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl.c | 21 +++++++++----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ kernel/irq/irqdomain.c | 106 +++++++++++++++++++++--------------------
+ 1 file changed, 55 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index 59f62306b9cb0..b6ec01f6fa73e 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -1715,8 +1715,8 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index 7625e424f85a6..72ab601871034 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -128,72 +128,76 @@ void irq_domain_free_fwnode(struct fwnode_handle *fwnode)
+ }
+ EXPORT_SYMBOL_GPL(irq_domain_free_fwnode);
  
- 		/* copy Tx queue info from VF into VSI */
- 		if (qpi->txq.ring_len > 0) {
--			vsi->tx_rings[i]->dma = qpi->txq.dma_ring_addr;
--			vsi->tx_rings[i]->count = qpi->txq.ring_len;
-+			vsi->tx_rings[q_idx]->dma = qpi->txq.dma_ring_addr;
-+			vsi->tx_rings[q_idx]->count = qpi->txq.ring_len;
+-static int irq_domain_set_name(struct irq_domain *domain,
+-			       const struct fwnode_handle *fwnode,
+-			       enum irq_domain_bus_token bus_token)
++static int alloc_name(struct irq_domain *domain, char *base, enum irq_domain_bus_token bus_token)
++{
++	domain->name = bus_token ? kasprintf(GFP_KERNEL, "%s-%d", base, bus_token) :
++				   kasprintf(GFP_KERNEL, "%s", base);
++	if (!domain->name)
++		return -ENOMEM;
++
++	domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
++	return 0;
++}
++
++static int alloc_fwnode_name(struct irq_domain *domain, const struct fwnode_handle *fwnode,
++			     enum irq_domain_bus_token bus_token)
++{
++	char *name = bus_token ? kasprintf(GFP_KERNEL, "%pfw-%d", fwnode, bus_token) :
++				 kasprintf(GFP_KERNEL, "%pfw", fwnode);
++
++	if (!name)
++		return -ENOMEM;
++
++	/*
++	 * fwnode paths contain '/', which debugfs is legitimately unhappy
++	 * about. Replace them with ':', which does the trick and is not as
++	 * offensive as '\'...
++	 */
++	domain->name = strreplace(name, '/', ':');
++	domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
++	return 0;
++}
++
++static int alloc_unknown_name(struct irq_domain *domain, enum irq_domain_bus_token bus_token)
+ {
+ 	static atomic_t unknown_domains;
+-	struct irqchip_fwid *fwid;
++	int id = atomic_inc_return(&unknown_domains);
++
++	domain->name = bus_token ? kasprintf(GFP_KERNEL, "unknown-%d-%d", id, bus_token) :
++				   kasprintf(GFP_KERNEL, "unknown-%d", id);
  
- 			/* Disable any existing queue first */
- 			if (ice_vf_vsi_dis_single_txq(vf, vsi, q_idx))
-@@ -1725,7 +1725,7 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 			/* Configure a queue with the requested settings */
- 			if (ice_vsi_cfg_single_txq(vsi, vsi->tx_rings, q_idx)) {
- 				dev_warn(ice_pf_to_dev(pf), "VF-%d failed to configure TX queue %d\n",
--					 vf->vf_id, i);
-+					 vf->vf_id, q_idx);
- 				goto error_param;
- 			}
++	if (!domain->name)
++		return -ENOMEM;
++	domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
++	return 0;
++}
++
++static int irq_domain_set_name(struct irq_domain *domain, const struct fwnode_handle *fwnode,
++			       enum irq_domain_bus_token bus_token)
++{
+ 	if (is_fwnode_irqchip(fwnode)) {
+-		fwid = container_of(fwnode, struct irqchip_fwid, fwnode);
++		struct irqchip_fwid *fwid = container_of(fwnode, struct irqchip_fwid, fwnode);
+ 
+ 		switch (fwid->type) {
+ 		case IRQCHIP_FWNODE_NAMED:
+ 		case IRQCHIP_FWNODE_NAMED_ID:
+-			domain->name = bus_token ?
+-					kasprintf(GFP_KERNEL, "%s-%d",
+-						  fwid->name, bus_token) :
+-					kstrdup(fwid->name, GFP_KERNEL);
+-			if (!domain->name)
+-				return -ENOMEM;
+-			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+-			break;
++			return alloc_name(domain, fwid->name, bus_token);
+ 		default:
+ 			domain->name = fwid->name;
+-			if (bus_token) {
+-				domain->name = kasprintf(GFP_KERNEL, "%s-%d",
+-							 fwid->name, bus_token);
+-				if (!domain->name)
+-					return -ENOMEM;
+-				domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+-			}
+-			break;
++			if (bus_token)
++				return alloc_name(domain, fwid->name, bus_token);
  		}
-@@ -1733,24 +1733,23 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 		/* copy Rx queue info from VF into VSI */
- 		if (qpi->rxq.ring_len > 0) {
- 			u16 max_frame_size = ice_vc_get_max_frame_size(vf);
-+			struct ice_rx_ring *ring = vsi->rx_rings[q_idx];
- 			u32 rxdid;
+-	} else if (is_of_node(fwnode) || is_acpi_device_node(fwnode) ||
+-		   is_software_node(fwnode)) {
+-		char *name;
  
--			vsi->rx_rings[i]->dma = qpi->rxq.dma_ring_addr;
--			vsi->rx_rings[i]->count = qpi->rxq.ring_len;
-+			ring->dma = qpi->rxq.dma_ring_addr;
-+			ring->count = qpi->rxq.ring_len;
+-		/*
+-		 * fwnode paths contain '/', which debugfs is legitimately
+-		 * unhappy about. Replace them with ':', which does
+-		 * the trick and is not as offensive as '\'...
+-		 */
+-		name = bus_token ?
+-			kasprintf(GFP_KERNEL, "%pfw-%d", fwnode, bus_token) :
+-			kasprintf(GFP_KERNEL, "%pfw", fwnode);
+-		if (!name)
+-			return -ENOMEM;
+-
+-		domain->name = strreplace(name, '/', ':');
+-		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
++	} else if (is_of_node(fwnode) || is_acpi_device_node(fwnode) || is_software_node(fwnode)) {
++		return alloc_fwnode_name(domain, fwnode, bus_token);
+ 	}
  
- 			if (qpi->rxq.crc_disable)
--				vsi->rx_rings[q_idx]->flags |=
--					ICE_RX_FLAGS_CRC_STRIP_DIS;
-+				ring->flags |= ICE_RX_FLAGS_CRC_STRIP_DIS;
- 			else
--				vsi->rx_rings[q_idx]->flags &=
--					~ICE_RX_FLAGS_CRC_STRIP_DIS;
-+				ring->flags &= ~ICE_RX_FLAGS_CRC_STRIP_DIS;
+-	if (!domain->name) {
+-		if (fwnode)
+-			pr_err("Invalid fwnode type for irqdomain\n");
+-		domain->name = bus_token ?
+-				kasprintf(GFP_KERNEL, "unknown-%d-%d",
+-					  atomic_inc_return(&unknown_domains),
+-					  bus_token) :
+-				kasprintf(GFP_KERNEL, "unknown-%d",
+-					  atomic_inc_return(&unknown_domains));
+-		if (!domain->name)
+-			return -ENOMEM;
+-		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
+-	}
++	if (domain->name)
++		return 0;
  
- 			if (qpi->rxq.databuffer_size != 0 &&
- 			    (qpi->rxq.databuffer_size > ((16 * 1024) - 128) ||
- 			     qpi->rxq.databuffer_size < 1024))
- 				goto error_param;
- 			vsi->rx_buf_len = qpi->rxq.databuffer_size;
--			vsi->rx_rings[i]->rx_buf_len = vsi->rx_buf_len;
-+			ring->rx_buf_len = vsi->rx_buf_len;
- 			if (qpi->rxq.max_pkt_size > max_frame_size ||
- 			    qpi->rxq.max_pkt_size < 64)
- 				goto error_param;
-@@ -1765,7 +1764,7 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+-	return 0;
++	if (fwnode)
++		pr_err("Invalid fwnode type for irqdomain\n");
++	return alloc_unknown_name(domain, bus_token);
+ }
  
- 			if (ice_vsi_cfg_single_rxq(vsi, q_idx)) {
- 				dev_warn(ice_pf_to_dev(pf), "VF-%d failed to configure RX queue %d\n",
--					 vf->vf_id, i);
-+					 vf->vf_id, q_idx);
- 				goto error_param;
- 			}
- 
+ static struct irq_domain *__irq_domain_create(const struct irq_domain_info *info)
 -- 
 2.43.0
 
