@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2BF9E21B8
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E839E24BC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C94BF168764
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9504B16EED5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC4E1F8ADC;
-	Tue,  3 Dec 2024 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407705336E;
+	Tue,  3 Dec 2024 15:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ps/eDx2x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9q2lHAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B32B1F75B1;
-	Tue,  3 Dec 2024 15:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11801DDC26;
+	Tue,  3 Dec 2024 15:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238580; cv=none; b=jI/dp98bubg0INQg3VVI01Hu3HwejGeloKC6f+q3DB5Z9/A2XomvCBnGfEHEPgdBWNZ1Lm7HBeuxbhI1BmOoFcY8Gx4TTqZ6EN/FxGEdDAu/VEiDoFmfYKuUs4DFGkaPTT7kwunNRp5ilHZVn1GcbBiLNqmWQXrwrLx8Rjr7Ub0=
+	t=1733240679; cv=none; b=oBbH5shzQbSiArEGyKNajbCoRU4mENkC77m05IAklS9fxSU516cpmq956DGzcvs8GbsvvML2UVcNGUMrXqd1UfQNi8VbEB25Z0HjDHMYaDi/rB9Pr92qoCyWyzuN9h4hS1heFSQfz1GuaPYci+LbSbJScaJHpWDB6vkmm2e5fbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238580; c=relaxed/simple;
-	bh=HmFsJ4VzdWeguAsEbL6C+3quO5D8WMKO7q3N3hhXQsE=;
+	s=arc-20240116; t=1733240679; c=relaxed/simple;
+	bh=2TuqysjA7LLR6zW0R220kZynJE71eLKAwAj616Ptd8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Un27MfzhZitxOyD4vChZdqnV5NPxEAPslLyllmFBnSJI8p5+c4PDF2TgbCx1L2HpegFhwG2VkLAdMJQJgXBnQuOOgFNFzSEoctg/PulHl9elbSrCxtU6GAZ0ycAMVZXFeTDsRTKvL//3ZxaLrusMy95eNfldhmZAnYkyzMXnBDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ps/eDx2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0E4C4CECF;
-	Tue,  3 Dec 2024 15:09:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ojspBwe7dlzclJ1c8rql5Y08+dXOtkhLSSgbqj+z0IVy9Qd6GLMrL/4sZGn1y6zQsvJA+TakaQik7z+imNo/xD1KJX645cZq0JPcB9Zv4AB9xh+0SxASmQ0fN7Nepq65qdYuHpnTNs2TUl71x+ailypJYgpBmwWEaCkxmgRifv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9q2lHAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A52C4CECF;
+	Tue,  3 Dec 2024 15:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238580;
-	bh=HmFsJ4VzdWeguAsEbL6C+3quO5D8WMKO7q3N3hhXQsE=;
+	s=korg; t=1733240678;
+	bh=2TuqysjA7LLR6zW0R220kZynJE71eLKAwAj616Ptd8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ps/eDx2xGLI4fO227AgzvATwecZAZ9eaSzVwXHovvSuFrx3ia3tK/Ehf+bEV1usjG
-	 sr+fU7s3W6fMa+hKKkhxWIebDyCaDlH1p0nLGXxua4sfIqI51GPdCmYmcGCivcfBwS
-	 vqIgmeafTDXFbRwFiekV6PaUUOKnHbiMfX4NA3fY=
+	b=R9q2lHARaUfH8152vc2457IxWBS7iy7ZEFxXBPqRqcYBnf24VAWsPZWUSobgM+hQa
+	 bgxbb8GJDKLV/jU15g402schCb84AoVJmWxU/4hI677lNv4CxAT+MEthc1KMGXh1cU
+	 48nyrxHMgDDIAsrrN+/RuFlVCmBgS4SKRZwjWHCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Ge <gehao@kylinos.cn>,
-	Eric Sandeen <sandeen@redhat.com>,
-	Jan Kara <jack@suse.cz>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 326/817] isofs: avoid memory leak in iocharset
-Date: Tue,  3 Dec 2024 15:38:18 +0100
-Message-ID: <20241203144008.543172610@linuxfoundation.org>
+Subject: [PATCH 6.12 173/826] pwm: Assume a disabled PWM to emit a constant inactive output
+Date: Tue,  3 Dec 2024 15:38:20 +0100
+Message-ID: <20241203144750.487585842@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +61,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 0b5bbeee4de616a268db77e2f40f19ab010a367b ]
+[ Upstream commit b2eaa1170e45dc18eb09dcc9abafbe9a7502e960 ]
 
-A memleak was found as below:
+Some PWM hardwares (e.g. MC33XS2410) cannot implement a zero duty cycle
+but can instead disable the hardware which also results in a constant
+inactive output.
 
-unreferenced object 0xffff0000d10164d8 (size 8):
-  comm "pool-udisksd", pid 108217, jiffies 4295408555
-  hex dump (first 8 bytes):
-    75 74 66 38 00 cc cc cc                          utf8....
-  backtrace (crc de430d31):
-    [<ffff800081046e6c>] kmemleak_alloc+0xb8/0xc8
-    [<ffff8000803e6c3c>] __kmalloc_node_track_caller_noprof+0x380/0x474
-    [<ffff800080363b74>] kstrdup+0x70/0xfc
-    [<ffff80007bb3c6a4>] isofs_parse_param+0x228/0x2c0 [isofs]
-    [<ffff8000804d7f68>] vfs_parse_fs_param+0xf4/0x164
-    [<ffff8000804d8064>] vfs_parse_fs_string+0x8c/0xd4
-    [<ffff8000804d815c>] vfs_parse_monolithic_sep+0xb0/0xfc
-    [<ffff8000804d81d8>] generic_parse_monolithic+0x30/0x3c
-    [<ffff8000804d8bfc>] parse_monolithic_mount_data+0x40/0x4c
-    [<ffff8000804b6a64>] path_mount+0x6c4/0x9ec
-    [<ffff8000804b6e38>] do_mount+0xac/0xc4
-    [<ffff8000804b7494>] __arm64_sys_mount+0x16c/0x2b0
-    [<ffff80008002b8dc>] invoke_syscall+0x7c/0x104
-    [<ffff80008002ba44>] el0_svc_common.constprop.1+0xe0/0x104
-    [<ffff80008002ba94>] do_el0_svc+0x2c/0x38
-    [<ffff800081041108>] el0_svc+0x3c/0x1b8
+There are some checks (enabled with CONFIG_PWM_DEBUG) to help
+implementing a driver without violating the normal rounding rules. Make
+them less strict to let above described hardware pass without warning.
 
-The opt->iocharset is freed inside the isofs_fill_super function,
-But there may be situations where it's not possible to
-enter this function.
-
-For example, in the get_tree_bdev_flags function,when
-encountering the situation where "Can't mount, would change RO state,"
-In such a case, isofs_fill_super will not have the opportunity
-to be called,which means that opt->iocharset will not have the chance
-to be freed,ultimately leading to a memory leak.
-
-Let's move the memory freeing of opt->iocharset into
-isofs_free_fc function.
-
-Fixes: 1b17a46c9243 ("isofs: convert isofs to use the new mount API")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Reviewed-by: Eric Sandeen <sandeen@redhat.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241106082841.51773-1-hao.ge@linux.dev
+Reported-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+Link: https://lore.kernel.org/r/20241103205215.GA509903@debian
+Fixes: 3ad1f3a33286 ("pwm: Implement some checks for lowlevel drivers")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+Tested-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+Link: https://lore.kernel.org/r/20241105153521.1001864-2-u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/inode.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pwm/core.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index f50311a6b4299..47038e6608123 100644
---- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -948,8 +948,6 @@ static int isofs_fill_super(struct super_block *s, struct fs_context *fc)
- 		goto out_no_inode;
- 	}
+diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
+index 6e752e148b98c..210368099a064 100644
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -75,7 +75,7 @@ static void pwm_apply_debug(struct pwm_device *pwm,
+ 	    state->duty_cycle < state->period)
+ 		dev_warn(pwmchip_parent(chip), ".apply ignored .polarity\n");
  
--	kfree(opt->iocharset);
--
- 	return 0;
+-	if (state->enabled &&
++	if (state->enabled && s2.enabled &&
+ 	    last->polarity == state->polarity &&
+ 	    last->period > s2.period &&
+ 	    last->period <= state->period)
+@@ -83,7 +83,11 @@ static void pwm_apply_debug(struct pwm_device *pwm,
+ 			 ".apply didn't pick the best available period (requested: %llu, applied: %llu, possible: %llu)\n",
+ 			 state->period, s2.period, last->period);
  
- 	/*
-@@ -987,7 +985,6 @@ static int isofs_fill_super(struct super_block *s, struct fs_context *fc)
- 	brelse(bh);
- 	brelse(pri_bh);
- out_freesbi:
--	kfree(opt->iocharset);
- 	kfree(sbi);
- 	s->s_fs_info = NULL;
- 	return error;
-@@ -1528,7 +1525,10 @@ static int isofs_get_tree(struct fs_context *fc)
+-	if (state->enabled && state->period < s2.period)
++	/*
++	 * Rounding period up is fine only if duty_cycle is 0 then, because a
++	 * flat line doesn't have a characteristic period.
++	 */
++	if (state->enabled && s2.enabled && state->period < s2.period && s2.duty_cycle)
+ 		dev_warn(pwmchip_parent(chip),
+ 			 ".apply is supposed to round down period (requested: %llu, applied: %llu)\n",
+ 			 state->period, s2.period);
+@@ -99,7 +103,7 @@ static void pwm_apply_debug(struct pwm_device *pwm,
+ 			 s2.duty_cycle, s2.period,
+ 			 last->duty_cycle, last->period);
  
- static void isofs_free_fc(struct fs_context *fc)
- {
--	kfree(fc->fs_private);
-+	struct isofs_options *opt = fc->fs_private;
-+
-+	kfree(opt->iocharset);
-+	kfree(opt);
- }
- 
- static const struct fs_context_operations isofs_context_ops = {
+-	if (state->enabled && state->duty_cycle < s2.duty_cycle)
++	if (state->enabled && s2.enabled && state->duty_cycle < s2.duty_cycle)
+ 		dev_warn(pwmchip_parent(chip),
+ 			 ".apply is supposed to round down duty_cycle (requested: %llu/%llu, applied: %llu/%llu)\n",
+ 			 state->duty_cycle, state->period,
 -- 
 2.43.0
 
