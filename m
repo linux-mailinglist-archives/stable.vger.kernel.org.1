@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFF09E2475
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6619E214A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14DDE16AD93
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96DA4168BE1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025C91F9F6B;
-	Tue,  3 Dec 2024 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055C71F8926;
+	Tue,  3 Dec 2024 15:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zV/j8/Br"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmyfOhZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49D01F9AAC;
-	Tue,  3 Dec 2024 15:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66451F891D;
+	Tue,  3 Dec 2024 15:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240411; cv=none; b=ZTMN/pal2fIs+v1D18HYnxWIjqtV09SWKnUk/MSODNtS0PbYz98gvnoMBZGSaNp5ZHhXHWlUeMZ7FaEFUisyZxTsLbEjamsMpIWWJeu5sVpzHMl6NZSrs8G//FxZ8c16JNJ6au8c2UvbzSIJWx7DbTPWEgcoW0KuiFMbJcHnN1A=
+	t=1733238450; cv=none; b=LMdy6c8+evLkU+R9Q2NhwEsHHmonMaGg+OQ2d4CEZgVApaZogTMHdp7dLpaPmppDzQ3pXDWcTn6GsUhIeEDTKgrMYYKCuO8QawSr5n84av957JVkh+dYBUPXpx62r11gWp1aORIh4H/EtTnrDImrKrFyb0AEU5sGxcKGURhXuQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240411; c=relaxed/simple;
-	bh=9VrahmPl98BFixHfyQHDkRImKj7PuCWRsQxLrfJ0vk0=;
+	s=arc-20240116; t=1733238450; c=relaxed/simple;
+	bh=GFEdQ966hKH/HDkQZ2R2AHgKmL3VIKq231wfliFaCG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKbOAxg73viZN0QIIMgTjxw4dlMjUarsY1HJPC2iSGQbYOHyZzOUIKIlYC+LeamabeeYm9ab3qnOIjvCYLnQxthB5YgcLTBff7lVdDfLLaKM/J4AY8ZQgWfD1yTtlbkQ6/jBUeqw+s66Jcruo9X1vaALqAAoLNu+6EPOblSlONU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zV/j8/Br; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98A9C4CED8;
-	Tue,  3 Dec 2024 15:40:10 +0000 (UTC)
+	 MIME-Version; b=fAyKNR3niakxU5KkKGAb9gG/xfTKC9YGJuN9Ad0jDsQ9So2t4e8UMB0ZLuKjswdxDmTHunTSv6YMciKgcSVwNkg06hhhGZbInSzPiFPhsXFfVjHpgHfUzduUYtu2rETeoiergQl/58/jLM/Nd1AFewdczvnx8LI+RrQw7uDX4X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmyfOhZn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB29C4CED9;
+	Tue,  3 Dec 2024 15:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240411;
-	bh=9VrahmPl98BFixHfyQHDkRImKj7PuCWRsQxLrfJ0vk0=;
+	s=korg; t=1733238450;
+	bh=GFEdQ966hKH/HDkQZ2R2AHgKmL3VIKq231wfliFaCG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zV/j8/BrZpXzKiJyINrhiX9N9V2Ah+u0BcL5spUOMRGUa1U25lLNkDeCM8ucAezbv
-	 JOZOmsoi6EhUCn0t4Mr0Byrybiyi47/8jKq6300v4nVjAjqU7ylTfAnUKbzfBdtNLR
-	 Bv4LkySxTYK1m1zG4IC3BxMXt6Xecuf6jCsGkVfY=
+	b=cmyfOhZnwP8N1x+kSbpVAEQ6OcAIM6D78aq5vob3c2jlm3PvY1364eqoTbxIFMRHf
+	 h5IeQ/apQvwRBDMjcrOzw6MgIzJct10cXSTtpv2VXUUL0g9CTwqnIGIKTGLIMZChbf
+	 NBVlUFSEW/njkCap6YUvS3y+kE2H7TDB/BDQsXv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Te Yuan <yuanhsinte@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Ryan Walklin <ryan@testtoast.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/826] arm64: dts: mt8183: krane: Fix the address of eeprom at i2c4
-Date: Tue,  3 Dec 2024 15:37:33 +0100
-Message-ID: <20241203144748.657831682@linuxfoundation.org>
+Subject: [PATCH 6.11 282/817] drm: panel: nv3052c: correct spi_device_id for RG35XX panel
+Date: Tue,  3 Dec 2024 15:37:34 +0100
+Message-ID: <20241203144006.813500812@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Te Yuan <yuanhsinte@chromium.org>
+From: Ryan Walklin <ryan@testtoast.com>
 
-[ Upstream commit e9c60c34948662b5d47573490ee538439b29e462 ]
+[ Upstream commit 45608a3eb4902f32010a8328c0a01ccda4b38c9b ]
 
-The address of eeprom should be 50.
+The Anbernic RG35XX devices use an SPI LCD panel from an unknown OEM,
+with an NV3052C driver chip.
 
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Signed-off-by: Hsin-Te Yuan <yuanhsinte@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/20240909-eeprom-v1-1-1ed2bc5064f4@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+As discussed previously, the integrating vendor and device name are
+preferred instead of the OEM serial. A previous patch corrected the
+device tree binding and of_device_id in the NV3052C driver, however the
+spi_device_id also needs correction.
+
+Correct the spi_device_id for the RG35XX panel.
+
+Signed-off-by: Ryan Walklin <ryan@testtoast.com>
+Fixes: 76dce2a96c0f ("drm: panel: nv3052c: Correct WL-355608-A8 panel compatible")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241020083836.175733-1-ryan@testtoast.com
+[DB: corrected the Fixes tag]
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-newvision-nv3052c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-index 0f5fa893a7742..8b56b8564ed7a 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-krane.dtsi
-@@ -88,9 +88,9 @@ &i2c4 {
- 	clock-frequency = <400000>;
- 	vbus-supply = <&mt6358_vcn18_reg>;
- 
--	eeprom@54 {
-+	eeprom@50 {
- 		compatible = "atmel,24c32";
--		reg = <0x54>;
-+		reg = <0x50>;
- 		pagesize = <32>;
- 		vcc-supply = <&mt6358_vcn18_reg>;
- 	};
+diff --git a/drivers/gpu/drm/panel/panel-newvision-nv3052c.c b/drivers/gpu/drm/panel/panel-newvision-nv3052c.c
+index d3baccfe6286b..06e16a7c14a75 100644
+--- a/drivers/gpu/drm/panel/panel-newvision-nv3052c.c
++++ b/drivers/gpu/drm/panel/panel-newvision-nv3052c.c
+@@ -917,7 +917,7 @@ static const struct nv3052c_panel_info wl_355608_a8_panel_info = {
+ static const struct spi_device_id nv3052c_ids[] = {
+ 	{ "ltk035c5444t", },
+ 	{ "fs035vg158", },
+-	{ "wl-355608-a8", },
++	{ "rg35xx-plus-panel", },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(spi, nv3052c_ids);
 -- 
 2.43.0
 
