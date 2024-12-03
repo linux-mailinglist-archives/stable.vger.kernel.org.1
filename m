@@ -1,121 +1,193 @@
-Return-Path: <stable+bounces-97970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F609E2A59
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 193599E2ABD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BD60B45758
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:12:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19963B63EF7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6811F76BF;
-	Tue,  3 Dec 2024 16:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A591F8AFB;
+	Tue,  3 Dec 2024 16:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="igbMQ4yR"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="w68KKUgr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3566E81ADA;
-	Tue,  3 Dec 2024 16:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323081F893F
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 16:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242359; cv=none; b=h70PnczEYY9iM7VDkXe05u03qh0FiHSAEP9wMCVO9DfN75rzeOy9Aty5htbw6Yf5ennbiiNmepft/rhrqULbqKEhJ3yIai9xDgCwLyh68eHY8tEg5NvOpZSp7+3T4hp4NFOPPvq0p38Xk4ithzXsGID+IBjKD2N+EDFWR1NXk7s=
+	t=1733242945; cv=none; b=Mkfx5K+JgWCHzcafrIEvJZZdRv3YXN8ACMj31h6KmO/cG4duda0P7fk78wslyvz+9kW9LR2pYvQxjYp4JWJo9+PxyQ3oqpZzS6Y7zD9pTOo0H22F61GkUs55PBRXuQ2fqOA8CkSWERw7HDWYB57SA3HAQNw5G3Gs9gZf5Ls4chk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242359; c=relaxed/simple;
-	bh=F9SO0SqK8bG1I8hFZ3skt7R6pqnnPq9qHCJHYGaW9f4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gcwk/jZXCByC4FI+6JydQaz0XIGIzHHrhQlWt7IUErJo0dQsMUbTo7Q5XNeslARamcP02EeZEN27srLP+mOPCs2Wss20FhjgfTYMLZV6Hv83MFNJX90Kvy5L4yo6NEY5rCikC7P8OWliS0EyEBZ23/xkgVbEHWG1QXZLz0vMoCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=igbMQ4yR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F37C4CECF;
-	Tue,  3 Dec 2024 16:12:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733242358;
-	bh=F9SO0SqK8bG1I8hFZ3skt7R6pqnnPq9qHCJHYGaW9f4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=igbMQ4yRi9reLImfDnJLr2BHCu1Z6F6F0e6W+TcZm5J3kPylbhM5KYLoN3bmunPN6
-	 8vVr4LryjKCdHD8Qqr93ucUmUxyyNtFF019BIvNgzInqLGkiHneY5/OTt6mxXchlIq
-	 QWDdRsfwGxrBTvC9M8mtoYz5NDXiwvVL8BJfeyUTI+gJ2TDeqBaPLBl+BIu7X6T65t
-	 BJaqYpd5wEkGSao0FoVOxlBvD3Rao/umYJvBjgiGdgFPCUfpCngS/mcWQfx0qy39m1
-	 mQv6knn+kjCqYJS2cuQPyO4QbOTd5IPBOvmpUqFl3GnPDh02o6xkNwWAKBbLNsYVxl
-	 h/R3wWZvFOjNg==
-Date: Tue, 3 Dec 2024 16:12:33 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 5/6] arm64/signal: Avoid corruption of SME state when
- entering signal handler
-Message-ID: <537fe318-a679-4b5c-b87f-93a7812dbeca@sirena.org.uk>
-References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
- <20241203-arm64-sme-reenable-v1-5-d853479d1b77@kernel.org>
- <Z08kvi0znVM2RHx4@e133380.arm.com>
+	s=arc-20240116; t=1733242945; c=relaxed/simple;
+	bh=MAMb3InXzNtxIVC9mpD36wC7DiH6bFIuVagB1fhWAqU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qi7o4d7sHCDZp//hLw+ggjGlWPnu7JdJRNch0+VlZgk7lZaF14D5fUIZ4ZU4nNIeOpJG5a7ihfyNoFzyau0DbVtlBkMDHl4AEk5apk9Elnifp1K8q6Vu6BKLX4eof/71XdompPVNZXlLk74jEpn3P7zx5Xlj8JfJXhjAg/JS0FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=w68KKUgr; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
+	by cmsmtp with ESMTPS
+	id IUyhtuzE1umtXIVdmtPO7r; Tue, 03 Dec 2024 16:20:46 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id IVdltLsaBNWjnIVdltCZLZ; Tue, 03 Dec 2024 16:20:45 +0000
+X-Authority-Analysis: v=2.4 cv=dOagmvZb c=1 sm=1 tr=0 ts=674f2fdd
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=GtNDhlRIH4u8wNL3EA3KcA==:17
+ a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=7T7KSl7uo7wA:10 a=mDV3o1hIAAAA:8
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=YY3CVkhoXc6STAsvKmAA:9
+ a=QEXdDO2ut3YA:10 a=J6ZU--GpMfYA:10 a=Xt_RvD8W3m28Mn_h3AK8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=U74Ds+GFctnV/vlAbJcubbjqMwBEGmBMo13rCZz9JUQ=; b=w68KKUgrX01H8mxitVGqv0lS0F
+	B2ZzyNafbaYy6VjpmAnU6+vQTyJKoP+6NadRddjvX9w3PIkMHhpzvhftrt/dYchj4yjwtWjYPPqND
+	K9/QV6MPnGW8N4HZmBrpPdNF0sbatbLkJrR27cIhC0oIbUqt91oghFJBXIIRH/Vf4AI8CCDv7A5ny
+	e1p9spRgJJOIfvhg+SjxQbMye8R5XUhot8+lmEQxFf7cM8lv2lodKc9908l86r69hGU25N/3YvbfT
+	Je5UdHwow0NTbZXsNVFKDgaq6QW6tUuoxH6T/1tNSUhAWnW1MkNLiNUCjHLhFko71M59FJgUqcCqH
+	Ii7TGyzQ==;
+Received: from [177.238.21.80] (port=15554 helo=[192.168.0.21])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1tIVdk-002GvY-0s;
+	Tue, 03 Dec 2024 10:20:44 -0600
+Message-ID: <238df0b9-d1db-4f72-8238-828ea20ad1d9@embeddedor.com>
+Date: Tue, 3 Dec 2024 10:20:41 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="+lgisz515vzeuI55"
-Content-Disposition: inline
-In-Reply-To: <Z08kvi0znVM2RHx4@e133380.arm.com>
-X-Cookie: Alimony is the high cost of leaving.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: wireless: sme: Initialize n_channels before
+ accessing channels in cfg80211_conn_scan
+To: Johannes Berg <johannes@sipsolutions.net>, Haoyu Li <lihaoyu499@gmail.com>
+Cc: Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva"
+ <gustavoars@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, stable@vger.kernel.org
+References: <20241203152049.348806-1-lihaoyu499@gmail.com>
+ <fa9ef37903db0f81654451104b1407f60f85ce5d.camel@sipsolutions.net>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <fa9ef37903db0f81654451104b1407f60f85ce5d.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.21.80
+X-Source-L: No
+X-Exim-ID: 1tIVdk-002GvY-0s
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.21]) [177.238.21.80]:15554
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 1
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNkb9o14wqW4aLAwkUU6Jxc83StYMWaj+l3SE9r5Ho1KcZfBHK0OAL97TY8bvcAfW2cLS5vtLUnla2JrmdyfH2fHzbsjvSe0bk8H7biL/p4+zhL2uVAs
+ 2i/So6o7FVsPpTUIlxQoJzwQ44T7a0Rqp9/pJ5NaMBxL7bUzgu5escMMQredGfW21v0mDwLi6pXrCNOUI6/XMQuGB7d1wcgrAUI=
 
 
---+lgisz515vzeuI55
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Tue, Dec 03, 2024 at 03:33:18PM +0000, Dave Martin wrote:
-> On Tue, Dec 03, 2024 at 12:45:57PM +0000, Mark Brown wrote:
+On 03/12/24 09:25, Johannes Berg wrote:
+> On Tue, 2024-12-03 at 23:20 +0800, Haoyu Li wrote:
+>> With the new __counted_by annocation in cfg80211_scan_request struct,
+>> the "n_channels" struct member must be set before accessing the
+>> "channels" array. Failing to do so will trigger a runtime warning
+>> when enabling CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
+>>
+>> Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+>>
+>> Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
+> 
+> nit: there should be no newline between these
+> 
+> My tolerance for this is going WAY down, it seems it's all just busy-
+> work, and then everyone complains and I need to handle "urgent fixes"
+> because of it etc.
+> 
+> I'm having severe second thoughts about ever having accepted the
+> __counted_by annotations, I think we should just revert it. Experiment
+> failed, we found ... that the code is fine but constantly needs changes
+> to make the checkers happy.
 
-> > +	get_cpu_fpsimd_context();
+Thanks for taking these changes! - This is improving :) See below.
 
-> > +		if (current->thread.svcr & SVCR_SM_MASK) {
-> > +			memset(&current->thread.uw.fpsimd_state.vregs, 0,
-> > +			       sizeof(current->thread.uw.fpsimd_state.vregs));
+"Right now, any addition of a counted_by annotation must also
+include an open-coded assignment of the counter variable after
+the allocation:
 
-> Do we need to hold the CPU fpsimd context across this memset?
+   p = alloc(p, array, how_many);
+   p->counter = how_many;
 
-> IIRC, TIF_FOREIGN_FPSTATE can be spontaneously cleared along with
-> dumping of the regs into thread_struct (from current's PoV), but never
-> spontaneously set again.  So ... -> [*]
+In order to avoid the tedious and error-prone work of manually adding
+the open-coded counted-by intializations everywhere in the Linux
+kernel, a new GCC builtin __builtin_counted_by_ref will be very useful
+to be added to help the adoption of the counted-by attribute.
 
-Yes, we could drop the lock here.  OTOH this is very simple and easy to
-understand.
+  -- Built-in Function: TYPE __builtin_counted_by_ref (PTR)
+      The built-in function '__builtin_counted_by_ref' checks whether the
+      array object pointed by the pointer PTR has another object
+      associated with it that represents the number of elements in the
+      array object through the 'counted_by' attribute (i.e.  the
+      counted-by object).  If so, returns a pointer to the corresponding
+      counted-by object.  If such counted-by object does not exist,
+      returns a null pointer.
 
-> > +		/* Ensure any copies on other CPUs aren't reused */
-> > +		fpsimd_flush_task_state(current);
+      This built-in function is only available in C for now.
 
-> (This is very similar to fpsimd_flush_thread(); can they be unified?)
+      The argument PTR must be a pointer to an array.  The TYPE of the
+      returned value is a pointer type pointing to the corresponding
+      type of the counted-by object or a void pointer type in case of a
+      null pointer being returned.
 
-I have a half finished series to replace the whole setup around
-accessing the state with get/put operations for working on the state
-which should remove all these functions.  The pile of similarly and
-confusingly named operations we have for working on the state is one of
-the major sources of issues with this code, even when actively working
-on the code it's hard to remember exactly which operation does what
-never mind the rules for which is needed.
+With this new builtin, the central allocator could be updated to:
 
---+lgisz515vzeuI55
-Content-Type: application/pgp-signature; name="signature.asc"
+   #define MAX(A, B) (A > B) ? (A) : (B)
+   #define alloc(P, FAM, COUNT) ({ \
+     __auto_type __p = &(P); \
+     __auto_type __c = (COUNT); \
+     size_t __size = MAX (sizeof (*(*__p)),\
+			 __builtin_offsetof (__typeof(*(*__p)),FAM) \
+			 + sizeof (*((*__p)->FAM)) * __c); \
+     if ((*__p = kmalloc(__size))) { \
+       __auto_type ret = __builtin_counted_by_ref((*__p)->FAM); \
+       *_Generic(ret, void *: &(size_t){0}, default: ret) = __c; \
+     } \
+   })
 
------BEGIN PGP SIGNATURE-----
+And then structs can gain the counted_by attribute without needing
+additional open-coded counter assignments for each struct, and
+unannotated structs could still use the same allocator."[1]
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdPLfEACgkQJNaLcl1U
-h9BKOAf+MLS0FpEuVDT0jpRdE+xAaBTIboWgjMz8CcNXxOEGRn3n7smri5xV50BH
-Lvvp8PMP9DsUOxWqAAq7MxgEpo1aXopGH1oc84zjtzOD/rl+MQDlxFcS6jOM1dCf
-oI9bemAyeqxTT79KiPVTptC20e+VcCDeHM/7hXA1gqGPXz/07sdpgT9ZBX2KCdEI
-JD6hdVNzFlj/6Fjy7Awgu9WiqOA8oxjqO3NKgrJMbtdnMlm4SP4O1BX9KPgS35K6
-w0rIXthg3E5B1q53ry+07iAhAUA9CgpiKnKTzRe6W0ogv47mtp6FZa9wUcnBz6RM
-+vtgOU1CAStCu8pO5UeeO+kv1MSjxA==
-=TKmL
------END PGP SIGNATURE-----
+These changes have been merged already, and will likely be released
+in coming GCC 15.
 
---+lgisz515vzeuI55--
+For Clang, see [2].
+
+For the kmalloc-family changes, see [3] (a new version of this that includes
+the __builtin_counted_by_ref() update is coming soon).
+
+-Gustavo
+
+[1] https://gcc.gnu.org/pipermail/gcc-patches/2024-October/665165.html
+[2] https://github.com/llvm/llvm-project/issues/99774
+[3] https://lore.kernel.org/linux-hardening/20240822231324.make.666-kees@kernel.org/
 
