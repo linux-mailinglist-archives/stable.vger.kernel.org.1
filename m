@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4828E9E2508
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A6F9E24F0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C82283197
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE3BAB60199
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAD81F7561;
-	Tue,  3 Dec 2024 15:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831E21F76A2;
+	Tue,  3 Dec 2024 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9k5CKjL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fvaz0p4J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253A81F8902;
-	Tue,  3 Dec 2024 15:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB241F75B7;
+	Tue,  3 Dec 2024 15:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241344; cv=none; b=m5zGY4MiypKliOOjyjZLeD+JL/VxLFmffMlHuXfgaagssF6CNH3XlHltlRZZf1B6IiWzfkA1cmHWXRtM9F0/DFATg+Sn5iiLswcWH8stIGqWtxur1ZBYH0QkzIrqLtvPprzkSzbSICrfoL+WykcF61MPTkWf1Bmy7+6/q2Vg94w=
+	t=1733239342; cv=none; b=FFtjqES1HFE50U/fryrPcWunN3V59WGGwAbOw5Pz54dksN36u3t9/adlcCY5yeS4JEZ2/ZoIKgUJcsnyOZF4FLCCSc3OvVdSIGRDHRlgNtatztqMU3YAn6wVy5Hs0AsP5+/LhfnAXqlchb9nIX/oTp9XYV1T9uHDv8slx19Y/TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241344; c=relaxed/simple;
-	bh=5kY9qlT/ayA111i/B8Xapr14DNLGnJeNneQDNvyTtQQ=;
+	s=arc-20240116; t=1733239342; c=relaxed/simple;
+	bh=iSwwvW+y51kq4ZzCPifiS0zRlvZtlBurq0TDFb8O7P8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gd8KQTpU3+i5lwP0Dn/o5XXzqKXPTpfGwSVhj6hxDecvVTfnIfQ2VH6LywHw1q6k+HguV624AVFMHec07jWc1XYinI5Po2gIvxv7WoxlbqnyVH4XwceFcd1TJa2OWs0x/hKFcjN/XtV5JsZuUikMhp0b54JeEXWsgjXmA8AiF4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9k5CKjL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8907EC4CED9;
-	Tue,  3 Dec 2024 15:55:43 +0000 (UTC)
+	 MIME-Version; b=i8qId/2uj0o59ZwtDYaOCFYBIPCCDL85eD5XYURMhbK2e/Dn0M7cyMVudKnKvgCvO/A2Cucr9kD3VTop7hDa7uoz4S20RNskqsRMCg5MOun4Gw9R/DGubVpBFeJRMbTJhWtcQeyqe3DZS90MgiMUgRecVtTqKCVGHAZV6MXf7J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fvaz0p4J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7145AC4CECF;
+	Tue,  3 Dec 2024 15:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241344;
-	bh=5kY9qlT/ayA111i/B8Xapr14DNLGnJeNneQDNvyTtQQ=;
+	s=korg; t=1733239340;
+	bh=iSwwvW+y51kq4ZzCPifiS0zRlvZtlBurq0TDFb8O7P8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9k5CKjL2esIS6ET1O+XrA0HI7nb5MhZdzEMrsNVeJamNxVVjiky3jO9fZWf3dSnK
-	 J0IGWfTqgTlDXjVwSciOkOuc7wzOtESLJOBcm2Exo5PIWiyWa2NCfTogykjaXKQTny
-	 /Ae/UMUycEgv49DIo9JwgFVgxPh9Xzy3uM6tbBvc=
+	b=Fvaz0p4JB1M0GKdGQ4guqrga/HNqaHsI5xUGjZktrkO054lkVYeuc+sh0nSzSHvzu
+	 uPE0bOCHj4cb1+eILJqU57mdJODmSi0ZN4NSFPyxi3Dovh/46ljBxfw5BjXWbYnsj0
+	 crjSQQlsQ/6y0m9NlztxzL8hoGlvpvy+kXVAx1Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 393/826] RDMA/hns: Use dev_* printings in hem code instead of ibdev_*
-Date: Tue,  3 Dec 2024 15:42:00 +0100
-Message-ID: <20241203144759.093601955@linuxfoundation.org>
+Subject: [PATCH 6.11 549/817] phy: airoha: Fix REG_CSR_2L_PLL_CMN_RESERVE0 config in airoha_pcie_phy_init_clk_out()
+Date: Tue,  3 Dec 2024 15:42:01 +0100
+Message-ID: <20241203144017.336229918@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,184 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit d81fb6511abf18591befaa5f4a972ffc838690ec ]
+[ Upstream commit 09a19fb75498985cbb598f1fa43a7d2416925c30 ]
 
-The hem code is executed before ib_dev is registered, so use dev_*
-printing instead of ibdev_* to avoid log like this:
+Fix typo configuring REG_CSR_2L_PLL_CMN_RESERVE0 register in
+airoha_pcie_phy_init_clk_out routine.
 
-(null): set HEM address to HW failed!
-
-Fixes: 2f49de21f3e9 ("RDMA/hns: Optimize mhop get flow for multi-hop addressing")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241024124000.2931869-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: d7d2818b9383 ("phy: airoha: Add PCIe PHY driver for EN7581 SoC.")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20240918-airoha-en7581-phy-fixes-v1-1-8291729a87f8@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 44 ++++++++++++------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/phy/phy-airoha-pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index c7c167e2a0451..ee5d2c1bb5ca0 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -300,7 +300,7 @@ static int calc_hem_config(struct hns_roce_dev *hr_dev,
- 			   struct hns_roce_hem_mhop *mhop,
- 			   struct hns_roce_hem_index *index)
- {
--	struct ib_device *ibdev = &hr_dev->ib_dev;
-+	struct device *dev = hr_dev->dev;
- 	unsigned long mhop_obj = obj;
- 	u32 l0_idx, l1_idx, l2_idx;
- 	u32 chunk_ba_num;
-@@ -331,14 +331,14 @@ static int calc_hem_config(struct hns_roce_dev *hr_dev,
- 		index->buf = l0_idx;
- 		break;
- 	default:
--		ibdev_err(ibdev, "table %u not support mhop.hop_num = %u!\n",
--			  table->type, mhop->hop_num);
-+		dev_err(dev, "table %u not support mhop.hop_num = %u!\n",
-+			table->type, mhop->hop_num);
- 		return -EINVAL;
- 	}
- 
- 	if (unlikely(index->buf >= table->num_hem)) {
--		ibdev_err(ibdev, "table %u exceed hem limt idx %llu, max %lu!\n",
--			  table->type, index->buf, table->num_hem);
-+		dev_err(dev, "table %u exceed hem limt idx %llu, max %lu!\n",
-+			table->type, index->buf, table->num_hem);
- 		return -EINVAL;
- 	}
- 
-@@ -448,14 +448,14 @@ static int set_mhop_hem(struct hns_roce_dev *hr_dev,
- 			struct hns_roce_hem_mhop *mhop,
- 			struct hns_roce_hem_index *index)
- {
--	struct ib_device *ibdev = &hr_dev->ib_dev;
-+	struct device *dev = hr_dev->dev;
- 	u32 step_idx;
- 	int ret = 0;
- 
- 	if (index->inited & HEM_INDEX_L0) {
- 		ret = hr_dev->hw->set_hem(hr_dev, table, obj, 0);
- 		if (ret) {
--			ibdev_err(ibdev, "set HEM step 0 failed!\n");
-+			dev_err(dev, "set HEM step 0 failed!\n");
- 			goto out;
- 		}
- 	}
-@@ -463,7 +463,7 @@ static int set_mhop_hem(struct hns_roce_dev *hr_dev,
- 	if (index->inited & HEM_INDEX_L1) {
- 		ret = hr_dev->hw->set_hem(hr_dev, table, obj, 1);
- 		if (ret) {
--			ibdev_err(ibdev, "set HEM step 1 failed!\n");
-+			dev_err(dev, "set HEM step 1 failed!\n");
- 			goto out;
- 		}
- 	}
-@@ -475,7 +475,7 @@ static int set_mhop_hem(struct hns_roce_dev *hr_dev,
- 			step_idx = mhop->hop_num;
- 		ret = hr_dev->hw->set_hem(hr_dev, table, obj, step_idx);
- 		if (ret)
--			ibdev_err(ibdev, "set HEM step last failed!\n");
-+			dev_err(dev, "set HEM step last failed!\n");
- 	}
- out:
- 	return ret;
-@@ -485,14 +485,14 @@ static int hns_roce_table_mhop_get(struct hns_roce_dev *hr_dev,
- 				   struct hns_roce_hem_table *table,
- 				   unsigned long obj)
- {
--	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	struct hns_roce_hem_index index = {};
- 	struct hns_roce_hem_mhop mhop = {};
-+	struct device *dev = hr_dev->dev;
- 	int ret;
- 
- 	ret = calc_hem_config(hr_dev, table, obj, &mhop, &index);
- 	if (ret) {
--		ibdev_err(ibdev, "calc hem config failed!\n");
-+		dev_err(dev, "calc hem config failed!\n");
- 		return ret;
- 	}
- 
-@@ -504,7 +504,7 @@ static int hns_roce_table_mhop_get(struct hns_roce_dev *hr_dev,
- 
- 	ret = alloc_mhop_hem(hr_dev, table, &mhop, &index);
- 	if (ret) {
--		ibdev_err(ibdev, "alloc mhop hem failed!\n");
-+		dev_err(dev, "alloc mhop hem failed!\n");
- 		goto out;
- 	}
- 
-@@ -512,7 +512,7 @@ static int hns_roce_table_mhop_get(struct hns_roce_dev *hr_dev,
- 	if (table->type < HEM_TYPE_MTT) {
- 		ret = set_mhop_hem(hr_dev, table, obj, &mhop, &index);
- 		if (ret) {
--			ibdev_err(ibdev, "set HEM address to HW failed!\n");
-+			dev_err(dev, "set HEM address to HW failed!\n");
- 			goto err_alloc;
- 		}
- 	}
-@@ -575,7 +575,7 @@ static void clear_mhop_hem(struct hns_roce_dev *hr_dev,
- 			   struct hns_roce_hem_mhop *mhop,
- 			   struct hns_roce_hem_index *index)
- {
--	struct ib_device *ibdev = &hr_dev->ib_dev;
-+	struct device *dev = hr_dev->dev;
- 	u32 hop_num = mhop->hop_num;
- 	u32 chunk_ba_num;
- 	u32 step_idx;
-@@ -605,21 +605,21 @@ static void clear_mhop_hem(struct hns_roce_dev *hr_dev,
- 
- 		ret = hr_dev->hw->clear_hem(hr_dev, table, obj, step_idx);
- 		if (ret)
--			ibdev_warn(ibdev, "failed to clear hop%u HEM, ret = %d.\n",
--				   hop_num, ret);
-+			dev_warn(dev, "failed to clear hop%u HEM, ret = %d.\n",
-+				 hop_num, ret);
- 
- 		if (index->inited & HEM_INDEX_L1) {
- 			ret = hr_dev->hw->clear_hem(hr_dev, table, obj, 1);
- 			if (ret)
--				ibdev_warn(ibdev, "failed to clear HEM step 1, ret = %d.\n",
--					   ret);
-+				dev_warn(dev, "failed to clear HEM step 1, ret = %d.\n",
-+					 ret);
- 		}
- 
- 		if (index->inited & HEM_INDEX_L0) {
- 			ret = hr_dev->hw->clear_hem(hr_dev, table, obj, 0);
- 			if (ret)
--				ibdev_warn(ibdev, "failed to clear HEM step 0, ret = %d.\n",
--					   ret);
-+				dev_warn(dev, "failed to clear HEM step 0, ret = %d.\n",
-+					 ret);
- 		}
- 	}
+diff --git a/drivers/phy/phy-airoha-pcie.c b/drivers/phy/phy-airoha-pcie.c
+index bd3edaa986c8b..3113be0a0e5b6 100644
+--- a/drivers/phy/phy-airoha-pcie.c
++++ b/drivers/phy/phy-airoha-pcie.c
+@@ -456,7 +456,7 @@ static void airoha_pcie_phy_init_clk_out(struct airoha_pcie_phy *pcie_phy)
+ 	airoha_phy_csr_2l_clear_bits(pcie_phy, REG_CSR_2L_CLKTX1_OFFSET,
+ 				     CSR_2L_PXP_CLKTX1_SR);
+ 	airoha_phy_csr_2l_update_field(pcie_phy, REG_CSR_2L_PLL_CMN_RESERVE0,
+-				       CSR_2L_PXP_PLL_RESERVE_MASK, 0xdd);
++				       CSR_2L_PXP_PLL_RESERVE_MASK, 0xd0d);
  }
-@@ -629,14 +629,14 @@ static void hns_roce_table_mhop_put(struct hns_roce_dev *hr_dev,
- 				    unsigned long obj,
- 				    int check_refcount)
- {
--	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	struct hns_roce_hem_index index = {};
- 	struct hns_roce_hem_mhop mhop = {};
-+	struct device *dev = hr_dev->dev;
- 	int ret;
  
- 	ret = calc_hem_config(hr_dev, table, obj, &mhop, &index);
- 	if (ret) {
--		ibdev_err(ibdev, "calc hem config failed!\n");
-+		dev_err(dev, "calc hem config failed!\n");
- 		return;
- 	}
- 
+ static void airoha_pcie_phy_init_csr_2l(struct airoha_pcie_phy *pcie_phy)
 -- 
 2.43.0
 
