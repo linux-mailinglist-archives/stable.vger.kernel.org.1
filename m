@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-96629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB9509E288D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:03:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0779E21D2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D4CAB85D5B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:02:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2166AB2D3F7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C331F429B;
-	Tue,  3 Dec 2024 15:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7921F706B;
+	Tue,  3 Dec 2024 15:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkUwgdsJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e06iKKMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A7733FE;
-	Tue,  3 Dec 2024 15:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA221E3DF9;
+	Tue,  3 Dec 2024 15:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238134; cv=none; b=q95rmCJ4xJLiW6j6pm4ec2ZnjPa4B4xqyZ4SZ5JBGuaB8UUcOI2wHMRSc4shCfwhc4Yo+3j0OkxaZtCeVZZmzxAnssc813qRxBQjwsQahDQ+Wi6BX/j/xDVLsAH5GqR7Ppy4b4/9i4XAlEml/5rRtw5VNlKweIQheJHXLgh/yVc=
+	t=1733238044; cv=none; b=tUylpPDiXakioCW4y5gci82Yd/EKHi+7koqYGaSbp9e9UxnJpZ5iVNUXOhZYJ/Cv9JB8IKpExZlBva6bHKcKiVieJP++FCLWLkJzw4y9477H3IQKaVfQmBpLD8cZvq/J2c8GNo4ReeYBmC918zqc+3qxl9QEutHXyqzX5rZV6ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238134; c=relaxed/simple;
-	bh=Jx0SgSs39bAVlBWEZk/e7hq5KHY+xNq4nOrmEZh2cSo=;
+	s=arc-20240116; t=1733238044; c=relaxed/simple;
+	bh=aVncyru81RkUsL0++nNKCRJE60QBLxPUpVY7zZMhe6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaJz3U55cu4ApGhRaDsc2jRd6opaabngH7dezJepz144ZDndrhAgOyq2YV0VgmACMXi2cPG9B2TdLuwV47TMeHrx2YuyWlnQFx93+fVJq8yFXBRYbwW0wmE/CIUIvka3zhTWAFgAVDo4LjT0m6Ep2T/yUz4iSpZXw/kHfgxTwWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkUwgdsJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432A2C4CECF;
-	Tue,  3 Dec 2024 15:02:14 +0000 (UTC)
+	 MIME-Version; b=t05vV87qm6wbx0X8hj1L9Z3kqy84++QQTosWST/D9La+cDA8UT/b1cVoGLTQ4V/0yLNY+956BgeXtleqeynBzDEtIyCKh8pkjxPoBI3othb+843wP4rI7G1+SvaWxALPe5rd8tnIGMXGBvxHCrH8W9bMWoFmdq6newaxZJtx9Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e06iKKMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B4BC4CECF;
+	Tue,  3 Dec 2024 15:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238134;
-	bh=Jx0SgSs39bAVlBWEZk/e7hq5KHY+xNq4nOrmEZh2cSo=;
+	s=korg; t=1733238044;
+	bh=aVncyru81RkUsL0++nNKCRJE60QBLxPUpVY7zZMhe6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NkUwgdsJH2uqp1LQZkpip9o++HH6izPtFMqhqGZa4Oj/+Hgi76EV4CaVE3+9x0bKQ
-	 vMK5v8nwdS3clvJdoWpDHQG8BK31eJtaIzbYXC+FES7emkKCpyyNkoeTG0QeGz9AiO
-	 NUDTgQYyt55A1eN/L6DG3jsdzsendI7zxaDAVV/4=
+	b=e06iKKMTMBm8bV6kaOdWqyyY2ZNOdFogOtp2r44oXod2d0trm4gPH8/TVlbF+YTjK
+	 OA8XgVKXkZ37m3J3dA14ij/yYVc5pKlbTUhwt+Udluk5Dkzcww9giu/+Y62Ys/qdj6
+	 mLaqHpQYKZX+WrvO63JUSRHFmFmg+qsbn4tU3OX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 142/817] arm64: dts: qcom: qcs6390-rb3gen2: use modem.mbn for modem DSP
-Date: Tue,  3 Dec 2024 15:35:14 +0100
-Message-ID: <20241203144001.267968503@linuxfoundation.org>
+Subject: [PATCH 6.11 144/817] drivers: soc: xilinx: add the missing kfree in xlnx_add_cb_for_suspend()
+Date: Tue,  3 Dec 2024 15:35:16 +0100
+Message-ID: <20241203144001.347092224@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,36 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 6317aad0e1525f3e3609d9a0fea762a37799943a ]
+[ Upstream commit 44ed4f90a97ff6f339e50ac01db71544e0990efc ]
 
-Newer boards should always use squashed MBN firmware instead of split
-MDT+bNN. Use qcom/qcs6490/modem.mbn as the firmware for the modem on
-RB3gen2.
+If we fail to allocate memory for cb_data by kmalloc, the memory
+allocation for eve_data is never freed, add the missing kfree()
+in the error handling path.
 
-Fixes: ac6d35b9b74c ("arm64: dts: qcom: qcs6490-rb3gen2: Enable various remoteprocs")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-Link: https://lore.kernel.org/r/20240907-rb3g2-fixes-v1-1-eb9da98e9f80@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 05e5ba40ea7a ("driver: soc: xilinx: Add support of multiple callbacks for same event in event management driver")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Link: https://lore.kernel.org/r/20240706065155.452764-1-cuigaosheng1@huawei.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/xilinx/xlnx_event_manager.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
-index 0d45662b8028b..5d0167fbc7098 100644
---- a/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
-+++ b/arch/arm64/boot/dts/qcom/qcs6490-rb3gen2.dts
-@@ -707,7 +707,7 @@ &remoteproc_cdsp {
- };
+diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
+index f529e1346247c..85df6b9c04ee6 100644
+--- a/drivers/soc/xilinx/xlnx_event_manager.c
++++ b/drivers/soc/xilinx/xlnx_event_manager.c
+@@ -188,8 +188,10 @@ static int xlnx_add_cb_for_suspend(event_cb_func_t cb_fun, void *data)
+ 	INIT_LIST_HEAD(&eve_data->cb_list_head);
  
- &remoteproc_mpss {
--	firmware-name = "qcom/qcs6490/modem.mdt";
-+	firmware-name = "qcom/qcs6490/modem.mbn";
- 	status = "okay";
- };
+ 	cb_data = kmalloc(sizeof(*cb_data), GFP_KERNEL);
+-	if (!cb_data)
++	if (!cb_data) {
++		kfree(eve_data);
+ 		return -ENOMEM;
++	}
+ 	cb_data->eve_cb = cb_fun;
+ 	cb_data->agent_data = data;
  
 -- 
 2.43.0
