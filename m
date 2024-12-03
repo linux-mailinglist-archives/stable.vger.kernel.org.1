@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-97860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9C39E25E4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:06:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAC609E2341
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:34:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C5F6284A29
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:06:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C45F16AF0A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F331F76D1;
-	Tue,  3 Dec 2024 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EDE1F76D5;
+	Tue,  3 Dec 2024 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCmyQO5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKO92HTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9013123CE;
-	Tue,  3 Dec 2024 16:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A206D1F7557;
+	Tue,  3 Dec 2024 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241980; cv=none; b=mEGF9/p60JvNhrlxRyqybZ9lmR/mJgDE2b5DCBBy6UXawDuF94YdlIWhFSeT22HDGanHiMDMLKpPzzM8ZPu33qSPZIQRt2q+GI9WNAoQ5XcInb+J+zMjXdKBjldFZW7IcXTPWJPbCYmjOZy9t0HoV8QWfwakr7vpfOnaMNHc0H8=
+	t=1733239765; cv=none; b=B3WJC2Wxm7moYatxUBsfIG9kicdSJ9VcuN4ll399fxddnv6wkETlagxMuMihXl3WJ7ARirN8rrdICUluSmLuakqvGQShoJYDDrTy2PWD2MtdQdbDn0rV3mlHxvQ+UHOylCrETWOYBw9Gvg8YeJ1xImcLNtw0FiYnE7LXnIolXBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241980; c=relaxed/simple;
-	bh=nXGcTdHxOsLBjVvKRsP62+t9kAdCoB8oRCxslSOeFiU=;
+	s=arc-20240116; t=1733239765; c=relaxed/simple;
+	bh=0Jdo9yRRkLlXoP1wsHA8PLz3lNKGc+8q3094+ORiU7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3pMv02pn6ErBjt8PHuFJ45SCsQlF9uMOSWAr+PX/VboNmYE0wP3CulsOxUjt4u9i8VGPIREaxdXeqv4jvduUR9WVpth6ws0D9ti01OUPIOLiQRfVu0g51ce+MZI4Vv3GSOsW+0GMXVAPYZNOK96/RavNb0kpPeQesQ2ONniIJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCmyQO5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A09C4CECF;
-	Tue,  3 Dec 2024 16:06:19 +0000 (UTC)
+	 MIME-Version; b=sX0XMTCcWgPM9/Hl/FZx39KPiM/rB7nM6w/iGkoOKefCKN6kJxo+9NyH4plNlfZWCdSl1Yq3kvt1mq7sBze+KWgEQSQndyfRaYFqW/m0NPz6FTxmKgJn1QrQLyGxTyBxmQVLYJS+vZsk9Io2cz3lpC/ty6pN4Duz4Ckx5yiPoi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKO92HTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262A9C4CECF;
+	Tue,  3 Dec 2024 15:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241980;
-	bh=nXGcTdHxOsLBjVvKRsP62+t9kAdCoB8oRCxslSOeFiU=;
+	s=korg; t=1733239765;
+	bh=0Jdo9yRRkLlXoP1wsHA8PLz3lNKGc+8q3094+ORiU7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCmyQO5EhGDS4Oi6Dc5cdoV0DyZTsV4bM20UY8b4CAistpfRNUQzoPnXzhShyiysu
-	 S8xiQVAQa38hobz6slKLFlC20AWMeFpt+sftMXLbdDwuszNpzPBOh4S++ZJ9CZ5voL
-	 61TcYofgyqd3Y6BfhUAfR7qVowsSF4shgwlk55TQ=
+	b=LKO92HTYXl50qA56tAGG0dziTcNigNi2gJ+vzrxlGUqos4q2NOnUgzVnNlu0j3tpK
+	 kDh04YoVbKcs8cYty/9oZtjnIu4xQt+bb9WyjlH0LURjs8x3jWb+zU3/8ZaE2ZMEcl
+	 xnbP/9yDGOCpth+t5jFOWSVSpp6gjfZcpSCm+Kro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 572/826] octeontx2-af: RPM: fix stale RSFEC counters
+	Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.11 727/817] block: fix ordering between checking BLK_MQ_S_STOPPED request adding
 Date: Tue,  3 Dec 2024 15:44:59 +0100
-Message-ID: <20241203144806.064323836@linuxfoundation.org>
+Message-ID: <20241203144024.372333022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Muchun Song <songmuchun@bytedance.com>
 
-[ Upstream commit 07cd1eb166a3fa7244afa74d48bd13c9df7c559d ]
+commit 96a9fe64bfd486ebeeacf1e6011801ffe89dae18 upstream.
 
-The earlier patch sets the 'Stats control register' for RPM
-receive/transmit statistics instead of RSFEC statistics,
-causing the driver to return stale FEC counters.
+Supposing first scenario with a virtio_blk driver.
 
-Fixes: 84ad3642115d ("octeontx2-af: Add FEC stats for RPM/RPM_USX block")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU0                        CPU1
+
+blk_mq_try_issue_directly()
+  __blk_mq_issue_directly()
+    q->mq_ops->queue_rq()
+      virtio_queue_rq()
+        blk_mq_stop_hw_queue()
+                            virtblk_done()
+  blk_mq_request_bypass_insert()  1) store
+                              blk_mq_start_stopped_hw_queue()
+                                clear_bit(BLK_MQ_S_STOPPED)       3) store
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+                                  blk_mq_sched_dispatch_requests()
+  blk_mq_run_hw_queue()
+    if (!blk_mq_hctx_has_pending())
+      return
+    blk_mq_sched_dispatch_requests()
+      if (blk_mq_hctx_stopped())  2) load
+        return
+      __blk_mq_sched_dispatch_requests()
+
+Supposing another scenario.
+
+CPU0                        CPU1
+
+blk_mq_requeue_work()
+  blk_mq_insert_request() 1) store
+                            virtblk_done()
+                              blk_mq_start_stopped_hw_queue()
+  blk_mq_run_hw_queues()        clear_bit(BLK_MQ_S_STOPPED)       3) store
+                                blk_mq_run_hw_queue()
+                                  if (!blk_mq_hctx_has_pending()) 4) load
+                                    return
+                                  blk_mq_sched_dispatch_requests()
+    if (blk_mq_hctx_stopped())  2) load
+      continue
+    blk_mq_run_hw_queue()
+
+Both scenarios are similar, the full memory barrier should be inserted
+between 1) and 2), as well as between 3) and 4) to make sure that either
+CPU0 sees BLK_MQ_S_STOPPED is cleared or CPU1 sees dispatch list.
+Otherwise, either CPU will not rerun the hardware queue causing
+starvation of the request.
+
+The easy way to fix it is to add the essential full memory barrier into
+helper of blk_mq_hctx_stopped(). In order to not affect the fast path
+(hardware queue is not stopped most of the time), we only insert the
+barrier into the slow path. Actually, only slow path needs to care about
+missing of dispatching the request to the low-level device driver.
+
+Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
+Cc: stable@vger.kernel.org
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241014092934.53630-4-songmuchun@bytedance.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rpm.c | 13 +++++++++----
- drivers/net/ethernet/marvell/octeontx2/af/rpm.h |  4 +++-
- 2 files changed, 12 insertions(+), 5 deletions(-)
+ block/blk-mq.c |    6 ++++++
+ block/blk-mq.h |   13 +++++++++++++
+ 2 files changed, 19 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-index 22dd50a3fcd3a..70629f94c27ef 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
-@@ -699,6 +699,10 @@ int rpm_get_fec_stats(void *rpmd, int lmac_id, struct cgx_fec_stats_rsp *rsp)
- 	if (rpm->lmac_idmap[lmac_id]->link_info.fec == OTX2_FEC_NONE)
- 		return 0;
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2413,6 +2413,12 @@ void blk_mq_start_stopped_hw_queue(struc
+ 		return;
  
-+	/* latched registers FCFECX_CW_HI/RSFEC_STAT_FAST_DATA_HI_CDC are common
-+	 * for all counters. Acquire lock to ensure serialized reads
+ 	clear_bit(BLK_MQ_S_STOPPED, &hctx->state);
++	/*
++	 * Pairs with the smp_mb() in blk_mq_hctx_stopped() to order the
++	 * clearing of BLK_MQ_S_STOPPED above and the checking of dispatch
++	 * list in the subsequent routine.
 +	 */
-+	mutex_lock(&rpm->lock);
- 	if (rpm->lmac_idmap[lmac_id]->link_info.fec == OTX2_FEC_BASER) {
- 		val_lo = rpm_read(rpm, lmac_id, RPMX_MTI_FCFECX_VL0_CCW_LO);
- 		val_hi = rpm_read(rpm, lmac_id, RPMX_MTI_FCFECX_CW_HI);
-@@ -725,20 +729,21 @@ int rpm_get_fec_stats(void *rpmd, int lmac_id, struct cgx_fec_stats_rsp *rsp)
- 		}
- 	} else {
- 		/* enable RS-FEC capture */
--		cfg = rpm_read(rpm, 0, RPMX_MTI_STAT_STATN_CONTROL);
-+		cfg = rpm_read(rpm, 0, RPMX_MTI_RSFEC_STAT_STATN_CONTROL);
- 		cfg |= RPMX_RSFEC_RX_CAPTURE | BIT(lmac_id);
--		rpm_write(rpm, 0, RPMX_MTI_STAT_STATN_CONTROL, cfg);
-+		rpm_write(rpm, 0, RPMX_MTI_RSFEC_STAT_STATN_CONTROL, cfg);
- 
- 		val_lo = rpm_read(rpm, 0,
- 				  RPMX_MTI_RSFEC_STAT_COUNTER_CAPTURE_2);
--		val_hi = rpm_read(rpm, 0, RPMX_MTI_STAT_DATA_HI_CDC);
-+		val_hi = rpm_read(rpm, 0, RPMX_MTI_RSFEC_STAT_FAST_DATA_HI_CDC);
- 		rsp->fec_corr_blks = (val_hi << 32 | val_lo);
- 
- 		val_lo = rpm_read(rpm, 0,
- 				  RPMX_MTI_RSFEC_STAT_COUNTER_CAPTURE_3);
--		val_hi = rpm_read(rpm, 0, RPMX_MTI_STAT_DATA_HI_CDC);
-+		val_hi = rpm_read(rpm, 0, RPMX_MTI_RSFEC_STAT_FAST_DATA_HI_CDC);
- 		rsp->fec_uncorr_blks = (val_hi << 32 | val_lo);
- 	}
-+	mutex_unlock(&rpm->lock);
- 
- 	return 0;
++	smp_mb__after_atomic();
+ 	blk_mq_run_hw_queue(hctx, async);
  }
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-index 34b11deb0f3c1..a5773fbacaff8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
-@@ -84,9 +84,11 @@
- /* FEC stats */
- #define RPMX_MTI_STAT_STATN_CONTROL			0x10018
- #define RPMX_MTI_STAT_DATA_HI_CDC			0x10038
--#define RPMX_RSFEC_RX_CAPTURE				BIT_ULL(27)
-+#define RPMX_RSFEC_RX_CAPTURE				BIT_ULL(28)
- #define RPMX_CMD_CLEAR_RX				BIT_ULL(30)
- #define RPMX_CMD_CLEAR_TX				BIT_ULL(31)
-+#define RPMX_MTI_RSFEC_STAT_STATN_CONTROL               0x40018
-+#define RPMX_MTI_RSFEC_STAT_FAST_DATA_HI_CDC            0x40000
- #define RPMX_MTI_RSFEC_STAT_COUNTER_CAPTURE_2		0x40050
- #define RPMX_MTI_RSFEC_STAT_COUNTER_CAPTURE_3		0x40058
- #define RPMX_MTI_FCFECX_VL0_CCW_LO			0x38618
--- 
-2.43.0
-
+ EXPORT_SYMBOL_GPL(blk_mq_start_stopped_hw_queue);
+--- a/block/blk-mq.h
++++ b/block/blk-mq.h
+@@ -230,6 +230,19 @@ static inline struct blk_mq_tags *blk_mq
+ 
+ static inline bool blk_mq_hctx_stopped(struct blk_mq_hw_ctx *hctx)
+ {
++	/* Fast path: hardware queue is not stopped most of the time. */
++	if (likely(!test_bit(BLK_MQ_S_STOPPED, &hctx->state)))
++		return false;
++
++	/*
++	 * This barrier is used to order adding of dispatch list before and
++	 * the test of BLK_MQ_S_STOPPED below. Pairs with the memory barrier
++	 * in blk_mq_start_stopped_hw_queue() so that dispatch code could
++	 * either see BLK_MQ_S_STOPPED is cleared or dispatch list is not
++	 * empty to avoid missing dispatching requests.
++	 */
++	smp_mb();
++
+ 	return test_bit(BLK_MQ_S_STOPPED, &hctx->state);
+ }
+ 
 
 
 
