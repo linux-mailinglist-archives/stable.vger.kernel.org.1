@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-98039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620579E2702
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:20:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D598C9E26D0
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:17:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B43F165B22
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE512893C8
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B501F890B;
-	Tue,  3 Dec 2024 16:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E601F892C;
+	Tue,  3 Dec 2024 16:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBL8ykE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IESEXvWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A8A1EE00B;
-	Tue,  3 Dec 2024 16:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FC11EE00B;
+	Tue,  3 Dec 2024 16:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242589; cv=none; b=FqXzBC0c8WHY36FhuOm8GF+uCp/4yqwzezRvptrZzy5OBYr6xwPrrkH7lP9l6c5Yh1Zlxa/Aa652ody/ayQNiutP7ZApKV+rqeby307vK09HbotRBE1grfru3qHcOjDK1uyvgTaIifEkT4drxm/oVDCeLnrnn5ivH3rok27bxh4=
+	t=1733242654; cv=none; b=UwHakh6BjBJzOe8NvlCndg7tjx8OMhaEFm4KhQ1sH6x89YQkCJfBfCVYnystnagju1zWqj4ygom+1HfpBKluuQhtuC7SyaMCS0bf7pjoz3uPff4tV5WUowBzhECXrLiSf1K4Pay1KFZFMl1Tns5+fkLQaNpkNxqaxAEAMYsVZUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242589; c=relaxed/simple;
-	bh=HtuylQtVbhRKCwVbkXXh8MCLGZfqEqV7XD598rRHtsw=;
+	s=arc-20240116; t=1733242654; c=relaxed/simple;
+	bh=J0zhvZQO9vHFYyKPPrLuDoUHcggAqMugTQGSxwNvQp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXUkKQAenHonbBzorLEB8TUpHuS5fh/OLO8YhRkY8lhrYQN7tyctTvkrU+02456HO1Nn9ygtXr/JxrWnQ7/nSlIoY9a46eGBuW2m07doro7JW9Z5pw/4rNadqwFtS0lBVErsh1fatYWJWv6pLVq8xSSe/OpfbbwkW58suYUZvjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBL8ykE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434A1C4CECF;
-	Tue,  3 Dec 2024 16:16:29 +0000 (UTC)
+	 MIME-Version; b=fqlitO37vY3ShvVBxNmroG4wAYAmPnGFQLsO9Uu2b/8ETxgViL3WeSud6ojxJMfZE54108AXY6aPln33b723qfZw36qm6O4b7g+J6OyBFkT5q/VFU1yF0/0mQaNxdFsp3H7pVRRW7nnQ9YsxRGElZp+E5KiNsh8xU1LVYUMxMuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IESEXvWl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764DCC4CECF;
+	Tue,  3 Dec 2024 16:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242589;
-	bh=HtuylQtVbhRKCwVbkXXh8MCLGZfqEqV7XD598rRHtsw=;
+	s=korg; t=1733242653;
+	bh=J0zhvZQO9vHFYyKPPrLuDoUHcggAqMugTQGSxwNvQp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBL8ykE/fTjOpKnC+Avbo+o9E5breqn1EN9oE19Jak5m0+OB8B55cHYUDtcjIPu7a
-	 vi5Jiymr2+0T99WyYrEhFhl8Vd4dj9UWYbxZ09VlmSNiJ6q+LBxaBPWnmr5rLb1IrY
-	 8TZBxDigw/okxUPguP85324SmihRQveHootF4+uY=
+	b=IESEXvWlA0ahzzEOINP4YFlZvIOPm6Fdtx6ivc9StoW7QS3hs/TKRy8DeU3DS0sq9
+	 ivihDmLcfMx6AFGv0URVLSllX4s5Cx/d3p2iibYHRCBpZmqWxilgJuelBkZRzuLDD0
+	 Hl2mFzYpYPnZ+WxLrEnSSuhaqqGw2W0dwRHO3GI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 748/826] ALSA: hda/realtek: Apply quirk for Medion E15433
-Date: Tue,  3 Dec 2024 15:47:55 +0100
-Message-ID: <20241203144812.943559894@linuxfoundation.org>
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 751/826] smb3: request handle caching when caching directories
+Date: Tue,  3 Dec 2024 15:47:58 +0100
+Message-ID: <20241203144813.058814558@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -64,32 +64,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Steve French <stfrench@microsoft.com>
 
-commit ca0f79f0286046f6a91c099dc941cf7afae198d6 upstream.
+commit 9ed9d83a51a9636d367c796252409e7b2f4de4d4 upstream.
 
-Medion E15433 laptop wich ALC269VC (SSID 2782:1705) needs the same
-workaround for the missing speaker as another model.
+This client was only requesting READ caching, not READ and HANDLE caching
+in the LeaseState on the open requests we send for directories.  To
+delay closing a handle (e.g. for caching directory contents) we should
+be requesting HANDLE as well as READ (as we already do for deferred
+close of files).   See MS-SMB2 3.3.1.4 e.g.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1233298
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241128072646.15659-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/smb2ops.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11034,6 +11034,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x2782, 0x0228, "Infinix ZERO BOOK 13", ALC269VB_FIXUP_INFINIX_ZERO_BOOK_13),
- 	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x2782, 0x1701, "Infinix Y4 Max", ALC269VC_FIXUP_INFINIX_Y4_MAX),
-+	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x2782, 0x4900, "MEDION E15443", ALC233_FIXUP_MEDION_MTL_SPK),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -4080,7 +4080,7 @@ map_oplock_to_lease(u8 oplock)
+ 	if (oplock == SMB2_OPLOCK_LEVEL_EXCLUSIVE)
+ 		return SMB2_LEASE_WRITE_CACHING_LE | SMB2_LEASE_READ_CACHING_LE;
+ 	else if (oplock == SMB2_OPLOCK_LEVEL_II)
+-		return SMB2_LEASE_READ_CACHING_LE;
++		return SMB2_LEASE_READ_CACHING_LE | SMB2_LEASE_HANDLE_CACHING_LE;
+ 	else if (oplock == SMB2_OPLOCK_LEVEL_BATCH)
+ 		return SMB2_LEASE_HANDLE_CACHING_LE | SMB2_LEASE_READ_CACHING_LE |
+ 		       SMB2_LEASE_WRITE_CACHING_LE;
 
 
 
