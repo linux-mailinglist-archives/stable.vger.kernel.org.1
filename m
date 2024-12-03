@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-97998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4135A9E2BEC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:21:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3499E2C07
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 20:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44685BE05C2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB70BBE06F2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68FD1F8918;
-	Tue,  3 Dec 2024 16:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D341F8912;
+	Tue,  3 Dec 2024 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yu4lbTlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wricZYLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736DF1F76D2;
-	Tue,  3 Dec 2024 16:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052521F893F;
+	Tue,  3 Dec 2024 16:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242453; cv=none; b=OJxTJN2W9gCbFr5svi2dmCFmias0wQjmUDyI0QuheWZJhzQYRGRJPXdnf6T64H1jKb8fwXmDVXHpWjpe6GhBpL1HDK3EqPrG2zB3yNBzNvd5ZXJpYcu2WROHK3ctkv3xbdRQJeSXebzoWb5nhWeRbgGHtftgOtqAPYslEB4zx9Q=
+	t=1733242566; cv=none; b=lZoPfnl15h/BtR0/qLQsUU0xL5/gqp9BazDM49+e9l0/VDbIRtnkyt4XG6mPDGerxhv27fmc45IzsrB0guST7JFmOsScCogrJoSIWF6zUMZw7IWNBI0PJvL638HWE6lLUMoyXrkCPHe+jhsbDxkbkX+AQWTwPAcX+AEQ2Jd3f24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242453; c=relaxed/simple;
-	bh=+6Vsu1Sim6MeL6gtf+7GO1j5oDHjZOhVI1Hm8r+8K/c=;
+	s=arc-20240116; t=1733242566; c=relaxed/simple;
+	bh=VSn0xBP9zb71nDj1jFHpuw2Mxk7JUs7Ep4ny5wHOLJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CpIjTHMXQzvPWTAokrqvSmDO+fId2SgNKB+AqqjFHutEPvR+l5P8r5ffOU/BpQEKJtkJjST3oo46FauygdriditiW+mghuqclrfWbGA/hmi2ErTrPIfneknAu9/mjAwLl413fXK7yYzLBR7x8xIgo8Pvp+OMEAd19YhAS0iO94k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yu4lbTlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62A9C4CECF;
-	Tue,  3 Dec 2024 16:14:12 +0000 (UTC)
+	 MIME-Version; b=OGjNjpvVpJ/q+x+rrVJjc4rsa61t3C7oL1XkTagYJcjbqbjvz9bAsBNSOT9HcrLudr4cla6H2Bak+4/bMU+pUnTna0dUX+1DXbxD5Pi2bwUgenRfGviyOFdDFStTO0iZRpf6cqKEbu8EGd/++zLt4VjAVUQ3e96LBRtsfenInG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wricZYLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72149C4CECF;
+	Tue,  3 Dec 2024 16:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242453;
-	bh=+6Vsu1Sim6MeL6gtf+7GO1j5oDHjZOhVI1Hm8r+8K/c=;
+	s=korg; t=1733242565;
+	bh=VSn0xBP9zb71nDj1jFHpuw2Mxk7JUs7Ep4ny5wHOLJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yu4lbTlkId0r3GFz22sTHRtVAwSzH/pMozuGZH4G4be+Xq6APHqChg+o77B6dpxuE
-	 jLHI1+4EyDWp7Vcc0Q2cChbdTEabOy6sBespkdxKhXlPo2b6eFjvZqF3AESO1Mcjm6
-	 jWsRH6HRnqR9CYJETxiq/C65BvB9l3dfnFKynFlQ=
+	b=wricZYLVtTKwaXYVzMvbQc0EWRjjaDq2myz5zbZkP0axoyi6CatugVKOFb5HpmHb1
+	 Run76EPb/tcc2BlWrMzT0GoQ3UAB6bG+p8L+1bIgYfmycDelayPtVA+CJmU28uez/n
+	 9NzKry/2GkM/YejWBxrflKCOsJbI6jkxYAj2e2Eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.12 708/826] ubi: wl: Put source PEB into correct list if trying locking LEB failed
-Date: Tue,  3 Dec 2024 15:47:15 +0100
-Message-ID: <20241203144811.377515022@linuxfoundation.org>
+	syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 742/826] ALSA: pcm: Add sanity NULL check for the default mmap fault handler
+Date: Tue,  3 Dec 2024 15:47:49 +0100
+Message-ID: <20241203144812.708548547@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,62 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit d610020f030bec819f42de327c2bd5437d2766b3 upstream.
+commit d2913a07d9037fe7aed4b7e680684163eaed6bc4 upstream.
 
-During wear-leveing work, the source PEB will be moved into scrub list
-when source LEB cannot be locked in ubi_eba_copy_leb(), which is wrong
-for non-scrub type source PEB. The problem could bring extra and
-ineffective wear-leveing jobs, which makes more or less negative effects
-for the life time of flash. Specifically, the process is divided 2 steps:
-1. wear_leveling_worker // generate false scrub type PEB
-     ubi_eba_copy_leb // MOVE_RETRY is returned
-       leb_write_trylock // trylock failed
-     scrubbing = 1;
-     e1 is put into ubi->scrub
-2. wear_leveling_worker // schedule false scrub type PEB for wl
-     scrubbing = 1
-     e1 = rb_entry(rb_first(&ubi->scrub))
+A driver might allow the mmap access before initializing its
+runtime->dma_area properly.  Add a proper NULL check before passing to
+virt_to_page() for avoiding a panic.
 
-The problem can be reproduced easily by running fsstress on a small
-UBIFS partition(<64M, simulated by nandsim) for 5~10mins
-(CONFIG_MTD_UBI_FASTMAP=y,CONFIG_MTD_UBI_WL_THRESHOLD=50). Following
-message is shown:
- ubi0: scrubbed PEB 66 (LEB 0:10), data moved to PEB 165
-
-Since scrub type source PEB has set variable scrubbing as '1', and
-variable scrubbing is checked before variable keep, so the problem can
-be fixed by setting keep variable as 1 directly if the source LEB cannot
-be locked.
-
-Fixes: e801e128b220 ("UBI: fix missing scrub when there is a bit-flip")
-CC: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Reported-by: syzbot+4bf62a7b1d0f4fdb7ae2@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20241120141104.7060-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/ubi/wl.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/core/pcm_native.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/ubi/wl.c
-+++ b/drivers/mtd/ubi/wl.c
-@@ -846,7 +846,14 @@ static int wear_leveling_worker(struct u
- 			goto out_not_moved;
- 		}
- 		if (err == MOVE_RETRY) {
--			scrubbing = 1;
-+			/*
-+			 * For source PEB:
-+			 * 1. The scrubbing is set for scrub type PEB, it will
-+			 *    be put back into ubi->scrub list.
-+			 * 2. Non-scrub type PEB will be put back into ubi->used
-+			 *    list.
-+			 */
-+			keep = 1;
- 			dst_leb_clean = 1;
- 			goto out_not_moved;
- 		}
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -3793,9 +3793,11 @@ static vm_fault_t snd_pcm_mmap_data_faul
+ 		return VM_FAULT_SIGBUS;
+ 	if (substream->ops->page)
+ 		page = substream->ops->page(substream, offset);
+-	else if (!snd_pcm_get_dma_buf(substream))
++	else if (!snd_pcm_get_dma_buf(substream)) {
++		if (WARN_ON_ONCE(!runtime->dma_area))
++			return VM_FAULT_SIGBUS;
+ 		page = virt_to_page(runtime->dma_area + offset);
+-	else
++	} else
+ 		page = snd_sgbuf_get_page(snd_pcm_get_dma_buf(substream), offset);
+ 	if (!page)
+ 		return VM_FAULT_SIGBUS;
 
 
 
