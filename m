@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-96973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501929E2746
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:23:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB979E24DF
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46633B32328
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:19:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 149B4287FA9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FBF1F1317;
-	Tue,  3 Dec 2024 15:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E661F754A;
+	Tue,  3 Dec 2024 15:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oF/ePl9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6T3DeKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E5E1DA3D;
-	Tue,  3 Dec 2024 15:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037331AB6C9;
+	Tue,  3 Dec 2024 15:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239140; cv=none; b=f1cQCzXGkZVJqR8Z1o92ILuoQtAQK5bMtrO326S8Rvzq8sTUjlHBxWtvpYTDWelCIENUXwjvDmZDx+bI7Sp9o9Sp9LGp9JOzllEfnOjbXHlhIJMzZCug2d54X99DoWWtqcOfWsb+T5SOB9jWaDnGPYtQ3XQq644xTNlxVQNIdw4=
+	t=1733241234; cv=none; b=UxBZcV0+vlUhmReIPJHObRFy35PqYozkxxvlx6RFjej4Cd6hPQNgyqLPvjQWzAKegPmEJHi52cKos7g8hnaLMrLNfRrMo3o8YfRb6xbZq1RTkJqhmxuqrsK7B3oqhWeEY/yqoisV1qJRTYhd9ppEakmGJd9qyn4xY9CI05v9h+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239140; c=relaxed/simple;
-	bh=JDU+aB5kvJEkMj/BLRvuEC6mFAcU+cD/HUmllz0L3r8=;
+	s=arc-20240116; t=1733241234; c=relaxed/simple;
+	bh=S7LtONp5AdB6AgwIeLBicwixjiXtZgRG6/FSsGdhBsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FY1Gczi3MqpfLIWMpALq7HKThXdGszcdP6jhHM7obiwEM4E0V1AzLwsICs0lhmtz5y/XSh0kXCmlfO2en32GXPu3BoAtte/Thi53+g+OZRc1DZmhYFakTlliS1kgLgzqphmqrmzlaQgpiV+m3bZUj/40CS2sMTjUQn2Q2EX3ayw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF/ePl9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22636C4CECF;
-	Tue,  3 Dec 2024 15:18:59 +0000 (UTC)
+	 MIME-Version; b=pPAYDr5TcitTGZLSukyeg75YCfmXUYRqBLKp4I9+MBY71mGur5Tk1vq5qfJYdWWlPe8sdxGtD0kpFtedjTSSfuWTRYuNKiGS9UQQTrpgB6a+CF/pJk2rN2wcaErrxo4zKODiP3Sj5dYmjd4D8kNYWNiNCE54+HuDKkOoL/7LQq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6T3DeKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D80C4CECF;
+	Tue,  3 Dec 2024 15:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239140;
-	bh=JDU+aB5kvJEkMj/BLRvuEC6mFAcU+cD/HUmllz0L3r8=;
+	s=korg; t=1733241233;
+	bh=S7LtONp5AdB6AgwIeLBicwixjiXtZgRG6/FSsGdhBsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oF/ePl9vycnW4ifWZq5O4SK1e3U9SeNjUrWAyxx1beW9xAKOw8pSDMRpzsOP7EWUh
-	 4ntTIJHaqLZn1apYFUaS4UcgC8BWqEZFpeMCsl4BE/e+LR7gEP4XEU8LVK6aiVdBAT
-	 3H3RR1OQ38nE7guorZZZI7IrQCE7Mx66frayRI9A=
+	b=f6T3DeKbAoW1DXtRxl5AO4MNhQv2eR6iGZWqYex0lNETlaPEp9uSMRDGq+Th/rhhf
+	 QQISFAaHvvdSV6KBpi1z36Pjx/sO/hnKiQKDihQI2wxt8RYFm9xJOx6nM0a1hp2ZFF
+	 nE1Y6lIaB446nR/n1qQVLuAzO+V9dFEkyKvIknxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Thomas Richard <thomas.richard@bootlin.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 517/817] PCI: j721e: Add reset GPIO to struct j721e_pcie
+Subject: [PATCH 6.12 362/826] clk: mediatek: drop two dead config options
 Date: Tue,  3 Dec 2024 15:41:29 +0100
-Message-ID: <20241203144016.075413643@linuxfoundation.org>
+Message-ID: <20241203144757.881742767@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 
-[ Upstream commit b8600b8791cb2b7c8be894846b1ecddba7291680 ]
+[ Upstream commit 98619dc3cecc2b3943d6abe1db235c868dc72f8d ]
 
-Add reset GPIO to struct j721e_pcie, so it can be used at suspend and
-resume stages.
+Commit 0f471d31e5e8 ("clk: mediatek: Split MT8195 clock drivers and allow
+module build") adds a number of new COMMON_CLK_MT8195_* config options.
+Among those, the config options COMMON_CLK_MT8195_AUDSYS and
+COMMON_CLK_MT8195_MSDC have no reference in the source tree and are not
+used in the Makefile to include a specific file.
 
-Link: https://lore.kernel.org/linux-pci/20240102-j7200-pcie-s2r-v7-4-a2f9156da6c3@bootlin.com
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Signed-off-by: Thomas Richard <thomas.richard@bootlin.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Stable-dep-of: 22a9120479a4 ("PCI: j721e: Deassert PERST# after a delay of PCIE_T_PVPERL_MS milliseconds")
+Drop the dead config options COMMON_CLK_MT8195_AUDSYS and
+COMMON_CLK_MT8195_MSDC.
+
+Fixes: 0f471d31e5e8 ("clk: mediatek: Split MT8195 clock drivers and allow module build")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Link: https://lore.kernel.org/r/20240927092232.386511-1-lukas.bulwahn@redhat.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/cadence/pci-j721e.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/clk/mediatek/Kconfig | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pci-j721e.c b/drivers/pci/controller/cadence/pci-j721e.c
-index 85718246016b7..d676a4ed57803 100644
---- a/drivers/pci/controller/cadence/pci-j721e.c
-+++ b/drivers/pci/controller/cadence/pci-j721e.c
-@@ -52,6 +52,7 @@ struct j721e_pcie {
- 	u32			mode;
- 	u32			num_lanes;
- 	u32			max_lanes;
-+	struct gpio_desc	*reset_gpio;
- 	void __iomem		*user_cfg_base;
- 	void __iomem		*intd_cfg_base;
- 	u32			linkdown_irq_regfield;
-@@ -510,6 +511,7 @@ static int j721e_pcie_probe(struct platform_device *pdev)
- 				dev_err(dev, "Failed to get reset GPIO\n");
- 			goto err_get_sync;
- 		}
-+		pcie->reset_gpio = gpiod;
+diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
+index 70a005e7e1b18..486401e1f2f19 100644
+--- a/drivers/clk/mediatek/Kconfig
++++ b/drivers/clk/mediatek/Kconfig
+@@ -887,13 +887,6 @@ config COMMON_CLK_MT8195_APUSYS
+ 	help
+ 	  This driver supports MediaTek MT8195 AI Processor Unit System clocks.
  
- 		ret = cdns_pcie_init_phy(dev, cdns_pcie);
- 		if (ret) {
+-config COMMON_CLK_MT8195_AUDSYS
+-	tristate "Clock driver for MediaTek MT8195 audsys"
+-	depends on COMMON_CLK_MT8195
+-	default COMMON_CLK_MT8195
+-	help
+-	  This driver supports MediaTek MT8195 audsys clocks.
+-
+ config COMMON_CLK_MT8195_IMP_IIC_WRAP
+ 	tristate "Clock driver for MediaTek MT8195 imp_iic_wrap"
+ 	depends on COMMON_CLK_MT8195
+@@ -908,14 +901,6 @@ config COMMON_CLK_MT8195_MFGCFG
+ 	help
+ 	  This driver supports MediaTek MT8195 mfgcfg clocks.
+ 
+-config COMMON_CLK_MT8195_MSDC
+-	tristate "Clock driver for MediaTek MT8195 msdc"
+-	depends on COMMON_CLK_MT8195
+-	default COMMON_CLK_MT8195
+-	help
+-	  This driver supports MediaTek MT8195 MMC and SD Controller's
+-	  msdc and msdc_top clocks.
+-
+ config COMMON_CLK_MT8195_SCP_ADSP
+ 	tristate "Clock driver for MediaTek MT8195 scp_adsp"
+ 	depends on COMMON_CLK_MT8195
 -- 
 2.43.0
 
