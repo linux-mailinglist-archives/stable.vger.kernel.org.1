@@ -1,119 +1,111 @@
-Return-Path: <stable+bounces-96280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360099E1B37
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:45:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4202C9E1AC6
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 12:22:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C00B62235
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:47:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0493B2FF51
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 10:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DEF1E3762;
-	Tue,  3 Dec 2024 10:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317661E2842;
+	Tue,  3 Dec 2024 10:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="nTrt4M3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Cz9+6kz"
 X-Original-To: stable@vger.kernel.org
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD38E1E282D;
-	Tue,  3 Dec 2024 10:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51C41DE3BD
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 10:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733222759; cv=none; b=AgnB3F6tR49YAW5P0g0tuuQLgubXm+YVLb/njrbxGrrPo0N4783sVd7yAm1dcuYM/Vuo6weVwNvNjbgwcOMY8+gQmehxzd9kmL/Z4G8pyWF1588wyj+DFsTrrJiX59ofNXOf9A7xvzmeiqzK8pIM/0/2ZqUMzuFKE8evfbvGIeU=
+	t=1733223190; cv=none; b=JhLmz0RlL7gDK4ngWZd/SylXP35vylXIwWECZstZS7ZW8akQQzfjtLNt7OlP81LngEY6bE3KGeEivH2Pu8Sr3VQOJfRNeY89H110IiTIllRCHMM4e/3//rR+hrt/mu4+QtBokoZmnKXuX+uKoElrFYtKuGnPou1JxHEoSdtCyyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733222759; c=relaxed/simple;
-	bh=9Dt96s2Bcm1MRb0U9H3U4fTwQJyZ4SwoQ7T4izq5lpw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MKAnvFYWcSIVCpR/I0gq25pgkwLCmslgRitYSe3UR4r9gfv5gEVDXWAVVgwe+gZkqi+Vv3k7+6wbjX5cfaG8c868QRTDXb6XAsDSVSYBybhgNORtBEF4Pgd6dCvlrhAuylmE2YYKg4XMrpwwg/wddGL0kR31lXExi5lF2baz1zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=nTrt4M3C; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Cc:To:In-Reply-To:References:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=q4sUFc93gmjBPZgy68yfM8oI42T2WlPXmr5pgphYQSI=; b=nTrt4M3CasJxXw6OBstUtotAwB
-	1WpkLzMA5oiU3Ba86Sa2CIFx8lJwxpKMWvAhVTsNWCxypFy4crjYZgHxUfIjloq0PSFz9Z6mLCja8
-	oq1Ce0VtkITV8dQ7PqrelwFvQHDwT+b1Ka3jhM/rn1oR5Lpws+Lo9izXljgMkZSYsre8Bx389bRnP
-	m1saEEoL2bDUQ9moGPwOIR5M3wyGvAH8jduBhN+/ibCY1f5PAQSQbspSClgVADFxNO5RNubN7YcRG
-	d8EkB38Vd+VTVd8H6GhekIHctrFkou6mPGf/KuaA5iKodR8RAy5PIHKzlCqZFJhYeKjFp9d/MmEEP
-	8YY/dTaw==;
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <esben@geanix.com>)
-	id 1tIQPj-0001Pu-Nv; Tue, 03 Dec 2024 11:45:55 +0100
-Received: from [185.17.218.86] (helo=localhost)
-	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <esben@geanix.com>)
-	id 1tIQPj-000LGA-0D;
-	Tue, 03 Dec 2024 11:45:55 +0100
-From: Esben Haabendal <esben@geanix.com>
-Date: Tue, 03 Dec 2024 11:45:36 +0100
-Subject: [PATCH 6/6] rtc: interface: Ensure alarm irq is enabled when UIE
- is enabled
+	s=arc-20240116; t=1733223190; c=relaxed/simple;
+	bh=nx4necQx8i+7EDdIMLQZq0J7C0AinIni6Q8ibl6Mlmw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q2ASUgmOVww6T5plQBM66LhCztscDmbPIHeqfRwh1H8W5GDyA63m6P7ZnQS4KAQfx1P4/vbzEMt+tysbSgfLSyQkTgZY+haNkSo+rjou4/VGTt19O1tFJ0IyIGKUEPxnggL7q3zYcff7OfjQnej8PanatGNculCbBV+ILnTwKWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Cz9+6kz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB60C4CECF;
+	Tue,  3 Dec 2024 10:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733223189;
+	bh=nx4necQx8i+7EDdIMLQZq0J7C0AinIni6Q8ibl6Mlmw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0Cz9+6kzAQ8clTrfbxfmlIJzpwH8bCwt1DBtvo8sWvvUtP9VRlgBnWFsMbjxe6Pc/
+	 UETVi16uYnHgsWC3r0Lu1Bq36dQ0NAzfMvwewBpSVhUk/vVOqg+Jj1ixX6fJdbpOlA
+	 PKQJTeORH0WG0CvKzsYwBfZ2Fya5WMLA1F/i+fNI=
+Subject: FAILED: patch "[PATCH] usb: dwc3: ep0: Don't clear ep0 DWC3_EP_TRANSFER_STARTED" failed to apply to 5.10-stable tree
+To: Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 03 Dec 2024 11:52:24 +0100
+Message-ID: <2024120324-chimp-congested-68a6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241203-rtc-uie-irq-fixes-v1-6-01286ecd9f3f@geanix.com>
-References: <20241203-rtc-uie-irq-fixes-v1-0-01286ecd9f3f@geanix.com>
-In-Reply-To: <20241203-rtc-uie-irq-fixes-v1-0-01286ecd9f3f@geanix.com>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, Esben Haabendal <esben@geanix.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733222752; l=1219;
- i=esben@geanix.com; s=20240523; h=from:subject:message-id;
- bh=9Dt96s2Bcm1MRb0U9H3U4fTwQJyZ4SwoQ7T4izq5lpw=;
- b=r3Dyu5602AIrHx2dWjtPnTDJcvMVNYZzvLiEShal74iF5XFHfuxtkFwXBxg/GB5IcrPZAcp/Y
- sUdFz60GGCoARdQ0Yvo2lFgP3OoUSFmijOQzgDAwUvHBkSD7c4NrMhn
-X-Developer-Key: i=esben@geanix.com; a=ed25519;
- pk=PbXoezm+CERhtgVeF/QAgXtEzSkDIahcWfC7RIXNdEk=
-X-Authenticated-Sender: esben@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27476/Tue Dec  3 10:52:11 2024)
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-When setting a normal alarm, user-space is responsible for using
-RTC_AIE_ON/RTC_AIE_OFF to control if alarm irq should be enabled.
 
-But when RTC_UIE_ON is used, interrupts must be so that the requested
-irq events are generated.
-When RTC_UIE_OFF is used, alarm irq is disabled if there are no other
-alarms queued, so this commit brings symmetry to that.
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Signed-off-by: Esben Haabendal <esben@geanix.com>
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5d2fb074dea289c41f5aaf2c3f68286bee370634
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120324-chimp-congested-68a6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5d2fb074dea289c41f5aaf2c3f68286bee370634 Mon Sep 17 00:00:00 2001
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Date: Thu, 14 Nov 2024 01:02:06 +0000
+Subject: [PATCH] usb: dwc3: ep0: Don't clear ep0 DWC3_EP_TRANSFER_STARTED
+
+The driver cannot issue the End Transfer command to the SETUP transfer.
+Don't clear DWC3_EP_TRANSFER_STARTED flag to make sure that the driver
+won't send Start Transfer command again, which can cause no-resource
+error. For example this can occur if the host issues a reset to the
+device.
+
 Cc: stable@vger.kernel.org
----
- drivers/rtc/interface.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Fixes: 76cb323f80ac ("usb: dwc3: ep0: clear all EP0 flags")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/d3d618185fd614bb7426352a9fc1199641d3b5f5.1731545781.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index e365e8fd166db31f8b44fac9fb923d36881b1394..39db12f267cc627febb78e67400aaf8fc3301b0c 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -617,6 +617,10 @@ int rtc_update_irq_enable(struct rtc_device *rtc, unsigned int enabled)
- 		rtc->uie_rtctimer.node.expires = ktime_add(now, onesec);
- 		rtc->uie_rtctimer.period = ktime_set(1, 0);
- 		err = rtc_timer_enqueue(rtc, &rtc->uie_rtctimer);
-+		if (!err && rtc->ops && rtc->ops->alarm_irq_enable)
-+			err = rtc->ops->alarm_irq_enable(rtc->dev.parent, 1);
-+		if (err)
-+			goto out;
- 	} else {
- 		rtc_timer_remove(rtc, &rtc->uie_rtctimer);
- 	}
-
--- 
-2.47.1
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index f3d97ad5156e..666ac432f52d 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -232,7 +232,7 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
+ 	/* stall is always issued on EP0 */
+ 	dep = dwc->eps[0];
+ 	__dwc3_gadget_ep_set_halt(dep, 1, false);
+-	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
++	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED | DWC3_EP_TRANSFER_STARTED;
+ 	dep->flags |= DWC3_EP_ENABLED;
+ 	dwc->delayed_status = false;
+ 
 
 
