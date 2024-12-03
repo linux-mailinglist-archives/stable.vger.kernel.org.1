@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-96479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4F69E2195
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 502B19E27E3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F206BB2A55F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:53:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EB79B631DC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86EB1EF082;
-	Tue,  3 Dec 2024 14:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B231EF092;
+	Tue,  3 Dec 2024 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTAs2CRm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGY4ijl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7341B1DE2A1;
-	Tue,  3 Dec 2024 14:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52381F7577;
+	Tue,  3 Dec 2024 14:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237630; cv=none; b=oYyAiiVOszQdjz2ooP0pNfEuHXeqwbQMw9ZIQPBRnQnrzMydJb6IQW2iAGRQ9mp6zUJCo5g0tOtGoc9+E9FuRmPtJUPCm2fHmsPV88Q7Bcj3VXxKG1ycoG7e3YCQUONUrWivQE2+nfhw77JT2JRQxf5Hh+LM+jk9coL4kEH/2kU=
+	t=1733237724; cv=none; b=ltrnCO9rZ2QA1XI5264Y/vRtqP3sZGZrPE0LJ4akZSvEGxnLw+EF1swDOEVUhNkBHVobv6eJdsJkKHYPFGBiFRMAOb+Y1iHSW/6OIjryIUGdGJCaYx0B6P1Ht5xbt2CT9yuBlFUFcocfJ3SN/9dW7Y5pBUhqWYh8FBtBU6rZ/aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237630; c=relaxed/simple;
-	bh=ONYW/Le1C/ghtFvB+LzWzA8auaFwb/46q4Rccn6SE4I=;
+	s=arc-20240116; t=1733237724; c=relaxed/simple;
+	bh=8IjAGLMHCT1+aUkO7jJ4I1U1GGPTT7mySlW5VYiw/gI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1dd8/3VwgF8uc4HXrhtKV3CxlaUegmI90XAXj1r+xpxfDGkZyx4KHJbPCsb7KZs9yESYMcDtYLgRY9ABCDhLXC06DR+pU/aJX/HCtNWbnH6pvAJxkS4p50SPVfSfCx9fQ5Jfc7d6UqZMlOd5/kbeSYcbSHAcFIitP0Y/6GTQmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTAs2CRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20B3C4CECF;
-	Tue,  3 Dec 2024 14:53:49 +0000 (UTC)
+	 MIME-Version; b=m6ldy/frz/9IV0qSrKQUdxIcQTFRIeCkeoBogF5JagWAlNlk2eF5XZNSwVpyUzUA5kB3ffG6TorX1UG8fZZ6C+pVm5E7GfVSjyXYCACnIMKxddpgspdZ6Ee3EdHHuik1LcEIndEfa5Od0Be2cDeMZnyQyPO9BMxAoFwmAcxwvvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGY4ijl9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED77C4CECF;
+	Tue,  3 Dec 2024 14:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237630;
-	bh=ONYW/Le1C/ghtFvB+LzWzA8auaFwb/46q4Rccn6SE4I=;
+	s=korg; t=1733237723;
+	bh=8IjAGLMHCT1+aUkO7jJ4I1U1GGPTT7mySlW5VYiw/gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTAs2CRmgP4ljyX2HJ2gQtPiDeryXhFeciW2WHa+qzC07UbCIlnzdVTbmMtlRprDQ
-	 39RaA6dfVpx4OeJHUWiuykzpsUl3Y0oVO4hratRj20ItivnjB/bROAry5AMpK5yMgg
-	 jTl41WqDVA37hFMrsI3oM7VJJ4uA9ZZqlS2EQiaM=
+	b=wGY4ijl9xy5/dd34ArKS1Z3wBGVhYv3litXZkLCOvuSOl9Hk2UJ4NUsBHcvI2OFUO
+	 eCw7HtLJmaIzpq2/o5+shtwDUFlvGkP1m3qvwPiKcxX2QXaKCdaBZ6h7EiqnXMCmgx
+	 f+T2jxsdRMFhzWMU0wOtrk4UHl0hgkedM9jdPyZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Luo Yifan <luoyifan@cmss.chinamobile.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 025/817] platform/x86: dell-smbios-base: Extends support to Alienware products
-Date: Tue,  3 Dec 2024 15:33:17 +0100
-Message-ID: <20241203143956.626503479@linuxfoundation.org>
+Subject: [PATCH 6.11 034/817] ASoC: stm: Prevent potential division by zero in stm32_sai_get_clk_div()
+Date: Tue,  3 Dec 2024 15:33:26 +0100
+Message-ID: <20241203143956.981528391@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -62,53 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Luo Yifan <luoyifan@cmss.chinamobile.com>
 
-[ Upstream commit a36b8b84ac4327b90ef5a22bc97cc96a92073330 ]
+[ Upstream commit 23569c8b314925bdb70dd1a7b63cfe6100868315 ]
 
-Fixes the following error:
+This patch checks if div is less than or equal to zero (div <= 0). If
+div is zero or negative, the function returns -EINVAL, ensuring the
+division operation is safe to perform.
 
-dell_smbios: Unable to run on non-Dell system
-
-Which is triggered after dell-wmi driver fails to initialize on
-Alienware systems, as it depends on dell-smbios.
-
-This effectively extends dell-wmi, dell-smbios and dcdbas support to
-Alienware devices, that might share some features of the SMBIOS intereface
-calling interface with other Dell products.
-
-Tested on an Alienware X15 R1.
-
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Pali Rohár <pali@kernel.org>
-Link: https://lore.kernel.org/r/20241031154023.6149-2-kuurtb@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Luo Yifan <luoyifan@cmss.chinamobile.com>
+Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20241107015936.211902-1-luoyifan@cmss.chinamobile.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell-smbios-base.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/stm/stm32_sai_sub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
-index 73e41eb69cb57..01c72b91a50d4 100644
---- a/drivers/platform/x86/dell/dell-smbios-base.c
-+++ b/drivers/platform/x86/dell/dell-smbios-base.c
-@@ -576,6 +576,7 @@ static int __init dell_smbios_init(void)
- 	int ret, wmi, smm;
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 19307812ec765..64f52c75e2aa8 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -317,7 +317,7 @@ static int stm32_sai_get_clk_div(struct stm32_sai_sub_data *sai,
+ 	int div;
  
- 	if (!dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Dell System", NULL) &&
-+	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "Alienware", NULL) &&
- 	    !dmi_find_device(DMI_DEV_TYPE_OEM_STRING, "www.dell.com", NULL)) {
- 		pr_err("Unable to run on non-Dell system\n");
- 		return -ENODEV;
+ 	div = DIV_ROUND_CLOSEST(input_rate, output_rate);
+-	if (div > SAI_XCR1_MCKDIV_MAX(version)) {
++	if (div > SAI_XCR1_MCKDIV_MAX(version) || div <= 0) {
+ 		dev_err(&sai->pdev->dev, "Divider %d out of range\n", div);
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
