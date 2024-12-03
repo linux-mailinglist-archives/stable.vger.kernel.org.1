@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF0C9E253E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D389E21C9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:17:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE1D81674EC
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E999285AE1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4A11F8910;
-	Tue,  3 Dec 2024 15:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2530C1F8917;
+	Tue,  3 Dec 2024 15:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZ9HaGzs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6jE4zsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11A51DAC9F;
-	Tue,  3 Dec 2024 15:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8872646;
+	Tue,  3 Dec 2024 15:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241155; cv=none; b=IkvVImkYRBrSba4V/KJXf/tnZe+K0Ul5CdiI+FnLSHlO4Kf1lpXU57+5bcFYZcFhtxW59s36IksTdAG4x29kPF98XWSfwBwTLM69XeKTwos7zXzRK7qJwhewS8sOqZ0TS78r/ul2rgSCIdrC36z+dbC12d6aYu51RuUtNR/P89I=
+	t=1733238989; cv=none; b=JI2WApE8/cBGffwdaql2iLql0qATaM1Por/HJAdMlLO4PlHgSTjgXqgsR7+msGYw6zkS253f1ILmF/I63djaXCnhnSdBE2+F/2P1X4nuGs4vCWbHagPMB9nbSFd/h5nSk+4GYKEf8j7smYU9+s5R0Oi4qc0whB/wM67tQ/aUFkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241155; c=relaxed/simple;
-	bh=V7xsSRXk+ym1ejSRJ86HgqfTTwgm4wXyvvA4QMHp4Lk=;
+	s=arc-20240116; t=1733238989; c=relaxed/simple;
+	bh=o2o21CRA9CW5olGw9Tx//Vbiy1AGJ507NHZZICEJ7Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eG3rgCcEfI8PBVcamBXM1XvU6wKR5AjAvuEdIY9xOI3DN8+XOd7WRAkuIkRlC6Uwip+Oj5vKFfSfj6T+WPInWogckXmLfjMUWtdqTD9GiTkMHdcwXWuNBoNNf5DkXZh2T3QJw2FnDiKcQdz9uXPWpfadr3eH6ReM9RDsBHchQhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZ9HaGzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E41AC4CED6;
-	Tue,  3 Dec 2024 15:52:34 +0000 (UTC)
+	 MIME-Version; b=ip9s/mkHXAk1MdYCeBHKLEjgwS83o2Y4ZMP1BzGR3R9YqKiPyQlZGGPCL8IeesPZ1XvWcSOcX+FVavhYJWRu3EzPqjkoqiOyhG27FxvS81+D0Hjmn9jfmGxDPZ3xKrZR9YoWaQyuHD2ip1efYZcwhg7hxu4Th3Rh+jokd/bogpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6jE4zsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BCAC4CECF;
+	Tue,  3 Dec 2024 15:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241154;
-	bh=V7xsSRXk+ym1ejSRJ86HgqfTTwgm4wXyvvA4QMHp4Lk=;
+	s=korg; t=1733238989;
+	bh=o2o21CRA9CW5olGw9Tx//Vbiy1AGJ507NHZZICEJ7Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZ9HaGzs1Ojdo11ajPeANN3zLr4WHeDzTMIhmmX3N7skMnXpWeyRlqLExLJ2ew6ul
-	 segHNPXiYD1J1ZjoCYhlfWSBU72Ie7Z+XERavHgWUz7+aF4IsuiNJ6JXCPme7CHmNc
-	 fOlFhdzPmvBuw96xKG9zPkVW2hk1ir3TSTNMPeWQ=
+	b=p6jE4zscknhYr4nFVxdscrD6V4siPLSn6fS91ZH/syLqwaJXt0tCltoRtgxT0fFkR
+	 +5/m2JWfaknlJJl44ne0ulVYi6mBoIR+qQzxeU4cqpyT/W/Zh9XiDEeaUOS3yiwAm7
+	 XfJJpMZob3tCXBuotQp+BCpdvBIDUzt7GQesMcaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 310/826] selftests/bpf: Fix total_bytes in msg_loop_rx in test_sockmap
-Date: Tue,  3 Dec 2024 15:40:37 +0100
-Message-ID: <20241203144755.853722653@linuxfoundation.org>
+Subject: [PATCH 6.11 466/817] clk: ralink: mtmips: fix clock plan for Ralink SoC RT3883
+Date: Tue,  3 Dec 2024 15:40:38 +0100
+Message-ID: <20241203144014.063817967@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 
-[ Upstream commit 523dffccbadea0cfd65f1ff04944b864c558c4a8 ]
+[ Upstream commit 33239152305567b3e9bf052f71fd4baecd626341 ]
 
-total_bytes in msg_loop_rx should also take push into account, otherwise
-total_bytes will be a smaller value, which makes the msg_loop_rx end early.
+Clock plan for Ralink SoC RT3883 needs an extra 'periph' clock to properly
+set some peripherals that has this clock as their parent. When this driver
+was mainlined we could not find any active users of this SoC so we cannot
+perform any real tests for it. Now, one user of a Belkin f9k1109 version 1
+device which uses this SoC appear and reported some issues in openWRT:
+- https://github.com/openwrt/openwrt/issues/16054
+The peripherals that are wrong are 'uart', 'i2c', 'i2s' and 'uartlite' which
+has a not defined 'periph' clock as parent. Hence, introduce it to have a
+properly working clock plan for this SoC.
 
-Besides, total_bytes has already taken pop into account, so we don't need
-to subtract some bytes from iov_buf in sendmsg_test. The additional
-subtraction may make total_bytes a negative number, and msg_loop_rx will
-just end without checking anything.
-
-Fixes: 18d4e900a450 ("bpf: Selftests, improve test_sockmap total bytes counter")
-Fixes: d69672147faa ("selftests, bpf: Add one test for sockmap with strparser")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-4-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: 6f3b15586eef ("clk: ralink: add clock and reset driver for MTMIPS SoCs")
+Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Link: https://lore.kernel.org/r/20240910044024.120009-2-sergio.paracuellos@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/clk/ralink/clk-mtmips.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 1d59bed90d80b..5f4558f1f0049 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -606,8 +606,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		}
- 		clock_gettime(CLOCK_MONOTONIC, &s->end);
- 	} else {
-+		float total_bytes, txmsg_pop_total, txmsg_push_total;
- 		int slct, recvp = 0, recv, max_fd = fd;
--		float total_bytes, txmsg_pop_total;
- 		int fd_flags = O_NONBLOCK;
- 		struct timeval timeout;
- 		unsigned char k = 0;
-@@ -628,10 +628,14 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		total_bytes = (float)iov_length * (float)cnt;
- 		if (!opt->sendpage)
- 			total_bytes *= (float)iov_count;
--		if (txmsg_apply)
-+		if (txmsg_apply) {
-+			txmsg_push_total = txmsg_end_push * (total_bytes / txmsg_apply);
- 			txmsg_pop_total = txmsg_pop * (total_bytes / txmsg_apply);
--		else
-+		} else {
-+			txmsg_push_total = txmsg_end_push * cnt;
- 			txmsg_pop_total = txmsg_pop * cnt;
-+		}
-+		total_bytes += txmsg_push_total;
- 		total_bytes -= txmsg_pop_total;
- 		err = clock_gettime(CLOCK_MONOTONIC, &s->start);
- 		if (err < 0)
-@@ -800,8 +804,6 @@ static int sendmsg_test(struct sockmap_options *opt)
+diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
+index 50a443bf79ecd..62f9801ecd3a4 100644
+--- a/drivers/clk/ralink/clk-mtmips.c
++++ b/drivers/clk/ralink/clk-mtmips.c
+@@ -267,6 +267,11 @@ static struct mtmips_clk_fixed rt305x_fixed_clocks[] = {
+ 	CLK_FIXED("xtal", NULL, 40000000)
+ };
  
- 	rxpid = fork();
- 	if (rxpid == 0) {
--		if (txmsg_pop || txmsg_start_pop)
--			iov_buf -= (txmsg_pop - txmsg_start_pop + 1);
- 		if (opt->drop_expected || txmsg_ktls_skb_drop)
- 			_exit(0);
- 
++static struct mtmips_clk_fixed rt3883_fixed_clocks[] = {
++	CLK_FIXED("xtal", NULL, 40000000),
++	CLK_FIXED("periph", "xtal", 40000000)
++};
++
+ static struct mtmips_clk_fixed rt3352_fixed_clocks[] = {
+ 	CLK_FIXED("periph", "xtal", 40000000)
+ };
+@@ -779,8 +784,8 @@ static const struct mtmips_clk_data rt3352_clk_data = {
+ static const struct mtmips_clk_data rt3883_clk_data = {
+ 	.clk_base = rt3883_clks_base,
+ 	.num_clk_base = ARRAY_SIZE(rt3883_clks_base),
+-	.clk_fixed = rt305x_fixed_clocks,
+-	.num_clk_fixed = ARRAY_SIZE(rt305x_fixed_clocks),
++	.clk_fixed = rt3883_fixed_clocks,
++	.num_clk_fixed = ARRAY_SIZE(rt3883_fixed_clocks),
+ 	.clk_factor = NULL,
+ 	.num_clk_factor = 0,
+ 	.clk_periph = rt5350_pherip_clks,
 -- 
 2.43.0
 
