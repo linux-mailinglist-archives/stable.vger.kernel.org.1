@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-97437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB56D9E2B57
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:49:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC109E2A2A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:00:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8291FB455B1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:45:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD515B307DC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74171FBCAA;
-	Tue,  3 Dec 2024 15:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC0A1FA177;
+	Tue,  3 Dec 2024 15:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cR+7q8N/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SG47AyMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BFE1EE001;
-	Tue,  3 Dec 2024 15:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8907F1F7545;
+	Tue,  3 Dec 2024 15:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240506; cv=none; b=TU8xl6GXml78Piu2Wy21UgWLepTIMc7tHkJ3/jcMG338LYRjHK0hkqpI4oeTTukz3k4nEwrrK+hgh1GXGhj9BEYiXqjFglEiaem/jtkb2aJQG7x+8U3CyeiIMtq/LJkINZPIeJ1id4AwyHMcknTjV6RDUF+X+gZ9j1PWkkzqlow=
+	t=1733238629; cv=none; b=lGy8TIgDlwhjZv7dF9+5pwojoIJ5t6tazMpZhynwpVL6h8/HjTFD4s0yOcKf0J1PtL7xP6jEUHSPfaeaJjokvCPQUdGeOv2enO6tt9dkPWPlJv04x60KGRYxBGxGHO51pQeZlq+w+Eju8swVhXpwotCUJmb1LEMAycB6Lzh8Lrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240506; c=relaxed/simple;
-	bh=Qk4mqn/Kqaa/uBo9FxGaTLTXa+GIQDLwzv7oIHKTLDg=;
+	s=arc-20240116; t=1733238629; c=relaxed/simple;
+	bh=kFyja+B6QLVc0wSkETfotY3fv52FcY9XCgYHwtDbym0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2HFZOaOzfG4qqdwje++lG30TloRkA/3g2+iiVu2FRrGx68GP0Y/4lPe8Q2K7uqYvugQxqyFGtf3NOftW0oT2ZM6c4+Enat8DCQtR9mbFfRQ17245tWt7CKOmOWZJMGfCiQt0O82sNQKDRt0HU7JigZM+IkvvsMkIT3YJgkICqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cR+7q8N/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7ED7C4CED8;
-	Tue,  3 Dec 2024 15:41:45 +0000 (UTC)
+	 MIME-Version; b=bw0ryFZeYr7a0/pC2Cv3x7cctI8Okg/YMobeu43MQWAATk3oQzm0SBInxIUVi6H1DfbqCCJhwlZYUeoAJ7e48GzUY27JwWqqmehqm4DLnP15mSM63CL0XhepN1ppTE/yxL2OEi9bFaTnxfxU+A7iHRPgnLtpchfQVq4IVpof4/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SG47AyMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2FBC4CECF;
+	Tue,  3 Dec 2024 15:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240506;
-	bh=Qk4mqn/Kqaa/uBo9FxGaTLTXa+GIQDLwzv7oIHKTLDg=;
+	s=korg; t=1733238629;
+	bh=kFyja+B6QLVc0wSkETfotY3fv52FcY9XCgYHwtDbym0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cR+7q8N/WqvyaU0HR8Qplt35Q0KqrLb4XErvJOOpuS3Xf7EQ+SibpWY9IZ/aTWq3u
-	 Ch/hY/HzUyJr+/y0GHdswDIqFkePWH9lZJ4rD/XiI2b21kifBFwJiNQuBwOtoOxwGo
-	 kxozd3M6Cpi/jgkn/E5nGfpKNTFXxVph1qk4vY9Y=
+	b=SG47AyMad+dLARmlm8btWLYkeDBCRzixWp6HsGzACeppyMFT/kf9sh3kJQT1NWJlO
+	 4Xz8vLzeahc99xNBV5GCMF3O/txujkfAOoSkG5YnlNEqpcPz7cAXUks+hdEjpYPLyo
+	 aY1WSCpNXcmeI+K+UnvxVs4J50g5oeNsjtesdjKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 155/826] pmdomain: ti-sci: Add missing of_node_put() for args.np
-Date: Tue,  3 Dec 2024 15:38:02 +0100
-Message-ID: <20241203144749.789671921@linuxfoundation.org>
+Subject: [PATCH 6.11 312/817] drm/amdgpu: Fix the memory allocation issue in amdgpu_discovery_get_nps_info()
+Date: Tue,  3 Dec 2024 15:38:04 +0100
+Message-ID: <20241203144007.995444567@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Li Huafei <lihuafei1@huawei.com>
 
-[ Upstream commit afc2331ef81657493c074592c409dac7c3cb8ccc ]
+[ Upstream commit a1144da794adedb9447437c57d69add56494309d ]
 
-of_parse_phandle_with_args() needs to call of_node_put() to decrement
-the refcount of args.np. So, Add the missing of_node_put() in the loop.
+Fix two issues with memory allocation in amdgpu_discovery_get_nps_info()
+for mem_ranges:
 
-Fixes: efa5c01cd7ee ("soc: ti: ti_sci_pm_domains: switch to use multiple genpds instead of one")
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Message-ID: <20241024030442.119506-2-zhangzekun11@huawei.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+ - Add a check for allocation failure to avoid dereferencing a null
+   pointer.
+
+ - As suggested by Christophe, use kvcalloc() for memory allocation,
+   which checks for multiplication overflow.
+
+Additionally, assign the output parameters nps_type and range_cnt after
+the kvcalloc() call to prevent modifying the output parameters in case
+of an error return.
+
+Fixes: b194d21b9bcc ("drm/amdgpu: Use NPS ranges from discovery table")
+Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/ti/ti_sci_pm_domains.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pmdomain/ti/ti_sci_pm_domains.c b/drivers/pmdomain/ti/ti_sci_pm_domains.c
-index 1510d5ddae3de..0df3eb7ff09a3 100644
---- a/drivers/pmdomain/ti/ti_sci_pm_domains.c
-+++ b/drivers/pmdomain/ti/ti_sci_pm_domains.c
-@@ -161,6 +161,7 @@ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
- 				break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index 4bd61c169ca8d..ca8091fd3a24f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -1757,11 +1757,13 @@ int amdgpu_discovery_get_nps_info(struct amdgpu_device *adev,
  
- 			if (args.args_count >= 1 && args.np == dev->of_node) {
-+				of_node_put(args.np);
- 				if (args.args[0] > max_id) {
- 					max_id = args.args[0];
- 				} else {
-@@ -192,7 +193,10 @@ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
- 				pm_genpd_init(&pd->pd, NULL, true);
- 
- 				list_add(&pd->node, &pd_provider->pd_list);
-+			} else {
-+				of_node_put(args.np);
- 			}
-+
- 			index++;
- 		}
- 	}
+ 	switch (le16_to_cpu(nps_info->v1.header.version_major)) {
+ 	case 1:
++		mem_ranges = kvcalloc(nps_info->v1.count,
++				      sizeof(*mem_ranges),
++				      GFP_KERNEL);
++		if (!mem_ranges)
++			return -ENOMEM;
+ 		*nps_type = nps_info->v1.nps_type;
+ 		*range_cnt = nps_info->v1.count;
+-		mem_ranges = kvzalloc(
+-			*range_cnt * sizeof(struct amdgpu_gmc_memrange),
+-			GFP_KERNEL);
+ 		for (i = 0; i < *range_cnt; i++) {
+ 			mem_ranges[i].base_address =
+ 				nps_info->v1.instance_info[i].base_address;
 -- 
 2.43.0
 
