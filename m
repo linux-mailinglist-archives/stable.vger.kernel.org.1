@@ -1,102 +1,74 @@
-Return-Path: <stable+bounces-97790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2D689E259A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D759E2586
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9235E288042
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 363B1282B0B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B081F8919;
-	Tue,  3 Dec 2024 16:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD071F76BF;
+	Tue,  3 Dec 2024 16:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hw5MMwwd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y7kKacuK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f195.google.com (mail-qt1-f195.google.com [209.85.160.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F461F75B9;
-	Tue,  3 Dec 2024 16:02:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDBA23CE
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 16:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241742; cv=none; b=nqswRvjvMmfJ8SuknJnVO/GvknQdv5ryzjXxK2rOHGygIJejFXy8d+w3f7+bogaZhSMOoRJdJoBHYB1pQZx2Puvv9TOOSvjqBakOJwEuAJr7kod/iAxphdijpipTMSoZFfijycfNff0SnyAee3t/Yyorfe7uJrPI0lY4EtgH1ac=
+	t=1733241714; cv=none; b=OoSm3UTfLAo2oH1CcOT0ImAp9mP4LTwOC3OqhuErfE7PClGk0Ce1fDUM6f9ekFBDVXIW+ZbtX5DcWPKhrFOy4F6ClHOrTC0R39c9gXjlBu1HiE7DNOu73bLCJnvrZj/W45EP61DBexhH+ghnKRIw4NOzH55px0FobkFkhm0GlWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241742; c=relaxed/simple;
-	bh=GChH/jFCdkIBNyblvULtWTux4IPlCojVUfqnBTARLcg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nKrmauBcIq2MqZX/6SjOkzwqmw9zazt8JoFn0ZnUZ0+VXjbMXaVC2s4iMCgIpCT/+6JskcLhUZZbA2tYxBCl5HIyKkzaxiwAht1bvn+C5EkVmrkJ/vQ6+HNU59mA4z/Sdg7WJsz+9Ym4ydFDAbwN1YgFfdGuyxl65InZ6XBuMz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hw5MMwwd; arc=none smtp.client-ip=209.85.160.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f195.google.com with SMTP id d75a77b69052e-4668f208f10so42556821cf.3;
-        Tue, 03 Dec 2024 08:02:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733241739; x=1733846539; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+WTzDeex6MvV2fYh0DDtmM+R3bGWHPFsxwrTc0tB2Uk=;
-        b=hw5MMwwdaMmckAb70vhL6gF2HOgDzfU7SF4NwC//02/bG2oy3/icEDCM5wKyyzxbpY
-         UIVdtpdtsIOKm1PgMfyjD/Qvg4WOCh6HBIeOOlD7ipeATUwZ3Vk9VY3ppol1YNkXwJnx
-         2h72CDqoLHZ5VdQkSX59czxE1QRCMeLh58uSEtFNQR2kmxsHCELwdu2V5DkBZBunC36G
-         sLHVOkWMj+85hY/vja/DlJjmIin2Q2zJ4GuT/okiUnX6MBWhzEQxhAF+YsMiTH2uPj/V
-         8k11HNn50aLdigbwVsc4seMk+BK8x0r/jiKu9h9MuIeFbrZKtbZsfS2AMJcxRzoJ45jv
-         7lUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733241739; x=1733846539;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+WTzDeex6MvV2fYh0DDtmM+R3bGWHPFsxwrTc0tB2Uk=;
-        b=rXDEFUazvj+ufSMel9u7+Y+HOUOFRcXMWyjsxSumn777F4vMvT3Qw81kEr2Q1OnPXj
-         KvterSNrbOLTlQg11LoSyhQSkBYSa5sTy8+gAa7XfVs8PU4d/snF869u0KyCKOim2ITF
-         o8F/smcleGDblcBvJ52lOd35JQUn6nrxVQHuHycGC3WCwZj4ADDXJVPGK6obUuM3bfC8
-         onzHjQ8lBpRhBy2ISIfqWsrTb4DYn17Q+iOPuka6Zs4CBv8IIA/n0FH3n5d8G7h1Frgo
-         1Mg1P7iThO0ybEb82SVsWwX/ZIaX5YiWDWpYpvtb5JGoGMRSsa606VHCcyKerSWrC0E9
-         uuJw==
-X-Forwarded-Encrypted: i=1; AJvYcCWg6CGIZ/7NvjBT2tmaNbR/vIwpcj8hOpo8h4X0ARE3Wq1YyQSRIYjN0/BEd0hBnO7ekeo/X9qvNECbHA==@vger.kernel.org, AJvYcCXcLS7r2+3dcwuDTy2f7mrrRiC7oio4aYclyUPS/mTL8wGUeMxuyVwq9ambhflibueEWv4K/A9D@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAU6ajYQrRNAb7IzkswaqR89z7ZMORew2DlSl9Cx7//cCAuN46
-	mrBdKYj5PE+CSxnaRkE18O0oX5IojBL502UUdIb2TjLu1nn/Nu8l
-X-Gm-Gg: ASbGncu3oH7w+CuDsCgL748ukAusOkfPcRqbNkK2rAldQttribgx1TJkQvvbzrnBsEM
-	meIkkypzbEoyAugg2ZKSHiMJsXQUzVvtAJkGjhpuOQv0W30iFe/SrvfAo8EzMD7FhAVrmgXqNVx
-	5oImbwob7/Pnv4og0kB2ZI7xP08VbpNBr/fS8g7I7fghiw7aAzf3atUYTBdeKFXgVAo93ARp3kP
-	stOP6u8Xy7a3KUl5YjzW9n/VrjlaVFX+LqK4gwGyIQAX6ev/KLS1JoPsTzyDp3Ikk5A/spAqqwP
-	yUAZQU4G49Ofv+KKrnx7TJi+DUtDm/+YizvWYoWLKqTaMss1e5JkXVStW0U=
-X-Google-Smtp-Source: AGHT+IGDeeGWcRCTKyUCOq7c8fevpRJKKIBDhzv1JtFZuhU7+1av0GGQHLhd5L0WUnUDcgzYEzYebw==
-X-Received: by 2002:ac8:5a8b:0:b0:466:ad0d:f0ca with SMTP id d75a77b69052e-4670c6c5432mr40809661cf.50.1733241739116;
-        Tue, 03 Dec 2024 08:02:19 -0800 (PST)
-Received: from localhost.localdomain (host-36-26.ilcul54.champaign.il.us.clients.pavlovmedia.net. [68.180.36.26])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-466c42319b6sm62809341cf.77.2024.12.03.08.02.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 08:02:18 -0800 (PST)
-From: Gax-c <zichenxie0106@gmail.com>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	thierry.reding@gmail.com,
-	mperttunen@nvidia.com,
-	jonathanh@nvidia.com,
-	kraxel@redhat.com,
-	gurchetansingh@chromium.org,
-	olvaffe@gmail.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	mst@redhat.com,
-	airlied@redhat.com
+	s=arc-20240116; t=1733241714; c=relaxed/simple;
+	bh=AmnQe6A3KxtcW8XP/QhfkCqFZwG4vY1KZmdy7VCDCSE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pT5PgBXQ0l1daNtaEDtm86NnPfvizocAcWinvgkxWISI5tnP8myXSmYmt6u3mKbECKFH+4LwaCdjhJkAthUMYOZ7Yu1XSL+A9JLXuSq4YsH3Pqc5gklkQohMckO50VrgLDNbf90phb6isJcnuDAzwc7jrATG2e15X1eFsQvBPnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y7kKacuK; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733241711; x=1764777711;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=AmnQe6A3KxtcW8XP/QhfkCqFZwG4vY1KZmdy7VCDCSE=;
+  b=Y7kKacuKVwmT220iSP3YrcqxipeKSYKTXQ4cSOHFZgJmkRWrWOqkhoxs
+   VxG3lDtGsfR0cU4Lowf4xSnzQf9mMWKag04KXD+5jvPp+3dOOeYDbcRLw
+   MC1j/1fu59oL/ichtNKqKufAiWCirXgkNNn55EIiklUfqY8/EKw3po+KJ
+   eRptjeqHcoZd/F8pmPfwlWcUS1PprOwfVeUF52aqU/fPnf7r888hJg7yM
+   s0rJkgAyULAyRWEw2ELnMkiif+xGn+mlzf2c1l35equZgDquqt5PmwTND
+   F/elq39dmgXFwBJCzoI4G4wzw8zj6Gv+NaXwQAc1+404mlGroiB1dAaM/
+   A==;
+X-CSE-ConnectionGUID: eJ3e0xXsTwiET4Xy5Ugw8w==
+X-CSE-MsgGUID: mWq7YydxRkKKp1e2zztj7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="37236043"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="37236043"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 08:01:51 -0800
+X-CSE-ConnectionGUID: 5NXC7kwaRM6M5bMoCnsxVg==
+X-CSE-MsgGUID: kNJWxcxaSvalCDKednLhpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="93313031"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 08:01:45 -0800
+From: Imre Deak <imre.deak@intel.com>
+To: intel-gfx@lists.freedesktop.org
 Cc: dri-devel@lists.freedesktop.org,
-	linux-tegra@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Zichen Xie <zichenxie0106@gmail.com>,
+	Lyude Paul <lyude@redhat.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] drm: cast calculation to __u64 to fix potential integer overflow
-Date: Tue,  3 Dec 2024 10:02:00 -0600
-Message-Id: <20241203160159.8129-1-zichenxie0106@gmail.com>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH 1/7] drm/dp_mst: Fix resetting msg rx state after topology removal
+Date: Tue,  3 Dec 2024 18:02:17 +0200
+Message-ID: <20241203160223.2926014-2-imre.deak@intel.com>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20241203160223.2926014-1-imre.deak@intel.com>
+References: <20241203160223.2926014-1-imre.deak@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,74 +77,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zichen Xie <zichenxie0106@gmail.com>
+If the MST topology is removed during the reception of an MST down reply
+or MST up request sideband message, the
+drm_dp_mst_topology_mgr::up_req_recv/down_rep_recv states could be reset
+from one thread via drm_dp_mst_topology_mgr_set_mst(false), racing with
+the reading/parsing of the message from another thread via
+drm_dp_mst_handle_down_rep() or drm_dp_mst_handle_up_req(). The race is
+possible since the reader/parser doesn't hold any lock while accessing
+the reception state. This in turn can lead to a memory corruption in the
+reader/parser as described by commit bd2fccac61b4 ("drm/dp_mst: Fix MST
+sideband message body length check").
 
-Like commit b0b0d811eac6 ("drm/mediatek: Fix coverity issue with
-unintentional integer overflow"), directly multiply pitch and
-height may lead to integer overflow. Add a cast to avoid it.
+Fix the above by resetting the message reception state if needed before
+reading/parsing a message. Another solution would be to hold the
+drm_dp_mst_topology_mgr::lock for the whole duration of the message
+reception/parsing in drm_dp_mst_handle_down_rep() and
+drm_dp_mst_handle_up_req(), however this would require a bigger change.
+Since the fix is also needed for stable, opting for the simpler solution
+in this patch.
 
-Fixes: 6d1782919dc9 ("drm/cma: Introduce drm_gem_cma_dumb_create_internal()")
-Fixes: dc5698e80cf7 ("Add virtio gpu driver.")
-Fixes: dc6057ecb39e ("drm/tegra: gem: dumb: pitch and size are outputs")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Cc: stable@vger.kernel.org
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 1d082618bbf3 ("drm/display/dp_mst: Fix down/up message handling after sink disconnect")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13056
+Signed-off-by: Imre Deak <imre.deak@intel.com>
 ---
- drivers/gpu/drm/drm_gem_dma_helper.c | 6 +++---
- drivers/gpu/drm/tegra/gem.c          | 2 +-
- drivers/gpu/drm/virtio/virtgpu_gem.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 21 +++++++++++++++++--
+ include/drm/display/drm_dp_mst_helper.h       |  7 +++++++
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_gem_dma_helper.c b/drivers/gpu/drm/drm_gem_dma_helper.c
-index 870b90b78bc4..020c3b17fc02 100644
---- a/drivers/gpu/drm/drm_gem_dma_helper.c
-+++ b/drivers/gpu/drm/drm_gem_dma_helper.c
-@@ -272,8 +272,8 @@ int drm_gem_dma_dumb_create_internal(struct drm_file *file_priv,
- 	if (args->pitch < min_pitch)
- 		args->pitch = min_pitch;
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index e6ee180815b20..1475aa95ab6b2 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3700,8 +3700,7 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
+ 		ret = 0;
+ 		mgr->payload_id_table_cleared = false;
  
--	if (args->size < args->pitch * args->height)
--		args->size = args->pitch * args->height;
-+	if (args->size < (__u64)args->pitch * args->height)
-+		args->size = (__u64)args->pitch * args->height;
+-		memset(&mgr->down_rep_recv, 0, sizeof(mgr->down_rep_recv));
+-		memset(&mgr->up_req_recv, 0, sizeof(mgr->up_req_recv));
++		mgr->reset_rx_state = true;
+ 	}
  
- 	dma_obj = drm_gem_dma_create_with_handle(file_priv, drm, args->size,
- 						 &args->handle);
-@@ -306,7 +306,7 @@ int drm_gem_dma_dumb_create(struct drm_file *file_priv,
- 	struct drm_gem_dma_object *dma_obj;
+ out_unlock:
+@@ -3859,6 +3858,11 @@ int drm_dp_mst_topology_mgr_resume(struct drm_dp_mst_topology_mgr *mgr,
+ }
+ EXPORT_SYMBOL(drm_dp_mst_topology_mgr_resume);
  
- 	args->pitch = DIV_ROUND_UP(args->width * args->bpp, 8);
--	args->size = args->pitch * args->height;
-+	args->size = (__u64)args->pitch * args->height;
++static void reset_msg_rx_state(struct drm_dp_sideband_msg_rx *msg)
++{
++	memset(msg, 0, sizeof(*msg));
++}
++
+ static bool
+ drm_dp_get_one_sb_msg(struct drm_dp_mst_topology_mgr *mgr, bool up,
+ 		      struct drm_dp_mst_branch **mstb)
+@@ -4141,6 +4145,17 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 	return 0;
+ }
  
- 	dma_obj = drm_gem_dma_create_with_handle(file_priv, drm, args->size,
- 						 &args->handle);
-diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
-index d275404ad0e9..a84acdbbbe3f 100644
---- a/drivers/gpu/drm/tegra/gem.c
-+++ b/drivers/gpu/drm/tegra/gem.c
-@@ -548,7 +548,7 @@ int tegra_bo_dumb_create(struct drm_file *file, struct drm_device *drm,
- 	struct tegra_bo *bo;
++static void update_msg_rx_state(struct drm_dp_mst_topology_mgr *mgr)
++{
++	mutex_lock(&mgr->lock);
++	if (mgr->reset_rx_state) {
++		mgr->reset_rx_state = false;
++		reset_msg_rx_state(&mgr->down_rep_recv);
++		reset_msg_rx_state(&mgr->up_req_recv);
++	}
++	mutex_unlock(&mgr->lock);
++}
++
+ /**
+  * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
+  * @mgr: manager to notify irq for.
+@@ -4175,6 +4190,8 @@ int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u
+ 		*handled = true;
+ 	}
  
- 	args->pitch = round_up(min_pitch, tegra->pitch_align);
--	args->size = args->pitch * args->height;
-+	args->size = (__u64)args->pitch * args->height;
++	update_msg_rx_state(mgr);
++
+ 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
+ 		ret = drm_dp_mst_handle_down_rep(mgr);
+ 		*handled = true;
+diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
+index f6a1cbb0f600f..a80ba457a858f 100644
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -699,6 +699,13 @@ struct drm_dp_mst_topology_mgr {
+ 	 */
+ 	bool payload_id_table_cleared : 1;
  
- 	bo = tegra_bo_create_with_handle(file, drm, args->size, 0,
- 					 &args->handle);
-diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
-index 7db48d17ee3a..d5407316b12e 100644
---- a/drivers/gpu/drm/virtio/virtgpu_gem.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
-@@ -72,7 +72,7 @@ int virtio_gpu_mode_dumb_create(struct drm_file *file_priv,
- 		return -EINVAL;
- 
- 	pitch = args->width * 4;
--	args->size = pitch * args->height;
-+	args->size = (__u64)pitch * args->height;
- 	args->size = ALIGN(args->size, PAGE_SIZE);
- 
- 	params.format = virtio_gpu_translate_format(DRM_FORMAT_HOST_XRGB8888);
++	/**
++	 * @reset_rx_state: The down request's reply and up request message
++	 * receiver state must be reset, after the topology manager got
++	 * removed. Protected by @lock.
++	 */
++	bool reset_rx_state : 1;
++
+ 	/**
+ 	 * @payload_count: The number of currently active payloads in hardware. This value is only
+ 	 * intended to be used internally by MST helpers for payload tracking, and is only safe to
 -- 
-2.34.1
+2.44.2
 
 
