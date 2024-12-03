@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-96558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA8A9E218B
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADEE49E27C3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D9EDB63534
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98F34B30DB1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 14:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1481F7555;
-	Tue,  3 Dec 2024 14:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB51F706C;
+	Tue,  3 Dec 2024 14:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhfsxVyK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqQA4v6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BF21F706C;
-	Tue,  3 Dec 2024 14:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68281F8911;
+	Tue,  3 Dec 2024 14:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733237904; cv=none; b=pblPoIMlKU2cGhvDfMh/YCZxb4REnQaHe08YYkZDepXgnhbE3N410+AdJ5kk6mZFo4ByIU33/7ZSaY8Unvbdw3KPGxT0V3FDMELeqr7jTDnXxjqObEZRMli3jz2O3QZOU3IpXSU1McblEwSG4/JVWbmk5w0k3pDUpQogk2RL5/I=
+	t=1733237910; cv=none; b=av4Rt3wpEYdr/xWmRUt2ksgSYNqDWWuEb+PdYgjwoaomrO/RYBs07mTqDb3+KK33g63ltyM6ZLNQ83cyUp72vdnQhT4n2Y8fHHj5V3uuzLqUnAL216ZqxeHqDkRNzJPR6w0AkLfwqwW1mip1IzHAeVsckux9G7FdSa8A18L4Hyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733237904; c=relaxed/simple;
-	bh=hYBjyJfdc6GR+Ko6Bb8+mPTRWoeC5s94IG1jOlJ86Yg=;
+	s=arc-20240116; t=1733237910; c=relaxed/simple;
+	bh=ioTCiW/aaRGfqbsXPPR8PjnOa+1IbqbbI+SQrkGxJxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkIPX1f/zAgvKM0iagKvss5EVyOr1/RKq6bpTALHon5WjBPpGe6vXOjiN0OnZJYUv+/VL68ewNKBtzmHiRXefW30VTQzykaRW0ZhAgfroWxz41h1K4D95i5C+MXtgma+3xdOS4Z/PuE9oeSLc3pri/Gw1tZKf1xH501g29EIoes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhfsxVyK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3C8C4CECF;
-	Tue,  3 Dec 2024 14:58:23 +0000 (UTC)
+	 MIME-Version; b=Mst3pqnxEHs+KtRPT2Nd8U7yT5qmoZn5EO1jO21SNxFmEd9ySeof10JRVmDHzvX9Oi007HWeEpFpVI1JTejJrTxQtQTvoiHpb4uy/EgpvJbgKIOFH4juj3oab+l2jwmKN7xRs1q/zQw4LKTHUBPYn5SB8Qcc8+vv6UlKjND2iWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqQA4v6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2351AC4CED9;
+	Tue,  3 Dec 2024 14:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733237904;
-	bh=hYBjyJfdc6GR+Ko6Bb8+mPTRWoeC5s94IG1jOlJ86Yg=;
+	s=korg; t=1733237910;
+	bh=ioTCiW/aaRGfqbsXPPR8PjnOa+1IbqbbI+SQrkGxJxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhfsxVyKoKz8jaUatcDeFwgoaJcvvNkfk6rr9pm6qJOexLS9/1iOeTMOjyB2kdvGg
-	 ypi9bb1EP4zH8P/n94RwEm0mXAzVUla4pqlhwnjOqHok7jwfDTcBUHohhydTsVs9RL
-	 S0PU4WTmSCo23jq+iODbGsd/b5DlsJ1HCsJvq1IE=
+	b=IqQA4v6OvgjH2qds+c6c6tobhcD7tc5IXBfVNLCozdpKfKasymwtVMNX7cMu1PXWM
+	 FqapEiM7aSVNJX9s/IIUknq7eNVoupl96X2owtcsw/vNo5N+g7hpksNDbj0anCN5Hv
+	 7P6x85M6M/GPWRjf32Nb8fJuLO9EoQlhj6wOaAwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Zizhi Wo <wozizhi@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 071/817] acpi/arm64: Adjust error handling procedure in gtdt_parse_timer_block()
-Date: Tue,  3 Dec 2024 15:34:03 +0100
-Message-ID: <20241203143958.459757809@linuxfoundation.org>
+Subject: [PATCH 6.11 073/817] cachefiles: Fix incorrect length return value in cachefiles_ondemand_fd_write_iter()
+Date: Tue,  3 Dec 2024 15:34:05 +0100
+Message-ID: <20241203143958.538641230@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -68,43 +67,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Zizhi Wo <wozizhi@huawei.com>
 
-[ Upstream commit 1a9de2f6fda69d5f105dd8af776856a66abdaa64 ]
+[ Upstream commit 10c35abd35aa62c9aac56898ae0c63b4d7d115e5 ]
 
-In case of error in gtdt_parse_timer_block() invalid 'gtdt_frame'
-will be used in 'do {} while (i-- >= 0 && gtdt_frame--);' statement block
-because do{} block will be executed even if 'i == 0'.
+cachefiles_ondemand_fd_write_iter() function first aligns "pos" and "len"
+to block boundaries. When calling __cachefiles_write(), the aligned "pos"
+is passed in, but "len" is the original unaligned value(iter->count).
+Additionally, the returned length of the write operation is the modified
+"len" aligned by block size, which is unreasonable.
 
-Adjust error handling procedure by replacing 'i-- >= 0' with 'i-- > 0'.
+The alignment of "pos" and "len" is intended only to check whether the
+cache has enough space. But the modified len should not be used as the
+return value of cachefiles_ondemand_fd_write_iter() because the length we
+passed to __cachefiles_write() is the previous "len". Doing so would result
+in a mismatch in the data written on-demand. For example, if the length of
+the user state passed in is not aligned to the block size (the preread
+scene/DIO writes only need 512 alignment/Fault injection), the length of
+the write will differ from the actual length of the return.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+To solve this issue, since the __cachefiles_prepare_write() modifies the
+size of "len", we pass "aligned_len" to __cachefiles_prepare_write() to
+calculate the free blocks and use the original "len" as the return value of
+cachefiles_ondemand_fd_write_iter().
 
-Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240827101239.22020-1-amishin@t-argos.ru
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+Link: https://lore.kernel.org/r/20241107110649.3980193-2-wozizhi@huawei.com
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/arm64/gtdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cachefiles/ondemand.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-index c0e77c1c8e09d..eb6c2d3603874 100644
---- a/drivers/acpi/arm64/gtdt.c
-+++ b/drivers/acpi/arm64/gtdt.c
-@@ -283,7 +283,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
- 		if (frame->virt_irq > 0)
- 			acpi_unregister_gsi(gtdt_frame->virtual_timer_interrupt);
- 		frame->virt_irq = 0;
--	} while (i-- >= 0 && gtdt_frame--);
-+	} while (i-- > 0 && gtdt_frame--);
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 470c966583850..bdd321017f1c4 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -61,7 +61,7 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
+ 	struct cachefiles_object *object = kiocb->ki_filp->private_data;
+ 	struct cachefiles_cache *cache = object->volume->cache;
+ 	struct file *file = object->file;
+-	size_t len = iter->count;
++	size_t len = iter->count, aligned_len = len;
+ 	loff_t pos = kiocb->ki_pos;
+ 	const struct cred *saved_cred;
+ 	int ret;
+@@ -70,7 +70,7 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
+ 		return -ENOBUFS;
  
- 	return -EINVAL;
- }
+ 	cachefiles_begin_secure(cache, &saved_cred);
+-	ret = __cachefiles_prepare_write(object, file, &pos, &len, len, true);
++	ret = __cachefiles_prepare_write(object, file, &pos, &aligned_len, len, true);
+ 	cachefiles_end_secure(cache, saved_cred);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.43.0
 
