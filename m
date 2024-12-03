@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-97168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11779E2A10
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:54:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C0E9E2A04
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FAD3BA817E
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C83CB463DD
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148641F75A6;
-	Tue,  3 Dec 2024 15:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A13B1E3DED;
+	Tue,  3 Dec 2024 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdWk3aQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V22cThNl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DB4646;
-	Tue,  3 Dec 2024 15:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC4E2500DA;
+	Tue,  3 Dec 2024 15:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239710; cv=none; b=kvm5BmXgrArdGUFapfSpdRnr+DPunG2xGajENZiQvS4joi7GlHpr//EvhKcWdqbPHlz0KkoepT779mT7hkUakkSy62aEyfb3i7BlkQPSGjliV0YIuxliC/O4eG5PZNbxVUwAiEVvTcb4hW2qD3GUdkAe2L64rOaV72FGpQSZipM=
+	t=1733239823; cv=none; b=tfetf7ULxSx+ud/D60GW/3BOc5ueQ6R7J18DNZrk5xgar2Fvuh4bVUj/A0OKAwp1KoEIiLWfGrPczTLYLBP3nv0TdiSeIYgVOAm+fotNAb5lMGq2qxGzBXv+z+YhEBq8J7A6EneYBlla86YvPZ5Cvrrm9dIzRezx8ZsHieBpp6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239710; c=relaxed/simple;
-	bh=V/irMdHw1iLrd++OvBT2nIF/ogKf56r6FycKlSuHpCY=;
+	s=arc-20240116; t=1733239823; c=relaxed/simple;
+	bh=lyD7nUhXyWrb6oJ+uYj1EmfqTRfaL9l0BL0X330xgRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXqB4LC3IN0qy3nIDmkE0grvQz50b6HWk9lVd60apC+Z7CxjxMJtycybdtzNN7k/Wd8ii2BbmiagdlLCJyhMWhxOGJ63ZZjI4OTu9GEFxdjAIVUDaoHz88Bfc2UiGA3/ZDMgRQnHb9IW8lT0s3PmmhLTYLnBOZ3j2YXROCuLFKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdWk3aQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B01C4CED6;
-	Tue,  3 Dec 2024 15:28:29 +0000 (UTC)
+	 MIME-Version; b=WSMgja6iDM7qdqWSbfw7KSeYJNDIzJ6MNXzOdoaLYOuBKLpnzUX2avreQOiKl7d6H5CFefD34voiXA3BwIrGtWtXKo6XITqh5jltxBEJ0KMhJfEUEM8/orGZbMDysMUGIeHLWlkU5x3w03SLfiTxZ8MzOhBRz5PMHolahouR4FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V22cThNl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518CCC4CECF;
+	Tue,  3 Dec 2024 15:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239710;
-	bh=V/irMdHw1iLrd++OvBT2nIF/ogKf56r6FycKlSuHpCY=;
+	s=korg; t=1733239823;
+	bh=lyD7nUhXyWrb6oJ+uYj1EmfqTRfaL9l0BL0X330xgRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdWk3aQ1xkmRud0TN+k1OWLg5V6ODeTfxqSShFPtem98WGZl+WtGGiYFNkfA+fcpk
-	 +YyV3lkBNDIgUD6sVwDCXO4Z79DzaIW6kJf7Wi9nrUQGZJUXZzs4YEkX5GEx63erDA
-	 pMvkMwEfDGR/5t/pWCgNh/+qmJ06GR0bupsD47Jk=
+	b=V22cThNlOrjFWAFyWv9J01cZbSi5TCkWlOaleSwxV7GkUYXD/4HUcseqH5AxYY2vR
+	 TX/HGLlPCtN7BgMLG7XrgewOtzFPrLpa5YzYLiq9x8baUq3I0tqOogO+ID8NeEyScJ
+	 dwy+SKhvKdppkdnOEkVxyV5bxvsf5dr7BfWQ3t8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Talpey <tom@talpey.com>,
-	Jianhong Yin <jiyin@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.11 706/817] smb: client: fix NULL ptr deref in crypto_aead_setkey()
-Date: Tue,  3 Dec 2024 15:44:38 +0100
-Message-ID: <20241203144023.539877770@linuxfoundation.org>
+	Bin Liu <b-liu@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>
+Subject: [PATCH 6.11 715/817] serial: 8250: omap: Move pm_runtime_get_sync
+Date: Tue,  3 Dec 2024 15:44:47 +0100
+Message-ID: <20241203144023.901991712@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,122 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Bin Liu <b-liu@ti.com>
 
-commit 4bdec0d1f658f7c98749bd2c5a486e6cfa8565d2 upstream.
+commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
 
-Neither SMB3.0 or SMB3.02 supports encryption negotiate context, so
-when SMB2_GLOBAL_CAP_ENCRYPTION flag is set in the negotiate response,
-the client uses AES-128-CCM as the default cipher.  See MS-SMB2
-3.3.5.4.
+Currently in omap_8250_shutdown, the dma->rx_running flag is
+set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
+is called, which is a runtime resume call stack which can
+re-set the flag. When the call omap_8250_shutdown returns, the
+flag is expected to be UN-SET, but this is not the case. This
+is causing issues the next time UART is re-opened and
+omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
+before the omap_8250_rx_dma_flush.
 
-Commit b0abcd65ec54 ("smb: client: fix UAF in async decryption") added
-a @server->cipher_type check to conditionally call
-smb3_crypto_aead_allocate(), but that check would always be false as
-@server->cipher_type is unset for SMB3.02.
-
-Fix the following KASAN splat by setting @server->cipher_type for
-SMB3.02 as well.
-
-mount.cifs //srv/share /mnt -o vers=3.02,seal,...
-
-BUG: KASAN: null-ptr-deref in crypto_aead_setkey+0x2c/0x130
-Read of size 8 at addr 0000000000000020 by task mount.cifs/1095
-CPU: 1 UID: 0 PID: 1095 Comm: mount.cifs Not tainted 6.12.0 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-3.fc41
-04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5d/0x80
- ? crypto_aead_setkey+0x2c/0x130
- kasan_report+0xda/0x110
- ? crypto_aead_setkey+0x2c/0x130
- crypto_aead_setkey+0x2c/0x130
- crypt_message+0x258/0xec0 [cifs]
- ? __asan_memset+0x23/0x50
- ? __pfx_crypt_message+0x10/0x10 [cifs]
- ? mark_lock+0xb0/0x6a0
- ? hlock_class+0x32/0xb0
- ? mark_lock+0xb0/0x6a0
- smb3_init_transform_rq+0x352/0x3f0 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- smb_send_rqst+0x144/0x230 [cifs]
- ? __pfx_smb_send_rqst+0x10/0x10 [cifs]
- ? hlock_class+0x32/0xb0
- ? smb2_setup_request+0x225/0x3a0 [cifs]
- ? __pfx_cifs_compound_last_callback+0x10/0x10 [cifs]
- compound_send_recv+0x59b/0x1140 [cifs]
- ? __pfx_compound_send_recv+0x10/0x10 [cifs]
- ? __create_object+0x5e/0x90
- ? hlock_class+0x32/0xb0
- ? do_raw_spin_unlock+0x9a/0xf0
- cifs_send_recv+0x23/0x30 [cifs]
- SMB2_tcon+0x3ec/0xb30 [cifs]
- ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- ? __pfx_lock_release+0x10/0x10
- ? do_raw_spin_trylock+0xc6/0x120
- ? lock_acquire+0x3f/0x90
- ? _get_xid+0x16/0xd0 [cifs]
- ? __pfx_SMB2_tcon+0x10/0x10 [cifs]
- ? cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
- cifs_get_smb_ses+0xcdd/0x10a0 [cifs]
- ? __pfx_cifs_get_smb_ses+0x10/0x10 [cifs]
- ? cifs_get_tcp_session+0xaa0/0xca0 [cifs]
- cifs_mount_get_session+0x8a/0x210 [cifs]
- dfs_mount_share+0x1b0/0x11d0 [cifs]
- ? __pfx___lock_acquire+0x10/0x10
- ? __pfx_dfs_mount_share+0x10/0x10 [cifs]
- ? lock_acquire.part.0+0xf4/0x2a0
- ? find_held_lock+0x8a/0xa0
- ? hlock_class+0x32/0xb0
- ? lock_release+0x203/0x5d0
- cifs_mount+0xb3/0x3d0 [cifs]
- ? do_raw_spin_trylock+0xc6/0x120
- ? __pfx_cifs_mount+0x10/0x10 [cifs]
- ? lock_acquire+0x3f/0x90
- ? find_nls+0x16/0xa0
- ? smb3_update_mnt_flags+0x372/0x3b0 [cifs]
- cifs_smb3_do_mount+0x1e2/0xc80 [cifs]
- ? __pfx_vfs_parse_fs_string+0x10/0x10
- ? __pfx_cifs_smb3_do_mount+0x10/0x10 [cifs]
- smb3_get_tree+0x1bf/0x330 [cifs]
- vfs_get_tree+0x4a/0x160
- path_mount+0x3c1/0xfb0
- ? kasan_quarantine_put+0xc7/0x1d0
- ? __pfx_path_mount+0x10/0x10
- ? kmem_cache_free+0x118/0x3e0
- ? user_path_at+0x74/0xa0
- __x64_sys_mount+0x1a6/0x1e0
- ? __pfx___x64_sys_mount+0x10/0x10
- ? mark_held_locks+0x1a/0x90
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Cc: Tom Talpey <tom@talpey.com>
-Reported-by: Jianhong Yin <jiyin@redhat.com>
-Cc: stable@vger.kernel.org # v6.12
-Fixes: b0abcd65ec54 ("smb: client: fix UAF in async decryption")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+cc: stable@vger.kernel.org
+Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
+Signed-off-by: Bin Liu <b-liu@ti.com>
+[Judith: Add commit message]
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Kevin Hilman <khilman@baylibre.com>
+Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_omap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -1230,7 +1230,9 @@ SMB2_negotiate(const unsigned int xid,
- 	 * SMB3.0 supports only 1 cipher and doesn't have a encryption neg context
- 	 * Set the cipher type manually.
- 	 */
--	if (server->dialect == SMB30_PROT_ID && (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
-+	if ((server->dialect == SMB30_PROT_ID ||
-+	     server->dialect == SMB302_PROT_ID) &&
-+	    (server->capabilities & SMB2_GLOBAL_CAP_ENCRYPTION))
- 		server->cipher_type = SMB2_ENCRYPTION_AES128_CCM;
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -777,12 +777,12 @@ static void omap_8250_shutdown(struct ua
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct omap8250_priv *priv = port->private_data;
  
- 	security_blob = smb2_get_data_area_len(&blob_offset, &blob_length,
++	pm_runtime_get_sync(port->dev);
++
+ 	flush_work(&priv->qos_work);
+ 	if (up->dma)
+ 		omap_8250_rx_dma_flush(up);
+ 
+-	pm_runtime_get_sync(port->dev);
+-
+ 	serial_out(up, UART_OMAP_WER, 0);
+ 	if (priv->habit & UART_HAS_EFR2)
+ 		serial_out(up, UART_OMAP_EFR2, 0x0);
 
 
 
