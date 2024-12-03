@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-96612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B19B9E277A
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:30:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E469E239A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B93FB815AF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:01:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B223A28716D
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4D11F7584;
-	Tue,  3 Dec 2024 15:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0EE1FBE86;
+	Tue,  3 Dec 2024 15:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+q44Qk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaM3cm/D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D31133FE;
-	Tue,  3 Dec 2024 15:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0927B1F9EAC;
+	Tue,  3 Dec 2024 15:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733238085; cv=none; b=co41b74eelDuNkh75F8zNvFeDjNT1MMb3PnEIRmcsu1n9r+VOqeDRvbKv2qNB1cK5202R7kxMmnLaDNcazn04HRyYEmiu8wIaQJe2XWtXhFsCSAYKTAti14Zaj3HIReHgCKEIPunHPlMgOPE2Jc52Aiy103gUb26zcpX64pu0qQ=
+	t=1733240091; cv=none; b=q1d8NF8guaktiZvsDl/20p+XoTc3mxArdwphG27oTPA84jPCp7kWCtY6eRUEYby337Ru2vYVX+sRLgW45TWo02+688iNpRTH8L1VVbVbLKKqZa2dycmgVz0ClGoRTfHNHIKCms6G9jd9u6ObmRohl0bmfuiFb7ERUH7iPuLGIgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733238085; c=relaxed/simple;
-	bh=QJhiCAhNUTcP+RPiI3Q02tduZ0w0hmX7SWSpoyoxomE=;
+	s=arc-20240116; t=1733240091; c=relaxed/simple;
+	bh=j6G6qJzVtWim7O+pyJCOy7DhUKQWPnmkUsOUPJZW3zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mj38F+UNfmuZ2qtdyelGXalSIrvzWbvguV4qSO+FvJYh1JNclkefk8HYCK5PysJ7UcTheONKctm3aeg0XSd/qyG0HE5+AtLkMA453pi/Ma22UNzpnjnl1dbXlmDwUOL5/CpkpqDndrrhxa/yvK/qdXotlopGsq686dGsj/XICqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+q44Qk8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEEA1C4CECF;
-	Tue,  3 Dec 2024 15:01:24 +0000 (UTC)
+	 MIME-Version; b=FsDT4h17kZdiRp2zaH8PpSvl3VwlZBiqP/DIN+nc0LzoWjUFh0T+H7JXh2uHLAsZnm6t5CGf9M4Xbb/y71xm+bQ/POZZCUiFyem3DqT1LOC1TQNRO+HLOY+Nos1u9cZu7nCNFAn9wpg479os+DEOjuVYHVGZgI/eZ4TR8PQBfrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaM3cm/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B384C4CECF;
+	Tue,  3 Dec 2024 15:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733238085;
-	bh=QJhiCAhNUTcP+RPiI3Q02tduZ0w0hmX7SWSpoyoxomE=;
+	s=korg; t=1733240090;
+	bh=j6G6qJzVtWim7O+pyJCOy7DhUKQWPnmkUsOUPJZW3zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+q44Qk89QZ8nx1xxIk06IxvggPrzMnww2gCS1ihj4P/fr2xmAbRcwaOc3r+CarrU
-	 UJxZSNuTuIWBwxt5G3+lC73SYtYPdnnF2MMNsFDHR6GK57CrdYgv+F2xrX5Wy6oEZ/
-	 wKw+ApdztTYo9ibfAQC2IYawuYXI7Pd7tj0YV6fc=
+	b=ZaM3cm/D+tYkyavAkbxVX9BW2TiPMBi0M5Hx/qr7qGhSN3/T/z5VdRjCHtg+PPN5V
+	 QBWN7PGZSteMaETdTen6/o4ljr0cz6vEpOZ5U+uVDZl6K+ujZZ8+S+hO2nzZPyN/kQ
+	 KzroqNJDu5jj/eMjiGmFY0T2PoLZJRGSy3fMNtQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Jonathan Corbet <corbet@lwn.net>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 156/817] scripts/kernel-doc: Do not track section counter across processed files
-Date: Tue,  3 Dec 2024 15:35:28 +0100
-Message-ID: <20241203144001.815493409@linuxfoundation.org>
+Subject: [PATCH 6.12 002/826] drm/amd/display: Skip Invalid Streams from DSC Policy
+Date: Tue,  3 Dec 2024 15:35:29 +0100
+Message-ID: <20241203144743.537483702@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
-References: <20241203143955.605130076@linuxfoundation.org>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+References: <20241203144743.428732212@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-[ Upstream commit be9264110e4e874622d588a75daf930539fdf6ea ]
+[ Upstream commit 9afeda04964281e9f708b92c2a9c4f8a1387b46e ]
 
-The section counter tracks how many sections of kernel-doc were added.
-The only real use of the counter value is to check if anything was
-actually supposed to be output and give a warning is nothing is
-available.
+Streams with invalid new connector state should be elimiated from
+dsc policy.
 
-The current logic of remembering the initial value and then resetting
-the value then when processing each file means that if a file has the
-same number of sections as the previously processed one, a warning is
-incorrectly given.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20241008082905.4005524-1-wenst@chromium.org
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Signed-off-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kernel-doc | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/kernel-doc b/scripts/kernel-doc
-index 2791f81952038..c608820f0bf51 100755
---- a/scripts/kernel-doc
-+++ b/scripts/kernel-doc
-@@ -2322,7 +2322,6 @@ sub process_inline($$) {
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index a08e8a0b696c6..f756640048fee 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1120,6 +1120,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 	int i, k, ret;
+ 	bool debugfs_overwrite = false;
+ 	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
++	struct drm_connector_state *new_conn_state;
  
- sub process_file($) {
-     my $file;
--    my $initial_section_counter = $section_counter;
-     my ($orig_file) = @_;
+ 	memset(params, 0, sizeof(params));
  
-     $file = map_filename($orig_file);
-@@ -2360,8 +2359,7 @@ sub process_file($) {
-     }
+@@ -1127,7 +1128,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 		return PTR_ERR(mst_state);
  
-     # Make sure we got something interesting.
--    if ($initial_section_counter == $section_counter && $
--        output_mode ne "none") {
-+    if (!$section_counter && $output_mode ne "none") {
-         if ($output_selection == OUTPUT_INCLUDE) {
-             emit_warning("${file}:1", "'$_' not found\n")
-                 for keys %function_table;
+ 	/* Set up params */
+-	DRM_DEBUG_DRIVER("%s: MST_DSC Set up params for %d streams\n", __func__, dc_state->stream_count);
++	DRM_DEBUG_DRIVER("%s: MST_DSC Try to set up params from %d streams\n", __func__, dc_state->stream_count);
+ 	for (i = 0; i < dc_state->stream_count; i++) {
+ 		struct dc_dsc_policy dsc_policy = {0};
+ 
+@@ -1143,6 +1144,14 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 		if (!aconnector->mst_output_port)
+ 			continue;
+ 
++		new_conn_state = drm_atomic_get_new_connector_state(state, &aconnector->base);
++
++		if (!new_conn_state) {
++			DRM_DEBUG_DRIVER("%s:%d MST_DSC Skip the stream 0x%p with invalid new_conn_state\n",
++					__func__, __LINE__, stream);
++			continue;
++		}
++
+ 		stream->timing.flags.DSC = 0;
+ 
+ 		params[count].timing = &stream->timing;
+@@ -1175,6 +1184,8 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
+ 		count++;
+ 	}
+ 
++	DRM_DEBUG_DRIVER("%s: MST_DSC Params set up for %d streams\n", __func__, count);
++
+ 	if (count == 0) {
+ 		ASSERT(0);
+ 		return 0;
 -- 
 2.43.0
 
