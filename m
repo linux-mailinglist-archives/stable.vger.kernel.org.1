@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-97470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D3F9E24AF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:51:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8D19E283E
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:54:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A81D6168CA1
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:46:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C24BA2D15
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CF21F8932;
-	Tue,  3 Dec 2024 15:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F2E1F8928;
+	Tue,  3 Dec 2024 15:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g437i7+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCfuNdT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050F91F8935;
-	Tue,  3 Dec 2024 15:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1D51F76A4;
+	Tue,  3 Dec 2024 15:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240616; cv=none; b=SZJDPH9Owzv0NmrGIrfqOlAtLCsohdT/+s+DjmjHy40AZypx42Cqs2AvZh9DZ/sJ4ohvDO/5+CNsTityCdZDei1jx2j8+7WV/Rmy+TM/iKjapjkRH08A8ld0NJMUQc3yNatp3MSwF4oy1FL5Uvu3wTOYiY22SFZKorzDz0+k8MA=
+	t=1733238719; cv=none; b=XhZ77LlTRG+pPELidYBg+W/U3T71/FF7ZNlxlJIAhhPw0cYmP/D2yMiXC5oJzbi8EBzYhegvbN+IM29f6lJyd2oxLUzvtSpMczuz0Bk6QYHLIsc4S835NoaGsDPx0f+z+60mETWfVVIix59EJoan5S3z2G1rnwRBmGMpPPCcKWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240616; c=relaxed/simple;
-	bh=VmZ1bXk8DzCIWFReGhcYq4TWxdTNUVDl4ZIop+wy/dU=;
+	s=arc-20240116; t=1733238719; c=relaxed/simple;
+	bh=sMd9p5uSZ6C2UQJWp+flJUWF1h6Gmqubny42CjkSW2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UtBecXkP1TxFW6T3zBK3iU8/jmatqVmXzc/MHQelU+a72IT068fosMrP2tC9xr+Z2cc3byZSwc9tyshrF07BOMpZoLnrMbQP+XBhGwSvAtVKiGWgrKv0cC5DVnwJvU/qs9JaxEtRLf2eqXWyPWorJPDh3zUOkiR56A/FIdgCz8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g437i7+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60158C4CECF;
-	Tue,  3 Dec 2024 15:43:35 +0000 (UTC)
+	 MIME-Version; b=WCne71FP7uKP/POZpmTaYqoMOlRSQXakGaBpfv575qsrlEwPL011gHxfmtEgRrQX8vk4XgI+ZJ4FABkVWHdmRl/oRh5eZfDANZEK73H6BPhKVawSUPB11VEb7l42cgWx+r3rzTh2BEiOV51mmAKD1eC/g96Scfnb+MjUARCxFeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCfuNdT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD10C4CECF;
+	Tue,  3 Dec 2024 15:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240615;
-	bh=VmZ1bXk8DzCIWFReGhcYq4TWxdTNUVDl4ZIop+wy/dU=;
+	s=korg; t=1733238719;
+	bh=sMd9p5uSZ6C2UQJWp+flJUWF1h6Gmqubny42CjkSW2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g437i7+v9VU1kU36UYnBnqe3612ZGrGbh5f/3KYR7C0l0ceajJnGqJoOvfKFQJR40
-	 GDBG/kC2B6dl5Hq3k/jdDzkIVJ/wOGKIHoORX1v62gWmigdVURhy5uV7jO8p4GqTHY
-	 y0OYGoOf3IQT5+UIcpvHLJ8yNr70hq58V38Oq0nE=
+	b=UCfuNdT8iA8I5P070ku8tACIXzVtUm9r9A+/0W1VUOqHatC7PB+l2/k1duGMnOvZP
+	 GKiH2l2c+4ROdvCL+q/g5RfcY94kkj1YXj7u4Vfzg3iOMLYv1MDaA5AzRJ/SClONSK
+	 TA40ebRe8DlqrMhzT8FTlD4aWXU4lFqL9eRFcoBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 188/826] drm/vc4: hvs: Correct logic on stopping an HVS channel
+Subject: [PATCH 6.11 343/817] bpf: Force uprobe bpf program to always return 0
 Date: Tue,  3 Dec 2024 15:38:35 +0100
-Message-ID: <20241203144751.075633792@linuxfoundation.org>
+Message-ID: <20241203144009.212607507@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 7ab6512e7942889c0962588355cb92424a690be6 ]
+[ Upstream commit f505005bc7426f4309880da94cfbfc37efa225bd ]
 
-When factoring out __vc4_hvs_stop_channel, the logic got inverted from
-	if (condition)
-	  // stop channel
-to
-	if (condition)
-	  goto out
-	//stop channel
-	out:
-and also changed the exact register writes used to stop the channel.
+As suggested by Andrii make uprobe multi bpf programs to always return 0,
+so they can't force uprobe removal.
 
-Correct the logic so that the channel is actually stopped, and revert
-to the original register writes.
+Keeping the int return type for uprobe_prog_run, because it will be used
+in following session changes.
 
-Fixes: 6d01a106b4c8 ("drm/vc4: crtc: Move HVS init and close to a function")
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-32-dave.stevenson@raspberrypi.com
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241108134544.480660-3-jolsa@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_hvs.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ kernel/trace/bpf_trace.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_hvs.c b/drivers/gpu/drm/vc4/vc4_hvs.c
-index 14415943a1157..1d011fa8a7eac 100644
---- a/drivers/gpu/drm/vc4/vc4_hvs.c
-+++ b/drivers/gpu/drm/vc4/vc4_hvs.c
-@@ -420,13 +420,11 @@ void vc4_hvs_stop_channel(struct vc4_hvs *hvs, unsigned int chan)
- 	if (!drm_dev_enter(drm, &idx))
- 		return;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 6dbbb3683ab2e..9cb1c952c3ec4 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3294,7 +3294,6 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	struct bpf_prog *prog = link->link.prog;
+ 	bool sleepable = prog->sleepable;
+ 	struct bpf_run_ctx *old_run_ctx;
+-	int err = 0;
  
--	if (HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_ENABLE)
-+	if (!(HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_ENABLE))
- 		goto out;
+ 	if (link->task && current->mm != link->task->mm)
+ 		return 0;
+@@ -3307,7 +3306,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	migrate_disable();
  
--	HVS_WRITE(SCALER_DISPCTRLX(chan),
--		  HVS_READ(SCALER_DISPCTRLX(chan)) | SCALER_DISPCTRLX_RESET);
--	HVS_WRITE(SCALER_DISPCTRLX(chan),
--		  HVS_READ(SCALER_DISPCTRLX(chan)) & ~SCALER_DISPCTRLX_ENABLE);
-+	HVS_WRITE(SCALER_DISPCTRLX(chan), SCALER_DISPCTRLX_RESET);
-+	HVS_WRITE(SCALER_DISPCTRLX(chan), 0);
+ 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
+-	err = bpf_prog_run(link->link.prog, regs);
++	bpf_prog_run(link->link.prog, regs);
+ 	bpf_reset_run_ctx(old_run_ctx);
  
- 	/* Once we leave, the scaler should be disabled and its fifo empty. */
- 	WARN_ON_ONCE(HVS_READ(SCALER_DISPCTRLX(chan)) & SCALER_DISPCTRLX_RESET);
+ 	migrate_enable();
+@@ -3316,7 +3315,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 		rcu_read_unlock_trace();
+ 	else
+ 		rcu_read_unlock();
+-	return err;
++	return 0;
+ }
+ 
+ static bool
 -- 
 2.43.0
 
