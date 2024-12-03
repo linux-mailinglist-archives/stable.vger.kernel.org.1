@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B17D9E2B20
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:40:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C429E2AC9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A40BC69C7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:44:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57A41B3C9A5
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954FF1FAC54;
-	Tue,  3 Dec 2024 15:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33181F8EE8;
+	Tue,  3 Dec 2024 15:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8bbpb+e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buEFcblU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5393D1F8AFF;
-	Tue,  3 Dec 2024 15:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FAA1F75B3;
+	Tue,  3 Dec 2024 15:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240478; cv=none; b=d8NIGALYb19exswymRgg/recIC8JbLZfe9K5/3czayN5VGr5Aqg+tAu5KEkaN9vSPyz30cCFxKYLUPjqNklH3QntANnugADkgiz5+pxEWNE6KfgJVNRQDIEjlq/NqzrF71r3r8C3e858bXtsmnwNbvBSXmSc0SbGWs1o6r4qvJI=
+	t=1733238600; cv=none; b=TU2zPrYEZXksOeq1j2zfk5D9rnruWWZW7HzjWs9ToYRLKSWEyRu10y3Gd6cRRNNHX4ARGHrlY4SMfFARpObmCK95GuqdVOvIkEZ1xskcxnjAefx0FqDkNi3MdCfES1LzWy9ul0THi/NmEO+GewUXqaugNKabLTogIgO8EiO7mcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240478; c=relaxed/simple;
-	bh=8ZYc0NxV8EYV51Gbwk1Ns4Ps/9SdUxDfmmoUCZXJoFc=;
+	s=arc-20240116; t=1733238600; c=relaxed/simple;
+	bh=sUsAXgJOTB+fA1Z/l1FR5+/mFCU9eny7/O4PhJu0fM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aei9XDSsUrGhxsibSvXFltOHV2FOewyJJq+uq3gXztsjjoiUAsGLFsznj7glqMSfcdeiHpIP3waoSXD1V4N7YLmJetT6LEiarNP1bUNo3/btfNoDlmIDDSylNPOhb3oCNVJDWhRkM6SOHgwrLdxhIKKnl4Sk2tKf625jGH5XJx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8bbpb+e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B781FC4CECF;
-	Tue,  3 Dec 2024 15:41:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NnvIAyEo6x9xliscGbrFgB+gUge7QV0MjbUHN9iIJ26vrgQiYMQBzFbEHKI/xBh4V/UGm/ZTv+w+t0HuflZU7XfetYuvOhqUU/jkNZeqE5RBO/m17nLqpxhJa295zCwHxy8O9Ei2jitaz0QH9ux99rPfvYMZjEFN2ELmdnetyFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buEFcblU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D10C4CECF;
+	Tue,  3 Dec 2024 15:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240478;
-	bh=8ZYc0NxV8EYV51Gbwk1Ns4Ps/9SdUxDfmmoUCZXJoFc=;
+	s=korg; t=1733238600;
+	bh=sUsAXgJOTB+fA1Z/l1FR5+/mFCU9eny7/O4PhJu0fM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8bbpb+ehnEvUmPH/mC8mL9xJ0Sx4J8vpifsCsBMNdHpi6CYzBtesAMRoYYl5DllG
-	 ujTXiSkHIwLbAqCOCKB4+2o4ycEW9vjcfyNoCyj5yZCbRdXT/Ie5MKj4u0lJbC3A/R
-	 Qub0w5lrXFcWrVQWAJr/zd9m5cjQ1PWt6ygVLP4w=
+	b=buEFcblUqdKCX+Sljhc0WrrIG/E2mGbgLBiG2X31ZjGt0B3tct0FkKbZcXQLFBN39
+	 dTpzbrlab2Qc8q0FOWRTXjQYRI0Wc2V1LTDqna+oO5o3IplI8QnuPBmf0DEab5vG1o
+	 gFuF+GEYfDXxcbsvb93e+Vkg8z0jlRIrNyTU+8Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anurag Dutta <a-dutta@ti.com>,
-	Aniket Limaye <a-limaye@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Yuan Can <yuancan@huawei.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 148/826] arm64: dts: ti: k3-j7200: Fix clock ids for MCSPI instances
-Date: Tue,  3 Dec 2024 15:37:55 +0100
-Message-ID: <20241203144749.519620318@linuxfoundation.org>
+Subject: [PATCH 6.11 306/817] wifi: wfx: Fix error handling in wfx_core_init()
+Date: Tue,  3 Dec 2024 15:37:58 +0100
+Message-ID: <20241203144007.760339781@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,143 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anurag Dutta <a-dutta@ti.com>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 3a47e381670f130870caef6e1155ac531b17b032 ]
+[ Upstream commit 3b88a9876779b55478a4dde867e73f7a100ffa23 ]
 
-The clock IDs for multiple MCSPI instances across wakeup as
-well as main domain in J7200 are incorrect when compared with
-documentation [1]. This results in kernel crashes when the said
-instances are enabled. Fix the clock ids to their appropriate
-values.
+The wfx_core_init() returns without checking the retval from
+sdio_register_driver().
+If the sdio_register_driver() failed, the module failed to install,
+leaving the wfx_spi_driver not unregistered.
 
-[1]https://software-dl.ti.com/tisci/esd/latest/5_soc_doc/j7200/clocks.html
-
-Fixes: 8f6c475f4ca7 ("arm64: dts: ti: k3-j7200: Add MCSPI nodes")
-
-Signed-off-by: Anurag Dutta <a-dutta@ti.com>
-Reviewed-by: Aniket Limaye <a-limaye@ti.com>
-Link: https://lore.kernel.org/r/20241023104532.3438851-2-a-dutta@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Fixes: a7a91ca5a23d ("staging: wfx: add infrastructure for new driver")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Reviewed-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241022090453.84679-1-yuancan@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j7200-main.dtsi       | 16 ++++++++--------
- arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi |  6 +++---
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/wireless/silabs/wfx/main.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi b/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi
-index 41adfa64418d0..1d11da926a871 100644
---- a/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j7200-main.dtsi
-@@ -1163,7 +1163,7 @@ main_spi0: spi@2100000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 266 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 266 1>;
-+		clocks = <&k3_clks 266 4>;
- 		status = "disabled";
- 	};
+diff --git a/drivers/net/wireless/silabs/wfx/main.c b/drivers/net/wireless/silabs/wfx/main.c
+index e7198520bdffc..64441c8bc4606 100644
+--- a/drivers/net/wireless/silabs/wfx/main.c
++++ b/drivers/net/wireless/silabs/wfx/main.c
+@@ -480,10 +480,23 @@ static int __init wfx_core_init(void)
+ {
+ 	int ret = 0;
  
-@@ -1174,7 +1174,7 @@ main_spi1: spi@2110000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 267 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 267 1>;
-+		clocks = <&k3_clks 267 4>;
- 		status = "disabled";
- 	};
- 
-@@ -1185,7 +1185,7 @@ main_spi2: spi@2120000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 268 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 268 1>;
-+		clocks = <&k3_clks 268 4>;
- 		status = "disabled";
- 	};
- 
-@@ -1196,7 +1196,7 @@ main_spi3: spi@2130000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 269 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 269 1>;
-+		clocks = <&k3_clks 269 4>;
- 		status = "disabled";
- 	};
- 
-@@ -1207,7 +1207,7 @@ main_spi4: spi@2140000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 270 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 270 1>;
-+		clocks = <&k3_clks 270 2>;
- 		status = "disabled";
- 	};
- 
-@@ -1218,7 +1218,7 @@ main_spi5: spi@2150000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 271 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 271 1>;
-+		clocks = <&k3_clks 271 4>;
- 		status = "disabled";
- 	};
- 
-@@ -1229,7 +1229,7 @@ main_spi6: spi@2160000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 272 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 272 1>;
-+		clocks = <&k3_clks 272 4>;
- 		status = "disabled";
- 	};
- 
-@@ -1240,7 +1240,7 @@ main_spi7: spi@2170000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 273 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 273 1>;
-+		clocks = <&k3_clks 273 4>;
- 		status = "disabled";
- 	};
- 
-diff --git a/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
-index 5097d192c2b20..b18b2f2deb969 100644
---- a/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
-@@ -494,7 +494,7 @@ mcu_spi0: spi@40300000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 274 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 274 0>;
-+		clocks = <&k3_clks 274 4>;
- 		status = "disabled";
- 	};
- 
-@@ -505,7 +505,7 @@ mcu_spi1: spi@40310000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 275 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 275 0>;
-+		clocks = <&k3_clks 275 4>;
- 		status = "disabled";
- 	};
- 
-@@ -516,7 +516,7 @@ mcu_spi2: spi@40320000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 276 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 276 0>;
-+		clocks = <&k3_clks 276 2>;
- 		status = "disabled";
- 	};
- 
+-	if (IS_ENABLED(CONFIG_SPI))
++	if (IS_ENABLED(CONFIG_SPI)) {
+ 		ret = spi_register_driver(&wfx_spi_driver);
+-	if (IS_ENABLED(CONFIG_MMC) && !ret)
++		if (ret)
++			goto out;
++	}
++	if (IS_ENABLED(CONFIG_MMC)) {
+ 		ret = sdio_register_driver(&wfx_sdio_driver);
++		if (ret)
++			goto unregister_spi;
++	}
++
++	return 0;
++
++unregister_spi:
++	if (IS_ENABLED(CONFIG_SPI))
++		spi_unregister_driver(&wfx_spi_driver);
++out:
+ 	return ret;
+ }
+ module_init(wfx_core_init);
 -- 
 2.43.0
 
