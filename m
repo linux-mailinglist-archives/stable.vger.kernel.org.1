@@ -1,89 +1,150 @@
-Return-Path: <stable+bounces-98196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2509E3075
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 01:45:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41A19E302E
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 00:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 637A7B245FF
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 00:45:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A196CB26FD9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 23:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1E84A2D;
-	Wed,  4 Dec 2024 00:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA07820B1ED;
+	Tue,  3 Dec 2024 23:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oq0Yeiby"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CfeVbRJ4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072B77F9
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 00:45:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02AF817;
+	Tue,  3 Dec 2024 23:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733273134; cv=none; b=sWZoAD81Y4/flQntdoVM90fR8WFNa0p7xTIrV8e9aTuhT2ngWI7RZrNNQtd9RmFTau2yW4SHrYieug0Kl4mcXsOuOVH3QGxGdYOau6gYP+QWtgBl5j/5Hb17FuLn39RGOs95TklM2+V5MTpgwzoK3BHfrZeJPYzDH8lz64cIjyc=
+	t=1733270150; cv=none; b=RPp171zWQ5OWTCcbDy58qdbqlyZi+NN/XftCixPwbDeQDyyytQ9nfqXMUXMKXCan6UcnlLZ2gC8QFZpxJBzX14a+oH9/sboWw8A60S/HSo9sKxpe+dCeVfrO8E0ninb7iqcntyEtwtP+Bgm+tZT+M5c/fjm5V2ijSvTDug94dBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733273134; c=relaxed/simple;
-	bh=4SQSIXe4EnHdzQrYloju6aDt3qHvMTZ7XQQiCAZXyEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejXGG9hFY6osh0nD4UEz1ysjUP92HnZl3y3DQRQj8Ycsz9Z1Ys5jrRhtHhhZDzwny0tBT/Gm5rnCpkDuzg5/uV37MnQsf7J4EJ3TVHEJ6Os/KodytUtk3GCEA5LMrEQyS8AfMsbW7pgs8CQJ5XCCh3JdQfK3kDJ1npP1r9FH/do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oq0Yeiby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5A2C4CEDC;
-	Wed,  4 Dec 2024 00:45:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733273133;
-	bh=4SQSIXe4EnHdzQrYloju6aDt3qHvMTZ7XQQiCAZXyEE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oq0YeibyBgtgC2dDoJXgTWBeVmkc57ur4cXFST60YHpGtJ7LUtHh1xJfjzVNfi5Al
-	 XgfhwSOucyMkmtG1jWb9RCW0QSppBZLABj/2L/0sLgEph7FgmIGxhWslaeXkiD8sa1
-	 xYMw1YkE76A5pfYpM6AcOuCvtbXqRWSxXaY8ISkUCPA9e3cK1XC2wpsmvl6XxKxK/D
-	 jTBE9Js+uHYFyWj+E+r2KV7KyKZ0i/cC2i+H1UaQ3EXNoe2on/A66K676aEDNwAMQx
-	 Cyzs9+wyEg0GUZkGUZE1eD+GXCp++VEI9BLT+zW9irfKHFG8ltPViVzdH/QIkAxrt9
-	 AosdMxPy1ucrA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Raghavendra Rao Ananta <rananta@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH] KVM: arm64: Ignore PMCNTENSET_EL0 while checking for overflow status
-Date: Tue,  3 Dec 2024 18:34:13 -0500
-Message-ID: <20241203180911-dd0663d61317b9d3@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241203190236.2711302-1-rananta@google.com>
-References: 
+	s=arc-20240116; t=1733270150; c=relaxed/simple;
+	bh=ABNONvwzwbZ9lYuHjxb+GeVAhQsC72921kdHY2c44Kw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eihwOt4dlODmyc4aTbbUYnKFQpm+VToTWsG19dieM0teyQE88zjkhqO1ZBRx30GPo94bv+VnqnCTkJ/LjDiSOKaa5Mcm/5tWw8xLDwdh55f0zUQKehIC59+Dqai720J9a7rXBjipKSmconv5tEsv/zcrrCepHOrvusKasSMrZyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CfeVbRJ4; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-434a742481aso50506045e9.3;
+        Tue, 03 Dec 2024 15:55:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733270147; x=1733874947; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PbmK8djA4c+Q1mS6i8LDpnbtdWAMJS0PnO8F/s9zXkM=;
+        b=CfeVbRJ4BWwH8w5ZlGKkE3Zf0uuRjxnYe1uzZxclvGjTAK2DzlBga8hrwZHWNrHGE4
+         ngd1pDWByjXmqYf560NdOWiNLvv10ugK3dey4qxexipKsAj+UNTxxGtVK2v9qjfSjFl9
+         /RSJZ848gk31c5Qg1ovC/633OCiu/NYSnppkaXzawqUpSo03wf5Yxdy4btXayhMPS12V
+         LyhIJ3zu0jTk9wgPsk0zwwZaHsfCYzjTrYx+XW57Eq1Y16xIp1upJ3K6RYjqusHUcuR4
+         xU5fUYIO7pFEJtQFbn/zpgDQf0CN7bGHayJ7pM8WDjL6AxHuLq38Og/WuQeIY3n3f7w8
+         6znA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733270147; x=1733874947;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PbmK8djA4c+Q1mS6i8LDpnbtdWAMJS0PnO8F/s9zXkM=;
+        b=ejJCPt2yjNZJGn0Gp5txvQZDbYbkXsQTe8kc13TFE/3A/obb53/ol28JzJIXXxm98L
+         pMPh5imSAO1N80bZojbXu0yX+mgkaC+ZYPHMaed5rpaMdGlBreZjcweet2IxmJscKxYj
+         FPSVH316evjFIO62y3+ZKGHWWU1Uy+xFv7Z8FC0TtQJcc81B0CKlC3Xc8BvEtRqewcL5
+         DkQtjYOtgG1HaimSzagLTnA2ILPnHxT0kWEosRx33UuuiwXSAiVaGa32xEv4oIAO0DKC
+         rds3rUcrCBkxpBiggvvErW5SkGlxDkRww0hMopH+Dy+zKIkEVRwC1k4vDGTjn/7DFqHH
+         6lbA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUEcY/ciUUK/QcVVe1+nRKL5rZHEgsQTiBA6Wm7J4p0vkL2jkV4k2XoPkcus8XomkyaByBMlrhRHEBbbQa@vger.kernel.org, AJvYcCXOx/QZ4VL5y7tNsN/ll67i83BxaNjFzivl6eZ6oRaAK1PpcbV0470XAy7f2HkgtuQ+Bo3ftVM3sMA=@vger.kernel.org, AJvYcCXx+DX+8T9ZhQC7bW7yEJRgQRceO87bKeioQxUSvdD+I/E728P1vIU6JSMDT6t9FHDZTtBb+TSl@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBl2epaMNN0YLJHdXSlZHEAFX5SIJd2nKy+TjH/OtEOyCeWvLm
+	eZ7++pOMo5UYp+SYDsQauXoyovx/n4EAgSHBWo9/i6m8nIJ+Lt0O
+X-Gm-Gg: ASbGnct9E57u4DN2U1nZDAhpIcbfGMt8oSGbJyDktynhm+tFIuU/r7ZjvxUQ9mtHh/b
+	nfRCzKGKtkKQiArEOkovBEoMloKJYEj3n/6VlgHM0Nfg750OrqDpVKPVblabrXVPw3N5TDE1ZYM
+	Ccuz0klH8XCjwXS2LiA4dCLpfGhuhZiYBcDwcBl4hLkj6C2hTv8k9x+RUW1Y2E7muGrLG0Xmp9c
+	LGzaXtrYLXrNxAi3T8XcbqR0oBOd1SpyTsV2gsEwQdB9v5pjBiqtuqwzcgw1M3MiRCRwMLGpHr/
+	8GOqRFWYpBscFUfTmueQTz12Yke9mOyZRwTC9S4UGh0PmB35ka6w2aNnnrBs0hWnZ2xc8jiC
+X-Google-Smtp-Source: AGHT+IE9/EzGzkQS9vezRYLj70UVFeDcv857tluybd5MreEdUegU/VqnQppt1LenU3InEpjdD4XpKA==
+X-Received: by 2002:a05:600c:512a:b0:434:a4a6:51ee with SMTP id 5b1f17b1804b1-434d1e21892mr35078485e9.16.1733270146970;
+        Tue, 03 Dec 2024 15:55:46 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-5e3a-77ab-7b2b-a993.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:5e3a:77ab:7b2b:a993])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d527e287sm3871025e9.12.2024.12.03.15.55.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 15:55:46 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 0/2] iio: fix information leaks in triggered buffers
+Date: Wed, 04 Dec 2024 00:55:30 +0100
+Message-Id: <20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHKaT2cC/3WNQQqDMBBFryKzbopJqlVXvUcRSeOoAyYpGZEW8
+ e5NhS67fA/++xswRkKGJtsg4kpMwSdQpwzsZPyIgvrEoHJ1kVJpQRQ6h45x6dga301hRhamvOp
+ KaxxqrSBtnxEHeh3de5t4Il5CfB83q/zaX7H4U1ylyEVuHyXWVV/Vhb2NztB8tsFBu+/7B4jCQ
+ ou6AAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Antoni Pokusinski <apokusinski01@gmail.com>, 
+ Francesco Dolcini <francesco@dolcini.it>, 
+ =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
+ Christian Eggers <ceggers@arri.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733270145; l=1668;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=ABNONvwzwbZ9lYuHjxb+GeVAhQsC72921kdHY2c44Kw=;
+ b=7cP8gL9VAoCLycqNLU6uYFvlnfWTIUl4/owGsTzXArXV81jbxYygFRfAh1BvSKb1hEbEvthyu
+ 1dQLccUwkYhDvKHrSStJhRhGjy0JRbuMjSydNsxBJZ19c3tkdxr/GHl
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-[ Sasha's backport helper bot ]
+This issue was found after attempting to make the same mistake for
+a driver I maintain, which was fortunately spotted by Jonathan [1].
 
-Hi,
+Keeping old sensor values if the channel configuration changes is known
+and not considered an issue, which is also mentioned in [1], so it has
+not been addressed by this series. That keeps most of the drivers out
+of the way because they store the scan element in iio private data,
+which is kzalloc() allocated.
 
-The upstream commit SHA1 provided is correct: 54bbee190d42166209185d89070c58a343bf514b
+This series only addresses cases where uninitialized i.e. unknown data
+is pushed to the userspace, either due to holes in structs or
+uninitialized struct members/array elements.
 
+While analyzing involved functions, I found and fixed some triviality
+(wrong function name) in the documentation of iio_dev_opaque.
 
-Status in newer kernel trees:
-6.12.y | Present (different SHA1: 2a68705a5469)
+Link: https://lore.kernel.org/linux-iio/20241123151634.303aa860@jic23-huawei/ [1]
 
-Note: The patch differs from the upstream commit:
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Failed to apply patch cleanly, falling back to interdiff...
+Changes in v2:
+- as73211.c: shift channels if no temperature is available and
+  initialize chan[3] to zero.
+- Link to v1: https://lore.kernel.org/r/20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com
+
 ---
+Javier Carrasco (2):
+      iio: temperature: tmp006: fix information leak in triggered buffer
+      iio: light: as73211: fix channel handling in only-color triggered buffer
 
-Results of testing on various branches:
+ drivers/iio/light/as73211.c      | 17 +++++++++++++----
+ drivers/iio/temperature/tmp006.c |  2 ++
+ 2 files changed, 15 insertions(+), 4 deletions(-)
+---
+base-commit: 1694dea95b02eff1a64c893ffee4626df533b2ab
+change-id: 20241123-iio_memset_scan_holes-a673833ef932
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Failed     |  N/A       |
-| stable/linux-6.11.y       |  Failed     |  N/A       |
-| stable/linux-6.6.y        |  Failed     |  N/A       |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Failed     |  N/A       |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Success    |  Success   |
-| stable/linux-4.19.y       |  Success    |  Success   |
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
 
