@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-97156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8725E9E2B62
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:52:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB069E29EA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE01BB43296
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E15ABA2BDA
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1561F7071;
-	Tue,  3 Dec 2024 15:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D63646;
+	Tue,  3 Dec 2024 15:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5WVP7tq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2AihQjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B17A646;
-	Tue,  3 Dec 2024 15:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A712C1F473A;
+	Tue,  3 Dec 2024 15:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239681; cv=none; b=Qf5OY3H33vpaX1ijoHaEqcYOiriCb8CjCgQ3KhSgDITMv2d7HX1lwa1zGI5V9QB95+VqcoT/kbRLZnN3jzBr1EpqYQLp7r4pPqUMyQbpY+NAWYLWDg6m/rfhUHOt2mMKhn3IlstPZi87mNZ3c7aKBTgkFMH7EiyAHEMy/ALY+Xo=
+	t=1733239692; cv=none; b=UiIVUDDdylndqZYkSo9Pqjt5+yUhwZT4KNictRwWm3nyOlGknnAAqLY7UEItrU9mhkQTDXCQyWOzs0sLNW21zPDrvq6RgYnZAgLj2YnkKNBGYxt7IfdI2trL0LKuHSZbz5A5jriEDH131zueZ213swQlLelTqlGoG59Nn5BzFsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239681; c=relaxed/simple;
-	bh=DMVyc2aaorqUuzI56dBPzB7Q2mNN5+vgnD9g9dNfm7w=;
+	s=arc-20240116; t=1733239692; c=relaxed/simple;
+	bh=1Hq2MRV3oQ1to6ALcPXjS8KTasfwbkgqvZYbmZs2pNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxiWYSvWM+mVDDtlYXXQrLhxG0VedQELqMUh7232AwYogQIv+guhz5d2DfswQH4bUaJl0DXDbOlcZOfEbRbPAqXp/QOlkvSqOvzCYR543HGKifkbiHJ21h+8K0sNRfWlmDYtaq4/6OMXG5Za8928dI4zZSwPAJ/V4H4Z6QcWwQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5WVP7tq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7234C4CECF;
-	Tue,  3 Dec 2024 15:28:00 +0000 (UTC)
+	 MIME-Version; b=lzQuLT6WkhZe8tZWKClJe+gdmqdmWXCdXVKOg/qbXJrnx1rJeUTZRc4xzGCqukkBoBzHiREZs41DZmUUJ3/2eShyKrjsa/r9VGvaZoviSeMkDUK7H7jfC9F/s8bUmEPHjufXXgL863ucD+FZh0LHFhHnEIHGZhzoW/gOSPfsdE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2AihQjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE2DC4CECF;
+	Tue,  3 Dec 2024 15:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733239681;
-	bh=DMVyc2aaorqUuzI56dBPzB7Q2mNN5+vgnD9g9dNfm7w=;
+	s=korg; t=1733239692;
+	bh=1Hq2MRV3oQ1to6ALcPXjS8KTasfwbkgqvZYbmZs2pNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U5WVP7tqpdvpn6Yw9g0zmgD0uteHMBRu6LIUgg9QjeHyHqZShE0RrKxpzUoerHfxs
-	 C/c7qbTijtnDXGiY4fzvv5M64V+V1cXOa7s8nhOeQFUJM48BvFdPp1hCBor78fkf+4
-	 dK9h4+1lvAKe/IJ5oK5A1nOEgZQ02H/IuUP2t2w0=
+	b=e2AihQjfTdsFMTN2jwUG4p3SqSKYYzUUYtOsrpE7Q4uynWErPlLn8FOlTRsrKEa8I
+	 UvxLNNLSsAbpsaeh/YY+7PJoKheFZ/mfdXU6DDXxtcKnwLpPbBwQoJoL/O8Si2BWcW
+	 zhxPA37kXpRGxyTC5p5uVNhD4vA5kGJB8ku/n71o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.11 697/817] netfilter: ipset: add missing range check in bitmap_ip_uadt
-Date: Tue,  3 Dec 2024 15:44:29 +0100
-Message-ID: <20241203144023.184740369@linuxfoundation.org>
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.11 701/817] cifs: support mounting with alternate password to allow password rotation
+Date: Tue,  3 Dec 2024 15:44:33 +0100
+Message-ID: <20241203144023.341729398@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
 References: <20241203143955.605130076@linuxfoundation.org>
@@ -67,52 +65,140 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Meetakshi Setiya <msetiya@microsoft.com>
 
-commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
+commit b9aef1b13a0a92aa7058ba235afb24b5b89153ca upstream.
 
-When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
-the values of ip and ip_to are slightly swapped. Therefore, the range check
-for ip should be done later, but this part is missing and it seems that the
-vulnerability occurs.
+Fixes the case for example where the password specified on mount is a
+recently expired password, but password2 is valid.  Without this patch
+this mount scenario would fail.
 
-So we should add missing range checks and remove unnecessary range checks.
+This patch introduces the following changes to support password rotation on
+mount:
 
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
-Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+1. If an existing session is not found and the new session setup results in
+EACCES, EKEYEXPIRED or EKEYREVOKED, swap password and password2 (if
+available), and retry the mount.
+
+2. To match the new mount with an existing session, add conditions to check
+if a) password and password2 of the new mount and the existing session are
+the same, or b) password of the new mount is the same as the password2 of
+the existing session, and password2 of the new mount is the same as the
+password of the existing session.
+
+3. If an existing session is found, but needs reconnect, retry the session
+setup after swapping password and password2 (if available), in case the
+previous attempt results in EACCES, EKEYEXPIRED or EKEYREVOKED.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/smb/client/connect.c |   57 ++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 50 insertions(+), 7 deletions(-)
 
---- a/net/netfilter/ipset/ip_set_bitmap_ip.c
-+++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
-@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
- 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
- 		if (ret)
- 			return ret;
--		if (ip > ip_to) {
-+		if (ip > ip_to)
- 			swap(ip, ip_to);
--			if (ip < map->first_ip)
--				return -IPSET_ERR_BITMAP_RANGE;
--		}
- 	} else if (tb[IPSET_ATTR_CIDR]) {
- 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
- 
-@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
- 		ip_to = ip;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1908,11 +1908,35 @@ static int match_session(struct cifs_ses
+ 			    CIFS_MAX_USERNAME_LEN))
+ 			return 0;
+ 		if ((ctx->username && strlen(ctx->username) != 0) &&
+-		    ses->password != NULL &&
+-		    strncmp(ses->password,
+-			    ctx->password ? ctx->password : "",
+-			    CIFS_MAX_PASSWORD_LEN))
+-			return 0;
++		    ses->password != NULL) {
++
++			/* New mount can only share sessions with an existing mount if:
++			 * 1. Both password and password2 match, or
++			 * 2. password2 of the old mount matches password of the new mount
++			 *    and password of the old mount matches password2 of the new
++			 *	  mount
++			 */
++			if (ses->password2 != NULL && ctx->password2 != NULL) {
++				if (!((strncmp(ses->password, ctx->password ?
++					ctx->password : "", CIFS_MAX_PASSWORD_LEN) == 0 &&
++					strncmp(ses->password2, ctx->password2,
++					CIFS_MAX_PASSWORD_LEN) == 0) ||
++					(strncmp(ses->password, ctx->password2,
++					CIFS_MAX_PASSWORD_LEN) == 0 &&
++					strncmp(ses->password2, ctx->password ?
++					ctx->password : "", CIFS_MAX_PASSWORD_LEN) == 0)))
++					return 0;
++
++			} else if ((ses->password2 == NULL && ctx->password2 != NULL) ||
++				(ses->password2 != NULL && ctx->password2 == NULL)) {
++				return 0;
++
++			} else {
++				if (strncmp(ses->password, ctx->password ?
++					ctx->password : "", CIFS_MAX_PASSWORD_LEN))
++					return 0;
++			}
++		}
  	}
  
--	if (ip_to > map->last_ip)
-+	if (ip < map->first_ip || ip_to > map->last_ip)
- 		return -IPSET_ERR_BITMAP_RANGE;
+ 	if (strcmp(ctx->local_nls->charset, ses->local_nls->charset))
+@@ -2256,6 +2280,7 @@ struct cifs_ses *
+ cifs_get_smb_ses(struct TCP_Server_Info *server, struct smb3_fs_context *ctx)
+ {
+ 	int rc = 0;
++	int retries = 0;
+ 	unsigned int xid;
+ 	struct cifs_ses *ses;
+ 	struct sockaddr_in *addr = (struct sockaddr_in *)&server->dstaddr;
+@@ -2274,6 +2299,8 @@ cifs_get_smb_ses(struct TCP_Server_Info
+ 			cifs_dbg(FYI, "Session needs reconnect\n");
  
- 	for (; !before(ip_to, ip); ip += map->hosts) {
+ 			mutex_lock(&ses->session_mutex);
++
++retry_old_session:
+ 			rc = cifs_negotiate_protocol(xid, ses, server);
+ 			if (rc) {
+ 				mutex_unlock(&ses->session_mutex);
+@@ -2286,6 +2313,13 @@ cifs_get_smb_ses(struct TCP_Server_Info
+ 			rc = cifs_setup_session(xid, ses, server,
+ 						ctx->local_nls);
+ 			if (rc) {
++				if (((rc == -EACCES) || (rc == -EKEYEXPIRED) ||
++					(rc == -EKEYREVOKED)) && !retries && ses->password2) {
++					retries++;
++					cifs_dbg(FYI, "Session reconnect failed, retrying with alternate password\n");
++					swap(ses->password, ses->password2);
++					goto retry_old_session;
++				}
+ 				mutex_unlock(&ses->session_mutex);
+ 				/* problem -- put our reference */
+ 				cifs_put_smb_ses(ses);
+@@ -2361,6 +2395,7 @@ cifs_get_smb_ses(struct TCP_Server_Info
+ 	ses->chans_need_reconnect = 1;
+ 	spin_unlock(&ses->chan_lock);
+ 
++retry_new_session:
+ 	mutex_lock(&ses->session_mutex);
+ 	rc = cifs_negotiate_protocol(xid, ses, server);
+ 	if (!rc)
+@@ -2373,8 +2408,16 @@ cifs_get_smb_ses(struct TCP_Server_Info
+ 	       sizeof(ses->smb3signingkey));
+ 	spin_unlock(&ses->chan_lock);
+ 
+-	if (rc)
+-		goto get_ses_fail;
++	if (rc) {
++		if (((rc == -EACCES) || (rc == -EKEYEXPIRED) ||
++			(rc == -EKEYREVOKED)) && !retries && ses->password2) {
++			retries++;
++			cifs_dbg(FYI, "Session setup failed, retrying with alternate password\n");
++			swap(ses->password, ses->password2);
++			goto retry_new_session;
++		} else
++			goto get_ses_fail;
++	}
+ 
+ 	/*
+ 	 * success, put it on the list and add it as first channel
 
 
 
