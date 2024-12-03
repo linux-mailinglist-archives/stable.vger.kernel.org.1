@@ -1,114 +1,168 @@
-Return-Path: <stable+bounces-97928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D719E2637
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:10:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 355CA9E27C9
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:41:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE234288F55
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:10:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE4CF2859FC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 500BE1F8932;
-	Tue,  3 Dec 2024 16:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6AA1F8ADD;
+	Tue,  3 Dec 2024 16:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z+2ReGAd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JClbkhKx"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ImoIQxh7"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BDC1F76D7;
-	Tue,  3 Dec 2024 16:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20FC1E3DD8
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 16:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242214; cv=none; b=JWDMWCPGEvM8Ycnm7lawalX/r761dWd3sNSoGViQTIc2AEMvAsMoEaoqXWy1bnwg6M+suoSIKYu930RtGJP1eSsn0QXyQrmdMAbEH/vpMNkJxbM7AL6Bg8xF70gFByr3waeLe9+1l5VBS/qor7BFB6DE4hH5dBkqrpJsjAdQSRU=
+	t=1733244082; cv=none; b=mFMDTt4y0jcRrl72IAkMoXTbY+GWQS+KD2r+2JkVOZHKwphc4Cx1j16BLFjSq9PLNb73rLLrganSua1kWEr2N9YIr/BeKyN87h+cQdd82vNucdLgrcsSH5uOInx7abae9T9+5mbIg8IzUvISuo0rJFSTcgOurS8143LOXeQRssA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242214; c=relaxed/simple;
-	bh=fG2igQkn+4+8e57/uPhJs9Uh52Ls0xvv3KuRt0L7L8g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SMcTEb2cv+J0niaqMJ+sGWZ8LfKYn2FCL6MKRIoe9j1rMD3TK+0xqFR2dYF+SR0j7Q97TWuE/mYZHXAWWnnYVFeW3MxygiUga1kt9bjcsEkfiyDZSaHNrr9WObl0zmq/1h0TjOKR7317kQ9kOFLzY81dKL76yQPQHHILgeGyaHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z+2ReGAd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JClbkhKx; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733242210;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ddk6G81ViUFgr4R1ETgTtudIxbjBUqRlwB5igRmXu4g=;
-	b=Z+2ReGAdXtDLEPMXg5raBwXetTEwjAfMflPPAVrOEfwrcGysNtb8Ptm4XzSqdf4ddJMGIq
-	ZZBqiBOgCOuNuIq7DGHEpXVU5Xu4jv5Ii0TG4PGQvsseXUozaeu5T5eRpVLSIubrfSBUZY
-	lFZrJk3uf2apYr8jS5FoEhfHHkKwHL1pNg0eQKunI6+PHruC3fqVPA0XwdV0EArk+NSne1
-	qRUQSW5+Hn6udBK6/6UYU3VD1Qvh1dzaS5h0bDf2GWTmtVuK2vdUqgTz4h/DjFGF7xoGyx
-	74YrDneOpK3BgwfyF7vv7CsmkugBesXXEbSgxcas7HUjervqVsUTsLXvAgoZEw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733242210;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ddk6G81ViUFgr4R1ETgTtudIxbjBUqRlwB5igRmXu4g=;
-	b=JClbkhKx8PC6kkrMhZFXxilt17KHhS6wyGx8qQN8eby8jwpBXi3PGasAee6M7LJ+MvpgRm
-	h+JYswnTZp71zZAw==
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
- 20241015061522.25288-1-rui.zhang@intel.com, Zhang Rui
- <rui.zhang@intel.com>, hpa@zytor.com, peterz@infradead.org,
- thorsten.blum@toblux.com, yuntao.wang@linux.dev, tony.luck@intel.com,
- len.brown@intel.com, srinivas.pandruvada@intel.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, rafael.j.wysocki@intel.com,
- x86@kernel.org, linux-pm@vger.kernel.org, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH] modpost: Add .irqentry.text to OTHER_SECTIONS
-In-Reply-To: <CAK7LNARufW5wc=qBt5R=RJ9BkFirLKAgRgg_t=OmTTGbjLfsAg@mail.gmail.com>
-References: <20241128111844.GE10431@google.com> <87o71xvuf3.ffs@tglx>
- <20241130114549.GI10431@google.com> <87iks3wt2t.ffs@tglx>
- <CAK7LNARWpcbVsJFYCDN28vuuLfEibZmT+m5=qMEJcKD9Abzv4Q@mail.gmail.com>
- <87iks1vlu5.ffs@tglx>
- <CAK7LNARufW5wc=qBt5R=RJ9BkFirLKAgRgg_t=OmTTGbjLfsAg@mail.gmail.com>
-Date: Tue, 03 Dec 2024 17:10:09 +0100
-Message-ID: <87h67ku4ri.ffs@tglx>
+	s=arc-20240116; t=1733244082; c=relaxed/simple;
+	bh=lYbDR2oS7Lr5SDoN1wnli3FOgTY/tUQ6zhWZKZOdyow=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rHquesvOhP01Z9MXP93njiPmYcPiW4iFSYln5n35Rwf+BP0Kh71YQI7bp8XNt/yVk8NHw55ohcN8eU3tP2IqaNy7cXPanjOYJ5F52xeQB4Jq72pcrNzEl3FmKO/bVmZ7xR6luIgUSHEzya8hWI0J1KuRfhaUX9jWBcSSTmDO1mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ImoIQxh7; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53dde4f0f23so5772825e87.3
+        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 08:41:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1733244079; x=1733848879; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R3cKcg9kF9rQPeRe4S6fxF/eadsgLyIFQpsrwW9a20M=;
+        b=ImoIQxh7nUBc5zE16H6St8zh7YdwHCTuoVetX+c/ZAKvzRSCcZ9oLEKaV+SkYclt0u
+         F2Hl2PyEoicz39fzpxddzAJKA5HRp5djWN2e0j7d9lzDmu+HOu4OodTHWeknppjoM9i1
+         KRA1514qpqrV8kCieco0wbUIN+j07argQW2w6zUIAoa95v4q0+UJm54ouJB8phun9yMl
+         AdvEFDf2ptrOKSSiXgYyfgjKLu9KQV1+rKbHKjsxyD+0Uhg0aPvlzZFr0f7O8nOZPc0w
+         A+gHbB127oCihcCf0GJtNOSL+a7pUx3np7OUrIJVQ8gzlzGHoiBGcdO6Er41AlTviqFW
+         FgQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733244079; x=1733848879;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R3cKcg9kF9rQPeRe4S6fxF/eadsgLyIFQpsrwW9a20M=;
+        b=UGmBuPEcyiLrCYuhpjCS6SHROwrI0jcUMDKTzYVV9iqMqfFW/cTDzr+zjaTOb0jXGn
+         Iwlyx9Y6IKE0INZSDU4h645SHWJH8r7tcCxnBCfR1WW7+I2lc0Z41fC/CZILpqrGqBH4
+         ohFo1kJ2XFDM5adTeWtIDoGUqKVDKnhZ6DjWRg2L0CJhpTQywT1OlYJyBZxQ6jpB1EZZ
+         Xk1EBD7NrJ9480O5MiQsD2C1jNtkyLgkq8P5c3GREtaVrO6sT3KwmBqf+LXGf0X9K9zv
+         l5JM0bJ0aZLmJHNGc8dWW5GmmKIp18T9S4uRtdOrU3XEU+VHvhJZSLrL5OFOyPLmwWEQ
+         gNqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWJTECoF/bW8ONdIHf6V6GbVfVEiJmuXnClvnBUyRX07QNYBuNHp19oVCJxLN/iAHwpx60jJiI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUNJ7ymSCcWryWoOsUJ0pYruX2dA6CCpxHWBiQqi8oRdzzFRSN
+	kVX7TaPkbukX3K2aP6t0K08K97UzU6J/tft+Z0N/cVDSsYPy3Qe/crvWvZcdX3M6v7o7F+swTy/
+	mcjesQBEwlz4m5se2v0u1DM/Z10+bOBEyhVHrcg==
+X-Gm-Gg: ASbGncsLR5TNi4nTaV1W7BpU1Gjn6Z1bRttkL7cjG5SCMwnZ0CpxVLpS9EUvcGkT4/4
+	cTayD2aObnU21w8keaHI85sYWgAEDoQI=
+X-Google-Smtp-Source: AGHT+IHW+vsl0mYcoay/ASPlsom23HgQ21s30uqyqy8EPOs30ZTnPyOxBXGCdO8xyntMRDTjm/dm7vKdQmuCRnMPcw4=
+X-Received: by 2002:a05:6512:3a8f:b0:53d:a9a4:73c1 with SMTP id
+ 2adb3069b0e04-53e12a2186emr2033000e87.39.1733244078951; Tue, 03 Dec 2024
+ 08:41:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20241127184506.962756-1-alexander.sverdlin@siemens.com>
+In-Reply-To: <20241127184506.962756-1-alexander.sverdlin@siemens.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 3 Dec 2024 17:41:07 +0100
+Message-ID: <CAMRc=MeSVHjsrU6tbGwcu_TqOh_Pw-8OLRcqcdkZDpDP9n4Z4w@mail.gmail.com>
+Subject: Re: [PATCH v2] gpio: omap: Silence lockdep "Invalid wait context"
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: linux-gpio@vger.kernel.org, Grygorii Strashko <grygorii.strashko@ti.com>, 
+	Santosh Shilimkar <ssantosh@kernel.org>, Kevin Hilman <khilman@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, linux-omap@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 04 2024 at 00:27, Masahiro Yamada wrote:
-> On Tue, Dec 3, 2024 at 6:03=E2=80=AFAM Thomas Gleixner <tglx@linutronix.d=
-e> wrote:
->> > In this mainline kernel, DEFINE_IDTENTRY_SYSVEC()
->> > expands to a normal .text function which is explicitly
->> > annotated 'noinline'.
->>
->> It's not annotated noinline, it's annotated 'noinstr', which puts the
->> code into the .noinstr.text section. That one is indeed covered.
+On Wed, Nov 27, 2024 at 7:45=E2=80=AFPM A. Sverdlin
+<alexander.sverdlin@siemens.com> wrote:
 >
-> The callsite of local_apic_timer_interrupt() is annotated 'noinline'
-> if I correctly understand this line:
->   https://github.com/torvalds/linux/blob/v6.13-rc1/arch/x86/include/asm/i=
-dtentry.h#L272
-
-You're right. I got lost in the macro maze and looked at the actual
-sysvec_...() part.
-
->> So yes, the fix is only required for pre 5.8 kernels.
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 >
-> This never occurs on x86 after commit f0178fc01fe46,
-> but theoretically this may occur for other architectures.
+> The problem apparetly has been known since the conversion to
+> raw_spin_lock() (commit 4dbada2be460
+> ("gpio: omap: use raw locks for locking")).
+>
+> Symptom:
+>
+> [ BUG: Invalid wait context ]
+> 5.10.214
+> -----------------------------
+> swapper/1 is trying to lock:
+> (enable_lock){....}-{3:3}, at: clk_enable_lock
+> other info that might help us debug this:
+> context-{5:5}
+> 2 locks held by swapper/1:
+>  #0: (&dev->mutex){....}-{4:4}, at: device_driver_attach
+>  #1: (&bank->lock){....}-{2:2}, at: omap_gpio_set_config
+> stack backtrace:
+> CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.214
+> Hardware name: Generic AM33XX (Flattened Device Tree)
+> unwind_backtrace
+> show_stack
+> __lock_acquire
+> lock_acquire.part.0
+> _raw_spin_lock_irqsave
+> clk_enable_lock
+> clk_enable
+> omap_gpio_set_config
+> gpio_keys_setup_key
+> gpio_keys_probe
+> platform_drv_probe
+> really_probe
+> driver_probe_device
+> device_driver_attach
+> __driver_attach
+> bus_for_each_dev
+> bus_add_driver
+> driver_register
+> do_one_initcall
+> do_initcalls
+> kernel_init_freeable
+> kernel_init
+>
+> Reorder clk_enable()/clk_disable() calls in a way that they always happen
+> outside of raw_spin_lock'ed sections.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 4dbada2be460 ("gpio: omap: use raw locks for locking")
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+> ---
+> Changelog:
+> v2: complete rework, I've totally missed the fact
+>     clk_enable()/clk_disable() cannot avoid clk_enable_lock() even if the
+>     clock is enabled; I had to extract all clk_*() calls out of
+>     raw_spin_lock'ed sections
+>
 
-Correct.
+This looks so much worse now. :(
 
-Thanks,
+I refuse to believe this is the only way to fix it.
 
-        tglx
+Would it be possible to wrap the logic that disables the clock
+depending on the return value of omap_gpio_dbck_enable() in some
+abstraction layer? Basing the behavior on the boolean return value of
+a function named omap_gpio_dbck_enable() makes very little sense when
+looking at it now and it will make even less a year from now.
+
+Could we add functions like omap_gpio_dbck_clk_enable() and
+omap_gpio_dbck_clk_disable() plus some state in the driver data set by
+omap_gpio_dbck_enable() which would be then read by
+omap_gpio_dbck_clk_disable() in order to determine whether to disable
+the clock or keep it going?
+
+Bart
 
