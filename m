@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0661D9E24FF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC45A9E2291
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:26:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAB5F2882BF
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:55:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2227161E51
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C691F7561;
-	Tue,  3 Dec 2024 15:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D10A1F473A;
+	Tue,  3 Dec 2024 15:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOopjSNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ju8HmliG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242E51F7567;
-	Tue,  3 Dec 2024 15:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099AC1EF0AE;
+	Tue,  3 Dec 2024 15:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241317; cv=none; b=jL7xhDSJg1D0yIkEupdbjhMcqqLb5dVve/jJRqFZATeibHaSyFNxyyHEltejPlVSdhtv3STlA5Ppn6C3DmI8ADzUwMis4xioP6brv23pRoDy5Ct+xZyTc0fUwBIsqSbkQnRzbSRAcoJ5WoHs/0mQChyOuV56AfZjQdVSqcChEgc=
+	t=1733239280; cv=none; b=me0PEL1Z8DEhSYXDvxN0hvObaIc95KuZiL/VORlwzNr4m3LQXdX6gO1UkwCmyJVdBxb21lamt8w3df9/sI+AxGSDHZCVUSKWhqPkRxOthh9hF+B9Zg3OHeAxUhfstSfvtX1WOPh2j0hwnPiB1tJI4+8DZYaS+3m9qx24QJ5qFzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241317; c=relaxed/simple;
-	bh=wid8pzLWA/ejUI0zi1TXVdGquZc1qZM6AIoWJO8n7Fs=;
+	s=arc-20240116; t=1733239280; c=relaxed/simple;
+	bh=A44Y/ry5UZhD9CF7D4MfFOAYKQjC4eKKLmtiMG5R5KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4JUVmjTeYdqGNLinBfgypbxJG+OLNHPCDqI46XWunIcGYtMXZ8nTGy+DN3pdn4PdUa8BCKsDL8JHtq7GsVPon3GNC3dGH68RADRhITF+Le7rDqQOXI0hF+NLCgzBUHMoz6m3gRTaObMKhubMfWFFdMDQqsqVeKgGK5Hbc9z8iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOopjSNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81875C4CED9;
-	Tue,  3 Dec 2024 15:55:16 +0000 (UTC)
+	 MIME-Version; b=qLtMPfAXBZvpzHFQp8mBvQ4jfyXXQ67h6JubnC6CDJwYBD6xYO9caBaBbFIeUoYkabP/RzxhXYV9BN+ypAWMQomJdNtOyIXGvS50l+kdczguwtHI4/79vx+J4/uGD66Ye088TzGfH3b2gcprBADVrJAKzwuRDUFamXd9trAjhgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ju8HmliG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD95C4CECF;
+	Tue,  3 Dec 2024 15:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241317;
-	bh=wid8pzLWA/ejUI0zi1TXVdGquZc1qZM6AIoWJO8n7Fs=;
+	s=korg; t=1733239279;
+	bh=A44Y/ry5UZhD9CF7D4MfFOAYKQjC4eKKLmtiMG5R5KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOopjSNOiLrMzb8XDU6n/y3gghdTvYSRHveJwbT76dtRXDMzR3r1iMTiaeEFuBYpO
-	 8/+ydxQ8IYauNrf80TumTHx1giT3XBc6kOHwyKiByBr9H43G7ss006TrOQBMbiWZ/N
-	 CQ3HXG25okXPrRTQurE7cl/jYATywJX28Nj8eaKw=
+	b=ju8HmliGQxBEPjsjLOylFpvp/pnGZW+4vTXzkKlpPzQTk9gZCYLvyR+VMGfg4l597
+	 yY9eVb+q5MF0M+eh/3Tw36Tzhg/D7PUTBzIrYnHDkU7BSUjzLrZ/TiRV+o+U6ur11m
+	 leL9pY10cRpbCLKU5XUqLgG6qr7IKzFWn/i+XWQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kajol Jain <kjain@linux.ibm.com>,
-	"Nysal Jan K.A" <nysal@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 386/826] powerpc/pseries: Fix dtl_access_lock to be a rw_semaphore
-Date: Tue,  3 Dec 2024 15:41:53 +0100
-Message-ID: <20241203144758.820331965@linuxfoundation.org>
+Subject: [PATCH 6.11 542/817] nfsd: release svc_expkey/svc_export with rcu_work
+Date: Tue,  3 Dec 2024 15:41:54 +0100
+Message-ID: <20241203144017.060718304@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,155 +63,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Yang Erkun <yangerkun@huawei.com>
 
-[ Upstream commit cadae3a45d23aa4f6485938a67cbc47aaaa25e38 ]
+[ Upstream commit f8c989a0c89a75d30f899a7cabdc14d72522bb8d ]
 
-The dtl_access_lock needs to be a rw_sempahore, a sleeping lock, because
-the code calls kmalloc() while holding it, which can sleep:
+The last reference for `cache_head` can be reduced to zero in `c_show`
+and `e_show`(using `rcu_read_lock` and `rcu_read_unlock`). Consequently,
+`svc_export_put` and `expkey_put` will be invoked, leading to two
+issues:
 
-  # echo 1 > /proc/powerpc/vcpudispatch_stats
-  BUG: sleeping function called from invalid context at include/linux/sched/mm.h:337
-  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 199, name: sh
-  preempt_count: 1, expected: 0
-  3 locks held by sh/199:
-   #0: c00000000a0743f8 (sb_writers#3){.+.+}-{0:0}, at: vfs_write+0x324/0x438
-   #1: c0000000028c7058 (dtl_enable_mutex){+.+.}-{3:3}, at: vcpudispatch_stats_write+0xd4/0x5f4
-   #2: c0000000028c70b8 (dtl_access_lock){+.+.}-{2:2}, at: vcpudispatch_stats_write+0x220/0x5f4
-  CPU: 0 PID: 199 Comm: sh Not tainted 6.10.0-rc4 #152
-  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
-  Call Trace:
-    dump_stack_lvl+0x130/0x148 (unreliable)
-    __might_resched+0x174/0x410
-    kmem_cache_alloc_noprof+0x340/0x3d0
-    alloc_dtl_buffers+0x124/0x1ac
-    vcpudispatch_stats_write+0x2a8/0x5f4
-    proc_reg_write+0xf4/0x150
-    vfs_write+0xfc/0x438
-    ksys_write+0x88/0x148
-    system_call_exception+0x1c4/0x5a0
-    system_call_common+0xf4/0x258
+1. The `svc_export_put` will directly free ex_uuid. However,
+   `e_show`/`c_show` will access `ex_uuid` after `cache_put`, which can
+   trigger a use-after-free issue, shown below.
 
-Fixes: 06220d78f24a ("powerpc/pseries: Introduce rwlock to gatekeep DTLB usage")
-Tested-by: Kajol Jain <kjain@linux.ibm.com>
-Reviewed-by: Nysal Jan K.A <nysal@linux.ibm.com>
-Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20240819122401.513203-1-mpe@ellerman.id.au
+   ==================================================================
+   BUG: KASAN: slab-use-after-free in svc_export_show+0x362/0x430 [nfsd]
+   Read of size 1 at addr ff11000010fdc120 by task cat/870
+
+   CPU: 1 UID: 0 PID: 870 Comm: cat Not tainted 6.12.0-rc3+ #1
+   Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+   1.16.1-2.fc37 04/01/2014
+   Call Trace:
+    <TASK>
+    dump_stack_lvl+0x53/0x70
+    print_address_description.constprop.0+0x2c/0x3a0
+    print_report+0xb9/0x280
+    kasan_report+0xae/0xe0
+    svc_export_show+0x362/0x430 [nfsd]
+    c_show+0x161/0x390 [sunrpc]
+    seq_read_iter+0x589/0x770
+    seq_read+0x1e5/0x270
+    proc_reg_read+0xe1/0x140
+    vfs_read+0x125/0x530
+    ksys_read+0xc1/0x160
+    do_syscall_64+0x5f/0x170
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+   Allocated by task 830:
+    kasan_save_stack+0x20/0x40
+    kasan_save_track+0x14/0x30
+    __kasan_kmalloc+0x8f/0xa0
+    __kmalloc_node_track_caller_noprof+0x1bc/0x400
+    kmemdup_noprof+0x22/0x50
+    svc_export_parse+0x8a9/0xb80 [nfsd]
+    cache_do_downcall+0x71/0xa0 [sunrpc]
+    cache_write_procfs+0x8e/0xd0 [sunrpc]
+    proc_reg_write+0xe1/0x140
+    vfs_write+0x1a5/0x6d0
+    ksys_write+0xc1/0x160
+    do_syscall_64+0x5f/0x170
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+   Freed by task 868:
+    kasan_save_stack+0x20/0x40
+    kasan_save_track+0x14/0x30
+    kasan_save_free_info+0x3b/0x60
+    __kasan_slab_free+0x37/0x50
+    kfree+0xf3/0x3e0
+    svc_export_put+0x87/0xb0 [nfsd]
+    cache_purge+0x17f/0x1f0 [sunrpc]
+    nfsd_destroy_serv+0x226/0x2d0 [nfsd]
+    nfsd_svc+0x125/0x1e0 [nfsd]
+    write_threads+0x16a/0x2a0 [nfsd]
+    nfsctl_transaction_write+0x74/0xa0 [nfsd]
+    vfs_write+0x1a5/0x6d0
+    ksys_write+0xc1/0x160
+    do_syscall_64+0x5f/0x170
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+2. We cannot sleep while using `rcu_read_lock`/`rcu_read_unlock`.
+   However, `svc_export_put`/`expkey_put` will call path_put, which
+   subsequently triggers a sleeping operation due to the following
+   `dput`.
+
+   =============================
+   WARNING: suspicious RCU usage
+   5.10.0-dirty #141 Not tainted
+   -----------------------------
+   ...
+   Call Trace:
+   dump_stack+0x9a/0xd0
+   ___might_sleep+0x231/0x240
+   dput+0x39/0x600
+   path_put+0x1b/0x30
+   svc_export_put+0x17/0x80
+   e_show+0x1c9/0x200
+   seq_read_iter+0x63f/0x7c0
+   seq_read+0x226/0x2d0
+   vfs_read+0x113/0x2c0
+   ksys_read+0xc9/0x170
+   do_syscall_64+0x33/0x40
+   entry_SYSCALL_64_after_hwframe+0x67/0xd1
+
+Fix these issues by using `rcu_work` to help release
+`svc_expkey`/`svc_export`. This approach allows for an asynchronous
+context to invoke `path_put` and also facilitates the freeing of
+`uuid/exp/key` after an RCU grace period.
+
+Fixes: 9ceddd9da134 ("knfsd: Allow lockless lookups of the exports")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/dtl.h        | 4 ++--
- arch/powerpc/platforms/pseries/dtl.c  | 8 ++++----
- arch/powerpc/platforms/pseries/lpar.c | 8 ++++----
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ fs/nfsd/export.c | 31 +++++++++++++++++++++++++------
+ fs/nfsd/export.h |  4 ++--
+ 2 files changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/dtl.h b/arch/powerpc/include/asm/dtl.h
-index d6f43d149f8dc..a5c21bc623cb0 100644
---- a/arch/powerpc/include/asm/dtl.h
-+++ b/arch/powerpc/include/asm/dtl.h
-@@ -1,8 +1,8 @@
- #ifndef _ASM_POWERPC_DTL_H
- #define _ASM_POWERPC_DTL_H
+diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
+index 50b3135d07ac7..d8e22bae76e8c 100644
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -40,15 +40,24 @@
+ #define	EXPKEY_HASHMAX		(1 << EXPKEY_HASHBITS)
+ #define	EXPKEY_HASHMASK		(EXPKEY_HASHMAX -1)
  
-+#include <linux/rwsem.h>
- #include <asm/lppaca.h>
--#include <linux/spinlock_types.h>
- 
- /*
-  * Layout of entries in the hypervisor's dispatch trace log buffer.
-@@ -35,7 +35,7 @@ struct dtl_entry {
- #define DTL_LOG_ALL		(DTL_LOG_CEDE | DTL_LOG_PREEMPT | DTL_LOG_FAULT)
- 
- extern struct kmem_cache *dtl_cache;
--extern rwlock_t dtl_access_lock;
-+extern struct rw_semaphore dtl_access_lock;
- 
- extern void register_dtl_buffer(int cpu);
- extern void alloc_dtl_buffers(unsigned long *time_limit);
-diff --git a/arch/powerpc/platforms/pseries/dtl.c b/arch/powerpc/platforms/pseries/dtl.c
-index 8cb9d36ea4915..f293588b8c7b5 100644
---- a/arch/powerpc/platforms/pseries/dtl.c
-+++ b/arch/powerpc/platforms/pseries/dtl.c
-@@ -191,7 +191,7 @@ static int dtl_enable(struct dtl *dtl)
- 		return -EBUSY;
- 
- 	/* ensure there are no other conflicting dtl users */
--	if (!read_trylock(&dtl_access_lock))
-+	if (!down_read_trylock(&dtl_access_lock))
- 		return -EBUSY;
- 
- 	n_entries = dtl_buf_entries;
-@@ -199,7 +199,7 @@ static int dtl_enable(struct dtl *dtl)
- 	if (!buf) {
- 		printk(KERN_WARNING "%s: buffer alloc failed for cpu %d\n",
- 				__func__, dtl->cpu);
--		read_unlock(&dtl_access_lock);
-+		up_read(&dtl_access_lock);
- 		return -ENOMEM;
- 	}
- 
-@@ -217,7 +217,7 @@ static int dtl_enable(struct dtl *dtl)
- 	spin_unlock(&dtl->lock);
- 
- 	if (rc) {
--		read_unlock(&dtl_access_lock);
-+		up_read(&dtl_access_lock);
- 		kmem_cache_free(dtl_cache, buf);
- 	}
- 
-@@ -232,7 +232,7 @@ static void dtl_disable(struct dtl *dtl)
- 	dtl->buf = NULL;
- 	dtl->buf_entries = 0;
- 	spin_unlock(&dtl->lock);
--	read_unlock(&dtl_access_lock);
-+	up_read(&dtl_access_lock);
- }
- 
- /* file interface */
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index c1d8bee8f7018..bb09990eec309 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -169,7 +169,7 @@ struct vcpu_dispatch_data {
-  */
- #define NR_CPUS_H	NR_CPUS
- 
--DEFINE_RWLOCK(dtl_access_lock);
-+DECLARE_RWSEM(dtl_access_lock);
- static DEFINE_PER_CPU(struct vcpu_dispatch_data, vcpu_disp_data);
- static DEFINE_PER_CPU(u64, dtl_entry_ridx);
- static DEFINE_PER_CPU(struct dtl_worker, dtl_workers);
-@@ -463,7 +463,7 @@ static int dtl_worker_enable(unsigned long *time_limit)
+-static void expkey_put(struct kref *ref)
++static void expkey_put_work(struct work_struct *work)
  {
- 	int rc = 0, state;
+-	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
++	struct svc_expkey *key =
++		container_of(to_rcu_work(work), struct svc_expkey, ek_rcu_work);
  
--	if (!write_trylock(&dtl_access_lock)) {
-+	if (!down_write_trylock(&dtl_access_lock)) {
- 		rc = -EBUSY;
- 		goto out;
- 	}
-@@ -479,7 +479,7 @@ static int dtl_worker_enable(unsigned long *time_limit)
- 		pr_err("vcpudispatch_stats: unable to setup workqueue for DTL processing\n");
- 		free_dtl_buffers(time_limit);
- 		reset_global_dtl_mask();
--		write_unlock(&dtl_access_lock);
-+		up_write(&dtl_access_lock);
- 		rc = -EINVAL;
- 		goto out;
- 	}
-@@ -494,7 +494,7 @@ static void dtl_worker_disable(unsigned long *time_limit)
- 	cpuhp_remove_state(dtl_worker_state);
- 	free_dtl_buffers(time_limit);
- 	reset_global_dtl_mask();
--	write_unlock(&dtl_access_lock);
-+	up_write(&dtl_access_lock);
+ 	if (test_bit(CACHE_VALID, &key->h.flags) &&
+ 	    !test_bit(CACHE_NEGATIVE, &key->h.flags))
+ 		path_put(&key->ek_path);
+ 	auth_domain_put(key->ek_client);
+-	kfree_rcu(key, ek_rcu);
++	kfree(key);
++}
++
++static void expkey_put(struct kref *ref)
++{
++	struct svc_expkey *key = container_of(ref, struct svc_expkey, h.ref);
++
++	INIT_RCU_WORK(&key->ek_rcu_work, expkey_put_work);
++	queue_rcu_work(system_wq, &key->ek_rcu_work);
  }
  
- static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
+ static int expkey_upcall(struct cache_detail *cd, struct cache_head *h)
+@@ -355,16 +364,26 @@ static void export_stats_destroy(struct export_stats *stats)
+ 					    EXP_STATS_COUNTERS_NUM);
+ }
+ 
+-static void svc_export_put(struct kref *ref)
++static void svc_export_put_work(struct work_struct *work)
+ {
+-	struct svc_export *exp = container_of(ref, struct svc_export, h.ref);
++	struct svc_export *exp =
++		container_of(to_rcu_work(work), struct svc_export, ex_rcu_work);
++
+ 	path_put(&exp->ex_path);
+ 	auth_domain_put(exp->ex_client);
+ 	nfsd4_fslocs_free(&exp->ex_fslocs);
+ 	export_stats_destroy(exp->ex_stats);
+ 	kfree(exp->ex_stats);
+ 	kfree(exp->ex_uuid);
+-	kfree_rcu(exp, ex_rcu);
++	kfree(exp);
++}
++
++static void svc_export_put(struct kref *ref)
++{
++	struct svc_export *exp = container_of(ref, struct svc_export, h.ref);
++
++	INIT_RCU_WORK(&exp->ex_rcu_work, svc_export_put_work);
++	queue_rcu_work(system_wq, &exp->ex_rcu_work);
+ }
+ 
+ static int svc_export_upcall(struct cache_detail *cd, struct cache_head *h)
+diff --git a/fs/nfsd/export.h b/fs/nfsd/export.h
+index ca9dc230ae3d0..9d895570ceba0 100644
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -75,7 +75,7 @@ struct svc_export {
+ 	u32			ex_layout_types;
+ 	struct nfsd4_deviceid_map *ex_devid_map;
+ 	struct cache_detail	*cd;
+-	struct rcu_head		ex_rcu;
++	struct rcu_work		ex_rcu_work;
+ 	unsigned long		ex_xprtsec_modes;
+ 	struct export_stats	*ex_stats;
+ };
+@@ -92,7 +92,7 @@ struct svc_expkey {
+ 	u32			ek_fsid[6];
+ 
+ 	struct path		ek_path;
+-	struct rcu_head		ek_rcu;
++	struct rcu_work		ek_rcu_work;
+ };
+ 
+ #define EX_ISSYNC(exp)		(!((exp)->ex_flags & NFSEXP_ASYNC))
 -- 
 2.43.0
 
