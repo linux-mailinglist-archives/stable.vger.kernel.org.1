@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-97980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08BA9E2B2D
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:43:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FC09E293B
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 918E2B3A27F
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:13:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD37FB37EE1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD0D1E3DF9;
-	Tue,  3 Dec 2024 16:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486BE1F76DB;
+	Tue,  3 Dec 2024 16:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnHVKsTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYJwGhv6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEC881ADA;
-	Tue,  3 Dec 2024 16:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076191E3DF9;
+	Tue,  3 Dec 2024 16:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242395; cv=none; b=ELTcWBk/LyTUqotDkPFvbDpz9b97XnxQKrXtRcvZEF6OhwiRsvV+MqJsqlXG0bD2abtPY+ZBvXE1STd5f1LW3D207mY0KHN2/sFgNpaLaW6UpP1298QRzFzWKPMsecp1A1DppxoCdGoj12Eu7A4GOdh88QSDGLL2fMgkDMIQpDs=
+	t=1733242447; cv=none; b=jfBI7BUE6jjughJDzfdhZfiWfuPKCDazriguiSLptQiBUjipzE/2Ugq8CCxt6wjmcbC/AvyUpWx3C5eqGaOiNPBV3qAV+iOTynlbdqVua3dpykXWsjaArZc/VS4apLSTFWkg+ee9A4jkEnOFNNWZDRunNw9slHx6tem0gIZKzK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242395; c=relaxed/simple;
-	bh=68R12clyfr4duXqHHbqUXLFnoZ7D/OmTN/5L/ROO/m8=;
+	s=arc-20240116; t=1733242447; c=relaxed/simple;
+	bh=qYXXOGkp/7s+xvZMYO1702L9btVllvxbu7Tu0EMrS78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljNvLmKWPlZiwrZM07RQJpSacnEjle5TkAZRIdfYBA5kla0FY/JJGt3XhWmp7cdnDoW2HiffFClZEySr1sbdYeWAT1TByc/ZSs14kCS1yFPyIQWrb+ETUa8UgDvpOKmQf4xmzU3uKjYH393p0R/QpCOa/TLso9Z2TFA8xfhtjDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnHVKsTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F257BC4CECF;
-	Tue,  3 Dec 2024 16:13:13 +0000 (UTC)
+	 MIME-Version; b=sCHooNyotmfv0TpRkoKo8Cm/2MuEN/msn4cJHZg3yjzj1//I1jqNainl/rQ0t8UWLxwyqMa5lFlgsCc0gFMq/M/TcHlhLHa8ZGZM6DlgkiXdsMYJRXoB90hN/LCDDZzyUirrCkd0p/Mf1v1jPBS0vvgCCwwEVuSPnSA2m8E7A7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYJwGhv6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EFBC4CECF;
+	Tue,  3 Dec 2024 16:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733242394;
-	bh=68R12clyfr4duXqHHbqUXLFnoZ7D/OmTN/5L/ROO/m8=;
+	s=korg; t=1733242446;
+	bh=qYXXOGkp/7s+xvZMYO1702L9btVllvxbu7Tu0EMrS78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnHVKsTpKgaLNsK2k6wYah7tBbqQx/F2kAyhqwkYl2Lytq5kmQ9tlML869OD+VG75
-	 Ojuscum7ux/BJIXO8GoHd5drbBH81EwTFpGuDFD6gM3U/OF7fsZTeggIuwt57Z5iMO
-	 i/WCE3M6jdRY2PLkZUrfX4IpOmtP71e/ohV1VG3U=
+	b=TYJwGhv66VO10724EFzrI4VxcFyRWvzElz4snwjn1LW3Hf9aYrH8Ynh/E2nNqAz+C
+	 FdhPO8Msmn90d+72/S/NMlwu2mVVlpl80aE+ipE1nxfDSEa1nweo8Nia8dPUI3vTWd
+	 V9xBnCY38/KMtQb3s3qgzw/F9NcB30bDFSr0DTYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 691/826] io_uring: fix corner case forgetting to vunmap
-Date: Tue,  3 Dec 2024 15:46:58 +0100
-Message-ID: <20241203144810.711681747@linuxfoundation.org>
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.12 706/826] irqchip/irq-mvebu-sei: Move misplaced select() callback to SEI CP domain
+Date: Tue,  3 Dec 2024 15:47:13 +0100
+Message-ID: <20241203144811.298593533@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
 References: <20241203144743.428732212@linuxfoundation.org>
@@ -65,50 +65,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-commit 43eef70e7e2ac74e7767731dd806720c7fb5e010 upstream.
+commit 12aaf67584cf19dc84615b7aba272fe642c35b8b upstream.
 
-io_pages_unmap() is a bit tricky in trying to figure whether the pages
-were previously vmap'ed or not. In particular If there is juts one page
-it belives there is no need to vunmap. Paired io_pages_map(), however,
-could've failed io_mem_alloc_compound() and attempted to
-io_mem_alloc_single(), which does vmap, and that leads to unpaired vmap.
+Commit fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
+introduced in v6.11-rc1 broke Mavell Armada platforms (and possibly others)
+by incorrectly switching irq-mvebu-sei to MSI parent.
 
-The solution is to fail if io_mem_alloc_compound() can't allocate a
-single page. That's the easiest way to deal with it, and those two
-functions are getting removed soon, so no need to overcomplicate it.
+In the above commit, msi_parent_ops is set for the sei->cp_domain, but
+rather than adding a .select method to mvebu_sei_cp_domain_ops (which is
+associated with sei->cp_domain), it was added to mvebu_sei_domain_ops which
+is associated with sei->sei_domain, which doesn't have any
+msi_parent_ops. This makes the call to msi_lib_irq_domain_select() always
+fail.
 
+This bug manifests itself with the following kernel messages on Armada 8040
+based systems:
+
+ platform f21e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
+ platform f41e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
+
+Move the select callback to mvebu_sei_cp_domain_ops to cure it.
+
+Fixes: fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Fixes: 3ab1db3c6039e ("io_uring: get rid of remap_pfn_range() for mapping rings/sqes")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/477e75a3907a2fe83249e49c0a92cd480b2c60e0.1732569842.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/all/E1tE6bh-004CmX-QU@rmk-PC.armlinux.org.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/memmap.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-mvebu-sei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/memmap.c
-+++ b/io_uring/memmap.c
-@@ -72,6 +72,8 @@ void *io_pages_map(struct page ***out_pa
- 	ret = io_mem_alloc_compound(pages, nr_pages, size, gfp);
- 	if (!IS_ERR(ret))
- 		goto done;
-+	if (nr_pages == 1)
-+		goto fail;
+--- a/drivers/irqchip/irq-mvebu-sei.c
++++ b/drivers/irqchip/irq-mvebu-sei.c
+@@ -192,7 +192,6 @@ static void mvebu_sei_domain_free(struct
+ }
  
- 	ret = io_mem_alloc_single(pages, nr_pages, size, gfp);
- 	if (!IS_ERR(ret)) {
-@@ -80,7 +82,7 @@ done:
- 		*npages = nr_pages;
- 		return ret;
- 	}
--
-+fail:
- 	kvfree(pages);
- 	*out_pages = NULL;
- 	*npages = 0;
+ static const struct irq_domain_ops mvebu_sei_domain_ops = {
+-	.select	= msi_lib_irq_domain_select,
+ 	.alloc	= mvebu_sei_domain_alloc,
+ 	.free	= mvebu_sei_domain_free,
+ };
+@@ -306,6 +305,7 @@ static void mvebu_sei_cp_domain_free(str
+ }
+ 
+ static const struct irq_domain_ops mvebu_sei_cp_domain_ops = {
++	.select	= msi_lib_irq_domain_select,
+ 	.alloc	= mvebu_sei_cp_domain_alloc,
+ 	.free	= mvebu_sei_cp_domain_free,
+ };
 
 
 
