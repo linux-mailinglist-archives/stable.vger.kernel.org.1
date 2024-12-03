@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA449E24FE
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:55:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB9F9E28A3
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:06:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A45D416BE60
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:49:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49323B81AA2
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31ECC1F76A2;
-	Tue,  3 Dec 2024 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422001F75B9;
+	Tue,  3 Dec 2024 15:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzmXXNBk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fg3i6e8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49502C80;
-	Tue,  3 Dec 2024 15:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B6C1F75A4;
+	Tue,  3 Dec 2024 15:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733240949; cv=none; b=hQcj+klTds3ADAUrE41XXSVUheSIO+55hM6lEyMFs4oS0X8NfoClUcOipUcUKW8v5sY/qcWUIz94v3bmWCvVhH7t5rfvL+ZuV2jFS1VCyH15fT8oFUr05KjPvH8DcoDzrhfjMhypZ0ibpd+Y4/1NsoRx9tYUsOO7LTKRxo45C3U=
+	t=1733239031; cv=none; b=pcFke+DR734eJIFPxsJ/rKdJnNPr0PsCHs7H4reNh+aGgDpskATFPLCVGeWdf3CSSgGUvZATYWjEpyxlafS690GpKKVGJhx/qNkW+UhN91LPOaAv6v+OjQWDwj84CT6Nug97k0+I0KQvOzSPAsURQ+02Tv3Co6vqsk08n99gcPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733240949; c=relaxed/simple;
-	bh=bBEprhbZ5aQH0zu48Y1hjo6xWqJOQNWXo+0EQDnxv9s=;
+	s=arc-20240116; t=1733239031; c=relaxed/simple;
+	bh=6bH/rsZaZ6djhZ58EGXTh2UAFaO489pY8Dr+yllTr+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8gTV699/+lEeVqVqGBq+FdxtKTAAeCEYSzahDeLDJfo4Ax+WiC5uOcQ6Bq8j3WIsIsZi/5v2h8JKz9CHbRiUdoFOHwiDca/DFPnKzmWUpEoVFLgVtxZyXJz9DG6idTEm5DOo1Ca5kPMdlLQ00jlcUZVOiWXeKqYiIhDDlVn6bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzmXXNBk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6E5C4CECF;
-	Tue,  3 Dec 2024 15:49:08 +0000 (UTC)
+	 MIME-Version; b=KuE+I7TGJyxugCipWxBov35ncmyVRmzQ+hy7ZPBJsBaZ4moJJ9LXmvhqumInxjpswMtfcHMRjiN6mE901nu0GahIBTY3uE2UgRsknO+ibOY6LDdcxe2PTxdpk5sLiCrvVJ3Da8/lEz2v2fPWekGwsNXHqHKzI8Lb+pwHuSMC9Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fg3i6e8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81827C4CECF;
+	Tue,  3 Dec 2024 15:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733240948;
-	bh=bBEprhbZ5aQH0zu48Y1hjo6xWqJOQNWXo+0EQDnxv9s=;
+	s=korg; t=1733239030;
+	bh=6bH/rsZaZ6djhZ58EGXTh2UAFaO489pY8Dr+yllTr+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mzmXXNBk60QecRoNX7VpxAfDZX3cVbORbZxP5QjlCyKhnxak8US8CKspJWGWIZH1K
-	 hKD+M9HLSgpYxHum8jun2gq4SeaDueIykj/bM34Oyli9yFZgqgawq06ajvz0VsGPuO
-	 wWfxqh0DREjmYQbFcGekb74AFiA/gbUwx8S6wAGk=
+	b=fg3i6e8XeYIfAO+dMUpLn10kDT6Dfytm8klLbWLHSK6414ANHQtFt4VZwa74XrX/M
+	 eM9bRkBzCDqcbKDk6eD11HyRfB5tNjKHOBIia25tO0W+ClTJb9CXoTniPPie5pyywN
+	 7OlFHbycm8pvbN+KgDgVBsQmsd4pFdzVzlqEd0Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zeng Heng <zengheng4@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 283/826] drm/amd/display: Increase idle worker HPD detection time
-Date: Tue,  3 Dec 2024 15:40:10 +0100
-Message-ID: <20241203144754.810008789@linuxfoundation.org>
+Subject: [PATCH 6.11 439/817] scsi: fusion: Remove unused variable rc
+Date: Tue,  3 Dec 2024 15:40:11 +0100
+Message-ID: <20241203144013.017018023@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Zeng Heng <zengheng4@huawei.com>
 
-[ Upstream commit 60612f75992d96955fb7154468c58d5d168cf1ab ]
+[ Upstream commit bd65694223f7ad11c790ab63ad1af87a771192ee ]
 
-[Why]
-Idle worker thread waits HPD_DETECTION_TIME for HPD processing complete.
-Some displays require longer time for that.
+The return value of scsi_device_reprobe() is currently ignored in
+_scsih_reprobe_lun(). Fixing the calling code to deal with the potential
+error is non-trivial, so for now just WARN_ON().
 
-[How]
-Increase HPD_DETECTION_TIME to 100ms.
+The handling of scsi_device_reprobe()'s return value refers to
+_scsih_reprobe_lun() and the following link:
 
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: a88b19b13fb4 ("drm/amd/display: Reduce HPD Detection Interval for IPS")
+https://lore.kernel.org/all/094fdbf57487af4f395238c0525b2a560c8f68f0.1469766027.git.calvinowens@fb.com/
+
+Fixes: f99be43b3024 ("[SCSI] fusion: power pc and miscellaneous bug fixs")
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+Link: https://lore.kernel.org/r/20241024084417.154655-1-zengheng4@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/message/fusion/mptsas.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-index 288be19db7c1b..8780d4737680f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -36,7 +36,7 @@
- #include "amdgpu_dm_debugfs.h"
- 
- #define HPD_DETECTION_PERIOD_uS 5000000
--#define HPD_DETECTION_TIME_uS 1000
-+#define HPD_DETECTION_TIME_uS 100000
- 
- void amdgpu_dm_crtc_handle_vblank(struct amdgpu_crtc *acrtc)
+diff --git a/drivers/message/fusion/mptsas.c b/drivers/message/fusion/mptsas.c
+index a0bcb0864ecd2..a798e26c6402d 100644
+--- a/drivers/message/fusion/mptsas.c
++++ b/drivers/message/fusion/mptsas.c
+@@ -4231,10 +4231,8 @@ mptsas_find_phyinfo_by_phys_disk_num(MPT_ADAPTER *ioc, u8 phys_disk_num,
+ static void
+ mptsas_reprobe_lun(struct scsi_device *sdev, void *data)
  {
+-	int rc;
+-
+ 	sdev->no_uld_attach = data ? 1 : 0;
+-	rc = scsi_device_reprobe(sdev);
++	WARN_ON(scsi_device_reprobe(sdev));
+ }
+ 
+ static void
 -- 
 2.43.0
 
