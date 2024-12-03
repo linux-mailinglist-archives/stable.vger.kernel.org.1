@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-97705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-97067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADAC9E25A2
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:02:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE509E27A7
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:37:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E7831648C5
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:57:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB583B316B1
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD9C1F76BF;
-	Tue,  3 Dec 2024 15:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2901F7569;
+	Tue,  3 Dec 2024 15:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PW4LYEqA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPL3w2/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B0A1F76B5;
-	Tue,  3 Dec 2024 15:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773231EE001;
+	Tue,  3 Dec 2024 15:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241448; cv=none; b=ileuftO3ErQNNH8SRo9iftTku0vX8wvBdp3EfyfHreblxx9PpFk73HwK0Tb7j1RfL386eAu6kU2se7PXCTHN2nldcI70B0VFiPqiJ9CW80C+dEarsqV8wADt+eZBW/7TlIgLWSZzZPGaWxetvASkz8B1gf2WY5Ntyd/ErOVhja0=
+	t=1733239425; cv=none; b=OsgQ3ai6fWrwE+dXnhULD6RcEO9yfsRCAeg0Ntx5jPS/PbfMQaz82msNdUF1rf4tl2hTyg8eC7sNKf/3dWBJZge/XNN+uJi7HJXYrBatkhfRMBE2E8FQrIOBRt0boD2FlkBXdYqslnpMdawRFL8pJTBmAU2WnZIAale1ZH5Cq40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241448; c=relaxed/simple;
-	bh=9hQLQjUp7A2TlHA7B4yYgI2xidEkMeJEGLNPONQ6HBM=;
+	s=arc-20240116; t=1733239425; c=relaxed/simple;
+	bh=ISyQWJAGR7B2WQvYzgu/Ch6zN4LnmFMfV+2Bes5v1Bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7YD2NuPI3NLzEChvk6G11lT8nJDkXql1gFkLJf2ycBKF4YsUZuvTva9W7W1ZYexJmZEeptuC82IVksG5FoadAFTbsdQS4MDo8b521lrupz4XE/6oV3x6nt3a8s0WWCLkV4Rt2dDgPtXWkBnM1GOfN37k2CIeKNKD8LpyNIdPzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PW4LYEqA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC206C4CECF;
-	Tue,  3 Dec 2024 15:57:27 +0000 (UTC)
+	 MIME-Version; b=dNHhK5ZN3Efxe85L96P/yjcue6ylDfhaFnEbWyR9zOORAcKWD8qoHhig3V9JrP7ukgokN2l7OvpNvOHhwbeYL5HbCe2pzdSHYLd23lGPKAVw9OotdkKpJvDmuUxm3H+r/VbooTJkuQ1RtWklXdGrg9pKEtthOkGaCOsAu8u57OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPL3w2/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3483C4CECF;
+	Tue,  3 Dec 2024 15:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241448;
-	bh=9hQLQjUp7A2TlHA7B4yYgI2xidEkMeJEGLNPONQ6HBM=;
+	s=korg; t=1733239425;
+	bh=ISyQWJAGR7B2WQvYzgu/Ch6zN4LnmFMfV+2Bes5v1Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PW4LYEqA0CPaPv2CU7vYWbH/tbIrs1WV+BXnl7a16/MXea7WNEm9tRlV4LfdrhXlg
-	 grxlsgXmOIDogi1Ul/7Mgr2Ec3Vm2gJYHfG4/LJPqUXGlGseJ4ngx7Rgfe+fbqKA/Q
-	 n2XbP90gZIU92rEnxvCHxJjtfb2qzRj0mMMrGDg0=
+	b=jPL3w2/V9g1UB7qJEWUYo4dd3TJnOzp8SQesQvRxGJWGxr1hNREVbl7HtZVri1lcu
+	 K+l/LlVkFvvDFzARAN5SN8LhPoLJfnSwiNbpZAZcmnl0Prh6KERpvnbImroEWypImR
+	 qgb2l4um3OXvaetyQ03NFcRYMUD3OVBkKeawGJrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Douglas Gilbert <dgilbert@interlog.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 422/826] scsi: sg: Enable runtime power management
-Date: Tue,  3 Dec 2024 15:42:29 +0100
-Message-ID: <20241203144800.223746965@linuxfoundation.org>
+Subject: [PATCH 6.11 578/817] octeontx2-af: RPM: Fix mismatch in lmac type
+Date: Tue,  3 Dec 2024 15:42:30 +0100
+Message-ID: <20241203144018.478354839@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 4045de893f691f75193c606aec440c365cf7a7be ]
+[ Upstream commit 7ebbbb23ea5b6d051509cb11399afac5042c9266 ]
 
-In 2010, runtime power management support was implemented in the SCSI
-core.  The description of patch "[SCSI] implement runtime Power
-Management" mentions that the sg driver is skipped but not why. This
-patch enables runtime power management even if an instance of the sg
-driver is held open.  Enabling runtime PM for the sg driver is safe
-because all interactions of the sg driver with the SCSI device pass
-through the block layer (blk_execute_rq_nowait()) and the block layer
-already supports runtime PM.
+Due to a bug in the previous patch, there is a mismatch
+between the lmac type reported by the driver and the actual
+hardware configuration.
 
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: Douglas Gilbert <dgilbert@interlog.com>
-Fixes: bc4f24014de5 ("[SCSI] implement runtime Power Management")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20241030220310.1373569-1-bvanassche@acm.org
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 3ad3f8f93c81 ("octeontx2-af: cn10k: MAC internal loopback support")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sg.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rpm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index f86be197fedd0..84334ab39c810 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -307,10 +307,6 @@ sg_open(struct inode *inode, struct file *filp)
- 	if (retval)
- 		goto sg_put;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index 1b34cf9c97035..9e8c5e4389f8b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -467,7 +467,7 @@ u8 rpm_get_lmac_type(void *rpmd, int lmac_id)
+ 	int err;
  
--	retval = scsi_autopm_get_device(device);
--	if (retval)
--		goto sdp_put;
--
- 	/* scsi_block_when_processing_errors() may block so bypass
- 	 * check if O_NONBLOCK. Permits SCSI commands to be issued
- 	 * during error recovery. Tread carefully. */
-@@ -318,7 +314,7 @@ sg_open(struct inode *inode, struct file *filp)
- 	      scsi_block_when_processing_errors(device))) {
- 		retval = -ENXIO;
- 		/* we are in error recovery for this device */
--		goto error_out;
-+		goto sdp_put;
- 	}
- 
- 	mutex_lock(&sdp->open_rel_lock);
-@@ -371,8 +367,6 @@ sg_open(struct inode *inode, struct file *filp)
- 	}
- error_mutex_locked:
- 	mutex_unlock(&sdp->open_rel_lock);
--error_out:
--	scsi_autopm_put_device(device);
- sdp_put:
- 	kref_put(&sdp->d_ref, sg_device_destroy);
- 	scsi_device_put(device);
-@@ -392,7 +386,6 @@ sg_release(struct inode *inode, struct file *filp)
- 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp, "sg_release\n"));
- 
- 	mutex_lock(&sdp->open_rel_lock);
--	scsi_autopm_put_device(sdp->device);
- 	kref_put(&sfp->f_ref, sg_remove_sfp);
- 	sdp->open_cnt--;
- 
+ 	req = FIELD_SET(CMDREG_ID, CGX_CMD_GET_LINK_STS, req);
+-	err = cgx_fwi_cmd_generic(req, &resp, rpm, 0);
++	err = cgx_fwi_cmd_generic(req, &resp, rpm, lmac_id);
+ 	if (!err)
+ 		return FIELD_GET(RESP_LINKSTAT_LMAC_TYPE, resp);
+ 	return err;
 -- 
 2.43.0
 
