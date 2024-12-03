@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-97623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F5379E2545
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC1199E2233
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A14C1166EE4
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39B9C167A2A
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2229F1F890D;
-	Tue,  3 Dec 2024 15:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A42A1F8913;
+	Tue,  3 Dec 2024 15:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dfrYbEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUWITkRI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46141DAC9F;
-	Tue,  3 Dec 2024 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA0D1F8915;
+	Tue,  3 Dec 2024 15:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241151; cv=none; b=EEgOrUdhxgQvzIas3osChxlYjgbBSAngVTcKIoyTJ7/qWcowtpdMGa2v7rr+JY228GeaaLgKYNZJ+1b3CC9C0gjAQNGwDJDUO629IcBII8GltesAi8wPdn1YiDjXYmPz7Ux39tJ+4UyFDiWX86vu4OH7jiaDxyXzVZ7NtbRoGus=
+	t=1733238987; cv=none; b=FmV8F87rp+PDhimn78cFi0j8vwg+FSx+RkwArjzconCDd1xIPWp8wArHaX/l+zeWjmj9V8rKBHmMbF9XZj1GTg3ahj93piAEUhvUb3JazlQpO86ASPnrDzR7SJAYw6EIkOl8WqLW9HUyWRh6V+1/p83JHIyMRD7+RJiFDAlhar8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241151; c=relaxed/simple;
-	bh=+EZTC8GVO7WHd7anZXSNsMY0ydGwG6Lo6S8l6QSbwC8=;
+	s=arc-20240116; t=1733238987; c=relaxed/simple;
+	bh=9buIJnb2dEH/l+rFtVTPZYyfBrW4SZE4nnmqYePI9nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzuyfLL3pQw3QOKfMKjJjLDTTqiS/DA9l6FLrZiGulBAcXudl5syq+tvAFWD7DbJ4uK51RyQk7s+8XChgOq+TI8waST81p50FlTkNzMTKJkwARxFS9oIpPB/qAp04OKSHp3fPHeYyP0SnhSDGaTW81U+Cc4EKGqMzuMbWJRsriU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dfrYbEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580AEC4CED6;
-	Tue,  3 Dec 2024 15:52:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AstdAQIyjuz2q1F8WH9qf1VzkXh0C7nHQ1ONbJU65OhQVfHmeomcxZKtag6z9zz4MIUJO41O1bnnHaeDaDbWOM5nik508SWQM7R+NvpnUiPq8MSLaAowIfpwDdf1Fn4PiavN/W9eF2hLDkdn1wdjeoWSzMts0PvOULBiiP2vt+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUWITkRI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 748C7C4CECF;
+	Tue,  3 Dec 2024 15:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241151;
-	bh=+EZTC8GVO7WHd7anZXSNsMY0ydGwG6Lo6S8l6QSbwC8=;
+	s=korg; t=1733238986;
+	bh=9buIJnb2dEH/l+rFtVTPZYyfBrW4SZE4nnmqYePI9nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dfrYbEL4zfMo7qs/a9i6mhFMScbjmUxgt3ryCuRN2MgNUMobiVa6Y/BkZoWX7PCk
-	 dMb8wmBaQGWrJJeUSUF9Kw0r0UfCI7DClJG9dyYEbx/WYGVt9VuxKGYHhP+6hJTKa3
-	 Qr/tZH3WTImBPjaQIhBxIz2WvUTczjda/cLpILfM=
+	b=LUWITkRINToK7jCa167HmwxlMxCx+tokPeSt0nR3NhT4hNxNrahICQFRNA6Yzv83q
+	 Xa9ShBpgMQOr0u+1yr9kfgCGsSZJSriU9+Sk/sFYIf27aih8u8/w1UFBLPHspkDtGp
+	 n92LVuqnKJl8xlDtk3fdODn2exgS3TvP38QnbXjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Charles Han <hanchunchao@inspur.com>,
+	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 309/826] selftests/bpf: Fix SENDPAGE data logic in test_sockmap
-Date: Tue,  3 Dec 2024 15:40:36 +0100
-Message-ID: <20241203144755.815357411@linuxfoundation.org>
+Subject: [PATCH 6.11 465/817] clk: clk-apple-nco: Add NULL check in applnco_probe
+Date: Tue,  3 Dec 2024 15:40:37 +0100
+Message-ID: <20241203144014.024705188@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 4095031463d4e99b534d2cd82035a417295764ae ]
+[ Upstream commit 969c765e2b508cca9099d246c010a1e48dcfd089 ]
 
-In the SENDPAGE test, "opt->iov_length * cnt" size of data will be sent
-cnt times by sendfile.
-1. In push/pop tests, they will be invoked cnt times, for the simplicity of
-msg_verify_data, change chunk_sz to iov_length
-2. Change iov_length in test_send_large from 1024 to 8192. We have pop test
-where txmsg_start_pop is 4096. 4096 > 1024, an error will be returned.
+Add NULL check in applnco_probe, to handle kernel NULL pointer
+dereference error.
 
-Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-3-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: 6641057d5dba ("clk: clk-apple-nco: Add driver for Apple NCO")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Link: https://lore.kernel.org/r/20241114072820.3071-1-hanchunchao@inspur.com
+Reviewed-by: Martin Povišer <povik+lin@cutebit.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/clk/clk-apple-nco.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 0f065273fde32..1d59bed90d80b 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -420,16 +420,18 @@ static int msg_loop_sendpage(int fd, int iov_length, int cnt,
- {
- 	bool drop = opt->drop_expected;
- 	unsigned char k = 0;
-+	int i, j, fp;
- 	FILE *file;
--	int i, fp;
- 
- 	file = tmpfile();
- 	if (!file) {
- 		perror("create file for sendpage");
- 		return 1;
- 	}
--	for (i = 0; i < iov_length * cnt; i++, k++)
--		fwrite(&k, sizeof(char), 1, file);
-+	for (i = 0; i < cnt; i++, k = 0) {
-+		for (j = 0; j < iov_length; j++, k++)
-+			fwrite(&k, sizeof(char), 1, file);
-+	}
- 	fflush(file);
- 	fseek(file, 0, SEEK_SET);
- 
-@@ -623,7 +625,9 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		 * This is really only useful for testing edge cases in code
- 		 * paths.
- 		 */
--		total_bytes = (float)iov_count * (float)iov_length * (float)cnt;
-+		total_bytes = (float)iov_length * (float)cnt;
-+		if (!opt->sendpage)
-+			total_bytes *= (float)iov_count;
- 		if (txmsg_apply)
- 			txmsg_pop_total = txmsg_pop * (total_bytes / txmsg_apply);
- 		else
-@@ -701,7 +705,7 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 
- 			if (data) {
- 				int chunk_sz = opt->sendpage ?
--						iov_length * cnt :
-+						iov_length :
- 						iov_length * iov_count;
- 
- 				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt);
-@@ -1466,8 +1470,8 @@ static void test_send_many(struct sockmap_options *opt, int cgrp)
- 
- static void test_send_large(struct sockmap_options *opt, int cgrp)
- {
--	opt->iov_length = 256;
--	opt->iov_count = 1024;
-+	opt->iov_length = 8192;
-+	opt->iov_count = 32;
- 	opt->rate = 2;
- 	test_exec(cgrp, opt);
- }
+diff --git a/drivers/clk/clk-apple-nco.c b/drivers/clk/clk-apple-nco.c
+index 39472a51530a3..457a48d489412 100644
+--- a/drivers/clk/clk-apple-nco.c
++++ b/drivers/clk/clk-apple-nco.c
+@@ -297,6 +297,9 @@ static int applnco_probe(struct platform_device *pdev)
+ 		memset(&init, 0, sizeof(init));
+ 		init.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%s-%d", np->name, i);
++		if (!init.name)
++			return -ENOMEM;
++
+ 		init.ops = &applnco_ops;
+ 		init.parent_data = &pdata;
+ 		init.num_parents = 1;
 -- 
 2.43.0
 
