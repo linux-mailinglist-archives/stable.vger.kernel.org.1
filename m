@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-97627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-96927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5846C9E2537
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:58:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6B29E2237
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 638AC1676CA
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:53:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83936168213
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 15:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FED51DAC9F;
-	Tue,  3 Dec 2024 15:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1171F7576;
+	Tue,  3 Dec 2024 15:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VjNHOp4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OdU295g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8541AB6C9;
-	Tue,  3 Dec 2024 15:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7751F7560;
+	Tue,  3 Dec 2024 15:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733241165; cv=none; b=ltn8u3zr5GpHTuo5/DIiK91V9KhIG4TLYe/mUQF+faS3OfZvTSfIMopMuRJTcQkvGZGDMLNC6XBAXTXv1utpSyjQpg/cRrVj1pyQQaQHrVMT1E9ftBNK9K5RUL3GkPbyljDnvXXWx1s+nyyLr0WLs8ko/mKfDyc+jKXWeC2NSuc=
+	t=1733239002; cv=none; b=Zq3jppDA8zKpMQJ/agtWOlEEVP3cxx8MuVt2IxoUQ1Ad73qO7HXdABmPcm4F6pQ4PQjiKT7lHUS29+YQs8ykHP62s9XdMmwHyGSau8cf1JvVl7T8uJHErZytVd0BxKVWWsLgj+l5svlQTWEmAZqYL7QV8CwfjfH2llL4ZrH5F84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733241165; c=relaxed/simple;
-	bh=yHZYV2UkDv5rVKqfSRZS8iseHuXjCyVkSOvpC8zlUvI=;
+	s=arc-20240116; t=1733239002; c=relaxed/simple;
+	bh=abtrINqjoZio3GVxJPky4y/AVJtbgUSrVbHJp/J62rA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/ZBgoGap25xkEsqPWmgmLDQngJvwGvra4q4KwfQljUs8iF/cUiLqDeUeEo8OzGV3XPXrBeLOBadAoGXg1vxmKoF+HHpQwPPvoI8wTJpiHPZvQuAqJgbeQfrCbiPMSAQDV64FUS7ILO5FdXFFepKTRsA+EJY8xOdbe4L/nwknfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VjNHOp4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAC5C4CECF;
-	Tue,  3 Dec 2024 15:52:44 +0000 (UTC)
+	 MIME-Version; b=oL9PMfpvDHl8XNo9QhMBdG3o14/uzR//PDCejJIwIaS31z/543jvjMKbJ/jEUFIZpo/WipwK8XHz1njh+C2maM9wguBmq7VaThfDtAcrPrATtE36u6Ls450WqFOdcn3XgNirqiprGMeTgC9mui6f1+m9q/FtDUo/03NGsDUbPUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OdU295g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A70C4CECF;
+	Tue,  3 Dec 2024 15:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733241164;
-	bh=yHZYV2UkDv5rVKqfSRZS8iseHuXjCyVkSOvpC8zlUvI=;
+	s=korg; t=1733239001;
+	bh=abtrINqjoZio3GVxJPky4y/AVJtbgUSrVbHJp/J62rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VjNHOp4TRBAHGrO/KzB4LLBZw2wG6/3raRlCMcKpBoHoXBdNsNfCD+zATxj2u1ATQ
-	 Bno0X1uzDQ7px+pJIqWCSG8k8xe6meCBHRgZsZ4KSE1hrZ6LKXLlpXmw+xZpAOUOSQ
-	 4LQdCk6taw5J1A0E4YA2KkEiL6HSJKPWJEprdo4o=
+	b=0OdU295gjWtU5SbC67CVdIUojCdkXUxWOpP7bCbDYAPoWfhOJA6ZzAFTv2fsBmBVE
+	 N8xC1pZ3lCaRc9XGrcjcT/DQtB09a5ZPIi9nAm4CHMGIbFCX8g74gslLYdKvgr0BzH
+	 XVZo8aeW1rpxJq/ZPbNXfOhK7uso8V8EyzvG++dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 313/826] bpf, sockmap: Several fixes to bpf_msg_pop_data
-Date: Tue,  3 Dec 2024 15:40:40 +0100
-Message-ID: <20241203144755.972936449@linuxfoundation.org>
+Subject: [PATCH 6.11 469/817] clk: en7523: move clock_register in hw_init callback
+Date: Tue,  3 Dec 2024 15:40:41 +0100
+Message-ID: <20241203144014.179846119@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: <20241203144743.428732212@linuxfoundation.org>
+In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+References: <20241203143955.605130076@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +62,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 5d609ba262475db450ba69b8e8a557bd768ac07a ]
+[ Upstream commit b8bdfc666bc5f58caf46e67b615132fccbaca3d4 ]
 
-Several fixes to bpf_msg_pop_data,
-1. In sk_msg_shift_left, we should put_page
-2. if (len == 0), return early is better
-3. pop the entire sk_msg (last == msg->sg.size) should be supported
-4. Fix for the value of variable "a"
-5. In sk_msg_shift_left, after shifting, i has already pointed to the next
-element. Addtional sk_msg_iter_var_next may result in BUG.
+Move en7523_register_clocks routine in hw_init callback.
+Introduce en7523_clk_hw_init callback for EN7523 SoC.
+This is a preliminary patch to differentiate IO mapped region between
+EN7523 and EN7581 SoCs in order to access chip-scu IO region
+<0x1fa20000 0x384> on EN7581 SoC as syscon device since it contains
+miscellaneous registers needed by multiple devices (clock, pinctrl ..).
 
-Fixes: 7246d8ed4dcc ("bpf: helper to pop data from messages")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-8-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/20241112-clk-en7581-syscon-v2-3-8ada5e394ae4@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: f98eded9e9ab ("clk: en7523: fix estimation of fixed rate for EN7581")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/clk/clk-en7523.c | 82 ++++++++++++++++++++++++----------------
+ 1 file changed, 50 insertions(+), 32 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 0315ebbabe728..60c6e1e4662bd 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2921,8 +2921,10 @@ static const struct bpf_func_proto bpf_msg_push_data_proto = {
+diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
+index ec6716844fdcf..da112c9fe8ef9 100644
+--- a/drivers/clk/clk-en7523.c
++++ b/drivers/clk/clk-en7523.c
+@@ -78,7 +78,8 @@ struct en_clk_soc_data {
+ 		const u16 *idx_map;
+ 		u16 idx_map_nr;
+ 	} reset;
+-	int (*hw_init)(struct platform_device *pdev, void __iomem *np_base);
++	int (*hw_init)(struct platform_device *pdev,
++		       struct clk_hw_onecell_data *clk_data);
+ };
  
- static void sk_msg_shift_left(struct sk_msg *msg, int i)
+ static const u32 gsw_base[] = { 400000000, 500000000 };
+@@ -406,20 +407,6 @@ static void en7581_pci_disable(struct clk_hw *hw)
+ 	usleep_range(1000, 2000);
+ }
+ 
+-static int en7581_clk_hw_init(struct platform_device *pdev,
+-			      void __iomem *np_base)
+-{
+-	u32 val;
+-
+-	val = readl(np_base + REG_NP_SCU_SSTR);
+-	val &= ~(REG_PCIE_XSI0_SEL_MASK | REG_PCIE_XSI1_SEL_MASK);
+-	writel(val, np_base + REG_NP_SCU_SSTR);
+-	val = readl(np_base + REG_NP_SCU_PCIC);
+-	writel(val | 3, np_base + REG_NP_SCU_PCIC);
+-
+-	return 0;
+-}
+-
+ static void en7523_register_clocks(struct device *dev, struct clk_hw_onecell_data *clk_data,
+ 				   void __iomem *base, void __iomem *np_base)
  {
-+	struct scatterlist *sge = sk_msg_elem(msg, i);
- 	int prev;
+@@ -449,6 +436,49 @@ static void en7523_register_clocks(struct device *dev, struct clk_hw_onecell_dat
+ 	clk_data->num = EN7523_NUM_CLOCKS;
+ }
  
-+	put_page(sg_page(sge));
- 	do {
- 		prev = i;
- 		sk_msg_iter_var_next(i);
-@@ -2959,6 +2961,9 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	if (unlikely(flags))
- 		return -EINVAL;
- 
-+	if (unlikely(len == 0))
-+		return 0;
++static int en7523_clk_hw_init(struct platform_device *pdev,
++			      struct clk_hw_onecell_data *clk_data)
++{
++	void __iomem *base, *np_base;
 +
- 	/* First find the starting scatterlist element */
- 	i = msg->sg.start;
- 	do {
-@@ -2971,7 +2976,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	} while (i != msg->sg.end);
++	base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
++
++	np_base = devm_platform_ioremap_resource(pdev, 1);
++	if (IS_ERR(np_base))
++		return PTR_ERR(np_base);
++
++	en7523_register_clocks(&pdev->dev, clk_data, base, np_base);
++
++	return 0;
++}
++
++static int en7581_clk_hw_init(struct platform_device *pdev,
++			      struct clk_hw_onecell_data *clk_data)
++{
++	void __iomem *base, *np_base;
++	u32 val;
++
++	base = devm_platform_ioremap_resource(pdev, 0);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
++
++	np_base = devm_platform_ioremap_resource(pdev, 1);
++	if (IS_ERR(np_base))
++		return PTR_ERR(np_base);
++
++	en7523_register_clocks(&pdev->dev, clk_data, base, np_base);
++
++	val = readl(np_base + REG_NP_SCU_SSTR);
++	val &= ~(REG_PCIE_XSI0_SEL_MASK | REG_PCIE_XSI1_SEL_MASK);
++	writel(val, np_base + REG_NP_SCU_SSTR);
++	val = readl(np_base + REG_NP_SCU_PCIC);
++	writel(val | 3, np_base + REG_NP_SCU_PCIC);
++
++	return 0;
++}
++
+ static int en7523_reset_update(struct reset_controller_dev *rcdev,
+ 			       unsigned long id, bool assert)
+ {
+@@ -543,31 +573,18 @@ static int en7523_clk_probe(struct platform_device *pdev)
+ 	struct device_node *node = pdev->dev.of_node;
+ 	const struct en_clk_soc_data *soc_data;
+ 	struct clk_hw_onecell_data *clk_data;
+-	void __iomem *base, *np_base;
+ 	int r;
  
- 	/* Bounds checks: start and pop must be inside message */
--	if (start >= offset + l || last >= msg->sg.size)
-+	if (start >= offset + l || last > msg->sg.size)
- 		return -EINVAL;
+-	base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(base))
+-		return PTR_ERR(base);
+-
+-	np_base = devm_platform_ioremap_resource(pdev, 1);
+-	if (IS_ERR(np_base))
+-		return PTR_ERR(np_base);
+-
+-	soc_data = device_get_match_data(&pdev->dev);
+-	if (soc_data->hw_init) {
+-		r = soc_data->hw_init(pdev, np_base);
+-		if (r)
+-			return r;
+-	}
+-
+ 	clk_data = devm_kzalloc(&pdev->dev,
+ 				struct_size(clk_data, hws, EN7523_NUM_CLOCKS),
+ 				GFP_KERNEL);
+ 	if (!clk_data)
+ 		return -ENOMEM;
  
- 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
-@@ -3000,12 +3005,12 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 	 */
- 	if (start != offset) {
- 		struct scatterlist *nsge, *sge = sk_msg_elem(msg, i);
--		int a = start;
-+		int a = start - offset;
- 		int b = sge->length - pop - a;
+-	en7523_register_clocks(&pdev->dev, clk_data, base, np_base);
++	soc_data = device_get_match_data(&pdev->dev);
++	r = soc_data->hw_init(pdev, clk_data);
++	if (r)
++		return r;
  
- 		sk_msg_iter_var_next(i);
+ 	r = of_clk_add_hw_provider(node, of_clk_hw_onecell_get, clk_data);
+ 	if (r)
+@@ -590,6 +607,7 @@ static const struct en_clk_soc_data en7523_data = {
+ 		.prepare = en7523_pci_prepare,
+ 		.unprepare = en7523_pci_unprepare,
+ 	},
++	.hw_init = en7523_clk_hw_init,
+ };
  
--		if (pop < sge->length - a) {
-+		if (b > 0) {
- 			if (space) {
- 				sge->length = a;
- 				sk_msg_shift_right(msg, i);
-@@ -3024,7 +3029,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				if (unlikely(!page))
- 					return -ENOMEM;
- 
--				sge->length = a;
- 				orig = sg_page(sge);
- 				from = sg_virt(sge);
- 				to = page_address(page);
-@@ -3034,7 +3038,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 				put_page(orig);
- 			}
- 			pop = 0;
--		} else if (pop >= sge->length - a) {
-+		} else {
- 			pop -= (sge->length - a);
- 			sge->length = a;
- 		}
-@@ -3068,7 +3072,6 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 			pop -= sge->length;
- 			sk_msg_shift_left(msg, i);
- 		}
--		sk_msg_iter_var_next(i);
- 	}
- 
- 	sk_mem_uncharge(msg->sk, len - pop);
+ static const struct en_clk_soc_data en7581_data = {
 -- 
 2.43.0
 
