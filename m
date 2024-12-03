@@ -1,67 +1,68 @@
-Return-Path: <stable+bounces-98125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193599E2ABD
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 19:24:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D642A9E28AC
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 18:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19963B63EF7
-	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 16:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969DA287CDB
+	for <lists+stable@lfdr.de>; Tue,  3 Dec 2024 17:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A591F8AFB;
-	Tue,  3 Dec 2024 16:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF361F9F6C;
+	Tue,  3 Dec 2024 17:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="w68KKUgr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QiGwQbgD"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323081F893F
-	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 16:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7821F9F6B
+	for <stable@vger.kernel.org>; Tue,  3 Dec 2024 17:07:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733242945; cv=none; b=Mkfx5K+JgWCHzcafrIEvJZZdRv3YXN8ACMj31h6KmO/cG4duda0P7fk78wslyvz+9kW9LR2pYvQxjYp4JWJo9+PxyQ3oqpZzS6Y7zD9pTOo0H22F61GkUs55PBRXuQ2fqOA8CkSWERw7HDWYB57SA3HAQNw5G3Gs9gZf5Ls4chk=
+	t=1733245623; cv=none; b=p+4g8cyfUGffhSxhS1tBKQSI9kMvi3SJm2Os1FGcYg/cQUi467Sf+gKhR8hPFJ/0i6qfr1A8GyN98908BVEEzG4JdRSwbWF+sCbbSzq2cnEZKIKuhDhfatzXF+gLWERGyIwUu1Fv9m4YcDYUDgVteVdCjTdIOfylEFs3A7wHTNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733242945; c=relaxed/simple;
-	bh=MAMb3InXzNtxIVC9mpD36wC7DiH6bFIuVagB1fhWAqU=;
+	s=arc-20240116; t=1733245623; c=relaxed/simple;
+	bh=WiNQkakVt0nPiJ2a9FPmOJnkhOs9w5dcj1QqqN6s0iQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qi7o4d7sHCDZp//hLw+ggjGlWPnu7JdJRNch0+VlZgk7lZaF14D5fUIZ4ZU4nNIeOpJG5a7ihfyNoFzyau0DbVtlBkMDHl4AEk5apk9Elnifp1K8q6Vu6BKLX4eof/71XdompPVNZXlLk74jEpn3P7zx5Xlj8JfJXhjAg/JS0FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=w68KKUgr; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
-	by cmsmtp with ESMTPS
-	id IUyhtuzE1umtXIVdmtPO7r; Tue, 03 Dec 2024 16:20:46 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id IVdltLsaBNWjnIVdltCZLZ; Tue, 03 Dec 2024 16:20:45 +0000
-X-Authority-Analysis: v=2.4 cv=dOagmvZb c=1 sm=1 tr=0 ts=674f2fdd
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=GtNDhlRIH4u8wNL3EA3KcA==:17
- a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=7T7KSl7uo7wA:10 a=mDV3o1hIAAAA:8
- a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=YY3CVkhoXc6STAsvKmAA:9
- a=QEXdDO2ut3YA:10 a=J6ZU--GpMfYA:10 a=Xt_RvD8W3m28Mn_h3AK8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=U74Ds+GFctnV/vlAbJcubbjqMwBEGmBMo13rCZz9JUQ=; b=w68KKUgrX01H8mxitVGqv0lS0F
-	B2ZzyNafbaYy6VjpmAnU6+vQTyJKoP+6NadRddjvX9w3PIkMHhpzvhftrt/dYchj4yjwtWjYPPqND
-	K9/QV6MPnGW8N4HZmBrpPdNF0sbatbLkJrR27cIhC0oIbUqt91oghFJBXIIRH/Vf4AI8CCDv7A5ny
-	e1p9spRgJJOIfvhg+SjxQbMye8R5XUhot8+lmEQxFf7cM8lv2lodKc9908l86r69hGU25N/3YvbfT
-	Je5UdHwow0NTbZXsNVFKDgaq6QW6tUuoxH6T/1tNSUhAWnW1MkNLiNUCjHLhFko71M59FJgUqcCqH
-	Ii7TGyzQ==;
-Received: from [177.238.21.80] (port=15554 helo=[192.168.0.21])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1tIVdk-002GvY-0s;
-	Tue, 03 Dec 2024 10:20:44 -0600
-Message-ID: <238df0b9-d1db-4f72-8238-828ea20ad1d9@embeddedor.com>
-Date: Tue, 3 Dec 2024 10:20:41 -0600
+	 In-Reply-To:Content-Type; b=JTy/gqmV7qFN5qgQUvq2xoIMcAEYaAthwYTNsTCKQtBSGXMmcrkdg/XDSr3PaF5wotYQRIv90hiLEvgty1+8Fo1Do4UPDD7GNFHHR345ECC02hv/eaEJcOe3q+KU1EIKu1SOU6FeMSnVLd8HmhZXpLceXXe8Tmo/Um6mHE8Tuk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QiGwQbgD; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733245621; x=1764781621;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WiNQkakVt0nPiJ2a9FPmOJnkhOs9w5dcj1QqqN6s0iQ=;
+  b=QiGwQbgDMqQNyaLEVxV7vR+qDb3/g8I1gSVJ3Bv7yBA/cKka5Ksry+nI
+   fDYnBlkb+tLj4Hg7Z27kQMXgRg8fxt6gzUTE9keBJrB0H8tVWRMJ4DvCb
+   7bLQ7nqydMjBffUc/8QUotFw8GvJ6my1vNG6qE3F1rAYQojOuVRUQWRSS
+   BTYDcD5OWptuF10l0baWBvnCwRtLawgi3gKKSJWbse0v5Ym0eeJ3dWvaz
+   8Jxg1dUGFcYt9Dg/XWAylykYnIFUpHDQpfpnPOo8GT2RQqEMefr2eXpo+
+   wj8z4PBtbWiVqn9Zz2ZfEfeNfqP8TyLK161PRxlhMjsTAKu8pVK28dKBS
+   A==;
+X-CSE-ConnectionGUID: Gp8AundzRRah/Fkql2qupw==
+X-CSE-MsgGUID: PLLOg3jDQ0SQ4oqqvKuzvQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="55960319"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="55960319"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 09:07:01 -0800
+X-CSE-ConnectionGUID: LijuRzHvT4Cu52IziDbQJw==
+X-CSE-MsgGUID: qK8fCYKYRia3UF5NL84cYw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="93905804"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa007.jf.intel.com with ESMTP; 03 Dec 2024 09:06:59 -0800
+Received: from [10.245.120.199] (mwajdecz-MOBL.ger.corp.intel.com [10.245.120.199])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id DD7452FC5B;
+	Tue,  3 Dec 2024 17:06:57 +0000 (GMT)
+Message-ID: <053cc89a-0b20-4fb0-b93c-1e864a6b6f6a@intel.com>
+Date: Tue, 3 Dec 2024 18:06:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,125 +70,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: wireless: sme: Initialize n_channels before
- accessing channels in cfg80211_conn_scan
-To: Johannes Berg <johannes@sipsolutions.net>, Haoyu Li <lihaoyu499@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva"
- <gustavoars@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org, stable@vger.kernel.org
-References: <20241203152049.348806-1-lihaoyu499@gmail.com>
- <fa9ef37903db0f81654451104b1407f60f85ce5d.camel@sipsolutions.net>
+Subject: Re: [PATCH v6] drm/i915: Fix NULL pointer dereference in
+ capture_engine
+To: Eugene Kobyak <eugene.kobyak@intel.com>, intel-gfx@lists.freedesktop.org
+Cc: John.C.Harrison@intel.com, andi.shyti@linux.intel.com,
+ jani.nikula@linux.intel.com, stable@vger.kernel.org
+References: <xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at>
 Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <fa9ef37903db0f81654451104b1407f60f85ce5d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+In-Reply-To: <xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 177.238.21.80
-X-Source-L: No
-X-Exim-ID: 1tIVdk-002GvY-0s
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.0.21]) [177.238.21.80]:15554
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 1
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfNkb9o14wqW4aLAwkUU6Jxc83StYMWaj+l3SE9r5Ho1KcZfBHK0OAL97TY8bvcAfW2cLS5vtLUnla2JrmdyfH2fHzbsjvSe0bk8H7biL/p4+zhL2uVAs
- 2i/So6o7FVsPpTUIlxQoJzwQ44T7a0Rqp9/pJ5NaMBxL7bUzgu5escMMQredGfW21v0mDwLi6pXrCNOUI6/XMQuGB7d1wcgrAUI=
 
 
 
-On 03/12/24 09:25, Johannes Berg wrote:
-> On Tue, 2024-12-03 at 23:20 +0800, Haoyu Li wrote:
->> With the new __counted_by annocation in cfg80211_scan_request struct,
->> the "n_channels" struct member must be set before accessing the
->> "channels" array. Failing to do so will trigger a runtime warning
->> when enabling CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
->>
->> Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
->>
->> Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
+On 03.12.2024 15:54, Eugene Kobyak wrote:
+> When the intel_context structure contains NULL,
+> it raises a NULL pointer dereference error in drm_info().
 > 
-> nit: there should be no newline between these
+> Fixes: e8a3319c31a1 ("drm/i915: Allow error capture without a request")
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12309
+> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: John Harrison <John.C.Harrison@Intel.com>
+> Cc: <stable@vger.kernel.org> # v6.3+
+> Signed-off-by: Eugene Kobyak <eugene.kobyak@intel.com>
+> ---
+> v2:
+>   - return drm_info to separate condition
+> v3:
+>   - create separate condition which generate string if intel_context exist
+> v4:
+>   - rollback and add check intel_context in log condition
+> v5:
+>   - create separate string with guc_id if intel_context exist
+> v6:
+>   - print changed log if intel_context exist
 > 
-> My tolerance for this is going WAY down, it seems it's all just busy-
-> work, and then everyone complains and I need to handle "urgent fixes"
-> because of it etc.
+>  drivers/gpu/drm/i915/i915_gpu_error.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
 > 
-> I'm having severe second thoughts about ever having accepted the
-> __counted_by annotations, I think we should just revert it. Experiment
-> failed, we found ... that the code is fine but constantly needs changes
-> to make the checkers happy.
+> diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
+> index 135ded17334e..d88cefb889c3 100644
+> --- a/drivers/gpu/drm/i915/i915_gpu_error.c
+> +++ b/drivers/gpu/drm/i915/i915_gpu_error.c
+> @@ -1643,9 +1643,21 @@ capture_engine(struct intel_engine_cs *engine,
+>  		return NULL;
+>  
+>  	intel_engine_get_hung_entity(engine, &ce, &rq);
+> -	if (rq && !i915_request_started(rq))
+> -		drm_info(&engine->gt->i915->drm, "Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
+> -			 engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
+> +	if (rq && !i915_request_started(rq)) {
+> +		/*
+> +		* We want to know also what is the gcu_id of the context,
 
-Thanks for taking these changes! - This is improving :) See below.
+typo: guc_id
 
-"Right now, any addition of a counted_by annotation must also
-include an open-coded assignment of the counter variable after
-the allocation:
+> +		* but if we don't have the context reference, then skip
+> +		* printing it.
+> +		*/
 
-   p = alloc(p, array, how_many);
-   p->counter = how_many;
+but IMO this comment is redundant as it's quite obvious that without
+context pointer you can't print guc_id member
 
-In order to avoid the tedious and error-prone work of manually adding
-the open-coded counted-by intializations everywhere in the Linux
-kernel, a new GCC builtin __builtin_counted_by_ref will be very useful
-to be added to help the adoption of the counted-by attribute.
+> +		if (ce)
+> +			drm_info(&engine->gt->i915->drm,
+> +				"Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
+> +				engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
+> +		else
+> +			drm_info(&engine->gt->i915->drm,
+> +				"Got hung context on %s with active request %lld:%lld not yet started\n",
+> +				engine->name, rq->fence.context, rq->fence.seqno);
 
-  -- Built-in Function: TYPE __builtin_counted_by_ref (PTR)
-      The built-in function '__builtin_counted_by_ref' checks whether the
-      array object pointed by the pointer PTR has another object
-      associated with it that represents the number of elements in the
-      array object through the 'counted_by' attribute (i.e.  the
-      counted-by object).  If so, returns a pointer to the corresponding
-      counted-by object.  If such counted-by object does not exist,
-      returns a null pointer.
+since you are touching drm_info() where we use engine->gt then maybe
+it's good time to switch to gt_info() to get better per-GT message?
 
-      This built-in function is only available in C for now.
+> +	}
+>  
+>  	if (rq) {
+>  		capture = intel_engine_coredump_add_request(ee, rq, ATOMIC_MAYFAIL);
 
-      The argument PTR must be a pointer to an array.  The TYPE of the
-      returned value is a pointer type pointing to the corresponding
-      type of the counted-by object or a void pointer type in case of a
-      null pointer being returned.
-
-With this new builtin, the central allocator could be updated to:
-
-   #define MAX(A, B) (A > B) ? (A) : (B)
-   #define alloc(P, FAM, COUNT) ({ \
-     __auto_type __p = &(P); \
-     __auto_type __c = (COUNT); \
-     size_t __size = MAX (sizeof (*(*__p)),\
-			 __builtin_offsetof (__typeof(*(*__p)),FAM) \
-			 + sizeof (*((*__p)->FAM)) * __c); \
-     if ((*__p = kmalloc(__size))) { \
-       __auto_type ret = __builtin_counted_by_ref((*__p)->FAM); \
-       *_Generic(ret, void *: &(size_t){0}, default: ret) = __c; \
-     } \
-   })
-
-And then structs can gain the counted_by attribute without needing
-additional open-coded counter assignments for each struct, and
-unannotated structs could still use the same allocator."[1]
-
-These changes have been merged already, and will likely be released
-in coming GCC 15.
-
-For Clang, see [2].
-
-For the kmalloc-family changes, see [3] (a new version of this that includes
-the __builtin_counted_by_ref() update is coming soon).
-
--Gustavo
-
-[1] https://gcc.gnu.org/pipermail/gcc-patches/2024-October/665165.html
-[2] https://github.com/llvm/llvm-project/issues/99774
-[3] https://lore.kernel.org/linux-hardening/20240822231324.make.666-kees@kernel.org/
 
