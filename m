@@ -1,109 +1,88 @@
-Return-Path: <stable+bounces-98250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3AE9E3551
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 09:29:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 500529E3583
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 09:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 048C3B2D7B0
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:27:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 146DF28148A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F05194AEE;
-	Wed,  4 Dec 2024 08:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="hH/OI7he"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817B719007D;
+	Wed,  4 Dec 2024 08:34:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDE0194A65;
-	Wed,  4 Dec 2024 08:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A293D18C03B
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 08:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733300861; cv=none; b=HZqtK3etCS8UJ5taHu8SJTI0MYBhUnKvLtJ4bLSEVkjyqGfiVUo65G/vUBG3Y90losVm9Bv88+Q2jDNUkFkqaKjd07/ITVk6gPewiY15k/OTPux9Zy+pARsj84Sb1de2OG+QkbH63WYwNGY0GOnsCF87wGoJTDRQd4UN3Fq4n6U=
+	t=1733301248; cv=none; b=AbaHYTkYzDVdFVj/NGyGl89tvk2OLr/i9+MmRU1G3a6PKscFzbg5x3DRyW6fT/g3zw1VG/KPXjsV30wP82Bb8zsSNM6Qxthz917kvOwbmCe+/JLbF8akN18Qbtj7rKXTjq3oLvUZ/E3faEL7IxKrpqcN3AC93AdP1favZBOAxuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733300861; c=relaxed/simple;
-	bh=3PAdGlK1PBb/5QbKhuXphs8txq5Ea4b1Kv9m/dTFb7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OoKa7ljK8hTIyOLPx3+OvspquBPVo8xtL/KthJ91FLtTgT9vwPTtVG3l+5niqdY9GmaPZ/glmeyhuwA6dHaWYELosfwtSMcXmocTYSRwOwyW8Deg1EYQAmR1/gHFUoc8tesRiusbHeELcIaf4bRXzEVx+fxO/nh9gFazkThhH9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=hH/OI7he; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BsXSuJk3ItUrYBEbPwAqLO9YHFFao95G+5kD9387LRI=; b=hH/OI7hewtJI3yjcgveARXop1L
-	CqCdHmRmuYvg0AZpUuXo4z19krwR6/Gma7p6YNLrHmtu29OcbClsJMjhYkTFFLN4S+kyF3JjyBH3G
-	QCu/d1WX8rVQiS1CP83hhKVsYy3Ow+adPhddarCD2yI0zjSX52TpeLV6Qt/jaKg283h00KVLQroO2
-	c/V93w/GAVeh1DXg2rDTPZUaGVNX4182KUEx6EeDXU2tgkhNCxAy4np0CGPMJC/qXlVyeXpH3slZk
-	XR8HYbQeBWAcay0ZN8TJFKYOAxIKP0fwgCwUv9oe1efq0ct7UOHlYhDt/vPiH/SRM2Tgzh/LiUPZQ
-	hP5/GCVg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tIkjS-0000000Bsi7-3S86;
-	Wed, 04 Dec 2024 08:27:38 +0000
-Date: Wed, 4 Dec 2024 00:27:38 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: cem@kernel.org, stable@vger.kernel.org, linux-xfs@vger.kernel.org,
-	hch@lst.de
-Subject: Re: [PATCH 4/6] xfs: fix zero byte checking in the superblock
- scrubber
-Message-ID: <Z1ASehwdTewFiwZE@infradead.org>
-References: <173328106571.1145623.3212405760436181793.stgit@frogsfrogsfrogs>
- <173328106652.1145623.7325198732846866757.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1733301248; c=relaxed/simple;
+	bh=Bp9oGxS3uGOhpIdm381eXYW4ZXNEajMk3OM5LkKBPYs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=l3okrHWM+rZjFCnm0MFM2fKukjPxY6y7yYwlitN3zyV6c1g67C8wF4Br/0cKYJjaTjhrMhNFYTM/DS3G4Sxfcfs2lbpqAnJbH9+02DvPiUXdTdedBv/uEnAN7l4fEja3tU74qbbjS8zQ15QoMVZlw27gk2ZvdqFpfClQ0dcCLTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y39jb3L4sz1kvGb;
+	Wed,  4 Dec 2024 16:31:47 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id 03B7214011B;
+	Wed,  4 Dec 2024 16:34:04 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
+ (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 4 Dec
+ 2024 16:34:03 +0800
+From: Zhang Zekun <zhangzekun11@huawei.com>
+To: <gregkh@linuxfoundation.org>
+CC: <cve@kernel.org>, <stable@vger.kernel.org>, <kevinyang.wang@amd.com>,
+	<alexander.deucher@amd.com>, <liuyongqiang13@huawei.com>,
+	<zhangzekun11@huawei.com>
+Subject: [PATCH 6.1] Revert "drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()"
+Date: Wed, 4 Dec 2024 16:27:52 +0800
+Message-ID: <20241204082752.18498-1-zhangzekun11@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <173328106652.1145623.7325198732846866757.stgit@frogsfrogsfrogs>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
 
-On Tue, Dec 03, 2024 at 07:03:16PM -0800, Darrick J. Wong wrote:
-> +/* Calculate the ondisk superblock size in bytes */
-> +STATIC size_t
-> +xchk_superblock_ondisk_size(
-> +	struct xfs_mount	*mp)
-> +{
-> +	if (xfs_has_metadir(mp))
-> +		return offsetofend(struct xfs_dsb, sb_pad);
-> +	if (xfs_has_metauuid(mp))
-> +		return offsetofend(struct xfs_dsb, sb_meta_uuid);
-> +	if (xfs_has_crc(mp))
-> +		return offsetofend(struct xfs_dsb, sb_lsn);
-> +	if (xfs_sb_version_hasmorebits(&mp->m_sb))
-> +		return offsetofend(struct xfs_dsb, sb_bad_features2);
-> +	if (xfs_has_logv2(mp))
-> +		return offsetofend(struct xfs_dsb, sb_logsunit);
-> +	if (xfs_has_sector(mp))
-> +		return offsetofend(struct xfs_dsb, sb_logsectsize);
-> +	/* only support dirv2 or more recent */
-> +	return offsetofend(struct xfs_dsb, sb_dirblklog);
+This reverts commit 25d7e84343e1235b667cf5226c3934fdf36f0df6.
 
-This really should be libxfs so tht it can be shared with
-secondary_sb_whack in xfsrepair.  The comment at the end of
-the xfs_dsb definition should also be changed to point to this
-libxfs version.
+The origin mainline patch fix a buffer overflow issue in
+amdgpu_debugfs_gprwave_read(), but it has not been introduced in kernel
+6.1 and older kernels. This patch add a check in a wrong function in the
+same file.
 
-> +}
->  	/* Everything else must be zero. */
-> -	if (memchr_inv(sb + 1, 0,
-> -			BBTOB(bp->b_length) - sizeof(struct xfs_dsb)))
-> +	sblen = xchk_superblock_ondisk_size(mp);
-> +	if (memchr_inv((char *)sb + sblen, 0, BBTOB(bp->b_length) - sblen))
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This could be simplified to
-
-	if (memchr_inv(bp->b_addr + sblen, 0, BBTOB(bp->b_length) - sblen))
-
-Otherwise looks good:
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index a8dd63f270c3..3cca3f07f34d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -419,7 +419,7 @@ static ssize_t amdgpu_debugfs_regs_pcie_write(struct file *f, const char __user
+ 	ssize_t result = 0;
+ 	int r;
+ 
+-	if (size > 4096 || size & 0x3 || *pos & 0x3)
++	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
+ 
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+-- 
+2.17.1
 
 
