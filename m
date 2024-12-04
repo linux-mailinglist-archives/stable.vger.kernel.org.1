@@ -1,235 +1,153 @@
-Return-Path: <stable+bounces-98307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508459E3E5D
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:32:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF039E3E5F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:33:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBBC8B37742
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 15:23:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAE3516384C
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 15:33:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAB220CCF4;
-	Wed,  4 Dec 2024 15:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C1520C02A;
+	Wed,  4 Dec 2024 15:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsUjrzZo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Lc7VjwwL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141DA20CCEA;
-	Wed,  4 Dec 2024 15:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5011B87C6
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 15:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733325752; cv=none; b=heQwKSX8PfGaK63n/8T9Pn1nJBZaJjbvP/9tqTUJVHXhr25n2vaclAOOf3nXX+B91FdP0gvtFVsLL6J9jFKSYMrBfLK2iXT9GFjI2WCWWkFXQ5j8teRen6EG/X6tamDV/AO9nrQvFJoR0dH9b5Q4Q0COOYKKgZLTKNwrnRz4jDk=
+	t=1733326384; cv=none; b=lpS7ruPThggZBoOLHzs9A9FVBv4TUBKeSflyIORKpLRtlBkULGOJyJuraRZag6B9aJC/SlIGKti+6MuM2UKJBkf+1hpel166X0lHtwl0pB/WcUzzhoY/aX0fh6TelrtO+jnwqAONA//bFbh0otCRkBg64DnVbyfxTZ719xgDs/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733325752; c=relaxed/simple;
-	bh=lZE0yTF3Wn3zm9BaDbx5EJVtSvWlxgzUZ0o5624BVkc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=cdHnx0+jYjQb2gZo8aho4SXT8EnSg1Ir6c5kADoNzhThA3Ko4LKobhR3jJGX8xBeLu0ijUPsFJtDoswxbkAk8DzI3bdhcoL2jQ57F1NeHsaXRgeThNT2rxKkg4LZN5YC7vKKl1pglQP1TPN9lJDSRnzt4vWh1Azk0ppT34/3NRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsUjrzZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DD1C4CECD;
-	Wed,  4 Dec 2024 15:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733325752;
-	bh=lZE0yTF3Wn3zm9BaDbx5EJVtSvWlxgzUZ0o5624BVkc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=qsUjrzZoYvGeW4O1Qo2S/QEo1kpj3bCn/WaqU3FmeHw2BoTS92MADRiV9v+ZUEYma
-	 PL6q7ETvLd/+nb+k9JNrD/XMk1wJWoM9W5vYkPkbF0s0BVOcxObOU3O5I5WwDIaDzO
-	 dYlFyTfadRQpnmFZkhX+n7l83OT33Kj3xcnLodcpUY0pckUkZAK1rsG4PCiQ0pIGEF
-	 5ZlvBF9H6It2QWCjfWr39rwp4fBuagiKsVFIsy9Y9jpXyqPo26ZcChEGq1B6IU1FKd
-	 CzgS6jT/0W+tqbO2kk+K27LrqkCSlLhTLBQGGgAG55V4vKk19dfOVAfzgCG7JWOZUw
-	 kLNqqyhwFtqVg==
-From: Mark Brown <broonie@kernel.org>
-Date: Wed, 04 Dec 2024 15:20:52 +0000
-Subject: [PATCH v2 4/6] arm64/signal: Avoid corruption of SME state when
- entering signal handler
+	s=arc-20240116; t=1733326384; c=relaxed/simple;
+	bh=WKAlhH29xEF4xdMd6IOvEbZvOJijsedbXkd9Fo94v+8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pU7oikePJB82fXI495NDV9FxXoYTka7SfYpZm5bfK/Z/Lwggy7T3946aD+lBrAV+u/T8w6ucQ9i1l7EY4taUL1BhANVIQ0MFpFSDVQD/qFoOvm1SvuenKFyTYrn3uGLyrjp8PNT/OD8894s6rALEMx5V6BrLFTO05sBYA5EPChg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Lc7VjwwL; arc=none smtp.client-ip=209.85.221.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-51529df6202so1599737e0c.3
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 07:33:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733326380; x=1733931180; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4BM7g2tnTxffenD3gAnjnDpzGPqkZZJws6+BF+fZajU=;
+        b=Lc7VjwwLdDhtjzyshExaeLaBucdetu31MNHxwHZ0+0irwnROs763o9LVBguJ6M8BIa
+         pGgzp+hfC8ITIXW7h+6rNblFjjNIA8o+wJUJ1JtW4rkyEmpncvM3X8G191IAgS6dB0oF
+         wT/uEsIaR0GFSrDg+i5GX0D1gYG31IpBMm60ipz6ne2gLw5/Z1qRk9r1X6tTaVcW/ZKK
+         UjACsmtr5z7qAoBfc3ekQ2fjDHXXkqaH1v51WaEwOHqNZVkKbc7buwvorJCWKHIAu2z7
+         p3jcaFsDpcCooR3hkzlsEGoq8aqsqI7c/QeQnruaIEYiOnVhVbV+5qr3aYGdroNlWDYD
+         7muA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733326380; x=1733931180;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4BM7g2tnTxffenD3gAnjnDpzGPqkZZJws6+BF+fZajU=;
+        b=DxHoZdxR98xm54YA0t9SwPVt7Aw/SoEzkV3pUMyihTYUZ7z8O9gtT3M95yyBK12mCn
+         nebcfbBxVoIQbXT6Xe1QXaLVEhmmuA5oZxTZYWxTZZb0DR5MvVkocGNfw9OrkJjJfnIv
+         pyZ5i1JCzkOJLhYOZxnJQG23i3o2Wufk2ZeQI1yyCQ3aRCtt7hqOiDUdbk7rSSSn8ofw
+         fFqsKvjwtQ/blF2+sKzKQxBu8e09xIrhMcauke4hKu9NYDgbGaolzYhW9DK8mMZmouog
+         HKBOv0fS3wKgTV/mOeM4t8TkszzPDHXSdJYkVhJaIZjIGfFiWhqnRcWTxvTUIJBIsiNX
+         mo8Q==
+X-Gm-Message-State: AOJu0YweGV+i2EaP1aisxBjfam3C/0DAqWjOEkz9jm5bScq+uYnXTlMP
+	VM6GT6cQBH9s+6MrnGigeuoJYONS4scVQkkkuyXCpPCod6eJjgrW55WVeS/IeH9f0uJmD5Xntej
+	cCIn1itmxuhLQavI/tlyVZRHutaqPVjJkVCs71g==
+X-Gm-Gg: ASbGncsHilHcG4XkY9r9IIB8AeMki/pw6mBZARIDw8t6AoQs3+tUgX5Vrl60wNzqspv
+	GMzrBE1T8jX1CscIbrbXU18WhmC7kYCJR
+X-Google-Smtp-Source: AGHT+IF0RVZVCMdJkXYjBAAcJHezPOoWCH4jS8XQLyQLEPZuJ7e6SomQNYsR4Mx3bJ489e5yJU/yOjgwrrV33kHvO74=
+X-Received: by 2002:a05:6122:1d04:b0:515:c769:9d33 with SMTP id
+ 71dfb90a1353d-515cf784e53mr6510755e0c.9.1733326380385; Wed, 04 Dec 2024
+ 07:33:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-arm64-sme-reenable-v2-4-bae87728251d@kernel.org>
-References: <20241204-arm64-sme-reenable-v2-0-bae87728251d@kernel.org>
-In-Reply-To: <20241204-arm64-sme-reenable-v2-0-bae87728251d@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, Dave Martin <Dave.Martin@arm.com>, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-9b746
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6215; i=broonie@kernel.org;
- h=from:subject:message-id; bh=lZE0yTF3Wn3zm9BaDbx5EJVtSvWlxgzUZ0o5624BVkc=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnUHOrNgOudoKrDy1LNoXO+30vsuX1Sq99+Z0u/GpF
- cnOco76JATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ1BzqwAKCRAk1otyXVSH0G9vB/
- 9WZhYOqn/+ue9mmPEZKnaxHPg8zv3uNoHg89HImh9V8P6iMBLBqKwK63OlDzhtRPGDiBNDpYJXTcgK
- TTCxYPgsBxqndrDp3TlvKUkf3rTA4G5DF+Lg+x1GHd6VkXVRaliTztue1LU8ZRjIc5zyOrsepipQRG
- 68KD1dl/Xbt0gT1KgKWr12hOSYG0vyqgeDni5eM4mfajRtdIXwJ/XXwRwHjZAzLwezxGr+e4mzHRqQ
- an2+EfV0z7DFhpLlFM2tqpcoEMt06Rbf5chVfCrNQnAUOjHR6g35eIfs7+MhHFy7Fz7WSGS9XMwWBn
- MeZMOcqxqz6bI92ziLgC6eUvv4dJbE
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+References: <20241203141923.524658091@linuxfoundation.org> <CA+G9fYtXS+Ze5Y8ddtOjZPiYP1NEDhArQhEJYfS3n5pcLdn9Hw@mail.gmail.com>
+In-Reply-To: <CA+G9fYtXS+Ze5Y8ddtOjZPiYP1NEDhArQhEJYfS3n5pcLdn9Hw@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 4 Dec 2024 21:02:47 +0530
+Message-ID: <CA+G9fYuDAAZkgNK4_0Y=wDcTUzs7=ggbni4iJDAPbD9ocq992g@mail.gmail.com>
+Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Matthias Schiffer <matthias.schiffer@tq-group.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Daniel Vetter <daniel.vetter@ffwll.ch>, noralf@tronnes.org, 
+	Sam Ravnborg <sam@ravnborg.org>, simona@ffwll.ch, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We intend that signal handlers are entered with PSTATE.{SM,ZA}={0,0}.
-The logic for this in setup_return() manipulates the saved state and
-live CPU state in an unsafe manner, and consequently, when a task enters
-a signal handler:
+On Wed, 4 Dec 2024 at 19:24, Naresh Kamboju <naresh.kamboju@linaro.org> wro=
+te:
+>
+> On Tue, 3 Dec 2024 at 20:04, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > ------------------
+> > Note, this is the LAST 4.19.y kernel to be released.  After this one, i=
+t
+> > is end-of-life.  It's been 6 years, everyone should have moved off of i=
+t
+> > by now.
+> > ------------------
+> >
+> > This is the start of the stable review cycle for the 4.19.325 release.
+> > There are 138 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 05 Dec 2024 14:18:57 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patc=
+h-4.19.325-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-4.19.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> Results from Linaro=E2=80=99s test farm.
+> Regressions on arm.
+>
+> The arm builds failed with gcc-12 and clang-19 due to following
+> build warnings / errors.
+>
+> Build log:
+> ---------
+> drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c:177:9: error:
+> 'DRM_GEM_CMA_DRIVER_OPS' undeclared here (not in a function)
+>   177 |         DRM_GEM_CMA_DRIVER_OPS,
+>       |         ^~~~~~~~~~~~~~~~~~~~~~
+> make[5]: *** [scripts/Makefile.build:303:
+> drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.o] Error 1
+>
 
- * The task entering the signal handler might not have its PSTATE.{SM,ZA}
-   bits cleared, and other register state that is affected by changes to
-   PSTATE.{SM,ZA} might not be zeroed as expected.
+Anders bisected this down to,
 
- * An unrelated task might have its PSTATE.{SM,ZA} bits cleared
-   unexpectedly, potentially zeroing other register state that is
-   affected by changes to PSTATE.{SM,ZA}.
+# first bad commit:
+   [5a8529fd9205b37df58a4fd756498407d956b385]
+   drm/fsl-dcu: Use GEM CMA object functions
 
-   Tasks which do not set PSTATE.{SM,ZA} (i.e. those only using plain
-   FPSIMD or non-streaming SVE) are not affected, as there is no
-   resulting change to PSTATE.{SM,ZA}.
-
-Consider for example two tasks on one CPU:
-
- A: Begins signal entry in kernel mode, is preempted prior to SMSTOP.
- B: Using SM and/or ZA in userspace with register state current on the
-    CPU, is preempted.
- A: Scheduled in, no register state changes made as in kernel mode.
- A: Executes SMSTOP, modifying live register state.
- A: Scheduled out.
- B: Scheduled in, fpsimd_thread_switch() sees the register state on the
-    CPU is tracked as being that for task B so the state is not reloaded
-    prior to returning to userspace.
-
-Task B is now running with SM and ZA incorrectly cleared.
-
-Fix this by:
-
- * Checking TIF_FOREIGN_FPSTATE, and only updating the saved or live
-   state as appropriate.
-
- * Using {get,put}_cpu_fpsimd_context() to ensure mutual exclusion
-   against other code which manipulates this state. To allow their use,
-   the logic is moved into a new fpsimd_enter_sighandler() helper in
-   fpsimd.c.
-
-This race has been observed intermittently with fp-stress, especially
-with preempt disabled, commonly but not exclusively reporting "Bad SVCR: 0".
-
-While we're at it also fix a discrepancy between in register and in memory
-entries. When operating on the register state we issue a SMSTOP, exiting
-streaming mode if we were in it. This clears the V/Z and P register and
-FPMR, and resets FPSR to 0x800009f but does not change ZA, ZT or FPCR.
-The in memory version clears all the user FPSIMD state including FPCR
-and FPSR but does not clear FPMR. Update the code to implement the
-changes the hardware implements.
-
-Fixes: 40a8e87bb3285 ("arm64/sme: Disable ZA and streaming mode when handling signals")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@vger.kernel.org
----
- arch/arm64/include/asm/fpsimd.h |  1 +
- arch/arm64/kernel/fpsimd.c      | 40 ++++++++++++++++++++++++++++++++++++++++
- arch/arm64/kernel/signal.c      | 19 +------------------
- 3 files changed, 42 insertions(+), 18 deletions(-)
-
-diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
-index f2a84efc361858d4deda99faf1967cc7cac386c1..09af7cfd9f6c2cec26332caa4c254976e117b1bf 100644
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -76,6 +76,7 @@ extern void fpsimd_load_state(struct user_fpsimd_state *state);
- extern void fpsimd_thread_switch(struct task_struct *next);
- extern void fpsimd_flush_thread(void);
- 
-+extern void fpsimd_enter_sighandler(void);
- extern void fpsimd_signal_preserve_current_state(void);
- extern void fpsimd_preserve_current_state(void);
- extern void fpsimd_restore_current_state(void);
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index a3bb17c88942eba031d26e9f75ad46f37b6dc621..2b045d4d8f71ace5bf01a596dda279285a0998a5 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1696,6 +1696,46 @@ void fpsimd_signal_preserve_current_state(void)
- 		sve_to_fpsimd(current);
- }
- 
-+/*
-+ * Called by the signal handling code when preparing current to enter
-+ * a signal handler. Currently this only needs to take care of exiting
-+ * streaming mode and clearing ZA on SME systems.
-+ */
-+void fpsimd_enter_sighandler(void)
-+{
-+	if (!system_supports_sme())
-+		return;
-+
-+	get_cpu_fpsimd_context();
-+
-+	if (test_thread_flag(TIF_FOREIGN_FPSTATE)) {
-+		/*
-+		 * Exiting streaming mode zeros the V/Z and P
-+		 * registers and FPMR.  Zero FPMR and the V registers,
-+		 * marking the state as FPSIMD only to force a clear
-+		 * of the remaining bits during reload if needed.
-+		 */
-+		if (current->thread.svcr & SVCR_SM_MASK) {
-+			memset(&current->thread.uw.fpsimd_state.vregs, 0,
-+			       sizeof(current->thread.uw.fpsimd_state.vregs));
-+			current->thread.uw.fpsimd_state.fpsr = 0x800009f;
-+			current->thread.uw.fpmr = 0;
-+			current->thread.fp_type = FP_STATE_FPSIMD;
-+		}
-+
-+		current->thread.svcr &= ~(SVCR_ZA_MASK |
-+					  SVCR_SM_MASK);
-+
-+		/* Ensure any copies on other CPUs aren't reused */
-+		fpsimd_flush_task_state(current);
-+	} else {
-+		/* The register state is current, just update it. */
-+		sme_smstop();
-+	}
-+
-+	put_cpu_fpsimd_context();
-+}
-+
- /*
-  * Called by KVM when entering the guest.
-  */
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index 14ac6fdb872b9672e4b16a097f1b577aae8dec50..79c9c5cd0802149b3cde20b398617437d79181f2 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -1487,24 +1487,7 @@ static int setup_return(struct pt_regs *regs, struct ksignal *ksig,
- 	/* TCO (Tag Check Override) always cleared for signal handlers */
- 	regs->pstate &= ~PSR_TCO_BIT;
- 
--	/* Signal handlers are invoked with ZA and streaming mode disabled */
--	if (system_supports_sme()) {
--		/*
--		 * If we were in streaming mode the saved register
--		 * state was SVE but we will exit SM and use the
--		 * FPSIMD register state - flush the saved FPSIMD
--		 * register state in case it gets loaded.
--		 */
--		if (current->thread.svcr & SVCR_SM_MASK) {
--			memset(&current->thread.uw.fpsimd_state, 0,
--			       sizeof(current->thread.uw.fpsimd_state));
--			current->thread.fp_type = FP_STATE_FPSIMD;
--		}
--
--		current->thread.svcr &= ~(SVCR_ZA_MASK |
--					  SVCR_SM_MASK);
--		sme_smstop();
--	}
-+	fpsimd_enter_sighandler();
- 
- 	if (ksig->ka.sa.sa_flags & SA_RESTORER)
- 		sigtramp = ksig->ka.sa.sa_restorer;
-
--- 
-2.39.5
-
+- Naresh
 
