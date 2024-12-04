@@ -1,72 +1,56 @@
-Return-Path: <stable+bounces-98432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F219E415D
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:24:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFF09E415F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3436161CAB
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:24:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97EBA167BCF
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B9A223A8A;
-	Wed,  4 Dec 2024 17:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE98223A9C;
+	Wed,  4 Dec 2024 17:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAboMdsV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TaiJa/1v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9249F223A85;
-	Wed,  4 Dec 2024 17:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE45223A96;
+	Wed,  4 Dec 2024 17:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331762; cv=none; b=hxhMrLm0j/6Gf/Mk4dUhgB4E//Gc2RzgOJqbOB7lFDQF3tyYmWlmZikHv/f13LZAsmGo0x/Jr6ph02+mHeJqxVGjNCp+lgsIeivUwNtxYk57K438URVh3sYocCVXl0GCINz80G0sMZ4o9uZFUs8poBKTcvnWJFFeIKppZH3nPaU=
+	t=1733331763; cv=none; b=rZCngLrmjqb8+HS7IBsicXAptwTwbpCD3b7F9jz0uHILADTe2RBTiMwnORGxAHxti8QCJqIwFP7F1zWlKQaXSMUWtfImsM8Se+cJe7rAM9MbnYySBHT6OS/ESiSgWEcC0fcUbcZtMzh0atT6SR7CjYx5V+ObW9t3vHYfJCygHEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331762; c=relaxed/simple;
-	bh=7u2DoriNT4352wrIk1exknMyKRlYYDQiy9mn/liPiNA=;
+	s=arc-20240116; t=1733331763; c=relaxed/simple;
+	bh=JyOC5EEdu2tdkVGstYkePGugiBeei51zMxzYS/bghik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ov6S0cERDXt0oVLb/XRrSp5QGpGwOtJt3SIfQmNXGABnG0RUySvIKEuqOZjkYNTnWf9VK7jXSyzXhZAyXbOjYT7tuTHLqzeNtOQIrAnCHGaFu5FXA4OTfSOIGwKyWqxh+cso0qf2BgLwdX8TaRM7DVJq3N4PxaN09C8ks4UXoTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QAboMdsV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD214C4CECD;
-	Wed,  4 Dec 2024 17:02:39 +0000 (UTC)
+	 MIME-Version; b=SG8jD3dWQSDqbfG078KP2gMc0/KqVh2KwJPyIrtZSudOoYKzFSfWLpA/YVbEEKe1MDlkg4hAFQiGdZIdLGEkVUTo6EIaLP3L51PVqJIgZ8f2erxAAYQSs+eDtoFhbs4+NTL7V1jT0hpjZasZ7nwpLeo+tHB2YhGDAmqWgVigWUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TaiJa/1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE58C4CED1;
+	Wed,  4 Dec 2024 17:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331762;
-	bh=7u2DoriNT4352wrIk1exknMyKRlYYDQiy9mn/liPiNA=;
+	s=k20201202; t=1733331763;
+	bh=JyOC5EEdu2tdkVGstYkePGugiBeei51zMxzYS/bghik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAboMdsVN9OVTuY9mdZTyEBEBqUbNN98zMNsbKZvwIxxVwlTbm9VLqYHZhQq1x8Ho
-	 EwAku4XWmrqhw5+PPQYza05JjlBaalJSnFJ/laF7CC04b2l5bUrOk2uQFuqVuI+iGw
-	 sNfuGXjNKgT5ihLO5VW790BoaOthV/wamQhuAJSLD44eecoox762J+1kikBtkoFpxm
-	 fa1sJiJPvUGGePTsnH1jqdqIe2egMrfs7nSHwtiWjeodYF9oa9XOYfPYoADYfW3G9G
-	 3HbbCWlfjOYEX970z485nH3F4DAg3es5NJOOSEz17pU++tYf97gqJEf04A4Kdg3xb+
-	 6/eYAqN+U0MTg==
+	b=TaiJa/1vyiAX9O7pg35DjcFj05yUTCCbeIWi+tDimWfiqSpE74iWx/1nc6gdDlzF4
+	 l5p/9qTViAOUFS5jCB+oAzUCH7zcCE6zw3UgBbkZjgcXC1jql2dUe1NDTc7Y/aZAsa
+	 AwSjIiCJTldA0Ye0y+16wUD5+orF+NUxMNRwHlmiZL5o9yCOjoHcsxl7da4y9zJWAv
+	 Xn/HoTyyyT7bAdlTQB8blw9RK18lZhrsQ2HEfRvtyImtDa1o1LiAz6bEa1ER0V7N2M
+	 Nty/K7B3l+KSZU7dKuyy+RYm66GU3QAkgaTO1o6wXzuEcejUkqSrxKVmGR1P6BH+5e
+	 wlwcdWqh8Ieag==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bart Van Assche <bvanassche@acm.org>,
-	Avri Altman <Avri.Altman@wdc.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	yoshihiro.shimoda.uh@renesas.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	avri.altman@wdc.com,
-	manivannan.sadhasivam@linaro.org,
-	ahalaney@redhat.com,
-	beanhuo@micron.com,
-	quic_mnaresh@quicinc.com,
-	ebiggers@google.com,
-	minwoo.im@samsung.com,
-	linux-scsi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 06/15] scsi: ufs: core: Make DMA mask configuration more flexible
-Date: Wed,  4 Dec 2024 10:50:45 -0500
-Message-ID: <20241204155105.2214350-6-sashal@kernel.org>
+Cc: Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 07/15] mfd: axp20x: Allow multiple regulators
+Date: Wed,  4 Dec 2024 10:50:46 -0500
+Message-ID: <20241204155105.2214350-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204155105.2214350-1-sashal@kernel.org>
 References: <20241204155105.2214350-1-sashal@kernel.org>
@@ -81,117 +65,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit 78bc671bd1501e2f6c571e063301a4fdc5db53b2 ]
+[ Upstream commit e37ec32188701efa01455b9be42a392adab06ce4 ]
 
-Replace UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS with
-ufs_hba_variant_ops::set_dma_mask.  Update the Renesas driver
-accordingly.  This patch enables supporting other configurations than
-32-bit or 64-bit DMA addresses, e.g. 36-bit DMA addresses.
+At the moment trying to register a second AXP chip makes the probe fail,
+as some sysfs registration fails due to a duplicate name:
 
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20241018194753.775074-1-bvanassche@acm.org
-Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+...
+[    3.688215] axp20x-i2c 0-0035: AXP20X driver loaded
+[    3.695610] axp20x-i2c 0-0036: AXP20x variant AXP323 found
+[    3.706151] sysfs: cannot create duplicate filename '/bus/platform/devices/axp20x-regulator'
+[    3.714718] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc1-00026-g50bf2e2c079d-dirty #192
+[    3.724020] Hardware name: Avaota A1 (DT)
+[    3.728029] Call trace:
+[    3.730477]  dump_backtrace+0x94/0xec
+[    3.734146]  show_stack+0x18/0x24
+[    3.737462]  dump_stack_lvl+0x80/0xf4
+[    3.741128]  dump_stack+0x18/0x24
+[    3.744444]  sysfs_warn_dup+0x64/0x80
+[    3.748109]  sysfs_do_create_link_sd+0xf0/0xf8
+[    3.752553]  sysfs_create_link+0x20/0x40
+[    3.756476]  bus_add_device+0x64/0x104
+[    3.760229]  device_add+0x310/0x760
+[    3.763717]  platform_device_add+0x10c/0x238
+[    3.767990]  mfd_add_device+0x4ec/0x5c8
+[    3.771829]  mfd_add_devices+0x88/0x11c
+[    3.775666]  axp20x_device_probe+0x70/0x184
+[    3.779851]  axp20x_i2c_probe+0x9c/0xd8
+...
+
+This is because we use PLATFORM_DEVID_NONE for the mfd_add_devices()
+call, which would number the child devices in the same 0-based way, even
+for the second (or any other) instance.
+
+Use PLATFORM_DEVID_AUTO instead, which automatically assigns
+non-conflicting device numbers.
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20241007001408.27249-4-andre.przywara@arm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c      | 4 ++--
- drivers/ufs/host/ufs-renesas.c | 9 ++++++++-
- include/ufs/ufshcd.h           | 9 +++------
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ drivers/mfd/axp20x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a1809aa9a8892..df94c563b808a 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -2230,8 +2230,6 @@ static inline int ufshcd_hba_capabilities(struct ufs_hba *hba)
- 	int err;
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index 880c41fa7021b..3c2582bc2d923 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -1000,7 +1000,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
+ 		}
+ 	}
  
- 	hba->capabilities = ufshcd_readl(hba, REG_CONTROLLER_CAPABILITIES);
--	if (hba->quirks & UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS)
--		hba->capabilities &= ~MASK_64_ADDRESSING_SUPPORT;
+-	ret = mfd_add_devices(axp20x->dev, -1, axp20x->cells,
++	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_AUTO, axp20x->cells,
+ 			      axp20x->nr_cells, NULL, 0, NULL);
  
- 	/* nutrs and nutmrs are 0 based values */
- 	hba->nutrs = (hba->capabilities & MASK_TRANSFER_REQUESTS_SLOTS) + 1;
-@@ -9648,6 +9646,8 @@ EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
-  */
- static int ufshcd_set_dma_mask(struct ufs_hba *hba)
- {
-+	if (hba->vops && hba->vops->set_dma_mask)
-+		return hba->vops->set_dma_mask(hba);
- 	if (hba->capabilities & MASK_64_ADDRESSING_SUPPORT) {
- 		if (!dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(64)))
- 			return 0;
-diff --git a/drivers/ufs/host/ufs-renesas.c b/drivers/ufs/host/ufs-renesas.c
-index ab0652d8705ac..481ad0a3a6c7c 100644
---- a/drivers/ufs/host/ufs-renesas.c
-+++ b/drivers/ufs/host/ufs-renesas.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
-@@ -364,14 +365,20 @@ static int ufs_renesas_init(struct ufs_hba *hba)
- 		return -ENOMEM;
- 	ufshcd_set_variant(hba, priv);
- 
--	hba->quirks |= UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS | UFSHCD_QUIRK_HIBERN_FASTAUTO;
-+	hba->quirks |= UFSHCD_QUIRK_HIBERN_FASTAUTO;
- 
- 	return 0;
- }
- 
-+static int ufs_renesas_set_dma_mask(struct ufs_hba *hba)
-+{
-+	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
-+}
-+
- static const struct ufs_hba_variant_ops ufs_renesas_vops = {
- 	.name		= "renesas",
- 	.init		= ufs_renesas_init,
-+	.set_dma_mask	= ufs_renesas_set_dma_mask,
- 	.setup_clocks	= ufs_renesas_setup_clocks,
- 	.hce_enable_notify = ufs_renesas_hce_enable_notify,
- 	.dbg_register_dump = ufs_renesas_dbg_register_dump,
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index b54f22840dabf..c4b1e6dca2397 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -272,6 +272,8 @@ struct ufs_pwr_mode_info {
-  * @name: variant name
-  * @init: called when the driver is initialized
-  * @exit: called to cleanup everything done in init
-+ * @set_dma_mask: For setting another DMA mask than indicated by the 64AS
-+ *	capability bit.
-  * @get_ufs_hci_version: called to get UFS HCI version
-  * @clk_scale_notify: notifies that clks are scaled up/down
-  * @setup_clocks: called before touching any of the controller registers
-@@ -303,6 +305,7 @@ struct ufs_hba_variant_ops {
- 	int	(*init)(struct ufs_hba *);
- 	void    (*exit)(struct ufs_hba *);
- 	u32	(*get_ufs_hci_version)(struct ufs_hba *);
-+	int	(*set_dma_mask)(struct ufs_hba *);
- 	int	(*clk_scale_notify)(struct ufs_hba *, bool,
- 				    enum ufs_notify_change_status);
- 	int	(*setup_clocks)(struct ufs_hba *, bool,
-@@ -582,12 +585,6 @@ enum ufshcd_quirks {
- 	 */
- 	UFSHCD_QUIRK_SKIP_PH_CONFIGURATION		= 1 << 16,
- 
--	/*
--	 * This quirk needs to be enabled if the host controller has
--	 * 64-bit addressing supported capability but it doesn't work.
--	 */
--	UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS		= 1 << 17,
--
- 	/*
- 	 * This quirk needs to be enabled if the host controller has
- 	 * auto-hibernate capability but it's FASTAUTO only.
+ 	if (ret) {
 -- 
 2.43.0
 
