@@ -1,50 +1,66 @@
-Return-Path: <stable+bounces-98236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92959E3330
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 06:36:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1102D9E334D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 06:49:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36D5163E02
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 05:36:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0869160601
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 05:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333C117A597;
-	Wed,  4 Dec 2024 05:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C47181CE1;
+	Wed,  4 Dec 2024 05:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UPZGKwbb"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="awHI/dA7"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CA12F22
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 05:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6132E155398;
+	Wed,  4 Dec 2024 05:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733290587; cv=none; b=uglZYyiwXoKRI8lNG1sWowu/hN+q5hh8N4yRVicJ8lkfqTT0YgCFDAZJl2pBf/uAbBecD1Xd3CTKWVabCJTNgIYS7bWhhCsXida5Qlb1Tc7bs7Po96vdY+D2mJIG1/LaCG9mQzcRU5sQWDCtNWnuy7okt/q7FsTXiRp1yfHAUkk=
+	t=1733291355; cv=none; b=RyZAE9qLY9c5vnVrbJjWOr3MBJm3G+vSDEPI2F7HL9b/mLVPztEIl0VMrMgBIIXDsYhNP9Q/J37Slj1pmjRxrcS1GghifuZQ4NbrBxdAoG9DONTHwKZg3P+nJ0LPrJPVeFBxjXYPLpoHpdXE4RLiNaBUdatBRGZzaCq3PycEsXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733290587; c=relaxed/simple;
+	s=arc-20240116; t=1733291355; c=relaxed/simple;
 	bh=IkEZtadZftKjRqH9yhts5fEPqBDe38sXpY9gxB7o5Mc=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=X/rgsk57EEt3+1Hly9EXFBHUpl9OtprlUaKtt4NK4PMBZTp/Z4xVS245UajhpQQlXPsYRxAImwh3kFD7fAgtSG9/rvDLG8wYfHQlZN3JuC2XSpCDIFiB3jBUZ8y3SGOLvRf8zVRuFj7zs+hGkPIn9iLap89wnbbwtHrV2O9MnQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UPZGKwbb; arc=none smtp.client-ip=13.77.154.182
+	h=From:To:Cc:Subject:Date:Message-Id; b=dKKBqaYPE2kMJAJgZFQDxANe8ceKzvoX4Un9r63YJniKOJhLM6AgkhAahsxCC0Fdh0P4CbPDb/TPzb76vErZtfwccNe0+sNoJEBzq4+G6D+AAp84u/+AQPsfO/QvkxnNQTdLgoR2lwBjL76PvBt/zqEoe7sSz48ZBE/3zV+zmt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=awHI/dA7; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id 4265E20BCAE6; Tue,  3 Dec 2024 21:36:25 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4265E20BCAE6
+	id E66E120BCAE6; Tue,  3 Dec 2024 21:49:13 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E66E120BCAE6
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1733290585;
+	s=default; t=1733291353;
 	bh=WO1k8Du3NxHFMes7jiIFdn5k2SdK8KHlt0QIB6oFTsM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=UPZGKwbbTpRzgj66L52zYVUCGFBRgfLc6Xc1Ecgv46auUmI2VFlFLvgqZHNTujnSu
-	 ZvPP6rH+ZfFCa9T/IRU+VVRWthl1VOP12+PpRzusO7Rr3Q5/yrLTidwiplhSSkjg4y
-	 g0IBNAqnb23kOq1rhbUZtzaH7pYH1Jgox4AKYX5c=
+	b=awHI/dA7tv/s5c6Ko1jjxO/b8h9g0EdFwF3Gko9BwbyI3WTUOmtJq+tiIgbtAlNWB
+	 0ML7L58npWa3taJFWWeXKCkwhndc55LCdO3wx1zye7sOi1SOk8kaZmxtbx5pSF0Uwb
+	 /2rnkyZsXPFKIoQiT7hd+mULCXskH/aDyOTvuVFg=
 From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: 
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
 Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Long Li <longli@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Erick Archer <erick.archer@outlook.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
 	stable@vger.kernel.org
 Subject: [PATCH net] net :mana :Request a V2 response version for MANA_QUERY_GF_STAT
-Date: Tue,  3 Dec 2024 21:36:23 -0800
-Message-Id: <1733290583-10924-1-git-send-email-shradhagupta@linux.microsoft.com>
+Date: Tue,  3 Dec 2024 21:48:20 -0800
+Message-Id: <1733291300-12593-1-git-send-email-shradhagupta@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
