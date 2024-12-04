@@ -1,56 +1,72 @@
-Return-Path: <stable+bounces-98381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5789E40B4
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:10:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43D89E4377
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72B03284841
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:10:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45F27B61A48
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D453210186;
-	Wed,  4 Dec 2024 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55AD202C50;
+	Wed,  4 Dec 2024 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmPdSXBK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ni5wsxV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E0320CCC5;
-	Wed,  4 Dec 2024 17:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A14A202C44;
+	Wed,  4 Dec 2024 17:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331608; cv=none; b=DLm5MAkqbPIfZVLRvFzmg7X41R4Ekcdz/wVnh+ZAcuWljSKZohulShaTf0dwc3/uojeMe9iIpM5PWZn296nTTj/T+fUdrYqiafzYdoBHfI4vAphGFzcKMTO2NcmkfqI4MRh/KTcSgMmfrCfpJtYs+4eOiUc1aLUrk9KAYxnna+E=
+	t=1733331615; cv=none; b=BhoPZ6DNJWf+o5t2lEVN9EYpNkfT7bMkHaSz60eRCtrrRJJabJlBwzt5Wchp0f8KkoRMopPe5dSR/X/2LmLRvSGmFg0v6Nl6dhNlihw85omNT84CFNMMhfIdEmsDWlAoQsbaKLM3pudsVy/1C6pcy2YSZFIch0tBBSZ1uE+JVT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331608; c=relaxed/simple;
-	bh=qOxobhayZsSfFAlWKlP4MIFI68mJ1JOLD8MP5y0VOMM=;
+	s=arc-20240116; t=1733331615; c=relaxed/simple;
+	bh=PrS5dMApRuvYtyE1/G9FbY88WGrmssJalLtkRCLFrXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JnJV7a7n2OWBhGryAhBZLgXSl30sPCsG+x//BQZqMN/ZAnEWTWSxbRM/AJnvlufkp/2+d458bZ5MNSL0R80w4aex9K3qyTU7VKnZMROy3nfGgs7NJzV2PxBjOCqYaKKiKD48N6GFRdXOK7kHM2MQqwMMNJqdDyxfcCEsMqpQEsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmPdSXBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A506C4CECD;
-	Wed,  4 Dec 2024 17:00:07 +0000 (UTC)
+	 MIME-Version; b=d1d2JEFUdnumBHs8krHiYsG93NuPtpjiffTpn/xGYdttH81BiiCrVJVuk+OujbP6N6wwtqW48eyHdpFQxCxRP5BPaBjUo6S8fJS135EhhO+O/d2LUjkZXOtXWEq+Uo4ljfzFvGQhwPhJO/H8GQ0EBkhFATbvANGK2eOPsX8REk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ni5wsxV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C56C4CECD;
+	Wed,  4 Dec 2024 17:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331607;
-	bh=qOxobhayZsSfFAlWKlP4MIFI68mJ1JOLD8MP5y0VOMM=;
+	s=k20201202; t=1733331615;
+	bh=PrS5dMApRuvYtyE1/G9FbY88WGrmssJalLtkRCLFrXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmPdSXBKKNcqzjPgSgZlg0Wc94Wk5X0zoAiP1hep+LHZSRRMNtW3aBfoXMbZjcYsh
-	 GocaYF3yq9fL/HzVAoB59JEqRNwDaCo3cbjVFzGbffuCoaWR0w6XH6r+TqHwqopFXa
-	 w00jwZRoqBa2+dgmIuSl2CYDfCYk0A2qf7mZhVdpsOa/l3++GrAPemv3hVxJJlAnIW
-	 gTYp2mmG1Wa9fkvVeYTkuJxhsuwjhsDjAGpoksbVIRlz44hPi09eHqeLZR+LlCEwT1
-	 xBfJnqvzhnwI9Kwt6lX6nKFnbUvZXIE7jIT/w5CukGBgg0YKFyyPkx/hC2wdFGnFII
-	 Xd1ZO+PBh5riA==
+	b=Ni5wsxV7DiLLTobBia7tM2LkD/0vkHhNBmNQrL8U+FSNr8LHr23Xt1NsQUE5VRvxg
+	 D3Jf7PAo9vR2IvNiodpwx0T0zLRBX8193m9BGijJTGeiJzjwQbY8puCi9D7Qpg4YTi
+	 L7RHgp9HK3wiXcHui7VD80Xz6BJtJt7d7F99O7kqEK+H3QbUngbq54x98PRvXdsA0/
+	 5VqwMUdADkZ7J4gIGrknoWX/MGanqWbawSIFiQ/jWuJEjwY5ZjvlR4Ejo+/MDkV9ln
+	 ty5ZNs/p4DRkveCOMp7z+COn3QLLc+rJpDcSDcK+ebNCSsRvwf9N3A4qoMj83B5tNQ
+	 13S3Y7GvlYEoA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mukesh Ojha <quic_mojha@quicinc.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Avri Altman <Avri.Altman@wdc.com>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 12/33] pinmux: Use sequential access to access desc->pinmux data
-Date: Wed,  4 Dec 2024 10:47:25 -0500
-Message-ID: <20241204154817.2212455-12-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	yoshihiro.shimoda.uh@renesas.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	avri.altman@wdc.com,
+	manivannan.sadhasivam@linaro.org,
+	ahalaney@redhat.com,
+	beanhuo@micron.com,
+	quic_mnaresh@quicinc.com,
+	ebiggers@google.com,
+	minwoo.im@samsung.com,
+	linux-scsi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 13/33] scsi: ufs: core: Make DMA mask configuration more flexible
+Date: Wed,  4 Dec 2024 10:47:26 -0500
+Message-ID: <20241204154817.2212455-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154817.2212455-1-sashal@kernel.org>
 References: <20241204154817.2212455-1-sashal@kernel.org>
@@ -65,334 +81,117 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 5a3e85c3c397c781393ea5fb2f45b1f60f8a4e6e ]
+[ Upstream commit 78bc671bd1501e2f6c571e063301a4fdc5db53b2 ]
 
-When two client of the same gpio call pinctrl_select_state() for the
-same functionality, we are seeing NULL pointer issue while accessing
-desc->mux_owner.
+Replace UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS with
+ufs_hba_variant_ops::set_dma_mask.  Update the Renesas driver
+accordingly.  This patch enables supporting other configurations than
+32-bit or 64-bit DMA addresses, e.g. 36-bit DMA addresses.
 
-Let's say two processes A, B executing in pin_request() for the same pin
-and process A updates the desc->mux_usecount but not yet updated the
-desc->mux_owner while process B see the desc->mux_usecount which got
-updated by A path and further executes strcmp and while accessing
-desc->mux_owner it crashes with NULL pointer.
-
-Serialize the access to mux related setting with a mutex lock.
-
-	cpu0 (process A)			cpu1(process B)
-
-pinctrl_select_state() {		  pinctrl_select_state() {
-  pin_request() {				pin_request() {
-  ...
-						 ....
-    } else {
-         desc->mux_usecount++;
-    						desc->mux_usecount && strcmp(desc->mux_owner, owner)) {
-
-         if (desc->mux_usecount > 1)
-               return 0;
-         desc->mux_owner = owner;
-
-  }						}
-
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Link: https://lore.kernel.org/20241014192930.1539673-1-quic_mojha@quicinc.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20241018194753.775074-1-bvanassche@acm.org
+Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/core.c   |   3 +
- drivers/pinctrl/core.h   |   1 +
- drivers/pinctrl/pinmux.c | 173 ++++++++++++++++++++++-----------------
- 3 files changed, 100 insertions(+), 77 deletions(-)
+ drivers/ufs/core/ufshcd.c      | 4 ++--
+ drivers/ufs/host/ufs-renesas.c | 9 ++++++++-
+ include/ufs/ufshcd.h           | 9 +++------
+ 3 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index 314ab93d76918..35f1046db9b6a 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -220,6 +220,9 @@ static int pinctrl_register_one_pin(struct pinctrl_dev *pctldev,
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 03490f062d63a..5c64ef7334546 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -2398,8 +2398,6 @@ static inline int ufshcd_hba_capabilities(struct ufs_hba *hba)
+ 	int err;
  
- 	/* Set owner */
- 	pindesc->pctldev = pctldev;
-+#ifdef CONFIG_PINMUX
-+	mutex_init(&pindesc->mux_lock);
-+#endif
+ 	hba->capabilities = ufshcd_readl(hba, REG_CONTROLLER_CAPABILITIES);
+-	if (hba->quirks & UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS)
+-		hba->capabilities &= ~MASK_64_ADDRESSING_SUPPORT;
  
- 	/* Copy basic pin info */
- 	if (pin->name) {
-diff --git a/drivers/pinctrl/core.h b/drivers/pinctrl/core.h
-index 4e07707d2435b..d6c24978e7081 100644
---- a/drivers/pinctrl/core.h
-+++ b/drivers/pinctrl/core.h
-@@ -177,6 +177,7 @@ struct pin_desc {
- 	const char *mux_owner;
- 	const struct pinctrl_setting_mux *mux_setting;
- 	const char *gpio_owner;
-+	struct mutex mux_lock;
- #endif
- };
+ 	/* nutrs and nutmrs are 0 based values */
+ 	hba->nutrs = (hba->capabilities & MASK_TRANSFER_REQUESTS_SLOTS_SDB) + 1;
+@@ -10314,6 +10312,8 @@ EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
+  */
+ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
+ {
++	if (hba->vops && hba->vops->set_dma_mask)
++		return hba->vops->set_dma_mask(hba);
+ 	if (hba->capabilities & MASK_64_ADDRESSING_SUPPORT) {
+ 		if (!dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(64)))
+ 			return 0;
+diff --git a/drivers/ufs/host/ufs-renesas.c b/drivers/ufs/host/ufs-renesas.c
+index 8711e5cbc9680..3ff97112e1f6d 100644
+--- a/drivers/ufs/host/ufs-renesas.c
++++ b/drivers/ufs/host/ufs-renesas.c
+@@ -7,6 +7,7 @@
  
-diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
-index aae71a37219b2..90ca50d9efb6a 100644
---- a/drivers/pinctrl/pinmux.c
-+++ b/drivers/pinctrl/pinmux.c
-@@ -14,6 +14,7 @@
- 
- #include <linux/array_size.h>
- #include <linux/ctype.h>
-+#include <linux/cleanup.h>
- #include <linux/debugfs.h>
- #include <linux/device.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
++#include <linux/dma-mapping.h>
  #include <linux/err.h>
-@@ -93,6 +94,7 @@ bool pinmux_can_be_used_for_gpio(struct pinctrl_dev *pctldev, unsigned int pin)
- 	if (!desc || !ops)
- 		return true;
+ #include <linux/iopoll.h>
+ #include <linux/kernel.h>
+@@ -364,14 +365,20 @@ static int ufs_renesas_init(struct ufs_hba *hba)
+ 		return -ENOMEM;
+ 	ufshcd_set_variant(hba, priv);
  
-+	guard(mutex)(&desc->mux_lock);
- 	if (ops->strict && desc->mux_usecount)
- 		return false;
+-	hba->quirks |= UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS | UFSHCD_QUIRK_HIBERN_FASTAUTO;
++	hba->quirks |= UFSHCD_QUIRK_HIBERN_FASTAUTO;
  
-@@ -127,29 +129,31 @@ static int pin_request(struct pinctrl_dev *pctldev,
- 	dev_dbg(pctldev->dev, "request pin %d (%s) for %s\n",
- 		pin, desc->name, owner);
+ 	return 0;
+ }
  
--	if ((!gpio_range || ops->strict) &&
--	    desc->mux_usecount && strcmp(desc->mux_owner, owner)) {
--		dev_err(pctldev->dev,
--			"pin %s already requested by %s; cannot claim for %s\n",
--			desc->name, desc->mux_owner, owner);
--		goto out;
--	}
-+	scoped_guard(mutex, &desc->mux_lock) {
-+		if ((!gpio_range || ops->strict) &&
-+		    desc->mux_usecount && strcmp(desc->mux_owner, owner)) {
-+			dev_err(pctldev->dev,
-+				"pin %s already requested by %s; cannot claim for %s\n",
-+				desc->name, desc->mux_owner, owner);
-+			goto out;
-+		}
++static int ufs_renesas_set_dma_mask(struct ufs_hba *hba)
++{
++	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
++}
++
+ static const struct ufs_hba_variant_ops ufs_renesas_vops = {
+ 	.name		= "renesas",
+ 	.init		= ufs_renesas_init,
++	.set_dma_mask	= ufs_renesas_set_dma_mask,
+ 	.setup_clocks	= ufs_renesas_setup_clocks,
+ 	.hce_enable_notify = ufs_renesas_hce_enable_notify,
+ 	.dbg_register_dump = ufs_renesas_dbg_register_dump,
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index 0fd2aebac7286..3fee38029bfee 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -298,6 +298,8 @@ struct ufs_pwr_mode_info {
+  * @max_num_rtt: maximum RTT supported by the host
+  * @init: called when the driver is initialized
+  * @exit: called to cleanup everything done in init
++ * @set_dma_mask: For setting another DMA mask than indicated by the 64AS
++ *	capability bit.
+  * @get_ufs_hci_version: called to get UFS HCI version
+  * @clk_scale_notify: notifies that clks are scaled up/down
+  * @setup_clocks: called before touching any of the controller registers
+@@ -340,6 +342,7 @@ struct ufs_hba_variant_ops {
+ 	int	(*init)(struct ufs_hba *);
+ 	void    (*exit)(struct ufs_hba *);
+ 	u32	(*get_ufs_hci_version)(struct ufs_hba *);
++	int	(*set_dma_mask)(struct ufs_hba *);
+ 	int	(*clk_scale_notify)(struct ufs_hba *, bool,
+ 				    enum ufs_notify_change_status);
+ 	int	(*setup_clocks)(struct ufs_hba *, bool,
+@@ -622,12 +625,6 @@ enum ufshcd_quirks {
+ 	 */
+ 	UFSHCD_QUIRK_SKIP_PH_CONFIGURATION		= 1 << 16,
  
--	if ((gpio_range || ops->strict) && desc->gpio_owner) {
--		dev_err(pctldev->dev,
--			"pin %s already requested by %s; cannot claim for %s\n",
--			desc->name, desc->gpio_owner, owner);
--		goto out;
--	}
-+		if ((gpio_range || ops->strict) && desc->gpio_owner) {
-+			dev_err(pctldev->dev,
-+				"pin %s already requested by %s; cannot claim for %s\n",
-+				desc->name, desc->gpio_owner, owner);
-+			goto out;
-+		}
- 
--	if (gpio_range) {
--		desc->gpio_owner = owner;
--	} else {
--		desc->mux_usecount++;
--		if (desc->mux_usecount > 1)
--			return 0;
-+		if (gpio_range) {
-+			desc->gpio_owner = owner;
-+		} else {
-+			desc->mux_usecount++;
-+			if (desc->mux_usecount > 1)
-+				return 0;
- 
--		desc->mux_owner = owner;
-+			desc->mux_owner = owner;
-+		}
- 	}
- 
- 	/* Let each pin increase references to this module */
-@@ -178,12 +182,14 @@ static int pin_request(struct pinctrl_dev *pctldev,
- 
- out_free_pin:
- 	if (status) {
--		if (gpio_range) {
--			desc->gpio_owner = NULL;
--		} else {
--			desc->mux_usecount--;
--			if (!desc->mux_usecount)
--				desc->mux_owner = NULL;
-+		scoped_guard(mutex, &desc->mux_lock) {
-+			if (gpio_range) {
-+				desc->gpio_owner = NULL;
-+			} else {
-+				desc->mux_usecount--;
-+				if (!desc->mux_usecount)
-+					desc->mux_owner = NULL;
-+			}
- 		}
- 	}
- out:
-@@ -219,15 +225,17 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
- 		return NULL;
- 	}
- 
--	if (!gpio_range) {
--		/*
--		 * A pin should not be freed more times than allocated.
--		 */
--		if (WARN_ON(!desc->mux_usecount))
--			return NULL;
--		desc->mux_usecount--;
--		if (desc->mux_usecount)
--			return NULL;
-+	scoped_guard(mutex, &desc->mux_lock) {
-+		if (!gpio_range) {
-+			/*
-+			 * A pin should not be freed more times than allocated.
-+			 */
-+			if (WARN_ON(!desc->mux_usecount))
-+				return NULL;
-+			desc->mux_usecount--;
-+			if (desc->mux_usecount)
-+				return NULL;
-+		}
- 	}
- 
+-	/*
+-	 * This quirk needs to be enabled if the host controller has
+-	 * 64-bit addressing supported capability but it doesn't work.
+-	 */
+-	UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS		= 1 << 17,
+-
  	/*
-@@ -239,13 +247,15 @@ static const char *pin_free(struct pinctrl_dev *pctldev, int pin,
- 	else if (ops->free)
- 		ops->free(pctldev, pin);
- 
--	if (gpio_range) {
--		owner = desc->gpio_owner;
--		desc->gpio_owner = NULL;
--	} else {
--		owner = desc->mux_owner;
--		desc->mux_owner = NULL;
--		desc->mux_setting = NULL;
-+	scoped_guard(mutex, &desc->mux_lock) {
-+		if (gpio_range) {
-+			owner = desc->gpio_owner;
-+			desc->gpio_owner = NULL;
-+		} else {
-+			owner = desc->mux_owner;
-+			desc->mux_owner = NULL;
-+			desc->mux_setting = NULL;
-+		}
- 	}
- 
- 	module_put(pctldev->owner);
-@@ -459,7 +469,8 @@ int pinmux_enable_setting(const struct pinctrl_setting *setting)
- 				 pins[i]);
- 			continue;
- 		}
--		desc->mux_setting = &(setting->data.mux);
-+		scoped_guard(mutex, &desc->mux_lock)
-+			desc->mux_setting = &(setting->data.mux);
- 	}
- 
- 	ret = ops->set_mux(pctldev, setting->data.mux.func,
-@@ -473,8 +484,10 @@ int pinmux_enable_setting(const struct pinctrl_setting *setting)
- err_set_mux:
- 	for (i = 0; i < num_pins; i++) {
- 		desc = pin_desc_get(pctldev, pins[i]);
--		if (desc)
--			desc->mux_setting = NULL;
-+		if (desc) {
-+			scoped_guard(mutex, &desc->mux_lock)
-+				desc->mux_setting = NULL;
-+		}
- 	}
- err_pin_request:
- 	/* On error release all taken pins */
-@@ -493,6 +506,7 @@ void pinmux_disable_setting(const struct pinctrl_setting *setting)
- 	unsigned int num_pins = 0;
- 	int i;
- 	struct pin_desc *desc;
-+	bool is_equal;
- 
- 	if (pctlops->get_group_pins)
- 		ret = pctlops->get_group_pins(pctldev, setting->data.mux.group,
-@@ -518,7 +532,10 @@ void pinmux_disable_setting(const struct pinctrl_setting *setting)
- 				 pins[i]);
- 			continue;
- 		}
--		if (desc->mux_setting == &(setting->data.mux)) {
-+		scoped_guard(mutex, &desc->mux_lock)
-+			is_equal = (desc->mux_setting == &(setting->data.mux));
-+
-+		if (is_equal) {
- 			pin_free(pctldev, pins[i], NULL);
- 		} else {
- 			const char *gname;
-@@ -611,40 +628,42 @@ static int pinmux_pins_show(struct seq_file *s, void *what)
- 		if (desc == NULL)
- 			continue;
- 
--		if (desc->mux_owner &&
--		    !strcmp(desc->mux_owner, pinctrl_dev_get_name(pctldev)))
--			is_hog = true;
--
--		if (pmxops->strict) {
--			if (desc->mux_owner)
--				seq_printf(s, "pin %d (%s): device %s%s",
--					   pin, desc->name, desc->mux_owner,
-+		scoped_guard(mutex, &desc->mux_lock) {
-+			if (desc->mux_owner &&
-+			    !strcmp(desc->mux_owner, pinctrl_dev_get_name(pctldev)))
-+				is_hog = true;
-+
-+			if (pmxops->strict) {
-+				if (desc->mux_owner)
-+					seq_printf(s, "pin %d (%s): device %s%s",
-+						   pin, desc->name, desc->mux_owner,
-+						   is_hog ? " (HOG)" : "");
-+				else if (desc->gpio_owner)
-+					seq_printf(s, "pin %d (%s): GPIO %s",
-+						   pin, desc->name, desc->gpio_owner);
-+				else
-+					seq_printf(s, "pin %d (%s): UNCLAIMED",
-+						   pin, desc->name);
-+			} else {
-+				/* For non-strict controllers */
-+				seq_printf(s, "pin %d (%s): %s %s%s", pin, desc->name,
-+					   desc->mux_owner ? desc->mux_owner
-+					   : "(MUX UNCLAIMED)",
-+					   desc->gpio_owner ? desc->gpio_owner
-+					   : "(GPIO UNCLAIMED)",
- 					   is_hog ? " (HOG)" : "");
--			else if (desc->gpio_owner)
--				seq_printf(s, "pin %d (%s): GPIO %s",
--					   pin, desc->name, desc->gpio_owner);
-+			}
-+
-+			/* If mux: print function+group claiming the pin */
-+			if (desc->mux_setting)
-+				seq_printf(s, " function %s group %s\n",
-+					   pmxops->get_function_name(pctldev,
-+						desc->mux_setting->func),
-+					   pctlops->get_group_name(pctldev,
-+						desc->mux_setting->group));
- 			else
--				seq_printf(s, "pin %d (%s): UNCLAIMED",
--					   pin, desc->name);
--		} else {
--			/* For non-strict controllers */
--			seq_printf(s, "pin %d (%s): %s %s%s", pin, desc->name,
--				   desc->mux_owner ? desc->mux_owner
--				   : "(MUX UNCLAIMED)",
--				   desc->gpio_owner ? desc->gpio_owner
--				   : "(GPIO UNCLAIMED)",
--				   is_hog ? " (HOG)" : "");
-+				seq_putc(s, '\n');
- 		}
--
--		/* If mux: print function+group claiming the pin */
--		if (desc->mux_setting)
--			seq_printf(s, " function %s group %s\n",
--				   pmxops->get_function_name(pctldev,
--					desc->mux_setting->func),
--				   pctlops->get_group_name(pctldev,
--					desc->mux_setting->group));
--		else
--			seq_putc(s, '\n');
- 	}
- 
- 	mutex_unlock(&pctldev->mutex);
+ 	 * This quirk needs to be enabled if the host controller has
+ 	 * auto-hibernate capability but it's FASTAUTO only.
 -- 
 2.43.0
 
