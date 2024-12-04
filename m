@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-98674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EAA99E49CC
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:45:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276ED9E49E3
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:47:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF6DD288D9E
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:45:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF97B188246E
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC18D20C01A;
-	Wed,  4 Dec 2024 23:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3958920B80C;
+	Wed,  4 Dec 2024 23:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nVheEnCc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NvgoqObL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B6320766E;
-	Wed,  4 Dec 2024 23:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D97206F1E;
+	Wed,  4 Dec 2024 23:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733355297; cv=none; b=Aghe1mUflD70uQwNPSWKE3zLHel0eiiuNeCWCtRro6HY5IscG38B4G7VQOXiwlesepM4Jd+/VnMawLHnePxLmKRw6knfL7aBia9Ix8YuVKgD/Zpx52Q0RJKBmQ0shFGjZevbsJ95s4+nbCGABxBL6HeTUmuIHmOZjs2LA/lLz7w=
+	t=1733355298; cv=none; b=KZk1bqd6dYpN5JyO8MtbarKs9/wv9omSrYFSa2meNPlcxkqW/Kq0ZmjLHv2pgg4tckyi7vXwaAE8O6UBHqpjWeoTEXrXLokie6yv0qqCpBs8sARkJsNjlk1uwX1NAXt/LCa9+fcXKeBves+2CT5fNn1qN4Uut8iw0KaBfCbrPxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733355297; c=relaxed/simple;
-	bh=bD/RNP/wZcE8mx//XWXRtjbINcRDinSfXo0ShkmlNoc=;
+	s=arc-20240116; t=1733355298; c=relaxed/simple;
+	bh=nXLeo5Lvnrbx7/XuHNCN/7+mLimUxnLn37cF4/DCK+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pT2eKSpYPBAk15QbHEIEmRtCYVcv1qequrLe/oxYjl9Yd35mMfM41x/cuAHN/TlAURC/NmzVK9MKPigxklZUzk6Oo1mQz34rf6eTYmsBP+MFRo1zun1jG94cuhN4r6tqGUmQtPb6m+7hQ3EOtLeZRy1CFw0zw6IC8gw99RGnQiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nVheEnCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E82DC4CED2;
-	Wed,  4 Dec 2024 23:34:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=in6raeRMuPh/gXGICpy40U7P34P+RpwIyKUNF64T4izptxFdEK7tnzwWGd/vOwyHLhDgNXDROWyrCww0vVWK8vm6l1rGx1c4O/rbaWYDZrE/TXF2C4edQtJo2JEZ1+3+AtTcRGsqB7IvF4tUZuZcPD1mFgojxak3f6UjMAXo6j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NvgoqObL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEDFC2BCB9;
+	Wed,  4 Dec 2024 23:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355296;
-	bh=bD/RNP/wZcE8mx//XWXRtjbINcRDinSfXo0ShkmlNoc=;
+	s=k20201202; t=1733355297;
+	bh=nXLeo5Lvnrbx7/XuHNCN/7+mLimUxnLn37cF4/DCK+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVheEnCcqJGFqXnQcY9PvDbgcF+my3KSNBQF8Jl8W4Kt0ZoTFcSu6Q6qB5PnFbl/i
-	 qi1Pi6bKXEizCxKir2X9RV8hGJe43U4WKGpBom6S21e0dinMYozhcAo0a06RrImrt5
-	 K+3XonMqwqw2D9uIKIlPDu/Ef3rTxwuDRSZ5P4+Y/GKmWzzSVkW1k3ExLN4DHQ/TMr
-	 37eD5rZYhwYXi+84r3XN24m1Sy3xwxvxjmNsxnXJ+vSood6ENK6JRslu2Hhr1gL/5h
-	 q8eGNMRS1xqFydKM8JJCA+S9ft9aHYxvu5XUrH+m0eV+x7R9+1lNd5MKqoT0FrZDWa
-	 bz3Iu4DroZghQ==
+	b=NvgoqObLuo9O8cc6G0fbvmUKaoMyTAEbNA4R0BXBMI91LTm7oyMU14u1luC7OubLz
+	 lvaKl9dmJwgBKxfhLjWGO3NMYrqwAduK4fW5B2wgh1Cv8gaTocpg83V9qTTGA6YQht
+	 N4NBGtRMeukhf9RKVSuX2YwsEhffz0aZGgSXfE77kQt4cC6WqrlSXjfr3Dm6teR/c4
+	 lJ0hVLtAn3ERQGpGTYcv0asdFo+RoaZMoj51FLRUPnR3NKFFzsOkl5J1pjMTruEUuc
+	 cBB3P9LjuiA450yzI+EBy8ms1u+hH3npcvZMWQYty1iKtHQ1J+cQQx3I4nuKEY/OWZ
+	 8S6wgVgfdKeEA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Inochi Amaoto <inochiama@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-rtc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 2/8] rtc: cmos: avoid taking rtc_lock for extended period of time
-Date: Wed,  4 Dec 2024 17:23:18 -0500
-Message-ID: <20241204222334.2249307-2-sashal@kernel.org>
+	jirislaby@kernel.org,
+	unicorn_wang@outlook.com,
+	inochiama@outlook.com,
+	linux-serial@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 3/8] serial: 8250_dw: Add Sophgo SG2044 quirk
+Date: Wed,  4 Dec 2024 17:23:19 -0500
+Message-ID: <20241204222334.2249307-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204222334.2249307-1-sashal@kernel.org>
 References: <20241204222334.2249307-1-sashal@kernel.org>
@@ -67,90 +71,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-[ Upstream commit 0a6efab33eab4e973db26d9f90c3e97a7a82e399 ]
+[ Upstream commit cad4dda82c7eedcfc22597267e710ccbcf39d572 ]
 
-On my device reading entirety of /sys/devices/pnp0/00:03/cmos_nvram0/nvmem
-takes about 9 msec during which time interrupts are off on the CPU that
-does the read and the thread that performs the read can not be migrated
-or preempted by another higher priority thread (RT or not).
+SG2044 relys on an internal divisor when calculating bitrate, which
+means a wrong clock for the most common bitrates. So add a quirk for
+this uart device to skip the set rate call and only relys on the
+internal UART divisor.
 
-Allow readers and writers be preempted by taking and releasing rtc_lock
-spinlock for each individual byte read or written rather than once per
-read/write request.
-
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Link: https://lore.kernel.org/r/Zxv8QWR21AV4ztC5@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Link: https://lore.kernel.org/r/20241024062105.782330-4-inochiama@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-cmos.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index 35dca2accbb8d..5849d2970bba4 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -645,18 +645,17 @@ static int cmos_nvram_read(void *priv, unsigned int off, void *val,
- 	unsigned char *buf = val;
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index ab9e7f2042602..51894c93c8a31 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -750,7 +750,7 @@ static const struct dw8250_platform_data dw8250_renesas_rzn1_data = {
+ 	.quirks = DW_UART_QUIRK_CPR_VALUE | DW_UART_QUIRK_IS_DMA_FC,
+ };
  
- 	off += NVRAM_OFFSET;
--	spin_lock_irq(&rtc_lock);
--	for (; count; count--, off++) {
-+	for (; count; count--, off++, buf++) {
-+		guard(spinlock_irq)(&rtc_lock);
- 		if (off < 128)
--			*buf++ = CMOS_READ(off);
-+			*buf = CMOS_READ(off);
- 		else if (can_bank2)
--			*buf++ = cmos_read_bank2(off);
-+			*buf = cmos_read_bank2(off);
- 		else
--			break;
-+			return -EIO;
- 	}
--	spin_unlock_irq(&rtc_lock);
- 
--	return count ? -EIO : 0;
-+	return 0;
- }
- 
- static int cmos_nvram_write(void *priv, unsigned int off, void *val,
-@@ -671,23 +670,23 @@ static int cmos_nvram_write(void *priv, unsigned int off, void *val,
- 	 * NVRAM to update, updating checksums is also part of its job.
- 	 */
- 	off += NVRAM_OFFSET;
--	spin_lock_irq(&rtc_lock);
--	for (; count; count--, off++) {
-+	for (; count; count--, off++, buf++) {
- 		/* don't trash RTC registers */
- 		if (off == cmos->day_alrm
- 				|| off == cmos->mon_alrm
- 				|| off == cmos->century)
--			buf++;
--		else if (off < 128)
--			CMOS_WRITE(*buf++, off);
-+			continue;
-+
-+		guard(spinlock_irq)(&rtc_lock);
-+		if (off < 128)
-+			CMOS_WRITE(*buf, off);
- 		else if (can_bank2)
--			cmos_write_bank2(*buf++, off);
-+			cmos_write_bank2(*buf, off);
- 		else
--			break;
-+			return -EIO;
- 	}
--	spin_unlock_irq(&rtc_lock);
- 
--	return count ? -EIO : 0;
-+	return 0;
- }
- 
- /*----------------------------------------------------------------*/
+-static const struct dw8250_platform_data dw8250_starfive_jh7100_data = {
++static const struct dw8250_platform_data dw8250_skip_set_rate_data = {
+ 	.usr_reg = DW_UART_USR,
+ 	.quirks = DW_UART_QUIRK_SKIP_SET_RATE,
+ };
+@@ -760,7 +760,8 @@ static const struct of_device_id dw8250_of_match[] = {
+ 	{ .compatible = "cavium,octeon-3860-uart", .data = &dw8250_octeon_3860_data },
+ 	{ .compatible = "marvell,armada-38x-uart", .data = &dw8250_armada_38x_data },
+ 	{ .compatible = "renesas,rzn1-uart", .data = &dw8250_renesas_rzn1_data },
+-	{ .compatible = "starfive,jh7100-uart", .data = &dw8250_starfive_jh7100_data },
++	{ .compatible = "sophgo,sg2044-uart", .data = &dw8250_skip_set_rate_data },
++	{ .compatible = "starfive,jh7100-uart", .data = &dw8250_skip_set_rate_data },
+ 	{ /* Sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, dw8250_of_match);
 -- 
 2.43.0
 
