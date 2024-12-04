@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-98347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F879E4059
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C136C9E405A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FC0228112F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:01:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817D4283B4F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544DA2144DB;
-	Wed,  4 Dec 2024 16:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729EC215F53;
+	Wed,  4 Dec 2024 16:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOP6CR9x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kp02n1gd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9112144D4;
-	Wed,  4 Dec 2024 16:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C58E215F4B;
+	Wed,  4 Dec 2024 16:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331504; cv=none; b=CdwMJ2k5kSJyR2OHnU2zMVCDjbMb+v9sdL0j1kKPpw13C+wJvlE+cnDxYGOvulCwsjwHR8Ygp4zjShB7829YK8qYc515A1ozR4tYD0ibgoYVRdrN7Yfae2oc8/3EfFmLS2SYD/9FuAR2X2paUSCy8cwmhSWtB+LZnNl2jjZe8IE=
+	t=1733331505; cv=none; b=i0yd/FxMzpy980lijxrNV795gOHDX9nU3728+YIY/TXeMQxhgkI5g7cYU7uB2nfJlutqRgAsinKkpWydgyYlQir1e/i/9yOhRA0Zf7XNIeOPfYhWrD5MPyTHfmqAN7fsERNH/jgmygHgnrnmPCouTjImeivUPcxH9TY2kYmf224=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331504; c=relaxed/simple;
-	bh=+X1/Nu5CoD/sFJfWzapKZW1fSBzONFEp4WsLJt5tBFM=;
+	s=arc-20240116; t=1733331505; c=relaxed/simple;
+	bh=VCQjoMTE9WmNOxmh4sZzq4/xmH7ZVxgr0NMQqzTKmCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpJg6RfdhfBYb501HNDCKgYo+OicZ7CB1yp+I1lGmNz+DWeHepknNida4Q7ZJ6t79q5A5XdBHZtg3LyMvVhCeDtyoGK9j2MCj/+ORdJygXii4RNj579/3RCqvWuHD+Nku2SjN6VgtquqWCDBIoMI5RZ/cOUb9PqQerrKxLVZq40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOP6CR9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FBBC4CED1;
-	Wed,  4 Dec 2024 16:58:22 +0000 (UTC)
+	 MIME-Version; b=lBRHFyJUh+6/nV5ST0GLwPk9F/suCSoVIlX68PNZrpjP1rowqaWiG43AR3DvNCsur3Gdy2TbwbgnDBOGZUwHQEAmok7X32YbQg5RJZeNjFpcJG2+aeOIGjbld0CSTHPjv5v1Sp0IMuPziz6SYIY4sF1KQOHdIe+0FqoKLcVIq/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kp02n1gd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBE3C4CEDF;
+	Wed,  4 Dec 2024 16:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331503;
-	bh=+X1/Nu5CoD/sFJfWzapKZW1fSBzONFEp4WsLJt5tBFM=;
+	s=k20201202; t=1733331504;
+	bh=VCQjoMTE9WmNOxmh4sZzq4/xmH7ZVxgr0NMQqzTKmCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aOP6CR9x1MSXJrkzdipFL7zDncCk2Thxf059pgA/sW+3ySc/PeajnF2NklWOgKgPR
-	 qDUYzE96KmEgvZV+zb7fcYB2Us8Q2XZppAo+uZL0OWWEe4wgw8v6+Em4PQzWUIhefd
-	 Ad9sARNwO4mv8wuDT2H8l7LpYo0VXodwiCX3rSyAE2Uv1KQiVRweTpkvbjQN8axGJH
-	 YhW86EqE2taRGhinPtKuZzwrjuBNi4Z8dpw5ec2hl09ollhAk9AfhtzVcY1JR3+SKM
-	 Ka5z7ZddkayW54a35jTNRpiZ5JJR2EBm0wRJtYSKuTHhT4MnnkLnThWGEjE0/VfyvG
-	 /aGN3V4EKMVpg==
+	b=kp02n1gdmVcVNEJaKbVscUqAB0rQ78fcl/0PCDMp/JSgFIvaKP4jGZn/ek2c7Gis3
+	 rSUWZIeuhaXifqtbN9RW1emtZnv3cTyCjlJE0izgbpg9MVA7U4h3lDKFdMlCaGiTUV
+	 xzAiqHIDiE+uORbmc7Zq6BzHDowvTAgNXPbP5RbBKhJzGBOqeOIKn9y0wX3OPAiVv4
+	 zQHW3OH2IDQfV05pRjDKpS7T1epEXGIXzQwE1RTAlDo1fG3xyn6lmTUN3+VI+gD6fh
+	 H84yyIidSuG3mMPP9Pc/ET7eKzMDfK9Sy2QSQG8HxM1fVDm92yfPp8z8SfN/cuX5KN
+	 6oqpJ5Es90Sbg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	joro@8bytes.org,
-	will@kernel.org,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 14/36] iommu/amd: Fix corruption when mapping large pages from 0
-Date: Wed,  4 Dec 2024 10:45:30 -0500
-Message-ID: <20241204154626.2211476-14-sashal@kernel.org>
+Cc: Andre Przywara <andre.przywara@arm.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 15/36] mfd: axp20x: Allow multiple regulators
+Date: Wed,  4 Dec 2024 10:45:31 -0500
+Message-ID: <20241204154626.2211476-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
 References: <20241204154626.2211476-1-sashal@kernel.org>
@@ -68,81 +65,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit e3a682eaf2af51a83f5313145ef592ce50fa787f ]
+[ Upstream commit e37ec32188701efa01455b9be42a392adab06ce4 ]
 
-If a page is mapped starting at 0 that is equal to or larger than can fit
-in the current mode (number of table levels) it results in corrupting the
-mapping as the following logic assumes the mode is correct for the page
-size being requested.
+At the moment trying to register a second AXP chip makes the probe fail,
+as some sysfs registration fails due to a duplicate name:
 
-There are two issues here, the check if the address fits within the table
-uses the start address, it should use the last address to ensure that last
-byte of the mapping fits within the current table mode.
+...
+[    3.688215] axp20x-i2c 0-0035: AXP20X driver loaded
+[    3.695610] axp20x-i2c 0-0036: AXP20x variant AXP323 found
+[    3.706151] sysfs: cannot create duplicate filename '/bus/platform/devices/axp20x-regulator'
+[    3.714718] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc1-00026-g50bf2e2c079d-dirty #192
+[    3.724020] Hardware name: Avaota A1 (DT)
+[    3.728029] Call trace:
+[    3.730477]  dump_backtrace+0x94/0xec
+[    3.734146]  show_stack+0x18/0x24
+[    3.737462]  dump_stack_lvl+0x80/0xf4
+[    3.741128]  dump_stack+0x18/0x24
+[    3.744444]  sysfs_warn_dup+0x64/0x80
+[    3.748109]  sysfs_do_create_link_sd+0xf0/0xf8
+[    3.752553]  sysfs_create_link+0x20/0x40
+[    3.756476]  bus_add_device+0x64/0x104
+[    3.760229]  device_add+0x310/0x760
+[    3.763717]  platform_device_add+0x10c/0x238
+[    3.767990]  mfd_add_device+0x4ec/0x5c8
+[    3.771829]  mfd_add_devices+0x88/0x11c
+[    3.775666]  axp20x_device_probe+0x70/0x184
+[    3.779851]  axp20x_i2c_probe+0x9c/0xd8
+...
 
-The second is if the mapping is exactly the size of the full page table it
-has to add another level to instead hold a single IOPTE for the large
-size.
+This is because we use PLATFORM_DEVID_NONE for the mfd_add_devices()
+call, which would number the child devices in the same 0-based way, even
+for the second (or any other) instance.
 
-Since both corner cases require a 0 IOVA to be hit and doesn't start until
-a page size of 2^48 it is unlikely to ever hit in a real system.
+Use PLATFORM_DEVID_AUTO instead, which automatically assigns
+non-conflicting device numbers.
 
-Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/0-v1-27ab08d646a1+29-amd_0map_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Link: https://lore.kernel.org/r/20241007001408.27249-4-andre.przywara@arm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/io_pgtable.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/mfd/axp20x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
-index 804b788f3f167..f3399087859fd 100644
---- a/drivers/iommu/amd/io_pgtable.c
-+++ b/drivers/iommu/amd/io_pgtable.c
-@@ -118,6 +118,7 @@ static void free_sub_pt(u64 *root, int mode, struct list_head *freelist)
-  */
- static bool increase_address_space(struct amd_io_pgtable *pgtable,
- 				   unsigned long address,
-+				   unsigned int page_size_level,
- 				   gfp_t gfp)
- {
- 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
-@@ -133,7 +134,8 @@ static bool increase_address_space(struct amd_io_pgtable *pgtable,
- 
- 	spin_lock_irqsave(&domain->lock, flags);
- 
--	if (address <= PM_LEVEL_SIZE(pgtable->mode))
-+	if (address <= PM_LEVEL_SIZE(pgtable->mode) &&
-+	    pgtable->mode - 1 >= page_size_level)
- 		goto out;
- 
- 	ret = false;
-@@ -163,18 +165,21 @@ static u64 *alloc_pte(struct amd_io_pgtable *pgtable,
- 		      gfp_t gfp,
- 		      bool *updated)
- {
-+	unsigned long last_addr = address + (page_size - 1);
- 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
- 	int level, end_lvl;
- 	u64 *pte, *page;
- 
- 	BUG_ON(!is_power_of_2(page_size));
- 
--	while (address > PM_LEVEL_SIZE(pgtable->mode)) {
-+	while (last_addr > PM_LEVEL_SIZE(pgtable->mode) ||
-+	       pgtable->mode - 1 < PAGE_SIZE_LEVEL(page_size)) {
- 		/*
- 		 * Return an error if there is no memory to update the
- 		 * page-table.
- 		 */
--		if (!increase_address_space(pgtable, address, gfp))
-+		if (!increase_address_space(pgtable, last_addr,
-+					    PAGE_SIZE_LEVEL(page_size), gfp))
- 			return NULL;
+diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
+index 4051551757f2d..f438c5cb694ad 100644
+--- a/drivers/mfd/axp20x.c
++++ b/drivers/mfd/axp20x.c
+@@ -1419,7 +1419,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
+ 		}
  	}
  
+-	ret = mfd_add_devices(axp20x->dev, -1, axp20x->cells,
++	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_AUTO, axp20x->cells,
+ 			      axp20x->nr_cells, NULL, 0, NULL);
+ 
+ 	if (ret) {
 -- 
 2.43.0
 
