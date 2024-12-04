@@ -1,195 +1,366 @@
-Return-Path: <stable+bounces-98270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799459E3753
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4DB9E376F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ADF92813A7
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 400B6284CFE
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FDE1AE005;
-	Wed,  4 Dec 2024 10:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3EC1ACDF0;
+	Wed,  4 Dec 2024 10:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tvBlw8SK"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="vVkR2hV/";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="QLnMgbpm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4DE2500D2
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 10:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18951632FE;
+	Wed,  4 Dec 2024 10:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733307429; cv=none; b=q2Siuh5S/MbFeANXvsbRHsfWERd1SPEkOkd5C7AQ+qCSJ5kfGDcJ6P//MdqwRUJugQzlRcpUN2GurUmIit1TxUwtnBAFFVfCH2+rPtebQrdM4rKwYasSmUv6pd3+FHUdqzJaUZACTaNQM3h8JaQB2P8R1rsI5bGw7cDUkIeNpyc=
+	t=1733308119; cv=none; b=ODswsq5PCMNn9SJ5JU7rzMZbn/eAS1cJrxq2ncfJB3IKwN8Eq6TQH4x3Uxem5ss/ScqwL5b1l0CngnJB1VsSSm8lzo84CQJXEBHv03q22zpQwwnlapSKGVJN5hNSnQ5GFKUjsYxU0BirPcdcu/6N8GvDqB8NHEEywAZhxXfz6gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733307429; c=relaxed/simple;
-	bh=jBI72p1G4aC+JP1xOK/m0VIInB1bR7rMPs063MVIUgU=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=jVomQgy7Y9UUgtk0/SZD2Ug2w1reMTUwYUL/yEO0yC+ycXgERwdAUst9q/z8tIT6dGXaQqmvRaceXREGmVWRvYg1Re2JMBrY3/AQfdOP3jZm5S22e63z4XQSnROM/ZnnMJXu13gEEV9FiBuPiSxvNXGywhw3HswWJBmUacBPk5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tvBlw8SK; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-385eed29d7fso471973f8f.0
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 02:17:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733307426; x=1733912226; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IwYGoE0lwYluIalBShQtlG9f9t82GiZ00OYlWPwUtzU=;
-        b=tvBlw8SKR4zGVMREsTDMmsk9jqQ4lS67A4kdLwKkhrG3EWCWty3T3yBn1l2sFO+kiP
-         9X5jcc8MzKBY8M6+C8J/prId7MZ4THyJUenQc7mcCQhsJSuhA3uMAIJUTxFjMMIXp4da
-         mIqZpYphhKChTvN0RoYmuVlES4ag8kcibqeFbpKnGQzi+jxNG6gnRCZff4V/SU8a2LLa
-         UiO5xoNh+6CJ4Z5NAYc+K+sGX48cvyKARXXOpeAe+kwJONfjsdfY3NjOgL/BOf/k0IgT
-         FufkjAaFKC7zemr57Gbbi6jixDv+L6yMgqtoZBXFIfy/wcabJ8kVBCQa8pxQabd8qCJT
-         Fr6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733307426; x=1733912226;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IwYGoE0lwYluIalBShQtlG9f9t82GiZ00OYlWPwUtzU=;
-        b=EPgGfUoylfixUtOcEGQBq1nhoKYompyyYu8kaQ7mu7g3vM3lKmKcZl9nOEL/XC7e8U
-         dax8LOlBxICjyyB5UDKf0EbpzCH6vcrG6FGuSO8yIO2DsBhdBZWfkd/YE2z8gZeiJiLy
-         6TUJKW9tJem2KpUX6FQ63PcquAulxL4ztLV7uuDvsTHSiwOZ0Jf43DjMYQHqZhyGybkZ
-         39YjSQMe9XnB7fV3DEONEYEqsH2L+L1ZUBYP+j1t3IVskawYPLbwbUuP9Ucqz/+VVuTA
-         JkifYBo13f84Yntg0/RlNdgNh+7wqv3ymm04KPrEMc6uwCSKbqBDDT39jIDtAVZyjSxm
-         cCpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWeNHZtMJgZ00P1Rw+bwKnjuFEk0irX1/mTXBeVb2+eqrbzVksf+kgmHNrj5eKG4ab7Rbxsxdk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOAeZg96bQhmEspQK+fFz50KlWjcoRxYEsa5q6xcVHx0wi7L2B
-	ZAUCKSWmY/sbghziUkHm+6wJOBgonxjNOvzs4/oEkP+kt3vyXyFu5wzAOKDGwt8=
-X-Gm-Gg: ASbGncsc0SSCL2q1EOsmJoirJIBzQkHG4/70hs00nH/5VEBKsehgR8z4pO3R+leYLyN
-	NdctPJeLvHEc2zkZsY/K+xxfGWA6sJxzjxUlR3pbJirRP6Ct01IJ0OVN3sN/LUTX1qcWtC4ugS/
-	HEb+cyTqpPuqNVbHsBBwuGtnWNqVIl1G2WyWxMkBPdk+X5CBB7xv+CwaG6k/dBPgQhN81k8ar1p
-	OKcxILacqEXJA3bf4UMmm50XQ8hx6t85y+iN3EMb2DchSktchIEyLzBzjP1cFmkBIYNFi7oj3oc
-	oOtHv/+7dlIHgHrIIUskJ2WU
-X-Google-Smtp-Source: AGHT+IEnnBeTi4rkAq3RJvKv2sDTzPVMvHzLRXRbi8PGwwB6IaU0jmg6KgC+yuOAOUHizPIfNPeD9A==
-X-Received: by 2002:a05:6000:1f84:b0:385:e90a:b7ea with SMTP id ffacd0b85a97d-385e90abbd6mr12256289f8f.3.1733307426515;
-        Wed, 04 Dec 2024 02:17:06 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:982:cbb0:740:b323:3531:5c75? ([2a01:e0a:982:cbb0:740:b323:3531:5c75])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e391656csm12702156f8f.47.2024.12.04.02.17.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 02:17:06 -0800 (PST)
-Message-ID: <f727834f-b178-4a85-aeae-54826cbbde42@linaro.org>
-Date: Wed, 4 Dec 2024 11:17:04 +0100
+	s=arc-20240116; t=1733308119; c=relaxed/simple;
+	bh=7eb506RYFeu+3yUrmMfiN/XKza7dzzKww0rH3dCY76Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fCL913jgrOyfQOquXY8fLkdBD+74K/V51poAZHW1pRqevMLzh1Qsd9JyPjRNJIxr6/6q5/+mA8UL1ST9+iaZYixHxzKP4b5j1ODt3D8dh48srS5CRpSP356F0nIx0LpyFb5ctUz7JzCoVvPXJQeA2jVX8Re4xJYwYE1/Rsj7Lx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=vVkR2hV/; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=QLnMgbpm; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E7EB81F365;
+	Wed,  4 Dec 2024 10:28:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1733308115; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tdhLciGMr0dHEF8qTm+SUDKr/T4aE/yxU4GYWQt3Urk=;
+	b=vVkR2hV/gwJF/h2GYwYo9E0BsuMjTM1lMR2armbNWqqM+TulCB68vcYu9bmHpkYvYLHcfd
+	vCTcnKQi154fK9z3o2u370KEkaEw4MxuxGf9Qfe/w1l/icyTKNxng9s+gdi17uBc/UnC5a
+	sZDBi4h9NpYXX36VZmonhPW8L9+NNks=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=QLnMgbpm
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1733308114; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tdhLciGMr0dHEF8qTm+SUDKr/T4aE/yxU4GYWQt3Urk=;
+	b=QLnMgbpmEM0NGrBwaxSTFuwgFWSnRKzRE4QSgj03IiKQGV6eXGB7y+NTjVxpQpGJvg22hs
+	wdLFh3mPXMy5jrxYwzhC/myjJl2mFY1aik0S6QIvekSNs6rMXCNkZ1HqAn/wkhGw1GpQPG
+	FVjermcIVjWlWxm8sMSlGnwSYA0piWg=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DBC161396E;
+	Wed,  4 Dec 2024 10:28:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LNUmJ9EuUGczfwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Wed, 04 Dec 2024 10:28:33 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] btrfs: do proper folio cleanup when cow_file_range() failed
+Date: Wed,  4 Dec 2024 20:58:31 +1030
+Message-ID: <0419e04c1f9ddec20e0313d52b8815de954111c0.1733308057.git.wqu@suse.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: neil.armstrong@linaro.org
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH 2/9] crypto: qce - unregister previously registered algos
- in error path
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Thara Gopinath <thara.gopinath@gmail.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- Stanimir Varbanov <svarbanov@mm-sol.com>, linux-crypto@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
-References: <20241203-crypto-qce-refactor-v1-0-c5901d2dd45c@linaro.org>
- <20241203-crypto-qce-refactor-v1-2-c5901d2dd45c@linaro.org>
- <b3e5184d-19bc-45ed-92e3-a751842839b3@linaro.org>
- <CAMRc=Mc+hKeAwyvm_aaWe_r07iXuBMy0hRQrXSQjpy0irKzvMw@mail.gmail.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <CAMRc=Mc+hKeAwyvm_aaWe_r07iXuBMy0hRQrXSQjpy0irKzvMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E7EB81F365
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email,suse.com:dkim,suse.com:mid]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+X-Spam-Flag: NO
 
-On 03/12/2024 16:05, Bartosz Golaszewski wrote:
-> On Tue, Dec 3, 2024 at 2:55 PM <neil.armstrong@linaro.org> wrote:
->>
->> On 03/12/2024 10:19, Bartosz Golaszewski wrote:
->>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>
->>> If we encounter an error when registering alorithms with the crypto
->>> framework, we just bail out and don't unregister the ones we
->>> successfully registered in prior iterations of the loop.
->>>
->>> Add code that goes back over the algos and unregisters them before
->>> returning an error from qce_register_algs().
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
->>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>> ---
->>>    drivers/crypto/qce/core.c | 11 +++++++----
->>>    1 file changed, 7 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/crypto/qce/core.c b/drivers/crypto/qce/core.c
->>> index 58ea93220f015..848e5e802b92b 100644
->>> --- a/drivers/crypto/qce/core.c
->>> +++ b/drivers/crypto/qce/core.c
->>> @@ -51,16 +51,19 @@ static void qce_unregister_algs(struct qce_device *qce)
->>>    static int qce_register_algs(struct qce_device *qce)
->>>    {
->>>        const struct qce_algo_ops *ops;
->>> -     int i, ret = -ENODEV;
->>> +     int i, j, ret = -ENODEV;
->>>
->>>        for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
->>>                ops = qce_ops[i];
->>>                ret = ops->register_algs(qce);
->>> -             if (ret)
->>> -                     break;
->>> +             if (ret) {
->>> +                     for (j = i - 1; j >= 0; j--)
->>> +                             ops->unregister_algs(qce);
->>> +                     return ret;
->>> +             }
->>>        }
->>>
->>> -     return ret;
->>> +     return 0;
->>>    }
->>>
->>>    static int qce_handle_request(struct crypto_async_request *async_req)
->>>
->>
->> Perhaps you can also use the devm trick here aswell ?
->>
-> 
-> I wanted to keep this one brief for backporting but I also think that
-> scheduling a separate action here for every algo would be a bit
-> overkill. This is quite concise so I'd keep it this way.
+[BUG]
+When testing with COW fixup marked as BUG_ON() (this is involved with the
+new pin_user_pages*() change, which should not result new out-of-band
+dirty pages), I hit a crash triggered by the BUG_ON() from hitting COW
+fixup path.
 
-Sure understandable!
+This BUG_ON() happens just after a failed btrfs_run_delalloc_range():
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+ BTRFS error (device dm-2): failed to run delalloc range, root 348 ino 405 folio 65536 submit_bitmap 6-15 start 90112 len 106496: -28
+ ------------[ cut here ]------------
+ kernel BUG at fs/btrfs/extent_io.c:1444!
+ Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+ CPU: 0 UID: 0 PID: 434621 Comm: kworker/u24:8 Tainted: G           OE      6.12.0-rc7-custom+ #86
+ Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+ Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
+ pc : extent_writepage_io+0x2d4/0x308 [btrfs]
+ lr : extent_writepage_io+0x2d4/0x308 [btrfs]
+ Call trace:
+  extent_writepage_io+0x2d4/0x308 [btrfs]
+  extent_writepage+0x218/0x330 [btrfs]
+  extent_write_cache_pages+0x1d4/0x4b0 [btrfs]
+  btrfs_writepages+0x94/0x150 [btrfs]
+  do_writepages+0x74/0x190
+  filemap_fdatawrite_wbc+0x88/0xc8
+  start_delalloc_inodes+0x180/0x3b0 [btrfs]
+  btrfs_start_delalloc_roots+0x174/0x280 [btrfs]
+  shrink_delalloc+0x114/0x280 [btrfs]
+  flush_space+0x250/0x2f8 [btrfs]
+  btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
+  process_one_work+0x164/0x408
+  worker_thread+0x25c/0x388
+  kthread+0x100/0x118
+  ret_from_fork+0x10/0x20
+ Code: aa1403e1 9402f3ef aa1403e0 9402f36f (d4210000)
+ ---[ end trace 0000000000000000 ]---
 
-> 
-> Bart
+[CAUSE]
+That failure is mostly from cow_file_range(), where we can hit -ENOSPC.
+
+Although the -ENOSPC is already a bug related to our space reservation
+code, let's just focus on the error handling.
+
+For example, we have the following dirty range [0, 64K) of an inode,
+with 4K sector size and 4K page size:
+
+   0        16K        32K       48K       64K
+   |///////////////////////////////////////|
+   |#######################################|
+
+Where |///| means page are still dirty, and |###| means the extent io
+tree has EXTENT_DELALLOC flag.
+
+- Enter extent_writepage() for page 0
+
+- Enter btrfs_run_delalloc_range() for range [0, 64K)
+
+- Enter cow_file_range() for range [0, 64K)
+
+- Function btrfs_reserve_extent() only reserved one 16K extent
+  So we created extent map and ordered extent for range [0, 16K)
+
+   0        16K        32K       48K       64K
+   |////////|//////////////////////////////|
+   |<- OE ->|##############################|
+
+   And range [0, 16K) has its delalloc flag cleared.
+   But since we haven't yet submit any bio, involved 4 pages are still
+   dirty.
+
+- Function btrfs_reserve_extent() return with -ENOSPC
+  Now we have to run error cleanup, which will clear all
+  EXTENT_DELALLOC* flags and clear the dirty flags for the remaining
+  ranges:
+
+   0        16K        32K       48K       64K
+   |////////|                              |
+   |        |                              |
+
+  Note that range [0, 16K) still has their pages dirty.
+
+- Some time later, writeback are triggered again for the range [0, 16K)
+  since the page range still have dirty flags.
+
+- btrfs_run_delalloc_range() will do nothing because there is no
+  EXTENT_DELALLOC flag.
+
+- extent_writepage_io() find page 0 has no ordered flag
+  Which falls into the COW fixup path, triggering the BUG_ON().
+
+Unfortunately this error handling bug dates back to the introduction of btrfs.
+Thankfully with the abuse of cow fixup, at least it won't crash the
+kernel.
+
+[FIX]
+Instead of immediately unlock the extent and folios, we keep the extent
+and folios locked until either erroring out or the whole delalloc range
+finished.
+
+When the whole delalloc range finished without error, we just unlock the
+whole range with PAGE_SET_ORDERED (and PAGE_UNLOCK for !keep_locked
+cases), with EXTENT_DELALLOC and EXTENT_LOCKED cleared.
+And those involved folios will be properly submitted, with their dirty
+flags cleared during submission.
+
+For the error path, it will be a little more complex:
+
+- The range with ordered extent allocated (range (1))
+  We only clear the EXTENT_DELALLOC and EXTENT_LOCKED, as the remaining
+  flags are cleaned up by
+  btrfs_mark_ordered_io_finished()->btrfs_finish_one_ordered().
+
+  For folios we finish the IO (clear dirty, start writeback and
+  immediately finish the writeback) and unlock the folios.
+
+- The range with reserved extent but no ordered extent (range(2))
+- The range we never touched (range(3))
+  For both range (2) and range(3) the behavior is not changed.
+
+Now even if cow_file_range() failed halfway with some successfully
+reserved extents/ordered extents, we will keep all folios clean, so
+there will be no future writeback triggered on them.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+---
+Changelog:
+v2:
+- Fix the error handling for range (1)
+  Where the patch is still using the old "0", which will not unlock the
+  extent range.
+---
+ fs/btrfs/inode.c | 65 ++++++++++++++++++++++++------------------------
+ 1 file changed, 32 insertions(+), 33 deletions(-)
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 9267861f8ab0..9517fb2df649 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1372,6 +1372,17 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 
+ 	alloc_hint = btrfs_get_extent_allocation_hint(inode, start, num_bytes);
+ 
++	/*
++	 * We're not doing compressed IO, don't unlock the first page
++	 * (which the caller expects to stay locked), don't clear any
++	 * dirty bits and don't set any writeback bits
++	 *
++	 * Do set the Ordered (Private2) bit so we know this page was
++	 * properly setup for writepage.
++	 */
++	page_ops = (keep_locked ? 0 : PAGE_UNLOCK);
++	page_ops |= PAGE_SET_ORDERED;
++
+ 	/*
+ 	 * Relocation relies on the relocated extents to have exactly the same
+ 	 * size as the original extents. Normally writeback for relocation data
+@@ -1431,6 +1442,10 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 		file_extent.offset = 0;
+ 		file_extent.compression = BTRFS_COMPRESS_NONE;
+ 
++		/*
++		 * Locked range will be released either during error clean up or
++		 * after the whole range is finished.
++		 */
+ 		lock_extent(&inode->io_tree, start, start + cur_alloc_size - 1,
+ 			    &cached);
+ 
+@@ -1476,21 +1491,6 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 
+ 		btrfs_dec_block_group_reservations(fs_info, ins.objectid);
+ 
+-		/*
+-		 * We're not doing compressed IO, don't unlock the first page
+-		 * (which the caller expects to stay locked), don't clear any
+-		 * dirty bits and don't set any writeback bits
+-		 *
+-		 * Do set the Ordered (Private2) bit so we know this page was
+-		 * properly setup for writepage.
+-		 */
+-		page_ops = (keep_locked ? 0 : PAGE_UNLOCK);
+-		page_ops |= PAGE_SET_ORDERED;
+-
+-		extent_clear_unlock_delalloc(inode, start, start + cur_alloc_size - 1,
+-					     locked_folio, &cached,
+-					     EXTENT_LOCKED | EXTENT_DELALLOC,
+-					     page_ops);
+ 		if (num_bytes < cur_alloc_size)
+ 			num_bytes = 0;
+ 		else
+@@ -1507,6 +1507,9 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 		if (ret)
+ 			goto out_unlock;
+ 	}
++	extent_clear_unlock_delalloc(inode, orig_start, end, locked_folio, &cached,
++				     EXTENT_LOCKED | EXTENT_DELALLOC,
++				     page_ops);
+ done:
+ 	if (done_offset)
+ 		*done_offset = end;
+@@ -1527,35 +1530,31 @@ static noinline int cow_file_range(struct btrfs_inode *inode,
+ 	 * We process each region below.
+ 	 */
+ 
+-	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
+-		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
+-	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+-
+ 	/*
+ 	 * For the range (1). We have already instantiated the ordered extents
+ 	 * for this region. They are cleaned up by
+ 	 * btrfs_cleanup_ordered_extents() in e.g,
+-	 * btrfs_run_delalloc_range(). EXTENT_LOCKED | EXTENT_DELALLOC are
+-	 * already cleared in the above loop. And, EXTENT_DELALLOC_NEW |
+-	 * EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV are handled by the cleanup
+-	 * function.
++	 * btrfs_run_delalloc_range().
++	 * EXTENT_DELALLOC_NEW | EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV
++	 * are also handled by the cleanup function.
+ 	 *
+-	 * However, in case of @keep_locked, we still need to unlock the pages
+-	 * (except @locked_folio) to ensure all the pages are unlocked.
++	 * So here we only clear EXTENT_LOCKED and EXTENT_DELALLOC flag,
++	 * and finish the writeback of the involved folios, which will be
++	 * never submitted.
+ 	 */
+-	if (keep_locked && orig_start < start) {
++	if (orig_start < start) {
++		clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC;
++		page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
++
+ 		if (!locked_folio)
+ 			mapping_set_error(inode->vfs_inode.i_mapping, ret);
+ 		extent_clear_unlock_delalloc(inode, orig_start, start - 1,
+-					     locked_folio, NULL, 0, page_ops);
++					     locked_folio, NULL, clear_bits, page_ops);
+ 	}
+ 
+-	/*
+-	 * At this point we're unlocked, we want to make sure we're only
+-	 * clearing these flags under the extent lock, so lock the rest of the
+-	 * range and clear everything up.
+-	 */
+-	lock_extent(&inode->io_tree, start, end, NULL);
++	clear_bits = EXTENT_LOCKED | EXTENT_DELALLOC | EXTENT_DELALLOC_NEW |
++		EXTENT_DEFRAG | EXTENT_CLEAR_META_RESV;
++	page_ops = PAGE_UNLOCK | PAGE_START_WRITEBACK | PAGE_END_WRITEBACK;
+ 
+ 	/*
+ 	 * For the range (2). If we reserved an extent for our delalloc range
+-- 
+2.47.1
 
 
