@@ -1,123 +1,135 @@
-Return-Path: <stable+bounces-98560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FC99E45FC
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:42:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53F89E4658
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 22:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45F2F285DB9
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:42:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 725F6B31C84
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146A818F2EA;
-	Wed,  4 Dec 2024 20:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EA91F03CD;
+	Wed,  4 Dec 2024 20:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fZCxFF99"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HUFwwsdc"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575521531E8
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 20:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FB61F540C
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 20:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733344972; cv=none; b=shu9/xQG5ZrtwE3k3f1gzXl52uUn2EHanIODBmAHqgC/g/NT3c/ET4ZGGz929KeOLUaWZ6hnOO5I+oCmaWb4GPtYJH2DCW01G2KQIzMcg8+p9m2gkG1qHz7ASUJL0T/CekZElGoy/n1S9oleuQ1hpz6ndZSnnBAJcvB7H8tNh8A=
+	t=1733343845; cv=none; b=Km8YhvBc7yvs3BxDcIr+5SemylouWpw+u073GwrWs2++NSgMnCh0GUTizOn69tlAiQiTXUDQxDfqomoOZylimQEzMbAQxQSwFNKSmaId1w1Q+rS20KE4MJUrdQ9/KQpAmGI+quKjAYolWUtNJrhdQYVl7GS8p6YQVKSZCWTWhv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733344972; c=relaxed/simple;
-	bh=b0KUq2hBq2h1yRarubIm7P/LyMXZy+MJlXP7Voz62/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M7KAU2DNBSCOHV+QdresI79PEwq06ltoDC5UR+rYZsZis9QS/ULVXl3XPuVz9F/KmF20FSVNmo848mGnq4qwC23k21r4vQpiUI8JD+gX4TlM6Lfls+EanmPbDjFSA3/6FafZAWBmOqKr0crkIV1HmnNIn2056C7ArkE6zgSdip8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fZCxFF99; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733344970;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iE1za9z1DJw81fVOgnOIV9q0IUu9vwpwBBEeucKo+zA=;
-	b=fZCxFF99onaNGHU+GFpnG2eQTe6x3Uv5NRZvv7nmHcCwIXWJ87oTCNudZrvu80c8Kx19KJ
-	Kc3Y2yl9989ahNCboIZ/BG70T1/ws6GgAKSKdhWLsMZGoqBJGYS7t5qUi7iOVVD7ZV32BZ
-	deQyNnboPa5jDWtXOvLk/mSu6N08Kb8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-246-xbSKEkjvN0S4-JhjleNyAg-1; Wed,
- 04 Dec 2024 15:42:46 -0500
-X-MC-Unique: xbSKEkjvN0S4-JhjleNyAg-1
-X-Mimecast-MFC-AGG-ID: xbSKEkjvN0S4-JhjleNyAg
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7792019560A2;
-	Wed,  4 Dec 2024 20:42:44 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.194.11])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E18DC1956094;
-	Wed,  4 Dec 2024 20:42:42 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andy@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	platform-driver-x86@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3 3/8] platform/x86: serdev_helpers: Check for serial_ctrl_uid == NULL
-Date: Wed,  4 Dec 2024 21:42:14 +0100
-Message-ID: <20241204204227.95757-4-hdegoede@redhat.com>
-In-Reply-To: <20241204204227.95757-1-hdegoede@redhat.com>
-References: <20241204204227.95757-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1733343845; c=relaxed/simple;
+	bh=MXOiCACkpVOc6mcNafOGPJ4hyrXbRoMooLVv45LWQUY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=r4qjHzV0qprM5IY6hr68aClCzjqk1JYg3dnQEHWJzKLh+as6G9FjIBWy9aD4x6swKLmSUxTmdawakszXN2w7oiBzmY2AU4ZPSHOZ44eVe1evLUqFKQT9aP5ll3kwGS0qxIsukl7WqsEx6Jt3LML7MJ47bgn3GmhjWKIF+XIvcW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HUFwwsdc; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-7259a7fd145so144581b3a.0
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 12:24:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733343843; x=1733948643; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Urpq4ZoTz0zlhdaes7Fa3+xbfU+e0tOc7pcRLcJtc8=;
+        b=HUFwwsdc+gHYWTOwh1FongCPeOzO5y5uvD8yBtov2BuwoMAUbW41xvTzInk5SPbnn/
+         7yIQLFbLrCkHpUOeLgP//yL6obIXgnCWR42k50tbmPH+3hynwp8JE6gy5DV/oyIGRhhZ
+         AsdTQU0lrayZxeOYOmu6uJI5bX1ChoxWiGiNZSRbc3vqNyK3KBfwduPC9pa94u4QR6Ak
+         YJuYlFWFsQUu3r58hbB+hASxqk9e/zA66oiTvZIuOoq1lGVo/QwnwSgQi7gCGC83prAc
+         r1ZrG7x550SqDfOT+9plM92J/OJILLdkAKijQQik9t+m710QTyNL/h7GeGxFb+3unyE2
+         yoSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733343843; x=1733948643;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/Urpq4ZoTz0zlhdaes7Fa3+xbfU+e0tOc7pcRLcJtc8=;
+        b=APGRayutog40f1TE98diaeCrnWLyGSnNDHgh9+2AEU1PMDoLAcT/pI/C/gHBRRcyOc
+         U8Z90QMpix1l0rQ+rS8L2m7/o0NvKfgJzh+u3uIO0BTPAjLguV1TBmaDuqSO5s7GxXO3
+         GnBU9kfzJoBa+bH6/OzJ84sOfTcBax8eT4Mv/oKX/FJG2gDfVr8HdZDWYqR/eFfx7T/y
+         KkbcH6XMVIblA2HH1hduveGSwDMLsfaPOmQEHVmzNsZauDT3kzPoBiwUBjJSvmTXvnAf
+         5fD5YkEPRB0Nu5ChpAGzvqCC61/FYB4YoPy9zDOPfugS0tAOgvFmoKnt04Pd8LzJaSeF
+         WdRQ==
+X-Gm-Message-State: AOJu0Yxff527oQ8en0+oXKhyf0MGWwmuDR9/pQhtQMzLPSTPVGgXStc1
+	jIhJNAwnND5EmkG54OGRqH84Id6BAPI0AjAmWvmJqGal8cMzGqcuo266C0Hf51tZo+vtlbJruKe
+	c/1rfRVH08OTCVQ9jP2zsxq+ATmlpdueahr7dYn4K9m661SJmUnRMNzTFMTeTaemxK3emkAoV2V
+	4fQ1xqLshZ+vQWyKJcuyFvgx1rrmiijJ98s3rp+h81F4ciU9hP3PqDFTTAI8U=
+X-Google-Smtp-Source: AGHT+IHH6OFqXpyPi8C0yfCQwnDXJAzhiEtnLdmByQh9n74PQdlopfO8TiWs2x9Rc2ZO26mGluCkQ0+HdW6pU0Kzcg==
+X-Received: from pfbcu14.prod.google.com ([2002:a05:6a00:448e:b0:724:e19a:dfd1])
+ (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:e5d1:b0:215:ba36:7b35 with SMTP id d9443c01a7336-215bd10eeb8mr88104945ad.32.1733343843509;
+ Wed, 04 Dec 2024 12:24:03 -0800 (PST)
+Date: Wed,  4 Dec 2024 12:23:57 -0800
+In-Reply-To: <20241204202357.2718096-1-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Mime-Version: 1.0
+References: <20241204202357.2718096-1-jingzhangos@google.com>
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241204202357.2718096-3-jingzhangos@google.com>
+Subject: [PATCH 6.1.y 3/3] KVM: arm64: vgic-its: Clear ITE when DISCARD frees
+ an ITE
+From: Jing Zhang <jingzhangos@google.com>
+To: stable@vger.kernel.org
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Kunkun Jiang <jiangkunkun@huawei.com>, Jing Zhang <jingzhangos@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-dell_uart_bl_pdev_probe() calls get_serdev_controller() with the
-serial_ctrl_uid parameter set to NULL.
+From: Kunkun Jiang <jiangkunkun@huawei.com>
 
-In case of errors this NULL parameter then gets passed to pr_err()
-as argument matching a "%s" conversion specification. This leads to
-compiler warnings when building with "make W=1".
+commit 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 upstream.
 
-Check serial_ctrl_uid before passing it to pr_err() to avoid these.
+When DISCARD frees an ITE, it does not invalidate the
+corresponding ITE. In the scenario of continuous saves and
+restores, there may be a situation where an ITE is not saved
+but is restored. This is unreasonable and may cause restore
+to fail. This patch clears the corresponding ITE when DISCARD
+frees an ITE.
 
-Fixes: dc5afd720f84 ("platform/x86: Add new get_serdev_controller() helper")
 Cc: stable@vger.kernel.org
-Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+[Jing: Update with entry write helper]
+Signed-off-by: Jing Zhang <jingzhangos@google.com>
+Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 ---
- drivers/platform/x86/serdev_helpers.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/serdev_helpers.h b/drivers/platform/x86/serdev_helpers.h
-index bcf3a0c356ea..3bc7fd8e1e19 100644
---- a/drivers/platform/x86/serdev_helpers.h
-+++ b/drivers/platform/x86/serdev_helpers.h
-@@ -35,7 +35,7 @@ get_serdev_controller(const char *serial_ctrl_hid,
- 	ctrl_adev = acpi_dev_get_first_match_dev(serial_ctrl_hid, serial_ctrl_uid, -1);
- 	if (!ctrl_adev) {
- 		pr_err("error could not get %s/%s serial-ctrl adev\n",
--		       serial_ctrl_hid, serial_ctrl_uid);
-+		       serial_ctrl_hid, serial_ctrl_uid ?: "*");
- 		return ERR_PTR(-ENODEV);
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 7a1569b9d10e..5a8a181cf219 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -855,6 +855,9 @@ static int vgic_its_cmd_handle_discard(struct kvm *kvm, struct vgic_its *its,
+ 
+ 	ite = find_ite(its, device_id, event_id);
+ 	if (ite && its_is_collection_mapped(ite->collection)) {
++		struct its_device *device = find_its_device(its, device_id);
++		int ite_esz = vgic_its_get_abi(its)->ite_esz;
++		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
+ 		/*
+ 		 * Though the spec talks about removing the pending state, we
+ 		 * don't bother here since we clear the ITTE anyway and the
+@@ -863,7 +866,8 @@ static int vgic_its_cmd_handle_discard(struct kvm *kvm, struct vgic_its *its,
+ 		vgic_its_invalidate_cache(kvm);
+ 
+ 		its_free_ite(kvm, ite);
+-		return 0;
++
++		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
  	}
  
-@@ -43,7 +43,7 @@ get_serdev_controller(const char *serial_ctrl_hid,
- 	ctrl_dev = get_device(acpi_get_first_physical_node(ctrl_adev));
- 	if (!ctrl_dev) {
- 		pr_err("error could not get %s/%s serial-ctrl physical node\n",
--		       serial_ctrl_hid, serial_ctrl_uid);
-+		       serial_ctrl_hid, serial_ctrl_uid ?: "*");
- 		ctrl_dev = ERR_PTR(-ENODEV);
- 		goto put_ctrl_adev;
- 	}
+ 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
 -- 
-2.47.0
+2.47.0.338.g60cca15819-goog
 
 
