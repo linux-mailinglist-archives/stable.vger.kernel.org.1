@@ -1,94 +1,100 @@
-Return-Path: <stable+bounces-98216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFC69E31DB
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 04:10:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A0241624A4
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:10:23 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20756149C53;
-	Wed,  4 Dec 2024 03:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCFM8mZL"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FFB9E3202
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 04:20:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4514D9FB;
-	Wed,  4 Dec 2024 03:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32B7EB20993
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:20:23 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE4C6F31E;
+	Wed,  4 Dec 2024 03:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kAwnhcgR"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C02374FF
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 03:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733281819; cv=none; b=j/D4fTeU63gjUEFMo4Q6CIcDGM0O+sBBl7VMNPv33ysQAUacUHu7g5umgXE6Vpt4KAeZVyq9HSjJJ5EsOKt1g4nUVSn8ebu1H+WrbY0zVn2dT4fdPA4noqRYz+jq4+vBXRRhEH7+EzXhqfmoA2Ra1br5kVOL28wv8fvb5L67Yew=
+	t=1733282419; cv=none; b=Tcq/IFXjb8HJeuuzDj+TRfJ4LFbyWpl14ibDtmohXMOrNZlTxiBNid/dEueZcO38HApnmBXrprKKvRgk/8FFqHkETsBxN1ve2E7HyuOgTX5wMJBLEdkB6OmolhshY7Xr5n5nO/wXyOj6+Dd8qfjpRJTcevqYWOpo4dmNXCG3Oqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733281819; c=relaxed/simple;
-	bh=WmrE0DC5qwIB4Vgu/OlnByp2tC0LRSQN3RMWZUkdeFU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NSDIQDkdJYtNMb7gtBtkzSFpNM5GZce0TOj8woCV4MKVt5Wj0xkCw3c7adRdwmmruh6tPn4Uht6DWQG4EH6o5IsbZFCFBvls5CLkXNyT3aTz5gLledp/QzCHljeOAFwv/mMxbcbU0Fk0kAsKAxIafBqbLSeNm1tQLPxcyrUfbHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCFM8mZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4F7C4CEDC;
-	Wed,  4 Dec 2024 03:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733281817;
-	bh=WmrE0DC5qwIB4Vgu/OlnByp2tC0LRSQN3RMWZUkdeFU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YCFM8mZL7gome89XLNLCmtOdYb3+dKYF7EhVnEBUdxE8j8g5Gj7gM3UkgxI97Gp9K
-	 lApY+e2lZ0q07l8pT/Pwu1pHT0/NuDTilkWrg5cKmrw+GVC7qM/G36E0su+Okz+EUN
-	 6zcngXwkaLFjielLu4PMn57aMUB3YJO3bomF8jI3QbscSteV+CogL0rHfoypl66Q74
-	 7M30Te64pIZN/GY4Cu4DtIZAxAql5meMhC0A6eukGgVx9iyYd/StaKiUVCn3MI6pkn
-	 DULIM0UlaCp+4X4SicfSA0ZvAvM1kUR4gADFZ08rCAG8K71b0N3YptfSy4lkJlRbqd
-	 VCx7WHOkXFJbw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7217F3806656;
-	Wed,  4 Dec 2024 03:10:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1733282419; c=relaxed/simple;
+	bh=K9TBe0Dvrs7BK6n7BsEVLjUQ6ytLahEijjRyzXF/cbg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=sU3vcqsr8jmvm8HfWqIfGyF2DEJghC6Z5h3w5M899W6e6mYNut2EfQpQqTuBFDWr+qdRUXyczU3EdxCCE7Ukpiw7epk4+IUO5wjVd30osqZKZUrJHixdH+IOH677gnyDg1kyHYkJfLDh/Szl2CsrR1MMW8hzjGt/QFb8a05fpis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kAwnhcgR; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733282418; x=1764818418;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=K9TBe0Dvrs7BK6n7BsEVLjUQ6ytLahEijjRyzXF/cbg=;
+  b=kAwnhcgRxR+0iNulRsa2sSLdaJWvxhzYNocWg8iYmvsihcrgylf8+tQe
+   cH3587LRu4FTF21oyZcfT1LOJR3jatvWoYmV/zcp8WJUgYWCvSqGIjl46
+   R4XOYOKfa2rRU9YoJIyfvh8O4Y361ehbEirzcKThxw90y/zNBnvzKRld9
+   h22zmCRMPBOjkNRlZ9yPgU46XKDPytpLCBvgt6wsNI7ClkxHRROwQGN6G
+   G9cHMG7DzcndFKurnY4/uKvwdwBTqc7ivis+HdJNYZo5dPpmJ5iDHLOzT
+   qF2MORQwvDRkLSwH9f5Kc+6xDahmbP7hWZ/YDG7GzwPIYDuyXnp5X/QDO
+   Q==;
+X-CSE-ConnectionGUID: Cgu5l9ieQU+YLmIPI3IIbA==
+X-CSE-MsgGUID: BwUGj5EwQ+SE4AZ2NsMiiw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="32891282"
+X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
+   d="scan'208";a="32891282"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 19:20:17 -0800
+X-CSE-ConnectionGUID: SvT0dZ8fShq4YGkVjzh0kA==
+X-CSE-MsgGUID: WDFbm2pQT5eafbhQL/Y3iQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,206,1728975600"; 
+   d="scan'208";a="93481975"
+Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 03 Dec 2024 19:20:16 -0800
+Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tIfvx-0001jB-2R;
+	Wed, 04 Dec 2024 03:20:13 +0000
+Date: Wed, 4 Dec 2024 11:19:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Haoyu Li <lihaoyu499@gmail.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] net: wireless: sme: Initialize n_channels before
+ accessing channels in cfg80211_conn_scan
+Message-ID: <Z0_KMj-UU-HaXPpt@24ad928833eb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [net] net: Make napi_hash_lock irq safe
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173328183200.718738.18254702355170016369.git-patchwork-notify@kernel.org>
-Date: Wed, 04 Dec 2024 03:10:32 +0000
-References: <20241202182103.363038-1-jdamato@fastly.com>
-In-Reply-To: <20241202182103.363038-1-jdamato@fastly.com>
-To: Joe Damato <jdamato@fastly.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
- kuba@kernel.org, mkarsten@uwaterloo.ca, stable@vger.kernel.org,
- linux@roeck-us.net, davem@davemloft.net, horms@kernel.org,
- dsahern@kernel.org, bigeasy@linutronix.de, lorenzo@kernel.org,
- aleksander.lobakin@intel.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241203152049.348806-1-lihaoyu499@gmail.com>
 
-Hello:
+Hi,
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Thanks for your patch.
 
-On Mon,  2 Dec 2024 18:21:02 +0000 you wrote:
-> Make napi_hash_lock IRQ safe. It is used during the control path, and is
-> taken and released in napi_hash_add and napi_hash_del, which will
-> typically be called by calls to napi_enable and napi_disable.
-> 
-> This change avoids a deadlock in pcnet32 (and other any other drivers
-> which follow the same pattern):
-> 
-> [...]
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Here is the summary with links:
-  - [net] net: Make napi_hash_lock irq safe
-    https://git.kernel.org/netdev/net/c/cecc1555a8c2
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-You are awesome, thank you!
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] net: wireless: sme: Initialize n_channels before accessing channels in cfg80211_conn_scan
+Link: https://lore.kernel.org/stable/20241203152049.348806-1-lihaoyu499%40gmail.com
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
 
