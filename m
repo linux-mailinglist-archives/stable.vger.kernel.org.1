@@ -1,312 +1,110 @@
-Return-Path: <stable+bounces-98293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981A99E3AC6
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 14:01:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015B99E3AD1
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 14:06:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9455164253
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 13:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1192161EC8
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 13:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBBA1BC08B;
-	Wed,  4 Dec 2024 13:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEEB1BC08B;
+	Wed,  4 Dec 2024 13:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uG0rJY64"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="DPWSlsl7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872EF1B6CF9
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 13:01:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0E9746E
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 13:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733317273; cv=none; b=NIz+Xhz/6XI/bkBYYzxCUCS1lvdKm5PrIL3lOTWw2bMGICflifS7tugGzxXK6A3GsJoe2dJ5N94fRdxj710A1FM6ZaxtzFM0ehbIJLWB5/bZmZwSrlFhTAywNUDuj3GHg6F3RqeyzKFn4WtcIBWCUt5YuBhHub1lMr6FM66JXCQ=
+	t=1733317553; cv=none; b=D/gAFgnIz+a8mBaDIlPCTIqpz6JayON6aCwH1IbINZc/HTZ9VfMvvt2Bit/oXRhtUk9SdCcNxejg7U8eitirihkoNO/8XVn7lFbjohR4Wl4Gd5fYre5njllwUlgV0KJS+Vfp8zM741Ssqpw1h9bd3QOSNvqz6qoprEBU1YgEkxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733317273; c=relaxed/simple;
-	bh=5ILmEqTiQzWMOMrrhvDVYhyp5VUJ3IUTTE1tEB2Ycdo=;
+	s=arc-20240116; t=1733317553; c=relaxed/simple;
+	bh=Z3EENbcgyMum84QzWlYJALT23zS7loMokMBszOJOSX4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aUO9MfC+ZVcYDaP1SeIpAAbMlofyk5ffztb4zmFfNwdIg45L0Yomfa2lxmS/mhixvDNWxKRquT3ZLpWtdgtlMloM7zA0cWxD6TF0eKfFtpojqoiL0nsMacIqHp1886zSEf/qRgiw8kgVTeIFFSKKh8QLe7fJmcT1aoRVUWIQn10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uG0rJY64; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b65d1c707aso488055385a.0
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 05:01:11 -0800 (PST)
+	 To:Cc:Content-Type; b=Mn4EWNmKyH4zFEjNrULJ4iFggSAQ5QSkcXBALKW4to6A40GDESR10t3TEUwlDCmGw938ta6rDkbnq+dodHl9I1jL86a9FjygBIH1be4eD8quWWZ9rhDirZULmx+yh92psSnfJIwlBy6qU1xD7hkb0+EU9e6De6OvXh/uaxnm2oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=DPWSlsl7; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5cfa1ec3b94so7595037a12.2
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 05:05:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733317270; x=1733922070; darn=vger.kernel.org;
+        d=ionos.com; s=google; t=1733317548; x=1733922348; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tpV0x8eY3pglXksgasLFNdR3HbZHXmyjX5FpR9r0Yfo=;
-        b=uG0rJY64Q600BACGASWqTsnuWkY6v5Z/9EuNvy3FHHzZr4W8FoRHrsHQb1Bts25V2J
-         1H96AnBWPK3VW+LtFdVzQSXmv2r1ojVl+xwu76Wcw2aqDpnUZlip3eruuyVwGb0v+r/d
-         JbOMUMGXDAjlX8eErKeHXAzs0eOV1gYzogHc40z6Awo7rzyNhVN7OdZcChy3gBZVh5XR
-         rPfg30ALQufAAI+BvPVI8jbRRZcq6IjBymc0cfAgiWk+bDmGCEEN/vwRXsD/dQT18sAq
-         3f1IlwS6deldFtRvtrMlu0B6QtTumv5erVpKquFnmIiQagK/0stbSQ3K3evYCl1sKvfm
-         ZIpw==
+        bh=Z3EENbcgyMum84QzWlYJALT23zS7loMokMBszOJOSX4=;
+        b=DPWSlsl7sjY4NmrKmvWt3tRZMtRWqkcyrBKrUYMvEta/xr1bWiKbRyJyhdpZGSuEHD
+         ewcejePyZq9mHxYJ5QwjPWba/yFpO2eudzyONjs+nvbiET5O+sDO737PUxdRlkZYKDbo
+         RHK2eA3TY83w2JitClwhGvhkHQbpOsV0eWsZa2Hm5NuEeUB7aLP4QYitiqswC6H42Ft0
+         mSFmlcT64FSJ3rXwqxmh1o5HehBmPRtJKwdmNlS3ZkhRMJvcfOmhpjsfksxwFJFlULzF
+         pqxS9XXvK7fRp4nuB1J8yboy4QHIHWWYO0V6U8WGuN31wkxvQCbIcJQTv9HwRLklM2Tr
+         yhvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733317270; x=1733922070;
+        d=1e100.net; s=20230601; t=1733317548; x=1733922348;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tpV0x8eY3pglXksgasLFNdR3HbZHXmyjX5FpR9r0Yfo=;
-        b=ocef7YYVvucE0rT2TaRLoESbIFFm5Y0GHSP4sI6w4anA7LnZX4ZpJ85mCpoJQQgWqh
-         HmnmyaVDxiAGEGtxoFhbh16ZHn1O0n+nTFImKDF9261MTwvTCI01othFbUZNmG3yHBgK
-         PaozCvUC8tThw7G7sSS7FKSP53/lMKRWqkv2p6mLyRwAkdPnDAVBk0yJMqVqdnR2bhHc
-         i4rPSxtBXEboH84Zf0R8JUC+lnGk3OfRv5SX32o724qFshdUg3rCwGNcpVI6MtYloHVE
-         s6HGk+tztPHk9jja3za6c9nnu5rjzqc/+I6OtesrUuXSlBLJ2gv9W1EYYnYd5N6EHnRZ
-         4S9g==
-X-Gm-Message-State: AOJu0YwLNUrv/uYRAEKIo4ktQKld0+UYsExGL3Y389manJLJyFONDi/w
-	oXuJX5swJDussN/xTL8vz/n05jBAWiW7aLGlWCrPbIuw2Ffv5PoRTTuVmc7HkVxXohGRii+meuZ
-	xZ1SnryUR+rvDhsQcU5DyrUhxyukpFLFpVMrtWln8Ern2EdcBbEE=
-X-Gm-Gg: ASbGncvzqjMEQHwUXKkGPrqn9obcGDagIpqaxpS/dpmg3oxxkfFPDCHjDgGXeE2+BVc
-	S04PrhyqiBTuQcGmbMkxW/46cVwXMwlBZ
-X-Google-Smtp-Source: AGHT+IH+iTIPjsJVLJ1TxqzWa1PXd6bsGmH6/EGI/vqgJHKP761HYaMPr1dif7uYa4ILxAw1c15EM8Qscw23c6n3EfE=
-X-Received: by 2002:a05:6102:d93:b0:4af:b127:6742 with SMTP id
- ada2fe7eead31-4afb127685cmr756838137.21.1733317259252; Wed, 04 Dec 2024
- 05:00:59 -0800 (PST)
+        bh=Z3EENbcgyMum84QzWlYJALT23zS7loMokMBszOJOSX4=;
+        b=tS1FS5gFWnCIVw2if16CUDyXr8zGXOK96u4ma0WqQvKdNfl0QFcKRkd5+HdB5k+Pdz
+         BuEAozDWDdrPyGYGPVDVxrog2eSQfQfV82kmIJ0GPNuk5eS2MjcAvqjCDrB7kHlxMZRu
+         B9/x164vVM15UIOpc1bT7Eftr6lwhMz5Nwvl9pYsxK7KkSJpSaxCUsFPDpA9EjanLRhy
+         mzNY/FM5BdJGpiiujoAynljlXeaAiCaPsk34jedrhBNk/qEhsf5w/WX/sE9E5uzFpU64
+         hmYWpr6dRZ9dKNsKRcM8hEuAVV0KVZQT75Pi7MG4QLIS8uCtPsRwYTDL7NftaJUvZBrt
+         X7kw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCs91Qm5SWpkhIp+KHEO9FAjrk8GhiP8klZMC+l6ShuYRasG7gOh/xHhv7QoTui5I16inFs50=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF+crC6qX8HrRZMhpfUehWNepeY2VG9g+nQHnCPy4JTWRndk04
+	2+gd55rs4sOsqgdQqrgPsNH7pCsnTiUzUqbTH7uf02fuMIjwIgLC2buk9y2s+CFgMPRW9YRrzM7
+	NJWwE3lA2ecqK5nZYWbjIN3xjDSxmu6lPenLweQ==
+X-Gm-Gg: ASbGncv+CbqFt9Zy9z4PBXdM5ZAEIE+ibBZenXmGYfO9uvI3mfOBHYP8CHBEEgpuWMQ
+	gAUU649+VGZTQ/y2gfyt7MmYk9jO7mScJtFfLldrv9KX7KETv/zU2HaNO4fxu
+X-Google-Smtp-Source: AGHT+IGrdr9TGaSHAfS1s7UDwKK36JSpdSVugCVWYYvYdWQLSIIW7IxynDRCS9finSrEfHe9b0yvURkSkUzxde1WavQ=
+X-Received: by 2002:a17:906:1ba9:b0:aa5:3853:553c with SMTP id
+ a640c23a62f3a-aa5f7f4ae96mr404733366b.53.1733317547869; Wed, 04 Dec 2024
+ 05:05:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203144743.428732212@linuxfoundation.org>
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 4 Dec 2024 18:30:47 +0530
-Message-ID: <CA+G9fYu21yqTvL428TFueMJ1uU1H_u8Vc470dER2CTrNK=Js0g@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/826] 6.12.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Anders Roxell <anders.roxell@linaro.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
-	Michal Suchanek <msuchanek@suse.de>, Nicolai Stange <nstange@suse.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Herbert Xu <herbert@gondor.apana.org.au>
+References: <20241118222828.240530-1-max.kellermann@ionos.com>
+ <CAOi1vP8Ni3s+NGoBt=uB0MF+kb5B-Ck3cBbOH=hSEho-Gruffw@mail.gmail.com>
+ <c32e7d6237e36527535af19df539acbd5bf39928.camel@kernel.org>
+ <CAKPOu+-orms2QBeDy34jArutySe_S3ym-t379xkPmsyCWXH=xw@mail.gmail.com>
+ <CA+2bHPZUUO8A-PieY0iWcBH-AGd=ET8uz=9zEEo4nnWH5VkyFA@mail.gmail.com>
+ <CAKPOu+8k9ze37v8YKqdHJZdPs8gJfYQ9=nNAuPeWr+eWg=yQ5Q@mail.gmail.com>
+ <CA+2bHPZW5ngyrAs8LaYzm__HGewf0De51MvffNZW4h+WX7kfwA@mail.gmail.com>
+ <CAO8a2SiRwVUDT8e3fN1jfFOw3Z92dtWafZd8M6MHB57D3d_wvg@mail.gmail.com>
+ <CAO8a2SiN+cnsK5LGMV+6jZM=VcO5kmxkTH1mR1bLF6Z5cPxH9A@mail.gmail.com>
+ <CAKPOu+8u1Piy9KVvo+ioL93i2MskOvSTn5qqMV14V6SGRuMpOw@mail.gmail.com>
+ <CAO8a2SizOPGE6z0g3qFV4E_+km_fxNx8k--9wiZ4hUG8_XE_6A@mail.gmail.com>
+ <CAKPOu+_-RdM59URnGWp9x+Htzg5xHqUW9djFYi8msvDYwdGxyw@mail.gmail.com> <CAO8a2ShGd+jnLbLocJQv9ETD8JHVgvVezXDC60DewPneW48u5A@mail.gmail.com>
+In-Reply-To: <CAO8a2ShGd+jnLbLocJQv9ETD8JHVgvVezXDC60DewPneW48u5A@mail.gmail.com>
+From: Max Kellermann <max.kellermann@ionos.com>
+Date: Wed, 4 Dec 2024 14:05:36 +0100
+Message-ID: <CAKPOu+9vUdU8jjdEi76z847JGh5XU1AR93HXuRMv3=D8Jn4i2A@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/mds_client: give up on paths longer than PATH_MAX
+To: Alex Markuze <amarkuze@redhat.com>
+Cc: Patrick Donnelly <pdonnell@redhat.com>, Jeff Layton <jlayton@kernel.org>, 
+	Ilya Dryomov <idryomov@gmail.com>, Venky Shankar <vshankar@redhat.com>, xiubli@redhat.com, 
+	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, dario@cure53.de, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 3 Dec 2024 at 21:06, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.2 release.
-> There are 826 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 05 Dec 2024 14:45:11 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.2-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Wed, Dec 4, 2024 at 1:51=E2=80=AFPM Alex Markuze <amarkuze@redhat.com> w=
+rote:
+> It's already in a testing branch; what branch are you working on?
 
-Results from Linaro=E2=80=99s test farm.
-Regressions on arm64, arm, x86_64 riscv and powerpc.
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-1) The allmodconfig builds failed on arm64, arm, riscv and x86_64
-     due to following build warnings / errors.
-
-Build errors for allmodconfig:
---------------
-drivers/gpu/drm/imx/ipuv3/parallel-display.c:75:3: error: variable
-'num_modes' is uninitialized when used here [-Werror,-Wuninitialized]
-   75 |                 num_modes++;
-      |                 ^~~~~~~~~
-drivers/gpu/drm/imx/ipuv3/parallel-display.c:55:15: note: initialize
-the variable 'num_modes' to silence this warning
-   55 |         int num_modes;
-      |                      ^
-      |                       =3D 0
-1 error generated.
-make[8]: *** [scripts/Makefile.build:229:
-drivers/gpu/drm/imx/ipuv3/parallel-display.o] Error 1
-drivers/gpu/drm/imx/ipuv3/imx-ldb.c:143:3: error: variable 'num_modes'
-is uninitialized when used here [-Werror,-Wuninitialized]
-  143 |                 num_modes++;
-      |                 ^~~~~~~~~
-drivers/gpu/drm/imx/ipuv3/imx-ldb.c:133:15: note: initialize the
-variable 'num_modes' to silence this warning
-  133 |         int num_modes;
-      |                      ^
-      |                       =3D 0
-1 error generated.
-
-2) The powerpc builds failed due to this build warnings / errors.
-      ERROR: modpost: "gcm_update"
-[arch/powerpc/crypto/aes-gcm-p10-crypto.ko] undefined!
-
-3) As other reported perf build failures
-   util/stat-display.c: In function 'uniquify_event_name':
-   util/stat-display.c:895:45: error: 'struct evsel' has no member
-named 'alternate_hw_config'
-     895 |         if (counter->pmu->is_core &&
-counter->alternate_hw_config !=3D PERF_COUNT_HW_MAX)
-      |                                             ^~
-
-Build errors:
----------------
-ERROR: modpost: "gcm_update"
-[arch/powerpc/crypto/aes-gcm-p10-crypto.ko] undefined!
-
-## Build
-* kernel: 6.12.2-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 1b3321bcbfba89474cbae3673f3dac9c456ce4b9
-* git describe: v6.12.1-827-g1b3321bcbfba
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.1-827-g1b3321bcbfba
-
-## Test Regressions (compared to v6.12-4-g11741096a22c)
-* arm, build
-  - gcc-13-lkftconfig-perf
-
-* arm64, build
-  - clang-19-allmodconfig
-  - gcc-13-lkftconfig-perf
-
-* powerpc, build
-  - clang-19-defconfig
-  - clang-nightly-defconfig
-  - clang-nightly-lkftconfig-hardening
-  - clang-nightly-lkftconfig-lto-full
-  - clang-nightly-lkftconfig-lto-thing
-  - gcc-13-defconfig
-  - gcc-13-lkftconfig-hardening
-  - gcc-8-defconfig
-  - gcc-8-lkftconfig-hardening
-  - korg-clang-19-lkftconfig-hardening
-  - korg-clang-19-lkftconfig-lto-full
-  - korg-clang-19-lkftconfig-lto-thing
-
-* riscv, build
-  - clang-19-allmodconfig
-
-* x86_64, build
-  - clang-19-allmodconfig
-  - gcc-13-lkftconfig-perf
-
-## Metric Regressions (compared to v6.12-4-g11741096a22c)
-
-## Test Fixes (compared to v6.12-4-g11741096a22c)
-
-## Metric Fixes (compared to v6.12-4-g11741096a22c)
-
-## Test result summary
-total: 157764, pass: 129957, fail: 2971, skip: 24836, xfail: 0
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 138 total, 135 passed, 3 failed
-* arm64: 52 total, 50 passed, 2 failed
-* i386: 18 total, 17 passed, 1 failed
-* mips: 34 total, 33 passed, 1 failed
-* parisc: 4 total, 3 passed, 1 failed
-* powerpc: 40 total, 27 passed, 13 failed
-* riscv: 24 total, 22 passed, 2 failed
-* s390: 22 total, 21 passed, 1 failed
-* sh: 5 total, 5 passed, 0 failed
-* sparc: 4 total, 3 passed, 1 failed
-* x86_64: 44 total, 42 passed, 2 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-rust
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+It is? Which one? I checked
+https://github.com/ceph/ceph-client/commits/testing/ and it's not
+there. This is the repository mentioned on
+https://docs.ceph.com/en/latest/dev/developer_guide/testing_integration_tes=
+ts/tests-integration-testing-teuthology-kernel/
 
