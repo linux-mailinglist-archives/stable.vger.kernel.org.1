@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-98374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE8C9E40A3
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:08:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE8E9E40A4
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6E30281E66
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:08:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAF7328152B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA401C3BEF;
-	Wed,  4 Dec 2024 16:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47B11C3C12;
+	Wed,  4 Dec 2024 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzp5cRA6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IzE6EYH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA4C1C3BE5;
-	Wed,  4 Dec 2024 16:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DACD1C3C0A;
+	Wed,  4 Dec 2024 16:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331590; cv=none; b=JQj2m7ZuGvxeOYo2s4yQrgVinPL9pLACeHhmdHiyJwn7aLphz09k3DOSUxytPEvETcALzMbVPlIMU/tr+H+aDyRsS5iGkEAXCp1bLZO+vYb4w04KUdiR6zVxiR4CWkm0NOhnc/YvsPcR2Q8HOe/IzCcjKfUy3yIwJLBvqfgrWNw=
+	t=1733331593; cv=none; b=dFaehcb3ewtZ5J5gf6B3CXL57EEbqHdMusKw2RJMck1+ZHdbNu4bKK8rmCIslJs2uDPPMMXtmtODs8gLq/gUOclN4spPyovnuz9dKDzQnstVANcFeQdhQ0kLrX9vPamih/r4bjWIpYDcnzbaN9k7s5nWNSa9ViuXFaBrwU1eN8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331590; c=relaxed/simple;
-	bh=EDGtG5EBGtH2cHj7KVKZS1fbq4ioEggx+uprl8swCfg=;
+	s=arc-20240116; t=1733331593; c=relaxed/simple;
+	bh=uSo708ym+6IUE3v7hcIVVLbdQwAsdo/NWdqhzGsHD1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ls1RLssq+NE7nkK+WYihNOb44dKeWn8hZ4n5hbJTQlM0TWRG5CpTubmE2D1Cm2a1qC+3R60UjbUM0wz8IuN77UzxElBQ7x4zDDZUawSgodzekQJLxyx/upkOgFntqLmfx12QartkFlH2hwzEY8l9hv93ndvLiSmlc2cPuQka/UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzp5cRA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45075C4CECD;
-	Wed,  4 Dec 2024 16:59:49 +0000 (UTC)
+	 MIME-Version; b=Kep2VoarB/0v4AUlYb764/u78MXFLP6fTqMRKVj2ijzA/9xvZKqEs9UKsz3/Tv7J5z0lj+V7zMVoDchNx1oyDOz5wlTaxE8qIZZSFlJxKNxbh3qa1hwu1Wu7Cdi0AZNpL+beS/3bCA13VTwFwpYlUyTDtmPfwRXQOemTMtlMyUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IzE6EYH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D738C4CECD;
+	Wed,  4 Dec 2024 16:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331590;
-	bh=EDGtG5EBGtH2cHj7KVKZS1fbq4ioEggx+uprl8swCfg=;
+	s=k20201202; t=1733331593;
+	bh=uSo708ym+6IUE3v7hcIVVLbdQwAsdo/NWdqhzGsHD1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mzp5cRA6ER1rjkiXkm2H/mimrEhEShynHCM3Ugnjse1HEUEW7WJ4/p2bSeHjM1BxR
-	 CVu6cH4hFhi00o/fJJUSaTFXbQ4D52uxMnrtsujfZGXCKrShUL8thuiTXYySbr8yCO
-	 IaLibW7WjEQtPy0n1BtC/b4pb+r7FYdB6WRLlS7WJmKiSdoAgH31OxyYt9JImYhHlK
-	 AFqpUKtXYhpHFUWrBA+ZxcvcAqGEbB9kwC8ghKpkJJQ+5WeVxFtmQ/oLrNk/f6+18F
-	 v+Mvz+jfKLQQXB9s+SLnYllT8ffnzpnJjPpFQgWkilE49oRcE9/sG//irRiA683R8j
-	 CDKcaMe/9j7Jw==
+	b=IzE6EYH3aMFd095kYvc544hZ+YiIYlqjbupn+4W8Niceepkc60tQrXhLaVGhCjI4W
+	 1P5vHjdZL8j7lFMk6UgK7JOL5mNGRQiovMtw2Js4Fyh+nrZ/Ty5WmwC7pqjxhXjTn0
+	 6DcP/5XP7UwVRqtKOjt/sbKYFFqV68Tp+XTYiyVTASHXS39XJ0mCHO82feNAYGHhG+
+	 4Q7JQEWpFTs48+SeYLz6ymWQ486FMaGg7olu6ufiVczVFmVyTc/APSGwIC+S91OtcI
+	 8VuHd/fHnF4ok/DaWODGLw/h98NvgpwAu1We2T+ZWpRKesLHsCzzw4cdHii1Bz+g9k
+	 YPtuWunQwtdZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jan Stancek <jstancek@redhat.com>,
+Cc: Tomas Glozar <tglozar@redhat.com>,
+	Attila Fazekas <afazekas@redhat.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>,
 	bristot@kernel.org,
-	tglozar@redhat.com,
-	limingming890315@gmail.com,
+	jkacur@redhat.com,
+	ezulian@redhat.com,
 	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 05/33] tools/rtla: fix collision with glibc sched_attr/sched_set_attr
-Date: Wed,  4 Dec 2024 10:47:18 -0500
-Message-ID: <20241204154817.2212455-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 06/33] rtla/timerlat: Make timerlat_top_cpu->*_count unsigned long long
+Date: Wed,  4 Dec 2024 10:47:19 -0500
+Message-ID: <20241204154817.2212455-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154817.2212455-1-sashal@kernel.org>
 References: <20241204154817.2212455-1-sashal@kernel.org>
@@ -63,87 +64,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Jan Stancek <jstancek@redhat.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit 0eecee340672c4b512f6f4a8c6add26df05d130c ]
+[ Upstream commit 4eba4723c5254ba8251ecb7094a5078d5c300646 ]
 
-glibc commit 21571ca0d703 ("Linux: Add the sched_setattr
-and sched_getattr functions") now also provides 'struct sched_attr'
-and sched_setattr() which collide with the ones from rtla.
+Most fields of struct timerlat_top_cpu are unsigned long long, but the
+fields {irq,thread,user}_count are int (32-bit signed).
 
-  In file included from src/trace.c:11:
-  src/utils.h:49:8: error: redefinition of ‘struct sched_attr’
-     49 | struct sched_attr {
-        |        ^~~~~~~~~~
-  In file included from /usr/include/bits/sched.h:60,
-                   from /usr/include/sched.h:43,
-                   from /usr/include/tracefs/tracefs.h:10,
-                   from src/trace.c:4:
-  /usr/include/linux/sched/types.h:98:8: note: originally defined here
-     98 | struct sched_attr {
-        |        ^~~~~~~~~~
+This leads to overflow when tracing on a large number of CPUs for a long
+enough time:
+$ rtla timerlat top -a20 -c 1-127 -d 12h
+...
+  0 12:00:00   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+ 1 #43200096  |        0         0         1         2 |        3         2         6        12
+...
+127 #43200096  |        0         0         1         2 |        3         2         5        11
+ALL #119144 e4 |                  0         5         4 |                  2        28        16
 
-Define 'struct sched_attr' conditionally, similar to what strace did:
-  https://lore.kernel.org/all/20240930222913.3981407-1-raj.khem@gmail.com/
-and rename rtla's version of sched_setattr() to avoid collision.
+The average latency should be 0-1 for IRQ and 5-6 for thread, but is
+reported as 5 and 28, about 4 to 5 times more, due to the count
+overflowing when summed over all CPUs: 43200096 * 127 = 5486412192,
+however, 1191444898 (= 5486412192 mod MAX_INT) is reported instead, as
+seen on the last line of the output, and the averages are thus ~4.6
+times higher than they should be (5486412192 / 1191444898 = ~4.6).
 
-Link: https://lore.kernel.org/8088f66a7a57c1b209cd8ae0ae7c336a7f8c930d.1728572865.git.jstancek@redhat.com
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Fix the issue by changing {irq,thread,user}_count fields to unsigned
+long long, similarly to other fields in struct timerlat_top_cpu and to
+the count variable in timerlat_top_print_sum.
+
+Link: https://lore.kernel.org/20241011121015.2868751-1-tglozar@redhat.com
+Reported-by: Attila Fazekas <afazekas@redhat.com>
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/utils.c | 4 ++--
- tools/tracing/rtla/src/utils.h | 2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ tools/tracing/rtla/src/timerlat_top.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
-index 9ac71a66840c1..0735fcb827ed7 100644
---- a/tools/tracing/rtla/src/utils.c
-+++ b/tools/tracing/rtla/src/utils.c
-@@ -233,7 +233,7 @@ long parse_ns_duration(char *val)
- 
- #define SCHED_DEADLINE		6
- 
--static inline int sched_setattr(pid_t pid, const struct sched_attr *attr,
-+static inline int syscall_sched_setattr(pid_t pid, const struct sched_attr *attr,
- 				unsigned int flags) {
- 	return syscall(__NR_sched_setattr, pid, attr, flags);
- }
-@@ -243,7 +243,7 @@ int __set_sched_attr(int pid, struct sched_attr *attr)
- 	int flags = 0;
- 	int retval;
- 
--	retval = sched_setattr(pid, attr, flags);
-+	retval = syscall_sched_setattr(pid, attr, flags);
- 	if (retval < 0) {
- 		err_msg("Failed to set sched attributes to the pid %d: %s\n",
- 			pid, strerror(errno));
-diff --git a/tools/tracing/rtla/src/utils.h b/tools/tracing/rtla/src/utils.h
-index d44513e6c66a0..99c9cf81bcd02 100644
---- a/tools/tracing/rtla/src/utils.h
-+++ b/tools/tracing/rtla/src/utils.h
-@@ -46,6 +46,7 @@ update_sum(unsigned long long *a, unsigned long long *b)
- 	*a += *b;
- }
- 
-+#ifndef SCHED_ATTR_SIZE_VER0
- struct sched_attr {
- 	uint32_t size;
- 	uint32_t sched_policy;
-@@ -56,6 +57,7 @@ struct sched_attr {
- 	uint64_t sched_deadline;
- 	uint64_t sched_period;
+diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
+index 210b0f533534a..ee7c291fc9bb3 100644
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -54,9 +54,9 @@ struct timerlat_top_params {
  };
-+#endif /* SCHED_ATTR_SIZE_VER0 */
  
- int parse_prio(char *arg, struct sched_attr *sched_param);
- int parse_cpu_set(char *cpu_list, cpu_set_t *set);
+ struct timerlat_top_cpu {
+-	int			irq_count;
+-	int			thread_count;
+-	int			user_count;
++	unsigned long long	irq_count;
++	unsigned long long	thread_count;
++	unsigned long long	user_count;
+ 
+ 	unsigned long long	cur_irq;
+ 	unsigned long long	min_irq;
+@@ -280,7 +280,7 @@ static void timerlat_top_print(struct osnoise_tool *top, int cpu)
+ 	/*
+ 	 * Unless trace is being lost, IRQ counter is always the max.
+ 	 */
+-	trace_seq_printf(s, "%3d #%-9d |", cpu, cpu_data->irq_count);
++	trace_seq_printf(s, "%3d #%-9llu |", cpu, cpu_data->irq_count);
+ 
+ 	if (!cpu_data->irq_count) {
+ 		trace_seq_printf(s, "%s %s %s %s |", no_value, no_value, no_value, no_value);
 -- 
 2.43.0
 
