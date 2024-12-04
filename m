@@ -1,74 +1,130 @@
-Return-Path: <stable+bounces-98240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AC99E33DD
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:09:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068809E33DB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D311B26AE1
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 07:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5FEC28410C
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 07:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996DE1E522;
-	Wed,  4 Dec 2024 07:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F28188A3B;
+	Wed,  4 Dec 2024 07:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mEQLXj7h"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="AXIcT3Rg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5BE18A931
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 07:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAEB1E522
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 07:09:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733296170; cv=none; b=Be8QnAzLzQuOm9SfakiXXmBVJf9ywTmnbIgag3+MjV88StYAF1BRr75aJRyJpN17ibhBxJBYGDnS3iE92hpC+Foc+qnoVxXGLlH6l6LoczpO94D7emAwZfpJFCFdo06S2eli2nhtVxA4OhqvdKFQzcAUbg1vD1Gx0gJuPOoTgpY=
+	t=1733296164; cv=none; b=TgkV2U7T4AQYioUNijHcfgFQtpDgzGv1XlS5kSgiIytrgv4L1k8iVxt1ExLVWUMC+hOEnRhgqRa9NYOH5qO18cIej7OcIzl7PnDggRJ5F4mdPjBvfh6fRGUOUErx3ZE0CX/yuwStuc4+iGkmtQwbeqv0Z0hcDOfCH93RJyGcKWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733296170; c=relaxed/simple;
-	bh=ERrUTeJgGDm6rEh+szqITpNO+iN7LDdVTN0znQbfoy4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D4pzflKhrmBw43hnVWv4DHLAkDbJoddt65W+3nY4xemWhO3//li3H2RfN7RLDPIbfVgEXFBD9aNJnpCtcUHzGCp7zwHmUbwpo6165UZRovlUzsaqNQ58oNjWddFii4vS1ttMBXNRZvwHI4rJdv//gI6Hb3SL620GUYnVSARcuL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mEQLXj7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C523C4CED6;
-	Wed,  4 Dec 2024 07:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733296169;
-	bh=ERrUTeJgGDm6rEh+szqITpNO+iN7LDdVTN0znQbfoy4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mEQLXj7hgSlwasZoxUkw7XxpBDx0Hr0nKlZcqSxUnyqkARmiacGmfwt8xrmdQ3Jcm
-	 xhsM6+0WNrO/HIfn/NYAwCFIN+2+BNHU+iICSrQhhPVpOCDv5zkqXaAXCW40Bvx9dt
-	 U3KJUHTdwhHsho94wrB3qOP7bQqxXHNvEWjfI9JI=
-Date: Wed, 4 Dec 2024 08:08:56 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Yu, Mingli" <mingli.yu@windriver.com>
-Cc: mingli.yu@eng.windriver.com, stable@vger.kernel.org,
-	xialonglong@kylinos.cn
-Subject: Re: [PATCH v2 5.15] tty: n_gsm: Fix use-after-free in gsm_cleanup_mux
-Message-ID: <2024120426-draw-aeration-99e3@gregkh>
-References: <20241128084730.430060-1-mingli.yu@eng.windriver.com>
- <2024120226-motion-dole-53a4@gregkh>
- <09b31a23-62df-4448-ba2a-fd09ebdd916f@windriver.com>
+	s=arc-20240116; t=1733296164; c=relaxed/simple;
+	bh=CC+MjCAkZzJLcoqvbXmhMHmEPLKO53R3HEjLtel5JEc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PK8r1IYIOWNziPFXHfrpGWaJdkL9x4EyNLVQMTb1PSJpBW+BDCpOiSmxQuO9SeqVMSgk2m4QEnG+6Y6Fq+8f7FTJNJkj++GF+tAWwhEnUSJ7WI/wB9DOyX33ml+C2v2cUSmyiQNjYljqpcjA0QUIUbDrTUvmXC+laiDogKLGeAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=AXIcT3Rg; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+	by cmsmtp with ESMTPS
+	id IW72ttJRfvH7lIjVetoQUP; Wed, 04 Dec 2024 07:09:18 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id IjVctizcLlDL5IjVdtYi0V; Wed, 04 Dec 2024 07:09:17 +0000
+X-Authority-Analysis: v=2.4 cv=LLtgQoW9 c=1 sm=1 tr=0 ts=6750001d
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=Q5_8b3TqwLNI1KgPcvkA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=zUG+b8RpCONyYnfAip3HiV/DqliaNHNjvaQcav8VtMY=; b=AXIcT3RgIUnKrMfyc1ZBl5ejV1
+	jTd8fJZZz/Iv5r0XBPvkH3ValuZhN+rok+XtjoKE4qMsZHp6hkM96qRVUSS0rhS/jG2P0KtykC3Uc
+	xcJvvXU5A0tWafCG4Myt/z7eowDjjV55nMcGR/hEEvPvtF8L2+wBeppFCnLJlH0hzqSMAeTaEIHTe
+	LBvu1f1khS46pinLxLY1Moy4NaqNH6sD8XmcHUsO7osdsTyJsBOURc8DZwiRZkLGWzzXiJVsSVESg
+	N/YOXZ3Ex3O4V+xdZE9+F+/QVoUj+imvCD12+CGh7eqFnd9aVBex97V3QXD/TQ5b6uU162TTw6APZ
+	1743c/eA==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:33898 helo=[10.0.1.115])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1tIjVb-004BFI-2T;
+	Wed, 04 Dec 2024 00:09:15 -0700
+Message-ID: <c363a831-83d2-4901-b38a-67cd7a9fde77@w6rz.net>
+Date: Tue, 3 Dec 2024 23:09:13 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <09b31a23-62df-4448-ba2a-fd09ebdd916f@windriver.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/826] 6.12.2-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20241203144743.428732212@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tIjVb-004BFI-2T
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.115]) [73.223.253.157]:33898
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPK728mK8ttVoft2kieG35rbt/d47SULh2s73t6y1g/Hr14jPN/FHxChJwt95ulnednqQHqeelqt5gGQDmBIiXkD+m0lgyeLHu9YyOhAqS3nsSwEcGm/
+ oZcUNnq9xTHLtDhVwv5G6Xbk+6XC/Kz7Nr2jQYmWKfyPAO019YTP1euHcl1SymcS6MNcwSsbBHRrlA==
 
-On Wed, Dec 04, 2024 at 10:07:46AM +0800, Yu, Mingli wrote:
-> Hi Greg,
-> 
-> Sorry for confusion!
-> 
-> Please use v2 instead as we correct the author in v2.
+On 12/3/24 06:35, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.2 release.
+> There are 826 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 05 Dec 2024 14:45:11 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.2-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Please submit a correct version 3 like I asked, this is long gone from
-my review queue.  Also, please do not top-post.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-thanks,
+Tested-by: Ron Economos <re@w6rz.net>
 
-greg k-h
 
