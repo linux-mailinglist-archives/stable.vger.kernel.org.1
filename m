@@ -1,63 +1,68 @@
-Return-Path: <stable+bounces-98634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77879E4958
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:36:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0B29E495A
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 796F4281AE0
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:36:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D19A283C22
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844932165E7;
-	Wed,  4 Dec 2024 23:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DE0216600;
+	Wed,  4 Dec 2024 23:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOMMlQ01"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lTfGIcS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306C82163B0;
-	Wed,  4 Dec 2024 23:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431B420DD63;
+	Wed,  4 Dec 2024 23:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354952; cv=none; b=X1Omx55OR+krC/PqQVDFR/tiXjLhqG/KekZtpRYb+YtiQs2WYFOoZYcud/aSFl3IxVtmvzko6c4Pohu2X2+MRjtpDY6Hg+hVtv/27anP7NwqghBh1M3xnOI2i1SoOlI/jmvXotXrnrSrxzImrPYw2WFPkE1KZ8RqKrMIk8t3Qv4=
+	t=1733354956; cv=none; b=rK/ooValpj14xPK/IxZ96u2T2Ud2U08vdtNfhFRiv5kHRz4k9Y2Su1ezc7Bj1E1wrV91Z8V2s4wlk/74o0+YnRjqFBVdarGwdA8e+ZxrTYt9rYFUnnBrNjkdpY/Le3yGFA+GS2NiNf4wAZCazV60xInC8qa81bq9f6XRkAeUWsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354952; c=relaxed/simple;
-	bh=rtzB1TYr0eHB7a49S5nXx04jBYsRDkVxs6m1JK9ubyE=;
+	s=arc-20240116; t=1733354956; c=relaxed/simple;
+	bh=pFQjjEdkgiRe6I61WhUqrKY6q25ZpHWn+fnlSX5OMTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ih+hYjpWM6pMLDK0rqJm4YD8EEyfphTPj3ENnB9p1pXTevwGJw99t8ob74z1MwG2loRfPOiU+9aET6s2aAf3rHQuDa+ZFZggDoy+4LVR1BJN4x3dHyVCYXST7DfIf6PLAPCmRyyPHv92wxdPuQQu7khbTXBRIgqkSeUsyTB9Wnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOMMlQ01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4782C4CED2;
-	Wed,  4 Dec 2024 23:29:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eaAXc60190xsJchcE5+OEOmQkhE3oiZYTnT7r+iBOj2ewf5HLgwjZDinZOADZm8XJztxMPTS0xuEAvKL/HLDXwRc82knLxddgV4UFNDcOIIHEP7Zz0ZHJippZiXw2tXKXAPLbGa3qEZvOrFOoA7nDYCCsO6O4rfg5VaLWIlTaoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lTfGIcS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40851C4CECD;
+	Wed,  4 Dec 2024 23:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354952;
-	bh=rtzB1TYr0eHB7a49S5nXx04jBYsRDkVxs6m1JK9ubyE=;
+	s=k20201202; t=1733354956;
+	bh=pFQjjEdkgiRe6I61WhUqrKY6q25ZpHWn+fnlSX5OMTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOMMlQ01/Up9kJcLdNNFov+J1Uz4KraruBgUvIRLCyNTB3cp4cEyp6sSoeRUtuL9U
-	 QW5SWcQGj6RyZsvjFw64KSdQ/QCMrYX8OONcNzJd0LlRoqIygrtUU+b/E3mI32qWG9
-	 sy9JrKZMm6AHnDtp9eHxl8hLDQSBXlZ2NKPGJ2L8SRAFV2X9H/VQpiLZwNTSMkoqva
-	 AkMsBGlCsGkh+ZoypE3uWgZ4ia74JMoXjh+vYgLZPUPj1E5e7mvFFaZkcMvRFMxBz/
-	 jRcEp/QbvBPhU36+LeAKfcodPpo+/awLGcdlaRmZzOfFHX2SG+a7timhMrlGEwEN/D
-	 BOUCgKutRtFeA==
+	b=lTfGIcS2ZfwDYS2tpsbw9iq6MywlJc33TwCg6+J6mcK2jnry8h24WtsIjWmbDed0D
+	 Q2xQHwxcOL/4UxQaJdssqrs39drqV56ahd6TtLHc06pXijMUtyOlRow6i+Ijpm7NHk
+	 Sm7iZBAfaIcrkH0mni/wJb37HFKrZpAiEVsH0Um2Z9sp3gy45ympFJnLXGoNXbLns5
+	 2THmr1NmztR0qVDT3CnpiKCfgbQi6ciNjxNDGQpn7uX8I+ROqOadUZkZ64A1HEHsJZ
+	 JrBn8Td2AZRMKhLd7ySm9voLAFr8zK7hodUFpVbdKefg0gmc4SNI6UwIzgxbgT1PtI
+	 3rQmjIgmaEYyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Far <anf1980@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Xiang Liu <xiang.liu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	"Stanley . Yang" <Stanley.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	mario.limonciello@amd.com,
-	end.to.start@mail.ru,
-	me@jwang.link,
-	venkataprasad.potturu@amd.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 11/15] ASoC: amd: yc: fix internal mic on Redmi G 2022
-Date: Wed,  4 Dec 2024 17:17:05 -0500
-Message-ID: <20241204221726.2247988-11-sashal@kernel.org>
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sunil.khatri@amd.com,
+	lijo.lazar@amd.com,
+	leo.liu@amd.com,
+	Jane.Jian@amd.com,
+	David.Wu3@amd.com,
+	sathishkumar.sundararaju@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.11 12/15] drm/amdgpu/vcn: reset fw_shared when VCPU buffers corrupted on vcn v4.0.3
+Date: Wed,  4 Dec 2024 17:17:06 -0500
+Message-ID: <20241204221726.2247988-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204221726.2247988-1-sashal@kernel.org>
 References: <20241204221726.2247988-1-sashal@kernel.org>
@@ -67,44 +72,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Alex Far <anf1980@gmail.com>
+From: Xiang Liu <xiang.liu@amd.com>
 
-[ Upstream commit 67a0463d339059eeeead9cd015afa594659cfdaf ]
+[ Upstream commit 928cd772e18ffbd7723cb2361db4a8ccf2222235 ]
 
-This laptop model requires an additional detection quirk to enable the
-internal microphone
+It is not necessarily corrupted. When there is RAS fatal error, device
+memory access is blocked. Hence vcpu bo cannot be saved to system memory
+as in a regular suspend sequence before going for reset. In other full
+device reset cases, that gets saved and restored during resume.
 
-Signed-off-by: Alex Far <anf1980@gmail.com>
-Link: https://patch.msgid.link/ZzjrZY3sImcqTtGx@RedmiG
-Signed-off-by: Mark Brown <broonie@kernel.org>
+v2: Remove redundant code like vcn_v4_0 did
+v2: Refine commit message
+v3: Drop the volatile
+v3: Refine commit message
+
+Signed-off-by: Xiang Liu <xiang.liu@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Stanley.Yang <Stanley.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c | 30 ++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index dc476bfb6da40..8b2ae20f828cf 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -402,6 +402,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Xiaomi Book Pro 14 2022"),
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+index 9bae95538b628..77071967f965a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+@@ -80,6 +80,20 @@ static int vcn_v4_0_3_early_init(void *handle)
+ 	return amdgpu_vcn_early_init(adev);
+ }
+ 
++static int vcn_v4_0_3_fw_shared_init(struct amdgpu_device *adev, int inst_idx)
++{
++	struct amdgpu_vcn4_fw_shared *fw_shared;
++
++	fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
++	fw_shared->present_flag_0 = cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
++	fw_shared->sq.is_enabled = 1;
++
++	if (amdgpu_vcnfw_log)
++		amdgpu_vcn_fwlog_init(&adev->vcn.inst[inst_idx]);
++
++	return 0;
++}
++
+ /**
+  * vcn_v4_0_3_sw_init - sw init for VCN block
+  *
+@@ -110,8 +124,6 @@ static int vcn_v4_0_3_sw_init(void *handle)
+ 		return r;
+ 
+ 	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
+-		volatile struct amdgpu_vcn4_fw_shared *fw_shared;
+-
+ 		vcn_inst = GET_INST(VCN, i);
+ 
+ 		ring = &adev->vcn.inst[i].ring_enc[0];
+@@ -134,12 +146,7 @@ static int vcn_v4_0_3_sw_init(void *handle)
+ 		if (r)
+ 			return r;
+ 
+-		fw_shared = adev->vcn.inst[i].fw_shared.cpu_addr;
+-		fw_shared->present_flag_0 = cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
+-		fw_shared->sq.is_enabled = true;
+-
+-		if (amdgpu_vcnfw_log)
+-			amdgpu_vcn_fwlog_init(&adev->vcn.inst[i]);
++		vcn_v4_0_3_fw_shared_init(adev, i);
+ 	}
+ 
+ 	if (amdgpu_sriov_vf(adev)) {
+@@ -224,6 +231,8 @@ static int vcn_v4_0_3_hw_init(void *handle)
  		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "TIMI"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Redmi G 2022"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+ 	} else {
+ 		for (i = 0; i < adev->vcn.num_vcn_inst; ++i) {
++			struct amdgpu_vcn4_fw_shared *fw_shared;
++
+ 			vcn_inst = GET_INST(VCN, i);
+ 			ring = &adev->vcn.inst[i].ring_enc[0];
+ 
+@@ -247,6 +256,11 @@ static int vcn_v4_0_3_hw_init(void *handle)
+ 					regVCN_RB1_DB_CTRL);
+ 			}
+ 
++			/* Re-init fw_shared when RAS fatal error occurred */
++			fw_shared = adev->vcn.inst[i].fw_shared.cpu_addr;
++			if (!fw_shared->sq.is_enabled)
++				vcn_v4_0_3_fw_shared_init(adev, i);
++
+ 			r = amdgpu_ring_test_helper(ring);
+ 			if (r)
+ 				return r;
 -- 
 2.43.0
 
