@@ -1,166 +1,232 @@
-Return-Path: <stable+bounces-98296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305749E3BC9
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 14:55:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1279E3C4D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 15:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18A17B37727
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 13:47:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17E07B35300
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 13:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4106E1F6680;
-	Wed,  4 Dec 2024 13:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12DA202F84;
+	Wed,  4 Dec 2024 13:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W1HzHYRI"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HS6unY7b"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9991EB9E7
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 13:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5551FDE05
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 13:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733319995; cv=none; b=PE7oIo1MCC17blths4PGcKFaZTt4C4iqsvzLl0uk/kk13eWnS1GcquH5H3wGxqHg1Qjlx4tZxbZ/HXCZBl6Q1YjhzdQW0eaFV5uJ/Eg4sMQ60qAKqF6fj/BvicctXahgHBgq8Ul6SX336XaHjyEo3X0QCyubSb9lQp//0KZbrAE=
+	t=1733320486; cv=none; b=eQzJjI/YIsmq1dhQKqv8gcakBQFh7ri9bCPOhfBOVestwU1HAUJKXMscH0duvBJq1u/JC6jQhIYLrNeb7gGMpm+sx9k7f4AnO/WSoUVKPrhzVpiracYXQBaeQ38H10CtBMhCEl8d1B8qcZ2AMPbLDYt7GJ2hRC+ZuS4zN6551Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733319995; c=relaxed/simple;
-	bh=Cbw6URr7BpchOgGvOsnvOBm3jM/gD4ppQ0a/dAj4D/k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CmJeZaLTeWFQfpZmuBc0ULK8QNjuUaEgduZxigE/9z53mURwxLjWwyiXCr4DNz2mqIpgJPLoOcHqcUbb255TV3ThNF5XshIXX3ISHN7q+USafvKNOLCU8N4Y2uGMQPqaTFKtORCbp3CkkqHH+miDZSKUGzjihh04nxZj5gAYDgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W1HzHYRI; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733319991;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WBQV+/reYDzQHVW2bMORUzTYkYet838A4ueVXpJ2mu0=;
-	b=W1HzHYRI7V2W6Nxgp4vXlNQhm9eb4G4q+Zo0IlH2DRU8QcSd4ykP/s4l3/uIPhABtFDSNo
-	D4qX7WiFznWZSmj/+IkPlBIzy9/mCVMA6rVuIpmI+cl7bf/ET+V0E2wJXe/sLnU0Od0t9c
-	+c6Fl+IPTdjq/ee12TKuN0gfo7TSCFA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-219-OGZibuGDOHGUh8aHq0i6jw-1; Wed, 04 Dec 2024 08:46:27 -0500
-X-MC-Unique: OGZibuGDOHGUh8aHq0i6jw-1
-X-Mimecast-MFC-AGG-ID: OGZibuGDOHGUh8aHq0i6jw
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-aa5a0a35384so389340366b.2
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 05:46:27 -0800 (PST)
+	s=arc-20240116; t=1733320486; c=relaxed/simple;
+	bh=9MFcB0mt+YP02nI8+TN97YFKOZ4xMNdsGYzMyXBbU00=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cOzRBVWdq+nuZK9azAGyZ5UsdzA73Y054CdWTY4865wYLlKcgmzNqWwhwZo8FP+FyYQjEtEZ6YCr7JttPka0IgHrmMuaQZ8CgXUH3fh6GULq+8zw/2Y0dnzDEo67wb/Eox5+pBtslzILBVBkXFy6jzO/k9mUB1NTUv2bL9+mBBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HS6unY7b; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-85bc9b60bc8so408166241.0
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 05:54:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733320484; x=1733925284; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/TF0Nwn/uxbQ0jRBIOm8Y4E/+CokY8zgI5N0QMm7aiY=;
+        b=HS6unY7beRHQjUfNfVl5UstIAt9LTHynOOu+8Jywa/nvqh2VWNtxkNn3UYuZM6Ju72
+         Vmzee/QlKBqEqAh8UFs3CX1OBjg0HmRmcEGEQPq6RgnZG8Y7anqQkbapPLckiWzi/deR
+         HiApjGbACW4PdJilE9BjxXkupI8EjUAphWJuUo9szSiW4xIu3otfK80nVZQTo7u0nM3y
+         uvHMuYDJ05XCxrR/dCRquzW6AoryVNq7NFt+DfhTwKnBuTdGq7bzRMVvfURFvpJ3mMs7
+         RNAhrNlfKJlLhlFd5+E9My3y3xPHnhevxGLFzpNa7GbKzfCDtlPsTDG6/ywChCXWYNeL
+         fy+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733319984; x=1733924784;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WBQV+/reYDzQHVW2bMORUzTYkYet838A4ueVXpJ2mu0=;
-        b=Q3c7Iy0pqkm4WR64E7AOFtcaMGfih7FHnDlyNtbafLop11Yb8FfbU5VZ6ABcMsvdTb
-         IditfFT9zivPZfEQeADpCtA0RVpGrOCZIPx1WBFZeQ5QSchTvAspT6kBResvvsDWwbkI
-         foyo0w3h2hnxeW/XBE33DcKVfrjVengcZuvQi8pBB63VY9o6uQG9/cXWvaLbjhEOc+hS
-         M1Hav0OYe71+MdcPR8kZYDU2cIg5J9+GxEhhA7RTcxtDf6vfEkYrmRaehUqQLJdIrD2T
-         IuZRFyZ6/MeoTbvAbL1VzV7haJ0aqnzqLcPyxFVmm/i5T4gHB44hXCh1ANtaJUrX+q1m
-         qYxw==
-X-Forwarded-Encrypted: i=1; AJvYcCUot64cTwxKIwBvFKjEbqXDO5B3kF0NwB/l95jWo6Kdd5s4aISExdUbzq9sF+4EXq74/2IVkn8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXPUd7eq1mFsFOfyII850tWjAkzuSFvG3CuLJe/NmS/h1eGZHw
-	RQsd8+LpdSJq6kWvaIA2JZ4df9Bw5JZSkIWs9L89Q6QacGDjRlMVq3t6l/fEMqrHcYpPx+5CFLO
-	ItuK3pHbhxENS+1Rac7sm/2kxvMDj8m8mjNC6ur0qybfp37RxNp41nA==
-X-Gm-Gg: ASbGncu/uwX2rRR7l6teozv//m4vGmDL5HTACnQBduzWIgABPX2oHWpbO5DpXR8seAk
-	mhdltLSCIQqOdr1zwnCCmEwA78akHsADa2bpQzuf+XHAUjCHXuNrcxgMDaXddDLbIrD0QRbiu2b
-	vrgTkyE34wNPouk1Eyzy7tGiA0HgbskHwpXmdgUx574t+orY+EOsSZ1LzIJb/taJgfuqZQKsJs5
-	gfCLIFjqCM8pJJoS9ArRYumsoZAsPsqD+mLbuO+DxQkXGQmE3EabxMN6RXuAZ6UjM+joPtBM9nE
-	GJE+0EPV9QIhmsgSrnZzozSzQOuA3ymGMFcnKnFYV3avN+w5FdjgX4YJwINqaWL4BiMTpWhb6dP
-	y8iI2aliz0IDg6W+HL2+wsBSC
-X-Received: by 2002:a17:907:7842:b0:aa5:14b3:a040 with SMTP id a640c23a62f3a-aa5f7cc2e89mr671377966b.5.1733319984315;
-        Wed, 04 Dec 2024 05:46:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGJSFHFdnQSI6RXejuptvZDyxZwz+jBIMo7QA5Sw245xohyQAA0QRuXSgUOrjTafewvvQXSsA==
-X-Received: by 2002:a17:907:7842:b0:aa5:14b3:a040 with SMTP id a640c23a62f3a-aa5f7cc2e89mr671262266b.5.1733319973080;
-        Wed, 04 Dec 2024 05:46:13 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5997d56eesm733692966b.81.2024.12.04.05.46.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 05:46:12 -0800 (PST)
-Message-ID: <76c867e3-f13f-4afd-93be-639616dc9458@redhat.com>
-Date: Wed, 4 Dec 2024 14:46:12 +0100
+        d=1e100.net; s=20230601; t=1733320484; x=1733925284;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/TF0Nwn/uxbQ0jRBIOm8Y4E/+CokY8zgI5N0QMm7aiY=;
+        b=cnzB7s++y11dO4QETeuX4mofrTgvj/pGW/agU2MjKrJ8k1LrbVz3w7BOltTfbkKHM/
+         /ZrpHHn4TOK9tbOPCPF+EmqemvfsAj4WPF8LzIi9A+8WnP9FiNk65vhVh2ZxUyR3RCtq
+         fxgz1zFrkKzMMjOoaKR2h10gmIaFVo6tkwNWqG9t3LovPs62iPP1/QkgOXl3X/gJdsdK
+         S3hCXb5IPtU5KpZruFoj9wdQZ7wlgunATuMP6mOE+BV+nDZ/QgMK6LgoSIERbY0Bndbg
+         j2D9vm4J/dFHEiQQfre/6OFZHZ8JkdScHipTkYaQI//2x+kdaugrsLiOm0hWqZNOlqrr
+         WVZQ==
+X-Gm-Message-State: AOJu0YyGx/Ebo/Fix8mpykxKa9phzOO4voZTXvWvoHtLkwQtEpi3L6Lj
+	3+LfHkScCD5mFupJgPbFCJY3K2USaSkpEE6V2OnUGIzJP+WrgMJh1cVX8vws0MAVfqrb4HULzxq
+	tCZw1co3AEqVMT+9ms6JCu7R0gnmMWakasPeXRA==
+X-Gm-Gg: ASbGnctVZ0Chdrlpa4RVWT4RbSeU/n2zMElfNZ7Hwn2DyPKU04JHmACd982OQRNi8mJ
+	fc3g45/I16+DC+dReXFuE47a1LJH/LURq
+X-Google-Smtp-Source: AGHT+IG+Art1DPLFfgwUGb/naey5bBX8ZjccqsZMWtS4P6ycFMuMbOku965u7UTYzIZeMUUL9MgjB0Okz9w4fvlkr/4=
+X-Received: by 2002:a05:6102:836:b0:4af:456e:5427 with SMTP id
+ ada2fe7eead31-4af555d7c00mr30536547137.4.1733320483835; Wed, 04 Dec 2024
+ 05:54:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] media: uvcvideo: Do not set an async control owned
- by other fh
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans Verkuil <hverkuil-cisco@xs4all.nl>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Guennadi Liakhovetski <guennadi.liakhovetski@intel.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241129220339.GD2652@pendragon.ideasonboard.com>
- <CANiDSCsXi-WQLpbeXMat5FoM8AnYoJ0nVeCkTDMvEus8pXCC3w@mail.gmail.com>
- <20241202001846.GD6105@pendragon.ideasonboard.com>
- <fb321ade-40e7-4b1e-8fcd-c6475767239d@xs4all.nl>
- <20241202081157.GB16635@pendragon.ideasonboard.com>
- <445e551c-c527-443c-8913-6999455bd366@xs4all.nl>
- <633ca07b-6795-429f-874d-474a68396f45@redhat.com>
- <CANiDSCvmRrf1vT3g9Mzkc790RUo3GuQaFzu5+_G66b3_62RuXw@mail.gmail.com>
- <839446b3-1d16-4af8-997a-f2a37eb4711e@redhat.com>
- <CANiDSCszkv=YQPJOSE8EarXWPhZxkk-KR9enLScUOV_P0nzTCg@mail.gmail.com>
- <20241203193251.GA4242@pendragon.ideasonboard.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20241203193251.GA4242@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241203141923.524658091@linuxfoundation.org>
+In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 4 Dec 2024 19:24:32 +0530
+Message-ID: <CA+G9fYtXS+Ze5Y8ddtOjZPiYP1NEDhArQhEJYfS3n5pcLdn9Hw@mail.gmail.com>
+Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Matthias Schiffer <matthias.schiffer@tq-group.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Daniel Vetter <daniel.vetter@ffwll.ch>, noralf@tronnes.org, 
+	Sam Ravnborg <sam@ravnborg.org>, simona@ffwll.ch, dri-devel@lists.freedesktop.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, 3 Dec 2024 at 20:04, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> ------------------
+> Note, this is the LAST 4.19.y kernel to be released.  After this one, it
+> is end-of-life.  It's been 6 years, everyone should have moved off of it
+> by now.
+> ------------------
+>
+> This is the start of the stable review cycle for the 4.19.325 release.
+> There are 138 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 05 Dec 2024 14:18:57 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.19.325-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-On 3-Dec-24 8:32 PM, Laurent Pinchart wrote:
-> On Mon, Dec 02, 2024 at 02:29:24PM +0100, Ricardo Ribalda wrote:
->> On Mon, 2 Dec 2024 at 13:19, Hans de Goede wrote:
->>> On 2-Dec-24 11:50 AM, Ricardo Ribalda wrote:
->>>> On Mon, 2 Dec 2024 at 11:27, Hans de Goede wrote:
+Results from Linaro=E2=80=99s test farm.
+Regressions on arm.
 
-<snip>
+The arm builds failed with gcc-12 and clang-19 due to following
+build warnings / errors.
 
->>>>> Note that if we simply return -EBUSY on set until acked by a status
->>>>> event we also avoid the issue of ctrl->handle getting overwritten,
->>>>> but that relies on reliable status events; or requires timeout handling.
->>>>>
->>>>> 3. I agree with Ricardo that a timeout based approach for cameras which
->>>>> to not properly send status events for async ctrls is going to be
->>>>> problematic. Things like pan/tilt homing can take multiple seconds which
->>>>> is really long to use as a timeout if we plan to return -EBUSY until
->>>>> the timeout triggers. I think it would be better to just rely on
->>>>> the hardware sending a stall, or it accepting and correctly handling
->>>>> a new CUR_SET command while the previous one is still being processed.
->>>>>
->>>>> I guess we can track if the hw does send status events when async ctrls
->>>>> complete and then do the -EBUSY thing without going out to the hw after
->>>>> the first time an async ctrl has been acked by a status event.
-> 
-> That sounds quite complex, and wouldn't guard against the status event
-> being occasionally lost. I'm more concerned about devices that only
-> occasionally mess up sending the status event, not devices that never
-> send it.
+Build log:
+---------
+drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c:177:9: error:
+'DRM_GEM_CMA_DRIVER_OPS' undeclared here (not in a function)
+  177 |         DRM_GEM_CMA_DRIVER_OPS,
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+make[5]: *** [scripts/Makefile.build:303:
+drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.o] Error 1
 
-I did wonder if we would see devices where the status event is
-occasionally lost.
+Build link:
+---------
+ - https://storage.tuxsuite.com/public/linaro/lkft/builds/2piB6D5prhWVm3slY=
+YXWoIGa8Rl/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4=
+.19.324-139-g1efbea5bef00/testrun/26176978/suite/build/test/gcc-12-defconfi=
+g/log
 
-I think that patches 1-4 of "[PATCH v6 0/5] media: uvcvideo: Two +1 fixes for
-async controls" solves the issue at hand nicely, so lets go with that.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-And I hereby withdraw my proposal for a per ctrl flag to track if
-we get status events for that control, because as you say that will
-not work in the case where the status events are missing some of
-the time (rather then the status events simply being never send).
+## Build
+* kernel: 4.19.325-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 1efbea5bef007cc0efd372763792996843054d7c
+* git describe: v4.19.324-139-g1efbea5bef00
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
+.324-139-g1efbea5bef00
 
-Regards,
+## Test Regressions (compared to v4.19.323-53-g3b4d1c2cc314)
+* arm, build
+  - clang-19-defconfig
+  - clang-19-imx_v6_v7_defconfig
+  - clang-19-omap2plus_defconfig
+  - gcc-12-defconfig
+  - gcc-12-imx_v6_v7_defconfig
+  - gcc-12-lkftconfig
+  - gcc-12-lkftconfig-debug
+  - gcc-12-lkftconfig-kasan
+  - gcc-12-lkftconfig-kunit
+  - gcc-12-lkftconfig-libgpiod
+  - gcc-12-lkftconfig-rcutorture
+  - gcc-12-omap2plus_defconfig
+  - gcc-8-defconfig
+  - gcc-8-imx_v6_v7_defconfig
+  - gcc-8-omap2plus_defconfig
 
-Hans
+## Metric Regressions (compared to v4.19.323-53-g3b4d1c2cc314)
 
+## Test Fixes (compared to v4.19.323-53-g3b4d1c2cc314)
 
+## Metric Fixes (compared to v4.19.323-53-g3b4d1c2cc314)
+
+## Test result summary
+total: 27904, pass: 22045, fail: 211, skip: 5623, xfail: 25
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 101 total, 80 passed, 21 failed
+* arm64: 26 total, 21 passed, 5 failed
+* i386: 14 total, 11 passed, 3 failed
+* mips: 20 total, 20 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 21 total, 21 passed, 0 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 22 total, 16 passed, 6 failed
+
+## Test suites summary
+* boot
+* kunit
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
