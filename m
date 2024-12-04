@@ -1,102 +1,140 @@
-Return-Path: <stable+bounces-98561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE659E4719
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 22:46:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF3C9E472F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 22:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FC62167CFC
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:46:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 707361880134
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6B0191F9B;
-	Wed,  4 Dec 2024 21:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C95191F9B;
+	Wed,  4 Dec 2024 21:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M1b+cjZe"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Cow6RH0x"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560B919BBA;
-	Wed,  4 Dec 2024 21:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB0B18C900;
+	Wed,  4 Dec 2024 21:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733348769; cv=none; b=Md2nStNf3H36vDYEWBRqkgQqqgyozM3RpYy8L1WljQ2dPMcNjuS7gncXdPHasoC19PgdeEl7SlsI0580OFVu1U7vfDn51TQjfxA2qUopktwFkbaRIoS5onYZaBDVGunW1xIrnAKOc831M00UQmGpJHUObhnljfaZAhZpzz8FhRk=
+	t=1733348940; cv=none; b=S5JThKE24qeIWWXqVHvZwNiQxQETL8TA+5ZmzGnCfjVwKPWmevbqhi3iswQOVrc3CBCgMvBORDzVT1AxRuMv9tP0lNz/Jo000IbIT1CrVfx6zLgCgUbhXJtLH4mZLPSVfa2Qk/vPIw/BWYzhBSOpEaHoZYN4eR/9aX2QBACJD6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733348769; c=relaxed/simple;
-	bh=t+1yZQ2yj5jDedfR7Qxs3G0ejCWg1EregGj5E/3jjSM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BCzPIg8roBLG3y51cQBb0FgSaq7ibOLLOnf0sS2hI5rBrSMPmxsTTK6dBsiGY6xul3OHgC8/EM7Iw4rW2FdgwPjf5cXV1MMQ44pGaWKTYDjwbEXNlPuKdlPf+cVN336FraULU144Mru/f7xfo1UliZp8U1ku69OTHxu3aZLnX04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M1b+cjZe; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733348766; x=1764884766;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=t+1yZQ2yj5jDedfR7Qxs3G0ejCWg1EregGj5E/3jjSM=;
-  b=M1b+cjZePnN5fQG+4AxX99sD3oyvvDrh1IEBwow5+iQ1YYFBueceId56
-   mSrd80cxVVbQSAayMf+pB9c51sGkWnCxAuqKvcgcPRHWwefUqnU0GqSIo
-   8yLh6J0sopWqUO5RTb0mefCCS98qSSt37fl4e0Yb6vKOR+SytMfBo7TP2
-   B6PK3EDDh0ypWg19CfuPOCJyrEFUHdHFU6akUv10KNDz3jnjZdfWqkll7
-   9TG5xF7VAJOUzQJCc/VM13XTTuVDpMumKG8VCB8q7ODBMhZcKZQ4+GSbF
-   lUNujWEOVMlJo8KnICNlqGFBQgSaDICOlyAiBpihyYbSufZh05G+psTkk
-   g==;
-X-CSE-ConnectionGUID: GAq7aFgORK2XWx7NeiD3Ew==
-X-CSE-MsgGUID: NtHXmErGQ7O53tTxBhZ9gw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="32995277"
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="32995277"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 13:46:05 -0800
-X-CSE-ConnectionGUID: RVcurs7sRD6wYNuyblX5qw==
-X-CSE-MsgGUID: ifksASnzQY2wsyfIrvnc2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="93768613"
-Received: from slindbla-desk.ger.corp.intel.com (HELO intel.com) ([10.245.246.225])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 13:46:00 -0800
-Date: Wed, 4 Dec 2024 22:45:56 +0100
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: nirmoy.das@linux.intel.com, jani.nikula@linux.intel.com,
-	joonas.lahtinen@linux.intel.com, rodrigo.vivi@intel.com,
-	tursulin@ursulin.net, airlied@gmail.com, daniel@ffwll.ch,
-	chris@chris-wilson.co.uk, intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	Jiasheng Jiang <jiashengjiangcool@outlook.com>,
-	stable@vger.kernel.org, Nirmoy Das <nirmoy.das@intel.com>
-Subject: Re: [PATCH RESEND v2] drm/i915: Fix memory leak by correcting cache
- object name in error handler
-Message-ID: <Z1DNlAPvPNtgpMXO@ashyti-mobl2.lan>
-References: <20241127201042.29620-1-jiashengjiangcool@gmail.com>
+	s=arc-20240116; t=1733348940; c=relaxed/simple;
+	bh=35iTGkrXWrjYC67ZrxlborUE0oRYDRPXho2jVcFF1Ws=;
+	h=Date:To:From:Subject:Message-Id; b=svROSKYIeJ4KuAbJ673aXYLxom35dtCBy2WVs7UkAJ8pusJVb6P044ijy0/LxUoYbFlgJ04nUfDhZ//RblYf3fRXHKVoJDnTwTeD659BuvPLGM/NFH2ztBC64g5ij0Bqz+TqkCCi6Vsvlu6gumAk3FtAiU0+ewPlK7uWkrSJtpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Cow6RH0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7123BC4CECD;
+	Wed,  4 Dec 2024 21:48:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1733348939;
+	bh=35iTGkrXWrjYC67ZrxlborUE0oRYDRPXho2jVcFF1Ws=;
+	h=Date:To:From:Subject:From;
+	b=Cow6RH0xeZi7eW74UxPWn3eQ/NPiiUBJBlsnkeQf/TVuyERL3i3P+LszobZFW8Jts
+	 Fa6btR3cNBcyXRKV1kQ+rlZ20dB2VNMtI6wkTFOSME5DPM7JdxrzPtgAuZQsieh8sd
+	 KSPu6Mj3MLjP1J8v5RgF/t/6vggSqH9/KFJfL2dw=
+Date: Wed, 04 Dec 2024 13:48:58 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,deshengwu@tencent.com,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241204214859.7123BC4CECD@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241127201042.29620-1-jiashengjiangcool@gmail.com>
 
-Hi Jiasheng,
 
-On Wed, Nov 27, 2024 at 08:10:42PM +0000, Jiasheng Jiang wrote:
-> From: Jiasheng Jiang <jiashengjiangcool@outlook.com>
-> 
-> Replace "slab_priorities" with "slab_dependencies" in the error handler
-> to avoid memory leak.
-> 
-> Fixes: 32eb6bcfdda9 ("drm/i915: Make request allocation caches global")
-> Cc: <stable@vger.kernel.org> # v5.2+
-> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@outlook.com>
+The patch titled
+     Subject: zram: refuse to use zero sized block device as backing device
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch
 
-merged to drm-intel-next.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch
 
-Thanks,
-Andi
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kairui Song <kasong@tencent.com>
+Subject: zram: refuse to use zero sized block device as backing device
+Date: Thu, 5 Dec 2024 02:02:23 +0800
+
+Patch series "zram: fix backing device setup issue".
+
+This series fixes two bugs of backing device setting:
+
+- ZRAM should reject using a zero sized (or the uninitialized ZRAM
+  device itself) as the backing device.
+- Fix backing device leaking when removing a uninitialized ZRAM
+  device.
+
+
+This patch (of 2):
+
+Setting a zero sized block device as backing device is pointless, and one
+can easily create a recursive loop by setting the uninitialized ZRAM
+device itself as its own backing device by (zram0 is uninitialized):
+
+    echo /dev/zram0 > /sys/block/zram0/backing_dev
+
+It's definitely a wrong config, and the module will pin itself, kernel
+should refuse doing so in the first place.
+
+By refusing to use zero sized device we avoided misuse cases including
+this one above.
+
+Link: https://lkml.kernel.org/r/20241204180224.31069-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20241204180224.31069-2-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/block/zram/zram_drv.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+--- a/drivers/block/zram/zram_drv.c~zram-refuse-to-use-zero-sized-block-device-as-backing-device
++++ a/drivers/block/zram/zram_drv.c
+@@ -614,6 +614,12 @@ static ssize_t backing_dev_store(struct
+ 	}
+ 
+ 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
++	/* Refuse to use zero sized device (also prevents self reference) */
++	if (!nr_pages) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
+ 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
+ 	if (!bitmap) {
+_
+
+Patches currently in -mm which might be from kasong@tencent.com are
+
+zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch
+zram-fix-uninitialized-zram-not-releasing-backing-device.patch
+
 
