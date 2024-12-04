@@ -1,61 +1,73 @@
-Return-Path: <stable+bounces-98427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3BC9E4149
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:22:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134209E414B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:22:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACF84285445
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:22:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCF2828571A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F25F21773E;
-	Wed,  4 Dec 2024 17:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473B6217666;
+	Wed,  4 Dec 2024 17:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dxg17y1y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lPYcXkIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1C7217738;
-	Wed,  4 Dec 2024 17:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDCC217660;
+	Wed,  4 Dec 2024 17:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331746; cv=none; b=L50wU7IW7V51F68i/mh/Z6enrGceZ0rqWDlhjI1jHhWhhh7aVcsn8ZQyCfZu4ASt2oCbdGlazazE3mDlwdEI9NA5Eoc9O7QStW+xMye69HgrLxDdobqBBlOmnkvvilDeKUxR3ctCF2aWJ3QOKLU6J0wOwlFsueDlpJfQR1kSc+I=
+	t=1733331749; cv=none; b=G0zhWwDTfHvl1bGl87YXYITiLX1F/nUVWIl0LBJ3+6JiLOdTstMaOYyZ6fsVaSJBNXhV4Zf608S3wWbzjWELSMTt7TDhWLVq9NwpHOwHoi92bJ7V6GrU/PiyYjLScgCseiMjf5pxzwyEI4C5I9QxPVXGZ7Aiu39vzn0hA0aRjTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331746; c=relaxed/simple;
-	bh=uJ8xeLxvMqeuFlk8XlRgpRa1Nai86MbCWmlWaytvUtc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HJuSsLNXAFowEtB+2oeNARvzkTgHwgV+27vVqZh13XYApjx5COu7BaEc5bAOJllFv4IxBQugK43gYSVJ/iwkVcXdRSwJhoh5GJhRPFBo9LJ2vaapuQRxG2QlSqn9Bm4wYrukieKxTx03kbsPr7Uj1zb82phxleEXf60ONMoLN14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dxg17y1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6CDC4CECD;
-	Wed,  4 Dec 2024 17:02:24 +0000 (UTC)
+	s=arc-20240116; t=1733331749; c=relaxed/simple;
+	bh=M8u1x8f0D/+eUI2lQz/WEZewQjvuESEihTZT0YW/4tk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fEPnCZEii0tbpH5CBpQ1eGNj+rUqreAdpKIl2VMebHKNgH2BOz9fxRivTDZ/rV5zC7yfDoKbPjBCZcM8Kf96OBSSq1sDv8GoWHMyY5quSLf2LXy+Wjb8aIa49oXrhSqiOfPtXZazbHRPaHsQWZ8j1TTEYBKA2Dz04mV+Vy4CEHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lPYcXkIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55ABBC4CECD;
+	Wed,  4 Dec 2024 17:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331745;
-	bh=uJ8xeLxvMqeuFlk8XlRgpRa1Nai86MbCWmlWaytvUtc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Dxg17y1yVN4Cgq5ABreg/BSjNdflOzgPlptZfbat/QFR3Js1XjkizB31nF+PcshHl
-	 u1qsSfEIJH3aAX/10zP3JABD8+0zA3TBIkCx+aIwpk1LJlEZ3KD5Kr+P410sUXUQ8N
-	 otcy7YocspPV9GMtLpbKCSIXZCXyva+hjW3QklBPVtcJJolyFSSSEXy0hUFTcZP5o9
-	 2ojKnFAqwg5CPG3K7VbvHxZPw6S7GdPA8H0FCFErGnsqqHLKvk5aF8LuEEVqxgaSw6
-	 jG6Gnbec4oTvmJyu03iLzph27MwfkNq3aD3QHIsMb582FgNW5py8sOuBnroqBR0Hfj
-	 UwTl4zcGDRmaA==
+	s=k20201202; t=1733331748;
+	bh=M8u1x8f0D/+eUI2lQz/WEZewQjvuESEihTZT0YW/4tk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lPYcXkIvpkWHIXB4CSZtQIVmSNl7rGzPAp/GMT5DRY3pg7QJNEe20bnnByXEs353T
+	 LmIJ2sMxoT7acXprY1r1a//ckESYSFO+075KFl4F+1/H83r6GKnySR5ITfcIE2Ovlx
+	 aXRV3DtGWYdL06u2v1RRvSF5qCkDDeyQSwbmv31BghAkIe/8S2QvfoC8gOucu8jFox
+	 +N6JtHn2K4OmrGQlu2koArAmtEcGFPIPGRiz02IFL8hIlDEhbBIL2mQhemPfUuulmH
+	 PDKWIMpi83gyrdHLiTC0/CSKh3sj+AdcDwL0mEGygPLo868emjxAmfuTDy9dzs7PDD
+	 osbKXEtB8EyYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Esben Haabendal <esben@geanix.com>,
-	kernel test robot <lkp@intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michael Jeanson <mjeanson@efficios.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Yonghong Song <yhs@fb.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	bpf@vger.kernel.org,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>,
-	aisheng.dong@nxp.com,
-	festevam@gmail.com,
-	shawnguo@kernel.org,
-	ping.bai@nxp.com,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 01/15] pinctrl: freescale: fix COMPILE_TEST error with PINCTRL_IMX_SCU
-Date: Wed,  4 Dec 2024 10:50:40 -0500
-Message-ID: <20241204155105.2214350-1-sashal@kernel.org>
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 02/15] tracing/ftrace: disable preemption in syscall probe
+Date: Wed,  4 Dec 2024 10:50:41 -0500
+Message-ID: <20241204155105.2214350-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241204155105.2214350-1-sashal@kernel.org>
+References: <20241204155105.2214350-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,38 +79,143 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Esben Haabendal <esben@geanix.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-[ Upstream commit 58414a31c5713afb5449fd74a26a843d34cc62e8 ]
+[ Upstream commit 13d750c2c03e9861e15268574ed2c239cca9c9d5 ]
 
-When PINCTRL_IMX_SCU was selected by PINCTRL_IMX8DXL or PINCTRL_IMX8QM
-combined with COMPILE_TEST on a non-arm platforms, the IMX_SCU
-dependency could not be enabled.
+In preparation for allowing system call enter/exit instrumentation to
+handle page faults, make sure that ftrace can handle this change by
+explicitly disabling preemption within the ftrace system call tracepoint
+probes to respect the current expectations within ftrace ring buffer
+code.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410031439.GyTSa0kX-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202410030852.q0Hukplf-lkp@intel.com/
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Link: https://lore.kernel.org/20241003-imx-pinctrl-compile-test-fix-v1-1-145ca1948cc3@geanix.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+This change does not yet allow ftrace to take page faults per se within
+its probe, but allows its existing probes to adapt to the upcoming
+change.
+
+Cc: Michael Jeanson <mjeanson@efficios.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Yonghong Song <yhs@fb.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: bpf@vger.kernel.org
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Link: https://lore.kernel.org/20241009010718.2050182-3-mathieu.desnoyers@efficios.com
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/freescale/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/trace/trace_events.h  | 36 +++++++++++++++++++++++++++++++----
+ kernel/trace/trace_syscalls.c | 12 ++++++++++++
+ 2 files changed, 44 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/freescale/Kconfig b/drivers/pinctrl/freescale/Kconfig
-index 7a32f77792d9a..86110fc3c1465 100644
---- a/drivers/pinctrl/freescale/Kconfig
-+++ b/drivers/pinctrl/freescale/Kconfig
-@@ -9,7 +9,7 @@ config PINCTRL_IMX
+diff --git a/include/trace/trace_events.h b/include/trace/trace_events.h
+index c2f9cabf154d1..fa0d51cad57a8 100644
+--- a/include/trace/trace_events.h
++++ b/include/trace/trace_events.h
+@@ -244,6 +244,9 @@ static struct trace_event_fields trace_event_fields_##call[] = {	\
+ 	tstruct								\
+ 	{} };
  
- config PINCTRL_IMX_SCU
- 	tristate
--	depends on IMX_SCU
-+	depends on IMX_SCU || COMPILE_TEST
- 	select PINCTRL_IMX
++#undef DECLARE_EVENT_SYSCALL_CLASS
++#define DECLARE_EVENT_SYSCALL_CLASS DECLARE_EVENT_CLASS
++
+ #undef DEFINE_EVENT_PRINT
+ #define DEFINE_EVENT_PRINT(template, name, proto, args, print)
  
- config PINCTRL_IMX1_CORE
+@@ -374,11 +377,11 @@ static inline notrace int trace_event_get_offsets_##call(		\
+ 
+ #include "stages/stage6_event_callback.h"
+ 
+-#undef DECLARE_EVENT_CLASS
+-#define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
+-									\
++
++#undef __DECLARE_EVENT_CLASS
++#define __DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print) \
+ static notrace void							\
+-trace_event_raw_event_##call(void *__data, proto)			\
++do_trace_event_raw_event_##call(void *__data, proto)			\
+ {									\
+ 	struct trace_event_file *trace_file = __data;			\
+ 	struct trace_event_data_offsets_##call __maybe_unused __data_offsets;\
+@@ -403,6 +406,29 @@ trace_event_raw_event_##call(void *__data, proto)			\
+ 									\
+ 	trace_event_buffer_commit(&fbuffer);				\
+ }
++
++#undef DECLARE_EVENT_CLASS
++#define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
++__DECLARE_EVENT_CLASS(call, PARAMS(proto), PARAMS(args), PARAMS(tstruct), \
++		      PARAMS(assign), PARAMS(print))			\
++static notrace void							\
++trace_event_raw_event_##call(void *__data, proto)			\
++{									\
++	do_trace_event_raw_event_##call(__data, args);			\
++}
++
++#undef DECLARE_EVENT_SYSCALL_CLASS
++#define DECLARE_EVENT_SYSCALL_CLASS(call, proto, args, tstruct, assign, print) \
++__DECLARE_EVENT_CLASS(call, PARAMS(proto), PARAMS(args), PARAMS(tstruct), \
++		      PARAMS(assign), PARAMS(print))			\
++static notrace void							\
++trace_event_raw_event_##call(void *__data, proto)			\
++{									\
++	preempt_disable_notrace();					\
++	do_trace_event_raw_event_##call(__data, args);			\
++	preempt_enable_notrace();					\
++}
++
+ /*
+  * The ftrace_test_probe is compiled out, it is only here as a build time check
+  * to make sure that if the tracepoint handling changes, the ftrace probe will
+@@ -418,6 +444,8 @@ static inline void ftrace_test_probe_##call(void)			\
+ 
+ #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
+ 
++#undef __DECLARE_EVENT_CLASS
++
+ #include "stages/stage7_class_define.h"
+ 
+ #undef DECLARE_EVENT_CLASS
+diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
+index 942ddbdace4a4..e39c5ca76eabb 100644
+--- a/kernel/trace/trace_syscalls.c
++++ b/kernel/trace/trace_syscalls.c
+@@ -299,6 +299,12 @@ static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
+ 	int syscall_nr;
+ 	int size;
+ 
++	/*
++	 * Syscall probe called with preemption enabled, but the ring
++	 * buffer and per-cpu data require preemption to be disabled.
++	 */
++	guard(preempt_notrace)();
++
+ 	syscall_nr = trace_get_syscall_nr(current, regs);
+ 	if (syscall_nr < 0 || syscall_nr >= NR_syscalls)
+ 		return;
+@@ -338,6 +344,12 @@ static void ftrace_syscall_exit(void *data, struct pt_regs *regs, long ret)
+ 	struct trace_event_buffer fbuffer;
+ 	int syscall_nr;
+ 
++	/*
++	 * Syscall probe called with preemption enabled, but the ring
++	 * buffer and per-cpu data require preemption to be disabled.
++	 */
++	guard(preempt_notrace)();
++
+ 	syscall_nr = trace_get_syscall_nr(current, regs);
+ 	if (syscall_nr < 0 || syscall_nr >= NR_syscalls)
+ 		return;
 -- 
 2.43.0
 
