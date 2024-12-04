@@ -1,232 +1,154 @@
-Return-Path: <stable+bounces-98297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1279E3C4D
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 15:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 126DD9E3C63
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 15:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17E07B35300
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 13:55:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 181A0B28AAD
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 14:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12DA202F84;
-	Wed,  4 Dec 2024 13:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D476D207A07;
+	Wed,  4 Dec 2024 14:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="HS6unY7b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SwuYM/XL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5551FDE05
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 13:54:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED311F7594;
+	Wed,  4 Dec 2024 14:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733320486; cv=none; b=eQzJjI/YIsmq1dhQKqv8gcakBQFh7ri9bCPOhfBOVestwU1HAUJKXMscH0duvBJq1u/JC6jQhIYLrNeb7gGMpm+sx9k7f4AnO/WSoUVKPrhzVpiracYXQBaeQ38H10CtBMhCEl8d1B8qcZ2AMPbLDYt7GJ2hRC+ZuS4zN6551Bo=
+	t=1733321408; cv=none; b=oStbf8LP91tX7nUcFloeOc+RE5gx035Z1j4BvWqH6kHul9kHn7coxqkvgXhAEwbSdBFvnDGblnl/NqvEwQaqx00yieHC+U1tLMyQS2oC0lz6NunX2HG8tq5u2FpWkg/8xqPHSxLZFLTJf+G2KocJv3gs1z4hITqnwN3A9k9D6CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733320486; c=relaxed/simple;
-	bh=9MFcB0mt+YP02nI8+TN97YFKOZ4xMNdsGYzMyXBbU00=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cOzRBVWdq+nuZK9azAGyZ5UsdzA73Y054CdWTY4865wYLlKcgmzNqWwhwZo8FP+FyYQjEtEZ6YCr7JttPka0IgHrmMuaQZ8CgXUH3fh6GULq+8zw/2Y0dnzDEo67wb/Eox5+pBtslzILBVBkXFy6jzO/k9mUB1NTUv2bL9+mBBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=HS6unY7b; arc=none smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-85bc9b60bc8so408166241.0
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 05:54:44 -0800 (PST)
+	s=arc-20240116; t=1733321408; c=relaxed/simple;
+	bh=uxvU4fSRyWue5vxc3QNX7F/+NrrOhVfNfqhWAGT2lK4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B/JcVs9gVAklyrtNiyA76Rz7L40cfgRnsdoC+Q0UcX9TAmts1fH9/c2lCOeAMYK3hsx724OEXrBz/5qi/lmBjBx2zayiq6aDrwWCo+08hcpc5DtksnxiwM6IRr9Czjmt27LSMTVPrGI5UzEgGcBXfJY3BmIBYNQVzOlR7MH3lWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SwuYM/XL; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-385f07cd1a4so3019560f8f.1;
+        Wed, 04 Dec 2024 06:10:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733320484; x=1733925284; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/TF0Nwn/uxbQ0jRBIOm8Y4E/+CokY8zgI5N0QMm7aiY=;
-        b=HS6unY7beRHQjUfNfVl5UstIAt9LTHynOOu+8Jywa/nvqh2VWNtxkNn3UYuZM6Ju72
-         Vmzee/QlKBqEqAh8UFs3CX1OBjg0HmRmcEGEQPq6RgnZG8Y7anqQkbapPLckiWzi/deR
-         HiApjGbACW4PdJilE9BjxXkupI8EjUAphWJuUo9szSiW4xIu3otfK80nVZQTo7u0nM3y
-         uvHMuYDJ05XCxrR/dCRquzW6AoryVNq7NFt+DfhTwKnBuTdGq7bzRMVvfURFvpJ3mMs7
-         RNAhrNlfKJlLhlFd5+E9My3y3xPHnhevxGLFzpNa7GbKzfCDtlPsTDG6/ywChCXWYNeL
-         fy+w==
+        d=gmail.com; s=20230601; t=1733321405; x=1733926205; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mrFMLc/jdh5p8JybRnIahA1b8Q2rxGK6wJh2KFAKrwU=;
+        b=SwuYM/XLZJIZU0rHEYclS7RcaRbdK2lv2ECAWsRjPpLUeEnHfhlLeEgy2eosfIxr8i
+         JVM8ssUdobf8t8wk05U1hNQOxIByn3fnBVY5pRQCkX1+qKzOfVf+2ib3YAxzJPE4xSbX
+         7PkDnuaKF8RdAxsiLFg5MaD8lEaDcaMky8G5n6MOdcrHdiyy9Wx8JcMSyGR14kuyHGbi
+         ilXQA47vgWK0Q+f+Yn+8MWKxghRMZeTM2LcAJcuiOsEFUR6MviraK5ba4F2EzTAjDsRy
+         Lgwmz2PGJqZ9VuJZei9CL2smz89Jp7TocGYjHXQc1h3Vu7G2lGB6DFfE0YZXOvlygC+9
+         9EiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733320484; x=1733925284;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/TF0Nwn/uxbQ0jRBIOm8Y4E/+CokY8zgI5N0QMm7aiY=;
-        b=cnzB7s++y11dO4QETeuX4mofrTgvj/pGW/agU2MjKrJ8k1LrbVz3w7BOltTfbkKHM/
-         /ZrpHHn4TOK9tbOPCPF+EmqemvfsAj4WPF8LzIi9A+8WnP9FiNk65vhVh2ZxUyR3RCtq
-         fxgz1zFrkKzMMjOoaKR2h10gmIaFVo6tkwNWqG9t3LovPs62iPP1/QkgOXl3X/gJdsdK
-         S3hCXb5IPtU5KpZruFoj9wdQZ7wlgunATuMP6mOE+BV+nDZ/QgMK6LgoSIERbY0Bndbg
-         j2D9vm4J/dFHEiQQfre/6OFZHZ8JkdScHipTkYaQI//2x+kdaugrsLiOm0hWqZNOlqrr
-         WVZQ==
-X-Gm-Message-State: AOJu0YyGx/Ebo/Fix8mpykxKa9phzOO4voZTXvWvoHtLkwQtEpi3L6Lj
-	3+LfHkScCD5mFupJgPbFCJY3K2USaSkpEE6V2OnUGIzJP+WrgMJh1cVX8vws0MAVfqrb4HULzxq
-	tCZw1co3AEqVMT+9ms6JCu7R0gnmMWakasPeXRA==
-X-Gm-Gg: ASbGnctVZ0Chdrlpa4RVWT4RbSeU/n2zMElfNZ7Hwn2DyPKU04JHmACd982OQRNi8mJ
-	fc3g45/I16+DC+dReXFuE47a1LJH/LURq
-X-Google-Smtp-Source: AGHT+IG+Art1DPLFfgwUGb/naey5bBX8ZjccqsZMWtS4P6ycFMuMbOku965u7UTYzIZeMUUL9MgjB0Okz9w4fvlkr/4=
-X-Received: by 2002:a05:6102:836:b0:4af:456e:5427 with SMTP id
- ada2fe7eead31-4af555d7c00mr30536547137.4.1733320483835; Wed, 04 Dec 2024
- 05:54:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733321405; x=1733926205;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mrFMLc/jdh5p8JybRnIahA1b8Q2rxGK6wJh2KFAKrwU=;
+        b=Ryvnq7nuk9tVsKpfkESgJXQIoyWf0hIcS44oZ4VTatCG5EM5VC63R9Ny86xcUewhzs
+         N8P5QNSuOznngRWszdEyOGGbKavMJrkm7gvfXGutGXj1RFcW4tOH5Xzi/6JopC0jS8/6
+         GdCIADmUsSc0ckn0wy+nczBPnW2cgOT84iQyoCla2bzXi8Wgfm/vLOiDn/+LJZSuUNM1
+         GvFwO3DgHnPsJBFgBO+64yMJpLCICbJkYEcxrdhhO2Pd4NRshkMT5fVzj8O4hbDSpoVs
+         6SqckPdoIuj+C5me9wm17kQxTINw9hS68ok6z8obKJIGGbt3IM19XrLQMF7OW7tE5Ex1
+         m/fw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ7bYWGnUKSgLVHVLVt7tPAhdV7RofeSwxkK9l5hE+9gCw2QNGLwKuDRSXSbfff1J+hAgaDdmq@vger.kernel.org, AJvYcCUomkoiWO9W0e+/XnOXHuffHTFJO4RzFMz9S9VaCoPlD7oTjSrMaS9XYFaP+Ac3b/7OX9bSWsluji/Z3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4O3KTA0RMXNTNWZnnIwg+cR0eFKX1FBNrQrQ08EwrA2zKXR3O
+	80UIxL2XT3GmNDA5Y1Bluund7psEJMqDoXgMZFVx603e3f9VeXDa
+X-Gm-Gg: ASbGncvYP7GBOBYyNWD5k3Fj18gHmeiYVnukrAQgAKvrHr0/Ym0cNgHa4jNiHMLLJ4J
+	nS5/73YVTrGq9Zq8fB/eN+23mptzlNFDAOTNBdmOo1dBEF25/rSvqHEkCj2mtrrS6UlS4TimB7O
+	f5IzJJxZS0AIFHM30paiY9Lv1tebXhlMDKEdczGVIRsfty+gu2LQ7Ktxb8vhxnDEu9r7VjyM5v+
+	mSfebURS6wFj1moOP1xLPJ1ObSJwn12v31tTyIVv8q3J8IfEOX1GgVOi+3j5dxwR85otRBr9Cuv
+	v0MvKQ/FgthYSsQG64oTBCIR5LXRwkc592Ho
+X-Google-Smtp-Source: AGHT+IG17qKjHP7hajsb1NqDKGf26pPgtY+u2y2Irx0Mpfq+Bk5d1g+9CG/Zi2mBLwUCzK6vQKtkSA==
+X-Received: by 2002:a5d:598c:0:b0:385:ea2b:12cc with SMTP id ffacd0b85a97d-385fd3e779bmr6188036f8f.13.1733321404995;
+        Wed, 04 Dec 2024 06:10:04 -0800 (PST)
+Received: from orome (p200300e41f281900f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1900:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d527257dsm26885385e9.1.2024.12.04.06.10.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2024 06:10:04 -0800 (PST)
+Date: Wed, 4 Dec 2024 15:10:02 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Gax-c <zichenxie0106@gmail.com>
+Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org, 
+	tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch, mperttunen@nvidia.com, 
+	jonathanh@nvidia.com, kraxel@redhat.com, gurchetansingh@chromium.org, 
+	olvaffe@gmail.com, matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
+	mst@redhat.com, airlied@redhat.com, dri-devel@lists.freedesktop.org, 
+	linux-tegra@vger.kernel.org, virtualization@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] drm: cast calculation to __u64 to fix potential integer
+ overflow
+Message-ID: <xlmfl2rhjgczu6oycgogchqi2gc65w7s3qy33yxzsrf6mbri3q@7onulkroaa7z>
+References: <20241203160159.8129-1-zichenxie0106@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203141923.524658091@linuxfoundation.org>
-In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 4 Dec 2024 19:24:32 +0530
-Message-ID: <CA+G9fYtXS+Ze5Y8ddtOjZPiYP1NEDhArQhEJYfS3n5pcLdn9Hw@mail.gmail.com>
-Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Anders Roxell <anders.roxell@linaro.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Matthias Schiffer <matthias.schiffer@tq-group.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Daniel Vetter <daniel.vetter@ffwll.ch>, noralf@tronnes.org, 
-	Sam Ravnborg <sam@ravnborg.org>, simona@ffwll.ch, dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="magv3qwbnz55o6h7"
+Content-Disposition: inline
+In-Reply-To: <20241203160159.8129-1-zichenxie0106@gmail.com>
+
+
+--magv3qwbnz55o6h7
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] drm: cast calculation to __u64 to fix potential integer
+ overflow
+MIME-Version: 1.0
 
-On Tue, 3 Dec 2024 at 20:04, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> ------------------
-> Note, this is the LAST 4.19.y kernel to be released.  After this one, it
-> is end-of-life.  It's been 6 years, everyone should have moved off of it
-> by now.
-> ------------------
->
-> This is the start of the stable review cycle for the 4.19.325 release.
-> There are 138 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 05 Dec 2024 14:18:57 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
-4.19.325-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-4.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Tue, Dec 03, 2024 at 10:02:00AM -0600, Gax-c wrote:
+> From: Zichen Xie <zichenxie0106@gmail.com>
+>=20
+> Like commit b0b0d811eac6 ("drm/mediatek: Fix coverity issue with
+> unintentional integer overflow"), directly multiply pitch and
+> height may lead to integer overflow. Add a cast to avoid it.
+>=20
+> Fixes: 6d1782919dc9 ("drm/cma: Introduce drm_gem_cma_dumb_create_internal=
+()")
+> Fixes: dc5698e80cf7 ("Add virtio gpu driver.")
+> Fixes: dc6057ecb39e ("drm/tegra: gem: dumb: pitch and size are outputs")
+> Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/gpu/drm/drm_gem_dma_helper.c | 6 +++---
+>  drivers/gpu/drm/tegra/gem.c          | 2 +-
+>  drivers/gpu/drm/virtio/virtgpu_gem.c | 2 +-
+>  3 files changed, 5 insertions(+), 5 deletions(-)
 
-Results from Linaro=E2=80=99s test farm.
-Regressions on arm.
+I don't think this can ever happen. All of these functions should only
+ever be called via drm_mode_create_dumb(), which already ensures that
+these won't overflow.
 
-The arm builds failed with gcc-12 and clang-19 due to following
-build warnings / errors.
+Thierry
 
-Build log:
----------
-drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c:177:9: error:
-'DRM_GEM_CMA_DRIVER_OPS' undeclared here (not in a function)
-  177 |         DRM_GEM_CMA_DRIVER_OPS,
-      |         ^~~~~~~~~~~~~~~~~~~~~~
-make[5]: *** [scripts/Makefile.build:303:
-drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.o] Error 1
+--magv3qwbnz55o6h7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Build link:
----------
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2piB6D5prhWVm3slY=
-YXWoIGa8Rl/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4=
-.19.324-139-g1efbea5bef00/testrun/26176978/suite/build/test/gcc-12-defconfi=
-g/log
+-----BEGIN PGP SIGNATURE-----
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmdQYrcACgkQ3SOs138+
+s6HXsxAAtQJlAEOMdgNNQBcnlKziuLGEV6eDn2I2ZMbyfdflAwfxU1IZem8HHolu
+Uf8rl4/XAETFBzeMup8SZ+DvspOCUSQY6kf8Dh+25/5NDTEf50vjBA/TXcws/ced
+6pRImbXzulFvz7kEm/fOaTXdk9w7mKnNDpFj86FUBcuz5kIQm1Qo4uhEYZRR9BSs
+C5c6m77m/4N3Iw7mkJoKW1U0jDJpfgw/iCdUpZrNh2buoKaRhe3WasizYdpXcbIn
+ImHPVPKV7MUgLrlYjdqOlxninIKhRMB9n5hcbvHD2YQcv9Y3pj1XA9YzXu3+4pir
+Sq6HLJFoHy+vmeLdTJZsMEljM25tBtkXkIUVEiWUb4BTbjJHLikCT4IYvfm9wByx
+OKCLKtdAiKyC1mh3aswnmeHb9tHBTt2Zj++nl2u/oUJyUncmBeboX7Wh+C9aCWF3
+cjT8OzvzTFX0bTLWyO9n0hwM9n84di0kuVmN8Bm7erXZcFAQyJfQpVB8lqiXokYA
+iw+IZX7DQQ8oKnxYpXy+V+gxSD19e4fed6jzgGpn7s+JYRuH1SiBSA4iaIQ8OCze
+7FPuGM5WT1d92OgNUU+jC3gjM58QHwLiEFhJgV2Oj6/sOi5fs1JY9uGKlMbxynlF
+PQm2NJU7k9lZXI2hxYRY6AmtikgF4NSYiz5zgglZvHpLoeLItpo=
+=dkp1
+-----END PGP SIGNATURE-----
 
-## Build
-* kernel: 4.19.325-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 1efbea5bef007cc0efd372763792996843054d7c
-* git describe: v4.19.324-139-g1efbea5bef00
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
-.324-139-g1efbea5bef00
-
-## Test Regressions (compared to v4.19.323-53-g3b4d1c2cc314)
-* arm, build
-  - clang-19-defconfig
-  - clang-19-imx_v6_v7_defconfig
-  - clang-19-omap2plus_defconfig
-  - gcc-12-defconfig
-  - gcc-12-imx_v6_v7_defconfig
-  - gcc-12-lkftconfig
-  - gcc-12-lkftconfig-debug
-  - gcc-12-lkftconfig-kasan
-  - gcc-12-lkftconfig-kunit
-  - gcc-12-lkftconfig-libgpiod
-  - gcc-12-lkftconfig-rcutorture
-  - gcc-12-omap2plus_defconfig
-  - gcc-8-defconfig
-  - gcc-8-imx_v6_v7_defconfig
-  - gcc-8-omap2plus_defconfig
-
-## Metric Regressions (compared to v4.19.323-53-g3b4d1c2cc314)
-
-## Test Fixes (compared to v4.19.323-53-g3b4d1c2cc314)
-
-## Metric Fixes (compared to v4.19.323-53-g3b4d1c2cc314)
-
-## Test result summary
-total: 27904, pass: 22045, fail: 211, skip: 5623, xfail: 25
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 101 total, 80 passed, 21 failed
-* arm64: 26 total, 21 passed, 5 failed
-* i386: 14 total, 11 passed, 3 failed
-* mips: 20 total, 20 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 21 total, 21 passed, 0 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 22 total, 16 passed, 6 failed
-
-## Test suites summary
-* boot
-* kunit
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--magv3qwbnz55o6h7--
 
