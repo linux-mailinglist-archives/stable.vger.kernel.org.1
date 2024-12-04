@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-98445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1FF9E4175
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:27:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454269E4261
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:52:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31E22161F7F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:27:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C069CB29E26
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF134218543;
-	Wed,  4 Dec 2024 17:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F540226740;
+	Wed,  4 Dec 2024 17:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8m1BB3W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o4kUmKH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC3121853B;
-	Wed,  4 Dec 2024 17:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465F9217F5A;
+	Wed,  4 Dec 2024 17:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331785; cv=none; b=DJ7MmohWjAlsFEE4pR/1AW0hwPf46WPXli9d1gj3F5uHYPvgRCI0eIO2ZWA4T9xmMDvv3d2nZP8dfCGc4N8tDpbGtMq2bLQ3Q8bbN5zbOyX+IiV3I9A9MSN+arC3t+kTTCkVped5LT2SgrWRZHSozTODJEBqJbrpVeZFFaZ0MS8=
+	t=1733331787; cv=none; b=epnyNZe56OBzCMGR/sQoQA8EMAIu7qYiEH+16un+pc8gWpViQyukBb6Pdjw70wjzl34q+eL8xohQ8POQhIfx1P2DZnhANEjjnBq6a+pOZPt4fpbpHd+rDdzQpXu2xtwKXIUHIWEypmsJyJNGKt8hdl80cJCbVC5rhCGjRjHuDY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331785; c=relaxed/simple;
-	bh=Y21qK2d9hZyZjgWgdkEjdVCuZThbkPijo7p8hYXut1Y=;
+	s=arc-20240116; t=1733331787; c=relaxed/simple;
+	bh=CQ0Y2XlWV6ZdgV4NWg644F4Oln2qe5SEAzG6/wJk8AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0iSi6LWyAtOXb/NsTkp01E3wHiZHtOts8vqP4ZwPABycbTwfxgvzPIaAJvHPlgBKJCZuEFgfw684/CVJhAEmJH4l9kQnELcM2uUAtOPdHK4iFbaVDgXSnQXf+p2Nba1uCxldV79lhoV2cGmCVGeA3eTimqUsPNo3Blo5E32+cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8m1BB3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4FCC4CED1;
-	Wed,  4 Dec 2024 17:03:04 +0000 (UTC)
+	 MIME-Version; b=CmMMORpvQmtuPKpZBVOoXVieuPV7kxb9Z9Vd6q6XUjWi6j7L47a5S9z4Ux9BtfJQeG4tZnCAkfmk0ksp/xpdESGKLZ+EXt8XGlMjtxIW1cxJ2fL4ikLzf55G82gEldYnPNb2Jxc681lLoHeqygZeyPRU6UKwpsa9JjXXRthOFvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o4kUmKH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83A0C4CECD;
+	Wed,  4 Dec 2024 17:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331785;
-	bh=Y21qK2d9hZyZjgWgdkEjdVCuZThbkPijo7p8hYXut1Y=;
+	s=k20201202; t=1733331786;
+	bh=CQ0Y2XlWV6ZdgV4NWg644F4Oln2qe5SEAzG6/wJk8AQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8m1BB3WtJ/yVm9K/8ZKAeqjNsfmIEjtSwFdPOUfJga/0TiEVNDKcOjXI8bRv0HFW
-	 chww57GNgyKD7PPB0HwQNqw9tnMCnSM35gJgoAxUVGUIQMv2Dmys2QywNGwWPQVEeo
-	 R8bNoSneIk4Bl2gIlA1qmFH9fnf8egdMyHGq7oJNovHPnTGLdifCUBAR2MLM0SmSDN
-	 gWPMOgLVmLuOvmuozGHW8nkv526zt5RQ4IEXpJd2Sv4Nb4GXJi7JS7GWa/GfJDamH3
-	 zE7sPnNmW+ydvMkssRnLol69y+Z5WLauFTP1Jp+Qv26FFhfpzUwHT2jJ/+WvHJXodQ
-	 RxFJcCEPkeiRg==
+	b=o4kUmKH8Ho6OS0dfA96v/muuobI9cs6vIIkT1g8nQ9rFRL+sItkb7daHBz3chzYJt
+	 Y7xynDcHA96VrsSlBy7Aq7QRvbe7PoR0xUQB7CFO9K5jw1/20UJDSZyeJ/2561RAQZ
+	 UU5xGczt/7rhCvDj90I+La5WVy39Fk/gZ0qcF8+yc737x4frwY0EdkoTSiTVRfzVB1
+	 S8IfFuEyYq+GSvYr/BqdCmyILRvKDWC3X0nEM+/22YFyNsX8JftcWdIbhWSj7puaUf
+	 hKIDIko9b+ecCeBz/Z/193/gX+N2nBUXn7CQ8SbHt2ozTbHhy84CwsYgOWUNPMVtWh
+	 IL6momyERbCAQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
+Cc: Mukesh Ojha <quic_mojha@quicinc.com>,
+	Anish Kumar <yesanishhere@gmail.com>,
 	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.15 4/9] mfd: axp20x: Allow multiple regulators
-Date: Wed,  4 Dec 2024 10:51:34 -0500
-Message-ID: <20241204155141.2214748-4-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>,
+	pavel@ucw.cz,
+	linux-leds@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 5/9] leds: class: Protect brightness_show() with led_cdev->led_access mutex
+Date: Wed,  4 Dec 2024 10:51:35 -0500
+Message-ID: <20241204155141.2214748-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204155141.2214748-1-sashal@kernel.org>
 References: <20241204155141.2214748-1-sashal@kernel.org>
@@ -65,65 +67,171 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit e37ec32188701efa01455b9be42a392adab06ce4 ]
+[ Upstream commit 4ca7cd938725a4050dcd62ae9472e931d603118d ]
 
-At the moment trying to register a second AXP chip makes the probe fail,
-as some sysfs registration fails due to a duplicate name:
+There is NULL pointer issue observed if from Process A where hid device
+being added which results in adding a led_cdev addition and later a
+another call to access of led_cdev attribute from Process B can result
+in NULL pointer issue.
 
-...
-[    3.688215] axp20x-i2c 0-0035: AXP20X driver loaded
-[    3.695610] axp20x-i2c 0-0036: AXP20x variant AXP323 found
-[    3.706151] sysfs: cannot create duplicate filename '/bus/platform/devices/axp20x-regulator'
-[    3.714718] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.0-rc1-00026-g50bf2e2c079d-dirty #192
-[    3.724020] Hardware name: Avaota A1 (DT)
-[    3.728029] Call trace:
-[    3.730477]  dump_backtrace+0x94/0xec
-[    3.734146]  show_stack+0x18/0x24
-[    3.737462]  dump_stack_lvl+0x80/0xf4
-[    3.741128]  dump_stack+0x18/0x24
-[    3.744444]  sysfs_warn_dup+0x64/0x80
-[    3.748109]  sysfs_do_create_link_sd+0xf0/0xf8
-[    3.752553]  sysfs_create_link+0x20/0x40
-[    3.756476]  bus_add_device+0x64/0x104
-[    3.760229]  device_add+0x310/0x760
-[    3.763717]  platform_device_add+0x10c/0x238
-[    3.767990]  mfd_add_device+0x4ec/0x5c8
-[    3.771829]  mfd_add_devices+0x88/0x11c
-[    3.775666]  axp20x_device_probe+0x70/0x184
-[    3.779851]  axp20x_i2c_probe+0x9c/0xd8
-...
+Use mutex led_cdev->led_access to protect access to led->cdev and its
+attribute inside brightness_show() and max_brightness_show() and also
+update the comment for mutex that it should be used to protect the led
+class device fields.
 
-This is because we use PLATFORM_DEVID_NONE for the mfd_add_devices()
-call, which would number the child devices in the same 0-based way, even
-for the second (or any other) instance.
+	Process A 				Process B
 
-Use PLATFORM_DEVID_AUTO instead, which automatically assigns
-non-conflicting device numbers.
+ kthread+0x114
+ worker_thread+0x244
+ process_scheduled_works+0x248
+ uhid_device_add_worker+0x24
+ hid_add_device+0x120
+ device_add+0x268
+ bus_probe_device+0x94
+ device_initial_probe+0x14
+ __device_attach+0xfc
+ bus_for_each_drv+0x10c
+ __device_attach_driver+0x14c
+ driver_probe_device+0x3c
+ __driver_probe_device+0xa0
+ really_probe+0x190
+ hid_device_probe+0x130
+ ps_probe+0x990
+ ps_led_register+0x94
+ devm_led_classdev_register_ext+0x58
+ led_classdev_register_ext+0x1f8
+ device_create_with_groups+0x48
+ device_create_groups_vargs+0xc8
+ device_add+0x244
+ kobject_uevent+0x14
+ kobject_uevent_env[jt]+0x224
+ mutex_unlock[jt]+0xc4
+ __mutex_unlock_slowpath+0xd4
+ wake_up_q+0x70
+ try_to_wake_up[jt]+0x48c
+ preempt_schedule_common+0x28
+ __schedule+0x628
+ __switch_to+0x174
+						el0t_64_sync+0x1a8/0x1ac
+						el0t_64_sync_handler+0x68/0xbc
+						el0_svc+0x38/0x68
+						do_el0_svc+0x1c/0x28
+						el0_svc_common+0x80/0xe0
+						invoke_syscall+0x58/0x114
+						__arm64_sys_read+0x1c/0x2c
+						ksys_read+0x78/0xe8
+						vfs_read+0x1e0/0x2c8
+						kernfs_fop_read_iter+0x68/0x1b4
+						seq_read_iter+0x158/0x4ec
+						kernfs_seq_show+0x44/0x54
+						sysfs_kf_seq_show+0xb4/0x130
+						dev_attr_show+0x38/0x74
+						brightness_show+0x20/0x4c
+						dualshock4_led_get_brightness+0xc/0x74
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20241007001408.27249-4-andre.przywara@arm.com
+[ 3313.874295][ T4013] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
+[ 3313.874301][ T4013] Mem abort info:
+[ 3313.874303][ T4013]   ESR = 0x0000000096000006
+[ 3313.874305][ T4013]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 3313.874307][ T4013]   SET = 0, FnV = 0
+[ 3313.874309][ T4013]   EA = 0, S1PTW = 0
+[ 3313.874311][ T4013]   FSC = 0x06: level 2 translation fault
+[ 3313.874313][ T4013] Data abort info:
+[ 3313.874314][ T4013]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
+[ 3313.874316][ T4013]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[ 3313.874318][ T4013]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[ 3313.874320][ T4013] user pgtable: 4k pages, 39-bit VAs, pgdp=00000008f2b0a000
+..
+
+[ 3313.874332][ T4013] Dumping ftrace buffer:
+[ 3313.874334][ T4013]    (ftrace buffer empty)
+..
+..
+[ dd3313.874639][ T4013] CPU: 6 PID: 4013 Comm: InputReader
+[ 3313.874648][ T4013] pc : dualshock4_led_get_brightness+0xc/0x74
+[ 3313.874653][ T4013] lr : led_update_brightness+0x38/0x60
+[ 3313.874656][ T4013] sp : ffffffc0b910bbd0
+..
+..
+[ 3313.874685][ T4013] Call trace:
+[ 3313.874687][ T4013]  dualshock4_led_get_brightness+0xc/0x74
+[ 3313.874690][ T4013]  brightness_show+0x20/0x4c
+[ 3313.874692][ T4013]  dev_attr_show+0x38/0x74
+[ 3313.874696][ T4013]  sysfs_kf_seq_show+0xb4/0x130
+[ 3313.874700][ T4013]  kernfs_seq_show+0x44/0x54
+[ 3313.874703][ T4013]  seq_read_iter+0x158/0x4ec
+[ 3313.874705][ T4013]  kernfs_fop_read_iter+0x68/0x1b4
+[ 3313.874708][ T4013]  vfs_read+0x1e0/0x2c8
+[ 3313.874711][ T4013]  ksys_read+0x78/0xe8
+[ 3313.874714][ T4013]  __arm64_sys_read+0x1c/0x2c
+[ 3313.874718][ T4013]  invoke_syscall+0x58/0x114
+[ 3313.874721][ T4013]  el0_svc_common+0x80/0xe0
+[ 3313.874724][ T4013]  do_el0_svc+0x1c/0x28
+[ 3313.874727][ T4013]  el0_svc+0x38/0x68
+[ 3313.874730][ T4013]  el0t_64_sync_handler+0x68/0xbc
+[ 3313.874732][ T4013]  el0t_64_sync+0x1a8/0x1ac
+
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Reviewed-by: Anish Kumar <yesanishhere@gmail.com>
+Link: https://lore.kernel.org/r/20241103160527.82487-1-quic_mojha@quicinc.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/axp20x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/led-class.c | 14 +++++++++++---
+ include/linux/leds.h     |  2 +-
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/axp20x.c b/drivers/mfd/axp20x.c
-index 8161a5dc68e84..f5218623fb979 100644
---- a/drivers/mfd/axp20x.c
-+++ b/drivers/mfd/axp20x.c
-@@ -991,7 +991,7 @@ int axp20x_device_probe(struct axp20x_dev *axp20x)
- 		}
- 	}
+diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+index 6e88df4c87fa8..1e4fed64aee18 100644
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -28,11 +28,14 @@ static ssize_t brightness_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
++	unsigned int brightness;
  
--	ret = mfd_add_devices(axp20x->dev, -1, axp20x->cells,
-+	ret = mfd_add_devices(axp20x->dev, PLATFORM_DEVID_AUTO, axp20x->cells,
- 			      axp20x->nr_cells, NULL, 0, NULL);
+-	/* no lock needed for this */
++	mutex_lock(&led_cdev->led_access);
+ 	led_update_brightness(led_cdev);
++	brightness = led_cdev->brightness;
++	mutex_unlock(&led_cdev->led_access);
  
- 	if (ret) {
+-	return sprintf(buf, "%u\n", led_cdev->brightness);
++	return sprintf(buf, "%u\n", brightness);
+ }
+ 
+ static ssize_t brightness_store(struct device *dev,
+@@ -69,8 +72,13 @@ static ssize_t max_brightness_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
++	unsigned int max_brightness;
++
++	mutex_lock(&led_cdev->led_access);
++	max_brightness = led_cdev->max_brightness;
++	mutex_unlock(&led_cdev->led_access);
+ 
+-	return sprintf(buf, "%u\n", led_cdev->max_brightness);
++	return sprintf(buf, "%u\n", max_brightness);
+ }
+ static DEVICE_ATTR_RO(max_brightness);
+ 
+diff --git a/include/linux/leds.h b/include/linux/leds.h
+index 79ab2dfd3c72f..01fccb1c50010 100644
+--- a/include/linux/leds.h
++++ b/include/linux/leds.h
+@@ -161,7 +161,7 @@ struct led_classdev {
+ 	struct kernfs_node	*brightness_hw_changed_kn;
+ #endif
+ 
+-	/* Ensures consistent access to the LED Flash Class device */
++	/* Ensures consistent access to the LED class device */
+ 	struct mutex		led_access;
+ };
+ 
 -- 
 2.43.0
 
