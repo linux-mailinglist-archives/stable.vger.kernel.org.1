@@ -1,137 +1,91 @@
-Return-Path: <stable+bounces-98194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2348E9E305F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 01:26:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586D99E3070
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 01:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 968E6B25EB5
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 00:24:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DABE2831A7
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 00:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1945D1FA4;
-	Wed,  4 Dec 2024 00:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF3417D2;
+	Wed,  4 Dec 2024 00:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PaB/m/6u"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GF99kdzH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D7D17D2;
-	Wed,  4 Dec 2024 00:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C77623
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 00:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733271872; cv=none; b=ESBDsZqmymrMX97R2W5r2HzJFxUjhsSP+9+5jwy/R0rbNFhABWJnM9Ce7HAp6ckISvLrTMr7hckoNxXBSYcoCoRCVEyYXU7WkqgPlXZyNOfLltO0lQEDhmuu6nu0P/1NPwQt9tOoM/dZVQ5LHc/ULf6ZZa1ZWDwrtQApgOhk1Zg=
+	t=1733272756; cv=none; b=imMfMLn8cUh8lwuSaeI/vz420IBypz0SCyoJ9h+lRiAg/EyO39ce5jmXjkl+jxf4cBYymDNuiLR70I36FWle64iPZsE7GChqG+HnAlfuka0KuGoc1bu7KwWcsVoZFwoY+X9qKlhCDp5lEUQFXk/NDok7GN2fxoMFl2GjZO1IVSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733271872; c=relaxed/simple;
-	bh=3aLL3OQ0JjPgJJ3AA938LY53kK42EWSLbYjymQP4luY=;
+	s=arc-20240116; t=1733272756; c=relaxed/simple;
+	bh=odxI3owKIjmJytS8iq98DHJyPbubrAxeu5B75aU4mcg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=krFCtjg5wSoCCffpR5j8Nh3RD1v8DRlrlL1BBzgUDeRwargqUiscSixU5sCRf93fP7MLDpc9Xwnb2iMDJEt2AhEy5Bajsb8Tx12XabLBjJ+17y6R6uwY4PW0oZ3RuJfIA8FaLyZ1gNteDJFFantDsUz1WhfayuKWFNZIEprFojk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PaB/m/6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01882C4CEDC;
-	Wed,  4 Dec 2024 00:24:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733271872;
-	bh=3aLL3OQ0JjPgJJ3AA938LY53kK42EWSLbYjymQP4luY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PaB/m/6uERNd567YnOCKJUOPEsELei5qjtUUcBVeRrkmf1f7CWg9t6slPQsKD0QWM
-	 pNQZNHGP0MHFJRqMOY7M0+jMKr/beWuEcisTare79cSFNGcKp3sMgVDC1z/VvFf6gS
-	 x/vF2/c3sHutKk1UMiGYXOlo/OCgSR6iyktp1ZLiNl2go8Dfjenim1XTb+jTxcHI6V
-	 R3TjkGxmEGn+vqoEPY6Ej/FJKNyhItqyeo5vJduU/K0Z651n/2jRSy4YXhW1MVne4C
-	 Kc1uSUQI0mWPoB0YDjqDBpn/1KcxmTbCjms7EgI+PGGMktCx68xkvOVVdfyPHTH2PI
-	 bhWGq2eFDpzfQ==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
+	 MIME-Version:Content-Type; b=aKX7XTPLHcmht0fcT1bKTOa2sq4U1G3obVawgzcKTS2CslxLi9c81+L5tnsSF+cn9vvenpNhKYUyYMoIJ+8tJXKHiLSkUkhT0ZOfZXtRKry4fhgQLoxeCVblhoY/ORvNSgeDIo0drg2tJRUp3ztJBZ6yw1NST6DeWSEnSQHNasE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GF99kdzH; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1733272752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BuKyh758gXL4H4w1qOWYdSoyL7IX7eUQIvDf/JiLSic=;
+	b=GF99kdzHwPOPu8J2EKxn4AZYU4VtBVBTgBSgGQpLRe4dqm0Usij0/YgeP/TwfIEWMzsIdJ
+	okjsGMZ6swvZymbOrNECi2alxbeBxt5roZGJetiMWmQQaCbPKbqMq59LkttJDiMm7DyKXg
+	Xrn0znXvUv8G7xPO+7hnusDvfmje/Uk=
+From: Oliver Upton <oliver.upton@linux.dev>
+To: linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	damon@lists.linux.dev
-Subject: Re: [PATCH 6.12 000/826] 6.12.2-rc1 review
-Date: Tue,  3 Dec 2024 16:24:29 -0800
-Message-Id: <20241204002429.85717-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-References: 
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>
+Subject: Re: [PATCH] KVM: arm64: Do not allow ID_AA64MMFR0_EL1.ASIDbits to be overridden
+Date: Tue,  3 Dec 2024 16:38:55 -0800
+Message-Id: <173327270646.1289915.18344519507054696527.b4-ty@linux.dev>
+In-Reply-To: <20241203190236.505759-1-maz@kernel.org>
+References: <20241203190236.505759-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Hello,
-
-On Tue, 3 Dec 2024 15:35:27 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> This is the start of the stable review cycle for the 6.12.2 release.
-> There are 826 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, 03 Dec 2024 19:02:36 +0000, Marc Zyngier wrote:
+> Catalin reports that a hypervisor lying to a guest about the size
+> of the ASID field may result in unexpected issues:
 > 
-> Responses should be made by Thu, 05 Dec 2024 14:45:11 +0000.
-> Anything received after that time might be too late.
+> - if the underlying HW does only supports 8 bit ASIDs, the ASID
+>   field in a TLBI VAE1* operation is only 8 bits, and the HW will
+>   ignore the other 8 bits
+> 
+> [...]
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+Applied to fixes, thanks!
 
-Tested-by: SeongJae Park <sj@kernel.org>
+[1/1] KVM: arm64: Do not allow ID_AA64MMFR0_EL1.ASIDbits to be overridden
+      https://git.kernel.org/kvmarm/kvmarm/c/03c7527e97f7
 
-[1] https://github.com/damonitor/damon-tests/tree/next/corr
-[2] 1b3321bcbfba ("Linux 6.12.2-rc1")
-
-Thanks,
-SJ
-
-[...]
-
----
-
-ok 9 selftests: damon: damos_tried_regions.py
-ok 10 selftests: damon: damon_nr_regions.py
-ok 11 selftests: damon: reclaim.sh
-ok 12 selftests: damon: lru_sort.sh
-ok 13 selftests: damon: debugfs_empty_targets.sh
-ok 14 selftests: damon: debugfs_huge_count_read_write.sh
-ok 15 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 16 selftests: damon: debugfs_rm_non_contexts.sh
-ok 17 selftests: damon: debugfs_target_ids_read_before_terminate_race.sh
-ok 18 selftests: damon: debugfs_target_ids_pid_leak.sh
-ok 19 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 20 selftests: damon: sysfs_update_schemes_tried_regions_hang.py
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh # SKIP
-ok 12 selftests: damon-tests: build_m68k.sh # SKIP
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+--
+Best,
+Oliver
 
