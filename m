@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-98534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADFD9E426E
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:53:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C519E4247
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:49:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE9392831B1
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:53:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C64C168715
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCEF23874C;
-	Wed,  4 Dec 2024 17:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50EB9207E16;
+	Wed,  4 Dec 2024 17:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="biuZ1QDD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NLiUgTlr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC57A238740;
-	Wed,  4 Dec 2024 17:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE836233698
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 17:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332439; cv=none; b=YTb6u0eR8DQ3OM+5oyHonh53dUmaYJgs92rhgVlu2g+nVBYZ0RcRp5dbm8g94tVUl9Gx0waYUFOU1BA0v8ijSoXyZi3S1u+XP3sfo2wVAcOpx5v20Lp5IojYsyv6gFY+buJMty1BzkhfpstgyvHkug2yOUt7VNXoLc/S2iWcOFE=
+	t=1733332386; cv=none; b=og0tvomLil9xAOnyZGT9kI8TSNTBltqcTqOjwkaz9pV8ENNEdx4KsaJr+piBINvBRsxFbHLgxPRxuwWrJbSdc26gsSe8SUpQ58bIDRO9D5JvPRtJxTSvXV0m5trRpLPHotj1RgzTCduoOhxNYbrLVoGLrSrqP27KLPHGhrclsPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332439; c=relaxed/simple;
-	bh=nL2jMgDplLnwuxZm04PTOAyEHPsJP4TvdbcDsPszNz0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t3Tpv+XzxN/2TW4RGtkwQAxJs0ZGXlRfo9yUcWhmegC2Y5Qkj6/8RMabpIA2l1piazMVjWuaAnlyqDHPbq7N6UVQrUpAHQhpsxcysV61YsLlaZQLPN2arnewuBL3CW8l+lsgRTXwVDAeJMT8WiHlljcNS9Z2EH3lIdnR2qvS3bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=biuZ1QDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C903C4CED6;
-	Wed,  4 Dec 2024 17:13:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332439;
-	bh=nL2jMgDplLnwuxZm04PTOAyEHPsJP4TvdbcDsPszNz0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=biuZ1QDDk7fsopP28DAxA9qhHGr7nV/eggEk4rPBRSNZL/toh96MK7o7WClDp3QKY
-	 hcw1RhRcyvXnea6kz08MCexDh0fqnuDhSnMBXY3W6gk1A6Eh0gNR9Q68JE5JxNKnk8
-	 2h09lAVbCCNY0tTaYwdslUfa1C2M5hFLv9q5lB+uy3qV5Z6Izy59JbSQQHbQvzkrgW
-	 k5BmpB8eZcRwqiKjC2/1V5OEV/eVo7sDf2LNT4hdlx7fcoy81BILJIyegIeSiB/YXE
-	 S/OaTF4FTgwnuT6/g+JX5IV3S/qw4qqxePw1zQPo+WKX90isBOvMh3uBYr1+W8gipu
-	 294t22P1tfnfQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Amey Narkhede <ameynarkhede03@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	mariusz.tkaczyk@linux.intel.com,
-	ilpo.jarvinen@linux.intel.com,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19] PCI: Add 'reset_subordinate' to reset hierarchy below bridge
-Date: Wed,  4 Dec 2024 11:02:36 -0500
-Message-ID: <20241204160239.2217532-1-sashal@kernel.org>
+	s=arc-20240116; t=1733332386; c=relaxed/simple;
+	bh=Y3XZXBpF35vV99oi4KIDKGZpMLNQJAiul0q3/bdQoK4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=iCgDWPBF4Oyp5ATr0vvCXqnt4C5H3WYCWQSEldhxQiBxd1QFR/dgfXLH3jMMkeE2V6JwRI4TgSO7YWgPluCG07kcSIFm2tPpDUDKKotqAziVnsa6/SyR4EZ18MzAstRJ5zADbXsdupEVH4BPysTkNJaaeJ6opciDzTm2EXwCf2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NLiUgTlr; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733332384; x=1764868384;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Y3XZXBpF35vV99oi4KIDKGZpMLNQJAiul0q3/bdQoK4=;
+  b=NLiUgTlrHDiIBbunaOiRlMay8jzph2bfTEeoX5a/4k3nnTfsu1lWjcYX
+   mntpKL/fr73bY7lsOLwg1J53pLcM80IoT+m2v1ofBdxDKaC79bU4vya8p
+   9JEmhCeiERXDrJ4Jo8EiqiHnjzI2JB/6Ii3E6I45ZTCLRacBvBg3ifM3N
+   JS5Ti0FTQSZlUc1QHjNSXe1h3EUXXKaZjkFC0SbaIevhGmXT6R+VWrcwd
+   GqZCCI97gNJ/kBNsUZvWJF8Kl3lk+4xAMh3Dlj28F3gIy3Yg+2NsJ4KPP
+   8/JvEBdUSmTkXhWFw9bmvH+HoCLI6GijviJfugcu1P6WS7ZBc7gUDrnQX
+   A==;
+X-CSE-ConnectionGUID: Q6XX0QBjQSGNeKwqVDaJtw==
+X-CSE-MsgGUID: SguCR07wTZ+sMD9Wdv8yzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="32970102"
+X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
+   d="scan'208";a="32970102"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 09:13:03 -0800
+X-CSE-ConnectionGUID: 9uJ1v/7OQPeVs9xT6f8FGQ==
+X-CSE-MsgGUID: /xfOQBu+Rd6qy8czkxXRdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="98847938"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.ger.corp.intel.com) ([10.245.89.141])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 09:13:02 -0800
+From: Adrian Hunter <adrian.hunter@intel.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.4] perf/x86/intel/pt: Fix buffer full but size is 0 case
+Date: Wed,  4 Dec 2024 19:12:49 +0200
+Message-ID: <20241204171249.59950-1-adrian.hunter@intel.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,133 +69,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.324
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
 Content-Transfer-Encoding: 8bit
 
-From: Keith Busch <kbusch@kernel.org>
+commit 5b590160d2cf776b304eb054afafea2bd55e3620 upstream.
 
-[ Upstream commit 2fa046449a82a7d0f6d9721dd83e348816038444 ]
+If the trace data buffer becomes full, a truncated flag [T] is reported
+in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
+data must have been added to make the buffer full.
 
-The "bus" and "cxl_bus" reset methods reset a device by asserting Secondary
-Bus Reset on the bridge leading to the device.  These only work if the
-device is the only device below the bridge.
+That happens when the buffer fills up from empty to full before the
+Intel PT driver has updated the buffer position.  Then the driver
+calculates the new buffer position before calculating the data size.
+If the old and new positions are the same, the data size is reported
+as 0, even though it is really the whole buffer size.
 
-Add a sysfs 'reset_subordinate' attribute on bridges that can assert
-Secondary Bus Reset regardless of how many devices are below the bridge.
+Fix by detecting when the buffer position is wrapped, and adjust the
+data size calculation accordingly.
 
-This resets all the devices below a bridge in a single command, including
-the locking and config space save/restore that reset methods normally do.
+Example
 
-This may be the only way to reset devices that don't support other reset
-methods (ACPI, FLR, PM reset, etc).
+  Use a very small buffer size (8K) and observe the size of truncated [T]
+  data. Before the fix, it is possible to see records of 0 size.
 
-Link: https://lore.kernel.org/r/20241025222755.3756162-1-kbusch@meta.com
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[bhelgaas: commit log, add capable(CAP_SYS_ADMIN) check]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
-Reviewed-by: Amey Narkhede <ameynarkhede03@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Before:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 2 times to write data ]
+    [ perf record: Captured and wrote 0.105 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
+    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
+
+ After:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 3 times to write data ]
+    [ perf record: Captured and wrote 0.040 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
+    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
+
+Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- Documentation/ABI/testing/sysfs-bus-pci | 11 +++++++++++
- drivers/pci/pci-sysfs.c                 | 26 +++++++++++++++++++++++++
- drivers/pci/pci.c                       |  2 +-
- drivers/pci/pci.h                       |  1 +
- 4 files changed, 39 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/pt.c | 11 ++++++++---
+ arch/x86/events/intel/pt.h |  2 ++
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
-index 44d4b2be92fd4..c68d1d9a4d479 100644
---- a/Documentation/ABI/testing/sysfs-bus-pci
-+++ b/Documentation/ABI/testing/sysfs-bus-pci
-@@ -125,6 +125,17 @@ Description:
- 		will be present in sysfs.  Writing 1 to this file
- 		will perform reset.
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index 99b286b6c200..622bfb9a2fe7 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -782,11 +782,13 @@ static void pt_buffer_advance(struct pt_buffer *buf)
+ 	buf->cur_idx++;
  
-+What:		/sys/bus/pci/devices/.../reset_subordinate
-+Date:		October 2024
-+Contact:	linux-pci@vger.kernel.org
-+Description:
-+		This is visible only for bridge devices. If you want to reset
-+		all devices attached through the subordinate bus of a specific
-+		bridge device, writing 1 to this will try to do it.  This will
-+		affect all devices attached to the system through this bridge
-+		similiar to writing 1 to their individual "reset" file, so use
-+		with caution.
-+
- What:		/sys/bus/pci/devices/.../vpd
- Date:		February 2008
- Contact:	Ben Hutchings <bwh@kernel.org>
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index f68798763af8d..d5287dfac9171 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -507,6 +507,31 @@ static ssize_t dev_bus_rescan_store(struct device *dev,
+ 	if (buf->cur_idx == buf->cur->last) {
+-		if (buf->cur == buf->last)
++		if (buf->cur == buf->last) {
+ 			buf->cur = buf->first;
+-		else
++			buf->wrapped = true;
++		} else {
+ 			buf->cur = list_entry(buf->cur->list.next, struct topa,
+ 					      list);
++		}
+ 		buf->cur_idx = 0;
+ 	}
  }
- static DEVICE_ATTR(rescan, (S_IWUSR|S_IWGRP), NULL, dev_bus_rescan_store);
- 
-+static ssize_t reset_subordinate_store(struct device *dev,
-+				struct device_attribute *attr,
-+				const char *buf, size_t count)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct pci_bus *bus = pdev->subordinate;
-+	unsigned long val;
-+
-+	if (!capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
-+	if (kstrtoul(buf, 0, &val) < 0)
-+		return -EINVAL;
-+
-+	if (val) {
-+		int ret = __pci_reset_bus(bus);
-+
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return count;
-+}
-+static DEVICE_ATTR_WO(reset_subordinate);
-+
- #if defined(CONFIG_PM) && defined(CONFIG_ACPI)
- static ssize_t d3cold_allowed_store(struct device *dev,
- 				    struct device_attribute *attr,
-@@ -778,6 +803,7 @@ static struct attribute *pci_dev_attrs[] = {
- static struct attribute *pci_bridge_attrs[] = {
- 	&dev_attr_subordinate_bus_number.attr,
- 	&dev_attr_secondary_bus_number.attr,
-+	&dev_attr_reset_subordinate.attr,
- 	NULL,
- };
- 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index aa2be8d815048..e22040c8a0aec 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5295,7 +5295,7 @@ EXPORT_SYMBOL_GPL(pci_probe_reset_bus);
-  *
-  * Same as above except return -EAGAIN if the bus cannot be locked
-  */
--static int __pci_reset_bus(struct pci_bus *bus)
-+int __pci_reset_bus(struct pci_bus *bus)
+@@ -800,8 +802,11 @@ static void pt_buffer_advance(struct pt_buffer *buf)
+ static void pt_update_head(struct pt *pt)
  {
- 	int rc;
+ 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
++	bool wrapped = buf->wrapped;
+ 	u64 topa_idx, base, old;
  
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 39725b71300f8..1db9b8ff6043d 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -36,6 +36,7 @@ int pci_mmap_fits(struct pci_dev *pdev, int resno, struct vm_area_struct *vmai,
- int pci_probe_reset_function(struct pci_dev *dev);
- int pci_bridge_secondary_bus_reset(struct pci_dev *dev);
- int pci_bus_error_reset(struct pci_dev *dev);
-+int __pci_reset_bus(struct pci_bus *bus);
++	buf->wrapped = false;
++
+ 	/* offset of the first region in this table from the beginning of buf */
+ 	base = buf->cur->offset + buf->output_off;
  
- /**
-  * struct pci_platform_pm_ops - Firmware PM callbacks
+@@ -814,7 +819,7 @@ static void pt_update_head(struct pt *pt)
+ 	} else {
+ 		old = (local64_xchg(&buf->head, base) &
+ 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
+-		if (base < old)
++		if (base < old || (base == old && wrapped))
+ 			base += buf->nr_pages << PAGE_SHIFT;
+ 
+ 		local_add(base - old, &buf->data_size);
+diff --git a/arch/x86/events/intel/pt.h b/arch/x86/events/intel/pt.h
+index c2d00a072952..51674454c69d 100644
+--- a/arch/x86/events/intel/pt.h
++++ b/arch/x86/events/intel/pt.h
+@@ -64,6 +64,7 @@ struct pt_pmu {
+  * @lost:	if data was lost/truncated
+  * @head:	logical write offset inside the buffer
+  * @snapshot:	if this is for a snapshot/overwrite counter
++ * @wrapped:	buffer advance wrapped back to the first topa table
+  * @stop_pos:	STOP topa entry index
+  * @intr_pos:	INT topa entry index
+  * @stop_te:	STOP topa entry pointer
+@@ -80,6 +81,7 @@ struct pt_buffer {
+ 	local_t			data_size;
+ 	local64_t		head;
+ 	bool			snapshot;
++	bool			wrapped;
+ 	long			stop_pos, intr_pos;
+ 	struct topa_entry	*stop_te, *intr_te;
+ 	void			**data_pages;
 -- 
 2.43.0
 
