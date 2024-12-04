@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-98663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3FD9E49BC
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:44:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9869E49B9
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C6851881A69
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1734516254B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9009C21C19F;
-	Wed,  4 Dec 2024 23:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9073121CA0A;
+	Wed,  4 Dec 2024 23:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUuBrN2I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sv5TXyH9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC9821C197;
-	Wed,  4 Dec 2024 23:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B82221CA04;
+	Wed,  4 Dec 2024 23:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733355064; cv=none; b=RKDBv9l1rXq5z9pucK8BewlF77miR+RA9QLx9OMuc4UvB7wct4AaES1qRJDL66sF4i5U3shgyPMZMsaM3HL6UhCPl09+SKIKSfDdl/JWU5j4S2kjI1l4Q7c5lfgjkrJALEkET1X0PRLRcUALgVSt6XaX0JjIO8Su6dS14CVQ82o=
+	t=1733355067; cv=none; b=AcJnIZZ2xBZTDPdnJGG1gw0wl6smXkBBGlYrxYDVmEXxZwfIqiT09qxrzjtY2hNgMAxtQElY4VEioL+uSQe+Y8pn6YzGa1bhyIOF/pe3UsT8UxyC8ob8KXIiZiLYMAoRahUR1zlnEuQ1xiK35XLxbtyJRlCUHPjwF70IKV9N9fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733355064; c=relaxed/simple;
-	bh=MtmmaDHTRIfdmf82yH0QeEF5vBpIgJeydco6WJ1CTSI=;
+	s=arc-20240116; t=1733355067; c=relaxed/simple;
+	bh=7ui9ot9eoh+IkUpPzOlVCenipdDiAvxsCmjSBdH7YbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cs6ksVOGPAs2bsSsBufXeBSWvTRLaLaNKROfoj9i+oysQJ55ITxmwOjOyrzRsZcpal6T6NgH2UKAgbK7O3ttNoE+H9SiaAXx1qX40wMOjtLVBz1ndvrnOO+wNeduY5Oad+S9wJZG60nKSjiwFIycJU7+1gJQcWigS31uF4WSlys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUuBrN2I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC691C4CED2;
-	Wed,  4 Dec 2024 23:31:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jtOkbsTq1BZBH0ipbIxWjjiS6AtR+WG9I8FCLVrq2o/Kbg6qWWfqed8bi76q4Celqi5UPn0/N5hHP7onQKiprTRYvC16enHFmemLnq9oQbrFFxX3bFhZjtmDLIE4QNTEAAjxC+o5l3zcmnaWa8LFifmyTyFnQdG13sNAnjHjLic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sv5TXyH9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539AAC4CEDD;
+	Wed,  4 Dec 2024 23:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355063;
-	bh=MtmmaDHTRIfdmf82yH0QeEF5vBpIgJeydco6WJ1CTSI=;
+	s=k20201202; t=1733355065;
+	bh=7ui9ot9eoh+IkUpPzOlVCenipdDiAvxsCmjSBdH7YbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUuBrN2IYCWxmIlo1CM1zntZgRnn800xla/+0+IEL/Pa1Hz5YdJ6AlpQJtpdXdGXh
-	 zRFP5PfrIZdSHnrTnZQxxChgCYWitxvrC2r5OJzosfBvx8SW9oqLojLGaDVczZecT7
-	 CVQxyd8rhTSx9I6M01POeqoX3Z5zE85sYZYx10705P1BNAsTpuUXo9K06IkxyJwi4A
-	 GgrqTkRHEWRlWahi2Rq7z3hytEEbmv0Xf0cWfbwqXCTZvZmVjiCjLWuSwWJQsH9sD0
-	 RrW4+mNgIOF/42+bqEFll/evA9J8036JejXGgCwBY9bTc5MwUddMP2Mjg9IeTx5k5s
-	 btu8Y0AEuq4bw==
+	b=sv5TXyH9KCjl8AnDZ9wOvwPYh+tiLsmIOdFbphEmQw+VjOTVtQWOqJ5LxoFbpudtp
+	 baST1f+GNxHi8cq/rrsBa65DHlauVKWnBetPUtjy9pemNTk3GL9Q63dtT2ZEdcAODb
+	 LvRbX+E+WbMNJa5B33dvIl3gSxifLLDznz1iAalQNyRNFbYZtPheYjcorEYRpR5npd
+	 r4zCVBqbl6dts/CTLGhlskv6oFyk0l1wNb5kowwHuH639k470EdjK97hJk27JBKFy8
+	 abC6tK9c5iCrwG6ZN/YBxJXQgJzm87lVlkenGslwf0F4dxCWpKI+x+xYAYRDNY85kL
+	 bFA27G5KpsIbQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.com>,
+Cc: Saravana Kannan <saravanak@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	peter.chen@kernel.org,
-	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/5] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
-Date: Wed,  4 Dec 2024 17:19:35 -0500
-Message-ID: <20241204221942.2248973-2-sashal@kernel.org>
+	jckuo@nvidia.com,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	thierry.reding@gmail.com,
+	linux-phy@lists.infradead.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 3/5] phy: tegra: xusb: Set fwnode for xusb port devices
+Date: Wed,  4 Dec 2024 17:19:36 -0500
+Message-ID: <20241204221942.2248973-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204221942.2248973-1-sashal@kernel.org>
 References: <20241204221942.2248973-1-sashal@kernel.org>
@@ -62,47 +68,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit 548f48b66c0c5d4b9795a55f304b7298cde2a025 ]
+[ Upstream commit 74ffe43bad3af3e2a786ca017c205555ba87ebad ]
 
-As per USBSTS register description about UEI:
+fwnode needs to be set for a device for fw_devlink to be able to
+track/enforce its dependencies correctly. Without this, you'll see error
+messages like this when the supplier has probed and tries to make sure
+all its fwnode consumers are linked to it using device links:
 
-  When completion of a USB transaction results in an error condition, this
-  bit is set by the Host/Device Controller. This bit is set along with the
-  USBINT bit, if the TD on which the error interrupt occurred also had its
-  interrupt on complete (IOC) bit set.
+tegra-xusb-padctl 3520000.padctl: Failed to create device link (0x180) with 1-0008
 
-UI is set only when IOC set. Add checking UEI to fix miss call
-isr_tr_complete_handler() when IOC have not set and transfer error happen.
-
-Acked-by: Peter Chen <peter.chen@kernel.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240926022906.473319-1-xu.yang_2@nxp.com
+Reported-by: Jon Hunter <jonathanh@nvidia.com>
+Closes: https://lore.kernel.org/all/20240910130019.35081-1-jonathanh@nvidia.com/
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Suggested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20241024061347.1771063-3-saravanak@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c | 2 +-
+ drivers/phy/tegra/xusb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index f4661f654af88..a61721459ff51 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -2172,7 +2172,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
- 			}
- 		}
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 856397def89ac..133f504dfe9a7 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -531,7 +531,7 @@ static int tegra_xusb_port_init(struct tegra_xusb_port *port,
  
--		if (USBi_UI  & intr)
-+		if ((USBi_UI | USBi_UEI) & intr)
- 			isr_tr_complete_handler(ci);
+ 	device_initialize(&port->dev);
+ 	port->dev.type = &tegra_xusb_port_type;
+-	port->dev.of_node = of_node_get(np);
++	device_set_node(&port->dev, of_fwnode_handle(of_node_get(np)));
+ 	port->dev.parent = padctl->dev;
  
- 		if ((USBi_SLI & intr) && !(ci->suspended)) {
+ 	err = dev_set_name(&port->dev, "%s-%u", name, index);
 -- 
 2.43.0
 
