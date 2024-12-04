@@ -1,140 +1,113 @@
-Return-Path: <stable+bounces-98303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7507B9E3E06
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:18:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7E99E3E17
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B540165806
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 15:17:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7270C16625F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 15:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBCE20C03E;
-	Wed,  4 Dec 2024 15:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255F220B7E4;
+	Wed,  4 Dec 2024 15:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="GezznGjh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="so4yfvkv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0931C205E1C;
-	Wed,  4 Dec 2024 15:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C7216BE20;
+	Wed,  4 Dec 2024 15:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733325470; cv=none; b=JEK2HaXbzWFXWLX9fb3+5vRlIoqdkXygLJjSVs+2XmX088W6D/hcyKtcweP9lMN3ymT41JOevn8FKiteoWUdsOe3CM9pyPKqoSfmEUNQy0voCsyQmCQ+8hWwiZZXWAapboocqafAG3ySL0wHcIp5v1Nz4Imz9FvWOVP1mANjitI=
+	t=1733325744; cv=none; b=jF2LekQWKewt8ekNPLcdIwbYcwlp37Lgz/MKKecgJiKCvUtO0XH4ahyxLCdCMGy/F30VZaVP6LicwIkVYU6zfKz1JOILb8LYoF2oXnANYOLvBaKH2TVf+j1to7S0s5/Zh5aFiPXotc/XxJbEA8WO49sVafWVfWyjGTmz0yj7RfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733325470; c=relaxed/simple;
-	bh=imTyW5qs4VLxVBzu/Kz01yfJYL47jAGErlyACSyqeFo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MeTsixYBZZW82iAO5kfBfZpYeLa7vsqk4flmyEhtrESg7m4mhitWc6KWG3h4KORqrWaF9KuvSWopmIM9JcAIvjjpyp9X6dyLMBgRifg8r1xf0+NsfUeQYkLCgTsqMbfAdkZ5RC/YMQw2qg5LFAsj4LsOMAFW+Sssdih3jzpzvMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=GezznGjh; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Andrey Kalachev <kalachev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1733325457;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=stfWGS3BClOC/+OPYKfYd33IKMOm/Qu4X4Okloj0fNw=;
-	b=GezznGjhNo2/JXbSl4qJFmrYCJR3E6vHvG9hTFOll3zaVmZ5aUwJXcvmtO1MwHKxlxlinC
-	N9yi7MYwVfxvfhUjMwTK+upuFQfDpuNtpseSHA6P/Hy5xCoMMSyoKER+RoHCABxqKhPqnr
-	tvxtpYHFsGwuOCrNUkHb3WUOWvlqi1A=
-To: stable@vger.kernel.org
-Cc: vivek.kasireddy@intel.com,
-	kraxel@redhat.com,
-	sumit.semwal@linaro.org,
-	christian.koenig@amd.com,
-	dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org,
-	kalachev@swemel.ru,
-	lvc-project@linuxtesting.org
-Subject: [PATCH v5.4-v6.1] udmabuf: use vmf_insert_pfn and VM_PFNMAP for handling mmap
-Date: Wed,  4 Dec 2024 18:17:35 +0300
-Message-Id: <20241204151735.141277-3-kalachev@swemel.ru>
-In-Reply-To: <20241204151735.141277-1-kalachev@swemel.ru>
-References: <20241204151735.141277-1-kalachev@swemel.ru>
+	s=arc-20240116; t=1733325744; c=relaxed/simple;
+	bh=YxbdLK0hPdinmJ7aseN6ZxvZEvKSnXJP4oKfttGQxMg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GQj9kFpqU2Y5k3Ab57J5ndQxKfHbegDhWOmrOlvZylEM9bKHejXQ/phvrbOQsR+UUNiDbN8Cr5LcUrO4cxH5IPI+IisKJxo4jn0W4sjYsX28+UK0EWFMYFODv1od32H1RebDPHwC4XyT7Rsk+pIX6+cfAYdnXnwZCe4DBCuR0t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=so4yfvkv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79C0C4CECD;
+	Wed,  4 Dec 2024 15:22:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733325744;
+	bh=YxbdLK0hPdinmJ7aseN6ZxvZEvKSnXJP4oKfttGQxMg=;
+	h=From:Subject:Date:To:Cc:From;
+	b=so4yfvkvN9CDgMc6hEnOllf8Nm3zaqsK5NEJLHvCdhz31RV7sTx/cq/2nSN8Dku7t
+	 23F6IN8Gad0ycca3IE/TPM3lwhxI7iNC2BH1NAJVtJHwhtFwaQwFha6HJxkiA7y6jY
+	 AaDRjIFCQ9T0G/pwyJ4cI9YpG28v7YJt0+vsQIsL+fF536WuodGM9uyl8tS8QKPG7Q
+	 sslqF9neGm6Ws1LyD1yspxyYr43IkTWrfSzyxp1MfAkvQKUwIcGsXJeWXP3ZOWkHyp
+	 K2eneCiB2Wko+9nX4bWJlBHZy3ARSAXj9wwRxypcpDL7q9wADVPGEKCYqmhA6UcaCc
+	 Alv9sv6d3sEGA==
+From: Mark Brown <broonie@kernel.org>
+Subject: [PATCH v2 0/6] arm64/sme: Collected SME fixes
+Date: Wed, 04 Dec 2024 15:20:48 +0000
+Message-Id: <20241204-arm64-sme-reenable-v2-0-bae87728251d@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFBzUGcC/22Nyw6CMBREf4XctddQqDxc+R+GRYERGqGYW0M0p
+ P9uJXHnZpIzyZzZyEMsPJ2TjQSr9XZxEbJDQt1o3AC2fWTK0kyrGGxkLjT7GSyAM+0ErisUulO
+ FMhUoDh+Cm33t0msTebT+uch7/1jVt/3p8n+6VXHKfXXKdVn3qi3Lyx3iMB0XGagJIXwArzVMW
+ rUAAAA=
+X-Change-ID: 20241202-arm64-sme-reenable-98e64c161a8e
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Dave Martin <Dave.Martin@arm.com>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-9b746
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1436; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=YxbdLK0hPdinmJ7aseN6ZxvZEvKSnXJP4oKfttGQxMg=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnUHOoeQbPc1HbfhMEJ6VMwbqGljtgzH/xL/utSJwc
+ BuyUoruJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ1BzqAAKCRAk1otyXVSH0BawB/
+ 90OIzPt6j6CGU6RuSdHVSMeewxBU+uf1YFk4npaIu9/p54fletxj5NfLw3xCyb3bdsFlmpFpk3S/AW
+ Wx/8C6TMHj/2Iuohrqgm5pUK+h8LS1WET6CSqFh45R9N1+V3MvfuLr7Z7L1mMMBd+VbV733ZiEJAFO
+ sg/pNDrso2ZbqEDbog4svL/AwhmtkaL+uIUSdikXRrNzc0TPGvQ6w4pgzXlau6eTRbuCUrPP/8rfRy
+ AcS1URPzbJ7KoSmU00K9d0c6OY2NCH7une+m/R6lM5SZcLdY23cnuE/TWDFDNO6K5DHaxpZJ2IUBnz
+ wWdJhYdYKubtbJO5c4aQUCD979PDH2
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+This series collects the various SME related fixes that were previously
+posted separately.  These should address all the issues I am aware of so
+a patch which reenables the SME configuration option is also included.
 
-[ Upstream commit 7d79cd784470395539bda91bf0b3505ff5b2ab6d ]
-
-Add VM_PFNMAP to vm_flags in the mmap handler to ensure that the mappings
-would be managed without using struct page.
-
-And, in the vm_fault handler, use vmf_insert_pfn to share the page's pfn
-to userspace instead of directly sharing the page (via struct page *).
-
-Link: https://lkml.kernel.org/r/20240624063952.1572359-6-vivek.kasireddy@intel.com
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Dave Airlie <airlied@redhat.com>
-Acked-by: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Cc: Junxiao Chang <junxiao.chang@intel.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: syzbot+3d218f7b6c5511a83a79@syzkaller.appspotmail.com
-[ Andrey: Backport required minor change: replace call
-to vm_flags_set() in mmap_udmabuf() by direct
-modification of the vma->vm_flags, because the set
-of vm_flags_*() functions is not in this versions. ]
-Signed-off-by: Andrey Kalachev <kalachev@swemel.ru>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/dma-buf/udmabuf.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Changes in v2:
+- Pull simplification of the signal restore code after the SME
+  reenablement, it's not a fix but there's some code overlap.
+- Comment updates.
+- Link to v1: https://lore.kernel.org/r/20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index 2bcdb935a3ac..e57d57a10bb0 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -33,12 +33,13 @@ static vm_fault_t udmabuf_vm_fault(struct vm_fault *vmf)
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct udmabuf *ubuf = vma->vm_private_data;
- 	pgoff_t pgoff = vmf->pgoff;
-+	unsigned long pfn;
- 
- 	if (pgoff >= ubuf->pagecount)
- 		return VM_FAULT_SIGBUS;
--	vmf->page = ubuf->pages[pgoff];
--	get_page(vmf->page);
--	return 0;
-+
-+	pfn = page_to_pfn(ubuf->pages[pgoff]);
-+	return vmf_insert_pfn(vma, vmf->address, pfn);
- }
- 
- static const struct vm_operations_struct udmabuf_vm_ops = {
-@@ -54,6 +55,7 @@ static int mmap_udmabuf(struct dma_buf *buf, struct vm_area_struct *vma)
- 
- 	vma->vm_ops = &udmabuf_vm_ops;
- 	vma->vm_private_data = ubuf;
-+	vma->vm_flags |= VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP;
- 	return 0;
- }
- 
+---
+Mark Brown (6):
+      arm64/sme: Flush foreign register state in do_sme_acc()
+      arm64/fp: Don't corrupt FPMR when streaming mode changes
+      arm64/ptrace: Zero FPMR on streaming mode entry/exit
+      arm64/signal: Avoid corruption of SME state when entering signal handler
+      arm64/sme: Reenable SME
+      arm64/signal: Consistently invalidate the in register FP state in restore
+
+ arch/arm64/Kconfig              |  1 -
+ arch/arm64/include/asm/fpsimd.h |  1 +
+ arch/arm64/kernel/fpsimd.c      | 57 ++++++++++++++++++++++----
+ arch/arm64/kernel/ptrace.c      | 12 +++++-
+ arch/arm64/kernel/signal.c      | 89 +++++++++++------------------------------
+ 5 files changed, 84 insertions(+), 76 deletions(-)
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20241202-arm64-sme-reenable-98e64c161a8e
+
+Best regards,
 -- 
-2.30.2
+Mark Brown <broonie@kernel.org>
 
 
