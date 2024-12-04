@@ -1,198 +1,288 @@
-Return-Path: <stable+bounces-98541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DAD9E430C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:11:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6E79E442A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:09:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6CBB288353
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:11:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 932CEB3B413
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F99423918B;
-	Wed,  4 Dec 2024 18:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA7F2139C6;
+	Wed,  4 Dec 2024 16:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A4hkvq/o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HO+IHh5e"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A97F3D561
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 18:11:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C5B2139B2;
+	Wed,  4 Dec 2024 16:58:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733335901; cv=none; b=oFvFg4yybAWLrk0dGd5m/QH9cDVCQmmy3SFjCZ2O1QQ6i9PIW9DIqJ0/e8GsDtnaYR+azSON2Z+mwecSngaEqEMq+gthD+vKj2Ym5cv0oj/RWFRAC5vTwkEMJrIzXPZX2dA7hLfattYaSTMQiI/vRTm0mQSXBRgCP3xlKaGMInc=
+	t=1733331494; cv=none; b=bIVSN9Wz1ZlDuef/qT5ZVsOfvCzvBNCNlX38sICta+zZ2Fyf3ofy0aPK1a5l0BfT2GSypB+6A9WO/M23VGYXAr+jI6EX63D0fi2rPlQvaUt364p74Y3ApxeHo/0NhRZcDo261h55pOfXE4RpFTZ7s4j7yeQGZmVR/q+gpA/b+cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733335901; c=relaxed/simple;
-	bh=vjmcSgcWnBKzXMjigUXcBMqoJFMjy5ELFrCRu15LNI4=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrJ5mkDfzrwu9VpkDDdX9R96iPUFI3bIm3wsyyldZ8sQYDlrX1+6CIE0PZqdX3TVufD4cqSMp4HTluHnd20oAhwX/+oMNqNfupiboMzFvSMVauXsx2bsmatVfho2Sb5beKYN22fjrpCr6n0D8Y1OqDu3YekMs9Wj1acK4pAYok0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A4hkvq/o; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733335899; x=1764871899;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=vjmcSgcWnBKzXMjigUXcBMqoJFMjy5ELFrCRu15LNI4=;
-  b=A4hkvq/o7+AHY8EOSyYMnksVJlgTmO7tR6SWP0MvKmRbCgP1olxsM9N2
-   Rqq+hv3F6ao8O1H3hel9EVfcmCrAwyTzRdkd/PThzOaUKjvHJYBDO3eCz
-   qER0eINtdnp3coX0iVZAjIGo8mJkwKf+Z+ztLdyPhi5KO5ySfOcYN7r66
-   Bltg0KIUm3LZJWmYmPUWDu3G14NFbqvnUgHyu7kEXep1QAh59FzlsI3c+
-   AwxnQRx7gB4SDb0eWxOzFtFPWzdGnODNfcoddvZIMQbtQon8yi6AkMnLE
-   uBlHp4363fbt/Fwt5fsYs0ZsfFPh5WIIDQe9cHD9MqEp6YDyss8OXneLZ
-   Q==;
-X-CSE-ConnectionGUID: LHDQkX2cTxaM4ZSoUGMQgw==
-X-CSE-MsgGUID: VtHZgADhQa+mFhlnRvVpuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="37281331"
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="37281331"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 10:11:39 -0800
-X-CSE-ConnectionGUID: kDD4la/zTQuzeDONeS36Tw==
-X-CSE-MsgGUID: FUWwNT5dS7iODibIrBm5iw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
-   d="scan'208";a="93717427"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.ger.corp.intel.com) ([10.245.89.141])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 10:11:37 -0800
-From: Adrian Hunter <adrian.hunter@intel.com>
-To: stable@vger.kernel.org
-Subject: [PATCH 4.19] perf/x86/intel/pt: Fix buffer full but size is 0 case
-Date: Wed,  4 Dec 2024 20:11:26 +0200
-Message-ID: <20241204181126.61934-1-adrian.hunter@intel.com>
+	s=arc-20240116; t=1733331494; c=relaxed/simple;
+	bh=tWocmDwQ7dA4/KynPTdBWbKzp8Sjj1C34cjzodJbX9U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UMCEtDxSBekEgXSkDBtniy3a2xrI3S/7BEUNZisc5XnrWXZjt0ipXieLhUO/jbiGEc50kgJUI1OVmZnpv38XCs7q2wWzYjk7SRojZuIBUytzuSi5JaYJUn7K4W82wnJny8Y4Be6IGfXSlELPcVF76NlQv/nZAnaZJrVx4MsAubY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HO+IHh5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E537C4CECD;
+	Wed,  4 Dec 2024 16:58:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733331493;
+	bh=tWocmDwQ7dA4/KynPTdBWbKzp8Sjj1C34cjzodJbX9U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HO+IHh5eW1RBEQyzM2orm1ORBUnmcycy3O/mTZ22yjtmGENXApzTf//Rl8QFjocLO
+	 sh5qfPZtahp5iwg9yBP9tc0j5OJbjTIFhOhPQN/+pyPLvR4fZ6Tny4OzTytOAkrTXN
+	 J1poxRwdP+Y1rtxb9jaVHL6PhrQlOdf/FaXwNipceWKNT9/uz0xFykMKFnOaMl5vHu
+	 /STiOqeUZN57EhpYd+vz+yGhMj36Do2aSrMWhcSrqGzMyONFs+oeD8nTfqcE0aWUlk
+	 rJtSsrxx2oyVTRB4C7OUTLNKFI5CkanAafWnwYlDiZAlnyk723XQRXh1mhcdePOMeP
+	 VezV4VkPP8jLw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Petr Pavlu <petr.pavlu@suse.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 11/36] ring-buffer: Limit time with disabled interrupts in rb_check_pages()
+Date: Wed,  4 Dec 2024 10:45:27 -0500
+Message-ID: <20241204154626.2211476-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024120221-raft-bully-e091@gregkh>
-References: <2024120221-raft-bully-e091@gregkh>
+In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
+References: <20241204154626.2211476-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-commit 5b590160d2cf776b304eb054afafea2bd55e3620 upstream.
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-If the trace data buffer becomes full, a truncated flag [T] is reported
-in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
-data must have been added to make the buffer full.
+[ Upstream commit b237e1f7d2273fdcffac20100b72c002bdd770dd ]
 
-That happens when the buffer fills up from empty to full before the
-Intel PT driver has updated the buffer position.  Then the driver
-calculates the new buffer position before calculating the data size.
-If the old and new positions are the same, the data size is reported
-as 0, even though it is really the whole buffer size.
+The function rb_check_pages() validates the integrity of a specified
+per-CPU tracing ring buffer. It does so by traversing the underlying
+linked list and checking its next and prev links.
 
-Fix by detecting when the buffer position is wrapped, and adjust the
-data size calculation accordingly.
+To guarantee that the list isn't modified during the check, a caller
+typically needs to take cpu_buffer->reader_lock. This prevents the check
+from running concurrently, for example, with a potential reader which
+can make the list temporarily inconsistent when swapping its old reader
+page into the buffer.
 
-Example
+A problem with this approach is that the time when interrupts are
+disabled is non-deterministic, dependent on the ring buffer size. This
+particularly affects PREEMPT_RT because the reader_lock is a raw
+spinlock which doesn't become sleepable on PREEMPT_RT kernels.
 
-  Use a very small buffer size (8K) and observe the size of truncated [T]
-  data. Before the fix, it is possible to see records of 0 size.
+Modify the check so it still attempts to traverse the entire list, but
+gives up the reader_lock between checking individual pages. Introduce
+for this purpose a new variable ring_buffer_per_cpu.cnt which is bumped
+any time the list is modified. The value is used by rb_check_pages() to
+detect such a change and restart the check.
 
-  Before:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 2 times to write data ]
-    [ perf record: Captured and wrote 0.105 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
-    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
-
- After:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 3 times to write data ]
-    [ perf record: Captured and wrote 0.040 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
-    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
-
-Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241015112810.27203-1-petr.pavlu@suse.com
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c | 11 ++++++++---
- arch/x86/events/intel/pt.h |  2 ++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c | 98 ++++++++++++++++++++++++++++----------
+ 1 file changed, 72 insertions(+), 26 deletions(-)
 
-diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
-index 87cca5622885..d37ea43df220 100644
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -771,11 +771,13 @@ static void pt_buffer_advance(struct pt_buffer *buf)
- 	buf->cur_idx++;
- 
- 	if (buf->cur_idx == buf->cur->last) {
--		if (buf->cur == buf->last)
-+		if (buf->cur == buf->last) {
- 			buf->cur = buf->first;
--		else
-+			buf->wrapped = true;
-+		} else {
- 			buf->cur = list_entry(buf->cur->list.next, struct topa,
- 					      list);
-+		}
- 		buf->cur_idx = 0;
- 	}
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 5807116bcd0bf..366eb4c4f28e5 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -482,6 +482,8 @@ struct ring_buffer_per_cpu {
+ 	unsigned long			nr_pages;
+ 	unsigned int			current_context;
+ 	struct list_head		*pages;
++	/* pages generation counter, incremented when the list changes */
++	unsigned long			cnt;
+ 	struct buffer_page		*head_page;	/* read from head */
+ 	struct buffer_page		*tail_page;	/* write to tail */
+ 	struct buffer_page		*commit_page;	/* committed pages */
+@@ -1475,40 +1477,87 @@ static void rb_check_bpage(struct ring_buffer_per_cpu *cpu_buffer,
+ 	RB_WARN_ON(cpu_buffer, val & RB_FLAG_MASK);
  }
-@@ -789,8 +791,11 @@ static void pt_buffer_advance(struct pt_buffer *buf)
- static void pt_update_head(struct pt *pt)
- {
- 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
-+	bool wrapped = buf->wrapped;
- 	u64 topa_idx, base, old;
  
-+	buf->wrapped = false;
++static bool rb_check_links(struct ring_buffer_per_cpu *cpu_buffer,
++			   struct list_head *list)
++{
++	if (RB_WARN_ON(cpu_buffer,
++		       rb_list_head(rb_list_head(list->next)->prev) != list))
++		return false;
 +
- 	/* offset of the first region in this table from the beginning of buf */
- 	base = buf->cur->offset + buf->output_off;
++	if (RB_WARN_ON(cpu_buffer,
++		       rb_list_head(rb_list_head(list->prev)->next) != list))
++		return false;
++
++	return true;
++}
++
+ /**
+  * rb_check_pages - integrity check of buffer pages
+  * @cpu_buffer: CPU buffer with pages to test
+  *
+  * As a safety measure we check to make sure the data pages have not
+  * been corrupted.
+- *
+- * Callers of this function need to guarantee that the list of pages doesn't get
+- * modified during the check. In particular, if it's possible that the function
+- * is invoked with concurrent readers which can swap in a new reader page then
+- * the caller should take cpu_buffer->reader_lock.
+  */
+ static void rb_check_pages(struct ring_buffer_per_cpu *cpu_buffer)
+ {
+-	struct list_head *head = rb_list_head(cpu_buffer->pages);
+-	struct list_head *tmp;
++	struct list_head *head, *tmp;
++	unsigned long buffer_cnt;
++	unsigned long flags;
++	int nr_loops = 0;
  
-@@ -803,7 +808,7 @@ static void pt_update_head(struct pt *pt)
- 	} else {
- 		old = (local64_xchg(&buf->head, base) &
- 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
--		if (base < old)
-+		if (base < old || (base == old && wrapped))
- 			base += buf->nr_pages << PAGE_SHIFT;
+-	if (RB_WARN_ON(cpu_buffer,
+-			rb_list_head(rb_list_head(head->next)->prev) != head))
++	/*
++	 * Walk the linked list underpinning the ring buffer and validate all
++	 * its next and prev links.
++	 *
++	 * The check acquires the reader_lock to avoid concurrent processing
++	 * with code that could be modifying the list. However, the lock cannot
++	 * be held for the entire duration of the walk, as this would make the
++	 * time when interrupts are disabled non-deterministic, dependent on the
++	 * ring buffer size. Therefore, the code releases and re-acquires the
++	 * lock after checking each page. The ring_buffer_per_cpu.cnt variable
++	 * is then used to detect if the list was modified while the lock was
++	 * not held, in which case the check needs to be restarted.
++	 *
++	 * The code attempts to perform the check at most three times before
++	 * giving up. This is acceptable because this is only a self-validation
++	 * to detect problems early on. In practice, the list modification
++	 * operations are fairly spaced, and so this check typically succeeds at
++	 * most on the second try.
++	 */
++again:
++	if (++nr_loops > 3)
+ 		return;
  
- 		local_add(base - old, &buf->data_size);
-diff --git a/arch/x86/events/intel/pt.h b/arch/x86/events/intel/pt.h
-index ad4ac27f0468..7c3fc191f789 100644
---- a/arch/x86/events/intel/pt.h
-+++ b/arch/x86/events/intel/pt.h
-@@ -110,6 +110,7 @@ struct pt_pmu {
-  * @lost:	if data was lost/truncated
-  * @head:	logical write offset inside the buffer
-  * @snapshot:	if this is for a snapshot/overwrite counter
-+ * @wrapped:	buffer advance wrapped back to the first topa table
-  * @stop_pos:	STOP topa entry in the buffer
-  * @intr_pos:	INT topa entry in the buffer
-  * @data_pages:	array of pages from perf
-@@ -125,6 +126,7 @@ struct pt_buffer {
- 	local_t			data_size;
- 	local64_t		head;
- 	bool			snapshot;
-+	bool			wrapped;
- 	unsigned long		stop_pos, intr_pos;
- 	void			**data_pages;
- 	struct topa_entry	*topa_index[0];
+-	if (RB_WARN_ON(cpu_buffer,
+-			rb_list_head(rb_list_head(head->prev)->next) != head))
+-		return;
++	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++	head = rb_list_head(cpu_buffer->pages);
++	if (!rb_check_links(cpu_buffer, head))
++		goto out_locked;
++	buffer_cnt = cpu_buffer->cnt;
++	tmp = head;
++	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 
+-	for (tmp = rb_list_head(head->next); tmp != head; tmp = rb_list_head(tmp->next)) {
+-		if (RB_WARN_ON(cpu_buffer,
+-				rb_list_head(rb_list_head(tmp->next)->prev) != tmp))
+-			return;
++	while (true) {
++		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+ 
+-		if (RB_WARN_ON(cpu_buffer,
+-				rb_list_head(rb_list_head(tmp->prev)->next) != tmp))
+-			return;
++		if (buffer_cnt != cpu_buffer->cnt) {
++			/* The list was updated, try again. */
++			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
++			goto again;
++		}
++
++		tmp = rb_list_head(tmp->next);
++		if (tmp == head)
++			/* The iteration circled back, all is done. */
++			goto out_locked;
++
++		if (!rb_check_links(cpu_buffer, tmp))
++			goto out_locked;
++
++		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 	}
++
++out_locked:
++	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ }
+ 
+ /*
+@@ -2532,6 +2581,7 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
+ 
+ 	/* make sure pages points to a valid page in the ring buffer */
+ 	cpu_buffer->pages = next_page;
++	cpu_buffer->cnt++;
+ 
+ 	/* update head page */
+ 	if (head_bit)
+@@ -2638,6 +2688,7 @@ rb_insert_pages(struct ring_buffer_per_cpu *cpu_buffer)
+ 			 * pointer to point to end of list
+ 			 */
+ 			head_page->prev = last_page;
++			cpu_buffer->cnt++;
+ 			success = true;
+ 			break;
+ 		}
+@@ -2873,12 +2924,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
+ 		 */
+ 		synchronize_rcu();
+ 		for_each_buffer_cpu(buffer, cpu) {
+-			unsigned long flags;
+-
+ 			cpu_buffer = buffer->buffers[cpu];
+-			raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+ 			rb_check_pages(cpu_buffer);
+-			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 		}
+ 		atomic_dec(&buffer->record_disabled);
+ 	}
+@@ -5296,6 +5343,7 @@ rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
+ 	rb_list_head(reader->list.next)->prev = &cpu_buffer->reader_page->list;
+ 	rb_inc_page(&cpu_buffer->head_page);
+ 
++	cpu_buffer->cnt++;
+ 	local_inc(&cpu_buffer->pages_read);
+ 
+ 	/* Finally update the reader page to the new head */
+@@ -5835,12 +5883,9 @@ void
+ ring_buffer_read_finish(struct ring_buffer_iter *iter)
+ {
+ 	struct ring_buffer_per_cpu *cpu_buffer = iter->cpu_buffer;
+-	unsigned long flags;
+ 
+ 	/* Use this opportunity to check the integrity of the ring buffer. */
+-	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
+ 	rb_check_pages(cpu_buffer);
+-	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ 
+ 	atomic_dec(&cpu_buffer->resize_disabled);
+ 	kfree(iter->event);
+@@ -6757,6 +6802,7 @@ int ring_buffer_subbuf_order_set(struct trace_buffer *buffer, int order)
+ 		/* Install the new pages, remove the head from the list */
+ 		cpu_buffer->pages = cpu_buffer->new_pages.next;
+ 		list_del_init(&cpu_buffer->new_pages);
++		cpu_buffer->cnt++;
+ 
+ 		cpu_buffer->head_page
+ 			= list_entry(cpu_buffer->pages, struct buffer_page, list);
 -- 
 2.43.0
 
