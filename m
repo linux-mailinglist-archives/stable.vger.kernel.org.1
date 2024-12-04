@@ -1,60 +1,70 @@
-Return-Path: <stable+bounces-98335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737529E403C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:58:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A18ED9E403D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 338EE28370C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:58:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57EFA28296F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1223D20CCE4;
-	Wed,  4 Dec 2024 16:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9C120E032;
+	Wed,  4 Dec 2024 16:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UZa4LS1p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVQHhbV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFC820D4E9;
-	Wed,  4 Dec 2024 16:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E13020E028;
+	Wed,  4 Dec 2024 16:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331469; cv=none; b=nCXN6Z8nH2/zfvU1UJdm89gN2OtDUsGbySKATxJoLLUFSHb5K1ns5ft5r8OMpnggg0AROHAWd5ibkFOkBDlsEHAYTq81kdNyma0nIn48uge6AFSD+UH2yJYZhBCzRm/579rm6D9wv1o6NVokXfBvbk7C6HZ/0InHfLYMEXHWOTY=
+	t=1733331472; cv=none; b=KdtWazyPs1QvOghXvBpVBnF6Cio2nX3e0fnVnObcxd7a5qwpySNaYtYzUuXJfj6YgFMka+wl642jfFTqCDNMj41IjaPZ8dB4cwi2sF1aTFYiTtiiRkfBqVNm5dTsLVGhYjm4fogsXgzOmP+3hGyb29wwm0VDpHJb+czKWqJLNVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331469; c=relaxed/simple;
-	bh=06pVRQZvF7Hv8LSrodVzxmE+a9EeBGCKKwPeWagF/ac=;
+	s=arc-20240116; t=1733331472; c=relaxed/simple;
+	bh=j0rexkRhT7UJQi0wBqPBLui58SdxQ4Ya7MHelCUCPWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MI+dKw0yLGuu6kaB7kDkKL0GtShfsU/USZvuSawc+2TQng89xpGpLsM2u98g8OKwl1n47NSK1RtlrgEvH39tNiLjdBWBomFCkqjcQJbf6M3BCZiToAbP1ILvBxALDekx5s/k5aaTuiURc2zVoFqMBniXLgzNoZmtRoqbq16C/WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UZa4LS1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3D4C4CECD;
-	Wed,  4 Dec 2024 16:57:48 +0000 (UTC)
+	 MIME-Version; b=j1FihexdqMqEuP3+KKPp/3JKnaL+y6+MT++UL+ga3QGNqZEKKYzuoBTBlzghunBRgTgynH/dW2a6ZIM1NGTvL+1Hyum0BwlLKeGtb3G/cvInDgDluujDLjRS3urXBBMgUxW5x7FRT9sJN1BxNlbiP+41z1UYiSJwDxg2vPdRc1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVQHhbV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B5AC4CED6;
+	Wed,  4 Dec 2024 16:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331469;
-	bh=06pVRQZvF7Hv8LSrodVzxmE+a9EeBGCKKwPeWagF/ac=;
+	s=k20201202; t=1733331472;
+	bh=j0rexkRhT7UJQi0wBqPBLui58SdxQ4Ya7MHelCUCPWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZa4LS1pYpOPXocCCKDkFa/95MeXhtTnLR0/jtU/SKhrHBQXdhYXzMW2YsrqWDbHT
-	 0N8Pl6VQAhKqiMJc0gtKD/0BwvKOG6s7IeMjCqcHXsQ0AN8Y2Hd+Yrl9I3o6lC+GTe
-	 cASPfiOf7Qr9HMvmumKxgOJMG4q9po73rvGkWgBgwMQrJTjGAE4COszD25/E+d1JD5
-	 qHqOxFGB+3Zj5z9W0VSMbETv8Xkw5x2yu6kzSEn6rBT7O0v2x8n9d8qjDJ1liEXF/m
-	 nF79FwUsrWWcTO0K2UiJT4a94+qXBjzmdHEP9YmHiAuFXCH4HQDwe9Z26WxqRKMFtH
-	 xCK6k1QujtFhQ==
+	b=VVQHhbV+pmk+9WBc2DgT6fFqlw3SCER3X3RfmDFCkiAMIN+ZLYsD6PBNPnvkWvTll
+	 BD/XIHfOSy4KyHB2sovPSdfV0faA6+Jxwb/wy3qAhz1VyblQ7bcN9BwpLCjUlfyPzZ
+	 8SzNHaDuwsXH7IxjOQ7LTGswetYb82PyTRNHl2dlAiW3ZTUAkZ2lkgS0qpy7pcSeEw
+	 J9AfnHfJIEGLGfNe+W5Tfum7gv+wioq5ePfEbTvNFih37G5PXBoQf2wKF3+XOWVGa/
+	 gpXq6qb5VJnhE5dxnjJXmTtcdKg6PD46Gc9L5YPEMBtgXf3ZVsrH035t2axJ0xy0aP
+	 qY3OjynFg+IsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gabriele Monaco <gmonaco@redhat.com>,
-	John Kacur <jkacur@redhat.com>,
-	Luis Goncalves <lgoncalv@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Michael Jeanson <mjeanson@efficios.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Yonghong Song <yhs@fb.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	bpf@vger.kernel.org,
+	Joel Fernandes <joel@joelfernandes.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bristot@kernel.org,
 	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 02/36] rtla: Fix consistency in getopt_long for timerlat_hist
-Date: Wed,  4 Dec 2024 10:45:18 -0500
-Message-ID: <20241204154626.2211476-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 03/36] tracing/ftrace: disable preemption in syscall probe
+Date: Wed,  4 Dec 2024 10:45:19 -0500
+Message-ID: <20241204154626.2211476-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
 References: <20241204154626.2211476-1-sashal@kernel.org>
@@ -69,43 +79,143 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Gabriele Monaco <gmonaco@redhat.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-[ Upstream commit cfb1ea216c1656a4112becbc4bf757891933b902 ]
+[ Upstream commit 13d750c2c03e9861e15268574ed2c239cca9c9d5 ]
 
-Commit e9a4062e1527 ("rtla: Add --trace-buffer-size option") adds a new
-long option to rtla utilities, but among all affected files,
-timerlat_hist misses a trailing `:` in the corresponding short option
-inside the getopt string (e.g. `\3:`). This patch propagates the `:`.
+In preparation for allowing system call enter/exit instrumentation to
+handle page faults, make sure that ftrace can handle this change by
+explicitly disabling preemption within the ftrace system call tracepoint
+probes to respect the current expectations within ftrace ring buffer
+code.
 
-Although this change is not functionally required, it improves
-consistency and slightly reduces the likelihood a future change would
-introduce a problem.
+This change does not yet allow ftrace to take page faults per se within
+its probe, but allows its existing probes to adapt to the upcoming
+change.
 
-Cc: John Kacur <jkacur@redhat.com>
-Cc: Luis Goncalves <lgoncalv@redhat.com>
-Cc: Tomas Glozar <tglozar@redhat.com>
-Link: https://lore.kernel.org/20240926143417.54039-1-gmonaco@redhat.com
-Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Cc: Michael Jeanson <mjeanson@efficios.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Yonghong Song <yhs@fb.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: bpf@vger.kernel.org
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Link: https://lore.kernel.org/20241009010718.2050182-3-mathieu.desnoyers@efficios.com
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_hist.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/trace/trace_events.h  | 36 +++++++++++++++++++++++++++++++----
+ kernel/trace/trace_syscalls.c | 12 ++++++++++++
+ 2 files changed, 44 insertions(+), 4 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
-index a3907c390d67a..1f9137c592f45 100644
---- a/tools/tracing/rtla/src/timerlat_hist.c
-+++ b/tools/tracing/rtla/src/timerlat_hist.c
-@@ -778,7 +778,7 @@ static struct timerlat_hist_params
- 		/* getopt_long stores the option index here. */
- 		int option_index = 0;
+diff --git a/include/trace/trace_events.h b/include/trace/trace_events.h
+index c2f9cabf154d1..fa0d51cad57a8 100644
+--- a/include/trace/trace_events.h
++++ b/include/trace/trace_events.h
+@@ -244,6 +244,9 @@ static struct trace_event_fields trace_event_fields_##call[] = {	\
+ 	tstruct								\
+ 	{} };
  
--		c = getopt_long(argc, argv, "a:c:C::b:d:e:E:DhH:i:knp:P:s:t::T:uU0123456:7:8:9\1\2:\3",
-+		c = getopt_long(argc, argv, "a:c:C::b:d:e:E:DhH:i:knp:P:s:t::T:uU0123456:7:8:9\1\2:\3:",
- 				 long_options, &option_index);
++#undef DECLARE_EVENT_SYSCALL_CLASS
++#define DECLARE_EVENT_SYSCALL_CLASS DECLARE_EVENT_CLASS
++
+ #undef DEFINE_EVENT_PRINT
+ #define DEFINE_EVENT_PRINT(template, name, proto, args, print)
  
- 		/* detect the end of the options. */
+@@ -374,11 +377,11 @@ static inline notrace int trace_event_get_offsets_##call(		\
+ 
+ #include "stages/stage6_event_callback.h"
+ 
+-#undef DECLARE_EVENT_CLASS
+-#define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
+-									\
++
++#undef __DECLARE_EVENT_CLASS
++#define __DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print) \
+ static notrace void							\
+-trace_event_raw_event_##call(void *__data, proto)			\
++do_trace_event_raw_event_##call(void *__data, proto)			\
+ {									\
+ 	struct trace_event_file *trace_file = __data;			\
+ 	struct trace_event_data_offsets_##call __maybe_unused __data_offsets;\
+@@ -403,6 +406,29 @@ trace_event_raw_event_##call(void *__data, proto)			\
+ 									\
+ 	trace_event_buffer_commit(&fbuffer);				\
+ }
++
++#undef DECLARE_EVENT_CLASS
++#define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
++__DECLARE_EVENT_CLASS(call, PARAMS(proto), PARAMS(args), PARAMS(tstruct), \
++		      PARAMS(assign), PARAMS(print))			\
++static notrace void							\
++trace_event_raw_event_##call(void *__data, proto)			\
++{									\
++	do_trace_event_raw_event_##call(__data, args);			\
++}
++
++#undef DECLARE_EVENT_SYSCALL_CLASS
++#define DECLARE_EVENT_SYSCALL_CLASS(call, proto, args, tstruct, assign, print) \
++__DECLARE_EVENT_CLASS(call, PARAMS(proto), PARAMS(args), PARAMS(tstruct), \
++		      PARAMS(assign), PARAMS(print))			\
++static notrace void							\
++trace_event_raw_event_##call(void *__data, proto)			\
++{									\
++	preempt_disable_notrace();					\
++	do_trace_event_raw_event_##call(__data, args);			\
++	preempt_enable_notrace();					\
++}
++
+ /*
+  * The ftrace_test_probe is compiled out, it is only here as a build time check
+  * to make sure that if the tracepoint handling changes, the ftrace probe will
+@@ -418,6 +444,8 @@ static inline void ftrace_test_probe_##call(void)			\
+ 
+ #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
+ 
++#undef __DECLARE_EVENT_CLASS
++
+ #include "stages/stage7_class_define.h"
+ 
+ #undef DECLARE_EVENT_CLASS
+diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
+index 785733245eadf..f9b21bac9d45e 100644
+--- a/kernel/trace/trace_syscalls.c
++++ b/kernel/trace/trace_syscalls.c
+@@ -299,6 +299,12 @@ static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
+ 	int syscall_nr;
+ 	int size;
+ 
++	/*
++	 * Syscall probe called with preemption enabled, but the ring
++	 * buffer and per-cpu data require preemption to be disabled.
++	 */
++	guard(preempt_notrace)();
++
+ 	syscall_nr = trace_get_syscall_nr(current, regs);
+ 	if (syscall_nr < 0 || syscall_nr >= NR_syscalls)
+ 		return;
+@@ -338,6 +344,12 @@ static void ftrace_syscall_exit(void *data, struct pt_regs *regs, long ret)
+ 	struct trace_event_buffer fbuffer;
+ 	int syscall_nr;
+ 
++	/*
++	 * Syscall probe called with preemption enabled, but the ring
++	 * buffer and per-cpu data require preemption to be disabled.
++	 */
++	guard(preempt_notrace)();
++
+ 	syscall_nr = trace_get_syscall_nr(current, regs);
+ 	if (syscall_nr < 0 || syscall_nr >= NR_syscalls)
+ 		return;
 -- 
 2.43.0
 
