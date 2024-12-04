@@ -1,61 +1,68 @@
-Return-Path: <stable+bounces-98512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87659E4242
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:48:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205C69E43CF
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 765FA2853BE
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:48:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10E89BC4796
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0FB233662;
-	Wed,  4 Dec 2024 17:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E9B23496E;
+	Wed,  4 Dec 2024 17:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmTlDX5U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LNIjphcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAB3207E01;
-	Wed,  4 Dec 2024 17:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B0E234963;
+	Wed,  4 Dec 2024 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332375; cv=none; b=WFJeT+xrl8/g+JNnFg0PMWeqzybVp11tzvpY5s0++xRKDpCtknVjZKdpNWtsvhLT3dImbF6jntsul6BY7y6WVULF8edxvwQrkmYtiz6TKgwItph735IZfF/vUHM2CxCQgZVCpIKw8OtoyKWRiYKvJK3LNsYO4W0631znaYXQ9nE=
+	t=1733332387; cv=none; b=Ny25KvVckOtWUcVYeijEHYo/jSI3XXqETzFcHBI+jndiQg0uNzsb+1aUXSPFu7vVEpDLvVbwyPlwAjC+CVPSIBYI4JsBjoQ7mz9FBcFSugj5y+TTUx500BgqegILmDl6LMIBs8a8guUKRSk2w1NQskHjW9UEQ8lOGtLdFTE1kiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332375; c=relaxed/simple;
-	bh=uDF5ly0FsJEiGHXV0nkl+/APK79l2V5iLtxfKTkjEi4=;
+	s=arc-20240116; t=1733332387; c=relaxed/simple;
+	bh=UnnGKOXd0BhwwrAWMPw9umXxrSXIo78IY90fEx33PDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STUHZMrblZRQHZInJMxCqW3QG4ARqXTgJFPmGzF7fKAmZ0yS6hYbCE02Vx3fQl4KrKO79OCQhKQQMpzBqOxxli+WkcdPzJpqxDaoa2ve1xm57qJ+YdFDDk4OKSqDHqfBqtMNSvmg8UFxIDBotbwxiH43B/r1zNBSNXdt98ElGeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmTlDX5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95671C4CED1;
-	Wed,  4 Dec 2024 17:12:54 +0000 (UTC)
+	 MIME-Version; b=N3J3M6eAdBOypKrKAHTMs3mJMAqzdrqCbxA9fUAzWjeCfMVkjIGZu6SMesS+s+OgkTJsO/fZD9BCTk6dMO7CehlNeVfYEg/XDFmLfbUlRKyakOOTZjm1MHkd/rSxbSWzmRFWkMFS9sJo1Ir2F3f9ll9wMdIYrGM4Jpa0lVJMf+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LNIjphcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070CAC4CED6;
+	Wed,  4 Dec 2024 17:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332375;
-	bh=uDF5ly0FsJEiGHXV0nkl+/APK79l2V5iLtxfKTkjEi4=;
+	s=k20201202; t=1733332387;
+	bh=UnnGKOXd0BhwwrAWMPw9umXxrSXIo78IY90fEx33PDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmTlDX5UvSZNfqW7x9BemyqV8TXieVOkgiJp6V9MqX0BAY4WesyX8HAZKWGar+Ica
-	 VpOilf/2QCU/+etuKKlZlbNx/1EceaOt/xLskX3qEhn1yVU4fVkxh+mR50BEUHQDa2
-	 ZYtobnhVaVIazK09evE7GNbLxz6o/mNhdM3huBTWtjruuULL1eMItQMocKgbzC/Rs1
-	 TMMA4pDJ4BDJUAZNRZcE47M8DUqnBSYxc+j2+BK+HMpOEZdd0Vpj6omzs3k36nQxVs
-	 Wm+QnEhcgrRRBpzN0ddkdnIHZcfPY1hpzB6xCDWmiZQxGYBB/LWPIdmhPLwMRLBvT0
-	 7Ucaa3orqiwaA==
+	b=LNIjphcwNglJmpiG5Yz5CsHAvHcJk2y5yUlvW19pahgEG7yEDuIIbanQHtyKMDBnB
+	 3a1wUmR4PTeR6frppQDZ0HJLG1F/Ieo0sms4DrdBpkAxhYMWlv4oeXTJqNV5QILyei
+	 VO+zylgLLKs8L8iYvcvK2mQu/D9cnmWT6UVsPJkfCh5NiVZQTfuCb5EMoLM/ztJgCr
+	 Sq5wo7M9xPqf7yojccbse1eTw6zi6deEwi4VG0DsfGDBJ/uoWjoZCx8UZqFAsbjFzk
+	 cIZKSqVlfxi5WtclkVpqRDD69w2y9rHGgvLHDVMtopb89JK6APsh2LyTlAf9BDH9si
+	 h2XcP+aT2/P7w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>,
-	Xiuhong Wang <xiuhong.wang@unisoc.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+Cc: Esther Shimanovich <eshimanovich@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.6 12/12] f2fs: fix to shrink read extent node in batches
-Date: Wed,  4 Dec 2024 11:01:09 -0500
-Message-ID: <20241204160115.2216718-12-sashal@kernel.org>
+	rafael@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/6] PCI: Detect and trust built-in Thunderbolt chips
+Date: Wed,  4 Dec 2024 11:01:35 -0500
+Message-ID: <20241204160142.2217017-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204160115.2216718-1-sashal@kernel.org>
-References: <20241204160115.2216718-1-sashal@kernel.org>
+In-Reply-To: <20241204160142.2217017-1-sashal@kernel.org>
+References: <20241204160142.2217017-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,182 +71,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Chao Yu <chao@kernel.org>
+From: Esther Shimanovich <eshimanovich@chromium.org>
 
-[ Upstream commit 3fc5d5a182f6a1f8bd4dc775feb54c369dd2c343 ]
+[ Upstream commit 3b96b895127b7c0aed63d82c974b46340e8466c1 ]
 
-We use rwlock to protect core structure data of extent tree during
-its shrink, however, if there is a huge number of extent nodes in
-extent tree, during shrink of extent tree, it may hold rwlock for
-a very long time, which may trigger kernel hang issue.
+Some computers with CPUs that lack Thunderbolt features use discrete
+Thunderbolt chips to add Thunderbolt functionality. These Thunderbolt
+chips are located within the chassis; between the Root Port labeled
+ExternalFacingPort and the USB-C port.
 
-This patch fixes to shrink read extent node in batches, so that,
-critical region of the rwlock can be shrunk to avoid its extreme
-long time hold.
+These Thunderbolt PCIe devices should be labeled as fixed and trusted, as
+they are built into the computer. Otherwise, security policies that rely on
+those flags may have unintended results, such as preventing USB-C ports
+from enumerating.
 
-Reported-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
-Closes: https://lore.kernel.org/linux-f2fs-devel/20241112110627.1314632-1-xiuhong.wang@unisoc.com/
-Signed-off-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Detect the above scenario through the process of elimination.
+
+  1) Integrated Thunderbolt host controllers already have Thunderbolt
+     implemented, so anything outside their external facing Root Port is
+     removable and untrusted.
+
+     Detect them using the following properties:
+
+       - Most integrated host controllers have the "usb4-host-interface"
+         ACPI property, as described here:
+
+         https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#mapping-native-protocols-pcie-displayport-tunneled-through-usb4-to-usb4-host-routers
+
+       - Integrated Thunderbolt PCIe Root Ports before Alder Lake do not
+         have the "usb4-host-interface" ACPI property. Identify those by
+         their PCI IDs instead.
+
+  2) If a Root Port does not have integrated Thunderbolt capabilities, but
+     has the "ExternalFacingPort" ACPI property, that means the
+     manufacturer has opted to use a discrete Thunderbolt host controller
+     that is built into the computer.
+
+     This host controller can be identified by virtue of being located
+     directly below an external-facing Root Port that lacks integrated
+     Thunderbolt. Label it as trusted and fixed.
+
+     Everything downstream from it is untrusted and removable.
+
+The "ExternalFacingPort" ACPI property is described here:
+https://learn.microsoft.com/en-us/windows-hardware/drivers/pci/dsd-for-pcie-root-ports#identifying-externally-exposed-pcie-root-ports
+
+Link: https://lore.kernel.org/r/20240910-trust-tbt-fix-v5-1-7a7a42a5f496@chromium.org
+Suggested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/extent_cache.c | 69 +++++++++++++++++++++++++-----------------
- 1 file changed, 41 insertions(+), 28 deletions(-)
+ arch/x86/pci/acpi.c | 119 ++++++++++++++++++++++++++++++++++++++++++++
+ drivers/pci/probe.c |  30 ++++++++---
+ include/linux/pci.h |   6 +++
+ 3 files changed, 148 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index d6fb053b6dfbb..bfa2d89dc9ea3 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -347,21 +347,22 @@ static struct extent_tree *__grab_extent_tree(struct inode *inode,
+diff --git a/arch/x86/pci/acpi.c b/arch/x86/pci/acpi.c
+index 2f82480fd4305..4421560a5e825 100644
+--- a/arch/x86/pci/acpi.c
++++ b/arch/x86/pci/acpi.c
+@@ -248,6 +248,125 @@ void __init pci_acpi_crs_quirks(void)
+ 		printk(KERN_INFO "PCI: Please notify linux-pci@vger.kernel.org so future kernels can this automatically\n");
  }
  
- static unsigned int __free_extent_tree(struct f2fs_sb_info *sbi,
--					struct extent_tree *et)
-+				struct extent_tree *et, unsigned int nr_shrink)
- {
- 	struct rb_node *node, *next;
- 	struct extent_node *en;
--	unsigned int count = atomic_read(&et->node_cnt);
-+	unsigned int count;
- 
- 	node = rb_first_cached(&et->root);
--	while (node) {
-+
-+	for (count = 0; node && count < nr_shrink; count++) {
- 		next = rb_next(node);
- 		en = rb_entry(node, struct extent_node, rb_node);
- 		__release_extent_node(sbi, et, en);
- 		node = next;
- 	}
- 
--	return count - atomic_read(&et->node_cnt);
-+	return count;
- }
- 
- static void __drop_largest_extent(struct extent_tree *et,
-@@ -580,6 +581,30 @@ static struct extent_node *__insert_extent_tree(struct f2fs_sb_info *sbi,
- 	return en;
- }
- 
-+static unsigned int __destroy_extent_node(struct inode *inode,
-+					enum extent_type type)
++/*
++ * Check if pdev is part of a PCIe switch that is directly below the
++ * specified bridge.
++ */
++static bool pcie_switch_directly_under(struct pci_dev *bridge,
++				       struct pci_dev *pdev)
 +{
-+	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
-+	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
-+	unsigned int nr_shrink = type == EX_READ ?
-+				READ_EXTENT_CACHE_SHRINK_NUMBER :
-+				AGE_EXTENT_CACHE_SHRINK_NUMBER;
-+	unsigned int node_cnt = 0;
++	struct pci_dev *parent = pci_upstream_bridge(pdev);
 +
-+	if (!et || !atomic_read(&et->node_cnt))
-+		return 0;
++	/* If the device doesn't have a parent, it's not under anything */
++	if (!parent)
++		return false;
 +
-+	while (atomic_read(&et->node_cnt)) {
-+		write_lock(&et->lock);
-+		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
-+		write_unlock(&et->lock);
++	/*
++	 * If the device has a PCIe type, check if it is below the
++	 * corresponding PCIe switch components (if applicable). Then check
++	 * if its upstream port is directly beneath the specified bridge.
++	 */
++	switch (pci_pcie_type(pdev)) {
++	case PCI_EXP_TYPE_UPSTREAM:
++		return parent == bridge;
++
++	case PCI_EXP_TYPE_DOWNSTREAM:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
++
++	case PCI_EXP_TYPE_ENDPOINT:
++		if (pci_pcie_type(parent) != PCI_EXP_TYPE_DOWNSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		if (!parent || pci_pcie_type(parent) != PCI_EXP_TYPE_UPSTREAM)
++			return false;
++		parent = pci_upstream_bridge(parent);
++		return parent == bridge;
 +	}
 +
-+	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
-+
-+	return node_cnt;
++	return false;
 +}
 +
- static void __update_extent_tree_range(struct inode *inode,
- 			struct extent_info *tei, enum extent_type type)
++static bool pcie_has_usb4_host_interface(struct pci_dev *pdev)
++{
++	struct fwnode_handle *fwnode;
++
++	/*
++	 * For USB4, the tunneled PCIe Root or Downstream Ports are marked
++	 * with the "usb4-host-interface" ACPI property, so we look for
++	 * that first. This should cover most cases.
++	 */
++	fwnode = fwnode_find_reference(dev_fwnode(&pdev->dev),
++				       "usb4-host-interface", 0);
++	if (!IS_ERR(fwnode)) {
++		fwnode_handle_put(fwnode);
++		return true;
++	}
++
++	/*
++	 * Any integrated Thunderbolt 3/4 PCIe Root Ports from Intel
++	 * before Alder Lake do not have the "usb4-host-interface"
++	 * property so we use their PCI IDs instead. All these are
++	 * tunneled. This list is not expected to grow.
++	 */
++	if (pdev->vendor == PCI_VENDOR_ID_INTEL) {
++		switch (pdev->device) {
++		/* Ice Lake Thunderbolt 3 PCIe Root Ports */
++		case 0x8a1d:
++		case 0x8a1f:
++		case 0x8a21:
++		case 0x8a23:
++		/* Tiger Lake-LP Thunderbolt 4 PCIe Root Ports */
++		case 0x9a23:
++		case 0x9a25:
++		case 0x9a27:
++		case 0x9a29:
++		/* Tiger Lake-H Thunderbolt 4 PCIe Root Ports */
++		case 0x9a2b:
++		case 0x9a2d:
++		case 0x9a2f:
++		case 0x9a31:
++			return true;
++		}
++	}
++
++	return false;
++}
++
++bool arch_pci_dev_is_removable(struct pci_dev *pdev)
++{
++	struct pci_dev *parent, *root;
++
++	/* pdev without a parent or Root Port is never tunneled */
++	parent = pci_upstream_bridge(pdev);
++	if (!parent)
++		return false;
++	root = pcie_find_root_port(pdev);
++	if (!root)
++		return false;
++
++	/* Internal PCIe devices are not tunneled */
++	if (!root->external_facing)
++		return false;
++
++	/* Anything directly behind a "usb4-host-interface" is tunneled */
++	if (pcie_has_usb4_host_interface(parent))
++		return true;
++
++	/*
++	 * Check if this is a discrete Thunderbolt/USB4 controller that is
++	 * directly behind the non-USB4 PCIe Root Port marked as
++	 * "ExternalFacingPort". Those are not behind a PCIe tunnel.
++	 */
++	if (pcie_switch_directly_under(root, pdev))
++		return false;
++
++	/* PCIe devices after the discrete chip are tunneled */
++	return true;
++}
++
+ #ifdef	CONFIG_PCI_MMCONFIG
+ static int check_segment(u16 seg, struct device *dev, char *estr)
  {
-@@ -718,9 +743,6 @@ static void __update_extent_tree_range(struct inode *inode,
- 		}
- 	}
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index e19b79821dd6d..5c1ab9ee65eb3 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1593,23 +1593,33 @@ static void set_pcie_thunderbolt(struct pci_dev *dev)
  
--	if (is_inode_flag_set(inode, FI_NO_EXTENT))
--		__free_extent_tree(sbi, et);
--
- 	if (et->largest_updated) {
- 		et->largest_updated = false;
- 		updated = true;
-@@ -738,6 +760,9 @@ static void __update_extent_tree_range(struct inode *inode,
- out_read_extent_cache:
- 	write_unlock(&et->lock);
- 
-+	if (is_inode_flag_set(inode, FI_NO_EXTENT))
-+		__destroy_extent_node(inode, EX_READ);
-+
- 	if (updated)
- 		f2fs_mark_inode_dirty_sync(inode, true);
- }
-@@ -902,10 +927,14 @@ static unsigned int __shrink_extent_tree(struct f2fs_sb_info *sbi, int nr_shrink
- 	list_for_each_entry_safe(et, next, &eti->zombie_list, list) {
- 		if (atomic_read(&et->node_cnt)) {
- 			write_lock(&et->lock);
--			node_cnt += __free_extent_tree(sbi, et);
-+			node_cnt += __free_extent_tree(sbi, et,
-+					nr_shrink - node_cnt - tree_cnt);
- 			write_unlock(&et->lock);
- 		}
--		f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
-+
-+		if (atomic_read(&et->node_cnt))
-+			goto unlock_out;
-+
- 		list_del_init(&et->list);
- 		radix_tree_delete(&eti->extent_tree_root, et->ino);
- 		kmem_cache_free(extent_tree_slab, et);
-@@ -1044,23 +1073,6 @@ unsigned int f2fs_shrink_age_extent_tree(struct f2fs_sb_info *sbi, int nr_shrink
- 	return __shrink_extent_tree(sbi, nr_shrink, EX_BLOCK_AGE);
- }
- 
--static unsigned int __destroy_extent_node(struct inode *inode,
--					enum extent_type type)
--{
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
--	unsigned int node_cnt = 0;
--
--	if (!et || !atomic_read(&et->node_cnt))
--		return 0;
--
--	write_lock(&et->lock);
--	node_cnt = __free_extent_tree(sbi, et);
--	write_unlock(&et->lock);
--
--	return node_cnt;
--}
--
- void f2fs_destroy_extent_node(struct inode *inode)
+ static void set_pcie_untrusted(struct pci_dev *dev)
  {
- 	__destroy_extent_node(inode, EX_READ);
-@@ -1069,7 +1081,6 @@ void f2fs_destroy_extent_node(struct inode *inode)
+-	struct pci_dev *parent;
++	struct pci_dev *parent = pci_upstream_bridge(dev);
  
- static void __drop_extent_tree(struct inode *inode, enum extent_type type)
- {
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 	struct extent_tree *et = F2FS_I(inode)->extent_tree[type];
- 	bool updated = false;
- 
-@@ -1077,7 +1088,6 @@ static void __drop_extent_tree(struct inode *inode, enum extent_type type)
- 		return;
- 
- 	write_lock(&et->lock);
--	__free_extent_tree(sbi, et);
- 	if (type == EX_READ) {
- 		set_inode_flag(inode, FI_NO_EXTENT);
- 		if (et->largest.len) {
-@@ -1086,6 +1096,9 @@ static void __drop_extent_tree(struct inode *inode, enum extent_type type)
- 		}
- 	}
- 	write_unlock(&et->lock);
++	if (!parent)
++		return;
+ 	/*
+-	 * If the upstream bridge is untrusted we treat this device
++	 * If the upstream bridge is untrusted we treat this device as
+ 	 * untrusted as well.
+ 	 */
+-	parent = pci_upstream_bridge(dev);
+-	if (parent && (parent->untrusted || parent->external_facing))
++	if (parent->untrusted) {
++		dev->untrusted = true;
++		return;
++	}
 +
-+	__destroy_extent_node(inode, type);
-+
- 	if (updated)
- 		f2fs_mark_inode_dirty_sync(inode, true);
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as untrusted\n");
+ 		dev->untrusted = true;
++	}
  }
+ 
+ static void pci_set_removable(struct pci_dev *dev)
+ {
+ 	struct pci_dev *parent = pci_upstream_bridge(dev);
+ 
++	if (!parent)
++		return;
+ 	/*
+-	 * We (only) consider everything downstream from an external_facing
++	 * We (only) consider everything tunneled below an external_facing
+ 	 * device to be removable by the user. We're mainly concerned with
+ 	 * consumer platforms with user accessible thunderbolt ports that are
+ 	 * vulnerable to DMA attacks, and we expect those ports to be marked by
+@@ -1619,9 +1629,15 @@ static void pci_set_removable(struct pci_dev *dev)
+ 	 * accessible to user / may not be removed by end user, and thus not
+ 	 * exposed as "removable" to userspace.
+ 	 */
+-	if (parent &&
+-	    (parent->external_facing || dev_is_removable(&parent->dev)))
++	if (dev_is_removable(&parent->dev)) {
++		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++		return;
++	}
++
++	if (arch_pci_dev_is_removable(dev)) {
++		pci_dbg(dev, "marking as removable\n");
+ 		dev_set_removable(&dev->dev, DEVICE_REMOVABLE);
++	}
+ }
+ 
+ /**
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index df73fb26b8250..9e58e5400d783 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2471,6 +2471,12 @@ pci_host_bridge_acpi_msi_domain(struct pci_bus *bus) { return NULL; }
+ static inline bool pci_pr3_present(struct pci_dev *pdev) { return false; }
+ #endif
+ 
++#if defined(CONFIG_X86) && defined(CONFIG_ACPI)
++bool arch_pci_dev_is_removable(struct pci_dev *pdev);
++#else
++static inline bool arch_pci_dev_is_removable(struct pci_dev *pdev) { return false; }
++#endif
++
+ #ifdef CONFIG_EEH
+ static inline struct eeh_dev *pci_dev_to_eeh_dev(struct pci_dev *pdev)
+ {
 -- 
 2.43.0
 
