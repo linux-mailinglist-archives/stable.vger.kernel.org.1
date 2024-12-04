@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-98402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82CF59E43AF
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:48:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE56A9E4102
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:16:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10128B3EBA9
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 801EE28426D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01EF2144A3;
-	Wed,  4 Dec 2024 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AA42144A7;
+	Wed,  4 Dec 2024 17:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u6Ensv+5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQve1Pqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970692139D2;
-	Wed,  4 Dec 2024 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7BE2139C1;
+	Wed,  4 Dec 2024 17:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331661; cv=none; b=MOPL+JrlDj3zmTVE/Om8A8cRyX97Le5UgKxVajuUuOdt3rIUXAJJDYShFKGXVVyKMmsGyJi6cQAYk6VbSO80kqYEAP5TpaHJiXIBeQo1DTvzrkGCEwZA/XkavPzA2jdWfl5tSjeuAPIr7Uq76Kequmjw9/195GDki3X6wX5vOLY=
+	t=1733331684; cv=none; b=rons7AEiaO8HFgI4h/4MuirLKHSmu59gASMWvx743rsyocLWX29fQxtfkm1xA5eXNdUGriVgGRJVGlVXCI138UAAM7xbm6GGy+YRAUHyENZlWmTGTMKo3wKK0VHAoLAfAsEWuR2EZXxNQ/F1s3NTu6PQgy2yxIiQiZfdWFjwfNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331661; c=relaxed/simple;
-	bh=7TN0xW6egqreWmtzs9zkF80AingF69k+BcAEFWULy5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tgjk1Qt2Hsal6R8k8bbDJJ6fkzlWsWD1Dn7Wm2BEUBOtl3KG+cUd1T82n71uskNdoCFKkl9x+8qm7rqcg6wRBxJLwZ21KVL47MlySSDBdysHr08i797fwy6E4oRxnjENBwVZX/1Sy5CFByIRrLcKBE37Dmsg8/ww8QbwMwsUghA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u6Ensv+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFB7C4CED1;
-	Wed,  4 Dec 2024 17:01:00 +0000 (UTC)
+	s=arc-20240116; t=1733331684; c=relaxed/simple;
+	bh=giYmB+q+QQG0xK14sNEHKrn+BGBLw6e32G6/nRMgp4c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ccLoeD7otTq91f+P6ErBs0BbhwMNAX/BD3llh/P3+U9Rilcj453bfMhdlVxwI2gZN243uKuv+ZXxOlrPfa6mwB08MWN6zOXoIE66rDRzqcWVX+hRdiyGQLhkqgPixudzeJeTkuWsgKHo4bj9HI3MaP2lg4vSiI8+b9PIOXsk3BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQve1Pqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCF5C4CECD;
+	Wed,  4 Dec 2024 17:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331661;
-	bh=7TN0xW6egqreWmtzs9zkF80AingF69k+BcAEFWULy5o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6Ensv+5PeX0kzepPdqcKGqyYGUumQz8XztAo6zJ8cKQ+Va9cYpe4pewTlDvHa/Aa
-	 iPP5eaAb18+2NmNkgGCm9HK0b5z7//NO4slD4Cgrf2tgkU9qbeqYmbAhZ6hPRuwZXO
-	 lgWTX0eOLMzuHzLLnFu9FQfKtDj7evqbviB6cVf8cRC5nYRnN0Is/GKl4cYtynpiIu
-	 xr3VYFeypdsbIpkitZRxLEpZ6uK8cUESi8X6MtFJ9yA1ZcH4fK3evOEUtoOQ1ipoVt
-	 fKK1eRqg7duZkdyWVYdmsORg4VaU5f9j+kgQOwPWoKHNlwT8z6X6vy7gmgHNuqwEjh
-	 8v5RSZfMYRFag==
+	s=k20201202; t=1733331684;
+	bh=giYmB+q+QQG0xK14sNEHKrn+BGBLw6e32G6/nRMgp4c=;
+	h=From:To:Cc:Subject:Date:From;
+	b=oQve1PqmRrlvCtIb1D7ScS2SWygBAdcuIbO62KfHtXLCijev8G+qaF4bOr3pO9pUk
+	 GQUxBSQ9aIhpIRreeIxRYg1L57kNZRD2EJX0cuXsfdnEy9XIyfPpxiYVSruv2y/7GG
+	 Uo5OJSwgoGc+4C+XwU28P6r9fb7Rk0ybFOpLn/pzqmdQItAatD1kLs4f6w62+P50zJ
+	 P6P77iyVLFCEpaM53TM4ZjgBIGOjGrR9AEXRku3mPyLNS8N0GUBTryZMLwIuS8ctnY
+	 cvmrMxI5ucRK1C+PMX7M+5TdzqOsCOANPPC7WbV2gQBPzhi0yc54gqCOnr/Yl/ruvm
+	 l1/s50w3gtSvA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Adam Young <admiyo@os.amperecomputing.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+Cc: Esben Haabendal <esben@geanix.com>,
+	kernel test robot <lkp@intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 33/33] mailbox: pcc: Check before sending MCTP PCC response ACK
-Date: Wed,  4 Dec 2024 10:47:46 -0500
-Message-ID: <20241204154817.2212455-33-sashal@kernel.org>
+	aisheng.dong@nxp.com,
+	festevam@gmail.com,
+	shawnguo@kernel.org,
+	ping.bai@nxp.com,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/24] pinctrl: freescale: fix COMPILE_TEST error with PINCTRL_IMX_SCU
+Date: Wed,  4 Dec 2024 10:49:21 -0500
+Message-ID: <20241204155003.2213733-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204154817.2212455-1-sashal@kernel.org>
-References: <20241204154817.2212455-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,167 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.10
+X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Adam Young <admiyo@os.amperecomputing.com>
+From: Esben Haabendal <esben@geanix.com>
 
-[ Upstream commit 7f9e19f207be0c534d517d65e01417ba968cdd34 ]
+[ Upstream commit 58414a31c5713afb5449fd74a26a843d34cc62e8 ]
 
-Type 4 PCC channels have an option to send back a response
-to the platform when they are done processing the request.
-The flag to indicate whether or not to respond is inside
-the message body, and thus is not available to the pcc
-mailbox.
+When PINCTRL_IMX_SCU was selected by PINCTRL_IMX8DXL or PINCTRL_IMX8QM
+combined with COMPILE_TEST on a non-arm platforms, the IMX_SCU
+dependency could not be enabled.
 
-If the flag is not set, still set command completion
-bit after processing message.
-
-In order to read the flag, this patch maps the shared
-buffer to virtual memory. To avoid duplication of mapping
-the shared buffer is then made available to be used by
-the driver that uses the mailbox.
-
-Signed-off-by: Adam Young <admiyo@os.amperecomputing.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410031439.GyTSa0kX-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202410030852.q0Hukplf-lkp@intel.com/
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+Link: https://lore.kernel.org/20241003-imx-pinctrl-compile-test-fix-v1-1-145ca1948cc3@geanix.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 61 +++++++++++++++++++++++++++++++++++++------
- include/acpi/pcc.h    |  7 +++++
- 2 files changed, 60 insertions(+), 8 deletions(-)
+ drivers/pinctrl/freescale/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index 94885e411085a..82102a4c5d688 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -269,6 +269,35 @@ static bool pcc_mbox_cmd_complete_check(struct pcc_chan_info *pchan)
- 	return !!val;
- }
+diff --git a/drivers/pinctrl/freescale/Kconfig b/drivers/pinctrl/freescale/Kconfig
+index 27bdc548f3a7d..a36dae526de12 100644
+--- a/drivers/pinctrl/freescale/Kconfig
++++ b/drivers/pinctrl/freescale/Kconfig
+@@ -9,7 +9,7 @@ config PINCTRL_IMX
  
-+static void check_and_ack(struct pcc_chan_info *pchan, struct mbox_chan *chan)
-+{
-+	struct acpi_pcct_ext_pcc_shared_memory pcc_hdr;
-+
-+	if (pchan->type != ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
-+		return;
-+	/* If the memory region has not been mapped, we cannot
-+	 * determine if we need to send the message, but we still
-+	 * need to set the cmd_update flag before returning.
-+	 */
-+	if (pchan->chan.shmem == NULL) {
-+		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
-+		return;
-+	}
-+	memcpy_fromio(&pcc_hdr, pchan->chan.shmem,
-+		      sizeof(struct acpi_pcct_ext_pcc_shared_memory));
-+	/*
-+	 * The PCC slave subspace channel needs to set the command complete bit
-+	 * after processing message. If the PCC_ACK_FLAG is set, it should also
-+	 * ring the doorbell.
-+	 *
-+	 * The PCC master subspace channel clears chan_in_use to free channel.
-+	 */
-+	if (le32_to_cpup(&pcc_hdr.flags) & PCC_ACK_FLAG_MASK)
-+		pcc_send_data(chan, NULL);
-+	else
-+		pcc_chan_reg_read_modify_write(&pchan->cmd_update);
-+}
-+
- /**
-  * pcc_mbox_irq - PCC mailbox interrupt handler
-  * @irq:	interrupt number
-@@ -306,14 +335,7 @@ static irqreturn_t pcc_mbox_irq(int irq, void *p)
+ config PINCTRL_IMX_SCU
+ 	tristate
+-	depends on IMX_SCU
++	depends on IMX_SCU || COMPILE_TEST
+ 	select PINCTRL_IMX
  
- 	mbox_chan_received_data(chan, NULL);
- 
--	/*
--	 * The PCC slave subspace channel needs to set the command complete bit
--	 * and ring doorbell after processing message.
--	 *
--	 * The PCC master subspace channel clears chan_in_use to free channel.
--	 */
--	if (pchan->type == ACPI_PCCT_TYPE_EXT_PCC_SLAVE_SUBSPACE)
--		pcc_send_data(chan, NULL);
-+	check_and_ack(pchan, chan);
- 	pchan->chan_in_use = false;
- 
- 	return IRQ_HANDLED;
-@@ -365,14 +387,37 @@ EXPORT_SYMBOL_GPL(pcc_mbox_request_channel);
- void pcc_mbox_free_channel(struct pcc_mbox_chan *pchan)
- {
- 	struct mbox_chan *chan = pchan->mchan;
-+	struct pcc_chan_info *pchan_info;
-+	struct pcc_mbox_chan *pcc_mbox_chan;
- 
- 	if (!chan || !chan->cl)
- 		return;
-+	pchan_info = chan->con_priv;
-+	pcc_mbox_chan = &pchan_info->chan;
-+	if (pcc_mbox_chan->shmem) {
-+		iounmap(pcc_mbox_chan->shmem);
-+		pcc_mbox_chan->shmem = NULL;
-+	}
- 
- 	mbox_free_channel(chan);
- }
- EXPORT_SYMBOL_GPL(pcc_mbox_free_channel);
- 
-+int pcc_mbox_ioremap(struct mbox_chan *chan)
-+{
-+	struct pcc_chan_info *pchan_info;
-+	struct pcc_mbox_chan *pcc_mbox_chan;
-+
-+	if (!chan || !chan->cl)
-+		return -1;
-+	pchan_info = chan->con_priv;
-+	pcc_mbox_chan = &pchan_info->chan;
-+	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
-+				       pcc_mbox_chan->shmem_size);
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
-+
- /**
-  * pcc_send_data - Called from Mailbox Controller code. Used
-  *		here only to ring the channel doorbell. The PCC client
-diff --git a/include/acpi/pcc.h b/include/acpi/pcc.h
-index 9b373d172a776..699c1a37b8e78 100644
---- a/include/acpi/pcc.h
-+++ b/include/acpi/pcc.h
-@@ -12,6 +12,7 @@
- struct pcc_mbox_chan {
- 	struct mbox_chan *mchan;
- 	u64 shmem_base_addr;
-+	void __iomem *shmem;
- 	u64 shmem_size;
- 	u32 latency;
- 	u32 max_access_rate;
-@@ -31,11 +32,13 @@ struct pcc_mbox_chan {
- #define PCC_CMD_COMPLETION_NOTIFY	BIT(0)
- 
- #define MAX_PCC_SUBSPACES	256
-+#define PCC_ACK_FLAG_MASK	0x1
- 
- #ifdef CONFIG_PCC
- extern struct pcc_mbox_chan *
- pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id);
- extern void pcc_mbox_free_channel(struct pcc_mbox_chan *chan);
-+extern int pcc_mbox_ioremap(struct mbox_chan *chan);
- #else
- static inline struct pcc_mbox_chan *
- pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
-@@ -43,6 +46,10 @@ pcc_mbox_request_channel(struct mbox_client *cl, int subspace_id)
- 	return ERR_PTR(-ENODEV);
- }
- static inline void pcc_mbox_free_channel(struct pcc_mbox_chan *chan) { }
-+static inline int pcc_mbox_ioremap(struct mbox_chan *chan)
-+{
-+	return 0;
-+};
- #endif
- 
- #endif /* _PCC_H */
+ config PINCTRL_IMX1_CORE
 -- 
 2.43.0
 
