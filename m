@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-98612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC889E4926
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6659E492A
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:33:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FD6916AC44
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:31:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DABF16B220
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4C2207E10;
-	Wed,  4 Dec 2024 23:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5FD2101B2;
+	Wed,  4 Dec 2024 23:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sxLvUZmw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfZkROQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D78207E08;
-	Wed,  4 Dec 2024 23:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0152101AC;
+	Wed,  4 Dec 2024 23:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354872; cv=none; b=n4xPcBJAv0jf/O2aMM3zLsJR6CWV7pCM/G31nZ0LJMc1W+ecxg/5x/AL3MLU2cmSWlaOyrgLPzG2xuB4vUU3uACTj9ZqMohLIXU9AzRerM5+zJNlTHq4a6bORgpDhMRLSu88gmlhrRk2pP2LV7QlW2436r6d1QIekjmwvzV5DHw=
+	t=1733354875; cv=none; b=TguGAzAfZuSCOW3WpTxrh3llbfhGiaVl3e/j2zzuIMwiPnuDtJ5kAg7JsNrSWEFNaLbfUYgEQldEFtgxVdOdXocEhLSbklAXJDTSZPFDxCkSMSyUCMIdcRUR2uoWEMkiHbR/Fs4R254sWUwvztFsJrBi4XA40DHwCiRNZO/uc0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354872; c=relaxed/simple;
-	bh=aMyVwZKE/J+HTyLBtwcw66qT0e9TcG3WljKc+1MM2Ls=;
+	s=arc-20240116; t=1733354875; c=relaxed/simple;
+	bh=iwmQgpFpv3ojbLRaQam3mb39EDcfTKLT2dz4T1Vlnvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttyoWBbfbH+G9KHUsCSRS/4teu6VdVRhPuSAVa2FIZRG+I7p8T5qSNgfw0IbrC3AwIkCqCSV5uKQbFCULR0pAwAXYKE485Lvm9LzLJCqtH2tb7x4GZzliHqDRkVhj8pKni/EnaH+K4FsaeW/Qi/gGgP0Tf2HHMon7MNIiIj3NE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sxLvUZmw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2798BC4CECD;
-	Wed,  4 Dec 2024 23:27:51 +0000 (UTC)
+	 MIME-Version; b=GzhX6nF7t7SusxMf2rv4AppNxYtDDtTJh3OvHJpPZGZmAbDLBkck9m1hsxxSJfwcE3pCJJeDJz4Oq9K3y1yqbhxhJeoEan+SRpR5xfW2q1o4827t8dQ3hoYciiF4I04OCwMD71OS9BS/rsw2ZP757LixNk6T65KQB2K5qubgzJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfZkROQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D40C4CEDD;
+	Wed,  4 Dec 2024 23:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354872;
-	bh=aMyVwZKE/J+HTyLBtwcw66qT0e9TcG3WljKc+1MM2Ls=;
+	s=k20201202; t=1733354875;
+	bh=iwmQgpFpv3ojbLRaQam3mb39EDcfTKLT2dz4T1Vlnvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxLvUZmww+c4FY2M/cG/2Cqto6JVn+ObYV9ejWz4iYHEpvH39mWOtWPzALFlS8rtV
-	 21D9pfmxGUUpWir1eh6fuy5M5Jc5q7W1Dt98LMQ9czWHk40vZkGfRfp+Ul888f89ua
-	 wTW4YvdztKuK+yaKOwo3WGH1Iew+wp2uk5q6ecwNwSrP+NGnAoRppv1LiznGYGEbJi
-	 i/FqZjA/CdWPaYsjfpS1bPzw7D8OY9GcFQPClBK5snQ/ZpQOOoNQvm5v56B/7u2DxU
-	 fyPt3jmBKU0XGD9VOPKnYr6oGwwMQVvfsa7oMUzUMLAVaYmIRMbMe8ertLZFFd62PV
-	 0V+t/fhWYhzXg==
+	b=YfZkROQQPYtohofSQowPhNbw8zNb650f1ZmGK4xZwGo3EVWj6a5J81W8wELqAgHXR
+	 Kqs9FniMjnbicJnShNzvF4zl8adPbiYDsnczdcoQUtXZTTeLB4gxri0woRjhOnGNz1
+	 vfzJKq+mfBtOEHGItgtVDCPSH5w3jYr8U4q84UZ8GkrOGKR9Qcg2f/fSDIf2QdpB/x
+	 Y13LbOGp865woW9PbHAOHXNFA3IPNJNItq0gTYUxnhhKtjNcL/icVZVV6GTRItwYTK
+	 UgJJJ2G/8cTUUsmXQX7+AuQp/HW1pr1HoqAyW7yisBiRS7UXsyZbW2iiUp7XgvjXl9
+	 eVCcNoNFr3xPA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xu Yang <xu.yang_2@nxp.com>,
-	Peter Chen <peter.chen@kernel.com>,
+Cc: Saranya Gopal <saranya.gopal@intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	"Christian A . Ehrhardt" <lk@c--e.de>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	peter.chen@kernel.org,
+	dmitry.baryshkov@linaro.org,
+	u.kleine-koenig@baylibre.com,
+	diogo.ivo@tecnico.ulisboa.pt,
 	linux-usb@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 04/15] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
-Date: Wed,  4 Dec 2024 17:15:58 -0500
-Message-ID: <20241204221627.2247598-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 05/15] usb: typec: ucsi: Do not call ACPI _DSM method for UCSI read operations
+Date: Wed,  4 Dec 2024 17:15:59 -0500
+Message-ID: <20241204221627.2247598-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204221627.2247598-1-sashal@kernel.org>
 References: <20241204221627.2247598-1-sashal@kernel.org>
@@ -67,42 +70,114 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Saranya Gopal <saranya.gopal@intel.com>
 
-[ Upstream commit 548f48b66c0c5d4b9795a55f304b7298cde2a025 ]
+[ Upstream commit fa48d7e81624efdf398b990a9049e9cd75a5aead ]
 
-As per USBSTS register description about UEI:
+ACPI _DSM methods are needed only for UCSI write operations and for reading
+CCI during RESET_PPM operation. So, remove _DSM calls from other places.
+While there, remove the Zenbook quirk also since the default behavior
+now aligns with the Zenbook quirk. With this change, GET_CONNECTOR_STATUS
+returns at least 6 seconds faster than before in Arrowlake-S platforms.
 
-  When completion of a USB transaction results in an error condition, this
-  bit is set by the Host/Device Controller. This bit is set along with the
-  USBINT bit, if the TD on which the error interrupt occurred also had its
-  interrupt on complete (IOC) bit set.
-
-UI is set only when IOC set. Add checking UEI to fix miss call
-isr_tr_complete_handler() when IOC have not set and transfer error happen.
-
-Acked-by: Peter Chen <peter.chen@kernel.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20240926022906.473319-1-xu.yang_2@nxp.com
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Saranya Gopal <saranya.gopal@intel.com>
+Reviewed-by: Christian A. Ehrhardt <lk@c--e.de>
+Link: https://lore.kernel.org/r/20240830084342.460109-1-saranya.gopal@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/udc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_acpi.c | 56 +++---------------------------
+ 1 file changed, 5 insertions(+), 51 deletions(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index f0fcaf2b1f334..fd6032874bf33 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -2217,7 +2217,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
- 			}
- 		}
+diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+index 7a5dff8d9cc6c..accf15ff1306a 100644
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -61,9 +61,11 @@ static int ucsi_acpi_read_cci(struct ucsi *ucsi, u32 *cci)
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+ 	int ret;
  
--		if (USBi_UI  & intr)
-+		if ((USBi_UI | USBi_UEI) & intr)
- 			isr_tr_complete_handler(ci);
+-	ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
+-	if (ret)
+-		return ret;
++	if (UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
++		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
++		if (ret)
++			return ret;
++	}
  
- 		if ((USBi_SLI & intr) && !(ci->suspended)) {
+ 	memcpy(cci, ua->base + UCSI_CCI, sizeof(*cci));
+ 
+@@ -73,11 +75,6 @@ static int ucsi_acpi_read_cci(struct ucsi *ucsi, u32 *cci)
+ static int ucsi_acpi_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
+ {
+ 	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+-	int ret;
+-
+-	ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
+-	if (ret)
+-		return ret;
+ 
+ 	memcpy(val, ua->base + UCSI_MESSAGE_IN, val_len);
+ 
+@@ -102,42 +99,6 @@ static const struct ucsi_operations ucsi_acpi_ops = {
+ 	.async_control = ucsi_acpi_async_control
+ };
+ 
+-static int
+-ucsi_zenbook_read_cci(struct ucsi *ucsi, u32 *cci)
+-{
+-	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+-	int ret;
+-
+-	if (UCSI_COMMAND(ua->cmd) == UCSI_PPM_RESET) {
+-		ret = ucsi_acpi_dsm(ua, UCSI_DSM_FUNC_READ);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	memcpy(cci, ua->base + UCSI_CCI, sizeof(*cci));
+-
+-	return 0;
+-}
+-
+-static int
+-ucsi_zenbook_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
+-{
+-	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
+-
+-	/* UCSI_MESSAGE_IN is never read for PPM_RESET, return stored data */
+-	memcpy(val, ua->base + UCSI_MESSAGE_IN, val_len);
+-
+-	return 0;
+-}
+-
+-static const struct ucsi_operations ucsi_zenbook_ops = {
+-	.read_version = ucsi_acpi_read_version,
+-	.read_cci = ucsi_zenbook_read_cci,
+-	.read_message_in = ucsi_zenbook_read_message_in,
+-	.sync_control = ucsi_sync_control_common,
+-	.async_control = ucsi_acpi_async_control
+-};
+-
+ static int ucsi_gram_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
+ {
+ 	u16 bogus_change = UCSI_CONSTAT_POWER_LEVEL_CHANGE |
+@@ -190,13 +151,6 @@ static const struct ucsi_operations ucsi_gram_ops = {
+ };
+ 
+ static const struct dmi_system_id ucsi_acpi_quirks[] = {
+-	{
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
+-		},
+-		.driver_data = (void *)&ucsi_zenbook_ops,
+-	},
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
 -- 
 2.43.0
 
