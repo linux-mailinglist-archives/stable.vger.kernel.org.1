@@ -1,188 +1,220 @@
-Return-Path: <stable+bounces-98317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC539E4034
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:57:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DC49E3FB2
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:31:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79F71B2965A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:22:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23023B37E56
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EB920B809;
-	Wed,  4 Dec 2024 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736FD20C485;
+	Wed,  4 Dec 2024 16:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fGpBkyII"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V31ZNHFr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E426C4A28;
-	Wed,  4 Dec 2024 16:22:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6624820C473
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 16:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329344; cv=none; b=rdDV5SbyxTj36+pW+RVhBmcWx077d3jdG9CY0rbWBIJ3c6xVXzObJnotLqsqbvlXt465TZe562sbFj9E4K5FWw7PWIF7ZiFgpoWxudnY+IUNZE/xMmOIPNNWI9Fa7/VyZBLPHPUy6Y8u4F/PxnzyiDJO2Eh6pa2Qn6liFpSyo1A=
+	t=1733329623; cv=none; b=W6iAjsyfnoNp3TQ1xsin9AmlCIxstlNNaOHFVtG8UqqRpVAqa1S+kZhFeYpUfs7EUCKjm7ZZhP1cJOlrYwldGAYAXP8nABWEkmcqTwGFG9i0HQzQy+UdMjncnkNeaihI8sF8Z9Wff2JxNiM5Ivc7YMRMGbH31XiHt171eNRFd+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329344; c=relaxed/simple;
-	bh=A4oFzO9GNWTbQ3XOLyNV9MXETcpu40rt/iPXCpxt6O0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JrToRck7zLqP/35QT578rbcZqX627SCfrctF13LSbxiRtUCnfWqANrEEaBfw/6hPcWyQJ/jXqaPn6i1cLx6U8VwgmI5/2rIDNovP0vF49OMN2RPcGo2o438XDJ2nU8ePeCd3FtYP/jpgEfpmSTI3ON+08CVJUr30o/ECEBhVkAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fGpBkyII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A523C4CECD;
-	Wed,  4 Dec 2024 16:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733329343;
-	bh=A4oFzO9GNWTbQ3XOLyNV9MXETcpu40rt/iPXCpxt6O0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fGpBkyII/weC405HQoEiRu/1XgL4ZBG+6mhNu9ctwnh6fUcZPAO4pV8h+1ZLFuFgW
-	 RS0QLciPWPQesBerPRF7xdvROL8vhmtOX2tkKHPuExWHhyPBztU4o7Dd6in+wQIrfR
-	 Sc02RTwLFsQrdwoI90q+HKv2fFDjndzvmKq0JcugC3/vvZg6T9mtKmet0O8JMyGg4x
-	 04pH28o3/WBnsxqgEUYED0NxsObiYrasGhQ6c7AueBA92UdxG31mR6qRC9Nscfxk9Z
-	 pxQXbjcj5kFbZwi6PRyu/X+QqmFpKHdn+MHhGQ1wurkMN16X4a9vamKrDsLbgbUFBr
-	 Q1ER1cgvPGCXw==
-Message-ID: <b04ee5e7-f654-4562-bc8e-2643f37f1ba3@kernel.org>
-Date: Wed, 4 Dec 2024 17:22:19 +0100
+	s=arc-20240116; t=1733329623; c=relaxed/simple;
+	bh=x70cZ6Pnodptk8s8H2UvJEPrrE/aNUkvtZGjOJaEWtk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TP5T1AnSJTumBtNpiTve8TN569eEKp4aPKTwJm/tTW3yFH1rYVeIHRwuj2NlhrrP3+B7BT+ljutYyBg3EkFHq+ZUrNSe65RewnNRs/vhzQ+2QzWYsJ2zqmaD0u9luACcQLEcIZaLwi9oJ2ejPOsAJrEnBY+ejeVAVmHpro0AeeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V31ZNHFr; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-434a9f9a225so60175e9.1
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 08:27:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733329620; x=1733934420; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KyQtsXmeUdkqec1pltW/92iEDMhCyyh/Xugcf79kOqw=;
+        b=V31ZNHFr50T7ICeDRNi9HoJWR8UJd9yFPtaFXfh3HC79SWtGvJJta7PE0hSlmZZL1/
+         8ku4HytApLjsSbL7rymTgPqvTHFsveXMVbVS1c4NZPlx9sBC5PDE/Y2jTSEQiPaw9ARZ
+         Ynf902Ff+xIBb5MEXWgC0hRGy0Vv7o7zuuP9w9y0mahTluJOMUKkEWYnowx+4OaFN4HG
+         lf6+YnakI05ylVVefXhqtrWIlcOB+Ujzi4R1P/PZSaTMRS4IfPCsUvvDVjbW7Y8Ywiyb
+         jD5iGIBMcYMTL60IpKwr9i+PCY766H9yq4BGRMoN8I2YE8I/Czf3WtQqS9UJSPFa/Bn1
+         C9Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733329620; x=1733934420;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KyQtsXmeUdkqec1pltW/92iEDMhCyyh/Xugcf79kOqw=;
+        b=Sm3JGITk5YeqoCQXr8aKOdEy1avJ2VCnOOICPI/RlojcOgSSpGnUFk7fklK8Bm9AX2
+         kS5TvIewbmPceCJtKwuGqXiylQWatNpN7kNWhwDkiD012p6J01E6o3Hswn31z1OHCz1C
+         do/WXZKfb/cSVsFShgnFv5VdXQwoMWmNLr/hd3I9fn08gPt93o/jprdfWnfACM5WCg85
+         FNxtBPsoUc1cFfU+7lWuzjyiQnRSi7/HqF2VmXBbazB6/fOxMZ+iSmy2hwv14U2rSgax
+         DyxvLveYrxYjg4POdM54y/2ESmS6Z4Ye6S/qxkvvjuxO1oue41//PEB/0NMTUxZmcT+e
+         h4Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUoGmqcqiSp/DeQFzkxTaLR1Q3nNnwxpDFyq6GeAX8/E0XBo4rCLOAPdFF0ChfGMC2opmAbhoA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycKpu2b8Kwc/wypWwAVHWYRSGAWK2cIDjPiEeJ2yP1NdrviaxI
+	g9hkYarYxTEkSBqV/3h0EyhVj+y5EwfQWQbl15ePL94Fab86tyYb86WBJtXtiyYs6fURLmfjOt9
+	5xbP+
+X-Gm-Gg: ASbGncuv1lovjoC5c1IRlTOat7umqABxd2e/dk+7W5oeZZY5Z5dZMQuTlxmx24D497V
+	5rGFNgq36u8ja0PRGeBiuQgSBAWOhO63erLH1Ke0Z8ZdzuslYxJE1Sl9mfn2i8e/jyCiYWMxzT8
+	TBrVa+mgiG4NjiOAAqXWvnHhw1n4HqcOwfHF641eDFd3sAKV07cYQpPgsiY4BXvt5TaP5Xi55Gj
+	9+h5q2EwI8cezRi2S2jVbw0PZ/iTIrLlSw5Ag==
+X-Google-Smtp-Source: AGHT+IFpzQfGXpeDPtULiRhPLDybLBEA4OSAEcAX75ckbymNW1nJjJIq12WV3lMHghFcvSelG5JPlw==
+X-Received: by 2002:a05:600c:55c5:b0:42b:8ff7:bee2 with SMTP id 5b1f17b1804b1-434d52b563dmr1239595e9.5.1733329619368;
+        Wed, 04 Dec 2024 08:26:59 -0800 (PST)
+Received: from localhost ([2a00:79e0:9d:4:4606:5fa1:8ade:6950])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e17574ebsm14388276f8f.30.2024.12.04.08.26.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2024 08:26:58 -0800 (PST)
+From: Jann Horn <jannh@google.com>
+Subject: [PATCH v2 0/3] fixes for udmabuf (memfd sealing checks and a leak)
+Date: Wed, 04 Dec 2024 17:26:18 +0100
+Message-Id: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 043/826] crypto: powerpc/p10-aes-gcm - Register
- modules as SIMD
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Danny Tsen <dtsen@linux.ibm.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- Sasha Levin <sashal@kernel.org>
-References: <20241203144743.428732212@linuxfoundation.org>
- <20241203144745.143525056@linuxfoundation.org>
- <2a720dd0-56a0-4781-81d3-118368613792@kernel.org>
- <2024120417-flattop-unpaired-fcf8@gregkh>
- <92315b46-db52-4640-b8b9-c2ddbef38a17@kernel.org>
- <2024120421-coming-snore-e6fc@gregkh>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <2024120421-coming-snore-e6fc@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKqCUGcC/3WMyw7CIBQFf6W5azG82lhX/ofpgseFkthiwBJNw
+ 7+L3bucczKzQ8YUMMO12yFhCTnEtQE/dWBmtXokwTYGTrlknAqy2UXpzREX3piJpVL0qJUeBgH
+ NeSY8jqbcp8ZzyK+YPke+sN/6r1QYocSNI78wI2Sv1M3H6B94NnGBqdb6BTX3zp2rAAAA
+X-Change-ID: 20241203-udmabuf-fixes-d0435ebab663
+To: Gerd Hoffmann <kraxel@redhat.com>, 
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Simona Vetter <simona.vetter@ffwll.ch>, John Stultz <jstultz@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
+ Jann Horn <jannh@google.com>, Julian Orth <ju.orth@gmail.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733329589; l=3258;
+ i=jannh@google.com; s=20240730; h=from:subject:message-id;
+ bh=x70cZ6Pnodptk8s8H2UvJEPrrE/aNUkvtZGjOJaEWtk=;
+ b=wvi+WMu5XyGongyF0xG2h2EfpSwyL8Ch96wwqWKQwp3k2ZEGtB86dYewh42kVY0ZyLnBTMeKu
+ 1GCnV9vQLOPBwlbq+veVUlxDTxbwGjCn5HlM6jDoIcqd5fad7aYhFUZ
+X-Developer-Key: i=jannh@google.com; a=ed25519;
+ pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-On 04. 12. 24, 13:24, Greg Kroah-Hartman wrote:
-> On Wed, Dec 04, 2024 at 11:45:05AM +0100, Jiri Slaby wrote:
->> On 04. 12. 24, 11:34, Greg Kroah-Hartman wrote:
->>> On Wed, Dec 04, 2024 at 11:00:34AM +0100, Jiri Slaby wrote:
->>>> Hi,
->>>>
->>>> On 03. 12. 24, 15:36, Greg Kroah-Hartman wrote:
->>>>> 6.12-stable review patch.  If anyone has any objections, please let me know.
->>>>>
->>>>> ------------------
->>>>>
->>>>> From: Danny Tsen <dtsen@linux.ibm.com>
->>>>>
->>>>> [ Upstream commit c954b252dee956d33ee59f594710af28fb3037d9 ]
->>>>>
->>>>> This patch is to fix an issue when simd is not usable that data mismatch
->>>>> may occur. The fix is to register algs as SIMD modules so that the
->>>>> algorithm is excecuted when SIMD instructions is usable.  Called
->>>>> gcm_update() to generate the final digest if needed.
->>>>>
->>>>> A new module rfc4106(gcm(aes)) is also added.
->>>>>
->>>>> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
->>>>>
->>>>> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
->>>>> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
->>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
->>>>> ---
->>>>>     arch/powerpc/crypto/aes-gcm-p10-glue.c | 141 +++++++++++++++++++++----
->>>>>     1 file changed, 118 insertions(+), 23 deletions(-)
->>>>>
->>>>> diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
->>>>> index f66ad56e765f0..4a029d2fe06ce 100644
->>>>> --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
->>>>> +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
->>>> ...
->>>>> @@ -281,6 +295,7 @@ static int p10_aes_gcm_crypt(struct aead_request *req, int enc)
->>>>>     	/* Finalize hash */
->>>>>     	vsx_begin();
->>>>> +	gcm_update(gctx->iv, hash->Htable);
->>>>
->>>> Now I get:
->>>> ERROR: modpost: "gcm_update" [arch/powerpc/crypto/aes-gcm-p10-crypto.ko]
->>>> undefined!
->>>>
->>>> Only this:
->>>> commit 7aa747edcb266490f93651dd749c69b7eb8541d9
->>>> Author: Danny Tsen <dtsen@linux.ibm.com>
->>>> Date:   Mon Sep 23 09:30:38 2024 -0400
->>>>
->>>>       crypto: powerpc/p10-aes-gcm - Re-write AES/GCM stitched implementation
->>>>
->>>>
->>>>
->>>> added that function...
->>>
->>> Ah, thanks, I'll go drop this patch from everywhere.
->>
->> OK.
->>
->> Looking at the queue, it looks like a prereq for un-BROKEN-ing the module in
->> the next patch:
->>    8b6c1e466eec crypto: powerpc/p10-aes-gcm - Add dependency on
->> CRYPTO_SIMDand re-enable CRYPTO_AES_GCM_P10
-> 
-> No, I don't see a conflict here.  Are you sure you are?
+I have tested that patches 2 and 3 work using the following reproducers.
+I did not write a reproducer for the issue described in patch 1.
 
-Not sure at all about this crypto stuff. But this failing patch 
-introduces SIMD and the above 8b6c1e466eec adds a dep to SIMD and makes 
-the module nonBROKEN at the same time. So I assume the failing one is a 
-prereq to unbreak the module. Maintainers?
+Reproducer for F_SEAL_FUTURE_WRITE not being respected:
+```
+#define _GNU_SOURCE
+#include <err.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <linux/udmabuf.h>
+
+#define SYSCHK(x) ({          \
+  typeof(x) __res = (x);      \
+  if (__res == (typeof(x))-1) \
+    err(1, "SYSCHK(" #x ")"); \
+  __res;                      \
+})
+
+int main(void) {
+  int memfd = SYSCHK(memfd_create("test", MFD_ALLOW_SEALING));
+  SYSCHK(ftruncate(memfd, 0x1000));
+  SYSCHK(fcntl(memfd, F_ADD_SEALS, F_SEAL_SHRINK|F_SEAL_FUTURE_WRITE));
+  int udmabuf_fd = SYSCHK(open("/dev/udmabuf", O_RDWR));
+  struct udmabuf_create create_arg = {
+    .memfd = memfd,
+    .flags = 0,
+    .offset = 0,
+    .size = 0x1000
+  };
+  int buf_fd = SYSCHK(ioctl(udmabuf_fd, UDMABUF_CREATE, &create_arg));
+  printf("created udmabuf buffer fd %d\n", buf_fd);
+  char *map = SYSCHK(mmap(NULL, 0x1000, PROT_READ|PROT_WRITE, MAP_SHARED, buf_fd, 0));
+  *map = 'a';
+}
+```
+
+Reproducer for the memory leak (if you run this for a while, your memory
+usage will steadily go up, and /sys/kernel/debug/dma_buf/bufinfo will
+contain a ton of entries):
+```
+#define _GNU_SOURCE
+#include <err.h>
+#include <errno.h>
+#include <assert.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <sys/resource.h>
+#include <linux/udmabuf.h>
+
+#define SYSCHK(x) ({          \
+  typeof(x) __res = (x);      \
+  if (__res == (typeof(x))-1) \
+    err(1, "SYSCHK(" #x ")"); \
+  __res;                      \
+})
+
+int main(void) {
+  int memfd = SYSCHK(memfd_create("test", MFD_ALLOW_SEALING));
+  SYSCHK(ftruncate(memfd, 0x1000));
+  SYSCHK(fcntl(memfd, F_ADD_SEALS, F_SEAL_SHRINK));
+  int udmabuf_fd = SYSCHK(open("/dev/udmabuf", O_RDWR));
+
+  // prevent creating new FDs
+  struct rlimit rlim = { .rlim_cur = 1, .rlim_max = 1 };
+  SYSCHK(setrlimit(RLIMIT_NOFILE, &rlim));
+
+  while (1) {
+    struct udmabuf_create create_arg = {
+      .memfd = memfd,
+      .flags = 0,
+      .offset = 0,
+      .size = 0x1000
+    };
+    int buf_fd = ioctl(udmabuf_fd, UDMABUF_CREATE, &create_arg);
+    assert(buf_fd == -1);
+    assert(errno == EMFILE);
+  }
+}
+```
+
+Signed-off-by: Jann Horn <jannh@google.com>
+---
+Changes in v2:
+- patch 1/3: use file_inode instead of ->f_inode (Vivek)
+- patch 1/3: add comment explaining the inode_lock_shared()
+- patch 3/3: remove unused parameter (Vivek)
+- patch 3/3: add comment on cleanup (Vivek)
+- collect Acks
+- Link to v1: https://lore.kernel.org/r/20241203-udmabuf-fixes-v1-0-f99281c345aa@google.com
+
+---
+Jann Horn (3):
+      udmabuf: fix racy memfd sealing check
+      udmabuf: also check for F_SEAL_FUTURE_WRITE
+      udmabuf: fix memory leak on last export_udmabuf() error path
+
+ drivers/dma-buf/udmabuf.c | 43 +++++++++++++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 16 deletions(-)
+---
+base-commit: b86545e02e8c22fb89218f29d381fa8e8b91d815
+change-id: 20241203-udmabuf-fixes-d0435ebab663
 
 -- 
-js
-suse labs
+Jann Horn <jannh@google.com>
+
 
