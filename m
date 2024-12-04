@@ -1,134 +1,227 @@
-Return-Path: <stable+bounces-98549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70F89E4598
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:23:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CCC9E4599
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:23:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A243C164807
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:23:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BCF3280E3A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5123A1F5414;
-	Wed,  4 Dec 2024 20:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8654F1F5403;
+	Wed,  4 Dec 2024 20:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sqOIas7K"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="woJ2+bHL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70881F540E
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 20:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66601F03C8
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 20:23:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733343790; cv=none; b=T6zAaW2yW4XbHX4nW5nM77HobFko0lG5EcNWidqjIMdCGMw4W3fefXXmF9W/bhfVGz5q67ynFLeAGVE5nRBXY3Yymk717/RIOi+P/Qywp8MG9kgQHXSPoliKvhgQT86e3TYzyfaWi95JTgWrzmSxr9Bws3vCukDw8VtiJqPpdLY=
+	t=1733343807; cv=none; b=cjKOaNGpDrfQu0wBR+xZjxR2HOdB+ZQPaotPOzaWrXWqGhiOc8/DVEVM+54QMWEg9FGQ2sDxy3OOp6GkjGhz+Rn3yr1oErwD22yEAUZy6YVCMlMU9OzKS7Zrm/hZpn9fpeU3dnrVfkrxHb2giLspPVIs4HbmZJ2pmnPiAmoJ++g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733343790; c=relaxed/simple;
-	bh=NlOpZ+BPgtnXhjo4CLmyVoEWAPY2XItVR0IA8DkKV8k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R4oh+KtBCdfjwRSGZxcSps5Kk1aTGYbQ+/rP9JkePTQIPdtA8oCnZt8wVh1u4+S4IGie+hUvWvsnLXFlUOil1xTt4FlOgc1zGPAkGJscjqFSmB8SofpOa2GyJbrXa3jopYWBrDIQZjEyQxdkoDwc2gKT1EJXGZKmCc/Qw3P35Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sqOIas7K; arc=none smtp.client-ip=209.85.216.73
+	s=arc-20240116; t=1733343807; c=relaxed/simple;
+	bh=/rt5DjlA7EYa/TJMp127fZTiF/O/u0lYY/c72B20vnk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=JAomlW3PSJuzvSk0XE4wEbgrUg8OTHPnwqZT4JR9ghk1x0eh4gjAAu0CFnzbwxELdXjoza6pQCSvg9DSKwvwmNVX+IyUcp6aa3W2dvMYRVTjbApEAzSoH2KBW7tmAvZmkYujryRNQYaIebUwJ57QnfCsZXTS92/zSpAohqlUYPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=woJ2+bHL; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ee0c9962daso239573a91.2
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 12:23:08 -0800 (PST)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ee31227b58so171662a91.3
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 12:23:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733343788; x=1733948588; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nXuMzIuGHuPyiMjfR7MFZH/isNz94m7GQQ/lJ4B6iGA=;
-        b=sqOIas7KVqIV5yrOGw3gR/UWF+YVz6YTSPv5BQF+hRvrnz95W/KhqUVZO7qOQofivL
-         qRaXKXbX0BAJZLS7jX17447ix0QmW79wZI8nPxhtryYRhlaxY2czvt83dmxN3promVFn
-         Ax1Mznchi0NfycR102iaO/MkDRmfQoo6tI8U7F8AGG3WHsWFTafFcmYxXzfFLQyCKlqN
-         LHuUdr3k9w+UVQnYR2s88AF1qeQm1TZTU4gfNtr/YLllqo5OeyYhFKcl6Kuwhw00d1Vd
-         kEkszPlgxe0A0dN70yIfQUfxMSed91srUKAKO5+SkIqsMSD6oP/+iHRsGiJBuj0EXoON
-         WElQ==
+        d=google.com; s=20230601; t=1733343805; x=1733948605; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mx5sg+NDnEMEVsBHmo4z1ZqCK55Eia08bWmY/EI65Zs=;
+        b=woJ2+bHLX6OBEwYf6ZKG+jVUPJ6dlzam/zSuX69gXKroWDxc8Fy+i03TOX1t5BMXPo
+         DsWypA0Ck31z9lM9Manm1d5TMwvYyn4G1ifQ9syjkJL4OdAZ1WUPb3JAHL8BGrL9vZ5n
+         FYqYgDIQ39/xv93BphRKo6NqBZzu3Q21yHAvB9dFypoIq1iO6aBV6dt+jWko04vZQ1Tb
+         QPDdOf64VAn/tw6Z2EvnuRww57k0A33g8wSoCsZWhgXe/urdWOlklMAvZSACE5/gbS0Z
+         VkM1bF1qaIlHgw3lbLWG/mhq4r62SLYdeh9ToPnvFEjpcB9FS2GNyWh2hASLgcoOkB/H
+         FFdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733343788; x=1733948588;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nXuMzIuGHuPyiMjfR7MFZH/isNz94m7GQQ/lJ4B6iGA=;
-        b=YJU8p8AM4VdZ46ODTUqWKUuUGgilUIOoShBsdXys4KO/UPl8XArkx0BCKHHuleLhfE
-         FGjneVbMO5jAujpFV1z2HWDPhOLlOrKY00chh9kMrJrwlsJ0CAUOm+aVNpg8dq9a+ZLE
-         D1SFj0ovcBocKTMr1NoegFBWIijRsHzn/TGYob0HvTYrdaWczxU4ftW9hdgKXSS02yf0
-         oQ3jEFmPxSOwcdTZqjEJMzsROWSt3KUVyrx2/CuNNwf8ovBXmmA9O2jBITyMz3rhHjHM
-         YQOc2bemjniKssXl1S6jJkNKFtxYUOkOn4HSDAFWLj4PEP8PNqaRbiq1O5ks1C7QuOyL
-         gUyg==
-X-Gm-Message-State: AOJu0Yxs0cA3GM9wZTFFoQf17Pxt06cYTzsm4T5BYGJg1j/Rm69tWE0h
-	aapv+2JICYvhbBz3khQ0LW+Eek/nbLk2JzOtcrYaUAar3HVibjgg9tya8Miu7q9kr7Xq+Lr3lvg
-	VHGAq6HUhqKR6EejJxJzGNEpIOxkXrdgmKhgCrym/BZMSXjHCxEFx0dW8os8RZoHbVXAoN7tDap
-	jqorys3cwt8s7/GKopht3WxffdOFzlgWkhGfqzgdz+FPcqd3jrvI/PMNlQHuo=
-X-Google-Smtp-Source: AGHT+IECeuCdmrAcIbs8klA/hd6UhaKRm0edCoxBzD1zD+cIZ8wVBL7xrDe7b9+SQscHxdyOeE1SfrmJvW7nBm0+KQ==
-X-Received: from pfbf12.prod.google.com ([2002:a05:6a00:ad8c:b0:724:f17d:ebd7])
+        d=1e100.net; s=20230601; t=1733343805; x=1733948605;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mx5sg+NDnEMEVsBHmo4z1ZqCK55Eia08bWmY/EI65Zs=;
+        b=cbxrHzb7dJljX0DT5P/FuuyBraFxm4hKiLnpPx8oI4cV304pNkdgqtmZFwPRwc08M2
+         l82PNj1a737EbYi97va4KdaDF/X3hdhlfrx7zHPvVqP5FLv1QxOWJnt+RXei9AO3pn9q
+         jddH9nS9YAtJ5on6dmTgWQw9gQEsVhHiN65BtHijN8GDkDDNZnlmJQcwD/eNfRre60Gu
+         Hq+4vJfnSz1Cf7EiPNGe+beF2N1++SVpmhYuElVsJWNs35Hn9c2+PludWOKooWmDPIGq
+         6cvl1sTxWmV6mQmdsW4Uzoj3A272s9hpW7net0YOp9BL4cUd8Ig3NARwdCVarAyjkbj3
+         b2EA==
+X-Gm-Message-State: AOJu0YyLqYYnj3YXshte3x/wolKxzqge3sRDxzPXmMNr/wtTeg5lsvYz
+	Kmlcjs1TO9x4LbwOCM7UGynfzLGUAvec4/UBHZxmGSNWpcdDxo211J5Z8oDPY0RH5nQXIKsm1SZ
+	psgBxBgEkq+gxYFRklP605JfhHpqkyfzsdV96hawNZUXEw7H7siAMBAW+HFDmdHNEuBsY/uhfBf
+	c+TR4EuyMND/KaDQ6j6oChKyzsmnI1TNU6jiMh1md0wCC1d87W6nbBDMq6oj4=
+X-Google-Smtp-Source: AGHT+IH5xQjeHQX9tq+43SarBCSvCk1dThgEt62DFKaEU9+m22jhhN89M9ejirkV4cCpLdUoAlpS/L3BigwN3re5gQ==
+X-Received: from pfbbr10.prod.google.com ([2002:a05:6a00:440a:b0:725:936f:c305])
  (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:1c09:b0:2ee:3cc1:793a with SMTP id 98e67ed59e1d1-2ef0124c720mr10571240a91.29.1733343787765;
- Wed, 04 Dec 2024 12:23:07 -0800 (PST)
-Date: Wed,  4 Dec 2024 12:23:01 -0800
-In-Reply-To: <20241204202301.2715933-1-jingzhangos@google.com>
+ 2002:a17:90b:4b92:b0:2ee:df8b:684 with SMTP id 98e67ed59e1d1-2ef00f19e69mr11607679a91.0.1733343804804;
+ Wed, 04 Dec 2024 12:23:24 -0800 (PST)
+Date: Wed,  4 Dec 2024 12:23:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20241204202301.2715933-1-jingzhangos@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241204202301.2715933-3-jingzhangos@google.com>
-Subject: [PATCH 5.4.y 3/3] KVM: arm64: vgic-its: Clear ITE when DISCARD frees
- an ITE
+Message-ID: <20241204202318.2716633-1-jingzhangos@google.com>
+Subject: [PATCH 5.10.y 1/3] KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
 From: Jing Zhang <jingzhangos@google.com>
 To: stable@vger.kernel.org
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Kunkun Jiang <jiangkunkun@huawei.com>, Jing Zhang <jingzhangos@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-From: Kunkun Jiang <jiangkunkun@huawei.com>
+commit 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022 upstream.
 
-commit 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 upstream.
-
-When DISCARD frees an ITE, it does not invalidate the
-corresponding ITE. In the scenario of continuous saves and
-restores, there may be a situation where an ITE is not saved
-but is restored. This is unreasonable and may cause restore
-to fail. This patch clears the corresponding ITE when DISCARD
-frees an ITE.
+In all the vgic_its_save_*() functinos, they do not check whether
+the data length is 8 bytes before calling vgic_write_guest_lock.
+This patch adds the check. To prevent the kernel from being blown up
+when the fault occurs, KVM_BUG_ON() is used. And the other BUG_ON()s
+are replaced together.
 
 Cc: stable@vger.kernel.org
-Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
 Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-[Jing: Update with entry write helper]
+[Jing: Update with the new entry read/write helpers]
 Signed-off-by: Jing Zhang <jingzhangos@google.com>
-Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
+Link: https://lore.kernel.org/r/20241107214137.428439-4-jingzhangos@google.com
 Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 ---
- virt/kvm/arm/vgic/vgic-its.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-its.c | 20 ++++++++------------
+ arch/arm64/kvm/vgic/vgic.h     | 24 ++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/virt/kvm/arm/vgic/vgic-its.c b/virt/kvm/arm/vgic/vgic-its.c
-index 682ff15e3eb8..6e136b2e8de5 100644
---- a/virt/kvm/arm/vgic/vgic-its.c
-+++ b/virt/kvm/arm/vgic/vgic-its.c
-@@ -854,6 +854,9 @@ static int vgic_its_cmd_handle_discard(struct kvm *kvm, struct vgic_its *its,
+diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
+index 93c0365cdd7b..d3ea81d947b7 100644
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -2135,7 +2135,6 @@ static int scan_its_table(struct vgic_its *its, gpa_t base, int size, u32 esz,
+ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
+ 			      struct its_ite *ite, gpa_t gpa, int ite_esz)
+ {
+-	struct kvm *kvm = its->dev->kvm;
+ 	u32 next_offset;
+ 	u64 val;
  
- 	ite = find_ite(its, device_id, event_id);
- 	if (ite && ite->collection) {
-+		struct its_device *device = find_its_device(its, device_id);
-+		int ite_esz = vgic_its_get_abi(its)->ite_esz;
-+		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
- 		/*
- 		 * Though the spec talks about removing the pending state, we
- 		 * don't bother here since we clear the ITTE anyway and the
-@@ -862,7 +865,8 @@ static int vgic_its_cmd_handle_discard(struct kvm *kvm, struct vgic_its *its,
- 		vgic_its_invalidate_cache(kvm);
- 
- 		its_free_ite(kvm, ite);
--		return 0;
+@@ -2144,7 +2143,8 @@ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
+ 	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
+ 		ite->collection->collection_id;
+ 	val = cpu_to_le64(val);
+-	return kvm_write_guest_lock(kvm, gpa, &val, ite_esz);
 +
-+		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
- 	}
++	return vgic_its_write_entry_lock(its, gpa, val, ite_esz);
+ }
  
- 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
+ /**
+@@ -2280,7 +2280,6 @@ static int vgic_its_restore_itt(struct vgic_its *its, struct its_device *dev)
+ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
+ 			     gpa_t ptr, int dte_esz)
+ {
+-	struct kvm *kvm = its->dev->kvm;
+ 	u64 val, itt_addr_field;
+ 	u32 next_offset;
+ 
+@@ -2291,7 +2290,8 @@ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
+ 	       (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
+ 		(dev->num_eventid_bits - 1));
+ 	val = cpu_to_le64(val);
+-	return kvm_write_guest_lock(kvm, ptr, &val, dte_esz);
++
++	return vgic_its_write_entry_lock(its, ptr, val, dte_esz);
+ }
+ 
+ /**
+@@ -2471,7 +2471,8 @@ static int vgic_its_save_cte(struct vgic_its *its,
+ 	       ((u64)collection->target_addr << KVM_ITS_CTE_RDBASE_SHIFT) |
+ 	       collection->collection_id);
+ 	val = cpu_to_le64(val);
+-	return kvm_write_guest_lock(its->dev->kvm, gpa, &val, esz);
++
++	return vgic_its_write_entry_lock(its, gpa, val, esz);
+ }
+ 
+ static int vgic_its_restore_cte(struct vgic_its *its, gpa_t gpa, int esz)
+@@ -2482,8 +2483,7 @@ static int vgic_its_restore_cte(struct vgic_its *its, gpa_t gpa, int esz)
+ 	u64 val;
+ 	int ret;
+ 
+-	BUG_ON(esz > sizeof(val));
+-	ret = kvm_read_guest_lock(kvm, gpa, &val, esz);
++	ret = vgic_its_read_entry_lock(its, gpa, &val, esz);
+ 	if (ret)
+ 		return ret;
+ 	val = le64_to_cpu(val);
+@@ -2517,7 +2517,6 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
+ 	u64 baser = its->baser_coll_table;
+ 	gpa_t gpa = GITS_BASER_ADDR_48_to_52(baser);
+ 	struct its_collection *collection;
+-	u64 val;
+ 	size_t max_size, filled = 0;
+ 	int ret, cte_esz = abi->cte_esz;
+ 
+@@ -2541,10 +2540,7 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
+ 	 * table is not fully filled, add a last dummy element
+ 	 * with valid bit unset
+ 	 */
+-	val = 0;
+-	BUG_ON(cte_esz > sizeof(val));
+-	ret = kvm_write_guest_lock(its->dev->kvm, gpa, &val, cte_esz);
+-	return ret;
++	return vgic_its_write_entry_lock(its, gpa, 0, cte_esz);
+ }
+ 
+ /**
+diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
+index 3d7fa7ef353e..db99a1b167d8 100644
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -6,6 +6,7 @@
+ #define __KVM_ARM_VGIC_NEW_H__
+ 
+ #include <linux/irqchip/arm-gic-common.h>
++#include <asm/kvm_mmu.h>
+ 
+ #define PRODUCT_ID_KVM		0x4b	/* ASCII code K */
+ #define IMPLEMENTER_ARM		0x43b
+@@ -126,6 +127,29 @@ static inline bool vgic_irq_is_multi_sgi(struct vgic_irq *irq)
+ 	return vgic_irq_get_lr_count(irq) > 1;
+ }
+ 
++static inline int vgic_its_read_entry_lock(struct vgic_its *its, gpa_t eaddr,
++					   u64 *eval, unsigned long esize)
++{
++	struct kvm *kvm = its->dev->kvm;
++
++	if (KVM_BUG_ON(esize != sizeof(*eval), kvm))
++		return -EINVAL;
++
++	return kvm_read_guest_lock(kvm, eaddr, eval, esize);
++
++}
++
++static inline int vgic_its_write_entry_lock(struct vgic_its *its, gpa_t eaddr,
++					    u64 eval, unsigned long esize)
++{
++	struct kvm *kvm = its->dev->kvm;
++
++	if (KVM_BUG_ON(esize != sizeof(eval), kvm))
++		return -EINVAL;
++
++	return kvm_write_guest_lock(kvm, eaddr, &eval, esize);
++}
++
+ /*
+  * This struct provides an intermediate representation of the fields contained
+  * in the GICH_VMCR and ICH_VMCR registers, such that code exporting the GIC
+
+base-commit: 711d99f845cdb587b7d7cf5e56c289c3d96d27c5
 -- 
 2.47.0.338.g60cca15819-goog
 
