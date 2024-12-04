@@ -1,155 +1,250 @@
-Return-Path: <stable+bounces-98268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A1A9E3730
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:07:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7205D164C9B
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:07:43 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CE31AA7B4;
-	Wed,  4 Dec 2024 10:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9JuDOfx"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE009E3739
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:09:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7F219F40E;
-	Wed,  4 Dec 2024 10:07:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A01D0B2516C
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:08:19 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6C81A0B07;
+	Wed,  4 Dec 2024 10:08:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DzJe1ISN";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="2Sf2Njho";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nqygL3p6";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5nJfIlNF"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091EF199EA8
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 10:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733306860; cv=none; b=AUa5y5LN8mTq01CFkCJe8N0P6Xsnp9ozAO1Nu8QD/VoSIDfxbYLIzyyg4IDaG36+pqjqopStDtHmLxCfEveKtQaKo3UWP/ut+8dtlgUeLcdcXnCm+zksBWAlhSr7dhnkIlstJe04EtUGDR6uwmrYzDIlZ2vKz4LUCeERDY6LcRY=
+	t=1733306895; cv=none; b=syC5dTd0Qnk3kFRw8SSQbi+4eOnxt804nNWR8YQhAzfJ1ztuMVWJufGHcA28NtxXLSu1V+V5ebxF1xswFtoWZ6XCYWj0Tr6h1e4r2w2tJUniAYxtIAqFrV+Ejv9mPTDOz73mC+iw61TST3At1aFAVL9Pny15wUL9Kd2gJ6R6Z+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733306860; c=relaxed/simple;
-	bh=OUTf5c0z1+SrUX7KnHGxI7CCBH1X18kmqd5sXJWZJTQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P3+NPn/HxprfjeegtxbOKqMVTqAT4n3WbZfUGF1SB1UBreBkjOyB6MFAT5twWgdmixATCbwOBhGyALNznhUe6RY4YarJZwYseCoFwZlT1HEnbfazTEPlEPGo1N9AVx4WWNpeefoiAm2QbmIoAzSXzxBoThTxqA7QMs6PqCq1+BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9JuDOfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DABBC4CED6;
-	Wed,  4 Dec 2024 10:07:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733306860;
-	bh=OUTf5c0z1+SrUX7KnHGxI7CCBH1X18kmqd5sXJWZJTQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=i9JuDOfx903Z+A69s+Vnn4GL3fBfNq1qimgQaKq/fZbOV+WvZcH2i2BqXcxgd3TxH
-	 Z+ggupU9FFwn6BnHTp/cRuU1YcWy/J1xhBoiuop2ousV/QGswldCK18pmPnrMnG9p5
-	 lG8NK+MgyI1IOcTSKB19ln9Lj8XIi5iCsBfoCeuHVa0Rkwqp4/ckVs5vvO/WktrcSK
-	 GwatqcmLX89dWv7aLTrSpy5P0JSVnfxTIXhAGkQyJZ0xK7CNGxacVWyTrSw3eKOv7K
-	 buB/dH5xeQAtogdLdEKyX3T/SK9Xt7U645Etj0VKdJvb3hwswrp8i1yjXAgWmIA4dY
-	 Ii+PAqhMDp9sw==
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53de8ecafeeso6995848e87.1;
-        Wed, 04 Dec 2024 02:07:40 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUHqMfDM1Rs+tYuwGUDTUk8mZGSXPHkv7eRr2gS+uMPta2+O81t+l8w9w5GRf9me0xacBXVOamGCWlvJyX9@vger.kernel.org, AJvYcCWnJ4cbPhJYQ+upzpCwfGKfA5/UTTTrln/F4EkCTFPMWe9DpGaWufjrUPAE5aHEmAPr27JRQNcF@vger.kernel.org, AJvYcCXkWGAAkVvlJGunSm46SMs/HvAO/zlpizXVtblbfDhmcRQt2mbX8RmKVteUzqIu5Q/E4jXSIT/UR9O6qzWm@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAUKSeiDzKxuVrzqjdVccyqjRp4IBQ6edMP4j8ttd+MP6Y8N41
-	dQ8cSPDBSjwefPnqP8m+Uwm+YJpKl42XfCWgM0bPxJvkPyBB07JWAUqM0OmALOmew5BueDFgbJH
-	IdR8Y/ab9YQrDUZYXw0Fn0m0nu9M=
-X-Google-Smtp-Source: AGHT+IHWU+a7+eCom7OBfN7Jt2k2ech+5Jy8Q5QnscsoGZ+UCLjTOgPkoCZjR0oroWTIWLIXcb7v/jr+uOwaJTgZc7s=
-X-Received: by 2002:ac2:4f01:0:b0:53e:1c47:f2c2 with SMTP id
- 2adb3069b0e04-53e1c47f2fdmr737022e87.37.1733306858565; Wed, 04 Dec 2024
- 02:07:38 -0800 (PST)
+	s=arc-20240116; t=1733306895; c=relaxed/simple;
+	bh=Zazrb4J8g3ClxvwCQ/DO89s1q9XaA80PgAC+QPgX8Fw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=egPzu9Aw89hqL3Edwzs+dBhUaZC1rI6qwv2vV4e6edaOu5QiyLriTe1yxoS2jBAXPiIhfHqTbg6e0JJAcMbm36bmx0AVAqJy3RxB9tnwglUW1KKOw4ePr766H5A+nTBSMLCrGrICZywD3QxwTIXtfkvpxwyZXCoda/M/89dwObo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DzJe1ISN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=2Sf2Njho; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nqygL3p6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5nJfIlNF; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EB1211F365;
+	Wed,  4 Dec 2024 10:08:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1733306892; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
+	b=DzJe1ISN+6RgEveA+d99YQzCBMufnXFvJPWrMf9sE2U0O42dgmgfGGGeTF6FBeS77yQZDg
+	f2kKipmJSKOT0S3VscQdsr+xRvV7tEJrkWbrmDyEM7efsKeKMvDSUAHuTiiOGGrSjhUsiF
+	sqdABqOzmXp343FkGqrGCvrBvLeEMFE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1733306892;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
+	b=2Sf2NjhoebeUzhmLZ24056rDicZCfzBKC0tkOOXBWBfkoFPbx3/m6crN20r0/6IoMVPd33
+	1z+PHvffrZf7vUBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nqygL3p6;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5nJfIlNF
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1733306891; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
+	b=nqygL3p661HwuL1iWlgZ9P+9NYwLLZf2wjfd48VkGXLuNv+kny3CZdxf6cZnlaj8PXXehr
+	29QUqPaju3/pJwO1MsjfXpTVsm/zJaRcpJI3tyYbusZcvZG2uD7GqlC9BMz60qtuPHJ2lD
+	CLwRe7y7RsUV1JNx5y9wYB4dlyTnNj8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1733306891;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
+	b=5nJfIlNF1bWR2h8AtY7UyDg57APLG7gI1hhssrB2+gvGjC9kz2rFF/hWvJq7sLqcNUCr1b
+	1UeIzrIxHhWQ2vCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E1D661396E;
+	Wed,  4 Dec 2024 10:08:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id y2geNwsqUGfXeAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 04 Dec 2024 10:08:11 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id A0548A0918; Wed,  4 Dec 2024 11:08:11 +0100 (CET)
+Date: Wed, 4 Dec 2024 11:08:11 +0100
+From: Jan Kara <jack@suse.cz>
+To: Jakub Acs <acsjakub@amazon.com>
+Cc: gregkh@linuxfoundation.org, acsjakub@amazon.de, jack@suse.cz,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 6.1] udf: Fold udf_getblk() into udf_bread()
+Message-ID: <20241204100811.c7kvouk3es7oryx6@quack3>
+References: <2024112908-stillness-alive-c9d1@gregkh>
+ <20241204093226.60654-1-acsjakub@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203180553.16893-1-ebiggers@kernel.org>
-In-Reply-To: <20241203180553.16893-1-ebiggers@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 4 Dec 2024 11:07:26 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXFg0mapBt9=EJ+dMcYfeYcnHy0PjTpwfi2JNYTu2UAZVQ@mail.gmail.com>
-Message-ID: <CAMj1kXFg0mapBt9=EJ+dMcYfeYcnHy0PjTpwfi2JNYTu2UAZVQ@mail.gmail.com>
-Subject: Re: [PATCH] crypto: qce - fix priority to be less than ARMv8 CE
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Bartosz Golaszewski <brgl@bgdev.pl>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Thara Gopinath <thara.gopinath@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241204093226.60654-1-acsjakub@amazon.com>
+X-Rspamd-Queue-Id: EB1211F365
+X-Spam-Score: -4.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MISSING_XM_UA(0.00)[];
+	ARC_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim,syzkaller.appspot.com:url,suse.com:email];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_THREE(0.00)[3];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Tue, 3 Dec 2024 at 19:06, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> From: Eric Biggers <ebiggers@google.com>
->
-> As QCE is an order of magnitude slower than the ARMv8 Crypto Extensions
-> on the CPU, and is also less well tested, give it a lower priority.
-> Previously the QCE SHA algorithms had higher priority than the ARMv8 CE
-> equivalents, and the ciphers such as AES-XTS had the same priority which
-> meant the QCE versions were chosen if they happened to be loaded later.
->
-> Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
-> Cc: stable@vger.kernel.org
-> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-> Cc: Neil Armstrong <neil.armstrong@linaro.org>
-> Cc: Thara Gopinath <thara.gopinath@gmail.com>
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+On Wed 04-12-24 09:32:26, Jakub Acs wrote:
+> commit 32f123a3f34283f9c6446de87861696f0502b02e upstream.
+> 
+> udf_getblk() has a single call site. Fold it there.
+> 
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> 
+> [acsjakub: backport-adjusting changes]
+> udf_getblk() has changed between 6.1 and the backported commit namely
+> in commit 541e047b14c8 ("udf: Use udf_map_block() in udf_getblk()")
+> 
+> Backport using the form of udf_getblk present in 6.1., that means use
+> udf_get_block() instead of udf_map_block() and use dummy in buffer_new()
+> and buffer_mapped().
+> 
+> Closes: https://syzkaller.appspot.com/bug?extid=a38e34ca637c224f4a79
+> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+> ---
+> While doing the backport I have noticed potential side effect of the
+> upstream commit (present in the mainline):
+> 
+> If we take the if-branch of 'if (map.oflags & UDF_BLK_NEW)', we will
+> return the bh without the 'if (bh_read(bh, 0) >= 0)' check. Prior to
+> the folding, the check wouldn't be skipped, was this intentional by the
+> upstream commit?
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Absolutely. bh_read() is pointless if you fill in the buffer contents
+yourself (as we do in the 'if (map.oflags & UDF_BLK_NEW)' branch).
+
+								Honza
 
 > ---
->  drivers/crypto/qce/aead.c     | 2 +-
->  drivers/crypto/qce/sha.c      | 2 +-
->  drivers/crypto/qce/skcipher.c | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/crypto/qce/aead.c b/drivers/crypto/qce/aead.c
-> index 7d811728f047..97b56e92ea33 100644
-> --- a/drivers/crypto/qce/aead.c
-> +++ b/drivers/crypto/qce/aead.c
-> @@ -784,11 +784,11 @@ static int qce_aead_register_one(const struct qce_aead_def *def, struct qce_devi
->         alg->encrypt                    = qce_aead_encrypt;
->         alg->decrypt                    = qce_aead_decrypt;
->         alg->init                       = qce_aead_init;
->         alg->exit                       = qce_aead_exit;
->
-> -       alg->base.cra_priority          = 300;
-> +       alg->base.cra_priority          = 275;
->         alg->base.cra_flags             = CRYPTO_ALG_ASYNC |
->                                           CRYPTO_ALG_ALLOCATES_MEMORY |
->                                           CRYPTO_ALG_KERN_DRIVER_ONLY |
->                                           CRYPTO_ALG_NEED_FALLBACK;
->         alg->base.cra_ctxsize           = sizeof(struct qce_aead_ctx);
-> diff --git a/drivers/crypto/qce/sha.c b/drivers/crypto/qce/sha.c
-> index fc72af8aa9a7..71b748183cfa 100644
-> --- a/drivers/crypto/qce/sha.c
-> +++ b/drivers/crypto/qce/sha.c
-> @@ -480,11 +480,11 @@ static int qce_ahash_register_one(const struct qce_ahash_def *def,
->         else if (IS_SHA256(def->flags))
->                 tmpl->hash_zero = sha256_zero_message_hash;
->
->         base = &alg->halg.base;
->         base->cra_blocksize = def->blocksize;
-> -       base->cra_priority = 300;
-> +       base->cra_priority = 175;
->         base->cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_KERN_DRIVER_ONLY;
->         base->cra_ctxsize = sizeof(struct qce_sha_ctx);
->         base->cra_alignmask = 0;
->         base->cra_module = THIS_MODULE;
->         base->cra_init = qce_ahash_cra_init;
-> diff --git a/drivers/crypto/qce/skcipher.c b/drivers/crypto/qce/skcipher.c
-> index 5b493fdc1e74..ffb334eb5b34 100644
-> --- a/drivers/crypto/qce/skcipher.c
-> +++ b/drivers/crypto/qce/skcipher.c
-> @@ -459,11 +459,11 @@ static int qce_skcipher_register_one(const struct qce_skcipher_def *def,
->                                           IS_DES(def->flags) ? qce_des_setkey :
->                                           qce_skcipher_setkey;
->         alg->encrypt                    = qce_skcipher_encrypt;
->         alg->decrypt                    = qce_skcipher_decrypt;
->
-> -       alg->base.cra_priority          = 300;
-> +       alg->base.cra_priority          = 275;
->         alg->base.cra_flags             = CRYPTO_ALG_ASYNC |
->                                           CRYPTO_ALG_ALLOCATES_MEMORY |
->                                           CRYPTO_ALG_KERN_DRIVER_ONLY;
->         alg->base.cra_ctxsize           = sizeof(struct qce_cipher_ctx);
->         alg->base.cra_alignmask         = 0;
->
-> base-commit: ceb8bf2ceaa77fe222fe8fe32cb7789c9099ddf1
-> --
-> 2.47.1
->
+>  fs/udf/inode.c | 46 +++++++++++++++++++++-------------------------
+>  1 file changed, 21 insertions(+), 25 deletions(-)
+> 
+> diff --git a/fs/udf/inode.c b/fs/udf/inode.c
+> index d7d6ccd0af06..626450101412 100644
+> --- a/fs/udf/inode.c
+> +++ b/fs/udf/inode.c
+> @@ -369,29 +369,6 @@ static int udf_get_block(struct inode *inode, sector_t block,
+>  	return err;
+>  }
+>  
+> -static struct buffer_head *udf_getblk(struct inode *inode, udf_pblk_t block,
+> -				      int create, int *err)
+> -{
+> -	struct buffer_head *bh;
+> -	struct buffer_head dummy;
+> -
+> -	dummy.b_state = 0;
+> -	dummy.b_blocknr = -1000;
+> -	*err = udf_get_block(inode, block, &dummy, create);
+> -	if (!*err && buffer_mapped(&dummy)) {
+> -		bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
+> -		if (buffer_new(&dummy)) {
+> -			lock_buffer(bh);
+> -			memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
+> -			set_buffer_uptodate(bh);
+> -			unlock_buffer(bh);
+> -			mark_buffer_dirty_inode(bh, inode);
+> -		}
+> -		return bh;
+> -	}
+> -
+> -	return NULL;
+> -}
+>  
+>  /* Extend the file with new blocks totaling 'new_block_bytes',
+>   * return the number of extents added
+> @@ -1108,10 +1085,29 @@ struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
+>  			      int create, int *err)
+>  {
+>  	struct buffer_head *bh = NULL;
+> +	struct buffer_head dummy;
+>  
+> -	bh = udf_getblk(inode, block, create, err);
+> -	if (!bh)
+> +	dummy.b_state = 0;
+> +	dummy.b_blocknr = -1000;
+> +
+> +	*err = udf_get_block(inode, block, &dummy, create);
+> +	if (*err || !buffer_mapped(&dummy))
+> +		return NULL
+> +
+> +	bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
+> +	if (!bh) {
+> +		*err = -ENOMEM;
+>  		return NULL;
+> +	}
+> +
+> +	if (buffer_new(&dummy)) {
+> +		lock_buffer(bh);
+> +		memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
+> +		set_buffer_uptodate(bh);
+> +		unlock_buffer(bh);
+> +		mark_buffer_dirty_inode(bh, inode);
+> +		return bh;
+> +	}
+>  
+>  	if (bh_read(bh, 0) >= 0)
+>  		return bh;
+> 
+> base-commit: e4d90d63d385228b1e0bcf31cc15539bbbc28f7f
+> -- 
+> 2.40.1
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
