@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-98578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75E59E48AD
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 275379E48AE
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:23:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DD22162F23
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:23:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87FBA163514
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0461AE876;
-	Wed,  4 Dec 2024 23:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3161F03CB;
+	Wed,  4 Dec 2024 23:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dhsO7AkS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AajbuaNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7F619DF66
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 23:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08FF19DF66
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 23:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354585; cv=none; b=MTt9Fc+0vVSGuVApytt3xPg88OnErKuFTOc0lQmiB8Yv3CifjErD6fIKWfcNAjQHfURpwI9ZDWIgveXwH0P9GbO5faA0F37IAeE34SSpR7zonmTWsLjr2Yqu8s3xVh7QX0Oy5n8QlMeUkWAXfv/1g944apzoJJoKTlGB4esDOHA=
+	t=1733354587; cv=none; b=CyhqJI/GVYUdCSuifsVwN/owH3Fx88eQDToOX6fG0QHI/DB//sHbUv/AeSCBfu2QCBJBTylqMoUPOt8q536SztQlaXj6f31FDo/nDBZTKAWQbIbu36XFBIPPbYFowRpryQjQmtbk3nxVdC+ZcTu3x1BAau6VXXmiye3BOfPrEqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354585; c=relaxed/simple;
-	bh=KDqHiej5JioUyBhkIDuPw5V4aDcVVa3IQysNTizJAl0=;
+	s=arc-20240116; t=1733354587; c=relaxed/simple;
+	bh=CtTOF1181PmEs5NBxA5Uv7H5gh8qTSEYwDEH7zBK1Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iaaijadQmCprGOYmb/e0aEtEF3L9FU++5nUNS5IHSeYByS4DyiWyRL42mFSpcfOIoDheuyNJj7hN4oLYkmAhpPF3KGc8YuwaOVXgqsulLiCGOGwqZtgMqrs9JQhYTMVS1RgB7s6H6IVwrLqJ0jtLIzPF6CMbY5kuvbAaym9n3CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dhsO7AkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07289C4CECD;
-	Wed,  4 Dec 2024 23:23:04 +0000 (UTC)
+	 MIME-Version; b=lqUMXnRrcEicYRXxQqQm0ECLAiFBNKvAcggFI7f53tA1UiMEH1iVLZYnsCml7rZMyjLnpOkgGQCTewb1Kpv4RbHkWf08Q8ltc45Tq5b9cPi39/azSCw5YXFQcYQYGdmiOSc5Q5mt/a4x5GAPyAA7af7yWNhFm48f2hKYTDJXEzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AajbuaNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDF3C4CECD;
+	Wed,  4 Dec 2024 23:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354585;
-	bh=KDqHiej5JioUyBhkIDuPw5V4aDcVVa3IQysNTizJAl0=;
+	s=k20201202; t=1733354587;
+	bh=CtTOF1181PmEs5NBxA5Uv7H5gh8qTSEYwDEH7zBK1Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhsO7AkSdQ2xgXDM2znXSC+KQoWzHsU5XbCtYUqikh/Eh8EhO2A5XBXoyTeTKnP36
-	 CgX+rCgZbfZ+jxJLqcNpPx7KpvzTm1rXE9vLplxHqeK4AbI3ii4VWfgQu4qHqKa6oe
-	 WbYXd11Z2AE+JK6Y+G5buTHKvkftXtwuqkUfXTcKDlBuKYZCaj+alIKcsrUDgVJ9/h
-	 1QaFXo6uBHvyvVejU8HBYQ6Jih07SgeaDXSLbvUbLc+EI3jKAMtR3j4V2S73z59hyt
-	 oz1SaPh7Rs0Hj4giZBh+5jAvM8uWpfeT3zpoAuQZDGt5YH+ylPFQUO+eqvnPnRtcaJ
-	 kaecmaeKK1WWA==
+	b=AajbuaNdfM5TvOsWGbprqJ07kpKajDeQnhDZ0D1bfNw0xJi6NSjeLllezKK8US2vb
+	 3mYTlCwaNqwkYP/xeuhE5ccTWCpZY/QP7HcicrlkwitYsHyFk2r3B6Lw0zxU21mzI9
+	 UIW7JKXIYcfB/ozNt8O1hbbJQXN28Zi7nuVhRGFY9qMgfbJo5+OHcNVVGFsXGf5Q1w
+	 gI3oBNR4rwC9e9LDuy4BA7KyYeXQT7BZPswsMUI2ZmjvRaJLFiMGm5nlpCGh6rDJku
+	 ZeKzKDAbg41vaYkBWE2jkTbwDgnpYFpZCoQ46GeUTG+BoXaORjfIxUxM/GoqwOh9Ro
+	 ORO4L1AesBMRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jing Zhang <jingzhangos@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y 3/3] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
-Date: Wed,  4 Dec 2024 17:11:46 -0500
-Message-ID: <20241204164514-8ec54d6b55d76485@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y 3/3] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
+Date: Wed,  4 Dec 2024 17:11:47 -0500
+Message-ID: <20241204160446-328738d617923014@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241204202318.2716633-3-jingzhangos@google.com>
+In-Reply-To:  <20241204202357.2718096-3-jingzhangos@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,12 +75,10 @@ Status in newer kernel trees:
 6.11.y | Present (different SHA1: 85272e522655)
 6.6.y | Present (different SHA1: 9359737ade6c)
 6.1.y | Present (different SHA1: 1f6c9a5c3b12)
-5.15.y | Present (different SHA1: 04e670725c10)
-5.10.y | Present (different SHA1: e428da1e025c)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  7602ffd1d5e89 ! 1:  8bb3836356136 KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
+1:  7602ffd1d5e89 ! 1:  836537b65bd7b KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
     @@ Metadata
       ## Commit message ##
          KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
@@ -105,5 +103,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
