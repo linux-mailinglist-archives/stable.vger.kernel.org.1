@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-98685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E86E9E49F1
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:48:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1A89E49E6
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:47:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CD6516A8A7
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:47:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B767928B86D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3888213225;
-	Wed,  4 Dec 2024 23:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5DA2139A7;
+	Wed,  4 Dec 2024 23:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s9VddgDm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lwWmRiHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCEA212B3B;
-	Wed,  4 Dec 2024 23:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019C2213259;
+	Wed,  4 Dec 2024 23:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733355329; cv=none; b=OrpDvvxsqh1x9cmk+X1INSSvk0G6EJD1Q1dnvq8iDKBOxn4vJ/7KSuT6I1jcI4Mt8YJOgon1jfRQc2kiaOJnUvh6BK1l2eOy661UHrLrDo7KRmB6K4OzxViu3vTDZ4WJK6mf/dJYc4iPzuQR/KuHjhBDGU2EoPklDEioDOYZ7uQ=
+	t=1733355332; cv=none; b=npkyzT8WguQ7oZ1pbWRiHloneqdZWGihMsMl1OYXkJU/1GBmUKKFzCFT2Tb8yTraOJc2lKY+uK9jI8R47oYLvJQl+Mt8PiMic9ZoGEEpdFkFqvkqJzyQPQC44ELlxK9P8VRWoA967lGX97dMa8WdT1NXqLb0nmjg2fj8O2e9xlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733355329; c=relaxed/simple;
-	bh=6g/3gOZpjLqFEtM76L2A0xUggHcj0QKf3jkNqW6mKdU=;
+	s=arc-20240116; t=1733355332; c=relaxed/simple;
+	bh=7hYQI5j+nVjcxPZ2S4iXMwVOXCdAO8jM1GWwwnFjz/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icH+QJoKenU70rnR8yFZNZoDmOungKexqdj1EGlEcESgqkNjTlt7e3z4gCf1WLaMR6HgN4xP3P0q4DjhXtYofTAYmq9deOQH6jSR92r8tstiU2Bp2yc1ItsXbzHHRPAibcMGKElqTshL5n3ZwIgYtylgL6jrDaHPyfhpvbFh4wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s9VddgDm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36976C4CED2;
-	Wed,  4 Dec 2024 23:35:28 +0000 (UTC)
+	 MIME-Version; b=sGSefltdjejQz6DY9WsJVQGwGrloRSuJX82kcXYwj/W4QSxuInBMy5gjb7EQDIH17LpqsKggwI1AVSUEhzp/5xLrCZCMFSsowceIELqC2qoWdwwmSXxyJn85rCtkQoEZWfIOrGLnE+HO8HcU3ELkKFj475/MoBfTGT3JmJKVmKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lwWmRiHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCACC4CECD;
+	Wed,  4 Dec 2024 23:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355329;
-	bh=6g/3gOZpjLqFEtM76L2A0xUggHcj0QKf3jkNqW6mKdU=;
+	s=k20201202; t=1733355331;
+	bh=7hYQI5j+nVjcxPZ2S4iXMwVOXCdAO8jM1GWwwnFjz/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9VddgDmnhooTFCg+1QSbhYbf41oKuY3EJbY4FgyEo47VVXC1ylBQ1nJ/Vz8FpM9X
-	 Vb2eufM6aUixXZqJjpi0OLMPWHJG1uGEN3D3rlR0g0CSWpr+JBdJFyx/V86GMTXuH8
-	 Vdm2EGuxv1Zob7hv/7jcrv/Zy71vsrYlKo9GjF7CBt6e8S11MArB6wFZQQojx0TW+J
-	 niT99oclN+uw8keYeH56iG6npqx4+spzNPfzWhHjtofRN7dCE5egvATfqY9R7j6cGS
-	 4U/Z0HbQwlUj/IpE9llIj0+4vmV/JpDVEfTTfGJ1s5y7/Jxwy1uS7B5FDOBmsK+coM
-	 m0WByteKXJnHQ==
+	b=lwWmRiHAkl4rPr+FSKRaN3jNcRikRYqYit7F/mw4TxHngHcObEtJaFnlyG/P3gieP
+	 OiVoNEQrhOdMAJlj3BjTiyPKaBmGWkXidXN+GaKyvsu/3LWFdUdqzEXnyTWHvXmFPK
+	 TM+U4Qa5D02gdri/miVolfpfyQPQLztrgEohgUvJoWIycfJuXrvJ0fN3l/4QMiyCvG
+	 2srVdbZCI8V66kx4/7+7YH7f3+2GOtEwSGlFOoAvkQe9A1qOJPFib2e2sL0tB+4i60
+	 oBUyTzRh75n9nhBH6Xvbh76w2gHBv2vXom9OASfh+L7Ur/nWdJDgkW1otuQ3bWKRVb
+	 rBDD7kYK5ap/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.11 5/7] smb: client: don't try following DFS links in cifs_tree_connect()
-Date: Wed,  4 Dec 2024 17:23:47 -0500
-Message-ID: <20241204222402.2249702-5-sashal@kernel.org>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sean Christopherson <seanjc@google.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 6/7] setlocalversion: work around "git describe" performance
+Date: Wed,  4 Dec 2024 17:23:48 -0500
+Message-ID: <20241204222402.2249702-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204222402.2249702-1-sashal@kernel.org>
 References: <20241204222402.2249702-1-sashal@kernel.org>
@@ -67,266 +66,176 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-[ Upstream commit 36008fe6e3dc588e5e9ceae6e82c7f69399eb5d8 ]
+[ Upstream commit 523f3dbc187a9618d4fd80c2b438e4d490705dcd ]
 
-We can't properly support chasing DFS links in cifs_tree_connect()
-because
+Contrary to expectations, passing a single candidate tag to "git
+describe" is slower than not passing any --match options.
 
-  (1) We don't support creating new sessions while we're reconnecting,
-      which would be required for DFS interlinks.
+  $ time git describe --debug
+  ...
+  traversed 10619 commits
+  ...
+  v6.12-rc5-63-g0fc810ae3ae1
 
-  (2) ->is_path_accessible() can't be called from cifs_tree_connect()
-     as it would deadlock with smb2_reconnect().  This is required for
-     checking if new DFS target is a nested DFS link.
+  real    0m0.169s
 
-By unconditionally trying to get an DFS referral from new DFS target
-isn't correct because if the new DFS target (interlink) is an DFS
-standalone namespace, then we would end up getting -ELOOP and then
-potentially leaving tcon disconnected.
+  $ time git describe --match=v6.12-rc5 --debug
+  ...
+  traversed 1310024 commits
+  v6.12-rc5-63-g0fc810ae3ae1
 
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+  real    0m1.281s
+
+In fact, the --debug output shows that git traverses all or most of
+history. For some repositories and/or git versions, those 1.3s are
+actually 10-15 seconds.
+
+This has been acknowledged as a performance bug in git [1], and a fix
+is on its way [2]. However, no solution is yet in git.git, and even
+when one lands, it will take quite a while before it finds its way to
+a release and for $random_kernel_developer to pick that up.
+
+So rewrite the logic to use plumbing commands. For each of the
+candidate values of $tag, we ask: (1) is $tag even an annotated
+tag? (2) Is it eligible to describe HEAD, i.e. an ancestor of
+HEAD? (3) If so, how many commits are in $tag..HEAD?
+
+I have tested that this produces the same output as the current script
+for ~700 random commits between v6.9..v6.10. For those 700 commits,
+and in my git repo, the 'make -s kernelrelease' command is on average
+~4 times faster with this patch applied (geometric mean of ratios).
+
+For the commit mentioned in Josh's original report [3], the
+time-consuming part of setlocalversion goes from
+
+$ time git describe --match=v6.12-rc5 c1e939a21eb1
+v6.12-rc5-44-gc1e939a21eb1
+
+real    0m1.210s
+
+to
+
+$ time git rev-list --count --left-right v6.12-rc5..c1e939a21eb1
+0       44
+
+real    0m0.037s
+
+[1] https://lore.kernel.org/git/20241101113910.GA2301440@coredump.intra.peff.net/
+[2] https://lore.kernel.org/git/20241106192236.GC880133@coredump.intra.peff.net/
+[3] https://lore.kernel.org/lkml/309549cafdcfe50c4fceac3263220cc3d8b109b2.1730337435.git.jpoimboe@kernel.org/
+
+Reported-by: Sean Christopherson <seanjc@google.com>
+Closes: https://lore.kernel.org/lkml/ZPtlxmdIJXOe0sEy@google.com/
+Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Closes: https://lore.kernel.org/lkml/309549cafdcfe50c4fceac3263220cc3d8b109b2.1730337435.git.jpoimboe@kernel.org/
+Tested-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/dfs.c | 188 ++++----------------------------------------
- 1 file changed, 17 insertions(+), 171 deletions(-)
+ scripts/setlocalversion | 54 +++++++++++++++++++++++++++++------------
+ 1 file changed, 38 insertions(+), 16 deletions(-)
 
-diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
-index 3ec965547e3d4..bd259b04cdede 100644
---- a/fs/smb/client/dfs.c
-+++ b/fs/smb/client/dfs.c
-@@ -324,49 +324,6 @@ int dfs_mount_share(struct cifs_mount_ctx *mnt_ctx, bool *isdfs)
- 	return rc;
- }
+diff --git a/scripts/setlocalversion b/scripts/setlocalversion
+index 38b96c6797f40..5818465abba98 100755
+--- a/scripts/setlocalversion
++++ b/scripts/setlocalversion
+@@ -30,6 +30,27 @@ if test $# -gt 0 -o ! -d "$srctree"; then
+ 	usage
+ fi
  
--/* Update dfs referral path of superblock */
--static int update_server_fullpath(struct TCP_Server_Info *server, struct cifs_sb_info *cifs_sb,
--				  const char *target)
--{
--	int rc = 0;
--	size_t len = strlen(target);
--	char *refpath, *npath;
--
--	if (unlikely(len < 2 || *target != '\\'))
--		return -EINVAL;
--
--	if (target[1] == '\\') {
--		len += 1;
--		refpath = kmalloc(len, GFP_KERNEL);
--		if (!refpath)
--			return -ENOMEM;
--
--		scnprintf(refpath, len, "%s", target);
--	} else {
--		len += sizeof("\\");
--		refpath = kmalloc(len, GFP_KERNEL);
--		if (!refpath)
--			return -ENOMEM;
--
--		scnprintf(refpath, len, "\\%s", target);
--	}
--
--	npath = dfs_cache_canonical_path(refpath, cifs_sb->local_nls, cifs_remap(cifs_sb));
--	kfree(refpath);
--
--	if (IS_ERR(npath)) {
--		rc = PTR_ERR(npath);
--	} else {
--		mutex_lock(&server->refpath_lock);
--		spin_lock(&server->srv_lock);
--		kfree(server->leaf_fullpath);
--		server->leaf_fullpath = npath;
--		spin_unlock(&server->srv_lock);
--		mutex_unlock(&server->refpath_lock);
--	}
--	return rc;
--}
--
- static int target_share_matches_server(struct TCP_Server_Info *server, char *share,
- 				       bool *target_match)
++try_tag() {
++	tag="$1"
++
++	# Is $tag an annotated tag?
++	[ "$(git cat-file -t "$tag" 2> /dev/null)" = tag ] || return 1
++
++	# Is it an ancestor of HEAD, and if so, how many commits are in $tag..HEAD?
++	# shellcheck disable=SC2046 # word splitting is the point here
++	set -- $(git rev-list --count --left-right "$tag"...HEAD 2> /dev/null)
++
++	# $1 is 0 if and only if $tag is an ancestor of HEAD. Use
++	# string comparison, because $1 is empty if the 'git rev-list'
++	# command somehow failed.
++	[ "$1" = 0 ] || return 1
++
++	# $2 is the number of commits in the range $tag..HEAD, possibly 0.
++	count="$2"
++
++	return 0
++}
++
+ scm_version()
  {
-@@ -391,77 +348,22 @@ static int target_share_matches_server(struct TCP_Server_Info *server, char *sha
- 	return rc;
- }
+ 	local short=false
+@@ -61,33 +82,33 @@ scm_version()
+ 	# stable kernel:    6.1.7      ->  v6.1.7
+ 	version_tag=v$(echo "${KERNELVERSION}" | sed -E 's/^([0-9]+\.[0-9]+)\.0(.*)$/\1\2/')
  
--static void __tree_connect_ipc(const unsigned int xid, char *tree,
--			       struct cifs_sb_info *cifs_sb,
--			       struct cifs_ses *ses)
--{
--	struct TCP_Server_Info *server = ses->server;
--	struct cifs_tcon *tcon = ses->tcon_ipc;
--	int rc;
--
--	spin_lock(&ses->ses_lock);
--	spin_lock(&ses->chan_lock);
--	if (cifs_chan_needs_reconnect(ses, server) ||
--	    ses->ses_status != SES_GOOD) {
--		spin_unlock(&ses->chan_lock);
--		spin_unlock(&ses->ses_lock);
--		cifs_server_dbg(FYI, "%s: skipping ipc reconnect due to disconnected ses\n",
--				__func__);
--		return;
--	}
--	spin_unlock(&ses->chan_lock);
--	spin_unlock(&ses->ses_lock);
--
--	cifs_server_lock(server);
--	scnprintf(tree, MAX_TREE_SIZE, "\\\\%s\\IPC$", server->hostname);
--	cifs_server_unlock(server);
--
--	rc = server->ops->tree_connect(xid, ses, tree, tcon,
--				       cifs_sb->local_nls);
--	cifs_server_dbg(FYI, "%s: tree_reconnect %s: %d\n", __func__, tree, rc);
--	spin_lock(&tcon->tc_lock);
--	if (rc) {
--		tcon->status = TID_NEED_TCON;
--	} else {
--		tcon->status = TID_GOOD;
--		tcon->need_reconnect = false;
--	}
--	spin_unlock(&tcon->tc_lock);
--}
--
--static void tree_connect_ipc(const unsigned int xid, char *tree,
--			     struct cifs_sb_info *cifs_sb,
--			     struct cifs_tcon *tcon)
--{
--	struct cifs_ses *ses = tcon->ses;
--
--	__tree_connect_ipc(xid, tree, cifs_sb, ses);
--	__tree_connect_ipc(xid, tree, cifs_sb, CIFS_DFS_ROOT_SES(ses));
--}
--
--static int __tree_connect_dfs_target(const unsigned int xid, struct cifs_tcon *tcon,
--				     struct cifs_sb_info *cifs_sb, char *tree, bool islink,
--				     struct dfs_cache_tgt_list *tl)
-+static int tree_connect_dfs_target(const unsigned int xid,
-+				   struct cifs_tcon *tcon,
-+				   struct cifs_sb_info *cifs_sb,
-+				   char *tree, bool islink,
-+				   struct dfs_cache_tgt_list *tl)
- {
--	int rc;
-+	const struct smb_version_operations *ops = tcon->ses->server->ops;
- 	struct TCP_Server_Info *server = tcon->ses->server;
--	const struct smb_version_operations *ops = server->ops;
--	struct cifs_ses *root_ses = CIFS_DFS_ROOT_SES(tcon->ses);
--	char *share = NULL, *prefix = NULL;
- 	struct dfs_cache_tgt_iterator *tit;
-+	char *share = NULL, *prefix = NULL;
- 	bool target_match;
--
--	tit = dfs_cache_get_tgt_iterator(tl);
--	if (!tit) {
--		rc = -ENOENT;
--		goto out;
--	}
-+	int rc = -ENOENT;
++	# try_tag initializes count if the tag is usable.
++	count=
++
+ 	# If a localversion* file exists, and the corresponding
+ 	# annotated tag exists and is an ancestor of HEAD, use
+ 	# it. This is the case in linux-next.
+-	tag=${file_localversion#-}
+-	desc=
+-	if [ -n "${tag}" ]; then
+-		desc=$(git describe --match=$tag 2>/dev/null)
++	if [ -n "${file_localversion#-}" ] ; then
++		try_tag "${file_localversion#-}"
+ 	fi
  
- 	/* Try to tree connect to all dfs targets */
--	for (; tit; tit = dfs_cache_get_next_tgt(tl, tit)) {
--		const char *target = dfs_cache_get_tgt_name(tit);
--		DFS_CACHE_TGT_LIST(ntl);
--
-+	for (tit = dfs_cache_get_tgt_iterator(tl);
-+	     tit; tit = dfs_cache_get_next_tgt(tl, tit)) {
- 		kfree(share);
- 		kfree(prefix);
- 		share = prefix = NULL;
-@@ -482,69 +384,16 @@ static int __tree_connect_dfs_target(const unsigned int xid, struct cifs_tcon *t
- 		}
+ 	# Otherwise, if a localversion* file exists, and the tag
+ 	# obtained by appending it to the tag derived from
+ 	# KERNELVERSION exists and is an ancestor of HEAD, use
+ 	# it. This is e.g. the case in linux-rt.
+-	if [ -z "${desc}" ] && [ -n "${file_localversion}" ]; then
+-		tag="${version_tag}${file_localversion}"
+-		desc=$(git describe --match=$tag 2>/dev/null)
++	if [ -z "${count}" ] && [ -n "${file_localversion}" ]; then
++		try_tag "${version_tag}${file_localversion}"
+ 	fi
  
- 		dfs_cache_noreq_update_tgthint(server->leaf_fullpath + 1, tit);
--		tree_connect_ipc(xid, tree, cifs_sb, tcon);
--
- 		scnprintf(tree, MAX_TREE_SIZE, "\\%s", share);
--		if (!islink) {
--			rc = ops->tree_connect(xid, tcon->ses, tree, tcon, cifs_sb->local_nls);
--			break;
--		}
--
--		/*
--		 * If no dfs referrals were returned from link target, then just do a TREE_CONNECT
--		 * to it.  Otherwise, cache the dfs referral and then mark current tcp ses for
--		 * reconnect so either the demultiplex thread or the echo worker will reconnect to
--		 * newly resolved target.
--		 */
--		if (dfs_cache_find(xid, root_ses, cifs_sb->local_nls, cifs_remap(cifs_sb), target,
--				   NULL, &ntl)) {
--			rc = ops->tree_connect(xid, tcon->ses, tree, tcon, cifs_sb->local_nls);
--			if (rc)
--				continue;
--
-+		rc = ops->tree_connect(xid, tcon->ses, tree,
-+				       tcon, tcon->ses->local_nls);
-+		if (islink && !rc && cifs_sb)
- 			rc = cifs_update_super_prepath(cifs_sb, prefix);
--		} else {
--			/* Target is another dfs share */
--			rc = update_server_fullpath(server, cifs_sb, target);
--			dfs_cache_free_tgts(tl);
--
--			if (!rc) {
--				rc = -EREMOTE;
--				list_replace_init(&ntl.tl_list, &tl->tl_list);
--			} else
--				dfs_cache_free_tgts(&ntl);
--		}
- 		break;
- 	}
+ 	# Otherwise, default to the annotated tag derived from KERNELVERSION.
+-	if [ -z "${desc}" ]; then
+-		tag="${version_tag}"
+-		desc=$(git describe --match=$tag 2>/dev/null)
++	if [ -z "${count}" ]; then
++		try_tag "${version_tag}"
+ 	fi
  
--out:
- 	kfree(share);
- 	kfree(prefix);
--
--	return rc;
--}
--
--static int tree_connect_dfs_target(const unsigned int xid, struct cifs_tcon *tcon,
--				   struct cifs_sb_info *cifs_sb, char *tree, bool islink,
--				   struct dfs_cache_tgt_list *tl)
--{
--	int rc;
--	int num_links = 0;
--	struct TCP_Server_Info *server = tcon->ses->server;
--	char *old_fullpath = server->leaf_fullpath;
--
--	do {
--		rc = __tree_connect_dfs_target(xid, tcon, cifs_sb, tree, islink, tl);
--		if (!rc || rc != -EREMOTE)
--			break;
--	} while (rc = -ELOOP, ++num_links < MAX_NESTED_LINKS);
--	/*
--	 * If we couldn't tree connect to any targets from last referral path, then
--	 * retry it from newly resolved dfs referral.
--	 */
--	if (rc && server->leaf_fullpath != old_fullpath)
--		cifs_signal_cifsd_for_reconnect(server, true);
--
- 	dfs_cache_free_tgts(tl);
- 	return rc;
- }
-@@ -599,14 +448,11 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
- 	if (!IS_ERR(sb))
- 		cifs_sb = CIFS_SB(sb);
+-	# If we are at the tagged commit, we ignore it because the version is
+-	# well-defined.
+-	if [ "${tag}" != "${desc}" ]; then
++	# If we are at the tagged commit, we ignore it because the
++	# version is well-defined. If none of the attempted tags exist
++	# or were usable, $count is still empty.
++	if [ -z "${count}" ] || [ "${count}" -gt 0 ]; then
  
--	/*
--	 * Tree connect to last share in @tcon->tree_name whether dfs super or
--	 * cached dfs referral was not found.
--	 */
--	if (!cifs_sb || !server->leaf_fullpath ||
-+	/* Tree connect to last share in @tcon->tree_name if no DFS referral */
-+	if (!server->leaf_fullpath ||
- 	    dfs_cache_noreq_find(server->leaf_fullpath + 1, &ref, &tl)) {
--		rc = ops->tree_connect(xid, tcon->ses, tcon->tree_name, tcon,
--				       cifs_sb ? cifs_sb->local_nls : nlsc);
-+		rc = ops->tree_connect(xid, tcon->ses, tcon->tree_name,
-+				       tcon, tcon->ses->local_nls);
- 		goto out;
- 	}
+ 		# If only the short version is requested, don't bother
+ 		# running further git commands
+@@ -95,14 +116,15 @@ scm_version()
+ 			echo "+"
+ 			return
+ 		fi
++
+ 		# If we are past the tagged commit, we pretty print it.
+ 		# (like 6.1.0-14595-g292a089d78d3)
+-		if [ -n "${desc}" ]; then
+-			echo "${desc}" | awk -F- '{printf("-%05d", $(NF-1))}'
++		if [ -n "${count}" ]; then
++			printf "%s%05d" "-" "${count}"
+ 		fi
  
+ 		# Add -g and exactly 12 hex chars.
+-		printf '%s%s' -g "$(echo $head | cut -c1-12)"
++		printf '%s%.12s' -g "$head"
+ 	fi
+ 
+ 	if ${no_dirty}; then
 -- 
 2.43.0
 
