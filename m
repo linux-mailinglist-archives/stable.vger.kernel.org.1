@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-98601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F119E48DB
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:27:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CC99E48E8
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:28:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4927828270A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:27:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AA218814A5
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA36207675;
-	Wed,  4 Dec 2024 23:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A9F1865FA;
+	Wed,  4 Dec 2024 23:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRKKX5uC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+TNg1zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65051206F02;
-	Wed,  4 Dec 2024 23:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD27202C4F;
+	Wed,  4 Dec 2024 23:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354772; cv=none; b=tZuOkZvNRJOx4bVd+FqFq9qo5VD7ocCKSemUUD7jPrD3H6q9tvkxsKE1YlTjFQoIBRsFd2j2yNGNUoR6l4h01/IcHBnhMJ43qYuJ5SnquX/tXbC0ztJc+OsmHFzgFQO8mqjsfQFzCT4ecSprm7ZuNEG7FlYNjCXyWi0w9kTnHqc=
+	t=1733354777; cv=none; b=MFeOXUrvgNRHmfq0H8+AeYKU+TSQgxGGySQJ8RhDkvYPC0xOZGHkaHY6adt0GY05dIELMo7IFE5qLwjFwZQPAx8u+XVsDm1Ug/vZZK1XrFF+K2U5zohB9zvEj+3BH28YTfpzxvihhPmstsLLBCgdZgT0V/O8v9RoB2DerYegy3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354772; c=relaxed/simple;
-	bh=V9u7XI+QSVXRCVDSdLlxcWtcxujY49M4RdlhubV46Gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFSPLTUp/Hyr1OrUZGQdF7Gn0KsfZPS8eAmwczAbw/tBipCSDP9BIKvSemxpCmfQUQT8f6DxsBwOE8ay8uSgrfZRV0VqphiMZW+etV3p7tiLMkE3Dec+XVNVwMzaDz6P2In1JZnUnyDoJJdheOjyWfsKq35pyW1LqTHikO1MmVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRKKX5uC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769DBC4CECD;
-	Wed,  4 Dec 2024 23:26:10 +0000 (UTC)
+	s=arc-20240116; t=1733354777; c=relaxed/simple;
+	bh=gFF5Zu+PVc4pu8Aty8CKqrK4CCZ9Ay14XcEr7z9OAjs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ilhI5lFwHgma32V4mCs8HAqRnU/UYhHc1kJfWrYlo0C00AvkoWepy77IybffVMAFkRW1hycGMA2a92dJLD1GN8xwo+uvfIVo4hEKPVqWno3wMkEPHh5miuwJOQCNWj3ECa9mlSPAPiz/kWBSamQh8tM3c6EqySn7LlPvLG7nXE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+TNg1zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2D8C4CECD;
+	Wed,  4 Dec 2024 23:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354771;
-	bh=V9u7XI+QSVXRCVDSdLlxcWtcxujY49M4RdlhubV46Gw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRKKX5uCVdA2HHsSVFeL8cCWUyjPigYgZ0u5323CpppSWQGPqEUS3tZtMwbNWDKxw
-	 b9wlkK67MlJvDBdRLTyII8/v7OLDtolB7KzkUsRdFz6nhrv42xE/z6cD9sJaQhZ/oh
-	 jOMqXgM0sbPqdKSL7BaNVKC1uKWcumVWnf3msG2H9RG3dxfpYm4BN78yguJjnmCfHb
-	 wXxG+pRFV2bi/SsCHytSViu/sQqnxYrfhpbC7iOgdDMKnDJ+G+VbbMlAeqlLGKL15k
-	 Vl6NspqX9LPxJKkQh4yqVwlbOLsEU6gdCEVQtPJ9IpkwwW8sMs2mnHLNlJurm2TR2a
-	 POAehfq2BXBHw==
+	s=k20201202; t=1733354777;
+	bh=gFF5Zu+PVc4pu8Aty8CKqrK4CCZ9Ay14XcEr7z9OAjs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=U+TNg1zr85aHifQ6X91gEobkk5ow+Bxx3iEr3/0UiqqxaW6iBdaqDFkE4jEj/b/tA
+	 uye+34D3nv9FrhE2jAk0hN/lOHHecaN3LWuMZgZq1RMU4E2y3I8dbjFaJYnjrQwwfn
+	 dI5XeHiaZw8QwWqOkb1KFBtmylJaSeWQB7Ypj3Xk2GqTi2Q2XFKzspy01GhMGouHP/
+	 k05ORnzaAVW0az8INjL1XRm+lg2/s/oGSPqK/cxYJGLtSS3a5/a4rS7IC+x09guC0j
+	 Y/AVEbNQurry7aMWhZ5vtPTKbXWkWLDKdvp7oi8QW8lLfX46BQ7xcNii6VozPXkcnm
+	 uAzXgy4IMORSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,17 +49,15 @@ Cc: Huacai Chen <chenhuacai@loongson.cn>,
 	bigeasy@linutronix.de,
 	clrkwllms@kernel.org,
 	rostedt@goodmis.org,
-	tangyouling@loongson.cn,
 	yangtiezhu@loongson.cn,
 	hejinyang@loongson.cn,
+	tangyouling@loongson.cn,
 	loongarch@lists.linux.dev,
 	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 3/3] LoongArch: Fix sleeping in atomic context for PREEMPT_RT
-Date: Wed,  4 Dec 2024 17:14:39 -0500
-Message-ID: <20241204221445.2247192-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1] LoongArch: Fix sleeping in atomic context for PREEMPT_RT
+Date: Wed,  4 Dec 2024 17:14:54 -0500
+Message-ID: <20241204221457.2247288-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204221445.2247192-1-sashal@kernel.org>
-References: <20241204221445.2247192-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
 From: Huacai Chen <chenhuacai@loongson.cn>
@@ -132,10 +129,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
-index 56bf1dd5358aa..526310ec73c7e 100644
+index eeb2d815cfa2a..faf44cac403b4 100644
 --- a/arch/loongarch/mm/tlb.c
 +++ b/arch/loongarch/mm/tlb.c
-@@ -292,7 +292,7 @@ static void setup_tlb_handler(int cpu)
+@@ -279,7 +279,7 @@ void setup_tlb_handler(int cpu)
  		/* Avoid lockdep warning */
  		rcu_cpu_starting(cpu);
  
