@@ -1,120 +1,121 @@
-Return-Path: <stable+bounces-98564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9F89E4730
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 22:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA09E471E
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 22:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D150169702
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:49:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578C616952D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778AC1925B4;
-	Wed,  4 Dec 2024 21:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3C418A6D7;
+	Wed,  4 Dec 2024 21:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mWi3Z8yD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kNk6IDqk"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDAC2391A0;
-	Wed,  4 Dec 2024 21:49:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D1C18C900
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 21:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733348941; cv=none; b=mV14QwHC3H60ygcWovZU2w5aSdP324nmU106DrnVVHm0OFg9Xkxgn7A1fPvskbvOeVD5lEipO3ZAnmwqWvvK0w8fPh/e2Km/CV9wUKMcTMuTvhf7DuVYsUMVjXnGJ5FNkXQh9/hGJwa+dZAcHl7A/ZBMilSm7dqGtl4sj86V0VU=
+	t=1733348836; cv=none; b=tvu81IJWbJcSAgPH1M9rIb0IB9qH7p5qfolA+s6E/y2OTwf8Ma8pwGiJZA9U/LMqpLu/wh0G0YPAPTrlRB16f9xVgOjjrZnUY3coJOsA+xiWoKAt3HQfkIeaJffQJXWGEXi5EcAuermSv8YY4vTj5Bi0vlXJHEkt1isQVLonShw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733348941; c=relaxed/simple;
-	bh=P6NIUjOqM5CWx1CaCD7GJ0lLhmeCzFpUgoBSXTYIwqE=;
-	h=Date:To:From:Subject:Message-Id; b=tVK4278sg7SlXo6SBM+BVw+9juqyGUUCEFKyFbhYor0G2GzNTUGEYXtrK/KsG9uf7yC/HQl43OxY3xxnnHS4MZ/2mRWNdFjH1upHO8e0bF5hNUuNzqote2ir+RbyD66qydYN/lC9xF6P99gXRZCBGo89Q8mJfTGv+iVdHFtUqcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mWi3Z8yD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C66C4CEDF;
-	Wed,  4 Dec 2024 21:49:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1733348940;
-	bh=P6NIUjOqM5CWx1CaCD7GJ0lLhmeCzFpUgoBSXTYIwqE=;
-	h=Date:To:From:Subject:From;
-	b=mWi3Z8yDzRAdMIr/H8ITUAZgNn6jcZ6LELrSKb4BHO2Ew56f+fYpRYFAkJ9kHH571
-	 X9MjLE7IHdxjIS1NupmrB7i7x1tkpHxDo0JOMHUWVvQe8a0coDSE7QnJuuhwRgjj/J
-	 LcxXLMbKRX3kcBbIV6gwxdhOMAPPlbE2XKlSwKbw=
-Date: Wed, 04 Dec 2024 13:49:00 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,deshengwu@tencent.com,kasong@tencent.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + zram-fix-uninitialized-zram-not-releasing-backing-device.patch added to mm-hotfixes-unstable branch
-Message-Id: <20241204214900.A9C66C4CEDF@smtp.kernel.org>
+	s=arc-20240116; t=1733348836; c=relaxed/simple;
+	bh=jA5LHzErPwAfWK7eyxNlm68vjWtVI89o3vDkO3V6Li4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cO08u97PWK9gSiCiFiuM4XTQB9xCnZTqmVRZ3Mf9fXsHqN01gpzX3GplrxUMNEZfadl4umC6HmJrO7HwL4dxObZyzLGASqp6qFLUFuZKJwnvSrM+9YFJjxAKXZXN6zc+qMxhuzMVQGypcBem4As6FBEYSzVxrCGwFPeW89slPSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kNk6IDqk; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733348835; x=1764884835;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jA5LHzErPwAfWK7eyxNlm68vjWtVI89o3vDkO3V6Li4=;
+  b=kNk6IDqkxNjiu4bknTDBFQP0XJLVopE6OvVwIPzwooaaQ+XIBhkPgUOC
+   XQcI/yMDhYiVY5qTr/vXgn28hsnyZzZgmyuysm4XIFgCREf5OXjOzbztp
+   C0Vgms6H7F5yaP9rPCzBvHqKE0IAsjMJmVehcEbb6T/JlID5BV+WttVuu
+   n4SKbNiNuv4E/emN06fE4XrHUL5qpisphLsrMFhMEZiSFLV4egoLPbVmL
+   KKhkWQsuoiFqbVOxo7qZ+MtnL+nPqeQBoMlwk+wfM1oncjvRDHVPSm/4v
+   Zfo1VQPZlqk+8SS1i1XHV86R93eRRpMlZs5pT4nhIRSS53BFuLqQZDhN6
+   Q==;
+X-CSE-ConnectionGUID: xQ8SRLncSI6AAlrPviZHQA==
+X-CSE-MsgGUID: Xhmw1eagTE6DO0eAubJawg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="33558002"
+X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
+   d="scan'208";a="33558002"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 13:47:14 -0800
+X-CSE-ConnectionGUID: 4qDg6l5uSzq/56AkIrDmWQ==
+X-CSE-MsgGUID: TYo1ktk4QIGAa5PwTk9WCw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
+   d="scan'208";a="93967203"
+Received: from nirmoyda-desk.igk.intel.com ([10.211.135.230])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 13:47:12 -0800
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/xe: Wait for migration job before unmapping pages
+Date: Wed,  4 Dec 2024 23:06:05 +0100
+Message-ID: <20241204220605.1786340-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
+Content-Transfer-Encoding: 8bit
 
+There could be still migration job going on while doing
+xe_tt_unmap_sg() which could trigger GPU page faults. Fix this by
+waiting for the migration job to finish.
 
-The patch titled
-     Subject: zram: fix uninitialized ZRAM not releasing backing device
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     zram-fix-uninitialized-zram-not-releasing-backing-device.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zram-fix-uninitialized-zram-not-releasing-backing-device.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Kairui Song <kasong@tencent.com>
-Subject: zram: fix uninitialized ZRAM not releasing backing device
-Date: Thu, 5 Dec 2024 02:02:24 +0800
-
-Setting backing device is done before ZRAM initialization.  If we set the
-backing device, then remove the ZRAM module without initializing the
-device, the backing device reference will be leaked and the device will be
-hold forever.
-
-Fix this by always check and release the backing device when resetting or
-removing ZRAM.
-
-Link: https://lkml.kernel.org/r/20241204180224.31069-3-ryncsn@gmail.com
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3466
+Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system buffer objects to TT")
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: <stable@vger.kernel.org> # v6.11+
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 ---
+ drivers/gpu/drm/xe/xe_bo.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
- drivers/block/zram/zram_drv.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/drivers/block/zram/zram_drv.c~zram-fix-uninitialized-zram-not-releasing-backing-device
-+++ a/drivers/block/zram/zram_drv.c
-@@ -2335,6 +2335,9 @@ static void zram_reset_device(struct zra
- 	zram->limit_pages = 0;
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 73689dd7d672..40c5c74e9306 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -857,8 +857,16 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
  
- 	if (!init_done(zram)) {
-+		/* Backing device could be set before ZRAM initialization. */
-+		reset_bdev(zram);
+ out:
+ 	if ((!ttm_bo->resource || ttm_bo->resource->mem_type == XE_PL_SYSTEM) &&
+-	    ttm_bo->ttm)
++	    ttm_bo->ttm) {
++		long timeout = dma_resv_wait_timeout(ttm_bo->base.resv,
++						     DMA_RESV_USAGE_BOOKKEEP,
++						     true,
++						     MAX_SCHEDULE_TIMEOUT);
++		if (timeout < 0)
++			ret = timeout;
 +
- 		up_write(&zram->init_lock);
- 		return;
- 	}
-_
-
-Patches currently in -mm which might be from kasong@tencent.com are
-
-zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch
-zram-fix-uninitialized-zram-not-releasing-backing-device.patch
+ 		xe_tt_unmap_sg(ttm_bo->ttm);
++	}
+ 
+ 	return ret;
+ }
+-- 
+2.46.0
 
 
