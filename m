@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-98520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F120F9E425D
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:51:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1237C9E4253
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:50:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8842FBC5067
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:50:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DABC91693AD
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FD92111A5;
-	Wed,  4 Dec 2024 17:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32282352CE;
+	Wed,  4 Dec 2024 17:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9ma+/23"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8HA1Zt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E05207E0E;
-	Wed,  4 Dec 2024 17:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0982111B8;
+	Wed,  4 Dec 2024 17:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332402; cv=none; b=eKiX8RfLAeUY4eQXn9Wkcu3e4KXTXEtRVVQ7iMAUZt1dG5QAfwP91FtZYflfMip8MDV4GN7vOiCUVF/GxlxhNvLK1gOqT62p7yB+N4LlS9gnYr99jb6DUswzLcmwP1AX+tP/KBNFER6Kg9wFv7UBPF8NN19uudFt0Q0DRts5uEM=
+	t=1733332403; cv=none; b=uxJd5b7sk+mCWuZGHSrYVLwmn/U/00svPTmKy37HuApr/34yfzrQejZwmxtRuBgFxho+gk8EnXbp7ue6HndTK6q1Jn2Dj55PGQdgflnbgzRWGScNibT3gLuOXK7aIL3QZSuXgV/X90/5ENseaPW5t0cbGa1bAqnf9uWrpPLYTiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332402; c=relaxed/simple;
-	bh=O9o/DZ3PqL/m7G8PKZ1daP9OXCiRAtqLyuwwwJe+8qo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mVZgX3EVdW1hjL7unz8q4uAdsTMBvt3EMKQFqxuwHXsepkTTcHzeQ9tRJ5DQQ8KKAhpysEzgWJ0M09Syn/4Hfj6nSCwifLUgVlhI+Q7HRC4lkz2PE1jn3z30J+YEL91AgQH0gwFZGN55RZ09CMiCACYc9/2nPq5gz/36mDhBKdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9ma+/23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96475C4CECD;
-	Wed,  4 Dec 2024 17:13:19 +0000 (UTC)
+	s=arc-20240116; t=1733332403; c=relaxed/simple;
+	bh=HcMhPImvTT4zfizAJqvG20GxrdA+50plVMVe8cC05KE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Q3GF+nJEqbwj5qrt3EGcyZgwb1kfkdfUdyIvo872LJejFLu0lLTQAITIfg3YndMcjQr+L+e+IJXnM2eaWf6ANc7wSg1f8pSK86cxWK0rbdjjyb/vuemfri/cprKVxK7SgF1r5bOw4qvByYLGlm0PwBkp/oLp3OjzYryXvmAC0f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8HA1Zt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD18C4CECD;
+	Wed,  4 Dec 2024 17:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332400;
-	bh=O9o/DZ3PqL/m7G8PKZ1daP9OXCiRAtqLyuwwwJe+8qo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R9ma+/23xsDt+BGuJFRIpEwqEo49AlYwtLlSMYzJyAYrei98Sg20KjcCfe0y+S1ls
-	 7KFzOM0uvJVt4YbRK8GAkEvzTwX/lFFxmcFXWJXCWDsYFakeoJfLWGOp0azdYKevx2
-	 WQYcqVoUEkOAG4nEb5Z9ONK0h/OmNbRwOVYH58DRmrwg6u5nBHQ0pWoc+zZeyRvcxI
-	 HQLzf1AcUf7ORiXdDeAWyRnltslTNe6Ex39GHjNISDli9LutNAGm+/gpt6lrBVLOJ4
-	 tfrE8VKBrsSECcvk9pn2cYTv98NmiNrWXhvlW7BCk5Yi+wgOj+8VtEkjbiTn0HpR+X
-	 HPtQKZlEElTrA==
+	s=k20201202; t=1733332403;
+	bh=HcMhPImvTT4zfizAJqvG20GxrdA+50plVMVe8cC05KE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=h8HA1Zt712gJo2q8XgmURCL8WJjz6Momgdrbpl9VBwyg/Xas1SWwjPcEufGuxVsxZ
+	 hwasvy9mEcCV2RnObSXyAMZUm8mSudH9L8aW8h3CrcWDB/7q7OzKdEMOcAi7899dVB
+	 5G3ZFEhaPA8H6TU1ex87SrRL5/mCi1HyX5STIK+dSRQcw0hewP0KuPbkLR8yB9bnxC
+	 j/yS/ic8zlQlUBjzTZX3ARsKGCqBhdCIaTkg2cH+wUK9Zp/r1JaMmHNQw92miYrU4r
+	 fouUkfUlSRc/UfPVji3zeY1kGB1/je/X6N9vcA1LApMD+QNzPUhIZPcM6P1W9rW6zv
+	 pU2QmM4MQtZ7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Qi Han <hanqi@vivo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-f2fs-devel@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 5.15 1/6] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
-Date: Wed,  4 Dec 2024 11:01:51 -0500
-Message-ID: <20241204160200.2217169-1-sashal@kernel.org>
+	linux-i3c@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 2/6] i3c: mipi-i3c-hci: Mask ring interrupts before ring stop request
+Date: Wed,  4 Dec 2024 11:01:52 -0500
+Message-ID: <20241204160200.2217169-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241204160200.2217169-1-sashal@kernel.org>
+References: <20241204160200.2217169-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,82 +65,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
-From: Qi Han <hanqi@vivo.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
+[ Upstream commit 6ca2738174e4ee44edb2ab2d86ce74f015a0cc32 ]
 
-creating a large files during checkpoint disable until it runs out of
-space and then delete it, then remount to enable checkpoint again, and
-then unmount the filesystem triggers the f2fs_bug_on as below:
+Bus cleanup path in DMA mode may trigger a RING_OP_STAT interrupt when
+the ring is being stopped. Depending on timing between ring stop request
+completion, interrupt handler removal and code execution this may lead
+to a NULL pointer dereference in hci_dma_irq_handler() if it gets to run
+after the io_data pointer is set to NULL in hci_dma_cleanup().
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/inode.c:896!
-CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-RIP: 0010:f2fs_evict_inode+0x58c/0x610
-Call Trace:
- __die_body+0x15/0x60
- die+0x33/0x50
- do_trap+0x10a/0x120
- f2fs_evict_inode+0x58c/0x610
- do_error_trap+0x60/0x80
- f2fs_evict_inode+0x58c/0x610
- exc_invalid_op+0x53/0x60
- f2fs_evict_inode+0x58c/0x610
- asm_exc_invalid_op+0x16/0x20
- f2fs_evict_inode+0x58c/0x610
- evict+0x101/0x260
- dispose_list+0x30/0x50
- evict_inodes+0x140/0x190
- generic_shutdown_super+0x2f/0x150
- kill_block_super+0x11/0x40
- kill_f2fs_super+0x7d/0x140
- deactivate_locked_super+0x2a/0x70
- cleanup_mnt+0xb3/0x140
- task_work_run+0x61/0x90
+Prevent this my masking the ring interrupts before ring stop request.
 
-The root cause is: creating large files during disable checkpoint
-period results in not enough free segments, so when writing back root
-inode will failed in f2fs_enable_checkpoint. When umount the file
-system after enabling checkpoint, the root inode is dirty in
-f2fs_evict_inode function, which triggers BUG_ON. The steps to
-reproduce are as follows:
-
-dd if=/dev/zero of=f2fs.img bs=1M count=55
-mount f2fs.img f2fs_dir -o checkpoint=disable:10%
-dd if=/dev/zero of=big bs=1M count=50
-sync
-rm big
-mount -o remount,checkpoint=enable f2fs_dir
-umount f2fs_dir
-
-Let's redirty inode when there is not free segments during checkpoint
-is disable.
-
-Signed-off-by: Qi Han <hanqi@vivo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20240920144432.62370-2-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 27bd8d1bae4d3..558f478d037d0 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -724,8 +724,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
- 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
- 		return 0;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index b9b6be1864384..61a5abac50dc0 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -174,10 +174,10 @@ static void hci_dma_cleanup(struct i3c_hci *hci)
+ 	for (i = 0; i < rings->total; i++) {
+ 		rh = &rings->headers[i];
  
--	if (!f2fs_is_checkpoint_ready(sbi))
-+	if (!f2fs_is_checkpoint_ready(sbi)) {
-+		f2fs_mark_inode_dirty_sync(inode, true);
- 		return -ENOSPC;
-+	}
++		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
+ 		rh_reg_write(RING_CONTROL, 0);
+ 		rh_reg_write(CR_SETUP, 0);
+ 		rh_reg_write(IBI_SETUP, 0);
+-		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
  
- 	/*
- 	 * We need to balance fs here to prevent from producing dirty node pages
+ 		if (rh->xfer)
+ 			dma_free_coherent(&hci->master.dev,
 -- 
 2.43.0
 
