@@ -1,59 +1,71 @@
-Return-Path: <stable+bounces-98615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117C09E491F
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:32:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31429E4933
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:34:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C689D2868BC
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:32:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 659F516A9CF
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773F0211483;
-	Wed,  4 Dec 2024 23:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92602116E8;
+	Wed,  4 Dec 2024 23:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CYegcuWB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7JpU6SL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCDD20B213;
-	Wed,  4 Dec 2024 23:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6321720C021;
+	Wed,  4 Dec 2024 23:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354880; cv=none; b=IRmHgmnL7mg99etax2UEJ11e+9gc5SJ7SMRnhnxxytsg3JK8VUUoCstDNI9b2Ec1NhOUNsIJUtVZ8XfC/KRJaksBQpwFx7gJy7bE3OJBxAN/gZTbp+S7JQASM8vrUh2n21/5j4Nbp0Nz1MV6ZofY3iXREzE5bQGTlwjZvGZPcGk=
+	t=1733354884; cv=none; b=b9TuUeFMqH/jW5DWzQPhhT4RukLFIt7l6rlvlwl5LLGRXQNwMIKiTAF9HzXORJ//jkSaPXdJ23/ONT+1Z4zdmpS8MvH8S7CzARqDirETP/GRPeeym/uiyp107H/2Cuz6kRUj0vYWyqVcrK5TUyhcCRsdF5mwem1zh2DgHrTCCVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354880; c=relaxed/simple;
-	bh=QxhMXdqUrydnTcdF41z9OWpFa5LfRVKONm0hMTL99Y4=;
+	s=arc-20240116; t=1733354884; c=relaxed/simple;
+	bh=Pk0XYOaSRK/hR93+uDXH8B8FrNukHwTXjp5RVOSUmb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJokdkmPmhiuhOI/4f17KyhL6IWyK8G8ujjCkTD1Y13N0CXMhgLst12G2wBxnbONX3/VeWcGfw/5R5EemScwLDL1leKJHgAynXvb1mDKZSYz84M9YFQwVo4cDXPIrfe2K+5NGRqVoLYaRj5cG7zHuMfnUe0p6crzR/JxDS+nQQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CYegcuWB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096FAC4CED2;
-	Wed,  4 Dec 2024 23:27:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=css+8ltCseL+7phRWGkxPEt9MmfXysCUBLvM3Xz3UeFkXmRyy9iSVIL7C3Do3qaWvDSgr4WX7cgvpr+4rDeCPmM2mSMbH6yhXYQ8B4nsCTmhd0SKvxHMgQ987P/uXcAyS51B+mK0x3nf2bxXr/p6lX+nxfKhLVogp34rjzfZdtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7JpU6SL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25020C4CECD;
+	Wed,  4 Dec 2024 23:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354880;
-	bh=QxhMXdqUrydnTcdF41z9OWpFa5LfRVKONm0hMTL99Y4=;
+	s=k20201202; t=1733354884;
+	bh=Pk0XYOaSRK/hR93+uDXH8B8FrNukHwTXjp5RVOSUmb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYegcuWBDNTexcUQOOTcnPmAP3fSqjpDfJ7jYFcvGMP2AAse8xW1At3iuL3HX836d
-	 yBapi8f1MP0KQAizDPjR5Cs6kErIBsD4/1mkgXrXeZ3lcA2RwHpWKZpou6lFcuigC2
-	 iG9DIIoYefdKGYA0GpnPO7mJ+57HOx52cri5+LZBGAxtyiUOrIPByt8FTZbNeCi8yl
-	 N8qVtOi8ZZtEaXpJrt7mGoFwmrShxksz/LVwLowEDn6CeQYf+PEaLBkKFgJwgefwFu
-	 JjnEuxmqi8/lbGO4GbPlGFNSHEVzMmHar/2yG32Kj8naIh0kMFfVUsA92cXh6LjvdN
-	 Ia3NSZEn7bzPw==
+	b=k7JpU6SLU8CAYTzrG24RXFK4auc0Z8H6RSoOGCArqJ9C0tppXRwJTO+uFEamIkxFD
+	 SC9QwZaXJJH9jQk3EPdY1RPIeSeRhpCZra9Qe4YxCP2/FmKVwfjiEAoHK5ujTbYck+
+	 7GBhfBB5T3P19lhdcmMCUqkk8PQiXlD0Lzr5Wbne5+JSmU13be7qqjFCKLIWZE/XpV
+	 LwdCD/rONJLEAItyC6QBHFXrOAmOXWJtcUIwEwMbLwM06G/SePs0YaVK+2dFOFqVkt
+	 zVilk5cC24jHSBIfVnbl5jcU6ErSKp/jULFqChCqUDrHUoVSO/C3NtntSDcYGnf2Te
+	 f9tEiX1fn+LJQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Saravana Kannan <saravanak@google.com>,
+	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Thierry Reding <treding@nvidia.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jic23@kernel.org,
-	jstephan@baylibre.com,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 07/15] iio: light: ltr501: Add LTER0303 to the supported devices
-Date: Wed,  4 Dec 2024 17:16:01 -0500
-Message-ID: <20241204221627.2247598-7-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	matthias.bgg@gmail.com,
+	elder@kernel.org,
+	sumit.garg@linaro.org,
+	ricardo@marliere.net,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 08/15] drm: display: Set fwnode for aux bus devices
+Date: Wed,  4 Dec 2024 17:16:02 -0500
+Message-ID: <20241204221627.2247598-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204221627.2247598-1-sashal@kernel.org>
 References: <20241204221627.2247598-1-sashal@kernel.org>
@@ -63,44 +75,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit c26acb09ccbef47d1fddaf0783c1392d0462122c ]
+[ Upstream commit fe2e59aa5d7077c5c564d55b7e2997e83710c314 ]
 
-It has been found that the (non-vendor issued) ACPI ID for Lite-On
-LTR303 is present in Microsoft catalog. Add it to the list of the
-supported devices.
+fwnode needs to be set for a device for fw_devlink to be able to
+track/enforce its dependencies correctly. Without this, you'll see error
+messages like this when the supplier has probed and tries to make sure
+all its fwnode consumers are linked to it using device links:
 
-Link: https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303
-Closes: https://lore.kernel.org/r/9cdda3e0-d56e-466f-911f-96ffd6f602c8@redhat.com
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20241024191200.229894-24-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+mediatek-drm-dp 1c500000.edp-tx: Failed to create device link (0x180) with backlight-lcd0
+
+Reported-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Closes: https://lore.kernel.org/all/7b995947-4540-4b17-872e-e107adca4598@notapiano/
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Thierry Reding <treding@nvidia.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20241024061347.1771063-2-saravanak@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/ltr501.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/display/drm_dp_aux_bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
-index 8c516ede91161..640a5d3aa2c6e 100644
---- a/drivers/iio/light/ltr501.c
-+++ b/drivers/iio/light/ltr501.c
-@@ -1613,6 +1613,8 @@ static const struct acpi_device_id ltr_acpi_match[] = {
- 	{ "LTER0501", ltr501 },
- 	{ "LTER0559", ltr559 },
- 	{ "LTER0301", ltr301 },
-+	/* https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303 */
-+	{ "LTER0303", ltr303 },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, ltr_acpi_match);
+diff --git a/drivers/gpu/drm/display/drm_dp_aux_bus.c b/drivers/gpu/drm/display/drm_dp_aux_bus.c
+index d810529ebfb6e..ec7eac6b595f7 100644
+--- a/drivers/gpu/drm/display/drm_dp_aux_bus.c
++++ b/drivers/gpu/drm/display/drm_dp_aux_bus.c
+@@ -292,7 +292,7 @@ int of_dp_aux_populate_bus(struct drm_dp_aux *aux,
+ 	aux_ep->dev.parent = aux->dev;
+ 	aux_ep->dev.bus = &dp_aux_bus_type;
+ 	aux_ep->dev.type = &dp_aux_device_type_type;
+-	aux_ep->dev.of_node = of_node_get(np);
++	device_set_node(&aux_ep->dev, of_fwnode_handle(of_node_get(np)));
+ 	dev_set_name(&aux_ep->dev, "aux-%s", dev_name(aux->dev));
+ 
+ 	ret = device_register(&aux_ep->dev);
 -- 
 2.43.0
 
