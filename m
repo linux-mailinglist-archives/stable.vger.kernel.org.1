@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-98493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DA79E4274
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:54:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729BE9E421E
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:44:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5077BBC199E
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46534168CAA
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F18A22E3E5;
-	Wed,  4 Dec 2024 17:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43C6206F18;
+	Wed,  4 Dec 2024 17:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YsWkIjs9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WuzE20DP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D29206F0C;
-	Wed,  4 Dec 2024 17:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE9122E3FE;
+	Wed,  4 Dec 2024 17:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332334; cv=none; b=p/rLBNhzEDpG9A3oPyFGaQ95y0CrFLXDukPVCkumpGeOByY+esNyEZOVDwh7dqubymEh8Gwx7SpazLyRpCd8JjxM/xpgEbAOXGTEMQItuyVcaoo/7i9PN56quujPte58vCbCEIs5FKiqKESBUJLjGWI7dsuHeMtoH/biiFy6EsM=
+	t=1733332338; cv=none; b=C0e2Err/1U44r+4o6f1/+u2QiFy7rGviE980pwp/G7X0+gdN+uot54VuVhK2MQVkJKr7AkVnPRiHxmRRexiJjJRIqGBAeuu8hmlQ01SoB9ebFvCE41JntiPP9ii/dUyK1SE0EyHcUVXeMEvcQAlKpJP69ORx4vxRUr2e4QwPyBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332334; c=relaxed/simple;
-	bh=/rIQyMQqx4zwzYiI7PjlycsFVukg5Xl3Bfy+I4W71vs=;
+	s=arc-20240116; t=1733332338; c=relaxed/simple;
+	bh=YuE73BkZ0RKOKhmYk3ZgKO630w+ip7/J13UrungYeNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pqRxhLwb6lvYHJ6C+7ToNLb8nN9G4p39yVuDjOJAmWEDPD2f8CO9ZZ7o503Udy7XnOv/fcjf0/591lYbwfg7UEkvG0S5STdHXqMshTEwvWNbgv9/try+8r8EyQONXNQ53AxfqB+Y4nXN71ZjDo6AN8p/5yIJfpO0sPxR/J/rVpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YsWkIjs9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAEABC4CEE2;
-	Wed,  4 Dec 2024 17:12:12 +0000 (UTC)
+	 MIME-Version; b=G/8nVobd+tE214Kg4z33bZLsdbK7Y+W9Y+smxKIKzyvfeKMBrVeypTeXwqWFvcAvIgvvD58tkuXY4a9cuUofdw6EBstE+Tndi3W1XlvhHaC23B8we1VkhNTJvbfXJUYJIqDw81lmiPd7gHEi3mB9t766L1AuQ1+DiVhtZw/eyUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WuzE20DP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9017C4CEDF;
+	Wed,  4 Dec 2024 17:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332334;
-	bh=/rIQyMQqx4zwzYiI7PjlycsFVukg5Xl3Bfy+I4W71vs=;
+	s=k20201202; t=1733332338;
+	bh=YuE73BkZ0RKOKhmYk3ZgKO630w+ip7/J13UrungYeNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsWkIjs9yi+yPFxwu93Ae0JLGdAImzJrkryRDgltfmfuy4e3oWVzkDcanshoNpQoD
-	 X/jaPgqFk++E21yHdvQVBn7rC6l5I4EkGtN5D0GNqCmS8Aoly0g7m8jthWfKxEdS4n
-	 7DwFNZiNZYm9GbWcLeXR68qwIl5noesGWXdNPF5syrC9ZxNBd2UVC16upOIzckXeUx
-	 BilJi6xiwcyV4M20MZJl5TQvkA+zp9mdWRdmFoc5A4aXdACe+YL0HPvhadK4NwXFW9
-	 ZXBX1x7BjWQS52epgtbj2cehdTkIlqPyJkMjuv/l7SccnjqOcaSUh2TIXjpB7Vdd9E
-	 Kc3hn6iY84tNA==
+	b=WuzE20DP5hg7sHq/3s+F/v44/kiRZ525Ja1wgoRMVrxlZaFQg+qxzXTLY/U76VDxY
+	 FYWFv399ctqUP6x03S1+pTGazDzhlsiuLBRYPMt+gWsx9siF60ZJCUoHJJgiehXAq2
+	 N8WlWX+bz/mdqlZKl85sHss1EeIU8Q7DTMCGdsyw66L2tkNAK0uYflD/FzCKKjLHsG
+	 Ou6Nqvh18kcstnkNIgedoaflFnZ7DLf/QE/uOE0sEzB82L4T+M/U1BU/dqIr/oM3Ei
+	 LGraQXhhIW86obRSIuQCDMHrpp3hP+L9esxp7RLkwWGHAsmQYgvqTTsN2N262m4uFh
+	 FCGBlxs/bFzlg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jian-Hong Pan <jhp@endlessos.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Mayank Rana <quic_mrana@quicinc.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	nirmal.patel@linux.intel.com,
+	kevin.xie@starfivetech.com,
 	lpieralisi@kernel.org,
 	kw@linux.com,
 	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 06/13] PCI: vmd: Set devices to D0 before enabling PM L1 Substates
-Date: Wed,  4 Dec 2024 11:00:31 -0500
-Message-ID: <20241204160044.2216380-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 08/13] PCI: starfive: Enable controller runtime PM before probing host bridge
+Date: Wed,  4 Dec 2024 11:00:33 -0500
+Message-ID: <20241204160044.2216380-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204160044.2216380-1-sashal@kernel.org>
 References: <20241204160044.2216380-1-sashal@kernel.org>
@@ -65,82 +65,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Jian-Hong Pan <jhp@endlessos.org>
+From: Mayank Rana <quic_mrana@quicinc.com>
 
-[ Upstream commit d66041063192497a4a97d21dbf86b79a03a7f4fb ]
+[ Upstream commit 6168efbebace0db443185d4c6701ca8170a8788d ]
 
-The remapped PCIe Root Port and the child device have PM L1 Substates
-capability, but they are disabled originally.
+A PCI controller device, e.g., StarFive, is parent to PCI host bridge
+device. We must enable runtime PM of the controller before enabling runtime
+PM of the host bridge, which will happen in pci_host_probe(), to avoid this
+warning:
 
-Here is a failed example on ASUS B1400CEAE:
+  pcie-starfive 940000000.pcie: Enabling runtime PM for inactive device with active children
 
-  Capabilities: [900 v1] L1 PM Substates
-        L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1- ASPM_L1.2+ ASPM_L1.1- L1_PM_Substates+
-                  PortCommonModeRestoreTime=32us PortTPowerOnTime=10us
-        L1SubCtl1: PCI-PM_L1.2- PCI-PM_L1.1- ASPM_L1.2+ ASPM_L1.1-
-                   T_CommonMode=0us LTR1.2_Threshold=101376ns
-        L1SubCtl2: T_PwrOn=50us
+Fix this issue by enabling StarFive controller device's runtime PM before
+calling pci_host_probe() in plda_pcie_host_init().
 
-Enable PCI-PM L1 PM Substates for devices below VMD while they are in D0
-(see PCIe r6.0, sec 5.5.4).
-
-Link: https://lore.kernel.org/r/20241001083438.10070-4-jhp@endlessos.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218394
-Signed-off-by: Jian-Hong Pan <jhp@endlessos.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Link: https://lore.kernel.org/r/20241111-runtime_pm-v7-1-9c164eefcd87@quicinc.com
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Mayank Rana <quic_mrana@quicinc.com>
+[bhelgaas: commit log]
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/vmd.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/pci/controller/plda/pcie-starfive.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 4429a3ca1de17..73c672cb830f3 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -751,11 +751,9 @@ static int vmd_pm_enable_quirk(struct pci_dev *pdev, void *userdata)
- 	if (!(features & VMD_FEAT_BIOS_PM_QUIRK))
- 		return 0;
+diff --git a/drivers/pci/controller/plda/pcie-starfive.c b/drivers/pci/controller/plda/pcie-starfive.c
+index c9933ecf68338..0564fdce47c2a 100644
+--- a/drivers/pci/controller/plda/pcie-starfive.c
++++ b/drivers/pci/controller/plda/pcie-starfive.c
+@@ -404,6 +404,9 @@ static int starfive_pcie_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
--	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
--
- 	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_LTR);
- 	if (!pos)
--		return 0;
-+		goto out_state_change;
++	pm_runtime_enable(&pdev->dev);
++	pm_runtime_get_sync(&pdev->dev);
++
+ 	plda->host_ops = &sf_host_ops;
+ 	plda->num_events = PLDA_MAX_EVENT_NUM;
+ 	/* mask doorbell event */
+@@ -413,11 +416,12 @@ static int starfive_pcie_probe(struct platform_device *pdev)
+ 	plda->events_bitmap <<= PLDA_NUM_DMA_EVENTS;
+ 	ret = plda_pcie_host_init(&pcie->plda, &starfive_pcie_ops,
+ 				  &stf_pcie_event);
+-	if (ret)
++	if (ret) {
++		pm_runtime_put_sync(&pdev->dev);
++		pm_runtime_disable(&pdev->dev);
+ 		return ret;
++	}
  
- 	/*
- 	 * Skip if the max snoop LTR is non-zero, indicating BIOS has set it
-@@ -763,7 +761,7 @@ static int vmd_pm_enable_quirk(struct pci_dev *pdev, void *userdata)
- 	 */
- 	pci_read_config_dword(pdev, pos + PCI_LTR_MAX_SNOOP_LAT, &ltr_reg);
- 	if (!!(ltr_reg & (PCI_LTR_VALUE_MASK | PCI_LTR_SCALE_MASK)))
--		return 0;
-+		goto out_state_change;
+-	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_sync(&pdev->dev);
+ 	platform_set_drvdata(pdev, pcie);
  
- 	/*
- 	 * Set the default values to the maximum required by the platform to
-@@ -775,6 +773,13 @@ static int vmd_pm_enable_quirk(struct pci_dev *pdev, void *userdata)
- 	pci_write_config_dword(pdev, pos + PCI_LTR_MAX_SNOOP_LAT, ltr_reg);
- 	pci_info(pdev, "VMD: Default LTR value set by driver\n");
- 
-+out_state_change:
-+	/*
-+	 * Ensure devices are in D0 before enabling PCI-PM L1 PM Substates, per
-+	 * PCIe r6.0, sec 5.5.4.
-+	 */
-+	pci_set_power_state_locked(pdev, PCI_D0);
-+	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
  	return 0;
- }
- 
 -- 
 2.43.0
 
