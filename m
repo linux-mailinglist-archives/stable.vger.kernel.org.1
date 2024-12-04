@@ -1,124 +1,133 @@
-Return-Path: <stable+bounces-98287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4C19E38DC
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:33:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCF49E38E0
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:34:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B995F16084C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:33:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FDD6284069
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5091B21AB;
-	Wed,  4 Dec 2024 11:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F531B2522;
+	Wed,  4 Dec 2024 11:34:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7EA1B0F36;
-	Wed,  4 Dec 2024 11:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2568A1B218A;
+	Wed,  4 Dec 2024 11:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733311989; cv=none; b=WXbVUev2NPE4y1FCJ5YiPvQiP6xfVXVFtfP+Atb+zEWd5bIfsPXxstrt2+Mcq0xM7sOI4m/lokURLZKDCc9SOCaBZb/Pe6vRaFRq4ieq+RsF98YXNqUm9xkylHUmH3GA5ErqYP2SrYgQscNjI6/TiTWuCXMNR2HY0CAd4c5ap6I=
+	t=1733312047; cv=none; b=fNNmMT4QDnXPkMdB06igH7PiD4KlVWJxzoxdJpttUHEL6KHRiHAMpm9qV3bNDHy4qfOSRCRLnLPYhpLbBm5jrPyB3W9FX/47WspThmsJiOctV/vpk1uXv5LRk6IU+6q6azEEEIybtfBj1nq11gNNKJBWrTtdywkiqkU+bhjY6b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733311989; c=relaxed/simple;
-	bh=4WTW9FUmZwSnNbESxNLpj77cDzjJTxm2vPyChPJTCXw=;
+	s=arc-20240116; t=1733312047; c=relaxed/simple;
+	bh=WOmmx/TYJt9siuctuf82NMwVd5HB06rxCXNrNMiCQ6k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VfGCd3gr3Sr8DQqE9/V0aO7Ob27vh4ryoMoT+vyFzdj4tR0By3IFH3DjXxcA6DZozacjIorc7i0Fn9xd3YZ12VNATGXMOxeCJd/LyqxUIkVQnSYMJEFaxqJh+DxRvsqiAzZuqQAo73q6F7MosbOMbm93jlrmkBMaGhA5iYt3kew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC120FEC;
-	Wed,  4 Dec 2024 03:33:33 -0800 (PST)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.37])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9F9C33F71E;
-	Wed,  4 Dec 2024 03:33:04 -0800 (PST)
-Date: Wed, 4 Dec 2024 11:33:02 +0000
-From: Dave Martin <Dave.Martin@arm.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/6] arm64/sme: Flush foreign register state in
- do_sme_acc()
-Message-ID: <Z1A97pR+un1Trtyg@e133380.arm.com>
-References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
- <20241203-arm64-sme-reenable-v1-1-d853479d1b77@kernel.org>
- <Z08khk6Mg6+T6VV9@e133380.arm.com>
- <9365be76-8da6-47ce-b88e-dfa244b9e5b7@sirena.org.uk>
- <Z085GKS8jzEhcZdW@e133380.arm.com>
- <44d67835-1e43-47cc-9a18-c279c885dcec@sirena.org.uk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=c5gtR/yEjaZLkJgUXjDaCLSt4UDPmz+4K1HS4Y0I2uTFaBw2p9Gp6cknKyf1zgVy6dEUE5IBonsajeMP1QpJbK6+zBjYJPnh//awGLe6HS/wcX1aDRHMFIZCE0nv4NkZleW70OJmaIbxMe9BMlU1OrqB6oooDb6RQ9JfKKm+jBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id CC1431C00A0; Wed,  4 Dec 2024 12:34:02 +0100 (CET)
+Date: Wed, 4 Dec 2024 12:34:02 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pavel Machek <pavel@denx.de>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
+Message-ID: <Z1A+Ku5D0OFOSUm4@duo.ucw.cz>
+References: <20241203141923.524658091@linuxfoundation.org>
+ <Z09KXnGlTJZBpA90@duo.ucw.cz>
+ <2024120424-diminish-staple-50d5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="rRJwBGNM29yCb0EE"
+Content-Disposition: inline
+In-Reply-To: <2024120424-diminish-staple-50d5@gregkh>
+
+
+--rRJwBGNM29yCb0EE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <44d67835-1e43-47cc-9a18-c279c885dcec@sirena.org.uk>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 03, 2024 at 05:24:39PM +0000, Mark Brown wrote:
-> On Tue, Dec 03, 2024 at 05:00:08PM +0000, Dave Martin wrote:
-> > On Tue, Dec 03, 2024 at 04:00:45PM +0000, Mark Brown wrote:
+Hi!
 
-[...]
+> > > This is the start of the stable review cycle for the 4.19.325 release.
+> > > There are 138 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, plea=
+se
+> > > let me know.
+> >=20
+> > Build fails:
+> >=20
+> > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/85=
+32423815
+> >=20
+> >   CC      drivers/pinctrl/uniphier/pinctrl-uniphier-pro4.o
+> > 3895
+> >   CC      drivers/pci/of.o
+> > 3896
+> > drivers/rtc/rtc-st-lpc.c: In function 'st_rtc_probe':
+> > 3897
+> > drivers/rtc/rtc-st-lpc.c:233:11: error: 'IRQF_NO_AUTOEN' undeclared (fi=
+rst use in this function); did you mean 'IRQ_NOAUTOEN'?
+> > 3898
+> >            IRQF_NO_AUTOEN, pdev->name, rtc);
+> > 3899
+> >            ^~~~~~~~~~~~~~
+> > 3900
+> >            IRQ_NOAUTOEN
+> > 3901
+> > drivers/rtc/rtc-st-lpc.c:233:11: note: each undeclared identifier is re=
+ported only once for each function it appears in
+> > 3902
+> >   CC      drivers/pci/quirks.o
+> > 3903
+> > make[2]: *** [scripts/Makefile.build:303: drivers/rtc/rtc-st-lpc.o] Err=
+or 1
+> > 3904
+> > make[1]: *** [scripts/Makefile.build:544: drivers/rtc] Error 2
+> > 3905
+> > make[1]: *** Waiting for unfinished jobs....
+> > 3906
+> >   CC      drivers/pinctrl/uniphier/pinctrl-uniphier-sld8.o
+> > 3907
+> >   CC      drivers/soc/renesas/r8a7743-sysc.o
+>=20
+> What arch is this?  And can you not wrap error logs like this please?
 
-> We know that the only bit of register state which is not up to date at
-> this point is the SME vector length, we don't configure that for tasks
-> that do not have SME.  SVCR is always configured since we have to exit
-> streaming mode for FPSIMD and SVE to work properly so we know it's
-> already 0, all the other SME specific state is gated by controls in
-> SVCR.
-> 
-> > fpsimd_flush_task_state() means that we do the necessary work when re-
-> > entering userspace, but is there a problem with simply marking all the
-> > FPSIMD/vector state as stale?  If FPSR or FPCR is dirty for example, it
-> > now looks like they won't get written back to thread struct if there is
-> > a context switch before current re-enters userspace?
-> 
-> > Maybe the other flags distinguish these cases -- I haven't fully got my
-> > head around it.
-> 
-> We are doing fpsimd_flush_task_state() in the TIF_FOREIGN_FPSTATE case
-> so we know there is no dirty state in the registers.
+Not easily. But you can easily get nicely formatted logs +
+architecture details by clicking the hyperlink above.
 
-Ah, that wasn't obvious from the diff context, but you're right.
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-I was confused by the fpsimd_bind_task_to_cpu() call; I forgot that
-there are reasons to call this even when TIF_FOREIGN_FPSTATE is clear.
-Perhaps it would be worth splitting some of those uses up, but it would
-need some thinking about.  Doesn't really belong in this series anyway.
+--rRJwBGNM29yCb0EE
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> > (Actually, the ARM ARM says (IMHTLZ) that toggling PSTATE.SM by any
-> > means causes FPSR to become 0x800009f.  I'm not sure where that fits in
-> > -- do we handle that anywhere?  I guess the "soft" SM toggling via
-> 
-> Urgh, not seen that one - that needs handling in the signal entry path
-> and ptrace.  That will have been defined while the feature was being
-> implemented.  It's not relevant here though since we are in the SME
-> access trap, we might be trapping due to a SMSTART or equivalent
-> operation but that SMSTART has not yet run at the point where we return
-> to userspace.
-> 
-> > ptrace, signal delivery or maybe exec, ought to set this?  Not sure how
-> > that interacts with the expected behaviour of the fenv(3) API...  Hmm.
-> > I see no corresponding statement about FPCR.)
-> 
-> Fun.  I'm not sure how the ABI is defined there by libc.
+-----BEGIN PGP SIGNATURE-----
 
-I guess this should be left as-is, for now.  There's an argument for
-sanitising FPCR/FPSR on signal delivery, but neither signal(7) nor
-fenv(3) give any clue about the expected behaviour...
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ1A+KgAKCRAw5/Bqldv6
+8st2AKC74IP/4VCvOaJ9Mhd5CPms1awCbQCgh3KYxqrHsKB+NVWPrTEJlYJBAN0=
+=HNVQ
+-----END PGP SIGNATURE-----
 
-For ptrace, the user has the opportunity to specify exactly what they
-want to happen to all the registers, so I suppose it's best to stick to
-the current model and require the tracer to specify all changes
-explicitly rather than add new magic ptrace behaviour.
-
-Not relevant for this series, in any case.
-
-Cheers
----Dave
+--rRJwBGNM29yCb0EE--
 
