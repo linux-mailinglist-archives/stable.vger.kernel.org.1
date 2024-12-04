@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-98498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4709E455A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:10:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BCD9E4487
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25BC2B36696
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:45:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35AC7BC3D0A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFC822F38A;
-	Wed,  4 Dec 2024 17:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4467D20808F;
+	Wed,  4 Dec 2024 17:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PsR+YJhr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnWjGlHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA6C22F383;
-	Wed,  4 Dec 2024 17:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B5C208088;
+	Wed,  4 Dec 2024 17:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332344; cv=none; b=rfghSARxN88RCjd9GYywO3JhhBZdWMZIsVKTq4NYkCYoJzhQnjB6FrO2ZBU9VhiVuez+rm1j10byVIjr0J5dM0384kauLDY5oZZJb6d01TzdAeULPQhIdgs6ajFgsahGC1eZl2Esso85+UQIj5X5gCV2MfKY4XXoknitY9IodCI=
+	t=1733332373; cv=none; b=kkMGbugC5c0sSJFQmcnH1QdKYG5LTVnMyAYuovKu/0Nt03TVSSHpvo7D729mNu0kIS12K2m5xKpgGgOdVoAfU9IjaQxluBOl8t5Bm53EAKTjkllPZnL40Tih5RFzVSEQAsRgVLxFMLVua+9eGZiU0onmYIm9fq3mxmqQJmJ22sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332344; c=relaxed/simple;
-	bh=rxoBcMFbJyrz7iCwfBybM9Sod743Iqe6GpVYyVawzFg=;
+	s=arc-20240116; t=1733332373; c=relaxed/simple;
+	bh=+prgbQJ7bK5DDcrltgzkru2+wjUv6I+mbmQKBN1Ttdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D3YlJNeHPPjgmZUTKiuwvh3ufp44+r6hN3tbex/fE3fhuFYXbKPHvsXOc1zmCD+XRm/x3q5rtHrXWsD5Bg9E/6N8/ONj/vB8PMpvw3FbTXqzXjnikJZe2Vp6otN8NJGfNEN4sOEd8xudVssFEHfqPLjDzhlL+iI9i7boGKFmm4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PsR+YJhr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21A6C4CECD;
-	Wed,  4 Dec 2024 17:12:22 +0000 (UTC)
+	 MIME-Version; b=rEbMhKCtr5DQb3lbeZbCuTIDGhFQfkUfixtycujGr7KkEDhawy5diwvbVtOf7Zcv/TouCscBVmNon9Jy9M3+WLKoTuq7OOdwyPy5/2EluKwp24ecYg3xxon4HHuj39fHsHlcPChd+zPBY2rU6+g1rYP1UcQjA3dp40qAJEZAQZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnWjGlHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1C1C4CED6;
+	Wed,  4 Dec 2024 17:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332344;
-	bh=rxoBcMFbJyrz7iCwfBybM9Sod743Iqe6GpVYyVawzFg=;
+	s=k20201202; t=1733332372;
+	bh=+prgbQJ7bK5DDcrltgzkru2+wjUv6I+mbmQKBN1Ttdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PsR+YJhraxY1ps9zz+bLi2TrgvT7PpEAVoLq9ttNro2KefwMImRvLHcuTvfPxkjqa
-	 5iZ6v6ohmmaCZyLJZMTazhu8C2qr/o2YapC1BihXgBLBX/qDYgZqGIccF5bkGF5cyb
-	 c84EUUFqTRG/n5Ln4yVNhsjSlyESDdXAvsLOF26h7GqjXy5StiL8jYvjSwDApghoEE
-	 mJx6urO36bv+JvLbsbU5mGX2ED7KYNp5XyMGA4IcvygNkBSo6TMjg/jojDL16u057u
-	 +v1Ied5JhKEFz0+kjVpJ1WMT5UTAo6G4vE7dd/HlMD88IJvHfBdlXuJKYcMPsv2gIn
-	 PTjgbO9maQkRA==
+	b=VnWjGlHuK9UFVS10AM1u7UUm3sQdX0D4kDJvk/MlkGNPVyENGIRz1LlFT1jFtlNQS
+	 q+teuAFafhdDMdugnyNKtWSQlF6oZAMxnbvdTvWZUBhmsArwC3ez5hq/0Yt7nIfIw1
+	 /nLPTrewTdRE+ynLOZ6PiDcZwblcD5qpIzKNfMDpxOrWRFLEDkHGUoWIh5UkjdtD/g
+	 wep9l+2tMCXsS1k3RPMjBXGAl+SkuC/fwu2jG8pGERkfY2E45cs2DQGjA7vXQHIFFf
+	 Z0xnvJw6F7O+H8y1LWPlqBr1TFGHXA328v7H0Qt6805Pb3rye8kq0PNoOoh3LE82c2
+	 vGrFDUXbnAUYw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,12 +52,12 @@ Cc: Defa Li <defa.li@mediatek.com>,
 	linux-i3c@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 11/13] i3c: Use i3cdev->desc->info instead of calling i3c_device_get_info() to avoid deadlock
-Date: Wed,  4 Dec 2024 11:00:36 -0500
-Message-ID: <20241204160044.2216380-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 10/12] i3c: Use i3cdev->desc->info instead of calling i3c_device_get_info() to avoid deadlock
+Date: Wed,  4 Dec 2024 11:01:07 -0500
+Message-ID: <20241204160115.2216718-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204160044.2216380-1-sashal@kernel.org>
-References: <20241204160044.2216380-1-sashal@kernel.org>
+In-Reply-To: <20241204160115.2216718-1-sashal@kernel.org>
+References: <20241204160115.2216718-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,7 +66,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.11.10
+X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
 From: Defa Li <defa.li@mediatek.com>
@@ -160,10 +160,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 7028f03c2c42e..5e3b63f78d2d2 100644
+index 0e9ff5500a777..d66ff7a98c71d 100644
 --- a/drivers/i3c/master.c
 +++ b/drivers/i3c/master.c
-@@ -282,7 +282,8 @@ static int i3c_device_uevent(const struct device *dev, struct kobj_uevent_env *e
+@@ -280,7 +280,8 @@ static int i3c_device_uevent(const struct device *dev, struct kobj_uevent_env *e
  	struct i3c_device_info devinfo;
  	u16 manuf, part, ext;
  
