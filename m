@@ -1,134 +1,199 @@
-Return-Path: <stable+bounces-98540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B069E42F2
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:08:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DAD9E430C
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:11:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69A2C1668A0
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:08:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6CBB288353
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DD91C3C17;
-	Wed,  4 Dec 2024 18:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F99423918B;
+	Wed,  4 Dec 2024 18:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eaQRWsZe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A4hkvq/o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001851C3C05;
-	Wed,  4 Dec 2024 18:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A97F3D561
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 18:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733335359; cv=none; b=c8V0cIgZpztHMqTRf0Vu9zhjXLR6nbuAs4hB6SVK5nvZb9l8xKsgcjqMjcyOsH3oGdWTK4d3u+WphXZv62Glot6Y78q3nmcL8K9BkarkcSfRRe1K85EdF7i1BcceYvJ4yejPlRjSyk2Jie4seZcuxnUXNV+090LULLpHCBA2aAs=
+	t=1733335901; cv=none; b=oFvFg4yybAWLrk0dGd5m/QH9cDVCQmmy3SFjCZ2O1QQ6i9PIW9DIqJ0/e8GsDtnaYR+azSON2Z+mwecSngaEqEMq+gthD+vKj2Ym5cv0oj/RWFRAC5vTwkEMJrIzXPZX2dA7hLfattYaSTMQiI/vRTm0mQSXBRgCP3xlKaGMInc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733335359; c=relaxed/simple;
-	bh=x/6cjXwLIpZfwSRp36yamP6IaujEqfNuSpAlnson4kI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=goWcvHtj8iz8OzEyUDojTRuCDYrWz4UOJIzHDIi778NsBCQ7jhRIH9xRYMFI1pBeYmK0WI/pOc/YlpMF09eMVgMCWfK9rxKcN86AWkRopxAD6XB+XbADd+1xsXa/TZ6UcRPIGAmpegSddLRJgvHPIh212Y3SE00Z/nulr/5WvZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eaQRWsZe; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7250844b0ecso87599b3a.1;
-        Wed, 04 Dec 2024 10:02:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733335357; x=1733940157; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bAlGt/tiVuSRFhJS9Rkw9mOuskNJthnKTcKF5ulNOvw=;
-        b=eaQRWsZeyATGcCtVinzhMn9t7KS9yNRHOnurKhP0obzrBgwKbVcSXIEScR5GIlsSs5
-         MWI7Kp7SoLC5toCyfBFFSwEdyV/dQWy8ZgS9VnQRStptuYzEh9z/2ySncfvipyreb3ba
-         zgPz0badl9GjA+Q4bBc1aOIPH2biIvCG9ocNoiMus6KufZFIrhkkVE7PWscJ7CB+ZXHc
-         E8sCnxkZUbEQLkukHcaBDps+Bqb8+itHJOk+RWWxspzqJVoc53oHXy6EgTRGfW1XdlJo
-         sLzpHvJHRftA2iesZp/J3TwXjxg8XxU7+eF8xlPvWkGyPLriiU49migTdaJ5wYOxI26i
-         s6mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733335357; x=1733940157;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bAlGt/tiVuSRFhJS9Rkw9mOuskNJthnKTcKF5ulNOvw=;
-        b=B0XaWcEoTs5JLVEP7xZzcw8ScFScbFupzM72ddxYzpr1+lU9vCWh3xnEYRG/JURGD1
-         YxYfMaCJr6ejxeaGuoQF017IOPtINIEulANnljLeljFCtXOwwnCFBcmC81vqgKmgp7YM
-         S3ZP2ZsUQye6WEKdbWe51Y4t9HIRTxqk0Ah7QnWn2KjgDs4bD2rij3zQF6z2HeVfsMM+
-         PRJKAL3SndG3DYCqDSlHwQHH9iwuqokFYCdqZAd6kyLCDNaPbsa52Es5UGGz2hDlgS/X
-         pgtxZZZX8qlUwShxMXe4OE1TiKTU9Nz8P6uMxOmLO8iY+Yiaq6acs9ZhRE97nv59wIW/
-         8WgA==
-X-Forwarded-Encrypted: i=1; AJvYcCV1ahRLmOvz8uMvXfJL+xnaVHozUapbDx+bh2H73VtDTkzWfhQ0Mbwi1pZZ4wSTv85+glbNOPphHrr0uw==@vger.kernel.org, AJvYcCX4waq4EOrSATvtNI25Nu8VmyGhKGCBOwhtJwiZlBxS8i5pgpin4t1FQh7J90e2R7SfTj0IG0O/@vger.kernel.org, AJvYcCXpARw8rYyPbzIU7V4jtDnZpBLWY4hskJqRicGvO93OaFSANHmURkImzvCnVHgkfhukViRuKBCAGZ9YGbij@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjAfFQCFEXUoYtbX6sHK4PyQYw9tlgf9VVJRqyn4x9GRbHWFhf
-	KLW7jCee8svltMIZlSE+UOHHkOKyg2AQEv+xYnX3lTnyj4s/lOjg
-X-Gm-Gg: ASbGncv+Ezd8odfUl+gnKH+BuZH6DvIpZ7nt6NZFU9GfvfQ6yOaDyuoTpkp0WT5Jp9p
-	f2aEu+AqYRHAI1aA+8PitsRMtCL08GO1rWOnQC3Kb+SCnEENOtGuMKsbyb3ANS2uKYrKlVNeafx
-	qwOTkfFkFmEGIuwf8SmpIxkI0rOc4CvmXTnKIlm6cbzzrgt1QoUK0iyobmT4MM2mqzVo1EGIC1Q
-	UHtC5NTJpUFwgJa7hau3rmRvGKTuusZd23i/ogyKgd6LK7rz+brzCA8/+JKfFpPVOgb6x0=
-X-Google-Smtp-Source: AGHT+IHeql1iWXSfpkc9alhz3TOTPqPIWd0paC+yeqbkwcITYB2dvWkcwBYhP1UiZzR3SpjSJkLP+g==
-X-Received: by 2002:a05:6a00:3c8c:b0:71e:f4:dbc with SMTP id d2e1a72fcca58-7257fcced2cmr9725349b3a.25.1733335357173;
-        Wed, 04 Dec 2024 10:02:37 -0800 (PST)
-Received: from KASONG-MC4.tencent.com ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7258947b48fsm2064736b3a.47.2024.12.04.10.02.34
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 04 Dec 2024 10:02:36 -0800 (PST)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] zram: fix uninitialized ZRAM not releasing backing device
-Date: Thu,  5 Dec 2024 02:02:24 +0800
-Message-ID: <20241204180224.31069-3-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241204180224.31069-1-ryncsn@gmail.com>
-References: <20241204180224.31069-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
+	s=arc-20240116; t=1733335901; c=relaxed/simple;
+	bh=vjmcSgcWnBKzXMjigUXcBMqoJFMjy5ELFrCRu15LNI4=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hrJ5mkDfzrwu9VpkDDdX9R96iPUFI3bIm3wsyyldZ8sQYDlrX1+6CIE0PZqdX3TVufD4cqSMp4HTluHnd20oAhwX/+oMNqNfupiboMzFvSMVauXsx2bsmatVfho2Sb5beKYN22fjrpCr6n0D8Y1OqDu3YekMs9Wj1acK4pAYok0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A4hkvq/o; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733335899; x=1764871899;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=vjmcSgcWnBKzXMjigUXcBMqoJFMjy5ELFrCRu15LNI4=;
+  b=A4hkvq/o7+AHY8EOSyYMnksVJlgTmO7tR6SWP0MvKmRbCgP1olxsM9N2
+   Rqq+hv3F6ao8O1H3hel9EVfcmCrAwyTzRdkd/PThzOaUKjvHJYBDO3eCz
+   qER0eINtdnp3coX0iVZAjIGo8mJkwKf+Z+ztLdyPhi5KO5ySfOcYN7r66
+   Bltg0KIUm3LZJWmYmPUWDu3G14NFbqvnUgHyu7kEXep1QAh59FzlsI3c+
+   AwxnQRx7gB4SDb0eWxOzFtFPWzdGnODNfcoddvZIMQbtQon8yi6AkMnLE
+   uBlHp4363fbt/Fwt5fsYs0ZsfFPh5WIIDQe9cHD9MqEp6YDyss8OXneLZ
+   Q==;
+X-CSE-ConnectionGUID: LHDQkX2cTxaM4ZSoUGMQgw==
+X-CSE-MsgGUID: VtHZgADhQa+mFhlnRvVpuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="37281331"
+X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
+   d="scan'208";a="37281331"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 10:11:39 -0800
+X-CSE-ConnectionGUID: kDD4la/zTQuzeDONeS36Tw==
+X-CSE-MsgGUID: FUWwNT5dS7iODibIrBm5iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,208,1728975600"; 
+   d="scan'208";a="93717427"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO ahunter-VirtualBox.ger.corp.intel.com) ([10.245.89.141])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 10:11:37 -0800
+From: Adrian Hunter <adrian.hunter@intel.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 4.19] perf/x86/intel/pt: Fix buffer full but size is 0 case
+Date: Wed,  4 Dec 2024 20:11:26 +0200
+Message-ID: <20241204181126.61934-1-adrian.hunter@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024120221-raft-bully-e091@gregkh>
+References: <2024120221-raft-bully-e091@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki, Business Identity Code: 0357606 - 4, Domiciled in Helsinki
 Content-Transfer-Encoding: 8bit
 
-From: Kairui Song <kasong@tencent.com>
+commit 5b590160d2cf776b304eb054afafea2bd55e3620 upstream.
 
-Setting backing device is done before ZRAM initialization.
-If we set the backing device, then remove the ZRAM module without
-initializing the device, the backing device reference will be leaked
-and the device will be hold forever.
+If the trace data buffer becomes full, a truncated flag [T] is reported
+in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
+data must have been added to make the buffer full.
 
-Fix this by always check and release the backing device when resetting
-or removing ZRAM.
+That happens when the buffer fills up from empty to full before the
+Intel PT driver has updated the buffer position.  Then the driver
+calculates the new buffer position before calculating the data size.
+If the old and new positions are the same, the data size is reported
+as 0, even though it is really the whole buffer size.
 
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Signed-off-by: Kairui Song <kasong@tencent.com>
+Fix by detecting when the buffer position is wrapped, and adjust the
+data size calculation accordingly.
+
+Example
+
+  Use a very small buffer size (8K) and observe the size of truncated [T]
+  data. Before the fix, it is possible to see records of 0 size.
+
+  Before:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 2 times to write data ]
+    [ perf record: Captured and wrote 0.105 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
+    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
+
+ After:
+
+    $ perf record -m,8K -e intel_pt// uname
+    Linux
+    [ perf record: Woken up 3 times to write data ]
+    [ perf record: Captured and wrote 0.040 MB perf.data ]
+    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
+    Warning:
+    AUX data lost 2 times out of 3!
+
+    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
+    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
+
+Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 ---
- drivers/block/zram/zram_drv.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/events/intel/pt.c | 11 ++++++++---
+ arch/x86/events/intel/pt.h |  2 ++
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index dd48df5b97c8..dfe9a994e437 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2335,6 +2335,9 @@ static void zram_reset_device(struct zram *zram)
- 	zram->limit_pages = 0;
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index 87cca5622885..d37ea43df220 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -771,11 +771,13 @@ static void pt_buffer_advance(struct pt_buffer *buf)
+ 	buf->cur_idx++;
  
- 	if (!init_done(zram)) {
-+		/* Backing device could be set before ZRAM initialization. */
-+		reset_bdev(zram);
-+
- 		up_write(&zram->init_lock);
- 		return;
+ 	if (buf->cur_idx == buf->cur->last) {
+-		if (buf->cur == buf->last)
++		if (buf->cur == buf->last) {
+ 			buf->cur = buf->first;
+-		else
++			buf->wrapped = true;
++		} else {
+ 			buf->cur = list_entry(buf->cur->list.next, struct topa,
+ 					      list);
++		}
+ 		buf->cur_idx = 0;
  	}
+ }
+@@ -789,8 +791,11 @@ static void pt_buffer_advance(struct pt_buffer *buf)
+ static void pt_update_head(struct pt *pt)
+ {
+ 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
++	bool wrapped = buf->wrapped;
+ 	u64 topa_idx, base, old;
+ 
++	buf->wrapped = false;
++
+ 	/* offset of the first region in this table from the beginning of buf */
+ 	base = buf->cur->offset + buf->output_off;
+ 
+@@ -803,7 +808,7 @@ static void pt_update_head(struct pt *pt)
+ 	} else {
+ 		old = (local64_xchg(&buf->head, base) &
+ 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
+-		if (base < old)
++		if (base < old || (base == old && wrapped))
+ 			base += buf->nr_pages << PAGE_SHIFT;
+ 
+ 		local_add(base - old, &buf->data_size);
+diff --git a/arch/x86/events/intel/pt.h b/arch/x86/events/intel/pt.h
+index ad4ac27f0468..7c3fc191f789 100644
+--- a/arch/x86/events/intel/pt.h
++++ b/arch/x86/events/intel/pt.h
+@@ -110,6 +110,7 @@ struct pt_pmu {
+  * @lost:	if data was lost/truncated
+  * @head:	logical write offset inside the buffer
+  * @snapshot:	if this is for a snapshot/overwrite counter
++ * @wrapped:	buffer advance wrapped back to the first topa table
+  * @stop_pos:	STOP topa entry in the buffer
+  * @intr_pos:	INT topa entry in the buffer
+  * @data_pages:	array of pages from perf
+@@ -125,6 +126,7 @@ struct pt_buffer {
+ 	local_t			data_size;
+ 	local64_t		head;
+ 	bool			snapshot;
++	bool			wrapped;
+ 	unsigned long		stop_pos, intr_pos;
+ 	void			**data_pages;
+ 	struct topa_entry	*topa_index[0];
 -- 
-2.47.0
+2.43.0
 
 
