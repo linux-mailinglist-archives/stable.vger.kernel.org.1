@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-98648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D6D9E498A
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:40:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208C79E4996
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21E27162173
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:39:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E86C188036F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B2521883F;
-	Wed,  4 Dec 2024 23:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9175620E336;
+	Wed,  4 Dec 2024 23:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HdMLasxo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0qR3Kzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939411C3C13;
-	Wed,  4 Dec 2024 23:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48197186287;
+	Wed,  4 Dec 2024 23:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733355007; cv=none; b=q2uMQMCuRkcrc8fXzm+4/vvTC9LCOiqBZC3uB3XG9Ci+FUTvkI1vCfGH2ZQx+6cVeU+UKf1FXQUoCDiqt5Ghhnjf+jZqqRAA47PTuC+M2+4MXbGAQnLND0B0zUDFwQbgSjl9f4gCGuiatkl65Eqzf0xRDGb5boxDtc/eAxzkuA8=
+	t=1733355019; cv=none; b=i73jghqUoSNX5h3oSlpxq4Yf6SBJShb7d9DKOX6/Sp/jK5i/D/DAkZI/fpA6upaKFOEL6/j8fBP1ZEMFNkuQJfT6ehex4o0NhmyQumJT6qQ93zaCkWr8nRXAI0uOE6yLlgMXHI/SpRrJ5GKwZv6dHFuhhJCnbdjQiRz1Yq8PCWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733355007; c=relaxed/simple;
-	bh=3LM6BcQii/dod30SKjStMYeiuwsTOy/Qg766ka+ZWYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jA2MvDsXtibhTkvati9dqwINqnxpz0z26okRA2ZE01GxYzpX2mUqMf41H5hPGYrtDr+u3wfKsByROUe2hhtiGKLu8C10pKMHaZK+8fpERdENA9pvb+sqqYpSb5iBIZr9XVGc7xzJ7NJfkoGLQjy6QQLoz0xBZZuvsVxxoDODIZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HdMLasxo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2A9C4CECD;
-	Wed,  4 Dec 2024 23:30:06 +0000 (UTC)
+	s=arc-20240116; t=1733355019; c=relaxed/simple;
+	bh=oDcCFF0JXfC+ZHmSNf79WZ7yzRKn/zCPGW7kK6wIj3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oHhhGiizvCGmFaWcvW79F0P5gi0RiViSW0IY16fTi+Nc1dcaTgIeANBhGd1+ipTY4rSrLfXFM/jxdzqVetteapvf3V9YegNYALkRnuM5H7PdVz7h4DpddF+GmBy3apxnNX4yCYH5qwt+Smu6FB/8Hk+KEgnrSAoXM+rNQyyT3ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0qR3Kzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F27C4CECD;
+	Wed,  4 Dec 2024 23:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355007;
-	bh=3LM6BcQii/dod30SKjStMYeiuwsTOy/Qg766ka+ZWYY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HdMLasxoPQMsbNm08Pe9Q5+y8Zlm9M+EGh/XoZDgxZqDbfJU1qnloLG2fk5CHfgon
-	 +UAq+z8ceiwySL1Kq0yguQFQslFSy5rs3X3CiZ8f9mqDi+ZNg32glgimvtS//CknTZ
-	 Gj/QzSJmpol05SRNmRyHcWmLqwicnEXjy5Vdo4N0/Hu9aAKdRq9uaWxMrqc0Gfa8KZ
-	 2tcpDsMsdc9YJAwM//nQbGZa+ikjCLKwkPFeKvMfVNKN5fundeGJH3yXIqBmF4S+tQ
-	 KBKgJI4q4ICTap9Q6I0TOA/4iDaBhukZmPYDzeSo9IcknWYE76hCoqNXtapMPcDNMV
-	 117hIHO9zBCtg==
+	s=k20201202; t=1733355019;
+	bh=oDcCFF0JXfC+ZHmSNf79WZ7yzRKn/zCPGW7kK6wIj3Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=e0qR3Kzxq7u71e5BTfq29KHhkFUpYhMGNV/iAjyYVwoWlwrTc8A7bAWCe1otxvmUs
+	 FCJJSlxeOZhdAr4d674VYGVV2NmWIfiAnt+7cVf0FWfpUQRKrWbL/4Ai65g3yd8EFZ
+	 SZICJtVdWTTVSjYKsc2e0euaXEANgpYfaTfVuWnPC80UmM/eV47M3PDTm5c733Q6xT
+	 sSPevwmBGBDRZVI4gYRvYjqfa1iIb+uKd3l+UT46BZwTFu9240ylt1yCFekTX1ig8b
+	 +stgz6LUGEFIU7/YBj2Od48pYN7W55XsF+KnmGYclpK6JwNdPyTzbuibCblkXshAfM
+	 0hnnMWPOtPkbA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Rob Herring <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+Cc: Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	aneesh.kumar@kernel.org,
-	jsavitz@redhat.com,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.6 10/10] powerpc/prom_init: Fixup missing powermac #size-cells
-Date: Wed,  4 Dec 2024 17:18:08 -0500
-Message-ID: <20241204221820.2248367-10-sashal@kernel.org>
+	peter.chen@kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 1/8] usb: chipidea: udc: create bounce buffer for problem sglist entries if possible
+Date: Wed,  4 Dec 2024 17:18:43 -0500
+Message-ID: <20241204221859.2248634-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204221820.2248367-1-sashal@kernel.org>
-References: <20241204221820.2248367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,104 +61,258 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
+[ Upstream commit edfcc455c85ccc5855f0c329ca5a2d85cc9fc6c6 ]
 
-On some powermacs `escc` nodes are missing `#size-cells` properties,
-which is deprecated and now triggers a warning at boot since commit
-045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
-handling").
+The chipidea controller doesn't fully support sglist, such as it can not
+transfer data spanned more dTDs to form a bus packet, so it can only work
+on very limited cases.
 
-For example:
+The limitations as below:
+1. the end address of the first sg buffer must be 4KB aligned.
+2. the start and end address of the middle sg buffer must be 4KB aligned.
+3. the start address of the first sg buffer must be 4KB aligned.
 
-  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
-  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
-  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-  ...
-  Call Trace:
-    of_bus_n_size_cells+0x98/0x108 (unreliable)
-    of_bus_default_count_cells+0x40/0x60
-    __of_get_address+0xc8/0x21c
-    __of_address_to_resource+0x5c/0x228
-    pmz_init_port+0x5c/0x2ec
-    pmz_probe.isra.0+0x144/0x1e4
-    pmz_console_init+0x10/0x48
-    console_init+0xcc/0x138
-    start_kernel+0x5c4/0x694
+However, not all the use cases violate these limitations. To make the
+controller compatible with most of the cases, this will try to bounce the
+problem sglist entries which can be found by sglist_get_invalid_entry().
+Then a bounced line buffer (the size will roundup to page size) will be
+allocated to replace the remaining problem sg entries. The data will be
+copied between problem sg entries and bounce buffer according to the
+transfer direction. The bounce buffer will be freed when the request
+completed.
 
-As powermacs boot via prom_init it's possible to add the missing
-properties to the device tree during boot, avoiding the warning. Note
-that `escc-legacy` nodes are also missing `#size-cells` properties, but
-they are skipped by the macio driver, so leave them alone.
-
-Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
+Acked-by: Peter Chen <peter.chen@kernel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240923081203.2851768-3-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/udc.c | 148 +++++++++++++++++++++++++++++++++++++
+ drivers/usb/chipidea/udc.h |   2 +
+ 2 files changed, 150 insertions(+)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index d464ba412084d..a6090896f7497 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2924,7 +2924,7 @@ static void __init fixup_device_tree_chrp(void)
- #endif
- 
- #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
--static void __init fixup_device_tree_pmac(void)
-+static void __init fixup_device_tree_pmac64(void)
- {
- 	phandle u3, i2c, mpic;
- 	u32 u3_rev;
-@@ -2964,7 +2964,31 @@ static void __init fixup_device_tree_pmac(void)
- 		     &parent, sizeof(parent));
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 35dfc05854fb7..3af0a7ef19f61 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -10,6 +10,7 @@
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/dmapool.h>
++#include <linux/dma-direct.h>
+ #include <linux/err.h>
+ #include <linux/irqreturn.h>
+ #include <linux/kernel.h>
+@@ -540,6 +541,126 @@ static int prepare_td_for_sg(struct ci_hw_ep *hwep, struct ci_hw_req *hwreq)
+ 	return ret;
  }
- #else
--#define fixup_device_tree_pmac()
-+#define fixup_device_tree_pmac64()
-+#endif
-+
-+#ifdef CONFIG_PPC_PMAC
-+static void __init fixup_device_tree_pmac(void)
+ 
++/*
++ * Verify if the scatterlist is valid by iterating each sg entry.
++ * Return invalid sg entry index which is less than num_sgs.
++ */
++static int sglist_get_invalid_entry(struct device *dma_dev, u8 dir,
++			struct usb_request *req)
 +{
-+	__be32 val = 1;
-+	char type[8];
-+	phandle node;
++	int i;
++	struct scatterlist *s = req->sg;
 +
-+	// Some pmacs are missing #size-cells on escc nodes
-+	for (node = 0; prom_next_node(&node); ) {
-+		type[0] = '\0';
-+		prom_getprop(node, "device_type", type, sizeof(type));
-+		if (prom_strcmp(type, "escc"))
-+			continue;
++	if (req->num_sgs == 1)
++		return 1;
 +
-+		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
-+			continue;
++	dir = dir ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
 +
-+		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
++	for (i = 0; i < req->num_sgs; i++, s = sg_next(s)) {
++		/* Only small sg (generally last sg) may be bounced. If
++		 * that happens. we can't ensure the addr is page-aligned
++		 * after dma map.
++		 */
++		if (dma_kmalloc_needs_bounce(dma_dev, s->length, dir))
++			break;
++
++		/* Make sure each sg start address (except first sg) is
++		 * page-aligned and end address (except last sg) is also
++		 * page-aligned.
++		 */
++		if (i == 0) {
++			if (!IS_ALIGNED(s->offset + s->length,
++						CI_HDRC_PAGE_SIZE))
++				break;
++		} else {
++			if (s->offset)
++				break;
++			if (!sg_is_last(s) && !IS_ALIGNED(s->length,
++						CI_HDRC_PAGE_SIZE))
++				break;
++		}
 +	}
++
++	return i;
 +}
-+#else
-+static inline void fixup_device_tree_pmac(void) { }
- #endif
++
++static int sglist_do_bounce(struct ci_hw_req *hwreq, int index,
++			bool copy, unsigned int *bounced)
++{
++	void *buf;
++	int i, ret, nents, num_sgs;
++	unsigned int rest, rounded;
++	struct scatterlist *sg, *src, *dst;
++
++	nents = index + 1;
++	ret = sg_alloc_table(&hwreq->sgt, nents, GFP_KERNEL);
++	if (ret)
++		return ret;
++
++	sg = src = hwreq->req.sg;
++	num_sgs = hwreq->req.num_sgs;
++	rest = hwreq->req.length;
++	dst = hwreq->sgt.sgl;
++
++	for (i = 0; i < index; i++) {
++		memcpy(dst, src, sizeof(*src));
++		rest -= src->length;
++		src = sg_next(src);
++		dst = sg_next(dst);
++	}
++
++	/* create one bounce buffer */
++	rounded = round_up(rest, CI_HDRC_PAGE_SIZE);
++	buf = kmalloc(rounded, GFP_KERNEL);
++	if (!buf) {
++		sg_free_table(&hwreq->sgt);
++		return -ENOMEM;
++	}
++
++	sg_set_buf(dst, buf, rounded);
++
++	hwreq->req.sg = hwreq->sgt.sgl;
++	hwreq->req.num_sgs = nents;
++	hwreq->sgt.sgl = sg;
++	hwreq->sgt.nents = num_sgs;
++
++	if (copy)
++		sg_copy_to_buffer(src, num_sgs - index, buf, rest);
++
++	*bounced = rest;
++
++	return 0;
++}
++
++static void sglist_do_debounce(struct ci_hw_req *hwreq, bool copy)
++{
++	void *buf;
++	int i, nents, num_sgs;
++	struct scatterlist *sg, *src, *dst;
++
++	sg = hwreq->req.sg;
++	num_sgs = hwreq->req.num_sgs;
++	src = sg_last(sg, num_sgs);
++	buf = sg_virt(src);
++
++	if (copy) {
++		dst = hwreq->sgt.sgl;
++		for (i = 0; i < num_sgs - 1; i++)
++			dst = sg_next(dst);
++
++		nents = hwreq->sgt.nents - num_sgs + 1;
++		sg_copy_from_buffer(dst, nents, buf, sg_dma_len(src));
++	}
++
++	hwreq->req.sg = hwreq->sgt.sgl;
++	hwreq->req.num_sgs = hwreq->sgt.nents;
++	hwreq->sgt.sgl = sg;
++	hwreq->sgt.nents = num_sgs;
++
++	kfree(buf);
++	sg_free_table(&hwreq->sgt);
++}
++
+ /**
+  * _hardware_enqueue: configures a request at hardware level
+  * @hwep:   endpoint
+@@ -552,6 +673,8 @@ static int _hardware_enqueue(struct ci_hw_ep *hwep, struct ci_hw_req *hwreq)
+ 	struct ci_hdrc *ci = hwep->ci;
+ 	int ret = 0;
+ 	struct td_node *firstnode, *lastnode;
++	unsigned int bounced_size;
++	struct scatterlist *sg;
  
- #ifdef CONFIG_PPC_EFIKA
-@@ -3189,6 +3213,7 @@ static void __init fixup_device_tree(void)
- 	fixup_device_tree_maple_memory_controller();
- 	fixup_device_tree_chrp();
- 	fixup_device_tree_pmac();
-+	fixup_device_tree_pmac64();
- 	fixup_device_tree_efika();
- 	fixup_device_tree_pasemi();
- }
+ 	/* don't queue twice */
+ 	if (hwreq->req.status == -EALREADY)
+@@ -559,11 +682,29 @@ static int _hardware_enqueue(struct ci_hw_ep *hwep, struct ci_hw_req *hwreq)
+ 
+ 	hwreq->req.status = -EALREADY;
+ 
++	if (hwreq->req.num_sgs && hwreq->req.length &&
++		ci->has_short_pkt_limit) {
++		ret = sglist_get_invalid_entry(ci->dev->parent, hwep->dir,
++					&hwreq->req);
++		if (ret < hwreq->req.num_sgs) {
++			ret = sglist_do_bounce(hwreq, ret, hwep->dir == TX,
++					&bounced_size);
++			if (ret)
++				return ret;
++		}
++	}
++
+ 	ret = usb_gadget_map_request_by_dev(ci->dev->parent,
+ 					    &hwreq->req, hwep->dir);
+ 	if (ret)
+ 		return ret;
+ 
++	if (hwreq->sgt.sgl) {
++		/* We've mapped a bigger buffer, now recover the actual size */
++		sg = sg_last(hwreq->req.sg, hwreq->req.num_sgs);
++		sg_dma_len(sg) = min(sg_dma_len(sg), bounced_size);
++	}
++
+ 	if (hwreq->req.num_mapped_sgs)
+ 		ret = prepare_td_for_sg(hwep, hwreq);
+ 	else
+@@ -732,6 +873,10 @@ static int _hardware_dequeue(struct ci_hw_ep *hwep, struct ci_hw_req *hwreq)
+ 	usb_gadget_unmap_request_by_dev(hwep->ci->dev->parent,
+ 					&hwreq->req, hwep->dir);
+ 
++	/* sglist bounced */
++	if (hwreq->sgt.sgl)
++		sglist_do_debounce(hwreq, hwep->dir == RX);
++
+ 	hwreq->req.actual += actual;
+ 
+ 	if (hwreq->req.status)
+@@ -1573,6 +1718,9 @@ static int ep_dequeue(struct usb_ep *ep, struct usb_request *req)
+ 
+ 	usb_gadget_unmap_request(&hwep->ci->gadget, req, hwep->dir);
+ 
++	if (hwreq->sgt.sgl)
++		sglist_do_debounce(hwreq, false);
++
+ 	req->status = -ECONNRESET;
+ 
+ 	if (hwreq->req.complete != NULL) {
+diff --git a/drivers/usb/chipidea/udc.h b/drivers/usb/chipidea/udc.h
+index 5193df1e18c75..c8a47389a46bb 100644
+--- a/drivers/usb/chipidea/udc.h
++++ b/drivers/usb/chipidea/udc.h
+@@ -69,11 +69,13 @@ struct td_node {
+  * @req: request structure for gadget drivers
+  * @queue: link to QH list
+  * @tds: link to TD list
++ * @sgt: hold original sglist when bounce sglist
+  */
+ struct ci_hw_req {
+ 	struct usb_request	req;
+ 	struct list_head	queue;
+ 	struct list_head	tds;
++	struct sg_table		sgt;
+ };
+ 
+ #ifdef CONFIG_USB_CHIPIDEA_UDC
 -- 
 2.43.0
 
