@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-98344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6E79E442A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6D19E4498
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 932CEB3B413
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:00:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 041ECB3F48E
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA7F2139C6;
-	Wed,  4 Dec 2024 16:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F128B21C17B;
+	Wed,  4 Dec 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HO+IHh5e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PS9dOT2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C5B2139B2;
-	Wed,  4 Dec 2024 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76F721C16F;
+	Wed,  4 Dec 2024 16:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331494; cv=none; b=bIVSN9Wz1ZlDuef/qT5ZVsOfvCzvBNCNlX38sICta+zZ2Fyf3ofy0aPK1a5l0BfT2GSypB+6A9WO/M23VGYXAr+jI6EX63D0fi2rPlQvaUt364p74Y3ApxeHo/0NhRZcDo261h55pOfXE4RpFTZ7s4j7yeQGZmVR/q+gpA/b+cA=
+	t=1733331517; cv=none; b=eo+6PHeDYPAfMIeyDiNWdrtO/ac19ICvAIfGZUjQOBJCBoukKkEDuZOMNqLY0uAUGgofNY7hDKjbG/xcQchJwesV4C3IKiNTkaczCdvuhS8FBW+EKFrZWlxwkovUn8ml8IEtjCFDH3iuKKUi9+8lTSUDIN/8NtP/ux/RTGrnvko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331494; c=relaxed/simple;
-	bh=tWocmDwQ7dA4/KynPTdBWbKzp8Sjj1C34cjzodJbX9U=;
+	s=arc-20240116; t=1733331517; c=relaxed/simple;
+	bh=WXIbVvxTlJvBoUek1MnVbfGc5Mt4uhb2gkV11zvU4pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMCEtDxSBekEgXSkDBtniy3a2xrI3S/7BEUNZisc5XnrWXZjt0ipXieLhUO/jbiGEc50kgJUI1OVmZnpv38XCs7q2wWzYjk7SRojZuIBUytzuSi5JaYJUn7K4W82wnJny8Y4Be6IGfXSlELPcVF76NlQv/nZAnaZJrVx4MsAubY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HO+IHh5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E537C4CECD;
-	Wed,  4 Dec 2024 16:58:12 +0000 (UTC)
+	 MIME-Version; b=TIKZA0HgJZYRAo7ocTm7MWxX8jXDaY/2+omFQaCwYDAP2MfCP5lc6UwYicTKRFGdhtQCxBgYZvLkmr+TCHy57V5Ftf6VritegoOn+5wZPKtyCdrVxN4nLsZuDcGsFTEtrQzjM4ayS8Ucrf8W1RYd/gLgoBIUEgeZDGCprWolOlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PS9dOT2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B45C4CECD;
+	Wed,  4 Dec 2024 16:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331493;
-	bh=tWocmDwQ7dA4/KynPTdBWbKzp8Sjj1C34cjzodJbX9U=;
+	s=k20201202; t=1733331517;
+	bh=WXIbVvxTlJvBoUek1MnVbfGc5Mt4uhb2gkV11zvU4pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HO+IHh5eW1RBEQyzM2orm1ORBUnmcycy3O/mTZ22yjtmGENXApzTf//Rl8QFjocLO
-	 sh5qfPZtahp5iwg9yBP9tc0j5OJbjTIFhOhPQN/+pyPLvR4fZ6Tny4OzTytOAkrTXN
-	 J1poxRwdP+Y1rtxb9jaVHL6PhrQlOdf/FaXwNipceWKNT9/uz0xFykMKFnOaMl5vHu
-	 /STiOqeUZN57EhpYd+vz+yGhMj36Do2aSrMWhcSrqGzMyONFs+oeD8nTfqcE0aWUlk
-	 rJtSsrxx2oyVTRB4C7OUTLNKFI5CkanAafWnwYlDiZAlnyk723XQRXh1mhcdePOMeP
-	 VezV4VkPP8jLw==
+	b=PS9dOT2ZL5zzNspKIt2JxUy0Gbp9Akg0AMxi3orX5UKWCJiVOzRYD0IgGH4MgA9Y0
+	 X/a77Je+7LVxjTegs6U/+ZUrq9yIdBmreuu1EQB3NE0TIK0R0GLE8sKEhF20sQer71
+	 knWoEeaUKEaXctiUq7Qgzw4Rd4Dqeo7w5rBL2hn0JQVLSpfWunPc1qA+A09amtSFgg
+	 uopWEd82NzYj/0EzCjyooXVS+MVZmj+iIsrxb0CF8aO5bVLF4LSgLbaYo23m9Hz62L
+	 NIombaMKV8B0ACLwKzPT9LwQaC7OES2jo4qZC4xZlU0RPDRDNMrCqPB/IqDHTL3U69
+	 xZEmUS/lY53+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Petr Pavlu <petr.pavlu@suse.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 11/36] ring-buffer: Limit time with disabled interrupts in rb_check_pages()
-Date: Wed,  4 Dec 2024 10:45:27 -0500
-Message-ID: <20241204154626.2211476-11-sashal@kernel.org>
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 23/36] clk: qcom: dispcc-sm8550: enable support for SAR2130P
+Date: Wed,  4 Dec 2024 10:45:39 -0500
+Message-ID: <20241204154626.2211476-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
 References: <20241204154626.2211476-1-sashal@kernel.org>
@@ -70,219 +70,99 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b237e1f7d2273fdcffac20100b72c002bdd770dd ]
+[ Upstream commit 1335c7eb7012f23dc073b8ae4ffcfc1f6e69cfb3 ]
 
-The function rb_check_pages() validates the integrity of a specified
-per-CPU tracing ring buffer. It does so by traversing the underlying
-linked list and checking its next and prev links.
+The display clock controller on SAR2130P is very close to the clock
+controller on SM8550 (and SM8650). Reuse existing driver to add support
+for the controller on SAR2130P.
 
-To guarantee that the list isn't modified during the check, a caller
-typically needs to take cpu_buffer->reader_lock. This prevents the check
-from running concurrently, for example, with a potential reader which
-can make the list temporarily inconsistent when swapping its old reader
-page into the buffer.
-
-A problem with this approach is that the time when interrupts are
-disabled is non-deterministic, dependent on the ring buffer size. This
-particularly affects PREEMPT_RT because the reader_lock is a raw
-spinlock which doesn't become sleepable on PREEMPT_RT kernels.
-
-Modify the check so it still attempts to traverse the entire list, but
-gives up the reader_lock between checking individual pages. Introduce
-for this purpose a new variable ring_buffer_per_cpu.cnt which is bumped
-any time the list is modified. The value is used by rb_check_pages() to
-detect such a change and restart the check.
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241015112810.27203-1-petr.pavlu@suse.com
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-clocks-v5-10-ecad2a1432ba@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 98 ++++++++++++++++++++++++++++----------
- 1 file changed, 72 insertions(+), 26 deletions(-)
+ drivers/clk/qcom/Kconfig         |  4 ++--
+ drivers/clk/qcom/dispcc-sm8550.c | 18 ++++++++++++++++--
+ 2 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 5807116bcd0bf..366eb4c4f28e5 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -482,6 +482,8 @@ struct ring_buffer_per_cpu {
- 	unsigned long			nr_pages;
- 	unsigned int			current_context;
- 	struct list_head		*pages;
-+	/* pages generation counter, incremented when the list changes */
-+	unsigned long			cnt;
- 	struct buffer_page		*head_page;	/* read from head */
- 	struct buffer_page		*tail_page;	/* write to tail */
- 	struct buffer_page		*commit_page;	/* committed pages */
-@@ -1475,40 +1477,87 @@ static void rb_check_bpage(struct ring_buffer_per_cpu *cpu_buffer,
- 	RB_WARN_ON(cpu_buffer, val & RB_FLAG_MASK);
- }
+diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+index a3e2a09e2105b..46a6cdee65e5d 100644
+--- a/drivers/clk/qcom/Kconfig
++++ b/drivers/clk/qcom/Kconfig
+@@ -959,10 +959,10 @@ config SM_DISPCC_8450
+ config SM_DISPCC_8550
+ 	tristate "SM8550 Display Clock Controller"
+ 	depends on ARM64 || COMPILE_TEST
+-	depends on SM_GCC_8550 || SM_GCC_8650
++	depends on SM_GCC_8550 || SM_GCC_8650 || SAR_GCC_2130P
+ 	help
+ 	  Support for the display clock controller on Qualcomm Technologies, Inc
+-	  SM8550 or SM8650 devices.
++	  SAR2130P, SM8550 or SM8650 devices.
+ 	  Say Y if you want to support display devices and functionality such as
+ 	  splash screen.
  
-+static bool rb_check_links(struct ring_buffer_per_cpu *cpu_buffer,
-+			   struct list_head *list)
-+{
-+	if (RB_WARN_ON(cpu_buffer,
-+		       rb_list_head(rb_list_head(list->next)->prev) != list))
-+		return false;
-+
-+	if (RB_WARN_ON(cpu_buffer,
-+		       rb_list_head(rb_list_head(list->prev)->next) != list))
-+		return false;
-+
-+	return true;
-+}
-+
- /**
-  * rb_check_pages - integrity check of buffer pages
-  * @cpu_buffer: CPU buffer with pages to test
-  *
-  * As a safety measure we check to make sure the data pages have not
-  * been corrupted.
-- *
-- * Callers of this function need to guarantee that the list of pages doesn't get
-- * modified during the check. In particular, if it's possible that the function
-- * is invoked with concurrent readers which can swap in a new reader page then
-- * the caller should take cpu_buffer->reader_lock.
-  */
- static void rb_check_pages(struct ring_buffer_per_cpu *cpu_buffer)
- {
--	struct list_head *head = rb_list_head(cpu_buffer->pages);
--	struct list_head *tmp;
-+	struct list_head *head, *tmp;
-+	unsigned long buffer_cnt;
-+	unsigned long flags;
-+	int nr_loops = 0;
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index 7f9021ca0ecb0..e41d4104d7702 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -75,7 +75,7 @@ static struct pll_vco lucid_ole_vco[] = {
+ 	{ 249600000, 2000000000, 0 },
+ };
  
--	if (RB_WARN_ON(cpu_buffer,
--			rb_list_head(rb_list_head(head->next)->prev) != head))
-+	/*
-+	 * Walk the linked list underpinning the ring buffer and validate all
-+	 * its next and prev links.
-+	 *
-+	 * The check acquires the reader_lock to avoid concurrent processing
-+	 * with code that could be modifying the list. However, the lock cannot
-+	 * be held for the entire duration of the walk, as this would make the
-+	 * time when interrupts are disabled non-deterministic, dependent on the
-+	 * ring buffer size. Therefore, the code releases and re-acquires the
-+	 * lock after checking each page. The ring_buffer_per_cpu.cnt variable
-+	 * is then used to detect if the list was modified while the lock was
-+	 * not held, in which case the check needs to be restarted.
-+	 *
-+	 * The code attempts to perform the check at most three times before
-+	 * giving up. This is acceptable because this is only a self-validation
-+	 * to detect problems early on. In practice, the list modification
-+	 * operations are fairly spaced, and so this check typically succeeds at
-+	 * most on the second try.
-+	 */
-+again:
-+	if (++nr_loops > 3)
- 		return;
+-static const struct alpha_pll_config disp_cc_pll0_config = {
++static struct alpha_pll_config disp_cc_pll0_config = {
+ 	.l = 0xd,
+ 	.alpha = 0x6492,
+ 	.config_ctl_val = 0x20485699,
+@@ -106,7 +106,7 @@ static struct clk_alpha_pll disp_cc_pll0 = {
+ 	},
+ };
  
--	if (RB_WARN_ON(cpu_buffer,
--			rb_list_head(rb_list_head(head->prev)->next) != head))
--		return;
-+	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
-+	head = rb_list_head(cpu_buffer->pages);
-+	if (!rb_check_links(cpu_buffer, head))
-+		goto out_locked;
-+	buffer_cnt = cpu_buffer->cnt;
-+	tmp = head;
-+	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+-static const struct alpha_pll_config disp_cc_pll1_config = {
++static struct alpha_pll_config disp_cc_pll1_config = {
+ 	.l = 0x1f,
+ 	.alpha = 0x4000,
+ 	.config_ctl_val = 0x20485699,
+@@ -594,6 +594,13 @@ static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src[] = {
+ 	{ }
+ };
  
--	for (tmp = rb_list_head(head->next); tmp != head; tmp = rb_list_head(tmp->next)) {
--		if (RB_WARN_ON(cpu_buffer,
--				rb_list_head(rb_list_head(tmp->next)->prev) != tmp))
--			return;
-+	while (true) {
-+		raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
++static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src_sar2130p[] = {
++	F(200000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
++	F(325000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
++	F(514000000, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
++	{ }
++};
++
+ static const struct freq_tbl ftbl_disp_cc_mdss_mdp_clk_src_sm8650[] = {
+ 	F(19200000, P_BI_TCXO, 1, 0, 0),
+ 	F(85714286, P_DISP_CC_PLL0_OUT_MAIN, 3, 0, 0),
+@@ -1750,6 +1757,7 @@ static struct qcom_cc_desc disp_cc_sm8550_desc = {
+ };
  
--		if (RB_WARN_ON(cpu_buffer,
--				rb_list_head(rb_list_head(tmp->prev)->next) != tmp))
--			return;
-+		if (buffer_cnt != cpu_buffer->cnt) {
-+			/* The list was updated, try again. */
-+			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
-+			goto again;
-+		}
-+
-+		tmp = rb_list_head(tmp->next);
-+		if (tmp == head)
-+			/* The iteration circled back, all is done. */
-+			goto out_locked;
-+
-+		if (!rb_check_links(cpu_buffer, tmp))
-+			goto out_locked;
-+
-+		raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
+ static const struct of_device_id disp_cc_sm8550_match_table[] = {
++	{ .compatible = "qcom,sar2130p-dispcc" },
+ 	{ .compatible = "qcom,sm8550-dispcc" },
+ 	{ .compatible = "qcom,sm8650-dispcc" },
+ 	{ }
+@@ -1780,6 +1788,12 @@ static int disp_cc_sm8550_probe(struct platform_device *pdev)
+ 		disp_cc_mdss_mdp_clk_src.freq_tbl = ftbl_disp_cc_mdss_mdp_clk_src_sm8650;
+ 		disp_cc_mdss_dptx1_usb_router_link_intf_clk.clkr.hw.init->parent_hws[0] =
+ 			&disp_cc_mdss_dptx1_link_div_clk_src.clkr.hw;
++	} else if (of_device_is_compatible(pdev->dev.of_node, "qcom,sar2130p-dispcc")) {
++		disp_cc_pll0_config.l = 0x1f;
++		disp_cc_pll0_config.alpha = 0x4000;
++		disp_cc_pll0_config.user_ctl_val = 0x1;
++		disp_cc_pll1_config.user_ctl_val = 0x1;
++		disp_cc_mdss_mdp_clk_src.freq_tbl = ftbl_disp_cc_mdss_mdp_clk_src_sar2130p;
  	}
-+
-+out_locked:
-+	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- }
  
- /*
-@@ -2532,6 +2581,7 @@ rb_remove_pages(struct ring_buffer_per_cpu *cpu_buffer, unsigned long nr_pages)
- 
- 	/* make sure pages points to a valid page in the ring buffer */
- 	cpu_buffer->pages = next_page;
-+	cpu_buffer->cnt++;
- 
- 	/* update head page */
- 	if (head_bit)
-@@ -2638,6 +2688,7 @@ rb_insert_pages(struct ring_buffer_per_cpu *cpu_buffer)
- 			 * pointer to point to end of list
- 			 */
- 			head_page->prev = last_page;
-+			cpu_buffer->cnt++;
- 			success = true;
- 			break;
- 		}
-@@ -2873,12 +2924,8 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 		 */
- 		synchronize_rcu();
- 		for_each_buffer_cpu(buffer, cpu) {
--			unsigned long flags;
--
- 			cpu_buffer = buffer->buffers[cpu];
--			raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
- 			rb_check_pages(cpu_buffer);
--			raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 		}
- 		atomic_dec(&buffer->record_disabled);
- 	}
-@@ -5296,6 +5343,7 @@ rb_get_reader_page(struct ring_buffer_per_cpu *cpu_buffer)
- 	rb_list_head(reader->list.next)->prev = &cpu_buffer->reader_page->list;
- 	rb_inc_page(&cpu_buffer->head_page);
- 
-+	cpu_buffer->cnt++;
- 	local_inc(&cpu_buffer->pages_read);
- 
- 	/* Finally update the reader page to the new head */
-@@ -5835,12 +5883,9 @@ void
- ring_buffer_read_finish(struct ring_buffer_iter *iter)
- {
- 	struct ring_buffer_per_cpu *cpu_buffer = iter->cpu_buffer;
--	unsigned long flags;
- 
- 	/* Use this opportunity to check the integrity of the ring buffer. */
--	raw_spin_lock_irqsave(&cpu_buffer->reader_lock, flags);
- 	rb_check_pages(cpu_buffer);
--	raw_spin_unlock_irqrestore(&cpu_buffer->reader_lock, flags);
- 
- 	atomic_dec(&cpu_buffer->resize_disabled);
- 	kfree(iter->event);
-@@ -6757,6 +6802,7 @@ int ring_buffer_subbuf_order_set(struct trace_buffer *buffer, int order)
- 		/* Install the new pages, remove the head from the list */
- 		cpu_buffer->pages = cpu_buffer->new_pages.next;
- 		list_del_init(&cpu_buffer->new_pages);
-+		cpu_buffer->cnt++;
- 
- 		cpu_buffer->head_page
- 			= list_entry(cpu_buffer->pages, struct buffer_page, list);
+ 	clk_lucid_ole_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
 -- 
 2.43.0
 
