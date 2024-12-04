@@ -1,92 +1,92 @@
-Return-Path: <stable+bounces-98204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213AB9E3188
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:45:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD699E318C
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:45:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96E4DB232EC
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 02:45:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37BC01682EB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 02:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBD1824A3;
-	Wed,  4 Dec 2024 02:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C525612B17C;
+	Wed,  4 Dec 2024 02:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bVyMHb86"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EJUwRo+I"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424546F31E
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 02:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE2327701
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 02:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733280308; cv=none; b=GklcSNF3WRZKDA7L9HcTHEBDEyYvg8EcZKUZWIkoIcDztd6vUFYdznC5vDnEVgKXDwkIkoCcDGux+iLe/bRpSarMUGb+4n7FiikTcIg4mpBNc5VImCc1W3Ir/crkiCMB3N1l3AXGV0ls3MJt6UeqcVn1oULG9aSwIU6bDxE9oiU=
+	t=1733280320; cv=none; b=D6fR8HNuKTUOnuZ1D9dGwP72/V+cH99JZM/bHrofS95Rtp9rUtupzXqAU0N0vayELNvfEAujctIQAQ1XvjcLeX2rdLHAL+hPfDH4Vq0cKr1gv7CKGgiBVJHUQXLi73P78cQFlI2W/Fj42J3XwbQo4zBKMwfuc7sEK0uRaYQ5S08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733280308; c=relaxed/simple;
-	bh=XbnQOq3MesemtOcTeCYxeKP2DW43Br9wh3sOMpJ7Mmo=;
+	s=arc-20240116; t=1733280320; c=relaxed/simple;
+	bh=Umu6Car8so61Fi6bkAY6iRnRqQR/TwCf6TWknn9Jf3s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ENGoHRf7wL1rchUoGclWNggWb6+24uIbvWREZmPJa9t8uoEeu0fxvzT2BjnO72zRA4t2aNb80ziT5Yr8gxbzu37JFayEvIIpOcmEQSIPLFTxJuEfSbJs5bJxcsGPUVVsCauzxvw/rpo+vo2NoLHsF21G+ULNdvMkwIYocL6X2yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bVyMHb86; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=mtt0SIgVvM91shHiU6dn3YEZ51i8K9p7I8GfYtOot4YJexR+jaWkTwJ9/F1FwHmUVany4U4JTTcq9bYafqDElo90cqG1nPj4VPlXBiEj/Y9HuVa2pRNC3aNhCAh68yxKahPT2ppuDDRTIjP/uTBYlfM2tknTtmleJwYUf0m2Nk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EJUwRo+I; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733280305;
+	s=mimecast20190719; t=1733280317;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XbnQOq3MesemtOcTeCYxeKP2DW43Br9wh3sOMpJ7Mmo=;
-	b=bVyMHb86puUYx2QRKQAD5W6hVOmByQITnkJsMbt820NT9xMwRO3g1OhdhxgyCqvpRV4GAF
-	iUqYLwJQ3Q26noP7MLH9J8qpsquNS9XX3L7WQi39DJX/GiVRAY1VJ62oTbwDZxNk/8eScP
-	3hdoqj5NjfSaM9116ilGD9dWYXbd61w=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=RT9vNRuz1GobfeJNstmUeuuIfbOl5noBbZUkCCOdLaQ=;
+	b=EJUwRo+Iu7sV3ajbIR8TVFopMJgI1fK1qUdoRqZH0WZ7wxDJ1TQRagG67HRXaNDLxkAytB
+	5BExei0RlM/2w01vv6770bZ/FQMA/YKhNdqYiaZw9U8xCbEnYPwyPHAn445thTH5EJxAZ/
+	gpg1zT9fS0SWeDluwKeyxxAx1s1j8fY=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-404-lcWOakRUM56hOKQDl6vnew-1; Tue, 03 Dec 2024 21:45:04 -0500
-X-MC-Unique: lcWOakRUM56hOKQDl6vnew-1
-X-Mimecast-MFC-AGG-ID: lcWOakRUM56hOKQDl6vnew
-Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-4adddccac28so856085137.2
-        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 18:45:04 -0800 (PST)
+ us-mta-645-vlu2KQk_OBG6BD974Q5Lxw-1; Tue, 03 Dec 2024 21:45:16 -0500
+X-MC-Unique: vlu2KQk_OBG6BD974Q5Lxw-1
+X-Mimecast-MFC-AGG-ID: vlu2KQk_OBG6BD974Q5Lxw
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-85b8f79174eso409738241.0
+        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 18:45:16 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733280303; x=1733885103;
+        d=1e100.net; s=20230601; t=1733280315; x=1733885115;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XbnQOq3MesemtOcTeCYxeKP2DW43Br9wh3sOMpJ7Mmo=;
-        b=eso+QSH/hUAmVWGhd7Q1NUqp8hIyKRT539MKTfFXoa+z87iHZk/qKl9TorhKh99g/f
-         L5TEhRDciS7r4hjfo4P5BO4eyscqe153z4NXtvTpv2B6XEVn6sutQFQAy/8JV5RjlFiV
-         Ruf13HFW4+8eWCT35AjAhD0v5eLvJr8qkR8p88OtVg3b24OGJW5aZJCrkRsEzKt8VyMF
-         offjsDu+ObcJtWtzcEtKTWhmVjh7ifqBPGig4U3XOaEm8vKtKC8lwq9YBjt+Br11rOCV
-         +LqkRUJAFki0Pg/OLJTe+OKHyP6mzdEb4vO8ztK8mjzsQfj1bX8f94Waasbfplykq4vF
-         Wt2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVLSSy3ez99pnM3JqRLM9icC8iPMXdCbLdi7YoeDXHD6uPTj9dXX0zKHrmFgcocITL13WJuxp8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzVLGwxl8A7//fVB1fui4v1mDUIfvFko8sI1ayxTob2rhv6GJp
-	THeLb+75cFL6tuqm6lL6pFe5TK44+qYvDsxV0Llj/5pmnb3yq9JndPqLym4fsec+Ca1BO7HQemZ
-	oFlq0gHcHRGoONCz1c66xnhlVWpF4mVEscj4wUnwPm7xUQ0ip6uHQD4AgeZrt33J+2mP5CevpBX
-	3rLtzzY+kIEkv1HY1xV53vApsBdfHj
-X-Gm-Gg: ASbGncux15czUg92br9fctSu8gBZgkbUhyLOVVxelQVFNcT3QFBLUPW9HC2dtPT2+QX
-	7MJ7gjady9nsOkY+9MLXFiw8VM9VIt8jl
-X-Received: by 2002:a05:6102:5489:b0:4af:aaa4:dd9a with SMTP id ada2fe7eead31-4afaaa51842mr2184621137.10.1733280303456;
-        Tue, 03 Dec 2024 18:45:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEnv582pmJNRSCddpQRIMLUIrhRF1VM316y4CUO+jOhzMa7TrksbE6s7FhVZ/bBvYjjr0SiWjodQSlPoQUf1dM=
-X-Received: by 2002:a05:6102:5489:b0:4af:aaa4:dd9a with SMTP id
- ada2fe7eead31-4afaaa51842mr2184605137.10.1733280303130; Tue, 03 Dec 2024
- 18:45:03 -0800 (PST)
+        bh=RT9vNRuz1GobfeJNstmUeuuIfbOl5noBbZUkCCOdLaQ=;
+        b=RnnWk+E9T4qc81C4OU6BnuEH9vin198BUAwSYjv6Uh+2fgrJfXcD5UBsYWnK7bmO98
+         VtCX3YCHnfFmdbxfDzrL92o48QBGSLdXOc0ZJS90vC4xsN/T4l2DRjpzUS8RCvJvHGIl
+         CCRCHARztLXmq4djLWo9GUiM0NfvLLAsLAfA8z0us86vC0atKRPRmn37ID0B2O93lpty
+         8Mxa8sCJN2FRnqwkUzMRpugj8pd35VGQYDiI4yaP+H3G2a6izPqRrAbokHuiT62v5zsY
+         WZ4JY12znxAVdGt6ru6W2U22/WIz4VFYE3RPQG4sovOgs9lFg+/AiqkKkf6ZsOZOQtIa
+         njVw==
+X-Forwarded-Encrypted: i=1; AJvYcCW30FG51Z6Ke0RD+fHTuq7WLCOKkQpvwNwuKyZhdxuRiTPcDsXArVv/H0XvzJwotqH6FMiKKVA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5eBX/AB6tPWDzn8fMnpeIGFVQx56yrxmUCPKh1AdaFVwCEWUy
+	5q8sXaeIAS1RZaxS9FNoOvj7F8eeXTSjqGKt4YHyckcxBwcLZ2GYULGfSBiDqp16gkglkK6vQAL
+	r/O9eFLznKxkAWjF+hqn6qYEi3VnbpjHHAlGo9Sfza2TuiL9skJaMNS/5URxAj701BW8Pf5zsmZ
+	Q/0ERBufJQvjVBvJRschcLyh2kgddi
+X-Gm-Gg: ASbGnct5cu3vOXweWE6bvrmF23Z7HCC7lT2Q1bOzSuTJBtia1ats/95J65fkvimnFrj
+	lvqsm5oInE66t4vfVno4Srt2uzUPUeKv5
+X-Received: by 2002:a05:6122:801b:10b0:515:43ff:6ed8 with SMTP id 71dfb90a1353d-5156a90343emr25217260e0c.5.1733280315545;
+        Tue, 03 Dec 2024 18:45:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEaM8Ub1sBHOGnSplmbxx9nJgyCNXBRz6PfmwefSmiYMyYCu+B2aXJqKKCAZbP3xlJThMftJTyXJnOKMB/xVG8=
+X-Received: by 2002:a05:6122:801b:10b0:515:43ff:6ed8 with SMTP id
+ 71dfb90a1353d-5156a90343emr25217252e0c.5.1733280315145; Tue, 03 Dec 2024
+ 18:45:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203073025.67065-1-koichiro.den@canonical.com> <20241203073025.67065-3-koichiro.den@canonical.com>
-In-Reply-To: <20241203073025.67065-3-koichiro.den@canonical.com>
+References: <20241203073025.67065-1-koichiro.den@canonical.com> <20241203073025.67065-2-koichiro.den@canonical.com>
+In-Reply-To: <20241203073025.67065-2-koichiro.den@canonical.com>
 From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 4 Dec 2024 10:44:50 +0800
-Message-ID: <CACGkMEu=zjbnyLGLESsSUx_J_KkcKHYo2dBDuQ_evvkOuJ=bEw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 2/5] virtio_ring: add 'flushed' as an argument
- to virtqueue_resize()
+Date: Wed, 4 Dec 2024 10:45:01 +0800
+Message-ID: <CACGkMEvFMM84n8FV_qxTURzqOx0GLQLFrAyLRnX-8yWjT+MBWw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/5] virtio_net: correct netdev_tx_reset_queue()
+ invocation point
 To: Koichiro Den <koichiro.den@canonical.com>
 Cc: virtualization@lists.linux.dev, mst@redhat.com, xuanzhuo@linux.alibaba.com, 
 	eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
@@ -98,12 +98,145 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Dec 3, 2024 at 3:31=E2=80=AFPM Koichiro Den <koichiro.den@canonical=
 .com> wrote:
 >
-> When virtqueue_resize() has actually recycled all unused buffers,
-> additional work may be required in some cases. Relying solely on its
-> return status is fragile, so introduce a new argument 'flushed' to
-> explicitly indicate whether it has really occurred.
+> When virtnet_close is followed by virtnet_open, some TX completions can
+> possibly remain unconsumed, until they are finally processed during the
+> first NAPI poll after the netdev_tx_reset_queue(), resulting in a crash
+> [1]. Commit b96ed2c97c79 ("virtio_net: move netdev_tx_reset_queue() call
+> before RX napi enable") was not sufficient to eliminate all BQL crash
+> cases for virtio-net.
 >
+> This issue can be reproduced with the latest net-next master by running:
+> `while :; do ip l set DEV down; ip l set DEV up; done` under heavy networ=
+k
+> TX load from inside the machine.
+>
+> netdev_tx_reset_queue() can actually be dropped from virtnet_open path;
+> the device is not stopped in any case. For BQL core part, it's just like
+> traffic nearly ceases to exist for some period. For stall detector added
+> to BQL, even if virtnet_close could somehow lead to some TX completions
+> delayed for long, followed by virtnet_open, we can just take it as stall
+> as mentioned in commit 6025b9135f7a ("net: dqs: add NIC stall detector
+> based on BQL"). Note also that users can still reset stall_max via sysfs.
+>
+> So, drop netdev_tx_reset_queue() from virtnet_enable_queue_pair(). This
+> eliminates the BQL crashes. Note that netdev_tx_reset_queue() is now
+> explicitly required in freeze/restore path, so this patch adds it to
+> free_unused_bufs().
+>
+> [1]:
+> ------------[ cut here ]------------
+> kernel BUG at lib/dynamic_queue_limits.c:99!
+> Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 7 UID: 0 PID: 1598 Comm: ip Tainted: G    N 6.12.0net-next_main+ #2
+> Tainted: [N]=3DTEST
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), \
+> BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:dql_completed+0x26b/0x290
+> Code: b7 c2 49 89 e9 44 89 da 89 c6 4c 89 d7 e8 ed 17 47 00 58 65 ff 0d
+> 4d 27 90 7e 0f 85 fd fe ff ff e8 ea 53 8d ff e9 f3 fe ff ff <0f> 0b 01
+> d2 44 89 d1 29 d1 ba 00 00 00 00 0f 48 ca e9 28 ff ff ff
+> RSP: 0018:ffffc900002b0d08 EFLAGS: 00010297
+> RAX: 0000000000000000 RBX: ffff888102398c80 RCX: 0000000080190009
+> RDX: 0000000000000000 RSI: 000000000000006a RDI: 0000000000000000
+> RBP: ffff888102398c00 R08: 0000000000000000 R09: 0000000000000000
+> R10: 00000000000000ca R11: 0000000000015681 R12: 0000000000000001
+> R13: ffffc900002b0d68 R14: ffff88811115e000 R15: ffff8881107aca40
+> FS:  00007f41ded69500(0000) GS:ffff888667dc0000(0000)
+> knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000556ccc2dc1a0 CR3: 0000000104fd8003 CR4: 0000000000772ef0
+> PKRU: 55555554
+> Call Trace:
+>  <IRQ>
+>  ? die+0x32/0x80
+>  ? do_trap+0xd9/0x100
+>  ? dql_completed+0x26b/0x290
+>  ? dql_completed+0x26b/0x290
+>  ? do_error_trap+0x6d/0xb0
+>  ? dql_completed+0x26b/0x290
+>  ? exc_invalid_op+0x4c/0x60
+>  ? dql_completed+0x26b/0x290
+>  ? asm_exc_invalid_op+0x16/0x20
+>  ? dql_completed+0x26b/0x290
+>  __free_old_xmit+0xff/0x170 [virtio_net]
+>  free_old_xmit+0x54/0xc0 [virtio_net]
+>  virtnet_poll+0xf4/0xe30 [virtio_net]
+>  ? __update_load_avg_cfs_rq+0x264/0x2d0
+>  ? update_curr+0x35/0x260
+>  ? reweight_entity+0x1be/0x260
+>  __napi_poll.constprop.0+0x28/0x1c0
+>  net_rx_action+0x329/0x420
+>  ? enqueue_hrtimer+0x35/0x90
+>  ? trace_hardirqs_on+0x1d/0x80
+>  ? kvm_sched_clock_read+0xd/0x20
+>  ? sched_clock+0xc/0x30
+>  ? kvm_sched_clock_read+0xd/0x20
+>  ? sched_clock+0xc/0x30
+>  ? sched_clock_cpu+0xd/0x1a0
+>  handle_softirqs+0x138/0x3e0
+>  do_softirq.part.0+0x89/0xc0
+>  </IRQ>
+>  <TASK>
+>  __local_bh_enable_ip+0xa7/0xb0
+>  virtnet_open+0xc8/0x310 [virtio_net]
+>  __dev_open+0xfa/0x1b0
+>  __dev_change_flags+0x1de/0x250
+>  dev_change_flags+0x22/0x60
+>  do_setlink.isra.0+0x2df/0x10b0
+>  ? rtnetlink_rcv_msg+0x34f/0x3f0
+>  ? netlink_rcv_skb+0x54/0x100
+>  ? netlink_unicast+0x23e/0x390
+>  ? netlink_sendmsg+0x21e/0x490
+>  ? ____sys_sendmsg+0x31b/0x350
+>  ? avc_has_perm_noaudit+0x67/0xf0
+>  ? cred_has_capability.isra.0+0x75/0x110
+>  ? __nla_validate_parse+0x5f/0xee0
+>  ? __pfx___probestub_irq_enable+0x3/0x10
+>  ? __create_object+0x5e/0x90
+>  ? security_capable+0x3b/0x70
+>  rtnl_newlink+0x784/0xaf0
+>  ? avc_has_perm_noaudit+0x67/0xf0
+>  ? cred_has_capability.isra.0+0x75/0x110
+>  ? stack_depot_save_flags+0x24/0x6d0
+>  ? __pfx_rtnl_newlink+0x10/0x10
+>  rtnetlink_rcv_msg+0x34f/0x3f0
+>  ? do_syscall_64+0x6c/0x180
+>  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+>  netlink_rcv_skb+0x54/0x100
+>  netlink_unicast+0x23e/0x390
+>  netlink_sendmsg+0x21e/0x490
+>  ____sys_sendmsg+0x31b/0x350
+>  ? copy_msghdr_from_user+0x6d/0xa0
+>  ___sys_sendmsg+0x86/0xd0
+>  ? __pte_offset_map+0x17/0x160
+>  ? preempt_count_add+0x69/0xa0
+>  ? __call_rcu_common.constprop.0+0x147/0x610
+>  ? preempt_count_add+0x69/0xa0
+>  ? preempt_count_add+0x69/0xa0
+>  ? _raw_spin_trylock+0x13/0x60
+>  ? trace_hardirqs_on+0x1d/0x80
+>  __sys_sendmsg+0x66/0xc0
+>  do_syscall_64+0x6c/0x180
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x7f41defe5b34
+> Code: 15 e1 12 0f 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00
+> f3 0f 1e fa 80 3d 35 95 0f 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00
+> f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+> RSP: 002b:00007ffe5336ecc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f41defe5b34
+> RDX: 0000000000000000 RSI: 00007ffe5336ed30 RDI: 0000000000000003
+> RBP: 00007ffe5336eda0 R08: 0000000000000010 R09: 0000000000000001
+> R10: 00007ffe5336f6f9 R11: 0000000000000202 R12: 0000000000000003
+> R13: 0000000067452259 R14: 0000556ccc28b040 R15: 0000000000000000
+>  </TASK>
+> [...]
+> ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+>
+> Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
+> Cc: <stable@vger.kernel.org> # v6.11+
 > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+> ---
 
 Acked-by: Jason Wang <jasowang@redhat.com>
 
