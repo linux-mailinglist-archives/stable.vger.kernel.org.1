@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-98510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BCD9E4487
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:25:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73459E45DC
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35AC7BC3D0A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:48:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3082BC43BA
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4467D20808F;
-	Wed,  4 Dec 2024 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF10C23367B;
+	Wed,  4 Dec 2024 17:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnWjGlHu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PnkOQ8q+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B5C208088;
-	Wed,  4 Dec 2024 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7A5233682;
+	Wed,  4 Dec 2024 17:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332373; cv=none; b=kkMGbugC5c0sSJFQmcnH1QdKYG5LTVnMyAYuovKu/0Nt03TVSSHpvo7D729mNu0kIS12K2m5xKpgGgOdVoAfU9IjaQxluBOl8t5Bm53EAKTjkllPZnL40Tih5RFzVSEQAsRgVLxFMLVua+9eGZiU0onmYIm9fq3mxmqQJmJ22sU=
+	t=1733332382; cv=none; b=hYy73E0tvw0Do2rmdn1ZyUzjMYrOngi7EfV/f0cq7SLJ+0FYLQBCTFbZ2RMiP3M1tNpY7hlM93uSOo6gocV4cE8Pz9VHlJhNlEbzuFdKuKvdUCzwX8iCwe+nCY06XOUXKeSALDumEIuCeNN/KCN26byX7RfIT7LfYiC9BREUWd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332373; c=relaxed/simple;
-	bh=+prgbQJ7bK5DDcrltgzkru2+wjUv6I+mbmQKBN1Ttdc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEbMhKCtr5DQb3lbeZbCuTIDGhFQfkUfixtycujGr7KkEDhawy5diwvbVtOf7Zcv/TouCscBVmNon9Jy9M3+WLKoTuq7OOdwyPy5/2EluKwp24ecYg3xxon4HHuj39fHsHlcPChd+zPBY2rU6+g1rYP1UcQjA3dp40qAJEZAQZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnWjGlHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1C1C4CED6;
-	Wed,  4 Dec 2024 17:12:51 +0000 (UTC)
+	s=arc-20240116; t=1733332382; c=relaxed/simple;
+	bh=nbUSKLOVCskGwS+rrDWhi086fbtxWW3E6+M68LdtxCs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h92Ov5QzahEMOehN/0TSJzLZXqNCGZXxS6plsnVQRqYXhHpkLgL21a7H8arCidR+F8fs8Tk/jNK2dlseIFlJnNom93Y7F8N+zlGTupyF6E0ZRCQWO4uMcrJFmY4vqW0xPtQ+lf1xWNMpe5SnygzXH1j/kVdPRlnLJzDkWqKBZl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PnkOQ8q+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04C3C4CECD;
+	Wed,  4 Dec 2024 17:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332372;
-	bh=+prgbQJ7bK5DDcrltgzkru2+wjUv6I+mbmQKBN1Ttdc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnWjGlHuK9UFVS10AM1u7UUm3sQdX0D4kDJvk/MlkGNPVyENGIRz1LlFT1jFtlNQS
-	 q+teuAFafhdDMdugnyNKtWSQlF6oZAMxnbvdTvWZUBhmsArwC3ez5hq/0Yt7nIfIw1
-	 /nLPTrewTdRE+ynLOZ6PiDcZwblcD5qpIzKNfMDpxOrWRFLEDkHGUoWIh5UkjdtD/g
-	 wep9l+2tMCXsS1k3RPMjBXGAl+SkuC/fwu2jG8pGERkfY2E45cs2DQGjA7vXQHIFFf
-	 Z0xnvJw6F7O+H8y1LWPlqBr1TFGHXA328v7H0Qt6805Pb3rye8kq0PNoOoh3LE82c2
-	 vGrFDUXbnAUYw==
+	s=k20201202; t=1733332382;
+	bh=nbUSKLOVCskGwS+rrDWhi086fbtxWW3E6+M68LdtxCs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PnkOQ8q+ShGNuqUoAHuuZUGBQpsw9lsPIDtchQ4DZ+ELBVmEIc/4d8wzPPFE0zQ87
+	 H6mBVzgZ9Rq2Oq6WGzZaFWz/qSyMboWbUzTEiw1ERg//QqQO3SPvYP7oLAGyH2m2as
+	 9xxKidgZ/dCcmBnNu0N8+GN2I1Co1aPx6jV+6qzTE7rFv7Ps1BK1RnzaKRhbNGJMYq
+	 LdMkYuh7t2lrBnGdNb4RMXXTtwUGI+rBc3wgXy7/20mGmu4mb2X/4bLB3056V9lZjW
+	 RJV/FvUbzCaBDx39Y3ZAEhx36mmCVB7d8AfMjID3s5Y6+n13NPK63BlCrMLJMtEmry
+	 OT2LGZDuAXVQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Defa Li <defa.li@mediatek.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Qi Han <hanqi@vivo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-i3c@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 10/12] i3c: Use i3cdev->desc->info instead of calling i3c_device_get_info() to avoid deadlock
-Date: Wed,  4 Dec 2024 11:01:07 -0500
-Message-ID: <20241204160115.2216718-10-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.1 1/6] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
+Date: Wed,  4 Dec 2024 11:01:33 -0500
+Message-ID: <20241204160142.2217017-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204160115.2216718-1-sashal@kernel.org>
-References: <20241204160115.2216718-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,113 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.63
+X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Defa Li <defa.li@mediatek.com>
+From: Qi Han <hanqi@vivo.com>
 
-[ Upstream commit 6cf7b65f7029914dc0cd7db86fac9ee5159008c6 ]
+[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
 
-A deadlock may happen since the i3c_master_register() acquires
-&i3cbus->lock twice. See the log below.
-Use i3cdev->desc->info instead of calling i3c_device_info() to
-avoid acquiring the lock twice.
+creating a large files during checkpoint disable until it runs out of
+space and then delete it, then remount to enable checkpoint again, and
+then unmount the filesystem triggers the f2fs_bug_on as below:
 
-v2:
-  - Modified the title and commit message
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/inode.c:896!
+CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+RIP: 0010:f2fs_evict_inode+0x58c/0x610
+Call Trace:
+ __die_body+0x15/0x60
+ die+0x33/0x50
+ do_trap+0x10a/0x120
+ f2fs_evict_inode+0x58c/0x610
+ do_error_trap+0x60/0x80
+ f2fs_evict_inode+0x58c/0x610
+ exc_invalid_op+0x53/0x60
+ f2fs_evict_inode+0x58c/0x610
+ asm_exc_invalid_op+0x16/0x20
+ f2fs_evict_inode+0x58c/0x610
+ evict+0x101/0x260
+ dispose_list+0x30/0x50
+ evict_inodes+0x140/0x190
+ generic_shutdown_super+0x2f/0x150
+ kill_block_super+0x11/0x40
+ kill_f2fs_super+0x7d/0x140
+ deactivate_locked_super+0x2a/0x70
+ cleanup_mnt+0xb3/0x140
+ task_work_run+0x61/0x90
 
-============================================
-WARNING: possible recursive locking detected
-6.11.0-mainline
---------------------------------------------
-init/1 is trying to acquire lock:
-f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_bus_normaluse_lock
+The root cause is: creating large files during disable checkpoint
+period results in not enough free segments, so when writing back root
+inode will failed in f2fs_enable_checkpoint. When umount the file
+system after enabling checkpoint, the root inode is dirty in
+f2fs_evict_inode function, which triggers BUG_ON. The steps to
+reproduce are as follows:
 
-but task is already holding lock:
-f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
+dd if=/dev/zero of=f2fs.img bs=1M count=55
+mount f2fs.img f2fs_dir -o checkpoint=disable:10%
+dd if=/dev/zero of=big bs=1M count=50
+sync
+rm big
+mount -o remount,checkpoint=enable f2fs_dir
+umount f2fs_dir
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
+Let's redirty inode when there is not free segments during checkpoint
+is disable.
 
-       CPU0
-       ----
-  lock(&i3cbus->lock);
-  lock(&i3cbus->lock);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-2 locks held by init/1:
- #0: fcffff809b6798f8 (&dev->mutex){....}-{3:3}, at: __driver_attach
- #1: f1ffff80a6a40dc0 (&i3cbus->lock){++++}-{3:3}, at: i3c_master_register
-
-stack backtrace:
-CPU: 6 UID: 0 PID: 1 Comm: init
-Call trace:
- dump_backtrace+0xfc/0x17c
- show_stack+0x18/0x28
- dump_stack_lvl+0x40/0xc0
- dump_stack+0x18/0x24
- print_deadlock_bug+0x388/0x390
- __lock_acquire+0x18bc/0x32ec
- lock_acquire+0x134/0x2b0
- down_read+0x50/0x19c
- i3c_bus_normaluse_lock+0x14/0x24
- i3c_device_get_info+0x24/0x58
- i3c_device_uevent+0x34/0xa4
- dev_uevent+0x310/0x384
- kobject_uevent_env+0x244/0x414
- kobject_uevent+0x14/0x20
- device_add+0x278/0x460
- device_register+0x20/0x34
- i3c_master_register_new_i3c_devs+0x78/0x154
- i3c_master_register+0x6a0/0x6d4
- mtk_i3c_master_probe+0x3b8/0x4d8
- platform_probe+0xa0/0xe0
- really_probe+0x114/0x454
- __driver_probe_device+0xa0/0x15c
- driver_probe_device+0x3c/0x1ac
- __driver_attach+0xc4/0x1f0
- bus_for_each_dev+0x104/0x160
- driver_attach+0x24/0x34
- bus_add_driver+0x14c/0x294
- driver_register+0x68/0x104
- __platform_driver_register+0x20/0x30
- init_module+0x20/0xfe4
- do_one_initcall+0x184/0x464
- do_init_module+0x58/0x1ec
- load_module+0xefc/0x10c8
- __arm64_sys_finit_module+0x238/0x33c
- invoke_syscall+0x58/0x10c
- el0_svc_common+0xa8/0xdc
- do_el0_svc+0x1c/0x28
- el0_svc+0x50/0xac
- el0t_64_sync_handler+0x70/0xbc
- el0t_64_sync+0x1a8/0x1ac
-
-Signed-off-by: Defa Li <defa.li@mediatek.com>
-Link: https://lore.kernel.org/r/20241107132549.25439-1-defa.li@mediatek.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 0e9ff5500a777..d66ff7a98c71d 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -280,7 +280,8 @@ static int i3c_device_uevent(const struct device *dev, struct kobj_uevent_env *e
- 	struct i3c_device_info devinfo;
- 	u16 manuf, part, ext;
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 5b672df194a99..0f350368dea73 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -719,8 +719,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
+ 		return 0;
  
--	i3c_device_get_info(i3cdev, &devinfo);
-+	if (i3cdev->desc)
-+		devinfo = i3cdev->desc->info;
- 	manuf = I3C_PID_MANUF_ID(devinfo.pid);
- 	part = I3C_PID_PART_ID(devinfo.pid);
- 	ext = I3C_PID_EXTRA_INFO(devinfo.pid);
+-	if (!f2fs_is_checkpoint_ready(sbi))
++	if (!f2fs_is_checkpoint_ready(sbi)) {
++		f2fs_mark_inode_dirty_sync(inode, true);
+ 		return -ENOSPC;
++	}
+ 
+ 	/*
+ 	 * We need to balance fs here to prevent from producing dirty node pages
 -- 
 2.43.0
 
