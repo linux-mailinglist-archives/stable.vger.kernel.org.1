@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-98497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2734B9E4222
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:44:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51889E4225
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:45:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00E3E168E13
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:44:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70326287349
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788A9206F1F;
-	Wed,  4 Dec 2024 17:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0338B22F39E;
+	Wed,  4 Dec 2024 17:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIqkoCJw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKE1gvt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31384206F19;
-	Wed,  4 Dec 2024 17:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D12206F2B;
+	Wed,  4 Dec 2024 17:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332343; cv=none; b=RTItYqr1w57Au5eq5GnLGJxTcfYaFSvS06tdtyvaoLRKEHtESxRAOgMWejzHxMMbQ/UdyqX7hIDjgw+0XmEeb1uBwgnwzm+JKbT3mUuvLOT4fvDuXtuNR0tMzrlSliHq/4OveMNnEN2uy5BRavTiDWdv5CEczxYMCrSDvAdgU0c=
+	t=1733332346; cv=none; b=IYixrxKcrxaTIwJuLY+B0P7OUDulZZLvNH/i7YsHa5+1fW0whQXgFnyaULy7PEv8lGBCRJN4H1PcG2+WzS0aeRoCblmbDkacEqIsjgKl5FLz5g8GRiABfGv8hrNcwG4QztV/tTPAcMiksNsSutsrE8waHWCP7MRZZKdP5M+RCmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332343; c=relaxed/simple;
-	bh=ckDMjVDSyBTqcPOpG8jfSlViv6qZAcYWL7qVzsWgtYM=;
+	s=arc-20240116; t=1733332346; c=relaxed/simple;
+	bh=BDcY9jP3Y82p/ki8rX0LX77R2FO03nOBjVn+X3fyvAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TcTB5ohnsWG5QbDcy8dFQuY+ADEhCNAgQTDrahzeAe+yJZAQlgqZOfwzC9EUiJOoEd4bnnMJmjCTeIvNgHC3idw3mgMcychTYyMOv+bvQTQBwiOEHVeKYw2OKMhUfkyQNP+MIs5xV9sKpCLbafMDgq84CJUyqhyFxwV6diWlO0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIqkoCJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52A0C4CEDF;
-	Wed,  4 Dec 2024 17:12:21 +0000 (UTC)
+	 MIME-Version; b=LlYhtg828+jiroNXpf6iS3HTxqbtZB1bA8wbxyJWehrcUHLgLcD+yvgUpmMPDQrpX9RtIxl2HC9n/oZYzNgpaemugcP1qMeFhlkFMSMr535oXuMvqf6bJPH19WJCmc9yR2yA+/HTX15meAsIr8GON2ZN47kdvTUj59mT1FkXzSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKE1gvt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7492FC4CED6;
+	Wed,  4 Dec 2024 17:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332342;
-	bh=ckDMjVDSyBTqcPOpG8jfSlViv6qZAcYWL7qVzsWgtYM=;
+	s=k20201202; t=1733332345;
+	bh=BDcY9jP3Y82p/ki8rX0LX77R2FO03nOBjVn+X3fyvAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIqkoCJwZMjNqLbr4oHIdKyvdz4eC4aI9fbG3R3/CTvFzQNFTbJVhYABCNArcYYqw
-	 8zSd679WV86w4Pxyli0nrLSrheMWxyFLh9IAlh8Ksbk22NBC3T5lTCsFKndtXGO5+R
-	 r6W2E5P8NEBS78UIigTDFvG9dTGwxk++p498xAHy2L85UujJoopAYtUfSWICBSJqjB
-	 ijpvcv+cIEUfKfj05cT009gh3y+dBcaJGO8nqGLx54acvF1mKqcyfXqSFSdxXvG6rl
-	 8Id9k3rY2LIZaR1M8eAQzLq3elc5tyCI6zn9vEmb8KDEqdKoGCwzy8f8I/KGNbqmKB
-	 4KgoDXp+LR2XA==
+	b=GKE1gvt6rZua6Zhrh/2l8Ny9sB9RiSKm2IEZS2gdbm64iSYYrND+TM7ZBZ/JYda5U
+	 BJQ14qmluPGbXE9iEHNnBvF3YH8caP36d5OqiOb47yTrtYCr0akbl54E+g7la1eyW0
+	 SknSh2SRDhLlWEI/MSkCEAwqYqHQB3H4vs9+GP2JtuavleovFtZV6em7sDVkmsI4YK
+	 6zNVx15O99sWChMHlF/dOAVPmLQfJL8DrROYNFXwbD4FPr7yXNiWtcVII8jWWmVGHA
+	 pO0mvhl3C6bXiTTGqNOE3ODfc/kDIv/2z5mxeCM5740UXKCHF9oAII06bmeX9JcHCU
+	 JdHjr29Pls//w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+Cc: Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 10/13] PCI: Add ACS quirk for Wangxun FF5xxx NICs
-Date: Wed,  4 Dec 2024 11:00:35 -0500
-Message-ID: <20241204160044.2216380-10-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.11 12/13] f2fs: print message if fscorrupted was found in f2fs_new_node_page()
+Date: Wed,  4 Dec 2024 11:00:37 -0500
+Message-ID: <20241204160044.2216380-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204160044.2216380-1-sashal@kernel.org>
 References: <20241204160044.2216380-1-sashal@kernel.org>
@@ -65,61 +65,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit aa46a3736afcb7b0793766d22479b8b99fc1b322 ]
+[ Upstream commit 81520c684ca67aea6a589461a3caebb9b11dcc90 ]
 
-Wangxun FF5xxx NICs are similar to SFxxx, RP1000 and RP2000 NICs.  They may
-be multi-function devices, but they do not advertise an ACS capability.
+If fs corruption occurs in f2fs_new_node_page(), let's print
+more information about corrupted metadata into kernel log.
 
-But the hardware does isolate FF5xxx functions as though it had an ACS
-capability and PCI_ACS_RR and PCI_ACS_CR were set in the ACS Control
-register, i.e., all peer-to-peer traffic is directed upstream instead of
-being routed internally.
+Meanwhile, it updates to record ERROR_INCONSISTENT_NAT instead
+of ERROR_INVALID_BLKADDR if blkaddr in nat entry is not
+NULL_ADDR which means nat bitmap and nat entry is inconsistent.
 
-Add ACS quirk for FF5xxx NICs in pci_quirk_wangxun_nic_acs() so the
-functions can be in independent IOMMU groups.
-
-Link: https://lore.kernel.org/r/E16053DB2B80E9A5+20241115024604.30493-1-mengyuanlou@net-swift.com
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ fs/f2fs/node.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index dccb60c1d9cc3..8103bc24a54ea 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4996,18 +4996,21 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev, u16 acs_flags)
- }
- 
- /*
-- * Wangxun 10G/1G NICs have no ACS capability, and on multi-function
-- * devices, peer-to-peer transactions are not be used between the functions.
-- * So add an ACS quirk for below devices to isolate functions.
-+ * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
-+ * multi-function devices, the hardware isolates the functions by
-+ * directing all peer-to-peer traffic upstream as though PCI_ACS_RR and
-+ * PCI_ACS_CR were set.
-  * SFxxx 1G NICs(em).
-  * RP1000/RP2000 10G NICs(sp).
-+ * FF5xxx 40G/25G/10G NICs(aml).
-  */
- static int  pci_quirk_wangxun_nic_acs(struct pci_dev *dev, u16 acs_flags)
- {
- 	switch (dev->device) {
--	case 0x0100 ... 0x010F:
--	case 0x1001:
--	case 0x2001:
-+	case 0x0100 ... 0x010F: /* EM */
-+	case 0x1001: case 0x2001: /* SP */
-+	case 0x5010: case 0x5025: case 0x5040: /* AML */
-+	case 0x5110: case 0x5125: case 0x5140: /* AML */
- 		return pci_acs_ctrl_enabled(acs_flags,
- 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index b72ef96f7e33a..6ed4b1b2e7d94 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1331,7 +1331,12 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 		err = -EFSCORRUPTED;
+ 		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+-		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
++		f2fs_warn_ratelimited(sbi,
++			"f2fs_new_node_page: inconsistent nat entry, "
++			"ino:%u, nid:%u, blkaddr:%u, ver:%u, flag:%u",
++			new_ni.ino, new_ni.nid, new_ni.blk_addr,
++			new_ni.version, new_ni.flag);
++		f2fs_handle_error(sbi, ERROR_INCONSISTENT_NAT);
+ 		goto fail;
  	}
+ #endif
 -- 
 2.43.0
 
