@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-98669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F8C9E49C7
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:45:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7678A9E49C8
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:45:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 080EE16459F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:43:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A34316B10C
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F2C221466;
-	Wed,  4 Dec 2024 23:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFC5221477;
+	Wed,  4 Dec 2024 23:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a94rZvoR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UnFh/9Ix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FBE221461;
-	Wed,  4 Dec 2024 23:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3555C202C54;
+	Wed,  4 Dec 2024 23:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733355081; cv=none; b=GRSaD1xNV+NA/xTF2RCIGg30czn+kFratZp+1UU0slex3NPqirZwSp9RgnpZFiPXP5Wjd0MlBCof8EYSSQNyow9Nb9tC/9ekeyZ/DgLaJXNKYLwGaznvb6bTdegN5Xs2ogZW0pifpB0WVlABtUpx0fy41ufPaYiuDtBqPOE/n3g=
+	t=1733355086; cv=none; b=orFiiPAGMPh7Ev758l2IMeHd2+MdxYCyHiQbVLplJZ1P13zDZ1V0P+xhhVokWFDuOBACvxbVLAIvOmuTkGecvPEO9VUbyyRQJd092kKJNDmq5GZ13wZlUfIU4XHZQae3oiWQVIAXlXzTFyf0+ohL59/pWuk9wMJFhl8bCmOIedk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733355081; c=relaxed/simple;
-	bh=UPDQbnLjFtIUDVYYo483+FCn6THQPTwzGxqrRVfxNtk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f26QRVWp2qQkZF5XSYkBAxcoG5pd2JezLYDyG8zHmZxvSzaFErJSBlHqcuiGJrHgQJ7kAFjUJ3Hju4NOjNI2DL8oNDQ5wzBGV7WVB72RWkgQPBUcs0z1RwdwcEvwJdGUM3/6Lg32cUitQx1ATzedxi79qSRDPzDDZtZC2lwpVJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a94rZvoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CCBC4CECD;
-	Wed,  4 Dec 2024 23:31:20 +0000 (UTC)
+	s=arc-20240116; t=1733355086; c=relaxed/simple;
+	bh=usj7+BpAioBWq1ukTSyPWCfNmAGcJKm5+IZrw+TQa8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZR2kstRirJ2vo05BjxQ1jHegIPQUcqW6m89pjk53aA8LoQEpRBfgCd1EgG/T/IcDwGXFJ6+xp628VYbCP6cc2ho0llJcsFn+jPYOrSB2siJz5vDSOBBAE6Fj0nmb95xlJXfklUBQv+VGnV0u4lJQFVCglfThrAT0iL50c6apOwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UnFh/9Ix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C962C4CED2;
+	Wed,  4 Dec 2024 23:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355081;
-	bh=UPDQbnLjFtIUDVYYo483+FCn6THQPTwzGxqrRVfxNtk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a94rZvoRbYs+lZ6QMSG+xv38yxT/rI9p110bdikgBKpFF3/8bq+VfLlWRD1oN+tQn
-	 tkSfCKkFoH75RzrX/aeZWM6qF6v4GI2s7Byb+xRSpBOaO5DwsAa9hzVSSVs+CdzGb7
-	 il899SbzPIz/zh/NElGwnTVwDpgruy5KT+zZ1VcP4uDqFvnZy4OnYi/gmPuJRDkZt0
-	 kqfJzlIYINYhMGy9sIv+XfUvKp1wdFJYIuX3VnkoZ+zWST29/w5smSdcv3HitdoG02
-	 WV25DJy1AIaUG+41d5KTBdtdBnD1lFH8XfuH8loSuVacCwXd9TNOLrxGXNF/+gmzdx
-	 UtLzaDrJiNWrw==
+	s=k20201202; t=1733355086;
+	bh=usj7+BpAioBWq1ukTSyPWCfNmAGcJKm5+IZrw+TQa8E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UnFh/9IxfTu4ggowMaNwVD0AdW9guM7LlWn3cIttM+cbE2QdPD0FPUzoQ6opLk0gk
+	 RR1mg2dybITIy+57w+ohBuqPHskbqJJJ9U1ECDixzgXiJ4cef4KRH5iz2UyN4MKM7/
+	 EJJ8X7Qw8WwV9JuPil1v2j8KURJ7+fBq+MhL+JKnOLoLW4YnQG7quS6LREHHVKu1PO
+	 rrrTnjDnsDlX8DQPfuU+66OMS14t4soE3w18U65ihOmefKfJRAs1dt1P16TQ+bye7K
+	 rMjghpWi4vAdKrIGHISHZJ6n3alSHbHl9AIznzlIOQPqDMaOl2mqVUJ+uSpFdEuY81
+	 wS7SXJKNAzUjQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Rob Herring <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+Cc: Xu Yang <xu.yang_2@nxp.com>,
+	Peter Chen <peter.chen@kernel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jsavitz@redhat.com,
-	aneesh.kumar@kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 5.4 3/3] powerpc/prom_init: Fixup missing powermac #size-cells
-Date: Wed,  4 Dec 2024 17:19:54 -0500
-Message-ID: <20241204221956.2249103-3-sashal@kernel.org>
+	peter.chen@kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 1/3] usb: chipidea: udc: handle USB Error Interrupt if IOC not set
+Date: Wed,  4 Dec 2024 17:20:01 -0500
+Message-ID: <20241204222006.2249186-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204221956.2249103-1-sashal@kernel.org>
-References: <20241204221956.2249103-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,104 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.286
+X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
+[ Upstream commit 548f48b66c0c5d4b9795a55f304b7298cde2a025 ]
 
-On some powermacs `escc` nodes are missing `#size-cells` properties,
-which is deprecated and now triggers a warning at boot since commit
-045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
-handling").
+As per USBSTS register description about UEI:
 
-For example:
+  When completion of a USB transaction results in an error condition, this
+  bit is set by the Host/Device Controller. This bit is set along with the
+  USBINT bit, if the TD on which the error interrupt occurred also had its
+  interrupt on complete (IOC) bit set.
 
-  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
-  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
-  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-  ...
-  Call Trace:
-    of_bus_n_size_cells+0x98/0x108 (unreliable)
-    of_bus_default_count_cells+0x40/0x60
-    __of_get_address+0xc8/0x21c
-    __of_address_to_resource+0x5c/0x228
-    pmz_init_port+0x5c/0x2ec
-    pmz_probe.isra.0+0x144/0x1e4
-    pmz_console_init+0x10/0x48
-    console_init+0xcc/0x138
-    start_kernel+0x5c4/0x694
+UI is set only when IOC set. Add checking UEI to fix miss call
+isr_tr_complete_handler() when IOC have not set and transfer error happen.
 
-As powermacs boot via prom_init it's possible to add the missing
-properties to the device tree during boot, avoiding the warning. Note
-that `escc-legacy` nodes are also missing `#size-cells` properties, but
-they are skipped by the macio driver, so leave them alone.
-
-Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
+Acked-by: Peter Chen <peter.chen@kernel.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20240926022906.473319-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/udc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 7f4e2c031a9ab..b7ef63614417d 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2856,7 +2856,7 @@ static void __init fixup_device_tree_chrp(void)
- #endif
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 6a626f41cded1..27be93d12b59c 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -1902,7 +1902,7 @@ static irqreturn_t udc_irq(struct ci_hdrc *ci)
+ 			}
+ 		}
  
- #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
--static void __init fixup_device_tree_pmac(void)
-+static void __init fixup_device_tree_pmac64(void)
- {
- 	phandle u3, i2c, mpic;
- 	u32 u3_rev;
-@@ -2896,7 +2896,31 @@ static void __init fixup_device_tree_pmac(void)
- 		     &parent, sizeof(parent));
- }
- #else
--#define fixup_device_tree_pmac()
-+#define fixup_device_tree_pmac64()
-+#endif
-+
-+#ifdef CONFIG_PPC_PMAC
-+static void __init fixup_device_tree_pmac(void)
-+{
-+	__be32 val = 1;
-+	char type[8];
-+	phandle node;
-+
-+	// Some pmacs are missing #size-cells on escc nodes
-+	for (node = 0; prom_next_node(&node); ) {
-+		type[0] = '\0';
-+		prom_getprop(node, "device_type", type, sizeof(type));
-+		if (prom_strcmp(type, "escc"))
-+			continue;
-+
-+		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
-+			continue;
-+
-+		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
-+	}
-+}
-+#else
-+static inline void fixup_device_tree_pmac(void) { }
- #endif
+-		if (USBi_UI  & intr)
++		if ((USBi_UI | USBi_UEI) & intr)
+ 			isr_tr_complete_handler(ci);
  
- #ifdef CONFIG_PPC_EFIKA
-@@ -3121,6 +3145,7 @@ static void __init fixup_device_tree(void)
- 	fixup_device_tree_maple_memory_controller();
- 	fixup_device_tree_chrp();
- 	fixup_device_tree_pmac();
-+	fixup_device_tree_pmac64();
- 	fixup_device_tree_efika();
- 	fixup_device_tree_pasemi();
- }
+ 		if ((USBi_SLI & intr) && !(ci->suspended)) {
 -- 
 2.43.0
 
