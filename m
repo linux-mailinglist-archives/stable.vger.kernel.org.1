@@ -1,198 +1,163 @@
-Return-Path: <stable+bounces-98225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D209E32BA
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 05:45:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02709E32C6
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 05:51:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E79281420
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 04:45:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9172167E92
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 04:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7324174BE1;
-	Wed,  4 Dec 2024 04:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42C9175D5D;
+	Wed,  4 Dec 2024 04:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="y6qtfIEb"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KebMb7UL"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BC42500D6;
-	Wed,  4 Dec 2024 04:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70CE502BE;
+	Wed,  4 Dec 2024 04:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733287545; cv=none; b=QpqRDGykzDj/fxXJZSplr+peRT8wdrEyzuF6TQSbzI3TyCdZPAfRGhTQCWKXwS6eln/dNMdqxhalSgKD+HmJeRjuYIi2IeAiWOE26nL6GDoU+rXyoLCvHFkqRuhxhocV/H4ZBTQGPOuxm7O3POUTQOvCz9DfzA19xJa2X/uj9y0=
+	t=1733287860; cv=none; b=J4k6KofVx/wBmTdynTK0pWv/ynbPfnhpsesgZrokeztYU1zDdfnWlgQ5xKxonryG02icQUgQkxtHLyz7bhfKWb40f/LkxaQKJpjwQdJXz5qW0J/cQFBazbYuZs9cpJOWjL6yEHCJBhrLsucGA0Nv/MBP8wT6svisl+3/fjtokns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733287545; c=relaxed/simple;
-	bh=XwLbTzFiAE5SI0qI0DgMmjn+R8D2LmCtWfFtwHhH2bE=;
-	h=Message-ID:Content-Type:Mime-Version:Subject:From:In-Reply-To:
-	 Date:Cc:References:To; b=NdDBjV6PEusjUfG3CuZUIyw0falCsjPtFqVJMeXTIWTRaUPcY/tbgXVLzD65tNyiSllKSHIlVdbGKb2eE7plmkxGsH4Gq8n2sNaSymR9PBmktz2mBweJkKPNAxrTlg30qN/FS8TIrwN42Kdhq4T9KvV3fNSQzuq5HnIXvWHtJ6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name; spf=pass smtp.mailfrom=cyyself.name; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=y6qtfIEb; arc=none smtp.client-ip=162.62.57.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cyyself.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cyyself.name
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1733287534; bh=U239pY3v8KPxGhdBjoNQzmm5zyQwq19JmuP2wUPnm2U=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To;
-	b=y6qtfIEb2b7kzbfXCUkjnY9q2vWdg/9RnEQJvUrzlhjDiIvwksbjAv46uFKxGy8Yh
-	 iAjNhUrvg8aq6Rrbyw4RkXGz7E4xWfEef6v7BTwfIakHG6aej7rHPmzV0uTzFRVaij
-	 YRmKm+jUquAZF65P95Eb2U5pc85tY86tHSZywa4A=
-Received: from smtpclient.apple ([2408:8207:18a1:fd2f:c2c:ade3:99d6:a00])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id B5DAC603; Wed, 04 Dec 2024 12:45:29 +0800
-X-QQ-mid: xmsmtpt1733287529t5la5omw5
-Message-ID: <tencent_249C769EA3122E4F0C45084863109F83A006@qq.com>
-X-QQ-XMAILINFO: OOEWBQXMvCdj1LJL0D5mNDaEjpPBd3fUDyoL0Ui/QFCqvZ9eHyNaX4U3EHPa6F
-	 vN7iMrMS5O11M+04+iJothjzoD2gry39TGs2ngCTzlYtGwJIT57p8MLpP3QVpcl3CTrGea7S2pez
-	 EQW2oZbt1WEbbtW0YK4F99bKThj+7DGpnhtw+7Lw79vAbPZMA5C6kf1xENUYt9Sp0kCfPieRBQ04
-	 HjuAijD+ruvGQM4OGWmpgneKP0e5ryzsGh71kg/4a40AhAjN2Sr1Rx1sqylpGu8klfK/GkxRpjGs
-	 GC5Cu0vSf7KR8Xgg6fb9HW9ERf2sdxLqBtv0ZkFQyYLVbF6WtIzV5MyLOUNtiHslq2hQHkzvaUuB
-	 dwB7M7Ao00pZJARYVauy4XVe8IC07GKZIYxJE9suc6gsaIZ6NwG6fIkYtKdhHStmBeyLpfCqmoQk
-	 qMKxf+qPWtrAW4rJE7rQ4lhpY2ERRHdEFndDRFRfFXyI7IdFUva+z9EDNyHx2QkSgnZBwelB/3MD
-	 gSYSlr2q3hqErGtXul1F2R60llRkiASTMofSIhnKP1EQ3vaoRJOujvYcgbEZVuIpJel+cwaCVp49
-	 fINBdi09Y+SM8wnoCHwGcuBj248Jzjhn3sxmNwRD1nrpHFfTExSXQTHg8pyIYpSnzn2tR6IT8Bsv
-	 u2PrNtjghXVcJ4FGl8VnZYG7LwXKU9/H30ahCrYfDl7Pgyv45RZvGBHC7Q3/VuwTfAu1BsoAYGIC
-	 xxyYucP8c0FTDpneCRkgZ93eqaQQ2A36sqtr4uZ8OyHi8jhv2Qv58iJq7ZD2dybfaLSUecbQ6M1R
-	 Hee9N99T/hRWp/J9YZrEBDvVCkilr6Hf8czjE/0jPUap782mJCcug2FKj7hCoO5Xj4AR60bACuuY
-	 NbgpHFXUwZyJ+DLgeqq4sVTYEi2n70RVmkcJccPGI8FGsfO6FcOyhx1PmoZW38Nm19MGtV9Z+iwc
-	 LiaTsifmHp1QtraSHDMA==
-X-QQ-XMRINFO: MSVp+SPm3vtS1Vd6Y4Mggwc=
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1733287860; c=relaxed/simple;
+	bh=jr6/2axKyMSR18uZ66Kb/g4i6DxyDlHZwP1V5vP7+pY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cQJyp+HLGfwv1WlcC3enhtv1XNVxhn9pjINir3akXuGx3TA9Re3VdLVZVPK1+DJ9y/aJsvyLDlMIyWzjpCoHGGURqOXADgOLyXTyUEPDm9DMIL4AdNxdx5J0tTYVYacmgpd5GAJ/FTCGt4ChWWya8pkjbOB7iC3s17TWEWRfvpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KebMb7UL; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B3JNSf1027880;
+	Wed, 4 Dec 2024 04:50:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	HrT+ix17CMvRW4h/CZZjYHFfnbNWyyW8v5tETaJEQNI=; b=KebMb7ULABBC+0Ku
+	DlM/hOuQ1YzmmaUhzDsiqS6F51v49PEV7oL+cSpPoAGn27/i67wla15Z1w/0RCAL
+	gdz127wEY9Y6yPWS2c1HAOpIZ2aKXlPVrPgZZXqlTPOxgC1aJHwWlKHrtDzbroOi
+	aWgfQjSerQVRKrU1A4T5s/XmCyHtRxid0/Nns+t0AsbJB69mogbfNHdc1ej7ua8p
+	jErbKBb8R5HzDjQ44nPwHGmnuDrGKw7y26MaRGPxCGTuVNAhaePsQI7efN4tt5sl
+	EqHJ9PCONzl2uHlCr7jvTTlZPflMoFSp0CL7U8oSgtN35mjno2oLIfX06TMvidGt
+	csCcYw==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 437tstj85s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Dec 2024 04:50:34 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B44oXVS027878
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 4 Dec 2024 04:50:33 GMT
+Received: from [10.253.8.52] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 3 Dec 2024
+ 20:50:30 -0800
+Message-ID: <8360f26a-f384-4089-b50a-ae9751f503db@quicinc.com>
+Date: Wed, 4 Dec 2024 12:50:27 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
-Subject: Re: [PATCH] riscv: Fix vector state restore in rt_sigreturn()
-From: Yangyu Chen <cyy@cyyself.name>
-In-Reply-To: <20240403072638.567446-1-bjorn@kernel.org>
-Date: Wed, 4 Dec 2024 12:45:19 +0800
-Cc: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
- Conor Dooley <conor.dooley@microchip.com>,
- Heiko Stuebner <heiko@sntech.de>,
- Vincent Chen <vincent.chen@sifive.com>,
- Ben Dooks <ben.dooks@codethink.co.uk>,
- Greentime Hu <greentime.hu@sifive.com>,
- Haorong Lu <ancientmodern4@gmail.com>,
- Jerry Shih <jerry.shih@sifive.com>,
- Nick Knight <nick.knight@sifive.com>,
- linux-kernel@vger.kernel.org,
- Vineet Gupta <vineetg@rivosinc.com>,
- Charlie Jenkins <charlie@rivosinc.com>,
- Vineet Gupta <vgupta@kernel.org>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-X-OQ-MSGID: <1D423665-AF23-480D-8B68-414A54222F2B@cyyself.name>
-References: <20240403072638.567446-1-bjorn@kernel.org>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>,
- Andy Chiu <andy.chiu@sifive.com>,
- linux-riscv@lists.infradead.org
-X-Mailer: Apple Mail (2.3826.200.121)
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Bluetooth: qca: Support downloading board ID specific
+ NVM for WCN6855
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+CC: Paul Menzel <pmenzel@molgen.mpg.de>, Zijun Hu <zijun_hu@icloud.com>,
+        <linux-bluetooth@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Luiz
+ Augusto von Dentz" <luiz.von.dentz@intel.com>,
+        Bjorn Andersson
+	<bjorande@quicinc.com>,
+        "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>,
+        "Cheng
+ Jiang" <quic_chejiang@quicinc.com>,
+        Johan Hovold <johan@kernel.org>,
+        "Jens
+ Glathe" <jens.glathe@oldschoolsolutions.biz>,
+        <stable@vger.kernel.org>, "Johan Hovold" <johan+linaro@kernel.org>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Steev Klimaszewski <steev@kali.org>,
+        Marcel Holtmann
+	<marcel@holtmann.org>
+References: <20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com>
+Content-Language: en-US
+From: quic_zijuhu <quic_zijuhu@quicinc.com>
+In-Reply-To: <20241116-x13s_wcn6855_fix-v2-1-c08c298d5fbf@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: EJh6MI1RqT8UnI3hcLLEmYr2rP2v2RRo
+X-Proofpoint-GUID: EJh6MI1RqT8UnI3hcLLEmYr2rP2v2RRo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 impostorscore=0 mlxlogscore=999 mlxscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 adultscore=0 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412040037
 
-I think this patch should also be backported to the v6.6 LTS tree.
-Since it should recolonize as Fixes: 8ee0b41898 ("riscv: signal:
-Add sigcontext save/restore for vector") and that commit first
-appears since v6.5-rc1 and this patch land to master branch since
-v6.9-rc3
+On 11/16/2024 11:49 PM, Zijun Hu wrote:
+> For WCN6855, board ID specific NVM needs to be downloaded once board ID
+> is available, but the default NVM is always downloaded currently, and
+> the wrong NVM causes poor RF performance which effects user experience.
+> 
 
-Thanks,
-Yangyu Chen
+Hi Luiz,
 
-On 4/3/24 15:26, Bj=C3=B6rn T=C3=B6pel wrote:
-> From: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
-> The RISC-V Vector specification states in "Appendix D: Calling
-> Convention for Vector State" [1] that "Executing a system call causes
-> all caller-saved vector registers (v0-v31, vl, vtype) and vstart to
-> become unspecified.". In the RISC-V kernel this is called "discarding
-> the vstate".
-> Returning from a signal handler via the rt_sigreturn() syscall, vector
-> discard is also performed. However, this is not an issue since the
-> vector state should be restored from the sigcontext, and therefore not
-> care about the vector discard.
-> The "live state" is the actual vector register in the running context,
-> and the "vstate" is the vector state of the task. A dirty live state,
-> means that the vstate and live state are not in synch.
-> When vectorized user_from_copy() was introduced, an bug sneaked in at
-> the restoration code, related to the discard of the live state.
-> An example when this go wrong:
->   1. A userland application is executing vector code
->   2. The application receives a signal, and the signal handler is
->      entered.
->   3. The application returns from the signal handler, using the
->      rt_sigreturn() syscall.
->   4. The live vector state is discarded upon entering the
->      rt_sigreturn(), and the live state is marked as "dirty", =
-indicating
->      that the live state need to be synchronized with the current
->      vstate.
->   5. rt_sigreturn() restores the vstate, except the Vector registers,
->      from the sigcontext
->   6. rt_sigreturn() restores the Vector registers, from the =
-sigcontext,
->      and now the vectorized user_from_copy() is used. The dirty live
->      state from the discard is saved to the vstate, making the vstate
->      corrupt.
->   7. rt_sigreturn() returns to the application, which crashes due to
->      corrupted vstate.
-> Note that the vectorized user_from_copy() is invoked depending on the
-> value of CONFIG_RISCV_ISA_V_UCOPY_THRESHOLD. Default is 768, which
-> means that vlen has to be larger than 128b for this bug to trigger.
-> The fix is simply to mark the live state as non-dirty/clean prior
-> performing the vstate restore.
-> Link: =
-https://github.com/riscv/riscv-isa-manual/releases/download/riscv-isa-rele=
-ase-8abdb41-2024-03-26/unpriv-isa-asciidoc.pdf # [1]
-> Reported-by: Charlie Jenkins <charlie@rivosinc.com>
-> Reported-by: Vineet Gupta <vgupta@kernel.org>
-> Fixes: c2a658d41924 ("riscv: lib: vectorize =
-copy_to_user/copy_from_user")
-> Signed-off-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+could you please code review for this change ?
+
+several types of product in market need this fix, hope it will go to
+mainline as early as possible.
+
+sorry for this noise.
+
+> Fix by downloading board ID specific NVM if board ID is available.
+> 
+> Cc: Bjorn Andersson <bjorande@quicinc.com>
+> Cc: Aiqun Yu (Maria) <quic_aiquny@quicinc.com>
+> Cc: Cheng Jiang <quic_chejiang@quicinc.com>
+> Cc: Johan Hovold <johan@kernel.org>
+> Cc: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+> Cc: Steev Klimaszewski <steev@kali.org>
+> Cc: Paul Menzel <pmenzel@molgen.mpg.de>
+> Fixes: 095327fede00 ("Bluetooth: hci_qca: Add support for QTI Bluetooth chip wcn6855")
+> Cc: stable@vger.kernel.org # 6.4
+> Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> Tested-by: Steev Klimaszewski <steev@kali.org>
+> Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 > ---
->  arch/riscv/kernel/signal.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
-> diff --git a/arch/riscv/kernel/signal.c b/arch/riscv/kernel/signal.c
-> index 501e66debf69..5a2edd7f027e 100644
-> --- a/arch/riscv/kernel/signal.c
-> +++ b/arch/riscv/kernel/signal.c
-> @@ -119,6 +119,13 @@ static long __restore_v_state(struct pt_regs =
-*regs, void __user *sc_vec)
->  	struct __sc_riscv_v_state __user *state =3D sc_vec;
->  	void __user *datap;
->  +	/*
-> +	 * Mark the vstate as clean prior performing the actual copy,
-> +	 * to avoid getting the vstate incorrectly clobbered by the
-> +	 *  discarded vector state.
-> +	 */
-> +	riscv_v_vstate_set_restore(current, regs);
-> +
->  	/* Copy everything of __sc_riscv_v_state except datap. */
->  	err =3D __copy_from_user(&current->thread.vstate, =
-&state->v_state,
->  			       offsetof(struct __riscv_v_ext_state, =
-datap));
-> @@ -133,13 +140,7 @@ static long __restore_v_state(struct pt_regs =
-*regs, void __user *sc_vec)
->  	 * Copy the whole vector content from user space datap. Use
->  	 * copy_from_user to prevent information leak.
->  	 */
-> -	err =3D copy_from_user(current->thread.vstate.datap, datap, =
-riscv_v_vsize);
-> -	if (unlikely(err))
-> -		return err;
-> -
-> -	riscv_v_vstate_set_restore(current, regs);
-> -
-> -	return err;
-> +	return copy_from_user(current->thread.vstate.datap, datap, =
-riscv_v_vsize);
->  }
->  #else
->  #define save_v_state(task, regs) (0)
-> base-commit: 7115ff4a8bfed3b9294bad2e111744e6abeadf1a
+> Thank you Paul, Jens, Steev, Johan, Luiz for code review, various
+> verification, comments and suggestions. these comments and suggestions
+> are very good, and all of them are taken by this v2 patch.
+> 
+> Regarding the variant 'g', sorry for that i can say nothing due to
+> confidential information (CCI), but fortunately, we don't need to
+> care about its difference against one without 'g' from BT host
+> perspective, qca_get_hsp_nvm_name_generic() shows how to map BT chip
+> to firmware.
+> 
+> I will help to backport it to LTS kernels ASAP once this commit
+> is mainlined.
+> ---
+> Changes in v2:
+> - Correct subject and commit message
+> - Temporarily add nvm fallback logic to speed up backport.
+> — Add fix/stable tags as suggested by Luiz and Johan
+> - Link to v1: https://lore.kernel.org/r/20241113-x13s_wcn6855_fix-
+> v1-1-15af0aa2549c@quicinc.com
+> ---
 
 
