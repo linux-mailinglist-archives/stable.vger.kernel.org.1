@@ -1,102 +1,104 @@
-Return-Path: <stable+bounces-98438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84049E416A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:25:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4F99E4335
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64225284E1C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:25:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FF4BBA01E8
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27975224B14;
-	Wed,  4 Dec 2024 17:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137CB22578C;
+	Wed,  4 Dec 2024 17:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XcGMApev"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyDc9wRt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1CC224B07;
-	Wed,  4 Dec 2024 17:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0219225771;
+	Wed,  4 Dec 2024 17:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331770; cv=none; b=GhSAejkSJNu0gTuwSdFFm0k50fKbAUempek7DXukukBSNOHZtWlQqJfEhELkbDBRF9yawXFjule8vXFfoxLcFmzbAvwD7JOUHH8cfomny6dqHgL12iHVuNfzCfdQyekVMWRcwmOjG03LYYJ8Ve7CpJFcCGaQdUNvMRaZ9VPfbi4=
+	t=1733331781; cv=none; b=th+HOkBTJNzybrkB/CJ6eA1ZYLr/g8htPYO0Mqwby/X+P1K+vmHUQb/Vnw9LGnG+myid3VHRJnX12WkyAuRIc13SRkaNrxSbqqW20FPOQxOhvpmYA+qTDCXTccGaNbOMG+ORDsszmHVai6Ef47Xv56+6Od5hlIFoHYy8ACsAK6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331770; c=relaxed/simple;
-	bh=OJNu50YNgqoBrOcGF4lciAHcWjVwGvUYhnDDiLLPJKs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eRVgHBPvyI0nmWHGpDsKapDsut9sDXzkgkAKeDDMIJA+Oz2grLxmGLMxgeV7/AvfQTmhhf4wY7TGRo3Thu29fKIBSazW0EbM1PdLuQ0pSqYjpCdd6GCPMU6l99vILbY7ZJAFNJ2aiJgxYCNOClRouoRXTnjGp41Y1cJUfPYNB84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XcGMApev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5F1CC4CED1;
-	Wed,  4 Dec 2024 17:02:49 +0000 (UTC)
+	s=arc-20240116; t=1733331781; c=relaxed/simple;
+	bh=YwO3Q2f4FsLS/5XpKdz3ZlRCiBwyZqJ3ML/XJ3gZePw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sz4KHdEoXQYNW/Gzf/Pw3mAYiz5XgmTF9B7igiq4zQhX9F0FckJY/6QUdOF/l5/UlG+WQyVPcWBeYk61W9FDHz+MYnHaoMM7MpV16TRcHDogD9MHD4Y11kPiHmlMFu3R/fuGPNow6UTRFQU42o8kWFt/EuXk7XWsJoYr52IdaWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyDc9wRt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20794C4CECD;
+	Wed,  4 Dec 2024 17:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331770;
-	bh=OJNu50YNgqoBrOcGF4lciAHcWjVwGvUYhnDDiLLPJKs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XcGMApevayaCZSTmDUNm0bCB6VGjy7OTCmmYL1uX4+rcmoxRURhlq45XeLPDzJRn8
-	 69p13wR58Gb5fTag+0TerMd4iTcNX7gIuoThp6rZdlJi4iMioxH8lpGt76PjNRGY9t
-	 6b7b0l3jGrg5xsD8RbSOxUd6fza47uZiT5XyDBsFhmvLb/ZFwpbPDfTEz+qj27aVWm
-	 83xdPdL03J9jgIupZSKSxbhFbQRC+OSYhpamX8/7cfHvurniL09iM1DodFCfUMr4sN
-	 9PleXDnnbOc/4hO22kIM+iD0bkPFTz4fM9eZKOgp0Y7cRbx5qlzEz6cWz7uiou30U4
-	 a4JXQCkXr+uPw==
+	s=k20201202; t=1733331781;
+	bh=YwO3Q2f4FsLS/5XpKdz3ZlRCiBwyZqJ3ML/XJ3gZePw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hyDc9wRt1Bqh0YoMGQXxFkETWYMiaQwDfEOQPVIHAmG31PyVlR5EEhEFlbFZeuZBd
+	 p5G5fu9+YPZGFihDSY7wzfL05OIHE53MFnD1DObjHsv3+cqD0ly7J6JK7eQXw970jP
+	 cc777a9O2MQxp8ld+pTZH88Lk2temSc5cE5FP51a2f6InpJb8bQ3TDsGBDvSEZlm0W
+	 TvvVjUaiUJW0W0JaMh0yuqJ9RiTFKjDR5wSx0UoPEpAUjet4ATNST9FoovATWGUA2w
+	 pKeO5Py8fY+MKNmwqVyopmRGKBhvA5KOIB+U5krcbUJoicwsHr1J60rLYEdT8OVRMx
+	 lPIu4TpSCJudA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+Cc: Esben Haabendal <esben@geanix.com>,
+	kernel test robot <lkp@intel.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andersson@kernel.org,
-	linux-arm-msm@vger.kernel.org,
+	aisheng.dong@nxp.com,
+	festevam@gmail.com,
+	shawnguo@kernel.org,
+	ping.bai@nxp.com,
 	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 12/15] pinctrl: qcom: spmi-mpp: Add PM8937 compatible
-Date: Wed,  4 Dec 2024 10:50:51 -0500
-Message-ID: <20241204155105.2214350-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 1/9] pinctrl: freescale: fix COMPILE_TEST error with PINCTRL_IMX_SCU
+Date: Wed,  4 Dec 2024 10:51:31 -0500
+Message-ID: <20241204155141.2214748-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204155105.2214350-1-sashal@kernel.org>
-References: <20241204155105.2214350-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.119
+X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Esben Haabendal <esben@geanix.com>
 
-[ Upstream commit f755261190e88f5d19fe0a3b762f0bbaff6bd438 ]
+[ Upstream commit 58414a31c5713afb5449fd74a26a843d34cc62e8 ]
 
-The PM8937 provides 4 MPPs.
-Add a compatible to support them.
+When PINCTRL_IMX_SCU was selected by PINCTRL_IMX8DXL or PINCTRL_IMX8QM
+combined with COMPILE_TEST on a non-arm platforms, the IMX_SCU
+dependency could not be enabled.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/20241031-msm8917-v2-4-8a075faa89b1@mainlining.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202410031439.GyTSa0kX-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202410030852.q0Hukplf-lkp@intel.com/
+Signed-off-by: Esben Haabendal <esben@geanix.com>
+Link: https://lore.kernel.org/20241003-imx-pinctrl-compile-test-fix-v1-1-145ca1948cc3@geanix.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-mpp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/freescale/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-index 6937157f50b3c..148cc107b7aff 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-@@ -964,6 +964,7 @@ static const struct of_device_id pmic_mpp_of_match[] = {
- 	{ .compatible = "qcom,pm8226-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8841-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8916-mpp", .data = (void *) 4 },
-+	{ .compatible = "qcom,pm8937-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8941-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8950-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pmi8950-mpp", .data = (void *) 4 },
+diff --git a/drivers/pinctrl/freescale/Kconfig b/drivers/pinctrl/freescale/Kconfig
+index 21fa21c6547b1..93b38d97a7263 100644
+--- a/drivers/pinctrl/freescale/Kconfig
++++ b/drivers/pinctrl/freescale/Kconfig
+@@ -9,7 +9,7 @@ config PINCTRL_IMX
+ 
+ config PINCTRL_IMX_SCU
+ 	tristate
+-	depends on IMX_SCU
++	depends on IMX_SCU || COMPILE_TEST
+ 	select PINCTRL_IMX
+ 
+ config PINCTRL_IMX1_CORE
 -- 
 2.43.0
 
