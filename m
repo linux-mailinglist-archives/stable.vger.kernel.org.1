@@ -1,166 +1,155 @@
-Return-Path: <stable+bounces-98267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B110D9E370F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:02:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A1A9E3730
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:07:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 722E0B24FC5
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:00:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7205D164C9B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8242D1AF0A4;
-	Wed,  4 Dec 2024 10:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CE31AA7B4;
+	Wed,  4 Dec 2024 10:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTF/oyWY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9JuDOfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B1B1AA1DF;
-	Wed,  4 Dec 2024 10:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7F219F40E;
+	Wed,  4 Dec 2024 10:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733306438; cv=none; b=jynTsEcG3hDuD+bcV4UDfHHSKHeLXXMA4WyMxNNgRVjCwBcArbEZ2S0NE19d7GE18W4SPvgKgdzXniF951VkzDpcwpx+GWfXIBG0nSLizKHCeNNS9E0OTZtickiYlrRHWQqfGcbsxxGRwNfbgUt2RalSmpS23r5wfodlh+Kd/fM=
+	t=1733306860; cv=none; b=AUa5y5LN8mTq01CFkCJe8N0P6Xsnp9ozAO1Nu8QD/VoSIDfxbYLIzyyg4IDaG36+pqjqopStDtHmLxCfEveKtQaKo3UWP/ut+8dtlgUeLcdcXnCm+zksBWAlhSr7dhnkIlstJe04EtUGDR6uwmrYzDIlZ2vKz4LUCeERDY6LcRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733306438; c=relaxed/simple;
-	bh=riMj8mK85ro6K5wSxmm0vidWnb2YepUy9TgXyoFozoQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BR5dJC5y7a1DXiJK83wbnpnUKvgf4QgXuKEZuaWtJ/3Z5KBLFadZzV2UydADrumxy+8l9ouIR0/WWNEOOtN+wiTPFzQzfnaQOa71tplLL1bSfF/n063vdUmafMsBj8ijj6i8lrNNXzhe2YL8HfPmXASeU20x6JbAPuYQBdtR2uE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTF/oyWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBD1C4CED1;
-	Wed,  4 Dec 2024 10:00:36 +0000 (UTC)
+	s=arc-20240116; t=1733306860; c=relaxed/simple;
+	bh=OUTf5c0z1+SrUX7KnHGxI7CCBH1X18kmqd5sXJWZJTQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P3+NPn/HxprfjeegtxbOKqMVTqAT4n3WbZfUGF1SB1UBreBkjOyB6MFAT5twWgdmixATCbwOBhGyALNznhUe6RY4YarJZwYseCoFwZlT1HEnbfazTEPlEPGo1N9AVx4WWNpeefoiAm2QbmIoAzSXzxBoThTxqA7QMs6PqCq1+BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9JuDOfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DABBC4CED6;
+	Wed,  4 Dec 2024 10:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733306437;
-	bh=riMj8mK85ro6K5wSxmm0vidWnb2YepUy9TgXyoFozoQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KTF/oyWYSPr1M6eR/SzqkCgoYWnEa+98RCAT95fpSr6vpFbmAGjLcRA7bfHhnw7w+
-	 votcOJ+7f/sbdRp266BEn34HoMvRwDcXBWhYE17Ay/2b1dCabti2cFx5UhxP1D7eS1
-	 EKB4qJG9HCrbjdI5FyOp9jYz1ihaZIRXvzkQeICKe7XTN9qXERF0n5MaJ3H73JpZCM
-	 b2iezu2yY8/dQkLC701MKTMm5HMXlkyKH47vVXDbz1P2M9BGFsH5IOBTOv97iT3SXH
-	 Eji9RbUleGqDei5YFRfUlnmW9p8otFyUeJrNoItBIxobgk0UREJkbgyHTgDeq4tphN
-	 z20RQjuBuRJLQ==
-Message-ID: <2a720dd0-56a0-4781-81d3-118368613792@kernel.org>
-Date: Wed, 4 Dec 2024 11:00:34 +0100
+	s=k20201202; t=1733306860;
+	bh=OUTf5c0z1+SrUX7KnHGxI7CCBH1X18kmqd5sXJWZJTQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=i9JuDOfx903Z+A69s+Vnn4GL3fBfNq1qimgQaKq/fZbOV+WvZcH2i2BqXcxgd3TxH
+	 Z+ggupU9FFwn6BnHTp/cRuU1YcWy/J1xhBoiuop2ousV/QGswldCK18pmPnrMnG9p5
+	 lG8NK+MgyI1IOcTSKB19ln9Lj8XIi5iCsBfoCeuHVa0Rkwqp4/ckVs5vvO/WktrcSK
+	 GwatqcmLX89dWv7aLTrSpy5P0JSVnfxTIXhAGkQyJZ0xK7CNGxacVWyTrSw3eKOv7K
+	 buB/dH5xeQAtogdLdEKyX3T/SK9Xt7U645Etj0VKdJvb3hwswrp8i1yjXAgWmIA4dY
+	 Ii+PAqhMDp9sw==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53de8ecafeeso6995848e87.1;
+        Wed, 04 Dec 2024 02:07:40 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUHqMfDM1Rs+tYuwGUDTUk8mZGSXPHkv7eRr2gS+uMPta2+O81t+l8w9w5GRf9me0xacBXVOamGCWlvJyX9@vger.kernel.org, AJvYcCWnJ4cbPhJYQ+upzpCwfGKfA5/UTTTrln/F4EkCTFPMWe9DpGaWufjrUPAE5aHEmAPr27JRQNcF@vger.kernel.org, AJvYcCXkWGAAkVvlJGunSm46SMs/HvAO/zlpizXVtblbfDhmcRQt2mbX8RmKVteUzqIu5Q/E4jXSIT/UR9O6qzWm@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAUKSeiDzKxuVrzqjdVccyqjRp4IBQ6edMP4j8ttd+MP6Y8N41
+	dQ8cSPDBSjwefPnqP8m+Uwm+YJpKl42XfCWgM0bPxJvkPyBB07JWAUqM0OmALOmew5BueDFgbJH
+	IdR8Y/ab9YQrDUZYXw0Fn0m0nu9M=
+X-Google-Smtp-Source: AGHT+IHWU+a7+eCom7OBfN7Jt2k2ech+5Jy8Q5QnscsoGZ+UCLjTOgPkoCZjR0oroWTIWLIXcb7v/jr+uOwaJTgZc7s=
+X-Received: by 2002:ac2:4f01:0:b0:53e:1c47:f2c2 with SMTP id
+ 2adb3069b0e04-53e1c47f2fdmr737022e87.37.1733306858565; Wed, 04 Dec 2024
+ 02:07:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 043/826] crypto: powerpc/p10-aes-gcm - Register
- modules as SIMD
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Danny Tsen <dtsen@linux.ibm.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Sasha Levin <sashal@kernel.org>
-References: <20241203144743.428732212@linuxfoundation.org>
- <20241203144745.143525056@linuxfoundation.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20241203144745.143525056@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241203180553.16893-1-ebiggers@kernel.org>
+In-Reply-To: <20241203180553.16893-1-ebiggers@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 4 Dec 2024 11:07:26 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFg0mapBt9=EJ+dMcYfeYcnHy0PjTpwfi2JNYTu2UAZVQ@mail.gmail.com>
+Message-ID: <CAMj1kXFg0mapBt9=EJ+dMcYfeYcnHy0PjTpwfi2JNYTu2UAZVQ@mail.gmail.com>
+Subject: Re: [PATCH] crypto: qce - fix priority to be less than ARMv8 CE
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Thara Gopinath <thara.gopinath@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+On Tue, 3 Dec 2024 at 19:06, Eric Biggers <ebiggers@kernel.org> wrote:
+>
+> From: Eric Biggers <ebiggers@google.com>
+>
+> As QCE is an order of magnitude slower than the ARMv8 Crypto Extensions
+> on the CPU, and is also less well tested, give it a lower priority.
+> Previously the QCE SHA algorithms had higher priority than the ARMv8 CE
+> equivalents, and the ciphers such as AES-XTS had the same priority which
+> meant the QCE versions were chosen if they happened to be loaded later.
+>
+> Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+> Cc: stable@vger.kernel.org
+> Cc: Bartosz Golaszewski <brgl@bgdev.pl>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Thara Gopinath <thara.gopinath@gmail.com>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 
-On 03. 12. 24, 15:36, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Danny Tsen <dtsen@linux.ibm.com>
-> 
-> [ Upstream commit c954b252dee956d33ee59f594710af28fb3037d9 ]
-> 
-> This patch is to fix an issue when simd is not usable that data mismatch
-> may occur. The fix is to register algs as SIMD modules so that the
-> algorithm is excecuted when SIMD instructions is usable.  Called
-> gcm_update() to generate the final digest if needed.
-> 
-> A new module rfc4106(gcm(aes)) is also added.
-> 
-> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
-> 
-> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+
 > ---
->   arch/powerpc/crypto/aes-gcm-p10-glue.c | 141 +++++++++++++++++++++----
->   1 file changed, 118 insertions(+), 23 deletions(-)
-> 
-> diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> index f66ad56e765f0..4a029d2fe06ce 100644
-> --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-...
-> @@ -281,6 +295,7 @@ static int p10_aes_gcm_crypt(struct aead_request *req, int enc)
->   
->   	/* Finalize hash */
->   	vsx_begin();
-> +	gcm_update(gctx->iv, hash->Htable);
-
-Now I get:
-ERROR: modpost: "gcm_update" [arch/powerpc/crypto/aes-gcm-p10-crypto.ko] 
-undefined!
-
-Only this:
-commit 7aa747edcb266490f93651dd749c69b7eb8541d9
-Author: Danny Tsen <dtsen@linux.ibm.com>
-Date:   Mon Sep 23 09:30:38 2024 -0400
-
-     crypto: powerpc/p10-aes-gcm - Re-write AES/GCM stitched implementation
-
-
-
-added that function...
-
-thanks,
--- 
-js
-suse labs
-
+>  drivers/crypto/qce/aead.c     | 2 +-
+>  drivers/crypto/qce/sha.c      | 2 +-
+>  drivers/crypto/qce/skcipher.c | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/crypto/qce/aead.c b/drivers/crypto/qce/aead.c
+> index 7d811728f047..97b56e92ea33 100644
+> --- a/drivers/crypto/qce/aead.c
+> +++ b/drivers/crypto/qce/aead.c
+> @@ -784,11 +784,11 @@ static int qce_aead_register_one(const struct qce_aead_def *def, struct qce_devi
+>         alg->encrypt                    = qce_aead_encrypt;
+>         alg->decrypt                    = qce_aead_decrypt;
+>         alg->init                       = qce_aead_init;
+>         alg->exit                       = qce_aead_exit;
+>
+> -       alg->base.cra_priority          = 300;
+> +       alg->base.cra_priority          = 275;
+>         alg->base.cra_flags             = CRYPTO_ALG_ASYNC |
+>                                           CRYPTO_ALG_ALLOCATES_MEMORY |
+>                                           CRYPTO_ALG_KERN_DRIVER_ONLY |
+>                                           CRYPTO_ALG_NEED_FALLBACK;
+>         alg->base.cra_ctxsize           = sizeof(struct qce_aead_ctx);
+> diff --git a/drivers/crypto/qce/sha.c b/drivers/crypto/qce/sha.c
+> index fc72af8aa9a7..71b748183cfa 100644
+> --- a/drivers/crypto/qce/sha.c
+> +++ b/drivers/crypto/qce/sha.c
+> @@ -480,11 +480,11 @@ static int qce_ahash_register_one(const struct qce_ahash_def *def,
+>         else if (IS_SHA256(def->flags))
+>                 tmpl->hash_zero = sha256_zero_message_hash;
+>
+>         base = &alg->halg.base;
+>         base->cra_blocksize = def->blocksize;
+> -       base->cra_priority = 300;
+> +       base->cra_priority = 175;
+>         base->cra_flags = CRYPTO_ALG_ASYNC | CRYPTO_ALG_KERN_DRIVER_ONLY;
+>         base->cra_ctxsize = sizeof(struct qce_sha_ctx);
+>         base->cra_alignmask = 0;
+>         base->cra_module = THIS_MODULE;
+>         base->cra_init = qce_ahash_cra_init;
+> diff --git a/drivers/crypto/qce/skcipher.c b/drivers/crypto/qce/skcipher.c
+> index 5b493fdc1e74..ffb334eb5b34 100644
+> --- a/drivers/crypto/qce/skcipher.c
+> +++ b/drivers/crypto/qce/skcipher.c
+> @@ -459,11 +459,11 @@ static int qce_skcipher_register_one(const struct qce_skcipher_def *def,
+>                                           IS_DES(def->flags) ? qce_des_setkey :
+>                                           qce_skcipher_setkey;
+>         alg->encrypt                    = qce_skcipher_encrypt;
+>         alg->decrypt                    = qce_skcipher_decrypt;
+>
+> -       alg->base.cra_priority          = 300;
+> +       alg->base.cra_priority          = 275;
+>         alg->base.cra_flags             = CRYPTO_ALG_ASYNC |
+>                                           CRYPTO_ALG_ALLOCATES_MEMORY |
+>                                           CRYPTO_ALG_KERN_DRIVER_ONLY;
+>         alg->base.cra_ctxsize           = sizeof(struct qce_cipher_ctx);
+>         alg->base.cra_alignmask         = 0;
+>
+> base-commit: ceb8bf2ceaa77fe222fe8fe32cb7789c9099ddf1
+> --
+> 2.47.1
+>
 
