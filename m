@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-98319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C5E9E3F9A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F579E3FA1
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04C55282107
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:27:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C49B2821AB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8920420CCD7;
-	Wed,  4 Dec 2024 16:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6843120D506;
+	Wed,  4 Dec 2024 16:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nHtWyHxu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4n1WkQHH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C83188587
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 16:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7663020C48A
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 16:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329624; cv=none; b=TrHUQv9gtBfocdMNzDSj/B0cqpx+EgWw8/fHT0AWzCWUi3HyxwYXS7OHLWb+UkTMQm6JbxOJ/Bdag1xd9T+X2tci8A5x+kBKS912/cVSyhBhrPPpixIdn869LwLOb98ZdyY1BQLaB4Y2+mfucfSgLlKrMJDUJawKd7UeBmspQkw=
+	t=1733329626; cv=none; b=YhAbQZzNxzZ9vS2MGHZY7ixX+JyY2xpi3BU08u4m/CnJs+xWUgRL3sbp8szcK330o56IsLiqxUf2tIpZ7slXeyXnevewerG7R4CnWWOHrURONsaHvaKK7zV8cc1Bi7p1n9UVb/phKQjsreObkFfQjA4/JWICk4c/tVLgX1J+FkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329624; c=relaxed/simple;
-	bh=Tb4zTg8gwUbDaogCnGrqjqwGKOpD1jahUvTB+lbqtzQ=;
+	s=arc-20240116; t=1733329626; c=relaxed/simple;
+	bh=fJkw2rLMTtXSXhulM8gnhffaFfLiI1f0yAZSjHGcIX0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=sflQ+LFsTDBQJN99FbN4hHMt4vbHA8AhzSf44lZr4xJzjkJzh6ASFUqaAufvCEjpWu4WkZ8XeSozdNl1dNtUll9cljsDPte7du+CDa5aQOLjmeLzYCXLmji8z6o5fYyNtsLdOmErD7CQC1BRP3LPPSOcZJ9tOfFCHbEpbLXV+Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nHtWyHxu; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:To:Cc; b=FmU6W5J3/H1U9w4nq0mDlc9pJJ3omLs9yICXbm4EZg/+6P8/PzoGA/FW5FkjLqRjwzP0Q3djVOKqlbaqoXxUNvSNEy60IoEJ3f1N+mQELHKdqTJvYAA1O0SxfUwMRc3sNaQeGE1ZRfvRdTvslcE+4bKcjNcjR1U31zl28Tec1EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4n1WkQHH; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-434a9f9a225so60235e9.1
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 08:27:02 -0800 (PST)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4349ea54db7so61755e9.0
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 08:27:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733329621; x=1733934421; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733329622; x=1733934422; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=G9G1+IA4HE6z5Jl984QuG0eTi6gYVIS+JAIiJpGUT64=;
-        b=nHtWyHxuXQRjOMdNrhEB6NLoK3rnkKQbbuBVs9TqL3+5rdKYuiAzoaG+vv508D/rfB
-         UoJGmSYPjwXmsBGamgihduaUltJIpDcRgY/r9rV2wGxgTsZH40yPJPa3pJpUxc37rky1
-         U6bTdxGhky8+oHiClGs2maV725B3l/+fm+6+RCiKt31IqGU7HRlG7+QP7rULXgFzXDbL
-         exWO6ALc2aAwu3YKMwGeX6c5uqnDGK++9DVz/uUepkrwhD0egCEU2x1EI3qUTRe+t8Hk
-         rHuRvAgTD6guaSlBsGyWfWUmJxJ+9nMPiRhe7WhHFoVX30SGZsb/x7fKqEDWvi1bl2Fo
-         08hw==
+        bh=ndPjCiEchgmhN558RiQyP0Yt1FLq3iHOnb50r5toGHE=;
+        b=4n1WkQHHwDnRHDoSIIEdJN67nUStmUBcHEIdSHqvKaDm5qIzzeOEW+FB99ksnz+Y4B
+         sB55fX7bW42s94SZXDFZy+jX5zRFdq396No43GpqTPT2w9LMFeMMXS1UCT3UWWlRokUW
+         jMHlxpY55+RCl98zk/WkZY8RF1bJgLFi5W3mn+pU8SCM2ugOa01Gj2yGiWsr9IV8C4CH
+         gBaQzIYQwRUib4RlMxXX7lQkv/P+6LHHQBxt2UUzD6CNVSIchE01Sjg+HTuQH36mNaXK
+         Jmke3uWfIOStAuD8Fk5cfMbH4RH/X8p4dVHTs9midILE1TrB2DpLsA9HPhOlsBmFt4ll
+         ZlVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733329621; x=1733934421;
+        d=1e100.net; s=20230601; t=1733329622; x=1733934422;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=G9G1+IA4HE6z5Jl984QuG0eTi6gYVIS+JAIiJpGUT64=;
-        b=YAW6p8tXlmPXeRvOBDfrgUnByUDwOJyEoRdIxxTu16vP3/SANfMG9vUjQhU0ngnDo9
-         Y0PaX1RaUqY8XuydWnIOrZHJbN5CHf3mIJeM0ynorKbCvtTYS59PmWYbjk7N3uZTDeh/
-         8pfJUJNtcigWmTdozX/ZxisUD/HmZgUN+ZEbr57NeIUanNq/jngnuFmI310hrwowv/GK
-         tLrFYC6DJ89ZiknISKcT3oEzwZBKvCkty3T4McKup6CF86rlLU9vLWPZVzfNPelHVIEN
-         5oK/06hUC9macZv9Ng1GFJSF/CCuG/lvfn6rCPvS/OXZ1WpWZD6+48mvT4adlDabR09u
-         M2tQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOWEotoxOW/bB3hGRTSsiVyV2Mpeq+X8c6LZ2xQprPx2Ej108pQ4Ife4bGVKbFFZ2FkcqB+iM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+F9XhMAtGWh8Po3Fy6Qei7eO1rBpzfyzUJxeQnyj0KP15IjNG
-	T/iRa6v4PcW7E+w6vTf2XwMlVWC11DiCXMV6jF59+T8IiBTVKW1S/BS6zu0wje7Rv85giEHPhPa
-	FIZbW
-X-Gm-Gg: ASbGncvTP8V2IXYkhHxwJnYBrZvgIzYo/wQ6fwJtUhJxYZsPaTr9IPtOym0+6vOPoWD
-	nB2+13P7dVlMBl5buzjf6TQqmc6kpbo/Cy8Z/at9edPn3tYIKH9/TUtuz1mAwNZCZ9GHurWfRV4
-	i62mrznp2d9L5ijD3sRWArJKayimJNMudkAWbO4+jwEDkNQf/m7KMpg924FacPIoUGaPo/EYq/H
-	gjLCPoc27pTOwEqV1Qtb9qvMgdLdZTD4sA6Ew==
-X-Google-Smtp-Source: AGHT+IG9U1RkmAjCsaZkbHJvJ5nu4yp+BcYJp90LiOTeDBKduQ1hWfRCwdTnNEzAhSGitcQ4jLpnsQ==
-X-Received: by 2002:a05:600c:138c:b0:434:9d76:5031 with SMTP id 5b1f17b1804b1-434d52a1a87mr1200475e9.1.1733329620387;
-        Wed, 04 Dec 2024 08:27:00 -0800 (PST)
+        bh=ndPjCiEchgmhN558RiQyP0Yt1FLq3iHOnb50r5toGHE=;
+        b=QgBykQOp34z5kjzuYe3iCL8NgLvN3VDZ0BMA3URRUaTeThLA+8OeKgXdNjc3OzHks0
+         vnyTUAwLlfz8UvA7deIDGQOtIOzCHyvHzEBa2KGbTh5pVhX0CdgQspCdD3sn3kH/nUqc
+         11jtTYinn4YC6dSfbSR0jqwyFgUPOp5b5j0F9QUus4cAKhc2okXIdeg48cOPS8FoGXIp
+         R4fy6GetrPSgwKqp78LNml21qduUFcXpjB+WM7IPR/CNYcc+UHEJ25lXzdnIpI7QK4at
+         k5/OZtBwjTGrDsUCcAb5EkFYOslupyo8qXsVWFciwCQAx1jMVmm1j+S0tQEXeSQPZlY9
+         nBlA==
+X-Forwarded-Encrypted: i=1; AJvYcCVsGjUXLXPkxNlhri+wi2OfnNLQBnxfQZT2BbFYOD+CgQJb459CA5MB8Tozu6vL9lH2jUOtItM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwluZHJLhUMUdl91zJsy0mRX1q5cWfXqwTaHLzrgG0LiIxWNmW6
+	a87OpBT8m/41Q0CauRS9e5T7NVBIh2rLuxjS+ppZKhWjRy0A2p8nma437cfXmSolWmYwEJqivJB
+	lU8MN
+X-Gm-Gg: ASbGncuO80sZ7saBFCvZ65yszz/n5x1QjX4jFCtGG37fV0C6DGyPSQVyRHJ2s+dtvQK
+	sBJfZlce7IrtnjdVcbYczQj84XXs88xKghjeddoLUhN5IrIBSdDbfdEsev7Dv+c+6fnLMqlymPQ
+	FL06k/+1P+/L1TYkMfLibZoRUTLxYyKc0PDAX0BbLH7aqHJbLFYQbTs+UygdQU4aYnINYCsJUVC
+	OQL/kyKCJ+kUjtL9pm81Q1n+bAludDmgDKRIw==
+X-Google-Smtp-Source: AGHT+IHRNnKQuL0FzYJ9sRykYWh8jH2cm3zF2nEbZZRSS5rqUEb9oxCGR02zINfXQfHQRF/jLblOew==
+X-Received: by 2002:a05:600c:3ac8:b0:42c:9e35:cde6 with SMTP id 5b1f17b1804b1-434d4a5d4a4mr1384465e9.2.1733329621419;
+        Wed, 04 Dec 2024 08:27:01 -0800 (PST)
 Received: from localhost ([2a00:79e0:9d:4:4606:5fa1:8ade:6950])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385dd99504csm16808066f8f.85.2024.12.04.08.26.59
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385dec66e0esm16298133f8f.43.2024.12.04.08.27.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 08:26:59 -0800 (PST)
+        Wed, 04 Dec 2024 08:27:00 -0800 (PST)
 From: Jann Horn <jannh@google.com>
-Date: Wed, 04 Dec 2024 17:26:19 +0100
-Subject: [PATCH v2 1/3] udmabuf: fix racy memfd sealing check
+Date: Wed, 04 Dec 2024 17:26:20 +0100
+Subject: [PATCH v2 2/3] udmabuf: also check for F_SEAL_FUTURE_WRITE
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-udmabuf-fixes-v2-1-23887289de1c@google.com>
+Message-Id: <20241204-udmabuf-fixes-v2-2-23887289de1c@google.com>
 References: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com>
 In-Reply-To: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com>
 To: Gerd Hoffmann <kraxel@redhat.com>, 
@@ -95,65 +95,41 @@ To: Gerd Hoffmann <kraxel@redhat.com>,
  "Joel Fernandes (Google)" <joel@joelfernandes.org>
 Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
  linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
- Jann Horn <jannh@google.com>, Julian Orth <ju.orth@gmail.com>, 
- stable@vger.kernel.org
+ Jann Horn <jannh@google.com>, stable@vger.kernel.org
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733329589; l=1788;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733329589; l=1031;
  i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=Tb4zTg8gwUbDaogCnGrqjqwGKOpD1jahUvTB+lbqtzQ=;
- b=x0rM9Iqs4R9cqZm4OwMo3VWit21K6SeS2leyIeQreRfqXoZoMTJdgc0TRz3BeylxDekXItOM6
- v3yPm+oXfdYAGerYEcgb+A8uMYKhMtEJ8Hr0uOzDDVLWGCHtKOz9Wou
+ bh=fJkw2rLMTtXSXhulM8gnhffaFfLiI1f0yAZSjHGcIX0=;
+ b=NhY0leWwseGXjAz22badChvpbfQCiGr6eextWw4sxPskRjjjSOJH/wPzPkPy4s/BHbCWwcM7p
+ LC618vgQbjWCzsNvNI9+Z53VJP06p8zJnx97CEnj6l4JcYpay7agU4B
 X-Developer-Key: i=jannh@google.com; a=ed25519;
  pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-The current check_memfd_seals() is racy: Since we first do
-check_memfd_seals() and then udmabuf_pin_folios() without holding any
-relevant lock across both, F_SEAL_WRITE can be set in between.
-This is problematic because we can end up holding pins to pages in a
-write-sealed memfd.
+When F_SEAL_FUTURE_WRITE was introduced, it was overlooked that udmabuf
+must reject memfds with this flag, just like ones with F_SEAL_WRITE.
+Fix it by adding F_SEAL_FUTURE_WRITE to SEALS_DENIED.
 
-Fix it using the inode lock, that's probably the easiest way.
-In the future, we might want to consider moving this logic into memfd,
-especially if anyone else wants to use memfd_pin_folios().
-
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219106
-Closes: https://lore.kernel.org/r/CAG48ez0w8HrFEZtJkfmkVKFDhE5aP7nz=obrimeTgpD+StkV9w@mail.gmail.com
-Fixes: fbb0de795078 ("Add udmabuf misc device")
+Fixes: ab3948f58ff8 ("mm/memfd: add an F_SEAL_FUTURE_WRITE seal to memfd")
 Cc: stable@vger.kernel.org
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Jann Horn <jannh@google.com>
 ---
- drivers/dma-buf/udmabuf.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/dma-buf/udmabuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index 8ce1f074c2d32a0a9f59ff7184359e37d56548c6..c1d8c2766d6d36fc5fe1b3d73057f6e01ec6678f 100644
+index c1d8c2766d6d36fc5fe1b3d73057f6e01ec6678f..b330b99fcc7619a05bb7dc2aeeb9c82faf9a387b 100644
 --- a/drivers/dma-buf/udmabuf.c
 +++ b/drivers/dma-buf/udmabuf.c
-@@ -436,14 +436,19 @@ static long udmabuf_create(struct miscdevice *device,
- 			goto err;
- 		}
+@@ -297,7 +297,7 @@ static const struct dma_buf_ops udmabuf_ops = {
+ };
  
-+		/*
-+		 * Take the inode lock to protect against concurrent
-+		 * memfd_add_seals(), which takes this lock in write mode.
-+		 */
-+		inode_lock_shared(file_inode(memfd));
- 		ret = check_memfd_seals(memfd);
--		if (ret < 0) {
--			fput(memfd);
--			goto err;
--		}
-+		if (ret)
-+			goto out_unlock;
+ #define SEALS_WANTED (F_SEAL_SHRINK)
+-#define SEALS_DENIED (F_SEAL_WRITE)
++#define SEALS_DENIED (F_SEAL_WRITE|F_SEAL_FUTURE_WRITE)
  
- 		ret = udmabuf_pin_folios(ubuf, memfd, list[i].offset,
- 					 list[i].size, folios);
-+out_unlock:
-+		inode_unlock_shared(file_inode(memfd));
- 		fput(memfd);
- 		if (ret)
- 			goto err;
+ static int check_memfd_seals(struct file *memfd)
+ {
 
 -- 
 2.47.0.338.g60cca15819-goog
