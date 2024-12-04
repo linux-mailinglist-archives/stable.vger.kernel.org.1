@@ -1,137 +1,140 @@
-Return-Path: <stable+bounces-98320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F579E3FA1
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:27:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90DC79E400B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:49:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654BF165CDB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:48:58 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DEB20C474;
+	Wed,  4 Dec 2024 16:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RODX1vKl"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C49B2821AB
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:27:38 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6843120D506;
-	Wed,  4 Dec 2024 16:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4n1WkQHH"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7663020C48A
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 16:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E16155A2F;
+	Wed,  4 Dec 2024 16:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329626; cv=none; b=YhAbQZzNxzZ9vS2MGHZY7ixX+JyY2xpi3BU08u4m/CnJs+xWUgRL3sbp8szcK330o56IsLiqxUf2tIpZ7slXeyXnevewerG7R4CnWWOHrURONsaHvaKK7zV8cc1Bi7p1n9UVb/phKQjsreObkFfQjA4/JWICk4c/tVLgX1J+FkU=
+	t=1733330937; cv=none; b=iCmNNuzruD9InW6ByNW6xMF7CIniM+JeVK0SZJXe3TxcDIvNtUqvV2McRUGEH1/KwM/367GCAfgFal7CVuT/YcWMn8/aKq3IL7q2RM89W+846Gv+JZGES3yv7ERtY4t2Fp+waq4JSW/3rpm21lNbvjO/Ok78EcwksqQFjrykLgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329626; c=relaxed/simple;
-	bh=fJkw2rLMTtXSXhulM8gnhffaFfLiI1f0yAZSjHGcIX0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FmU6W5J3/H1U9w4nq0mDlc9pJJ3omLs9yICXbm4EZg/+6P8/PzoGA/FW5FkjLqRjwzP0Q3djVOKqlbaqoXxUNvSNEy60IoEJ3f1N+mQELHKdqTJvYAA1O0SxfUwMRc3sNaQeGE1ZRfvRdTvslcE+4bKcjNcjR1U31zl28Tec1EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4n1WkQHH; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4349ea54db7so61755e9.0
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 08:27:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733329622; x=1733934422; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ndPjCiEchgmhN558RiQyP0Yt1FLq3iHOnb50r5toGHE=;
-        b=4n1WkQHHwDnRHDoSIIEdJN67nUStmUBcHEIdSHqvKaDm5qIzzeOEW+FB99ksnz+Y4B
-         sB55fX7bW42s94SZXDFZy+jX5zRFdq396No43GpqTPT2w9LMFeMMXS1UCT3UWWlRokUW
-         jMHlxpY55+RCl98zk/WkZY8RF1bJgLFi5W3mn+pU8SCM2ugOa01Gj2yGiWsr9IV8C4CH
-         gBaQzIYQwRUib4RlMxXX7lQkv/P+6LHHQBxt2UUzD6CNVSIchE01Sjg+HTuQH36mNaXK
-         Jmke3uWfIOStAuD8Fk5cfMbH4RH/X8p4dVHTs9midILE1TrB2DpLsA9HPhOlsBmFt4ll
-         ZlVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733329622; x=1733934422;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ndPjCiEchgmhN558RiQyP0Yt1FLq3iHOnb50r5toGHE=;
-        b=QgBykQOp34z5kjzuYe3iCL8NgLvN3VDZ0BMA3URRUaTeThLA+8OeKgXdNjc3OzHks0
-         vnyTUAwLlfz8UvA7deIDGQOtIOzCHyvHzEBa2KGbTh5pVhX0CdgQspCdD3sn3kH/nUqc
-         11jtTYinn4YC6dSfbSR0jqwyFgUPOp5b5j0F9QUus4cAKhc2okXIdeg48cOPS8FoGXIp
-         R4fy6GetrPSgwKqp78LNml21qduUFcXpjB+WM7IPR/CNYcc+UHEJ25lXzdnIpI7QK4at
-         k5/OZtBwjTGrDsUCcAb5EkFYOslupyo8qXsVWFciwCQAx1jMVmm1j+S0tQEXeSQPZlY9
-         nBlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsGjUXLXPkxNlhri+wi2OfnNLQBnxfQZT2BbFYOD+CgQJb459CA5MB8Tozu6vL9lH2jUOtItM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwluZHJLhUMUdl91zJsy0mRX1q5cWfXqwTaHLzrgG0LiIxWNmW6
-	a87OpBT8m/41Q0CauRS9e5T7NVBIh2rLuxjS+ppZKhWjRy0A2p8nma437cfXmSolWmYwEJqivJB
-	lU8MN
-X-Gm-Gg: ASbGncuO80sZ7saBFCvZ65yszz/n5x1QjX4jFCtGG37fV0C6DGyPSQVyRHJ2s+dtvQK
-	sBJfZlce7IrtnjdVcbYczQj84XXs88xKghjeddoLUhN5IrIBSdDbfdEsev7Dv+c+6fnLMqlymPQ
-	FL06k/+1P+/L1TYkMfLibZoRUTLxYyKc0PDAX0BbLH7aqHJbLFYQbTs+UygdQU4aYnINYCsJUVC
-	OQL/kyKCJ+kUjtL9pm81Q1n+bAludDmgDKRIw==
-X-Google-Smtp-Source: AGHT+IHRNnKQuL0FzYJ9sRykYWh8jH2cm3zF2nEbZZRSS5rqUEb9oxCGR02zINfXQfHQRF/jLblOew==
-X-Received: by 2002:a05:600c:3ac8:b0:42c:9e35:cde6 with SMTP id 5b1f17b1804b1-434d4a5d4a4mr1384465e9.2.1733329621419;
-        Wed, 04 Dec 2024 08:27:01 -0800 (PST)
-Received: from localhost ([2a00:79e0:9d:4:4606:5fa1:8ade:6950])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385dec66e0esm16298133f8f.43.2024.12.04.08.27.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 08:27:00 -0800 (PST)
-From: Jann Horn <jannh@google.com>
-Date: Wed, 04 Dec 2024 17:26:20 +0100
-Subject: [PATCH v2 2/3] udmabuf: also check for F_SEAL_FUTURE_WRITE
+	s=arc-20240116; t=1733330937; c=relaxed/simple;
+	bh=stKYzQ0R9UHlbunEwTrubh6TmczNsMqKLnm63iCclNw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NRKd4UFiQXV0IyYt/cFwF/Ck22RQrydFBGOIirt5pyVmARqlsC0o3XlbzQlo8I7py7mAxhmg4i/pq1AIPzzJYEeV6n4Wcc/MxB1eS2JaD23RrH9oPmQQ4aS/Gf86ckGuCbirRG4oMM7gQaBL8dIBA48fhPEQz3dd8YuhyXNqT0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RODX1vKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3C1C4CECD;
+	Wed,  4 Dec 2024 16:48:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733330936;
+	bh=stKYzQ0R9UHlbunEwTrubh6TmczNsMqKLnm63iCclNw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RODX1vKlkCvETpQ5NpIm2OdX8o7qCEhp3Dmj1sPZkL/EWT6FiiYq7nV5/Vui3Ybsv
+	 jdgQQCBg1SM+GGVAdBFXbE/TqEYOPpaihjEYnrfBxpbGNdnQRWEMcik6wdKI2qCJwi
+	 hhX4jKWmpNSQhlumBc+AmYI4I7axb3IVP7Z7mkxuFRO46JYmskULr/mDbFqQvhLb80
+	 HCZFXsecssdLy+glJY28q5jk3YO+TFwK6js17ZpmeyJgjIjTjpT0cJKSirUh3XcLFu
+	 jrXJenR91EyCP+xzhO9pCjt9qSDT1AFcO9Yo7xsuU580vMXXYI8rA3nUXEimUYuqL6
+	 UAMF69blJoEVw==
+Date: Wed, 4 Dec 2024 09:48:53 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Michal Suchanek <msuchanek@suse.de>,
+	Nicolai Stange <nstange@suse.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH 6.12 000/826] 6.12.2-rc1 review
+Message-ID: <20241204164853.GA3356373@thelio-3990X>
+References: <20241203144743.428732212@linuxfoundation.org>
+ <CA+G9fYu21yqTvL428TFueMJ1uU1H_u8Vc470dER2CTrNK=Js0g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-udmabuf-fixes-v2-2-23887289de1c@google.com>
-References: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com>
-In-Reply-To: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, 
- Vivek Kasireddy <vivek.kasireddy@intel.com>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Simona Vetter <simona.vetter@ffwll.ch>, John Stultz <jstultz@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc: dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org, 
- Jann Horn <jannh@google.com>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733329589; l=1031;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=fJkw2rLMTtXSXhulM8gnhffaFfLiI1f0yAZSjHGcIX0=;
- b=NhY0leWwseGXjAz22badChvpbfQCiGr6eextWw4sxPskRjjjSOJH/wPzPkPy4s/BHbCWwcM7p
- LC618vgQbjWCzsNvNI9+Z53VJP06p8zJnx97CEnj6l4JcYpay7agU4B
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYu21yqTvL428TFueMJ1uU1H_u8Vc470dER2CTrNK=Js0g@mail.gmail.com>
 
-When F_SEAL_FUTURE_WRITE was introduced, it was overlooked that udmabuf
-must reject memfds with this flag, just like ones with F_SEAL_WRITE.
-Fix it by adding F_SEAL_FUTURE_WRITE to SEALS_DENIED.
+On Wed, Dec 04, 2024 at 06:30:47PM +0530, Naresh Kamboju wrote:
+> On Tue, 3 Dec 2024 at 21:06, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.2-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> > and the diffstat can be found below
+...
+> 1) The allmodconfig builds failed on arm64, arm, riscv and x86_64
+>      due to following build warnings / errors.
+> 
+> Build errors for allmodconfig:
+> --------------
+> drivers/gpu/drm/imx/ipuv3/parallel-display.c:75:3: error: variable
+> 'num_modes' is uninitialized when used here [-Werror,-Wuninitialized]
+>    75 |                 num_modes++;
+>       |                 ^~~~~~~~~
+> drivers/gpu/drm/imx/ipuv3/parallel-display.c:55:15: note: initialize
+> the variable 'num_modes' to silence this warning
+>    55 |         int num_modes;
+>       |                      ^
+>       |                       = 0
+> 1 error generated.
+> make[8]: *** [scripts/Makefile.build:229:
+> drivers/gpu/drm/imx/ipuv3/parallel-display.o] Error 1
 
-Fixes: ab3948f58ff8 ("mm/memfd: add an F_SEAL_FUTURE_WRITE seal to memfd")
-Cc: stable@vger.kernel.org
-Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Jann Horn <jannh@google.com>
----
- drivers/dma-buf/udmabuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Introduced by backporting commit 5f6e56d3319d ("drm/imx:
+parallel-display: switch to drm_panel_bridge") without
+commit f94b9707a1c9 ("drm/imx: parallel-display: switch to
+imx_legacy_bridge / drm_bridge_connector"). The latter change also had a
+follow up fix in commit ef214002e6b3 ("drm/imx: parallel-display: add
+legacy bridge Kconfig dependency").
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index c1d8c2766d6d36fc5fe1b3d73057f6e01ec6678f..b330b99fcc7619a05bb7dc2aeeb9c82faf9a387b 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -297,7 +297,7 @@ static const struct dma_buf_ops udmabuf_ops = {
- };
- 
- #define SEALS_WANTED (F_SEAL_SHRINK)
--#define SEALS_DENIED (F_SEAL_WRITE)
-+#define SEALS_DENIED (F_SEAL_WRITE|F_SEAL_FUTURE_WRITE)
- 
- static int check_memfd_seals(struct file *memfd)
- {
+> drivers/gpu/drm/imx/ipuv3/imx-ldb.c:143:3: error: variable 'num_modes'
+> is uninitialized when used here [-Werror,-Wuninitialized]
+>   143 |                 num_modes++;
+>       |                 ^~~~~~~~~
+> drivers/gpu/drm/imx/ipuv3/imx-ldb.c:133:15: note: initialize the
+> variable 'num_modes' to silence this warning
+>   133 |         int num_modes;
+>       |                      ^
+>       |                       = 0
+> 1 error generated.
 
--- 
-2.47.0.338.g60cca15819-goog
+Introduced by backporting commit 5c5843b20bbb ("drm/imx: ldb: switch to
+drm_panel_bridge") without commit 4c3d525f6573 ("drm/imx: ldb: switch to
+imx_legacy_bridge / drm_bridge_connector").
 
+These are both upstream patch series bisectability issues, not anything
+that stable specifically did, as the num_nodes initialization was
+removed by the first change but the entire function containing num_nodes
+was removed by the second change so when the series was taken atomically
+upstream, nobody notices. However, I do wonder why these patches are
+being picked up, as they don't really read like fixes to me and the
+cover letter of the original series does not really make it seem like it
+either.
+
+Cheers,
+Nathan
 
