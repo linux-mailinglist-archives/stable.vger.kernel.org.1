@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-98503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51219E422D
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:46:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF859E4230
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:46:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C45D5165B63
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:46:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC48528759B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B59207662;
-	Wed,  4 Dec 2024 17:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0307207675;
+	Wed,  4 Dec 2024 17:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yhtljgzq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0OrDanE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CB920765A;
-	Wed,  4 Dec 2024 17:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CE020765C;
+	Wed,  4 Dec 2024 17:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332359; cv=none; b=XWaSTq+vSwPiGM84RmfmepMEI9NSIhx4YWB1zLUhExufWEEeYnmdlBSaJNJbgTseVcgnWHkXamrC54/t81hDx3h5mF8IUpY97Z7eJeyn3nRKOrTUpKFnyoamvBSIOCZbMr17qRp1+ce03hss7gBP04J75ydqrPIartEgCGf0kVs=
+	t=1733332361; cv=none; b=GNbdkmtc7GYQOVsG6i8Wzh3+HzAoCoD12g4GHrtgTe70MzJ6wi6MkK6RAAsM40mqZ9Kx6M35gcvTM3IK7qSke/ORCTsWlm93LsSRGZ4yiSJdwHxI4pWOKSv1KnXXWM6RJdKMDvg85bA/MjOcegNKk1yUX9VYhpa4RerZksBmADk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332359; c=relaxed/simple;
-	bh=+X9biTYdLqrN3HM1KDhzN5t9z9vfwvlhW1FN3fQOejA=;
+	s=arc-20240116; t=1733332361; c=relaxed/simple;
+	bh=G0vd4FDjx3uLl/Z+msCeyMHX4sbiyxk8MJ1jBLPFtkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnoD8QJ0wPayxqTdw2OWzTp8y108FOi1Q0AHRQiZTy1THRKnGIwlY5TtvpfmXqQpVj4xn7Csyns0akVchnwuKJV9kz33nvcA7BNaG6yIYmrt3AwHOdSDywOfqCNH0aApdsuNJYhARB1DMhoMiSzosU5I3/2tTex5LAX8IYKVAek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yhtljgzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881DBC4CECD;
-	Wed,  4 Dec 2024 17:12:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X9KU82zE39Nry4Nub6A/IxVZN/WAkEIlgSoxhrvCP4B+PSuvMNOTgZE2nVjwL7Q5FqeFKHROjEhMHWwjxvwmYtBkP2VE3XZYfneBgin6istnzi4QBJ0Qugsebd1GORZQcL7Edy4KoE9ZgU91xBksbnGyiDOAH4B7NcAnWWpv70c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0OrDanE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39B9C4CED1;
+	Wed,  4 Dec 2024 17:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332359;
-	bh=+X9biTYdLqrN3HM1KDhzN5t9z9vfwvlhW1FN3fQOejA=;
+	s=k20201202; t=1733332361;
+	bh=G0vd4FDjx3uLl/Z+msCeyMHX4sbiyxk8MJ1jBLPFtkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YhtljgzqIshQE6XxTq1lbxxK3TMOJaSXTaFkm6/f2swWdQkOXOkCKbSBuM3tMA9/L
-	 TzJ7ZrAJEXCedkKe5QLTolKXZ1TblD6GdC1hyLg6o8GerI2raKHd/60hKJ8UaLD5+4
-	 C7gB+QjTgZ1HgJqP4xfdF8KXkPLg9EjtgRNqXg2Qy/4Gf2zttmqTIAz/WfOLCkRnnK
-	 QwO/qVNoszhYBPTRPShemZ03j4xPB2zxzqgg7/lVpjSXAqI6v/KScD9WT5ic6aCVd9
-	 Jxn4hL1XlH7vs/DUoKPKb+W+6ttEB2P2ViHRfhsMmKClctVq3rzJAAXVt7++I9EZg/
-	 cxtiDWaTxPIFw==
+	b=n0OrDanEyg0vGqmALVxhicz+GLD2upC7qQcNNqLoto0/FdqUpBOd0XRNUgbsvKSBi
+	 MG0zp6sDpxbUeQHuFMeJ1BqHR+XsGYDZQMqmqMBQqNiAcUz2GzdYlRbuy4vdBVIYMb
+	 QTF89hY7d6O9+Meb9JWOOSaDqqRMjGdPYtM4gpHit1Jzsl9q9c9NlEd1NdPO1M/+j8
+	 InHGVAOSO4Trm3Dpb3Mj2yOC1bWYJ4x/jfHqyNJsYIA9iFwTy/xZYiCeDFfefGt48x
+	 cOpZPtanu1LAD+1kPWTRVCBM0HnupGD10ze93ZziraNayXT6AxGJAR+/NzI3tqb+xV
+	 8UNQP7u7swoOA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: devi priya <quic_devipriy@quicinc.com>,
+	Anusha Rao <quic_anusha@quicinc.com>,
+	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i3c@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 03/12] i3c: mipi-i3c-hci: Mask ring interrupts before ring stop request
-Date: Wed,  4 Dec 2024 11:01:00 -0500
-Message-ID: <20241204160115.2216718-3-sashal@kernel.org>
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	bhelgaas@google.com,
+	linux-arm-msm@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 04/12] PCI: qcom: Add support for IPQ9574
+Date: Wed,  4 Dec 2024 11:01:01 -0500
+Message-ID: <20241204160115.2216718-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204160115.2216718-1-sashal@kernel.org>
 References: <20241204160115.2216718-1-sashal@kernel.org>
@@ -60,47 +68,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: devi priya <quic_devipriy@quicinc.com>
 
-[ Upstream commit 6ca2738174e4ee44edb2ab2d86ce74f015a0cc32 ]
+[ Upstream commit a63b74f2e35be3829f256922037ae5cee6bb844a ]
 
-Bus cleanup path in DMA mode may trigger a RING_OP_STAT interrupt when
-the ring is being stopped. Depending on timing between ring stop request
-completion, interrupt handler removal and code execution this may lead
-to a NULL pointer dereference in hci_dma_irq_handler() if it gets to run
-after the io_data pointer is set to NULL in hci_dma_cleanup().
+Add the new IPQ9574 platform which is based on the Qcom IP rev. 1.27.0
+and Synopsys IP rev. 5.80a.
 
-Prevent this my masking the ring interrupts before ring stop request.
+The platform itself has four PCIe Gen3 controllers: two single-lane and
+two dual-lane, all are based on Synopsys IP rev. 5.70a. As such, reuse
+all the members of 'ops_2_9_0'.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20240920144432.62370-2-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20240801054803.3015572-5-quic_srichara@quicinc.com
+Co-developed-by: Anusha Rao <quic_anusha@quicinc.com>
+Signed-off-by: Anusha Rao <quic_anusha@quicinc.com>
+Signed-off-by: devi priya <quic_devipriy@quicinc.com>
+Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index edc3a69bfe31f..bcc0c7d4131f2 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -174,10 +174,10 @@ static void hci_dma_cleanup(struct i3c_hci *hci)
- 	for (i = 0; i < rings->total; i++) {
- 		rh = &rings->headers[i];
- 
-+		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
- 		rh_reg_write(RING_CONTROL, 0);
- 		rh_reg_write(CR_SETUP, 0);
- 		rh_reg_write(IBI_SETUP, 0);
--		rh_reg_write(INTR_SIGNAL_ENABLE, 0);
- 
- 		if (rh->xfer)
- 			dma_free_coherent(&hci->master.dev,
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index d3ca6d3493130..2427237cbe9c7 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1618,6 +1618,7 @@ static const struct of_device_id qcom_pcie_match[] = {
+ 	{ .compatible = "qcom,pcie-ipq8064-v2", .data = &cfg_2_1_0 },
+ 	{ .compatible = "qcom,pcie-ipq8074", .data = &cfg_2_3_3 },
+ 	{ .compatible = "qcom,pcie-ipq8074-gen3", .data = &cfg_2_9_0 },
++	{ .compatible = "qcom,pcie-ipq9574", .data = &cfg_2_9_0 },
+ 	{ .compatible = "qcom,pcie-msm8996", .data = &cfg_2_3_2 },
+ 	{ .compatible = "qcom,pcie-qcs404", .data = &cfg_2_4_0 },
+ 	{ .compatible = "qcom,pcie-sa8540p", .data = &cfg_1_9_0 },
 -- 
 2.43.0
 
