@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-98466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1459E41B1
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:33:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 554839E41B4
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:33:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 897C028CA99
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:33:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29DAA167A61
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4EB218DC7;
-	Wed,  4 Dec 2024 17:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF14022B8C4;
+	Wed,  4 Dec 2024 17:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zd7ZiwgC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRj/lHdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0916D218DC6;
-	Wed,  4 Dec 2024 17:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979AF218DC6;
+	Wed,  4 Dec 2024 17:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331823; cv=none; b=RvAuLPZXd/1JwYXuz09LkASzbG3kY18tsp22ncAOlR0tqcM5Ul0+42vzHY+aL8pUZuvg+jao4fcsPnUbGVqV4FHk4XP7Y1xrM3NkleiYaifrjGt9gqOzIP/sYQjutCcy8K53LQHm0iDlDzLd6Zjo8Po1TH1+U64aDNsQziNlJR8=
+	t=1733331826; cv=none; b=OD01RDaduPWTjpUgUziGUJICwbe/mzod3Egqw8PMmhpJ3Dfud7IIUXy2bf5mgkQJ7Mi8n/6xQrCnLQ1KV1XI2om0oJ6/S/kqGgMuc+ab91nsPjAhAXYtJ+5ZRiWcd4N+m5S7VPgDXsyfOCr2NUEWl0NH6GdREEPJ5q0NCZrb8XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331823; c=relaxed/simple;
-	bh=yuHaRE1iv1c9h/Pp45HxXM5iJTa3nhKlWYuQeRowhbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufHQuEkOVPR5+G/UwHizKorciv20EBYscTp+299WUG3wZhghf6w3siGYwQ/VhzlLeIjG6WR/5NhwcJaQ7SSmKISthjxxhfOKeRNtCq/j9Y5Co4bITVuIYqHoQEs6Z5/3hyhfTo46tF3CXbQv0GmZrK8cUiR3hFnqu7BzFAKEagM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zd7ZiwgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658E0C4CED1;
-	Wed,  4 Dec 2024 17:03:41 +0000 (UTC)
+	s=arc-20240116; t=1733331826; c=relaxed/simple;
+	bh=2GzttSpa/kaeonSAGg1jQW/Lt5L31GNe3I0m2S2UGNA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iaaggmyoM3s675xrcC9hPvhpHMMXIto/IDJ8lQOltjM8HkOzpxlPwgN5xMyfwfIeGGxL/f7r7Q+fOVqE2ZGS0auuU+o9ShZETjkcYoSSaBPX2IZZqjPWAx4XWHZdSl+DGHLJI2XSM/1NmNHv2UN4BBzBxZrpxt3EM9COaLTs7q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRj/lHdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D441C4CECD;
+	Wed,  4 Dec 2024 17:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331822;
-	bh=yuHaRE1iv1c9h/Pp45HxXM5iJTa3nhKlWYuQeRowhbg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zd7ZiwgCyS53dMy10iRYLq7QZeg1v/l8go2/Bdjyq6Umqcy4VqnjVARNHnRDsdJIn
-	 tuVKsKlYXRrTkxzT3jwiy9Eu4SMXlka72V3TZi8AqdzpiaASujkSDOGpleqfkgbK1O
-	 1aZ/3Dz/wMkhZhUc/8qJCWiT0B8kWK+C75Aaw07cMn4ViKrUeRntVk6GG4Qtj3V9He
-	 QJAO8KUrbH4F5B/eVSXashe+bO7TBMrhin6yChzEWYdUBwO3ZYooK8JAyB0c4Ha89Z
-	 I5VnS6Xs0xMeLKeSdm+b/jhj5BVOXJXfhdJzZ4+DE+dEbFQq2bPOEoTjZdXfgkRY05
-	 rDm4UltEexjog==
+	s=k20201202; t=1733331826;
+	bh=2GzttSpa/kaeonSAGg1jQW/Lt5L31GNe3I0m2S2UGNA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kRj/lHdA1mrREEWGHbI0GZDPO3A8k9yqDVUHHc9w5n1X+8p/f0M4mlblEyU9wy1zB
+	 LIG5UOzaN6o/RWHvY1dxrrhZwFAG3PNIiUNIMe6Q67QvLsT+goF+BCmLmsgF08Axst
+	 OzCopt4Z6YIaKLkNmps/7UBj4Qt9i+BozxIHDZ/RDSKbJWcIDJl+zyoAOwCA8JX3Zx
+	 3TDzasH7rDdc17FEyHhwS0Hk3vvOLxHOdnuwJk7BGlUalWlZppBgOzHc1zFtDKiUtg
+	 XCgma1icATPiZqgTGzbwVoaW6aqqCz4n4QLg8ihMmD866EZ8pM2Ci0+A+oxemRWVyu
+	 GrsPxaJWSv2Jg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yi Yang <yiyang13@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+Cc: Uros Bizjak <ubizjak@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	nvdimm@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.4 7/7] nvdimm: rectify the illogical code within nd_dax_probe()
-Date: Wed,  4 Dec 2024 10:52:12 -0500
-Message-ID: <20241204155213.2215170-7-sashal@kernel.org>
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 1/6] tracing: Use atomic64_inc_return() in trace_clock_counter()
+Date: Wed,  4 Dec 2024 10:52:20 -0500
+Message-ID: <20241204155226.2215336-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241204155213.2215170-1-sashal@kernel.org>
-References: <20241204155213.2215170-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,66 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.286
+X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
+[ Upstream commit eb887c4567d1b0e7684c026fe7df44afa96589e6 ]
 
-When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
-it is inadvisable to perform pointer arithmetic or address-taking on a
-NULL pointer.
-Introduce the nd_dax_devinit() function to enhance the code's logic and
-improve its readability.
+Use atomic64_inc_return(&ref) instead of atomic64_add_return(1, &ref)
+to use optimized implementation and ease register pressure around
+the primitive for targets that implement optimized variant.
 
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241007085651.48544-1-ubizjak@gmail.com
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/dax_devs.c | 4 ++--
- drivers/nvdimm/nd.h       | 7 +++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ kernel/trace/trace_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
-index 6d22b0f83b3b0..c882534dbe84c 100644
---- a/drivers/nvdimm/dax_devs.c
-+++ b/drivers/nvdimm/dax_devs.c
-@@ -113,12 +113,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
- 
- 	nvdimm_bus_lock(&ndns->dev);
- 	nd_dax = nd_dax_alloc(nd_region);
--	nd_pfn = &nd_dax->nd_pfn;
--	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
-+	dax_dev = nd_dax_devinit(nd_dax, ndns);
- 	nvdimm_bus_unlock(&ndns->dev);
- 	if (!dax_dev)
- 		return -ENOMEM;
- 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
-+	nd_pfn = &nd_dax->nd_pfn;
- 	nd_pfn->pfn_sb = pfn_sb;
- 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
- 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index ee5c04070ef91..23d011b01fa61 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -326,6 +326,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
- int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
- bool is_nd_dax(struct device *dev);
- struct device *nd_dax_create(struct nd_region *nd_region);
-+static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
-+					    struct nd_namespace_common *ndns)
-+{
-+	if (!nd_dax)
-+		return NULL;
-+	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
-+}
- #else
- static inline int nd_dax_probe(struct device *dev,
- 		struct nd_namespace_common *ndns)
+diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
+index 4702efb00ff21..4cb2ebc439be6 100644
+--- a/kernel/trace/trace_clock.c
++++ b/kernel/trace/trace_clock.c
+@@ -154,5 +154,5 @@ static atomic64_t trace_counter;
+  */
+ u64 notrace trace_clock_counter(void)
+ {
+-	return atomic64_add_return(1, &trace_counter);
++	return atomic64_inc_return(&trace_counter);
+ }
 -- 
 2.43.0
 
