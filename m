@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-98363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF91A9E4084
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B92E9E4086
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:06:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6545F281943
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:05:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16774282C57
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7220720E02B;
-	Wed,  4 Dec 2024 16:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BD0231CB0;
+	Wed,  4 Dec 2024 16:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQyyRrQk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6m7CSas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295F5231C80;
-	Wed,  4 Dec 2024 16:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA33231CA8;
+	Wed,  4 Dec 2024 16:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331529; cv=none; b=cmh6M57dhhW7mvbUV3m68OqUD3lqwvjgvPehNzMdqjHz3Vd1hAdSDTdAQXFv0z2ohHOCYtfutkrewY7N++Qyywk2zmjQrQBRNfgg4HzTs6j4ieTFIAQg4l+3/5DvK+8W3C4BuJQeF2I/7WvxnLPJvxsB/3oFRpvST9rvo3XVhCU=
+	t=1733331530; cv=none; b=ju7jEl2WG2bauxX4IrNYms6WxSUL9OJOF0f82s/XwebRHe1LGx4aI/wa8QAk1X0u9ik166va7ntC4tjaDSuMD8ISO+n0HML/AxxNY9evuuxyWeq01hw7LjYGytkL4AI3bZA+rMqdKXWyRGm79sO3GG3n8lOjjLquqOJrog7aoqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331529; c=relaxed/simple;
-	bh=mykbys0+YchcE0EdWY+/Z5/c1q2jIeezT1RFg2xckFg=;
+	s=arc-20240116; t=1733331530; c=relaxed/simple;
+	bh=Z7dcg172ZmLMndDiaZ86nq9I4fvX84bySeNXPXbXVGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sMO0Oe1MrlfDEt8W0sMr1s1s/Ad7R8/hRZFP3mUo2X5Z1+uhazrp2D3F4p53shksdcxSXrsCOWmjNdEFOcL4xJafOgZUlc4o0iGl0IahK/gyuLXz2ItCKf5VOe03YVSUo/3t2geWz4B4ZBMkavw+UsbN9gHvwUb/hU6bYhyn100=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQyyRrQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68241C4CED6;
-	Wed,  4 Dec 2024 16:58:47 +0000 (UTC)
+	 MIME-Version; b=IouSsMg8At8xt9QXIdA71KDLIKED8e6LT52uSV2P3y+P29FtkAHrQJOEs+x9736RdXulEOesWNpSnzlHhodeWl+ZCaeRpzeZC8Of/EKk7pHTfTumWbFgIpIx8H4+C06m59urVZj6iH2m8O1LEcz5NLeB3LIYlzYWcPh3m961BKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r6m7CSas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D97CC4CECD;
+	Wed,  4 Dec 2024 16:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331528;
-	bh=mykbys0+YchcE0EdWY+/Z5/c1q2jIeezT1RFg2xckFg=;
+	s=k20201202; t=1733331530;
+	bh=Z7dcg172ZmLMndDiaZ86nq9I4fvX84bySeNXPXbXVGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQyyRrQkKyGNiFsdnzyyZagPADxmES0h2VaTBXOBiMt/zfGPnafeYKdveIJCafDU/
-	 LonVDYSQrI48n3zLuJJTXBOmXwbby8BGccZKA5FUPsYbNqNEXec9UkpEgm5iDS+1M+
-	 dcHz2spVVM2jCqAeBLdkkQXX7/d5nLgRf64LYiXUfdkGfdkUhNsQRjItzwV+Qmcq1z
-	 JP2gYWrn278RX1rdvIn3QaRl7hQu6zhJIeTo9IJWIRHD5k2YBLy4XeD87V2+g2yiHd
-	 VeEs7kLK5KUYwKQ8nd4CZwsaF27A106O5e7XKBz0u338qEan/8prqE9l0fmQl9huZg
-	 SX4WvoZAJvN3Q==
+	b=r6m7CSasM4Cn09IhpoJB2RGhHS/dk+qpBr+hf78P50jquSOGJW0rrLx9t/0MpLQCI
+	 keXJYSxIZrnOFif4AEuDjg1wN8Al32Jm6jT0QvhIShyQ2gY8e0EFWM2nzsJAo/iZOQ
+	 SnMSFeBBFk/QCfsMcAeE9HtH52Bp+oWu2TBUQN8QH9W9L70ToHENIlpZxHUcgoFcyW
+	 fGgcR3lNBd11rtOYPn4rbd0dzdFow+rQEuXAK4pgaOgx0ZR+NgjgdsZP/VplZbmpwd
+	 hXVOmLqW1jYVNiyQ5xixYrN7HoHcZER9Ws3tFQ3VvQhaX4FT7uV2sPqLUtw81sw+5g
+	 9Rps7Z0AbOUKg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+Cc: Yi Yang <yiyang13@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	amitk@kernel.org,
-	thara.gopinath@gmail.com,
-	rafael@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 30/36] thermal/drivers/qcom/tsens-v1: Add support for MSM8937 tsens
-Date: Wed,  4 Dec 2024 10:45:46 -0500
-Message-ID: <20241204154626.2211476-30-sashal@kernel.org>
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	nvdimm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 31/36] nvdimm: rectify the illogical code within nd_dax_probe()
+Date: Wed,  4 Dec 2024 10:45:47 -0500
+Message-ID: <20241204154626.2211476-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
 References: <20241204154626.2211476-1-sashal@kernel.org>
@@ -65,104 +63,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit e2ffb6c3a40ee714160e35e61f0a984028b5d550 ]
+[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
 
-Add support for tsens v1.4 block what can be found in
-MSM8937 and MSM8917.
+When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
+it is inadvisable to perform pointer arithmetic or address-taking on a
+NULL pointer.
+Introduce the nd_dax_devinit() function to enhance the code's logic and
+improve its readability.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20241113-msm8917-v6-5-c348fb599fef@mainlining.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qcom/tsens-v1.c | 21 ++++++++++++++-------
- drivers/thermal/qcom/tsens.c    |  3 +++
- drivers/thermal/qcom/tsens.h    |  2 +-
- 3 files changed, 18 insertions(+), 8 deletions(-)
+ drivers/nvdimm/dax_devs.c | 4 ++--
+ drivers/nvdimm/nd.h       | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/thermal/qcom/tsens-v1.c b/drivers/thermal/qcom/tsens-v1.c
-index dc1c4ae2d8b01..1a7874676f68e 100644
---- a/drivers/thermal/qcom/tsens-v1.c
-+++ b/drivers/thermal/qcom/tsens-v1.c
-@@ -162,28 +162,35 @@ struct tsens_plat_data data_tsens_v1 = {
- 	.fields	= tsens_v1_regfields,
- };
+diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
+index 6b4922de30477..37b743acbb7ba 100644
+--- a/drivers/nvdimm/dax_devs.c
++++ b/drivers/nvdimm/dax_devs.c
+@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
  
--static const struct tsens_ops ops_8956 = {
--	.init		= init_8956,
-+static const struct tsens_ops ops_common = {
-+	.init		= init_common,
- 	.calibrate	= tsens_calibrate_common,
- 	.get_temp	= get_temp_tsens_valid,
- };
- 
--struct tsens_plat_data data_8956 = {
-+struct tsens_plat_data data_8937 = {
- 	.num_sensors	= 11,
--	.ops		= &ops_8956,
-+	.ops		= &ops_common,
- 	.feat		= &tsens_v1_feat,
- 	.fields		= tsens_v1_regfields,
- };
- 
--static const struct tsens_ops ops_8976 = {
--	.init		= init_common,
-+static const struct tsens_ops ops_8956 = {
-+	.init		= init_8956,
- 	.calibrate	= tsens_calibrate_common,
- 	.get_temp	= get_temp_tsens_valid,
- };
- 
-+struct tsens_plat_data data_8956 = {
-+	.num_sensors	= 11,
-+	.ops		= &ops_8956,
-+	.feat		= &tsens_v1_feat,
-+	.fields		= tsens_v1_regfields,
-+};
-+
- struct tsens_plat_data data_8976 = {
- 	.num_sensors	= 11,
--	.ops		= &ops_8976,
-+	.ops		= &ops_common,
- 	.feat		= &tsens_v1_feat,
- 	.fields		= tsens_v1_regfields,
- };
-diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
-index 0b4421bf47854..d2db804692f01 100644
---- a/drivers/thermal/qcom/tsens.c
-+++ b/drivers/thermal/qcom/tsens.c
-@@ -1119,6 +1119,9 @@ static const struct of_device_id tsens_table[] = {
- 	}, {
- 		.compatible = "qcom,msm8916-tsens",
- 		.data = &data_8916,
-+	}, {
-+		.compatible = "qcom,msm8937-tsens",
-+		.data = &data_8937,
- 	}, {
- 		.compatible = "qcom,msm8939-tsens",
- 		.data = &data_8939,
-diff --git a/drivers/thermal/qcom/tsens.h b/drivers/thermal/qcom/tsens.h
-index cab39de045b10..7b36a0318fa6a 100644
---- a/drivers/thermal/qcom/tsens.h
-+++ b/drivers/thermal/qcom/tsens.h
-@@ -647,7 +647,7 @@ extern struct tsens_plat_data data_8960;
- extern struct tsens_plat_data data_8226, data_8909, data_8916, data_8939, data_8974, data_9607;
- 
- /* TSENS v1 targets */
--extern struct tsens_plat_data data_tsens_v1, data_8976, data_8956;
-+extern struct tsens_plat_data data_tsens_v1, data_8937, data_8976, data_8956;
- 
- /* TSENS v2 targets */
- extern struct tsens_plat_data data_8996, data_ipq8074, data_tsens_v2;
+ 	nvdimm_bus_lock(&ndns->dev);
+ 	nd_dax = nd_dax_alloc(nd_region);
+-	nd_pfn = &nd_dax->nd_pfn;
+-	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
++	dax_dev = nd_dax_devinit(nd_dax, ndns);
+ 	nvdimm_bus_unlock(&ndns->dev);
+ 	if (!dax_dev)
+ 		return -ENOMEM;
+ 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
++	nd_pfn = &nd_dax->nd_pfn;
+ 	nd_pfn->pfn_sb = pfn_sb;
+ 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
+ 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index 2dbb1dca17b53..5ca06e9a2d292 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -600,6 +600,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
+ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
+ bool is_nd_dax(const struct device *dev);
+ struct device *nd_dax_create(struct nd_region *nd_region);
++static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
++					    struct nd_namespace_common *ndns)
++{
++	if (!nd_dax)
++		return NULL;
++	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
++}
+ #else
+ static inline int nd_dax_probe(struct device *dev,
+ 		struct nd_namespace_common *ndns)
 -- 
 2.43.0
 
