@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-98349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F0D9E405F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:02:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4425F9E4060
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2761633FD
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:02:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FF76165735
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14CF217640;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14F3217645;
 	Wed,  4 Dec 2024 16:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oa8zLjEm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sMV339sZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDEE20DD67;
-	Wed,  4 Dec 2024 16:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE4C215F4B;
+	Wed,  4 Dec 2024 16:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331508; cv=none; b=g1soB/3+357hep8WGLyxkdGGlvmgRhLY4e6P/Py1vgmjQM9rzT86L8MS/OI6k2yQFd7cl+2cFre+/7syoOmunHlNHVn5kZKkiNBMqGkLDMXkwiwBJzneVYKHmVmVa+7OTmW8aDgXCMZLPCAeIJHZ1XITVHPU9a+seaUzHsLoalU=
+	t=1733331508; cv=none; b=dmaDfKTrMuhyjx0gnB47N0vk+49hY5cQhIFJkk85avhzs4V3K+0I+0H7UVlaMvDGOY8L9+izZ6GQwpWqdHTDgNE466kQKglYPjI8AkxYD18hq3lkGsYMnebMj/+/lwIIHQUPrharwjMpltdkaOH6FSVkA7wjOduCz2/wm4d8yQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733331508; c=relaxed/simple;
-	bh=udSRhDBulGplchZ3ggP60P1EzgTxgPhSkL0dcvpLWgg=;
+	bh=ShxyKbUZbqLWskYD7MScECKc0N7WMzo8edmStbKj94g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edcWeqM5Dijsgt7xTm/66Untz2M3aWG6hqAupJjICgRgAka5+DX++Ej0+LuUJjD1zq3gquitjGwXpt1JFuAMqCXTAw94Uf8u9JQ/6bLlGMf+sP5e6jNTZ9I1sJocBcnzYx1QZ1YbHzKMK70n1t5MyShz467hgMghBD5utaYqzr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oa8zLjEm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395EDC4CED1;
-	Wed,  4 Dec 2024 16:58:25 +0000 (UTC)
+	 MIME-Version; b=qmdOIY1smmk6VmN59U59/T5C08oogXpYZNPsS0Iahd8/LWFHc9zKmyPgSSxgrcOE119b+3RwDADOEkt5F/k+AqPn9A+NiFrRO2AGgbUX8iSn7ZEsA+iqm9vAYQ0FtJZV+Lxz9YK+L7WnKzs63wPtIVM2wD4X5L4DfHym1oS9HvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sMV339sZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD874C4CECD;
+	Wed,  4 Dec 2024 16:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331506;
-	bh=udSRhDBulGplchZ3ggP60P1EzgTxgPhSkL0dcvpLWgg=;
+	s=k20201202; t=1733331507;
+	bh=ShxyKbUZbqLWskYD7MScECKc0N7WMzo8edmStbKj94g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oa8zLjEmOEjTiscjmQL2W5oL24DNBDUsq1gYUYysF0+yu5BppsZxZpA/SYImVN8B5
-	 xoSBmtL7iRM840ntnvKoCTTXvOKQedHiu/5n6ypO78AsmITM5XzfGPirKXHiAhv3Q7
-	 90WKij2KKTfeQKM1pcOf1cvW/E9WzxaFJGf/27C4r5paOfRT8KuvhitBYQWvzony4Z
-	 HFI+oYTtIBcdLOAPBIvtpwnh6qcJ8K2PFUjhdrZxzMJpX9wT38duIMCgoQbzCVs3LM
-	 hjzM5ZZte+SpM2APrK/bddpFlb54VS47IyI8buXE7OFziVgKAY1XafXUWTYwGzts3E
-	 xJVzCv2BVnDFQ==
+	b=sMV339sZZ7uiJGnGydhXEFB6tzR9a5kz6iZWmSFrp0c76ISQlIpGdwS7puiDgjdm6
+	 06mSjJYTMgDaJgjGUrV2/cwaJRtNvSKLruKwM70CYoAGOdhc4lfK2h/QIioZA7iepO
+	 Rwp/GZIQmodI7qh28P6M5vtBhhBkzBstYag/IWVd70pciEjtXLR9kG8FNId1D5jLZy
+	 L1hI5E8f6qnrzX8tBXqpG2pJ1JtksEP5sh4Kh/JTOmeA4Jfo5K210/awlm20IDH3Fv
+	 YyL4eTwduGlattMdzAdV/hTpBsx8g5bT2Q0Pw3cIwPLDlJJ53Pi3heeKDpvLLzQvHg
+	 vzje4Y5nVlpAg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Jordan Rife <jrife@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
+Cc: Justin Tee <justin.tee@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 16/36] bpf: put bpf_link's program when link is safe to be deallocated
-Date: Wed,  4 Dec 2024 10:45:32 -0500
-Message-ID: <20241204154626.2211476-16-sashal@kernel.org>
+	james.smart@broadcom.com,
+	dick.kennedy@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 17/36] scsi: lpfc: Call lpfc_sli4_queue_unset() in restart and rmmod paths
+Date: Wed,  4 Dec 2024 10:45:33 -0500
+Message-ID: <20241204154626.2211476-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
 References: <20241204154626.2211476-1-sashal@kernel.org>
@@ -68,101 +68,182 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit f44ec8733a8469143fde1984b5e6931b2e2f6f3f ]
+[ Upstream commit d35f7672715d1ff3e3ad9bb4ae6ac6cb484200fe ]
 
-In general, BPF link's underlying BPF program should be considered to be
-reachable through attach hook -> link -> prog chain, and, pessimistically,
-we have to assume that as long as link's memory is not safe to free,
-attach hook's code might hold a pointer to BPF program and use it.
+During initialization, the driver allocates wq->pring in lpfc_wq_create
+and lpfc_sli4_queue_unset() is the only place where kfree(wq->pring) is
+called.
 
-As such, it's not (generally) correct to put link's program early before
-waiting for RCU GPs to go through. More eager bpf_prog_put() that we
-currently do is mostly correct due to BPF program's release code doing
-similar RCU GP waiting, but as will be shown in the following patches,
-BPF program can be non-sleepable (and, thus, reliant on only "classic"
-RCU GP), while BPF link's attach hook can have sleepable semantics and
-needs to be protected by RCU Tasks Trace, and for such cases BPF link
-has to go through RCU Tasks Trace + "classic" RCU GPs before being
-deallocated. And so, if we put BPF program early, we might free BPF
-program before we free BPF link, leading to use-after-free situation.
+There is a possible memory leak in lpfc_sli_brdrestart_s4() (restart)
+and lpfc_pci_remove_one_s4() (rmmod) paths because there are no calls to
+lpfc_sli4_queue_unset() to kfree() the wq->pring.
 
-So, this patch defers bpf_prog_put() until we are ready to perform
-bpf_link's deallocation. At worst, this delays BPF program freeing by
-one extra RCU GP, but that seems completely acceptable. Alternatively,
-we'd need more elaborate ways to determine BPF hook, BPF link, and BPF
-program lifetimes, and how they relate to each other, which seems like
-an unnecessary complication.
+Fix by inserting a call to lpfc_sli4_queue_unset() in
+lpfc_sli_brdrestart_s4() and lpfc_sli4_hba_unset() routines.  Also, add
+a check for the SLI_ACTIVE flag before issuing the Q_DESTROY mailbox
+command.  If not set, then the mailbox command will obviously fail.  In
+such cases, skip issuing the mailbox command and only execute the driver
+resource clean up portions of the lpfc_*q_destroy routines.
 
-Note, for most BPF links we still will perform eager bpf_prog_put() and
-link dealloc, so for those BPF links there are no observable changes
-whatsoever. Only BPF links that use deferred dealloc might notice
-slightly delayed freeing of BPF programs.
-
-Also, to reduce code and logic duplication, extract program put + link
-dealloc logic into bpf_link_dealloc() helper.
-
-Link: https://lore.kernel.org/20241101181754.782341-1-andrii@kernel.org
-Tested-by: Jordan Rife <jrife@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20241031223219.152342-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ drivers/scsi/lpfc/lpfc_init.c |  2 ++
+ drivers/scsi/lpfc/lpfc_sli.c  | 41 ++++++++++++++++++++++++++++++-----
+ 2 files changed, 38 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index c5aa127ed4cc0..2e99fedb9e4ab 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -2976,12 +2976,24 @@ void bpf_link_inc(struct bpf_link *link)
- 	atomic64_inc(&link->refcnt);
- }
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 0dd451009b079..a3658ef1141b2 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -13518,6 +13518,8 @@ lpfc_sli4_hba_unset(struct lpfc_hba *phba)
+ 	/* Disable FW logging to host memory */
+ 	lpfc_ras_stop_fwlog(phba);
  
-+static void bpf_link_dealloc(struct bpf_link *link)
-+{
-+	/* now that we know that bpf_link itself can't be reached, put underlying BPF program */
-+	if (link->prog)
-+		bpf_prog_put(link->prog);
++	lpfc_sli4_queue_unset(phba);
 +
-+	/* free bpf_link and its containing memory */
-+	if (link->ops->dealloc_deferred)
-+		link->ops->dealloc_deferred(link);
-+	else
-+		link->ops->dealloc(link);
-+}
+ 	/* Reset SLI4 HBA FCoE function */
+ 	lpfc_pci_function_reset(phba);
+ 
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index 2ec6e55771b45..6748fba48a07e 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -5291,6 +5291,8 @@ lpfc_sli_brdrestart_s4(struct lpfc_hba *phba)
+ 			"0296 Restart HBA Data: x%x x%x\n",
+ 			phba->pport->port_state, psli->sli_flag);
+ 
++	lpfc_sli4_queue_unset(phba);
 +
- static void bpf_link_defer_dealloc_rcu_gp(struct rcu_head *rcu)
- {
- 	struct bpf_link *link = container_of(rcu, struct bpf_link, rcu);
+ 	rc = lpfc_sli4_brdreset(phba);
+ 	if (rc) {
+ 		phba->link_state = LPFC_HBA_ERROR;
+@@ -17625,6 +17627,9 @@ lpfc_eq_destroy(struct lpfc_hba *phba, struct lpfc_queue *eq)
+ 	if (!eq)
+ 		return -ENODEV;
  
--	/* free bpf_link and its containing memory */
--	link->ops->dealloc_deferred(link);
-+	bpf_link_dealloc(link);
- }
- 
- static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
-@@ -3003,7 +3015,6 @@ static void bpf_link_free(struct bpf_link *link)
- 		sleepable = link->prog->sleepable;
- 		/* detach BPF program, clean up used resources */
- 		ops->release(link);
--		bpf_prog_put(link->prog);
++	if (!(phba->sli.sli_flag & LPFC_SLI_ACTIVE))
++		goto list_remove;
++
+ 	mbox = mempool_alloc(eq->phba->mbox_mem_pool, GFP_KERNEL);
+ 	if (!mbox)
+ 		return -ENOMEM;
+@@ -17651,10 +17656,12 @@ lpfc_eq_destroy(struct lpfc_hba *phba, struct lpfc_queue *eq)
+ 				shdr_status, shdr_add_status, rc);
+ 		status = -ENXIO;
  	}
- 	if (ops->dealloc_deferred) {
- 		/* schedule BPF link deallocation; if underlying BPF program
-@@ -3014,8 +3025,9 @@ static void bpf_link_free(struct bpf_link *link)
- 			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
- 		else
- 			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
--	} else if (ops->dealloc)
--		ops->dealloc(link);
-+	} else if (ops->dealloc) {
-+		bpf_link_dealloc(link);
-+	}
++	mempool_free(mbox, eq->phba->mbox_mem_pool);
+ 
++list_remove:
+ 	/* Remove eq from any list */
+ 	list_del_init(&eq->list);
+-	mempool_free(mbox, eq->phba->mbox_mem_pool);
++
+ 	return status;
  }
  
- static void bpf_link_put_deferred(struct work_struct *work)
+@@ -17682,6 +17689,10 @@ lpfc_cq_destroy(struct lpfc_hba *phba, struct lpfc_queue *cq)
+ 	/* sanity check on queue memory */
+ 	if (!cq)
+ 		return -ENODEV;
++
++	if (!(phba->sli.sli_flag & LPFC_SLI_ACTIVE))
++		goto list_remove;
++
+ 	mbox = mempool_alloc(cq->phba->mbox_mem_pool, GFP_KERNEL);
+ 	if (!mbox)
+ 		return -ENOMEM;
+@@ -17707,9 +17718,11 @@ lpfc_cq_destroy(struct lpfc_hba *phba, struct lpfc_queue *cq)
+ 				shdr_status, shdr_add_status, rc);
+ 		status = -ENXIO;
+ 	}
++	mempool_free(mbox, cq->phba->mbox_mem_pool);
++
++list_remove:
+ 	/* Remove cq from any list */
+ 	list_del_init(&cq->list);
+-	mempool_free(mbox, cq->phba->mbox_mem_pool);
+ 	return status;
+ }
+ 
+@@ -17737,6 +17750,10 @@ lpfc_mq_destroy(struct lpfc_hba *phba, struct lpfc_queue *mq)
+ 	/* sanity check on queue memory */
+ 	if (!mq)
+ 		return -ENODEV;
++
++	if (!(phba->sli.sli_flag & LPFC_SLI_ACTIVE))
++		goto list_remove;
++
+ 	mbox = mempool_alloc(mq->phba->mbox_mem_pool, GFP_KERNEL);
+ 	if (!mbox)
+ 		return -ENOMEM;
+@@ -17762,9 +17779,11 @@ lpfc_mq_destroy(struct lpfc_hba *phba, struct lpfc_queue *mq)
+ 				shdr_status, shdr_add_status, rc);
+ 		status = -ENXIO;
+ 	}
++	mempool_free(mbox, mq->phba->mbox_mem_pool);
++
++list_remove:
+ 	/* Remove mq from any list */
+ 	list_del_init(&mq->list);
+-	mempool_free(mbox, mq->phba->mbox_mem_pool);
+ 	return status;
+ }
+ 
+@@ -17792,6 +17811,10 @@ lpfc_wq_destroy(struct lpfc_hba *phba, struct lpfc_queue *wq)
+ 	/* sanity check on queue memory */
+ 	if (!wq)
+ 		return -ENODEV;
++
++	if (!(phba->sli.sli_flag & LPFC_SLI_ACTIVE))
++		goto list_remove;
++
+ 	mbox = mempool_alloc(wq->phba->mbox_mem_pool, GFP_KERNEL);
+ 	if (!mbox)
+ 		return -ENOMEM;
+@@ -17816,11 +17839,13 @@ lpfc_wq_destroy(struct lpfc_hba *phba, struct lpfc_queue *wq)
+ 				shdr_status, shdr_add_status, rc);
+ 		status = -ENXIO;
+ 	}
++	mempool_free(mbox, wq->phba->mbox_mem_pool);
++
++list_remove:
+ 	/* Remove wq from any list */
+ 	list_del_init(&wq->list);
+ 	kfree(wq->pring);
+ 	wq->pring = NULL;
+-	mempool_free(mbox, wq->phba->mbox_mem_pool);
+ 	return status;
+ }
+ 
+@@ -17850,6 +17875,10 @@ lpfc_rq_destroy(struct lpfc_hba *phba, struct lpfc_queue *hrq,
+ 	/* sanity check on queue memory */
+ 	if (!hrq || !drq)
+ 		return -ENODEV;
++
++	if (!(phba->sli.sli_flag & LPFC_SLI_ACTIVE))
++		goto list_remove;
++
+ 	mbox = mempool_alloc(hrq->phba->mbox_mem_pool, GFP_KERNEL);
+ 	if (!mbox)
+ 		return -ENOMEM;
+@@ -17890,9 +17919,11 @@ lpfc_rq_destroy(struct lpfc_hba *phba, struct lpfc_queue *hrq,
+ 				shdr_status, shdr_add_status, rc);
+ 		status = -ENXIO;
+ 	}
++	mempool_free(mbox, hrq->phba->mbox_mem_pool);
++
++list_remove:
+ 	list_del_init(&hrq->list);
+ 	list_del_init(&drq->list);
+-	mempool_free(mbox, hrq->phba->mbox_mem_pool);
+ 	return status;
+ }
+ 
 -- 
 2.43.0
 
