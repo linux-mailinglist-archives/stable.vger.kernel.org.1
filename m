@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-98283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696FD9E384E
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:07:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C439E38D0
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:29:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CFBC285F34
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:07:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 567ACB2FF1A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782491BBBD7;
-	Wed,  4 Dec 2024 11:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC28E1B414D;
+	Wed,  4 Dec 2024 11:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="NePGoTkI"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Oe+XQYUm"
 X-Original-To: stable@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7B61B87D5;
-	Wed,  4 Dec 2024 11:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E4E1B4137;
+	Wed,  4 Dec 2024 11:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733310355; cv=none; b=GL5UPgM18WeJLKb43kNJ13MAgVuuTmpUlL1kI6pRcQq3JuzyPYabtcgXfP20Rr2uqtfhrx1xspd4PwYFUyganHaJ4Z3mw5M7XId3v/o97v1rh2RI5USvbd1gaZFRAbrFLfOrLfyd5m4tFzNj3JQ+hvDY46egruZJ+8pK0IRYDi4=
+	t=1733310348; cv=none; b=MC1vuOq12cW3fETI+N1wKAooz5X1HpX+FAEdPiOpoibwVQvXQgc3fA73fujlpzPtcOBbDE1TPHKUDXD+sC6pvXJYPscQMPA+LT8sc73BPWgilsoxnLfDPcvXw4BXmtwMz6iwFIXSMnj9hQQvtWQxUmjJD5VS0A2Zj1hopBmEFCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733310355; c=relaxed/simple;
-	bh=9uSVonVe6lZLjDKA/C9zzamzFDTm7nGbHwPAR/udAeA=;
+	s=arc-20240116; t=1733310348; c=relaxed/simple;
+	bh=9Q+3PN+oneMKxhelptmjC5NFHWuyRqKXnKfK75CmdQA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S946lsFNA20TXZJd1+cxCsRIQ7IxoCARqLgd4S5hU2aBUqYP9nb3tfsviYlElvXSOqFR9IGCKi2tKXmZOBOgTXpLdS/uTDLwmS21T7BrPYAF0gZbt7I/jk5XR3rLYu/4WbmQfEUiJ2Oa9Hj7ct96XKtkN2K77DQYnEs1GsPthCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=NePGoTkI; arc=none smtp.client-ip=213.167.242.64
+	 In-Reply-To:To:Cc; b=d2D/xUv6vKM8Fcjs469i1qDn2j0QoRBn5DOYGM+M2YBG5IqjXHG94X2OljJj3Ea3B2yEXZZlnwC3c8CKYyU4zHr8Ge2QpoTMtY9hbhfdbW9FJEQ8jA2zYsIe4fsRXJA6jYLcMezDUniLkFonUsUFNGhL7QUbOuDZ9tAP9AcR5No=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Oe+XQYUm; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0F73F10B6;
-	Wed,  4 Dec 2024 12:05:19 +0100 (CET)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 7E4FA9FC;
+	Wed,  4 Dec 2024 12:05:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1733310319;
-	bh=9uSVonVe6lZLjDKA/C9zzamzFDTm7nGbHwPAR/udAeA=;
+	s=mail; t=1733310317;
+	bh=9Q+3PN+oneMKxhelptmjC5NFHWuyRqKXnKfK75CmdQA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=NePGoTkIlWnIGV5/qykt/8mfPwGkSlkDR1VHXr8XEUtyLJHJML120/V7bf6gj3E2A
-	 /idymrPt8lU+dItMCGriMAU8ZDgAlORClptd1WyjavfEj8g5Ub42+PyLiV4a6U5ghv
-	 oAwUub/A3lwAVYg0fPG/cUXLGOHIpMANYq8lHlr8=
+	b=Oe+XQYUmbcpz24w5x9pat9Trho1+HN6/tcmsmXPGy+b3rTGhZNkEw+pjlWZ+whDjC
+	 5hxLp3QRDiZUjJ3E99Elo+xxH4KyTQDRGFZ9MUL0RfUkyopcQiC+ESQVZj/t7VVpRF
+	 mZ0xDAPCF0rtLEPerXVcFcZ8mDqOgcQaUWLTehQU=
 From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Date: Wed, 04 Dec 2024 13:05:19 +0200
-Subject: [PATCH v3 05/15] media: i2c: ds90ub960: Fix UB9702 VC map
+Date: Wed, 04 Dec 2024 13:05:15 +0200
+Subject: [PATCH v3 01/15] media: i2c: ds90ub9x3: Fix extra
+ fwnode_handle_put()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-ub9xx-fixes-v3-5-a933c109b323@ideasonboard.com>
+Message-Id: <20241204-ub9xx-fixes-v3-1-a933c109b323@ideasonboard.com>
 References: <20241204-ub9xx-fixes-v3-0-a933c109b323@ideasonboard.com>
 In-Reply-To: <20241204-ub9xx-fixes-v3-0-a933c109b323@ideasonboard.com>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
@@ -63,56 +64,66 @@ To: Mauro Carvalho Chehab <mchehab@kernel.org>,
 Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, stable@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1239;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1705;
  i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
- bh=9uSVonVe6lZLjDKA/C9zzamzFDTm7nGbHwPAR/udAeA=;
- b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnUDeDh5EI4nS+x0sy2KhC3GhDuX0OqJz1HwjYs
- O4z9AFLcauJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ1A3gwAKCRD6PaqMvJYe
- 9WtoEACUBTbwuaEtEIZI7xtSRJmQmRJPNOfO1yf7K2fzyj99t9CUj6/cH/M274hqI/7+CEzrN7q
- JVAgnz9iEHhTL1U4pkxI07otQxVYd+/Q46f+NdtM1Gzc30XjVcK7qyGktOPJOgD5cb+eNm1js2e
- XtzUFqOrOfDFQQqpQply64UKqUBLJIP3knT/pOBcZrCaFFZQwKV+OTC+heUwJ0I/BwerRItqhfI
- AVTns1hDkpvv7sNs2W+tfh8192uR+al144AMZg/jAVdm8mOPQQ4O9BwCk035BRGxoWPZkSJ6A5U
- xgFweiGLUGwojsa8W+EVve0YzYxUXVj+jRx3MIIBObdhQXQb1Uzwrj8lHyncFJyVkYNh07uzH8C
- BeXlX0faDDThswWAHIl/LVMBXe2ANXUPNQL+WVW26U0jFxoR/WXyImaOhlDy0x16DVSaqDjmYWX
- FIAmE2Y1K6fkL0EFoUTE3y7Gz2xHqnFdmdpP9LNlqGpflr+lVO8+4llSI0gcSakZjMiA3yzXSs/
- cC+X3erfYzHZ8AdEv1Plkc2SHSolGNhSTJJ1zti9Z9vzhUuCsrJIcWH8fKlfx5afv6+K1quT21t
- MWikN8l9D2fx/meHFN2vMnSbRGMEyx3lDq/MHGm4Mt9h2SR8r/EWD82dEpd7gXmOuVPfPd6b7RJ
- 6gi4lFQpRcoo8ig==
+ bh=9Q+3PN+oneMKxhelptmjC5NFHWuyRqKXnKfK75CmdQA=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnUDeBYVp5Kfg9W7I/Qp2qHxiACwAa47wM0BRoh
+ 5lxVibt42iJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ1A3gQAKCRD6PaqMvJYe
+ 9XMbEACQ9pwMYU9SaQdXTYK+M49PDywbL5xCbOnk7bTQjSc6U77i1AR9nMAQSxN5EivAoBczkl4
+ RZzhaFt33HkIQI8QerX2POTtu+vaO6UYPjeWkELNwbp6VQ9ZWHos1gpVtAN00VcAOxxmFoeD5ld
+ yg81gyHY6PR3w0IUvhqsgR8XXqRr0gKWrPYndGpzOkSnsW/o65JFuxSJWULFTuk1z+i9ZaBkp8Q
+ dmePwIz7/BGpMaAF8laEXUSiixF+7kMZKvnaTz/Ylyygpt9+LeuIa2WmfPcp6ViCtZ3coaYwYOD
+ YnvSi0PaflK8s7NHvMssI2zchX0IEFPV8A42wHDwz72Xluklt0NAxMcDSeQ0FOe+epvyuUALdLN
+ y8hyHIWwid+FtcvHLEfeDycL3QTufZr8m+Wkav7o1BO/vM9+zgugE/Nt3mzzqDWUTBCUQe6kICT
+ o/s5LJfcNvCEiEz3pGlAFgaWiqrUWcyTtFX4BhickpPLH6P3rEJpSAgHKh/7m9PabNjQ3esUWQb
+ sAf9gMY6Zt3PcV+gxa3RdHHF2kGXvWU72kxntzOsiU5+5xPFu2J1r+NknFddJjakcSvkArtb5Jc
+ FakmFfIaMS5F7gwWm/sxh1SodJUZTZSOvKyu+qNmJovfIKnu25UU+l8cP3gTUJaRCNktKzEYUYr
+ bu1fplZHVVksbCw==
 X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
  fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-The driver uses a static CSI-2 virtual channel mapping where all virtual
-channels from an RX port are mapped to a virtual channel number matching
-the RX port number.
+The ub913 and ub953 drivers call fwnode_handle_put(priv->sd.fwnode) as
+part of their remove process, and if the driver is removed multiple
+times, eventually leads to put "overflow", possibly causing memory
+corruption or crash.
 
-The UB960 and UB9702 have different registers for the purpose, and the
-UB9702 version is not correct. Each of the VC_ID_MAP registers do not
-contain a single mapping, as the driver currently thinks, but two.
-
-This can cause received VCs other than 0 to be mapped in a wrong way.
-
-Fix this by writing both mappings to each register.
+The fwnode_handle_put() is a leftover from commit 905f88ccebb1 ("media:
+i2c: ds90ub9x3: Fix sub-device matching"), which changed the code
+related to the sd.fwnode, but missed removing these fwnode_handle_put()
+calls.
 
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Cc: stable@vger.kernel.org
-Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
+Fixes: 905f88ccebb1 ("media: i2c: ds90ub9x3: Fix sub-device matching")
 ---
- drivers/media/i2c/ds90ub960.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ds90ub913.c | 1 -
+ drivers/media/i2c/ds90ub953.c | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/drivers/media/i2c/ds90ub960.c b/drivers/media/i2c/ds90ub960.c
-index 94c8acf171b4..bfffa14e2049 100644
---- a/drivers/media/i2c/ds90ub960.c
-+++ b/drivers/media/i2c/ds90ub960.c
-@@ -2533,7 +2533,7 @@ static int ub960_configure_ports_for_streaming(struct ub960_data *priv,
- 				for (i = 0; i < 8; i++)
- 					ub960_rxport_write(priv, nport,
- 							   UB960_RR_VC_ID_MAP(i),
--							   nport);
-+							   (nport << 4) | nport);
- 			}
+diff --git a/drivers/media/i2c/ds90ub913.c b/drivers/media/i2c/ds90ub913.c
+index 8eed4a200fd8..b5375d736629 100644
+--- a/drivers/media/i2c/ds90ub913.c
++++ b/drivers/media/i2c/ds90ub913.c
+@@ -793,7 +793,6 @@ static void ub913_subdev_uninit(struct ub913_data *priv)
+ 	v4l2_async_unregister_subdev(&priv->sd);
+ 	ub913_v4l2_nf_unregister(priv);
+ 	v4l2_subdev_cleanup(&priv->sd);
+-	fwnode_handle_put(priv->sd.fwnode);
+ 	media_entity_cleanup(&priv->sd.entity);
+ }
  
- 			break;
+diff --git a/drivers/media/i2c/ds90ub953.c b/drivers/media/i2c/ds90ub953.c
+index 16f88db14981..10daecf6f457 100644
+--- a/drivers/media/i2c/ds90ub953.c
++++ b/drivers/media/i2c/ds90ub953.c
+@@ -1291,7 +1291,6 @@ static void ub953_subdev_uninit(struct ub953_data *priv)
+ 	v4l2_async_unregister_subdev(&priv->sd);
+ 	ub953_v4l2_notifier_unregister(priv);
+ 	v4l2_subdev_cleanup(&priv->sd);
+-	fwnode_handle_put(priv->sd.fwnode);
+ 	media_entity_cleanup(&priv->sd.entity);
+ }
+ 
 
 -- 
 2.43.0
