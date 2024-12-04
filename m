@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-98645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 910139E4A1C
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:51:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7DF9E498C
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:41:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47382285A3B
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:51:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D79EC18835AC
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED9A218595;
-	Wed,  4 Dec 2024 23:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44F12185B0;
+	Wed,  4 Dec 2024 23:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUUI0Ktx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RzMe1gLF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C89A20E30F;
-	Wed,  4 Dec 2024 23:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D6D2185A1;
+	Wed,  4 Dec 2024 23:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354998; cv=none; b=FvmmHZBejSOSBibNdReiu33+ZWq3lFZ06UGayYsmd3l+bFIl7voLPrfOvW58fYnxoryc/gKnAXqJQHTl079mm3CZYmdogR8NU6GC4f+JIP1ZmMrO4Ca5QmFoHPJJM7lO/NRKFnbz7I+dMltuJd/fKkyJf5juKt05MQhftCXTIoM=
+	t=1733355001; cv=none; b=rDGrLh8F6IjExPj8ouAGaYfIl2UTHu76Ad1TfNnfeUO+0gxkYcPTTs67+2Ks/CJfnSmpYZ1IQsqkk1rrfY9RWrcfdwlUYGaiiRutN2WUnu0lweZ+fp6h5HjXMoxnB+DPjeA78cd4hlOnmWfKVbNsbqq/4ZIe1mh4WYzqn+nZask=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354998; c=relaxed/simple;
-	bh=+J+kz/M+Y8prMAq3RC1OxtSLP4O3Db7wbLLW3XlzyMg=;
+	s=arc-20240116; t=1733355001; c=relaxed/simple;
+	bh=mzYkslIUXLeOFOh0aayYYVU2C1ENA1994A5krtiOfoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DrbHdCb//3iNoJOeoBpEoyhBTqBw47XZkTLeoXqnfBsfKvpO4Sm2fFT/V5MThUFWPEz7uE/uyvbwkUGDpu/JzBgGeiKo2vl0q60HOsBNzH0rittZ91EnBupGT/9KQeeMQ4FF9v/b1XW9gt8UyEmyDbCYTGrgXkAbn8mhYMYyR/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUUI0Ktx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EC0C2BCC4;
-	Wed,  4 Dec 2024 23:29:56 +0000 (UTC)
+	 MIME-Version; b=mnxsf4MUVHrhn+Yfy32NtGSiWYZ84xoGuQFexk2kL5lVRD7hD/4cTVENNghWAKOy+CfRRCC42eay/U2tM9hiKtrcaO377auFUbY6T77P4rAhYcNb0sK2n9+w8go/nP2h9QJtX+Dab2deSwzIp9JR4tn5EGXm6/RJs+XLiZqQigQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RzMe1gLF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093D5C4CECD;
+	Wed,  4 Dec 2024 23:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354998;
-	bh=+J+kz/M+Y8prMAq3RC1OxtSLP4O3Db7wbLLW3XlzyMg=;
+	s=k20201202; t=1733355001;
+	bh=mzYkslIUXLeOFOh0aayYYVU2C1ENA1994A5krtiOfoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUUI0Ktx6giwokja8FInhutIaiBLV81gp9sLgwi+7wkT4mSuVC08D46/7lUuiaG0o
-	 /KeU0aUfXz+H7Y7L1yhdgnLCwVpuF1OwM8EVcELqJAhk3JYpdWzpA7fh7TBYB2T1Vl
-	 KvJSsw9ALIXJylUWKbZS0REfkrvepJRo7iWtF+YwZKvMVGSxiJp3QAxjQgsvCSBnn8
-	 pPRh+Tnj/Efq9WnwhUAGw3YIKw7gZdq0euWafp1yjll7oCA/kcAkbHcLmGTGU6ONUo
-	 mC/ZQsib8KvS3zm4ZTCig0BJGvoMlr2Mp1aDLNj87TCgBqhDn+kVoery6ZWxpS3kQO
-	 q5Hz2xjrGOMzg==
+	b=RzMe1gLFBkR4Mlgfvc9v80jcIxZn4HaOF0smuOKsAx28Fc1hL//lYXWDyc4UpxxGi
+	 lYBmFEzHXF+piqcVq69ILO2EWV9EKsmaPEe6QrgJAhsZROxBq8rJrgkPeSkaidoMpK
+	 N6JH0BtRX+Q0jLnIim6z80da9fxjVPQUfpEkid19qS7bvSPT0IvYLZP0xTXTnazURu
+	 pQ2bem+Fh0jNcZkCis1g/jcFGXlGGKurni5kqMEFTkivqbAfYyUMClM60UXg7SWbhw
+	 VlEPLCzGwBGwBM7Lnry2JtT2fW2X8/0N9edcm7v9rR6gZheCZ4mLRxE7KEc0pUadjQ
+	 UaS5iFXvy5ueQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xiang Liu <xiang.liu@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	"Stanley . Yang" <Stanley.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Xi Ruoyao <xry111@xry111.site>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	sunil.khatri@amd.com,
-	lijo.lazar@amd.com,
-	Jane.Jian@amd.com,
-	David.Wu3@amd.com,
-	sathishkumar.sundararaju@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 07/10] drm/amdgpu/vcn: reset fw_shared when VCPU buffers corrupted on vcn v4.0.3
-Date: Wed,  4 Dec 2024 17:18:05 -0500
-Message-ID: <20241204221820.2248367-7-sashal@kernel.org>
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	jiaxun.yang@flygoat.com,
+	davem@davemloft.net,
+	si.yanteng@linux.dev,
+	devicetree@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 08/10] MIPS: Loongson64: DTS: Really fix PCIe port nodes for ls7a
+Date: Wed,  4 Dec 2024 17:18:06 -0500
+Message-ID: <20241204221820.2248367-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204221820.2248367-1-sashal@kernel.org>
 References: <20241204221820.2248367-1-sashal@kernel.org>
@@ -71,104 +67,271 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Xiang Liu <xiang.liu@amd.com>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit 928cd772e18ffbd7723cb2361db4a8ccf2222235 ]
+[ Upstream commit 4fbd66d8254cedfd1218393f39d83b6c07a01917 ]
 
-It is not necessarily corrupted. When there is RAS fatal error, device
-memory access is blocked. Hence vcpu bo cannot be saved to system memory
-as in a regular suspend sequence before going for reset. In other full
-device reset cases, that gets saved and restored during resume.
+Fix the dtc warnings:
 
-v2: Remove redundant code like vcn_v4_0 did
-v2: Refine commit message
-v3: Drop the volatile
-v3: Refine commit message
+    arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
+    arch/mips/boot/dts/loongson/ls7a-pch.dtsi:68.16-416.5: Warning (interrupt_provider): /bus@10000000/pci@1a000000: '#interrupt-cells' found, but node is not an interrupt provider
+    arch/mips/boot/dts/loongson/loongson64g_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
 
-Signed-off-by: Xiang Liu <xiang.liu@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Stanley.Yang <Stanley.Yang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+And a runtime warning introduced in commit 045b14ca5c36 ("of: WARN on
+deprecated #address-cells/#size-cells handling"):
+
+    WARNING: CPU: 0 PID: 1 at drivers/of/base.c:106 of_bus_n_addr_cells+0x9c/0xe0
+    Missing '#address-cells' in /bus@10000000/pci@1a000000/pci_bridge@9,0
+
+The fix is similar to commit d89a415ff8d5 ("MIPS: Loongson64: DTS: Fix PCIe
+port nodes for ls7a"), which has fixed the issue for ls2k (despite its
+subject mentions ls7a).
+
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c | 30 ++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ arch/mips/boot/dts/loongson/ls7a-pch.dtsi | 73 +++++++++++++++++++----
+ 1 file changed, 60 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-index f85d18cd74eca..e80c4f5b4f402 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
-@@ -77,6 +77,20 @@ static int vcn_v4_0_3_early_init(void *handle)
- 	return amdgpu_vcn_early_init(adev);
- }
+diff --git a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
+index cce9428afc41f..ee71045883e7e 100644
+--- a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
++++ b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
+@@ -70,7 +70,6 @@ pci@1a000000 {
+ 			device_type = "pci";
+ 			#address-cells = <3>;
+ 			#size-cells = <2>;
+-			#interrupt-cells = <2>;
+ 			msi-parent = <&msi>;
  
-+static int vcn_v4_0_3_fw_shared_init(struct amdgpu_device *adev, int inst_idx)
-+{
-+	struct amdgpu_vcn4_fw_shared *fw_shared;
-+
-+	fw_shared = adev->vcn.inst[inst_idx].fw_shared.cpu_addr;
-+	fw_shared->present_flag_0 = cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
-+	fw_shared->sq.is_enabled = 1;
-+
-+	if (amdgpu_vcnfw_log)
-+		amdgpu_vcn_fwlog_init(&adev->vcn.inst[inst_idx]);
-+
-+	return 0;
-+}
-+
- /**
-  * vcn_v4_0_3_sw_init - sw init for VCN block
-  *
-@@ -107,8 +121,6 @@ static int vcn_v4_0_3_sw_init(void *handle)
- 		return r;
+ 			reg = <0 0x1a000000 0 0x02000000>,
+@@ -234,7 +233,7 @@ phy1: ethernet-phy@1 {
+ 				};
+ 			};
  
- 	for (i = 0; i < adev->vcn.num_vcn_inst; i++) {
--		volatile struct amdgpu_vcn4_fw_shared *fw_shared;
--
- 		vcn_inst = GET_INST(VCN, i);
+-			pci_bridge@9,0 {
++			pcie@9,0 {
+ 				compatible = "pci0014,7a19.1",
+ 						   "pci0014,7a19",
+ 						   "pciclass060400",
+@@ -244,12 +243,16 @@ pci_bridge@9,0 {
+ 				interrupts = <32 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
  
- 		ring = &adev->vcn.inst[i].ring_enc[0];
-@@ -131,12 +143,7 @@ static int vcn_v4_0_3_sw_init(void *handle)
- 		if (r)
- 			return r;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 32 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
  
--		fw_shared = adev->vcn.inst[i].fw_shared.cpu_addr;
--		fw_shared->present_flag_0 = cpu_to_le32(AMDGPU_FW_SHARED_FLAG_0_UNIFIED_QUEUE);
--		fw_shared->sq.is_enabled = true;
--
--		if (amdgpu_vcnfw_log)
--			amdgpu_vcn_fwlog_init(&adev->vcn.inst[i]);
-+		vcn_v4_0_3_fw_shared_init(adev, i);
- 	}
+-			pci_bridge@a,0 {
++			pcie@a,0 {
+ 				compatible = "pci0014,7a09.1",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+@@ -259,12 +262,16 @@ pci_bridge@a,0 {
+ 				interrupts = <33 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
  
- 	if (amdgpu_sriov_vf(adev)) {
-@@ -221,6 +228,8 @@ static int vcn_v4_0_3_hw_init(void *handle)
- 		}
- 	} else {
- 		for (i = 0; i < adev->vcn.num_vcn_inst; ++i) {
-+			struct amdgpu_vcn4_fw_shared *fw_shared;
-+
- 			vcn_inst = GET_INST(VCN, i);
- 			ring = &adev->vcn.inst[i].ring_enc[0];
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 33 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
  
-@@ -244,6 +253,11 @@ static int vcn_v4_0_3_hw_init(void *handle)
- 					regVCN_RB1_DB_CTRL);
- 			}
+-			pci_bridge@b,0 {
++			pcie@b,0 {
+ 				compatible = "pci0014,7a09.1",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+@@ -274,12 +281,16 @@ pci_bridge@b,0 {
+ 				interrupts = <34 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
  
-+			/* Re-init fw_shared when RAS fatal error occurred */
-+			fw_shared = adev->vcn.inst[i].fw_shared.cpu_addr;
-+			if (!fw_shared->sq.is_enabled)
-+				vcn_v4_0_3_fw_shared_init(adev, i);
-+
- 			r = amdgpu_ring_test_helper(ring);
- 			if (r)
- 				goto done;
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 34 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@c,0 {
++			pcie@c,0 {
+ 				compatible = "pci0014,7a09.1",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+@@ -289,12 +300,16 @@ pci_bridge@c,0 {
+ 				interrupts = <35 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 35 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@d,0 {
++			pcie@d,0 {
+ 				compatible = "pci0014,7a19.1",
+ 						   "pci0014,7a19",
+ 						   "pciclass060400",
+@@ -304,12 +319,16 @@ pci_bridge@d,0 {
+ 				interrupts = <36 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 36 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@e,0 {
++			pcie@e,0 {
+ 				compatible = "pci0014,7a09.1",
+ 						   "pci0014,7a09",
+ 						   "pciclass060400",
+@@ -319,12 +338,16 @@ pci_bridge@e,0 {
+ 				interrupts = <37 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 37 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@f,0 {
++			pcie@f,0 {
+ 				compatible = "pci0014,7a29.1",
+ 						   "pci0014,7a29",
+ 						   "pciclass060400",
+@@ -334,12 +357,16 @@ pci_bridge@f,0 {
+ 				interrupts = <40 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 40 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@10,0 {
++			pcie@10,0 {
+ 				compatible = "pci0014,7a19.1",
+ 						   "pci0014,7a19",
+ 						   "pciclass060400",
+@@ -349,12 +376,16 @@ pci_bridge@10,0 {
+ 				interrupts = <41 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 41 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@11,0 {
++			pcie@11,0 {
+ 				compatible = "pci0014,7a29.1",
+ 						   "pci0014,7a29",
+ 						   "pciclass060400",
+@@ -364,12 +395,16 @@ pci_bridge@11,0 {
+ 				interrupts = <42 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 42 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@12,0 {
++			pcie@12,0 {
+ 				compatible = "pci0014,7a19.1",
+ 						   "pci0014,7a19",
+ 						   "pciclass060400",
+@@ -379,12 +414,16 @@ pci_bridge@12,0 {
+ 				interrupts = <43 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 43 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@13,0 {
++			pcie@13,0 {
+ 				compatible = "pci0014,7a29.1",
+ 						   "pci0014,7a29",
+ 						   "pciclass060400",
+@@ -394,12 +433,16 @@ pci_bridge@13,0 {
+ 				interrupts = <38 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 38 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 
+-			pci_bridge@14,0 {
++			pcie@14,0 {
+ 				compatible = "pci0014,7a19.1",
+ 						   "pci0014,7a19",
+ 						   "pciclass060400",
+@@ -409,9 +452,13 @@ pci_bridge@14,0 {
+ 				interrupts = <39 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-parent = <&pic>;
+ 
++				#address-cells = <3>;
++				#size-cells = <2>;
++				device_type = "pci";
+ 				#interrupt-cells = <1>;
+ 				interrupt-map-mask = <0 0 0 0>;
+ 				interrupt-map = <0 0 0 0 &pic 39 IRQ_TYPE_LEVEL_HIGH>;
++				ranges;
+ 			};
+ 		};
+ 
 -- 
 2.43.0
 
