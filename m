@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-98545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38DD49E458A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:21:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBF79E458B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 21:21:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ED351682AE
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:21:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6DF168296
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E851F03E6;
-	Wed,  4 Dec 2024 20:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70B41F03E6;
+	Wed,  4 Dec 2024 20:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f00DDHx1"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RFHyT/qR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C98A1F03C8
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 20:21:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BC61C3BF5
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 20:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733343668; cv=none; b=E8sNzjYCjc83Au6+I/qd6GpbI8P16hQEa2thPmOljnQCqI9cH2wGRL9TnYPO65rjeHjVegutnUetuZeoZukidDxm1iNfP6imFacE1lrEpEdkh+9U5cDpKk5ohQfzJJg7p7DQZ5ghJNVkgVScZ+GPisbLLlPf1D+AcIluUuYKXfA=
+	t=1733343674; cv=none; b=MFGzWyY93AhGK4bJ2weg7Cjy5WbR7U1d9gItIlVOqmIHlGI4DTpvt4NrOM+weEV1nkBxoyUsh8wJyhNz5e9lj1+ya5ZsTcikIzD7ulOlxMSlrzU9MOQviJik/1FUP2PoLBmmxF6Fpgo+Iy75u0xPZ5ecuY5/Q7b/JOwbvfwvHQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733343668; c=relaxed/simple;
-	bh=8dZRsuYu1zmtlFhenxXJ5xpljjqT5d/zc6Oc2WncoXc=;
+	s=arc-20240116; t=1733343674; c=relaxed/simple;
+	bh=WfQHvzrY6qzP7pVrHT1AS38K5kyhSj/smgOAtycnS7s=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kNJWSkZ/IyDKDZSM5FEl6bHk9eVfWKM3WvNbWKRvJYDiMjH0xr1Rpl5R1E3+Q1iPiIF9yOy4HpGVNHV0D5/NYNmk2FbAs0qUqr0UXdR/LxSwhaUzxFqp6Fb+aqYlZsUR/2YO98VI2gpc/ZUyTOaEAiy5ffRwvpEFXoCZungNmEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f00DDHx1; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=RSlRYJ4iz5d2eS/siFRJrdIiB5w2h8YLPwF83ZzOwSkT+x27E7+5pIIRYGqrjorhS/+cfHGPixkkiGls0uA+tE3CxmdH+H/+eNtGqW2bh6FP180GkzNhFeEifujPQDazqyix71D7JRNUPAHN222G6ePtqLaIOWwRKkfGRdw6Zpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RFHyT/qR; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jingzhangos.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7fcd0eff40cso142412a12.0
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 12:21:07 -0800 (PST)
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-72524409ab8so150600b3a.2
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 12:21:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733343667; x=1733948467; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733343672; x=1733948472; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3U+2IR4ectl1N4fqSAGYoJpdQdS/W+F/z/+40EA1a4U=;
-        b=f00DDHx14lpK9jqp8sBkC1G77wWdF/qQZPNRoCwTbMBAtgbHUgc6HRstgWtL5/mbX6
-         8alQ1ao2A6q4QiJZonHURN0FQehvnq+ssz8KoMa9f30ArDDPcWLqtFsr4pAf21AAnjGs
-         IEz9+wwcqAtbnhplLD5rd4quKLeCavN37jCnT7luJ7o+C2ddzjUVnCMPi8j1Lo+kFcze
-         5eyAO3TEy+qyUweKZgwfMldYYCkfDTGrpV7x9v+hAKscLspD+BcpgKypuCq1C6M87jqr
-         qYvWAiOM5X5bumAAxNW2hvabOC2jBgvIXSFvo4wrlbhnOoGy2taHuFgIIPnJ5gZ+9yJg
-         wftA==
+        bh=6GyBEX7xgbm3nL6uVDnlaxlSqNtFmUPqQIDnxeWDIyc=;
+        b=RFHyT/qR/ciJiApkI7OvlDLdYI8dQtohBX9gF++hoLbVr1zjnYeFEKT2E7SbWoBlVg
+         wC9wivD7lrBh63lesYJYjE7nw7EYy89Cwcv0Z7sbUDNaXJKILeSrN6keuf7DxSDnqt/I
+         /zAZ6pvZNfPLTQX3/7QyN4ONTpevOJEYwLFaWObi6ADKbGGJ/NalrnfbUdYx9yn9mI/P
+         F03s073UTrOTIk04ToqQlX5siL5ycM8LQQvj6Fi0hqm+1j/oQgr4BwQxcCNJg9s8aMlx
+         N7XxB+v87K8KRGrz/FjuVzfmtuM5BPf9lA+FbqSOaVoMvf8mjz1nJwugtOucySCXUExq
+         Oe1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733343667; x=1733948467;
+        d=1e100.net; s=20230601; t=1733343672; x=1733948472;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3U+2IR4ectl1N4fqSAGYoJpdQdS/W+F/z/+40EA1a4U=;
-        b=Wy4gAotcMzJdvVCmytLEqcIrVMA5Rq13ySm5wmXJUkQmBYA4s6nkF0XdpgK80IFhDW
-         a9R4Zf2Rogr4cj9FaAT3P+xpQi0EESQSi5XjgGKHBFqYZPufixq9YOERSLQpqMb8a2h8
-         0cHceJaFW+hvvlXpO8YsQR4AGga6Ef+j+3RwfpFaD+zgQ3JRi6gy76WwthZ9mOdH2u9P
-         DBSeT23GheqqMfA183VayI5VNdzmz9JS/xLMbjwDe6dk8A0tDVu6LLp1Nrl7GTDQzb3s
-         e2BRWUM3llpsQQw6jC4s9uLKRzPGnjxlU77FGo/zNDMRsacJB4X5BKblFQA7kzWuIxEg
-         m1KQ==
-X-Gm-Message-State: AOJu0YyKGqN6cKFPvB1UdGFYm34qJ8VvIAcGWHPqbEpXl3ehJHK3sHop
-	SFfxhg3jQ3llSkrENgn3mlzUhCJ1rQNF4BorA2ZMNqbantieVznQPzMlxcoCYKedxwFL6Y95N+O
-	i1vGqgU1pDMmeQj8rmbtnOJXJZcOViIM8rg5QhNP6nXJO+UIARKkvdXrzoOdgsPyGazO4pk3362
-	5H3xXAnlElUDHHh35sKlkDcy+ZNN72rJedpc9cQknBAwUSQbJc/UAUhMGPjKw=
-X-Google-Smtp-Source: AGHT+IERhRgCmQ1YM2zxJYcuekBoWdqTx9OaLwB5hK9+78Knaqg7pfbtv+0GGgMW+lfqPoezSYdgKlY5uRCXtmCFxw==
-X-Received: from pfbcw27.prod.google.com ([2002:a05:6a00:451b:b0:725:325e:59d5])
+        bh=6GyBEX7xgbm3nL6uVDnlaxlSqNtFmUPqQIDnxeWDIyc=;
+        b=oDlbvrnjx1QJNtd2RZhm2OQ00W+0BPdydTf4lz6RiEYeLTRK5q3QrP+qTlpL3+Sb2f
+         cpPz1ZVrFSRzfajQin8+HbSPU2vxUXG2VsrqWMWXiu5V9ZZ1+WFGqNY4KkX+gecOrpVg
+         1ciBXGxdq1m/8KQeAkNtoCxI8RRau0h29a03BPVV/N8EsVieCEc90zo42P9gWN/dK1vH
+         AoNuKTsgHgKbrXKkNBLJ8SkLYiHqJp90l4F6mHtNJDn5HHRDB8l1PAzaOxOLuUF/VLAV
+         rBvMqOj0wLg9JiF6FcZXdrMiE3X1OjZiPv4H5wvmu/8dhUwi1jBmkNChLETOJAH5xs5V
+         YRuw==
+X-Gm-Message-State: AOJu0YwjjFoqhZ1CwzF0tLHRyipbu5xHSkSep75RJuFRaBYoy3RxHRG9
+	JmeOL5REEnGgVNiPbMeDfpUwSyHSH0mwXJlPPgJCiwAcXkMgpaBfMykJ1J1V5OED64Oavw7SQAF
+	bh8up/+n5jSwbQHpjzrydVDtp5Yp7dL63+ScO4pKJylul/raGbXZL3+D9Q6oV6dd9ThQvCQdqHq
+	OkKX9abuMOQPavCwkr5LNAYBi6OfqXyuID5QR8ul86yDHrXhCwB4GgwK0la6o=
+X-Google-Smtp-Source: AGHT+IHNi9EGrZ7MAtVE70EbcmUcbdpGbFiS/SMV14HlB57akD5PpMu5hBfK4ya493brQlHljGHHrIynpuOaAAcMog==
+X-Received: from pfbjc18.prod.google.com ([2002:a05:6a00:6c92:b0:724:f889:5b94])
  (user=jingzhangos job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:6da6:b0:1db:de98:28fd with SMTP id adf61e73a8af0-1e16bef0ab0mr9517613637.37.1733343666661;
- Wed, 04 Dec 2024 12:21:06 -0800 (PST)
-Date: Wed,  4 Dec 2024 12:20:37 -0800
+ 2002:a05:6a00:b86:b0:725:e6e:53f3 with SMTP id d2e1a72fcca58-7257fb7c70bmr10045580b3a.12.1733343672555;
+ Wed, 04 Dec 2024 12:21:12 -0800 (PST)
+Date: Wed,  4 Dec 2024 12:20:38 -0800
 In-Reply-To: <20241204202038.2714140-1-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,70 +74,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20241204202038.2714140-1-jingzhangos@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241204202038.2714140-2-jingzhangos@google.com>
-Subject: [PATCH 4.19.y 2/3] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+Message-ID: <20241204202038.2714140-3-jingzhangos@google.com>
+Subject: [PATCH 4.19.y 3/3] KVM: arm64: vgic-its: Clear ITE when DISCARD frees
+ an ITE
 From: Jing Zhang <jingzhangos@google.com>
 To: stable@vger.kernel.org
 Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Kunkun Jiang <jiangkunkun@huawei.com>, Shusen Li <lishusen2@huawei.com>, 
-	Jing Zhang <jingzhangos@google.com>
+	Kunkun Jiang <jiangkunkun@huawei.com>, Jing Zhang <jingzhangos@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
 From: Kunkun Jiang <jiangkunkun@huawei.com>
 
-commit e9649129d33dca561305fc590a7c4ba8c3e5675a upstream.
+commit 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 upstream.
 
-vgic_its_save_device_tables will traverse its->device_list to
-save DTE for each device. vgic_its_restore_device_tables will
-traverse each entry of device table and check if it is valid.
-Restore if valid.
-
-But when MAPD unmaps a device, it does not invalidate the
-corresponding DTE. In the scenario of continuous saves
-and restores, there may be a situation where a device's DTE
-is not saved but is restored. This is unreasonable and may
-cause restore to fail. This patch clears the corresponding
-DTE when MAPD unmaps a device.
+When DISCARD frees an ITE, it does not invalidate the
+corresponding ITE. In the scenario of continuous saves and
+restores, there may be a situation where an ITE is not saved
+but is restored. This is unreasonable and may cause restore
+to fail. This patch clears the corresponding ITE when DISCARD
+frees an ITE.
 
 Cc: stable@vger.kernel.org
-Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
-Co-developed-by: Shusen Li <lishusen2@huawei.com>
-Signed-off-by: Shusen Li <lishusen2@huawei.com>
+Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
 Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
 [Jing: Update with entry write helper]
 Signed-off-by: Jing Zhang <jingzhangos@google.com>
-Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
+Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
 Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 ---
- virt/kvm/arm/vgic/vgic-its.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ virt/kvm/arm/vgic/vgic-its.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/virt/kvm/arm/vgic/vgic-its.c b/virt/kvm/arm/vgic/vgic-its.c
-index 7fcf903fa5b0..a7895be3866d 100644
+index a7895be3866d..42753340b5b8 100644
 --- a/virt/kvm/arm/vgic/vgic-its.c
 +++ b/virt/kvm/arm/vgic/vgic-its.c
-@@ -1038,9 +1038,11 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
- 	bool valid = its_cmd_get_validbit(its_cmd);
- 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
- 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
-+	int dte_esz = vgic_its_get_abi(its)->dte_esz;
- 	struct its_device *device;
-+	gpa_t gpa;
+@@ -714,13 +714,17 @@ static int vgic_its_cmd_handle_discard(struct kvm *kvm, struct vgic_its *its,
  
--	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
-+	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
- 		return E_ITS_MAPD_DEVICE_OOR;
- 
- 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
-@@ -1061,7 +1063,7 @@ static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
- 	 * is an error, so we are done in any case.
- 	 */
- 	if (!valid)
+ 	ite = find_ite(its, device_id, event_id);
+ 	if (ite && ite->collection) {
++		struct its_device *device = find_its_device(its, device_id);
++		int ite_esz = vgic_its_get_abi(its)->ite_esz;
++		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
+ 		/*
+ 		 * Though the spec talks about removing the pending state, we
+ 		 * don't bother here since we clear the ITTE anyway and the
+ 		 * pending state is a property of the ITTE struct.
+ 		 */
+ 		its_free_ite(kvm, ite);
 -		return 0;
-+		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
++
++		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
+ 	}
  
- 	device = vgic_its_alloc_device(its, device_id, itt_addr,
- 				       num_eventid_bits);
+ 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
 -- 
 2.47.0.338.g60cca15819-goog
 
