@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-98469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0A69E4369
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:29:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46429E41BB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:34:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB0CCB35E03
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:33:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C1928CBE7
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5EC22C715;
-	Wed,  4 Dec 2024 17:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D374C22CE67;
+	Wed,  4 Dec 2024 17:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iigcQrfC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fIN+Oose"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F6222C70C;
-	Wed,  4 Dec 2024 17:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8578A22CE5D;
+	Wed,  4 Dec 2024 17:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331829; cv=none; b=pDSC6J39I9dhMZeZr5/YpqR62uJ3HnrtODAWrJAM0ZqjJXxT8xITsYAuurTnDm/dGdle7ufVMm5CxiK9TAAo3ptbGkaB8MD5ACySDDMXn7nkPjhjR/DzEPJbojxqB91MihaIVOI4Tkdx+j9SwVOMN89DWKjF0sw5pUl8j7xDi0E=
+	t=1733331832; cv=none; b=Rfv6SniMtlor64HP852IzXlHUzE0z/cLpLyXMvTZX0K/KtocYfiHL/4W+iaKKLLl1ESa41htshYrbZiMcA0T9DvOIruQoFbBSLwj7Q0Fp5JltXr5jWUt/El5qb1h5V7OXau0Ga5kqxOXy7sITEvtgMpkvxPqdqJzBviqCUuTKD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331829; c=relaxed/simple;
-	bh=gxfNcpwvGQNVHSUQdiOwW3aJlO0yMJdoDiYGfm3zHtQ=;
+	s=arc-20240116; t=1733331832; c=relaxed/simple;
+	bh=gsV/QsNcFpCtE/D+hR3ES7sxSQqH2WQ/eY32NGrHz18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYLkp01IWt3vA8Kg8U+DJA+Xr8UsYLKo2Vp28FNsEQcYlxMIVuFefEyJogwjJRhpnlz2VGeVlKTAfLCWAZMQH2YIcbZ2IkvN+b8b8xPKv22qVOLBNTdEF6sjJnHZpWv88bZq3xei/jWpx4gJKZB1ZfYjcl98QQlZx2qzWrwBrWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iigcQrfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47076C4CECD;
-	Wed,  4 Dec 2024 17:03:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=riCUr+Rxyh1D5+FMCwAdo9XneAEJhuKL0G4QcifsN+xnvC1Z8VhGHcNaORxnpu0ozkOz7mfSI2YuEZMaRHV71UxWYLZROgzfCtXopxtA/EO2i15MtLQupEAj0av5qVc6UcpYGR1jlToUWHwZ5sHO77FyqpjKK1yV6i7Lh1tZm+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fIN+Oose; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE59C4CED1;
+	Wed,  4 Dec 2024 17:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331829;
-	bh=gxfNcpwvGQNVHSUQdiOwW3aJlO0yMJdoDiYGfm3zHtQ=;
+	s=k20201202; t=1733331832;
+	bh=gsV/QsNcFpCtE/D+hR3ES7sxSQqH2WQ/eY32NGrHz18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iigcQrfCNfGP+CT7as9SH9il7gBfjZt5WBRW7sa6DwSXW9mhhg0PjQYbRhv6q+lki
-	 bnZtYqER3LsImXBhPNSmuRtoMZb3moz49FDUfjd1+aFQNd8jX2DCYX5dqleeYI2NWf
-	 oFoQHv2kYmdJaCiJXOkdXhBMioy+K1ei3NdQkeN2X/xGKxLWm15lrxt5+j+HUqm2+j
-	 lLPu9PuLvAT0olBmF/xCxxkk7vTNfdUegUC995lFOpL+wyRrEUj4sGbUIYVQ6EH9Tn
-	 A6DChIKXpepR8xCfIUUTVDz+osSHn9XaguXdmGfplKxjIWj9XWMOBzFji+mNUf8kJW
-	 Ug+lwclFgyrSg==
+	b=fIN+OoseD5hToSG66v9s0tKIK7SxxZT6zPt1cG3aHwR2T67o/fVmn2aJ0xVTe6Ugx
+	 zDNpeET0nUy+Ne8qtLoaalW8tjcxT19N3lX5ZQB26MV1eQDOSBhRNmexIgVOdXg0ln
+	 wT7tDho60Ayag7Sxfl2FrOv2fq6X55ymj6uupxC/6xpl5MqPELL4vB/ICmUQmEBhmR
+	 ri7Iy1+gJma9EqWOTxXAzH4hjoZuBAqknSGehEk7aZBpSUJCwA/CWoarbIKbsS3HIF
+	 ylde7gyzwe5Vi83z8wk2dKUh9v6boB+zdKzA1yrPBZeqX0P0AjxPdQtPs+3ltZccRQ
+	 Oyk48Hbdn/oTw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mukesh Ojha <quic_mojha@quicinc.com>,
-	Anish Kumar <yesanishhere@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	pavel@ucw.cz,
-	linux-leds@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 3/6] leds: class: Protect brightness_show() with led_cdev->led_access mutex
-Date: Wed,  4 Dec 2024 10:52:22 -0500
-Message-ID: <20241204155226.2215336-3-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 5/6] scsi: st: Add MTIOCGET and MTLOAD to ioctls allowed after device reset
+Date: Wed,  4 Dec 2024 10:52:24 -0500
+Message-ID: <20241204155226.2215336-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204155226.2215336-1-sashal@kernel.org>
 References: <20241204155226.2215336-1-sashal@kernel.org>
@@ -62,176 +62,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
 
-[ Upstream commit 4ca7cd938725a4050dcd62ae9472e931d603118d ]
+[ Upstream commit 0b120edb37dc9dd8ca82893d386922eb6b16f860 ]
 
-There is NULL pointer issue observed if from Process A where hid device
-being added which results in adding a led_cdev addition and later a
-another call to access of led_cdev attribute from Process B can result
-in NULL pointer issue.
+Most drives rewind the tape when the device is reset. Reading and writing
+are not allowed until something is done to make the tape position match the
+user's expectation (e.g., rewind the tape). Add MTIOCGET and MTLOAD to
+operations allowed after reset. MTIOCGET is modified to not touch the tape
+if pos_unknown is non-zero. The tape location is known after MTLOAD.
 
-Use mutex led_cdev->led_access to protect access to led->cdev and its
-attribute inside brightness_show() and max_brightness_show() and also
-update the comment for mutex that it should be used to protect the led
-class device fields.
-
-	Process A 				Process B
-
- kthread+0x114
- worker_thread+0x244
- process_scheduled_works+0x248
- uhid_device_add_worker+0x24
- hid_add_device+0x120
- device_add+0x268
- bus_probe_device+0x94
- device_initial_probe+0x14
- __device_attach+0xfc
- bus_for_each_drv+0x10c
- __device_attach_driver+0x14c
- driver_probe_device+0x3c
- __driver_probe_device+0xa0
- really_probe+0x190
- hid_device_probe+0x130
- ps_probe+0x990
- ps_led_register+0x94
- devm_led_classdev_register_ext+0x58
- led_classdev_register_ext+0x1f8
- device_create_with_groups+0x48
- device_create_groups_vargs+0xc8
- device_add+0x244
- kobject_uevent+0x14
- kobject_uevent_env[jt]+0x224
- mutex_unlock[jt]+0xc4
- __mutex_unlock_slowpath+0xd4
- wake_up_q+0x70
- try_to_wake_up[jt]+0x48c
- preempt_schedule_common+0x28
- __schedule+0x628
- __switch_to+0x174
-						el0t_64_sync+0x1a8/0x1ac
-						el0t_64_sync_handler+0x68/0xbc
-						el0_svc+0x38/0x68
-						do_el0_svc+0x1c/0x28
-						el0_svc_common+0x80/0xe0
-						invoke_syscall+0x58/0x114
-						__arm64_sys_read+0x1c/0x2c
-						ksys_read+0x78/0xe8
-						vfs_read+0x1e0/0x2c8
-						kernfs_fop_read_iter+0x68/0x1b4
-						seq_read_iter+0x158/0x4ec
-						kernfs_seq_show+0x44/0x54
-						sysfs_kf_seq_show+0xb4/0x130
-						dev_attr_show+0x38/0x74
-						brightness_show+0x20/0x4c
-						dualshock4_led_get_brightness+0xc/0x74
-
-[ 3313.874295][ T4013] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
-[ 3313.874301][ T4013] Mem abort info:
-[ 3313.874303][ T4013]   ESR = 0x0000000096000006
-[ 3313.874305][ T4013]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 3313.874307][ T4013]   SET = 0, FnV = 0
-[ 3313.874309][ T4013]   EA = 0, S1PTW = 0
-[ 3313.874311][ T4013]   FSC = 0x06: level 2 translation fault
-[ 3313.874313][ T4013] Data abort info:
-[ 3313.874314][ T4013]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
-[ 3313.874316][ T4013]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[ 3313.874318][ T4013]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[ 3313.874320][ T4013] user pgtable: 4k pages, 39-bit VAs, pgdp=00000008f2b0a000
-..
-
-[ 3313.874332][ T4013] Dumping ftrace buffer:
-[ 3313.874334][ T4013]    (ftrace buffer empty)
-..
-..
-[ dd3313.874639][ T4013] CPU: 6 PID: 4013 Comm: InputReader
-[ 3313.874648][ T4013] pc : dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874653][ T4013] lr : led_update_brightness+0x38/0x60
-[ 3313.874656][ T4013] sp : ffffffc0b910bbd0
-..
-..
-[ 3313.874685][ T4013] Call trace:
-[ 3313.874687][ T4013]  dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874690][ T4013]  brightness_show+0x20/0x4c
-[ 3313.874692][ T4013]  dev_attr_show+0x38/0x74
-[ 3313.874696][ T4013]  sysfs_kf_seq_show+0xb4/0x130
-[ 3313.874700][ T4013]  kernfs_seq_show+0x44/0x54
-[ 3313.874703][ T4013]  seq_read_iter+0x158/0x4ec
-[ 3313.874705][ T4013]  kernfs_fop_read_iter+0x68/0x1b4
-[ 3313.874708][ T4013]  vfs_read+0x1e0/0x2c8
-[ 3313.874711][ T4013]  ksys_read+0x78/0xe8
-[ 3313.874714][ T4013]  __arm64_sys_read+0x1c/0x2c
-[ 3313.874718][ T4013]  invoke_syscall+0x58/0x114
-[ 3313.874721][ T4013]  el0_svc_common+0x80/0xe0
-[ 3313.874724][ T4013]  do_el0_svc+0x1c/0x28
-[ 3313.874727][ T4013]  el0_svc+0x38/0x68
-[ 3313.874730][ T4013]  el0t_64_sync_handler+0x68/0xbc
-[ 3313.874732][ T4013]  el0t_64_sync+0x1a8/0x1ac
-
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Anish Kumar <yesanishhere@gmail.com>
-Link: https://lore.kernel.org/r/20241103160527.82487-1-quic_mojha@quicinc.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
+Link: https://lore.kernel.org/r/20241106095723.63254-3-Kai.Makisara@kolumbus.fi
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Tested-by: John Meneghini <jmeneghi@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-class.c | 14 +++++++++++---
- include/linux/leds.h     |  2 +-
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/scsi/st.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
-index 4e63dd2bfcf87..56a1e290fe8d0 100644
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -29,11 +29,14 @@ static ssize_t brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int brightness;
+diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
+index c6b341415a125..abfde71216faf 100644
+--- a/drivers/scsi/st.c
++++ b/drivers/scsi/st.c
+@@ -3501,6 +3501,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 	int i, cmd_nr, cmd_type, bt;
+ 	int retval = 0;
+ 	unsigned int blk;
++	bool cmd_mtiocget;
+ 	struct scsi_tape *STp = file->private_data;
+ 	struct st_modedef *STm;
+ 	struct st_partstat *STps;
+@@ -3615,6 +3616,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 			 */
+ 			if (mtc.mt_op != MTREW &&
+ 			    mtc.mt_op != MTOFFL &&
++			    mtc.mt_op != MTLOAD &&
+ 			    mtc.mt_op != MTRETEN &&
+ 			    mtc.mt_op != MTERASE &&
+ 			    mtc.mt_op != MTSEEK &&
+@@ -3728,17 +3730,28 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
+ 		goto out;
+ 	}
  
--	/* no lock needed for this */
-+	mutex_lock(&led_cdev->led_access);
- 	led_update_brightness(led_cdev);
-+	brightness = led_cdev->brightness;
-+	mutex_unlock(&led_cdev->led_access);
- 
--	return sprintf(buf, "%u\n", led_cdev->brightness);
-+	return sprintf(buf, "%u\n", brightness);
- }
- 
- static ssize_t brightness_store(struct device *dev,
-@@ -69,8 +72,13 @@ static ssize_t max_brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int max_brightness;
++	cmd_mtiocget = cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET);
 +
-+	mutex_lock(&led_cdev->led_access);
-+	max_brightness = led_cdev->max_brightness;
-+	mutex_unlock(&led_cdev->led_access);
+ 	if ((i = flush_buffer(STp, 0)) < 0) {
+-		retval = i;
+-		goto out;
+-	}
+-	if (STp->can_partitions &&
+-	    (i = switch_partition(STp)) < 0) {
+-		retval = i;
+-		goto out;
++		if (cmd_mtiocget && STp->pos_unknown) {
++			/* flush fails -> modify status accordingly */
++			reset_state(STp);
++			STp->pos_unknown = 1;
++		} else { /* return error */
++			retval = i;
++			goto out;
++		}
++	} else { /* flush_buffer succeeds */
++		if (STp->can_partitions) {
++			i = switch_partition(STp);
++			if (i < 0) {
++				retval = i;
++				goto out;
++			}
++		}
+ 	}
  
--	return sprintf(buf, "%u\n", led_cdev->max_brightness);
-+	return sprintf(buf, "%u\n", max_brightness);
- }
- static DEVICE_ATTR_RO(max_brightness);
+-	if (cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET)) {
++	if (cmd_mtiocget) {
+ 		struct mtget mt_status;
  
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index 834683d603f91..88fb9d1e6770e 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -119,7 +119,7 @@ struct led_classdev {
- 	struct kernfs_node	*brightness_hw_changed_kn;
- #endif
- 
--	/* Ensures consistent access to the LED Flash Class device */
-+	/* Ensures consistent access to the LED class device */
- 	struct mutex		led_access;
- };
- 
+ 		if (_IOC_SIZE(cmd_in) != sizeof(struct mtget)) {
 -- 
 2.43.0
 
