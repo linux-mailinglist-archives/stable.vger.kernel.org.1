@@ -1,130 +1,94 @@
-Return-Path: <stable+bounces-98239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068809E33DB
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:09:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5180B9E33DF
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5FEC28410C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 07:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1161B2848C3
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 07:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F28188A3B;
-	Wed,  4 Dec 2024 07:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBD618A931;
+	Wed,  4 Dec 2024 07:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="AXIcT3Rg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="is4KKSGs"
 X-Original-To: stable@vger.kernel.org
-Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAEB1E522
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 07:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF0F1E522;
+	Wed,  4 Dec 2024 07:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733296164; cv=none; b=TgkV2U7T4AQYioUNijHcfgFQtpDgzGv1XlS5kSgiIytrgv4L1k8iVxt1ExLVWUMC+hOEnRhgqRa9NYOH5qO18cIej7OcIzl7PnDggRJ5F4mdPjBvfh6fRGUOUErx3ZE0CX/yuwStuc4+iGkmtQwbeqv0Z0hcDOfCH93RJyGcKWg=
+	t=1733296282; cv=none; b=FAQQYbXNbSb+EFRt4I6cLPjEw3q/VAaL0fkvRCPFB9f9omDfobk2Wul0YjeXNGmLwkBqDikh9QdbimgzrGzwgkKGnuwwAzzuyuMC15oiixplwci2ptYQKoBCwE8hE5bNJFELTvRKoXa0ZQFYRHu76HS9qtdP5O6UXs0wL6PsYU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733296164; c=relaxed/simple;
-	bh=CC+MjCAkZzJLcoqvbXmhMHmEPLKO53R3HEjLtel5JEc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PK8r1IYIOWNziPFXHfrpGWaJdkL9x4EyNLVQMTb1PSJpBW+BDCpOiSmxQuO9SeqVMSgk2m4QEnG+6Y6Fq+8f7FTJNJkj++GF+tAWwhEnUSJ7WI/wB9DOyX33ml+C2v2cUSmyiQNjYljqpcjA0QUIUbDrTUvmXC+laiDogKLGeAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=AXIcT3Rg; arc=none smtp.client-ip=35.89.44.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
-	by cmsmtp with ESMTPS
-	id IW72ttJRfvH7lIjVetoQUP; Wed, 04 Dec 2024 07:09:18 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id IjVctizcLlDL5IjVdtYi0V; Wed, 04 Dec 2024 07:09:17 +0000
-X-Authority-Analysis: v=2.4 cv=LLtgQoW9 c=1 sm=1 tr=0 ts=6750001d
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=Q5_8b3TqwLNI1KgPcvkA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=zUG+b8RpCONyYnfAip3HiV/DqliaNHNjvaQcav8VtMY=; b=AXIcT3RgIUnKrMfyc1ZBl5ejV1
-	jTd8fJZZz/Iv5r0XBPvkH3ValuZhN+rok+XtjoKE4qMsZHp6hkM96qRVUSS0rhS/jG2P0KtykC3Uc
-	xcJvvXU5A0tWafCG4Myt/z7eowDjjV55nMcGR/hEEvPvtF8L2+wBeppFCnLJlH0hzqSMAeTaEIHTe
-	LBvu1f1khS46pinLxLY1Moy4NaqNH6sD8XmcHUsO7osdsTyJsBOURc8DZwiRZkLGWzzXiJVsSVESg
-	N/YOXZ3Ex3O4V+xdZE9+F+/QVoUj+imvCD12+CGh7eqFnd9aVBex97V3QXD/TQ5b6uU162TTw6APZ
-	1743c/eA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:33898 helo=[10.0.1.115])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1tIjVb-004BFI-2T;
-	Wed, 04 Dec 2024 00:09:15 -0700
-Message-ID: <c363a831-83d2-4901-b38a-67cd7a9fde77@w6rz.net>
-Date: Tue, 3 Dec 2024 23:09:13 -0800
+	s=arc-20240116; t=1733296282; c=relaxed/simple;
+	bh=YTjrgNavoJ/T1NkkRPsRo2iE2j/AVmm61TofZtskhs4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q04ocGg6jig9ixvX/oSLOZP5G5Rrn8k6n/veZTvN0IloZ6jV4lPK/2x37wWRyaKa9ej750DGNEWxSmPCECSF834X+7WTIYHmGOj84P5bUV/oMxesMNJG1ixCFMbsorNBNbLMVqKqNPptMBbu2/7IEtIWoifRyobBT9Xn0Okirl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=is4KKSGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BD7C4CED1;
+	Wed,  4 Dec 2024 07:11:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733296280;
+	bh=YTjrgNavoJ/T1NkkRPsRo2iE2j/AVmm61TofZtskhs4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=is4KKSGsGHGdKv2sQI8oXAqT6okLz9kdUgyMc/jNN8jrN+zUeSPH1BdogouhuRGMz
+	 fbQ/hAgbflt1uIMNvbt1E4v+6ko0bo1GVeM5cDrBH2frl8xSsJlsLwpC5eadjup9Ow
+	 uDC0OdEvblPTmKZUNV6QCKCHcLdi6s1Z/rV3q740=
+Date: Wed, 4 Dec 2024 08:10:47 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Tomasz Figa <tfiga@google.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.11 207/817] media: venus: fix enc/dec destruction order
+Message-ID: <2024120433-paternal-state-098e@gregkh>
+References: <20241203143955.605130076@linuxfoundation.org>
+ <20241203144003.826130114@linuxfoundation.org>
+ <20241204031031.GF886051@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/826] 6.12.2-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20241203144743.428732212@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20241203144743.428732212@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1tIjVb-004BFI-2T
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.115]) [73.223.253.157]:33898
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 18
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPK728mK8ttVoft2kieG35rbt/d47SULh2s73t6y1g/Hr14jPN/FHxChJwt95ulnednqQHqeelqt5gGQDmBIiXkD+m0lgyeLHu9YyOhAqS3nsSwEcGm/
- oZcUNnq9xTHLtDhVwv5G6Xbk+6XC/Kz7Nr2jQYmWKfyPAO019YTP1euHcl1SymcS6MNcwSsbBHRrlA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241204031031.GF886051@google.com>
 
-On 12/3/24 06:35, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.2 release.
-> There are 826 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 05 Dec 2024 14:45:11 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Wed, Dec 04, 2024 at 12:10:31PM +0900, Sergey Senozhatsky wrote:
+> On (24/12/03 15:36), Greg Kroah-Hartman wrote:
+> > 6.11-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Sergey Senozhatsky <senozhatsky@chromium.org>
+> > 
+> > [ Upstream commit 6c9934c5a00ae722a98d1a06ed44b673514407b5 ]
+> > 
+> > We destroy mutex-es too early as they are still taken in
+> > v4l2_fh_exit()->v4l2_event_unsubscribe()->v4l2_ctrl_find().
+> > 
+> > We should destroy mutex-es right before kfree().  Also
+> > do not vdec_ctrl_deinit() before v4l2_fh_exit().
+> 
+> Hi Greg, I just received a regression report which potentially
+> might have been caused by these venus patches.  Please do not
+> take
+> 
+> 	media: venus: sync with threaded IRQ during inst destruction
+> 	media: venus: fix enc/dec destruction order
+> 
+> to any stable kernels yet.  I need to investigate first.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+What are the git commit id of these that I should be dropping?
 
-Tested-by: Ron Economos <re@w6rz.net>
+thanks,
 
+greg k-h
 
