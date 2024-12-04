@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-98698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D146F9E4A22
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:52:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEBB79E4A23
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:52:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8CF188116D
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:50:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8865A1882199
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EA9216395;
-	Wed,  4 Dec 2024 23:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44872206F3F;
+	Wed,  4 Dec 2024 23:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J3L1eGr4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vIXbFf/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A253215F6C;
-	Wed,  4 Dec 2024 23:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38AD215F6C;
+	Wed,  4 Dec 2024 23:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733355381; cv=none; b=qoSP6rnXydHMerSi3f9XjpGiQQcW4y6+462elIidXW/yWmJpYjDpr0SOhn3LU+s2ytmmt0sixnRzMx5HL/Tysp+wOFN74L61tEhXrMysXVHh4nw3rWe2683QcIUgLFYAx/M+CTLYWXyYNjk91L3BblGxuDvwYg9/dYUCax/iQy8=
+	t=1733355389; cv=none; b=NPdmNWKAjZAFZTQu37KcJkWMh+3fgY27zh4D9sadAnz+GYPhWdF0mkOAt8oTvkXWHJaupMOMFCm/GNRfMcpy9PG9TId70NhquCgy3rHxeuPkt7+a/M9Enuv+uHD38YZH4TiYYJURUwMcEVPXZDArDmHBPPTF1vvZHRykhlaqnjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733355381; c=relaxed/simple;
+	s=arc-20240116; t=1733355389; c=relaxed/simple;
 	bh=tiaMZKtDv5lKJdWASKTc5/3vyxs1Ilxhz9tDEHXqeeo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HHN5kU+jNtvWRUZZ2+qu2X+8JB8U3n1LxGe7V6CFJXq5OekReSNaFiC/EaSHQdMJT7AjfFXrAjTqdYRI8OeO3q7pcVAZPsys/1DkII9gQ6J8aROFAC7EY0EHn/3LSgjTIkFdFLH1FZ/USVgxzWZHLHk15N8nAYvia0OJfiuTtzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J3L1eGr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F52C4CECD;
-	Wed,  4 Dec 2024 23:36:17 +0000 (UTC)
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MyQOSutm+fYaguF7+WWYIJIKMXuv3AAqgri4mz1ZqnWiXryQNOqUD0k7mfA0J37gTimT1QbTP+UjFQiFrEHnb/gbH+CfPJw+ksFU19abX/wLKhrvyGmgucIUfITJ+w5mne8siR7MK5XoRR9wJR2I6sb0RU9PWWyVjTD5cA2jbX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vIXbFf/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C538DC4CECD;
+	Wed,  4 Dec 2024 23:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355378;
+	s=k20201202; t=1733355388;
 	bh=tiaMZKtDv5lKJdWASKTc5/3vyxs1Ilxhz9tDEHXqeeo=;
 	h=From:To:Cc:Subject:Date:From;
-	b=J3L1eGr4nxPMr/C/HMBBtjR8LzTScO+/O/E29S2Glzg8tKgXS+xfkJ1bKggxn/lKf
-	 Ud1QE0XIhxV85Qh+M4q9KI/vWTWsG4C0yKKzjIWsl7yvlAtb6UGE8kAmu7ks6zVRTV
-	 FRexB1f5aCSXZZQf8ZDGFBSQKsKf/nFypEcsrqF97SeE/QwSRNNBZ/ZvXsKcULub3v
-	 l3tuHY2SC1WFRd28I6EY8pIL1iAyYgnkJtsLe/sQSVnxpQJECDzrGISSSEVj20VXxw
-	 i+g0Gt07rHnkH8LbURLS6cKhFcVdwYcQQMKmgCE3kXftsrQuzU0zWQSZVEX43RlklQ
-	 f00NagYRMKvjQ==
+	b=vIXbFf/7coQteyWVICFlhaxkpUcHACv+5vcyMiUA8fhdG+8/wzvXly5fYETlg0McT
+	 BFhZPX25yIf+Gb9DNxodmdiNxouFjOuT8YJrgPgcAkP0D0aOofdavDxRHNfeKwRAvP
+	 Phhx10+yRp5whGon29dHIgnJWmKipFt1nPo+xV03TKJCMvQ0wClSdDEKFs1rC1ach+
+	 eP6+9mMQE4SCID9+Gh+FazQs/GJuX22AZ4M+10gZGaxwUs7WBZySxv5JuotW5ij3Y2
+	 Hh8LDnYYrbJR0tZhDaREyfHb9UYlCVxn9e3dotZu1uJjol+Om3y1lqpoYn2Agol9g2
+	 DVZUnu4PI1yoA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -47,9 +47,9 @@ Cc: Parker Newman <pnewman@connecttech.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.15] misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle
-Date: Wed,  4 Dec 2024 17:24:51 -0500
-Message-ID: <20241204222459.2250440-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10] misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle
+Date: Wed,  4 Dec 2024 17:25:01 -0500
+Message-ID: <20241204222508.2250488-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,7 +59,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.173
+X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
 From: Parker Newman <pnewman@connecttech.com>
