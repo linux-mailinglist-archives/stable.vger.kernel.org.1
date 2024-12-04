@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-98668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891829E49CD
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:45:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F8C9E49C7
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C73D18819B2
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:43:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 080EE16459F
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2CD22144B;
-	Wed,  4 Dec 2024 23:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F2C221466;
+	Wed,  4 Dec 2024 23:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLazWW+1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a94rZvoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA3B221445;
-	Wed,  4 Dec 2024 23:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FBE221461;
+	Wed,  4 Dec 2024 23:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733355078; cv=none; b=PXMLIdMwVGpTepNRB3i6tHVrM9fsP56lQvosRHkJF/0ISjEJ83ssWV+IJcyZSfHt0x+leHxwN6xEly62lP5uJTG/m94II073jybp0w14qr93QNf9yjshpWmrdtURJZJI3ma8nngSfkC/VBmpjVSDkjRCmoyG2yCdT/ybs/lTIec=
+	t=1733355081; cv=none; b=GRSaD1xNV+NA/xTF2RCIGg30czn+kFratZp+1UU0slex3NPqirZwSp9RgnpZFiPXP5Wjd0MlBCof8EYSSQNyow9Nb9tC/9ekeyZ/DgLaJXNKYLwGaznvb6bTdegN5Xs2ogZW0pifpB0WVlABtUpx0fy41ufPaYiuDtBqPOE/n3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733355078; c=relaxed/simple;
-	bh=SPV67TGKzu1wgDVFjLDPPi+G3UW18wk/zCVr50aCEDg=;
+	s=arc-20240116; t=1733355081; c=relaxed/simple;
+	bh=UPDQbnLjFtIUDVYYo483+FCn6THQPTwzGxqrRVfxNtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VFV2DnL4QD8Yi3R0pTJf0liqUNbiXDRj17FPt1NGBxa2/OOqvAukzcTm86FQ+9ae08hjvFTu4GDq7J3r6dAegCtBUt4bJluU5Turee60ozAyNJpH+rOPU4ezfV/IfXrDykdidoe6N3gi4H47Xym1kdKHWGA8BPqOQj6tVgqSEiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLazWW+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C29C4CED6;
-	Wed,  4 Dec 2024 23:31:16 +0000 (UTC)
+	 MIME-Version; b=f26QRVWp2qQkZF5XSYkBAxcoG5pd2JezLYDyG8zHmZxvSzaFErJSBlHqcuiGJrHgQJ7kAFjUJ3Hju4NOjNI2DL8oNDQ5wzBGV7WVB72RWkgQPBUcs0z1RwdwcEvwJdGUM3/6Lg32cUitQx1ATzedxi79qSRDPzDDZtZC2lwpVJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a94rZvoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67CCBC4CECD;
+	Wed,  4 Dec 2024 23:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733355078;
-	bh=SPV67TGKzu1wgDVFjLDPPi+G3UW18wk/zCVr50aCEDg=;
+	s=k20201202; t=1733355081;
+	bh=UPDQbnLjFtIUDVYYo483+FCn6THQPTwzGxqrRVfxNtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLazWW+1jucaVQ9wQQwPynFr/cJqh+bvaxshbZHdhhQFB0MbFrabo+3RYAUudJFG3
-	 coBP0mYX5PGh1ut5hHjPyaC7GOoEJ9+BD/y7ZK+JPyH3AOg/4q0wyJJEm5PtcJs5SO
-	 URysb63T+laky+K8vXcppFwLixXjN3FWPBrf6ff0xdP0vFscem8juKX8jEy9ax6UDQ
-	 whhhFhq/6MSvTTffPeAyFgQQSQFNGrXGSGJAvgM/URehSGD2EOaPdY3zCicVrfT06w
-	 fzHcr6zRT2h8lk5QQqPlk07fopVeSj2f6IzStZkNeiwPDl9xqvE8xQUK72Ot7Oz/cn
-	 G8zi3HU1DJJkQ==
+	b=a94rZvoRbYs+lZ6QMSG+xv38yxT/rI9p110bdikgBKpFF3/8bq+VfLlWRD1oN+tQn
+	 tkSfCKkFoH75RzrX/aeZWM6qF6v4GI2s7Byb+xRSpBOaO5DwsAa9hzVSSVs+CdzGb7
+	 il899SbzPIz/zh/NElGwnTVwDpgruy5KT+zZ1VcP4uDqFvnZy4OnYi/gmPuJRDkZt0
+	 kqfJzlIYINYhMGy9sIv+XfUvKp1wdFJYIuX3VnkoZ+zWST29/w5smSdcv3HitdoG02
+	 WV25DJy1AIaUG+41d5KTBdtdBnD1lFH8XfuH8loSuVacCwXd9TNOLrxGXNF/+gmzdx
+	 UtLzaDrJiNWrw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Saravana Kannan <saravanak@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Rob Herring <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jckuo@nvidia.com,
-	vkoul@kernel.org,
-	kishon@kernel.org,
-	thierry.reding@gmail.com,
-	linux-phy@lists.infradead.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/3] phy: tegra: xusb: Set fwnode for xusb port devices
-Date: Wed,  4 Dec 2024 17:19:53 -0500
-Message-ID: <20241204221956.2249103-2-sashal@kernel.org>
+	jsavitz@redhat.com,
+	aneesh.kumar@kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 5.4 3/3] powerpc/prom_init: Fixup missing powermac #size-cells
+Date: Wed,  4 Dec 2024 17:19:54 -0500
+Message-ID: <20241204221956.2249103-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204221956.2249103-1-sashal@kernel.org>
 References: <20241204221956.2249103-1-sashal@kernel.org>
@@ -68,49 +63,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.286
 Content-Transfer-Encoding: 8bit
 
-From: Saravana Kannan <saravanak@google.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 74ffe43bad3af3e2a786ca017c205555ba87ebad ]
+[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
 
-fwnode needs to be set for a device for fw_devlink to be able to
-track/enforce its dependencies correctly. Without this, you'll see error
-messages like this when the supplier has probed and tries to make sure
-all its fwnode consumers are linked to it using device links:
+On some powermacs `escc` nodes are missing `#size-cells` properties,
+which is deprecated and now triggers a warning at boot since commit
+045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
+handling").
 
-tegra-xusb-padctl 3520000.padctl: Failed to create device link (0x180) with 1-0008
+For example:
 
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/all/20240910130019.35081-1-jonathanh@nvidia.com/
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Suggested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20241024061347.1771063-3-saravanak@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
+  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
+  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
+  ...
+  Call Trace:
+    of_bus_n_size_cells+0x98/0x108 (unreliable)
+    of_bus_default_count_cells+0x40/0x60
+    __of_get_address+0xc8/0x21c
+    __of_address_to_resource+0x5c/0x228
+    pmz_init_port+0x5c/0x2ec
+    pmz_probe.isra.0+0x144/0x1e4
+    pmz_console_init+0x10/0x48
+    console_init+0xcc/0x138
+    start_kernel+0x5c4/0x694
+
+As powermacs boot via prom_init it's possible to add the missing
+properties to the device tree during boot, avoiding the warning. Note
+that `escc-legacy` nodes are also missing `#size-cells` properties, but
+they are skipped by the macio driver, so leave them alone.
+
+Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index efe7abf459fda..7cf2698791a0f 100644
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -521,7 +521,7 @@ static int tegra_xusb_port_init(struct tegra_xusb_port *port,
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 7f4e2c031a9ab..b7ef63614417d 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2856,7 +2856,7 @@ static void __init fixup_device_tree_chrp(void)
+ #endif
  
- 	device_initialize(&port->dev);
- 	port->dev.type = &tegra_xusb_port_type;
--	port->dev.of_node = of_node_get(np);
-+	device_set_node(&port->dev, of_fwnode_handle(of_node_get(np)));
- 	port->dev.parent = padctl->dev;
+ #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
+-static void __init fixup_device_tree_pmac(void)
++static void __init fixup_device_tree_pmac64(void)
+ {
+ 	phandle u3, i2c, mpic;
+ 	u32 u3_rev;
+@@ -2896,7 +2896,31 @@ static void __init fixup_device_tree_pmac(void)
+ 		     &parent, sizeof(parent));
+ }
+ #else
+-#define fixup_device_tree_pmac()
++#define fixup_device_tree_pmac64()
++#endif
++
++#ifdef CONFIG_PPC_PMAC
++static void __init fixup_device_tree_pmac(void)
++{
++	__be32 val = 1;
++	char type[8];
++	phandle node;
++
++	// Some pmacs are missing #size-cells on escc nodes
++	for (node = 0; prom_next_node(&node); ) {
++		type[0] = '\0';
++		prom_getprop(node, "device_type", type, sizeof(type));
++		if (prom_strcmp(type, "escc"))
++			continue;
++
++		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
++			continue;
++
++		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
++	}
++}
++#else
++static inline void fixup_device_tree_pmac(void) { }
+ #endif
  
- 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ #ifdef CONFIG_PPC_EFIKA
+@@ -3121,6 +3145,7 @@ static void __init fixup_device_tree(void)
+ 	fixup_device_tree_maple_memory_controller();
+ 	fixup_device_tree_chrp();
+ 	fixup_device_tree_pmac();
++	fixup_device_tree_pmac64();
+ 	fixup_device_tree_efika();
+ 	fixup_device_tree_pasemi();
+ }
 -- 
 2.43.0
 
