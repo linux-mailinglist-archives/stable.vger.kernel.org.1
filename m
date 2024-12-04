@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-98458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5665E9E4536
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 843BE9E4434
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A41EB32183
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:30:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D26DBA2BB0
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A25F218AD6;
-	Wed,  4 Dec 2024 17:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62303229B20;
+	Wed,  4 Dec 2024 17:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVYI9wIr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYZDW4Cn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFFC218AC5;
-	Wed,  4 Dec 2024 17:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FF4229B17;
+	Wed,  4 Dec 2024 17:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331808; cv=none; b=Xf8Bf8jhN7cvGJZ8j7mjwgbJHUSq2C4m3w6MF+sbJjnMx28YHWV0AB1A1TZcxlgJA3x1XOyqwokY9ekZ8iGDKs85CoP+sI0RMu+ZXgEj6ikg9E8nAEOdQQysrqHab70VCHACz6wRPV5O+bltGUnWvwSgxPPBwL9ynXXEgtYUFsg=
+	t=1733331810; cv=none; b=eoGMPMR1JLBnzzExirCta+7FYnkjxKIzqi9pMUa5Q+WgxcX0Fur5T7RmBZUIAmo1d3s3//xYKfFwC1WnXrTijhbODo4+WCatsQB+26Ie2D9AhBlFhxChn5AGnDV7pNFUWeghfXOmKWp/xiRDfOOwjVSzaTboibVs0YsLurAzi5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331808; c=relaxed/simple;
-	bh=BAtYgzy4rvRUDcmcLeuuSuc7wPnz3hH/LbP+TPbtIzs=;
+	s=arc-20240116; t=1733331810; c=relaxed/simple;
+	bh=y0Ta5sY4OqUiVRPPAeY0cY47eLRaG49ak4eVu1CF15Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZBhqMN821S2gY4/cPli3WmTwN6MCe7Q2OssPyr6G/emXVAhER0urRGOshp47Eof/v2fWapoHLD+0JUr3xDYJ/m18WAS9aS9T25DUhYv1tBO8cS51uPGZ4M+iNLN9rRNRbaly2jGccVDaVmY4S7ARxmZw8v5djwchHjpD4YeqCjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVYI9wIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0AFC4CECD;
-	Wed,  4 Dec 2024 17:03:26 +0000 (UTC)
+	 MIME-Version; b=aG3oKwNqoJXVH6gfEdneQKMZdj4SWF7ZDAlmxCjpy440UjNiaLdHruE6enY3nmGpFbyuY+urg0PGOu0ExK9y+gtkaG1g9Vqelb62qOTr+LvylSSdGpvojYrrONYTi3oNF32o9WPWfd1fMm0FFYjxqf+dXI7bi1OFjxL+uJR5+Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYZDW4Cn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81327C4CED1;
+	Wed,  4 Dec 2024 17:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331808;
-	bh=BAtYgzy4rvRUDcmcLeuuSuc7wPnz3hH/LbP+TPbtIzs=;
+	s=k20201202; t=1733331809;
+	bh=y0Ta5sY4OqUiVRPPAeY0cY47eLRaG49ak4eVu1CF15Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVYI9wIrMa0FoaHE6R0x9OdTCWbxk/REHmHxirDlTn3zrMnb3iEaQkCrUUlX/uE+x
-	 Ed4ABdEgwOZIN+V6pIhDsVDaqd5dDmoVUR/eWl0FxYsJvTs3TiaflH2otKV1ATKLND
-	 PWlTsJTKGEf75lXSKAAkQnA9Y8qiZ1b9cOc5voXP+OBxi1Rc2/LF7S7TPqu0DVh4MO
-	 /JyDpwHyqcmzU3NOlOzF7tQbVCJGOiAV09sTdyfxv7iTqJB4RUDkmFBCF6lx4u53z8
-	 urTpbSiVkiPELXlhCBbv/l/bF44qQno0vKCrJqDtTeVfS99tSmzoDoSlp6UIxJvoJt
-	 jzZTjfRKvGJrg==
+	b=SYZDW4Cneb4/IH86ihYBZ9wvlCuobDTsC/NRntB91r64xRQgzQb0H9o5ylowpF9tZ
+	 eLvTR/V4j/PE/MA+2jN8rdwCI4UGEAev3SVviEHykhFacvL2GDoWmjFG5JVmLhL1FF
+	 67BIfqZ6dqP4s5OLSfg3+Ted/77TbTnKiW+ppXxiGWcnadJY6qGxwUuhUN7CKcA8rA
+	 5T1bCyfZu3UtfA+GCaH3M3gEQ3pCXVEiNldg5Ji9Rjw/YKv26uD4RndCPYBDzgD69/
+	 +uoU/tTGMNveZRk8nOkedTL5qtJ71gudY0xlCgB89Q1CzGQuYdC2MeDIku3Un+2TJ8
+	 QHBcG9ZyUmR9Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: Yi Yang <yiyang13@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andersson@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-gpio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 8/9] pinctrl: qcom-pmic-gpio: add support for PM8937
-Date: Wed,  4 Dec 2024 10:51:54 -0500
-Message-ID: <20241204155157.2214959-8-sashal@kernel.org>
+	dan.j.williams@intel.com,
+	vishal.l.verma@intel.com,
+	nvdimm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.10 9/9] nvdimm: rectify the illogical code within nd_dax_probe()
+Date: Wed,  4 Dec 2024 10:51:55 -0500
+Message-ID: <20241204155157.2214959-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204155157.2214959-1-sashal@kernel.org>
 References: <20241204155157.2214959-1-sashal@kernel.org>
@@ -63,40 +63,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 89265a58ff24e3885c2c9ca722bc3aaa47018be9 ]
+[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
 
-PM8937 has 8 GPIO-s with holes on GPIO3, GPIO4 and GPIO6.
+When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
+it is inadvisable to perform pointer arithmetic or address-taking on a
+NULL pointer.
+Introduce the nd_dax_devinit() function to enhance the code's logic and
+improve its readability.
 
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/20241031-msm8917-v2-2-8a075faa89b1@mainlining.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvdimm/dax_devs.c | 4 ++--
+ drivers/nvdimm/nd.h       | 7 +++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-index 17441388ce8f5..fd1e4fb176c79 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
-@@ -1106,6 +1106,8 @@ static int pmic_gpio_remove(struct platform_device *pdev)
- static const struct of_device_id pmic_gpio_of_match[] = {
- 	{ .compatible = "qcom,pm8005-gpio", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8916-gpio", .data = (void *) 4 },
-+	/* pm8937 has 8 GPIOs with holes on 3, 4 and 6 */
-+	{ .compatible = "qcom,pm8937-gpio", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8941-gpio", .data = (void *) 36 },
- 	/* pm8950 has 8 GPIOs with holes on 3 */
- 	{ .compatible = "qcom,pm8950-gpio", .data = (void *) 8 },
+diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
+index 99965077bac4f..e7b8211c19cc6 100644
+--- a/drivers/nvdimm/dax_devs.c
++++ b/drivers/nvdimm/dax_devs.c
+@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
+ 
+ 	nvdimm_bus_lock(&ndns->dev);
+ 	nd_dax = nd_dax_alloc(nd_region);
+-	nd_pfn = &nd_dax->nd_pfn;
+-	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
++	dax_dev = nd_dax_devinit(nd_dax, ndns);
+ 	nvdimm_bus_unlock(&ndns->dev);
+ 	if (!dax_dev)
+ 		return -ENOMEM;
+ 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
++	nd_pfn = &nd_dax->nd_pfn;
+ 	nd_pfn->pfn_sb = pfn_sb;
+ 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
+ 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index 696b55556d4d2..12c2be3cdf5cc 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -335,6 +335,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
+ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
+ bool is_nd_dax(struct device *dev);
+ struct device *nd_dax_create(struct nd_region *nd_region);
++static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
++					    struct nd_namespace_common *ndns)
++{
++	if (!nd_dax)
++		return NULL;
++	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
++}
+ #else
+ static inline int nd_dax_probe(struct device *dev,
+ 		struct nd_namespace_common *ndns)
 -- 
 2.43.0
 
