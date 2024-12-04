@@ -1,74 +1,54 @@
-Return-Path: <stable+bounces-98286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64309E38E1
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:34:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4C19E38DC
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:33:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3969EB255F3
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:29:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B995F16084C
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588D01B21AB;
-	Wed,  4 Dec 2024 11:29:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BMqUUXG7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5091B21AB;
+	Wed,  4 Dec 2024 11:33:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D2F19D09F
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 11:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7EA1B0F36;
+	Wed,  4 Dec 2024 11:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733311790; cv=none; b=SblOk7dWSAmH8hLhN2qtQ+ZtyMgIQGrgH0tXtTiIDefFCNQQBmBONDT049Lr8+30vgSw49QwTcQw5/syMZ0cnvxdcNEPg9r0+cU57I+Kosn7ZVOIyBEW7SZvRf0V24Xuz7ut/vgfTgzanAE6p99hOtaYtGqgP0Ga8TLBmLEXnIw=
+	t=1733311989; cv=none; b=WXbVUev2NPE4y1FCJ5YiPvQiP6xfVXVFtfP+Atb+zEWd5bIfsPXxstrt2+Mcq0xM7sOI4m/lokURLZKDCc9SOCaBZb/Pe6vRaFRq4ieq+RsF98YXNqUm9xkylHUmH3GA5ErqYP2SrYgQscNjI6/TiTWuCXMNR2HY0CAd4c5ap6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733311790; c=relaxed/simple;
-	bh=K9G3ow5eSG09Qm9mcHn2m/eM+zl0slGLHgi9J56zwRk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ZJWbjJPgDGdoKmh6vt9aMb6YzlnoDlD7v7QJCU6FGmFV/ltRY7KmqN4wNxp78EiS55t915ZcXDG4GcP+lxcbh4ulD3mycn/owdjhTqR2ug6TgEam7RRx8k0JbkH3xt7xIX46gqKS6IVD2zLFDlj/HWav4Qe2Ayd+7F9hMtO26hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BMqUUXG7; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733311788; x=1764847788;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=K9G3ow5eSG09Qm9mcHn2m/eM+zl0slGLHgi9J56zwRk=;
-  b=BMqUUXG7mZT9z4FZUvaU2Xgiaxv2ljWWBO/dkPJFyxIsD/0/z8s68f6n
-   BJK4+gw/06dTvzwq9U/DrloegTdeROpzWVgOnjVYjTqVRCc+HwTEBzTnt
-   cAiNLQHj1KYqUhCT4R4uPk/LUvC7Mz1RPsHzJVeZ+QR1oVyBFttMNTveR
-   JaFPQfdLi3V68Oq+S+XORnPM5lJ+IdU3R8TIDcYUloS34Adq3I2hiVv4G
-   CkEKdzvUfRUuWLNpvnWI+2PQw+OgxMgwxWRT1jAitroerCFcmtiHY9VHb
-   Xeltutt1Q4M/kReX9es69u14n0T2LH8Mz9+dsFjb44jckZd8bE/7HJFoo
-   A==;
-X-CSE-ConnectionGUID: 3zemD4CeQJK8ebeyyzjMKQ==
-X-CSE-MsgGUID: gI0mVq8aSS62zjHoq0Uftg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="37510154"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="37510154"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 03:29:48 -0800
-X-CSE-ConnectionGUID: s2ZEqdPiRxC9jFVrSYL78A==
-X-CSE-MsgGUID: 2NfcIHAHREuypBw7LPKxlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="93822999"
-Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 04 Dec 2024 03:29:48 -0800
-Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tInZg-0002x7-2T;
-	Wed, 04 Dec 2024 11:29:44 +0000
-Date: Wed, 4 Dec 2024 19:29:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating
- userspace page tables
-Message-ID: <Z1A9JkG3JspS5tFO@fa4ec8514079>
+	s=arc-20240116; t=1733311989; c=relaxed/simple;
+	bh=4WTW9FUmZwSnNbESxNLpj77cDzjJTxm2vPyChPJTCXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VfGCd3gr3Sr8DQqE9/V0aO7Ob27vh4ryoMoT+vyFzdj4tR0By3IFH3DjXxcA6DZozacjIorc7i0Fn9xd3YZ12VNATGXMOxeCJd/LyqxUIkVQnSYMJEFaxqJh+DxRvsqiAzZuqQAo73q6F7MosbOMbm93jlrmkBMaGhA5iYt3kew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC120FEC;
+	Wed,  4 Dec 2024 03:33:33 -0800 (PST)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.37])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9F9C33F71E;
+	Wed,  4 Dec 2024 03:33:04 -0800 (PST)
+Date: Wed, 4 Dec 2024 11:33:02 +0000
+From: Dave Martin <Dave.Martin@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/6] arm64/sme: Flush foreign register state in
+ do_sme_acc()
+Message-ID: <Z1A97pR+un1Trtyg@e133380.arm.com>
+References: <20241203-arm64-sme-reenable-v1-0-d853479d1b77@kernel.org>
+ <20241203-arm64-sme-reenable-v1-1-d853479d1b77@kernel.org>
+ <Z08khk6Mg6+T6VV9@e133380.arm.com>
+ <9365be76-8da6-47ce-b88e-dfa244b9e5b7@sirena.org.uk>
+ <Z085GKS8jzEhcZdW@e133380.arm.com>
+ <44d67835-1e43-47cc-9a18-c279c885dcec@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,24 +57,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <412c90a4df7aef077141d9f68d19cbe5602d6c6d.camel@infradead.org>
+In-Reply-To: <44d67835-1e43-47cc-9a18-c279c885dcec@sirena.org.uk>
 
-Hi,
+On Tue, Dec 03, 2024 at 05:24:39PM +0000, Mark Brown wrote:
+> On Tue, Dec 03, 2024 at 05:00:08PM +0000, Dave Martin wrote:
+> > On Tue, Dec 03, 2024 at 04:00:45PM +0000, Mark Brown wrote:
 
-Thanks for your patch.
+[...]
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> We know that the only bit of register state which is not up to date at
+> this point is the SME vector length, we don't configure that for tasks
+> that do not have SME.  SVCR is always configured since we have to exit
+> streaming mode for FPSIMD and SVE to work properly so we know it's
+> already 0, all the other SME specific state is gated by controls in
+> SVCR.
+> 
+> > fpsimd_flush_task_state() means that we do the necessary work when re-
+> > entering userspace, but is there a problem with simply marking all the
+> > FPSIMD/vector state as stale?  If FPSR or FPCR is dirty for example, it
+> > now looks like they won't get written back to thread struct if there is
+> > a context switch before current re-enters userspace?
+> 
+> > Maybe the other flags distinguish these cases -- I haven't fully got my
+> > head around it.
+> 
+> We are doing fpsimd_flush_task_state() in the TIF_FOREIGN_FPSTATE case
+> so we know there is no dirty state in the registers.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Ah, that wasn't obvious from the diff context, but you're right.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables
-Link: https://lore.kernel.org/stable/412c90a4df7aef077141d9f68d19cbe5602d6c6d.camel%40infradead.org
+I was confused by the fpsimd_bind_task_to_cpu() call; I forgot that
+there are reasons to call this even when TIF_FOREIGN_FPSTATE is clear.
+Perhaps it would be worth splitting some of those uses up, but it would
+need some thinking about.  Doesn't really belong in this series anyway.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > (Actually, the ARM ARM says (IMHTLZ) that toggling PSTATE.SM by any
+> > means causes FPSR to become 0x800009f.  I'm not sure where that fits in
+> > -- do we handle that anywhere?  I guess the "soft" SM toggling via
+> 
+> Urgh, not seen that one - that needs handling in the signal entry path
+> and ptrace.  That will have been defined while the feature was being
+> implemented.  It's not relevant here though since we are in the SME
+> access trap, we might be trapping due to a SMSTART or equivalent
+> operation but that SMSTART has not yet run at the point where we return
+> to userspace.
+> 
+> > ptrace, signal delivery or maybe exec, ought to set this?  Not sure how
+> > that interacts with the expected behaviour of the fenv(3) API...  Hmm.
+> > I see no corresponding statement about FPCR.)
+> 
+> Fun.  I'm not sure how the ABI is defined there by libc.
 
+I guess this should be left as-is, for now.  There's an argument for
+sanitising FPCR/FPSR on signal delivery, but neither signal(7) nor
+fenv(3) give any clue about the expected behaviour...
 
+For ptrace, the user has the opportunity to specify exactly what they
+want to happen to all the registers, so I suppose it's best to stick to
+the current model and require the tracer to specify all changes
+explicitly rather than add new magic ptrace behaviour.
 
+Not relevant for this series, in any case.
+
+Cheers
+---Dave
 
