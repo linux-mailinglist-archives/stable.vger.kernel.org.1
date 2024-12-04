@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-98355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C909E41DD
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:38:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD2879E42EE
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B691BB3F78F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:03:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F226BB6491D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF292185B2;
-	Wed,  4 Dec 2024 16:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B46233D71;
+	Wed,  4 Dec 2024 16:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oupCBwGT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c/6mSWbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D876D21858F;
-	Wed,  4 Dec 2024 16:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC90233D68;
+	Wed,  4 Dec 2024 16:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331516; cv=none; b=ZLHKjNGd22EBZ7bTt2+41W4nWmpxCyxLL+Joyv6GJm4KV/69s0BkUDOiTtd5xiNNrieS8JsuoVWdlxN4WuUvoNvyjNberAq+eTQs/RTE6/XKaK/CSjY7G7H4OIJNu8HN7AzN4JLdsxN25AXl9rRDy0NkEltmVH0XSqDkuzwTKVw=
+	t=1733331532; cv=none; b=KoXM0yNNaLEw7Z2koWqnnjAXZ88VcvaoXiVXt+lPUGgXGbjFqBxA0NkNsIw9GBJ5DODMKDf5QR3gp1kqSkOGYWC78aWJVG+8RcW4j1F4hXCy+FxeJaDWIgWnIvc0IkHn9QE1d5/sFJSXdSJQHtaWQaLdxTE+Ghz4esSG/Y2MyLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331516; c=relaxed/simple;
-	bh=xwgudsxGIo94rntV7Ii8BArBcCp9b9lcNfpvcnRWsHw=;
+	s=arc-20240116; t=1733331532; c=relaxed/simple;
+	bh=nRp2boy3gqrralSZ0lweFfaRojSVHtUhRfYWWpxRuSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPDwKaq6bzeFlL0GGsPIG3zQGUhJOI4pTJ1neAIgzljEakVCJFq05l5Wz9ToPfo/ytRDkD6gWEJD7Bzrx1M2V7lb+PYcoVhxLXttvlzsejmQh/rDXfkluIuKvEYuBT9+An7c49oU1fSXIOX54srw/8T/9SepPwLQLrX3X57vLb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oupCBwGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACBCC4CED6;
-	Wed,  4 Dec 2024 16:58:34 +0000 (UTC)
+	 MIME-Version; b=MUB/g6atlJs0q/OVUJVoWfuWp9CWMTOqofhebZtrGAbSqjG5zMTTh0i/hCi18wagNGfOr7DB/Hle/L9Sym5atkUN0jUmTGRD+UvixvXBrWJxlhDeQsY+gg7p84ZWK7UNELtW89RB0R+3x5eCV9m74AvYdbWD79FGOg/rugLCj+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c/6mSWbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82C7C4CECD;
+	Wed,  4 Dec 2024 16:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331515;
-	bh=xwgudsxGIo94rntV7Ii8BArBcCp9b9lcNfpvcnRWsHw=;
+	s=k20201202; t=1733331531;
+	bh=nRp2boy3gqrralSZ0lweFfaRojSVHtUhRfYWWpxRuSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oupCBwGT5zzTOgC8oDg2u/3ki2tN9wzSYe0an5z/oHyvoR+kbQ1HCLYOBe559Hfb2
-	 5T2KNHXT3pfqM5UVFAn6IRcUuEobqhh1X4LXAs7cyn19BvpGDz7dQwaFIUEe/qYZYV
-	 nFAlIyd2woaBqIVfdPUqupacTlzVefiwwrSnpEQ5R9q0ujK6M/busmkbIVH7T4WwQs
-	 zlM3Upz2Lu1o/11gxCgdj3j9rKNm+HKoIeK4TlSZBbcxj2u9rZ3+CeOHZ/I2tOjRde
-	 VJ0s8YiAjnI3oMQodymSKMBv4ftJ0/HVEIMfU73MGwSollm9oq8weukrsech6X0FkS
-	 WNZLOIF8wP/oQ==
+	b=c/6mSWbBZ6NN7JCOU4LaqzW54UrKhGda18ru3LfGJUi/JDfhnt4WA6zijPaA8iDie
+	 7pLT7s3irWEJ47IljNbthXMqGUU+pnko6YegJ2BNu+6DchDgONQ1wQaGn/QCEK2N8J
+	 nuyVI+pxIuaTRUJuzH0KHyaTIuTKPNyQOLLCsBvY4FM3JYNuGe6ATb7V9DVTxOPssd
+	 E6TPVRtjjkBQbYwahUUfo/TRNx+Oax7aGwsI4hsuPE4vouZB2LKVemAyy5g4vXqKXF
+	 7S3H5/CYZIJwiNj2SsM+j/vXIHUNrlI2/iMRGPHqvlMPn+n6bMfzwfS9Pq4wWrFW8h
+	 T6FTG0xaQUDfg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-clk@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 22/36] clk: qcom: tcsrcc-sm8550: add SAR2130P support
-Date: Wed,  4 Dec 2024 10:45:38 -0500
-Message-ID: <20241204154626.2211476-22-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.12 32/36] smb: client: memcpy() with surrounding object base address
+Date: Wed,  4 Dec 2024 10:45:48 -0500
+Message-ID: <20241204154626.2211476-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
 References: <20241204154626.2211476-1-sashal@kernel.org>
@@ -69,73 +68,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit d2e0a043530b9d6f37a8de8f05e0725667aba0a6 ]
+[ Upstream commit f69b0187f8745a7a9584f6b13f5e792594b88b2e ]
 
-The SAR2130P platform has the same TCSR Clock Controller as the SM8550,
-except for the lack of the UFS clocks. Extend the SM8550 TCSRCC driver
-to support SAR2130P.
+Like commit f1f047bd7ce0 ("smb: client: Fix -Wstringop-overflow issues"),
+adjust the memcpy() destination address to be based off the surrounding
+object rather than based off the 4-byte "Protocol" member. This avoids a
+build-time warning when compiling under CONFIG_FORTIFY_SOURCE with GCC 15:
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241027-sar2130p-clocks-v5-9-ecad2a1432ba@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+In function 'fortify_memcpy_chk',
+    inlined from 'CIFSSMBSetPathInfo' at ../fs/smb/client/cifssmb.c:5358:2:
+../include/linux/fortify-string.h:571:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  571 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/tcsrcc-sm8550.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ fs/smb/client/cifssmb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/tcsrcc-sm8550.c b/drivers/clk/qcom/tcsrcc-sm8550.c
-index e5e8f2e82b949..41d73f92a000a 100644
---- a/drivers/clk/qcom/tcsrcc-sm8550.c
-+++ b/drivers/clk/qcom/tcsrcc-sm8550.c
-@@ -129,6 +129,13 @@ static struct clk_branch tcsr_usb3_clkref_en = {
- 	},
- };
- 
-+static struct clk_regmap *tcsr_cc_sar2130p_clocks[] = {
-+	[TCSR_PCIE_0_CLKREF_EN] = &tcsr_pcie_0_clkref_en.clkr,
-+	[TCSR_PCIE_1_CLKREF_EN] = &tcsr_pcie_1_clkref_en.clkr,
-+	[TCSR_USB2_CLKREF_EN] = &tcsr_usb2_clkref_en.clkr,
-+	[TCSR_USB3_CLKREF_EN] = &tcsr_usb3_clkref_en.clkr,
-+};
-+
- static struct clk_regmap *tcsr_cc_sm8550_clocks[] = {
- 	[TCSR_PCIE_0_CLKREF_EN] = &tcsr_pcie_0_clkref_en.clkr,
- 	[TCSR_PCIE_1_CLKREF_EN] = &tcsr_pcie_1_clkref_en.clkr,
-@@ -146,6 +153,12 @@ static const struct regmap_config tcsr_cc_sm8550_regmap_config = {
- 	.fast_io = true,
- };
- 
-+static const struct qcom_cc_desc tcsr_cc_sar2130p_desc = {
-+	.config = &tcsr_cc_sm8550_regmap_config,
-+	.clks = tcsr_cc_sar2130p_clocks,
-+	.num_clks = ARRAY_SIZE(tcsr_cc_sar2130p_clocks),
-+};
-+
- static const struct qcom_cc_desc tcsr_cc_sm8550_desc = {
- 	.config = &tcsr_cc_sm8550_regmap_config,
- 	.clks = tcsr_cc_sm8550_clocks,
-@@ -153,7 +166,8 @@ static const struct qcom_cc_desc tcsr_cc_sm8550_desc = {
- };
- 
- static const struct of_device_id tcsr_cc_sm8550_match_table[] = {
--	{ .compatible = "qcom,sm8550-tcsr" },
-+	{ .compatible = "qcom,sar2130p-tcsr", .data = &tcsr_cc_sar2130p_desc },
-+	{ .compatible = "qcom,sm8550-tcsr", .data = &tcsr_cc_sm8550_desc },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, tcsr_cc_sm8550_match_table);
-@@ -162,7 +176,7 @@ static int tcsr_cc_sm8550_probe(struct platform_device *pdev)
- {
- 	struct regmap *regmap;
- 
--	regmap = qcom_cc_map(pdev, &tcsr_cc_sm8550_desc);
-+	regmap = qcom_cc_map(pdev, of_device_get_match_data(&pdev->dev));
- 	if (IS_ERR(regmap))
- 		return PTR_ERR(regmap);
- 
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index c6f15dbe860a4..0eae60731c20c 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -5406,7 +5406,7 @@ CIFSSMBSetPathInfo(const unsigned int xid, struct cifs_tcon *tcon,
+ 	param_offset = offsetof(struct smb_com_transaction2_spi_req,
+ 				InformationLevel) - 4;
+ 	offset = param_offset + params;
+-	data_offset = (char *) (&pSMB->hdr.Protocol) + offset;
++	data_offset = (char *)pSMB + offsetof(typeof(*pSMB), hdr.Protocol) + offset;
+ 	pSMB->ParameterOffset = cpu_to_le16(param_offset);
+ 	pSMB->DataOffset = cpu_to_le16(offset);
+ 	pSMB->SetupCount = 1;
 -- 
 2.43.0
 
