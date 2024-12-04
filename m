@@ -1,143 +1,142 @@
-Return-Path: <stable+bounces-98277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9563A9E3836
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:04:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 815D59E3843
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 12:06:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BD3E28235F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:04:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6A31625EB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A7F1AF0BE;
-	Wed,  4 Dec 2024 11:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A0F1B413A;
+	Wed,  4 Dec 2024 11:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H1NkxUx9"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="LGaxZ0Eu"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197861B0F2E
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 11:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266811B21A6;
+	Wed,  4 Dec 2024 11:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733310259; cv=none; b=NQzuzUWMNhg6Dvcw8MvkGxAHRN20JRqZb9ypiYhsGCJeZFHQB2Kb8Ho+KXCsIpq+mHLbqFImjQ0M9bIESVqkVZcF1pwDVdtXqL4nKPGCDJY4+Q5DROSIK4ocrKvIsVL4Md1ostSPHDyAV8F56Pq29Kr4+s+XwpiI7zzbmOwOrDs=
+	t=1733310347; cv=none; b=pYcgMr0B1osprTlS1FnmOVdXdv+u33v6EUxLMORg7BJ5nnfEeExSnRBx8CxFCXzeDYnhvFQv8hSUixNlsHHbN1sg2Md6hzqkBCi688WQCz7SvzEHiAsPEAUHrPZKQk+bcKdW09vblyhjTMYA4RVnVE88Jfbr8rglpeOmYnraqjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733310259; c=relaxed/simple;
-	bh=ahqqkIb7p/gDv+P32bHbeqCtkNEt52o5QFlR+Ugs8qc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Af8YddN2pQzHpdGMHs2vAEcioFEhyrsMQgYDalLB3CGTyOV51BpA0xooowF5TQaZyl+DbDYv3HAbsqOI5A/fP69ub0HhbJ1gxJY1FB8dJJFwSyd4/5gVoszei3lYF9TXgO1rFu+V81cdiT+hfd5kjg0aR5NVbO7tjr79b6ubTHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H1NkxUx9; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733310258; x=1764846258;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ahqqkIb7p/gDv+P32bHbeqCtkNEt52o5QFlR+Ugs8qc=;
-  b=H1NkxUx9f+ZFPUn6wYcRmO8jqL+/0iHWwObu0lrFBVXWIBVAmfjwYZJ/
-   PiwRwcrB3+uxmQRV7PPszIRe/QpQsskV8iV1rwoweBxccaYzuW2CTTvqo
-   8gmPV+lwqO/JRJ6l9jonE5nAtYkQ31epn6acVR7t8mChXo7XUm++Zdnap
-   vljcAIAAaEmVL8RASmVhw7lCi15gvD56kQnOS32N5j0ybJNp0aiSI/ZBn
-   s0IvIkIIWiHSmBeZIUweKlDbYBOzL6V+ahsogd4q3KMrelixxWZ7uYj5x
-   HOMsHl+g/9C9t5FjN56C32CaIR0Fmv4xUqcSPH7wz0XRKjzsJC3ips6gK
-   g==;
-X-CSE-ConnectionGUID: lOqsCHx2TTe9okBeydkA5Q==
-X-CSE-MsgGUID: ldLtfVDbQleKYQpegidY4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44947296"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="44947296"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 03:04:17 -0800
-X-CSE-ConnectionGUID: VaWeAFJjQX6/qMGyzCvWOw==
-X-CSE-MsgGUID: FqJ9Z4gYRpuC4SbEePceog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="116983800"
-Received: from slindbla-desk.ger.corp.intel.com (HELO intel.com) ([10.245.246.225])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 03:04:14 -0800
-Date: Wed, 4 Dec 2024 12:04:11 +0100
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Eugene Kobyak <eugene.kobyak@intel.com>,
-	intel-gfx@lists.freedesktop.org, John.C.Harrison@intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6] drm/i915: Fix NULL pointer dereference in
- capture_engine
-Message-ID: <Z1A3K2djcF6UqelX@ashyti-mobl2.lan>
-References: <xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at>
- <053cc89a-0b20-4fb0-b93c-1e864a6b6f6a@intel.com>
- <Z1Avw4f93LlBULI2@ashyti-mobl2.lan>
- <87frn33elv.fsf@intel.com>
+	s=arc-20240116; t=1733310347; c=relaxed/simple;
+	bh=c503PyijQRCSJhJm7VYaVdgRzKNLwzVVuquZMgWfAKo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mcDsdRzy/trgdgF5230A/WgdPaQR30cHTManAjnPUwMjSss2q8qTfunXPMg3FbiU7k0iR5RpnCOE3NO9JRsbikVbu2+LRnkjvdfX0lSZaJOgPERtJgoI2Yu4LP/K2vefPo4+H7umXkB2oaO5XHldT28gwyNypNXkOC5/tiZvC2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=LGaxZ0Eu; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [127.0.1.1] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id D18724D4;
+	Wed,  4 Dec 2024 12:05:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1733310316;
+	bh=c503PyijQRCSJhJm7VYaVdgRzKNLwzVVuquZMgWfAKo=;
+	h=From:Subject:Date:To:Cc:From;
+	b=LGaxZ0Eu8rF5O2xPE0yBjK0C3bb8ADOQ+PFi0bBFeJMNTiAMHVYGjqoWvGOxoSzYW
+	 7jBjxGh68/cmhtCy2ehSuX23Z8UFt+Tr1K2HYtlp7j0a4XPQKUF4G84Q4GNMcjDL2w
+	 gT0zUZapT3NoUgyj/vOJF+cXDL9xH5UMxqzOt8UE=
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Subject: [PATCH v3 00/15] media: i2c: ds90ub9xx: Misc fixes and
+ improvements
+Date: Wed, 04 Dec 2024 13:05:14 +0200
+Message-Id: <20241204-ub9xx-fixes-v3-0-a933c109b323@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87frn33elv.fsf@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGs3UGcC/23Myw6CMBCF4Vcxs7amt0Bx5XsYF70MMgupabXBE
+ N7dwsaYsPxncr4ZMibCDOfDDAkLZYpjDXU8gB/seEdGoTZILrXgXLO366aJ9TRhZs5Zw4PXppE
+ t1MUz4faog+ut9kD5FdNnw4tYr/tOEYwzVNzqRinfmuZCAW2Oo4s2hZOPD1i5In+E4OafkJXwb
+ XDKSRtM1+8Qy7J8AYGXr1LwAAAA
+To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Jai Luthra <jai.luthra@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2486;
+ i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
+ bh=c503PyijQRCSJhJm7VYaVdgRzKNLwzVVuquZMgWfAKo=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBnUDd+PTg/XW+FjZxSGEwZcb4g2llLRlYz4L2C2
+ Jb1MQhIHjWJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZ1A3fgAKCRD6PaqMvJYe
+ 9byfD/4/dPEGLTolgTM6UMLUGR1HOUMIJovKCxc+zLG08Gaw4l6ZxS5AXXpT7WvZZlOwUA3C/we
+ nCcBmshrfgNhqWIIsnNOfzjJ3m50XG574E1D007pgRqJqvYfZrPp2IQ0mnnKnxWfdmhSQVj0Lop
+ sk8ZtAZ47YBnY+gER0hPR46GDF7eG8yNgLbR4WhKnvFrz5tg4Xv6APSMOLqFKI1y3uHKrGdTQ8s
+ MuJepSeCeIkIAkd4rwSRvusP4ooNAAbO1G2nxJXbxDpIjgIceVGeay+Ji/DEgxysSiZWxnqyYAm
+ UPLHwAeUa916AtqgYLZINKHBwsB8aCSD6F7ZNcTwwqo1I5IG7FJg5RiJqiQQsGaxxuX2QpbllU2
+ vJOtPip7N5cctG3FXIyLnnhBJJQJBaiwVfnFTp0OSE1ZzRPvCm8jHdCQWPQYz/wv3OEQswJLJN8
+ /cW2mwWrbmQp141rFL3KvLpUflyFJZ1lWh/xC3/Ce6Q+FkqMWLqiYDn3Xnel/DN6hwKY4V1LP47
+ QP9Bw093S1Xv4bKKLWU2bGdSH9vNAREoVsJRu2Sr4RkSEJmfUkLlqbJfTzjAGPC4GX1A8QsEB6o
+ T2VFtObrjNv62xR5fWmwP4Q8zV24c5xMBTI2RB/W5AE5PYbYErjWiGJW9kTb2g3EDxDTHlyfrMi
+ Hv9TuHFS2aAcHRA==
+X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
+ fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 
-Hi Jani,
+This series fixes various small issues in the drivers, and adds a few
+things (a couple of pixel formats and a debugging feature).
 
-On Wed, Dec 04, 2024 at 12:51:56PM +0200, Jani Nikula wrote:
-> On Wed, 04 Dec 2024, Andi Shyti <andi.shyti@linux.intel.com> wrote:
-> > Hi Michal,
-> >
-> >> > +	if (rq && !i915_request_started(rq)) {
-> >> > +		/*
-> >> > +		* We want to know also what is the gcu_id of the context,
-> >> 
-> >> typo: guc_id
-> >> 
-> >> > +		* but if we don't have the context reference, then skip
-> >> > +		* printing it.
-> >> > +		*/
-> >> 
-> >> but IMO this comment is redundant as it's quite obvious that without
-> >> context pointer you can't print guc_id member
-> >
-> > I recommended to add a comment because there is some code
-> > redundancy that, I think, needs some explanation; someone might
-> > not spot immediately the need for ce, unless goes a the end of
-> > the drm_info parameter's list.
-> >
-> >> > +		if (ce)
-> >> > +			drm_info(&engine->gt->i915->drm,
-> >> > +				"Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
-> >> > +				engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
-> >> > +		else
-> >> > +			drm_info(&engine->gt->i915->drm,
-> >> > +				"Got hung context on %s with active request %lld:%lld not yet started\n",
-> >> > +				engine->name, rq->fence.context, rq->fence.seqno);
-> >> 
-> >> since you are touching drm_info() where we use engine->gt then maybe
-> >> it's good time to switch to gt_info() to get better per-GT message?
-> >
-> > I think the original reason for using drm_info is because we are
-> > outside the GT. But, because the engine belongs to the GT, it
-> > makes also sense to use gt_info(), I don't oppose.
-> >
-> > It would make more sense to move this function completely into
-> > gt/.
-> 
-> Can we converge on the patch instead of diverge, please?
-> 
-> It's a Cc: stable null pointer dereference fix.
-> 
-> It's already been iterated for two weeks to reach v6.
-> 
-> Fix the comment typo while applying, but there's nothing inherently
-> wrong here AFAICT. Merge it and move on.
+It also takes a few steps in adding more i2c read/write error handlings
+to the drivers, but covers only the easy places.
 
-Thanks for the feedback, will go ahead and merge.
+Adding error handling to all reads/writes needs more thinking, perhaps
+adding a "ret" parameter to the calls, similar to the cci_* functions,
+or perhaps adding helpers for writing multiple registers from a given
+table. Also, in some places rolling back from an error will require
+work.
 
-All other gt/ adjustments can be done later.
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+---
+Changes in v3:
+- Include bitfield.h for FIELD_PREP()
+- Cc stable for relevant fixes
+- Link to v2: https://lore.kernel.org/r/20241108-ub9xx-fixes-v2-0-c7db3b2ad89f@ideasonboard.com
 
-Andi
+Changes in v2:
+- Address comments from Andy
+- Add two new patches:
+	- media: i2c: ds90ub960: Fix shadowing of local variables
+	- media: i2c: ds90ub960: Use HZ_PER_MHZ
+- Link to v1: https://lore.kernel.org/r/20241004-ub9xx-fixes-v1-0-e30a4633c786@ideasonboard.com
+
+---
+Tomi Valkeinen (15):
+      media: i2c: ds90ub9x3: Fix extra fwnode_handle_put()
+      media: i2c: ds90ub960: Fix UB9702 refclk register access
+      media: i2c: ds90ub960: Fix use of non-existing registers on UB9702
+      media: i2c: ds90ub960: Fix logging SP & EQ status only for UB9702
+      media: i2c: ds90ub960: Fix UB9702 VC map
+      media: i2c: ds90ub960: Use HZ_PER_MHZ
+      media: i2c: ds90ub960: Add support for I2C_RX_ID
+      media: i2c: ds90ub960: Add RGB24, RAW8 and RAW10 formats
+      media: i2c: ds90ub953: Clear CRC errors in ub953_log_status()
+      media: i2c: ds90ub960: Drop unused indirect block define
+      media: i2c: ds90ub960: Reduce sleep in ub960_rxport_wait_locks()
+      media: i2c: ds90ub960: Handle errors in ub960_log_status_ub960_sp_eq()
+      media: i2c: ds90ub913: Add error handling to ub913_hw_init()
+      media: i2c: ds90ub953: Add error handling for i2c reads/writes
+      media: i2c: ds90ub960: Fix shadowing of local variables
+
+ drivers/media/i2c/ds90ub913.c |  26 ++++--
+ drivers/media/i2c/ds90ub953.c |  56 +++++++++----
+ drivers/media/i2c/ds90ub960.c | 186 ++++++++++++++++++++++++++++--------------
+ 3 files changed, 187 insertions(+), 81 deletions(-)
+---
+base-commit: adc218676eef25575469234709c2d87185ca223a
+change-id: 20241004-ub9xx-fixes-bba80dc48627
+
+Best regards,
+-- 
+Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+
 
