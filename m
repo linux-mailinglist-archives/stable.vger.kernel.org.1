@@ -1,488 +1,208 @@
-Return-Path: <stable+bounces-98537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D737E9E42BF
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:02:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35F5D1673B2
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:02:07 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809911F03E4;
-	Wed,  4 Dec 2024 17:43:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="FdVXOyoe"
-X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D9739E42E9
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 19:07:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849021F03DD;
-	Wed,  4 Dec 2024 17:43:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733334225; cv=none; b=b09BwmGcc3+2MsKxk8YfZy1s5BtW6PzAz5+SRqAO/wlw6bI/o4dksfHUfXqToOPdxeqXzF6hHiZI8HqRetp4S1UreBup0hkrPWZWLSdDMLHGW99PLlWP4GyF0H/AQmPYwzra7bUyRznHFLjyCl+xpd87cSK40jvTs55VXEw48yU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733334225; c=relaxed/simple;
-	bh=6dslxSEtvc/+AI8wCFo+U7QVaW/wNEfNh8DyXFqZuCw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=bxbjgGsu6inQAd9S4mEF9TiRjt4zbbZuDpBn954BlcXMJFlHqWUOP70lb7PkhN2Fb7cMBSNN9o94rcrEwuc8caRRQyB/A/6mSkVXiZSWKW+A3tqfqANoQnxVIolHr4FRgMV2I1t0T2fyJS7g85aKxhOmNJgRsdvyOVGcnca9KbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=FdVXOyoe; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=BG31DdiJ2Iz7TXZTm9hVg92l826j8PxwKF9YEXyaLvg=; t=1733334222;
-	x=1733766222; b=FdVXOyoe+U5i10HlVpucFJOYXpKi++GR8OSljhy/pne6qQLsii1l6XctIkJgH
-	JSaRGJXF2DWrq7VP1PFsbW2345g/UUVn5QaEx1RyYJLb7GyBfqu/jL9Enxr35rYxDZZtOGmZgYWpi
-	AwPt+3BCVSgdLW15h66TAxBmkjrcw/VEc6T1DCrZ6bEw7TYWsoYeYm5r7XKwgJJRY/QDHH9L9cJG/
-	bADlRZ9u92Itj60MTv2QSJiQXTGq7JbWORA8Px/OVyJQM74ZwajUPjwJv147CeAMP/ZNA9QbYmsQ3
-	4/2xY8dJ0cQ7Tf/mi9/xP+QpqWLyZSTL1SjiRAK5S+eHeDl5xw==;
-Received: from [2a02:8108:8980:2478:87e9:6c79:5f84:367d]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128)
-	id 1tItPK-00DEZe-20;
-	Wed, 04 Dec 2024 18:43:26 +0100
-Message-ID: <563836eb-78da-4a89-b80a-52775107161d@leemhuis.info>
-Date: Wed, 4 Dec 2024 18:43:24 +0100
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDE76285FD2
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:07:29 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCCE17BB1C;
+	Wed,  4 Dec 2024 18:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="eHjIiChX"
+X-Original-To: stable@vger.kernel.org
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11020110.outbound.protection.outlook.com [52.101.51.110])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9626D2907;
+	Wed,  4 Dec 2024 18:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.51.110
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733335285; cv=fail; b=IxeKut+kq2Kh7ETP3PKf+sHr8mTdLY2Rv/20L/AoDjZP+zgzUWdFvK9ZOksePdRMZMPmiephNY5qeacxBHm91FXWQcne2QWXjhZzGalA8HvT/UJz+kg7Zobiw7wDNJK+fa8cGy7KEnw61JGsGle9lSLTKdcxAQrYronkLb8a5h8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733335285; c=relaxed/simple;
+	bh=svIooBcHTM6yGz/sCdhZIOuikIegCOZW2E7QHnF3j88=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rJ1Lcw+ecPlac14JhiW6XdbtKpXnkLDlXJ8m4XgtY0U5Ir+/2fL1IDTGgYGw7qyFTd3+zu1/bDT85AIIfThXo03rpBZjh1+8RdI0lDUXa2sMWfhA7SZ6/P6fuNpQnm2KWhE0a4VW5T091WzcrBtHVSgQr1C4oQNyiQ7iYREgVwQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=eHjIiChX; arc=fail smtp.client-ip=52.101.51.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AHXoEAGJi9HXCcurt858lyHHmfhsUfQjjuzTOcndQkyyHHzzB+pd4ik9LQiN/r/eqDiDJqW0/BmZ9VECqkhzJpjURyrO2BHJxaykteIihCETdzmjGDZQtQNC3O1cDWseFSJ4umUC5x3Jk7rit4+00j2xPsCh+V06akk7F6QvyC7VRK7fQzF4PY2X4uoXIYq7ov9d0sTUoRh36Y72RdjJjH8Vtib1iZfGQ34UfTKrBm0fKeg2GTWK3hxAF/UmKYRHl4qVPz9+a4igu4j4s8QS7aITq8qqImWQPE8T9DGePUJIzNAuBJ6l7ObzUsQHnWFJgJGmUCjBWZhd9QQORdDrVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=svIooBcHTM6yGz/sCdhZIOuikIegCOZW2E7QHnF3j88=;
+ b=mnH4FyjxBxce2WR8uz3ow/XgdadRwyAykA2w5pBZaLkVi997omxD2qmrAG6d/EvuTuoIfj12UXbwuaTiHw0cmCZoxkSKRMjwNinbrR28OQhHi6Cucb8QvRZmqt88JbvLO2DC7AnhcXFedxMm2vGK8YtMs0p08mc33IeA2wx+CO92zVrnknG7z4mYIDY3jjn212+OQ4UIrdC6koN3HGOyhnWwKqaZHC3cUnqWO5WzHjhc3+5IvWpZMm5T+jD8CaxWtEscItfldMXEjhTx5ABRTG7uvt4iHxB80FuGdyaIv/QEcMJbXZ6cws1sXZHMGVsX+l6Za5w6yHnUsK9/0c7Jsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=svIooBcHTM6yGz/sCdhZIOuikIegCOZW2E7QHnF3j88=;
+ b=eHjIiChXo3gVkgYHV/iPI4PkZM4snHkhvmLeboJzmY3RGk9qasIybjultLk6lbvjge8Ht+ppG9zIi0Y/hy6W9wd+Qw0UXTtxTm1piOFbqqweeGcYhT92GbjC44VZEq98EB7Y5fA0T7IyiAXgAcNqbar36U5XkbOZej8OqWtiErM=
+Received: from MN0PR21MB3437.namprd21.prod.outlook.com (2603:10b6:208:3d2::17)
+ by MN0PR21MB3145.namprd21.prod.outlook.com (2603:10b6:208:379::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.7; Wed, 4 Dec
+ 2024 18:01:20 +0000
+Received: from MN0PR21MB3437.namprd21.prod.outlook.com
+ ([fe80::5125:461:1c07:1a97]) by MN0PR21MB3437.namprd21.prod.outlook.com
+ ([fe80::5125:461:1c07:1a97%4]) with mapi id 15.20.8251.005; Wed, 4 Dec 2024
+ 18:01:20 +0000
+From: Haiyang Zhang <haiyangz@microsoft.com>
+To: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: KY Srinivasan <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan
+ Cui <decui@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Long Li
+	<longli@microsoft.com>, Konstantin Taranov <kotaranov@microsoft.com>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>, Erick Archer
+	<erick.archer@outlook.com>, Shradha Gupta <shradhagupta@microsoft.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH net] net :mana :Request a V2 response version for
+ MANA_QUERY_GF_STAT
+Thread-Topic: [PATCH net] net :mana :Request a V2 response version for
+ MANA_QUERY_GF_STAT
+Thread-Index: AQHbRhBDRuGJfFSClkeAWFoAUHpOk7LWYJIQ
+Date: Wed, 4 Dec 2024 18:01:20 +0000
+Message-ID:
+ <MN0PR21MB3437D1C4146AE6238927FF69CA372@MN0PR21MB3437.namprd21.prod.outlook.com>
+References:
+ <1733291300-12593-1-git-send-email-shradhagupta@linux.microsoft.com>
+In-Reply-To:
+ <1733291300-12593-1-git-send-email-shradhagupta@linux.microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=e748be9b-8e5d-44ed-894d-9c9a49ba0434;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-12-04T18:00:06Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MN0PR21MB3437:EE_|MN0PR21MB3145:EE_
+x-ms-office365-filtering-correlation-id: a733d79e-be4d-4e46-d7cb-08dd148da877
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|1800799024|7416014|7053199007|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?CHsVQ0U8Xd3OJgRC6esry3409jxNgdJmIIQoDZepABwgjIKYImF71+zel4le?=
+ =?us-ascii?Q?oM8ijjlPe9a1yAyFrSsQpz7edAaomF3p02jYiNXQsvQcPnu+gM1gRzQnAcEU?=
+ =?us-ascii?Q?8tZSmdjBmfHKbrBG0gz4NfgRooV9WQTxuH7eL/AerHp4p6AxcrCv1Q9+IbZ1?=
+ =?us-ascii?Q?VGbKPBmZfPYDLEgbgMoBzuxF7IPlJQHrKRAQXCAozqdLUwnwGLn3bO6OXpQB?=
+ =?us-ascii?Q?Qr03H4E/sEjuCF2fmKB61TA0PgDiOal22I2lIEczhSBZYXD/aNbleJamn4po?=
+ =?us-ascii?Q?hsoOx0LfYQIbxHRHT4O6inVEYfp/S+dFEFJPOi86JMoWecEUSYGoP25RAlKC?=
+ =?us-ascii?Q?ZWcXcavGLSqeUAikmuIfkaAkRFa3YUVkrcd49bvU3Iw08T3woieGRM9awUiJ?=
+ =?us-ascii?Q?owOYA5LsJ2ZX4Cb6AY4qED634b2mBBBrxuxLcktpJzpNoDsvOuNtcITtAnBR?=
+ =?us-ascii?Q?LMBceRp2IWaJHEhfCVLk3jIXHF/0yx2jjYrkWF/OIhTe/GoN31bxC7gKQ7jh?=
+ =?us-ascii?Q?HVNkFrxaa+PXd4iInEC70ONBjCROSuq5WpWNnvdFtJGeKyUq8Di5pbqjpQIN?=
+ =?us-ascii?Q?QpHl5uGJADr9WIVYD1Oz4XeYt2YpWTgvrquDxEzjtqp6fj7L18D4TzuoXjA+?=
+ =?us-ascii?Q?vvkorRArzVn4wmCnMiWOlXIUmqbfCCwjyaGuIXoC/u2MU2tLeAFqeB+AGi2c?=
+ =?us-ascii?Q?hWIcZr52YD8dC5NtR4ogFA0aVIAkRKGwoAAN38xS1KNBnsmG4q/iADFtdNt2?=
+ =?us-ascii?Q?k2F1BV/DMwE5bfVB1hn+Ectcd3f0KnllBuZClXerKZXq+n6Kq9pZOkZGhSol?=
+ =?us-ascii?Q?OMpjZipKolyRpr62XyhsTcNqqw+RENdY09Lb1WqCvB9gQEcLP5at8N3BbP7x?=
+ =?us-ascii?Q?QnPGl7NPXY2pa0ofUFq/pNQrU8in2S6x37KQzGlhU+rG85KHM8LYEDbmAVNR?=
+ =?us-ascii?Q?moag9F4sWEEp1Ysb7qlHniTen7iUUmd0SExGTV6CYX2j78daYIwVazlp7rr1?=
+ =?us-ascii?Q?Do2Mj5Nl5DE/FMpqsRAlp6FOhgSCla0wxZM+5C4N5agZNthLx9EPe3Qkf2gD?=
+ =?us-ascii?Q?XmS9BML4Ek6jpQRs7gtoWiL16kto5BOaM2aSemPn4euhsl6d+T5A+7tyuMPS?=
+ =?us-ascii?Q?T7Q7srRldvnS4Wg5XDzIKPOez8z7dHWA9G0jSt9Wm0dqQ1eG+Wp1yJ5ngSaw?=
+ =?us-ascii?Q?GImI81BiFmHZZ19fdGPGF4nweP+m1eVvpjC0kVDkXkleqwmXxPlMCEA/kAxW?=
+ =?us-ascii?Q?pLBM071ZkAkB6zFsOr2CA1oNlyUewYJ9u/WNP807HX50Ivu8/ubxIKq6U742?=
+ =?us-ascii?Q?IsV8fee4MhOXaFahA3B5lBppeC0yMPXFNhT9CBizZSLN7PbUHtJyAoD78NgQ?=
+ =?us-ascii?Q?7i3AVSBFQiy2ncvPcD5AdlrBRh2lJelyy+2E8gWUTCfdJPZEOg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR21MB3437.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(7053199007)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Tm7LBe/RxGVIPh6QNIsYx353wZB6gzvBt35n6oeYUTDk5vKtSoMw2NEgxOUx?=
+ =?us-ascii?Q?pBXh9A3QCS68kOZ0SBpzGE3TBStVc4FiiHwToXKmcW8eztWeRkB0cy1p14PH?=
+ =?us-ascii?Q?fEsQK5dAcVNABn5racYDHKXCjleB6Gy5aJfBUlOsvSzKO3+s5RppQbhX3jpP?=
+ =?us-ascii?Q?nP4XnhBZZOGN1bv3DKNUPOrlMqE5gmJ74cqrtr49iyIoPW2fUmQUVufGep0a?=
+ =?us-ascii?Q?4MW3uSzOIFjkvxetlkjh1aQML92IyPKudxNVGVeqLH8mAUm1+t4TK23RC7Uf?=
+ =?us-ascii?Q?eFWdYTJQ/wjXB1vLBpd63f7SEL0u8BYHr/cvugGDzrerT2lOEvRdwpuV7xeB?=
+ =?us-ascii?Q?M/xPqgbeZPjsSELBzxqwyyHBFQUqibF5ChB4i28+0J/eJHDTGHaf1GwDCyvW?=
+ =?us-ascii?Q?Fc6KhZVdBPB+Ee4YEzPBpRh1annZmGrWZBmyEVJET7SXEUnCRABAvgmC/nVS?=
+ =?us-ascii?Q?vhA0k0NE1eLvwvBRNTcaTYw1wKybA7HzCnYS+wJwEsMr4kXdrssJXUj4Cz50?=
+ =?us-ascii?Q?yZU7DkXvpNjN2fPRfkW93dw78z1znk3bBJAcv0GRyXC6W7Gv0+CDcn/F889v?=
+ =?us-ascii?Q?xXKH6jUmIxzK+3/MV3kXn16wAOqKZW4f1jwBcBOHqYCYU46TsOP7IesmiyO9?=
+ =?us-ascii?Q?7Qg1G6loZf9eto/NQ+YQh1uZ6nAZQwDtFtWyrrObLHRTAO5n3XTWRJhqa3zi?=
+ =?us-ascii?Q?GbbfqI3wXWDKQuoJu85Z2MuiMHyGoW5g025lTQ6QFHIHo17O/0qSQGsf6wQX?=
+ =?us-ascii?Q?lKqUkPDknvg8+oGWNR0VdW7OyD0iITgh6M8rety+stVjiSlW5wiYHOvpA1vM?=
+ =?us-ascii?Q?6jzWDb8qELTw8+Nn8RS1l3+qmPITUdE34BwvS2QwMk/G2DuttNJBQXwPnKMZ?=
+ =?us-ascii?Q?WsaHyD0MT2UWRNceXllbidLfxycfTpoxtFtsKlZThQmNpNDlRQF5sXPlmP89?=
+ =?us-ascii?Q?HGVPw3Jeo35JTB58EXGMXEnautgI59iah33JH536JrC6KGqxkeiZbHYBwRSP?=
+ =?us-ascii?Q?SM/2UG9T0/MyUGlmZjnyV2nlzFv0jfR8HG7xo9B0BvwIrQvV8JPJx03tMKrc?=
+ =?us-ascii?Q?wg6nHUQe3NuV8Qn/gmvLv5Saorxd/VaIw0VHSkSXdhiJMfDhBm+8otutoZ0o?=
+ =?us-ascii?Q?AR1Ctl1OPRcLpl6G7Fuo9+UdQnv9u0D574kLlPoCzSzwmmBuu6+HWaD7XcWn?=
+ =?us-ascii?Q?fMLjWJvfP9vHUCq6/WJ4yDSVHoGr1mBfP3/h6/ZfI9z9v9sZsd78eZW/ctuD?=
+ =?us-ascii?Q?2vYcV+FGLDFq9ss6gWXe0rcwlBHUizKsBeGOXgwhIGsmHrCg8sya94Juhszg?=
+ =?us-ascii?Q?B4NcnQB9dJsVYfI2YRgiM2tZhhMkpaoI6dU71XJvRIozLYmzeuDoVSEV8SZ/?=
+ =?us-ascii?Q?/wVi0pBQnP89/6RqmH3BWgl67zVXBqmmIUsDcHTbmLbKnUWg2F0iSkBputFP?=
+ =?us-ascii?Q?S0xr2s2QsI5AnaIMBlR0Z0XURYn+THUui99UNGyfN8zurnuI8MTRqw4x7rWq?=
+ =?us-ascii?Q?r4Ub2BeyLqEAgPz2xrxL3HHN3WFKANWB2s2mjxIjX/YdMctBPwpgzbLCWhrf?=
+ =?us-ascii?Q?JZPdfU5lwSdKWSh688ODtSa/U16GIxxKMHnWxKAC?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 470/826] perf stat: Uniquify event name improvements
-From: Thorsten Leemhuis <linux@leemhuis.info>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>
-Cc: patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
- Ian Rogers <irogers@google.com>, Kan Liang <kan.liang@linux.intel.com>,
- James Clark <james.clark@linaro.org>, Yang Jihong
- <yangjihong@bytedance.com>, Dominique Martinet <asmadeus@codewreck.org>,
- Colin Ian King <colin.i.king@gmail.com>, Howard Chu <howardchu95@gmail.com>,
- Ze Gao <zegao2021@gmail.com>, Yicong Yang <yangyicong@hisilicon.com>,
- Weilin Wang <weilin.wang@intel.com>, Will Deacon <will@kernel.org>,
- Mike Leach <mike.leach@linaro.org>, Jing Zhang <renyu.zj@linux.alibaba.com>,
- Yang Li <yang.lee@linux.alibaba.com>, Leo Yan <leo.yan@linux.dev>,
- ak@linux.intel.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
- linux-arm-kernel@lists.infradead.org, Sun Haiyong <sunhaiyong@loongson.cn>,
- John Garry <john.g.garry@oracle.com>,
- Justin Forbes <jforbes@fedoraproject.org>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- Florian Fainelli <f.fainelli@gmail.com>
-References: <20241203144743.428732212@linuxfoundation.org>
- <20241203144802.097952233@linuxfoundation.org>
- <f2ada8a7-165b-41fb-8b7b-3c0d16bb8216@leemhuis.info>
-Content-Language: en-MW
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <f2ada8a7-165b-41fb-8b7b-3c0d16bb8216@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1733334222;fa4d9103;
-X-HE-SMSGID: 1tItPK-00DEZe-20
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR21MB3437.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a733d79e-be4d-4e46-d7cb-08dd148da877
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Dec 2024 18:01:20.5216
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: dbOI9LAISC18e671eOyTUYZxKdxZ2sHkaAlVltq3uSmioy+Fn1aYV4jU1ADhbv0UWEuoYHj0FSTWaLxhtIyP0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR21MB3145
 
-On 03.12.24 18:24, Thorsten Leemhuis wrote:
-> On 03.12.24 15:43, Greg Kroah-Hartman wrote:
->> 6.12-stable review patch.  If anyone has any objections, please let me=
- know.
->>
->> ------------------
->>
->> From: Ian Rogers <irogers@google.com>
->>
->> [ Upstream commit 057f8bfc6f7070577523d1e3081081bbf4229c1c ]
->>
->> Without aggregation on Intel:
+
+
+> -----Original Message-----
+> From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> Sent: Wednesday, December 4, 2024 12:48 AM
+> To: linux-hyperv@vger.kernel.org; netdev@vger.kernel.org; linux-
+> kernel@vger.kernel.org
+> Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>; KY Srinivasan
+> <kys@microsoft.com>; Haiyang Zhang <haiyangz@microsoft.com>; Wei Liu
+> <wei.liu@kernel.org>; Dexuan Cui <decui@microsoft.com>; Andrew Lunn
+> <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
+> Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
+> Abeni <pabeni@redhat.com>; Long Li <longli@microsoft.com>; Konstantin
+> Taranov <kotaranov@microsoft.com>; Souradeep Chakrabarti
+> <schakrabarti@linux.microsoft.com>; Erick Archer
+> <erick.archer@outlook.com>; Shradha Gupta <shradhagupta@microsoft.com>;
+> stable@vger.kernel.org
+> Subject: [PATCH net] net :mana :Request a V2 response version for
+> MANA_QUERY_GF_STAT
 >=20
-> My 6.11.y-rc and 6.12.y-rc builds for Fedora failed when building perf.=
-=20
-> I did not bisect, but from a brief look at the error message (see
-> below) I suspect it might be caused by this patch, which is the
-> second of the patch-set "Event parsing fixes":
-> https://lore.kernel.org/all/20240926144851.245903-1-james.clark@linaro.=
-org/
-
-TWIMC, Florian Fainelli and Naresh Kamboju (both now CCed) meanwhile
-reported the same problem for the latest 6.11.y and 6.12.y rc releases:
-
-https://lore.kernel.org/all/5eeb1f9c-2b9f-49f1-9861-051478a8630d@gmail.co=
-m/
-https://lore.kernel.org/all/713b5871-c7a3-44fa-a5ac-5cf558be81c9@gmail.co=
-m/
-https://lore.kernel.org/all/CA+G9fYu21yqTvL428TFueMJ1uU1H_u8Vc470dER2CTrN=
-K=3DJs0g@mail.gmail.com/
-https://lore.kernel.org/all/CA+G9fYtNvEDcUEuv=3DQFC84y+pXY1UszoRYOitJztCA=
-pLV7-psg@mail.gmail.com/
-
-Ciao, Thorsten
-
-> To my untrained eyes and from a quick look I guess the first patch
-> in the series needs to be backported as well:
-> perf evsel: Add alternate_hw_config and use in evsel__match
-> https://lore.kernel.org/all/20240926144851.245903-2-james.clark@linaro.=
-org/
+> The current requested response version(V1) for MANA_QUERY_GF_STAT query
+> results in STATISTICS_FLAGS_TX_ERRORS_GDMA_ERROR value being set to
+> 0 always.
+> In order to get the correct value for this counter we request the respons=
+e
+> version to be V2.
 >=20
-> This is 22a4db3c36034e ("perf evsel: Add alternate_hw_config
-> and use in evsel__match") in mainline. I tried to cherry-pick it
-> on-top of 6.12.2-rc1, but there were a few small conflicts.=20
->=20
-> Ciao, Thorsten
->=20
-> P.S.: The build error:
->=20
->   gcc -Wp,-MD,util/.topdown.o.d -Wp,-MT,util/topdown.o -O2 -fexceptions=
- -g -grecord-gcc-switches -pipe -Wall -Wno-complain-wrong-lang -Werror=3D=
-format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3D3 -Wp,-D_GLIBCX=
-X_ASSERTIONS -specs=3D/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-pro=
-tector-strong -specs=3D/usr/lib/rpm/redhat/redhat-annobin-cc1 -m64 -march=
-=3Dx86-64 -mtune=3Dgeneric -fasynchronous-unwind-tables -fstack-clash-pro=
-tection -fcf-protection -mtls-dialect=3Dgnu2 -Wbad-function-cast -Wdeclar=
-ation-after-statement -Wformat-security -Wformat-y2k -Winit-self -Wmissin=
-g-declarations -Wmissing-prototypes -Wno-system-headers -Wold-style-defin=
-ition -Wpacked -Wredundant-decls -Wstrict-prototypes -Wswitch-default -Ws=
-witch-enum -Wundef -Wwrite-strings -Wformat -Wno-type-limits -Wstrict-ali=
-asing=3D3 -Wshadow -DHAVE_SYSCALL_TABLE_SUPPORT -Iarch/x86/include/genera=
-ted -DHAVE_ARCH_X86_64_SUPPORT -DHAVE_ARCH_REGS_QUERY_REGISTER_OFFSET -DN=
-DEBUG=3D1 -O3 -fno-omit-frame-pointer -Wall -Wextra -std=3Dgnu11 -fstack-=
-protector-all -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3D2 -D_LARGEFILE64_SOUR=
-CE -D_FILE_OFFSET_BITS=3D64 -D_GNU_SOURCE -I/builddir/build/BUILD/kernel-=
-6.12.2-build/kernel-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64=
-/tools/perf/util/include -I/builddir/build/BUILD/kernel-6.12.2-build/kern=
-el-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/perf/arch/=
-x86/include -I/builddir/build/BUILD/kernel-6.12.2-build/kernel-6.12.2-rc1=
-/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/include/ -I/builddir/bu=
-ild/BUILD/kernel-6.12.2-build/kernel-6.12.2-rc1/linux-6.12.2-0.rc1.400.va=
-nilla.fc41.x86_64/tools/arch/x86/include/uapi -I/builddir/build/BUILD/ker=
-nel-6.12.2-build/kernel-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x8=
-6_64/tools/include/uapi -I/builddir/build/BUILD/kernel-6.12.2-build/kerne=
-l-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/arch/x86/in=
-clude/ -I/builddir/build/BUILD/kernel-6.12.2-build/kernel-6.12.2-rc1/linu=
-x-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/arch/x86/ -I/builddir/build/=
-BUILD/kernel-6.12.2-build/kernel-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanill=
-a.fc41.x86_64/tools/perf/util -I/builddir/build/BUILD/kernel-6.12.2-build=
-/kernel-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/perf =
--DHAVE_PTHREAD_ATTR_SETAFFINITY_NP -DHAVE_PTHREAD_BARRIER -DHAVE_EVENTFD_=
-SUPPORT -DHAVE_GET_CURRENT_DIR_NAME -DHAVE_GETTID -DHAVE_FILE_HANDLE -DHA=
-VE_DWARF_GETLOCATIONS_SUPPORT -DHAVE_DWARF_CFI_SUPPORT -DHAVE_AIO_SUPPORT=
- -DHAVE_SCANDIRAT_SUPPORT -DHAVE_SCHED_GETCPU_SUPPORT -DHAVE_SETNS_SUPPOR=
-T -DHAVE_ZLIB_SUPPORT -DHAVE_LIBELF_SUPPORT -DHAVE_ELF_GETPHDRNUM_SUPPORT=
- -DHAVE_GELF_GETNOTE_SUPPORT -DHAVE_ELF_GETSHDRSTRNDX_SUPPORT -DHAVE_DWAR=
-F_SUPPORT -DHAVE_LIBBPF_SUPPORT -DHAVE_SDT_EVENT -DHAVE_JITDUMP -DHAVE_BP=
-F_SKEL -DHAVE_DWARF_UNWIND_SUPPORT -DHAVE_LIBCRYPTO_SUPPORT -DHAVE_SLANG_=
-SUPPORT -DHAVE_LIBPERL_SUPPORT -DHAVE_TIMERFD_SUPPORT -DHAVE_LIBPYTHON_SU=
-PPORT -fPIC -DHAVE_LIBLLVM_SUPPORT -I/usr/include -D_GNU_SOURCE -D__STDC_=
-CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -DHAVE_CXA_D=
-EMANGLE_SUPPORT -DHAVE_LZMA_SUPPORT -DHAVE_ZSTD_SUPPORT -DHAVE_BACKTRACE_=
-SUPPORT -DHAVE_LIBNUMA_SUPPORT -DHAVE_KVM_STAT_SUPPORT -DDISASM_FOUR_ARGS=
-_SIGNATURE -DDISASM_INIT_STYLED -DHAVE_LIBBABELTRACE_SUPPORT -DHAVE_AUXTR=
-ACE_SUPPORT -DHAVE_JVMTI_CMLR -DHAVE_LIBTRACEEVENT -I/usr/include/traceev=
-ent -DLIBTRACEEVENT_VERSION=3D67067 -I/usr/include/tracefs -I/usr/include=
-/traceevent -DLIBTRACEFS_VERSION=3D67065 -I/builddir/build/BUILD/kernel-6=
-=2E12.2-build/kernel-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_6=
-4/tools/perf/libapi/include -I/builddir/build/BUILD/kernel-6.12.2-build/k=
-ernel-6.12.2-rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/perf/li=
-bsubcmd/include -I/builddir/build/BUILD/kernel-6.12.2-build/kernel-6.12.2=
--rc1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/perf/libsymbol/incl=
-ude -I/builddir/build/BUILD/kernel-6.12.2-build/kernel-6.12.2-rc1/linux-6=
-=2E12.2-0.rc1.400.vanilla.fc41.x86_64/tools/perf/libperf/include -D"BUILD=
-_STR(s)=3D#s" -c -o util/topdown.o util/topdown.c
-> util/stat-display.c: In function =E2=80=98uniquify_event_name=E2=80=99:=
+> Cc: stable@vger.kernel.org
+> Fixes: e1df5202e879 ("net :mana :Add remaining GDMA stats for MANA to
+> ethtool")
+> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
 
-> util/stat-display.c:895:45: error: =E2=80=98struct evsel=E2=80=99 has n=
-o member named =E2=80=98alternate_hw_config=E2=80=99
->   895 |         if (counter->pmu->is_core && counter->alternate_hw_conf=
-ig !=3D PERF_COUNT_HW_MAX)
->       |                                             ^~
-> make[4]: *** [/builddir/build/BUILD/kernel-6.12.2-build/kernel-6.12.2-r=
-c1/linux-6.12.2-0.rc1.400.vanilla.fc41.x86_64/tools/build/Makefile.build:=
-106: util/stat-display.o] Error 1
-> make[4]: *** Waiting for unfinished jobs....
->=20
->> ```
->> $ perf stat -e instructions,cycles ...
->> ```
->> Will use "cycles" for the name of the legacy cycles event but as
->> "instructions" has a sysfs name it will and a "[cpu]" PMU suffix. This=
-
->> often breaks things as the space between the event and the PMU name
->> look like an extra column. The existing uniquify logic was also
->> uniquifying in cases when all events are core and not with uncore
->> events, it was not correctly handling modifiers, etc.
->>
->> Change the logic so that an initial pass that can disable
->> uniquification is run. For individual counters, disable uniquification=
-
->> in more cases such as for consistency with legacy events or for
->> libpfm4 events. Don't use the "[pmu]" style suffix in uniquification,
->> always use "pmu/.../". Change how modifiers/terms are handled in the
->> uniquification so that they look like parse-able events.
->>
->> This fixes "102: perf stat metrics (shadow stat) test:" that has been
->> failing due to "instructions [cpu]" breaking its column/awk logic when=
-
->> values aren't aggregated. This started happening when instructions
->> could match a sysfs rather than a legacy event, so the fixes tag
->> reflects this.
->>
->> Fixes: 617824a7f0f7 ("perf parse-events: Prefer sysfs/JSON hardware ev=
-ents over legacy")
->> Acked-by: Namhyung Kim <namhyung@kernel.org>
->> Signed-off-by: Ian Rogers <irogers@google.com>
->> [ Fix Intel TPEBS counting mode test ]
->> Acked-by: Kan Liang <kan.liang@linux.intel.com>
->> Signed-off-by: James Clark <james.clark@linaro.org>
->> Cc: Yang Jihong <yangjihong@bytedance.com>
->> Cc: Dominique Martinet <asmadeus@codewreck.org>
->> Cc: Colin Ian King <colin.i.king@gmail.com>
->> Cc: Howard Chu <howardchu95@gmail.com>
->> Cc: Ze Gao <zegao2021@gmail.com>
->> Cc: Yicong Yang <yangyicong@hisilicon.com>
->> Cc: Weilin Wang <weilin.wang@intel.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Mike Leach <mike.leach@linaro.org>
->> Cc: Jing Zhang <renyu.zj@linux.alibaba.com>
->> Cc: Yang Li <yang.lee@linux.alibaba.com>
->> Cc: Leo Yan <leo.yan@linux.dev>
->> Cc: ak@linux.intel.com
->> Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: Sun Haiyong <sunhaiyong@loongson.cn>
->> Cc: John Garry <john.g.garry@oracle.com>
->> Link: https://lore.kernel.org/r/20240926144851.245903-3-james.clark@li=
-naro.org
->> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  .../perf/tests/shell/test_stat_intel_tpebs.sh |  11 +-
->>  tools/perf/util/stat-display.c                | 101 ++++++++++++++---=
--
->>  2 files changed, 85 insertions(+), 27 deletions(-)
->>
->> diff --git a/tools/perf/tests/shell/test_stat_intel_tpebs.sh b/tools/p=
-erf/tests/shell/test_stat_intel_tpebs.sh
->> index c60b29add9801..9a11f42d153ca 100755
->> --- a/tools/perf/tests/shell/test_stat_intel_tpebs.sh
->> +++ b/tools/perf/tests/shell/test_stat_intel_tpebs.sh
->> @@ -8,12 +8,15 @@ grep -q GenuineIntel /proc/cpuinfo || { echo Skippin=
-g non-Intel; exit 2; }
->>  # Use this event for testing because it should exist in all platforms=
-
->>  event=3Dcache-misses:R
->> =20
->> +# Hybrid platforms output like "cpu_atom/cache-misses/R", rather than=
- as above
->> +alt_name=3D/cache-misses/R
->> +
->>  # Without this cmd option, default value or zero is returned
->> -echo "Testing without --record-tpebs"
->> -result=3D$(perf stat -e "$event" true 2>&1)
->> -[[ "$result" =3D~ $event ]] || exit 1
->> +#echo "Testing without --record-tpebs"
->> +#result=3D$(perf stat -e "$event" true 2>&1)
->> +#[[ "$result" =3D~ $event || "$result" =3D~ $alt_name ]] || exit 1
->> =20
->>  # In platforms that do not support TPEBS, it should execute without e=
-rror.
->>  echo "Testing with --record-tpebs"
->>  result=3D$(perf stat -e "$event" --record-tpebs -a sleep 0.01 2>&1)
->> -[[ "$result" =3D~ "perf record" && "$result" =3D~ $event ]] || exit 1=
-
->> +[[ "$result" =3D~ "perf record" && "$result" =3D~ $event || "$result"=
- =3D~ $alt_name ]] || exit 1
->> diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-dis=
-play.c
->> index ea96e4ebad8c8..cbff43ff8d0fb 100644
->> --- a/tools/perf/util/stat-display.c
->> +++ b/tools/perf/util/stat-display.c
->> @@ -871,38 +871,66 @@ static void printout(struct perf_stat_config *co=
-nfig, struct outstate *os,
->> =20
->>  static void uniquify_event_name(struct evsel *counter)
->>  {
->> -	char *new_name;
->> -	char *config;
->> -	int ret =3D 0;
->> +	const char *name, *pmu_name;
->> +	char *new_name, *config;
->> +	int ret;
->> =20
->> -	if (counter->uniquified_name || counter->use_config_name ||
->> -	    !counter->pmu_name || !strncmp(evsel__name(counter), counter->pm=
-u_name,
->> -					   strlen(counter->pmu_name)))
->> +	/* The evsel was already uniquified. */
->> +	if (counter->uniquified_name)
->>  		return;
->> =20
->> -	config =3D strchr(counter->name, '/');
->> +	/* Avoid checking to uniquify twice. */
->> +	counter->uniquified_name =3D true;
->> +
->> +	/* The evsel has a "name=3D" config term or is from libpfm. */
->> +	if (counter->use_config_name || counter->is_libpfm_event)
->> +		return;
->> +
->> +	/* Legacy no PMU event, don't uniquify. */
->> +	if  (!counter->pmu ||
->> +	     (counter->pmu->type < PERF_TYPE_MAX && counter->pmu->type !=3D =
-PERF_TYPE_RAW))
->> +		return;
->> +
->> +	/* A sysfs or json event replacing a legacy event, don't uniquify. *=
-/
->> +	if (counter->pmu->is_core && counter->alternate_hw_config !=3D PERF_=
-COUNT_HW_MAX)
->> +		return;
->> +
->> +	name =3D evsel__name(counter);
->> +	pmu_name =3D counter->pmu->name;
->> +	/* Already prefixed by the PMU name. */
->> +	if (!strncmp(name, pmu_name, strlen(pmu_name)))
->> +		return;
->> +
->> +	config =3D strchr(name, '/');
->>  	if (config) {
->> -		if (asprintf(&new_name,
->> -			     "%s%s", counter->pmu_name, config) > 0) {
->> -			free(counter->name);
->> -			counter->name =3D new_name;
->> -		}
->> -	} else {
->> -		if (evsel__is_hybrid(counter)) {
->> -			ret =3D asprintf(&new_name, "%s/%s/",
->> -				       counter->pmu_name, counter->name);
->> +		int len =3D config - name;
->> +
->> +		if (config[1] =3D=3D '/') {
->> +			/* case: event// */
->> +			ret =3D asprintf(&new_name, "%s/%.*s/%s", pmu_name, len, name, con=
-fig + 2);
->>  		} else {
->> -			ret =3D asprintf(&new_name, "%s [%s]",
->> -				       counter->name, counter->pmu_name);
->> +			/* case: event/.../ */
->> +			ret =3D asprintf(&new_name, "%s/%.*s,%s", pmu_name, len, name, con=
-fig + 1);
->>  		}
->> +	} else {
->> +		config =3D strchr(name, ':');
->> +		if (config) {
->> +			/* case: event:.. */
->> +			int len =3D config - name;
->> =20
->> -		if (ret) {
->> -			free(counter->name);
->> -			counter->name =3D new_name;
->> +			ret =3D asprintf(&new_name, "%s/%.*s/%s", pmu_name, len, name, con=
-fig + 1);
->> +		} else {
->> +			/* case: event */
->> +			ret =3D asprintf(&new_name, "%s/%s/", pmu_name, name);
->>  		}
->>  	}
->> -
->> -	counter->uniquified_name =3D true;
->> +	if (ret > 0) {
->> +		free(counter->name);
->> +		counter->name =3D new_name;
->> +	} else {
->> +		/* ENOMEM from asprintf. */
->> +		counter->uniquified_name =3D false;
->> +	}
->>  }
->> =20
->>  static bool hybrid_uniquify(struct evsel *evsel, struct perf_stat_con=
-fig *config)
->> @@ -1559,6 +1587,31 @@ static void print_cgroup_counter(struct perf_st=
-at_config *config, struct evlist
->>  		print_metric_end(config, os);
->>  }
->> =20
->> +static void disable_uniquify(struct evlist *evlist)
->> +{
->> +	struct evsel *counter;
->> +	struct perf_pmu *last_pmu =3D NULL;
->> +	bool first =3D true;
->> +
->> +	evlist__for_each_entry(evlist, counter) {
->> +		/* If PMUs vary then uniquify can be useful. */
->> +		if (!first && counter->pmu !=3D last_pmu)
->> +			return;
->> +		first =3D false;
->> +		if (counter->pmu) {
->> +			/* Allow uniquify for uncore PMUs. */
->> +			if (!counter->pmu->is_core)
->> +				return;
->> +			/* Keep hybrid event names uniquified for clarity. */
->> +			if (perf_pmus__num_core_pmus() > 1)
->> +				return;
->> +		}
->> +	}
->> +	evlist__for_each_entry_continue(evlist, counter) {
->> +		counter->uniquified_name =3D true;
->> +	}
->> +}
->> +
->>  void evlist__print_counters(struct evlist *evlist, struct perf_stat_c=
-onfig *config,
->>  			    struct target *_target, struct timespec *ts,
->>  			    int argc, const char **argv)
->> @@ -1572,6 +1625,8 @@ void evlist__print_counters(struct evlist *evlis=
-t, struct perf_stat_config *conf
->>  		.first =3D true,
->>  	};
->> =20
->> +	disable_uniquify(evlist);
->> +
->>  	if (config->iostat_run)
->>  		evlist->selected =3D evlist__first(evlist);
->> =20
->=20
-
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Thanks.
 
