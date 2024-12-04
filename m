@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-98199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E619E316E
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:31:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCD49E3278
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 04:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C476B29A40
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 02:31:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE2B4284293
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC60720DF4;
-	Wed,  4 Dec 2024 02:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E917156997;
+	Wed,  4 Dec 2024 03:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PbWnLyu3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAF14A1A
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 02:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1B414A4E9
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 03:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733279497; cv=none; b=Ye8pl5IdVumVxWkF1khP3GpqF1lG7coiSfclmJPoD5q/8MlPfb31ZYZFryWf02exKe0hPkHqXH1XnlYzVXLBt+3IBqCovsCYmU0N+tWiY3hCQhF2LL7mzynILmeM0Inz/G0tSto/oNcFxc+yugxEG7i0TTR3Y0l2cT2+LIjWhOA=
+	t=1733284531; cv=none; b=mneiV17+OO9zLnJEPxjRCajiEADwCVePk3DGRTP1fXvGRoOaHVwiewiKUTfa6EZdEs+L9uDYxJXXoqNuwt5un6+2+nMnFgm/hun0MKaoM5CItt56SvQjYKEQRa9PwmmyXAZORKCqa5V+U25+/I42AoNoLCsroOEhil2tsa/GrO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733279497; c=relaxed/simple;
-	bh=TWNvdrWkrN9k8hk+AZ/kJ9jvsNNylEqCMe5p/fRSM9w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HOLNVsTVOpeBv+YN/JzflkQ/2myFRf/RslFMONZka7aNT8qQ/ov1F7rJAco08qzPzBifaSBQZrFDZpy82l8JPTpRacul9RhAY1dhiok3JGNP29wdAjeMn7GluwFrRJa8TpUvS2Yzu8VJZOFYEmBiHQIjSHRXHEG3qc16xEv5fIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B41MVvR026057;
-	Wed, 4 Dec 2024 02:31:26 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 437sp746s9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 04 Dec 2024 02:31:25 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Tue, 3 Dec 2024 18:31:24 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Tue, 3 Dec 2024 18:31:23 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <almaz.alexandrovich@paragon-software.com>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH 6.1.y] fs/ntfs3: Fixed overflow check in mi_enum_attr()
-Date: Wed, 4 Dec 2024 11:29:13 +0800
-Message-ID: <20241204032913.1456610-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733284531; c=relaxed/simple;
+	bh=EGXxR5SXL+S42X/nxAV5+cXWmDR+N0U20++0fjhx7U0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Os0I0TiDCSjS2FpenReE2Qrspme3UUjfB7rcc1ZuQbehTefkaWlzqNwmPHiMpebTbZJaTUtEXOvbRjyMdAv0nyEV1AwSWOBcgTmwVXjtxWcbZ3Geey4ailWSuen8y/IgdEzfwhr9BSZZ0fFvG9L5v9yF55t89j4V12JPCA/k2oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PbWnLyu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069B1C4CED1;
+	Wed,  4 Dec 2024 03:55:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733284530;
+	bh=EGXxR5SXL+S42X/nxAV5+cXWmDR+N0U20++0fjhx7U0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PbWnLyu3DDWesygXXMUzKo3xiVSH8QvMjCpPf02Pf0QoCn2nD1YmDNocWbS+VHpeW
+	 3WfUAMbazF4yJxVX2I9C7xx4XdM9lA5zGKEtTAtybvcEGnc4EmS1QH5iaPIyk9aBAs
+	 zBSF6fiIrqGf2tOVDkgaWvVLHCKK9l3Wjkcy2/qxp66/JOwfWzh5SblV4ToSzXE9FL
+	 eEZ4oahoKl77gPm5sEgvRK3QNCWfbvn+8zxSAkxMnjKtplPOCm5IXhd8zGq0MKcu6j
+	 cFAzVotq+i+yPJhOvWUY+l0yo1F4FxQA48UpTfc9Xu5Rsak/MRAufDYU/AhQ61NTtv
+	 AQRYmzOzxSYPw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] fs/ntfs3: Fixed overflow check in mi_enum_attr()
+Date: Tue,  3 Dec 2024 21:44:10 -0500
+Message-ID: <20241203213832-611194989a871870@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241204032913.1456610-1-jianqi.ren.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,46 +58,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=Qvqk3Uyd c=1 sm=1 tr=0 ts=674fbefd cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=GFCt93a2AAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=fATKHIbVh68Ky4GJMjkA:9 a=0UNspqPZPZo5crgNHNjb:22
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: DDMigFwQ6WxS07-muSBVQyw0O2Oj1sRb
-X-Proofpoint-GUID: DDMigFwQ6WxS07-muSBVQyw0O2Oj1sRb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-04_01,2024-12-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- lowpriorityscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- bulkscore=0 priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0
- classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412040020
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 652cfeb43d6b9aba5c7c4902bed7a7340df131fb ]
+Hi,
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Jianqi.ren.cn@windriver.com <jianqi.ren.cn@windriver.com>
+The upstream commit SHA1 provided is correct: 652cfeb43d6b9aba5c7c4902bed7a7340df131fb
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+
+
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+6.11.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 8c77398c7261)
+6.1.y | Present (different SHA1: 7cfa8ae94ffa)
+
+Note: The patch differs from the upstream commit:
 ---
- fs/ntfs3/record.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+1:  652cfeb43d6b9 ! 1:  310681bc6d92e fs/ntfs3: Fixed overflow check in mi_enum_attr()
+    @@ Metadata
+      ## Commit message ##
+         fs/ntfs3: Fixed overflow check in mi_enum_attr()
+     
+    +    [ Upstream commit 652cfeb43d6b9aba5c7c4902bed7a7340df131fb ]
+    +
+         Reported-by: Robert Morris <rtm@csail.mit.edu>
+         Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+    +    Signed-off-by: Jianqi.ren.cn@windriver.com <jianqi.ren.cn@windriver.com>
+     
+      ## fs/ntfs3/record.c ##
+     @@ fs/ntfs3/record.c: struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+    @@ fs/ntfs3/record.c: struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTR
+     +		if (le32_to_cpu(attr->res.data_size) > asize - t16)
+      			return NULL;
+      
+    - 		t32 = sizeof(short) * attr->name_len;
+    + 		if (attr->name_len &&
+---
 
-diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
-index 7ab452710572..826a756669a3 100644
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -273,7 +273,7 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 		if (t16 > asize)
- 			return NULL;
- 
--		if (t16 + le32_to_cpu(attr->res.data_size) > asize)
-+		if (le32_to_cpu(attr->res.data_size) > asize - t16)
- 			return NULL;
- 
- 		if (attr->name_len &&
--- 
-2.25.1
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
