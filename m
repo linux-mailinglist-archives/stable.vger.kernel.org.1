@@ -1,148 +1,144 @@
-Return-Path: <stable+bounces-98219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EFB9E320C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 04:23:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A599E3223
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 04:33:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71A541679D9
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:23:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614C2161762
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 03:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A26149E00;
-	Wed,  4 Dec 2024 03:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF41156F3A;
+	Wed,  4 Dec 2024 03:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aB3z9lhB"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="HrdDNHTD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A91C145A0B;
-	Wed,  4 Dec 2024 03:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEAF1531C1
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 03:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733282601; cv=none; b=sjPPGW2S3kiBxW+aveoy3QRcG/2nROsX1glK8nDhZFng2PZf4azEnQfC1srgjFViRDdD8vGS4ksqqo9OmCWAAKu/VteS66DeQDK0rFPQy1HkmJM4fP38DAhFjRE/VblW6XCZ8yQ8KL5VXq5vqW/q+bLQRxhsadZqhsRSJGb0RZo=
+	t=1733283180; cv=none; b=HOGyWL1asWzgT5dg7GgDmsqeKjP22YDwRKjNNUmUfGUvT1u2p61ushYKr9A7VB6LMOYArj3JfHbUBgIvybk+ectM8ov3CajwbZy5cck7iWEBaTNluHVcko89cf7p3kkOMi3Rjl8wb8cV4yYJH4bOOkBsSHQG+dOhidZfDcOtfR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733282601; c=relaxed/simple;
-	bh=JeTbbGh+igtqLAeGNq1wAJhz9kFuQ1HReyhHEuaf+i8=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=IrtN+WiJ2fnfGyb+O5TY0MhA4pzel/WgVFpo8JnXzI1r8ZrQ15YAieitCQ9DqLMZV/u88roCwVn27sZYWx4OkkM69YZSVU0OwllVF8ufrveR2vYLQWovGeojheYK1kyGRoXePNVUze5tkfXfDj9hO1mVT6m0uDNvhSfnIjOIUxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aB3z9lhB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76F58C4CEDE;
-	Wed,  4 Dec 2024 03:23:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733282600;
-	bh=JeTbbGh+igtqLAeGNq1wAJhz9kFuQ1HReyhHEuaf+i8=;
-	h=Date:Subject:From:To:Cc:From;
-	b=aB3z9lhBXIfsItt38ZmBuzQ430cFCCe/k8jUXTftH1VDaOb6s0ed+LcLQzXXddOFW
-	 KXqOYoXtnwzbbSmAw7P6Xf9zZU1LvLw0H2JokoGUemkCWcDck8cFm/BC8o5sDEsHih
-	 tKBdLZUcp14qMsZ2cUqbQmzHI7J/IA5vyETqPq+GtYLCuE884fQDE09oLYDQ5hcJ/D
-	 MtK9PE9mJFKDpH2NB2ULYLbOV9G9fSe+AMNwmBZJx1cs2y07AqjJH9o8+CVg9HwvjA
-	 y60tHptsVsR3o+L4W15alROnzscQk+9sUmWrEWJxLFCIGkAfnWEDWYfzQPiHaJRtjZ
-	 aF6/Gp2qRPuPQ==
-Date: Tue, 03 Dec 2024 19:23:19 -0800
-Subject: [GIT PULL] xfs: bug fixes for 6.13
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: cem@kernel.org, djwong@kernel.org
-Cc: dan.carpenter@linaro.org, hch@lst.de, linux-xfs@vger.kernel.org, stable@vger.kernel.org, wozizhi@huawei.com
-Message-ID: <173328206660.1159971.4540485910402305562.stg-ugh@frogsfrogsfrogs>
+	s=arc-20240116; t=1733283180; c=relaxed/simple;
+	bh=HETMPyYFonTIlUEtDkB4W+NGpx0pChnBvtqpUMwbz5Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BZbbIqEfQXrqGpgK2rlV2gldkoYj+9ZV9ai9f9AjqgFWffTnJ9xdYtLYIcNsPJRLfl76nACQlKbMxcEVnRy6dSfAwurgXl89tzVBDsYJ+ng4n+QOv0lxbT0s0TrhXVqIv6VmNswjRXP6C9PWRtanaufuMcu8vKafCZUuPnxtQQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=HrdDNHTD; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4349fe119a8so7379795e9.3
+        for <stable@vger.kernel.org>; Tue, 03 Dec 2024 19:32:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1733283175; x=1733887975; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IyQZbBp455IiiS0cimMqLKVcykFWRydlh8NnN31mrV4=;
+        b=HrdDNHTD9DwHwb7xvHvSwiMY3SSdcxaT0xZewai1RP+/nETanu6wWDUD8Y3WAvw+5z
+         +F6TGbIdPfQP+wR0rFLdn8DjHkhBbl2W6bZge9gfLp2h9oPOiuigEsD2YDgEOZg3s4H7
+         5ucvKFvoXV4dsC/I4lqzUU40avdJrgfeXvGNDof2SfY3QeMZhVVY7tBTo43huu53cKZq
+         RTL34c49Z8guY++MOwSHcXbTtXI0kATRCLvwNIpXMSmDyBidM/ae2OXgAesJWeZQWYMn
+         SU9TG0xfbyvC7R6wThyC7JRWVFLXpkaUH2Z9kNnrNcXAj4feWFc+V3xutDR5SwACYzuB
+         53ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733283175; x=1733887975;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IyQZbBp455IiiS0cimMqLKVcykFWRydlh8NnN31mrV4=;
+        b=X1erqH90vj9PaqCTyAJd95A4BFW4XwkHbReTSLVv8UPyb6iD6ZzPkgPYT9OO+R1Tug
+         4VIjE2XL3YC7nEGaKAoup4kO60+0TO3wnLnNnX7/przM3S2k18u9o++AzoSnukadMcf/
+         EB9bkspnaQkzbroAdLQsv1V53fHU4XOYGb6dFVdP9wabuE9ZcEHk8GFtlsqLXPdYkqp3
+         30gJm5q00868W3NtfqSw+zjoTRx+2msL5q/2KbkqCH9/tpmGTUDRGFydn8JiC8osxgiy
+         jc45gG+w1nUqKYpuIn7yjHlsRzth/UlhtIqFl+WsiViN160JXT6gnWQE6hLIrrr1/e/N
+         dVWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDdSOD+HLDZqx8PZlT24sqC1aZ+KwrLS8nHtTXOetByBh+iA2taCjKgOIEniXcbfiiPQghaX8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwU2lAYkaF4w+sgobLN3N1wM9EQbZ9c90cqsjh34+7SbxuCSWiR
+	DsHHlJ+PnH7bD2DaEYeDZ9q1QwJt37iOmMMjgGc3Lit+0GhHxktu6VY6mZP8DF8=
+X-Gm-Gg: ASbGncuLZi7aJrrHagd5woC0eX/fImWO0ZI8EJH8N9v8/9T78MijIZFaiH8yfvkNCxe
+	NVY9qntKNmWO5W7ahyShxi3jIMxknAZ4LBcMcOHAsPj5LCNNp8rJN2w2FszbyPzj5U/KTBO2PTL
+	B6uctFxEGGQADYoOZebNv3whBUst/eIs3bwE0Q7Uwzrj7Rm/fl7OBEg9j2WSrHk6Gnj41p9J6eF
+	qDivjUWSaOAFAKvSYZySTvj4eFbO1d2C/PwIeVBr7kKpFp2XBzc1554ubOB4g==
+X-Google-Smtp-Source: AGHT+IE/jHB53rXLi5u7lvRJEF+CPq4Zu3rqIEuQoyRi8fGpj8biZzILxPOqXkFg+fFvWqVlPTnhJQ==
+X-Received: by 2002:a5d:6dae:0:b0:385:e10a:4d98 with SMTP id ffacd0b85a97d-385fd3cfcb3mr1524139f8f.8.1733283175560;
+        Tue, 03 Dec 2024 19:32:55 -0800 (PST)
+Received: from localhost.localdomain ([114.254.72.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215a04dc249sm37476025ad.203.2024.12.03.19.32.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 19:32:54 -0800 (PST)
+From: Heming Zhao <heming.zhao@suse.com>
+To: joseph.qi@linux.alibaba.com,
+	ocfs2-devel@lists.linux.dev
+Cc: Heming Zhao <heming.zhao@suse.com>,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	gregkh@linuxfoundation.org,
+	Heming Zhao <heing.zhao@suse.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] ocfs2: Revert "ocfs2: fix the la space leak when unmounting an ocfs2 volume"
+Date: Wed,  4 Dec 2024 11:32:39 +0800
+Message-ID: <20241204033243.8273-2-heming.zhao@suse.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241204033243.8273-1-heming.zhao@suse.com>
+References: <20241204033243.8273-1-heming.zhao@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Carlos,
+This reverts commit dfe6c5692fb5 ("ocfs2: fix the la space leak when
+unmounting an ocfs2 volume").
 
-Please pull this branch with changes for xfs against 6.13-rc1.
+In commit dfe6c5692fb5, the commit log stating "This bug has existed
+since the initial OCFS2 code." is incorrect. The correct introduction
+commit is 30dd3478c3cd ("ocfs2: correctly use ocfs2_find_next_zero_bit()").
 
-As usual, I did a test-merge with the main upstream branch as of a few
-minutes ago, and didn't see any conflicts.  Please let me know if you
-encounter any problems.
+Fixes: dfe6c5692fb5 ("ocfs2: fix the la space leak when unmounting an ocfs2 volume")
+Signed-off-by: Heming Zhao <heing.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+---
+ fs/ocfs2/localalloc.c | 19 -------------------
+ 1 file changed, 19 deletions(-)
 
---D
-
-The following changes since commit feffde684ac29a3b7aec82d2df850fbdbdee55e4:
-
-Merge tag 'for-6.13-rc1-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux (2024-12-03 11:02:17 -0800)
-
-are available in the Git repository at:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/djwong/xfs-linux.git tags/fixes-6.13_2024-12-03
-
-for you to fetch changes up to 641a4a63154885060b7900f86bb45582f07e964b:
-
-xfs: fix sb_spino_align checks for large fsblock sizes (2024-12-03 18:54:49 -0800)
-
-----------------------------------------------------------------
-xfs: bug fixes for 6.13 [v2 1/2]
-
-Here are some bugfixes for 6.13 that have been accumulating since 6.12
-was released.
-
-With a bit of luck, this should all go splendidly.
-
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
-
-----------------------------------------------------------------
-Darrick J. Wong (22):
-xfs: fix off-by-one error in fsmap's end_daddr usage
-xfs: metapath scrubber should use the already loaded inodes
-xfs: keep quota directory inode loaded
-xfs: return a 64-bit block count from xfs_btree_count_blocks
-xfs: don't drop errno values when we fail to ficlone the entire range
-xfs: separate healthy clearing mask during repair
-xfs: set XFS_SICK_INO_SYMLINK_ZAPPED explicitly when zapping a symlink
-xfs: mark metadir repair tempfiles with IRECOVERY
-xfs: fix null bno_hint handling in xfs_rtallocate_rtg
-xfs: fix error bailout in xfs_rtginode_create
-xfs: update btree keys correctly when _insrec splits an inode root block
-xfs: fix scrub tracepoints when inode-rooted btrees are involved
-xfs: unlock inodes when erroring out of xfs_trans_alloc_dir
-xfs: only run precommits once per transaction object
-xfs: avoid nested calls to __xfs_trans_commit
-xfs: don't lose solo superblock counter update transactions
-xfs: don't lose solo dquot update transactions
-xfs: separate dquot buffer reads from xfs_dqflush
-xfs: clean up log item accesses in xfs_qm_dqflush{,_done}
-xfs: attach dquot buffer to dquot log item buffer
-xfs: convert quotacheck to attach dquot buffers
-xfs: fix sb_spino_align checks for large fsblock sizes
-
-fs/xfs/libxfs/xfs_btree.c        |  33 +++++--
-fs/xfs/libxfs/xfs_btree.h        |   2 +-
-fs/xfs/libxfs/xfs_ialloc_btree.c |   4 +-
-fs/xfs/libxfs/xfs_rtgroup.c      |   2 +-
-fs/xfs/libxfs/xfs_sb.c           |  11 ++-
-fs/xfs/scrub/agheader.c          |   6 +-
-fs/xfs/scrub/agheader_repair.c   |   6 +-
-fs/xfs/scrub/fscounters.c        |   2 +-
-fs/xfs/scrub/health.c            |  57 +++++++-----
-fs/xfs/scrub/ialloc.c            |   4 +-
-fs/xfs/scrub/metapath.c          |  68 ++++++--------
-fs/xfs/scrub/refcount.c          |   2 +-
-fs/xfs/scrub/scrub.h             |   6 ++
-fs/xfs/scrub/symlink_repair.c    |   3 +-
-fs/xfs/scrub/tempfile.c          |  10 +-
-fs/xfs/scrub/trace.h             |   2 +-
-fs/xfs/xfs_bmap_util.c           |   2 +-
-fs/xfs/xfs_dquot.c               | 195 +++++++++++++++++++++++++++++++++------
-fs/xfs/xfs_dquot.h               |   6 +-
-fs/xfs/xfs_dquot_item.c          |  51 +++++++---
-fs/xfs/xfs_dquot_item.h          |   7 ++
-fs/xfs/xfs_file.c                |   8 ++
-fs/xfs/xfs_fsmap.c               |  38 ++++----
-fs/xfs/xfs_inode.h               |   2 +-
-fs/xfs/xfs_qm.c                  |  95 +++++++++++++------
-fs/xfs/xfs_qm.h                  |   1 +
-fs/xfs/xfs_quota.h               |   7 +-
-fs/xfs/xfs_rtalloc.c             |   2 +-
-fs/xfs/xfs_trans.c               |  58 ++++++------
-fs/xfs/xfs_trans_ail.c           |   2 +-
-fs/xfs/xfs_trans_dquot.c         |  31 ++++++-
-31 files changed, 495 insertions(+), 228 deletions(-)
+diff --git a/fs/ocfs2/localalloc.c b/fs/ocfs2/localalloc.c
+index 8ac42ea81a17..5df34561c551 100644
+--- a/fs/ocfs2/localalloc.c
++++ b/fs/ocfs2/localalloc.c
+@@ -1002,25 +1002,6 @@ static int ocfs2_sync_local_to_main(struct ocfs2_super *osb,
+ 		start = bit_off + 1;
+ 	}
+ 
+-	/* clear the contiguous bits until the end boundary */
+-	if (count) {
+-		blkno = la_start_blk +
+-			ocfs2_clusters_to_blocks(osb->sb,
+-					start - count);
+-
+-		trace_ocfs2_sync_local_to_main_free(
+-				count, start - count,
+-				(unsigned long long)la_start_blk,
+-				(unsigned long long)blkno);
+-
+-		status = ocfs2_release_clusters(handle,
+-				main_bm_inode,
+-				main_bm_bh, blkno,
+-				count);
+-		if (status < 0)
+-			mlog_errno(status);
+-	}
+-
+ bail:
+ 	if (status)
+ 		mlog_errno(status);
+-- 
+2.43.0
 
 
