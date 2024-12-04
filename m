@@ -1,100 +1,83 @@
-Return-Path: <stable+bounces-98235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3799B9E32FE
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 06:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E92959E3330
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 06:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1235F164C2B
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 05:10:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36D5163E02
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 05:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0BA38385;
-	Wed,  4 Dec 2024 05:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333C117A597;
+	Wed,  4 Dec 2024 05:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kJlLkQc1"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UPZGKwbb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F5441C85
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 05:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99CA12F22
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 05:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733289037; cv=none; b=DNF9w8KmSEz4TVxq0G7V8mtn/B9W/E1ycQ3vV6eCH1gkAm9adQmcg/a1Y6UqUd2TBTkIXOsHXusWM0/F9vA30cMtIWSDnRbQgvAmJbuGJKimed2ZjsIHrLjJeCfYYcZw89DvL/D+U/B59u5JoPaILtMysnvVmAnzVevHH89YLsY=
+	t=1733290587; cv=none; b=uglZYyiwXoKRI8lNG1sWowu/hN+q5hh8N4yRVicJ8lkfqTT0YgCFDAZJl2pBf/uAbBecD1Xd3CTKWVabCJTNgIYS7bWhhCsXida5Qlb1Tc7bs7Po96vdY+D2mJIG1/LaCG9mQzcRU5sQWDCtNWnuy7okt/q7FsTXiRp1yfHAUkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733289037; c=relaxed/simple;
-	bh=EpiONNx3Awea6gxAEJuEObBVvFNLhfiTReodoWPWfyk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rI/eH8FjCMpnP7AFgu0lakcovZCSpjUKe9dO+VQkDxx5TE6elBt/25cudu47rDBr4IS/Okzp+6nGeB2qEDYyomEl76R8lHituFZI2ACVPG6FPS1ke6GWqHkePRISvSuyuOpHxmdBFuZsRQOJGn333r4E4huYM4Zg6aIBXu+VnyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kJlLkQc1; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733289036; x=1764825036;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=EpiONNx3Awea6gxAEJuEObBVvFNLhfiTReodoWPWfyk=;
-  b=kJlLkQc1ToUduMRLPTTMgMoc7CG5U4ZjEPpCC4YAuMNHLVSPAaAU6cIh
-   zeWPPQD8W/cGM+dYYnB4fEo1agX//CWhtq393TkB1Ba7vpSzcDJUkFAW0
-   8F4NiAHKUO6akTvqgVMhdAiXPo/yrR0wPSmoAeA7O6xQ+Q6lwW39q/MZw
-   V7ly9zPLM+LrB18a+AtCl/vbxHl9n+NZRRR11ImCeAmGiJeDSQbl57kwS
-   uORxccAslGKmnujumZGKHceXe/h2SGHcRyYXTkIFLMOjC2Opb1ebcPzMy
-   wk24qGuSydkmNf/a4fdzM7HZP4j0RSg7uVii7fcrG8pYXK1phqrEe4Tl0
-   A==;
-X-CSE-ConnectionGUID: fGatM1w+Rn2Ui0fmjy0RvA==
-X-CSE-MsgGUID: zWKX3jeqThuuOW6JFiILRw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44566255"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="44566255"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 21:10:36 -0800
-X-CSE-ConnectionGUID: 9F5oESZRS/Sqm0fMDQN3oA==
-X-CSE-MsgGUID: LpeyXGqCSY22vyfm2VP2yA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="94483009"
-Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 03 Dec 2024 21:10:35 -0800
-Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tIhei-0002bx-1w;
-	Wed, 04 Dec 2024 05:10:32 +0000
-Date: Wed, 4 Dec 2024 13:09:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Koichiro Den <koichiro.den@canonical.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net-next v3 2/7] virtio_net: replace vq2rxq with vq2txq
- where appropriate
-Message-ID: <Z0_kGx5kqFdUZXed@24ad928833eb>
+	s=arc-20240116; t=1733290587; c=relaxed/simple;
+	bh=IkEZtadZftKjRqH9yhts5fEPqBDe38sXpY9gxB7o5Mc=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=X/rgsk57EEt3+1Hly9EXFBHUpl9OtprlUaKtt4NK4PMBZTp/Z4xVS245UajhpQQlXPsYRxAImwh3kFD7fAgtSG9/rvDLG8wYfHQlZN3JuC2XSpCDIFiB3jBUZ8y3SGOLvRf8zVRuFj7zs+hGkPIn9iLap89wnbbwtHrV2O9MnQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UPZGKwbb; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 4265E20BCAE6; Tue,  3 Dec 2024 21:36:25 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4265E20BCAE6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1733290585;
+	bh=WO1k8Du3NxHFMes7jiIFdn5k2SdK8KHlt0QIB6oFTsM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UPZGKwbbTpRzgj66L52zYVUCGFBRgfLc6Xc1Ecgv46auUmI2VFlFLvgqZHNTujnSu
+	 ZvPP6rH+ZfFCa9T/IRU+VVRWthl1VOP12+PpRzusO7Rr3Q5/yrLTidwiplhSSkjg4y
+	 g0IBNAqnb23kOq1rhbUZtzaH7pYH1Jgox4AKYX5c=
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: 
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net :mana :Request a V2 response version for MANA_QUERY_GF_STAT
+Date: Tue,  3 Dec 2024 21:36:23 -0800
+Message-Id: <1733290583-10924-1-git-send-email-shradhagupta@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241204050724.307544-3-koichiro.den@canonical.com>
 
-Hi,
+The current requested response version(V1) for MANA_QUERY_GF_STAT query
+results in STATISTICS_FLAGS_TX_ERRORS_GDMA_ERROR value being set to
+0 always.
+In order to get the correct value for this counter we request the response
+version to be V2.
 
-Thanks for your patch.
+Cc: stable@vger.kernel.org
+Fixes: e1df5202e879 ("net :mana :Add remaining GDMA stats for MANA to ethtool")
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net-next v3 2/7] virtio_net: replace vq2rxq with vq2txq where appropriate
-Link: https://lore.kernel.org/stable/20241204050724.307544-3-koichiro.den%40canonical.com
-
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 57ac732e7707..f73848a4feb3 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -2536,6 +2536,7 @@ void mana_query_gf_stats(struct mana_port_context *apc)
+ 
+ 	mana_gd_init_req_hdr(&req.hdr, MANA_QUERY_GF_STAT,
+ 			     sizeof(req), sizeof(resp));
++	req.hdr.resp.msg_version = GDMA_MESSAGE_V2;
+ 	req.req_stats = STATISTICS_FLAGS_RX_DISCARDS_NO_WQE |
+ 			STATISTICS_FLAGS_RX_ERRORS_VPORT_DISABLED |
+ 			STATISTICS_FLAGS_HC_RX_BYTES |
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.43.0
 
 
