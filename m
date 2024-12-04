@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-98617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF749E4921
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:33:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802CB9E493E
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:35:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F2862834EE
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:32:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55CE61883CBB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5052116FD;
-	Wed,  4 Dec 2024 23:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCF2211716;
+	Wed,  4 Dec 2024 23:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S9Xl0Waz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aI1OWgGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B500B2116F4;
-	Wed,  4 Dec 2024 23:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74342206F19;
+	Wed,  4 Dec 2024 23:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354886; cv=none; b=Ll/BvliHyilJbYnpT/6SaVpZfO/2lCvJFVRCdOJTOqUufCwNtFbi2RlDWN4g2Xu8EOv0Y30i/UOA4M09ratN4vdoZGiwNcKZ3LTR4IVTqoov4GqSJAH+g8c1nZhpXnvmE0fxVLQBLiNyKazmznq6KnEqzqZgYr4yPVJI/eYn4CE=
+	t=1733354890; cv=none; b=tQVRfO1Y+H0lykS0dOHX3GLSc0kiQWH57SPj8DwCasmcObPRGU1ccTNiNMfdU++gf4fpFXvml4eH3lpbwvb4/2w8bq9PhQWCecWJWfxMbYiAwKC4SP33idwK0A6HEZpYE1ROowVQft6iEl3BOX9FqAYErN9tl4tmAklRXE0qQdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354886; c=relaxed/simple;
-	bh=Eui2HQ4Hgc+MEWR+/Z9ZyS66EVROKvhofo2EgPXu/LY=;
+	s=arc-20240116; t=1733354890; c=relaxed/simple;
+	bh=qHhAUuyhQXNQrTTjUNmUBsCanrlnuEay1E2XfKz3Vpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WDQRoyBtJTyooZZ3ZRIlyCGTx3HeIEtnDmEOX8ZCHohllGNri6SPXaln+ows08ymcVa2/KvJc366oFgpGp+EE7j0yuEMQvCPkKopY+znrD4BwM75mj9CcE4oTo3OH3v6e277uXUS+XtrnOYBfabUagEcTUE4Y+0hhF4AGgWr/Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S9Xl0Waz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B796FC4CED2;
-	Wed,  4 Dec 2024 23:28:04 +0000 (UTC)
+	 MIME-Version; b=pN3LTWREyH8HFUqD6PRb0/9q8ZdgSyKJl4ytmKAO++TLDRwlnA//g0mls/vOJJ0EWRzSpPrdar5nWsZdadF4dXi+L/kxLpfztz6RHtNQ/uMJH/lZjPyYF6E2l9UYBj/9XrHvq1hEwScVB9z6pFmFnGDbPjGslnBR4tAApLl6z30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aI1OWgGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E63C4CED2;
+	Wed,  4 Dec 2024 23:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354886;
-	bh=Eui2HQ4Hgc+MEWR+/Z9ZyS66EVROKvhofo2EgPXu/LY=;
+	s=k20201202; t=1733354889;
+	bh=qHhAUuyhQXNQrTTjUNmUBsCanrlnuEay1E2XfKz3Vpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9Xl0WaznqnOjxeJxrLeQB9k2VBdNI6TjczRCgRv3/vnzSfwblJhGKTtC+D/ljGqN
-	 BSy+g/WFtPUytPeIi9QVuXwFZo56U8n2mGgoGc0b8KCqOLdzuSMosnkYPM7EjJM4gX
-	 r5b71bLVQFFAm4EqP9mykAwJldk/5HEoU91wDAhB6rHvqVbhwiiztLl/Ec6Tnn0yRq
-	 4WTkaMCT76v4CUmfCQCaWOMMwsEvGYLv6AD5Mj0R9HS3Mt6CXqr4pULVBPpzQgJb5a
-	 KqEHWjXEA19xkMWMfhJHEFjwch7OAJ+OwiBP4/5k7F1uMeqdP5Ya5JfP4gYg1A9iUO
-	 Neuh6TT0m7+Ig==
+	b=aI1OWgGstTG8P9AVoGPy4fb5DUov6N3bJFGiugd1155SdJkFRq8z6N2xSprk3qMXY
+	 zT3iJpxfOAHd8Qr3y+/PJwM11sDCTnxrYt5RYkpOrB1oBMZ1n6GPmt/F75/Htaog54
+	 qXnoMU7UmeBjxQ7Q6drYmsW/YZBDXpLfQiB8JyI7N7vyDQaWP/WRNDJsAtk6qQ+urN
+	 0zpCvQxeFHnw2KfMUKm63/pLl7mG/DJuOMRmDGBHSupfXCicgoz3ngbuF/H7eV0UXS
+	 S9KUYtoAPQnr7UfCqTqs0UH/SLcK0Wbzrwgolh+OQYIqZtc153MimRbATZihu953hk
+	 QJTYes5fnq2qw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Saravana Kannan <saravanak@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	=?UTF-8?q?N=C3=ADcolas=20F=20=2E=20R=20=2E=20A=20=2E=20Prado?= <nfraprado@collabora.com>,
-	Thierry Reding <treding@nvidia.com>,
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jckuo@nvidia.com,
-	vkoul@kernel.org,
-	kishon@kernel.org,
-	thierry.reding@gmail.com,
-	linux-phy@lists.infradead.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 09/15] phy: tegra: xusb: Set fwnode for xusb port devices
-Date: Wed,  4 Dec 2024 17:16:03 -0500
-Message-ID: <20241204221627.2247598-9-sashal@kernel.org>
+	heikki.krogerus@linux.intel.com,
+	quic_bjorande@quicinc.com,
+	javier.carrasco.cruz@gmail.com,
+	quic_kriskura@quicinc.com,
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 10/15] usb: typec: ucsi: glink: be more precise on orientation-aware ports
+Date: Wed,  4 Dec 2024 17:16:04 -0500
+Message-ID: <20241204221627.2247598-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204221627.2247598-1-sashal@kernel.org>
 References: <20241204221627.2247598-1-sashal@kernel.org>
@@ -68,49 +67,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Saravana Kannan <saravanak@google.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 74ffe43bad3af3e2a786ca017c205555ba87ebad ]
+[ Upstream commit de9df030ccb5d3e31ee0c715d74cd77c619748f8 ]
 
-fwnode needs to be set for a device for fw_devlink to be able to
-track/enforce its dependencies correctly. Without this, you'll see error
-messages like this when the supplier has probed and tries to make sure
-all its fwnode consumers are linked to it using device links:
+Instead of checking if any of the USB-C ports have orientation GPIO and
+thus is orientation-aware, check for the GPIO for the port being
+registered. There are no boards that are affected by this change at this
+moment, so the patch is not marked as a fix, but it might affect other
+boards in future.
 
-tegra-xusb-padctl 3520000.padctl: Failed to create device link (0x180) with 1-0008
-
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Closes: https://lore.kernel.org/all/20240910130019.35081-1-jonathanh@nvidia.com/
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Suggested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20241024061347.1771063-3-saravanak@google.com
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20241109-ucsi-glue-fixes-v2-2-8b21ff4f9fbe@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/tegra/xusb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_glink.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
-index 342f5ccf611d8..d536998288acb 100644
---- a/drivers/phy/tegra/xusb.c
-+++ b/drivers/phy/tegra/xusb.c
-@@ -543,7 +543,7 @@ static int tegra_xusb_port_init(struct tegra_xusb_port *port,
+diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+index 03c0fa8edc8db..50a23578d0f26 100644
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -172,12 +172,12 @@ static int pmic_glink_ucsi_async_control(struct ucsi *__ucsi, u64 command)
+ static void pmic_glink_ucsi_update_connector(struct ucsi_connector *con)
+ {
+ 	struct pmic_glink_ucsi *ucsi = ucsi_get_drvdata(con->ucsi);
+-	int i;
  
- 	device_initialize(&port->dev);
- 	port->dev.type = &tegra_xusb_port_type;
--	port->dev.of_node = of_node_get(np);
-+	device_set_node(&port->dev, of_fwnode_handle(of_node_get(np)));
- 	port->dev.parent = padctl->dev;
+-	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
+-		if (ucsi->port_orientation[i])
+-			con->typec_cap.orientation_aware = true;
+-	}
++	if (con->num > PMIC_GLINK_MAX_PORTS ||
++	    !ucsi->port_orientation[con->num - 1])
++		return;
++
++	con->typec_cap.orientation_aware = true;
+ }
  
- 	err = dev_set_name(&port->dev, "%s-%u", name, index);
+ static void pmic_glink_ucsi_connector_status(struct ucsi_connector *con)
 -- 
 2.43.0
 
