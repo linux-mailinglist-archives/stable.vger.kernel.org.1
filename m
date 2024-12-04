@@ -1,87 +1,79 @@
-Return-Path: <stable+bounces-98254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8759E355B
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 09:30:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873A49E3526
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 09:24:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B1E8282360
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E4FF1644AE
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 08:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BEE19007D;
-	Wed,  4 Dec 2024 08:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41443192D6B;
+	Wed,  4 Dec 2024 08:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="1GRlokOO"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8ED1865FA
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 08:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBBC136338;
+	Wed,  4 Dec 2024 08:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733301012; cv=none; b=IznI6FcsEgMq1sjqmEcyBBJFsJXCi40OaN8MZ9KRUtonY4N4FrsIPXMHm+ezCNmPafWu25EbMwdC8NvyNDhFKIVTWMscSaAUzFH/shalad3XPqIG0XiiJyokCyqkSyPfkncw1k2dLkDcMnc7vEiarVRm1X8sgh+8QDuB4Ollh8M=
+	t=1733300684; cv=none; b=sJUvrjJWiOLyPRGKpyXVUug5kcNFqpYYSAFRQJ+2t1Yk6aLSsZBx4e+M5iJNGNSL9xdqWeGVD4RTiLiF7TXt7B058qw31dGMQbQuztx3GkPTTSxrSgWVxOtYyXd7HKX45fVP+cmnVFu7bdBznix2Xz3QN/sLV556Kac0bbfzWjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733301012; c=relaxed/simple;
-	bh=YusYe5CWhtlKbMSTNAjtGRT81PJ8ckjywzHfu/PJDIM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bbrHW+vyDONretjxcPxb6gvjVakOtckAKq5XGbmQ4QWBEGWrGUjsJ4AtaPm8/04iBC6HQ2/Q1jwNlXJDYHNlZDVJTH8cPuK6BbbBUjCz8V9rGXQWo/DnkcQjniUiM1ise6cyuY1BTV54KQbwS1tAgL1mfm1CcqhBCBIR6iybGoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y39d369j6z1kvGh;
-	Wed,  4 Dec 2024 16:27:51 +0800 (CST)
-Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
-	by mail.maildlp.com (Postfix) with ESMTPS id 62B121400D2;
-	Wed,  4 Dec 2024 16:30:08 +0800 (CST)
-Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
- (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 4 Dec
- 2024 16:30:07 +0800
-From: Zhang Zekun <zhangzekun11@huawei.com>
-To: <gregkh@linuxfoundation.org>
-CC: <cve@kernel.org>, <stable@vger.kernel.org>, <kevinyang.wang@amd.com>,
-	<alexander.deucher@amd.com>, <liuyongqiang13@huawei.com>
-Subject: [PATCH 5.10] Revert "drm/amdgpu: add missing size check in amdgpu_debugfs_gprwave_read()"
-Date: Wed, 4 Dec 2024 16:23:56 +0800
-Message-ID: <20241204082356.1048-1-zhangzekun11@huawei.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1733300684; c=relaxed/simple;
+	bh=Vbb+LWzgbeKQpAD33xZntLAK0UD94Lkb9f42B+/u9Og=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BQSfttGlXKdaYQp3eKmgHi7u+oB5Vgj/Hnq7TkeaaIl/6SHW/XC8vCxDezj9h+qUkszJLctZ2NiXbuZyRAui3N7BGFga3wElVxwlI7wMtT0ga3Yz7VMoXK39bg4L2JSA3/z3rEYCj7kGw3+9etv5kGX8W+Fdb1nNHAAj1jHYZb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=1GRlokOO; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=tTultgpvICV49EytFNVBFsrb+ynUehgUrUeULSEp1r8=; b=1GRlokOOYg4t7+Fy4AbfCTdFXI
+	LFg09Yjt2TIMpt0LI6H8Riw70HFSE01/4uVrGZea2hXO39BATv06EyMxh6YUT8lwXw7ZzFYML3bUX
+	wh1AVufYPNAeRtQ6U7oet/giIePI+RGL7mDjc+Bds4WExqYQqicDmrwC12dfv8uFX7xCbsSvcW2f2
+	cc2LGEIzOjf0pnPqa45mvcvoCNv32HTDYjzFqOgEMQhHAfCpJgJOMao5dRdWKbcCmK91KzLfbUY5L
+	N5P3Tup2kBhXGXFmJYzjtMQJEpHcWJ4gspjs1n4qL8gC3gKQWRdgvSN7JmfF37ch1zelcWTJDoUdo
+	27b0NulA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tIkgY-0000000BsGP-2EIm;
+	Wed, 04 Dec 2024 08:24:38 +0000
+Date: Wed, 4 Dec 2024 00:24:38 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: cem@kernel.org, stable@vger.kernel.org, linux-xfs@vger.kernel.org,
+	hch@lst.de
+Subject: Re: [PATCH 1/6] xfs: don't move nondir/nonreg temporary repair files
+ to the metadir namespace
+Message-ID: <Z1ARxgqwLYNvpdYS@infradead.org>
+References: <173328106571.1145623.3212405760436181793.stgit@frogsfrogsfrogs>
+ <173328106602.1145623.16395857710576941601.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemf500003.china.huawei.com (7.202.181.241)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <173328106602.1145623.16395857710576941601.stgit@frogsfrogsfrogs>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-This reverts commit 17f5f18085acb5e9d8d13d84a4e12bb3aff2bd64.
+On Tue, Dec 03, 2024 at 07:02:29PM -0800, Darrick J. Wong wrote:
+> From: Darrick J. Wong <djwong@kernel.org>
+> 
+> Only directories or regular files are allowed in the metadata directory
+> tree.  Don't move the repair tempfile to the metadir namespace if this
+> is not true; this will cause the inode verifiers to trip.
 
-The origin mainline patch fix a buffer overflow issue in
-amdgpu_debugfs_gprwave_read(), but it has not been introduced in kernel
-6.1 and older kernels. This patch add a check in a wrong function in the
-same file.
-
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-index 3cca007a0cd0..8a1cb1de2b13 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -396,7 +396,7 @@ static ssize_t amdgpu_debugfs_regs_pcie_write(struct file *f, const char __user
- 	ssize_t result = 0;
- 	int r;
- 
--	if (size > 4096 || size & 0x3 || *pos & 0x3)
-+	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
- 
- 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
--- 
-2.17.1
+Shouldn't this be an error instead of silently returning?  Either way
+the function could probably use a lot more comments explaining what is
+doing and why.
 
 
