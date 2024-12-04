@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-98476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20FC09E44AB
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:34:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CADED9E451A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B065AB6534F
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:39:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 543FBB66C24
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B48204A1C;
-	Wed,  4 Dec 2024 17:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546D52309A0;
+	Wed,  4 Dec 2024 17:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2xh04T1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEKAezYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F2B204A13;
-	Wed,  4 Dec 2024 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2009230995;
+	Wed,  4 Dec 2024 17:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332297; cv=none; b=j2tNd4BZrMINbRTTM17AM0+j/Ej/5w9mYGa3nOsBVs+7ApikEi1Ls1k90YkkLq9d7yBD7isfNl+P+hO/Pjnyk4Ij5CVx5fYKWvOyMWEQIvHYRgOKGDLqoYXiz0xB/83rN5pAenL3uTsz+bsJBvjve6f0/qEKnjC0IIAoY2Hafj8=
+	t=1733332310; cv=none; b=HMzBDsTmE7okLiFqpbWwbhcvzAgw6G40ioxc40SyPOwrlF/6dCEKrNcaRNBtAasQ18q1HtPzaue6KmjAfiTnHnD1QslvrRedp/imnVAtCeV8NDNuhiDfBUkBXbHM/1GMAkMOejtHcdL3LkOwzDjSCnY5i8cXQtP42NMqQK6IIEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332297; c=relaxed/simple;
-	bh=cjhyV+/fM90COjAxJQgpYB2Tqy1Q8XVFd/TkxArK4KY=;
+	s=arc-20240116; t=1733332310; c=relaxed/simple;
+	bh=k1jOQVgSF2aXA8uiylaUo68g12VS2FuU1O43wOhZ6cU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VrgNbz8PWsHEwTwq+1ukbn21LbHm/Yy9dROEIfZiEFi6YsFilFYvQEMc6DYnYZLMaWXXzAGsEz9JV9E6eGtmh0MB1XvwyLSLSbcQ38NcKgbZPI9i3PcHki52efy54F26cusuH2gWSJ8Ff0NX3ufmzg7o0yeryZhHK/h3l1SYsk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2xh04T1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459ADC4CED6;
-	Wed,  4 Dec 2024 17:11:35 +0000 (UTC)
+	 MIME-Version; b=oGj6u18xPbyze+rrEGZjTFNEBrrgpnOAxpvFkUhLIzWErkwYl9+GF4OMLUvDnED1NrIl7g/TSpw9uoX7E4xlzumqNGcOsuA+tLsysvGXxp4YEea8zSuaJq3/R8vA5RQGsZrbfjfEwzckoLhjgGHmCOeEX5SjQqrU+WrSMJmxOhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEKAezYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C608CC4CEDF;
+	Wed,  4 Dec 2024 17:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332296;
-	bh=cjhyV+/fM90COjAxJQgpYB2Tqy1Q8XVFd/TkxArK4KY=;
+	s=k20201202; t=1733332309;
+	bh=k1jOQVgSF2aXA8uiylaUo68g12VS2FuU1O43wOhZ6cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2xh04T1l4wo26Qh0nNxqb6YLbuCMm+iZbzJK596jf6Mfz+fk+1lXn7KES1t/PZk0
-	 7pH05gx13Z6MvaLtBye0pbeVUpPqSzKeccAnwCm2hZyNEfKt9Fz1OMYh7DBhVgfPJt
-	 VDcVQAup3jE4Pgdb+fFxoZk6FUmKFLtGI+VNpXvw2s1o/oc9Dz27YrVlvS/ve7zxIy
-	 /8JHFRwSHnEJUti09jdnOBAYGSWIJre6sOlqboduERC+bz5MdliW21SDffKFbghTin
-	 5YKrzTTQ8IolqL8UbBl+r34A1eGaML9+GnVWzZDVNwJoR9X1/yRNBxABYvmTVw9osI
-	 0LPRJcrN0FRpA==
+	b=hEKAezYZgBOTWO7+H8Y1DAlDeJhhO1+i0Y0gspGdtWMFWB0wdcjzi9z4nRufdDcTo
+	 pk96gDYFB/eBa4vKCqXxb/B78DKOxIW0rjpCxIgk5jiaCazb0IhZNd6erAM0C6f7XB
+	 w36txTowlGc3S7kmME8waHBYN/BE8aqo4D89T7mQR/F1M0Y4ejZrMQLc6MSoTPk7dr
+	 ooqGXvF2hbLaKzie3odW9xSgNGF3VaHqR8Vh2HPsTHGY4E/Bp0VFcp73O58ynaPz16
+	 m9Sd/XVRdgElSofOu8jBBtfKAG9Dc9HZRQLaHBhKwRbfF5Rrr7DHp05h8f59dIXjL/
+	 TrDbZ4oAiBGSw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: devi priya <quic_devipriy@quicinc.com>,
-	Anusha Rao <quic_anusha@quicinc.com>,
-	Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 04/15] PCI: qcom: Add support for IPQ9574
-Date: Wed,  4 Dec 2024 10:59:52 -0500
-Message-ID: <20241204160010.2216008-4-sashal@kernel.org>
+	mathieu.poirier@linaro.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-remoteproc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 11/15] remoteproc: qcom: pas: enable SAR2130P audio DSP support
+Date: Wed,  4 Dec 2024 10:59:59 -0500
+Message-ID: <20241204160010.2216008-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204160010.2216008-1-sashal@kernel.org>
 References: <20241204160010.2216008-1-sashal@kernel.org>
@@ -68,49 +63,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: devi priya <quic_devipriy@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a63b74f2e35be3829f256922037ae5cee6bb844a ]
+[ Upstream commit 009e288c989b3fe548a45c82da407d7bd00418a9 ]
 
-Add the new IPQ9574 platform which is based on the Qcom IP rev. 1.27.0
-and Synopsys IP rev. 5.80a.
+Enable support for the Audio DSP on the Qualcomm SAR2130P platform,
+reusing the SM8350 resources.
 
-The platform itself has four PCIe Gen3 controllers: two single-lane and
-two dual-lane, all are based on Synopsys IP rev. 5.70a. As such, reuse
-all the members of 'ops_2_9_0'.
-
-Link: https://lore.kernel.org/r/20240801054803.3015572-5-quic_srichara@quicinc.com
-Co-developed-by: Anusha Rao <quic_anusha@quicinc.com>
-Signed-off-by: Anusha Rao <quic_anusha@quicinc.com>
-Signed-off-by: devi priya <quic_devipriy@quicinc.com>
-Signed-off-by: Sricharan Ramabadhran <quic_srichara@quicinc.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-3-bd204e39d24e@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom.c | 1 +
+ drivers/remoteproc/qcom_q6v5_pas.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index ef44a82be058b..40e0577738650 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1828,6 +1828,7 @@ static const struct of_device_id qcom_pcie_match[] = {
- 	{ .compatible = "qcom,pcie-ipq8064-v2", .data = &cfg_2_1_0 },
- 	{ .compatible = "qcom,pcie-ipq8074", .data = &cfg_2_3_3 },
- 	{ .compatible = "qcom,pcie-ipq8074-gen3", .data = &cfg_2_9_0 },
-+	{ .compatible = "qcom,pcie-ipq9574", .data = &cfg_2_9_0 },
- 	{ .compatible = "qcom,pcie-msm8996", .data = &cfg_2_3_2 },
- 	{ .compatible = "qcom,pcie-qcs404", .data = &cfg_2_4_0 },
- 	{ .compatible = "qcom,pcie-sa8540p", .data = &cfg_sc8280xp },
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index ef82835e98a4e..0a7477ea832ed 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -1421,6 +1421,7 @@ static const struct of_device_id adsp_of_match[] = {
+ 	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
+ 	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
+ 	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
++	{ .compatible = "qcom,sar2130p-adsp-pas", .data = &sm8350_adsp_resource},
+ 	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
+ 	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
+ 	{ .compatible = "qcom,sc7280-adsp-pas", .data = &sm8350_adsp_resource},
 -- 
 2.43.0
 
