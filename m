@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-98602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CC99E48E8
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:28:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D614A9E4919
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0AA218814A5
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:27:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7246018816B5
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A9F1865FA;
-	Wed,  4 Dec 2024 23:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517FB207644;
+	Wed,  4 Dec 2024 23:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U+TNg1zr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OjT0pakR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD27202C4F;
-	Wed,  4 Dec 2024 23:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD2E20E008;
+	Wed,  4 Dec 2024 23:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354777; cv=none; b=MFeOXUrvgNRHmfq0H8+AeYKU+TSQgxGGySQJ8RhDkvYPC0xOZGHkaHY6adt0GY05dIELMo7IFE5qLwjFwZQPAx8u+XVsDm1Ug/vZZK1XrFF+K2U5zohB9zvEj+3BH28YTfpzxvihhPmstsLLBCgdZgT0V/O8v9RoB2DerYegy3w=
+	t=1733354814; cv=none; b=YzsWog3lul8aBt3riuMv8bbsX9a2615tyLfCHF2tTXZe6mllp+sulEhsTWso6xvCs7OoMVf1E/FhXvDPM1SRypDCoUJK+K+U+K4UNTP7FJu02Wi42uXfz1ELA/6BUpNY6vzI6bZJIGrKDIwn9lVg5yS7ndpgbTOLAOdzvP6fKuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354777; c=relaxed/simple;
-	bh=gFF5Zu+PVc4pu8Aty8CKqrK4CCZ9Ay14XcEr7z9OAjs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ilhI5lFwHgma32V4mCs8HAqRnU/UYhHc1kJfWrYlo0C00AvkoWepy77IybffVMAFkRW1hycGMA2a92dJLD1GN8xwo+uvfIVo4hEKPVqWno3wMkEPHh5miuwJOQCNWj3ECa9mlSPAPiz/kWBSamQh8tM3c6EqySn7LlPvLG7nXE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U+TNg1zr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2D8C4CECD;
-	Wed,  4 Dec 2024 23:26:16 +0000 (UTC)
+	s=arc-20240116; t=1733354814; c=relaxed/simple;
+	bh=uZ6/8HSGQmlZoMbdq46G1DfGZkQcGN844EQM3r5Tt+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PoTArrM+tI0DWD7dT7zoUQc3CEzivWiyJrUrvOVuFNLxGHEhvLQSo5zMS5Rp7/DFOL1QjOyh3KWNXFXR9IbeLJ0xSt5VczeBBO3ydaut6gHcmjHhjrOMVWlp9knT8bCRAMO/CECsHcgfXqiz/4r1UtZov8XrniiqAX2JUhhbUp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OjT0pakR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2768CC4CED2;
+	Wed,  4 Dec 2024 23:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354777;
-	bh=gFF5Zu+PVc4pu8Aty8CKqrK4CCZ9Ay14XcEr7z9OAjs=;
+	s=k20201202; t=1733354813;
+	bh=uZ6/8HSGQmlZoMbdq46G1DfGZkQcGN844EQM3r5Tt+E=;
 	h=From:To:Cc:Subject:Date:From;
-	b=U+TNg1zr85aHifQ6X91gEobkk5ow+Bxx3iEr3/0UiqqxaW6iBdaqDFkE4jEj/b/tA
-	 uye+34D3nv9FrhE2jAk0hN/lOHHecaN3LWuMZgZq1RMU4E2y3I8dbjFaJYnjrQwwfn
-	 dI5XeHiaZw8QwWqOkb1KFBtmylJaSeWQB7Ypj3Xk2GqTi2Q2XFKzspy01GhMGouHP/
-	 k05ORnzaAVW0az8INjL1XRm+lg2/s/oGSPqK/cxYJGLtSS3a5/a4rS7IC+x09guC0j
-	 Y/AVEbNQurry7aMWhZ5vtPTKbXWkWLDKdvp7oi8QW8lLfX46BQ7xcNii6VozPXkcnm
-	 uAzXgy4IMORSQ==
+	b=OjT0pakR8eFhALIkqETuoMpsXqT8rkOW36Bi/r4f6y0XoIgy41Cvo5oF9XX48nbDx
+	 i0SWgGHJoO+z8JyX1p+5a6lSVCItNUxIynKdnCI81Bm3UyAVtkSQNjv0n/ZFgZvnWz
+	 zaj3NEz6jSMpipSJbzfqwzIq899hi6b8bMJQ1B3or7kUVJLR/Ou+AdNQvO3bE3qfQr
+	 9LQqMg0Gtk08bx9AUkEOYuCjIueVxGp7JVL3LTvCnyo1JvLcVrqvrrVibkp0owIZ2A
+	 tspisHAp933id3B4/aYsh9T26pmrkk1dIKyJQTz7JNfgtEKx1LLd9PFbX2wCuM6iBk
+	 jYmV9xA/kyfTA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	syzbot+1c25748a40fe79b8a119@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
-	chenhuacai@kernel.org,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	yangtiezhu@loongson.cn,
-	hejinyang@loongson.cn,
-	tangyouling@loongson.cn,
-	loongarch@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1] LoongArch: Fix sleeping in atomic context for PREEMPT_RT
-Date: Wed,  4 Dec 2024 17:14:54 -0500
-Message-ID: <20241204221457.2247288-1-sashal@kernel.org>
+	ntfs3@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 1/3] fs/ntfs3: Fix warning in ni_fiemap
+Date: Wed,  4 Dec 2024 17:15:30 -0500
+Message-ID: <20241204221534.2247369-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,81 +59,294 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.119
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 88fd2b70120d52c1010257d36776876941375490 ]
+[ Upstream commit e2705dd3d16d1000f1fd8193d82447065de8c899 ]
 
-Commit bab1c299f3945ffe79 ("LoongArch: Fix sleeping in atomic context in
-setup_tlb_handler()") changes the gfp flag from GFP_KERNEL to GFP_ATOMIC
-for alloc_pages_node(). However, for PREEMPT_RT kernels we can still get
-a "sleeping in atomic context" error:
+Use local runs_tree instead of cached. This way excludes rw_semaphore lock.
 
-[    0.372259] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-[    0.372266] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-[    0.372268] preempt_count: 1, expected: 0
-[    0.372270] RCU nest depth: 1, expected: 1
-[    0.372272] 3 locks held by swapper/1/0:
-[    0.372274]  #0: 900000000c9f5e60 (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x524/0x1c60
-[    0.372294]  #1: 90000000087013b8 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x50/0x140
-[    0.372305]  #2: 900000047fffd388 (&zone->lock){+.+.}-{3:3}, at: __rmqueue_pcplist+0x30c/0xea0
-[    0.372314] irq event stamp: 0
-[    0.372316] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-[    0.372322] hardirqs last disabled at (0): [<9000000005947320>] copy_process+0x9c0/0x26e0
-[    0.372329] softirqs last  enabled at (0): [<9000000005947320>] copy_process+0x9c0/0x26e0
-[    0.372335] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[    0.372341] CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.12.0-rc7+ #1891
-[    0.372346] Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
-[    0.372349] Stack : 0000000000000089 9000000005a0db9c 90000000071519c8 9000000100388000
-[    0.372486]         900000010038b890 0000000000000000 900000010038b898 9000000007e53788
-[    0.372492]         900000000815bcc8 900000000815bcc0 900000010038b700 0000000000000001
-[    0.372498]         0000000000000001 4b031894b9d6b725 00000000055ec000 9000000100338fc0
-[    0.372503]         00000000000000c4 0000000000000001 000000000000002d 0000000000000003
-[    0.372509]         0000000000000030 0000000000000003 00000000055ec000 0000000000000003
-[    0.372515]         900000000806d000 9000000007e53788 00000000000000b0 0000000000000004
-[    0.372521]         0000000000000000 0000000000000000 900000000c9f5f10 0000000000000000
-[    0.372526]         90000000076f12d8 9000000007e53788 9000000005924778 0000000000000000
-[    0.372532]         00000000000000b0 0000000000000004 0000000000000000 0000000000070000
-[    0.372537]         ...
-[    0.372540] Call Trace:
-[    0.372542] [<9000000005924778>] show_stack+0x38/0x180
-[    0.372548] [<90000000071519c4>] dump_stack_lvl+0x94/0xe4
-[    0.372555] [<900000000599b880>] __might_resched+0x1a0/0x260
-[    0.372561] [<90000000071675cc>] rt_spin_lock+0x4c/0x140
-[    0.372565] [<9000000005cbb768>] __rmqueue_pcplist+0x308/0xea0
-[    0.372570] [<9000000005cbed84>] get_page_from_freelist+0x564/0x1c60
-[    0.372575] [<9000000005cc0d98>] __alloc_pages_noprof+0x218/0x1820
-[    0.372580] [<900000000593b36c>] tlb_init+0x1ac/0x298
-[    0.372585] [<9000000005924b74>] per_cpu_trap_init+0x114/0x140
-[    0.372589] [<9000000005921964>] cpu_probe+0x4e4/0xa60
-[    0.372592] [<9000000005934874>] start_secondary+0x34/0xc0
-[    0.372599] [<900000000715615c>] smpboot_entry+0x64/0x6c
-
-This is because in PREEMPT_RT kernels normal spinlocks are replaced by
-rt spinlocks and rt_spin_lock() will cause sleeping. Fix it by disabling
-NUMA optimization completely for PREEMPT_RT kernels.
-
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reported-by: syzbot+1c25748a40fe79b8a119@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/tlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/attrib.c  |   9 ++--
+ fs/ntfs3/frecord.c | 103 +++++++--------------------------------------
+ fs/ntfs3/ntfs_fs.h |   3 +-
+ 3 files changed, 21 insertions(+), 94 deletions(-)
 
-diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
-index eeb2d815cfa2a..faf44cac403b4 100644
---- a/arch/loongarch/mm/tlb.c
-+++ b/arch/loongarch/mm/tlb.c
-@@ -279,7 +279,7 @@ void setup_tlb_handler(int cpu)
- 		/* Avoid lockdep warning */
- 		rcu_cpu_starting(cpu);
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 0763202d00c99..8d789b017fa9b 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -977,7 +977,7 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
  
--#ifdef CONFIG_NUMA
-+#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
- 		vec_sz = sizeof(exception_handlers);
+ 	/* Check for compressed frame. */
+ 	err = attr_is_frame_compressed(ni, attr_b, vcn >> NTFS_LZNT_CUNIT,
+-				       &hint);
++				       &hint, run);
+ 	if (err)
+ 		goto out;
  
- 		if (pcpu_handlers[cpu])
+@@ -1521,16 +1521,16 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
+  * attr_is_frame_compressed - Used to detect compressed frame.
+  *
+  * attr - base (primary) attribute segment.
++ * run  - run to use, usually == &ni->file.run.
+  * Only base segments contains valid 'attr->nres.c_unit'
+  */
+ int attr_is_frame_compressed(struct ntfs_inode *ni, struct ATTRIB *attr,
+-			     CLST frame, CLST *clst_data)
++			     CLST frame, CLST *clst_data, struct runs_tree *run)
+ {
+ 	int err;
+ 	u32 clst_frame;
+ 	CLST clen, lcn, vcn, alen, slen, vcn_next;
+ 	size_t idx;
+-	struct runs_tree *run;
+ 
+ 	*clst_data = 0;
+ 
+@@ -1542,7 +1542,6 @@ int attr_is_frame_compressed(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 
+ 	clst_frame = 1u << attr->nres.c_unit;
+ 	vcn = frame * clst_frame;
+-	run = &ni->file.run;
+ 
+ 	if (!run_lookup_entry(run, vcn, &lcn, &clen, &idx)) {
+ 		err = attr_load_runs_vcn(ni, attr->type, attr_name(attr),
+@@ -1678,7 +1677,7 @@ int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
+ 	if (err)
+ 		goto out;
+ 
+-	err = attr_is_frame_compressed(ni, attr_b, frame, &clst_data);
++	err = attr_is_frame_compressed(ni, attr_b, frame, &clst_data, run);
+ 	if (err)
+ 		goto out;
+ 
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 41c7ffad27901..c33e818b3164c 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1900,46 +1900,6 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 	return REPARSE_LINK;
+ }
+ 
+-/*
+- * fiemap_fill_next_extent_k - a copy of fiemap_fill_next_extent
+- * but it uses 'fe_k' instead of fieinfo->fi_extents_start
+- */
+-static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
+-				     struct fiemap_extent *fe_k, u64 logical,
+-				     u64 phys, u64 len, u32 flags)
+-{
+-	struct fiemap_extent extent;
+-
+-	/* only count the extents */
+-	if (fieinfo->fi_extents_max == 0) {
+-		fieinfo->fi_extents_mapped++;
+-		return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
+-	}
+-
+-	if (fieinfo->fi_extents_mapped >= fieinfo->fi_extents_max)
+-		return 1;
+-
+-	if (flags & FIEMAP_EXTENT_DELALLOC)
+-		flags |= FIEMAP_EXTENT_UNKNOWN;
+-	if (flags & FIEMAP_EXTENT_DATA_ENCRYPTED)
+-		flags |= FIEMAP_EXTENT_ENCODED;
+-	if (flags & (FIEMAP_EXTENT_DATA_TAIL | FIEMAP_EXTENT_DATA_INLINE))
+-		flags |= FIEMAP_EXTENT_NOT_ALIGNED;
+-
+-	memset(&extent, 0, sizeof(extent));
+-	extent.fe_logical = logical;
+-	extent.fe_physical = phys;
+-	extent.fe_length = len;
+-	extent.fe_flags = flags;
+-
+-	memcpy(fe_k + fieinfo->fi_extents_mapped, &extent, sizeof(extent));
+-
+-	fieinfo->fi_extents_mapped++;
+-	if (fieinfo->fi_extents_mapped == fieinfo->fi_extents_max)
+-		return 1;
+-	return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
+-}
+-
+ /*
+  * ni_fiemap - Helper for file_fiemap().
+  *
+@@ -1950,11 +1910,9 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 	      __u64 vbo, __u64 len)
+ {
+ 	int err = 0;
+-	struct fiemap_extent *fe_k = NULL;
+ 	struct ntfs_sb_info *sbi = ni->mi.sbi;
+ 	u8 cluster_bits = sbi->cluster_bits;
+-	struct runs_tree *run;
+-	struct rw_semaphore *run_lock;
++	struct runs_tree run;
+ 	struct ATTRIB *attr;
+ 	CLST vcn = vbo >> cluster_bits;
+ 	CLST lcn, clen;
+@@ -1965,13 +1923,11 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 	u32 flags;
+ 	bool ok;
+ 
++	run_init(&run);
+ 	if (S_ISDIR(ni->vfs_inode.i_mode)) {
+-		run = &ni->dir.alloc_run;
+ 		attr = ni_find_attr(ni, NULL, NULL, ATTR_ALLOC, I30_NAME,
+ 				    ARRAY_SIZE(I30_NAME), NULL, NULL);
+-		run_lock = &ni->dir.run_lock;
+ 	} else {
+-		run = &ni->file.run;
+ 		attr = ni_find_attr(ni, NULL, NULL, ATTR_DATA, NULL, 0, NULL,
+ 				    NULL);
+ 		if (!attr) {
+@@ -1986,7 +1942,6 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 				"fiemap is not supported for compressed file (cp -r)");
+ 			goto out;
+ 		}
+-		run_lock = &ni->file.run_lock;
+ 	}
+ 
+ 	if (!attr || !attr->non_res) {
+@@ -1998,51 +1953,33 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		goto out;
+ 	}
+ 
+-	/*
+-	 * To avoid lock problems replace pointer to user memory by pointer to kernel memory.
+-	 */
+-	fe_k = kmalloc_array(fieinfo->fi_extents_max,
+-			     sizeof(struct fiemap_extent),
+-			     GFP_NOFS | __GFP_ZERO);
+-	if (!fe_k) {
+-		err = -ENOMEM;
+-		goto out;
+-	}
+-
+ 	end = vbo + len;
+ 	alloc_size = le64_to_cpu(attr->nres.alloc_size);
+ 	if (end > alloc_size)
+ 		end = alloc_size;
+ 
+-	down_read(run_lock);
+ 
+ 	while (vbo < end) {
+ 		if (idx == -1) {
+-			ok = run_lookup_entry(run, vcn, &lcn, &clen, &idx);
++			ok = run_lookup_entry(&run, vcn, &lcn, &clen, &idx);
+ 		} else {
+ 			CLST vcn_next = vcn;
+ 
+-			ok = run_get_entry(run, ++idx, &vcn, &lcn, &clen) &&
++			ok = run_get_entry(&run, ++idx, &vcn, &lcn, &clen) &&
+ 			     vcn == vcn_next;
+ 			if (!ok)
+ 				vcn = vcn_next;
+ 		}
+ 
+ 		if (!ok) {
+-			up_read(run_lock);
+-			down_write(run_lock);
+-
+ 			err = attr_load_runs_vcn(ni, attr->type,
+ 						 attr_name(attr),
+-						 attr->name_len, run, vcn);
+-
+-			up_write(run_lock);
+-			down_read(run_lock);
++						 attr->name_len, &run, vcn);
+ 
+ 			if (err)
+ 				break;
+ 
+-			ok = run_lookup_entry(run, vcn, &lcn, &clen, &idx);
++			ok = run_lookup_entry(&run, vcn, &lcn, &clen, &idx);
+ 
+ 			if (!ok) {
+ 				err = -EINVAL;
+@@ -2067,8 +2004,9 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		} else if (is_attr_compressed(attr)) {
+ 			CLST clst_data;
+ 
+-			err = attr_is_frame_compressed(
+-				ni, attr, vcn >> attr->nres.c_unit, &clst_data);
++			err = attr_is_frame_compressed(ni, attr,
++						       vcn >> attr->nres.c_unit,
++						       &clst_data, &run);
+ 			if (err)
+ 				break;
+ 			if (clst_data < NTFS_LZNT_CLUSTERS)
+@@ -2097,8 +2035,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 			if (vbo + dlen >= end)
+ 				flags |= FIEMAP_EXTENT_LAST;
+ 
+-			err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo,
+-							dlen, flags);
++			err = fiemap_fill_next_extent(fieinfo, vbo, lbo, dlen,
++						      flags);
+ 
+ 			if (err < 0)
+ 				break;
+@@ -2119,8 +2057,7 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		if (vbo + bytes >= end)
+ 			flags |= FIEMAP_EXTENT_LAST;
+ 
+-		err = fiemap_fill_next_extent_k(fieinfo, fe_k, vbo, lbo, bytes,
+-						flags);
++		err = fiemap_fill_next_extent(fieinfo, vbo, lbo, bytes, flags);
+ 		if (err < 0)
+ 			break;
+ 		if (err == 1) {
+@@ -2131,19 +2068,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		vbo += bytes;
+ 	}
+ 
+-	up_read(run_lock);
+-
+-	/*
+-	 * Copy to user memory out of lock
+-	 */
+-	if (copy_to_user(fieinfo->fi_extents_start, fe_k,
+-			 fieinfo->fi_extents_max *
+-				 sizeof(struct fiemap_extent))) {
+-		err = -EFAULT;
+-	}
+-
+ out:
+-	kfree(fe_k);
++	run_close(&run);
+ 	return err;
+ }
+ 
+@@ -2672,7 +2598,8 @@ int ni_read_frame(struct ntfs_inode *ni, u64 frame_vbo, struct page **pages,
+ 		down_write(&ni->file.run_lock);
+ 		run_truncate_around(run, le64_to_cpu(attr->nres.svcn));
+ 		frame = frame_vbo >> (cluster_bits + NTFS_LZNT_CUNIT);
+-		err = attr_is_frame_compressed(ni, attr, frame, &clst_data);
++		err = attr_is_frame_compressed(ni, attr, frame, &clst_data,
++					       run);
+ 		up_write(&ni->file.run_lock);
+ 		if (err)
+ 			goto out1;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 26e1e1379c04e..cd8e8374bb5a0 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -446,7 +446,8 @@ int attr_wof_frame_info(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 			struct runs_tree *run, u64 frame, u64 frames,
+ 			u8 frame_bits, u32 *ondisk_size, u64 *vbo_data);
+ int attr_is_frame_compressed(struct ntfs_inode *ni, struct ATTRIB *attr,
+-			     CLST frame, CLST *clst_data);
++			     CLST frame, CLST *clst_data,
++			     struct runs_tree *run);
+ int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
+ 			u64 new_valid);
+ int attr_collapse_range(struct ntfs_inode *ni, u64 vbo, u64 bytes);
 -- 
 2.43.0
 
