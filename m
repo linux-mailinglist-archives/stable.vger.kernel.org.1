@@ -1,75 +1,56 @@
-Return-Path: <stable+bounces-98273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D489E37B0
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:38:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8E69E3819
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6011AB33ECB
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:36:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C52AB34413
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898DE1B218B;
-	Wed,  4 Dec 2024 10:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0B71ABEA7;
+	Wed,  4 Dec 2024 10:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NivLQqTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETyChfSf"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2F31B2188
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 10:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA201A724C;
+	Wed,  4 Dec 2024 10:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733308363; cv=none; b=md6K6UhPixjBm+hFrTPwISdU0azj92mOoZTFs+pcigaT+oPMlPu5HFw49MY0auJJzNaCG+iWNSqwuk4aSVHLmg1irShg+Ie88ReVtptBRuawr56I/i9jHYQ8MviKAmKndXXb/O/Ao6tgVwQnD6hzIRqVKtwiDRsgh9IRAtNXxms=
+	t=1733308479; cv=none; b=sOAxKd6epvoqJqF2ovoKG1Zufmx7eGlCeeCVtYqnhcy/oJEmvS+vUdqIf+fqSEt9FcZIFcOuQNhWAdhMINa10DKpDLkfefhMKE9Js156u9IEoOIq5CExhXLnB0ExEPHsWhu9nMltftsrM1hDQSJ7+TGQQlJ4EasigTofuTV5SdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733308363; c=relaxed/simple;
-	bh=OLoUPjBgCdDsMMwtWaFtL6apVxOZyumCKfzBGuwQTvI=;
+	s=arc-20240116; t=1733308479; c=relaxed/simple;
+	bh=ZmW39cuXdgUBVsyYOe3pr+CBI6V1hxq70ePe7MrH5qw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cKpbRtM2V3kSRU3WO4O3CKcFTsOpowi5ANAO3ql81mMytRARD6/Qrf+Xh9+qaOOzR7IcO5v9CqxpRzpT9HQJLMeHmxt7IVtf4XmXM3AeMVyisRPDZu+EdQ+QX9/5gke21zVKGzVWWLOP1NCoMID5o787ws7XlzK2X7qBIAl4wY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NivLQqTw; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733308361; x=1764844361;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OLoUPjBgCdDsMMwtWaFtL6apVxOZyumCKfzBGuwQTvI=;
-  b=NivLQqTwG17wpaR+LeROlZlgtzPAiG/omACMdywlQNIsaCH4Pr1btQgU
-   jC+9NidiM5Fw7ApMS2g9i6l/AP50prFxjvXtq5iH6+VvvQhwAZRwEeV5J
-   bxtvNvOLhcFkA7ZsKnpMXBKj1GsWTkPbUYHe6eaAShATBQXnw5qvyF5tq
-   YUwUrDeRefDTraN0Ns/AdJJx40RyTcCoYqj56bW95Zhe0loDErgF/jfZn
-   yM3zEBhJQV0i3p2D6qT4x/ahbH6EJBid+k7VNDaK1wyKgSDwTkXBwtqB/
-   e8ypVyxQjZ+DFQBWL1ZPKyOe62baiPeug8qA+uvntl6bEhQLrJ0CL/pSp
-   w==;
-X-CSE-ConnectionGUID: OL0yAOPSQ/Wp3tvn09MP9Q==
-X-CSE-MsgGUID: DgtDKlNfSUuetVLdKMLyDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44177506"
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="44177506"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 02:32:41 -0800
-X-CSE-ConnectionGUID: igVmwB1QQO62SIyFnDRerQ==
-X-CSE-MsgGUID: fZ+m8N5MQcmaHTBhsu0gzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
-   d="scan'208";a="93812257"
-Received: from slindbla-desk.ger.corp.intel.com (HELO intel.com) ([10.245.246.225])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 02:32:38 -0800
-Date: Wed, 4 Dec 2024 11:32:35 +0100
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Eugene Kobyak <eugene.kobyak@intel.com>,
-	intel-gfx@lists.freedesktop.org, John.C.Harrison@intel.com,
-	andi.shyti@linux.intel.com, jani.nikula@linux.intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v6] drm/i915: Fix NULL pointer dereference in
- capture_engine
-Message-ID: <Z1Avw4f93LlBULI2@ashyti-mobl2.lan>
-References: <xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at>
- <053cc89a-0b20-4fb0-b93c-1e864a6b6f6a@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fuk393Inx/b0MA83D5w4AvBluvdBdZBjUAcpq7T9i5vbk2qvgUDYHd1lapDjMApQg1cGcgL4djZiy6DyGcsnzvnclFw0sSSOudHYFQm7RlCLtvIU1gjyroNnrWM5qnbcb2TNdxTLjp9htUO3PYClSsDA9ufeZ6qN93/rR8WO6cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETyChfSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABAEC4CED1;
+	Wed,  4 Dec 2024 10:34:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733308479;
+	bh=ZmW39cuXdgUBVsyYOe3pr+CBI6V1hxq70ePe7MrH5qw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ETyChfSf984dCBCXO5nIzjeETxqeafOVoLWtmfJHmwcuVv/9RULTl6/pao+i9Oyje
+	 oSzjuuwPxqILpk0jUdGN+FJtU3Bq0NPEZQ+wQcvt7Beo/k1Yfa8G7c/wUgC+rga36Z
+	 CKQORky1G6pC7DYtI/riqD4z4nCSsEa/OAdt+TtE=
+Date: Wed, 4 Dec 2024 11:34:35 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Danny Tsen <dtsen@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 043/826] crypto: powerpc/p10-aes-gcm - Register
+ modules as SIMD
+Message-ID: <2024120417-flattop-unpaired-fcf8@gregkh>
+References: <20241203144743.428732212@linuxfoundation.org>
+ <20241203144745.143525056@linuxfoundation.org>
+ <2a720dd0-56a0-4781-81d3-118368613792@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,47 +59,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <053cc89a-0b20-4fb0-b93c-1e864a6b6f6a@intel.com>
+In-Reply-To: <2a720dd0-56a0-4781-81d3-118368613792@kernel.org>
 
-Hi Michal,
-
-> > +	if (rq && !i915_request_started(rq)) {
-> > +		/*
-> > +		* We want to know also what is the gcu_id of the context,
+On Wed, Dec 04, 2024 at 11:00:34AM +0100, Jiri Slaby wrote:
+> Hi,
 > 
-> typo: guc_id
+> On 03. 12. 24, 15:36, Greg Kroah-Hartman wrote:
+> > 6.12-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Danny Tsen <dtsen@linux.ibm.com>
+> > 
+> > [ Upstream commit c954b252dee956d33ee59f594710af28fb3037d9 ]
+> > 
+> > This patch is to fix an issue when simd is not usable that data mismatch
+> > may occur. The fix is to register algs as SIMD modules so that the
+> > algorithm is excecuted when SIMD instructions is usable.  Called
+> > gcm_update() to generate the final digest if needed.
+> > 
+> > A new module rfc4106(gcm(aes)) is also added.
+> > 
+> > Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+> > 
+> > Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+> > Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >   arch/powerpc/crypto/aes-gcm-p10-glue.c | 141 +++++++++++++++++++++----
+> >   1 file changed, 118 insertions(+), 23 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > index f66ad56e765f0..4a029d2fe06ce 100644
+> > --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> ...
+> > @@ -281,6 +295,7 @@ static int p10_aes_gcm_crypt(struct aead_request *req, int enc)
+> >   	/* Finalize hash */
+> >   	vsx_begin();
+> > +	gcm_update(gctx->iv, hash->Htable);
 > 
-> > +		* but if we don't have the context reference, then skip
-> > +		* printing it.
-> > +		*/
+> Now I get:
+> ERROR: modpost: "gcm_update" [arch/powerpc/crypto/aes-gcm-p10-crypto.ko]
+> undefined!
 > 
-> but IMO this comment is redundant as it's quite obvious that without
-> context pointer you can't print guc_id member
-
-I recommended to add a comment because there is some code
-redundancy that, I think, needs some explanation; someone might
-not spot immediately the need for ce, unless goes a the end of
-the drm_info parameter's list.
-
-> > +		if (ce)
-> > +			drm_info(&engine->gt->i915->drm,
-> > +				"Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
-> > +				engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
-> > +		else
-> > +			drm_info(&engine->gt->i915->drm,
-> > +				"Got hung context on %s with active request %lld:%lld not yet started\n",
-> > +				engine->name, rq->fence.context, rq->fence.seqno);
+> Only this:
+> commit 7aa747edcb266490f93651dd749c69b7eb8541d9
+> Author: Danny Tsen <dtsen@linux.ibm.com>
+> Date:   Mon Sep 23 09:30:38 2024 -0400
 > 
-> since you are touching drm_info() where we use engine->gt then maybe
-> it's good time to switch to gt_info() to get better per-GT message?
+>     crypto: powerpc/p10-aes-gcm - Re-write AES/GCM stitched implementation
+> 
+> 
+> 
+> added that function...
 
-I think the original reason for using drm_info is because we are
-outside the GT. But, because the engine belongs to the GT, it
-makes also sense to use gt_info(), I don't oppose.
+Ah, thanks, I'll go drop this patch from everywhere.
 
-It would make more sense to move this function completely into
-gt/.
-
-Thanks,
-Andi
+greg k-h
 
