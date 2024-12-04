@@ -1,103 +1,124 @@
-Return-Path: <stable+bounces-98272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C93E9E3782
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:33:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE71B1619B8
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:33:10 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4854E1B3949;
-	Wed,  4 Dec 2024 10:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5ZWS+h/"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D489E37B0
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:38:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009571A724C;
-	Wed,  4 Dec 2024 10:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6011AB33ECB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:36:53 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898DE1B218B;
+	Wed,  4 Dec 2024 10:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NivLQqTw"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2F31B2188
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 10:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733308267; cv=none; b=k/3sQ+jV+AV9KjiNnGyU3XPftuvWqsmHhC7AD8YPWuqUgThKyfoU/OS9CltlQDh1N2RUR9pd+o1HmKsRO9DwV5VT6iRHuqPeFm1eqIziIUNjF4+o4Ew34jqww5qaIuGQBAGw/vo6877qRbDQpvcDlDu4BRkVw8+vKGp2HiPPwug=
+	t=1733308363; cv=none; b=md6K6UhPixjBm+hFrTPwISdU0azj92mOoZTFs+pcigaT+oPMlPu5HFw49MY0auJJzNaCG+iWNSqwuk4aSVHLmg1irShg+Ie88ReVtptBRuawr56I/i9jHYQ8MviKAmKndXXb/O/Ao6tgVwQnD6hzIRqVKtwiDRsgh9IRAtNXxms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733308267; c=relaxed/simple;
-	bh=RlkJX0MrhsJeOtYwbzKz9uU11pc4QQCMS9xkZOpuwfo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s5JJtW0VD48xgMu14TrjxvnpgT/zjILxdQmnjAw0qNb4MLEwro2FYuEAjKMFhkgXVqSB+jSLQc5IL2HgrrwXSrx3+aKV6LJmOZtkFueJQSGqNIqC1vuWZngcEsCaUyi31rn3ZhoUKBOWshalEGIJBpSbi6Tw1JiVPFxge05t5hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5ZWS+h/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3466AC4CEDD;
-	Wed,  4 Dec 2024 10:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733308266;
-	bh=RlkJX0MrhsJeOtYwbzKz9uU11pc4QQCMS9xkZOpuwfo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5ZWS+h/mbWTTmvQEszVA3a14XrbmFIlUZT3Xh3uiVXjA7t11SGw44HUlMrfplPYA
-	 eDkn54F/9g20AZGsvSm+WIdkcsKbvTzebPOHjhtserCsUvjzdIn0a9PeWD0PGhWJ4Q
-	 XFFy5nVD5vLk/AwUEDmp4Nl4JIvO7HXhHiEv7fRZZ+HF7/QkP3ndMlQNBBnf9O/7zB
-	 ntvwajTTgSPav6hSNYuizgyH23apH2H9ejefXRwGAyqUX7obgZIVcwqgDnHSNzoGul
-	 bKxuAMEKr7wBrBf4V0xDYc7FU5Y68hip5sJKCx9SMgobcEXVg/MiZGFwaDbld5F+7L
-	 oT82zbZsfvrMQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Davide Ciminaghi <ciminaghi@gnudd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
+	s=arc-20240116; t=1733308363; c=relaxed/simple;
+	bh=OLoUPjBgCdDsMMwtWaFtL6apVxOZyumCKfzBGuwQTvI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cKpbRtM2V3kSRU3WO4O3CKcFTsOpowi5ANAO3ql81mMytRARD6/Qrf+Xh9+qaOOzR7IcO5v9CqxpRzpT9HQJLMeHmxt7IVtf4XmXM3AeMVyisRPDZu+EdQ+QX9/5gke21zVKGzVWWLOP1NCoMID5o787ws7XlzK2X7qBIAl4wY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NivLQqTw; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733308361; x=1764844361;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OLoUPjBgCdDsMMwtWaFtL6apVxOZyumCKfzBGuwQTvI=;
+  b=NivLQqTwG17wpaR+LeROlZlgtzPAiG/omACMdywlQNIsaCH4Pr1btQgU
+   jC+9NidiM5Fw7ApMS2g9i6l/AP50prFxjvXtq5iH6+VvvQhwAZRwEeV5J
+   bxtvNvOLhcFkA7ZsKnpMXBKj1GsWTkPbUYHe6eaAShATBQXnw5qvyF5tq
+   YUwUrDeRefDTraN0Ns/AdJJx40RyTcCoYqj56bW95Zhe0loDErgF/jfZn
+   yM3zEBhJQV0i3p2D6qT4x/ahbH6EJBid+k7VNDaK1wyKgSDwTkXBwtqB/
+   e8ypVyxQjZ+DFQBWL1ZPKyOe62baiPeug8qA+uvntl6bEhQLrJ0CL/pSp
+   w==;
+X-CSE-ConnectionGUID: OL0yAOPSQ/Wp3tvn09MP9Q==
+X-CSE-MsgGUID: DgtDKlNfSUuetVLdKMLyDg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="44177506"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="44177506"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 02:32:41 -0800
+X-CSE-ConnectionGUID: igVmwB1QQO62SIyFnDRerQ==
+X-CSE-MsgGUID: fZ+m8N5MQcmaHTBhsu0gzw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="93812257"
+Received: from slindbla-desk.ger.corp.intel.com (HELO intel.com) ([10.245.246.225])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 02:32:38 -0800
+Date: Wed, 4 Dec 2024 11:32:35 +0100
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Eugene Kobyak <eugene.kobyak@intel.com>,
+	intel-gfx@lists.freedesktop.org, John.C.Harrison@intel.com,
+	andi.shyti@linux.intel.com, jani.nikula@linux.intel.com,
 	stable@vger.kernel.org
-Subject: [PATCH 01/11] x86/Kconfig: Geode CPU has cmpxchg8b
-Date: Wed,  4 Dec 2024 11:30:32 +0100
-Message-Id: <20241204103042.1904639-2-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241204103042.1904639-1-arnd@kernel.org>
-References: <20241204103042.1904639-1-arnd@kernel.org>
+Subject: Re: [PATCH v6] drm/i915: Fix NULL pointer dereference in
+ capture_engine
+Message-ID: <Z1Avw4f93LlBULI2@ashyti-mobl2.lan>
+References: <xmsgfynkhycw3cf56akp4he2ffg44vuratocsysaowbsnhutzi@augnqbm777at>
+ <053cc89a-0b20-4fb0-b93c-1e864a6b6f6a@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <053cc89a-0b20-4fb0-b93c-1e864a6b6f6a@intel.com>
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hi Michal,
 
-An older cleanup of mine inadvertently removed geode-gx1 and geode-lx
-from the list of CPUs that are known to support a working cmpxchg8b.
+> > +	if (rq && !i915_request_started(rq)) {
+> > +		/*
+> > +		* We want to know also what is the gcu_id of the context,
+> 
+> typo: guc_id
+> 
+> > +		* but if we don't have the context reference, then skip
+> > +		* printing it.
+> > +		*/
+> 
+> but IMO this comment is redundant as it's quite obvious that without
+> context pointer you can't print guc_id member
 
-Fixes: 88a2b4edda3d ("x86/Kconfig: Rework CONFIG_X86_PAE dependency")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/x86/Kconfig.cpu | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I recommended to add a comment because there is some code
+redundancy that, I think, needs some explanation; someone might
+not spot immediately the need for ce, unless goes a the end of
+the drm_info parameter's list.
 
-diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
-index 2a7279d80460..42e6a40876ea 100644
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -368,7 +368,7 @@ config X86_HAVE_PAE
- 
- config X86_CMPXCHG64
- 	def_bool y
--	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
-+	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7 || MGEODEGX1 || MGEODE_LX
- 
- # this should be set for all -march=.. options where the compiler
- # generates cmov.
--- 
-2.39.5
+> > +		if (ce)
+> > +			drm_info(&engine->gt->i915->drm,
+> > +				"Got hung context on %s with active request %lld:%lld [0x%04X] not yet started\n",
+> > +				engine->name, rq->fence.context, rq->fence.seqno, ce->guc_id.id);
+> > +		else
+> > +			drm_info(&engine->gt->i915->drm,
+> > +				"Got hung context on %s with active request %lld:%lld not yet started\n",
+> > +				engine->name, rq->fence.context, rq->fence.seqno);
+> 
+> since you are touching drm_info() where we use engine->gt then maybe
+> it's good time to switch to gt_info() to get better per-GT message?
 
+I think the original reason for using drm_info is because we are
+outside the GT. But, because the engine belongs to the GT, it
+makes also sense to use gt_info(), I don't oppose.
+
+It would make more sense to move this function completely into
+gt/.
+
+Thanks,
+Andi
 
