@@ -1,250 +1,195 @@
-Return-Path: <stable+bounces-98269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE009E3739
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:09:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799459E3753
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 11:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A01D0B2516C
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:08:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ADF92813A7
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 10:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6C81A0B07;
-	Wed,  4 Dec 2024 10:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FDE1AE005;
+	Wed,  4 Dec 2024 10:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DzJe1ISN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="2Sf2Njho";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nqygL3p6";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5nJfIlNF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tvBlw8SK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091EF199EA8
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 10:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4DE2500D2
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 10:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733306895; cv=none; b=syC5dTd0Qnk3kFRw8SSQbi+4eOnxt804nNWR8YQhAzfJ1ztuMVWJufGHcA28NtxXLSu1V+V5ebxF1xswFtoWZ6XCYWj0Tr6h1e4r2w2tJUniAYxtIAqFrV+Ejv9mPTDOz73mC+iw61TST3At1aFAVL9Pny15wUL9Kd2gJ6R6Z+8=
+	t=1733307429; cv=none; b=q2Siuh5S/MbFeANXvsbRHsfWERd1SPEkOkd5C7AQ+qCSJ5kfGDcJ6P//MdqwRUJugQzlRcpUN2GurUmIit1TxUwtnBAFFVfCH2+rPtebQrdM4rKwYasSmUv6pd3+FHUdqzJaUZACTaNQM3h8JaQB2P8R1rsI5bGw7cDUkIeNpyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733306895; c=relaxed/simple;
-	bh=Zazrb4J8g3ClxvwCQ/DO89s1q9XaA80PgAC+QPgX8Fw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=egPzu9Aw89hqL3Edwzs+dBhUaZC1rI6qwv2vV4e6edaOu5QiyLriTe1yxoS2jBAXPiIhfHqTbg6e0JJAcMbm36bmx0AVAqJy3RxB9tnwglUW1KKOw4ePr766H5A+nTBSMLCrGrICZywD3QxwTIXtfkvpxwyZXCoda/M/89dwObo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DzJe1ISN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=2Sf2Njho; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nqygL3p6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5nJfIlNF; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EB1211F365;
-	Wed,  4 Dec 2024 10:08:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1733306892; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
-	b=DzJe1ISN+6RgEveA+d99YQzCBMufnXFvJPWrMf9sE2U0O42dgmgfGGGeTF6FBeS77yQZDg
-	f2kKipmJSKOT0S3VscQdsr+xRvV7tEJrkWbrmDyEM7efsKeKMvDSUAHuTiiOGGrSjhUsiF
-	sqdABqOzmXp343FkGqrGCvrBvLeEMFE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1733306892;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
-	b=2Sf2NjhoebeUzhmLZ24056rDicZCfzBKC0tkOOXBWBfkoFPbx3/m6crN20r0/6IoMVPd33
-	1z+PHvffrZf7vUBQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nqygL3p6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5nJfIlNF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1733306891; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
-	b=nqygL3p661HwuL1iWlgZ9P+9NYwLLZf2wjfd48VkGXLuNv+kny3CZdxf6cZnlaj8PXXehr
-	29QUqPaju3/pJwO1MsjfXpTVsm/zJaRcpJI3tyYbusZcvZG2uD7GqlC9BMz60qtuPHJ2lD
-	CLwRe7y7RsUV1JNx5y9wYB4dlyTnNj8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1733306891;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YB1JejBL752uPr6dQ98f6dTDLRVpGbyFkH26mYiKGNE=;
-	b=5nJfIlNF1bWR2h8AtY7UyDg57APLG7gI1hhssrB2+gvGjC9kz2rFF/hWvJq7sLqcNUCr1b
-	1UeIzrIxHhWQ2vCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E1D661396E;
-	Wed,  4 Dec 2024 10:08:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id y2geNwsqUGfXeAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 04 Dec 2024 10:08:11 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id A0548A0918; Wed,  4 Dec 2024 11:08:11 +0100 (CET)
-Date: Wed, 4 Dec 2024 11:08:11 +0100
-From: Jan Kara <jack@suse.cz>
-To: Jakub Acs <acsjakub@amazon.com>
-Cc: gregkh@linuxfoundation.org, acsjakub@amazon.de, jack@suse.cz,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 6.1] udf: Fold udf_getblk() into udf_bread()
-Message-ID: <20241204100811.c7kvouk3es7oryx6@quack3>
-References: <2024112908-stillness-alive-c9d1@gregkh>
- <20241204093226.60654-1-acsjakub@amazon.com>
+	s=arc-20240116; t=1733307429; c=relaxed/simple;
+	bh=jBI72p1G4aC+JP1xOK/m0VIInB1bR7rMPs063MVIUgU=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=jVomQgy7Y9UUgtk0/SZD2Ug2w1reMTUwYUL/yEO0yC+ycXgERwdAUst9q/z8tIT6dGXaQqmvRaceXREGmVWRvYg1Re2JMBrY3/AQfdOP3jZm5S22e63z4XQSnROM/ZnnMJXu13gEEV9FiBuPiSxvNXGywhw3HswWJBmUacBPk5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tvBlw8SK; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-385eed29d7fso471973f8f.0
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 02:17:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733307426; x=1733912226; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IwYGoE0lwYluIalBShQtlG9f9t82GiZ00OYlWPwUtzU=;
+        b=tvBlw8SKR4zGVMREsTDMmsk9jqQ4lS67A4kdLwKkhrG3EWCWty3T3yBn1l2sFO+kiP
+         9X5jcc8MzKBY8M6+C8J/prId7MZ4THyJUenQc7mcCQhsJSuhA3uMAIJUTxFjMMIXp4da
+         mIqZpYphhKChTvN0RoYmuVlES4ag8kcibqeFbpKnGQzi+jxNG6gnRCZff4V/SU8a2LLa
+         UiO5xoNh+6CJ4Z5NAYc+K+sGX48cvyKARXXOpeAe+kwJONfjsdfY3NjOgL/BOf/k0IgT
+         FufkjAaFKC7zemr57Gbbi6jixDv+L6yMgqtoZBXFIfy/wcabJ8kVBCQa8pxQabd8qCJT
+         Fr6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733307426; x=1733912226;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=IwYGoE0lwYluIalBShQtlG9f9t82GiZ00OYlWPwUtzU=;
+        b=EPgGfUoylfixUtOcEGQBq1nhoKYompyyYu8kaQ7mu7g3vM3lKmKcZl9nOEL/XC7e8U
+         dax8LOlBxICjyyB5UDKf0EbpzCH6vcrG6FGuSO8yIO2DsBhdBZWfkd/YE2z8gZeiJiLy
+         6TUJKW9tJem2KpUX6FQ63PcquAulxL4ztLV7uuDvsTHSiwOZ0Jf43DjMYQHqZhyGybkZ
+         39YjSQMe9XnB7fV3DEONEYEqsH2L+L1ZUBYP+j1t3IVskawYPLbwbUuP9Ucqz/+VVuTA
+         JkifYBo13f84Yntg0/RlNdgNh+7wqv3ymm04KPrEMc6uwCSKbqBDDT39jIDtAVZyjSxm
+         cCpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWeNHZtMJgZ00P1Rw+bwKnjuFEk0irX1/mTXBeVb2+eqrbzVksf+kgmHNrj5eKG4ab7Rbxsxdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOAeZg96bQhmEspQK+fFz50KlWjcoRxYEsa5q6xcVHx0wi7L2B
+	ZAUCKSWmY/sbghziUkHm+6wJOBgonxjNOvzs4/oEkP+kt3vyXyFu5wzAOKDGwt8=
+X-Gm-Gg: ASbGncsc0SSCL2q1EOsmJoirJIBzQkHG4/70hs00nH/5VEBKsehgR8z4pO3R+leYLyN
+	NdctPJeLvHEc2zkZsY/K+xxfGWA6sJxzjxUlR3pbJirRP6Ct01IJ0OVN3sN/LUTX1qcWtC4ugS/
+	HEb+cyTqpPuqNVbHsBBwuGtnWNqVIl1G2WyWxMkBPdk+X5CBB7xv+CwaG6k/dBPgQhN81k8ar1p
+	OKcxILacqEXJA3bf4UMmm50XQ8hx6t85y+iN3EMb2DchSktchIEyLzBzjP1cFmkBIYNFi7oj3oc
+	oOtHv/+7dlIHgHrIIUskJ2WU
+X-Google-Smtp-Source: AGHT+IEnnBeTi4rkAq3RJvKv2sDTzPVMvHzLRXRbi8PGwwB6IaU0jmg6KgC+yuOAOUHizPIfNPeD9A==
+X-Received: by 2002:a05:6000:1f84:b0:385:e90a:b7ea with SMTP id ffacd0b85a97d-385e90abbd6mr12256289f8f.3.1733307426515;
+        Wed, 04 Dec 2024 02:17:06 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:982:cbb0:740:b323:3531:5c75? ([2a01:e0a:982:cbb0:740:b323:3531:5c75])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e391656csm12702156f8f.47.2024.12.04.02.17.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Dec 2024 02:17:06 -0800 (PST)
+Message-ID: <f727834f-b178-4a85-aeae-54826cbbde42@linaro.org>
+Date: Wed, 4 Dec 2024 11:17:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241204093226.60654-1-acsjakub@amazon.com>
-X-Rspamd-Queue-Id: EB1211F365
-X-Spam-Score: -4.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MISSING_XM_UA(0.00)[];
-	ARC_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim,syzkaller.appspot.com:url,suse.com:email];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+From: neil.armstrong@linaro.org
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH 2/9] crypto: qce - unregister previously registered algos
+ in error path
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Thara Gopinath <thara.gopinath@gmail.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Stanimir Varbanov <svarbanov@mm-sol.com>, linux-crypto@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org
+References: <20241203-crypto-qce-refactor-v1-0-c5901d2dd45c@linaro.org>
+ <20241203-crypto-qce-refactor-v1-2-c5901d2dd45c@linaro.org>
+ <b3e5184d-19bc-45ed-92e3-a751842839b3@linaro.org>
+ <CAMRc=Mc+hKeAwyvm_aaWe_r07iXuBMy0hRQrXSQjpy0irKzvMw@mail.gmail.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <CAMRc=Mc+hKeAwyvm_aaWe_r07iXuBMy0hRQrXSQjpy0irKzvMw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed 04-12-24 09:32:26, Jakub Acs wrote:
-> commit 32f123a3f34283f9c6446de87861696f0502b02e upstream.
+On 03/12/2024 16:05, Bartosz Golaszewski wrote:
+> On Tue, Dec 3, 2024 at 2:55 PM <neil.armstrong@linaro.org> wrote:
+>>
+>> On 03/12/2024 10:19, Bartosz Golaszewski wrote:
+>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>
+>>> If we encounter an error when registering alorithms with the crypto
+>>> framework, we just bail out and don't unregister the ones we
+>>> successfully registered in prior iterations of the loop.
+>>>
+>>> Add code that goes back over the algos and unregisters them before
+>>> returning an error from qce_register_algs().
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: ec8f5d8f6f76 ("crypto: qce - Qualcomm crypto engine driver")
+>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>> ---
+>>>    drivers/crypto/qce/core.c | 11 +++++++----
+>>>    1 file changed, 7 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/drivers/crypto/qce/core.c b/drivers/crypto/qce/core.c
+>>> index 58ea93220f015..848e5e802b92b 100644
+>>> --- a/drivers/crypto/qce/core.c
+>>> +++ b/drivers/crypto/qce/core.c
+>>> @@ -51,16 +51,19 @@ static void qce_unregister_algs(struct qce_device *qce)
+>>>    static int qce_register_algs(struct qce_device *qce)
+>>>    {
+>>>        const struct qce_algo_ops *ops;
+>>> -     int i, ret = -ENODEV;
+>>> +     int i, j, ret = -ENODEV;
+>>>
+>>>        for (i = 0; i < ARRAY_SIZE(qce_ops); i++) {
+>>>                ops = qce_ops[i];
+>>>                ret = ops->register_algs(qce);
+>>> -             if (ret)
+>>> -                     break;
+>>> +             if (ret) {
+>>> +                     for (j = i - 1; j >= 0; j--)
+>>> +                             ops->unregister_algs(qce);
+>>> +                     return ret;
+>>> +             }
+>>>        }
+>>>
+>>> -     return ret;
+>>> +     return 0;
+>>>    }
+>>>
+>>>    static int qce_handle_request(struct crypto_async_request *async_req)
+>>>
+>>
+>> Perhaps you can also use the devm trick here aswell ?
+>>
 > 
-> udf_getblk() has a single call site. Fold it there.
-> 
-> Signed-off-by: Jan Kara <jack@suse.cz>
-> 
-> [acsjakub: backport-adjusting changes]
-> udf_getblk() has changed between 6.1 and the backported commit namely
-> in commit 541e047b14c8 ("udf: Use udf_map_block() in udf_getblk()")
-> 
-> Backport using the form of udf_getblk present in 6.1., that means use
-> udf_get_block() instead of udf_map_block() and use dummy in buffer_new()
-> and buffer_mapped().
-> 
-> Closes: https://syzkaller.appspot.com/bug?extid=a38e34ca637c224f4a79
-> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
-> ---
-> While doing the backport I have noticed potential side effect of the
-> upstream commit (present in the mainline):
-> 
-> If we take the if-branch of 'if (map.oflags & UDF_BLK_NEW)', we will
-> return the bh without the 'if (bh_read(bh, 0) >= 0)' check. Prior to
-> the folding, the check wouldn't be skipped, was this intentional by the
-> upstream commit?
+> I wanted to keep this one brief for backporting but I also think that
+> scheduling a separate action here for every algo would be a bit
+> overkill. This is quite concise so I'd keep it this way.
 
-Absolutely. bh_read() is pointless if you fill in the buffer contents
-yourself (as we do in the 'if (map.oflags & UDF_BLK_NEW)' branch).
+Sure understandable!
 
-								Honza
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-> ---
->  fs/udf/inode.c | 46 +++++++++++++++++++++-------------------------
->  1 file changed, 21 insertions(+), 25 deletions(-)
 > 
-> diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-> index d7d6ccd0af06..626450101412 100644
-> --- a/fs/udf/inode.c
-> +++ b/fs/udf/inode.c
-> @@ -369,29 +369,6 @@ static int udf_get_block(struct inode *inode, sector_t block,
->  	return err;
->  }
->  
-> -static struct buffer_head *udf_getblk(struct inode *inode, udf_pblk_t block,
-> -				      int create, int *err)
-> -{
-> -	struct buffer_head *bh;
-> -	struct buffer_head dummy;
-> -
-> -	dummy.b_state = 0;
-> -	dummy.b_blocknr = -1000;
-> -	*err = udf_get_block(inode, block, &dummy, create);
-> -	if (!*err && buffer_mapped(&dummy)) {
-> -		bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
-> -		if (buffer_new(&dummy)) {
-> -			lock_buffer(bh);
-> -			memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
-> -			set_buffer_uptodate(bh);
-> -			unlock_buffer(bh);
-> -			mark_buffer_dirty_inode(bh, inode);
-> -		}
-> -		return bh;
-> -	}
-> -
-> -	return NULL;
-> -}
->  
->  /* Extend the file with new blocks totaling 'new_block_bytes',
->   * return the number of extents added
-> @@ -1108,10 +1085,29 @@ struct buffer_head *udf_bread(struct inode *inode, udf_pblk_t block,
->  			      int create, int *err)
->  {
->  	struct buffer_head *bh = NULL;
-> +	struct buffer_head dummy;
->  
-> -	bh = udf_getblk(inode, block, create, err);
-> -	if (!bh)
-> +	dummy.b_state = 0;
-> +	dummy.b_blocknr = -1000;
-> +
-> +	*err = udf_get_block(inode, block, &dummy, create);
-> +	if (*err || !buffer_mapped(&dummy))
-> +		return NULL
-> +
-> +	bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
-> +	if (!bh) {
-> +		*err = -ENOMEM;
->  		return NULL;
-> +	}
-> +
-> +	if (buffer_new(&dummy)) {
-> +		lock_buffer(bh);
-> +		memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
-> +		set_buffer_uptodate(bh);
-> +		unlock_buffer(bh);
-> +		mark_buffer_dirty_inode(bh, inode);
-> +		return bh;
-> +	}
->  
->  	if (bh_read(bh, 0) >= 0)
->  		return bh;
-> 
-> base-commit: e4d90d63d385228b1e0bcf31cc15539bbbc28f7f
-> -- 
-> 2.40.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Bart
+
 
