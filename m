@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-98457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47FE9E44B9
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:37:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5665E9E4536
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45C6ABA2487
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:30:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A41EB32183
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF27B228D9D;
-	Wed,  4 Dec 2024 17:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A25F218AD6;
+	Wed,  4 Dec 2024 17:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJUaG+nC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HVYI9wIr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B751228D95;
-	Wed,  4 Dec 2024 17:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFFC218AC5;
+	Wed,  4 Dec 2024 17:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331806; cv=none; b=neXjjL//S5XH7a20rqiGVn9SjJMhA3VlSh/CA6LKP8Uf29z0Rb2cdtXeJLTvOunv3eksaH8XJKoaqzRMVIVB527aGAp6tziicF4R4zChD2nuIG76tO3VvLh6vFJzQ8Ekdq9WD3SoN2+Ul+6o3aO7fyzoyHi6OO4xGY7SpNBKfD4=
+	t=1733331808; cv=none; b=Xf8Bf8jhN7cvGJZ8j7mjwgbJHUSq2C4m3w6MF+sbJjnMx28YHWV0AB1A1TZcxlgJA3x1XOyqwokY9ekZ8iGDKs85CoP+sI0RMu+ZXgEj6ikg9E8nAEOdQQysrqHab70VCHACz6wRPV5O+bltGUnWvwSgxPPBwL9ynXXEgtYUFsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331806; c=relaxed/simple;
-	bh=gT7/ZYx16a7GEXmiOrl/ZD/dAbbUaDgi3E1RX5rX1qo=;
+	s=arc-20240116; t=1733331808; c=relaxed/simple;
+	bh=BAtYgzy4rvRUDcmcLeuuSuc7wPnz3hH/LbP+TPbtIzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pcONo5ny5fwl7Xy0bLZ11WVkbhuDwUCGOgv9TSjGbdBJxdmhnERlae4JkkRDG3RUbIJH3frIuFvhsyPbb77ZlniyoXqwjNMHdoSSy0rpVmz+zJzBlqXWSWm6J76OSXHJvCR8dLqTHPE/ATMneJ+HAhmNElmlieAtkcdBHhX/QLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJUaG+nC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C16C4CED1;
-	Wed,  4 Dec 2024 17:03:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZBhqMN821S2gY4/cPli3WmTwN6MCe7Q2OssPyr6G/emXVAhER0urRGOshp47Eof/v2fWapoHLD+0JUr3xDYJ/m18WAS9aS9T25DUhYv1tBO8cS51uPGZ4M+iNLN9rRNRbaly2jGccVDaVmY4S7ARxmZw8v5djwchHjpD4YeqCjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HVYI9wIr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0AFC4CECD;
+	Wed,  4 Dec 2024 17:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331806;
-	bh=gT7/ZYx16a7GEXmiOrl/ZD/dAbbUaDgi3E1RX5rX1qo=;
+	s=k20201202; t=1733331808;
+	bh=BAtYgzy4rvRUDcmcLeuuSuc7wPnz3hH/LbP+TPbtIzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJUaG+nCZbHVrwXRsQHbRnlvspORwKclJncIKu8w75E0pGHiR1MnhKVnwR9qiuAVs
-	 f4lG2scUCqaY2b7YscZdFCOLqY3rV5kTc7U8UQhB286mtDvqnswyhiGn9prkcOGwn2
-	 5TsRqd06Z05W98dcSCKPIlYMbFusJrlKo/oCbqV0WQGI+wCy9XrqCHL0Gwz6JqHcp8
-	 qCp20EJhdFoggegOZkcIV3XgwPBP8uw9DtwaSpLoDtYX/iO5gTE4n468TL7w08pG55
-	 hudoHteZZcZ7yF+mZfrA+Zvgw/d9aazHdA4vuLwYOTt/32wLeYmZqLYd3mU68tnrLB
-	 /+grFz/rPpdqQ==
+	b=HVYI9wIrMa0FoaHE6R0x9OdTCWbxk/REHmHxirDlTn3zrMnb3iEaQkCrUUlX/uE+x
+	 Ed4ABdEgwOZIN+V6pIhDsVDaqd5dDmoVUR/eWl0FxYsJvTs3TiaflH2otKV1ATKLND
+	 PWlTsJTKGEf75lXSKAAkQnA9Y8qiZ1b9cOc5voXP+OBxi1Rc2/LF7S7TPqu0DVh4MO
+	 /JyDpwHyqcmzU3NOlOzF7tQbVCJGOiAV09sTdyfxv7iTqJB4RUDkmFBCF6lx4u53z8
+	 urTpbSiVkiPELXlhCBbv/l/bF44qQno0vKCrJqDtTeVfS99tSmzoDoSlp6UIxJvoJt
+	 jzZTjfRKvGJrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: =?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 7/9] scsi: st: Add MTIOCGET and MTLOAD to ioctls allowed after device reset
-Date: Wed,  4 Dec 2024 10:51:53 -0500
-Message-ID: <20241204155157.2214959-7-sashal@kernel.org>
+	andersson@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 8/9] pinctrl: qcom-pmic-gpio: add support for PM8937
+Date: Wed,  4 Dec 2024 10:51:54 -0500
+Message-ID: <20241204155157.2214959-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204155157.2214959-1-sashal@kernel.org>
 References: <20241204155157.2214959-1-sashal@kernel.org>
@@ -68,84 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Barnabás Czémán <barnabas.czeman@mainlining.org>
 
-[ Upstream commit 0b120edb37dc9dd8ca82893d386922eb6b16f860 ]
+[ Upstream commit 89265a58ff24e3885c2c9ca722bc3aaa47018be9 ]
 
-Most drives rewind the tape when the device is reset. Reading and writing
-are not allowed until something is done to make the tape position match the
-user's expectation (e.g., rewind the tape). Add MTIOCGET and MTLOAD to
-operations allowed after reset. MTIOCGET is modified to not touch the tape
-if pos_unknown is non-zero. The tape location is known after MTLOAD.
+PM8937 has 8 GPIO-s with holes on GPIO3, GPIO4 and GPIO6.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
-Link: https://lore.kernel.org/r/20241106095723.63254-3-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/20241031-msm8917-v2-2-8a075faa89b1@mainlining.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-spmi-gpio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index c08518258f001..3b819c6b15a56 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3505,6 +3505,7 @@ static long st_ioctl_common(struct file *file, unsigned int cmd_in, void __user
- 	int i, cmd_nr, cmd_type, bt;
- 	int retval = 0;
- 	unsigned int blk;
-+	bool cmd_mtiocget;
- 	struct scsi_tape *STp = file->private_data;
- 	struct st_modedef *STm;
- 	struct st_partstat *STps;
-@@ -3618,6 +3619,7 @@ static long st_ioctl_common(struct file *file, unsigned int cmd_in, void __user
- 			 */
- 			if (mtc.mt_op != MTREW &&
- 			    mtc.mt_op != MTOFFL &&
-+			    mtc.mt_op != MTLOAD &&
- 			    mtc.mt_op != MTRETEN &&
- 			    mtc.mt_op != MTERASE &&
- 			    mtc.mt_op != MTSEEK &&
-@@ -3731,17 +3733,28 @@ static long st_ioctl_common(struct file *file, unsigned int cmd_in, void __user
- 		goto out;
- 	}
- 
-+	cmd_mtiocget = cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET);
-+
- 	if ((i = flush_buffer(STp, 0)) < 0) {
--		retval = i;
--		goto out;
--	}
--	if (STp->can_partitions &&
--	    (i = switch_partition(STp)) < 0) {
--		retval = i;
--		goto out;
-+		if (cmd_mtiocget && STp->pos_unknown) {
-+			/* flush fails -> modify status accordingly */
-+			reset_state(STp);
-+			STp->pos_unknown = 1;
-+		} else { /* return error */
-+			retval = i;
-+			goto out;
-+		}
-+	} else { /* flush_buffer succeeds */
-+		if (STp->can_partitions) {
-+			i = switch_partition(STp);
-+			if (i < 0) {
-+				retval = i;
-+				goto out;
-+			}
-+		}
- 	}
- 
--	if (cmd_type == _IOC_TYPE(MTIOCGET) && cmd_nr == _IOC_NR(MTIOCGET)) {
-+	if (cmd_mtiocget) {
- 		struct mtget mt_status;
- 
- 		if (_IOC_SIZE(cmd_in) != sizeof(struct mtget)) {
+diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+index 17441388ce8f5..fd1e4fb176c79 100644
+--- a/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
++++ b/drivers/pinctrl/qcom/pinctrl-spmi-gpio.c
+@@ -1106,6 +1106,8 @@ static int pmic_gpio_remove(struct platform_device *pdev)
+ static const struct of_device_id pmic_gpio_of_match[] = {
+ 	{ .compatible = "qcom,pm8005-gpio", .data = (void *) 4 },
+ 	{ .compatible = "qcom,pm8916-gpio", .data = (void *) 4 },
++	/* pm8937 has 8 GPIOs with holes on 3, 4 and 6 */
++	{ .compatible = "qcom,pm8937-gpio", .data = (void *) 8 },
+ 	{ .compatible = "qcom,pm8941-gpio", .data = (void *) 36 },
+ 	/* pm8950 has 8 GPIOs with holes on 3 */
+ 	{ .compatible = "qcom,pm8950-gpio", .data = (void *) 8 },
 -- 
 2.43.0
 
