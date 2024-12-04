@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-98339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75F69E4045
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:59:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6DA9E4047
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:59:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91A40167751
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0818282C32
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663B520FA8B;
-	Wed,  4 Dec 2024 16:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9C520FAAB;
+	Wed,  4 Dec 2024 16:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WHJfOhjb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JdJ8mgsC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F66D20FA87;
-	Wed,  4 Dec 2024 16:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F9520D511;
+	Wed,  4 Dec 2024 16:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331481; cv=none; b=HlNe+80mffO3YwZKnASJqe8RNVYPxivdY/qRiMggiw3jBTH0YtAf+qjMveSof1ZYrI2TP6XimZ5zyef1xGGxoPI7djDrx68S+EeMS9oxSe8ERqjn7WWJKKDeehY0VdnuibX1HK0F8ka4JKBelsRKI3WRoH8knKWJ+Gd35MNQrCo=
+	t=1733331484; cv=none; b=DIPf0B1iuMp7/hISZE23Dmnr9vAQo09yOlNdkaT9wo3xoYaT/lM1Lum3I4NtbIk0FHF0K55+/3uRSkLckIY4BWJ0RzUFw9LV1Pywz/7rTVYW7N54BW9tmlDpZvyay9dcTp16n0E4qjNRmUcJai1LZudwoWQ89xnCEfq8TWVBYsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331481; c=relaxed/simple;
-	bh=uSo708ym+6IUE3v7hcIVVLbdQwAsdo/NWdqhzGsHD1Y=;
+	s=arc-20240116; t=1733331484; c=relaxed/simple;
+	bh=WhX+ruXdfwM8nhqsAMiKlobOuSeFumxFogO5m7DEJDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGsccXNe+1c84d+vt7EDlyvD6WdcKlWX+A5amn6/Sits2G0gtl0V8JuJxouoNAGuw7xTF2rJxelRvES4rMGuItlsCZbxSguaPA1Ec+1CehURJw/snXz5J2n4uOtiSGm8+fRncjWmgLUTGfl0Zz0ofsZ63g8mkzmO3DehWOxhVM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WHJfOhjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE94C4CECD;
-	Wed,  4 Dec 2024 16:57:59 +0000 (UTC)
+	 MIME-Version; b=EB9dFW/UHgMDydGgM8RZxKvjwdzqEM3NmPCk8ZqS/6gOhQo3vYtAL1QMcuvH9nd6Qr8tKje2DCrKs/oCMjn0UJm27dHjblWlMq1RTaM59pHp/zW3QqFCBlLAB/n5BLgHa/wGc1dMVvBardFwUYh4gvCQE9TSJia5Obyu1OGJkUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JdJ8mgsC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B2BC4CED1;
+	Wed,  4 Dec 2024 16:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331481;
-	bh=uSo708ym+6IUE3v7hcIVVLbdQwAsdo/NWdqhzGsHD1Y=;
+	s=k20201202; t=1733331484;
+	bh=WhX+ruXdfwM8nhqsAMiKlobOuSeFumxFogO5m7DEJDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WHJfOhjbzhmym08mMsRH9ES3d2QwSjaJKeXn61dISoGXpiIETv8wTCDJo4NYP1hcg
-	 bqpnspVwkmslECnnUIh4dyBHDkPAqmSS8q58wQeiuVoCDKKlCxIC93wN9TcMWPU0L0
-	 uBDXtNajw3oyDS45+Yk/SBNwLlWOIHqzYwvLZX3DNI6MjBwP/7OcabEszov3H9C31H
-	 LCdtUKnHjwvSGXfOIGLgISFL7RMJDyiFzSmBH+jkOk1rnED9Gxo/pmghdmcCGT/Gmd
-	 eplIzc8mQil+TtVB3rAoiH6TWVk7eX/iQmZFSND2amrwio0zp0LF5fICrRXEr7Nxge
-	 hR4zeDAfsfQmw==
+	b=JdJ8mgsCFOCFJkAmmvvfONwQdGFiTlIEU0rWX4vE1ilPEASkg3hI6Pt2sCCsI2nty
+	 Hu4fzGBGHZ3xGlFQYtx7HNNZ3+aadPPaDfMEtbTrYdhp6YeY06g6BUfwYaQbeZIDHE
+	 Ag3uFh/b6FS1GLgPSPZrUHgIrAl6xHEgn4HIOgW0vAs/k9r8UUzKs+x1wmOfyyn21i
+	 w3o/78dpnkArBfnTVbJC0bWtzh/qBWr1CvWTsfcgEK9oWEee0eQbtORhy9/WQ/vxMY
+	 07CnNNTU5Ij8Q+Fzfrjs8aXygpW72xt4XQPHK2SzLeUOSqWagpGdqPZG2SWtMGQPGQ
+	 QWAgP6QPb+omg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,11 +50,11 @@ Cc: Tomas Glozar <tglozar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
 	bristot@kernel.org,
 	jkacur@redhat.com,
-	ezulian@redhat.com,
+	gmonaco@redhat.com,
 	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 06/36] rtla/timerlat: Make timerlat_top_cpu->*_count unsigned long long
-Date: Wed,  4 Dec 2024 10:45:22 -0500
-Message-ID: <20241204154626.2211476-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 07/36] rtla/timerlat: Make timerlat_hist_cpu->*_count unsigned long long
+Date: Wed,  4 Dec 2024 10:45:23 -0500
+Message-ID: <20241204154626.2211476-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204154626.2211476-1-sashal@kernel.org>
 References: <20241204154626.2211476-1-sashal@kernel.org>
@@ -71,50 +71,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit 4eba4723c5254ba8251ecb7094a5078d5c300646 ]
+[ Upstream commit 76b3102148135945b013797fac9b206273f0f777 ]
 
-Most fields of struct timerlat_top_cpu are unsigned long long, but the
-fields {irq,thread,user}_count are int (32-bit signed).
+Do the same fix as in previous commit also for timerlat-hist.
 
-This leads to overflow when tracing on a large number of CPUs for a long
-enough time:
-$ rtla timerlat top -a20 -c 1-127 -d 12h
-...
-  0 12:00:00   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
-CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
- 1 #43200096  |        0         0         1         2 |        3         2         6        12
-...
-127 #43200096  |        0         0         1         2 |        3         2         5        11
-ALL #119144 e4 |                  0         5         4 |                  2        28        16
-
-The average latency should be 0-1 for IRQ and 5-6 for thread, but is
-reported as 5 and 28, about 4 to 5 times more, due to the count
-overflowing when summed over all CPUs: 43200096 * 127 = 5486412192,
-however, 1191444898 (= 5486412192 mod MAX_INT) is reported instead, as
-seen on the last line of the output, and the averages are thus ~4.6
-times higher than they should be (5486412192 / 1191444898 = ~4.6).
-
-Fix the issue by changing {irq,thread,user}_count fields to unsigned
-long long, similarly to other fields in struct timerlat_top_cpu and to
-the count variable in timerlat_top_print_sum.
-
-Link: https://lore.kernel.org/20241011121015.2868751-1-tglozar@redhat.com
+Link: https://lore.kernel.org/20241011121015.2868751-2-tglozar@redhat.com
 Reported-by: Attila Fazekas <afazekas@redhat.com>
 Signed-off-by: Tomas Glozar <tglozar@redhat.com>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/tracing/rtla/src/timerlat_hist.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
-index 210b0f533534a..ee7c291fc9bb3 100644
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -54,9 +54,9 @@ struct timerlat_top_params {
- };
+diff --git a/tools/tracing/rtla/src/timerlat_hist.c b/tools/tracing/rtla/src/timerlat_hist.c
+index 1f9137c592f45..d49c8f0855fe0 100644
+--- a/tools/tracing/rtla/src/timerlat_hist.c
++++ b/tools/tracing/rtla/src/timerlat_hist.c
+@@ -62,9 +62,9 @@ struct timerlat_hist_cpu {
+ 	int			*thread;
+ 	int			*user;
  
- struct timerlat_top_cpu {
 -	int			irq_count;
 -	int			thread_count;
 -	int			user_count;
@@ -122,17 +99,46 @@ index 210b0f533534a..ee7c291fc9bb3 100644
 +	unsigned long long	thread_count;
 +	unsigned long long	user_count;
  
- 	unsigned long long	cur_irq;
  	unsigned long long	min_irq;
-@@ -280,7 +280,7 @@ static void timerlat_top_print(struct osnoise_tool *top, int cpu)
- 	/*
- 	 * Unless trace is being lost, IRQ counter is always the max.
- 	 */
--	trace_seq_printf(s, "%3d #%-9d |", cpu, cpu_data->irq_count);
-+	trace_seq_printf(s, "%3d #%-9llu |", cpu, cpu_data->irq_count);
+ 	unsigned long long	sum_irq;
+@@ -304,15 +304,15 @@ timerlat_print_summary(struct timerlat_hist_params *params,
+ 			continue;
  
- 	if (!cpu_data->irq_count) {
- 		trace_seq_printf(s, "%s %s %s %s |", no_value, no_value, no_value, no_value);
+ 		if (!params->no_irq)
+-			trace_seq_printf(trace->seq, "%9d ",
++			trace_seq_printf(trace->seq, "%9llu ",
+ 					data->hist[cpu].irq_count);
+ 
+ 		if (!params->no_thread)
+-			trace_seq_printf(trace->seq, "%9d ",
++			trace_seq_printf(trace->seq, "%9llu ",
+ 					data->hist[cpu].thread_count);
+ 
+ 		if (params->user_hist)
+-			trace_seq_printf(trace->seq, "%9d ",
++			trace_seq_printf(trace->seq, "%9llu ",
+ 					 data->hist[cpu].user_count);
+ 	}
+ 	trace_seq_printf(trace->seq, "\n");
+@@ -488,15 +488,15 @@ timerlat_print_stats_all(struct timerlat_hist_params *params,
+ 		trace_seq_printf(trace->seq, "count:");
+ 
+ 	if (!params->no_irq)
+-		trace_seq_printf(trace->seq, "%9d ",
++		trace_seq_printf(trace->seq, "%9llu ",
+ 				 sum.irq_count);
+ 
+ 	if (!params->no_thread)
+-		trace_seq_printf(trace->seq, "%9d ",
++		trace_seq_printf(trace->seq, "%9llu ",
+ 				 sum.thread_count);
+ 
+ 	if (params->user_hist)
+-		trace_seq_printf(trace->seq, "%9d ",
++		trace_seq_printf(trace->seq, "%9llu ",
+ 				 sum.user_count);
+ 
+ 	trace_seq_printf(trace->seq, "\n");
 -- 
 2.43.0
 
