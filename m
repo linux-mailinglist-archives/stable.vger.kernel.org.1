@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-98424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82D49E4141
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:21:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944A69E4144
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DAD2162006
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:21:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6DE6164A5D
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43FF22145A;
-	Wed,  4 Dec 2024 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CA12163B1;
+	Wed,  4 Dec 2024 17:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZX1O2Eib"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMsekpcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC6A22144B;
-	Wed,  4 Dec 2024 17:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2EC221474;
+	Wed,  4 Dec 2024 17:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331728; cv=none; b=If6cHAdCnZ6A7rqcU6TLWI7sg3pZHTq8FpUdU4/h+2ynpPXkVf9MhKthOghRtclHkAxHaXt7i6iaRGgRBGphCHOx6hK/fksBmKhUijrFzdqmpfKDGw0qh78rAwQQZj1HRKKcCbHTl3fl7gX6P4MZKDlVPvJ2gm9YRiNdgl6lRLU=
+	t=1733331730; cv=none; b=tGxtB5+WX4sVqekQ9IaMQvk9FW9gby6+9NbfyzFvCzeay7geN7WJ8cYt2osEOP3CcCNQ0/12qICXUZAKe15LdkXPAvGBRJlE4JUHVXOQY+0R8ZOUn/xi0jk4qj0m0L2x2MC5WvtjIMy5bJBSy0MceWblaKv5jmnk1B2OYV8F4YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331728; c=relaxed/simple;
-	bh=F8g1ZzkAE7Z4xwtf1thmKFemuZCBnownLe2zR6PC4iU=;
+	s=arc-20240116; t=1733331730; c=relaxed/simple;
+	bh=TAZkU2/9ASsYEjOO7G8MaU7/9Xway/EOa6HJfawrR2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gA+yTUXnjJmxmHVE9IJ6Hk5BSxB4Km18p/byd44n2KbnsME+4ThoJXeGSxp5/9qq4v2RsswthGl79DUIuGXS0vzqQQZNkgj1ZBBCVmA0PuRRQcvdMtLIieqUxgCvb0qP/u2di70rRDeSfXYBF0Pwuy7BdpW9jJfU592Z0urDA+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZX1O2Eib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3599AC4CECD;
-	Wed,  4 Dec 2024 17:02:07 +0000 (UTC)
+	 MIME-Version; b=UFeCa0Ng++qvgybJGATFVnrHC9CUIPEWRlVqHIU8wicg8GimzxTx62GzKRzouHGgX5B9l8KnCE9JjuXnt+E4gGosKRaD83KNphi/RM7qWrtjNlmQZ0lkH1JS0wST/BzPm18VRTpZOTzSX89TnrEv0dcNPWrYa+afVC7OUSj5G9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMsekpcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B817BC4CECD;
+	Wed,  4 Dec 2024 17:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733331728;
-	bh=F8g1ZzkAE7Z4xwtf1thmKFemuZCBnownLe2zR6PC4iU=;
+	s=k20201202; t=1733331729;
+	bh=TAZkU2/9ASsYEjOO7G8MaU7/9Xway/EOa6HJfawrR2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZX1O2EibLGjzR4ZL34tEtZcZzaVJxuZ6lGd1GwtQQY23NkByKpYPraD5F3cptqJE5
-	 r7IPbGHS7T/GzGyhcsgtE9/JK3/PjtA+i96ah++i3fk2kCAjJ8qPV8AJ+4pyssyzOE
-	 l5N4MgPCbxm1lsaRMoXZClJfIgHyJ7s5nih4Lpn+aPRgkUzeVBsOVQyMl02jFYN/8Z
-	 RfDKct2Sp45oYWRStkRH/7wckcgvJRivcyFxIrLNZLz8qZw0OSC9dVMW9GxNxhm1C4
-	 YGmgzAN3wBba3FIDJVD7WIzhNaZdkBZv0ruRP0cVz78666M1EzoF1F4TWyznd5yuFy
-	 j7X+4JfORV/8A==
+	b=oMsekpcWnkWReS46Tq5mr9vpdnYuTuXIex0vd0oR7WWX4BvmBORxyP+9iY4m8vfz0
+	 dRar1MQnb/D3q3tc4DKzdrcrr/3bRAT3dBwmWjdeuNGJwMUe5CIp/JmEu1qZwrY29h
+	 FkKRolfJi0rIkjLz169xVVrMI/MUPb4NZjukDDSjKA83VTRuyeRdMU3UgRQ+Ba5Edy
+	 wme/tGOwF8HpRPmz8tCRge1+sXnPhMPeWfcPdTpaCk5i3Scenbh8G5dIR7lLGBa8da
+	 5lRZeDY8GlY/jtBuD3ItBxukLmzWn+huDaOezJ5V+yvCN5PlWHiV/uunb71iKLqD92
+	 B/vbgrtUwWdcg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yi Yang <yiyang13@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
+Cc: Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	nvdimm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 22/24] nvdimm: rectify the illogical code within nd_dax_probe()
-Date: Wed,  4 Dec 2024 10:49:42 -0500
-Message-ID: <20241204155003.2213733-22-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.6 23/24] smb: client: memcpy() with surrounding object base address
+Date: Wed,  4 Dec 2024 10:49:43 -0500
+Message-ID: <20241204155003.2213733-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204155003.2213733-1-sashal@kernel.org>
 References: <20241204155003.2213733-1-sashal@kernel.org>
@@ -68,63 +68,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.63
 Content-Transfer-Encoding: 8bit
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit b61352101470f8b68c98af674e187cfaa7c43504 ]
+[ Upstream commit f69b0187f8745a7a9584f6b13f5e792594b88b2e ]
 
-When nd_dax is NULL, nd_pfn is consequently NULL as well. Nevertheless,
-it is inadvisable to perform pointer arithmetic or address-taking on a
-NULL pointer.
-Introduce the nd_dax_devinit() function to enhance the code's logic and
-improve its readability.
+Like commit f1f047bd7ce0 ("smb: client: Fix -Wstringop-overflow issues"),
+adjust the memcpy() destination address to be based off the surrounding
+object rather than based off the 4-byte "Protocol" member. This avoids a
+build-time warning when compiling under CONFIG_FORTIFY_SOURCE with GCC 15:
 
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20241108085526.527957-1-yiyang13@huawei.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+In function 'fortify_memcpy_chk',
+    inlined from 'CIFSSMBSetPathInfo' at ../fs/smb/client/cifssmb.c:5358:2:
+../include/linux/fortify-string.h:571:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  571 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/dax_devs.c | 4 ++--
- drivers/nvdimm/nd.h       | 7 +++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ fs/smb/client/cifssmb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
-index 3bd61f2457885..cfafe1fa77bab 100644
---- a/drivers/nvdimm/dax_devs.c
-+++ b/drivers/nvdimm/dax_devs.c
-@@ -106,12 +106,12 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
- 
- 	nvdimm_bus_lock(&ndns->dev);
- 	nd_dax = nd_dax_alloc(nd_region);
--	nd_pfn = &nd_dax->nd_pfn;
--	dax_dev = nd_pfn_devinit(nd_pfn, ndns);
-+	dax_dev = nd_dax_devinit(nd_dax, ndns);
- 	nvdimm_bus_unlock(&ndns->dev);
- 	if (!dax_dev)
- 		return -ENOMEM;
- 	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
-+	nd_pfn = &nd_dax->nd_pfn;
- 	nd_pfn->pfn_sb = pfn_sb;
- 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
- 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index e8b9d27dbb3c3..12774334273c1 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -601,6 +601,13 @@ struct nd_dax *to_nd_dax(struct device *dev);
- int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns);
- bool is_nd_dax(const struct device *dev);
- struct device *nd_dax_create(struct nd_region *nd_region);
-+static inline struct device *nd_dax_devinit(struct nd_dax *nd_dax,
-+					    struct nd_namespace_common *ndns)
-+{
-+	if (!nd_dax)
-+		return NULL;
-+	return nd_pfn_devinit(&nd_dax->nd_pfn, ndns);
-+}
- #else
- static inline int nd_dax_probe(struct device *dev,
- 		struct nd_namespace_common *ndns)
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 301189ee1335b..a34db419e46f7 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -5364,7 +5364,7 @@ CIFSSMBSetPathInfo(const unsigned int xid, struct cifs_tcon *tcon,
+ 	param_offset = offsetof(struct smb_com_transaction2_spi_req,
+ 				InformationLevel) - 4;
+ 	offset = param_offset + params;
+-	data_offset = (char *) (&pSMB->hdr.Protocol) + offset;
++	data_offset = (char *)pSMB + offsetof(typeof(*pSMB), hdr.Protocol) + offset;
+ 	pSMB->ParameterOffset = cpu_to_le16(param_offset);
+ 	pSMB->DataOffset = cpu_to_le16(offset);
+ 	pSMB->SetupCount = 1;
 -- 
 2.43.0
 
