@@ -1,128 +1,105 @@
-Return-Path: <stable+bounces-98333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B234C9E402D
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:57:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D9569E411B
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 18:18:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8007D167652
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:57:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5BC6B2BC74
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 16:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954F520CCCE;
-	Wed,  4 Dec 2024 16:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00ED1B85D2;
+	Wed,  4 Dec 2024 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXfjL6Qf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jO/2g/kP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f181.google.com (mail-il1-f181.google.com [209.85.166.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75F520C474
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 16:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06291E519
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 16:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733331421; cv=none; b=WM9jYUHMOUMLZQjD53oDPV/yCUv6msKXKm3OnvCM9A9Ij5K/vYtyKZIfgqf1/I72UQDUl4ojA9/CCz3RX3ZFEl/1VK0KXPJQd02d2rrCTWyVSWSJnRnWBrGM2YXns/AHcnWlOYvyqJ00lmIgUu0mIBVhNWAogiw6jzkcttJyNAY=
+	t=1733331189; cv=none; b=tCr6bhou9cb4fgoltKpjaCKFWK9CtVOSb/PT3XFM9C/XRLyuDLQ8SG9g1CnwSdRtPcpBbX2PnDEOhusk2qo+SWkNg9V8d2zYWAyPUqznTkeUitE2OzQnCtdjqXqWSlEzylVzZnBve2S0tfDtS3/+EfblRziC8m3WN7vRYyqi+d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733331421; c=relaxed/simple;
-	bh=XaoMXII8e6mfuATSLsXtjEWnRh3UwxsQH2bojJPG7NA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cLJsfb5LWKS799hNVvTs5lJcV0K03Q8mNH7K4C7o05wzXSBCpCHzw4uCIfStfumnbPZLmv7YxQ6nxru+umItlNv/XPqHg6pBJAqqGlllVYfpYt/xX6hy+VdIvGBBOMZonAMd6zWZ4uolBnBKE+IvZ4pz1pzwtJfgHI9vGQhuOjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXfjL6Qf; arc=none smtp.client-ip=209.85.166.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3a7a8195822so30865365ab.0
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 08:56:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1733331419; x=1733936219; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7iTXrzkVbRdOn7ya7jAgMy2aC6OZ+AghQ3qdoT+WQZ8=;
-        b=YXfjL6Qf7iqmC5EujnCqD4rd/5wY14LEHuMK8FfQfxCEbVDn3lObDh9PrpYoRtshh4
-         hnd4lH8pIZxucE1n85k50NkzlXbBIzcNJw5We8xQiegZhRmcghhKsAIKPD/TZ5NYf+d2
-         lX71pTROwjTskPsblJiRWtUOuMmry6pO/OkdI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733331419; x=1733936219;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7iTXrzkVbRdOn7ya7jAgMy2aC6OZ+AghQ3qdoT+WQZ8=;
-        b=eFzpUYfsedX86he3VZ7BOmFITste2+Q6ydamy68XyDRCIxk6m1upNplWiJbL2L812W
-         SymJ/zeYObTBjy5cXnb8zq3DWRua+8MV2qM/g7b1oOWSd89pnyVumzpLgQEq7Co8pWOE
-         XMcMx+k5mSHQ8xincUIm06vbQXFcdOmtQS5lfYuoBEEavR5oSYGdfriHbTXVESSGvUk0
-         QuJLCqoz1oIgsRYvTgWCNC8hv8bFDHNfVdfpcGEJQpqCMt0uL5K+ZeJSrrGJVEu1ApsN
-         ga1TpeO2qPJmjJec8W0FVDAzbMN/Oe6ccWuwytAybFlK4XY6h+hZyAQeOHQ6IJ/Gc6N5
-         tfTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRf+rF4P6c67QwD+dG6rI7/604LCQtAVzuRGg0aMYf8GoE3EypCLGtsinXMcu7S3rYSef7rhU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzd1IJ9NBKwKmgDCa/NLyhQfwrjXhGZCLDRZDJX3+1H7/WCNClS
-	8wwKCownjU4ZV7cDyAxq/gQXtCttudK1mLVqgckXeBHkTzqYSuvkT2L3Vzup+kU=
-X-Gm-Gg: ASbGncu7DGMLmGL2Yji9ut2rVeqdGJFUK7HNRbT4TqrdkUYdmTN8CwuBYMUWooCEbKM
-	RPNAnUmYh3QAMmTUeBTMexYT5HFmWJrKFl3kT1b+BDe+o6jwiSPUfXD3Qn0GMtXzyMaZb3ndIFb
-	t8y2mDaw9/Yy+8sBrKQG9xNdoD0cGftbO/KLoJzDMlHGnL3Im0RIoOWAI6iHcXRd0nK+BQgX8Q0
-	3zdZXzDVeJVA/erAsHJm8pRhTeJ+o8hWrG9KMAgo565NYpxNCtNb8eMBM4cgA==
-X-Google-Smtp-Source: AGHT+IHYHfBvUu0DZFh16zcxTkFpKxetrmBGHduH1Px3jq7+qvQd558v6EZlAarkWJRanQMBCA2qaQ==
-X-Received: by 2002:a05:6e02:174c:b0:3a7:e0c0:5f25 with SMTP id e9e14a558f8ab-3a7f9a2952dmr79789725ab.4.1733331418893;
-        Wed, 04 Dec 2024 08:56:58 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3a7dcc6146fsm26878105ab.74.2024.12.04.08.56.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 08:56:58 -0800 (PST)
-Message-ID: <8e7b4812-bb10-4f5f-92f9-86aa33203c3a@linuxfoundation.org>
-Date: Wed, 4 Dec 2024 09:56:57 -0700
+	s=arc-20240116; t=1733331189; c=relaxed/simple;
+	bh=MFIiNJmyBHMSKbsD5SQGqIoECy1BSCRrS2gSe1x8Z/o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=B16W+YD1SojfrZ3J3wEsOAquwwxUhnF2D3roQ30Vb91UWWpW+nH2f+ERYKjojVGSh+KZISPCvDLp3FHusBiR2IZFnYm+U2RzMPFCviRTeCzWGp6FRZPjIn1H2A0Vqtd8BskjTQbhKOuDh10rRZmC+GFm79wW7fsh9we/uakZank=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jO/2g/kP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7890C4CECD;
+	Wed,  4 Dec 2024 16:53:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733331189;
+	bh=MFIiNJmyBHMSKbsD5SQGqIoECy1BSCRrS2gSe1x8Z/o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jO/2g/kPrrdtcsX/zQXtr43GQX93izsKqzy7B4y7N304zXyt54xYCXvSKRtjVUzX3
+	 zWnZ2iquEcDt0WJ7Tj4tubd9favxSxGT7EpOVvb54cmjBx4fZeDHVdDmDS8F63V7wv
+	 bzUHxzMKWAxWcnsDzh9fBm3RPyLuhlFeGMF8BdckoQw73sQraXT4t8zz+vgt5F1v2X
+	 K0tiJpkOCu6I1B09DZHNGTaCCB7wqROvdOsRoMm83eNfcAgOw2csck+0Gnw4Ykr3Wy
+	 lgtbdpC8Swd5pjSIeIrgz1oJcNSsDVLO5Rd/7/AlYSY/HFtWLYkwLYKzcvwII8YfV1
+	 5TtUOO0sUq3pQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jakub Acs <acsjakub@amazon.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH v2 6.1] udf: Fold udf_getblk() into udf_bread()
+Date: Wed,  4 Dec 2024 10:41:49 -0500
+Message-ID: <20241204065657-de0ff92045247001@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241204093226.60654-1-acsjakub@amazon.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20241203141923.524658091@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12/3/24 07:30, Greg Kroah-Hartman wrote:
-> ------------------
-> Note, this is the LAST 4.19.y kernel to be released.  After this one, it
-> is end-of-life.  It's been 6 years, everyone should have moved off of it
-> by now.
-> ------------------
-> 
-> This is the start of the stable review cycle for the 4.19.325 release.
-> There are 138 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 05 Dec 2024 14:18:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.325-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+[ Sasha's backport helper bot ]
 
-Compiled and booted on my test system. No dmesg regressions.
+Hi,
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+The upstream commit SHA1 provided is correct: 32f123a3f34283f9c6446de87861696f0502b02e
 
-thanks,
--- Shuah
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Jakub Acs <acsjakub@amazon.com>
+Commit author: Jan Kara <jack@suse.cz>
+
+
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+6.11.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  32f123a3f3428 < -:  ------------- udf: Fold udf_getblk() into udf_bread()
+-:  ------------- > 1:  9087b1856465c udf: Fold udf_getblk() into udf_bread()
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Failed    |
+
+Build Errors:
+Build error for stable/linux-6.1.y:
+    fs/udf/inode.c: In function 'udf_bread':
+    fs/udf/inode.c:1097:9: error: expected ';' before 'bh'
+     1097 |         bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
+          |         ^~
+    make[3]: *** [scripts/Makefile.build:250: fs/udf/inode.o] Error 1
+    make[3]: Target 'fs/udf/' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:503: fs/udf] Error 2
+    make[2]: Target 'fs/' not remade because of errors.
+    make[1]: *** [scripts/Makefile.build:503: fs] Error 2
+    make[1]: Target './' not remade because of errors.
+    make: *** [Makefile:2009: .] Error 2
+    make: Target '__all' not remade because of errors.
 
