@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-98582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657E39E48B1
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:23:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C0E9E48B3
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF4C6163A31
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:23:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1DAD18804EB
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31BB1F03CB;
-	Wed,  4 Dec 2024 23:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED30D1F03FF;
+	Wed,  4 Dec 2024 23:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVv0hE8d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQaFQyoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F7F19DF66
-	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 23:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA661B0F0E
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 23:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733354593; cv=none; b=HEAP3rJ1IxnqGA8MNWDn+vbHFTH4bON0rDq/wVtDzfBt9jj7Jr9dgrJ4Q/4+wCf29bmQIKQQMOAV1M+FNpkJ5FRjcCzHyZUV528BhIUC1DVBzeiwYzk5Sa4KKtXQtDJDN8uk19lg2wneCpb1Y7FKayJ2Bk7Dp/rW4AQZvnqMGMU=
+	t=1733354595; cv=none; b=uiPe8cz6YF9HFmw6i+XJ1ByCAjGLqrRagUDUKkjLiPhJ3AiwBaMwX0PTG8fq507qLkrIKtQHnA5bz+5dUnD9SdVXrY2BAINz/He6iDt32HLsBa9s/KFHHDh8qs03nUXY9XLh+hb9bTiZvzcRmntxshs87/uzhdnNjG7csrvJHYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733354593; c=relaxed/simple;
-	bh=84uGrFgIsXhzMu4jZE1maaUvYldDsBrm+r2xkMo90T8=;
+	s=arc-20240116; t=1733354595; c=relaxed/simple;
+	bh=8dEjY1qgiy2UFhPcAnVhH4nf+KaQdwbl1QzY5LClPhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUdFxzhzoyU/sRrsWAE+UQC1X5bpBd1+9sZeDLI7WiI19eQCaHtlOWuY5+JYJ2EKVrBxCiQsspYSYlwioYxiDdHL0Co/dLb1ZAL0Z5iGY5728xKvGjLfjir4Q6E5ZlckLfroaUwp7LCDCY+cku+w8igxKaOzpWQyDPRdU4K2pLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVv0hE8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFCDC4CED2;
-	Wed,  4 Dec 2024 23:23:12 +0000 (UTC)
+	 MIME-Version; b=LARcSdX/VyL2I21VvApiiNuLwK/9MDT3dIw1DI5JzzEIEk7jkv//29TWEW0gdjLQnyzD5Jas2gPUJBnMSXV3aN/pG8UR3nErLA5dPaKfAgvw3k5ADEKKsrY2GALgdJuBJl9BoI1U7esPKxVQdg3f66ZCsiZomeVzvU8lYveCmpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQaFQyoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C384DC4CECD;
+	Wed,  4 Dec 2024 23:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733354593;
-	bh=84uGrFgIsXhzMu4jZE1maaUvYldDsBrm+r2xkMo90T8=;
+	s=k20201202; t=1733354595;
+	bh=8dEjY1qgiy2UFhPcAnVhH4nf+KaQdwbl1QzY5LClPhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVv0hE8dwbfQwjF26BP2/zGfptXlURSsSKn8+mFN+r4NrBTCSPYVYtI1C5AX+dnOj
-	 xZgIyfwIRqRKkkFesMLfECHH3knGRxTGygTaiUVMvnMOBtAQq2i2RW3s5t6OF0p9w1
-	 JYvucCmpLZBWgEZkPKJlILyPA/wlMsbohOAqnpnXsYSG+cIoeUxF8X/5A5ebDfrhGw
-	 b3o9U+oAioDkAyx/vhm0n51KwtbajX+aVkUUMVjixlPKmYxopDEzgxzfUvFmOtOTE7
-	 YBz/R66lkkWKqrR5VyveB6zzLPFG5eMNNLda53KR4aP6amtu/XHHHOHdYE1ychzNGb
-	 8Y+uE0gRXOczA==
+	b=tQaFQyoDnLn/h9S/DNX6k2RKHNALMi2fjjHeQh3pLVWEXpgLIVNdPYvbwUL8p6hqr
+	 Ndk5Qilotmeuca3I12wUe4nGKn5BfGsKjudzSgr7MfyqEuVehf/EWM8c8ak2nnTTSP
+	 z9cY8W3ZFRGYT2C3JTfGvhq3IVFGEr+O1lpeGMJss+CKXdM6hBtB1K/GXC8K8mNYaW
+	 nSH6ScOQFAmyymNyS8lC4phit23YY84d70ifnNvSkapEXThsLQvtkM5tSrEf8o8TSS
+	 do6bowCO3qjKuDB8uEDJma2q61WAGzJX/MBuuclT5BPOtpqOP0kfE8yZl6XaZ0IOeo
+	 p/LLUB8WBGxlQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jing Zhang <jingzhangos@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y 1/3] KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
-Date: Wed,  4 Dec 2024 17:11:53 -0500
-Message-ID: <20241204155625-a6f5388a4d6df95c@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y 2/3] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+Date: Wed,  4 Dec 2024 17:11:55 -0500
+Message-ID: <20241204164213-af665442ee9e2d42@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241204202357.2718096-1-jingzhangos@google.com>
+In-Reply-To:  <20241204202318.2716633-2-jingzhangos@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,97 +63,38 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022
+The upstream commit SHA1 provided is correct: e9649129d33dca561305fc590a7c4ba8c3e5675a
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Jing Zhang <jingzhangos@google.com>
+Commit author: Kunkun Jiang <jiangkunkun@huawei.com>
 
 
 Status in newer kernel trees:
-6.12.y | Not found
-6.11.y | Not found
-6.6.y | Not found
+6.12.y | Present (different SHA1: 3b47865d395e)
+6.11.y | Present (different SHA1: 78e981b6b725)
+6.6.y | Present (different SHA1: 026af3ce08de)
 6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  7fe28d7e68f92 ! 1:  e12537d3bc969 KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
+1:  e9649129d33dc ! 1:  ead439996b603 KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
     @@ Metadata
       ## Commit message ##
-         KVM: arm64: vgic-its: Add a data length check in vgic_its_save_*
+         KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
      
-    +    commit 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022 upstream.
+    +    commit e9649129d33dca561305fc590a7c4ba8c3e5675a upstream.
     +
-         In all the vgic_its_save_*() functinos, they do not check whether
-         the data length is 8 bytes before calling vgic_write_guest_lock.
-         This patch adds the check. To prevent the kernel from being blown up
-    @@ arch/arm64/kvm/vgic/vgic-its.c: static int vgic_its_save_ite(struct vgic_its *it
-      	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
-      		ite->collection->collection_id;
-      	val = cpu_to_le64(val);
-    --	return vgic_write_guest_lock(kvm, gpa, &val, ite_esz);
-    +-	return kvm_write_guest_lock(kvm, gpa, &val, ite_esz);
-     +
-     +	return vgic_its_write_entry_lock(its, gpa, val, ite_esz);
-      }
-    @@ arch/arm64/kvm/vgic/vgic-its.c: static int vgic_its_save_dte(struct vgic_its *it
-      	       (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
-      		(dev->num_eventid_bits - 1));
-      	val = cpu_to_le64(val);
-    --	return vgic_write_guest_lock(kvm, ptr, &val, dte_esz);
-    +-	return kvm_write_guest_lock(kvm, ptr, &val, dte_esz);
-     +
-     +	return vgic_its_write_entry_lock(its, ptr, val, dte_esz);
-      }
-    @@ arch/arm64/kvm/vgic/vgic-its.c: static int vgic_its_save_cte(struct vgic_its *it
-      	       ((u64)collection->target_addr << KVM_ITS_CTE_RDBASE_SHIFT) |
-      	       collection->collection_id);
-      	val = cpu_to_le64(val);
-    --	return vgic_write_guest_lock(its->dev->kvm, gpa, &val, esz);
-    +-	return kvm_write_guest_lock(its->dev->kvm, gpa, &val, esz);
-     +
-     +	return vgic_its_write_entry_lock(its, gpa, val, esz);
-      }
-    @@ arch/arm64/kvm/vgic/vgic-its.c: static int vgic_its_save_collection_table(struct
-      	 */
-     -	val = 0;
-     -	BUG_ON(cte_esz > sizeof(val));
-    --	ret = vgic_write_guest_lock(its->dev->kvm, gpa, &val, cte_esz);
-    +-	ret = kvm_write_guest_lock(its->dev->kvm, gpa, &val, cte_esz);
-     -	return ret;
-     +	return vgic_its_write_entry_lock(its, gpa, 0, cte_esz);
-      }
-      
-    - /*
-    + /**
-     
-      ## arch/arm64/kvm/vgic/vgic.h ##
-    -@@ arch/arm64/kvm/vgic/vgic.h: static inline int vgic_write_guest_lock(struct kvm *kvm, gpa_t gpa,
-    - 	return ret;
-    +@@
-    + #define __KVM_ARM_VGIC_NEW_H__
-    + 
-    + #include <linux/irqchip/arm-gic-common.h>
-    ++#include <asm/kvm_mmu.h>
-    + 
-    + #define PRODUCT_ID_KVM		0x4b	/* ASCII code K */
-    + #define IMPLEMENTER_ARM		0x43b
-    +@@ arch/arm64/kvm/vgic/vgic.h: static inline bool vgic_irq_is_multi_sgi(struct vgic_irq *irq)
-    + 	return vgic_irq_get_lr_count(irq) > 1;
-      }
-      
-     +static inline int vgic_its_read_entry_lock(struct vgic_its *its, gpa_t eaddr,
-    @@ arch/arm64/kvm/vgic/vgic.h: static inline int vgic_write_guest_lock(struct kvm *
-     +	if (KVM_BUG_ON(esize != sizeof(eval), kvm))
-     +		return -EINVAL;
-     +
-    -+	return vgic_write_guest_lock(kvm, eaddr, &eval, esize);
-    ++	return kvm_write_guest_lock(kvm, eaddr, &eval, esize);
-     +}
-     +
-      /*
+         vgic_its_save_device_tables will traverse its->device_list to
+         save DTE for each device. vgic_its_restore_device_tables will
+         traverse each entry of device table and check if it is valid.
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
