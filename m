@@ -1,92 +1,121 @@
-Return-Path: <stable+bounces-98566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2436A9E47CC
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:26:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F84F9E48A2
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 00:22:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D14CE163F23
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 22:26:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005E328114A
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 23:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361841C3C0A;
-	Wed,  4 Dec 2024 22:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DE51B0F0E;
+	Wed,  4 Dec 2024 23:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXXzMH4T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lq4F/GZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED9C192B8C;
-	Wed,  4 Dec 2024 22:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE91819DF66
+	for <stable@vger.kernel.org>; Wed,  4 Dec 2024 23:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733351180; cv=none; b=F3KxBltHMcqttx8dddOHYTN8j0YiyOXRFBXmcQE8Ly7zS4oOSPedbWpZlc14cOmwS6zkjhhqKD+2mVuiSklVZdqW3Et/0Oqvw+q2JPJ0ExqdyiYcBeEAU9OcHh9stN93GAGsq7JYwn+x7LdplG7eCReNzLoFtGg8GOE/TgQyiyU=
+	t=1733354563; cv=none; b=SHe3RbEmbM2S+h7SdNQF6MHrM/Xv2vgx0rDVlIl+bYxA3cGBzPcYqhIbekXa471liHE8Hhj9qttjmM/nFU4I/Mba2AcfsygNTWfJBm5Uc9JRgOemA7HtWL85YvCaaXJS6fSyQknRNZKMn24y5Wg91/cb4nm32PFFnQLmgzyVNVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733351180; c=relaxed/simple;
-	bh=2T7sODf+o+w83r4IZxWNgLjY7Y0Zrd5ODJ4R2F4/7l0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mm5mu+/qfjOr4m3YIeTY7OnwhSocyAxlxtPsmT+5pMoWHn+dGOh7XH7hLgXAfaluFcQY2QXdT1XiClS70heRZVFtqIwTENHkzvCN6W5a7AWAuSAMMJDYH1aPZxDZ+jau0W1bvdc0QhM8PAaUDzl2J9CRWT1J9scNmbkupKItPwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXXzMH4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7132C4CECD;
-	Wed,  4 Dec 2024 22:26:14 +0000 (UTC)
+	s=arc-20240116; t=1733354563; c=relaxed/simple;
+	bh=CPGtmb5pzgAEV9sCvJitDStXD8b2gbvXuzDH2JfKSds=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NiV5uYoQWMpk+g59kN/LVRVvu/7GnNxjoXN1GKcpl3BUlR89yDfa4iT6ntyqk623zj3eOyxo+Fluij/f0ynpv14P1pjbkzUgIsqvsGbJpUXD3z8ww/Tn7TzRQreDvNKw/LvHGCOZ+hHeqIkM3y0SCzStnGUsE4hFX14233xP2wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lq4F/GZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED043C4CECD;
+	Wed,  4 Dec 2024 23:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733351177;
-	bh=2T7sODf+o+w83r4IZxWNgLjY7Y0Zrd5ODJ4R2F4/7l0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pXXzMH4TTm+2pWSLhzWINWQIybRyfKac/m8pH6oFzDryA60moDprk6gOrkyFwAnDo
-	 pG+z3jxfyG7H5T1p4NeeK6XClMrehTTf6CNAjf2cgDHLtspmQWAFuVt4zvsDpMeIq+
-	 L5Lp/slniWgIRw22G6Yh4p5HtqsgsaXMhWNhZcV3h+oC8hewz+/TFrkSC9xZ84sAmH
-	 4btbRC6uP9qabd11c1QCIO/kzmA9twDmK6lJ0gCYqxEGPPho7LIKQdgBLu4UelcBdq
-	 07S5diBr1JAb3etHoxfc/Z7bGWY2tKeDw77TRpzi8sBL8h9YhSaCYJNY1alizGcok2
-	 t4aHUEs/lncHQ==
-Message-ID: <90d27f95-4747-4a67-96ee-4c865ded66eb@kernel.org>
-Date: Thu, 5 Dec 2024 00:26:12 +0200
+	s=k20201202; t=1733354563;
+	bh=CPGtmb5pzgAEV9sCvJitDStXD8b2gbvXuzDH2JfKSds=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lq4F/GZ5CaFYCVrngpMBNXx4W7XzE8FLcXOVB+3MeDH7cxKwvn9rIFSuKCh6wAL/X
+	 bp9By0aQUhbvWO81LWP+HpRQmrRjdwEhsSlbRfVSQLFCjULmUwHrgePmm2f4/AAazK
+	 CDLeQz0CXoaQELnG52qiIQEurJ/EQBMGjC4dS1/9coAsyC4YpAXxBbwjfvDd0CifGM
+	 F3SWWCvm2ObrtWWJSRtPTo/Tvx+tPQR5+8unxwO+ORyqqLL36QxeTMBk6JAu1LmCTe
+	 at2+l2VxA9zhPfp9LB7SHJyC7oW/DBt6D3P58GDRmh+qM/KqtqRKBIBFFJsQ0obIrI
+	 L9gKa19X6EsuQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Jing Zhang <jingzhangos@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4.y 2/3] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+Date: Wed,  4 Dec 2024 17:11:23 -0500
+Message-ID: <20241204165123-7cdfc014c7b5df67@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241204202301.2715933-2-jingzhangos@google.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] ARM: dts: ti/omap: gta04: fix pm issues caused by spi
- module
-To: Andreas Kemnade <andreas@kemnade.info>, tony@atomide.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, hns@goldelico.com,
- linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, aaro.koskinen@iki.fi, khilman@baylibre.com
-Cc: stable@vger.kernel.org
-References: <20241204174152.2360431-1-andreas@kemnade.info>
-Content-Language: en-US
-From: Roger Quadros <rogerq@kernel.org>
-In-Reply-To: <20241204174152.2360431-1-andreas@kemnade.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+
+[ Sasha's backport helper bot ]
+
+Hi,
+
+The upstream commit SHA1 provided is correct: e9649129d33dca561305fc590a7c4ba8c3e5675a
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Jing Zhang <jingzhangos@google.com>
+Commit author: Kunkun Jiang <jiangkunkun@huawei.com>
 
 
+Status in newer kernel trees:
+6.12.y | Present (different SHA1: 3b47865d395e)
+6.11.y | Present (different SHA1: 78e981b6b725)
+6.6.y | Present (different SHA1: 026af3ce08de)
+6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
+5.4.y | Not found
 
-On 04/12/2024 19:41, Andreas Kemnade wrote:
-> Despite CM_IDLEST1_CORE and CM_FCLKEN1_CORE behaving normal,
-> disabling SPI leads to messages like when suspending:
-> Powerdomain (core_pwrdm) didn't enter target state 0
-> and according to /sys/kernel/debug/pm_debug/count off state is not
-> entered. That was not connected to SPI during the discussion
-> of disabling SPI. See:
-> https://lore.kernel.org/linux-omap/20230122100852.32ae082c@aktux/
-> 
-> The reason is that SPI is per default in slave mode. Linux driver
-> will turn it to master per default. It slave mode, the powerdomain seems to
-> be kept active if active chip select input is sensed.
-> 
-> Fix that by explicitly disabling the SPI3 pins which used to be muxed by
-> the bootloader since they are available on an optionally fitted header
-> which would require dtb overlays anyways.
-> 
-> Fixes: a622310f7f01 ("ARM: dts: gta04: fix excess dma channel usage")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Note: The patch differs from the upstream commit:
+---
+1:  e9649129d33dc ! 1:  44c617b100eff KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+    @@ Metadata
+      ## Commit message ##
+         KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
+     
+    +    commit e9649129d33dca561305fc590a7c4ba8c3e5675a upstream.
+    +
+         vgic_its_save_device_tables will traverse its->device_list to
+         save DTE for each device. vgic_its_restore_device_tables will
+         traverse each entry of device table and check if it is valid.
+    @@ Commit message
+         Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
+         Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+     
+    - ## arch/arm64/kvm/vgic/vgic-its.c ##
+    -@@ arch/arm64/kvm/vgic/vgic-its.c: static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+    + ## virt/kvm/arm/vgic/vgic-its.c ##
+    +@@ virt/kvm/arm/vgic/vgic-its.c: static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+      	bool valid = its_cmd_get_validbit(its_cmd);
+      	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
+      	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
+    @@ arch/arm64/kvm/vgic/vgic-its.c: static int vgic_its_cmd_handle_mapd(struct kvm *
+      		return E_ITS_MAPD_DEVICE_OOR;
+      
+      	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
+    -@@ arch/arm64/kvm/vgic/vgic-its.c: static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+    +@@ virt/kvm/arm/vgic/vgic-its.c: static int vgic_its_cmd_handle_mapd(struct kvm *kvm, struct vgic_its *its,
+      	 * is an error, so we are done in any case.
+      	 */
+      	if (!valid)
+---
 
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.4.y        |  Success    |  Success   |
 
