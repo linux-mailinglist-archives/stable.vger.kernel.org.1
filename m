@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-98483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CADED9E451A
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:54:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E99F9E44E9
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 20:41:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 543FBB66C24
-	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:41:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B74D3BC0847
+	for <lists+stable@lfdr.de>; Wed,  4 Dec 2024 17:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546D52309A0;
-	Wed,  4 Dec 2024 17:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3A2231C9A;
+	Wed,  4 Dec 2024 17:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hEKAezYZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iD7H+vSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2009230995;
-	Wed,  4 Dec 2024 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A76231C93;
+	Wed,  4 Dec 2024 17:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332310; cv=none; b=HMzBDsTmE7okLiFqpbWwbhcvzAgw6G40ioxc40SyPOwrlF/6dCEKrNcaRNBtAasQ18q1HtPzaue6KmjAfiTnHnD1QslvrRedp/imnVAtCeV8NDNuhiDfBUkBXbHM/1GMAkMOejtHcdL3LkOwzDjSCnY5i8cXQtP42NMqQK6IIEM=
+	t=1733332313; cv=none; b=qgwHRZCOVOscBDyPjvLgNBoWCQqWOv5hjhEp566pFQCFhY5z7oSXCT+QNF/Oek1YOw3BH5LicQuN1+bM3NDXYdkfb/1VvJjJK5Q6KrlR4DDLtwHnOPiyLh7JSe1bG/y4JCaIAFytoJbWCv+38kT0vbubtCiJcac1CnPyY3s0Hek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332310; c=relaxed/simple;
-	bh=k1jOQVgSF2aXA8uiylaUo68g12VS2FuU1O43wOhZ6cU=;
+	s=arc-20240116; t=1733332313; c=relaxed/simple;
+	bh=3pxWEnxr6XMjjy+AhRxPK8q2FLeIUsRi6U5y2ZV0sxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGj6u18xPbyze+rrEGZjTFNEBrrgpnOAxpvFkUhLIzWErkwYl9+GF4OMLUvDnED1NrIl7g/TSpw9uoX7E4xlzumqNGcOsuA+tLsysvGXxp4YEea8zSuaJq3/R8vA5RQGsZrbfjfEwzckoLhjgGHmCOeEX5SjQqrU+WrSMJmxOhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hEKAezYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C608CC4CEDF;
-	Wed,  4 Dec 2024 17:11:48 +0000 (UTC)
+	 MIME-Version; b=KjFzK/ZCsjQGbjaEcOKcl9pqJnNsagtD8cUHO4xL/zsZoA/HFGUY1qoZZd2lofs+8yHVkMvmgi5OXRs62wQSACAWg6tatrbbft3mGO/htHGZAATDPacZPCCm30BP9FWihqwCSaMM8aDXBdgWayMmsFp29rTtnqgHSpgff2wmnjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iD7H+vSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF68FC4CECD;
+	Wed,  4 Dec 2024 17:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733332309;
-	bh=k1jOQVgSF2aXA8uiylaUo68g12VS2FuU1O43wOhZ6cU=;
+	s=k20201202; t=1733332312;
+	bh=3pxWEnxr6XMjjy+AhRxPK8q2FLeIUsRi6U5y2ZV0sxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEKAezYZgBOTWO7+H8Y1DAlDeJhhO1+i0Y0gspGdtWMFWB0wdcjzi9z4nRufdDcTo
-	 pk96gDYFB/eBa4vKCqXxb/B78DKOxIW0rjpCxIgk5jiaCazb0IhZNd6erAM0C6f7XB
-	 w36txTowlGc3S7kmME8waHBYN/BE8aqo4D89T7mQR/F1M0Y4ejZrMQLc6MSoTPk7dr
-	 ooqGXvF2hbLaKzie3odW9xSgNGF3VaHqR8Vh2HPsTHGY4E/Bp0VFcp73O58ynaPz16
-	 m9Sd/XVRdgElSofOu8jBBtfKAG9Dc9HZRQLaHBhKwRbfF5Rrr7DHp05h8f59dIXjL/
-	 TrDbZ4oAiBGSw==
+	b=iD7H+vSx9rwCuZ9mk0FQJn0JXsOxFsbunCiF7red3OCmOfOdLXbAD5Lcxkvsb0hJh
+	 8uXm6/nVIDADypKNKpAnj5BT5769gsOKTWMcOL16nA8Ug04X2ZEFQ1FNa32ncyu3Hs
+	 xzBWhTzsS0tVzQxvxXxjPZ2POTh1drXRT4feevl+WHP9kf2VxjufR69LemPxHJnZKZ
+	 9B2XQwUfieL1XC8gi6PLebYvkQd3zOS0ThrOvZ4ePY/ZvmZsY7tPn8aAtzSf7QJl0k
+	 UNQd3+iH9LdLzPO6Wh46svD15tm89BXRSUac+ot3AfWmTGhkgAfTKDmmviOQrDVK/b
+	 mN48tTEYDohZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mathieu.poirier@linaro.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 11/15] remoteproc: qcom: pas: enable SAR2130P audio DSP support
-Date: Wed,  4 Dec 2024 10:59:59 -0500
-Message-ID: <20241204160010.2216008-11-sashal@kernel.org>
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.12 13/15] f2fs: print message if fscorrupted was found in f2fs_new_node_page()
+Date: Wed,  4 Dec 2024 11:00:01 -0500
+Message-ID: <20241204160010.2216008-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241204160010.2216008-1-sashal@kernel.org>
 References: <20241204160010.2216008-1-sashal@kernel.org>
@@ -68,34 +65,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 009e288c989b3fe548a45c82da407d7bd00418a9 ]
+[ Upstream commit 81520c684ca67aea6a589461a3caebb9b11dcc90 ]
 
-Enable support for the Audio DSP on the Qualcomm SAR2130P platform,
-reusing the SM8350 resources.
+If fs corruption occurs in f2fs_new_node_page(), let's print
+more information about corrupted metadata into kernel log.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-3-bd204e39d24e@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Meanwhile, it updates to record ERROR_INCONSISTENT_NAT instead
+of ERROR_INVALID_BLKADDR if blkaddr in nat entry is not
+NULL_ADDR which means nat bitmap and nat entry is inconsistent.
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/node.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index ef82835e98a4e..0a7477ea832ed 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -1421,6 +1421,7 @@ static const struct of_device_id adsp_of_match[] = {
- 	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
- 	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
- 	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
-+	{ .compatible = "qcom,sar2130p-adsp-pas", .data = &sm8350_adsp_resource},
- 	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
- 	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
- 	{ .compatible = "qcom,sc7280-adsp-pas", .data = &sm8350_adsp_resource},
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 59b13ff243fa8..601ae810349fe 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1331,7 +1331,12 @@ struct page *f2fs_new_node_page(struct dnode_of_data *dn, unsigned int ofs)
+ 		err = -EFSCORRUPTED;
+ 		dec_valid_node_count(sbi, dn->inode, !ofs);
+ 		set_sbi_flag(sbi, SBI_NEED_FSCK);
+-		f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
++		f2fs_warn_ratelimited(sbi,
++			"f2fs_new_node_page: inconsistent nat entry, "
++			"ino:%u, nid:%u, blkaddr:%u, ver:%u, flag:%u",
++			new_ni.ino, new_ni.nid, new_ni.blk_addr,
++			new_ni.version, new_ni.flag);
++		f2fs_handle_error(sbi, ERROR_INCONSISTENT_NAT);
+ 		goto fail;
+ 	}
+ #endif
 -- 
 2.43.0
 
