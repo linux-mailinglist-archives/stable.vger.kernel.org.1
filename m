@@ -1,58 +1,46 @@
-Return-Path: <stable+bounces-98781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F599E5352
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 12:06:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047F39E5365
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 12:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4391882436
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 11:06:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFA2318813B4
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 11:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BDD1DC1AF;
-	Thu,  5 Dec 2024 11:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753CC1DDA31;
+	Thu,  5 Dec 2024 11:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="KViapaAx"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KEDSO+2X"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29561DED74;
-	Thu,  5 Dec 2024 11:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733396769; cv=pass; b=tsB8VrJMKV9A0L7QB/6eAofmZTJcisFLUMcP7NZzB0QLCxmZtWvKaUbcfpy5ZpAXBjHj9ZJe/JGdGkgwhua4Dc6X1E3bCrpQ7cAoO3wAcMK6148pcIGTKl49RCDpQw9L+1kaNod/Caym9J+awtQk730NiJVaRT42f7jiVeCiNjA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733396769; c=relaxed/simple;
-	bh=IXx/oU+QcESCCwz770HGNR30hBuagnf5VX8nXcXOBsA=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=rCs7IxUWOP6AiCrKpz5FdznsFdgWB8iUj2HSsRNiVzc2uzdH8+nl7nMd+Y4fQV0nDR6ThHMiT2uYSQPkKBsAfnLkaz+hPSzAXezZrnjfjtlBjJIsKuh08QdueyYypQ38aLY8QCyCK8+RfRoeC4u1j3r/wz4q+5ZyFzvQfPsnuhI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=KViapaAx; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1733396726; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=e/vvx+4EI8ma1BqbazfaFXL8muTv2shgaw+WCATmI7u8+rcK3p41W3vImhjdE1OODgg0JjAagt8Ry3pzJ4/xaQNBAJkEIBnav+Au2+uXlpxsz3061TbbmMOJPWR75xRBAUuxl++e7YWsixodTPrZx8fCedbap3eRCS2+vJYERY8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1733396726; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=zyAQUEXTKqnKv3dXt1Tbhihbg4GZs6imcvRqEyArecE=; 
-	b=bHHa72zpMklvKcM3dcP5notYVE93V4rZ5b9rWHggWvD/DfUSzquLsVaHmk3j6imTNCmvoZw7tpdt/v8MnlGZl0DSFzBveRDl3MUs5rE3MTW1iyWwdGb6p4V2CRMxsjCDqE5kfZb37kPECpvEWsg9iri/eZkX6hrb39zQSUEqATA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
-	dmarc=pass header.from=<Usama.Anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733396726;
-	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=zyAQUEXTKqnKv3dXt1Tbhihbg4GZs6imcvRqEyArecE=;
-	b=KViapaAxeZVaR1STt2JJlmbet0YIJmzL0Y+g9YAgsvXnMPwoQ8x+57+6hr34OnLr
-	bHNW1ThI9r6pRkmSQ0c1UERX0JYErc6559/xvMFeauhFLd3lzyK4A9EUVNGDj/Vt2jp
-	IaJycDKDwUDfdP6j9A+mKJiHlyz7I5ankDVq5TJQ=
-Received: by mx.zohomail.com with SMTPS id 1733396724917488.63465424619517;
-	Thu, 5 Dec 2024 03:05:24 -0800 (PST)
-Message-ID: <f27909d7-345b-4375-aa76-06eaa012b2a0@collabora.com>
-Date: Thu, 5 Dec 2024 16:05:23 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509081DF75B;
+	Thu,  5 Dec 2024 11:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733396954; cv=none; b=A6ay2fEjPRbVtytru/eYRaqGj5JgZZrYvXi5YDW006ZDszScaS1KR5DY7s0alzauP1EKoj+R2pQbw6DDtVY8l3OuEHcaHGpC4Zwbhxyke4TnPQSAOToqLuUu5Ol4FjEIHahX8/Hpsp2d1hXl9iMXuK9WWFOzBPqS9/6o92/peS4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733396954; c=relaxed/simple;
+	bh=2lwv7PTuYJ1KSoCkZDbSJ2Fkk3xStOJzhn/LI+XU2d8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mtAhUSdShTThCgZATBJji9Gl+jgXYFyOnv+bRiO9w7MwYztZw9whemt9Bv2FABKqVsxiUG0nbNS6wDua4TxVvQbF1MTOnjw4YhNZydMHExcoB9xZdycCGTkkVRx0JwFwtx7u++ZltojWumebi6Eih+nAMuZO22Zc/M/tLnv5J6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KEDSO+2X; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1733396947; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=F1uWlXiJdRS4YGgh84leHN/3o0Drua4QYRdsX3mwS+0=;
+	b=KEDSO+2XvEvZvehACXFaeK3fvN+jFJk0SOxOPrEHz3tLkrqBpDSuu05nPGnlxjFnYcUh5e4L7k4B0d9el8nokwxQqRvuYQWRU8398jCO9y7z6+o3wFJ6vqYsN7XCDHcl3ZSg5DDsVW8FwY975RUyp8J74ooNOtzYqIqfCQaQ4dU=
+Received: from 30.221.131.123(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0WKt16k9_1733396946 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 05 Dec 2024 19:09:07 +0800
+Message-ID: <c994ac21-7412-4df2-b6d9-e810d8c6864b@linux.alibaba.com>
+Date: Thu, 5 Dec 2024 19:09:06 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,81 +48,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.11 000/817] 6.11.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-References: <20241203143955.605130076@linuxfoundation.org>
+Subject: Re: [PATCH v2 1/2] ocfs2: Revert "ocfs2: fix the la space leak when
+ unmounting an ocfs2 volume"
+To: Heming Zhao <heming.zhao@suse.com>, ocfs2-devel@lists.linux.dev,
+ akpm <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241205104835.18223-1-heming.zhao@suse.com>
+ <20241205104835.18223-2-heming.zhao@suse.com>
 Content-Language: en-US
-From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-In-Reply-To: <20241203143955.605130076@linuxfoundation.org>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+In-Reply-To: <20241205104835.18223-2-heming.zhao@suse.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
 
-On 12/3/24 7:32 PM, Greg Kroah-Hartman wrote:
-> -----------
-> Note, this is will probably be the last 6.11.y kernel to be released.
-> Please move to the 6.12.y branch at this time.
-> -----------
+
+
+On 12/5/24 6:48 PM, Heming Zhao wrote:
+> This reverts commit dfe6c5692fb5 ("ocfs2: fix the la space leak when
+> unmounting an ocfs2 volume").
 > 
-> This is the start of the stable review cycle for the 6.11.11 release.
-> There are 817 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> In commit dfe6c5692fb5, the commit log "This bug has existed since the
+> initial OCFS2 code." is wrong. The correct introduction commit is
+> 30dd3478c3cd ("ocfs2: correctly use ocfs2_find_next_zero_bit()").
 > 
-> Responses should be made by Thu, 05 Dec 2024 14:36:47 +0000.
-> Anything received after that time might be too late.
+> The influence of commit dfe6c5692fb5 is that it provides a correct
+> fix for the latest kernel. however, it shouldn't be pushed to stable
+> branches. Let's use this commit to revert all branches that include
+> dfe6c5692fb5 and use a new fix method to fix commit 30dd3478c3cd.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-> and the diffstat can be found below.
+> Fixes: dfe6c5692fb5 ("ocfs2: fix the la space leak when unmounting an ocfs2 volume")
+> Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+
+> Cc: <stable@vger.kernel.org>
+> ---
+>  fs/ocfs2/localalloc.c | 19 -------------------
+>  1 file changed, 19 deletions(-)
 > 
-> thanks,
-> 
-> greg k-h
-> 
+> diff --git a/fs/ocfs2/localalloc.c b/fs/ocfs2/localalloc.c
+> index 8ac42ea81a17..5df34561c551 100644
+> --- a/fs/ocfs2/localalloc.c
+> +++ b/fs/ocfs2/localalloc.c
+> @@ -1002,25 +1002,6 @@ static int ocfs2_sync_local_to_main(struct ocfs2_super *osb,
+>  		start = bit_off + 1;
+>  	}
+>  
+> -	/* clear the contiguous bits until the end boundary */
+> -	if (count) {
+> -		blkno = la_start_blk +
+> -			ocfs2_clusters_to_blocks(osb->sb,
+> -					start - count);
+> -
+> -		trace_ocfs2_sync_local_to_main_free(
+> -				count, start - count,
+> -				(unsigned long long)la_start_blk,
+> -				(unsigned long long)blkno);
+> -
+> -		status = ocfs2_release_clusters(handle,
+> -				main_bm_inode,
+> -				main_bm_bh, blkno,
+> -				count);
+> -		if (status < 0)
+> -			mlog_errno(status);
+> -	}
+> -
+>  bail:
+>  	if (status)
+>  		mlog_errno(status);
 
-OVERVIEW
-
-        Builds: 14 passed, 0 failed
-
-    Boot tests: 0 passed, 0 failed
-
-    CI systems: broonie
-
-REVISION
-
-    Commit
-        name: v6.11.10-818-g57f39ce086c9
-        hash: 57f39ce086c9b727df2d92ea7ab7cc80e89d7ed2
-    Checked out from
-        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
-
-
-BUILDS
-
-    No build failures found
-
-
-BOOT TESTS
-
-    No boot failures found
-
-See complete and up-to-date report at:
-
-    https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=57f39ce086c9b727df2d92ea7ab7cc80e89d7ed2&var-patchset_hash=
-
-
-Tested-by: kernelci.org bot <bot@kernelci.org>
-
-Thanks,
-KernelCI team
 
