@@ -1,123 +1,89 @@
-Return-Path: <stable+bounces-98768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AC79E517C
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 10:36:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10E09E51AF
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 10:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DABAE18817A1
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 09:36:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B087A16481F
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 09:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3F11D5AC6;
-	Thu,  5 Dec 2024 09:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C941D5171;
+	Thu,  5 Dec 2024 09:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHTo+lSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fp8PhcmI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B341D516A;
-	Thu,  5 Dec 2024 09:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A734918FC70
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 09:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733391401; cv=none; b=U0IqdTzSw2aVzQsLYano60DvSm3V0jzDoX5N9ceiYN6rsMjdzIUc0ajaoGQQjKSzv3ga1BXotT79L3hMv0vBj+36m04MheMC4hGXk8tf5RHITf/HXEbi7WeH7rBfeoKaLpZwzn9iQjJZCFU3NQ0bk6u/P9HP5pAK65yzJqEMdiA=
+	t=1733392134; cv=none; b=ElPJtVx0S9lc8kGaeSfYh89Sql3rPK+/lc5BRl7/pCmZO1CjNEhawdQ7s+BWWnO/sfFFEn6YHIl1sBS0ruSlY9I4EnJ4WBQmFvy0/pPeRMC9s/UC+s8Gfp1BTXf/RMbcBXj9rO1UE7OSxPGktBw5y543xd1DygtPf4+Y1ILcUu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733391401; c=relaxed/simple;
-	bh=MtvxtPQXXkdESvM17FbUWJ8ZBd0i1jazUOmBCLv66ms=;
+	s=arc-20240116; t=1733392134; c=relaxed/simple;
+	bh=UqVoW8hk9+grtqvAi1vI8R33uxmL8eKMwR5CCUhshbQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LcI9pFpq0jYXYKsdE1ntxGmTwlTzR02TLSkIzjpp60i9QjwWOpymNT3Pctq4bYItV2vRL3T0KMrlwfMZqnyDHk7opNPujsIXuIwKNCQLAAcsxDbTi8h7oBaHXk/2OG2L4fIyxUQENKorATjWi/Fej3VgGrFe/MHwCkfzBzdz3Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHTo+lSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D89C4CED1;
-	Thu,  5 Dec 2024 09:36:40 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Isq+iIWGSF4N/PUO61OjnDaVNNso0AZ26HdguuYvBw+NXBgNO3yQIil/mJ89HOPes0HnEfpJMKuG0KXlfk1ehE+mgBBaflqcA+3jooZNqz634bZogUb1eWN7T674Fr5BMF15OqQ6/pqQhGcg7F2VcgEcAlfN+iMs0hbYPar+RNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fp8PhcmI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8919C4CED1;
+	Thu,  5 Dec 2024 09:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733391401;
-	bh=MtvxtPQXXkdESvM17FbUWJ8ZBd0i1jazUOmBCLv66ms=;
+	s=korg; t=1733392134;
+	bh=UqVoW8hk9+grtqvAi1vI8R33uxmL8eKMwR5CCUhshbQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nHTo+lSUSeb99KPYFYRB2nH/XCNwgU0zdOHP7n9zLa6uvqFyEMhtt14AdI9dV0ts5
-	 HibYBUJUwskfrm9HJhFFSgXyFI5Oz4fMBsw4TlroWpmeRQUjV79Yx/nHRfX0rlJ4VG
-	 mP9uTBW4wEJVJ3smlwMWWYnnETPvvxylnRim04j0=
-Date: Thu, 5 Dec 2024 10:36:38 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
-Message-ID: <2024120503-eloquent-exemption-b3e7@gregkh>
-References: <20241203141923.524658091@linuxfoundation.org>
- <Z09KXnGlTJZBpA90@duo.ucw.cz>
- <2024120424-diminish-staple-50d5@gregkh>
- <Z1A+Ku5D0OFOSUm4@duo.ucw.cz>
+	b=Fp8PhcmIWDuDJ4OB8IPDW/ueIGusHB8jmdsSWxN2guhpNH9oggcdFAEzpKDQTHp9a
+	 uwK5mNk+J1ZEIwxPamCYiP+Dq5RMb9z8FEMpPoMRyEDN7LiW+wFLiUXoTIPoh/bptt
+	 AZs9GELKMJGVx+1P049O9IE8tnkY+a9GBAXdAPXk=
+Date: Thu, 5 Dec 2024 10:48:51 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?Q?Beno=EEt?= Sevens <bsevens@google.com>
+Cc: stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH 5.10.y] ALSA: usb-audio: Fix out of bounds reads when
+ finding clock sources
+Message-ID: <2024120526-jawless-robust-ea3f@gregkh>
+References: <20241205092925.922510-1-bsevens@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <Z1A+Ku5D0OFOSUm4@duo.ucw.cz>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241205092925.922510-1-bsevens@google.com>
 
-On Wed, Dec 04, 2024 at 12:34:02PM +0100, Pavel Machek wrote:
-> Hi!
+On Thu, Dec 05, 2024 at 09:29:25AM +0000, Benoît Sevens wrote:
+> From: Takashi Iwai <tiwai@suse.de>
 > 
-> > > > This is the start of the stable review cycle for the 4.19.325 release.
-> > > > There are 138 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > 
-> > > Build fails:
-> > > 
-> > > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/8532423815
-> > > 
-> > >   CC      drivers/pinctrl/uniphier/pinctrl-uniphier-pro4.o
-> > > 3895
-> > >   CC      drivers/pci/of.o
-> > > 3896
-> > > drivers/rtc/rtc-st-lpc.c: In function 'st_rtc_probe':
-> > > 3897
-> > > drivers/rtc/rtc-st-lpc.c:233:11: error: 'IRQF_NO_AUTOEN' undeclared (first use in this function); did you mean 'IRQ_NOAUTOEN'?
-> > > 3898
-> > >            IRQF_NO_AUTOEN, pdev->name, rtc);
-> > > 3899
-> > >            ^~~~~~~~~~~~~~
-> > > 3900
-> > >            IRQ_NOAUTOEN
-> > > 3901
-> > > drivers/rtc/rtc-st-lpc.c:233:11: note: each undeclared identifier is reported only once for each function it appears in
-> > > 3902
-> > >   CC      drivers/pci/quirks.o
-> > > 3903
-> > > make[2]: *** [scripts/Makefile.build:303: drivers/rtc/rtc-st-lpc.o] Error 1
-> > > 3904
-> > > make[1]: *** [scripts/Makefile.build:544: drivers/rtc] Error 2
-> > > 3905
-> > > make[1]: *** Waiting for unfinished jobs....
-> > > 3906
-> > >   CC      drivers/pinctrl/uniphier/pinctrl-uniphier-sld8.o
-> > > 3907
-> > >   CC      drivers/soc/renesas/r8a7743-sysc.o
-> > 
-> > What arch is this?  And can you not wrap error logs like this please?
+> The current USB-audio driver code doesn't check bLength of each
+> descriptor at traversing for clock descriptors.  That is, when a
+> device provides a bogus descriptor with a shorter bLength, the driver
+> might hit out-of-bounds reads.
 > 
-> Not easily. But you can easily get nicely formatted logs +
-> architecture details by clicking the hyperlink above.
+> For addressing it, this patch adds sanity checks to the validator
+> functions for the clock descriptor traversal.  When the descriptor
+> length is shorter than expected, it's skipped in the loop.
+> 
+> For the clock source and clock multiplier descriptors, we can just
+> check bLength against the sizeof() of each descriptor type.
+> OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
+> of bNrInPins elements and two more fields at its tail, hence those
+> have to be checked in addition to the sizeof() check.
+> 
+> Reported-by: Benoît Sevens <bsevens@google.com>
+> Cc: <stable@vger.kernel.org>
+> Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
+> Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> (cherry picked from commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6)
 
-Sometimes we don't have web access, only email access.  Putting all of
-the relevant information in the report is best please, if you wish for
-anyone to pay attention to it (i.e. don't make me do extra work for your
-test systems...)
-
-I found the offending commit, I think.  Funnily it used IRQ_NOAUTOEN
-which is also in other files in 4.19.y yet never defined, so our test
-coverage isn't all that good these days.  All the more reason this
-kernel needs to be marked end-of-life and never used again.
+You did _MUCH_ more than just cherry picking this.  Please document your
+changes somehow, this is much different from the original commit.
 
 thanks,
 
