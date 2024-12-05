@@ -1,114 +1,177 @@
-Return-Path: <stable+bounces-98741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D8D09E4EAA
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:35:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C649E4E89
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:34:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EFEF282AE2
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 07:35:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7AAA18819A7
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 07:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B1D1CEAD0;
-	Thu,  5 Dec 2024 07:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AED1B85E2;
+	Thu,  5 Dec 2024 07:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KuChJRyi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mmw9XcFW"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D247B1C8FD7
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 07:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A941B6CE6
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 07:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733384004; cv=none; b=Nd8MPk4pYqjWfb3DyWSeQDBsvcOlM0oWfuC9odlVRXYAuTTLGkP8RTfZxUqF9h3nhyvAHOIZNn0SJ+v4/GfxtuqE2ZtrcHOM9D8gxjxGJ+x6D3bN7no1jrLSrygTAtdGUqQisPMIlHxn36hB+/2wFfTxWvG5rR/1y8sh+QyFNWw=
+	t=1733383997; cv=none; b=mw7RbGPmWCfAEaEHmDCYdvCIdMGy7L+DZU0ZCKlDNxZOOOfUDzcrOHtTDXK1FICQuZh8Jaxv4wMIQ9Dh4DA0x4RQz2qNkgCoE9jqz1yTx1eOM8kFQWdzg1x3ElMQmiSzANp1vnljAC/IhCgP9A3GskQWPyP0zbqRHTuKVbjQzzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733384004; c=relaxed/simple;
-	bh=LR8Ks9hoX/zY9Z6VgXzgidX0Sq1XGsPeMKuoflaftsY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S/ht0P1WNCN5q6YV8glG+0j+U+v2JYTA/uS/4AARGS+rmbRikfqpmooZ2jmyImJGZ3eo0DPNMyybYzxxjZcPyQEEqVeAMzbobFWlQ++Juhxvhku14UGYsWlVcycqBKf7+bOZqjoWWXBX5W3FN4fXFLN/DBk8mVLO+LggomeITLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KuChJRyi; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733384002;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LR8Ks9hoX/zY9Z6VgXzgidX0Sq1XGsPeMKuoflaftsY=;
-	b=KuChJRyiL7529Dd9mQYgTJ8YdklBt+JdXQn9KpnPpxvkCT2LCuoRILBQgRQcTad9/ulOAc
-	aB78C90Uot8JPUsm29rRRWtq+YcJFY5jXn3bM1FS3vT3qRMjqt/7XBDtNSHnuACU0h0mqX
-	Rh70PjoSsbUOjX3LTZvxi3iXrEhOq5w=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-AjdZovdHMLus3RFpNmvd7w-1; Thu, 05 Dec 2024 02:33:20 -0500
-X-MC-Unique: AjdZovdHMLus3RFpNmvd7w-1
-X-Mimecast-MFC-AGG-ID: AjdZovdHMLus3RFpNmvd7w
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-85bb7ab2ccbso96225241.2
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 23:33:20 -0800 (PST)
+	s=arc-20240116; t=1733383997; c=relaxed/simple;
+	bh=RBijzRaiyQCfMRRbG6euJ9nQvKHptBuFr6E++PumUaI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=duW4ihQgaRG3Z2pBbAleNCC98fMwC9u2dXU1ylw6SO+FDGQo04ApeZnaK9/Fd7Q4U5mOrpq/9DVjGqNXmSBzXG1K6o4V8Gwnvd8QkNy23dy5F7KODxZEKDNTsYnQRtZoPlrq0gAqnwWVSwfN4pXrcH+WttEz82qw7ZrmWfF2/PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mmw9XcFW; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aa629402b53so45781966b.3
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 23:33:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733383993; x=1733988793; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jyPCCbXGwL2HX2ZQQ75iZPGtqkwk+FZ+xBNeL3SfQvk=;
+        b=mmw9XcFWr6x7AhTvLj5uduw6VpsDlA+WuFnqA+xXjRHFyqQTX5RsdNpSiXejsZ9afJ
+         hcQvWReZ63HSpRGKt2Z706b7Zt2wfkpsC2NHloNxCpI7hU/7RKNjpPoooM5Y80AVOJty
+         Y9rPTjWhZy8GJkt6QiVaRUBeo/0JHw7rH6LDCDWiLzM0kB2dsf4f8m62bMUcO5vdfwxZ
+         J57ear4DQwCZpUm1nR2orecNH1w2GcV8l/fTbs16w/YGwYLE26NJPkzk8aYCHQwVMPWn
+         q+mcB1t1aHGI7k1Zz9eFFZ8qOPTVz9beSMvOcTUCAdOkbc3GaMNSZihnl7b3st7wb4Y4
+         eRmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733384000; x=1733988800;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LR8Ks9hoX/zY9Z6VgXzgidX0Sq1XGsPeMKuoflaftsY=;
-        b=ANF97NhR6+O3Htg2CaACsmBrkAFR7NR2xQ4OH+4DpV9x7FiYFSo7xtzQApOsEXspo3
-         w0EWX30srbA2yKXan81MhiPAKdjwk7GJK87CezT9oHTxApDYYxZTdTQNZQkkffB+me8n
-         +N0l8oX6wEPmq2Uua7JwDYXO2Mn+JdNRTNkXN+mdUHqe0eo7bHYuJBd78xH9B5Bh8K7J
-         3YmtOGTNylSIbQJ8ZnlpeJY5jOAZf0Td3Ham00BNvjyp4vUuBdHi3MO01a+ugIzJ8zVn
-         cpEhqfhFHmrQhIhNWPVEweYAKvyVL682SSQ1NU9jffqIj6EKXawC5KKEfDmCjw8cRxLA
-         nKaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX3WYVXr3WTkIDHzaQSl8fCDn4l80TyaPz0oJmvxbJkuKWQLl5DHXm+/h53AK1VA9AyjrJF5zE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1Ev8gaaxeSjbRGr6Qw4/74V6u05zQd0awbXJ6m0jeOTb3aUqJ
-	bENVAlY7CuidNhcYVyIdYCYB4dYOYWy3fzNvuHI3RZpFEYD4Y/naJm/v3IF2vXcU3LvB7l9xixe
-	njgFD652dsCiQ8BkJ6CqbHGB5m/57pwDUW27kwK4Se8Shzp4LQkBR8SwOrmAdn/k8rRRcM94PpR
-	r0YDuVpOYF76MVZRgqLsEsrgicKEF5
-X-Gm-Gg: ASbGncu8XKtcWV6yrkVy/dd8X5eJgPrSHlocyiLRH5Ou2zrpnOLUoCGABJlb1wfZ1v+
-	RDG6nFV0x70m7Y1x5TjKulLuY6KI5PSui
-X-Received: by 2002:a05:6102:e13:b0:4ad:5c22:8412 with SMTP id ada2fe7eead31-4af973616d8mr12754220137.17.1733384000435;
-        Wed, 04 Dec 2024 23:33:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IELTyIwlkQV/FRs6ijjhpSGbcHEbQmTZ4PYlrb2mZ2b3HG32XEj4FFiezBBQtrrkcWKDD+bF56IdeIGqAxNni4=
-X-Received: by 2002:a05:6102:e13:b0:4ad:5c22:8412 with SMTP id
- ada2fe7eead31-4af973616d8mr12754214137.17.1733384000076; Wed, 04 Dec 2024
- 23:33:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733383993; x=1733988793;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jyPCCbXGwL2HX2ZQQ75iZPGtqkwk+FZ+xBNeL3SfQvk=;
+        b=PMExQnixdUMLa4N2Omw36+BYcjX82sV9aJmhlbGDd3HXWTmNGlw1vkqd//vKUqvyPn
+         LqY0WFIWdTQQh42ZHidNAeX9AkB4kwGiswqJWnh+w7oDCgXAVa5I/2mhvKYCCsvtH0EP
+         m0J8Ebh+lq1IzPODo4F2Hn9niWE9x/kJ2E+3CBGplEUM/wzUrOZeqQoX96V52UYJ848I
+         Hs8n3u+lD/yec46+z1LGMr7PFBE/nDhylv0cx+5t5uP/wpf8qAhEdNJ2gRGz0G+HwY/b
+         oAR90KguhvMDu+eQ9y1Mv3nxziI29yPSVeroDGH6rtu5V4S4/JYUO2YFd6GKSfhNvrwE
+         1Rog==
+X-Forwarded-Encrypted: i=1; AJvYcCW6t2Dpyzb+qYgJehHzz08jKI6Sty2U8ADUgllYPdTQqYwd2nXSgBkTkcnmB3kIzBscTw8dW5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJVHZeYNT6RyvEfhMc/zjIEut8HN0X9syOyuWub3S8VhMZSYRd
+	ngT4KkT0uBsA3XXHQ1h8PU9au4yZxAkTOsFKLplyzcfNoBso7k64PUnh/AHHm9k=
+X-Gm-Gg: ASbGncui1On/gdsPRfq1oeGlerSccJKF2TwJY2mYIY/Dy4yZCTyC1f5LJhetT0YRRZu
+	bNzpvT0j4S1biA905OUyoWr/isJla2iJir3A7G10ZadIhBepIOmOGyJo4Vs2aJrE981atzsa/Pk
+	iAm/GeXSKLBZzDKN9Shw4S6ZjaoMzsE8AIJtWJdJkHPlne+F3CSBIygU33S6/27Uhi2Rcse1vrl
+	VaUFNdjgBA1rLd2vvDG1KJ5C/+1j2HTUxDkoDdryd1jShjUYbI0ZF8K4NUqzFS7d4mnrUvsMdRX
+	XyitcHCrMDbvlbnkZaTtB/qU3HGN3q/tSQ==
+X-Google-Smtp-Source: AGHT+IHfI+UCHItr2vvHKPBrNf3u5if9tiRttGFiL6E80p15Kq2YgAQozShUjLutF89S1nrAwt0aIw==
+X-Received: by 2002:a17:907:1ded:b0:aa5:2d9a:1528 with SMTP id a640c23a62f3a-aa5f7f40800mr661936566b.60.1733383993082;
+        Wed, 04 Dec 2024 23:33:13 -0800 (PST)
+Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6260888casm53371766b.133.2024.12.04.23.33.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2024 23:33:12 -0800 (PST)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Subject: [PATCH v3 0/8] USB31DRD phy updates for Google Tensor gs101
+ (orientation & DWC3 rpm)
+Date: Thu, 05 Dec 2024 07:33:11 +0000
+Message-Id: <20241205-gs101-phy-lanes-orientation-phy-v3-0-32f721bed219@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241204050724.307544-1-koichiro.den@canonical.com> <20241204050724.307544-8-koichiro.den@canonical.com>
-In-Reply-To: <20241204050724.307544-8-koichiro.den@canonical.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 5 Dec 2024 15:33:04 +0800
-Message-ID: <CACGkMEtd9-=TD2J-ds_NGnim-EeKYJxLiqJXemMP0JY8EuMeQg@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 7/7] virtio_net: ensure netdev_tx_reset_queue
- is called on bind xsk for tx
-To: Koichiro Den <koichiro.den@canonical.com>
-Cc: virtualization@lists.linux.dev, mst@redhat.com, xuanzhuo@linux.alibaba.com, 
-	eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADdXUWcC/43NQQqDMBQE0KtI1k35+QatXXmP0kVMogYkkURCR
+ bx7v25KV+1yBubNxpKNziZ2LzYWbXbJBU+hvBRMj8oPljtDmSGgFAJrPiQBgs/jyiflbeKB5n5
+ RC+3OFhuDoCtzkwYZKXO0vXudD48n5dGlJcT1PMziaP+3s+DARVf32qJsKujayXkVwzXEgR14x
+ g+IUP4GkUAJRvekVjWYL3Df9zelo8+vIAEAAA==
+To: Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Sylwester Nawrocki <s.nawrocki@samsung.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Peter Griffin <peter.griffin@linaro.org>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, 
+ Sam Protsenko <semen.protsenko@linaro.org>, 
+ Will McVicker <willmcvicker@google.com>, Roy Luo <royluo@google.com>, 
+ kernel-team@android.com, linux-phy@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13.0
 
-On Wed, Dec 4, 2024 at 1:08=E2=80=AFPM Koichiro Den <koichiro.den@canonical=
-.com> wrote:
->
-> virtnet_sq_bind_xsk_pool() flushes tx skbs and then resets tx queue, so
-> DQL counters need to be reset when flushing has actually occurred, Add
-> virtnet_sq_free_unused_buf_done() as a callback for virtqueue_resize()
-> to handle this.
->
-> Fixes: 21a4e3ce6dc7 ("virtio_net: xsk: bind/unbind xsk for tx")
-> Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-> ---
+Hi,
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+This series enables USB3 Type-C lane orientation detection and
+configuration on platforms that support this (Google gs101), and it
+also allows the DWC3 core to enter runtime suspend even when UDC is
+active.
 
-Thanks
+For lane orientation, this driver now optionally (based on DT)
+subscribes to the TCPC's lane orientation notifier and remembers the
+orientation to later be used during phy_init().
+
+To enable DWC3 runtime suspend, the gadget needs to inform the core via
+dwc3_gadget_interrupt() with event type == DWC3_DEVICE_EVENT_DISCONNECT
+of a cable disconnect. For that to allow to happen, this driver
+therefore needs to stop forcing the Vbus and bvalid signals to active
+and instead change their state based on actual conditions. The same
+TCPC notifier is used to detect this, and program the hardware
+accordingly.
+
+That signal state is based on advice given by Thinh in
+https://lore.kernel.org/all/20240813230625.jgkatqstyhcmpezv@synopsys.com/
+
+Both changes together now allow cable orientation detection to work, as
+the DWC3 will now call phy_exit() on cable disconnect, and we can
+reprogram the lane mux in phy_init().
+
+On top of that, there are some small related cleanup patches.
+
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+---
+Changes in v3:
+- patches 1 & 2: update as per Rob's suggestions
+- patch 7 & 8: drop init to -1 of phy_drd->orientation (Vinod)
+- patch 7: avoid an #ifdef 
+- Link to v2: https://lore.kernel.org/r/20241203-gs101-phy-lanes-orientation-phy-v2-0-40dcf1b7670d@linaro.org
+
+Changes in v2:
+- squash patches #2 and #3 from v1 to actually disallow
+  orientation-switch on !gs101 (not just optional) (Conor)
+- update bindings commit message to clarify that the intention for the
+  driver is to work with old and new DTS (Conor)
+- add cc-stable and fixes tags to power gating patch (Krzysztof)
+- fix an #include and typo (Peter)
+- Link to v1: https://lore.kernel.org/r/20241127-gs101-phy-lanes-orientation-phy-v1-0-1b7fce24960b@linaro.org
+
+---
+André Draszik (8):
+      dt-bindings: phy: samsung,usb3-drd-phy: add blank lines between DT properties
+      dt-bindings: phy: samsung,usb3-drd-phy: gs101: require Type-C properties
+      phy: exynos5-usbdrd: convert to dev_err_probe
+      phy: exynos5-usbdrd: fix EDS distribution tuning (gs101)
+      phy: exynos5-usbdrd: gs101: ensure power is gated to SS phy in phy_exit()
+      phy: exynos5-usbdrd: gs101: configure SS lanes based on orientation
+      phy: exynos5-usbdrd: subscribe to orientation notifier if required
+      phy: exynos5-usbdrd: allow DWC3 runtime suspend with UDC bound (E850+)
+
+ .../bindings/phy/samsung,usb3-drd-phy.yaml         |  21 +-
+ drivers/phy/samsung/Kconfig                        |   1 +
+ drivers/phy/samsung/phy-exynos5-usbdrd.c           | 215 ++++++++++++++++-----
+ 3 files changed, 190 insertions(+), 47 deletions(-)
+---
+base-commit: c245a7a79602ccbee780c004c1e4abcda66aec32
+change-id: 20241127-gs101-phy-lanes-orientation-phy-29d20c6d84d2
+
+Best regards,
+-- 
+André Draszik <andre.draszik@linaro.org>
 
 
