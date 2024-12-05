@@ -1,125 +1,205 @@
-Return-Path: <stable+bounces-98745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F1E9E4ED6
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:46:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 011641880820
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 07:46:08 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3318E1C07C0;
-	Thu,  5 Dec 2024 07:46:05 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0509B9E5031
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 09:48:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DED31B87C0
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 07:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFE54282BC8
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:48:09 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A1B1D3564;
+	Thu,  5 Dec 2024 08:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C23rppL6"
+X-Original-To: stable@vger.kernel.org
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B55A16F27E
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 08:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733384765; cv=none; b=jb2VZMn4UYpPCWpUjLRHPlQcLwcGtr6qIF2Cxl53QL2ogYBNsbE9gB0+9SqGHtsAY3UxDmEp6eIbOBYC21v8ZBooDP7QngAkgAUK0AF8zXj/2lprkRs2P9M7kGrpUMo/JmUMjCmNgx40/23igYHR3IB+962wtGQT6XI0wQSKvlU=
+	t=1733388484; cv=none; b=eR5bbNt4gQQv6NyGHSppsL73YykHTWQTyUSeCrts5dYSC5xuVG5MOGYKIaW5gJy/rQ3EZfZKrF11RCRUl1hngYilb8P5NA7oZVQBd+BTFvUo9V/jL8RHelmUB4WRTqLQpCvX9s3aGeo9DaHNQtD+yCM2ous+K1xoqn3phsvge04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733384765; c=relaxed/simple;
-	bh=zjNi37K9gDPteihWlKV/NyV2+G+ddXlWk/GJ28X/61o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f7D45p/WPiD3OoRZPbNPyWfAOdmtkzqCoaeaQTXse1JLjG5XSzm1AVmmbco2KkNrXjJMIamAYUnkirQ5lL0VWa0jZvNIJGKKl6QqcLfK09sKoPQ89FjJ+zVhZjQG0WpcAzM6u43A/WMQn0shrrlywmu1go1qOfj9Rtz+nLjV8EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B56fOFp030368;
-	Thu, 5 Dec 2024 07:45:41 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 437qx15t58-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 05 Dec 2024 07:45:41 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Wed, 4 Dec 2024 23:45:40 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Wed, 4 Dec 2024 23:45:39 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <n.zhandarovich@fintech.ru>, <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH 6.1.y] drm/amd/display: fix NULL checks for adev->dm.dc in amdgpu_dm_fini()
-Date: Thu, 5 Dec 2024 16:43:29 +0800
-Message-ID: <20241205084329.1748881-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733388484; c=relaxed/simple;
+	bh=wYDw1TuN2k35SkoIU0toiEcsVuzpIP7INLAH3/IoOlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZU8YwWOFPFn0mlezV0KcLAKMrIt7cioazLkd69cc6rAa4tpvrGpDJYBfhKSSJkFGlyT8PJem5Ve/oGcAId2zsoxa4X2kGJJJcrwxyBcBq5pdvbYeDJun1+m7F3Itx3gORSfgBV/AKp5KxwuoOdZVNBJe7CWAfJIcdyvZLjuhmVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C23rppL6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733388481;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ccQzRwMGVsbCgo9un1k/hDN15wwRwt7Gy/SqmL8E9vc=;
+	b=C23rppL6VOyuyULNHoIjN/CWAKSwqJB7nJ3tc49z7zIS9kIuM5Exjju6etVomhMW2OhpId
+	xgj6+t8RywqcTjaOKcHdCMwBIU3j28sSZUrYF1g4w68dHggf6Kiuinv5EvWEYobJWssAXp
+	abgLpMADqhu/poXuXjqDEjr8TCuRnFE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-388-qIMSRSmVPxGb32FvCtITKg-1; Thu,
+ 05 Dec 2024 03:47:55 -0500
+X-MC-Unique: qIMSRSmVPxGb32FvCtITKg-1
+X-Mimecast-MFC-AGG-ID: qIMSRSmVPxGb32FvCtITKg
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A5FDC19560BD;
+	Thu,  5 Dec 2024 08:47:53 +0000 (UTC)
+Received: from redhat.com (unknown [10.22.64.4])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C1D491956052;
+	Thu,  5 Dec 2024 08:47:51 +0000 (UTC)
+Date: Thu, 5 Dec 2024 02:47:49 -0600
+From: Bill O'Donnell <bodonnel@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@infradead.org>, cem@kernel.org,
+	stable@vger.kernel.org, jlayton@kernel.org,
+	linux-xfs@vger.kernel.org, hch@lst.de
+Subject: Re: [PATCHSET v2] xfs: proposed bug fixes for 6.13
+Message-ID: <Z1FotR1TR8y_kY4D@redhat.com>
+References: <173328106571.1145623.3212405760436181793.stgit@frogsfrogsfrogs>
+ <Z1EBXqpMWGL306sh@redhat.com>
+ <20241205064243.GD7837@frogsfrogsfrogs>
+ <Z1FNqV27x5hjnqQ9@redhat.com>
+ <Z1FPGXpTIJ1Fc2Xy@infradead.org>
+ <Z1FQdYEXLR5BoOE-@redhat.com>
+ <20241205073321.GH7837@frogsfrogsfrogs>
+ <Z1Facuy97Xxj9mKO@redhat.com>
+ <Z1Fd-FVR84x3fLVd@redhat.com>
+ <2024120533-dirtiness-streak-c69d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: _uAkun2EG2LpjwnaAQ9XdtEIKkhN8OyD
-X-Authority-Analysis: v=2.4 cv=EuYorTcA c=1 sm=1 tr=0 ts=67515a25 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=DFC7gQDcAAAA:8 a=HH5vDtPzAAAA:8 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=TusaAkCut-tyimdG5pgA:9
- a=6mkBMmtgJpxIRZlSFNLW:22 a=QM_-zKB-Ew0MsOlNKMB5:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: _uAkun2EG2LpjwnaAQ9XdtEIKkhN8OyD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-05_04,2024-12-04_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- clxscore=1011 priorityscore=1501 suspectscore=0 adultscore=0 mlxscore=0
- spamscore=0 impostorscore=0 lowpriorityscore=0 mlxlogscore=894
- malwarescore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412050057
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024120533-dirtiness-streak-c69d@gregkh>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+On Thu, Dec 05, 2024 at 09:39:42AM +0100, Greg KH wrote:
+> On Thu, Dec 05, 2024 at 02:02:00AM -0600, Bill O'Donnell wrote:
+> > On Thu, Dec 05, 2024 at 01:46:58AM -0600, Bill O'Donnell wrote:
+> > > On Wed, Dec 04, 2024 at 11:33:21PM -0800, Darrick J. Wong wrote:
+> > > > On Thu, Dec 05, 2024 at 01:04:21AM -0600, Bill O'Donnell wrote:
+> > > > > On Wed, Dec 04, 2024 at 10:58:33PM -0800, Christoph Hellwig wrote:
+> > > > > > On Thu, Dec 05, 2024 at 12:52:25AM -0600, Bill O'Donnell wrote:
+> > > > > > > > 1) Our vaunted^Wshitty review process didn't catch various coding bugs,
+> > > > > > > > and testing didn't trip over them until I started (ab)using precommit
+> > > > > > > > hooks for spot checking of inode/dquot/buffer log items.
+> > > > > > > 
+> > > > > > > You give little time for the review process.
+> > > > 
+> > > > Seriously?!
+> > > > 
+> > > > Metadir has been out for review in some form or another since January
+> > > > 2019[1].  If five years and eleven months is not sufficient for you to
+> > > > review a patchset or even to make enough noise that I'm aware that
+> > > > you're even reading my code, then I don't want you ever to touch any of
+> > > > my patchsets ever again.
+> > > > 
+> > > > > > I don't really think that is true.  But if you feel you need more time
+> > > > > > please clearly ask for it.  I've done that in the past and most of the
+> > > > > > time the relevant people acted on it (not always).
+> > > > > > 
+> > > > > > > > 2) Most of the metadir/rtgroups fixes are for things that hch reworked
+> > > > > > > > towards the end of the six years the patchset has been under
+> > > > > > > > development, and that introduced bugs.  Did it make things easier for a
+> > > > > > > > second person to understand?  Yes.
+> > > > > > > 
+> > > > > > > No.
+> > > > > > 
+> > > > > > So you speak for other people here?
+> > > > > 
+> > > > > No. I speak for myself. A lowly downstream developer.
+> > > > > 
+> > > > > > 
+> > > > > > > I call bullshit. You guys are fast and loose with your patches. Giving
+> > > > > > > little time for review and soaking.
+> > > > > > 
+> > > > > > I'm not sure who "you" is, but please say what is going wrong and what
+> > > > > > you'd like to do better.
+> > > > > 
+> > > > > You and Darrick. Can I be much clearer?
+> > > > > 
+> > > > > > 
+> > > > > > > > > becoming rather dodgy these days. Do things need to be this
+> > > > > > > > > complicated?
+> > > > > > > > 
+> > > > > > > > Yeah, they do.  We left behind the kindly old world where people didn't
+> > > > > > > > feed computers fuzzed datafiles and nobody got fired for a computer
+> > > > > > > > crashing periodically.  Nowadays it seems that everything has to be
+> > > > > > > > bulletproofed AND fast. :(
+> > > > > > > 
+> > > > > > > Cop-out answer.
+> > > > > > 
+> > > > > > What Darrick wrote feels a little snarky, but he has a very valid
+> > > > > > point.  A lot of recent bug fixes come from better test coverage, where
+> > > > > > better test coverage is mostly two new fuzzers hitting things, or
+> > > > > > people using existing code for different things that weren't tested
+> > > > > > much before.  And Darrick is single handedly responsible for a large
+> > > > > > part of the better test coverage, both due to fuzzing and specific
+> > > > > > xfstests.  As someone who's done a fair amount of new development
+> > > > > > recently I'm extremely glad about all this extra coverage.
+> > > > > > 
+> > > > > I think you are killing xfs with your fast and loose patches.
+> > > > 
+> > > > Go work on the maintenance mode filesystems like JFS then.  Shaggy would
+> > > > probably love it if someone took on some of that.
+> > > 
+> > > No idea who "Shaggy" is. Nor do I care.	   
+> > > > 
+> > > > > Downstreamers like me are having to clean up the mess you make of
+> > > > > things.
+> > > > 
+> > > > What are you doing downstream these days, exactly?  You don't
+> > > > participate in the LTS process at all, and your employer boasts about
+> > > > ignoring that community process.  If your employer chooses to perform
+> > > > independent forklift upgrades of the XFS codebase in its product every
+> > > > three months and you don't like that, take it up with them, not
+> > > > upstream.
+> > 
+> > Why are you such a nasty person? I try to get along with people, but you're
+> > impossible. I've been an engineer for 40+ years, and I've never encountered such
+> > an arrogant one as you.
+> 
+> I have to step in here, sorry.
+> 
+> Please take a beat and relax and maybe get some sleep before you respond
+> again.  Darrick is not being "nasty" here at all, but reiterating the
+> fact that your company does do huge fork-lifts of code into their kernel
+> tree.  If that development model doesn't work for you, please work with
+> your company to change it.
+> 
+> And if you wish to help out here, please do so by reviewing and even
+> better yet, testing, the proposed changes.  If you can't just suck down
+> a patch series and put it into your test framework with a few
+> keystrokes, perhaps that needs to be worked on to make it simpler to do
+> from your side (i.e. that's what most of us do here with our development
+> systems.)
+> 
+> By critisizing the mere posting of bugfixes, you aren't helping anything
+> out at all, sorry.  Bugfixes are good, I don't know why you don't want
+> even more, that means that people are testing and finding issues to fix!
+> Surely you don't want the people finding the issues to be your users,
+> right?
+> 
+> thanks,
 
-Since 'adev->dm.dc' in amdgpu_dm_fini() might turn out to be NULL
-before the call to dc_enable_dmub_notifications(), check
-beforehand to ensure there will not be a possible NULL-ptr-deref
-there.
+Thank you for putting this in a better perspective.
+-Bill
 
-Also, since commit 1e88eb1b2c25 ("drm/amd/display: Drop
-CONFIG_DRM_AMD_DC_HDCP") there are two separate checks for NULL in
-'adev->dm.dc' before dc_deinit_callbacks() and dc_dmub_srv_destroy().
-Clean up by combining them all under one 'if'.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 81927e2808be ("drm/amd/display: Support for DMUB AUX")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8dc0f70df24f..7b4d44dcb343 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1882,14 +1882,14 @@ static void amdgpu_dm_fini(struct amdgpu_device *adev)
- 		dc_deinit_callbacks(adev->dm.dc);
- #endif
- 
--	if (adev->dm.dc)
-+	if (adev->dm.dc) {
- 		dc_dmub_srv_destroy(&adev->dm.dc->ctx->dmub_srv);
--
--	if (dc_enable_dmub_notifications(adev->dm.dc)) {
--		kfree(adev->dm.dmub_notify);
--		adev->dm.dmub_notify = NULL;
--		destroy_workqueue(adev->dm.delayed_hpd_wq);
--		adev->dm.delayed_hpd_wq = NULL;
-+		if (dc_enable_dmub_notifications(adev->dm.dc)) {
-+			kfree(adev->dm.dmub_notify);
-+			adev->dm.dmub_notify = NULL;
-+			destroy_workqueue(adev->dm.delayed_hpd_wq);
-+			adev->dm.delayed_hpd_wq = NULL;
-+		}
- 	}
- 
- 	if (adev->dm.dmub_bo)
--- 
-2.25.1
+> 
+> greg k-h
+> 
 
 
