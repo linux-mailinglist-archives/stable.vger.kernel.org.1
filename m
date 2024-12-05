@@ -1,148 +1,203 @@
-Return-Path: <stable+bounces-98820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A56D9E588E
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 15:34:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111CD1884D80
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 14:34:01 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2361F218AA2;
-	Thu,  5 Dec 2024 14:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hSTegYIc"
-X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46C49E58A2
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 15:39:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B671C3318
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 14:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733409234; cv=none; b=pK7+nnzU6Wnuq0oxystD7Sdd3rv4jASmTFjYymkHZa5qt8OIcGD2Ko/qMkrfea+JAYd9atbj8K1J0UvkrpXLoITHbI5fBvJurDCg4SH0y/UcRWiQHsHo58Vcbc8MK6A6YtJJ+LYTPYitOT7ZJCoWe5m9r5P/9CopM7Ip1SAjCWw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733409234; c=relaxed/simple;
-	bh=LlowRok/dH+1SYmF4Zr4S2WYiD5LJL5jllu745nJqHE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rxaqE/o5/OaKq9owUx0YtLlVnp5s3wE8IrjEWfKZPslWKg7SKi/Vwlh+a2qageuuK0q4IUQmpIzyvdP9Da5yh09ltcbbKJDadNAfEmHnEgQewirzseDAO9p7CZCOZpRaqX+dpMKPgV9KVIp0b37zLEXw1S0ZESo6FfwsSWGCYiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hSTegYIc; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733409233; x=1764945233;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=LlowRok/dH+1SYmF4Zr4S2WYiD5LJL5jllu745nJqHE=;
-  b=hSTegYIcl4LE9/yYawSHiBTMBCTQMG/I5Wf5WlcdA5XQ/ZZAPbZEcBfv
-   uLXug32SJa9n7VOA6xoA3Z1zCVT0hJ7pFa/PpEYxNteQpSgCcsjUdnZog
-   WJ2Sq0zY5e8qgV5wfvDEoIEkSrFVp5dQ9GcTUS//V3G8GaxuwHi2C5Z2q
-   dC22oMu/ex0gJVShSh3jZREoX07qiunFf7hJxPqqzGpIdHd91WxtrqLgw
-   JHnGL+ivaY3eZltegySztHg/fcXble76bXuwftz7jnZ+nMyxbeu5C0F0R
-   qR2h4w2mTkAV1dNLvnoOaiwu9Tt/JM8cJvagaYgdIDayrwu6ve4f/420m
-   A==;
-X-CSE-ConnectionGUID: 1TOyGmuZT4yb6R5rPiSp7Q==
-X-CSE-MsgGUID: r0cKjt9iTYynUueAx37PKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11277"; a="33074220"
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
-   d="scan'208";a="33074220"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 06:33:53 -0800
-X-CSE-ConnectionGUID: WOBwx1NmQ2G8jdMp50fhZQ==
-X-CSE-MsgGUID: MxlQjevzT8m/y1qXblwauQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,210,1728975600"; 
-   d="scan'208";a="93978287"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.163.217]) ([10.245.163.217])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 06:33:51 -0800
-Message-ID: <695c408b-c077-44c1-9861-0af54148cc86@linux.intel.com>
-Date: Thu, 5 Dec 2024 15:33:46 +0100
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 560B2281844
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 14:39:16 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3392C21A425;
+	Thu,  5 Dec 2024 14:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="iw+Fq7Zo"
+X-Original-To: stable@vger.kernel.org
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2086.outbound.protection.outlook.com [40.107.100.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4EB149C64;
+	Thu,  5 Dec 2024 14:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733409552; cv=fail; b=V2d0PDMlQw2Mo5Vh3EX5g3B9ioIkoF0rEOyIyZ+LvDhd4jJb0oxK2+xEfvUwpZon3RnZgXoDSb8JhmCjGCd3Jr/vPDsYJrkxmHq9RYlPdzlQtv+EljmmDGqHR+AY7w7wCJqpQlBlSvrTMGfispOqreble1JPF31xcWUB+ZtWZCc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733409552; c=relaxed/simple;
+	bh=cn2i74pUBCbxt0qF1w+2JjcZ/EWAgp/HgZxmlWYy/aY=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=cvb8CFwj2Dm52q9ru4BFGrvdVarRQUWPYZLNPlsfV7hiQ744QK5OLCoRBJB2XJCKuh/kayotvf178fPRfoDHTb4f9/7OhzYaH5H9/yfkVzeNs6WZ0r5Nf3kbv2S2/IRJCgDSzkCK1SLFX5fHQNaoF9UyZgN1/RD1dmKVr2GA4cY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=iw+Fq7Zo; arc=fail smtp.client-ip=40.107.100.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QwGL3h+1L+fkDBhusUSWcri3o7UTw0MoDg+1RtI+GXU3+7zj77OXGQqDqYEoNKLZ+7bl1cvrLBo6R+FsSa31qOJ3F/LUL1EUS6wo460Vu6mFRPkuazHr+HCIGIXi62Fdvtt0EgrTtHX+sFLw6r5FF9eh7AgFVxLxM03bNM8K2MJUdj4PiQOAIp859rv3kysbz3w+Nl6KAuP9TGUOdDzj8LU2x/uMhjEifRThVtZaLePi5x0VQ26Z2ha40m1l8K4nxh7EAyRDTT/J1V62akf967QfrZyQrtK+tnZcqyo6LqC6nI+M1PxwfzUn+50RpCynPzkDVGBKOiM+68L8a/cyMw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6jxAuBpkiK6uSwhqy/71g/1CANOsl3VfWwBKnoB2LWg=;
+ b=s3K7jvOihwkafmzM266d0Ykdk98Ts3g94h1lqXH89fwL752nSAr52jbJpzpfgm52QWPG2Q1CqY3OlxFS1OK4cxd50Pb2fFoqNgf8jobDsbagnm12ZnZHdOpM3CLSHCkPVyAouPnFwoSuNPi+2b45Kzs0SA/lLk0Gp2OWMdoyPw0bU3pODeFvJwsegBLqJrZqSCER/4MJf7KPJtTG1Wyx7JsmVDWnc3lscwqDYJI/aomYi+Nq/dpWziyyM61/IZMqsVPS44bDhiSEX+FHAHIc96HjUTyWLfm6JYEQXrZ7HqqDgHxK1o31nqOpYpT9rg69P3YjCBRZofRbpU/P041cyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6jxAuBpkiK6uSwhqy/71g/1CANOsl3VfWwBKnoB2LWg=;
+ b=iw+Fq7ZoM4QHv+/p30TUiFsGqPhWnQN201vXKxDI7viNqpMNVHDpxACxeiNdHGPL+xFzAewP3uwpC+UOfwPgfDQth3Ux2NRD8CzguNGd/zDjBnVcl+NQYVnIMXC7jj+aM8tUSbIr60otgUOPsGIkxfTxTHVEWhIl5G+7MU2aETRXDGgZmdzZZPPhi4gjtno9scdoOsTBLdjf2AW8MLhmuWM0tXwBrkrUkDPvYrc8JG3Z52/7o9/bs6twcQVbDMWE5MryFdZ05lr7MyqlasRq5j6LB1y+FXYrGlU1bsLUfTU8l/5YXDfpqKqvW/lRyT5gspMgPAHS4FP2bCtvL59W+w==
+Received: from SA1P222CA0109.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:3c5::26)
+ by BL3PR12MB6401.namprd12.prod.outlook.com (2603:10b6:208:3b1::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.23; Thu, 5 Dec
+ 2024 14:39:04 +0000
+Received: from SA2PEPF00003F62.namprd04.prod.outlook.com
+ (2603:10b6:806:3c5:cafe::80) by SA1P222CA0109.outlook.office365.com
+ (2603:10b6:806:3c5::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8230.12 via Frontend Transport; Thu,
+ 5 Dec 2024 14:39:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SA2PEPF00003F62.mail.protection.outlook.com (10.167.248.37) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8230.7 via Frontend Transport; Thu, 5 Dec 2024 14:39:03 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 5 Dec 2024
+ 06:38:51 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Thu, 5 Dec 2024
+ 06:38:50 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Thu, 5 Dec 2024 06:38:50 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <hargar@microsoft.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
+In-Reply-To: <20241203141923.524658091@linuxfoundation.org>
+References: <20241203141923.524658091@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] drm/xe: Wait for migration job before unmapping
- pages
-To: Matthew Auld <matthew.auld@intel.com>, Nirmoy Das <nirmoy.das@intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>, stable@vger.kernel.org
-References: <20241205120253.2015537-1-nirmoy.das@intel.com>
- <20241205120253.2015537-2-nirmoy.das@intel.com>
- <5eb91aa3-6d84-47a9-9f07-1742fe723c41@intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <5eb91aa3-6d84-47a9-9f07-1742fe723c41@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <71fc98de-2f61-4530-8c03-dcd7fa3bf470@rnnvmail204.nvidia.com>
+Date: Thu, 5 Dec 2024 06:38:50 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003F62:EE_|BL3PR12MB6401:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f968b16-698a-41e0-9b3e-08dd153a90af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ODM1aXNFbnIxZnVrQVlHTGdhcXVsY0htL0NzRVpCOEgvNUIxNW1sUXZpTU5l?=
+ =?utf-8?B?emxNNjJCSmF5VUk4MjNXQ0RPVm41NzZPZ29GVFd0WDJ0RDhoeVlBSi83YjFn?=
+ =?utf-8?B?OUlVUUp4Ymp3Qkp4NDlIdzc1Z3RHSnFYNWRTM0E1d3lYWks3K0t0SHJNOXZ0?=
+ =?utf-8?B?Yzk0Ly9wZ0xiZVFGbDVZclpJbXA1NWw0QWVwTUl3dENNcXpaY1VBSEkvWE91?=
+ =?utf-8?B?RFhpY2lXSUVmandhWHRIREY4K2FjTHN2WTV3MStobmE5ZWNWR3VFL0MwY1ds?=
+ =?utf-8?B?Tk1hMWZRYU5YbUFnc1BFclcrUmREYUlwSk11TEhpSXJTL0lIRXBZWS8zMU1w?=
+ =?utf-8?B?dTBoL0N3NTFYOUo3VEVrTkg2aWVXcnJuN0k1MmU4OEk1dUZ4RWo5VndSME56?=
+ =?utf-8?B?clQrdlZmd3ExRTdpV2J5RVVOd1lqOGI4enZ5R0RKdnZnOU50N0o2ZTNMWEg4?=
+ =?utf-8?B?VFpzWlZYMmhQbkN3Zjkrd3VvakhsbnVZUlRFZUJ1TnY1dENwdWROakJoZm5L?=
+ =?utf-8?B?REtzU3VSQldMNkxqOGMrbHUrQS9YUXM3MEtMTnEwYTYwWWEweU5GaU4vYzZV?=
+ =?utf-8?B?R1VhZTRTS3JsSEx0cUVGdGVSOWU1S3ZvcThBY1RkWDlKQ0FrQUZ1bzlOcUV6?=
+ =?utf-8?B?NWhHQ3BHM0dzTlB0ZDRYb0EvNHpVT1dyeWVZRDNXaDZ3YTNCSG1WajRaaVE5?=
+ =?utf-8?B?MS9ibExyd0pVdVFKeTY5Y0hSTXlTaDR6Ynp6VjVtNlhzdVZRNXgybENISDlF?=
+ =?utf-8?B?ODZ2ZkZWbXFlWndiWnZhRk1jbXZCL1B0TFpjVVhYTHIvTjYwdkx1clg4aVpw?=
+ =?utf-8?B?bUF4NEx2Z2t4SXFoUkt3RitsWGw2eVhJMy9RQkZCaTQzUS9JN1AwODNKVjl6?=
+ =?utf-8?B?NU54Nlk1SEdhcHMxQkR5NFdsdHpySmxlQnY3N2tqUVMzTjV1UDFQQXJQTEl3?=
+ =?utf-8?B?V1lxZWN5ZnpsTE9Idmt2NDE5MGFaRHBvWGJIZTJ0NzJmMGZna21EQ3JsNFhn?=
+ =?utf-8?B?dVZDZDFNcmlNbXhkbUxqb3NsNzhKMTk4UGtRbDhyaTNEOWg4QlZJMUJhYndK?=
+ =?utf-8?B?QXV0UkhCOXBSYjhoQlRySlRtVTZSWWlnZnpMR1o1RlhhSFpXVFg3UURHb0VQ?=
+ =?utf-8?B?WW1Jbis5d1BBVlRlUVEwYjMvcERmUTdIaFo0bEtJYVlVeVJtR2dPTlhFUDNa?=
+ =?utf-8?B?ejVBd2psTGN3VWlmZTFmWjZLbnc1cEZkc0w1dFlUMk9hSFdoQ3VJMGtWYnpi?=
+ =?utf-8?B?WlFPaFBOT0hYNVBnRTVZR3pvZ2g2TVN6WnBwNjlmb1h5Qzlyc09ldDhpUVRE?=
+ =?utf-8?B?TSs0aHVIR2MwME9ITm03RjVoZkdoMVJuNFRQanpkZC9xb0hhc2JVYStpSk1B?=
+ =?utf-8?B?bG1wNlc4Y2lrVENuL3haZVFLRm5PelZldmJHcXpaNFRZd1BGQW9iU3RRSEEv?=
+ =?utf-8?B?RFhMdXhVN1g3KzR2TStXTCtFRCsvbklhaWs2WGlld3lncGt3bWErYzh3TUdl?=
+ =?utf-8?B?cTd6cVpHNEExelZEeGQrdTZTR2NSeGg0dGM5MFdGeStPanQ4YjNZQXBlK2di?=
+ =?utf-8?B?NzN1VTU4c3NLK05nMTlSc3RMdG1aNjNBcHJRekhjczhBdWR4VWhhelp6VHJL?=
+ =?utf-8?B?RHNWQmRMV1hwd2xwZDAxdGNsSjdoT1lsMmlEc20yMUp6WmhaQ3BXSEhobTFG?=
+ =?utf-8?B?NXVQZHlXZE82eE13dXhtNlg0WEc0MkU4QTVFTTJMNGE5anpveTdpSGx3ZTAr?=
+ =?utf-8?B?M0F6M0FaOHJ4RTUyY3dzZ0kwemNtYVV2dW1PTjhlTVN2TS9tZzkzSmJOc3ZH?=
+ =?utf-8?B?cWxiLzA4TDQzeFpVNzFVZC85b1dvTFlZYmhTSFZ0SS92ZWdRRWY2UGxxZW1X?=
+ =?utf-8?B?Umd6Q1dDSDkxY2NNaHlHellETWRXSksrU3o0M1N6WlRXdTdRV2FwMERKTFNa?=
+ =?utf-8?Q?TRq2SI4ZtziwAKGzyDyInCTbOTgOsJqG?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2024 14:39:03.4630
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f968b16-698a-41e0-9b3e-08dd153a90af
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00003F62.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6401
 
+On Tue, 03 Dec 2024 15:30:29 +0100, Greg Kroah-Hartman wrote:
+> ------------------
+> Note, this is the LAST 4.19.y kernel to be released.  After this one, it
+> is end-of-life.  It's been 6 years, everyone should have moved off of it
+> by now.
+> ------------------
+> 
+> This is the start of the stable review cycle for the 4.19.325 release.
+> There are 138 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 05 Dec 2024 14:18:57 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.325-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On 12/5/2024 1:40 PM, Matthew Auld wrote:
-> On 05/12/2024 12:02, Nirmoy Das wrote:
->> There could be still migration job going on while doing
->> xe_tt_unmap_sg() which could trigger GPU page faults. Fix this by
->> waiting for the migration job to finish.
->>
->> v2: Use intr=false(Matt A)
->>
->> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3466
->> Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system buffer objects to TT")
->> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->> Cc: Matthew Brost <matthew.brost@intel.com>
->> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.11+
->> Cc: Matthew Auld <matthew.auld@intel.com>
->> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->
-> Ok, so this is something like ttm_bo_move_to_ghost() doing a pipeline move for tt -> system, but we then do xe_tt_unmap_sg() too early which tears down the IOMMU (if enabled) mappings whilst the job is in progress?
-Yes, this exactly what is happening for this issue.
->
-> Maybe add some more info to the commit message? 
+Failures detected for Tegra ...
 
-I will add more details.
+Test results for stable-v4.19:
+    10 builds:	6 pass, 4 fail
+    12 boots:	12 pass, 0 fail
+    21 tests:	21 pass, 0 fail
 
+Linux version:	4.19.325-rc1-g1efbea5bef00
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
 
-> I think this for sure fixes it. Just wondering if it's somehow possible to keep the mapping until the job is done, since all tt -> sys moves are now synced here?
->
-> Unless Thomas has a better idea here,
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Builds failed:	aarch64+defconfig+jetson, arm+multi_v7
 
-
-Thanks,
-
-Nirmoy
-
->
->> ---
->>   drivers/gpu/drm/xe/xe_bo.c | 10 +++++++++-
->>   1 file changed, 9 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
->> index b2aa368a23f8..c906a5529db0 100644
->> --- a/drivers/gpu/drm/xe/xe_bo.c
->> +++ b/drivers/gpu/drm/xe/xe_bo.c
->> @@ -857,8 +857,16 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
->>     out:
->>       if ((!ttm_bo->resource || ttm_bo->resource->mem_type == XE_PL_SYSTEM) &&
->> -        ttm_bo->ttm)
->> +        ttm_bo->ttm) {
->> +        long timeout = dma_resv_wait_timeout(ttm_bo->base.resv,
->> +                             DMA_RESV_USAGE_BOOKKEEP,
->> +                             false,
->> +                             MAX_SCHEDULE_TIMEOUT);
->> +        if (timeout < 0)
->> +            ret = timeout;
->> +
->>           xe_tt_unmap_sg(ttm_bo->ttm);
->> +    }
->>         return ret;
->>   }
->
+Jon
 
