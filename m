@@ -1,166 +1,148 @@
-Return-Path: <stable+bounces-98858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D925D9E5F31
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 20:54:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F059E6043
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 22:53:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8736128615E
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 19:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 571E6169D08
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 21:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5371422E3F4;
-	Thu,  5 Dec 2024 19:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E3A1C07C8;
+	Thu,  5 Dec 2024 21:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QoJLV9Jg"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Qan6aY59"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7407522D4F2
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 19:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D9A19DF66
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 21:53:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733428478; cv=none; b=LQAxOPFNOd5oc733oRZdqXKpTAciTMSExKsQxmr0BwT7s4hRgto4Hg8gSzFAMbPSrEwQIgn6X4qOC/ZOMV86toFE9jCXDNTke06wSuywmqpcpyrzfOQfUBMTNJunzpT2imlM0VXLRoRVoS6+2jPzTmRgVe7o0Waqt0VThWTekyM=
+	t=1733435623; cv=none; b=vDx8OkrDopDZuJxoESjGaahm4U/yuj4gk/rmOkuzs6VyQ0Sz8LDIqHjGgEJN5QATv2isp+SohLgwsY04AHqtGGzhQNqEO1kVZ5hqRwfTwSJAiRFHJ5puynESzD58uEMjoZrgnuuDZsg4Ce1MLiIpixK097oNwz5r101jMNz7B0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733428478; c=relaxed/simple;
-	bh=vhbbHz1yBMg1oLY8i08EsGZhgnjN0h92EmEVlCnFACY=;
+	s=arc-20240116; t=1733435623; c=relaxed/simple;
+	bh=olezBj5hU++GVc9fyVkBN0k/RRkEKEgHJnYEPg7J3HA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E2uo1NIXD0F1oTJZF6ilEBAg2zgS6zpxAIsBMH6YCFTJu6SO5CSae+8Bo7aRZCPIrHp1smo3lf+gj50fKSJRr84ygACVcHuFdXO9K4enqMPtONGg6Gz02NHTMRt2QK8zkSblEDB6B5ESGy3ixAcxT+GEKQdBpL5EpfqBtmj559Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QoJLV9Jg; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-434a9f9a225so9115e9.1
-        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 11:54:36 -0800 (PST)
+	 To:Cc:Content-Type; b=U/NcPiSXG+4qUXwfolc/632NWxRiHBsY09+KklecsORv8FXSF6a5TSN3omEr8IN5dpgsLeH2zKXmwc/F6gxTlwHsXvkQ67uaRUBfx/xkjNwJWWmfpGLooUZJ5+QIPkAv9gkTyNQEPhA6EbIhLMHeLLsn09iXfsPx8XmKo2k/yxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Qan6aY59; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-515d0e09f2fso384494e0c.3
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 13:53:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733428475; x=1734033275; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1733435620; x=1734040420; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YV1GOShnKkFf0HLahvzq1w+GJ+Yzlm4X88Ky6h9+fMA=;
-        b=QoJLV9JgDl34C7Ugqfm9XdnfyPQLc4Lm5yKF+NeashYgx195kbauZjmrx5UP3zT77I
-         MdaKFvpzkMBSPBnwJ0274q8b1280iAjuwwu9WdBxR8UX+HcgBwwmDGS2Udjl3+ScHzDl
-         oPhxNHzqhCee4nX1r5ToPNn/D88EklYAVlMbvCf52wwCzj4a//HTHo/c49JMm39lKl17
-         bFYFYGWsbyIx+MyywsV+Vi+HKWVz0WkL9lh8mRsyu7mqgu/b/6MedyPTsN8Tgy/7iEsf
-         IRAmwR3/NuK8IW5t4qId2sXvmwZJKjBWFKlLGDLsm3gLKTNRbRD/6jOv+ZkJlgeNzWf1
-         t0BQ==
+        bh=5gDQjPlS1AG51euFwytbFdQZXGvmJG/Xvn5DXHovM5Y=;
+        b=Qan6aY59UbaqzMmt7eFilPacsHT8JMRLqyeqRIYHBBmLhBSQkRR5a3zB53PMqr5ttN
+         3krLKdCXe/8UhOS0f7LjTZw0uO4l9RpeaVjPl/WbFOjqvyzsa2CHwsl2MmQJFPFakXl7
+         TcWUbkNr5EX8t34utdw89gUMWzIp0ubXmYcC8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733428475; x=1734033275;
+        d=1e100.net; s=20230601; t=1733435620; x=1734040420;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YV1GOShnKkFf0HLahvzq1w+GJ+Yzlm4X88Ky6h9+fMA=;
-        b=HeVuX6htpk8zUNeL1YntNkVEtw+NIhxxR4Fxrj0CVhcpcyPTfsRuHnu5/kb3uVUAVL
-         tBukFlhR1H5vbeqJPVHzFF3FZAJornlBvPF9TKA7EyL1ljVEZaQvhblD4NnBXPR9s4HJ
-         yMXKPUu6PE9PWIdzQ+tZfB8LzFH+5kn6KRuNgsdAHH7O/dxBvnbbDVkjAOpZ4RM3/XU3
-         sBkclyNEffmBruV2ZV74YoSc5Dhk/Azu/tueIyevUxusZD2qB1LLxd2uHWHYMj+b3cja
-         5PgZVxN0oC4Clb3ys27LBtngBcqNl6ngGFHnq8HbsZQ504SK0Xzz7HFr9lfs3CB8b2yu
-         VYwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWs9YriAvxnlSIA3FdYoP/gER9l/mzhUM75roSJZEZHiDOibgrgzOTngCRLUd6dV9NIgMFFkWg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztV6M6llBh8sKSenHMY7S68Dj5JyhUQpxbR3vggomPa2PEvMhT
-	rTiWs+ijvXTL7fWjlt8DQfbykJzWTPJRnUyn2bxHYt46OhPrRkeMbm12jaVG73pb5TMmWkTJXil
-	u6dmdRLQ13BDlCPhBPTr8RzvpGz64MLsTZBSG
-X-Gm-Gg: ASbGncu8X7B9JChGEU8j69ig2G5iYMFsOGwPoylRZ9NLf4fD4FhuHQqzpSpJf1UIBSY
-	JztKxiDac9hWCCrSbl/KdACIM09AoBaV37svaVw98pGIgilHt5CTvBap+bZuD
-X-Google-Smtp-Source: AGHT+IEg8jS6R8nzvvgqFY4eAzSsGGb0NyqX/at7eAZ/z8kw1IzlpGFkHWMNC7b2JnZaKud2fJhzbW1s/D33iVi8sr0=
-X-Received: by 2002:a05:600c:5846:b0:434:9e1d:44ef with SMTP id
- 5b1f17b1804b1-434de647452mr97705e9.7.1733428474682; Thu, 05 Dec 2024 11:54:34
- -0800 (PST)
+        bh=5gDQjPlS1AG51euFwytbFdQZXGvmJG/Xvn5DXHovM5Y=;
+        b=gKGEhzEKUM55OWv7/aI+UTmUg/cxSKs65XFwWWqC8/01GlEs9mjq6GkDRrtDgHj8oz
+         lUew2IUW4rETYkDEPPEz8W5q5Q+rs5XIIO3pOZs4K2MCAhEjdZ50fozBNR3W9URVi0Vv
+         e0a41og6InWxfqgAiLWWhccXUJKbLyBwfUgWWCQmoKHxljRJncW2aAVbjqhZgmJ1Bs2T
+         oOpqoW89VdFJ0UHPXOgz/BLx2Hf/jffmvj2RzWtUK4uxCG8hyTgVLb2kt/xq+3+oUTe3
+         BL0zMMRkEQu9LDke+MfKYvzn08oCpVocltOfspCIKN5S6R6KbVj+Yz29YyS8mb0QpXuj
+         D8Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCUA56zhjs05sa4bxPczs4wSoy3px58j2snR2WVVuOpuQLK+UCI7a6ELF91Rps3u88Ds5aFwoGE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAfSaogthqSRjBX1SfgZCCp/kRENzGhO2HZ7EqXF+/SRIh/Wd7
+	V21CZLIfzjdhpXV9U7Ix6wfhB/fd0NNOAf5BVMgBl3b3vWjr351b0tyTrOAmz+CH6EHI449EO+y
+	RiEoXb34e0YONQdR3C1mlZZPN61Sv3wDDlDuO
+X-Gm-Gg: ASbGncs5WEqYqC5z/nK0W1Z7UbO2hau4x8DD/dH/TOTE2K9qS0U4nVGbedr7k5ZG0r0
+	y5pnQsIjMpAM5uzzC7iO6xL61uRFxzn6F/0nJIfGYHltO4p8HEvuvuo2Vu0SC/VVI
+X-Google-Smtp-Source: AGHT+IEmvn/lxMBSMBB+tVk5gZMlBqGiKWv8YmxOzM55UzTq1Wc4l5ml/qgygEWL2gTiL1+Ri/LEoggjMxoAIwf7NBI=
+X-Received: by 2002:a05:6122:1b01:b0:515:c854:d3c6 with SMTP id
+ 71dfb90a1353d-515fca0bd92mr1183134e0c.4.1733435620699; Thu, 05 Dec 2024
+ 13:53:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241205192943.3228757-1-isaacmanjarres@google.com>
-In-Reply-To: <20241205192943.3228757-1-isaacmanjarres@google.com>
-From: Jeff Xu <jeffxu@google.com>
-Date: Thu, 5 Dec 2024 11:53:57 -0800
-Message-ID: <CALmYWFvGZj5Bc8LfveMCc=3ZAgd-Lqr=186K4swpnTc=2a-JkQ@mail.gmail.com>
-Subject: Re: [PATCH v1] selftests/memfd: Run sysctl tests when PID namespace
- support is enabled
-To: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-Cc: Shuah Khan <shuah@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Daniel Verkamp <dverkamp@chromium.org>, Kees Cook <kees@kernel.org>, stable@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>, Kalesh Singh <kaleshsingh@google.com>, kernel-team@android.com, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <191e7126880.114951a532011899.3321332904343010318@collabora.com>
+ <20241029024236.2702721-1-gwendal@chromium.org> <20241029074117.GB22316@lst.de>
+ <CAPUE2uvUs5dGGmovvHVPdsthKT37tJCK5jDXPMgP18VKhm5qTA@mail.gmail.com> <192d9b75f76.106d874861279652.1491635971113271140@collabora.com>
+In-Reply-To: <192d9b75f76.106d874861279652.1491635971113271140@collabora.com>
+From: Gwendal Grignou <gwendal@chromium.org>
+Date: Thu, 5 Dec 2024 13:53:29 -0800
+Message-ID: <CAPUE2utp0qOiMRNPwtn_gF45f2awa9UyNJ91zmpRbtu6zR5p9w@mail.gmail.com>
+Subject: Re: [PATCH] nvme-pci: Remove O2 Queue Depth quirk
+To: Robert Beckett <bob.beckett@collabora.com>
+Cc: Christoph Hellwig <hch@lst.de>, kbusch <kbusch@kernel.org>, kbusch <kbusch@meta.com>, 
+	linux-nvme <linux-nvme@lists.infradead.org>, sagi <sagi@grimberg.me>, 
+	stable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 5, 2024 at 11:29=E2=80=AFAM Isaac J. Manjarres
-<isaacmanjarres@google.com> wrote:
+On Tue, Oct 29, 2024 at 12:19=E2=80=AFPM Robert Beckett
+<bob.beckett@collabora.com> wrote:
 >
-> The sysctl tests for vm.memfd_noexec rely on the kernel to support PID
-> namespaces (i.e. the kernel is built with CONFIG_PID_NS=3Dy). If the
-> kernel the test runs on does not support PID namespaces, the first
-> sysctl test will fail when attempting to spawn a new thread in a new
-> PID namespace, abort the test, preventing the remaining tests from
-> being run.
 >
-> This is not desirable, as not all kernels need PID namespaces, but can
-> still use the other features provided by memfd. Therefore, only run the
-> sysctl tests if the kernel supports PID namespaces. Otherwise, skip
-> those tests and emit an informative message to let the user know why
-> the sysctl tests are not being run.
 >
-Thanks for fixing this.
+>
+>
+>
+>  ---- On Tue, 29 Oct 2024 18:58:40 +0000  Gwendal Grignou  wrote ---
+>  > On Tue, Oct 29, 2024 at 12:41=E2=80=AFAM Christoph Hellwig hch@lst.de>=
+ wrote:
+>  > >
+>  > > On Mon, Oct 28, 2024 at 07:42:36PM -0700, Gwendal Grignou wrote:
+>  > > > PCI_DEVICE(0x1217, 0x8760) (O2 Micro, Inc. FORESEE E2M2 NVMe SSD)
+>  > > > is a NMVe to eMMC bridge, that can be used with different eMMC
+>  > > > memory devices.
+>  > >
+>  > > Holy f**k, what an awful idea..
+>  > >
+>  > > > The NVMe device name contains the eMMC device name, for instance:
+>  > > > `BAYHUB SanDisk-DA4128-91904055-128GB`
+>  > > >
+>  > > > The bridge is known to work with many eMMC devices, we need to lim=
+it
+>  > > > the queue depth once we know which eMMC device is behind the bridg=
+e.
+>  > >
+>  > > Please work with Tobert to quirk based on the identify data for "his=
+"
+>  > > device to keep it quirked instead of regressing it.
+>  >
+>  > The issue is we would need to base the quirk on the model name
+>  > (subsys->model) that is not available in `nvme_id_table`. Beside,
+>  > `q_depth` is set in `nvme_pci_enable`, called at probe time before
+>  > calling `nvme_init_ctrl_finish` that will indirectly populate
+>  > `subsys`.
+>  >
+>  > Bob, to address the data corruption problem from user space, adding a
+>  > udev rule to set `queue/nr_requests` to 1 when `device/model` matches
+>  > the device used in the Steam Deck would most likely be too late in the
+>  > boot process, wouldn't it?
+>
+> I've never seen the corruption outside of severe stress testing.
+> In the field, people reported it during and after os image updates (more =
+stress testing).
+> However, as this concerns data integrity, it seems risky to me to rely on=
+ a fix
+> after bootup.
 
-> Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_=
-EXEC")
-> Cc: stable@vger.kernel.org # v6.6+
-> Cc: Jeff Xu <jeffxu@google.com>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Kalesh Singh <kaleshsingh@google.com>
-> Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-> ---
->  tools/testing/selftests/memfd/memfd_test.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+Since limiting the queue depth to 2 is only needed for a small subset
+of eMMC memory modules that can be connected behind the bridge, would
+it make sense to apply this patch, but add the kernel module parameter
+mentioned earlier for impacted devices?
+
+Gwendal.
 >
-> diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/s=
-elftests/memfd/memfd_test.c
-> index 95af2d78fd31..0a0b55516028 100644
-> --- a/tools/testing/selftests/memfd/memfd_test.c
-> +++ b/tools/testing/selftests/memfd/memfd_test.c
-> @@ -9,6 +9,7 @@
->  #include <fcntl.h>
->  #include <linux/memfd.h>
->  #include <sched.h>
-> +#include <stdbool.h>
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <signal.h>
-> @@ -1557,6 +1558,11 @@ static void test_share_fork(char *banner, char *b_=
-suffix)
->         close(fd);
->  }
+>  >
+>  > Gwendal.
+>  >
 >
-> +static bool pid_ns_supported(void)
-> +{
-> +       return access("/proc/self/ns/pid", F_OK) =3D=3D 0;
-> +}
-> +
->  int main(int argc, char **argv)
->  {
->         pid_t pid;
-> @@ -1591,8 +1597,12 @@ int main(int argc, char **argv)
->         test_seal_grow();
->         test_seal_resize();
->
-> -       test_sysctl_simple();
-> -       test_sysctl_nested();
-> +       if (pid_ns_supported()) {
-> +               test_sysctl_simple();
-> +               test_sysctl_nested();
-> +       } else {
-> +               printf("PID namespaces are not supported; skipping sysctl=
- tests\n");
-> +       }
->
->         test_share_dup("SHARE-DUP", "");
->         test_share_mmap("SHARE-MMAP", "");
-> --
-> 2.47.0.338.g60cca15819-goog
->
-Reviewed-by: Jeff Xu <jeffxu@google.com>
 
