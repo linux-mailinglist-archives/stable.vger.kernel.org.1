@@ -1,107 +1,275 @@
-Return-Path: <stable+bounces-98709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7627B9E4C5E
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 03:41:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D89E4C81
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 03:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3626F283142
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 02:41:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F01B285192
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 02:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6D617C7B1;
-	Thu,  5 Dec 2024 02:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DE6188733;
+	Thu,  5 Dec 2024 02:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gsdX6V8r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D145BE49;
-	Thu,  5 Dec 2024 02:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A87B79DC
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 02:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733366471; cv=none; b=ebpUjTkeUsmXyuzJmqtqN427lzEtedpKXlcFwVLTMu00CBHWHE30YKridc2E1ZSQKf4Tb9ClKa3VYtUGOms1D5DtED7tcm7m2olNJevNtvv5jQB5UvzNgqJ4yvpYtg4OB7Wu09YUGN/QDIqq2YSWFvVt4kbG7lm67XLf3gvvdmw=
+	t=1733367083; cv=none; b=gDcx4tXhc5avoPx1bU8fnfelQWhws6Hb+p5agb+xz8mx4ciV++jxD0KxkjBr+CWLbc+YTgO8JWOuKIaDbsYO85VqVhj5sWLjyLdLN0CcxX4euFaU/oGE39beOKuc4SGJ4JQhvclngtMJkLiI8nXHTLsoGm8yrIqF/Gy8v3TwPLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733366471; c=relaxed/simple;
-	bh=q0yv3RMHE7v9mV9K/pUaQrLNjAvfc2BMhOSEGrvlUXE=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=Gr5nd1cKfjVgkIYCtu3ARnei/vDNbhlifonMO9zQ8DN+zn2hlPagjcjapXKCDFI9/tmezAHdk+GQ+GQlPc2c5od3DI+7lXIELG5IHRQmFEWRncWGb0bC7vLtw59TGDCt75JdAI4f2OYf6jmY13lv66ig06cNOX6z4Nyu2kj2ue8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D21C4CED6;
-	Thu,  5 Dec 2024 02:41:11 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.98)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1tJ1nn-000000022en-2Nt1;
-	Wed, 04 Dec 2024 21:41:15 -0500
-Message-ID: <20241205024115.419087387@goodmis.org>
-User-Agent: quilt/0.68
-Date: Wed, 04 Dec 2024 21:35:53 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Kuan-Wei Chiu <visitorckw@gmail.com>
-Subject: [for-linus][PATCH 1/2] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
-References: <20241205023552.609451828@goodmis.org>
+	s=arc-20240116; t=1733367083; c=relaxed/simple;
+	bh=C6QIeV4sx+z3ZpTwPXvgteXpZ2czYEC24/RTEClQnvY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=sqj6X9UPMsI7FD3i5RhAqSn0yWQ1I8m8xU5JBCMYiPXJ2f8hhuui+HhSIKSMRKMngnhC9SV6Qc2y4MZ+CaIb+XWXM7NertjqiKMLwqHWt3PMRaaWUSCLnmgHU5nFAz7XK87tgGpRYZVGeen8mtPFGO0HbLqta3CCAKQvLqOcnfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gsdX6V8r; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385e25c5d75so211071f8f.1
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 18:51:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1733367079; x=1733971879; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=V4vSeKosLeQm03elmc976Gn4TxLq2sgRQtGDwl9H/vM=;
+        b=gsdX6V8rGqSDBh4afADb3ikvY5G9GW5AKVtqnxKCpsB5GrV1oAxjqC/IiukKnawea+
+         RIS8VhxW0xR2IUDJKKWfM6lIuuDY67SXFr9qzPUTSrRZyE3yr4dYaaQFmnu94McR7m1m
+         /+3Sx5Anv7KZZmGcexnKZybq9dqUBZ8SKH9qJFcSP1vndMtn9pkGllwg+p4O28tXthn7
+         jX+yn/bljHFaw8xjzoHF1AXEj6hhHwWKc/9iixL2NoTj88vsgaM6TGZKLF6bnNQQwT6U
+         MsBMhr6UULyWfMKGxJBXRHBiPQ94SAHP3TDB2qWq69k7BB2H2om4A/fb1JfiaVF4kfFa
+         MY6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733367079; x=1733971879;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V4vSeKosLeQm03elmc976Gn4TxLq2sgRQtGDwl9H/vM=;
+        b=czGqVcbMtgcL6/D1k0jX8nBKDZ+e7NibCzAMs5JVMfYhTvlCo96SpXmnXmhxLvqIoz
+         tAZ+0ONnA08GrdG9HFUHbeSxELNiLHxvVFk5Unxv4n+aq2QG9rg969L6q3o3LbbgC5UT
+         pm++sJelTCN7v0qSdJXD+4PaNiCB9AVp+DULqQatv1VKKVD57+sTScfu2jQlGlQa+unU
+         wuaoB4EUXNAEQ3e0Jv9Qd/aTUiYiFtVRzh3dk1BfE9UvxukCjgx59UE3DASuAmNfsJOQ
+         U4IRRKSYeSsqk88a4seVkAtgRVhbmaRv2wS1ByxuPsiFMc8/FQFgCzMdcCqauInBrWUZ
+         4pYQ==
+X-Gm-Message-State: AOJu0YzOmi0TXee/CkbOhhhr8/2X0kaC36QrkkwUKmIcVgmwELKgZhgM
+	miM670xSRSvu/8ChwrxcaRCiJgkUFFvipUHxksVnMJhEkmm4skAvuTTswtcmppzgeEvac6muF8A
+	F
+X-Gm-Gg: ASbGncuHF9dS1yodQmNs81CVGin/G4q9YElqK701ihN6469kBCr8Uxg1h9R5PHb0veA
+	zEiE6N1FGTnpLOo1ePh5L2/N0IKu/rtP0Pu9R3FE8t7MXFGkadD9RZW3eta/bBrd/1C9Tjeme65
+	0pzx4qd/n5/ZDGp4sIdKFpJhAmOQFKBya2u0x1YbMVZl7Gg+lUppeZUBLvE69CCkja/Ir1EhMIH
+	j4SSuJ364v9oUrB58oMOLTtYGvAJszpRky/x3dhOj4tJNT5L3+TD3z1BPsAuNCREHjR2H5Xn2Z5
+	pA==
+X-Google-Smtp-Source: AGHT+IEGzGbcGGnipQtp0Gqf+Qs+liOMGDndQRILLskdfgQLymoy2Wt4bUgXn31B6wdglMHM56lMmw==
+X-Received: by 2002:a05:6000:1866:b0:385:dc45:ea06 with SMTP id ffacd0b85a97d-385fd3e7b28mr8040302f8f.13.1733367079082;
+        Wed, 04 Dec 2024 18:51:19 -0800 (PST)
+Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd157ad524sm261711a12.62.2024.12.04.18.51.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Dec 2024 18:51:18 -0800 (PST)
+Message-ID: <627a9d4b-a358-4e5b-a8e7-cfd6ba0298d6@suse.com>
+Date: Thu, 5 Dec 2024 13:21:14 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-
-The cmp_entries_dup() function used as the comparator for sort()
-violated the symmetry and transitivity properties required by the
-sorting algorithm. Specifically, it returned 1 whenever memcmp() was
-non-zero, which broke the following expectations:
-
-* Symmetry: If x < y, then y > x.
-* Transitivity: If x < y and y < z, then x < z.
-
-These violations could lead to incorrect sorting and failure to
-correctly identify duplicate elements.
-
-Fix the issue by directly returning the result of memcmp(), which
-adheres to the required comparison properties.
-
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] btrfs: do proper folio cleanup when
+ run_delalloc_nocow() failed
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
 Cc: stable@vger.kernel.org
-Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
-Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/tracing_map.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
-
-diff --git a/kernel/trace/tracing_map.c b/kernel/trace/tracing_map.c
-index 3a56e7c8aa4f..1921ade45be3 100644
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map *map)
- static int cmp_entries_dup(const void *A, const void *B)
- {
- 	const struct tracing_map_sort_entry *a, *b;
--	int ret = 0;
- 
- 	a = *(const struct tracing_map_sort_entry **)A;
- 	b = *(const struct tracing_map_sort_entry **)B;
- 
--	if (memcmp(a->key, b->key, a->elt->map->key_size))
--		ret = 1;
--
--	return ret;
-+	return memcmp(a->key, b->key, a->elt->map->key_size);
- }
- 
- static int cmp_entries_sum(const void *A, const void *B)
--- 
-2.45.2
+References: <3e5d5665ef36ee43e310be321073210785b89adc.1733273653.git.wqu@suse.com>
+Content-Language: en-US
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <3e5d5665ef36ee43e310be321073210785b89adc.1733273653.git.wqu@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
+
+在 2024/12/4 13:05, Qu Wenruo 写道:
+> Just like cow_file_range(), from day 1 btrfs doesn't really clean the
+> dirty flags, if it has an ordered extent created successfully.
+> 
+> Per error handling protocol (according to the iomap, and the btrfs
+> handling if it failed at the beginning of the range), we should clear
+> all dirty flags for the involved folios.
+> 
+> Or the range of that folio will still be marked dirty, but has no
+> EXTENT_DEALLLOC set inside the io tree.
+> 
+> Since the folio range is still dirty, it will still be the target for
+> the next writeback, but since there is no EXTENT_DEALLLOC, no new
+> ordered extent will be created for it.
+> 
+> This means the writeback of that folio range will fall back to COW
+> fixup path. However the COW fixup path itself is being re-evaluated as
+> the newly introduced pin_user_pages_*() should prevent us hitting an
+> out-of-band dirty folios, and we're moving to deprecate such COW fixup
+> path.
+> 
+> We already have an experimental patch that will make fixup COW path to
+> crash, to verify there is no such out-of-band dirty folios anymore.
+> So here we need to avoid going COW fixup path, by doing proper folio
+> dirty flags cleanup.
+> 
+> Unlike the fix in cow_file_range(), which holds the folio and extent
+> lock until error or a fully successfully run, here we have no such luxury
+> as we can fallback to COW, and in that case the extent/folio range will
+> be unlocked by cow_file_range().
+> 
+> So here we introduce a new helper, cleanup_dirty_folios(), to clear the
+> dirty flags for the involved folios.
+> 
+> And since the final fallback_to_cow() call can also fail, and we rely on
+> @cur_offset to do the proper cleanup, here we remove the unnecessary and
+> incorrect @cur_offset assignment.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> ---
+> Changelog:
+> v2:
+> - Fix the incorrect @cur_offset assignment to @end
+>    The @end is not aligned to sector size, nor @cur_offset should be
+>    updated before fallback_to_cow() succeeded.
+> 
+> - Add one extra ASSERT() to make sure the range is properly aligned
+> ---
+>   fs/btrfs/inode.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++-
+>   1 file changed, 58 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index e8232ac7917f..92df6dfff2e4 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -1969,6 +1969,48 @@ static int can_nocow_file_extent(struct btrfs_path *path,
+>   	return ret < 0 ? ret : can_nocow;
+>   }
+>   
+> +static void cleanup_dirty_folios(struct btrfs_inode *inode,
+> +				 struct folio *locked_folio,
+> +				 u64 start, u64 end, int error)
+> +{
+> +	struct btrfs_fs_info *fs_info = inode->root->fs_info;
+> +	struct address_space *mapping = inode->vfs_inode.i_mapping;
+> +	pgoff_t start_index = start >> PAGE_SHIFT;
+> +	pgoff_t end_index = end >> PAGE_SHIFT;
+> +	u32 len;
+> +
+> +	ASSERT(end + 1 - start < U32_MAX);
+> +	ASSERT(IS_ALIGNED(start, fs_info->sectorsize) &&
+> +	       IS_ALIGNED(end + 1, fs_info->sectorsize));
+> +	len = end + 1 - start;
+> +
+> +	/*
+> +	 * Handle the locked folio first.
+> +	 * btrfs_folio_clamp_*() helpers can handle range out of the folio case.
+> +	 */
+> +	btrfs_folio_clamp_clear_dirty(fs_info, locked_folio, start, len);
+> +	btrfs_folio_clamp_set_writeback(fs_info, locked_folio, start, len);
+> +	btrfs_folio_clamp_clear_writeback(fs_info, locked_folio, start, len);
+> +
+> +	for (pgoff_t index = start_index; index <= end_index; index++) {
+> +		struct folio *folio;
+> +
+> +		/* Already handled at the beginning. */
+> +		if (index == locked_folio->index)
+> +			continue;
+> +		folio = __filemap_get_folio(mapping, index, FGP_LOCK, GFP_NOFS);
+> +		/* Cache already dropped, no need to do any cleanup. */
+> +		if (IS_ERR(folio))
+> +			continue;
+> +		btrfs_folio_clamp_clear_dirty(fs_info, folio, start, len);
+> +		btrfs_folio_clamp_set_writeback(fs_info, folio, start, len);
+> +		btrfs_folio_clamp_clear_writeback(fs_info, folio, start, len);
+> +		folio_unlock(folio);
+> +		folio_put(folio);
+> +	}
+> +	mapping_set_error(mapping, error);
+> +}
+> +
+>   /*
+>    * when nowcow writeback call back.  This checks for snapshots or COW copies
+>    * of the extents that exist in the file, and COWs the file as required.
+> @@ -2217,7 +2259,6 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+>   		cow_start = cur_offset;
+>   
+>   	if (cow_start != (u64)-1) {
+> -		cur_offset = end;
+>   		ret = fallback_to_cow(inode, locked_folio, cow_start, end);
+>   		cow_start = (u64)-1;
+>   		if (ret)
+> @@ -2228,6 +2269,22 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
+>   	return 0;
+>   
+>   error:
+> +	/*
+> +	 * We have some range with ordered extent created.
+> +	 *
+> +	 * Ordered extents and extent maps will be cleaned up by
+> +	 * btrfs_mark_ordered_io_finished() later, but we also need to cleanup
+> +	 * the dirty flags of folios.
+> +	 *
+> +	 * Or they can be written back again, but without any EXTENT_DELALLOC flag
+> +	 * in io tree.
+> +	 * This will force the writeback to go COW fixup, which is being deprecated.
+> +	 *
+> +	 * Also such left-over dirty flags do no follow the error handling protocol.
+> +	 */
+> +	if (cur_offset > start)
+> +		cleanup_dirty_folios(inode, locked_folio, start, cur_offset - 1, ret);
+> +
+>   	/*
+>   	 * If an error happened while a COW region is outstanding, cur_offset
+>   	 * needs to be reset to cow_start to ensure the COW region is unlocked
+
+It turns out that, we can not directly use 
+extent_clear_unlock_delalloc() for the range [cur_offset, end].
+
+The problem is @cur_offset can be updated to @cow_start, but the 
+fallback_to_cow() may have failed, and cow_file_range() will do the 
+proper cleanup by unlock all the folios.
+
+In that case, we can hit VM_BUG_ON() with folio already unlocked.
+
+This means we should skip the failed COW range during error handling, 
+making the error handling way more complex.
+
+I'll need to find a better solution for this.
+
+Thanks,
+Qu
 
