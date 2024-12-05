@@ -1,158 +1,157 @@
-Return-Path: <stable+bounces-98800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9159E55DD
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 13:54:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5749E5602
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 13:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 406DC288C53
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 12:54:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4695D285CD3
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 12:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED18D218AC6;
-	Thu,  5 Dec 2024 12:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C57D218E87;
+	Thu,  5 Dec 2024 12:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="V8tgxnuV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FGKWpJ0i"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E56F1773A
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 12:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495F1218AAB
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 12:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733403238; cv=none; b=riTStb+OUccKueA6YHdktG6YOBeoA9l2sIjIbUcjz8x2dFXgIu8A3y6+R0jqeXT9W2nf0BynwObGtdaixRoAp7sZcAjVDFwqVCVRMlfmCA11xxEWjCxBkQpdb9zSQmmX2tr4ebDS+EQlRceO9dE+8PX20uuGKOSHL3ZGoqmNYxA=
+	t=1733403462; cv=none; b=beogBYKHpzlMuYT09X+o9RQvpjG9KZH7UTlcFRk7E02agQ3WmF8oKbPb6MVE/Xczv2aVDZRjBwvgGggBpvBH8c433Jmt/1T3XBNfqOeU0J0rLzOh3pcugcaL0GacQiIB+oZ5Qip35xJonugTp5B1kagZueJyPH/hKrzmP60qjNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733403238; c=relaxed/simple;
-	bh=JZWxDg6kLZ0bFvcAVD+a3fOTrGu99x0LQws4omTlL0o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uPZffSZ6nmVffb+exqeghlYXsUAPTDh9eqF6mDY0MdqCHCPrMHX0z1Inc06bv7pQW5D+fCNkGkouMyOEKNkHfIJi0mTW0dXdG7WGINm+NYppzy5ao1lG4EBLIUsr2VcExYUm36hq3RR5BTANqYlWIMjzCWjzRJskct9casD/eH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=V8tgxnuV; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id EA86040CE4
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 12:53:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1733403232;
-	bh=FUPqE51TLvEDtsqOtCI9i9XXbeFVSmPyWNWK1a6nR9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=V8tgxnuVMGhqBI7cS51lH9AOTzm58sThQ4pWSkjdvgwxDz7LKMI7auV4NFxhDqnAH
-	 OnaOXDcqkqQbf7WOpihH/XIe8wAf6FcArXpRgbC99RsMnXg9kJxr1vbd3drfto4Q3y
-	 JZMse6qpdowiLZn5zPMJuezZY5JeAOcUsKp48RE5xqOcnWERlyeQEA4dAdDxGfj+Ub
-	 Kc8xaVgSMi0hKYVGzKiV+ByhHOA/5dYZjKkJ85n4QM7dKevV0p6+/XlbU1ePLisn1E
-	 ND5h3rCSe0wxiBB3gBaKa8vMZPKcBOuAagVABlEQ3E8S5LvHlqsYbybTqbqKKUOKwT
-	 I3Ania1gGZOhA==
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-7f80959f894so1756143a12.1
-        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 04:53:52 -0800 (PST)
+	s=arc-20240116; t=1733403462; c=relaxed/simple;
+	bh=1xpVZNikkLxPIpkkXLq0rqIATBlPYhijyahqDJFmbTE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZbNib97MayOd71ximk9X6NZA4u2wZMiNQflTCjkNhJ6+jYnUfq74wFkLK0BPDyJn1b12bBDlTPxgNW0B9TxrtpB6xc0tNidzpJIldigNuFj0v4646W4RHRIb9RiwYlveMYix2PifHKAdyuRUkloE93TCgM3MgT+6iHtEeAMjgx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FGKWpJ0i; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733403459;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ot7XcBFSegxFnsEWFIWT5T/J3rPFJxtVYqEbfcPpFpk=;
+	b=FGKWpJ0iyDKvIkXhpVTRVX40W4/9KhhinR2oIVGR+5l2lvunmWtLOCVQMFMYqond4eORWu
+	/k748hV7/JqCwZGb92SYVLrVXOiYvJuvRAWp7D019FO5nnSMtTztAwA7aZsU66J5RXf34r
+	ks10pr7I4zJpmLvg9vuHghZBPlBYAE0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-OhHGJ9QzNju3YvoQ2jLcSw-1; Thu, 05 Dec 2024 07:57:38 -0500
+X-MC-Unique: OhHGJ9QzNju3YvoQ2jLcSw-1
+X-Mimecast-MFC-AGG-ID: OhHGJ9QzNju3YvoQ2jLcSw
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-aa53beff6f0so71721466b.1
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 04:57:37 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733403231; x=1734008031;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FUPqE51TLvEDtsqOtCI9i9XXbeFVSmPyWNWK1a6nR9k=;
-        b=l4Ar79odamdQtqYWo+Jc6p2SffW6hLuyvNFpBDWbXckgwrs/gt7kFi4sJLPsGGCx55
-         42t5hpcxHGy81mYQj7vSAwi6RrFmIDwJot4PGQH2nTxawJD48S11OEb5L6aVmTKVjhOq
-         ldEr07ua0PPetjVViXz/b1bh5xtFSSWnzYeOS/wtPtthv1HYQAL4TKaSW91ajKbH2hca
-         3653brjFP83oD7pV35B95mKjBgy9dh4/ylgayM0reDJjExoHuqjDmmywbhZXvVpODIUP
-         0IXX1vI1TmoTjQWpn+g73mdJD4E+/sJyg57chHufiwUF6my+H2FOgeCzBEeWp5qT4LBg
-         ijDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVypyPaHzQxY5psPchftWK+F4KvX7sXgxmIPMzqJ8zLdFXKHlRX6RZyTmntWN3VoFQttQGoLi4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsb/lltSwQycAbhZTeJi7CPeIoN6dvd0bt6l3IjrdSwQmPxXy4
-	iv3buK2DpsI+7PgfSl77w+2geVg0mbo7B1cOJIA/c1EA+v6zCKgNQRKEHRXwrq3hC5qT4BKpS1I
-	7hz/0Cm7JvSgpiN43AQ0WrFGdAo3JlCD/Vl4MdnkRVcaIG6gvVVyDxm1fmcJ+bTI6iU/3vg==
-X-Gm-Gg: ASbGncsmGs2vOwZMKZISGFenq+dzH7y06UQnKp83o0FsgAsnvneRpvZGDH4OeVTlzdj
-	vwv4D904G44OZcF69v/ITy4m+AXfQ4Uh3ZtvoFPmG6HL6fR7f27N05K3A03dG7aYV67jO8uXeL0
-	QAzcv87t0a+Q0ZfP93AjBQq2RyWvOY1CEW9tOKTe5dPu+Z9Ed+6g3ImroYY12J9TbWMic8znpNC
-	ZXbBCK0rMhhgTQy63UiGUeLfaQ0LtObkoTvCTJ68DzfyI3ieKY=
-X-Received: by 2002:a05:6a20:9186:b0:1d9:ec2:c87b with SMTP id adf61e73a8af0-1e17d3841f3mr4662272637.9.1733403231230;
-        Thu, 05 Dec 2024 04:53:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFmNoiRxBOlLsxc22EXT6uQ0ZpleA21ZKP6ZYanOZreHBwMPSzZzR3LFylnFh324PSe+sabHw==
-X-Received: by 2002:a05:6a20:9186:b0:1d9:ec2:c87b with SMTP id adf61e73a8af0-1e17d3841f3mr4662236637.9.1733403230902;
-        Thu, 05 Dec 2024 04:53:50 -0800 (PST)
-Received: from localhost ([240f:74:7be:1:d88b:a41e:6f7b:abf])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd156b7964sm1080721a12.18.2024.12.05.04.53.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 04:53:50 -0800 (PST)
-Date: Thu, 5 Dec 2024 21:53:49 +0900
-From: Koichiro Den <koichiro.den@canonical.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: virtualization@lists.linux.dev, jasowang@redhat.com, 
-	xuanzhuo@linux.alibaba.com, eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net-next v3 3/7] virtio_net: introduce
- virtnet_sq_free_unused_buf_done()
-Message-ID: <42s4swjiewp7fv2st6i6vzs5dlcah5r5rupl57s75hiqeds7hl@fu4oqhjm7cxc>
-References: <20241204050724.307544-1-koichiro.den@canonical.com>
- <20241204050724.307544-4-koichiro.den@canonical.com>
- <20241205054009-mutt-send-email-mst@kernel.org>
+        d=1e100.net; s=20230601; t=1733403457; x=1734008257;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ot7XcBFSegxFnsEWFIWT5T/J3rPFJxtVYqEbfcPpFpk=;
+        b=uc/EJlDMTa0CF3xe/p07G3atYzQvwVNywC0wwWTr6yWsPLwd/rlw1eM+qmkWs1kwSB
+         ibQ33NR3FhOlPGy/WA7CCDz9RsPYWRXPl5AhE6e7fo7IhGQDTOwKR1lLZmIAMVpQZN8W
+         23PuI+pB20D22b1qTC97zQ4yrNk39x4PDYD1BvJiye8upbyRsBObGxRh5iBbI2NdZvNc
+         VLHnPsOadzXAIY3+iJTEkYXU5LuWww6pMUOCmYHOKIjS/sLSa1DuoVPPc/wHvI4hkIdt
+         vZU7L9GZ/9sHsLxo1vf0rg0A20weOgXMnZHMZ9xifnOZnEKE6f5naNckeXmqGQQwSjJY
+         H6Vw==
+X-Forwarded-Encrypted: i=1; AJvYcCWqp6B1hLYOiUtBjPaK7+C1sfysBJeDm7J8hdZYT2VchRMbjUCYjpFtiO5M8HwB9kuKo1a6RmE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+wUicD4DbQMPWO01C05Z4p226LYU4pBJNrSPFL9D0sfgqUjUF
+	YEraebmOf/CoCTMDtE+eQ199CDjKFIp6Oz/T3RKBFssVwskUN1ikE+M/je3q+vjtgehS2xBiMBm
+	pf9mcD2vbUMeg9hlpf1scTcQUoDQL+AfBgxtXQwptoY3ofYwUrOToSvlqvg7g2KSW+HFPvQewOd
+	55HcPNffLgouVSAAgJAzrHuuBvUokt
+X-Gm-Gg: ASbGnctbTiO+pLrDE4a7I1bywnhG44eF/27wY8F51fFJDIE2FVoRO7+ZUIyVk/DtTOv
+	LPlwH6ynyGnMvNop9EaMJd6GRji9iKBmmCVW32nyLa4xfKZ8=
+X-Received: by 2002:a05:6402:e0e:b0:5d0:d3eb:a78f with SMTP id 4fb4d7f45d1cf-5d10caa018amr17290132a12.0.1733403456800;
+        Thu, 05 Dec 2024 04:57:36 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGFgV8uME1/aUFGWwOlbZd9Dn/4rzI946nZtSCbX2ZqN9RTqCIfBOcwmQbs2px7IIYr9m09QSNstPqU6DEOlOM=
+X-Received: by 2002:a05:6402:e0e:b0:5d0:d3eb:a78f with SMTP id
+ 4fb4d7f45d1cf-5d10caa018amr17290075a12.0.1733403456496; Thu, 05 Dec 2024
+ 04:57:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241205054009-mutt-send-email-mst@kernel.org>
+References: <20241127212027.2704515-1-max.kellermann@ionos.com>
+ <CAO8a2SiS16QFJ0mDtAW0ieuy9Nh6RjnP7-39q0oZKsVwNL=kRQ@mail.gmail.com>
+ <CAKPOu+8qjHsPFFkVGu+V-ew7jQFNVz8G83Vj-11iB_Q9Z+YB5Q@mail.gmail.com>
+ <CAKPOu+-rrmGWGzTKZ9i671tHuu0GgaCQTJjP5WPc7LOFhDSNZg@mail.gmail.com>
+ <CAOi1vP-SSyTtLJ1_YVCxQeesY35TPxud8T=Wiw8Fk7QWEpu7jw@mail.gmail.com>
+ <CAO8a2SiTOJkNs2y5C7fEkkGyYRmqjzUKMcnTEYXGU350U2fPzQ@mail.gmail.com>
+ <CAKPOu+98G8YSBP8Nsj9WG3f5+HhVFE4Z5bTcgKrtTjrEwYtWRw@mail.gmail.com> <CAKPOu+9K314xvSn0TbY-L0oJ3CviVo=K2-=yxGPTUNEcBh3mbQ@mail.gmail.com>
+In-Reply-To: <CAKPOu+9K314xvSn0TbY-L0oJ3CviVo=K2-=yxGPTUNEcBh3mbQ@mail.gmail.com>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Thu, 5 Dec 2024 14:57:25 +0200
+Message-ID: <CAO8a2Sgjw4AuhEDT8_0w--gFOqTLT2ajTLwozwC+b5_Hm=478w@mail.gmail.com>
+Subject: Re: [PATCH] fs/ceph/file: fix memory leaks in __ceph_sync_read()
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: Ilya Dryomov <idryomov@gmail.com>, xiubli@redhat.com, ceph-devel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 05, 2024 at 05:40:33AM -0500, Michael S. Tsirkin wrote:
-> On Wed, Dec 04, 2024 at 02:07:20PM +0900, Koichiro Den wrote:
-> > This will be used in the following commits, to ensure DQL reset occurs
-> > iff. all unused buffers are actually recycled.
-> > 
-> > Cc: <stable@vger.kernel.org> # v6.11+
-> > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
-> 
-> to avoid adding an unused function, squash with a patch that uses it.
+I will explain the process for ceph client patches. It's important to
+note: The process itself and part of the automation is still evolving
+and so many things have to be done manually.
 
-I originally seperated this out because some were supposed to land stable
-tree while others not, and this was the common prerequisite. However, this
-can be squahsed with [5/7] regardless of that, and should be done so as you
-pointed out.
+1. A patch is created and pushed into a local testing branch and
+tested with xfstests on a kernel compiled with KASAN, several  static
+analysis tools are run as well.
+2. The local testing branch is merged with the `testing` branch which
+implies that all sepia labs teutology tests run on this new kernel --
+so care must be taken before pushing.
+3. The patch is reviewed on the mailing list by the community, when
+acked Ilya takes it to the main branch and eventually to the upstream
+kernel.
 
-I'll do so and send v4 later, thanks for the review.
+I will break it up into three separate patches, as it addresses three
+different issues. So that's a good comment. Any other constructive
+comments will be appreciated, both regarding the patch and the
+process.
+I didn't send an RFC yet; I need to understand how the other two
+issues were fixed as well, I will send an RFC when I'm done, as I need
+to make sure all root causes are fixed. I prefer fixing things once.
 
-> 
-> 
-> > ---
-> >  drivers/net/virtio_net.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> > 
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index 1b7a85e75e14..b3cbbd8052e4 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -503,6 +503,7 @@ struct virtio_net_common_hdr {
-> >  static struct virtio_net_common_hdr xsk_hdr;
-> >  
-> >  static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
-> > +static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq);
-> >  static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
-> >  			       struct net_device *dev,
-> >  			       unsigned int *xdp_xmit,
-> > @@ -6233,6 +6234,14 @@ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
-> >  	}
-> >  }
-> >  
-> > +static void virtnet_sq_free_unused_buf_done(struct virtqueue *vq)
-> > +{
-> > +	struct virtnet_info *vi = vq->vdev->priv;
-> > +	int i = vq2txq(vq);
-> > +
-> > +	netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, i));
-> > +}
-> > +
-> >  static void free_unused_bufs(struct virtnet_info *vi)
-> >  {
-> >  	void *buf;
-> > -- 
-> > 2.43.0
-> 
+On Thu, Dec 5, 2024 at 2:22=E2=80=AFPM Max Kellermann <max.kellermann@ionos=
+.com> wrote:
+>
+> On Thu, Dec 5, 2024 at 1:02=E2=80=AFPM Max Kellermann <max.kellermann@ion=
+os.com> wrote:
+> > - What "other thread"? I can't find anything on LKML and ceph-devel.
+>
+> Just in case you mean this patch authored by you:
+> https://github.com/ceph/ceph-client/commit/2a802a906f9c89f8ae492dbfcd82ff=
+41272abab1
+>
+> I don't think that's a good patch, and if I had the power, I would
+> certainly reject it, because:
+>
+> - it's big and confusing; hard to review
+> - it's badly documented; the commit message is just "fixing a race
+> condition when a file shrinks" but other than that, doesn't explain
+> anything; a proper explanation is necessary for such a complicated
+> diff
+> - the patch changes many distinct things in one patch, but it should
+> really be split
+> - this patch is about the buffer overflow for which my patch is much
+> simpler: https://lore.kernel.org/lkml/20241127212130.2704804-1-max.keller=
+mann@ionos.com/
+> which I suggested merging instead of all the other candicate patches
+> https://lore.kernel.org/lkml/CAKPOu+9kdcjMf36bF3HAW4K8v0mHxXQX3_oQfGSshmX=
+BKtS43A@mail.gmail.com/
+> but you did not reply (as usual, sigh!)
+> - deeply hidden in this patch is also a fix for the memory leak, but
+> instead of making one large patch which fixes everything, you should
+> first merge my trivial leak bug fix and then the fix for the buffer
+> overflow on top
+>
+
 
