@@ -1,173 +1,165 @@
-Return-Path: <stable+bounces-98770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C59D9E51DE
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 11:14:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E95749E5208
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 11:22:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16668282AF2
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 10:14:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB31C166D45
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 10:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B640D1DC74A;
-	Thu,  5 Dec 2024 10:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7521D63C7;
+	Thu,  5 Dec 2024 10:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EwaRXCfa"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tarLBTty"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E741DC18F;
-	Thu,  5 Dec 2024 10:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131BC192589
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 10:22:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733393673; cv=none; b=kT9wC66AXF72o7fAJKoWkEzgdsYzVaiOPHGJLC2MAsrvllaLr1d7ZX6FKDXnGZ6/+bDTfidJWfHxr8QUhPlR81Myj6lxto8WOs5YtrkdncVKfcScfxV5UKgpX7IaSQuj/3weXFEc3WPDWnv97G0EXmk6N1l9nuo0r7MiBAgb7Bo=
+	t=1733394125; cv=none; b=XNB3FdNqKH8XWD7fSwE9ydQBTgWWG65dSIt2WiSRZ/FG4GuZ69bK8RkybOG/f6tLjh+QLo8tpfZJbCMuWAWw434Sx4MF7zxiuw+evm4kMHr6cgtHXLkndvbB5NgxU5gKIDcNOnNls6cB1NfLaUPLjcwGU3657ethTaJW24yZuWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733393673; c=relaxed/simple;
-	bh=vc8tSJVclWUgVciwCbm9ORQlrRn2jqrHpZ134R7FF/g=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VR+91uoKUXCJa/p2M6Xb7nF3J/KxfJ3X0g3pUANVkyVtTtc9iRNk5ogeQxtiLPMN3wEThJ+KRRUYXcppuL1oFTAvUVK+gdChXgIavQwVLFHiboY6DxacCdarX4X/k6iyxH2TQ8pq5wYGbGRM4lDBKf04s9Of3KvdbBqn4RR9p8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EwaRXCfa; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=m6StHegZ6tGvbNYqRNSd5greVP+REzoM4PjmghzBUrE=;
-	b=EwaRXCfaQIpm6bMHSUFx5qY2kHXpSYUXlvZY9lTlx8uvYLgqN8+akK6MiqWUvL
-	CGY/rJvyEWix8gPhQidmH692VQHa1jsKI+ld6w8FmI0EmDPcNUJqK5gwJMlkX+8X
-	8/LnyUUe1I0kHppFICDZKWCqU9QMMZgn7Kvbg/JKEJmZo=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgD3vzjffFFnLkzFAg--.22554S2;
-	Thu, 05 Dec 2024 18:13:52 +0800 (CST)
-From: MoYuanhao <moyuanhao3676@163.com>
-To: matttbe@kernel.org,
-	edumazet@google.com
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	geliang@kernel.org,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	martineau@kernel.org,
-	moyuanhao3676@163.com,
-	mptcp@lists.linux.dev,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net-next] tcp: Check space before adding MPTCP options
-Date: Thu,  5 Dec 2024 18:13:51 +0800
-Message-Id: <20241205101351.34818-1-moyuanhao3676@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <0f07b584-1013-4932-b155-cc0883ca7061@kernel.org>
-References: <0f07b584-1013-4932-b155-cc0883ca7061@kernel.org>
+	s=arc-20240116; t=1733394125; c=relaxed/simple;
+	bh=plXtOKz29GTft7oIa1xpVOqkG4eCLvwhQNSboWbCoo4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fMV6oQE3P8InwiZRefUTYGb9b0S+WtjpiTbd0hSgQmQnfCMhGByB4ERjP6A/gU5nDERAu/rBoUfWmzIEw0JhBl55FpysX2j0hSJfLHzrmXTvAUHjlelOiOt1hUgNoNxEtv/+fR7qYSWGbsm9RvRwDmo5ISdJi8qKlFeS+LREgwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tarLBTty; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a9e8522445dso130980266b.1
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 02:22:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733394121; x=1733998921; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C2qCz2oyAWXcySnvC/YTGdboyjGwCf8uvEh34M5NQ1w=;
+        b=tarLBTtyIxG789Wi2HydCwg6vBxQtscctZ4kbdPpu4HrYKw4sgBRbA41gD4qHEObd4
+         88a/ZCvSovQAiKsnOvOSPsw/ZbO714p45GXjNzJWWXYWN+A9ULxS8KGa3dJXhw3Zfdir
+         S9F425i8sFvQwbHuUF5MsDC4SqZYT3ZgbJw/W9mS9W/OM8Qg3bzEV0fmjUUwroRbGn+N
+         MS7o8gM3XdQs0QxR2q5UpL9uAgEbft9j8q6wWBjK9aRt/9J2Fd3TdJQYlhnwnRedluBh
+         41YHOqOlIAPDWiT9k1NWRirADF6BXCUVX7nde1w8y719od33qhBMXjSp4QnSx92+2oja
+         KvSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733394121; x=1733998921;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C2qCz2oyAWXcySnvC/YTGdboyjGwCf8uvEh34M5NQ1w=;
+        b=Rgk3gUmQHBisapoHt65Qrf+9LkeLH1hW/G6EYrdCkPpaOqoAoiTGIo94yujkZO/uMK
+         wmr1FSL2Kga+fVK82YpTpU7jTuMqb2Vywzl3KBgA84BuoklB7/vmASOmN6qQJQViFCXf
+         84lfueaFL5MGRTcR2IfMP3el2UKlP/RkV7j3GRxFQSZisK8tlQUyJt+RiORUx9OF2CKj
+         RQqx2vhOwbMbhv1Qg9OtoHaF6AntTOvCvMm15XZGgMH03Xk5mP1CO87MBGA0nxm0qPWS
+         5xhxxnAQtpBCCMhEjiXfa/Y8vHyql/JFDsaDy2ChmrGp9OzpBB81IwoSaGH8WXpwxZvl
+         qCtw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4aTzm1T5xyqf9c4xD3HhQpR8GmB3cyRGYAptoT1cI1IbwZSBmu2PjfWx2ApI80Hd2Px9DDyk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWeJF/srEI0/UZRIvYZulckYClPMTHD9FyQ2sLup30ldHxqgYI
+	YFsUgC58feAhs5lUXff4kAch5YBRO3XJyVym58eJFXQ6pKmAddijjCkzIvfmE+c=
+X-Gm-Gg: ASbGncsJvmNzIA6aXY7m4oCY+gdysHE3LiPctc63qKdaux58GYCAaxZY/Yc++dsCvOD
+	qFCLmtINYEze5F3WocU0yEiBH6GJe5h7kUfKx2ynJN91PxhnCTQ2DF66ds+niVKSGbE+Xt++0RP
+	mXjHw3x9yRvrLZc1Hazuj2PxdRY9d5bF9r20grqjOBzbyKJFpI9gAKJFd8Bk5e2orOfsCqdvQeg
+	AaY4xRX+wJfe/PLVH58L9j2QP8mU3uHpxPS310D3DF2HQnLi+ERIKtpqa2Er4JK9YP/sL1+FjJ9
+	Xmp3We8iQViXbqA8ErSogCNb9VD6+tYWOA==
+X-Google-Smtp-Source: AGHT+IGIzS6w8nmzLwTehZGRCWLb5o+CLPa7VmxDEuLmOqo4b1mzG0cAAJu2wok4wnlPx8fiTWLtkA==
+X-Received: by 2002:a17:906:3d31:b0:aa5:41b2:e23e with SMTP id a640c23a62f3a-aa5f7da9717mr766598566b.30.1733394120780;
+        Thu, 05 Dec 2024 02:22:00 -0800 (PST)
+Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa62608f57fsm71606166b.146.2024.12.05.02.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 02:22:00 -0800 (PST)
+From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Date: Thu, 05 Dec 2024 10:22:00 +0000
+Subject: [PATCH v4] phy: exynos5-usbdrd: gs101: ensure power is gated to SS
+ phy in phy_exit()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgD3vzjffFFnLkzFAg--.22554S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXF1Utw47JF1UtF1DZFyDGFg_yoWrJrWUpr
-	yUKFsYkr4kJ348Gr4IqF1vyr1Fva1rGrWDXw15Ww12y3s0gFyI9ryIyr4Y9F97Wr48Jw1j
-	vr4UZ34fWa1UAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JU4MKAUUUUU=
-X-CM-SenderInfo: 5pr13t5qkd0jqwxwqiywtou0bp/1tbiNgSsfmdRe0AlkAAAsY
+Message-Id: <20241205-gs101-usb-phy-fix-v4-1-0278809fb810@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAMd+UWcC/x2MQQqAMAzAviI9W9iqA/Ur4mFq3XpRWVEU8e8Oj
+ wkkDygnYYWueCDxKSrbmqEuC5iiXwOjzJmBDNWWjMOg1lg8dMQ93rjIhTQ513hvqpY85G5PnPX
+ /7If3/QBAd16DYwAAAA==
+To: Vinod Koul <vkoul@kernel.org>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Peter Griffin <peter.griffin@linaro.org>
+Cc: Will McVicker <willmcvicker@google.com>, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, kernel-team@android.com, 
+ linux-phy@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
+ =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+X-Mailer: b4 0.13.0
 
-Hi Matt and Eric,
+We currently don't gate the power to the SS phy in phy_exit().
 
->Hi MoYuanhao,
+Shuffle the code slightly to ensure the power is gated to the SS phy as
+well.
 
->On 05/12/2024 08:54, Eric Dumazet wrote:
->> On Thu, Dec 5, 2024 at 8:31 AM Mo Yuanhao <moyuanhao3676@163.com> wrote:
->>>
->>> 在 2024/12/4 19:01, Matthieu Baerts 写道:
->>>> Hi MoYuanhao,
->>>>
->>>> +Cc MPTCP mailing list.
->>>>
->>>> (Please cc the MPTCP list next time)
->>>>
->>>> On 04/12/2024 09:58, MoYuanhao wrote:
->>>>> Ensure enough space before adding MPTCP options in tcp_syn_options()
->>>>> Added a check to verify sufficient remaining space
->>>>> before inserting MPTCP options in SYN packets.
->>>>> This prevents issues when space is insufficient.
->>>>
->>>> Thank you for this patch. I'm surprised we all missed this check, but
->>>> yes it is missing.
->>>>
->>>> As mentioned by Eric in his previous email, please add a 'Fixes' tag.
->>>> For bug-fixes, you should also Cc stable and target 'net', not 'net-next':
->>>>
->>>> Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing
->>>> connections")
->>>> Cc: stable@vger.kernel.org
->>>>
->>>>
->>>> Regarding the code, it looks OK to me, as we did exactly that with
->>>> mptcp_synack_options(). In mptcp_established_options(), we pass
->>>> 'remaining' because many MPTCP options can be set, but not here. So I
->>>> guess that's fine to keep the code like that, especially for the 'net' tree.
->>>>
->>>>
->>>> Also, and linked to Eric's email, did you have an issue with that, or is
->>>> it to prevent issues in the future?
->>>>
->>>>
->>>> One last thing, please don’t repost your patches within one 24h period, see:
->>>>
->>>>    https://docs.kernel.org/process/maintainer-netdev.html
->>>>
->>>>
->>>> Because the code is OK to me, and the same patch has already been sent
->>>> twice to the netdev ML within a few hours, I'm going to apply this patch
->>>> in our MPTCP tree with the suggested modifications. Later on, we will
->>>> send it for inclusion in the net tree.
->>>>
->>>> pw-bot: awaiting-upstream
->>>>
->>>> (Not sure this pw-bot instruction will work as no net/mptcp/* files have
->>>> been modified)
->>>>
->>>> Cheers,
->>>> Matt
->>> Hi Matt,
->>>
->>> Thank you for your feedback!
->>>
->>> I have made the suggested updates to the patch (version 2):
->>>
->>> I’ve added the Fixes tag and Cc'd the stable@vger.kernel.org list.
->>> The target branch has been adjusted to net as per your suggestion.
->>> I will make sure to Cc the MPTCP list in future submissions.
->>>
->>> Regarding your question, this patch was created to prevent potential
->>> issues related to insufficient space for MPTCP options in the future. I
->>> didn't encounter a specific issue, but it seemed like a necessary
->>> safeguard to ensure robustness when handling SYN packets with MPTCP options.
->>>
->>> Additionally, I have made further optimizations to the patch, which are
->>> included in the attached version. I believe it would be more elegant to
->>> introduce a new function, mptcp_set_option(), similar to
->>> mptcp_set_option_cond(), to handle MPTCP options.
->>>
->>> This is my first time replying to a message in a Linux mailing list, so
->>> if there are any formatting issues or mistakes, please point them out
->>> and I will make sure to correct them in future submissions.
->>>
->>> Thanks again for your review and suggestions. Looking forward to seeing
->>> the patch applied to the MPTCP tree and later inclusion in the net tree.
->> 
->> We usually do not refactor for a patch targeting a net tree.
->
->Indeed, I agree with Eric. Even if the code looks good, more lines have
->been modified, maybe more risks, but also harder to backport to stable.
+Fixes: 32267c29bc7d ("phy: exynos5-usbdrd: support Exynos USBDRD 3.1 combo phy (HS & SS)")
+CC: stable@vger.kernel.org # 6.11+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+---
+Changes in v4:
+- separate this patch out from original series
+- Link to v3: https://lore.kernel.org/all/20241205-gs101-phy-lanes-orientation-phy-v3-5-32f721bed219@linaro.org/
 
-Thank you for your guidance. I agree with your points, and using the patch from version 1 seems safer.
+Changes in v3:
+- none
+- Link to v2: https://lore.kernel.org/all/20241203-gs101-phy-lanes-orientation-phy-v2-5-40dcf1b7670d@linaro.org/
+
+Changes in v2:
+- add cc-stable and fixes tags to power gating patch (Krzysztof)
+- Link to v1: https://lore.kernel.org/all/20241127-gs101-phy-lanes-orientation-phy-v1-6-1b7fce24960b@linaro.org/
+---
+ drivers/phy/samsung/phy-exynos5-usbdrd.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+index c421b495eb0f..e4699d4e8075 100644
+--- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
++++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
+@@ -1296,14 +1296,17 @@ static int exynos5_usbdrd_gs101_phy_exit(struct phy *phy)
+ 	struct exynos5_usbdrd_phy *phy_drd = to_usbdrd_phy(inst);
+ 	int ret;
+ 
++	if (inst->phy_cfg->id == EXYNOS5_DRDPHY_UTMI) {
++		ret = exynos850_usbdrd_phy_exit(phy);
++		if (ret)
++			return ret;
++	}
++
++	exynos5_usbdrd_phy_isol(inst, true);
++
+ 	if (inst->phy_cfg->id != EXYNOS5_DRDPHY_UTMI)
+ 		return 0;
+ 
+-	ret = exynos850_usbdrd_phy_exit(phy);
+-	if (ret)
+-		return ret;
+-
+-	exynos5_usbdrd_phy_isol(inst, true);
+ 	return regulator_bulk_disable(phy_drd->drv_data->n_regulators,
+ 				      phy_drd->regulators);
+ }
+
+---
+base-commit: c245a7a79602ccbee780c004c1e4abcda66aec32
+change-id: 20241205-gs101-usb-phy-fix-2c558aa0392a
 
 Best regards,
-
-MoYuanhao
+-- 
+André Draszik <andre.draszik@linaro.org>
 
 
