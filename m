@@ -1,165 +1,116 @@
-Return-Path: <stable+bounces-98854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE2E9E5D77
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 18:41:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3D39E5DA9
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 18:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDC1818846FF
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 17:41:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5325A1884523
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 17:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D399A226EF5;
-	Thu,  5 Dec 2024 17:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80408224AEB;
+	Thu,  5 Dec 2024 17:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="KXVXFkjI"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8570F224AEA;
-	Thu,  5 Dec 2024 17:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029E4218E98
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 17:51:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733420461; cv=none; b=NudT8xiNkjt501LuTX9C58v2R6GlhE4QLHUQOvCKmr5gbMIpErLQy1qCENhjczL275tbZ3FjocsFHiJFpYUrRcHujsf/qaKBu5tMj3zuKe7r9h1XcyYTNVCyJ2Hu0ckjRDOtESFkOzvTf5aXI66qucN0Sq1pum4ElpzR+bqDxdk=
+	t=1733421120; cv=none; b=NjV+vkmzWpNhrpYhwm4k2qtGY/a4ClcJlUS6yoEuohlz8Z2uHX/BhYs+Bx3QuR7Z3iotLjxG+B3sqkPV8j1v0H1Nf6x6CLPvXn7X9qI7qGYq4Nni0lU8iAdC1lxtvxHzUJOkvknOKmVRd1O9uD8+skiKgYz/78GZYUDIoeCuGIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733420461; c=relaxed/simple;
-	bh=02QwFU0NbxHwwY4/jSg9aLzGDajj8t0KO3Hq/4zLXos=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TrDlNtyrbNLDVbvdXBbzK60MVMekN6gXT7owXEdlxq1CD2bX60l2f5g4C7ade6xWoIgkGumDBp7X1iPJtmyBzNnG6N6XRGj6I8WnxSyRLiUb+Eu23Z55wdKEhSUq7s1UycvTg6+lINA3Uk3IXpU5ykVs7LA9MX9KGf9RHBDqQjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 236B51BF203;
-	Thu,  5 Dec 2024 17:40:45 +0000 (UTC)
-Message-ID: <528505d0-e0ba-414b-ad9d-bc78c07464a1@ghiti.fr>
-Date: Thu, 5 Dec 2024 18:40:44 +0100
+	s=arc-20240116; t=1733421120; c=relaxed/simple;
+	bh=7MoIFK5OGXq3gDhad/EY4fgDc+nrvflIniaIyfUBSuc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=txHfKRuW7BLIm4aeLnO8Q798Y0BTlt5k1BSZVsrgqjQD1LRs3XwvJ/YbYTP2gOrLIjV3Wn9uZ24C+5xIBLsulrpZLCdEO0+uVJCsODIku92z0IbAg4R+DDsRlYD5PAyfu/Z6K+1m9fzJU1Xq3RceDUJCQZ7DHGLct/lOs9gCae4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=KXVXFkjI; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53e224bbaccso1324314e87.3
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 09:51:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1733421116; x=1734025916; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=z5eWK/vs7fqhFUwAujMxMk12h0AxsQYVmA9NF533vvU=;
+        b=KXVXFkjI0iWCJE0Y84upfas5njYq//+LIRxhbYFiQp+fpNVwjdv7R4C5hIzLEyOmdB
+         nSSTmfwHk1B/r98GIwZDA81zqeSwlZaktcxiuwtwQMOA3Y4FBiuJ7PBR10w3gtop3UrI
+         vYJ/4xVB4vfSGN1Tc0i6PS9m0AAnvuVanDjGs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733421116; x=1734025916;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=z5eWK/vs7fqhFUwAujMxMk12h0AxsQYVmA9NF533vvU=;
+        b=d+uXtrH3xgpf8w8lzp3Rnklm1qelAVah1PwMoy5o1gs8o81WNagvYcbtv8EQ/VrFOD
+         7JjJ5ixT5fcq3MJYKSctO8NqGeQR/PQPLikW8PoYuhnFFfmVqV0UfjFmcQeTLIsJgan1
+         6rGR04UDwa9nhWGtyEr/LuFwc7Nx8ZoJvvs84oPecrNw51kUg4ttNlOBWnmzLsegXyun
+         Sik/kPDlDGqW8v05JvH2DLx8j0FE81NFWceWEzWDR/QXhAKx7XpYPL3zazVihmujF+ir
+         SKiqMuM6t+R9vGqAJPXpoCujwYYdqqkWlksnjSZp9AGdNnOhGnTaEDSxeXKrTtLsHhh4
+         dLbw==
+X-Forwarded-Encrypted: i=1; AJvYcCVYQT3M0J6ZJQ+wbw307pkjhSntO8LGCtGqJB7ketVIQqOggp8KpJi/HoAI2Tn8mW55bG6QlhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQMqrzUe/ke3+tTV9ZQPfpQyLTfi++xGxsId+HVhygB94PU7mk
+	Q9s3z8aEA7k8OJlWd+hkHOjzkasO/+jSw+7hdvrB7Ywxu6B/F+54bXVcwzEzNhRj79bEimSCJrk
+	7LWE=
+X-Gm-Gg: ASbGncuSqW6C9iDc52ze2gR1BzfDkdzkTa9VlpFjCgM5o/49zmrtK4AeMBbXifarTXy
+	wdkDIq99eM27NNTj/zWSI3wt7JoSvqFlnU5Lpw0WNThERZVooUqYXRxAscURLmUYs7svQfL3izH
+	2noqur0hl+SYE5iQgnCsSBKvFKWymfyknPIYoEDAswui1gsKso1VpAvVFQ0G6nwIUF/sFRQ4k/G
+	bWlgg83g2sWc8kclGuS2ajBKX9s40MAV0s9HcIOay6vWWHyI5LOwqsJu3ngmyvWLbYRU8PZKhh4
+	DS1yAPEkG29Lfp7nSXZhJ7yp
+X-Google-Smtp-Source: AGHT+IHAVFuvbl2nxKeVSUc1Mgj83gupvCfEPfuprd2pFWImnTDvbfLB0C1muUb7MYYF0Ghl48l79Q==
+X-Received: by 2002:a05:6512:2203:b0:53e:1c53:b1e3 with SMTP id 2adb3069b0e04-53e1c53b1f2mr4694099e87.34.1733421115835;
+        Thu, 05 Dec 2024 09:51:55 -0800 (PST)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e229ca298sm302377e87.267.2024.12.05.09.51.54
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Dec 2024 09:51:54 -0800 (PST)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53e224bbaccso1324272e87.3
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 09:51:54 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWv2Jd0RJkq08TVjFlSHTIG53gyYjZ1kBu/011o3vlD81zFSjgA9v9PDxWc/Rt81WXQkeUFlNE=@vger.kernel.org
+X-Received: by 2002:a05:6512:6c9:b0:53d:e4d2:bb3 with SMTP id
+ 2adb3069b0e04-53e12a2e4e5mr7858256e87.50.1733421113830; Thu, 05 Dec 2024
+ 09:51:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] riscv/ptrace: add new regset to access original a0
- register
-Content-Language: en-US
-To: Celeste Liu <uwu@coelacanthus.name>, Oleg Nesterov <oleg@redhat.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
- Shuah Khan <shuah@kernel.org>
-Cc: "Dmitry V. Levin" <ldv@strace.io>, Andrea Bolognani
- <abologna@redhat.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ron Economos <re@w6rz.net>,
- Charlie Jenkins <charlie@rivosinc.com>, Quan Zhou <zhouquan@iscas.ac.cn>,
- Felix Yan <felixonmars@archlinux.org>, Ruizhe Pan <c141028@gmail.com>,
- Shiqi Zhang <shiqi@isrc.iscas.ac.cn>, Guo Ren <guoren@kernel.org>,
- Yao Zi <ziyao@disroot.org>, Han Gao <gaohan@iscas.ac.cn>,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20241203-riscv-new-regset-v2-0-d37da8c0cba6@coelacanthus.name>
- <20241203-riscv-new-regset-v2-1-d37da8c0cba6@coelacanthus.name>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20241203-riscv-new-regset-v2-1-d37da8c0cba6@coelacanthus.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
+References: <20241203144743.428732212@linuxfoundation.org> <efbda6ac-9482-4b37-90b7-829f2424f579@cachyos.org>
+In-Reply-To: <efbda6ac-9482-4b37-90b7-829f2424f579@cachyos.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 5 Dec 2024 09:51:37 -0800
+X-Gmail-Original-Message-ID: <CAHk-=whGd0dfaJNiWSR60HH5iwxqhUZPDWgHCQd446gH2Wu0yQ@mail.gmail.com>
+Message-ID: <CAHk-=whGd0dfaJNiWSR60HH5iwxqhUZPDWgHCQd446gH2Wu0yQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/826] 6.12.2-rc1 review
+To: Peter Jung <ptr1337@cachyos.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Celeste,
-
-On 03/12/2024 10:30, Celeste Liu wrote:
-> The orig_a0 is missing in struct user_regs_struct of riscv, and there is
-> no way to add it without breaking UAPI. (See Link tag below)
+On Thu, 5 Dec 2024 at 07:46, Peter Jung <ptr1337@cachyos.org> wrote:
 >
-> Like NT_ARM_SYSTEM_CALL do, we add a new regset name NT_RISCV_ORIG_A0 to
-> access original a0 register from userspace via ptrace API.
->
-> Link: https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Celeste Liu <uwu@coelacanthus.name>
-> ---
->   arch/riscv/kernel/ptrace.c | 32 ++++++++++++++++++++++++++++++++
->   include/uapi/linux/elf.h   |  1 +
->   2 files changed, 33 insertions(+)
->
-> diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
-> index ea67e9fb7a583683b922fe2c017ea61f3bc848db..18ce07ffb27bb1180667769eed800f6fdf96c083 100644
-> --- a/arch/riscv/kernel/ptrace.c
-> +++ b/arch/riscv/kernel/ptrace.c
-> @@ -31,6 +31,7 @@ enum riscv_regset {
->   #ifdef CONFIG_RISCV_ISA_SUPM
->   	REGSET_TAGGED_ADDR_CTRL,
->   #endif
-> +	REGSET_ORIG_A0,
->   };
->   
->   static int riscv_gpr_get(struct task_struct *target,
-> @@ -184,6 +185,29 @@ static int tagged_addr_ctrl_set(struct task_struct *target,
->   }
->   #endif
->   
-> +static int riscv_orig_a0_get(struct task_struct *target,
-> +			     const struct user_regset *regset,
-> +			     struct membuf to)
-> +{
-> +	return membuf_store(&to, task_pt_regs(target)->orig_a0);
-> +}
-> +
-> +static int riscv_orig_a0_set(struct task_struct *target,
-> +			     const struct user_regset *regset,
-> +			     unsigned int pos, unsigned int count,
-> +			     const void *kbuf, const void __user *ubuf)
-> +{
-> +	unsigned long orig_a0 = task_pt_regs(target)->orig_a0;
-> +	int ret;
-> +
-> +	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &orig_a0, 0, -1);
-> +	if (ret)
-> +		return ret;
-> +
-> +	task_pt_regs(target)->orig_a0 = orig_a0;
-> +	return ret;
-> +}
-> +
->   static const struct user_regset riscv_user_regset[] = {
->   	[REGSET_X] = {
->   		.core_note_type = NT_PRSTATUS,
-> @@ -224,6 +248,14 @@ static const struct user_regset riscv_user_regset[] = {
->   		.set = tagged_addr_ctrl_set,
->   	},
->   #endif
-> +	[REGSET_ORIG_A0] = {
-> +		.core_note_type = NT_RISCV_ORIG_A0,
-> +		.n = 1,
-> +		.size = sizeof(elf_greg_t),
-> +		.align = sizeof(elf_greg_t),
-> +		.regset_get = riscv_orig_a0_get,
-> +		.set = riscv_orig_a0_set,
-> +	},
->   };
->   
->   static const struct user_regset_view riscv_user_native_view = {
-> diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-> index b44069d29cecc0f9de90ee66bfffd2137f4275a8..390060229601631da2fb27030d9fa2142e676c14 100644
-> --- a/include/uapi/linux/elf.h
-> +++ b/include/uapi/linux/elf.h
-> @@ -452,6 +452,7 @@ typedef struct elf64_shdr {
->   #define NT_RISCV_CSR	0x900		/* RISC-V Control and Status Registers */
->   #define NT_RISCV_VECTOR	0x901		/* RISC-V vector registers */
->   #define NT_RISCV_TAGGED_ADDR_CTRL 0x902	/* RISC-V tagged address control (prctl()) */
-> +#define NT_RISCV_ORIG_A0	  0x903	/* RISC-V original a0 register */
->   #define NT_LOONGARCH_CPUCFG	0xa00	/* LoongArch CPU config registers */
->   #define NT_LOONGARCH_CSR	0xa01	/* LoongArch control and status registers */
->   #define NT_LOONGARCH_LSX	0xa02	/* LoongArch Loongson SIMD Extension registers */
->
+> Reverting following commits makes the machine again bootable:
+> acf588f9b6fb560e986365c6b175aaf589ef1f2a
+> 09162013082267af54bb39091b523a8daaa28955
 
-Do you know how far this should be backported? Does the following fixes 
-tag make sense?
+Hmm. Thet commit
 
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+    091620130822 ("sched/ext: Remove sched_fork() hack")
 
-Thanks,
+depends on upstream commit b23decf8ac91 ("sched: Initialize idle tasks
+only once") and does not work on its own.
 
-Alex
-
+         Linus
 
