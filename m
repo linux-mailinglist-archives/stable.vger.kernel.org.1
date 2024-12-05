@@ -1,168 +1,93 @@
-Return-Path: <stable+bounces-98708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E8B9E4C41
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 03:28:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A57369E4D0B
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 05:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D41FB18805D7
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 02:28:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DA7018804E9
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 04:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35EE16F0E8;
-	Thu,  5 Dec 2024 02:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D5A18C900;
+	Thu,  5 Dec 2024 04:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="Q0FWDBxv"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CCEFC0A
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 02:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EF215B54C;
+	Thu,  5 Dec 2024 04:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733365725; cv=none; b=adQ4Ga2+n6uyUWVL/+ko/oe9YpCBYMcIlTmnkfqyqdkIfGnwdm/snHlH2mS6z/G5Gf76PXcdKjeouK1Ctn5nl8I/4zyDPvSiSGc9mmcZ1Bftu4EDQ8R473SKtElUuc8DTDf/8HI8j52kDk8MR0f/rwQDpPbAjMFHSr4eFUBofSM=
+	t=1733372973; cv=none; b=AtrgrdsRzBksAYppQP/fkAP48/MWoX0at5giAzwOsF81RDveZtuMG77kRkespJnqWp/jqXhgLDWgFKA+Tc/dHr64HGMH22sI+Qr4h/dUxDbYrNdcs6AExJCPvJ4wIir0I0XB8w2eOeYmOlV1F+qS8RjyhN1Yyfp8bgHjkZ7Uy9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733365725; c=relaxed/simple;
-	bh=GDGTPi4d5yIoDO2bhGqiLBL86hh2U9JhaHeZ9Z+T7wc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bo77BrBQueMiJIylEwu6SI8CiW84mSn3nbAdpMZp4JpJAeI7ILC53wzmpkJuF8joamPPf0MX9btZ293rENq0NTMs/Vr7m9ZXh0HTwmW46pVTDGhOcMWu635+yD6mXk04jITU/S5C54C3jLBazTCTpz2ylYi7QL2TQ4DyaQSgeD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B52RdXT000779;
-	Wed, 4 Dec 2024 18:28:41 -0800
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43833q572d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 04 Dec 2024 18:28:40 -0800 (PST)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Wed, 4 Dec 2024 18:28:40 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Wed, 4 Dec 2024 18:28:39 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <sohaib.nadeem@amd.com>, <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH 6.1.y] drm/amd/display: fixed integer types and null check locations
-Date: Thu, 5 Dec 2024 11:26:29 +0800
-Message-ID: <20241205032629.3496629-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733372973; c=relaxed/simple;
+	bh=79/LqLma1lY+zjMNnDXeGme80c3sOqbrWrCpNT8UnsU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=shyzTtZlYZO81tXqX7AMaChlYUczchmlHRLjvzTMC6Nxv++tLjYdKHocawlmVbOmCBrKOYnpUbT9vPcTS3vc3fNIX4PUlb+fy9u3HMDpLVWS5bfNQ+MwzjbUB9As3n4JPBYoDqX1EHLoTR7DtZPHbpdtwvwBdoPfWu5D8FcLinE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=Q0FWDBxv; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=QvKy+UZr2t0OcAAdZLGtG1cVqgwSBnFneCPyMu3tf0g=; b=Q0FWDBxvY2eO4eZRP0V52Pps3/
+	X0JDaqbwG7DbIKxEYI7EliXw3SiS9vorrs5XITi6xEK44UQoC7YxF3kcl6cQpx3CZ6apw1fi3jH/Q
+	f+9SDwJRwgwdYDWsaHv6xYH9vYyNCNX5s9HxM+8xzPREYI3kwQ0LG29FRHhKtp/8vn5T3eozetrnz
+	VrYFqvcSNZnaEXMRY52wM5tgqEkUdVNujhBmWqdX7h1WnOHcOTiMJrsjY0J6nxrfQ8+6JaJdSna/5
+	f9JpGtQynAGzNn4lYLiQXpPYj04OmtpfKCxbhhZS/BdgIYIFlWCTf/hIGh09vUjMaUSGdHmbIlqgm
+	oD9/XQqw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1tJ3HY-0001EF-2p;
+	Thu, 05 Dec 2024 12:29:19 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 05 Dec 2024 12:29:17 +0800
+Date: Thu, 5 Dec 2024 12:29:17 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Danny Tsen <dtsen@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 043/826] crypto: powerpc/p10-aes-gcm - Register
+ modules as SIMD
+Message-ID: <Z1EsHcz57kKoArCR@gondor.apana.org.au>
+References: <20241203144743.428732212@linuxfoundation.org>
+ <20241203144745.143525056@linuxfoundation.org>
+ <2a720dd0-56a0-4781-81d3-118368613792@kernel.org>
+ <2024120417-flattop-unpaired-fcf8@gregkh>
+ <92315b46-db52-4640-b8b9-c2ddbef38a17@kernel.org>
+ <2024120421-coming-snore-e6fc@gregkh>
+ <b04ee5e7-f654-4562-bc8e-2643f37f1ba3@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: flGRIC00MGgYwEV2MmTmfTudABLWMhYZ
-X-Authority-Analysis: v=2.4 cv=bqq2BFai c=1 sm=1 tr=0 ts=67510fd8 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=RZcAm9yDv7YA:10 a=zd2uoN0lAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=fmNT8XcYnNex_eyvA98A:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: flGRIC00MGgYwEV2MmTmfTudABLWMhYZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-04_21,2024-12-04_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 phishscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0 spamscore=0
- clxscore=1011 suspectscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.21.0-2411120000
- definitions=main-2412050019
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b04ee5e7-f654-4562-bc8e-2643f37f1ba3@kernel.org>
 
-From: Sohaib Nadeem <sohaib.nadeem@amd.com>
+On Wed, Dec 04, 2024 at 05:22:19PM +0100, Jiri Slaby wrote:
+>
+> Not sure at all about this crypto stuff. But this failing patch introduces
+> SIMD and the above 8b6c1e466eec adds a dep to SIMD and makes the module
+> nonBROKEN at the same time. So I assume the failing one is a prereq to
+> unbreak the module. Maintainers?
 
-[ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
+Why not just leave it as BROKEN? The reason it was marked as BROKEN
+was because the fix was too invasive.  So I don't see any need to
+backport more patches to make it unBROKEN.
 
-[why]:
-issues fixed:
-- comparison with wider integer type in loop condition which can cause
-infinite loops
-- pointer dereference before null check
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Josip Pavic <josip.pavic@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
----
- .../gpu/drm/amd/display/dc/bios/bios_parser2.c   | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 4d2590964a20..75e44d8a7b40 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1862,19 +1862,21 @@ static enum bp_result get_firmware_info_v3_2(
- 		/* Vega12 */
- 		smu_info_v3_2 = GET_IMAGE(struct atom_smu_info_v3_2,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
- 		if (!smu_info_v3_2)
- 			return BP_RESULT_BADBIOSTABLE;
- 
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
-+
- 		info->default_engine_clk = smu_info_v3_2->bootup_dcefclk_10khz * 10;
- 	} else if (revision.minor == 3) {
- 		/* Vega20 */
- 		smu_info_v3_3 = GET_IMAGE(struct atom_smu_info_v3_3,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
- 		if (!smu_info_v3_3)
- 			return BP_RESULT_BADBIOSTABLE;
- 
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
-+
- 		info->default_engine_clk = smu_info_v3_3->bootup_dcefclk_10khz * 10;
- 	}
- 
-@@ -2439,10 +2441,11 @@ static enum bp_result get_integrated_info_v11(
- 	info_v11 = GET_IMAGE(struct atom_integrated_system_info_v1_11,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
- 	if (info_v11 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v11->gpucapinfo);
- 	/*
-@@ -2654,11 +2657,12 @@ static enum bp_result get_integrated_info_v2_1(
- 
- 	info_v2_1 = GET_IMAGE(struct atom_integrated_system_info_v2_1,
- 					DATA_TABLES(integratedsysteminfo));
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
- 
- 	if (info_v2_1 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_1->gpucapinfo);
- 	/*
-@@ -2816,11 +2820,11 @@ static enum bp_result get_integrated_info_v2_2(
- 	info_v2_2 = GET_IMAGE(struct atom_integrated_system_info_v2_2,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
--
- 	if (info_v2_2 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_2->gpucapinfo);
- 	/*
+Thanks,
 -- 
-2.25.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
