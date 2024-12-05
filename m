@@ -1,159 +1,153 @@
-Return-Path: <stable+bounces-98739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B669E4E9A
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:34:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24A59E4EAC
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91472168CF4
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 07:34:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6E971881C5A
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 07:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D10C1B87C7;
-	Thu,  5 Dec 2024 07:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E5D1CDFDE;
+	Thu,  5 Dec 2024 07:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DehWK7TL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kbyq0vc5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD1B1B87C0
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 07:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658941CDA1A;
+	Thu,  5 Dec 2024 07:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733384001; cv=none; b=ZuMfVPBb+GHS2+cIDKsEk0prluhuPU+npz+c+kJklIm91q9n3jWoQas6hvfmxNcFCYDgBHUuc0qHD+FnqW/c6moS4XnD4sdXK0QC2hlsTBJ/B2h9Ifuy8JG6L7tbZUr6RMSD3YzvSMIaATa7B0Nvb5aUKjPj1ryTiluQtsq2dRg=
+	t=1733384004; cv=none; b=MSL9+CkxSR5mkS4jdKyFLvnV0VV7yRl8ZbwY9zx6xTAH/PBny/MTcNUJjI5PGxjzyN7WG1VgLQP9Fip14XiRJS++BV3K2776ZVdLmbXnZH39Ncm2lGYSHUDFwvLPmjld009L6trmtnyaQ9kMc6EFHyzij3QmIIqmevHXZtJtQI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733384001; c=relaxed/simple;
-	bh=iFlGn8SYSQnS21b00+qwUeC5W1YHrazBnqPMlae/vqI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dZ6lh8JxCy6/NhpRfLcXvneCpKuQWWpnNsCq6QJaaamFeNUk7DwZGF/mpB+x+XmjeEpptUfZAAY11ZvJCHF0KPYiff8coErDoQXy3wCW7J+85mmNEWWW58L967BLHwQiTi/E2n+5AS6BPtZiuyKzuSOYahgf5jnOAeMWs9DJGrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DehWK7TL; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a9e8522445dso103680466b.1
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 23:33:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733383996; x=1733988796; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6M6cTvNs7V+xqyuwhG0n9JcP4Mq9Zi3RChVjlFoyS9c=;
-        b=DehWK7TLgdKUA5BElK0cDk1YkZUIHRRYi5bh8ZHNgc7HQHLpsXLrg50jphWxAmtmr8
-         S0vJU0+Q+OFyRYH55utOZglhTZNFiIpRnAi8yCUQg7bbRmzLG7Ez0cawLpK/HmV6YIsL
-         OICEcgGbostjgLDZqJ4JUBX3MZZzcnvOLgBuTrBXXtb3vtwPydJ7uQjxOOuS1Ovkt5FF
-         O6rm8cwBEIKOLrVbjNwu7qPexJqmcz7CiqWep0SKPcrKHkNU947Sz/gkIOq1vIpE7S7b
-         +Cp24nrpVe5RAb5oDmfnWpN54Qr8P/WyVUMJIHPKaXFAiFaEOfbZFQ8TgGboeBDStofT
-         p/Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733383996; x=1733988796;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6M6cTvNs7V+xqyuwhG0n9JcP4Mq9Zi3RChVjlFoyS9c=;
-        b=seYbNOcFxQVdpcsUrJjLz4RHCakVSlUZYlTLhXgYslf/kV4+mhbX8icXeHGBOkubNV
-         w+lVwt8qleTtZ8rVu9VwhZ6ClOJQexnDnBys4+BqR72sEioSQlblAMsfuD4sMxuJ3eZn
-         DlPeHb1P7DYTOaA+ZKOepu4MkmAGKi/1nFZ5TIrSUR7s4A0u5ZYOrc0fuedCarIcYANP
-         bfwMIExRtDtT5nxXVi43M7fIz5XRWl8/i9h88XaaYTr8tQB5M4V+RlAg/UWPd993x6MR
-         GsJ8Vlf4AookmdQShMrktPP/kb8RMnGue5SrEwvpLr17edVDFamMoUSJVie+4fkXTiH3
-         Eu3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXytIfl5j96P2U4ty7r+P0hFSGHFhrV08qormHNI/jjHwBNS2YxsblETd2tQgdqeNIvB8VMSWo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7aq0ZqVAB62PnPmUCyRDvFsd9dla7Qyk+jrJbe3ZfFwn7mdMm
-	w6V1nTZa0AYmeLwPxrW3cZ+L89nwLT0p39S/67S6FOUyr620Djc68las+rB6Kvg=
-X-Gm-Gg: ASbGncsonDTIUw2ZjcEMZw/BCW1n5+o09cE5JeQ39lTY/QPMkv/iXzeiAlbiLtXBJKT
-	md9RP/K2AlhP9tDA5osdhLT0zbfOjqjeoDF38nw3330RY1cAgopEjyvL5ZCheFDiibQBsRil9tY
-	vww5o0DHHKuJzwNT3qKIg2QDHroU6s0m1yAKzLhhrUB3eBrmuBK5DJr0eTwpacQW1BwR9YxsSvm
-	Q46sMtZ0MKOntYPv1fKvjbaK4r5dwQcFpRPfz/bL3BYlTmXaEMIEwh/8vnfhx7V6BKC5B2lhLVv
-	bSVnI/V9yH9m1P/2pIQdDNbHe0xJH+ykrw==
-X-Google-Smtp-Source: AGHT+IHuNjq0k6FYk7xK6t2GUtZ0TeRU7XN1ZF4Q/PTjjLe6Nsx4lZ862dPWiqXiDX4zZtdZApQooQ==
-X-Received: by 2002:a17:906:2921:b0:aa5:aa3:8c45 with SMTP id a640c23a62f3a-aa5f7ecd65emr765500366b.48.1733383995984;
-        Wed, 04 Dec 2024 23:33:15 -0800 (PST)
-Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6260888casm53371766b.133.2024.12.04.23.33.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 23:33:15 -0800 (PST)
-From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Date: Thu, 05 Dec 2024 07:33:16 +0000
-Subject: [PATCH v3 5/8] phy: exynos5-usbdrd: gs101: ensure power is gated
- to SS phy in phy_exit()
+	s=arc-20240116; t=1733384004; c=relaxed/simple;
+	bh=HxS/nkPAFuAjuB8ZGlmMi4h97q2g8J6nyu5SmuFmHAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oi0X3XPM5/ERGLYIme7Pn0ai1SqCiO9TQN4iNh4p9TvYy+MsSTHFhTRy0OZrVzwKECRsyxl7NdeCxhk1L+deSdp0iKm8YXDaP9BHk86QqWVvYL89fxC/hk7ud+qLZSYpg+V5+kSrTL7huT0AEQjvLH/RI0QPb597SIN1XnRPbBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kbyq0vc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FCDC4CEE8;
+	Thu,  5 Dec 2024 07:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733384002;
+	bh=HxS/nkPAFuAjuB8ZGlmMi4h97q2g8J6nyu5SmuFmHAA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Kbyq0vc5/16SCp5I1eMYruTYXVxycSgJJFJTkjVjGZOx30MDjsT0FeRQuvr5585Ms
+	 36hlmGeakiBe8Ov/G/Hi/RMcl17R+T3Om2o6c+GhysaQ3dcGbYzE1MysmF+7UY/VgB
+	 14tItgys6G7oa0Xk5YW1R7Uu60SMpv6YfiDGGVbgWWlhP5tKG/GzClc2zqBvwIUz8u
+	 CbDLlFMW5/DqG3KA/+v3y8Slx/czDhVFnMnB4wztpQbVdinhsp5vLpEnzV1Qm33prJ
+	 YaOI044DXYNJSq+MdVk0FHI05LBbH3/Rv2AWjthRA1RGK1pOA468eTwqDmHXUKSl51
+	 tNTRmdUfxCGPA==
+Date: Wed, 4 Dec 2024 23:33:21 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Bill O'Donnell <bodonnel@redhat.com>
+Cc: Christoph Hellwig <hch@infradead.org>, cem@kernel.org,
+	stable@vger.kernel.org, jlayton@kernel.org,
+	linux-xfs@vger.kernel.org, hch@lst.de
+Subject: Re: [PATCHSET v2] xfs: proposed bug fixes for 6.13
+Message-ID: <20241205073321.GH7837@frogsfrogsfrogs>
+References: <173328106571.1145623.3212405760436181793.stgit@frogsfrogsfrogs>
+ <Z1EBXqpMWGL306sh@redhat.com>
+ <20241205064243.GD7837@frogsfrogsfrogs>
+ <Z1FNqV27x5hjnqQ9@redhat.com>
+ <Z1FPGXpTIJ1Fc2Xy@infradead.org>
+ <Z1FQdYEXLR5BoOE-@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241205-gs101-phy-lanes-orientation-phy-v3-5-32f721bed219@linaro.org>
-References: <20241205-gs101-phy-lanes-orientation-phy-v3-0-32f721bed219@linaro.org>
-In-Reply-To: <20241205-gs101-phy-lanes-orientation-phy-v3-0-32f721bed219@linaro.org>
-To: Vinod Koul <vkoul@kernel.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Sylwester Nawrocki <s.nawrocki@samsung.com>, 
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Peter Griffin <peter.griffin@linaro.org>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Sam Protsenko <semen.protsenko@linaro.org>, 
- Will McVicker <willmcvicker@google.com>, Roy Luo <royluo@google.com>, 
- kernel-team@android.com, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
- =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>, 
- stable@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z1FQdYEXLR5BoOE-@redhat.com>
 
-We currently don't gate the power to the SS phy in phy_exit().
+On Thu, Dec 05, 2024 at 01:04:21AM -0600, Bill O'Donnell wrote:
+> On Wed, Dec 04, 2024 at 10:58:33PM -0800, Christoph Hellwig wrote:
+> > On Thu, Dec 05, 2024 at 12:52:25AM -0600, Bill O'Donnell wrote:
+> > > > 1) Our vaunted^Wshitty review process didn't catch various coding bugs,
+> > > > and testing didn't trip over them until I started (ab)using precommit
+> > > > hooks for spot checking of inode/dquot/buffer log items.
+> > > 
+> > > You give little time for the review process.
 
-Shuffle the code slightly to ensure the power is gated to the SS phy as
-well.
+Seriously?!
 
-Fixes: 32267c29bc7d ("phy: exynos5-usbdrd: support Exynos USBDRD 3.1 combo phy (HS & SS)")
-CC: stable@vger.kernel.org # 6.11+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Peter Griffin <peter.griffin@linaro.org>
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Metadir has been out for review in some form or another since January
+2019[1].  If five years and eleven months is not sufficient for you to
+review a patchset or even to make enough noise that I'm aware that
+you're even reading my code, then I don't want you ever to touch any of
+my patchsets ever again.
 
----
-v2:
-* add cc-stable and fixes tags (Krzysztof)
-* collect tags
----
- drivers/phy/samsung/phy-exynos5-usbdrd.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+> > I don't really think that is true.  But if you feel you need more time
+> > please clearly ask for it.  I've done that in the past and most of the
+> > time the relevant people acted on it (not always).
+> > 
+> > > > 2) Most of the metadir/rtgroups fixes are for things that hch reworked
+> > > > towards the end of the six years the patchset has been under
+> > > > development, and that introduced bugs.  Did it make things easier for a
+> > > > second person to understand?  Yes.
+> > > 
+> > > No.
+> > 
+> > So you speak for other people here?
+> 
+> No. I speak for myself. A lowly downstream developer.
+> 
+> > 
+> > > I call bullshit. You guys are fast and loose with your patches. Giving
+> > > little time for review and soaking.
+> > 
+> > I'm not sure who "you" is, but please say what is going wrong and what
+> > you'd like to do better.
+> 
+> You and Darrick. Can I be much clearer?
+> 
+> > 
+> > > > > becoming rather dodgy these days. Do things need to be this
+> > > > > complicated?
+> > > > 
+> > > > Yeah, they do.  We left behind the kindly old world where people didn't
+> > > > feed computers fuzzed datafiles and nobody got fired for a computer
+> > > > crashing periodically.  Nowadays it seems that everything has to be
+> > > > bulletproofed AND fast. :(
+> > > 
+> > > Cop-out answer.
+> > 
+> > What Darrick wrote feels a little snarky, but he has a very valid
+> > point.  A lot of recent bug fixes come from better test coverage, where
+> > better test coverage is mostly two new fuzzers hitting things, or
+> > people using existing code for different things that weren't tested
+> > much before.  And Darrick is single handedly responsible for a large
+> > part of the better test coverage, both due to fuzzing and specific
+> > xfstests.  As someone who's done a fair amount of new development
+> > recently I'm extremely glad about all this extra coverage.
+> > 
+> I think you are killing xfs with your fast and loose patches.
 
-diff --git a/drivers/phy/samsung/phy-exynos5-usbdrd.c b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-index 2a724d362c2d..c1ce6fdeef31 100644
---- a/drivers/phy/samsung/phy-exynos5-usbdrd.c
-+++ b/drivers/phy/samsung/phy-exynos5-usbdrd.c
-@@ -1296,14 +1296,17 @@ static int exynos5_usbdrd_gs101_phy_exit(struct phy *phy)
- 	struct exynos5_usbdrd_phy *phy_drd = to_usbdrd_phy(inst);
- 	int ret;
- 
-+	if (inst->phy_cfg->id == EXYNOS5_DRDPHY_UTMI) {
-+		ret = exynos850_usbdrd_phy_exit(phy);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	exynos5_usbdrd_phy_isol(inst, true);
-+
- 	if (inst->phy_cfg->id != EXYNOS5_DRDPHY_UTMI)
- 		return 0;
- 
--	ret = exynos850_usbdrd_phy_exit(phy);
--	if (ret)
--		return ret;
--
--	exynos5_usbdrd_phy_isol(inst, true);
- 	return regulator_bulk_disable(phy_drd->drv_data->n_regulators,
- 				      phy_drd->regulators);
- }
+Go work on the maintenance mode filesystems like JFS then.  Shaggy would
+probably love it if someone took on some of that.
 
--- 
-2.47.0.338.g60cca15819-goog
+> Downstreamers like me are having to clean up the mess you make of
+> things.
 
+What are you doing downstream these days, exactly?  You don't
+participate in the LTS process at all, and your employer boasts about
+ignoring that community process.  If your employer chooses to perform
+independent forklift upgrades of the XFS codebase in its product every
+three months and you don't like that, take it up with them, not
+upstream.
+
+--D
+
+[1] https://lore.kernel.org/linux-xfs/154630934595.21716.17416691804044507782.stgit@magnolia/
+
+
+> 
+> > 
+> 
+> 
 
