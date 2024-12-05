@@ -1,133 +1,95 @@
-Return-Path: <stable+bounces-98755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799449E4FF4
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 09:40:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24B2D188094C
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:40:27 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D90E1D358F;
-	Thu,  5 Dec 2024 08:40:23 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7E69E50B6
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 10:08:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFD411187
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 08:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82318287521
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 09:08:48 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985901D88D7;
+	Thu,  5 Dec 2024 09:05:44 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151731D5CFE;
+	Thu,  5 Dec 2024 09:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733388022; cv=none; b=MNDPXbbRtCMg91wBY1SallKkjhrcktEtPyJh1uxFJb8OEPGCl0Fkc89dmQHGl75n2qUAu0/nSlLcqIk8arpf1Zuki09FU54653cUgK54B32RU5TDzkntVFbxGtS1qeoNRpOd4A8W9g/Upd+2Cb6kyNaGJwU5v3LXdjsXqtko1gM=
+	t=1733389544; cv=none; b=fX+sYlJ5VrJLmyqlCbHgNY+PivlWwl1+e2VvzHUvL8UX8WnNzbHjUZ4tU1WLlUtLMWM5/AaM0Dz1N6hZEQMreXxMV1y0GzfaEnZ5E6Fs5CSJT2VTTiLQqVGVEF7lFQ7qCozEJ8q5PUE0EoWA8SUnd1ICXCgCpsmj6msH/R+qk2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733388022; c=relaxed/simple;
-	bh=R+blb6aTv0vKpGYqEr9EDfFwaWHuTpXx87nKykYM4Ck=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K3o8lt4fnYDJ97sjlGpdVL9ByKEuEpqH53Cm/iqcj1BemWWUuFzFfv7z6prtE4X1mstb7kpVeYSXKKhCYnDhPoGlVGybNE4zJw5RV30cGA0k0GcgfzV/aYm4e6sK+b/pmsv8divhMrGDkJ+JlqHAttNEA/oaXD2oZUHX1dEwPdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B58XCAI011833;
-	Thu, 5 Dec 2024 00:40:10 -0800
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43833q5f7d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 05 Dec 2024 00:40:09 -0800 (PST)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Thu, 5 Dec 2024 00:40:09 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Thu, 5 Dec 2024 00:40:08 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <kory.maincent@bootlin.com>, <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH 6.1.y] dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
-Date: Thu, 5 Dec 2024 17:37:58 +0800
-Message-ID: <20241205093758.2163649-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.39.4
+	s=arc-20240116; t=1733389544; c=relaxed/simple;
+	bh=10otrxhA1olVuUl7zOfi7Auyj1IJqPaGCK+rEEm6TkM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fvQiqLCX6rPElmlY9x9Vn4VAXNnwOOh+lZgG6tgaTz8cejzBEmxrWsky4SsRvjGtV94vovumI6eC3A22g0ydTk9PnTiQa1vcUj52YO6Q9mbB2hoM2nyaYMr4ok8FzPXrh4LOnmKYqgJgwpA4mhM1hmMwAARR2Jtwri0QBusnusg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
+X-CSE-ConnectionGUID: 9zuUEuhiS2u9fs4wuRtosQ==
+X-CSE-MsgGUID: uXuI3wSySFeG6qoSQ6KTeg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="56168376"
+X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
+   d="scan'208";a="56168376"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 01:05:43 -0800
+X-CSE-ConnectionGUID: QsnFHx4uQfeqwrK3u9sUyQ==
+X-CSE-MsgGUID: VgOmDvEERiKD99pywuUZyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
+   d="scan'208";a="117280074"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2024 01:05:41 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andy@kernel.org>)
+	id 1tJ7nm-000000042Gp-30cS;
+	Thu, 05 Dec 2024 11:05:38 +0200
+Date: Thu, 5 Dec 2024 11:05:38 +0200
+From: Andy Shevchenko <andy@kernel.org>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/8] platform/x86: serdev_helpers: Check for
+ serial_ctrl_uid == NULL
+Message-ID: <Z1Fs4j8g7uC-Cc14@smile.fi.intel.com>
+References: <20241204204227.95757-1-hdegoede@redhat.com>
+ <20241204204227.95757-4-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: TkSsyUZgC2coNXyfTdLw3Bz3uyh0Xheq
-X-Authority-Analysis: v=2.4 cv=bqq2BFai c=1 sm=1 tr=0 ts=675166e9 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=VwQbUJbxAAAA:8 a=P-IC7800AAAA:8 a=pGLkceISAAAA:8 a=KKAkSRfTAAAA:8 a=t7CeM3EgAAAA:8
- a=UiR0G8JrladZec7fDzYA:9 a=d3PnA9EDa4IxuAV0gXij:22 a=cvBusfyB2V15izCimMoJ:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: TkSsyUZgC2coNXyfTdLw3Bz3uyh0Xheq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-05_06,2024-12-04_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 phishscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0 spamscore=0
- clxscore=1011 suspectscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.21.0-2411120000
- definitions=main-2412050062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241204204227.95757-4-hdegoede@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+On Wed, Dec 04, 2024 at 09:42:14PM +0100, Hans de Goede wrote:
+> dell_uart_bl_pdev_probe() calls get_serdev_controller() with the
+> serial_ctrl_uid parameter set to NULL.
+> 
+> In case of errors this NULL parameter then gets passed to pr_err()
+> as argument matching a "%s" conversion specification. This leads to
+> compiler warnings when building with "make W=1".
+> 
+> Check serial_ctrl_uid before passing it to pr_err() to avoid these.
 
-[ Upstream commit bbcc1c83f343e580c3aa1f2a8593343bf7b55bba ]
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 
-The Linked list element and pointer are not stored in the same memory as
-the eDMA controller register. If the doorbell register is toggled before
-the full write of the linked list a race condition error will occur.
-In remote setup we can only use a readl to the memory to assure the full
-write has occurred.
+...
 
-Fixes: 7e4b8a4fbe2c ("dmaengine: Add Synopsys eDMA IP version 0 support")
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-6-8e8c1acb7a46@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
----
- drivers/dma/dw-edma/dw-edma-v0-core.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+> +		       serial_ctrl_hid, serial_ctrl_uid ?: "*");
 
-diff --git a/drivers/dma/dw-edma/dw-edma-v0-core.c b/drivers/dma/dw-edma/dw-edma-v0-core.c
-index a3816ba63285..4fe83d5a25b6 100644
---- a/drivers/dma/dw-edma/dw-edma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-v0-core.c
-@@ -357,6 +357,20 @@ static void dw_edma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
- 	#endif /* CONFIG_64BIT */
- }
- 
-+static void dw_edma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
-+{
-+	/*
-+	 * In case of remote eDMA engine setup, the DW PCIe RP/EP internal
-+	 * configuration registers and application memory are normally accessed
-+	 * over different buses. Ensure LL-data reaches the memory before the
-+	 * doorbell register is toggled by issuing the dummy-read from the remote
-+	 * LL memory in a hope that the MRd TLP will return only after the
-+	 * last MWr TLP is completed
-+	 */
-+	if (!(chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
-+		readl(chunk->ll_region.vaddr.io);
-+}
-+
- void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- {
- 	struct dw_edma_chan *chan = chunk->chan;
-@@ -423,6 +437,9 @@ void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- 		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
- 			  upper_32_bits(chunk->ll_region.paddr));
- 	}
-+
-+	dw_edma_v0_sync_ll_data(chunk);
-+
- 	/* Doorbell */
- 	SET_RW_32(dw, chan->dir, doorbell,
- 		  FIELD_PREP(EDMA_V0_DOORBELL_CH_MASK, chan->id));
+Not sure about '*' as it would mean 'any', perhaps 'none', '-', or 'undefined'
+would be better, but since they are error messages, it's not so critical.
+
 -- 
-2.39.4
+With Best Regards,
+Andy Shevchenko
+
 
 
