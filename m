@@ -1,110 +1,169 @@
-Return-Path: <stable+bounces-98810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E069E57BC
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 14:48:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F1D9E57CF
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 14:51:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E245A28B03B
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 13:48:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E65361881497
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 13:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0568121A42B;
-	Thu,  5 Dec 2024 13:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E943219A85;
+	Thu,  5 Dec 2024 13:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="xm90h+HI"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="uFPgp+9y"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10012001.me.com (pv50p00im-ztdg10012001.me.com [17.58.6.51])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAA1219A61
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 13:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B451DED77;
+	Thu,  5 Dec 2024 13:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733406375; cv=none; b=BbvkGvmyxvUJ+yIq9C2sE0ou8ly4IVmX9dg0ubea8utMykNA80zlln9AmkVmKkJkQPl8wdQnz0SQr6WFW+xMNloJAaDO4sRlPOpE3+ThQARnf7eMw/ekhDplUQnsM6193fTceosQCVf1Wyq8SuMnVXH6r7nvtx4skuUNjkHwdwQ=
+	t=1733406643; cv=none; b=i+ZotKmDLZWv6ZNWDEJl9Web2Gtl1pSZZ0BOvl19XKRd4VaOVR1PYTuKg1RxsPyyR4dYZ4IVGJaUpVGLNJlSog0Qf8TxUSyDIQwYkkZAmkaN9QaA/3qXWzLA14WQUdYS/4v+4NEJfVipTA8qmBgb+cSIRRQAhDccxSOni8BTdg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733406375; c=relaxed/simple;
-	bh=Erzunq/73jwoVQ/pOglQgLKLnOsPy+Bf0Oo/OLzmmW0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cSLimVIEGMb9iTSYMD/j+Fz75sdoQAIWrO1JS3JT0ocAjfWbykCPzCoj48tgq9s5PQ+av0XGCRJsivoiq+H3667/s1HYGlmOmetdWvME57JH7qeeJcbu9UuLibDTitIh4rJg6fef29wCfMxwi6goUe0DvafcwXoTepnAKDkBr3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=xm90h+HI; arc=none smtp.client-ip=17.58.6.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733406374;
-	bh=MPWGXb1Ff78zotVn43S71hljPg5nRkzHxsZYtR2AbFM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=xm90h+HIa7Ltu/hPCkDXDB3SCy7idLoBXJXop05pUvFfj+M1iJR07GJmhz99jjPri
-	 PbhHVKbgXQKN3QGPe7ZsnzRj8gcwlR7SRrWW13tb5TmRSjd6fVrJfXN7DmfNm707JL
-	 YvjiACbOPRDHkXGYQd7B27dDmQg1Gw55EHlD4zwvGJMSmQ5VyIY4eGyzoTIgQ/X/gF
-	 DEfDh4PStfw8ipSqQ64CgJhKTbtp/ufoGW8oOkMyKMjeOSCuErU8J2FWZs0mLV0qvD
-	 quz/aoVJWuBt3c2cqEWK4KGaeiho70qOl+eOVrb7WCMp6FkOMizFAULrgMhqlRFy4X
-	 d0Myd7kgrFsgw==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10012001.me.com (Postfix) with ESMTPSA id 18DBBA006A;
-	Thu,  5 Dec 2024 13:46:08 +0000 (UTC)
-Message-ID: <e5238f8d-853a-4822-a384-0a3c929ed591@icloud.com>
-Date: Thu, 5 Dec 2024 21:46:05 +0800
+	s=arc-20240116; t=1733406643; c=relaxed/simple;
+	bh=/5U1JU+ZMcLZxBZLpU1heNzEVTQDQXMJGFSCxWjhMt0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LXqdX5DwMpnKpMlLUjh2cV0hFvBFdTT1Of8MjfzTQdMtG95dMt1vFFVkBFQRJ5HxCFV6riSwMb9ULa8hdBpaH6knGwV9CQzLkGRfFaPDR9OCC6MJ4UELwpQsVXNVK0NhjYwB0uEYpPWKLKbP8YdzTUGAE7wM2gV+XsDRk2O4dtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=uFPgp+9y; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from mail.ideasonboard.com (unknown [IPv6:2401:4900:883a:dd5a:60c0:2d2a:9a5a:1723])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1F5653E;
+	Thu,  5 Dec 2024 14:50:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1733406611;
+	bh=/5U1JU+ZMcLZxBZLpU1heNzEVTQDQXMJGFSCxWjhMt0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uFPgp+9yFOLbTvxh9ZQ6cdC6swc7G3CNoqm3Ric9OaQjsXZWycMdmrZJvdpbsjTku
+	 N5mlPQ1mJUpL/VfMHAVBs86vi6kU+2ZMdA4YFL/r38mfeSRF8iqC6uH76LmvAd4YR5
+	 fGbiKLlXRDO7uViwEJiaIBZgS9z3B64zLc6fqwwc=
+Date: Thu, 5 Dec 2024 19:20:34 +0530
+From: Jai Luthra <jai.luthra@ideasonboard.com>
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Sakari Ailus <sakari.ailus@linux.intel.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 00/15] media: i2c: ds90ub9xx: Misc fixes and
+ improvements
+Message-ID: <rvcaonzaforq3dknypihqec3hpgtw4lqyla47u3psawis5rwe4@iruuxpsgx2lf>
+References: <20241204-ub9xx-fixes-v3-0-a933c109b323@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] PCI: endpoint: fix bug for an API and simplify
- another API
-To: =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Joao Pinto <jpinto@synopsys.com>
-References: <20241102-pci-epc-core_fix-v2-0-0785f8435be5@quicinc.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20241102-pci-epc-core_fix-v2-0-0785f8435be5@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 4dqKGGNDq6xcwg8KrtzYKbxFXSzgBzok
-X-Proofpoint-ORIG-GUID: 4dqKGGNDq6xcwg8KrtzYKbxFXSzgBzok
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-05_11,2024-12-05_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
- malwarescore=0 mlxlogscore=749 mlxscore=0 bulkscore=0 spamscore=0
- adultscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412050099
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="fbaov25vsrbawpjb"
+Content-Disposition: inline
+In-Reply-To: <20241204-ub9xx-fixes-v3-0-a933c109b323@ideasonboard.com>
 
-On 2024/11/2 20:20, Zijun Hu wrote:
-> This patch series is to fix bug for API devm_pci_epc_destroy()
-> and simplify API pci_epc_get().
-> 
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+
+--fbaov25vsrbawpjb
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 00/15] media: i2c: ds90ub9xx: Misc fixes and
+ improvements
+MIME-Version: 1.0
+
+Hi Tomi,
+
+On Dec 04, 2024 at 13:05:14 +0200, Tomi Valkeinen wrote:
+> This series fixes various small issues in the drivers, and adds a few
+> things (a couple of pixel formats and a debugging feature).
+>=20
+> It also takes a few steps in adding more i2c read/write error handlings
+> to the drivers, but covers only the easy places.
+>=20
+> Adding error handling to all reads/writes needs more thinking, perhaps
+> adding a "ret" parameter to the calls, similar to the cci_* functions,
+> or perhaps adding helpers for writing multiple registers from a given
+> table. Also, in some places rolling back from an error will require
+> work.
+>=20
+
+With the minor comment addressed, for the series:
+
+Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+
+> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 > ---
+> Changes in v3:
+> - Include bitfield.h for FIELD_PREP()
+> - Cc stable for relevant fixes
+> - Link to v2: https://lore.kernel.org/r/20241108-ub9xx-fixes-v2-0-c7db3b2=
+ad89f@ideasonboard.com
+>=20
 > Changes in v2:
-> - Correct tile and commit message for patch 1/2.
-> - Add one more patch 2/2 to simplify API pci_epc_get().
-> - Link to v1: https://lore.kernel.org/r/20241020-pci-epc-core_fix-v1-1-3899705e3537@quicinc.com
-> 
+> - Address comments from Andy
+> - Add two new patches:
+> 	- media: i2c: ds90ub960: Fix shadowing of local variables
+> 	- media: i2c: ds90ub960: Use HZ_PER_MHZ
+> - Link to v1: https://lore.kernel.org/r/20241004-ub9xx-fixes-v1-0-e30a463=
+3c786@ideasonboard.com
+>=20
 > ---
-> Zijun Hu (2):
->       PCI: endpoint: Fix that API devm_pci_epc_destroy() fails to destroy the EPC device
->       PCI: endpoint: Simplify API pci_epc_get() implementation
-> 
-
-Hi Krzysztof,
-
-could you code review for this patch series ?
-
->  drivers/pci/endpoint/pci-epc-core.c | 23 +++++++----------------
->  1 file changed, 7 insertions(+), 16 deletions(-)
+> Tomi Valkeinen (15):
+>       media: i2c: ds90ub9x3: Fix extra fwnode_handle_put()
+>       media: i2c: ds90ub960: Fix UB9702 refclk register access
+>       media: i2c: ds90ub960: Fix use of non-existing registers on UB9702
+>       media: i2c: ds90ub960: Fix logging SP & EQ status only for UB9702
+>       media: i2c: ds90ub960: Fix UB9702 VC map
+>       media: i2c: ds90ub960: Use HZ_PER_MHZ
+>       media: i2c: ds90ub960: Add support for I2C_RX_ID
+>       media: i2c: ds90ub960: Add RGB24, RAW8 and RAW10 formats
+>       media: i2c: ds90ub953: Clear CRC errors in ub953_log_status()
+>       media: i2c: ds90ub960: Drop unused indirect block define
+>       media: i2c: ds90ub960: Reduce sleep in ub960_rxport_wait_locks()
+>       media: i2c: ds90ub960: Handle errors in ub960_log_status_ub960_sp_e=
+q()
+>       media: i2c: ds90ub913: Add error handling to ub913_hw_init()
+>       media: i2c: ds90ub953: Add error handling for i2c reads/writes
+>       media: i2c: ds90ub960: Fix shadowing of local variables
+>=20
+>  drivers/media/i2c/ds90ub913.c |  26 ++++--
+>  drivers/media/i2c/ds90ub953.c |  56 +++++++++----
+>  drivers/media/i2c/ds90ub960.c | 186 ++++++++++++++++++++++++++++--------=
+------
+>  3 files changed, 187 insertions(+), 81 deletions(-)
 > ---
-> base-commit: 11066801dd4b7c4d75fce65c812723a80c1481ae
-> change-id: 20241020-pci-epc-core_fix-a92512fa9d19
-> 
+> base-commit: adc218676eef25575469234709c2d87185ca223a
+> change-id: 20241004-ub9xx-fixes-bba80dc48627
+>=20
 > Best regards,
+> --=20
+> Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+>=20
 
+--=20
+Thanks,
+Jai
+
+--fbaov25vsrbawpjb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEETeDYGOXVdejUWq/FQ96R+SSacUUFAmdRr6oACgkQQ96R+SSa
+cUWnNw/+K53qqAin/fIWO9ZmwASPmXYW25XsXNteeOQ0WiZgREFeqcC0+12DE6TS
+b1zwK6ZoQKbVwvQLn/y4uk0vQIaXL3195F7RTsC7sgGi3msMS/gv9cfj96bnmpEi
+iW5iDA1GTRxKcWgjB8i+XyaLEpxeyt3bYdiPUSvbS+yTn6Bwaei30QwXzoZy9vaL
+R4OiNm2ZmhWBJAJ8p7SIDR/PapTxAca1QViUT4cSHzjUe42tlgoFZu4MZfh6w9H+
+5rjqTpC5mTUwoCO4wgHD3J1k0a1KcjF3Oz+umfPZ24dW6JaUXEkaVxIYBqCRCUSk
+ZaT9xEmCHSSBinODt91YWmvf2W3WjuozxGgrQvBtEpihyRsePrJ554JiJr/P/OcS
+s4asVTTM04hT+qfONNITdlP87kbzI0kxr2qOI21hweeRUAffLzWPFeDRhQqx2lC6
+z7UkAUOI9at9lcPED+GMzGJ96RT7EnjgzmbTpRRue9hm526J8I8QIaPp0AOWhzGk
+MPgZ8wx/vrsjtrW1teIQwZHsBlm6fq/ITsPqSUXkNRdv44LgKYLeEkHnPwYpeBFf
+xo+Obo9xMU4g3lXJhE2ixCKG1qnwmosUwPZzgogFIYx1eX2Uk+JnAMltQXTSD93g
+0mc56i/RLwjk36b9hZfdT392ng8FSHc7e0QYFL6lIWUJEiQ0cHI=
+=KjYM
+-----END PGP SIGNATURE-----
+
+--fbaov25vsrbawpjb--
 
