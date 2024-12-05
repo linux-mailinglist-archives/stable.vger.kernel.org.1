@@ -1,148 +1,115 @@
-Return-Path: <stable+bounces-98731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918039E4E5D
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:31:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 563809E4E60
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:31:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5297F2847E5
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 07:31:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5DA169136
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 07:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC4B1AF0DD;
-	Thu,  5 Dec 2024 07:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ECB1B218C;
+	Thu,  5 Dec 2024 07:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hUOqu3po"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X2lkAgf8"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82C01AAE09
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 07:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F6A1B0F06
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 07:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733383854; cv=none; b=EGB4PQiEuri9W3ta4nH3+dID9159ueXNKuAphBRr4ICPBUasFQL/sM8rvMI9rX1YIYZNYQh6yr51dfhGkf2RE1yGnu8H9WXtvaBIR9cZk7GlwWKtdxMFL6IORgg4hpzaheVJGsDAk4RUN34wwsf6L8NTxg0g0VDeILWOioAT8PA=
+	t=1733383865; cv=none; b=iHiObomuOR++yULV0h7JTTwhPVkErkmn/HMNu16t+XAaEU/zaFFR5h+WIdD12xo+BETX4+IQGgsbrXl/W++Apntryr2DNKf22g5hOJPgJbVaI37pNr704csQMhsDGrsoAFtvkrX49Na14J0ZdwBXpI6yWT++rt+j8kiNvrmczeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733383854; c=relaxed/simple;
-	bh=OlRNBUjASL7FVNGtWoyFFzTei7wVTiYRgktEzUrextU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jq6CGOejVRjPjEFSLcIhchtRRRqH4hXgavEe3M/FkcVIKMONB9BDf6oRsTsTV5yc12DeTiwlouFgzMhn81qiVMiKydaK9KE1F2t98S/UmbtaaAppm8l/0GcD4O2pYEwreVK6mSbWxczWJscUqNiqsARBqFhRqGXJlsBotDAqUOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hUOqu3po; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1733383865; c=relaxed/simple;
+	bh=gBsazSA+2P8jNheF6Uy8VcoZ1wvAMnui60NL3/2jmLw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TV63Fmwbc1Y9ODU5uKU3g5HuyvrwiZTmg7Atvg7jiECwy9DiDp8dIBWlpMTqokm2EBZYWCZ5QSYE5QwB+QHbk1D40eh6ZqKayqMFPDBpCjwxn8ODUpGSireXjGWhMTJo4KKMjzKSEjagoUnWhh/cCaSqRPPv88o6GYD8OxNudsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X2lkAgf8; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733383851;
+	s=mimecast20190719; t=1733383863;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lgSEU4ckanSgk0HuuZW1mGMR1MCqcuQYAI+6N7Ir2cg=;
-	b=hUOqu3pohP1qC38cAQIpIDNFDIs8lzv7K4uFVEMQTVkspui6ERhJELcBbO3cz7LOyag9bQ
-	2DSs//ZvOJh4YK7jDvbZyJ4RXrhyaOu4d5COKINe0rcjPOCrTBVc/4WcwJwwGn6z2kSQ47
-	7CVUENWeAwiPG8fkz+14M5p3q7zpSJs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-TJwhZTnXMC6wBve6kCH3zA-1; Thu,
- 05 Dec 2024 02:30:48 -0500
-X-MC-Unique: TJwhZTnXMC6wBve6kCH3zA-1
-X-Mimecast-MFC-AGG-ID: TJwhZTnXMC6wBve6kCH3zA
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D445D1955DC8;
-	Thu,  5 Dec 2024 07:30:46 +0000 (UTC)
-Received: from redhat.com (unknown [10.22.64.4])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1517F1956054;
-	Thu,  5 Dec 2024 07:30:44 +0000 (UTC)
-Date: Thu, 5 Dec 2024 01:30:42 -0600
-From: Bill O'Donnell <bodonnel@redhat.com>
-To: Bill O'Donnell <bodonnel@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	"Darrick J. Wong" <djwong@kernel.org>, cem@kernel.org,
-	stable@vger.kernel.org, jlayton@kernel.org,
-	linux-xfs@vger.kernel.org, hch@lst.de
-Subject: Re: [PATCHSET v2] xfs: proposed bug fixes for 6.13
-Message-ID: <Z1FWojAndtCxEt-d@redhat.com>
-References: <173328106571.1145623.3212405760436181793.stgit@frogsfrogsfrogs>
- <Z1EBXqpMWGL306sh@redhat.com>
- <20241205064243.GD7837@frogsfrogsfrogs>
- <Z1FNqV27x5hjnqQ9@redhat.com>
- <Z1FPGXpTIJ1Fc2Xy@infradead.org>
- <Z1FQdYEXLR5BoOE-@redhat.com>
+	bh=fQByPnPwbfne/yS8JI9pQTP84ZOieAk2em/vkGbruFk=;
+	b=X2lkAgf8Bx1Md7lj76LD0PoHnb0nHaSW3yCTGGu0T+G+DfAZbkDSh1NiuUHmucScrGJudl
+	G4CJPWDvRNJClR93yNLGLVofYd0sgqpSm1zGOFSw442BkEeZGJIzZ4DUW4Ilh2T+sWgX3D
+	X8j0WhZUYMS8burLdQp9wLKn6pB1vLk=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-0SE_5O-kMJmbI1KBekHopQ-1; Thu, 05 Dec 2024 02:31:01 -0500
+X-MC-Unique: 0SE_5O-kMJmbI1KBekHopQ-1
+X-Mimecast-MFC-AGG-ID: 0SE_5O-kMJmbI1KBekHopQ
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2ee6ea04326so1133836a91.3
+        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 23:31:01 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733383860; x=1733988660;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fQByPnPwbfne/yS8JI9pQTP84ZOieAk2em/vkGbruFk=;
+        b=t4gegQtu5f3CnCz+hdy/0kdr+szuB6DgCsXupBmO7k4IHoFVXNdD4Revj9qckIVqbf
+         xVsUGRvvugCA6tr5Hb4R00Jlx/nOv1GRuqR5+WEfdy7gDGZRbO08PtRnASEF3zdbaRBp
+         YrJZ65bLLuGzbuHyGDC6rJxQvbjcOyNxC4j7Wn7XUpJniQvaXM/pUfkI5qTXFghSfh2q
+         Rdje8yvkIgy6xtXf/Ytg2hI7FPwTY6iu5yIPDfLI3CyqwcTEmsKU8RUm0xSLHBBKuT1R
+         44I1GFIsmx6ly0NZTGq7TdP5nJFxYNTNcbGAK7i5w/B1hTQjNlnmX2sperhCHmdnaEz0
+         rrQg==
+X-Forwarded-Encrypted: i=1; AJvYcCV0S9WZgyTxL8HEupBZumQAmMTZXY4gwRAw0EpbiGxxXo6zKUL9SzMm8ZGUieOgQ3KpQKnsmG4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbfG7w9ZcRYYnwlq6Le0KyU6Ux22LhYCn1XeDnrRh2Ljr9it3y
+	w1pRY2S3q/EiOq9uI3NrV0rLkupNT5Qgg2hfw+OHq//qKVxX9ywvyQ83GJSJm4dFQ960Stx4C4N
+	Sf7CvyxtoakqZgnLzf3ojQR2RCalzzOHVLJmJ1M0oR117RLA7K9Gzh0lrU2zpNc0jgETK9/6vGC
+	y9cFWRYp1/bhpxodDq84p489riiQtp
+X-Gm-Gg: ASbGnctPGV4ivvNxFFEbYDulOoS/6BbpPh4VVN69CIP1TaRsmO/FGgImupc7D4ykOGK
+	Ae6fbCRL25pjRDSx+PNw2kJpkl3hEOuHBIND4
+X-Received: by 2002:a17:90b:4a41:b0:2ee:a127:ba8b with SMTP id 98e67ed59e1d1-2ef012730dcmr11339467a91.36.1733383859156;
+        Wed, 04 Dec 2024 23:30:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHgjvvMf7JapTRuI1SObNMq7BvZhIqMSi6SZblyK6LzMeh4bpcCn3KV3lIBqaI+D6cczvydNaQWvE4gxNRWDj8=
+X-Received: by 2002:a17:90b:4a41:b0:2ee:a127:ba8b with SMTP id
+ 98e67ed59e1d1-2ef012730dcmr11339393a91.36.1733383857900; Wed, 04 Dec 2024
+ 23:30:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z1FQdYEXLR5BoOE-@redhat.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+References: <20241204050724.307544-1-koichiro.den@canonical.com> <20241204050724.307544-3-koichiro.den@canonical.com>
+In-Reply-To: <20241204050724.307544-3-koichiro.den@canonical.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Thu, 5 Dec 2024 15:30:46 +0800
+Message-ID: <CACGkMEuhhgNWZst2LAWStw+agvLjPrV+c2ZHe8JL4zLej2ZzGw@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/7] virtio_net: replace vq2rxq with vq2txq
+ where appropriate
+To: Koichiro Den <koichiro.den@canonical.com>
+Cc: virtualization@lists.linux.dev, mst@redhat.com, xuanzhuo@linux.alibaba.com, 
+	eperezma@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 05, 2024 at 01:04:21AM -0600, Bill O'Donnell wrote:
-> On Wed, Dec 04, 2024 at 10:58:33PM -0800, Christoph Hellwig wrote:
-> > On Thu, Dec 05, 2024 at 12:52:25AM -0600, Bill O'Donnell wrote:
-> > > > 1) Our vaunted^Wshitty review process didn't catch various coding bugs,
-> > > > and testing didn't trip over them until I started (ab)using precommit
-> > > > hooks for spot checking of inode/dquot/buffer log items.
-> > > 
-> > > You give little time for the review process.
-> > 
-> > I don't really think that is true.  But if you feel you need more time
-> > please clearly ask for it.  I've done that in the past and most of the
-> > time the relevant people acted on it (not always).
-> > 
-> > > > 2) Most of the metadir/rtgroups fixes are for things that hch reworked
-> > > > towards the end of the six years the patchset has been under
-> > > > development, and that introduced bugs.  Did it make things easier for a
-> > > > second person to understand?  Yes.
-> > > 
-> > > No.
-> > 
-> > So you speak for other people here?
-> 
-> No. I speak for myself. A lowly downstream developer.
-> 
-scrub is the worst offender. What the hell is it, and why do you insist its imortance?
+On Wed, Dec 4, 2024 at 1:08=E2=80=AFPM Koichiro Den <koichiro.den@canonical=
+.com> wrote:
+>
+> While not harmful, using vq2rxq where it's always sq appears odd.
+> Replace it with the more appropriate vq2txq for clarity and correctness.
+>
+> Fixes: 89f86675cb03 ("virtio_net: xsk: tx: support xmit xsk buffer")
+> Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+> ---
+>  drivers/net/virtio_net.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
 
-> > 
-> > > I call bullshit. You guys are fast and loose with your patches. Giving
-> > > little time for review and soaking.
-> > 
-> > I'm not sure who "you" is, but please say what is going wrong and what
-> > you'd like to do better.
-> 
-> You and Darrick. Can I be much clearer?
-> 
-> > 
-> > > > > becoming rather dodgy these days. Do things need to be this
-> > > > > complicated?
-> > > > 
-> > > > Yeah, they do.  We left behind the kindly old world where people didn't
-> > > > feed computers fuzzed datafiles and nobody got fired for a computer
-> > > > crashing periodically.  Nowadays it seems that everything has to be
-> > > > bulletproofed AND fast. :(
-> > > 
-> > > Cop-out answer.
-> > 
-> > What Darrick wrote feels a little snarky, but he has a very valid
-> > point.  A lot of recent bug fixes come from better test coverage, where
-> > better test coverage is mostly two new fuzzers hitting things, or
-> > people using existing code for different things that weren't tested
-> > much before.  And Darrick is single handedly responsible for a large
-> > part of the better test coverage, both due to fuzzing and specific
-> > xfstests.  As someone who's done a fair amount of new development
-> > recently I'm extremely glad about all this extra coverage.
-> > 
-> I think you are killing xfs with your fast and loose patches. Downstreamers
-> like me are having to clean up the mess you make of things.
-> 
-> 
-> > 
-> 
-> 
+Acked-by: Jason Wang <jasowang@redhat.com>
+
+Thanks
 
 
