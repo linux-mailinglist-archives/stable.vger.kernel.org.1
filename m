@@ -1,275 +1,168 @@
-Return-Path: <stable+bounces-98710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7D89E4C81
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 03:51:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E8B9E4C41
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 03:28:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D41FB18805D7
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 02:28:49 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35EE16F0E8;
+	Thu,  5 Dec 2024 02:28:45 +0000 (UTC)
+X-Original-To: stable@vger.kernel.org
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F01B285192
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 02:51:34 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DE6188733;
-	Thu,  5 Dec 2024 02:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gsdX6V8r"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A87B79DC
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 02:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CCEFC0A
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 02:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733367083; cv=none; b=gDcx4tXhc5avoPx1bU8fnfelQWhws6Hb+p5agb+xz8mx4ciV++jxD0KxkjBr+CWLbc+YTgO8JWOuKIaDbsYO85VqVhj5sWLjyLdLN0CcxX4euFaU/oGE39beOKuc4SGJ4JQhvclngtMJkLiI8nXHTLsoGm8yrIqF/Gy8v3TwPLA=
+	t=1733365725; cv=none; b=adQ4Ga2+n6uyUWVL/+ko/oe9YpCBYMcIlTmnkfqyqdkIfGnwdm/snHlH2mS6z/G5Gf76PXcdKjeouK1Ctn5nl8I/4zyDPvSiSGc9mmcZ1Bftu4EDQ8R473SKtElUuc8DTDf/8HI8j52kDk8MR0f/rwQDpPbAjMFHSr4eFUBofSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733367083; c=relaxed/simple;
-	bh=C6QIeV4sx+z3ZpTwPXvgteXpZ2czYEC24/RTEClQnvY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=sqj6X9UPMsI7FD3i5RhAqSn0yWQ1I8m8xU5JBCMYiPXJ2f8hhuui+HhSIKSMRKMngnhC9SV6Qc2y4MZ+CaIb+XWXM7NertjqiKMLwqHWt3PMRaaWUSCLnmgHU5nFAz7XK87tgGpRYZVGeen8mtPFGO0HbLqta3CCAKQvLqOcnfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gsdX6V8r; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385e25c5d75so211071f8f.1
-        for <stable@vger.kernel.org>; Wed, 04 Dec 2024 18:51:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1733367079; x=1733971879; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=V4vSeKosLeQm03elmc976Gn4TxLq2sgRQtGDwl9H/vM=;
-        b=gsdX6V8rGqSDBh4afADb3ikvY5G9GW5AKVtqnxKCpsB5GrV1oAxjqC/IiukKnawea+
-         RIS8VhxW0xR2IUDJKKWfM6lIuuDY67SXFr9qzPUTSrRZyE3yr4dYaaQFmnu94McR7m1m
-         /+3Sx5Anv7KZZmGcexnKZybq9dqUBZ8SKH9qJFcSP1vndMtn9pkGllwg+p4O28tXthn7
-         jX+yn/bljHFaw8xjzoHF1AXEj6hhHwWKc/9iixL2NoTj88vsgaM6TGZKLF6bnNQQwT6U
-         MsBMhr6UULyWfMKGxJBXRHBiPQ94SAHP3TDB2qWq69k7BB2H2om4A/fb1JfiaVF4kfFa
-         MY6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733367079; x=1733971879;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=V4vSeKosLeQm03elmc976Gn4TxLq2sgRQtGDwl9H/vM=;
-        b=czGqVcbMtgcL6/D1k0jX8nBKDZ+e7NibCzAMs5JVMfYhTvlCo96SpXmnXmhxLvqIoz
-         tAZ+0ONnA08GrdG9HFUHbeSxELNiLHxvVFk5Unxv4n+aq2QG9rg969L6q3o3LbbgC5UT
-         pm++sJelTCN7v0qSdJXD+4PaNiCB9AVp+DULqQatv1VKKVD57+sTScfu2jQlGlQa+unU
-         wuaoB4EUXNAEQ3e0Jv9Qd/aTUiYiFtVRzh3dk1BfE9UvxukCjgx59UE3DASuAmNfsJOQ
-         U4IRRKSYeSsqk88a4seVkAtgRVhbmaRv2wS1ByxuPsiFMc8/FQFgCzMdcCqauInBrWUZ
-         4pYQ==
-X-Gm-Message-State: AOJu0YzOmi0TXee/CkbOhhhr8/2X0kaC36QrkkwUKmIcVgmwELKgZhgM
-	miM670xSRSvu/8ChwrxcaRCiJgkUFFvipUHxksVnMJhEkmm4skAvuTTswtcmppzgeEvac6muF8A
-	F
-X-Gm-Gg: ASbGncuHF9dS1yodQmNs81CVGin/G4q9YElqK701ihN6469kBCr8Uxg1h9R5PHb0veA
-	zEiE6N1FGTnpLOo1ePh5L2/N0IKu/rtP0Pu9R3FE8t7MXFGkadD9RZW3eta/bBrd/1C9Tjeme65
-	0pzx4qd/n5/ZDGp4sIdKFpJhAmOQFKBya2u0x1YbMVZl7Gg+lUppeZUBLvE69CCkja/Ir1EhMIH
-	j4SSuJ364v9oUrB58oMOLTtYGvAJszpRky/x3dhOj4tJNT5L3+TD3z1BPsAuNCREHjR2H5Xn2Z5
-	pA==
-X-Google-Smtp-Source: AGHT+IEGzGbcGGnipQtp0Gqf+Qs+liOMGDndQRILLskdfgQLymoy2Wt4bUgXn31B6wdglMHM56lMmw==
-X-Received: by 2002:a05:6000:1866:b0:385:dc45:ea06 with SMTP id ffacd0b85a97d-385fd3e7b28mr8040302f8f.13.1733367079082;
-        Wed, 04 Dec 2024 18:51:19 -0800 (PST)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd157ad524sm261711a12.62.2024.12.04.18.51.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 18:51:18 -0800 (PST)
-Message-ID: <627a9d4b-a358-4e5b-a8e7-cfd6ba0298d6@suse.com>
-Date: Thu, 5 Dec 2024 13:21:14 +1030
+	s=arc-20240116; t=1733365725; c=relaxed/simple;
+	bh=GDGTPi4d5yIoDO2bhGqiLBL86hh2U9JhaHeZ9Z+T7wc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bo77BrBQueMiJIylEwu6SI8CiW84mSn3nbAdpMZp4JpJAeI7ILC53wzmpkJuF8joamPPf0MX9btZ293rENq0NTMs/Vr7m9ZXh0HTwmW46pVTDGhOcMWu635+yD6mXk04jITU/S5C54C3jLBazTCTpz2ylYi7QL2TQ4DyaQSgeD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B52RdXT000779;
+	Wed, 4 Dec 2024 18:28:41 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43833q572d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 04 Dec 2024 18:28:40 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Wed, 4 Dec 2024 18:28:40 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Wed, 4 Dec 2024 18:28:39 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <sohaib.nadeem@amd.com>, <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH 6.1.y] drm/amd/display: fixed integer types and null check locations
+Date: Thu, 5 Dec 2024 11:26:29 +0800
+Message-ID: <20241205032629.3496629-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] btrfs: do proper folio cleanup when
- run_delalloc_nocow() failed
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <3e5d5665ef36ee43e310be321073210785b89adc.1733273653.git.wqu@suse.com>
-Content-Language: en-US
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <3e5d5665ef36ee43e310be321073210785b89adc.1733273653.git.wqu@suse.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: flGRIC00MGgYwEV2MmTmfTudABLWMhYZ
+X-Authority-Analysis: v=2.4 cv=bqq2BFai c=1 sm=1 tr=0 ts=67510fd8 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=RZcAm9yDv7YA:10 a=zd2uoN0lAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=fmNT8XcYnNex_eyvA98A:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: flGRIC00MGgYwEV2MmTmfTudABLWMhYZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-04_21,2024-12-04_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 phishscore=0 adultscore=0
+ malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 suspectscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2411120000
+ definitions=main-2412050019
 
+From: Sohaib Nadeem <sohaib.nadeem@amd.com>
 
+[ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
 
-在 2024/12/4 13:05, Qu Wenruo 写道:
-> Just like cow_file_range(), from day 1 btrfs doesn't really clean the
-> dirty flags, if it has an ordered extent created successfully.
-> 
-> Per error handling protocol (according to the iomap, and the btrfs
-> handling if it failed at the beginning of the range), we should clear
-> all dirty flags for the involved folios.
-> 
-> Or the range of that folio will still be marked dirty, but has no
-> EXTENT_DEALLLOC set inside the io tree.
-> 
-> Since the folio range is still dirty, it will still be the target for
-> the next writeback, but since there is no EXTENT_DEALLLOC, no new
-> ordered extent will be created for it.
-> 
-> This means the writeback of that folio range will fall back to COW
-> fixup path. However the COW fixup path itself is being re-evaluated as
-> the newly introduced pin_user_pages_*() should prevent us hitting an
-> out-of-band dirty folios, and we're moving to deprecate such COW fixup
-> path.
-> 
-> We already have an experimental patch that will make fixup COW path to
-> crash, to verify there is no such out-of-band dirty folios anymore.
-> So here we need to avoid going COW fixup path, by doing proper folio
-> dirty flags cleanup.
-> 
-> Unlike the fix in cow_file_range(), which holds the folio and extent
-> lock until error or a fully successfully run, here we have no such luxury
-> as we can fallback to COW, and in that case the extent/folio range will
-> be unlocked by cow_file_range().
-> 
-> So here we introduce a new helper, cleanup_dirty_folios(), to clear the
-> dirty flags for the involved folios.
-> 
-> And since the final fallback_to_cow() call can also fail, and we rely on
-> @cur_offset to do the proper cleanup, here we remove the unnecessary and
-> incorrect @cur_offset assignment.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> ---
-> Changelog:
-> v2:
-> - Fix the incorrect @cur_offset assignment to @end
->    The @end is not aligned to sector size, nor @cur_offset should be
->    updated before fallback_to_cow() succeeded.
-> 
-> - Add one extra ASSERT() to make sure the range is properly aligned
-> ---
->   fs/btrfs/inode.c | 59 +++++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 58 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-> index e8232ac7917f..92df6dfff2e4 100644
-> --- a/fs/btrfs/inode.c
-> +++ b/fs/btrfs/inode.c
-> @@ -1969,6 +1969,48 @@ static int can_nocow_file_extent(struct btrfs_path *path,
->   	return ret < 0 ? ret : can_nocow;
->   }
->   
-> +static void cleanup_dirty_folios(struct btrfs_inode *inode,
-> +				 struct folio *locked_folio,
-> +				 u64 start, u64 end, int error)
-> +{
-> +	struct btrfs_fs_info *fs_info = inode->root->fs_info;
-> +	struct address_space *mapping = inode->vfs_inode.i_mapping;
-> +	pgoff_t start_index = start >> PAGE_SHIFT;
-> +	pgoff_t end_index = end >> PAGE_SHIFT;
-> +	u32 len;
-> +
-> +	ASSERT(end + 1 - start < U32_MAX);
-> +	ASSERT(IS_ALIGNED(start, fs_info->sectorsize) &&
-> +	       IS_ALIGNED(end + 1, fs_info->sectorsize));
-> +	len = end + 1 - start;
-> +
-> +	/*
-> +	 * Handle the locked folio first.
-> +	 * btrfs_folio_clamp_*() helpers can handle range out of the folio case.
-> +	 */
-> +	btrfs_folio_clamp_clear_dirty(fs_info, locked_folio, start, len);
-> +	btrfs_folio_clamp_set_writeback(fs_info, locked_folio, start, len);
-> +	btrfs_folio_clamp_clear_writeback(fs_info, locked_folio, start, len);
-> +
-> +	for (pgoff_t index = start_index; index <= end_index; index++) {
-> +		struct folio *folio;
-> +
-> +		/* Already handled at the beginning. */
-> +		if (index == locked_folio->index)
-> +			continue;
-> +		folio = __filemap_get_folio(mapping, index, FGP_LOCK, GFP_NOFS);
-> +		/* Cache already dropped, no need to do any cleanup. */
-> +		if (IS_ERR(folio))
-> +			continue;
-> +		btrfs_folio_clamp_clear_dirty(fs_info, folio, start, len);
-> +		btrfs_folio_clamp_set_writeback(fs_info, folio, start, len);
-> +		btrfs_folio_clamp_clear_writeback(fs_info, folio, start, len);
-> +		folio_unlock(folio);
-> +		folio_put(folio);
-> +	}
-> +	mapping_set_error(mapping, error);
-> +}
-> +
->   /*
->    * when nowcow writeback call back.  This checks for snapshots or COW copies
->    * of the extents that exist in the file, and COWs the file as required.
-> @@ -2217,7 +2259,6 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
->   		cow_start = cur_offset;
->   
->   	if (cow_start != (u64)-1) {
-> -		cur_offset = end;
->   		ret = fallback_to_cow(inode, locked_folio, cow_start, end);
->   		cow_start = (u64)-1;
->   		if (ret)
-> @@ -2228,6 +2269,22 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
->   	return 0;
->   
->   error:
-> +	/*
-> +	 * We have some range with ordered extent created.
-> +	 *
-> +	 * Ordered extents and extent maps will be cleaned up by
-> +	 * btrfs_mark_ordered_io_finished() later, but we also need to cleanup
-> +	 * the dirty flags of folios.
-> +	 *
-> +	 * Or they can be written back again, but without any EXTENT_DELALLOC flag
-> +	 * in io tree.
-> +	 * This will force the writeback to go COW fixup, which is being deprecated.
-> +	 *
-> +	 * Also such left-over dirty flags do no follow the error handling protocol.
-> +	 */
-> +	if (cur_offset > start)
-> +		cleanup_dirty_folios(inode, locked_folio, start, cur_offset - 1, ret);
-> +
->   	/*
->   	 * If an error happened while a COW region is outstanding, cur_offset
->   	 * needs to be reset to cow_start to ensure the COW region is unlocked
+[why]:
+issues fixed:
+- comparison with wider integer type in loop condition which can cause
+infinite loops
+- pointer dereference before null check
 
-It turns out that, we can not directly use 
-extent_clear_unlock_delalloc() for the range [cur_offset, end].
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Josip Pavic <josip.pavic@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+---
+ .../gpu/drm/amd/display/dc/bios/bios_parser2.c   | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-The problem is @cur_offset can be updated to @cow_start, but the 
-fallback_to_cow() may have failed, and cow_file_range() will do the 
-proper cleanup by unlock all the folios.
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 4d2590964a20..75e44d8a7b40 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -1862,19 +1862,21 @@ static enum bp_result get_firmware_info_v3_2(
+ 		/* Vega12 */
+ 		smu_info_v3_2 = GET_IMAGE(struct atom_smu_info_v3_2,
+ 							DATA_TABLES(smu_info));
+-		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
+ 		if (!smu_info_v3_2)
+ 			return BP_RESULT_BADBIOSTABLE;
+ 
++		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
++
+ 		info->default_engine_clk = smu_info_v3_2->bootup_dcefclk_10khz * 10;
+ 	} else if (revision.minor == 3) {
+ 		/* Vega20 */
+ 		smu_info_v3_3 = GET_IMAGE(struct atom_smu_info_v3_3,
+ 							DATA_TABLES(smu_info));
+-		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
+ 		if (!smu_info_v3_3)
+ 			return BP_RESULT_BADBIOSTABLE;
+ 
++		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
++
+ 		info->default_engine_clk = smu_info_v3_3->bootup_dcefclk_10khz * 10;
+ 	}
+ 
+@@ -2439,10 +2441,11 @@ static enum bp_result get_integrated_info_v11(
+ 	info_v11 = GET_IMAGE(struct atom_integrated_system_info_v1_11,
+ 					DATA_TABLES(integratedsysteminfo));
+ 
+-	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
+ 	if (info_v11 == NULL)
+ 		return BP_RESULT_BADBIOSTABLE;
+ 
++	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
++
+ 	info->gpu_cap_info =
+ 	le32_to_cpu(info_v11->gpucapinfo);
+ 	/*
+@@ -2654,11 +2657,12 @@ static enum bp_result get_integrated_info_v2_1(
+ 
+ 	info_v2_1 = GET_IMAGE(struct atom_integrated_system_info_v2_1,
+ 					DATA_TABLES(integratedsysteminfo));
+-	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
+ 
+ 	if (info_v2_1 == NULL)
+ 		return BP_RESULT_BADBIOSTABLE;
+ 
++	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
++
+ 	info->gpu_cap_info =
+ 	le32_to_cpu(info_v2_1->gpucapinfo);
+ 	/*
+@@ -2816,11 +2820,11 @@ static enum bp_result get_integrated_info_v2_2(
+ 	info_v2_2 = GET_IMAGE(struct atom_integrated_system_info_v2_2,
+ 					DATA_TABLES(integratedsysteminfo));
+ 
+-	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
+-
+ 	if (info_v2_2 == NULL)
+ 		return BP_RESULT_BADBIOSTABLE;
+ 
++	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
++
+ 	info->gpu_cap_info =
+ 	le32_to_cpu(info_v2_2->gpucapinfo);
+ 	/*
+-- 
+2.25.1
 
-In that case, we can hit VM_BUG_ON() with folio already unlocked.
-
-This means we should skip the failed COW range during error handling, 
-making the error handling way more complex.
-
-I'll need to find a better solution for this.
-
-Thanks,
-Qu
 
