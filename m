@@ -1,89 +1,99 @@
-Return-Path: <stable+bounces-98842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED6D9E5974
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 16:12:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802879E597E
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 16:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6F7164D0E
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 15:12:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E134163A0F
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 15:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4DE21D583;
-	Thu,  5 Dec 2024 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D701D21C177;
+	Thu,  5 Dec 2024 15:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="AiofJIco"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ivpA0Ove"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0776421C9FD
-	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 15:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D351773A
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 15:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733411546; cv=none; b=ICV+FOXwKgu28IpjNjs1vYxeg687Y6HOzuUGWN1P8abZEaucVMG3IWxbp7yNFxe0wTkGgGkaDdPuDUO78IlLQqU1kTAWCjLaE0Boamp9JFFoE4+ir0EiqT10q5uPLlyEbDAjv4JHQ2iz++xTivOVGYQeJIk3nFtKmoMcGBH7A84=
+	t=1733411670; cv=none; b=b6EJF41OaCJjWIzpaspATCMco2DlqQaCGOR/4lCtYw5jXe32mP8G0iKJ496XDyUb0XoUljZPtMyveH7zi2E7cFgPKwh3k3PlmykkcpXhdk9d07iiOj3GW53cjiAcsrQcgoP4jSLzRdhKzy34AFGbdvXuDcEZSsvJySisuxCwefw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733411546; c=relaxed/simple;
-	bh=8oBlH9Skh5+tYIY+TSUzZhh7emwiSyw93vKxzSMqwEs=;
+	s=arc-20240116; t=1733411670; c=relaxed/simple;
+	bh=7qfp1k43H9fVwZssZV48w2s2pgARIgGzmBQHqyjuHyg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=upxyOvxjAiLHhpm03GUWshiPrRBRxvjyllDsy/jQN4lAldILXTC5BQtOvoTj4foUqSuhhw8dIr0627EZ0y20kIJ2bhpfjifRJZTAvGZEqUa+i5f+sryG63nRzSx4Z2jn9hPy9DxYjNQyAjAew5IXy0jJC6cYOYRmDQ1rbmNkyBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=AiofJIco; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6d87ceb58a0so8452766d6.0
-        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 07:12:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1733411544; x=1734016344; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UpDuirXeCkooc6CrYIBSyW5CbLWq2iPbUdPYDNgR92g=;
-        b=AiofJIcoWSSwqw1GEGpOT6SRUMSujaBKPHcX+5hsMedLEoE3U4ASkENK17O8lHZ88u
-         rbfsTo5YXQ/FRACXrqjGC8M3+Xz+y/HYuwX+Yf4BVdLBWgGUUn/40jq/vhwC79h+nBGW
-         w7ywSB0euUeQ/qLNYAN0TpK5MqvOEW3J+OcCer2YnUmsfTa/3wKbKY09im1dtM0Dnah9
-         Kyc86sf3bvrgGBOhYnmCuTnuJGJHNtMDFfDwHBQ1sJxbAsQ3+Cxy7XfvP4PoTWlmgO/b
-         NJ2A1sD7It7jHoEYP4eouapDbmoVQgV/SxrASnqcafh9W60H79vU1f1AcH1vWE8xTUjY
-         +9Og==
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZlsLfaRVmYFEm1YW4kHg+Q/U07r/cQ8Q9e3NU035PjPvGY/7+I+Z0MYKt06EFPNwtzdDpfqiPijW+W7u089TbIWTebexTrZ56ClaMQftcGy/UxrfZpHIFD7ZadI5LOIcvxG3GALLi1O7fSDCtKAX16IGyARJfvelwzpDRW+jEZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ivpA0Ove; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733411667;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yZeKHaiPUwdz1Uez2rF+6KJO4fqDMNiUK6EU+5R9bYY=;
+	b=ivpA0OveGsP8ul+5Qu1rFneySdCMbGrqvdTvktgDGiLTvcZmsM80aXNGA0Rfe9wsaj37pt
+	Fnsz5FfN39gX2BUYp396mJiDYtrbepLA+Ox84NorpslDxnAYziobWdZhYA0c/G85UfXgIV
+	Di3EJ3RGwpJzvo4tQWv23fvjE6BD+V8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-543-4slOcrxxOnqoH8WeWSDIpg-1; Thu, 05 Dec 2024 10:14:26 -0500
+X-MC-Unique: 4slOcrxxOnqoH8WeWSDIpg-1
+X-Mimecast-MFC-AGG-ID: 4slOcrxxOnqoH8WeWSDIpg
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5d0d329cea3so943313a12.1
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 07:14:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733411544; x=1734016344;
+        d=1e100.net; s=20230601; t=1733411665; x=1734016465;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UpDuirXeCkooc6CrYIBSyW5CbLWq2iPbUdPYDNgR92g=;
-        b=LDNihH7F14eGNK/czYyNiGGMM9W50k7yh9m648WZOarQ63GVVg4yLO4fl6XqZGfLtA
-         x9XpUofuZUHXPidY3B5lpwZjIyXWSjhQ7kRO8I1lbCW28PSKxqpMRrbTr4KV9pCPBsd9
-         J+U4+ZRKhAA0Cpk/paOvPqHWRusTdHjXh/Cnhf9bgChBbFF+oDf76nABQ2dM6Lov0qos
-         E/RJcUVn/d3nU4HTFR34covUS4JKmqOY4Ky+T8ow8CCyhAdc04E4RRjQ4v+wjqkFLyvN
-         zU2VM+dLgzlm4s1dszDZuwMzMgM0Bb9zgivdEiq7vkz6dIYVz9kdZYqw+9ZZ2zEUQOJ1
-         LQ8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVAVL8tP88w3rjfftYb3yC3/o0k/9Asmr0oFxu4QecaBTlZdBbwKcnk0whaAXNqUBcynLNTSag=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNq9hFt9AP/CLgr28pUw7TcOAe+Kk8FnUjyNdgJkTRgD05a/r2
-	bj/6/TdCkX0odkK7+Gie10tTchO2Kc0gSa4c7LtPhNEjPhc9jGc4n5uLrmDlog==
-X-Gm-Gg: ASbGncvvwe38bgQNMGrPtOEkHDDztwaH+TkyQk4E0C3CHjHYtPUfjkMSAklFg/WYUAB
-	/RfvsTtCKU0dZ2WOjsestObPWgocFnETFJTIDDSdNCLjuFcDyFnXodFsWxvpE0PVJL5jiju3PI7
-	GHuopun0v99RBJtFeFAryrUmkVr8rKjUKklBv25kdAtKSARwVGivDgipFlJsunV7IwQTdzMCrHI
-	bkFvxtq542CVWO6uS88eLOreHXNyB9s65lv28h5NiVzdbb09jU=
-X-Google-Smtp-Source: AGHT+IGMhfCAwtSQVxKuS1TWRYoQx3MDjyra1gBdo8y0EUiz1ShXMjGXkrxghW12qu50gM/TSSZqXA==
-X-Received: by 2002:a05:6214:29c9:b0:6cb:e648:863e with SMTP id 6a1803df08f44-6d8b7454e0emr157169546d6.43.1733411543697;
-        Thu, 05 Dec 2024 07:12:23 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:681:fd10::d4d1])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8da66ddd4sm7370816d6.9.2024.12.05.07.12.22
+        bh=yZeKHaiPUwdz1Uez2rF+6KJO4fqDMNiUK6EU+5R9bYY=;
+        b=ta2b+tZYLQ+eQsy7oUEYR/ZMgMi7dEUPgw4Eo6M9c81er7YBj4QOffMxIXr8XvkuEN
+         gGza/Bl6aRxygBMbIZ9OwwtfPh7C55MyNhFFBuOrkBKoxtLC6BLptgU6bkeLhfWATd/b
+         7naUkA0R8oVC0/wpjsv5cLaVOxIIGT4pNHE0SQliBOqzNEYvrkce1C7iCPWvdjewyu76
+         artnsJMerWZ01hRLDgT5OYU272uK3xuFkAWo7ulkw/nTxUqfK78MM2nASD5SyV/yPZTe
+         xuA/UWB2oHzSkZA15YswD1P//go/XkYputZ+kHVeFDtHbkDfPeK5A520giQAtcV1W4Tw
+         7kbw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzgbjUzwCkqxPQQJfJAJdWuGB2hjnEcAZU/SQfrNn83HpJT5T59VXfgqAiG7jsNeC31m/zSVU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWVEMdATEgupPCHWfDgm30vMcqlhXNPxydYXq/8SHg7qPRHVuk
+	vbW+GTct1fURi9r9MgLSOkQrdnTkgRjIqMqXOLFHIVyGGiWU6x6k7Ua4cnMJYBhbAWxTabKijZS
+	//gSBdEqjfSjEaH1VyN1Y5oB52g3+7JXZtwze5tMNscNmmgZALHBpeg==
+X-Gm-Gg: ASbGncsLrFkBmIw7KzR7BcytbGE8d8KfrisSrKkelZt3otatjAmjYUgrph7M83wzfSA
+	GlHRbQXra5Lwkue8DZlWuZqiUZOn0Prlz3v2IQ5TwmKcr76IFbCoOBm9rWgxaqPFFtZbHT9Zz52
+	AdLA40EOgihgQTbSNjDVWQo3XU7jZNT1Th4QDlIDCdPKVsNuDHycdvviuhDDOAyLT/1poKtzkZP
+	LysB00eM8XSjIkT0UBCRJJg3fmGednok/2t7h75asc=
+X-Received: by 2002:a17:907:da6:b0:aa4:a3be:28dd with SMTP id a640c23a62f3a-aa5f7f2ac81mr1129712666b.55.1733411665182;
+        Thu, 05 Dec 2024 07:14:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFSaGMrvT1KxkOVkf0k5RNkdCEfFTYsGnhtOTkVXAHsDKc3mjlQMnj61cXOR/TqS7hnkMPHpQ==
+X-Received: by 2002:a17:907:da6:b0:aa4:a3be:28dd with SMTP id a640c23a62f3a-aa5f7f2ac81mr1129707566b.55.1733411664680;
+        Thu, 05 Dec 2024 07:14:24 -0800 (PST)
+Received: from redhat.com ([2.55.188.248])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e96ab6sm105853266b.60.2024.12.05.07.14.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 07:12:23 -0800 (PST)
-Date: Thu, 5 Dec 2024 10:12:20 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Vitalii Mordan <mordan@ispras.ru>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Deepak Saxena <dsaxena@linaro.org>,
-	Manjunath Goudar <manjunath.goudar@linaro.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Vadim Mutilin <mutilin@ispras.ru>, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: ohci-spear: fix call balance of sohci_p->clk
- handling routines
-Message-ID: <81c02947-5617-4ab5-a8bd-56349b9929f4@rowland.harvard.edu>
-References: <20241205133300.884353-1-mordan@ispras.ru>
+        Thu, 05 Dec 2024 07:14:23 -0800 (PST)
+Date: Thu, 5 Dec 2024 10:14:19 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Koichiro Den <koichiro.den@canonical.com>
+Cc: virtualization@lists.linux.dev, jasowang@redhat.com,
+	xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, jiri@resnulli.us,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net-next v3 1/7] virtio_net: correct
+ netdev_tx_reset_queue() invocation point
+Message-ID: <20241205101351-mutt-send-email-mst@kernel.org>
+References: <20241204050724.307544-1-koichiro.den@canonical.com>
+ <20241204050724.307544-2-koichiro.den@canonical.com>
+ <20241205052729-mutt-send-email-mst@kernel.org>
+ <nmjiptygbpqfcveclpzmpgczd3geir72kkczqixfucpgrl3g7u@6dzpd7qijvdm>
+ <cv7ph7yna6d5a37k7hoxplyzrbmrdxrcjd67nrttevsta3r54h@35ztxhqaczqd>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,77 +102,224 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241205133300.884353-1-mordan@ispras.ru>
+In-Reply-To: <cv7ph7yna6d5a37k7hoxplyzrbmrdxrcjd67nrttevsta3r54h@35ztxhqaczqd>
 
-On Thu, Dec 05, 2024 at 04:33:00PM +0300, Vitalii Mordan wrote:
-> If the clock sohci_p->clk was not enabled in spear_ohci_hcd_drv_probe,
-> it should not be disabled in any path.
+On Thu, Dec 05, 2024 at 10:16:35PM +0900, Koichiro Den wrote:
+> On Thu, Dec 05, 2024 at 09:43:38PM +0900, Koichiro Den wrote:
+> > On Thu, Dec 05, 2024 at 05:33:36AM -0500, Michael S. Tsirkin wrote:
+> > > On Wed, Dec 04, 2024 at 02:07:18PM +0900, Koichiro Den wrote:
+> > > > When virtnet_close is followed by virtnet_open, some TX completions can
+> > > > possibly remain unconsumed, until they are finally processed during the
+> > > > first NAPI poll after the netdev_tx_reset_queue(), resulting in a crash
+> > > > [1].
+> > > 
+> > > 
+> > > So it's a bugfix. Why net-next not net?
+> > 
+> > I was mistaken (I just read netdev-FAQ again). I'll resend to net, with
+> > adjustments reflecting your feedback.
+> > 
+> > > 
+> > > > Commit b96ed2c97c79 ("virtio_net: move netdev_tx_reset_queue() call
+> > > > before RX napi enable") was not sufficient to eliminate all BQL crash
+> > > > cases for virtio-net.
+> > > > 
+> > > > This issue can be reproduced with the latest net-next master by running:
+> > > > `while :; do ip l set DEV down; ip l set DEV up; done` under heavy network
+> > > > TX load from inside the machine.
+> > > > 
+> > > > netdev_tx_reset_queue() can actually be dropped from virtnet_open path;
+> > > > the device is not stopped in any case. For BQL core part, it's just like
+> > > > traffic nearly ceases to exist for some period. For stall detector added
+> > > > to BQL, even if virtnet_close could somehow lead to some TX completions
+> > > > delayed for long, followed by virtnet_open, we can just take it as stall
+> > > > as mentioned in commit 6025b9135f7a ("net: dqs: add NIC stall detector
+> > > > based on BQL"). Note also that users can still reset stall_max via sysfs.
+> > > > 
+> > > > So, drop netdev_tx_reset_queue() from virtnet_enable_queue_pair(). This
+> > > > eliminates the BQL crashes. Note that netdev_tx_reset_queue() is now
+> > > > explicitly required in freeze/restore path, so this patch adds it to
+> > > > free_unused_bufs().
+> > > 
+> > > I don't much like that free_unused_bufs now has this side effect.
+> > > I think would be better to just add a loop in virtnet_restore.
+> > > Or if you want to keep it there, pls rename the function
+> > > to hint it does more.
+> > 
+> > It makes sense. I would go for the former. Thanks.
 > 
-> Conversely, if it was enabled in spear_ohci_hcd_drv_probe, it must be disabled
-> in all error paths to ensure proper cleanup.
+> Hmm, as Jacob pointed out in v1
+> (https://lore.kernel.org/all/20241202181445.0da50076@kernel.org/),
+> it looks better to follow the rule of thumb. Taking both suggestions
+> from Jacob and you, adding a loop to remove_vq_common(), just after
+> free_unused_bufs(), seems more fitting now, like this:
 > 
-> The check inside spear_ohci_hcd_drv_resume() actually doesn't prevent
-> the clock to be unconditionally disabled later during the driver removal but
-> it is still good to have the check at least so that the PM core would duly
-> print the errors in the system log. This would also be consistent with
-> the similar code paths in ->resume() functions of other usb drivers, e.g. in
-> exynos_ehci_resume().
+>      static void remove_vq_common(struct virtnet_info *vi)
+>      {
+>     +       int i;
+>     +
+>             virtio_reset_device(vi->vdev);
+>     
+>             /* Free unused buffers in both send and recv, if any. */
+>             free_unused_bufs(vi);
+>     
+>     +       /* Tx unused buffers flushed, so reset BQL counter */
+>     +       for (i = 0; i < vi->max_queue_pairs; i++)
+>     +               netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, i));
+>     +
+>             free_receive_bufs(vi);
 > 
-> Found by Linux Verification Center (linuxtesting.org) with Klever.
+> What do you think?
 > 
-> Fixes: 1cc6ac59ffaa ("USB: OHCI: make ohci-spear a separate driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
-> ---
+> Thanks,
+> 
+> -Koichiro Den
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+why in remove_vq_common? It's only used on freeze/restore.
 
->  drivers/usb/host/ohci-spear.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/usb/host/ohci-spear.c b/drivers/usb/host/ohci-spear.c
-> index 993f347c5c28..6f6ae6fadfe5 100644
-> --- a/drivers/usb/host/ohci-spear.c
-> +++ b/drivers/usb/host/ohci-spear.c
-> @@ -80,7 +80,9 @@ static int spear_ohci_hcd_drv_probe(struct platform_device *pdev)
->  	sohci_p = to_spear_ohci(hcd);
->  	sohci_p->clk = usbh_clk;
->  
-> -	clk_prepare_enable(sohci_p->clk);
-> +	retval = clk_prepare_enable(sohci_p->clk);
-> +	if (retval)
-> +		goto err_put_hcd;
->  
->  	retval = usb_add_hcd(hcd, irq, 0);
->  	if (retval == 0) {
-> @@ -103,8 +105,7 @@ static void spear_ohci_hcd_drv_remove(struct platform_device *pdev)
->  	struct spear_ohci *sohci_p = to_spear_ohci(hcd);
->  
->  	usb_remove_hcd(hcd);
-> -	if (sohci_p->clk)
-> -		clk_disable_unprepare(sohci_p->clk);
-> +	clk_disable_unprepare(sohci_p->clk);
->  
->  	usb_put_hcd(hcd);
->  }
-> @@ -137,12 +138,15 @@ static int spear_ohci_hcd_drv_resume(struct platform_device *dev)
->  	struct usb_hcd *hcd = platform_get_drvdata(dev);
->  	struct ohci_hcd	*ohci = hcd_to_ohci(hcd);
->  	struct spear_ohci *sohci_p = to_spear_ohci(hcd);
-> +	int ret;
->  
->  	if (time_before(jiffies, ohci->next_statechange))
->  		msleep(5);
->  	ohci->next_statechange = jiffies;
->  
-> -	clk_prepare_enable(sohci_p->clk);
-> +	ret = clk_prepare_enable(sohci_p->clk);
-> +	if (ret)
-> +		return ret;
->  	ohci_resume(hcd, false);
->  	return 0;
->  }
-> -- 
-> 2.25.1
-> 
+> > 
+> > > 
+> > > 
+> > > > 
+> > > > [1]:
+> > > > ------------[ cut here ]------------
+> > > > kernel BUG at lib/dynamic_queue_limits.c:99!
+> > > > Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> > > > CPU: 7 UID: 0 PID: 1598 Comm: ip Tainted: G    N 6.12.0net-next_main+ #2
+> > > > Tainted: [N]=TEST
+> > > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), \
+> > > > BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> > > > RIP: 0010:dql_completed+0x26b/0x290
+> > > > Code: b7 c2 49 89 e9 44 89 da 89 c6 4c 89 d7 e8 ed 17 47 00 58 65 ff 0d
+> > > > 4d 27 90 7e 0f 85 fd fe ff ff e8 ea 53 8d ff e9 f3 fe ff ff <0f> 0b 01
+> > > > d2 44 89 d1 29 d1 ba 00 00 00 00 0f 48 ca e9 28 ff ff ff
+> > > > RSP: 0018:ffffc900002b0d08 EFLAGS: 00010297
+> > > > RAX: 0000000000000000 RBX: ffff888102398c80 RCX: 0000000080190009
+> > > > RDX: 0000000000000000 RSI: 000000000000006a RDI: 0000000000000000
+> > > > RBP: ffff888102398c00 R08: 0000000000000000 R09: 0000000000000000
+> > > > R10: 00000000000000ca R11: 0000000000015681 R12: 0000000000000001
+> > > > R13: ffffc900002b0d68 R14: ffff88811115e000 R15: ffff8881107aca40
+> > > > FS:  00007f41ded69500(0000) GS:ffff888667dc0000(0000)
+> > > > knlGS:0000000000000000
+> > > > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > CR2: 0000556ccc2dc1a0 CR3: 0000000104fd8003 CR4: 0000000000772ef0
+> > > > PKRU: 55555554
+> > > > Call Trace:
+> > > >  <IRQ>
+> > > >  ? die+0x32/0x80
+> > > >  ? do_trap+0xd9/0x100
+> > > >  ? dql_completed+0x26b/0x290
+> > > >  ? dql_completed+0x26b/0x290
+> > > >  ? do_error_trap+0x6d/0xb0
+> > > >  ? dql_completed+0x26b/0x290
+> > > >  ? exc_invalid_op+0x4c/0x60
+> > > >  ? dql_completed+0x26b/0x290
+> > > >  ? asm_exc_invalid_op+0x16/0x20
+> > > >  ? dql_completed+0x26b/0x290
+> > > >  __free_old_xmit+0xff/0x170 [virtio_net]
+> > > >  free_old_xmit+0x54/0xc0 [virtio_net]
+> > > >  virtnet_poll+0xf4/0xe30 [virtio_net]
+> > > >  ? __update_load_avg_cfs_rq+0x264/0x2d0
+> > > >  ? update_curr+0x35/0x260
+> > > >  ? reweight_entity+0x1be/0x260
+> > > >  __napi_poll.constprop.0+0x28/0x1c0
+> > > >  net_rx_action+0x329/0x420
+> > > >  ? enqueue_hrtimer+0x35/0x90
+> > > >  ? trace_hardirqs_on+0x1d/0x80
+> > > >  ? kvm_sched_clock_read+0xd/0x20
+> > > >  ? sched_clock+0xc/0x30
+> > > >  ? kvm_sched_clock_read+0xd/0x20
+> > > >  ? sched_clock+0xc/0x30
+> > > >  ? sched_clock_cpu+0xd/0x1a0
+> > > >  handle_softirqs+0x138/0x3e0
+> > > >  do_softirq.part.0+0x89/0xc0
+> > > >  </IRQ>
+> > > >  <TASK>
+> > > >  __local_bh_enable_ip+0xa7/0xb0
+> > > >  virtnet_open+0xc8/0x310 [virtio_net]
+> > > >  __dev_open+0xfa/0x1b0
+> > > >  __dev_change_flags+0x1de/0x250
+> > > >  dev_change_flags+0x22/0x60
+> > > >  do_setlink.isra.0+0x2df/0x10b0
+> > > >  ? rtnetlink_rcv_msg+0x34f/0x3f0
+> > > >  ? netlink_rcv_skb+0x54/0x100
+> > > >  ? netlink_unicast+0x23e/0x390
+> > > >  ? netlink_sendmsg+0x21e/0x490
+> > > >  ? ____sys_sendmsg+0x31b/0x350
+> > > >  ? avc_has_perm_noaudit+0x67/0xf0
+> > > >  ? cred_has_capability.isra.0+0x75/0x110
+> > > >  ? __nla_validate_parse+0x5f/0xee0
+> > > >  ? __pfx___probestub_irq_enable+0x3/0x10
+> > > >  ? __create_object+0x5e/0x90
+> > > >  ? security_capable+0x3b/0x70
+> > > >  rtnl_newlink+0x784/0xaf0
+> > > >  ? avc_has_perm_noaudit+0x67/0xf0
+> > > >  ? cred_has_capability.isra.0+0x75/0x110
+> > > >  ? stack_depot_save_flags+0x24/0x6d0
+> > > >  ? __pfx_rtnl_newlink+0x10/0x10
+> > > >  rtnetlink_rcv_msg+0x34f/0x3f0
+> > > >  ? do_syscall_64+0x6c/0x180
+> > > >  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > >  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+> > > >  netlink_rcv_skb+0x54/0x100
+> > > >  netlink_unicast+0x23e/0x390
+> > > >  netlink_sendmsg+0x21e/0x490
+> > > >  ____sys_sendmsg+0x31b/0x350
+> > > >  ? copy_msghdr_from_user+0x6d/0xa0
+> > > >  ___sys_sendmsg+0x86/0xd0
+> > > >  ? __pte_offset_map+0x17/0x160
+> > > >  ? preempt_count_add+0x69/0xa0
+> > > >  ? __call_rcu_common.constprop.0+0x147/0x610
+> > > >  ? preempt_count_add+0x69/0xa0
+> > > >  ? preempt_count_add+0x69/0xa0
+> > > >  ? _raw_spin_trylock+0x13/0x60
+> > > >  ? trace_hardirqs_on+0x1d/0x80
+> > > >  __sys_sendmsg+0x66/0xc0
+> > > >  do_syscall_64+0x6c/0x180
+> > > >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > > > RIP: 0033:0x7f41defe5b34
+> > > > Code: 15 e1 12 0f 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00
+> > > > f3 0f 1e fa 80 3d 35 95 0f 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00
+> > > > f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+> > > > RSP: 002b:00007ffe5336ecc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+> > > > RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f41defe5b34
+> > > > RDX: 0000000000000000 RSI: 00007ffe5336ed30 RDI: 0000000000000003
+> > > > RBP: 00007ffe5336eda0 R08: 0000000000000010 R09: 0000000000000001
+> > > > R10: 00007ffe5336f6f9 R11: 0000000000000202 R12: 0000000000000003
+> > > > R13: 0000000067452259 R14: 0000556ccc28b040 R15: 0000000000000000
+> > > >  </TASK>
+> > > > [...]
+> > > > ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+> > > > 
+> > > > Fixes: c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits")
+> > > > Cc: <stable@vger.kernel.org> # v6.11+
+> > > > Signed-off-by: Koichiro Den <koichiro.den@canonical.com>
+> > > > ---
+> > > >  drivers/net/virtio_net.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> > > > index 64c87bb48a41..48ce8b3881b6 100644
+> > > > --- a/drivers/net/virtio_net.c
+> > > > +++ b/drivers/net/virtio_net.c
+> > > > @@ -3054,7 +3054,6 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
+> > > >  	if (err < 0)
+> > > >  		goto err_xdp_reg_mem_model;
+> > > >  
+> > > > -	netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, qp_index));
+> > > >  	virtnet_napi_enable(vi->rq[qp_index].vq, &vi->rq[qp_index].napi);
+> > > >  	virtnet_napi_tx_enable(vi, vi->sq[qp_index].vq, &vi->sq[qp_index].napi);
+> > > >  
+> > > > @@ -6243,6 +6242,7 @@ static void free_unused_bufs(struct virtnet_info *vi)
+> > > >  		struct virtqueue *vq = vi->sq[i].vq;
+> > > >  		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
+> > > >  			virtnet_sq_free_unused_buf(vq, buf);
+> > > > +		netdev_tx_reset_queue(netdev_get_tx_queue(vi->dev, i));
+> > > >  		cond_resched();
+> > > >  	}
+> > > >  
+> > > > -- 
+> > > > 2.43.0
+> > > 
+
 
