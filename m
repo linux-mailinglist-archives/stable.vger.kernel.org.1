@@ -1,92 +1,83 @@
-Return-Path: <stable+bounces-98750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD039E4F33
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 09:04:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6C79E4F3C
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 09:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8829E1881E06
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067A61881E91
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 08:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59E71CEE9B;
-	Thu,  5 Dec 2024 08:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92091CF2A2;
+	Thu,  5 Dec 2024 08:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCM/WL7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnJFy8bz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD2C1B4138;
-	Thu,  5 Dec 2024 08:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741FE1CEEB6;
+	Thu,  5 Dec 2024 08:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733385847; cv=none; b=SkOaqXbGoR0uwck+1zWRTDBOflb6eM3h8vD4K7cRIXxr7mU+QOsPafYoE9EjdOjoe/QiQOO0eTQgI0NOZlxXiqTzi530W/N41vkDBPzUnVGC5TdRFWYGCaOPej2h0kTidzmpdZ+NptTNcPCXXtBW1s72WCAGt1Shxw3VVJ59OZE=
+	t=1733385913; cv=none; b=ShPgNIpOhJvZjE6TG2uCPGiQ62juBqlCzt33LxJYIRz2qwgwF2gtC34rGQzSupwNBunpvvK5/TBQKP/QIlULsnF7KBZbOGDped9h1nItmkFOB1xi09RB9+frhCRrOyuxHq8mZnluIi8AFRdEOwUlARKghy8WAyaRiWJ2hIEfJuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733385847; c=relaxed/simple;
-	bh=FIozSi8SgpqkY9ZdwR7YpI65MxDaseGvlnzWbKVg2nk=;
+	s=arc-20240116; t=1733385913; c=relaxed/simple;
+	bh=olkVMRPaTDYaEUdUouIrnlhdN/TCZuS4G4opFMBflj4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bCuiYNoFWnSpkFlonY2EEKXcoVHcHe3ebAc1weutnC0kzh8iDFAFsU1qj1KVdw4owxzfcgTe+t20XPjLSZM4RjVFE8qDXK+vgPQn/T4n0zK/nJUpVZyrhNRjFpjfGRiECgOOh8V3e8WbQ8wqmIDl9Jws8DlCcew82qXVqOnYqHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCM/WL7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F234C4CED6;
-	Thu,  5 Dec 2024 08:04:06 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=h+HWFLbIpNZ9KXaYBtUcULY7kf0f2pqDme0zQP0mWLrIAKsGB3olv1qnodo4eoIYntopYwNzf+3pgtbAw79nq2wLHUm7YJ6GjM1ErYTFGvJtD+40iYL+2dmJR9OKb4W7Pr9JSQPY4P3rz9BxzKfVgeigPR3IbBGlCiyAhFWw35o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnJFy8bz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E1DC4CED1;
+	Thu,  5 Dec 2024 08:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733385846;
-	bh=FIozSi8SgpqkY9ZdwR7YpI65MxDaseGvlnzWbKVg2nk=;
+	s=korg; t=1733385913;
+	bh=olkVMRPaTDYaEUdUouIrnlhdN/TCZuS4G4opFMBflj4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cCM/WL7AcmSti272C/8pmCDv4/kLRfmjlVaxX6jKtkohw9FU+pWVbFqN4btG9sx1u
-	 XLqWNZjvXB3yI3t6NUvjR32zdTUc0z9+CF/hZQ58QjaxQ/+2VfMyW6NYoqvAb1t2L6
-	 67Q9FWFCiKGW3ZiwO2xNke6z1SrKKCgiK/Rdd9t0=
-Date: Thu, 5 Dec 2024 09:04:02 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Will McVicker <willmcvicker@google.com>,
-	Roy Luo <royluo@google.com>, kernel-team@android.com,
-	linux-phy@lists.infradead.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, stable@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 5/8] phy: exynos5-usbdrd: gs101: ensure power is gated
- to SS phy in phy_exit()
-Message-ID: <2024120528-poker-thinness-6cfb@gregkh>
-References: <20241205-gs101-phy-lanes-orientation-phy-v3-0-32f721bed219@linaro.org>
- <20241205-gs101-phy-lanes-orientation-phy-v3-5-32f721bed219@linaro.org>
+	b=wnJFy8bzcc2i+x1r8L1HIbSYiEK0x0vZhWR/DCMcmGPgtRPYVIq+jKlRoRkhUoWj1
+	 1ByK+MOLeV/rhWmtA0Kolwpt1ysy6YoIkZzl7Havekz+3Cj466RMFa9PXZTw3OzSOU
+	 KB5BIDwrsxkiJBgdO4DsjtHmrmGbBDyb6FQybsJQ=
+Date: Thu, 5 Dec 2024 09:05:09 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Danny Tsen <dtsen@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 043/826] crypto: powerpc/p10-aes-gcm - Register
+ modules as SIMD
+Message-ID: <2024120555-arming-quicksand-49f0@gregkh>
+References: <20241203144743.428732212@linuxfoundation.org>
+ <20241203144745.143525056@linuxfoundation.org>
+ <2a720dd0-56a0-4781-81d3-118368613792@kernel.org>
+ <2024120417-flattop-unpaired-fcf8@gregkh>
+ <92315b46-db52-4640-b8b9-c2ddbef38a17@kernel.org>
+ <2024120421-coming-snore-e6fc@gregkh>
+ <b04ee5e7-f654-4562-bc8e-2643f37f1ba3@kernel.org>
+ <Z1EsHcz57kKoArCR@gondor.apana.org.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241205-gs101-phy-lanes-orientation-phy-v3-5-32f721bed219@linaro.org>
+In-Reply-To: <Z1EsHcz57kKoArCR@gondor.apana.org.au>
 
-On Thu, Dec 05, 2024 at 07:33:16AM +0000, André Draszik wrote:
-> We currently don't gate the power to the SS phy in phy_exit().
+On Thu, Dec 05, 2024 at 12:29:17PM +0800, Herbert Xu wrote:
+> On Wed, Dec 04, 2024 at 05:22:19PM +0100, Jiri Slaby wrote:
+> >
+> > Not sure at all about this crypto stuff. But this failing patch introduces
+> > SIMD and the above 8b6c1e466eec adds a dep to SIMD and makes the module
+> > nonBROKEN at the same time. So I assume the failing one is a prereq to
+> > unbreak the module. Maintainers?
 > 
-> Shuffle the code slightly to ensure the power is gated to the SS phy as
-> well.
-> 
-> Fixes: 32267c29bc7d ("phy: exynos5-usbdrd: support Exynos USBDRD 3.1 combo phy (HS & SS)")
-> CC: stable@vger.kernel.org # 6.11+
+> Why not just leave it as BROKEN? The reason it was marked as BROKEN
+> was because the fix was too invasive.  So I don't see any need to
+> backport more patches to make it unBROKEN.
 
-Why is a patch 5/8 a stable thing?  If this is such an important bugfix,
-it should be sent separately as a 1/1 patch, right?
-
-thanks,
+Fair enough, I've dropped this now from all stable queues, thanks!
 
 greg k-h
 
