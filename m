@@ -1,93 +1,132 @@
-Return-Path: <stable+bounces-98711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57369E4D0B
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 05:29:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F81A9E4D12
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 05:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DA7018804E9
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 04:29:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E59131880745
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 04:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D5A18C900;
-	Thu,  5 Dec 2024 04:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A287192D89;
+	Thu,  5 Dec 2024 04:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="Q0FWDBxv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dMfzADM7"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EF215B54C;
-	Thu,  5 Dec 2024 04:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1432119;
+	Thu,  5 Dec 2024 04:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733372973; cv=none; b=AtrgrdsRzBksAYppQP/fkAP48/MWoX0at5giAzwOsF81RDveZtuMG77kRkespJnqWp/jqXhgLDWgFKA+Tc/dHr64HGMH22sI+Qr4h/dUxDbYrNdcs6AExJCPvJ4wIir0I0XB8w2eOeYmOlV1F+qS8RjyhN1Yyfp8bgHjkZ7Uy9k=
+	t=1733373807; cv=none; b=ScgwUNo4QR4cQZ/5dnptG09k4LUKuuiPu4AcLOaMMf+oW2Y0+U7SiHDUMIrbTkhmhnlNu52xkQ2eRmtiyglJgaKfiXF+28OwSBzsTuewhsxLsjR72zHXTEEVxXkA+of37yxNGkgJ9r6D+i5d55gGK2qWB2kfV/l5I29dsxHwnEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733372973; c=relaxed/simple;
-	bh=79/LqLma1lY+zjMNnDXeGme80c3sOqbrWrCpNT8UnsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=shyzTtZlYZO81tXqX7AMaChlYUczchmlHRLjvzTMC6Nxv++tLjYdKHocawlmVbOmCBrKOYnpUbT9vPcTS3vc3fNIX4PUlb+fy9u3HMDpLVWS5bfNQ+MwzjbUB9As3n4JPBYoDqX1EHLoTR7DtZPHbpdtwvwBdoPfWu5D8FcLinE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=Q0FWDBxv; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=QvKy+UZr2t0OcAAdZLGtG1cVqgwSBnFneCPyMu3tf0g=; b=Q0FWDBxvY2eO4eZRP0V52Pps3/
-	X0JDaqbwG7DbIKxEYI7EliXw3SiS9vorrs5XITi6xEK44UQoC7YxF3kcl6cQpx3CZ6apw1fi3jH/Q
-	f+9SDwJRwgwdYDWsaHv6xYH9vYyNCNX5s9HxM+8xzPREYI3kwQ0LG29FRHhKtp/8vn5T3eozetrnz
-	VrYFqvcSNZnaEXMRY52wM5tgqEkUdVNujhBmWqdX7h1WnOHcOTiMJrsjY0J6nxrfQ8+6JaJdSna/5
-	f9JpGtQynAGzNn4lYLiQXpPYj04OmtpfKCxbhhZS/BdgIYIFlWCTf/hIGh09vUjMaUSGdHmbIlqgm
-	oD9/XQqw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1tJ3HY-0001EF-2p;
-	Thu, 05 Dec 2024 12:29:19 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 05 Dec 2024 12:29:17 +0800
-Date: Thu, 5 Dec 2024 12:29:17 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Danny Tsen <dtsen@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12 043/826] crypto: powerpc/p10-aes-gcm - Register
- modules as SIMD
-Message-ID: <Z1EsHcz57kKoArCR@gondor.apana.org.au>
-References: <20241203144743.428732212@linuxfoundation.org>
- <20241203144745.143525056@linuxfoundation.org>
- <2a720dd0-56a0-4781-81d3-118368613792@kernel.org>
- <2024120417-flattop-unpaired-fcf8@gregkh>
- <92315b46-db52-4640-b8b9-c2ddbef38a17@kernel.org>
- <2024120421-coming-snore-e6fc@gregkh>
- <b04ee5e7-f654-4562-bc8e-2643f37f1ba3@kernel.org>
+	s=arc-20240116; t=1733373807; c=relaxed/simple;
+	bh=CtuKv6ecMYWPznk8CcN+oHQB1GyUQEbKfo7aY/0tl4g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PYm6oSBH+0G8j5fC6kgkHPTzWJWbnklnpuv4I2PSLhxHpkdflnU8WCl9E3Ay5KeAH2oLIF9r3KfTGlaifjL0Aub/5ZV3SuWT5mcPHEb+LvuE9BkLW5HnhHWDJH+iEvsyNGPUFYRm27Fd+cC4hDw6/fzlSlwtlB/OnMRquXwsxl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dMfzADM7; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733373806; x=1764909806;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=CtuKv6ecMYWPznk8CcN+oHQB1GyUQEbKfo7aY/0tl4g=;
+  b=dMfzADM7mbjjBvN0TW/0I7PDuHIJVBMN8Qesmjlm6KASe5TRPpGLN1EL
+   oAQUl6TxoV+WD0gxpnwYb4JvxvfNMREfxEgdkSzkR9GwMsXxOmZ2CDtD7
+   zrjpCMjJlxbmdup2STxFwtSb/nuBErzh8CmShqDig1Xuq4n/N2an+Gy01
+   nJ1TjKZ6MM0a90+7qK2ukOPYGQ25SgcOx9D4rgFESME2VdymV4F/poGYt
+   R7UrruUuWybRhC52A9MhDKVAKBbafw6Hyl8/cCRMn0RpMqfLAvX7ie0AF
+   5IKMxQQwmUckMr8tCIwiOuIuwzL0BHOv0B0799VlBXeBkfde5ciM6Cdfx
+   Q==;
+X-CSE-ConnectionGUID: Z5+z/bUeQ8KHDcotNqw95w==
+X-CSE-MsgGUID: 0mRmy3TZSLaKm2l3tdXRjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11276"; a="44145927"
+X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
+   d="scan'208";a="44145927"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 20:43:24 -0800
+X-CSE-ConnectionGUID: zxSN6iOVSrqsrOt4N4h05Q==
+X-CSE-MsgGUID: xB/l3wD2T9a/kH3R02IZJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,209,1728975600"; 
+   d="scan'208";a="93870997"
+Received: from p12ill20yoongsia.png.intel.com ([10.88.227.28])
+  by orviesa009.jf.intel.com with ESMTP; 04 Dec 2024 20:43:20 -0800
+From: Song Yoong Siang <yoong.siang.song@intel.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Mykola Lysenko <mykolal@fb.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH bpf v2 1/1] selftests/bpf: Actuate tx_metadata_len in xdp_hw_metadata
+Date: Thu,  5 Dec 2024 12:42:58 +0800
+Message-Id: <20241205044258.3155799-1-yoong.siang.song@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b04ee5e7-f654-4562-bc8e-2643f37f1ba3@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 04, 2024 at 05:22:19PM +0100, Jiri Slaby wrote:
->
-> Not sure at all about this crypto stuff. But this failing patch introduces
-> SIMD and the above 8b6c1e466eec adds a dep to SIMD and makes the module
-> nonBROKEN at the same time. So I assume the failing one is a prereq to
-> unbreak the module. Maintainers?
+set XDP_UMEM_TX_METADATA_LEN flag to reserve tx_metadata_len bytes of
+per-chunk metadata.
 
-Why not just leave it as BROKEN? The reason it was marked as BROKEN
-was because the fix was too invasive.  So I don't see any need to
-backport more patches to make it unBROKEN.
+Fixes: d5e726d9143c ("xsk: Require XDP_UMEM_TX_METADATA_LEN to actuate tx_metadata_len")
+Cc: stable@vger.kernel.org # v6.11
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+v1: https://patchwork.kernel.org/project/netdevbpf/patch/20241204115715.3148412-1-yoong.siang.song@intel.com/
 
-Thanks,
+v1->v2 changelog:
+ - Add Fixes tag (Stanislav).
+ - Add stable@vger.kernel.org in email cc list.
+ - Separate the patch into two, current one submit to bpf,
+   another one submit to bpf-next.
+ - Update the commit title.
+---
+ tools/testing/selftests/bpf/xdp_hw_metadata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+index 6f9956eed797..ad6c08dfd6c8 100644
+--- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
++++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+@@ -79,7 +79,7 @@ static int open_xsk(int ifindex, struct xsk *xsk, __u32 queue_id)
+ 		.fill_size = XSK_RING_PROD__DEFAULT_NUM_DESCS,
+ 		.comp_size = XSK_RING_CONS__DEFAULT_NUM_DESCS,
+ 		.frame_size = XSK_UMEM__DEFAULT_FRAME_SIZE,
+-		.flags = XSK_UMEM__DEFAULT_FLAGS,
++		.flags = XDP_UMEM_TX_METADATA_LEN,
+ 		.tx_metadata_len = sizeof(struct xsk_tx_metadata),
+ 	};
+ 	__u32 idx = 0;
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.34.1
+
 
