@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-98806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3229E5755
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 14:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E75C89E58B9
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 15:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414FD169A39
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 13:33:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8EAB16C402
+	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 14:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CA6433D8;
-	Thu,  5 Dec 2024 13:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E7521A421;
+	Thu,  5 Dec 2024 14:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="XAvpQWug"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQvSLJgM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F1C218AB8;
-	Thu,  5 Dec 2024 13:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB555218ABE
+	for <stable@vger.kernel.org>; Thu,  5 Dec 2024 14:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733405609; cv=none; b=OmYdIZwOzC4DPNyESTHI0euUZkl2g7tSQasseFZx2M4hp3INSh+4paLHBfGWl1MIxLMgBcFBWclcJJ5/EDooCH+WprWPy7dqOTaLLoQqOfn61EmIS4feLlcYhZp0uOPzq/RJYITI0h6ZPxgO9/AvuKeINdHubQ3uqhmrAn4k8TM=
+	t=1733409915; cv=none; b=CuuKf5ULHME+IA6sUqi2SpuQir98xcxcAdUwCudYvsQxtq8/4XvpGDjh04RVBasW/+HEaic6/37LTY72urPbxwyXLX5c4ZHWap2kMTtLOlH2SBAJGBfEK+yhRbXLa1zc1V3qACKukVJhA38O4DK/SVHQF7ce1S8jpk8avef6qis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733405609; c=relaxed/simple;
-	bh=lczAqVQfpP9AYgOE79ExuSe2liZMUmXcyvl2haixi/M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cQA61lkqN6vq+ET81FgGrbWtDtgr4SmfO0Dm1vAdLspuvo7kDtQ8357OyKGoF8O0KNbaAQ2bI/EmD53+VQkHO0D9MDnUoGZbJ6KKC9PQKDNpwnkObUo7j93dSGBFBW1gjr7dEiMc7OxDqeK33S6yZEJjBu/PK/YlKho+ZUpkW78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=XAvpQWug; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from ldvnode.intra.ispras.ru (unknown [10.10.2.153])
-	by mail.ispras.ru (Postfix) with ESMTPSA id BA1C840762DC;
-	Thu,  5 Dec 2024 13:33:15 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BA1C840762DC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1733405595;
-	bh=j0BGhnmGhO8DhdcdiITa7Hz70d0+hDipGh+uz2C2l9U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XAvpQWug+JRVbPPJSkYq6+qysJM9+WgBEyCqlgmJUP7WZBVmXZ+JraFosMDtxIHZg
-	 Ns6vK67zdrr6Y4VssMzWHcn34mD0yNygqbga0dqZQnzZlfxZuGSsKBPMxkqiv/KVKK
-	 e2XL21Y/VDaUxYwVuj+tM6mx43Sm9mtAKzNhS+Sw=
-From: Vitalii Mordan <mordan@ispras.ru>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Vitalii Mordan <mordan@ispras.ru>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Deepak Saxena <dsaxena@linaro.org>,
-	Manjunath Goudar <manjunath.goudar@linaro.org>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Vadim Mutilin <mutilin@ispras.ru>,
-	stable@vger.kernel.org
-Subject: [PATCH] usb: ohci-spear: fix call balance of sohci_p->clk handling routines
-Date: Thu,  5 Dec 2024 16:33:00 +0300
-Message-Id: <20241205133300.884353-1-mordan@ispras.ru>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733409915; c=relaxed/simple;
+	bh=hmIFfHnUrbJHf4GsDZPUGQmjNGNPOz1/D3bef7LlM2U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DF7/Dj3NLrg/vLy9h5kAlgfEOGdWn053g95SpsTbm/qkNO9k8FSDMif381DagQOa8ykuiu9cesaeI0ITLJm17lhqluN/uEeRSP/WU/bGSdgv3kMVEs8KHuXAdU85ccR2n6Ekxc2iuqWXmjDr8pasyqRfT1sTROTboHWywMvcNM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQvSLJgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC14C4CEDC;
+	Thu,  5 Dec 2024 14:45:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733409915;
+	bh=hmIFfHnUrbJHf4GsDZPUGQmjNGNPOz1/D3bef7LlM2U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tQvSLJgMarkkoOj50o9F4rmVHhFj14iObVzpsujGkoXFn6qkW3a75Zc9GvzFF9Z/2
+	 xjf6dkkxiwmsO/7QJYGGN6uCn/RImPSaf+19mRHYJjA1I9Gx01PkeeXMHjyTeUxIZl
+	 +dxxkMAPEpwne4JZ11MOBMvdVwZ2730x/o0ZTlU8WtJYZFLARguBqA4n5zlBZAel17
+	 TWjJqxEaeemJjD77XV6nIX+Sk2zOpvn0d2DpCfKrdRzRdjtJc6pphb5S6FYhGK1eEi
+	 iLFyEO/WDjjZsp4F8R3aO39DEdj4+rnCJdTlPa55kkvOyJoUYYPCAP90w4t6iIbSzV
+	 4uz52t6iMYFzQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] drm/amd/display: fixed integer types and null check locations
+Date: Thu,  5 Dec 2024 08:33:55 -0500
+Message-ID: <20241205070647-f7abbf8ef2cdb962@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241205032629.3496629-1-jianqi.ren.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,71 +59,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the clock sohci_p->clk was not enabled in spear_ohci_hcd_drv_probe,
-it should not be disabled in any path.
+[ Sasha's backport helper bot ]
 
-Conversely, if it was enabled in spear_ohci_hcd_drv_probe, it must be disabled
-in all error paths to ensure proper cleanup.
+Hi,
 
-The check inside spear_ohci_hcd_drv_resume() actually doesn't prevent
-the clock to be unconditionally disabled later during the driver removal but
-it is still good to have the check at least so that the PM core would duly
-print the errors in the system log. This would also be consistent with
-the similar code paths in ->resume() functions of other usb drivers, e.g. in
-exynos_ehci_resume().
+The upstream commit SHA1 provided is correct: 0484e05d048b66d01d1f3c1d2306010bb57d8738
 
-Found by Linux Verification Center (linuxtesting.org) with Klever.
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Sohaib Nadeem <sohaib.nadeem@amd.com>
 
-Fixes: 1cc6ac59ffaa ("USB: OHCI: make ohci-spear a separate driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+6.11.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 71783d1ff652)
+6.1.y | Not found
+
+Note: The patch differs from the upstream commit:
 ---
- drivers/usb/host/ohci-spear.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+1:  0484e05d048b6 ! 1:  b87ee3f3696bd drm/amd/display: fixed integer types and null check locations
+    @@ Metadata
+      ## Commit message ##
+         drm/amd/display: fixed integer types and null check locations
+     
+    +    [ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
+    +
+         [why]:
+         issues fixed:
+         - comparison with wider integer type in loop condition which can cause
+    @@ Commit message
+         Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+         Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+     
+      ## drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c ##
+     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_firmware_info_v3_2(
+    @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_in
+      	info->gpu_cap_info =
+      	le32_to_cpu(info_v2_2->gpucapinfo);
+      	/*
+    -
+    - ## drivers/gpu/drm/amd/display/dc/link/link_validation.c ##
+    -@@ drivers/gpu/drm/amd/display/dc/link/link_validation.c: bool link_validate_dpia_bandwidth(const struct dc_stream_state *stream, const un
+    - 	struct dc_link *dpia_link[MAX_DPIA_NUM] = {0};
+    - 	int num_dpias = 0;
+    - 
+    --	for (uint8_t i = 0; i < num_streams; ++i) {
+    -+	for (unsigned int i = 0; i < num_streams; ++i) {
+    - 		if (stream[i].signal == SIGNAL_TYPE_DISPLAY_PORT) {
+    - 			/* new dpia sst stream, check whether it exceeds max dpia */
+    - 			if (num_dpias >= MAX_DPIA_NUM)
+---
 
-diff --git a/drivers/usb/host/ohci-spear.c b/drivers/usb/host/ohci-spear.c
-index 993f347c5c28..6f6ae6fadfe5 100644
---- a/drivers/usb/host/ohci-spear.c
-+++ b/drivers/usb/host/ohci-spear.c
-@@ -80,7 +80,9 @@ static int spear_ohci_hcd_drv_probe(struct platform_device *pdev)
- 	sohci_p = to_spear_ohci(hcd);
- 	sohci_p->clk = usbh_clk;
- 
--	clk_prepare_enable(sohci_p->clk);
-+	retval = clk_prepare_enable(sohci_p->clk);
-+	if (retval)
-+		goto err_put_hcd;
- 
- 	retval = usb_add_hcd(hcd, irq, 0);
- 	if (retval == 0) {
-@@ -103,8 +105,7 @@ static void spear_ohci_hcd_drv_remove(struct platform_device *pdev)
- 	struct spear_ohci *sohci_p = to_spear_ohci(hcd);
- 
- 	usb_remove_hcd(hcd);
--	if (sohci_p->clk)
--		clk_disable_unprepare(sohci_p->clk);
-+	clk_disable_unprepare(sohci_p->clk);
- 
- 	usb_put_hcd(hcd);
- }
-@@ -137,12 +138,15 @@ static int spear_ohci_hcd_drv_resume(struct platform_device *dev)
- 	struct usb_hcd *hcd = platform_get_drvdata(dev);
- 	struct ohci_hcd	*ohci = hcd_to_ohci(hcd);
- 	struct spear_ohci *sohci_p = to_spear_ohci(hcd);
-+	int ret;
- 
- 	if (time_before(jiffies, ohci->next_statechange))
- 		msleep(5);
- 	ohci->next_statechange = jiffies;
- 
--	clk_prepare_enable(sohci_p->clk);
-+	ret = clk_prepare_enable(sohci_p->clk);
-+	if (ret)
-+		return ret;
- 	ohci_resume(hcd, false);
- 	return 0;
- }
--- 
-2.25.1
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
