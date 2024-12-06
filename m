@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-99798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635C39E7373
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:20:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A760E9E7375
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2633188879A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:20:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 021821888A1E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B806920C471;
-	Fri,  6 Dec 2024 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4A32036FA;
+	Fri,  6 Dec 2024 15:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siNIj8oO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3xKi0PF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7345620C016;
-	Fri,  6 Dec 2024 15:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24FE1514CE;
+	Fri,  6 Dec 2024 15:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498385; cv=none; b=rPRUSOtf4n0LpWJx7dxujI2B5i6eqntWJ79u2yASl+RA2LFXRwcIMPE+bXsuRWoIzOeBuLvTom6RNDcpnIK5PehLEytkvzg8Xhivmilws3O4FOFEWsKzy+4vb3IR/w8Ux/gunoq1/OYCAFQ0rEnIi3h1Dcmez4syMBH7+6zOzlY=
+	t=1733498392; cv=none; b=qcZ5x+nJmcfJracXM2ho1vQ0KD3GgQUq7rH2ug1KA/rc1S8ZbAMSgu8i5SIxmLVZO/t4499x50mYXI1rhSxMEJlrAZCyS8sCcWbL0psrVs38VxyHkiUuYsfTe5LlnXYx/9eZHanJeXalxvshJG6eNZCB0OE8Pza7dZsnLftopzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498385; c=relaxed/simple;
-	bh=2YCMYZsliwyNJvj0FU1Xwu+CdtuLtiixfDwDIhLAAWI=;
+	s=arc-20240116; t=1733498392; c=relaxed/simple;
+	bh=t10JJ7hmK3YjteMChGu+snVLDW1kXR33ZPgQ5sfP7jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PK5t6jOPyjy1ahuCnOam0qicdW5GISdeT8OyBGgrSRwOg60tnlPwUOOj5bgYTfrKUqLo+FL/FcmmuZHjzV/uWcmkegmXyFJiEmKLm4yz9HPLLRHj3o20PvJ1XtrsqYeqcgwMbQfhVUT++nRaFtIgXupBs1gvzIH3CacY+r2Rxf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siNIj8oO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D573DC4CEDC;
-	Fri,  6 Dec 2024 15:19:44 +0000 (UTC)
+	 MIME-Version; b=ljj0p0XDo5MvavFbS4zV7ZXibgFBZ6usLvvZ8M1mJlaWhCqzzgU+RHQdBH7z8X+bjnXKdtHZ4yhUNtxlskpOq1t4r7eHk6UePRSmwoTtexfcd7VCCBjQPBJTjV/P38h4oPNBuSTaT2IVuqxYHy3IFZpMRgx8jvlMrSX+WhCH1t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3xKi0PF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650DBC4CED1;
+	Fri,  6 Dec 2024 15:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498385;
-	bh=2YCMYZsliwyNJvj0FU1Xwu+CdtuLtiixfDwDIhLAAWI=;
+	s=korg; t=1733498391;
+	bh=t10JJ7hmK3YjteMChGu+snVLDW1kXR33ZPgQ5sfP7jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siNIj8oOr1/6O5yMxS5XUdZtYUU6KQbllUA6Iq7ShPCYClcyEter4PNQKR1sOlbpa
-	 /Mgo37II4sZ2VJ8RSlozwmvfodbvFB/vYSxd75BQQ0y6DCq0knTtCV4YrWA5VRubrz
-	 UNdop/35Var13YkOkxmSfD8B0y2fP+XeJTB/OT4s=
+	b=r3xKi0PFrsoIUEqjhwe6qnDOW3Lq5XzDL8RRJfkpgRwyWZWPBcsaWIfAiXXbd5AWL
+	 fmXiOp41klTdH6LXnJpoo83lBfL5nl2noejL5CTCFXdpLLkSjOiRk6M6fdDE+enImm
+	 rulk6R7mCfl2n/nmUEtO3VSXTT7fe7MeYnS/1emY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 570/676] nvme/multipath: Fix RCU list traversal to use SRCU primitive
-Date: Fri,  6 Dec 2024 15:36:29 +0100
-Message-ID: <20241206143715.624527627@linuxfoundation.org>
+Subject: [PATCH 6.6 571/676] block: return unsigned int from bdev_io_min
+Date: Fri,  6 Dec 2024 15:36:30 +0100
+Message-ID: <20241206143715.662783500@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,105 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 5dd18f09ce7399df6fffe80d1598add46c395ae9 ]
+[ Upstream commit 46fd48ab3ea3eb3bb215684bd66ea3d260b091a9 ]
 
-The code currently uses list_for_each_entry_rcu() while holding an SRCU
-lock, triggering false positive warnings with CONFIG_PROVE_RCU=y
-enabled:
+The underlying limit is defined as an unsigned int, so return that from
+bdev_io_min as well.
 
-	drivers/nvme/host/multipath.c:168 RCU-list traversed in non-reader section!!
-	drivers/nvme/host/multipath.c:227 RCU-list traversed in non-reader section!!
-	drivers/nvme/host/multipath.c:260 RCU-list traversed in non-reader section!!
-
-While the list is properly protected by SRCU lock, the code uses the
-wrong list traversal primitive. Replace list_for_each_entry_rcu() with
-list_for_each_entry_srcu() to correctly indicate SRCU-based protection
-and eliminate the false warning.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Fixes: be647e2c76b2 ("nvme: use srcu for iterating namespace list")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: ac481c20ef8f ("block: Topology ioctls")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241119072602.1059488-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/multipath.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ include/linux/blkdev.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
-index 989d1e50fb8cc..32283301199f0 100644
---- a/drivers/nvme/host/multipath.c
-+++ b/drivers/nvme/host/multipath.c
-@@ -165,7 +165,8 @@ void nvme_kick_requeue_lists(struct nvme_ctrl *ctrl)
- 	int srcu_idx;
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index a7b65d4ab616e..ef35e9a9878c6 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1184,7 +1184,7 @@ static inline unsigned int queue_io_min(const struct request_queue *q)
+ 	return q->limits.io_min;
+ }
  
- 	srcu_idx = srcu_read_lock(&ctrl->srcu);
--	list_for_each_entry_rcu(ns, &ctrl->namespaces, list) {
-+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
-+				 srcu_read_lock_held(&ctrl->srcu)) {
- 		if (!ns->head->disk)
- 			continue;
- 		kblockd_schedule_work(&ns->head->requeue_work);
-@@ -209,7 +210,8 @@ void nvme_mpath_clear_ctrl_paths(struct nvme_ctrl *ctrl)
- 	int srcu_idx;
- 
- 	srcu_idx = srcu_read_lock(&ctrl->srcu);
--	list_for_each_entry_rcu(ns, &ctrl->namespaces, list) {
-+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
-+				 srcu_read_lock_held(&ctrl->srcu)) {
- 		nvme_mpath_clear_current_path(ns);
- 		kblockd_schedule_work(&ns->head->requeue_work);
- 	}
-@@ -224,7 +226,8 @@ void nvme_mpath_revalidate_paths(struct nvme_ns *ns)
- 	int srcu_idx;
- 
- 	srcu_idx = srcu_read_lock(&head->srcu);
--	list_for_each_entry_rcu(ns, &head->list, siblings) {
-+	list_for_each_entry_srcu(ns, &head->list, siblings,
-+				 srcu_read_lock_held(&head->srcu)) {
- 		if (capacity != get_capacity(ns->disk))
- 			clear_bit(NVME_NS_READY, &ns->flags);
- 	}
-@@ -256,7 +259,8 @@ static struct nvme_ns *__nvme_find_path(struct nvme_ns_head *head, int node)
- 	int found_distance = INT_MAX, fallback_distance = INT_MAX, distance;
- 	struct nvme_ns *found = NULL, *fallback = NULL, *ns;
- 
--	list_for_each_entry_rcu(ns, &head->list, siblings) {
-+	list_for_each_entry_srcu(ns, &head->list, siblings,
-+				 srcu_read_lock_held(&head->srcu)) {
- 		if (nvme_path_is_disabled(ns))
- 			continue;
- 
-@@ -355,7 +359,8 @@ static struct nvme_ns *nvme_queue_depth_path(struct nvme_ns_head *head)
- 	unsigned int min_depth_opt = UINT_MAX, min_depth_nonopt = UINT_MAX;
- 	unsigned int depth;
- 
--	list_for_each_entry_rcu(ns, &head->list, siblings) {
-+	list_for_each_entry_srcu(ns, &head->list, siblings,
-+				 srcu_read_lock_held(&head->srcu)) {
- 		if (nvme_path_is_disabled(ns))
- 			continue;
- 
-@@ -423,7 +428,8 @@ static bool nvme_available_path(struct nvme_ns_head *head)
- 	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags))
- 		return NULL;
- 
--	list_for_each_entry_rcu(ns, &head->list, siblings) {
-+	list_for_each_entry_srcu(ns, &head->list, siblings,
-+				 srcu_read_lock_held(&head->srcu)) {
- 		if (test_bit(NVME_CTRL_FAILFAST_EXPIRED, &ns->ctrl->flags))
- 			continue;
- 		switch (ns->ctrl->state) {
-@@ -784,7 +790,8 @@ static int nvme_update_ana_state(struct nvme_ctrl *ctrl,
- 		return 0;
- 
- 	srcu_idx = srcu_read_lock(&ctrl->srcu);
--	list_for_each_entry_rcu(ns, &ctrl->namespaces, list) {
-+	list_for_each_entry_srcu(ns, &ctrl->namespaces, list,
-+				 srcu_read_lock_held(&ctrl->srcu)) {
- 		unsigned nsid;
- again:
- 		nsid = le32_to_cpu(desc->nsids[n]);
+-static inline int bdev_io_min(struct block_device *bdev)
++static inline unsigned int bdev_io_min(struct block_device *bdev)
+ {
+ 	return queue_io_min(bdev_get_queue(bdev));
+ }
 -- 
 2.43.0
 
