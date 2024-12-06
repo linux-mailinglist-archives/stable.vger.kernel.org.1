@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-99326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123A99E7135
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 111299E713A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:53:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8727283139
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:53:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD34028230C
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436491FF7D1;
-	Fri,  6 Dec 2024 14:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08B31FBEB9;
+	Fri,  6 Dec 2024 14:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Z8+r+Et"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZvi7BYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F6B149C69;
-	Fri,  6 Dec 2024 14:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D3E1F8F13;
+	Fri,  6 Dec 2024 14:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496779; cv=none; b=obQtdobks+fuzoe7t0wYe+rHCSPB5qwGn5sXDQ2SzMUjZUMisAqYWHiYeBqUGeecJcHHAjMVqeThHthP0hG629TVovNji1YTH5D4jcOAcfm9YUtXh/eisQppXr00MRl+gnx15IlUh2h1qJ43e5yyXqSKTg1GTBzY37rOw53My7U=
+	t=1733496785; cv=none; b=gpyCqmkNLRlNK7BZBVIAbXDR6kD99Jj3F4Vq9ONI5hUATaucwTsTcteZkMA8R8mtUDxOkpi+gK2do58vLsNgstnQhi0B+yS9ar+pVq+ltY71VNXVPfYahqAp2/AL18YSvWdWs3DS2yvDhClxVNET16QqElybGOWFhHpXewlLcIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496779; c=relaxed/simple;
-	bh=qeIaPHyoVEXyYZJ7Bq/dlKlJOJEu6cH3ox5hdgR/oGE=;
+	s=arc-20240116; t=1733496785; c=relaxed/simple;
+	bh=oihSPhjL3dbZQIU/qxX+sogyP8W+sy81ih0eCg8LFbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5+TC6tnaozgf6opHwlddW3ty6Tyr7ZSFou2ncWywccqINSMQR2Yi0GvlHLibHCkjcEH5FSt/dxnDqDeR5mbgcqK6+pgyJ5cmgCLVBZpq/ZKwYy6DsKJlI7UxsRHsaQatfo2wl02kQBQ/qYxZZ/LAQqdB5ots0Hsvv20X5QZBdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Z8+r+Et; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCDAC4CED1;
-	Fri,  6 Dec 2024 14:52:58 +0000 (UTC)
+	 MIME-Version; b=Hl2Mej9YnmdqT061zbXZEWoGoLyrLM2IhXWaGkc9eFsmQkKBnT/B8caAvNlVjTvyiCseTVWxg9LcgJWXnw3MudRcNM2+KaBuJAjerqPw5rYuYqPrCDUGCf5rAMUJ7DQNDNHZDarzKMei+aah+6gGvio5Rq0yQ8QygJaOI+/B2SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZvi7BYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C07C4CED1;
+	Fri,  6 Dec 2024 14:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496778;
-	bh=qeIaPHyoVEXyYZJ7Bq/dlKlJOJEu6cH3ox5hdgR/oGE=;
+	s=korg; t=1733496785;
+	bh=oihSPhjL3dbZQIU/qxX+sogyP8W+sy81ih0eCg8LFbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Z8+r+Etzz5FYrgwU0fiornA7qW6VVLLgdDomBMmn6I6cnOI2sLHfklXDeBwZQikx
-	 1bdBOsVSLrM5bY/DyheI14hr2SWQKFceRfZXwcmwh40BTRXXA3l9mnZQmCiNFHVkXd
-	 wp6VhfdKoXXSQQ1uNP8LZu4KEEuXkm7T2CKlFkuc=
+	b=QZvi7BYz/lQU54HajHY7kXvEBi2o82mvgiV+OlnSGEHzXqY6Ls5o3/zCL5FtpKYTD
+	 qwh+9s1zyuX7Um5NG56fbdadfl5F8mu6mYywWQlfgxYAqgh35lrht8ajjer4OLMF9i
+	 rDR6FXfPfXv25v6iu50tQFJXBgBLmtu3eltH6xgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/676] crypto: cavium - Fix an error handling path in cpt_ucode_load_fw()
-Date: Fri,  6 Dec 2024 15:28:40 +0100
-Message-ID: <20241206143657.301639528@linuxfoundation.org>
+Subject: [PATCH 6.6 102/676] rcuscale: Do a proper cleanup if kfree_scale_init() fails
+Date: Fri,  6 Dec 2024 15:28:41 +0100
+Message-ID: <20241206143657.340487079@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,36 +69,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-[ Upstream commit 572b7cf08403b6c67dfe0dc3e0f2efb42443254f ]
+[ Upstream commit 812a1c3b9f7c36d9255f0d29d0a3d324e2f52321 ]
 
-If do_cpt_init() fails, a previous dma_alloc_coherent() call needs to be
-undone.
+A static analyzer for C, Smatch, reports and triggers below
+warnings:
 
-Add the needed dma_free_coherent() before returning.
+   kernel/rcu/rcuscale.c:1215 rcu_scale_init()
+   warn: inconsistent returns 'global &fullstop_mutex'.
 
-Fixes: 9e2c7d99941d ("crypto: cavium - Add Support for Octeon-tx CPT Engine")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The checker complains about, we do not unlock the "fullstop_mutex"
+mutex, in case of hitting below error path:
+
+<snip>
+...
+    if (WARN_ON_ONCE(jiffies_at_lazy_cb - jif_start < 2 * HZ)) {
+        pr_alert("ERROR: call_rcu() CBs are not being lazy as expected!\n");
+        WARN_ON_ONCE(1);
+        return -1;
+        ^^^^^^^^^^
+...
+<snip>
+
+it happens because "-1" is returned right away instead of
+doing a proper unwinding.
+
+Fix it by jumping to "unwind" label instead of returning -1.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Closes: https://lore.kernel.org/rcu/ZxfTrHuEGtgnOYWp@pc636/T/
+Fixes: 084e04fff160 ("rcuscale: Add laziness and kfree tests")
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/cavium/cpt/cptpf_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/rcu/rcuscale.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/cavium/cpt/cptpf_main.c b/drivers/crypto/cavium/cpt/cptpf_main.c
-index ec17beee24c07..54de869e5374c 100644
---- a/drivers/crypto/cavium/cpt/cptpf_main.c
-+++ b/drivers/crypto/cavium/cpt/cptpf_main.c
-@@ -302,6 +302,8 @@ static int cpt_ucode_load_fw(struct cpt_device *cpt, const u8 *fw, bool is_ae)
+diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
+index ed46d9e8c0e43..902575db9aec3 100644
+--- a/kernel/rcu/rcuscale.c
++++ b/kernel/rcu/rcuscale.c
+@@ -780,13 +780,15 @@ kfree_scale_init(void)
+ 		if (WARN_ON_ONCE(jiffies_at_lazy_cb - jif_start < 2 * HZ)) {
+ 			pr_alert("ERROR: call_rcu() CBs are not being lazy as expected!\n");
+ 			WARN_ON_ONCE(1);
+-			return -1;
++			firsterr = -1;
++			goto unwind;
+ 		}
  
- 	ret = do_cpt_init(cpt, mcode);
- 	if (ret) {
-+		dma_free_coherent(&cpt->pdev->dev, mcode->code_size,
-+				  mcode->code, mcode->phys_base);
- 		dev_err(dev, "do_cpt_init failed with ret: %d\n", ret);
- 		goto fw_release;
+ 		if (WARN_ON_ONCE(jiffies_at_lazy_cb - jif_start > 3 * HZ)) {
+ 			pr_alert("ERROR: call_rcu() CBs are being too lazy!\n");
+ 			WARN_ON_ONCE(1);
+-			return -1;
++			firsterr = -1;
++			goto unwind;
+ 		}
  	}
+ 
 -- 
 2.43.0
 
