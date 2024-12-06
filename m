@@ -1,99 +1,215 @@
-Return-Path: <stable+bounces-99017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96D29E6DB6
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:05:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ED89E6DB7
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:05:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C66A2832DF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:05:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23A182821B0
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2F31FF61F;
-	Fri,  6 Dec 2024 12:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B619120010E;
+	Fri,  6 Dec 2024 12:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="maxeOqkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9O4mpMe"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DFA1DACB4
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B0A1DF253
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733486708; cv=none; b=UI2xS86nujn46VnVB7EL8814Dv2b6r4Cx6egyneSxTWayfEoh2UCpoSWeJnXspE2OgviFOFq8AU/LCoTSBQIHT2e7yNLmime+W47YEp9UqQEFYYbu6KZsUlozy46O1+JiqefzI2SXANQYQvbu07bxet/drW4PCEEbrAYAwnnGjE=
+	t=1733486752; cv=none; b=q1ycdjb4moO4WUMji1yBydKhTLpL8F3YExaYNRe3dWHHDw0NPl2j+LBISF429CiwhDkzp0GBCjsZ12GcnK4hrYk3sfzco6C0XUPBNkvpHclioFlaWiMKkyeBjidzJ1Ls87Lcx06HkOy4UT+N6jin/DMAYBpTziiFw5aCTnztxck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733486708; c=relaxed/simple;
-	bh=15ZGA/H3waoF9a4W4RKfRvAYTv1FcSPpobCc6GnYdKg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mrb6Qol1LKElSquRxexJHDfIuBkPKZZdth/lHaURQTCGwcrs2LLpfVpGDgCk93/Q45xRgK/j1otjb/CKq8DMSCNV3sO/I7K6/bS1S7yccHAa56BeRWr8zK59SA4m91BRfid9hs7ig512r6s4Ix/pfKJSzWPWhgwB574GJywgglU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=maxeOqkS; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 58DE814C1E1;
-	Fri,  6 Dec 2024 13:04:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1733486697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x11F1HTMcCp9ZHykZGrsIkXnqprWtAytoR7C2HpqSts=;
-	b=maxeOqkS9w/ixz7rsuvXuYc0ts4oylsDJ+L0p2t8zgou6gtzsCt6+aLAj5kRQ/wxP53Zoy
-	D8dmG5f7WnMu+gV5EQH6f6f3k5SPZZy+TOy3GgYjni4ZByL4LVNrDWUVXZH4bPiipmv0kh
-	mBD/0usaH52treeclWryfmoD4zhGTEs4BxdZ8SOEmqzGeAvDdKApcB7FvrTIzpYxbtkk2F
-	u5Bp5aoE0pJyorU3yt8m6qvnD1hOrRqOevm/VlCCwwvMkY0+U7wcq54gwMOQpRpeg+XkQY
-	m+nsueA8Ogmn22nXOz8vYF+QWwuES9Os0t8BM8woQAG25kYXmCBFRoOBHkyssg==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id bdeee390;
-	Fri, 6 Dec 2024 12:04:54 +0000 (UTC)
-Date: Fri, 6 Dec 2024 21:04:39 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Salvatore Bonaccorso <carnil@debian.org>, Kees Cook <kees@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: please revert backport of
- 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d
-Message-ID: <Z1LoVw0ei1rm9MTO@codewreck.org>
-References: <202411210628.ECF1B494D7@keescook>
- <4ef74a1c-a261-487b-891c-56c44863daea@tls.msk.ru>
- <Z1FOMMxv8bVt8RC3@eldamar.lan>
- <2024120519-chamber-despise-c179@gregkh>
- <Z1FUxY74Gze-5J3N@eldamar.lan>
- <dbc8f688-46db-427c-8177-ab7c26233eaf@tls.msk.ru>
+	s=arc-20240116; t=1733486752; c=relaxed/simple;
+	bh=fz5fIDIpu3a2mjZ5yMxhAw4pAip9SwMnNbkXEwwoNlQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aB01XeTlaHm+HXqppoKwZr7sfVgbRC/vwwaMdq4Mw2NdWBfkb1ofO6K+F7Q1mSvKvuhAVRH7xey0DCCrwavgEBOhC7DATC5Dzyq1c7RDaE9fiybzc11p1af6X7WySVKoBuH3E9l9GE4+hr4Vps5FlHuZ/LiuJ9xdQ63ChdHX3HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9O4mpMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D40DC4CEDD;
+	Fri,  6 Dec 2024 12:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733486751;
+	bh=fz5fIDIpu3a2mjZ5yMxhAw4pAip9SwMnNbkXEwwoNlQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=h9O4mpMegp+ewuXMPazydoB34QODTeeVDZPnMdPvM1DkMoQMqY6ka+FkOKDdV4AAV
+	 E3ya3dFPWecjwZwS6mXONS9dgIFkir2nqoMwJ2kItYlLrSh6xzT9YB5n7X+v2Sx/1K
+	 0PrThOu4HbXWJ+Ow7kyen0DIcOTbH2WMOBBPxfe0=
+Subject: FAILED: patch "[PATCH] mm/slub: Avoid list corruption when removing a slab from the" failed to apply to 6.1-stable tree
+To: yuan.gao@ucloud.cn,42.hyeyoo@gmail.com,cl@linux.com,stable@vger.kernel.org,vbabka@suse.cz
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 06 Dec 2024 13:05:48 +0100
+Message-ID: <2024120648-unwound-scavenger-a298@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <dbc8f688-46db-427c-8177-ab7c26233eaf@tls.msk.ru>
-
-Hi mjt,
-
-Michael Tokarev wrote on Thu, Dec 05, 2024 at 10:35:26AM +0300:
-> It would be great to fix this in debian, yes.  It's a debian matter
-> anyway, for details there's no need to bother kernel people.
-> Please see #1088273.  Fixed qemu release should come together with
-> the updated kernel in debian -- if it will be next point release,
-> so be it, but if the kernel goes before, we should pick qemu too,
-> because else we'll re-introduce #1087822.
-
-The kernel aleady shipped in debian a while ago, hence the bug
-reports :)
-
-More precisely, the "bad" commit b0cde867b80 (in 6.1 tree) made it in
-6.1.107, and debian stable has been shipping it since the 6.1.112 update
-on the 3rd of October[1][2], so we've been here for a while now
-
-[1] https://tracker.debian.org/pkg/linux-signed-amd64
-[2] https://tracker.debian.org/news/1571617/accepted-linux-signed-amd64-611121-source-into-stable-security/
 
 
-Cheers,
--- 
-Dominique Martinet | Asmadeus
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x dbc16915279a548a204154368da23d402c141c81
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120648-unwound-scavenger-a298@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From dbc16915279a548a204154368da23d402c141c81 Mon Sep 17 00:00:00 2001
+From: "yuan.gao" <yuan.gao@ucloud.cn>
+Date: Fri, 18 Oct 2024 14:44:35 +0800
+Subject: [PATCH] mm/slub: Avoid list corruption when removing a slab from the
+ full list
+
+Boot with slub_debug=UFPZ.
+
+If allocated object failed in alloc_consistency_checks, all objects of
+the slab will be marked as used, and then the slab will be removed from
+the partial list.
+
+When an object belonging to the slab got freed later, the remove_full()
+function is called. Because the slab is neither on the partial list nor
+on the full list, it eventually lead to a list corruption (actually a
+list poison being detected).
+
+So we need to mark and isolate the slab page with metadata corruption,
+do not put it back in circulation.
+
+Because the debug caches avoid all the fastpaths, reusing the frozen bit
+to mark slab page with metadata corruption seems to be fine.
+
+[ 4277.385669] list_del corruption, ffffea00044b3e50->next is LIST_POISON1 (dead000000000100)
+[ 4277.387023] ------------[ cut here ]------------
+[ 4277.387880] kernel BUG at lib/list_debug.c:56!
+[ 4277.388680] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+[ 4277.389562] CPU: 5 PID: 90 Comm: kworker/5:1 Kdump: loaded Tainted: G           OE      6.6.1-1 #1
+[ 4277.392113] Workqueue: xfs-inodegc/vda1 xfs_inodegc_worker [xfs]
+[ 4277.393551] RIP: 0010:__list_del_entry_valid_or_report+0x7b/0xc0
+[ 4277.394518] Code: 48 91 82 e8 37 f9 9a ff 0f 0b 48 89 fe 48 c7 c7 28 49 91 82 e8 26 f9 9a ff 0f 0b 48 89 fe 48 c7 c7 58 49 91
+[ 4277.397292] RSP: 0018:ffffc90000333b38 EFLAGS: 00010082
+[ 4277.398202] RAX: 000000000000004e RBX: ffffea00044b3e50 RCX: 0000000000000000
+[ 4277.399340] RDX: 0000000000000002 RSI: ffffffff828f8715 RDI: 00000000ffffffff
+[ 4277.400545] RBP: ffffea00044b3e40 R08: 0000000000000000 R09: ffffc900003339f0
+[ 4277.401710] R10: 0000000000000003 R11: ffffffff82d44088 R12: ffff888112cf9910
+[ 4277.402887] R13: 0000000000000001 R14: 0000000000000001 R15: ffff8881000424c0
+[ 4277.404049] FS:  0000000000000000(0000) GS:ffff88842fd40000(0000) knlGS:0000000000000000
+[ 4277.405357] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 4277.406389] CR2: 00007f2ad0b24000 CR3: 0000000102a3a006 CR4: 00000000007706e0
+[ 4277.407589] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 4277.408780] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 4277.410000] PKRU: 55555554
+[ 4277.410645] Call Trace:
+[ 4277.411234]  <TASK>
+[ 4277.411777]  ? die+0x32/0x80
+[ 4277.412439]  ? do_trap+0xd6/0x100
+[ 4277.413150]  ? __list_del_entry_valid_or_report+0x7b/0xc0
+[ 4277.414158]  ? do_error_trap+0x6a/0x90
+[ 4277.414948]  ? __list_del_entry_valid_or_report+0x7b/0xc0
+[ 4277.415915]  ? exc_invalid_op+0x4c/0x60
+[ 4277.416710]  ? __list_del_entry_valid_or_report+0x7b/0xc0
+[ 4277.417675]  ? asm_exc_invalid_op+0x16/0x20
+[ 4277.418482]  ? __list_del_entry_valid_or_report+0x7b/0xc0
+[ 4277.419466]  ? __list_del_entry_valid_or_report+0x7b/0xc0
+[ 4277.420410]  free_to_partial_list+0x515/0x5e0
+[ 4277.421242]  ? xfs_iext_remove+0x41a/0xa10 [xfs]
+[ 4277.422298]  xfs_iext_remove+0x41a/0xa10 [xfs]
+[ 4277.423316]  ? xfs_inodegc_worker+0xb4/0x1a0 [xfs]
+[ 4277.424383]  xfs_bmap_del_extent_delay+0x4fe/0x7d0 [xfs]
+[ 4277.425490]  __xfs_bunmapi+0x50d/0x840 [xfs]
+[ 4277.426445]  xfs_itruncate_extents_flags+0x13a/0x490 [xfs]
+[ 4277.427553]  xfs_inactive_truncate+0xa3/0x120 [xfs]
+[ 4277.428567]  xfs_inactive+0x22d/0x290 [xfs]
+[ 4277.429500]  xfs_inodegc_worker+0xb4/0x1a0 [xfs]
+[ 4277.430479]  process_one_work+0x171/0x340
+[ 4277.431227]  worker_thread+0x277/0x390
+[ 4277.431962]  ? __pfx_worker_thread+0x10/0x10
+[ 4277.432752]  kthread+0xf0/0x120
+[ 4277.433382]  ? __pfx_kthread+0x10/0x10
+[ 4277.434134]  ret_from_fork+0x2d/0x50
+[ 4277.434837]  ? __pfx_kthread+0x10/0x10
+[ 4277.435566]  ret_from_fork_asm+0x1b/0x30
+[ 4277.436280]  </TASK>
+
+Fixes: 643b113849d8 ("slub: enable tracking of full slabs")
+Suggested-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: yuan.gao <yuan.gao@ucloud.cn>
+Reviewed-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Acked-by: Christoph Lameter <cl@linux.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+
+diff --git a/mm/slab.h b/mm/slab.h
+index 298567019485..632fedd71fea 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -73,6 +73,11 @@ struct slab {
+ 						struct {
+ 							unsigned inuse:16;
+ 							unsigned objects:15;
++							/*
++							 * If slab debugging is enabled then the
++							 * frozen bit can be reused to indicate
++							 * that the slab was corrupted
++							 */
+ 							unsigned frozen:1;
+ 						};
+ 					};
+diff --git a/mm/slub.c b/mm/slub.c
+index 4284cbe41d0d..ccbdd7eb37a8 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1409,6 +1409,11 @@ static int check_slab(struct kmem_cache *s, struct slab *slab)
+ 			slab->inuse, slab->objects);
+ 		return 0;
+ 	}
++	if (slab->frozen) {
++		slab_err(s, slab, "Slab disabled since SLUB metadata consistency check failed");
++		return 0;
++	}
++
+ 	/* Slab_pad_check fixes things up after itself */
+ 	slab_pad_check(s, slab);
+ 	return 1;
+@@ -1589,6 +1594,7 @@ static noinline bool alloc_debug_processing(struct kmem_cache *s,
+ 		slab_fix(s, "Marking all objects used");
+ 		slab->inuse = slab->objects;
+ 		slab->freelist = NULL;
++		slab->frozen = 1; /* mark consistency-failed slab as frozen */
+ 	}
+ 	return false;
+ }
+@@ -2730,7 +2736,8 @@ static void *alloc_single_from_partial(struct kmem_cache *s,
+ 	slab->inuse++;
+ 
+ 	if (!alloc_debug_processing(s, slab, object, orig_size)) {
+-		remove_partial(n, slab);
++		if (folio_test_slab(slab_folio(slab)))
++			remove_partial(n, slab);
+ 		return NULL;
+ 	}
+ 
+
 
