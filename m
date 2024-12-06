@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-98922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15929E6532
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C53A39E6533
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:55:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 553D41696BE
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:55:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F4FD1695B3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8898119415E;
-	Fri,  6 Dec 2024 03:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AEF192D9C;
+	Fri,  6 Dec 2024 03:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VNXNZvbW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="p8/QgNYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471FB193409;
-	Fri,  6 Dec 2024 03:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB2A1925AD;
+	Fri,  6 Dec 2024 03:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733457329; cv=none; b=mOjTOwRNzAQrMqNixnWnjY4cG8b5nIIpBJLOmqg/DUUtZEkindxipiXr+wYmqGwbPHjOGcGiAZFFuJ/e5y6nlTABwUgsd6O4VPN71qWj1bfMkboEDhjYbdTvbuIXwiaXy2EI0uMLjfZus4CcVobaANdkySBv6ulgcvq1dlmz6oY=
+	t=1733457331; cv=none; b=KVEUKGqChbFYnWkq5n4428bOqu2LSOINKcB0oKDo0dxbfhYW3gVmbO7eTE3p9yGO3Ug36whPaQfBqaAyqvA0YxbfU1FhVGSqgOyqV+IJM28RgMCZCfdJ/gVxiR25G9bN40uTsj70jMq7Ro9lqEn11hH9y+f4Byz2ee+FUMejjVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733457329; c=relaxed/simple;
-	bh=Qxk3jYUeuT9pRsujYeFRJuHeB33yVy/64Gm11Z+XUTk=;
-	h=Date:To:From:Subject:Message-Id; b=Of0MskpgkneRCTaR27S+fiYNeJvdW/yD2MLOTA/xuSOSCNOXwdH7QCodo8PMIz4oOZosOAiOrZEER8nqsyaB7jC+II3F6FvPUGM/VQezX3uS0ExYEdFO5zJFQZ2fuJvVcNogSY7ejTuvFt3HgFRI/P04xcDVA1j1Lb5oC/MeNR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VNXNZvbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0C1C4CED1;
-	Fri,  6 Dec 2024 03:55:28 +0000 (UTC)
+	s=arc-20240116; t=1733457331; c=relaxed/simple;
+	bh=undpJr0uf9zK2ZhFWj8IX1JsuZfiL69D2nr2WCzb1w0=;
+	h=Date:To:From:Subject:Message-Id; b=BjunppbDbBlxgbNhuzXQxJTsUcOfw2CtXEdEn2U4UtbI0AozhwmKIFMQ+kfv/o9b8XyXr3oPengJiv8qQL75ZHvQRjJ3ympdv+ITIpbcMzshYLhY1F3q1rN7+cYmRUZ+JdWaQcidVtncP5PqZ2yg+CKQ617YRyUmA2HEvT84x2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=p8/QgNYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34583C4CED1;
+	Fri,  6 Dec 2024 03:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1733457328;
-	bh=Qxk3jYUeuT9pRsujYeFRJuHeB33yVy/64Gm11Z+XUTk=;
+	s=korg; t=1733457331;
+	bh=undpJr0uf9zK2ZhFWj8IX1JsuZfiL69D2nr2WCzb1w0=;
 	h=Date:To:From:Subject:From;
-	b=VNXNZvbW/FZCny+fIPCS72/VfDQ8jST5q4A+xWODKlg80MqAJmiAb+EkAnwUHH8IF
-	 R7eOvwDsyESL/uHXe03g4hfpdCVN4BP9xLmiobi8CIt5rusCy9c9XYwm2sbQ5in3ZA
-	 hyCqTb/2/GHBqhYB/z0y1js8SOZ0EO5+s66aLBXk=
-Date: Thu, 05 Dec 2024 19:55:28 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,wen.gang.wang@oracle.com,akpm@linux-foundation.org
+	b=p8/QgNYQXzVSdc9ojJq3nAD6Qt6M9qX5Z/3ODdUNww241YfbYiaO391B5OvxpGS8e
+	 ESHrc8xnhvpaNh9V1L6X24g/sTNctlsDNeixxLoqLmGbUjtFQtEYu6S/HalReK/WFP
+	 BOsIEYCIadx80Qk2CqPgB58Gy7M7RWonIXKPDfEU=
+Date: Thu, 05 Dec 2024 19:55:30 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hannes@cmpxchg.org,jsperbeck@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2.patch removed from -mm tree
-Message-Id: <20241206035528.CB0C1C4CED1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-memcg-declare-do_memsw_account-inline.patch removed from -mm tree
+Message-Id: <20241206035531.34583C4CED1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,55 +50,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ocfs2: update seq_file index in ocfs2_dlm_seq_next
+     Subject: mm: memcg: declare do_memsw_account inline
 has been removed from the -mm tree.  Its filename was
-     ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2.patch
+     mm-memcg-declare-do_memsw_account-inline.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Wengang Wang <wen.gang.wang@oracle.com>
-Subject: ocfs2: update seq_file index in ocfs2_dlm_seq_next
-Date: Tue, 19 Nov 2024 09:45:00 -0800
+From: John Sperbeck <jsperbeck@google.com>
+Subject: mm: memcg: declare do_memsw_account inline
+Date: Thu, 28 Nov 2024 12:39:59 -0800
 
-The following INFO level message was seen:
+In commit 66d60c428b23 ("mm: memcg: move legacy memcg event code into
+memcontrol-v1.c"), the static do_memsw_account() function was moved from a
+.c file to a .h file.  Unfortunately, the traditional inline keyword
+wasn't added.  If a file (e.g., a unit test) includes the .h file, but
+doesn't refer to do_memsw_account(), it will get a warning like:
 
-seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
-update position index
+mm/memcontrol-v1.h:41:13: warning: unused function 'do_memsw_account' [-Wunused-function]
+   41 | static bool do_memsw_account(void)
+      |             ^~~~~~~~~~~~~~~~
 
-Fix:
-Update *pos (so m->index) to make seq_read_iter happy though the index its
-self makes no sense to ocfs2_dlm_seq_next.
-
-Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
-Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
+Link: https://lkml.kernel.org/r/20241128203959.726527-1-jsperbeck@google.com
+Fixes: 66d60c428b23 ("mm: memcg: move legacy memcg event code into memcontrol-v1.c")
+Signed-off-by: John Sperbeck <jsperbeck@google.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/dlmglue.c |    1 +
- 1 file changed, 1 insertion(+)
+ mm/memcontrol-v1.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ocfs2/dlmglue.c~ocfs2-update-seq_file-index-in-ocfs2_dlm_seq_next-v2
-+++ a/fs/ocfs2/dlmglue.c
-@@ -3110,6 +3110,7 @@ static void *ocfs2_dlm_seq_next(struct s
- 	struct ocfs2_lock_res *iter = v;
- 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
+--- a/mm/memcontrol-v1.h~mm-memcg-declare-do_memsw_account-inline
++++ a/mm/memcontrol-v1.h
+@@ -38,7 +38,7 @@ void mem_cgroup_id_put_many(struct mem_c
+ 	     iter = mem_cgroup_iter(NULL, iter, NULL))
  
-+	(*pos)++;
- 	spin_lock(&ocfs2_dlm_tracking_lock);
- 	iter = ocfs2_dlm_next_res(iter, priv);
- 	list_del_init(&dummy->l_debug_list);
+ /* Whether legacy memory+swap accounting is active */
+-static bool do_memsw_account(void)
++static inline bool do_memsw_account(void)
+ {
+ 	return !cgroup_subsys_on_dfl(memory_cgrp_subsys);
+ }
 _
 
-Patches currently in -mm which might be from wen.gang.wang@oracle.com are
+Patches currently in -mm which might be from jsperbeck@google.com are
 
 
 
