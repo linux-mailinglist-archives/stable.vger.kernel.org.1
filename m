@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-99966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AC99E76C3
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D443A9E76C4
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3156B1884737
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F221D165829
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B381F3D49;
-	Fri,  6 Dec 2024 17:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 714FB1F63F0;
+	Fri,  6 Dec 2024 17:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OVsu1gs/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YmX9W788"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44372206274
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317B1206274
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733505097; cv=none; b=aok+p1kjhK+Bgi6eg5cwJQDA6fu8/QKb0Dpby5zUMpWWUkO4Vql1gSn4oFBmLHN4HzVU9o2wpzG9A1sQ0EFjOUaH18vR32z6EF+DesVKEmYOKfk3BInGj0+QCfIndOml/l5dTZtue929f8dqVizwlQAF/Dg5X6KhkS6olSIVic8=
+	t=1733505099; cv=none; b=loruE0uMpDCkkYPI8//ZT2bU6Hs8B12IWFupGujdsJE1CCK80qBJUxmDS/3kXTs42f0tmfzOK0OduzMd0qis0Gm1Q1gIiteIzfgeShmg5soh4IXKNSov44BPdWv2eDjrJDQqy9cNce583scOShlyld6szg4ina6oOSyZFU+Ydxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733505097; c=relaxed/simple;
-	bh=5ekITlpIjkDRYpU6jMjpl7ymzL7L9AE8hCNf1ASHqlE=;
+	s=arc-20240116; t=1733505099; c=relaxed/simple;
+	bh=5kRysu/B0XH6D3HeWDMik/x9a2/nLAzhVll9gw7Q+Js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=louQsxqlaEKsC2K9KHCgXZZozFlIJXXmWZnVHGLAbkQjPJmbVjYit5ZvC23XFyRfdjbqX/HtEEWjlcBb/NsVK+l4tHZNCw875kQpHSyhv/JK8CS01//+IzsfF5azKOqvFByxsDn17rvUosfRSO0qTwyU3djQpHTXvJVAF9FiP34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OVsu1gs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471DAC4CED1;
-	Fri,  6 Dec 2024 17:11:36 +0000 (UTC)
+	 MIME-Version; b=Tt1AZ+6ILrt1tfnsNdQLloR/LXFMTJ2aZbctLhYbbxEtGNCqdn91+7s+f7mGL/pF+3eidzGHIdzz1cE3WllOoh7uKRJgOcLVVq0/cDBEdgMatYYtHGGzvW0vkeRV568b9ZgZuNiDxrjkGzkIu8Fd38mwk9y1X4AYTGY64YQSR+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YmX9W788; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F36EC4CED1;
+	Fri,  6 Dec 2024 17:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733505096;
-	bh=5ekITlpIjkDRYpU6jMjpl7ymzL7L9AE8hCNf1ASHqlE=;
+	s=k20201202; t=1733505098;
+	bh=5kRysu/B0XH6D3HeWDMik/x9a2/nLAzhVll9gw7Q+Js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVsu1gs/xAgk3oLhLXYT+XDw+5DBKVuT7Sig5dMC0Pu7SUmao5J0fT0JuZnHOwCmK
-	 xlJZMQ9EYEa5GYklO7/ZR4uxHijfzUGF3oOuwHSftP7FnZ+lq6EGix2T5NzxPqHHSP
-	 4XQGD3dt+7AamPZ/jxzzvEuyMCIcupBLpglL106Pjw2+YlF+WS1dWwZXQlvx98hrxG
-	 KNVv1cxF9V4nJM+DPXWGBlM1BlPfMicAZjPyWeD3p7poa0I6/YIJsZnazpsNY7bywr
-	 //nPWPH/21+LmOsqITcoOU3PLj8wOuf9WYxsXaZuXNKJAkXp96Ll1xz6tVmfWcmmpG
-	 LdDXzYh0FFSxQ==
+	b=YmX9W788RXctwp5SnkhrbMS+ab8se6ND8qOAianLT1GNm2RA8N+Ca2cV0Rlbl/0jy
+	 hH4N0j+50WZZY67SQCWzNK3ZiSuWFJeRBftdkTrFcnPswgLY0KDYY2TDHvFubkpcJt
+	 6WOr/6r/VWgUCliQ1NtEiI9NkqGOmAkry0Tn2/8UigLzq6/ooCX2xND1WQslA6Ksnd
+	 haetW6e+nDwQddmS1fMTZa3kiQo6nw+ZHfbwKpHSElGq3SfU6lh3GYFVI9I+F1kJgr
+	 qSPz8xouUEMhJfo9lYp3Zo7/+/75wcwTdhzQYWIEWxsrL16HqOaLqW7ELEguy0uWEM
+	 gF8uCo6G5XrFA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
+Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] media: uvcvideo: Require entities to have a non-zero unique ID
-Date: Fri,  6 Dec 2024 12:11:35 -0500
-Message-ID: <20241206101637-f53e835a4a2c9d82@stable.kernel.org>
+Subject: Re: [PATCH 5.15] arm64/sve: Discard stale CPU state when handling SVE traps
+Date: Fri,  6 Dec 2024 12:11:36 -0500
+Message-ID: <20241206113330-219cac939ed049d0@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241206125901.49354-1-ribalda@chromium.org>
+In-Reply-To:  <20241206141119.203712-1-broonie@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,86 +63,24 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: 3dd075fe8ebbc6fcbf998f81a75b8c4b159a6195
-
-WARNING: Author mismatch between patch and found commit:
-Backport author: Ricardo Ribalda <ribalda@chromium.org>
-Commit author: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Found matching upstream commit: 751ecf6afd6568adc98f2a6052315552c0483d18
 
 
 Status in newer kernel trees:
-6.12.y | Not found
-6.6.y | Not found
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 51d11ea0250d)
 6.1.y | Not found
 5.15.y | Not found
-5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  3dd075fe8ebbc ! 1:  9b7a621838d34 media: uvcvideo: Require entities to have a non-zero unique ID
-    @@ Commit message
-         Link: https://lore.kernel.org/r/20240913180601.1400596-2-cascardo@igalia.com
-         Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-         Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-    +    (cherry picked from commit 3dd075fe8ebbc6fcbf998f81a75b8c4b159a6195)
-     
-      ## drivers/media/usb/uvc/uvc_driver.c ##
-    -@@ drivers/media/usb/uvc/uvc_driver.c: static const u8 uvc_media_transport_input_guid[16] =
-    - 	UVC_GUID_UVC_MEDIA_TRANSPORT_INPUT;
-    - static const u8 uvc_processing_guid[16] = UVC_GUID_UVC_PROCESSING;
-    +@@ drivers/media/usb/uvc/uvc_driver.c: static int uvc_parse_streaming(struct uvc_device *dev,
-    + 	return ret;
-    + }
-      
-    --static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
-    +-static struct uvc_entity *uvc_alloc_entity(u16 type, u8 id,
-     -		unsigned int num_pads, unsigned int extra_size)
-     +static struct uvc_entity *uvc_alloc_new_entity(struct uvc_device *dev, u16 type,
-     +					       u16 id, unsigned int num_pads,
-    @@ drivers/media/usb/uvc/uvc_driver.c: static const u8 uvc_media_transport_input_gu
-      	extra_size = roundup(extra_size, sizeof(*entity->pads));
-      	if (num_pads)
-      		num_inputs = type & UVC_TERM_OUTPUT ? num_pads : num_pads - 1;
-    -@@ drivers/media/usb/uvc/uvc_driver.c: static struct uvc_entity *uvc_alloc_entity(u16 type, u16 id,
-    +@@ drivers/media/usb/uvc/uvc_driver.c: static struct uvc_entity *uvc_alloc_entity(u16 type, u8 id,
-      	     + num_inputs;
-      	entity = kzalloc(size, GFP_KERNEL);
-      	if (entity == NULL)
-    @@ drivers/media/usb/uvc/uvc_driver.c: static int uvc_parse_vendor_control(struct u
-     +		if (IS_ERR(unit))
-     +			return PTR_ERR(unit);
-      
-    - 		memcpy(unit->guid, &buffer[4], 16);
-    + 		memcpy(unit->extension.guidExtensionCode, &buffer[4], 16);
-      		unit->extension.bNumControls = buffer[20];
-     @@ drivers/media/usb/uvc/uvc_driver.c: static int uvc_parse_standard_control(struct uvc_device *dev,
-      			return -EINVAL;
-    @@ drivers/media/usb/uvc/uvc_driver.c: static int uvc_parse_standard_control(struct
-     +		if (IS_ERR(unit))
-     +			return PTR_ERR(unit);
-      
-    - 		memcpy(unit->guid, &buffer[4], 16);
-    + 		memcpy(unit->extension.guidExtensionCode, &buffer[4], 16);
-      		unit->extension.bNumControls = buffer[20];
-    -@@ drivers/media/usb/uvc/uvc_driver.c: static int uvc_gpio_parse(struct uvc_device *dev)
-    - 		return dev_err_probe(&dev->udev->dev, irq,
-    - 				     "No IRQ for privacy GPIO\n");
-    - 
-    --	unit = uvc_alloc_entity(UVC_EXT_GPIO_UNIT, UVC_EXT_GPIO_UNIT_ID, 0, 1);
-    --	if (!unit)
-    --		return -ENOMEM;
-    -+	unit = uvc_alloc_new_entity(dev, UVC_EXT_GPIO_UNIT,
-    -+				    UVC_EXT_GPIO_UNIT_ID, 0, 1);
-    -+	if (IS_ERR(unit))
-    -+		return PTR_ERR(unit);
-    - 
-    - 	unit->gpio.gpio_privacy = gpio_privacy;
-    - 	unit->gpio.irq = irq;
+1:  751ecf6afd656 < -:  ------------- arm64/sve: Discard stale CPU state when handling SVE traps
+-:  ------------- > 1:  d4ee6a25278c5 arm64/sve: Discard stale CPU state when handling SVE traps
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
