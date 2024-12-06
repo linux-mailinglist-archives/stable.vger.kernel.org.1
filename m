@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-99455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1699E71C8
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:00:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F049E71D4
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:01:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6744A18877B7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:00:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6411E28338F
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40461537D4;
-	Fri,  6 Dec 2024 15:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FEA13D508;
+	Fri,  6 Dec 2024 15:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nee1NuUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymV6uyfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9210A13AA5F;
-	Fri,  6 Dec 2024 15:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B341E871;
+	Fri,  6 Dec 2024 15:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497222; cv=none; b=RvJ3dekThznzUujiaoA1c5FS5iDuI8YdiwbRkpG/k5KD4UG5CEgw5XwkQcnIkWTGh3drn6W1jPGWvPyPmlDQtvJZv+wIo5cc/xD+sPhmxSjkEIK+d6cffwoqgXimTkP+eqgfQmgUeA5QG/kktRXx07NwHe7VXiU/QC6Vlan5hHk=
+	t=1733497260; cv=none; b=eAm2ExjaFR7VK2Tn2f1RUi70K5PHCg3xPlw+Kp4EeJ8hOBzSE3ratS+FzyTDKz0vYyTjiwmdhQ5rlj4DzK2qB/kTpA/petwpxJwE5cnZhmMvdsW8OZsy2UdSx3bMOfJXZ8pgD1KzvlwUA3O+lciRfqFlzAa9UcwHoC8RdGrlGng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497222; c=relaxed/simple;
-	bh=xwKc2UONLDEE2gumSuKGcDYSV+hUXPRMUHKrW1A3uOs=;
+	s=arc-20240116; t=1733497260; c=relaxed/simple;
+	bh=cKKoyPVgDdy4ujgqy88L6rSBLqvwSrzdd7ip1n4b/5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRfDEKtaPS+nzi9QPl7cPyl8kcy2XO/qN9fBne/kqNQoodp9e44yFjB33nPOV3YDGixnIiTjmgUPLVtC+l8Pmca09AcsnCQWGrq9B6DAfFL9VUvsN1Mu1CMUTtw/tz2F0cMS33oWBaap8G4YbQHOguvt4p3Eg3RbuAN8iam4u88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nee1NuUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017DCC4CED1;
-	Fri,  6 Dec 2024 15:00:21 +0000 (UTC)
+	 MIME-Version; b=nvHo9t2ec9iLHGErflzPraf7JeI0cypTv+glwxZaj8JiDEUF5HyT0+33WXmMIhOyBJnb15V0KHrfCDMwQ7Qwcj/MrEWvItwxmRgfezSz12SSta9uFANJH5poTfBXfUHuGF8zHRwIadfy55tBwDPkb5G/ZchdK/AXIvO5SP7qA/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymV6uyfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A5AC4CED1;
+	Fri,  6 Dec 2024 15:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497222;
-	bh=xwKc2UONLDEE2gumSuKGcDYSV+hUXPRMUHKrW1A3uOs=;
+	s=korg; t=1733497260;
+	bh=cKKoyPVgDdy4ujgqy88L6rSBLqvwSrzdd7ip1n4b/5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nee1NuUaU6TqPeI9YH7uHfg9e4HModNYUjI8OmNsb6QVn9Ltos8MIJVJ9xsIHQOfk
-	 cGAU13j/vpbLU3EOJcWAMGN8J/XQAriQ/GJWGA5wYyStu9Hv43QN/kdHWNwhq5cOZd
-	 iw5nD3IUs8U/KLpjPQoTEsuKU3MX2WZko+S75PxU=
+	b=ymV6uyfcy9MxqVkG++DmZrUv+mfgfSx/wkbbTTUf+NDzqikCIloQYm3yuuYHIXYbW
+	 2sZwMZ0Ihq23O64VHajWkrD5gdh+bxKcE/tTbXrtfkzgrSQLcZxp2uUCa8iyN31lz9
+	 i8jxC8ZIp3KI9Cg9whInPUy/1oc2VhcxF1T6SXk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/676] selftests/bpf: fix test_spin_lock_fail.cs global vars usage
-Date: Fri,  6 Dec 2024 15:30:31 +0100
-Message-ID: <20241206143701.623121452@linuxfoundation.org>
+Subject: [PATCH 6.6 213/676] drm/panfrost: Remove unused id_mask from struct panfrost_model
+Date: Fri,  6 Dec 2024 15:30:32 +0100
+Message-ID: <20241206143701.662210621@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,48 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Steven Price <steven.price@arm.com>
 
-[ Upstream commit 1b2bfc29695d273492c3dd8512775261f3272686 ]
+[ Upstream commit 581d1f8248550f2b67847e6d84f29fbe3751ea0a ]
 
-Global variables of special types (like `struct bpf_spin_lock`) make
-underlying ARRAY maps non-mmapable. To make this work with libbpf's
-mmaping logic, application is expected to declare such special variables
-as static, so libbpf doesn't even attempt to mmap() such ARRAYs.
+The id_mask field of struct panfrost_model has never been used.
 
-test_spin_lock_fail.c didn't follow this rule, but given it relied on
-this test to trigger failures, this went unnoticed, as we never got to
-the step of mmap()'ing these ARRAY maps.
-
-It is fragile and relies on specific sequence of libbpf steps, which are
-an internal implementation details.
-
-Fix the test by marking lockA and lockB as static.
-
-Fixes: c48748aea4f8 ("selftests/bpf: Add failure test cases for spin lock pairing")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20241023043908.3834423-2-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
+Signed-off-by: Steven Price <steven.price@arm.com>
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241025140008.385081-1-steven.price@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/test_spin_lock_fail.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panfrost/panfrost_gpu.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c b/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c
-index 86cd183ef6dc8..293ac1049d388 100644
---- a/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c
-+++ b/tools/testing/selftests/bpf/progs/test_spin_lock_fail.c
-@@ -28,8 +28,8 @@ struct {
- 	},
- };
- 
--SEC(".data.A") struct bpf_spin_lock lockA;
--SEC(".data.B") struct bpf_spin_lock lockB;
-+static struct bpf_spin_lock lockA SEC(".data.A");
-+static struct bpf_spin_lock lockB SEC(".data.B");
- 
- SEC("?tc")
- int lock_id_kptr_preserve(void *ctx)
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+index c067ff550692a..164c4690cacaf 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+@@ -157,7 +157,6 @@ static void panfrost_gpu_init_quirks(struct panfrost_device *pfdev)
+ struct panfrost_model {
+ 	const char *name;
+ 	u32 id;
+-	u32 id_mask;
+ 	u64 features;
+ 	u64 issues;
+ 	struct {
 -- 
 2.43.0
 
