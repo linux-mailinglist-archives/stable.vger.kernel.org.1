@@ -1,161 +1,173 @@
-Return-Path: <stable+bounces-99767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901BF9E733F
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:18:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 595BC1882095
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:18:06 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795CB153BE8;
-	Fri,  6 Dec 2024 15:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UARJmyrV"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010FD9E7427
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:32:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3470B53A7;
-	Fri,  6 Dec 2024 15:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFC65281BEF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:32:57 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5011B20ADFC;
+	Fri,  6 Dec 2024 15:32:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="teQG8uCw"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CD81B4122
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 15:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498283; cv=none; b=CWR6Lv9LyJnps9YJKwtxxsbUw16IDwFrQh9F0/F4ByD9AGZVXZru7c88p7pKKiwMD5iUUzTTSBo5HzRPl4+LxusieKwjH8UVgjLNIOx7yn3BrQXocL0SHT4wDl+jhk5FNzKTUdrm/CJclIh67gbUKGjUY6I7rAYlZMF2Jx4FzHg=
+	t=1733499173; cv=none; b=uIEVC/ClZQk+q3/D5iz0l+S4pgNiDDsj64Sy7TiXycyKhE3s3+upPKQi3OYYryqFGIORuc/5vsogqDxd+leJesm9e7Xb7OnTjqjuNGblVgt6UTGYxGUOt0haS1lhvwCPrjfVcq28E1U80o0XvdlXLxrzXqYWi+xG2QZQNszL8mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498283; c=relaxed/simple;
-	bh=7ZkkG9sI4gnvWA3PVy2tvr1W2lr2ZYeU7WA/gXOhtaw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y+J7oA6Mi5qrXRQawHSq6EZg9dkIvWH6Ulatoq2XGsl3OdKnd48z7ulo1X6FeXF7sr+jSSwRVIkwkWVeX8dLRgEQ1lJaH7IzPA8wplFIsFNxHdvMhJ/cb5a2bvcxiEuSq175G68YUy18Wu8wEgVxuQwtZufosJOQBH2lP7pFI9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UARJmyrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0302C4CEE5;
-	Fri,  6 Dec 2024 15:18:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733498282;
-	bh=7ZkkG9sI4gnvWA3PVy2tvr1W2lr2ZYeU7WA/gXOhtaw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=UARJmyrVsplk3Y4d668cEaXnOm8+YZvO8ziweiaWimxl7XfRWIQFuRDKkGBDJZtev
-	 ow2PtLYVvygcdvbNqo3HPjyMvCa1JLWP7I7Pk8moYlj4khcvgKVWBHxV3mKw407BEZ
-	 vO+l6U8I6epP0FU0St1UzfSkr5ew2/L1HFB5e5T/YChACSrRZAL+BZ6cjDu1R7IfqM
-	 W92uykTug/GG61bg63jf6DxYpMD0zp/M+aQFHvIsuKs7F8C4Su84w0CWVv3MKVeZ0P
-	 uiTb0vStL2iQBBokq8GKraoDlqZxGNgRv1jPcoAQM2BRcu2sl3O+S4uH67dO29C7iJ
-	 BhlET8it0hmyg==
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ffc016f301so19066521fa.1;
-        Fri, 06 Dec 2024 07:18:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUyK5ByQ2qVXe5evZdwApS3VBKrrz5hLMbxX1cO82HKGFxWWmLgItfPRj2aj7ivFS9HIRj7ccSRAyx4nwg=@vger.kernel.org, AJvYcCXcvt6LCbpDS24EjXCyRy/YEB6LgvnO2jpKI8/ax2jBWbERVNtGD/IXRvlC/vz27cxRnuYc8kJE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVbKWbfmWPjrlmTMi7YwElyp2wGI8LJmiioTFtFcNW164RGEFE
-	UQIBmhWM46G5B0HFgF3Ji0kPoEyoUhpEKUhB2K384fHg1930RpfcGwQtyZseS5rzSu319qfy1qq
-	qOE4zpdxa1penlQYPLVx0OfcbeMY=
-X-Google-Smtp-Source: AGHT+IGEDJ8Is8k/WRknAfEBV/J8olF8npu0JAL2v2Ao1IHNxcz/+L+AjjCTl7mVwRDRYRvPXdXxyCZMs21ZsKuKxkU=
-X-Received: by 2002:a05:651c:1b06:b0:300:159a:1637 with SMTP id
- 38308e7fff4ca-3002f912ae2mr10531431fa.20.1733498281007; Fri, 06 Dec 2024
- 07:18:01 -0800 (PST)
+	s=arc-20240116; t=1733499173; c=relaxed/simple;
+	bh=TIif4gFB4h/LqQjH73EF7Dn/xIREbzfII/NyIH+Q4dA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=eb8hKHTSPLUtrUXUn5eh7L48gb6PX5pmISvHJvZ7uzeMuYMZ3hwYWY4qFqk2ddjef6C/Br7m8TL/sH1xA7M42cTQ9It1+2FJujnKQi4MD6gB23ZqQcIappGQXqNL89cS951y/bcqPu7ER7GTDYiEVTlEqaMaGz4cosFvh4f696c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=teQG8uCw; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4349c376d4fso2386315e9.0
+        for <stable@vger.kernel.org>; Fri, 06 Dec 2024 07:32:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1733499169; x=1734103969; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AJ70EcJe8jYywWDYC9CMHy+Cxyz1o4e3QlzB+VWKUbE=;
+        b=teQG8uCwOC/+0C1xMcri2wn8wl1jiQkH/5SxJpuc1Jc/T5xiZFgn59oeHyPs7xpSne
+         DYMG5ovHf/u5/QMU7Gfn0vHNzQmmONVAAiinH4dV/X1pJx6vU/aa4xznLwFPtbmg+DHu
+         gCoNpU+XpamN4Fs3x1sr/JunypXjLOzDOPIiMwWBWCzUyf2Fb8b8KMw68j2nstqiyycK
+         bHfvJf2/S7HdDB/pM/4rL+Fvv3Vwes1LCrnax2KmX6bUjH0RnziqivJYQ8U30v8GpiA+
+         bC0Mzb349N4m2ATtLXGAfCbpmCY0zVTvyHz2x0GIZ2V8kN9Xe6L1eW9XIRVE7xOmlpkr
+         OZSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733499169; x=1734103969;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AJ70EcJe8jYywWDYC9CMHy+Cxyz1o4e3QlzB+VWKUbE=;
+        b=N+HO+bjvPm/BdvjsLwBh09RohMsPnJfKXFCOymUsKyZr1Osjvj5i4jT5/UyxIYHB5r
+         fLKAxewv5aV+ChkzKvUotYpA7uvrtOlZKsV8kaNpvlyId1AyWYFV/pnCT0TPet++tZZh
+         JE0tSpbL4qUeU1h4ApR3xlTeZRCbJPag/zPZkNHRpi19v9i3xVPrUPLGY9koj0ytKDn1
+         hAmf833fvU5yBfU7ZtCwEd2QIhgUsWUEpqEBbLMRGDhBNM+yP2Dqk400/N0AJjT3FJN0
+         Q4/xd1p/K6J22XrOvqwOJ+W4F4z0twsb2jH6p1/rAjbeduzmc45gq+3iaVYcZNud7GCV
+         LoXw==
+X-Forwarded-Encrypted: i=1; AJvYcCVwdXRR9mERmz+JwXnAj0Y31Xmu/KFHI6Yn4UDaTtMh4eZ3rCK+zq4poekadz6Dwi0S8r6YZjw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlP2b6Svu9mGdvAt8QgMMB5zHdNnSLXW+Ngftvv0kd1f81y9O2
+	CeRIUGGuRrzL9G5kpmTrShxyXlIw3DCOHfIkjxMm6PQHOXxblWFCb9Kz8/Qj6PC2MvrMQLX2h2R
+	h43c=
+X-Gm-Gg: ASbGnctKn0V7TqWHi5g/164B/d1IOx6KpVyxBppgAA1yDHYkfAAI9edcMD+584kzAsN
+	Dxl7dDnBFhakMnyr+kgMyxUEGDruGiHjsjhZFjBXdgAg4w2dSt75slelKSld4pS7yKV77RQrDBW
+	+4/Dwg/5mqrx9WMGswH6s7MTe8E093VWwIvTUy0XlVym0REK9BRAvqFsiwJsSPzT1HyOC/6yiFI
+	/IW44vMIdIwuCUi//TmofDu0hWQTpBQ3IXQSCRjkrn9NWDfFzVlDnl1x4FACoeV4A==
+X-Google-Smtp-Source: AGHT+IFKpm7qOUxTbqaZKrrVqg194z5KBoP1DrhsMMILvR8vDAu3Na1B60Dhv/Spq2gdpCrBU1GMfg==
+X-Received: by 2002:a05:600c:1ca3:b0:434:9d62:aa17 with SMTP id 5b1f17b1804b1-434dded1d94mr12649675e9.5.1733499168669;
+        Fri, 06 Dec 2024 07:32:48 -0800 (PST)
+Received: from [127.0.1.1] ([178.197.223.165])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da113580sm61158035e9.29.2024.12.06.07.32.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2024 07:32:48 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 00/19] arm64: dts: qcom: Fix remoteproc memory base and
+ length
+Date: Fri, 06 Dec 2024 16:32:24 +0100
+Message-Id: <20241206-dts-qcom-cdsp-mpss-base-address-v1-0-2f349e4d5a63@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105155801.1779119-1-brgerst@gmail.com> <20241105155801.1779119-2-brgerst@gmail.com>
- <20241206123207.GA2091@redhat.com> <CAMj1kXGKCJfBVqgsqjX1bA_SY=503Z-tJV893y5JAwoVs0BUfw@mail.gmail.com>
- <20241206142152.GB31748@redhat.com> <CAMj1kXGo5yv56VvNMvYBohxgyoyDtZhr4d4kjRdGTDQchHW0Gw@mail.gmail.com>
- <CAMzpN2iUi_q_CfDa53H8MEV_zkb8NRtXtQPvOwDrEks58=3uAg@mail.gmail.com>
-In-Reply-To: <CAMzpN2iUi_q_CfDa53H8MEV_zkb8NRtXtQPvOwDrEks58=3uAg@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 6 Dec 2024 16:17:49 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXF8PZq4660mzNYcT=QmWywB1gOOfZGzZhi1sQxQacUX=g@mail.gmail.com>
-Message-ID: <CAMj1kXF8PZq4660mzNYcT=QmWywB1gOOfZGzZhi1sQxQacUX=g@mail.gmail.com>
-Subject: Re: [PATCH] x86/stackprotector: fix build failure with CONFIG_STACKPROTECTOR=n
-To: Brian Gerst <brgerst@gmail.com>
-Cc: Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Uros Bizjak <ubizjak@gmail.com>, stable@vger.kernel.org, 
-	Fangrui Song <i@maskray.me>, Nathan Chancellor <nathan@kernel.org>, Andy Lutomirski <luto@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAgZU2cC/x3NQQqDQAxA0atI1gbGYbC0Vyku0iS2WajjREQQ7
+ 97B5dv8f4JrMXV4NScU3c1tmSu6tgH+0fxVNKmGGGLqYuhRNseVlwlZPOOU3fFDrkgiRStIH5x
+ CT/wkhlrJRUc77sN7uK4/wroinnEAAAA=
+X-Change-ID: 20241206-dts-qcom-cdsp-mpss-base-address-ae7c406ac9ac
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Abel Vesa <abel.vesa@linaro.org>, Sibi Sankar <quic_sibis@quicinc.com>, 
+ Luca Weiss <luca.weiss@fairphone.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2427;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=TIif4gFB4h/LqQjH73EF7Dn/xIREbzfII/NyIH+Q4dA=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBnUxkKUzJ2/4adaFmTbJ6uzv6aXkDSxtdLMiiRT
+ waJjbvhP7KJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ1MZCgAKCRDBN2bmhouD
+ 16pXD/0enUrYMzdi3VsReZlxxnqlSBDGceVCHTUTvLrGrSdeZC1QSVZwXTwnvYWXwmLcWZpq5/r
+ EmeW0S7/VyhR6eakXF7VKd/3EBS8V5y3Vru7lmZANaJzK6ODgHI7jWKuVcIljrDoR0ZtsF0cqej
+ oWQ0cvL2PZ8KxwRt3hvqK5ObenYphE0/XCa3OF9EeaYFA3pjUUitVOEA5JgV2fJkSw9sb9tOACC
+ kBfj/zUpJN+ZyzoxbWyZ/5E42lNKp3RfTSwpq2iXczJX+aPvP50fvJYA6dNVAr3PrNQqkh436yt
+ w5efIBLaVajfnaN02cF2o1hufb9T2iD6NahE64DYuetJTIm5RaBqgEn67wHEnAY6YwH+y3FXSxX
+ uQhZrbDeIpwcDQq0gyd0gQXHTpsRuOFyXVZcUzt2mECFVwWi/8wCVe3cLMHeXau+xpf+VC0Wqk1
+ 21Ijz0QinENsWYW1eLXcROu0NvZLOducSeN7NzKxSeD7DC845hmp1ZkenugC2bIhuThnX7yYjjf
+ paUCBGk5V/73sz1Y8oIsZBRLCG9OFvmkKd6MH0ZZ4cRP0I1d1eSBT1jxEVTp3osGnWsJ+Ax5ufW
+ AbZ0wfqvt7mTLlk7ZK7qY+vyXJIgLKmA+IJanI5lIXJO1Tmyo4kkpWvq8mKEloMolFouKClC6rI
+ Jkfhn9h7TAWpr1w==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-On Fri, 6 Dec 2024 at 16:12, Brian Gerst <brgerst@gmail.com> wrote:
->
-> On Fri, Dec 6, 2024 at 9:37=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> w=
-rote:
-> >
-> > On Fri, 6 Dec 2024 at 15:22, Oleg Nesterov <oleg@redhat.com> wrote:
-> > >
-> > > On 12/06, Ard Biesheuvel wrote:
-> > > >
-> > > > On Fri, 6 Dec 2024 at 13:32, Oleg Nesterov <oleg@redhat.com> wrote:
-> > > > >
-> > > > > +#ifdef CONFIG_STACKPROTECTOR
-> > > > >  /* needed for Clang - see arch/x86/entry/entry.S */
-> > > > >  PROVIDE(__ref_stack_chk_guard =3D __stack_chk_guard);
-> > > > > +#endif
-> > > > >
-> > > > >  #ifdef CONFIG_X86_64
-> > > > >  /*
-> > > >
-> > > > This shouldn't be necessary - PROVIDE() is only evaluated if a
-> > > > reference exists to the symbol it defines.
-> > > >
-> > > > Also, I'm failing to reproduce this. Could you share your .config,
-> > > > please, and the error that you get during the build?
-> > >
-> > > Please see the attached .config
-> > >
-> > > without the change above:
-> > >
-> > >         $ make bzImage
-> > >           CALL    scripts/checksyscalls.sh
-> > >           DESCEND objtool
-> > >           INSTALL libsubcmd_headers
-> > >           UPD     include/generated/utsversion.h
-> > >           CC      init/version-timestamp.o
-> > >           KSYMS   .tmp_vmlinux0.kallsyms.S
-> > >           AS      .tmp_vmlinux0.kallsyms.o
-> > >           LD      .tmp_vmlinux1
-> > >         ./arch/x86/kernel/vmlinux.lds:154: undefined symbol `__stack_=
-chk_guard' referenced in expression
-> > >         scripts/Makefile.vmlinux:77: recipe for target 'vmlinux' fail=
-ed
-> > >         make[2]: *** [vmlinux] Error 1
-> > >         /home/oleg/tmp/LINUX/Makefile:1225: recipe for target 'vmlinu=
-x' failed
-> > >         make[1]: *** [vmlinux] Error 2
-> > >         Makefile:251: recipe for target '__sub-make' failed
-> > >         make: *** [__sub-make] Error 2
-> > >
-> > > perhaps this is because my toolchain is quite old,
-> > >
-> > >         $ ld -v
-> > >         GNU ld version 2.25-17.fc23
-> > >
-> > > but according to Documentation/process/changes.rst
-> > >
-> > >         binutils               2.25             ld -v
-> > >
-> > > it is still supported.
-> > >
-> >
-> > We're about to bump the minimum toolchain requirements to GCC 8.1 (and
-> > whichever version of binutils was current at the time), so you might
-> > want to consider upgrading.
-> >
-> > However, you are right that these are still supported today, and so we
-> > need this fix this, especially because this has been backported to
-> > older stable kernels too.
-> >
-> > For the patch,
-> >
-> > Acked-by: Ard Biesheuvel <ardb@kernel.org>
->
-> Using PROVIDES() is now unnecessary.
->
+Konrad pointed out during SM8750 review, that numbers are odd, so I
+looked at datasheets and downstream DTS for all previous platforms.
 
-At this point, the use of -mstack-protector-guard-symbol is still
-limited to 32-bit x86. However, if we drop PROVIDE() here, the 64-bit
-kernel will also gain a symbol `__ref_stack_chk_guard` in its symbol
-table (and /proc/kallsyms, most likely).
+Most numbers are odd.
 
-Not sure whether that matters or not, but I'd rather keep the
-PROVIDE() as it doesn't do any harm.
+Older platforms like SM8150, SM8250, SC7280, SC8180X seem fine. I could
+not check few like SDX75 or SM6115, due to lack of access to datasheets.
+
+SM8350, SM8450, SM8550 tested on hardware. Others not, but I don't
+expect any failures because PAS drivers do not use the address space.
+Which also explains why odd numbers did not result in any failures.
+
+Best regards,
+Krzysztof
+
+---
+Krzysztof Kozlowski (19):
+      arm64: dts: qcom: sm8350: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8350: Fix CDSP memory base and length
+      arm64: dts: qcom: sm8350: Fix MPSS memory length
+      arm64: dts: qcom: sm8450: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8450: Fix CDSP memory length
+      arm64: dts: qcom: sm8450: Fix MPSS memory length
+      arm64: dts: qcom: sm8550: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8550: Fix CDSP memory length
+      arm64: dts: qcom: sm8550: Fix MPSS memory length
+      arm64: dts: qcom: sm8650: Fix ADSP memory base and length
+      arm64: dts: qcom: sm8650: Fix CDSP memory length
+      arm64: dts: qcom: sm8650: Fix MPSS memory length
+      arm64: dts: qcom: x1e80100: Fix ADSP memory base and length
+      arm64: dts: qcom: x1e80100: Fix CDSP memory length
+      arm64: dts: qcom: sm6350: Fix ADSP memory length
+      arm64: dts: qcom: sm6350: Fix MPSS memory length
+      arm64: dts: qcom: sm6375: Fix ADSP memory length
+      arm64: dts: qcom: sm6375: Fix CDSP memory base and length
+      arm64: dts: qcom: sm6375: Fix MPSS memory base and length
+
+ arch/arm64/boot/dts/qcom/sm6350.dtsi   |   4 +-
+ arch/arm64/boot/dts/qcom/sm6375.dtsi   |  10 +-
+ arch/arm64/boot/dts/qcom/sm8350.dtsi   | 492 ++++++++++++++++-----------------
+ arch/arm64/boot/dts/qcom/sm8450.dtsi   | 216 +++++++--------
+ arch/arm64/boot/dts/qcom/sm8550.dtsi   | 266 +++++++++---------
+ arch/arm64/boot/dts/qcom/sm8650.dtsi   | 300 ++++++++++----------
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi | 276 +++++++++---------
+ 7 files changed, 782 insertions(+), 782 deletions(-)
+---
+base-commit: c245a7a79602ccbee780c004c1e4abcda66aec32
+change-id: 20241206-dts-qcom-cdsp-mpss-base-address-ae7c406ac9ac
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 
