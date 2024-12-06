@@ -1,274 +1,288 @@
-Return-Path: <stable+bounces-100005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E990A9E7C4A
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:12:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CDA9E7C4F
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:14:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4E30283ECD
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:11:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26AED18862D5
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ECC212FA4;
-	Fri,  6 Dec 2024 23:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF04212FB9;
+	Fri,  6 Dec 2024 23:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gguNYgBO"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qXSPzv9B"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E881EF090
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 23:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3491BC07E
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 23:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733526718; cv=none; b=ZJ3g7paopGSEieP0zxHiS4x9NDNrwgMTvsx1a7cp2EmC5nPpBYGH/ekoFVlzTEBpL6gXu9tX2gQXcAy5/utP6MdZ4WdO94px7qkReUNbg0rN4VwBEHkm7bBqDjcsZb9aoQSSmaPOj4aUUbOEWZ0jQNRlVFbwpRdxm4583HEdupw=
+	t=1733526866; cv=none; b=vB5CeLOvAy9qHB0XikDin//vjU+OwyAoay1pfdyQKaPPMuyFSVSEwutR3pej+Vh9qrTx23lqT0B4qZs1fB5yasLRecLBSZf/G+5uSxcrWiiehsrfz4zQQQRSgZQPaFRYMXnP7Dvv3x2id8+dv1kmteukN9zKmvS22A9k7HK4uTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733526718; c=relaxed/simple;
-	bh=hg0gjQfTdXjvWRKQ7Aue9lp4bG4O02B2/ZGvajJoK1Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWryH7ua9ErV7Qk8hvIpU4XhXiBVwgK9Tgkt6rRveBX2n85tCddXQgetK7ElHEuPXiaCMvcizEGFa+tLj/fH9NGaTnxPgzUbb/2XZvYRzrHbFKVdlG67ctmp+4PXm0XVKx1gMnJKqMr/zYO0M+y4LnhcGEMfYwnAaMtifgBY79s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gguNYgBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23E3C4CED1;
-	Fri,  6 Dec 2024 23:11:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733526718;
-	bh=hg0gjQfTdXjvWRKQ7Aue9lp4bG4O02B2/ZGvajJoK1Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gguNYgBOdP1K4zhvlA43cxVgIe4Ch9K4iBw1/R/JGjP5p40+0kiqetn1kKXPTtQL0
-	 dBmkf5JjANHnUBAgBGnzAl5IYvzlKeTK/Jn3kjqfR8Usi2PQORyha+QmjzQ0rjYulB
-	 FyHInEDLcSu0e/bymPkN+fsO8WQzmAuy6pFa6m4Yma17zwFy38NRpWjS3RUMD6U1mK
-	 n46KukBuXFZ0vtFzKwkVzZYoPn0Z6Cq5waDHPW1pRIk+tMIMJdiJCPZUz9Leo06n6T
-	 8RAsZDlZKPebRxqsIvKzmxt+47nKLTeaFg7j49WvWfm9rlbT4VIVI+LRPYoHxkRG8B
-	 wF9LOYsDzeCgA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.1 1/3] net: Move {l,t,d}stats allocation to core and convert veth & vrf
-Date: Fri,  6 Dec 2024 18:11:56 -0500
-Message-ID: <20241206130554-1a2b2e7554bb99e9@stable.kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241206153403.273068-1-daniel@iogearbox.net>
-References: 
+	s=arc-20240116; t=1733526866; c=relaxed/simple;
+	bh=nr5ePPbtBK2X8uG6dSt4bEjpaGmviojpuJaDVxzFKlU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HQwu+qAewz13ytBJeW9gxt8wKVedbzXF+qHgh0WLvY/s1e3PwxqadQDLq0Luf/Ikh5FNRNvDOGPFDV5eQc96tAOHGHFbRAUohVWYAxxghs56/K8AKZje3fvfB0EHm21wzD196UW0AagXP2SeBCQPy35QXUiQCOT4gpI2hpmMeOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qXSPzv9B; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d1228d66a0so634a12.1
+        for <stable@vger.kernel.org>; Fri, 06 Dec 2024 15:14:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733526862; x=1734131662; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TT70/4haykowxKJLSO2D1Td5mevQmnkZI/GztOJ/4fM=;
+        b=qXSPzv9B5zrGpBSTqmtmnGte35c6q9CyuaibTtCEYOaFYa/GR87w8ATYtLV99CfnFB
+         3Vmf+v4yavNa6KSJUHA80T6GQjBVP7Uj/XvkywsjRm8SccMqNJJetZEa/dvXD4t9nV9j
+         NMqBWDinBFBMUpwtEgptrCLrXATCmCMtN0iTWcIdx6/vGmJlWjQxLT3T9QoVoAOYsx/D
+         GC8XOyLxl2645YXr1bqgwPtaZM/oJdAm982TSN23CM4wj75PgsytIukiY8PUc2vnpgBD
+         35goHEcXImdUtzVULOqZRFIi4AJHxQ1ZxnU9e97mqR9FiDE/qSaNV2ZVZw8+mvsk4ExJ
+         E+8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733526862; x=1734131662;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TT70/4haykowxKJLSO2D1Td5mevQmnkZI/GztOJ/4fM=;
+        b=Qfq6bnzYVbs8PJXfvp7pj9mAmbg8j6QNkFGwHuJDzrOgcFQB0s4HSYlqw3xywKnIf2
+         xWjA2Ofh/5yra8/tW0BsmZdD1lJ4fJkJzEtlLxkzwIdEVr2gF4oKe+7CslOeWLLW3/Fy
+         l350n728kHltbZ5dbaowVhFgjic8IJFFmGXPnP2Gf/+vmz9LDmqGXKG/pHklYM0R5V4Y
+         HyhmlBZNHZTLGLEw7z82yx+J3r0R+uHjlFZi+Il2RLzhHJnajmK4/RYyVCIBJ2kyzlnO
+         a4zPVYw6f0r/jxqcRmuhsFpTft9at8PQdCYiMYzMC24+8uS98ZpmysRax5JUNQi7DWov
+         SESg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRou6ag3rFbIWsfc35L+Lo9eTKffSjf3vJs+U8L3Ma6S46wr55cuhFjA2tnFGKbnDR1nQ4H6I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrJrdeHB8Scp5+Jb6e5f76Z1Lurj/gchAE4/+6MkbBfBcubyir
+	49yOTzDjDCC+lQjQY82E9Ow6Pod08tebitzsCXnzcWQo8NY77MXtvawBxJYYQMr5ATtU68aKKAr
+	zsnJQuZwlbvT1xIL0pRhn0FVaS76k8iu4E/7E
+X-Gm-Gg: ASbGncsNxOgbcKtgg6LI+mSUZVEcdNUTxGDra1bCAKaa0MIe8s8VpL7hAKRnkZuL9qT
+	ISUTRSdaQ743HvN0+AJltAryaqcl3oOIKsgdBaO2RB3ooC7CIwj/43Mh40KWfJZk=
+X-Google-Smtp-Source: AGHT+IFvqea0ygicIaaMKdKwMVrDYelzBAhoiklcQz+KZTVCeOG7wm/s4JtUPWbUATXoft/BlVZ3YIswZ48TXkXHTeU=
+X-Received: by 2002:a05:6402:1346:b0:5d0:b20c:205c with SMTP id
+ 4fb4d7f45d1cf-5d3dd9dd1a9mr11075a12.5.1733526861427; Fri, 06 Dec 2024
+ 15:14:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
+ <CAEf4BzYxaKd8Gv5g8PBY6zaQukYKSjjtaSgYMjJxL-PZ0dLrbQ@mail.gmail.com>
+ <CAG48ez3i5haHCc8EQMVNjKnd9xYwMcp4sbW_Y8DRpJCidJotjw@mail.gmail.com>
+ <CAEf4BzYkGQ0sw9JEeAMLAfcQbzxwg46c487kBD_LcbZSaTKD5Q@mail.gmail.com> <CAG48ez1LRsuew4y_KQxPHNipA68hhm+iJohHbk6=1cwv5QPCxQ@mail.gmail.com>
+In-Reply-To: <CAG48ez1LRsuew4y_KQxPHNipA68hhm+iJohHbk6=1cwv5QPCxQ@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Sat, 7 Dec 2024 00:13:45 +0100
+Message-ID: <CAG48ez2+3TTbWNNO4aqxFAX8Cd4COaayRxoy1V2xvM9oS2_ygQ@mail.gmail.com>
+Subject: Re: [PATCH bpf v2] bpf: Fix prog_array UAF in __uprobe_perf_func()
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Delyan Kratunov <delyank@fb.com>, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+On Fri, Dec 6, 2024 at 11:43=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+> On Fri, Dec 6, 2024 at 11:30=E2=80=AFPM Andrii Nakryiko
+> <andrii.nakryiko@gmail.com> wrote:
+> > On Fri, Dec 6, 2024 at 2:25=E2=80=AFPM Jann Horn <jannh@google.com> wro=
+te:
+> > >
+> > > On Fri, Dec 6, 2024 at 11:15=E2=80=AFPM Andrii Nakryiko
+> > > <andrii.nakryiko@gmail.com> wrote:
+> > > > On Fri, Dec 6, 2024 at 12:45=E2=80=AFPM Jann Horn <jannh@google.com=
+> wrote:
+> > > > >
+> > > > > Currently, the pointer stored in call->prog_array is loaded in
+> > > > > __uprobe_perf_func(), with no RCU annotation and no RCU protectio=
+n, so the
+> > > > > loaded pointer can immediately be dangling. Later,
+> > > > > bpf_prog_run_array_uprobe() starts a RCU-trace read-side critical=
+ section,
+> > > > > but this is too late. It then uses rcu_dereference_check(), but t=
+his use of
+> > > > > rcu_dereference_check() does not actually dereference anything.
+> > > > >
+> > > > > It looks like the intention was to pass a pointer to the member
+> > > > > call->prog_array into bpf_prog_run_array_uprobe() and actually de=
+reference
+> > > > > the pointer in there. Fix the issue by actually doing that.
+> > > > >
+> > > > > Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chainin=
+g gps")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > > > ---
+> > > > > To reproduce, in include/linux/bpf.h, patch in a mdelay(10000) di=
+rectly
+> > > > > before the might_fault() in bpf_prog_run_array_uprobe() and add a=
+n
+> > > > > include of linux/delay.h.
+> > > > >
+> > > > > Build this userspace program:
+> > > > >
+> > > > > ```
+> > > > > $ cat dummy.c
+> > > > > #include <stdio.h>
+> > > > > int main(void) {
+> > > > >   printf("hello world\n");
+> > > > > }
+> > > > > $ gcc -o dummy dummy.c
+> > > > > ```
+> > > > >
+> > > > > Then build this BPF program and load it (change the path to point=
+ to
+> > > > > the "dummy" binary you built):
+> > > > >
+> > > > > ```
+> > > > > $ cat bpf-uprobe-kern.c
+> > > > > #include <linux/bpf.h>
+> > > > > #include <bpf/bpf_helpers.h>
+> > > > > #include <bpf/bpf_tracing.h>
+> > > > > char _license[] SEC("license") =3D "GPL";
+> > > > >
+> > > > > SEC("uprobe//home/user/bpf-uprobe-uaf/dummy:main")
+> > > > > int BPF_UPROBE(main_uprobe) {
+> > > > >   bpf_printk("main uprobe triggered\n");
+> > > > >   return 0;
+> > > > > }
+> > > > > $ clang -O2 -g -target bpf -c -o bpf-uprobe-kern.o bpf-uprobe-ker=
+n.c
+> > > > > $ sudo bpftool prog loadall bpf-uprobe-kern.o uprobe-test autoatt=
+ach
+> > > > > ```
+> > > > >
+> > > > > Then run ./dummy in one terminal, and after launching it, run
+> > > > > `sudo umount uprobe-test` in another terminal. Once the 10-second
+> > > > > mdelay() is over, a use-after-free should occur, which may or may
+> > > > > not crash your kernel at the `prog->sleepable` check in
+> > > > > bpf_prog_run_array_uprobe() depending on your luck.
+> > > > > ---
+> > > > > Changes in v2:
+> > > > > - remove diff chunk in patch notes that confuses git
+> > > > > - Link to v1: https://lore.kernel.org/r/20241206-bpf-fix-uprobe-u=
+af-v1-1-6869c8a17258@google.com
+> > > > > ---
+> > > > >  include/linux/bpf.h         | 4 ++--
+> > > > >  kernel/trace/trace_uprobe.c | 2 +-
+> > > > >  2 files changed, 3 insertions(+), 3 deletions(-)
+> > > > >
+> > > >
+> > > > Looking at how similar in spirit bpf_prog_run_array() is meant to b=
+e
+> > > > used, it seems like it is the caller's responsibility to
+> > > > RCU-dereference array and keep RCU critical section before calling
+> > > > into bpf_prog_run_array(). So I wonder if it's best to do this inst=
+ead
+> > > > (Gmail will butcher the diff, but it's about the idea):
+> > >
+> > > Yeah, that's the other option I was considering. That would be more
+> > > consistent with the existing bpf_prog_run_array(), but has the
+> > > downside of unnecessarily pushing responsibility up to the caller...
+> > > I'm fine with either.
+> >
+> > there is really just one caller ("legacy" singular uprobe handler), so
+> > I think this should be fine. Unless someone objects I'd keep it
+> > consistent with other "prog_array_run" helpers
+>
+> Ack, I will make it consistent.
+>
+> > > > diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> > > > index eaee2a819f4c..4b8a9edd3727 100644
+> > > > --- a/include/linux/bpf.h
+> > > > +++ b/include/linux/bpf.h
+> > > > @@ -2193,26 +2193,25 @@ bpf_prog_run_array(const struct bpf_prog_ar=
+ray *array,
+> > > >   * rcu-protected dynamically sized maps.
+> > > >   */
+> > > >  static __always_inline u32
+> > > > -bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array=
+_rcu,
+> > > > +bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
+> > > >                           const void *ctx, bpf_prog_run_fn run_prog=
+)
+> > > >  {
+> > > >         const struct bpf_prog_array_item *item;
+> > > >         const struct bpf_prog *prog;
+> > > > -       const struct bpf_prog_array *array;
+> > > >         struct bpf_run_ctx *old_run_ctx;
+> > > >         struct bpf_trace_run_ctx run_ctx;
+> > > >         u32 ret =3D 1;
+> > > >
+> > > >         might_fault();
+> > > > +       RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu lock =
+held");
+> > > > +
+> > > > +       if (unlikely(!array))
+> > > > +               goto out;
+> > > >
+> > > > -       rcu_read_lock_trace();
+> > > >         migrate_disable();
+> > > >
+> > > >         run_ctx.is_uprobe =3D true;
+> > > >
+> > > > -       array =3D rcu_dereference_check(array_rcu, rcu_read_lock_tr=
+ace_held());
+> > > > -       if (unlikely(!array))
+> > > > -               goto out;
+> > > >         old_run_ctx =3D bpf_set_run_ctx(&run_ctx.run_ctx);
+> > > >         item =3D &array->items[0];
+> > > >         while ((prog =3D READ_ONCE(item->prog))) {
+> > > > @@ -2229,7 +2228,6 @@ bpf_prog_run_array_uprobe(const struct
+> > > > bpf_prog_array __rcu *array_rcu,
+> > > >         bpf_reset_run_ctx(old_run_ctx);
+> > > >  out:
+> > > >         migrate_enable();
+> > > > -       rcu_read_unlock_trace();
+> > > >         return ret;
+> > > >  }
+> > > >
+> > > > diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprob=
+e.c
+> > > > index fed382b7881b..87a2b8fefa90 100644
+> > > > --- a/kernel/trace/trace_uprobe.c
+> > > > +++ b/kernel/trace/trace_uprobe.c
+> > > > @@ -1404,7 +1404,9 @@ static void __uprobe_perf_func(struct trace_u=
+probe *tu,
+> > > >         if (bpf_prog_array_valid(call)) {
+> > > >                 u32 ret;
+> > > >
+> > > > +               rcu_read_lock_trace();
+> > > >                 ret =3D bpf_prog_run_array_uprobe(call->prog_array,
+> > > > regs, bpf_prog_run);
+> > >
+> > > But then this should be something like this (possibly split across
+> > > multiple lines with a helper variable or such):
+> > >
+> > > ret =3D bpf_prog_run_array_uprobe(rcu_dereference_check(call->prog_ar=
+ray,
+> > > rcu_read_lock_trace_held()), regs, bpf_prog_run);
+> >
+> > Yeah, absolutely, forgot to move the RCU dereference part, good catch!
+> > But I wouldn't do the _check() variant here, literally the previous
+> > line does rcu_read_trace_lock(), so this check part seems like just
+> > unnecessary verboseness, I'd go with a simple rcu_dereference().
+>
+> rcu_dereference() is not legal there - that asserts that we are in a
+> normal RCU read-side critical section, which we are not.
+> rcu_dereference_raw() would be, but I think it is nice to document the
+> semantics to make it explicit under which lock we're operating.
+>
+> I'll send a v3 in a bit after testing it.
 
-Hi,
-
-The upstream commit SHA1 provided is correct: 34d21de99cea9cb17967874313e5b0262527833c
-
-
-Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 6ae7b3fc7ae8)
-6.1.y | Not found
-
-Note: The patch differs from the upstream commit:
----
-1:  34d21de99cea9 ! 1:  927b0635b3b95 net: Move {l,t,d}stats allocation to core and convert veth & vrf
-    @@ Metadata
-      ## Commit message ##
-         net: Move {l,t,d}stats allocation to core and convert veth & vrf
-     
-    +    [ Upstream commit 34d21de99cea9cb17967874313e5b0262527833c ]
-    +    [ Note: Simplified vrf bits to reduce patch given unrelated to the fix ]
-    +
-         Move {l,t,d}stats allocation to the core and let netdevs pick the stats
-         type they need. That way the driver doesn't have to bother with error
-         handling (allocation failure checking, making sure free happens in the
-    @@ Commit message
-         Cc: David Ahern <dsahern@kernel.org>
-         Link: https://lore.kernel.org/r/20231114004220.6495-3-daniel@iogearbox.net
-         Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-    +    Stable-dep-of: 024ee930cb3c ("bpf: Fix dev's rx stats for bpf_redirect_peer traffic")
-    +    Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-     
-      ## drivers/net/veth.c ##
-     @@ drivers/net/veth.c: static void veth_free_queues(struct net_device *dev)
-    @@ drivers/net/veth.c: static void veth_setup(struct net_device *dev)
-      	dev->hw_features = VETH_FEATURES;
-     
-      ## drivers/net/vrf.c ##
-    -@@ drivers/net/vrf.c: static void vrf_dev_uninit(struct net_device *dev)
-    +@@ drivers/net/vrf.c: struct net_vrf {
-    + 	int			ifindex;
-    + };
-      
-    - 	vrf_rtable_release(dev, vrf);
-    - 	vrf_rt6_release(dev, vrf);
-    +-struct pcpu_dstats {
-    +-	u64			tx_pkts;
-    +-	u64			tx_bytes;
-    +-	u64			tx_drps;
-    +-	u64			rx_pkts;
-    +-	u64			rx_bytes;
-    +-	u64			rx_drps;
-    +-	struct u64_stats_sync	syncp;
-    +-};
-     -
-    --	free_percpu(dev->dstats);
-    --	dev->dstats = NULL;
-    - }
-    - 
-    - static int vrf_dev_init(struct net_device *dev)
-    + static void vrf_rx_stats(struct net_device *dev, int len)
-      {
-    - 	struct net_vrf *vrf = netdev_priv(dev);
-    + 	struct pcpu_dstats *dstats = this_cpu_ptr(dev->dstats);
-      
-    --	dev->dstats = netdev_alloc_pcpu_stats(struct pcpu_dstats);
-    --	if (!dev->dstats)
-    --		goto out_nomem;
-    --
-    - 	/* create the default dst which points back to us */
-    - 	if (vrf_rtable_create(dev) != 0)
-    --		goto out_stats;
-    -+		goto out_nomem;
-    - 
-    - 	if (vrf_rt6_create(dev) != 0)
-    - 		goto out_rth;
-    -@@ drivers/net/vrf.c: static int vrf_dev_init(struct net_device *dev)
-    - 
-    - out_rth:
-    - 	vrf_rtable_release(dev, vrf);
-    --out_stats:
-    --	free_percpu(dev->dstats);
-    --	dev->dstats = NULL;
-    - out_nomem:
-    - 	return -ENOMEM;
-    + 	u64_stats_update_begin(&dstats->syncp);
-    +-	dstats->rx_pkts++;
-    ++	dstats->rx_packets++;
-    + 	dstats->rx_bytes += len;
-    + 	u64_stats_update_end(&dstats->syncp);
-      }
-    -@@ drivers/net/vrf.c: static void vrf_setup(struct net_device *dev)
-    - 	dev->min_mtu = IPV6_MIN_MTU;
-    - 	dev->max_mtu = IP6_MAX_MTU;
-    - 	dev->mtu = dev->max_mtu;
-    -+
-    -+	dev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
-    +@@ drivers/net/vrf.c: static void vrf_get_stats64(struct net_device *dev,
-    + 		do {
-    + 			start = u64_stats_fetch_begin_irq(&dstats->syncp);
-    + 			tbytes = dstats->tx_bytes;
-    +-			tpkts = dstats->tx_pkts;
-    +-			tdrops = dstats->tx_drps;
-    ++			tpkts = dstats->tx_packets;
-    ++			tdrops = dstats->tx_drops;
-    + 			rbytes = dstats->rx_bytes;
-    +-			rpkts = dstats->rx_pkts;
-    ++			rpkts = dstats->rx_packets;
-    + 		} while (u64_stats_fetch_retry_irq(&dstats->syncp, start));
-    + 		stats->tx_bytes += tbytes;
-    + 		stats->tx_packets += tpkts;
-    +@@ drivers/net/vrf.c: static int vrf_local_xmit(struct sk_buff *skb, struct net_device *dev,
-    + 	if (likely(__netif_rx(skb) == NET_RX_SUCCESS))
-    + 		vrf_rx_stats(dev, len);
-    + 	else
-    +-		this_cpu_inc(dev->dstats->rx_drps);
-    ++		this_cpu_inc(dev->dstats->rx_drops);
-    + 
-    + 	return NETDEV_TX_OK;
-      }
-    +@@ drivers/net/vrf.c: static netdev_tx_t vrf_xmit(struct sk_buff *skb, struct net_device *dev)
-    + 		struct pcpu_dstats *dstats = this_cpu_ptr(dev->dstats);
-      
-    - static int vrf_validate(struct nlattr *tb[], struct nlattr *data[],
-    + 		u64_stats_update_begin(&dstats->syncp);
-    +-		dstats->tx_pkts++;
-    ++		dstats->tx_packets++;
-    + 		dstats->tx_bytes += len;
-    + 		u64_stats_update_end(&dstats->syncp);
-    + 	} else {
-    +-		this_cpu_inc(dev->dstats->tx_drps);
-    ++		this_cpu_inc(dev->dstats->tx_drops);
-    + 	}
-    + 
-    + 	return ret;
-     
-      ## include/linux/netdevice.h ##
-     @@ include/linux/netdevice.h: enum netdev_ml_priv_type {
-    @@ include/linux/netdevice.h: struct net_device {
-      	union {
-      		struct pcpu_lstats __percpu		*lstats;
-      		struct pcpu_sw_netstats __percpu	*tstats;
-    +@@ include/linux/netdevice.h: struct pcpu_sw_netstats {
-    + 	struct u64_stats_sync   syncp;
-    + } __aligned(4 * sizeof(u64));
-    + 
-    ++struct pcpu_dstats {
-    ++	u64			rx_packets;
-    ++	u64			rx_bytes;
-    ++	u64			rx_drops;
-    ++	u64			tx_packets;
-    ++	u64			tx_bytes;
-    ++	u64			tx_drops;
-    ++	struct u64_stats_sync	syncp;
-    ++} __aligned(8 * sizeof(u64));
-    ++
-    + struct pcpu_lstats {
-    + 	u64_stats_t packets;
-    + 	u64_stats_t bytes;
-     
-      ## net/core/dev.c ##
-     @@ net/core/dev.c: void netif_tx_stop_all_queues(struct net_device *dev)
-    @@ net/core/dev.c: int register_netdevice(struct net_device *dev)
-     +	if (ret)
-     +		goto err_uninit;
-     +
-    - 	ret = dev_index_reserve(net, dev->ifindex);
-    - 	if (ret < 0)
-    + 	ret = -EBUSY;
-    + 	if (!dev->ifindex)
-    + 		dev->ifindex = dev_new_index(net);
-    + 	else if (__dev_get_by_index(net, dev->ifindex))
-     -		goto err_uninit;
-     +		goto err_free_pcpu;
-    - 	dev->ifindex = ret;
-      
-      	/* Transfer changeable features to wanted_features and enable
-    + 	 * software offloads (GSO and GRO).
-    +@@ net/core/dev.c: int register_netdevice(struct net_device *dev)
-    + 	ret = call_netdevice_notifiers(NETDEV_POST_INIT, dev);
-    + 	ret = notifier_to_errno(ret);
-    + 	if (ret)
-    +-		goto err_uninit;
-    ++		goto err_free_pcpu;
-    + 
-    + 	ret = netdev_register_kobject(dev);
-    + 	write_lock(&dev_base_lock);
-    + 	dev->reg_state = ret ? NETREG_UNREGISTERED : NETREG_REGISTERED;
-    + 	write_unlock(&dev_base_lock);
-    + 	if (ret)
-    +-		goto err_uninit;
-    ++		goto err_free_pcpu;
-    + 
-    + 	__netdev_update_features(dev);
-    + 
-     @@ net/core/dev.c: int register_netdevice(struct net_device *dev)
-    - 	call_netdevice_notifiers(NETDEV_PRE_UNINIT, dev);
-    - err_ifindex_release:
-    - 	dev_index_release(net, dev->ifindex);
-    + out:
-    + 	return ret;
-    + 
-     +err_free_pcpu:
-     +	netdev_do_free_pcpu_stats(dev);
-      err_uninit:
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+Actually, now I'm still hitting a page fault with my WIP v3 fix
+applied... I'll probably poke at this some more next week.
 
