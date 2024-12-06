@@ -1,163 +1,107 @@
-Return-Path: <stable+bounces-99057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F789E6E91
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:52:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D869E6E90
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:52:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25781167066
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:50:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 003AD281AD1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C09205AC9;
-	Fri,  6 Dec 2024 12:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE6E200130;
+	Fri,  6 Dec 2024 12:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJU7ILLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hh6GHUlS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239553D6B;
-	Fri,  6 Dec 2024 12:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A07910E6
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733489449; cv=none; b=Fv5UAxKrSgh+3QPHQNg662hHPFKIVFhGuo03TPa+j8H52u8Qm7PHxmLPa4TBdc76QVsGu86F/RxaYxhHSnKR8Ggvh9TqpGvLYDAOM4kwSRcUN1L2J7CPeocy88gq1bGulbp4FG6pmAsr2+CCU3oGEGE4dAlpiizc+ENuzSWZVHY=
+	t=1733489520; cv=none; b=sI53kflBCqcq71Khhv6dI13KNooOTyxvl1JbV/TUc6BX7xaVAw/EnVUWsrVE3ED/NtHH1dZfId4gAj3g41cUPWWgSsx+jX1aZgby5XJ3f0OzCAMJKTK++0pxHvn8CxwFpYFGORL+WnD4oGEdDPw+/dcNlSFEhpLOsc+0KcvuTps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733489449; c=relaxed/simple;
-	bh=XEZyDHk132hZI57xsp0Rf6mJbSdLueVq0jXAyMBO/2I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SiCUFBEgPOrYhyyQJL8i7fLWGcMaXOq6A+u+H/4MCfV37aW7nWRTrJZgXTtflFni6n15Wt0JYur5Ql9ITgYfWhoWH8qNFN7rY54qKbRMQ700CCSTpAgTGidYfVgQkqjI0K5ueCsHJeV8Sx0f1KnAh/77vygnoyaKy5KdHyfGil0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TJU7ILLh; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7fd24e274fdso640801a12.2;
-        Fri, 06 Dec 2024 04:50:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733489447; x=1734094247; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BvnJWSsrkTVTOK9NYAknHMey6BhHTV0eKyyrXxhAy+8=;
-        b=TJU7ILLhuKIB+DdZYmNnXK/p+SNbakk71AxgvLrcRnRrQZCrUZ5CPEcT09Wh5kSgIu
-         8cGePaouVZAbvm/siKXY3XoCLDO7jWZenC9wqe7LTCZjH3qZVm1viFl5stjZCprjo0OX
-         P+5XoOriZ+oPXVcH30IlEW57ugv76w6+A55QCN7s+M3tzU6FM0Bd85QY0+fGUrK1ljAz
-         j8/ZY3fcfee2h9ZtfRJ9kWYTtKtnVKg89YD/EMP+q6REaA1KgJ346p/5UQW65Epy64b1
-         qhP+5ieQNx8ht9uH/lT8mydH3Izim1gP6NOCREtUgmJAOezZnqosOt/r1YTy+2xD9ksT
-         GkgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733489447; x=1734094247;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BvnJWSsrkTVTOK9NYAknHMey6BhHTV0eKyyrXxhAy+8=;
-        b=kPV/gP9TfPaEVZfIESOpF9miDPYLT3FLQEPctBMXAcdyJ8a3ErtHAQ20h18khd6mF0
-         erDm/mSSkAoVeyPLJcOg0LrNlP7S1HPrUs/G7avrRy9QhRuwzNX+K54M9swC09xy6jnT
-         S6Bjmoe0fh9frWqGM9zyojET25/3xLl02scmP9rct7YmG9fM3F+uyd0+gemmMlk0S3mR
-         VifNlHqWtNzOri/2HoBFiLklcKoWHlCBtrMPtWzXt8CjswoeRjPbD6u03Vy96P1kYiYU
-         T+/BwL6TPZjk31+yMxoBsU3bMFOle9c44dnyETnc9EL7904UECzCA2ILcxATv3fxC4zH
-         TSNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYR1ATRm5tftTH/aALjMzbWeVGOqMKP7t6AHEv8N1b6fB8IXIPTy1uGp7zSc8ApbbVGh2UBECN@vger.kernel.org, AJvYcCVzwWv8EbrnEOvxfth10xLGrvav8UPxjd1O/Q3i44JylE8DbrNIiIt9+udI+AtgRBei9E8yd8bA3zdp@vger.kernel.org, AJvYcCXUK/HJI86OVYRxn8Pv01VLJWxLgkzkVJr1xbmplXBnVtJAexifX8nqKFfTZNnlyqXSEYzO9W+fXhmtH84q@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJhMHoJV9+/uB7whT7DN4eAXspzny57/vzJcWLmgTuHKHONW2/
-	0mi24NKTh1rvblLMm28tT9xuGUcPmkX3FVPKertkyJ83MBTvT3dRHgKl4m3niPVLNPiBrfnUczO
-	DJsA/gAW0TXkWnRRBekf/F8nyU+J+8Q9S
-X-Gm-Gg: ASbGnctnCu4MQIut6TEzQ1n0EKMTKMDQI2S3S7i0ZgxlkiRlhQQwfeNw+Vneg/chrf3
-	rSuTfBxMyW8TbpnjnKEj+Efq1vpQ2hsY=
-X-Google-Smtp-Source: AGHT+IGfoReZyqEHkx2l9Z6yTZIOzjckyeg+BIUhB/ROWL3Ic48D0l/l6lTNNJvqLqnQjmI0031T4Qs+fZHxaDSRsvg=
-X-Received: by 2002:a17:90b:17c2:b0:2ee:aa28:79aa with SMTP id
- 98e67ed59e1d1-2ef69366eb9mr4867604a91.6.1733489447225; Fri, 06 Dec 2024
- 04:50:47 -0800 (PST)
+	s=arc-20240116; t=1733489520; c=relaxed/simple;
+	bh=Fr+eN7Mbfm4/7eG+xDqlT6vJxZkaQ2nGUghEYEfaUUI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nHPcRc7F2KxAMmQJupXl/hJH8J98w6fLH8lVS1QpXJf1H4vENSPxTTQ1DaUkgnGlYXHMefNRnaYaF1hmKFehw4V7UpNvxMpAbP0XCG5z3CVcCY7eeuKtO7nXlroONo3clTZ57QI42py87Nj+Y6GnYVL9UaZ1+nTLORKgzb8a79o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh6GHUlS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E66C4CED1;
+	Fri,  6 Dec 2024 12:51:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733489520;
+	bh=Fr+eN7Mbfm4/7eG+xDqlT6vJxZkaQ2nGUghEYEfaUUI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Hh6GHUlSe/rXym/pH9AQ4oGhj6GWxU68X+zb2uD4wIfqDQG7shyzmUFjN82wTvO8S
+	 ICI6mDx8Idk/QW8kitydHdKQLBNlEDu0SlSrcHDZu5m59WePIOqh6KLito+x4L9ZZD
+	 MKuDeMjEaPnnH12U+X2OQJ7rmMuhr9UqbHup9P2Q=
+Date: Fri, 6 Dec 2024 13:51:56 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	linux-stable <stable@vger.kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: stable-rc-queue-6.6: Error:
+ arch/arm/boot/dts/renesas/r7s72100-genmai.dts:114.1-5 Label or path bsc not
+ found
+Message-ID: <2024120640-charbroil-viral-075e@gregkh>
+References: <CA+G9fYuMnDvMK-4PRmyOk+KKFONrPPwRtFpnAVtUPrmQhcbOfw@mail.gmail.com>
+ <CAMuHMdW7RwVCbubxw_-=4-zHvGjip0oZED_DLmY=C9BNAmoyRg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOi1vP8PRbO3853M-MgMZfPOR+9TS1CrW5AGVP0s06u_=Xq3bg@mail.gmail.com>
- <20241205154951.4163232-1-max.kellermann@ionos.com> <CAO8a2Si+7uFkOCf4JxCSkLtJR=_nQOYPAZ_WkWES97ifhyHvBQ@mail.gmail.com>
-In-Reply-To: <CAO8a2Si+7uFkOCf4JxCSkLtJR=_nQOYPAZ_WkWES97ifhyHvBQ@mail.gmail.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Fri, 6 Dec 2024 13:50:36 +0100
-Message-ID: <CAOi1vP9Ovx1fJ8AH3gPEfeAT1nL3uT98EAngdO=FHtfiem6+3w@mail.gmail.com>
-Subject: Re: [PATCH v2] fs/ceph/file: fix memory leaks in __ceph_sync_read()
-To: Alex Markuze <amarkuze@redhat.com>
-Cc: Max Kellermann <max.kellermann@ionos.com>, xiubli@redhat.com, ceph-devel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMuHMdW7RwVCbubxw_-=4-zHvGjip0oZED_DLmY=C9BNAmoyRg@mail.gmail.com>
 
-On Thu, Dec 5, 2024 at 5:30=E2=80=AFPM Alex Markuze <amarkuze@redhat.com> w=
-rote:
->
-> Good.
-> This sequence has not been tested independently, but it should be fine.
+On Fri, Dec 06, 2024 at 10:53:14AM +0100, Geert Uytterhoeven wrote:
+> Hi Naresh,
+> 
+> On Mon, Dec 2, 2024 at 2:04 PM Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> > The arm build failed with gcc-13 on the Linux stable-rc queue 6.6 due to
+> > following build warning / errors.
+> >
+> > arm
+> > * arm, build
+> >   - build/gcc-13-defconfig-lkftconfig
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> > Build errors:
+> > ------
+> > Error: arch/arm/boot/dts/renesas/r7s72100-genmai.dts:114.1-5 Label or
+> > path bsc not found
+> > FATAL ERROR: Syntax error parsing input tree
+> 
+> I guess this is due to
+> 
+>     commit a670e8540da2de723c0eae14ef8234b0ada6b542
+>     Author: Geert Uytterhoeven <geert+renesas@glider.be>
+>     Date:   Thu Aug 31 13:52:32 2023 +0200
+> 
+>         ARM: dts: renesas: genmai: Add FLASH nodes
+> 
+>         [ Upstream commit 30e0a8cf886cb459dc8a895ba9a4fb5132b41499 ]
+> 
+> which depends on commit 175f1971164a6f8f ("ARM: dts: renesas:
+> r7s72100: Add BSC node") in v6.7.
 
-Applied.
+Now dropped (this was a dependancy for another fix, which I've also now
+dropped.)
 
-Thanks,
+thanks,
 
-                Ilya
-
->
-> On Thu, Dec 5, 2024 at 5:49=E2=80=AFPM Max Kellermann <max.kellermann@ion=
-os.com> wrote:
-> >
-> > In two `break` statements, the call to ceph_release_page_vector() was
-> > missing, leaking the allocation from ceph_alloc_page_vector().
-> >
-> > Instead of adding the missing ceph_release_page_vector() calls, the
-> > Ceph maintainers preferred to transfer page ownership to the
-> > `ceph_osd_request` by passing `own_pages=3Dtrue` to
-> > osd_req_op_extent_osd_data_pages().  This requires postponing the
-> > ceph_osdc_put_request() call until after the block that accesses the
-> > `pages`.
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-> > ---
-> >  fs/ceph/file.c | 7 +++----
-> >  1 file changed, 3 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/fs/ceph/file.c b/fs/ceph/file.c
-> > index 4b8d59ebda00..ce342a5d4b8b 100644
-> > --- a/fs/ceph/file.c
-> > +++ b/fs/ceph/file.c
-> > @@ -1127,7 +1127,7 @@ ssize_t __ceph_sync_read(struct inode *inode, lof=
-f_t *ki_pos,
-> >
-> >                 osd_req_op_extent_osd_data_pages(req, 0, pages, read_le=
-n,
-> >                                                  offset_in_page(read_of=
-f),
-> > -                                                false, false);
-> > +                                                false, true);
-> >
-> >                 op =3D &req->r_ops[0];
-> >                 if (sparse) {
-> > @@ -1186,8 +1186,6 @@ ssize_t __ceph_sync_read(struct inode *inode, lof=
-f_t *ki_pos,
-> >                         ret =3D min_t(ssize_t, fret, len);
-> >                 }
-> >
-> > -               ceph_osdc_put_request(req);
-> > -
-> >                 /* Short read but not EOF? Zero out the remainder. */
-> >                 if (ret >=3D 0 && ret < len && (off + ret < i_size)) {
-> >                         int zlen =3D min(len - ret, i_size - off - ret)=
-;
-> > @@ -1221,7 +1219,8 @@ ssize_t __ceph_sync_read(struct inode *inode, lof=
-f_t *ki_pos,
-> >                                 break;
-> >                         }
-> >                 }
-> > -               ceph_release_page_vector(pages, num_pages);
-> > +
-> > +               ceph_osdc_put_request(req);
-> >
-> >                 if (ret < 0) {
-> >                         if (ret =3D=3D -EBLOCKLISTED)
-> > --
-> > 2.45.2
-> >
->
+greg k-h
 
