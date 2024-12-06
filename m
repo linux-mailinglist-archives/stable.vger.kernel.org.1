@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-99510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5C49E7202
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:03:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C969E71E1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:01:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5345B16C00E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:03:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE0B6284432
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D43148FE6;
-	Fri,  6 Dec 2024 15:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE9253A7;
+	Fri,  6 Dec 2024 15:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThA2CP/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KghCB485"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B841C53A7;
-	Fri,  6 Dec 2024 15:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5661E871;
+	Fri,  6 Dec 2024 15:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497412; cv=none; b=HARgWn6fCQKpeml/xmFb0DKxFObGy3DgArZq38GAz6i8hs7Hvqawfd9Et3VlKqXygNHBVG4f0Pomk71JaVjqCT+Csh7TRpWQ5Etkeddo72hbfTi8jmfu0tM7gkraK8uXabqqCNoGSmIybc6s6G9peHYm5/oJ4bzJLW77U3qax0w=
+	t=1733497304; cv=none; b=G9qVfwTQ/b3BE6bBP8cLogvljI6Bl0mafIhH52YNYG2EaO0JrhRgn23b5y7klMB7Z2NcsKX/mw78TBAxkp7w4x+nnXZlE8yQbElROagKCfVqx50sCn7zJpvUQxqpEA96Wj/5tYL1apW1pebnftzbQ+MXokkPuVmexdoKuy2umAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497412; c=relaxed/simple;
-	bh=jsUG92OzEQCwDIq3KdnGWcMkr5jWZXxEWsS69/4rOEk=;
+	s=arc-20240116; t=1733497304; c=relaxed/simple;
+	bh=g0CH2BmaUK3Wc3s4MzpMrKk8XPKdlj4hXbtX5bJfYbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dDUjj03PqpmhK51kfRjQheQEyUJ8f2oAHSONbIiP8J/bAF+5JsC3DVfjzPQlVYwiYOPoWyCioWO4xNlMkwB1fSL20QGHmI1/VIQZi08j3BQ2Z2+TwzCWMYavDEDOrAmC5BrNaqOyDqXobjc/6W8XP3RS3wGmg9cR8WU4BCYlAO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThA2CP/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A40CC4CEDC;
-	Fri,  6 Dec 2024 15:03:31 +0000 (UTC)
+	 MIME-Version; b=TbYwaWonZDYWFoC8DzPp3SygsFgNP/3HwItpdW0eufGt7ZKPDK6L85yISz9qtxH66n2ITCj3Cga9qG4/6O7tfMVa0eS5BCJ+Q3QrUaSe+Qbjg/Px4QwyuAZTLtbQknYqrWj7Mvc17mghnJ6xgEqcMHWzmSEgjuCMPpw9fN4wUAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KghCB485; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B07C4CED1;
+	Fri,  6 Dec 2024 15:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497412;
-	bh=jsUG92OzEQCwDIq3KdnGWcMkr5jWZXxEWsS69/4rOEk=;
+	s=korg; t=1733497304;
+	bh=g0CH2BmaUK3Wc3s4MzpMrKk8XPKdlj4hXbtX5bJfYbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThA2CP/hNtEXKxac7K9flOH1PmVScz7cph4Ei2+obbMnJijN7KBh7DR5Clv6pJUhN
-	 6Wy/ur3GxsJLe7nRZ/x6VSJZCtdQ+Hhm5XrO8/9g+Nw6WmQKBCJNQdj4g8C+PpF+wo
-	 EY4tEHTK3KfujGIljAZXdz6pvVDfUkftvh/mIDzA=
+	b=KghCB485rWP8XrTcfcYmpeCs9eUK+aQmlU99p/5S7ZpRQt3TGKZxhLOxLA2Xlcp95
+	 yAeokMpRNGhV4ecNrLMYQGxq0wccb0zsiKbsLdKu5uYdeyd7Tyxwkw0317L4lnQ1R6
+	 0Vp4Re3FnS+/IhosVz95HhCAkohpYSntyYf86jTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6cf5652d3df49fae2e3f@syzkaller.appspotmail.com,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/676] Bluetooth: fix use-after-free in device_for_each_child()
-Date: Fri,  6 Dec 2024 15:31:12 +0100
-Message-ID: <20241206143703.213627327@linuxfoundation.org>
+Subject: [PATCH 6.6 254/676] erofs: handle NONHEAD !delta[1] lclusters gracefully
+Date: Fri,  6 Dec 2024 15:31:13 +0100
+Message-ID: <20241206143703.251895511@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,148 +66,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 27aabf27fd014ae037cc179c61b0bee7cff55b3d ]
+[ Upstream commit 0bc8061ffc733a0a246b8689b2d32a3e9204f43c ]
 
-Syzbot has reported the following KASAN splat:
+syzbot reported a WARNING in iomap_iter_done:
+ iomap_fiemap+0x73b/0x9b0 fs/iomap/fiemap.c:80
+ ioctl_fiemap fs/ioctl.c:220 [inline]
 
-BUG: KASAN: slab-use-after-free in device_for_each_child+0x18f/0x1a0
-Read of size 8 at addr ffff88801f605308 by task kbnepd bnep0/4980
+Generally, NONHEAD lclusters won't have delta[1]==0, except for crafted
+images and filesystems created by pre-1.0 mkfs versions.
 
-CPU: 0 UID: 0 PID: 4980 Comm: kbnepd bnep0 Not tainted 6.12.0-rc4-00161-gae90f6a6170d #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x100/0x190
- ? device_for_each_child+0x18f/0x1a0
- print_report+0x13a/0x4cb
- ? __virt_addr_valid+0x5e/0x590
- ? __phys_addr+0xc6/0x150
- ? device_for_each_child+0x18f/0x1a0
- kasan_report+0xda/0x110
- ? device_for_each_child+0x18f/0x1a0
- ? __pfx_dev_memalloc_noio+0x10/0x10
- device_for_each_child+0x18f/0x1a0
- ? __pfx_device_for_each_child+0x10/0x10
- pm_runtime_set_memalloc_noio+0xf2/0x180
- netdev_unregister_kobject+0x1ed/0x270
- unregister_netdevice_many_notify+0x123c/0x1d80
- ? __mutex_trylock_common+0xde/0x250
- ? __pfx_unregister_netdevice_many_notify+0x10/0x10
- ? trace_contention_end+0xe6/0x140
- ? __mutex_lock+0x4e7/0x8f0
- ? __pfx_lock_acquire.part.0+0x10/0x10
- ? rcu_is_watching+0x12/0xc0
- ? unregister_netdev+0x12/0x30
- unregister_netdevice_queue+0x30d/0x3f0
- ? __pfx_unregister_netdevice_queue+0x10/0x10
- ? __pfx_down_write+0x10/0x10
- unregister_netdev+0x1c/0x30
- bnep_session+0x1fb3/0x2ab0
- ? __pfx_bnep_session+0x10/0x10
- ? __pfx_lock_release+0x10/0x10
- ? __pfx_woken_wake_function+0x10/0x10
- ? __kthread_parkme+0x132/0x200
- ? __pfx_bnep_session+0x10/0x10
- ? kthread+0x13a/0x370
- ? __pfx_bnep_session+0x10/0x10
- kthread+0x2b7/0x370
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x48/0x80
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
+Previously, it would immediately bail out if delta[1]==0, which led to
+inadequate decompressed lengths (thus FIEMAP is impacted).  Treat it as
+delta[1]=1 to work around these legacy mkfs versions.
 
-Allocated by task 4974:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0xaa/0xb0
- __kmalloc_noprof+0x1d1/0x440
- hci_alloc_dev_priv+0x1d/0x2820
- __vhci_create_device+0xef/0x7d0
- vhci_write+0x2c7/0x480
- vfs_write+0x6a0/0xfc0
- ksys_write+0x12f/0x260
- do_syscall_64+0xc7/0x250
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+`lclusterbits > 14` is illegal for compact indexes, error out too.
 
-Freed by task 4979:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- kasan_save_free_info+0x3b/0x60
- __kasan_slab_free+0x4f/0x70
- kfree+0x141/0x490
- hci_release_dev+0x4d9/0x600
- bt_host_release+0x6a/0xb0
- device_release+0xa4/0x240
- kobject_put+0x1ec/0x5a0
- put_device+0x1f/0x30
- vhci_release+0x81/0xf0
- __fput+0x3f6/0xb30
- task_work_run+0x151/0x250
- do_exit+0xa79/0x2c30
- do_group_exit+0xd5/0x2a0
- get_signal+0x1fcd/0x2210
- arch_do_signal_or_restart+0x93/0x780
- syscall_exit_to_user_mode+0x140/0x290
- do_syscall_64+0xd4/0x250
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-In 'hci_conn_del_sysfs()', 'device_unregister()' may be called when
-an underlying (kobject) reference counter is greater than 1. This
-means that reparenting (happened when the device is actually freed)
-is delayed and, during that delay, parent controller device (hciX)
-may be deleted. Since the latter may create a dangling pointer to
-freed parent, avoid that scenario by reparenting to NULL explicitly.
-
-Reported-by: syzbot+6cf5652d3df49fae2e3f@syzkaller.appspotmail.com
-Tested-by: syzbot+6cf5652d3df49fae2e3f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6cf5652d3df49fae2e3f
-Fixes: a85fb91e3d72 ("Bluetooth: Fix double free in hci_conn_cleanup")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/67373c0c.050a0220.2a2fcc.0079.GAE@google.com
+Tested-by: syzbot+6c0b301317aa0156f9eb@syzkaller.appspotmail.com
+Fixes: d95ae5e25326 ("erofs: add support for the full decompressed length")
+Fixes: 001b8ccd0650 ("erofs: fix compact 4B support for 16k block size")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20241115173651.3339514-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sysfs.c | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ fs/erofs/zmap.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
-index 367e32fe30eb8..4b54dbbf0729a 100644
---- a/net/bluetooth/hci_sysfs.c
-+++ b/net/bluetooth/hci_sysfs.c
-@@ -21,16 +21,6 @@ static const struct device_type bt_link = {
- 	.release = bt_link_release,
- };
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index 6bd435a565f61..76566c2cbf63e 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -234,7 +234,7 @@ static int z_erofs_load_compact_lcluster(struct z_erofs_maprecorder *m,
+ 	unsigned int amortizedshift;
+ 	erofs_off_t pos;
  
--/*
-- * The rfcomm tty device will possibly retain even when conn
-- * is down, and sysfs doesn't support move zombie device,
-- * so we should move the device before conn device is destroyed.
-- */
--static int __match_tty(struct device *dev, void *data)
--{
--	return !strncmp(dev_name(dev), "rfcomm", 6);
--}
+-	if (lcn >= totalidx)
++	if (lcn >= totalidx || vi->z_logical_clusterbits > 14)
+ 		return -EINVAL;
+ 
+ 	m->lcn = lcn;
+@@ -409,7 +409,7 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
+ 	u64 lcn = m->lcn, headlcn = map->m_la >> lclusterbits;
+ 	int err;
+ 
+-	do {
++	while (1) {
+ 		/* handle the last EOF pcluster (no next HEAD lcluster) */
+ 		if ((lcn << lclusterbits) >= inode->i_size) {
+ 			map->m_llen = inode->i_size - map->m_la;
+@@ -421,14 +421,16 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
+ 			return err;
+ 
+ 		if (m->type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
+-			DBG_BUGON(!m->delta[1] &&
+-				  m->clusterofs != 1 << lclusterbits);
++			/* work around invalid d1 generated by pre-1.0 mkfs */
++			if (unlikely(!m->delta[1])) {
++				m->delta[1] = 1;
++				DBG_BUGON(1);
++			}
+ 		} else if (m->type == Z_EROFS_LCLUSTER_TYPE_PLAIN ||
+ 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD1 ||
+ 			   m->type == Z_EROFS_LCLUSTER_TYPE_HEAD2) {
+-			/* go on until the next HEAD lcluster */
+ 			if (lcn != headlcn)
+-				break;
++				break;	/* ends at the next HEAD lcluster */
+ 			m->delta[1] = 1;
+ 		} else {
+ 			erofs_err(inode->i_sb, "unknown type %u @ lcn %llu of nid %llu",
+@@ -437,8 +439,7 @@ static int z_erofs_get_extent_decompressedlen(struct z_erofs_maprecorder *m)
+ 			return -EOPNOTSUPP;
+ 		}
+ 		lcn += m->delta[1];
+-	} while (m->delta[1]);
 -
- void hci_conn_init_sysfs(struct hci_conn *conn)
- {
- 	struct hci_dev *hdev = conn->hdev;
-@@ -73,10 +63,13 @@ void hci_conn_del_sysfs(struct hci_conn *conn)
- 		return;
- 	}
- 
-+	/* If there are devices using the connection as parent reset it to NULL
-+	 * before unregistering the device.
-+	 */
- 	while (1) {
- 		struct device *dev;
- 
--		dev = device_find_child(&conn->dev, NULL, __match_tty);
-+		dev = device_find_any_child(&conn->dev);
- 		if (!dev)
- 			break;
- 		device_move(dev, NULL, DPM_ORDER_DEV_LAST);
++	}
+ 	map->m_llen = (lcn << lclusterbits) + m->clusterofs - map->m_la;
+ 	return 0;
+ }
 -- 
 2.43.0
 
