@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-99716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5345A9E72FF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:15:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AE49E72CF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F6F116A9EC
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93CAD2871E3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40E32066C2;
-	Fri,  6 Dec 2024 15:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949D72066EE;
+	Fri,  6 Dec 2024 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sM2Pmph8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EABjj0tB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14851474B2;
-	Fri,  6 Dec 2024 15:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A73153836;
+	Fri,  6 Dec 2024 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498111; cv=none; b=Nh7iiXmGUEUBdFnNEV+ctmHavXE3HTyJ7jm5L0eLjZnPw0eOZA908hKPO62cMqrIkSLoDTwITd8l5ivG7EpRMC3YSKv5WR2fReRLgnbWi9EamojchjkIm9Rg8C3sVHT+MqbTwI5DHVNq/LrPdT01LJwde0RIowIMXanOi3XpZts=
+	t=1733498000; cv=none; b=dXFVEFKGxiF8Dq0BFMK0T0/VHdFvkYmaaUgvSFOlUIbvcqDzshNhJaykjxwQo2gVgxUSj6m/9nFwZ5osRBd5rlkZFY+LstN+cDz1X94nZwNmCv7ivUSWLzTLWyWR3uGgjyjgCPXCcFhHOapb3vRiRb4uRPIOXEtHvH6e5DALCkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498111; c=relaxed/simple;
-	bh=C6vb4Hz0U5NQfZAWolrHn6j1kUTJxab9/LWrIVevRI0=;
+	s=arc-20240116; t=1733498000; c=relaxed/simple;
+	bh=NGRvskw8FvFr1zi1myAT42PVXmWZk0oyu5SiMsI//wo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YW79kmQ5+LU8KQ7Q50SjFh/i7lt2IK7kcTXut8zAODXGZQyP/YgSB1rTUDmaxA4UjJQKnj0zsPSdtL3xLXe4zZeiCaJvremqVZ29ib6FU+P5GQmQWAqsO5dE06IEHhY+04516rGbsuI4jD556MNLJW8xj4GJehMr26ITRKxys2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sM2Pmph8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E66C4CED1;
-	Fri,  6 Dec 2024 15:15:10 +0000 (UTC)
+	 MIME-Version; b=KOo7k5u9Sh1RgNy4zzfANMRhwtOyNAn6R3szQCVempeKUCknrx+FSZUIFY3LDx1U7Mf4U2BJhyyNTVOWAFiTKFIoLPMKiVkJzRiqUjWteuA5F6UukIYMytVt3W2M4D9yuuvSkAVmrXTYNwWjz+T8OIUc9tjO5GzW4kTRSRuR82o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EABjj0tB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4CEC4CED1;
+	Fri,  6 Dec 2024 15:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498111;
-	bh=C6vb4Hz0U5NQfZAWolrHn6j1kUTJxab9/LWrIVevRI0=;
+	s=korg; t=1733498000;
+	bh=NGRvskw8FvFr1zi1myAT42PVXmWZk0oyu5SiMsI//wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sM2Pmph8ViF2Rg6knk7DKsEJN9Ql6QVsmpzPliJq1R7IohM/rQjca2nl7njVx3+Dk
-	 vAEkO8nXdH+azxE1bGI4uUqQmNOBtMUa8MdixcybVROz+qZfMto0fojj9g/9aq3ahH
-	 75DYr3i5AjFGUYeG6xkZ1T7zshUBcOUMijMtuZKo=
+	b=EABjj0tBTPOpigBYVIJvyKH49gWAIWN+Gf7M7nenP92ky1e71xo4z1p7kMw4MgxZM
+	 ETcUSpQcZykvhjsvYzNM5KzhHOX0B46N801qIbpagJJpz/b0je2yYDYADMe9QDAzbF
+	 4HUWKkH9Q+9ntn5yPCcPzJk5qhL/vnxEhlCoKWMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Bin Lan <bin.lan.cn@windriver.com>
-Subject: [PATCH 6.6 448/676] xfs: add bounds checking to xlog_recover_process_data
-Date: Fri,  6 Dec 2024 15:34:27 +0100
-Message-ID: <20241206143710.867866211@linuxfoundation.org>
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 449/676] xen: Fix the issue of resource not being properly released in xenbus_dev_probe()
+Date: Fri,  6 Dec 2024 15:34:28 +0100
+Message-ID: <20241206143710.906412033@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -68,54 +65,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
+commit afc545da381ba0c651b2658966ac737032676f01 upstream.
 
-There is a lack of verification of the space occupied by fixed members
-of xlog_op_header in the xlog_recover_process_data.
+This patch fixes an issue in the function xenbus_dev_probe(). In the
+xenbus_dev_probe() function, within the if (err) branch at line 313, the
+program incorrectly returns err directly without releasing the resources
+allocated by err = drv->probe(dev, id). As the return value is non-zero,
+the upper layers assume the processing logic has failed. However, the probe
+operation was performed earlier without a corresponding remove operation.
+Since the probe actually allocates resources, failing to perform the remove
+operation could lead to problems.
 
-We can create a crafted image to trigger an out of bounds read by
-following these steps:
-    1) Mount an image of xfs, and do some file operations to leave records
-    2) Before umounting, copy the image for subsequent steps to simulate
-       abnormal exit. Because umount will ensure that tail_blk and
-       head_blk are the same, which will result in the inability to enter
-       xlog_recover_process_data
-    3) Write a tool to parse and modify the copied image in step 2
-    4) Make the end of the xlog_op_header entries only 1 byte away from
-       xlog_rec_header->h_size
-    5) xlog_rec_header->h_num_logops++
-    6) Modify xlog_rec_header->h_crc
+To fix this issue, we followed the resource release logic of the
+xenbus_dev_remove() function by adding a new block fail_remove before the
+fail_put block. After entering the branch if (err) at line 313, the
+function will use a goto statement to jump to the fail_remove block,
+ensuring that the previously acquired resources are correctly released,
+thus preventing the reference count leak.
 
-Fix:
-Add a check to make sure there is sufficient space to access fixed members
-of xlog_op_header.
+This bug was identified by an experimental static analysis tool developed
+by our team. The tool specializes in analyzing reference count operations
+and detecting potential issues where resources are not properly managed.
+In this case, the tool flagged the missing release operation as a
+potential problem, which led to the development of this patch.
 
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_log_recover.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/xen/xenbus/xenbus_probe.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2456,7 +2456,10 @@ xlog_recover_process_data(
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -313,7 +313,7 @@ int xenbus_dev_probe(struct device *_dev
+ 	if (err) {
+ 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
+ 		       dev->nodename);
+-		return err;
++		goto fail_remove;
+ 	}
  
- 		ohead = (struct xlog_op_header *)dp;
- 		dp += sizeof(*ohead);
--		ASSERT(dp <= end);
-+		if (dp > end) {
-+			xfs_warn(log->l_mp, "%s: op header overrun", __func__);
-+			return -EFSCORRUPTED;
-+		}
+ 	dev->spurious_threshold = 1;
+@@ -322,6 +322,12 @@ int xenbus_dev_probe(struct device *_dev
+ 			 dev->nodename);
  
- 		/* errors will abort recovery */
- 		error = xlog_recover_process_ophdr(log, rhash, rhead, ohead,
+ 	return 0;
++fail_remove:
++	if (drv->remove) {
++		down(&dev->reclaim_sem);
++		drv->remove(dev);
++		up(&dev->reclaim_sem);
++	}
+ fail_put:
+ 	module_put(drv->driver.owner);
+ fail:
 
 
 
