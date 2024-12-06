@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-99809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E189E7372
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:20:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B3A9E737E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:21:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70B0228AC21
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:20:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E77B218828C3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABCA14F9F4;
-	Fri,  6 Dec 2024 15:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35AC14EC60;
+	Fri,  6 Dec 2024 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ks5Dy6Oz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFVya6DI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F2A14D2BD;
-	Fri,  6 Dec 2024 15:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9A653A7;
+	Fri,  6 Dec 2024 15:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498423; cv=none; b=cLzuQwnk8e2rGdy4fcXIbRukZNSsl0vm071H/4DdQV0gLxsV2ZXSaLU4TxTks+S1ITKea18yBpM1ksPLJw+JcEsGfWeLZ6lDILmTwNHf50BxoM4QBEYmYEgL9VwZoPZlgmLQGHU8VaKRnlpX5S3ix8iEuyyRvrlkVuFz0Wx/68o=
+	t=1733498430; cv=none; b=GPYElvODQvsOxYwXHuDPxtjLc+UoMqmLV3LdaTNhUn93BfuLLnEUla1P3zSqYG9rkT6BChDqBCjm+Zmpp1LTpAZ5mJlDdKCpkiRyPV7yT3RC9JQzAWAJpey0wAYdku1twOn7i/aZaSYsHv2Kw2K/SNG9yleYVr1kwgcTOxhJ170=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498423; c=relaxed/simple;
-	bh=gSU6tfE8p3PuWVQB/NbtxBID3HBZDKtffI+9rQoTzGc=;
+	s=arc-20240116; t=1733498430; c=relaxed/simple;
+	bh=3XzMYFM2rCZOARDJYIa0hEpx8y/DRVxkG0z2BzjxLsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvM4D5M6PWIpjPJz8EDjc7ykZ/StXtmYRmNXt1MGbpzjBsXOABx9VwRiwzUUdwdWm/wEyqINNL+SyFJTLFxKJ1z99vpqu3aDJCeh5DkiBzVYROcr91WjF5MchPZWSMTLd6TVlzksXFpmsZAXUDBVu1UtQDOdWr4u5GS2h7Fem5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ks5Dy6Oz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2FAC4CED1;
-	Fri,  6 Dec 2024 15:20:22 +0000 (UTC)
+	 MIME-Version; b=lmBN/pypGdQoyV+LTeC74sN0Dv+9kh9rLg8UK1qnLeVDkK6ywlqC30S+ErILxMpNA0p8kTAWRZ1EW2g6p86qxW9rqDYNwlF29lXjdyhqXXNwEIQS1vjfHg+t8kEe/msMTTGjLtvekrZksG/WqZ4LYesjWtDD4qeWgAi52ku416U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFVya6DI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663A9C4CED1;
+	Fri,  6 Dec 2024 15:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498423;
-	bh=gSU6tfE8p3PuWVQB/NbtxBID3HBZDKtffI+9rQoTzGc=;
+	s=korg; t=1733498429;
+	bh=3XzMYFM2rCZOARDJYIa0hEpx8y/DRVxkG0z2BzjxLsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ks5Dy6OzFVythX6PPNG95QkGvhgm0HOS+8zQhzZ6m7Uod88ESBicyzHPstJTsEabZ
-	 5GhyUfoankXB1J5jXh19ECuDrKJWFGVx3Kp6RfZX9QFLMJHY9DWB5DzPCU+ZW+MWby
-	 QCazgXnU9xQY33K+ZS7om0E8u9SXaB2JehZihKTA=
+	b=JFVya6DITLviLHNV/ufyGmMPKSrVXE1fD4xdGWSfslcujtCzB1FrQVBXXOhLDny2g
+	 kfZcKZosChYHSKR8uoJRR6V3xiMcYH8sHIea7zBlXe4aQfhlQ1jF2alHKRrlJfY2lM
+	 kKU+IX2hhW9r73EC7eTGM5Q+iqCkW9b/1so0HIbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 580/676] modpost: remove ALL_EXIT_DATA_SECTIONS macro
-Date: Fri,  6 Dec 2024 15:36:39 +0100
-Message-ID: <20241206143716.016610088@linuxfoundation.org>
+Subject: [PATCH 6.6 581/676] modpost: disallow *driver to reference .meminit* sections
+Date: Fri,  6 Dec 2024 15:36:40 +0100
+Message-ID: <20241206143716.055412668@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,30 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 3ada34b0f6559b2388f1983366614fbe8027b6fd ]
+[ Upstream commit 50cccec15c48814765895891ca0d95d989b6a419 ]
 
-This is unused.
+Drivers must not reference .meminit* sections, which are discarded
+when CONFIG_MEMORY_HOTPLUG=n.
+
+The reason for whitelisting "*driver" in the section mismatch check
+was to allow drivers to reference symbols annotated as __devinit or
+__devexit that existed in the past.
+
+Those annotations were removed by the following commits:
+
+ - 54b956b90360 ("Remove __dev* markings from init.h")
+ - 92e9e6d1f984 ("modpost.c: Stop checking __dev* section mismatches")
+
+Remove the stale whitelist.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Stable-dep-of: bb43a59944f4 ("Rename .data.unlikely to .data..unlikely")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/modpost.c | 2 --
- 1 file changed, 2 deletions(-)
+ scripts/mod/modpost.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
 diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 828d5cc367169..f6cbf70e455ee 100644
+index f6cbf70e455ee..7e88e6437540e 100644
 --- a/scripts/mod/modpost.c
 +++ b/scripts/mod/modpost.c
-@@ -794,8 +794,6 @@ static void check_section(const char *modname, struct elf_info *elf,
- #define ALL_INIT_DATA_SECTIONS \
- 	".init.setup", ".init.rodata", ".meminit.rodata", \
- 	".init.data", ".meminit.data"
--#define ALL_EXIT_DATA_SECTIONS \
--	".exit.data", ".memexit.data"
+@@ -1007,12 +1007,6 @@ static int secref_whitelist(const char *fromsec, const char *fromsym,
+ 				    "*_console")))
+ 		return 0;
  
- #define ALL_INIT_TEXT_SECTIONS \
- 	".init.text", ".meminit.text"
+-	/* symbols in data sections that may refer to meminit sections */
+-	if (match(fromsec, PATTERNS(DATA_SECTIONS)) &&
+-	    match(tosec, PATTERNS(ALL_XXXINIT_SECTIONS)) &&
+-	    match(fromsym, PATTERNS("*driver")))
+-		return 0;
+-
+ 	/*
+ 	 * symbols in data sections must not refer to .exit.*, but there are
+ 	 * quite a few offenders, so hide these unless for W=1 builds until
 -- 
 2.43.0
 
