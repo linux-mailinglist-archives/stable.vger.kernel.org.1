@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-99693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC56F9E72DA
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5711D9E72DE
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D4D4285C4D
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC222873C4
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF329207650;
-	Fri,  6 Dec 2024 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2550206F34;
+	Fri,  6 Dec 2024 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqMjxGOO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFZtdAI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF0D13AA5F;
-	Fri,  6 Dec 2024 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B2E18FDAA;
+	Fri,  6 Dec 2024 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498032; cv=none; b=eAY8HibaKA1Robge9Q0IpTt6U6tHrf1PfSrCSpSUTvOr2Gk8IPRWFdgtw++v7XWmYMZ6zmphihzs3arhTHkj7tDhCBDFeKuCJDn2D1JFPaG7KsGtQC5QAmCIRQ1rnvPAdrKc1TSrQ5aJJCCeCkA0KwaOiv8cjvXidjOCvzYzxTk=
+	t=1733498039; cv=none; b=aULDslqGT/310je8J5kbLVUMDW8HVrar+a8wq01Ez0zfJrCG2z4JxP7kJrdMfrKDiDDp25zk35dK8u1r4OYU0iC3T+NU3AeiijKyTYrKBLDLVGiCMGOTfRwIktYOtsaUS8cBhwGI3q89Qhi8EOs5/nQXJq7Ptit8c++T8AT+Zos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498032; c=relaxed/simple;
-	bh=h2PfdYUuh2YmnZSItVgC2/5C2TfKK6Hg6eIy8uQAJmw=;
+	s=arc-20240116; t=1733498039; c=relaxed/simple;
+	bh=ei3tbR2FBxnX9yQppU81m+XdKlTtZgUvvugTFUBfcbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UU/F0LbnkF4wF8Go4VzGZwSAyz5YvX+tXl3YpUO7qcYBaVWUfO6YuDXt22RJj0fMlJdUVE8ZEKnBh/89zq8WGw7qlA8S22J4M3ihrOiWAMUBPruf1Z88uQ2Ah7GsFFLOe3OYAdjeRrAjsX1OZ4/SeWuOHDIEi6f4ppSeuyuQs9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqMjxGOO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15577C4CED1;
-	Fri,  6 Dec 2024 15:13:51 +0000 (UTC)
+	 MIME-Version; b=CEX7GyEx21hgd9ekoaabv6uwuCGTw61gUAS3L1jGXwL49srkq9jWuc5L/zwfvB58RtegY74yx/YOfYtVhNYlV1LYHtk6aj+mTu4s1czQqZzwE6zz5lq99O8zhnkxL8H+akRreLnp/9wTeuKETdIZCreJNYZtHeutbD4wXnYXNBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFZtdAI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EE6C4CED1;
+	Fri,  6 Dec 2024 15:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498032;
-	bh=h2PfdYUuh2YmnZSItVgC2/5C2TfKK6Hg6eIy8uQAJmw=;
+	s=korg; t=1733498039;
+	bh=ei3tbR2FBxnX9yQppU81m+XdKlTtZgUvvugTFUBfcbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqMjxGOO2iM3WyRr8MNljWCYXvVnxsqZeHuniVs9s/IcUdchKuGzBQdF+At0W0UfT
-	 6JY8yO5NfjvaEDhoFaphvo1g4zhxzJpfCLd/iYQq+oXcJMqQE4uDQA987w4wzfd9j1
-	 kzsXFTn2xSZoJ7wdzC9PeDzXxooqBFLOsNpcFTvg=
+	b=FFZtdAI9O7HpUR5VYQx+PpeeNtSWVCJhCe4HZGhFf3TMdo1aHVYKWk8fhag1gvP0Q
+	 dZSKyx+szeb10wiB6kV2gjVgHM/x3BSh1DTPdcNrb0Ouh4DlkPObe8yroDg9MAq27c
+	 Io2FkjJMoetrumfopUiqVZv5AiZkgK5wGkVgo8+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 467/676] ASoC: Intel: sst: Fix used of uninitialized ctx to log an error
-Date: Fri,  6 Dec 2024 15:34:46 +0100
-Message-ID: <20241206143711.611700473@linuxfoundation.org>
+	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 468/676] soc: qcom: socinfo: fix revision check in qcom_socinfo_probe()
+Date: Fri,  6 Dec 2024 15:34:47 +0100
+Message-ID: <20241206143711.649826617@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,35 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
 
-commit c1895ba181e560144601fafe46aeedbafdf4dbc4 upstream.
+commit 128fdbf36cddc2a901c4889ba1c89fa9f2643f2c upstream.
 
-Fix the new "LPE0F28" code path using the uninitialized ctx variable
-to log an error.
+In success case, the revision holds a non-null pointer. The current
+logic incorrectly returns an error for a non-null pointer, whereas
+it should return an error for a null pointer.
 
-Fixes: 6668610b4d8c ("ASoC: Intel: sst: Support LPE0F28 ACPI HID")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410261106.EBx49ssy-lkp@intel.com/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241026143615.171821-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The socinfo driver for IPQ9574 and IPQ5332 is currently broken,
+resulting in the following error message
+qcom-socinfo qcom-socinfo: probe with driver qcom-socinfo failed with
+error -12
+
+Add a null check for the revision to ensure it returns an error only in
+failure case (null pointer).
+
+Fixes: e694d2b5c58b ("soc: qcom: Add check devm_kasprintf() returned value")
+Signed-off-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20241016144852.2888679-1-quic_mmanikan@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/atom/sst/sst_acpi.c |    2 +-
+ drivers/soc/qcom/socinfo.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/intel/atom/sst/sst_acpi.c
-+++ b/sound/soc/intel/atom/sst/sst_acpi.c
-@@ -308,7 +308,7 @@ static int sst_acpi_probe(struct platfor
- 		rsrc = platform_get_resource(pdev, IORESOURCE_MEM,
- 					     pdata->res_info->acpi_lpe_res_index);
- 		if (!rsrc) {
--			dev_err(ctx->dev, "Invalid SHIM base\n");
-+			dev_err(dev, "Invalid SHIM base\n");
- 			return -EIO;
- 		}
- 		rsrc->start -= pdata->res_info->shim_offset;
+--- a/drivers/soc/qcom/socinfo.c
++++ b/drivers/soc/qcom/socinfo.c
+@@ -757,7 +757,7 @@ static int qcom_socinfo_probe(struct pla
+ 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
+ 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
+ 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
+-	if (!qs->attr.soc_id || qs->attr.revision)
++	if (!qs->attr.soc_id || !qs->attr.revision)
+ 		return -ENOMEM;
+ 
+ 	if (offsetof(struct socinfo, serial_num) <= item_size) {
 
 
 
