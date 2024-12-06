@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-99991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D809E7B67
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:09:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B68B59E7B6B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:10:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDAD31885CE4
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:09:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76DCE2826A9
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F401B87DA;
-	Fri,  6 Dec 2024 22:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9641EBFFC;
+	Fri,  6 Dec 2024 22:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUhGH5kE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFNJxnr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DED22C6C0
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 22:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A82022C6C0
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 22:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733522982; cv=none; b=U+Zug800WrxMnEMNGozl2+Z0nhSciZgdODExRgFXru6Fn9wRKmjLrUlTfGoYL5NnDZZ9lnhBSXNZIrDirQGP2XjP9Np2D6vasMd4R/vYIp6UeXRb7DNNircnmD8+7GEMalXevUoeCcK+nc/FaP8qsesm8r2+KsGbi0FF7VZEeis=
+	t=1733523019; cv=none; b=c6CuIdIcfWoLBUQqQLkiNOV8f/mQvG2/i2xZ96a1+O1t8AzuN0QJ2Wwlw0PsW2bv6ldQx8qs4F3llwEAwFD54om39gvWrEKwdpgBWfA8xXFW00wwn9TtXHlOu0vVGWCv7Kmgv6J7Z0JyAAw+JVzmtdh8pA2wlC2kNeH5FWgcgSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733522982; c=relaxed/simple;
-	bh=IoshGe0DuS2FUZ6yPy9DMR6cL9EMzjq3OH01IjJW7xo=;
+	s=arc-20240116; t=1733523019; c=relaxed/simple;
+	bh=0qrEZT8ypuxzDYJYOIXcXVeWak1KmPT/Noz9JcsUEVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDjzTFIZ1XH4QfKCZAwptYzJw65lBEs8svERPTmKuqt7URks1kGq84oNNrRkNb7SSEAHpdoWz2RxqKuW8E27MCYmvC9iLgO/NAfUrL+Gn2t0CktN8cCWygdVexdPj3FGKRv4vwOyznEdz7Rqy4v6lbKTj/3fvutV61is4IZGuVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUhGH5kE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B0DC4CEDE;
-	Fri,  6 Dec 2024 22:09:40 +0000 (UTC)
+	 MIME-Version; b=lbW+kxTMQ0kydeGzhku/cGdXuGTvo8XRNLu+DO3uXeH+TLxjlYz8oInrA6WTVmv7oS299C+5laq1JE4+Jdx5f9FPqGbE1Rf422gxo1/KxGN1hKYLJ7sdBuuILZt5P/Nv8qsctKn2x6A9/uZSE+tjFTH8aH31TQsbUrbDck4/IYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFNJxnr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6079C4CED1;
+	Fri,  6 Dec 2024 22:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733522982;
-	bh=IoshGe0DuS2FUZ6yPy9DMR6cL9EMzjq3OH01IjJW7xo=;
+	s=k20201202; t=1733523018;
+	bh=0qrEZT8ypuxzDYJYOIXcXVeWak1KmPT/Noz9JcsUEVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUhGH5kEeJDmPZ77TtaxG3mmJ9QNw7VykQmU9Vzq37wB2ld9AOHj+q5yz7S5ySsbE
-	 JwHilnzSGtYjyr/n2Snm7PFL+eZ3owMyhC2zviYZ6gfArNHLoFv9LPQUWvDJj88XNE
-	 KJLO3XvZH22zdisuSfKRVL6RT7IusdnObY9S/LLhFatkY88dtNGeCg4jlHHr/eOsFu
-	 ZErhMXQ0WBH7tGbNieCaOl4Z0Psu/PTQzzD5VV3+OPQnXY7GrzaS/pRBtF+FUlEuJ7
-	 4DZ7Yuggv1k4q8TMWu4sr4llJYqNFu3crpSnKbP1jwBklmfzpOfZ3CflC9MWHnRdYp
-	 XGoFTQhAXYvdg==
+	b=VFNJxnr2Tyb8jhggI6Zzd8r/utzJlq3vrd0w+H1VjLf2z0zeFyXFHCV2EHzBBfuM8
+	 lPi9R0OwR3jGiGvbd0dtElxtfR5wX5oJxP1Q9YriS2sWwo/4Ep5rrFvg0r0QjhKA+N
+	 PmKb+EFRde78w0tM6GCd/PHx0MbC7xdgPqGw0QwuKaLOzZKlDzxw2Dwc6j8CfECnFP
+	 ZFbrqtmtoESTKtD3rd8osdrGx4Ja6O8PUpXClAdaFHaZo3fk6z28wKEgIhni8I2rKS
+	 ufJcAyGk17edZpd1LPOXoSkvrKC9AataS0/axAQvw6ERLURasdwsyXxOL+Ca+t81sT
+	 HqyC9/0q3eZUA==
 From: Nathan Chancellor <nathan@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: stable@vger.kernel.org,
 	nathan@kernel.org,
 	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
-Date: Fri,  6 Dec 2024 15:09:26 -0700
-Message-ID: <20241206220926.2099603-1-nathan@kernel.org>
+Subject: [PATCH 6.1] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
+Date: Fri,  6 Dec 2024 15:10:05 -0700
+Message-ID: <20241206221005.2313691-1-nathan@kernel.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <2024120641-patriarch-wiring-1eed@gregkh>
-References: <2024120641-patriarch-wiring-1eed@gregkh>
+In-Reply-To: <2024120642-steep-reply-a3bd@gregkh>
+References: <2024120642-steep-reply-a3bd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,32 +82,29 @@ Cc: stable@vger.kernel.org # v6.1+
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 Link: https://patch.msgid.link/20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org
-[nathan: Backport to 6.6, which lacks a6b67eb09963]
+[nathan: Backport to 6.1, which lacks both a6b67eb09963 and 05e05bfc92d1]
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
- arch/powerpc/kernel/vdso/Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/vdso/Makefile | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 0c7d82c270c3..33d68e51cc9d 100644
+index a2e7b0ce5b19..48bf579eedae 100644
 --- a/arch/powerpc/kernel/vdso/Makefile
 +++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -16,10 +16,14 @@ ifneq ($(c-gettimeofday-y),)
+@@ -16,6 +16,12 @@ ifneq ($(c-gettimeofday-y),)
    CFLAGS_vgettimeofday-32.o += -ffreestanding -fasynchronous-unwind-tables
    CFLAGS_REMOVE_vgettimeofday-32.o = $(CC_FLAGS_FTRACE)
    CFLAGS_REMOVE_vgettimeofday-32.o += -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
 +  ifdef CONFIG_CC_IS_CLANG
-   # This flag is supported by clang for 64-bit but not 32-bit so it will cause
-   # an unused command line flag warning for this file.
--  ifdef CONFIG_CC_IS_CLANG
-   CFLAGS_REMOVE_vgettimeofday-32.o += -fno-stack-clash-protection
 +  # -mstack-protector-guard values from the 64-bit build are not valid for the
 +  # 32-bit one. clang validates the values passed to these arguments during
 +  # parsing, even when -fno-stack-protector is passed afterwards.
 +  CFLAGS_REMOVE_vgettimeofday-32.o += -mstack-protector-guard%
-   endif
++  endif
    CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y)
    CFLAGS_vgettimeofday-64.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+   CFLAGS_vgettimeofday-64.o += $(call cc-option, -fno-stack-protector)
 -- 
 2.47.1
 
