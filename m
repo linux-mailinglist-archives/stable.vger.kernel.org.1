@@ -1,290 +1,317 @@
-Return-Path: <stable+bounces-99993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5A19E7B89
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BC39E7B99
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18F2281959
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:15:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82C28285BC3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3398C19ABC6;
-	Fri,  6 Dec 2024 22:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453B222C6C1;
+	Fri,  6 Dec 2024 22:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4AKS1TX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j8eXyada"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AD22C6C1;
-	Fri,  6 Dec 2024 22:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DECA22C6C0
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 22:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733523345; cv=none; b=CBQqCwsAyulCL22Zc8o5E9dETCRromNm3sYMhdkSuBxfQXP2w/G1LWi1QTBzbOQ6gy2yv9klAYvc+5tkAk9lmUSVb9lt+CEQHD0sW7wIJ46o3rIRdb2SQXC3TmmTrvpOm6iw8+NRMGTOJr4489bfX4NWQoL5FVutbwfJI/dGs6w=
+	t=1733523713; cv=none; b=EN7rjgITvQ/BrErdgaYj3nQ15thymvT9E0FjRugDBUFIiazcZ5gKe/vXsH48FtnMSNz/nsQrrd19b2TYbemjjnSWQhT1y0EWZe62IaqxqZJOBaT3DODMa4hHuEgQwdbP7Y/PtOc/eL29Hblo6sKut16j3ButqyLejBfdmngsrWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733523345; c=relaxed/simple;
-	bh=pJNboDSrtAtEPyh4PwQKsGQAa4ood0d1G62be8rKVfU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EO4XSSP/ttP899IroiTQWFJBzTVBBE7JfV36bYRTkQjkoq4v4aQaJoOqHDg9N5mjUKpgDiiuGP2NlftTCJBRZjEyZ6wRlJsLUZ7461itaoAisLJhCOZfPhNgLchYEfNxdlzds+rREwjf/JIfQoSN1LMiW7rfPlmQUZuMTuBFjwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4AKS1TX; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee8aa26415so2215235a91.1;
-        Fri, 06 Dec 2024 14:15:43 -0800 (PST)
+	s=arc-20240116; t=1733523713; c=relaxed/simple;
+	bh=mMXN8UY+5jag5K48Lybbtf+3vHwqL3Yqi8ZSLsthOM8=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=I1ZUFBV+dqJVVk4cPbVNKHJaFbVk4Qsg+pPCfblLaz3k78FcmBBu2M3iQhmmFOvg6G8h5oIsQWyYoJdnW/49BvA/CoEBrClrmUXdd96L6Y2rkMY3jOId5yVmcL9DZj6VnWnXejZwJM6fYt7xhW4oVYzDRcYGpfOduS28bNSlD9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j8eXyada; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-215348d1977so21685955ad.3
+        for <stable@vger.kernel.org>; Fri, 06 Dec 2024 14:21:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733523342; x=1734128142; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w8e7YM4si5YOg3jr9H5Y9Db0TtNXgw9XX76Nlg+F5uY=;
-        b=N4AKS1TXrdLgn3Q0Fw8l9MSS4o+G4V8VE2+/gj/LmEV1hKM/ErdnNOALwxoi8F95Wx
-         ZoNaYGA33YNDD/g87f8lRwiPrmETJ3KBaAh54UMnr+Ry8g+Nywpctb1l6W9ljm2xow15
-         OkWLgfaXaNhgCkTEGHDLP0D7GvcnBtfxbWLu1c9JlSeap68SSILuiHD+bJ4OL8JvJ7UW
-         zXSY5lAxmVSeVG+pPFfodpNdmf6wJHLOb6dq9xoe8iJgmEoFpPruC4DsFe68oHHrYS9N
-         XHhKfHQbB6vAtuA46CZEuEzBEEgekrefH4DzSqgJf1jZBOIUwHxf99sgdPC/qYKMizX4
-         3UfA==
+        d=google.com; s=20230601; t=1733523710; x=1734128510; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=t+kpL6smuteWwQLLIWBSUleVhMRe9MwdnP1rS1Hbs0c=;
+        b=j8eXyadadniqcpScRxfR0bA9tGG1VYaB8rXJ41AmR+3VjFqn6NFcHygyGL2fXBIYuU
+         lcWTq8hcDHp/OICTL7Kzd8XLRJz1l5aRDsYDRCG3W9LsUzMvyFhCc8HYEE7sBO0oF0BO
+         6c3RjSuRm4O71GYsn3+rs0F5j3SCpshd6+sKC2xHswgjfNc7b3oo655/P+7Rog/8lyRd
+         IZ1I5b4WqABCMUOZMGEZvtzzeVi2LbUnFMBO5Wpm80XNzJigR5LAvWAVwZw8KalIKa7E
+         fJnjShNu9C99Ol/dh/Bokbr2gZPgkwXkUcS3mOHRC7KcN3ZnOzgpmfvFWo4p5iyIW3e9
+         beug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733523342; x=1734128142;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=w8e7YM4si5YOg3jr9H5Y9Db0TtNXgw9XX76Nlg+F5uY=;
-        b=UE7HnWXmok3uIFOdQRoUx4ww63IPwKQow7ib4hx6iYld0hziN4hH+3qj4hFAFXDvXz
-         EsNH9DHK0UhJO55DaFTEeBSxWwBFM2bHBZp9KyiT9X3ETfqDhrIrAq6jwz8Mi4CMTKGQ
-         cQvOkxCKd9X/bZ72xl+r/oH50l5hHwbvBajLXCUHqEHPviis87wHp6Jefgj1jYc8WZ0S
-         sOrK4/splEN/RpHq66GRZ6EuSApsx2Z0qrMb/abaMoVubFsY1LlCYWwmY1tQEP71R4Kq
-         xRZPBcjq1YwppcUAMwphkJKFhTYrFXU5o2T7JbusTdQBEimgnKGZlrMeK/HWPSQ8gbR1
-         nywQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4Rx4sYQn4WIx59SV7gXU43JXSdtkvA3fLzftr7Yp5zUK9CJA7wiR/4BEtQfiPw/YKJ7A=@vger.kernel.org, AJvYcCVC4ME9b7k/Z45ZeAP5OZYoBDThY5/979HXH/lTD6E0Et9KRo1n1yOW/D+idtP2bPxDtHuNBq3F@vger.kernel.org, AJvYcCVKe1VAOQ967NKG8zQ3TW4DewNUeFwq+4KkF0x1x8/WoGx/4KU0Mrg7xCyA6AzCjw5iodJJaqCe0iCTEwrm@vger.kernel.org, AJvYcCXJ+Y1ymv3KUs9XUv86z8rk2V6SS9nUaj9CUmXo0UlaqIuy8GQyqwhkgyMASDqtuPjuy/fmxzcoqyGQWB4r4n/DXYOW@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/tM4TR+k5FP9Wn/oZ+c2+NF5HAQ5YEwXQX8iHRkcembOdad4U
-	BF/Lcx9ho4KF1apr+0o4zAtWZCNjqr8dSN1N+mp5GYRnaYHpKypmnWGKGFOHcL49pBrtEHblp39
-	EUQ7FMy9lVDnTiizsHybWKK3lumo=
-X-Gm-Gg: ASbGnctkHiBLKl8DVVW0a8zvLfnC4WqbgPFlpe/J2RPKmkB/vDdOX2tNcSTUxcGdH5T
-	Nuns7zHf9YLmBAseIMzVC3fNnZRDCMivMqkKuYlT96S/1SL4=
-X-Google-Smtp-Source: AGHT+IFQDKX0xPfjy+1GV5DC2GEOe3O925IO0wivqwkD37VEAblMUzZqPiXYvt8JvyDgF5rSVBQzPfDgL3+j53X/Nbw=
-X-Received: by 2002:a17:90b:5405:b0:2ee:c291:765a with SMTP id
- 98e67ed59e1d1-2ef6955fa47mr6403143a91.8.1733523342534; Fri, 06 Dec 2024
- 14:15:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733523710; x=1734128510;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=t+kpL6smuteWwQLLIWBSUleVhMRe9MwdnP1rS1Hbs0c=;
+        b=Eiv6Me3LKTzou8DV5XpxVYLnXJn63gsm/cjcvzgiAjrklucNWTYsSFGsXu6V+cXf9Z
+         PP65EOahz2l2BEH9V9LoKhoI8StPBgpSAPnJWgbTmRdKq+u0yQIz7tMhu15gjJ4Egeib
+         nSLQqqxynYMqP/oXrtxkGaZm5QtDpNB+ezEep+eQKNXjXMxrX354CX2mj/+ExwcKlAPV
+         1sfu+/2KKRDKIsk9fFeP4XG16c7oBCz57RFdb2HGR2iLm8mcT5bDT8prACj3+TDaF5ls
+         hkyJH+TLofNSLnmjp4QsS42I57qbtx1oWHY0UP7pctPFgA88+HQgEGu9G+TTSPngetgs
+         yr9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXPzxLayX7JrGgMif4m52VKJ3F6frTDH1u350n8YgMTfLzgPYw4iRVGb3eUPBCCieUULdSO2nc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9uw6XvPWy1PP5ehQqOZrrt6Qjo+1TEV6ftBRbqtaJmGfpvY+e
+	M+Z9Yx0x9qf4CM9Ecrxo5Z9BoW7F0rbmkIkggJHGKg3nlHJoUN41rlOgC2vkQj1aSqw/ROgaTXQ
+	Lig==
+X-Gm-Gg: ASbGnctO64UME4/jaPXa+eIHV9jtH/EWzGxW+TxqVcUrMczzrN1oh7OJok2RWML3NgB
+	DdT3LKYpurqJeaGdzlsqFtP+rscqnpZfxcWKkj4TA5+aRCTa0wYs9hnBeMupLBgIlgJEc3/TjDE
+	PAueMDI/9VF9i51kVNW2q3kW72hOXzzoKDLDzI9fjj9aRP9OE/oDQyiuI+IuvLzlbbqJfbRh7z5
+	6bH/2Swo6x6wGbdDE1RFsZHPaKOpdyjbB+vRm0IaA3U+F2n1oPxM4lijG9E9xFudR7Xa5u7VYN0
+	E9R2rGCHWoX/XDZwN1SVc/+38akHCdRZ6w==
+X-Google-Smtp-Source: AGHT+IFvWQPTzIxqXtDKMwb7TH3lqHGthAZz1/GR+nIx/vhNSvbOcbuGM5aUnToGuiFJnxhds+OBYg==
+X-Received: by 2002:a17:902:f78b:b0:216:1543:1962 with SMTP id d9443c01a7336-21615431b14mr74986395ad.23.1733523710368;
+        Fri, 06 Dec 2024 14:21:50 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725a2ca691fsm3517010b3a.148.2024.12.06.14.21.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2024 14:21:49 -0800 (PST)
+Date: Fri, 6 Dec 2024 14:21:38 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: gregkh@linuxfoundation.org
+cc: roman.gushchin@linux.dev, akpm@linux-foundation.org, seanjc@google.com, 
+    stable@vger.kernel.org, vbabka@suse.cz, willy@infradead.org
+Subject: Re: FAILED: patch "[PATCH] mm: page_alloc: move mlocked flag clearance
+ into" failed to apply to 6.6-stable tree
+In-Reply-To: <92845557-1e54-71b7-0501-4733005a8fc3@google.com>
+Message-ID: <97594aca-8bfe-78d6-fa86-688af7610c83@google.com>
+References: <2024111714-varsity-grub-d888@gregkh> <92845557-1e54-71b7-0501-4733005a8fc3@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
-In-Reply-To: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 6 Dec 2024 14:15:30 -0800
-Message-ID: <CAEf4BzYxaKd8Gv5g8PBY6zaQukYKSjjtaSgYMjJxL-PZ0dLrbQ@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] bpf: Fix prog_array UAF in __uprobe_perf_func()
-To: Jann Horn <jannh@google.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Delyan Kratunov <delyank@fb.com>, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 
-On Fri, Dec 6, 2024 at 12:45=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
->
-> Currently, the pointer stored in call->prog_array is loaded in
-> __uprobe_perf_func(), with no RCU annotation and no RCU protection, so th=
-e
-> loaded pointer can immediately be dangling. Later,
-> bpf_prog_run_array_uprobe() starts a RCU-trace read-side critical section=
-,
-> but this is too late. It then uses rcu_dereference_check(), but this use =
-of
-> rcu_dereference_check() does not actually dereference anything.
->
-> It looks like the intention was to pass a pointer to the member
-> call->prog_array into bpf_prog_run_array_uprobe() and actually dereferenc=
-e
-> the pointer in there. Fix the issue by actually doing that.
->
-> Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jann Horn <jannh@google.com>
+On Mon, 18 Nov 2024, Hugh Dickins wrote:
+> On Sun, 17 Nov 2024, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.6-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 66edc3a5894c74f8887c8af23b97593a0dd0df4d
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024111714-varsity-grub-d888@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+> 
+> For 6.6 and 6.1 please use this replacement patch:
+
+I notice that there's now a 6.6.64-rc1 out for review, but without
+Roman's mlocked flag clearance patch.  No desperate need to get it into
+an rc of 6.6.64, but we wouldn't want it to go missing indefinitely.
+
+Thanks,
+Hugh
+
+> 
+> From 9de12cbafdf2fae7d5bfdf14f4684ce3244469df Mon Sep 17 00:00:00 2001
+> From: Roman Gushchin <roman.gushchin@linux.dev>
+> Date: Wed, 6 Nov 2024 19:53:54 +0000
+> Subject: [PATCH] mm: page_alloc: move mlocked flag clearance into
+>  free_pages_prepare()
+> 
+> commit 66edc3a5894c74f8887c8af23b97593a0dd0df4d upstream.
+> 
+> Syzbot reported a bad page state problem caused by a page being freed
+> using free_page() still having a mlocked flag at free_pages_prepare()
+> stage:
+> 
+>   BUG: Bad page state in process syz.5.504  pfn:61f45
+>   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x61f45
+>   flags: 0xfff00000080204(referenced|workingset|mlocked|node=0|zone=1|lastcpupid=0x7ff)
+>   raw: 00fff00000080204 0000000000000000 dead000000000122 0000000000000000
+>   raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+>   page dumped because: PAGE_FLAGS_CHECK_AT_FREE flag(s) set
+>   page_owner tracks the page as allocated
+>   page last allocated via order 0, migratetype Unmovable, gfp_mask 0x400dc0(GFP_KERNEL_ACCOUNT|__GFP_ZERO), pid 8443, tgid 8442 (syz.5.504), ts 201884660643, free_ts 201499827394
+>    set_page_owner include/linux/page_owner.h:32 [inline]
+>    post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1537
+>    prep_new_page mm/page_alloc.c:1545 [inline]
+>    get_page_from_freelist+0x303f/0x3190 mm/page_alloc.c:3457
+>    __alloc_pages_noprof+0x292/0x710 mm/page_alloc.c:4733
+>    alloc_pages_mpol_noprof+0x3e8/0x680 mm/mempolicy.c:2265
+>    kvm_coalesced_mmio_init+0x1f/0xf0 virt/kvm/coalesced_mmio.c:99
+>    kvm_create_vm virt/kvm/kvm_main.c:1235 [inline]
+>    kvm_dev_ioctl_create_vm virt/kvm/kvm_main.c:5488 [inline]
+>    kvm_dev_ioctl+0x12dc/0x2240 virt/kvm/kvm_main.c:5530
+>    __do_compat_sys_ioctl fs/ioctl.c:1007 [inline]
+>    __se_compat_sys_ioctl+0x510/0xc90 fs/ioctl.c:950
+>    do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+>    __do_fast_syscall_32+0xb4/0x110 arch/x86/entry/common.c:386
+>    do_fast_syscall_32+0x34/0x80 arch/x86/entry/common.c:411
+>    entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+>   page last free pid 8399 tgid 8399 stack trace:
+>    reset_page_owner include/linux/page_owner.h:25 [inline]
+>    free_pages_prepare mm/page_alloc.c:1108 [inline]
+>    free_unref_folios+0xf12/0x18d0 mm/page_alloc.c:2686
+>    folios_put_refs+0x76c/0x860 mm/swap.c:1007
+>    free_pages_and_swap_cache+0x5c8/0x690 mm/swap_state.c:335
+>    __tlb_batch_free_encoded_pages mm/mmu_gather.c:136 [inline]
+>    tlb_batch_pages_flush mm/mmu_gather.c:149 [inline]
+>    tlb_flush_mmu_free mm/mmu_gather.c:366 [inline]
+>    tlb_flush_mmu+0x3a3/0x680 mm/mmu_gather.c:373
+>    tlb_finish_mmu+0xd4/0x200 mm/mmu_gather.c:465
+>    exit_mmap+0x496/0xc40 mm/mmap.c:1926
+>    __mmput+0x115/0x390 kernel/fork.c:1348
+>    exit_mm+0x220/0x310 kernel/exit.c:571
+>    do_exit+0x9b2/0x28e0 kernel/exit.c:926
+>    do_group_exit+0x207/0x2c0 kernel/exit.c:1088
+>    __do_sys_exit_group kernel/exit.c:1099 [inline]
+>    __se_sys_exit_group kernel/exit.c:1097 [inline]
+>    __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
+>    x64_sys_call+0x2634/0x2640 arch/x86/include/generated/asm/syscalls_64.h:232
+>    do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>    do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>   Modules linked in:
+>   CPU: 0 UID: 0 PID: 8442 Comm: syz.5.504 Not tainted 6.12.0-rc6-syzkaller #0
+>   Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+>   Call Trace:
+>    <TASK>
+>    __dump_stack lib/dump_stack.c:94 [inline]
+>    dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+>    bad_page+0x176/0x1d0 mm/page_alloc.c:501
+>    free_page_is_bad mm/page_alloc.c:918 [inline]
+>    free_pages_prepare mm/page_alloc.c:1100 [inline]
+>    free_unref_page+0xed0/0xf20 mm/page_alloc.c:2638
+>    kvm_destroy_vm virt/kvm/kvm_main.c:1327 [inline]
+>    kvm_put_kvm+0xc75/0x1350 virt/kvm/kvm_main.c:1386
+>    kvm_vcpu_release+0x54/0x60 virt/kvm/kvm_main.c:4143
+>    __fput+0x23f/0x880 fs/file_table.c:431
+>    task_work_run+0x24f/0x310 kernel/task_work.c:239
+>    exit_task_work include/linux/task_work.h:43 [inline]
+>    do_exit+0xa2f/0x28e0 kernel/exit.c:939
+>    do_group_exit+0x207/0x2c0 kernel/exit.c:1088
+>    __do_sys_exit_group kernel/exit.c:1099 [inline]
+>    __se_sys_exit_group kernel/exit.c:1097 [inline]
+>    __ia32_sys_exit_group+0x3f/0x40 kernel/exit.c:1097
+>    ia32_sys_call+0x2624/0x2630 arch/x86/include/generated/asm/syscalls_32.h:253
+>    do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+>    __do_fast_syscall_32+0xb4/0x110 arch/x86/entry/common.c:386
+>    do_fast_syscall_32+0x34/0x80 arch/x86/entry/common.c:411
+>    entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+>   RIP: 0023:0xf745d579
+>   Code: Unable to access opcode bytes at 0xf745d54f.
+>   RSP: 002b:00000000f75afd6c EFLAGS: 00000206 ORIG_RAX: 00000000000000fc
+>   RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000000000
+>   RDX: 0000000000000000 RSI: 00000000ffffff9c RDI: 00000000f744cff4
+>   RBP: 00000000f717ae61 R08: 0000000000000000 R09: 0000000000000000
+>   R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+>   R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+>    </TASK>
+> 
+> The problem was originally introduced by commit b109b87050df ("mm/munlock:
+> replace clear_page_mlock() by final clearance"): it was focused on
+> handling pagecache and anonymous memory and wasn't suitable for lower
+> level get_page()/free_page() API's used for example by KVM, as with this
+> reproducer.
+> 
+> Fix it by moving the mlocked flag clearance down to free_page_prepare().
+> 
+> The bug itself if fairly old and harmless (aside from generating these
+> warnings), aside from a small memory leak - "bad" pages are stopped from
+> being allocated again.
+> 
+> Link: https://lkml.kernel.org/r/20241106195354.270757-1-roman.gushchin@linux.dev
+> Fixes: b109b87050df ("mm/munlock: replace clear_page_mlock() by final clearance")
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Reported-by: syzbot+e985d3026c4fd041578e@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/6729f475.050a0220.701a.0019.GAE@google.com
+> Acked-by: Hugh Dickins <hughd@google.com>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Sean Christopherson <seanjc@google.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Hugh Dickins <hughd@google.com>
 > ---
-> To reproduce, in include/linux/bpf.h, patch in a mdelay(10000) directly
-> before the might_fault() in bpf_prog_run_array_uprobe() and add an
-> include of linux/delay.h.
->
-> Build this userspace program:
->
-> ```
-> $ cat dummy.c
-> #include <stdio.h>
-> int main(void) {
->   printf("hello world\n");
-> }
-> $ gcc -o dummy dummy.c
-> ```
->
-> Then build this BPF program and load it (change the path to point to
-> the "dummy" binary you built):
->
-> ```
-> $ cat bpf-uprobe-kern.c
-> #include <linux/bpf.h>
-> #include <bpf/bpf_helpers.h>
-> #include <bpf/bpf_tracing.h>
-> char _license[] SEC("license") =3D "GPL";
->
-> SEC("uprobe//home/user/bpf-uprobe-uaf/dummy:main")
-> int BPF_UPROBE(main_uprobe) {
->   bpf_printk("main uprobe triggered\n");
->   return 0;
-> }
-> $ clang -O2 -g -target bpf -c -o bpf-uprobe-kern.o bpf-uprobe-kern.c
-> $ sudo bpftool prog loadall bpf-uprobe-kern.o uprobe-test autoattach
-> ```
->
-> Then run ./dummy in one terminal, and after launching it, run
-> `sudo umount uprobe-test` in another terminal. Once the 10-second
-> mdelay() is over, a use-after-free should occur, which may or may
-> not crash your kernel at the `prog->sleepable` check in
-> bpf_prog_run_array_uprobe() depending on your luck.
-> ---
-> Changes in v2:
-> - remove diff chunk in patch notes that confuses git
-> - Link to v1: https://lore.kernel.org/r/20241206-bpf-fix-uprobe-uaf-v1-1-=
-6869c8a17258@google.com
-> ---
->  include/linux/bpf.h         | 4 ++--
->  kernel/trace/trace_uprobe.c | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
->
-
-Looking at how similar in spirit bpf_prog_run_array() is meant to be
-used, it seems like it is the caller's responsibility to
-RCU-dereference array and keep RCU critical section before calling
-into bpf_prog_run_array(). So I wonder if it's best to do this instead
-(Gmail will butcher the diff, but it's about the idea):
-
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index eaee2a819f4c..4b8a9edd3727 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2193,26 +2193,25 @@ bpf_prog_run_array(const struct bpf_prog_array *arr=
-ay,
-  * rcu-protected dynamically sized maps.
-  */
- static __always_inline u32
--bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_rcu,
-+bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
-                          const void *ctx, bpf_prog_run_fn run_prog)
- {
-        const struct bpf_prog_array_item *item;
-        const struct bpf_prog *prog;
--       const struct bpf_prog_array *array;
-        struct bpf_run_ctx *old_run_ctx;
-        struct bpf_trace_run_ctx run_ctx;
-        u32 ret =3D 1;
-
-        might_fault();
-+       RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu lock held");
-+
-+       if (unlikely(!array))
-+               goto out;
-
--       rcu_read_lock_trace();
-        migrate_disable();
-
-        run_ctx.is_uprobe =3D true;
-
--       array =3D rcu_dereference_check(array_rcu, rcu_read_lock_trace_held=
-());
--       if (unlikely(!array))
--               goto out;
-        old_run_ctx =3D bpf_set_run_ctx(&run_ctx.run_ctx);
-        item =3D &array->items[0];
-        while ((prog =3D READ_ONCE(item->prog))) {
-@@ -2229,7 +2228,6 @@ bpf_prog_run_array_uprobe(const struct
-bpf_prog_array __rcu *array_rcu,
-        bpf_reset_run_ctx(old_run_ctx);
- out:
-        migrate_enable();
--       rcu_read_unlock_trace();
-        return ret;
- }
-
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index fed382b7881b..87a2b8fefa90 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1404,7 +1404,9 @@ static void __uprobe_perf_func(struct trace_uprobe *t=
-u,
-        if (bpf_prog_array_valid(call)) {
-                u32 ret;
-
-+               rcu_read_lock_trace();
-                ret =3D bpf_prog_run_array_uprobe(call->prog_array,
-regs, bpf_prog_run);
-+               rcu_read_unlock_trace();
-                if (!ret)
-                        return;
-        }
-
-
-> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> index eaee2a819f4c150a34a7b1075584711609682e4c..00b3c5b197df75a0386233b98=
-85b480b2ce72f5f 100644
-> --- a/include/linux/bpf.h
-> +++ b/include/linux/bpf.h
-> @@ -2193,7 +2193,7 @@ bpf_prog_run_array(const struct bpf_prog_array *arr=
-ay,
->   * rcu-protected dynamically sized maps.
->   */
->  static __always_inline u32
-> -bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_rcu,
-> +bpf_prog_run_array_uprobe(struct bpf_prog_array __rcu **array_rcu,
->                           const void *ctx, bpf_prog_run_fn run_prog)
->  {
->         const struct bpf_prog_array_item *item;
-> @@ -2210,7 +2210,7 @@ bpf_prog_run_array_uprobe(const struct bpf_prog_arr=
-ay __rcu *array_rcu,
->
->         run_ctx.is_uprobe =3D true;
->
-> -       array =3D rcu_dereference_check(array_rcu, rcu_read_lock_trace_he=
-ld());
-> +       array =3D rcu_dereference_check(*array_rcu, rcu_read_lock_trace_h=
-eld());
->         if (unlikely(!array))
->                 goto out;
->         old_run_ctx =3D bpf_set_run_ctx(&run_ctx.run_ctx);
-> diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-> index fed382b7881b82ee3c334ea77860cce77581a74d..c4eef1eb5ddb3c65205aa9d64=
-af1c72d62fab87f 100644
-> --- a/kernel/trace/trace_uprobe.c
-> +++ b/kernel/trace/trace_uprobe.c
-> @@ -1404,7 +1404,7 @@ static void __uprobe_perf_func(struct trace_uprobe =
-*tu,
->         if (bpf_prog_array_valid(call)) {
->                 u32 ret;
->
-> -               ret =3D bpf_prog_run_array_uprobe(call->prog_array, regs,=
- bpf_prog_run);
-> +               ret =3D bpf_prog_run_array_uprobe(&call->prog_array, regs=
-, bpf_prog_run);
->                 if (!ret)
->                         return;
->         }
->
-> ---
-> base-commit: 509df676c2d79c985ec2eaa3e3a3bbe557645861
-> change-id: 20241206-bpf-fix-uprobe-uaf-53d928bab3d0
->
-> --
-> Jann Horn <jannh@google.com>
->
->
+>  mm/page_alloc.c | 15 +++++++++++++++
+>  mm/swap.c       | 20 --------------------
+>  2 files changed, 15 insertions(+), 20 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 7272a922b838..3d7e685bdd0b 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1082,12 +1082,27 @@ static __always_inline bool free_pages_prepare(struct page *page,
+>  	int bad = 0;
+>  	bool skip_kasan_poison = should_skip_kasan_poison(page, fpi_flags);
+>  	bool init = want_init_on_free();
+> +	struct folio *folio = page_folio(page);
+>  
+>  	VM_BUG_ON_PAGE(PageTail(page), page);
+>  
+>  	trace_mm_page_free(page, order);
+>  	kmsan_free_page(page, order);
+>  
+> +	/*
+> +	 * In rare cases, when truncation or holepunching raced with
+> +	 * munlock after VM_LOCKED was cleared, Mlocked may still be
+> +	 * found set here.  This does not indicate a problem, unless
+> +	 * "unevictable_pgs_cleared" appears worryingly large.
+> +	 */
+> +	if (unlikely(folio_test_mlocked(folio))) {
+> +		long nr_pages = folio_nr_pages(folio);
+> +
+> +		__folio_clear_mlocked(folio);
+> +		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
+> +		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
+> +	}
+> +
+>  	if (unlikely(PageHWPoison(page)) && !order) {
+>  		/*
+>  		 * Do not let hwpoison pages hit pcplists/buddy
+> diff --git a/mm/swap.c b/mm/swap.c
+> index cd8f0150ba3a..42082eba42de 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -89,14 +89,6 @@ static void __page_cache_release(struct folio *folio)
+>  		__folio_clear_lru_flags(folio);
+>  		unlock_page_lruvec_irqrestore(lruvec, flags);
+>  	}
+> -	/* See comment on folio_test_mlocked in release_pages() */
+> -	if (unlikely(folio_test_mlocked(folio))) {
+> -		long nr_pages = folio_nr_pages(folio);
+> -
+> -		__folio_clear_mlocked(folio);
+> -		zone_stat_mod_folio(folio, NR_MLOCK, -nr_pages);
+> -		count_vm_events(UNEVICTABLE_PGCLEARED, nr_pages);
+> -	}
+>  }
+>  
+>  static void __folio_put_small(struct folio *folio)
+> @@ -1021,18 +1013,6 @@ void release_pages(release_pages_arg arg, int nr)
+>  			__folio_clear_lru_flags(folio);
+>  		}
+>  
+> -		/*
+> -		 * In rare cases, when truncation or holepunching raced with
+> -		 * munlock after VM_LOCKED was cleared, Mlocked may still be
+> -		 * found set here.  This does not indicate a problem, unless
+> -		 * "unevictable_pgs_cleared" appears worryingly large.
+> -		 */
+> -		if (unlikely(folio_test_mlocked(folio))) {
+> -			__folio_clear_mlocked(folio);
+> -			zone_stat_sub_folio(folio, NR_MLOCK);
+> -			count_vm_event(UNEVICTABLE_PGCLEARED);
+> -		}
+> -
+>  		list_add(&folio->lru, &pages_to_free);
+>  	}
+>  	if (lruvec)
+> -- 
+> 2.47.0.338.g60cca15819-goog
+> 
 
