@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-99979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6849E7783
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:37:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA959E77B9
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6811316AFBC
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:37:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47FE518851F3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DB422068F;
-	Fri,  6 Dec 2024 17:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B712C2206B4;
+	Fri,  6 Dec 2024 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3k1NwCd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r0VwMMwK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05117220684
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EF422068F
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733506628; cv=none; b=doVBvteVsWV+ddKzAEbHWPoFCYwwQGGsQZEEeILqLpMXprvQdFxLYmumjaCJGjhMzFwaO8anoHN9Lf2W3nxUlcjlZL9ood8M0YXGPCv2DSfBr+6AlACSsdFAhvQycpu+f70ty2/PUhNF3WMlqPDJi5RYoOdM9lcHMQwGkuTPdlk=
+	t=1733507631; cv=none; b=qFykyhjU5lTO/VOq+g2efxjO4SvnwfsZuLZKYcnJ4uXyLcVCdV371rygaaKaIUjlReZPjMQRYDfAmjzR5qra56yu3vgRHnIRIZyWfTw2+mubcdByArn0XtrHhHmctf6VFWiPz8woE0yuB3oG79SDU+fu22Y/0POVUi08zYHHLT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733506628; c=relaxed/simple;
-	bh=lNkdYeYNccx6cEwgtxsjnOUqeodsED4SozV7JcL646E=;
+	s=arc-20240116; t=1733507631; c=relaxed/simple;
+	bh=3KzmO2rKt6/Nnmiu2Dwo3tpt3qgeSc8eB8qyjNWbUuQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AfgyNrcSSLkJ64LSHXG5yW977gxSTehY/fCl6/xiB2hJsO/yxCg7ZafM/o68hGIqPsGXk+dyTlzjm62XXMEqAU1pSxIy/Vt/4dy7f9jy33TgErzvv6URdDMdSyvxW1FEbezr2LXT1/y6EngXu2CzT8crd7MtZX6Q/noMywxd218=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3k1NwCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4B0C4CED1;
-	Fri,  6 Dec 2024 17:37:07 +0000 (UTC)
+	 MIME-Version; b=k0fgVaqmVDbUZX6vrXjA4NlYcRagqftrYrJpvzkmPQQVG5hBONUdYkvxlM7SNNGBcfNEJ+v/lVTl6BTXP5fzCiH0naUgnXlQZXGXY4HG/REF9AqC/xSDQrEpTmyveXLlMN8cnLDeHkQFDUQ5fybBFUcmB0rHWd4Pq+6Viao58N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r0VwMMwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1624C4CED1;
+	Fri,  6 Dec 2024 17:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733506627;
-	bh=lNkdYeYNccx6cEwgtxsjnOUqeodsED4SozV7JcL646E=;
+	s=k20201202; t=1733507631;
+	bh=3KzmO2rKt6/Nnmiu2Dwo3tpt3qgeSc8eB8qyjNWbUuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3k1NwCdC2/niEDjCRaO5x5KNIFQ6ikGj46qFX+PLWZPsj3FtHbSP0D8znTb9NHG3
-	 fzQm70vUfwSEigO3fjiVzdn+GzmwasIMWHwIR49blf1W3YrUW5SIRIx/wylnzw1wlj
-	 DBSaCuTgxidthpfBEaWce4kisdNZtwT0qm9X9bADQP4hJTyuXy8I7WMdbXSei+Zupc
-	 KXdspzTXm1gKMIbFh4P307qe9aMsBPQ0PZRbq8pxR0yW4e7mB6LTxI7YFvxMbjblsg
-	 /6ubiTXZ1LPuTY+lxixjL2yKoPtdUQqj+JSV+edNnJc5aZIr6QizMKvE6ItzWHl9eH
-	 g2KoziF/QwKKQ==
+	b=r0VwMMwKIaxdkJD+xFi5w6oHC75IE83RPrXhBhMyrAdzX3PBuHGSDBssrAEBXUrQw
+	 e7o3KElJerlt/0o4bLY6+AwIqkIdMnEcNshInca7ROpkGRdA0qi3ErJyszmQ9CGLHU
+	 TLURX3hgFmKFg7WCdCX2w+/KwkdqKk0lrpzBqNoeVa6pxGwWUSKDpCjdHp9khYBtHR
+	 MGVfbKVntMV1rrtfdTuoTZ6MTJhDPn/Ri9ohCoLHgxSQ4tbOiGqUD5VGoAzZEgeTZQ
+	 AWq6DlHHaVkfPeQR9/YswzmfTv46Byb0rmYAjFx6vr8pMCThO3H3Inf1uz6PekhhlD
+	 OsyDjbT7SWwdg==
 From: SeongJae Park <sj@kernel.org>
-To: stable@vger.kernel.org
+To: 
 Cc: Zheng Yejian <zhengyejian@huaweicloud.com>,
 	SeongJae Park <sj@kernel.org>,
 	Fernand Sieber <sieberf@amazon.com>,
 	Leonard Foerster <foersleo@amazon.de>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Ye Weihua <yeweihua4@huawei.com>,
+	stable@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
-Date: Fri,  6 Dec 2024 09:37:00 -0800
-Message-Id: <20241206173700.75357-1-sj@kernel.org>
+Subject: [PATCH 6.1.y] mm/damon/vaddr: fix issue in damon_va_evenly_split_region()
+Date: Fri,  6 Dec 2024 09:53:46 -0800
+Message-Id: <20241206175346.114805-1-sj@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241206173426.75223-1-sj@kernel.org>
-References: 
+In-Reply-To: <2024120624-repeater-require-e263@gregkh>
+References: <2024120624-repeater-require-e263@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -144,15 +145,20 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit f3c7a1ede435e2e45177d7a490a85fb0a0ec96d1)
 ---
+FYI, the cherry-pick was conflict-free, maybe because my git was able to
+know the vaddr-test.h path change[1].
+
+[1] https://lore.kernel.org/20241206173426.75223-1-sj@kernel.org
+
  mm/damon/vaddr-test.h | 1 +
  mm/damon/vaddr.c      | 4 ++--
  2 files changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/mm/damon/vaddr-test.h b/mm/damon/vaddr-test.h
-index dcf1ca6b31cc..b4fc21ef3c70 100644
+index e939598aff94..cfb3ba80a642 100644
 --- a/mm/damon/vaddr-test.h
 +++ b/mm/damon/vaddr-test.h
-@@ -300,6 +300,7 @@ static void damon_test_split_evenly(struct kunit *test)
+@@ -292,6 +292,7 @@ static void damon_test_split_evenly(struct kunit *test)
  	damon_test_split_evenly_fail(test, 0, 100, 0);
  	damon_test_split_evenly_succ(test, 0, 100, 10);
  	damon_test_split_evenly_succ(test, 5, 59, 5);
@@ -161,7 +167,7 @@ index dcf1ca6b31cc..b4fc21ef3c70 100644
  }
  
 diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 530f01fedd35..5764b9885e7d 100644
+index 260f0b775bfa..708f281c1b6b 100644
 --- a/mm/damon/vaddr.c
 +++ b/mm/damon/vaddr.c
 @@ -67,6 +67,7 @@ static int damon_va_evenly_split_region(struct damon_target *t,
