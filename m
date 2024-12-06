@@ -1,166 +1,161 @@
-Return-Path: <stable+bounces-99669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FAD19E72D9
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277109E730F
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:16:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41783164762
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:12:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13C3018879C6
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D3D20C00E;
-	Fri,  6 Dec 2024 15:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61F220ADFC;
+	Fri,  6 Dec 2024 15:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j6tFYIKp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zp90cuLD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8734E20B1F7;
-	Fri,  6 Dec 2024 15:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50DF17B427
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 15:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497957; cv=none; b=GOl8Cn1w5Y6lRW7lUmX6U7pHis4e/c5D9KbK8KbPr5WvyLd5ME2DEGcP3rHnNClcDHgPsmbPTQfFjfF8gR0G/eLCKfxKHj3rjD/IE4B9S2dBJj9zONN08sRD75aVS2mcozpxTd3CY/4ylkwAjLq1D0GGy4cA46q6hyeNQz26PwI=
+	t=1733498113; cv=none; b=na2DbSAJbzXtFC3vbC0Bh/Tmn27AUETps18fBzIDAEf5rduoXnfwU3A6UdHoxxyd+7+cGTlKK84cDTbGfmmJXoiA2rPG4c/0tuCZl+8zVgJU/yFkjZ0NUP5kKweVD5qo09f0nAIT+5/u0F6TdCePpTuyqJkncQ5RQDvA+q03zoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497957; c=relaxed/simple;
-	bh=nBxHtdhQB5FLlrFFA527YiECEEEtLZr/yyEPczDfXps=;
+	s=arc-20240116; t=1733498113; c=relaxed/simple;
+	bh=Rf6UKchEYwEj7kWnfy7/GJwdbAaaF5fK63RIngHucuM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lYDNx8M8uesafvQ62CWLearjv07uIEgCXJfuUVMKd0i88oBHXiXzm2nOQA4lg517k5yta1CdP2tCVVBKEaZiB5KzU+6vV1sEyw+W0G3QEI54+qfXnkamn1J3GPX4UC3kchpQTsR5Sw9ADEceYOJRX//cXqbTOCvrtvjEK4N6eQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j6tFYIKp; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ffd6b7d77aso27276671fa.0;
-        Fri, 06 Dec 2024 07:12:34 -0800 (PST)
+	 To:Cc:Content-Type; b=K5sVsSNvDO6Gign4yhg1aqUVmNis9I25Gm52ZBrHvmW95vsvLAnc453i7qYGxS6/8IeEkO/mNl2SpVchb37qAzMRDW1svbGiJEfJTtAzfq+Cf+4AshIojwioGLp+tD+UgjQbpwEQxjC3+7hNKMoZnqgcxA3s4tvhbq5WIZG0Z2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zp90cuLD; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53de7321675so2788074e87.2
+        for <stable@vger.kernel.org>; Fri, 06 Dec 2024 07:15:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733497953; x=1734102753; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1733498110; x=1734102910; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W73679HmQ8KlBF8NSlHlv/uvxLcjA1X6Vo9+LFPoX88=;
-        b=j6tFYIKpy6upMel7KzLJZvBXYW0xnlrIVlMOOERPaIR0FBmTba6ZrAP7MQG/z9eVxE
-         t/QRe7zkIjYCoFlWlOBUi/bJXUFnJvXN2HWQxisPA76/iU8eiwaiqqm+qEpB3gpVXv/p
-         0CJDctrd2SF9anfRrt1SB0UoZp68tMU9Y8ZgRYUxKdFOm2CEKTSvh+nHWUyzVGnqyszW
-         EM8zK+QLvd/7+hzAeSOvfMn83tSMvVGjVbJLR595nS1wsyRd7Jgtxh1GbJWMsWfejRiC
-         8oYGEHtU36zNQxmbtSNoJczbS2L4ck84Nbjw/kXQLKGBzaqDuZVZkNJXSYSlbo/IUl0L
-         mmFg==
+        bh=6Bi85J4Anbz4KnoI5R1OFbqEq2YSaUnMErItaEKHBxE=;
+        b=Zp90cuLDUTSPxz7keYnv/UeeqioLl+78w+JBT+Bv9+0t4bo5JqhK0LTFg8fKtlqBy1
+         EveSAd6Zr+dfHoAr2Tpe1QJdYmowoeAzass77DTvCfXtCX/xRGapz3i1B/XJHKA3q8cW
+         uUML5i/cQjn99TO7HQgc6nHzdcuhLni0KomsOSQ2amd94OWBT5OSjFvBfaeE24xzTf9p
+         2t8CtIef/ChTaAPRviqUwJZb0FYW/d5feeoJDOcAzYYY+zt2ImYJ+VlTETbB/6RXhrey
+         GokUQqc10TKm7bOhFL2aEwwW/T1/OIby3ZStNixr86Mg5J4Dks2oD7w6knLJUPnSxlzk
+         zeDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733497953; x=1734102753;
+        d=1e100.net; s=20230601; t=1733498110; x=1734102910;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=W73679HmQ8KlBF8NSlHlv/uvxLcjA1X6Vo9+LFPoX88=;
-        b=K3ZWGghwGZl7QnPB83ZgYIQ3fU4sro6bBM5s16DCEIFAcKZpSh4x9w4ewUtZCu4SAD
-         Q/ZIdrPIGtp4oyULrLAO5Fvc1N2uXAB0boEjAefzJV6SmHnND/i5+e03YTJRubpM7hyi
-         GCAuBtiekHHTovSZ00ACBviN+0zFv3dfqNYB7YqEMCIYs3yDSn+Dm5X018rGsY5Tr5/K
-         qE3tN1aoPYSIgnpQlL5cxtHlftWr5BoZzaDcRWpMwwtoVyQFcLd51LuNGag2v9nzoQZT
-         vOH3lbXsUbR89F8mPnXaTqM5PhrclDMo/dnSfHv6Ul74UxGnPkNPwTx7RqiT6vWFqbmJ
-         Qttw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0RLXvnvHEkv2/WCcKFC1X7DeT+1lL/boeStpaGAwFACpt88FKZ1SiTShT2vDLt25ZE/CjpqX8@vger.kernel.org, AJvYcCUWW4PpRlHV9qQ6LKFRMxOrXglh3vAwXTirTIFEU7qtuXucXoTtrWg4ItaST5IuiGrYhlyPMgtw49QR7K4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8mkh0F67MRcDYp75mmFbXdNFSKF3gCr5HcfiVU7ux7uHw1BJw
-	Si/i86P31vrnKmiMOH81XGjYIGN8h9MA/FHb1rznw4DpS4wBJdmy3grkxc9i//w/wfv87HvBW3o
-	fPiPvlquqOGt+hQ2On6Qlr0DP8g==
-X-Gm-Gg: ASbGnctMrgs88VHCYijUeWnpIkWWfE682RjPWf1yGN9lG+8SqslfAmAZ0TTkbX5ArMI
-	RgtLRXIOsXqLZCmpgXsC9kmyr3NouqDlp1B4ywDOXf9ahoA==
-X-Google-Smtp-Source: AGHT+IHwK0hARRMdu/ZslO7Jdrs0a5LHFRqi533TRz4TWoZ2vLhjJ6JLSNL1SEj9Z3vQyPSDb/d/7EYLL4Ue0VsfGbY=
-X-Received: by 2002:a05:6512:2342:b0:53d:f1cb:6258 with SMTP id
- 2adb3069b0e04-53e2c2c23afmr2410284e87.32.1733497952400; Fri, 06 Dec 2024
- 07:12:32 -0800 (PST)
+        bh=6Bi85J4Anbz4KnoI5R1OFbqEq2YSaUnMErItaEKHBxE=;
+        b=Q0D1nXOzqbo6q+uuGPlVCICpA+GkaXD8UaEgdmlQ3JcF3jA7ri0VziGFdlMPvVnrGt
+         /vrpb/5qs6/JXifG9ginDOoDOg/cfyVNmvlxNXRnOYxCBYrUfudv1D+ChvSF/1eWTTLC
+         LVBU+0Ok2F2dMn9oDPzDVw5EN7kcmxwJQw7U65jCyPux9aWJKERAVJygEM13tAR5mbht
+         ZBBxh5ExwhLsYywsd6IKn6zhqw6RqaK1BKJIt13zI99QbfS1DhR+nFqd70dGy9X91Qmt
+         fe6UlcGxZsp0TXyyAswq5fGt6oZsRH1nmr5iRGRdeuUpfwJ9jxWGK9e66Rhd6fmEdYY8
+         bDZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWtSPFrjXJ0OY2OY+ijWv1QvItvitOaN25GysHsikDFQT+MLQRF0rxAAxPXMVeRiNT4a1YqcsQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywynrm/zHU8pyhAcoNEGaZ/MSs+/dPGI4SOKKI+QKGMnPJOEQh8
+	roobgt09gPG128PlPj75I35K40i8u86r8AABKT3wjhPY/m1P9oamNhxPyh8ACZe4biFicQotFy6
+	EtCIgagob8VT9iNhB/VHdQdR8tJwJHAABwpW2
+X-Gm-Gg: ASbGncsmyVT677GOXEXZIIwZ3pJrmzQhiIZGNaMH5VFqx/zDDrpBjtMjS6qm2lpysJR
+	zXzd7YZAqTa7jWk68yL9XW6akdKGnC8w=
+X-Google-Smtp-Source: AGHT+IE1cwLWlIj1GpiqN0fNBxkpgemnySZUfP6KDIPqY4kGmA+U/DT/8PsZJRBrjehxVuks6Jtd7XQt1GDre3GD9fE=
+X-Received: by 2002:a05:6512:3b0b:b0:53d:e669:e7d4 with SMTP id
+ 2adb3069b0e04-53e2c2b8efemr2131796e87.16.1733498109407; Fri, 06 Dec 2024
+ 07:15:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105155801.1779119-1-brgerst@gmail.com> <20241105155801.1779119-2-brgerst@gmail.com>
- <20241206123207.GA2091@redhat.com> <CAMj1kXGKCJfBVqgsqjX1bA_SY=503Z-tJV893y5JAwoVs0BUfw@mail.gmail.com>
- <20241206142152.GB31748@redhat.com> <CAMj1kXGo5yv56VvNMvYBohxgyoyDtZhr4d4kjRdGTDQchHW0Gw@mail.gmail.com>
-In-Reply-To: <CAMj1kXGo5yv56VvNMvYBohxgyoyDtZhr4d4kjRdGTDQchHW0Gw@mail.gmail.com>
-From: Brian Gerst <brgerst@gmail.com>
-Date: Fri, 6 Dec 2024 10:12:21 -0500
-Message-ID: <CAMzpN2iUi_q_CfDa53H8MEV_zkb8NRtXtQPvOwDrEks58=3uAg@mail.gmail.com>
-Subject: Re: [PATCH] x86/stackprotector: fix build failure with CONFIG_STACKPROTECTOR=n
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Uros Bizjak <ubizjak@gmail.com>, stable@vger.kernel.org, 
-	Fangrui Song <i@maskray.me>, Nathan Chancellor <nathan@kernel.org>, Andy Lutomirski <luto@kernel.org>
+References: <20241113-tcp-md5-diag-prep-v2-0-00a2a7feb1fa@gmail.com>
+ <20241204171351.52b8bb36@kernel.org> <CANn89iL5_2iW5U_8H43g7vXi0Ky=fkwadvTtmT3fvBdbaJ1BAw@mail.gmail.com>
+ <CAJwJo6amrAt+uBMWRvwBu=VdcTyDuEMtkAx0=_ittUj0KCa-zw@mail.gmail.com>
+In-Reply-To: <CAJwJo6amrAt+uBMWRvwBu=VdcTyDuEMtkAx0=_ittUj0KCa-zw@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 6 Dec 2024 16:14:58 +0100
+Message-ID: <CANn89iJzwe+Wds=otY-iFL9C9eNFVqGi62q085AehnYa3sET7w@mail.gmail.com>
+Subject: Re: [PATCH net v2 0/5] Make TCP-MD5-diag slightly less broken
+To: Dmitry Safonov <0x7f454c46@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, 
+	Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	David Ahern <dsahern@kernel.org>, Ivan Delalande <colona@arista.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Boris Pismenny <borisp@nvidia.com>, 
+	John Fastabend <john.fastabend@gmail.com>, Davide Caratti <dcaratti@redhat.com>, 
+	Kuniyuki Iwashima <kuniyu@amazon.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	mptcp@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 6, 2024 at 9:37=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> wro=
-te:
+On Fri, Dec 6, 2024 at 3:49=E2=80=AFAM Dmitry Safonov <0x7f454c46@gmail.com=
+> wrote:
 >
-> On Fri, 6 Dec 2024 at 15:22, Oleg Nesterov <oleg@redhat.com> wrote:
-> >
-> > On 12/06, Ard Biesheuvel wrote:
+> Hi Jakub, Eric,
+>
+> On Thu, 5 Dec 2024 at 09:09, Eric Dumazet <edumazet@google.com> wrote:
+> > On Thu, Dec 5, 2024 at 2:13=E2=80=AFAM Jakub Kicinski <kuba@kernel.org>=
+ wrote:
 > > >
-> > > On Fri, 6 Dec 2024 at 13:32, Oleg Nesterov <oleg@redhat.com> wrote:
-> > > >
-> > > > +#ifdef CONFIG_STACKPROTECTOR
-> > > >  /* needed for Clang - see arch/x86/entry/entry.S */
-> > > >  PROVIDE(__ref_stack_chk_guard =3D __stack_chk_guard);
-> > > > +#endif
-> > > >
-> > > >  #ifdef CONFIG_X86_64
-> > > >  /*
+> > > Hi Eric!
 > > >
-> > > This shouldn't be necessary - PROVIDE() is only evaluated if a
-> > > reference exists to the symbol it defines.
-> > >
-> > > Also, I'm failing to reproduce this. Could you share your .config,
-> > > please, and the error that you get during the build?
+> > > This was posted while you were away -- any thoughts or recommendation=
+ on
+> > > how to address the required nl message size changing? Or other proble=
+ms
+> > > pointed out by Dmitry? My suggestion in the subthread is to re-dump
+> > > with a fixed, large buffer on EMSGSIZE, but that's not super clean..
 > >
-> > Please see the attached .config
+> > Hi Jakub
 > >
-> > without the change above:
+> > inet_diag_dump_one_icsk() could retry, doubling the size until the
+> > ~32768 byte limit is reached ?
 > >
-> >         $ make bzImage
-> >           CALL    scripts/checksyscalls.sh
-> >           DESCEND objtool
-> >           INSTALL libsubcmd_headers
-> >           UPD     include/generated/utsversion.h
-> >           CC      init/version-timestamp.o
-> >           KSYMS   .tmp_vmlinux0.kallsyms.S
-> >           AS      .tmp_vmlinux0.kallsyms.o
-> >           LD      .tmp_vmlinux1
-> >         ./arch/x86/kernel/vmlinux.lds:154: undefined symbol `__stack_ch=
-k_guard' referenced in expression
-> >         scripts/Makefile.vmlinux:77: recipe for target 'vmlinux' failed
-> >         make[2]: *** [vmlinux] Error 1
-> >         /home/oleg/tmp/LINUX/Makefile:1225: recipe for target 'vmlinux'=
- failed
-> >         make[1]: *** [vmlinux] Error 2
-> >         Makefile:251: recipe for target '__sub-make' failed
-> >         make: *** [__sub-make] Error 2
-> >
-> > perhaps this is because my toolchain is quite old,
-> >
-> >         $ ld -v
-> >         GNU ld version 2.25-17.fc23
-> >
-> > but according to Documentation/process/changes.rst
-> >
-> >         binutils               2.25             ld -v
-> >
-> > it is still supported.
-> >
+> > Also, we could make sure inet_sk_attr_size() returns at least
+> > NLMSG_DEFAULT_SIZE, there is no
+> > point trying to save memory for a single skb in inet_diag_dump_one_icsk=
+().
 >
-> We're about to bump the minimum toolchain requirements to GCC 8.1 (and
-> whichever version of binutils was current at the time), so you might
-> want to consider upgrading.
->
-> However, you are right that these are still supported today, and so we
-> need this fix this, especially because this has been backported to
-> older stable kernels too.
->
-> For the patch,
->
-> Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> Starting from NLMSG_DEFAULT_SIZE sounds like a really sane idea! :-)
 
-Using PROVIDES() is now unnecessary.
+There is a consensus for this one, I will cook a patch with this part only.
 
+>
+> [..]
+> > @@ -585,8 +589,14 @@ int inet_diag_dump_one_icsk(struct inet_hashinfo *=
+hashinfo,
+> >
+> >         err =3D sk_diag_fill(sk, rep, cb, req, 0, net_admin);
+> >         if (err < 0) {
+> > -               WARN_ON(err =3D=3D -EMSGSIZE);
+> >                 nlmsg_free(rep);
+> > +               if (err =3D=3D -EMSGSIZE) {
+> > +                       attr_size <<=3D 1;
+> > +                       if (attr_size + NLMSG_HDRLEN <=3D
+> > SKB_WITH_OVERHEAD(32768)) {
+> > +                               cond_resched();
+> > +                               goto retry;
+> > +                       }
+> > +               }
+> >                 goto out;
+> >         }
+> >         err =3D nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).p=
+ortid);
+>
+> To my personal taste on larger than 327 md5 keys scale, I'd prefer to
+> see "dump may be inconsistent, retry if you need consistency" than
+> -EMSGSIZE fail, yet userspace potentially may use the errno as a
+> "retry" signal.
+>
 
-Brian Gerst
+I do not yet understand this point. I will let you send a patch for
+further discussion.
+
+Thanks.
 
