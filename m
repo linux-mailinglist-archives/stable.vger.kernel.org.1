@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-99704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0D19E7306
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:15:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA3B9E7308
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310A91887E9B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:14:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED02E1888991
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0061FCD11;
-	Fri,  6 Dec 2024 15:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF05206F34;
+	Fri,  6 Dec 2024 15:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uUG33cK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouxyJ93s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49370206F10;
-	Fri,  6 Dec 2024 15:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AF01FCD11;
+	Fri,  6 Dec 2024 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498070; cv=none; b=sNY/VONUrOxr93EaGRExzpw2d7cu8OqPSyW2PCg1mFB7Ah+L9mfRdd+XxRvDTd6J5G/EQ5o47ooPclL5Csl/Owxp5pgwJgYCMN1AokD1TqxKP6wufFVROKk7opYSArrq/g3XRczEm+QAi2sfDaFKBoe9lYkyUDw93xUQ677nOBg=
+	t=1733498077; cv=none; b=K13PAdLNelx8GoU2yrF0rhY7ZDK/ZuLIaUSLGZPHKaLuc+gsefGKCimOQW0AEo+UlMzsVggRkeBKAoeIf9y46Y/m7hz2GnGK3Op4tYsPOwWn9bcEmM/rsNrVFuqes6ch/LdZSQaL+Vc00AR5yKAK7IVdy4L1kj/cRj9QO0JeIsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498070; c=relaxed/simple;
-	bh=sVix0gnsEuOwKTRJNNEEveR+vwdyMehBi23YYF5sAcw=;
+	s=arc-20240116; t=1733498077; c=relaxed/simple;
+	bh=LICoDRqU5H68em/6nNT4n4QEKQldloazsAHhLwgCGrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMeKtKRnVqj663JhP8ssR4ZNY4T9vvK1ZTX6AekTtS4n996wBBjSotbm38UQbuFF1LyCHNQlwRaBxUmXpIRRogfg3LH61zaLO5O5cArpGbfOCEv9OT+HmzLMgmH9QIz8JRqKLKAM/+49fcPHG/7tv+p+h0CBRLOGlPrsFeiLLhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uUG33cK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42878C4CED1;
-	Fri,  6 Dec 2024 15:14:29 +0000 (UTC)
+	 MIME-Version; b=dHiOjPufOGndiQdH4c2Tn4O9XEhX0j1jElw/7IAEv3adwhi686f8u6y0D/dwK+K31ITSsNHnlN60TwGpAf3Wk90KckCwUPUB2s/QH8q7KMcN3amQBcHlhWC0e0jwYp5/bf5YLvu3mEQs38EAa6Gj+Qmddyn7BM69ER/f10y8LrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouxyJ93s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE96C4CED1;
+	Fri,  6 Dec 2024 15:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498069;
-	bh=sVix0gnsEuOwKTRJNNEEveR+vwdyMehBi23YYF5sAcw=;
+	s=korg; t=1733498076;
+	bh=LICoDRqU5H68em/6nNT4n4QEKQldloazsAHhLwgCGrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2uUG33cKENsdJ3onapqNC3BOdkLRtucBcsq4WMElZPXoEZEKDw7UnN8Q4QG9VyI+J
-	 JCX5DClSZdTxTaNuE1Am9wIOw9IH12D7t6G8XkIH6xFUD7KdQ4oOPBRfcdCmK6YHJh
-	 9w03LwchDOPD+kuFSNwCwkmd74/KGhMQQhXDyGmE=
+	b=ouxyJ93s3KSHF2ypdMTtoo0aBaSgPA/Qlc7QHI+ljPgd/2bfgLBRZGASEKKJcbnCB
+	 yono27ROcMzDaUXDejuLhekyWCw2lw4tHTgq/xjHinrjBrnhoLuADDLKA+0oDIXQYU
+	 HO40VmBZSMOTLMXMIb5391sz92/A1KEjzfzX4BPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 477/676] powerpc/pseries: Fix KVM guest detection for disabling hardlockup detector
-Date: Fri,  6 Dec 2024 15:34:56 +0100
-Message-ID: <20241206143711.996384347@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.6 478/676] KVM: arm64: vgic-v3: Sanitise guest writes to GICR_INVLPIR
+Date: Fri,  6 Dec 2024 15:34:57 +0100
+Message-ID: <20241206143712.035447117@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -65,46 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 44e5d21e6d3fd2a1fed7f0327cf72e99397e2eaf upstream.
+commit d561491ba927cb5634094ff311795e9d618e9b86 upstream.
 
-As per the kernel documentation[1], hardlockup detector should
-be disabled in KVM guests as it may give false positives. On
-PPC, hardlockup detector is enabled inside KVM guests because
-disable_hardlockup_detector() is marked as early_initcall and it
-relies on kvm_guest static key (is_kvm_guest()) which is initialized
-later during boot by check_kvm_guest(), which is a core_initcall.
-check_kvm_guest() is also called in pSeries_smp_probe(), which is called
-before initcalls, but it is skipped if KVM guest does not have doorbell
-support or if the guest is launched with SMT=1.
+Make sure we filter out non-LPI invalidation when handling writes
+to GICR_INVLPIR.
 
-Call check_kvm_guest() in disable_hardlockup_detector() so that
-is_kvm_guest() check goes through fine and hardlockup detector can be
-disabled inside the KVM guest.
-
-[1]: Documentation/admin-guide/sysctl/kernel.rst
-
-Fixes: 633c8e9800f3 ("powerpc/pseries: Enable hardlockup watchdog for PowerVM partitions")
-Cc: stable@vger.kernel.org # v5.14+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241108094839.33084-1-gautam@linux.ibm.com
+Fixes: 4645d11f4a553 ("KVM: arm64: vgic-v3: Implement MMIO-based LPI invalidation")
+Reported-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241117165757.247686-2-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/setup_64.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -924,6 +924,7 @@ static int __init disable_hardlockup_det
- 	hardlockup_detector_disable();
- #else
- 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
-+		check_kvm_guest();
- 		if (is_kvm_guest())
- 			hardlockup_detector_disable();
- 	}
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -555,6 +555,7 @@ static void vgic_mmio_write_invlpi(struc
+ 				   unsigned long val)
+ {
+ 	struct vgic_irq *irq;
++	u32 intid;
+ 
+ 	/*
+ 	 * If the guest wrote only to the upper 32bit part of the
+@@ -566,9 +567,13 @@ static void vgic_mmio_write_invlpi(struc
+ 	if ((addr & 4) || !vgic_lpis_enabled(vcpu))
+ 		return;
+ 
++	intid = lower_32_bits(val);
++	if (intid < VGIC_MIN_LPI)
++		return;
++
+ 	vgic_set_rdist_busy(vcpu, true);
+ 
+-	irq = vgic_get_irq(vcpu->kvm, NULL, lower_32_bits(val));
++	irq = vgic_get_irq(vcpu->kvm, NULL, intid);
+ 	if (irq) {
+ 		vgic_its_inv_lpi(vcpu->kvm, irq);
+ 		vgic_put_irq(vcpu->kvm, irq);
 
 
 
