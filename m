@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-99648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E3E9E72B3
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:12:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7B89E72BB
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:12:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D570518883A9
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:11:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEF7A287356
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B87206F1A;
-	Fri,  6 Dec 2024 15:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDF3207650;
+	Fri,  6 Dec 2024 15:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfLu6csN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dllDYQVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1F51527AC;
-	Fri,  6 Dec 2024 15:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0491D153836;
+	Fri,  6 Dec 2024 15:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497887; cv=none; b=kZLD3LnfuKOctDIQmHBaqZ59PjWiavX8kviM1IE0DK6mkemZ9Jcb3AXZhojlYlt9EXYEmbSXROqX5V83b7ks6l13JAPGfLMO5CNryD1NtPrQeBrcmhAZ75zCbJXmHmJnXnfSZylyCSjs9WjPs9EcViR41KsrsxpmVOhMuVXz1yg=
+	t=1733497925; cv=none; b=p+ae0XDsByW4DjtqPGGaDpFxn0yBNtaBDVQsxbOuBNQMp+uhVd/4wZiYe2J4tqZf6w2BX7AyMM/jLFiZ8pkFeTHqRl4u9BbiOfErE3Lc9xQYerEJa1LPPO+Izol91JVmKDjSf4O0QZZM92CbS/I4c+8rs37SFgoLZXEjkVLLZMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497887; c=relaxed/simple;
-	bh=bZQ6S/K7sxfvRaePwChVVaUTTauW5+o90iug0GKO5bI=;
+	s=arc-20240116; t=1733497925; c=relaxed/simple;
+	bh=RP9dilAXecx/BLdZPQW62sCiRhODFK1o8cDshhyfSI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qUgGkvrxtMK0AKxb4pVscVEBtsS57mWxnBNt93yz0cRhX8ZMNG45gIYbLhRrT1P51Rbcks8j2l3zwOMdo0o5N4Jsvy6e36brGmKfkiESWD0FeTrCSeExGeKpbD+Htkl5geLdI5ZOIuVBCXOjYdvpN4tvHjXySMpdh62jwcuveXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfLu6csN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB82FC4CEDC;
-	Fri,  6 Dec 2024 15:11:26 +0000 (UTC)
+	 MIME-Version; b=jwTYH1Tuh0toV5oUS584O0NL5zCjuN2nPdGrGiIf2l8aIlHAR0MSlWVtzf4V4LcrRuXBQdWmTeAciD7Q6+VSljA+jYTwyqoUmExVRyy/ZRuYRegz7uKvOQWoqpMFChhvmakHCItsZaRe1Ttj1SMsBnC1kcu7sB8QlCBhE4DJryI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dllDYQVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123E2C4CED1;
+	Fri,  6 Dec 2024 15:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497887;
-	bh=bZQ6S/K7sxfvRaePwChVVaUTTauW5+o90iug0GKO5bI=;
+	s=korg; t=1733497924;
+	bh=RP9dilAXecx/BLdZPQW62sCiRhODFK1o8cDshhyfSI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfLu6csNCqQMOcK2kvNxtAjFxLp+UxxLg8pnkWT9R3kOIjgfnWY3bTMRF8NnmjaGl
-	 a+1oF9x4VPjKcc4gZK9wxTMPG8Z8V37sv2DTVa00aBzIAsw2kcQmFIpLUWjOW5xKb0
-	 fFFIDPkAL5pllQO78awvMpR8gsD3vsZw+vt4/rrs=
+	b=dllDYQVGdMrPoQIUocGS4PtCMTxMQ31JiwqKvIP+0E/DSgroST45qG/+sZ31xQs28
+	 /9VbUuwNLxV3PavtqxYanz23+Yz1Imp2oaHTYfbxzF65gFqqv8kJpQ7BcaR2/1x1oG
+	 72SyaAxgvThpjCLMXu6Pm17RPsRa9Odj5hZkmeTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	George McCollister <george.mccollister@gmail.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 415/676] net: hsr: fix hsr_init_sk() vs network/transport headers.
-Date: Fri,  6 Dec 2024 15:33:54 +0100
-Message-ID: <20241206143709.560386432@linuxfoundation.org>
+Subject: [PATCH 6.6 416/676] bnxt_en: Reserve rings after PCIe AER recovery if NIC interface is down
+Date: Fri,  6 Dec 2024 15:33:55 +0100
+Message-ID: <20241206143709.598685005@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,59 +70,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit 9cfb5e7f0ded2bfaabc270ceb5f91d13f0e805b9 ]
+[ Upstream commit 5311598f7f3293683cdc761df71ae3469327332c ]
 
-Following sequence in hsr_init_sk() is invalid :
+After successful PCIe AER recovery, FW will reset all resource
+reservations.  If it is IF_UP, the driver will call bnxt_open() and
+all resources will be reserved again.  It it is IF_DOWN, we should
+call bnxt_reserve_rings() so that we can reserve resources including
+RoCE resources to allow RoCE to resume after AER.  Without this
+patch, RoCE fails to resume in this IF_DOWN scenario.
 
-    skb_reset_mac_header(skb);
-    skb_reset_mac_len(skb);
-    skb_reset_network_header(skb);
-    skb_reset_transport_header(skb);
+Later, if it becomes IF_UP, bnxt_open() will see that resources have
+been reserved and will not reserve again.
 
-It is invalid because skb_reset_mac_len() needs the correct
-network header, which should be after the mac header.
-
-This patch moves the skb_reset_network_header()
-and skb_reset_transport_header() before
-the call to dev_hard_header().
-
-As a result skb->mac_len is no longer set to a value
-close to 65535.
-
-Fixes: 48b491a5cc74 ("net: hsr: fix mac_len checks")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: George McCollister <george.mccollister@gmail.com>
-Link: https://patch.msgid.link/20241122171343.897551-1-edumazet@google.com
+Fixes: fb1e6e562b37 ("bnxt_en: Fix AER recovery.")
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_device.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index c5f7bd01379ce..906c38b9d66ff 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -253,6 +253,8 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
- 	skb->dev = master->dev;
- 	skb->priority = TC_PRIO_CONTROL;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 58a7bb75506a3..bc6206543e8e9 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -14102,8 +14102,12 @@ static void bnxt_io_resume(struct pci_dev *pdev)
+ 	rtnl_lock();
  
-+	skb_reset_network_header(skb);
-+	skb_reset_transport_header(skb);
- 	if (dev_hard_header(skb, skb->dev, ETH_P_PRP,
- 			    hsr->sup_multicast_addr,
- 			    skb->dev->dev_addr, skb->len) <= 0)
-@@ -260,8 +262,6 @@ static struct sk_buff *hsr_init_skb(struct hsr_port *master)
+ 	err = bnxt_hwrm_func_qcaps(bp);
+-	if (!err && netif_running(netdev))
+-		err = bnxt_open(netdev);
++	if (!err) {
++		if (netif_running(netdev))
++			err = bnxt_open(netdev);
++		else
++			err = bnxt_reserve_rings(bp, true);
++	}
  
- 	skb_reset_mac_header(skb);
- 	skb_reset_mac_len(skb);
--	skb_reset_network_header(skb);
--	skb_reset_transport_header(skb);
- 
- 	return skb;
- out:
+ 	bnxt_ulp_start(bp, err);
+ 	if (!err) {
 -- 
 2.43.0
 
