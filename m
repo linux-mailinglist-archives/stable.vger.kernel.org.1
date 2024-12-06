@@ -1,167 +1,126 @@
-Return-Path: <stable+bounces-98927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A369E6537
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:55:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A673B9E654A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 05:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92F4E188560C
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:55:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82131169E7B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1956119413C;
-	Fri,  6 Dec 2024 03:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CA719415E;
+	Fri,  6 Dec 2024 04:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oraNsZ0a"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZrVBQud/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDE3192B8F;
-	Fri,  6 Dec 2024 03:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D153F193081
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 04:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733457340; cv=none; b=HeLP9t6zmDdV2JK37C/wouSauUmumd/bMMFHWLPiEA9GzFE0j9h6sfw4X0+BOS353Zbl1iKLRB6Xty0mn4qUuuh/hKXWxALMU/Gp8a91jhjWq9MqAgJLnRFfyT8I/DYjM0mo06s1aJiCeutq6e+gHoxMSnRyylFBR7fU7DYPzQQ=
+	t=1733458133; cv=none; b=K5vPsF325iARyRbSyQvsd2KU/F8i4lTVtmxEloypsT4vX5KRdQsG79kmdE+uOhMFLgWS8NXfOIrjwKiOsDsVQkovwNDuKv7wkeYxn0Zh6kSS5Fa9SngMip0Z3UY1MTM3eH776XzmfzJSl6xKIGTs1EMxTT3f1mfmZAGNzk1TXL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733457340; c=relaxed/simple;
-	bh=Dh/eGzXc5wluzYLzlFtJSaV9/en8u1GHFxV/ZbKbwTY=;
-	h=Date:To:From:Subject:Message-Id; b=TBpY9L9szfvtvn4VlftD2Z/gsOPzYoJODJ5zOEnI0aaXPppLTYpFEkQjz9BaRwbvwat8kC/TcD/YQXVMdFx/rf6Ebg6srBnDOTt/hjxBVBZZyuZMwt5evMf7bRBv4hDD0wsI4uXqQ3LPqFDDwbafdSA5rz8nIYQdPnWBTxtglqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oraNsZ0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A242FC4CED1;
-	Fri,  6 Dec 2024 03:55:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1733457340;
-	bh=Dh/eGzXc5wluzYLzlFtJSaV9/en8u1GHFxV/ZbKbwTY=;
-	h=Date:To:From:Subject:From;
-	b=oraNsZ0ao/pS3OZYH2JnHBaevOphe4sqTWLkcTzrlQtEPrO6YqjDZGpWgZEna9tdF
-	 Xc7a41WUmTuYUHeaGNgVvht69cg60mHI+tWMMwqBjR5G0hfJiu8oYXXQh7EW3Vofjs
-	 8M1j52riuSl+cECUKIJzAaYEa3elQaSw04G7MECU=
-Date: Thu, 05 Dec 2024 19:55:40 -0800
-To: mm-commits@vger.kernel.org,vschneid@redhat.com,vincent.guittot@linaro.org,vbabka@suse.cz,sunjw10@lenovo.com,stable@vger.kernel.org,rostedt@goodmis.org,raghavendra.kt@amd.com,peterz@infradead.org,mingo@redhat.com,mgorman@suse.de,juri.lelli@redhat.com,dietmar.eggemann@arm.com,bsegall@google.com,ahuang12@lenovo.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] sched-numa-fix-memory-leak-due-to-the-overwritten-vma-numab_state.patch removed from -mm tree
-Message-Id: <20241206035540.A242FC4CED1@smtp.kernel.org>
+	s=arc-20240116; t=1733458133; c=relaxed/simple;
+	bh=mfEM/DG4PNsmSscMrTtijAKM7ewta8wLDkEBOoOqr1U=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GSDe9HIQRIgPdHq9xvZRNwbgHTDwhS19cBIJd0s4RB47kR2dMhiUDBpdJUc/ki6STFaheKUWNcEKoqTP/QT9X6PMPeTB9agSHo7OAvb/ydEAMvO6E3/USUz1tWbpRry3F9ZChhAfU3Xihx+ozGZZfvAj+B4DGacD1K6pnfu5t9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZrVBQud/; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7259b9147a1so265646b3a.0
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 20:08:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1733458131; x=1734062931; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pycc29BcH8MRwie8Do3jeg7dOfWDOOE59oanfpjCi0o=;
+        b=ZrVBQud/OGxzB/B/f18babgbVCORCrWMXfrTAA5dku3BxdfA3gludd3umcMX2hYrXM
+         lObEWPSn0Ejcs1XdC+Z7ou9zrityUFjbTGQC2VSrnFYDaQT/0Pmn3wANh5qoRbsSnxK8
+         aDsdIf0SXer1f3UFi0jfj913y5GtdbeDJQbxA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733458131; x=1734062931;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Pycc29BcH8MRwie8Do3jeg7dOfWDOOE59oanfpjCi0o=;
+        b=AK2WlEyCQcLWcIoKUWi1nI4qACFyxR98EpSGcVkOESPda1gof9s0ODXruAeugZKl7S
+         HGHS4Z7H1edfpsC45clU+uF5lWUPfA57xmN3BpVvok1E7wQySvntImtykFHs4vbjzFx/
+         QnbVGpop/gRxmZTZulUBuDVuvDWMDi8MUBxwBcqEXcrXT3Nd9g/5B/i3ur+tCX/ljzai
+         ouob01G+XY5xo0mHwyd0pFDI3owSyOUcaFe1Oe36dlhDOf24G6ioBP384jdb5iIdPuze
+         LsjpB+pFvUUuuqLRiPlOlb/SF5Onv6qzIbgzKYLHaeYTqKaOoRqKxOrNkVhXcbz45oza
+         KsBQ==
+X-Gm-Message-State: AOJu0Yw3cnNBvpjLw3+sYUSTSNJZ11OdoZHwiIUUqXN72x1CC9CbveFQ
+	oMl6favkM1pjempUP4w4cHJPPSMIqT0aE48JtuL5sfqceu7w0p2FS7NBaWQr6BxUD196ZZo3jxU
+	d7JvwlF9nZs6npk13ZOx6VLQTf9pu+Nuo2VxRDVv5BUrHfayUG2Fm871CVm5leIA6t3bPE4w8mQ
+	wbTIbw7rxqbVHAJwWOLeqfY26rDnSdqpCNVHM1ILU6/C2huHivH4y29CxjiQ==
+X-Gm-Gg: ASbGncskXGf03zRDpgJqPZENxnmKTmSV7zMk8Re8vXopYk6A0/t91PP53Gxu9nOsXx3
+	aDOaDtm06HIYVkApa4o57cYGMubKBAPlkn2duGSmcx+Kf6iL6i56tjPE8UL7J121pSkLNv9S/Jq
+	ffsXKGZRi1n/uZTRJP0+i2ojSq1Jki+0/+hbizTcb4wuk/F8YPtQiKdDWSf6FGEQ7nVd6R7Oz7y
+	DONXAJV7xYOrLPtsVbg08biRQ/B1XBDHKSB6ILQ052GAO4AHSxowu8MjByLus732hwZJqaocGXg
+	4E2Bk/7FrStEpJQW0w==
+X-Google-Smtp-Source: AGHT+IHxgK0uBuqS9VxoHyUeS6mBM9E7ub6R77truPmNtH3VetfzIrO8WGEyYuJM9Zme/SwKoAuxfA==
+X-Received: by 2002:a17:902:c402:b0:215:a3fd:61f9 with SMTP id d9443c01a7336-21614dce2fdmr7340275ad.15.1733458130805;
+        Thu, 05 Dec 2024 20:08:50 -0800 (PST)
+Received: from kk-ph5.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8f26ff2sm19920525ad.227.2024.12.05.20.08.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 20:08:50 -0800 (PST)
+From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: clm@fb.com,
+	josef@toxicpanda.com,
+	dsterba@suse.com,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v5.10-v6.6] btrfs: don't BUG_ON on ENOMEM from btrfs_lookuip_extent_info() in walk_down_proc()
+Date: Fri,  6 Dec 2024 04:08:46 +0000
+Message-Id: <20241206040846.4013310-1-keerthana.kalyanasundaram@broadcom.com>
+X-Mailer: git-send-email 2.39.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Josef Bacik <josef@toxicpanda.com>
 
-The quilt patch titled
-     Subject: sched/numa: fix memory leak due to the overwritten vma->numab_state
-has been removed from the -mm tree.  Its filename was
-     sched-numa-fix-memory-leak-due-to-the-overwritten-vma-numab_state.patch
+[ Upstream commit a580fb2c3479d993556e1c31b237c9e5be4944a3 ]
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+We handle errors here properly, ENOMEM isn't fatal, return the error.
 
-------------------------------------------------------
-From: Adrian Huang <ahuang12@lenovo.com>
-Subject: sched/numa: fix memory leak due to the overwritten vma->numab_state
-Date: Wed, 13 Nov 2024 18:21:46 +0800
-
-[Problem Description]
-When running the hackbench program of LTP, the following memory leak is
-reported by kmemleak.
-
-  # /opt/ltp/testcases/bin/hackbench 20 thread 1000
-  Running with 20*40 (== 800) tasks.
-
-  # dmesg | grep kmemleak
-  ...
-  kmemleak: 480 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-  kmemleak: 665 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
-
-  # cat /sys/kernel/debug/kmemleak
-  unreferenced object 0xffff888cd8ca2c40 (size 64):
-    comm "hackbench", pid 17142, jiffies 4299780315
-    hex dump (first 32 bytes):
-      ac 74 49 00 01 00 00 00 4c 84 49 00 01 00 00 00  .tI.....L.I.....
-      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    backtrace (crc bff18fd4):
-      [<ffffffff81419a89>] __kmalloc_cache_noprof+0x2f9/0x3f0
-      [<ffffffff8113f715>] task_numa_work+0x725/0xa00
-      [<ffffffff8110f878>] task_work_run+0x58/0x90
-      [<ffffffff81ddd9f8>] syscall_exit_to_user_mode+0x1c8/0x1e0
-      [<ffffffff81dd78d5>] do_syscall_64+0x85/0x150
-      [<ffffffff81e0012b>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  ...
-
-This issue can be consistently reproduced on three different servers:
-  * a 448-core server
-  * a 256-core server
-  * a 192-core server
-
-[Root Cause]
-Since multiple threads are created by the hackbench program (along with
-the command argument 'thread'), a shared vma might be accessed by two or
-more cores simultaneously. When two or more cores observe that
-vma->numab_state is NULL at the same time, vma->numab_state will be
-overwritten.
-
-Although current code ensures that only one thread scans the VMAs in a
-single 'numa_scan_period', there might be a chance for another thread
-to enter in the next 'numa_scan_period' while we have not gotten till
-numab_state allocation [1].
-
-Note that the command `/opt/ltp/testcases/bin/hackbench 50 process 1000`
-cannot the reproduce the issue. It is verified with 200+ test runs.
-
-[Solution]
-Use the cmpxchg atomic operation to ensure that only one thread executes
-the vma->numab_state assignment.
-
-[1] https://lore.kernel.org/lkml/1794be3c-358c-4cdc-a43d-a1f841d91ef7@amd.com/
-
-Link: https://lkml.kernel.org/r/20241113102146.2384-1-ahuang12@lenovo.com
-Fixes: ef6a22b70f6d ("sched/numa: apply the scan delay to every new vma")
-Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
-Reported-by: Jiwei Sun <sunjw10@lenovo.com>
-Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 ---
+ fs/btrfs/extent-tree.c | 1 -
+ 1 file changed, 1 deletion(-)
 
- kernel/sched/fair.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
---- a/kernel/sched/fair.c~sched-numa-fix-memory-leak-due-to-the-overwritten-vma-numab_state
-+++ a/kernel/sched/fair.c
-@@ -3399,10 +3399,16 @@ retry_pids:
- 
- 		/* Initialise new per-VMA NUMAB state. */
- 		if (!vma->numab_state) {
--			vma->numab_state = kzalloc(sizeof(struct vma_numab_state),
--				GFP_KERNEL);
--			if (!vma->numab_state)
-+			struct vma_numab_state *ptr;
-+
-+			ptr = kzalloc(sizeof(*ptr), GFP_KERNEL);
-+			if (!ptr)
-+				continue;
-+
-+			if (cmpxchg(&vma->numab_state, NULL, ptr)) {
-+				kfree(ptr);
- 				continue;
-+			}
- 
- 			vma->numab_state->start_scan_seq = mm->numa_scan_seq;
- 
-_
-
-Patches currently in -mm which might be from ahuang12@lenovo.com are
-
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 0d97c8ee6..f53c4d52b 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5213,7 +5213,6 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
+ 					       eb->start, level, 1,
+ 					       &wc->refs[level],
+ 					       &wc->flags[level]);
+-		BUG_ON(ret == -ENOMEM);
+ 		if (ret)
+ 			return ret;
+ 		if (unlikely(wc->refs[level] == 0)) {
+-- 
+2.19.0
 
 
