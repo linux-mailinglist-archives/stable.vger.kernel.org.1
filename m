@@ -1,111 +1,290 @@
-Return-Path: <stable+bounces-99992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68B59E7B6B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:10:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5A19E7B89
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76DCE2826A9
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:10:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18F2281959
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9641EBFFC;
-	Fri,  6 Dec 2024 22:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3398C19ABC6;
+	Fri,  6 Dec 2024 22:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFNJxnr2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N4AKS1TX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A82022C6C0
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 22:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7AD22C6C1;
+	Fri,  6 Dec 2024 22:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733523019; cv=none; b=c6CuIdIcfWoLBUQqQLkiNOV8f/mQvG2/i2xZ96a1+O1t8AzuN0QJ2Wwlw0PsW2bv6ldQx8qs4F3llwEAwFD54om39gvWrEKwdpgBWfA8xXFW00wwn9TtXHlOu0vVGWCv7Kmgv6J7Z0JyAAw+JVzmtdh8pA2wlC2kNeH5FWgcgSw=
+	t=1733523345; cv=none; b=CBQqCwsAyulCL22Zc8o5E9dETCRromNm3sYMhdkSuBxfQXP2w/G1LWi1QTBzbOQ6gy2yv9klAYvc+5tkAk9lmUSVb9lt+CEQHD0sW7wIJ46o3rIRdb2SQXC3TmmTrvpOm6iw8+NRMGTOJr4489bfX4NWQoL5FVutbwfJI/dGs6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733523019; c=relaxed/simple;
-	bh=0qrEZT8ypuxzDYJYOIXcXVeWak1KmPT/Noz9JcsUEVs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbW+kxTMQ0kydeGzhku/cGdXuGTvo8XRNLu+DO3uXeH+TLxjlYz8oInrA6WTVmv7oS299C+5laq1JE4+Jdx5f9FPqGbE1Rf422gxo1/KxGN1hKYLJ7sdBuuILZt5P/Nv8qsctKn2x6A9/uZSE+tjFTH8aH31TQsbUrbDck4/IYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFNJxnr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6079C4CED1;
-	Fri,  6 Dec 2024 22:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733523018;
-	bh=0qrEZT8ypuxzDYJYOIXcXVeWak1KmPT/Noz9JcsUEVs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFNJxnr2Tyb8jhggI6Zzd8r/utzJlq3vrd0w+H1VjLf2z0zeFyXFHCV2EHzBBfuM8
-	 lPi9R0OwR3jGiGvbd0dtElxtfR5wX5oJxP1Q9YriS2sWwo/4Ep5rrFvg0r0QjhKA+N
-	 PmKb+EFRde78w0tM6GCd/PHx0MbC7xdgPqGw0QwuKaLOzZKlDzxw2Dwc6j8CfECnFP
-	 ZFbrqtmtoESTKtD3rd8osdrGx4Ja6O8PUpXClAdaFHaZo3fk6z28wKEgIhni8I2rKS
-	 ufJcAyGk17edZpd1LPOXoSkvrKC9AataS0/axAQvw6ERLURasdwsyXxOL+Ca+t81sT
-	 HqyC9/0q3eZUA==
-From: Nathan Chancellor <nathan@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	nathan@kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.1] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang
-Date: Fri,  6 Dec 2024 15:10:05 -0700
-Message-ID: <20241206221005.2313691-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <2024120642-steep-reply-a3bd@gregkh>
-References: <2024120642-steep-reply-a3bd@gregkh>
+	s=arc-20240116; t=1733523345; c=relaxed/simple;
+	bh=pJNboDSrtAtEPyh4PwQKsGQAa4ood0d1G62be8rKVfU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EO4XSSP/ttP899IroiTQWFJBzTVBBE7JfV36bYRTkQjkoq4v4aQaJoOqHDg9N5mjUKpgDiiuGP2NlftTCJBRZjEyZ6wRlJsLUZ7461itaoAisLJhCOZfPhNgLchYEfNxdlzds+rREwjf/JIfQoSN1LMiW7rfPlmQUZuMTuBFjwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N4AKS1TX; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee8aa26415so2215235a91.1;
+        Fri, 06 Dec 2024 14:15:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733523342; x=1734128142; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w8e7YM4si5YOg3jr9H5Y9Db0TtNXgw9XX76Nlg+F5uY=;
+        b=N4AKS1TXrdLgn3Q0Fw8l9MSS4o+G4V8VE2+/gj/LmEV1hKM/ErdnNOALwxoi8F95Wx
+         ZoNaYGA33YNDD/g87f8lRwiPrmETJ3KBaAh54UMnr+Ry8g+Nywpctb1l6W9ljm2xow15
+         OkWLgfaXaNhgCkTEGHDLP0D7GvcnBtfxbWLu1c9JlSeap68SSILuiHD+bJ4OL8JvJ7UW
+         zXSY5lAxmVSeVG+pPFfodpNdmf6wJHLOb6dq9xoe8iJgmEoFpPruC4DsFe68oHHrYS9N
+         XHhKfHQbB6vAtuA46CZEuEzBEEgekrefH4DzSqgJf1jZBOIUwHxf99sgdPC/qYKMizX4
+         3UfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733523342; x=1734128142;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w8e7YM4si5YOg3jr9H5Y9Db0TtNXgw9XX76Nlg+F5uY=;
+        b=UE7HnWXmok3uIFOdQRoUx4ww63IPwKQow7ib4hx6iYld0hziN4hH+3qj4hFAFXDvXz
+         EsNH9DHK0UhJO55DaFTEeBSxWwBFM2bHBZp9KyiT9X3ETfqDhrIrAq6jwz8Mi4CMTKGQ
+         cQvOkxCKd9X/bZ72xl+r/oH50l5hHwbvBajLXCUHqEHPviis87wHp6Jefgj1jYc8WZ0S
+         sOrK4/splEN/RpHq66GRZ6EuSApsx2Z0qrMb/abaMoVubFsY1LlCYWwmY1tQEP71R4Kq
+         xRZPBcjq1YwppcUAMwphkJKFhTYrFXU5o2T7JbusTdQBEimgnKGZlrMeK/HWPSQ8gbR1
+         nywQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Rx4sYQn4WIx59SV7gXU43JXSdtkvA3fLzftr7Yp5zUK9CJA7wiR/4BEtQfiPw/YKJ7A=@vger.kernel.org, AJvYcCVC4ME9b7k/Z45ZeAP5OZYoBDThY5/979HXH/lTD6E0Et9KRo1n1yOW/D+idtP2bPxDtHuNBq3F@vger.kernel.org, AJvYcCVKe1VAOQ967NKG8zQ3TW4DewNUeFwq+4KkF0x1x8/WoGx/4KU0Mrg7xCyA6AzCjw5iodJJaqCe0iCTEwrm@vger.kernel.org, AJvYcCXJ+Y1ymv3KUs9XUv86z8rk2V6SS9nUaj9CUmXo0UlaqIuy8GQyqwhkgyMASDqtuPjuy/fmxzcoqyGQWB4r4n/DXYOW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/tM4TR+k5FP9Wn/oZ+c2+NF5HAQ5YEwXQX8iHRkcembOdad4U
+	BF/Lcx9ho4KF1apr+0o4zAtWZCNjqr8dSN1N+mp5GYRnaYHpKypmnWGKGFOHcL49pBrtEHblp39
+	EUQ7FMy9lVDnTiizsHybWKK3lumo=
+X-Gm-Gg: ASbGnctkHiBLKl8DVVW0a8zvLfnC4WqbgPFlpe/J2RPKmkB/vDdOX2tNcSTUxcGdH5T
+	Nuns7zHf9YLmBAseIMzVC3fNnZRDCMivMqkKuYlT96S/1SL4=
+X-Google-Smtp-Source: AGHT+IFQDKX0xPfjy+1GV5DC2GEOe3O925IO0wivqwkD37VEAblMUzZqPiXYvt8JvyDgF5rSVBQzPfDgL3+j53X/Nbw=
+X-Received: by 2002:a17:90b:5405:b0:2ee:c291:765a with SMTP id
+ 98e67ed59e1d1-2ef6955fa47mr6403143a91.8.1733523342534; Fri, 06 Dec 2024
+ 14:15:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
+In-Reply-To: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 6 Dec 2024 14:15:30 -0800
+Message-ID: <CAEf4BzYxaKd8Gv5g8PBY6zaQukYKSjjtaSgYMjJxL-PZ0dLrbQ@mail.gmail.com>
+Subject: Re: [PATCH bpf v2] bpf: Fix prog_array UAF in __uprobe_perf_func()
+To: Jann Horn <jannh@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Delyan Kratunov <delyank@fb.com>, bpf@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit d677ce521334d8f1f327cafc8b1b7854b0833158 upstream.
+On Fri, Dec 6, 2024 at 12:45=E2=80=AFPM Jann Horn <jannh@google.com> wrote:
+>
+> Currently, the pointer stored in call->prog_array is loaded in
+> __uprobe_perf_func(), with no RCU annotation and no RCU protection, so th=
+e
+> loaded pointer can immediately be dangling. Later,
+> bpf_prog_run_array_uprobe() starts a RCU-trace read-side critical section=
+,
+> but this is too late. It then uses rcu_dereference_check(), but this use =
+of
+> rcu_dereference_check() does not actually dereference anything.
+>
+> It looks like the intention was to pass a pointer to the member
+> call->prog_array into bpf_prog_run_array_uprobe() and actually dereferenc=
+e
+> the pointer in there. Fix the issue by actually doing that.
+>
+> Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+> To reproduce, in include/linux/bpf.h, patch in a mdelay(10000) directly
+> before the might_fault() in bpf_prog_run_array_uprobe() and add an
+> include of linux/delay.h.
+>
+> Build this userspace program:
+>
+> ```
+> $ cat dummy.c
+> #include <stdio.h>
+> int main(void) {
+>   printf("hello world\n");
+> }
+> $ gcc -o dummy dummy.c
+> ```
+>
+> Then build this BPF program and load it (change the path to point to
+> the "dummy" binary you built):
+>
+> ```
+> $ cat bpf-uprobe-kern.c
+> #include <linux/bpf.h>
+> #include <bpf/bpf_helpers.h>
+> #include <bpf/bpf_tracing.h>
+> char _license[] SEC("license") =3D "GPL";
+>
+> SEC("uprobe//home/user/bpf-uprobe-uaf/dummy:main")
+> int BPF_UPROBE(main_uprobe) {
+>   bpf_printk("main uprobe triggered\n");
+>   return 0;
+> }
+> $ clang -O2 -g -target bpf -c -o bpf-uprobe-kern.o bpf-uprobe-kern.c
+> $ sudo bpftool prog loadall bpf-uprobe-kern.o uprobe-test autoattach
+> ```
+>
+> Then run ./dummy in one terminal, and after launching it, run
+> `sudo umount uprobe-test` in another terminal. Once the 10-second
+> mdelay() is over, a use-after-free should occur, which may or may
+> not crash your kernel at the `prog->sleepable` check in
+> bpf_prog_run_array_uprobe() depending on your luck.
+> ---
+> Changes in v2:
+> - remove diff chunk in patch notes that confuses git
+> - Link to v1: https://lore.kernel.org/r/20241206-bpf-fix-uprobe-uaf-v1-1-=
+6869c8a17258@google.com
+> ---
+>  include/linux/bpf.h         | 4 ++--
+>  kernel/trace/trace_uprobe.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
 
-Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
-end up in the 32-bit vDSO flags, resulting in build failures due to the
-structure of clang's argument parsing of the stack protector options,
-which validates the arguments of the stack protector guard flags
-unconditionally in the frontend, choking on the 64-bit values when
-targeting 32-bit:
+Looking at how similar in spirit bpf_prog_run_array() is meant to be
+used, it seems like it is the caller's responsibility to
+RCU-dereference array and keep RCU critical section before calling
+into bpf_prog_run_array(). So I wonder if it's best to do this instead
+(Gmail will butcher the diff, but it's about the idea):
 
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index eaee2a819f4c..4b8a9edd3727 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2193,26 +2193,25 @@ bpf_prog_run_array(const struct bpf_prog_array *arr=
+ay,
+  * rcu-protected dynamically sized maps.
+  */
+ static __always_inline u32
+-bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_rcu,
++bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
+                          const void *ctx, bpf_prog_run_fn run_prog)
+ {
+        const struct bpf_prog_array_item *item;
+        const struct bpf_prog *prog;
+-       const struct bpf_prog_array *array;
+        struct bpf_run_ctx *old_run_ctx;
+        struct bpf_trace_run_ctx run_ctx;
+        u32 ret =3D 1;
 
-Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
-already handles situations similar to this. Additionally, reformat and
-align a comment better for the expanding CONFIG_CC_IS_CLANG block.
+        might_fault();
++       RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu lock held");
++
++       if (unlikely(!array))
++               goto out;
 
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org
-[nathan: Backport to 6.1, which lacks both a6b67eb09963 and 05e05bfc92d1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/powerpc/kernel/vdso/Makefile | 6 ++++++
- 1 file changed, 6 insertions(+)
+-       rcu_read_lock_trace();
+        migrate_disable();
 
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index a2e7b0ce5b19..48bf579eedae 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -16,6 +16,12 @@ ifneq ($(c-gettimeofday-y),)
-   CFLAGS_vgettimeofday-32.o += -ffreestanding -fasynchronous-unwind-tables
-   CFLAGS_REMOVE_vgettimeofday-32.o = $(CC_FLAGS_FTRACE)
-   CFLAGS_REMOVE_vgettimeofday-32.o += -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
-+  ifdef CONFIG_CC_IS_CLANG
-+  # -mstack-protector-guard values from the 64-bit build are not valid for the
-+  # 32-bit one. clang validates the values passed to these arguments during
-+  # parsing, even when -fno-stack-protector is passed afterwards.
-+  CFLAGS_REMOVE_vgettimeofday-32.o += -mstack-protector-guard%
-+  endif
-   CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y)
-   CFLAGS_vgettimeofday-64.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
-   CFLAGS_vgettimeofday-64.o += $(call cc-option, -fno-stack-protector)
--- 
-2.47.1
+        run_ctx.is_uprobe =3D true;
 
+-       array =3D rcu_dereference_check(array_rcu, rcu_read_lock_trace_held=
+());
+-       if (unlikely(!array))
+-               goto out;
+        old_run_ctx =3D bpf_set_run_ctx(&run_ctx.run_ctx);
+        item =3D &array->items[0];
+        while ((prog =3D READ_ONCE(item->prog))) {
+@@ -2229,7 +2228,6 @@ bpf_prog_run_array_uprobe(const struct
+bpf_prog_array __rcu *array_rcu,
+        bpf_reset_run_ctx(old_run_ctx);
+ out:
+        migrate_enable();
+-       rcu_read_unlock_trace();
+        return ret;
+ }
+
+diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+index fed382b7881b..87a2b8fefa90 100644
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -1404,7 +1404,9 @@ static void __uprobe_perf_func(struct trace_uprobe *t=
+u,
+        if (bpf_prog_array_valid(call)) {
+                u32 ret;
+
++               rcu_read_lock_trace();
+                ret =3D bpf_prog_run_array_uprobe(call->prog_array,
+regs, bpf_prog_run);
++               rcu_read_unlock_trace();
+                if (!ret)
+                        return;
+        }
+
+
+> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> index eaee2a819f4c150a34a7b1075584711609682e4c..00b3c5b197df75a0386233b98=
+85b480b2ce72f5f 100644
+> --- a/include/linux/bpf.h
+> +++ b/include/linux/bpf.h
+> @@ -2193,7 +2193,7 @@ bpf_prog_run_array(const struct bpf_prog_array *arr=
+ay,
+>   * rcu-protected dynamically sized maps.
+>   */
+>  static __always_inline u32
+> -bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_rcu,
+> +bpf_prog_run_array_uprobe(struct bpf_prog_array __rcu **array_rcu,
+>                           const void *ctx, bpf_prog_run_fn run_prog)
+>  {
+>         const struct bpf_prog_array_item *item;
+> @@ -2210,7 +2210,7 @@ bpf_prog_run_array_uprobe(const struct bpf_prog_arr=
+ay __rcu *array_rcu,
+>
+>         run_ctx.is_uprobe =3D true;
+>
+> -       array =3D rcu_dereference_check(array_rcu, rcu_read_lock_trace_he=
+ld());
+> +       array =3D rcu_dereference_check(*array_rcu, rcu_read_lock_trace_h=
+eld());
+>         if (unlikely(!array))
+>                 goto out;
+>         old_run_ctx =3D bpf_set_run_ctx(&run_ctx.run_ctx);
+> diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+> index fed382b7881b82ee3c334ea77860cce77581a74d..c4eef1eb5ddb3c65205aa9d64=
+af1c72d62fab87f 100644
+> --- a/kernel/trace/trace_uprobe.c
+> +++ b/kernel/trace/trace_uprobe.c
+> @@ -1404,7 +1404,7 @@ static void __uprobe_perf_func(struct trace_uprobe =
+*tu,
+>         if (bpf_prog_array_valid(call)) {
+>                 u32 ret;
+>
+> -               ret =3D bpf_prog_run_array_uprobe(call->prog_array, regs,=
+ bpf_prog_run);
+> +               ret =3D bpf_prog_run_array_uprobe(&call->prog_array, regs=
+, bpf_prog_run);
+>                 if (!ret)
+>                         return;
+>         }
+>
+> ---
+> base-commit: 509df676c2d79c985ec2eaa3e3a3bbe557645861
+> change-id: 20241206-bpf-fix-uprobe-uaf-53d928bab3d0
+>
+> --
+> Jann Horn <jannh@google.com>
+>
+>
 
