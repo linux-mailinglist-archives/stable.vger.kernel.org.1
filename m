@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-99658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035729E72D1
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB3389E72D2
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C470416D8DF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:12:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B4A16E134
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895DB206F10;
-	Fri,  6 Dec 2024 15:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDB220A5E5;
+	Fri,  6 Dec 2024 15:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slyxAfmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XICjboUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E33207E02;
-	Fri,  6 Dec 2024 15:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CE2153836;
+	Fri,  6 Dec 2024 15:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497921; cv=none; b=lUSPWQXCK5Ybog+22c0TsfevTNjCpgk2x16oOQFc8lBSb/JvrTdd8cN7tmNIX8m1kHW3mPEap7Y1OYtBBy4fCie248e1BHQbue3F7bKpt7vMK1y1omPm1zmnBe4uKt1Qe9o0IBohq7doD+5fhP/OMAY+EkBWdFugoGIQOFYHVxg=
+	t=1733497928; cv=none; b=CtvWf5Kk9SiVKf/QlLt1bpc3w6oAvChV/afPhR26N7Tg3P+A0uPWDmsVxxwvQn7lgabE7g2gALOA1kdTQneukfz6iRfBfSmkjovB9ISnrZ2busQfTEo9ZMV7VM2LDqejobu0dT3+T+NI1JQA5pTQbRRMAbs+zSgjntzooIHbysU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497921; c=relaxed/simple;
-	bh=RSxJBU8BRWH1dHAzc+h2Fn/vaT9ct24tvTknsBjMsc8=;
+	s=arc-20240116; t=1733497928; c=relaxed/simple;
+	bh=y/elpe2cfCQC9GxKS/qExqJ3Hxr4uSrFUIwcU070CnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbY9EDhU6ARUy2zUTV/gLi5wVHW/JMf3ZsOKwYIfXdVv6R+uX4P5TjLzlg3Kl58FL63zbOzDKpIv1p0mkp2FVtD+E84ueJaPkCppslkquqVuUcvsCEw3VORCGpoeaHDSIJyK9kzIE8wl6Wi1tdhNly/2r1KYf+eftHJWNCwfO04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slyxAfmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DA2C4CED1;
-	Fri,  6 Dec 2024 15:12:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iM4ivFEixaZ/k17zAlI1zbtTGQQWfaw1fCYdwssrPnG8OkOiPii3OhSWZvSS/PKymZIStDMdpm4kyHdvEV0yxvvec9mS9uAOs9CqVVPDWTsJXBki3bjvj0ZmF6Rh6YP8BQF17ny/diMKMkN3dZ9xmnZxSCNd6obGVFabtSoLiWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XICjboUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88300C4CEDC;
+	Fri,  6 Dec 2024 15:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497921;
-	bh=RSxJBU8BRWH1dHAzc+h2Fn/vaT9ct24tvTknsBjMsc8=;
+	s=korg; t=1733497928;
+	bh=y/elpe2cfCQC9GxKS/qExqJ3Hxr4uSrFUIwcU070CnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slyxAfmGSwyalAwwEBxS2ie81Xx3eUTFuJzTiuN3twFKJyprIbfMDywkp0xD466fi
-	 W6oC457LZttoSAqd5FkIZzilkL2mwInMtAHwVirSncJlaqaBOECawEjIB4979OTclT
-	 Y5ezqKSnq2f1ojZjM50GhvnyWjAMlEYQx8PdgPCQ=
+	b=XICjboUW74vzDOa9EHv94FJqEPkpp/yz7sCIL9uuIeedC/Ou6kg3vogFMPwiUuiKX
+	 TnlfX+Ong0Bk3Sx6MVluVL5otT20CUlLT6Vag1pp0Jg0z6kmDYg94ggsb1i3FezG/X
+	 Bcre6E999FuOV6lm9OKUsJCuWUIFUz+og9sMhOLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Panis <jpanis@baylibre.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	William Breathitt Gray <wbg@kernel.org>,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Russ Weight <russ.weight@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 433/676] counter: ti-ecap-capture: Add check for clk_enable()
-Date: Fri,  6 Dec 2024 15:34:12 +0100
-Message-ID: <20241206143710.255925219@linuxfoundation.org>
+Subject: [PATCH 6.6 434/676] firmware_loader: Fix possible resource leak in fw_log_firmware_info()
+Date: Fri,  6 Dec 2024 15:34:13 +0100
+Message-ID: <20241206143710.293873624@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -61,48 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-[ Upstream commit 1437d9f1c56fce9c24e566508bce1d218dd5497a ]
+[ Upstream commit 369a9c046c2fdfe037f05b43b84c386bdbccc103 ]
 
-Add check for the return value of clk_enable() in order to catch the
-potential exception.
+The alg instance should be released under the exception path, otherwise
+there may be resource leak here.
 
-Fixes: 4e2f42aa00b6 ("counter: ti-ecap-capture: capture driver support for ECAP")
-Reviewed-by: Julien Panis <jpanis@baylibre.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://lore.kernel.org/r/20241104194059.47924-1-jiashengjiangcool@gmail.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+To mitigate this, free the alg instance with crypto_free_shash when kmalloc
+fails.
+
+Fixes: 02fe26f25325 ("firmware_loader: Add debug message with checksum for FW file")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Reviewed-by: Russ Weight <russ.weight@linux.dev>
+Link: https://lore.kernel.org/r/20241016110335.3677924-1-cuigaosheng1@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/ti-ecap-capture.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/base/firmware_loader/main.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/counter/ti-ecap-capture.c b/drivers/counter/ti-ecap-capture.c
-index fb1cb1774674a..b84e368a413f5 100644
---- a/drivers/counter/ti-ecap-capture.c
-+++ b/drivers/counter/ti-ecap-capture.c
-@@ -576,8 +576,13 @@ static int ecap_cnt_resume(struct device *dev)
- {
- 	struct counter_device *counter_dev = dev_get_drvdata(dev);
- 	struct ecap_cnt_dev *ecap_dev = counter_priv(counter_dev);
-+	int ret;
+diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
+index 0b18c6b46e65d..f3133ba831c5e 100644
+--- a/drivers/base/firmware_loader/main.c
++++ b/drivers/base/firmware_loader/main.c
+@@ -824,19 +824,18 @@ static void fw_log_firmware_info(const struct firmware *fw, const char *name, st
+ 	shash->tfm = alg;
  
--	clk_enable(ecap_dev->clk);
-+	ret = clk_enable(ecap_dev->clk);
-+	if (ret) {
-+		dev_err(dev, "Cannot enable clock %d\n", ret);
-+		return ret;
-+	}
+ 	if (crypto_shash_digest(shash, fw->data, fw->size, sha256buf) < 0)
+-		goto out_shash;
++		goto out_free;
  
- 	ecap_cnt_capture_set_evmode(counter_dev, ecap_dev->pm_ctx.ev_mode);
+ 	for (int i = 0; i < SHA256_DIGEST_SIZE; i++)
+ 		sprintf(&outbuf[i * 2], "%02x", sha256buf[i]);
+ 	outbuf[SHA256_BLOCK_SIZE] = 0;
+ 	dev_dbg(device, "Loaded FW: %s, sha256: %s\n", name, outbuf);
  
+-out_shash:
+-	crypto_free_shash(alg);
+ out_free:
+ 	kfree(shash);
+ 	kfree(outbuf);
+ 	kfree(sha256buf);
++	crypto_free_shash(alg);
+ }
+ #else
+ static void fw_log_firmware_info(const struct firmware *fw, const char *name,
 -- 
 2.43.0
 
