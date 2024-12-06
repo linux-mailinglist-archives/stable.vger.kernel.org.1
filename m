@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-99409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672BD9E7195
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:57:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD799E71A4
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:58:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BD181887717
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:57:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E7D283A5F
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50AB2066C2;
-	Fri,  6 Dec 2024 14:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19532066C5;
+	Fri,  6 Dec 2024 14:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGt0vVo7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPLQuas1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43591F8F13;
-	Fri,  6 Dec 2024 14:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B012010E0;
+	Fri,  6 Dec 2024 14:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497062; cv=none; b=ZdbFFqxxOp9+jBbvFqv3h0azKEAf/2aeb/VcPGq95SvelU9x+hl2aY/zZfWkDPxDpdPfQpm+3QgQoGba5nilXL63TOIB2Xj3um7M73DfFTEHIMgJkzyO3oDSqhgdZ6jMdcT5h7xR457GY9OXcmVQcsC2ggFbef7/xmSSMkttI6o=
+	t=1733497099; cv=none; b=TG1BMQQdn6lmqY36qtZ/kdYhOF9Cni3Ed8Kr6vjCurhbt89Bqjq+wywL+OPt+SZzN6nU6x3RnmCZ6FiBgOjusaEwE8/TPQygVwL351INQtEne06kKk+OxLfy/42xHQnWHTCMaJWi3YzL6in/ZIb5JYoQn1i4iiFkGSg/v14oBp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497062; c=relaxed/simple;
-	bh=OQM+jw3LnnFfRXMdG1aj0K3pPJ4F8xK881UfShb1+GY=;
+	s=arc-20240116; t=1733497099; c=relaxed/simple;
+	bh=LkmbFDorHNJ/kMChKwFcCeu7ZOehsge5FJGlnNvqipI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clg7NVyYWKBgcCRuIzJaHaWe8FcCMVWerLegqZjxXQh28s3FbXGlBmKYiMVEge8YE5PI0UkSn4Ld31/ZhOfKr0njJMJtDyD/qQIRYnhwH76vO6RzKHtBy+VUgBkXvX+pOjhs2VfvKPnxg9XhYTbrBZBVxYubHtT+3tUmX99VjTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGt0vVo7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE79C4CED1;
-	Fri,  6 Dec 2024 14:57:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HE07D5JggXSzteFwSQS/EY7AYVJljhZ4o4QNju0/wNCQNnKlt99FAqoC3s09PzuX7NFMgO4HxtUI8S5AZQ8aigXvqmML+KVVfI9iT46ShOwhe4+LY74Y1/LGOyx5DrfdWyKhPtttoEo8XN6D0XxK7wu1z/OPeyJku90y8aYulW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPLQuas1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D04C4CED1;
+	Fri,  6 Dec 2024 14:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497062;
-	bh=OQM+jw3LnnFfRXMdG1aj0K3pPJ4F8xK881UfShb1+GY=;
+	s=korg; t=1733497099;
+	bh=LkmbFDorHNJ/kMChKwFcCeu7ZOehsge5FJGlnNvqipI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gGt0vVo7eODBjg1LTw3NGHRDMjkLuOmeW3tUooZ2tV5twkAkVxSBCz92Kmf5UFuS6
-	 Agh0dRUEooaNI/30hsu9MP1M9XY4EI9Jp7DnQ8b2e/cZCjnyA+2oNSlHQXbmIROvZ+
-	 aCle4Tjn9cMT9zABLP0SrcRh/eipZfs0cXAto1ao=
+	b=YPLQuas1NgiF1aZfOsFWrDhU9QWDOBh9zphtDT75KWHVRkRSxvfvq1rw6XVpviBVG
+	 Wovdongi6KoAidTKD+Cyaqv1y0gxYy2zHaa9st1KHFxcn6yWmEoTmBvMy5qKKNBAyb
+	 RU2OaRGlo63Mg3q5kRdyaMV1DE+qtwqimtYyPBKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/676] drm/imx/ipuv3: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Fri,  6 Dec 2024 15:29:55 +0100
-Message-ID: <20241206143700.222214545@linuxfoundation.org>
+Subject: [PATCH 6.6 177/676] drm/v3d: Address race-condition in MMU flush
+Date: Fri,  6 Dec 2024 15:29:56 +0100
+Message-ID: <20241206143700.260765308@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -61,51 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 40004709a3d3b07041a473a163ca911ef04ab8bd ]
+[ Upstream commit cf1becb7f996a0a23ea2c270cf6bb0911ec3ca1a ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+We must first flush the MMU cache and then, flush the TLB, not the other
+way around. Currently, we can see a race condition between the MMU cache
+and the TLB when running multiple rendering processes at the same time.
+This is evidenced by MMU errors triggered by the IRQ.
 
-Fixes: 47b1be5c0f4e ("staging: imx/drm: request irq only after adding the crtc")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240912083020.3720233-4-ruanjinjie@huawei.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fix the MMU flush order by flushing the MMU cache and then the TLB.
+Also, in order to address the race condition, wait for the MMU cache flush
+to finish before starting the TLB flush.
+
+Fixes: 57692c94dcbe ("drm/v3d: Introduce a new DRM driver for Broadcom V3D V3.x+")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240923141348.2422499-2-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/v3d/v3d_mmu.c | 29 ++++++++++-------------------
+ 1 file changed, 10 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-index 89585b31b985e..5f423a2e0ede3 100644
---- a/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-+++ b/drivers/gpu/drm/imx/ipuv3/ipuv3-crtc.c
-@@ -410,14 +410,12 @@ static int ipu_drm_bind(struct device *dev, struct device *master, void *data)
- 	}
+diff --git a/drivers/gpu/drm/v3d/v3d_mmu.c b/drivers/gpu/drm/v3d/v3d_mmu.c
+index 5a453532901f1..166d4a88daee5 100644
+--- a/drivers/gpu/drm/v3d/v3d_mmu.c
++++ b/drivers/gpu/drm/v3d/v3d_mmu.c
+@@ -34,32 +34,23 @@ static int v3d_mmu_flush_all(struct v3d_dev *v3d)
+ {
+ 	int ret;
  
- 	ipu_crtc->irq = ipu_plane_irq(ipu_crtc->plane[0]);
--	ret = devm_request_irq(ipu_crtc->dev, ipu_crtc->irq, ipu_irq_handler, 0,
--			"imx_drm", ipu_crtc);
-+	ret = devm_request_irq(ipu_crtc->dev, ipu_crtc->irq, ipu_irq_handler,
-+			       IRQF_NO_AUTOEN, "imx_drm", ipu_crtc);
- 	if (ret < 0) {
- 		dev_err(ipu_crtc->dev, "irq request failed with %d.\n", ret);
+-	/* Make sure that another flush isn't already running when we
+-	 * start this one.
+-	 */
+-	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
+-			 V3D_MMU_CTL_TLB_CLEARING), 100);
+-	if (ret)
+-		dev_err(v3d->drm.dev, "TLB clear wait idle pre-wait failed\n");
+-
+-	V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL) |
+-		  V3D_MMU_CTL_TLB_CLEAR);
+-
+-	V3D_WRITE(V3D_MMUC_CONTROL,
+-		  V3D_MMUC_CONTROL_FLUSH |
++	V3D_WRITE(V3D_MMUC_CONTROL, V3D_MMUC_CONTROL_FLUSH |
+ 		  V3D_MMUC_CONTROL_ENABLE);
+ 
+-	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
+-			 V3D_MMU_CTL_TLB_CLEARING), 100);
++	ret = wait_for(!(V3D_READ(V3D_MMUC_CONTROL) &
++			 V3D_MMUC_CONTROL_FLUSHING), 100);
+ 	if (ret) {
+-		dev_err(v3d->drm.dev, "TLB clear wait idle failed\n");
++		dev_err(v3d->drm.dev, "MMUC flush wait idle failed\n");
  		return ret;
  	}
--	/* Only enable IRQ when we actually need it to trigger work. */
--	disable_irq(ipu_crtc->irq);
  
- 	return 0;
+-	ret = wait_for(!(V3D_READ(V3D_MMUC_CONTROL) &
+-			 V3D_MMUC_CONTROL_FLUSHING), 100);
++	V3D_WRITE(V3D_MMU_CTL, V3D_READ(V3D_MMU_CTL) |
++		  V3D_MMU_CTL_TLB_CLEAR);
++
++	ret = wait_for(!(V3D_READ(V3D_MMU_CTL) &
++			 V3D_MMU_CTL_TLB_CLEARING), 100);
+ 	if (ret)
+-		dev_err(v3d->drm.dev, "MMUC flush wait idle failed\n");
++		dev_err(v3d->drm.dev, "MMU TLB clear wait idle failed\n");
+ 
+ 	return ret;
  }
 -- 
 2.43.0
