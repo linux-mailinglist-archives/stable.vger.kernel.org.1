@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-99118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFE09E7048
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:41:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 008289E704B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:41:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604AA283B9B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:41:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB0F1886DA1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F25C14EC60;
-	Fri,  6 Dec 2024 14:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451F014D29D;
+	Fri,  6 Dec 2024 14:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNHYJ8+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZ2MMMI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D3514D29D;
-	Fri,  6 Dec 2024 14:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0262C1494D9;
+	Fri,  6 Dec 2024 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496064; cv=none; b=ComhPcd+DyOj5uXhP8Xt5NaC5zUM52Ndu8YV7Fel2pr1JeuO1Pg2/tfa6khsQWtiS8i9GpmpNyZNgJaMGH0OSHqEtmUnSGQ/c7LB+RzNi6OST3G7ZgpiDcBNSd1zZj55wT90feGLxCeWjwzOQLrhmMoy/MFDDbcwhl9LiHi8cEU=
+	t=1733496071; cv=none; b=DKwJGI5qlODD4q2m9OHz4RSxHu/bwS0uHn0QJkQ35GMp8i9JjK6i9ljIIEqC0bEbLHGjeOUdhAPW30gxi82YI+Yq4wqsD7fMgsTHiGNcZ5TdNabAkm0RXoCvLLxCEO+MWFksFXCUcueTYDlDt/Zy+UgOV0kiyg6OnHPLXOjtVco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496064; c=relaxed/simple;
-	bh=g0vTPuuL/rw5JnH6weiuKPy+Bd+8ZCC9LPqd8PsO0AU=;
+	s=arc-20240116; t=1733496071; c=relaxed/simple;
+	bh=LhHlENCH3tfWqUIFMmB2+hrwz8kNb9eMAxfyJXJMuto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CoZsUfqI3mJA2KD866acW5YsJ+4j3r9sXJCiifJLKn5zOAohdYAo2pGifZE+TX0HvORhIW0WfGdL7sKoiYqmY3o9WLRK1wu8TMwYefBLU4tfami/EYcyyTQwFfs70DB2yBlkSF00TsLcVgWe7tFQLsGlrY2vKFKEinGgIzEEr9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNHYJ8+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C025C4CEDC;
-	Fri,  6 Dec 2024 14:41:03 +0000 (UTC)
+	 MIME-Version; b=e1i+NEH8ZaVEekAYAl2wrma/0a+gfkAKgyovtXTFmInUxcEKd1+xdEd9rYE/qIFsYDfONEcVOC1xV1DAsHM0c5fzDQEWPRxzbM5tnLKrVVogpLthK831srolHd45t15ieG3tkOuszbspmAcKu6M8XKGaNjI4nrp5N4iw/S2427o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZ2MMMI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63690C4CEDC;
+	Fri,  6 Dec 2024 14:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496063;
-	bh=g0vTPuuL/rw5JnH6weiuKPy+Bd+8ZCC9LPqd8PsO0AU=;
+	s=korg; t=1733496070;
+	bh=LhHlENCH3tfWqUIFMmB2+hrwz8kNb9eMAxfyJXJMuto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MNHYJ8+WjKAurmL4vHceaJpJXnLFKHpLXZPfIwOsfSxjFokfks5Hh/13h/WRexgxn
-	 VwVJYNzSfqRm8rUcmFHBz2hKy81pAfS/qB2bwAdUM+mSIdc9eEoWvquZU0rZOA4jUA
-	 fSl2bHrkRyK3XkdrD6GjwM7POid5SfPSuqx06Ibc=
+	b=rZ2MMMI2opgPWyPeLeIKQx5eI+roOuLwwfMlvNS+3feic1zhq157YIrSLvTDvQ7yg
+	 LRnlLzijUVHZOyGJtV2Zz7a6KVWaRIcUHCOmGGsHB85EcACFzoK7kEIDoxn+l/LfmW
+	 lHzkvIna5Sy+JmVEbyJe7eflC8PjxNay8A5SjzPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 040/146] tracing: Fix function timing profiler to initialize hashtable
-Date: Fri,  6 Dec 2024 15:36:11 +0100
-Message-ID: <20241206143529.208787109@linuxfoundation.org>
+	Zichen Xie <zichenxie0106@gmail.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.12 041/146] kunit: Fix potential null dereference in kunit_device_driver_test()
+Date: Fri,  6 Dec 2024 15:36:12 +0100
+Message-ID: <20241206143529.246426769@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -65,36 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-commit c54a1a06daa78613519b4d24495b0d175b8af63f upstream.
+commit 435c20eed572a95709b1536ff78832836b2f91b1 upstream.
 
-Since the new fgraph requires to initialize fgraph_ops.ops.func_hash before
-calling register_ftrace_graph(), initialize it with default (tracing all
-functions) parameter.
+kunit_kzalloc() may return a NULL pointer, dereferencing it without
+NULL check may lead to NULL dereference.
+Add a NULL check for test_state.
 
+Link: https://lore.kernel.org/r/20241115054335.21673-1-zichenxie0106@gmail.com
+Fixes: d03c720e03bd ("kunit: Add APIs for managing devices")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: 5fccc7552ccb ("ftrace: Add subops logic to allow one ops to manage many")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ lib/kunit/kunit-test.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -883,6 +883,10 @@ static void profile_graph_return(struct
- }
+diff --git a/lib/kunit/kunit-test.c b/lib/kunit/kunit-test.c
+index 37e02be1e710..d9c781c859fd 100644
+--- a/lib/kunit/kunit-test.c
++++ b/lib/kunit/kunit-test.c
+@@ -805,6 +805,8 @@ static void kunit_device_driver_test(struct kunit *test)
+ 	struct device *test_device;
+ 	struct driver_test_state *test_state = kunit_kzalloc(test, sizeof(*test_state), GFP_KERNEL);
  
- static struct fgraph_ops fprofiler_ops = {
-+	.ops = {
-+		.flags = FTRACE_OPS_FL_INITIALIZED,
-+		INIT_OPS_HASH(fprofiler_ops.ops)
-+	},
- 	.entryfunc = &profile_graph_entry,
- 	.retfunc = &profile_graph_return,
- };
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, test_state);
++
+ 	test->priv = test_state;
+ 	test_driver = kunit_driver_create(test, "my_driver");
+ 
+-- 
+2.47.1
+
 
 
 
