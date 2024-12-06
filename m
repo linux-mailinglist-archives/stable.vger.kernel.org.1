@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-99131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560159E7059
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:41:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45ED89E7065
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:42:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 168BF280A57
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:41:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02967188683B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC29214BFA2;
-	Fri,  6 Dec 2024 14:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5AE14D29D;
+	Fri,  6 Dec 2024 14:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4dzoqnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQYjawqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793391494D9;
-	Fri,  6 Dec 2024 14:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A29D1494D9;
+	Fri,  6 Dec 2024 14:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496108; cv=none; b=ZBl92cZMFxIplBEZyEP8SJtNNG7Y/foUMx5diFPPHv1hAUli421Cwh858Rtgo+/F52s1UhLMKDgpBMlQ3NY5ya7WetpmBcgjLJdqfnWwL7wVuZxx/sLEFoELo6/wgRqWevCOQbb7oWi/dzTWpEygf531+gq/O0xyMdy0/HYbCys=
+	t=1733496145; cv=none; b=dbj323nAvx/lsPArPNRwbC4GskD5fk7K+g7Vt3zk0IgXUFqeTObKVwgivYEYwujcHpt2dQoi8rmyNu1XLUt2EgMOqz2ySBqN/3j14jLsoRCNuZ7HihCl8FKNnglvogzKiSp0mV1nizX06BGwOv6NnRutegOh9B4drE4zqFcwyho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496108; c=relaxed/simple;
-	bh=bHWPgMhuH93nYpJC976ZNomkG7unt/JD3aV/DoLXXLQ=;
+	s=arc-20240116; t=1733496145; c=relaxed/simple;
+	bh=NvhysSOUHuLnVHhXqUcB3ptvzcvEopMx3+AE3gFqAjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZSIol0rRUfP3Y9Nb7+MpmEu17+fmrgtVRli2kogevhFhT3+KJ00B6jDkN1B5TKU3AGlctmQo1WmAvd4DF/vRK1EuIZ22C9RT9IuE5/ney8YhJOZgTPNNU0xhCUs7YMiFnRq67PFeanBgs1h6TE/l6Nwbul7l95eoq+qIyvYr4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4dzoqnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FAEC4CED1;
-	Fri,  6 Dec 2024 14:41:47 +0000 (UTC)
+	 MIME-Version; b=B7VYs4LFxHAzRbbQ8laV/iWHWaP/DmlK9Hy/+UGsMg5CCpxdeZF1c01CMFdmlNR1CwIFaLBgEf3wcd7BJ98YI44+DbwjK+frYWcIHAyyaOTyStYvIFLNEMD6caKNO1w9Q0Gl0lhXB1NextMfbpSpp4XGMbPtOR7SLe1pKyTM/R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQYjawqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8CBC4CED1;
+	Fri,  6 Dec 2024 14:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496108;
-	bh=bHWPgMhuH93nYpJC976ZNomkG7unt/JD3aV/DoLXXLQ=;
+	s=korg; t=1733496145;
+	bh=NvhysSOUHuLnVHhXqUcB3ptvzcvEopMx3+AE3gFqAjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4dzoqnb+KjTXmC1hEKAq2j5h9oFO4P3H+lkDwcSp1mNjPVkkpxmfvFJFfz+Y9ySF
-	 zaYkFw/7LHzG+aUgduCKyqbv79aikEnDTGpxAqsbwhvPtUi3Qp0JWLSWpVNiVZbF2P
-	 VxTMyaTdrqnN6meHqgUgfxPRB6vo6BEHEYIMVxhU=
+	b=EQYjawqTqZDuXEJJPjhIwB+/AvQjEUl5qUNDZ3I+IbXX1QM/cB7MutgVeLlZeHDPB
+	 x7l39shgOrED8o8Pnyk2pb23Wjq4sOO62LTKjLj2eAhEAWJp2l2AXwMm5Wb6t6rFmI
+	 8VQ1jmt3Nf/NSiHWn/BR/yowE2QQ3PPKDRNRQKJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MengEn Sun <mengensun@tencent.com>,
-	JinLiang Zheng <alexjlzheng@tencent.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shin Kawamura <kawasin@google.com>,
+	Brian Geffon <bgeffon@google.com>,
+	Minchan Kim <minchan@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 046/146] vmstat: call fold_vm_zone_numa_events() before show per zone NUMA event
-Date: Fri,  6 Dec 2024 15:36:17 +0100
-Message-ID: <20241206143529.437637374@linuxfoundation.org>
+Subject: [PATCH 6.12 047/146] zram: clear IDLE flag after recompression
+Date: Fri,  6 Dec 2024 15:36:18 +0100
+Message-ID: <20241206143529.475526203@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -66,47 +68,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: MengEn Sun <mengensun@tencent.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit 2ea80b039b9af0b71c00378523b71c254fb99c23 upstream.
+commit f85219096648b251a81e9fe24a1974590cfc417d upstream.
 
-Since 5.14-rc1, NUMA events will only be folded from per-CPU statistics to
-per zone and global statistics when the user actually needs it.
+Patch series "zram: IDLE flag handling fixes", v2.
 
-Currently, the kernel has performs the fold operation when reading
-/proc/vmstat, but does not perform the fold operation in /proc/zoneinfo.
-This can lead to inaccuracies in the following statistics in zoneinfo:
-- numa_hit
-- numa_miss
-- numa_foreign
-- numa_interleave
-- numa_local
-- numa_other
+zram can wrongly preserve ZRAM_IDLE flag on its entries which can result
+in premature post-processing (writeback and recompression) of such
+entries.
 
-Therefore, before printing per-zone vm_numa_event when reading
-/proc/zoneinfo, we should also perform the fold operation.
+This patch (of 2)
 
-Link: https://lkml.kernel.org/r/1730433998-10461-1-git-send-email-mengensun@tencent.com
-Fixes: f19298b9516c ("mm/vmstat: convert NUMA statistics to basic NUMA counters")
-Signed-off-by: MengEn Sun <mengensun@tencent.com>
-Reviewed-by: JinLiang Zheng <alexjlzheng@tencent.com>
-Cc: <stable@vger.kernel.org>
+Recompression should clear ZRAM_IDLE flag on the entries it has accessed,
+because otherwise some entries, specifically those for which recompression
+has failed, become immediate candidate entries for another post-processing
+(e.g.  writeback).
+
+Consider the following case:
+- recompression marks entries IDLE every 4 hours and attempts
+  to recompress them
+- some entries are incompressible, so we keep them intact and
+  hence preserve IDLE flag
+- writeback marks entries IDLE every 8 hours and writebacks
+  IDLE entries, however we have IDLE entries left from
+  recompression, so writeback prematurely writebacks those
+  entries.
+
+The bug was reported by Shin Kawamura.
+
+Link: https://lkml.kernel.org/r/20241028153629.1479791-1-senozhatsky@chromium.org
+Link: https://lkml.kernel.org/r/20241028153629.1479791-2-senozhatsky@chromium.org
+Fixes: 84b33bf78889 ("zram: introduce recompress sysfs knob")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Shin Kawamura <kawasin@google.com>
+Acked-by: Brian Geffon <bgeffon@google.com>
+Cc: Minchan Kim <minchan@kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmstat.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/zram/zram_drv.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1780,6 +1780,7 @@ static void zoneinfo_show_print(struct s
- 			   zone_page_state(zone, i));
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -1692,6 +1692,13 @@ static int zram_recompress(struct zram *
+ 	if (ret)
+ 		return ret;
  
- #ifdef CONFIG_NUMA
-+	fold_vm_zone_numa_events(zone);
- 	for (i = 0; i < NR_VM_NUMA_EVENT_ITEMS; i++)
- 		seq_printf(m, "\n      %-12s %lu", numa_stat_name(i),
- 			   zone_numa_event_state(zone, i));
++	/*
++	 * We touched this entry so mark it as non-IDLE. This makes sure that
++	 * we don't preserve IDLE flag and don't incorrectly pick this entry
++	 * for different post-processing type (e.g. writeback).
++	 */
++	zram_clear_flag(zram, index, ZRAM_IDLE);
++
+ 	class_index_old = zs_lookup_class_index(zram->mem_pool, comp_len_old);
+ 	/*
+ 	 * Iterate the secondary comp algorithms list (in order of priority)
 
 
 
