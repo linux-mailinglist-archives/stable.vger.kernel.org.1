@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-99670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B48A9E72C6
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D30F9E72C7
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE97428593F
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57F07287950
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6780120C479;
-	Fri,  6 Dec 2024 15:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E01420125C;
+	Fri,  6 Dec 2024 15:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iakc7W/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjL4mxQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AA020C03B;
-	Fri,  6 Dec 2024 15:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC191FCCFB;
+	Fri,  6 Dec 2024 15:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497958; cv=none; b=By29ZEZEVU0F+yDWiRGKNwcUM7aqFtqEjbRj+IiKFR3d6V7VgJwlHGLloHAC57PUwU+YLXyAhqY2NCV2PomdVJN6ROfR7BmzdGsX05IrMCXU3TNMi2ntrvEXSvNIWmhT38zKuiMrniTt4UDScMeMsG11lh99TvMwnExdXdRUmuI=
+	t=1733497965; cv=none; b=jmSg/HLN2LgJirocegQtZ/HaHYZAutnEwAucKULSIGG+h/XQ2GGG2avQaoQPaiygdZTPLTPRSq3KekmabtLw8sw6+VUKIwGTKIb2J0iRm1bKmrJm6CbuOUntVNEnlMiF0pURZEWLN6pDF0LWiDw3k309H+29OixE5XrkZvP8R3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497958; c=relaxed/simple;
-	bh=TTSxrRgMlxRAxDmddcjSJAXy7eN/xKMavQBhjELIFJc=;
+	s=arc-20240116; t=1733497965; c=relaxed/simple;
+	bh=ssZgyWxwoKpT6MAS/eta8tPRUKncCBEbDxAxHo42OZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUV1XYJnvl01UpXz/0dew9tRkbrUk8lD0Q8KEiz7q0R19F9ffXBkvU7TFisHDK507QZwK1+jJFBWwFrdNPgMcnHMhjtVnPuj4xZZC1HXfba7JuPfHWmLedbygSGgAXW3kmir8QXBU3Q3xMrC9s5lAVELyu4LYOaffVXC4PnG418=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iakc7W/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B75EC4CED1;
-	Fri,  6 Dec 2024 15:12:37 +0000 (UTC)
+	 MIME-Version; b=rQ/vmE9JrjUcs+K7XVwzalLMjyTcMSoBm8kyKj95YPPMj8D6Ri3fyH1+0XVnzltkcRAiJl3rj8q7eX6uHPK2jamAMOK7LML6Sq+LC92EL5MmGRaMPuETKjIeCtCJcyyBkUj/kvIcIGaIH3gbR8+oaI8/qJcGxrOMpGvieVGR7G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjL4mxQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9659C4CED1;
+	Fri,  6 Dec 2024 15:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497958;
-	bh=TTSxrRgMlxRAxDmddcjSJAXy7eN/xKMavQBhjELIFJc=;
+	s=korg; t=1733497964;
+	bh=ssZgyWxwoKpT6MAS/eta8tPRUKncCBEbDxAxHo42OZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iakc7W/ghDhG7nYCisv8Cv4XozhfsoCUH8QB9Zq804XdkubA+8d7lQ+Xmj2jzICoc
-	 DFcULFAlavy4HxlRK6fKRUTh+oMIQqH+P6qraetct3ldVAjUr0N2lXrlm2c4Ch6Ifm
-	 2lGznHcTAvWBt82+pYD1pdXuiU08NcjA+4J4iBWs=
+	b=RjL4mxQMX57DJchoDZ9ZJMXKtA1iHuceCFVQ/6ETB9Ocdja1VJvv8E7D9a2goGPo2
+	 E5wZeYvv1y6i02EwHd9iWn6/e0Gt7Io2hXBPPc9zxRQYlwWELfdc0UoxL9VENb7zf8
+	 ZrVU4QqS+sT7JZ3jRm1xC4tNqVDj3nzHq4NYZYZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 443/676] gfs2: Remove and replace gfs2_glock_queue_work
-Date: Fri,  6 Dec 2024 15:34:22 +0100
-Message-ID: <20241206143710.661307442@linuxfoundation.org>
+	Xiuhong Wang <xiuhong.wang@unisoc.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Daniel Rosenberg <drosen@google.com>
+Subject: [PATCH 6.6 444/676] f2fs: fix fiemap failure issue when page size is 16KB
+Date: Fri,  6 Dec 2024 15:34:23 +0100
+Message-ID: <20241206143710.701110527@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -65,164 +68,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Xiuhong Wang <xiuhong.wang@unisoc.com>
 
-[ Upstream commit 1e86044402c45b70a9b31beeaefb5cc732a7470c ]
+commit a7a7c1d423a6351a6541e95c797da5358e5ad1ea upstream.
 
-There are no more callers of gfs2_glock_queue_work() left, so remove
-that helper.  With that, we can now rename __gfs2_glock_queue_work()
-back to gfs2_glock_queue_work() to get rid of some unnecessary clutter.
+After enable 16K page size, an infinite loop may occur in
+fiemap (fm_length=UINT64_MAX) on a file, such as the 16KB
+scratch.img during the remount operation in Android.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The condition for whether fiemap continues to map is to check
+whether the number of bytes corresponding to the next map.m_lblk
+exceeds blks_to_bytes(inode,max_inode_blocks(inode)) if there are HOLE.
+The latter does not take into account the maximum size of a file with 16KB
+page size, so the loop cannot be jumped out.
+
+The following is the fail trace:
+When f2fs_map_blocks reaches map.m_lblk=3936, it needs to go to the
+first direct node block, so the map is 3936 + 4090 = 8026,
+The next map is the second direct node block, that is,
+8026 + 4090 = 12116,
+The next map is the first indirect node block, that is,
+12116 + 4090 * 4090 = 16740216,
+The next map is the second indirect node block, that is,
+16740216 + 4090 * 4090 = 33468316,
+The next map is the first double indirect node block, that is,
+33468316 + 4090 * 4090 * 4090 = 68451397316
+Since map.m_lblk represents the address of a block, which is 32
+bits, truncation will occur, that is, 68451397316 becomes
+4026887876, and the number of bytes corresponding to the block
+number does not exceed blks_to_bytes(inode,max_inode_blocks(inode)),
+so the loop will not be jumped out.
+The next time, it will be considered that it should still be a
+double indirect node block, that is,
+4026887876 + 4090 * 4090 * 4090 = 72444816876, which will be
+truncated to 3725340140, and the loop will not be jumped out.
+
+156.374871: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 0, start blkaddr = 0x8e00, len = 0x200, flags = 2,seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.374916: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 512, start blkaddr = 0x0, len = 0x0, flags = 0 , seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.374920: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 513, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+......
+156.385747: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3935, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385752: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3936, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385755: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 8026, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385758: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 12116, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385761: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 16740216, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385764: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 33468316, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385767: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 4026887876, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385770: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3725340140, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385772: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 4026887876, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+156.385775: f2fs_map_blocks: dev = (254,57), ino = 7449, file offset = 3725340140, start blkaddr = 0x0, len = 0x0, flags = 0, seg_type = 8, may_create = 0, multidevice = 0, flag = 1, err = 0
+
+Commit a6a010f5def5 ("f2fs: Restrict max filesize for 16K f2fs")
+has set the maximum allowed file size to (U32_MAX + 1) * F2FS_BLKSIZE,
+so max_file_blocks should be used here to limit it, that is,
+maxbytes defined above. And the max_inode_blocks function is not
+called by other functions except here, so cleanup it.
+
+Signed-off-by: Xiuhong Wang <xiuhong.wang@unisoc.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Daniel Rosenberg <drosen@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/glock.c | 35 +++++++++++++++--------------------
- 1 file changed, 15 insertions(+), 20 deletions(-)
+ fs/f2fs/data.c |   22 +---------------------
+ 1 file changed, 1 insertion(+), 21 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index f38d8558f4c18..2c0908a302102 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -274,7 +274,7 @@ static void gfs2_glock_remove_from_lru(struct gfs2_glock *gl)
-  * Enqueue the glock on the work queue.  Passes one glock reference on to the
-  * work queue.
-  */
--static void __gfs2_glock_queue_work(struct gfs2_glock *gl, unsigned long delay) {
-+static void gfs2_glock_queue_work(struct gfs2_glock *gl, unsigned long delay) {
- 	if (!queue_delayed_work(glock_workqueue, &gl->gl_work, delay)) {
- 		/*
- 		 * We are holding the lockref spinlock, and the work was still
-@@ -287,12 +287,6 @@ static void __gfs2_glock_queue_work(struct gfs2_glock *gl, unsigned long delay)
- 	}
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1873,25 +1873,6 @@ static int f2fs_xattr_fiemap(struct inod
+ 	return (err < 0 ? err : 0);
  }
  
--static void gfs2_glock_queue_work(struct gfs2_glock *gl, unsigned long delay) {
--	spin_lock(&gl->gl_lockref.lock);
--	__gfs2_glock_queue_work(gl, delay);
--	spin_unlock(&gl->gl_lockref.lock);
+-static loff_t max_inode_blocks(struct inode *inode)
+-{
+-	loff_t result = ADDRS_PER_INODE(inode);
+-	loff_t leaf_count = ADDRS_PER_BLOCK(inode);
+-
+-	/* two direct node blocks */
+-	result += (leaf_count * 2);
+-
+-	/* two indirect node blocks */
+-	leaf_count *= NIDS_PER_BLOCK;
+-	result += (leaf_count * 2);
+-
+-	/* one double indirect node block */
+-	leaf_count *= NIDS_PER_BLOCK;
+-	result += leaf_count;
+-
+-	return result;
 -}
 -
- static void __gfs2_glock_put(struct gfs2_glock *gl)
+ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		u64 start, u64 len)
  {
- 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
-@@ -337,7 +331,8 @@ void gfs2_glock_put_async(struct gfs2_glock *gl)
- 	if (lockref_put_or_lock(&gl->gl_lockref))
- 		return;
+@@ -1964,8 +1945,7 @@ next:
+ 	if (!compr_cluster && !(map.m_flags & F2FS_MAP_FLAGS)) {
+ 		start_blk = next_pgofs;
  
--	__gfs2_glock_queue_work(gl, 0);
-+	GLOCK_BUG_ON(gl, gl->gl_lockref.count != 1);
-+	gfs2_glock_queue_work(gl, 0);
- 	spin_unlock(&gl->gl_lockref.lock);
- }
+-		if (blks_to_bytes(inode, start_blk) < blks_to_bytes(inode,
+-						max_inode_blocks(inode)))
++		if (blks_to_bytes(inode, start_blk) < maxbytes)
+ 			goto prep_next;
  
-@@ -814,7 +809,7 @@ __acquires(&gl->gl_lockref.lock)
- 			 */
- 			clear_bit(GLF_LOCK, &gl->gl_flags);
- 			clear_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
--			__gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
-+			gfs2_glock_queue_work(gl, GL_GLOCK_DFT_HOLD);
- 			return;
- 		} else {
- 			clear_bit(GLF_INVALIDATE_IN_PROGRESS, &gl->gl_flags);
-@@ -844,7 +839,7 @@ __acquires(&gl->gl_lockref.lock)
- 
- 	/* Complete the operation now. */
- 	finish_xmote(gl, target);
--	__gfs2_glock_queue_work(gl, 0);
-+	gfs2_glock_queue_work(gl, 0);
- }
- 
- /**
-@@ -891,7 +886,7 @@ __acquires(&gl->gl_lockref.lock)
- 	clear_bit(GLF_LOCK, &gl->gl_flags);
- 	smp_mb__after_atomic();
- 	gl->gl_lockref.count++;
--	__gfs2_glock_queue_work(gl, 0);
-+	gfs2_glock_queue_work(gl, 0);
- 	return;
- 
- out_unlock:
-@@ -1124,12 +1119,12 @@ static void glock_work_func(struct work_struct *work)
- 		drop_refs--;
- 		if (gl->gl_name.ln_type != LM_TYPE_INODE)
- 			delay = 0;
--		__gfs2_glock_queue_work(gl, delay);
-+		gfs2_glock_queue_work(gl, delay);
- 	}
- 
- 	/*
- 	 * Drop the remaining glock references manually here. (Mind that
--	 * __gfs2_glock_queue_work depends on the lockref spinlock begin held
-+	 * gfs2_glock_queue_work depends on the lockref spinlock begin held
- 	 * here as well.)
- 	 */
- 	gl->gl_lockref.count -= drop_refs;
-@@ -1616,7 +1611,7 @@ int gfs2_glock_nq(struct gfs2_holder *gh)
- 		     test_and_clear_bit(GLF_FROZEN, &gl->gl_flags))) {
- 		set_bit(GLF_REPLY_PENDING, &gl->gl_flags);
- 		gl->gl_lockref.count++;
--		__gfs2_glock_queue_work(gl, 0);
-+		gfs2_glock_queue_work(gl, 0);
- 	}
- 	run_queue(gl, 1);
- 	spin_unlock(&gl->gl_lockref.lock);
-@@ -1681,7 +1676,7 @@ static void __gfs2_glock_dq(struct gfs2_holder *gh)
- 		    !test_bit(GLF_DEMOTE, &gl->gl_flags) &&
- 		    gl->gl_name.ln_type == LM_TYPE_INODE)
- 			delay = gl->gl_hold_time;
--		__gfs2_glock_queue_work(gl, delay);
-+		gfs2_glock_queue_work(gl, delay);
- 	}
- }
- 
-@@ -1905,7 +1900,7 @@ void gfs2_glock_cb(struct gfs2_glock *gl, unsigned int state)
- 			delay = gl->gl_hold_time;
- 	}
- 	handle_callback(gl, state, delay, true);
--	__gfs2_glock_queue_work(gl, delay);
-+	gfs2_glock_queue_work(gl, delay);
- 	spin_unlock(&gl->gl_lockref.lock);
- }
- 
-@@ -1965,7 +1960,7 @@ void gfs2_glock_complete(struct gfs2_glock *gl, int ret)
- 
- 	gl->gl_lockref.count++;
- 	set_bit(GLF_REPLY_PENDING, &gl->gl_flags);
--	__gfs2_glock_queue_work(gl, 0);
-+	gfs2_glock_queue_work(gl, 0);
- 	spin_unlock(&gl->gl_lockref.lock);
- }
- 
-@@ -2025,7 +2020,7 @@ __acquires(&lru_lock)
- 		gl->gl_lockref.count++;
- 		if (demote_ok(gl))
- 			handle_callback(gl, LM_ST_UNLOCKED, 0, false);
--		__gfs2_glock_queue_work(gl, 0);
-+		gfs2_glock_queue_work(gl, 0);
- 		spin_unlock(&gl->gl_lockref.lock);
- 		cond_resched_lock(&lru_lock);
- 	}
-@@ -2163,7 +2158,7 @@ static void thaw_glock(struct gfs2_glock *gl)
- 
- 	spin_lock(&gl->gl_lockref.lock);
- 	set_bit(GLF_REPLY_PENDING, &gl->gl_flags);
--	__gfs2_glock_queue_work(gl, 0);
-+	gfs2_glock_queue_work(gl, 0);
- 	spin_unlock(&gl->gl_lockref.lock);
- }
- 
-@@ -2182,7 +2177,7 @@ static void clear_glock(struct gfs2_glock *gl)
- 		gl->gl_lockref.count++;
- 		if (gl->gl_state != LM_ST_UNLOCKED)
- 			handle_callback(gl, LM_ST_UNLOCKED, 0, false);
--		__gfs2_glock_queue_work(gl, 0);
-+		gfs2_glock_queue_work(gl, 0);
- 	}
- 	spin_unlock(&gl->gl_lockref.lock);
- }
--- 
-2.43.0
-
+ 		flags |= FIEMAP_EXTENT_LAST;
 
 
 
