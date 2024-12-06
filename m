@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-99097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A26A9E7031
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:39:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 212369E703C
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:40:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB9E716B0F7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:39:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A08E16B5DE
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD87152166;
-	Fri,  6 Dec 2024 14:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDBA149E0E;
+	Fri,  6 Dec 2024 14:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsr2iNh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhCftqOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A9514D717;
-	Fri,  6 Dec 2024 14:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6879114B976;
+	Fri,  6 Dec 2024 14:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733495987; cv=none; b=WQYkaC481uK0OttUGENa4+jHncEYkPMtbxss+mAD4U5akcMzaAiiseutqdW4p9Sn/ODvkKZ+AWmo/uSg5RvQCUtGICrno9HoYHCic7qJiZIi75JOqoust+rCPkT3i+z82hr2Kot8fD01jbX3gOd85G8+uJqlLVL+YPcBcbt/c/o=
+	t=1733496024; cv=none; b=iH7aLshVqJg+vpv2nWZJaUEGsllFe8qBASDrwlha4VZCcEm5CW/RI9MXhb/Su/q5A65NQnIBX/zcPDO+pA4oNEZ4e934XK2hQ3iaCcZ6phkpXQ1jjrtJwUcJcHMU7X+EYB/giX8OFFSbCkT4xwJHymLOPwUUF0yhtcJH+zzIjac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733495987; c=relaxed/simple;
-	bh=IInn1rvLFlcE51qN7IG92FUtpa3EsWNdKPoJUX7Cxms=;
+	s=arc-20240116; t=1733496024; c=relaxed/simple;
+	bh=8WZrRsEXgfrGRtIaSy/of9Za2uExTaxLpSI82jRknQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5g2d2/z2zjF8v60NBQZAH9WaRurGaevbihEnqVOEvML04W575xli7SVyimp+88vF3tpEateXJctf5SqPSwHCegfBHA5B8m6QRVbfRvW/vVT781YOmCeTuhcUyjELye3qlwPLpc/hQnlR92mk8bP6TGuzYHijxf+cgKhPBoRqGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsr2iNh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622F6C4CEDE;
-	Fri,  6 Dec 2024 14:39:46 +0000 (UTC)
+	 MIME-Version; b=qqXG8jtBmBCBggKtizG/2z3YPNx4CbX0sPtop/YtJCNuiE+O6oCtVntDaWe73/DBaC73q1bZ7ihKTFiCqU0UEwVTgWt8GzSoqlO8lnScsls7bbv1J0TZH+H4iXt1gUoTzr4A2h2EfqdckJXim8pNHOpHFxMFHgNfCaeguGfKiNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhCftqOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C66D4C4CEDC;
+	Fri,  6 Dec 2024 14:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733495986;
-	bh=IInn1rvLFlcE51qN7IG92FUtpa3EsWNdKPoJUX7Cxms=;
+	s=korg; t=1733496024;
+	bh=8WZrRsEXgfrGRtIaSy/of9Za2uExTaxLpSI82jRknQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rsr2iNh6uTABZBOMeWNmi2zqGu4Z5N1o093mgBOPpVRsV9+tNkwwBLW1hf6elt1BD
-	 yuVpx7hzGsPpjRmlXLLQmUv7mESj4rM5QnhwlPik77DcZQmYA959xBrdEpoyXkObK1
-	 t/i33aEe6xYoHNGsUezYUj/in9bN7jKtGe6JXLxM=
+	b=PhCftqOcMi1xwcjuKcOv1tuiVKkRkelny6FybUUfnIqON6xYyMqDe4Hyiv8egDMvI
+	 DquizJaqmv+FcUtW08rRHSuHynSCCoDzPOvwpX0s78m95kyWs/6HA+nQwkTX1sh0oG
+	 Uqd+2i8BRxfqxjRTz0rdlPb0AFk33952NVBsxJLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiao Ni <xni@redhat.com>,
+	Yuan Can <yuancan@huawei.com>,
 	Yu Kuai <yukuai3@huawei.com>,
 	Song Liu <song@kernel.org>
-Subject: [PATCH 6.12 012/146] md/raid5: Wait sync io to finish before changing group cnt
-Date: Fri,  6 Dec 2024 15:35:43 +0100
-Message-ID: <20241206143528.143022583@linuxfoundation.org>
+Subject: [PATCH 6.12 013/146] md/md-bitmap: Add missing destroy_work_on_stack()
+Date: Fri,  6 Dec 2024 15:35:44 +0100
+Message-ID: <20241206143528.179932837@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -66,54 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xiao Ni <xni@redhat.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit fa1944bbe6220eb929e2c02e5e8706b908565711 upstream.
+commit 6012169e8aae9c0eda38bbedcd7a1540a81220ae upstream.
 
-One customer reports a bug: raid5 is hung when changing thread cnt
-while resync is running. The stripes are all in conf->handle_list
-and new threads can't handle them.
+This commit add missed destroy_work_on_stack() operations for
+unplug_work.work in bitmap_unplug_async().
 
-Commit b39f35ebe86d ("md: don't quiesce in mddev_suspend()") removes
-pers->quiesce from mddev_suspend/resume. Before this patch, mddev_suspend
-needs to wait for all ios including sync io to finish. Now it's used
-to only wait normal io.
-
-Fix this by calling raid5_quiesce from raid5_store_group_thread_cnt
-directly to wait all sync requests to finish before changing the group
-cnt.
-
-Fixes: b39f35ebe86d ("md: don't quiesce in mddev_suspend()")
+Fixes: a022325ab970 ("md/md-bitmap: add a new helper to unplug bitmap asynchrously")
 Cc: stable@vger.kernel.org
-Signed-off-by: Xiao Ni <xni@redhat.com>
+Signed-off-by: Yuan Can <yuancan@huawei.com>
 Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20241106095124.74577-1-xni@redhat.com
+Link: https://lore.kernel.org/r/20241105130105.127336-1-yuancan@huawei.com
 Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid5.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/md/md-bitmap.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -7177,6 +7177,8 @@ raid5_store_group_thread_cnt(struct mdde
- 	err = mddev_suspend_and_lock(mddev);
- 	if (err)
- 		return err;
-+	raid5_quiesce(mddev, true);
-+
- 	conf = mddev->private;
- 	if (!conf)
- 		err = -ENODEV;
-@@ -7198,6 +7200,8 @@ raid5_store_group_thread_cnt(struct mdde
- 			kfree(old_groups);
- 		}
- 	}
-+
-+	raid5_quiesce(mddev, false);
- 	mddev_unlock_and_resume(mddev);
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -1285,6 +1285,7 @@ static void bitmap_unplug_async(struct b
  
- 	return err ?: len;
+ 	queue_work(md_bitmap_wq, &unplug_work.work);
+ 	wait_for_completion(&done);
++	destroy_work_on_stack(&unplug_work.work);
+ }
+ 
+ static void bitmap_unplug(struct mddev *mddev, bool sync)
 
 
 
