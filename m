@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318909E7089
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:44:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEA79E7094
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BCC9164B5C
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:44:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC57318819C0
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906EA14B084;
-	Fri,  6 Dec 2024 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2720E14B976;
+	Fri,  6 Dec 2024 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPxAkSCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4gd4AuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF231474A9;
-	Fri,  6 Dec 2024 14:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D826114A4F0;
+	Fri,  6 Dec 2024 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496258; cv=none; b=bMPFUziaZrH4SPB6PxCnVSJx4izRcORobfb4KRJyIGlsjzOC3H5rQ/66b/CPHVCse2lSbpYjpaVi3ygoR2JmRX+GhQ0bPzwm+hx6emIedsvrKRarN1228ceL7nspS2UEGiwXB6zUOQfLefkxin+KLZn5euALZqmqjWM4z8U3r6M=
+	t=1733496295; cv=none; b=sPFyLGRKQ9EdjwAUQEB8hvE1ekzp87c+yQ1NWjQ5WVMvTOS0D2BcT3uIo8ES1BxJO5B3MAoHrQKidJI49qRN5s9z0T5IjMjyVqzjaYzq39SddoULxNo6OrSzVLhMOmNIS/YfcdrGPw9BU/hlak+zcJD8oWHsZSMOeNcu/UKwsNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496258; c=relaxed/simple;
-	bh=oRFtiMj2VJpR9Py0oGGjoPoVrAImZcfsgLBLLTYML1M=;
+	s=arc-20240116; t=1733496295; c=relaxed/simple;
+	bh=hplSOO+lV8ZjTey4X5TB8oIj0kenxuX/ZdcR0kzSfGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDv30ZgKOeC4f9b1h7RPDTI8mX+do/w8W6qS9agOKJS0tcqi1Li2VotP23uszXR/MrVTiiLyoV3RAHPN+ZIlRm9Ihqe6wJIErPcAwK4zph8SQjBw2k9hFQYXS9L/9XzpxNQVNrXDJnhjStjD5gQ5dds6msOYRUU4XTh1AXspsF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPxAkSCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA745C4CED1;
-	Fri,  6 Dec 2024 14:44:17 +0000 (UTC)
+	 MIME-Version; b=dkr5QNSdAwW29TYBCix5puk94MgM/qgIqs+WkagoavTBjgPIS7Pi1PSxL81to2hUKg7gkIBEZ5ix8s1G76IO/txgPBA+amoV1DA1y6QTV/xQDNOZe+feFnGqeBm+pfVXAMh6remhJnQeTvclLu14AfR98BLqaqkkmfEe8cXFOa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4gd4AuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFA5C4CED1;
+	Fri,  6 Dec 2024 14:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496258;
-	bh=oRFtiMj2VJpR9Py0oGGjoPoVrAImZcfsgLBLLTYML1M=;
+	s=korg; t=1733496295;
+	bh=hplSOO+lV8ZjTey4X5TB8oIj0kenxuX/ZdcR0kzSfGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPxAkSCWJHdWtp4Etp9qNdLLb9zUhnaP4pTnYhBvtH2F7/N2UcWfzC/SpkuKYMEwO
-	 Bdx95E3AMLvCqzhsIPcXV3kpwuWwrQuDYlk0Qy5OOFjnstLQ1MRZPr2PPD7MSMgYwW
-	 7oJMc7LgyTIGsQ1FhM77MDb+PSbPdQ8Qggag0wRU=
+	b=A4gd4AuCrOAk5FwPeftzYl26dtYuCTYeL7dOY09EdoizZsJKGBK8EgjbJcpvKtTw/
+	 4K0jmm/cJp4f1eETHD6+wL0sdhwKSUgAhQraT0fl+launVGoRrAzfk3SM0S5gty6FJ
+	 1qZW18zY1mPoBcz36dnVzRLpKLUFcOUArc7ZR+38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 082/146] i3c: master: svc: fix possible assignment of the same address to two devices
-Date: Fri,  6 Dec 2024 15:36:53 +0100
-Message-ID: <20241206143530.818041254@linuxfoundation.org>
+Subject: [PATCH 6.12 083/146] i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter
+Date: Fri,  6 Dec 2024 15:36:54 +0100
+Message-ID: <20241206143530.855233427@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -69,80 +69,64 @@ Content-Transfer-Encoding: 8bit
 
 From: Frank Li <Frank.Li@nxp.com>
 
-commit 3b2ac810d86eb96e882db80a3320a3848b133208 upstream.
+commit 25bc99be5fe53853053ceeaa328068c49dc1e799 upstream.
 
-svc_i3c_master_do_daa() {
-    ...
-    for (i = 0; i < dev_nb; i++) {
-        ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
-        if (ret)
-            goto rpm_out;
-    }
-}
-
-If two devices (A and B) are detected in DAA and address 0xa is assigned to
-device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-registered on the bus. The I3C stack might still consider 0xb a free
-address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
-causing both devices A and B to use the same address 0xb, violating the I3C
-specification.
-
-The return value for i3c_master_add_i3c_dev_locked() should not be checked
-because subsequent steps will scan the entire I3C bus, independent of
-whether i3c_master_add_i3c_dev_locked() returns success.
-
-If device A registration fails, there is still a chance to register device
-B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-retrieving device information.
+Fix issue where disabling IBI on one device disables the entire IBI
+interrupt. Modify bit 7:0 of enabled_events to serve as an IBI enable
+counter, ensuring that the system IBI interrupt is disabled only when all
+I3C devices have IBI disabled.
 
 Cc: stable@kernel.org
-Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys entry")
+Fixes: 7ff730ca458e ("i3c: master: svc: enable the interrupt in the enable ibi function")
 Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241002-svc-i3c-hj-v6-6-7e6e1d3569ae@nxp.com
+Link: https://lore.kernel.org/r/20241101165002.2479794-1-Frank.Li@nxp.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 --- a/drivers/i3c/master/svc-i3c-master.c
 +++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1056,12 +1056,27 @@ static int svc_i3c_master_do_daa(struct
- 	if (ret)
- 		goto rpm_out;
+@@ -130,8 +130,8 @@
+ #define SVC_I3C_PPBAUD_MAX 15
+ #define SVC_I3C_QUICK_I2C_CLK 4170000
  
--	/* Register all devices who participated to the core */
--	for (i = 0; i < dev_nb; i++) {
--		ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
--		if (ret)
--			goto rpm_out;
--	}
-+	/*
-+	 * Register all devices who participated to the core
-+	 *
-+	 * If two devices (A and B) are detected in DAA and address 0xa is assigned to
-+	 * device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
-+	 * for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
-+	 * registered on the bus. The I3C stack might still consider 0xb a free
-+	 * address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
-+	 * causing both devices A and B to use the same address 0xb, violating the I3C
-+	 * specification.
-+	 *
-+	 * The return value for i3c_master_add_i3c_dev_locked() should not be checked
-+	 * because subsequent steps will scan the entire I3C bus, independent of
-+	 * whether i3c_master_add_i3c_dev_locked() returns success.
-+	 *
-+	 * If device A registration fails, there is still a chance to register device
-+	 * B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
-+	 * retrieving device information.
-+	 */
-+	for (i = 0; i < dev_nb; i++)
-+		i3c_master_add_i3c_dev_locked(m, addrs[i]);
+-#define SVC_I3C_EVENT_IBI	BIT(0)
+-#define SVC_I3C_EVENT_HOTJOIN	BIT(1)
++#define SVC_I3C_EVENT_IBI	GENMASK(7, 0)
++#define SVC_I3C_EVENT_HOTJOIN	BIT(31)
  
- 	/* Configure IBI auto-rules */
- 	ret = svc_i3c_update_ibirules(master);
+ struct svc_i3c_cmd {
+ 	u8 addr;
+@@ -214,7 +214,7 @@ struct svc_i3c_master {
+ 		spinlock_t lock;
+ 	} ibi;
+ 	struct mutex lock;
+-	int enabled_events;
++	u32 enabled_events;
+ 	u32 mctrl_config;
+ };
+ 
+@@ -1639,7 +1639,7 @@ static int svc_i3c_master_enable_ibi(str
+ 		return ret;
+ 	}
+ 
+-	master->enabled_events |= SVC_I3C_EVENT_IBI;
++	master->enabled_events++;
+ 	svc_i3c_master_enable_interrupts(master, SVC_I3C_MINT_SLVSTART);
+ 
+ 	return i3c_master_enec_locked(m, dev->info.dyn_addr, I3C_CCC_EVENT_SIR);
+@@ -1651,7 +1651,7 @@ static int svc_i3c_master_disable_ibi(st
+ 	struct svc_i3c_master *master = to_svc_i3c_master(m);
+ 	int ret;
+ 
+-	master->enabled_events &= ~SVC_I3C_EVENT_IBI;
++	master->enabled_events--;
+ 	if (!master->enabled_events)
+ 		svc_i3c_master_disable_interrupts(master);
+ 
 
 
 
