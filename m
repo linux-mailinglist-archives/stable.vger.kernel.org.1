@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-99889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F080B9E73D6
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:24:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9859E73E1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:25:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF461288116
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:24:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43DBD188522D
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6DC207670;
-	Fri,  6 Dec 2024 15:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9DD720ADCA;
+	Fri,  6 Dec 2024 15:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oywI6H+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAPz5Qmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC04B53A7;
-	Fri,  6 Dec 2024 15:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982CD207658;
+	Fri,  6 Dec 2024 15:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498696; cv=none; b=q3SxhEE2Z3817f6Ju2AFnwJ9U+t2BUSa4/vk/Z40BSODMACw3ZgK1fZqvDexJnBMg9XzVR5zfyIobgZZEqPrrBbOkfEVcWwkfiMovR6veuLHqb4SVCqsSC2SAKiCukpX5wmq6cXLXVhA+XGLPik5k6oyXn5WP7ubRmI2kr1r3l8=
+	t=1733498582; cv=none; b=i2jCymfiLOVA6yu4b4WUQobZ1wHuAXlNLxAwxBe0VQr9Cd4rXd1NiQkTQPs3YvwVBU37qUi97sYTN1T6GYR7oTwVgqfkhbA0ZH0XN0IWGA12h+slznUxO/3yFTWwU0hyleLZ+iFk1ynJRoJQ25wXU/oVQi6BTz4ZJH0dbNtEG40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498696; c=relaxed/simple;
-	bh=wnkMSZRnFJlpNZMXIlJD5n/GD8y8yF5quRT8b4M8Tfc=;
+	s=arc-20240116; t=1733498582; c=relaxed/simple;
+	bh=eksjMPd+6SRIcX4CLZf3Evl9TOVnIoZXzNMAlR6ZkCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfMKmBpADchVrVzAdZQadMxSelnrA7KaaQdU8bFLNDf7h9qi2Riub+XAF5BQ8798V/zKro3IeEs6rbw0GZf0TZYQXKkr3efQRxOik/Kx1jKz5sQpTR3e3ttkal4X+qZRD8f+lTHGadidzhsw2aQKZrGDtLrLUY4pv2PT8pAbrA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oywI6H+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56884C4CED1;
-	Fri,  6 Dec 2024 15:24:55 +0000 (UTC)
+	 MIME-Version; b=c9BRpt4iqv3sJwpBeWPni2ltmkPt2z/lf7H2oUtCqc6YTrqPzAEeA2ydaqh+U3uHiymG0vfJPgaGpfiPvUSy0cLv0hvvEUfCu8kKPoPVtxRL74Ev4WgPpEvtcN/rXUJd9n2XUAO7pH0EEcE77UoVU7xJvx1Vq+aEbCQCPQL7LZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAPz5Qmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A97BFC4CED1;
+	Fri,  6 Dec 2024 15:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498695;
-	bh=wnkMSZRnFJlpNZMXIlJD5n/GD8y8yF5quRT8b4M8Tfc=;
+	s=korg; t=1733498582;
+	bh=eksjMPd+6SRIcX4CLZf3Evl9TOVnIoZXzNMAlR6ZkCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oywI6H+sXI8XNkXt0U+tVtsr9BCNvEYkpJ5i2rSzdou1rL5rcmDcAak6bvRSvxq3U
-	 i553atzktTrHMdwFKaBjxuyEATmKRdYXgkg+ApINbkXVYS2WSeOTnD+MGSsdPnnzA4
-	 IMYDrdsXogCXChNRvSFZ+wwLWD6SdzJeE+2DBzTs=
+	b=DAPz5Qmp2Pl0oSw8S2trja6u3NYacVQ2/TDfodwpQIEW44oyZGo+WTvliTBZXGBgp
+	 j4qYGog75dtREkLKN+bbfOa+3QKACTZZk0GkFJ/9Vci7kPZOKgS17ddnusnRHIHRVB
+	 /q8JAy3vBPSW+qHUUx+qZNTxjPe1aXzLHjT9Ho9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 619/676] efi/libstub: Free correct pointer on failure
-Date: Fri,  6 Dec 2024 15:37:18 +0100
-Message-ID: <20241206143717.547887216@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 620/676] media: amphion: Fix pm_runtime_set_suspended() with runtime pm enabled
+Date: Fri,  6 Dec 2024 15:37:19 +0100
+Message-ID: <20241206143717.585571944@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -64,35 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 06d39d79cbd5a91a33707951ebf2512d0e759847 upstream.
+commit 316e74500d1c6589cba28cebe2864a0bceeb2396 upstream.
 
-cmdline_ptr is an out parameter, which is not allocated by the function
-itself, and likely points into the caller's stack.
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-cmdline refers to the pool allocation that should be freed when cleaning
-up after a failure, so pass this instead to free_pool().
-
-Fixes: 42c8ea3dca09 ("efi: libstub: Factor out EFI stub entrypoint ...")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b50a64fc54af ("media: amphion: add amphion vpu device driver")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/efi-stub.c |    2 +-
+ drivers/media/platform/amphion/vpu_drv.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/efi-stub.c
-+++ b/drivers/firmware/efi/libstub/efi-stub.c
-@@ -149,7 +149,7 @@ efi_status_t efi_handle_cmdline(efi_load
- 	return EFI_SUCCESS;
+--- a/drivers/media/platform/amphion/vpu_drv.c
++++ b/drivers/media/platform/amphion/vpu_drv.c
+@@ -151,8 +151,8 @@ err_add_decoder:
+ 	media_device_cleanup(&vpu->mdev);
+ 	v4l2_device_unregister(&vpu->v4l2_dev);
+ err_vpu_deinit:
+-	pm_runtime_set_suspended(dev);
+ 	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
  
- fail_free_cmdline:
--	efi_bs_call(free_pool, cmdline_ptr);
-+	efi_bs_call(free_pool, cmdline);
- 	return status;
+ 	return ret;
  }
- 
 
 
 
