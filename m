@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-99683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AE49E72CF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9686F9E72EC
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:14:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93CAD2871E3
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18B1716DF1C
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949D72066EE;
-	Fri,  6 Dec 2024 15:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5852D1FCCFB;
+	Fri,  6 Dec 2024 15:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EABjj0tB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnSBCgdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A73153836;
-	Fri,  6 Dec 2024 15:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1538E20A5E5;
+	Fri,  6 Dec 2024 15:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498000; cv=none; b=dXFVEFKGxiF8Dq0BFMK0T0/VHdFvkYmaaUgvSFOlUIbvcqDzshNhJaykjxwQo2gVgxUSj6m/9nFwZ5osRBd5rlkZFY+LstN+cDz1X94nZwNmCv7ivUSWLzTLWyWR3uGgjyjgCPXCcFhHOapb3vRiRb4uRPIOXEtHvH6e5DALCkI=
+	t=1733498036; cv=none; b=EbdrQfIBLvP3CjBIXJbKcWL2SneNMsXQfECNdELbtmNMKJzXQiTUCmiq1KXI7IQdpb0cL1fWLyud//5ixVe39PplcFqtd4gzd/5R/m8hxcF7z+MbjejLZjz9IvV5vCAsUUqb0CbtHZ1kdJOK/0+pv6IY1BAApUUdgeqRvIQMf9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498000; c=relaxed/simple;
-	bh=NGRvskw8FvFr1zi1myAT42PVXmWZk0oyu5SiMsI//wo=;
+	s=arc-20240116; t=1733498036; c=relaxed/simple;
+	bh=U2uisAJ524ojFtUG7gHl4u9ymNX2XeNCkm6F5s2JPeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOo7k5u9Sh1RgNy4zzfANMRhwtOyNAn6R3szQCVempeKUCknrx+FSZUIFY3LDx1U7Mf4U2BJhyyNTVOWAFiTKFIoLPMKiVkJzRiqUjWteuA5F6UukIYMytVt3W2M4D9yuuvSkAVmrXTYNwWjz+T8OIUc9tjO5GzW4kTRSRuR82o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EABjj0tB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4CEC4CED1;
-	Fri,  6 Dec 2024 15:13:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bXTG2bS3m6fRpfPiuP1NUl+R57AhFXGLDLHnLd8rhxO0uAX8q/hsItCXdp4kvC2kaJyhdkkDlMlYQgmkuF1ONxukv5Y9TruDwJ5GK3dRMTP7FD9F1g1dl29rIBdIUFeHLGcQgGWKiVJ6wLXkBI7lhuxND7W4G6C3gnM56e8fRrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnSBCgdd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71534C4CED1;
+	Fri,  6 Dec 2024 15:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498000;
-	bh=NGRvskw8FvFr1zi1myAT42PVXmWZk0oyu5SiMsI//wo=;
+	s=korg; t=1733498035;
+	bh=U2uisAJ524ojFtUG7gHl4u9ymNX2XeNCkm6F5s2JPeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EABjj0tBTPOpigBYVIJvyKH49gWAIWN+Gf7M7nenP92ky1e71xo4z1p7kMw4MgxZM
-	 ETcUSpQcZykvhjsvYzNM5KzhHOX0B46N801qIbpagJJpz/b0je2yYDYADMe9QDAzbF
-	 4HUWKkH9Q+9ntn5yPCcPzJk5qhL/vnxEhlCoKWMU=
+	b=nnSBCgddThZeR8x1wNYF2Qan2Wr/skK1xzUd9VrYfE8tETDhIUjbNMUxrU71TE1i5
+	 UmS7U90+99V2O3wu5vMDr6RfQ/yhYyhL+jb7a0T7mmIvdXWj2XVaASGFX9/ukUwO4v
+	 TRm7a2v6iVtLG1uWWSpiF1JBr6SnNtSvD03cjLdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.6 449/676] xen: Fix the issue of resource not being properly released in xenbus_dev_probe()
-Date: Fri,  6 Dec 2024 15:34:28 +0100
-Message-ID: <20241206143710.906412033@linuxfoundation.org>
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 450/676] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+Date: Fri,  6 Dec 2024 15:34:29 +0100
+Message-ID: <20241206143710.944679737@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -59,73 +59,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit afc545da381ba0c651b2658966ac737032676f01 upstream.
+commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6 upstream.
 
-This patch fixes an issue in the function xenbus_dev_probe(). In the
-xenbus_dev_probe() function, within the if (err) branch at line 313, the
-program incorrectly returns err directly without releasing the resources
-allocated by err = drv->probe(dev, id). As the return value is non-zero,
-the upper layers assume the processing logic has failed. However, the probe
-operation was performed earlier without a corresponding remove operation.
-Since the probe actually allocates resources, failing to perform the remove
-operation could lead to problems.
+The current USB-audio driver code doesn't check bLength of each
+descriptor at traversing for clock descriptors.  That is, when a
+device provides a bogus descriptor with a shorter bLength, the driver
+might hit out-of-bounds reads.
 
-To fix this issue, we followed the resource release logic of the
-xenbus_dev_remove() function by adding a new block fail_remove before the
-fail_put block. After entering the branch if (err) at line 313, the
-function will use a goto statement to jump to the fail_remove block,
-ensuring that the previously acquired resources are correctly released,
-thus preventing the reference count leak.
+For addressing it, this patch adds sanity checks to the validator
+functions for the clock descriptor traversal.  When the descriptor
+length is shorter than expected, it's skipped in the loop.
 
-This bug was identified by an experimental static analysis tool developed
-by our team. The tool specializes in analyzing reference count operations
-and detecting potential issues where resources are not properly managed.
-In this case, the tool flagged the missing release operation as a
-potential problem, which led to the development of this patch.
+For the clock source and clock multiplier descriptors, we can just
+check bLength against the sizeof() of each descriptor type.
+OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
+of bNrInPins elements and two more fields at its tail, hence those
+have to be checked in addition to the sizeof() check.
 
-Fixes: 4bac07c993d0 ("xen: add the Xenbus sysfs and virtual device hotplug driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241105130919.4621-1-chenqiuji666@gmail.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Reported-by: Benoît Sevens <bsevens@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
+Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/usb/clock.c |   24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -313,7 +313,7 @@ int xenbus_dev_probe(struct device *_dev
- 	if (err) {
- 		dev_warn(&dev->dev, "watch_otherend on %s failed.\n",
- 		       dev->nodename);
--		return err;
-+		goto fail_remove;
- 	}
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -36,6 +36,12 @@ union uac23_clock_multiplier_desc {
+ 	struct uac_clock_multiplier_descriptor v3;
+ };
  
- 	dev->spurious_threshold = 1;
-@@ -322,6 +322,12 @@ int xenbus_dev_probe(struct device *_dev
- 			 dev->nodename);
++/* check whether the descriptor bLength has the minimal length */
++#define DESC_LENGTH_CHECK(p, proto) \
++	((proto) == UAC_VERSION_3 ? \
++	 ((p)->v3.bLength >= sizeof((p)->v3)) :	\
++	 ((p)->v2.bLength >= sizeof((p)->v2)))
++
+ #define GET_VAL(p, proto, field) \
+ 	((proto) == UAC_VERSION_3 ? (p)->v3.field : (p)->v2.field)
  
- 	return 0;
-+fail_remove:
-+	if (drv->remove) {
-+		down(&dev->reclaim_sem);
-+		drv->remove(dev);
-+		up(&dev->reclaim_sem);
-+	}
- fail_put:
- 	module_put(drv->driver.owner);
- fail:
+@@ -58,6 +64,8 @@ static bool validate_clock_source(void *
+ {
+ 	union uac23_clock_source_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
+ 
+@@ -65,13 +73,27 @@ static bool validate_clock_selector(void
+ {
+ 	union uac23_clock_selector_desc *cs = p;
+ 
+-	return GET_VAL(cs, proto, bClockID) == id;
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
++	if (GET_VAL(cs, proto, bClockID) != id)
++		return false;
++	/* additional length check for baCSourceID array (in bNrInPins size)
++	 * and two more fields (which sizes depend on the protocol)
++	 */
++	if (proto == UAC_VERSION_3)
++		return cs->v3.bLength >= sizeof(cs->v3) + cs->v3.bNrInPins +
++			4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
++	else
++		return cs->v2.bLength >= sizeof(cs->v2) + cs->v2.bNrInPins +
++			1 /* bmControls */ + 1 /* iClockSelector */;
+ }
+ 
+ static bool validate_clock_multiplier(void *p, int id, int proto)
+ {
+ 	union uac23_clock_multiplier_desc *cs = p;
+ 
++	if (!DESC_LENGTH_CHECK(cs, proto))
++		return false;
+ 	return GET_VAL(cs, proto, bClockID) == id;
+ }
+ 
 
 
 
