@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-99579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCD89E7254
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:07:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2C59E723B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:06:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0480C1884CF5
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:07:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9229166C92
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9B7153836;
-	Fri,  6 Dec 2024 15:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7AC1527AC;
+	Fri,  6 Dec 2024 15:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKDxxWvM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6V+N4SZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3AB148314;
-	Fri,  6 Dec 2024 15:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD1653A7;
+	Fri,  6 Dec 2024 15:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497657; cv=none; b=SocPiXmLfIDGl3Wjo9VCw13XZyZFK+JrxpQ/ynP3jcgnPcseHDC1qTUPREY60nlh0lHOos8hj6Qgpa10izjEiQIze/nOzzyaCviu9EjsxUAl4YZxNBgPVTZICzsQyXGcIkt2KgbQsV2pxIn9DG7URQ6fdlYzeYbRyLZkN6/YOhM=
+	t=1733497584; cv=none; b=I14Wkp7tesNQkHoA+8Wt0jm0O+wqgmYqJteXoj1O3alfeN8OStr+4A5Vzs1OYtqCnlUzSAtv0pAce7Pjnbk2MRnUzWhajLN2evW/m/czCgKQsW/7q7N4kXSanC/KjslK27ISvnpiVbEbUHQCLT80PWMzQX2IzgsIQqk0rtNcxvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497657; c=relaxed/simple;
-	bh=AcK6XSKMuKiLwMoBUBTDoRIhkI+unKhigDzpP08fC8w=;
+	s=arc-20240116; t=1733497584; c=relaxed/simple;
+	bh=BmTSPQeMUbl9005WIMbzK/xepUrniQ9qnoeMdFuyBE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUj8LqSjV6cUboN4VUeyrmIE0kZthcQr8g1vSOeEm0GvtOEKqNAV9c6R81xIQO0OHP/1P8YP98cJju5DL4RHQNCUcsAJwnf4OtKOZXOguQ7EN/S7EA1oK54su+fTr2K2kkfdRq+raPU0xTdG/0cJJjnCaHk+zFO9AYaQBiBHkhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKDxxWvM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7917C4CED1;
-	Fri,  6 Dec 2024 15:07:36 +0000 (UTC)
+	 MIME-Version; b=bbNk0Cm8T+/Ck61zUHez9wcJWUKjcq3aj8SBdrGHWv7pTzEp0JzacPAHRnZYZkTtyFsrxoC+DeTgDj2KkavK+5Gg+XjsjJ7CH02aPpG0dHq29KOMihWycJUIMpn3/xXidEwDXbDQhkTGSku6kHJVK8X9uRmY8cdVnsWmP3hNRF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6V+N4SZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E4DC4CED1;
+	Fri,  6 Dec 2024 15:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497657;
-	bh=AcK6XSKMuKiLwMoBUBTDoRIhkI+unKhigDzpP08fC8w=;
+	s=korg; t=1733497583;
+	bh=BmTSPQeMUbl9005WIMbzK/xepUrniQ9qnoeMdFuyBE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKDxxWvMMLPBmYePqUx6gNXrwAj7oele2dMOp2eUd9BiIVxtM/d/sOqXcDFTIjRt2
-	 7IHvJZORDq+pS4N9lFOcfTAtByUG37bml+YiqgFwAg86Dtr2vmBjEzreYlFigNnMr6
-	 IhtoRa2Yi3v1eyzx8ylEly2XfezMH6j6ObU/bI2Y=
+	b=A6V+N4SZSBiHCL0RzhTp7a1B+sNC9mA/oIAgx2hDS6qbxUCO2EJR4FH7tWLa5Efwv
+	 PzVNfbHfGkjTqHhNoiAix54iGn3br4m0rSq/D2JvCnPW33HDs7L3Uw5iyvMOBJ2jsK
+	 9/T3Vp0HQR9HokgooeeHZR/SWS0rdUtLuMCj+h8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 312/676] x86/tdx: Dynamically disable SEPT violations from causing #VEs
-Date: Fri,  6 Dec 2024 15:32:11 +0100
-Message-ID: <20241206143705.525416699@linuxfoundation.org>
+Subject: [PATCH 6.6 314/676] RDMA/hns: Fix NULL pointer derefernce in hns_roce_map_mr_sg()
+Date: Fri,  6 Dec 2024 15:32:13 +0100
+Message-ID: <20241206143705.602849031@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,170 +66,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit f65aa0ad79fca4ace921da0701644f020129043d ]
+[ Upstream commit 6b526d17eed850352d880b93b9bf20b93006bd92 ]
 
-Memory access #VEs are hard for Linux to handle in contexts like the
-entry code or NMIs.  But other OSes need them for functionality.
-There's a static (pre-guest-boot) way for a VMM to choose one or the
-other.  But VMMs don't always know which OS they are booting, so they
-choose to deliver those #VEs so the "other" OSes will work.  That,
-unfortunately has left us in the lurch and exposed to these
-hard-to-handle #VEs.
+ib_map_mr_sg() allows ULPs to specify NULL as the sg_offset argument.
+The driver needs to check whether it is a NULL pointer before
+dereferencing it.
 
-The TDX module has introduced a new feature. Even if the static
-configuration is set to "send nasty #VEs", the kernel can dynamically
-request that they be disabled. Once they are disabled, access to private
-memory that is not in the Mapped state in the Secure-EPT (SEPT) will
-result in an exit to the VMM rather than injecting a #VE.
-
-Check if the feature is available and disable SEPT #VE if possible.
-
-If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-attribute is no longer reliable. It reflects the initial state of the
-control for the TD, but it will not be updated if someone (e.g. bootloader)
-changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-determine if SEPT #VEs are enabled or disabled.
-
-[ dhansen: remove 'return' at end of function ]
-
-Fixes: 373e715e31bf ("x86/tdx: Panic on bad configs that #VE on "private" memory access")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/20241104103803.195705-4-kirill.shutemov%40linux.intel.com
+Fixes: d387d4b54eb8 ("RDMA/hns: Fix missing pagesize and alignment check in FRMR")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241108075743.2652258-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/tdx/tdx.c           | 74 ++++++++++++++++++++++++-------
- arch/x86/include/asm/shared/tdx.h | 10 ++++-
- 2 files changed, 67 insertions(+), 17 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index de4ff833fcf00..2f67e196a2ead 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -75,7 +75,7 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index b053f2f43dacd..7f29a55d378f0 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -415,15 +415,16 @@ static int hns_roce_set_page(struct ib_mr *ibmr, u64 addr)
  }
  
- /* Read TD-scoped metadata */
--static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
-+static inline u64 tdg_vm_rd(u64 field, u64 *value)
+ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+-		       unsigned int *sg_offset)
++		       unsigned int *sg_offset_p)
  {
- 	struct tdx_module_args args = {
- 		.rdx = field,
-@@ -169,6 +169,60 @@ static void __noreturn tdx_panic(const char *msg)
- 		__tdx_hypercall(&args);
- }
++	unsigned int sg_offset = sg_offset_p ? *sg_offset_p : 0;
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(ibmr->device);
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+ 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
+ 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
+ 	int ret, sg_num = 0;
  
-+/*
-+ * The kernel cannot handle #VEs when accessing normal kernel memory. Ensure
-+ * that no #VE will be delivered for accesses to TD-private memory.
-+ *
-+ * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
-+ * controls if the guest will receive such #VE with TD attribute
-+ * ATTR_SEPT_VE_DISABLE.
-+ *
-+ * Newer TDX modules allow the guest to control if it wants to receive SEPT
-+ * violation #VEs.
-+ *
-+ * Check if the feature is available and disable SEPT #VE if possible.
-+ *
-+ * If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-+ * attribute is no longer reliable. It reflects the initial state of the
-+ * control for the TD, but it will not be updated if someone (e.g. bootloader)
-+ * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-+ * determine if SEPT #VEs are enabled or disabled.
-+ */
-+static void disable_sept_ve(u64 td_attr)
-+{
-+	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
-+	bool debug = td_attr & ATTR_DEBUG;
-+	u64 config, controls;
-+
-+	/* Is this TD allowed to disable SEPT #VE */
-+	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
-+	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
-+		/* No SEPT #VE controls for the guest: check the attribute */
-+		if (td_attr & ATTR_SEPT_VE_DISABLE)
-+			return;
-+
-+		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
-+		if (debug)
-+			pr_warn("%s\n", msg);
-+		else
-+			tdx_panic(msg);
-+		return;
-+	}
-+
-+	/* Check if SEPT #VE has been disabled before us */
-+	tdg_vm_rd(TDCS_TD_CTLS, &controls);
-+	if (controls & TD_CTLS_PENDING_VE_DISABLE)
-+		return;
-+
-+	/* Keep #VEs enabled for splats in debugging environments */
-+	if (debug)
-+		return;
-+
-+	/* Disable SEPT #VEs */
-+	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_PENDING_VE_DISABLE,
-+		  TD_CTLS_PENDING_VE_DISABLE);
-+}
-+
- static void tdx_setup(u64 *cc_mask)
- {
- 	struct tdx_module_args args = {};
-@@ -194,24 +248,12 @@ static void tdx_setup(u64 *cc_mask)
- 	gpa_width = args.rcx & GENMASK(5, 0);
- 	*cc_mask = BIT_ULL(gpa_width - 1);
+-	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
++	if (!IS_ALIGNED(sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
+ 	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
+ 	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
+ 		return sg_num;
+@@ -434,7 +435,7 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
+ 	if (!mr->page_list)
+ 		return sg_num;
  
-+	td_attr = args.rdx;
-+
- 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
- 	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
- 
--	/*
--	 * The kernel can not handle #VE's when accessing normal kernel
--	 * memory.  Ensure that no #VE will be delivered for accesses to
--	 * TD-private memory.  Only VMM-shared memory (MMIO) will #VE.
--	 */
--	td_attr = args.rdx;
--	if (!(td_attr & ATTR_SEPT_VE_DISABLE)) {
--		const char *msg = "TD misconfiguration: SEPT_VE_DISABLE attribute must be set.";
--
--		/* Relax SEPT_VE_DISABLE check for debug TD. */
--		if (td_attr & ATTR_DEBUG)
--			pr_warn("%s\n", msg);
--		else
--			tdx_panic(msg);
--	}
-+	disable_sept_ve(td_attr);
- }
- 
- /*
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index dfae78d2d4791..aed99fb099d9c 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -18,9 +18,17 @@
- #define TDG_VM_RD			7
- #define TDG_VM_WR			8
- 
--/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-+/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
-+#define TDCS_CONFIG_FLAGS		0x1110000300000016
-+#define TDCS_TD_CTLS			0x1110000300000017
- #define TDCS_NOTIFY_ENABLES		0x9100000000000010
- 
-+/* TDCS_CONFIG_FLAGS bits */
-+#define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
-+
-+/* TDCS_TD_CTLS bits */
-+#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
-+
- /* TDX hypercall Leaf IDs */
- #define TDVMCALL_MAP_GPA		0x10001
- #define TDVMCALL_REPORT_FATAL_ERROR	0x10003
+-	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
++	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset_p, hns_roce_set_page);
+ 	if (sg_num < 1) {
+ 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
+ 			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
 -- 
 2.43.0
 
