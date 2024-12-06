@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-99786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62ACD9E7355
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:19:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1999E732B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:17:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1F2E16B7D7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DE7D28956C
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB6D153BE8;
-	Fri,  6 Dec 2024 15:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B588114F9F4;
+	Fri,  6 Dec 2024 15:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysXPyUbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBJJqTw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6F6149C6F;
-	Fri,  6 Dec 2024 15:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7206953A7;
+	Fri,  6 Dec 2024 15:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498344; cv=none; b=YhsAPMTe68gh2tVZNGqBPURdpnyyQTEd4Sd316XM0cXaw6pu3WvqHA6UZYykPwWzkSvrlRv6Y91P/zjjUff0pFM1DLUenZcjglfKr7DUkp7aLeoN6XYXIug52eUJBNAjPhPKXo6QKbCwxXNq0Z4j7kDUsOw0wHmx3GFvFso7qcw=
+	t=1733498238; cv=none; b=R3iA6iR0G0qeBJXuqzJL14cSqQErJSmbCnr3UQQ7xdmgzJdUCTmLmfWGS9FiZYPokwS/rxklPL3xrsnGDIIRdp1EpmLIL0xpUYM0v3fp2CK+5oVPzVKhT/GaYCJwEh9aJc/HyxbMAb7mUeqX8nNrFpobliWsQrnwvRpQ/n6DIVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498344; c=relaxed/simple;
-	bh=Nz0uIQANManWfL5ZDSbmeef8Y23XOlmKXOIrjwRLMCA=;
+	s=arc-20240116; t=1733498238; c=relaxed/simple;
+	bh=lTD3h9HPVTUKDJm/cruS1zkf/1/0O97YPHV7ALiC+xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNeJo+7uPLzgVpjNTwYLDVlsR5GGtdwtheNABvB/3JN83i1BrZBKSkmE/SvvIwBUlGxUE40j4GhFmM/asGxp+y3K8sH7tbA6od1Qtx2qyz6XOeGrmCIa+PT1GFxnOxB0Hul0TqF+fSr7HctioPGbSeZVnzezA+Kj0YkdJNgBlRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysXPyUbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 042FEC4CED1;
-	Fri,  6 Dec 2024 15:19:03 +0000 (UTC)
+	 MIME-Version; b=gKZknIpZTFS8cEiKsfjo9/c0tYKsY/kerxyBtRZ1ovnV25XNwn2Ybj5DihWEJHh1B3ssj3ti5JygQOw5gzaueYbmBtzZeAj+SUn8QL2AngdZHuX6hCX/JAmBAqhBJjwMcmJP14DAmaVEkKSaWTCv8+tBR/2zFSSy1oAi9xz79ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBJJqTw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC56C4CED1;
+	Fri,  6 Dec 2024 15:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498344;
-	bh=Nz0uIQANManWfL5ZDSbmeef8Y23XOlmKXOIrjwRLMCA=;
+	s=korg; t=1733498238;
+	bh=lTD3h9HPVTUKDJm/cruS1zkf/1/0O97YPHV7ALiC+xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysXPyUbSj3tcagZ5Kx1/BLTaFXGZzqffMtG0q/nfEuOjEG3GRoy44MKACDLTaBsy8
-	 cckfYDyorogN/saMcqqmSQGqCOglr75VHd3vlPIyw3dV+9muW4MCqKn5BR5K8XHjhU
-	 F33VKaZDJ32nbvnl/rkKbhQAQwViVdnXZBU6Rrtg=
+	b=pBJJqTw171goR1qhvHb8ArGecGkCGABO7Imkmhk/KD51BCe2cjlqAqycZIxNfWG+N
+	 NNcXqnIi2V3WVjj7v8OcF2oY+84ocK+qxgiRgYGqOyevHqLJi2oFPdbqlJLVJqrFyd
+	 /EaWKr0Mw875bz76Lqd1+Yz+aI2DLKePuOZss/Kk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 525/676] arm64: tls: Fix context-switching of tpidrro_el0 when kpti is enabled
-Date: Fri,  6 Dec 2024 15:35:44 +0100
-Message-ID: <20241206143713.866593067@linuxfoundation.org>
+	Muchun Song <muchun.song@linux.dev>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 526/676] block: fix missing dispatching request when queue is started or unquiesced
+Date: Fri,  6 Dec 2024 15:35:45 +0100
+Message-ID: <20241206143713.906340151@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,48 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Muchun Song <songmuchun@bytedance.com>
 
-commit 67ab51cbdfee02ef07fb9d7d14cc0bf6cb5a5e5c upstream.
+commit 2003ee8a9aa14d766b06088156978d53c2e9be3d upstream.
 
-Commit 18011eac28c7 ("arm64: tls: Avoid unconditional zeroing of
-tpidrro_el0 for native tasks") tried to optimise the context switching
-of tpidrro_el0 by eliding the clearing of the register when switching
-to a native task with kpti enabled, on the erroneous assumption that
-the kpti trampoline entry code would already have taken care of the
-write.
+Supposing the following scenario with a virtio_blk driver.
 
-Although the kpti trampoline does zero the register on entry from a
-native task, the check in tls_thread_switch() is on the *next* task and
-so we can end up leaving a stale, non-zero value in the register if the
-previous task was 32-bit.
+CPU0                    CPU1                    CPU2
 
-Drop the broken optimisation and zero tpidrro_el0 unconditionally when
-switching to a native 64-bit task.
+blk_mq_try_issue_directly()
+  __blk_mq_issue_directly()
+    q->mq_ops->queue_rq()
+      virtio_queue_rq()
+        blk_mq_stop_hw_queue()
+                                                virtblk_done()
+                        blk_mq_try_issue_directly()
+                          if (blk_mq_hctx_stopped())
+  blk_mq_request_bypass_insert()                  blk_mq_run_hw_queue()
+  blk_mq_run_hw_queue()     blk_mq_run_hw_queue()
+                            blk_mq_insert_request()
+                            return
 
-Cc: Mark Rutland <mark.rutland@arm.com>
+After CPU0 has marked the queue as stopped, CPU1 will see the queue is
+stopped. But before CPU1 puts the request on the dispatch list, CPU2
+receives the interrupt of completion of request, so it will run the
+hardware queue and marks the queue as non-stopped. Meanwhile, CPU1 also
+runs the same hardware queue. After both CPU1 and CPU2 complete
+blk_mq_run_hw_queue(), CPU1 just puts the request to the same hardware
+queue and returns. It misses dispatching a request. Fix it by running
+the hardware queue explicitly. And blk_mq_request_issue_directly()
+should handle a similar situation. Fix it as well.
+
+Fixes: d964f04a8fde ("blk-mq: fix direct issue")
 Cc: stable@vger.kernel.org
-Fixes: 18011eac28c7 ("arm64: tls: Avoid unconditional zeroing of tpidrro_el0 for native tasks")
-Signed-off-by: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20241114095332.23391-1-will@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20241014092934.53630-2-songmuchun@bytedance.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/process.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-mq.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -429,7 +429,7 @@ static void tls_thread_switch(struct tas
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2668,6 +2668,7 @@ static void blk_mq_try_issue_directly(st
  
- 	if (is_compat_thread(task_thread_info(next)))
- 		write_sysreg(next->thread.uw.tp_value, tpidrro_el0);
--	else if (!arm64_kernel_unmapped_at_el0())
-+	else
- 		write_sysreg(0, tpidrro_el0);
+ 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
+ 		blk_mq_insert_request(rq, 0);
++		blk_mq_run_hw_queue(hctx, false);
+ 		return;
+ 	}
  
- 	write_sysreg(*task_user_tls(next), tpidr_el0);
+@@ -2698,6 +2699,7 @@ static blk_status_t blk_mq_request_issue
+ 
+ 	if (blk_mq_hctx_stopped(hctx) || blk_queue_quiesced(rq->q)) {
+ 		blk_mq_insert_request(rq, 0);
++		blk_mq_run_hw_queue(hctx, false);
+ 		return BLK_STS_OK;
+ 	}
+ 
 
 
 
