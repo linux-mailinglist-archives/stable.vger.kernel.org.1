@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129A09E707E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:43:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 318909E7089
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:44:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1591188350E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:43:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BCC9164B5C
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367D21474A9;
-	Fri,  6 Dec 2024 14:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906EA14B084;
+	Fri,  6 Dec 2024 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MraL8uQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPxAkSCW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87961494D9;
-	Fri,  6 Dec 2024 14:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF231474A9;
+	Fri,  6 Dec 2024 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496225; cv=none; b=QxwSk73gVqAkC5wRd8WIqeyNHaC6ZOdXfH1lI0UIaMlhZetOa92ZJjXm5k7edphac/0Pbd2V3HNXGJlr3oSCjkncm518UaJLzgo0QRHe9RGW1qzyoLKPGxkWVhn25GxctD4sLazA2vcKGgjVEL4+EVJyGcLqgliYhG700YRcWwA=
+	t=1733496258; cv=none; b=bMPFUziaZrH4SPB6PxCnVSJx4izRcORobfb4KRJyIGlsjzOC3H5rQ/66b/CPHVCse2lSbpYjpaVi3ygoR2JmRX+GhQ0bPzwm+hx6emIedsvrKRarN1228ceL7nspS2UEGiwXB6zUOQfLefkxin+KLZn5euALZqmqjWM4z8U3r6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496225; c=relaxed/simple;
-	bh=N5YJr9tdmGMD00tD4gdOPToWNb+ujozG7qjmMvwIXnQ=;
+	s=arc-20240116; t=1733496258; c=relaxed/simple;
+	bh=oRFtiMj2VJpR9Py0oGGjoPoVrAImZcfsgLBLLTYML1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GPuY8ZdQlsLKwwN41x1hOAwtevc8+iFFK9DudjiupJAxIvHfMvnj2Pu+NtfGafunil4aai6Qr3D5q9f884+s+p2squjV8LGu8Gf6iacRAtcfpIHpKH1FZX3A6Ki/oAbIdOyJ5mihlwQjDnToyeU+ZI/e4YXQ+8LdUnm8DSn89xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MraL8uQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C9FC4CED1;
-	Fri,  6 Dec 2024 14:43:44 +0000 (UTC)
+	 MIME-Version; b=FDv30ZgKOeC4f9b1h7RPDTI8mX+do/w8W6qS9agOKJS0tcqi1Li2VotP23uszXR/MrVTiiLyoV3RAHPN+ZIlRm9Ihqe6wJIErPcAwK4zph8SQjBw2k9hFQYXS9L/9XzpxNQVNrXDJnhjStjD5gQ5dds6msOYRUU4XTh1AXspsF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPxAkSCW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA745C4CED1;
+	Fri,  6 Dec 2024 14:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496224;
-	bh=N5YJr9tdmGMD00tD4gdOPToWNb+ujozG7qjmMvwIXnQ=;
+	s=korg; t=1733496258;
+	bh=oRFtiMj2VJpR9Py0oGGjoPoVrAImZcfsgLBLLTYML1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MraL8uQNFvIuX/2Elw62Be2SRaMZUuWevnby9Uz2Q6dW+Z1DSMzGVmOD/jTZnVfA1
-	 43/nB89RejPYINFA3ViyWxEVdrwhYD1GHLfg5+oY0UmhMX6tAs7zLmUfT5ZRVhpfpf
-	 uckAnAwY1RMsQm+k9+AobnLdH5+d1PhQ0V7I13Y8=
+	b=HPxAkSCWJHdWtp4Etp9qNdLLb9zUhnaP4pTnYhBvtH2F7/N2UcWfzC/SpkuKYMEwO
+	 Bdx95E3AMLvCqzhsIPcXV3kpwuWwrQuDYlk0Qy5OOFjnstLQ1MRZPr2PPD7MSMgYwW
+	 7oJMc7LgyTIGsQ1FhM77MDb+PSbPdQ8Qggag0wRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Frank Li <Frank.Li@nxp.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 081/146] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
-Date: Fri,  6 Dec 2024 15:36:52 +0100
-Message-ID: <20241206143530.779769348@linuxfoundation.org>
+Subject: [PATCH 6.12 082/146] i3c: master: svc: fix possible assignment of the same address to two devices
+Date: Fri,  6 Dec 2024 15:36:53 +0100
+Message-ID: <20241206143530.818041254@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -69,37 +69,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Frank Li <Frank.Li@nxp.com>
 
-commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
+commit 3b2ac810d86eb96e882db80a3320a3848b133208 upstream.
 
-if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
-                                      ^^^ here check "init_dyn_addr"
-	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
-						             ^^^^
-							free "dyn_addr"
-Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
+svc_i3c_master_do_daa() {
+    ...
+    for (i = 0; i < dev_nb; i++) {
+        ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
+        if (ret)
+            goto rpm_out;
+    }
+}
+
+If two devices (A and B) are detected in DAA and address 0xa is assigned to
+device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
+for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
+registered on the bus. The I3C stack might still consider 0xb a free
+address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
+causing both devices A and B to use the same address 0xb, violating the I3C
+specification.
+
+The return value for i3c_master_add_i3c_dev_locked() should not be checked
+because subsequent steps will scan the entire I3C bus, independent of
+whether i3c_master_add_i3c_dev_locked() returns success.
+
+If device A registration fails, there is still a chance to register device
+B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
+retrieving device information.
 
 Cc: stable@kernel.org
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Fixes: 317bacf960a4 ("i3c: master: add enable(disable) hot join in sys entry")
 Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
+Link: https://lore.kernel.org/r/20241002-svc-i3c-hj-v6-6-7e6e1d3569ae@nxp.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c |   27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1417,7 +1417,7 @@ static void i3c_master_put_i3c_addrs(str
- 					     I3C_ADDR_SLOT_FREE);
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -1056,12 +1056,27 @@ static int svc_i3c_master_do_daa(struct
+ 	if (ret)
+ 		goto rpm_out;
  
- 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
--		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
-+		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
- 					     I3C_ADDR_SLOT_FREE);
- }
+-	/* Register all devices who participated to the core */
+-	for (i = 0; i < dev_nb; i++) {
+-		ret = i3c_master_add_i3c_dev_locked(m, addrs[i]);
+-		if (ret)
+-			goto rpm_out;
+-	}
++	/*
++	 * Register all devices who participated to the core
++	 *
++	 * If two devices (A and B) are detected in DAA and address 0xa is assigned to
++	 * device A and 0xb to device B, a failure in i3c_master_add_i3c_dev_locked()
++	 * for device A (addr: 0xa) could prevent device B (addr: 0xb) from being
++	 * registered on the bus. The I3C stack might still consider 0xb a free
++	 * address. If a subsequent Hotjoin occurs, 0xb might be assigned to Device A,
++	 * causing both devices A and B to use the same address 0xb, violating the I3C
++	 * specification.
++	 *
++	 * The return value for i3c_master_add_i3c_dev_locked() should not be checked
++	 * because subsequent steps will scan the entire I3C bus, independent of
++	 * whether i3c_master_add_i3c_dev_locked() returns success.
++	 *
++	 * If device A registration fails, there is still a chance to register device
++	 * B. i3c_master_add_i3c_dev_locked() can reset DAA if a failure occurs while
++	 * retrieving device information.
++	 */
++	for (i = 0; i < dev_nb; i++)
++		i3c_master_add_i3c_dev_locked(m, addrs[i]);
  
+ 	/* Configure IBI auto-rules */
+ 	ret = svc_i3c_update_ibirules(master);
 
 
 
