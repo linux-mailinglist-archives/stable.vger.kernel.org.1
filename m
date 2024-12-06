@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-99855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA4B9E73DF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:25:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A619B9E7386
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:21:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459231885ECE
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:23:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66658287819
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7E3207E10;
-	Fri,  6 Dec 2024 15:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DBD207650;
+	Fri,  6 Dec 2024 15:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOqtlnj7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z00ZJGPe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4643B2BB;
-	Fri,  6 Dec 2024 15:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70473145A16;
+	Fri,  6 Dec 2024 15:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498579; cv=none; b=i+UrrQa/wwLwyUN+GVQMXmIi3LV0Q5/+OIiGIDUYoJSjZAgM6RX+/4SdXxNzWyRLu5T9J9vDAdOTZJM/A70whjQkBpURELUSUHr0DiScwqZ3w1YJ8l3Y6iSlCYUym3QTIxEus6VusIEmxzCJNDrYG9Q1ceWC5np24kqRJYBUZ+I=
+	t=1733498468; cv=none; b=H1OGYOC2h0eWXbMhv0ySKsxsvmTAVZtzpy6rR8yv6mqQLVH/K/sIevgq+PvHpOLLql7LrF/q0aCiacP3gq97WKXn1+EZXLGbWQaJcVBY6ZNcrEq6+lME9dfLIOOQYcNLhnVtO+1Y1P7XiM8TYR7INJ5hL7KWckmubIOUHujmUGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498579; c=relaxed/simple;
-	bh=S7g0MwAbTpmlsIvUNU34unIOKvYO8SPeIv+XH1vLZys=;
+	s=arc-20240116; t=1733498468; c=relaxed/simple;
+	bh=jbEHoNal3vbI6oYcS+xD0dc3nkhK5dg5jsEHLfrJDUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUCRwtadToET9ZeHiBsjiwA7D/NrVgljTEIgTwh96YaFSMtWNT3lo/Qh7jSRCsKCtjRe6iyiKF8DkZ9lDSXmMD9K1NQZ22NPaoR1UdPRvcbF1vVipkSijD7O3B0fSF6nsfDoOvrvph1Bljgp1GY/pdhp2zaiyZsMqar9PoJqp+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOqtlnj7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659E2C4CED1;
-	Fri,  6 Dec 2024 15:22:58 +0000 (UTC)
+	 MIME-Version; b=eD0DnlR6i13xDqnuWen4Qmap4OiE9itokD2pF89Xi10ExKr6Yal/gCHJC7O0Ey6tCjE+EQ+A4W6Cder3T8mP2c7WkwjQRrmkMDlbe3roLiLN6qKS124ZwhSbPgfPzcvS7jSbnIq1xL8epAVGc8zZpNooC8vQQEyYProFR+f2YXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z00ZJGPe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76877C4CED1;
+	Fri,  6 Dec 2024 15:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498578;
-	bh=S7g0MwAbTpmlsIvUNU34unIOKvYO8SPeIv+XH1vLZys=;
+	s=korg; t=1733498466;
+	bh=jbEHoNal3vbI6oYcS+xD0dc3nkhK5dg5jsEHLfrJDUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qOqtlnj7dEVAOSCZELeyVqwG4pt8giAb6M1uXLaYTwWO/PEfUZASlTzZGL2ap3Ev9
-	 ux34M5xSBFdHSSgCbueAqZROMCvNJ1/fnsc5Vtm9Fma5rWSYQuSEXZ1Z2Cu+XVg5fU
-	 p1Pqed/CEI69EMNYk0iLZ6j3x6dc8MErhW/GKoF8=
+	b=z00ZJGPeTj5uc/5mjVLrCP+TBg/w/blPsF9oviSCWTWyk05/MYLbpOi6hsByTaLV4
+	 yKqW3cW+J9QFomGjm1iwJTpxXMRGIwPsNJFjQZgpfmo6ZRAxCeoyP9oibmAYXhYA5L
+	 XLW1bqd1qVSpZFTgY8QibEQlmf/WEzv5HyQm3CDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 585/676] modpost: use ALL_INIT_SECTIONS for the section check from DATA_SECTIONS
-Date: Fri,  6 Dec 2024 15:36:44 +0100
-Message-ID: <20241206143716.220740360@linuxfoundation.org>
+Subject: [PATCH 6.6 586/676] modpost: squash ALL_{INIT,EXIT}_TEXT_SECTIONS to ALL_TEXT_SECTIONS
+Date: Fri,  6 Dec 2024 15:36:45 +0100
+Message-ID: <20241206143716.260995481@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,32 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit e578e4e3110635b20786e442baa3aeff9bb65f95 ]
+[ Upstream commit 34fcf231dcf94d7dea29c070228c4b93849f4850 ]
 
-ALL_INIT_SECTIONS is defined as follows:
-
-  #define ALL_INIT_SECTIONS INIT_SECTIONS, ALL_XXXINIT_SECTIONS
+ALL_INIT_TEXT_SECTIONS and ALL_EXIT_TEXT_SECTIONS are only used in
+the macro definition of ALL_TEXT_SECTIONS.
 
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Stable-dep-of: bb43a59944f4 ("Rename .data.unlikely to .data..unlikely")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/modpost.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/mod/modpost.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
 diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index c4c09e28dc902..413da4c93b78e 100644
+index 413da4c93b78e..bd559361ecd27 100644
 --- a/scripts/mod/modpost.c
 +++ b/scripts/mod/modpost.c
-@@ -864,7 +864,7 @@ static const struct sectioncheck sectioncheck[] = {
- },
- {
- 	.fromsec = { DATA_SECTIONS, NULL },
--	.bad_tosec = { ALL_XXXINIT_SECTIONS, INIT_SECTIONS, NULL },
-+	.bad_tosec = { ALL_INIT_SECTIONS, NULL },
- 	.mismatch = DATA_TO_ANY_INIT,
- },
- {
+@@ -795,11 +795,6 @@ static void check_section(const char *modname, struct elf_info *elf,
+ 	".init.setup", ".init.rodata", ".meminit.rodata", \
+ 	".init.data", ".meminit.data"
+ 
+-#define ALL_INIT_TEXT_SECTIONS \
+-	".init.text", ".meminit.text"
+-#define ALL_EXIT_TEXT_SECTIONS \
+-	".exit.text"
+-
+ #define ALL_PCI_INIT_SECTIONS	\
+ 	".pci_fixup_early", ".pci_fixup_header", ".pci_fixup_final", \
+ 	".pci_fixup_enable", ".pci_fixup_resume", \
+@@ -820,7 +815,7 @@ static void check_section(const char *modname, struct elf_info *elf,
+ 
+ #define INIT_SECTIONS      ".init.*"
+ 
+-#define ALL_TEXT_SECTIONS  ALL_INIT_TEXT_SECTIONS, ALL_EXIT_TEXT_SECTIONS, \
++#define ALL_TEXT_SECTIONS  ".init.text", ".meminit.text", ".exit.text", \
+ 		TEXT_SECTIONS, OTHER_TEXT_SECTIONS
+ 
+ enum mismatch {
 -- 
 2.43.0
 
