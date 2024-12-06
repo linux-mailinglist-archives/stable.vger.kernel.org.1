@@ -1,120 +1,98 @@
-Return-Path: <stable+bounces-99055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654A89E6E6A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:40:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DC29E6E5D
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:37:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B0216A1FD
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:36:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6A59284A0E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC34202C2C;
-	Fri,  6 Dec 2024 12:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A949A201254;
+	Fri,  6 Dec 2024 12:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S29D4J6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC8tRGke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C97C1DDA30
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644E01FC107;
+	Fri,  6 Dec 2024 12:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733488485; cv=none; b=XurrvLnk0Ya90pF0jN1YbquclLaxbWH801K+3b+6ml4UVqeHhwvp459KMmM75BkYmCaPLsjbATOSSivFUCRgXeEgSQB2M+oaHLzz5SubOwS1qsmE4OSXumGpKKtcCM5UlWJ5HQYqL2IJCamzqaM1CmHJdudi3sIcLsPwJV5Wu+0=
+	t=1733488666; cv=none; b=JObVh3eT30W++kQVFlTCivRuEYGPJdb6h5oLGScBCD5ROcX6m7xJpogRIfhWXQ8qc6bJdeshRtuOP238TQ6mmXFPe3Muhudz4kc46xz1kM1Ny0/fY84+yJhnu/Yzqe9OK2yDOF87wF0EcEoYQUj+q6CaOyOKZgh2MwkdHQou/Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733488485; c=relaxed/simple;
-	bh=pBpFfxOvJF9XhIsReNkvn9s2GhRxQiZUeUe5ktWDDgk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZSCwpu/mgxeFzUc/OXkJ1Lkw9MXRtIrCvhI9abZINwgjpXQglYh0uHFE6g2twIi5N9dIdPZmutNCyEbcZGu6F7X4r19YPKQUQm/UafQFVoHnfx8chnKmywHuDG3UBlcPP4JfnQGZdGIO7LgTGeZPU0XAVXALQSa6Fly/qfHEoWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S29D4J6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B909C4CEDF;
-	Fri,  6 Dec 2024 12:34:43 +0000 (UTC)
+	s=arc-20240116; t=1733488666; c=relaxed/simple;
+	bh=MTBlHdWW/VoP2jEQuIra4lVHdD6SmKOwIDWgkPH/P0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m5AalDmvA5tQKA3Cp0GOiLqXcIEC8BIEMg9J0ct4gWI/zD/cH5zOLnVyAaLYpgcM3WfENFo7kWeBTQhvgQIc/2xlor/V2Ycw+gZKSShZDpc/p2ElR2sV60kpDGJ2ZBXJ+jAza93kdmkY/y685KDG2Aqfn+9jY6HM96WGtZ28QN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC8tRGke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89879C4CEDD;
+	Fri,  6 Dec 2024 12:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733488484;
-	bh=pBpFfxOvJF9XhIsReNkvn9s2GhRxQiZUeUe5ktWDDgk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=S29D4J6BpNK3DQ5jsMKS2vVQ6CGavgv0FOZvBgASUAvL4mdpLR8tN7eANb8t+rccc
-	 UMe8tgImCfVj96zT8nFQqU4EXYSLtW8XARCwa2hH4Ku00OgVJ0WDN/Qlvdx1+s/OK/
-	 Lm4zDn6478cyOtYgUn+4tN/GZpy1VoQ2h7TqEzsI=
-Subject: FAILED: patch "[PATCH] iio: adc: ad7923: Fix buffer overflow for tx_buf and" failed to apply to 5.10-stable tree
-To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,quzicheng@huawei.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 13:34:33 +0100
-Message-ID: <2024120633-brutishly-whisking-17ca@gregkh>
+	s=korg; t=1733488666;
+	bh=MTBlHdWW/VoP2jEQuIra4lVHdD6SmKOwIDWgkPH/P0k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QC8tRGkeKyBa8U0oPbCSk5OBpEftOLDJwk2kqgsGDvFK+Wn2gIKJ1QISjOiPkglNj
+	 2y36X7rta8w09FFglGdLxsSq1P3toRteV4PmgukDTilHFr8wIhawdcWiw7t4dE/OCd
+	 rryYNs+TcWU+qKlmKActAyp2KmcP+VVGFWEyInXc=
+Date: Fri, 6 Dec 2024 13:37:43 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Sterba <dsterba@suse.cz>
+Cc: David Sterba <dsterba@suse.com>, stable@vger.kernel.org,
+	linux-btrfs@vger.kernel.org, git@atemu.net,
+	Luca Stefani <luca.stefani.ge1@gmail.com>
+Subject: Re: [PATCH 6.6.x] btrfs: add cancellation points to trim loops
+Message-ID: <2024120635-linked-frenzied-9a2e@gregkh>
+References: <20241125180729.13148-1-dsterba@suse.com>
+ <2024120245-molar-antidote-e93a@gregkh>
+ <20241203152756.GA31418@suse.cz>
+ <20241203154159.GB31418@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241203154159.GB31418@suse.cz>
 
+On Tue, Dec 03, 2024 at 04:41:59PM +0100, David Sterba wrote:
+> On Tue, Dec 03, 2024 at 04:27:56PM +0100, David Sterba wrote:
+> > On Mon, Dec 02, 2024 at 12:15:54PM +0100, Greg KH wrote:
+> > > On Mon, Nov 25, 2024 at 07:07:28PM +0100, David Sterba wrote:
+> > > > From: Luca Stefani <luca.stefani.ge1@gmail.com>
+> > > > 
+> > > > There are reports that system cannot suspend due to running trim because
+> > > > the task responsible for trimming the device isn't able to finish in
+> > > > time, especially since we have a free extent discarding phase, which can
+> > > > trim a lot of unallocated space. There are no limits on the trim size
+> > > > (unlike the block group part).
+> > > > 
+> > > > Since trime isn't a critical call it can be interrupted at any time,
+> > > > in such cases we stop the trim, report the amount of discarded bytes and
+> > > > return an error.
+> > > > 
+> > > > Link: https://bugzilla.kernel.org/show_bug.cgi?id=219180
+> > > > Link: https://bugzilla.suse.com/show_bug.cgi?id=1229737
+> > > > CC: stable@vger.kernel.org # 5.15+
+> > > > Signed-off-by: Luca Stefani <luca.stefani.ge1@gmail.com>
+> > > > Reviewed-by: David Sterba <dsterba@suse.com>
+> > > > Signed-off-by: David Sterba <dsterba@suse.com>
+> > > > ---
+> > > 
+> > > No git id?  :(
+> > 
+> > I forgot to add it but meanwhile Sasha looked up the commit and added it for me.
+> 
+> For the record it's 69313850dce33ce8c24b38576a279421f4c60996
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 3a4187ec454e19903fd15f6e1825a4b84e59a4cd
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120633-brutishly-whisking-17ca@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
+Great, can you resend it with that information?
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 3a4187ec454e19903fd15f6e1825a4b84e59a4cd Mon Sep 17 00:00:00 2001
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Tue, 29 Oct 2024 13:46:37 +0000
-Subject: [PATCH] iio: adc: ad7923: Fix buffer overflow for tx_buf and
- ring_xfer
-
-The AD7923 was updated to support devices with 8 channels, but the size
-of tx_buf and ring_xfer was not increased accordingly, leading to a
-potential buffer overflow in ad7923_update_scan_mode().
-
-Fixes: 851644a60d20 ("iio: adc: ad7923: Add support for the ad7908/ad7918/ad7928")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-Link: https://patch.msgid.link/20241029134637.2261336-1-quzicheng@huawei.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-index 09680015a7ab..acc44cb34f82 100644
---- a/drivers/iio/adc/ad7923.c
-+++ b/drivers/iio/adc/ad7923.c
-@@ -48,7 +48,7 @@
- 
- struct ad7923_state {
- 	struct spi_device		*spi;
--	struct spi_transfer		ring_xfer[5];
-+	struct spi_transfer		ring_xfer[9];
- 	struct spi_transfer		scan_single_xfer[2];
- 	struct spi_message		ring_msg;
- 	struct spi_message		scan_single_msg;
-@@ -64,7 +64,7 @@ struct ad7923_state {
- 	 * Length = 8 channels + 4 extra for 8 byte timestamp
- 	 */
- 	__be16				rx_buf[12] __aligned(IIO_DMA_MINALIGN);
--	__be16				tx_buf[4];
-+	__be16				tx_buf[8];
- };
- 
- struct ad7923_chip_info {
-
 
