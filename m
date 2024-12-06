@@ -1,122 +1,117 @@
-Return-Path: <stable+bounces-98956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81AD9E69BD
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:09:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9069E6B53
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:09:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9060428186E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 09:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 877291884AA7
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BD21E1A31;
-	Fri,  6 Dec 2024 09:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAB31B0F1D;
+	Fri,  6 Dec 2024 10:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUVk59rj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9101EF0B3
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 09:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A23028684
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 10:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733476127; cv=none; b=A3fQdH5FboKjs5Fw+A4l5wRN6fa9iBr0VrnGjrzcaYa4IK6Vh8qiOKBCXkgqgtYizVmLT7g3Ya+C6OAhCB0wdixZxD/p6HS62e0/SerKk7uD1tCJUVkN/toR8tJSYLpUG3Tk4kLXM97BvmrMulfPTPksy2apZmmn1wpBmoFQmdY=
+	t=1733479746; cv=none; b=SLwU/uUZYKn1RfR7KBMk02UXLXwgQGDkyGy/8Lxvjx66J8/IUdCEIEV9kyjbA3AMOu4RUJSfo4qUCrm4Fc34jIYm4d/la+HAKZPDEjtO4+7414jYqignjdCcMTJrW/fpMnqR5uIPPVb0hGtCPmG2M8vtDlRGchl1WrR4bh1Q4Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733476127; c=relaxed/simple;
-	bh=i/IRixI0CtK3mTZJRJIOaTlQm1oXXvYycdJnkuND66Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i86jp1rAlQFs7VB349klrJpqsTHunLfLOUgFjcKL/DPzb364sWJ3NOZqvj3OB0EbEq2VAUWk7Dr9i0239PN3LdAHAzqO6TKniLW2m9aurtlgqg8WVIl1SFQQWlGqU+H/XYkp3ongYCL/CtHBhF/RBYl+UQXLtrC5iY03jA+Hghc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B65v0A1016419;
-	Fri, 6 Dec 2024 09:08:40 GMT
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 437sp774k8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 06 Dec 2024 09:08:40 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Fri, 6 Dec 2024 01:08:38 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Fri, 6 Dec 2024 01:08:37 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <wayne.lin@amd.com>, <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH 6.1.y] drm/amd/display: Don't refer to dc_sink in is_dsc_need_re_compute
-Date: Fri, 6 Dec 2024 18:06:29 +0800
-Message-ID: <20241206100629.1243468-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733479746; c=relaxed/simple;
+	bh=u0o1+kUFJXJPwycF7JVxT8TRn0GsSyRFS002kiOyao8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OCl3tmOfPtyv4uTGXI3iacMVK3pISqphio0GnpB4toR7Z8g8E+N0gHpBNpDve4/fF7+f87T+iUpbCoWdtHgtm8622FqfTY43tLebAW8UityxA6p46+DxhcS4g+gOjMN+iVM0l//TbH4hR0kHpFZWahR0bo40S33W1fCCC3vMo7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUVk59rj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7C9C4CED1;
+	Fri,  6 Dec 2024 10:09:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733479745;
+	bh=u0o1+kUFJXJPwycF7JVxT8TRn0GsSyRFS002kiOyao8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=pUVk59rjXsZSnvM+yzMQ1GZoKJlJyVzHCWekQ4sgm5s/lq3IiAuKLPr3t6ne2ObNB
+	 iPfOmRN0usjCwVNKJA/tiG0lq/y7NM32mSGWebuP8aj97nfJhRVNO1h8rE4ys4KGHZ
+	 q1BwtQx8BwkkQdlhkhcSRZIxVrYsUXZRihTbo8ZE=
+Subject: FAILED: patch "[PATCH] media: dvb-core: add missing buffer index check" failed to apply to 6.12-stable tree
+To: hverkuil-cisco@xs4all.nl,benjamin.gaignard@collabora.com,chenyuan0y@gmail.com,mchehab+huawei@kernel.org,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 06 Dec 2024 11:09:02 +0100
+Message-ID: <2024120601-unheard-margarine-05ff@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=Qvqk3Uyd c=1 sm=1 tr=0 ts=6752bf18 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=RZcAm9yDv7YA:10 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=3MRwYbaJRXBt91PjEZAA:9 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: u8_-aYqgs83AQv-g2loyQTVsaCmUT0f8
-X-Proofpoint-GUID: u8_-aYqgs83AQv-g2loyQTVsaCmUT0f8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-06_04,2024-12-05_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- lowpriorityscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 malwarescore=0
- bulkscore=0 priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0
- classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412060066
 
-From: Wayne Lin <wayne.lin@amd.com>
 
-[ Upstream commit fcf6a49d79923a234844b8efe830a61f3f0584e4 ]
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-[Why]
-When unplug one of monitors connected after mst hub, encounter null pointer dereference.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-It's due to dc_sink get released immediately in early_unregister() or detect_ctx(). When
-commit new state which directly referring to info stored in dc_sink will cause null pointer
-dereference.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x bfe703ac0c9f42fd54ec46416146f46d9502bc8c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120601-unheard-margarine-05ff@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-[how]
-Remove redundant checking condition. Relevant condition should already be covered by checking
-if dsc_aux is null or not. Also reset dsc_aux to NULL when the connector is disconnected.
+Possible dependencies:
 
-Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
-Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 1acef5f3838f..a1619f4569cf 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -183,6 +183,8 @@ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
- 		dc_sink_release(dc_sink);
- 		aconnector->dc_sink = NULL;
- 		aconnector->edid = NULL;
-+		aconnector->dsc_aux = NULL;
-+		port->passthrough_aux = NULL;
- 	}
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From bfe703ac0c9f42fd54ec46416146f46d9502bc8c Mon Sep 17 00:00:00 2001
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Tue, 1 Oct 2024 11:01:34 +0200
+Subject: [PATCH] media: dvb-core: add missing buffer index check
+
+dvb_vb2_expbuf() didn't check if the given buffer index was
+for a valid buffer. Add this check.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: 7dc866df4012 ("media: dvb-core: Use vb2_get_buffer() instead of directly access to buffers array")
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+diff --git a/drivers/media/dvb-core/dvb_vb2.c b/drivers/media/dvb-core/dvb_vb2.c
+index 192a8230c4aa..29edaaff7a5c 100644
+--- a/drivers/media/dvb-core/dvb_vb2.c
++++ b/drivers/media/dvb-core/dvb_vb2.c
+@@ -366,9 +366,15 @@ int dvb_vb2_querybuf(struct dvb_vb2_ctx *ctx, struct dmx_buffer *b)
+ int dvb_vb2_expbuf(struct dvb_vb2_ctx *ctx, struct dmx_exportbuffer *exp)
+ {
+ 	struct vb2_queue *q = &ctx->vb_q;
++	struct vb2_buffer *vb2 = vb2_get_buffer(q, exp->index);
+ 	int ret;
  
- 	aconnector->mst_status = MST_STATUS_DEFAULT;
-@@ -487,6 +489,8 @@ dm_dp_mst_detect(struct drm_connector *connector,
- 		dc_sink_release(aconnector->dc_sink);
- 		aconnector->dc_sink = NULL;
- 		aconnector->edid = NULL;
-+		aconnector->dsc_aux = NULL;
-+		port->passthrough_aux = NULL;
- 
- 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
- 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
--- 
-2.25.1
+-	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, q->bufs[exp->index],
++	if (!vb2) {
++		dprintk(1, "[%s] invalid buffer index\n", ctx->name);
++		return -EINVAL;
++	}
++
++	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, vb2,
+ 			      0, exp->flags);
+ 	if (ret) {
+ 		dprintk(1, "[%s] index=%d errno=%d\n", ctx->name,
 
 
