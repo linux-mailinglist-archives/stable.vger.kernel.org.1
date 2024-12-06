@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-99544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4464D9E722C
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:05:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC779E7204
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:03:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0528B286ACF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:05:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74B5916BDD3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F0D1494A8;
-	Fri,  6 Dec 2024 15:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B615B13E03A;
+	Fri,  6 Dec 2024 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sz/PKg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEOEiPns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3227B13E03A;
-	Fri,  6 Dec 2024 15:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7599353A7;
+	Fri,  6 Dec 2024 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497533; cv=none; b=NmT9B0Cc9830DHzR41VOXs3JPI/ZyasR+N3aRv32EHtD+eSY8J6PHSiG1VY6e+gZbe/exYMZ6wCBFgNnxuiNsTVld/C6T+XS1CtNEIdHvocLaGJDBKNbQ5nVg9i64IDTiFXRUBf87dSU8AUSWKJt3uZY+92628UrL5JYGpxMPWY=
+	t=1733497422; cv=none; b=W2acA5j8VlH9M+4CPKsHmsrlbAhs1UlfTCR/NnSKc3YCyd3NbWMcWh8JpJrLW+y4gsPwn5W6F4Nn8S4AbebxT49Ri95mWkWrtZfNYlBJRH3iV6JdiLJPfu8jTQWflh+KlguHGt/YxLasJrYpd06x04Jeptp2e+wry3qwQBv9V0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497533; c=relaxed/simple;
-	bh=x/npLsWmy2YnR1ZuSLgPPDcwMhQteV1I4ch/xdUOrd8=;
+	s=arc-20240116; t=1733497422; c=relaxed/simple;
+	bh=vkdVqJONkcs8GcsK80E+ZEe7FX88bBaWIMPC52wo2Fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7wWBj2/uHIe9NHCsUZa8XA1t69p2VuB1LvVQr5Sp2g+Gwno2Wkp90OnPaU09O6uDVWN9aIRlaVU0+8Rpm7fr/DsK9eGjUVfnrhPl9gjy0cClqjXFDKPTUy/kCe33zew08g+XO5d5FI5XqPD8J4CEa1PjNt0G2ohr2BtPojnGLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sz/PKg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920C8C4CED1;
-	Fri,  6 Dec 2024 15:05:32 +0000 (UTC)
+	 MIME-Version; b=YnVUpNF/Ak+5Vf2HaAxQjZC3hsTjRCkCmmyKUokHfkeEkVG25X51KT1aM/FgMM/Mf3DYc5yYfdXPXqlVX0WL8q/PM83kx7GViyc6Q/5c5qWygqETcb+NFMGz6JdQWakN/fJkMoG/13m10mBJ1UV5znl9ITQRflyomFqP5T/N9Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEOEiPns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2A5C4CED1;
+	Fri,  6 Dec 2024 15:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497533;
-	bh=x/npLsWmy2YnR1ZuSLgPPDcwMhQteV1I4ch/xdUOrd8=;
+	s=korg; t=1733497422;
+	bh=vkdVqJONkcs8GcsK80E+ZEe7FX88bBaWIMPC52wo2Fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sz/PKg86s1RhvnaOdVOhdMZSIREB3TwfUxA2lhRCKasT9VGm4cg6itl5O/cb3hrJ
-	 DUYU6BJZYLAUJUCcsjX8zrI18GhJgSC2aBuVWpu56Y6vrUq2pyKDX76LKvjNX4P/Og
-	 EWeIIjYymkoXW8qMGrwdiXSPsbSedUwVPDBa+zBI=
+	b=YEOEiPnsn9ltiUhzJBG0JTWk9RR7Hj2ptTdkQnoKm0nehO6UU6FMHY5Wdx7uxA+MF
+	 Y3+/hXUyy9GL3JpcH1D1gSdVbjDTpHuFS6l9zygPgUIshX1914r+hQ4H7W83Y/lkvY
+	 60o+Q8Jwh8zgePOisXpAp2gOtWn0pdAA2ARnAwyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hien Huynh <hien.huynh.px@renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Liu Jian <liujian56@huawei.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/676] clk: renesas: rzg2l: Fix FOUTPOSTDIV clk
-Date: Fri,  6 Dec 2024 15:31:46 +0100
-Message-ID: <20241206143704.551141575@linuxfoundation.org>
+Subject: [PATCH 6.6 288/676] RDMA/rxe: Set queue pair cur_qp_state when being queried
+Date: Fri,  6 Dec 2024 15:31:47 +0100
+Message-ID: <20241206143704.589986997@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,54 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit dabf72b85f298970e86891b5218459c17b57b26a ]
+[ Upstream commit 775e6d3c8fda41083b16c26d05163fd69f029a62 ]
 
-While computing foutpostdiv_rate, the value of params->pl5_fracin
-is discarded, which results in the wrong refresh rate. Fix the formula
-for computing foutpostdiv_rate.
+Same with commit e375b9c92985 ("RDMA/cxgb4: Set queue pair state when
+ being queried"). The API for ib_query_qp requires the driver to set
+cur_qp_state on return, add the missing set.
 
-Fixes: 1561380ee72f ("clk: renesas: rzg2l: Add FOUTPOSTDIV clk support")
-Signed-off-by: Hien Huynh <hien.huynh.px@renesas.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/20241024134236.315289-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Link: https://patch.msgid.link/20241031092019.2138467-1-liujian56@huawei.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 75f9eca020ce5..f8dbb092b9f1b 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -285,7 +285,7 @@ static unsigned long
- rzg2l_cpg_get_foutpostdiv_rate(struct rzg2l_pll5_param *params,
- 			       unsigned long rate)
- {
--	unsigned long foutpostdiv_rate;
-+	unsigned long foutpostdiv_rate, foutvco_rate;
- 
- 	params->pl5_intin = rate / MEGA;
- 	params->pl5_fracin = div_u64(((u64)rate % MEGA) << 24, MEGA);
-@@ -294,10 +294,11 @@ rzg2l_cpg_get_foutpostdiv_rate(struct rzg2l_pll5_param *params,
- 	params->pl5_postdiv2 = 1;
- 	params->pl5_spread = 0x16;
- 
--	foutpostdiv_rate =
--		EXTAL_FREQ_IN_MEGA_HZ * MEGA / params->pl5_refdiv *
--		((((params->pl5_intin << 24) + params->pl5_fracin)) >> 24) /
--		(params->pl5_postdiv1 * params->pl5_postdiv2);
-+	foutvco_rate = div_u64(mul_u32_u32(EXTAL_FREQ_IN_MEGA_HZ * MEGA,
-+					   (params->pl5_intin << 24) + params->pl5_fracin),
-+			       params->pl5_refdiv) >> 24;
-+	foutpostdiv_rate = DIV_ROUND_CLOSEST_ULL(foutvco_rate,
-+						 params->pl5_postdiv1 * params->pl5_postdiv2);
- 
- 	return foutpostdiv_rate;
- }
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 28e379c108bce..3767d7fc0aac8 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -781,6 +781,7 @@ int rxe_qp_to_attr(struct rxe_qp *qp, struct ib_qp_attr *attr, int mask)
+ 	 * Yield the processor
+ 	 */
+ 	spin_lock_irqsave(&qp->state_lock, flags);
++	attr->cur_qp_state = qp_state(qp);
+ 	if (qp->attr.sq_draining) {
+ 		spin_unlock_irqrestore(&qp->state_lock, flags);
+ 		cond_resched();
 -- 
 2.43.0
 
