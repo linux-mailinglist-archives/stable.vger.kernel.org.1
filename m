@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-99962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270B29E76BF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2F89E76C0
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3ACC167B9D
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41381623C5
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4442C1F3D49;
-	Fri,  6 Dec 2024 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAD71F8AF0;
+	Fri,  6 Dec 2024 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gs1zWb26"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhmMB/yT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054BB1F4E36
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E31C1F4E36
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733505089; cv=none; b=P/sG7Iv3n1k9zjQ057C0cwwxXwBCoPW89H+V2NZNqP5MDmkT+7Ui57FNBmlbGw9JHFdjYHxN8H8GydGeE4sNXQryVbkWKlKEZUYIyXJ24cam0rmZMqA2qZ07gyjeyrWcvw3CrzuGTwmBs70kizY05T9AlpKFgr5fTtVQsStea10=
+	t=1733505091; cv=none; b=rGD1ol5PacL7bUV9EY+oyyZ1mK+pOcteUH4zNycsKWif+b1Ql7evNh8AG9LOJogDXT2+3TgnuRsC7qX8o9Zc5RmxFmDeQBDUZvBwWjbi8tELkzZn+ALkN9IzBOsRRbS4AyhGarixQF0/1NNbDKwQJKcemtwrsgN06iKMhQDFJgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733505089; c=relaxed/simple;
-	bh=N0P84IMJxpSaMvmqTJIuq6iUdz+NXGcwnaLwe1mQJE4=;
+	s=arc-20240116; t=1733505091; c=relaxed/simple;
+	bh=fJIgl/FpOUHCvWPvIAZ5o4iXR+4l35COmsS/45BFD+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CE1oe1ZT21sdZF7dhX7tZ9n+yWXTuShgFJ+qLbkyk5w6QY7I/37LfvShaQAO/2uiG6omQWIn7a7ik8xLhN/+Qeg/arHa85TSUAji8kRE5Y/5o1Z8yp5q9MSzF2kxBZbHLgh5Rf8PAVTFl84CIUJE9q4isu88eRkr7fZnmrPIv3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gs1zWb26; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FA6C4CEDC;
-	Fri,  6 Dec 2024 17:11:27 +0000 (UTC)
+	 MIME-Version; b=WYFlMxjCpmVtId16rZbLSl5D6iOmYx3dw8MQGyIKIQIkj4/klhx5IDvUnTmf8+LY9t6bN9AmYRav2UIrPqKTDPLy7+A9sfI+M0xLf3njmMlGJmOEL9dwldL+6WYSht0/h76bZdcUnDAHW17X/iElgqctLFbfF2mIJC1MxGvFIXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhmMB/yT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E47C4CED1;
+	Fri,  6 Dec 2024 17:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733505088;
-	bh=N0P84IMJxpSaMvmqTJIuq6iUdz+NXGcwnaLwe1mQJE4=;
+	s=k20201202; t=1733505090;
+	bh=fJIgl/FpOUHCvWPvIAZ5o4iXR+4l35COmsS/45BFD+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gs1zWb26dQwt5oTbJXDN4k61G9yD18ocZ2bk6CtRzr7zhlEfMDik6XKiRg9AOiCX7
-	 +5LptibpMW/fMaDbKd3X0785NuFzIMz+pVt39FBJXetEbv67KnsT/25sK8S1tqDzlm
-	 M7OHTnpNXMwSMwZod5tY/wMlW+hsO3W7XaahMxZNPx5xXMLsrZk3dtJ1jk0WHz+EwW
-	 +6XexKTlUqCxiTAqMRbcH6RBuOTL2Rpl+1+yoTfoKV3gZ1ieGDcqlK831rO2T7OQA3
-	 8/oRKOfOJjcZXz0xqCRuVZC3PMDIV6/HXpVyflRP743dkOTBI9H/u3GCMB0ozxrNqm
-	 aHRk7I+eq7MFg==
+	b=fhmMB/yTtczzGv6hiScTixb5qZlUq+VoHAMFDRskjY0CTw6VNGmBmmvzwE/1KNMBL
+	 ri+eo7rBuCTbKehPA9EDmGms5z8S93FrraTyoES+e78XQ0EjAnOCk9F/ZYJhgx9nQv
+	 /hj12mGTncw/g0Az6Ynz6rO1zAgVKaXyzmyWWmmIbxtA5LLa+T847j9E1t9BoSPwhu
+	 JQJxw8C6YFppMLracnAS94Hn3pcuCtVRUyagzx9fDdTCHDY8pHjAec6caieGV75msJ
+	 Lh+TFuOOKhV6d7NwHZLrUTgY1KqbR/l2D8GMYy+sz7o3ws0CaIYEJy/pmX3C22lHiM
+	 QLwHWFQLwZ9lg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Oleg Nesterov <oleg@redhat.com>,
+Cc: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: FAILED: patch "[PATCH] posix-timers: Target group sigqueue to current task only if" failed to apply to 6.12-stable tree
-Date: Fri,  6 Dec 2024 12:11:26 -0500
-Message-ID: <20241206102129-dd39d62e89649bb6@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y v3] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+Date: Fri,  6 Dec 2024 12:11:28 -0500
+Message-ID: <20241206103625-b02b11d89f7fcccf@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241206130824.GA31748@redhat.com>
+In-Reply-To:  <20241206102357.1259610-1-bsevens@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,25 +63,29 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 63dffecfba3eddcf67a8f76d80e0c141f93d44a5
+Found matching upstream commit: a3dd4d63eeb452cfb064a13862fb376ab108f6a6
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Oleg Nesterov <oleg@redhat.com>
-Commit author: Frederic Weisbecker <frederic@kernel.org>
+WARNING: Author mismatch between patch and found commit:
+Backport author: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
+Commit author: Takashi Iwai <tiwai@suse.de>
 
 
 Status in newer kernel trees:
-6.12.y | Not found
+6.12.y | Present (different SHA1: 096bb5b43edf)
+6.6.y | Present (different SHA1: a3e9b49ef5a5)
+6.1.y | Present (different SHA1: f30a4d8cb1bd)
+5.15.y | Present (different SHA1: db5afb61c536)
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  63dffecfba3ed < -:  ------------- posix-timers: Target group sigqueue to current task only if not exiting
--:  ------------- > 1:  b5913c9a2e038 FAILED: patch "[PATCH] posix-timers: Target group sigqueue to current task only if" failed to apply to 6.12-stable tree
+1:  a3dd4d63eeb45 < -:  ------------- ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+-:  ------------- > 1:  9bf995ef0eedc ALSA: usb-audio: Fix out of bounds reads when finding clock sources
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
