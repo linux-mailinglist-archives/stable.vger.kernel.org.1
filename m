@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-99774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CC99E7346
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:18:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDDC9E7351
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:19:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E116D28A2FF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5AF51887D71
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 435D3149C6F;
-	Fri,  6 Dec 2024 15:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646181FCF7D;
+	Fri,  6 Dec 2024 15:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppXy3dG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fYcuaaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006F6170A11;
-	Fri,  6 Dec 2024 15:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2284E1714DF;
+	Fri,  6 Dec 2024 15:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498305; cv=none; b=G3eUco3rgSj346/v5ZJdCI/w61U74pkIGH69j6ZSQd08wD09w71l1NUMdMxSddDb5aXjDrWo3Px4Fjcu+iYFFrYHrm/dZCOopSSiom8EXN80sB9jRGm2GzZINFCXbaHv4UaXh5M+BUgEfGgW7nndWvfeZptC3JUbrIrw11n+ATA=
+	t=1733498311; cv=none; b=I6mfELDDFuRW5IFXdaHvVsD+aRC8sahG6FaeHeNMYw/Dc1w8JrGLFFU6XoIkWykMHGBkYI0YTkWisa63fCT7+xtWzGJ/ANc6hUqOcQxZvwwyZW3X0uJ/HMH3Plsvr+iSjOhWnfhWOYH3Ws0aNMwC9aQRT9PV4CpKz6kjD6r01xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498305; c=relaxed/simple;
-	bh=s8DTe+5yiLsS7FoKJ7YhxtZGAEXHQDKjyhbl3scBvUE=;
+	s=arc-20240116; t=1733498311; c=relaxed/simple;
+	bh=5ag92K7qK6wrQg7jxkq1fgVyKF4jiKqk+mi3tY5di9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nAl5FjdEm6JIqWGBugLE89Ml8KcbiZ0olY6+2ghwoNo4bEgmaGd2EeGr4WRFvJ4yCF/g8eCLtt5Pc78D7hLgDg3dwE3mPzfyzHtwRVoMTXxYv2dEg0gTQLXMS9gZw7EhFfX6aDTwaJ6Mq7XtVnDibBf5ANxy2wVgAnPj/NiLcTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppXy3dG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B069C4CED1;
-	Fri,  6 Dec 2024 15:18:23 +0000 (UTC)
+	 MIME-Version; b=G8PUMmEO8uA67rz3UJR6P7FCRVDZZ1q38NkGW/U8ULeX6ReLsbM/VBg/0lCRQOcankrc+kz1oZChO7Sr6qFw4n4lDDTC7sEK/dN1P8iZccHrBQm63Foza+GzU/AyutOOaU56GXtoawiI1r8HwpXcbRXO+bqk6h1KfCYr+7qJW7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fYcuaaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827FAC4CED1;
+	Fri,  6 Dec 2024 15:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498304;
-	bh=s8DTe+5yiLsS7FoKJ7YhxtZGAEXHQDKjyhbl3scBvUE=;
+	s=korg; t=1733498311;
+	bh=5ag92K7qK6wrQg7jxkq1fgVyKF4jiKqk+mi3tY5di9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppXy3dG8/B9PCJEd7jCJdCv628YLaaF84WC/EBF9TzKFzw0axmAtQWajGpCMSEwTF
-	 6SR7VGQIXRa4E1uyX4K4b2+t4q2vJOuLmC64E7cbsRWLGNBn7S239/wJz/2Jg9ZPzu
-	 mkuOMs9LUfCs/egrWFkriYQgCz8BuN/yezBxyNvk=
+	b=1fYcuaazt/MIjqi5k/P6fQXBO0/cobSMQytjtbK+UdFaERlkIItjK9G7Uh+inbwMX
+	 KE9ZFeLNsOrQmyfE7ezoA2h4P1GWQBSPiOOyGDGshVSiFu4Ee5R0hdOwnRCgR1mM2N
+	 be2FZdWPywas8utIVgB73D6ZLPvTlQ9I49aaSU38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Hubert=20Wi=C5=9Bniewski?= <hubert.wisniewski.25632@gmail.com>
-Subject: [PATCH 6.6 545/676] usb: musb: Fix hardware lockup on first Rx endpoint request
-Date: Fri,  6 Dec 2024 15:36:04 +0100
-Message-ID: <20241206143714.647700286@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 546/676] usb: dwc3: gadget: Fix checking for number of TRBs left
+Date: Fri,  6 Dec 2024 15:36:05 +0100
+Message-ID: <20241206143714.685723121@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -58,137 +58,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 3fc137386c4620305bbc2a216868c53f9245670a upstream.
+commit 02a6982b0ccfcdc39e20016f5fc9a1b7826a6ee7 upstream.
 
-There is a possibility that a request's callback could be invoked from
-usb_ep_queue() (call trace below, supplemented with missing calls):
+The check whether the TRB ring is full or empty in dwc3_calc_trbs_left()
+is insufficient. It assumes there are active TRBs if there's any request
+in the started_list. However, that's not the case for requests with a
+large SG list.
 
-req->complete from usb_gadget_giveback_request
-	(drivers/usb/gadget/udc/core.c:999)
-usb_gadget_giveback_request from musb_g_giveback
-	(drivers/usb/musb/musb_gadget.c:147)
-musb_g_giveback from rxstate
-	(drivers/usb/musb/musb_gadget.c:784)
-rxstate from musb_ep_restart
-	(drivers/usb/musb/musb_gadget.c:1169)
-musb_ep_restart from musb_ep_restart_resume_work
-	(drivers/usb/musb/musb_gadget.c:1176)
-musb_ep_restart_resume_work from musb_queue_resume_work
-	(drivers/usb/musb/musb_core.c:2279)
-musb_queue_resume_work from musb_gadget_queue
-	(drivers/usb/musb/musb_gadget.c:1241)
-musb_gadget_queue from usb_ep_queue
-	(drivers/usb/gadget/udc/core.c:300)
+That is, if we have a single usb request that requires more TRBs than
+the total TRBs in the TRB ring, the queued TRBs will be available when
+all the TRBs in the ring are completed. But the request is only
+partially completed and remains in the started_list. With the current
+logic, the TRB ring is empty, but dwc3_calc_trbs_left() returns 0.
 
-According to the docstring of usb_ep_queue(), this should not happen:
+Fix this by additionally checking for the request->num_trbs for active
+TRB count.
 
-"Note that @req's ->complete() callback must never be called from within
-usb_ep_queue() as that can create deadlock situations."
-
-In fact, a hardware lockup might occur in the following sequence:
-
-1. The gadget is initialized using musb_gadget_enable().
-2. Meanwhile, a packet arrives, and the RXPKTRDY flag is set, raising an
-   interrupt.
-3. If IRQs are enabled, the interrupt is handled, but musb_g_rx() finds an
-   empty queue (next_request() returns NULL). The interrupt flag has
-   already been cleared by the glue layer handler, but the RXPKTRDY flag
-   remains set.
-4. The first request is enqueued using usb_ep_queue(), leading to the call
-   of req->complete(), as shown in the call trace above.
-5. If the callback enables IRQs and another packet is waiting, step (3)
-   repeats. The request queue is empty because usb_g_giveback() removes the
-   request before invoking the callback.
-6. The endpoint remains locked up, as the interrupt triggered by hardware
-   setting the RXPKTRDY flag has been handled, but the flag itself remains
-   set.
-
-For this scenario to occur, it is only necessary for IRQs to be enabled at
-some point during the complete callback. This happens with the USB Ethernet
-gadget, whose rx_complete() callback calls netif_rx(). If called in the
-task context, netif_rx() disables the bottom halves (BHs). When the BHs are
-re-enabled, IRQs are also enabled to allow soft IRQs to be processed. The
-gadget itself is initialized at module load (or at boot if built-in), but
-the first request is enqueued when the network interface is brought up,
-triggering rx_complete() in the task context via ioctl(). If a packet
-arrives while the interface is down, it can prevent the interface from
-receiving any further packets from the USB host.
-
-The situation is quite complicated with many parties involved. This
-particular issue can be resolved in several possible ways:
-
-1. Ensure that callbacks never enable IRQs. This would be difficult to
-   enforce, as discovering how netif_rx() interacts with interrupts was
-   already quite challenging and u_ether is not the only function driver.
-   Similar "bugs" could be hidden in other drivers as well.
-2. Disable MUSB interrupts in musb_g_giveback() before calling the callback
-   and re-enable them afterwars (by calling musb_{dis,en}able_interrupts(),
-   for example). This would ensure that MUSB interrupts are not handled
-   during the callback, even if IRQs are enabled. In fact, it would allow
-   IRQs to be enabled when releasing the lock. However, this feels like an
-   inelegant hack.
-3. Modify the interrupt handler to clear the RXPKTRDY flag if the request
-   queue is empty. While this approach also feels like a hack, it wastes
-   CPU time by attempting to handle incoming packets when the software is
-   not ready to process them.
-4. Flush the Rx FIFO instead of calling rxstate() in musb_ep_restart().
-   This ensures that the hardware can receive packets when there is at
-   least one request in the queue. Once IRQs are enabled, the interrupt
-   handler will be able to correctly process the next incoming packet
-   (eventually calling rxstate()). This approach may cause one or two
-   packets to be dropped (two if double buffering is enabled), but this
-   seems to be a minor issue, as packet loss can occur when the software is
-   not yet ready to process them. Additionally, this solution makes the
-   gadget driver compliant with the rule mentioned in the docstring of
-   usb_ep_queue().
-
-There may be additional solutions, but from these four, the last one has
-been chosen as it seems to be the most appropriate, as it addresses the
-"bad" behavior of the driver.
-
-Fixes: baebdf48c360 ("net: dev: Makes sure netif_rx() can be invoked in any context.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hubert Wiśniewski <hubert.wisniewski.25632@gmail.com>
-Link: https://lore.kernel.org/r/4ee1ead4525f78fb5909a8cbf99513ad0082ad21.camel@gmail.com
+Fixes: 51f1954ad853 ("usb: dwc3: gadget: Fix dwc3_calc_trbs_left()")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/708dc62b56b77da1f704cc2ae9b6ddb1f2dbef1f.1731545781.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_gadget.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/gadget.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/musb/musb_gadget.c
-+++ b/drivers/usb/musb/musb_gadget.c
-@@ -1170,12 +1170,19 @@ struct free_record {
-  */
- void musb_ep_restart(struct musb *musb, struct musb_request *req)
- {
-+	u16 csr;
-+	void __iomem *epio = req->ep->hw_ep->regs;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1196,11 +1196,14 @@ static u32 dwc3_calc_trbs_left(struct dw
+ 	 * pending to be processed by the driver.
+ 	 */
+ 	if (dep->trb_enqueue == dep->trb_dequeue) {
++		struct dwc3_request *req;
 +
- 	trace_musb_req_start(req);
- 	musb_ep_select(musb->mregs, req->epnum);
--	if (req->tx)
-+	if (req->tx) {
- 		txstate(musb, req);
--	else
--		rxstate(musb, req);
-+	} else {
-+		csr = musb_readw(epio, MUSB_RXCSR);
-+		csr |= MUSB_RXCSR_FLUSHFIFO | MUSB_RXCSR_P_WZC_BITS;
-+		musb_writew(epio, MUSB_RXCSR, csr);
-+		musb_writew(epio, MUSB_RXCSR, csr);
-+	}
- }
+ 		/*
+-		 * If there is any request remained in the started_list at
+-		 * this point, that means there is no TRB available.
++		 * If there is any request remained in the started_list with
++		 * active TRBs at this point, then there is no TRB available.
+ 		 */
+-		if (!list_empty(&dep->started_list))
++		req = next_request(&dep->started_list);
++		if (req && req->num_trbs)
+ 			return 0;
  
- static int musb_ep_restart_resume_work(struct musb *musb, void *data)
+ 		return DWC3_TRB_NUM - 1;
 
 
 
