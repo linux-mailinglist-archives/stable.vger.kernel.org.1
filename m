@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558029E713F
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:53:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E10959E716D
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:55:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF64282446
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:53:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB0D91886E52
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43DA1442E8;
-	Fri,  6 Dec 2024 14:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBEB15667D;
+	Fri,  6 Dec 2024 14:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7o28/+b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJ1d6E77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715BB149C51;
-	Fri,  6 Dec 2024 14:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7811442E8;
+	Fri,  6 Dec 2024 14:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496797; cv=none; b=sKbo4d7IqUBCPfrZJdrAoURMMYkZCuN5iFUZhNOSQaVzmZnjH+FYaFhQNMMZbcMJ+h1UH6EIo+KJYh4ROPjo8a2OyAyxUGAEO6FUlSNRkj5TYNB06njZMisW6GCiQk2X88bGNU+8RII3vOQMHjI4NfEYsDZWxZ2dN3V/GiUOafE=
+	t=1733496935; cv=none; b=m2vW+D2w5R72cSuXphMuK0FvOsJBD5A+7aIjNd6OVRVZxXhdipxGfJw/tkCMSXBQGk/lH6/A7HgorMdmOeGSeeB6PPLWiXhWHlXewUQYYrKBg0b1HiUI1RjPPJaHNph9CdCS2LMNko6fh++iT8vCsKrNihNIuRt3Li4IuX5SgSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496797; c=relaxed/simple;
-	bh=M455fGKSUz8rJxIWpKboOqe7IyA4UQY1Xevj6xBhcog=;
+	s=arc-20240116; t=1733496935; c=relaxed/simple;
+	bh=Voo8w02BcmBp/dr3Z8aNDTl4E+R+Yj9a8x31I0EYjrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghGPC/H+/YUcmWsoKGd3EG2am1wW8djMSwiQDAnn3H5Y4gYF5/T0UhrCruWiZeZE2eFg/LUJzzJqTgn9Y5bYdaApEHqAJ5oPDlY3DmxWnK67muNYzSKZlRzv6v1lFhy3s+kjmD+ScVzRJVIRbkw3dkV1D1cRL2DbfJ83Ilt6DPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7o28/+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBAE7C4CED1;
-	Fri,  6 Dec 2024 14:53:16 +0000 (UTC)
+	 MIME-Version; b=Nu7G0jzVTauqnKNfHYDGkvoiguzSyW8xFgKIoGutqW7yw6EA/lxJWTMRZ4eOzsnqfZtElczq8prtTBhunPa9TOKUl/6zr1Ao6ycS7rgH/FB6Vwk7Sv2Vn99o8ub937zPE8FfT+XZfXYxpRQpJ/97tDnbf0zZBJqEWDC2mFNXQ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJ1d6E77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560DBC4CED1;
+	Fri,  6 Dec 2024 14:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496797;
-	bh=M455fGKSUz8rJxIWpKboOqe7IyA4UQY1Xevj6xBhcog=;
+	s=korg; t=1733496934;
+	bh=Voo8w02BcmBp/dr3Z8aNDTl4E+R+Yj9a8x31I0EYjrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7o28/+bua9qdUyYHpFA+Hvu8agHkwUPgg4/wEPY7AKT4UfZGmwnpc4++3OGGQ3a0
-	 sSKM51c0XkPTqx2KRMHM3KjMBkTER63FhLcVV+3aNyvCD90wxMtfdHjaRA0RfMcbT+
-	 0Yc0hjvfPlYg2nJRJ3CeIq6z0uYmT9aJGAtfp17U=
+	b=YJ1d6E77JmKojf8xPmrFaDqqcn8voUR6bvNovPCvmR7mSfdxz+W0ebkn86IHn/How
+	 VfqgDVINzZqT6FX1U74WqhAmE6GYiqKWPK19oTsaKuGhIofQc0eDBLU0nxOf+idASk
+	 TiFVoUuXq0a0y0zyJ2DnEY7f0E1yWbmowwH5IQpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/676] time: Partially revert cleanup on msecs_to_jiffies() documentation
-Date: Fri,  6 Dec 2024 15:28:45 +0100
-Message-ID: <20241206143657.499413580@linuxfoundation.org>
+Subject: [PATCH 6.6 107/676] time: Fix references to _msecs_to_jiffies() handling of values
+Date: Fri,  6 Dec 2024 15:28:46 +0100
+Message-ID: <20241206143657.539084767@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -68,38 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit b05aefc1f5886c8aece650c9c1639c87b976191a ]
+[ Upstream commit 92b043fd995a63a57aae29ff85a39b6f30cd440c ]
 
-The documentation's intention is to compare msecs_to_jiffies() (first
-sentence) with __msecs_to_jiffies() (second sentence), which is what the
-original documentation did. One of the cleanups in commit f3cb80804b82
-("time: Fix various kernel-doc problems") may have thought the paragraph
-was talking about the latter since that is what it is being documented.
+The details about the handling of the "normal" values were moved
+to the _msecs_to_jiffies() helpers in commit ca42aaf0c861 ("time:
+Refactor msecs_to_jiffies"). However, the same commit still mentioned
+__msecs_to_jiffies() in the added documentation.
 
-Thus revert that part of the change.
+Thus point to _msecs_to_jiffies() instead.
 
-Fixes: f3cb80804b82 ("time: Fix various kernel-doc problems")
+Fixes: ca42aaf0c861 ("time: Refactor msecs_to_jiffies")
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241025110141.157205-1-ojeda@kernel.org
+Link: https://lore.kernel.org/all/20241025110141.157205-2-ojeda@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/jiffies.h | 2 +-
+ kernel/time/time.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index e0ae2a43e0ebd..03f38fe9b9a10 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -499,7 +499,7 @@ static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
+  *   handling any 32-bit overflows.
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
+  *
+  * msecs_to_jiffies() checks for the passed in value being a constant
+  * via __builtin_constant_p() allowing gcc to eliminate most of the
 diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 642647f5046be..e1879ca321033 100644
+index e1879ca321033..1ad88e97b4ebc 100644
 --- a/kernel/time/time.c
 +++ b/kernel/time/time.c
-@@ -558,7 +558,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
+@@ -556,7 +556,7 @@ EXPORT_SYMBOL(ns_to_timespec64);
+  * - all other values are converted to jiffies by either multiplying
+  *   the input value by a factor or dividing it with a factor and
   *   handling any 32-bit overflows.
-  *   for the details see __msecs_to_jiffies()
+- *   for the details see __msecs_to_jiffies()
++ *   for the details see _msecs_to_jiffies()
   *
-- * __msecs_to_jiffies() checks for the passed in value being a constant
-+ * msecs_to_jiffies() checks for the passed in value being a constant
+  * msecs_to_jiffies() checks for the passed in value being a constant
   * via __builtin_constant_p() allowing gcc to eliminate most of the
-  * code, __msecs_to_jiffies() is called if the value passed does not
-  * allow constant folding and the actual conversion must be done at
 -- 
 2.43.0
 
