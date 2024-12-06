@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-99221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333379E70B9
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:46:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE2E9E70C3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1729188231C
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:46:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE9AC16AF1A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AE513D516;
-	Fri,  6 Dec 2024 14:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6F314B976;
+	Fri,  6 Dec 2024 14:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3/3dB1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JB2rsP2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B8247F53;
-	Fri,  6 Dec 2024 14:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2881010E0;
+	Fri,  6 Dec 2024 14:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496407; cv=none; b=j323lg4zSCswGpqL1xSbeOyUrC8hdQJlKqDqZoyVbcDN98pVmTVjiqFpmBX9yCJciU5gL+zHvRRFrsf56pYUgJSNh0T1dLqXMxcmQqKA1/ZQbVYy3T/OXlTN8n8Vxu28J9RzHaoTU0NIbc1pcpUvhZ/OE4pvFePhPPwI0OwV9AQ=
+	t=1733496414; cv=none; b=nbXUQ63VCEzTOrM1yP2nPysNQ9/LqqTAuYWltWBIUTLBuWvS63OaxUUNnSHHABJKUzmUevBieSRReeoaYaSewvVBSEwGSP7BPesJewbJ2z4r/M0T1p15xMbwvDDdaoU5YPzZhBiVqvJ+6mpr+MrG/MI+BrOKlVsIQofdXYuMyIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496407; c=relaxed/simple;
-	bh=NK74DuAHtuNu4nNwICpBw6eOpEjGrGQ+9CU6am+/5Ik=;
+	s=arc-20240116; t=1733496414; c=relaxed/simple;
+	bh=eTdSaf2Sak3S8tzvxzOgIrr85p5kAMMtLJm/Vjl7V+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaxNT7lL+fxCzxLqFfHTb+OIKJWWGCFdfAYbdchjqDWuRAt3kZlf+7tcAPqq+Tb0jMbUGBdm4hEzNdtxI4mSxwx+wkiO7XzwsJpgWhDOav7dWbRzNFehfm/XKxj4iiqrBqh6ag+Bi16b3tvALdMs5pwLXh0jbtJD7Zq1fWIYius=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3/3dB1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D590EC4CED1;
-	Fri,  6 Dec 2024 14:46:46 +0000 (UTC)
+	 MIME-Version; b=F4ijy6xCjQQyfpaoUeW8LHfqu00Upc7nTCI08ZVsU2tgYKfw5eGCBMqhhd11sczo5pSRAfmaVPTzZL8zDViewOMuqaw4VUrFQ+SX7n430varZxe8X0cSdXXvvH8Cu7rCBgKpSRD1UreILurgsTpHiURv4c0FsoJd25U6d7SFkZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JB2rsP2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86767C4CED1;
+	Fri,  6 Dec 2024 14:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496407;
-	bh=NK74DuAHtuNu4nNwICpBw6eOpEjGrGQ+9CU6am+/5Ik=;
+	s=korg; t=1733496414;
+	bh=eTdSaf2Sak3S8tzvxzOgIrr85p5kAMMtLJm/Vjl7V+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3/3dB1FTriM7YJCHtQ8lhRieZRlmuVb66zoxGpHQfU5BY3JJnFtweTXMqKNtmIdq
-	 YLZQkanTY8MxrVtmUPMF7zO6pm7SXqNz3HwtlKWQf4eCbaZ0lbnSpFlX2tx8p7pbjH
-	 gF2NEDhFpvXXMBO7f5YMUr3FP4FKlman3tHKPm8k=
+	b=JB2rsP2K4hOHmydvKBWiGUFbB61iXNnKFy0a8CLYQaNwTdvkRq+i05Znmy1TCWa4p
+	 h9Qxg/pj3cvsXhukcyjLzIkrEB0wjkRC2TCxeXIGH+3VEEf84f6kD6bJx0wDZAGJiT
+	 MIIUkD+fRvClyjAXWc5eVGgcD6xB9Ix8/lPdTHhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josip Pavic <josip.pavic@amd.com>,
-	Joshua Aberback <joshua.aberback@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Yihan Zhu <Yihan.Zhu@amd.com>,
 	Hamza Mahfooz <hamza.mahfooz@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 143/146] drm/amd/display: Fix handling of plane refcount
-Date: Fri,  6 Dec 2024 15:37:54 +0100
-Message-ID: <20241206143533.159349667@linuxfoundation.org>
+Subject: [PATCH 6.12 144/146] drm/amd/display: update pipe selection policy to check head pipe
+Date: Fri,  6 Dec 2024 15:37:55 +0100
+Message-ID: <20241206143533.196263972@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -68,44 +68,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joshua Aberback <joshua.aberback@amd.com>
+From: Yihan Zhu <Yihan.Zhu@amd.com>
 
-commit 27227a234c1487cb7a684615f0749c455218833a upstream.
+commit 8fef253c94a5312b9150b2ff8e633b331bac7e88 upstream.
 
 [Why]
-The mechanism to backup and restore plane states doesn't maintain
-refcount, which can cause issues if the refcount of the plane changes
-in between backup and restore operations, such as memory leaks if the
-refcount was supposed to go down, or double frees / invalid memory
-accesses if the refcount was supposed to go up.
+No check on head pipe during the dml to dc hw mapping will allow illegal
+pipe usage. This will result in a wrong pipe topology to cause mpcc tree
+totally mess up then cause a display hang.
 
 [How]
-Cache and re-apply current refcount when restoring plane states.
+Avoid to use the pipe is head in all check and avoid ODM slice during
+preferred pipe check.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Josip Pavic <josip.pavic@amd.com>
-Signed-off-by: Joshua Aberback <joshua.aberback@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
 Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c |   23 +++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3066,7 +3066,10 @@ static void restore_planes_and_stream_st
- 		return;
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_dc_resource_mgmt.c
+@@ -258,12 +258,25 @@ static unsigned int find_preferred_pipe_
+ 	 * However this condition comes with a caveat. We need to ignore pipes that will
+ 	 * require a change in OPP but still have the same stream id. For example during
+ 	 * an MPC to ODM transiton.
++	 *
++	 * Adding check to avoid pipe select on the head pipe by utilizing dc resource
++	 * helper function resource_get_primary_dpp_pipe and comparing the pipe index.
+ 	 */
+ 	if (existing_state) {
+ 		for (i = 0; i < pipe_count; i++) {
+ 			if (existing_state->res_ctx.pipe_ctx[i].stream && existing_state->res_ctx.pipe_ctx[i].stream->stream_id == stream_id) {
++				struct pipe_ctx *head_pipe =
++					resource_is_pipe_type(&existing_state->res_ctx.pipe_ctx[i], DPP_PIPE) ?
++						resource_get_primary_dpp_pipe(&existing_state->res_ctx.pipe_ctx[i]) :
++							NULL;
++
++				// we should always respect the head pipe from selection
++				if (head_pipe && head_pipe->pipe_idx == i)
++					continue;
+ 				if (existing_state->res_ctx.pipe_ctx[i].plane_res.hubp &&
+-					existing_state->res_ctx.pipe_ctx[i].plane_res.hubp->opp_id != i)
++					existing_state->res_ctx.pipe_ctx[i].plane_res.hubp->opp_id != i &&
++						(existing_state->res_ctx.pipe_ctx[i].prev_odm_pipe ||
++						existing_state->res_ctx.pipe_ctx[i].next_odm_pipe))
+ 					continue;
  
- 	for (i = 0; i < status->plane_count; i++) {
-+		/* refcount will always be valid, restore everything else */
-+		struct kref refcount = status->plane_states[i]->refcount;
- 		*status->plane_states[i] = scratch->plane_states[i];
-+		status->plane_states[i]->refcount = refcount;
- 	}
- 	*stream = scratch->stream_state;
- }
+ 				preferred_pipe_candidates[num_preferred_candidates++] = i;
+@@ -292,6 +305,14 @@ static unsigned int find_last_resort_pip
+ 	 */
+ 	if (existing_state) {
+ 		for (i  = 0; i < pipe_count; i++) {
++			struct pipe_ctx *head_pipe =
++				resource_is_pipe_type(&existing_state->res_ctx.pipe_ctx[i], DPP_PIPE) ?
++					resource_get_primary_dpp_pipe(&existing_state->res_ctx.pipe_ctx[i]) :
++						NULL;
++
++			// we should always respect the head pipe from selection
++			if (head_pipe && head_pipe->pipe_idx == i)
++				continue;
+ 			if ((existing_state->res_ctx.pipe_ctx[i].plane_res.hubp &&
+ 				existing_state->res_ctx.pipe_ctx[i].plane_res.hubp->opp_id != i) ||
+ 				existing_state->res_ctx.pipe_ctx[i].stream_res.tg)
 
 
 
