@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-99199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BE69E70A0
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 129A09E707E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03D091881CBE
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:45:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1591188350E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864A1145B22;
-	Fri,  6 Dec 2024 14:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367D21474A9;
+	Fri,  6 Dec 2024 14:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQoY4F4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MraL8uQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4412D10E0;
-	Fri,  6 Dec 2024 14:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87961494D9;
+	Fri,  6 Dec 2024 14:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496333; cv=none; b=PJfHtD05P76v3WIyqDFk2yyNfQICCegzSMcEf8zuubf5iLalUeTGjV5cGL414PFXwYSqpJhM1OtcEnlM4DLgthY+3u37FMBrKwb2XRfWGf+r2hY34MLhqNaad/vcw/gVSX74VyW5pCDZLq0U90/jLqd2+clmuwyXwLcj5R+QCgw=
+	t=1733496225; cv=none; b=QxwSk73gVqAkC5wRd8WIqeyNHaC6ZOdXfH1lI0UIaMlhZetOa92ZJjXm5k7edphac/0Pbd2V3HNXGJlr3oSCjkncm518UaJLzgo0QRHe9RGW1qzyoLKPGxkWVhn25GxctD4sLazA2vcKGgjVEL4+EVJyGcLqgliYhG700YRcWwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496333; c=relaxed/simple;
-	bh=EVPMqNkwN7Ax0LluGM4TBT5cA00Ah2j/YNfgoBHVPE0=;
+	s=arc-20240116; t=1733496225; c=relaxed/simple;
+	bh=N5YJr9tdmGMD00tD4gdOPToWNb+ujozG7qjmMvwIXnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7VkAs1hgW/pbIo/VSIE771p6vSMQ+LGx5qjPzczvix3dzQ3S7ObDggtKV/1z0oqNxxzUf67vg/HZIABiFeeIwaaQ98cdg1GtXnxKWN0KR92tAwaF9hFv9NrZ0JpEFnT4W+/EnK2pvhNH8L2wEZaz7qQm2bHlHZWU1lxZqstKuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQoY4F4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92B5C4CEDC;
-	Fri,  6 Dec 2024 14:45:32 +0000 (UTC)
+	 MIME-Version; b=GPuY8ZdQlsLKwwN41x1hOAwtevc8+iFFK9DudjiupJAxIvHfMvnj2Pu+NtfGafunil4aai6Qr3D5q9f884+s+p2squjV8LGu8Gf6iacRAtcfpIHpKH1FZX3A6Ki/oAbIdOyJ5mihlwQjDnToyeU+ZI/e4YXQ+8LdUnm8DSn89xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MraL8uQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C9FC4CED1;
+	Fri,  6 Dec 2024 14:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496333;
-	bh=EVPMqNkwN7Ax0LluGM4TBT5cA00Ah2j/YNfgoBHVPE0=;
+	s=korg; t=1733496224;
+	bh=N5YJr9tdmGMD00tD4gdOPToWNb+ujozG7qjmMvwIXnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQoY4F4A1TatG4w+TtoVZlhlTmget+dY4M+gTUfeB6GSq3c0T3y66+R1KX8DTgudE
-	 HSFc6r/2T9NJcn+xS8wHA9WAAyeq4pzNCNWN9XnGIBgMmQkcGi/kEhrxDa8tx3+N4+
-	 IqeAQGZigPDbVWK6JOAOqpoSo0rPTp2VBYP0MJgI=
+	b=MraL8uQNFvIuX/2Elw62Be2SRaMZUuWevnby9Uz2Q6dW+Z1DSMzGVmOD/jTZnVfA1
+	 43/nB89RejPYINFA3ViyWxEVdrwhYD1GHLfg5+oY0UmhMX6tAs7zLmUfT5ZRVhpfpf
+	 uckAnAwY1RMsQm+k9+AobnLdH5+d1PhQ0V7I13Y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
+	stable@kernel.org,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 080/146] i3c: master: svc: Fix pm_runtime_set_suspended() with runtime pm enabled
-Date: Fri,  6 Dec 2024 15:36:51 +0100
-Message-ID: <20241206143530.740975074@linuxfoundation.org>
+Subject: [PATCH 6.12 081/146] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
+Date: Fri,  6 Dec 2024 15:36:52 +0100
+Message-ID: <20241206143530.779769348@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -67,38 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 18599e93e4e814ce146186026c6abf83c14d5798 upstream.
+commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+                                      ^^^ here check "init_dyn_addr"
+	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
+						             ^^^^
+							free "dyn_addr"
+Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
 
-Cc: stable@vger.kernel.org # v5.17
-Fixes: 05be23ef78f7 ("i3c: master: svc: add runtime pm support")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@kernel.org
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
 Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240930091913.2545510-1-ruanjinjie@huawei.com
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    2 +-
+ drivers/i3c/master.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1827,8 +1827,8 @@ static int svc_i3c_master_probe(struct p
- rpm_disable:
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1417,7 +1417,7 @@ static void i3c_master_put_i3c_addrs(str
+ 					     I3C_ADDR_SLOT_FREE);
  
- err_disable_clks:
- 	svc_i3c_master_unprepare_clks(master);
+ 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+-		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
++		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
+ 					     I3C_ADDR_SLOT_FREE);
+ }
+ 
 
 
 
