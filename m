@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-99210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBF19E70B2
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:46:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BD79E70BB
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:46:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C9E82875D6
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E042165FE2
 	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D66D20011B;
-	Fri,  6 Dec 2024 14:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A34203710;
+	Fri,  6 Dec 2024 14:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yveOxdDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPuVt7G4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8AB1547E7;
-	Fri,  6 Dec 2024 14:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA45193;
+	Fri,  6 Dec 2024 14:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496370; cv=none; b=KmgBXuU3W4peeq4jvquvhYqPFp66YPrdqs5bUtTAEWCY9kHk0RgacOnEeb/TeRviGDELlmyf9Snfnyls/gakxOEjgv1/1XVcClT4kuXQLvchLBPg3nhtjWFX7JuZOTCDzMaFkoniqt0QBZtC3/89ZnOdI1T2iu+Nz4A5O/skG5s=
+	t=1733496377; cv=none; b=EUD/8DghhDT6FqSHSXDczSj052ANsv8epbrn+4uC0YLcCQeD+NFf44OltcZmtWUlpFRNogCgsOP7LOp2XDws+NjBlZBupzyzqRBZibhBK7CNiMw6d2Ada1ZabKEGaPVCuQZoFPrcxJi4f/77Mu9zYjwpfjwErv6SElIikYYxkj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496370; c=relaxed/simple;
-	bh=70KqBnlDLrlTlMNpIT531NzGbRvM/VkBvPE5/chEB4s=;
+	s=arc-20240116; t=1733496377; c=relaxed/simple;
+	bh=7MEA2xZfXm6GwS2ZnLRLJNDvk0n6kS2Klds+5tSqY9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ufvirv1mUuSvMorXPRm/+t6OXVl0LFhVn9Th5P3XIEa2MwFpfyoizFnOJ2f+N7fwpBs/DY7fs/af64xehjsT2k93Z/jN4HB+m9qNe4cnJrluN+VVV76Ebw6sDBSimDneaKh64R8fPutNQXaPtTkX/x/538MPXdFLDaGI9WKG6ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yveOxdDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38250C4CED1;
-	Fri,  6 Dec 2024 14:46:10 +0000 (UTC)
+	 MIME-Version; b=G2ygzUYeSIEO0sIEPahGneFZAD+usqFL/i0mdYnvHrWYsxFhDecKeRy7WeiGaOktJ7yd/ocv/R3WJj6F0t+CA39ID5z0jGve0YG7tGEvux52y60ca8fCI/dZA6Aa/ku1SUuJoMvqoL6ehEKU17nbh6Dfsc/nR1aKLar4nCHSyx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPuVt7G4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0138C4CED1;
+	Fri,  6 Dec 2024 14:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496370;
-	bh=70KqBnlDLrlTlMNpIT531NzGbRvM/VkBvPE5/chEB4s=;
+	s=korg; t=1733496377;
+	bh=7MEA2xZfXm6GwS2ZnLRLJNDvk0n6kS2Klds+5tSqY9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yveOxdDhCwQtQ0qkHocGF4NaHWJ806XlJ5mDQt15MRfq+BohwLdlSbKP4jmKWFnNp
-	 1L1c+qg0bRO9NmR2/Ar/HvL8WYMYdqFT8z2BlFSczmPz4v48RQHgzDfFZxotY0Dkrd
-	 UodWU2UXiNCyAf35XJ8NSX/CBWO/KNMo/3LpyaPE=
+	b=QPuVt7G4Hi08x5pWdQj4KptOTTkNlBog3rPOaXD9ra50P6iIRGrY5UUMEbqgtCZuR
+	 jVhNQhyzbLD/xdk3aybikhxHR04CBuuOtY4Gh56m8yHeiRcpA9K4q2URDNYqz9R36S
+	 kSFlgj3h/3mdf0d6ilQeOeqPzeE9ptPNOWnogb+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.12 133/146] drm/xe/guc_submit: fix race around suspend_pending
-Date: Fri,  6 Dec 2024 15:37:44 +0100
-Message-ID: <20241206143532.773434938@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 134/146] drm/amdkfd: Use the correct wptr size
+Date: Fri,  6 Dec 2024 15:37:45 +0100
+Message-ID: <20241206143532.813427055@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -60,97 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit 87651f31ae4e6e6e7e6c7270b9b469405e747407 upstream.
+commit cdc6705f98ea3f854a60ba8c9b19228e197ae384 upstream.
 
-Currently in some testcases we can trigger:
+Write pointer could be 32-bit or 64-bit. Use the correct size during
+initialization.
 
-xe 0000:03:00.0: [drm] Assertion `exec_queue_destroyed(q)` failed!
-....
-WARNING: CPU: 18 PID: 2640 at drivers/gpu/drm/xe/xe_guc_submit.c:1826 xe_guc_sched_done_handler+0xa54/0xef0 [xe]
-xe 0000:03:00.0: [drm] *ERROR* GT1: DEREGISTER_DONE: Unexpected engine state 0x00a1, guc_id=57
-
-Looking at a snippet of corresponding ftrace for this GuC id we can see:
-
-162.673311: xe_sched_msg_add:     dev=0000:03:00.0, gt=1 guc_id=57, opcode=3
-162.673317: xe_sched_msg_recv:    dev=0000:03:00.0, gt=1 guc_id=57, opcode=3
-162.673319: xe_exec_queue_scheduling_disable: dev=0000:03:00.0, 1:0x2, gt=1, width=1, guc_id=57, guc_state=0x29, flags=0x0
-162.674089: xe_exec_queue_kill:   dev=0000:03:00.0, 1:0x2, gt=1, width=1, guc_id=57, guc_state=0x29, flags=0x0
-162.674108: xe_exec_queue_close:  dev=0000:03:00.0, 1:0x2, gt=1, width=1, guc_id=57, guc_state=0xa9, flags=0x0
-162.674488: xe_exec_queue_scheduling_done: dev=0000:03:00.0, 1:0x2, gt=1, width=1, guc_id=57, guc_state=0xa9, flags=0x0
-162.678452: xe_exec_queue_deregister: dev=0000:03:00.0, 1:0x2, gt=1, width=1, guc_id=57, guc_state=0xa1, flags=0x0
-
-It looks like we try to suspend the queue (opcode=3), setting
-suspend_pending and triggering a disable_scheduling. The user then
-closes the queue. However the close will also forcefully signal the
-suspend fence after killing the queue, later when the G2H response for
-disable_scheduling comes back we have now cleared suspend_pending when
-signalling the suspend fence, so the disable_scheduling now incorrectly
-tries to also deregister the queue. This leads to warnings since the queue
-has yet to even be marked for destruction. We also seem to trigger
-errors later with trying to double unregister the same queue.
-
-To fix this tweak the ordering when handling the response to ensure we
-don't race with a disable_scheduling that didn't actually intend to
-perform an unregister.  The destruction path should now also correctly
-wait for any pending_disable before marking as destroyed.
-
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3371
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241122161914.321263-6-matthew.auld@intel.com
-(cherry picked from commit f161809b362f027b6d72bd998e47f8f0bad60a2e)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |   17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1846,16 +1846,29 @@ static void handle_sched_done(struct xe_
- 		xe_gt_assert(guc_to_gt(guc), runnable_state == 0);
- 		xe_gt_assert(guc_to_gt(guc), exec_queue_pending_disable(q));
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
+@@ -125,7 +125,7 @@ static bool kq_initialize(struct kernel_
  
--		clear_exec_queue_pending_disable(q);
- 		if (q->guc->suspend_pending) {
- 			suspend_fence_signal(q);
-+			clear_exec_queue_pending_disable(q);
- 		} else {
- 			if (exec_queue_banned(q) || check_timeout) {
- 				smp_wmb();
- 				wake_up_all(&guc->ct.wq);
- 			}
--			if (!check_timeout)
-+			if (!check_timeout && exec_queue_destroyed(q)) {
-+				/*
-+				 * Make sure to clear the pending_disable only
-+				 * after sampling the destroyed state. We want
-+				 * to ensure we don't trigger the unregister too
-+				 * early with something intending to only
-+				 * disable scheduling. The caller doing the
-+				 * destroy must wait for an ongoing
-+				 * pending_disable before marking as destroyed.
-+				 */
-+				clear_exec_queue_pending_disable(q);
- 				deregister_exec_queue(guc, q);
-+			} else {
-+				clear_exec_queue_pending_disable(q);
-+			}
- 		}
- 	}
- }
+ 	memset(kq->pq_kernel_addr, 0, queue_size);
+ 	memset(kq->rptr_kernel, 0, sizeof(*kq->rptr_kernel));
+-	memset(kq->wptr_kernel, 0, sizeof(*kq->wptr_kernel));
++	memset(kq->wptr_kernel, 0, dev->kfd->device_info.doorbell_size);
+ 
+ 	prop.queue_size = queue_size;
+ 	prop.is_interop = false;
 
 
 
