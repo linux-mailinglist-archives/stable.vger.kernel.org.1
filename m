@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-99963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2F89E76C0
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 241079E76C1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41381623C5
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D756C2827BD
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAD71F8AF0;
-	Fri,  6 Dec 2024 17:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC951F3D5E;
+	Fri,  6 Dec 2024 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fhmMB/yT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BTHGdlne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E31C1F4E36
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D4C1E1A05
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733505091; cv=none; b=rGD1ol5PacL7bUV9EY+oyyZ1mK+pOcteUH4zNycsKWif+b1Ql7evNh8AG9LOJogDXT2+3TgnuRsC7qX8o9Zc5RmxFmDeQBDUZvBwWjbi8tELkzZn+ALkN9IzBOsRRbS4AyhGarixQF0/1NNbDKwQJKcemtwrsgN06iKMhQDFJgY=
+	t=1733505092; cv=none; b=G9ptq89fBtMLMIXN+rAuTrEVkY5PJFdADk6RGFzruxTHP/FLE55OQ4ncuvoJ5sJNt4fYarQqrscOSAm4cGe7m+a4gnMXm1oXVvmlCHKNOP/zqrhYKRRmVPrW9yvXTH/kW01Wmv6ZZ073AfyNdXIH0MvDytFb6+ztSnhs4f1NJuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733505091; c=relaxed/simple;
-	bh=fJIgl/FpOUHCvWPvIAZ5o4iXR+4l35COmsS/45BFD+o=;
+	s=arc-20240116; t=1733505092; c=relaxed/simple;
+	bh=dcxqr6gb66BKtV8Z/ehf383CJIrjXaNV5E5qqn1Kjnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYFlMxjCpmVtId16rZbLSl5D6iOmYx3dw8MQGyIKIQIkj4/klhx5IDvUnTmf8+LY9t6bN9AmYRav2UIrPqKTDPLy7+A9sfI+M0xLf3njmMlGJmOEL9dwldL+6WYSht0/h76bZdcUnDAHW17X/iElgqctLFbfF2mIJC1MxGvFIXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fhmMB/yT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E47C4CED1;
-	Fri,  6 Dec 2024 17:11:29 +0000 (UTC)
+	 MIME-Version; b=uA2/K4pBTIgoRnbFWDQ7fAvSCarQF0c4pvgLuSVz3bvuHvuSk6fjsbhFGw+YO6WCy+y/+IhVKmH5qzluSRVgDPGUJdyi7JNmeie58OaG9Qp1sSizhbDA2jCxZqnRo7lzjYAtrnFHGYj4qQQXLi5ECOMvu+1b5grDvDkHGYku5iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BTHGdlne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41825C4CED1;
+	Fri,  6 Dec 2024 17:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733505090;
-	bh=fJIgl/FpOUHCvWPvIAZ5o4iXR+4l35COmsS/45BFD+o=;
+	s=k20201202; t=1733505092;
+	bh=dcxqr6gb66BKtV8Z/ehf383CJIrjXaNV5E5qqn1Kjnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhmMB/yTtczzGv6hiScTixb5qZlUq+VoHAMFDRskjY0CTw6VNGmBmmvzwE/1KNMBL
-	 ri+eo7rBuCTbKehPA9EDmGms5z8S93FrraTyoES+e78XQ0EjAnOCk9F/ZYJhgx9nQv
-	 /hj12mGTncw/g0Az6Ynz6rO1zAgVKaXyzmyWWmmIbxtA5LLa+T847j9E1t9BoSPwhu
-	 JQJxw8C6YFppMLracnAS94Hn3pcuCtVRUyagzx9fDdTCHDY8pHjAec6caieGV75msJ
-	 Lh+TFuOOKhV6d7NwHZLrUTgY1KqbR/l2D8GMYy+sz7o3ws0CaIYEJy/pmX3C22lHiM
-	 QLwHWFQLwZ9lg==
+	b=BTHGdlneqGfLH41Xe0cIfzxGH8+VesLf+57CBy0sV2dzT2k7+2GOq4mw11FrpxPGQ
+	 Y/p7tQxqWninw0D/GMp5C2L+HKAzTD+LWpTCzKoix9rZ3R14Rh9ninkHwCAzZ2XEE+
+	 NQy8EYzOtkuEkbqb5bBKYwRJ5QNmFbtnc9H5ZdtlgRj2C2rmpwwkMkF4aDKlVpZ6Xn
+	 pFUNTwcQi2wpExjmhEzxaVd7I4gLn7uz8MOVA3++Kp06izoTyGFYJrEJ/DwuCuHD/T
+	 s+nMbZJzw3V9rLre+GWS7COCJhCwAmPp8jh4eifgTbV17lrhafDh3NEj8TBkobXY0P
+	 v5QRRVNypyumw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>,
+Cc: Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y v3] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
-Date: Fri,  6 Dec 2024 12:11:28 -0500
-Message-ID: <20241206103625-b02b11d89f7fcccf@stable.kernel.org>
+Subject: Re: [PATCH v5.10-v6.6] btrfs: don't BUG_ON on ENOMEM from btrfs_lookuip_extent_info() in walk_down_proc()
+Date: Fri,  6 Dec 2024 12:11:30 -0500
+Message-ID: <20241206112129-3501fbcbea4a5d21@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241206102357.1259610-1-bsevens@google.com>
+In-Reply-To:  <20241206040846.4013310-1-keerthana.kalyanasundaram@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,29 +63,27 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: a3dd4d63eeb452cfb064a13862fb376ab108f6a6
+The upstream commit SHA1 provided is correct: a580fb2c3479d993556e1c31b237c9e5be4944a3
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
-Commit author: Takashi Iwai <tiwai@suse.de>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Commit author: Josef Bacik <josef@toxicpanda.com>
 
 
 Status in newer kernel trees:
-6.12.y | Present (different SHA1: 096bb5b43edf)
-6.6.y | Present (different SHA1: a3e9b49ef5a5)
-6.1.y | Present (different SHA1: f30a4d8cb1bd)
-5.15.y | Present (different SHA1: db5afb61c536)
-5.10.y | Not found
+6.12.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a3dd4d63eeb45 < -:  ------------- ALSA: usb-audio: Fix out of bounds reads when finding clock sources
--:  ------------- > 1:  9bf995ef0eedc ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+1:  a580fb2c3479d < -:  ------------- btrfs: don't BUG_ON on ENOMEM from btrfs_lookup_extent_info() in walk_down_proc()
+-:  ------------- > 1:  614d01a4521eb btrfs: don't BUG_ON on ENOMEM from btrfs_lookuip_extent_info() in walk_down_proc()
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
+| stable/linux-6.6.y        |  Success    |  Success   |
 | stable/linux-5.10.y       |  Success    |  Success   |
 
