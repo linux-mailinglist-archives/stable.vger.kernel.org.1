@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-99882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19819E73F9
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:26:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D0E9E740A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A01571889528
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:24:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950BC16B1CE
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362301465AB;
-	Fri,  6 Dec 2024 15:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4770E1F4735;
+	Fri,  6 Dec 2024 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEWQyDEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaIlus7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4279149C51;
-	Fri,  6 Dec 2024 15:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A65149C51;
+	Fri,  6 Dec 2024 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498672; cv=none; b=APqCykeMeaf0upB1mHU5bKbH9yCClC2iJKiWP9kUujvuaOC5pUssXAB2lGkH1ZjBJ3dBGdd5mGbGnVUpiD0NDGX1EJvrThn1NP6fdkRm4d+2zBwTm77OzyUOzMCVJ73WAL8u5eBp3HKqIpZ6uSho52I9U2FcCRta3H//4t4QkP0=
+	t=1733498776; cv=none; b=uAHLacagVYYDuh3ElCyuysPGusepj8o+4GdlKZRlMN1pniYbb4eI5BAjqyhRyQQ10vHKpvc6dRU3KiXgYoY8ALFqsOWO/VcnfKnNozRdK1eswuzV3Gmy0QCOGG9e6l8vOJbUzHnKS0HFKHI7qO1vDR/p5yT2rXy+fbu/xJq01xU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498672; c=relaxed/simple;
-	bh=NLkvdJs+bA+zkTv6vpmSHCZCwXyNnDRWhgy3Xnx0E64=;
+	s=arc-20240116; t=1733498776; c=relaxed/simple;
+	bh=IQisGBLeS/SV+iqwGrF28t95m7yH90UbuyDiVItm4xE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdDsDtUQhyS04fiWdkgUxo+vbqKGT7q2f5k+ujLQZeDXdQ8moQVDGAKUpWimA/W0HrIs9w6v+koCsVcdRzl7mDY8FF31JUe3ATctggqA8bAZo4q8mMldIiX4xLECD3gFJ+1bwCh8NFzBG931jWRUcIGEvg1Lj3b004i00aVNJTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEWQyDEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A47CC4CED1;
-	Fri,  6 Dec 2024 15:24:31 +0000 (UTC)
+	 MIME-Version; b=J9tqeKiTZr41tTdYafV1Miu3OvAaYwj2V9M1vQ/vgM4NbOqOmbQGj9NkfChFVEUgEgFWMknHYAVjFXOPBvtUI3/yjmL+Kp2BtbtdKBT3VbP8+bl6CRv4LGwwUzJ/FE/O4I7ncvwCDPRQWsdyaqddTCbbuUKpKak+3uREIExrV90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaIlus7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD90C4CED1;
+	Fri,  6 Dec 2024 15:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498671;
-	bh=NLkvdJs+bA+zkTv6vpmSHCZCwXyNnDRWhgy3Xnx0E64=;
+	s=korg; t=1733498775;
+	bh=IQisGBLeS/SV+iqwGrF28t95m7yH90UbuyDiVItm4xE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IEWQyDEOKJzJGRit7nNlIMVeQc8aMcC+lQKdYlJ7Du7FCHhX+M8BhKAnkThf08L5J
-	 +W0GQO1d45ljCcMMX5a9+WW0UFd/e0JRb1DlNVFJ6CaFoppkxa4m+2Yh4wCfW3J7GK
-	 JnYMmdL1tpJo/4U+hmPN3r5JYZBPlWKa5Q175t7Y=
+	b=TaIlus7kOOHihrIE3iw7c903COInPRsId3eoVjmjYb8mgp+ZAr+8rsXmjpLQ23weq
+	 6n7LnkQs8gFiKpCdnEHQNuaekOK5hyrMlPjxRqXsnP+rdBM/SyT8URZJS5aBpaibS2
+	 Owd1yvLOmsZ937XXYD0I65ZFfAqXM+n+YUZgZksw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ssuhung Yeh <ssuhung@gmail.com>,
+	Yuan Can <yuancan@huawei.com>,
 	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 652/676] dm: Fix typo in error message
-Date: Fri,  6 Dec 2024 15:37:51 +0100
-Message-ID: <20241206143718.837643154@linuxfoundation.org>
+Subject: [PATCH 6.6 653/676] dm thin: Add missing destroy_work_on_stack()
+Date: Fri,  6 Dec 2024 15:37:52 +0100
+Message-ID: <20241206143718.876969671@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -65,39 +65,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ssuhung Yeh <ssuhung@gmail.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit 2deb70d3e66d538404d9e71bff236e6d260da66e upstream.
+commit e74fa2447bf9ed03d085b6d91f0256cc1b53f1a8 upstream.
 
-Remove the redundant "i" at the beginning of the error message. This "i"
-came from commit 1c1318866928 ("dm: prefer
-'"%s...", __func__'"), the "i" is accidentally left.
+This commit add missed destroy_work_on_stack() operations for pw->worker in
+pool_work_wait().
 
-Signed-off-by: Ssuhung Yeh <ssuhung@gmail.com>
+Fixes: e7a3e871d895 ("dm thin: cleanup noflush_work to use a proper completion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuan Can <yuancan@huawei.com>
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: 1c1318866928 ("dm: prefer '"%s...", __func__'")
-Cc: stable@vger.kernel.org	# v6.3+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/persistent-data/dm-space-map-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-thin.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/persistent-data/dm-space-map-common.c b/drivers/md/persistent-data/dm-space-map-common.c
-index 3a19124ee279..22a551c407da 100644
---- a/drivers/md/persistent-data/dm-space-map-common.c
-+++ b/drivers/md/persistent-data/dm-space-map-common.c
-@@ -51,7 +51,7 @@ static int index_check(const struct dm_block_validator *v,
- 					       block_size - sizeof(__le32),
- 					       INDEX_CSUM_XOR));
- 	if (csum_disk != mi_le->csum) {
--		DMERR_LIMIT("i%s failed: csum %u != wanted %u", __func__,
-+		DMERR_LIMIT("%s failed: csum %u != wanted %u", __func__,
- 			    le32_to_cpu(csum_disk), le32_to_cpu(mi_le->csum));
- 		return -EILSEQ;
- 	}
--- 
-2.47.1
-
+--- a/drivers/md/dm-thin.c
++++ b/drivers/md/dm-thin.c
+@@ -2486,6 +2486,7 @@ static void pool_work_wait(struct pool_w
+ 	init_completion(&pw->complete);
+ 	queue_work(pool->wq, &pw->worker);
+ 	wait_for_completion(&pw->complete);
++	destroy_work_on_stack(&pw->worker);
+ }
+ 
+ /*----------------------------------------------------------------*/
 
 
 
