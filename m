@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-99728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9E79E7319
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:16:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECAA9E730E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:16:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A951D1887D97
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3EC16A663
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A2C17C208;
-	Fri,  6 Dec 2024 15:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E757562171;
+	Fri,  6 Dec 2024 15:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URMNaM1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rzd+U5+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B8A3B2BB;
-	Fri,  6 Dec 2024 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46603B2BB;
+	Fri,  6 Dec 2024 15:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498154; cv=none; b=qj2S9rlCJD4OIB4mCcC8TuLL5FIDhGa68MdWiIGJyyVx5AKtZz5K0r7qFoMy+c4txSMMRibFWv9d4r8P4lsH+QNlyF1flQ4pNxEtlmbQnR9WL58oDp4/3GbMI/kBoHxFAmlOl2ot6Z12WupT8DrCCdcU//mUa2w2eCE8CSRXgiw=
+	t=1733498160; cv=none; b=filJV8NcWLFp3bMUHLfKxyAcE2Lg7KrZOc/8MMR7jyDn8bf5Oussticwi1tD0BMxVn62YwIEg1hi7YI9Dl0h7Kob0hkGfWe7XJCPRENaDRIe42vCuVuJmAEF1mZzYOo+DtE71vgkV50d9D8XqW8yZYTpXw8TCqfKUBhYm9k7k0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498154; c=relaxed/simple;
-	bh=lwzp7zQWfPIz3TjQW+sgHuW5Rre6JVj0Xyboe7Rxe3A=;
+	s=arc-20240116; t=1733498160; c=relaxed/simple;
+	bh=077Aw0qBpaVAlEWHqNnszd0R5VIVTKhDzbZGhWfuow0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKQzo7/ZkzYNt14VAF0CZDG4sOhQndgbVsRaytbaTGLkdN5e9cb6qSw4iQtSTnAHODVTp3OqhOcb/7Kz+MuA4rcrb1J1DoTA0gFuAPbGrY4vY01i/HyshmF/O6nuua8XCPGuU22wcq6hS9Zhss31GBAYSih4cLpba3P0EEOnRZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=URMNaM1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55443C4CED1;
-	Fri,  6 Dec 2024 15:15:53 +0000 (UTC)
+	 MIME-Version; b=uvd50/zl45Z/lxHMbQgwViOtD6st8tkaco3CgImFhWg/6xeYwTDp+hrfbHSGt+dZF4rNXxjVFCgBuAom8kWNSe+pT8kaWbQCBkYf7ANctmxPooDIdcuyjaeKDJ8km084Ta8e1mm0krtUOEV/i23RoKIyoOqwIAueGMEMifwPSIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rzd+U5+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C122CC4CEDC;
+	Fri,  6 Dec 2024 15:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498153;
-	bh=lwzp7zQWfPIz3TjQW+sgHuW5Rre6JVj0Xyboe7Rxe3A=;
+	s=korg; t=1733498160;
+	bh=077Aw0qBpaVAlEWHqNnszd0R5VIVTKhDzbZGhWfuow0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URMNaM1nqXLOTMwYgja/XeS4GxsDc1vHR3cdwMgHGZFsuwYoy073DWFHIt+/BYaC1
-	 iDWrrXIxH8hMnt1lBXSWyiJJUPUtQnlRHgXsGekcumRmSmoLM7YLGwYxZj9HB1U2dA
-	 Ddm2w/twac3cth/1m4U45gb6vhBkZQ7Y0h1OMAa8=
+	b=Rzd+U5+CxR9BA1PbmK8TxH1mNxWKu7gttCwdPS079t8pHt12kJ4fDdWpNrQUw/rr3
+	 UbZ4WOw5Bqb6GH6HqtEvoYSwcDDagSpdh7+zO4rXz5E0WX2k8z1SQn9iogWl1FzFyt
+	 s4hqzgM+J97X48A9iM6eV0mnQa9atk5IxjZh6HFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 501/676] wifi: brcmfmac: release root node in all execution paths
-Date: Fri,  6 Dec 2024 15:35:20 +0100
-Message-ID: <20241206143712.926270288@linuxfoundation.org>
+	Michal Vrastil <michal.vrastil@hidglobal.com>,
+	Elson Roy Serrao <quic_eserrao@quicinc.com>,
+	Peter korsgaard <peter@korsgaard.com>
+Subject: [PATCH 6.6 502/676] Revert "usb: gadget: composite: fix OS descriptors w_value logic"
+Date: Fri,  6 Dec 2024 15:35:21 +0100
+Message-ID: <20241206143712.965237758@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -65,41 +66,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Michal Vrastil <michal.vrastil@hidglobal.com>
 
-commit 2e19a3b590ebf2e351fc9d0e7c323430e65b6b6d upstream.
+commit 51cdd69d6a857f527d6d0697a2e1f0fa8bca1005 upstream.
 
-The fixed patch introduced an additional condition to enter the scope
-where the 'root' device_node is released (!settings->board_type,
-currently 'err'), which avoid decrementing the refcount with a call to
-of_node_put() if that second condition is not satisfied.
+This reverts commit ec6ce7075ef879b91a8710829016005dc8170f17.
 
-Move the call to of_node_put() to the point where 'root' is no longer
-required to avoid leaking the resource if err is not zero.
+Fix installation of WinUSB driver using OS descriptors. Without the
+fix the drivers are not installed correctly and the property
+'DeviceInterfaceGUID' is missing on host side.
+
+The original change was based on the assumption that the interface
+number is in the high byte of wValue but it is in the low byte,
+instead. Unfortunately, the fix is based on MS documentation which is
+also wrong.
+
+The actual USB request for OS descriptors (using USB analyzer) looks
+like:
+
+Offset  0   1   2   3   4   5   6   7
+0x000   C1  A1  02  00  05  00  0A  00
+
+C1: bmRequestType (device to host, vendor, interface)
+A1: nas magic number
+0002: wValue (2: nas interface)
+0005: wIndex (5: get extended property i.e. nas interface GUID)
+008E: wLength (142)
+
+The fix was tested on Windows 10 and Windows 11.
 
 Cc: stable@vger.kernel.org
-Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com
+Fixes: ec6ce7075ef8 ("usb: gadget: composite: fix OS descriptors w_value logic")
+Signed-off-by: Michal Vrastil <michal.vrastil@hidglobal.com>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Acked-by: Peter korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20241113235433.20244-1-quic_eserrao@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/gadget/composite.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -109,9 +109,8 @@ void brcmf_of_probe(struct device *dev,
- 		}
- 		strreplace(board_type, '/', '-');
- 		settings->board_type = board_type;
--
--		of_node_put(root);
- 	}
-+	of_node_put(root);
- 
- 	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
- 		return;
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2111,8 +2111,20 @@ unknown:
+ 			memset(buf, 0, w_length);
+ 			buf[5] = 0x01;
+ 			switch (ctrl->bRequestType & USB_RECIP_MASK) {
++			/*
++			 * The Microsoft CompatID OS Descriptor Spec(w_index = 0x4) and
++			 * Extended Prop OS Desc Spec(w_index = 0x5) state that the
++			 * HighByte of wValue is the InterfaceNumber and the LowByte is
++			 * the PageNumber. This high/low byte ordering is incorrectly
++			 * documented in the Spec. USB analyzer output on the below
++			 * request packets show the high/low byte inverted i.e LowByte
++			 * is the InterfaceNumber and the HighByte is the PageNumber.
++			 * Since we dont support >64KB CompatID/ExtendedProp descriptors,
++			 * PageNumber is set to 0. Hence verify that the HighByte is 0
++			 * for below two cases.
++			 */
+ 			case USB_RECIP_DEVICE:
+-				if (w_index != 0x4 || (w_value & 0xff))
++				if (w_index != 0x4 || (w_value >> 8))
+ 					break;
+ 				buf[6] = w_index;
+ 				/* Number of ext compat interfaces */
+@@ -2128,9 +2140,9 @@ unknown:
+ 				}
+ 				break;
+ 			case USB_RECIP_INTERFACE:
+-				if (w_index != 0x5 || (w_value & 0xff))
++				if (w_index != 0x5 || (w_value >> 8))
+ 					break;
+-				interface = w_value >> 8;
++				interface = w_value & 0xFF;
+ 				if (interface >= MAX_CONFIG_INTERFACES ||
+ 				    !os_desc_cfg->interface[interface])
+ 					break;
 
 
 
