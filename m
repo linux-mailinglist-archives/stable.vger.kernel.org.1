@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-99675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49BA9E72C9
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:13:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5345A9E72FF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:15:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95EE8287166
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F6F116A9EC
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657ED207DF8;
-	Fri,  6 Dec 2024 15:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40E32066C2;
+	Fri,  6 Dec 2024 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLcoSbMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sM2Pmph8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C851527AC;
-	Fri,  6 Dec 2024 15:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14851474B2;
+	Fri,  6 Dec 2024 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497974; cv=none; b=rOFCwrvtgPfqytb7ofXRdnpND/PpB0kj8PF2JdhnRlNjWXmrm3w8LL+djg42sp8gQhus4PdQtsOBPNIokkcxGXhReo8n5nIti2cERXy9SfGhluwlemQcXHGTQSycAM1OQn05O7wbxCSZ6m7HL1zGzdRLWxY+fnNckGhN2osQxdU=
+	t=1733498111; cv=none; b=Nh7iiXmGUEUBdFnNEV+ctmHavXE3HTyJ7jm5L0eLjZnPw0eOZA908hKPO62cMqrIkSLoDTwITd8l5ivG7EpRMC3YSKv5WR2fReRLgnbWi9EamojchjkIm9Rg8C3sVHT+MqbTwI5DHVNq/LrPdT01LJwde0RIowIMXanOi3XpZts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497974; c=relaxed/simple;
-	bh=W+a9ZDLBrEMbxi6c+8Og+iPDOcqabWt6qrMayfIk3vE=;
+	s=arc-20240116; t=1733498111; c=relaxed/simple;
+	bh=C6vb4Hz0U5NQfZAWolrHn6j1kUTJxab9/LWrIVevRI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4GtzS78pj4RXG90g36tvvTZ2g7YyPy0IGlsN6i0Zh7xvANd1iQcIvH+1GCHiPUakq3USuzQewlDfv3NJc+XBnCHY7Vp0jP9a3d9VXv+fmoIGLQ+NEXsQrZ3hwzWXPgd2eoeFtcLXdhI0o+ZNlyhwoAdjQNU84uadPI1tij4igg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLcoSbMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82638C4CED1;
-	Fri,  6 Dec 2024 15:12:53 +0000 (UTC)
+	 MIME-Version; b=YW79kmQ5+LU8KQ7Q50SjFh/i7lt2IK7kcTXut8zAODXGZQyP/YgSB1rTUDmaxA4UjJQKnj0zsPSdtL3xLXe4zZeiCaJvremqVZ29ib6FU+P5GQmQWAqsO5dE06IEHhY+04516rGbsuI4jD556MNLJW8xj4GJehMr26ITRKxys2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sM2Pmph8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E66C4CED1;
+	Fri,  6 Dec 2024 15:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497974;
-	bh=W+a9ZDLBrEMbxi6c+8Og+iPDOcqabWt6qrMayfIk3vE=;
+	s=korg; t=1733498111;
+	bh=C6vb4Hz0U5NQfZAWolrHn6j1kUTJxab9/LWrIVevRI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLcoSbMYGxLkx85CV7Qhu/fqneMb++/MZ17wCx6lYkPYETyNOWyeq4K67ULL3Nmpf
-	 V0coh5GtX12gKKjOaaHsL1RkxdFA4p2/R9W8hIIVDCxPOY5msKBp8lh0/VLnr001B0
-	 fpxrdim6+WuVnNs9WUt2fvIKFqMeeRk88ffmCAuA=
+	b=sM2Pmph8ViF2Rg6knk7DKsEJN9Ql6QVsmpzPliJq1R7IohM/rQjca2nl7njVx3+Dk
+	 vAEkO8nXdH+azxE1bGI4uUqQmNOBtMUa8MdixcybVROz+qZfMto0fojj9g/9aq3ahH
+	 75DYr3i5AjFGUYeG6xkZ1T7zshUBcOUMijMtuZKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Puranjay Mohan <pjy@amazon.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Anuj Gupta <anuj20.g@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Hagar Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 6.6 447/676] nvme: fix metadata handling in nvme-passthrough
-Date: Fri,  6 Dec 2024 15:34:26 +0100
-Message-ID: <20241206143710.829435088@linuxfoundation.org>
+	lei lu <llfamsec@gmail.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Bin Lan <bin.lan.cn@windriver.com>
+Subject: [PATCH 6.6 448/676] xfs: add bounds checking to xlog_recover_process_data
+Date: Fri,  6 Dec 2024 15:34:27 +0100
+Message-ID: <20241206143710.867866211@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -69,71 +68,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Puranjay Mohan <pjy@amazon.com>
+From: lei lu <llfamsec@gmail.com>
 
-commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 upstream.
+commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
 
-On an NVMe namespace that does not support metadata, it is possible to
-send an IO command with metadata through io-passthru. This allows issues
-like [1] to trigger in the completion code path.
-nvme_map_user_request() doesn't check if the namespace supports metadata
-before sending it forward. It also allows admin commands with metadata to
-be processed as it ignores metadata when bdev == NULL and may report
-success.
+There is a lack of verification of the space occupied by fixed members
+of xlog_op_header in the xlog_recover_process_data.
 
-Reject an IO command with metadata when the NVMe namespace doesn't
-support it and reject an admin command if it has metadata.
+We can create a crafted image to trigger an out of bounds read by
+following these steps:
+    1) Mount an image of xfs, and do some file operations to leave records
+    2) Before umounting, copy the image for subsequent steps to simulate
+       abnormal exit. Because umount will ensure that tail_blk and
+       head_blk are the same, which will result in the inability to enter
+       xlog_recover_process_data
+    3) Write a tool to parse and modify the copied image in step 2
+    4) Make the end of the xlog_op_header entries only 1 byte away from
+       xlog_rec_header->h_size
+    5) xlog_rec_header->h_num_logops++
+    6) Modify xlog_rec_header->h_crc
 
-[1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
+Fix:
+Add a check to make sure there is sufficient space to access fixed members
+of xlog_op_header.
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Puranjay Mohan <pjy@amazon.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[ Minor changes to make it work on 6.6 ]
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Signed-off-by: lei lu <llfamsec@gmail.com>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/ioctl.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_log_recover.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2011-2014, Intel Corporation.
-  * Copyright (c) 2017-2021 Christoph Hellwig.
-  */
-+#include <linux/blk-integrity.h>
- #include <linux/ptrace.h>	/* for force_successful_syscall_return */
- #include <linux/nvme_ioctl.h>
- #include <linux/io_uring.h>
-@@ -171,10 +172,15 @@ static int nvme_map_user_request(struct
- 	struct request_queue *q = req->q;
- 	struct nvme_ns *ns = q->queuedata;
- 	struct block_device *bdev = ns ? ns->disk->part0 : NULL;
-+	bool supports_metadata = bdev && blk_get_integrity(bdev->bd_disk);
-+	bool has_metadata = meta_buffer && meta_len;
- 	struct bio *bio = NULL;
- 	void *meta = NULL;
- 	int ret;
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2456,7 +2456,10 @@ xlog_recover_process_data(
  
-+	if (has_metadata && !supports_metadata)
-+		return -EINVAL;
-+
- 	if (ioucmd && (ioucmd->flags & IORING_URING_CMD_FIXED)) {
- 		struct iov_iter iter;
+ 		ohead = (struct xlog_op_header *)dp;
+ 		dp += sizeof(*ohead);
+-		ASSERT(dp <= end);
++		if (dp > end) {
++			xfs_warn(log->l_mp, "%s: op header overrun", __func__);
++			return -EFSCORRUPTED;
++		}
  
-@@ -198,7 +204,7 @@ static int nvme_map_user_request(struct
- 	if (bdev)
- 		bio_set_dev(bio, bdev);
- 
--	if (bdev && meta_buffer && meta_len) {
-+	if (has_metadata) {
- 		meta = nvme_add_user_metadata(req, meta_buffer, meta_len,
- 				meta_seed);
- 		if (IS_ERR(meta)) {
+ 		/* errors will abort recovery */
+ 		error = xlog_recover_process_ophdr(log, rhash, rhead, ohead,
 
 
 
