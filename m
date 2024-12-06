@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-99008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50799E6DAD
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:03:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA0F9E6DAE
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:03:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6CFB1674CF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:03:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F762830D6
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76731200B88;
-	Fri,  6 Dec 2024 12:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559031FF615;
+	Fri,  6 Dec 2024 12:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z78hivn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGxQHCCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3509D200B81
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168121DACB4
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733486589; cv=none; b=UDOxzCrh9oAI+wBXZAlmuiSUyxxBn1vIUTUv/BIh+8UICtAXhAn2zqtUzhGnBqay3Jd1J1o7iyXRLdTNHAk2axFJP6ZcOo4U3oRmmIK4ebu0pNv4FfkUHYkimwEQSoOzuko+JnDAjOeE8ilGAMGsYzCTe5duNjdD0VyZYaGDSJk=
+	t=1733486609; cv=none; b=RIOQgul7tRqzZPxI8IhJXGKJMVYQJvNb0B+ynWMPq9pdtQokmqKopwxQEpR1S7IIGvWMtiRcDytXCfB1RUBlN9nsH7REfjCWyd7A2SR40GKMeRlAd4+v17PmTl04WZLgFpZ1Tx12FwY+fNIX/93kjJHEzno7/9YeR6O+KHeLC3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733486589; c=relaxed/simple;
-	bh=sEb0l1Z9TGzBIQAGaOesfm8k45+7WFZvK6d5rygzrgA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=K4cbzsllvpYMGvajFbUK6F5sovj3OH7MJui+ug8x3NoNNTxvfRqkCefCsIte1UfOtHsqiCDMLOZPOpcM+CvDiV3/0VE3Cafe4E19x25ftv2EQElJYThUP5mGfFEgcWbC8nqaoD3Cm5U4eyFWQR26Dth5h6+zgXYOAymEcBZfgl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z78hivn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14640C4CEE1;
-	Fri,  6 Dec 2024 12:03:07 +0000 (UTC)
+	s=arc-20240116; t=1733486609; c=relaxed/simple;
+	bh=1G0BrA66y53hbuZWoRqL5kIjVdKwELC/x+i5hOIZv+M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=j435qDTQYqkUeTd2pdImVJTSSXEp1hJYJheTTADq1KquJCdvQTl4NrivnXbXeZX9pC/Ag1+76Sz/1iZOad0afw5DMyX6Y9UTXdpL/LSOqo5fI1PAfGUopE6u5adoiOf9wTeEcNLTLLDzx77AcKWMN9Ai2pvX0FmkqqU7SQ8TzKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGxQHCCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D13DC4CED1;
+	Fri,  6 Dec 2024 12:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733486588;
-	bh=sEb0l1Z9TGzBIQAGaOesfm8k45+7WFZvK6d5rygzrgA=;
+	s=korg; t=1733486605;
+	bh=1G0BrA66y53hbuZWoRqL5kIjVdKwELC/x+i5hOIZv+M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=z78hivn6JpuidMJlR1TfV3fP1vP/8wfqpk2FJTLNHisoFB0fx7uDaAnmwaHaaSoKA
-	 NF1fatv+g7WJa7jus1QE4TGvcQKulEclkgPaCI1GrCtALgZ0qq1qRq0TtdcXgElw/D
-	 NDOomSH+IR94r/KHMEzAnQQhO8fG2Dbl9Juuuyko=
-Subject: FAILED: patch "[PATCH] posix-timers: Target group sigqueue to current task only if" failed to apply to 6.6-stable tree
-To: frederic@kernel.org,anthony.mallet@laas.fr,oleg@redhat.com,tglx@linutronix.de
+	b=wGxQHCCmpR3stA76znmAsSFfU8PT8jcA4EiPywWBPFwccN6KkUXwAcdeTfdTWEWoX
+	 C5I+DhEqAYpSH0d2LKjniJW7YyDe0CuIl/aq3onyqoDo/RREFTf0gvXqHFKbGqkBMG
+	 gawx7e3c0q8isdG+O9yWY0cnfNm0x4VyLu+LREAk=
+Subject: FAILED: patch "[PATCH] ntp: Remove invalid cast in time offset math" failed to apply to 6.12-stable tree
+To: marcelo.dalmas@ge.com,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 13:02:57 +0100
-Message-ID: <2024120657-mushiness-fence-cc2c@gregkh>
+Date: Fri, 06 Dec 2024 13:03:22 +0100
+Message-ID: <2024120622-enamel-avenge-5621@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 63dffecfba3eddcf67a8f76d80e0c141f93d44a5
+git cherry-pick -x f5807b0606da7ac7c1b74a386b22134ec7702d05
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120657-mushiness-fence-cc2c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120622-enamel-avenge-5621@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,69 +77,46 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 63dffecfba3eddcf67a8f76d80e0c141f93d44a5 Mon Sep 17 00:00:00 2001
-From: Frederic Weisbecker <frederic@kernel.org>
-Date: Sat, 23 Nov 2024 00:48:11 +0100
-Subject: [PATCH] posix-timers: Target group sigqueue to current task only if
- not exiting
+From f5807b0606da7ac7c1b74a386b22134ec7702d05 Mon Sep 17 00:00:00 2001
+From: Marcelo Dalmas <marcelo.dalmas@ge.com>
+Date: Mon, 25 Nov 2024 12:16:09 +0000
+Subject: [PATCH] ntp: Remove invalid cast in time offset math
 
-A sigqueue belonging to a posix timer, which target is not a specific
-thread but a whole thread group, is preferrably targeted to the current
-task if it is part of that thread group.
+Due to an unsigned cast, adjtimex() returns the wrong offest when using
+ADJ_MICRO and the offset is negative. In this case a small negative offset
+returns approximately 4.29 seconds (~ 2^32/1000 milliseconds) due to the
+unsigned cast of the negative offset.
 
-However nothing prevents a posix timer event from queueing such a
-sigqueue from a reaped yet running task. The interruptible code space
-between exit_notify() and the final call to schedule() is enough for
-posix_timer_fn() hrtimer to fire.
+This cast was added when the kernel internal struct timex was changed to
+use type long long for the time offset value to address the problem of a
+64bit/32bit division on 32bit systems.
 
-If that happens while the current task is part of the thread group
-target, it is proposed to handle it but since its sighand pointer may
-have been cleared already, the sigqueue is dropped even if there are
-other tasks running within the group that could handle it.
+The correct cast would have been (s32), which is correct as time_offset can
+only be in the range of [INT_MIN..INT_MAX] because the shift constant used
+for calculating it is 32. But that's non-obvious.
 
-As a result posix timers with thread group wide target may miss signals
-when some of their threads are exiting.
+Remove the cast and use div_s64() to cure the issue.
 
-Fix this with verifying that the current task hasn't been through
-exit_notify() before proposing it as a preferred target so as to ensure
-that its sighand is still here and stable.
+[ tglx: Fix white space damage, use div_s64() and amend the change log ]
 
-complete_signal() might still reconsider the choice and find a better
-target within the group if current has passed retarget_shared_pending()
-already.
-
-Fixes: bcb7ee79029d ("posix-timers: Prefer delivery of signals to the current thread")
-Reported-by: Anthony Mallet <anthony.mallet@laas.fr>
-Suggested-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: ead25417f82e ("timex: use __kernel_timex internally")
+Signed-off-by: Marcelo Dalmas <marcelo.dalmas@ge.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241122234811.60455-1-frederic@kernel.org
-Closes: https://lore.kernel.org/all/26411.57288.238690.681680@gargle.gargle.HOWL
+Link: https://lore.kernel.org/all/SJ0P101MB03687BF7D5A10FD3C49C51E5F42E2@SJ0P101MB0368.NAMP101.PROD.OUTLOOK.COM
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 98b65cb35830..989b1cc9116a 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -1959,14 +1959,15 @@ static void posixtimer_queue_sigqueue(struct sigqueue *q, struct task_struct *t,
-  *
-  * Where type is not PIDTYPE_PID, signals must be delivered to the
-  * process. In this case, prefer to deliver to current if it is in
-- * the same thread group as the target process, which avoids
-- * unnecessarily waking up a potentially idle task.
-+ * the same thread group as the target process and its sighand is
-+ * stable, which avoids unnecessarily waking up a potentially idle task.
-  */
- static inline struct task_struct *posixtimer_get_target(struct k_itimer *tmr)
- {
- 	struct task_struct *t = pid_task(tmr->it_pid, tmr->it_pid_type);
+diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
+index b550ebe0f03b..163e7a2033b6 100644
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -798,7 +798,7 @@ int __do_adjtimex(struct __kernel_timex *txc, const struct timespec64 *ts,
  
--	if (t && tmr->it_pid_type != PIDTYPE_PID && same_thread_group(t, current))
-+	if (t && tmr->it_pid_type != PIDTYPE_PID &&
-+	    same_thread_group(t, current) && !current->exit_state)
- 		t = current;
- 	return t;
- }
+ 		txc->offset = shift_right(ntpdata->time_offset * NTP_INTERVAL_FREQ, NTP_SCALE_SHIFT);
+ 		if (!(ntpdata->time_status & STA_NANO))
+-			txc->offset = (u32)txc->offset / NSEC_PER_USEC;
++			txc->offset = div_s64(txc->offset, NSEC_PER_USEC);
+ 	}
+ 
+ 	result = ntpdata->time_state;
 
 
