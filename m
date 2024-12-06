@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-99557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2C59E723B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:06:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 697689E7246
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:07:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9229166C92
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:06:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AD492874DF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7AC1527AC;
-	Fri,  6 Dec 2024 15:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03071494A8;
+	Fri,  6 Dec 2024 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6V+N4SZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JR2rVJQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD1653A7;
-	Fri,  6 Dec 2024 15:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA2953A7;
+	Fri,  6 Dec 2024 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497584; cv=none; b=I14Wkp7tesNQkHoA+8Wt0jm0O+wqgmYqJteXoj1O3alfeN8OStr+4A5Vzs1OYtqCnlUzSAtv0pAce7Pjnbk2MRnUzWhajLN2evW/m/czCgKQsW/7q7N4kXSanC/KjslK27ISvnpiVbEbUHQCLT80PWMzQX2IzgsIQqk0rtNcxvA=
+	t=1733497621; cv=none; b=q64az0BRrgz2J2lpghonvfupkSVnjLfTBwjMRt6MLL77Tz/E58A0FaJL0OF/LEtv9QE5HVjZNh1N/AQePpRgyXwaR5xdIdfqI0f2FfEieSDRKtkX3AYmpCZHAQYQh1XQldWIE8AMNPvwrdIuLq6V3jpXgJU1LWZth5o8Wfs9WC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497584; c=relaxed/simple;
-	bh=BmTSPQeMUbl9005WIMbzK/xepUrniQ9qnoeMdFuyBE0=;
+	s=arc-20240116; t=1733497621; c=relaxed/simple;
+	bh=KVl3FwJ0mHmKUrHfRYPmB+Kgtni3IC9xV4uPItqrmu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbNk0Cm8T+/Ck61zUHez9wcJWUKjcq3aj8SBdrGHWv7pTzEp0JzacPAHRnZYZkTtyFsrxoC+DeTgDj2KkavK+5Gg+XjsjJ7CH02aPpG0dHq29KOMihWycJUIMpn3/xXidEwDXbDQhkTGSku6kHJVK8X9uRmY8cdVnsWmP3hNRF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6V+N4SZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E4DC4CED1;
-	Fri,  6 Dec 2024 15:06:23 +0000 (UTC)
+	 MIME-Version; b=e6ZI0hfpVXLO7QsUeI1p11FeGRvN8WlAPto9v8QXXoSZiOXl8+y2KVurNuJPzJ/f4VWPttsLJ6GK9lQHpG0033NBloPtG8vKACxwsWhj4GdNmS/tbp4NKDlquMmhrNAk5byOGwGJxXTm+1WwehU8Ne1Vqojn1qUYRNuVPzDwAHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JR2rVJQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9A6C4CED1;
+	Fri,  6 Dec 2024 15:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497583;
-	bh=BmTSPQeMUbl9005WIMbzK/xepUrniQ9qnoeMdFuyBE0=;
+	s=korg; t=1733497621;
+	bh=KVl3FwJ0mHmKUrHfRYPmB+Kgtni3IC9xV4uPItqrmu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6V+N4SZSBiHCL0RzhTp7a1B+sNC9mA/oIAgx2hDS6qbxUCO2EJR4FH7tWLa5Efwv
-	 PzVNfbHfGkjTqHhNoiAix54iGn3br4m0rSq/D2JvCnPW33HDs7L3Uw5iyvMOBJ2jsK
-	 9/T3Vp0HQR9HokgooeeHZR/SWS0rdUtLuMCj+h8A=
+	b=JR2rVJQ2mTWUxb+qXKKwpi7Bco+mT69m09GfwBfDi3DJ+abfjVTr091GefP31ttLv
+	 5n/ABTqc3Bwe8wD/84m1yNp44+7TXTEcR4LqF6u5Zihdnj4dDP28JYihr5sXEzq7rN
+	 SAVhvsJKuM+eChLCge5rKrPJdCuBiR6jriIN4b5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Quentin Perret <qperret@google.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 314/676] RDMA/hns: Fix NULL pointer derefernce in hns_roce_map_mr_sg()
-Date: Fri,  6 Dec 2024 15:32:13 +0100
-Message-ID: <20241206143705.602849031@linuxfoundation.org>
+Subject: [PATCH 6.6 315/676] cpufreq: CPPC: Fix wrong return value in cppc_get_cpu_cost()
+Date: Fri,  6 Dec 2024 15:32:14 +0100
+Message-ID: <20241206143705.640819218@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,55 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 6b526d17eed850352d880b93b9bf20b93006bd92 ]
+[ Upstream commit be392aa80f1e5b0b65ccc2a540b9304fefcfe3d8 ]
 
-ib_map_mr_sg() allows ULPs to specify NULL as the sg_offset argument.
-The driver needs to check whether it is a NULL pointer before
-dereferencing it.
+cppc_get_cpu_cost() return 0 if the policy is NULL. Then in
+em_compute_costs(), the later zero check for cost is not valid
+as cost is uninitialized. As Quentin pointed out, kernel energy model
+core check the return value of get_cost() first, so if the callback
+failed it should tell the core. Return -EINVAL to fix it.
 
-Fixes: d387d4b54eb8 ("RDMA/hns: Fix missing pagesize and alignment check in FRMR")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20241108075743.2652258-3-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 1a1374bb8c59 ("cpufreq: CPPC: Fix possible null-ptr-deref for cppc_get_cpu_cost()")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/c4765377-7830-44c2-84fa-706b6e304e10@stanley.mountain/
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Quentin Perret <qperret@google.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_mr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/cpufreq/cppc_cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
-index b053f2f43dacd..7f29a55d378f0 100644
---- a/drivers/infiniband/hw/hns/hns_roce_mr.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
-@@ -415,15 +415,16 @@ static int hns_roce_set_page(struct ib_mr *ibmr, u64 addr)
- }
+diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+index 866a0538ca896..05a8418485079 100644
+--- a/drivers/cpufreq/cppc_cpufreq.c
++++ b/drivers/cpufreq/cppc_cpufreq.c
+@@ -499,7 +499,7 @@ static int cppc_get_cpu_cost(struct device *cpu_dev, unsigned long KHz,
  
- int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
--		       unsigned int *sg_offset)
-+		       unsigned int *sg_offset_p)
- {
-+	unsigned int sg_offset = sg_offset_p ? *sg_offset_p : 0;
- 	struct hns_roce_dev *hr_dev = to_hr_dev(ibmr->device);
- 	struct ib_device *ibdev = &hr_dev->ib_dev;
- 	struct hns_roce_mr *mr = to_hr_mr(ibmr);
- 	struct hns_roce_mtr *mtr = &mr->pbl_mtr;
- 	int ret, sg_num = 0;
+ 	policy = cpufreq_cpu_get_raw(cpu_dev->id);
+ 	if (!policy)
+-		return 0;
++		return -EINVAL;
  
--	if (!IS_ALIGNED(*sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
-+	if (!IS_ALIGNED(sg_offset, HNS_ROCE_FRMR_ALIGN_SIZE) ||
- 	    ibmr->page_size < HNS_HW_PAGE_SIZE ||
- 	    ibmr->page_size > HNS_HW_MAX_PAGE_SIZE)
- 		return sg_num;
-@@ -434,7 +435,7 @@ int hns_roce_map_mr_sg(struct ib_mr *ibmr, struct scatterlist *sg, int sg_nents,
- 	if (!mr->page_list)
- 		return sg_num;
- 
--	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset, hns_roce_set_page);
-+	sg_num = ib_sg_to_pages(ibmr, sg, sg_nents, sg_offset_p, hns_roce_set_page);
- 	if (sg_num < 1) {
- 		ibdev_err(ibdev, "failed to store sg pages %u %u, cnt = %d.\n",
- 			  mr->npages, mr->pbl_mtr.hem_cfg.buf_pg_count, sg_num);
+ 	cpu_data = policy->driver_data;
+ 	perf_caps = &cpu_data->perf_caps;
 -- 
 2.43.0
 
