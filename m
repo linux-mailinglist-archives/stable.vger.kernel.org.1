@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-99538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78ED9E7226
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:05:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B367D9E722E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 481681886873
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:05:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 568AA16C152
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41961537D4;
-	Fri,  6 Dec 2024 15:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9FF148832;
+	Fri,  6 Dec 2024 15:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RImQDIsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/rCUWn7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8345B13E03A;
-	Fri,  6 Dec 2024 15:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABA653A7;
+	Fri,  6 Dec 2024 15:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497513; cv=none; b=I2QUNEb+BQ7bl30nJqIKi4400ssDlCRO9c6FkpiwC4OIXb1W1yk4DZIODc8WKMR4sfydiWx7lPeE4qZ/d3GMULB5Pr2APnv3RjGiCDs9/vGXh46qqmHk85gGV1xRly3lCjUCxVTWRGrE2SWBNTQtldp/J6A+5M5TKP5yY2AVrOQ=
+	t=1733497541; cv=none; b=dTv6D/50i+0ryqIiQ/HrMCIjp5bcpmcrclSCOqYmVU9vAKn1/wvIzcMGAeVGgQQ8BqYWMxs6ww2A4cgZnpnT6+phhPDVWhiy4tMV6xlbuAhn3t0tS6zbW3RKwpkgTw9JHn3D8e/ULUo3Mh0knw2Vi4NbOhbcTlJjjrl2QVMBmV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497513; c=relaxed/simple;
-	bh=pzttmzl3/l+t+t0XIPy5D/aHt0zEaSta8K9k2iCDwgY=;
+	s=arc-20240116; t=1733497541; c=relaxed/simple;
+	bh=B177AZb1tq7UPsQlvUxDZ/hZJSjf/jwKE9oid/m/FuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o1RDN1GeKlBlj+AgiebT+cdapDtr9s1zTlNya47KTF2BHMihiam9DTKWC5g+HCDFVcBDob4VGnBV1ZQex5FdtNvNbgsrxNKwJ+M7Z29EpDknyVfwCSYjcp8IFPm8L0dIWb6EsB4JFRLm1EO9c68Abz+yI/MMa2sq8LsxDekDyS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RImQDIsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0821C4CED1;
-	Fri,  6 Dec 2024 15:05:12 +0000 (UTC)
+	 MIME-Version; b=K+zej8otd3hcVL1/gAv6pvlYv045QB968ohBQvZEjwFhT+TUV6oXeeLRinnEymDVzrWQs+W6C6Rh4KgXry1azYKezPiYPZzi8aP3z95VAPNfNRoJSKvjlmopHfPcK/sgvHZe2W4kKxY73rWmUYz6KPAioB2aV5D5tLl6IOWasNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/rCUWn7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3136FC4CED1;
+	Fri,  6 Dec 2024 15:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497513;
-	bh=pzttmzl3/l+t+t0XIPy5D/aHt0zEaSta8K9k2iCDwgY=;
+	s=korg; t=1733497540;
+	bh=B177AZb1tq7UPsQlvUxDZ/hZJSjf/jwKE9oid/m/FuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RImQDIsw0UMm+R+Lz/F5zV7oLKzxAUIPl2wcROwR3Gm+wk+RaAPV7kbQUfVSuoHJu
-	 1be288BBBTmqoD+cNwngkehZCqjX1t+W5LvqwdwkwvYxh/H+dkzkIP/9bkuSLj8UsC
-	 WUyNInO/Bl6o6GWM9jfvT2+mVEaL6zibdFy8OJWc=
+	b=V/rCUWn7ZGaFlFEe7Jd3KlFLyMOAfTfbh1HItSvNjeYtQdhMbYr5J9oBJNzPDzGrj
+	 jSEFrNqbshIAddbiUr+mKUxzdPH0uVARekFN7TuX4ndYI8WKlyKFHHz/XapJmLk+Sj
+	 lIEWhmWioWA3INuQZyMsM91gfugnWjMq0LIRibqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Kai Huang <kai.huang@intel.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 311/676] x86/tdx: Rename tdx_parse_tdinfo() to tdx_setup()
-Date: Fri,  6 Dec 2024 15:32:10 +0100
-Message-ID: <20241206143705.487034116@linuxfoundation.org>
+Subject: [PATCH 6.6 313/676] RDMA/hns: Fix out-of-order issue of requester when setting FENCE
+Date: Fri,  6 Dec 2024 15:32:12 +0100
+Message-ID: <20241206143705.564320790@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -68,65 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit b064043d9565786b385f85e6436ca5716bbd5552 ]
+[ Upstream commit 5dbcb1c1900f45182b5651c89257c272f1f3ead7 ]
 
-Rename tdx_parse_tdinfo() to tdx_setup() and move setting NOTIFY_ENABLES
-there.
+The FENCE indicator in hns WQE doesn't ensure that response data from
+a previous Read/Atomic operation has been written to the requester's
+memory before the subsequent Send/Write operation is processed. This
+may result in the subsequent Send/Write operation accessing the original
+data in memory instead of the expected response data.
 
-The function will be extended to adjust TD configuration.
+Unlike FENCE, the SO (Strong Order) indicator blocks the subsequent
+operation until the previous response data is written to memory and a
+bresp is returned. Set the SO indicator instead of FENCE to maintain
+strict order.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/20241104103803.195705-3-kirill.shutemov%40linux.intel.com
-Stable-dep-of: f65aa0ad79fc ("x86/tdx: Dynamically disable SEPT violations from causing #VEs")
+Fixes: 9a4435375cd1 ("IB/hns: Add driver files for hns RoCE driver")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20241108075743.2652258-2-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/tdx/tdx.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 0bb895344497e..de4ff833fcf00 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -169,7 +169,7 @@ static void __noreturn tdx_panic(const char *msg)
- 		__tdx_hypercall(&args);
- }
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index b29c12e4e45c4..2824d390ec316 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -578,7 +578,7 @@ static inline int set_rc_wqe(struct hns_roce_qp *qp,
+ 	if (WARN_ON(ret))
+ 		return ret;
  
--static void tdx_parse_tdinfo(u64 *cc_mask)
-+static void tdx_setup(u64 *cc_mask)
- {
- 	struct tdx_module_args args = {};
- 	unsigned int gpa_width;
-@@ -194,6 +194,9 @@ static void tdx_parse_tdinfo(u64 *cc_mask)
- 	gpa_width = args.rcx & GENMASK(5, 0);
- 	*cc_mask = BIT_ULL(gpa_width - 1);
+-	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_FENCE,
++	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SO,
+ 		     (wr->send_flags & IB_SEND_FENCE) ? 1 : 0);
  
-+	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
-+	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+
- 	/*
- 	 * The kernel can not handle #VE's when accessing normal kernel
- 	 * memory.  Ensure that no #VE will be delivered for accesses to
-@@ -804,11 +807,11 @@ void __init tdx_early_init(void)
- 	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
- 
- 	cc_vendor = CC_VENDOR_INTEL;
--	tdx_parse_tdinfo(&cc_mask);
--	cc_set_mask(cc_mask);
- 
--	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
--	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
-+	/* Configure the TD */
-+	tdx_setup(&cc_mask);
-+
-+	cc_set_mask(cc_mask);
- 
- 	/*
- 	 * All bits above GPA width are reserved and kernel treats shared bit
+ 	hr_reg_write(rc_sq_wqe, RC_SEND_WQE_SE,
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index a401b607592b9..b8e17721f6fde 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -899,6 +899,7 @@ struct hns_roce_v2_rc_send_wqe {
+ #define RC_SEND_WQE_OWNER RC_SEND_WQE_FIELD_LOC(7, 7)
+ #define RC_SEND_WQE_CQE RC_SEND_WQE_FIELD_LOC(8, 8)
+ #define RC_SEND_WQE_FENCE RC_SEND_WQE_FIELD_LOC(9, 9)
++#define RC_SEND_WQE_SO RC_SEND_WQE_FIELD_LOC(10, 10)
+ #define RC_SEND_WQE_SE RC_SEND_WQE_FIELD_LOC(11, 11)
+ #define RC_SEND_WQE_INLINE RC_SEND_WQE_FIELD_LOC(12, 12)
+ #define RC_SEND_WQE_WQE_INDEX RC_SEND_WQE_FIELD_LOC(30, 15)
 -- 
 2.43.0
 
