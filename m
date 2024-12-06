@@ -1,153 +1,231 @@
-Return-Path: <stable+bounces-98910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AAF9E646C
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:50:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED24B9E6469
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2BD169C10
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 02:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE5131698B6
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 02:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D87018C34B;
-	Fri,  6 Dec 2024 02:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VTGX1qJR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8849613C677;
+	Fri,  6 Dec 2024 02:49:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731E0188CC6;
-	Fri,  6 Dec 2024 02:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D84C9A;
+	Fri,  6 Dec 2024 02:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733453399; cv=none; b=lYQdbFhwydvo1ob231RqQWMY+oIfGaGh7XOY3gDZEhuAPrxcl1r/ERwNjJlZdNDxQJbvRtubf/c96Q5n0DvYnKpLILfqbpidiyDJ0Vt2n0SM1z2sMTPR70FkUCDzzaVlt+hn4VKZ8Q38bggrnibfOm8BaKdnyRtEHYVslaUGtig=
+	t=1733453396; cv=none; b=P2kcS/3ngdn09DnWTaKNT2qOmTPCXqdyTEXq97ryn2yhIXs1Yoe9pnnpzJge47VFzSFNSIvBtBuPBq0sC6kL4eVr066/byIQoIEuTQ49OLacHjXDOMQZVY0EqNT+Ep3a7/6GNZJVob9Wjt7fqLwvsLp7OnKn8RVXZ4tENWjTQSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733453399; c=relaxed/simple;
-	bh=d1mlV6zQCgCyxHwYY1PXH9w0PynEoomgfBQSdBZwFno=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=npBztaiQRh1jJY45w6sFt3ZoEci3yefqsX7kFq5sQm9uLsbPWIR5QaxoEee+Ky0aUArJmexmdueFJxSuw1b5DCpxKvHlwj2k8cXzFBIY62r4GZRJvDDps654XRMWeQIdFmM+8CuKvE/Gm5RBxoy1f8V3wZETL1mfz8PeNqKmzrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VTGX1qJR; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2eed82ca5b4so1387199a91.2;
-        Thu, 05 Dec 2024 18:49:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733453398; x=1734058198; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jFcBusQAgop/cJ9zHlAC34d6C2cvFm40FRSAV1uCAPY=;
-        b=VTGX1qJRPX47AXTqVOGDViuamU6neySro3ttK0RvwANwuBekx0sV9IJVZKhBujs1D2
-         A02KifHA4ZTl9SAxms6bb7nOlkfGWMiZKIyIZ0oY0dhJKXBwvqnVrZwoIEz3G9Daq9Yo
-         HS6XjgVAwwcvrzlZW0/wXWP/lsfo1TWAanHFaDevBbkauarkReLbcVUH6oTCH2sb1tlg
-         xuZ5m8Ay/+ygVWM1UNaIsYNW3hJKKXMnoUD5ffjBH1UX5HVz7FbFTREk7zoOzC31rsmv
-         FExfgaA+y2Bspq5GLWEKOr8qfia9j7Xq9q2FvisUwQgwnV7V2z2uSpXaXxqcysIJvdbV
-         u1RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733453398; x=1734058198;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jFcBusQAgop/cJ9zHlAC34d6C2cvFm40FRSAV1uCAPY=;
-        b=t3DrjkhbOD7SsX8qKkMtRfGnB0GAWkTPb/eZEcWETW22LAIN51BoM5n9kL8mHtfjVZ
-         rxd8FlnhrBmEUv0Dg3V7KsYQgcPxFnRAIrRnxTucOSwIOZlyxU3wuAxnsqRrLNsO2hOD
-         exIsXpei/4Zpe883Mtp5+m8mI7R1S9Br8NVE7tFDQ+Gm5DGkjVK0oe1Pg1h/xsrryXx9
-         v24SpOZ7MSFuXKv0eW14DR3zeP++ayLyXCE9wfD+EUNIqvCvbducSOiQIcwRi1t5J4ck
-         GuPVwdvHm7tfEVcNJXYXxEx+DyvD4SgHrviI5RnJYFR1DDYu0wEFh3Tmja0+y8c276jL
-         DEbw==
-X-Forwarded-Encrypted: i=1; AJvYcCUaogRd3o0u9Sor3tkqBuoGphl+4+yIjBICD76HC3L5HMncnLSH0pdnkI8CuuVKWe0FbADUnEg6@vger.kernel.org, AJvYcCVUdMNA26MOVK9+nWnHSC31kl8bZQm+1FQAL0VEDmwtEadaDrlwVK41UikDm3F0vq09EjTmyxs6UqjjZ2s=@vger.kernel.org, AJvYcCWyegYLFTjEymg7XSM90ekuPk0APsH2QUqya8U1YjgQ4n9YgzWTqqJNCRWD6fijYPumub55RNZO@vger.kernel.org
-X-Gm-Message-State: AOJu0YxFSciM7823odQzr9D71VF88jiI7FqzV42N6MwobwLDhbknHj4A
-	Ol/a6sUBP6r576h/bwACE9oBXoWNdSHmjXPYQhZT31Y99pW4Ek35dfbhFjbeW83875q9F/dzr/w
-	W1uakrqzYHCJj2ddRzZI1l7ydzzs=
-X-Gm-Gg: ASbGncsZTkwPIfDDbILlT85nI+T96OOq8hLTPxTWCd5oiYVCCRpEKgiBs+QU43teBTs
-	GYnpVKYoKsFInpo79AHBuNcrG63vpGQ==
-X-Google-Smtp-Source: AGHT+IEA11huRP+Trp19deRlrQWYZoOM5ceG9+1zVCv7r7Tsw6HHVVGPX/+z5mIMkkizPeSriAQ8V5bZRdiioL1KesA=
-X-Received: by 2002:a17:90b:33c4:b0:2ee:863e:9fff with SMTP id
- 98e67ed59e1d1-2ef69e15339mr2443280a91.10.1733453397711; Thu, 05 Dec 2024
- 18:49:57 -0800 (PST)
+	s=arc-20240116; t=1733453396; c=relaxed/simple;
+	bh=LaQW0ppd/Don9fm3kf876MvIkSbgfOpuuYUBYFkKTGg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=T1QESrw+Ql4F1gDZW2aCG92kgDSvfNRtM4c7a3T5UxvFb6Q9dUQnEMJIFwl5i5LSjVyxyx9zkf8j+WEgnRB9Sfepe3GQ54k5Bg831cpvGFADRP6B0WFv2SD/Vi2Ll87b9b0DzJGcTYvMDtSuzeqF6fazyvi0zjh/z0So/Vqq3NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Y4G1w1Xz4z1JDjw;
+	Fri,  6 Dec 2024 10:49:40 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 952361A0188;
+	Fri,  6 Dec 2024 10:49:49 +0800 (CST)
+Received: from [10.174.177.243] (10.174.177.243) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 6 Dec 2024 10:49:48 +0800
+Message-ID: <f8713870-51c1-41ff-b4b2-9e7d9bb657b1@huawei.com>
+Date: Fri, 6 Dec 2024 10:49:48 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241113-tcp-md5-diag-prep-v2-0-00a2a7feb1fa@gmail.com>
- <20241204171351.52b8bb36@kernel.org> <CANn89iL5_2iW5U_8H43g7vXi0Ky=fkwadvTtmT3fvBdbaJ1BAw@mail.gmail.com>
-In-Reply-To: <CANn89iL5_2iW5U_8H43g7vXi0Ky=fkwadvTtmT3fvBdbaJ1BAw@mail.gmail.com>
-From: Dmitry Safonov <0x7f454c46@gmail.com>
-Date: Fri, 6 Dec 2024 02:49:46 +0000
-Message-ID: <CAJwJo6amrAt+uBMWRvwBu=VdcTyDuEMtkAx0=_ittUj0KCa-zw@mail.gmail.com>
-Subject: Re: [PATCH net v2 0/5] Make TCP-MD5-diag slightly less broken
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, 
-	Dmitry Safonov via B4 Relay <devnull+0x7f454c46.gmail.com@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	David Ahern <dsahern@kernel.org>, Ivan Delalande <colona@arista.com>, 
-	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
-	Geliang Tang <geliang@kernel.org>, Boris Pismenny <borisp@nvidia.com>, 
-	John Fastabend <john.fastabend@gmail.com>, Davide Caratti <dcaratti@redhat.com>, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	mptcp@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: Respect mmap hint address when aligning for THP
+To: Kalesh Singh <kaleshsingh@google.com>
+CC: <kernel-team@android.com>, <android-mm@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, Yang Shi
+	<yang@os.amperecomputing.com>, Rik van Riel <riel@surriel.com>, Ryan Roberts
+	<ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>, Minchan Kim
+	<minchan@kernel.org>, Hans Boehm <hboehm@google.com>, Lokesh Gidra
+	<lokeshgidra@google.com>, <stable@vger.kernel.org>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Jann
+ Horn <jannh@google.com>, Yang Shi <shy828301@gmail.com>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+References: <20241118214650.3667577-1-kaleshsingh@google.com>
+Content-Language: en-US
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+In-Reply-To: <20241118214650.3667577-1-kaleshsingh@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemf100008.china.huawei.com (7.185.36.138)
 
-Hi Jakub, Eric,
 
-On Thu, 5 Dec 2024 at 09:09, Eric Dumazet <edumazet@google.com> wrote:
-> On Thu, Dec 5, 2024 at 2:13=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
-> >
-> > Hi Eric!
-> >
-> > This was posted while you were away -- any thoughts or recommendation o=
-n
-> > how to address the required nl message size changing? Or other problems
-> > pointed out by Dmitry? My suggestion in the subthread is to re-dump
-> > with a fixed, large buffer on EMSGSIZE, but that's not super clean..
->
-> Hi Jakub
->
-> inet_diag_dump_one_icsk() could retry, doubling the size until the
-> ~32768 byte limit is reached ?
->
-> Also, we could make sure inet_sk_attr_size() returns at least
-> NLMSG_DEFAULT_SIZE, there is no
-> point trying to save memory for a single skb in inet_diag_dump_one_icsk()=
-.
 
-Starting from NLMSG_DEFAULT_SIZE sounds like a really sane idea! :-)
+On 2024/11/19 5:46, Kalesh Singh wrote:
+> Commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+> boundaries") updated __get_unmapped_area() to align the start address
+> for the VMA to a PMD boundary if CONFIG_TRANSPARENT_HUGEPAGE=y.
+> 
+> It does this by effectively looking up a region that is of size,
+> request_size + PMD_SIZE, and aligning up the start to a PMD boundary.
+> 
+> Commit 4ef9ad19e176 ("mm: huge_memory: don't force huge page alignment
+> on 32 bit") opted out of this for 32bit due to regressions in mmap base
+> randomization.
+> 
+> Commit d4148aeab412 ("mm, mmap: limit THP alignment of anonymous
+> mappings to PMD-aligned sizes") restricted this to only mmap sizes that
+> are multiples of the PMD_SIZE due to reported regressions in some
+> performance benchmarks -- which seemed mostly due to the reduced spatial
+> locality of related mappings due to the forced PMD-alignment.
+> 
+> Another unintended side effect has emerged: When a user specifies an mmap
+> hint address, the THP alignment logic modifies the behavior, potentially
+> ignoring the hint even if a sufficiently large gap exists at the requested
+> hint location.
+> 
+> Example Scenario:
+> 
+> Consider the following simplified virtual address (VA) space:
+> 
+>      ...
+> 
+>      0x200000-0x400000 --- VMA A
+>      0x400000-0x600000 --- Hole
+>      0x600000-0x800000 --- VMA B
+> 
+>      ...
+> 
+> A call to mmap() with hint=0x400000 and len=0x200000 behaves differently:
+> 
+>    - Before THP alignment: The requested region (size 0x200000) fits into
+>      the gap at 0x400000, so the hint is respected.
+> 
+>    - After alignment: The logic searches for a region of size
+>      0x400000 (len + PMD_SIZE) starting at 0x400000.
+>      This search fails due to the mapping at 0x600000 (VMA B), and the hint
+>      is ignored, falling back to arch_get_unmapped_area[_topdown]().
+> 
+> In general the hint is effectively ignored, if there is any
+> existing mapping in the below range:
+> 
+>       [mmap_hint + mmap_size, mmap_hint + mmap_size + PMD_SIZE)
+> 
+> This changes the semantics of mmap hint; from ""Respect the hint if a
+> sufficiently large gap exists at the requested location" to "Respect the
+> hint only if an additional PMD-sized gap exists beyond the requested size".
+> 
+> This has performance implications for allocators that allocate their heap
+> using mmap but try to keep it "as contiguous as possible" by using the
+> end of the exisiting heap as the address hint. With the new behavior
+> it's more likely to get a much less contiguous heap, adding extra
+> fragmentation and performance overhead.
+> 
+> To restore the expected behavior; don't use thp_get_unmapped_area_vmflags()
+> when the user provided a hint address, for anonymous mappings.
+> 
+> Note: As, Yang Shi, pointed out: the issue still remains for filesystems
+> which are using thp_get_unmapped_area() for their get_unmapped_area() op.
+> It is unclear what worklaods will regress for if we ignore THP alignment
+> when the hint address is provided for such file backed mappings -- so this
+> fix will be handled separately.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Yang Shi <yang@os.amperecomputing.com>
+> Cc: Rik van Riel <riel@surriel.com>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Suren Baghdasaryan <surenb@google.com>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Hans Boehm <hboehm@google.com>
+> Cc: Lokesh Gidra <lokeshgidra@google.com>
+> Cc: <stable@vger.kernel.org>
+> Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+> Reviewed-by: Rik van Riel <riel@surriel.com>
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+> 
+> Changes in v2:
+>    - Clarify the handling of file backed mappings, as highlighted by Yang
+>    - Collect Vlastimil's and Rik's Reviewed-by's
+> 
+>   mm/mmap.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> index 79d541f1502b..2f01f1a8e304 100644
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -901,6 +901,7 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
+>   	if (get_area) {
+>   		addr = get_area(file, addr, len, pgoff, flags);
+>   	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
+> +		   && !addr /* no hint */
 
-[..]
-> @@ -585,8 +589,14 @@ int inet_diag_dump_one_icsk(struct inet_hashinfo *ha=
-shinfo,
->
->         err =3D sk_diag_fill(sk, rep, cb, req, 0, net_admin);
->         if (err < 0) {
-> -               WARN_ON(err =3D=3D -EMSGSIZE);
->                 nlmsg_free(rep);
-> +               if (err =3D=3D -EMSGSIZE) {
-> +                       attr_size <<=3D 1;
-> +                       if (attr_size + NLMSG_HDRLEN <=3D
-> SKB_WITH_OVERHEAD(32768)) {
-> +                               cond_resched();
-> +                               goto retry;
-> +                       }
-> +               }
->                 goto out;
->         }
->         err =3D nlmsg_unicast(net->diag_nlsk, rep, NETLINK_CB(in_skb).por=
-tid);
+Hello, any update about this patch?
 
-To my personal taste on larger than 327 md5 keys scale, I'd prefer to
-see "dump may be inconsistent, retry if you need consistency" than
--EMSGSIZE fail, yet userspace potentially may use the errno as a
-"retry" signal.
+And another question about efa7df3e3bb5 ("mm: align larger anonymous
+mappings on THP boundaries"), it said that align anon mapping, but the
+code does enable file mapping too, for fs without get_unmapped_area and
+enable CONFIG_TRANSPARENT_HUGEPAGE, we always try
+thp_get_unmapped_area_vmflags(), right?
 
-Do you plan to re-send it as a proper patch? Or I can send it with my
-next patches for TCP-MD5-diag issues (1), (3), (4) and TCP-AO-diag.
 
-Thanks,
-             Dmitry
+  if (file) {
+          if (file->f_op->get_unmapped_area)
+                  get_area = file->f_op->get_unmapped_area;
+  }
+  ...
+  if (get_area) {
+          addr = get_area(file, addr, len, pgoff, flags);
+  } else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
+             && !addr /* no hint */
+             && IS_ALIGNED(len, PMD_SIZE)) {
+          /* Ensures that larger anonymous mappings are THP aligned. */
+          addr = thp_get_unmapped_area_vmflags();
+  } else {
+          addr = mm_get_unmapped_area_vmflags();
+  }
+
+Should we limit it to not call thp_get_unmapped_area_vmflags() for file?
+
+diff --git a/mm/mmap.c b/mm/mmap.c
+index 16f8e8be01f8..854fe240d27d 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -894,6 +894,7 @@ __get_unmapped_area(struct file *file, unsigned long 
+addr, unsigned long len,
+                 addr = get_area(file, addr, len, pgoff, flags);
+         } else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
+                    && !addr /* no hint */
++                  && !file
+                    && IS_ALIGNED(len, PMD_SIZE)) {
+                 /* Ensures that larger anonymous mappings are THP 
+aligned. */
+                 addr = thp_get_unmapped_area_vmflags(file, addr, len,
+
+
+Thanks
+
+
+>   		   && IS_ALIGNED(len, PMD_SIZE)) {
+>   		/* Ensures that larger anonymous mappings are THP aligned. */
+>   		addr = thp_get_unmapped_area_vmflags(file, addr, len,
+> 
+> base-commit: 2d5404caa8c7bb5c4e0435f94b28834ae5456623
+> --
+> 2.47.0.338.g60cca15819-goog
+> 
+> 
+
 
