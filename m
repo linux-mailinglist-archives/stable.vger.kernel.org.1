@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-99867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90119E73E8
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:25:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAF09E73CF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:24:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1DE1887E54
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26A8287666
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083FC18FDAA;
-	Fri,  6 Dec 2024 15:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EDB20B7E4;
+	Fri,  6 Dec 2024 15:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJcLlyUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feuOy910"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91FD1465AB;
-	Fri,  6 Dec 2024 15:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3237D207DFA;
+	Fri,  6 Dec 2024 15:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498619; cv=none; b=XRYOZXLSqZ/uVOzwRz4g9TjLTbLu2+CowQXentDCmuBKFGqi7VHxPnIPmtCcxHnQBVXpX/IzgAEJ7zJxWTC9CMzpeSzE5b/wpN77wg407Al7S7c0SDrF6xRd0NIFpICX3dVm2TLXLdId+QtGZmRBfoSHLBFl/g2YvR0GrEy9s9Q=
+	t=1733498658; cv=none; b=ZilR9x1knVY9vhIRrEuJKyyPZkK6aKe3KTMZnkoCYTTj6JVQFzU5sgfeldEnhzmZCyz7HuwaZl66MNUhZwt/6xLhUFHVKe4CKsVOrkWlqxOTujU0J65FmnVYipIgbya2oH/FiZ2Po1uZmYjxJpxbjDxeG4M5Dgr/gyZSI04pIoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498619; c=relaxed/simple;
-	bh=yj/pxMPtVOqJZaWfcqroh2mzjTBTuJODSnLP0s9ngfQ=;
+	s=arc-20240116; t=1733498658; c=relaxed/simple;
+	bh=rADzKthc1PO98oMPjc7MRLui2koB0vFx48M7rGoe0Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTgznlu0mb9lDWe/j1uV4n6QyCGLf2J1Fq91AhG4Ear/WG3dI4gwcD5o0/kMXTYVQ36I7wLvdRDn/dyZclHkxI9I/r19Pqb1ihbkLeJMlqy09Nktc/0Rtop1kq8U/PHxnOkTF5HLN2lQzcgS6UAtoMh1jc1kyfX6M+JKighZjz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJcLlyUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEA2C4CED1;
-	Fri,  6 Dec 2024 15:23:39 +0000 (UTC)
+	 MIME-Version; b=fDuE1+q1+RFURjGmhxH+eMpWARDTPuTaHBofEYZQWZg/V4ksQPSu5nRrklaKxaS/u2xT9waS1ZlVUzxRoTwkyEwanJ/zyLMo3Vrdl3XzZI7sZMoVuSgbdSlIVcSUS1yuerhwIBZ4KNNq8t94EV7ccxAOzgSRRPFIBSIOD+/ZwPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feuOy910; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC20C4CED1;
+	Fri,  6 Dec 2024 15:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498619;
-	bh=yj/pxMPtVOqJZaWfcqroh2mzjTBTuJODSnLP0s9ngfQ=;
+	s=korg; t=1733498658;
+	bh=rADzKthc1PO98oMPjc7MRLui2koB0vFx48M7rGoe0Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJcLlyUKH46/icNFApLQOX5IqW7xX6kYsSWUen9IUZRAgsKtzheZiCQt2s4Ou/RaE
-	 Zvm+KBVOdL0l6mZUdSejxoTGpxnd7EdO6/3pC7EfNFAl3p3WYwCJ7kayhTxiNvgan5
-	 iVmBV6DIZPSmFY9AF3rBuDUBSqV4F9sdmKoIOkaQ=
+	b=feuOy910C1aLgAvK7tWU1C+YIBeQDCc0wFOTylSCd29kvhXsCROzKFkMP5DWjFjFv
+	 52gD9kmGl6EPbTR8QEGIj/aBKvq2+ISvTPFAF+GH/ZsBq7/aDRghga/boCGrQ1NJex
+	 AsPJzonDmhiMTPkZQV5UOpK3Z48ekcH8tU+drOrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 621/676] media: venus: Fix pm_runtime_set_suspended() with runtime pm enabled
-Date: Fri,  6 Dec 2024 15:37:20 +0100
-Message-ID: <20241206143717.624148026@linuxfoundation.org>
+Subject: [PATCH 6.6 622/676] media: gspca: ov534-ov772x: Fix off-by-one error in set_frame_rate()
+Date: Fri,  6 Dec 2024 15:37:21 +0100
+Message-ID: <20241206143717.662822616@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -70,36 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 2a20869f7d798aa2b69e45b863eaf1b1ecf98278 upstream.
+commit d2842dec577900031826dc44e9bf0c66416d7173 upstream.
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+In set_frame_rate(), select a rate in rate_0 or rate_1 by checking
+sd->frame_rate >= r->fps in a loop, but the loop condition terminates when
+the index reaches zero, which fails to check the last elememt in rate_0 or
+rate_1.
 
+Check for >= 0 so that the last one in rate_0 or rate_1 is also checked.
+
+Fixes: 189d92af707e ("V4L/DVB (13422): gspca - ov534: ov772x changes from Richard Kaswy.")
 Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Acked-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    2 +-
+ drivers/media/usb/gspca/ov534.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -406,8 +406,8 @@ err_of_depopulate:
- 	of_platform_depopulate(dev);
- err_runtime_disable:
- 	pm_runtime_put_noidle(dev);
--	pm_runtime_set_suspended(dev);
- 	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
- 	hfi_destroy(core);
- err_core_deinit:
- 	hfi_core_deinit(core, false);
+--- a/drivers/media/usb/gspca/ov534.c
++++ b/drivers/media/usb/gspca/ov534.c
+@@ -847,7 +847,7 @@ static void set_frame_rate(struct gspca_
+ 		r = rate_1;
+ 		i = ARRAY_SIZE(rate_1);
+ 	}
+-	while (--i > 0) {
++	while (--i >= 0) {
+ 		if (sd->frame_rate >= r->fps)
+ 			break;
+ 		r++;
 
 
 
