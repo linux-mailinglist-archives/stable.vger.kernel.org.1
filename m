@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-99375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19429E716E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:55:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE4C9E7179
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:56:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1AC188713A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:55:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B5C528123A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E511F1537D4;
-	Fri,  6 Dec 2024 14:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43BC1537D4;
+	Fri,  6 Dec 2024 14:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpREbzMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2W9lT9MU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2816148832;
-	Fri,  6 Dec 2024 14:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8044C14AD29;
+	Fri,  6 Dec 2024 14:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496938; cv=none; b=GIpNOp4cF62U3qmzH9LxNDfmUY8YON7FRLNC7q3cLS0FmWjtzZv3OmOl5LX0t2eDbNTNSUFDryo8sahhvbCubkHaNVfEOLYqm3ngWdxRDX74qb3ARQ3wNEKhNbekgzXjK10pU51eDO+sW9MBWCJSFLvJEmRfy9TTiTu25+54Mj4=
+	t=1733496975; cv=none; b=A59f0QmIWUMpAZcsxzsEgGt32P6Peao+la/Ft/C647V3VHaKwH0rP9/WOeqYzj5YKStCgVnixd2e6pJBYC21fdaqW/G+KyXwBNuEdqvhGvzrQ3tmmUPVAqiHnxy+RTgXZ7ou9T8laE5uxsjXjS9JBOX8ME2jx5mh/2v1SZIrOMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496938; c=relaxed/simple;
-	bh=XXadmvkCFJFXaTE5ygj4lCzxSxopQKiR4ZDvKHE+rsU=;
+	s=arc-20240116; t=1733496975; c=relaxed/simple;
+	bh=m4I9FJrIIkmawz4VhrU1meu9Bm4w+g4f+Jhz55x0ZJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBLAgqy4WNsX5mpAzhKH+7TEoVQKXjZWMvzty2pEq+mXXbWmm5NRkCDrPA3V/6GuxhYKFJGfolRbkpblBeUmuoBa97ykuWVQh40F1Wv1AxpDv8GAJAoJZ5rZW3iWulfRD5Hh6aTpXd2KMWSwTFuksllr5YwHHtq7xM4+BnMG+ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpREbzMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50D8C4CED1;
-	Fri,  6 Dec 2024 14:55:37 +0000 (UTC)
+	 MIME-Version; b=YIf/jwlLaT01BMnNvfz62wZJ/Y8bymmH5Ascs7QiQKAb81kg7Q9tAhu7Earmzhfh91aPgLD8XMMECmGa3ZDgUQV+/g1nHptPABVVnZfaONe/PRVIWDth9zoW1c2KqEDKIozm8HrZuiknWuP4YYeregOIHUhr8+AhWnYssHfyhMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2W9lT9MU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF077C4CED1;
+	Fri,  6 Dec 2024 14:56:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496938;
-	bh=XXadmvkCFJFXaTE5ygj4lCzxSxopQKiR4ZDvKHE+rsU=;
+	s=korg; t=1733496975;
+	bh=m4I9FJrIIkmawz4VhrU1meu9Bm4w+g4f+Jhz55x0ZJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LpREbzMdz8wPonrjuiOT2ICgUTMn/rfreFD2IOhny7zB9rznHbTX6SaJipEQz09Nu
-	 DWVtN0CxksGDYlt5FgkLsQmSFoIyDnvmXl3/yTUFb+SfX89AA2fK/sWkHOB1R5yDV1
-	 GMF/2x5vuqLcZZZUUJOXsPL9mnKS7P2Oc30kgXvI=
+	b=2W9lT9MU8WMVoStj7iSvEoITaSaYG4apuzy+myePcIx7yBzluL8xKIrxrfcuMpOUN
+	 MEHk4Gc3JRAnphdKuJVU3DHb3cWsGK2IPSnSIdtgvTDmHMFgiueNWqmcDaMYfpxxBW
+	 2d4oWrUZLKgRDTW5wN4cdAwAHsCzJ/8ukLBgB3cI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anurag Dutta <a-dutta@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-um@lists.infradead.org,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/676] arm64: dts: ti: k3-j721s2: Fix clock IDs for MCSPI instances
-Date: Fri,  6 Dec 2024 15:29:21 +0100
-Message-ID: <20241206143658.899592654@linuxfoundation.org>
+Subject: [PATCH 6.6 143/676] um: Unconditionally call unflatten_device_tree()
+Date: Fri,  6 Dec 2024 15:29:22 +0100
+Message-ID: <20241206143658.938336026@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,134 +72,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anurag Dutta <a-dutta@ti.com>
+From: Stephen Boyd <sboyd@kernel.org>
 
-[ Upstream commit 891874f015e98f67ab2fda76f2e859921e136621 ]
+[ Upstream commit 221a819aa3ca5bbbc91ce425b3e8d9463b121d09 ]
 
-The clock IDs for multiple MCSPI instances across wakeup domain
-in J721s2 are incorrect when compared with documentation [1]. Fix the
-clock IDs to their appropriate values.
+Call this function unconditionally so that we can populate an empty DTB
+on platforms that don't boot with a command line provided DTB.  There's
+no harm in calling unflatten_device_tree() unconditionally. If there
+isn't a valid initial_boot_params dtb then unflatten_device_tree()
+returns early.
 
-[1]https://software-dl.ti.com/tisci/esd/latest/5_soc_doc/j721s2/clocks.html
-
-Fixes: 04d7cb647b85 ("arm64: dts: ti: k3-j721s2: Add MCSPI nodes")
-
-Signed-off-by: Anurag Dutta <a-dutta@ti.com>
-Link: https://lore.kernel.org/r/20241023104532.3438851-4-a-dutta@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-um@lists.infradead.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240217010557.2381548-4-sboyd@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: b2473a359763 ("of/fdt: add dt_phys arg to early_init_dt_scan and early_init_dt_verify")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi       | 16 ++++++++--------
- arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi |  6 +++---
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ arch/um/kernel/dtb.c  | 16 ++++++++--------
+ drivers/of/unittest.c |  4 ----
+ 2 files changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
-index 084f8f5b66993..9484347acba79 100644
---- a/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j721s2-main.dtsi
-@@ -1569,7 +1569,7 @@ main_spi0: spi@2100000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 339 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 339 1>;
-+		clocks = <&k3_clks 339 2>;
- 		status = "disabled";
- 	};
+diff --git a/arch/um/kernel/dtb.c b/arch/um/kernel/dtb.c
+index 484141b06938f..4954188a6a090 100644
+--- a/arch/um/kernel/dtb.c
++++ b/arch/um/kernel/dtb.c
+@@ -16,16 +16,16 @@ void uml_dtb_init(void)
+ 	void *area;
  
-@@ -1580,7 +1580,7 @@ main_spi1: spi@2110000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 340 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 340 1>;
-+		clocks = <&k3_clks 340 2>;
- 		status = "disabled";
- 	};
+ 	area = uml_load_file(dtb, &size);
+-	if (!area)
+-		return;
+-
+-	if (!early_init_dt_scan(area)) {
+-		pr_err("invalid DTB %s\n", dtb);
+-		memblock_free(area, size);
+-		return;
++	if (area) {
++		if (!early_init_dt_scan(area)) {
++			pr_err("invalid DTB %s\n", dtb);
++			memblock_free(area, size);
++			return;
++		}
++
++		early_init_fdt_scan_reserved_mem();
+ 	}
  
-@@ -1591,7 +1591,7 @@ main_spi2: spi@2120000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 341 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 341 1>;
-+		clocks = <&k3_clks 341 2>;
- 		status = "disabled";
- 	};
+-	early_init_fdt_scan_reserved_mem();
+ 	unflatten_device_tree();
+ }
  
-@@ -1602,7 +1602,7 @@ main_spi3: spi@2130000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 342 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 342 1>;
-+		clocks = <&k3_clks 342 2>;
- 		status = "disabled";
- 	};
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 4f58345b5c683..7986113adc7d3 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -4017,10 +4017,6 @@ static int __init of_unittest(void)
+ 	add_taint(TAINT_TEST, LOCKDEP_STILL_OK);
  
-@@ -1613,7 +1613,7 @@ main_spi4: spi@2140000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 343 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 343 1>;
-+		clocks = <&k3_clks 343 2>;
- 		status = "disabled";
- 	};
- 
-@@ -1624,7 +1624,7 @@ main_spi5: spi@2150000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 344 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 344 1>;
-+		clocks = <&k3_clks 344 2>;
- 		status = "disabled";
- 	};
- 
-@@ -1635,7 +1635,7 @@ main_spi6: spi@2160000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 345 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 345 1>;
-+		clocks = <&k3_clks 345 2>;
- 		status = "disabled";
- 	};
- 
-@@ -1646,7 +1646,7 @@ main_spi7: spi@2170000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 346 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 346 1>;
-+		clocks = <&k3_clks 346 2>;
- 		status = "disabled";
- 	};
- 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
-index 71324fec415ae..6fc008fbfb003 100644
---- a/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j721s2-mcu-wakeup.dtsi
-@@ -416,7 +416,7 @@ mcu_spi0: spi@40300000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 347 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 347 0>;
-+		clocks = <&k3_clks 347 2>;
- 		status = "disabled";
- 	};
- 
-@@ -427,7 +427,7 @@ mcu_spi1: spi@40310000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 348 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 348 0>;
-+		clocks = <&k3_clks 348 2>;
- 		status = "disabled";
- 	};
- 
-@@ -438,7 +438,7 @@ mcu_spi2: spi@40320000 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		power-domains = <&k3_pds 349 TI_SCI_PD_EXCLUSIVE>;
--		clocks = <&k3_clks 349 0>;
-+		clocks = <&k3_clks 349 2>;
- 		status = "disabled";
- 	};
- 
+ 	/* adding data for unittest */
+-
+-	if (IS_ENABLED(CONFIG_UML))
+-		unittest_unflatten_overlay_base();
+-
+ 	res = unittest_data_add();
+ 	if (res)
+ 		return res;
 -- 
 2.43.0
 
