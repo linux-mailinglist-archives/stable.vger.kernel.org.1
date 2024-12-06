@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-98885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F20A9E626A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 01:48:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7283F9E626B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 01:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E2F518838D3
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:48:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECAB01883235
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A0D1E51D;
-	Fri,  6 Dec 2024 00:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2405225D6;
+	Fri,  6 Dec 2024 00:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jLEX8gfP"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wH1AkYap"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C952C1758B
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 00:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63850BE46
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 00:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733446107; cv=none; b=BMaE+zQdsJTyecXs6Yrz1WnP3WgFfRWKGl1ep6yxSvbhfKw/fBje2rhaJ4Sh50AhBxmEBHpOhStAitSjkOXcl3amq+J4Qj2++pIt/FikfyPuZx5+yfMuT0ZwACh2ysQhv/8Mxy15URy1DrcFhh25hGnN4WH+58cdVNIjN1XOHmg=
+	t=1733446132; cv=none; b=TfyG5JFqNLfF+LGCvn9ueU0kLd7fQq6AWi/iV6lFs7q+wRWbQ2sRGk/ms+Gg+jFuIPCaK00GIFsI7S7BSEw60fgCVaprk7CXS4p+1qjFQ16xfcDwyRPmAmHYZyx3PMCsRa97uuKYc5bsElg1Be7dilhCYcKtabcNPwwTlvUk8uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733446107; c=relaxed/simple;
-	bh=XY7+H+HZ/4CqTmZS/R7+qj437WRnLqkbBRlxzBlwUO0=;
+	s=arc-20240116; t=1733446132; c=relaxed/simple;
+	bh=hZeKIXTC/sOG7mA+goS1z5dbXjoOqDOqBTWnMUk3+rE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ifgzuKZJi/13ASBZfRWzz1FEcjoufjZoJjpCu4j/cuoES/kWtbvQB/vohJ3IdvVESPGsjtZkwxlXjrd8nh94gUWNDjfZWmNzpaWDaPCmpWsvuNDko9mGr3avXPo9fKCRoA6Zu2fgk0xvmqEXTf97CU71ZxamlpFL1Myrqb6bhrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jLEX8gfP; arc=none smtp.client-ip=91.218.175.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=SyaAEvDPsQ0j+DHJiVvKyp+mmXxBDJ2O6cuWgu5FxxrEB2Kg84JhwmW9Qt2/Ce+yPIXdpRrqlXk6C1wjE9EOfXf55a90//acmsS9+TWClcBJ5vjO/zYFZiMfg21daW25opLK7eUll/gQn8dJqWQE2v13hqBw150IO9KCtUNaqJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wH1AkYap; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 5 Dec 2024 16:48:17 -0800
+Date: Thu, 5 Dec 2024 16:48:44 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1733446102;
+	t=1733446128;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BANolBkvPo0NYoQbJaKZma0IsqEIcHlSsmOgEjMElTg=;
-	b=jLEX8gfPqE4M9XGbKRWIqrvpxLrfqGgVGH7O4nps60kWrGUjp7rt2byFWYZX73Gh3JBrjA
-	e19jwyau7a9QV8cBm/8ZLmb5OYS0+Zl2F/hxHdUjQ726oFnhKc2yIfpR+qWuSTlf0Un9/e
-	XdAECIUNJG/sVNh4W2gopcFHJWSf1Cc=
+	bh=zTomUZzUQRbQ0kv/WGXZgGfaSH9n4l1h8NH8fWxrXro=;
+	b=wH1AkYapMaRe0IEsoSywqxDxOq4c5cQXIiK+9wcEKlyVO0Mpdrp8ztKe/UpF0bo/VQFogS
+	5CTLvWqWPJgn4vAPiC3uDqq9ORIydWPQb29BKXPUOOUSZatwZ14ChVQnHIoNBVFWYcDMDi
+	8p9hmIhVHumzu7nkkweIPGV9VAnoUv4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Oliver Upton <oliver.upton@linux.dev>
 To: Jing Zhang <jingzhangos@google.com>
 Cc: stable@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
 	Kunkun Jiang <jiangkunkun@huawei.com>
-Subject: Re: [PATCH 5.10.y 1/3] KVM: arm64: vgic-its: Add a data length check
+Subject: Re: [PATCH 5.15.y 1/3] KVM: arm64: vgic-its: Add a data length check
  in vgic_its_save_*
-Message-ID: <Z1JJ0ZQD6z7K7N-o@linux.dev>
-References: <20241204202318.2716633-1-jingzhangos@google.com>
+Message-ID: <Z1JJ7JDq3Ncily9z@linux.dev>
+References: <20241204202340.2717420-1-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,10 +58,10 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241204202318.2716633-1-jingzhangos@google.com>
+In-Reply-To: <20241204202340.2717420-1-jingzhangos@google.com>
 X-Migadu-Flow: FLOW_OUT
 
-On Wed, Dec 04, 2024 at 12:23:16PM -0800, Jing Zhang wrote:
+On Wed, Dec 04, 2024 at 12:23:38PM -0800, Jing Zhang wrote:
 > commit 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022 upstream.
 > 
 > In all the vgic_its_save_*() functinos, they do not check whether
@@ -91,7 +91,7 @@ Oliver
 >  2 files changed, 32 insertions(+), 12 deletions(-)
 > 
 > diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-> index 93c0365cdd7b..d3ea81d947b7 100644
+> index 02ab6ab6ba91..bff7c49dfda5 100644
 > --- a/arch/arm64/kvm/vgic/vgic-its.c
 > +++ b/arch/arm64/kvm/vgic/vgic-its.c
 > @@ -2135,7 +2135,6 @@ static int scan_its_table(struct vgic_its *its, gpa_t base, int size, u32 esz,
@@ -171,7 +171,7 @@ Oliver
 >  
 >  /**
 > diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-> index 3d7fa7ef353e..db99a1b167d8 100644
+> index 2be4b0759f5b..d2fc5ecb223e 100644
 > --- a/arch/arm64/kvm/vgic/vgic.h
 > +++ b/arch/arm64/kvm/vgic/vgic.h
 > @@ -6,6 +6,7 @@
@@ -213,7 +213,7 @@ Oliver
 >   * This struct provides an intermediate representation of the fields contained
 >   * in the GICH_VMCR and ICH_VMCR registers, such that code exporting the GIC
 > 
-> base-commit: 711d99f845cdb587b7d7cf5e56c289c3d96d27c5
+> base-commit: 0a51d2d4527b43c5e467ffa6897deefeaf499358
 > -- 
 > 2.47.0.338.g60cca15819-goog
 > 
