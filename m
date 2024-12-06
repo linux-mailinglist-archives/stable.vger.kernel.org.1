@@ -1,128 +1,159 @@
-Return-Path: <stable+bounces-98908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88479E6435
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:33:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9490B9E6525
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3DA167F36
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 02:33:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49A191885591
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D0B145A05;
-	Fri,  6 Dec 2024 02:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CA718C34B;
+	Fri,  6 Dec 2024 03:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sIvq/qRy"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CA34437A
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 02:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724966FBF;
+	Fri,  6 Dec 2024 03:55:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733452428; cv=none; b=tCMoV7xZ3+ZvRcrPkpe8GxxuiSGsvl42Z/UpiaP8MMsdqHFh5bxYlwuxboQR8MYm3pR0uDeFhZgrF5Tc6aFOPtjhzISbeyoaVQUBM6h40mEeiJQnxVrdV09BDVLmP+v6gAKBb+OtQFKZCYDIDmAuFvWGBAGWoq1UJ1WuRAMk9O8=
+	t=1733457312; cv=none; b=O4CF4IzKDRHFjcKn5Q13LwxzVqXNbiCPvMUwt/2Ns0BOMT4StwkjsN4NY6ejb8wEQZCShkUFBc1copZuLQImXb1nxuH4fWyb6U5rf3pUdX949s/AJz+XsltH9ofeTK+9RdQqEfdimL8YI853vWcNhcI2McyY6Ow52Ki/gXubVt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733452428; c=relaxed/simple;
-	bh=Ex9VcrgbblC510nuEbwyf/y+gulTHmjHFvcTt6Umtsc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CgqIT4RZEuJBVi61Mm9JLu5q6IRcT+1jXcUddbKsDlWwPtfzV/Z3lmujTGecpZ0oZ/AdVy+lHbeRb0es95XUauTUaI6hNqED8ObBf9SLtePFTkmFmA0VIVGC0lBE/t3TkTy8ceGd+Kw+DMW+zWhjjpuF783jiEfEZbY/uQL7KPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B61igsA003278;
-	Thu, 5 Dec 2024 18:33:30 -0800
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43833q6gge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 05 Dec 2024 18:33:30 -0800 (PST)
-Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Thu, 5 Dec 2024 18:33:29 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Thu, 5 Dec 2024 18:33:28 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <n.zhandarovich@fintech.ru>, <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH 6.1.y] drm/amd/display: fix NULL checks for adev->dm.dc in amdgpu_dm_fini()
-Date: Fri, 6 Dec 2024 11:31:19 +0800
-Message-ID: <20241206033119.3139154-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733457312; c=relaxed/simple;
+	bh=xgYVcPZkGGINY7KFRwixATEVBYjyb9MnEMw96gCcvzc=;
+	h=Date:To:From:Subject:Message-Id; b=JJvie9+x07eeKR0zERhl3cGBrAnFtsDwImpVldi1QpmcqeByfmyrZyVqnFy0ORrzrPUD9MbeUM+CCN6RNDfdZ5Y2AeyV9t8ULy40DRbv6qZJzPqHisP1GJz94S7xO/lx1TaTSXoZHcKSv29JkBK4uL8MK5YgYyHvwEBmdxFTdf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sIvq/qRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22927C4CED1;
+	Fri,  6 Dec 2024 03:55:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1733457312;
+	bh=xgYVcPZkGGINY7KFRwixATEVBYjyb9MnEMw96gCcvzc=;
+	h=Date:To:From:Subject:From;
+	b=sIvq/qRyf+fk1rTuaQ3QL0+TKSgz2ifCYj6xCvQmusi3SbaHhh10a3jdA4w7AnhbY
+	 SZJ1R3JBn08pH88dLpPBY5DLhKzXoIoGum9uCZ0zTE7gfwSe1WIMzYbiCd8QSBDGyP
+	 IGwIexXSJKjfz/e6aU40ejQMoNSMiMAoUZ8Wmq1M=
+Date: Thu, 05 Dec 2024 19:55:11 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,peterx@redhat.com,osalvador@suse.de,kraxel@redhat.com,junxiao.chang@intel.com,jgg@nvidia.com,hughd@google.com,hch@infradead.org,dongwon.kim@intel.com,david@redhat.com,daniel.vetter@ffwll.ch,arnd@arndb.de,airlied@redhat.com,jhubbard@nvidia.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-gup-handle-null-pages-in-unpin_user_pages.patch removed from -mm tree
+Message-Id: <20241206035512.22927C4CED1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: _GqIeD2udjnawx01RcmlYXMXY3XlWMbz
-X-Authority-Analysis: v=2.4 cv=bqq2BFai c=1 sm=1 tr=0 ts=6752627a cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=DFC7gQDcAAAA:8 a=HH5vDtPzAAAA:8 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=TusaAkCut-tyimdG5pgA:9
- a=6mkBMmtgJpxIRZlSFNLW:22 a=QM_-zKB-Ew0MsOlNKMB5:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: _GqIeD2udjnawx01RcmlYXMXY3XlWMbz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-06_01,2024-12-05_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- mlxlogscore=944 lowpriorityscore=0 phishscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 mlxscore=0 bulkscore=0 spamscore=0
- clxscore=1011 suspectscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.21.0-2411120000
- definitions=main-2412060017
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 2a3cfb9a24a28da9cc13d2c525a76548865e182c ]
+The quilt patch titled
+     Subject: mm/gup: handle NULL pages in unpin_user_pages()
+has been removed from the -mm tree.  Its filename was
+     mm-gup-handle-null-pages-in-unpin_user_pages.patch
 
-Since 'adev->dm.dc' in amdgpu_dm_fini() might turn out to be NULL
-before the call to dc_enable_dmub_notifications(), check
-beforehand to ensure there will not be a possible NULL-ptr-deref
-there.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Also, since commit 1e88eb1b2c25 ("drm/amd/display: Drop
-CONFIG_DRM_AMD_DC_HDCP") there are two separate checks for NULL in
-'adev->dm.dc' before dc_deinit_callbacks() and dc_dmub_srv_destroy().
-Clean up by combining them all under one 'if'.
+------------------------------------------------------
+From: John Hubbard <jhubbard@nvidia.com>
+Subject: mm/gup: handle NULL pages in unpin_user_pages()
+Date: Wed, 20 Nov 2024 19:49:33 -0800
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+The recent addition of "pofs" (pages or folios) handling to gup has a
+flaw: it assumes that unpin_user_pages() handles NULL pages in the pages**
+array.  That's not the case, as I discovered when I ran on a new
+configuration on my test machine.
 
-Fixes: 81927e2808be ("drm/amd/display: Support for DMUB AUX")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Fix this by skipping NULL pages in unpin_user_pages(), just like
+unpin_folios() already does.
+
+Details: when booting on x86 with "numa=fake=2 movablecore=4G" on Linux
+6.12, and running this:
+
+    tools/testing/selftests/mm/gup_longterm
+
+...I get the following crash:
+
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+RIP: 0010:sanity_check_pinned_pages+0x3a/0x2d0
+...
+Call Trace:
+ <TASK>
+ ? __die_body+0x66/0xb0
+ ? page_fault_oops+0x30c/0x3b0
+ ? do_user_addr_fault+0x6c3/0x720
+ ? irqentry_enter+0x34/0x60
+ ? exc_page_fault+0x68/0x100
+ ? asm_exc_page_fault+0x22/0x30
+ ? sanity_check_pinned_pages+0x3a/0x2d0
+ unpin_user_pages+0x24/0xe0
+ check_and_migrate_movable_pages_or_folios+0x455/0x4b0
+ __gup_longterm_locked+0x3bf/0x820
+ ? mmap_read_lock_killable+0x12/0x50
+ ? __pfx_mmap_read_lock_killable+0x10/0x10
+ pin_user_pages+0x66/0xa0
+ gup_test_ioctl+0x358/0xb20
+ __se_sys_ioctl+0x6b/0xc0
+ do_syscall_64+0x7b/0x150
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Link: https://lkml.kernel.org/r/20241121034933.77502-1-jhubbard@nvidia.com
+Fixes: 94efde1d1539 ("mm/gup: avoid an unnecessary allocation call for FOLL_LONGTERM cases")
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Junxiao Chang <junxiao.chang@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8dc0f70df24f..7b4d44dcb343 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1882,14 +1882,14 @@ static void amdgpu_dm_fini(struct amdgpu_device *adev)
- 		dc_deinit_callbacks(adev->dm.dc);
- #endif
+ mm/gup.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+--- a/mm/gup.c~mm-gup-handle-null-pages-in-unpin_user_pages
++++ a/mm/gup.c
+@@ -52,7 +52,12 @@ static inline void sanity_check_pinned_p
+ 	 */
+ 	for (; npages; npages--, pages++) {
+ 		struct page *page = *pages;
+-		struct folio *folio = page_folio(page);
++		struct folio *folio;
++
++		if (!page)
++			continue;
++
++		folio = page_folio(page);
  
--	if (adev->dm.dc)
-+	if (adev->dm.dc) {
- 		dc_dmub_srv_destroy(&adev->dm.dc->ctx->dmub_srv);
--
--	if (dc_enable_dmub_notifications(adev->dm.dc)) {
--		kfree(adev->dm.dmub_notify);
--		adev->dm.dmub_notify = NULL;
--		destroy_workqueue(adev->dm.delayed_hpd_wq);
--		adev->dm.delayed_hpd_wq = NULL;
-+		if (dc_enable_dmub_notifications(adev->dm.dc)) {
-+			kfree(adev->dm.dmub_notify);
-+			adev->dm.dmub_notify = NULL;
-+			destroy_workqueue(adev->dm.delayed_hpd_wq);
-+			adev->dm.delayed_hpd_wq = NULL;
+ 		if (is_zero_page(page) ||
+ 		    !folio_test_anon(folio))
+@@ -409,6 +414,10 @@ void unpin_user_pages(struct page **page
+ 
+ 	sanity_check_pinned_pages(pages, npages);
+ 	for (i = 0; i < npages; i += nr) {
++		if (!pages[i]) {
++			nr = 1;
++			continue;
 +		}
+ 		folio = gup_folio_next(pages, npages, i, &nr);
+ 		gup_put_folio(folio, nr, FOLL_PIN);
  	}
- 
- 	if (adev->dm.dmub_bo)
--- 
-2.25.1
+_
+
+Patches currently in -mm which might be from jhubbard@nvidia.com are
+
 
 
