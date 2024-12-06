@@ -1,203 +1,179 @@
-Return-Path: <stable+bounces-99061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133979E6EE7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:07:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9F19E6F07
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:13:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA018281020
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:07:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AA4218812B3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F3B1F9AB5;
-	Fri,  6 Dec 2024 13:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E3E203713;
+	Fri,  6 Dec 2024 13:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2R1gDDE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JXGCXX0v"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B002F1DDA10
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 13:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D46F1EE02E
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 13:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733490440; cv=none; b=j5PoACye5JsPKX1HjHHfFF78nxm3b5XiUfGn0MQynGDTMMJlzD3TPUOmI/g4WULi1QFiToJojGzuJamrbgllQI4zcEhk1AzRANbcoriV9nqPy/1x/fUbscduXu2T0xoxRcm/Try+OjEaJKrwmlCdMxf/WqeiMIQwi3l7bv7ncGc=
+	t=1733490537; cv=none; b=o7gV+xvhvwjxWRP5Fm2VUSAjhBPCh1rDDj4ospnLgWIZCrDwRSbrNNtnGekP4oECyh0uOoSTD4LOZfiBiSZm+9jf7V/Qu9khZU+64p0e6y02FUKHMabTiXSuOn4fQPzUzNx8Qajp2OUOCoJ/3sZAWRDwTYo7XrDT6Hqn0lEtc7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733490440; c=relaxed/simple;
-	bh=M0EsCno/Beryz7j6+Q9s8RjrxkaP1O8xXf3vi2ohlkM=;
+	s=arc-20240116; t=1733490537; c=relaxed/simple;
+	bh=hPryPFjLQxt17wypVm7q83PWcS3S5NbIvZYrvM5jq+k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QSVYrNbMeC4tnKxmzBbRr297xSC4AZMNqYA38DmEhGsEWfkg/ZqCmwYcGQn5InPGZOv6saFwGE58gQ+NYWVdv/j52Z0t7r1Bswvh9CfFJZKf/QTd6j8iPHzKGzKM04nnybHey3K8JbzZyvSnpiS0BeEYyHfFlpWURqzhBMIL8n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2R1gDDE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECF3C4CED1;
-	Fri,  6 Dec 2024 13:07:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733490440;
-	bh=M0EsCno/Beryz7j6+Q9s8RjrxkaP1O8xXf3vi2ohlkM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t2R1gDDEXC0OGE8ElxsPi0nsOvL0tTAkigl+5QpgNKlBBNMQ67mThtNGKNjmrf4CM
-	 G85oM0J52ztdOvOjh3L4Dfnqs+zgU4dO8+tQgaizCYYqmHEBaEdcN9PDnNO9yPG4CF
-	 jd+NaLPEaHhabFnoPCl1d5JsgooqqpGHAiI6FjNc=
-Date: Fri, 6 Dec 2024 14:07:17 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: stable@vger.kernel.org,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com,
-	syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: Re: [PATCH 5.10.y] media: uvcvideo: Require entities to have a
- non-zero unique ID
-Message-ID: <2024120648-gutless-capital-512b@gregkh>
-References: <2024120653-blaspheme-emphases-81cb@gregkh>
- <20241206125901.49354-1-ribalda@chromium.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=drSo0ysXlqnw+C4o+f0NObWDiIPM8TnGQddOgjoeS3k1qHE6kNj77IQHUPpOKlkNSp2Jwa7EVSUCaCh/9ZEWvUUI6hw4rqpSTSjtZKVr9/JwEFzccGnmYAZ13A3u9Z4WRT5QGnEqBcRiakIJMNa8D0lvjtdRcSC8EjYeddRqsEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JXGCXX0v; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733490534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=luQTG3HobMiLGPqsmBPNLtX1YUjWdLRxxX/mchSrWqw=;
+	b=JXGCXX0vaUoWfIsD84rcANfCjAjZkDwazzT44RYlvsj4PDR54UQweDqBanzu0v01ntwJTR
+	rQzJCOPyaY8iAlFP9457TW90WnuQ23duNQGC1r8bDuYCRUcAUulO5xxTJaVO8qBgisTs/Q
+	bvsYBLmJUZ6x2/BoOGQt9XsMm33QuQQ=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-rqGSS7mhM7qy44-SY2epNA-1; Fri,
+ 06 Dec 2024 08:08:53 -0500
+X-MC-Unique: rqGSS7mhM7qy44-SY2epNA-1
+X-Mimecast-MFC-AGG-ID: rqGSS7mhM7qy44-SY2epNA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8667319560A2;
+	Fri,  6 Dec 2024 13:08:51 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.103])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 368BB1955E80;
+	Fri,  6 Dec 2024 13:08:48 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Fri,  6 Dec 2024 14:08:28 +0100 (CET)
+Date: Fri, 6 Dec 2024 14:08:25 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: gregkh@linuxfoundation.org
+Cc: frederic@kernel.org, anthony.mallet@laas.fr, tglx@linutronix.de,
+	stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] posix-timers: Target group sigqueue to
+ current task only if" failed to apply to 6.12-stable tree
+Message-ID: <20241206130824.GA31748@redhat.com>
+References: <2024120656-jelly-gore-aa4c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="4Ckj6UjgE2iN1+kY"
+Content-Disposition: inline
+In-Reply-To: <2024120656-jelly-gore-aa4c@gregkh>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+
+
+--4Ckj6UjgE2iN1+kY
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241206125901.49354-1-ribalda@chromium.org>
 
-On Fri, Dec 06, 2024 at 12:59:01PM +0000, Ricardo Ribalda wrote:
-> From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> 
-> Per UVC 1.1+ specification 3.7.2, units and terminals must have a non-zero
-> unique ID.
-> 
-> ```
-> Each Unit and Terminal within the video function is assigned a unique
-> identification number, the Unit ID (UID) or Terminal ID (TID), contained in
-> the bUnitID or bTerminalID field of the descriptor. The value 0x00 is
-> reserved for undefined ID,
-> ```
-> 
-> So, deny allocating an entity with ID 0 or an ID that belongs to a unit
-> that is already added to the list of entities.
-> 
-> This also prevents some syzkaller reproducers from triggering warnings due
-> to a chain of entities referring to themselves. In one particular case, an
-> Output Unit is connected to an Input Unit, both with the same ID of 1. But
-> when looking up for the source ID of the Output Unit, that same entity is
-> found instead of the input entity, which leads to such warnings.
-> 
-> In another case, a backward chain was considered finished as the source ID
-> was 0. Later on, that entity was found, but its pads were not valid.
-> 
-> Here is a sample stack trace for one of those cases.
-> 
-> [   20.650953] usb 1-1: new high-speed USB device number 2 using dummy_hcd
-> [   20.830206] usb 1-1: Using ep0 maxpacket: 8
-> [   20.833501] usb 1-1: config 0 descriptor??
-> [   21.038518] usb 1-1: string descriptor 0 read error: -71
-> [   21.038893] usb 1-1: Found UVC 0.00 device <unnamed> (2833:0201)
-> [   21.039299] uvcvideo 1-1:0.0: Entity type for entity Output 1 was not initialized!
-> [   21.041583] uvcvideo 1-1:0.0: Entity type for entity Input 1 was not initialized!
-> [   21.042218] ------------[ cut here ]------------
-> [   21.042536] WARNING: CPU: 0 PID: 9 at drivers/media/mc/mc-entity.c:1147 media_create_pad_link+0x2c4/0x2e0
-> [   21.043195] Modules linked in:
-> [   21.043535] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.11.0-rc7-00030-g3480e43aeccf #444
-> [   21.044101] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-> [   21.044639] Workqueue: usb_hub_wq hub_event
-> [   21.045100] RIP: 0010:media_create_pad_link+0x2c4/0x2e0
-> [   21.045508] Code: fe e8 20 01 00 00 b8 f4 ff ff ff 48 83 c4 30 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc 0f 0b eb e9 0f 0b eb 0a 0f 0b eb 06 <0f> 0b eb 02 0f 0b b8 ea ff ff ff eb d4 66 2e 0f 1f 84 00 00 00 00
-> [   21.046801] RSP: 0018:ffffc9000004b318 EFLAGS: 00010246
-> [   21.047227] RAX: ffff888004e5d458 RBX: 0000000000000000 RCX: ffffffff818fccf1
-> [   21.047719] RDX: 000000000000007b RSI: 0000000000000000 RDI: ffff888004313290
-> [   21.048241] RBP: ffff888004313290 R08: 0001ffffffffffff R09: 0000000000000000
-> [   21.048701] R10: 0000000000000013 R11: 0001888004313290 R12: 0000000000000003
-> [   21.049138] R13: ffff888004313080 R14: ffff888004313080 R15: 0000000000000000
-> [   21.049648] FS:  0000000000000000(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
-> [   21.050271] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [   21.050688] CR2: 0000592cc27635b0 CR3: 000000000431c000 CR4: 0000000000750ef0
-> [   21.051136] PKRU: 55555554
-> [   21.051331] Call Trace:
-> [   21.051480]  <TASK>
-> [   21.051611]  ? __warn+0xc4/0x210
-> [   21.051861]  ? media_create_pad_link+0x2c4/0x2e0
-> [   21.052252]  ? report_bug+0x11b/0x1a0
-> [   21.052540]  ? trace_hardirqs_on+0x31/0x40
-> [   21.052901]  ? handle_bug+0x3d/0x70
-> [   21.053197]  ? exc_invalid_op+0x1a/0x50
-> [   21.053511]  ? asm_exc_invalid_op+0x1a/0x20
-> [   21.053924]  ? media_create_pad_link+0x91/0x2e0
-> [   21.054364]  ? media_create_pad_link+0x2c4/0x2e0
-> [   21.054834]  ? media_create_pad_link+0x91/0x2e0
-> [   21.055131]  ? _raw_spin_unlock+0x1e/0x40
-> [   21.055441]  ? __v4l2_device_register_subdev+0x202/0x210
-> [   21.055837]  uvc_mc_register_entities+0x358/0x400
-> [   21.056144]  uvc_register_chains+0x1fd/0x290
-> [   21.056413]  uvc_probe+0x380e/0x3dc0
-> [   21.056676]  ? __lock_acquire+0x5aa/0x26e0
-> [   21.056946]  ? find_held_lock+0x33/0xa0
-> [   21.057196]  ? kernfs_activate+0x70/0x80
-> [   21.057533]  ? usb_match_dynamic_id+0x1b/0x70
-> [   21.057811]  ? find_held_lock+0x33/0xa0
-> [   21.058047]  ? usb_match_dynamic_id+0x55/0x70
-> [   21.058330]  ? lock_release+0x124/0x260
-> [   21.058657]  ? usb_match_one_id_intf+0xa2/0x100
-> [   21.058997]  usb_probe_interface+0x1ba/0x330
-> [   21.059399]  really_probe+0x1ba/0x4c0
-> [   21.059662]  __driver_probe_device+0xb2/0x180
-> [   21.059944]  driver_probe_device+0x5a/0x100
-> [   21.060170]  __device_attach_driver+0xe9/0x160
-> [   21.060427]  ? __pfx___device_attach_driver+0x10/0x10
-> [   21.060872]  bus_for_each_drv+0xa9/0x100
-> [   21.061312]  __device_attach+0xed/0x190
-> [   21.061812]  device_initial_probe+0xe/0x20
-> [   21.062229]  bus_probe_device+0x4d/0xd0
-> [   21.062590]  device_add+0x308/0x590
-> [   21.062912]  usb_set_configuration+0x7b6/0xaf0
-> [   21.063403]  usb_generic_driver_probe+0x36/0x80
-> [   21.063714]  usb_probe_device+0x7b/0x130
-> [   21.063936]  really_probe+0x1ba/0x4c0
-> [   21.064111]  __driver_probe_device+0xb2/0x180
-> [   21.064577]  driver_probe_device+0x5a/0x100
-> [   21.065019]  __device_attach_driver+0xe9/0x160
-> [   21.065403]  ? __pfx___device_attach_driver+0x10/0x10
-> [   21.065820]  bus_for_each_drv+0xa9/0x100
-> [   21.066094]  __device_attach+0xed/0x190
-> [   21.066535]  device_initial_probe+0xe/0x20
-> [   21.066992]  bus_probe_device+0x4d/0xd0
-> [   21.067250]  device_add+0x308/0x590
-> [   21.067501]  usb_new_device+0x347/0x610
-> [   21.067817]  hub_event+0x156b/0x1e30
-> [   21.068060]  ? process_scheduled_works+0x48b/0xaf0
-> [   21.068337]  process_scheduled_works+0x5a3/0xaf0
-> [   21.068668]  worker_thread+0x3cf/0x560
-> [   21.068932]  ? kthread+0x109/0x1b0
-> [   21.069133]  kthread+0x197/0x1b0
-> [   21.069343]  ? __pfx_worker_thread+0x10/0x10
-> [   21.069598]  ? __pfx_kthread+0x10/0x10
-> [   21.069908]  ret_from_fork+0x32/0x40
-> [   21.070169]  ? __pfx_kthread+0x10/0x10
-> [   21.070424]  ret_from_fork_asm+0x1a/0x30
-> [   21.070737]  </TASK>
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+0584f746fde3d52b4675@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=0584f746fde3d52b4675
-> Reported-by: syzbot+dd320d114deb3f5bb79b@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=dd320d114deb3f5bb79b
-> Fixes: a3fbc2e6bb05 ("media: mc-entity.c: use WARN_ON, validate link pads")
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-> Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Link: https://lore.kernel.org/r/20240913180601.1400596-2-cascardo@igalia.com
-> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-> Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> (cherry picked from commit 3dd075fe8ebbc6fcbf998f81a75b8c4b159a6195)
-> ---
->  drivers/media/usb/uvc/uvc_driver.c | 63 ++++++++++++++++++------------
->  1 file changed, 39 insertions(+), 24 deletions(-)
+Hi Greg,
 
-You forgot to sign off on this as you modified it from the original
-commit (and you forgot to document what you modified...)
+On 12/06, gregkh@linuxfoundation.org wrote:
+>
+> The patch below does not apply to the 6.12-stable tree.
 
-thanks,
+Please see the attached patch. For v6.12 and the previous versions.
 
-greg k-h
+Oleg.
+
+--4Ckj6UjgE2iN1+kY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="0001-posix-timers-Target-group-sigqueue-to-current-task-o.patch~"
+
+From 3851a6b5b7183f377bcedc98ffaecff067236ce5 Mon Sep 17 00:00:00 2001
+From: Frederic Weisbecker <frederic@kernel.org>
+Date: Fri, 6 Dec 2024 13:59:12 +0100
+Subject: [PATCH -stable] posix-timers: Target group sigqueue to current task
+ only if not exiting
+
+From: Frederic Weisbecker <frederic@kernel.org>
+
+commit 63dffecfba3eddcf67a8f76d80e0c141f93d44a5 upstream.
+
+A sigqueue belonging to a posix timer, which target is not a specific
+thread but a whole thread group, is preferrably targeted to the current
+task if it is part of that thread group.
+
+However nothing prevents a posix timer event from queueing such a
+sigqueue from a reaped yet running task. The interruptible code space
+between exit_notify() and the final call to schedule() is enough for
+posix_timer_fn() hrtimer to fire.
+
+If that happens while the current task is part of the thread group
+target, it is proposed to handle it but since its sighand pointer may
+have been cleared already, the sigqueue is dropped even if there are
+other tasks running within the group that could handle it.
+
+As a result posix timers with thread group wide target may miss signals
+when some of their threads are exiting.
+
+Fix this with verifying that the current task hasn't been through
+exit_notify() before proposing it as a preferred target so as to ensure
+that its sighand is still here and stable.
+
+complete_signal() might still reconsider the choice and find a better
+target within the group if current has passed retarget_shared_pending()
+already.
+
+Fixes: bcb7ee79029d ("posix-timers: Prefer delivery of signals to the current thread")
+Reported-by: Anthony Mallet <anthony.mallet@laas.fr>
+Suggested-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241122234811.60455-1-frederic@kernel.org
+Closes: https://lore.kernel.org/all/26411.57288.238690.681680@gargle.gargle.HOWL
+---
+ kernel/signal.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/kernel/signal.c b/kernel/signal.c
+index cbabb2d05e0a..2ae45e6eb6bb 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1986,14 +1986,15 @@ int send_sigqueue(struct sigqueue *q, struct pid *pid, enum pid_type type)
+ 	 * into t->pending).
+ 	 *
+ 	 * Where type is not PIDTYPE_PID, signals must be delivered to the
+-	 * process. In this case, prefer to deliver to current if it is in
+-	 * the same thread group as the target process, which avoids
+-	 * unnecessarily waking up a potentially idle task.
++	 * process. In this case, prefer to deliver to current if it is in the
++	 * same thread group as the target process and its sighand is stable,
++	 * which avoids unnecessarily waking up a potentially idle task.
+ 	 */
+ 	t = pid_task(pid, type);
+ 	if (!t)
+ 		goto ret;
+-	if (type != PIDTYPE_PID && same_thread_group(t, current))
++	if (type != PIDTYPE_PID &&
++	    same_thread_group(t, current) && !current->exit_state)
+ 		t = current;
+ 	if (!likely(lock_task_sighand(t, &flags)))
+ 		goto ret;
+-- 
+2.25.1.362.g51ebf55
+
+
+--4Ckj6UjgE2iN1+kY--
+
 
