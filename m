@@ -1,121 +1,145 @@
-Return-Path: <stable+bounces-99006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42D49E6D9B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:52:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 445B2188189D
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:52:39 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2789E1FF7D2;
-	Fri,  6 Dec 2024 11:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XxJdm4/4"
-X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D464C9E6DAA
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:03:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4811FF7A1
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 11:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733485953; cv=none; b=Fq4r1t6RmvScZa9emmja3QQ/mdVZEZIFEd5wxw9L+q9DrBziemO7Iyx5BDkLLiqeDjnf0+aLC+ouIPiMAfFHLy8VNPoX2FatjhleSEZD3lu7wIr4BrUeqsdrylkJpPjnJhPkctTYrSaUqtjJpz5u90peXVJYu3qFDP8pt4We3RE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733485953; c=relaxed/simple;
-	bh=fvR19Fke+nqsX8G1M7vQ81Me4p4pbkSD1dYSS3UM4zA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P0p29BKdrTY3OK9ujiaBGwfgVWvNEg//bdxhrHEA6D8k1X3AtanXbh1bx4Z97NG676hwyG9u8kO9n7YH918WC+bHCrdg7EznNcC/rfgoue21diPqmr/HsrTEsa23iWLDoQucbYkjSHq/xY9ginMBv48R3auCh7iM66tS+2RXrY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XxJdm4/4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733485951;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gppRjBK2ayDqLXJbDav8bMCH+p/FKEHFZICRNK1hGng=;
-	b=XxJdm4/4Ddwo3iTdc0GrEYeqrQv0iBfpfaUzMSXI75QWsqhv2pMKqE3WnVH2S0bmrQ9B6+
-	uc3cjO4RI3B3L7zfV6I4M+CAXNzfAhbPJJz/BbqoAHUNs9/0M6qf4xjobNrNTmchaOo3B7
-	UaWfUNWhZqIjnzjbF6punKrgF1zALLE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-468-ENwAxsbaOkSeO5nLZWaGhg-1; Fri,
- 06 Dec 2024 06:52:25 -0500
-X-MC-Unique: ENwAxsbaOkSeO5nLZWaGhg-1
-X-Mimecast-MFC-AGG-ID: ENwAxsbaOkSeO5nLZWaGhg
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8726D283826
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:03:04 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD9E1FF61F;
+	Fri,  6 Dec 2024 12:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xv6QInuD"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 499E21956055;
-	Fri,  6 Dec 2024 11:52:23 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.224.103])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 571B31956095;
-	Fri,  6 Dec 2024 11:52:18 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Fri,  6 Dec 2024 12:52:00 +0100 (CET)
-Date: Fri, 6 Dec 2024 12:51:54 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Brian Gerst <brgerst@gmail.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	Ingo Molnar <mingo@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>,
-	Uros Bizjak <ubizjak@gmail.com>, stable@vger.kernel.org,
-	Fangrui Song <i@maskray.me>, Nathan Chancellor <nathan@kernel.org>,
-	Andy Lutomirski <luto@kernel.org>
-Subject: Re: [PATCH v5 01/16] x86/stackprotector: Work around strict Clang
- TLS symbol requirements
-Message-ID: <20241206115154.GA32491@redhat.com>
-References: <20241105155801.1779119-1-brgerst@gmail.com>
- <20241105155801.1779119-2-brgerst@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ACF41FF604
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733486580; cv=none; b=T1fNiMVtFXTFhvHau1l5KLgMpNfoK8+4AQoukSxSzvtdfPSpc3xYzcAMXVwyFy11YEem3fxrKXyay/JxVWiXNFxHHn9B1T/O9g5COwe3sGUiIYF2oSc+eE57uvZhmb/He2mq0Pr/9azRih4cfEfmGtEuyBuUf71C3oN78AD68Ws=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733486580; c=relaxed/simple;
+	bh=pVtpHpwALZU07KWDhbYW0H0drxhREf9hgaakkO06La4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=guyUwB+XzQM/TBvYuAJd6MS4BfoMXr08a2aScMLA48n1C0xENP8Z4JgTXUw/ilnkZpb7XIUFXIawi45nXSETlWj30J3ZQdNDViODE/+92s5GZ6zmgc+Z4T0vjMy+BCpsVNu6f4GgzpZG0kF9klHvBOmPzMtGl/vl3IaKL+y9M2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xv6QInuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB79C4CED1;
+	Fri,  6 Dec 2024 12:02:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733486579;
+	bh=pVtpHpwALZU07KWDhbYW0H0drxhREf9hgaakkO06La4=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Xv6QInuDQUQWd1lu7l9Pkdq5IA5SomYgzfPsJ/tJzrtgUSWUc2KgfHAIEVvw1r8Sj
+	 KruJPtckSDcvVEyQ6/YO8dAbt9X7yiIWdRKrwT11LURcWC5ZxuCwpOxxkdl9jeJ+wq
+	 V0Z1ExJPdEZFlM5jUJGyHdD3csjjSdxuw3Ue9HBo=
+Subject: FAILED: patch "[PATCH] posix-timers: Target group sigqueue to current task only if" failed to apply to 6.12-stable tree
+To: frederic@kernel.org,anthony.mallet@laas.fr,oleg@redhat.com,tglx@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 06 Dec 2024 13:02:56 +0100
+Message-ID: <2024120656-jelly-gore-aa4c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241105155801.1779119-2-brgerst@gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 11/05, Brian Gerst wrote:
->
-> --- a/arch/x86/kernel/vmlinux.lds.S
-> +++ b/arch/x86/kernel/vmlinux.lds.S
-> @@ -468,6 +468,9 @@ SECTIONS
->  . = ASSERT((_end - LOAD_OFFSET <= KERNEL_IMAGE_SIZE),
->  	   "kernel image bigger than KERNEL_IMAGE_SIZE");
->
-> +/* needed for Clang - see arch/x86/entry/entry.S */
-> +PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
 
-Don't we need the simple fix below?
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-without this patch I can't build the kernel with CONFIG_STACKPROTECTOR=n.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Oleg.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 63dffecfba3eddcf67a8f76d80e0c141f93d44a5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120656-jelly-gore-aa4c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index fab3ac9a4574..2ff48645bab9 100644
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -472,8 +472,10 @@ SECTIONS
- . = ASSERT((_end - LOAD_OFFSET <= KERNEL_IMAGE_SIZE),
- 	   "kernel image bigger than KERNEL_IMAGE_SIZE");
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 63dffecfba3eddcf67a8f76d80e0c141f93d44a5 Mon Sep 17 00:00:00 2001
+From: Frederic Weisbecker <frederic@kernel.org>
+Date: Sat, 23 Nov 2024 00:48:11 +0100
+Subject: [PATCH] posix-timers: Target group sigqueue to current task only if
+ not exiting
+
+A sigqueue belonging to a posix timer, which target is not a specific
+thread but a whole thread group, is preferrably targeted to the current
+task if it is part of that thread group.
+
+However nothing prevents a posix timer event from queueing such a
+sigqueue from a reaped yet running task. The interruptible code space
+between exit_notify() and the final call to schedule() is enough for
+posix_timer_fn() hrtimer to fire.
+
+If that happens while the current task is part of the thread group
+target, it is proposed to handle it but since its sighand pointer may
+have been cleared already, the sigqueue is dropped even if there are
+other tasks running within the group that could handle it.
+
+As a result posix timers with thread group wide target may miss signals
+when some of their threads are exiting.
+
+Fix this with verifying that the current task hasn't been through
+exit_notify() before proposing it as a preferred target so as to ensure
+that its sighand is still here and stable.
+
+complete_signal() might still reconsider the choice and find a better
+target within the group if current has passed retarget_shared_pending()
+already.
+
+Fixes: bcb7ee79029d ("posix-timers: Prefer delivery of signals to the current thread")
+Reported-by: Anthony Mallet <anthony.mallet@laas.fr>
+Suggested-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241122234811.60455-1-frederic@kernel.org
+Closes: https://lore.kernel.org/all/26411.57288.238690.681680@gargle.gargle.HOWL
+
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 98b65cb35830..989b1cc9116a 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1959,14 +1959,15 @@ static void posixtimer_queue_sigqueue(struct sigqueue *q, struct task_struct *t,
+  *
+  * Where type is not PIDTYPE_PID, signals must be delivered to the
+  * process. In this case, prefer to deliver to current if it is in
+- * the same thread group as the target process, which avoids
+- * unnecessarily waking up a potentially idle task.
++ * the same thread group as the target process and its sighand is
++ * stable, which avoids unnecessarily waking up a potentially idle task.
+  */
+ static inline struct task_struct *posixtimer_get_target(struct k_itimer *tmr)
+ {
+ 	struct task_struct *t = pid_task(tmr->it_pid, tmr->it_pid_type);
  
-+#ifdef CONFIG_STACKPROTECTOR
- /* needed for Clang - see arch/x86/entry/entry.S */
- PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
-+#endif
- 
- #ifdef CONFIG_X86_64
- /*
+-	if (t && tmr->it_pid_type != PIDTYPE_PID && same_thread_group(t, current))
++	if (t && tmr->it_pid_type != PIDTYPE_PID &&
++	    same_thread_group(t, current) && !current->exit_state)
+ 		t = current;
+ 	return t;
+ }
 
 
