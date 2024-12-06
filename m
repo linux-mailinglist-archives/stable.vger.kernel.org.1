@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-99068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48599E6F29
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:18:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E839A9E6F2B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A4B018836EB
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 184E8164AD3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCAF206F21;
-	Fri,  6 Dec 2024 13:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A50206F2E;
+	Fri,  6 Dec 2024 13:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWtpcGCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jw/pV8Uz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8CA204095
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 13:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4921B1E1C11
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 13:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733490929; cv=none; b=Psa0DeouU7NWVQQD/4dTc0dWvLDpAhuCOyr2zxuuHtGRb8C5tjR6MBzx+4o60Ia3QVS/z0b+USLYjI94XJUPBnTSsrqhsKNQucONHlHx6dsSRTAQXv6AitmmYt+pOjeqn7keV9HuxEbN4HxRwzEOCVGJ9UnqLYLaBJsM8a8oDHk=
+	t=1733490992; cv=none; b=FYqnTaiv3FmB5/DZlU//lJnwU1YDGRt8BFUiZhWeQXeGcwuYyJeRMo0HDJpVmUfP81TNIugHIJmnIQC0FW2GxQbDDM+YwLy3JyzxThOFMyEQoPUXjfHKnQzAJCfmAoyZIKTolZry82Yv1+41aNrNNYmX3nOEvjZmhNspSMrW+iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733490929; c=relaxed/simple;
-	bh=hJT1wGNS/z1qZGMDK2nf02jVwjnj4QPl/4aVEgP+LMM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gGgVwn6J8U5yS4pDV6gDa7yDiUOCpOonMFnlmbSmpNTY+IzV4I2XMi0IoMk+32jbyxZo+5HyjLMwP/zGuHnxYCBUqR1FBVtZre17fwVZ1tpbUrH3xs9CHSgYedcHZtqJxvGl1dE8vGFK9r207vQcCT9VGHCBaZX5YTONvJ4fqW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWtpcGCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BAAC4CED1;
-	Fri,  6 Dec 2024 13:15:24 +0000 (UTC)
+	s=arc-20240116; t=1733490992; c=relaxed/simple;
+	bh=roNrLOD8HFoKCoNMiOUrzQ/e9KAcWbzJwC4L9ZvUTNM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hSLjhJ2d/HkjaoIjvj7/Owpuq7893xXp/Q4SZO/N3rnLP4pGSlYWCdiSx3DiNSSBlVQ8pJdhPAHpp6r8Ftxt1H7iJaSpVmI+yoqIDRa858fjVsRWEWBfKLSpeA6xwkxOEBfQkXBHC7hwaRcIwSCW/661/SpGX2X6mEQ7+KEup0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jw/pV8Uz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A54C4CED1;
+	Fri,  6 Dec 2024 13:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733490925;
-	bh=hJT1wGNS/z1qZGMDK2nf02jVwjnj4QPl/4aVEgP+LMM=;
+	s=korg; t=1733490991;
+	bh=roNrLOD8HFoKCoNMiOUrzQ/e9KAcWbzJwC4L9ZvUTNM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lWtpcGCibf7bXrXFQT9De4CH8GIuAao7KyIrMf57Q9qSpEy2YDWNuMykPa4JPoXVi
-	 2JCHsFfg+ndCha6Kc7TFiyPS98SiRzkaZg1lSSpekVjjlYHA8rSUjPS828UViNBlCJ
-	 95iFXdz1fwkvXXE4QkZ0dfInut/UPLDFw/MMBv2U=
-Subject: FAILED: patch "[PATCH] drm/sti: avoid potential dereference of error pointers" failed to apply to 5.10-stable tree
-To: make24@iscas.ac.cn,alain.volmat@foss.st.com
+	b=jw/pV8UzORXTs8K3+8PKSNUkYsYAa2ptDrDAgk0lkawcJmTPHmz2m1s7K3788NK87
+	 ekuXdt61JFOrtq2Zi9gZ9sg6fQcNgdzolUyw1AUAZCKXYb33aujGi3bcOks+WzvjaB
+	 KbICG2Bf315rbrMAgYYbsyTGtVJFn8oZP7QpvvA8=
+Subject: FAILED: patch "[PATCH] drm/bridge: it6505: Fix inverted reset polarity" failed to apply to 6.6-stable tree
+To: wenst@chromium.org,dmitry.baryshkov@linaro.org,neil.armstrong@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 14:15:22 +0100
-Message-ID: <2024120622-rifling-twentieth-0cf4@gregkh>
+Date: Fri, 06 Dec 2024 14:16:28 +0100
+Message-ID: <2024120628-size-spiritism-13d9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 831214f77037de02afc287eae93ce97f218d8c04
+git cherry-pick -x c5f3f21728b069412e8072b8b1d0a3d9d3ab0265
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120622-rifling-twentieth-0cf4@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120628-size-spiritism-13d9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,34 +77,68 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 831214f77037de02afc287eae93ce97f218d8c04 Mon Sep 17 00:00:00 2001
-From: Ma Ke <make24@iscas.ac.cn>
-Date: Fri, 13 Sep 2024 17:04:12 +0800
-Subject: [PATCH] drm/sti: avoid potential dereference of error pointers
+From c5f3f21728b069412e8072b8b1d0a3d9d3ab0265 Mon Sep 17 00:00:00 2001
+From: Chen-Yu Tsai <wenst@chromium.org>
+Date: Tue, 29 Oct 2024 17:54:10 +0800
+Subject: [PATCH] drm/bridge: it6505: Fix inverted reset polarity
 
-The return value of drm_atomic_get_crtc_state() needs to be
-checked. To avoid use of error pointer 'crtc_state' in case
-of the failure.
+The IT6505 bridge chip has a active low reset line. Since it is a
+"reset" and not an "enable" line, the GPIO should be asserted to
+put it in reset and deasserted to bring it out of reset during
+the power on sequence.
 
+The polarity was inverted when the driver was first introduced, likely
+because the device family that was targeted had an inverting level
+shifter on the reset line.
+
+The MT8186 Corsola devices already have the IT6505 in their device tree,
+but the whole display pipeline is actually disabled and won't be enabled
+until some remaining issues are sorted out. The other known user is
+the MT8183 Kukui / Jacuzzi family; their device trees currently do not
+have the IT6505 included.
+
+Fix the polarity in the driver while there are no actual users.
+
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
 Cc: stable@vger.kernel.org
-Fixes: dd86dc2f9ae1 ("drm/sti: implement atomic_check for the planes")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240913090412.2022848-1-make24@iscas.ac.cn
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241029095411.657616-1-wenst@chromium.org
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 
-diff --git a/drivers/gpu/drm/sti/sti_cursor.c b/drivers/gpu/drm/sti/sti_cursor.c
-index db0a1eb53532..c59fcb4dca32 100644
---- a/drivers/gpu/drm/sti/sti_cursor.c
-+++ b/drivers/gpu/drm/sti/sti_cursor.c
-@@ -200,6 +200,9 @@ static int sti_cursor_atomic_check(struct drm_plane *drm_plane,
- 		return 0;
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index 7ff17aa14b01..008d86cc562a 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2614,9 +2614,9 @@ static int it6505_poweron(struct it6505 *it6505)
+ 	/* time interval between OVDD and SYSRSTN at least be 10ms */
+ 	if (pdata->gpiod_reset) {
+ 		usleep_range(10000, 20000);
+-		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
+-		usleep_range(1000, 2000);
+ 		gpiod_set_value_cansleep(pdata->gpiod_reset, 1);
++		usleep_range(1000, 2000);
++		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
+ 		usleep_range(25000, 35000);
+ 	}
  
- 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
-+	if (IS_ERR(crtc_state))
-+		return PTR_ERR(crtc_state);
-+
- 	mode = &crtc_state->mode;
- 	dst_x = new_plane_state->crtc_x;
- 	dst_y = new_plane_state->crtc_y;
+@@ -2647,7 +2647,7 @@ static int it6505_poweroff(struct it6505 *it6505)
+ 	disable_irq_nosync(it6505->irq);
+ 
+ 	if (pdata->gpiod_reset)
+-		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
++		gpiod_set_value_cansleep(pdata->gpiod_reset, 1);
+ 
+ 	if (pdata->pwr18) {
+ 		err = regulator_disable(pdata->pwr18);
+@@ -3135,7 +3135,7 @@ static int it6505_init_pdata(struct it6505 *it6505)
+ 		return PTR_ERR(pdata->ovdd);
+ 	}
+ 
+-	pdata->gpiod_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	pdata->gpiod_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pdata->gpiod_reset)) {
+ 		dev_err(dev, "gpiod_reset gpio not found");
+ 		return PTR_ERR(pdata->gpiod_reset);
 
 
