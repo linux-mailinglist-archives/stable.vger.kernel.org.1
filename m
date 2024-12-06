@@ -1,213 +1,245 @@
-Return-Path: <stable+bounces-98999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F489E6C35
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:29:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6289E6C66
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A0BE18887CF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:28:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48DF81882F11
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206711FA254;
-	Fri,  6 Dec 2024 10:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AE61EF08A;
+	Fri,  6 Dec 2024 10:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P9d4FEWS"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rhHLp0No"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2049.outbound.protection.outlook.com [40.107.243.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091681D47A2
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 10:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733480644; cv=none; b=VHLWAOHmInzqGLMeXYYcfrpCZDfRXTuhA4bzhoHxsecXzLL/gU1E1H+gCSemx0kKhpYbSq0Iwc6e24iNICUkM2Tru2/MuUkev8ciU2jNW69Octp2rLsBKgEHmAgI6kuK7L83qfjKZv15c4nAAGMlGMbsv6dnBLAT24Si8ft46dI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733480644; c=relaxed/simple;
-	bh=Esap0BFWLjwr3lb6wD5Bi3a/tO1AxEzL+dmnkp+oVT8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BA3nxYjfzi7CnBkm7MvnGFTUGyujkxHDeHtwThjLSyaXb3amcMeg8CdHnGWQxw9IlB7SG5VttAO3stFWKz1MNMD8xssg866NoHmQbCe/HS5o8sbFGnh5kvpNs1Bb41LTax/pmf+kR4AOVeeVjTU8/nLKkPMyni9wcjQaDto3hwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P9d4FEWS; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-aa6225fbc52so151923466b.3
-        for <stable@vger.kernel.org>; Fri, 06 Dec 2024 02:24:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733480641; x=1734085441; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NJ9dvy26w3ha8/zA1bxAQDeunJypghJCiCYHw1i0WAI=;
-        b=P9d4FEWSlbQBOqShsjLTLKRs+bvudAoW8tObmiL4E0BFKq5MovDQlFB0TSnktkC+/Z
-         UlC0Zbx+9tVAUwTKSZcUtdC1jxognOEgMvrb2akR5glyaqFAl/9K2qITA72TOeftwFba
-         XNtlPOEP0EZ2FXW5slifXDkdPGhZ6kwZqsq8MHNKjBLuOUt9hF5B90c7P38fKUpiOruM
-         vR+NZBjaR+B4MHnwRvrdvXPMLV7LGp0Mrj86qCYRYelubEY/ig5JN2lmP5n3yMfqUsQd
-         ph/o3gtSGpy4JToisq3WCMqc/rwYspqQBoysdoDEzW+lmmEeRH6tcDQuKJbE1Zngqjwx
-         ef1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733480641; x=1734085441;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NJ9dvy26w3ha8/zA1bxAQDeunJypghJCiCYHw1i0WAI=;
-        b=Jw64QzFvmOKa2F9ynr/8c4yxkhfVafRaZOKqkv9d0PFrZ4BG6kRpn4dFSYZTN4kocg
-         xGJNeUzRJAzcmQVR1MZbEQjnkPeYnW4q2FKrWCYYPAzSyZRkc5qBpT5L8iU66mG0GIFS
-         Nwvmyz2vCTfKZ21hNBMlObZYJY/BIPtU7kZLgnsqArM6TUr7AA7FmnciXwpSA6OcwAV2
-         1qGJ7nlfQnOxdIFl4KcpQqa/zS+oF98AtEywz8+uPvvfosZ9UpitlXpRcRCIS4jUX5Me
-         XAcVZmfdOzx17Hc2z5EDL82vl6lThZxtXcjD1aT0KDk496wWKY5oLofcnkzci9S28T3b
-         w9Xg==
-X-Gm-Message-State: AOJu0YzG3sYhOoh4IgmJ9nlbg2UFHKm7VRFVfL9sQkjUwrSDrhGeVhYc
-	+nReLIZnlQAxJUD+/nTGy5/JsILKpkyYOa1mJNY3r0Xn5cK8EdlqfAFi52ObFv/Q0TnMQrHEYL9
-	hyVhWsVXI4PHE3S7m7XQoToFuhMFliAEaIoi5OV4P1h3tT32RvZ6LicVjN0Tw4BVCSdeVkj6Mmz
-	F1tMkmtaXvIvyf66vgJPr4hvJBvKM9ygiZCWSCNA==
-X-Google-Smtp-Source: AGHT+IGuxIfveKPgaUNlNfjIdXnxvkH3PZFFGbsVkK+OSCM4Dd5cZPtoYepjlqtU3r+LOFwmbinYLcq+38vC
-X-Received: from edqd19.prod.google.com ([2002:a50:fb13:0:b0:5d1:ad08:19da])
- (user=bsevens job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:32d2:b0:aa6:3f03:7ab4
- with SMTP id a640c23a62f3a-aa63f038759mr121519866b.46.1733480641383; Fri, 06
- Dec 2024 02:24:01 -0800 (PST)
-Date: Fri,  6 Dec 2024 10:23:54 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D15131AD9F9;
+	Fri,  6 Dec 2024 10:39:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733481578; cv=fail; b=cjEYxW2qu4zXFFYgj+rsCe5dFIp08FphKOrNyQkvIchiR/ve8OnF+9sAyXOsU86oJK7UOmH2l+7J466y7QcMLtc+boXuXozOQSxy80Tb1OU9mx8d9EMNRQyUNrrQI8ZaRjT2Plwpx95lmlyIOJoTKEjeBQW9U/ca7+MWDOQ82F8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733481578; c=relaxed/simple;
+	bh=6bYKmxCNrec+gE5VZMODIlJopxBIIJ4bECyJw0acyII=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Pa38Osuj4cQbtiC/ZxkRKdUrOrUpkohRMWzRjJdQ8Ft0s1celub9oAPShU8Kwx2LrZAIRiQOyp77RcvpN5egsetOPuex3QCydGQDWXjtQTiP+3y9tANTPKNBhBV4IshHN+j8HiwFPDZ3BwfIHb/y76MOIu7nV+/l9kyR+3p0viI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rhHLp0No; arc=fail smtp.client-ip=40.107.243.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nzUPiiR6+FeqCQuMoYLOq2G8ZNLyzXiNiz23/GoNQRWyrYt+umyT0jBUXZjsSHoMaV6wwHx1WRtljdmYMnr5QINnts3kvOc4sSnuAyyoyv+vFnN4f3ftufV4QMnZFC5F1P0PvqwXA1XGdNCbzUiWu90mPsJomX0dpRjedjxIanRc26VFFnMi7vZcuaNl0qXEBmsD0Xxh3v11aQeMqrNqx/raKu87pfHTZmd7eCEc66bTB7PG1Rn6SN12eQkokeuov9gVGy4BpYjQA9ilvHcVZ83m2QDN3q8cDRxqJkgwRytnWG7Je46GAKR+bT86++R1TbevlN0SG52unxgaWSq1kg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RniU4QHFrLTAcRKqRRPuchVJ10S4tA1QMksiyun1ZMI=;
+ b=F3jGdZiDjlc9cDrRhK0453aKgQaRCapQYcQBP0bDZUu9YknxuxFIXHPtgMcrI23RVWEviE3vlfu1EvDULGic/cF2CMBYDogCO+n8z0fLdRP79k5/A9slUK1fxphpuMQ0nIscPf9ohF2HUqxwYegIF+i7i+v/Gw0U/7l1R8S3bzgefmhVcab3FBxrJoJPgqKkOOek+byXrPOUuA58AOnxLa4DtL9XczjR7nqHTGjWvZxUGPJh5fWIgIhI43jEkN9wxt+MX2obzFkkTIh3kc20yTCAR3x96iFwWMDhB30sZK3rXvII1RDdzbB0rB8vMepO5TRsh7/2WA2oldn7TEHYGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RniU4QHFrLTAcRKqRRPuchVJ10S4tA1QMksiyun1ZMI=;
+ b=rhHLp0NoCJtfknnacR2z9iB9XkRnEqBXz3f63GFfUbJ6vON9lALNcJ6foUY+DrhvjTkYF1VnqjSfYEzQCAxpupKCNJfW5oD1lq+DimzphjBYm/VuctZjdqC3k58mdrqAgOrdkundSvYAEeJikTSAtVnOd9kRNwUrZmbpEVDXhT+Mp5bfed0fK6gPIcW/fDDZbRydOj/yneYsOWrIMKEblQyZD/tWO3ycYJyzcJIbFcvzeYfHr7s2hoFTVneryN1JjqaDS9FcQk95fuNa47q6Z7XYwZ+PiLygImRelnQ63KSM+OmxVqxnpJaMMCr6shCObBK+68/adhuQpOtpb3B+7w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11)
+ by PH7PR12MB7793.namprd12.prod.outlook.com (2603:10b6:510:270::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Fri, 6 Dec
+ 2024 10:39:31 +0000
+Received: from SJ2PR12MB8784.namprd12.prod.outlook.com
+ ([fe80::1660:3173:eef6:6cd9]) by SJ2PR12MB8784.namprd12.prod.outlook.com
+ ([fe80::1660:3173:eef6:6cd9%2]) with mapi id 15.20.8207.017; Fri, 6 Dec 2024
+ 10:39:31 +0000
+Message-ID: <b4807a3c-dd53-48d6-a923-d2ce4cecccf5@nvidia.com>
+Date: Fri, 6 Dec 2024 10:39:25 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4.19 000/138] 4.19.325-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ linux-tegra@vger.kernel.org, stable@vger.kernel.org
+References: <20241203141923.524658091@linuxfoundation.org>
+ <71fc98de-2f61-4530-8c03-dcd7fa3bf470@rnnvmail204.nvidia.com>
+ <5a174c4b-fa2b-4180-af6b-ae50d76fef4d@nvidia.com>
+ <2024120623-chloride-harvest-91fe@gregkh>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <2024120623-chloride-harvest-91fe@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0664.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:316::8) To SJ2PR12MB8784.namprd12.prod.outlook.com
+ (2603:10b6:a03:4d0::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241206102357.1259610-1-bsevens@google.com>
-Subject: [PATCH 5.10.y v3] ALSA: usb-audio: Fix out of bounds reads when
- finding clock sources
-From: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
-To: stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>, "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8784:EE_|PH7PR12MB7793:EE_
+X-MS-Office365-Filtering-Correlation-Id: d051b376-a94a-4322-b678-08dd15e2449e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UTJSYmFxeGphM1dHTFFvOHFWeHZITUQ1UkR1Uk1sbEdxTG9WeGk4SFZpZ1pr?=
+ =?utf-8?B?enE1SHpwdERrRjdIWlhVRmZ0UHlhc0dKMTZubUcrN3VkNGJnUmZWY0RNQjRn?=
+ =?utf-8?B?djkzc2MyU011dGsxWmNkY0pDeHlSMmp3Q0gyVktBdEp3S1E1NEhqVHhQbkhU?=
+ =?utf-8?B?OE5ZKzgrSzdCZjZqNms4NmUxQ21zc3hZcDdaQ2lDdDB4ZGJaZU51cnVZUkNP?=
+ =?utf-8?B?OEFwVjgwRmZVa0VkVGFnSjRqQlJUOW1JNnV3d0VnbllsL1lqdzVWQW9aV0do?=
+ =?utf-8?B?ZmxDb2Z4b3VxZ011WUl2c3k5aDFUbVpWbW5XcjZDKy9YSVNVVmgwRnZDOWp0?=
+ =?utf-8?B?OTNrVTM0T1RZRjlXN1RNa0UvQTBydHM3SDRsaFJGbjM3ME9HaVdEcWpDQ2xw?=
+ =?utf-8?B?WjNjNnFMQ3R3ejFrYTU4eWdCSnlmR1pORlBSdStZL21pODE1ZlJMRkwxRDNH?=
+ =?utf-8?B?RVdBdkhDbGhDZ3VOYzM2aEN3OThoMVdiMURycHhJNXNoRDNBdkJXWUp0eFpT?=
+ =?utf-8?B?bzR2eVZYVW42R3VhRU9MMWVGNHJGQzMyTzcvUjVwcXltVjR6bmFXQktXMWl1?=
+ =?utf-8?B?dVZSYmVUdzNOVENUMm5uRVhNdFc5S0hTZlB5Y0JBWUdQWVpMWnRDczdkSzdV?=
+ =?utf-8?B?a2hmR2hRaGV2WEtCLzI2OWZTaFFyMm9idkNyOUsweDAyYStMM2tURjVCc3Rv?=
+ =?utf-8?B?RnpTenlaakN2WTh5RER6S2RBK29DVjlRbWRhM1UyTVhOWHZDMkRjU0lpTlda?=
+ =?utf-8?B?dlQxWG5XaTRUek42WDB6RHdnQUFBRld1b2dydjZyTkJGbFpPeDlxZXlDS3Vj?=
+ =?utf-8?B?VGgrNEl2dXhYd2RHQ1Y2azA4cGxaZFhWbkVXVnN1M1U3UkpSZkJRM0RZK0Za?=
+ =?utf-8?B?eTZYSnFSZnNMRjJmUDVPdTVyOEpMOHJRQkFTWGM4MFJBYjREcXhLZzVFNWhT?=
+ =?utf-8?B?Qk90dVpObjI4aVdULzdDQVY4SzVuOFhTeXEzS1VaNzgzWkYrQlpRZFV0RzF3?=
+ =?utf-8?B?MEdlbWVrZTZUY1pvL29BbVFHT21BZW91YTYzWkNmN2VteXk2NURqai9zempx?=
+ =?utf-8?B?VEJlYmdlS0NrNmRhWnNQaUl6SnRrZ2tnVjUva0pHS3gzeEJFalVueldiQVZI?=
+ =?utf-8?B?YTlFZ3A1cnBwYzdOdU12VE56alZiNlRzc2xyTHN6T0tTL1FMeEEwOEpnN1FX?=
+ =?utf-8?B?MUJLOXFhZDJRYnJTRTZIRmpCNWVPaGJGeUN4cEFGSlgyTHREbk1WUlpCNkJX?=
+ =?utf-8?B?TjBZTThHZFdQdVc2YUJWMW54cVpBeThQa1JIbEt0VjNURW41eVlNMGhvcCtw?=
+ =?utf-8?B?ZStQOUVWUUJjalMwM09PZW4vNlprSXRHeCtnbkpvRFZGbFZZblpQOWQ3ejRR?=
+ =?utf-8?B?Q1NCMzBhNUgwMThGVlBhdGxZSGUvZFpqV254MXl3Z2hZa3REaEF3V2J2clJM?=
+ =?utf-8?B?V2JEVXlhWkRyUFpjVUkxU0xUNTVIM0tiR1I0YmVES3JiVHNHN1NFb3RsN1p2?=
+ =?utf-8?B?Qk4wTFVBalRibmwzVnJ3MitOM2dmQzRtaGR4RzV0cmg0a0xpdTFQd3NhM29v?=
+ =?utf-8?B?R1duUm1tcEdXK20yeGZkeGFUNHBjMXd1SVIvSTd1ZnNUekJ1cGhjRlEweFlQ?=
+ =?utf-8?B?NEJ3alpnVnpjTzFTQm5NbWY4MkJPL25ncVlTVmxmb0VQRVliZFpQNzROSXhT?=
+ =?utf-8?B?U1pWZXhKUURqYkcyNytTbndPMlc0K0xQS3BJZU40TE5VaTcwSytvb1NWbFYw?=
+ =?utf-8?B?Sk94RWxnTFRMWnBqRnhyb25jbUNCY0VSVkpQc3NFVHlRdlNDWHlHVEZLME1m?=
+ =?utf-8?Q?qd+6mksYGt+eKDrJ5Gs5HXmjz75TV0IPoOS64=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8784.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YnF2VnpNaTExQVZ0RGVCVG9EU1cxYTl1OHBrV0VKUStCd3QxbGF6blBndWl1?=
+ =?utf-8?B?MnluSVRaTTFrTnNUTkd4Q05oZkpMRjVxYWxVdFpvV0JkVDhlTlFmS1BKZVND?=
+ =?utf-8?B?cXIrTzVhcXFnNTVLdVpSbTlUS09TcldZNHJqQmlVc25qTVAyYVZla0J5dk9C?=
+ =?utf-8?B?UlVpNHRpOVFsV2VkSXU1VXhzM2h4alkxY1RDSG82WkgxeExZQjlUWlVKUHB3?=
+ =?utf-8?B?cGk3TWpmMEdXSisvRmVqbzdZeG1scTFiRTZFUzFsM1dzOHRBV3VUakFMRnJG?=
+ =?utf-8?B?NUhIbDlhdDZ3OGxjdXFzUmVUK3ljTy84c3BOOVZqR0IwZnZScFlMWElmR3pN?=
+ =?utf-8?B?ZGRKVm4rUmVYSFVoWWl4UmhSemtyYzVFc3psV0hoS2N3MU9ZaWJrcmI0VGhu?=
+ =?utf-8?B?M1V2cFZodk5PM2Nvc1UwRXNEMlpwcU93ZDRCNzh5Nksya21UNmdLWUIyamlN?=
+ =?utf-8?B?UEhtM1RnOVAybjRpQ2d4Z1lnTm1ubFIvaUNzUjVjVXJUZXNFVHI2TVdtWmtu?=
+ =?utf-8?B?MmIxOEpnVnBwZGZyMlh6RkdtWjZ1OGZDY1B1NDNtY1A0NHhWSktoR25xOFVJ?=
+ =?utf-8?B?TDkrZ1hHVUlzRnJXOXpoeDJGbzZDeE1NUWh0WDJTUTF6K000RWhuL3d1U0ls?=
+ =?utf-8?B?NWlsSGgwWmxuUDJIRHYxZm9mUkhtQklZUmFia0lGdDZqZDBjRWZNeFV4YmFO?=
+ =?utf-8?B?SE8zV090ZUZQajlLWk1iZDVSc1NxWTc1dGoyQitsbXZ2TFZhdzJEMHNzcmh2?=
+ =?utf-8?B?QUF1Z3J3M3Y1Nytia05lODhZNmxLbmhYOFJ1YXNNSVRFM2tGcm9hY1B4azRW?=
+ =?utf-8?B?K09CREdydExUbUZNY3lqcS9lVHNKUFp0M0lOMHpFQXVneHFzbG5DZXp5eUV6?=
+ =?utf-8?B?akdBVUpySE95cWZZN2d1aFNYdUlLV2k4ei9WZm51Y3J0MHJUMXpQSDQzNVd1?=
+ =?utf-8?B?VldxdU80Zm9mWmVsNUVpdlhmekZjY1lJdFRTcWFJRmVEQ0Vpb29GL0dGcWEw?=
+ =?utf-8?B?YndqUm1ubG16aHY2b2tXRkN2VVd3SDNRVGUvVDdPOXo2Wm1FdjlQZ1NXOHVv?=
+ =?utf-8?B?ZTNIOEM2RzdpU0dGc3NQaVl6ZUFyMzlDb202NmQ4aCtIeUJGbGVyMDdhN2ln?=
+ =?utf-8?B?TkxxWjFPaHUvM1ZOMnoraXkzZWV0d1RjVUltQmpLMHk0TklNWlpVZ2hzZk9V?=
+ =?utf-8?B?cnAvemZXeDUzYmxRVXJMeURoL0EzVWEzd0cxVnoxV0duNDV2dXpKTjROa1VC?=
+ =?utf-8?B?a0pyWkl0QVhSR1VkWC9QQ3lmdHBqcXBxWWFLQWZnSkpHSzdUY3I3cDU2SlAr?=
+ =?utf-8?B?V3dFVTBRQ2UvcGRGWUwvTHc4TjBFN2JhT1VuUDhNZXlreWh6V0Zid09OSU5o?=
+ =?utf-8?B?d3Y4T1M0c1FrMm0yZkNZdFZhZFdLY05LRDZKQ0JSYksvcll0U1pxQkNxb0Zy?=
+ =?utf-8?B?R3IrRmQxQUdiOWZhdWJuVWlnT2dUVlQ1SkMvUlRYODg4dm1oMVc5cWlnMGk5?=
+ =?utf-8?B?NW4wTDQzS3BZeHNTU3RSaDY5L3BhNTZwMFoveUd4ZS94QjBMNFg2NVE3VkVj?=
+ =?utf-8?B?MWJwK2p2c0M2eHpmMGVsM0xtV1ZtNGdiZmc4SWxMb1F3UGpNWUxoR0RwdG9W?=
+ =?utf-8?B?WWk5anZKM21hM0VJcC9udjJhNTQzU1REbjlubGFyUGtWek9mMHNHVXNlSGUz?=
+ =?utf-8?B?V0xhS1ZMT1FOZHJNbmhaRWZ4alBoTXlGODJ0Z0NvZWloTDNvWkFuNkY1QWhS?=
+ =?utf-8?B?c01MeGZ4N2tyTDFrd01PUDdHY2ZUUVVkTlduMk0zYVRNVE40N3J2MFZ5UlA2?=
+ =?utf-8?B?YWVJKzF3S09tNUtscVN2THhzSjV1eU0yRXVXdW1zYzIzS21NazJvOVFuZGhu?=
+ =?utf-8?B?N215MUFPTVg4dHFtQWJkK05kWHBhN2dDQkl4a3QyeFU2VE50dng0VTRzV3lz?=
+ =?utf-8?B?VVhyQWQ3YVZCQzdUazkwdy96ZWc0Yk9vMUxxeE8ra0tiUUFGNGJJY2tzOFpO?=
+ =?utf-8?B?SDMvc0k3alhvM2M4K0VvaDIzV2RLcDNnNkE3T1daTDZydlpML3hxd2NOS0Na?=
+ =?utf-8?B?ZlV5eitGMk8yOGtQZHJ3RVJ1QTA5STlIbFJSY3FuUisvV3hJYlBoZkhvbXhF?=
+ =?utf-8?B?VWN1RENUVUtrSGRPamc1Z3JRZjJiTnllVnA3THowcWpmTk85WEFSRzZUK2d4?=
+ =?utf-8?B?Z0VIZlVKV3VRVzlGYU1ZZmE1QTg3dkt0TXdIVFo0bFM1NG0zM1EveUluWUtH?=
+ =?utf-8?B?RmZhRWliOUVubjJYRHdVdDNKQjNnPT0=?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d051b376-a94a-4322-b678-08dd15e2449e
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8784.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2024 10:39:31.6990
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YgFTXjuQVUe+RSTk8ezc656X/LdanGwkeTBw4jh8oKtVh59GGw9MCSFjliMm0Ix9Y0jewLBEMKSIXwvl8jSPjQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7793
 
-From: Takashi Iwai <tiwai@suse.de>
 
-Upstream commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6
+On 06/12/2024 06:07, Greg Kroah-Hartman wrote:
+> On Thu, Dec 05, 2024 at 02:40:28PM +0000, Jon Hunter wrote:
+>>
+>> On 05/12/2024 14:38, Jon Hunter wrote:
+>>> On Tue, 03 Dec 2024 15:30:29 +0100, Greg Kroah-Hartman wrote:
+>>>> ------------------
+>>>> Note, this is the LAST 4.19.y kernel to be released.  After this one, it
+>>>> is end-of-life.  It's been 6 years, everyone should have moved off of it
+>>>> by now.
+>>>> ------------------
+>>>>
+>>>> This is the start of the stable review cycle for the 4.19.325 release.
+>>>> There are 138 patches in this series, all will be posted as a response
+>>>> to this one.  If anyone has any issues with these being applied, please
+>>>> let me know.
+>>>>
+>>>> Responses should be made by Thu, 05 Dec 2024 14:18:57 +0000.
+>>>> Anything received after that time might be too late.
+>>>>
+>>>> The whole patch series can be found in one patch at:
+>>>> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.325-rc1.gz
+>>>> or in the git tree and branch at:
+>>>> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+>>>> and the diffstat can be found below.
+>>>>
+>>>> thanks,
+>>>>
+>>>> greg k-h
+>>>
+>>> Failures detected for Tegra ...
+>>>
+>>> Test results for stable-v4.19:
+>>>       10 builds:	6 pass, 4 fail
+>>>       12 boots:	12 pass, 0 fail
+>>>       21 tests:	21 pass, 0 fail
+>>>
+>>> Linux version:	4.19.325-rc1-g1efbea5bef00
+>>> Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+>>>                   tegra194-p2972-0000, tegra20-ventana,
+>>>                   tegra210-p2371-2180, tegra30-cardhu-a04
+>>>
+>>> Builds failed:	aarch64+defconfig+jetson, arm+multi_v7
+>>
+>>
+>> This is the same build failure as reported here:
+>>
+>> https://lore.kernel.org/stable/Z09KXnGlTJZBpA90@duo.ucw.cz/
+> 
+> Great, hopefully I fixed that up in the real release :)
+> 
+> thanks for testing this kernel all these years!
 
-The current USB-audio driver code doesn't check bLength of each
-descriptor at traversing for clock descriptors.  That is, when a
-device provides a bogus descriptor with a shorter bLength, the driver
-might hit out-of-bounds reads.
 
-For addressing it, this patch adds sanity checks to the validator
-functions for the clock descriptor traversal.  When the descriptor
-length is shorter than expected, it's skipped in the loop.
+Yes all looking good now! Thanks for maintaining it, I am sure we are 
+both happy to have one less kernel!
 
-For the clock source and clock multiplier descriptors, we can just
-check bLength against the sizeof() of each descriptor type.
-OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
-of bNrInPins elements and two more fields at its tail, hence those
-have to be checked in addition to the sizeof() check.
+Jon
 
-This patch ports the upstream commit a3dd4d63eeb4 ("ALSA: usb-audio: Fix
-out of bounds reads when finding clock sources") to trees that do not
-include the refactoring commit 9ec730052fa2 ("ALSA: usb-audio:
-Refactoring UAC2/3 clock setup code"). That commit provides union
-objects for pointing both UAC2 and UAC3 objects and unifies the clock
-source, selector and multiplier helper functions. This means we need to
-perform the check in each version specific helper function, but on the
-other hand do not need to do version specific union dereferencing in the
-macros and helper functions.
-
-Reported-by: Beno=C3=AEt Sevens <bsevens@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
-Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-(cherry picked from commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6)
-Signed-off-by: Beno=C3=AEt Sevens <bsevens@google.com>
----
-Changes in v3:
-- add patch changelog=20
-
-Changes in v2:
-- provide better changelog description of how the upstream patch is
-  backported
-
- sound/usb/clock.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/sound/usb/clock.c b/sound/usb/clock.c
-index 3d1c0ec11753..58902275c815 100644
---- a/sound/usb/clock.c
-+++ b/sound/usb/clock.c
-@@ -21,6 +21,10 @@
- #include "clock.h"
- #include "quirks.h"
-=20
-+/* check whether the descriptor bLength has the minimal length */
-+#define DESC_LENGTH_CHECK(p) \
-+	 (p->bLength >=3D sizeof(*p))
-+
- static void *find_uac_clock_desc(struct usb_host_interface *iface, int id,
- 				 bool (*validator)(void *, int), u8 type)
- {
-@@ -38,36 +42,60 @@ static void *find_uac_clock_desc(struct usb_host_interf=
-ace *iface, int id,
- static bool validate_clock_source_v2(void *p, int id)
- {
- 	struct uac_clock_source_descriptor *cs =3D p;
-+	if (!DESC_LENGTH_CHECK(cs))
-+		return false;
- 	return cs->bClockID =3D=3D id;
- }
-=20
- static bool validate_clock_source_v3(void *p, int id)
- {
- 	struct uac3_clock_source_descriptor *cs =3D p;
-+	if (!DESC_LENGTH_CHECK(cs))
-+		return false;
- 	return cs->bClockID =3D=3D id;
- }
-=20
- static bool validate_clock_selector_v2(void *p, int id)
- {
- 	struct uac_clock_selector_descriptor *cs =3D p;
--	return cs->bClockID =3D=3D id;
-+	if (!DESC_LENGTH_CHECK(cs))
-+		return false;
-+	if (cs->bClockID !=3D id)
-+		return false;
-+	/* additional length check for baCSourceID array (in bNrInPins size)
-+	 * and two more fields (which sizes depend on the protocol)
-+	 */
-+	return cs->bLength >=3D sizeof(*cs) + cs->bNrInPins +
-+		1 /* bmControls */ + 1 /* iClockSelector */;
- }
-=20
- static bool validate_clock_selector_v3(void *p, int id)
- {
- 	struct uac3_clock_selector_descriptor *cs =3D p;
--	return cs->bClockID =3D=3D id;
-+	if (!DESC_LENGTH_CHECK(cs))
-+		return false;
-+	if (cs->bClockID !=3D id)
-+		return false;
-+	/* additional length check for baCSourceID array (in bNrInPins size)
-+	 * and two more fields (which sizes depend on the protocol)
-+	 */
-+	return cs->bLength >=3D sizeof(*cs) + cs->bNrInPins +
-+		4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
- }
-=20
- static bool validate_clock_multiplier_v2(void *p, int id)
- {
- 	struct uac_clock_multiplier_descriptor *cs =3D p;
-+	if (!DESC_LENGTH_CHECK(cs))
-+		return false;
- 	return cs->bClockID =3D=3D id;
- }
-=20
- static bool validate_clock_multiplier_v3(void *p, int id)
- {
- 	struct uac3_clock_multiplier_descriptor *cs =3D p;
-+	if (!DESC_LENGTH_CHECK(cs))
-+		return false;
- 	return cs->bClockID =3D=3D id;
- }
-=20
---=20
-2.47.0.338.g60cca15819-goog
+-- 
+nvpublic
 
 
