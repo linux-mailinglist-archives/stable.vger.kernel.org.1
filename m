@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-99292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2679E710B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:51:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9CA9E710D
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:51:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87530163715
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:50:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EF94282A4F
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08012149E0E;
-	Fri,  6 Dec 2024 14:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C423E149E0E;
+	Fri,  6 Dec 2024 14:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe3cOFUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6oDKfmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91A132C8B;
-	Fri,  6 Dec 2024 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E1032C8B;
+	Fri,  6 Dec 2024 14:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496657; cv=none; b=JF3UozlgWCkjMKerzkq18T7K5dmn2z3gGBPUFz/4hR+NAxeCOyYmOqKi1gUKegkW/J6FqAHJdTKWGCcIz4sqr4MztnLpOwDAqdCw6qSZFAHBwtQepoFQJtcBD0M0YlLYgyFGMFyvdzjed4KeG32zsxabTXywzAl4jx+4h92xniY=
+	t=1733496664; cv=none; b=DfafVCVMBURtpUKQabU7hUP8LV0dP0Sq4cJoy6jAoQ8hUz1j3byKlpqPQLqKH085707NNTPuoH6yC6wNtjDKqic3SIETEEheB6El+DWhSJ6SEil3qzIrFMS/NsN49+KmfqaQUU7Dea4jJUb5/K+tY/+3pYdQrrWBMyv2Z1wI+R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496657; c=relaxed/simple;
-	bh=NY3WnSXOzhfsc+8WSN8fForkbIFIixblKYw/Zi2PaRs=;
+	s=arc-20240116; t=1733496664; c=relaxed/simple;
+	bh=yO6Q+Fan2Cky1QWkEwqLaY3pj6FPdgeaF1BNWRp3IHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g20E1YVm69rJf9WLgA+epL+gbkYbtRzCB+JJBf86mvljXKxLPeyA3Wt40cutECT+zpXXwzYFh3uHFCMg2ELQ/Wp7pB0RdG+3qpjsAsU/q8tDlxR7KuVG6DejQ2Tpjk9oNzYnP8yXrB0bsvKbxu//x4iCBWL1XVCgdKKYeTHPGtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe3cOFUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B37C4CED1;
-	Fri,  6 Dec 2024 14:50:57 +0000 (UTC)
+	 MIME-Version; b=TJdAv36dRSKbK/XDm+7NwgPNoPewqFZTr6lMoKK0fH/NfMgYT1ONYjoL+KEyZGoY8ndrQ9AYPtRb5UTctILLDBNtVnJig4e/SoJVtPzI/g6BQuWLL09o+5yWCX2MTH91r4twXT3anKIzG6rE7UvYEdjLQDIPR1MwqOYuQg928LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6oDKfmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04ACC4CED1;
+	Fri,  6 Dec 2024 14:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496657;
-	bh=NY3WnSXOzhfsc+8WSN8fForkbIFIixblKYw/Zi2PaRs=;
+	s=korg; t=1733496664;
+	bh=yO6Q+Fan2Cky1QWkEwqLaY3pj6FPdgeaF1BNWRp3IHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qe3cOFUUiuSl0vbESFoBFyKpJ+JKqmGclenPClZTXh6LCFj/g05UgXmjmErbf4Q9g
-	 nkekKpqQpruv9ddRVlWbL/LzL51GM8edJRDvPpF/PDOlk8i/9bF0NHO92tGAS4oDO4
-	 8+yT9SJ3IqOqFf6L39JFcS1zoEt/GbeaaYIxKAHY=
+	b=N6oDKfmqO2nYe76HhN+dcQEOxxcqN1VUs968wGBWOzvKFCIlcwwtOiNxQKkEvSl/O
+	 gf64Kc5H2/PIqpMomv+wLDF2vOUFyhpKObw+/wdnbU/R6Zxi1EiMmG19TEuvX98BQZ
+	 zMRI5bYgr1X07hjtF+4pRVvOb2xq+MjA4xB5MYvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/676] netfs/fscache: Add a memory barrier for FSCACHE_VOLUME_CREATING
-Date: Fri,  6 Dec 2024 15:28:06 +0100
-Message-ID: <20241206143655.976243061@linuxfoundation.org>
+Subject: [PATCH 6.6 068/676] block: fix bio_split_rw_at to take zone_write_granularity into account
+Date: Fri,  6 Dec 2024 15:28:07 +0100
+Message-ID: <20241206143656.017303979@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,65 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 22f9400a6f3560629478e0a64247b8fcc811a24d ]
+[ Upstream commit 7ecd2cd4fae3e8410c0a6620f3a83dcdbb254f02 ]
 
-In fscache_create_volume(), there is a missing memory barrier between the
-bit-clearing operation and the wake-up operation. This may cause a
-situation where, after a wake-up, the bit-clearing operation hasn't been
-detected yet, leading to an indefinite wait. The triggering process is as
-follows:
+Otherwise it can create unaligned writes on zoned devices.
 
-  [cookie1]                [cookie2]                  [volume_work]
-fscache_perform_lookup
-  fscache_create_volume
-                        fscache_perform_lookup
-                          fscache_create_volume
-			                        fscache_create_volume_work
-                                                  cachefiles_acquire_volume
-                                                  clear_and_wake_up_bit
-    test_and_set_bit
-                            test_and_set_bit
-                              goto maybe_wait
-      goto no_wait
-
-In the above process, cookie1 and cookie2 has the same volume. When cookie1
-enters the -no_wait- process, it will clear the bit and wake up the waiting
-process. If a barrier is missing, it may cause cookie2 to remain in the
--wait- process indefinitely.
-
-In commit 3288666c7256 ("fscache: Use clear_and_wake_up_bit() in
-fscache_create_volume_work()"), barriers were added to similar operations
-in fscache_create_volume_work(), but fscache_create_volume() was missed.
-
-By combining the clear and wake operations into clear_and_wake_up_bit() to
-fix this issue.
-
-Fixes: bfa22da3ed65 ("fscache: Provide and use cache methods to lookup/create/free a volume")
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Link: https://lore.kernel.org/r/20241107110649.3980193-6-wozizhi@huawei.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: a805a4fa4fa3 ("block: introduce zone_write_granularity limit")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20241104062647.91160-3-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fscache/volume.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ block/blk-merge.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/fscache/volume.c b/fs/fscache/volume.c
-index cb75c07b5281a..ced14ac78cc1c 100644
---- a/fs/fscache/volume.c
-+++ b/fs/fscache/volume.c
-@@ -322,8 +322,7 @@ void fscache_create_volume(struct fscache_volume *volume, bool wait)
- 	}
- 	return;
- no_wait:
--	clear_bit_unlock(FSCACHE_VOLUME_CREATING, &volume->flags);
--	wake_up_bit(&volume->flags, FSCACHE_VOLUME_CREATING);
-+	clear_and_wake_up_bit(FSCACHE_VOLUME_CREATING, &volume->flags);
+diff --git a/block/blk-merge.c b/block/blk-merge.c
+index 07bf758c523a9..889ac59759a26 100644
+--- a/block/blk-merge.c
++++ b/block/blk-merge.c
+@@ -256,6 +256,14 @@ static bool bvec_split_segs(const struct queue_limits *lim,
+ 	return len > 0 || bv->bv_len > max_len;
  }
  
- /*
++static unsigned int bio_split_alignment(struct bio *bio,
++		const struct queue_limits *lim)
++{
++	if (op_is_write(bio_op(bio)) && lim->zone_write_granularity)
++		return lim->zone_write_granularity;
++	return lim->logical_block_size;
++}
++
+ /**
+  * bio_split_rw - split a bio in two bios
+  * @bio:  [in] bio to be split
+@@ -326,7 +334,7 @@ struct bio *bio_split_rw(struct bio *bio, const struct queue_limits *lim,
+ 	 * split size so that each bio is properly block size aligned, even if
+ 	 * we do not use the full hardware limits.
+ 	 */
+-	bytes = ALIGN_DOWN(bytes, lim->logical_block_size);
++	bytes = ALIGN_DOWN(bytes, bio_split_alignment(bio, lim));
+ 
+ 	/*
+ 	 * Bio splitting may cause subtle trouble such as hang when doing sync
 -- 
 2.43.0
 
