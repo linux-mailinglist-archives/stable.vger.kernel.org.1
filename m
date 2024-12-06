@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9309C9E70CC
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:47:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546049E70F3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:49:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 526F2283214
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30C9816356E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF55149DF0;
-	Fri,  6 Dec 2024 14:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E07C1FA279;
+	Fri,  6 Dec 2024 14:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9BiYPnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oc7/Cuza"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F2D10E0;
-	Fri,  6 Dec 2024 14:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE896149C51;
+	Fri,  6 Dec 2024 14:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496454; cv=none; b=BLkaMytgHAWz/KW67ySU6XCKQWAe24GHaei0oNkfR5gLY9zOkSix0shOzRFb+lLtU30HzstBJQb8uS2TeRFvchG7Nqd4x4NtKs9Xf5MQVgL8mIGcx677pVWO/7JXzBHs0HkxeY3ZrrULnuXIfwHeqIOl6xEm6IJms0Sx3EdAr1Y=
+	t=1733496578; cv=none; b=eHncvUNowE2DKTMVBy5ekLpv2pycDDBE9s68XyfgKBiKUHSag3E1CW4uEPjCTVLAgp04qBXkYLfonaUT0NBTiIg+D67qUUZNsQcs6zwZFsn3PYyyFE6xFMMPab/YAdYFyrdxZCdnG/Dmuoo9v7NHL9iMVcPevpV6f1vl1taIoNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496454; c=relaxed/simple;
-	bh=dFMgwWHYJ/MDgVTRUTnMT/UzdLf+s0kP2ADQY2qwq4k=;
+	s=arc-20240116; t=1733496578; c=relaxed/simple;
+	bh=3Q5lRCFmg0faDOHXKL7jRID5LHCiTwSRrzwUH0fSomQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmbitU1i5qjvChSt0y9qtXMLaa03l9KGNybFKCvTjwGQ71nTKKmvoERrwl8KbF9UDSwVK7qFb2ARLxicShXeow2LNmQ2CBl2FvXjc8UpVNXkf9lKt7LkYdovVloi6PpPRW9FycqcTcT3RNfSm6OHmwLWlg8MTsNo9RBLqqm6dEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9BiYPnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19619C4CED1;
-	Fri,  6 Dec 2024 14:47:33 +0000 (UTC)
+	 MIME-Version; b=KFEsk/62qeOPjkTjIQcAkqPeQ41xX2GnbhMh1Qp6BK58pkUPTKxxk7/UHf1XZDRTG5txdv9G9buFdY83N5fvB3fsisVnEsgZqwSqpyDx60oqgMRvSKbNY8jBhkIWH8U85D+LU9yhtu2DYm7fb91WeVvTgH1d8tXN8gLM8NnRCyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oc7/Cuza; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFEFC4CED1;
+	Fri,  6 Dec 2024 14:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496454;
-	bh=dFMgwWHYJ/MDgVTRUTnMT/UzdLf+s0kP2ADQY2qwq4k=;
+	s=korg; t=1733496577;
+	bh=3Q5lRCFmg0faDOHXKL7jRID5LHCiTwSRrzwUH0fSomQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9BiYPnWmy8JN8hTwYsfCk/PFD3v1EGf4BzuxX1cdfbJCAMTP00oTPmBoA3Gxq+qP
-	 1cQHFPJ5k8RH8DcDMvYgK2UtXKkp6pExAdd8nKDK1r8uI6oV+zxRF7QZeJ10Y8wSBI
-	 +BkPJh2tLAig926+QFX/pCP015c/1kdX1BnPimdY=
+	b=oc7/CuzaCKhM5xWp4p1+zr0VPMvNJR5OYnYTK6ghJZoPsTqPevAK4JLf3sUdhVCC9
+	 X+51m4PQmHc7/P0RWDbjaltypTzY3LK6NWKUZZAqsnTG6NFcad/nJuJbDsJtErJnQc
+	 07N9QVZ5rrVuSZHavoSCLs+mHDzuWLCY+YskZHpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hans de Goede <hdegoede@redhat.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 003/676] ASoC: Intel: bytcr_rt5640: Add support for non ACPI instantiated codec
-Date: Fri,  6 Dec 2024 15:27:02 +0100
-Message-ID: <20241206143653.489479445@linuxfoundation.org>
+Subject: [PATCH 6.6 004/676] ASoC: Intel: bytcr_rt5640: Add DMI quirk for Vexia Edu Atla 10 tablet
+Date: Fri,  6 Dec 2024 15:27:03 +0100
+Message-ID: <20241206143653.528716144@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -60,7 +60,6 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -69,85 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit d48696b915527b5bcdd207a299aec03fb037eb17 ]
+[ Upstream commit 0107f28f135231da22a9ad5756bb16bd5cada4d5 ]
 
-On some x86 Bay Trail tablets which shipped with Android as factory OS,
-the DSDT is so broken that the codec needs to be manually instantatiated
-by the special x86-android-tablets.ko "fixup" driver for cases like this.
+The Vexia Edu Atla 10 tablet mostly uses the BYTCR tablet defaults,
+but as happens on more models it is using IN1 instead of IN3 for
+its internal mic and JD_SRC_JD2_IN4N instead of JD_SRC_JD1_IN4P
+for jack-detection.
 
-This means that the codec-dev cannot be retrieved through its ACPI fwnode,
-add support to the bytcr_rt5640 machine driver for such manually
-instantiated rt5640 i2c_clients.
-
-An example of a tablet which needs this is the Vexia EDU ATLA 10 tablet,
-which has been distributed to schools in the Spanish Andalucía region.
+Add a DMI quirk for this to fix the internal-mic and jack-detection.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241024211615.79518-1-hdegoede@redhat.com
+Link: https://patch.msgid.link/20241024211615.79518-2-hdegoede@redhat.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 33 ++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 5b8b21ade9cfe..79c50498144ec 100644
+index 79c50498144ec..ddf68be0af14a 100644
 --- a/sound/soc/intel/boards/bytcr_rt5640.c
 +++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -17,6 +17,7 @@
- #include <linux/acpi.h>
- #include <linux/clk.h>
- #include <linux/device.h>
-+#include <linux/device/bus.h>
- #include <linux/dmi.h>
- #include <linux/gpio/consumer.h>
- #include <linux/gpio/machine.h>
-@@ -32,6 +33,8 @@
- #include "../atom/sst-atom-controls.h"
- #include "../common/soc-intel-quirks.h"
- 
-+#define BYT_RT5640_FALLBACK_CODEC_DEV_NAME	"i2c-rt5640"
-+
- enum {
- 	BYT_RT5640_DMIC1_MAP,
- 	BYT_RT5640_DMIC2_MAP,
-@@ -1697,9 +1700,33 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
- 	acpi_dev_put(adev);
--	if (!codec_dev)
--		return -EPROBE_DEFER;
--	priv->codec_dev = get_device(codec_dev);
-+
-+	if (codec_dev) {
-+		priv->codec_dev = get_device(codec_dev);
-+	} else {
-+		/*
-+		 * Special case for Android tablets where the codec i2c_client
-+		 * has been manually instantiated by x86_android_tablets.ko due
-+		 * to a broken DSDT.
-+		 */
-+		codec_dev = bus_find_device_by_name(&i2c_bus_type, NULL,
-+					BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
-+		if (!codec_dev)
-+			return -EPROBE_DEFER;
-+
-+		if (!i2c_verify_client(codec_dev)) {
-+			dev_err(dev, "Error '%s' is not an i2c_client\n",
-+				BYT_RT5640_FALLBACK_CODEC_DEV_NAME);
-+			put_device(codec_dev);
-+		}
-+
-+		/* fixup codec name */
-+		strscpy(byt_rt5640_codec_name, BYT_RT5640_FALLBACK_CODEC_DEV_NAME,
-+			sizeof(byt_rt5640_codec_name));
-+
-+		/* bus_find_device() returns a reference no need to get() */
-+		priv->codec_dev = codec_dev;
-+	}
- 
- 	/*
- 	 * swap SSP0 if bytcr is detected
+@@ -1132,6 +1132,21 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 					BYT_RT5640_SSP0_AIF2 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
++	{	/* Vexia Edu Atla 10 tablet */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
++			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
++			/* Above strings are too generic, also match on BIOS date */
++			DMI_MATCH(DMI_BIOS_DATE, "08/25/2014"),
++		},
++		.driver_data = (void *)(BYT_RT5640_IN1_MAP |
++					BYT_RT5640_JD_SRC_JD2_IN4N |
++					BYT_RT5640_OVCD_TH_2000UA |
++					BYT_RT5640_OVCD_SF_0P75 |
++					BYT_RT5640_DIFF_MIC |
++					BYT_RT5640_SSP0_AIF2 |
++					BYT_RT5640_MCLK_EN),
++	},
+ 	{	/* Voyo Winpad A15 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
 -- 
 2.43.0
 
