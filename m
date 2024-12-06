@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-99401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880F69E718B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:57:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812F39E71BC
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:59:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4794D2833E6
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:57:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E230188654C
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46A61F8F13;
-	Fri,  6 Dec 2024 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD6814AD29;
+	Fri,  6 Dec 2024 14:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EaCIIjwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heP36xz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704D510E0;
-	Fri,  6 Dec 2024 14:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A31F47F53;
+	Fri,  6 Dec 2024 14:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497036; cv=none; b=biNCMKHiQVzlgTKVC91KWjBjA26d0xgKhuKdSpXpnJ4CfHEuVeFmrF9OG3N1c2WYQPtvkNZHQOQ1sTl4UwlNuKc2l2kTaBUc0V8L5YO9iOumQfTeJ9iKvfmHRWUuAReOqNefGYe3Eui/4EmS8RNByz4J+KnYID6lNUgneQow1hU=
+	t=1733497181; cv=none; b=LCKMZssSyWUeQi6+oos4qEfQ8fIhOHmKYzQa7H2wF1APq8m63uc92jGdM8E3vxC30HOWRTBqzQ4xn6HjFbFuUhwlXhklBnfOnb2Wt0ZQGYsmqiMU5MYqjeKYxm136yGJJwBl9SYVWhLRhCKbwFPz4MHA/Bl/5wKNI4Wdy46iX/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497036; c=relaxed/simple;
-	bh=ooxIQCRgtd/pXRO9LbpayfeCutQFHCo7u/LZwvztVoA=;
+	s=arc-20240116; t=1733497181; c=relaxed/simple;
+	bh=JUvawU68qudSwXDcEtvs5yHiJP9pB/BBrQVJ1ndjTBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1F+dosaRngkjpSfGLpKwLiH3ZohFAuGnW950WYQG2p5IsHHp6a+BtRqsUt2x9I6VNbj2FNylXhdzZEmz507gAPeW4qHYwr8LC+RiZNYMLJxv0JzAkwtdhpy7jB/q4JPAExxNN4K1LyNNy1BdazHXr9ut2OXrYZiF5YFGgdjqks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EaCIIjwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D061EC4CED1;
-	Fri,  6 Dec 2024 14:57:15 +0000 (UTC)
+	 MIME-Version; b=dv4CcMcwrxdOSMSL8X0OhedBddSmhXiaoN78AdEKC4Eqq44/tUN5qSynRhAdte6URW+Ixl1fEGWAQVzV2pZuSMNjA4p3wLq7hX0vs2qtSQ4TWEZYYiIfRXulJNgeSPg8OrPbvHpKENvlqLBmgjvtjJrUrY7O/zu9NqkS0lGdp9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heP36xz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEABAC4CED1;
+	Fri,  6 Dec 2024 14:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497036;
-	bh=ooxIQCRgtd/pXRO9LbpayfeCutQFHCo7u/LZwvztVoA=;
+	s=korg; t=1733497181;
+	bh=JUvawU68qudSwXDcEtvs5yHiJP9pB/BBrQVJ1ndjTBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EaCIIjweQriJ+XzzjyeElRGGuOZbqwJ+KoxnKFWO5D/1lh+B4qejxxRFJJ+FR+Q/v
-	 6o/WdGth7/QN3GHk5lt1bE13lAz643q3UJlssUIM9jELAjXejeLdg12+6nk+8Sgtvk
-	 noBBO6qkB4DuAb00MGSXKf8JFfGBYldn3j8KM1Fk=
+	b=heP36xz5WIHRdUUyR7TrcoqtE8VtluB5GuXuyyI5pd1PBtxyZn4mVLtZPQnfcKzZ5
+	 S5MauwecsQRKuKy8vTf68eMcrAwp/Zny8eMETdAIcGjrnj0SEH+zLFmiSnI4EYQNWf
+	 Z6W0jOm0HzmllC6f4YUEKMRpU1yYoAue6tJaQ6Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/676] wifi: mwifiex: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Fri,  6 Dec 2024 15:29:53 +0100
-Message-ID: <20241206143700.145747556@linuxfoundation.org>
+Subject: [PATCH 6.6 175/676] drm/imx/dcss: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Fri,  6 Dec 2024 15:29:54 +0100
+Message-ID: <20241206143700.184492588@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -69,44 +69,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 9a98dd48b6d834d7a3fe5e8e7b8c3a1d006f9685 ]
+[ Upstream commit 1af01e14db7e0b45ae502d822776a58c86688763 ]
 
 disable_irq() after request_irq() still has a time gap in which
 interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
 disable IRQ auto-enable when request IRQ.
 
-Fixes: 853402a00823 ("mwifiex: Enable WoWLAN for both sdio and pcie")
+Fixes: 9021c317b770 ("drm/imx: Add initial support for DCSS on iMX8MQ")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240910124314.698896-3-ruanjinjie@huawei.com
+Reviewed-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240912083020.3720233-2-ruanjinjie@huawei.com
+[DB: fixed the subject]
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/imx/dcss/dcss-crtc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index d99127dc466ec..6c60a4c21a312 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -1633,7 +1633,8 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
- 	}
+diff --git a/drivers/gpu/drm/imx/dcss/dcss-crtc.c b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+index 31267c00782fc..af91e45b5d13b 100644
+--- a/drivers/gpu/drm/imx/dcss/dcss-crtc.c
++++ b/drivers/gpu/drm/imx/dcss/dcss-crtc.c
+@@ -206,15 +206,13 @@ int dcss_crtc_init(struct dcss_crtc *crtc, struct drm_device *drm)
+ 	if (crtc->irq < 0)
+ 		return crtc->irq;
  
- 	ret = devm_request_irq(dev, adapter->irq_wakeup,
--			       mwifiex_irq_wakeup_handler, IRQF_TRIGGER_LOW,
-+			       mwifiex_irq_wakeup_handler,
-+			       IRQF_TRIGGER_LOW | IRQF_NO_AUTOEN,
- 			       "wifi_wake", adapter);
+-	ret = request_irq(crtc->irq, dcss_crtc_irq_handler,
+-			  0, "dcss_drm", crtc);
++	ret = request_irq(crtc->irq, dcss_crtc_irq_handler, IRQF_NO_AUTOEN,
++			  "dcss_drm", crtc);
  	if (ret) {
- 		dev_err(dev, "Failed to request irq_wakeup %d (%d)\n",
-@@ -1641,7 +1642,6 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
- 		goto err_exit;
+ 		dev_err(dcss->dev, "irq request failed with %d.\n", ret);
+ 		return ret;
  	}
  
--	disable_irq(adapter->irq_wakeup);
- 	if (device_init_wakeup(dev, true)) {
- 		dev_err(dev, "fail to init wakeup for mwifiex\n");
- 		goto err_exit;
+-	disable_irq(crtc->irq);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
