@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-99877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32F59E73CC
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:24:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4D29E73D0
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69D072871CC
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:24:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACD3F287783
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04A0D20B20C;
-	Fri,  6 Dec 2024 15:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2A21F4735;
+	Fri,  6 Dec 2024 15:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGrTkcoo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPNlggbP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B405A206F1A;
-	Fri,  6 Dec 2024 15:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBB0154449;
+	Fri,  6 Dec 2024 15:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498654; cv=none; b=oejlpqdZH6U4RBiNOQseBPrJ+M/5vl9V2dBBrvOO+m19ZTA8MIuYAIFklLQHN8ijwCA0dV4DRfG6jeKBPJx1+JH5tylstusuv7J/wC8XdrGl+v91P9+qFvPLYmG44vbIwH16azZFPaQJW1ab6ocwsIQevV99V4GE7w/wiq6xszg=
+	t=1733498661; cv=none; b=AumQamHtau2HP/677/ytXIWudtwqIs59YuQkhqr+hu6otC1bYtYELH/Bt8+vcgdhrxBnhuNrzfVt8fyTUsn26OcUdrsEbxkPvmD2P0/72RjEhPsA87OgvBYrYNdO98liXuaOKcDh+rEYYShyYkLmuKhiTwMGbdV1AnooqDmEbT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498654; c=relaxed/simple;
-	bh=JXxrAiWFViuSH0PA0qEJIwdftgzrWy2bBBHHvZUKV5k=;
+	s=arc-20240116; t=1733498661; c=relaxed/simple;
+	bh=MjqxAfiWQ9jAkU1EMjNx6yZdMwSBMf7FajJDJG0Pg+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMNzOCRZRDwgR7Rji9kNnXT7ExZBkBmVFdDClIOc5Lz8ZWHBURWLMvGiwcJi1LhlupDE9xbmrk2tTI9WZ8mmoMjEF+7s1E97Y5S0ITFTD2FUZx3YDb0MxhFoyyQnUhd/Z/aoTBJKKnuHvFHjdMK4DB7+B5l3z9sP+D/GZgQni0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGrTkcoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA12EC4CEDF;
-	Fri,  6 Dec 2024 15:24:13 +0000 (UTC)
+	 MIME-Version; b=VEysOqN2C90JlUCjSBYLAlkRE11X0Waq8g7DUbzBaCPFVWvmR1SOp4rz7ROIXCno5q7nO/0niY2Vx5WkQXmXtYM9Of3v+DRCgpFsp77vm3tdi9PvhdpeiU/NFINQb1UNpVNkUh2/p2F3GENuGrbI/6lHTto+kBSYCTnjdDDT0FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPNlggbP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BB2C4CED1;
+	Fri,  6 Dec 2024 15:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498654;
-	bh=JXxrAiWFViuSH0PA0qEJIwdftgzrWy2bBBHHvZUKV5k=;
+	s=korg; t=1733498661;
+	bh=MjqxAfiWQ9jAkU1EMjNx6yZdMwSBMf7FajJDJG0Pg+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGrTkcooKICS38g1lsxTW8uDfLAJERFk3ehPJ2IRxKdZ62xbjSAlZTDS29iYl0vo3
-	 auefMmwOqOVkHBn/R0Q85bgQPJ9MYL0a1xvCNvBKJ1GY1t2dfFtJgfj2If3awp2Zhw
-	 NRF/CWAmoQ1ej+5gJYt1d+CQNl88tQ4ap4pvOXFg=
+	b=RPNlggbPsZavYgfD67cHM0SCYfuyXFMMQlNRu+vDFd3ebxaRj3ewvUSBsBO7T2f+I
+	 tz7Z0kSTIUivAaAru6/oP9OjUYZ1/6+WotO7cDJ3mwB9XlKiasa8jDYnwOOLF62Itb
+	 gITQGXJ8twPWIGm47UXmdu5ZRZcJyE4/Y3/bVuFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 648/676] fs/proc/kcore.c: Clear ret value in read_kcore_iter after successful iov_iter_zero
-Date: Fri,  6 Dec 2024 15:37:47 +0100
-Message-ID: <20241206143718.678629005@linuxfoundation.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 649/676] thermal: int3400: Fix reading of current_uuid for active policy
+Date: Fri,  6 Dec 2024 15:37:48 +0100
+Message-ID: <20241206143718.718654638@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,38 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit 088f294609d8f8816dc316681aef2eb61982e0da upstream.
+commit 7082503622986537f57bdb5ef23e69e70cfad881 upstream.
 
-If iov_iter_zero succeeds after failed copy_from_kernel_nofault,
-we need to reset the ret value to zero otherwise it will be returned
-as final return value of read_kcore_iter.
+When the current_uuid attribute is set to the active policy UUID,
+reading back the same attribute is returning "INVALID" instead of
+the active policy UUID on some platforms before Ice Lake.
 
-This fixes objdump -d dump over /proc/kcore for me.
+In platforms before Ice Lake, firmware provides a list of supported
+thermal policies. In this case, user space can select any of the
+supported thermal policies via a write to attribute "current_uuid".
 
-Cc: stable@vger.kernel.org
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Fixes: 3d5854d75e31 ("fs/proc/kcore.c: allow translation of physical memory addresses")
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20241121231118.3212000-1-jolsa@kernel.org
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+In commit c7ff29763989 ("thermal: int340x: Update OS policy capability
+handshake")', the OS policy handshake was updated to support Ice Lake
+and later platforms and it treated priv->current_uuid_index=0 as
+invalid. However, priv->current_uuid_index=0 is for the active policy,
+only priv->current_uuid_index=-1 is invalid.
+
+Fix this issue by updating the priv->current_uuid_index check.
+
+Fixes: c7ff29763989 ("thermal: int340x: Update OS policy capability handshake")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: 5.18+ <stable@vger.kernel.org> # 5.18+
+Link: https://patch.msgid.link/20241114200213.422303-1-srinivas.pandruvada@linux.intel.com
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/kcore.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/thermal/intel/int340x_thermal/int3400_thermal.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/proc/kcore.c
-+++ b/fs/proc/kcore.c
-@@ -599,6 +599,7 @@ static ssize_t read_kcore_iter(struct ki
- 					ret = -EFAULT;
- 					goto out;
- 				}
-+				ret = 0;
- 			/*
- 			 * We know the bounce buffer is safe to copy from, so
- 			 * use _copy_to_iter() directly.
+--- a/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
++++ b/drivers/thermal/intel/int340x_thermal/int3400_thermal.c
+@@ -144,7 +144,7 @@ static ssize_t current_uuid_show(struct
+ 	struct int3400_thermal_priv *priv = dev_get_drvdata(dev);
+ 	int i, length = 0;
+ 
+-	if (priv->current_uuid_index > 0)
++	if (priv->current_uuid_index >= 0)
+ 		return sprintf(buf, "%s\n",
+ 			       int3400_thermal_uuids[priv->current_uuid_index]);
+ 
 
 
 
