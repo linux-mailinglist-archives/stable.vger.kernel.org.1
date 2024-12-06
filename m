@@ -1,114 +1,115 @@
-Return-Path: <stable+bounces-98969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564989E6AF4
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:46:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5059E6D32
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:21:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79EC1885973
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 09:46:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 825C816609A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D091F6665;
-	Fri,  6 Dec 2024 09:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95891DA61E;
+	Fri,  6 Dec 2024 11:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RMU9Aho"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E0A1F12E1
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 09:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8DA46426
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 11:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733478234; cv=none; b=WsuLdj/YOs9jLTopBp11cH5f9eqgxr9/ild/9tPUUZkANNp01txi+CIx0VaAO5kKjFA6WM042KPr0qBsTEk1qL3y0WWDFPIXCktaNuTp4ixMJKO72EosvSTa84MXlSvbcDZoOpCtDpAaioTW09X0Oj/T9/2+nEBuQnL4BDHvnHM=
+	t=1733484088; cv=none; b=t1rsUOs/7yvHyzxnolMN/VG6BC4ak/q/h0h/uEuo79fUvoXHwOj1zcwe8d8BY07NCAkXOnRdjQysm9tOfGxIO1t/2hlB1bJce7lSFBunfO9Fhzof+wuiOcH4yAr4leUpk29m1zL9at0A1D1eO39p/GxvIpIlPZwByz4l0s+CRyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733478234; c=relaxed/simple;
-	bh=pxVjJM3xlHmqsLWloFW4wOs0kH3D8fuPRBOZEI5nH0Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kr56cgVF7cyZakkjwtGj7Lo/AKbhzG7NN974e9Xs9pOiVbChNozF2KAszb0mHy0ktXmkrfHFHutrj3lpcKF3KLbKsWjBvCTvuK0lJu2wRwjyf0tSsQqMmp46Sq2m9bPK0WDMbwm3th6LUK4hTmL0il5qshcQ2DDcHFGgKTEqUcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B67j1U8018355;
-	Fri, 6 Dec 2024 01:43:26 -0800
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 437xv7y166-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 06 Dec 2024 01:43:26 -0800 (PST)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Fri, 6 Dec 2024 01:43:25 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Fri, 6 Dec 2024 01:43:24 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <abelova@astralinux.ru>, <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>
-Subject: [PATCH 6.1.y] cpufreq: amd-pstate: add check for cpufreq_cpu_get's return value
-Date: Fri, 6 Dec 2024 18:41:15 +0800
-Message-ID: <20241206104115.1273254-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733484088; c=relaxed/simple;
+	bh=fS97WpPpNwnWsFxqVlZBqP5MOniZjWfJaR3KgjEedcQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tahByAdEbhXVB9oLSC8aNGTfkEAAV1vK7mguUcH7xgfA3VQX/04eQ/RGEoHXlQUEbGhtDJi+ZPFF9unyHV2SH/aBvkDlD8QLWBA+Gywoi30se5Q6r4lmt/igsPf31ci1o7SGiafnTmlXRNIheqkU6gT+tfrMLIeKg8gfPlRH/oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RMU9Aho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50707C4CEDF;
+	Fri,  6 Dec 2024 11:21:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733484087;
+	bh=fS97WpPpNwnWsFxqVlZBqP5MOniZjWfJaR3KgjEedcQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=1RMU9Ahod/8JWdTcMLn5l6EL6VCk6IgwEBrZ+bIRT1HUcAAfC+02NnY9zIUx4an43
+	 z3IQMr+JnF+Ckksg55puv9VrrZIZcCarGG+I7ualGVUfXJmMAgnEbIwP5tUFsK+EZk
+	 RHbKR8/AxlF9tBgl8YkGtvIWKw9wzL+kHwj+uudk=
+Subject: FAILED: patch "[PATCH] media: platform: exynos4-is: Fix an OF node reference leak in" failed to apply to 5.15-stable tree
+To: joe@pf.is.s.u-tokyo.ac.jp,hverkuil@xs4all.nl,krzysztof.kozlowski@linaro.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 06 Dec 2024 12:21:23 +0100
+Message-ID: <2024120623-refract-altitude-40e5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: o09WUuQ44ySO-2Y9nlZ2DrbQiqg6JQxR
-X-Authority-Analysis: v=2.4 cv=RpA/LDmK c=1 sm=1 tr=0 ts=6752c73e cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=RZcAm9yDv7YA:10 a=KP9VF9y3AAAA:8 a=HH5vDtPzAAAA:8 a=zd2uoN0lAAAA:8 a=KKAkSRfTAAAA:8 a=t7CeM3EgAAAA:8
- a=T-_msMMreK8bA51VSmQA:9 a=4w0yzETBtB_scsjRCo-X:22 a=QM_-zKB-Ew0MsOlNKMB5:22 a=cvBusfyB2V15izCimMoJ:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: o09WUuQ44ySO-2Y9nlZ2DrbQiqg6JQxR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-06_05,2024-12-05_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 bulkscore=0 malwarescore=0 adultscore=0
- phishscore=0 mlxlogscore=999 clxscore=1011 suspectscore=0
- priorityscore=1501 mlxscore=0 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.21.0-2411120000
- definitions=main-2412060070
 
-From: Anastasia Belova <abelova@astralinux.ru>
 
-[ Upstream commit 5493f9714e4cdaf0ee7cec15899a231400cb1a9f ]
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-cpufreq_cpu_get may return NULL. To avoid NULL-dereference check it
-and return in case of error.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8964eb23408243ae0016d1f8473c76f64ff25d20
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120623-refract-altitude-40e5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
----
- drivers/cpufreq/amd-pstate.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Possible dependencies:
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 90dcf26f0973..106aef210003 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -309,9 +309,14 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
- 	unsigned long max_perf, min_perf, des_perf,
- 		      cap_perf, lowest_nonlinear_perf, max_freq;
- 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
--	struct amd_cpudata *cpudata = policy->driver_data;
-+	struct amd_cpudata *cpudata;
- 	unsigned int target_freq;
- 
-+	if (!policy)
-+		return;
-+
-+	cpudata = policy->driver_data;
-+
- 	cap_perf = READ_ONCE(cpudata->highest_perf);
- 	lowest_nonlinear_perf = READ_ONCE(cpudata->lowest_nonlinear_perf);
- 	max_freq = READ_ONCE(cpudata->max_freq);
--- 
-2.25.1
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8964eb23408243ae0016d1f8473c76f64ff25d20 Mon Sep 17 00:00:00 2001
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Date: Mon, 4 Nov 2024 19:01:19 +0900
+Subject: [PATCH] media: platform: exynos4-is: Fix an OF node reference leak in
+ fimc_md_is_isp_available
+
+In fimc_md_is_isp_available(), of_get_child_by_name() is called to check
+if FIMC-IS is available. Current code does not decrement the refcount of
+the returned device node, which causes an OF node reference leak. Fix it
+by calling of_node_put() at the end of the variable scope.
+
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Fixes: e781bbe3fecf ("[media] exynos4-is: Add fimc-is subdevs registration")
+Cc: stable@vger.kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: added CC to stable]
+
+diff --git a/drivers/media/platform/samsung/exynos4-is/media-dev.h b/drivers/media/platform/samsung/exynos4-is/media-dev.h
+index 786264cf79dc..a50e58ab7ef7 100644
+--- a/drivers/media/platform/samsung/exynos4-is/media-dev.h
++++ b/drivers/media/platform/samsung/exynos4-is/media-dev.h
+@@ -178,8 +178,9 @@ int fimc_md_set_camclk(struct v4l2_subdev *sd, bool on);
+ #ifdef CONFIG_OF
+ static inline bool fimc_md_is_isp_available(struct device_node *node)
+ {
+-	node = of_get_child_by_name(node, FIMC_IS_OF_NODE_NAME);
+-	return node ? of_device_is_available(node) : false;
++	struct device_node *child __free(device_node) =
++		of_get_child_by_name(node, FIMC_IS_OF_NODE_NAME);
++	return child ? of_device_is_available(child) : false;
+ }
+ #else
+ #define fimc_md_is_isp_available(node) (false)
 
 
