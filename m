@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-99578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1069E7253
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:07:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB96A9E7237
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:06:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAA1E16953A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:07:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A185E28440B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6EB1537D4;
-	Fri,  6 Dec 2024 15:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74134148FE6;
+	Fri,  6 Dec 2024 15:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GROKtfl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqQc702e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570F653A7;
-	Fri,  6 Dec 2024 15:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3079153A7;
+	Fri,  6 Dec 2024 15:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497654; cv=none; b=ub7OB5WjEGqwBbARy/tOWOEUl8Kr7YUNPLGCMTZFzGhyj5S2WIQ7JpWSYHNOLI1d03wKyTPhUHLNyHCOPRIRqH9gnDAqeS7hux+4mhAoED9T0wkPY9honnI1aeT0H6lT4DoNrG5h36DiRWSqvN8RrO9hFPV3LZqYqukYMpsOVrY=
+	t=1733497574; cv=none; b=HzXdT51sOoNKZO2RoWx1PIU5M3Xw1G2+VJDPpLlwsbXMpZhL8HTCTR3celxY7+r5xQfe/i4FOCs2sMujQA8/zOEJlyP3KtaACsDy+eqDiU/hIn4HhwcTigHK+EMPl5N3iQ95RtRWwQzMuULu0w3gEq4Pm2f9YpDMAR3vgnXmDYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497654; c=relaxed/simple;
-	bh=UcfKgw+U7TlrRNyz0mrgJl04rb1Lzjf+BOBLWe0cYr8=;
+	s=arc-20240116; t=1733497574; c=relaxed/simple;
+	bh=SJ94/nM0FpnRfMKcv4EOf2O/YrUihwkRwtkHZjDztHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBidbeLmXpdonqCZypREjt+B8vAzm9U3FDPurBBb2x8A5hBhmWiNtb3t5Oubhj+I8YqbwTHJrRUDhZXbjZSavt3f9pYpjHXWPQ0g2+3ZGWVmFTE78J0O1LI9+78UOOMvk/oDBSr4HjbuXjWAh+ZGze6N962uJldSbhR+XD1oL2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GROKtfl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D110BC4CED1;
-	Fri,  6 Dec 2024 15:07:33 +0000 (UTC)
+	 MIME-Version; b=IUbbBdC8oh3/0sP3QhDqlRY6O1WfgYixX/9+11jdE7GiFCZ2R2L0gz+OxccC7sOdk5SCRM+Kkt9fTkq31iv6hw0jaio07xM1hvObn+APr9wsacHkQuSLEk3at4c6OeoHtNrQb1wTn+xnQF89Sg4l0729DYd3wffKNiWbz0DYEfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqQc702e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD64C4CEDE;
+	Fri,  6 Dec 2024 15:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497654;
-	bh=UcfKgw+U7TlrRNyz0mrgJl04rb1Lzjf+BOBLWe0cYr8=;
+	s=korg; t=1733497573;
+	bh=SJ94/nM0FpnRfMKcv4EOf2O/YrUihwkRwtkHZjDztHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GROKtfl+JK7wRlA+J57mNQiI8oZlbnfOYmYU/r1I09MY0WO2uxGbcZc651R2Amy2o
-	 1r0G3uJ1roYWvlG2DlXeF/WkvQWxAFXxHfREYYMKf/UVsKkLUkfxJcRoYqHNkn/71z
-	 lyg/7J38cY2xHSQ1Z+UfPTuXJlOS2fZz1luaehq0=
+	b=mqQc702eumi+bDkiVPM0e6tApnIUUY48fNVTaDk3fqA8FzsXKzaK1yg9/lj8cgJrv
+	 g6DuMiViviAEhTNj2bM86ZVdwQXM9ezk97P5SHZEfc5R8QiIDSuLI0ntbnyDLfR0p6
+	 iV67nd0kkIIvyFXoK+VnULBfPGWvegDrf+jigzYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Suchanek <msuchanek@suse.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/676] powerpc/sstep: make emulate_vsx_load and emulate_vsx_store static
-Date: Fri,  6 Dec 2024 15:32:20 +0100
-Message-ID: <20241206143705.883334065@linuxfoundation.org>
+Subject: [PATCH 6.6 329/676] dt-bindings: clock: axi-clkgen: include AXI clk
+Date: Fri,  6 Dec 2024 15:32:28 +0100
+Message-ID: <20241206143706.196479634@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,74 +67,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Suchanek <msuchanek@suse.de>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit a26c4dbb3d9c1821cb0fc11cb2dbc32d5bf3463b ]
+[ Upstream commit 47f3f5a82a31527e027929c5cec3dd1ef5ef30f5 ]
 
-These functions are not used outside of sstep.c
+In order to access the registers of the HW, we need to make sure that
+the AXI bus clock is enabled. Hence let's increase the number of clocks
+by one and add clock-names to differentiate between parent clocks and
+the bus clock.
 
-Fixes: 350779a29f11 ("powerpc: Handle most loads and stores in instruction emulation code")
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241001130356.14664-1-msuchanek@suse.de
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-1-bc5e0733ad76@analog.com
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/sstep.h |  5 -----
- arch/powerpc/lib/sstep.c         | 12 ++++--------
- 2 files changed, 4 insertions(+), 13 deletions(-)
+ .../bindings/clock/adi,axi-clkgen.yaml        | 22 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
-index 50950deedb873..e3d0e714ff280 100644
---- a/arch/powerpc/include/asm/sstep.h
-+++ b/arch/powerpc/include/asm/sstep.h
-@@ -173,9 +173,4 @@ int emulate_step(struct pt_regs *regs, ppc_inst_t instr);
-  */
- extern int emulate_loadstore(struct pt_regs *regs, struct instruction_op *op);
+diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+index 5e942bccf2778..2b2041818a0a4 100644
+--- a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
++++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+@@ -26,9 +26,21 @@ properties:
+     description:
+       Specifies the reference clock(s) from which the output frequency is
+       derived. This must either reference one clock if only the first clock
+-      input is connected or two if both clock inputs are connected.
+-    minItems: 1
+-    maxItems: 2
++      input is connected or two if both clock inputs are connected. The last
++      clock is the AXI bus clock that needs to be enabled so we can access the
++      core registers.
++    minItems: 2
++    maxItems: 3
++
++  clock-names:
++    oneOf:
++      - items:
++          - const: clkin1
++          - const: s_axi_aclk
++      - items:
++          - const: clkin1
++          - const: clkin2
++          - const: s_axi_aclk
  
--extern void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
--			     const void *mem, bool cross_endian);
--extern void emulate_vsx_store(struct instruction_op *op,
--			      const union vsx_reg *reg, void *mem,
--			      bool cross_endian);
- extern int emulate_dcbz(unsigned long ea, struct pt_regs *regs);
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 6af97dc0f6d5a..efbf180788708 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -780,8 +780,8 @@ static nokprobe_inline int emulate_stq(struct pt_regs *regs, unsigned long ea,
- #endif /* __powerpc64 */
+   '#clock-cells':
+     const: 0
+@@ -40,6 +52,7 @@ required:
+   - compatible
+   - reg
+   - clocks
++  - clock-names
+   - '#clock-cells'
  
- #ifdef CONFIG_VSX
--void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
--		      const void *mem, bool rev)
-+static nokprobe_inline void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
-+					     const void *mem, bool rev)
- {
- 	int size, read_size;
- 	int i, j;
-@@ -863,11 +863,9 @@ void emulate_vsx_load(struct instruction_op *op, union vsx_reg *reg,
- 		break;
- 	}
- }
--EXPORT_SYMBOL_GPL(emulate_vsx_load);
--NOKPROBE_SYMBOL(emulate_vsx_load);
- 
--void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
--		       void *mem, bool rev)
-+static nokprobe_inline void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
-+					      void *mem, bool rev)
- {
- 	int size, write_size;
- 	int i, j;
-@@ -955,8 +953,6 @@ void emulate_vsx_store(struct instruction_op *op, const union vsx_reg *reg,
- 		break;
- 	}
- }
--EXPORT_SYMBOL_GPL(emulate_vsx_store);
--NOKPROBE_SYMBOL(emulate_vsx_store);
- 
- static nokprobe_inline int do_vsx_load(struct instruction_op *op,
- 				       unsigned long ea, struct pt_regs *regs,
+ additionalProperties: false
+@@ -50,5 +63,6 @@ examples:
+       compatible = "adi,axi-clkgen-2.00.a";
+       #clock-cells = <0>;
+       reg = <0xff000000 0x1000>;
+-      clocks = <&osc 1>;
++      clocks = <&osc 1>, <&clkc 15>;
++      clock-names = "clkin1", "s_axi_aclk";
+     };
 -- 
 2.43.0
 
