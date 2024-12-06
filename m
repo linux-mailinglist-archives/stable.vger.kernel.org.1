@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-99848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144469E73C3
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:24:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F080B9E73D6
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:24:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F6F16EEB1
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:22:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF461288116
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEE4207E0C;
-	Fri,  6 Dec 2024 15:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6DC207670;
+	Fri,  6 Dec 2024 15:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzvWw3Yw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oywI6H+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CAA152160;
-	Fri,  6 Dec 2024 15:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC04B53A7;
+	Fri,  6 Dec 2024 15:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498556; cv=none; b=uKzoLUWbGbx2VlMTK111Gv/d1u7Gl4RSCZLLYGq90qfpVnXUjM3I3bjmg9wcOiGZi8l7IyfSbhRTba3/i4P3VGEQX03BCA0lsnl3+xWCWeMgSZH6GkIMTH5T4jf3vj9j6GbO2NTXVJ8inOtNzvCJutHI4Q0gJnFkveBQIUde6v8=
+	t=1733498696; cv=none; b=q3SxhEE2Z3817f6Ju2AFnwJ9U+t2BUSa4/vk/Z40BSODMACw3ZgK1fZqvDexJnBMg9XzVR5zfyIobgZZEqPrrBbOkfEVcWwkfiMovR6veuLHqb4SVCqsSC2SAKiCukpX5wmq6cXLXVhA+XGLPik5k6oyXn5WP7ubRmI2kr1r3l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498556; c=relaxed/simple;
-	bh=M/lem3HKmbSwAaj8JA6ChMU30VOooEiw/idzKp8qAnE=;
+	s=arc-20240116; t=1733498696; c=relaxed/simple;
+	bh=wnkMSZRnFJlpNZMXIlJD5n/GD8y8yF5quRT8b4M8Tfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HKj3K/RbZbfSVngmkafBq8HcbdaideUq3wdkF26GamVzC9b/Ou9UVKUlLq0vsevmZgAuuygS7GLYylBZov8lGGGMl8pjRZTU6J5O1QPRUWCC2J14Pl3I7BHoA4tPoo6Yn+rEq4a5uoZhwvqter8OEeQwTMgK0AQbzF/4nJfWqS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzvWw3Yw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CFDC4CED1;
-	Fri,  6 Dec 2024 15:22:35 +0000 (UTC)
+	 MIME-Version; b=qfMKmBpADchVrVzAdZQadMxSelnrA7KaaQdU8bFLNDf7h9qi2Riub+XAF5BQ8798V/zKro3IeEs6rbw0GZf0TZYQXKkr3efQRxOik/Kx1jKz5sQpTR3e3ttkal4X+qZRD8f+lTHGadidzhsw2aQKZrGDtLrLUY4pv2PT8pAbrA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oywI6H+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56884C4CED1;
+	Fri,  6 Dec 2024 15:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498556;
-	bh=M/lem3HKmbSwAaj8JA6ChMU30VOooEiw/idzKp8qAnE=;
+	s=korg; t=1733498695;
+	bh=wnkMSZRnFJlpNZMXIlJD5n/GD8y8yF5quRT8b4M8Tfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzvWw3Yw5Boex8c1gIPgwJy3ZpxDin+xWUX9lupjNFQrxahYfM/oBmQXnQnIUkxaL
-	 Ea25q5x9YWgfGF2KehCcSZcrYti5QzQRjumh2ZQ5SvEQXBAn7OKceHlz7I4RVfEDEa
-	 9UaB2tDtTG7we3NTwfzbomrUus/2lLJ2SoVZaNxQ=
+	b=oywI6H+sXI8XNkXt0U+tVtsr9BCNvEYkpJ5i2rSzdou1rL5rcmDcAak6bvRSvxq3U
+	 i553atzktTrHMdwFKaBjxuyEATmKRdYXgkg+ApINbkXVYS2WSeOTnD+MGSsdPnnzA4
+	 IMYDrdsXogCXChNRvSFZ+wwLWD6SdzJeE+2DBzTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 618/676] media: platform: exynos4-is: Fix an OF node reference leak in fimc_md_is_isp_available
-Date: Fri,  6 Dec 2024 15:37:17 +0100
-Message-ID: <20241206143717.509959501@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.6 619/676] efi/libstub: Free correct pointer on failure
+Date: Fri,  6 Dec 2024 15:37:18 +0100
+Message-ID: <20241206143717.547887216@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,40 +64,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 8964eb23408243ae0016d1f8473c76f64ff25d20 upstream.
+commit 06d39d79cbd5a91a33707951ebf2512d0e759847 upstream.
 
-In fimc_md_is_isp_available(), of_get_child_by_name() is called to check
-if FIMC-IS is available. Current code does not decrement the refcount of
-the returned device node, which causes an OF node reference leak. Fix it
-by calling of_node_put() at the end of the variable scope.
+cmdline_ptr is an out parameter, which is not allocated by the function
+itself, and likely points into the caller's stack.
 
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Fixes: e781bbe3fecf ("[media] exynos4-is: Add fimc-is subdevs registration")
-Cc: stable@vger.kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: added CC to stable]
+cmdline refers to the pool allocation that should be freed when cleaning
+up after a failure, so pass this instead to free_pool().
+
+Fixes: 42c8ea3dca09 ("efi: libstub: Factor out EFI stub entrypoint ...")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/samsung/exynos4-is/media-dev.h |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/libstub/efi-stub.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/samsung/exynos4-is/media-dev.h
-+++ b/drivers/media/platform/samsung/exynos4-is/media-dev.h
-@@ -178,8 +178,9 @@ int fimc_md_set_camclk(struct v4l2_subde
- #ifdef CONFIG_OF
- static inline bool fimc_md_is_isp_available(struct device_node *node)
- {
--	node = of_get_child_by_name(node, FIMC_IS_OF_NODE_NAME);
--	return node ? of_device_is_available(node) : false;
-+	struct device_node *child __free(device_node) =
-+		of_get_child_by_name(node, FIMC_IS_OF_NODE_NAME);
-+	return child ? of_device_is_available(child) : false;
+--- a/drivers/firmware/efi/libstub/efi-stub.c
++++ b/drivers/firmware/efi/libstub/efi-stub.c
+@@ -149,7 +149,7 @@ efi_status_t efi_handle_cmdline(efi_load
+ 	return EFI_SUCCESS;
+ 
+ fail_free_cmdline:
+-	efi_bs_call(free_pool, cmdline_ptr);
++	efi_bs_call(free_pool, cmdline);
+ 	return status;
  }
- #else
- #define fimc_md_is_isp_available(node) (false)
+ 
 
 
 
