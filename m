@@ -1,135 +1,151 @@
-Return-Path: <stable+bounces-99079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17329E6FD7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:10:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B9B9E6FE3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17618168A26
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:13:24 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B3C207E13;
+	Fri,  6 Dec 2024 14:13:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NdiaeFFX"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8171B28258D
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:10:14 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5AD207670;
-	Fri,  6 Dec 2024 14:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LacXbEam"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CC02E859;
-	Fri,  6 Dec 2024 14:10:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A0A1FCCFB
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 14:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733494210; cv=none; b=R8JwBC8jsVhhL1DFTqBW+6jRL6UZ6PRXtkqMmAHRCuHqpeaU6YVhIYGXZ4CkQjzKyuAKP1SfYP7gL06ojpGzHe0Qm5x9uw2fYnO7a3s9RMWBtckoMcajTQkgL/sog1SzyKusAMLVMgiQv42hRc4p8nMZAN2KajOyE3hd4AH6qUY=
+	t=1733494399; cv=none; b=lE0yZj9glrtdsz7ZBbnC52N1SR6YlMqDHyRqAsG99eZZoXpkYLB1990jL3LffBYf/cLX2cf3XlPg6N/yJ0BBylxSVqqQFIYc9EpCWIZP9lJmEDNUjZL18qqaViHsK/me00jMTsk3uyCxW4XokQzDzINQwLYq+SPPCZbU8jIs16U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733494210; c=relaxed/simple;
-	bh=8PFPN7DbZZGHpYlhMxeWbMPrpnXKX3Dkt/Q2/+aIyaI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TbyLZuDRForZx60oHBg419adGb/eouI6/BGL/1ZY4/fuM8f6IN2THbG3WLMiJHUSAqVJ7W+IVIc9rk0xo608VkfK5Ayw5CPeVW1ItVvn2L4/rW/YJZVeAYB+jujvFLUM2eJpLkJYOZZL6ksnihwBjCj9sU342DuhNfPREjP2nGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LacXbEam; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-53e1c3dfbb0so1946759e87.3;
-        Fri, 06 Dec 2024 06:10:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733494207; x=1734099007; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WJ9IUcbryk0YazN7Sa5TOtgGdDNEInD45SiDVANUoqs=;
-        b=LacXbEamzHiOouoomoi6B/EyG1v2tdcp3UaFR46QA7a4tSiA5LpDIeiriFwNrEW9oO
-         8Plag1/sNtshuSfhg8Tvk5itIlWc1oR1Wqt0xJ+dhrAC+yLQ9DzJTsYxjiMDmAeePtZw
-         9vhpOyeYdkbVeI4fYsVrxPCxn1JPvI8Sfn0i5atOVzwKbTR85XDXVSbPkhdFkFdlpU6w
-         uhUKBKn5IjVyJrWYIkcKDE8UN5fYW5nullBxk9p9oTq+Eix8mvFby5nSBPJqG4X9jfQ3
-         ivZv+PaaJEo5ZEOnYyZRnSzoRalDBJbPGQ3my397eTmC4N0FojL4p1SGGmKCWM9tdwFY
-         lYpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733494207; x=1734099007;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WJ9IUcbryk0YazN7Sa5TOtgGdDNEInD45SiDVANUoqs=;
-        b=ZytnZ1MGUzroR7rG4ZnoDeBu2Vzj3HVyU2s6OJ/q+RWntipwzV0OT/cFVPSLWnSVkg
-         tIk5QfPklaF6VQFNQkrgbTGXjZai1mDhtzn1+nehJURCx9DwpEPiVx5JmUl2F4m0Ufta
-         1Wm/STQFwZvCtKhhamP1Y+YsgOlEM3P43Uh/7kXkQEWUfqxIasLagDDaCGmUApItYtgm
-         DjxSryz8/sH8kfRbfYW5Zsbmms115+riGycHg3wWf0hBx1rePaij96iSGLnPZWoIwuuc
-         XkAWdEnFm8GwS1VsnsAtMiqsrcuQ4DvOSg5yy+NJjvvdeRmjDRn4gXMGhNRpYF6zR/5S
-         9qhw==
-X-Forwarded-Encrypted: i=1; AJvYcCV76x6c6HJEns7Wdeye5W9LtHJB3cb5W0Dqct8NZLQqTLxJ99dANUHyLpldHndQ5n+leBbNtdo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjW59x++aK9UXYvDfhBE9VnrRsoJwiUfCrz0BljwgawfZffxfX
-	rJdrsXfCF9Hf3C6wmeIzkpA9hHxRvGgnG1dudHP60m1bvcxaAxcK3eREPwAF+AEhFfx3E3VpHTc
-	RdkJlrc7WaWNC7u3KmgMeWpN/swg2
-X-Gm-Gg: ASbGncuFDssWLNlNO+0trdc4e5D10u9awVXQklPu6cbaicAjcYRY5v1wAa5lDPNv531
-	gX3HrYtEMnUpe+T62KqJS1kw9YDMlfx+v9RMUrlsWQD9JoQ==
-X-Google-Smtp-Source: AGHT+IFmPgaxVCncnxSpgGFH2NGYgVn6CI4Sy8CIqD74igkDri8YqGT7RQpReqsWcGBJ+i/X88yERPyj1yI/64Yzmfs=
-X-Received: by 2002:a05:6512:e88:b0:53e:12f2:68f7 with SMTP id
- 2adb3069b0e04-53e2c2b1a6amr767751e87.1.1733494206924; Fri, 06 Dec 2024
- 06:10:06 -0800 (PST)
+	s=arc-20240116; t=1733494399; c=relaxed/simple;
+	bh=jvTDeik4aBjulx/mzVsWSYvRmvzyEo28Ba9b7m3Oflw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TKYYCArywAVmI+rNpYbkgkZSnLI6LOmU+oLSd/Dvs5OjzrCKRcZlUueYj8Bno98PiTLIKI0xHAss0tISz28fbu7pxxEAZGoopzoJPrEGe4dePEPuOENl1cGNWi1xX8j7M+UMgSVlnd+iGq79woZnhDFdQ15JkNQH2fmOx3SsQwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NdiaeFFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF70C4CEDC;
+	Fri,  6 Dec 2024 14:13:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733494398;
+	bh=jvTDeik4aBjulx/mzVsWSYvRmvzyEo28Ba9b7m3Oflw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NdiaeFFXu3N6c+JAYkDp41FM5n4PDR3ZmYF3/UTh1rCisAMbupxNyhyph20Rq/XVM
+	 f8hceM+RCeoK8o4rACv4JVmJwcCD8GEOCwlqUsZjkRkk93j23Zv9uSjiftYzoUapom
+	 sgmF9tjtYCQFQ0Jnnaa9i8FNM9myIYI/wK2PvKVEeT0cvoj+kTMe6hOoGuuFKcs64U
+	 w04M8uExFkoh4Bxy4J8Bw+GEy4aopvt0BFwqdgPzYHr1KDR6rQ/nhPdG2hPcG8l5ng
+	 yn3/RuIg4vjWv1TTmZ8o/4JEea/8SFXNEWfssHYfezvwqFbP6KEyI+LvRdCusZav18
+	 9QlmNKfDnVvEg==
+From: Mark Brown <broonie@kernel.org>
+To: stable@vger.kernel.org
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15] arm64/sve: Discard stale CPU state when handling SVE traps
+Date: Fri,  6 Dec 2024 14:11:19 +0000
+Message-Id: <20241206141119.203712-1-broonie@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241105155801.1779119-1-brgerst@gmail.com> <20241105155801.1779119-2-brgerst@gmail.com>
- <20241206115154.GA32491@redhat.com>
-In-Reply-To: <20241206115154.GA32491@redhat.com>
-From: Brian Gerst <brgerst@gmail.com>
-Date: Fri, 6 Dec 2024 09:09:55 -0500
-Message-ID: <CAMzpN2g8eenLASqXA36LwP=Zr+8Z1cO7Cpz0ijiUdOr_+7G-3A@mail.gmail.com>
-Subject: Re: [PATCH v5 01/16] x86/stackprotector: Work around strict Clang TLS
- symbol requirements
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	Ingo Molnar <mingo@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Borislav Petkov <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>, Uros Bizjak <ubizjak@gmail.com>, 
-	stable@vger.kernel.org, Fangrui Song <i@maskray.me>, 
-	Nathan Chancellor <nathan@kernel.org>, Andy Lutomirski <luto@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3494; i=broonie@kernel.org; h=from:subject; bh=jvTDeik4aBjulx/mzVsWSYvRmvzyEo28Ba9b7m3Oflw=; b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBnUwYGpdXDDmEspwj29fBJd3Z0VbY0XV57UVefuLMa lXMoT8GJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZ1MGBgAKCRAk1otyXVSH0BeLCA CCB3oNfgPNx/8P91ak70l1H9A4afPkg3yG+l6faKzlJH1PuxGmcnZ7zGNgrTtUBBZxtitbWRIbTr0H dcvsCPCIJVlo36Ybs9pB6c+StTHz7ooisj+y6yQ2Z/CrDAp4qMzhWf50g8hq55p2sg4sx7lpB0oEuu 2I11UxfsI5at32B5LDru2Ts1IfwnZaTIc65JbKLDMFzqRkMssyFtfbeBmcAZMNxakgDAsN7euSHXgG E+Pm2BjBH0p+06KIQagxv/VfXnAfybZkzcDQfFodPh1eFSBViz+BUWywNmAmr7zLMw6ZkscNaMWR88 26zvDKKW+IwEMmZ56iMlZQZinKcZwO
+X-Developer-Key: i=broonie@kernel.org; a=openpgp; fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 6, 2024 at 6:52=E2=80=AFAM Oleg Nesterov <oleg@redhat.com> wrot=
-e:
->
-> On 11/05, Brian Gerst wrote:
-> >
-> > --- a/arch/x86/kernel/vmlinux.lds.S
-> > +++ b/arch/x86/kernel/vmlinux.lds.S
-> > @@ -468,6 +468,9 @@ SECTIONS
-> >  . =3D ASSERT((_end - LOAD_OFFSET <=3D KERNEL_IMAGE_SIZE),
-> >          "kernel image bigger than KERNEL_IMAGE_SIZE");
-> >
-> > +/* needed for Clang - see arch/x86/entry/entry.S */
-> > +PROVIDE(__ref_stack_chk_guard =3D __stack_chk_guard);
->
-> Don't we need the simple fix below?
->
-> without this patch I can't build the kernel with CONFIG_STACKPROTECTOR=3D=
-n.
->
-> Oleg.
->
-> diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.=
-S
-> index fab3ac9a4574..2ff48645bab9 100644
-> --- a/arch/x86/kernel/vmlinux.lds.S
-> +++ b/arch/x86/kernel/vmlinux.lds.S
-> @@ -472,8 +472,10 @@ SECTIONS
->  . =3D ASSERT((_end - LOAD_OFFSET <=3D KERNEL_IMAGE_SIZE),
->            "kernel image bigger than KERNEL_IMAGE_SIZE");
->
-> +#ifdef CONFIG_STACKPROTECTOR
->  /* needed for Clang - see arch/x86/entry/entry.S */
->  PROVIDE(__ref_stack_chk_guard =3D __stack_chk_guard);
-> +#endif
->
->  #ifdef CONFIG_X86_64
->  /*
+The logic for handling SVE traps manipulates saved FPSIMD/SVE state
+incorrectly, and a race with preemption can result in a task having
+TIF_SVE set and TIF_FOREIGN_FPSTATE clear even though the live CPU state
+is stale (e.g. with SVE traps enabled). This has been observed to result
+in warnings from do_sve_acc() where SVE traps are not expected while
+TIF_SVE is set:
 
-Which compiler are you using?  It builds fine with GCC 14 and clang 18.
+|         if (test_and_set_thread_flag(TIF_SVE))
+|                 WARN_ON(1); /* SVE access shouldn't have trapped */
 
+Warnings of this form have been reported intermittently, e.g.
 
-Brian Gerst
+  https://lore.kernel.org/linux-arm-kernel/CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com/
+  https://lore.kernel.org/linux-arm-kernel/000000000000511e9a060ce5a45c@google.com/
+
+The race can occur when the SVE trap handler is preempted before and
+after manipulating the saved FPSIMD/SVE state, starting and ending on
+the same CPU, e.g.
+
+| void do_sve_acc(unsigned long esr, struct pt_regs *regs)
+| {
+|         // Trap on CPU 0 with TIF_SVE clear, SVE traps enabled
+|         // task->fpsimd_cpu is 0.
+|         // per_cpu_ptr(&fpsimd_last_state, 0) is task.
+|
+|         ...
+|
+|         // Preempted; migrated from CPU 0 to CPU 1.
+|         // TIF_FOREIGN_FPSTATE is set.
+|
+|         get_cpu_fpsimd_context();
+|
+|         if (test_and_set_thread_flag(TIF_SVE))
+|                 WARN_ON(1); /* SVE access shouldn't have trapped */
+|
+|         sve_init_regs() {
+|                 if (!test_thread_flag(TIF_FOREIGN_FPSTATE)) {
+|                         ...
+|                 } else {
+|                         fpsimd_to_sve(current);
+|                         current->thread.fp_type = FP_STATE_SVE;
+|                 }
+|         }
+|
+|         put_cpu_fpsimd_context();
+|
+|         // Preempted; migrated from CPU 1 to CPU 0.
+|         // task->fpsimd_cpu is still 0
+|         // If per_cpu_ptr(&fpsimd_last_state, 0) is still task then:
+|         // - Stale HW state is reused (with SVE traps enabled)
+|         // - TIF_FOREIGN_FPSTATE is cleared
+|         // - A return to userspace skips HW state restore
+| }
+
+Fix the case where the state is not live and TIF_FOREIGN_FPSTATE is set
+by calling fpsimd_flush_task_state() to detach from the saved CPU
+state. This ensures that a subsequent context switch will not reuse the
+stale CPU state, and will instead set TIF_FOREIGN_FPSTATE, forcing the
+new state to be reloaded from memory prior to a return to userspace.
+
+Fixes: cccb78ce89c4 ("arm64/sve: Rework SVE access trap to convert state in registers")
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20241030-arm64-fpsimd-foreign-flush-v1-1-bd7bd66905a2@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+[Backported to 5.15 -- broonie]
+(cherry picked from commit 751ecf6afd6568adc98f2a6052315552c0483d18)
+---
+ arch/arm64/kernel/fpsimd.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 7a3fcf21b18a..e22571e57ae1 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -964,6 +964,7 @@ void do_sve_acc(unsigned long esr, struct pt_regs *regs)
+ 		fpsimd_bind_task_to_cpu();
+ 	} else {
+ 		fpsimd_to_sve(current);
++		fpsimd_flush_task_state(current);
+ 	}
+ 
+ 	put_cpu_fpsimd_context();
+-- 
+2.39.5
+
 
