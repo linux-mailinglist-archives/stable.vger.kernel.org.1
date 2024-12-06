@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-99033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45C69E6DFB
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:21:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F22D9E6DF8
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:20:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEFD0165965
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:20:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3660428289D
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B052C1E1A05;
-	Fri,  6 Dec 2024 12:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389651E1A05;
+	Fri,  6 Dec 2024 12:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuSb2yus"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bWaxpej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECD92A1D4
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDADA2A1D4
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733487646; cv=none; b=KDYiM/hk1ZBfhmpheyCN3Eo8TXnCIG0gxmliSFpE4asHFgvzMA+31jj4qatR4MXOPpvPbajoh80ki4ZvALViEAng9dsHdYT7o8wED2UCcosCI7LH1n9NO+7YOtWsIbxwvVFtW1e1oUhiFaPnymwZsSHZeGefkeS+NFgf+Ma01pM=
+	t=1733487655; cv=none; b=KNuKbI0GNIDh90NaJAdyv22AiF5Cptsi1mHmrkxQsn8K53NmrenMgvMwtU/jnZtaAB2BFjEbXt1bNfroLspZ/Jn1G9RC26YOF0A6rvOA4i4wOqiDzxsLQn1nLK3eIt00fp0QL1N5E0S9lnvnUmB5dDLpoutDQM5K46+LwW3aPcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733487646; c=relaxed/simple;
-	bh=gDW5TY1igoMvyk/K21HktrV/w3XYnFu88Mk86CJfQVs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gd0Dkw2dZSAJxupaAfR8WDPeP/Uz20dWznqJt/8ozEjtkvvpX3P4ZOhmXPDYv0xAIKDxGAXhZu3VOZpABcbDDRNH0z2EhUs0BL5l53GakGiV4UIA1cmXxsrVcHyvHhBaTpSv9EmZh2pnEBAOjUeRi6sWo3KfIjEn6GQAxXXz0BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SuSb2yus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA19C4CED1;
-	Fri,  6 Dec 2024 12:20:45 +0000 (UTC)
+	s=arc-20240116; t=1733487655; c=relaxed/simple;
+	bh=8AndreXN6vI3wi4TveycAzeP11xmW4Foico3TaAVcIE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MUfOTxtNbKqDztOR0wLSUJaE/sJTTTdC0iheRw9fBfAL7kN/YyF257ussNBUCdncrr3bwEL/PeLrvyGGb+dGOMMOsCUlhHwrTO0eL0uRMm8M5P31bXc5sqgcNiBKe8uiMsITWJKMRyXwYvPWplTtX4YPc/mNAIKuRTl9voXIQu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bWaxpej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C77BC4CED1;
+	Fri,  6 Dec 2024 12:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733487646;
-	bh=gDW5TY1igoMvyk/K21HktrV/w3XYnFu88Mk86CJfQVs=;
+	s=korg; t=1733487654;
+	bh=8AndreXN6vI3wi4TveycAzeP11xmW4Foico3TaAVcIE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SuSb2yusrRUU9JRP7z15BPn7IdvwuYvQ/nXldcq7g3HwdD7+c/9/hBOC1QcZgeh+n
-	 2+1H9q5AO1jr+4ESUpLNzTzOt9V/T2SZKzLiKxcMX3AWTdTipl0Pjm+D4xj+ymilkE
-	 Rl5cuBsAMsbwoWxFm+FwkfbGb7ANdIE1ns++Xv/g=
-Subject: FAILED: patch "[PATCH] i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI" failed to apply to 6.6-stable tree
+	b=2bWaxpejQ9FCW8A5e/Me/EFsO38C191KQPedS9eemMOIgYcrH+lC93RSFlnfthHyh
+	 1l/+MpEFfS49Nmi+YAxg44RhKTT5Xrqey4hTGbii8nbyzyAkEUTQ/WDTHENr1GoqfJ
+	 Og+B2pTwx8Ikla3Ye7Gg0TRqwUsBExwBjQFVoDpQ=
+Subject: FAILED: patch "[PATCH] i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI" failed to apply to 6.1-stable tree
 To: Frank.Li@nxp.com,alexandre.belloni@bootlin.com,miquel.raynal@bootlin.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 13:20:42 +0100
-Message-ID: <2024120642-energy-dallying-4098@gregkh>
+Date: Fri, 06 Dec 2024 13:20:43 +0100
+Message-ID: <2024120643-catcher-grievance-879c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 25bc99be5fe53853053ceeaa328068c49dc1e799
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120642-energy-dallying-4098@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120643-catcher-grievance-879c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
