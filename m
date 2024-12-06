@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-99158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05EC99E7075
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:43:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BE69E70A0
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:45:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D473C161415
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:43:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03D091881CBE
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55D21474A9;
-	Fri,  6 Dec 2024 14:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864A1145B22;
+	Fri,  6 Dec 2024 14:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOgsfOAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQoY4F4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FF61494D9;
-	Fri,  6 Dec 2024 14:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4412D10E0;
+	Fri,  6 Dec 2024 14:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496197; cv=none; b=e0+HrdE+nEpcOge//JHLLFlSc0BNxTmVJCQtE5daiCSDXfqdj9pGsiDtJ+Vxxy7HQbLGxofddZtKb6vX/o6NVQmufem3SLmdCPTfzvTyHNbO3czmXPxEH6Rj9pvqudXYomNn6gD+4wbhvJAUHNnXsi/8OT+NytZO+0aJlWotWd0=
+	t=1733496333; cv=none; b=PJfHtD05P76v3WIyqDFk2yyNfQICCegzSMcEf8zuubf5iLalUeTGjV5cGL414PFXwYSqpJhM1OtcEnlM4DLgthY+3u37FMBrKwb2XRfWGf+r2hY34MLhqNaad/vcw/gVSX74VyW5pCDZLq0U90/jLqd2+clmuwyXwLcj5R+QCgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496197; c=relaxed/simple;
-	bh=t/oU4eogs5yPq7802+7N+ni9Er7Ni5Pa+2Da/HUBgpo=;
+	s=arc-20240116; t=1733496333; c=relaxed/simple;
+	bh=EVPMqNkwN7Ax0LluGM4TBT5cA00Ah2j/YNfgoBHVPE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=buPoxKITPVciRrffjHMZB6+/tz9mxZlyzX38OzT9Tbds8XqXwwlV8VGLInB5DH0a1Q+NjP9nvsv6l76VRXzzawvXdZqbrfs0R4/6vFuGFTWbfKwhteQO2rRIfsSf0OKVBmkhMpRW7RO+sMJRFBRyeyYXkpmw3TI7KJSWfACtDTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOgsfOAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BCDC4CED1;
-	Fri,  6 Dec 2024 14:43:16 +0000 (UTC)
+	 MIME-Version; b=R7VkAs1hgW/pbIo/VSIE771p6vSMQ+LGx5qjPzczvix3dzQ3S7ObDggtKV/1z0oqNxxzUf67vg/HZIABiFeeIwaaQ98cdg1GtXnxKWN0KR92tAwaF9hFv9NrZ0JpEFnT4W+/EnK2pvhNH8L2wEZaz7qQm2bHlHZWU1lxZqstKuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQoY4F4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92B5C4CEDC;
+	Fri,  6 Dec 2024 14:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496197;
-	bh=t/oU4eogs5yPq7802+7N+ni9Er7Ni5Pa+2Da/HUBgpo=;
+	s=korg; t=1733496333;
+	bh=EVPMqNkwN7Ax0LluGM4TBT5cA00Ah2j/YNfgoBHVPE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOgsfOAwvNBZsrMGbRTvG3yTfyxC4HKI/XG3ArLpX8ayHFEj95RTmPm07r9wPbI3b
-	 5c3HaayggaI7JPeDdk+VQNh76TpAZfWOaurgYYT0cxsb6I0pjyWtTnpHYHY7Oh6Bvx
-	 8HtYKcN88067rFqfVhhjgUdf+VgnV+d2tSEPEG/w=
+	b=UQoY4F4A1TatG4w+TtoVZlhlTmget+dY4M+gTUfeB6GSq3c0T3y66+R1KX8DTgudE
+	 HSFc6r/2T9NJcn+xS8wHA9WAAyeq4pzNCNWN9XnGIBgMmQkcGi/kEhrxDa8tx3+N4+
+	 IqeAQGZigPDbVWK6JOAOqpoSo0rPTp2VBYP0MJgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 079/146] scsi: ufs: exynos: Fix hibern8 notify callbacks
-Date: Fri,  6 Dec 2024 15:36:50 +0100
-Message-ID: <20241206143530.702367999@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.12 080/146] i3c: master: svc: Fix pm_runtime_set_suspended() with runtime pm enabled
+Date: Fri,  6 Dec 2024 15:36:51 +0100
+Message-ID: <20241206143530.740975074@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -66,88 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit ceef938bbf8b93ba3a218b4adc244cde94b582aa upstream.
+commit 18599e93e4e814ce146186026c6abf83c14d5798 upstream.
 
-v1 of the patch which introduced the ufshcd_vops_hibern8_notify()
-callback used a bool instead of an enum. In v2 this was updated to an
-enum based on the review feedback in [1].
+It is not valid to call pm_runtime_set_suspended() for devices
+with runtime PM enabled because it returns -EAGAIN if it is enabled
+already and working. So, call pm_runtime_disable() before to fix it.
 
-ufs-exynos hibernate calls have always been broken upstream as it
-follows the v1 bool implementation.
-
-Link: https://patchwork.kernel.org/project/linux-scsi/patch/001f01d23994$719997c0$54ccc740$@samsung.com/ [1]
-Fixes: 55f4b1f73631 ("scsi: ufs: ufs-exynos: Add UFS host support for Exynos SoCs")
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20241031150033.3440894-13-peter.griffin@linaro.org
-Cc: stable@vger.kernel.org
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: stable@vger.kernel.org # v5.17
+Fixes: 05be23ef78f7 ("i3c: master: svc: add runtime pm support")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240930091913.2545510-1-ruanjinjie@huawei.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1487,12 +1487,12 @@ static void exynos_ufs_dev_hw_reset(stru
- 	hci_writel(ufs, 1 << 0, HCI_GPIO_OUT);
- }
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -1827,8 +1827,8 @@ static int svc_i3c_master_probe(struct p
+ rpm_disable:
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_noidle(&pdev->dev);
+-	pm_runtime_set_suspended(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
++	pm_runtime_set_suspended(&pdev->dev);
  
--static void exynos_ufs_pre_hibern8(struct ufs_hba *hba, u8 enter)
-+static void exynos_ufs_pre_hibern8(struct ufs_hba *hba, enum uic_cmd_dme cmd)
- {
- 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
- 	struct exynos_ufs_uic_attr *attr = ufs->drv_data->uic_attr;
- 
--	if (!enter) {
-+	if (cmd == UIC_CMD_DME_HIBER_EXIT) {
- 		if (ufs->opts & EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL)
- 			exynos_ufs_disable_auto_ctrl_hcc(ufs);
- 		exynos_ufs_ungate_clks(ufs);
-@@ -1520,11 +1520,11 @@ static void exynos_ufs_pre_hibern8(struc
- 	}
- }
- 
--static void exynos_ufs_post_hibern8(struct ufs_hba *hba, u8 enter)
-+static void exynos_ufs_post_hibern8(struct ufs_hba *hba, enum uic_cmd_dme cmd)
- {
- 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
- 
--	if (!enter) {
-+	if (cmd == UIC_CMD_DME_HIBER_EXIT) {
- 		u32 cur_mode = 0;
- 		u32 pwrmode;
- 
-@@ -1543,7 +1543,7 @@ static void exynos_ufs_post_hibern8(stru
- 
- 		if (!(ufs->opts & EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB))
- 			exynos_ufs_establish_connt(ufs);
--	} else {
-+	} else if (cmd == UIC_CMD_DME_HIBER_ENTER) {
- 		ufs->entry_hibern8_t = ktime_get();
- 		exynos_ufs_gate_clks(ufs);
- 		if (ufs->opts & EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL)
-@@ -1630,15 +1630,15 @@ static int exynos_ufs_pwr_change_notify(
- }
- 
- static void exynos_ufs_hibern8_notify(struct ufs_hba *hba,
--				     enum uic_cmd_dme enter,
-+				     enum uic_cmd_dme cmd,
- 				     enum ufs_notify_change_status notify)
- {
- 	switch ((u8)notify) {
- 	case PRE_CHANGE:
--		exynos_ufs_pre_hibern8(hba, enter);
-+		exynos_ufs_pre_hibern8(hba, cmd);
- 		break;
- 	case POST_CHANGE:
--		exynos_ufs_post_hibern8(hba, enter);
-+		exynos_ufs_post_hibern8(hba, cmd);
- 		break;
- 	}
- }
+ err_disable_clks:
+ 	svc_i3c_master_unprepare_clks(master);
 
 
 
