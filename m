@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-99211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECBB9E70B4
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:46:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0AFD9E70BA
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:46:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A81D31887589
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71AB22878FF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BA1201001;
-	Fri,  6 Dec 2024 14:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A30045BE3;
+	Fri,  6 Dec 2024 14:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PjNhR0Fa"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCyPIvRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFAF1474AF;
-	Fri,  6 Dec 2024 14:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFCD146A87;
+	Fri,  6 Dec 2024 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496374; cv=none; b=eIl5k8PUGWxJz1lhG/SDdAXtimsjVFLCAINuDVcgDIoo0f0IpOtE1CIf8Ecf2hmMbOWjC2hn5H3lZ9WPZxu/iI0IgTIK127x1x4imd6kTYXsJO2jDiYz9TrgusaqwbP8+OFkRBrDLlI0+rGXoW+IlOI0PjDVh4fEjEe8svTOT0s=
+	t=1733496410; cv=none; b=aqtkVGbIjEP2oSAGTH0vBxvE+urGoKkPL8kURgZ5kA0HM2GTLNHouCbW+upnCqwAJl6NI1V30h+XKYFWbFOXGk3Dfdsf2eOwVasHxj3FJTeJaPwvOAliky+NnhPxztQMmVTAcnA6T8A+MOFFh+3OO0yrfbtVoYcVrUsjGP1QzYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496374; c=relaxed/simple;
-	bh=814p6JNH/kGsbTk1oE6DRc42J0ZQctN1gT1i0yEVkRc=;
+	s=arc-20240116; t=1733496410; c=relaxed/simple;
+	bh=MEs5WRcJpqcNhz0IGYqyphEWzvay+QcptAw6e0bhihs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pLANim44iG5JN0BI39eT9GmsUb+eJztJ8nv2VWp4xUHPLmVlg/Zl3Xq+z0dxAmpn1pKJlaOtkOqBM2m46ubmBBpciTqCDlb6JHJQY2Z3nNVcWEDWv8CNl7S38j21886+Lej2lnnoPOkSHeWJY5SLNL3LYq/jFQmJrQ4lRhR1Mu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PjNhR0Fa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D81AC4CED1;
-	Fri,  6 Dec 2024 14:46:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OoIRWlL+R4r93MqSdiMrKD7AihIrqKYFFBIOp0jF/PR0S2Uds4oZEZrmTQwz+iAG8quJjQtsoztR/kk89PNgPe6cWI6oL494wATPNHxPo2XZNII2LZr6AMprKFjUJsUxjd/VkhnzStdLkKwU6n49NorobkwQkS/CJKbA8XrEfTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCyPIvRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27257C4CED1;
+	Fri,  6 Dec 2024 14:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496374;
-	bh=814p6JNH/kGsbTk1oE6DRc42J0ZQctN1gT1i0yEVkRc=;
+	s=korg; t=1733496410;
+	bh=MEs5WRcJpqcNhz0IGYqyphEWzvay+QcptAw6e0bhihs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PjNhR0FaxUtBx9OCUcCHtSdMNdGYXg6fas17KbgfeghUbGIBugyqBWWwhSczyGGyg
-	 RoR6oEYj6t6+HIoGlopINq4G+fOH3dnMksR3Db+p/FoUTsZvBs9FaLvPq7EmWQm24I
-	 TpLb5oDleTWSCxVRR8PyRkp79q7He8rHlkoE9fuA=
+	b=GCyPIvRzfD384Ef+UxZnIZ0Lu187nwD7yZlh70AtiU59bKciOsdhsG0mZn/5sZirs
+	 gQci5rMbGH3LYIODLvcaBSqshEAbd7lbAKrwfuW3z53o+52xPYFAeffQsLlE+a8hMV
+	 OAL/QntS2xLMpaMJMAsFZEA/PJ5rFhrcFJJNZvfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>
-Subject: [PATCH 6.12 116/146] dt-bindings: net: fec: add pps channel property
-Date: Fri,  6 Dec 2024 15:37:27 +0100
-Message-ID: <20241206143532.119610423@linuxfoundation.org>
+	=20Bence?= <csokas.bence@prolan.hu>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 117/146] net: fec: refactor PPS channel configuration
+Date: Fri,  6 Dec 2024 15:37:28 +0100
+Message-ID: <20241206143532.159107182@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -71,38 +70,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-commit 1aa772be0444a2bd06957f6d31865e80e6ae4244 upstream.
+commit bf8ca67e21671e7a56e31da45360480b28f185f1 upstream.
 
-Add fsl,pps-channel property to select where to connect the PPS signal.
-This depends on the internal SoC routing and on the board, for example
-on the i.MX8 SoC it can be connected to an external pin (using channel 1)
-or to internal eDMA as DMA request (channel 0).
+Preparation patch to allow for PPS channel configuration, no functional
+change intended.
 
 Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Csókás, Bence <csokas.bence@prolan.hu>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/net/fsl,fec.yaml |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/freescale/fec_ptp.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/Documentation/devicetree/bindings/net/fsl,fec.yaml
-+++ b/Documentation/devicetree/bindings/net/fsl,fec.yaml
-@@ -183,6 +183,13 @@ properties:
-     description:
-       Register bits of stop mode control, the format is <&gpr req_gpr req_bit>.
+--- a/drivers/net/ethernet/freescale/fec_ptp.c
++++ b/drivers/net/ethernet/freescale/fec_ptp.c
+@@ -84,8 +84,7 @@
+ #define FEC_CC_MULT	(1 << 31)
+ #define FEC_COUNTER_PERIOD	(1 << 31)
+ #define PPS_OUPUT_RELOAD_PERIOD	NSEC_PER_SEC
+-#define FEC_CHANNLE_0		0
+-#define DEFAULT_PPS_CHANNEL	FEC_CHANNLE_0
++#define DEFAULT_PPS_CHANNEL	0
  
-+  fsl,pps-channel:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    default: 0
-+    description:
-+      Specifies to which timer instance the PPS signal is routed.
-+    enum: [0, 1, 2, 3]
+ #define FEC_PTP_MAX_NSEC_PERIOD		4000000000ULL
+ #define FEC_PTP_MAX_NSEC_COUNTER	0x80000000ULL
+@@ -524,8 +523,9 @@ static int fec_ptp_enable(struct ptp_clo
+ 	unsigned long flags;
+ 	int ret = 0;
+ 
++	fep->pps_channel = DEFAULT_PPS_CHANNEL;
 +
-   mdio:
-     $ref: mdio.yaml#
-     unevaluatedProperties: false
+ 	if (rq->type == PTP_CLK_REQ_PPS) {
+-		fep->pps_channel = DEFAULT_PPS_CHANNEL;
+ 		fep->reload_period = PPS_OUPUT_RELOAD_PERIOD;
+ 
+ 		ret = fec_ptp_enable_pps(fep, on);
+@@ -536,10 +536,9 @@ static int fec_ptp_enable(struct ptp_clo
+ 		if (rq->perout.flags)
+ 			return -EOPNOTSUPP;
+ 
+-		if (rq->perout.index != DEFAULT_PPS_CHANNEL)
++		if (rq->perout.index != fep->pps_channel)
+ 			return -EOPNOTSUPP;
+ 
+-		fep->pps_channel = DEFAULT_PPS_CHANNEL;
+ 		period.tv_sec = rq->perout.period.sec;
+ 		period.tv_nsec = rq->perout.period.nsec;
+ 		period_ns = timespec64_to_ns(&period);
 
 
 
