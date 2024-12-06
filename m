@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-99153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDEF9E7070
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 893D69E7077
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4CA21886997
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530451881B66
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4053314BFA2;
-	Fri,  6 Dec 2024 14:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6901B14B976;
+	Fri,  6 Dec 2024 14:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kpq1xboi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NY/g2+gq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1413149E0E;
-	Fri,  6 Dec 2024 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2525014B084;
+	Fri,  6 Dec 2024 14:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496181; cv=none; b=nXizKdZNeJYmLZrhjGO6Cccfw3DKJMbYUbPG+Iq4Clr8MJ0OLlRulquGBJIGHBY2TkEsMi6YvOPhL1nFIFb/fzCROyAy22O5Zt3k5GsbN+dG9qSS9BHLd094Tpl6oTsOTL3FL1zTOxERylyOhARIlWaUmY8cYQyVX7Mey3WRpQU=
+	t=1733496201; cv=none; b=HXgV2GtFCIkKECmn/mH+aWeTyOiDm/kA0Bwiny3wqLaUGZi+YcQWhss0U5fIluKjYe22OdOAk3BzkXftWuLt7pSh6p9vBHUBCzgOMmEA8FoKwb25VaFNamMrUMlZx4ztJ0x42gIZlxJq37bYZHaJG6k2I0eap4IN2hTIauOsSFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496181; c=relaxed/simple;
-	bh=5L5cC3BTW+MZVYhzjiSd6N/VCSgEgjMb7RKwiHwKWDQ=;
+	s=arc-20240116; t=1733496201; c=relaxed/simple;
+	bh=nlpaO/EM0+Cmt+aujYHUZGtf16ii7YIwVIA5+W+6hdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtBmMWDjatu4MK6e7U6FYKI4EawbKgxKsSmwV/XPJw/KInLdI3q7IqZS/NjjGzy52WWKp/xhVq8JHmY/Ohgv58RwPTJrSSWjAD7E41M3x9WHoOJXTGHQ/i6pUN2IZyvg0bmAz9Zejrg4t+3+W845IJ1Odf4iznYumAmlI3gJcu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kpq1xboi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D993C4CED1;
-	Fri,  6 Dec 2024 14:43:00 +0000 (UTC)
+	 MIME-Version; b=T64Ohkl48MCj6Ie6tHM2qTY54JeISIM7SskPQWQx5NIQAq4ppEaDeHz2AeY+904pIzcAvdoQpm9FenDNHAQH53IMUgzU4us82hVHvmDm95SSAPq0N3RqyVkav5RPyTPn98fYLG1Qj0iF7A/xgMguH9j/WvIJXhzrwlgJqgEFk8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NY/g2+gq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888C2C4CED1;
+	Fri,  6 Dec 2024 14:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496180;
-	bh=5L5cC3BTW+MZVYhzjiSd6N/VCSgEgjMb7RKwiHwKWDQ=;
+	s=korg; t=1733496201;
+	bh=nlpaO/EM0+Cmt+aujYHUZGtf16ii7YIwVIA5+W+6hdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kpq1xboiRKiZLXhMnb4zswd36IzILec0sqRLdwib37EjlzwZJPoqYZD7l6/Q6zeP3
-	 YUts+mdIau6T4EKJwwFMZ3RfcbfNWTYDaaac3C+adTG+wUIeN9iIpLADQHCMdUNsHg
-	 0bdVmIs3IjSTRmwMgsFugo7bBYkvN+Ux3S2/WVHA=
+	b=NY/g2+gqlCumLjAsbhfbguXumZ6YK30P3R/QYYF+hkbHHkpDA6YfpQ5e6ya9HmLnb
+	 hJzSmM3JEs/VLX98VQEEJ22eeVwsJ4U6Yd9cZqEg2qAAD/ah4zu455xgIh4z9VBjJ3
+	 itnocWMasLOUbIFOgn0fZxPa9St+XCWvxijUPqCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
+	Prakash Gupta <quic_guptap@quicinc.com>,
+	Pratyush Brahma <quic_pbrahma@quicinc.com>,
 	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.12 048/146] iommu/io-pgtable-arm: Fix stage-2 map/unmap for concatenated tables
-Date: Fri,  6 Dec 2024 15:36:19 +0100
-Message-ID: <20241206143529.514473676@linuxfoundation.org>
+Subject: [PATCH 6.12 049/146] iommu/arm-smmu: Defer probe of clients after smmu device bound
+Date: Fri,  6 Dec 2024 15:36:20 +0100
+Message-ID: <20241206143529.552199607@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -65,83 +66,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Pratyush Brahma <quic_pbrahma@quicinc.com>
 
-commit d71fa842d33c48ac2809ae11d2379b5a788792cb upstream.
+commit 229e6ee43d2a160a1592b83aad620d6027084aad upstream.
 
-ARM_LPAE_LVL_IDX() takes into account concatenated PGDs and can return
-an index spanning multiple page-table pages given a sufficiently large
-input address. However, when the resulting index is used to calculate
-the number of remaining entries in the page, the possibility of
-concatenation is ignored and we end up computing a negative upper bound:
+Null pointer dereference occurs due to a race between smmu
+driver probe and client driver probe, when of_dma_configure()
+for client is called after the iommu_device_register() for smmu driver
+probe has executed but before the driver_bound() for smmu driver
+has been called.
 
-	max_entries = ARM_LPAE_PTES_PER_TABLE(data) - map_idx_start;
+Following is how the race occurs:
 
-On the map path, this results in a negative 'mapped' value being
-returned but on the unmap path we can leak child tables if they are
-skipped in __arm_lpae_free_pgtable().
+T1:Smmu device probe		T2: Client device probe
 
-Introduce an arm_lpae_max_entries() helper to convert a table index into
-the remaining number of entries within a single page-table page.
+really_probe()
+arm_smmu_device_probe()
+iommu_device_register()
+					really_probe()
+					platform_dma_configure()
+					of_dma_configure()
+					of_dma_configure_id()
+					of_iommu_configure()
+					iommu_probe_device()
+					iommu_init_device()
+					arm_smmu_probe_device()
+					arm_smmu_get_by_fwnode()
+						driver_find_device_by_fwnode()
+						driver_find_device()
+						next_device()
+						klist_next()
+						    /* null ptr
+						       assigned to smmu */
+					/* null ptr dereference
+					   while smmu->streamid_mask */
+driver_bound()
+	klist_add_tail()
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20241024162516.2005652-2-smostafa@google.com
-[will: Tweaked comment and commit message]
+When this null smmu pointer is dereferenced later in
+arm_smmu_probe_device, the device crashes.
+
+Fix this by deferring the probe of the client device
+until the smmu device has bound to the arm smmu driver.
+
+Fixes: 021bb8420d44 ("iommu/arm-smmu: Wire up generic configuration support")
+Cc: stable@vger.kernel.org
+Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
+Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
+Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
+Link: https://lore.kernel.org/r/20241004090428.2035-1-quic_pbrahma@quicinc.com
+[will: Add comment]
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/io-pgtable-arm.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/iommu/io-pgtable-arm.c
-+++ b/drivers/iommu/io-pgtable-arm.c
-@@ -199,6 +199,18 @@ static phys_addr_t iopte_to_paddr(arm_lp
- 	return (paddr | (paddr << (48 - 12))) & (ARM_LPAE_PTE_ADDR_MASK << 4);
- }
- 
-+/*
-+ * Convert an index returned by ARM_LPAE_PGD_IDX(), which can point into
-+ * a concatenated PGD, into the maximum number of entries that can be
-+ * mapped in the same table page.
-+ */
-+static inline int arm_lpae_max_entries(int i, struct arm_lpae_io_pgtable *data)
-+{
-+	int ptes_per_table = ARM_LPAE_PTES_PER_TABLE(data);
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@ -1437,6 +1437,17 @@ static struct iommu_device *arm_smmu_pro
+ 			goto out_free;
+ 	} else {
+ 		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
 +
-+	return ptes_per_table - (i & (ptes_per_table - 1));
-+}
-+
- static bool selftest_running = false;
- 
- static dma_addr_t __arm_lpae_dma_addr(void *pages)
-@@ -390,7 +402,7 @@ static int __arm_lpae_map(struct arm_lpa
- 
- 	/* If we can install a leaf entry at this level, then do so */
- 	if (size == block_size) {
--		max_entries = ARM_LPAE_PTES_PER_TABLE(data) - map_idx_start;
-+		max_entries = arm_lpae_max_entries(map_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
- 		ret = arm_lpae_init_pte(data, iova, paddr, prot, lvl, num_entries, ptep);
- 		if (!ret)
-@@ -592,7 +604,7 @@ static size_t arm_lpae_split_blk_unmap(s
- 
- 	if (size == split_sz) {
- 		unmap_idx_start = ARM_LPAE_LVL_IDX(iova, lvl, data);
--		max_entries = ptes_per_table - unmap_idx_start;
-+		max_entries = arm_lpae_max_entries(unmap_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
++		/*
++		 * Defer probe if the relevant SMMU instance hasn't finished
++		 * probing yet. This is a fragile hack and we'd ideally
++		 * avoid this race in the core code. Until that's ironed
++		 * out, however, this is the most pragmatic option on the
++		 * table.
++		 */
++		if (!smmu)
++			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
++						"smmu dev has not bound yet\n"));
  	}
  
-@@ -650,7 +662,7 @@ static size_t __arm_lpae_unmap(struct ar
- 
- 	/* If the size matches this level, we're in the right place */
- 	if (size == ARM_LPAE_BLOCK_SIZE(lvl, data)) {
--		max_entries = ARM_LPAE_PTES_PER_TABLE(data) - unmap_idx_start;
-+		max_entries = arm_lpae_max_entries(unmap_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
- 
- 		/* Find and handle non-leaf entries */
+ 	ret = -EINVAL;
 
 
 
