@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-98914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA7A9E6528
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:55:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 476DB9E6529
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954C11885554
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B8D1694F1
 	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 03:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84749192D80;
-	Fri,  6 Dec 2024 03:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46DE193063;
+	Fri,  6 Dec 2024 03:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TbNY8agT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UC+HLgUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417D66FBF;
-	Fri,  6 Dec 2024 03:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9121F6FBF;
+	Fri,  6 Dec 2024 03:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733457317; cv=none; b=p9IEJA4nvZ9kljId4EIziFwhkgldiLpwA5wCZvJfuKdO6Tn1X+3ontv1CoGXtTyvebT/I2REqtxZhV3FIP9fCj5PWOFqhNOLlimBL1Tp6SNaQ3OrDfc4j3XfCWvrzP7+qwaQUHw9udMH3PR0e6UzdFwAOqXNV/1npOImPxjAOtk=
+	t=1733457319; cv=none; b=AvEqjerlRIVUkrBNsUFDz6o+U9KxYCxPF+f7S2jWJBvWnxZppO93UbPfCta8uu83FvG4QKzviWF1NNbaWwh9uKh9RRyppdJ4ke9Ph+50N5amnW4n4LbckK8iQ3+72Z6YMOloeWdJd9FkJFA+X/tMPnZxvw2hqTbaTTnZ3UrbhKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733457317; c=relaxed/simple;
-	bh=xlcYBMfXE2Mo5caQX1NFxeokIbMhRaGUMHq1Y0PeHqs=;
-	h=Date:To:From:Subject:Message-Id; b=iuZjVEhHBL4gHkWe3oT9w2e7brBOJirLSntBsj5sW+ysr9rZBe8xOe3pmhSMGoJ3z2TkPKroquqJ2Rb4Ro0rTBuV/mCRmYloOOeWoqUWjzkUPhWHzb3J5Lb8m+YAmBzCc/6/qXHV3RBaUt2NbWzOHQm2uwT/8BrTJGfhWBnteew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TbNY8agT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089F6C4CED1;
-	Fri,  6 Dec 2024 03:55:17 +0000 (UTC)
+	s=arc-20240116; t=1733457319; c=relaxed/simple;
+	bh=elgyb1tTJ+zyNDVjId5k07Dggcma9j4o5EW6PzVhd+s=;
+	h=Date:To:From:Subject:Message-Id; b=cApv7jsMREE202r7cCJutdu5rkcIaJQMxqw548yWIc99KSUe3jigOjkRhToTS0WQZspH01750PDBsjoqtP61uZ7HmMfMbhNVntzArqmGQ0dSElj3VwjChLEMSs1GgJGsSHcrs/6CKTM22uWY1g2Jac/LXiFjJ3Pm/dYUdjEqGiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UC+HLgUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58050C4CED1;
+	Fri,  6 Dec 2024 03:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1733457317;
-	bh=xlcYBMfXE2Mo5caQX1NFxeokIbMhRaGUMHq1Y0PeHqs=;
+	s=korg; t=1733457319;
+	bh=elgyb1tTJ+zyNDVjId5k07Dggcma9j4o5EW6PzVhd+s=;
 	h=Date:To:From:Subject:From;
-	b=TbNY8agTUo0/5sUx+bxr9I/smQdrib2Lz8L6S6cgHcLwzDY9poyp0jDEn91AHR52D
-	 kwcZ/ozArjxuuy5vqH1bjEweL23RDiZwEvPP8zG7tLYRW3GjSStAt33nFwKH3PCktZ
-	 dG9HUEWh/fIRbWvn6OwJ1ioIOQTM0OMJNDa2Q6xY=
-Date: Thu, 05 Dec 2024 19:55:16 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
+	b=UC+HLgUsA7VVdBY2yhe5U2qcvlrzmGk2+jhZBhv2Nwn3wIQBVk6QRItwclCvY9gEt
+	 A2WbsU+40Lzx5MXs7bJm1E3LDUK9Tjt7+a1VfUJnMo2z0yCmzRSJrywTXny4MPEP9o
+	 kAd1L7LCBKd/Bcp+I6Jt68wi5juK9ZGaZ5kaSPOc=
+Date: Thu, 05 Dec 2024 19:55:18 -0800
+To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,shuah@kernel.org,ritesh.list@gmail.com,donettom@linux.ibm.com,broonie@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry.patch removed from -mm tree
-Message-Id: <20241206035517.089F6C4CED1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftest-hugetlb_dio-fix-test-naming.patch removed from -mm tree
+Message-Id: <20241206035519.58050C4CED1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,65 +50,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
+     Subject: selftest: hugetlb_dio: fix test naming
 has been removed from the -mm tree.  Its filename was
-     nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry.patch
+     selftest-hugetlb_dio-fix-test-naming.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
-Date: Wed, 20 Nov 2024 02:23:37 +0900
+From: Mark Brown <broonie@kernel.org>
+Subject: selftest: hugetlb_dio: fix test naming
+Date: Wed, 27 Nov 2024 16:14:22 +0000
 
-Syzbot reported that when searching for records in a directory where the
-inode's i_size is corrupted and has a large value, memory access outside
-the folio/page range may occur, or a use-after-free bug may be detected if
-KASAN is enabled.
+The string logged when a test passes or fails is used by the selftest
+framework to identify which test is being reported.  The hugetlb_dio test
+not only uses the same strings for every test that is run but it also uses
+different strings for test passes and failures which means that test
+automation is unable to follow what the test is doing at all.
 
-This is because nilfs_last_byte(), which is called by nilfs_find_entry()
-and others to calculate the number of valid bytes of directory data in a
-page from i_size and the page index, loses the upper 32 bits of the 64-bit
-size information due to an inappropriate type of local variable to which
-the i_size value is assigned.
+Pull the existing duplicated logging of the number of free huge pages
+before and after the test out of the conditional and replace that and the
+logging of the result with a single ksft_print_result() which incorporates
+the parameters passed into the test into the output.
 
-This caused a large byte offset value due to underflow in the end address
-calculation in the calling nilfs_find_entry(), resulting in memory access
-that exceeds the folio/page size.
-
-Fix this issue by changing the type of the local variable causing the bit
-loss from "unsigned int" to "u64".  The return value of nilfs_last_byte()
-is also of type "unsigned int", but it is truncated so as not to exceed
-PAGE_SIZE and no bit loss occurs, so no change is required.
-
-Link: https://lkml.kernel.org/r/20241119172403.9292-1-konishi.ryusuke@gmail.com
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d5d14c47d97015c624
-Tested-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
+Link: https://lkml.kernel.org/r/20241127-kselftest-mm-hugetlb-dio-names-v1-1-22aab01bf550@kernel.org
+Fixes: fae1980347bf ("selftests: hugetlb_dio: fixup check for initial conditions to skip in the start")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/nilfs2/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/hugetlb_dio.c |   14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/fs/nilfs2/dir.c~nilfs2-fix-potential-out-of-bounds-memory-access-in-nilfs_find_entry
-+++ a/fs/nilfs2/dir.c
-@@ -70,7 +70,7 @@ static inline unsigned int nilfs_chunk_s
-  */
- static unsigned int nilfs_last_byte(struct inode *inode, unsigned long page_nr)
- {
--	unsigned int last_byte = inode->i_size;
-+	u64 last_byte = inode->i_size;
+--- a/tools/testing/selftests/mm/hugetlb_dio.c~selftest-hugetlb_dio-fix-test-naming
++++ a/tools/testing/selftests/mm/hugetlb_dio.c
+@@ -76,19 +76,15 @@ void run_dio_using_hugetlb(unsigned int
+ 	/* Get the free huge pages after unmap*/
+ 	free_hpage_a = get_free_hugepages();
  
- 	last_byte -= page_nr << PAGE_SHIFT;
- 	if (last_byte > PAGE_SIZE)
++	ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
++	ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
++
+ 	/*
+ 	 * If the no. of free hugepages before allocation and after unmap does
+ 	 * not match - that means there could still be a page which is pinned.
+ 	 */
+-	if (free_hpage_a != free_hpage_b) {
+-		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
+-		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
+-		ksft_test_result_fail(": Huge pages not freed!\n");
+-	} else {
+-		ksft_print_msg("No. Free pages before allocation : %d\n", free_hpage_b);
+-		ksft_print_msg("No. Free pages after munmap : %d\n", free_hpage_a);
+-		ksft_test_result_pass(": Huge pages freed successfully !\n");
+-	}
++	ksft_test_result(free_hpage_a == free_hpage_b,
++			 "free huge pages from %u-%u\n", start_off, end_off);
+ }
+ 
+ int main(void)
 _
 
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+Patches currently in -mm which might be from broonie@kernel.org are
 
 
 
