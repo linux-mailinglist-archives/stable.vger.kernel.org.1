@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-99718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB019E72FE
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:15:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1B79E731A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:16:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0110C288580
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2F11887E62
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD01D20B80F;
-	Fri,  6 Dec 2024 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BD7149C6F;
+	Fri,  6 Dec 2024 15:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5s2Ny5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdaAHBNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BAA20C016;
-	Fri,  6 Dec 2024 15:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039813B2BB;
+	Fri,  6 Dec 2024 15:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498114; cv=none; b=btVRqYMkmtOHgaSISLqaPh3A4zaIHQ0K6vHyuYEb9muH96TpaG0Eqzn9TSyUCuEJMxMwGt/koA1dwieq2CC4SbH7aY7ATR09NYWyslLbUCnWIyMnzPdR6RMJQw5Vi5Mx4EN17dhAQvI26fwB+w2Py5vFkCVA4haTxtJKtXuFZ3w=
+	t=1733498157; cv=none; b=XhZKKbmVyuINKCBU9UeDZbcN9RsuQGVcwObTY9BVChit+dVeYq3m8B1DZCUPUFIOcMNKIt7ZjrVp9SiEL0S8qD6IJy6E0v2UVuIq09ZipFq0O24tycXdZ+ByDUHuX6H3gbGz/L99wfMZMziP4c0FR2y+7TlFLJIvVm58T3dBaFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498114; c=relaxed/simple;
-	bh=YjylkPL/paXeFXTMrOjBHXarQBUZb6H4Anb+IbHtM/k=;
+	s=arc-20240116; t=1733498157; c=relaxed/simple;
+	bh=Tjbux0gW+YqI58RkJ0zHGeC+zBUIgC4m71zJM6i7kHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFzUdI7yvM6PJsUIpAyLSJDtYyp9+sedWprsUMYpKFtwSEly7nbTX8ualDanpg8aY+M3B7m7yKAUnnaV7krDXI31C7DcOvIhuVQn562IRpI2kKo9yFQQ/Mx+mSjIWApZQlfJzUC6RJaFlPG2Mncyp5oiP+GXpHYW8G0Fa0nBOrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5s2Ny5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D727C4CEE0;
-	Fri,  6 Dec 2024 15:15:13 +0000 (UTC)
+	 MIME-Version; b=BRlIxHYaltmFxgmHSeTBE+SOt/gSlhgCnzzkPFEUHxUCb96mCcr2HpBwePpY7OUQgTd4E6yLyZ9bidmpsJFQECRSLMtvhuJC39IN7XsmOliTw9ToVd9xxYb3woR4/0NBewTM5+zmf3K2E4maPAkyHv9SxXHKhtfwexooRaIjeDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdaAHBNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DD9C4CED1;
+	Fri,  6 Dec 2024 15:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498114;
-	bh=YjylkPL/paXeFXTMrOjBHXarQBUZb6H4Anb+IbHtM/k=;
+	s=korg; t=1733498156;
+	bh=Tjbux0gW+YqI58RkJ0zHGeC+zBUIgC4m71zJM6i7kHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5s2Ny5QtnWMBEv66yhQusqjlBTfxUnHL9wJ4bXFNvXLop8dT/T9GIUqnnV2/4CZJ
-	 4LyP8IL3VBYv27gKUkxc8xTcq4S4PLP07HEgVYi0NaX0K8WT8pJIg9AygudTL6S0MM
-	 K5GJvrQPeRpEDZNNUmp454Jz63SBgC03Zg5h2OZY=
+	b=XdaAHBNgDJOCsDVxL0rwCk0ES9P6HAJyHOa6FrZT9uenXsvHD6p0rTOltGsU8DbUC
+	 Mxf9xtsyu7lhFKCXgII6YzGIz4KHqdFOiv6ncAZ/7p9ZW9ZZSO7WW3mVZ6pXWR/e9s
+	 kH3CUsuN4DPfH9FMID4aCEbA95uVi8K/ALyEvp/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shusen Li <lishusen2@huawei.com>,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Jing Zhang <jingzhangos@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.6 483/676] KVM: arm64: vgic-its: Clear DTE when MAPD unmaps a device
-Date: Fri,  6 Dec 2024 15:35:02 +0100
-Message-ID: <20241206143712.228450245@linuxfoundation.org>
+	Dennis Wassenberg <Dennis.Wassenberg@secunet.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 484/676] PCI: Fix use-after-free of slot->bus on hot remove
+Date: Fri,  6 Dec 2024 15:35:03 +0100
+Message-ID: <20241206143712.267503755@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,60 +67,130 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kunkun Jiang <jiangkunkun@huawei.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit e9649129d33dca561305fc590a7c4ba8c3e5675a upstream.
+commit c7acef99642b763ba585f4a43af999fcdbcc3dc4 upstream.
 
-vgic_its_save_device_tables will traverse its->device_list to
-save DTE for each device. vgic_its_restore_device_tables will
-traverse each entry of device table and check if it is valid.
-Restore if valid.
+Dennis reports a boot crash on recent Lenovo laptops with a USB4 dock.
 
-But when MAPD unmaps a device, it does not invalidate the
-corresponding DTE. In the scenario of continuous saves
-and restores, there may be a situation where a device's DTE
-is not saved but is restored. This is unreasonable and may
-cause restore to fail. This patch clears the corresponding
-DTE when MAPD unmaps a device.
+Since commit 0fc70886569c ("thunderbolt: Reset USB4 v2 host router") and
+commit 59a54c5f3dbd ("thunderbolt: Reset topology created by the boot
+firmware"), USB4 v2 and v1 Host Routers are reset on probe of the
+thunderbolt driver.
 
+The reset clears the Presence Detect State and Data Link Layer Link Active
+bits at the USB4 Host Router's Root Port and thus causes hot removal of the
+dock.
+
+The crash occurs when pciehp is unbound from one of the dock's Downstream
+Ports:  pciehp creates a pci_slot on bind and destroys it on unbind.  The
+pci_slot contains a pointer to the pci_bus below the Downstream Port, but
+a reference on that pci_bus is never acquired.  The pci_bus is destroyed
+before the pci_slot, so a use-after-free ensues when pci_slot_release()
+accesses slot->bus.
+
+In principle this should not happen because pci_stop_bus_device() unbinds
+pciehp (and therefore destroys the pci_slot) before the pci_bus is
+destroyed by pci_remove_bus_device().
+
+However the stacktrace provided by Dennis shows that pciehp is unbound from
+pci_remove_bus_device() instead of pci_stop_bus_device().  To understand
+the significance of this, one needs to know that the PCI core uses a two
+step process to remove a portion of the hierarchy:  It first unbinds all
+drivers in the sub-hierarchy in pci_stop_bus_device() and then actually
+removes the devices in pci_remove_bus_device().  There is no precaution to
+prevent driver binding in-between pci_stop_bus_device() and
+pci_remove_bus_device().
+
+In Dennis' case, it seems removal of the hierarchy by pciehp races with
+driver binding by pci_bus_add_devices().  pciehp is bound to the
+Downstream Port after pci_stop_bus_device() has run, so it is unbound by
+pci_remove_bus_device() instead of pci_stop_bus_device().  Because the
+pci_bus has already been destroyed at that point, accesses to it result in
+a use-after-free.
+
+One might conclude that driver binding needs to be prevented after
+pci_stop_bus_device() has run.  However it seems risky that pci_slot points
+to pci_bus without holding a reference.  Solely relying on correct ordering
+of driver unbind versus pci_bus destruction is certainly not defensive
+programming.
+
+If pci_slot has a need to access data in pci_bus, it ought to acquire a
+reference.  Amend pci_create_slot() accordingly.  Dennis reports that the
+crash is not reproducible with this change.
+
+Abridged stacktrace:
+
+  pcieport 0000:00:07.0: PME: Signaling with IRQ 156
+  pcieport 0000:00:07.0: pciehp: Slot #12 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ IbPresDis- LLActRep+
+  pci_bus 0000:20: dev 00, created physical slot 12
+  pcieport 0000:00:07.0: pciehp: Slot(12): Card not present
+  ...
+  pcieport 0000:21:02.0: pciehp: pcie_disable_notification: SLOTCTRL d8 write cmd 0
+  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 13 UID: 0 PID: 134 Comm: irq/156-pciehp Not tainted 6.11.0-devel+ #1
+  RIP: 0010:dev_driver_string+0x12/0x40
+  pci_destroy_slot
+  pciehp_remove
+  pcie_port_remove_service
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  device_unregister
+  remove_iter
+  device_for_each_child
+  pcie_portdrv_remove
+  pci_device_remove
+  device_release_driver_internal
+  bus_remove_device
+  device_del
+  pci_remove_bus_device (recursive invocation)
+  pci_remove_bus_device
+  pciehp_unconfigure_device
+  pciehp_disable_slot
+  pciehp_handle_presence_or_link_change
+  pciehp_ist
+
+Link: https://lore.kernel.org/r/4bfd4c0e976c1776cd08e76603903b338cf25729.1728579288.git.lukas@wunner.de
+Reported-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Closes: https://lore.kernel.org/r/6de4b45ff2b32dd91a805ec02ec8ec73ef411bf6.camel@secunet.com/
+Tested-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 57a9a117154c ("KVM: arm64: vgic-its: Device table save/restore")
-Co-developed-by: Shusen Li <lishusen2@huawei.com>
-Signed-off-by: Shusen Li <lishusen2@huawei.com>
-Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-[Jing: Update with entry write helper]
-Signed-off-by: Jing Zhang <jingzhangos@google.com>
-Link: https://lore.kernel.org/r/20241107214137.428439-5-jingzhangos@google.com
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pci/slot.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -1215,9 +1215,11 @@ static int vgic_its_cmd_handle_mapd(stru
- 	bool valid = its_cmd_get_validbit(its_cmd);
- 	u8 num_eventid_bits = its_cmd_get_size(its_cmd);
- 	gpa_t itt_addr = its_cmd_get_ittaddr(its_cmd);
-+	int dte_esz = vgic_its_get_abi(its)->dte_esz;
- 	struct its_device *device;
-+	gpa_t gpa;
+--- a/drivers/pci/slot.c
++++ b/drivers/pci/slot.c
+@@ -79,6 +79,7 @@ static void pci_slot_release(struct kobj
+ 	up_read(&pci_bus_sem);
  
--	if (!vgic_its_check_id(its, its->baser_device_table, device_id, NULL))
-+	if (!vgic_its_check_id(its, its->baser_device_table, device_id, &gpa))
- 		return E_ITS_MAPD_DEVICE_OOR;
+ 	list_del(&slot->list);
++	pci_bus_put(slot->bus);
  
- 	if (valid && num_eventid_bits > VITS_TYPER_IDBITS)
-@@ -1238,7 +1240,7 @@ static int vgic_its_cmd_handle_mapd(stru
- 	 * is an error, so we are done in any case.
- 	 */
- 	if (!valid)
--		return 0;
-+		return vgic_its_write_entry_lock(its, gpa, 0, dte_esz);
+ 	kfree(slot);
+ }
+@@ -261,7 +262,7 @@ placeholder:
+ 		goto err;
+ 	}
  
- 	device = vgic_its_alloc_device(its, device_id, itt_addr,
- 				       num_eventid_bits);
+-	slot->bus = parent;
++	slot->bus = pci_bus_get(parent);
+ 	slot->number = slot_nr;
+ 
+ 	slot->kobj.kset = pci_slots_kset;
+@@ -269,6 +270,7 @@ placeholder:
+ 	slot_name = make_slot_name(name);
+ 	if (!slot_name) {
+ 		err = -ENOMEM;
++		pci_bus_put(slot->bus);
+ 		kfree(slot);
+ 		goto err;
+ 	}
 
 
 
