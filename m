@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-99304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061639E711B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:51:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DB29E70F6
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37F9A1884F04
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:51:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F95618848D7
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137CC207650;
-	Fri,  6 Dec 2024 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CA7149C69;
+	Fri,  6 Dec 2024 14:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRoikl1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSjOW2Xc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45DA206F35;
-	Fri,  6 Dec 2024 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1D61474AF;
+	Fri,  6 Dec 2024 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496701; cv=none; b=dNRpbyKKmjY3dbSpz26Lh+8UA4plso7vnQRvpwPdIGJaCTRkllAcOOkgQ19n5xnCryizbGFtmUANPv5SgrIpeKMKKSL1+2e/MS5zoGV4shi/Fi4GoPus396zGVtij9PqwFEOvfMIHDmh+WaG2uddOE8ZZ+Xv8KQtChtc91N5eg4=
+	t=1733496582; cv=none; b=jltr5dzScE6prJCiS2LgKLdFcLT4bM+W9ni2s1fqBDSU6S7sVNMOMweUrtkfZQ0gGJF3ivuIeSqTid5u/pcV7cMs/MIvwTaIkmj9iRfjebKq92362eKjO+0aiX7Nj4LZBGGREX5L11Y8XgXZK/GTTUcLEqguiV9/AkdZAxm6S8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496701; c=relaxed/simple;
-	bh=eUh5xHWr+unoHSCvskLv934g4waWWSl/sBOuR0QQI+A=;
+	s=arc-20240116; t=1733496582; c=relaxed/simple;
+	bh=rob3UG7Luoio8NoVT942/7SjXGKe3Nt0W67gw9ZioPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwfFWUYnNr5k4R+JYu9xkRx3jOxFGfzmCHzYFbaBYfhHoS7aTJI+9zSUWjgeQ9knrY+mPdrRdNzFyoGGy2q2seCAJRew4fziYQvF0I11dyl7Q0bQhtqznYze9Q0MnAS2FiUlBKfb6YoRB9SJHSt8uAVhzJRFb0G7/yF+lXnKVRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRoikl1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18310C4CEDE;
-	Fri,  6 Dec 2024 14:51:41 +0000 (UTC)
+	 MIME-Version; b=M7Ny3UjLdhk9S8r2LDll8gXoIS6AC8+3OWkKrs+7ovIMYgYEIrdbQFlaavuVSetN+u5B3LG37SiW4dyLOzZTAL82eqW38IrQqjzqzU6YFKvCwyZ4HuqbqW5LqyG9+4Cq08iqrVb4Iyh8lUmcXF1cRoMzzUXjHLcvbonv1HXQ3FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSjOW2Xc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFCFC4CED1;
+	Fri,  6 Dec 2024 14:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496701;
-	bh=eUh5xHWr+unoHSCvskLv934g4waWWSl/sBOuR0QQI+A=;
+	s=korg; t=1733496581;
+	bh=rob3UG7Luoio8NoVT942/7SjXGKe3Nt0W67gw9ZioPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yRoikl1Qz2/zbtKms7tIbcZKb268gmRmVun3LJOR2/X98sYzcRtsQ6rG48xSBHJkP
-	 N5mKLUFM955kquhI3y5VuhmK342WeLktfQYL4jLau4Lmdlgu0Eq46QsS8z/87Wv2c/
-	 d6ou1TM0JEL/Ww4DkEOS0yUsajuwUdUfmMDxZqbI=
+	b=MSjOW2XceRKPyrtw5RtX99ama8bze4Yi/guqV2EZFpGgfoicAvGNPRXtmqzhPmVOh
+	 LzuPtfFcHQ6LZXgMfGCuiEhwynoaxymXv0aHu7OnCFKDv/rkezZSWDo4o0w9EfaBJ1
+	 DbS8vUDLrc1W32zZ0WGyEQoPiOfi+0iPFbAo3TlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
 	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Xiangyu Chen <xiangyu.chen@windriver.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/676] drm/amd/display: Add NULL check for function pointer in dcn32_set_output_transfer_func
-Date: Fri,  6 Dec 2024 15:27:37 +0100
-Message-ID: <20241206143654.843889172@linuxfoundation.org>
+Subject: [PATCH 6.6 039/676] drm/amd/display: Initialize denominators default to 1
+Date: Fri,  6 Dec 2024 15:27:38 +0100
+Message-ID: <20241206143654.881661950@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -74,51 +70,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 28574b08c70e56d34d6f6379326a860b96749051 ]
+[ Upstream commit b995c0a6de6c74656a0c39cd57a0626351b13e3c ]
 
-This commit adds a null check for the set_output_gamma function pointer
-in the dcn32_set_output_transfer_func function. Previously,
-set_output_gamma was being checked for null, but then it was being
-dereferenced without any null check. This could lead to a null pointer
-dereference if set_output_gamma is null.
+[WHAT & HOW]
+Variables used as denominators and maybe not assigned to other values,
+should not be 0. Change their default to 1 so they are never 0.
 
-To fix this, we now ensure that set_output_gamma is not null before
-dereferencing it. We do this by adding a null check for set_output_gamma
-before the call to set_output_gamma.
+This fixes 10 DIVIDE_BY_ZERO issues reported by Coverity.
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Xiangyu: Bp to fix CVE: CVE-2024-49899
+Discard the dml2_core/dml2_core_shared.c due to this file no exists]
 Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c   | 2 +-
+ drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-index 650e1598bddcb..2289c17f6ead5 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-@@ -587,7 +587,9 @@ bool dcn32_set_output_transfer_func(struct dc *dc,
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
+index 548cdef8a8ade..543ce9a08cfd3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/display_rq_dlg_calc_20.c
+@@ -78,7 +78,7 @@ static void calculate_ttu_cursor(struct display_mode_lib *mode_lib,
  
--	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-+	if (mpc->funcs->set_output_gamma)
-+		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
-+
- 	return ret;
- }
+ static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
+ {
+-	unsigned int ret_val = 0;
++	unsigned int ret_val = 1;
  
+ 	if (source_format == dm_444_16) {
+ 		if (!is_chroma)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c b/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
+index 3df559c591f89..70df992f859d7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dml1_display_rq_dlg_calc.c
+@@ -39,7 +39,7 @@
+ 
+ static unsigned int get_bytes_per_element(enum source_format_class source_format, bool is_chroma)
+ {
+-	unsigned int ret_val = 0;
++	unsigned int ret_val = 1;
+ 
+ 	if (source_format == dm_444_16) {
+ 		if (!is_chroma)
 -- 
 2.43.0
 
