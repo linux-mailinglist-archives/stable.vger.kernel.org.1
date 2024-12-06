@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-99315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CE69E712A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 418F29E712B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7438C2826F4
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F24281062
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A4C1FF7D1;
-	Fri,  6 Dec 2024 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D11915575F;
+	Fri,  6 Dec 2024 14:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KL5YVLji"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/OvJkiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F2D1F8F13;
-	Fri,  6 Dec 2024 14:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2E11547E7;
+	Fri,  6 Dec 2024 14:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496744; cv=none; b=hCHoK7uC4b+6Syrx4Uw9F7MR+DyW6kBQSvKRq9ZJu4D/Mc6caVwrMakGEwoGnf/mXYR8UpvFXOpMxSk9GqF8erjAs6EoYEMIF/JTp768iidQuDjlI5X0HfWCLPNnS4xLdTxLwwsqz2oHf5wg9mEGTmmYWzzXosRpZiIbbTItLqM=
+	t=1733496752; cv=none; b=oFNCGaOScLtgYztlaGyY61T4QhW6Rq/RluAA5ODmJ4PZjDYz1tJgXBeGMQlK9e2sI2OLA0mChgCrU7hC5X0on98s5Rg6raGv2kBGtBN3kIsbHGvtd/rJ0p7sIRaRrCj/7imzuEUPChNfd5qI8KdMh/hB4AvNKG4iypEYF8tYnt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496744; c=relaxed/simple;
-	bh=eKjMb1VV0xLvjhHzaHLG0hIKpD0cLAWbmMCTJaimPTQ=;
+	s=arc-20240116; t=1733496752; c=relaxed/simple;
+	bh=koN+Y5yIJTwSJYrv9vJy+xHWY3LVAL4Z1mvzwao6suE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyjdtD0TFLNxD7lTCs83zCjP2vTDAMhe3OZUK3hvnb1Fij515zWrOHOuyGYu2iElnUQWzDqbNwU9IhhTrTV45GQ2fTbmr/RzG3GxkrPRoSppHCf+A/P63eHHtzP3+WX3HrVe1zNgoAciL4tiGjFybNKtVOojAgn4EtUB09EUg9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KL5YVLji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1961DC4CED1;
-	Fri,  6 Dec 2024 14:52:23 +0000 (UTC)
+	 MIME-Version; b=t8igWPfWGlwhhnEkqPAs6Qfa5FHWN14XRG9nx1evcCF9k9T944wq61/h8cQSj7d/7V8EyQALkq9NfVglFBZhfjE77ghnwE2jiSh/ooQhgLOCAWdfqP1YVaRz8rHXa+gl7/345wUoQPYI/xsIcaAr6+3ZhccRitFYX8XPcAkUy/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/OvJkiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADD1C4CED1;
+	Fri,  6 Dec 2024 14:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496744;
-	bh=eKjMb1VV0xLvjhHzaHLG0hIKpD0cLAWbmMCTJaimPTQ=;
+	s=korg; t=1733496751;
+	bh=koN+Y5yIJTwSJYrv9vJy+xHWY3LVAL4Z1mvzwao6suE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KL5YVLjiRxvzc5PE5oRqvvgmQJCw+292DXqWcyHTEZq09wXSJ2KsnwdOTjDwntOI3
-	 jIySwJi661VAJ0y7TcwhH49468OLYj1gzS8LZJhcVcp67G9yotkO2zY92iFQNeJYKR
-	 2X1rfx4t0AfqzZ58h/rjocSYO6j4kRjRb4A0Q70s=
+	b=w/OvJkiGDmuIkAvGHF+sc+Ms9ojVnGwR106AWkbvzXm9ZTLyX1cklSZvalO9UAC27
+	 PDJrNDpOevQGNfKJtfwR+BgUKo6RSQXgUK/DJlFRstlLOgutCUef2Svf7PrH8x9Xxk
+	 1H/LyuIGD1liU03E8bp1mAmbCn3vqqCpUYB9ixtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Orange Kao <orange@aiven.io>,
-	Tony Luck <tony.luck@intel.com>,
+	Li Huafei <lihuafei1@huawei.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/676] EDAC/igen6: Avoid segmentation fault on module unload
-Date: Fri,  6 Dec 2024 15:28:30 +0100
-Message-ID: <20241206143656.913194081@linuxfoundation.org>
+Subject: [PATCH 6.6 092/676] crypto: inside-secure - Fix the return value of safexcel_xcbcmac_cra_init()
+Date: Fri,  6 Dec 2024 15:28:31 +0100
+Message-ID: <20241206143656.953609852@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,54 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Orange Kao <orange@aiven.io>
+From: Li Huafei <lihuafei1@huawei.com>
 
-[ Upstream commit fefaae90398d38a1100ccd73b46ab55ff4610fba ]
+[ Upstream commit a10549fcce2913be7dc581562ffd8ea35653853e ]
 
-The segmentation fault happens because:
+The commit 320406cb60b6 ("crypto: inside-secure - Replace generic aes
+with libaes") replaced crypto_alloc_cipher() with kmalloc(), but did not
+modify the handling of the return value. When kmalloc() returns NULL,
+PTR_ERR_OR_ZERO(NULL) returns 0, but in fact, the memory allocation has
+failed, and -ENOMEM should be returned.
 
-During modprobe:
-1. In igen6_probe(), igen6_pvt will be allocated with kzalloc()
-2. In igen6_register_mci(), mci->pvt_info will point to
-   &igen6_pvt->imc[mc]
-
-During rmmod:
-1. In mci_release() in edac_mc.c, it will kfree(mci->pvt_info)
-2. In igen6_remove(), it will kfree(igen6_pvt);
-
-Fix this issue by setting mci->pvt_info to NULL to avoid the double
-kfree.
-
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219360
-Signed-off-by: Orange Kao <orange@aiven.io>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20241104124237.124109-2-orange@aiven.io
+Fixes: 320406cb60b6 ("crypto: inside-secure - Replace generic aes with libaes")
+Signed-off-by: Li Huafei <lihuafei1@huawei.com>
+Acked-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/igen6_edac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/inside-secure/safexcel_hash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index a0edb61a5a01a..0b408299699a8 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -1075,6 +1075,7 @@ static int igen6_register_mci(int mc, u64 mchbar, struct pci_dev *pdev)
- 	imc->mci = mci;
- 	return 0;
- fail3:
-+	mci->pvt_info = NULL;
- 	kfree(mci->ctl_name);
- fail2:
- 	edac_mc_free(mci);
-@@ -1099,6 +1100,7 @@ static void igen6_unregister_mcis(void)
+diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
+index e17577b785c33..f44c08f5f5ec4 100644
+--- a/drivers/crypto/inside-secure/safexcel_hash.c
++++ b/drivers/crypto/inside-secure/safexcel_hash.c
+@@ -2093,7 +2093,7 @@ static int safexcel_xcbcmac_cra_init(struct crypto_tfm *tfm)
  
- 		edac_mc_del_mc(mci->pdev);
- 		kfree(mci->ctl_name);
-+		mci->pvt_info = NULL;
- 		edac_mc_free(mci);
- 		iounmap(imc->window);
- 	}
+ 	safexcel_ahash_cra_init(tfm);
+ 	ctx->aes = kmalloc(sizeof(*ctx->aes), GFP_KERNEL);
+-	return PTR_ERR_OR_ZERO(ctx->aes);
++	return ctx->aes == NULL ? -ENOMEM : 0;
+ }
+ 
+ static void safexcel_xcbcmac_cra_exit(struct crypto_tfm *tfm)
 -- 
 2.43.0
 
