@@ -1,187 +1,110 @@
-Return-Path: <stable+bounces-99936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC599E747B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:38:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BB29E7480
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:38:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E7A286E14
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:38:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB00163A18
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B347A20E30B;
-	Fri,  6 Dec 2024 15:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C40720DD5A;
+	Fri,  6 Dec 2024 15:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="hzbUznQC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SH3EJflg"
 X-Original-To: stable@vger.kernel.org
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5019820E016;
-	Fri,  6 Dec 2024 15:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA00B20DD43;
+	Fri,  6 Dec 2024 15:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733499284; cv=none; b=kw5HAOqMR7VRSx8RogFYKdne8e4iOqEU+zqDrOx2STr7BZbbuVv++kZ3Dz+iOGk3HEx/ur9MCES2E81HLWqbXvCW6XM4RcFo6mhGRUxIkuxsyiD0RiIDOFC4sVyX8urQ0d5UJrs5YEtKNJIFdh9EbTxARIsWCHxt4V/qLn7qUOQ=
+	t=1733499279; cv=none; b=pLpo6hp5rNF+Ax6eQvF+OLBkwn4ceYaROnyLgjrkCOD97NrPM9QkmtQi3fnv2J8m147qxEEmq7YK3fAgsABZvWG7lrMAyrXlbYk6OaIV8ePRtTxERumzSTGewjzFDxTDGYS+2+sqEL/mcMdt9zGsaI9+HZeD7cjbdkJUg4k0NA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733499284; c=relaxed/simple;
-	bh=1ITbAn22++Ob7kA1nEk7YQEuphiXTzhZj2P7KDqtLQY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fkeqhu1HsgVZVOEwmc8N4dYJm5a0Xvgd+X5B0WwfyzA8xe7CwG3fWBXFDm9XQ8Ft4vgUEb55Gxwb6D6HG94oW2DeUIdS/fxlr/Hr3zhoAH2NDKbZSr1fjBTAaR9LMasElSon0ECZ2Wh17DTh/jDlkiNCL3ZgXQRXwKQm71YuchI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=hzbUznQC; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=yDvV13jrwvg/8LFAnBn/yTTKslVhcmcZpdcecddhnVw=; b=hzbUznQC2tNOQ2Oolvrlp6bH4J
-	72/NVj7vTywifcs8H7GO74W/4l6j/sCtHNmQgf5Gtog7wZRDWGxXcFy9NIq3+lcJXXckTqI/kLNPF
-	+T8df0sFfVilfwzWjbfKhA3ZtKTYL/M0gSHmWB0pCco0xWGjzev84qhyM34kqV3R6CQBTSbQxJyjD
-	CUJ2X2J7KOIBMcyuRJnF8+/v8Rj4QmaYRw149VKRLeqtsnD5KJFnm+iiRCUSU3TgIeurX+iRVH51l
-	GkIfi+6+lJSaId2vo/2nQI8cHK4pHd7ygPfECyU4fP65qczV5ns1Yckj5hxAtsHFRU1tlh0/+5Z2x
-	jxXVMM9g==;
-Received: from 226.206.1.85.dynamic.cust.swisscom.net ([85.1.206.226] helo=localhost)
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1tJaLZ-000ESD-0q; Fri, 06 Dec 2024 16:34:25 +0100
-From: Daniel Borkmann <daniel@iogearbox.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	leitao@debian.org,
-	martin.lau@linux.dev,
-	peilin.ye@bytedance.com,
-	kuba@kernel.org,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH stable 6.1 3/3] veth: Use tstats per-CPU traffic counters
-Date: Fri,  6 Dec 2024 16:34:03 +0100
-Message-ID: <20241206153403.273068-3-daniel@iogearbox.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241206153403.273068-1-daniel@iogearbox.net>
-References: <20241206153403.273068-1-daniel@iogearbox.net>
+	s=arc-20240116; t=1733499279; c=relaxed/simple;
+	bh=ob41PRiaHdvAd/92XG25/M3XLgXJ0Gvcu2eu3AUbA10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S0hxAd0tQ3YG9435rVBaohl7xoLYPZXoSIZrDxCC8yiwOSrra0UcyMhkSW1jNYltmP5VSbg+n1Y/rgf7FDQH6Xp7X7+AOyt89HwVIVxr4aZ92ZAezFqLOZH2m1Ynm1tTQBDYd8AD4m2O9RZOt37gg33NPtOVh8sVuHck+Q0ory8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SH3EJflg; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733499278; x=1765035278;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ob41PRiaHdvAd/92XG25/M3XLgXJ0Gvcu2eu3AUbA10=;
+  b=SH3EJflgAoiQyKt4SMWi2yuSxn+un+gxIb43xcS7lDTX8pcrVAxTc6g6
+   9M4zGdosZYM+QfvfC4nMCqnt2CDLlTm1+m7uwkrTzZBWG/JOxCqytNlJM
+   A5HAMx4KoUXWs9CwPUyEtlVhXRCkGnPXo+qMauY2jYC/zJdYFClZ22We7
+   HIuoGm+8xPrY1/lpmcqNFTqm2gZyJxJiIxhn35WVhWcAY/QGWi5ag9eTp
+   56hvUv72yS88oFmgm4MEctBddgke6ScM8U0JUBBRwHWaLpWAiUwdtqegf
+   f0bw8Q0+oYy5yRi7PUlPYtQw8pBxyfCbLVvu1s38fcqONyZawAkpD1eW5
+   g==;
+X-CSE-ConnectionGUID: W+2ykv6BTP+gHHm1iuPXZw==
+X-CSE-MsgGUID: 7a1FdrI+QhqximobE5YpRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="37532711"
+X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; 
+   d="scan'208";a="37532711"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 07:34:37 -0800
+X-CSE-ConnectionGUID: 0em8r/N5T4K1gQcKO5CJkw==
+X-CSE-MsgGUID: qvYEIrRqRna769XkvZQp/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; 
+   d="scan'208";a="94634366"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 07:34:35 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tJaLg-00000004YPX-31Jl;
+	Fri, 06 Dec 2024 17:34:32 +0200
+Date: Fri, 6 Dec 2024 17:34:32 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 00/15] media: i2c: ds90ub9xx: Misc fixes and
+ improvements
+Message-ID: <Z1MZiFg76jlZ4eDE@smile.fi.intel.com>
+References: <20241206-ub9xx-fixes-v4-0-466786eec7cc@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27479/Fri Dec  6 10:40:14 2024)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241206-ub9xx-fixes-v4-0-466786eec7cc@ideasonboard.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+On Fri, Dec 06, 2024 at 10:26:36AM +0200, Tomi Valkeinen wrote:
+> This series fixes various small issues in the drivers, and adds a few
+> things (a couple of pixel formats and a debugging feature).
+> 
+> It also takes a few steps in adding more i2c read/write error handlings
+> to the drivers, but covers only the easy places.
+> 
+> Adding error handling to all reads/writes needs more thinking, perhaps
+> adding a "ret" parameter to the calls, similar to the cci_* functions,
+> or perhaps adding helpers for writing multiple registers from a given
+> table. Also, in some places rolling back from an error will require
+> work.
 
-[ Upstream commit 6f2684bf2b4460c84d0d34612a939f78b96b03fc ]
+FWIW,
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Currently veth devices use the lstats per-CPU traffic counters, which only
-cover TX traffic. veth_get_stats64() actually populates RX stats of a veth
-device from its peer's TX counters, based on the assumption that a veth
-device can _only_ receive packets from its peer, which is no longer true:
-
-For example, recent CNIs (like Cilium) can use the bpf_redirect_peer() BPF
-helper to redirect traffic from NIC's tc ingress to veth's tc ingress (in
-a different netns), skipping veth's peer device. Unfortunately, this kind
-of traffic isn't currently accounted for in veth's RX stats.
-
-In preparation for the fix, use tstats (instead of lstats) to maintain
-both RX and TX counters for each veth device. We'll use RX counters for
-bpf_redirect_peer() traffic, and keep using TX counters for the usual
-"peer-to-peer" traffic. In veth_get_stats64(), calculate RX stats by
-_adding_ RX count to peer's TX count, in order to cover both kinds of
-traffic.
-
-veth_stats_rx() might need a name change (perhaps to "veth_stats_xdp()")
-for less confusion, but let's leave it to another patch to keep the fix
-minimal.
-
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20231114004220.6495-5-daniel@iogearbox.net
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
----
- drivers/net/veth.c | 30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
-
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 0a8154611d7f..e1e7df00e85c 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -342,7 +342,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	skb_tx_timestamp(skb);
- 	if (likely(veth_forward_skb(rcv, skb, rq, use_napi) == NET_RX_SUCCESS)) {
- 		if (!use_napi)
--			dev_lstats_add(dev, length);
-+			dev_sw_netstats_tx_add(dev, 1, length);
- 	} else {
- drop:
- 		atomic64_inc(&priv->dropped);
-@@ -357,14 +357,6 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return ret;
- }
- 
--static u64 veth_stats_tx(struct net_device *dev, u64 *packets, u64 *bytes)
--{
--	struct veth_priv *priv = netdev_priv(dev);
--
--	dev_lstats_read(dev, packets, bytes);
--	return atomic64_read(&priv->dropped);
--}
--
- static void veth_stats_rx(struct veth_stats *result, struct net_device *dev)
- {
- 	struct veth_priv *priv = netdev_priv(dev);
-@@ -402,24 +394,24 @@ static void veth_get_stats64(struct net_device *dev,
- 	struct veth_priv *priv = netdev_priv(dev);
- 	struct net_device *peer;
- 	struct veth_stats rx;
--	u64 packets, bytes;
- 
--	tot->tx_dropped = veth_stats_tx(dev, &packets, &bytes);
--	tot->tx_bytes = bytes;
--	tot->tx_packets = packets;
-+	tot->tx_dropped = atomic64_read(&priv->dropped);
-+	dev_fetch_sw_netstats(tot, dev->tstats);
- 
- 	veth_stats_rx(&rx, dev);
- 	tot->tx_dropped += rx.xdp_tx_err;
- 	tot->rx_dropped = rx.rx_drops + rx.peer_tq_xdp_xmit_err;
--	tot->rx_bytes = rx.xdp_bytes;
--	tot->rx_packets = rx.xdp_packets;
-+	tot->rx_bytes += rx.xdp_bytes;
-+	tot->rx_packets += rx.xdp_packets;
- 
- 	rcu_read_lock();
- 	peer = rcu_dereference(priv->peer);
- 	if (peer) {
--		veth_stats_tx(peer, &packets, &bytes);
--		tot->rx_bytes += bytes;
--		tot->rx_packets += packets;
-+		struct rtnl_link_stats64 tot_peer = {};
-+
-+		dev_fetch_sw_netstats(&tot_peer, peer->tstats);
-+		tot->rx_bytes += tot_peer.tx_bytes;
-+		tot->rx_packets += tot_peer.tx_packets;
- 
- 		veth_stats_rx(&rx, peer);
- 		tot->tx_dropped += rx.peer_tq_xdp_xmit_err;
-@@ -1612,7 +1604,7 @@ static void veth_setup(struct net_device *dev)
- 			       NETIF_F_HW_VLAN_STAG_RX);
- 	dev->needs_free_netdev = true;
- 	dev->priv_destructor = veth_dev_free;
--	dev->pcpu_stat_type = NETDEV_PCPU_STAT_LSTATS;
-+	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
- 	dev->max_mtu = ETH_MAX_MTU;
- 
- 	dev->hw_features = VETH_FEATURES;
 -- 
-2.43.0
+With Best Regards,
+Andy Shevchenko
+
 
 
