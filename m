@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-99044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372EF9E6DFF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:21:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBC29E6E05
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:21:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2FEA2820F7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:21:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AAB11624D1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D6420100D;
-	Fri,  6 Dec 2024 12:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8BD20100D;
+	Fri,  6 Dec 2024 12:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OsbeBBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7g6zgzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA4E1E1A05
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12EA1D63DF
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733487691; cv=none; b=Z0TURETcqXP1g71vQEMMoGXFhpJ/c0X0K/WVvvdqApvutIXru+eqfKq5U4/Mjh9IRfCTPm66radwwqGbFX4zZdr/S7VZmXwZ70sc1w4OSwlv9042XhPZIKbXRmndxpBdZ13vOa0xyAku8p5eC/u1K5hlhZW3IN0n5wozE1NN7ts=
+	t=1733487712; cv=none; b=sq4AfeHAN7uSzi0H7FMqGHoYWKMFHIqupfDbRPjJrQ8aR/TKv5Myz8pDncYuyLnvQw2nv1XagiZbqK7j9eUPVOJF8a2MbzOknh7KatFfRXfcxAZ6PIzPQJEJVUOKU5o4i5Xu647cxjSWrVkUP47F2510zGBXPPydkQj/z3OM6/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733487691; c=relaxed/simple;
-	bh=8MSIJZSBL3tjb5PFG8Uf0Cy3rgZrf0u7MdtTQDxu8wQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MAYZ9AwqhnfDaTkv6XVGHob4/uIJGGMqe5qZ1jz28DiGzlIKGOvvisV8rJdQNRqpUDrQLl08KKZVgigGs0aL/H6qAeqXkO7FSoAuI+0aAFpUetl7SzOHVaF2JXNci40fyZBEKMjkkqJGuw9D4Eu1hB77gmJih/NnBLx24hWfE7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OsbeBBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F14C4CED1;
-	Fri,  6 Dec 2024 12:21:30 +0000 (UTC)
+	s=arc-20240116; t=1733487712; c=relaxed/simple;
+	bh=R6suaYukc0zvF8L3VIQGMRxqiOc1tQDwFO1Fsb3w9vU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RImpXJD55PuB7yt01XSKtJw3GCXJq2qky8tOUXLaIhDPhkwAQiqgCGNCcSmOqnogUSFdHE9o8IQ3wj1++Vu+JQTHHiNpl9BSt+uOF5Ich1EL3OvRQmhAsLJ/q+T0bnI4HLAKQsUKrx0BZ6uiTNg7Xplv9wm5jIBKwstbwoOBq4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7g6zgzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C4AEC4CED1;
+	Fri,  6 Dec 2024 12:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733487690;
-	bh=8MSIJZSBL3tjb5PFG8Uf0Cy3rgZrf0u7MdtTQDxu8wQ=;
+	s=korg; t=1733487711;
+	bh=R6suaYukc0zvF8L3VIQGMRxqiOc1tQDwFO1Fsb3w9vU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2OsbeBBIMrpm/+R6gnpLWko6xQsGbFmwnhccQrjyf87AqeGCcJHzTtBsRQNGeFi1X
-	 x9u2dPT7Nm/LNiYghvbFoFaZA2dRPVA7EifpLYv1W/66Lp+VMOMqX31QEzSJv+ln8T
-	 7uIbzpkLzO68PxxM7sbMl4shGsIVq8ZgSiGm61JM=
-Subject: FAILED: patch "[PATCH] PCI: keystone: Set mode as Root Complex for" failed to apply to 5.10-stable tree
-To: kishon@ti.com,kwilczynski@kernel.org,s-vadapalli@ti.com
+	b=l7g6zgzcZUgHrRDgHRapo1bKUspfr/v/+ilv98+F+n+yhoPnNBggtIxtn49KGq1q7
+	 F18tE5/GeIuvjezl5OjcHw4KEXyIrKOndnZOwL8wpweQKtvXQZT5Dat/Dz/o4wOd5q
+	 S0QKWrFmwM2Q67K9lQsTwxCEE6EY63DM1slUVrgw=
+Subject: FAILED: patch "[PATCH] PCI: endpoint: Clear secondary (not primary) EPC in" failed to apply to 6.1-stable tree
+To: quic_zijuhu@quicinc.com,bhelgaas@google.com,kwilczynski@kernel.org,manivannan.sadhasivam@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 13:21:16 +0100
-Message-ID: <2024120615-backlands-caboose-2224@gregkh>
+Date: Fri, 06 Dec 2024 13:21:48 +0100
+Message-ID: <2024120648-rigging-lying-eda9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5a938ed9481b0c06cb97aec45e722a80568256fd
+git cherry-pick -x 688d2eb4c6fcfdcdaed0592f9df9196573ff5ce2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120615-backlands-caboose-2224@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120648-rigging-lying-eda9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,50 +77,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5a938ed9481b0c06cb97aec45e722a80568256fd Mon Sep 17 00:00:00 2001
-From: Kishon Vijay Abraham I <kishon@ti.com>
-Date: Fri, 24 May 2024 16:27:13 +0530
-Subject: [PATCH] PCI: keystone: Set mode as Root Complex for
- "ti,keystone-pcie" compatible
+From 688d2eb4c6fcfdcdaed0592f9df9196573ff5ce2 Mon Sep 17 00:00:00 2001
+From: Zijun Hu <quic_zijuhu@quicinc.com>
+Date: Thu, 7 Nov 2024 08:53:09 +0800
+Subject: [PATCH] PCI: endpoint: Clear secondary (not primary) EPC in
+ pci_epc_remove_epf()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-commit 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x
-Platforms") introduced configuring "enum dw_pcie_device_mode" as part of
-device data ("struct ks_pcie_of_data"). However it failed to set the
-mode for "ti,keystone-pcie" compatible.
+In addition to a primary endpoint controller, an endpoint function may be
+associated with a secondary endpoint controller, epf->sec_epc, to provide
+NTB (non-transparent bridge) functionality.
 
-Since the mode defaults to "DW_PCIE_UNKNOWN_TYPE", the following error
-message is displayed for the v3.65a controller:
+Previously, pci_epc_remove_epf() incorrectly cleared epf->epc instead of
+epf->sec_epc when removing from the secondary endpoint controller.
 
-  "INVALID device type 0"
+Extend the epc->list_lock coverage and clear either epf->epc or
+epf->sec_epc as indicated.
 
-Despite the driver probing successfully, the controller may not be
-functional in the Root Complex mode of operation.
-
-So, set the mode as Root Complex for "ti,keystone-pcie" compatible to
-fix this.
-
-Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
-Link: https://lore.kernel.org/r/20240524105714.191642-2-s-vadapalli@ti.com
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-[kwilczynski: commit log, added tag for stable releases]
+Link: https://lore.kernel.org/r/20241107-epc_rfc-v2-2-da5b6a99a66f@quicinc.com
+Fixes: 63840ff53223 ("PCI: endpoint: Add support to associate secondary EPC with EPF")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+[mani: reworded subject and description]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Cc: stable@vger.kernel.org
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 2219b1a866fa..b99bc4071fe9 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1093,6 +1093,7 @@ static int ks_pcie_am654_set_mode(struct device *dev,
+diff --git a/drivers/pci/endpoint/pci-epc-core.c b/drivers/pci/endpoint/pci-epc-core.c
+index 21af2dbacc33..bed7c7d1fe3c 100644
+--- a/drivers/pci/endpoint/pci-epc-core.c
++++ b/drivers/pci/endpoint/pci-epc-core.c
+@@ -746,18 +746,18 @@ void pci_epc_remove_epf(struct pci_epc *epc, struct pci_epf *epf,
+ 	if (IS_ERR_OR_NULL(epc) || !epf)
+ 		return;
  
- static const struct ks_pcie_of_data ks_pcie_rc_of_data = {
- 	.host_ops = &ks_pcie_host_ops,
-+	.mode = DW_PCIE_RC_TYPE,
- 	.version = DW_PCIE_VER_365A,
- };
- 
++	mutex_lock(&epc->list_lock);
+ 	if (type == PRIMARY_INTERFACE) {
+ 		func_no = epf->func_no;
+ 		list = &epf->list;
++		epf->epc = NULL;
+ 	} else {
+ 		func_no = epf->sec_epc_func_no;
+ 		list = &epf->sec_epc_list;
++		epf->sec_epc = NULL;
+ 	}
+-
+-	mutex_lock(&epc->list_lock);
+ 	clear_bit(func_no, &epc->function_num_map);
+ 	list_del(list);
+-	epf->epc = NULL;
+ 	mutex_unlock(&epc->list_lock);
+ }
+ EXPORT_SYMBOL_GPL(pci_epc_remove_epf);
 
 
