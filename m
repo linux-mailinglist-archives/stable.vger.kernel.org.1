@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-99188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEA79E7094
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:44:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29C59E7099
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC57318819C0
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:44:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D17AC16154F
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2720E14B976;
-	Fri,  6 Dec 2024 14:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A7B1F8F13;
+	Fri,  6 Dec 2024 14:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4gd4AuC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amQjGlpm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D826114A4F0;
-	Fri,  6 Dec 2024 14:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C731448E4;
+	Fri,  6 Dec 2024 14:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496295; cv=none; b=sPFyLGRKQ9EdjwAUQEB8hvE1ekzp87c+yQ1NWjQ5WVMvTOS0D2BcT3uIo8ES1BxJO5B3MAoHrQKidJI49qRN5s9z0T5IjMjyVqzjaYzq39SddoULxNo6OrSzVLhMOmNIS/YfcdrGPw9BU/hlak+zcJD8oWHsZSMOeNcu/UKwsNI=
+	t=1733496313; cv=none; b=ONzvCKc2EjLyxGHvXqMKS9VlAmTS6JYBMlJBgsr41/GVCOiBq7nk3qMayLLtg58cLcGxi1SSCqc2GBuyjIq4ju5MyZqRfe6emOagdmOqXs4zSDrsg4IhTmSEK+W2cgphH/znVbxNazKEGTB8dn9rgjq6NRaJJ3TS5VtMfbgbhDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496295; c=relaxed/simple;
-	bh=hplSOO+lV8ZjTey4X5TB8oIj0kenxuX/ZdcR0kzSfGI=;
+	s=arc-20240116; t=1733496313; c=relaxed/simple;
+	bh=A86vur1iOalXQiEsed2ko9tDbA+bww+0XJmfzzoB/lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkr5QNSdAwW29TYBCix5puk94MgM/qgIqs+WkagoavTBjgPIS7Pi1PSxL81to2hUKg7gkIBEZ5ix8s1G76IO/txgPBA+amoV1DA1y6QTV/xQDNOZe+feFnGqeBm+pfVXAMh6remhJnQeTvclLu14AfR98BLqaqkkmfEe8cXFOa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4gd4AuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFA5C4CED1;
-	Fri,  6 Dec 2024 14:44:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XAM+aNnNUKmb+8xnKvcw75xs/h9slhcnPXAdXJLz59W1v4sKcK1JK8R127fetYPxVlY8HeAe5PJ6e7sIG2jCx6hz7hEl8/nygH95pTbeYU8MRyNS+7LAQtHsFy1hJ+fApOFBhME1H2d4uo03M5wr3DlndKbgDh33WO8tPJXDo+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amQjGlpm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0FDC4CED1;
+	Fri,  6 Dec 2024 14:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496295;
-	bh=hplSOO+lV8ZjTey4X5TB8oIj0kenxuX/ZdcR0kzSfGI=;
+	s=korg; t=1733496312;
+	bh=A86vur1iOalXQiEsed2ko9tDbA+bww+0XJmfzzoB/lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4gd4AuCrOAk5FwPeftzYl26dtYuCTYeL7dOY09EdoizZsJKGBK8EgjbJcpvKtTw/
-	 4K0jmm/cJp4f1eETHD6+wL0sdhwKSUgAhQraT0fl+launVGoRrAzfk3SM0S5gty6FJ
-	 1qZW18zY1mPoBcz36dnVzRLpKLUFcOUArc7ZR+38=
+	b=amQjGlpmB7sVGOcxH5nlAkGNoEcMv+IqDN08IxOXI+022nUkJk2bF3/InScg9zR9x
+	 Ah4gO5LtQj6GHUZPxL8WxZ1GtZz+/yTqXOlNRQ2ZqfN2Alue0O2ENKhC6c2zWdzjBt
+	 7zHCPld1ny8JGlYcf8QCIPnfboMJYoq39mZxgPzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 083/146] i3c: master: svc: Modify enabled_events bit 7:0 to act as IBI enable counter
-Date: Fri,  6 Dec 2024 15:36:54 +0100
-Message-ID: <20241206143530.855233427@linuxfoundation.org>
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.12 084/146] PCI: keystone: Set mode as Root Complex for "ti,keystone-pcie" compatible
+Date: Fri,  6 Dec 2024 15:36:55 +0100
+Message-ID: <20241206143530.894037461@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -61,71 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-commit 25bc99be5fe53853053ceeaa328068c49dc1e799 upstream.
+commit 5a938ed9481b0c06cb97aec45e722a80568256fd upstream.
 
-Fix issue where disabling IBI on one device disables the entire IBI
-interrupt. Modify bit 7:0 of enabled_events to serve as an IBI enable
-counter, ensuring that the system IBI interrupt is disabled only when all
-I3C devices have IBI disabled.
+commit 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x
+Platforms") introduced configuring "enum dw_pcie_device_mode" as part of
+device data ("struct ks_pcie_of_data"). However it failed to set the
+mode for "ti,keystone-pcie" compatible.
 
-Cc: stable@kernel.org
-Fixes: 7ff730ca458e ("i3c: master: svc: enable the interrupt in the enable ibi function")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241101165002.2479794-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Since the mode defaults to "DW_PCIE_UNKNOWN_TYPE", the following error
+message is displayed for the v3.65a controller:
+
+  "INVALID device type 0"
+
+Despite the driver probing successfully, the controller may not be
+functional in the Root Complex mode of operation.
+
+So, set the mode as Root Complex for "ti,keystone-pcie" compatible to
+fix this.
+
+Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
+Link: https://lore.kernel.org/r/20240524105714.191642-2-s-vadapalli@ti.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+[kwilczynski: commit log, added tag for stable releases]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -130,8 +130,8 @@
- #define SVC_I3C_PPBAUD_MAX 15
- #define SVC_I3C_QUICK_I2C_CLK 4170000
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -1093,6 +1093,7 @@ static int ks_pcie_am654_set_mode(struct
  
--#define SVC_I3C_EVENT_IBI	BIT(0)
--#define SVC_I3C_EVENT_HOTJOIN	BIT(1)
-+#define SVC_I3C_EVENT_IBI	GENMASK(7, 0)
-+#define SVC_I3C_EVENT_HOTJOIN	BIT(31)
- 
- struct svc_i3c_cmd {
- 	u8 addr;
-@@ -214,7 +214,7 @@ struct svc_i3c_master {
- 		spinlock_t lock;
- 	} ibi;
- 	struct mutex lock;
--	int enabled_events;
-+	u32 enabled_events;
- 	u32 mctrl_config;
+ static const struct ks_pcie_of_data ks_pcie_rc_of_data = {
+ 	.host_ops = &ks_pcie_host_ops,
++	.mode = DW_PCIE_RC_TYPE,
+ 	.version = DW_PCIE_VER_365A,
  };
- 
-@@ -1639,7 +1639,7 @@ static int svc_i3c_master_enable_ibi(str
- 		return ret;
- 	}
- 
--	master->enabled_events |= SVC_I3C_EVENT_IBI;
-+	master->enabled_events++;
- 	svc_i3c_master_enable_interrupts(master, SVC_I3C_MINT_SLVSTART);
- 
- 	return i3c_master_enec_locked(m, dev->info.dyn_addr, I3C_CCC_EVENT_SIR);
-@@ -1651,7 +1651,7 @@ static int svc_i3c_master_disable_ibi(st
- 	struct svc_i3c_master *master = to_svc_i3c_master(m);
- 	int ret;
- 
--	master->enabled_events &= ~SVC_I3C_EVENT_IBI;
-+	master->enabled_events--;
- 	if (!master->enabled_events)
- 		svc_i3c_master_disable_interrupts(master);
  
 
 
