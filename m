@@ -1,129 +1,213 @@
-Return-Path: <stable+bounces-98998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122B39E6BE3
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:21:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F489E6C35
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C0218869EE
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:20:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A0BE18887CF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F5E206F35;
-	Fri,  6 Dec 2024 10:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206711FA254;
+	Fri,  6 Dec 2024 10:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sf2S3WHH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P9d4FEWS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C57206F1E
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 10:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091681D47A2
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 10:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733480215; cv=none; b=Yk3VALMgVDfUAo/kI1mHzGIOvbXwTpGjCmjI7DdHOjinEucnkR31MOEqDGXj+xsGRq6c3KRpQhk5o4H3r2zc0m6qi5nIvOoSYLBtu9g/2fMhvhHeaF9a1VigZRar/0DRDkQEC8Ne56WepNksa/pzZYP+JUVDYhpeMJBxErUyAnk=
+	t=1733480644; cv=none; b=VHLWAOHmInzqGLMeXYYcfrpCZDfRXTuhA4bzhoHxsecXzLL/gU1E1H+gCSemx0kKhpYbSq0Iwc6e24iNICUkM2Tru2/MuUkev8ciU2jNW69Octp2rLsBKgEHmAgI6kuK7L83qfjKZv15c4nAAGMlGMbsv6dnBLAT24Si8ft46dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733480215; c=relaxed/simple;
-	bh=EY0LngxVk1G3OjGeBPMuhP8mcnagmL3TLHqpaH0pynQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uW66B9QW4tVb87TNfyV751fr+0kwzqK/61BYGzrpzZp07rXgO3hYxlDZXsvE3f9vasg2k/f6lmX08rq6JbEPM5IHlZTrPDNDaUoqpY6yQ/bC7jwLdtxwgNYmeMK/ybSIIosr17XeZSK7x5fl3j6WwVX8E6jcSyJmdIuckP/ci9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sf2S3WHH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1020EC4CEDE;
-	Fri,  6 Dec 2024 10:16:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733480214;
-	bh=EY0LngxVk1G3OjGeBPMuhP8mcnagmL3TLHqpaH0pynQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=sf2S3WHH7GzBhhZXQyHxa7XO8Wv6n84jQ6ZjXAGggx6TSgAcAzMryGb0SyxzI9qmC
-	 U/dmoIiqmMv/G9XyeAr40lnlRfCJcZog25pucK1I2WaJQvpzOGj2g9/agTxKnNTb4F
-	 cBzXcye1M3oYO44ZmUPE568NVd1+O2x349VZ7TgI=
-Subject: FAILED: patch "[PATCH] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit" failed to apply to 6.1-stable tree
-To: nathan@kernel.org,mpe@ellerman.id.au
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 11:16:43 +0100
-Message-ID: <2024120642-steep-reply-a3bd@gregkh>
+	s=arc-20240116; t=1733480644; c=relaxed/simple;
+	bh=Esap0BFWLjwr3lb6wD5Bi3a/tO1AxEzL+dmnkp+oVT8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BA3nxYjfzi7CnBkm7MvnGFTUGyujkxHDeHtwThjLSyaXb3amcMeg8CdHnGWQxw9IlB7SG5VttAO3stFWKz1MNMD8xssg866NoHmQbCe/HS5o8sbFGnh5kvpNs1Bb41LTax/pmf+kR4AOVeeVjTU8/nLKkPMyni9wcjQaDto3hwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P9d4FEWS; arc=none smtp.client-ip=209.85.218.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--bsevens.bounces.google.com
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-aa6225fbc52so151923466b.3
+        for <stable@vger.kernel.org>; Fri, 06 Dec 2024 02:24:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733480641; x=1734085441; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NJ9dvy26w3ha8/zA1bxAQDeunJypghJCiCYHw1i0WAI=;
+        b=P9d4FEWSlbQBOqShsjLTLKRs+bvudAoW8tObmiL4E0BFKq5MovDQlFB0TSnktkC+/Z
+         UlC0Zbx+9tVAUwTKSZcUtdC1jxognOEgMvrb2akR5glyaqFAl/9K2qITA72TOeftwFba
+         XNtlPOEP0EZ2FXW5slifXDkdPGhZ6kwZqsq8MHNKjBLuOUt9hF5B90c7P38fKUpiOruM
+         vR+NZBjaR+B4MHnwRvrdvXPMLV7LGp0Mrj86qCYRYelubEY/ig5JN2lmP5n3yMfqUsQd
+         ph/o3gtSGpy4JToisq3WCMqc/rwYspqQBoysdoDEzW+lmmEeRH6tcDQuKJbE1Zngqjwx
+         ef1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733480641; x=1734085441;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NJ9dvy26w3ha8/zA1bxAQDeunJypghJCiCYHw1i0WAI=;
+        b=Jw64QzFvmOKa2F9ynr/8c4yxkhfVafRaZOKqkv9d0PFrZ4BG6kRpn4dFSYZTN4kocg
+         xGJNeUzRJAzcmQVR1MZbEQjnkPeYnW4q2FKrWCYYPAzSyZRkc5qBpT5L8iU66mG0GIFS
+         Nwvmyz2vCTfKZ21hNBMlObZYJY/BIPtU7kZLgnsqArM6TUr7AA7FmnciXwpSA6OcwAV2
+         1qGJ7nlfQnOxdIFl4KcpQqa/zS+oF98AtEywz8+uPvvfosZ9UpitlXpRcRCIS4jUX5Me
+         XAcVZmfdOzx17Hc2z5EDL82vl6lThZxtXcjD1aT0KDk496wWKY5oLofcnkzci9S28T3b
+         w9Xg==
+X-Gm-Message-State: AOJu0YzG3sYhOoh4IgmJ9nlbg2UFHKm7VRFVfL9sQkjUwrSDrhGeVhYc
+	+nReLIZnlQAxJUD+/nTGy5/JsILKpkyYOa1mJNY3r0Xn5cK8EdlqfAFi52ObFv/Q0TnMQrHEYL9
+	hyVhWsVXI4PHE3S7m7XQoToFuhMFliAEaIoi5OV4P1h3tT32RvZ6LicVjN0Tw4BVCSdeVkj6Mmz
+	F1tMkmtaXvIvyf66vgJPr4hvJBvKM9ygiZCWSCNA==
+X-Google-Smtp-Source: AGHT+IGuxIfveKPgaUNlNfjIdXnxvkH3PZFFGbsVkK+OSCM4Dd5cZPtoYepjlqtU3r+LOFwmbinYLcq+38vC
+X-Received: from edqd19.prod.google.com ([2002:a50:fb13:0:b0:5d1:ad08:19da])
+ (user=bsevens job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:32d2:b0:aa6:3f03:7ab4
+ with SMTP id a640c23a62f3a-aa63f038759mr121519866b.46.1733480641383; Fri, 06
+ Dec 2024 02:24:01 -0800 (PST)
+Date: Fri,  6 Dec 2024 10:23:54 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241206102357.1259610-1-bsevens@google.com>
+Subject: [PATCH 5.10.y v3] ALSA: usb-audio: Fix out of bounds reads when
+ finding clock sources
+From: "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
+To: stable@vger.kernel.org
+Cc: Takashi Iwai <tiwai@suse.de>, "=?UTF-8?q?Beno=C3=AEt=20Sevens?=" <bsevens@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+From: Takashi Iwai <tiwai@suse.de>
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Upstream commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The current USB-audio driver code doesn't check bLength of each
+descriptor at traversing for clock descriptors.  That is, when a
+device provides a bogus descriptor with a shorter bLength, the driver
+might hit out-of-bounds reads.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x d677ce521334d8f1f327cafc8b1b7854b0833158
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120642-steep-reply-a3bd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+For addressing it, this patch adds sanity checks to the validator
+functions for the clock descriptor traversal.  When the descriptor
+length is shorter than expected, it's skipped in the loop.
 
-Possible dependencies:
+For the clock source and clock multiplier descriptors, we can just
+check bLength against the sizeof() of each descriptor type.
+OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
+of bNrInPins elements and two more fields at its tail, hence those
+have to be checked in addition to the sizeof() check.
 
+This patch ports the upstream commit a3dd4d63eeb4 ("ALSA: usb-audio: Fix
+out of bounds reads when finding clock sources") to trees that do not
+include the refactoring commit 9ec730052fa2 ("ALSA: usb-audio:
+Refactoring UAC2/3 clock setup code"). That commit provides union
+objects for pointing both UAC2 and UAC3 objects and unifies the clock
+source, selector and multiplier helper functions. This means we need to
+perform the check in each version specific helper function, but on the
+other hand do not need to do version specific union dereferencing in the
+macros and helper functions.
 
+Reported-by: Beno=C3=AEt Sevens <bsevens@google.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
+Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+(cherry picked from commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6)
+Signed-off-by: Beno=C3=AEt Sevens <bsevens@google.com>
+---
+Changes in v3:
+- add patch changelog=20
 
-thanks,
+Changes in v2:
+- provide better changelog description of how the upstream patch is
+  backported
 
-greg k-h
+ sound/usb/clock.c | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
------------------- original commit in Linus's tree ------------------
-
-From d677ce521334d8f1f327cafc8b1b7854b0833158 Mon Sep 17 00:00:00 2001
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 30 Oct 2024 11:41:37 -0700
-Subject: [PATCH] powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit
- files with clang
-
-Under certain conditions, the 64-bit '-mstack-protector-guard' flags may
-end up in the 32-bit vDSO flags, resulting in build failures due to the
-structure of clang's argument parsing of the stack protector options,
-which validates the arguments of the stack protector guard flags
-unconditionally in the frontend, choking on the 64-bit values when
-targeting 32-bit:
-
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  clang: error: invalid value 'r13' in 'mstack-protector-guard-reg=', expected one of: r2
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
-  make[3]: *** [arch/powerpc/kernel/vdso/Makefile:87: arch/powerpc/kernel/vdso/vgetrandom-32.o] Error 1
-
-Remove these flags by adding them to the CC32FLAGSREMOVE variable, which
-already handles situations similar to this. Additionally, reformat and
-align a comment better for the expanding CONFIG_CC_IS_CLANG block.
-
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241030-powerpc-vdso-drop-stackp-flags-clang-v1-1-d95e7376d29c@kernel.org
-
-diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
-index 31ca5a547004..c568cad6a22e 100644
---- a/arch/powerpc/kernel/vdso/Makefile
-+++ b/arch/powerpc/kernel/vdso/Makefile
-@@ -54,10 +54,14 @@ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -W
- 
- CC32FLAGS := -m32
- CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
--  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
--  # an unused command line flag warning for this file.
- ifdef CONFIG_CC_IS_CLANG
-+# This flag is supported by clang for 64-bit but not 32-bit so it will cause
-+# an unused command line flag warning for this file.
- CC32FLAGSREMOVE += -fno-stack-clash-protection
-+# -mstack-protector-guard values from the 64-bit build are not valid for the
-+# 32-bit one. clang validates the values passed to these arguments during
-+# parsing, even when -fno-stack-protector is passed afterwards.
-+CC32FLAGSREMOVE += -mstack-protector-guard%
- endif
- LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
- AS32FLAGS := -D__VDSO32__
+diff --git a/sound/usb/clock.c b/sound/usb/clock.c
+index 3d1c0ec11753..58902275c815 100644
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -21,6 +21,10 @@
+ #include "clock.h"
+ #include "quirks.h"
+=20
++/* check whether the descriptor bLength has the minimal length */
++#define DESC_LENGTH_CHECK(p) \
++	 (p->bLength >=3D sizeof(*p))
++
+ static void *find_uac_clock_desc(struct usb_host_interface *iface, int id,
+ 				 bool (*validator)(void *, int), u8 type)
+ {
+@@ -38,36 +42,60 @@ static void *find_uac_clock_desc(struct usb_host_interf=
+ace *iface, int id,
+ static bool validate_clock_source_v2(void *p, int id)
+ {
+ 	struct uac_clock_source_descriptor *cs =3D p;
++	if (!DESC_LENGTH_CHECK(cs))
++		return false;
+ 	return cs->bClockID =3D=3D id;
+ }
+=20
+ static bool validate_clock_source_v3(void *p, int id)
+ {
+ 	struct uac3_clock_source_descriptor *cs =3D p;
++	if (!DESC_LENGTH_CHECK(cs))
++		return false;
+ 	return cs->bClockID =3D=3D id;
+ }
+=20
+ static bool validate_clock_selector_v2(void *p, int id)
+ {
+ 	struct uac_clock_selector_descriptor *cs =3D p;
+-	return cs->bClockID =3D=3D id;
++	if (!DESC_LENGTH_CHECK(cs))
++		return false;
++	if (cs->bClockID !=3D id)
++		return false;
++	/* additional length check for baCSourceID array (in bNrInPins size)
++	 * and two more fields (which sizes depend on the protocol)
++	 */
++	return cs->bLength >=3D sizeof(*cs) + cs->bNrInPins +
++		1 /* bmControls */ + 1 /* iClockSelector */;
+ }
+=20
+ static bool validate_clock_selector_v3(void *p, int id)
+ {
+ 	struct uac3_clock_selector_descriptor *cs =3D p;
+-	return cs->bClockID =3D=3D id;
++	if (!DESC_LENGTH_CHECK(cs))
++		return false;
++	if (cs->bClockID !=3D id)
++		return false;
++	/* additional length check for baCSourceID array (in bNrInPins size)
++	 * and two more fields (which sizes depend on the protocol)
++	 */
++	return cs->bLength >=3D sizeof(*cs) + cs->bNrInPins +
++		4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
+ }
+=20
+ static bool validate_clock_multiplier_v2(void *p, int id)
+ {
+ 	struct uac_clock_multiplier_descriptor *cs =3D p;
++	if (!DESC_LENGTH_CHECK(cs))
++		return false;
+ 	return cs->bClockID =3D=3D id;
+ }
+=20
+ static bool validate_clock_multiplier_v3(void *p, int id)
+ {
+ 	struct uac3_clock_multiplier_descriptor *cs =3D p;
++	if (!DESC_LENGTH_CHECK(cs))
++		return false;
+ 	return cs->bClockID =3D=3D id;
+ }
+=20
+--=20
+2.47.0.338.g60cca15819-goog
 
 
