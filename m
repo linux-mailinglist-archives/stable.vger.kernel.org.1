@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-99671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF51E9E72E2
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:14:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72709E72E0
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:14:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 944851888254
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A557316C883
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD39B20C462;
-	Fri,  6 Dec 2024 15:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D669207E03;
+	Fri,  6 Dec 2024 15:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNmOEqx0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5Z9/pLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685A7207A07;
-	Fri,  6 Dec 2024 15:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B24F2066EE;
+	Fri,  6 Dec 2024 15:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497961; cv=none; b=bPYyg/ogIirYXI5hBRzB4dU1tIbZUtucGPdKtAeR6oCeyxZVQGZhyISv5Ut83B6QzSfp4EIdQICh3mGwYaO1JSUzHVxIBCNDhO5lTC2VcSNfGxt6BsYUwfbw528glAifgcxL/XJ7C2jFY8JjWktOT61AKtRUAvBE0rlDDeDajBE=
+	t=1733497977; cv=none; b=XyCbmUm9FhxjgSHu1INAtBYZ8/kVgr4zyrfS+n5YxgVWSdyGV6HdRY2/+5BPieXYKsB/VPAP8dF0W01I1tip6naVAcJPagwo0A39FTl4t2XpsnI6+jrP5MQLO0gZK3FS+/GBUDFa0tZbqNr8XI7BzKzfHDAVMLUff+b+4AhJTJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497961; c=relaxed/simple;
-	bh=zeunuCxYMirkXYxp+4fXdTV7/XGuexvIYmPYVTRutqg=;
+	s=arc-20240116; t=1733497977; c=relaxed/simple;
+	bh=uGPkrlajw+VtYhVWahBC0EXFMZEETtOq8dQP15+0wx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4hOE8o4vkSkxTjoZYX8Q4xpj62dDnn3CIPEv6eozT2cp2jhlDs0KfG2Z+WwvvThhk2+qTYyLUL378R9w2ptRoBQuT2lVWsXX46LXYb8MT76wa6E7KpSXRrEXjz25frXoS7KbFHuksjaV9WBWbNiNTubCICGDVysKciAPFY2hX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNmOEqx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD159C4CED1;
-	Fri,  6 Dec 2024 15:12:40 +0000 (UTC)
+	 MIME-Version; b=pYlDgk9qRVWF00K+EcW8AcYD+nr1I65m8aKaGrImzcLR1WiyJN6Grhyp6dA9vS0VEgha47KeHgVQxyh8EgbH42bMVs5T+7GtRA16WeY2xsqSaXteMFf0kERJ/Ixl3rKBR/C62ouMnozsKYkQ0i6Wwu7LESxwrulmSiNYuw4IPqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5Z9/pLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8647C4CED1;
+	Fri,  6 Dec 2024 15:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497961;
-	bh=zeunuCxYMirkXYxp+4fXdTV7/XGuexvIYmPYVTRutqg=;
+	s=korg; t=1733497977;
+	bh=uGPkrlajw+VtYhVWahBC0EXFMZEETtOq8dQP15+0wx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNmOEqx0A9ywYL+ybMxlcIoOckUgZT0RI3zrb19l/2T8ttrFPXe5GF7U9+FvJL0oT
-	 19RjKsbC0H7jUPPn7W5VgbD1lXJJlSj73+TTZOO8eFzchT5zd6lkOSHo7BLDPYlH83
-	 JohRzoP9oePPxIUptPO+rPT3AI5ubqtOnX+CYx20=
+	b=C5Z9/pLXZzgDokq4TS3O4fbej8M0nVCsE86odmlimt+1+C30OLzyQfDRM8MswGvOE
+	 3ZV3Q69XUCd4OcMWmdId+CLD3mt4t6P/uWN87UpSt1VhhUtu8urjvx8z5xB4LXrqSt
+	 ip0pT2eeZSy5II7I7O4hrwLblRVSFclawmq/w/1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Richard Cochran <richardcochran@gmail.com>,
 	Somnath Kotur <somnath.kotur@broadcom.com>,
 	Pavan Chebbi <pavan.chebbi@broadcom.com>,
 	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
 	Michael Chan <michael.chan@broadcom.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 417/676] bnxt_en: Refactor bnxt_ptp_init()
-Date: Fri,  6 Dec 2024 15:33:56 +0100
-Message-ID: <20241206143709.637341465@linuxfoundation.org>
+Subject: [PATCH 6.6 418/676] bnxt_en: Unregister PTP during PCI shutdown and suspend
+Date: Fri,  6 Dec 2024 15:33:57 +0100
+Message-ID: <20241206143709.676566794@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -71,94 +72,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 1e9614cd956268e10a669c0593e7e54d03d0c087 ]
+[ Upstream commit 3661c05c54e8db7064aa96a0774654740974dffc ]
 
-Instead of passing the 2nd parameter phc_cfg to bnxt_ptp_init().
-Store it in bp->ptp_cfg so that the caller doesn't need to know what
-the value should be.
+If we go through the PCI shutdown or suspend path, we shutdown the
+NIC but PTP remains registered.  If the kernel continues to run for
+a little bit, the periodic PTP .do_aux_work() function may be called
+and it will read the PHC from the BAR register.  Since the device
+has already been disabled, it will cause a PCIe completion timeout.
+Fix it by calling bnxt_ptp_clear() in the PCI shutdown/suspend
+handlers.  bnxt_ptp_clear() will unregister from PTP and
+.do_aux_work() will be canceled.
 
-In the next patch, we'll need to call bnxt_ptp_init() in bnxt_resume()
-and this will make it easier.
+In bnxt_resume(), we need to re-initialize PTP.
 
+Fixes: a521c8a01d26 ("bnxt_en: Move bnxt_ptp_init() from bnxt_open() back to bnxt_init_one()")
+Cc: Richard Cochran <richardcochran@gmail.com>
 Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
 Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 3661c05c54e8 ("bnxt_en: Unregister PTP during PCI shutdown and suspend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 6 +++---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 4 ++--
- drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h | 3 ++-
- 3 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index bc6206543e8e9..c216d95809282 100644
+index c216d95809282..c440f4d8d43a2 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -7597,7 +7597,6 @@ static int __bnxt_hwrm_ptp_qcfg(struct bnxt *bp)
- 	struct hwrm_port_mac_ptp_qcfg_output *resp;
- 	struct hwrm_port_mac_ptp_qcfg_input *req;
- 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
--	bool phc_cfg;
- 	u8 flags;
- 	int rc;
+@@ -13857,6 +13857,7 @@ static void bnxt_shutdown(struct pci_dev *pdev)
+ 	if (netif_running(dev))
+ 		dev_close(dev);
  
-@@ -7640,8 +7639,9 @@ static int __bnxt_hwrm_ptp_qcfg(struct bnxt *bp)
- 		rc = -ENODEV;
- 		goto exit;
++	bnxt_ptp_clear(bp);
+ 	bnxt_clear_int_mode(bp);
+ 	pci_disable_device(pdev);
+ 
+@@ -13883,6 +13884,7 @@ static int bnxt_suspend(struct device *device)
+ 		rc = bnxt_close(dev);
  	}
--	phc_cfg = (flags & PORT_MAC_PTP_QCFG_RESP_FLAGS_RTC_CONFIGURED) != 0;
--	rc = bnxt_ptp_init(bp, phc_cfg);
-+	ptp->rtc_configured =
-+		(flags & PORT_MAC_PTP_QCFG_RESP_FLAGS_RTC_CONFIGURED) != 0;
-+	rc = bnxt_ptp_init(bp);
- 	if (rc)
- 		netdev_warn(bp->dev, "PTP initialization failed.\n");
- exit:
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-index 6e3da3362bd61..bbe8657f6545b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
-@@ -922,7 +922,7 @@ static void bnxt_ptp_free(struct bnxt *bp)
+ 	bnxt_hwrm_func_drv_unrgtr(bp);
++	bnxt_ptp_clear(bp);
+ 	pci_disable_device(bp->pdev);
+ 	bnxt_free_ctx_mem(bp);
+ 	kfree(bp->ctx);
+@@ -13926,6 +13928,10 @@ static int bnxt_resume(struct device *device)
+ 		goto resume_exit;
  	}
- }
  
--int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
-+int bnxt_ptp_init(struct bnxt *bp)
- {
- 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
- 	int rc;
-@@ -944,7 +944,7 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
- 
- 	if (BNXT_PTP_USE_RTC(bp)) {
- 		bnxt_ptp_timecounter_init(bp, false);
--		rc = bnxt_ptp_init_rtc(bp, phc_cfg);
-+		rc = bnxt_ptp_init_rtc(bp, ptp->rtc_configured);
- 		if (rc)
- 			goto out;
- 	} else {
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-index 34162e07a1195..7d6a215b10b1f 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
-@@ -115,6 +115,7 @@ struct bnxt_ptp_cfg {
- 					 BNXT_PTP_MSG_PDELAY_REQ |	\
- 					 BNXT_PTP_MSG_PDELAY_RESP)
- 	u8			tx_tstamp_en:1;
-+	u8			rtc_configured:1;
- 	int			rx_filter;
- 	u32			tstamp_filters;
- 
-@@ -145,6 +146,6 @@ int bnxt_get_tx_ts_p5(struct bnxt *bp, struct sk_buff *skb);
- int bnxt_get_rx_ts_p5(struct bnxt *bp, u64 *ts, u32 pkt_ts);
- void bnxt_ptp_rtc_timecounter_init(struct bnxt_ptp_cfg *ptp, u64 ns);
- int bnxt_ptp_init_rtc(struct bnxt *bp, bool phc_cfg);
--int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg);
-+int bnxt_ptp_init(struct bnxt *bp);
- void bnxt_ptp_clear(struct bnxt *bp);
- #endif
++	if (bnxt_ptp_init(bp)) {
++		kfree(bp->ptp_cfg);
++		bp->ptp_cfg = NULL;
++	}
+ 	bnxt_get_wol_settings(bp);
+ 	if (netif_running(dev)) {
+ 		rc = bnxt_open(dev);
 -- 
 2.43.0
 
