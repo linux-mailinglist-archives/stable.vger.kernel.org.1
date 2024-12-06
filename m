@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-99854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685B29E73D5
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:24:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDAEA9E7388
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:21:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA3A16A610
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:23:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9717928782A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004EC20D501;
-	Fri,  6 Dec 2024 15:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1A7207670;
+	Fri,  6 Dec 2024 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydS720BS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnZPovAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3298207E1A;
-	Fri,  6 Dec 2024 15:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C8817C208;
+	Fri,  6 Dec 2024 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498575; cv=none; b=h/m2yo2tgQ283lXhzCoNQJXjY6F7kQpyM/OgPS12hwMfIw+0HoQ7VIINi5HKIjVtlnj91utF4KoxPwPbgtx7x8X1w7+9aBtkUkVK7zXGLxkFX0N+vt0LVbuH6XFFjgcFQ6N+mhofS3/3kENYqZ4fGq2fA/NRoyhZ7Eym0/n9eMc=
+	t=1733498470; cv=none; b=K/IUp5WJjPRIv1mT8sUMd+zDVsWFy7PfSGaImUaLdQ63GjL5SfHDfHbg30VsijSgca0hZJYkWun9rEJ3Z5B/FXjp+Xw6jJsmkRZq84chLYIoAdRk3ViFMGGpN5Y3cKghDgrQaAP7IaOsyXf5iDAh2wPUUPvdlsrj8ra51HlzQEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498575; c=relaxed/simple;
-	bh=Y4tOHP2uTmBSraitLAX+fwXLV8YazQtin9ga3EPZdZA=;
+	s=arc-20240116; t=1733498470; c=relaxed/simple;
+	bh=NDiH8rucRtLoPk2pt8x6AhlEl8QBEpo1MU/3wcddTT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZsp1sKCAPipEM8mia0q9+tmqYV+F06Djwk28qG2N9Ql2xTX57AXv+obK4/PNygHwJyicahTXxsM06fSBNIBCzJ6grXNm3gT1fqQsziFbFQhBgWGCjPWj4UPbK01Zbn0tjc2dw1SBvs7gYiRgcc7Wtce/oXHYHL20Xq9THJCGpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydS720BS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E02C4CEDC;
-	Fri,  6 Dec 2024 15:22:54 +0000 (UTC)
+	 MIME-Version; b=BIJbvzqVH8unE+bODZwc+tzndx71ddDY/fAlZUykVQGZB+rc2LHRLeLztEouZIfUz7cbOXOMcBBHugSlMwOFNECQR3vjoGb9x/1wum8Dru5D4VwdG5W4RaSSHcKNEoDd/oAIizK8MznkU7msAR28Mj5iqXBcVdV8q3mpgDaaWvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnZPovAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC71BC4CED1;
+	Fri,  6 Dec 2024 15:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498575;
-	bh=Y4tOHP2uTmBSraitLAX+fwXLV8YazQtin9ga3EPZdZA=;
+	s=korg; t=1733498470;
+	bh=NDiH8rucRtLoPk2pt8x6AhlEl8QBEpo1MU/3wcddTT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydS720BSlx1ehxptKIXr9bdwvp4es79g5XIv/fJ2f2e0hlI3+2p9TzdPCh0HQBtrq
-	 nZab0CutYCXnHng/2fnOkMpntcPonsfniAx4RvtxMrpBj7igTGyUiMDRROTX0MLKiQ
-	 pATlw3QvGgszF+ZrBN6s/D0ciFvo8x6lumP9yhgE=
+	b=QnZPovAqwdkDb9eXoBKXRtZPJmHuJ44dL/iZl7haByZ/RZjCemCzAoltI31Q4e4NE
+	 bOTa8IRWXLlfRR14XPDxD9J2nmFIT5x7SUPXz9Rr9wX0uqN0dJjRnEUrBgn5+oFscl
+	 fYHujfakt4iuOwLLGVPBKNk/U3zUuQnBqd0eJAzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Li Lingfeng <lilingfeng3@huawei.com>,
+	Liu Jian <liujian56@huawei.com>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 594/676] nfs: ignore SB_RDONLY when mounting nfs
-Date: Fri,  6 Dec 2024 15:36:53 +0100
-Message-ID: <20241206143716.572405739@linuxfoundation.org>
+Subject: [PATCH 6.6 595/676] sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport
+Date: Fri,  6 Dec 2024 15:36:54 +0100
+Message-ID: <20241206143716.610828711@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -66,77 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3 ]
+[ Upstream commit 4db9ad82a6c823094da27de4825af693a3475d51 ]
 
-When exporting only one file system with fsid=0 on the server side, the
-client alternately uses the ro/rw mount options to perform the mount
-operation, and a new vfsmount is generated each time.
+Since transport->sock has been set to NULL during reset transport,
+XPRT_SOCK_UPD_TIMEOUT also needs to be cleared. Otherwise, the
+xs_tcp_set_socket_timeouts() may be triggered in xs_tcp_send_request()
+to dereference the transport->sock that has been set to NULL.
 
-It can be reproduced as follows:
-[root@localhost ~]# mount /dev/sda /mnt2
-[root@localhost ~]# echo "/mnt2 *(rw,no_root_squash,fsid=0)" >/etc/exports
-[root@localhost ~]# systemctl restart nfs-server
-[root@localhost ~]# mount -t nfs -o ro,vers=4 127.0.0.1:/ /mnt/sdaa
-[root@localhost ~]# mount -t nfs -o rw,vers=4 127.0.0.1:/ /mnt/sdaa
-[root@localhost ~]# mount -t nfs -o ro,vers=4 127.0.0.1:/ /mnt/sdaa
-[root@localhost ~]# mount -t nfs -o rw,vers=4 127.0.0.1:/ /mnt/sdaa
-[root@localhost ~]# mount | grep nfs4
-127.0.0.1:/ on /mnt/sdaa type nfs4 (ro,relatime,vers=4.2,rsize=1048576,...
-127.0.0.1:/ on /mnt/sdaa type nfs4 (rw,relatime,vers=4.2,rsize=1048576,...
-127.0.0.1:/ on /mnt/sdaa type nfs4 (ro,relatime,vers=4.2,rsize=1048576,...
-127.0.0.1:/ on /mnt/sdaa type nfs4 (rw,relatime,vers=4.2,rsize=1048576,...
-[root@localhost ~]#
-
-We expected that after mounting with the ro option, using the rw option to
-mount again would return EBUSY, but the actual situation was not the case.
-
-As shown above, when mounting for the first time, a superblock with the ro
-flag will be generated, and at the same time, in do_new_mount_fc -->
-do_add_mount, it detects that the superblock corresponding to the current
-target directory is inconsistent with the currently generated one
-(path->mnt->mnt_sb != newmnt->mnt.mnt_sb), and a new vfsmount will be
-generated.
-
-When mounting with the rw option for the second time, since no matching
-superblock can be found in the fs_supers list, a new superblock with the
-rw flag will be generated again. The superblock in use (ro) is different
-from the newly generated superblock (rw), and a new vfsmount will be
-generated again.
-
-When mounting with the ro option for the third time, the superblock (ro)
-is found in fs_supers, the superblock in use (rw) is different from the
-found superblock (ro), and a new vfsmount will be generated again.
-
-We can switch between ro/rw through remount, and only one superblock needs
-to be generated, thus avoiding the problem of repeated generation of
-vfsmount caused by switching superblocks.
-
-Furthermore, This can also resolve the issue described in the link.
-
-Fixes: 275a5d24bf56 ("NFS: Error when mounting the same filesystem with different options")
-Link: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
+Fixes: 7196dbb02ea0 ("SUNRPC: Allow changing of the TCP timeout parameters on the fly")
 Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Liu Jian <liujian56@huawei.com>
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/xprtsock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 8bceaac2205c8..a92b234ae0870 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -11,7 +11,7 @@
- #include <linux/nfs_page.h>
- #include <linux/wait_bit.h>
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 50490b1e8a0d0..714da627fba8e 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1186,6 +1186,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
+ 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
+ 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
+ 	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
++	clear_bit(XPRT_SOCK_UPD_TIMEOUT, &transport->sock_state);
+ }
  
--#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
-+#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
- 
- extern const struct export_operations nfs_export_ops;
- 
+ static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
 -- 
 2.43.0
 
