@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-99086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318A39E7025
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:39:12 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1749E7027
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:39:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6F0D281890
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:39:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBD0318862F1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4521614A4F0;
-	Fri,  6 Dec 2024 14:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D8014A4F0;
+	Fri,  6 Dec 2024 14:39:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcHIx4eU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNP5sAQY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84321494D9;
-	Fri,  6 Dec 2024 14:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCABA1494D9;
+	Fri,  6 Dec 2024 14:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733495948; cv=none; b=EZTFtOPrBN9+qeGDmU7k8b7AvW0ECgyVbyziQ8VNiI60YlB4RAJk4RgE9bBXXpxjrttye8fHX5Yezzu4cY3dOF/xrwD9YaBZ9vTR22HQTyqZEXYv4uJ3UosLuRYsy6/5PWgJdqftisvoafHJU/Fx/OjcWANAmjsuG+PEo2O1m14=
+	t=1733495956; cv=none; b=qUGDdXY0JFJyyWsruCR4C3lCKCZx+5yW0GoCl0m9Zx+744kpOVZd77WLzsgas8+DN0S0ppvVqjGaIoeNYfsMwg+FCC4IJCnZVbCUm51CGQLUqDdH4weAm8SeGL4G3C3cg6SoVTUVJ8/MNKb2DSOIjlEgFng6cpAVyJDbSZ1QKd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733495948; c=relaxed/simple;
-	bh=GlNk0Q4316aU5oK4ItPh7atCzryIc3Sz/RKqYu6imK4=;
+	s=arc-20240116; t=1733495956; c=relaxed/simple;
+	bh=qZTImxgkxVkbJnfZC3KmzIJZt4FjRt0KDObnoLGIT/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOmKKlkJioYNsvoaBIfZnaBnHcYpkYJ/nl7m8aEpfAGx4Qu7Ua8baQ0PYTibMIpXQI3UAZFuYt+lVD6pbzVwx3TS8q/yoy5NN7hG0vcA4ULj+sT3rVBq9Nig/1MtGj0Dy/iy0tVxKTxy8RjudFBq8JqXiSOBAv6JZOXoptdkoPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcHIx4eU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C614DC4CED1;
-	Fri,  6 Dec 2024 14:39:06 +0000 (UTC)
+	 MIME-Version; b=f/OW/BFteyEBnJAwEZU8hgePaUnzriQv7e2hnG9oZtTd5TJ2it/A3jDfFLrtPJY43fDqeIglQKo+VqkE2SeTCEnOZXlYKep72F3S0lR340D7Tkdcc4Kl2EiTKmlfjXvJgnkCUc+bb8TV5nnhQn5OksGcm3v3FyUyS8boI49g4Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNP5sAQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51B4C4CED1;
+	Fri,  6 Dec 2024 14:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733495947;
-	bh=GlNk0Q4316aU5oK4ItPh7atCzryIc3Sz/RKqYu6imK4=;
+	s=korg; t=1733495954;
+	bh=qZTImxgkxVkbJnfZC3KmzIJZt4FjRt0KDObnoLGIT/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcHIx4eUIZdQiWvFVI9HsRlW4D7QWugrRusGCtljodCKygreCyGC8N9sZb+IkJlNU
-	 JGPIF4na753tc3t2MXadXts3cyRJYsBfkhDK/1IpJEqiOGdHqJDqxG9Q01P0Eu9sDz
-	 yFsm6byXc1quP3xmTRV/+KBn9z8kLnJzLEzS/SLo=
+	b=aNP5sAQYUgh6+N4x210EcCbtMAfYuGRWEcGdfS4KC2Sbqi/KtBKpfrr+RFN8EMrw4
+	 i79GlaZ5gjILg5ekxl2ctkCWE8JzS0lG8Wk+AtENaJuFWg/d5Yx+iyDvAC5Qev+6Wr
+	 wzFS+aGjrWyotNY7DK7wGk8u6x5BVk3XWOGRvZS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
+	Disha Goel <disgoel@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 001/146] xfs: remove unknown compat feature check in superblock write validation
-Date: Fri,  6 Dec 2024 15:35:32 +0100
-Message-ID: <20241206143527.715964432@linuxfoundation.org>
+Subject: [PATCH 6.12 002/146] quota: flush quota_release_work upon quota writeback
+Date: Fri,  6 Dec 2024 15:35:33 +0100
+Message-ID: <20241206143527.755848010@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -68,57 +68,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
 
-[ Upstream commit 652f03db897ba24f9c4b269e254ccc6cc01ff1b7 ]
+[ Upstream commit ac6f420291b3fee1113f21d612fa88b628afab5b ]
 
-Compat features are new features that older kernels can safely ignore,
-allowing read-write mounts without issues. The current sb write validation
-implementation returns -EFSCORRUPTED for unknown compat features,
-preventing filesystem write operations and contradicting the feature's
-definition.
+One of the paths quota writeback is called from is:
 
-Additionally, if the mounted image is unclean, the log recovery may need
-to write to the superblock. Returning an error for unknown compat features
-during sb write validation can cause mount failures.
+freeze_super()
+  sync_filesystem()
+    ext4_sync_fs()
+      dquot_writeback_dquots()
 
-Although XFS currently does not use compat feature flags, this issue
-affects current kernels' ability to mount images that may use compat
-feature flags in the future.
+Since we currently don't always flush the quota_release_work queue in
+this path, we can end up with the following race:
 
-Since superblock read validation already warns about unknown compat
-features, it's unnecessary to repeat this warning during write validation.
-Therefore, the relevant code in write validation is being removed.
+ 1. dquot are added to releasing_dquots list during regular operations.
+ 2. FS Freeze starts, however, this does not flush the quota_release_work queue.
+ 3. Freeze completes.
+ 4. Kernel eventually tries to flush the workqueue while FS is frozen which
+    hits a WARN_ON since transaction gets started during frozen state:
 
-Fixes: 9e037cb7972f ("xfs: check for unknown v5 feature bits in superblock write verifier")
-Cc: stable@vger.kernel.org # v4.19+
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+  ext4_journal_check_start+0x28/0x110 [ext4] (unreliable)
+  __ext4_journal_start_sb+0x64/0x1c0 [ext4]
+  ext4_release_dquot+0x90/0x1d0 [ext4]
+  quota_release_workfn+0x43c/0x4d0
+
+Which is the following line:
+
+  WARN_ON(sb->s_writers.frozen == SB_FREEZE_COMPLETE);
+
+Which ultimately results in generic/390 failing due to dmesg
+noise. This was detected on powerpc machine 15 cores.
+
+To avoid this, make sure to flush the workqueue during
+dquot_writeback_dquots() so we dont have any pending workitems after
+freeze.
+
+Reported-by: Disha Goel <disgoel@linux.ibm.com>
+CC: stable@vger.kernel.org
+Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20241121123855.645335-2-ojaswin@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_sb.c | 7 -------
- 1 file changed, 7 deletions(-)
+ fs/quota/dquot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/xfs/libxfs/xfs_sb.c b/fs/xfs/libxfs/xfs_sb.c
-index d95409f3cba66..02ebcbc4882f5 100644
---- a/fs/xfs/libxfs/xfs_sb.c
-+++ b/fs/xfs/libxfs/xfs_sb.c
-@@ -297,13 +297,6 @@ xfs_validate_sb_write(
- 	 * the kernel cannot support since we checked for unsupported bits in
- 	 * the read verifier, which means that memory is corrupt.
- 	 */
--	if (xfs_sb_has_compat_feature(sbp, XFS_SB_FEAT_COMPAT_UNKNOWN)) {
--		xfs_warn(mp,
--"Corruption detected in superblock compatible features (0x%x)!",
--			(sbp->sb_features_compat & XFS_SB_FEAT_COMPAT_UNKNOWN));
--		return -EFSCORRUPTED;
--	}
--
- 	if (!xfs_is_readonly(mp) &&
- 	    xfs_sb_has_ro_compat_feature(sbp, XFS_SB_FEAT_RO_COMPAT_UNKNOWN)) {
- 		xfs_alert(mp,
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index b40410cd39af4..71c0ce31a4c4d 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -689,6 +689,8 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+ 
+ 	WARN_ON_ONCE(!rwsem_is_locked(&sb->s_umount));
+ 
++	flush_delayed_work(&quota_release_work);
++
+ 	for (cnt = 0; cnt < MAXQUOTAS; cnt++) {
+ 		if (type != -1 && cnt != type)
+ 			continue;
 -- 
 2.43.0
 
