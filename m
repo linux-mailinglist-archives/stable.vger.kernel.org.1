@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-99900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F509E73FA
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:26:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3E29E7400
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E415D16DDE8
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:25:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DBEE1886418
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949E31FC7CB;
-	Fri,  6 Dec 2024 15:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C901F4735;
+	Fri,  6 Dec 2024 15:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuzNniXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFF6aCXj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51690149C51;
-	Fri,  6 Dec 2024 15:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1878253A7;
+	Fri,  6 Dec 2024 15:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498733; cv=none; b=SBYWCLwQ5+ytoG3mAzcjyXPCsDN/YcoQk8tRTT5E0IoTJUG2FA4u0F5dEO9LOjeKK7/KW+Zq2pSd3gr664i0oyX69KkKzmQqEZ3fIe38giNEa6kEf43pbGhjl3yYK4+jQ0yWLyerWe2lkpfYjBuo/JpJWqbNFeP3DvIRIBIcEFo=
+	t=1733498740; cv=none; b=gxGtM454LGrnQ7Z2Z3vqyluvhsJgjDVBE/UpAiR9y4833E9Xuio2XX8yNaaRnQNfTUgXKz3xwyPib/7r3+JZapP65xalf+BJ9lZGYhuTIwZWpteOMcpugDVI3vMgzFNvsK4cF4ICt21eSqgLqUbe2j+0aNiRr2sgMwg7HYSVGhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498733; c=relaxed/simple;
-	bh=HVTlBSypLR2mIud434xm6/WU/QawF/UR4SF/+UY/zD8=;
+	s=arc-20240116; t=1733498740; c=relaxed/simple;
+	bh=RvG6C5ljNHy0aKNyblGZVbSLW02QwY4VlZ7/UrxWbsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/+D8+lrhGSAQ7KYeNltxgv60/9vBO1oFmb2Na6KXSHdbw//C2ARHYHisGDLYNDx0IQbAH54VAvr9LNvZnzvnOsnnDQu8/uV+tGrdN3IOi3nuX0TTdABct1Fog6TwsE4jmhp6uoc2uSwyyIWfbZrin8iMpckCmCJSDSMJ6lHfVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuzNniXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BA8C4CED1;
-	Fri,  6 Dec 2024 15:25:32 +0000 (UTC)
+	 MIME-Version; b=LDAbTAepk9lY4QNpAR+d/IbANtGCEOgO01ZF89+jAiJ1Y2sD5g2Mv/9Y6vX0PM12ntENXQYngesMagrOjYijW2NjncwOgVGTsICHzrJZt3aBAbM62+oYt5C7DbI+1NFwFVpVjc2iVvgwkPELWJQXrjsN4S5aItne9CNicHXL5H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFF6aCXj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783D8C4CED1;
+	Fri,  6 Dec 2024 15:25:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498733;
-	bh=HVTlBSypLR2mIud434xm6/WU/QawF/UR4SF/+UY/zD8=;
+	s=korg; t=1733498740;
+	bh=RvG6C5ljNHy0aKNyblGZVbSLW02QwY4VlZ7/UrxWbsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yuzNniXC1eFJnhNE84pIguHOjro6Kj0rBCb4MWBlATxTo/l4MspbYIDoGbWzaN+5g
-	 cZaLdLzdH8OSpF/GMFTAbMSX2+UX7aCFNPyuqkLUaX9kH2tWqBwj4UxzadkL5q+MhM
-	 WiFvipL5yQSZhwZAD+xOpfZPatsb7W7VRK5DGJWs=
+	b=LFF6aCXjIdHQ90b6FpCCh+6rMOri2WS/zI3pF1soi1C2KOOZr7wHIgeHHqdhIxTJu
+	 9zXUbG3LeTsK3OKouGtGOnqGAmGTOxl2Y7vEyO0kornKZeKVwWLwqv6a35Y8WquYxq
+	 VxcPG60D33YERT7hVGNfPUoPkX8AzwWjpYAEYvP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.6 672/676] drm: xlnx: zynqmp_dpsub: fix hotplug detection
-Date: Fri,  6 Dec 2024 15:38:11 +0100
-Message-ID: <20241206143719.618807520@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 673/676] drm/amdkfd: Use the correct wptr size
+Date: Fri,  6 Dec 2024 15:38:12 +0100
+Message-ID: <20241206143719.657463581@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -65,41 +65,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit 71ba1c9b1c717831920c3d432404ee5a707e04b4 upstream.
+commit cdc6705f98ea3f854a60ba8c9b19228e197ae384 upstream.
 
-drm_kms_helper_poll_init needs to be called after zynqmp_dpsub_kms_init.
-zynqmp_dpsub_kms_init creates the connector and without it we don't
-enable hotplug detection.
+Write pointer could be 32-bit or 64-bit. Use the correct size during
+initialization.
 
-Fixes: eb2d64bfcc17 ("drm: xlnx: zynqmp_dpsub: Report HPD through the bridge")
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steffen Dirkwinkel <s.dirkwinkel@beckhoff.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241028134218.54727-1-lists@steffen.cc
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xlnx/zynqmp_kms.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xlnx/zynqmp_kms.c
-+++ b/drivers/gpu/drm/xlnx/zynqmp_kms.c
-@@ -506,12 +506,12 @@ int zynqmp_dpsub_drm_init(struct zynqmp_
- 	if (ret)
- 		return ret;
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_kernel_queue.c
+@@ -123,7 +123,7 @@ static bool kq_initialize(struct kernel_
  
--	drm_kms_helper_poll_init(drm);
--
- 	ret = zynqmp_dpsub_kms_init(dpsub);
- 	if (ret < 0)
- 		goto err_poll_fini;
+ 	memset(kq->pq_kernel_addr, 0, queue_size);
+ 	memset(kq->rptr_kernel, 0, sizeof(*kq->rptr_kernel));
+-	memset(kq->wptr_kernel, 0, sizeof(*kq->wptr_kernel));
++	memset(kq->wptr_kernel, 0, dev->kfd->device_info.doorbell_size);
  
-+	drm_kms_helper_poll_init(drm);
-+
- 	/* Reset all components and register the DRM device. */
- 	drm_mode_config_reset(drm);
- 
+ 	prop.queue_size = queue_size;
+ 	prop.is_interop = false;
 
 
 
