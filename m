@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-98883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602289E6267
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 01:47:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E857B1882AD4
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:47:41 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112661DFFC;
-	Fri,  6 Dec 2024 00:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VL1BnAQE"
-X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23969E6268
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 01:48:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7661EEF9
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 00:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 610BE285E21
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:48:12 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3221DFFC;
+	Fri,  6 Dec 2024 00:48:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jG5Yt3nB"
+X-Original-To: stable@vger.kernel.org
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035F21758B
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 00:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733446057; cv=none; b=nNK3SfWxPEkHCtpddAwPsMNWM80TkrvaaaBmfmZEVN6uFfAncudaRtD5sAIvhADjQTvV26WwneYRIG3+ig1INFzasUyh8NYlUAnw+5RIBqCd1E8II1v1R2otpqSFQIwrObFIEnYx8eKTnaQCiwBPM7de49+OTBaL3rskqaq1A3Q=
+	t=1733446089; cv=none; b=BzUW6lxn7ax3OwHsPaT/bY1eMJkIMTtha1yrbLFQj1Zy3sEvv2IHV9y76KFCM5eDj1IynXK9/T6AURAPe5aLiCqvUfjrtBSBapyGWIfWbPmp13U8CcyrhRi7G+I4y65nTt9LiX91Y+vxvMaMlQ5QVaIfdtTJSlDqTKx19O/H1Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733446057; c=relaxed/simple;
-	bh=/8CnTaAHdSDRvvTzV00/IZWsFsusaNcgYkScChET5ts=;
+	s=arc-20240116; t=1733446089; c=relaxed/simple;
+	bh=7o4FkoiZuy7PUjTuzrcAlScaNKtV8bX0eRwU9s63kps=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kodzjyXbFLqZsW99N8sWIRhFC+wiYU00jy8SwQ1e7icbq4iPN+FOtQbLdkGixdAa637esXfvTJ4qCnROa+uDOwuMKn+T6++NJ8Jsfvzoevf/FRrsbv6dEQK7MYxQ2uN5R7PzKjiRavYSC2rjqW4XdHwSTq+SOfLPj/DUHucqwDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VL1BnAQE; arc=none smtp.client-ip=95.215.58.189
+	 Content-Type:Content-Disposition:In-Reply-To; b=NvPscryinG8CSTsgvGOKyamEYgBUCTxBczaJZJMUtLQLG/hKF+HTKVx42H6Wv2vR+eb3523iJw8uZV2JTf6IbvM6wGMwyQjABuWl0jx1mHsOvBnHGDU8DwLwsT6/60HXQ3lFpopJ3j0Bf5kBRDp5JUuxbJkLDp4FsIXzQCF7x+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jG5Yt3nB; arc=none smtp.client-ip=95.215.58.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 5 Dec 2024 16:47:27 -0800
+Date: Thu, 5 Dec 2024 16:47:58 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1733446053;
+	t=1733446085;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IEZDZOSzmcJ+X6LjLDvz0dxZX+PQ0TzSko0YGz3Br3M=;
-	b=VL1BnAQEyR7xp+47uGuPyJE0VDDTkceVeHPAmeMOgrrXNji+xXty5O+yL5rDNLJ1PbxzDO
-	DzJTr6M71OXFMvKL3iXHM+WYFYZHLjwox1MjFvju6WaqBD1QD9wymGpT1Re0uRkhsSf3rX
-	/kyx3sI0axms5dvtWALUNEeCrkoQVeg=
+	bh=KgZ8nqyj5fuU76zFx2zmKyv8BJLk5V1Xo4T78qfEMZA=;
+	b=jG5Yt3nB6u8oxePP2X6ZHalqnQ1vknKrK3SvFUTajcCvl9EBXHyOs+DFXI7diXGcE7JPKJ
+	zBAHb5PS/X0sThwZuNFyCQ3/x69MMfRZ7Fx/+DiuJo6Cvnoz11EHs7Tv7K4QfaKZxCCijA
+	6AKD4mvNShQMfbaeDXWz37pADu/Pzc4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Oliver Upton <oliver.upton@linux.dev>
 To: Jing Zhang <jingzhangos@google.com>
 Cc: stable@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
 	Kunkun Jiang <jiangkunkun@huawei.com>
-Subject: Re: [PATCH 4.19.y 1/3] KVM: arm64: vgic-its: Add a data length check
+Subject: Re: [PATCH 5.4.y 1/3] KVM: arm64: vgic-its: Add a data length check
  in vgic_its_save_*
-Message-ID: <Z1JJn7PgcdvQs4kC@linux.dev>
-References: <20241204202038.2714140-1-jingzhangos@google.com>
+Message-ID: <Z1JJvuUjbk009fWV@linux.dev>
+References: <20241204202301.2715933-1-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,10 +58,10 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241204202038.2714140-1-jingzhangos@google.com>
+In-Reply-To: <20241204202301.2715933-1-jingzhangos@google.com>
 X-Migadu-Flow: FLOW_OUT
 
-On Wed, Dec 04, 2024 at 12:20:36PM -0800, Jing Zhang wrote:
+On Wed, Dec 04, 2024 at 12:22:59PM -0800, Jing Zhang wrote:
 > commit 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022 upstream.
 > 
 > In all the vgic_its_save_*() functinos, they do not check whether
@@ -91,10 +91,10 @@ Oliver
 >  2 files changed, 32 insertions(+), 12 deletions(-)
 > 
 > diff --git a/virt/kvm/arm/vgic/vgic-its.c b/virt/kvm/arm/vgic/vgic-its.c
-> index 2fb26bd3106e..7fcf903fa5b0 100644
+> index f4ce08c0d0be..f091d4c9120a 100644
 > --- a/virt/kvm/arm/vgic/vgic-its.c
 > +++ b/virt/kvm/arm/vgic/vgic-its.c
-> @@ -1949,7 +1949,6 @@ static int scan_its_table(struct vgic_its *its, gpa_t base, int size, u32 esz,
+> @@ -2134,7 +2134,6 @@ static int scan_its_table(struct vgic_its *its, gpa_t base, int size, u32 esz,
 >  static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
 >  			      struct its_ite *ite, gpa_t gpa, int ite_esz)
 >  {
@@ -102,7 +102,7 @@ Oliver
 >  	u32 next_offset;
 >  	u64 val;
 >  
-> @@ -1958,7 +1957,8 @@ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
+> @@ -2143,7 +2142,8 @@ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
 >  	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
 >  		ite->collection->collection_id;
 >  	val = cpu_to_le64(val);
@@ -112,7 +112,7 @@ Oliver
 >  }
 >  
 >  /**
-> @@ -2094,7 +2094,6 @@ static int vgic_its_restore_itt(struct vgic_its *its, struct its_device *dev)
+> @@ -2279,7 +2279,6 @@ static int vgic_its_restore_itt(struct vgic_its *its, struct its_device *dev)
 >  static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
 >  			     gpa_t ptr, int dte_esz)
 >  {
@@ -120,7 +120,7 @@ Oliver
 >  	u64 val, itt_addr_field;
 >  	u32 next_offset;
 >  
-> @@ -2105,7 +2104,8 @@ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
+> @@ -2290,7 +2289,8 @@ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
 >  	       (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
 >  		(dev->num_eventid_bits - 1));
 >  	val = cpu_to_le64(val);
@@ -130,7 +130,7 @@ Oliver
 >  }
 >  
 >  /**
-> @@ -2285,7 +2285,8 @@ static int vgic_its_save_cte(struct vgic_its *its,
+> @@ -2470,7 +2470,8 @@ static int vgic_its_save_cte(struct vgic_its *its,
 >  	       ((u64)collection->target_addr << KVM_ITS_CTE_RDBASE_SHIFT) |
 >  	       collection->collection_id);
 >  	val = cpu_to_le64(val);
@@ -140,7 +140,7 @@ Oliver
 >  }
 >  
 >  static int vgic_its_restore_cte(struct vgic_its *its, gpa_t gpa, int esz)
-> @@ -2296,8 +2297,7 @@ static int vgic_its_restore_cte(struct vgic_its *its, gpa_t gpa, int esz)
+> @@ -2481,8 +2482,7 @@ static int vgic_its_restore_cte(struct vgic_its *its, gpa_t gpa, int esz)
 >  	u64 val;
 >  	int ret;
 >  
@@ -150,15 +150,15 @@ Oliver
 >  	if (ret)
 >  		return ret;
 >  	val = le64_to_cpu(val);
-> @@ -2331,7 +2331,6 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
+> @@ -2516,7 +2516,6 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
 >  	u64 baser = its->baser_coll_table;
->  	gpa_t gpa = BASER_ADDRESS(baser);
+>  	gpa_t gpa = GITS_BASER_ADDR_48_to_52(baser);
 >  	struct its_collection *collection;
 > -	u64 val;
 >  	size_t max_size, filled = 0;
 >  	int ret, cte_esz = abi->cte_esz;
 >  
-> @@ -2355,10 +2354,7 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
+> @@ -2540,10 +2539,7 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
 >  	 * table is not fully filled, add a last dummy element
 >  	 * with valid bit unset
 >  	 */
@@ -171,10 +171,10 @@ Oliver
 >  
 >  /**
 > diff --git a/virt/kvm/arm/vgic/vgic.h b/virt/kvm/arm/vgic/vgic.h
-> index d5e454279925..e5a307dab61e 100644
+> index 83066a81b16a..ac553f9171a6 100644
 > --- a/virt/kvm/arm/vgic/vgic.h
 > +++ b/virt/kvm/arm/vgic/vgic.h
-> @@ -17,6 +17,7 @@
+> @@ -6,6 +6,7 @@
 >  #define __KVM_ARM_VGIC_NEW_H__
 >  
 >  #include <linux/irqchip/arm-gic-common.h>
@@ -182,7 +182,7 @@ Oliver
 >  
 >  #define PRODUCT_ID_KVM		0x4b	/* ASCII code K */
 >  #define IMPLEMENTER_ARM		0x43b
-> @@ -137,6 +138,29 @@ static inline bool vgic_irq_is_multi_sgi(struct vgic_irq *irq)
+> @@ -126,6 +127,29 @@ static inline bool vgic_irq_is_multi_sgi(struct vgic_irq *irq)
 >  	return vgic_irq_get_lr_count(irq) > 1;
 >  }
 >  
@@ -213,7 +213,7 @@ Oliver
 >   * This struct provides an intermediate representation of the fields contained
 >   * in the GICH_VMCR and ICH_VMCR registers, such that code exporting the GIC
 > 
-> base-commit: 708f578f2a8f702d2f2a0ef5e6eac28e08206e03
+> base-commit: cd5b619ac41b6b1a8167380ca6655df7ccf5b5eb
 > -- 
 > 2.47.0.338.g60cca15819-goog
 > 
