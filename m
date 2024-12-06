@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E969E737D
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:21:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B769E738C
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB6261888627
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:20:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3E151888F7B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C467A203710;
-	Fri,  6 Dec 2024 15:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F5020C004;
+	Fri,  6 Dec 2024 15:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY7YZlSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhnqSHtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8339014D2BD;
-	Fri,  6 Dec 2024 15:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732A220B80A;
+	Fri,  6 Dec 2024 15:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498426; cv=none; b=S9+WSCzxvmF8L7dfG2IdIPQ9SnHTifUJ5vSZgYzRnQ7iNOGfAdIQC5rSLTjwyFzjrWWZ0SPp1UAoRA8Z93nhU+fJLyOrNNQvU2aQlVmuPDOfxq+3S0mKfoOzojJvwSPyWMvwxDz3miRDQ8I/9XbbogO72/h91CE1k8vPRXrgjVE=
+	t=1733498443; cv=none; b=So48D54co4r/7n6NzxjOLFYkIf65MrXsRhpV3WEXijsMgk6+JRhS2r1ijMsPj1AU3wjTzAe+Edp3YGf2ob6i2ZnMmeu9LhJPWHQ44/rjbpPGVI7Mo3vu9Gcyab5fLP7Dpleokhxm2K5epBypEQROkFacSz4/1YnP67NGsXpoW1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498426; c=relaxed/simple;
-	bh=6qCkCkM8eGklvn1k/W9cl0X7y1PO8pnD3LG6PGZUBfM=;
+	s=arc-20240116; t=1733498443; c=relaxed/simple;
+	bh=UWQYCdYt29aOdAduovYa3JrpHgscYeLSZlBpvTxtvfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VqbeYKfgv6xQ0g2qLhfeEtGj8oSquSCo8H7jU079lBpma5xH//pK6cSeP28IE6klfhQxsLyRrngcwPXY2jYMdGqyiVu0XToge6VqysNK7CM3DUPrc2zzXHyp1+OPLCFQSbcUW7U1/nbM4UR5IgYOoMRMv9nnCIveCVsfHY//tCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wY7YZlSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045F1C4CEDE;
-	Fri,  6 Dec 2024 15:20:25 +0000 (UTC)
+	 MIME-Version; b=bPFme5PqdsweFFO6N9CH/nDhFdzTiuuE/cACc8gh+ZOQGejcFDGXN1GSlt3u1sfSri9IRjDY/DC9QSztGTstefpssdThlR1/hoX35BLCBZlSHpNAPv5sPE4YxclS8Rb7d1SYM2ln/tk+tuLMe1rmVXEhAAiJPec201z2JMy8+9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhnqSHtr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFE6C4CEDC;
+	Fri,  6 Dec 2024 15:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498426;
-	bh=6qCkCkM8eGklvn1k/W9cl0X7y1PO8pnD3LG6PGZUBfM=;
+	s=korg; t=1733498443;
+	bh=UWQYCdYt29aOdAduovYa3JrpHgscYeLSZlBpvTxtvfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wY7YZlSVlCx3BmBYMAF6c45d6NfkoI8/z6+eeCkraIHJjvreCgUCF97zZdZufz/2H
-	 TRvYCgS+2c1Dqfxz9VHbRm2wZYiVARJzphSXVfIaRoWiAstVCIoTRkXXZxlQhDcDeP
-	 iqcjRRxuDP2coVOkLsVEqno9Tr4NfYBwcsJKOtfQ=
+	b=DhnqSHtr0xxVdBloc+okVIk7NOA90s58n8L9UddHBgsNeFyLaGUq87dYe70wYMi4B
+	 WDcAZ4Myva31EcGCuv96YA5pIEC+uZigSAiGIKoPBfoutK2LVwFXUuTB/X1y1rSJcj
+	 eYIfxknkSwoeJceMfuG9QWMu4WydAoYbPQGPL59Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tiwei Bie <tiwei.btw@antgroup.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 554/676] um: Fix potential integer overflow during physmem setup
-Date: Fri,  6 Dec 2024 15:36:13 +0100
-Message-ID: <20241206143715.007463967@linuxfoundation.org>
+Subject: [PATCH 6.6 555/676] um: Fix the return value of elf_core_copy_task_fpregs
+Date: Fri,  6 Dec 2024 15:36:14 +0100
+Message-ID: <20241206143715.046080090@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -68,46 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
+[ Upstream commit 865e3845eeaa21e9a62abc1361644e67124f1ec0 ]
 
-This issue happens when the real map size is greater than LONG_MAX,
-which can be easily triggered on UML/i386.
+This function is expected to return a boolean value, which should be
+true on success and false on failure.
 
-Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
+Fixes: d1254b12c93e ("uml: fix x86_64 core dump crash")
 Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
+Link: https://patch.msgid.link/20240913023302.130300-1-tiwei.btw@antgroup.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/physmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/um/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
-index 91485119ae67a..4339580f5a4f6 100644
---- a/arch/um/kernel/physmem.c
-+++ b/arch/um/kernel/physmem.c
-@@ -80,10 +80,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 			  unsigned long len, unsigned long long highmem)
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index 6daffb9d8a8d7..afe67d8161467 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -397,6 +397,6 @@ int elf_core_copy_task_fpregs(struct task_struct *t, elf_fpregset_t *fpu)
  {
- 	unsigned long reserve = reserve_end - start;
--	long map_size = len - reserve;
-+	unsigned long map_size = len - reserve;
- 	int err;
+ 	int cpu = current_thread_info()->cpu;
  
--	if(map_size <= 0) {
-+	if (len <= reserve) {
- 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
- 			reserve, len);
- 		exit(1);
-@@ -94,7 +94,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
- 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
- 			    map_size, 1, 1, 1);
- 	if (err < 0) {
--		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
-+		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
- 			"failed - errno = %d\n", map_size,
- 			(void *) reserve_end, err);
- 		exit(1);
+-	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu);
++	return save_i387_registers(userspace_pid[cpu], (unsigned long *) fpu) == 0;
+ }
+ 
 -- 
 2.43.0
 
