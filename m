@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-99647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFE79E72B2
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:12:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F112E9E7286
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B402B188837A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:11:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E31E116D07B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A016207E0C;
-	Fri,  6 Dec 2024 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67B820ADFC;
+	Fri,  6 Dec 2024 15:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCMJg2Mf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z13p1Le7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FD31527AC;
-	Fri,  6 Dec 2024 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8240B1DFD89;
+	Fri,  6 Dec 2024 15:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497884; cv=none; b=tQ8Wd6JsWjysUKk18oGFWxQY0KiOwcM35C7vPPWy7kp77rRioqglA6fOJJRhvrLpY1ndY142CBhx9dfX6huIyl+WmcfGKe6QBCqV0fGSIH74M7G0ZObimeI7QKbg4zf8arHED0E+0Bm5l1ZOrz0G2B0xE99lyQxFw5p5pjwoTEE=
+	t=1733497771; cv=none; b=dsmIrYHfUChhCr6iQAiCNC62J45xqRgya7q7GhVAx0WsExZ1qa6YV8DDQbLphF3KkQuF/6TbtjbtFE+ldSKcRGU15PYBkRGDD99ZAtwF1MliVYSTMfOG624KBI9G4aNTu5fycbXU5h4UykcGUWeEfvoDQOXsR1yO76ny7TyKKKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497884; c=relaxed/simple;
-	bh=kNLEjfPvQH6A8/s0/SZAHDg5OEpNjq+YMecE9AOQ3FM=;
+	s=arc-20240116; t=1733497771; c=relaxed/simple;
+	bh=0n/Xgn8uDhps3cR1k0xVNVgclFhBU0+DFu+lVRuQCJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IzSFzqdwBOuSmiG1Fr7eY1TQqdig7fX5dD0yde274XoCeuFGaV9OvY7RVwjFBbQ+wZux6MYJYJY6Q1ta4mYmqQ9cEP8tkXQYCaDP7C9mhA7pXDTybEKjp45IGHAXXS4w7+KqR3KV/8UPC1AfjmVKF/nFRUyb/MworeAuq3Yc+3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCMJg2Mf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2C0C4CEDC;
-	Fri,  6 Dec 2024 15:11:23 +0000 (UTC)
+	 MIME-Version; b=fKllhKGkxUk5LZ96N2ylQDRneF7w4o0QhVric6V/ce+Zaqx6xe3wGuwdHyRtcN0ZBiJYLKjGHkfHCZZ8ZYBMx0uYx1f01H7osD2mWM4LSbg9yQVw+V0XNhPiQXIXG8ai3dS5WAGaqL3wAkZgOk5TMnB6f4/YYx4Ti/xXCXzFDzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z13p1Le7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D799EC4CED1;
+	Fri,  6 Dec 2024 15:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497883;
-	bh=kNLEjfPvQH6A8/s0/SZAHDg5OEpNjq+YMecE9AOQ3FM=;
+	s=korg; t=1733497771;
+	bh=0n/Xgn8uDhps3cR1k0xVNVgclFhBU0+DFu+lVRuQCJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCMJg2Mfj6LYymb7GtW852CysxeHmddgBdWpTDkBufvngts6FxgqQKypi5e9YJjtW
-	 d4WstCO1+Dlmpl3H91k8H4smdVMVaCTo2GTTyyxy3DYZzKj3DlB25tc9HpUS+2RNiD
-	 d9Fvwym5uLn6jtz04QfNPkFGXqKtfOOUvr9mp9As=
+	b=Z13p1Le7oYGC+ZZuo74fjY0OIPed6OHcH3ioA7gHaYrr9tToXD6VoR60wVbmfO378
+	 pvD+bV8JG+knv9KOx10B6zTdLz7GXwGBYoukriCKhzN9oRaSo0x54xrov/CnoSg1iY
+	 hRNRmOclZkEW6wppXWhS6LvsTRPM+5nkwq7iR52M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 380/676] PCI: endpoint: epf-mhi: Avoid NULL dereference if DT lacks mmio
-Date: Fri,  6 Dec 2024 15:33:19 +0100
-Message-ID: <20241206143708.190375200@linuxfoundation.org>
+Subject: [PATCH 6.6 381/676] NFSD: Prevent NULL dereference in nfsd4_process_cb_update()
+Date: Fri,  6 Dec 2024 15:33:20 +0100
+Message-ID: <20241206143708.228812953@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -62,57 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 5089b3d874e9933d9842e90410d3af1520494757 ]
+[ Upstream commit 1e02c641c3a43c88cecc08402000418e15578d38 ]
 
-If platform_get_resource_byname() fails and returns NULL because DT lacks
-an 'mmio' property for the MHI endpoint, dereferencing res->start will
-cause a NULL pointer access. Add a check to prevent it.
+@ses is initialized to NULL. If __nfsd4_find_backchannel() finds no
+available backchannel session, setup_callback_client() will try to
+dereference @ses and segfault.
 
-Fixes: 1bf5f25324f7 ("PCI: endpoint: Add PCI Endpoint function driver for MHI bus")
-Link: https://lore.kernel.org/r/20241105120735.1240728-1-quic_zhonhan@quicinc.com
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-[kwilczynski: error message update per the review feedback]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Fixes: dcbeaa68dbbd ("nfsd4: allow backchannel recovery")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-mhi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfsd/nfs4callback.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-index 34e7191f95086..87154992ea11b 100644
---- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
-@@ -600,12 +600,18 @@ static int pci_epf_mhi_bind(struct pci_epf *epf)
- {
- 	struct pci_epf_mhi *epf_mhi = epf_get_drvdata(epf);
- 	struct pci_epc *epc = epf->epc;
-+	struct device *dev = &epf->dev;
- 	struct platform_device *pdev = to_platform_device(epc->dev.parent);
- 	struct resource *res;
- 	int ret;
+diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
+index 4039ffcf90ba5..bc2716c1bdeab 100644
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -1379,6 +1379,8 @@ static void nfsd4_process_cb_update(struct nfsd4_callback *cb)
+ 		ses = c->cn_session;
+ 	}
+ 	spin_unlock(&clp->cl_lock);
++	if (!c)
++		return;
  
- 	/* Get MMIO base address from Endpoint controller */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mmio");
-+	if (!res) {
-+		dev_err(dev, "Failed to get \"mmio\" resource\n");
-+		return -ENODEV;
-+	}
-+
- 	epf_mhi->mmio_phys = res->start;
- 	epf_mhi->mmio_size = resource_size(res);
- 
+ 	err = setup_callback_client(clp, &conn, ses);
+ 	if (err) {
 -- 
 2.43.0
 
