@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-99192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F529E7098
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:45:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 950C49E70C7
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:47:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64B21165DFB
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:45:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51F951882638
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15643146580;
-	Fri,  6 Dec 2024 14:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCF113D516;
+	Fri,  6 Dec 2024 14:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00QamTNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPpzcPQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A1715575F;
-	Fri,  6 Dec 2024 14:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B17610E0;
+	Fri,  6 Dec 2024 14:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496309; cv=none; b=HClMDSMVIBqN3r4fzVs6D/Y40W80Tash+MLSK8HkZR1y3vkCIM2zLtDk/9KI5VpId5mcisSO0vguy8vWzYK10ivjhHJIn8euH1/6/pb2xNGPPrORjSPt7apndbnkbGkjKM2dc2hhnkxbg4CrwyOOS9DNgO5tlmQxWK5AoCWyPzY=
+	t=1733496444; cv=none; b=uVeEp6LXQQIr98qkfDmMwCdrR8IGxwjVkUUVT+qINArRDAiA7Kdtq2XPZyJ14P9hMI97vo72HkpGGnY7oMhYGH/vufkgLjMra9xeFa9blge3sPxVEtTPcQH8f09pvoihmcuMCFn7G6B/Fo8WsST8ghDfQi2Atb+s6VA0BkCr7kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496309; c=relaxed/simple;
-	bh=OP8DNDZVwp33l3y9rlV7N7uxkgVPE/XbD6Gv3R9uLdU=;
+	s=arc-20240116; t=1733496444; c=relaxed/simple;
+	bh=KnnIH37WcE8hRIxbUTNJCESqvVfnTzxbId3UeCRQw5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hVWmH+/KcZFGIF2x9WwF5sDlBuwyIk+NV07xS7RKCkOKEhQ0QYtc+D6D9ieLGcO2ogYe/cCY+z0CFxKqbwpDLWf4B9Pu4wnNKSthfXt0gh4jh/mfZGjxP3uQkjIPHpH3TdzFy98t6FFV5dnLKyE6INXDR/PRjjcnJI1flfcod+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00QamTNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB747C4CED1;
-	Fri,  6 Dec 2024 14:45:08 +0000 (UTC)
+	 MIME-Version; b=ew4hSQohg6M48r9Wmbuh181EtejGl+a0jXp9fwWLwLDIEQxQVF9bqkV172ectIV0ccdbGOYOG6s9W2KC7zw4nkR4bFZafbNnoCq5J8LBTm91cc4GJhPCRm9JKyFWrLdMBtu4QrRH4xA4bBXUzcaH1vUjJ2WCrvRuXg7lWYiJgN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPpzcPQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BF7C4CED1;
+	Fri,  6 Dec 2024 14:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496309;
-	bh=OP8DNDZVwp33l3y9rlV7N7uxkgVPE/XbD6Gv3R9uLdU=;
+	s=korg; t=1733496444;
+	bh=KnnIH37WcE8hRIxbUTNJCESqvVfnTzxbId3UeCRQw5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00QamTNeZpqZzuELjyl83vlSc5mE2O8QPbfPYDGRhgXQix/iwUAR26Vl+hrgIdXyY
-	 agcNgqg1sXpKREh8KbKiGB7lyvrbEPfnSghVy23eL0oA9iOjp2T8+FXLbCIN885cti
-	 giQey8FctU9DVKgfvUwVOznGgEB+JCl1ogmF8wcM=
+	b=hPpzcPQ5XAII5YE4uPrIOTFBCYb9C+y12hoETwfUb7e2lFIy1dRzribe6f+5vGLuV
+	 +cSwG6g+0uksD50WcqAI0N4Zu6S52Y0P5XcIij96jKWrx3lNBADlIYHpdMBkSWFEx4
+	 amK/FAtgoikU4xhIHNYBZVsxCN+7uDCX0E9h12Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
 	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
 	Todd Kjos <tkjos@google.com>
-Subject: [PATCH 6.12 113/146] binder: allow freeze notification for dead nodes
-Date: Fri,  6 Dec 2024 15:37:24 +0100
-Message-ID: <20241206143532.006017505@linuxfoundation.org>
+Subject: [PATCH 6.12 114/146] binder: fix memleak of proc->delivered_freeze
+Date: Fri,  6 Dec 2024 15:37:25 +0100
+Message-ID: <20241206143532.043717126@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -68,84 +68,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Carlos Llamas <cmllamas@google.com>
 
-commit ca63c66935b978441055e3d87d30225267f99329 upstream.
+commit 1db76ec2b4b206ff943e292a0b55e68ff3443598 upstream.
 
-Alice points out that binder_request_freeze_notification() should not
-return EINVAL when the relevant node is dead [1]. The node can die at
-any point even if the user input is valid. Instead, allow the request
-to be allocated but skip the initial notification for dead nodes. This
-avoids propagating unnecessary errors back to userspace.
+If a freeze notification is cleared with BC_CLEAR_FREEZE_NOTIFICATION
+before calling binder_freeze_notification_done(), then it is detached
+from its reference (e.g. ref->freeze) but the work remains queued in
+proc->delivered_freeze. This leads to a memory leak when the process
+exits as any pending entries in proc->delivered_freeze are not freed:
+
+  unreferenced object 0xffff38e8cfa36180 (size 64):
+    comm "binder-util", pid 655, jiffies 4294936641
+    hex dump (first 32 bytes):
+      b8 e9 9e c8 e8 38 ff ff b8 e9 9e c8 e8 38 ff ff  .....8.......8..
+      0b 00 00 00 00 00 00 00 3c 1f 4b 00 00 00 00 00  ........<.K.....
+    backtrace (crc 95983b32):
+      [<000000000d0582cf>] kmemleak_alloc+0x34/0x40
+      [<000000009c99a513>] __kmalloc_cache_noprof+0x208/0x280
+      [<00000000313b1704>] binder_thread_write+0xdec/0x439c
+      [<000000000cbd33bb>] binder_ioctl+0x1b68/0x22cc
+      [<000000002bbedeeb>] __arm64_sys_ioctl+0x124/0x190
+      [<00000000b439adee>] invoke_syscall+0x6c/0x254
+      [<00000000173558fc>] el0_svc_common.constprop.0+0xac/0x230
+      [<0000000084f72311>] do_el0_svc+0x40/0x58
+      [<000000008b872457>] el0_svc+0x38/0x78
+      [<00000000ee778653>] el0t_64_sync_handler+0x120/0x12c
+      [<00000000a8ec61bf>] el0t_64_sync+0x190/0x194
+
+This patch fixes the leak by ensuring that any pending entries in
+proc->delivered_freeze are freed during binder_deferred_release().
 
 Fixes: d579b04a52a1 ("binder: frozen notification")
 Cc: stable@vger.kernel.org
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/all/CAH5fLghapZJ4PbbkC8V5A6Zay-_sgTzwVpwqk6RWWUNKKyJC_Q@mail.gmail.com/ [1]
 Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20240926233632.821189-7-cmllamas@google.com
+Link: https://lore.kernel.org/r/20240926233632.821189-8-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ drivers/android/binder.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index 73dc6cbc1681..415fc9759249 100644
+index 415fc9759249..7c09b5e38e32 100644
 --- a/drivers/android/binder.c
 +++ b/drivers/android/binder.c
-@@ -3856,7 +3856,6 @@ binder_request_freeze_notification(struct binder_proc *proc,
- {
- 	struct binder_ref_freeze *freeze;
- 	struct binder_ref *ref;
--	bool is_frozen;
- 
- 	freeze = kzalloc(sizeof(*freeze), GFP_KERNEL);
- 	if (!freeze)
-@@ -3872,32 +3871,31 @@ binder_request_freeze_notification(struct binder_proc *proc,
- 	}
- 
- 	binder_node_lock(ref->node);
--
--	if (ref->freeze || !ref->node->proc) {
--		binder_user_error("%d:%d invalid BC_REQUEST_FREEZE_NOTIFICATION %s\n",
--				  proc->pid, thread->pid,
--				  ref->freeze ? "already set" : "dead node");
-+	if (ref->freeze) {
-+		binder_user_error("%d:%d BC_REQUEST_FREEZE_NOTIFICATION already set\n",
-+				  proc->pid, thread->pid);
- 		binder_node_unlock(ref->node);
- 		binder_proc_unlock(proc);
- 		kfree(freeze);
- 		return -EINVAL;
- 	}
--	binder_inner_proc_lock(ref->node->proc);
--	is_frozen = ref->node->proc->is_frozen;
--	binder_inner_proc_unlock(ref->node->proc);
- 
- 	binder_stats_created(BINDER_STAT_FREEZE);
- 	INIT_LIST_HEAD(&freeze->work.entry);
- 	freeze->cookie = handle_cookie->cookie;
- 	freeze->work.type = BINDER_WORK_FROZEN_BINDER;
--	freeze->is_frozen = is_frozen;
--
- 	ref->freeze = freeze;
- 
--	binder_inner_proc_lock(proc);
--	binder_enqueue_work_ilocked(&ref->freeze->work, &proc->todo);
--	binder_wakeup_proc_ilocked(proc);
--	binder_inner_proc_unlock(proc);
-+	if (ref->node->proc) {
-+		binder_inner_proc_lock(ref->node->proc);
-+		freeze->is_frozen = ref->node->proc->is_frozen;
-+		binder_inner_proc_unlock(ref->node->proc);
+@@ -5155,6 +5155,16 @@ static void binder_release_work(struct binder_proc *proc,
+ 		} break;
+ 		case BINDER_WORK_NODE:
+ 			break;
++		case BINDER_WORK_CLEAR_FREEZE_NOTIFICATION: {
++			struct binder_ref_freeze *freeze;
 +
-+		binder_inner_proc_lock(proc);
-+		binder_enqueue_work_ilocked(&freeze->work, &proc->todo);
-+		binder_wakeup_proc_ilocked(proc);
-+		binder_inner_proc_unlock(proc);
-+	}
++			freeze = container_of(w, struct binder_ref_freeze, work);
++			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
++				     "undelivered freeze notification, %016llx\n",
++				     (u64)freeze->cookie);
++			kfree(freeze);
++			binder_stats_deleted(BINDER_STAT_FREEZE);
++		} break;
+ 		default:
+ 			pr_err("unexpected work type, %d, not freed\n",
+ 			       wtype);
+@@ -6273,6 +6283,7 @@ static void binder_deferred_release(struct binder_proc *proc)
  
- 	binder_node_unlock(ref->node);
- 	binder_proc_unlock(proc);
+ 	binder_release_work(proc, &proc->todo);
+ 	binder_release_work(proc, &proc->delivered_death);
++	binder_release_work(proc, &proc->delivered_freeze);
+ 
+ 	binder_debug(BINDER_DEBUG_OPEN_CLOSE,
+ 		     "%s: %d threads %d, nodes %d (ref %d), refs %d, active transactions %d\n",
 -- 
 2.47.1
 
