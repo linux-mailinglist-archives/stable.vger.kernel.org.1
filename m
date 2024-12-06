@@ -1,73 +1,116 @@
-Return-Path: <stable+bounces-99084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED999E7011
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:31:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 257999E71EE
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:02:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E477282B5A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:31:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2A416C9AF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36345146D68;
-	Fri,  6 Dec 2024 14:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32F61714DF;
+	Fri,  6 Dec 2024 15:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQkNbS0F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vi5FE6hd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB78713D8B5
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 14:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E33C53A7;
+	Fri,  6 Dec 2024 15:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733495469; cv=none; b=Ah/xHXtBZ4UqOLDsd3tPpw05tuHNzjaDO6/j1Of9mghXJk/rl7RNQSCPsbST88rlo54PdEhwWFZ8K8bbxT52xraBIQf+xaxUYcbCBEy/MKvvOlKYXk3AtfkkuWEOepFlwKpUkyJJzuvSEskhU5EDFaXceA4lMYzSL1K7B2i1F28=
+	t=1733497338; cv=none; b=TX52HJ386aVcjZ49PMyDNOWO/OB9VkWw3JNfOFSqLfZ8K6ouYdU7HJN6OEQExUR9zVgf86oGV2jUghAC1Eqssh9ddILTEqe+Fz0Msbp98saOyhJZESpRy3pApT1Vr06QLj0wZQGmtQsLJoJgcPecq8pzDkV/17+fy3VMsXqBRqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733495469; c=relaxed/simple;
-	bh=tVDlBrDTmdVQsJAaGQF6OsrpyCoNVA9K3kqX6eIpFBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EeZ4WE0PtYaiW+HsTRarM5zs2yyK+OE3+h0SpcQfYeZHl1U5FTk5w38u/lKrNU8dkjF2ny1BqwFZTw2EkTk2p6scXgJdTXjd2v3cXGIHLU+tqGtNP5kKiKKS+EB/aQHgL2kk+yp9urT1wccVZQmKBZNRonDwdOqk/nQG9t/P+rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQkNbS0F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9963AC4CED1;
-	Fri,  6 Dec 2024 14:31:08 +0000 (UTC)
+	s=arc-20240116; t=1733497338; c=relaxed/simple;
+	bh=8hVsiz4KEaoXvqQKbYK1b8KvuXFfeuVcZaVR2vemO8Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DQccSSjjVUSZDE3Fi/j1/unVQfIbHO8eZZ+lp5tjiZDnTlN7U/R0cLC7E/YRFt8NfxZ9rkpcfxTP8A2V8pM8Forqge5DbmkUH4TvYCvOz0rqOLR2khHdKEQDg0tX3t9M3XmK1QQE76LgFpHkWJdd2XddHhnjismffrNtHW2pYEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vi5FE6hd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05D5C4CED1;
+	Fri,  6 Dec 2024 15:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733495469;
-	bh=tVDlBrDTmdVQsJAaGQF6OsrpyCoNVA9K3kqX6eIpFBM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TQkNbS0FvN6aIUaB1wJz4iDqwRXt2LtgaBJGjM9kI6sNV6o/ZDC2E79iikL1jLIGV
-	 qiGnrbdfWGfVNEYpIltulGZ2Ov494joQdiqcX71qtbj8FCqA3KVSmZdKhe4KcblFtI
-	 OgQd6Tqknldf6dOJ0R0xhKKcOrWba2lBP2addaew=
-Date: Fri, 6 Dec 2024 15:31:05 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: frederic@kernel.org, anthony.mallet@laas.fr, tglx@linutronix.de,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] posix-timers: Target group sigqueue to
- current task only if" failed to apply to 6.12-stable tree
-Message-ID: <2024120659-majorette-brook-b814@gregkh>
-References: <2024120656-jelly-gore-aa4c@gregkh>
- <20241206130824.GA31748@redhat.com>
+	s=korg; t=1733497338;
+	bh=8hVsiz4KEaoXvqQKbYK1b8KvuXFfeuVcZaVR2vemO8Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=vi5FE6hdKkMMp6cJOpX6SDfRFJzXAWfKQ8exHWG9c27Onwd7rPxGHW8FBQjcPwgpT
+	 kx5KBzE6rpKiOABMbjoHOkfy1hpINXwwteFBlfeFPrpNXn3dACe7UBrS+9SBXVRy8l
+	 jandz5zUW6ZOBy7SJDcmRUQmuOyGuOZmlZ1yGG1Q=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Yuan Can <yuancan@huawei.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 246/676] drm/amdkfd: Fix wrong usage of INIT_WORK()
+Date: Fri,  6 Dec 2024 15:31:05 +0100
+Message-ID: <20241206143702.941054678@linuxfoundation.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
+References: <20241206143653.344873888@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241206130824.GA31748@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 06, 2024 at 02:08:25PM +0100, Oleg Nesterov wrote:
-> Hi Greg,
-> 
-> On 12/06, gregkh@linuxfoundation.org wrote:
-> >
-> > The patch below does not apply to the 6.12-stable tree.
-> 
-> Please see the attached patch. For v6.12 and the previous versions.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Thanks, now queued up.
+------------------
 
-greg k-h
+From: Yuan Can <yuancan@huawei.com>
+
+[ Upstream commit 21cae8debc6a1d243f64fa82cd1b41cb612b5c61 ]
+
+In kfd_procfs_show(), the sdma_activity_work_handler is a local variable
+and the sdma_activity_work_handler.sdma_activity_work should initialize
+with INIT_WORK_ONSTACK() instead of INIT_WORK().
+
+Fixes: 32cb59f31362 ("drm/amdkfd: Track SDMA utilization per process")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 6c90231e0aec2..fd640a061c96a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -312,8 +312,8 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
+ 							      attr_sdma);
+ 		struct kfd_sdma_activity_handler_workarea sdma_activity_work_handler;
+ 
+-		INIT_WORK(&sdma_activity_work_handler.sdma_activity_work,
+-					kfd_sdma_activity_worker);
++		INIT_WORK_ONSTACK(&sdma_activity_work_handler.sdma_activity_work,
++				  kfd_sdma_activity_worker);
+ 
+ 		sdma_activity_work_handler.pdd = pdd;
+ 		sdma_activity_work_handler.sdma_activity_counter = 0;
+@@ -321,6 +321,7 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
+ 		schedule_work(&sdma_activity_work_handler.sdma_activity_work);
+ 
+ 		flush_work(&sdma_activity_work_handler.sdma_activity_work);
++		destroy_work_on_stack(&sdma_activity_work_handler.sdma_activity_work);
+ 
+ 		return snprintf(buffer, PAGE_SIZE, "%llu\n",
+ 				(sdma_activity_work_handler.sdma_activity_counter)/
+-- 
+2.43.0
+
+
+
 
