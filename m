@@ -1,220 +1,114 @@
-Return-Path: <stable+bounces-98887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E3109E6276
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 01:49:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6720B9E628A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 01:53:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5447E285E67
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:49:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2135518839F4
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E67938F9C;
-	Fri,  6 Dec 2024 00:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5369274421;
+	Fri,  6 Dec 2024 00:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xv+yB2ip"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="hi6Yfp8S"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from pv50p00im-ztdg10012001.me.com (pv50p00im-ztdg10012001.me.com [17.58.6.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4808633997
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 00:49:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24563E499
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 00:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733446151; cv=none; b=Umzqg3xgFVQ28tuwibrzRlam542OkLSWkCtv6M6EAgfQWLT3znBPKdIAYr+oaG2KIx3/hQlghKWmEpNckVe+UQpaMi/iURk8q8RKXHQZvSxFrCxdkg2u+XNBFdYlAwQas7v1B39QmA04AtgondhFNmsqYC2s5HcfNBGHrhcRG9E=
+	t=1733446385; cv=none; b=bQDho5TpL2yHU6VtxGyC0RvMcwlZ3c3ffmCso9K634p0bNSXuS4etfue8dl4FfcxspJ75vtPqr86W1j1fdp3B7694WuZSP98aniMAet3XxTcZqc7wAsGSvnDF4V5TQSP5gfhQCcAiGKkY3grgA2P8wDUZ1Um4+pIHfd4aN/9YQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733446151; c=relaxed/simple;
-	bh=sSWc4lOfgrXequLezIW3Wed07Ny8XSYOHRslBzxfY+8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iImVEvxDtKLOW8ud3tRmyWiwUDLkygdc+BarMBY/8cTjoljALc6maGD5F1Qn/PHsgkiYPRywGThYWFHLTOPbVFS5quuXzZ08fEJGe1NldK5p83c36yBrqm5gCyaCCKwEvYoQ1whmYhsIFkE8w3vt89P9bNXj2l/WwIiBGUbQaH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xv+yB2ip; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 5 Dec 2024 16:49:03 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1733446147;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aOFJfHmp55sF9Komhb9x4dt+fkGanoK5wXCLqTHTjBg=;
-	b=xv+yB2ipsuGjyhM9kSSGvgqAJdC+le8807La3XqTpKy1d8eoYppSBuEjZtOEk939RmgF6x
-	3lerNcS4cTikhMPVeO1s7fAXvPWSeVsQRLb7/jJRx4F3fo4U/XTnf79Nwa+j9603SvJZhN
-	5i1IKm49iK1Ss3wi+1/xvVcTfabfoxE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Jing Zhang <jingzhangos@google.com>
-Cc: stable@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
-	Kunkun Jiang <jiangkunkun@huawei.com>
-Subject: Re: [PATCH 6.1.y 1/3] KVM: arm64: vgic-its: Add a data length check
- in vgic_its_save_*
-Message-ID: <Z1JJ_2dN4ysvdmRI@linux.dev>
-References: <20241204202357.2718096-1-jingzhangos@google.com>
+	s=arc-20240116; t=1733446385; c=relaxed/simple;
+	bh=wOYv63c54RyGiFTh41AjUWVq3YW54AG1Xq0ZEBZHwOU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=enZSeUto4NQeN/mR1qkEOB6vMlN3YAYti7CATdRN2Xz9ULhjU8+0Gv5lNKP5UvTfMBLzDm/J2W+iAw9FoecjwQnjHqQ5k+TZ7yZWXLzNxmNruYMzZ9+kzzdsNSaPTD9+tOpD7uBdajGlv29kVGmGrh1HNmSW9dxpFywm/Fw19YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=hi6Yfp8S; arc=none smtp.client-ip=17.58.6.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1733446383;
+	bh=69NzVYXYPQWlYMOcr43m0o4u0Tn+jvvdpHpCjTYFKq8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:
+	 x-icloud-hme;
+	b=hi6Yfp8SHYtfqSvzeIf1VMzeEDn117wDCHpk42aB/M+M0aJASb/JfUgSre3R3RR8P
+	 htDyMTdPapZ+zbtIvOzAu4xswfZQC7wCbGGj2h/Tx3Nqg3ek6KbFd8sP3T5yMhcMdR
+	 bvZNBXYDEAs93hhyVhzRIdAKGSHobFg3k0EZSqW2UISQ3Bvxe5rsTuyqdXS+Gz5nSt
+	 ktVeggp8MKF1lKZuNApgBPhsMTxx81GMFBfpG8kXlN+foT9moosTl+rU3ILY2nsEKP
+	 90wafh1BcqTVs0YFOsKXnTv1ZIt8hQXyQaHoy2irWvFiipX6E/4E8n7h8wm9rsuO0z
+	 IsHk/UblZ86oQ==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10012001.me.com (Postfix) with ESMTPSA id 33936A0295;
+	Fri,  6 Dec 2024 00:52:56 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH 00/10] of: fix bugs and improve codes
+Date: Fri, 06 Dec 2024 08:52:26 +0800
+Message-Id: <20241206-of_core_fix-v1-0-dc28ed56bec3@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241204202357.2718096-1-jingzhangos@google.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMpKUmcC/x2MQQqAIBAAvyJ7TtBNJPpKhIiutRcNhQjCvycdZ
+ 2DmhUaVqcEqXqh0c+OSB+hJQDh9PkhyHAyo0GhUVpbkQqnkEj8yhlmh9soavcAorkpD/7dt7/0
+ DOvoJVl0AAAA=
+X-Change-ID: 20241206-of_core_fix-dc3021a06418
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+ Leif Lindholm <leif.lindholm@linaro.org>, 
+ Stephen Boyd <stephen.boyd@linaro.org>, Maxime Ripard <mripard@kernel.org>, 
+ Robin Murphy <robin.murphy@arm.com>, 
+ Grant Likely <grant.likely@secretlab.ca>
+Cc: Zijun Hu <zijun_hu@icloud.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Proofpoint-GUID: -bVrGoRo7FM41P3ICiq7MYlGOzclqN52
+X-Proofpoint-ORIG-GUID: -bVrGoRo7FM41P3ICiq7MYlGOzclqN52
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-05_16,2024-12-05_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=685
+ suspectscore=0 spamscore=0 mlxscore=0 adultscore=0 phishscore=0
+ bulkscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2412060006
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-On Wed, Dec 04, 2024 at 12:23:55PM -0800, Jing Zhang wrote:
-> commit 7fe28d7e68f92cc3d0668b8f2fbdf5c303ac3022 upstream.
-> 
-> In all the vgic_its_save_*() functinos, they do not check whether
-> the data length is 8 bytes before calling vgic_write_guest_lock.
-> This patch adds the check. To prevent the kernel from being blown up
-> when the fault occurs, KVM_BUG_ON() is used. And the other BUG_ON()s
-> are replaced together.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-> [Jing: Update with the new entry read/write helpers]
-> Signed-off-by: Jing Zhang <jingzhangos@google.com>
-> Link: https://lore.kernel.org/r/20241107214137.428439-4-jingzhangos@google.com
-> Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+This patch series is to fix bugs and improve codes for drivers/of/*.
 
-For the series:
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Zijun Hu (10):
+      of: Fix alias name length calculating error in API of_find_node_opts_by_path()
+      of: Correct return value for API of_parse_phandle_with_args_map()
+      of: Correct child specifier used as input of the 2nd nexus node
+      of: Fix refcount leakage for OF node returned by __of_get_dma_parent()
+      of: Fix available buffer size calculating error in API of_device_uevent_modalias()
+      of/fdt: Dump __be32 array in CPU type order in of_dump_addr()
+      of: Correct comments for of_alias_scan()
+      of: Swap implementation between of_property_present() and of_property_read_bool()
+      of: property: Implement of_fwnode_property_present() by of_property_present()
+      of: Simplify API of_find_node_with_property() implementation
 
-Acked-by: Oliver Upton <oliver.upton@linux.dev>
+ drivers/of/address.c     |  2 +-
+ drivers/of/base.c        | 25 +++++++++++--------------
+ drivers/of/device.c      |  4 ++--
+ drivers/of/fdt_address.c |  2 +-
+ drivers/of/property.c    |  2 +-
+ include/linux/of.h       | 23 ++++++++++++-----------
+ 6 files changed, 28 insertions(+), 30 deletions(-)
+---
+base-commit: 16ef9c9de0c48b836c5996c6e9792cb4f658c8f1
+change-id: 20241206-of_core_fix-dc3021a06418
 
+Best regards,
 -- 
-Thanks,
-Oliver
+Zijun Hu <quic_zijuhu@quicinc.com>
 
-> ---
->  arch/arm64/kvm/vgic/vgic-its.c | 20 ++++++++------------
->  arch/arm64/kvm/vgic/vgic.h     | 24 ++++++++++++++++++++++++
->  2 files changed, 32 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-> index 092327665a6e..84499545bd8d 100644
-> --- a/arch/arm64/kvm/vgic/vgic-its.c
-> +++ b/arch/arm64/kvm/vgic/vgic-its.c
-> @@ -2207,7 +2207,6 @@ static int scan_its_table(struct vgic_its *its, gpa_t base, int size, u32 esz,
->  static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
->  			      struct its_ite *ite, gpa_t gpa, int ite_esz)
->  {
-> -	struct kvm *kvm = its->dev->kvm;
->  	u32 next_offset;
->  	u64 val;
->  
-> @@ -2216,7 +2215,8 @@ static int vgic_its_save_ite(struct vgic_its *its, struct its_device *dev,
->  	       ((u64)ite->irq->intid << KVM_ITS_ITE_PINTID_SHIFT) |
->  		ite->collection->collection_id;
->  	val = cpu_to_le64(val);
-> -	return kvm_write_guest_lock(kvm, gpa, &val, ite_esz);
-> +
-> +	return vgic_its_write_entry_lock(its, gpa, val, ite_esz);
->  }
->  
->  /**
-> @@ -2357,7 +2357,6 @@ static int vgic_its_restore_itt(struct vgic_its *its, struct its_device *dev)
->  static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
->  			     gpa_t ptr, int dte_esz)
->  {
-> -	struct kvm *kvm = its->dev->kvm;
->  	u64 val, itt_addr_field;
->  	u32 next_offset;
->  
-> @@ -2368,7 +2367,8 @@ static int vgic_its_save_dte(struct vgic_its *its, struct its_device *dev,
->  	       (itt_addr_field << KVM_ITS_DTE_ITTADDR_SHIFT) |
->  		(dev->num_eventid_bits - 1));
->  	val = cpu_to_le64(val);
-> -	return kvm_write_guest_lock(kvm, ptr, &val, dte_esz);
-> +
-> +	return vgic_its_write_entry_lock(its, ptr, val, dte_esz);
->  }
->  
->  /**
-> @@ -2555,7 +2555,8 @@ static int vgic_its_save_cte(struct vgic_its *its,
->  	       ((u64)collection->target_addr << KVM_ITS_CTE_RDBASE_SHIFT) |
->  	       collection->collection_id);
->  	val = cpu_to_le64(val);
-> -	return kvm_write_guest_lock(its->dev->kvm, gpa, &val, esz);
-> +
-> +	return vgic_its_write_entry_lock(its, gpa, val, esz);
->  }
->  
->  /*
-> @@ -2571,8 +2572,7 @@ static int vgic_its_restore_cte(struct vgic_its *its, gpa_t gpa, int esz)
->  	u64 val;
->  	int ret;
->  
-> -	BUG_ON(esz > sizeof(val));
-> -	ret = kvm_read_guest_lock(kvm, gpa, &val, esz);
-> +	ret = vgic_its_read_entry_lock(its, gpa, &val, esz);
->  	if (ret)
->  		return ret;
->  	val = le64_to_cpu(val);
-> @@ -2610,7 +2610,6 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
->  	u64 baser = its->baser_coll_table;
->  	gpa_t gpa = GITS_BASER_ADDR_48_to_52(baser);
->  	struct its_collection *collection;
-> -	u64 val;
->  	size_t max_size, filled = 0;
->  	int ret, cte_esz = abi->cte_esz;
->  
-> @@ -2634,10 +2633,7 @@ static int vgic_its_save_collection_table(struct vgic_its *its)
->  	 * table is not fully filled, add a last dummy element
->  	 * with valid bit unset
->  	 */
-> -	val = 0;
-> -	BUG_ON(cte_esz > sizeof(val));
-> -	ret = kvm_write_guest_lock(its->dev->kvm, gpa, &val, cte_esz);
-> -	return ret;
-> +	return vgic_its_write_entry_lock(its, gpa, 0, cte_esz);
->  }
->  
->  /**
-> diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-> index bc898229167b..056fcee46165 100644
-> --- a/arch/arm64/kvm/vgic/vgic.h
-> +++ b/arch/arm64/kvm/vgic/vgic.h
-> @@ -6,6 +6,7 @@
->  #define __KVM_ARM_VGIC_NEW_H__
->  
->  #include <linux/irqchip/arm-gic-common.h>
-> +#include <asm/kvm_mmu.h>
->  
->  #define PRODUCT_ID_KVM		0x4b	/* ASCII code K */
->  #define IMPLEMENTER_ARM		0x43b
-> @@ -131,6 +132,29 @@ static inline bool vgic_irq_is_multi_sgi(struct vgic_irq *irq)
->  	return vgic_irq_get_lr_count(irq) > 1;
->  }
->  
-> +static inline int vgic_its_read_entry_lock(struct vgic_its *its, gpa_t eaddr,
-> +					   u64 *eval, unsigned long esize)
-> +{
-> +	struct kvm *kvm = its->dev->kvm;
-> +
-> +	if (KVM_BUG_ON(esize != sizeof(*eval), kvm))
-> +		return -EINVAL;
-> +
-> +	return kvm_read_guest_lock(kvm, eaddr, eval, esize);
-> +
-> +}
-> +
-> +static inline int vgic_its_write_entry_lock(struct vgic_its *its, gpa_t eaddr,
-> +					    u64 eval, unsigned long esize)
-> +{
-> +	struct kvm *kvm = its->dev->kvm;
-> +
-> +	if (KVM_BUG_ON(esize != sizeof(eval), kvm))
-> +		return -EINVAL;
-> +
-> +	return kvm_write_guest_lock(kvm, eaddr, &eval, esize);
-> +}
-> +
->  /*
->   * This struct provides an intermediate representation of the fields contained
->   * in the GICH_VMCR and ICH_VMCR registers, such that code exporting the GIC
-> 
-> base-commit: e4d90d63d385228b1e0bcf31cc15539bbbc28f7f
-> -- 
-> 2.47.0.338.g60cca15819-goog
-> 
 
