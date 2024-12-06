@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-99026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1F09E6DCC
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:07:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2FA9E6DC0
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 13:06:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9E39167D66
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1BE5283BE7
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 12:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E896200133;
-	Fri,  6 Dec 2024 12:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B713F20010F;
+	Fri,  6 Dec 2024 12:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocM9W9SI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9cShRtj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E075220012D
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C0A1FF61F
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 12:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733486790; cv=none; b=CWvPMq1D4CN85VK7ZfM7/9ysZ0uZ3p620hREGatAIjmD6Qd+k7Hc8iivbDQqEMG5d/V8JwbqIRpnL4UeRxV4TyJxWNuEnGCVrGqiwP7sOTV6JD8NZn29E9y/BR6Gr/MKFgwAIa7ZL7e5jIfyvuKmPK1K95hNoal53RUCzLtjisg=
+	t=1733486793; cv=none; b=Oqji0U0PHVS8hm4Wo9lXJfkA5OtUp7F3pBYjmV2/rKzji5PuUh032l060DQH08a2b9U2TCG4Mx0UXbJC5a5OhlMHoYwvIbsRbftNeEBhIy5QytzSsfk59W4Rdijew40KlV32OVudKhVEOATCoIIOlLMDOpFM10syqFrXTkNuM+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733486790; c=relaxed/simple;
-	bh=0MPbX024graXJTZiJcvTL54Pzptm80YHl92OZzTvPwQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CJudNSD/xdQjix1IRet/z6Qh4Q/Z9NrgQ9vcc1yCpXD4XgvYGFcPfmQqMfMR18+crGFY+Sqob+C9Xqlaz/Q82dXXk6G0giIDuApnR+pqnGCqcvIYVCJKTiwZItj08DJueaPXJEUHwWzeTKYLweeloRvu8VUeG+pSITZFJmq+wjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocM9W9SI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01613C4CEDD;
-	Fri,  6 Dec 2024 12:06:28 +0000 (UTC)
+	s=arc-20240116; t=1733486793; c=relaxed/simple;
+	bh=nZUtZd+sJJFKwKqF7DWXcUxlDVeRnYCmrtSDMtjQNlg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eyA8FoO2ZEX5zsCF0F7s/VlQ23lqt7Aeys7UrrZpyqZhAxAw2jfMdlRjMVetJC00kL5nwau64HiwrDhpTMrVxKMd0ep5GlNSW2Y+Iz7GO4W9BbHZEDnMmaNzdf+Vev/7y55flRhVKcbAzYkQgtqLXhnIgkmTKnGnuSXB9DufX8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9cShRtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9946FC4CED1;
+	Fri,  6 Dec 2024 12:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733486789;
-	bh=0MPbX024graXJTZiJcvTL54Pzptm80YHl92OZzTvPwQ=;
+	s=korg; t=1733486793;
+	bh=nZUtZd+sJJFKwKqF7DWXcUxlDVeRnYCmrtSDMtjQNlg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ocM9W9SIKf6IuZRbkx2q3PLdfolABPtzhtekz4aNSpfc6wdmbyy/xSUs7aSJmMKWj
-	 ZaC+Fqepsm1RQwRjAPuRHM/XOyANGdaOX9+aOW9dDB25EnJzDxDwJX2SN2AMzb+K6a
-	 HgTBg2s709jvmgY1q/SjP7C6Ev+hIOtNLaEwltRk=
-Subject: FAILED: patch "[PATCH] f2fs: fix to drop all discards after creating snapshot on lvm" failed to apply to 5.4-stable tree
-To: chao@kernel.org,jaegeuk@kernel.org,piergiorgio.sartor@nexgo.de
+	b=L9cShRtjBhAT4aR/RvOJLPlQNngZwqAp4pTOJvWQDv1je8QpQ+Rfg0cDKBgEGhYlv
+	 mkVyVPGGUaMLn6/a7qQ3zz8WBoksc0q/5TY+Uzv1Oa+fQwvCFoiCg4SX3dUBSOlIzP
+	 WK/4KHfODkkdRuWNi6r0uXhfqy+w9lI0F58G3mB8=
+Subject: FAILED: patch "[PATCH] f2fs: fix to requery extent which cross boundary of inquiry" failed to apply to 6.12-stable tree
+To: chao@kernel.org,jaegeuk@kernel.org,zhiguo.niu@unisoc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 13:06:16 +0100
-Message-ID: <2024120616-slinging-pope-8f99@gregkh>
+Date: Fri, 06 Dec 2024 13:06:29 +0100
+Message-ID: <2024120628-crazy-studio-e1dc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x bc8aeb04fd80cb8cfae3058445c84410fd0beb5e
+git cherry-pick -x 6787a82245857271133b63ae7f72f1dc9f29e985
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120616-slinging-pope-8f99@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120628-crazy-studio-e1dc@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,107 +77,93 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bc8aeb04fd80cb8cfae3058445c84410fd0beb5e Mon Sep 17 00:00:00 2001
+From 6787a82245857271133b63ae7f72f1dc9f29e985 Mon Sep 17 00:00:00 2001
 From: Chao Yu <chao@kernel.org>
-Date: Thu, 21 Nov 2024 22:17:16 +0800
-Subject: [PATCH] f2fs: fix to drop all discards after creating snapshot on lvm
- device
+Date: Fri, 8 Nov 2024 09:25:57 +0800
+Subject: [PATCH] f2fs: fix to requery extent which cross boundary of inquiry
 
-Piergiorgio reported a bug in bugzilla as below:
+dd if=/dev/zero of=file bs=4k count=5
+xfs_io file -c "fiemap -v 2 16384"
+file:
+   EXT: FILE-OFFSET      BLOCK-RANGE      TOTAL FLAGS
+     0: [0..31]:         139272..139303      32 0x1000
+     1: [32..39]:        139304..139311       8 0x1001
+xfs_io file -c "fiemap -v 0 16384"
+file:
+   EXT: FILE-OFFSET      BLOCK-RANGE      TOTAL FLAGS
+     0: [0..31]:         139272..139303      32 0x1000
+xfs_io file -c "fiemap -v 0 16385"
+file:
+   EXT: FILE-OFFSET      BLOCK-RANGE      TOTAL FLAGS
+     0: [0..39]:         139272..139311      40 0x1001
 
-------------[ cut here ]------------
-WARNING: CPU: 2 PID: 969 at fs/f2fs/segment.c:1330
-RIP: 0010:__submit_discard_cmd+0x27d/0x400 [f2fs]
-Call Trace:
- __issue_discard_cmd+0x1ca/0x350 [f2fs]
- issue_discard_thread+0x191/0x480 [f2fs]
- kthread+0xcf/0x100
- ret_from_fork+0x31/0x50
- ret_from_fork_asm+0x1a/0x30
+There are two problems:
+- continuous extent is split to two
+- FIEMAP_EXTENT_LAST is missing in last extent
 
-w/ below testcase, it can reproduce this bug quickly:
-- pvcreate /dev/vdb
-- vgcreate myvg1 /dev/vdb
-- lvcreate -L 1024m -n mylv1 myvg1
-- mount /dev/myvg1/mylv1 /mnt/f2fs
-- dd if=/dev/zero of=/mnt/f2fs/file bs=1M count=20
-- sync
-- rm /mnt/f2fs/file
-- sync
-- lvcreate -L 1024m -s -n mylv1-snapshot /dev/myvg1/mylv1
-- umount /mnt/f2fs
+The root cause is: if upper boundary of inquiry crosses extent,
+f2fs_map_blocks() will truncate length of returned extent to
+F2FS_BYTES_TO_BLK(len), and also, it will stop to query latter
+extent or hole to make sure current extent is last or not.
 
-The root cause is: it will update discard_max_bytes of mounted lvm
-device to zero after creating snapshot on this lvm device, then,
-__submit_discard_cmd() will pass parameter @nr_sects w/ zero value
-to __blkdev_issue_discard(), it returns a NULL bio pointer, result
-in panic.
-
-This patch changes as below for fixing:
-1. Let's drop all remained discards in f2fs_unfreeze() if snapshot
-of lvm device is created.
-2. Checking discard_max_bytes before submitting discard during
-__submit_discard_cmd().
+In order to fix this issue, once we found an extent locates
+in the end of inquiry range by f2fs_map_blocks(), we need to
+expand inquiry range to requiry.
 
 Cc: stable@vger.kernel.org
-Fixes: 35ec7d574884 ("f2fs: split discard command in prior to block layer")
-Reported-by: Piergiorgio Sartor <piergiorgio.sartor@nexgo.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219484
+Fixes: 7f63eb77af7b ("f2fs: report unwritten area in f2fs_fiemap")
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
 Signed-off-by: Chao Yu <chao@kernel.org>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 4236040e3994..eade36c5ef13 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -1290,16 +1290,18 @@ static int __submit_discard_cmd(struct f2fs_sb_info *sbi,
- 						wait_list, issued);
- 			return 0;
- 		}
--
--		/*
--		 * Issue discard for conventional zones only if the device
--		 * supports discard.
--		 */
--		if (!bdev_max_discard_sectors(bdev))
--			return -EOPNOTSUPP;
- 	}
- #endif
- 
-+	/*
-+	 * stop issuing discard for any of below cases:
-+	 * 1. device is conventional zone, but it doesn't support discard.
-+	 * 2. device is regulare device, after snapshot it doesn't support
-+	 * discard.
-+	 */
-+	if (!bdev_max_discard_sectors(bdev))
-+		return -EOPNOTSUPP;
-+
- 	trace_f2fs_issue_discard(bdev, dc->di.start, dc->di.len);
- 
- 	lstart = dc->di.lstart;
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index c0670cd61956..fc7d463dee15 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1760,6 +1760,18 @@ static int f2fs_freeze(struct super_block *sb)
- 
- static int f2fs_unfreeze(struct super_block *sb)
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 69f1cb0490ee..ee5614324df0 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -1896,7 +1896,7 @@ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		u64 start, u64 len)
  {
-+	struct f2fs_sb_info *sbi = F2FS_SB(sb);
-+
+ 	struct f2fs_map_blocks map;
+-	sector_t start_blk, last_blk;
++	sector_t start_blk, last_blk, blk_len, max_len;
+ 	pgoff_t next_pgofs;
+ 	u64 logical = 0, phys = 0, size = 0;
+ 	u32 flags = 0;
+@@ -1940,14 +1940,13 @@ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 
+ 	start_blk = F2FS_BYTES_TO_BLK(start);
+ 	last_blk = F2FS_BYTES_TO_BLK(start + len - 1);
+-
+-	if (len & F2FS_BLKSIZE_MASK)
+-		len = round_up(len, F2FS_BLKSIZE);
++	blk_len = last_blk - start_blk + 1;
++	max_len = F2FS_BYTES_TO_BLK(maxbytes) - start_blk;
+ 
+ next:
+ 	memset(&map, 0, sizeof(map));
+ 	map.m_lblk = start_blk;
+-	map.m_len = F2FS_BYTES_TO_BLK(len);
++	map.m_len = blk_len;
+ 	map.m_next_pgofs = &next_pgofs;
+ 	map.m_seg_type = NO_CHECK_TYPE;
+ 
+@@ -1970,6 +1969,17 @@ int f2fs_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		flags |= FIEMAP_EXTENT_LAST;
+ 	}
+ 
 +	/*
-+	 * It will update discard_max_bytes of mounted lvm device to zero
-+	 * after creating snapshot on this lvm device, let's drop all
-+	 * remained discards.
-+	 * We don't need to disable real-time discard because discard_max_bytes
-+	 * will recover after removal of snapshot.
++	 * current extent may cross boundary of inquiry, increase len to
++	 * requery.
 +	 */
-+	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
-+		f2fs_issue_discard_timeout(sbi);
++	if (!compr_cluster && (map.m_flags & F2FS_MAP_MAPPED) &&
++				map.m_lblk + map.m_len - 1 == last_blk &&
++				blk_len != max_len) {
++		blk_len = max_len;
++		goto next;
++	}
 +
- 	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
- 	return 0;
- }
+ 	compr_appended = false;
+ 	/* In a case of compressed cluster, append this to the last extent */
+ 	if (compr_cluster && ((map.m_flags & F2FS_MAP_DELALLOC) ||
 
 
