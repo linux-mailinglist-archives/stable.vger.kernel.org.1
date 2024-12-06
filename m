@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-99833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B53F9E73A3
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3989E73A2
 	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:22:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30E1316BB64
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:21:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF6302888CC
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67EF8149E1A;
-	Fri,  6 Dec 2024 15:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655AE1514CE;
+	Fri,  6 Dec 2024 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QAMnA/Nl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOctt4CB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140CD14F9F4;
-	Fri,  6 Dec 2024 15:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242F7148832;
+	Fri,  6 Dec 2024 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498505; cv=none; b=iDFmgBDoGeRPwi+UlvEnCf9FlioJrjVwsHPYPyViWt6I4ybI76hXdCG9+YimAnczVOMCNH64IqruHeJI4nBM9IQbFfuW4aazcVjXyzj1LmChX29AjK7JUGMDmXLHfybrhBxzaE8/TTDjjOSC6kD/TrjPobuL1DOAyPrIpe1P9fI=
+	t=1733498542; cv=none; b=Bv4IVPqDB+R0VWx56b5Hw8ACIi4Cjr9iTB2Kora5Ya0wRKptg3zEejAyzRZwFIzG225nKYIGy+cKhJoMSSz6b9XSC33dxGS459HXaog/Q0a6yfpEZcEGy2DkaBdAZti2i1du4HW1UR/Ya/OAahbeJOlA+04zFJNUuVD8+IlGOH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498505; c=relaxed/simple;
-	bh=moQWHEdNr/Ik9oX4MHhPwqzeQRrrbIznkYlhzxRAfYI=;
+	s=arc-20240116; t=1733498542; c=relaxed/simple;
+	bh=cUZi38TtzXfPN2ajc+exRaCpr8UFdE2mEy/MAOaDD7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnoOEgqg6mFiKJ7DXoytrZFo9U2XO1/Nv8/Qjye6nENaToGzzNYsEpmX/d91GDcop6BAqWzsGoSdECGwF0auxjnK9Ki04IEetoikMInlOwTQIUpXge9veY2jQrpdk7xD1epxOXesH520qDuj58pQRKfSgipJYyl/HeTltk3ZlM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QAMnA/Nl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764E4C4CED1;
-	Fri,  6 Dec 2024 15:21:44 +0000 (UTC)
+	 MIME-Version; b=s6rVWkQlGIvqcEdpcWZNomff7b2r6R772ffXmVyPhdtwYeBxzeT5lPAHr1pndss7+stt/5zI9TeyGQZ6WfDo2y6YuDKOuTouOC6+PnBMk78zqK5oPeGP3287QNEzhs9UmezJ30h4hkiMfWOHx67abe0WB7+Qzy8rUsMaRn4KKOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOctt4CB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885AFC4CED1;
+	Fri,  6 Dec 2024 15:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498504;
-	bh=moQWHEdNr/Ik9oX4MHhPwqzeQRrrbIznkYlhzxRAfYI=;
+	s=korg; t=1733498542;
+	bh=cUZi38TtzXfPN2ajc+exRaCpr8UFdE2mEy/MAOaDD7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAMnA/NleqTSasMOf33LsZFidq2Jfm85Z76r38ZEJXJPi+KOY2sHY+yNyj1QScQ5t
-	 amHUScF317oCruIQUn2Zfi2JZrpZxjwFoQxQyc2iXOC9nNOiXmGeyj4z4xq8xCEzZr
-	 n3xXk4qOl7kr3922FPf6op6H2lDf0VhnogfzFK8I=
+	b=OOctt4CBUE8B7T3cFHU63xIiALohyXhXR2MzJisVyTvfca8kmx7V3QYfsZWvFZAwS
+	 UTj2b01ryq+RPy+5wQ2S3kPuXOvz+tzJbS0ixkA96GExs3CgPJpw+Xs9NeI8FjMIJ0
+	 XduflK8VQ9pz9fSe3J/n8uFBkRf2XpnXQrDYP1+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Masahiro Yamada <masahiroy@kernel.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 587/676] init/modpost: conditionally check section mismatch to __meminit*
-Date: Fri,  6 Dec 2024 15:36:46 +0100
-Message-ID: <20241206143716.299396274@linuxfoundation.org>
+Subject: [PATCH 6.6 588/676] Rename .data.unlikely to .data..unlikely
+Date: Fri,  6 Dec 2024 15:36:47 +0100
+Message-ID: <20241206143716.338259275@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -70,199 +67,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 73db3abdca58c8a014ec4c88cf5ef925cbf63669 ]
+[ Upstream commit bb43a59944f45e89aa158740b8a16ba8f0b0fa2b ]
 
-This reverts commit eb8f689046b8 ("Use separate sections for __dev/
-_cpu/__mem code/data").
+Commit 7ccaba5314ca ("consolidate WARN_...ONCE() static variables")
+was intended to collect all .data.unlikely sections into one chunk.
+However, this has not worked when CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
+or CONFIG_LTO_CLANG is enabled, because .data.unlikely matches the
+.data.[0-9a-zA-Z_]* pattern in the DATA_MAIN macro.
 
-Check section mismatch to __meminit* only when CONFIG_MEMORY_HOTPLUG=n.
+Commit cb87481ee89d ("kbuild: linker script do not match C names unless
+LD_DEAD_CODE_DATA_ELIMINATION is configured") was introduced to suppress
+the issue for the default CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=n case,
+providing a minimal fix for stable backporting. We were aware this did
+not address the issue for CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=y. The
+plan was to apply correct fixes and then revert cb87481ee89d. [1]
 
-With this change, the linker script and modpost become simpler, and we
-can get rid of the __ref annotations from the memory hotplug code.
+Seven years have passed since then, yet the #ifdef workaround remains in
+place.
 
-[sfr@canb.auug.org.au: remove MEM_KEEP from arch/powerpc/kernel/vmlinux.lds.S]
-  Link: https://lkml.kernel.org/r/20240710093213.2aefb25f@canb.auug.org.au
-Link: https://lkml.kernel.org/r/20240706160511.2331061-2-masahiroy@kernel.org
+Using a ".." separator in the section name fixes the issue for
+CONFIG_LD_DEAD_CODE_DATA_ELIMINATION and CONFIG_LTO_CLANG.
+
+[1]: https://lore.kernel.org/linux-kbuild/CAK7LNASck6BfdLnESxXUeECYL26yUDm0cwRZuM4gmaWUkxjL5g@mail.gmail.com/
+
+Fixes: cb87481ee89d ("kbuild: linker script do not match C names unless LD_DEAD_CODE_DATA_ELIMINATION is configured")
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: bb43a59944f4 ("Rename .data.unlikely to .data..unlikely")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/vmlinux.lds.S |  2 --
- include/asm-generic/vmlinux.lds.h | 18 ++----------------
- include/linux/init.h              | 14 +++++++++-----
- scripts/mod/modpost.c             | 19 ++++---------------
- 4 files changed, 15 insertions(+), 38 deletions(-)
+ include/asm-generic/vmlinux.lds.h | 2 +-
+ include/linux/rcupdate.h          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index f420df7888a75..7ab4e2fb28b1e 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -123,8 +123,6 @@ SECTIONS
- 		 */
- 		*(.sfpr);
- 		*(.text.asan.* .text.tsan.*)
--		MEM_KEEP(init.text)
--		MEM_KEEP(exit.text)
- 	} :text
- 
- 	. = ALIGN(PAGE_SIZE);
 diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 63029bc7c9dd0..5793aedb24c6d 100644
+index 5793aedb24c6d..cb12f164caf1e 100644
 --- a/include/asm-generic/vmlinux.lds.h
 +++ b/include/asm-generic/vmlinux.lds.h
-@@ -139,14 +139,6 @@
-  * often happens at runtime)
-  */
- 
--#if defined(CONFIG_MEMORY_HOTPLUG)
--#define MEM_KEEP(sec)    *(.mem##sec)
--#define MEM_DISCARD(sec)
--#else
--#define MEM_KEEP(sec)
--#define MEM_DISCARD(sec) *(.mem##sec)
--#endif
--
- #ifndef CONFIG_HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
- #define KEEP_PATCHABLE		KEEP(*(__patchable_function_entries))
- #define PATCHABLE_DISCARDS
-@@ -355,7 +347,6 @@
+@@ -347,7 +347,7 @@
  	*(.data..decrypted)						\
  	*(.ref.data)							\
  	*(.data..shared_aligned) /* percpu related */			\
--	MEM_KEEP(init.data*)						\
- 	*(.data.unlikely)						\
+-	*(.data.unlikely)						\
++	*(.data..unlikely)						\
  	__start_once = .;						\
  	*(.data.once)							\
-@@ -519,7 +510,6 @@
- 	/* __*init sections */						\
- 	__init_rodata : AT(ADDR(__init_rodata) - LOAD_OFFSET) {		\
- 		*(.ref.rodata)						\
--		MEM_KEEP(init.rodata)					\
- 	}								\
- 									\
- 	/* Built-in module parameters. */				\
-@@ -570,8 +560,7 @@
- 		*(.text.unknown .text.unknown.*)			\
- 		NOINSTR_TEXT						\
- 		*(.ref.text)						\
--		*(.text.asan.* .text.tsan.*)				\
--	MEM_KEEP(init.text*)						\
-+		*(.text.asan.* .text.tsan.*)
- 
- 
- /* sched.text is aling to function alignment to secure we have same
-@@ -678,7 +667,6 @@
- #define INIT_DATA							\
- 	KEEP(*(SORT(___kentry+*)))					\
- 	*(.init.data .init.data.*)					\
--	MEM_DISCARD(init.data*)						\
- 	KERNEL_CTORS()							\
- 	MCOUNT_REC()							\
- 	*(.init.rodata .init.rodata.*)					\
-@@ -686,7 +674,6 @@
- 	TRACE_SYSCALLS()						\
- 	KPROBE_BLACKLIST()						\
- 	ERROR_INJECT_WHITELIST()					\
--	MEM_DISCARD(init.rodata)					\
- 	CLK_OF_TABLES()							\
- 	RESERVEDMEM_OF_TABLES()						\
- 	TIMER_OF_TABLES()						\
-@@ -704,8 +691,7 @@
- 
- #define INIT_TEXT							\
- 	*(.init.text .init.text.*)					\
--	*(.text.startup)						\
--	MEM_DISCARD(init.text*)
-+	*(.text.startup)
- 
- #define EXIT_DATA							\
- 	*(.exit.data .exit.data.*)					\
-diff --git a/include/linux/init.h b/include/linux/init.h
-index 01b52c9c75268..63d2ee4f1f0e0 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -84,11 +84,15 @@
- 
- #define __exit          __section(".exit.text") __exitused __cold notrace
- 
--/* Used for MEMORY_HOTPLUG */
--#define __meminit        __section(".meminit.text") __cold notrace \
--						  __latent_entropy
--#define __meminitdata    __section(".meminit.data")
--#define __meminitconst   __section(".meminit.rodata")
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+#define __meminit
-+#define __meminitdata
-+#define __meminitconst
-+#else
-+#define __meminit	__init
-+#define __meminitdata	__initdata
-+#define __meminitconst	__initconst
-+#endif
- 
- /* For assembly routines */
- #define __HEAD		.section	".head.text","ax"
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index bd559361ecd27..4110d559ed688 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -792,17 +792,14 @@ static void check_section(const char *modname, struct elf_info *elf,
- 
- 
- #define ALL_INIT_DATA_SECTIONS \
--	".init.setup", ".init.rodata", ".meminit.rodata", \
--	".init.data", ".meminit.data"
-+	".init.setup", ".init.rodata", ".init.data"
- 
- #define ALL_PCI_INIT_SECTIONS	\
- 	".pci_fixup_early", ".pci_fixup_header", ".pci_fixup_final", \
- 	".pci_fixup_enable", ".pci_fixup_resume", \
- 	".pci_fixup_resume_early", ".pci_fixup_suspend"
- 
--#define ALL_XXXINIT_SECTIONS ".meminit.*"
--
--#define ALL_INIT_SECTIONS INIT_SECTIONS, ALL_XXXINIT_SECTIONS
-+#define ALL_INIT_SECTIONS ".init.*"
- #define ALL_EXIT_SECTIONS ".exit.*"
- 
- #define DATA_SECTIONS ".data", ".data.rel"
-@@ -813,9 +810,7 @@ static void check_section(const char *modname, struct elf_info *elf,
- 		".fixup", ".entry.text", ".exception.text", \
- 		".coldtext", ".softirqentry.text"
- 
--#define INIT_SECTIONS      ".init.*"
--
--#define ALL_TEXT_SECTIONS  ".init.text", ".meminit.text", ".exit.text", \
-+#define ALL_TEXT_SECTIONS  ".init.text", ".exit.text", \
- 		TEXT_SECTIONS, OTHER_TEXT_SECTIONS
- 
- enum mismatch {
-@@ -867,12 +862,6 @@ static const struct sectioncheck sectioncheck[] = {
- 	.bad_tosec = { ALL_EXIT_SECTIONS, NULL },
- 	.mismatch = TEXTDATA_TO_ANY_EXIT,
- },
--/* Do not reference init code/data from meminit code/data */
--{
--	.fromsec = { ALL_XXXINIT_SECTIONS, NULL },
--	.bad_tosec = { INIT_SECTIONS, NULL },
--	.mismatch = XXXINIT_TO_SOME_INIT,
--},
- /* Do not use exit code/data from init code */
- {
- 	.fromsec = { ALL_INIT_SECTIONS, NULL },
-@@ -887,7 +876,7 @@ static const struct sectioncheck sectioncheck[] = {
- },
- {
- 	.fromsec = { ALL_PCI_INIT_SECTIONS, NULL },
--	.bad_tosec = { INIT_SECTIONS, NULL },
-+	.bad_tosec = { ALL_INIT_SECTIONS, NULL },
- 	.mismatch = ANY_INIT_TO_ANY_EXIT,
- },
- {
+ 	__end_once = .;							\
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 6466c2f792923..7602d1f8a9ecb 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -398,7 +398,7 @@ static inline int debug_lockdep_rcu_enabled(void)
+  */
+ #define RCU_LOCKDEP_WARN(c, s)						\
+ 	do {								\
+-		static bool __section(".data.unlikely") __warned;	\
++		static bool __section(".data..unlikely") __warned;	\
+ 		if (debug_lockdep_rcu_enabled() && (c) &&		\
+ 		    debug_lockdep_rcu_enabled() && !__warned) {		\
+ 			__warned = true;				\
 -- 
 2.43.0
 
