@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-98972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE9069E6B53
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:09:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF039E6B58
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 11:11:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 877291884AA7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:09:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DD12280CDC
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 10:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAB31B0F1D;
-	Fri,  6 Dec 2024 10:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43A21EE016;
+	Fri,  6 Dec 2024 10:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUVk59rj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9zhi12N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A23028684
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 10:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D491AD9F9
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 10:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733479746; cv=none; b=SLwU/uUZYKn1RfR7KBMk02UXLXwgQGDkyGy/8Lxvjx66J8/IUdCEIEV9kyjbA3AMOu4RUJSfo4qUCrm4Fc34jIYm4d/la+HAKZPDEjtO4+7414jYqignjdCcMTJrW/fpMnqR5uIPPVb0hGtCPmG2M8vtDlRGchl1WrR4bh1Q4Ig=
+	t=1733479865; cv=none; b=IaIZbH2GJteSnJtjyT7YH685ef4u+hAbojktsT4Z81fLtQsQRv/fUPUMZVDf3WqbO2RBgXJnpQs5sqi5W4kmzGk4CDDf2IvF2W1l+AwP4BbwXefNNOdgTT7dpSrZG/+fJOmpuQpHHsf2a/tf4mhyJZt4YUzkrc7RUEZNbGftr+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733479746; c=relaxed/simple;
-	bh=u0o1+kUFJXJPwycF7JVxT8TRn0GsSyRFS002kiOyao8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OCl3tmOfPtyv4uTGXI3iacMVK3pISqphio0GnpB4toR7Z8g8E+N0gHpBNpDve4/fF7+f87T+iUpbCoWdtHgtm8622FqfTY43tLebAW8UityxA6p46+DxhcS4g+gOjMN+iVM0l//TbH4hR0kHpFZWahR0bo40S33W1fCCC3vMo7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUVk59rj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7C9C4CED1;
-	Fri,  6 Dec 2024 10:09:05 +0000 (UTC)
+	s=arc-20240116; t=1733479865; c=relaxed/simple;
+	bh=v0KpIcRh6o6t8BA3dz8kQ7CNKpFRBaG8UFJ+ByDZoAk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IwpKUMnDAYDetBOvRwNhk/iz3YyozLYGK9+hBdZ8d7s5chmLEeuzNOsDjr/uIKu/eIXLDEuplAQISdYD056r8WJFkk8wFq2wCOBiLIoUdq1+Dt/FhIT2e6v5suPsXlzVMmac5IiQsEBmFx4l8kSredx5CT5XeJyJgsr/GgCGmRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9zhi12N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79759C4CEDD;
+	Fri,  6 Dec 2024 10:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733479745;
-	bh=u0o1+kUFJXJPwycF7JVxT8TRn0GsSyRFS002kiOyao8=;
+	s=korg; t=1733479864;
+	bh=v0KpIcRh6o6t8BA3dz8kQ7CNKpFRBaG8UFJ+ByDZoAk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pUVk59rjXsZSnvM+yzMQ1GZoKJlJyVzHCWekQ4sgm5s/lq3IiAuKLPr3t6ne2ObNB
-	 iPfOmRN0usjCwVNKJA/tiG0lq/y7NM32mSGWebuP8aj97nfJhRVNO1h8rE4ys4KGHZ
-	 q1BwtQx8BwkkQdlhkhcSRZIxVrYsUXZRihTbo8ZE=
-Subject: FAILED: patch "[PATCH] media: dvb-core: add missing buffer index check" failed to apply to 6.12-stable tree
-To: hverkuil-cisco@xs4all.nl,benjamin.gaignard@collabora.com,chenyuan0y@gmail.com,mchehab+huawei@kernel.org,stable@vger.kernel.org
+	b=L9zhi12NQ1QNHiSjF6H50rcBJ5FEPJiDwcLV3vMs+TlgOIUVyZzTGWoLCiCcpjcJh
+	 P+OHjKe+w3ibCKL97sptFYJ09iOPsQAq2ZRfdKAQ2GujH7nwpkoWeHQG8PSL/eD3XM
+	 1dzrKwocyzotWXU+bsaK+L1ZeQ6qSnE04rEDCReA=
+Subject: FAILED: patch "[PATCH] mmc: mtk-sd: Fix MMC_CAP2_CRYPTO flag setting" failed to apply to 6.12-stable tree
+To: andy-ld.lu@mediatek.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 06 Dec 2024 11:09:02 +0100
-Message-ID: <2024120601-unheard-margarine-05ff@gregkh>
+Date: Fri, 06 Dec 2024 11:11:01 +0100
+Message-ID: <2024120601-faculty-facelift-caf7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x bfe703ac0c9f42fd54ec46416146f46d9502bc8c
+git cherry-pick -x 2508925fb346661bad9f50b497d7ac7d0b6085d0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120601-unheard-margarine-05ff@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024120601-faculty-facelift-caf7@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bfe703ac0c9f42fd54ec46416146f46d9502bc8c Mon Sep 17 00:00:00 2001
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Tue, 1 Oct 2024 11:01:34 +0200
-Subject: [PATCH] media: dvb-core: add missing buffer index check
+From 2508925fb346661bad9f50b497d7ac7d0b6085d0 Mon Sep 17 00:00:00 2001
+From: Andy-ld Lu <andy-ld.lu@mediatek.com>
+Date: Mon, 11 Nov 2024 16:49:31 +0800
+Subject: [PATCH] mmc: mtk-sd: Fix MMC_CAP2_CRYPTO flag setting
 
-dvb_vb2_expbuf() didn't check if the given buffer index was
-for a valid buffer. Add this check.
+Currently, the MMC_CAP2_CRYPTO flag is set by default for eMMC hosts.
+However, this flag should not be set for hosts that do not support inline
+encryption.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: 7dc866df4012 ("media: dvb-core: Use vb2_get_buffer() instead of directly access to buffers array")
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+The 'crypto' clock, as described in the documentation, is used for data
+encryption and decryption. Therefore, only hosts that are configured with
+this 'crypto' clock should have the MMC_CAP2_CRYPTO flag set.
 
-diff --git a/drivers/media/dvb-core/dvb_vb2.c b/drivers/media/dvb-core/dvb_vb2.c
-index 192a8230c4aa..29edaaff7a5c 100644
---- a/drivers/media/dvb-core/dvb_vb2.c
-+++ b/drivers/media/dvb-core/dvb_vb2.c
-@@ -366,9 +366,15 @@ int dvb_vb2_querybuf(struct dvb_vb2_ctx *ctx, struct dmx_buffer *b)
- int dvb_vb2_expbuf(struct dvb_vb2_ctx *ctx, struct dmx_exportbuffer *exp)
- {
- 	struct vb2_queue *q = &ctx->vb_q;
-+	struct vb2_buffer *vb2 = vb2_get_buffer(q, exp->index);
- 	int ret;
+Fixes: 7b438d0377fb ("mmc: mtk-sd: add Inline Crypto Engine clock control")
+Fixes: ed299eda8fbb ("mmc: mtk-sd: fix devm_clk_get_optional usage")
+Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
+Cc: stable@vger.kernel.org
+Message-ID: <20241111085039.26527-1-andy-ld.lu@mediatek.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 022526a1f754..efb0d2d5716b 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2907,7 +2907,8 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 		host->crypto_clk = devm_clk_get_optional(&pdev->dev, "crypto");
+ 		if (IS_ERR(host->crypto_clk))
+ 			return PTR_ERR(host->crypto_clk);
+-		mmc->caps2 |= MMC_CAP2_CRYPTO;
++		else if (host->crypto_clk)
++			mmc->caps2 |= MMC_CAP2_CRYPTO;
+ 	}
  
--	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, q->bufs[exp->index],
-+	if (!vb2) {
-+		dprintk(1, "[%s] invalid buffer index\n", ctx->name);
-+		return -EINVAL;
-+	}
-+
-+	ret = vb2_core_expbuf(&ctx->vb_q, &exp->fd, q->type, vb2,
- 			      0, exp->flags);
- 	if (ret) {
- 		dprintk(1, "[%s] index=%d errno=%d\n", ctx->name,
+ 	host->irq = platform_get_irq(pdev, 0);
 
 
