@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-98928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A673B9E654A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 05:09:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6429E654E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 05:10:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82131169E7B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:08:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC388283E4A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 04:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CA719415E;
-	Fri,  6 Dec 2024 04:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69ADA1946D0;
+	Fri,  6 Dec 2024 04:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZrVBQud/"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="P+xqFfYO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D153F193081
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 04:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B4018CBFE
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 04:10:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733458133; cv=none; b=K5vPsF325iARyRbSyQvsd2KU/F8i4lTVtmxEloypsT4vX5KRdQsG79kmdE+uOhMFLgWS8NXfOIrjwKiOsDsVQkovwNDuKv7wkeYxn0Zh6kSS5Fa9SngMip0Z3UY1MTM3eH776XzmfzJSl6xKIGTs1EMxTT3f1mfmZAGNzk1TXL8=
+	t=1733458244; cv=none; b=nofYjYLuada4hOdFJ8gbPswFggw+vsRhA0MuX4rZZhKrHyGn6AR5K1M25IFosB0Jstk1cCJf3fGJXjgYuFv1z2qizPrskSHI/tFEApuKfEl1pSQsOsUkbO/XvEchRn57FW56KvczbzQEso2rlHwAOYWq1JGVyk49Dm2RMyRLtwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733458133; c=relaxed/simple;
-	bh=mfEM/DG4PNsmSscMrTtijAKM7ewta8wLDkEBOoOqr1U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GSDe9HIQRIgPdHq9xvZRNwbgHTDwhS19cBIJd0s4RB47kR2dMhiUDBpdJUc/ki6STFaheKUWNcEKoqTP/QT9X6PMPeTB9agSHo7OAvb/ydEAMvO6E3/USUz1tWbpRry3F9ZChhAfU3Xihx+ozGZZfvAj+B4DGacD1K6pnfu5t9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZrVBQud/; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1733458244; c=relaxed/simple;
+	bh=V7/lKkhMDAzPFuNdlkfXeN81gLMB4rzzuf0y3yjA3E0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MQ1lg5hCaVrU1z/szoKS6yKOEmt/rNS571zkIcr4Ue7O2Sa3jR3BZHqT5G23Onpxid8/nhYoEYycth7i+ADFhgilh5wdEnkJ/7iYNf45oO70EAOIAzke47Xdk7tg/akwh34sTg88lyeJvYznz2uG30UBW0HJysZL1/D6oeiaus4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=P+xqFfYO; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7259b9147a1so265646b3a.0
-        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 20:08:51 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-215564e34acso2354585ad.3
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 20:10:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1733458131; x=1734062931; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1733458241; x=1734063041; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pycc29BcH8MRwie8Do3jeg7dOfWDOOE59oanfpjCi0o=;
-        b=ZrVBQud/OGxzB/B/f18babgbVCORCrWMXfrTAA5dku3BxdfA3gludd3umcMX2hYrXM
-         lObEWPSn0Ejcs1XdC+Z7ou9zrityUFjbTGQC2VSrnFYDaQT/0Pmn3wANh5qoRbsSnxK8
-         aDsdIf0SXer1f3UFi0jfj913y5GtdbeDJQbxA=
+        bh=0IU9gPKZ0cYpxiTpLI8JVzoAjrjZPxFqYWDg1qG91HQ=;
+        b=P+xqFfYOAjcuvi3EQvMz2SobiqR9F3csyExT7dpA4KKoSzC5wZxvmDlY8qtEbuH2Fa
+         sAm0alTQbEHpz72FEIzR9hG/3tAO04xGpHk7mKPvPN5tiJltgVWmhleOgIUiy+F/7V06
+         tCitc8SaxKVbSnXmMffCae3Fe1edy5TmAvyV0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733458131; x=1734062931;
+        d=1e100.net; s=20230601; t=1733458241; x=1734063041;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Pycc29BcH8MRwie8Do3jeg7dOfWDOOE59oanfpjCi0o=;
-        b=AK2WlEyCQcLWcIoKUWi1nI4qACFyxR98EpSGcVkOESPda1gof9s0ODXruAeugZKl7S
-         HGHS4Z7H1edfpsC45clU+uF5lWUPfA57xmN3BpVvok1E7wQySvntImtykFHs4vbjzFx/
-         QnbVGpop/gRxmZTZulUBuDVuvDWMDi8MUBxwBcqEXcrXT3Nd9g/5B/i3ur+tCX/ljzai
-         ouob01G+XY5xo0mHwyd0pFDI3owSyOUcaFe1Oe36dlhDOf24G6ioBP384jdb5iIdPuze
-         LsjpB+pFvUUuuqLRiPlOlb/SF5Onv6qzIbgzKYLHaeYTqKaOoRqKxOrNkVhXcbz45oza
-         KsBQ==
-X-Gm-Message-State: AOJu0Yw3cnNBvpjLw3+sYUSTSNJZ11OdoZHwiIUUqXN72x1CC9CbveFQ
-	oMl6favkM1pjempUP4w4cHJPPSMIqT0aE48JtuL5sfqceu7w0p2FS7NBaWQr6BxUD196ZZo3jxU
-	d7JvwlF9nZs6npk13ZOx6VLQTf9pu+Nuo2VxRDVv5BUrHfayUG2Fm871CVm5leIA6t3bPE4w8mQ
-	wbTIbw7rxqbVHAJwWOLeqfY26rDnSdqpCNVHM1ILU6/C2huHivH4y29CxjiQ==
-X-Gm-Gg: ASbGncskXGf03zRDpgJqPZENxnmKTmSV7zMk8Re8vXopYk6A0/t91PP53Gxu9nOsXx3
-	aDOaDtm06HIYVkApa4o57cYGMubKBAPlkn2duGSmcx+Kf6iL6i56tjPE8UL7J121pSkLNv9S/Jq
-	ffsXKGZRi1n/uZTRJP0+i2ojSq1Jki+0/+hbizTcb4wuk/F8YPtQiKdDWSf6FGEQ7nVd6R7Oz7y
-	DONXAJV7xYOrLPtsVbg08biRQ/B1XBDHKSB6ILQ052GAO4AHSxowu8MjByLus732hwZJqaocGXg
-	4E2Bk/7FrStEpJQW0w==
-X-Google-Smtp-Source: AGHT+IHxgK0uBuqS9VxoHyUeS6mBM9E7ub6R77truPmNtH3VetfzIrO8WGEyYuJM9Zme/SwKoAuxfA==
-X-Received: by 2002:a17:902:c402:b0:215:a3fd:61f9 with SMTP id d9443c01a7336-21614dce2fdmr7340275ad.15.1733458130805;
-        Thu, 05 Dec 2024 20:08:50 -0800 (PST)
+        bh=0IU9gPKZ0cYpxiTpLI8JVzoAjrjZPxFqYWDg1qG91HQ=;
+        b=L8AFxwCSa0Xz4LA7jRd9FIXfSQfcXuLF1Fq2w0sGHaHdL4ZL0Li0dKZg2ThVg6URGM
+         KVX8d0uCbIbEMg46iPx7eHvOVZVgs6GfP8J0yau/txZWVOxoY4Drp1U4hG5eaHLWAC2n
+         9ga0Mf7A9a4gpwv628DxRSEegKMtWSE9hN2DUb6F60lSuX/80anTLMRCuteNBd9EeC2h
+         NSGRqKNFRMv3gtryUc7L0UKp0nBFoV1HBqnAzghvackbjnvwyRc1opA2wWyRWyQ4FGNv
+         SlmFh/rzMbaCDTo3F5O8N+RwKyGslrPQCKjX4HzfLnJqtG4y3TWDDMu9py3RUVwnmWek
+         smlw==
+X-Gm-Message-State: AOJu0YyeJaE0z8EXVoJnXY2L16Rxyzb01KocCAUYluimOZrCBZU3aVzI
+	U5g0zByiwDINW1Aw/rRxKqFgPN97WxVpi/hFY9qy7N8lj0vy6kaw1dVvb0+lztjr/5o+9FtA8bX
+	/7ViwCFC8DOsziHAkwocPD76WFdROnQWdpiL6GVgocyrqQT0pDDkByFEOtrvZG305xuomt7OyyV
+	dUR7g5sy6kS8XLRHS3gnVQXFz37Ivn7mCHDW4o3IRpGD8aRjhdM6NAjoh2jQd3bz8=
+X-Gm-Gg: ASbGncvznVNVKvdpNxxPyJ8/EWh6yi9UqyuaRWO1S6li6HudR0mi512tJ/yax3kCyab
+	DNpzBNtUB5tWiUQLhdnfm+x2pyKIqZkQj9wSCYmVYtXKnkIjx1ymosIVMUC3ukIKCOHCdlXwo2c
+	9JWtl66jutH6mgXXEED5z8F3zhWnqbESX79YvI+L+LwQR23MdpTkW/NrlNHl78lh3oqPx1s3Dsg
+	+29JITofsM/15V+8BVOh3yb76H8iKfXrUZzphzq5sR/z/WJwOiTHotrPgxc+2Qtb9XVKVR6flhv
+	KBIB/7soMzrm+YBoIg==
+X-Google-Smtp-Source: AGHT+IHIPKNeut07aOTI89zxMd3Vl+EMqCNUz246+xUnyar4QNLZ+a1aZ5TrSWJS1HODt0F85bhzoA==
+X-Received: by 2002:a17:902:da8c:b0:215:7ced:9d59 with SMTP id d9443c01a7336-21614de3df3mr8726785ad.12.1733458241448;
+        Thu, 05 Dec 2024 20:10:41 -0800 (PST)
 Received: from kk-ph5.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8f26ff2sm19920525ad.227.2024.12.05.20.08.49
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8e3e807sm20053675ad.57.2024.12.05.20.10.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 20:08:50 -0800 (PST)
+        Thu, 05 Dec 2024 20:10:41 -0800 (PST)
 From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -79,11 +79,15 @@ Cc: clm@fb.com,
 	ajay.kaher@broadcom.com,
 	alexey.makhalov@broadcom.com,
 	vasavi.sirnapalli@broadcom.com,
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH v5.10-v6.6] btrfs: don't BUG_ON on ENOMEM from btrfs_lookuip_extent_info() in walk_down_proc()
-Date: Fri,  6 Dec 2024 04:08:46 +0000
-Message-Id: <20241206040846.4013310-1-keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v5.10-v6.1] drm/amd/display: Check BIOS images before it is used
+Date: Fri,  6 Dec 2024 04:10:37 +0000
+Message-Id: <20241206041037.4013334-1-keerthana.kalyanasundaram@broadcom.com>
 X-Mailer: git-send-email 2.39.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -93,34 +97,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit a580fb2c3479d993556e1c31b237c9e5be4944a3 ]
+[ Upstream commit 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c ]
 
-We handle errors here properly, ENOMEM isn't fatal, return the error.
+BIOS images may fail to load and null checks are added before they are
+used.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This fixes 6 NULL_RETURNS issues reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 ---
- fs/btrfs/extent-tree.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 0d97c8ee6..f53c4d52b 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5213,7 +5213,6 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
- 					       eb->start, level, 1,
- 					       &wc->refs[level],
- 					       &wc->flags[level]);
--		BUG_ON(ret == -ENOMEM);
- 		if (ret)
- 			return ret;
- 		if (unlikely(wc->refs[level] == 0)) {
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+index 9b8ea6e9a..0f686e363 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
+@@ -664,6 +664,9 @@ static enum bp_result get_ss_info_v3_1(
+ 
+ 	ss_table_header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
+ 		DATA_TABLES(ASIC_InternalSS_Info));
++	if (!ss_table_header_include)
++		return BP_RESULT_UNSUPPORTED;
++
+ 	table_size =
+ 		(le16_to_cpu(ss_table_header_include->sHeader.usStructureSize)
+ 				- sizeof(ATOM_COMMON_TABLE_HEADER))
+@@ -1031,6 +1034,8 @@ static enum bp_result get_ss_info_from_internal_ss_info_tbl_V2_1(
+ 
+ 	header = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
+ 		DATA_TABLES(ASIC_InternalSS_Info));
++	if (!header)
++		return result;
+ 
+ 	memset(info, 0, sizeof(struct spread_spectrum_info));
+ 
+@@ -1104,6 +1109,8 @@ static enum bp_result get_ss_info_from_ss_info_table(
+ 	get_atom_data_table_revision(header, &revision);
+ 
+ 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO, DATA_TABLES(SS_Info));
++	if (!tbl)
++		return result;
+ 
+ 	if (1 != revision.major || 2 > revision.minor)
+ 		return result;
+@@ -1631,6 +1638,8 @@ static uint32_t get_ss_entry_number_from_ss_info_tbl(
+ 
+ 	tbl = GET_IMAGE(ATOM_SPREAD_SPECTRUM_INFO,
+ 			DATA_TABLES(SS_Info));
++	if (!tbl)
++		return number;
+ 
+ 	if (1 != revision.major || 2 > revision.minor)
+ 		return number;
+@@ -1711,6 +1720,8 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_v2_1(
+ 
+ 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
+ 			DATA_TABLES(ASIC_InternalSS_Info));
++	if (!header_include)
++		return 0;
+ 
+ 	size = (le16_to_cpu(header_include->sHeader.usStructureSize)
+ 			- sizeof(ATOM_COMMON_TABLE_HEADER))
+@@ -1748,6 +1759,9 @@ static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_V3_1(
+ 
+ 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
+ 			DATA_TABLES(ASIC_InternalSS_Info));
++	if (!header_include)
++		return number;
++
+ 	size = (le16_to_cpu(header_include->sHeader.usStructureSize) -
+ 			sizeof(ATOM_COMMON_TABLE_HEADER)) /
+ 					sizeof(ATOM_ASIC_SS_ASSIGNMENT_V3);
 -- 
-2.19.0
+2.39.4
 
 
