@@ -1,280 +1,158 @@
-Return-Path: <stable+bounces-99997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B920A9E7BE0
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:43:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D8B9E7BE3
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:44:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A3C3283E8E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:43:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C697016D674
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 22:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994FD1EE010;
-	Fri,  6 Dec 2024 22:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422211F4E33;
+	Fri,  6 Dec 2024 22:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zoa8Ya8c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NMU2V+un"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B34D1EE014
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 22:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F58922C6C3;
+	Fri,  6 Dec 2024 22:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733525034; cv=none; b=eQGfBAqaUIYr0Hv/Zji2NZVwDOIUom1SAu/aYdmb0iW3SfcmDGj7kCqZ0c2uRJrsvOIHBqRbufmA4TdJOzivQ5yZov1+5IQ46LXJqCwqWUpeukdTzg8hFp2/eM4XbedOCG7sIhfy9w02nQVqP/CrLUFvvzbWogX25gty9ERDVBw=
+	t=1733525084; cv=none; b=hVeMWM7WtMtN5SF5PHttvJViFpKeUexL6ffn3n8Qf7zr/yPPpkXeBG3fk88HqE//WRgDh3N3uoQTpHhrfYQIdvw/T0GdCCzVfaTXFl0hcd2Get0JQLla19+vZ5RR5z9wZKqJ4UgKtwUjXYqxBGW9NXTxJXgBXBU65zfYXIRhqDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733525034; c=relaxed/simple;
-	bh=GRqnO46nzid8krfEuysxeIgBaxe3w35yymvOILNQ/94=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I0/xP11IGzo77VIUxvO2b02704yNVJIqx6sreS2P4jf31haKaTHLsZKZb+Wto4iJKAa+1qwR2w/QVwOERRKU6zVgaHhyuEQrTZuK6a3U+PP6p5p/d40xPixlauQ1O9OaRF123oO1irZU2J7QzDX15IufienuWIvwxWIr1/VT9Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zoa8Ya8c; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5d3cfdc7e4fso537a12.0
-        for <stable@vger.kernel.org>; Fri, 06 Dec 2024 14:43:52 -0800 (PST)
+	s=arc-20240116; t=1733525084; c=relaxed/simple;
+	bh=WI2J7dR0+ilHazk4wgjzpDOluD8//9je5uTiSk7GoAo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Fnfua1se44Inkgx+512q6aYyAKWjDm/N49hqEVPzVGuj7VVbkKJqLpCGFnzgQl4BFP5w3DUw83ZAwd0MBKlciwn4HJAIDk1wowAljPgPc8WLTC1XYnbsa31ctaqTrmvrRoJADWcxjDMdZ+pQyMhbZAIKHpVBGskppbpZ8RGbV/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NMU2V+un; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4668f208f5fso23278351cf.0;
+        Fri, 06 Dec 2024 14:44:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733525031; x=1734129831; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pywEdegimLQlBn+t8T2abCZBtIJoyKsgIBCkU4hsymM=;
-        b=zoa8Ya8coF87HkvbpsJCQ1knVyXyt6qC+XvRusxA9UuF+t3szoXPT6sBQXBX06ESx5
-         sDz+ZYHdAsUMZYY1wER8kZiExQFZkjJdmO28mp8RvgPFK0Hudf+J2GuMCfcYxggIYuct
-         wng0kxGmn9TBO/fa4cbmO5RwUguGWQ/d03uom/86TvrVRTTKRQIDXjgKXw5lRARIoREk
-         KWFHKEp8Nb7xX3gfiWKq5uxSpMfCj7aj75iGC+GmWVWlVKrXHJARefs0zIuaYXdiqk9+
-         D1m8UY9uL78XKY/Ez1hyOfeDo9b+nJur0zXmnQgu1FeJkXzLcKEZCL4UfvFBDCb3UBaX
-         F00w==
+        d=gmail.com; s=20230601; t=1733525081; x=1734129881; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=iCN7jYmq/Ly3S+/F2VYvFeB81jNT2qnKK+9AsXABa/Q=;
+        b=NMU2V+unWLlqoDVaU0IoWRABJanfLdmh9yhdowmPaFnQzlneqv4CsWN4JAbFauiteZ
+         B0cHh6c6Jb/jQ4rmQxWO04f8vuwNiRGoe9lM93FhjHAWuXIS3S/pHsXhww1go2DqXOFV
+         BUdT5FsEaAAb0JR3jj1iBjOVMJEn57diyFD0ujQOXZSm49ERPDbHJ/W7SNJwPJdhBuM8
+         4PkRUgnhTG/LGnwhm+eh/z4osWzzN5xIWC/yaDDdA6J9EYE9ak0xZa8R3GsyZ1gttiD6
+         7mWw1Bb4b0t6nyeVhF5mTQOoKLQ5EB7zMxyJLH5f2le2qhakUu1hdKmp5xqdWuoaMUHE
+         RNQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733525031; x=1734129831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pywEdegimLQlBn+t8T2abCZBtIJoyKsgIBCkU4hsymM=;
-        b=ESbaIyXEMLtyCQAy1D4D/8HgqdXX30YXx0ce2TeAsPBwLTO7keRvSQQpSK0cPlpCQh
-         RKd76zY1wF6SU/g84IYky7/qtSsZsdaFOAFm4cdTpKXtvY6iHh4hw2+Ia5tStXEnkh7P
-         TOJK5Xh4n5EbraN439cRs5wnlPHKNqVuJWmtlSVieIXNEbdp8z7T5nYvuHA7ZNvOKpVD
-         RnT4+w/9N6SlgxIqpQjlyaz9KUVgwMuBxm9JFY4YVjmW7Tds6+bi9oHzjKq6WQzL/1fy
-         l0i/Wu2rYvo8buRZ6XRdaB7pj++1uVqltly+s2IIWKhoIeScgP74qW6zxeX6d1qDmaeB
-         AMhg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0hnuyz/brmJ7mNVQQqzzeNvzxsklerNaYHqcmKA7t0VZEBOPQOjrAgJ6orwbF7z8mTYhQ4xs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyxqQezEwhBoTCCTP+/FwSGsEqEF0/7SmpA/pzdPyiicWYQHvG2
-	sfUJwzxg/P8nqygwEsFKDxQsw7qfoX4tOj4ubscUb7qEuKRol1eemT7mRBORIUhY3ye/RVR3UOK
-	TYcH7iwu6BRZAaYNgQI+uvviwDCW4GxoDu5uh
-X-Gm-Gg: ASbGncvfBzkl3iY+yN4lZZC75xnGGSTAJsSKm8KP+5beerfQV1kUsr9aF359Fw8PBCu
-	HXztp7v/DL3yyl39ZkDsvunb8UvQh7xey35v/7OYfb2djxmka8+LVhu0/4d0=
-X-Google-Smtp-Source: AGHT+IEcFVlYVUQgcKyQVRnm4YZqN1F0sexw3RaThTUV7zXbpxDXVpQFQ7RHn+UrMij61DBoRTmSNblJ4FWJz1a95EY=
-X-Received: by 2002:a50:eb44:0:b0:5d0:b6ff:5277 with SMTP id
- 4fb4d7f45d1cf-5d3dabe69e1mr31910a12.2.1733525030223; Fri, 06 Dec 2024
- 14:43:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733525081; x=1734129881;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iCN7jYmq/Ly3S+/F2VYvFeB81jNT2qnKK+9AsXABa/Q=;
+        b=prnpvrRT7C9MGCMajyoblyEdcsB8XgaPJrQzCjVj8a30FRGXXWBI2hwN3ngo0zL57k
+         5Fn+YvtqktN4FW6SIJE1k0ys+l1IJIGajPAOKJL//qKyKWKv0ngaW6DrXscY4+/BJR/o
+         OJ+uCRXQWiJlj+Hl6NEph3WoQ6j0QoqVFuNsNwKBQjICTxJSsbUTjlVkKXBMhITPGw9/
+         i91Ey9Lf4sUB80TRsExpuPq5kAdZmgpIqNIhT6kUyYajFBQPQkTS8WY7WZjpny6pZkBy
+         buJeaIa7krkfS4W6lHKsCUsX8sLtPrspCVzMTKVOLVWpZqm0E4QZJTjq0YF5aaTscDTY
+         A+EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDOrfosT6DV315Yz7YL3KpvpVG4sCnR7/2oIfx/PLlWZtPU6zwL3RoxzoKODWKfYNkvBv7nbrHKaJfcx4=@vger.kernel.org, AJvYcCXSozuGR6VZk229afm1XSbYoFxDzysBf54RwtKubQlh71BMmXtFTAQMZf2hKLty8uHW7v1W2UZU@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUP130AOQcrHAHvK8NoSvpRrzC1SEyCPagKMhmhhb1qdByN9uP
+	sEy8XxwFDiZMndNtO1XWayhz1+WO7YUYDNM14KGEzXZ4VznCwOiT
+X-Gm-Gg: ASbGncsRdxo04G3rgZrr33oMZF/t5DiBVoiX2QmHZv9vsYr4p9LyM5GvDzUtcogFbav
+	Be0/n9c15H3CUGqz/QLv6W0dTKlwwoz9C64DJ1b3ZBG+q2eUiSUwrLtmFjoYRWBGN8xZsB8CD7l
+	w08ehei/EAgWnWxOotxKO2yqQGHbSZNKfY3pFgwA3h0lG2fQ7eu3/4OgMlKzB1IjoOKMusmyRJc
+	qe3+JFJEZfyEIMiZq9RaUK4WaNMYagh47I3QChuqD07o4SqY19K/P7EnKubDNcVwxF38ioTg0wZ
+	uw==
+X-Google-Smtp-Source: AGHT+IE+CaF0eGH3ZR5dX95dfeuHr9PvwB934hOYv3WA31istBnI0LMpUh2I1Nn9x0ochL1UtCrAxw==
+X-Received: by 2002:a05:622a:1a99:b0:45f:bc9e:c69c with SMTP id d75a77b69052e-46734c87a09mr106144231cf.7.1733525081432;
+        Fri, 06 Dec 2024 14:44:41 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-467297d6c5esm25928661cf.82.2024.12.06.14.44.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Dec 2024 14:44:40 -0800 (PST)
+Message-ID: <61d56813-0658-4893-994d-4e9f0175554d@gmail.com>
+Date: Fri, 6 Dec 2024 14:44:37 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
- <CAEf4BzYxaKd8Gv5g8PBY6zaQukYKSjjtaSgYMjJxL-PZ0dLrbQ@mail.gmail.com>
- <CAG48ez3i5haHCc8EQMVNjKnd9xYwMcp4sbW_Y8DRpJCidJotjw@mail.gmail.com> <CAEf4BzYkGQ0sw9JEeAMLAfcQbzxwg46c487kBD_LcbZSaTKD5Q@mail.gmail.com>
-In-Reply-To: <CAEf4BzYkGQ0sw9JEeAMLAfcQbzxwg46c487kBD_LcbZSaTKD5Q@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 6 Dec 2024 23:43:14 +0100
-Message-ID: <CAG48ez1LRsuew4y_KQxPHNipA68hhm+iJohHbk6=1cwv5QPCxQ@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] bpf: Fix prog_array UAF in __uprobe_perf_func()
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Delyan Kratunov <delyank@fb.com>, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/676] 6.6.64-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20241206143653.344873888@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
+ xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
+ X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
+ AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
+ ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
+ SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
+ nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
+ qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
+ YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wn0EExECACYCGyMGCwkIBwMCBBUCCAME
+ FgIDAQIeAQIXgAUCZyzoUwUJMSthbgAhCRBhV5kVtWN2DhYhBP5PoW9lJh2L2le8vWFXmRW1
+ Y3YOiy4AoKaKEzMlk0vfG76W10qZBKa9/1XcAKCwzGTbxYHbVXmFXeX72TVJ1s9b2c7DTQRI
+ z7gSEBAAv+jT1uhH0PdWTVO3v6ClivdZDqGBhU433Tmrad0SgDYnR1DEk1HDeydpscMPNAEB
+ yo692LtiJ18FV0qLTDEeFK5EF+46mm6l1eRvvPG49C5K94IuqplZFD4JzZCAXtIGqDOdt7o2
+ Ci63mpdjkNxqCT0uoU0aElDNQYcCwiyFqnV/QHU+hTJQ14QidX3wPxd3950zeaE72dGlRdEr
+ 0G+3iIRlRca5W1ktPnacrpa/YRnVOJM6KpmV/U/6/FgsHH14qZps92bfKNqWFjzKvVLW8vSB
+ ID8LpbWj9OjB2J4XWtY38xgeWSnKP1xGlzbzWAA7QA/dXUbTRjMER1jKLSBolsIRCerxXPW8
+ NcXEfPKGAbPu6YGxUqZjBmADwOusHQyho/fnC4ZHdElxobfQCcmkQOQFgfOcjZqnF1y5M84d
+ nISKUhGsEbMPAa0CGV3OUGgHATdncxjfVM6kAK7Vmk04zKxnrGITfmlaTBzQpibiEkDkYV+Z
+ ZI3oOeKKZbemZ0MiLDgh9zHxveYWtE4FsMhbXcTnWP1GNs7+cBor2d1nktE7UH/wXBq3tsvO
+ awKIRc4ljs02kgSmSg2gRR8JxnCYutT545M/NoXp2vDprJ7ASLnLM+DdMBPoVXegGw2DfGXB
+ TSA8re/qBg9fnD36i89nX+qo186tuwQVG6JJWxlDmzcAAwUP/1eOWedUOH0Zf+v/qGOavhT2
+ 0Swz5VBdpVepm4cppKaiM4tQI/9hVCjsiJho2ywJLgUI97jKsvgUkl8kCxt7IPKQw3vACcFw
+ 6Rtn0E8k80JupTp2jAs6LLwC5NhDjya8jJDgiOdvoZOu3EhQNB44E25AL+DLLHedsv+VWUdv
+ Gvi1vpiSGQ7qyGNeFCHudBvfcWMY7g9ZTXU2v2L+qhXxAKjXYxASjbjhFEDpUy53TrL8Tjj2
+ tZkVJPAapvQVLSx5Nxg2/G3w8HaLNf4dkDxIvniPjv25vGF+6hO7mdd20VgWPkuPnHfgso/H
+ symACaPQftIOGkVYXYXNwLVuOJb2aNYdoppfbcDC33sCpBld6Bt+QnBfZjne5+rw2nd7Xnja
+ WHf+amIZKKUKxpNqEQascr6Ui6yXqbMmiKX67eTTWh+8kwrRl3MZRn9o8xnXouh+MUD4w3Fa
+ tkWuRiaIZ2/4sbjnNKVnIi/NKIbaUrKS5VqD4iKMIiibvw/2NG0HWrVDmXBmnZMsAmXP3YOY
+ XAGDWHIXPAMAONnaesPEpSLJtciBmn1pTZ376m0QYJUk58RbiqlYIIs9s5PtcGv6D/gfepZu
+ zeP9wMOrsu5Vgh77ByHL+JcQlpBV5MLLlqsxCiupMVaUQ6BEDw4/jsv2SeX2LjG5HR65XoMK
+ EOuC66nZolVTwk8EGBECAA8CGwwFAlRf0vEFCR5cHd8ACgkQYVeZFbVjdg6PhQCfeesUs9l6
+ Qx6pfloP9qr92xtdJ/IAoLjkajRjLFUca5S7O/4YpnqezKwn
+In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 6, 2024 at 11:30=E2=80=AFPM Andrii Nakryiko
-<andrii.nakryiko@gmail.com> wrote:
-> On Fri, Dec 6, 2024 at 2:25=E2=80=AFPM Jann Horn <jannh@google.com> wrote=
-:
-> >
-> > On Fri, Dec 6, 2024 at 11:15=E2=80=AFPM Andrii Nakryiko
-> > <andrii.nakryiko@gmail.com> wrote:
-> > > On Fri, Dec 6, 2024 at 12:45=E2=80=AFPM Jann Horn <jannh@google.com> =
-wrote:
-> > > >
-> > > > Currently, the pointer stored in call->prog_array is loaded in
-> > > > __uprobe_perf_func(), with no RCU annotation and no RCU protection,=
- so the
-> > > > loaded pointer can immediately be dangling. Later,
-> > > > bpf_prog_run_array_uprobe() starts a RCU-trace read-side critical s=
-ection,
-> > > > but this is too late. It then uses rcu_dereference_check(), but thi=
-s use of
-> > > > rcu_dereference_check() does not actually dereference anything.
-> > > >
-> > > > It looks like the intention was to pass a pointer to the member
-> > > > call->prog_array into bpf_prog_run_array_uprobe() and actually dere=
-ference
-> > > > the pointer in there. Fix the issue by actually doing that.
-> > > >
-> > > > Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining =
-gps")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Jann Horn <jannh@google.com>
-> > > > ---
-> > > > To reproduce, in include/linux/bpf.h, patch in a mdelay(10000) dire=
-ctly
-> > > > before the might_fault() in bpf_prog_run_array_uprobe() and add an
-> > > > include of linux/delay.h.
-> > > >
-> > > > Build this userspace program:
-> > > >
-> > > > ```
-> > > > $ cat dummy.c
-> > > > #include <stdio.h>
-> > > > int main(void) {
-> > > >   printf("hello world\n");
-> > > > }
-> > > > $ gcc -o dummy dummy.c
-> > > > ```
-> > > >
-> > > > Then build this BPF program and load it (change the path to point t=
-o
-> > > > the "dummy" binary you built):
-> > > >
-> > > > ```
-> > > > $ cat bpf-uprobe-kern.c
-> > > > #include <linux/bpf.h>
-> > > > #include <bpf/bpf_helpers.h>
-> > > > #include <bpf/bpf_tracing.h>
-> > > > char _license[] SEC("license") =3D "GPL";
-> > > >
-> > > > SEC("uprobe//home/user/bpf-uprobe-uaf/dummy:main")
-> > > > int BPF_UPROBE(main_uprobe) {
-> > > >   bpf_printk("main uprobe triggered\n");
-> > > >   return 0;
-> > > > }
-> > > > $ clang -O2 -g -target bpf -c -o bpf-uprobe-kern.o bpf-uprobe-kern.=
-c
-> > > > $ sudo bpftool prog loadall bpf-uprobe-kern.o uprobe-test autoattac=
-h
-> > > > ```
-> > > >
-> > > > Then run ./dummy in one terminal, and after launching it, run
-> > > > `sudo umount uprobe-test` in another terminal. Once the 10-second
-> > > > mdelay() is over, a use-after-free should occur, which may or may
-> > > > not crash your kernel at the `prog->sleepable` check in
-> > > > bpf_prog_run_array_uprobe() depending on your luck.
-> > > > ---
-> > > > Changes in v2:
-> > > > - remove diff chunk in patch notes that confuses git
-> > > > - Link to v1: https://lore.kernel.org/r/20241206-bpf-fix-uprobe-uaf=
--v1-1-6869c8a17258@google.com
-> > > > ---
-> > > >  include/linux/bpf.h         | 4 ++--
-> > > >  kernel/trace/trace_uprobe.c | 2 +-
-> > > >  2 files changed, 3 insertions(+), 3 deletions(-)
-> > > >
-> > >
-> > > Looking at how similar in spirit bpf_prog_run_array() is meant to be
-> > > used, it seems like it is the caller's responsibility to
-> > > RCU-dereference array and keep RCU critical section before calling
-> > > into bpf_prog_run_array(). So I wonder if it's best to do this instea=
-d
-> > > (Gmail will butcher the diff, but it's about the idea):
-> >
-> > Yeah, that's the other option I was considering. That would be more
-> > consistent with the existing bpf_prog_run_array(), but has the
-> > downside of unnecessarily pushing responsibility up to the caller...
-> > I'm fine with either.
->
-> there is really just one caller ("legacy" singular uprobe handler), so
-> I think this should be fine. Unless someone objects I'd keep it
-> consistent with other "prog_array_run" helpers
+On 12/6/24 06:26, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.64 release.
+> There are 676 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 08 Dec 2024 14:34:52 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.64-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Ack, I will make it consistent.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-> > > diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> > > index eaee2a819f4c..4b8a9edd3727 100644
-> > > --- a/include/linux/bpf.h
-> > > +++ b/include/linux/bpf.h
-> > > @@ -2193,26 +2193,25 @@ bpf_prog_run_array(const struct bpf_prog_arra=
-y *array,
-> > >   * rcu-protected dynamically sized maps.
-> > >   */
-> > >  static __always_inline u32
-> > > -bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *array_r=
-cu,
-> > > +bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
-> > >                           const void *ctx, bpf_prog_run_fn run_prog)
-> > >  {
-> > >         const struct bpf_prog_array_item *item;
-> > >         const struct bpf_prog *prog;
-> > > -       const struct bpf_prog_array *array;
-> > >         struct bpf_run_ctx *old_run_ctx;
-> > >         struct bpf_trace_run_ctx run_ctx;
-> > >         u32 ret =3D 1;
-> > >
-> > >         might_fault();
-> > > +       RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu lock he=
-ld");
-> > > +
-> > > +       if (unlikely(!array))
-> > > +               goto out;
-> > >
-> > > -       rcu_read_lock_trace();
-> > >         migrate_disable();
-> > >
-> > >         run_ctx.is_uprobe =3D true;
-> > >
-> > > -       array =3D rcu_dereference_check(array_rcu, rcu_read_lock_trac=
-e_held());
-> > > -       if (unlikely(!array))
-> > > -               goto out;
-> > >         old_run_ctx =3D bpf_set_run_ctx(&run_ctx.run_ctx);
-> > >         item =3D &array->items[0];
-> > >         while ((prog =3D READ_ONCE(item->prog))) {
-> > > @@ -2229,7 +2228,6 @@ bpf_prog_run_array_uprobe(const struct
-> > > bpf_prog_array __rcu *array_rcu,
-> > >         bpf_reset_run_ctx(old_run_ctx);
-> > >  out:
-> > >         migrate_enable();
-> > > -       rcu_read_unlock_trace();
-> > >         return ret;
-> > >  }
-> > >
-> > > diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.=
-c
-> > > index fed382b7881b..87a2b8fefa90 100644
-> > > --- a/kernel/trace/trace_uprobe.c
-> > > +++ b/kernel/trace/trace_uprobe.c
-> > > @@ -1404,7 +1404,9 @@ static void __uprobe_perf_func(struct trace_upr=
-obe *tu,
-> > >         if (bpf_prog_array_valid(call)) {
-> > >                 u32 ret;
-> > >
-> > > +               rcu_read_lock_trace();
-> > >                 ret =3D bpf_prog_run_array_uprobe(call->prog_array,
-> > > regs, bpf_prog_run);
-> >
-> > But then this should be something like this (possibly split across
-> > multiple lines with a helper variable or such):
-> >
-> > ret =3D bpf_prog_run_array_uprobe(rcu_dereference_check(call->prog_arra=
-y,
-> > rcu_read_lock_trace_held()), regs, bpf_prog_run);
->
-> Yeah, absolutely, forgot to move the RCU dereference part, good catch!
-> But I wouldn't do the _check() variant here, literally the previous
-> line does rcu_read_trace_lock(), so this check part seems like just
-> unnecessary verboseness, I'd go with a simple rcu_dereference().
-
-rcu_dereference() is not legal there - that asserts that we are in a
-normal RCU read-side critical section, which we are not.
-rcu_dereference_raw() would be, but I think it is nice to document the
-semantics to make it explicit under which lock we're operating.
-
-I'll send a v3 in a bit after testing it.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
