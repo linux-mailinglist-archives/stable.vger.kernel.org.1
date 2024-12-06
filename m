@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-99499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637E49E71F8
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:03:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 087D39E71FB
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:03:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CAF016B9B9
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B37B32862F7
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1684148FE6;
-	Fri,  6 Dec 2024 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C751527AC;
+	Fri,  6 Dec 2024 15:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwq/RMQS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hRZnA0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB6D53A7;
-	Fri,  6 Dec 2024 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226F213AA5F;
+	Fri,  6 Dec 2024 15:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497376; cv=none; b=EgTnR5qqhmLyKfZ0l4Nme8hARU+LgqHLhg2vUar3xAZRH4GK1suYudC4w/AtPl8yWuyVBNvfPhUSM7jRVG7eaEAeB7omq86Z4F0uAqjRIwfv86f+fyvYCL8rUC67PeUPSUB5oNlGOzKDRnho7E+fQE9VfSe494Q2batqJdXyljI=
+	t=1733497383; cv=none; b=SaKgard/pvLFuySufVyRacdI8wERyjk0642FqP7roQwdDRhThE8WMYYEnM5nvnKW7mwS/j3XnSrMsXieayhI1ojSq6cywczqB89qqm/7+UIyZzBr482+rbU2HAArEn++VcOpHsnvA++fV89G1KghRS1SDZVjO7dnvIMKpfpAgm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497376; c=relaxed/simple;
-	bh=EoufOzY4ENeRsW6UFLBUxkM7QwjvtALVbEWPtZaMx9E=;
+	s=arc-20240116; t=1733497383; c=relaxed/simple;
+	bh=dB0Zqg98DpGNwrmq0eQdFLOlFI6xELiKRKyH2I5Sxw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T418/jA1L06QF+/T+LsYrOdpKtFKMpjswTLOD199AqXe+NlgHWMAdTgQTJPd0n72rjB6Zw0nCWJI5CpAlxjsg2MF0oSCNyT/mRc2w/TRDe0rUXNbP81wbFitKzzB+uf5u2/F3cqPLkSIZyUtPUzwVWRYBaaF6QYsjN+gfiR6FMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwq/RMQS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28B8C4CEDE;
-	Fri,  6 Dec 2024 15:02:55 +0000 (UTC)
+	 MIME-Version; b=BrwsP8i0VB5ePwkynNMM4Cj+2PvX2CKc3ynYPFd0KTh9GllfFVvPGhS6ye9OESdvHpFJ5HexsZzfkVNerbJu0WYk6nD1hdOikrMZrU83Cp1x8C1k9oJdJW7xQ1sjRDkckH7SsUcZuAp/Pec2AuCtHup59QMQNjqfNYIRGXcE1Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hRZnA0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC4DC4CED1;
+	Fri,  6 Dec 2024 15:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497376;
-	bh=EoufOzY4ENeRsW6UFLBUxkM7QwjvtALVbEWPtZaMx9E=;
+	s=korg; t=1733497383;
+	bh=dB0Zqg98DpGNwrmq0eQdFLOlFI6xELiKRKyH2I5Sxw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwq/RMQSHDPKOGwSKF2eqQdY+PlYEJUFsuSCNX/tJHwkPtWorH29NDSVkSihlV2S1
-	 o1n54GNf8ZJYV/wFF0c3mQoPJM4W/lNAIPjnYlNJOtNCtULBS6wjpEfnQWm3LxMjgT
-	 s0RkLZRuEoUXY5fACJY2qc6cKmHY67pwjCzv1EDQ=
+	b=2hRZnA0GnMvKni2Yeq3opg8imEQFIDqEC82CuHjouTsOfc/qhKOldiJ/iAHVD/LmL
+	 q+pFh+8ZnwBAa6E56IPlZrgybN14hvvW/KTNGka1dB5orWIXF8rFjiajyZi3PRz2sP
+	 YMw5Ilk9dhlyWrPCNFh45VGdzEcVgVYpsZlbBjgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/676] mtd: hyperbus: rpc-if: Convert to platform remove callback returning void
-Date: Fri,  6 Dec 2024 15:31:32 +0100
-Message-ID: <20241206143704.005339131@linuxfoundation.org>
+Subject: [PATCH 6.6 274/676] mtd: hyperbus: rpc-if: Add missing MODULE_DEVICE_TABLE
+Date: Fri,  6 Dec 2024 15:31:33 +0100
+Message-ID: <20241206143704.043433195@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -61,64 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit baaa90c1c923ff2412fae0162eb66d036fd3be6b ]
+[ Upstream commit 7d189579a287d5c568db623c5fc2344cce98a887 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
+The rpc-if-hyperflash driver can be compiled as a module, but lacks
+MODULE_DEVICE_TABLE() and will therefore not be loaded automatically.
+Fix this.
 
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new(), which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
-
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 5de15b610f78 ("mtd: hyperbus: add Renesas RPC-IF driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/linux-mtd/20231008200143.196369-11-u.kleine-koenig@pengutronix.de
-Stable-dep-of: 7d189579a287 ("mtd: hyperbus: rpc-if: Add missing MODULE_DEVICE_TABLE")
+Link: https://lore.kernel.org/linux-mtd/20240731080846.257139-1-biju.das.jz@bp.renesas.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/hyperbus/rpc-if.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/mtd/hyperbus/rpc-if.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/drivers/mtd/hyperbus/rpc-if.c b/drivers/mtd/hyperbus/rpc-if.c
-index ef32fca5f785e..b22aa57119f23 100644
+index b22aa57119f23..e7a28f3316c3f 100644
 --- a/drivers/mtd/hyperbus/rpc-if.c
 +++ b/drivers/mtd/hyperbus/rpc-if.c
-@@ -154,20 +154,18 @@ static int rpcif_hb_probe(struct platform_device *pdev)
- 	return error;
- }
- 
--static int rpcif_hb_remove(struct platform_device *pdev)
-+static void rpcif_hb_remove(struct platform_device *pdev)
- {
- 	struct rpcif_hyperbus *hyperbus = platform_get_drvdata(pdev);
- 
- 	hyperbus_unregister_device(&hyperbus->hbdev);
- 
+@@ -163,9 +163,16 @@ static void rpcif_hb_remove(struct platform_device *pdev)
  	pm_runtime_disable(hyperbus->rpc.dev);
--
--	return 0;
  }
  
++static const struct platform_device_id rpc_if_hyperflash_id_table[] = {
++	{ .name = "rpc-if-hyperflash" },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(platform, rpc_if_hyperflash_id_table);
++
  static struct platform_driver rpcif_platform_driver = {
  	.probe	= rpcif_hb_probe,
--	.remove	= rpcif_hb_remove,
-+	.remove_new = rpcif_hb_remove,
+ 	.remove_new = rpcif_hb_remove,
++	.id_table = rpc_if_hyperflash_id_table,
  	.driver	= {
  		.name	= "rpc-if-hyperflash",
  	},
