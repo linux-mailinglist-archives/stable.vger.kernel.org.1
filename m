@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-99763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435B69E733A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:17:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5408B9E7349
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 047DB289877
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:17:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D8628A27B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92486149C6F;
-	Fri,  6 Dec 2024 15:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5577A14F9F4;
+	Fri,  6 Dec 2024 15:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efNrIFHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdYHu9Se"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9E753A7;
-	Fri,  6 Dec 2024 15:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD99145A16;
+	Fri,  6 Dec 2024 15:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498272; cv=none; b=kDil7JGwIHdnXbeHB7my0IQTa2NZ+jyl4bxyEH68DBLXuRg8zy98i4/FNCIKwwz2DFyHt4lPOBTgwQnsu2B8g/hEz2c8dxPl2x49GqYYURR7wJoyGh1CO3znG0dmiz5s/HekPSVs5HDFHiPmadZLn8WStVabK6mLB7WwSb5B88E=
+	t=1733498308; cv=none; b=YHVRxlOgZvu2gUZ5MCGidV8uTgwNZZesOFXzJjiMdNv0H0jUM0A0hsbONNi3CDX9E6GsuGCrGu/SCOx/GKMKdJ1KKJi28DQID6DvdqfRfNumQpNZNq1s8S6MK497Q84aI4PQKhC3U6bv0IH1z7+aEIFfz4sCBEgUQevnAjtwKOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498272; c=relaxed/simple;
-	bh=yC5dlLunwOdBVuJ5Aet+8taqQYHc9Q94tycu4+clO0Q=;
+	s=arc-20240116; t=1733498308; c=relaxed/simple;
+	bh=6VHIQHpc4Gsw7AjAdM1S9IH9w6tyjqwgNKcR6aRvXZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEe9it4Fjwbob1oXoqXPaxkCKP2ys/N2bu0bYv9LO7YKf41ykuiwkOilc2w3hpAVpcfTd8VNYewnZZ0cH/cjIB3R0RbyI7TjxKKvlY0vnbY4QBJF7x/hlNVm+H1nH/G/MFi7SNCbDljTBQ2KJ1gZdOlPfCurx6NKApuSoQQPobA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efNrIFHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1588C4CEDC;
-	Fri,  6 Dec 2024 15:17:51 +0000 (UTC)
+	 MIME-Version; b=r2MzuQ6eYiKyth7el2VwvYbpTRtul205PCUSfWEeekHrcjBsk1IsnJvqvGmiTZhdEsuAPRKQOKnzoyzAvJbelDLGGATVMPDkHLcYpKskbEkkFjIGy6tG0RZXk8IBKOiX2lafbLGbYxL/+KtNHEvUWb4W6sdrhXbedL+f33N2OB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdYHu9Se; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A015C4CED1;
+	Fri,  6 Dec 2024 15:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498272;
-	bh=yC5dlLunwOdBVuJ5Aet+8taqQYHc9Q94tycu4+clO0Q=;
+	s=korg; t=1733498307;
+	bh=6VHIQHpc4Gsw7AjAdM1S9IH9w6tyjqwgNKcR6aRvXZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efNrIFHJehJSq2K6PM9lKSqS/har3NyQQk31wfOP0ypQWJlxTBA7wVirwAswNpKem
-	 jn0C29zo2ScUh4yfrM12f2rRbrxRpR8QDorQzfhuO/r5BXLG29RAT1dW0Zu8z+fmKs
-	 tWK59LIjPOe0cOCwaJ0r+LD1z2VzPdrMJYfsE2/8=
+	b=HdYHu9SenMTwYHAKDgOsy+MmyKv/ATveI+789sqghUouzsHXoJ5VvxCWnTJpLILqr
+	 IE1ZKOphzlFBuv3yjQBfQ8BBPbRcHNgpT4POowR0s5WLb2rSz6kTB2ht9w85B7T2Fn
+	 JCfO0UsgStqfLnsaIcZYtJJOp0T0D61NrZW0e44Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 6.6 518/676] dt-bindings: serial: rs485: Fix rs485-rts-delay property
-Date: Fri,  6 Dec 2024 15:35:37 +0100
-Message-ID: <20241206143713.594766735@linuxfoundation.org>
+	Filip Brozovic <fbrozovic@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 519/676] serial: 8250_fintek: Add support for F81216E
+Date: Fri,  6 Dec 2024 15:35:38 +0100
+Message-ID: <20241206143713.633684304@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -65,52 +65,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Filip Brozovic <fbrozovic@gmail.com>
 
-commit 12b3642b6c242061d3ba84e6e3050c3141ded14c upstream.
+commit 166105c9030a30ba08574a9998afc7b60bc72dd7 upstream.
 
-Code expects array only with 2 items which should be checked.
-But also item checking is not working as it should likely because of
-incorrect items description.
+The F81216E is a LPC/eSPI to 4 UART Super I/O and is mostly compatible with
+the F81216H, but does not support RS-485 auto-direction delays on any port.
 
-Fixes: d50f974c4f7f ("dt-bindings: serial: Convert rs485 bindings to json-schema")
-Signed-off-by: Michal Simek <michal.simek@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzk@kernel.org>
-Link: https://lore.kernel.org/r/820c639b9e22fe037730ed44d1b044cdb6d28b75.1726480384.git.michal.simek@amd.com
+Signed-off-by: Filip Brozovic <fbrozovic@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241110111703.15494-1-fbrozovic@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/serial/rs485.yaml |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/tty/serial/8250/8250_fintek.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/serial/rs485.yaml
-+++ b/Documentation/devicetree/bindings/serial/rs485.yaml
-@@ -18,16 +18,15 @@ properties:
-     description: prop-encoded-array <a b>
-     $ref: /schemas/types.yaml#/definitions/uint32-array
-     items:
--      items:
--        - description: Delay between rts signal and beginning of data sent in
--            milliseconds. It corresponds to the delay before sending data.
--          default: 0
--          maximum: 100
--        - description: Delay between end of data sent and rts signal in milliseconds.
--            It corresponds to the delay after sending data and actual release
--            of the line.
--          default: 0
--          maximum: 100
-+      - description: Delay between rts signal and beginning of data sent in
-+          milliseconds. It corresponds to the delay before sending data.
-+        default: 0
-+        maximum: 100
-+      - description: Delay between end of data sent and rts signal in milliseconds.
-+          It corresponds to the delay after sending data and actual release
-+          of the line.
-+        default: 0
-+        maximum: 100
+--- a/drivers/tty/serial/8250/8250_fintek.c
++++ b/drivers/tty/serial/8250/8250_fintek.c
+@@ -21,6 +21,7 @@
+ #define CHIP_ID_F81866 0x1010
+ #define CHIP_ID_F81966 0x0215
+ #define CHIP_ID_F81216AD 0x1602
++#define CHIP_ID_F81216E 0x1617
+ #define CHIP_ID_F81216H 0x0501
+ #define CHIP_ID_F81216 0x0802
+ #define VENDOR_ID1 0x23
+@@ -158,6 +159,7 @@ static int fintek_8250_check_id(struct f
+ 	case CHIP_ID_F81866:
+ 	case CHIP_ID_F81966:
+ 	case CHIP_ID_F81216AD:
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81216:
+ 		break;
+@@ -181,6 +183,7 @@ static int fintek_8250_get_ldn_range(str
+ 		return 0;
  
-   rs485-rts-active-high:
-     description: drive RTS high when sending (this is the default).
+ 	case CHIP_ID_F81216AD:
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81216:
+ 		*min = F81216_LDN_LOW;
+@@ -250,6 +253,7 @@ static void fintek_8250_set_irq_mode(str
+ 		break;
+ 
+ 	case CHIP_ID_F81216AD:
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81216:
+ 		sio_write_mask_reg(pdata, FINTEK_IRQ_MODE, IRQ_SHARE,
+@@ -263,7 +267,8 @@ static void fintek_8250_set_irq_mode(str
+ static void fintek_8250_set_max_fifo(struct fintek_8250 *pdata)
+ {
+ 	switch (pdata->pid) {
+-	case CHIP_ID_F81216H: /* 128Bytes FIFO */
++	case CHIP_ID_F81216E: /* 128Bytes FIFO */
++	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81966:
+ 	case CHIP_ID_F81866:
+ 		sio_write_mask_reg(pdata, FIFO_CTRL,
+@@ -297,6 +302,7 @@ static void fintek_8250_set_termios(stru
+ 		goto exit;
+ 
+ 	switch (pdata->pid) {
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 		reg = RS485;
+ 		break;
+@@ -346,6 +352,7 @@ static void fintek_8250_set_termios_hand
+ 	struct fintek_8250 *pdata = uart->port.private_data;
+ 
+ 	switch (pdata->pid) {
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81966:
+ 	case CHIP_ID_F81866:
+@@ -438,6 +445,11 @@ static void fintek_8250_set_rs485_handle
+ 			uart->port.rs485_supported = fintek_8250_rs485_supported;
+ 		break;
+ 
++	case CHIP_ID_F81216E: /* F81216E does not support RS485 delays */
++		uart->port.rs485_config = fintek_8250_rs485_config;
++		uart->port.rs485_supported = fintek_8250_rs485_supported;
++		break;
++
+ 	default: /* No RS485 Auto direction functional */
+ 		break;
+ 	}
 
 
 
