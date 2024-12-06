@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5497B9E71B5
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:59:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47049E71DF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:01:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14396283E7E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7751A166F14
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B2814AD29;
-	Fri,  6 Dec 2024 14:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B918213D508;
+	Fri,  6 Dec 2024 15:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0kVJvQOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5OrfnGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3DC47F53;
-	Fri,  6 Dec 2024 14:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DA913AA5F;
+	Fri,  6 Dec 2024 15:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497157; cv=none; b=WSNk0+OS+V6rZgL0K9CuChMBrfsq5n9iUO5xxaKkFuTKJ+8N+bY21jv+VUDRuxXW4ec/u7a1E0Pgvw/avvkJ5Yc0V/w9pZ/uoEyZc5wR4bY7TYVWtOuTk2H2Zn1zwNUdfgmqCx2eUk9L3SLg2pN2v3QzO3v1A9GHLfZSw1lIme8=
+	t=1733497297; cv=none; b=dExaGnEjmTwHv/7nyXk1GrhWZ5DJFxR9Of6FYTfTnS+O55etOdCf/in25VmNpinsSy59Kne0H+pB+PnR6IkuTf9zOjt06Bvac+N2D6e60CkdgCz+p+ocKWoRadgx5ZBEGvi9FJNabu2rdtyWZx98J9hgvZySkentcBnsxEST+Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497157; c=relaxed/simple;
-	bh=8bP8L0sfrf7TGPkE1+1X9Qd4oX0DcAGx+yRyvd4sWGQ=;
+	s=arc-20240116; t=1733497297; c=relaxed/simple;
+	bh=puTe0Dp4sHDHETgXeCU2bYS1Z8hK2AQfnhbwPQ7dxls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7+z8A0r36wbGjPwJ0BIvGuCh+2MFh58050YXDz+8hJ66rihQD+Nsk9THUvA02zBWr6f19Uf0dsic9QqjsOEFDdFbLE+RnMuBF1yyI/re/iyHhmDhuuPgI5F5m95fcez2KyxWfktRS9TzUaxD0RaJy2E2mIfpuFlKSPhQ4jRp24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0kVJvQOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF0FC4CED1;
-	Fri,  6 Dec 2024 14:59:16 +0000 (UTC)
+	 MIME-Version; b=HTkjolDSNpG5EZdP1Bgi4AWHJzQ+FOWrTVpd8jb4NGKFhnmOreQYud0jQFIGu80X+Oa6IhyD6+TId4GuZLBWa/ZjbgH8ToZKtv7Gk6NZj6knxzLVIibuteNTU7iPO7GZP10pJLkmNlpEFlYmT3sZWAmT94MxY4gW9IUoqIWpBqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5OrfnGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3852C4AF09;
+	Fri,  6 Dec 2024 15:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497157;
-	bh=8bP8L0sfrf7TGPkE1+1X9Qd4oX0DcAGx+yRyvd4sWGQ=;
+	s=korg; t=1733497297;
+	bh=puTe0Dp4sHDHETgXeCU2bYS1Z8hK2AQfnhbwPQ7dxls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0kVJvQOLmLXLLh2L6P2DdOEzw5ZY+z+2RDsbkQZrhUDPkqPZUA6psERK1Lr7bEYYD
-	 mrZM5V3er6R0tGcCAsnrFRbJkj1ra+GGSHPBN/utZdqrD95uxuzTizFPMDGCFXMbTR
-	 orDzlgKNxhf8P8jRkHYA1mDnDtIFmJMcGLYjjg5g=
+	b=t5OrfnGTJUQEE/27cOGWTLVZp0gJ6VA5vCoN0xYZYVw3Mjj5FuFJ/vg2Rb1fSoaA2
+	 iQtdXXe4RuezsNel2GPhWNKM7/lSzbT/TxOd2Twd7dUskCLfDdhXQmKpEGsP0qg9eG
+	 HpYLyd6mvIIVJ/SxutxxiioEIuTfMIOmuSfmZnFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/676] octeontx2-pf: handle otx2_mbox_get_rsp errors in cn10k.c
-Date: Fri,  6 Dec 2024 15:30:28 +0100
-Message-ID: <20241206143701.505698466@linuxfoundation.org>
+Subject: [PATCH 6.6 210/676] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_dmac_flt.c
+Date: Fri,  6 Dec 2024 15:30:29 +0100
+Message-ID: <20241206143701.545929467@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -69,35 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit ac9183023b6a9c09467516abd8aab04f9a2f9564 ]
+[ Upstream commit f5b942e6c54b13246ee49d42dcfb71b7f29e3c64 ]
 
-Add error pointer check after calling otx2_mbox_get_rsp().
+Add error pointer checks after calling otx2_mbox_get_rsp().
 
-Fixes: 2ca89a2c3752 ("octeontx2-pf: TC_MATCHALL ingress ratelimiting offload")
+Fixes: 79d2be385e9e ("octeontx2-pf: offload DMAC filters to CGX/RPM block")
+Fixes: fa5e0ccb8f3a ("octeontx2-pf: Add support for exact match table.")
 Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c   | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-index c1c99d7054f87..7417087b6db59 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-@@ -203,6 +203,11 @@ int cn10k_alloc_leaf_profile(struct otx2_nic *pfvf, u16 *leaf)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
+index 80d853b343f98..2046dd0da00d8 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
+@@ -28,6 +28,11 @@ static int otx2_dmacflt_do_add(struct otx2_nic *pf, const u8 *mac,
+ 	if (!err) {
+ 		rsp = (struct cgx_mac_addr_add_rsp *)
+ 			 otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp)) {
++			mutex_unlock(&pf->mbox.lock);
++			return PTR_ERR(rsp);
++		}
++
+ 		*dmac_index = rsp->index;
+ 	}
  
- 	rsp = (struct  nix_bandprof_alloc_rsp *)
- 	       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
+@@ -200,6 +205,10 @@ int otx2_dmacflt_update(struct otx2_nic *pf, u8 *mac, u32 bit_pos)
+ 
+ 	rsp = (struct cgx_mac_addr_update_rsp *)
+ 		otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
 +	if (IS_ERR(rsp)) {
 +		rc = PTR_ERR(rsp);
 +		goto out;
 +	}
-+
- 	if (!rsp->prof_count[BAND_PROF_LEAF_LAYER]) {
- 		rc = -EIO;
- 		goto out;
+ 
+ 	pf->flow_cfg->bmap_to_dmacindex[bit_pos] = rsp->index;
+ 
 -- 
 2.43.0
 
