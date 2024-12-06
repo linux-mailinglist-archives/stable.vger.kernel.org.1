@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-99970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16539E76C7
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB029E76C8
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 18:11:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E9C282895
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAB3E188410E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 17:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FCF1F3D49;
-	Fri,  6 Dec 2024 17:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7895C1F3D49;
+	Fri,  6 Dec 2024 17:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6b8IWBu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSSlKPBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F9C206274
-	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39ACE206274
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 17:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733505105; cv=none; b=eQoUe7Zti2KomnFuDYDDgVerCDqM/tCWBQdDmLp8ARegFdYHT6thK2UKaq0lkkEy7fYrgrRnWqx337sk1CdCic6LiI2+0CyuCwJvRVLWOusOuhL8bzNpXUnGhjo9o4LyRVG7civ7sDsVWDuHK4hezWA/qOLPvchmjwcs96pyjD8=
+	t=1733505107; cv=none; b=ohv5RqMMhNO++/iFy86PT27o1dMPI2I45JkGsJ2z7RW7z/ZzqOpUBmmkYErRquqSJxlgue9YnoQLUgHr1jlXgqhbhQAmecAGoPZamyYrxpmwZ7pqMfnYz2UgbpcPo0Oq4N6prpTDNV0qKmN7+n5TCSjyeSxEqqPFPFLw9meV9xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733505105; c=relaxed/simple;
-	bh=IQKBe+hKHynb11dZWtOc3QU5Kr3QF5+eMTKQF/rJEqE=;
+	s=arc-20240116; t=1733505107; c=relaxed/simple;
+	bh=1B8Ux3wqbt7tpI2vWiMtWEfasWvwPhXyHyYg9I7eRsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oDk0uH8z1/3dfd33+mnGvB4fSgWGLAbodB5FvWZgfSQc8ITdum8Hjml6kvNc+GUuFSf5d2U8Cs2sTqnlMDpW8MNZNnyu3c/JqyOj/u+fVwi9gyIvDZsGz0BXlRNZlAbnCM4QkROdkEt6HOpZuBFUBlFN7OvtcU29JZH2S3szwxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6b8IWBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AADEC4CEDF;
-	Fri,  6 Dec 2024 17:11:44 +0000 (UTC)
+	 MIME-Version; b=uXVlA13Jj3+6JfRmkOcnpIKhEtshTKn7/ZUKyLnEDruW/w27FSFKfH92mTlnkh7R4YS61OLTNl1yxzMVDU/lqQR8KrOkPUC9wAogyE7x/D90YU3GX8LkzPMt9lc+JkLM7zXfV9+nl0cce3m69fW6B4J4Ps5iNmJmtCWXaqs69fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSSlKPBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E6C4CED1;
+	Fri,  6 Dec 2024 17:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733505104;
-	bh=IQKBe+hKHynb11dZWtOc3QU5Kr3QF5+eMTKQF/rJEqE=;
+	s=k20201202; t=1733505106;
+	bh=1B8Ux3wqbt7tpI2vWiMtWEfasWvwPhXyHyYg9I7eRsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6b8IWBu/tVbsIcOpI31DMBlD6erNCT+ailDobz6Z9xDvBG17GYKet5QIiLIptNhw
-	 /89QWlJWfQFYh3WUcIHex/C4i74t+lWaAFZrEW1E/Zq88msM3p7+occr5DTxj15N+O
-	 8F+QfIxvK77hNciNJK+UD7m70erqN+km4cmAYoSrLRgSwcNQhf2v6GvOEvbpB5O05E
-	 nAoB7746bH+PFDm/cyi4J0We2jIJk1HGwVkny9ypgQjv+tB2YnfC1+MSfZBPssxSA4
-	 et9HjPYRmIOp8AnF3s5V0v+hxzbaPyYLurXwf3ngm70yod/cKeUfiteWPGsrxKwC7E
-	 qmn/kCOh4aExg==
+	b=eSSlKPBZDj35Dbp0175HaFWji5b/5VGD64DqAZM1FuIlzqv+tcj4gYL1dtRs0Q4Ii
+	 uREyZdYMSvmEjwafDwrAy3sIiqLPIloUv3yWdObK5Bg5DUlBCA3QnvBiE+Do9ENyEw
+	 m3zaQYwmw2okBWmipb487I2J/Q0rZrUXHZaC8/RaheVrL5cuoG1p4DPl6NYN05UGWD
+	 7J40yhvQljwnilYqBw8/f73a9JR9q5CY2CVysds9jFeClt6TQMI+WkMlwIgNIKU9LX
+	 eDiFioEOoFV7rzoUvqlRC6vzTjOobntstkVuLuNNr59QanNpDNVefbxr7dovpHEpMa
+	 esJrH8tFyZZGA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v5.10-v6.1] drm/amd/display: Check BIOS images before it is used
-Date: Fri,  6 Dec 2024 12:11:43 -0500
-Message-ID: <20241206104607-197c3a79c93b8054@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
+Date: Fri,  6 Dec 2024 12:11:45 -0500
+Message-ID: <20241206095441-33232574ccf00444@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241206041414.4013356-1-keerthana.kalyanasundaram@broadcom.com>
+In-Reply-To:  <20241206032214.3089315-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,86 +63,60 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c
+The upstream commit SHA1 provided is correct: bbcc1c83f343e580c3aa1f2a8593343bf7b55bba
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Commit author: Alex Hung <alex.hung@amd.com>
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Kory Maincent <kory.maincent@bootlin.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: e50bec62acae)
+6.6.y | Present (different SHA1: d24fe6d5a1cf)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  8b0ddf19cca2a ! 1:  3a1c77af30b1b drm/amd/display: Check BIOS images before it is used
+1:  bbcc1c83f343e ! 1:  da1ca4c28e390 dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
     @@ Metadata
       ## Commit message ##
-         drm/amd/display: Check BIOS images before it is used
+         dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
      
-    +    [ Upstream commit 8b0ddf19cca2a352b2a7e01d99d3ba949a99c84c ]
+    +    [ Upstream commit bbcc1c83f343e580c3aa1f2a8593343bf7b55bba ]
     +
-         BIOS images may fail to load and null checks are added before they are
-         used.
-     
+         The Linked list element and pointer are not stored in the same memory as
+         the eDMA controller register. If the doorbell register is toggled before
+         the full write of the linked list a race condition error will occur.
     @@ Commit message
-         Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-         Signed-off-by: Alex Hung <alex.hung@amd.com>
-         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
-    +    Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+         Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+         Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-6-8e8c1acb7a46@bootlin.com
+         Signed-off-by: Vinod Koul <vkoul@kernel.org>
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
      
-      ## drivers/gpu/drm/amd/display/dc/bios/bios_parser.c ##
-     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c: static enum bp_result get_ss_info_v3_1(
-    - 	ss_table_header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
-    - 				DATA_TABLES(ASIC_InternalSS_Info),
-    - 				struct_size(ss_table_header_include, asSpreadSpectrum, 1)));
-    + 
-    + 	ss_table_header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
-    + 		DATA_TABLES(ASIC_InternalSS_Info));
-     +	if (!ss_table_header_include)
-     +		return BP_RESULT_UNSUPPORTED;
-     +
-    @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c: static enum bp_result get_ss_
-      		(le16_to_cpu(ss_table_header_include->sHeader.usStructureSize)
-      				- sizeof(ATOM_COMMON_TABLE_HEADER))
-     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c: static enum bp_result get_ss_info_from_internal_ss_info_tbl_V2_1(
-    - 				&bp->base,
-    - 				DATA_TABLES(ASIC_InternalSS_Info),
-    - 				struct_size(header, asSpreadSpectrum, 1)));
-    + 
-    + 	header = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
-    + 		DATA_TABLES(ASIC_InternalSS_Info));
-     +	if (!header)
-     +		return result;
+      ## drivers/dma/dw-edma/dw-edma-v0-core.c ##
+     @@ drivers/dma/dw-edma/dw-edma-v0-core.c: static void dw_edma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
+    - 	dw_edma_v0_write_ll_link(chunk, i, control, chunk->ll_region.paddr);
+    + 	#endif /* CONFIG_64BIT */
+      }
       
-    @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c: static uint32_t get_ss_entry_
-      	if (1 != revision.major || 2 > revision.minor)
-      		return number;
-     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c: static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_v2_1(
-    - 				&bp->base,
-    - 				DATA_TABLES(ASIC_InternalSS_Info),
-    - 				struct_size(header_include, asSpreadSpectrum, 1)));
-    + 
-    + 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V2,
-    + 			DATA_TABLES(ASIC_InternalSS_Info));
-     +	if (!header_include)
-     +		return 0;
-      
-      	size = (le16_to_cpu(header_include->sHeader.usStructureSize)
-      			- sizeof(ATOM_COMMON_TABLE_HEADER))
-     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser.c: static uint32_t get_ss_entry_number_from_internal_ss_info_tbl_V3_1(
-    - 	header_include = ((ATOM_ASIC_INTERNAL_SS_INFO_V3 *) bios_get_image(&bp->base,
-    - 				DATA_TABLES(ASIC_InternalSS_Info),
-    - 				struct_size(header_include, asSpreadSpectrum, 1)));
-    + 
-    + 	header_include = GET_IMAGE(ATOM_ASIC_INTERNAL_SS_INFO_V3,
-    + 			DATA_TABLES(ASIC_InternalSS_Info));
-     +	if (!header_include)
-     +		return number;
+     +static void dw_edma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
+    @@ drivers/dma/dw-edma/dw-edma-v0-core.c: static void dw_edma_v0_core_write_chunk(s
+     +	 * last MWr TLP is completed
+     +	 */
+     +	if (!(chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
+    -+		readl(chunk->ll_region.vaddr.io);
+    ++		readl(chunk->ll_region.vaddr);
+     +}
      +
+    - static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+    + void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+      {
+      	struct dw_edma_chan *chan = chunk->chan;
+    -@@ drivers/dma/dw-edma/dw-edma-v0-core.c: static void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+    +@@ drivers/dma/dw-edma/dw-edma-v0-core.c: void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
+      		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
+      			  upper_32_bits(chunk->ll_region.paddr));
+      	}
 ---
 
 Results of testing on various branches:
@@ -150,5 +124,4 @@ Results of testing on various branches:
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
 | stable/linux-6.1.y        |  Success    |  Success   |
-| stable/linux-5.10.y       |  Success    |  Success   |
 
