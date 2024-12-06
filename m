@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-99488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DED9E71F1
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:02:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C399E71EF
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D2051887A49
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:02:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5807416C6F1
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC0154BF5;
-	Fri,  6 Dec 2024 15:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7AB1FCF7D;
+	Fri,  6 Dec 2024 15:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGx8INqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3BdGN56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D0453A7;
-	Fri,  6 Dec 2024 15:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A964253A7;
+	Fri,  6 Dec 2024 15:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497335; cv=none; b=tgZQoQcHij4JIpgQYC3ilrCH8GWyrx6APh5oraaUO/SicEGgGQQhJ+lrye6ciTWJ89WNJChWEEYxUiSFlhlf763r80tsyrtqYRnVPs7kc+2sSIbMULYSxXet5rJrfT6wahFHoWU59h2w/cYicPoY3zseih74qiGwemYkxPLdbvA=
+	t=1733497341; cv=none; b=o02fRkOmLzhG6JCf18f1y7WNQyFxU3Jqmsy0zTx0Oy2bEMUPF2XfYhXCrCvM73SE17cdkGUW3E00cKeDv7g/qIZF0ve4Krl9nzvTidS/Nbz3Q6t21LNjhjQHroEm3tsTGg66FpV4ZvfuOKW6RCxLE5+EZuBFnHRV1royW2sdUj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497335; c=relaxed/simple;
-	bh=1UusoUtOAacGvAQ9QlZHQivJUr6tsVGxmBabOwYTJCs=;
+	s=arc-20240116; t=1733497341; c=relaxed/simple;
+	bh=q3qToVuKUZBidC6KUE+JjfXjLk8L55P89Ooc6Qp5Gpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4uDE7cENzSW4VIZd+3JUEsbF0BauqIl0oAD4LNpWQ7Bzka8Jt2YX9JZhfwEzcQVm2eY8tdWYUpcFceLJPk4tne7tTwOn5dF72vivpnTc/X3DA2AWoaM5yTTuY9ZgZa6/qMzvgltl5FiKf0ioMDQfB3tsfYMVL11QcaAsOzTvEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGx8INqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E44C4CED1;
-	Fri,  6 Dec 2024 15:02:14 +0000 (UTC)
+	 MIME-Version; b=XBsA5hAw/xNahG2pK72StZ7afiqFQrIRaZ0GAibqi/HbStXRI1p45gVRVxHF7GJhqNm/37pVEu56fDnJk5M3zjv3VgS5wGgOURSNbWT1FoHnLtOo1rImyNVDzK/DsDtvhIOC/k+T7r7sXp7wMgzMn8RbRu8n8G25L4KV1v3Cq5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3BdGN56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2E3C4CED1;
+	Fri,  6 Dec 2024 15:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497335;
-	bh=1UusoUtOAacGvAQ9QlZHQivJUr6tsVGxmBabOwYTJCs=;
+	s=korg; t=1733497341;
+	bh=q3qToVuKUZBidC6KUE+JjfXjLk8L55P89Ooc6Qp5Gpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGx8INqZIEcuTHVrJJtjgoClvaDFmWMqylwEkr5WJd54CV2glZiLepLzv3TZAGfQB
-	 GQojToWifFodZ7iHh8/eOg/Ryz7juru7CAO3Z4oVRh7pAxbh5EdaxeppX1hQe8R7Ji
-	 t9ZgqTNMHg0CxWMCvstCqyIKEuU5i0lHrkXu1MCI=
+	b=H3BdGN56Y3Zvg1ikgjdAJy/TFi0/rj9d4Zuea6BqNYFerZHqiPRbNwBJuVBL6/yQM
+	 8uBnWGPeWWZTUWjvo9F2Bl1bJ1AxnLjAX6KWh3V7tLBPkxCMg+kbu4Eh4XZHOupyn8
+	 y2pFJzTy/PgoC3TKFzSLgVniyT2ICW8xFI0IofBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/676] scsi: hisi_sas: Enable all PHYs that are not disabled by user during controller reset
-Date: Fri,  6 Dec 2024 15:31:22 +0100
-Message-ID: <20241206143703.605535893@linuxfoundation.org>
+Subject: [PATCH 6.6 264/676] powerpc/vdso: Flag VDSO64 entry points as functions
+Date: Fri,  6 Dec 2024 15:31:23 +0100
+Message-ID: <20241206143703.648368019@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,54 +67,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 08a07dc71d7fc6f58c35c4fc0bcede2811c5aa4c ]
+[ Upstream commit 0161bd38c24312853ed5ae9a425a1c41c4ac674a ]
 
-For the controller reset operation(such as FLR or clear nexus ha in SCSI
-EH), we will disable all PHYs and then enable PHY based on the
-hisi_hba->phy_state obtained in hisi_sas_controller_reset_prepare(). If
-the device is removed before controller reset or the PHY is not attached
-to any device in directly attached scenario, the corresponding bit of
-phy_state is not set. After controller reset done, the PHY is disabled.
-The device cannot be identified even if user reconnect the disk.
+On powerpc64 as shown below by readelf, vDSO functions symbols have
+type NOTYPE.
 
-Therefore, for PHYs that are not disabled by user, hisi_sas_phy_enable()
-needs to be executed even if the corresponding bit of phy_state is not
-set.
+$ powerpc64-linux-gnu-readelf -a arch/powerpc/kernel/vdso/vdso64.so.dbg
+ELF Header:
+  Magic:   7f 45 4c 46 02 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF64
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              DYN (Shared object file)
+  Machine:                           PowerPC64
+  Version:                           0x1
+...
 
-Fixes: 89954f024c3a ("scsi: hisi_sas: Ensure all enabled PHYs up during controller reset")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20241008021822.2617339-5-liyihang9@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Symbol table '.dynsym' contains 12 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+     1: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+...
+     4: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+     5: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __[...]@@LINUX_2.6.15
+
+Symbol table '.symtab' contains 56 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+...
+    45: 0000000000000000     0 OBJECT  GLOBAL DEFAULT  ABS LINUX_2.6.15
+    46: 00000000000006c0    48 NOTYPE  GLOBAL DEFAULT    8 __kernel_getcpu
+    47: 0000000000000524    84 NOTYPE  GLOBAL DEFAULT    8 __kernel_clock_getres
+
+To overcome that, commit ba83b3239e65 ("selftests: vDSO: fix vDSO
+symbols lookup for powerpc64") was applied to have selftests also
+look for NOTYPE symbols, but the correct fix should be to flag VDSO
+entry points as functions.
+
+The original commit that brought VDSO support into powerpc/64 has the
+following explanation:
+
+    Note that the symbols exposed by the vDSO aren't "normal" function symbols, apps
+    can't be expected to link against them directly, the vDSO's are both seen
+    as if they were linked at 0 and the symbols just contain offsets to the
+    various functions.  This is done on purpose to avoid a relocation step
+    (ppc64 functions normally have descriptors with abs addresses in them).
+    When glibc uses those functions, it's expected to use it's own trampolines
+    that know how to reach them.
+
+The descriptors it's talking about are the OPD function descriptors
+used on ABI v1 (big endian). But it would be more correct for a text
+symbol to have type function, even if there's no function descriptor
+for it.
+
+glibc has a special case already for handling the VDSO symbols which
+creates a fake opd pointing at the kernel symbol. So changing the VDSO
+symbol type to function shouldn't affect that.
+
+For ABI v2, there is no function descriptors and VDSO functions can
+safely have function type.
+
+So lets flag VDSO entry points as functions and revert the
+selftest change.
+
+Link: https://github.com/mpe/linux-fullhistory/commit/5f2dd691b62da9d9cc54b938f8b29c22c93cb805
+Fixes: ba83b3239e65 ("selftests: vDSO: fix vDSO symbols lookup for powerpc64")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-By: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://patch.msgid.link/b6ad2f1ee9887af3ca5ecade2a56f4acda517a85.1728512263.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/vdso.h           | 1 +
+ tools/testing/selftests/vDSO/parse_vdso.c | 3 +--
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index e4363b8c6ad26..db9ae206974c2 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1539,10 +1539,16 @@ void hisi_sas_controller_reset_done(struct hisi_hba *hisi_hba)
- 	/* Init and wait for PHYs to come up and all libsas event finished. */
- 	for (phy_no = 0; phy_no < hisi_hba->n_phy; phy_no++) {
- 		struct hisi_sas_phy *phy = &hisi_hba->phy[phy_no];
-+		struct asd_sas_phy *sas_phy = &phy->sas_phy;
+diff --git a/arch/powerpc/include/asm/vdso.h b/arch/powerpc/include/asm/vdso.h
+index 7650b6ce14c85..8d972bc98b55f 100644
+--- a/arch/powerpc/include/asm/vdso.h
++++ b/arch/powerpc/include/asm/vdso.h
+@@ -25,6 +25,7 @@ int vdso_getcpu_init(void);
+ #ifdef __VDSO64__
+ #define V_FUNCTION_BEGIN(name)		\
+ 	.globl name;			\
++	.type name,@function; 		\
+ 	name:				\
  
--		if (!(hisi_hba->phy_state & BIT(phy_no)))
-+		if (!sas_phy->phy->enabled)
+ #define V_FUNCTION_END(name)		\
+diff --git a/tools/testing/selftests/vDSO/parse_vdso.c b/tools/testing/selftests/vDSO/parse_vdso.c
+index 7dd5668ea8a6e..28f35620c4991 100644
+--- a/tools/testing/selftests/vDSO/parse_vdso.c
++++ b/tools/testing/selftests/vDSO/parse_vdso.c
+@@ -222,8 +222,7 @@ void *vdso_sym(const char *version, const char *name)
+ 		ELF(Sym) *sym = &vdso_info.symtab[chain];
+ 
+ 		/* Check for a defined global or weak function w/ right name. */
+-		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC &&
+-		    ELF64_ST_TYPE(sym->st_info) != STT_NOTYPE)
++		if (ELF64_ST_TYPE(sym->st_info) != STT_FUNC)
  			continue;
- 
-+		if (!(hisi_hba->phy_state & BIT(phy_no))) {
-+			hisi_sas_phy_enable(hisi_hba, phy_no, 1);
-+			continue;
-+		}
-+
- 		async_schedule_domain(hisi_sas_async_init_wait_phyup,
- 				      phy, &async);
- 	}
+ 		if (ELF64_ST_BIND(sym->st_info) != STB_GLOBAL &&
+ 		    ELF64_ST_BIND(sym->st_info) != STB_WEAK)
 -- 
 2.43.0
 
