@@ -1,154 +1,153 @@
-Return-Path: <stable+bounces-98867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD059E613A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:24:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372309E6195
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 01:04:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBBE62838DA
-	for <lists+stable@lfdr.de>; Thu,  5 Dec 2024 23:24:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C30541884CE5
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 00:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD191CDA05;
-	Thu,  5 Dec 2024 23:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B192815C0;
+	Fri,  6 Dec 2024 00:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="1Fcraesx";
-	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="YsKQ41mJ"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t2I1aQnU"
 X-Original-To: stable@vger.kernel.org
-Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E0B1B4123;
-	Thu,  5 Dec 2024 23:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733441080; cv=fail; b=IDop0b2b5qJi8DB/l3tC72wHOwoqIsatW6OiEpIM+uACa8TDImqeIL9wYWJdPA6nVz+pN3WbxRI8pM6lTWZGqWXClZrtZMj+H3e+X4wQpl65gZJq0Lok5ytAtgPr/uXE76WEJGGaZb467NGGW1BgtQ4Oc2FfBmXXuQigFJClnKg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733441080; c=relaxed/simple;
-	bh=cPY/rcKLg7apIyeqaXIPA0hFJME3AW7ueKuJEfB3/zM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j53jPf8ynQXnkIJh/vOuQ2Y7yzPuSTlrDAf/v2mI9B+9lLLMqsuYcC4ejWM1Z14f9psCRL4h4zEOGyOF24prV/Fs2pESNEJdTgLqD4qMbpsI+po22DzJE8PDjoIIvT3M4vIulH498rwzlav9w23bRnvMtRDJ5UiCgCptGPEY+YA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=1Fcraesx; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=YsKQ41mJ; arc=fail smtp.client-ip=72.84.236.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
-Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
-   signature) header.d=sapience.com header.i=@sapience.com 
-   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
-   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
-Received: from srv8.sapience.com (srv8.sapience.com [x.x.x.x])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by s1.sapience.com (Postfix) with ESMTPS id 64CEF480AB4;
-	Thu, 05 Dec 2024 18:24:37 -0500 (EST)
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1733441077;
- h=message-id : subject : from : to : date : in-reply-to : references :
- content-type : mime-version : from;
- bh=cPY/rcKLg7apIyeqaXIPA0hFJME3AW7ueKuJEfB3/zM=;
- b=1FcraesxglsCtV/5zgBlM47lyj6Kx7g+Uq0qbUpt8j8pftJ5gpWVKQ6JCYG02nD3O2FKa
- 4PhezKih98VoxU2Bw==
-ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1733441077;
-	cv=none; b=klyuSU9x68Met0CFh7N4nSiSvuKqk2F0H2p37CQeFwjfjFifp9IfEZls1toaQFv7psnQTnpJmPqEjFeAWH4GR9WACsO7puuPCz+r5c+Z9apuj7H3eQBz6Yq3SugedPtyNfKyOn9E/oDfWjTAlDkLiJ8tn8yN8G2wYtYlsaR9zjM6SSe6CNeOYIQpG3GVM3zqoUaN5iWhZHUEeQTvIuLdV3gFhX4H2qz4w89sB7N13olJSjOa4fol7AnCU0ySnsvf/z0F07myz8ub2KGA5KYiNuX3qNY7qIif364gctLl06jxIvUKKAMfDnFBKL3D6fjClATCKlwBL+ZL8siFs/Wrdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
-	t=1733441077; c=relaxed/simple;
-	bh=cPY/rcKLg7apIyeqaXIPA0hFJME3AW7ueKuJEfB3/zM=;
-	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Date:
-	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
-	 MIME-Version; b=pNh91NHeHQt2aDW5I6CShBTS+y3MXaQQmcnb5gwTWfOp6+RYNz2DzmXuUtA3HQjUJpWiG638o52nc6QcIdqPCDzUTpDW40AW8Uuaehi/YVDPMYX0qMqeQiBnwrZDYi+sN4lYe2t1Lk8TReQPBwtzc+hBDOepD1YxZtUDTn7y6WTgpdtTeV+EMklSIO4yMgPxwiQBo9CXRFUTolsWS7U/LYavpRQZ7tdLVvwO8hLeSO9/ueRvTpUvOC0S2UqQhJayDB3GQ3avq6Q2i0b247h7jUoO7cnwH+ia17TFsIFDi30/W5ajqw2OkGFZPwl4qywsh+S5styF2ZHNN9D789/iNg==
-ARC-Authentication-Results: i=1; arc-srv8.sapience.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
- i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1733441077;
- h=message-id : subject : from : to : date : in-reply-to : references :
- content-type : mime-version : from;
- bh=cPY/rcKLg7apIyeqaXIPA0hFJME3AW7ueKuJEfB3/zM=;
- b=YsKQ41mJ7/wElQvIysdVqWDfa57VbrcQtzBZkBvq5+SVbCpW7n+cCzNfsgCNjbDxYb7J3
- yoC4HRrvloqu/siWf+8gallCBH5bzReqvVGJYP+yAxJQA4myl/EqZtUTqoLxoIvd7fijOdt
- Go/frozdO7VvT+vL4SpVurpxdKJK/mC2V63rHbgVrnmE8PgIm7ZrNsown2qoA6KVJcySked
- FPYF2Jzca7pwaJsUO+h6IxIJRHXUp/KzptZrRw+XlIRzB4oN5GHYH15swzN7wdptMcJj/vh
- B5gTSU9IBWl3RSdmKHnzg++krQu4hNg2SymVYM8/ZIwDBh9rX6rnYsc88qRQ==
-Received: from lap7.sapience.com (lap7w.sapience.com [x.x.x.x])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
-	(No client certificate requested)
-	by srv8.sapience.com (Postfix) with ESMTPS id 206A4280050;
-	Thu, 05 Dec 2024 18:24:37 -0500 (EST)
-Message-ID: <136fbb7aedc6e3750f8361309609ddf4283cd91d.camel@sapience.com>
-Subject: Re: Linux 6.12.2
-From: Genes Lists <lists@sapience.com>
-To: Holger =?ISO-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 05 Dec 2024 18:24:36 -0500
-In-Reply-To: <01a7263b-3739-582e-aade-6d9d9495500d@applied-asynchrony.com>
-References: <2024120529-strained-unbraided-b958@gregkh>
-	 <bad6ec6fc4e8d43198c0873f2e92d324dc1343eb.camel@sapience.com>
-	 <01a7263b-3739-582e-aade-6d9d9495500d@applied-asynchrony.com>
-Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
- keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
- 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
- sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
- vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
- BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
-Content-Type: multipart/signed; micalg="pgp-sha384";
-	protocol="application/pgp-signature"; boundary="=-NT4Z4Mdj94hjuaRs8wWQ"
-User-Agent: Evolution 3.54.2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1C2819
+	for <stable@vger.kernel.org>; Fri,  6 Dec 2024 00:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733443459; cv=none; b=Nj320zl76eQrZEi6erV0SP+XEfCsCPm3YSurtPCLyvCz+ySxNdwRsGsf5+R5gVGos175humEK+Yi2JBXMezgFlHIf/PkSz115+V8jJoXmOVoVMz/es3ZJJ+8Z9fueUUe/xerlkUFhoCUwfjoXiavyjEvrxpq4vl7griLZDDP0RA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733443459; c=relaxed/simple;
+	bh=cem6YOoyp7AZDcfsQKGmNgPJ/G6o5juYqAiM9Lb2GhM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=buCViCHKK4NiRRo5brKv0RxLGptnsaWD9nEuknM0VtxD0Q4XJvkLrcV5YPl+yULuF0eqF85wMrWlXMRGUCEl6DwZx8QR3m2p8Zf/ArG+QSFnx3mzGf+87zGjU0D5Vfu1Wgp6kbK8ytD47/tGL5ntvXtZxK15XTpO6ImnwqBtft8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t2I1aQnU; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53ded167ae3so1497390e87.0
+        for <stable@vger.kernel.org>; Thu, 05 Dec 2024 16:04:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1733443455; x=1734048255; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xwj/agv7HQLTwHjDmPbArm4lVXi5bkqm0hUb9PKPpxk=;
+        b=t2I1aQnUI87eUU2ZCbyFKnkIWrCJ34k7BlxsgU8fOSRY1pE8mD3pmN1TW50zdPoP2m
+         oEQFL2SF3iqwYUahqh4UxFCM51G/XRFWkcFHrOlkoaiIpS//x49/Q0+55Kb5PmwnYHIg
+         cuEE+GvJYrTkP/NrXIlAkfaYWPw9SvQ4EcCDn3U82iqeAvSc7kZZWVEBD1B7oXjXMi5y
+         +5znvAM2CBzwUJLEMijJa0hd7H86lMpoPKVFBDtAnLp3uTNuM3y1sdXamLfxnpmJS2Yk
+         QvmjdQw60wncqthBlszvuPpoIDz0/lkcvkZi9eGEVQkDzT5bW6I/veqB5zkLAQaCQq8x
+         6bag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733443455; x=1734048255;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xwj/agv7HQLTwHjDmPbArm4lVXi5bkqm0hUb9PKPpxk=;
+        b=D81eK6KsgdFWUF3Pz+2Ev/R9TDanN5T4YVXe2BFeFXhKhVXBBuji1DJAMb6Crx5c2d
+         VWPMzKVR+GBTPIbZ58jfg1YycLMvEFRXga28Q+SHQ/FEkA5MsdW139KZbufT9wbLNszl
+         D0S1ZpsZLGZxX405LubZTv6Sq1vHD8S0UgyrzZxnxR24kYmRmmwY0A5Vn9TuO7vQ7hNE
+         q+Gj4V9Q8xwfg/5WAYafhvtl2upnii5C8pgHpN1dxsdPOUJAjDdcMCco4lyyQj7tDGwW
+         T4hyIkIEFq9zWFDiwYiDBP1PnnfOGsLKhyIXjyt2cKWpLL5cSApkLTSsf9P6E2NXlb6R
+         lmdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWUBPoLde+uT/xOYMa4gGMSkPw1FOl1y/QXaVGv5Y+dMeK7IoCWgYKO8qhxw4OLWFEukWRc7FE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwdckR11QRcr0GA9G8Wpb6uvx8hVisHWp1ZyxFXBfo35N0UPHH
+	CRKXMR8eTun9ZZcA2RvdiSRnDm+eqySFCSWZ9I2V4EMuaK5gbxqfUzj/mn6+eNxiaeQlvm4lbaU
+	M/zNKfszd3aJUbofg9KRgYvQGGnXf1er9tKUf
+X-Gm-Gg: ASbGncvCL8FNWhVJBO8grsXzAk9NJQQkEdw+8Udv0XHIZBI5z6RkO+/r/UsoBzOroos
+	QE5B89hl7EEFYgCfo/BKLZiTnIhwdEQ==
+X-Google-Smtp-Source: AGHT+IGl2G+ZtrZsi0Il70DwFniDP6/Jpy6f/54NvatI53Q8jXo3yQ6cXcDsZ/Inpw7JimLVPKqN2Ay8N4V3sAFXdcc=
+X-Received: by 2002:a05:6512:2316:b0:53e:1c46:e08d with SMTP id
+ 2adb3069b0e04-53e2c2b1a75mr166757e87.2.1733443455261; Thu, 05 Dec 2024
+ 16:04:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-
---=-NT4Z4Mdj94hjuaRs8wWQ
+References: <20241204222006.2249186-1-sashal@kernel.org> <20241204222006.2249186-2-sashal@kernel.org>
+In-Reply-To: <20241204222006.2249186-2-sashal@kernel.org>
+From: Saravana Kannan <saravanak@google.com>
+Date: Thu, 5 Dec 2024 16:03:38 -0800
+Message-ID: <CAGETcx-a-+ktU8rzVwP_GN2pM8-_vaWd7OiqFJCwiNpyQMETpg@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 4.19 2/3] phy: tegra: xusb: Set fwnode for xusb
+ port devices
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Jon Hunter <jonathanh@nvidia.com>, 
+	=?UTF-8?B?TsOtY29sYXMgRiAuIFIgLiBBIC4gUHJhZG8=?= <nfraprado@collabora.com>, 
+	Thierry Reding <treding@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, jckuo@nvidia.com, 
+	vkoul@kernel.org, kishon@kernel.org, thierry.reding@gmail.com, 
+	linux-phy@lists.infradead.org, linux-tegra@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2024-12-06 at 00:07 +0100, Holger Hoffst=C3=A4tte wrote:
-> > 6.12.1 works fine but 6.12.2 generates lots of errors during
-...
->=20
->=20
-> As Linus has indicated in:
-> https://lore.kernel.org/stable/CAHk-
-> =3DwhGd0dfaJNiWSR60HH5iwxqhUZPDWgHCQd446gH2Wu0yQ@mail.gmail.com/
->=20
-> the problem is the missing commit b23decf8ac91 ("sched: Initialize
-> idle tasks
-> only once"). Applying that on top of 6.12.2 fixes the problem.
->=20
-> We just encountered this issue in Gentoo as well when releasing a new
-> kernel
-> and adding that patch has resolved the issue.
->=20
-> > Thought it best to share before I start to work on bisect....
+On Wed, Dec 4, 2024 at 3:31=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
+e:
+>
+> From: Saravana Kannan <saravanak@google.com>
+>
+> [ Upstream commit 74ffe43bad3af3e2a786ca017c205555ba87ebad ]
+>
+> fwnode needs to be set for a device for fw_devlink to be able to
+> track/enforce its dependencies correctly. Without this, you'll see error
+> messages like this when the supplier has probed and tries to make sure
+> all its fwnode consumers are linked to it using device links:
+>
+> tegra-xusb-padctl 3520000.padctl: Failed to create device link (0x180) wi=
+th 1-0008
+>
+> Reported-by: Jon Hunter <jonathanh@nvidia.com>
+> Closes: https://lore.kernel.org/all/20240910130019.35081-1-jonathanh@nvid=
+ia.com/
+> Tested-by: Jon Hunter <jonathanh@nvidia.com>
+> Suggested-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
+> Signed-off-by: Saravana Kannan <saravanak@google.com>
+> Acked-by: Thierry Reding <treding@nvidia.com>
+> Link: https://lore.kernel.org/r/20241024061347.1771063-3-saravanak@google=
+.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-> No need to, just add b23decf8ac91 :)
->=20
-> cheers
-> Holger
->=20
-Excellent - missed that completely.=C2=A0
-I will stop bisecting now, thank you so much.
+As mentioned in the original cover letter:
 
+PSA: Do not pull any of these patches into stable kernels. fw_devlink
+had a lot of changes that landed in the last year. It's hard to ensure
+cherry-picks have picked up all the dependencies correctly. If any of
+these really need to get cherry-picked into stable kernels, cc me and
+wait for my explicit Ack.
 
---=20
-Gene
+Is there a pressing need for this in 4.19?
 
+-Saravana
 
---=-NT4Z4Mdj94hjuaRs8wWQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCZ1I2NAAKCRA5BdB0L6Ze
-2+TiAQDhPOk8JkWxpz7R2S5bQbL4xWHkHs7TemE1HrxbMpvsyAD/RNaEg+jAgnZY
-YzAOrgBSuKGA54hQF8ke135TMaqVjgs=
-=OaZS
------END PGP SIGNATURE-----
-
---=-NT4Z4Mdj94hjuaRs8wWQ--
+> ---
+>  drivers/phy/tegra/xusb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+> index 17211b31e1ed4..943dfff49592d 100644
+> --- a/drivers/phy/tegra/xusb.c
+> +++ b/drivers/phy/tegra/xusb.c
+> @@ -519,7 +519,7 @@ static int tegra_xusb_port_init(struct tegra_xusb_por=
+t *port,
+>
+>         device_initialize(&port->dev);
+>         port->dev.type =3D &tegra_xusb_port_type;
+> -       port->dev.of_node =3D of_node_get(np);
+> +       device_set_node(&port->dev, of_fwnode_handle(of_node_get(np)));
+>         port->dev.parent =3D padctl->dev;
+>
+>         err =3D dev_set_name(&port->dev, "%s-%u", name, index);
+> --
+> 2.43.0
+>
 
