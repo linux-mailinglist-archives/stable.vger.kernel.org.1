@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F659E71B0
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:58:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5697F9E71B6
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7127D283C7E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:58:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CBD9283E34
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208D2149E0E;
-	Fri,  6 Dec 2024 14:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4CB14AD29;
+	Fri,  6 Dec 2024 14:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCO9QlYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBsgIwc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E5047F53;
-	Fri,  6 Dec 2024 14:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D9510E0;
+	Fri,  6 Dec 2024 14:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497135; cv=none; b=F9eWcP69uYmXut6nD7n4K8m8z15ZKAJnUzbreQMyRLWpph91375wv4SlpA58xjzBugpN98wbtHIKAg1T8mvrsRm1YwAOXoVUrWAJKR3aJnBGoGsmp8ZEuhIH5qWN84f42h8z9Jc4YXu4vt/zF4yniFCQsfQUwsBlBBnulWCpn/4=
+	t=1733497162; cv=none; b=reFfB2o92WsJYv5R8P/L/qgnQ7Y31Pi1ypNzRu+BS+3Ot8RaBiNt7GbJzeAWTdqNd7hrM9Bt989wPvIXO/zxWMVciXmWOC3lU+eMzGKEp6oYi/NxZOu1MzB1P8/Is5l1CmFsMlXW4lJ1d1Qqj1ecrOaFQsMyLVZP98DUwM2kcPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497135; c=relaxed/simple;
-	bh=eNuyNqXF5Ops9hpQje2L9it4NwVgKAn3KVDFy8JQtSM=;
+	s=arc-20240116; t=1733497162; c=relaxed/simple;
+	bh=MfSp/xOXoOd05yZHq0txZOsOqnRAzdiXycmU6slJzdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJbOgLMum2VU8k7eOOz22ZqWQOyvBkDo8yZrYIIRUpGkRfYi6I4gGmWYBVROQ7xE0JH10Uh21o6nuKMoNtfOU9h86cGdSX/2e2nADBppsKMHk9kTdCsAq6ds4boVytFuS7hIdqEi7jK2e2vLe6JNGWUCuBORcA+asSS18O/JSQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCO9QlYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FEAC4CED1;
-	Fri,  6 Dec 2024 14:58:54 +0000 (UTC)
+	 MIME-Version; b=CniGONS+wst4uA05owWrpfjl0+qZNJ1CnswaGUDVMZtPhfC6Vbgs4ekE/2I3TYlku0+EPXkXbOMZ1wOqWIpPQlwTtwQRlzm0uyIzPwsgSXHaB6eCRo+h2+dy/t4rkLK434PszI8pW3v0GhfEeqxZfPx67OhjmO8bEpes4KbzRRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBsgIwc6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401D7C4CED1;
+	Fri,  6 Dec 2024 14:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497135;
-	bh=eNuyNqXF5Ops9hpQje2L9it4NwVgKAn3KVDFy8JQtSM=;
+	s=korg; t=1733497160;
+	bh=MfSp/xOXoOd05yZHq0txZOsOqnRAzdiXycmU6slJzdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCO9QlYY2ajiRGLsr18WgtjwEqC5q+I9Ty7/MdZlNx+d7aK9w1RqTFMgshMqRNL7V
-	 /1408XedbMLI11rE3b7Rne/wRVxS3o2Lofjz73SeDngGgkmohqzzokgklOo2MxJJl6
-	 4Dezwx8hSpX1z9QkV33o/WnuKNsNkNURe09vb+uE=
+	b=VBsgIwc667WCigYObyY9OIAv5jIrCBcAbPtEOkwR1GRsuqPgHFqUjJq7XC3z7dCPf
+	 F/ktSu7px1XW3M0Jg2ckn7FRtc+q5gf2FHtESho5t4c5Wy9krjqx/4cLHQQSgbAF60
+	 spDyabRBwf+iE0Z18DUnTtqP8/ab/PoSuNmiN0wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/676] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss1
-Date: Fri,  6 Dec 2024 15:29:57 +0100
-Message-ID: <20241206143700.299829866@linuxfoundation.org>
+Subject: [PATCH 6.6 179/676] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss2
+Date: Fri,  6 Dec 2024 15:29:58 +0100
+Message-ID: <20241206143700.337977801@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -70,16 +70,19 @@ Content-Transfer-Encoding: 8bit
 
 From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit d50886b27850447d90c0cd40c725238097909d1e ]
+[ Upstream commit 52db16ec5bae7bd027804265b968259d1a6c3970 ]
 
-In supported_vht_mcs_rate_nss1, the rate for MCS9 & VHT20 is defined as
-{780,  867}, this does not align with firmware's definition and therefore
+In supported_vht_mcs_rate_nss2, the rate for MCS9 & VHT20 is defined as
+{1560, 1733}, this does not align with firmware's definition and therefore
 fails the verification in ath10k_mac_get_rate_flags_vht():
 
-	invalid vht params rate 960 100kbps nss 1 mcs 9
+	invalid vht params rate 1730 100kbps nss 2 mcs 9
 
-Change it to {865,  960} to align with firmware, so this issue could be
-fixed.
+and:
+
+	invalid vht params rate 1920 100kbps nss 2 mcs 9
+
+Change it to {1730,  1920} to align with firmware to fix the issue.
 
 Since ath10k_hw_params::supports_peer_stats_info is enabled only for
 QCA6174, this change does not affect other chips.
@@ -91,26 +94,27 @@ Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Closes: https://lore.kernel.org/lkml/fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de/
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 13 9360
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240711020344.98040-2-quic_bqiang@quicinc.com
+Link: https://patch.msgid.link/20240711020344.98040-3-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  drivers/net/wireless/ath/ath10k/mac.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 03e7bc5b6c0bd..cc7cf91f11147 100644
+index cc7cf91f11147..d5e6e11f630b9 100644
 --- a/drivers/net/wireless/ath/ath10k/mac.c
 +++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -9119,7 +9119,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss1[
- 	{6,  {2633, 2925}, {1215, 1350}, {585,  650} },
- 	{7,  {2925, 3250}, {1350, 1500}, {650,  722} },
- 	{8,  {3510, 3900}, {1620, 1800}, {780,  867} },
--	{9,  {3900, 4333}, {1800, 2000}, {780,  867} }
-+	{9,  {3900, 4333}, {1800, 2000}, {865,  960} }
+@@ -9134,7 +9134,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss2[
+ 	{6,  {5265, 5850}, {2430, 2700}, {1170, 1300} },
+ 	{7,  {5850, 6500}, {2700, 3000}, {1300, 1444} },
+ 	{8,  {7020, 7800}, {3240, 3600}, {1560, 1733} },
+-	{9,  {7800, 8667}, {3600, 4000}, {1560, 1733} }
++	{9,  {7800, 8667}, {3600, 4000}, {1730, 1920} }
  };
  
- /*MCS parameters with Nss = 2 */
+ static void ath10k_mac_get_rate_flags_ht(struct ath10k *ar, u32 rate, u8 nss, u8 mcs,
 -- 
 2.43.0
 
