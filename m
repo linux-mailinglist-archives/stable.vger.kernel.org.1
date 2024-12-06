@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-99729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1B79E731A
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:16:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D3C9E7329
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:17:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB2F11887E62
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:15:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB92188808E
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BD7149C6F;
-	Fri,  6 Dec 2024 15:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3375220A5E5;
+	Fri,  6 Dec 2024 15:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdaAHBNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yglfhrw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039813B2BB;
-	Fri,  6 Dec 2024 15:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EFD207E13;
+	Fri,  6 Dec 2024 15:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498157; cv=none; b=XhZKKbmVyuINKCBU9UeDZbcN9RsuQGVcwObTY9BVChit+dVeYq3m8B1DZCUPUFIOcMNKIt7ZjrVp9SiEL0S8qD6IJy6E0v2UVuIq09ZipFq0O24tycXdZ+ByDUHuX6H3gbGz/L99wfMZMziP4c0FR2y+7TlFLJIvVm58T3dBaFc=
+	t=1733498195; cv=none; b=PMyFgvj8pCZ5B4Ru/3LOTXm6Vv0GooIr6KPyPJWSJE16Ct39gHgt9zd/1FuL52kz+VeE+f77Bo/ZzPqvmgajgjiRoMIEbd+QZQ+Ozo/wql/bPL5DE2nn3+gjhDYj/c8u68WmiYwx5Af6JyEJQ1vge7dgerVLKISWZ/7kpCnJ+HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498157; c=relaxed/simple;
-	bh=Tjbux0gW+YqI58RkJ0zHGeC+zBUIgC4m71zJM6i7kHg=;
+	s=arc-20240116; t=1733498195; c=relaxed/simple;
+	bh=M+8aybJ8mIsG1yV9h9LkC7Ry8ibAzbGWsJN9xlZTcl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRlIxHYaltmFxgmHSeTBE+SOt/gSlhgCnzzkPFEUHxUCb96mCcr2HpBwePpY7OUQgTd4E6yLyZ9bidmpsJFQECRSLMtvhuJC39IN7XsmOliTw9ToVd9xxYb3woR4/0NBewTM5+zmf3K2E4maPAkyHv9SxXHKhtfwexooRaIjeDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdaAHBNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DD9C4CED1;
-	Fri,  6 Dec 2024 15:15:56 +0000 (UTC)
+	 MIME-Version; b=CsvAv7U/jW5gH5x+cNFpsdj9oVvn2EE5XWG9FWuS5gyLPZ6LCDmd+710xOJzwHhs2eMVxW85vUCZay2oJHXVIm5mXJbPrW4pA+rLUWy5IVoWn1LnLZdz6Ckrv/a4VhgZNTS1R8UmcDMolR+CvvnncndXz1Gwr8kyfNCWtWc0gH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yglfhrw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB604C4CEDE;
+	Fri,  6 Dec 2024 15:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733498156;
-	bh=Tjbux0gW+YqI58RkJ0zHGeC+zBUIgC4m71zJM6i7kHg=;
+	s=korg; t=1733498194;
+	bh=M+8aybJ8mIsG1yV9h9LkC7Ry8ibAzbGWsJN9xlZTcl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdaAHBNgDJOCsDVxL0rwCk0ES9P6HAJyHOa6FrZT9uenXsvHD6p0rTOltGsU8DbUC
-	 Mxf9xtsyu7lhFKCXgII6YzGIz4KHqdFOiv6ncAZ/7p9ZW9ZZSO7WW3mVZ6pXWR/e9s
-	 kH3CUsuN4DPfH9FMID4aCEbA95uVi8K/ALyEvp/I=
+	b=Yglfhrw1yWavEFXDEY4ZGe55ejymAfhzfnAg8RzozIYxxcmhdo7VPzszE+IWKLvl6
+	 AtW3ZmXga0ocHSRP8MDwf51x7ySsrME80BzDquKsa2Ani1S1hvlMZ3QiM1J1PZ7QGr
+	 GgINm6NcxL/ySPcreliOrdhZRHSpV4XXHIBahx7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Wassenberg <Dennis.Wassenberg@secunet.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 484/676] PCI: Fix use-after-free of slot->bus on hot remove
-Date: Fri,  6 Dec 2024 15:35:03 +0100
-Message-ID: <20241206143712.267503755@linuxfoundation.org>
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.6 485/676] fsnotify: fix sending inotify event with unexpected filename
+Date: Fri,  6 Dec 2024 15:35:04 +0100
+Message-ID: <20241206143712.305926167@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,129 +66,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit c7acef99642b763ba585f4a43af999fcdbcc3dc4 upstream.
+commit aa52c54da40d9eee3ba87c05cdcb0cd07c04fa13 upstream.
 
-Dennis reports a boot crash on recent Lenovo laptops with a USB4 dock.
+We got a report that adding a fanotify filsystem watch prevents tail -f
+from receiving events.
 
-Since commit 0fc70886569c ("thunderbolt: Reset USB4 v2 host router") and
-commit 59a54c5f3dbd ("thunderbolt: Reset topology created by the boot
-firmware"), USB4 v2 and v1 Host Routers are reset on probe of the
-thunderbolt driver.
+Reproducer:
 
-The reset clears the Presence Detect State and Data Link Layer Link Active
-bits at the USB4 Host Router's Root Port and thus causes hot removal of the
-dock.
+1. Create 3 windows / login sessions. Become root in each session.
+2. Choose a mounted filesystem that is pretty quiet; I picked /boot.
+3. In the first window, run: fsnotifywait -S -m /boot
+4. In the second window, run: echo data >> /boot/foo
+5. In the third window, run: tail -f /boot/foo
+6. Go back to the second window and run: echo more data >> /boot/foo
+7. Observe that the tail command doesn't show the new data.
+8. In the first window, hit control-C to interrupt fsnotifywait.
+9. In the second window, run: echo still more data >> /boot/foo
+10. Observe that the tail command in the third window has now printed
+the missing data.
 
-The crash occurs when pciehp is unbound from one of the dock's Downstream
-Ports:  pciehp creates a pci_slot on bind and destroys it on unbind.  The
-pci_slot contains a pointer to the pci_bus below the Downstream Port, but
-a reference on that pci_bus is never acquired.  The pci_bus is destroyed
-before the pci_slot, so a use-after-free ensues when pci_slot_release()
-accesses slot->bus.
+When stracing tail, we observed that when fanotify filesystem mark is
+set, tail does get the inotify event, but the event is receieved with
+the filename:
 
-In principle this should not happen because pci_stop_bus_device() unbinds
-pciehp (and therefore destroys the pci_slot) before the pci_bus is
-destroyed by pci_remove_bus_device().
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\20\0\0\0foo\0\0\0\0\0\0\0\0\0\0\0\0\0",
+50) = 32
 
-However the stacktrace provided by Dennis shows that pciehp is unbound from
-pci_remove_bus_device() instead of pci_stop_bus_device().  To understand
-the significance of this, one needs to know that the PCI core uses a two
-step process to remove a portion of the hierarchy:  It first unbinds all
-drivers in the sub-hierarchy in pci_stop_bus_device() and then actually
-removes the devices in pci_remove_bus_device().  There is no precaution to
-prevent driver binding in-between pci_stop_bus_device() and
-pci_remove_bus_device().
+This is unexpected, because tail is watching the file itself and not its
+parent and is inconsistent with the inotify event received by tail when
+fanotify filesystem mark is not set:
 
-In Dennis' case, it seems removal of the hierarchy by pciehp races with
-driver binding by pci_bus_add_devices().  pciehp is bound to the
-Downstream Port after pci_stop_bus_device() has run, so it is unbound by
-pci_remove_bus_device() instead of pci_stop_bus_device().  Because the
-pci_bus has already been destroyed at that point, accesses to it result in
-a use-after-free.
+read(4, "\1\0\0\0\2\0\0\0\0\0\0\0\0\0\0\0", 50) = 16
 
-One might conclude that driver binding needs to be prevented after
-pci_stop_bus_device() has run.  However it seems risky that pci_slot points
-to pci_bus without holding a reference.  Solely relying on correct ordering
-of driver unbind versus pci_bus destruction is certainly not defensive
-programming.
+The inteference between different fsnotify groups was caused by the fact
+that the mark on the sb requires the filename, so the filename is passed
+to fsnotify().  Later on, fsnotify_handle_event() tries to take care of
+not passing the filename to groups (such as inotify) that are interested
+in the filename only when the parent is watching.
 
-If pci_slot has a need to access data in pci_bus, it ought to acquire a
-reference.  Amend pci_create_slot() accordingly.  Dennis reports that the
-crash is not reproducible with this change.
+But the logic was incorrect for the case that no group is watching the
+parent, some groups are watching the sb and some watching the inode.
 
-Abridged stacktrace:
-
-  pcieport 0000:00:07.0: PME: Signaling with IRQ 156
-  pcieport 0000:00:07.0: pciehp: Slot #12 AttnBtn- PwrCtrl- MRL- AttnInd- PwrInd- HotPlug+ Surprise+ Interlock- NoCompl+ IbPresDis- LLActRep+
-  pci_bus 0000:20: dev 00, created physical slot 12
-  pcieport 0000:00:07.0: pciehp: Slot(12): Card not present
-  ...
-  pcieport 0000:21:02.0: pciehp: pcie_disable_notification: SLOTCTRL d8 write cmd 0
-  Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b6b: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 13 UID: 0 PID: 134 Comm: irq/156-pciehp Not tainted 6.11.0-devel+ #1
-  RIP: 0010:dev_driver_string+0x12/0x40
-  pci_destroy_slot
-  pciehp_remove
-  pcie_port_remove_service
-  device_release_driver_internal
-  bus_remove_device
-  device_del
-  device_unregister
-  remove_iter
-  device_for_each_child
-  pcie_portdrv_remove
-  pci_device_remove
-  device_release_driver_internal
-  bus_remove_device
-  device_del
-  pci_remove_bus_device (recursive invocation)
-  pci_remove_bus_device
-  pciehp_unconfigure_device
-  pciehp_disable_slot
-  pciehp_handle_presence_or_link_change
-  pciehp_ist
-
-Link: https://lore.kernel.org/r/4bfd4c0e976c1776cd08e76603903b338cf25729.1728579288.git.lukas@wunner.de
-Reported-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
-Closes: https://lore.kernel.org/r/6de4b45ff2b32dd91a805ec02ec8ec73ef411bf6.camel@secunet.com/
-Tested-by: Dennis Wassenberg <Dennis.Wassenberg@secunet.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: stable@vger.kernel.org
+Reported-by: Miklos Szeredi <miklos@szeredi.hu>
+Fixes: 7372e79c9eb9 ("fanotify: fix logic of reporting name info with watched parent")
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/slot.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/notify/fsnotify.c |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
---- a/drivers/pci/slot.c
-+++ b/drivers/pci/slot.c
-@@ -79,6 +79,7 @@ static void pci_slot_release(struct kobj
- 	up_read(&pci_bus_sem);
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -310,16 +310,19 @@ static int fsnotify_handle_event(struct
+ 	if (!inode_mark)
+ 		return 0;
  
- 	list_del(&slot->list);
-+	pci_bus_put(slot->bus);
- 
- 	kfree(slot);
- }
-@@ -261,7 +262,7 @@ placeholder:
- 		goto err;
- 	}
- 
--	slot->bus = parent;
-+	slot->bus = pci_bus_get(parent);
- 	slot->number = slot_nr;
- 
- 	slot->kobj.kset = pci_slots_kset;
-@@ -269,6 +270,7 @@ placeholder:
- 	slot_name = make_slot_name(name);
- 	if (!slot_name) {
- 		err = -ENOMEM;
-+		pci_bus_put(slot->bus);
- 		kfree(slot);
- 		goto err;
+-	if (mask & FS_EVENT_ON_CHILD) {
+-		/*
+-		 * Some events can be sent on both parent dir and child marks
+-		 * (e.g. FS_ATTRIB).  If both parent dir and child are
+-		 * watching, report the event once to parent dir with name (if
+-		 * interested) and once to child without name (if interested).
+-		 * The child watcher is expecting an event without a file name
+-		 * and without the FS_EVENT_ON_CHILD flag.
+-		 */
+-		mask &= ~FS_EVENT_ON_CHILD;
++	/*
++	 * Some events can be sent on both parent dir and child marks (e.g.
++	 * FS_ATTRIB).  If both parent dir and child are watching, report the
++	 * event once to parent dir with name (if interested) and once to child
++	 * without name (if interested).
++	 *
++	 * In any case regardless whether the parent is watching or not, the
++	 * child watcher is expecting an event without the FS_EVENT_ON_CHILD
++	 * flag. The file name is expected if and only if this is a directory
++	 * event.
++	 */
++	mask &= ~FS_EVENT_ON_CHILD;
++	if (!(mask & ALL_FSNOTIFY_DIRENT_EVENTS)) {
+ 		dir = NULL;
+ 		name = NULL;
  	}
 
 
