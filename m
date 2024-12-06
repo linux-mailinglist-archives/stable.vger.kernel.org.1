@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-99556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 433169E7239
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:06:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC679E723A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:06:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D5DC188381E
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:06:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D200528503A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A0F148FE6;
-	Fri,  6 Dec 2024 15:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801131527AC;
+	Fri,  6 Dec 2024 15:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXLMMDwG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJZI8bFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB1353A7;
-	Fri,  6 Dec 2024 15:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5EF53A7;
+	Fri,  6 Dec 2024 15:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497582; cv=none; b=s2ugVAj+/Q0q00EuE6rk/8W2O3y9lDv10xfmn2nYq5H6/0YN5SGnugs3ZEsW2QYV1YZWwb6wDGccBboyID/um6e3xigQ0xCFNuuaXfG5P5Ps1VKPLaXmpRR+EyAFbzzw44ikTRXHER5M2nP9nUOEr7aVzoz8Ll89bvEyara1loE=
+	t=1733497587; cv=none; b=roXU7HZmAzttMLlqVEvcwI2PkwMQ5mIAs3nIR+AD3gX9HdDJ860lxFWaeQjCtI5IErkppy04yHAFF++yHk/EyrvdaGRvjjjONlUX+OG02XVqJJ3u1o6l9zFQiKacZUofW7v4azmTXr2MK1CZciVUo5Xb0X9MaiTL+uEVJyp+vUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497582; c=relaxed/simple;
-	bh=pzTMa3VClSINB+r0QMskpf+MiIdClYfUC9RN2UGwriQ=;
+	s=arc-20240116; t=1733497587; c=relaxed/simple;
+	bh=uKGhvVvE1VRWgqya0upR6IQfa09FBRnxC9Y3BmdV1uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcMxuBKG9qCBoRUFm6SwiKAxSrWQZa8IEWbMIZdioLWK2MvDa0lOANSmJe8x0acMd5Bmq79kPSh4BiIJIfOTZ+xCnkVDi/EP6rphQ3hWWt0EM1ga3xhAv65ir8P3ba6ptczokHpx2jGErtzgVOeiurTtcjBLq2gjQl14KQFrwNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXLMMDwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33523C4CED1;
-	Fri,  6 Dec 2024 15:06:20 +0000 (UTC)
+	 MIME-Version; b=lwjrnl9SiI9nq/s+hLuCH5pyWGWRawXFcHCMipYCn5YuaURY1ngfWY2o7CFQXDrr/V8Fd86LuRbQpkpF6jff7NGShBmX2z8u0LbEKiZmqbusImmvOpZ9AjP3bUNfyYssODrKbksgS6yHL/gQDhKAImKz+FLWNo75Tb60AGpCJoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJZI8bFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80C2C4CED1;
+	Fri,  6 Dec 2024 15:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497580;
-	bh=pzTMa3VClSINB+r0QMskpf+MiIdClYfUC9RN2UGwriQ=;
+	s=korg; t=1733497587;
+	bh=uKGhvVvE1VRWgqya0upR6IQfa09FBRnxC9Y3BmdV1uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXLMMDwGAbEyj5DCJd9V7wM/F8wj8OhsUqZa5i/02YLKktJ/+2Pz71lPT3aAsRdEr
-	 epdaVNP7b99+NowaBzGUXpftfkzBJIX3sb13/GIznu16iBTku8L3gJP/4oznZ8oaam
-	 zlcf4FIPAi5wB0HRJq0AspwjC7iubR7moHd9UPzE=
+	b=NJZI8bFVCHxd8drfwIMzWrw6UaeJ/1FzWpaN0LW3g5RNIlZ3xvixuZdadnmN7ogKg
+	 r2Ef4LQUbUQEFedFeiXouGBBMPp4IqC9nGHGVnIbGSdcVdA4Fcd2iuRwZy/452cgNZ
+	 ptY3brx3+I0RyEjYkl8mImaDKwSzdIV5AyyjOLh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 331/676] arm64: dts: qcom: sc8180x: Add a SoC-specific compatible to cpufreq-hw
-Date: Fri,  6 Dec 2024 15:32:30 +0100
-Message-ID: <20241206143706.275800265@linuxfoundation.org>
+Subject: [PATCH 6.6 332/676] pinctrl: k210: Undef K210_PC_DEFAULT
+Date: Fri,  6 Dec 2024 15:32:31 +0100
+Message-ID: <20241206143706.313734202@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,37 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-[ Upstream commit 5df30684415d5a902f23862ab5bbed2a2df7fbf1 ]
+[ Upstream commit 7e86490c5dee5c41a55f32d0dc34269e200e6909 ]
 
-Comply with bindings guidelines and get rid of errors such as:
+When the temporary macro K210_PC_DEFAULT is not needed anymore,
+use its name in the #undef statement instead of
+the incorrect "DEFAULT" name.
 
-cpufreq@18323000: compatible: 'oneOf' conditional failed, one must be fixed:
-        ['qcom,cpufreq-hw'] is too short
-
-Fixes: 8575f197b077 ("arm64: dts: qcom: Introduce the SC8180x platform")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: d4c34d09ab03 ("pinctrl: Add RISC-V Canaan Kendryte K210 FPIOA driver")
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/20241113071201.5440-1-zhangjiao2@cmss.chinamobile.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 2 +-
+ drivers/pinctrl/pinctrl-k210.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index 92b85de7706d3..dfeeada91b780 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -3618,7 +3618,7 @@ lmh@18358800 {
- 		};
+diff --git a/drivers/pinctrl/pinctrl-k210.c b/drivers/pinctrl/pinctrl-k210.c
+index b6d1ed9ec9a3c..7c05dbf533e7a 100644
+--- a/drivers/pinctrl/pinctrl-k210.c
++++ b/drivers/pinctrl/pinctrl-k210.c
+@@ -183,7 +183,7 @@ static const u32 k210_pinconf_mode_id_to_mode[] = {
+ 	[K210_PC_DEFAULT_INT13] = K210_PC_MODE_IN | K210_PC_PU,
+ };
  
- 		cpufreq_hw: cpufreq@18323000 {
--			compatible = "qcom,cpufreq-hw";
-+			compatible = "qcom,sc8180x-cpufreq-hw", "qcom,cpufreq-hw";
- 			reg = <0 0x18323000 0 0x1400>, <0 0x18325800 0 0x1400>;
- 			reg-names = "freq-domain0", "freq-domain1";
+-#undef DEFAULT
++#undef K210_PC_DEFAULT
  
+ /*
+  * Pin functions configuration information.
 -- 
 2.43.0
 
