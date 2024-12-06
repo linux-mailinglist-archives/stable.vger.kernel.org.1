@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47049E71DF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:01:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6FE49E71BD
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:59:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7751A166F14
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:01:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88B3628225B
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B918213D508;
-	Fri,  6 Dec 2024 15:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CB3149E0E;
+	Fri,  6 Dec 2024 14:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5OrfnGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQBWwikW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DA913AA5F;
-	Fri,  6 Dec 2024 15:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51F110E0;
+	Fri,  6 Dec 2024 14:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497297; cv=none; b=dExaGnEjmTwHv/7nyXk1GrhWZ5DJFxR9Of6FYTfTnS+O55etOdCf/in25VmNpinsSy59Kne0H+pB+PnR6IkuTf9zOjt06Bvac+N2D6e60CkdgCz+p+ocKWoRadgx5ZBEGvi9FJNabu2rdtyWZx98J9hgvZySkentcBnsxEST+Q0=
+	t=1733497184; cv=none; b=Hon75QcIpA/3BRJnVN1qhTP6FqD1mvFz+Miw91qVfxy8o2lMf8gfmeFFvccKNW/LlCiPf0BC+nWIvyhavIHpGZfoUXBsup2xpbK5tZmt0oyAIG1Vae+Xqo2KiggPC5Of+b5rZRPXpUnlYAv6WFyIZIIJUivmT+tJkiQL7w4TKjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497297; c=relaxed/simple;
-	bh=puTe0Dp4sHDHETgXeCU2bYS1Z8hK2AQfnhbwPQ7dxls=;
+	s=arc-20240116; t=1733497184; c=relaxed/simple;
+	bh=DOcRT9SP3Gej1J1u8xZjuDHmgKbp73pY2l+YNCc3sM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTkjolDSNpG5EZdP1Bgi4AWHJzQ+FOWrTVpd8jb4NGKFhnmOreQYud0jQFIGu80X+Oa6IhyD6+TId4GuZLBWa/ZjbgH8ToZKtv7Gk6NZj6knxzLVIibuteNTU7iPO7GZP10pJLkmNlpEFlYmT3sZWAmT94MxY4gW9IUoqIWpBqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5OrfnGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3852C4AF09;
-	Fri,  6 Dec 2024 15:01:36 +0000 (UTC)
+	 MIME-Version; b=R7AJEEMF+suUWpvQBmzsWE51p80b66BoV6EZPkYvb5Ad0yIfqKHhhjlkyvI8VwDC17l7SuAVh4N0Y2JS32I4tSu/ZtLux+Jgd/8xAkXujbOlHFnI+vAADnphjyS8guHU1e+M/OpW1cv+ZqFxUQ1G1jj5s+SwXe7zRCnVcjTWlco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQBWwikW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48ABAC4CED1;
+	Fri,  6 Dec 2024 14:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497297;
-	bh=puTe0Dp4sHDHETgXeCU2bYS1Z8hK2AQfnhbwPQ7dxls=;
+	s=korg; t=1733497184;
+	bh=DOcRT9SP3Gej1J1u8xZjuDHmgKbp73pY2l+YNCc3sM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5OrfnGTJUQEE/27cOGWTLVZp0gJ6VA5vCoN0xYZYVw3Mjj5FuFJ/vg2Rb1fSoaA2
-	 iQtdXXe4RuezsNel2GPhWNKM7/lSzbT/TxOd2Twd7dUskCLfDdhXQmKpEGsP0qg9eG
-	 HpYLyd6mvIIVJ/SxutxxiioEIuTfMIOmuSfmZnFg=
+	b=LQBWwikW5WYIJ/IKXaWlDC3k+ylQE0l7ISdqY9Qw0rP/9yLvGyn9+m2AwWLnY0798
+	 RGNO6wk7dEUZ1tTd6/MTlbU8UmE522JwCiw5X9WPsytTqnCbgbUt0c4MXNZTfboqTr
+	 mo0I3YApjqx4+8ubokgRCa1BPEckmLUer2h3ugP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 210/676] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_dmac_flt.c
-Date: Fri,  6 Dec 2024 15:30:29 +0100
-Message-ID: <20241206143701.545929467@linuxfoundation.org>
+Subject: [PATCH 6.6 211/676] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_dcbnl.c
+Date: Fri,  6 Dec 2024 15:30:30 +0100
+Message-ID: <20241206143701.584458730@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -69,47 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Dipendra Khadka <kdipendra88@gmail.com>
 
-[ Upstream commit f5b942e6c54b13246ee49d42dcfb71b7f29e3c64 ]
+[ Upstream commit 69297b0d3369488af259e3a7cf53d69157938ea1 ]
 
-Add error pointer checks after calling otx2_mbox_get_rsp().
+Add error pointer check after calling otx2_mbox_get_rsp().
 
-Fixes: 79d2be385e9e ("octeontx2-pf: offload DMAC filters to CGX/RPM block")
-Fixes: fa5e0ccb8f3a ("octeontx2-pf: Add support for exact match table.")
+Fixes: 8e67558177f8 ("octeontx2-pf: PFC config support with DCBx")
 Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c   | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
-index 80d853b343f98..2046dd0da00d8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dmac_flt.c
-@@ -28,6 +28,11 @@ static int otx2_dmacflt_do_add(struct otx2_nic *pf, const u8 *mac,
- 	if (!err) {
- 		rsp = (struct cgx_mac_addr_add_rsp *)
- 			 otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+index aa01110f04a33..294fba58b6709 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+@@ -315,6 +315,11 @@ int otx2_config_priority_flow_ctrl(struct otx2_nic *pfvf)
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pfc_rsp *)
+ 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
 +		if (IS_ERR(rsp)) {
-+			mutex_unlock(&pf->mbox.lock);
-+			return PTR_ERR(rsp);
++			err = PTR_ERR(rsp);
++			goto unlock;
 +		}
 +
- 		*dmac_index = rsp->index;
- 	}
- 
-@@ -200,6 +205,10 @@ int otx2_dmacflt_update(struct otx2_nic *pf, u8 *mac, u32 bit_pos)
- 
- 	rsp = (struct cgx_mac_addr_update_rsp *)
- 		otx2_mbox_get_rsp(&pf->mbox.mbox, 0, &req->hdr);
-+	if (IS_ERR(rsp)) {
-+		rc = PTR_ERR(rsp);
-+		goto out;
-+	}
- 
- 	pf->flow_cfg->bmap_to_dmacindex[bit_pos] = rsp->index;
- 
+ 		if (req->rx_pause != rsp->rx_pause || req->tx_pause != rsp->tx_pause) {
+ 			dev_warn(pfvf->dev,
+ 				 "Failed to config PFC\n");
 -- 
 2.43.0
 
