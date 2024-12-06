@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-99129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1AD9E7058
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:41:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B839E7032
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:39:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1667C167789
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:41:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7E9A281BEB
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 14:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9E814D29D;
-	Fri,  6 Dec 2024 14:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A833F154425;
+	Fri,  6 Dec 2024 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3k6J2hr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPv42w3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8EE14B084;
-	Fri,  6 Dec 2024 14:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D4C14D29D;
+	Fri,  6 Dec 2024 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733496101; cv=none; b=mLfQ2881fJtUNzMOd6UKU0pGOyopAJ24dzRHkxvWv7Z7ogFBtXmKCBBJRgLoVrcVXACURD+7cvWsTjnEkCOmezwtT5WJ5TDDFbFj8EUBwVyxXY92yEpTmHsi1T0WowMjL9uM58eOz4szb8G4jHYOTSxI9UMY4sw7wk6c7m0qQak=
+	t=1733495990; cv=none; b=o+Rgc4cm2TaQDWmqaioH+bDbwoJ6718ooK/LDX0tl8Tzi65MDmmxWdZlfzkIqO+jDQ2epsro9zgBQrXgYBD6LYI/8cJy0V5DnfuRsi/HQGewQSzQBq7EJTEPL+hThAM/BoTboxAmbwa8iOf1w+6BzcU5jXGUhVSPGQrxvv3rxBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733496101; c=relaxed/simple;
-	bh=ChFrfg0u+ZyxtBXhWYHeojEgGGWcS9+XH4py3MwqE54=;
+	s=arc-20240116; t=1733495990; c=relaxed/simple;
+	bh=i722dPi8l5s5O/2m2NTLZH543YHbmmB0cOqgDzFDtBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbJUmSFpnPJZEO6z40rqebQmDRIm3xBYvp0n7KwwiN+t1C1/+Pajg/h4whENIlSgyLxDfnVe/uRFAiW0CqLCBh67oxWfM6wdIwsyEzry2fJruRret165F4BRwcCmZYyRgwrTkQtLNjMf52brE0On0rmD+9yOhlwSwelh2FSJDyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3k6J2hr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0584C4CED1;
-	Fri,  6 Dec 2024 14:41:40 +0000 (UTC)
+	 MIME-Version; b=MvM03ge8I3nvg/bbqNZyBjqzUB4z2v1ld/PdxmGCpn95O2atzQxrQq3BxMHId8iJa2zbFpgL4MKPgPlT4x+iy0szUKBwIbYQSPR8/peETB6TqrouBdNTBlTQyqqFZuzQJglZOudffzlQVpkZz5dVOhMpPRt1KDL6ciWex6cdPXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPv42w3a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70B2C4CEDC;
+	Fri,  6 Dec 2024 14:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733496101;
-	bh=ChFrfg0u+ZyxtBXhWYHeojEgGGWcS9+XH4py3MwqE54=;
+	s=korg; t=1733495990;
+	bh=i722dPi8l5s5O/2m2NTLZH543YHbmmB0cOqgDzFDtBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3k6J2hrmkhzm5A/2EZZKpAgfw5q3fwmW6gZpOR+7qw9tUiEsC67x1Qtm6U7Of08C
-	 gmO9ihETw583AgoeCWh3RVWI6dTCZa6kuEeI3IwvAxykZqYTxG860YC1DXKN7q6E/I
-	 wJAI2DKZtKC13X1sdC+IwdXzS5+T06mu8uNjo9iI=
+	b=aPv42w3aKVcE4vmvB/rOb7XwFb55nxelQywg/0L+ykNkkoMX3wSwn1cPLPRWUssPC
+	 uvDQJNMSOjgQ5PfJUcfrjIgeG2MRBf6T16JWeii7zAaILW6wU7tJLkvIBLq6xeVPew
+	 QiboXuCA64zhI2FqU0aUdBVz/8n67bxjFJANAvZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ming Qian <ming.qian@nxp.com>,
 	TaoJiang <tao.jiang_2@nxp.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.12 020/146] media: amphion: Set video drvdata before register video device
-Date: Fri,  6 Dec 2024 15:35:51 +0100
-Message-ID: <20241206143528.443375952@linuxfoundation.org>
+Subject: [PATCH 6.12 021/146] media: imx-jpeg: Set video drvdata before register video device
+Date: Fri,  6 Dec 2024 15:35:52 +0100
+Message-ID: <20241206143528.482992590@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
 References: <20241206143527.654980698@linuxfoundation.org>
@@ -68,40 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Ming Qian <ming.qian@nxp.com>
 
-commit 8cbb1a7bd5973b57898b26eb804fe44af440bb63 upstream.
+commit d2b7ecc26bd5406d5ba927be1748aa99c568696c upstream.
 
 The video drvdata should be set before the video device is registered,
 otherwise video_drvdata() may return NULL in the open() file ops, and led
 to oops.
 
-Fixes: 3cd084519c6f ("media: amphion: add vpu v4l2 m2m support")
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Ming Qian <ming.qian@nxp.com>
 Reviewed-by: TaoJiang <tao.jiang_2@nxp.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/amphion/vpu_v4l2.c |    2 +-
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/amphion/vpu_v4l2.c
-+++ b/drivers/media/platform/amphion/vpu_v4l2.c
-@@ -841,6 +841,7 @@ int vpu_add_func(struct vpu_dev *vpu, st
- 		vfd->fops = vdec_get_fops();
- 		vfd->ioctl_ops = vdec_get_ioctl_ops();
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -2842,6 +2842,7 @@ static int mxc_jpeg_probe(struct platfor
+ 	jpeg->dec_vdev->vfl_dir = VFL_DIR_M2M;
+ 	jpeg->dec_vdev->device_caps = V4L2_CAP_STREAMING |
+ 					V4L2_CAP_VIDEO_M2M_MPLANE;
++	video_set_drvdata(jpeg->dec_vdev, jpeg);
+ 	if (mode == MXC_JPEG_ENCODE) {
+ 		v4l2_disable_ioctl(jpeg->dec_vdev, VIDIOC_DECODER_CMD);
+ 		v4l2_disable_ioctl(jpeg->dec_vdev, VIDIOC_TRY_DECODER_CMD);
+@@ -2854,7 +2855,6 @@ static int mxc_jpeg_probe(struct platfor
+ 		dev_err(dev, "failed to register video device\n");
+ 		goto err_vdev_register;
  	}
-+	video_set_drvdata(vfd, vpu);
- 
- 	ret = video_register_device(vfd, VFL_TYPE_VIDEO, -1);
- 	if (ret) {
-@@ -848,7 +849,6 @@ int vpu_add_func(struct vpu_dev *vpu, st
- 		v4l2_m2m_release(func->m2m_dev);
- 		return ret;
- 	}
--	video_set_drvdata(vfd, vpu);
- 	func->vfd = vfd;
- 
- 	ret = v4l2_m2m_register_media_controller(func->m2m_dev, func->vfd, func->function);
+-	video_set_drvdata(jpeg->dec_vdev, jpeg);
+ 	if (mode == MXC_JPEG_ENCODE)
+ 		v4l2_info(&jpeg->v4l2_dev,
+ 			  "encoder device registered as /dev/video%d (%d,%d)\n",
 
 
 
