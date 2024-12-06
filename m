@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-99606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E83999E7271
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:09:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFE79E72B2
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:12:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E4E0285244
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:09:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B402B188837A
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5163A207650;
-	Fri,  6 Dec 2024 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A016207E0C;
+	Fri,  6 Dec 2024 15:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRbGBjrG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCMJg2Mf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7B0206F1A;
-	Fri,  6 Dec 2024 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FD31527AC;
+	Fri,  6 Dec 2024 15:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497744; cv=none; b=dxeFRaSGElShtl7MiNnbw3om4oxTrGbpOWVFUw1dOuvY2KCNRwqd6sBWLjNwe0ln4avjqSTVGRNfJtULDXx7+fiBpHI6ZStmX7AvWRziBXLULOWdPRoxeR7mPmR9syJfKILyKfCaB2kJuJqitgVrvBbv8DsgVR+RH3Py6jwRtA8=
+	t=1733497884; cv=none; b=tQ8Wd6JsWjysUKk18oGFWxQY0KiOwcM35C7vPPWy7kp77rRioqglA6fOJJRhvrLpY1ndY142CBhx9dfX6huIyl+WmcfGKe6QBCqV0fGSIH74M7G0ZObimeI7QKbg4zf8arHED0E+0Bm5l1ZOrz0G2B0xE99lyQxFw5p5pjwoTEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497744; c=relaxed/simple;
-	bh=BR4rxIRxbJgPC9PhsYgARAVg/F6Wv0AVkDR2GF37Zb0=;
+	s=arc-20240116; t=1733497884; c=relaxed/simple;
+	bh=kNLEjfPvQH6A8/s0/SZAHDg5OEpNjq+YMecE9AOQ3FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmIRVOfZ5ifKZdK497vVMjEinlJ3TSXXb2D/PbfOvFI6/6LA9cj30UcJmY8BDW87whcYEe3EtlADXKCh61H2ZWEiANQKderIjHkrrMtTKmCMeXQecBbC6md2rQZKDdlWtqvMYIgp4N7WpUaDQwgtRliHvYV+bfz5NyTBY5meZBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRbGBjrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B58C4CEDC;
-	Fri,  6 Dec 2024 15:09:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IzSFzqdwBOuSmiG1Fr7eY1TQqdig7fX5dD0yde274XoCeuFGaV9OvY7RVwjFBbQ+wZux6MYJYJY6Q1ta4mYmqQ9cEP8tkXQYCaDP7C9mhA7pXDTybEKjp45IGHAXXS4w7+KqR3KV/8UPC1AfjmVKF/nFRUyb/MworeAuq3Yc+3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iCMJg2Mf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2C0C4CEDC;
+	Fri,  6 Dec 2024 15:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497743;
-	bh=BR4rxIRxbJgPC9PhsYgARAVg/F6Wv0AVkDR2GF37Zb0=;
+	s=korg; t=1733497883;
+	bh=kNLEjfPvQH6A8/s0/SZAHDg5OEpNjq+YMecE9AOQ3FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRbGBjrGfalRIrDmzomlYwqivn7sIqirWlMVYzOSJzCyVvWXSaX78P3GoDCX/xlnd
-	 tQlkQIlvBLfaj5xvnqwQZL2Ar6i75EaMTGxhmfouSF+fsmzkVKQoP/veY9i6mpwEJy
-	 PZ+SLLzyomY1qHrvTjN1Z1Gdwz+TPzAWhyujSiPI=
+	b=iCMJg2Mfj6LYymb7GtW852CysxeHmddgBdWpTDkBufvngts6FxgqQKypi5e9YJjtW
+	 d4WstCO1+Dlmpl3H91k8H4smdVMVaCTo2GTTyyxy3DYZzKj3DlB25tc9HpUS+2RNiD
+	 d9Fvwym5uLn6jtz04QfNPkFGXqKtfOOUvr9mp9As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 379/676] remoteproc: qcom_q6v5_mss: Re-order writes to the IMEM region
-Date: Fri,  6 Dec 2024 15:33:18 +0100
-Message-ID: <20241206143708.152202175@linuxfoundation.org>
+Subject: [PATCH 6.6 380/676] PCI: endpoint: epf-mhi: Avoid NULL dereference if DT lacks mmio
+Date: Fri,  6 Dec 2024 15:33:19 +0100
+Message-ID: <20241206143708.190375200@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -61,56 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-[ Upstream commit 7b22b7719fc17d5979a991c918c868ab041be5c8 ]
+[ Upstream commit 5089b3d874e9933d9842e90410d3af1520494757 ]
 
-Any write access to the IMEM region when the Q6 is setting up XPU
-protection on it will result in a XPU violation. Fix this by ensuring
-IMEM writes related to the MBA post-mortem logs happen before the Q6
-is brought out of reset.
+If platform_get_resource_byname() fails and returns NULL because DT lacks
+an 'mmio' property for the MHI endpoint, dereferencing res->start will
+cause a NULL pointer access. Add a check to prevent it.
 
-Fixes: 318130cc9362 ("remoteproc: qcom_q6v5_mss: Add MBA log extraction support")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240819073020.3291287-1-quic_sibis@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 1bf5f25324f7 ("PCI: endpoint: Add PCI Endpoint function driver for MHI bus")
+Link: https://lore.kernel.org/r/20241105120735.1240728-1-quic_zhonhan@quicinc.com
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+[kwilczynski: error message update per the review feedback]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-mhi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index 22fe7b5f5236d..2d717f2ed396c 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1161,6 +1161,9 @@ static int q6v5_mba_load(struct q6v5 *qproc)
- 		goto disable_active_clks;
- 	}
+diff --git a/drivers/pci/endpoint/functions/pci-epf-mhi.c b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+index 34e7191f95086..87154992ea11b 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-mhi.c
++++ b/drivers/pci/endpoint/functions/pci-epf-mhi.c
+@@ -600,12 +600,18 @@ static int pci_epf_mhi_bind(struct pci_epf *epf)
+ {
+ 	struct pci_epf_mhi *epf_mhi = epf_get_drvdata(epf);
+ 	struct pci_epc *epc = epf->epc;
++	struct device *dev = &epf->dev;
+ 	struct platform_device *pdev = to_platform_device(epc->dev.parent);
+ 	struct resource *res;
+ 	int ret;
  
-+	if (qproc->has_mba_logs)
-+		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
+ 	/* Get MMIO base address from Endpoint controller */
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mmio");
++	if (!res) {
++		dev_err(dev, "Failed to get \"mmio\" resource\n");
++		return -ENODEV;
++	}
 +
- 	writel(qproc->mba_phys, qproc->rmb_base + RMB_MBA_IMAGE_REG);
- 	if (qproc->dp_size) {
- 		writel(qproc->mba_phys + SZ_1M, qproc->rmb_base + RMB_PMI_CODE_START_REG);
-@@ -1171,9 +1174,6 @@ static int q6v5_mba_load(struct q6v5 *qproc)
- 	if (ret)
- 		goto reclaim_mba;
+ 	epf_mhi->mmio_phys = res->start;
+ 	epf_mhi->mmio_size = resource_size(res);
  
--	if (qproc->has_mba_logs)
--		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
--
- 	ret = q6v5_rmb_mba_wait(qproc, 0, 5000);
- 	if (ret == -ETIMEDOUT) {
- 		dev_err(qproc->dev, "MBA boot timed out\n");
 -- 
 2.43.0
 
