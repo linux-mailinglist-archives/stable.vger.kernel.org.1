@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-99489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-99500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257999E71EE
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:02:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743469E71FA
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 16:03:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A2A416C9AF
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D174169348
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 15:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32F61714DF;
-	Fri,  6 Dec 2024 15:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF6E148832;
+	Fri,  6 Dec 2024 15:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vi5FE6hd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5uO03ve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E33C53A7;
-	Fri,  6 Dec 2024 15:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C147213D508;
+	Fri,  6 Dec 2024 15:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497338; cv=none; b=TX52HJ386aVcjZ49PMyDNOWO/OB9VkWw3JNfOFSqLfZ8K6ouYdU7HJN6OEQExUR9zVgf86oGV2jUghAC1Eqssh9ddILTEqe+Fz0Msbp98saOyhJZESpRy3pApT1Vr06QLj0wZQGmtQsLJoJgcPecq8pzDkV/17+fy3VMsXqBRqM=
+	t=1733497379; cv=none; b=ZvxKBC9NIkCmKD8rHoA1jtQR2qwqXdhjbdW1FUzON9wctPx4yUlxUueRNIn7axXdI1kM29u8fZbtvpcDbrJH5+lR1kBydZfiMv05G88jPz7NacwkpviIHuP/icGnz1/vHcyp1E08ctqfi6sG+D8Qn331yNB2NZrkeFNb+RvCaLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497338; c=relaxed/simple;
-	bh=8hVsiz4KEaoXvqQKbYK1b8KvuXFfeuVcZaVR2vemO8Y=;
+	s=arc-20240116; t=1733497379; c=relaxed/simple;
+	bh=EKtj7PGMu8Mvn0H9ZBwfP5g3Pm7THM/nyUWOtSwwB9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQccSSjjVUSZDE3Fi/j1/unVQfIbHO8eZZ+lp5tjiZDnTlN7U/R0cLC7E/YRFt8NfxZ9rkpcfxTP8A2V8pM8Forqge5DbmkUH4TvYCvOz0rqOLR2khHdKEQDg0tX3t9M3XmK1QQE76LgFpHkWJdd2XddHhnjismffrNtHW2pYEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vi5FE6hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05D5C4CED1;
-	Fri,  6 Dec 2024 15:02:17 +0000 (UTC)
+	 MIME-Version; b=IA+rtmhIeHqJCjcDOHivxWObLCamJvYGieo0jS1YnqfmWFxqyRhfOd4F55XA8Cu8GwQFpI51lEjS+KnywJMHd5whwd26GVNgQQIVwSxEzlVNLUbbxVMgswarC9RjkQdy3guT345KvYDfKs+CLepqIIKtnHkt+lKu9DUFiyU/WDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5uO03ve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BDDC4CED1;
+	Fri,  6 Dec 2024 15:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733497338;
-	bh=8hVsiz4KEaoXvqQKbYK1b8KvuXFfeuVcZaVR2vemO8Y=;
+	s=korg; t=1733497379;
+	bh=EKtj7PGMu8Mvn0H9ZBwfP5g3Pm7THM/nyUWOtSwwB9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vi5FE6hdKkMMp6cJOpX6SDfRFJzXAWfKQ8exHWG9c27Onwd7rPxGHW8FBQjcPwgpT
-	 kx5KBzE6rpKiOABMbjoHOkfy1hpINXwwteFBlfeFPrpNXn3dACe7UBrS+9SBXVRy8l
-	 jandz5zUW6ZOBy7SJDcmRUQmuOyGuOZmlZ1yGG1Q=
+	b=F5uO03velot6SGLjmCB/Cmv+pqK8siuWnXks09Jz9SSMXuLEw9mhv0PO0uMI7OpVt
+	 G1FzXGi6TS5B/ndy0lX+RECErs5cHmp3HK1swCLf0WYhLDpDljkz+KTuVNckjYd1wO
+	 LuUsssXMGlrS1kbMQGgLMQFVzzOV8ODnYWnq8Hvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/676] drm/amdkfd: Fix wrong usage of INIT_WORK()
-Date: Fri,  6 Dec 2024 15:31:05 +0100
-Message-ID: <20241206143702.941054678@linuxfoundation.org>
+Subject: [PATCH 6.6 247/676] bpf: Force uprobe bpf program to always return 0
+Date: Fri,  6 Dec 2024 15:31:06 +0100
+Message-ID: <20241206143702.981037411@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
 References: <20241206143653.344873888@linuxfoundation.org>
@@ -67,47 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 21cae8debc6a1d243f64fa82cd1b41cb612b5c61 ]
+[ Upstream commit f505005bc7426f4309880da94cfbfc37efa225bd ]
 
-In kfd_procfs_show(), the sdma_activity_work_handler is a local variable
-and the sdma_activity_work_handler.sdma_activity_work should initialize
-with INIT_WORK_ONSTACK() instead of INIT_WORK().
+As suggested by Andrii make uprobe multi bpf programs to always return 0,
+so they can't force uprobe removal.
 
-Fixes: 32cb59f31362 ("drm/amdkfd: Track SDMA utilization per process")
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Keeping the int return type for uprobe_prog_run, because it will be used
+in following session changes.
+
+Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241108134544.480660-3-jolsa@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/trace/bpf_trace.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-index 6c90231e0aec2..fd640a061c96a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
-@@ -312,8 +312,8 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
- 							      attr_sdma);
- 		struct kfd_sdma_activity_handler_workarea sdma_activity_work_handler;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 9064f75de7e46..e8fb6ada323c1 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3098,7 +3098,6 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	struct bpf_prog *prog = link->link.prog;
+ 	bool sleepable = prog->aux->sleepable;
+ 	struct bpf_run_ctx *old_run_ctx;
+-	int err = 0;
  
--		INIT_WORK(&sdma_activity_work_handler.sdma_activity_work,
--					kfd_sdma_activity_worker);
-+		INIT_WORK_ONSTACK(&sdma_activity_work_handler.sdma_activity_work,
-+				  kfd_sdma_activity_worker);
+ 	if (link->task && current->mm != link->task->mm)
+ 		return 0;
+@@ -3111,7 +3110,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	migrate_disable();
  
- 		sdma_activity_work_handler.pdd = pdd;
- 		sdma_activity_work_handler.sdma_activity_counter = 0;
-@@ -321,6 +321,7 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
- 		schedule_work(&sdma_activity_work_handler.sdma_activity_work);
+ 	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
+-	err = bpf_prog_run(link->link.prog, regs);
++	bpf_prog_run(link->link.prog, regs);
+ 	bpf_reset_run_ctx(old_run_ctx);
  
- 		flush_work(&sdma_activity_work_handler.sdma_activity_work);
-+		destroy_work_on_stack(&sdma_activity_work_handler.sdma_activity_work);
+ 	migrate_enable();
+@@ -3120,7 +3119,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 		rcu_read_unlock_trace();
+ 	else
+ 		rcu_read_unlock();
+-	return err;
++	return 0;
+ }
  
- 		return snprintf(buffer, PAGE_SIZE, "%llu\n",
- 				(sdma_activity_work_handler.sdma_activity_counter)/
+ static bool
 -- 
 2.43.0
 
