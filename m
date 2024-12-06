@@ -1,167 +1,132 @@
-Return-Path: <stable+bounces-98950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208289E695B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 09:54:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24E19E6976
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 09:58:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF50E2832E2
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 08:54:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A9E21881364
+	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 08:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303D11DF24B;
-	Fri,  6 Dec 2024 08:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uQEmO9dz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0571E1022;
+	Fri,  6 Dec 2024 08:58:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB901D9A48;
-	Fri,  6 Dec 2024 08:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF8979DC;
+	Fri,  6 Dec 2024 08:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733475283; cv=none; b=mrFMhqKF84tHM6Rofs4+YtIPjLCrkoAIuJ6zOOQUOKgGaB0liNVgP5p7tQ4+XmgldW6AKXhBd57ECHGUI6wOHDjYYDgHGKVrQB+0gCuP+CQI8TRiPo2N539r0A9sTKCSgcgADoL8N/edE61lZ90oqMnsHYjZuKejz8NAXZRTSuE=
+	t=1733475526; cv=none; b=OGHIKywOE6oPtxF83TSqp/5BwGpkhPToAnX24r49IsvHnQy1Vp5mm1qc+Ltk1bEukIDEeCKOCMRXz7WnAvS/nnroMeoiZWrBeGVENgs+PMpSTf0LARXYoj3UDNePA6UhNNVkqhgu4JuIs2UAgGM3yNp49fn6jqMjiS6RN4SIDkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733475283; c=relaxed/simple;
-	bh=QpA5tBVMEXe/6/GlbhF4j9NCVruG6zRkEENabN28sos=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uwbAu9MKTX5fANzMlLqzSE5+HZLWPqY9W8+Jmr1So2f0QM1cCxkWDOPMbmiHr7vLxOsmuRKcwuOYy8ffzaiJ+q0wVFdTN+wETVOwsYFmpxdDWKXqiWRFZuGEmZglBMksh3PwSWviSvLnRUEIvZgOQ5oCPsm4vTRbhEdyT9aSMB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uQEmO9dz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A5DC4CED1;
-	Fri,  6 Dec 2024 08:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733475282;
-	bh=QpA5tBVMEXe/6/GlbhF4j9NCVruG6zRkEENabN28sos=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uQEmO9dzl3K90Gexl9wvOwZG99HTEB/I32KuFR2Dx0KkcYxSrT09YNyVgBn7BcKUE
-	 nBfp0mSGqpm8VZXI5h46asyvUZPD+Bqk40iuX0tEuiLN0wHRPupOMNQ6fhCRxnfUHa
-	 uP3/1s3VDeNoA9dgFsgvojjOwVLlnARyzmM8aFQk2/EIFtp+WzAWA4TV5vlKJT1ZnP
-	 DdwRqMilCkBveM3B9AiLCaTrA64TO7VNy3FN5cz9tT9DWZ5VJ2ecGkAoTRLzLhKJVA
-	 QmyoMsS+prBbxeK47/gCoaB2kjnNERn/iJzBVdX5yrYJ/7cbT6meAkZSXN/YJB7aN4
-	 thIB84PkgpchQ==
-Message-ID: <e1e81fd7-342c-4dbf-921c-dcc1324ec222@kernel.org>
-Date: Fri, 6 Dec 2024 09:54:38 +0100
+	s=arc-20240116; t=1733475526; c=relaxed/simple;
+	bh=ZemS1sodgjC3cZHxf11uqrAhrCPKKD2kAtEf85QNgoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tMB8IdR9MJSKUy3oqRFHpUj9VBl2Wt/dFX3GmId2qq2JSWoiCJ7+nIFFfbTv0XxgPI7KtEbU2FVTChx9TmYo4QU8XpbaHmO/K1vo2wvd9KrOw8bw+luT22/vqdj9B1qtISTW3Nrwg4rrCXtZh/H5EPme5wroCkXlpBw97hjv/Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.38])
+	by gateway (Coremail) with SMTP id _____8BxPOK5vFJn3hRSAA--.28430S3;
+	Fri, 06 Dec 2024 16:58:33 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.38])
+	by front1 (Coremail) with SMTP id qMiowMAxIMOovFJnxhx4AA--.14616S2;
+	Fri, 06 Dec 2024 16:58:31 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	stable@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1&6.6 0/3] kbuild: Avoid weak external linkage where possible
+Date: Fri,  6 Dec 2024 16:58:07 +0800
+Message-ID: <20241206085810.112341-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 383/826] iommu/tegra241-cmdqv: Staticize
- cmdqv_debugfs_dir
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
- Nicolin Chen <nicolinc@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-References: <20241203144743.428732212@linuxfoundation.org>
- <20241203144758.706043384@linuxfoundation.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20241203144758.706043384@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMAxIMOovFJnxhx4AA--.14616S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxCry8Kr4fCFy8XF1xGF48uFX_yoW5GFWkpr
+	W3ur4fJF4UAryI9w1fJa1xu3y3X3Z7u3W7Ga9xKry8urs5XryIq3yvyr95XasFk3y0qa4F
+	vr9rta42gFyUAagCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
+	AKI48JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY
+	6r1j6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7
+	xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xII
+	jxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
+	67AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8HKZJUUUUU==
 
-On 03. 12. 24, 15:41, Greg Kroah-Hartman wrote:
-> 6.12-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Nicolin Chen <nicolinc@nvidia.com>
-> 
-> [ Upstream commit 89edbe88db2857880b08ce363a2695eec657f51b ]
-> 
-> Fix a sparse warning.
-> 
-> Fixes: 918eb5c856f6 ("iommu/arm-smmu-v3: Add in-kernel support for NVIDIA Tegra241 (Grace) CMDQV")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202410172003.bRQEReTc-lkp@intel.com/
-> Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Link: https://lore.kernel.org/r/20241021230847.811218-1-nicolinc@nvidia.com
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-> index fcd13d301fff6..a243c543598ce 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c
-> @@ -800,7 +800,7 @@ static int tegra241_cmdqv_init_structures(struct arm_smmu_device *smmu)
->   	return 0;
->   }
->   
-> -struct dentry *cmdqv_debugfs_dir;
-> +static struct dentry *cmdqv_debugfs_dir;
+Backport this series to 6.1&6.6 because LoongArch gets build errors with
+latest binutils which has commit 599df6e2db17d1c4 ("ld, LoongArch: print
+error about linking without -fPIC or -fPIE flag in more detail").
 
-So now, with
-   # CONFIG_IOMMU_DEBUGFS is not set
-I see:
-   ../drivers/iommu/arm/arm-smmu-v3/tegra241-cmdqv.c:804:23: warning: 
-‘cmdqv_debugfs_dir’ defined but not used [-Wunused-variable]
+  CC      .vmlinux.export.o
+  UPD     include/generated/utsversion.h
+  CC      init/version-timestamp.o
+  LD      .tmp_vmlinux.kallsyms1
+loongarch64-unknown-linux-gnu-ld: kernel/kallsyms.o:(.text+0): relocation R_LARCH_PCALA_HI20 against `kallsyms_markers` can not be used when making a PIE object; recompile with -fPIE
+loongarch64-unknown-linux-gnu-ld: kernel/crash_core.o:(.init.text+0x984): relocation R_LARCH_PCALA_HI20 against `kallsyms_names` can not be used when making a PIE object; recompile with -fPIE
+loongarch64-unknown-linux-gnu-ld: kernel/bpf/btf.o:(.text+0xcc7c): relocation R_LARCH_PCALA_HI20 against `__start_BTF` can not be used when making a PIE object; recompile with -fPIE
+loongarch64-unknown-linux-gnu-ld: BFD (GNU Binutils) 2.43.50.20241126 assertion fail ../../bfd/elfnn-loongarch.c:2673
 
-Should the definition be guarded by CONFIG_IOMMU_DEBUGFS?
+In theory 5.10&5.15 also need this, but since LoongArch get upstream at
+5.19, so I just ignore them because there is no error report about other
+archs now.
 
-/me looks
+Weak external linkage is intended for cases where a symbol reference
+can remain unsatisfied in the final link. Taking the address of such a
+symbol should yield NULL if the reference was not satisfied.
 
-Ah, yes:
-commit 5492f0c4085a8fb8820ff974f17b83a7d6dab5a5
-Author: Will Deacon <will@kernel.org>
-Date:   Tue Oct 29 15:58:24 2024 +0000
+Given that ordinary RIP or PC relative references cannot produce NULL,
+some kind of indirection is always needed in such cases, and in position
+independent code, this results in a GOT entry. In ordinary code, it is
+arch specific but amounts to the same thing.
 
-     iommu/tegra241-cmdqv: Fix unused variable warning
+While unavoidable in some cases, weak references are currently also used
+to declare symbols that are always defined in the final link, but not in
+the first linker pass. This means we end up with worse codegen for no
+good reason. So let's clean this up, by providing preliminary
+definitions that are only used as a fallback.
 
-Could you pick that up for the next stable?
+Ard Biesheuvel (3):
+  kallsyms: Avoid weak references for kallsyms symbols
+  vmlinux: Avoid weak reference to notes section
+  btf: Avoid weak external references
 
-thanks,
--- 
-js
-suse labs
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ include/asm-generic/vmlinux.lds.h | 28 ++++++++++++++++++
+ kernel/bpf/btf.c                  |  7 +++--
+ kernel/bpf/sysfs_btf.c            |  6 ++--
+ kernel/kallsyms.c                 |  6 ----
+ kernel/kallsyms_internal.h        | 30 ++++++++------------
+ kernel/ksysfs.c                   |  4 +--
+ lib/buildid.c                     |  4 +--
+ 7 files changed, 52 insertions(+), 33 deletions(-)
+---
+2.27.0
 
 
