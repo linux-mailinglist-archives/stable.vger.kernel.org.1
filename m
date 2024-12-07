@@ -1,107 +1,130 @@
-Return-Path: <stable+bounces-100038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5643F9E7EC3
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 08:47:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A5DE16C170
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 07:47:27 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC9782C7E;
-	Sat,  7 Dec 2024 07:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7ZgI9Gx"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9399E7ECF
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 08:54:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91AE22C6E3;
-	Sat,  7 Dec 2024 07:47:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2E39284FAD
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 07:54:00 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C16A136E3B;
+	Sat,  7 Dec 2024 07:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="DmHAHXMO"
+X-Original-To: stable@vger.kernel.org
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED495126C02
+	for <stable@vger.kernel.org>; Sat,  7 Dec 2024 07:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733557644; cv=none; b=VS+1Y8bTqV37XOtj992IXVNt2EcFzHaFXbV8vb/zoSDkq32f3Pu5e/EN7L0NbzsEnhATD+CyvDYG17RvvfYwHUsH95J08AzDJSlTGuWrSYaSufVK8dWPxS+LNG4hnRuvOkdrh9UonwwPD24LVn/FhFX3tKTjqHAktQSs/rk1GO0=
+	t=1733558037; cv=none; b=rSCl7CtHVQqKEhRExLNLfUB/AiS5DjGaJp2DhJRhQ9RKEI81XIgx/EVPYJgnU5gt48KrtD18dJ93ueMWG3VoAZhAiDKLsoodAvi6HkiOKjsacd0p3X9Xy941xd/Nnk7Qghe1oUxEwG0WLQ6ygH1XUCHfMsynbMlbAQDmlsBMR1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733557644; c=relaxed/simple;
-	bh=j1gSkhCovogep0/9Jq5s8i8/lrGWnRSes+LrOjKcg0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gABvefKPXORGZqquVaSxB/9yvUMq3Q+HTGT4S3aFdDMoZyLCGVSRh7QLwbbNgVl4Dk69xMH/kXeSUZh3mggIPmUnKHsF+tly/vZ135tgoXm3R87FS8r20J2MhYjSUBJyIz/+RGj0PQAui2+6zRqH0xf6cXgucBFV36aJdo5fvV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7ZgI9Gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9E1C4CECD;
-	Sat,  7 Dec 2024 07:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733557644;
-	bh=j1gSkhCovogep0/9Jq5s8i8/lrGWnRSes+LrOjKcg0I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D7ZgI9Gx1cc1spK+OWD+hFk3STA+xp7ZLaU5v/VnhNjNqJ/BXxuO6wUjp9C1kHrb/
-	 Y1pLvkRpwdKPktXrgZNzl+/ncAjcGQqDqhGotoFKExpetbcjqVmLA8UCrp+9iJp9gP
-	 9kMW8UdGaAZiSV4cLBFdcRxevVpCk868sPKGkgnVLZB/zUs/lZF+Wat6Yh5aQDR6w3
-	 tVMUn5enGXB6RYMpqPBOOsXzD3LpM8jp3Ma5JEtbQXlaUbE7iCcgyTq9EGG0Ir8EL8
-	 2g+VFznGy8hM7DkY/rb/gErKmA1Gn6auv3xWIEmkpWmcbshLC4C8VKsJZ22RQF+WZ1
-	 X8+h1mULXQi6g==
-Date: Sat, 7 Dec 2024 07:47:22 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: Naman Jain <namjain@linux.microsoft.com>
-Cc: "K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Michael Kelley <mhklinux@outlook.com>, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] x86/hyper-v: Fix hv tsc page based sched_clock for
- hibernation
-Message-ID: <Z1P9ipIZjI712RTf@liuwe-devbox-debian-v2>
-References: <20240917053917.76787-1-namjain@linux.microsoft.com>
+	s=arc-20240116; t=1733558037; c=relaxed/simple;
+	bh=esN7QsntwI4AA1UJrsf/v0wSrB5LxUaOwlnCZFn0Rcg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DnE5j5iq2uzqSaHmvc0r+6NMRLHB8qBEbVwufpTuT9E2d6thQ1BYefqNbUOEWWAHMX5QQ68MSC5C7HOabXfp5uu+S8qbeR/V5gD4ydm7zv4PWzBMc1rm5gRhQT/ohWD2uuMoab/elYaEpIO2l5T2m5FLgKaFjDNDoqAfQp39yPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=DmHAHXMO; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
+	by cmsmtp with ESMTPS
+	id JYTwtjAWLiA19JpdMtEr7R; Sat, 07 Dec 2024 07:53:48 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id JpdLtrp3l9zHHJpdLtKBxC; Sat, 07 Dec 2024 07:53:47 +0000
+X-Authority-Analysis: v=2.4 cv=eOkVjmp1 c=1 sm=1 tr=0 ts=6753ff0b
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=28vsWALzorOhdgl1oEpWYzWCOsWhDTgvkf0wFHoptoo=; b=DmHAHXMOEOQMZpqS0neCTg9Pdz
+	z7gD+QuNJY6CHnwzb/axj80jmxgy7Iu2UIp+y8tLH1v7mjYCaKievPdjHouSAvYuaOCqJ+EKTdPDm
+	HfEzbamnICk6Y2OOwakVUkOVZcuaRaR+WrMfZ+ZrA6OxTNUdiXJ9F5W+sPSuz0vJtSGIriJCRwAAu
+	svz7ozKpP26rf5I3reRftPuYYqyfejnJkE7a/q54QmjvwJxcRVYZ9Fv1BukX5R/kwKnorJb/bEvMM
+	w3MN4mu2Be9i2PsRMtXEMQYHpTGUnzdxb2TKapVoxJk6fuGeyTEjwgosYd3zoatirRAWRY7fqPFhZ
+	5AM+voiQ==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:38480 helo=[10.0.1.115])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1tJpdK-0032ua-0h;
+	Sat, 07 Dec 2024 00:53:46 -0700
+Message-ID: <ea363e0e-1072-4c32-bdca-0175ab90fb16@w6rz.net>
+Date: Fri, 6 Dec 2024 23:53:44 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240917053917.76787-1-namjain@linux.microsoft.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/676] 6.6.64-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20241206143653.344873888@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1tJpdK-0032ua-0h
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.115]) [73.223.253.157]:38480
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 37
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKXzcXpcO+UTQB6eNnTrHe9EQZPQGJD/+M8H/sRNadPSem1T+T7hbvvRtxKXnxiOT7DdmHGapewJUZ0AbXGuX/eMmBj2AiByOZHO/wu1ssJFQwV3evu4
+ ZQrEOl7/RWoHKp1LcQWgX0xqds3ZTaSjuLbnlH4osSWHwpU5wKFxBDTgS3qWctJFtOYycCz8BSls1Q==
 
-On Tue, Sep 17, 2024 at 11:09:17AM +0530, Naman Jain wrote:
-> read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
-> bigger than the variable hv_sched_clock_offset, which is cached during
-> early boot, but depending on the timing this assumption may be false
-> when a hibernated VM starts again (the clock counter starts from 0
-> again) and is resuming back (Note: hv_init_tsc_clocksource() is not
-> called during hibernation/resume); consequently,
-> read_hv_sched_clock_tsc() may return a negative integer (which is
-> interpreted as a huge positive integer since the return type is u64)
-> and new kernel messages are prefixed with huge timestamps before
-> read_hv_sched_clock_tsc() grows big enough (which typically takes
-> several seconds).
-> 
-> Fix the issue by saving the Hyper-V clock counter just before the
-> suspend, and using it to correct the hv_sched_clock_offset in
-> resume. This makes hv tsc page based sched_clock continuous and ensures
-> that post resume, it starts from where it left off during suspend.
-> Override x86_platform.save_sched_clock_state and
-> x86_platform.restore_sched_clock_state routines to correct this as soon
-> as possible.
-> 
-> Note: if Invariant TSC is available, the issue doesn't happen because
-> 1) we don't register read_hv_sched_clock_tsc() for sched clock:
-> See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
-> clocksource and sched clock setup");
-> 2) the common x86 code adjusts TSC similarly: see
-> __restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
-> x86_platform.restore_sched_clock_state().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
-> Co-developed-by: Dexuan Cui <decui@microsoft.com>
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
-> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+On 12/6/24 06:26, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.64 release.
+> There are 676 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 08 Dec 2024 14:34:52 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.64-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Applied to hyperv-fixes with the subject line fixed up. Thanks.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+
+Tested-by: Ron Economos <re@w6rz.net>
+
 
