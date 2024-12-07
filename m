@@ -1,92 +1,104 @@
-Return-Path: <stable+bounces-100012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2C19E7D30
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 01:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E23769E7D50
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 01:12:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9FF28153E
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:04:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40C7281E20
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6DB38B;
-	Sat,  7 Dec 2024 00:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFD810F4;
+	Sat,  7 Dec 2024 00:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NyQ+T171"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="rnFhX+/s"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290D817E0;
-	Sat,  7 Dec 2024 00:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35E04A07;
+	Sat,  7 Dec 2024 00:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733529896; cv=none; b=fE/dM1qo981Mnw9WmfETaEwNLWMSjxMtRaqcGYDCM9aWRp9Myx/cFZC/MTvL0IhBD4Xje5vkNsefB5Y9f6qzkorl57TnCIgc+OBw6Gev93A56aunNEXIJp5pmz1kZb2sFqF/QRwezmCffxxlTQtyjrOIJPLOfhmMSsusZ+t2/KY=
+	t=1733530363; cv=none; b=nZEoSH4cRrNVZjZ6ZxAnUu7jnqisAQMlYjzUt9xfYPIT3LeIxsy8dGuB3FU/1EDlPkBMh5lRfFIJM1XhNFcBfX/o1NQ4/aLA9q7aOBH1uGvC092egxe7MVAins6bYrC7xg+WK491DJKsnm39DGgVSmcKdeSsk5ExlfMRmx8w/Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733529896; c=relaxed/simple;
-	bh=DpqGG4bMlII5yzVkc5pwB4B4TGfNhDaJexByzDs6FrQ=;
-	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L++tC4s94c1s7PwuC3pim7aqaVzBXex8oE4FIOfs+5s+h7CCI6903NWGkvzKBgHxzA6czajRhIFLQy9KWkCtyw7zSt6JypU2mK6xAbNn2vKVJMHnoCnuG0Cme5t1kw0TMdvwleq3jjoXNU5eU2jL0UsOfzVbVvH7zve1ylcM5Zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NyQ+T171; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A926CC4CED1;
-	Sat,  7 Dec 2024 00:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733529895;
-	bh=DpqGG4bMlII5yzVkc5pwB4B4TGfNhDaJexByzDs6FrQ=;
-	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=NyQ+T1717nVzcT+LxnanA6RRWYpAjI/C1bSzkSBnSjUzgJi3XpPxDDeR1i9QRAyZT
-	 y2O1t1Zpsx8tNMa27OSDQuxn8M5wz1NrYRPwen1kogGQtyv9dl8yRD2UeZN9o1hjMj
-	 Fz5qpIFOCpz2RW4r4OLGHYNBuIgCAw7QTDpx5dep3+mnwoAMZ8ov9UcAWRHCaDO0Tl
-	 bYELBYbEHwi4O2WN5R3tlqTP9AK9QtZlTLM7k+jl6Jizjf1iMjeeS8FoZ8uC8LsUD+
-	 uy9252r4Z7FvqXtDOFQbg+vw20So5cdKRQQGPJMeUvZ6pfb7TPVuUInuuuwNbeIfeE
-	 YyWlvdciSU7JA==
-Date: Fri, 06 Dec 2024 16:04:55 -0800
-Subject: [PATCH 6/6] xfs: return from xfs_symlink_verify early on V4
- filesystems
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: aalbersh@kernel.org, djwong@kernel.org
-Cc: stable@vger.kernel.org, hch@lst.de, linux-xfs@vger.kernel.org
-Message-ID: <173352751290.126106.1391306417071639286.stgit@frogsfrogsfrogs>
-In-Reply-To: <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
-References: <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
+	s=arc-20240116; t=1733530363; c=relaxed/simple;
+	bh=B0SF8tpB9EeLvhzrBh4i+p6/dp1JQVTjTUX48mccYpg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sQVNuqIE+VdVNvk3/VvSjSoo2ZWh4PuFcJoTRf8db2Kz7eISI7d2vvWP60XURTKFoPbfHt48Ho6Ak/lO3FCaNcCZNLunBSZNz7Ide6ln2NwRyCPBSGCeMygcBkluVicNBRWzucpziL+J5IPZisOBRvU2/EwW6XWHHTc9uohBNdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=rnFhX+/s; arc=none smtp.client-ip=185.125.188.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from hwang4-ThinkPad-T14s-Gen-2a.. (unknown [183.155.67.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id AA2943F1C8;
+	Sat,  7 Dec 2024 00:12:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1733530359;
+	bh=QRUAQ1ZVncxN0VUq3nC73X4ELlJn2+9laQ5RSsdxalM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+	b=rnFhX+/sBmc9A7wixK4bjjKzOnLRz/XeZ/Pv2cVECXalJYmiCTEuMdcR67peImlc+
+	 eyBzefSoB5gya4J5YuO2qnUheICWmNGZXNiQTVekcSJV+BSmkJoMOzv+Ker6mntbVN
+	 YCIdNvWkyhCkLnG5ijt9k1U+S3GAY0eR2mzKuQjfBvpVdt+xqGWbqlG10IrmOZOp4P
+	 nMJGxqJrFnRy8NnLW6VRRVKaSFo2JL3PvUgtloIuHIfLR/U+xz847YL6PM+ki2Y8jz
+	 xv6GVsOqtVXVUevP2oFf6cPPSM3fNER7ZOUT/sDCQ/fTF/eEBolu+S9EOrJKwJsN/o
+	 qzyLE8WHRgAUQ==
+From: Hui Wang <hui.wang@canonical.com>
+To: stable@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: hvilleneuve@dimonoff.com,
+	hui.wang@canonical.com
+Subject: [stable-kernel-only][5.15.y][5.10.y][PATCH] serial: sc16is7xx: the reg needs to shift in regmap_noinc
+Date: Sat,  7 Dec 2024 08:12:25 +0800
+Message-Id: <20241207001225.203262-1-hui.wang@canonical.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: Darrick J. Wong <djwong@kernel.org>
+Recently we found the fifo_read() and fifo_write() are broken in our
+5.15 and 5.4 kernels after cherry-pick the commit e635f652696e
+("serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions
+for FIFO"), that is because the reg needs to shift if we don't
+cherry-pick a prerequiste commit 3837a0379533 ("serial: sc16is7xx:
+improve regmap debugfs by using one regmap per port").
 
-V4 symlink blocks didn't have headers, so return early if this is a V4
-filesystem.
+Here fix it by shifting the reg as regmap_volatile() does.
 
-Cc: <stable@vger.kernel.org> # v5.1
-Fixes: 39708c20ab5133 ("xfs: miscellaneous verifier magic value fixups")
-Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
 ---
- libxfs/xfs_symlink_remote.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-
-diff --git a/libxfs/xfs_symlink_remote.c b/libxfs/xfs_symlink_remote.c
-index 2ad586f3926ad2..1c355f751e1cc7 100644
---- a/libxfs/xfs_symlink_remote.c
-+++ b/libxfs/xfs_symlink_remote.c
-@@ -89,8 +89,10 @@ xfs_symlink_verify(
- 	struct xfs_mount	*mp = bp->b_mount;
- 	struct xfs_dsymlink_hdr	*dsl = bp->b_addr;
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index d274a847c6ab..87e34099f369 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -487,7 +487,14 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
  
-+	/* no verification of non-crc buffers */
- 	if (!xfs_has_crc(mp))
--		return __this_address;
-+		return NULL;
+ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
+ {
+-	return reg == SC16IS7XX_RHR_REG;
++	switch (reg >> SC16IS7XX_REG_SHIFT) {
++	case SC16IS7XX_RHR_REG:
++		return true;
++	default:
++		break;
++	}
 +
- 	if (!xfs_verify_magic(bp, dsl->sl_magic))
- 		return __this_address;
- 	if (!uuid_equal(&dsl->sl_uuid, &mp->m_sb.sb_meta_uuid))
++	return false;
+ }
+ 
+ /*
+-- 
+2.34.1
 
 
