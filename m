@@ -1,134 +1,128 @@
-Return-Path: <stable+bounces-100041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C819E7F48
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 10:05:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9259E7F5C
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 10:21:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E881662CD
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 09:05:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FCF916898F
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 09:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7110984A3E;
-	Sat,  7 Dec 2024 09:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357FF13D245;
+	Sat,  7 Dec 2024 09:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="Vk1qic0E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tfg1pyve"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4AFD27E;
-	Sat,  7 Dec 2024 09:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733562302; cv=pass; b=IxNU6/J8/RrarEImgzTipGrFMk9b6fd49BB5JcZplYyDucytGVRpBD+HuoMg/OFfrQtifydhe1VUNEgdAqmRmYPGNm3B3B2ZFpJiIvuIxyxHYbdbcBE/Xwh6ZTDXI7G54Q4e7R38Beg0xw/z3gf+KhcZLCIrA7/6XPMzljCt+fQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733562302; c=relaxed/simple;
-	bh=A/EpA9NPinU0ZlTBKSL4JEhVpbQccTbmiiuBeRMMZmM=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=SrJTdcQBmiGmC7uf+hiATxnVxkQY5d5zN3N1qv36y/Vzn/VaDsNU0CAuZIU7o+xIKQgBw6u3hJJiViKMyQ6Q8XzmurcD+X0WSYXc76lY2R+SBj8MWiDLLdJunRrRjH4h3F9alvDZV8NHSw74N42ZXv3izPOas3w/KFwJaCy1pp8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=Vk1qic0E; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1733562268; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=L7Xkey+71JGyyiU4DxrR2Pw/iO1MW609yX59KOtgfJbFU6ro4kCz1w+owmtXugZg2SSFIuEFChkoV4GP7dfFdozM0XE5lncFOQ8ilDU1SJelI36CXCtgreB27njJh35s8pMzLu/Hm24tLa5xi9Yn51IoGYtN7EpCybqleJBlopw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1733562268; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=h2Gu8A4atvculm7iV74mSwnfWC3UgbPidCt+vfE4uKM=; 
-	b=YXmVMU6RgPooghNvDfRCl2/Yx02lKM7iDZTKZVvuP/9ymc7UVTzMmhF/d5ices9Sj0H2lMxFrJ/hYQM+Q3AYc9P30zFUfy9L49+DJuoZo+wLIzJmZZkW16jVPb/+8wUoTKeJ7KVr+VSReGOGe9WN7Y+1lVzxYliFO7v7L/9YDH0=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
-	dmarc=pass header.from=<Usama.Anjum@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1733562268;
-	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=h2Gu8A4atvculm7iV74mSwnfWC3UgbPidCt+vfE4uKM=;
-	b=Vk1qic0E6eWPFAMYsezDPYfs1q4b/SSfI0UCkiTjZ7QVoOTwQkL0lS6yuDhm11f4
-	wL+IiBaTAN65hGxDDKINcmdMKC/i2tkFbAddoiHh9f6CS0CHbAtZ8g8CiDo/jKr5myE
-	a3H9g2PSf+uw24wPqsCPui1nY9R3ltVHPwHbjgKY=
-Received: by mx.zohomail.com with SMTPS id 1733562266304431.29998464284483;
-	Sat, 7 Dec 2024 01:04:26 -0800 (PST)
-Message-ID: <70e5845b-0939-4aad-88a9-58316d92f775@collabora.com>
-Date: Sat, 7 Dec 2024 14:04:26 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAB9200A0;
+	Sat,  7 Dec 2024 09:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733563275; cv=none; b=R7qMuVvH45qbOrtaKKBttwoCIyfybOj7c1r7YETH58cImM7/9YqZfhRP3KZ2k0GvH12uaPxGI8OdeDoyBvV8QzCZ67LQ5U/cN7H+uJlfCUpxtr1tYLPPs2Fgwi5jdHk5jw7SKk2GHGCcNDRZi7JtiINqSFj1WJiLySglrvsq33I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733563275; c=relaxed/simple;
+	bh=oXaKWhVppoF+2yB9dqGTHDuejqvmtpaXwKyVrGLxOGU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rO1NjB6gtd3iunYWXSUnnFJ08MMZP3PshlmRbeb7eKXutx9O/7OACWhZnOazCwVa6FIuRFobVbQbpenwr+1YQ/7ZwVgyangAQor0q9F+S428X0I9TP683sNGyOa87Ko0LNshKPXFTbDQk5rQvC+FzatHpRCoaAwqKTVSiUPf2Y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tfg1pyve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB5DC4CEE1;
+	Sat,  7 Dec 2024 09:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733563274;
+	bh=oXaKWhVppoF+2yB9dqGTHDuejqvmtpaXwKyVrGLxOGU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Tfg1pyvevvjWCf2RDSvl/KgipCykR46pje2aXZeCN+oZ7ysevjPYeEKjV7hmf13Vm
+	 UDbtcUEOgTqbDU+992HUXsR5dOLvN2Y8T7KHRdUWRQ20aL+L8etmZroSgSu3IMPoxE
+	 YqyOolei5ii66Y0dqdaR1ALVX9OGtZ5db9NqrAlk47HFDkhCIZmio4/D+Bx1VumDrV
+	 XprrVvIBz93s/d8onLivtfz8sf+xyAZETn9+3R08FMV2a6+wA4gk5MQrzLh6xGFkQO
+	 tsYUjLy+9v3zJ/P56THOayFw1BsosrrNC3YMiDijy7EWRGhJ54kNM0eVMzeRL9fHcD
+	 RtEo8UlGyAaXg==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso442285866b.1;
+        Sat, 07 Dec 2024 01:21:14 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVaMwb1j5oI6YhZgpr4gyBDS/Oe23EsY9x/jan/6m+t6ugEtBlGeFNJ7kbg7MnnfyKPsNU4oOhFkMFOMBk=@vger.kernel.org, AJvYcCWbdlZpw71Y70d/UK6ymDW+lolLUVL6hwkK45uiFB1XOnGYB5ReSCIDLIc+IABFuOpEnu9/ii9n@vger.kernel.org, AJvYcCWpAIi3vPHIlb8moFZowcflEsqT1neDcl4g4ne1WzFv8ADUDYzjBXOB0I59b47OnwJwK5Zjy5E775yt0dam@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxo2DOOyOdXLmkZjlVVvEdgEWaoS2vxxjZIG7/RjPGksWeR9dlH
+	mZiAGTbRHELXHRyfgRfynkQwyIzNladYfCHRug3TTue55AFHIRelV+k2Rxej+JfKM5sKqoRyrcC
+	DzRt7FB6dJn1sPNssEjPP+bola9U=
+X-Google-Smtp-Source: AGHT+IHlVF7tZYrIaLh2jBCm3RKIXfyNIznJWxjjRoEUentLdi1XjsoDPhpixqV8IOPgf2bn437pTpO7hsyeoAen46Q=
+X-Received: by 2002:a17:907:90d5:b0:aa6:4671:ddf5 with SMTP id
+ a640c23a62f3a-aa646721797mr291560666b.35.1733563272964; Sat, 07 Dec 2024
+ 01:21:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Usama.Anjum@collabora.com, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org
-Subject: Re: [PATCH 6.6 000/676] 6.6.64-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-References: <20241206143653.344873888@linuxfoundation.org>
-Content-Language: en-US
-From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-In-Reply-To: <20241206143653.344873888@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ZohoMailClient: External
+References: <20241206085810.112341-1-chenhuacai@loongson.cn> <2024120635-wham-campsite-b62b@gregkh>
+In-Reply-To: <2024120635-wham-campsite-b62b@gregkh>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 7 Dec 2024 17:21:00 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4Db0tVrqcfXHceJeODgnK0ggHpx9_6vwXAAV0LohCD-w@mail.gmail.com>
+Message-ID: <CAAhV-H4Db0tVrqcfXHceJeODgnK0ggHpx9_6vwXAAV0LohCD-w@mail.gmail.com>
+Subject: Re: [PATCH 6.1&6.6 0/3] kbuild: Avoid weak external linkage where possible
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>, 
+	Xuerui Wang <kernel@xen0n.name>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, stable@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	Ard Biesheuvel <ardb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/6/24 7:26 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.64 release.
-> There are 676 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 08 Dec 2024 14:34:52 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.64-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
+Hi, Greg,
+
+On Fri, Dec 6, 2024 at 9:04=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Dec 06, 2024 at 04:58:07PM +0800, Huacai Chen wrote:
+> > Backport this series to 6.1&6.6 because LoongArch gets build errors wit=
+h
+> > latest binutils which has commit 599df6e2db17d1c4 ("ld, LoongArch: prin=
+t
+> > error about linking without -fPIC or -fPIE flag in more detail").
+> >
+> >   CC      .vmlinux.export.o
+> >   UPD     include/generated/utsversion.h
+> >   CC      init/version-timestamp.o
+> >   LD      .tmp_vmlinux.kallsyms1
+> > loongarch64-unknown-linux-gnu-ld: kernel/kallsyms.o:(.text+0): relocati=
+on R_LARCH_PCALA_HI20 against `kallsyms_markers` can not be used when makin=
+g a PIE object; recompile with -fPIE
+> > loongarch64-unknown-linux-gnu-ld: kernel/crash_core.o:(.init.text+0x984=
+): relocation R_LARCH_PCALA_HI20 against `kallsyms_names` can not be used w=
+hen making a PIE object; recompile with -fPIE
+> > loongarch64-unknown-linux-gnu-ld: kernel/bpf/btf.o:(.text+0xcc7c): relo=
+cation R_LARCH_PCALA_HI20 against `__start_BTF` can not be used when making=
+ a PIE object; recompile with -fPIE
+> > loongarch64-unknown-linux-gnu-ld: BFD (GNU Binutils) 2.43.50.20241126 a=
+ssertion fail ../../bfd/elfnn-loongarch.c:2673
+> >
+> > In theory 5.10&5.15 also need this, but since LoongArch get upstream at
+> > 5.19, so I just ignore them because there is no error report about othe=
+r
+> > archs now.
+>
+> Odd, why doesn't this affect other arches as well using new binutils?  I
+> hate to have to backport all of this just for one arch, as that feels
+> odd.
+The related binutils commit is only for LoongArch, so build errors
+only occured on LoongArch. I don't know why other archs have no
+problem exactly, but may be related to their CFLAGS (for example, if
+we disable CONFIG_RELOCATABLE, LoongArch also has no build errors
+because CFLAGS changes).
+
+On the other hand, Ard's original patches are not for LoongArch only,
+so I think backport to stable branches is also not for LoongArch only.
+
+Huacai
+
+>
 > thanks,
-> 
+>
 > greg k-h
-> 
-> -------------
-OVERVIEW
-
-        Builds: 29 passed, 0 failed
-
-    Boot tests: 0 passed, 0 failed
-
-    CI systems: maestro
-
-REVISION
-
-    Commit
-        name: v6.6.63-677-g1415e716e528
-        hash: 1415e716e528f373c2804c2209aa7af6706f1e71
-    Checked out from
-        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-
-
-BUILDS
-
-    No build failures found
-
-BOOT TESTS
-
-
-
-See complete and up-to-date report at:
-
-    https://kcidb.kernelci.org/d/revision/revision?orgId=1&var-git_commit_hash=1415e716e528f373c2804c2209aa7af6706f1e71&var-patchset_hash=
-
-
-Tested-by: kernelci.org bot <bot@kernelci.org>
-
-Thanks,
-KernelCI team
 
