@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-100010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E803F9E7D29
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 01:03:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AB59E7D2B
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 01:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54AD1887D69
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:03:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91461883504
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE70A48;
-	Sat,  7 Dec 2024 00:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AF238B;
+	Sat,  7 Dec 2024 00:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7PXeLEI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YnT+O1g4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4512A8C1;
-	Sat,  7 Dec 2024 00:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E4A139B;
+	Sat,  7 Dec 2024 00:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733529817; cv=none; b=VkhIBx8BnQIsXgJgG7gSFpPmJvUFe8RipdyMtGEVVYhRHDOVJcd+t9JmfcQ+Di1RZEuoeYAGEZgcr2Y0nGwIH+Ab6TK5Gq1a6gUE5eC2JFkfDwF8M8F7ViiIU8OosnZ1X8y9PlGgGzJl+f/9K5EQGfWsJ0XHhY3E/SsKL+zk63E=
+	t=1733529849; cv=none; b=YccOfWxVbZRDZRLf77gJOZuZxSNHDSUeuDOCQ9kRHyB+s3h6C91QkSnAqptHV2wZ5a/SHs/KGMVfWDjKDFFELQ5NT3a/dTQDUldhv+pXRVT/hC/M6qy1NX6a3M4Eng+x0dkyBdiqmQAIF5B1sD2BNe30o5L5i99wHWmWrPxfLrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733529817; c=relaxed/simple;
-	bh=Fy4iqRobx8evseMbf4CjhAQEVkhVopkrBmfUcRgRoOM=;
+	s=arc-20240116; t=1733529849; c=relaxed/simple;
+	bh=XcSmG1DDmIoBwBMa7DfIzTntQFdzableBCgb8sgrhc0=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RUiYG3OitrSVCyak6o5VaM6eHojjsUYRd3EeJcH0qMg0HeDPscQ/iinGzMreAZfirOPM526PQCgHXRhupYHNU9jkGLxG8oLtkYh6cAYmhOGOpJwnD1tmyTdfjFGxcuu059g1c9EFODVKoyXapxegshC60tyVwu2hirrbiFilOns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7PXeLEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99254C4CED1;
-	Sat,  7 Dec 2024 00:03:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S/5rfXEG25O7kagrxhfWdCsXzYt1Ci83fbb6/m8T1DAKXwC8NRenLkXuXRk/drsOCotXecTV+x3z5/TbwTPl3shPeDr5XQ5aY+Q6rOgWlAr94uKeFbNwF7RCCvgA6Tg0fDvO2+9OJeDPE06L7JxF4vCJezpbb1GYMPo+oM27u7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YnT+O1g4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8516C4CED1;
+	Sat,  7 Dec 2024 00:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733529817;
-	bh=Fy4iqRobx8evseMbf4CjhAQEVkhVopkrBmfUcRgRoOM=;
+	s=k20201202; t=1733529848;
+	bh=XcSmG1DDmIoBwBMa7DfIzTntQFdzableBCgb8sgrhc0=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=s7PXeLEIr5zR1aufhknuoHIJV66pfLzY0pmzD0gFsgQ+6Kdsp5tc17XZl/FSdCLKV
-	 hCuvnGBFiIGmQMmqjouZP1jVqIHlvpb4XjUTTpCp1KUjyDvuodL4ql4ri3zDnof7m1
-	 DSyPHQxqhlnwx6Rc9ZcoZOMsXIaEjSglFe+6Hay5aC36stK2Ui/VuqHI3hnWMUo74a
-	 1pj+X9iL383oQoGL5giCgU8fkBTzhDj/KXEqDiCsd1LzPJ66eFcJjPOWU6A7JYJBsu
-	 cilx5LoGJWGF6gZNYuT8beuCpkAhX3h4L9Suvp41G3wOL9Wr6/ksQ4oGrL6tH6ZHHW
-	 7FspdgEaWnGEQ==
-Date: Fri, 06 Dec 2024 16:03:37 -0800
-Subject: [PATCH 1/6] xfs: return a 64-bit block count from
- xfs_btree_count_blocks
+	b=YnT+O1g4snN2boy/tQWXqEhrETMlGg1xdpBFpM6cdFETCkrn1h1niYYezSQWcMT2L
+	 Y5aO/SkvRI3KQ5xreo+mRegLsqgQ9BIFlPLYcNEF+DqUnRHFTctdY7GCeMg/URDBUL
+	 fLbRWKHbN73Ve8Ri12trwHVMp2/SsnNf6DIwvZW2lVFHx9eslGLFVXtFavfNOHdOyJ
+	 cVfxtlSAaPcMz9E0TfAiD6F6ctEhAfuY2e3e0KanHTZKfJ/3wLPrO/2ZAMNjqnmK9t
+	 QNKV8th3eWy4oK0IiQFzqm9xUA9fmMZbe3Livmt8LpfycX4P0vzDskhyZUnhfKFz04
+	 Jnem5gs4fUiLw==
+Date: Fri, 06 Dec 2024 16:04:08 -0800
+Subject: [PATCH 3/6] xfs: update btree keys correctly when _insrec splits an
+ inode root block
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: aalbersh@kernel.org, djwong@kernel.org
-Cc: stable@vger.kernel.org, hch@lst.de, linux-xfs@vger.kernel.org
-Message-ID: <173352751213.126106.11484272025980381078.stgit@frogsfrogsfrogs>
+Cc: stable@vger.kernel.org, hch@lst.de, hch@lst.de, linux-xfs@vger.kernel.org
+Message-ID: <173352751244.126106.16426037647903930309.stgit@frogsfrogsfrogs>
 In-Reply-To: <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
 References: <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
 Precedence: bulk
@@ -61,85 +61,77 @@ Content-Transfer-Encoding: 7bit
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-With the nrext64 feature enabled, it's possible for a data fork to have
-2^48 extent mappings.  Even with a 64k fsblock size, that maps out to
-a bmbt containing more than 2^32 blocks.  Therefore, this predicate must
-return a u64 count to avoid an integer wraparound that will cause scrub
-to do the wrong thing.
+In commit 2c813ad66a72, I partially fixed a bug wherein xfs_btree_insrec
+would erroneously try to update the parent's key for a block that had
+been split if we decided to insert the new record into the new block.
+The solution was to detect this situation and update the in-core key
+value that we pass up to the caller so that the caller will (eventually)
+add the new block to the parent level of the tree with the correct key.
 
-It's unlikely that any such filesystem currently exists, because the
-incore bmbt would consume more than 64GB of kernel memory on its own,
-and so far nobody except me has driven a filesystem that far, judging
-from the lack of complaints.
+However, I missed a subtlety about the way inode-rooted btrees work.  If
+the full block was a maximally sized inode root block, we'll solve that
+fullness by moving the root block's records to a new block, resizing the
+root block, and updating the root to point to the new block.  We don't
+pass a pointer to the new block to the caller because that work has
+already been done.  The new record will /always/ land in the new block,
+so in this case we need to use xfs_btree_update_keys to update the keys.
 
-Cc: <stable@vger.kernel.org> # v5.19
-Fixes: df9ad5cc7a5240 ("xfs: Introduce macros to represent new maximum extent counts for data/attr forks")
+This bug can theoretically manifest itself in the very rare case that we
+split a bmbt root block and the new record lands in the very first slot
+of the new block, though I've never managed to trigger it in practice.
+However, it is very easy to reproduce by running generic/522 with the
+realtime rmapbt patchset if rtinherit=1.
+
+Cc: <stable@vger.kernel.org> # v4.8
+Fixes: 2c813ad66a7218 ("xfs: support btrees with overlapping intervals for keys")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 ---
- libxfs/xfs_btree.c        |    4 ++--
- libxfs/xfs_btree.h        |    2 +-
- libxfs/xfs_ialloc_btree.c |    4 +++-
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ libxfs/xfs_btree.c |   29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
 
 diff --git a/libxfs/xfs_btree.c b/libxfs/xfs_btree.c
-index 3d870f3f4a5165..5c293ccf623336 100644
+index 5c293ccf623336..f4c4db62e2069e 100644
 --- a/libxfs/xfs_btree.c
 +++ b/libxfs/xfs_btree.c
-@@ -5142,7 +5142,7 @@ xfs_btree_count_blocks_helper(
- 	int			level,
- 	void			*data)
- {
--	xfs_extlen_t		*blocks = data;
-+	xfs_filblks_t		*blocks = data;
- 	(*blocks)++;
+@@ -3555,14 +3555,31 @@ xfs_btree_insrec(
+ 	xfs_btree_log_block(cur, bp, XFS_BB_NUMRECS);
  
- 	return 0;
-@@ -5152,7 +5152,7 @@ xfs_btree_count_blocks_helper(
- int
- xfs_btree_count_blocks(
- 	struct xfs_btree_cur	*cur,
--	xfs_extlen_t		*blocks)
-+	xfs_filblks_t		*blocks)
- {
- 	*blocks = 0;
- 	return xfs_btree_visit_blocks(cur, xfs_btree_count_blocks_helper,
-diff --git a/libxfs/xfs_btree.h b/libxfs/xfs_btree.h
-index 3b739459ebb0f4..c5bff273cae255 100644
---- a/libxfs/xfs_btree.h
-+++ b/libxfs/xfs_btree.h
-@@ -484,7 +484,7 @@ typedef int (*xfs_btree_visit_blocks_fn)(struct xfs_btree_cur *cur, int level,
- int xfs_btree_visit_blocks(struct xfs_btree_cur *cur,
- 		xfs_btree_visit_blocks_fn fn, unsigned int flags, void *data);
- 
--int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_extlen_t *blocks);
-+int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_filblks_t *blocks);
- 
- union xfs_btree_rec *xfs_btree_rec_addr(struct xfs_btree_cur *cur, int n,
- 		struct xfs_btree_block *block);
-diff --git a/libxfs/xfs_ialloc_btree.c b/libxfs/xfs_ialloc_btree.c
-index 19fca9fad62b1d..4cccac145dc775 100644
---- a/libxfs/xfs_ialloc_btree.c
-+++ b/libxfs/xfs_ialloc_btree.c
-@@ -743,6 +743,7 @@ xfs_finobt_count_blocks(
- {
- 	struct xfs_buf		*agbp = NULL;
- 	struct xfs_btree_cur	*cur;
-+	xfs_filblks_t		blocks;
- 	int			error;
- 
- 	error = xfs_ialloc_read_agi(pag, tp, 0, &agbp);
-@@ -750,9 +751,10 @@ xfs_finobt_count_blocks(
- 		return error;
- 
- 	cur = xfs_finobt_init_cursor(pag, tp, agbp);
--	error = xfs_btree_count_blocks(cur, tree_blocks);
-+	error = xfs_btree_count_blocks(cur, &blocks);
- 	xfs_btree_del_cursor(cur, error);
- 	xfs_trans_brelse(tp, agbp);
-+	*tree_blocks = blocks;
- 
- 	return error;
- }
+ 	/*
+-	 * If we just inserted into a new tree block, we have to
+-	 * recalculate nkey here because nkey is out of date.
++	 * Update btree keys to reflect the newly added record or keyptr.
++	 * There are three cases here to be aware of.  Normally, all we have to
++	 * do is walk towards the root, updating keys as necessary.
+ 	 *
+-	 * Otherwise we're just updating an existing block (having shoved
+-	 * some records into the new tree block), so use the regular key
+-	 * update mechanism.
++	 * If the caller had us target a full block for the insertion, we dealt
++	 * with that by calling the _make_block_unfull function.  If the
++	 * "make unfull" function splits the block, it'll hand us back the key
++	 * and pointer of the new block.  We haven't yet added the new block to
++	 * the next level up, so if we decide to add the new record to the new
++	 * block (bp->b_bn != old_bn), we have to update the caller's pointer
++	 * so that the caller adds the new block with the correct key.
++	 *
++	 * However, there is a third possibility-- if the selected block is the
++	 * root block of an inode-rooted btree and cannot be expanded further,
++	 * the "make unfull" function moves the root block contents to a new
++	 * block and updates the root block to point to the new block.  In this
++	 * case, no block pointer is passed back because the block has already
++	 * been added to the btree.  In this case, we need to use the regular
++	 * key update function, just like the first case.  This is critical for
++	 * overlapping btrees, because the high key must be updated to reflect
++	 * the entire tree, not just the subtree accessible through the first
++	 * child of the root (which is now two levels down from the root).
+ 	 */
+-	if (bp && xfs_buf_daddr(bp) != old_bn) {
++	if (!xfs_btree_ptr_is_null(cur, &nptr) &&
++	    bp && xfs_buf_daddr(bp) != old_bn) {
+ 		xfs_btree_get_keys(cur, block, lkey);
+ 	} else if (xfs_btree_needs_key_update(cur, optr)) {
+ 		error = xfs_btree_update_keys(cur, level);
 
 
