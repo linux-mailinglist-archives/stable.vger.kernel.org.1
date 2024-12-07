@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-100034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935939E7E90
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 07:32:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10B29E7E92
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 07:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8241E16A5D6
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 06:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D4716A4DF
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 06:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB6C6E2BE;
-	Sat,  7 Dec 2024 06:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C35D6E2BE;
+	Sat,  7 Dec 2024 06:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gg+kK+aK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goL4WReR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B1E360;
-	Sat,  7 Dec 2024 06:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFA3360;
+	Sat,  7 Dec 2024 06:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733553116; cv=none; b=ocL3teCiYBfpIM8YTPrK8P43WxautTpEAmbEL/9JsdWZ1t6v5hjNxcT14ytUX/Iy+sNzLfym59gvdetVTkdpaNQMLrqXu1QcgIDGBtLGasYwo4ned1dZvKcbGBcEhrRIWa3UMRut0IWngyN4dpJtptIvrkoF2/7GZsJoShHZ7XQ=
+	t=1733553330; cv=none; b=RLDhhB5oFbrVbICu5v365KfIhjf2Hg/0G0RA2T92yBQ5Q22YUdbiO8Ta0qDQLBdNIKVR817B6eKFJeT6wosnzy+6RAaxMLcwvr4vNa0WR+1jlJFkweXuZGrEJTbQuuU6KvIv0V+0/IKULy7YLwZrG6PzvaQLe0hRdaIjOVmC3Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733553116; c=relaxed/simple;
-	bh=WX70jKtqu3HbtTsSfomRJ8WtD4pmoAPdhIae74hdd5Q=;
+	s=arc-20240116; t=1733553330; c=relaxed/simple;
+	bh=3kAwRmDXezRZ3nl8LZP9C+NSCUbMbmoNK/Ky4AMh5to=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IcEvepGzJR8y9LlGZ/qT0EXsgu7zv/kpEl1dLd/E0vSSR8VyurY838yH57BwWb5pKdtEfwqhIkXKB3nnATXhX+HxoQMHkUh7oK/CDRXLnd846fax3aEqP5xY+OFzdeUXGkq6bYGUnEBbZ7Ox+KSwELVZMEgOGQEcmt/sk+N1984=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gg+kK+aK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50404C4CECD;
-	Sat,  7 Dec 2024 06:31:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=R2UtNn08q09W0vsP8pmJxAXOmeaDjTT+/dNm6zb+ucszbF+U05Tg68J775WvE9UoYNuf0L0hDJeqTlPr04TPp7gx3B57LHWbt/AhdNqUIyPTemAJywIG05YmlHO1L9wk0L7PJHGoz0Lv5Qy0+riW1uRgiqcGRp30utcrDNe3KUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goL4WReR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B09C4CECD;
+	Sat,  7 Dec 2024 06:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733553115;
-	bh=WX70jKtqu3HbtTsSfomRJ8WtD4pmoAPdhIae74hdd5Q=;
+	s=korg; t=1733553329;
+	bh=3kAwRmDXezRZ3nl8LZP9C+NSCUbMbmoNK/Ky4AMh5to=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Gg+kK+aKrsElWLcF2UvV70Y29Bvj0C7WMKcHzfGojr+gwEyM8G08QzByitFUntH0b
-	 fTYIY5mDqfPKOGwOs4UuxzMqqlRiFdeNbfmpcssrdworiNrzAEdFHT0OBl6POwnl0v
-	 HBEFVZw/wjZ4VIBNykYAKe8tfH5206AfS308UugM=
-Date: Sat, 7 Dec 2024 07:31:52 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hui Wang <hui.wang@canonical.com>
-Cc: stable@vger.kernel.org, linux-serial@vger.kernel.org,
-	hvilleneuve@dimonoff.com
-Subject: Re: [stable-kernel-only][5.15.y][5.10.y][PATCH] serial: sc16is7xx:
- the reg needs to shift in regmap_noinc
-Message-ID: <2024120740-violet-breath-763f@gregkh>
-References: <20241207001225.203262-1-hui.wang@canonical.com>
+	b=goL4WReR1HDqoRzsOobDJqfS58HaRdiU+6iWjrD4zUIKjOiMxDPgKa83CwJKHfznv
+	 U7bIY/6dpZ71RC57OdqNcOUN/BjgbTUUbIhQq6SBKpIZ9MTgiYV4f5KtrK7KpcaR5d
+	 IWVup73tmiTe11MVVAmZmRkauMrYyI+5tV5IRzQg=
+Date: Sat, 7 Dec 2024 07:35:26 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	John Harrison <john.c.harrison@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH 6.12 129/146] drm/xe/xe_guc_ads: save/restore OA
+ registers and allowlist regs
+Message-ID: <2024120712-cabbie-sniff-1a2f@gregkh>
+References: <20241206143527.654980698@linuxfoundation.org>
+ <20241206143532.618496043@linuxfoundation.org>
+ <85jzcc3fsl.wl-ashutosh.dixit@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,23 +59,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241207001225.203262-1-hui.wang@canonical.com>
+In-Reply-To: <85jzcc3fsl.wl-ashutosh.dixit@intel.com>
 
-On Sat, Dec 07, 2024 at 08:12:25AM +0800, Hui Wang wrote:
-> Recently we found the fifo_read() and fifo_write() are broken in our
-> 5.15 and 5.4 kernels after cherry-pick the commit e635f652696e
-> ("serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions
-> for FIFO"), that is because the reg needs to shift if we don't
-> cherry-pick a prerequiste commit 3837a0379533 ("serial: sc16is7xx:
-> improve regmap debugfs by using one regmap per port").
+On Fri, Dec 06, 2024 at 09:03:06AM -0800, Dixit, Ashutosh wrote:
+> On Fri, 06 Dec 2024 06:37:40 -0800, Greg Kroah-Hartman wrote:
+> >
 > 
-> Here fix it by shifting the reg as regmap_volatile() does.
+> Hi Greg,
 > 
-> Signed-off-by: Hui Wang <hui.wang@canonical.com>
-> ---
->  drivers/tty/serial/sc16is7xx.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+> > 6.12-stable review patch.  If anyone has any objections, please let me
+> > know.
+> 
+> No this patch should *NOT* be added. It was later reverted in:
+> 
+> 0191fddf5374 ("Revert "drm/xe/xe_guc_ads: save/restore OA registers and allowlist regs"")
 
-Why not take the proper upstream commit instead?
+Oops, I missed that, sorry.  I've queued the revert up now as well.
 
+thanks,
+
+greg k-h
 
