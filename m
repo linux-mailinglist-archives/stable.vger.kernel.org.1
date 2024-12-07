@@ -1,123 +1,145 @@
-Return-Path: <stable+bounces-100009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C079E7D0E
-	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:58:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E803F9E7D29
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 01:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF91B16D44B
-	for <lists+stable@lfdr.de>; Fri,  6 Dec 2024 23:58:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54AD1887D69
+	for <lists+stable@lfdr.de>; Sat,  7 Dec 2024 00:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 451231FF7B7;
-	Fri,  6 Dec 2024 23:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE70A48;
+	Sat,  7 Dec 2024 00:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="SSYE5Tm6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s7PXeLEI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AC81F3D48;
-	Fri,  6 Dec 2024 23:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4512A8C1;
+	Sat,  7 Dec 2024 00:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733529501; cv=none; b=qKF7AP2yOKrCfIky1O2S4tXE++oRezaSWkwz9l07TwJi7HV4Lx9U2QDk1rOMDnUgERKCoyx/Q+y8BYkl9lLGTwCqOiczhc80s1vASh6Oi2YbJ8kgF1G0oRtTJH8wybjQLja6Zoe0RpNw952L6ZYlOwmmY1rV8e3eAH+hthxtCww=
+	t=1733529817; cv=none; b=VkhIBx8BnQIsXgJgG7gSFpPmJvUFe8RipdyMtGEVVYhRHDOVJcd+t9JmfcQ+Di1RZEuoeYAGEZgcr2Y0nGwIH+Ab6TK5Gq1a6gUE5eC2JFkfDwF8M8F7ViiIU8OosnZ1X8y9PlGgGzJl+f/9K5EQGfWsJ0XHhY3E/SsKL+zk63E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733529501; c=relaxed/simple;
-	bh=NP4LB1TdrbwYoE/qGnK6kqxraStnmXD2ZB0lHgcUg8U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EevxqQK7srr/ADrlg17utMYqlz8OdBnL0lCxwG65N0hI6Vi0F6mfz/2dSgdOxdVVR9HNRpY0gkiiZ6/q5MzbONpayYQdNu00mjpAtzTTCsJCyVPc42skcPbOubO+3D5U5pW0LpGhom73xnWQki2G1/tsWwvkDwRdv6J4mO3G07A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=SSYE5Tm6; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434a044dce2so29126465e9.2;
-        Fri, 06 Dec 2024 15:58:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1733529498; x=1734134298; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=joUDrwCiOf41zwhP9RpIICtMQhuen0a1v3beKVMGZQ8=;
-        b=SSYE5Tm6C/akoZYxI1TA/gbB3a/3V3VLB6OsFzAA13jKK+CLBNjHbfWvXbNNQfvYXn
-         lGpgDge5yBTqBf/jG0gFSZ0ouClLLf8LXH5fUkB74UW4tACPlx3NS6Cn7ZnNEqB9ppZX
-         8c/e+M8LrAyhJoJAS9xsJAgb6MfARn1txpo/Vshy+cab46IF1Z0kHIe+c0WBnbsOoshW
-         7Ssodz1LLpg1Zpsec5yXubIi83Lbzd3Ljwxu8+U12YyGVXC8H5cJ3KFFlBgGh/a8tq+T
-         fyIueGd1iKo9r6qNwN2WPFzYlabG8AY1pWN7SXmapKjvFo3cDv+aaQudmDB0n2tjVaqq
-         mIHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733529498; x=1734134298;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=joUDrwCiOf41zwhP9RpIICtMQhuen0a1v3beKVMGZQ8=;
-        b=mF34e+2XFy1VL4KgxBYFLolvD5INqzABSl0N7+UBCcpWx0SAv0TbkyIMU7i3bbBsMA
-         rot8lt1REVhp8nnJBxMSl04lDAUD/d+1U2Nn3ltxC8BP5gRIVsTBmq6A7Sxt1P9IEMWt
-         ytVMu+ClLgOmJktGFC8I0qdygwAn96UdixD3HkV4ZcxIvDNYtZOMT2TNp0w9xdeim8c+
-         +7EE888YkCtLX2BIPXBGAcofrsbtMPfcpHft943em0W09ESLImSGr8isegx5mEW2jjOu
-         hf9ONx2ltiR7yWWSb5iaATFMlOvJlzLozOUfcMPYtfZavAFyUChydGVoFmlPsxkjSvmQ
-         lT5g==
-X-Forwarded-Encrypted: i=1; AJvYcCU4U09FNVyseDgSpBcCnmpAhfoopmcl7kGRfffLx/QFFQo0sZOzR0YyaXT/XTKUgElsBMS7KTju@vger.kernel.org, AJvYcCW+soG9DYH9vsaojuFCiL+CPfrdCw3hXmh3owJ3D7N1v85rY937DP91I7Wz1nW4wxYUv75G+E5U9QJJ92U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiyZgVbSnuZcJkrpAYHcBoO1SdW4JbPcOB9bOfhefIITSTN2BC
-	1Fwan3DUVy185jBoDCTyHS7jNuMScnMUkP8J0ckQR3xDkhvTDrU=
-X-Gm-Gg: ASbGnctvJNvdovTYFwSZycZHtfa0tIOXtvpBVW4lKW63/jaWaPyNe+eKbvE3JfOMP38
-	cD1QVES2OmGH4HQIAwNau8qMOGjlgPWi4CQAFsMTCYN6nRaVE7Ihmh9/Y+hEVMsj/tPe6P/MQJm
-	X+2XuveRf2lIwnvceQVKpTm5TsNstfKAPyWvFBdLfLCBBsS7nrhNCjhoeGsb9R68xIYpQKcLOWF
-	MLjnyU8GwmxOf9zHWS29DMlMHMZRUiA4mA8s69v/Ya+s+cU8OJeu1+VilFnUosAmBTNN9ML6F4d
-	oarxvK6Ub3Mv4jDLKPFwSce8aw==
-X-Google-Smtp-Source: AGHT+IFPmPx0Suf2weJBJcMcRL2iILyN9EfWHl/6GUyqeSE1eZlDPG8bTqZUZM0ji+1N6Jg7lfCWIA==
-X-Received: by 2002:a05:600c:a45:b0:431:542d:2599 with SMTP id 5b1f17b1804b1-434dded8234mr43416955e9.22.1733529497395;
-        Fri, 06 Dec 2024 15:58:17 -0800 (PST)
-Received: from [192.168.1.3] (p5b2b4e5c.dip0.t-ipconnect.de. [91.43.78.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d527eeedsm105792745e9.19.2024.12.06.15.58.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Dec 2024 15:58:15 -0800 (PST)
-Message-ID: <b5887a1a-169a-4772-879b-fc4934acaf32@googlemail.com>
-Date: Sat, 7 Dec 2024 00:58:14 +0100
+	s=arc-20240116; t=1733529817; c=relaxed/simple;
+	bh=Fy4iqRobx8evseMbf4CjhAQEVkhVopkrBmfUcRgRoOM=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RUiYG3OitrSVCyak6o5VaM6eHojjsUYRd3EeJcH0qMg0HeDPscQ/iinGzMreAZfirOPM526PQCgHXRhupYHNU9jkGLxG8oLtkYh6cAYmhOGOpJwnD1tmyTdfjFGxcuu059g1c9EFODVKoyXapxegshC60tyVwu2hirrbiFilOns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s7PXeLEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99254C4CED1;
+	Sat,  7 Dec 2024 00:03:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733529817;
+	bh=Fy4iqRobx8evseMbf4CjhAQEVkhVopkrBmfUcRgRoOM=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=s7PXeLEIr5zR1aufhknuoHIJV66pfLzY0pmzD0gFsgQ+6Kdsp5tc17XZl/FSdCLKV
+	 hCuvnGBFiIGmQMmqjouZP1jVqIHlvpb4XjUTTpCp1KUjyDvuodL4ql4ri3zDnof7m1
+	 DSyPHQxqhlnwx6Rc9ZcoZOMsXIaEjSglFe+6Hay5aC36stK2Ui/VuqHI3hnWMUo74a
+	 1pj+X9iL383oQoGL5giCgU8fkBTzhDj/KXEqDiCsd1LzPJ66eFcJjPOWU6A7JYJBsu
+	 cilx5LoGJWGF6gZNYuT8beuCpkAhX3h4L9Suvp41G3wOL9Wr6/ksQ4oGrL6tH6ZHHW
+	 7FspdgEaWnGEQ==
+Date: Fri, 06 Dec 2024 16:03:37 -0800
+Subject: [PATCH 1/6] xfs: return a 64-bit block count from
+ xfs_btree_count_blocks
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: aalbersh@kernel.org, djwong@kernel.org
+Cc: stable@vger.kernel.org, hch@lst.de, linux-xfs@vger.kernel.org
+Message-ID: <173352751213.126106.11484272025980381078.stgit@frogsfrogsfrogs>
+In-Reply-To: <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
+References: <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/146] 6.12.4-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20241206143527.654980698@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20241206143527.654980698@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Am 06.12.2024 um 15:35 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.4 release.
-> There are 146 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Darrick J. Wong <djwong@kernel.org>
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+With the nrext64 feature enabled, it's possible for a data fork to have
+2^48 extent mappings.  Even with a 64k fsblock size, that maps out to
+a bmbt containing more than 2^32 blocks.  Therefore, this predicate must
+return a u64 count to avoid an integer wraparound that will cause scrub
+to do the wrong thing.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+It's unlikely that any such filesystem currently exists, because the
+incore bmbt would consume more than 64GB of kernel memory on its own,
+and so far nobody except me has driven a filesystem that far, judging
+from the lack of complaints.
+
+Cc: <stable@vger.kernel.org> # v5.19
+Fixes: df9ad5cc7a5240 ("xfs: Introduce macros to represent new maximum extent counts for data/attr forks")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+---
+ libxfs/xfs_btree.c        |    4 ++--
+ libxfs/xfs_btree.h        |    2 +-
+ libxfs/xfs_ialloc_btree.c |    4 +++-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
 
-Beste Grüße,
-Peter Schneider
+diff --git a/libxfs/xfs_btree.c b/libxfs/xfs_btree.c
+index 3d870f3f4a5165..5c293ccf623336 100644
+--- a/libxfs/xfs_btree.c
++++ b/libxfs/xfs_btree.c
+@@ -5142,7 +5142,7 @@ xfs_btree_count_blocks_helper(
+ 	int			level,
+ 	void			*data)
+ {
+-	xfs_extlen_t		*blocks = data;
++	xfs_filblks_t		*blocks = data;
+ 	(*blocks)++;
+ 
+ 	return 0;
+@@ -5152,7 +5152,7 @@ xfs_btree_count_blocks_helper(
+ int
+ xfs_btree_count_blocks(
+ 	struct xfs_btree_cur	*cur,
+-	xfs_extlen_t		*blocks)
++	xfs_filblks_t		*blocks)
+ {
+ 	*blocks = 0;
+ 	return xfs_btree_visit_blocks(cur, xfs_btree_count_blocks_helper,
+diff --git a/libxfs/xfs_btree.h b/libxfs/xfs_btree.h
+index 3b739459ebb0f4..c5bff273cae255 100644
+--- a/libxfs/xfs_btree.h
++++ b/libxfs/xfs_btree.h
+@@ -484,7 +484,7 @@ typedef int (*xfs_btree_visit_blocks_fn)(struct xfs_btree_cur *cur, int level,
+ int xfs_btree_visit_blocks(struct xfs_btree_cur *cur,
+ 		xfs_btree_visit_blocks_fn fn, unsigned int flags, void *data);
+ 
+-int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_extlen_t *blocks);
++int xfs_btree_count_blocks(struct xfs_btree_cur *cur, xfs_filblks_t *blocks);
+ 
+ union xfs_btree_rec *xfs_btree_rec_addr(struct xfs_btree_cur *cur, int n,
+ 		struct xfs_btree_block *block);
+diff --git a/libxfs/xfs_ialloc_btree.c b/libxfs/xfs_ialloc_btree.c
+index 19fca9fad62b1d..4cccac145dc775 100644
+--- a/libxfs/xfs_ialloc_btree.c
++++ b/libxfs/xfs_ialloc_btree.c
+@@ -743,6 +743,7 @@ xfs_finobt_count_blocks(
+ {
+ 	struct xfs_buf		*agbp = NULL;
+ 	struct xfs_btree_cur	*cur;
++	xfs_filblks_t		blocks;
+ 	int			error;
+ 
+ 	error = xfs_ialloc_read_agi(pag, tp, 0, &agbp);
+@@ -750,9 +751,10 @@ xfs_finobt_count_blocks(
+ 		return error;
+ 
+ 	cur = xfs_finobt_init_cursor(pag, tp, agbp);
+-	error = xfs_btree_count_blocks(cur, tree_blocks);
++	error = xfs_btree_count_blocks(cur, &blocks);
+ 	xfs_btree_del_cursor(cur, error);
+ 	xfs_trans_brelse(tp, agbp);
++	*tree_blocks = blocks;
+ 
+ 	return error;
+ }
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
