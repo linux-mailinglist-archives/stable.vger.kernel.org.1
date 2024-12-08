@@ -1,102 +1,157 @@
-Return-Path: <stable+bounces-100063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277C79E8444
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 09:42:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E414C9E8458
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 09:55:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49261884A4E
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 08:42:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D54471884A28
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 08:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3A413AD22;
-	Sun,  8 Dec 2024 08:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A48339A0;
+	Sun,  8 Dec 2024 08:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J9DT5tYB"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="tEiAiyIJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3798982488
-	for <stable@vger.kernel.org>; Sun,  8 Dec 2024 08:42:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7D37F7FC
+	for <stable@vger.kernel.org>; Sun,  8 Dec 2024 08:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733647355; cv=none; b=CAGXQIXSDNlCIe45wvVD7QSJXKQOUkjgHHJVJJ2mTNyKhSb8Z3yPK9yo0Q4F9KxVd8XKf8B8U4Uy8zfidxsZyJCyLa8YzmHNCEjWTzT2rH+9FnE6bCSykVEj9TvYGVzJi0NkvOzumGLEsLUcJx4z94yxSPW50uqIWQXdD439mX0=
+	t=1733648129; cv=none; b=B6uY5iaOUUCgSs0IcTRDfl6RjGalxLmHrvFFBgrXHlCm2p2FnPXwXTDxFpRY8Xl2Zl9p9GJWK5mkKeA72r0HXbLUSR5X8dH7KO2DovT5WbUkkNBvkeZq2bqSNopu4LwzxHU2dV8ev+j3/EaiPRBlIOxgG9TQAlmRjJWC8HgAoys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733647355; c=relaxed/simple;
-	bh=0SIJDo6MX/QEQO85LU0ihdjDe1Dt56/YEKfiRIPfEqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=JiDBn0DWYLyTfKrJahHsvuxN2lZsOuJhMAFDzaciOO80TRmRd7p84o87jC/xXKPRffISKlMisT1rVG42Z/V0/CIxlaamAvtreg0iWQzOsFtSX8ybhULR005Tww2yu4U1PfJiSOnDun6h7YbTJFY7cqrI042Q+HKND9AqIG4CoT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J9DT5tYB; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733647354; x=1765183354;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=0SIJDo6MX/QEQO85LU0ihdjDe1Dt56/YEKfiRIPfEqc=;
-  b=J9DT5tYBw3+TWOQ3zPz5YbMfk62+zkNhPn8oqj5ltD3KnwMYtDenbktf
-   7x0QNJD5WcRR1qeMtuAwOl5kfRqFnzrqV+Awhb5xdi7brmn3onZ2IVPbc
-   hagEnINA/5k+AfmnexiGlKoYWsYXLjjEFtcE48lsFJ7Z9h9gGoeDVDGkd
-   88w30ZBO7wLR6lYYE0+/bimbtPivdzKT++BUM/v6P049KFAMB+15pfsNi
-   4ni6kZ426l6S/VcQGLfHYmGJxjgK1EKge5RF2OsXUGfaXxvhOG1P0J35Y
-   B4TyIwTc/J7+2efttN1xw7ZSlNhqwVDpUwz5DKmyLx+Gqq+cGrH+wyX25
-   A==;
-X-CSE-ConnectionGUID: enZ6sa0/ScSxmoazmmVtnQ==
-X-CSE-MsgGUID: zeIr2bL7S3SVcycvyrma+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11279"; a="44557421"
-X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
-   d="scan'208";a="44557421"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 00:42:32 -0800
-X-CSE-ConnectionGUID: +5h7JRTCSDeNb6ox4Uv6/Q==
-X-CSE-MsgGUID: CT4riyY+TTWJONpXklhAGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
-   d="scan'208";a="94888291"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 08 Dec 2024 00:42:30 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tKCs0-0003Dx-0N;
-	Sun, 08 Dec 2024 08:42:28 +0000
-Date: Sun, 8 Dec 2024 16:42:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 6.1] KVM: x86/mmu: Ensure that kvm_release_pfn_clean()
- takes exact pfn from kvm_faultin_pfn()
-Message-ID: <Z1Vb6mMqvlZHBQ8z@a512c14b2e7e>
+	s=arc-20240116; t=1733648129; c=relaxed/simple;
+	bh=1LuAH+W3sYmEOAjt0jFY4Zi/2yKZsMCJEL4NyY39FHA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UdedQ2CkJ31l/bm9ANXo2YPo8vJabzPCOulBmNKp1PVn0zXaJyihzrIE4s1nBQ7ajOQrowCI3vMz4QnWMM6eZa0RqpfKOV/z0s9v7IaskeRiA7GXCCNITafYqGxjrItydOgid1PMM4A8cM42wJGew2HOJsL9XcNKcZHZd5bxLmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=tEiAiyIJ; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 27ac9bb6b54211ef99858b75a2457dd9-20241208
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=mg7c6KUyUSNSCtmuiyEkcIKCy+B7+Xcry4SGBw+3yGs=;
+	b=tEiAiyIJ8lV2XLG6fbPnXO5MUktVjm3YYEcTpWeIqnBfJ/obGc3UFpP5Q54kcEsLyypFCWE/3pvGXFsWjeDgZemE5oUQmriSGqCBAZDoUcbSfln74SO2VP0cjxpSUx09q/Qr8H4adJ4B5plHguL6QCB5nOmITbgnZsboaKCyOEU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:f36c3b92-ef62-4419-a2c0-cbb0891b80d5,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:6493067,CLOUDID:ee7e86a4-c699-437d-b877-50282f19c2c6,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0,EDM:-3,IP
+	:nil,URL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 27ac9bb6b54211ef99858b75a2457dd9-20241208
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <andy-ld.lu@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 514735540; Sun, 08 Dec 2024 16:55:20 +0800
+Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Sun, 8 Dec 2024 16:55:19 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Sun, 8 Dec 2024 16:55:19 +0800
+From: Andy-ld Lu <andy-ld.lu@mediatek.com>
+To: <stable@vger.kernel.org>
+CC: Andy-ld Lu <andy-ld.lu@mediatek.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Ulf Hansson
+	<ulf.hansson@linaro.org>
+Subject: [PATCH 6.6.y] mmc: mtk-sd: Fix error handle of probe function
+Date: Sun, 8 Dec 2024 16:55:01 +0800
+Message-ID: <20241208085517.22063-1-andy-ld.lu@mediatek.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <2024120628-radiator-underwire-a0d9@gregkh>
+References: <2024120628-radiator-underwire-a0d9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241208083743.77295-1-kniv@yandex-team.ru>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hi,
+In the probe function, it goes to 'release_mem' label and returns after
+some procedure failure. But if the clocks (partial or all) have been
+enabled previously, they would not be disabled in msdc_runtime_suspend,
+since runtime PM is not yet enabled for this case.
 
-Thanks for your patch.
+That cause mmc related clocks always on during system suspend and block
+suspend flow. Below log is from a SDCard issue of MT8196 chromebook, it
+returns -ETIMEOUT while polling clock stable in the msdc_ungate_clock()
+and probe failed, but the enabled clocks could not be disabled anyway.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+[  129.059253] clk_chk_dev_pm_suspend()
+[  129.350119] suspend warning: msdcpll is on
+[  129.354494] [ck_msdc30_1_sel : enabled, 1, 1, 191999939,   ck_msdcpll_d2]
+[  129.362787] [ck_msdcpll_d2   : enabled, 1, 1, 191999939,         msdcpll]
+[  129.371041] [ck_msdc30_1_ck  : enabled, 1, 1, 191999939, ck_msdc30_1_sel]
+[  129.379295] [msdcpll         : enabled, 1, 1, 383999878,          clk26m]
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+Add a new 'release_clk' label and reorder the error handle functions to
+make sure the clocks be disabled after probe failure.
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH v2 6.1] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
-Link: https://lore.kernel.org/stable/20241208083743.77295-1-kniv%40yandex-team.ru
+Fixes: ffaea6ebfe9c ("mmc: mtk-sd: Use readl_poll_timeout instead of open-coded polling")
+Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+Message-ID: <20241107121215.5201-1-andy-ld.lu@mediatek.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+(cherry picked from commit 291220451c775a054cedc4fab4578a1419eb6256)
+---
+ drivers/mmc/host/mtk-sd.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Please ignore this mail if the patch is not relevant for upstream.
-
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 8b755f162732..bafd020f234a 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2823,7 +2823,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	ret = msdc_ungate_clock(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Cannot ungate clocks!\n");
+-		goto release_mem;
++		goto release_clk;
+ 	}
+ 	msdc_init_hw(host);
+ 
+@@ -2833,14 +2833,14 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 					     GFP_KERNEL);
+ 		if (!host->cq_host) {
+ 			ret = -ENOMEM;
+-			goto host_free;
++			goto release;
+ 		}
+ 		host->cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
+ 		host->cq_host->mmio = host->base + 0x800;
+ 		host->cq_host->ops = &msdc_cmdq_ops;
+ 		ret = cqhci_init(host->cq_host, mmc, true);
+ 		if (ret)
+-			goto host_free;
++			goto release;
+ 		mmc->max_segs = 128;
+ 		/* cqhci 16bit length */
+ 		/* 0 size, means 65536 so we don't have to -1 here */
+@@ -2867,9 +2867,10 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ end:
+ 	pm_runtime_disable(host->dev);
+ release:
+-	platform_set_drvdata(pdev, NULL);
+ 	msdc_deinit_hw(host);
++release_clk:
+ 	msdc_gate_clock(host);
++	platform_set_drvdata(pdev, NULL);
+ release_mem:
+ 	if (host->dma.gpd)
+ 		dma_free_coherent(&pdev->dev,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.46.0
 
 
