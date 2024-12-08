@@ -1,72 +1,65 @@
-Return-Path: <stable+bounces-100059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B9069E8435
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 09:32:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BEC89E843E
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 09:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54D718849BB
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 08:32:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BDFD1884A3E
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 08:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559E342AA1;
-	Sun,  8 Dec 2024 08:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D03E12D758;
+	Sun,  8 Dec 2024 08:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="eNLLheG7"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="XHgnNO7e"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E099EEB2
-	for <stable@vger.kernel.org>; Sun,  8 Dec 2024 08:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE7013E028;
+	Sun,  8 Dec 2024 08:40:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733646756; cv=none; b=YlkS88DZkhOeJptNw58juOjEqDLwj4lTj2kKAWn6TNL4BuSca24d3HwAB0DhfgzQK4MCA4hy/4sbWXeHhUaehH0LlkX4vHSHmDhRpRSmQfnqPCvgFiJG/MIYF+kEzXvpf/Oe0thQKGxVFBTx8zkWMsaUoU4ZrtWGPGQ6GGm4sJo=
+	t=1733647217; cv=none; b=hHRhH4kz6x+Fe/JrxpnObHGXtYYwEFj/upOIeocLlBa2oVN8MfS10gKNHSwA6FkTozGKUIMJ0jUu5j3DJJUrgxe9ueV4ekL5R9ULCS9aKhGmnNzDTZ0AupCVtWNNc44c+0VnBurFWfVo3eW5KS63PTb1TqZmpwaidUxQPQmzs8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733646756; c=relaxed/simple;
-	bh=kTUUO97zyKUTWqjnPoA8QQ1mpsqxso5e5jXLTYCuADI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CcAWVTKe3tAeuqp/GvodrKHEdbLXcKSCj/Sfq3PbTGOKWrTnFctSQ74hcin+032XDIBuMiMgjLQSnGhhKvVtAulGaOwrIWhdMMBivToKHIVo+jZd2RrmYHLWEQDrn58e3+D4U3zZJHpTK/iny9DiqbNlAsVA+ml3E74tSlTQJNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=eNLLheG7; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: f6301daeb53e11ef99858b75a2457dd9-20241208
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=uw+tFoFu0LWU0tU93xwzdYSeQxaRUDJ7+8qf9ewiCdQ=;
-	b=eNLLheG7D1AxaAveibwut9MnlprDyxSIaAahgzJ+MxQWmJAtBNFzN854ioNJtlksFWupcnuLnPfgEiOEjIccUda7HoO98Hhn3Hb1zn2BSyFxRAAUZgQlA13XLmhNfRP9lrmfWrtCEkBTKZzUOnzj+UUIjAjXgSTUm4sVNo78F8s=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:5a8b824c-f670-4277-92f1-695ad6668c79,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6493067,CLOUDID:a96086a4-c699-437d-b877-50282f19c2c6,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0,EDM:-3,IP
-	:nil,URL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
-	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: f6301daeb53e11ef99858b75a2457dd9-20241208
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
-	(envelope-from <andy-ld.lu@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 684048131; Sun, 08 Dec 2024 16:32:29 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Sun, 8 Dec 2024 16:32:24 +0800
-Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Sun, 8 Dec 2024 16:32:24 +0800
-From: Andy-ld Lu <andy-ld.lu@mediatek.com>
-To: <stable@vger.kernel.org>
-CC: Andy-ld Lu <andy-ld.lu@mediatek.com>, Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12.y] mmc: mtk-sd: Fix MMC_CAP2_CRYPTO flag setting
-Date: Sun, 8 Dec 2024 16:31:45 +0800
-Message-ID: <20241208083221.21514-1-andy-ld.lu@mediatek.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <2024120601-faculty-facelift-caf7@gregkh>
-References: <2024120601-faculty-facelift-caf7@gregkh>
+	s=arc-20240116; t=1733647217; c=relaxed/simple;
+	bh=YDhTqJs7cdVyrsOqWw6VKLHpME/TC6wse3uJLjtYGJE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FBR9WaTEpU3yuEM/rc+QqYaF7sMhWK7jWNUDer45hPL7kek/mIGo8FDaesjlHQuSSuz90emn2TwekLToovxOUa2lrsWuso8D5F2fs4vk0U75IH7MdhrkXpPRG5pU3j36zLY3eYc7jwGAzBTSx0kCylSy90/3d/SiO7hRmtWyz68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=XHgnNO7e; arc=none smtp.client-ip=178.154.239.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
+Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:3b05:0:640:71ba:0])
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id A261960B61;
+	Sun,  8 Dec 2024 11:37:59 +0300 (MSK)
+Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:b71b::1:31])
+	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id kbfFIq1Iga60-lp6MeZLk;
+	Sun, 08 Dec 2024 11:37:59 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+	s=default; t=1733647079;
+	bh=rVWwTNiyChLEkKx04wxCVkuEEVv9xSBQtvkQfDjGKS0=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=XHgnNO7e2lqHMtghLiu9enBKvwagJsgpjRxlxXreYxry4O3vVmNb/U3hk1pFSxTQt
+	 9LnfHv/7DXYkKmlh/PxagquOseWpLT0cMDX1uNLVLoMHlaqgQTR3Q0vgFazNTW2cby
+	 Oy8DRCHlJz5ookOhfuIg9obHGFRqYpSo7+Mg3GqY=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
+From: Nikolay Kuratov <kniv@yandex-team.ru>
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	x86@kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Nikolay Kuratov <kniv@yandex-team.ru>
+Subject: [PATCH v2 6.1] KVM: x86/mmu: Ensure that kvm_release_pfn_clean() takes exact pfn from kvm_faultin_pfn()
+Date: Sun,  8 Dec 2024 11:37:43 +0300
+Message-Id: <20241208083743.77295-1-kniv@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,53 +67,116 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--1.468300-8.000000
-X-TMASE-MatchedRID: 0sQiHSPfQFAm4SY1UdFN+XQEQEU5OIefoA9Le8XJpbpMOjKUxCZwr7iN
-	d7CXjOinsC7QIHAmtIR/zjwurOOmjPZyTDo2IZ6U2PArUpVkoPxCX8V1FiRRkt9RlPzeVuQQkmi
-	3zE7HIvlX6UIPOG+iLR2NwlAFp+i1HxPMjOKY7A8LbigRnpKlKZx+7GyJjhAUllG0Q8OaxMMhO0
-	h5snjNQ0WmnY5NsOWhA/kgKW4lrtywvUW7QqN4yX4DkOCxlyss3CL9Aemx0rnng+PccmkOxZZDO
-	vRoxQje8jae4OD13tAV7Mc+rowcVKtX/F0pBwVJjSV5hDFby7aUTGVAhB5EbQ==
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--1.468300-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: E7D83E68B9BF1A4C2DFCB1B491BBA689CB87BD2190BF6B6C72601EEC83FDE73D2000:8
 
-Currently, the MMC_CAP2_CRYPTO flag is set by default for eMMC hosts.
-However, this flag should not be set for hosts that do not support inline
-encryption.
+Since 5.16 and prior to 6.13 KVM can't be used with FSDAX
+guest memory (PMD pages). To reproduce the issue you need to reserve
+guest memory with `memmap=` cmdline, create and mount FS in DAX mode
+(tested both XFS and ext4), see doc link below. ndctl command for test:
+ndctl create-namespace -v -e namespace1.0 --map=dev --mode=fsdax -a 2M
+Then pass memory object to qemu like:
+-m 8G -object memory-backend-file,id=ram0,size=8G,\
+mem-path=/mnt/pmem/guestmem,share=on,prealloc=on,dump=off,align=2097152 \
+-numa node,memdev=ram0,cpus=0-1
+QEMU fails to run guest with error: kvm run failed Bad address
+and there are two warnings in dmesg:
+WARN_ON_ONCE(!page_count(page)) in kvm_is_zone_device_page() and
+WARN_ON_ONCE(folio_ref_count(folio) <= 0) in try_grab_folio() (v6.6.63)
 
-The 'crypto' clock, as described in the documentation, is used for data
-encryption and decryption. Therefore, only hosts that are configured with
-this 'crypto' clock should have the MMC_CAP2_CRYPTO flag set.
+It looks like in the past assumption was made that pfn won't change from
+faultin_pfn() to release_pfn_clean(), e.g. see
+commit 4cd071d13c5c ("KVM: x86/mmu: Move calls to thp_adjust() down a level")
+But kvm_page_fault structure made pfn part of mutable state, so
+now release_pfn_clean() can take hugepage-adjusted pfn.
+And it works for all cases (/dev/shm, hugetlb, devdax) except fsdax.
+Apparently in fsdax mode faultin-pfn and adjusted-pfn may refer to
+different folios, so we're getting get_page/put_page imbalance.
 
-Fixes: 7b438d0377fb ("mmc: mtk-sd: add Inline Crypto Engine clock control")
-Fixes: ed299eda8fbb ("mmc: mtk-sd: fix devm_clk_get_optional usage")
-Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
-Cc: stable@vger.kernel.org
-Message-ID: <20241111085039.26527-1-andy-ld.lu@mediatek.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-(cherry picked from commit 2508925fb346661bad9f50b497d7ac7d0b6085d0)
+To solve this preserve faultin pfn in separate local variable
+and pass it in kvm_release_pfn_clean().
+
+Patch tested for all mentioned guest memory backends with tdp_mmu={0,1}.
+
+No bug in upstream as it was solved fundamentally by
+commit 8dd861cc07e2 ("KVM: x86/mmu: Put refcounted pages instead of blindly releasing pfns")
+and related patch series.
+
+Link: https://nvdimm.docs.kernel.org/2mib_fs_dax.html
+Fixes: 2f6305dd5676 ("KVM: MMU: change kvm_tdp_mmu_map() arguments to kvm_page_fault")
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 ---
- drivers/mmc/host/mtk-sd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v1 -> v2:
+ * Instead of new struct field prefer local variable to snapshot faultin pfn
+ as suggested by Sean Christopherson. 
+ * Tested patch for 6.1 and 6.12
 
-diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
-index 89018b6c97b9..cb593e379ab0 100644
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -2778,7 +2778,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
- 		host->crypto_clk = devm_clk_get_optional(&pdev->dev, "crypto");
- 		if (IS_ERR(host->crypto_clk))
- 			host->crypto_clk = NULL;
--		else
-+		else if (host->crypto_clk)
- 			mmc->caps2 |= MMC_CAP2_CRYPTO;
+ arch/x86/kvm/mmu/mmu.c         | 5 ++++-
+ arch/x86/kvm/mmu/paging_tmpl.h | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 13134954e24d..d392022dcb89 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -4245,6 +4245,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	bool is_tdp_mmu_fault = is_tdp_mmu(vcpu->arch.mmu);
+ 
+ 	unsigned long mmu_seq;
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 
+ 	fault->gfn = fault->addr >> PAGE_SHIFT;
+@@ -4272,6 +4273,8 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 	if (r != RET_PF_CONTINUE)
+ 		return r;
+ 
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 
+ 	if (is_tdp_mmu_fault)
+@@ -4296,7 +4299,7 @@ static int direct_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 		read_unlock(&vcpu->kvm->mmu_lock);
+ 	else
+ 		write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index 1f4f5e703f13..685560a45bf6 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -790,6 +790,7 @@ FNAME(is_self_change_mapping)(struct kvm_vcpu *vcpu,
+ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ {
+ 	struct guest_walker walker;
++	kvm_pfn_t orig_pfn;
+ 	int r;
+ 	unsigned long mmu_seq;
+ 	bool is_self_change_mapping;
+@@ -868,6 +869,8 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 			walker.pte_access &= ~ACC_EXEC_MASK;
  	}
  
++	orig_pfn = fault->pfn;
++
+ 	r = RET_PF_RETRY;
+ 	write_lock(&vcpu->kvm->mmu_lock);
+ 
+@@ -881,7 +884,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
+ 
+ out_unlock:
+ 	write_unlock(&vcpu->kvm->mmu_lock);
+-	kvm_release_pfn_clean(fault->pfn);
++	kvm_release_pfn_clean(orig_pfn);
+ 	return r;
+ }
+ 
 -- 
-2.46.0
+2.34.1
 
 
