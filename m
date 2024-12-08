@@ -1,82 +1,74 @@
-Return-Path: <stable+bounces-100057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE2389E8339
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 03:51:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83BCF9E8406
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 07:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2EBF18845D7
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 02:51:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B52716378E
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 06:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2624256446;
-	Sun,  8 Dec 2024 02:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF7470827;
+	Sun,  8 Dec 2024 06:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="P67dkN5d";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="P67dkN5d"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="JfALoYBU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB25B482DD;
-	Sun,  8 Dec 2024 02:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB52628371
+	for <stable@vger.kernel.org>; Sun,  8 Dec 2024 06:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733626294; cv=none; b=dxAF7c2Eo+Ag46dE3jyC/as4MpCREOxcAFsJNmZ9mIfUQ6zGzzfrSWflXoflnL4xlO1LV1OkG0WVcQSuuO8k5wROHVgSt39N0L2eAHtYVDFeBMm6y7Z6m5fkAgMI0PUUNxOgkqgKzlaIN3P1hPdiHFv9318LUipnCPhYJqIfpfI=
+	t=1733639663; cv=none; b=B1urYLl7/9ZBp9OdPBQSAiWrOwLwm5oDgZA7tsjZtwlYM3MdClm0Dak1NxyJpcqpb6N4DNOn2034q7Ma3qPjAhObtaNtU9iwyS44EGU1eAYODYIudLRHvIhxpnfF8WWYRXdqh02CizJ4/TF15/m8nabGkZLtWPMQCeHEH/cHA9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733626294; c=relaxed/simple;
-	bh=vN4SN9ToN/257ZV0lJIiYnOc5JbUoeplb3avFKLku4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqsBE22K2RNAHEOQDf+Qh0vJZ9QH8rPYUJHBF5ZDAhNtM9B9wdHJxDdHIFbS0E1WangqFuXVyFjKLLGn868LNIgPnohmzgQkmF70+5cBFPJgIOU8ApbpfvnwB/UBhN/kO9Ty/fXh8jOxSt0DY1E+jMC3BvzvJmYDbsTR+a3mv8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=P67dkN5d; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=P67dkN5d; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 353EA1F37E;
-	Sun,  8 Dec 2024 02:51:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1733626291; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oAqJGIN2lcQtOoQWErAl/GqukOyzMqjea0klTX83sbs=;
-	b=P67dkN5dS4o1YgkNHB1oitkA6dK+eodb8CXrB0/9O2uTi3sh3hkcFYJ9nbUxoqMeDnPgP5
-	/StZHE7rvxjzNVCdG2KFAY08mikeB+mDKjzWZBG2akprGgL/0TaMC7RnWKo4d9Ms9DAcYA
-	ca2idt9viw4Y3N6YT6ux9o3SkO05Gi8=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1733626291; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oAqJGIN2lcQtOoQWErAl/GqukOyzMqjea0klTX83sbs=;
-	b=P67dkN5dS4o1YgkNHB1oitkA6dK+eodb8CXrB0/9O2uTi3sh3hkcFYJ9nbUxoqMeDnPgP5
-	/StZHE7rvxjzNVCdG2KFAY08mikeB+mDKjzWZBG2akprGgL/0TaMC7RnWKo4d9Ms9DAcYA
-	ca2idt9viw4Y3N6YT6ux9o3SkO05Gi8=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3922A133D1;
-	Sun,  8 Dec 2024 02:51:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aKYuO7EJVWcXcQAAD6G6ig
-	(envelope-from <wqu@suse.com>); Sun, 08 Dec 2024 02:51:29 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 5/8] btrfs: do proper folio cleanup when run_delalloc_nocow() failed
-Date: Sun,  8 Dec 2024 13:21:02 +1030
-Message-ID: <f48fbb3a0601829f26d227d63c64c4cc74906686.1733624454.git.wqu@suse.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1733624454.git.wqu@suse.com>
-References: <cover.1733624454.git.wqu@suse.com>
+	s=arc-20240116; t=1733639663; c=relaxed/simple;
+	bh=KYdkAMkTisbThaWMSIg+t8YGrBorlLFijPZSS2zHEw0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hex9I/Kt+PM3dBIlpTXOogx6ppBlgDqrsU7snQEBgvlZHxj0MUs+uFiuoYZAIq0SeB5NrfeUwzp4n9v3AxbXSAbM9D+SnZyIzWP7npvtud048bB/CKFlxImSqfpPjTY48gCrz1nEEUQUKVYSZt/OjZ+mRxNLTVLhHJy9NkHlwbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=JfALoYBU; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 6fa66d20b52e11ef99858b75a2457dd9-20241208
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=6p8Q7wp9pNPZ8yq+piwjsd6C9I80sdt01HyRrp5A49s=;
+	b=JfALoYBUxWbQF7T1yVy35F6VW3Adj8nOpm2bKjYZ58ikmTRixhXmwdmSGHqppAw88MImPg8tSUdNQQe9wx8uO55AAociCjtBg/oG5C4r4EIgBj2MTsPkTMa8fAMWOBESiNtS8Mh9TMfyeTK0qWLV0WL/bJcybpqtry6if/Hw/N4=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:efbce4fb-24dc-4cb0-be9b-8abd25906f12,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:6493067,CLOUDID:968f9b3b-e809-4df3-83cd-88f012b9e9ba,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102,TC:nil,Content:0,EDM:-3,IP
+	:nil,URL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 6fa66d20b52e11ef99858b75a2457dd9-20241208
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
+	(envelope-from <andy-ld.lu@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1324102677; Sun, 08 Dec 2024 14:34:11 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Sun, 8 Dec 2024 14:34:10 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Sun, 8 Dec 2024 14:34:10 +0800
+From: Andy-ld Lu <andy-ld.lu@mediatek.com>
+To: <stable@vger.kernel.org>
+CC: Andy-ld Lu <andy-ld.lu@mediatek.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Ulf Hansson
+	<ulf.hansson@linaro.org>
+Subject: [PATCH 6.12.y] mmc: mtk-sd: Fix error handle of probe function
+Date: Sun, 8 Dec 2024 14:31:55 +0800
+Message-ID: <20241208063407.19633-1-andy-ld.lu@mediatek.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <2024120624-qualified-region-9a31@gregkh>
+References: <2024120624-qualified-region-9a31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,267 +76,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:email];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_NONE(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain
 
-[BUG]
-With CONFIG_DEBUG_VM set, test case generic/476 has some chance to crash
-with the following VM_BUG_ON_FOLIO():
+In the probe function, it goes to 'release_mem' label and returns after
+some procedure failure. But if the clocks (partial or all) have been
+enabled previously, they would not be disabled in msdc_runtime_suspend,
+since runtime PM is not yet enabled for this case.
 
- BTRFS error (device dm-3): cow_file_range failed, start 1146880 end 1253375 len 106496 ret -28
- BTRFS error (device dm-3): run_delalloc_nocow failed, start 1146880 end 1253375 len 106496 ret -28
- page: refcount:4 mapcount:0 mapping:00000000592787cc index:0x12 pfn:0x10664
- aops:btrfs_aops [btrfs] ino:101 dentry name(?):"f1774"
- flags: 0x2fffff80004028(uptodate|lru|private|node=0|zone=2|lastcpupid=0xfffff)
- page dumped because: VM_BUG_ON_FOLIO(!folio_test_locked(folio))
- ------------[ cut here ]------------
- kernel BUG at mm/page-writeback.c:2992!
- Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
- CPU: 2 UID: 0 PID: 3943513 Comm: kworker/u24:15 Tainted: G           OE      6.12.0-rc7-custom+ #87
- Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
- Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
- Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
- pc : folio_clear_dirty_for_io+0x128/0x258
- lr : folio_clear_dirty_for_io+0x128/0x258
- Call trace:
-  folio_clear_dirty_for_io+0x128/0x258
-  btrfs_folio_clamp_clear_dirty+0x80/0xd0 [btrfs]
-  __process_folios_contig+0x154/0x268 [btrfs]
-  extent_clear_unlock_delalloc+0x5c/0x80 [btrfs]
-  run_delalloc_nocow+0x5f8/0x760 [btrfs]
-  btrfs_run_delalloc_range+0xa8/0x220 [btrfs]
-  writepage_delalloc+0x230/0x4c8 [btrfs]
-  extent_writepage+0xb8/0x358 [btrfs]
-  extent_write_cache_pages+0x21c/0x4e8 [btrfs]
-  btrfs_writepages+0x94/0x150 [btrfs]
-  do_writepages+0x74/0x190
-  filemap_fdatawrite_wbc+0x88/0xc8
-  start_delalloc_inodes+0x178/0x3a8 [btrfs]
-  btrfs_start_delalloc_roots+0x174/0x280 [btrfs]
-  shrink_delalloc+0x114/0x280 [btrfs]
-  flush_space+0x250/0x2f8 [btrfs]
-  btrfs_async_reclaim_data_space+0x180/0x228 [btrfs]
-  process_one_work+0x164/0x408
-  worker_thread+0x25c/0x388
-  kthread+0x100/0x118
-  ret_from_fork+0x10/0x20
- Code: 910a8021 a90363f7 a9046bf9 94012379 (d4210000)
- ---[ end trace 0000000000000000 ]---
+That cause mmc related clocks always on during system suspend and block
+suspend flow. Below log is from a SDCard issue of MT8196 chromebook, it
+returns -ETIMEOUT while polling clock stable in the msdc_ungate_clock()
+and probe failed, but the enabled clocks could not be disabled anyway.
 
-[CAUSE]
-The first two lines of extra debug messages show the problem is caused
-by the error handling of run_delalloc_nocow().
+[  129.059253] clk_chk_dev_pm_suspend()
+[  129.350119] suspend warning: msdcpll is on
+[  129.354494] [ck_msdc30_1_sel : enabled, 1, 1, 191999939,   ck_msdcpll_d2]
+[  129.362787] [ck_msdcpll_d2   : enabled, 1, 1, 191999939,         msdcpll]
+[  129.371041] [ck_msdc30_1_ck  : enabled, 1, 1, 191999939, ck_msdc30_1_sel]
+[  129.379295] [msdcpll         : enabled, 1, 1, 383999878,          clk26m]
 
-E.g. we have the following dirtied range (4K blocksize 4K page size):
+Add a new 'release_clk' label and reorder the error handle functions to
+make sure the clocks be disabled after probe failure.
 
-    0                 16K                  32K
-    |//////////////////////////////////////|
-    |  Pre-allocated  |
-
-And the range [0, 16K) has a preallocated extent.
-
-- Enter run_delalloc_nocow() for range [0, 16K)
-  Which found range [0, 16K) is preallocated, can do the proper NOCOW
-  write.
-
-- Enter fallback_to_fow() for range [16K, 32K)
-  Since the range [16K, 32K) is not backed by preallocated extent, we
-  have to go COW.
-
-- cow_file_range() failed for range [16K, 32K)
-  So cow_file_range() will do the clean up by clearing folio dirty,
-  unlock the folios.
-
-  Now the folios in range [16K, 32K) is unlocked.
-
-- Enter extent_clear_unlock_delalloc() from run_delalloc_nocow()
-  Which is called with PAGE_START_WRITEBACK to start page writeback.
-  But folios can only be marked writeback when it's properly locked,
-  thus this triggered the VM_BUG_ON_FOLIO().
-
-Furthermore there is another hidden but common bug that
-run_delalloc_nocow() is not clearing the folio dirty flags in its error
-handling path.
-This is the common bug shared between run_delalloc_nocow() and
-cow_file_range().
-
-[FIX]
-- Clear folio dirty for range [@start, @cur_offset)
-  Introduce a helper, cleanup_dirty_folios(), which
-  will find and lock the folio in the range, clear the dirty flag and
-  start/end the writeback, with the extra handling for the
-  @locked_folio.
-
-- Introduce a helper to record the last failed COW range end
-  This is to trace which range we should skip, to avoid double
-  unlocking.
-
-- Skip the failed COW range for the error handling
-
+Fixes: ffaea6ebfe9c ("mmc: mtk-sd: Use readl_poll_timeout instead of open-coded polling")
+Fixes: 7a2fa8eed936 ("mmc: mtk-sd: use devm_mmc_alloc_host")
+Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Message-ID: <20241107121215.5201-1-andy-ld.lu@mediatek.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+(cherry picked from commit 291220451c775a054cedc4fab4578a1419eb6256)
 ---
- fs/btrfs/inode.c | 93 ++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 86 insertions(+), 7 deletions(-)
+ drivers/mmc/host/mtk-sd.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 57e9b7deee88..75b7956a7b4c 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1961,6 +1961,48 @@ static int can_nocow_file_extent(struct btrfs_path *path,
- 	return ret < 0 ? ret : can_nocow;
- }
- 
-+static void cleanup_dirty_folios(struct btrfs_inode *inode,
-+				 struct folio *locked_folio,
-+				 u64 start, u64 end, int error)
-+{
-+	struct btrfs_fs_info *fs_info = inode->root->fs_info;
-+	struct address_space *mapping = inode->vfs_inode.i_mapping;
-+	pgoff_t start_index = start >> PAGE_SHIFT;
-+	pgoff_t end_index = end >> PAGE_SHIFT;
-+	u32 len;
-+
-+	ASSERT(end + 1 - start < U32_MAX);
-+	ASSERT(IS_ALIGNED(start, fs_info->sectorsize) &&
-+	       IS_ALIGNED(end + 1, fs_info->sectorsize));
-+	len = end + 1 - start;
-+
-+	/*
-+	 * Handle the locked folio first.
-+	 * btrfs_folio_clamp_*() helpers can handle range out of the folio case.
-+	 */
-+	btrfs_folio_clamp_clear_dirty(fs_info, locked_folio, start, len);
-+	btrfs_folio_clamp_set_writeback(fs_info, locked_folio, start, len);
-+	btrfs_folio_clamp_clear_writeback(fs_info, locked_folio, start, len);
-+
-+	for (pgoff_t index = start_index; index <= end_index; index++) {
-+		struct folio *folio;
-+
-+		/* Already handled at the beginning. */
-+		if (index == locked_folio->index)
-+			continue;
-+		folio = __filemap_get_folio(mapping, index, FGP_LOCK, GFP_NOFS);
-+		/* Cache already dropped, no need to do any cleanup. */
-+		if (IS_ERR(folio))
-+			continue;
-+		btrfs_folio_clamp_clear_dirty(fs_info, folio, start, len);
-+		btrfs_folio_clamp_set_writeback(fs_info, folio, start, len);
-+		btrfs_folio_clamp_clear_writeback(fs_info, folio, start, len);
-+		folio_unlock(folio);
-+		folio_put(folio);
-+	}
-+	mapping_set_error(mapping, error);
-+}
-+
- /*
-  * when nowcow writeback call back.  This checks for snapshots or COW copies
-  * of the extents that exist in the file, and COWs the file as required.
-@@ -1976,6 +2018,11 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
- 	struct btrfs_root *root = inode->root;
- 	struct btrfs_path *path;
- 	u64 cow_start = (u64)-1;
-+	/*
-+	 * If not 0, represents the inclusive end of the last fallback_to_cow()
-+	 * range. Only for error handling.
-+	 */
-+	u64 cow_end = 0;
- 	u64 cur_offset = start;
- 	int ret;
- 	bool check_prev = true;
-@@ -2136,6 +2183,7 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
- 					      found_key.offset - 1);
- 			cow_start = (u64)-1;
- 			if (ret) {
-+				cow_end = found_key.offset - 1;
- 				btrfs_dec_nocow_writers(nocow_bg);
- 				goto error;
- 			}
-@@ -2209,11 +2257,12 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
- 		cow_start = cur_offset;
- 
- 	if (cow_start != (u64)-1) {
--		cur_offset = end;
- 		ret = fallback_to_cow(inode, locked_folio, cow_start, end);
- 		cow_start = (u64)-1;
--		if (ret)
-+		if (ret) {
-+			cow_end = end;
- 			goto error;
-+		}
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index 89018b6c97b9..9409b6346aaa 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2885,7 +2885,7 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	ret = msdc_ungate_clock(host);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Cannot ungate clocks!\n");
+-		goto release_mem;
++		goto release_clk;
  	}
+ 	msdc_init_hw(host);
  
- 	btrfs_free_path(path);
-@@ -2221,12 +2270,42 @@ static noinline int run_delalloc_nocow(struct btrfs_inode *inode,
- 
- error:
- 	/*
--	 * If an error happened while a COW region is outstanding, cur_offset
--	 * needs to be reset to cow_start to ensure the COW region is unlocked
--	 * as well.
-+	 * There are several error cases:
-+	 *
-+	 * 1) Failed without falling back to COW
-+	 *    start         cur_start              end
-+	 *    |/////////////|                      |
-+	 *
-+	 *    For range [start, cur_start) the folios are already unlocked (except
-+	 *    @locked_folio), EXTENT_DELALLOC already removed.
-+	 *    Only need to clear the dirty flag as they will never be submitted.
-+	 *    Ordered extent and extent maps are handled by
-+	 *    btrfs_mark_ordered_io_finished() inside run_delalloc_range().
-+	 *
-+	 * 2) Failed with error from fallback_to_cow()
-+	 *    start         cur_start   cow_end    end
-+	 *    |/////////////|-----------|          |
-+	 *
-+	 *    For range [start, cur_start) it's the same as case 1).
-+	 *    But for range [cur_start, cow_end), the folios have dirty flag
-+	 *    cleared and unlocked, EXTENT_DEALLLOC cleared.
-+	 *    There may or may not be any ordered extents/extent maps allocated.
-+	 *
-+	 *    We should not call extent_clear_unlock_delalloc() on range [cur_start,
-+	 *    cow_end), as the folios are already unlocked.
-+	 *
-+	 * So clear the folio dirty flags for [start, cur_offset) first.
- 	 */
--	if (cow_start != (u64)-1)
--		cur_offset = cow_start;
-+	if (cur_offset > start)
-+		cleanup_dirty_folios(inode, locked_folio, start, cur_offset - 1, ret);
-+
-+	/*
-+	 * If an error happened while a COW region is outstanding, cur_offset
-+	 * needs to be reset to @cow_end + 1 to skip the COW range, as
-+	 * cow_file_range() will do the proper cleanup at error.
-+	 */
-+	if (cow_end)
-+		cur_offset = cow_end + 1;
- 
- 	/*
- 	 * We need to lock the extent here because we're clearing DELALLOC and
+@@ -2895,14 +2895,14 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 					     GFP_KERNEL);
+ 		if (!host->cq_host) {
+ 			ret = -ENOMEM;
+-			goto host_free;
++			goto release;
+ 		}
+ 		host->cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
+ 		host->cq_host->mmio = host->base + 0x800;
+ 		host->cq_host->ops = &msdc_cmdq_ops;
+ 		ret = cqhci_init(host->cq_host, mmc, true);
+ 		if (ret)
+-			goto host_free;
++			goto release;
+ 		mmc->max_segs = 128;
+ 		/* cqhci 16bit length */
+ 		/* 0 size, means 65536 so we don't have to -1 here */
+@@ -2929,9 +2929,10 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ end:
+ 	pm_runtime_disable(host->dev);
+ release:
+-	platform_set_drvdata(pdev, NULL);
+ 	msdc_deinit_hw(host);
++release_clk:
+ 	msdc_gate_clock(host);
++	platform_set_drvdata(pdev, NULL);
+ release_mem:
+ 	if (host->dma.gpd)
+ 		dma_free_coherent(&pdev->dev,
 -- 
-2.47.1
+2.46.0
 
 
