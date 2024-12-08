@@ -1,174 +1,92 @@
-Return-Path: <stable+bounces-100080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1919E86BE
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 17:58:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 766D79E86C8
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 17:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C07D1641DD
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 16:58:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 686BC16423C
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 16:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A00187844;
-	Sun,  8 Dec 2024 16:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68619189BBF;
+	Sun,  8 Dec 2024 16:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tKFgh8Fi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ndLAxfN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9B120323;
-	Sun,  8 Dec 2024 16:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210C120323;
+	Sun,  8 Dec 2024 16:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733677090; cv=none; b=fdmIoNqtVPTGUhCzltmhwH+rUZI9107zNKafbLiST494PVg0aVSvxdWVLIWAorYa5uW8LsyQg6qEbFa41nDnYvxpmfGuh6vT1fItCQRuxLbcQJH5kaTdCER6zH+eYakgphEHeVaJIaOy4GWcvB7A1DNxgGi89AzXRcGKoNb0jr0=
+	t=1733677138; cv=none; b=hI5VDprm4owEdRraSMY5HxXmsFQXBX5Tff3j6nDMSt4Rmvjb53rtWSgFQ44frMfYKTV2Iq4aohA8Ny+ekXKaqRMvvMriYiCeDUvS2cUoZx1j/jQzTRVXQdnxSjL9SXWj7fELq8rIiAx3OnLgKLO6UmIqroilkTjKyBfz/PgRv60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733677090; c=relaxed/simple;
-	bh=ZupYwODzz1JZIpwYvnLeAs3GYHnLlQAmCgPJ5BKpR5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BdIU8cgOz6ob4UBFDi110dkCzHDAE0WKise7yGDyBQTs6W5TGiBGkqW5qHIzNiBaREcQZGRMNi3OwHg77HRtp2U5jJWDbTrfW91UvCnVzy32G093Z6dpdJJLdaN2umQbprpF5mAxDulN+EaXfBaGJnOWQeVLdC7NNjmEQGPvdLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tKFgh8Fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73174C4CED2;
-	Sun,  8 Dec 2024 16:58:05 +0000 (UTC)
+	s=arc-20240116; t=1733677138; c=relaxed/simple;
+	bh=4b8k6Gcyhw1gaSHNTpYg9f2l+lRd2mJlHG6QsYQQKsg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=eZrXjaUN+pVenG6TR22xztzCnGoMan7Twifj2Xfgl2ydbGtaYduE7LF256W2eGiZKx2/NgCyYZsYY83jto2mi80kW5sxW2U8KYEv964SzN0DAmvtLukrfhoXgRypRRAQJa1iUzKCfvNGDeiRk7SOITS83OJ6njjSM7WVmnvR86k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ndLAxfN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4556AC4AF0B;
+	Sun,  8 Dec 2024 16:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733677090;
-	bh=ZupYwODzz1JZIpwYvnLeAs3GYHnLlQAmCgPJ5BKpR5Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tKFgh8FiS8FbRTFkK2N+FlA7iqzGWZknrBXFt8WYBZ8DtYjuE5gSiiWqTM9CNI56G
-	 fjeOd1LWq2bILNNh+9jeOvowOvhohfDcNzI65UVz0jiojk4b4/T/culUhkplgEtRDD
-	 zQ75TY9PgTECJH08yI43oLajI9aN/VZ6NhoCrFmXY8/HlsHKKD+5OsJVynKVEz730N
-	 pz4bro2tW+HiOZWGXRTSamb3qBw9NCn4Z5O+qdarOilS6zVKSm+UHFqc9ZQU5kxO9c
-	 Lnhkrju45GcVM9kYoGpc8onf6R5SXzzCxjVCRNKOuM3ks9/8pSRmEPTzGKwN7zqbRn
-	 I/jlR5A60YWHw==
-Date: Sun, 8 Dec 2024 16:58:00 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Christian Eggers <ceggers@arri.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Antoni Pokusinski
- <apokusinski01@gmail.com>, Francesco Dolcini <francesco@dolcini.it>,
- =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <jpaulo.silvagoncalves@gmail.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29u?=
- =?UTF-8?B?w6dhbHZlcw==?= <joao.goncalves@toradex.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] iio: light: as73211: fix channel handling in
- only-color triggered buffer
-Message-ID: <20241208165800.1f4504a9@jic23-huawei>
-In-Reply-To: <3614353.dWV9SEqChM@n9w6sw14>
-References: <20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com>
-	<20241204-iio_memset_scan_holes-v2-2-3f941592a76d@gmail.com>
-	<3614353.dWV9SEqChM@n9w6sw14>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1733677137;
+	bh=4b8k6Gcyhw1gaSHNTpYg9f2l+lRd2mJlHG6QsYQQKsg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ndLAxfN8c4UFvtBiwysKL9Zvsa6fKpLxJhu55E0mHGe6iKRZA6uEH4JW7gr3jZ03Z
+	 rjjg++Ghx9gP6qK/37yTqgfvdehRD+UTGlYIUDJzyw+R8crlfi4gnw8MtsOSGeT8/g
+	 1TqSbkVoIej9n5a+t6kSvqo2manBdjuil5z/H3TR3EQwU3CMoG2wmKF8AvuCuygcYx
+	 I74rJYIuz7u8IRSE1rzWbhQCEdWsdo1qOeCwmm/Bsh3QXNRjEhVRsw10MrclvwrWGX
+	 0DGQTUko6aK6d4T5ZC41JEmrHAn5ITNLLo4+5YCpNejEXxnR3HoNwanyLP/f8ydhIS
+	 xfudYZkk09j+A==
+From: Vinod Koul <vkoul@kernel.org>
+To: Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Bjorn Andersson <quic_bjorande@quicinc.com>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Mantas Pucka <mantas@8devices.com>, Abel Vesa <abel.vesa@linaro.org>, 
+ Komal Bajaj <quic_kbajaj@quicinc.com>, 
+ Krishna Kurapati <quic_kriskura@quicinc.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linux-phy@lists.infradead.org, quic_ppratap@quicinc.com, 
+ quic_jackp@quicinc.com, stable@vger.kernel.org
+In-Reply-To: <20241112092831.4110942-1-quic_kriskura@quicinc.com>
+References: <20241112092831.4110942-1-quic_kriskura@quicinc.com>
+Subject: Re: [PATCH] phy: qcom-qmp: Fix register name in RX Lane config of
+ SC8280XP
+Message-Id: <173367713289.1031947.10070868300921760788.b4-ty@kernel.org>
+Date: Sun, 08 Dec 2024 22:28:52 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-On Wed, 4 Dec 2024 17:20:47 +0100
-Christian Eggers <ceggers@arri.de> wrote:
 
-> On Wednesday, 4 December 2024, 00:55:32 CET, Javier Carrasco wrote:
-> > The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-> > set (optimized path for color channel readings), and it must be shifted
-> > instead of leaving an empty channel for the temperature when it is off.
-> > 
-> > Once the channel index is fixed, the uninitialized channel must be set
-> > to zero to avoid pushing uninitialized data.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > ---
-> >  drivers/iio/light/as73211.c | 17 +++++++++++++----
-> >  1 file changed, 13 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> > index be0068081ebb..2d45dfeda406 100644
-> > --- a/drivers/iio/light/as73211.c
-> > +++ b/drivers/iio/light/as73211.c
-> > @@ -672,9 +672,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
-> >  
-> >  		/* AS73211 starts reading at address 2 */
-> >  		ret = i2c_master_recv(data->client,
-> > -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-> > +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
-> >  		if (ret < 0)
-> >  			goto done;
-> > +
-> > +		/* Avoid pushing uninitialized data */
-> > +		scan.chan[3] = 0;
-> >  	}
-> >  
-> >  	if (data_result) {
-> > @@ -682,9 +685,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
-> >  		 * Saturate all channels (in case of overflows). Temperature channel
-> >  		 * is not affected by overflows.
-> >  		 */
-> > -		scan.chan[1] = cpu_to_le16(U16_MAX);
-> > -		scan.chan[2] = cpu_to_le16(U16_MAX);
-> > -		scan.chan[3] = cpu_to_le16(U16_MAX);
-> > +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-> > +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[3] = cpu_to_le16(U16_MAX);
-> > +		} else {
-> > +			scan.chan[0] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> > +		}
-> >  	}
-> >  
-> >  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> > 
-> >   
-> 
-> With this change, having only X, Y and Z in the scan_mask (without the
-> temperature channel) works fine.
-> 
-> But it looks that there is still another problem if a single color channel
-> (e.g. X) is omitted from the scan mask (which probably wouldn't make much
-> sense in practice).  If I am right, the layout of scan.chan[] is also wrong for
-> that case, so e.g. if omitting X, the application will get the X values where
-> it expects the temperature value (which isn't read from the hardware at all).
-> 
-> Does it make sense to write a follow-up patch for this? I fear that taking all
-> possible combinations into account could make the driver more complicated than
-> necessary.  Or is there a good example how to handle such combinations?
-> 
-Good spot. I'd fallen for assuming a driver worked the way I thought it would
-and not checked everything necessary was there.
-
-Hmm. This is a bit odd. Driver seems to be written with assumption that the IIO
-core is doing demux.  That doesn't work unless available_scan_masks is set.
-
-Make that
-{
-	AS73211_SCAN_MASK_ALL,
-	AS73211_SCAN_MASK_COLOR,
-	0,
-};
-
-And then if you enable fewer channels, the IIO core will still enable one of the
-sets in available_scan_masks and then do the relevant data manipulation to repack
-as necessary.
-
-I'll not pick this patch up as it makes sense to fix both issues together.
-
-Thanks
-
-Jonathan
-
-> 
-> Tested-by: Christian Eggers <ceggers@arri.de>
+On Tue, 12 Nov 2024 14:58:31 +0530, Krishna Kurapati wrote:
+> In RX Lane configuration sequence of SC8280XP, the register
+> V5_RX_UCDR_FO_GAIN is incorrectly spelled as RX_UCDR_SO_GAIN and
+> hence the programming sequence is wrong. Fix the register sequence
+> accordingly to avoid any compliance failures. This has been tested
+> on SA8775P by checking device mode enumeration in SuperSpeed.
 > 
 > 
-> 
-> 
+> [...]
+
+Applied, thanks!
+
+[1/1] phy: qcom-qmp: Fix register name in RX Lane config of SC8280XP
+      commit: 8886fb3240931a0afce82dea87edfe46bcb0a586
+
+Best regards,
+-- 
+~Vinod
+
 
 
