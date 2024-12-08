@@ -1,128 +1,144 @@
-Return-Path: <stable+bounces-100066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B12B9E8483
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 11:17:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9339E8589
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 14:53:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 644DD2818AA
-	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 10:17:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 138C21649B6
+	for <lists+stable@lfdr.de>; Sun,  8 Dec 2024 13:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CA51459F6;
-	Sun,  8 Dec 2024 10:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220EA4C74;
+	Sun,  8 Dec 2024 13:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XeSrbMub"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OiYYhRh1"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A18E5130499
-	for <stable@vger.kernel.org>; Sun,  8 Dec 2024 10:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248861482E8
+	for <stable@vger.kernel.org>; Sun,  8 Dec 2024 13:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733653034; cv=none; b=l7r1IkNMsiS7uz9utdvCtt3O/byTT10bd3o2btEmO/5qxjqbltdnqPQOwe6lUAHKizEzXop05M9BpDWK101X2BKSV3qnLM801UwyGmaYgrYPdoYtRLmYohft8aL98/r/UvuljaH6oi6GEK5te1Gp3ZucAF37mynvI66G2VZz8go=
+	t=1733666009; cv=none; b=SDBdmxaIDiuxJ5BPnZZhN3B1Uqw/C/UdHZpuc1WGBSIFvyyraPlxX67QEqezI8kkKvNdI7M0UQ6LpA1lDmJ0S7lXbThtUO0KljvobWo9MTxdUu2mnpy0IHTPl4kpXubnco27IscQ6BvAygoe4bx3jnLpamK57MOo/BafS5vX5ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733653034; c=relaxed/simple;
-	bh=iSk7qBPcuDjKWe/dJvRrHB51dAqOTbdPSdfEakWI4CM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PMxdoZTbXWuA9JpTSLEeQnntpW6vkNAO41PuxbXldA53rh4IfgDAeZC2P21K4wrh9xORfO9rvvSRGdfTCDVsbszS++R4FheklCHNt1Zc7hW00OqSm/lrNcgxN+pQuyCUgitko8Pr24KCSux9kirh9lZNRfVpOIxqsmGUahqbS2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XeSrbMub; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1733666009; c=relaxed/simple;
+	bh=6vmI2rNzZbPbg2XeKr3Oe5TOFkJlJ7i4jg3roFC7Oqw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CMpULxaBzHinNC68hIhSEe9532qXpWpEp8arHIEh2XKa6owIVG8VCRmh3F7bwWlwt2yFchzJtnvdxbaBDpbs4qLczj3bvZYZdzH5gomzu5XEIIm/7WC1TnFtBuXQ4HXOL0zQ9fUjCN5Cf1w/If8EWN8RnYjqcRn48JW6ei5tiyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OiYYhRh1; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733653030;
+	s=mimecast20190719; t=1733666007;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iSk7qBPcuDjKWe/dJvRrHB51dAqOTbdPSdfEakWI4CM=;
-	b=XeSrbMub/eoZ61p1cjzJ8n3TvLn0I6PWqHpBvEB3TOGAqP0H8AHJxcU7QXPlSa2iZlUn6W
-	Q84gH3cUaL918yy2kFTa2rTzR2mFezCbHNHQIYNgDT4ODzyc/7lbU8KkaiX7VuTWrrIQ1v
-	Gyv53lo+veR5PzUPb1USks/KIRlsXpc=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=effItv+T4ngQBiRIY7XZjYM5/CDQslMyXd/pUoX0ZDs=;
+	b=OiYYhRh1DvNgwST7PW1oW6sit2k4wTTypdTJX6R37WnFlDgrMv1NTlzVH1eRXOFw7eyNiE
+	w2IepBNUsLk00GQlEIHNRAfvrDp9YO8S5/eRi+65T0iRFLDKib2FZwB61T8O4/LbZLskFf
+	qLvTSDk0dIn4W8z12MDJABtLikEUGpo=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-283-JW1XUDD1MIKI-gSGAxYkBg-1; Sun, 08 Dec 2024 05:17:09 -0500
-X-MC-Unique: JW1XUDD1MIKI-gSGAxYkBg-1
-X-Mimecast-MFC-AGG-ID: JW1XUDD1MIKI-gSGAxYkBg
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-aa6732a1af5so42784966b.3
-        for <stable@vger.kernel.org>; Sun, 08 Dec 2024 02:17:09 -0800 (PST)
+ us-mta-311-u6EY12fbMjmouQbUJuYTlw-1; Sun, 08 Dec 2024 08:53:25 -0500
+X-MC-Unique: u6EY12fbMjmouQbUJuYTlw-1
+X-Mimecast-MFC-AGG-ID: u6EY12fbMjmouQbUJuYTlw
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-5d3cdb9d4b1so2429098a12.1
+        for <stable@vger.kernel.org>; Sun, 08 Dec 2024 05:53:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733653028; x=1734257828;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iSk7qBPcuDjKWe/dJvRrHB51dAqOTbdPSdfEakWI4CM=;
-        b=ktGmFWAyZTwk2BZ/pdW5+qJecRvI4zVcOK3072NLf/Ii3Z6qiJEw56xAnxD07P3Qp1
-         VPy+DsMz28KQDFa8eROvvM99oBQubzUS3cfTwpT3DFAac8mHDXVNa+h7nUAOw5He5zKL
-         t1QovG3DMXy7jIrQSWDGKqx+OhPGN18XUHiex9nsiShqmzP5kyOQypVi3x8PRBUnBrR1
-         G+eCxKnDFqQxk7sKopHh+KiWsreUkPb8+cE6MLIIKbHBvPbwKaY6FPIRgoOqKU9QqCjx
-         rD6C3xtIhPnjUg1aBsDpgAG/mcPyvguCBdMHyBsv3fstLg5au12gK3YtnOhn1uXajPIO
-         Sscw==
-X-Forwarded-Encrypted: i=1; AJvYcCVpO4tGbhfSPFhKkur3ep9IAaCT9BvA4AoXVRTwKD0lSVFw3NX1RcK5J8OjT1Pa3eC4OYmvSro=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlZwZobQ0fB2NIyV+wAqlmAUVaYA2Ggkh00HWrN3oUUJbRBnHP
-	VhnS+m+gI6cVtYnd9gW8SPqcZ460yh5TSGtxWtFsy2ZIxy+gHvdDoahpz/10QiCWOeca4/zmIHO
-	79AVBbwC5Y4xjX2r5nGWMABEYIxFalwRtiJMsJlu9QNedY+6f/dci5KZO2Wu6yn+LZWOtL20Q8t
-	9VqixKQNXJCmgmdYp/3Hxz9tSx6bIF
-X-Gm-Gg: ASbGncsZu+hKomBMcQFyim3F7+4f/BhN+SpQe4CpVLhuYYTlHhvVWTe3CgJXGYNu14H
-	tYWU69Dfs9y9ZLUXNKDySWRF97SDBZPzCiq6eaGPJA5xoTH8=
-X-Received: by 2002:a17:906:18b1:b0:aa4:9ab1:1985 with SMTP id a640c23a62f3a-aa63a2c6626mr776043666b.51.1733653027972;
-        Sun, 08 Dec 2024 02:17:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFamKd09koQ2FZaKjQGaKQqbUfNzFN6quC7hLeEwoA1mVdlNypn6b1pc9Ybo1wSkeUjYV+Mp+R+DMrikNj2bp4=
-X-Received: by 2002:a17:906:18b1:b0:aa4:9ab1:1985 with SMTP id
- a640c23a62f3a-aa63a2c6626mr776041466b.51.1733653027380; Sun, 08 Dec 2024
- 02:17:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733666004; x=1734270804;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=effItv+T4ngQBiRIY7XZjYM5/CDQslMyXd/pUoX0ZDs=;
+        b=fv5KnCc9CnB2MJWuS8RIyiJ4N+GBcGEFvkHwFn1/aDQniftOBxE1OxMs/n1mYXEDX4
+         MP/rAOMJitdqXSfpd6bANY9IhLY+o5ro9mHtqVLsX10vJRA6zDGqW/MrIwQVZpFFrPY4
+         oLkq3AJTwgwncn82Klq+eqJP3Ho3E00iupLmpg1vtR2T/W7f3/hYsjjUxnMuuwkSrDTn
+         R2x1ZlwTG2UgXkY0sgfp1cfUgCJdjZkLz9NxlhoQyfmTmyJYMne5AtXUuNegGkKPDRCD
+         981N1/ISNcY2mpzO3T7cARKD3W0kxqKBKPm1dcN7q2oGJ1ZRCro9WZLlcoWw9c+xxdVa
+         uuUg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAH2kQFCVy4H9h40XNxWnM+7biVBW310MdSRNwEzSqbpY+LYl9atPi33YDnyHMlBNH6LorvvI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6F+DAQd/bzd2bZMWIm89u7fz07w0XdOqTEqesY0iQNy6OkCYT
+	fPyrsEhJH+eHM8mDm4scaroUpyrQcDuIU9//+iWEftaQ+4lfmiaFcYK/echKX+eHmpd2X92LccN
+	gtcuwB+/4FZn9iluEGrotqCcq2XErwdFb/nDGGQT5NEflxJFvuj9oOg==
+X-Gm-Gg: ASbGncuog8oIuubWHPIgjA5zjuOwMbiQokxynYkLhroYvSrJCb+eW/PPE0Gh3uFGxbk
+	5XxJfkwnX4iVWclkBhI5Pt7QT8tbb210H3crQPeHuUlKbC6yp3Tqgt1ndHIZWw5BzBj+DtIIa8S
+	r3wjzZQmFQ2Kv+3M7kuMnSEv+z6bhRYB/a1FhLEWpbw6dqDD9zPM53rVWuJ07G4KP6UcUMB0fn0
+	17t8KMw9sNJD5VxTqCrSkRhsDeX3gNzdPF/07dfVHE0yfuBUg4taYAwCcBs+DEq3D+ZRnZ5Q9Ie
+	0P3F7jYWCctbuBFQ1cjzlGWi2RBIJ7pc94b2H1LJTotdJ8WeHQccb3/KLwQGMyqL34+vAnLvt+Z
+	ObkzTyFnGYxKKNBK/rkH4vxzO
+X-Received: by 2002:a05:6402:27ce:b0:5d0:d06b:cdc4 with SMTP id 4fb4d7f45d1cf-5d3bdccdb54mr9000815a12.15.1733666004586;
+        Sun, 08 Dec 2024 05:53:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFT6Q+gAyU4Hw06qKdr07+MmMs8jMXgZWk7VUDrfXYZHJ4HC8iwAV1xJFoNInSvuusyWJSJdw==
+X-Received: by 2002:a05:6402:27ce:b0:5d0:d06b:cdc4 with SMTP id 4fb4d7f45d1cf-5d3bdccdb54mr9000794a12.15.1733666004181;
+        Sun, 08 Dec 2024 05:53:24 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d3d20c032csm2944939a12.36.2024.12.08.05.53.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Dec 2024 05:53:23 -0800 (PST)
+Message-ID: <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
+Date: Sun, 8 Dec 2024 14:53:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241118222828.240530-1-max.kellermann@ionos.com>
- <CAOi1vP8Ni3s+NGoBt=uB0MF+kb5B-Ck3cBbOH=hSEho-Gruffw@mail.gmail.com>
- <c32e7d6237e36527535af19df539acbd5bf39928.camel@kernel.org>
- <CAKPOu+-orms2QBeDy34jArutySe_S3ym-t379xkPmsyCWXH=xw@mail.gmail.com>
- <CA+2bHPZUUO8A-PieY0iWcBH-AGd=ET8uz=9zEEo4nnWH5VkyFA@mail.gmail.com>
- <CAKPOu+8k9ze37v8YKqdHJZdPs8gJfYQ9=nNAuPeWr+eWg=yQ5Q@mail.gmail.com>
- <CA+2bHPZW5ngyrAs8LaYzm__HGewf0De51MvffNZW4h+WX7kfwA@mail.gmail.com>
- <CAO8a2SiRwVUDT8e3fN1jfFOw3Z92dtWafZd8M6MHB57D3d_wvg@mail.gmail.com>
- <CAO8a2SiN+cnsK5LGMV+6jZM=VcO5kmxkTH1mR1bLF6Z5cPxH9A@mail.gmail.com>
- <CAKPOu+8u1Piy9KVvo+ioL93i2MskOvSTn5qqMV14V6SGRuMpOw@mail.gmail.com>
- <CAO8a2SizOPGE6z0g3qFV4E_+km_fxNx8k--9wiZ4hUG8_XE_6A@mail.gmail.com>
- <CAKPOu+_-RdM59URnGWp9x+Htzg5xHqUW9djFYi8msvDYwdGxyw@mail.gmail.com>
- <CAO8a2ShGd+jnLbLocJQv9ETD8JHVgvVezXDC60DewPneW48u5A@mail.gmail.com> <CAKPOu+-d=hYUYt-Xd8VpudfvMNHCSmzhSeMrGnk+YQL6WBh95w@mail.gmail.com>
-In-Reply-To: <CAKPOu+-d=hYUYt-Xd8VpudfvMNHCSmzhSeMrGnk+YQL6WBh95w@mail.gmail.com>
-From: Alex Markuze <amarkuze@redhat.com>
-Date: Sun, 8 Dec 2024 12:16:56 +0200
-Message-ID: <CAO8a2ShQHCRWBGWs4rk69Gvm-NoKHyZPKJmmsazKeY3UZHeEdw@mail.gmail.com>
-Subject: Re: [PATCH] fs/ceph/mds_client: give up on paths longer than PATH_MAX
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: Patrick Donnelly <pdonnell@redhat.com>, Jeff Layton <jlayton@kernel.org>, 
-	Ilya Dryomov <idryomov@gmail.com>, Venky Shankar <vshankar@redhat.com>, xiubli@redhat.com, 
-	ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, dario@cure53.de, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+To: Ping-Ke Shih <pkshih@realtek.com>, Jes Sorensen <Jes.Sorensen@gmail.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+ Peter Robinson <pbrobinson@gmail.com>
+References: <20241107140833.274986-1-hdegoede@redhat.com>
+ <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Illya, this patch is tested and it has my review by.
+Hi,
 
-On Thu, Dec 5, 2024 at 10:24=E2=80=AFAM Max Kellermann <max.kellermann@iono=
-s.com> wrote:
->
-> On Wed, Dec 4, 2024 at 1:51=E2=80=AFPM Alex Markuze <amarkuze@redhat.com>=
- wrote:
-> > It's already in a testing branch; what branch are you working on?
->
-> I found this on branch "wip-shirnk-crash":
-> https://github.com/ceph/ceph-client/commit/6cdec9f931e38980eb007d9704c5a2=
-4535fb5ec5
-> - did you mean this branch?
->
-> This is my patch; but you removed the commit message, removed the
-> explanation I wrote from the code comment, left the (useless and
-> confusing) log message in, and then claimed authorship for my work.
->
+On 18-Nov-24 3:23 AM, Ping-Ke Shih wrote:
+> Hans de Goede <hdegoede@redhat.com> wrote:
+> 
+>> The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
+>> except for the following 10, add these to the untested section so they
+>> can be used with the rtl8xxxu as the rtl8192cu are well supported.
+>>
+>> This fixes these wifi modules not working on distributions which have
+>> disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
+>> like Fedora.
+>>
+>> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
+>> Cc: stable@vger.kernel.org
+>> Cc: Peter Robinson <pbrobinson@gmail.com>
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+> 
+> 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+> 
+> 31be3175bd7b wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+
+Thank you for merging this, since this is a bugfix patch, see e.g. :
+
+https://bugzilla.redhat.com/show_bug.cgi?id=2321540
+
+I was expecting this patch to show up in 6.13-rc1 but it does
+not appear to be there.
+
+Can you please include this in a fixes-pull-request to the network
+maintainer so that gets added to a 6.13-rc# release soon and then
+can be backported to various stable kernels ?
+
+Regards,
+
+Hans
+
 
 
