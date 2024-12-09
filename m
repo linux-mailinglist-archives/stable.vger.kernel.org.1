@@ -1,112 +1,143 @@
-Return-Path: <stable+bounces-100181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57099E972C
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:34:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DBC49E9764
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12F792834D2
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:34:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFA52824E7
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9201A238B;
-	Mon,  9 Dec 2024 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DBF233156;
+	Mon,  9 Dec 2024 13:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p3CIV2zx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IMAbmhaM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D96E39ACC
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B86233137;
+	Mon,  9 Dec 2024 13:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733751262; cv=none; b=K8XC6VSdYPAK53dy6Pc5MoHZYRO1+7x8SNxaEn70WKahuGS4/v62wcytkbgAxwsjYVPgokqRaXx+QsjR+tM2jvQabRsBdh9XDVbMkc8w643eEPKkHiAgYc+ySqm1gqyHDbtACSEuo3REPR+YY/iVEe69r5plFVwYaGim2PNqn5M=
+	t=1733751757; cv=none; b=ttWb18ezTqbcc4jY+aH04vHXL3zQpJjqalSijiRtYidR6AURBJ52VIilkSaGcdiMaS5oEu0q2t03PU+C2ULzBa/KpjmkDHnHbbdb9pPyQukVffn6JVhm5ncAsH0kFaGPxMs+5SaCtyEIuI5VbNFzGk8CuqGW27Ig2gZ/LohKgyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733751262; c=relaxed/simple;
-	bh=2XnCJO2Ir1RkGS9FPuM9lx46jfc3ddfFDKFy3P8d4s0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bfqv3FX/F4zK5tBhjqxazw9GWdrJH7YM5Xacsh7xrBSnvKzSTgW9fX3eHldjYYs3xsRCPWjmU/yFXRnOZk3JNgl0j8cKy+9/2m/y44Ho7RGZCp7fpC/NcG0OU/JCxkiyh5TaLU4Xw5ZeyZ2IHk532rMbo1XCY78BvMr4lYOY4Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p3CIV2zx; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3a78b39034dso17892425ab.3
-        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 05:34:21 -0800 (PST)
+	s=arc-20240116; t=1733751757; c=relaxed/simple;
+	bh=03QJGK4Z1yvJAl/3TNKhw/EVpYlKKfAUlrw6poXpiK4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D9sexwR8Zzy+WhBkbGdofs/YsNd/K52LoANcH9g+DBnJsE5gz9YomhL0g5h7pWYL8T2gOYgJ7XGJsXzrzTOT6VRgEQXH4r5JrO5YdL9angL/RoSM6NVVFFcH1uuTzHFW2xIxzFDoMncPDOGftWsmCHIkgFNkF5LtVqrv2ciKvgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IMAbmhaM; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-21628b3fe7dso19938835ad.3;
+        Mon, 09 Dec 2024 05:42:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733751260; x=1734356060; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2XnCJO2Ir1RkGS9FPuM9lx46jfc3ddfFDKFy3P8d4s0=;
-        b=p3CIV2zxhBVji/6bO3YfxmW4O2TcIZ1T7jgU26jtHnLoS0d3aVfNnEZNSDxuCyHzr+
-         7vR0pzM/Kp+kXZUC6PvyQ0E92QZ4/HBvaeJ9vCP59FDKwdvP6iyASccT8V7mBW7gP0if
-         4v8uS4G/NZ0yE+RlXkrcEXbEzBNBA17CUzOASteMQY7JewCZoVYNGE1/G9Pu9ZCndBAH
-         8sQS1JmKAoaPdXF+BWtENRvFkxtWm7Y9X9F2diLyALvaPdbZKcCBEw1edJvFfwVuT6xQ
-         MKZ4gwJDphkyrEkL+z+bdSRJEZb6XruAnhrn21WVmc6qD9s9+t0lFiHc+Fz1HQDOatAH
-         h+4A==
+        d=gmail.com; s=20230601; t=1733751755; x=1734356555; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HRJ9EgO00gvd/eE2hkZ5c1MkBkZAMOXjJaY80cKYo5E=;
+        b=IMAbmhaMOIOPf6Agi//IkKX5zL8GcA/jv54I43kQdo28d0qpX1j/bhGY8u0sN8/x+7
+         ahl91+i+UI24z2HYFDR9nRfvnwoFnk3zYflS3bur7RIni8Hdo8rBdhdOCZvMEmxlQV5j
+         OEAos0pGWaCCGSd7+iDRelQYgWfp9UrAzLpzMdWOm0ICb/xqiCrcbNQ4ccArVqDX91q9
+         yBtIuRM3Rp72+O+7YsgpuRalvTJQ65lG/k18/rg7bksbqpGceWUx/BKWMHYmFn6SYY3M
+         f9tZj5VkzSo6ZbCcc3IaJyqCYsj1ks3YVBKWmDVNbfG/tXD+LCkCyhofCJtgT1mZqqKR
+         UjIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733751260; x=1734356060;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2XnCJO2Ir1RkGS9FPuM9lx46jfc3ddfFDKFy3P8d4s0=;
-        b=elnEXl5Y67Kx7NJo7Hp49ZdbQc48nL3WTtVINU7Z3g6Wfw4w6FKGXyZ+s7zUxvpPQq
-         sxD0ZcDkZ9b6KDOkw9a7pN0ylvT7OFHQFnAKPxe4jTzHgosh8rSk9CEk9X4GPPgrWiYa
-         OG9qEK808l0mzW8efWuAZadQToe53M6t6P+z+NCR0jDvBmMyJH/VvaAABFSGAKVGFNeq
-         Gi0TycUvSsyXUEN9JeS9avpRpPx2XP/pjyM4NuITtKwOwn4yCKKmGZSt2ZUOlOJeJ04b
-         rEyxjkoFeD4M3HgUsHCG21YMAuqomLFgS9Tb2b7P/kg8yyK/IubogemUR7E2p1D8uaol
-         WtQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXNYKyDDAaqNskkcHiwzV51nBM9/fIHEAMzABLJNnN/FfIrZmxOTRk3NEXHr1jFbTiVhsg6xFs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG/o7BbYYaz+ZlGYTjTZ24ROtPTF/PlgRHgEwsyud8o0wlpD32
-	jozDBzp0ypBPIC3v+y7YRY3PUoCx+Y0KDw1s22nKD2jZHaL32tK+YHH/6w8pnyZekohoeEZemOz
-	1wtedBCtaQOdig/0Cz+TeLxGgym6EueiyHZdf
-X-Gm-Gg: ASbGncsiRr0Q63rj92SfHiHCWeFdDhtAqVZRO6jCL7bmW9hZfK86ZwUgq2Ej7S2AvAE
-	dKs6lJqU7bKU2Ekl/zcElv7cm3OHVAQ==
-X-Google-Smtp-Source: AGHT+IHRSd8liIwypeFGnJ2w4GP4iNsA1tFPI9rJi5aQdzanGH/U1dY5+7Sdd0pd0DZsUi7LvwuAbNc3wqFv/AS0+bQ=
-X-Received: by 2002:a05:6e02:1e06:b0:3a7:d082:651 with SMTP id
- e9e14a558f8ab-3a811db1f7amr136023395ab.12.1733751260168; Mon, 09 Dec 2024
- 05:34:20 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733751755; x=1734356555;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HRJ9EgO00gvd/eE2hkZ5c1MkBkZAMOXjJaY80cKYo5E=;
+        b=s+euU89S5kVk/O0VlPZ96w6FNsCxY4ZULd7TsdNJyqrHHmxuH9Bzte87iDhIXqdZND
+         awA5J9RRgH6XMZqcVECPEbLarJ+afXZdmcL3ClW659rCh3moveZSX5Kg2DXmVoJNXyNX
+         DQbMUI09JJ9SG24PKZpaDfFem09jTaxNRw86FSvM3uOWalnG/hr6EoNbycP4FfywS22q
+         koVEncXNsvIpZbHneoPXha/eup3+W2uP/vES5MgLhuwrTlqB4obzJYIiGoBqoVFZsJ84
+         dlVJ4c32FGFyUSVhVwYRThgLz1O0UyxmLnc0ZS4BPR70YNhWIo3xXEwGVzRdGJzmNU0J
+         WlRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBzDmGijje276a691+RYILEa5MciQAAd0GIO3fwqp3kSOC3Zz4ELw93CLcFA5JnulkiYO7cHzQzh/E4eaOhEa57Q==@vger.kernel.org, AJvYcCVDGzO/TgDP/gXjgRdNbdBRXL6VLEwQwQ8EbbtpTmk9ONIls/DX5R0asUnbFGuITpsN8odJs8WHTmaIsXQ=@vger.kernel.org, AJvYcCVqN/SD+AcRnRigRJ85KzXvJpPaKnq0OWVA6h/5w+5kDFjVblnaho5b/ZtzHCOwLtyHWxVzf//y@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEMqM5zKzoJslUyTHpwTc0Un6w8Ud1f5eTEVh0s0lIUO7d83k3
+	A15su7tuo0cUN/EOGG4/XLrCT2sDBgOAsgJ5bUlyKntF+m+Ql0kh
+X-Gm-Gg: ASbGncuaY0h62XLoab5L0QcP8lCVXAoWQwswozXsDabNePBQ/XMLYYoiZ+YSxE4Wp0W
+	5Y5Nh7YDCXtSQVU9Y82xWsQqW5+Rwe0Vs0fPftT0kTfXtQzj04tDuvQDWZDgFwu/j3hEd1ycNqH
+	3PsAEtb8XNLx8VheLsSytRqjz0I1JwOQaM1+zd3cFnGnzoA04ukEKcGfyax6e7uGW/zSw0k0Jvt
+	7xLmv0Gsz5GHC+52NMY4vH6Pd6qxR4vB3LAvxlfIq/si6Xg+/ys48rkq8PpB0aDr9nmcCYWLJQV
+	Mo9O
+X-Google-Smtp-Source: AGHT+IHizzILtGkGZld4afmwIQGr0ZCEhjHEDFw/DW/9vITEgpcIGs3KbA21Eq13Yw77XhMITKs3Hw==
+X-Received: by 2002:a17:902:e807:b0:215:6995:1ef3 with SMTP id d9443c01a7336-21614d1d441mr153586085ad.3.1733751754538;
+        Mon, 09 Dec 2024 05:42:34 -0800 (PST)
+Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21644dcf724sm23863525ad.257.2024.12.09.05.42.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 05:42:33 -0800 (PST)
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org
+Cc: mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org,
+	irogers@google.com,
+	kan.liang@linux.intel.com,
+	adrian.hunter@intel.com,
+	jserv@ccns.ncku.edu.tw,
+	chuang@cs.nycu.edu.tw,
+	linux-perf-users@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf ftrace: Fix undefined behavior in cmp_profile_data()
+Date: Mon,  9 Dec 2024 21:42:26 +0800
+Message-Id: <20241209134226.1939163-1-visitorckw@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209-net-mptcp-check-space-syn-v1-1-2da992bb6f74@kernel.org>
-In-Reply-To: <20241209-net-mptcp-check-space-syn-v1-1-2da992bb6f74@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 9 Dec 2024 14:34:06 +0100
-Message-ID: <CANn89iLipfRa2jj7bXNQzx4ocgbD2C+z8+cYChQfPRwQ2SoiEw@mail.gmail.com>
-Subject: Re: [PATCH net] tcp: check space before adding MPTCP SYN options
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, "David S. Miller" <davem@davemloft.net>, 
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>, Christoph Paasch <cpaasch@apple.com>, 
-	Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, MoYuanhao <moyuanhao3676@163.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 9, 2024 at 1:28=E2=80=AFPM Matthieu Baerts (NGI0)
-<matttbe@kernel.org> wrote:
->
-> From: MoYuanhao <moyuanhao3676@163.com>
->
-> Ensure there is enough space before adding MPTCP options in
-> tcp_syn_options().
->
-> Without this check, 'remaining' could underflow, and causes issues. If
-> there is not enough space, MPTCP should not be used.
->
-> Signed-off-by: MoYuanhao <moyuanhao3676@163.com>
-> Fixes: cec37a6e41aa ("mptcp: Handle MP_CAPABLE options for outgoing conne=
-ctions")
-> Cc: stable@vger.kernel.org
-> Acked-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> [ Matt: Add Fixes, cc Stable, update Description ]
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+The comparison function cmp_profile_data() violates the C standard's
+requirements for qsort() comparison functions, which mandate symmetry
+and transitivity:
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+* Symmetry: If x < y, then y > x.
+* Transitivity: If x < y and y < z, then x < z.
+
+When v1 and v2 are equal, the function incorrectly returns 1, breaking
+symmetry and transitivity. This causes undefined behavior, which can
+lead to memory corruption in certain versions of glibc [1].
+
+Fix the issue by returning 0 when v1 and v2 are equal, ensuring
+compliance with the C standard and preventing undefined behavior.
+
+Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+Fixes: 0f223813edd0 ("perf ftrace: Add 'profile' command")
+Fixes: 74ae366c37b7 ("perf ftrace profile: Add -s/--sort option")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+---
+ tools/perf/builtin-ftrace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
+index 272d3c70810e..a56cf8b0a7d4 100644
+--- a/tools/perf/builtin-ftrace.c
++++ b/tools/perf/builtin-ftrace.c
+@@ -1151,8 +1151,9 @@ static int cmp_profile_data(const void *a, const void *b)
+ 
+ 	if (v1 > v2)
+ 		return -1;
+-	else
++	if (v1 < v2)
+ 		return 1;
++	return 0;
+ }
+ 
+ static void print_profile_result(struct perf_ftrace *ftrace)
+-- 
+2.34.1
+
 
