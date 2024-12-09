@@ -1,89 +1,107 @@
-Return-Path: <stable+bounces-100250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1849C9EA04B
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 21:32:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D5D9EA0AA
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 21:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D321016665B
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 20:32:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6A11886267
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 20:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA2D19C54B;
-	Mon,  9 Dec 2024 20:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930DC199EB2;
+	Mon,  9 Dec 2024 20:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hc3HPJWh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bnfm/eJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B647223315A;
-	Mon,  9 Dec 2024 20:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DF21E515
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 20:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733776322; cv=none; b=TRXlL6cMY4rcYmV2677XHtPZQNCjv51o6DJIKThRagJDIoUzIwaJIoRMWXkTJZPaiv3lVmKj0/uj/uMu+uDK1nstRfeGvs926nsdCo4YkeIH5MLlLCOSg2DfePFqAHAmmZto0MKPsD28d8dbDDx/4UWniN8pcYfgOT5+YTr/hy8=
+	t=1733777744; cv=none; b=MBFfAihEh3m/XgZNOLB0OEP2vBf4OCvEBtpFiz9405zjK9okDte4xGMU6nafEly2Mn0/3LN+t0r5EpWSqnieOZz4CBq//xlZ+a7j3UYfjXvMIdq2dJ1f46dTE6KrgG/z6I5rr89D8Pf9ApP7ifW/oymPIm9Hhp22C5H1u2hIXJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733776322; c=relaxed/simple;
-	bh=wpgzYV9P/iqfJu/uKuikGtFuJPC6IBtMiMfoMSv56sM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QSUb9r05Pt87H818KIvN/kfzlTU+Cr1wvkIFE/38QCTgcLx8VArWkOsWbEXULpv+R2ELFDdk5mvZXvJ3C6PYjQjwuJ/pKIQli192n0mlPgl6M34nhv+Fos59rqZqmXVPvUwDxy1lD4nkBCL7U8lhPPPt9Oa9EIHWYbY2PuGiEfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hc3HPJWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAF4C4CED1;
-	Mon,  9 Dec 2024 20:32:01 +0000 (UTC)
+	s=arc-20240116; t=1733777744; c=relaxed/simple;
+	bh=e8wUWjX7DX+o2Vdp8yIr6YN/rUoSgwQiyxGpqJvz4SA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R9vvJAsgIrKH97NuRwhCrMBYCux7k9Ztyk0igXDEYK4P3g3YN5iwDXfPbMI/4yvvD84X60lbMjoSPGOnqrcD/CqQf4DZMeO1AUk2GpZK1HscFi59jf5Hap9sERe/dZusSGjieow5Yl9l5eHXaQqzer4XHg79u9xqfF4+UdYPub4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bnfm/eJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA7CC4CED1;
+	Mon,  9 Dec 2024 20:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733776322;
-	bh=wpgzYV9P/iqfJu/uKuikGtFuJPC6IBtMiMfoMSv56sM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hc3HPJWhRXcHBxhmPwUYAYM77Ohadjum2ZaPWO+920b5ZpqNB17fExI0q179iPPwU
-	 Tdp5zJajw4LlTgRYxYdKHjde4CvcKowmgHaOzg7uqbwBU+8Uyj1mPD/wgKjrRBZvha
-	 QltwfxUBz1kAfl3S4s72woG4sJKt+m1aidlCTh5SmVNez/SrbnMpEWcZYxlQEhRJta
-	 Cl1SedwtzZnE45u0eVpxeKTn21ieP29RLbj1vs+i6kJsoTp6eytB7c6FvLEdpYw8kf
-	 e9Sfy1AmzyQD43XeOYRrToZc3dwK4fJHI8evPjj5+deqvrk2nRzbGmLHe0rQcpMrEs
-	 k5JO8Nr42k/DQ==
-Date: Mon, 9 Dec 2024 14:32:00 -0600
-From: Rob Herring <robh@kernel.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Saravana Kannan <saravanak@google.com>,
-	Leif Lindholm <leif.lindholm@linaro.org>,
-	Stephen Boyd <stephen.boyd@linaro.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 04/10] of: Fix refcount leakage for OF node returned by
- __of_get_dma_parent()
-Message-ID: <20241209203200.GA925532-robh@kernel.org>
-References: <20241206-of_core_fix-v1-0-dc28ed56bec3@quicinc.com>
- <20241206-of_core_fix-v1-4-dc28ed56bec3@quicinc.com>
+	s=k20201202; t=1733777744;
+	bh=e8wUWjX7DX+o2Vdp8yIr6YN/rUoSgwQiyxGpqJvz4SA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Bnfm/eJUph8FVgbCZ2N5M063PD41p41AibGWGCc8EIzAgCv5b1Arl02lKwrXgNqB1
+	 FpvQHnvzL29jJmp+Bbd8jVtJRvZXTuKdytgd8uFWvktMxGb9LtGt5ydCFdfGPkSrbt
+	 0rfhsRtO5/rJVTxyRVqa/1zXE4iQbI/w9qgFYvJJOrpBY/aEhPoYu8Et++CsH58btR
+	 3uHXwBJjIe7c4dPp7rWKa3z6z8zU11MJUSF8VIcJ6W+n/whlz7Cer16pmWeo+pjyV9
+	 LQa3/W4/ttFJ0LkPRpAe/yLP5lvPiHioY0pC6svhKruV8j4cieXYNZ8dh4AZyVEz9j
+	 IQQlQGHk62SiQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y 3/3] scsi: sd: Fix sd_do_mode_sense() buffer length handling
+Date: Mon,  9 Dec 2024 15:55:41 -0500
+Message-ID: <20241209152530-c6925bd714abdab5@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241209170330.113179-4-kovalev@altlinux.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241206-of_core_fix-v1-4-dc28ed56bec3@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 06, 2024 at 08:52:30AM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> 
-> __of_get_dma_parent() returns OF device node @args.np, but the node's
-> refcount is increased twice, by both of_parse_phandle_with_args() and
-> of_node_get(), so causes refcount leakage for the node.
-> 
-> Fix by directly returning the node got by of_parse_phandle_with_args().
-> 
-> Fixes: f83a6e5dea6c ("of: address: Add support for the parent DMA bus")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  drivers/of/address.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+[ Sasha's backport helper bot ]
 
-Applied, thanks.
+Hi,
 
-Rob
+The upstream commit SHA1 provided is correct: c749301ebee82eb5e97dec14b6ab31a4aabe37a6
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Vasiliy Kovalev <kovalev@altlinux.org>
+Commit author: Damien Le Moal <damien.lemoal@wdc.com>
+
+
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (different SHA1: c82cd4eed128)
+5.10.y | Not found
+
+Note: The patch differs from the upstream commit:
+---
+1:  c749301ebee82 ! 1:  f6b467ad3c189 scsi: sd: Fix sd_do_mode_sense() buffer length handling
+    @@ Metadata
+      ## Commit message ##
+         scsi: sd: Fix sd_do_mode_sense() buffer length handling
+     
+    +    commit c749301ebee82eb5e97dec14b6ab31a4aabe37a6 upstream.
+    +
+         For devices that explicitly asked for MODE SENSE(10) use, make sure that
+         scsi_mode_sense() is called with a buffer of at least 8 bytes so that the
+         sense header fits.
+    @@ Commit message
+         Link: https://lore.kernel.org/r/20210820070255.682775-4-damien.lemoal@wdc.com
+         Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    +    Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+     
+      ## drivers/scsi/sd.c ##
+     @@ drivers/scsi/sd.c: sd_do_mode_sense(struct scsi_disk *sdkp, int dbd, int modepage,
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.10.y       |  Success    |  Success   |
 
