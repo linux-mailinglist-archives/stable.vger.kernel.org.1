@@ -1,119 +1,94 @@
-Return-Path: <stable+bounces-100178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA5D89E9718
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3479E9717
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:33:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75CF18890B6
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD16D1889DAB
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FB4233132;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4451F1E9B0D;
 	Mon,  9 Dec 2024 13:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="Wso66Tc9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5LNn6Qu"
 X-Original-To: stable@vger.kernel.org
-Received: from ci74p00im-qukt09082501.me.com (ci74p00im-qukt09082501.me.com [17.57.156.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC4E233133
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.156.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68551ACEC0;
+	Mon,  9 Dec 2024 13:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733750809; cv=none; b=N+lqDVpDsMmX1dTuZao8EsoUwV8dVM/fzCRpjRot8vJqjViFjm28HPHwQtp2h4sWQ42ZzAndFirPTXqRoJ9ecOl96nbRJFvCvS3mdyvMvwYCwO+GLjXSgxSb5Ufg6VXoeEJsc46FysFZgXEdGCNkrF+bns7r53HKa2KrwF1MuD0=
+	t=1733750809; cv=none; b=oGaI3UsQBGHIcT4sGlW1U8XZFKeWaWSfF3vNW6mlNCL7pfo/BZe/u8Ij0S46gw/F/UUgWUaKn9FgRadjs3jiSOWFoI/3NTG/se4h95Dzr8SJ9UDuGaCt62vbDt5f2pmHA3RsY059B8/Zc6eNg1nvDip7+9aXm21kGh1S4BznhpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733750809; c=relaxed/simple;
-	bh=K0Lwr+5Zc7hqtyeiWM0OCk8PT5tW57AsknNOd5lB1Dk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oDT3U+w7P7Q8pZLk6UaMuPLBZ98nTmYtNORl14RrEhhBhuViHGmnTia6dtvLDXLTvW0B3DpyFplr4MNHUiBiOy4FEGcP53GVsLwu/ApVrRmqqFY2ZBhUkjldt4CjK+KKqW5Pqmdof9xzCR95i+eiFJjZXMLI6YFSmHu53uTwcRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=Wso66Tc9; arc=none smtp.client-ip=17.57.156.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733750807;
-	bh=o+mb1+yAyOmCC9VR27IaIt7teFx55tYGAzUNXG1KmaU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
-	 x-icloud-hme;
-	b=Wso66Tc9D+q1txBNGW41589RkhLNh3tjT/q7i4ups0/XZb4hY7jNrnSdkUbJSLzU8
-	 bQ88UlhyUPk+iDNeG7dIwSV/HnQZLNeWzfp/QH+T7PyzEvccAZhpidDODrCfa8jDNH
-	 YbRCw4WaXqpQkRjP27+5ZuyQeIAIQZSjrjRAYrFu9rkdQZUIb9DoKTSYFUNRf4L+Jh
-	 BoqzGPd81n2WwiDXnrp+M46qQbnOEc7nzJoGntMxMQuIIxakvGpuZcnZKU1t/DFjOO
-	 IIbczDQyslVs2aCGzP1q7OCCMHAVpF/hd4uXw+i6TyEs7ZGwLC4gjFOJf39l4CrjpF
-	 VTxbw2FMKIJPQ==
-Received: from [192.168.1.26] (ci77p00im-dlb-asmtp-mailmevip.me.com [17.57.156.26])
-	by ci74p00im-qukt09082501.me.com (Postfix) with ESMTPSA id A10FB4AA010B;
-	Mon,  9 Dec 2024 13:26:40 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Mon, 09 Dec 2024 21:25:06 +0800
-Subject: [PATCH 8/8] of/irq: Fix device node refcount leakage in API
- irq_of_parse_and_map()
+	bh=HrxdnU3SHqNfb11C7hkI7FJu/c2hKnEQalteFfFDM+c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VWp4ud32oBv3p8TS88o5ZrOJJrEtQR+jAQt6oF/HjpmYSpvLQJfw9DsF3jLAhAdTHApAv3TFVdvNGmxbM8Znx/Cc5cSOhhM+n3vT/damvKA6Te/ogDHuYwbTVR80BRnDECSxAiRRvYrqDn0XxptF+mrMeyszC0HYbshah30BAbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5LNn6Qu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D923C4CEE6;
+	Mon,  9 Dec 2024 13:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733750808;
+	bh=HrxdnU3SHqNfb11C7hkI7FJu/c2hKnEQalteFfFDM+c=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=E5LNn6QuOyH8zYg3d+MSlaHyvO/ArHWOQlYckRGfbPtFCaCSw6h5zFqK+NUv/5tYg
+	 KqJKso4dPdageQF9o7p3KdtLaPBvKDkzKg7BZaHNLwEuJblr6SkStEsFid5qXGaHTi
+	 ywQnti0LuiIBilV8ITDpZ5aYTof0UGAiq2i+DprcDk1INxoA5E5W/jgqCuGTKHPcNa
+	 ij+/7kAXoh7PC4Rt8nE43bkwXUhruUKDHWYU2xU+JkLzAxZjIiYIJ5vtykA3MI1wvl
+	 ZQVNVfI8OHNyVOaSfK4VwqvfZ2LEI9EfQfSX289+OAIehN6t7/vpqGldZY6OcCzEJt
+	 MmbLqF6kGDWGw==
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e39f43344c5so4308823276.1;
+        Mon, 09 Dec 2024 05:26:48 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVImSjiEpu3YZrYlzMdiyZjBcVizszgaps4PXDVW6ncfiYtfvrbptkYQW8/b8lwS84sFP16ElPy7zcq@vger.kernel.org, AJvYcCVedSngUHihW8WI7H0XPtuWKdexm7CCEAalMeRVPbgCiMLT1NRO3i9r6hCpVw7QHaCEp+QrLZ0P@vger.kernel.org, AJvYcCW3K1s4pGHMPs4+fTLwFk6JAWGsrt3ALXx6ko/tkk0P0jd2HiypQRcp+FItG30U4ZfXaxem+BxF1Gt4hU7w@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBFiJ0dxILfZq2jo4ReWutjmBtPH5ulxXKwg4kmbDIk4h3ylOn
+	U8wmhebZWiP1cXAzlVWe8G6Y0yZ6MVVBPJOBdGr8hbqQqQEuQaoEP7J9EUxL6NXXboHFw9RJLFv
+	ch3BNFjfA9sJh10lKxrWIA+5wBA==
+X-Google-Smtp-Source: AGHT+IEuFoUDEMVC4Fc96+M6wpsqZ9pSoqWs9ryP9PAOzxwgyi3vXQId+RgciARGpopRBq57vy6ScMYUwEf1ed9ZI78=
+X-Received: by 2002:a05:6902:2202:b0:e39:8cfe:9d36 with SMTP id
+ 3f1490d57ef6-e3a0b0c8440mr10658612276.20.1733750807729; Mon, 09 Dec 2024
+ 05:26:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241209-of_irq_fix-v1-8-782f1419c8a1@quicinc.com>
-References: <20241209-of_irq_fix-v1-0-782f1419c8a1@quicinc.com>
-In-Reply-To: <20241209-of_irq_fix-v1-0-782f1419c8a1@quicinc.com>
-To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>, Marc Zyngier <maz@kernel.org>, 
- Stefan Wiehler <stefan.wiehler@nokia.com>, 
- Grant Likely <grant.likely@linaro.org>, Tony Lindgren <tony@atomide.com>, 
- Kumar Gala <galak@codeaurora.org>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Julia Lawall <Julia.Lawall@lip6.fr>, Jamie Iles <jamie@jamieiles.com>, 
- Grant Likely <grant.likely@secretlab.ca>, 
- Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Zijun Hu <zijun_hu@icloud.com>, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Rob Herring <rob.herring@calxeda.com>, 
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+References: <20241206-of_core_fix-v1-0-dc28ed56bec3@quicinc.com> <20241206-of_core_fix-v1-2-dc28ed56bec3@quicinc.com>
+In-Reply-To: <20241206-of_core_fix-v1-2-dc28ed56bec3@quicinc.com>
+From: Rob Herring <robh@kernel.org>
+Date: Mon, 9 Dec 2024 07:26:36 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJPBSJSdSW6F9YERGaRZ5bngbZBy8f5SHKTYnyDuZKk4g@mail.gmail.com>
+Message-ID: <CAL_JsqJPBSJSdSW6F9YERGaRZ5bngbZBy8f5SHKTYnyDuZKk4g@mail.gmail.com>
+Subject: Re: [PATCH 02/10] of: Correct return value for API of_parse_phandle_with_args_map()
+To: Zijun Hu <zijun_hu@icloud.com>
+Cc: Saravana Kannan <saravanak@google.com>, Leif Lindholm <leif.lindholm@linaro.org>, 
+	Stephen Boyd <stephen.boyd@linaro.org>, Maxime Ripard <mripard@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Grant Likely <grant.likely@secretlab.ca>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Thu, Dec 5, 2024 at 6:53=E2=80=AFPM Zijun Hu <zijun_hu@icloud.com> wrote=
+:
+>
+> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>
+> @ret is used by of_parse_phandle_with_args_map() to record return value
+> and it is preseted with -EINVAL before the outer while loop, but it is
+> changed to 0 by below successful operation within the inner loop:
+> of_property_read_u32(new, cells_name, &new_size)
+>
+> So cause 0(success) is returned for all failures which happen after the
+> operation, that is obviously wrong.
+>
+> Fix by restoring @ret with preseted -EINVAL after the operation.
 
-In irq_of_parse_and_map(), refcount of device node @oirq.np was got
-by successful of_irq_parse_one() invocation, but it does not put the
-refcount before return, so causes @oirq.np refcount leakage.
+Already have a similar fix queued up.
 
-Fix by putting @oirq.np refcount before return.
-
-Fixes: e3873444990d ("of/irq: Move irq_of_parse_and_map() to common code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/of/irq.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 29a58d62d97d1ca4d09a4e4d21531b5b9b958494..b43c49de935c76cbf1e49391517dd7b1a569b7fa 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -38,11 +38,15 @@
- unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
- {
- 	struct of_phandle_args oirq;
-+	unsigned int ret;
- 
- 	if (of_irq_parse_one(dev, index, &oirq))
- 		return 0;
- 
--	return irq_create_of_mapping(&oirq);
-+	ret = irq_create_of_mapping(&oirq);
-+	of_node_put(oirq.np);
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(irq_of_parse_and_map);
- 
-
--- 
-2.34.1
-
+Rob
 
