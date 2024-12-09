@@ -1,154 +1,177 @@
-Return-Path: <stable+bounces-100167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4529E967A
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:22:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A8E89E96B4
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:27:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 867A416AE39
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:23:36 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA451A239D;
+	Mon,  9 Dec 2024 13:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b0MC7bdi"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF8BB283BA5
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:22:40 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BF0222D48;
-	Mon,  9 Dec 2024 13:15:45 +0000 (UTC)
-X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E1E1B0404;
-	Mon,  9 Dec 2024 13:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF251A239A
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733750145; cv=none; b=Ad+5Y9IhyVOqNi+Oz8tHR6UjubObZto7AWjCCfImbj2SPbQSGZ5apdHJr4qpDepaD05lImhGpS6/jUeXDpasaLt1gr9INOhfuvBUMlYkP+oEG3XwwQxqFlySkhyxfmz0HzevR6GmUmHNUqbiJ+gjh/O9rt1sky8AfRQEQRNCQNI=
+	t=1733750302; cv=none; b=iYRhCpfPFw2hYA/j/fZnkZ7z1YffZyMMGzEvnCJVvxhfkM3T1EUFeV9VAdOslnGqeAaHe6JCEoxnX8/c7s7KruN5Wy0kS1WVDFqy4YHSUYvPZXWoifaDMh3Sl50V4XsJtGoWbITRrPTn7OygiHPM2y0uJuoKD6/kr8IqYYIptck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733750145; c=relaxed/simple;
-	bh=lh/Nf8r8mXVMnZOUdv/stO7zBDdteR2rS6iLVzqqYwQ=;
+	s=arc-20240116; t=1733750302; c=relaxed/simple;
+	bh=IKpdyTxaL6MHQtXFHVt4rKA2u0Wimp9puiY3v89GaLE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=C7GSyzrsVFduYyZqerklGNn9rhWORwjp5riQDsil7LTXJgvLOYUjf/NE5ZF4JU282RMSWcAMgbQRZqRwg3w97dniqHEpMoiB23qNoEO/MvFsZASu4HqGcbLxwRYkAURzWdK64u1nyRdELGmLu9JtElYURbQP4B6g2Y3N4rkQAwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6d900c27af7so16703446d6.2;
-        Mon, 09 Dec 2024 05:15:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733750140; x=1734354940;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uIGy8FeFMEG5S1lHlLlnwF/0gV8yzkzOW8jZGh+/bqk=;
-        b=P7742JeJ3EuVKWoQ8OFs9G0XjW4JDEnURVT6fEkhweuoesi4GaotWN0eGfKI1Y84bU
-         Dqm4fP/1ahLdH8uqhfP3J64WPnMq7C+VhC4Lgq7u//8i117nY6TpGCvbbkq0UeAEPEPs
-         GiRjuS4+JAYpsAmn0Zxf15vQ3OV+cAX8LhszqoAhtZB++avQ4R+d2v2QcRji0ggx9AyP
-         SDRLvk+YHLNk4GghKIihN9cbCsCpDthh4tkOpFCcFFCFKhz4ETrqqgoDrg0VHh+uNTFX
-         A2M3dx8SgwXEsJbXLWn5VMNzyrmValLenX9VklzdIIXs8R8nIFu/D3VrbZaw13isfYle
-         Y1Jw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3XbUz9oWh3EcGNmhpI6rz127fSQJo0YcyoR4/vfLEg+fG/ZajMqK9a7WYJqWdxYUDyVC+cXbSk8N+iJhrFX/1P1k=@vger.kernel.org, AJvYcCUR4P6Is6cV92a/hWq3tB1FhG+nqYxFAOkl5QjFg/Bw+Dial1O5h8M3s5dQ8R9Ha+oPDMB92rnE@vger.kernel.org, AJvYcCUqmLTnuE0dTHGBINKjAoyyZtNeFc6mBkUw/SGJt6R88JqPLfSvp0qFN8Hg+8m+XpweSvIFIHZ7tSHU+Tg=@vger.kernel.org, AJvYcCUsWjqtp9MLPPEU1zIQZsa1ly/kKt6HjodA/AbJ1TCG8G2zUS9PG12t7TLrlAnVvdQ8ojcbW+37DjuX@vger.kernel.org, AJvYcCV438ofmlFsDfXSdMAHCmb32mYtMqW7JUz9CQRqkscmdA7anEkCxT04zwnMDPpz4+0Ikm9pkUtbsR9wLbqj@vger.kernel.org, AJvYcCVe6C570aLWJwJQv2tjwXGea1OfMgTOEAXHMb+yGOt/8leQrQwnXq+nG/0KMkkrLFHudd2VwDzEeOVY@vger.kernel.org, AJvYcCVy4OD+li3CeYLsb/pn9kDcMlf6kVpnvnEzo3mejxvD2eBY9KwzBFUMmKSYOx7c4tXFnczWdgjLiXdfsw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfGX/Y9HDimJVpwshvMTm5giVy+17qjg1dBXJOJ5Ya4de60glg
-	sFjJCCmMgSYr0HZ2UQ9Ax9MjL9W79gtrEdmfYc/gUl3VlYhpvN7zLjWoNXmaJfY=
-X-Gm-Gg: ASbGnctl4j16MrhKux2IRmN9d35ovyPJZ8nTTQfzyVrOWA6DcRpqED0dUxIiMmk3trv
-	6AfS4KO0D3n1efd6gd2QkYYzAql3y9AFjnPfSfXrg8ppWLKEJemMZzngHAhXW6ZGajF1Urusxsr
-	wcVGdjCd2ADF8N03izWfe0QVFvBk3HwbOYfWUHUjMqKCRE3c6x+Xgi7ssriQdPbe00CwdWDiGig
-	80A6bKVq8x6Av3jTWXIkZohY6eXuM9e+DozVWgqHyGjCjYB3PXHorc4s3jtpsx4OnHuVL230xQa
-	qHM3maUYILFPv8c7
-X-Google-Smtp-Source: AGHT+IHrqWZIuvIEmy43fVOVGVVSkwU8XBB5DoBQnnvQtgovpWb4fbtF1e8jZLXcDYXLGg2YT4k8vQ==
-X-Received: by 2002:a05:6214:d88:b0:6d8:880b:665d with SMTP id 6a1803df08f44-6d8e73e8b96mr191295966d6.41.1733750140461;
-        Mon, 09 Dec 2024 05:15:40 -0800 (PST)
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com. [209.85.222.180])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d8f79157f6sm27242336d6.54.2024.12.09.05.15.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Dec 2024 05:15:39 -0800 (PST)
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b6cade6e1fso123588185a.2;
-        Mon, 09 Dec 2024 05:15:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV89GsC/RqBPcYvZEKGXnzQWWaYE0e29YWk6MsHpyUAMtqEn2vKw//txHgiduJ+RKEzmMBOyTMYtSoj5w==@vger.kernel.org, AJvYcCVddHqW4hnsjGsHVekLUp4RxyD8xjH85snkyNgABVrQefF+Yv97RVANRFtOPW0Cqb5XAY4/K14h@vger.kernel.org, AJvYcCVg7vdjiGu39T5LQxNEdt4nrPBU6azZRBz4tBa74wB+h/iT+z3CZxDf5RUNhBR9I6T/oUDlORzbDe/7QJed@vger.kernel.org, AJvYcCWAYgxHvD6m3tQd4UB4jJUDKkeu3sxFsuFIbnrUYXVWewkvF6+J1XzdNWM5nX2MEGrIDqRdaK0HMtpRHFY=@vger.kernel.org, AJvYcCWC4xZWpq9oaLKEjHL4964U3hBnOaJJn6cb7HYPGWp0hewO5UglaRqaCErp3mzW4Lnleg9ul/MCX9F9@vger.kernel.org, AJvYcCWFleGVAFG9hZSPXS5GRjF/BBlXCRW4TtL5ooVEAjiFaimWmQzPvbC5g6BeBez4dW1NM8/GQhpEecEPCUHl29l+2Y8=@vger.kernel.org, AJvYcCWp2a6atfaLVfvbIPWTjF24Qe6OgSTJNf/dO+xoJLg5pU7m6XM7wrJI53PJX6NkIm/oKKTBVx3Rr03H@vger.kernel.org
-X-Received: by 2002:a05:620a:2912:b0:7b6:d4df:28a7 with SMTP id
- af79cd13be357-7b6d4df2b49mr526820785a.38.1733750138520; Mon, 09 Dec 2024
- 05:15:38 -0800 (PST)
+	 Cc:Content-Type; b=I8gbmf0G07t+gWgD02/eDKFaZZUDEIfcyeA9bpSpEazTITKVpyQIZqMXgClmKUfh6qWQSHFWgHl1R8lTdrB4T+h0YtP+kch1sZZ+5+IjfmxZlyjoxOTUSER/907Cl2f/AMLO5qdguCh0lVRyo8QjgOKuT9nygUV9v84P794DPEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b0MC7bdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DA0C4AF0B
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:18:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733750302;
+	bh=IKpdyTxaL6MHQtXFHVt4rKA2u0Wimp9puiY3v89GaLE=;
+	h=References:In-Reply-To:From:Date:Subject:Cc:From;
+	b=b0MC7bdicccUdWj4HvtRFAm3v5BODcJAsqXp0HjMaRSaCz+m+lqx0XGgwCLyMmZYx
+	 3PCIMg6FrdiyHC8agM3Hy62Z3813iP5O1Cd2d5F7BAgjIHyP17HBrPRNAN5xHM7QKp
+	 hk+1lIbY6V3fPwotjtUj45r8aZBZ0p47kl1M/AARpk+qrHyon4SmFoPLKx9yXNmh3Z
+	 8yuDqp/zV3o/2BHH1DrD92IbgObnTWjxzq+EW67ZTJDbCWSgcLC9wIGXXF2RpH5VXF
+	 sUeBETRieXkd0JMj121y64BUa7/Zzap4Yc62kzzeMroJ1gEden+8AdYsq7aBEKokFG
+	 pjP3TPVrdKuZA==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30167f4c1e3so14231381fa.3
+        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 05:18:22 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW46uBYMB14JRAk+RpDP3rldgiywjFysQH2AnjTB7bG5+Wl3HccI6chZmMlH2yz+e/Gr24ktOQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzl5oW13JjWjjurU7Tg9Wal52mvbnExmhFyv5FvmE+i6MAX166r
+	ZMdZMtoMEIZInCsbl1VQvxgDqLmb5eH1MNuTWkQC5Y+Aa3zG/ewQiw1uukLqEL29RdNWzDZuXG8
+	SRXV/oN7L4ukU1Sd93qU3ucCRZ28=
+X-Received: by 2002:a05:651c:19a9:b0:300:33b1:f0e2 with SMTP id
+ 38308e7fff4ca-3022fb3859emt1236351fa.3.1733750300533; Mon, 09 Dec 2024
+ 05:18:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241113133540.2005850-1-claudiu.beznea.uj@bp.renesas.com> <20241113133540.2005850-7-claudiu.beznea.uj@bp.renesas.com>
-In-Reply-To: <20241113133540.2005850-7-claudiu.beznea.uj@bp.renesas.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 9 Dec 2024 14:15:26 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUa9GnzOMOBhpQcX88Yy2qvgKmKMdeEwEVo-OXgr-3SMg@mail.gmail.com>
-Message-ID: <CAMuHMdUa9GnzOMOBhpQcX88Yy2qvgKmKMdeEwEVo-OXgr-3SMg@mail.gmail.com>
-Subject: Re: [PATCH v3 06/25] ASoC: renesas: rz-ssi: Terminate all the DMA transactions
-To: Claudiu <claudiu.beznea@tuxon.dev>
-Cc: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, biju.das.jz@bp.renesas.com, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, lgirdwood@gmail.com, 
-	broonie@kernel.org, magnus.damm@gmail.com, linus.walleij@linaro.org, 
-	perex@perex.cz, tiwai@suse.com, p.zabel@pengutronix.de, 
-	linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+References: <20241205150229.3510177-8-ardb+git@google.com> <20241205150229.3510177-9-ardb+git@google.com>
+In-Reply-To: <20241205150229.3510177-9-ardb+git@google.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 9 Dec 2024 14:18:09 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXFUVS_TdQb_Q_ta1BfSMUnAtB7zJpxDDtkFX6Q3tiUtcA@mail.gmail.com>
+Message-ID: <CAMj1kXFUVS_TdQb_Q_ta1BfSMUnAtB7zJpxDDtkFX6Q3tiUtcA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] arm64/mm: Reduce PA space to 48 bits when LPA2 is
+ not enabled
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Kees Cook <keescook@chromium.org>, 
+	Quentin Perret <qperret@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Claudiu,
-
-On Wed, Nov 13, 2024 at 2:35=E2=80=AFPM Claudiu <claudiu.beznea@tuxon.dev> =
-wrote:
-> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+On Thu, 5 Dec 2024 at 16:03, Ard Biesheuvel <ardb+git@google.com> wrote:
 >
-> In case of full duplex the 1st closed stream doesn't benefit from the
-> dmaengine_terminate_async(). Call it after the companion stream is
-> closed.
+> From: Ard Biesheuvel <ardb@kernel.org>
 >
-> Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-
-Thanks for your patch!
-
-> Changes in v3:
-> - collected tags
-> - use proper fixes commit SHA1 and description
-
-I am not sure which one is the correct one: the above, or commit
-26ac471c5354583c ("ASoC: sh: rz-ssi: Add SSI DMAC support")...
-
-> --- a/sound/soc/renesas/rz-ssi.c
-> +++ b/sound/soc/renesas/rz-ssi.c
-> @@ -415,8 +415,12 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, stru=
-ct rz_ssi_stream *strm)
->         rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
+> Currently, LPA2 kernel support implies support for up to 52 bits of
+> physical addressing, and this is reflected in global definitions such as
+> PHYS_MASK_SHIFT and MAX_PHYSMEM_BITS.
 >
->         /* Cancel all remaining DMA transactions */
-> -       if (rz_ssi_is_dma_enabled(ssi))
-> -               dmaengine_terminate_async(strm->dma_ch);
-> +       if (rz_ssi_is_dma_enabled(ssi)) {
-> +               if (ssi->playback.dma_ch)
-> +                       dmaengine_terminate_async(ssi->playback.dma_ch);
-> +               if (ssi->capture.dma_ch)
-> +                       dmaengine_terminate_async(ssi->capture.dma_ch);
-> +       }
-
-rz_ssi_stop() is called twice: once for capture, and a second time for
-playback. How come that doesn't stop both?
-Perhaps the checks at the top of rz_ssi_stop() are not correct?
-Disclaimer: I am no sound expert, so I may be missing something...
-
+> This is potentially problematic, given that LPA2 hardware support is
+> modeled as a CPU feature which can be overridden, and with LPA2 hardware
+> support turned off, attempting to map physical regions with address bits
+> [51:48] set (which may exist on LPA2 capable systems booting with
+> arm64.nolva) will result in corrupted mappings with a truncated output
+> address and bogus shareability attributes.
 >
->         rz_ssi_set_idle(ssi);
+> This means that the accepted physical address range in the mapping
+> routines should be at most 48 bits wide when LPA2 support is configured
+> but not enabled at runtime.
+>
+> Fixes: 352b0395b505 ("arm64: Enable 52-bit virtual addressing for 4k and 16k granule configs")
+> Cc: <stable@vger.kernel.org>
+> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/arm64/include/asm/pgtable-hwdef.h | 6 ------
+>  arch/arm64/include/asm/pgtable-prot.h  | 7 +++++++
+>  arch/arm64/include/asm/sparsemem.h     | 4 +++-
+>  3 files changed, 10 insertions(+), 7 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/pgtable-hwdef.h b/arch/arm64/include/asm/pgtable-hwdef.h
+> index c78a988cca93..a9136cc551cc 100644
+> --- a/arch/arm64/include/asm/pgtable-hwdef.h
+> +++ b/arch/arm64/include/asm/pgtable-hwdef.h
+> @@ -222,12 +222,6 @@
+>   */
+>  #define S1_TABLE_AP            (_AT(pmdval_t, 3) << 61)
+>
+> -/*
+> - * Highest possible physical address supported.
+> - */
+> -#define PHYS_MASK_SHIFT                (CONFIG_ARM64_PA_BITS)
+> -#define PHYS_MASK              ((UL(1) << PHYS_MASK_SHIFT) - 1)
+> -
+>  #define TTBR_CNP_BIT           (UL(1) << 0)
+>
+>  /*
+> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
+> index 9f9cf13bbd95..a95f1f77bb39 100644
+> --- a/arch/arm64/include/asm/pgtable-prot.h
+> +++ b/arch/arm64/include/asm/pgtable-prot.h
+> @@ -81,6 +81,7 @@ extern unsigned long prot_ns_shared;
+>  #define lpa2_is_enabled()      false
+>  #define PTE_MAYBE_SHARED       PTE_SHARED
+>  #define PMD_MAYBE_SHARED       PMD_SECT_S
+> +#define PHYS_MASK_SHIFT                (CONFIG_ARM64_PA_BITS)
+>  #else
+>  static inline bool __pure lpa2_is_enabled(void)
+>  {
+> @@ -89,8 +90,14 @@ static inline bool __pure lpa2_is_enabled(void)
+>
+>  #define PTE_MAYBE_SHARED       (lpa2_is_enabled() ? 0 : PTE_SHARED)
+>  #define PMD_MAYBE_SHARED       (lpa2_is_enabled() ? 0 : PMD_SECT_S)
+> +#define PHYS_MASK_SHIFT                (lpa2_is_enabled() ? CONFIG_ARM64_PA_BITS : 48)
+>  #endif
+>
+> +/*
+> + * Highest possible physical address supported.
+> + */
+> +#define PHYS_MASK              ((UL(1) << PHYS_MASK_SHIFT) - 1)
+> +
+>  /*
+>   * If we have userspace only BTI we don't want to mark kernel pages
+>   * guarded even if the system does support BTI.
+> diff --git a/arch/arm64/include/asm/sparsemem.h b/arch/arm64/include/asm/sparsemem.h
+> index 8a8acc220371..035e0ca74e88 100644
+> --- a/arch/arm64/include/asm/sparsemem.h
+> +++ b/arch/arm64/include/asm/sparsemem.h
+> @@ -5,7 +5,9 @@
+>  #ifndef __ASM_SPARSEMEM_H
+>  #define __ASM_SPARSEMEM_H
+>
+> -#define MAX_PHYSMEM_BITS       CONFIG_ARM64_PA_BITS
+> +#include <asm/pgtable-prot.h>
+> +
+> +#define MAX_PHYSMEM_BITS       PHYS_MASK_SHIFT
+>
 
-Gr{oetje,eeting}s,
+This needs
 
-                        Geert
+--- a/arch/arm64/include/asm/sparsemem.h
++++ b/arch/arm64/include/asm/sparsemem.h
+@@ -7,7 +7,8 @@
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+ #include <asm/pgtable-prot.h>
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+-#define MAX_PHYSMEM_BITS       PHYS_MASK_SHIFT
++#define MAX_PHYSMEM_BITS               PHYS_MASK_SHIFT
++#define MAX_POSSIBLE_PHYSMEM_BITS      (52)
+
+ /*
+  * Section size must be at least 512MB for 64K base
+
+applied on top to make the ZSMALLOC code happy.
 
