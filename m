@@ -1,121 +1,100 @@
-Return-Path: <stable+bounces-100245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B474B9E9F3A
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 20:09:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464929E9F3D
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 20:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF97D16B35B
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 19:09:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63FAB1887EB1
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 19:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751B3187844;
-	Mon,  9 Dec 2024 19:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F78153814;
+	Mon,  9 Dec 2024 19:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PdxsRQ3Q"
 X-Original-To: stable@vger.kernel.org
-Received: from s1.jo-so.de (s1.jo-so.de [37.221.195.157])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FCF14E2CC;
-	Mon,  9 Dec 2024 19:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.221.195.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7858C13B59A
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 19:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733771276; cv=none; b=swUebz+xJZhxYayQrbfMzfsIlH63+oCE+285UtFpi/e92j0bFvAKE/1k5rli4SauPbI6zHvWBfF8nbEHAYNBS2LgJJs/NdPFcAJWGqExjwMNyWzYK+Y2MudivIjvao39hw81rMdrEVEnaYtWe1GL/77QORn/M2cqGxbNZqeLdCA=
+	t=1733771568; cv=none; b=XuoFwjOa0DG8urogKAxsw+PyestbzxeMZGvBxaurIuYA1h/rqyjI025BOmcDt/PIBe0sWLjbNtANXkJgsoX3BXsxpFYuv7HMfml4WEXl3mDquy5TDhMX79B9hcEG7u0W1rweynpLKIOpcXb8Aok+X9Xw1lGOq5O/kJLLhOnfQ6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733771276; c=relaxed/simple;
-	bh=GYpB0xHV+GOCcfVnZNdc8CB8Qm2VjIfSsU+NmGkALvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OepQlP9UKP61QstNiGxR/MzoH8ejK6fmli+dg+EmaRfnDJcPf07qVWook5onwuBP2sHvHltsIJ9jqvyAp8oAr51WvpXuxjfDbRXuAQZVTp8/Biods+5ZkcuyNje2SdGmX3D70PDMb65aws/fk2wL+KLSJClx3G28REJpvxBscXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de; spf=pass smtp.mailfrom=jo-so.de; arc=none smtp.client-ip=37.221.195.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jo-so.de
-Received: from mail-relay (helo=jo-so.de)
-	by s1.jo-so.de with local-bsmtp (Exim 4.96)
-	(envelope-from <joerg@jo-so.de>)
-	id 1tKj6k-001Fl1-1K;
-	Mon, 09 Dec 2024 20:07:50 +0100
-Received: from joerg by zenbook.jo-so.de with local (Exim 4.98)
-	(envelope-from <joerg@jo-so.de>)
-	id 1tKj6j-00000000CLg-3IVT;
-	Mon, 09 Dec 2024 20:07:49 +0100
-From: =?UTF-8?q?J=C3=B6rg=20Sommer?= <joerg@jo-so.de>
-To: stable@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Tristram Ha <Tristram.Ha@microchip.com>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>
-Subject: [PATCH] net: dsa: microchip: correct KSZ8795 static MAC table access
-Date: Mon,  9 Dec 2024 20:07:49 +0100
-Message-ID: <b4a802ae7dfac66efa5175313228f0ba2fc769ef.1733771269.git.joerg@jo-so.de>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1733771568; c=relaxed/simple;
+	bh=tWDp1sWI+Zcw2X5Z0krY7Stv3V7yPVyYhlszcXNzgaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=LmGQPVXXu6MV2laoEiPDwYZHuFb6DEsf8QYD++WO9Y9pAG+k2b5Bb6j3iuBjcVK79/QK9W7qCivKDUju5FHuVuI5JiWNurNm02oGFABbQ685msPWVUdKDo6txrqT1fBDv3nFkqGxxsENHRICGokiMEYIWx/KuSCxgfAMqHb8TcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PdxsRQ3Q; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733771567; x=1765307567;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=tWDp1sWI+Zcw2X5Z0krY7Stv3V7yPVyYhlszcXNzgaA=;
+  b=PdxsRQ3Qo6VXODwVQvJfwPJTGFBOx7lDLenYkP+2JINOtOkadknn3u6j
+   1kTglxWgQIZwF/RLF4+pr2dGw8j2tg4wCfW5gA/y8yYfXuY9vTMGouHhJ
+   lEB0cnMR/oyb/iNO0EAyQW3J+Y1KAVdieTe5lPZCpCCzNP3vIl3Rw4Htn
+   4qSKoX28Glc/CGi0/HCjIm6UtNvW237aTYFxf/5y8QPmNu3mMuliSibyo
+   JUQePH3yi0FKyWiQQqOiP3JEvUd9Wv9ds6IReMxwl2sh7V/FcmnQ7oo+8
+   ECuHOXg2VmghLEff1J36B3it2NLVsmpl/XcgTb9WosccRPpRNux+98y+l
+   w==;
+X-CSE-ConnectionGUID: whF0jXRnSNSGUwY52CL0Ww==
+X-CSE-MsgGUID: 3ekL2J+cRxiAWjOKZrWRpQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="34234757"
+X-IronPort-AV: E=Sophos;i="6.12,220,1728975600"; 
+   d="scan'208";a="34234757"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 11:12:47 -0800
+X-CSE-ConnectionGUID: faMw1IrvSzqfe3sh+6Y8kA==
+X-CSE-MsgGUID: AmSu8griSNCfsaxld5jDmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="100203121"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 09 Dec 2024 11:12:45 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tKjBS-0004j7-25;
+	Mon, 09 Dec 2024 19:12:42 +0000
+Date: Tue, 10 Dec 2024 03:11:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: =?iso-8859-1?Q?J=F6rg?= Sommer <joerg@jo-so.de>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] net: dsa: microchip: correct KSZ8795 static MAC table
+ access
+Message-ID: <Z1dA-V5rnnZLiPtd@0945f8898a0b>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b4a802ae7dfac66efa5175313228f0ba2fc769ef.1733771269.git.joerg@jo-so.de>
 
-[Backport of 4bdf79d686b49ac49373b36466acfb93972c7d7c to v5.15]
+Hi,
 
-The rewrite in 9f73e11250fb3948a8599d72318951d5e93b1eaf contained some
-mistakes they where fixed with 4bdf79d686b49ac49373b36466acfb93972c7d7c in
-master. The code in 4bdf to support the bit shift is only required for
-KSZ8795, because support for KSZ8794 and KSZ8765 does not exist in v5.15.
+Thanks for your patch.
 
-Signed-off-by: Jörg Sommer <joerg@jo-so.de>
-Cc: Tristram Ha <Tristram.Ha@microchip.com>
-Cc: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
- drivers/net/dsa/microchip/ksz8795.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/net/dsa/microchip/ksz8795.c b/drivers/net/dsa/microchip/ksz8795.c
-index c5142f86a3c7..ef88e26aedf2 100644
---- a/drivers/net/dsa/microchip/ksz8795.c
-+++ b/drivers/net/dsa/microchip/ksz8795.c
-@@ -25,6 +25,8 @@
- #include "ksz8795_reg.h"
- #include "ksz8.h"
- 
-+#define KSZ8795_CHIP_ID         0x09
-+
- static const u8 ksz8795_regs[] = {
- 	[REG_IND_CTRL_0]		= 0x6E,
- 	[REG_IND_DATA_8]		= 0x70,
-@@ -52,13 +54,13 @@ static const u32 ksz8795_masks[] = {
- 	[STATIC_MAC_TABLE_VALID]	= BIT(21),
- 	[STATIC_MAC_TABLE_USE_FID]	= BIT(23),
- 	[STATIC_MAC_TABLE_FID]		= GENMASK(30, 24),
--	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(26),
--	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(24, 20),
-+	[STATIC_MAC_TABLE_OVERRIDE]	= BIT(22),
-+	[STATIC_MAC_TABLE_FWD_PORTS]	= GENMASK(20, 16),
- 	[DYNAMIC_MAC_TABLE_ENTRIES_H]	= GENMASK(6, 0),
--	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(8),
-+	[DYNAMIC_MAC_TABLE_MAC_EMPTY]	= BIT(7),
- 	[DYNAMIC_MAC_TABLE_NOT_READY]	= BIT(7),
- 	[DYNAMIC_MAC_TABLE_ENTRIES]	= GENMASK(31, 29),
--	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(26, 20),
-+	[DYNAMIC_MAC_TABLE_FID]		= GENMASK(22, 16),
- 	[DYNAMIC_MAC_TABLE_SRC_PORT]	= GENMASK(26, 24),
- 	[DYNAMIC_MAC_TABLE_TIMESTAMP]	= GENMASK(28, 27),
- };
-@@ -601,7 +603,13 @@ static int ksz8_r_sta_mac_table(struct ksz_device *dev, u16 addr,
- 				shifts[STATIC_MAC_FWD_PORTS];
- 		alu->is_override =
- 			(data_hi & masks[STATIC_MAC_TABLE_OVERRIDE]) ? 1 : 0;
--		data_hi >>= 1;
-+
-+		/* KSZ8795 family switches have STATIC_MAC_TABLE_USE_FID and
-+		 * STATIC_MAC_TABLE_FID definitions off by 1 when doing read on the
-+		 * static MAC table compared to doing write.
-+		 */
-+		if (dev->chip_id == KSZ8795_CHIP_ID)
-+			data_hi >>= 1;
- 		alu->is_static = true;
- 		alu->is_use_fid =
- 			(data_hi & masks[STATIC_MAC_TABLE_USE_FID]) ? 1 : 0;
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] net: dsa: microchip: correct KSZ8795 static MAC table access
+Link: https://lore.kernel.org/stable/b4a802ae7dfac66efa5175313228f0ba2fc769ef.1733771269.git.joerg%40jo-so.de
+
 -- 
-2.45.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
