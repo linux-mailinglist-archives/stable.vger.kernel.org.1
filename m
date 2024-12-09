@@ -1,172 +1,161 @@
-Return-Path: <stable+bounces-100121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09E09E8FC6
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 11:10:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF679E8FE0
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 11:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96BCA1882D6B
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 10:10:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54B8C162CE0
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 10:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066E021660C;
-	Mon,  9 Dec 2024 10:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19858217659;
+	Mon,  9 Dec 2024 10:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jE7vHkoo"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="FXyqjxEW"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2047.outbound.protection.outlook.com [40.107.236.47])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E7F12CD8B;
-	Mon,  9 Dec 2024 10:10:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733739037; cv=fail; b=LEevN7yEbBPNi8u4fQHcBhe2q8vFMFc6bC7eHzMPWdRwW5ODtdT9JuNO6Q3EBSsakpeOVDROmx67moW317yM8gnUkkastKO1tPnBl44MVb9crDzc2ZMYwOsjgT0eXjumVAQq70U5O8Uvli8C5PIZ/LqFuWj9inKjAmU2g2jwGVo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733739037; c=relaxed/simple;
-	bh=IYcrBkae5aK9/oEMZJiiWPXW7pKfznQtmCT0JQ70n6U=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RqYiDxsPxztIkCDDZ0JxftGTrHfwoGiOKw4GTdZfOt++uxlKGhidfIo3ZHuRbJJOhHJOFSvtBSADFfGEoEE0Yl4d7Gvv+8BwyFezTnCBHvlma5Ran4OrveAXEdS6r8WRlVdwtxlb49dOteY7aRv/a1XLdWoRIBHjZ7Uq64Y5FzM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jE7vHkoo; arc=fail smtp.client-ip=40.107.236.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LvjXDdUzTV4jtu1EnIu9ITScJ0ANDaLxOFQsepW2VN/G52hGvY348S1hVLti8Ykq2Ma2wjjAMYrECZ8UKjE7MKV1LD79xKTG8XvXXe6ov+De7iNCF4KS8LmdslYlQ6l9P/RNQjC9hC7suYJy5Jzq2yIcwlAB+HHnAB0uLqibnJeBRFRFfeYRnxXHiLXoitOp/+lg440pPwks7S311NHq5bd7RxhR9p3o+203s1UuOSMa4mnhIQaemsKJTffXVfdur9Le9E0quBQp69gsHdTkXDih6O1uJ+ZTSYhGaXQHBp96HY9+7naT34e5tner29zTlvuS1LVhiRXqole/ks5XnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HQ1XqdpdY3+iecExSMkteIZfhNUqpafc1KIEH8j8zyE=;
- b=Z5k8OSQCBO4zJ/3sXk9n+KOaXysOmYupp7eGFHRogQ14NsoNFTHWvYb1bt74h+DQTV/YxfZlOry+pS+l01YA7bQQfA8Zch/F0ZqfndNYl8b+aObvVg9o3tApm9pqiY+QGbRKkurqnXhwiGOQoQf3WtFy/NwnwER63vlmM8co5lUK6u4oPk7lDb3jeMa0FRfFCg0QgWHQufIifnyvD2NIiFOR6CpvjDajRvQScDmUM1CyDhPRNG9bh1p18m8YO7CkjW1LYvoWxqdTCG2OQIZqOwrBDA7WBwHMehC4qMU7Hfc5wimoTyYc+p/Hga9edUkMmYewiEzUBP97g/s189qvZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=intel.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HQ1XqdpdY3+iecExSMkteIZfhNUqpafc1KIEH8j8zyE=;
- b=jE7vHkooWukyyO9H3KCn+a/sg0VfRpfrVQjO3SGquMhZwvUescQzsI7G7QGyrtyJG9XrsA30Mp3t26nsTo9cdDZ1neHyklHclHhJ4Y2u32GslHGa7ZduPi9aw2k5QFqPVh2xFosHofdo8tOjTRb97wl9ifbhs0djzEW2PV3wUg55SbkXVQBf5H0oHf+lf+CUvL8RGze43wge50oPL78cMv2ZmPax7X6oPCCXByjqtXNty/k1dOJYJRunUX0pfbnsPsu+GxjjpHWdZntVGpwQk9/R0r4Giu+2PecdbCF5mUQA4akGS5rjsUjq5psnTL+c667PuxcbJ2t6rwVJTyGuUg==
-Received: from SJ0PR13CA0060.namprd13.prod.outlook.com (2603:10b6:a03:2c2::35)
- by MN2PR12MB4455.namprd12.prod.outlook.com (2603:10b6:208:265::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Mon, 9 Dec
- 2024 10:10:31 +0000
-Received: from SJ1PEPF00002322.namprd03.prod.outlook.com
- (2603:10b6:a03:2c2:cafe::b3) by SJ0PR13CA0060.outlook.office365.com
- (2603:10b6:a03:2c2::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.9 via Frontend Transport; Mon, 9
- Dec 2024 10:10:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00002322.mail.protection.outlook.com (10.167.242.84) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8230.7 via Frontend Transport; Mon, 9 Dec 2024 10:10:30 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 9 Dec 2024
- 02:10:14 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 9 Dec 2024
- 02:10:14 -0800
-Received: from pshete-ubuntu.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Mon, 9 Dec 2024 02:10:11 -0800
-From: Prathamesh Shete <pshete@nvidia.com>
-To: <adrian.hunter@intel.com>, <ulf.hansson@linaro.org>,
-	<thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-	<linux-mmc@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <pshete@nvidia.com>, <anrao@nvidia.com>, <stable@vger.kernel.org>
-Subject: [PATCH] mmc: sdhci-tegra: Remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk
-Date: Mon, 9 Dec 2024 15:40:09 +0530
-Message-ID: <20241209101009.22710-1-pshete@nvidia.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DC0216E2A;
+	Mon,  9 Dec 2024 10:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733739278; cv=none; b=pstuC3BtDv8N36HadaWfI8UgCsiPqx7a8Vl2iwLm/8r/NjPQzPmX5mwPTTvY7nBqn8fhks8g65XtmDp8K58GHRn0YbmN7Zvi9539mX1y/S3wwZbaHBh75K9nqRQADuO6Nii7SJlqvVFd5+jvcXs6Oj8SyiGRf6YhBVuYq0Em+aM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733739278; c=relaxed/simple;
+	bh=viH+O/8YuxJMwRK8NhrD/jE9U8OL3VcRI8DKW6n4SnU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EO2ISnXS4P5mNQxJvtr4/WyPFLsK4P38a5J6At43sh55qLROdcM6O2Eoo9h5tKKe4FIJJNDPChe1d1aWWJt+1luYmIjzbqm+utWaqD9xZ7ig2hadFcgRv9MrhJZeWdTfmQQDpdBpxZAHgbbNYVa0Osxhx6eMn+SQWT+gxg2bBMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=FXyqjxEW; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 385B989A;
+	Mon,  9 Dec 2024 11:14:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1733739241;
+	bh=viH+O/8YuxJMwRK8NhrD/jE9U8OL3VcRI8DKW6n4SnU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FXyqjxEWZo8hAUsDmpi3cDBDNE0vqbVgNHVjZGLLUAI2hM4YrsD4gUTjwaVPFzrBw
+	 pTp5UO4wUurOr+fqNNN77APmGpusetkQrjeKfX4nEumFhgaCrwWSoG3Z//qOEBHd4k
+	 5+DwsoWYCvhQovPYPL9TNG6ZeJC/uSARmOr1f3uY=
+Message-ID: <80c92aef-81e0-41fa-b347-88b76e5e351e@ideasonboard.com>
+Date: Mon, 9 Dec 2024 12:14:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002322:EE_|MN2PR12MB4455:EE_
-X-MS-Office365-Filtering-Correlation-Id: 566190a5-d5ab-4240-a51f-08dd1839b67c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?CElE9UkY6DQklEV709vy1UxJ7+/fzWSJ5pOJ47zymfuFUuaMfc0NQC0Rumq4?=
- =?us-ascii?Q?S6hinQKUvOwtkf7RqUGwso7+0qSG7b3b0iTx/GdccqYgO3YefjpiYzAeVH30?=
- =?us-ascii?Q?Ah7sTp3IhCDbosae2YeeAfImeMZjvoRKWwjmcTUGfWpWTFryHvlCEknYwE7s?=
- =?us-ascii?Q?MEKEROWLmnI43j5lFNbFQFrstC/XXSH5Cic5uRt2beFtnG1w4fPIi7N1bubf?=
- =?us-ascii?Q?QZqPKLYqlmgNh+igEhS9McfBS/df+ygNVUcv0+6ttcMaGLxrdxIm4SsFw3UZ?=
- =?us-ascii?Q?uP3nDQuukZhwh6gTzbiMeX7oPwvOeAJTH1ocDN1JFGAw3xkwNBnYEG0eW1lh?=
- =?us-ascii?Q?h34khoUDnMzZFheeHiQkpkWhUdM5Az0MIF/7RmQkjpIPbx0hGOL5EEF0pkJG?=
- =?us-ascii?Q?lEvFo2+2KOxZxLC8b6bP4iJfaY8N6QHLov4M/WUhEb9425/aj3PQT2M+C1MW?=
- =?us-ascii?Q?dHSS9Zv+EeUFXtaYsW5Xubvu+94BRXEt8lbV/FNFQtfR3V18bpPF19y0Wn+U?=
- =?us-ascii?Q?07afZmYO8oXISc0JJw5R1Y6BT5dvI7A0T2kv2uSceP4zD8JOUXU+/F+z6sV1?=
- =?us-ascii?Q?el45+8XqQ7RMRYj7Bcu+EAlawvAgnssvX6z0XkO/Ky5dghaY+KCINVFNSzHk?=
- =?us-ascii?Q?chxXISfiU0+ZEAGaMRB8adccB8cWY5QM7OCbsJwhDvbKSYNdpcQRgsw6UXd7?=
- =?us-ascii?Q?ktr/Ssa2WHVETApzd44W3+6nWj1CHu/9/PZ/UBXYcyvKm1nA/0otOo1+IwTr?=
- =?us-ascii?Q?n0XZ2z/vxrFhVVO6pvHI2cJRGFOKqth5LzX2df2rl4DzM6qQMmpT937UQxUc?=
- =?us-ascii?Q?UR9pW8Ac8Tfi7NR7hCqn8m+RjilMRHFewM+nE4skr36jKeSquuRCu5os3FAf?=
- =?us-ascii?Q?gSQ9BRsrAv86aJCV6rwSnp1qvxcOiLDdf2WXsCImhBjE3d9Dx0pcBEUzXSdH?=
- =?us-ascii?Q?bJRLad9yad+9+9TTTKraf+4wpKySujgMk9CO5Yghj/insxTeUdDhd26BXS4f?=
- =?us-ascii?Q?5pPPeJtH18b3Ygw6pW5mxUMg/LiWk12MRjTJfTGvll1CIQ2Sqlob9K9Wip9Y?=
- =?us-ascii?Q?0gbUr9OWK+o5e34saEO89rM/+oeMJWQrsTd5mYQ6KgW3tS9fo7Ce+rC3RzBi?=
- =?us-ascii?Q?QpXV4teZ/rCyIQBXnTxblyMPMEZB1JcG9Ku1zgguCgdHadazv7behJzJ9UZ0?=
- =?us-ascii?Q?S+utlm+RIBmwxo0fD/wJiV/JuhgJnI3+gZkHFsBHwHm7PKRTXVLv4h0ewUZh?=
- =?us-ascii?Q?jzSh2lrJ3J36MiScMt4zQJFyAsBE0g1iG3gj48XV5JThLsp707/wyPlVxINQ?=
- =?us-ascii?Q?Fh75jXTeI0s44UB59anEDQvC+bk3VzaeVcI2Xif5Eu7/3LhMl0aW40dbnx2F?=
- =?us-ascii?Q?BFQuoDskY6g/1WPMCcPYGSYLgAcjmrx1tUOp65E7VhaE8i4pStU+j1gbiwtA?=
- =?us-ascii?Q?KAagi76wS/6o6+bAzdOn3sqArdtE5bR/?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2024 10:10:30.9052
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 566190a5-d5ab-4240-a51f-08dd1839b67c
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002322.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4455
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/15] media: i2c: ds90ub960: Fix logging SP & EQ
+ status only for UB9702
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jai Luthra <jai.luthra@ideasonboard.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241206-ub9xx-fixes-v4-0-466786eec7cc@ideasonboard.com>
+ <20241206-ub9xx-fixes-v4-4-466786eec7cc@ideasonboard.com>
+ <Z1a0OiRDw92o1w6_@kekkonen.localdomain>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <Z1a0OiRDw92o1w6_@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Value 0 in ADMA length decsriptor is interpretated as 65536 on new Tegra
-chips, remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk to make sure
-max ADMA2 length is 65536
+Hi,
 
-Fixes: 4346b7c7941d ("mmc: tegra: Add Tegra186 support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
----
- drivers/mmc/host/sdhci-tegra.c | 1 -
- 1 file changed, 1 deletion(-)
+On 09/12/2024 11:11, Sakari Ailus wrote:
+> Huomenta,
+> 
+> On Fri, Dec 06, 2024 at 10:26:40AM +0200, Tomi Valkeinen wrote:
+>> UB9702 does not have SP and EQ registers, but the driver uses them in
+>> log_status(). Fix this by separating the SP and EQ related log_status()
+>> work into a separate function (for clarity) and calling that function
+>> only for UB960.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
+>> Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+>> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+>> ---
+>>   drivers/media/i2c/ds90ub960.c | 90 ++++++++++++++++++++++++-------------------
+>>   1 file changed, 50 insertions(+), 40 deletions(-)
+>>
+>> diff --git a/drivers/media/i2c/ds90ub960.c b/drivers/media/i2c/ds90ub960.c
+>> index 24198b803eff..94c8acf171b4 100644
+>> --- a/drivers/media/i2c/ds90ub960.c
+>> +++ b/drivers/media/i2c/ds90ub960.c
+>> @@ -2950,6 +2950,54 @@ static const struct v4l2_subdev_pad_ops ub960_pad_ops = {
+>>   	.set_fmt = ub960_set_fmt,
+>>   };
+>>   
+>> +static void ub960_log_status_ub960_sp_eq(struct ub960_data *priv,
+>> +					 unsigned int nport)
+>> +{
+>> +	struct device *dev = &priv->client->dev;
+>> +	u8 eq_level;
+>> +	s8 strobe_pos;
+>> +	u8 v = 0;
+>> +
+>> +	/* Strobe */
+>> +
+>> +	ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
+> 
+> How about adding __must_check to the ub960_read()?
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index 1ad0a6b3a2eb..7b6b82bec855 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -1525,7 +1525,6 @@ static const struct sdhci_pltfm_data sdhci_tegra186_pdata = {
- 	.quirks = SDHCI_QUIRK_BROKEN_TIMEOUT_VAL |
- 		  SDHCI_QUIRK_SINGLE_POWER_WRITE |
- 		  SDHCI_QUIRK_NO_HISPD_BIT |
--		  SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC |
- 		  SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN,
- 	.quirks2 = SDHCI_QUIRK2_PRESET_VALUE_BROKEN |
- 		   SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER,
--- 
-2.17.1
+Yes, that's a good idea.
+
+We also have a patch in works that'll add error handling to all the i2c 
+reads and writes (and some other ub960 improvements), on top of this series.
+
+  Tomi
 
 
