@@ -1,107 +1,119 @@
-Return-Path: <stable+bounces-100262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B4E9EA125
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 22:19:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E029EA160
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 22:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3598F18871D1
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 21:19:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FAB2165C2C
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 21:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB20199E84;
-	Mon,  9 Dec 2024 21:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUb/NKbN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FF119CCEA;
+	Mon,  9 Dec 2024 21:48:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1488170815;
-	Mon,  9 Dec 2024 21:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A441137776;
+	Mon,  9 Dec 2024 21:48:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733779159; cv=none; b=jCf27orxHFmQ9NoXQVSafs5M4Fnnx0YQv7zBvHbLPRQUruilsijO9prPrpFfkwilk7W7XSALpKkwho+ArZInl0gdWs7vk8Q3x1qPdRrWEEqAs6KGLsmVz19uQRxbv2CvyDlz03CaCUC0rCkOaBN7gd4Mo7qs7+0RBHH0ge/XWXI=
+	t=1733780936; cv=none; b=lkb5tpvsbJ+OfiLfPUvIg7/3sMdvA2TW5tSRAw86vkZMsrW6ieS0Nqi50kSeREZOSzhG+hjsEat9TlD8Ypl0N75Nm7/MwjC+qND0au4xBYEqWB3da1WJK2POEd4YuzaubRYMSBlrpqgEdgyn+hjDlirB9sDKEDEtKxFSFFzX08U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733779159; c=relaxed/simple;
-	bh=fQf9zpQ+5s9sRVYLqUiIDpZiLT4jPnTuTXJA3SHtA4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G7KVSIwZgmMPskCuTIOpowwPit2tSTxZZCHfCICAt9zCu6OdjEXaHT1eg4hqY1YCUo3jqilBIuNQwzo7r+Wv73oQsCfXYLkuqdKLSjHKzG1YdKZrnGrQzQzU5SDis/fuhv1dfCvJ5turfp8/w9WOnt86q0evaMWH90gYaZlDZoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUb/NKbN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685ACC4CED1;
-	Mon,  9 Dec 2024 21:19:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733779158;
-	bh=fQf9zpQ+5s9sRVYLqUiIDpZiLT4jPnTuTXJA3SHtA4Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iUb/NKbNQlXWONUnLeHLd9UQEEefBjSvVgaefA85vq+pKHT26jN7ZnrD1eW4bRoYX
-	 TjAuoJh/0PDLCwD7QnBoTxluv1l1sdU0Rhs52afBwuqTyzZlOEGnOco6Je+w4FThlW
-	 h5IfIBHyOYKa3nqfVKbsswfueA0CzgqOVF6eCImjfOVieajMKvc1ty9AxKR5e0r+qw
-	 UMkywIVqD2Bnb1pf8o5rus+AhYLpTjAXNQfHkZH6B9gHkpyMAa8cjqcjOwgs6a42Ts
-	 pgX7oK+qTI9CzLwhT9uwScJ1snm1tWep4vhWR0Heg+wV5zNCVZoT+4NA7Sz4n9+5lQ
-	 zb6ftHv9Ke2Sg==
-Date: Mon, 9 Dec 2024 15:19:16 -0600
-From: Rob Herring <robh@kernel.org>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Saravana Kannan <saravanak@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Marc Zyngier <maz@kernel.org>,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Grant Likely <grant.likely@linaro.org>,
-	Tony Lindgren <tony@atomide.com>, Kumar Gala <galak@codeaurora.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Julia Lawall <Julia.Lawall@lip6.fr>,
-	Jamie Iles <jamie@jamieiles.com>,
-	Grant Likely <grant.likely@secretlab.ca>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Rob Herring <rob.herring@calxeda.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 4/8] of/irq: Fix using uninitialized variable @addr_len
- in API of_irq_parse_one()
-Message-ID: <20241209211916.GD938291-robh@kernel.org>
-References: <20241209-of_irq_fix-v1-0-782f1419c8a1@quicinc.com>
- <20241209-of_irq_fix-v1-4-782f1419c8a1@quicinc.com>
+	s=arc-20240116; t=1733780936; c=relaxed/simple;
+	bh=mMKyzltzE9gNDdDyhqe6BiBbJhqhmYrX1bn0tNYjKgc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OesrpgrzZvVQ4piH2le8U54BuRvQB6kQseQZ+KNbAFTrAA3mMPiBHVXfzHL3EmTemFfsHmsnRLegyjkugg/6Vk67y+N9ogXfcjCI2xnWtwuAZy28cwcat6HWUtZRlxH4IaGwxSZf8mC9j4m/L16iDP6dVHZv5SF1bDc05xSNZOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7258cf2975fso4217972b3a.0;
+        Mon, 09 Dec 2024 13:48:55 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733780934; x=1734385734;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mMKyzltzE9gNDdDyhqe6BiBbJhqhmYrX1bn0tNYjKgc=;
+        b=E9CxwYTVrzppdA/3RSLy8ompuxgjcI16+SUqejXrJ5TP6T+8+v1p6ycMvgGwNhx8WU
+         GB8zL/kGHrojNvKCeahiJFj+NTXOz9Y4lOT9+WtnMv5mnpRK6wF6HF0zsy9ckMlXr7TH
+         SQ+V2rJfnZ19nrtXJegZvQcZI+8EU3wV/MXwCyL/U4rkYLlqxsg7cdt7gu8UcIDBKHHn
+         KAhV0M13aBntss3jFqNo6L+1ysKZbIcZLmKBzpqBmBq9Yt5qu5uBRJDN5TBd2cfIkET5
+         Mq1IEOFauUcW5liKIpcprURxlnQ83v3LRSXgX+DYdyMuNVLhYPG9YZx8vE1ss/YLikvC
+         SrPA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1gK8L8SPgVklz+NL2GQcbnDfKAYk6yQwI8HFeaoN6aMjkuH4xKxrT5GGrU4TSRU4K8P6NWzkDaOBdRI4=@vger.kernel.org, AJvYcCWyE3rpvH0ljBTer9fUSMzPZMZNvzJLUEuFTxOHAr81qr0wG4uyPP+A85uUiAXJUrSqBu2LVYxbvueJrFluNpPCGQ==@vger.kernel.org, AJvYcCXhQmNzNT6pWTVmU29zO6dpWYPtOWQ+LnOr+hZLDXd60vyewb23Ap54yhYwOC6gpHKmqJkUI9BZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNftz2x2TCn3Yozq3A9k+zcorYNvvkIc86gDZj06ctyY1rZC/8
+	1OhoI4b9zCrAatvg15Lqn5mOIQRbyidIxLgeiQuQlQDsxTgSiivfgYlB5rUbOEBt8uQ8RXGvbbe
+	zOoGXqC0R3F6tAVPj28gB96j2coq+uQ==
+X-Gm-Gg: ASbGnctg/x6tI23grw6p/6x7tVw0LB5d8kFJcq/lQIBxYdUQSAil5XUodY001VoWpFr
+	IkUsG06wx/6qqrrlqoNLor+QoKKoSaAHuBg==
+X-Google-Smtp-Source: AGHT+IHGGgYK/t9tnM6hmf/m70NafShg+X8SVH9Qz0IDo9gXUayhVuGvz55ZNrixNevRqGrZ7ta6CQhIG+QGL8byEOI=
+X-Received: by 2002:a05:6a20:1589:b0:1e1:6ef2:fbe3 with SMTP id
+ adf61e73a8af0-1e1b1a79c58mr3239680637.5.1733780934562; Mon, 09 Dec 2024
+ 13:48:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209-of_irq_fix-v1-4-782f1419c8a1@quicinc.com>
+References: <20241209134226.1939163-1-visitorckw@gmail.com>
+ <CAM9d7cgL-1rET97eVU2qpz5-V5XqeCX1N92wTwR5y2sp_4sjog@mail.gmail.com> <Z1dSimfbQ5FO7sjU@x1>
+In-Reply-To: <Z1dSimfbQ5FO7sjU@x1>
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Mon, 9 Dec 2024 13:48:43 -0800
+Message-ID: <CAM9d7cj4_8LHHq22Gh-9BOPCEQk3qZizuOjF03cyQtrKSWWTRA@mail.gmail.com>
+Subject: Re: [PATCH] perf ftrace: Fix undefined behavior in cmp_profile_data()
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>, peterz@infradead.org, mingo@redhat.com, 
+	mark.rutland@arm.com, alexander.shishkin@linux.intel.com, jolsa@kernel.org, 
+	irogers@google.com, kan.liang@linux.intel.com, adrian.hunter@intel.com, 
+	jserv@ccns.ncku.edu.tw, chuang@cs.nycu.edu.tw, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 09, 2024 at 09:25:02PM +0800, Zijun Hu wrote:
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> 
-> of_irq_parse_one() may use uninitialized variable @addr_len as shown below:
-> 
-> // @addr_len is uninitialized
-> int addr_len;
-> 
-> // This operation does not touch @addr_len if it fails.
-> addr = of_get_property(device, "reg", &addr_len);
-> 
-> // Use uninitialized @addr_len if the operation fails.
-> if (addr_len > sizeof(addr_buf))
-> 	addr_len = sizeof(addr_buf);
-> 
-> // Check the operation result here.
-> if (addr)
-> 	memcpy(addr_buf, addr, addr_len);
-> 
-> Fix by initializing @addr_len before the operation.
-> 
-> Fixes: b739dffa5d57 ("of/irq: Prevent device address out-of-bounds read in interrupt map walk")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  drivers/of/irq.c | 1 +
->  1 file changed, 1 insertion(+)
+On Mon, Dec 9, 2024 at 12:26=E2=80=AFPM Arnaldo Carvalho de Melo
+<acme@kernel.org> wrote:
+>
+> On Mon, Dec 09, 2024 at 09:02:24AM -0800, Namhyung Kim wrote:
+> > Hello,
+> >
+> > On Mon, Dec 9, 2024 at 5:42=E2=80=AFAM Kuan-Wei Chiu <visitorckw@gmail.=
+com> wrote:
+> > >
+> > > The comparison function cmp_profile_data() violates the C standard's
+> > > requirements for qsort() comparison functions, which mandate symmetry
+> > > and transitivity:
+> > >
+> > > * Symmetry: If x < y, then y > x.
+> > > * Transitivity: If x < y and y < z, then x < z.
+> > >
+> > > When v1 and v2 are equal, the function incorrectly returns 1, breakin=
+g
+> > > symmetry and transitivity. This causes undefined behavior, which can
+> > > lead to memory corruption in certain versions of glibc [1].
+> > >
+> > > Fix the issue by returning 0 when v1 and v2 are equal, ensuring
+> > > compliance with the C standard and preventing undefined behavior.
+> > >
+> > > Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
+> > > Fixes: 0f223813edd0 ("perf ftrace: Add 'profile' command")
+> > > Fixes: 74ae366c37b7 ("perf ftrace profile: Add -s/--sort option")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+> >
+> > Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+>
+> I'm assuming you'll pick this for perf-tools, ok?
+>
+> Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-Applied, thanks.
+Yep, sure.
 
-Rob
+Thanks,
+Namhyung
 
