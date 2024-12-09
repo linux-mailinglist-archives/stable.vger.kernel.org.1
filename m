@@ -1,143 +1,126 @@
-Return-Path: <stable+bounces-100114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7448F9E8F2D
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 10:50:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F2C9E8F70
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 10:56:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6D118876AF
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 09:56:01 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D71216E05;
+	Mon,  9 Dec 2024 09:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bp9orZ97"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1D9E28281A
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 09:50:03 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5F6216E14;
-	Mon,  9 Dec 2024 09:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TKugvTDf"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB343215706
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 09:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392AE21660D;
+	Mon,  9 Dec 2024 09:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733737777; cv=none; b=uUKuUwdh6NRTPqZfR+PeSlGac9hWlXSXGfF+MKrUH8D6ZgepMqpyRM22fodQaDRF4xkeDAe0lFPMEiS+/dOkiUQp+o8cB/7+m5qG+IGgjlOmL0iyAnSZ3jrc7tqZIljrXL4Lr5VdjdLiMZC0Ega565cXPDAKJdMF2b+m2AAOmRM=
+	t=1733738001; cv=none; b=CMKAnXHzM9vTd+++u1anCrvsrux9QyYBcFqrdUJv1ekkApoSeOxDbJGAjadoj3aolBUuNcfrbZil29gwWqBYUI0KXDfmmh9fvd0geaI46p37zY2p205k966l8DzD2kH6VKCFT1iYg2Rq17k9BSb8Mchkcz4kDrnP3RloY9i4dEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733737777; c=relaxed/simple;
-	bh=gvzytYw4sbSQU/ATlBNgaGw+c3UqmAd600g9QF+80xI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NtAiRpevVR7x7SpSV4wmaskHaAnvW4q+/yFgzKN61Fsr3y3BDrOFhX817rzzQAinSxvxREVakQraqq10jdHIvsxXiYdCgvv88zIHBLMugpZ6WVRfmTVv2MzFzoq+yKvv3q6Ki4gc967idG0bEbxGQS3kdlcHX3Gm2nxJZGR33FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TKugvTDf; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-46753242ef1so21643081cf.1
-        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 01:49:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1733737774; x=1734342574; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c3Tsa9g564W559Vpb/AnoUfrIQ3XajXQIt2s3wRsgwk=;
-        b=TKugvTDfoBjOS6n5X6dlr8+LRrTGoK+Bdp0iBq1DSpt/J9guRKpqF+/duZEsnGtn7S
-         46zDbcnV4SGVVXJqbNgkpj/lIEKZFS8lujrYx3TLBr3+BVcx7GA1Mx3dvN1gInwBl13Y
-         YRRzQmjmRArCK33HI5ijbNz5UX9mEXAqohZH8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733737774; x=1734342574;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c3Tsa9g564W559Vpb/AnoUfrIQ3XajXQIt2s3wRsgwk=;
-        b=gYfKdtfh6RvifRWVfX+I3jQRowOGUQVqBVy9+5RQgGHqcvJxFVVWouiWKcwux1edym
-         9NJ99W9i7rNEIo+2KICZJS3kHpvlestk25EzLBlOb5j1cK6WwliROb128LWYXxozJpfT
-         8V9/ZcCIN508BJsyX+3hMQieNzdyIPXxRSG33O3OCS0bb5UaZanJ0poTY/vG/qle35aw
-         PILjGBwccRN3Hj0UKXmwxFGnUTwkMR7X93NaHRLpgQNWZAMXfeiq1ypD0Tv+vul0Lh1F
-         HIkn33nPOjhnAV2MtKkQQhEGpihqdHFjGjnaEpMU+4g91L8hdnhXwC6F7BiEOLN8GnvS
-         T+GA==
-X-Gm-Message-State: AOJu0YxPhNcXb0S7IRD2qF51bfFOfCm+geNwzCgtyExdFvFCgJGmIKpq
-	zTHCjYPxFtY/GXGY9WMXw7h5jICxkhoMBnNnQPjLR9844NjCD2iAvJGpLvHSEOobnhMoRDP+KRK
-	+SDy/Gjtvj6CTlBdIJT7qaLHZ4/PUslFeTeY/wD4elh6iRHeI0UriDo4XJy3U9VZauEbpQq/eUw
-	wGp5TCdC6eqAuJkOeiLx1orWqgTDefQ9pEYtcqNH85
-X-Gm-Gg: ASbGncuK9p5Eten9dQA27YCtKi/VSJ7VgNcktmtlPdhKYwGySvZDmbGs/uzBN0aNsnP
-	ihb0HE4sVB5D77iYpJxeO8uCD2/nOqI9YAYoC/Fr/KrsQtUGWfhXQV1ET9eOX4W1BpoS3BtzOpO
-	2vtU+rmc/X/73I8eoOJDEEpgHLjJ0lfRBzoh3s7ujXMyjdhIf07yjOXqyNMZizDrVmYbU0g3eNP
-	Dxdmp0yLtqKHFfwT85fpiXjZR6t6kVwEHuDxk0qa0TgqjufIbSm7ALBlKl8m2lz8lkbp7rjC4l4
-	Jw0=
-X-Google-Smtp-Source: AGHT+IGmY9glarrXNarZaAo9mWvdbYU7LPRt4v3eMj8NpeG7c1QvpqnB5GcbMm9FjHW0BzZ2wvAZkA==
-X-Received: by 2002:a05:622a:15c9:b0:466:9938:91f3 with SMTP id d75a77b69052e-46734ee9e07mr201445901cf.49.1733737774204;
-        Mon, 09 Dec 2024 01:49:34 -0800 (PST)
-Received: from photon-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6d2147ff2sm128409085a.70.2024.12.09.01.49.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 01:49:33 -0800 (PST)
-From: Ajay Kaher <ajay.kaher@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: zack.rusin@broadcom.com,
-	thomas.hellstrom@linux.intel.com,
-	christian.koenig@amd.com,
-	ray.huang@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Ye Li <ye.li@broadcom.com>
-Subject: [PATCH v6.1.y 2/2] drm/ttm: Print the memory decryption status just once
-Date: Mon,  9 Dec 2024 09:49:04 +0000
-Message-Id: <20241209094904.2547579-3-ajay.kaher@broadcom.com>
-X-Mailer: git-send-email 2.39.4
-In-Reply-To: <20241209094904.2547579-1-ajay.kaher@broadcom.com>
-References: <20241209094904.2547579-1-ajay.kaher@broadcom.com>
+	s=arc-20240116; t=1733738001; c=relaxed/simple;
+	bh=qmqlQ0SK+gQx6stg+eRMu+glM1RrZ6TpsciE4zz2ci4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uu8Z8wWlw0bQ94Je7qsorly0dgJ1cT48JywWoBwlIfITzMU5CnsKQgkHGmeGogNLNOy5T1TnurUtuGb8ZxknI4lJw8j7kl8dMkEKGMjsxTlLCYJseELV6qhpD9/Pu/piFt++nWYnKyXZ1Ky/K5DElkulTrJPWgGY7TVwqzd1ph4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bp9orZ97; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733738000; x=1765274000;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qmqlQ0SK+gQx6stg+eRMu+glM1RrZ6TpsciE4zz2ci4=;
+  b=bp9orZ976t+99sP6H5qtGlx/LBXB+Fu2IkkaDvIeW1vPkcL3Z64Ru9YY
+   3xIVsktlYd3+oZVrb+1uGIqGt7I7Gv5uZRcztXjhEPsNzx+RGZwB5Dx3J
+   ZaA2tKErj6G+ZlMgAViM8TjEQA86ukH+NjS4v9NmOC5xtHnRnzrELL/Xr
+   0Tvy1Ro44dpjgSFARUbIpgZcDBZHlQ0Fr+jnsHrYedYCZ+S8h+z7NRkea
+   wMFhp5pJTIdQd3j5nR4M5ahZhX0YKdnjTzpE9mH6Hk02MqS7HaOGo+h6W
+   4DGQ672GHbVxtAhVUntiXl1JL5eOvGzR2aFf/0zQyzItR2eWJvkZy08Fc
+   Q==;
+X-CSE-ConnectionGUID: UrSRBcAYRHuhnPZXxVLqpg==
+X-CSE-MsgGUID: XU9qxQ6cTtSVF1KqLIBdyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="33369953"
+X-IronPort-AV: E=Sophos;i="6.12,219,1728975600"; 
+   d="scan'208";a="33369953"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 01:53:18 -0800
+X-CSE-ConnectionGUID: CRbdIBR9TeuybfWNZCI6jg==
+X-CSE-MsgGUID: +88ZpgNcQuOXHXGdNOj1Ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="100054980"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2024 01:53:17 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id A4B8911F775;
+	Mon,  9 Dec 2024 11:53:13 +0200 (EET)
+Date: Mon, 9 Dec 2024 09:53:13 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 01/15] media: i2c: ds90ub9x3: Fix extra
+ fwnode_handle_put()
+Message-ID: <Z1a-CV02K_o4rMHU@kekkonen.localdomain>
+References: <20241204-ub9xx-fixes-v3-0-a933c109b323@ideasonboard.com>
+ <20241204-ub9xx-fixes-v3-1-a933c109b323@ideasonboard.com>
+ <Z1azue3G14MQpfiI@kekkonen.localdomain>
+ <c740c233-315f-4431-8b86-8bdc1e3a72de@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c740c233-315f-4431-8b86-8bdc1e3a72de@ideasonboard.com>
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+Moi,
 
-commit 27906e5d78248b19bcdfdae72049338c828897bb upstream.
+On Mon, Dec 09, 2024 at 11:46:45AM +0200, Tomi Valkeinen wrote:
+> Hi,
+> 
+> On 09/12/2024 11:09, Sakari Ailus wrote:
+> > Huomenta,
+> > 
+> > On Wed, Dec 04, 2024 at 01:05:15PM +0200, Tomi Valkeinen wrote:
+> > > The ub913 and ub953 drivers call fwnode_handle_put(priv->sd.fwnode) as
+> > > part of their remove process, and if the driver is removed multiple
+> > > times, eventually leads to put "overflow", possibly causing memory
+> > 
+> > This is, in fact, an extra put. It'll lead to underflow, not overflow.
+> 
+> Well, there are too many puts, so "put overflow" =). I don't think underflow
+> is the right word here either, but it's probably better than overflow. Maybe
+> I'll reword it so that it doesn't have a flow at all.
 
-Stop printing the TT memory decryption status info each time tt is created
-and instead print it just once.
+Sound good.
 
-Reduces the spam in the system logs when running guests with SEV enabled.
+> 
+> > I'd expect removing it once would be already too much.
+> 
+> True, but there's something keeping some refs to the fwnode even without
+> these drivers (otherwise they'd be freed when these drivers are not around),
+> so the issue shows only when those refs are taken out by the puts in these
+> drivers.
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 71ce046327cf ("drm/ttm: Make sure the mapped tt pages are decrypted when needed")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-kernel@vger.kernel.org
-Cc: <stable@vger.kernel.org> # v5.14+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240408155605.1398631-1-zack.rusin@broadcom.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Ye Li <ye.li@broadcom.com>
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
----
- drivers/gpu/drm/ttm/ttm_tt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Port nodes perhaps?
 
-diff --git a/drivers/gpu/drm/ttm/ttm_tt.c b/drivers/gpu/drm/ttm/ttm_tt.c
-index 91e1797..d3190aa 100644
---- a/drivers/gpu/drm/ttm/ttm_tt.c
-+++ b/drivers/gpu/drm/ttm/ttm_tt.c
-@@ -90,7 +90,7 @@ int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
- 	 */
- 	if (bdev->pool.use_dma_alloc && cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		page_flags |= TTM_TT_FLAG_DECRYPTED;
--		drm_info(ddev, "TT memory decryption enabled.");
-+		drm_info_once(ddev, "TT memory decryption enabled.");
- 	}
- 
- 	bo->ttm = bdev->funcs->ttm_tt_create(bo, page_flags);
 -- 
-2.39.4
+Terveisin,
 
+Sakari Ailus
 
