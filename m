@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2522D9E98FA
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 15:35:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CFE9E98FC
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 15:35:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8159281315
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EE5F167545
 	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C30D1B0426;
-	Mon,  9 Dec 2024 14:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C463E1B0403;
+	Mon,  9 Dec 2024 14:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byvxCfuW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKH+RElT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF37A15575F
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 14:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8478E23313D
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 14:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733754913; cv=none; b=BwEwHl3fDuaE9pVsv/OgToCbU+wCANeNO0fNj7TkF4oC4/mP2EG8aCytA39X1YthrTDsEdEj8OpGg25fUkgOgQ5ysx0818pAIyIytT0kW0hb0QCN9DMEAWqfDhOAhRTy5B5Z9JHqUkbCWwoVjlWecvhghJVWccVR/8izIGiuifU=
+	t=1733754915; cv=none; b=kO2OSXbshYGY+nMhYrszADwCZj60TGx1qeoakGKdG19IGMrxGQJv6Ii+K84KaK1knDdiSUHK56ie7PnJhQ4bl2U9Y5JItT33MiZACV2cc4b18zo45OkfRL9hyF3oAbRtRqwIOmLC8hQg4dMmljYZcE93Az7U5pd8Bf5I1dPatJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733754913; c=relaxed/simple;
-	bh=a9QcQiM00M1Zv3FgNaWygJVoKtz0iSwWXLqF6/mAJPU=;
+	s=arc-20240116; t=1733754915; c=relaxed/simple;
+	bh=LY6PValsi7F9LnPyEcdCMG6R1a+Y40j8Pek5Nn2q+vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SAxOUoUDBTFnVO6G4qN+h46UpeBnyj2TdtbWUR2Hbch/C/UiOyeVCG99IvVrt32pZ51we25/R/mKlP90RV32XVZ9fChI/BRQtWOs+96wL5c+oO314RHt/ImV/RlxqNQFadX7FtgKkOx0urTCjVUxHxNBF8CySPZjy6ILVFHTEjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byvxCfuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42CEC4CEDE;
-	Mon,  9 Dec 2024 14:35:12 +0000 (UTC)
+	 MIME-Version; b=UcwSoKPMwAjoAkIj+saNyczsv7bF26+ebVwVJ0ba3B/ax48JRlwGFFfY643mL73eo8+xbsYhh/IKhJyMaTP+3Qljrxlzqzxlffeco0hr9cwhUX1bLNvzuN4BA+nEVPlp3fxcV1YfUWz1S/F4aMgo6b8ZKtvsN2Ax+JMx2v3gMIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKH+RElT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA62C4CED1;
+	Mon,  9 Dec 2024 14:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733754913;
-	bh=a9QcQiM00M1Zv3FgNaWygJVoKtz0iSwWXLqF6/mAJPU=;
+	s=k20201202; t=1733754915;
+	bh=LY6PValsi7F9LnPyEcdCMG6R1a+Y40j8Pek5Nn2q+vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byvxCfuWDbpKKooPF9rV+CMTapcz5KYRkJD69dgNGB2k7l1rsimqS9jvPH4K3yddL
-	 RL+utlHctIzI0PTtxUlKmgG07brmzVFb5uhJGiOVLkinvQnudB7Z4KdGQX6AX4jQpy
-	 HsPRmR5/0PrykMp9pCqtQB75DEB/0WqSJLdExLjMPNOSbV4RaLVZ2A7iZDJd2hMZxi
-	 hzPYSllSFpA2AxcIkw5jpS/jpZFiaXm5jvyGY9AdwHTrNme9pobZY8JaQKpMoQwsKl
-	 d7jKept0Zx13P8SzXxaPQLab9QWOw/9YANtZhYHnA0qdwnEwdpXvj2nxHVRBlsOrVb
-	 sHy/MXu2gLhYg==
+	b=fKH+RElTLLqVkWLY1+ut37yDC78aI8SoI6DKKBB7dHBMfciHM0m6pF6dkP2IeG6Ef
+	 2Hg7paJa6De5gjyNeh1XR6CFA2Xp46U/nicKErxMYrey1MqIdkXGvs2nfhtWFV4q6q
+	 biDl6y/4smckqGns8CfVnDKfQLiY4RqM48Gj0Bko9Sm4PO86Gfh5PR89aCHn3+NJe9
+	 enlvlvyltRxqMulBEEc+ep4HIjSkt3w3ECcSMppSEXUTFQ6SED0E3fBsF028NSM0A1
+	 14nZJx25c61SXCt9zyQOOFUIE5pkoxAcUkkm+MRTS56XVpEE3Xh2aK3NCoorZk2b1z
+	 hZjZ4JuuGzgFQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: jianqi.ren.cn@windriver.com,
+Cc: Ajay Kaher <ajay.kaher@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
-Date: Mon,  9 Dec 2024 09:35:11 -0500
-Message-ID: <20241209075536-d21beeee13dd6299@stable.kernel.org>
+Subject: Re: [PATCH v6.1.y 1/2] drm/ttm: Make sure the mapped tt pages are decrypted when needed
+Date: Mon,  9 Dec 2024 09:35:13 -0500
+Message-ID: <20241209082525-a0e062063bffb83d@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241209063333.3426999-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20241209094904.2547579-2-ajay.kaher@broadcom.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,49 +63,72 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 789c17185fb0f39560496c2beab9b57ce1d0cbe7
+The upstream commit SHA1 provided is correct: 71ce046327cfd3aef3f93d1c44e091395eb03f8f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Rand Deeb <rand.sec96@gmail.com>
+Backport author: Ajay Kaher <ajay.kaher@broadcom.com>
+Commit author: Zack Rusin <zack.rusin@broadcom.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: c5dc2d8eb398)
+6.6.y | Present (different SHA1: de125efb3bae)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  789c17185fb0f ! 1:  eabfe79daed2a ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
+1:  71ce046327cfd ! 1:  fcdf2063a135c drm/ttm: Make sure the mapped tt pages are decrypted when needed
     @@ Metadata
       ## Commit message ##
-         ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
+         drm/ttm: Make sure the mapped tt pages are decrypted when needed
      
-    +    [ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
+    +    commit 71ce046327cfd3aef3f93d1c44e091395eb03f8f upstream.
     +
-         The ssb_device_uevent() function first attempts to convert the 'dev' pointer
-         to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
-         performing the NULL check, potentially leading to a NULL pointer
+         Some drivers require the mapped tt pages to be decrypted. In an ideal
+         world this would have been handled by the dma layer, but the TTM page
+         fault handling would have to be rewritten to able to do that.
     @@ Commit message
-         Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-         Signed-off-by: Kalle Valo <kvalo@kernel.org>
-         Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
-    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+         Cc: linux-kernel@vger.kernel.org
+         Cc: <stable@vger.kernel.org> # v5.14+
+         Link: https://patchwork.freedesktop.org/patch/msgid/20230926040359.3040017-1-zack@kde.org
+    +    Signed-off-by: Sasha Levin <sashal@kernel.org>
+    +    Signed-off-by: Ye Li <ye.li@broadcom.com>
+    +    Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
      
-      ## drivers/ssb/main.c ##
-     @@ drivers/ssb/main.c: static int ssb_bus_match(struct device *dev, struct device_driver *drv)
-      
-    - static int ssb_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
-    + static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+      ## drivers/gpu/drm/ttm/ttm_bo_util.c ##
+     @@ drivers/gpu/drm/ttm/ttm_bo_util.c: pgprot_t ttm_io_prot(struct ttm_buffer_object *bo, struct ttm_resource *res,
+    @@ drivers/gpu/drm/ttm/ttm_tt.c
+      #include <linux/module.h>
+      #include <drm/drm_cache.h>
+     +#include <drm/drm_device.h>
+    - #include <drm/drm_util.h>
+    - #include <drm/ttm/ttm_bo.h>
+    - #include <drm/ttm/ttm_tt.h>
+    + #include <drm/ttm/ttm_bo_driver.h>
+    + 
+    + #include "ttm_module.h"
+     @@ drivers/gpu/drm/ttm/ttm_tt.c: static atomic_long_t ttm_dma32_pages_allocated;
+      int ttm_tt_create(struct ttm_buffer_object *bo, bool zero_alloc)
       {
-    --	const struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
-    -+	const struct ssb_device *ssb_dev;
-    +-	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
-    ++	struct ssb_device *ssb_dev;
+    @@ include/drm/ttm/ttm_tt.h: struct ttm_tt {
+      	 * set by TTM after ttm_tt_populate() has successfully returned, and is
+      	 * then unset when TTM calls ttm_tt_unpopulate().
+     @@ include/drm/ttm/ttm_tt.h: struct ttm_tt {
+    - #define TTM_TT_FLAG_ZERO_ALLOC		BIT(1)
+    - #define TTM_TT_FLAG_EXTERNAL		BIT(2)
+    - #define TTM_TT_FLAG_EXTERNAL_MAPPABLE	BIT(3)
+    -+#define TTM_TT_FLAG_DECRYPTED		BIT(4)
+    + #define TTM_TT_FLAG_ZERO_ALLOC		(1 << 1)
+    + #define TTM_TT_FLAG_EXTERNAL		(1 << 2)
+    + #define TTM_TT_FLAG_EXTERNAL_MAPPABLE	(1 << 3)
+    ++#define TTM_TT_FLAG_DECRYPTED		(1 << 4)
       
-      	if (!dev)
-      		return -ENODEV;
+    --#define TTM_TT_FLAG_PRIV_POPULATED	BIT(4)
+    -+#define TTM_TT_FLAG_PRIV_POPULATED	BIT(5)
+    + #define TTM_TT_FLAG_PRIV_POPULATED  (1U << 31)
+      	uint32_t page_flags;
+    - 	/** @num_pages: Number of pages in the page array. */
+    - 	uint32_t num_pages;
 ---
 
 Results of testing on various branches:
