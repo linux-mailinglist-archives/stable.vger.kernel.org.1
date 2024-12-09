@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-100103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2596B9E8C8B
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 08:48:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C229E8BD2
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 08:08:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D07152814AE
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 07:48:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC477163DCA
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 07:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB8C214A93;
-	Mon,  9 Dec 2024 07:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="ToeJQjYP";
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="Gm6n3ncw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9F42144A5;
+	Mon,  9 Dec 2024 07:08:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mta-03.yadro.com (mta-03.yadro.com [89.207.88.253])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DB915573D;
-	Mon,  9 Dec 2024 07:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.207.88.253
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9180D1EB3D;
+	Mon,  9 Dec 2024 07:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733730478; cv=none; b=CtQfWMQrztqNY9Y+025WKL/uv2pNzX2wM4RSYr53Y5IqT/MPrtqZhydjpHHhydBlmGuPxw36lTFVpEcMElzjgcjeKYSnCDt545UdV8ps0AEtoSzBZQconMNxUDDf/jaCdD2PNPBx+a8wUxZzfHnkcDY/wmPCU9wvQ7zn6qcXdb8=
+	t=1733728085; cv=none; b=m0PPd/IQ4Vhjqd9ivbw1w4ViSWx7NNYZIWeRjAw6PDPq1Mh86tAxdYKmqAjwfH1LejDZwaVbD+kaXViOwMenCFqf3zbrDoWVoZ3xA5BuMFvR37DCKAVxGFTBun+//YtNuThldUkcK4KKKU8cgMpo6yc1OWjFUZi4XoWVAWdHvYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733730478; c=relaxed/simple;
-	bh=Sd8GLV1GZTuMQndnci343v7z53UP/Oxb0I80I1PF628=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=plQRaP5le1OMkzXReG+xMPtSE84IWSu3ww2x/Ybf5XaZu491jle952tX+CBmBYzyqYXAYXKXSy2/9oEv/bsFxIM8S7gvBR29zfPsu+sb0HOlw8ThizffNQdpKKsWVgHSIU1OR1Tsg7zGcVNqWVptjy8sm4sE3dRIJHJ3C2o+9LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=ToeJQjYP; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=Gm6n3ncw; arc=none smtp.client-ip=89.207.88.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com 1983EE0008
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
-	t=1733730464; bh=9rTtz124RMOkvIMCEigwQM+K63GbqUml6CtYuHYZxYQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=ToeJQjYPeOBCziDWhCGfg59C+idKZRuO623CNHq4hFVAqT4I8Eax1tF8lFRHrgZIV
-	 Ts3HdvhXMMTJZhEokQ3hyVxIrwgihFr+SbmRP/idBAE2n70AQUMN8J7EG+yeIdnSqi
-	 anAIpy5ROaTQvhEVfUCys5lGkrKWjiJl+1WeAcuyBCZWi6mUzF6PvYzxAcmWhGBiJW
-	 3LhToC76XQhNU8tTo16wkDakjbQ9hAw/jfrUBXSl3Im0DVRZGJ8jzlmaC54czBCQF/
-	 +2wDQ5RGb+zBDrN9MRuPQbjxwkm3RVhdjJ6j5JkWQyG9hRbe8qUAH15vjS2Np5inPq
-	 WW6Bvp3ppk9aQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
-	t=1733730464; bh=9rTtz124RMOkvIMCEigwQM+K63GbqUml6CtYuHYZxYQ=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=Gm6n3ncwcl/8vHsVaZTj99eQ0lnMXMQOA0pyPiTfHOCvqn9rGpWCjNu7GB3btY1M7
-	 iG+swQDeJ71FLU3hoa7+ZSaoFlWRDDZ7vwFyX2tmHEZhQB+mQBA3yAywBMKMCoE1Qc
-	 C6jmW0AbKPrc4sXWRSCTarHDcmsj8nYScbsmqerqQvkCb2eaWT+UxuQZABi0P1bQeL
-	 FN61V8UM2h7Wy2w5MeX+vlOAxxZH81sn5x4h19I12TPPLOfww2GFOYC06ZOUI2XmA9
-	 3aa4iAnJmsqnx5oAbPDXvAJYVmNP4diCkxIj3V4WbTP6IotdMOotAm1+JnlSf7/MKb
-	 2oouM3UHwo3Mg==
-From: Evgenii Shatokhin <e.shatokhin@yadro.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-CC: <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nikita
- Shubin <nikita.shubin@maquefel.me>, <linux@yadro.com>, Evgenii Shatokhin
-	<e.shatokhin@yadro.com>, <stable@vger.kernel.org>
-Subject: [PATCH] pinctrl: mcp23s08: Fix sleeping in atomic context due to regmap locking
-Date: Mon, 9 Dec 2024 10:46:59 +0300
-Message-ID: <20241209074659.1442898-1-e.shatokhin@yadro.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1733728085; c=relaxed/simple;
+	bh=a3K64jJA2uqJMe1HS7E60k7y1DffRW1euJVCcFm1q9Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AWLlm0upmDm1i58Py2ryPVWWLAxnTK+iXG0C3vOosH4sQ4Jb6P4qObuUq3uO7mAl9QGm6JOvcGbB6Dr2WVRsFo0QQg0HAxDDoWWr+QPNwvgY/LPOeKHcjuEnwEZrmKFqFg3Abs1edNEIu3K64THmVTfRlBmY/SnQgAUV46a1dRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B95TvkO012069;
+	Sun, 8 Dec 2024 23:07:51 -0800
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cx1u12sb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 08 Dec 2024 23:07:51 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Sun, 8 Dec 2024 23:07:50 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Sun, 8 Dec 2024 23:07:49 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <almaz.alexandrovich@paragon-software.com>
+CC: <stable@vger.kernel.org>, <ntfs3@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH 6.1.y] fs/ntfs3: Fixed overflow check in mi_enum_attr()
+Date: Mon, 9 Dec 2024 16:05:41 +0800
+Message-ID: <20241209080541.3541969-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,111 +58,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
- T-EXCH-10.corp.yadro.com (172.17.11.60)
+X-Authority-Analysis: v=2.4 cv=H/shw/Yi c=1 sm=1 tr=0 ts=67569747 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=RZcAm9yDv7YA:10 a=GFCt93a2AAAA:8 a=t7CeM3EgAAAA:8 a=fATKHIbVh68Ky4GJMjkA:9 a=0UNspqPZPZo5crgNHNjb:22
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-ORIG-GUID: _qr2igixvVPsItVcCOxlYaUVZREp9f7U
+X-Proofpoint-GUID: _qr2igixvVPsItVcCOxlYaUVZREp9f7U
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-09_04,2024-12-09_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2411120000 definitions=main-2412090055
 
-If a device uses MCP23xxx IO expander to receive IRQs, the following
-bug can happen:
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-  BUG: sleeping function called from invalid context
-    at kernel/locking/mutex.c:283
-  in_atomic(): 1, irqs_disabled(): 1, non_block: 0, ...
-  preempt_count: 1, expected: 0
-  ...
-  Call Trace:
-  ...
-  __might_resched+0x104/0x10e
-  __might_sleep+0x3e/0x62
-  mutex_lock+0x20/0x4c
-  regmap_lock_mutex+0x10/0x18
-  regmap_update_bits_base+0x2c/0x66
-  mcp23s08_irq_set_type+0x1ae/0x1d6
-  __irq_set_trigger+0x56/0x172
-  __setup_irq+0x1e6/0x646
-  request_threaded_irq+0xb6/0x160
-  ...
+[ Upstream commit 652cfeb43d6b9aba5c7c4902bed7a7340df131fb ]
 
-We observed the problem while experimenting with a touchscreen driver which
-used MCP23017 IO expander (I2C).
-
-The regmap in the pinctrl-mcp23s08 driver uses a mutex for protection from
-concurrent accesses, which is the default for regmaps without .fast_io,
-.disable_locking, etc.
-
-mcp23s08_irq_set_type() calls regmap_update_bits_base(), and the latter
-locks the mutex.
-
-However, __setup_irq() locks desc->lock spinlock before calling these
-functions. As a result, the system tries to lock the mutex whole holding
-the spinlock.
-
-It seems, the internal regmap locks are not needed in this driver at all.
-mcp->lock seems to protect the regmap from concurrent accesses already,
-except, probably, in mcp_pinconf_get/set.
-
-mcp23s08_irq_set_type() and mcp23s08_irq_mask/unmask() are called under
-chip_bus_lock(), which calls mcp23s08_irq_bus_lock(). The latter takes
-mcp->lock and enables regmap caching, so that the potentially slow I2C
-accesses are deferred until chip_bus_unlock().
-
-The accesses to the regmap from mcp23s08_probe_one() do not need additional
-locking.
-
-In all remaining places where the regmap is accessed, except
-mcp_pinconf_get/set(), the driver already takes mcp->lock.
-
-This patch adds locking in mcp_pinconf_get/set() and disables internal
-locking in the regmap config. Among other things, it fixes the sleeping
-in atomic context described above.
-
-Fixes: 8f38910ba4f6 ("pinctrl: mcp23s08: switch to regmap caching")
-Cc: stable@vger.kernel.org
-Signed-off-by: Evgenii Shatokhin <e.shatokhin@yadro.com>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
 ---
- drivers/pinctrl/pinctrl-mcp23s08.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ntfs3/record.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
-index d66c3a3e8429..b96e6368a956 100644
---- a/drivers/pinctrl/pinctrl-mcp23s08.c
-+++ b/drivers/pinctrl/pinctrl-mcp23s08.c
-@@ -86,6 +86,7 @@ const struct regmap_config mcp23x08_regmap = {
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x08_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.max_register = MCP_OLAT,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x08_regmap);
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 7ab452710572..826a756669a3 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -273,7 +273,7 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
+ 		if (t16 > asize)
+ 			return NULL;
  
-@@ -132,6 +133,7 @@ const struct regmap_config mcp23x17_regmap = {
- 	.num_reg_defaults = ARRAY_SIZE(mcp23x17_defaults),
- 	.cache_type = REGCACHE_FLAT,
- 	.val_format_endian = REGMAP_ENDIAN_LITTLE,
-+	.disable_locking = true, /* mcp->lock protects the regmap */
- };
- EXPORT_SYMBOL_GPL(mcp23x17_regmap);
+-		if (t16 + le32_to_cpu(attr->res.data_size) > asize)
++		if (le32_to_cpu(attr->res.data_size) > asize - t16)
+ 			return NULL;
  
-@@ -228,7 +230,9 @@ static int mcp_pinconf_get(struct pinctrl_dev *pctldev, unsigned int pin,
- 
- 	switch (param) {
- 	case PIN_CONFIG_BIAS_PULL_UP:
-+		mutex_lock(&mcp->lock);
- 		ret = mcp_read(mcp, MCP_GPPU, &data);
-+		mutex_unlock(&mcp->lock);
- 		if (ret < 0)
- 			return ret;
- 		status = (data & BIT(pin)) ? 1 : 0;
-@@ -257,7 +261,9 @@ static int mcp_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 
- 		switch (param) {
- 		case PIN_CONFIG_BIAS_PULL_UP:
-+			mutex_lock(&mcp->lock);
- 			ret = mcp_set_bit(mcp, MCP_GPPU, pin, arg);
-+			mutex_unlock(&mcp->lock);
- 			break;
- 		default:
- 			dev_dbg(mcp->dev, "Invalid config param %04x\n", param);
+ 		if (attr->name_len &&
 -- 
-2.34.1
+2.25.1
 
 
