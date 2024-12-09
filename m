@@ -1,163 +1,215 @@
-Return-Path: <stable+bounces-100105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1F19E8D6B
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 09:30:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A213218852D8
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 08:30:54 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0342156E6;
-	Mon,  9 Dec 2024 08:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GRiMP4BB"
-X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AA69E8D77
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 09:31:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5E022C6E8
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 08:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 958592812CD
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 08:31:58 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76835215077;
+	Mon,  9 Dec 2024 08:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9sD4D13"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6E112CDAE;
+	Mon,  9 Dec 2024 08:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733733046; cv=none; b=ARnTt5k+Z9OuKP9Z/lEX28mjogK0wjspF6qAO08zMyca9sxvlsIsOGuQ7PRMi0vrqQ2r7WxQ+ECY+2xqe9ay4HjgnIHeRFvU2CKL427LXmpJhdF9h7eNGybz+hM1TrQbg8BgWpp2H2gBoWXE8LWIwWes1B+kyZFaHgwgpKBqR3M=
+	t=1733733117; cv=none; b=GyN2q3swJFgbQxQvSXe0sMGkkDCvK/7JML3JN5KiQu3aUzsNL4AO7fN4W9qQrprDke4DRqB3Lp47UAa/qZeTaM0RMyz1iGON+dhzxi088j5pEiuA42+61TFcFcMTPlIo4dtKkeN/pTWTz7MZjqNRQQAanJR88ViMFtAs5ZCGS4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733733046; c=relaxed/simple;
-	bh=1d2UQs4IpJLHgNHjQ0N7DB/H72rwjrFm6x80oXir/GQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NiGJ6rSYlV+/bNdZCeq8x/W8u4JtBwdjnEJ7CzpU+3xUl0YdsBFnJNocDDIqVW2yzU0MzlwE8F2bGAinihuJgufIsJZ9bU7DQj3TWJOlsYFI57AHVIZEH+3MR25ov9XHFMG3piJH6q5HfBXJldQiDZ6mSi+Bok5X3AgAZ6aqgKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GRiMP4BB; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733733043;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bBKF2UFZWXbCYwAhv8QttLFQKMvyT8IMYojBhS1/oT8=;
-	b=GRiMP4BBoOXcEbPQL+CxzFl156wy66nO/c9zq5/0AZDsVWho05QXTIRs/qyc0CZuAW1N/1
-	J8afIrdUEtzfiDewWLGVQrYqDar8AtZw47SK//XDNP3HWYKFUXaKsZR7c0SkFh/qEL4i79
-	cytDKbCBCTAV3T+uBnwcrp/0zZFTv4o=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-WmURT7-ZPjODf5GujrImpw-1; Mon, 09 Dec 2024 03:30:42 -0500
-X-MC-Unique: WmURT7-ZPjODf5GujrImpw-1
-X-Mimecast-MFC-AGG-ID: WmURT7-ZPjODf5GujrImpw
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-aa691c09772so36192966b.1
-        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 00:30:42 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733733041; x=1734337841;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bBKF2UFZWXbCYwAhv8QttLFQKMvyT8IMYojBhS1/oT8=;
-        b=WUIMNWuRMMM5WxbS6jXI9HsCUUulhikbhdjdWP5KhAka1PlcKdIeQlaIs2SW3FWz6G
-         WEYCwu44oyrBNmEFT/16ZUdPbEJOKS2TGBHBbZBVNWw+duc38aCD7UpS2cPxaRAvTrKK
-         tccoetDfPATyhDdIs2vK4myZRv/aFGj04EdgRoqcsxqOOMSIq4hzAHJZdBDyb/YmsJZr
-         ///5t0nGADE14d/uqLv24byFpJ16gxUKgLBbfPjT+zyxoL6jblCGPZz/bWsxtdtsfkyl
-         KAj7B+Y7SnGexrpxYdvQce0vk8v7utJleOwnnzsYxe68qs3+4WgUAMiRohv6C9yKmcze
-         Qpsg==
-X-Forwarded-Encrypted: i=1; AJvYcCXkuJM+opoaAZgZC6wtAX+DChvNRpUQv1ech6N5RvL7R4QQZdagcDeZJtB73VJRKnpJj90/iC0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxE9gBe1s9w9Pn04GYwIGMp073cq4+3EpUwaVIdUBeK/Oow07Cs
-	zUOslyARTtW5Q8gcfNfFxALrvqIqoINyusYChUe30WKC9aw0tOUKe1ZlmvfY0TngJzRENfKVP5+
-	XJaiiJprMwZ8c2gsBe17rDmXcxJDdzKBMZWU1V9rszZbjhUWmVB2R/w==
-X-Gm-Gg: ASbGncveD3BCati+wMEUDWukdOr4+4GXT8i801qL6DCWj8Fc0qMHRn4V/PA8V17moat
-	C6hQa5wc4s+400Z4Z+wEJHImqd6mXhTtLpEZebT+K4fJ/8oPd2jnm2OnzH7t89rQAavt38B9IF1
-	2+UQLk+3lld2udySQ9hasnU/B6kTDzqfBirms9Bm/P0gDKC8kwyWTWKzdSVPTbIuGHDc4RrLqcA
-	3n45ONU60IP01jlEY+sI0s9dpBAa9d8BvW+06WU7OIWGuo6YypnbQ==
-X-Received: by 2002:a17:907:938a:b0:aa6:851d:af4d with SMTP id a640c23a62f3a-aa6851db0ddmr295608966b.21.1733733041415;
-        Mon, 09 Dec 2024 00:30:41 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHEq7O6vhfSo0hMIn8Em0ocaUBDqo5E0XsXucfSOt0kTSkILyqyAJlHkBj5DDT0CDvMJvO4tg==
-X-Received: by 2002:a17:907:938a:b0:aa6:851d:af4d with SMTP id a640c23a62f3a-aa6851db0ddmr295607366b.21.1733733041066;
-        Mon, 09 Dec 2024 00:30:41 -0800 (PST)
-Received: from [10.40.98.157] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa6260e2c31sm651505666b.180.2024.12.09.00.30.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Dec 2024 00:30:40 -0800 (PST)
-Message-ID: <1d59a602-053a-47f1-9dac-5c95483d07b6@redhat.com>
-Date: Mon, 9 Dec 2024 09:30:39 +0100
+	s=arc-20240116; t=1733733117; c=relaxed/simple;
+	bh=OXDcmuj6dJBmZafC8rFQNhhumNNdoBeDEizT1mjedQs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cJd0mtrMDEA3WDO/jCmvy/hepxG3U0Yq+7s3/3sKT7E7zI34mgRBXqxqUKHJzCKfh3wKSrbouH5GlFIYJqjcrLUPj4rASu4Vt4N2PtZG4NGJyXuNAnUo/ngvMOj/08ICvHl7dxV6JJimapOOyO5VpqWZkgYlilPRvoKTYh0KH/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9sD4D13; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB89AC4CED1;
+	Mon,  9 Dec 2024 08:31:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733733116;
+	bh=OXDcmuj6dJBmZafC8rFQNhhumNNdoBeDEizT1mjedQs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=G9sD4D13Apsbs2y/i67y1IztMC2/fYb3d/k3lTv9i44pvEibLhHW0uk2dVroGUVdL
+	 37ij1KxX9LFj6jezjepyZ+gBd+BmMt7C0qmq5+PyYoMobULxydWhPU6h5MdgyeQpfx
+	 6ffYK8RA6teMWab2+SHov+yzaCMQyExDRURx7JOL1rzhdoqQzRH6FlGyS7oPuxvJcx
+	 iQ8ef/eMb0K5qOuIUkBM0LMxh6yrja6UIqzn/Gkuvw9G4ePZ7fVBQWxMmSQV6DExvP
+	 myG5sgCT+qqCqfAhcaXIXL5j7+UyeKZBMJnF5U6dpYlpuyEKNR+Ljld1UOIDlnzBSc
+	 bokz7daDF3pnQ==
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5401c52000fso836206e87.2;
+        Mon, 09 Dec 2024 00:31:56 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV29L5zWvcBiFCWQRQ9Qvm615llkFxIO22JvpAfcpO9hh2gLZqUyGziNW3mL/SU0NZVmaaprae/9imsuFs=@vger.kernel.org, AJvYcCWIo9nmxoLwGchhPfVv99/wXZ3mWcX6WxmxWhnea3Ba8/F9lRZVM0wZwmvDDvsWJRgsMera2s/h5SI7+eFp@vger.kernel.org, AJvYcCWsfc3GIyBIK8XE8tPbUTX1Y187jx0z843Mewb09VPx1nCyAQ/fCvCXM3nmV464O9JNnYHzXTKK@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeF3neRozDYAMl2wfVKTxubFHCVwRdQ2yjQYe0JQBVXCFUzAXK
+	xYNxe7afu27wy3J5BIlzwVgao1WX9TKCrtTyCy9zBH5AI2tyVhb5u5iPdiskTJ/wyKM7txF/6RT
+	jIXjrOb9Wg/lDs0ana0C3PXDZ7SA=
+X-Google-Smtp-Source: AGHT+IGMWZRZQy+J3n8zTwDkOHS4vYSTqxdMj4RkRBjWA19n5LCCT8s31zfp9zMsoNVhKTJA/CXUmvRP8sHSBYw8boA=
+X-Received: by 2002:a05:6512:e9f:b0:53f:5e23:fb72 with SMTP id
+ 2adb3069b0e04-53f5e23fd21mr2030810e87.57.1733733114978; Mon, 09 Dec 2024
+ 00:31:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-To: Ping-Ke Shih <pkshih@realtek.com>, Jes Sorensen <Jes.Sorensen@gmail.com>,
- Kalle Valo <kvalo@kernel.org>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Peter Robinson <pbrobinson@gmail.com>
-References: <20241107140833.274986-1-hdegoede@redhat.com>
- <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
- <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
- <8e0a643ecdc2469f936c607dbd555b4c@realtek.com>
-Content-Language: en-US
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <8e0a643ecdc2469f936c607dbd555b4c@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241206085810.112341-1-chenhuacai@loongson.cn>
+ <2024120635-wham-campsite-b62b@gregkh> <CAAhV-H4Db0tVrqcfXHceJeODgnK0ggHpx9_6vwXAAV0LohCD-w@mail.gmail.com>
+ <2024120748-preaching-reshape-06e9@gregkh> <ccb1fa9034b177042db8fcbe7a95a2a5b466dc30.camel@xry111.site>
+In-Reply-To: <ccb1fa9034b177042db8fcbe7a95a2a5b466dc30.camel@xry111.site>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 9 Dec 2024 09:31:43 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEV+HC+2HMLhDaLfAufQLrXRs2J7akMNr1mjejDYc7kdw@mail.gmail.com>
+Message-ID: <CAMj1kXEV+HC+2HMLhDaLfAufQLrXRs2J7akMNr1mjejDYc7kdw@mail.gmail.com>
+Subject: Re: [PATCH 6.1&6.6 0/3] kbuild: Avoid weak external linkage where possible
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@kernel.org>, 
+	Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>, 
+	Xuerui Wang <kernel@xen0n.name>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, stable@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Sat, 7 Dec 2024 at 11:46, Xi Ruoyao <xry111@xry111.site> wrote:
+>
+> On Sat, 2024-12-07 at 10:32 +0100, Greg Kroah-Hartman wrote:
+> > On Sat, Dec 07, 2024 at 05:21:00PM +0800, Huacai Chen wrote:
+> > > Hi, Greg,
+> > >
+> > > On Fri, Dec 6, 2024 at 9:04=E2=80=AFPM Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Fri, Dec 06, 2024 at 04:58:07PM +0800, Huacai Chen wrote:
+> > > > > Backport this series to 6.1&6.6 because LoongArch gets build erro=
+rs with
+> > > > > latest binutils which has commit 599df6e2db17d1c4 ("ld, LoongArch=
+: print
+> > > > > error about linking without -fPIC or -fPIE flag in more detail").
+> > > > >
+> > > > >   CC      .vmlinux.export.o
+> > > > >   UPD     include/generated/utsversion.h
+> > > > >   CC      init/version-timestamp.o
+> > > > >   LD      .tmp_vmlinux.kallsyms1
+> > > > > loongarch64-unknown-linux-gnu-ld: kernel/kallsyms.o:(.text+0): re=
+location R_LARCH_PCALA_HI20 against `kallsyms_markers` can not be used when=
+ making a PIE object; recompile with -fPIE
+> > > > > loongarch64-unknown-linux-gnu-ld: kernel/crash_core.o:(.init.text=
++0x984): relocation R_LARCH_PCALA_HI20 against `kallsyms_names` can not be =
+used when making a PIE object; recompile with -fPIE
+> > > > > loongarch64-unknown-linux-gnu-ld: kernel/bpf/btf.o:(.text+0xcc7c)=
+: relocation R_LARCH_PCALA_HI20 against `__start_BTF` can not be used when =
+making a PIE object; recompile with -fPIE
+> > > > > loongarch64-unknown-linux-gnu-ld: BFD (GNU Binutils) 2.43.50.2024=
+1126 assertion fail ../../bfd/elfnn-loongarch.c:2673
+> > > > >
+> > > > > In theory 5.10&5.15 also need this, but since LoongArch get upstr=
+eam at
+> > > > > 5.19, so I just ignore them because there is no error report abou=
+t other
+> > > > > archs now.
+> > > >
+> > > > Odd, why doesn't this affect other arches as well using new binutil=
+s?  I
+> > > > hate to have to backport all of this just for one arch, as that fee=
+ls
+> > > > odd.
+> > > The related binutils commit is only for LoongArch, so build errors
+> > > only occured on LoongArch. I don't know why other archs have no
+> > > problem exactly, but may be related to their CFLAGS (for example, if
+> > > we disable CONFIG_RELOCATABLE, LoongArch also has no build errors
+> > > because CFLAGS changes).
+> >
+> > does LoongArch depend on that option?
+>
+> "That option" is -mdirect-extern-access.  Without it we'll use GOT in
+> the kernel image to address anything out of the current TU, bloating the
+> kernel size and making it slower.
+>
 
-On 9-Dec-24 1:26 AM, Ping-Ke Shih wrote:
-> Hans de Goede <hdegoede@redhat.com> wrote:
->> Hi,
->>
->> On 18-Nov-24 3:23 AM, Ping-Ke Shih wrote:
->>> Hans de Goede <hdegoede@redhat.com> wrote:
->>>
->>>> The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
->>>> except for the following 10, add these to the untested section so they
->>>> can be used with the rtl8xxxu as the rtl8192cu are well supported.
->>>>
->>>> This fixes these wifi modules not working on distributions which have
->>>> disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
->>>> like Fedora.
->>>>
->>>> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
->>>> Cc: stable@vger.kernel.org
->>>> Cc: Peter Robinson <pbrobinson@gmail.com>
->>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->>>> Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
->>>
->>> 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
->>>
->>> 31be3175bd7b wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
->>
->> Thank you for merging this, since this is a bugfix patch, see e.g. :
->>
->> https://bugzilla.redhat.com/show_bug.cgi?id=2321540
->>
->> I was expecting this patch to show up in 6.13-rc1 but it does
->> not appear to be there.
->>
->> Can you please include this in a fixes-pull-request to the network
->> maintainer so that gets added to a 6.13-rc# release soon and then
->> can be backported to various stable kernels ?
->>
-> 
-> This patch stays in rtw.git and 6.14 will have it, and then drain to stable
-> trees. For the redhat users, could you ask the distro maintainer to take this
-> patch ahead?
+An alternative to this might be to add
 
-That is not how things are supposed to work. You are supposed to have a fixes
-tree/branch and a next tree/branch and fixes should be send out ASAP.
+-include $(srctree)/include/linux/hidden.h
 
-Ideally you would have already send this out as a fixes pull-request for
-6.12 but waiting till 6.14 really is not acceptable IMHO.
+to KBUILD_CFLAGS_KERNEL, so that the compiler understands that all
+external references are resolved at link time, not at load/run time.
 
-Note this is not just about Red Hat / Fedora users, other distros are
-likely impacted by this too.
+> The problem is the linker failed to handle a direct access to undefined
+> weak symbol on LoongArch.
+...
+> With Binutils trunk, an error is emitted instead of silently producing
+> buggy executable.  Still I don't think emitting an error is correct when
+> linking a static PIE (our vmlinux is a static PIE).  Instead the linker
+> should just rewrite
+>
+>     pcalau12i rd, %pc_hi20(undef_weak)
+>
+> to
+>
+>     move rd, $zero
+>
 
-Regards,
+Is that transformation even possible at link time? Isn't pc_hi20 part of a =
+pair?
 
-Hans
+> Also the "recompile with -fPIE" suggestion in the error message is
+> completely misleading.  We are *already* compiling relocatable kernel
+> with -fPIE.
+>
 
+And this is the most important difference between LoongArch and the
+other arches - LoongArch already uses PIC code explicitly. Other
+architectures use ordinary position dependent codegen and linking, or
+-in the case of arm64- use position dependent codegen and PIE linking,
+where the fact that this is even possible is a happy accident.
 
+...
+> > What happens if it is enabled for other arches?  Why doesn't it break
+> > them?
+>
+> The other arches have copy relocation, so their -mdirect-extern-access
+> is intended to work with dynamically linked executable, thus it's the
+> default and not as strong as ours.  On them -mdirect-extern-access still
+> uses GOT to address weak symbols.
+>
+> We don't have copy relocation, thus our default is -mno-direct-extern-
+> access, and -mdirect-extern-access is only intended for static
+> executables (including OS kernel, embedded firmware, etc).  So it's
+> designed to be stronger, unfortunately the toolchain failed to implement
+> it correctly.
+>
+
+This has nothing to do with copy relocations - those are only relevant
+when shared libraries come into play.
+
+Other architectures don't break because they either a) use position
+dependent codegen with absolute addressing, and simply resolve
+undefined weak references as 0x0, or b) use GOT indirection, where the
+reference is a GOT load and the address in the GOT is set to 0x0.
+
+So the issue here appears to be that the compiler fails to emit a GOT
+entry for this reference, even though it is performing PIC codegen.
+This is probably due to -mdirect-extern-access being taken into
+account too strictly. The upshot is that a relative reference is
+emitted to an undefined symbol, and it is impossible for a relative
+reference to [reliably] yield NULL, and so the reference produces a
+bogus non-NULL address.
+
+As these patches deal with symbols that are only undefined in the
+preliminary first linker pass, and are guaranteed to exist afterwards,
+silently emitting a bogus relative reference was not a problem in
+these cases. Obviously, throwing an error is.
+
+The patches should be rather harmless in practice, but I know Masahiro
+did not like the approach for the kallsyms markers, and made some
+subsequent modifications to it.
+
+Given that this is relatively new toolchain behavior, I'd suggest
+fixing the compiler to emit weak external references via GOT entries
+even when  -mdirect-extern-access is in effect.
 
