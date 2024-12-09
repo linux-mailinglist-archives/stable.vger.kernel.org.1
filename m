@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639A49EA0AF
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 21:55:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 340269EA0B5
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 21:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45CD9164CA0
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 20:55:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 034651886209
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 20:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A82199EB2;
-	Mon,  9 Dec 2024 20:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FD019CC2A;
+	Mon,  9 Dec 2024 20:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PpATFCMr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utVxAhrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F6A1E515
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 20:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BC81E515
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 20:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733777755; cv=none; b=SbKZO5k4NqxmIUTLZWF0k5br3t/QcQRe6aFPn1WcpZ5QJXFcyGvZ3LTywpYjPB+/wV4TL1PjrTonXIQsvKfqTiTW9fUb/qecKfwZ2CSVLZmqV+gJHcxPoXnenkShUu1/rbwrXx2HSVjPIFINF0Q9/a+IdM0td8W5mUZlDLi3P6U=
+	t=1733777757; cv=none; b=gyN6lQ/1A8Det/SqEFPWStM4MRBY319m5yF3xdiH7N5ew8fpwhBmJ32u25ibskx5aWNO9COMVY0v1ibwsXWKzetKnC0Ss1j6XbF8AdDVSHNqEzQZVXH6/L7zfCY3V0rKNIILaM5RcvhHg5mxwG5TvN8dAokN0v8ra89HwVoE06E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733777755; c=relaxed/simple;
-	bh=Zgx3D37Zw1JWNuPE2e5fMfUSgIFBWRD/BpC05rCgaro=;
+	s=arc-20240116; t=1733777757; c=relaxed/simple;
+	bh=8qynSQVTIOsAtmTBwLQ1W6Qi80FQ7H0nrq4o3S67mHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgPJnyIqTC3mjzsFEh+D7piOpGyCXFON2aE6ziv3kH6hZg/I/JV87TeO6XSIOHnc88qrW5Z0z90mBf7MqVwOMX1ZsqbiW7gRuZnNvbQTCaS2XnNg9Pci1BvTGXcAwGg4XMqdBdaTYNGBLkjHW2rivVSQalFGvQjfSjCwR6Y05y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PpATFCMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A382C4CED1;
-	Mon,  9 Dec 2024 20:55:54 +0000 (UTC)
+	 MIME-Version; b=CQ66r3/rkkPLccPy0xhJKgdwv1t8+mOxfST5kli6boiTr+2UOTCvGUyn6jrsnrOhwkbFPfwpeI994dUdgE93YetnKd2GYP1Xc9Y1WZnz4mlqKEVjLorZmVq4bp88FvDDSSXeZ9CgrSmkk+/QNI7hTreF+Ui4EwvU83mElZGFvVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utVxAhrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF7AC4CED1;
+	Mon,  9 Dec 2024 20:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733777754;
-	bh=Zgx3D37Zw1JWNuPE2e5fMfUSgIFBWRD/BpC05rCgaro=;
+	s=k20201202; t=1733777756;
+	bh=8qynSQVTIOsAtmTBwLQ1W6Qi80FQ7H0nrq4o3S67mHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpATFCMreP+gsCPMXD44pVfW/SpTzKLHPtAHEldt5k6gy3VS+y6ix2Pp4BiMCVQX8
-	 HJ9QbIDddPrqSLdJyFuubS+KkXT/G8K1xVTASAJ68ebc3cfVQ+oMaCafUMfmPVaiz/
-	 KuNUsDXAPnjMagvZXy0rXdUrjAIEcLN569BuQlxMWe0oChzdG8ABkaz7ntgF05QGm9
-	 9r/01mZXpYEB6Brbg0TZWZwCRiz8KwVWv1CH3kGXuosq98wRYGY890iak5rEApmhMh
-	 j3s/22xccX9Z2lkxQXja/Se4lvhN7oDMEOq9GSwG95JR6JlUiDcgyPwQVRpu5JTVCb
-	 K4zHuBZ7IGOBw==
+	b=utVxAhrW00AMIBkNUng9GeSZJ/CM6OTQKxTnme3CQYBGiOHMokL4ew9h6AVRKzQLg
+	 8WlHKbhXk7K8YVcC0+VEHFEH+bb1w1G1fl8AcNWiNamMZdXFpKxNgSGUvVVxLV8QRB
+	 SGIbmbBN5sWo51xCJgyyurPiwDWzGzSvaa2XrzJntJ9WKrB87RdEd5vnrIkvCuYAMm
+	 wc3kU4x84ThdwniVRWSUghCd7+CzW7wy/qDWaBZTyWSJb+D89pYx8Fy/ZrEk51StsH
+	 2HJ0LSlQYuMz7J+HSxPdrI1C7OMbg0TWYdLUEig36ussReq/dWoeLxgw2yUfyOHV96
+	 rvA2ZL39B5Lrg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] media: ipu6: use the IPU6 DMA mapping APIs to do mapping
-Date: Mon,  9 Dec 2024 15:55:53 -0500
-Message-ID: <20241209140015-9d5855e4e01a460e@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] scsi: core: Fix scsi_mode_select() buffer length handling
+Date: Mon,  9 Dec 2024 15:55:55 -0500
+Message-ID: <20241209132628-c75f8be7ddfda850@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241209175416.59433-1-stanislaw.gruszka@linux.intel.com>
+In-Reply-To:  <20241209165340.112862-1-kovalev@altlinux.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,52 +63,44 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: 1d4a000289979cc7f2887c8407b1bfe2a0918354
+The upstream commit SHA1 provided is correct: a7d6840bed0c2b16ac3071b74b5fcf08fc488241
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Commit author: Bingbu Cao <bingbu.cao@intel.com>
+Backport author: Vasiliy Kovalev <kovalev@altlinux.org>
+Commit author: Damien Le Moal <damien.lemoal@wdc.com>
 
 
 Status in newer kernel trees:
-6.12.y | Not found
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  1d4a000289979 ! 1:  b5698951cc16d media: ipu6: use the IPU6 DMA mapping APIs to do mapping
+1:  a7d6840bed0c2 ! 1:  16b532ea81441 scsi: core: Fix scsi_mode_select() buffer length handling
     @@ Metadata
       ## Commit message ##
-         media: ipu6: use the IPU6 DMA mapping APIs to do mapping
+         scsi: core: Fix scsi_mode_select() buffer length handling
      
-    +    commit 1d4a000289979cc7f2887c8407b1bfe2a0918354 upstream.
+    +    commit a7d6840bed0c2b16ac3071b74b5fcf08fc488241 upstream.
     +
-         dma_ops is removed from the IPU6 auxiliary device, ISYS driver
-         should use the IPU6 DMA mapping APIs directly instead of depending
-         on the device callbacks.
+         The MODE SELECT(6) command allows handling mode page buffers that are up to
+         255 bytes, including the 4 byte header needed in front of the page
+         buffer. For requests larger than this limit, automatically use the MODE
     @@ Commit message
-         [Sakari Ailus: Rebased on recent videobuf2 wait changes.]
-         Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-         Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-    +    Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+         Link: https://lore.kernel.org/r/20210820070255.682775-3-damien.lemoal@wdc.com
+         Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    +    Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
      
-      ## drivers/media/pci/intel/ipu6/Kconfig ##
-     @@ drivers/media/pci/intel/ipu6/Kconfig: config VIDEO_INTEL_IPU6
-    @@ drivers/media/pci/intel/ipu6/ipu6-isys-queue.c: void ipu6_isys_queue_buf_ready(s
-      static const struct vb2_ops ipu6_isys_queue_ops = {
-     -	.queue_setup = queue_setup,
-     +	.queue_setup = ipu6_isys_queue_setup,
-    -+	.wait_prepare = vb2_ops_wait_prepare,
-    -+	.wait_finish = vb2_ops_wait_finish,
-    + 	.wait_prepare = vb2_ops_wait_prepare,
-    + 	.wait_finish = vb2_ops_wait_finish,
-     +	.buf_init = ipu6_isys_buf_init,
-      	.buf_prepare = ipu6_isys_buf_prepare,
-     +	.buf_cleanup = ipu6_isys_buf_cleanup,
+      ## drivers/scsi/scsi_lib.c ##
+     @@ drivers/scsi/scsi_lib.c: scsi_mode_select(struct scsi_device *sdev, int pf, int sp, int modepage,
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
