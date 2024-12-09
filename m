@@ -1,116 +1,157 @@
-Return-Path: <stable+bounces-100084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E249E88B4
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 01:26:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD2B9E88CA
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 01:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8618616363D
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 00:26:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0241883DB9
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 00:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D7EB673;
-	Mon,  9 Dec 2024 00:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65268C8DF;
+	Mon,  9 Dec 2024 00:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MZoMsfeY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmWQtzYm"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38E85234;
-	Mon,  9 Dec 2024 00:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251FB38F83
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 00:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733704010; cv=none; b=K7WRz+SvQniwx9mKna8ZTQ9ZldI73bpltM9t6h0CgTljTSg/QEY8HGKEzCg75B3e4qRjGZs/zXlG+7KoffcDwXTpaXGhDJWwM1LChb91jORdabHPzf+IKmgHx12+FeVg7d81x9KbMBJgIPnNSN3KKul0lFiAu06ZtDt5dhTCHB4=
+	t=1733705865; cv=none; b=qxqr1kxRuKdOYcwwuvkptPgC9bFvbX89MoBaFyyLQmb20pNK5VD4K0Nt/ew/uC/YtZ8naKdcF52pYrkd/qIfXHdHWAzZ8lYgiO5QUYuwZV8mnvWi96WdyAmwGiQitEoc8qlynX3g+IPDKsNmx87az83O6Po7NlmareXy65Ih35s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733704010; c=relaxed/simple;
-	bh=Xy8TrOhAejEC7lIReBFuEnDvP0P9w1gRCS6WWCa7QeI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z356lZFmypsu361leOBSb9DhGzVf0dkOcGRcVJm2+1+N1NcVBWpJW9xsGMdseCnFYBbTENdj2tr0X9gBkaUlnfNGEhkCcPO+AU2aUGoVI6Xv0GP8gJlCGOBit3Y7AtksN3SpBK4wSlgADVaEoJ7sqh2aY3fviNQokSi8NXJ0jK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MZoMsfeY; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4B90QQHW03911839, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1733703986; bh=Xy8TrOhAejEC7lIReBFuEnDvP0P9w1gRCS6WWCa7QeI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=MZoMsfeYP8Fq5Za2ExEXNoQhB6P6Zml23IZE4F6Li9bBssI1bwFc8QM8tLTcE2c8P
-	 mpaBJkm7O+ZZpGC99LVGercquGeviPp+ZIcwLnvuWVZJi/I5WHLsUSbDQw1yUYYxee
-	 3qdrBenjhA+6/lkrHbEQUT7ae2A4htcMtpS0eWuwfHpmkDdoJHFg+Ksmtl4cMrTf2p
-	 tptHTu4kjczXWc5TjXSyCGvNpzRjlaItutI2827UkSMIKuBhA6pVmzruCyGKrD+q9A
-	 humnoVDrU4NWQ/b2s3rACVPDorRLyhm9gyBCcNV3n9VBWTonOAr5DMuH7RhRv7trl8
-	 izkQauC/k+8lQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4B90QQHW03911839
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Dec 2024 08:26:26 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 9 Dec 2024 08:26:27 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 9 Dec 2024 08:26:26 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Mon, 9 Dec 2024 08:26:26 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Hans de Goede <hdegoede@redhat.com>,
-        Jes Sorensen
-	<Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Peter Robinson
-	<pbrobinson@gmail.com>
-Subject: RE: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-Thread-Topic: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-Thread-Index: AQHbMR7R6Gvee4SdJkqElRUs0WKrm7K72VoAgCAvYgCAATWcgA==
-Date: Mon, 9 Dec 2024 00:26:26 +0000
-Message-ID: <8e0a643ecdc2469f936c607dbd555b4c@realtek.com>
-References: <20241107140833.274986-1-hdegoede@redhat.com>
- <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
- <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
-In-Reply-To: <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1733705865; c=relaxed/simple;
+	bh=QvSrg+dsZlejdRg2V6nKnmIV2qvtzbJA4VA/yiC03kc=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SdYY0sF8J6AXQWGvIRTOIWRxMjNNvJcSGS1meNS86rCv1lwLd2p1/XeMg51hCLIFzPoOrEja3NQew8oXKSBxMsyfTSb6wH5Y1cycicQqhXjZsGk7MOrQGk6hTwhNILGEtBU1CBAURBczjGCWAsA3uJdOMlSwnCmTTnbsmG40zD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmWQtzYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EB7C4CED6
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 00:57:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733705864;
+	bh=QvSrg+dsZlejdRg2V6nKnmIV2qvtzbJA4VA/yiC03kc=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=KmWQtzYmFyw7l2TBzt5ljgk+Xfkl8Op0RhxvwfQH8w/Mswcvso6UWh+/Thil3mKQX
+	 a5AGMKY0ivzGlJBQ8ZlmdAUUjIKmY5mih6QiWLV+LYYY+5XnDycq3r2/PejJRHnb5b
+	 +k9ZbyCXq5mOYWt68BVUxgsgGBSDEYMdK3ArgnU3pLLK3halQBv3hwTblgySa5JKIF
+	 H8dRCS1pTczEerc1JUvtg/Up2e3/kA1lLXKn2fpY7EJkE1e0yK8yggJ4RBEXb6iHRb
+	 u6P+H2lMm/oEK/Jivyjnc3TIHEJVqwtTGKRPjakPy4gMMCdLzpySCpDUiCv0UlrwAU
+	 1FIV2DyzROFHQ==
+From: Damien Le Moal <dlemoal@kernel.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.10.y] PCI: rockchip-ep: Fix address translation unit programming
+Date: Mon,  9 Dec 2024 09:57:21 +0900
+Message-ID: <20241209005721.599249-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <2024120621-scoreless-reword-f512@gregkh>
+References: <2024120621-scoreless-reword-f512@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-SGFucyBkZSBHb2VkZSA8aGRlZ29lZGVAcmVkaGF0LmNvbT4gd3JvdGU6DQo+IEhpLA0KPiANCj4g
-T24gMTgtTm92LTI0IDM6MjMgQU0sIFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPiBIYW5zIGRlIEdv
-ZWRlIDxoZGVnb2VkZUByZWRoYXQuY29tPiB3cm90ZToNCj4gPg0KPiA+PiBUaGUgcnRsOHh4eHUg
-aGFzIGFsbCB0aGUgcnRsODE5MmN1IFVTQiBJRHMgZnJvbSBydGx3aWZpL3J0bDgxOTJjdS9zdy5j
-DQo+ID4+IGV4Y2VwdCBmb3IgdGhlIGZvbGxvd2luZyAxMCwgYWRkIHRoZXNlIHRvIHRoZSB1bnRl
-c3RlZCBzZWN0aW9uIHNvIHRoZXkNCj4gPj4gY2FuIGJlIHVzZWQgd2l0aCB0aGUgcnRsOHh4eHUg
-YXMgdGhlIHJ0bDgxOTJjdSBhcmUgd2VsbCBzdXBwb3J0ZWQuDQo+ID4+DQo+ID4+IFRoaXMgZml4
-ZXMgdGhlc2Ugd2lmaSBtb2R1bGVzIG5vdCB3b3JraW5nIG9uIGRpc3RyaWJ1dGlvbnMgd2hpY2gg
-aGF2ZQ0KPiA+PiBkaXNhYmxlZCBDT05GSUdfUlRMODE5MkNVIHJlcGxhY2luZyBpdCB3aXRoIENP
-TkZJR19SVEw4WFhYVV9VTlRFU1RFRCwNCj4gPj4gbGlrZSBGZWRvcmEuDQo+ID4+DQo+ID4+IENs
-b3NlczogaHR0cHM6Ly9idWd6aWxsYS5yZWRoYXQuY29tL3Nob3dfYnVnLmNnaT9pZD0yMzIxNTQw
-DQo+ID4+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4+IENjOiBQZXRlciBSb2JpbnNv
-biA8cGJyb2JpbnNvbkBnbWFpbC5jb20+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEhhbnMgZGUgR29l
-ZGUgPGhkZWdvZWRlQHJlZGhhdC5jb20+DQo+ID4+IFJldmlld2VkLWJ5OiBQZXRlciBSb2JpbnNv
-biA8cGJyb2JpbnNvbkBnbWFpbC5jb20+DQo+ID4NCj4gPiAxIHBhdGNoKGVzKSBhcHBsaWVkIHRv
-IHJ0dy1uZXh0IGJyYW5jaCBvZiBydHcuZ2l0LCB0aGFua3MuDQo+ID4NCj4gPiAzMWJlMzE3NWJk
-N2Igd2lmaTogcnRsOHh4eHU6IGFkZCBtb3JlIG1pc3NpbmcgcnRsODE5MmN1IFVTQiBJRHMNCj4g
-DQo+IFRoYW5rIHlvdSBmb3IgbWVyZ2luZyB0aGlzLCBzaW5jZSB0aGlzIGlzIGEgYnVnZml4IHBh
-dGNoLCBzZWUgZS5nLiA6DQo+IA0KPiBodHRwczovL2J1Z3ppbGxhLnJlZGhhdC5jb20vc2hvd19i
-dWcuY2dpP2lkPTIzMjE1NDANCj4gDQo+IEkgd2FzIGV4cGVjdGluZyB0aGlzIHBhdGNoIHRvIHNo
-b3cgdXAgaW4gNi4xMy1yYzEgYnV0IGl0IGRvZXMNCj4gbm90IGFwcGVhciB0byBiZSB0aGVyZS4N
-Cj4gDQo+IENhbiB5b3UgcGxlYXNlIGluY2x1ZGUgdGhpcyBpbiBhIGZpeGVzLXB1bGwtcmVxdWVz
-dCB0byB0aGUgbmV0d29yaw0KPiBtYWludGFpbmVyIHNvIHRoYXQgZ2V0cyBhZGRlZCB0byBhIDYu
-MTMtcmMjIHJlbGVhc2Ugc29vbiBhbmQgdGhlbg0KPiBjYW4gYmUgYmFja3BvcnRlZCB0byB2YXJp
-b3VzIHN0YWJsZSBrZXJuZWxzID8NCj4gDQoNClRoaXMgcGF0Y2ggc3RheXMgaW4gcnR3LmdpdCBh
-bmQgNi4xNCB3aWxsIGhhdmUgaXQsIGFuZCB0aGVuIGRyYWluIHRvIHN0YWJsZQ0KdHJlZXMuIEZv
-ciB0aGUgcmVkaGF0IHVzZXJzLCBjb3VsZCB5b3UgYXNrIHRoZSBkaXN0cm8gbWFpbnRhaW5lciB0
-byB0YWtlIHRoaXMNCnBhdGNoIGFoZWFkPyANCg0KUGluZy1LZQ0KDQo=
+The Rockchip PCIe endpoint controller handles PCIe transfers addresses
+by masking the lower bits of the programmed PCI address and using the
+same number of lower bits masked from the CPU address space used for the
+mapping. For a PCI mapping of <size> bytes starting from <pci_addr>,
+the number of bits masked is the number of address bits changing in the
+address range [pci_addr..pci_addr + size - 1].
+
+However, rockchip_pcie_prog_ep_ob_atu() calculates num_pass_bits only
+using the size of the mapping, resulting in an incorrect number of mask
+bits depending on the value of the PCI address to map.
+
+Fix this by introducing the helper function
+rockchip_pcie_ep_ob_atu_num_bits() to correctly calculate the number of
+mask bits to use to program the address translation unit. The number of
+mask bits is calculated depending on both the PCI address and size of
+the mapping, and clamped between 8 and 20 using the macros
+ROCKCHIP_PCIE_AT_MIN_NUM_BITS and ROCKCHIP_PCIE_AT_MAX_NUM_BITS. As
+defined in the Rockchip RK3399 TRM V1.3 Part2, Sections 17.5.5.1.1 and
+17.6.8.2.1, this clamping is necessary because:
+
+  1) The lower 8 bits of the PCI address to be mapped by the outbound
+     region are ignored. So a minimum of 8 address bits are needed and
+     imply that the PCI address must be aligned to 256.
+
+  2) The outbound memory regions are 1MB in size. So while we can specify
+     up to 63-bits for the PCI address (num_bits filed uses bits 0 to 5 of
+     the outbound address region 0 register), we must limit the number of
+     valid address bits to 20 to match the memory window maximum size (1
+     << 20 = 1MB).
+
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Link: https://lore.kernel.org/r/20241017015849.190271-2-dlemoal@kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+(cherry picked from commit 64f093c4d99d797b68b407a9d8767aadc3e3ea7a)
+---
+ drivers/pci/controller/pcie-rockchip-ep.c | 18 +++++++++++++-----
+ drivers/pci/controller/pcie-rockchip.h    |  4 ++++
+ 2 files changed, 17 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
+index d1b72b704c31..77a2b9700aa9 100644
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -67,18 +67,26 @@ static void rockchip_pcie_clear_ep_ob_atu(struct rockchip_pcie *rockchip,
+ 			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR1(region));
+ }
+ 
++static int rockchip_pcie_ep_ob_atu_num_bits(struct rockchip_pcie *rockchip,
++					    u64 pci_addr, size_t size)
++{
++	int num_pass_bits = fls64(pci_addr ^ (pci_addr + size - 1));
++
++	return clamp(num_pass_bits,
++		     ROCKCHIP_PCIE_AT_MIN_NUM_BITS,
++		     ROCKCHIP_PCIE_AT_MAX_NUM_BITS);
++}
++
+ static void rockchip_pcie_prog_ep_ob_atu(struct rockchip_pcie *rockchip, u8 fn,
+ 					 u32 r, u32 type, u64 cpu_addr,
+ 					 u64 pci_addr, size_t size)
+ {
+-	u64 sz = 1ULL << fls64(size - 1);
+-	int num_pass_bits = ilog2(sz);
++	int num_pass_bits;
+ 	u32 addr0, addr1, desc0, desc1;
+ 	bool is_nor_msg = (type == AXI_WRAPPER_NOR_MSG);
+ 
+-	/* The minimal region size is 1MB */
+-	if (num_pass_bits < 8)
+-		num_pass_bits = 8;
++	num_pass_bits = rockchip_pcie_ep_ob_atu_num_bits(rockchip,
++							 pci_addr, size);
+ 
+ 	cpu_addr -= rockchip->mem_res->start;
+ 	addr0 = ((is_nor_msg ? 0x10 : (num_pass_bits - 1)) &
+diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
+index 76a5f96bfd0a..de78a3091b6a 100644
+--- a/drivers/pci/controller/pcie-rockchip.h
++++ b/drivers/pci/controller/pcie-rockchip.h
+@@ -241,6 +241,10 @@
+ #define   ROCKCHIP_PCIE_EP_MSI_CTRL_MASK_MSI_CAP	BIT(24)
+ #define ROCKCHIP_PCIE_EP_DUMMY_IRQ_ADDR				0x1
+ #define ROCKCHIP_PCIE_EP_FUNC_BASE(fn)	(((fn) << 12) & GENMASK(19, 12))
++
++#define ROCKCHIP_PCIE_AT_MIN_NUM_BITS  8
++#define ROCKCHIP_PCIE_AT_MAX_NUM_BITS  20
++
+ #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR0(fn, bar) \
+ 	(PCIE_RC_RP_ATS_BASE + 0x0840 + (fn) * 0x0040 + (bar) * 0x0008)
+ #define ROCKCHIP_PCIE_AT_IB_EP_FUNC_BAR_ADDR1(fn, bar) \
+-- 
+2.47.1
+
 
