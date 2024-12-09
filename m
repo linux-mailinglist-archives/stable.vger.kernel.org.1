@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-100096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452619E8B38
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 06:55:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D91B9E8B3B
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 06:56:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E790E28147E
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 05:55:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448801885ABE
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 05:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5DD20FABF;
-	Mon,  9 Dec 2024 05:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25AC221018B;
+	Mon,  9 Dec 2024 05:56:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688DB207E03;
-	Mon,  9 Dec 2024 05:54:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB1D207E03;
+	Mon,  9 Dec 2024 05:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733723700; cv=none; b=pTd3cvbikRXwWHpdHQ36bHPZ/DWPHK5p/vhWKioOEK59RFp9aySqr5RMWax2avR5fRlqDVUOC0qMGTKyTbiAPEGJCviUpmteRpzdOArxeskX/e1RgnCaVKqqOaoLGb6Yr6OwAyjmIYE57norNNQs6c9jhF7hhnSQ9Nz0NuKFJP0=
+	t=1733723802; cv=none; b=TectfmXV1q7+Jv+UnFdzQbH3SAM33fVbr57djJHTSSvCzy//0S9vEYBMHMCV+t9qAYeBICzB0biqjfzZTwpq6KBWgY+mYqryyKjTnrchWh48lP7Zqi9Mzk2AqpsYVC36f6M7S0czzM44qo7AZClgrGOjQ47PZQmfVN9bFhaClWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733723700; c=relaxed/simple;
-	bh=TWNvdrWkrN9k8hk+AZ/kJ9jvsNNylEqCMe5p/fRSM9w=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QU1eROvn/w4U7Y0Cq0DU0ef1ZHDkwfuiWW27MJtLfKa63MYwUaVrOua/76wcE0/yh3dbwvFV6FrEBvRasa0AX37l7gB5NJUwryv2IixAZhiwmuVXrJ2kwH1Vo3Es/0VqhtYBwJ8mbEWdnSsFZQ6j4cFPz9HuYHX6Z7p7j6PldsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+	s=arc-20240116; t=1733723802; c=relaxed/simple;
+	bh=S3ynFn5IQhrduAB8uFXzMnIMijqyL8bdZHhsSiOAqM0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U+4TdTZPtM+I6bp0E/+Oxw3rKb56HD1Nf0sUCBQXl8i5B51uHh+0ZG9oZ5PBiFXJtjyEMEks5NMbcaPErmxOkfd6Mwf9SXIkM8fgDKlIzVNgFlOaaozNQuL5NUKfRV/aFsSRze3F5wPDiaRhGgJrigKQAdZFw8+bC5emiqgQQFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B95sW4V015695;
-	Sun, 8 Dec 2024 21:54:32 -0800
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B95pamN011765;
+	Mon, 9 Dec 2024 05:56:25 GMT
 Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cx1u114e-1
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cx4x90tf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Sun, 08 Dec 2024 21:54:32 -0800 (PST)
+	Mon, 09 Dec 2024 05:56:24 +0000 (GMT)
 Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
  ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Sun, 8 Dec 2024 21:54:31 -0800
+ 15.1.2507.43; Sun, 8 Dec 2024 21:56:23 -0800
 Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
  ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Sun, 8 Dec 2024 21:54:30 -0800
+ 15.1.2507.43 via Frontend Transport; Sun, 8 Dec 2024 21:56:20 -0800
 From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <almaz.alexandrovich@paragon-software.com>
-CC: <stable@vger.kernel.org>, <ntfs3@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6.1.y] fs/ntfs3: Fixed overflow check in mi_enum_attr()
-Date: Mon, 9 Dec 2024 14:52:23 +0800
-Message-ID: <20241209065223.3427374-1-jianqi.ren.cn@windriver.com>
+To: <fullwaywang@outlook.com>, <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <tiffany.lin@mediatek.com>, <andrew-ct.chen@mediatek.com>,
+        <yunfei.dong@mediatek.com>, <mchehab@kernel.org>,
+        <matthias.bgg@gmail.com>, <linux-media@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: [PATCH 6.1.y] media: mtk-vcodec: potential null pointer deference in SCP
+Date: Mon, 9 Dec 2024 14:54:13 +0800
+Message-ID: <20241209065413.3427435-1-jianqi.ren.cn@windriver.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -58,44 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=H/shw/Yi c=1 sm=1 tr=0 ts=67568618 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=GFCt93a2AAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=fATKHIbVh68Ky4GJMjkA:9 a=0UNspqPZPZo5crgNHNjb:22
- a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: Znd9HBFHGsVPkzLY71skt8-TvRmtO8yn
-X-Proofpoint-GUID: Znd9HBFHGsVPkzLY71skt8-TvRmtO8yn
+X-Proofpoint-GUID: S3ZoAS84DtwxGV_JxU010U8Iu170Gkmg
+X-Proofpoint-ORIG-GUID: S3ZoAS84DtwxGV_JxU010U8Iu170Gkmg
+X-Authority-Analysis: v=2.4 cv=Y/UCsgeN c=1 sm=1 tr=0 ts=67568688 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=t7CeM3EgAAAA:8 a=7f2alXSBUxmpNkzq_swA:9 a=FdTzh2GWekK77mhwV6Dw:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-12-09_02,2024-12-09_01,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=999 suspectscore=0 spamscore=0 clxscore=1011
- impostorscore=0 adultscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
- mlxscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412090047
+ bulkscore=0 mlxscore=0 clxscore=1011 malwarescore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 adultscore=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2411120000 definitions=main-2412090047
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Fullway Wang <fullwaywang@outlook.com>
 
-[ Upstream commit 652cfeb43d6b9aba5c7c4902bed7a7340df131fb ]
+[ Upstream commit 53dbe08504442dc7ba4865c09b3bbf5fe849681b ]
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Jianqi.ren.cn@windriver.com <jianqi.ren.cn@windriver.com>
+The return value of devm_kzalloc() needs to be checked to avoid
+NULL pointer deference. This is similar to CVE-2022-3113.
+
+Link: https://lore.kernel.org/linux-media/PH7PR20MB5925094DAE3FD750C7E39E01BF712@PH7PR20MB5925.namprd20.prod.outlook.com
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
 ---
- fs/ntfs3/record.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
-index 7ab452710572..826a756669a3 100644
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -273,7 +273,7 @@ struct ATTRIB *mi_enum_attr(struct mft_inode *mi, struct ATTRIB *attr)
- 		if (t16 > asize)
- 			return NULL;
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
+index d8e66b645bd8..27f08b1d34d1 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_fw_scp.c
+@@ -65,6 +65,8 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_init(struct mtk_vcodec_dev *dev)
+ 	}
  
--		if (t16 + le32_to_cpu(attr->res.data_size) > asize)
-+		if (le32_to_cpu(attr->res.data_size) > asize - t16)
- 			return NULL;
- 
- 		if (attr->name_len &&
+ 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
++	if (!fw)
++		return ERR_PTR(-ENOMEM);
+ 	fw->type = SCP;
+ 	fw->ops = &mtk_vcodec_rproc_msg;
+ 	fw->scp = scp;
 -- 
 2.25.1
 
