@@ -1,130 +1,112 @@
-Return-Path: <stable+bounces-100169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FCC9E96CA
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:29:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 474F416A16C
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:25:37 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D8E233136;
-	Mon,  9 Dec 2024 13:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y+U0MZlX"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1C79E96AA
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:26:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B4923312B;
-	Mon,  9 Dec 2024 13:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C9928284F
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:26:38 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704631A239B;
+	Mon,  9 Dec 2024 13:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="uzLQtbmp"
+X-Original-To: stable@vger.kernel.org
+Received: from ci74p00im-qukt09082501.me.com (ci74p00im-qukt09082501.me.com [17.57.156.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948E935975
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.156.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733750674; cv=none; b=sxhhz0Yl6VR/VgXZoexFh67cUT2wCxWxp71/z9Tw68WaWyP3xMujEAHPYRh+yAWockEmL7FHPscz0dx6OfglE7c2+gUsgOhXw/NRbyjqmHwPcJMCyLyF2P+LQm5PW3ZO8zSgmjlmPuFiwvDzGKyiZUth7obXKXyvV/Z6MHjcwBc=
+	t=1733750736; cv=none; b=pAHPKiY9pnnhp/WkiEJQFTcqnhdtZD8ZQq+YhYuO53IcAGDD1qNxB46W8n3pyTr3N7gia/jf9lKH6cjVNHWG730jqzDUFuZ/QZQiUlBjPmrr933H2cGDkPzUSO/n2CT9tsMlU2KOsqN4yd2O/GB7YlF3eV63sDOwWES98+yphD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733750674; c=relaxed/simple;
-	bh=tIjsY5za2Jlf4kKilwQOlSjddec7kKrcZ9gWvcVoaEw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SzwtOvj415vHlVtYpD2r2swAv5/88A5ELeD4HuMhq0EGzwHXq1xvastJrt1eibppqullsyPKy1ZTixOUwLgXi7GjDyJruHwFCBxvIPpASZa3aZFDRbD4BinexL08aXQOG+cFlu/e13vU57yMdQ5OOVDjQYF8L7RU0PJnIdN6/T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y+U0MZlX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FF8C4CEDD;
-	Mon,  9 Dec 2024 13:24:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733750673;
-	bh=tIjsY5za2Jlf4kKilwQOlSjddec7kKrcZ9gWvcVoaEw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Y+U0MZlXnMPJ/YkjwHlY8vc4pCW+UstnKf1T26MnsVz0SwoLHWss8OHorOpTK9ndh
-	 sFTRXbPrsapqShctjYGFLs0Fk3FB4Yo8mv1wPSyO6G0DDtJow8W/hUWbL+y2i1aqZt
-	 40D1aZ3BWpzQethUQzMhP+NirsYiUWnPQiLGlz/uRT3qh9GG9rco6Z+n3GGmkgvL2S
-	 qBx8FKHBP84umzobVfcWaZ/GLAHnWAzOYDT/bmsRHSQ4TWQ0KPRSc42ZFPCvHB68rm
-	 tEtMTaJofJTtm7A3Ge6a1xdnAhqFmJ8qOwyJwSpHHAnML25PPbByxC526li4QAovmE
-	 DKvLpTMZyMG4A==
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e388503c0d7so3607716276.0;
-        Mon, 09 Dec 2024 05:24:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWqcWLwC2jg01Ab9xjLqGENJkq2853mPH1EOC7BTSaIB0DZomF2t7MV6ZlPgBw6IZLBl8KAFnUp@vger.kernel.org, AJvYcCX2xN3X47vN/S4r/wBBEnKTfK1w8qwO0IYNCETSXQIOJ+w1lH8vmvfgeNASPzPJXqYGFdVlPU3ihVBQezvN@vger.kernel.org, AJvYcCX5xqKYmQk6InUzkiiNmZSO/R0ml8K7Fb1Gr+ddkTpO+Yx/2EPGUkAmaU87mVaC0hd4u34OdjVf8gLE@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrycJI6Iq4Wrqj8M1CuuYAwjZkgx1KsjNOEcCdal7rf/tIXnaz
-	q0tS1JGX3PlzneYaif8SZDyj1IDl87JqtSOxXOJwmU+OAI3UUPP8xli4ZDphGkRTApH93S1FzN9
-	UA/Y7MNmqQVxQisA0QbNa0aqqIQ==
-X-Google-Smtp-Source: AGHT+IHTtAaLacoSDyYlgvTFYfHtgFO7Eq42ii8VWVKdodPb9rW9jMC4W4JhRjkH55B8Szv983O1c0YYGpvO0FkkI9Y=
-X-Received: by 2002:a05:6902:cc4:b0:e39:84da:95f1 with SMTP id
- 3f1490d57ef6-e3a0b4d114fmr11040045276.48.1733750672812; Mon, 09 Dec 2024
- 05:24:32 -0800 (PST)
+	s=arc-20240116; t=1733750736; c=relaxed/simple;
+	bh=cIsLpDzxg/O78TjiwVY6xfVOn/s9Hl2qzAqGoFPgsyw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BHOr3IX7hK7TeEZ9+FCUIB4E0ZOvBCQ8mB6d7Wsv1JMleNkhyl9JMsEUf1OgFXTPMc1yJyYF2+vRRqesVcrCTa1THWHEVS7hG88qqpd6443qtv4T06Pt0ET8KD+68lecZYxucU8kvxsJ5W+Y7KFh2GZCqgc2CjUTwDvvn5L2dnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=uzLQtbmp; arc=none smtp.client-ip=17.57.156.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1733750732;
+	bh=Jg01KlCWEyryfswH+6Mz0EliiB82cdWBn2LiyicOsKY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:
+	 x-icloud-hme;
+	b=uzLQtbmpbDmWzr5xhkTlrN/KgHdG7eaABaF3jgjjwvd/ySd5+MAn9ypH1OrQYdxJH
+	 UBQ3/zr+rxjtmqKFPHg5+wiwAtgnvHPSA+dAB9rNUoDqHumcHwsCx3NCy5AWZYz1BN
+	 2F49Dpb37BN42V8nRBbnzKtMsXrkjup4T/OvPg0ddSgANfe5+F9NmCzXupZ5sQpLgi
+	 7YcooaqTrLpv08uno0Hz4xJYvBZgqx2ddtyqxRzyji6ozMLYCHdVfZcoBg/cWJDT3U
+	 hGoQcg9xhlOvcQL2h+idu82pXzMwqIqk7YDyZ4AX/fQIKtw2fjbZzBa06bbfiGrVS6
+	 t9foKg6tQY4kQ==
+Received: from [192.168.1.26] (ci77p00im-dlb-asmtp-mailmevip.me.com [17.57.156.26])
+	by ci74p00im-qukt09082501.me.com (Postfix) with ESMTPSA id 22B9F4AA033B;
+	Mon,  9 Dec 2024 13:25:24 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Subject: [PATCH 0/8] of/irq: fix bugs
+Date: Mon, 09 Dec 2024 21:24:58 +0800
+Message-Id: <20241209-of_irq_fix-v1-0-782f1419c8a1@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206-of_core_fix-v1-0-dc28ed56bec3@quicinc.com> <20241206-of_core_fix-v1-1-dc28ed56bec3@quicinc.com>
-In-Reply-To: <20241206-of_core_fix-v1-1-dc28ed56bec3@quicinc.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 9 Dec 2024 07:24:21 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqK1gsVeCG29RzWMFycbASAGAsds34Utuoq+Egw3-Afi7g@mail.gmail.com>
-Message-ID: <CAL_JsqK1gsVeCG29RzWMFycbASAGAsds34Utuoq+Egw3-Afi7g@mail.gmail.com>
-Subject: Re: [PATCH 01/10] of: Fix alias name length calculating error in API of_find_node_opts_by_path()
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Saravana Kannan <saravanak@google.com>, Leif Lindholm <leif.lindholm@linaro.org>, 
-	Stephen Boyd <stephen.boyd@linaro.org>, Maxime Ripard <mripard@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Grant Likely <grant.likely@secretlab.ca>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKrvVmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDIwML3fy0+Myiwvi0zApdM1NLU0OTpGTLxERjJaCGgqJUoDDYsOjY2lo
+ AiiIh11wAAAA=
+X-Change-ID: 20241208-of_irq_fix-659514bc9aa3
+To: Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Marc Zyngier <maz@kernel.org>, 
+ Stefan Wiehler <stefan.wiehler@nokia.com>, 
+ Grant Likely <grant.likely@linaro.org>, Tony Lindgren <tony@atomide.com>, 
+ Kumar Gala <galak@codeaurora.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Julia Lawall <Julia.Lawall@lip6.fr>, Jamie Iles <jamie@jamieiles.com>, 
+ Grant Likely <grant.likely@secretlab.ca>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Rob Herring <rob.herring@calxeda.com>, 
+ Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Proofpoint-GUID: GBwb3WpfS47vy3H8oyXbgCgNhUN0ZgWL
+X-Proofpoint-ORIG-GUID: GBwb3WpfS47vy3H8oyXbgCgNhUN0ZgWL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-09_10,2024-12-09_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0 mlxscore=0
+ clxscore=1011 mlxlogscore=610 suspectscore=0 adultscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2412090105
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-On Thu, Dec 5, 2024 at 6:53=E2=80=AFPM Zijun Hu <zijun_hu@icloud.com> wrote=
-:
->
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
->
-> Alias name length calculated by of_find_node_opts_by_path() is wrong as
-> explained below:
->
-> Take "alias/serial@llc500:115200n8" as its @patch argument for an example
->       ^    ^             ^
->       0    5             19
->
-> The right length of alias 'alias' is 5, but the API results in 19 which i=
-s
-> obvious wrong.
->
-> The wrong length will cause finding device node failure for such paths.
-> Fix by using index of either '/' or ':' as the length who comes earlier.
+This patch series is to fix bugs in drivers/of/irq.c
 
-Can you add a test case in the unittest for this.
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Zijun Hu (8):
+      of/irq: Fix wrong value of variable @len in of_irq_parse_imap_parent()
+      of/irq: Correct element count for array @dummy_imask in API of_irq_parse_raw()
+      of/irq: Fix device node refcount leakage in API of_irq_parse_raw()
+      of/irq: Fix using uninitialized variable @addr_len in API of_irq_parse_one()
+      of/irq: Fix device node refcount leakage in API of_irq_parse_one()
+      of/irq: Fix device node refcount leakages in of_irq_count()
+      of/irq: Fix device node refcount leakages in of_irq_init()
+      of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
 
->
-> Fixes: 106937e8ccdc ("of: fix handling of '/' in options for of_find_node=
-_by_path()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
->  drivers/of/base.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 7dc394255a0a14cd1aed02ec79c2f787a222b44c..9a9313183d1f1b61918fe7e6f=
-a80c2726b099a1c 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -893,10 +893,10 @@ struct device_node *of_find_node_opts_by_path(const=
- char *path, const char **opt
->         /* The path could begin with an alias */
->         if (*path !=3D '/') {
->                 int len;
-> -               const char *p =3D separator;
-> +               const char *p =3D strchrnul(path, '/');
->
-> -               if (!p)
-> -                       p =3D strchrnul(path, '/');
-> +               if (separator && separator < p)
-> +                       p =3D separator;
->                 len =3D p - path;
->
->                 /* of_aliases must not be NULL */
->
-> --
-> 2.34.1
->
+ drivers/of/irq.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
+---
+base-commit: 16ef9c9de0c48b836c5996c6e9792cb4f658c8f1
+change-id: 20241208-of_irq_fix-659514bc9aa3
+
+Best regards,
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
+
 
