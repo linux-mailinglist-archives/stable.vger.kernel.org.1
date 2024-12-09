@@ -1,153 +1,139 @@
-Return-Path: <stable+bounces-100226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB4E9E9C52
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 18:00:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B915C9E9C69
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 18:03:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885DD1889755
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:02:12 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23FC476410;
+	Mon,  9 Dec 2024 17:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="bHOtKjS1"
+X-Original-To: stable@vger.kernel.org
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72F592824C7
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:00:38 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD581547E9;
-	Mon,  9 Dec 2024 16:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Si5W1kj1"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1012216E29;
-	Mon,  9 Dec 2024 16:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0BF13AA2F;
+	Mon,  9 Dec 2024 17:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733763471; cv=none; b=GFpwcby8ZMM6wYIIiL2ujU78SZuZXHC5Is77EW9sdfnUmHD7Wqj0nFTCrOws404Qy76HvCalhgEdEsdwVuYzFVVU567/ew0V+lJA0U1pozQyFVF23QhzGZCnLlxC4LC7Q8QkaIHPV94Ne6MbyiEJ1A6qC+yhUoeGzJ8EEX29ZLE=
+	t=1733763628; cv=none; b=ZPyklstJJk+ccCGdSaKlHmNRGXPCeicS5aDoJcJHtwP+IG0rxjXJt4XLF8Cgbv35hhDGcaAoOPhjrqa1Uai56Dpo4P/5xxkXt/z7Cy+iMfVh1hTBri3fQiEydn9HjSy09cbppu902K5pvqUFV+HzpmHUnKhVZu6WJt3rvlkgFAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733763471; c=relaxed/simple;
-	bh=UL1umb3+OKKP4NIwwX2YKxMLyMq+sGP8UkjwENxBpNc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SkumpaCdf2Qh6JL7s7A0b029zftk8xQ9u2SlNR7bRW4Pniv5JGSb4yeJSS4G6TLuMtJh6PfCpLiapNxWM5Mcz3cemCgS8DjTForWC73q9CE8fOSAWF60LtbYzzv5MROZSPFB8kfgzQ25GsP2K5zt25faWcw+zLl8Z/9pk8C8GOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Si5W1kj1; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-725ee27e905so1286034b3a.2;
-        Mon, 09 Dec 2024 08:57:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733763469; x=1734368269; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TWIw0hhAH4VJQ0Z+LUoADX7ca43ciXjofF1Ce/M4dOk=;
-        b=Si5W1kj1kx6JtFcVJodNDB0BX3JJq8N+xV7UBfjg42LQTNglJTMhe7v2g8AnrlwLUU
-         uEmXSyuFll5qwCSvkoyMdxwivH0v/dwxrLyQtpxHEDG7rUwAtCcSpTz3oSONoEhx25vY
-         RPuaGW7rPupDp2rUjRDlaudBPb90iehiprXzN6wfip7tCRWx1fW9Fcbht9iBBPNJMzW0
-         2zqEPN90XTtmxN3gCIJ7nAFEiM2fScTunQSJPIncsNl5MOSFBFNS1teVh06pNQ3PvXlc
-         kjmpbHiR/gBfkatW7qqViYz7Ivud1mCXRGqn6o30tlXoBz3GsUmPmj3OPTHX1ot4KUPw
-         Mu2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733763469; x=1734368269;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TWIw0hhAH4VJQ0Z+LUoADX7ca43ciXjofF1Ce/M4dOk=;
-        b=m5kHAXtwdDvdyz5vqr3bvlV7TFbUJfH3uUosrL5FgU4aEbwuKZCbLxGorLgHzJgvx2
-         I4sJ/y1JwC8prn5fR71Uj2ZAuIJDreWkG2lPjDKxdOI4uu4O6DlvycziohgP+mc9W+Ho
-         GwjwTZpnM2zwpoKS5taRO/DCBa584ZRuhk6qfMYekXWQj9LSGLwhGOn1Fx9xPDdmLkjR
-         WLlq6HrFPCgTXcWTU33Lc2MgqXdbdjzvHhhWn1zF713afK6nxP2s1TElLzspuYMektbS
-         Qy36FGRW70xbL6Ivw1lWPvmYTer07pGUFCm9032rl2cHiO863Am3cPXOtuhn2OXOLIcZ
-         LqVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWA5+vD6po7hJAgIjMCqTTWHhNTEWHlHCkvrqtCfy0EErRck3pEPFHDs20Ks5+jd2tR2sc2b9LS@vger.kernel.org, AJvYcCWYgQRfIvXzYzGjZTfj5TkD4XsiQqtfPzKeeuHBGqO2tCCQjLKQUWo7isVOWRsB66YdKKADPjnmzeIivQ==@vger.kernel.org, AJvYcCWs/o2xaxmryXty5LMAsX7KtPz7FbgsZZVpAwV7r2knj+miriteInGZLxs9SemG2rEzMv0lrQxEO1uNcOVr@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyfAeZOBrWyxWA7xU44mv/vRunwGbVK4ajIClJ0xqregk1hciN
-	ZwVRczVQ5l3hdHiRJxA5C39su++BgReP2mmJe0e3EyU+JYngh0Tt
-X-Gm-Gg: ASbGncvwIY2+4EtuBiX68lUpkBGOQBaeUgBOdGEX7mSx08nD3ggl0081qcgAkapC/Sd
-	SDV8CY6/Uj/laKnOlETyzJ1soLFwVI62X8MY41pdcrgyK+5LwCu3qoBZ94anL7oG9cY41BpK1MG
-	obzEuJj54gaPWgsq91WmetaY0Xr8EaM/Qkhwe3ZgMXqS7OoGjAzT3Rdv1ldm10Nq6JSJonsmhsg
-	LmrhqXVLmH1QXS+zHOTgLN+RA7jvAyrbWIdHhJaeRTaKMgZvUgXEOkqPQWK7Rxnkf0J8pY=
-X-Google-Smtp-Source: AGHT+IGPb5h1KzA7h2yK1etF1SPW3948xDox8qr2YCpFm0ctolrhSkaAbYueqzrsyOSh5QsXCLFdsg==
-X-Received: by 2002:a05:6a00:2e0f:b0:726:f7c9:7b28 with SMTP id d2e1a72fcca58-726f7c97e8emr3032663b3a.8.1733763468992;
-        Mon, 09 Dec 2024 08:57:48 -0800 (PST)
-Received: from KASONG-MC4.tencent.com ([106.37.120.120])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7273c7f3f1fsm514201b3a.13.2024.12.09.08.57.46
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Dec 2024 08:57:48 -0800 (PST)
-From: Kairui Song <ryncsn@gmail.com>
-To: linux-mm@kvack.org
-Cc: Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kairui Song <kasong@tencent.com>,
-	Desheng Wu <deshengwu@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] zram: fix uninitialized ZRAM not releasing backing device
-Date: Tue, 10 Dec 2024 00:57:16 +0800
-Message-ID: <20241209165717.94215-3-ryncsn@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241209165717.94215-1-ryncsn@gmail.com>
-References: <20241209165717.94215-1-ryncsn@gmail.com>
-Reply-To: Kairui Song <kasong@tencent.com>
+	s=arc-20240116; t=1733763628; c=relaxed/simple;
+	bh=ysn17uQxkXzPtLZxnOMKYQsJkVa5vH4rdmQv56kQ19U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hEDs7guiyK6/bCcfry618MX5Aus04rHvJGKa227oF3P0pwfJlMzk2PhqMSRJHLbGhTOeXAb9i0/5h5tbme+fDG77w8FDdt8ptlEErj49fZ47Dg4BQCF7r4opA9JAFgOdKYelgi01zjPd+urqduQ0AsWVbyvtjbC4oIxRKKd1TN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=bHOtKjS1; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1733763623;
+	bh=ysn17uQxkXzPtLZxnOMKYQsJkVa5vH4rdmQv56kQ19U=;
+	h=From:Subject:Date:To:Cc:From;
+	b=bHOtKjS1103e+9ea300h6Mz17GGWJIWxh41GOfvGOiUUrJ6ghWqieWRAU/xZXPP74
+	 DQ/V9z5EC2TUMDPKe9qLaCKTj04sK4F8gGEPgAAEigp0+aMtMGaQpEUPYW1NRhSpTl
+	 VtfLSj/k/tZqkldi+PH3AUbGwaTEiXxhpPoV8FvuFPTvps/q5MI5J97Ndjiqyx5yUM
+	 r01L6rhobmsLN9olbYcG92sMeXkb+szabyxGDekAkmeBfGrRI5PfifXXfXZXwos3Lo
+	 5e6mJlOk3FW/eAoygr9t/+jlEK0v7EYci1d8dsAKr2BgWK56GwzTJsipO2XQe3vZo3
+	 failmmYZYK5+A==
+Received: from [192.168.0.47] (unknown [IPv6:2804:14c:1a9:53ee::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nfraprado)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 8A62317E37BF;
+	Mon,  9 Dec 2024 18:00:19 +0100 (CET)
+From: =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>
+Subject: [PATCH v2 0/5] thermal/drivers/mediatek/lvts: Fixes for suspend
+ and IRQ storm, and cleanups
+Date: Mon, 09 Dec 2024 14:00:01 -0300
+Message-Id: <20241209-mt8192-lvts-filtered-suspend-fix-v2-0-5b046a99baa9@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIABEiV2cC/4WNQQ6CMBAAv0J6dk27gEFP/sNwKMsqTQolbW00p
+ H+3knj2OHOY2URgbziIS7UJz8kE45YCeKgETXp5MJixsECJjVKoYI6dOiPYFAPcjY3seYTwDCs
+ vYxEv0K2skXTHxIMomdVz0fvi1heeTIjOv/djUl/7i7f/40mBhAa5JtliRye6krNWD87rI7lZ9
+ DnnD8dyvrHUAAAA
+X-Change-ID: 20241121-mt8192-lvts-filtered-suspend-fix-a5032ca8eceb
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Alexandre Mergnat <amergnat@baylibre.com>, 
+ Balsam CHIHI <bchihi@baylibre.com>
+Cc: kernel@collabora.com, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, Hsin-Te Yuan <yuanhsinte@chromium.org>, 
+ Chen-Yu Tsai <wenst@chromium.org>, 
+ =?utf-8?q?Bernhard_Rosenkr=C3=A4nzer?= <bero@baylibre.com>, 
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+ =?utf-8?q?N=C3=ADcolas_F=2E_R=2E_A=2E_Prado?= <nfraprado@collabora.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
 
-From: Kairui Song <kasong@tencent.com>
+Patches 1 and 2 of this series fix the issue reported by Hsin-Te Yuan
+[1] where MT8192-based Chromebooks are not able to suspend/resume 10
+times in a row. Either one of those patches on its own is enough to fix
+the issue, but I believe both are desirable, so I've included them both
+here.
 
-Setting backing device is done before ZRAM initialization.
-If we set the backing device, then remove the ZRAM module without
-initializing the device, the backing device reference will be leaked
-and the device will be hold forever.
+Patches 3-5 fix unrelated issues that I've noticed while debugging.
+Patch 3 fixes IRQ storms when the temperature sensors drop to 20
+Celsius. Patches 4 and 5 are cleanups to prevent future issues.
 
-Fix this by always reset the ZRAM fully on rmmod or reset store.
+To test this series, I've run 'rtcwake -m mem -d 60' 10 times in a row
+on a MT8192-Asurada-Spherion-rev3 Chromebook and checked that the wakeup
+happened 60 seconds later (+-5 seconds). I've repeated that test on 10
+separate runs. Not once did the chromebook wake up early with the series
+applied.
 
-Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-Reported-by: Desheng Wu <deshengwu@tencent.com>
-Suggested-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Cc: stable@vger.kernel.org
+I've also checked that during those runs, the LVTS interrupt didn't
+trigger even once, while before the series it would trigger a few times
+per run, generally during boot or resume.
+
+Finally, as a sanity check I've verified that the interrupts still work
+by lowering the thermal trip point to 45 Celsius and running 'stress -c
+8'. Indeed they still do, and the temperature showed by the
+thermal_temperature ftrace event matched the expected value.
+
+[1] https://lore.kernel.org/all/20241108-lvts-v1-1-eee339c6ca20@chromium.org/
+
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 ---
- drivers/block/zram/zram_drv.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Changes in v2:
+- Renamed bitmasks for interrupt enable (added "INTEN" to the name)
+- Made read-only arrays static const
+- Changed sensor_filt_bitmap array from u32 to u8 to save memory
+- Rebased on next-20241209
+- Link to v1: https://lore.kernel.org/r/20241125-mt8192-lvts-filtered-suspend-fix-v1-0-42e3c0528c6c@collabora.com
 
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index e86cc3d2f4d2..45df5eeabc5e 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1444,12 +1444,16 @@ static void zram_meta_free(struct zram *zram, u64 disksize)
- 	size_t num_pages = disksize >> PAGE_SHIFT;
- 	size_t index;
- 
-+	if (!zram->table)
-+		return;
-+
- 	/* Free all pages that are still in this zram device */
- 	for (index = 0; index < num_pages; index++)
- 		zram_free_page(zram, index);
- 
- 	zs_destroy_pool(zram->mem_pool);
- 	vfree(zram->table);
-+	zram->table = NULL;
- }
- 
- static bool zram_meta_alloc(struct zram *zram, u64 disksize)
-@@ -2326,11 +2330,6 @@ static void zram_reset_device(struct zram *zram)
- 
- 	zram->limit_pages = 0;
- 
--	if (!init_done(zram)) {
--		up_write(&zram->init_lock);
--		return;
--	}
--
- 	set_capacity_and_notify(zram->disk, 0);
- 	part_stat_set_all(zram->disk->part0, 0);
- 
+---
+Nícolas F. R. A. Prado (5):
+      thermal/drivers/mediatek/lvts: Disable monitor mode during suspend
+      thermal/drivers/mediatek/lvts: Disable Stage 3 thermal threshold
+      thermal/drivers/mediatek/lvts: Disable low offset IRQ for minimum threshold
+      thermal/drivers/mediatek/lvts: Start sensor interrupts disabled
+      thermal/drivers/mediatek/lvts: Only update IRQ enable for valid sensors
+
+ drivers/thermal/mediatek/lvts_thermal.c | 103 ++++++++++++++++++++++----------
+ 1 file changed, 72 insertions(+), 31 deletions(-)
+---
+base-commit: d1486dca38afd08ca279ae94eb3a397f10737824
+change-id: 20241121-mt8192-lvts-filtered-suspend-fix-a5032ca8eceb
+
+Best regards,
 -- 
-2.47.1
+Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
 
