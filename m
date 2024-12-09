@@ -1,49 +1,93 @@
-Return-Path: <stable+bounces-100224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565BB9E9C2B
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:54:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0859E9C51
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 18:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF24418875D1
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 16:54:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B31991887D1F
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E442B14BF92;
-	Mon,  9 Dec 2024 16:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DAB1F2C4B;
+	Mon,  9 Dec 2024 16:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KQOUEAq5"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85F214F9F8;
-	Mon,  9 Dec 2024 16:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43C0153BFC;
+	Mon,  9 Dec 2024 16:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733763238; cv=none; b=ZRYUsrf0l0+sifU26Cna77hdiB4Jr7URdEh0tBNgbZA0QgEJuv2jUwjJb7nShzkRzPI1s1IvB0EzFLUj+tZq9Jr7/cpYkoqNC2TKXE7lM5vKceYps1qcCnNhVxZp8IJVRymfhSvfeq6zxmIzljU9pMZS4ZIR5i0UYnyy17hTCfc=
+	t=1733763468; cv=none; b=hRtSnEoVxo5cZDhRpBH98M93ay1mE7Gv1h8YNj8jtNR4gGbNoYtytRgaryHBT7hdleClZ/ifWf2rcqK80mnpGUBQMHj/b2aPJuJyi/5aQp83BOQaNYUKn/zDvlNxPMvT5yFgxwDqRZZ9fVxntXUg0yA7RRzXC+FjMWNqe6PMtw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733763238; c=relaxed/simple;
-	bh=lXgLbm4Srm38TXoVBYCVtlylQo/H0hVGE/NC01GeR7M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cArn/IOiR1WEDBrUcAGvCJY8acTUSJWs7roF2U/w4pmnkYhoEJjmGT4+o8B3PqZOGw29TSJ5mJ5T0dSfr84j2Q19tt+GEA4UTAm4BZNtZ17TpssHP64P4pNqF1kfVdaT9DMI31QcukYJedOBmI4aZjTnMsj5phDgFQVJGZu/Nqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
-	by air.basealt.ru (Postfix) with ESMTPSA id B13F22333A;
-	Mon,  9 Dec 2024 19:53:42 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
+	s=arc-20240116; t=1733763468; c=relaxed/simple;
+	bh=o73P0u9wkOskRPgIGm239nyVo3oCprnaYIYczJzZ2bQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JH5lRNNHBUhRmhd2k1Ec05TraEgjCMpssW6RJ92yWzQB8X4IlQ8O8+UBleB7a9tlqVhFAYbPlQPKqDtXliNArEM3ehPvqAO2PyFFHu1299ZRxk3h/hXNTOdXjm5elc1RnPC3cor4LRE6phZ6yHzEHNboKuSB0YDeNSix6Gdkf7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KQOUEAq5; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-725ad59ad72so3183673b3a.2;
+        Mon, 09 Dec 2024 08:57:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733763466; x=1734368266; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=sUP+2JyKnLRQco8QsCJe4ce6gkYVIGp7F338G8iPtHg=;
+        b=KQOUEAq5KJCGoew+Ng+S+2PA9fmvr2sHX0DX154tUgwXhOq2YQKQ4yGGS7U6AwCLRk
+         jWH7erumn7Nl7Aspfx23opOnitVe4cm3sRUS8J9x2TFAcZKJPJG2MBZMB+9GEd3ySqTd
+         ePtUO65Bn6u3z94RvVx+SpoTdNrLk6uM5wcBtonKBa7UOcWLqS5wmm82IanlXH2ygPq4
+         Az4ToMGVVxOnjRQQMoJUfcqpGlIIKCQU2P8bjW2jSI7ZbR/YOxIZZ/akiwtsKchHPrzy
+         vA1+/FeK4Rhu9gKKO6QAYS5T9/H/FNfgbiEI9OhSU2FyzS0JCaPCap85yOHBKwkIQKAc
+         zIPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733763466; x=1734368266;
+        h=content-transfer-encoding:mime-version:reply-to:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sUP+2JyKnLRQco8QsCJe4ce6gkYVIGp7F338G8iPtHg=;
+        b=TikSqwZF5MscpF0f8IZ2L9UBdXT/KL3itylf3ckCT31OFKnRNZWfLoaA8JA2vxvejm
+         yhynmhDNfzhWME6+bN9/d4njjJPpjrXFq7FMzGfHcMGgE044Y9Ky/runu49/WNb7y7zn
+         6g3myrKj8QZvPqZcUEyk2lcslYEPLtPbmi9TBwyePBATKmR+mao8M0PFkUjyfAH+vt4a
+         eBviV0WeN8lE3yDtdzh8aYgbO3oMiZFYhb3LEkOeQPq9o6MSqtK7m+vwb7KF5oPu5XR2
+         Yrz59vXzbw+ocqk+DhCy2csk5mxZi/+uxttYNkntZ0lq20B730ZwQmPOpm+UTsdpILZ3
+         MujA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5vb7pIFRzqBu3xHhkIVaI5Ba3Sl5mNB1vhOWSA6oCS9t39guhAGfaHY0S03xZzbxyTBKjjQAzhdPuST7s@vger.kernel.org, AJvYcCUYdcEMUj6zCMl4dwhSgC5hscduckIpMcFzgIO7G40tN0LcP9ghhQPgPVlJCn8yMnuzgw0QmPVMKmyP/w==@vger.kernel.org, AJvYcCXk2tBx664d0PJ62mGw0010PiyVV8uyBBh+RdiK24xSaueCjmEIuEaB5Lx0frkwXgYmn8zdyEAm@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8jOVYjuk8e7ybOGF3iBPC7ti1PJntowhcTRsmmRlPW29E6uID
+	4IB8Iq9CRNYVebjpoVNxIZp6Q2ZbJImp4CE2SdWcF4b2Ku6rttQiMcIODIKekPpgHg==
+X-Gm-Gg: ASbGncs35upb5W7t7WOLTLPuOULj32+SXsByluTeiwLAfk6B2L/o4KpvfyPL3tjg7WH
+	mYVssM3wo8017deqD8wIV1b3BYXJSmxW06c+BINTQ24owP5geuedS/q1bCBKuIt0PwElLBZ4PWG
+	BGZbamYoMYTXWjCigm3jEUmAhhOTgJHMsyDZC8muYwYJSLiLtoq/TM9YXMghlar9eKcRAjRZGae
+	yuEyyHYHJ7cwqd3nTHXX+kjJcTA/2Ri/XpXYUixsig3qeHH7Ktdo33mMP4QbdPF+bsglEQ=
+X-Google-Smtp-Source: AGHT+IFU9XNL4TYYMN57+MI1JthzbOjTs3oeXC9tvV2S1ujsyt7L/AjZO37t5fVZBxfj6fd+QgbvFA==
+X-Received: by 2002:a05:6a21:e88:b0:1e1:a6a6:848 with SMTP id adf61e73a8af0-1e1a6a60975mr9194204637.25.1733763466179;
+        Mon, 09 Dec 2024 08:57:46 -0800 (PST)
+Received: from KASONG-MC4.tencent.com ([106.37.120.120])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7273c7f3f1fsm514201b3a.13.2024.12.09.08.57.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 09 Dec 2024 08:57:45 -0800 (PST)
+From: Kairui Song <ryncsn@gmail.com>
+To: linux-mm@kvack.org
+Cc: Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kairui Song <kasong@tencent.com>,
+	Desheng Wu <deshengwu@tencent.com>,
 	stable@vger.kernel.org
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-	"James E . J . Bottomley" <jejb@linux.ibm.com>,
-	Damien Le Moal <damien.lemoal@wdc.com>,
-	linux-scsi@vger.kernel.org,
-	kovalev@altlinux.org
-Subject: [PATCH 5.15.y] scsi: core: Fix scsi_mode_select() buffer length handling
-Date: Mon,  9 Dec 2024 19:53:40 +0300
-Message-Id: <20241209165340.112862-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+Subject: [PATCH v2 1/2] zram: refuse to use zero sized block device as backing device
+Date: Tue, 10 Dec 2024 00:57:15 +0800
+Message-ID: <20241209165717.94215-2-ryncsn@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241209165717.94215-1-ryncsn@gmail.com>
+References: <20241209165717.94215-1-ryncsn@gmail.com>
+Reply-To: Kairui Song <kasong@tencent.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,84 +96,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Damien Le Moal <damien.lemoal@wdc.com>
+From: Kairui Song <kasong@tencent.com>
 
-commit a7d6840bed0c2b16ac3071b74b5fcf08fc488241 upstream.
+Setting a zero sized block device as backing device is pointless, and
+one can easily create a recursive loop by setting the uninitialized
+ZRAM device itself as its own backing device by (zram0 is uninitialized):
 
-The MODE SELECT(6) command allows handling mode page buffers that are up to
-255 bytes, including the 4 byte header needed in front of the page
-buffer. For requests larger than this limit, automatically use the MODE
-SELECT(10) command.
+    echo /dev/zram0 > /sys/block/zram0/backing_dev
 
-In both cases, since scsi_mode_select() adds the mode select page header,
-checks on the buffer length value must include this header size to avoid
-overflows of the command CDB allocation length field.
+It's definitely a wrong config, and the module will pin itself,
+kernel should refuse doing so in the first place.
 
-While at it, use put_unaligned_be16() for setting the header block
-descriptor length and CDB allocation length when using MODE SELECT(10).
+By refusing to use zero sized device we avoided misuse cases
+including this one above.
 
-[mkp: fix MODE SENSE vs. MODE SELECT confusion]
-
-Link: https://lore.kernel.org/r/20210820070255.682775-3-damien.lemoal@wdc.com
-Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: stable@vger.kernel.org
 ---
-kovalev: This patch complements the previously backported fixes
-e15de347faf4 ("scsi: core: Fix scsi_mode_sense() buffer length handling") and
-c82cd4eed128 ("scsi: sd: Fix sd_do_mode_sense() buffer length handling"),
-which are 2 out of 3 patches in the same series, one of which addressed the
-CVE-2021-47182 vulnerability. This patch introduces important changes to
-buffer length handling in scsi_mode_select(), completing the series and
-ensuring consistency and completeness of the fixes.  
-Link: https://www.cve.org/CVERecord/?id=CVE-2021-47182
----
- drivers/scsi/scsi_lib.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/block/zram/zram_drv.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 2d37790321631b..9721984fd9bc68 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -2044,8 +2044,15 @@ scsi_mode_select(struct scsi_device *sdev, int pf, int sp, int modepage,
- 	memset(cmd, 0, sizeof(cmd));
- 	cmd[1] = (pf ? 0x10 : 0) | (sp ? 0x01 : 0);
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 3dee026988dc..e86cc3d2f4d2 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -614,6 +614,12 @@ static ssize_t backing_dev_store(struct device *dev,
+ 	}
  
--	if (sdev->use_10_for_ms) {
--		if (len > 65535)
-+	/*
-+	 * Use MODE SELECT(10) if the device asked for it or if the mode page
-+	 * and the mode select header cannot fit within the maximumm 255 bytes
-+	 * of the MODE SELECT(6) command.
-+	 */
-+	if (sdev->use_10_for_ms ||
-+	    len + 4 > 255 ||
-+	    data->block_descriptor_length > 255) {
-+		if (len > 65535 - 8)
- 			return -EINVAL;
- 		real_buffer = kmalloc(8 + len, GFP_KERNEL);
- 		if (!real_buffer)
-@@ -2058,15 +2065,13 @@ scsi_mode_select(struct scsi_device *sdev, int pf, int sp, int modepage,
- 		real_buffer[3] = data->device_specific;
- 		real_buffer[4] = data->longlba ? 0x01 : 0;
- 		real_buffer[5] = 0;
--		real_buffer[6] = data->block_descriptor_length >> 8;
--		real_buffer[7] = data->block_descriptor_length;
-+		put_unaligned_be16(data->block_descriptor_length,
-+				   &real_buffer[6]);
- 
- 		cmd[0] = MODE_SELECT_10;
--		cmd[7] = len >> 8;
--		cmd[8] = len;
-+		put_unaligned_be16(len, &cmd[7]);
- 	} else {
--		if (len > 255 || data->block_descriptor_length > 255 ||
--		    data->longlba)
-+		if (data->longlba)
- 			return -EINVAL;
- 
- 		real_buffer = kmalloc(4 + len, GFP_KERNEL);
+ 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
++	/* Refuse to use zero sized device (also prevents self reference) */
++	if (!nr_pages) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
+ 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
+ 	if (!bitmap) {
 -- 
-2.33.8
+2.47.1
 
 
