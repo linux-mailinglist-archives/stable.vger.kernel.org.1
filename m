@@ -1,342 +1,176 @@
-Return-Path: <stable+bounces-100222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05F79E9BF3
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:41:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B8D9E9C25
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8FC31886C4C
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 16:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFEE418856DE
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 16:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996F814B97E;
-	Mon,  9 Dec 2024 16:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D9414B087;
+	Mon,  9 Dec 2024 16:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPRJ3r3Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+msIlcc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489B014AD19;
-	Mon,  9 Dec 2024 16:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D9835956;
+	Mon,  9 Dec 2024 16:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733762452; cv=none; b=FaKDlHg/X+3CENNiA8YXhe8rhIVnKj9WQB1ej5iOgpVPyyvZhKA96d+3KiiMrJ8JVioGN0JgUth6Mfk2B9HdzixGPtHB4IDusqgTo2qOIeQD0poe+Aug9TkfS5Eh1mwWlqGgcjhFQffPCjvD63eCXlqZHHFFY0iNMUXq6R+C1lc=
+	t=1733763176; cv=none; b=b3F9WLl3WBlUnuenq58YEaI1EnrclmhcR9WP4bAbb4wTn8uQ5QLJQow6E7EfhEi/wn1tt7a2B15aSZtb9b0aLCBNXzZfUt8mE3lgvvWBasqf6z1DRZX7QKsuhWpYv6cI/ByjPxbyKZVEWTKkii5PE0pTU2dLQYQHEZiq2AyH6Pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733762452; c=relaxed/simple;
-	bh=2YH9hsbk9BUYlRaw0AjEiD/6YOppO+5bV2Cn1CltciU=;
+	s=arc-20240116; t=1733763176; c=relaxed/simple;
+	bh=BEJSrdcQEMAqO6NZAi7z6/czjWS6uwS86uL3dliZBx4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YPjgH73QM02HXxI79xJc3O9+sv60x/l+FlbyeCkXe0c67CQocheGNmXrppHY7RstGwZiXP8mwffXKnXtf6KEwOLNl9/pPDGsuO0qT3k1bi1erJgPIRssidBsiwjzcG3HIZCaAQeMbH8nULJuSTrUVWx/Gsf5tSwYbsvpfz4Oq9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPRJ3r3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241F8C4CEE9;
-	Mon,  9 Dec 2024 16:40:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733762452;
-	bh=2YH9hsbk9BUYlRaw0AjEiD/6YOppO+5bV2Cn1CltciU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oPRJ3r3ZNg5XAaQq/ddYWZ10/bsTC8ay9kN7fs3qoMZaH8+wV7+Xxn32wJkNd9LT4
-	 29aI58k8Z07/ENGam/nJgHnx9xg67DYbBLWcUcgU8sK3YABR0FdJZIJkdaUsPRm85u
-	 jY9rYpqNhfeEdY/HOwfa9XHox6lCMfZFcd2eUh62dI1Rpfna1p/YL+O3AGOjC52zpz
-	 I5tWbQsdAB4VNKag2aoEyJ8abDtqUK1kfOHaH0CA+qQ0U+BXnGYMxzxQ/2FcoYzGm7
-	 MUFxV9rgg1chcJmxvZc+Elimnp28SV6U7QFEoukQVyjfkcF/w2WDy2enTKK1np8xYD
-	 krqqor2uSSz2w==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53e3778bffdso3151238e87.0;
-        Mon, 09 Dec 2024 08:40:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUjxPMY2bpfHYESOeQr7I7QHmisvZ8zsCqEL94ObxC+Y/Niq3C94CGCA9f6mGuDp8TCiy3oLN1erj7QJlI=@vger.kernel.org, AJvYcCWlz4ceBt9DT+CaG/ygMprS11w1/rF4y+cMRFYBlErUEPp0N8IGuMnhWK9X8HEYr6zAIZOCalIJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAbTGurJ6ii6U7g5P/eIarqsVALQzRUqZSUWduYHpUQK2QE9+i
-	y6u7rdwHguJu8qocpcprSR/9zTaCrS9Xve1BSj5LGl8i71RnGBxgj7K3h7/3bjwVm+oENq99aeh
-	/463uNTuj1DIBdW7lOgbjAIr57rI=
-X-Google-Smtp-Source: AGHT+IE/8DE0dfbEwG+Wqb59z111GYonaD1p6VbmjBAEq5VgM410O9jD6dhoLoJ9EjrzdnDdZCErQ8NcrtGjlhTL2iI=
-X-Received: by 2002:a05:6512:39d1:b0:53e:3a01:cf47 with SMTP id
- 2adb3069b0e04-540240b0fecmr573900e87.4.1733762450303; Mon, 09 Dec 2024
- 08:40:50 -0800 (PST)
+	 To:Cc:Content-Type; b=LxFTBnOmHSAGh9at9r0nOw+eSoHD8JcxJs3JflVsfDeXpR2xEURHMp2MapnOifblrbyp+U9kNdsGT+fozWArv/SZ2sVkK8GZVenQtgahS4HpCJ9kPhI6rMx2xS/slFhuBVxRXkh23kFLmjWoqlya7yokxVBm4BJaz52HnJxVwIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+msIlcc; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ffa8df8850so48130921fa.3;
+        Mon, 09 Dec 2024 08:52:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733763173; x=1734367973; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OkiWcOXrAlAxqqLCJ/KAQ1yQEFRTTCQcJdAddZbbZ1s=;
+        b=X+msIlccZuZE+jDAJg2uxUNYJWvpi7UtO22ReEKtQl17l7OGjKLY9WVBsTgMGNloWD
+         z/1e7pUaw/5Ate0u3/fxFG7xTpF7mmVwZzuPiOOuR2kun4uOvcIKHZvtZNxWaASL7BbV
+         vLsKDdpfkQdVPURtps+xyw3fiH+awZGc/PDTNm2JvuX0fA+dU7zHamfUC4En3c2bFdG/
+         ePliJmRdpE0TzZ6L/JP2oYkRzV0TAiYbi7poCGs06N1gdNo/CXJKL9DuGCoIDubGEA9f
+         oZvJQuN4wbG6kR2qGlrjkuygbDo0FdePYxZKa2Y64DF8mLkXHOmObFrcK8QTDIP5Oh9e
+         VGvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733763173; x=1734367973;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OkiWcOXrAlAxqqLCJ/KAQ1yQEFRTTCQcJdAddZbbZ1s=;
+        b=AoDgkOHmNqZXmXGjTMFr6+z7Pwd9P0e2YrJflcu9THJr2PT8AknNtNfK8ZaYStoZRY
+         doVAy1TV1Gi0o9aBl+7XJyny1TUDF/8n/OKbU9dB+1Y9cYiUex1rG9FqKQhJnoopNKHN
+         wU+6d4ytd1hWrGT5pa6zHQs1t9cGhh9ydjl31Qn7FYchHe+38m4lvF48EDvuTEuhl9R1
+         mo83/Jsf4a2SD1E2QcwnAwrMp8TnMbZ2U1uy10dC0p4x2uMlK2IeAQ1zw7vjQJ/hQ3CZ
+         uQ6agAkv4NjpRkOKnISSKbXhCiVBAae98aDpBy8P/i7lfYhHSKEa6IFYf7/78Z37heIy
+         0UVA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwueHjoHlb2yeyrgHY/IQsQUhW8w7vnK4z9tp9z1/ARkv8cxXGlUljAtAHKRUbpFTXghb4AjgCfxyvKA==@vger.kernel.org, AJvYcCW24XNGQiTQD58fHO8Wy6Pi46Ujpqj0wP3PoDP2dpag4yqMbNv1MgRHyuxGmlj2qybyel180kV3@vger.kernel.org, AJvYcCXqRTDTVwcz/p576tEhi1Wdk26R4F28BtjuWOoKtFVmvtqeYsuGE5LMEGtgsPVlZ2nnzd6YvOMcLEU8xtHG@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFYmhN11otGaoRQTdTuL6XbbNFA2lJHnix0ROeYeCQsa2V2Mre
+	wcZK4AxExcsO8951JJYuWeao9ufc1r4qdBF2jesB2nr21KLYzGI95cmLfhw5alW0f9Ar4cd7u2P
+	a6ULhU0fhLQ/0lKfnKQLyjGyJEughWFFT
+X-Gm-Gg: ASbGnctAUH55DXMAUHvP127J3Q2ATOV3cVjpl68wKImfaBH0mZhr2hUdgHoY61F1tJL
+	cdZ9rY557jg4cHSKwGfXlimeuXzTAjgQ=
+X-Google-Smtp-Source: AGHT+IENQl4Nc5lF30ol6UXzbTLguVyc/JsFURLtyoI2Px1WGiLmX0RVNAXTyxminD80fO/yjJS2UhJ4fkEeaNVOwtY=
+X-Received: by 2002:a05:651c:1602:b0:302:29a5:6dea with SMTP id
+ 38308e7fff4ca-30229a5719amr14979111fa.27.1733763172455; Mon, 09 Dec 2024
+ 08:52:52 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241209162449.48390-1-hamzamahfooz@linux.microsoft.com>
-In-Reply-To: <20241209162449.48390-1-hamzamahfooz@linux.microsoft.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 9 Dec 2024 17:40:39 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXF=f-QAhXJA=U=jbn++Vyzf+e2k+cCS+Jk4Om4p0puD5Q@mail.gmail.com>
-Message-ID: <CAMj1kXF=f-QAhXJA=U=jbn++Vyzf+e2k+cCS+Jk4Om4p0puD5Q@mail.gmail.com>
-Subject: Re: [PATCH] efi: make the min and max mmap slack slots configurable
-To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Cc: linux-efi@vger.kernel.org, stable@vger.kernel.org, 
-	Tyler Hicks <code@tyhicks.com>, Brian Nguyen <nguyenbrian@microsoft.com>, 
-	Jacob Pan <panj@microsoft.com>, Allen Pais <apais@microsoft.com>, 
-	Jonathan Marek <jonathan@marek.ca>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Jeremy Linton <jeremy.linton@arm.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, 
-	=?UTF-8?B?S09ORE8gS0FaVU1BKOi/keiXpCDlkoznnJ8p?= <kazuma-kondo@nec.com>, 
-	Kees Cook <kees@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>, Yuntao Wang <ytcoode@gmail.com>, 
-	Aditya Garg <gargaditya08@live.com>, open list <linux-kernel@vger.kernel.org>
+References: <20241204180224.31069-1-ryncsn@gmail.com> <20241204180224.31069-3-ryncsn@gmail.com>
+ <20241205070939.GF16709@google.com>
+In-Reply-To: <20241205070939.GF16709@google.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 10 Dec 2024 00:52:35 +0800
+Message-ID: <CAMgjq7Bf=m-KUkZiy_7pFcE=8U0yvy0bqrUNkGj--asMbMC8vQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] zram: fix uninitialized ZRAM not releasing backing device
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Desheng Wu <deshengwu@tencent.com>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Hamza,
-
-Thanks for the patch.
-
-On Mon, 9 Dec 2024 at 17:25, Hamza Mahfooz
-<hamzamahfooz@linux.microsoft.com> wrote:
+On Thu, Dec 5, 2024 at 3:09=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> Recent platforms
-
-Which platforms are you referring to here?
-
-> require more slack slots than the current value of
-> EFI_MMAP_NR_SLACK_SLOTS, otherwise they fail to boot. So, introduce
-> EFI_MIN_NR_MMAP_SLACK_SLOTS and EFI_MAX_NR_MMAP_SLACK_SLOTS
-> and use them to determine a number of slots that the platform
-> is willing to accept.
+> On (24/12/05 02:02), Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+> >
+> > Setting backing device is done before ZRAM initialization.
+> > If we set the backing device, then remove the ZRAM module without
+> > initializing the device, the backing device reference will be leaked
+> > and the device will be hold forever.
+> >
+> > Fix this by always check and release the backing device when resetting
+> > or removing ZRAM.
+> >
+> > Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+> > Reported-by: Desheng Wu <deshengwu@tencent.com>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  drivers/block/zram/zram_drv.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_dr=
+v.c
+> > index dd48df5b97c8..dfe9a994e437 100644
+> > --- a/drivers/block/zram/zram_drv.c
+> > +++ b/drivers/block/zram/zram_drv.c
+> > @@ -2335,6 +2335,9 @@ static void zram_reset_device(struct zram *zram)
+> >       zram->limit_pages =3D 0;
+> >
+> >       if (!init_done(zram)) {
+> > +             /* Backing device could be set before ZRAM initialization=
+. */
+> > +             reset_bdev(zram);
+> > +
+> >               up_write(&zram->init_lock);
+> >               return;
+> >       }
+> > --
 >
-
-What does 'acceptance' mean in this case?
-
-> Cc: stable@vger.kernel.org
-> Cc: Tyler Hicks <code@tyhicks.com>
-> Tested-by: Brian Nguyen <nguyenbrian@microsoft.com>
-> Tested-by: Jacob Pan <panj@microsoft.com>
-> Reviewed-by: Allen Pais <apais@microsoft.com>
-
-I appreciate the effort of your colleagues, but if these
-tested/reviewed-bys were not given on an open list, they are
-meaningless, and I am going to drop them unless the people in question
-reply to this thread.
-
-> Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+> So here I think we better remove that if entirely and always reset
+> the device.  Something like this (untested):
+>
 > ---
->  drivers/firmware/efi/Kconfig                  | 23 +++++++++++++++++
->  .../firmware/efi/libstub/efi-stub-helper.c    |  2 +-
->  drivers/firmware/efi/libstub/efistub.h        | 15 +----------
->  drivers/firmware/efi/libstub/kaslr.c          |  2 +-
->  drivers/firmware/efi/libstub/mem.c            | 25 +++++++++++++++----
->  drivers/firmware/efi/libstub/randomalloc.c    |  2 +-
->  drivers/firmware/efi/libstub/relocate.c       |  2 +-
->  drivers/firmware/efi/libstub/x86-stub.c       |  8 +++---
->  8 files changed, 52 insertions(+), 27 deletions(-)
 >
-
-This looks rather intrusive for a patch that is intended as cc:stable.
-
-> diff --git a/drivers/firmware/efi/Kconfig b/drivers/firmware/efi/Kconfig
-> index e312d731f4a3..7fedc271d543 100644
-> --- a/drivers/firmware/efi/Kconfig
-> +++ b/drivers/firmware/efi/Kconfig
-> @@ -155,6 +155,29 @@ config EFI_TEST
->           Say Y here to enable the runtime services support via /dev/efi_test.
->           If unsure, say N.
+> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
+c
+> index 0ca6d55c9917..8773b12afc9d 100644
+> --- a/drivers/block/zram/zram_drv.c
+> +++ b/drivers/block/zram/zram_drv.c
+> @@ -1438,12 +1438,16 @@ static void zram_meta_free(struct zram *zram, u64=
+ disksize)
+>         size_t num_pages =3D disksize >> PAGE_SHIFT;
+>         size_t index;
 >
-> +#
-> +# An efi_boot_memmap is used by efi_get_memory_map() to return the
-> +# EFI memory map in a dynamically allocated buffer.
-> +#
-> +# The buffer allocated for the EFI memory map includes extra room for
-> +# a range of [EFI_MIN_NR_MMAP_SLACK_SLOTS, EFI_MAX_NR_MMAP_SLACK_SLOTS]
-> +# additional EFI memory descriptors. This facilitates the reuse of the
-> +# EFI memory map buffer when a second call to ExitBootServices() is
-> +# needed because of intervening changes to the EFI memory map. Other
-> +# related structures, e.g. x86 e820ext, need to factor in this headroom
-> +# requirement as well.
-> +#
+> +       if (!zram->table)
+> +               return;
 > +
-> +config EFI_MIN_NR_MMAP_SLACK_SLOTS
-> +       int
-> +       depends on EFI
-> +       default 8
-> +
-> +config EFI_MAX_NR_MMAP_SLACK_SLOTS
-> +       int
-> +       depends on EFI
-> +       default 64
-> +
-
-What would be the reason for not always bumping this to 64?
-
->  config EFI_DEV_PATH_PARSER
->         bool
+>         /* Free all pages that are still in this zram device */
+>         for (index =3D 0; index < num_pages; index++)
+>                 zram_free_page(zram, index);
 >
-> diff --git a/drivers/firmware/efi/libstub/efi-stub-helper.c b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> index c0c81ca4237e..adf2b0c0dd34 100644
-> --- a/drivers/firmware/efi/libstub/efi-stub-helper.c
-> +++ b/drivers/firmware/efi/libstub/efi-stub-helper.c
-> @@ -432,7 +432,7 @@ efi_status_t efi_exit_boot_services(void *handle, void *priv,
->         if (efi_disable_pci_dma)
->                 efi_pci_disable_bridge_busmaster();
+>         zs_destroy_pool(zram->mem_pool);
+>         vfree(zram->table);
+> +       zram->table =3D NULL;
+>  }
 >
-> -       status = efi_get_memory_map(&map, true);
-> +       status = efi_get_memory_map(&map, true, NULL);
->         if (status != EFI_SUCCESS)
->                 return status;
+>  static bool zram_meta_alloc(struct zram *zram, u64 disksize)
+> @@ -2327,12 +2331,6 @@ static void zram_reset_device(struct zram *zram)
+>         down_write(&zram->init_lock);
 >
-> diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-> index 76e44c185f29..d86c6e13de5f 100644
-> --- a/drivers/firmware/efi/libstub/efistub.h
-> +++ b/drivers/firmware/efi/libstub/efistub.h
-> @@ -160,19 +160,6 @@ void efi_set_u64_split(u64 data, u32 *lo, u32 *hi)
->   */
->  #define EFI_100NSEC_PER_USEC   ((u64)10)
->
-> -/*
-> - * An efi_boot_memmap is used by efi_get_memory_map() to return the
-> - * EFI memory map in a dynamically allocated buffer.
-> - *
-> - * The buffer allocated for the EFI memory map includes extra room for
-> - * a minimum of EFI_MMAP_NR_SLACK_SLOTS additional EFI memory descriptors.
-> - * This facilitates the reuse of the EFI memory map buffer when a second
-> - * call to ExitBootServices() is needed because of intervening changes to
-> - * the EFI memory map. Other related structures, e.g. x86 e820ext, need
-> - * to factor in this headroom requirement as well.
-> - */
-> -#define EFI_MMAP_NR_SLACK_SLOTS        8
+>         zram->limit_pages =3D 0;
 > -
->  typedef struct efi_generic_dev_path efi_device_path_protocol_t;
+> -       if (!init_done(zram)) {
+> -               up_write(&zram->init_lock);
+> -               return;
+> -       }
+> -
+>         set_capacity_and_notify(zram->disk, 0);
+>         part_stat_set_all(zram->disk->part0, 0);
 >
->  union efi_device_path_to_text_protocol {
-> @@ -1059,7 +1046,7 @@ void efi_apply_loadoptions_quirk(const void **load_options, u32 *load_options_si
->  char *efi_convert_cmdline(efi_loaded_image_t *image);
 >
->  efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
-> -                               bool install_cfg_tbl);
-> +                               bool install_cfg_tbl, unsigned int *n);
->
->  efi_status_t efi_allocate_pages(unsigned long size, unsigned long *addr,
->                                 unsigned long max);
-> diff --git a/drivers/firmware/efi/libstub/kaslr.c b/drivers/firmware/efi/libstub/kaslr.c
-> index 6318c40bda38..06e7a1ef34ab 100644
-> --- a/drivers/firmware/efi/libstub/kaslr.c
-> +++ b/drivers/firmware/efi/libstub/kaslr.c
-> @@ -62,7 +62,7 @@ static bool check_image_region(u64 base, u64 size)
->         bool ret = false;
->         int map_offset;
->
-> -       status = efi_get_memory_map(&map, false);
-> +       status = efi_get_memory_map(&map, false, NULL);
->         if (status != EFI_SUCCESS)
->                 return false;
->
-> diff --git a/drivers/firmware/efi/libstub/mem.c b/drivers/firmware/efi/libstub/mem.c
-> index 4f1fa302234d..cab25183b790 100644
-> --- a/drivers/firmware/efi/libstub/mem.c
-> +++ b/drivers/firmware/efi/libstub/mem.c
-> @@ -13,32 +13,47 @@
->   *                     configuration table
->   *
->   * Retrieve the UEFI memory map. The allocated memory leaves room for
-> - * up to EFI_MMAP_NR_SLACK_SLOTS additional memory map entries.
-> + * up to CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS additional memory map entries.
->   *
->   * Return:     status code
->   */
->  efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
-> -                               bool install_cfg_tbl)
-> +                               bool install_cfg_tbl,
-> +                               unsigned int *n)
 
-What is the purpose of 'n'? Having single letter names for function
-parameters is not great for legibility.
-
->  {
->         int memtype = install_cfg_tbl ? EFI_ACPI_RECLAIM_MEMORY
->                                       : EFI_LOADER_DATA;
->         efi_guid_t tbl_guid = LINUX_EFI_BOOT_MEMMAP_GUID;
-> +       unsigned int nr = CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS;
->         struct efi_boot_memmap *m, tmp;
->         efi_status_t status;
->         unsigned long size;
->
-> +       BUILD_BUG_ON(!is_power_of_2(CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS) ||
-> +                    !is_power_of_2(CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS) ||
-> +                    CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS >=
-> +                    CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS);
-> +
->         tmp.map_size = 0;
->         status = efi_bs_call(get_memory_map, &tmp.map_size, NULL, &tmp.map_key,
->                              &tmp.desc_size, &tmp.desc_ver);
->         if (status != EFI_BUFFER_TOO_SMALL)
->                 return EFI_LOAD_ERROR;
->
-> -       size = tmp.map_size + tmp.desc_size * EFI_MMAP_NR_SLACK_SLOTS;
-> -       status = efi_bs_call(allocate_pool, memtype, sizeof(*m) + size,
-> -                            (void **)&m);
-> +       do {
-> +               size = tmp.map_size + tmp.desc_size * nr;
-> +               status = efi_bs_call(allocate_pool, memtype, sizeof(*m) + size,
-> +                                    (void **)&m);
-> +               nr <<= 1;
-> +       } while (status == EFI_BUFFER_TOO_SMALL &&
-> +                nr <= CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS);
-> +
-
-Under what circumstances would you expect AllocatePool() to return
-EFI_BUFFER_TOO_SMALL? What is the purpose of this loop?
-
-How did you test this code?
-
->         if (status != EFI_SUCCESS)
->                 return status;
->
-> +       if (n)
-> +               *n = nr;
-> +
->         if (install_cfg_tbl) {
->                 /*
->                  * Installing a configuration table might allocate memory, and
-> diff --git a/drivers/firmware/efi/libstub/randomalloc.c b/drivers/firmware/efi/libstub/randomalloc.c
-> index c41e7b2091cd..e80a65e7b87a 100644
-> --- a/drivers/firmware/efi/libstub/randomalloc.c
-> +++ b/drivers/firmware/efi/libstub/randomalloc.c
-> @@ -65,7 +65,7 @@ efi_status_t efi_random_alloc(unsigned long size,
->         efi_status_t status;
->         int map_offset;
->
-> -       status = efi_get_memory_map(&map, false);
-> +       status = efi_get_memory_map(&map, false, NULL);
->         if (status != EFI_SUCCESS)
->                 return status;
->
-> diff --git a/drivers/firmware/efi/libstub/relocate.c b/drivers/firmware/efi/libstub/relocate.c
-> index d694bcfa1074..b7b0aad95ba4 100644
-> --- a/drivers/firmware/efi/libstub/relocate.c
-> +++ b/drivers/firmware/efi/libstub/relocate.c
-> @@ -28,7 +28,7 @@ efi_status_t efi_low_alloc_above(unsigned long size, unsigned long align,
->         unsigned long nr_pages;
->         int i;
->
-> -       status = efi_get_memory_map(&map, false);
-> +       status = efi_get_memory_map(&map, false, NULL);
->         if (status != EFI_SUCCESS)
->                 goto fail;
->
-> diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-> index 188c8000d245..cb14f0d2a3d9 100644
-> --- a/drivers/firmware/efi/libstub/x86-stub.c
-> +++ b/drivers/firmware/efi/libstub/x86-stub.c
-> @@ -740,15 +740,15 @@ static efi_status_t allocate_e820(struct boot_params *params,
->         struct efi_boot_memmap *map;
->         efi_status_t status;
->         __u32 nr_desc;
-> +       __u32 nr;
->
-> -       status = efi_get_memory_map(&map, false);
-> +       status = efi_get_memory_map(&map, false, &nr);
->         if (status != EFI_SUCCESS)
->                 return status;
->
->         nr_desc = map->map_size / map->desc_size;
-> -       if (nr_desc > ARRAY_SIZE(params->e820_table) - EFI_MMAP_NR_SLACK_SLOTS) {
-> -               u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) +
-> -                                EFI_MMAP_NR_SLACK_SLOTS;
-> +       if (nr_desc > ARRAY_SIZE(params->e820_table) - nr) {
-> +               u32 nr_e820ext = nr_desc - ARRAY_SIZE(params->e820_table) + nr;
->
->                 status = alloc_e820ext(nr_e820ext, e820ext, e820ext_size);
->         }
-> --
-> 2.47.1
->
+Thanks for the suggestion, I've tested it and it works well. Will send
+a V2 shortly.
 
