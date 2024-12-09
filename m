@@ -1,176 +1,135 @@
-Return-Path: <stable+bounces-100223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B8D9E9C25
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:53:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565BB9E9C2B
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFEE418856DE
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 16:53:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF24418875D1
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 16:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D9414B087;
-	Mon,  9 Dec 2024 16:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+msIlcc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E442B14BF92;
+	Mon,  9 Dec 2024 16:53:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D9835956;
-	Mon,  9 Dec 2024 16:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85F214F9F8;
+	Mon,  9 Dec 2024 16:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733763176; cv=none; b=b3F9WLl3WBlUnuenq58YEaI1EnrclmhcR9WP4bAbb4wTn8uQ5QLJQow6E7EfhEi/wn1tt7a2B15aSZtb9b0aLCBNXzZfUt8mE3lgvvWBasqf6z1DRZX7QKsuhWpYv6cI/ByjPxbyKZVEWTKkii5PE0pTU2dLQYQHEZiq2AyH6Pw=
+	t=1733763238; cv=none; b=ZRYUsrf0l0+sifU26Cna77hdiB4Jr7URdEh0tBNgbZA0QgEJuv2jUwjJb7nShzkRzPI1s1IvB0EzFLUj+tZq9Jr7/cpYkoqNC2TKXE7lM5vKceYps1qcCnNhVxZp8IJVRymfhSvfeq6zxmIzljU9pMZS4ZIR5i0UYnyy17hTCfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733763176; c=relaxed/simple;
-	bh=BEJSrdcQEMAqO6NZAi7z6/czjWS6uwS86uL3dliZBx4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LxFTBnOmHSAGh9at9r0nOw+eSoHD8JcxJs3JflVsfDeXpR2xEURHMp2MapnOifblrbyp+U9kNdsGT+fozWArv/SZ2sVkK8GZVenQtgahS4HpCJ9kPhI6rMx2xS/slFhuBVxRXkh23kFLmjWoqlya7yokxVBm4BJaz52HnJxVwIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+msIlcc; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ffa8df8850so48130921fa.3;
-        Mon, 09 Dec 2024 08:52:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733763173; x=1734367973; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OkiWcOXrAlAxqqLCJ/KAQ1yQEFRTTCQcJdAddZbbZ1s=;
-        b=X+msIlccZuZE+jDAJg2uxUNYJWvpi7UtO22ReEKtQl17l7OGjKLY9WVBsTgMGNloWD
-         z/1e7pUaw/5Ate0u3/fxFG7xTpF7mmVwZzuPiOOuR2kun4uOvcIKHZvtZNxWaASL7BbV
-         vLsKDdpfkQdVPURtps+xyw3fiH+awZGc/PDTNm2JvuX0fA+dU7zHamfUC4En3c2bFdG/
-         ePliJmRdpE0TzZ6L/JP2oYkRzV0TAiYbi7poCGs06N1gdNo/CXJKL9DuGCoIDubGEA9f
-         oZvJQuN4wbG6kR2qGlrjkuygbDo0FdePYxZKa2Y64DF8mLkXHOmObFrcK8QTDIP5Oh9e
-         VGvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733763173; x=1734367973;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OkiWcOXrAlAxqqLCJ/KAQ1yQEFRTTCQcJdAddZbbZ1s=;
-        b=AoDgkOHmNqZXmXGjTMFr6+z7Pwd9P0e2YrJflcu9THJr2PT8AknNtNfK8ZaYStoZRY
-         doVAy1TV1Gi0o9aBl+7XJyny1TUDF/8n/OKbU9dB+1Y9cYiUex1rG9FqKQhJnoopNKHN
-         wU+6d4ytd1hWrGT5pa6zHQs1t9cGhh9ydjl31Qn7FYchHe+38m4lvF48EDvuTEuhl9R1
-         mo83/Jsf4a2SD1E2QcwnAwrMp8TnMbZ2U1uy10dC0p4x2uMlK2IeAQ1zw7vjQJ/hQ3CZ
-         uQ6agAkv4NjpRkOKnISSKbXhCiVBAae98aDpBy8P/i7lfYhHSKEa6IFYf7/78Z37heIy
-         0UVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVwueHjoHlb2yeyrgHY/IQsQUhW8w7vnK4z9tp9z1/ARkv8cxXGlUljAtAHKRUbpFTXghb4AjgCfxyvKA==@vger.kernel.org, AJvYcCW24XNGQiTQD58fHO8Wy6Pi46Ujpqj0wP3PoDP2dpag4yqMbNv1MgRHyuxGmlj2qybyel180kV3@vger.kernel.org, AJvYcCXqRTDTVwcz/p576tEhi1Wdk26R4F28BtjuWOoKtFVmvtqeYsuGE5LMEGtgsPVlZ2nnzd6YvOMcLEU8xtHG@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFYmhN11otGaoRQTdTuL6XbbNFA2lJHnix0ROeYeCQsa2V2Mre
-	wcZK4AxExcsO8951JJYuWeao9ufc1r4qdBF2jesB2nr21KLYzGI95cmLfhw5alW0f9Ar4cd7u2P
-	a6ULhU0fhLQ/0lKfnKQLyjGyJEughWFFT
-X-Gm-Gg: ASbGnctAUH55DXMAUHvP127J3Q2ATOV3cVjpl68wKImfaBH0mZhr2hUdgHoY61F1tJL
-	cdZ9rY557jg4cHSKwGfXlimeuXzTAjgQ=
-X-Google-Smtp-Source: AGHT+IENQl4Nc5lF30ol6UXzbTLguVyc/JsFURLtyoI2Px1WGiLmX0RVNAXTyxminD80fO/yjJS2UhJ4fkEeaNVOwtY=
-X-Received: by 2002:a05:651c:1602:b0:302:29a5:6dea with SMTP id
- 38308e7fff4ca-30229a5719amr14979111fa.27.1733763172455; Mon, 09 Dec 2024
- 08:52:52 -0800 (PST)
+	s=arc-20240116; t=1733763238; c=relaxed/simple;
+	bh=lXgLbm4Srm38TXoVBYCVtlylQo/H0hVGE/NC01GeR7M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cArn/IOiR1WEDBrUcAGvCJY8acTUSJWs7roF2U/w4pmnkYhoEJjmGT4+o8B3PqZOGw29TSJ5mJ5T0dSfr84j2Q19tt+GEA4UTAm4BZNtZ17TpssHP64P4pNqF1kfVdaT9DMI31QcukYJedOBmI4aZjTnMsj5phDgFQVJGZu/Nqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from altlinux.ipa.basealt.ru (unknown [178.76.204.78])
+	by air.basealt.ru (Postfix) with ESMTPSA id B13F22333A;
+	Mon,  9 Dec 2024 19:53:42 +0300 (MSK)
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+	"James E . J . Bottomley" <jejb@linux.ibm.com>,
+	Damien Le Moal <damien.lemoal@wdc.com>,
+	linux-scsi@vger.kernel.org,
+	kovalev@altlinux.org
+Subject: [PATCH 5.15.y] scsi: core: Fix scsi_mode_select() buffer length handling
+Date: Mon,  9 Dec 2024 19:53:40 +0300
+Message-Id: <20241209165340.112862-1-kovalev@altlinux.org>
+X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241204180224.31069-1-ryncsn@gmail.com> <20241204180224.31069-3-ryncsn@gmail.com>
- <20241205070939.GF16709@google.com>
-In-Reply-To: <20241205070939.GF16709@google.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Tue, 10 Dec 2024 00:52:35 +0800
-Message-ID: <CAMgjq7Bf=m-KUkZiy_7pFcE=8U0yvy0bqrUNkGj--asMbMC8vQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] zram: fix uninitialized ZRAM not releasing backing device
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: linux-mm@kvack.org, Minchan Kim <minchan@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-block@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Desheng Wu <deshengwu@tencent.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 5, 2024 at 3:09=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> On (24/12/05 02:02), Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> > Setting backing device is done before ZRAM initialization.
-> > If we set the backing device, then remove the ZRAM module without
-> > initializing the device, the backing device reference will be leaked
-> > and the device will be hold forever.
-> >
-> > Fix this by always check and release the backing device when resetting
-> > or removing ZRAM.
-> >
-> > Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
-> > Reported-by: Desheng Wu <deshengwu@tencent.com>
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  drivers/block/zram/zram_drv.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_dr=
-v.c
-> > index dd48df5b97c8..dfe9a994e437 100644
-> > --- a/drivers/block/zram/zram_drv.c
-> > +++ b/drivers/block/zram/zram_drv.c
-> > @@ -2335,6 +2335,9 @@ static void zram_reset_device(struct zram *zram)
-> >       zram->limit_pages =3D 0;
-> >
-> >       if (!init_done(zram)) {
-> > +             /* Backing device could be set before ZRAM initialization=
-. */
-> > +             reset_bdev(zram);
-> > +
-> >               up_write(&zram->init_lock);
-> >               return;
-> >       }
-> > --
->
-> So here I think we better remove that if entirely and always reset
-> the device.  Something like this (untested):
->
-> ---
->
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.=
-c
-> index 0ca6d55c9917..8773b12afc9d 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -1438,12 +1438,16 @@ static void zram_meta_free(struct zram *zram, u64=
- disksize)
->         size_t num_pages =3D disksize >> PAGE_SHIFT;
->         size_t index;
->
-> +       if (!zram->table)
-> +               return;
-> +
->         /* Free all pages that are still in this zram device */
->         for (index =3D 0; index < num_pages; index++)
->                 zram_free_page(zram, index);
->
->         zs_destroy_pool(zram->mem_pool);
->         vfree(zram->table);
-> +       zram->table =3D NULL;
->  }
->
->  static bool zram_meta_alloc(struct zram *zram, u64 disksize)
-> @@ -2327,12 +2331,6 @@ static void zram_reset_device(struct zram *zram)
->         down_write(&zram->init_lock);
->
->         zram->limit_pages =3D 0;
-> -
-> -       if (!init_done(zram)) {
-> -               up_write(&zram->init_lock);
-> -               return;
-> -       }
-> -
->         set_capacity_and_notify(zram->disk, 0);
->         part_stat_set_all(zram->disk->part0, 0);
->
->
+From: Damien Le Moal <damien.lemoal@wdc.com>
 
-Thanks for the suggestion, I've tested it and it works well. Will send
-a V2 shortly.
+commit a7d6840bed0c2b16ac3071b74b5fcf08fc488241 upstream.
+
+The MODE SELECT(6) command allows handling mode page buffers that are up to
+255 bytes, including the 4 byte header needed in front of the page
+buffer. For requests larger than this limit, automatically use the MODE
+SELECT(10) command.
+
+In both cases, since scsi_mode_select() adds the mode select page header,
+checks on the buffer length value must include this header size to avoid
+overflows of the command CDB allocation length field.
+
+While at it, use put_unaligned_be16() for setting the header block
+descriptor length and CDB allocation length when using MODE SELECT(10).
+
+[mkp: fix MODE SENSE vs. MODE SELECT confusion]
+
+Link: https://lore.kernel.org/r/20210820070255.682775-3-damien.lemoal@wdc.com
+Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+---
+kovalev: This patch complements the previously backported fixes
+e15de347faf4 ("scsi: core: Fix scsi_mode_sense() buffer length handling") and
+c82cd4eed128 ("scsi: sd: Fix sd_do_mode_sense() buffer length handling"),
+which are 2 out of 3 patches in the same series, one of which addressed the
+CVE-2021-47182 vulnerability. This patch introduces important changes to
+buffer length handling in scsi_mode_select(), completing the series and
+ensuring consistency and completeness of the fixes.  
+Link: https://www.cve.org/CVERecord/?id=CVE-2021-47182
+---
+ drivers/scsi/scsi_lib.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 2d37790321631b..9721984fd9bc68 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -2044,8 +2044,15 @@ scsi_mode_select(struct scsi_device *sdev, int pf, int sp, int modepage,
+ 	memset(cmd, 0, sizeof(cmd));
+ 	cmd[1] = (pf ? 0x10 : 0) | (sp ? 0x01 : 0);
+ 
+-	if (sdev->use_10_for_ms) {
+-		if (len > 65535)
++	/*
++	 * Use MODE SELECT(10) if the device asked for it or if the mode page
++	 * and the mode select header cannot fit within the maximumm 255 bytes
++	 * of the MODE SELECT(6) command.
++	 */
++	if (sdev->use_10_for_ms ||
++	    len + 4 > 255 ||
++	    data->block_descriptor_length > 255) {
++		if (len > 65535 - 8)
+ 			return -EINVAL;
+ 		real_buffer = kmalloc(8 + len, GFP_KERNEL);
+ 		if (!real_buffer)
+@@ -2058,15 +2065,13 @@ scsi_mode_select(struct scsi_device *sdev, int pf, int sp, int modepage,
+ 		real_buffer[3] = data->device_specific;
+ 		real_buffer[4] = data->longlba ? 0x01 : 0;
+ 		real_buffer[5] = 0;
+-		real_buffer[6] = data->block_descriptor_length >> 8;
+-		real_buffer[7] = data->block_descriptor_length;
++		put_unaligned_be16(data->block_descriptor_length,
++				   &real_buffer[6]);
+ 
+ 		cmd[0] = MODE_SELECT_10;
+-		cmd[7] = len >> 8;
+-		cmd[8] = len;
++		put_unaligned_be16(len, &cmd[7]);
+ 	} else {
+-		if (len > 255 || data->block_descriptor_length > 255 ||
+-		    data->longlba)
++		if (data->longlba)
+ 			return -EINVAL;
+ 
+ 		real_buffer = kmalloc(4 + len, GFP_KERNEL);
+-- 
+2.33.8
+
 
