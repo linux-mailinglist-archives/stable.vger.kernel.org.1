@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-100183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B269E978C
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:43:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D8C9E97B4
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:49:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 008D42828DC
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:43:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30552165C1D
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0499E233146;
-	Mon,  9 Dec 2024 13:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D9F1ACED2;
+	Mon,  9 Dec 2024 13:46:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10E035953
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE401E9B3E
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733751833; cv=none; b=QHSgCAp7Q8qe+/KZ/W499v8ln/thsnBcY3Qx/UtbXvHKkDgkfywC1fFv3i2hJl04u4stb4Zc1LHvcunTsph+V6DaN8loRvuK6HfFd2Edows5PV4eDg55ZWpAJiIVsppNde/Jk3C8cjz+6d3J8Z8Zi7VHsghtzw1ZEA73meDShxo=
+	t=1733751972; cv=none; b=FuFKA9P8JJbpiN8LnyR5QLotonDGp5gKQP1u2KwqF8XyCeCIcEcO1h0Y8UW688YK4bsV6Une5a3ZqhVOqd7s2dIepdcMXB29V0MajeTarseyxr8p7aPON5o/sraLrKRUvg7/Q3tI7//KjZBpIcjKwj4CBou72A1hmZgHvVmKhps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733751833; c=relaxed/simple;
-	bh=qjkLotXuE+TbpESf7ThjGmZxOeZ1d+FQb9qXxU9w/dI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ENFd/1XQphOQb6mWhi08j+rOquF0hR6kqkHl2ysv6Jsnk4VFsY64ElqhTy79v/3LcD4rUX6xSAob1avqsnV6jhS8rkLKCApTQ6Wv//u697bIXZ63/M0HeRAVtaf0OrW8rMSgkWUGj/QY4Q8TJzbbyre7yI2Q9k4jOlE3Y5+ZQto=
+	s=arc-20240116; t=1733751972; c=relaxed/simple;
+	bh=qGPwGZ+UsiOTdf+HoSdnLhNsFKRb2k8G6k1RAZUsDfo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Tl6PT1sYbD+0xO3fZClSvnuw2TkgZ8ODQGHe6Sibfq6d3/DXQbQpkwo1pvPNN+6zDqXDcQnKbrzzwjkeu6NR4iEhH8VpnPfW5w3Cg8Lr6AM4d63Nox2z4fwiq+G7+V3lxi26WHqQ91B2XgEV+A4215UKWNviqr1vwizCBshCwv0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2BB30113E;
-	Mon,  9 Dec 2024 05:44:18 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BFAC113E;
+	Mon,  9 Dec 2024 05:46:36 -0800 (PST)
 Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CDEBE3F720;
-	Mon,  9 Dec 2024 05:43:48 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 70E813F720;
+	Mon,  9 Dec 2024 05:46:07 -0800 (PST)
 From: Mark Rutland <mark.rutland@arm.com>
 To: stable@vger.kernel.org
 Cc: ardb@kernel.org,
@@ -40,9 +40,9 @@ Cc: ardb@kernel.org,
 	mark.rutland@arm.com,
 	maz@kernel.org,
 	will@kernel.org
-Subject: [PATCH 6.1.y] arm64: smccc: Remove broken support for SMCCCv1.3 SVE discard hint
-Date: Mon,  9 Dec 2024 13:43:39 +0000
-Message-Id: <20241209134339.2088127-1-mark.rutland@arm.com>
+Subject: [PATCH 5.15.y] arm64: smccc: Remove broken support for SMCCCv1.3 SVE discard hint
+Date: Mon,  9 Dec 2024 13:46:02 +0000
+Message-Id: <20241209134602.2088353-1-mark.rutland@arm.com>
 X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -119,7 +119,7 @@ Cc: stable@vger.kernel.org
 Reviewed-by: Mark Brown <broonie@kernel.org>
 Link: https://lore.kernel.org/r/20241106160448.2712997-1-mark.rutland@arm.com
 Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: fix conflicts in <linux/arm-smccc.h> ]
+[ Mark: fix conflicts in <linux/arm-smccc.h> and drivers/firmware/smccc/smccc.c ]
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 ---
  arch/arm64/kernel/smccc-call.S | 35 +++-------------------------------
@@ -127,7 +127,7 @@ Signed-off-by: Mark Rutland <mark.rutland@arm.com>
  include/linux/arm-smccc.h      | 30 ++---------------------------
  3 files changed, 5 insertions(+), 64 deletions(-)
 
-This backport is based on 6.1.119; defconfig builds cleanly and boots
+This backport is based on 5.15.173; defconfig builds cleanly and boots
 fine.
 
 Mark.
@@ -189,7 +189,7 @@ index 487381164ff6b..2def9d0dd3ddb 100644
  
  /*
 diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smccc.c
-index db818f9dcb8ee..105cc7d9f4c35 100644
+index 60ccf3e90d7de..0f3437b4c97e7 100644
 --- a/drivers/firmware/smccc/smccc.c
 +++ b/drivers/firmware/smccc/smccc.c
 @@ -16,7 +16,6 @@ static u32 smccc_version = ARM_SMCCC_VERSION_1_0;
@@ -197,21 +197,21 @@ index db818f9dcb8ee..105cc7d9f4c35 100644
  
  bool __ro_after_init smccc_trng_available = false;
 -u64 __ro_after_init smccc_has_sve_hint = false;
- s32 __ro_after_init smccc_soc_id_version = SMCCC_RET_NOT_SUPPORTED;
- s32 __ro_after_init smccc_soc_id_revision = SMCCC_RET_NOT_SUPPORTED;
  
-@@ -28,9 +27,6 @@ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
+ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
+ {
+@@ -24,9 +23,6 @@ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
  	smccc_conduit = conduit;
  
  	smccc_trng_available = smccc_probe_trng();
 -	if (IS_ENABLED(CONFIG_ARM64_SVE) &&
 -	    smccc_version >= ARM_SMCCC_VERSION_1_3)
 -		smccc_has_sve_hint = true;
+ }
  
- 	if ((smccc_version >= ARM_SMCCC_VERSION_1_2) &&
- 	    (smccc_conduit != SMCCC_CONDUIT_NONE)) {
+ enum arm_smccc_conduit arm_smccc_1_1_get_conduit(void)
 diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
-index f196c19f8e55c..2d1d02eac500c 100644
+index 220c8c60e021a..49f66554e4e0b 100644
 --- a/include/linux/arm-smccc.h
 +++ b/include/linux/arm-smccc.h
 @@ -224,8 +224,6 @@ u32 arm_smccc_get_version(void);
@@ -221,9 +221,9 @@ index f196c19f8e55c..2d1d02eac500c 100644
 -extern u64 smccc_has_sve_hint;
 -
  /**
-  * arm_smccc_get_soc_id_version()
-  *
-@@ -323,15 +321,6 @@ struct arm_smccc_quirk {
+  * struct arm_smccc_res - Result from SMC/HVC call
+  * @a0-a3 result values from registers 0 to 3
+@@ -305,15 +303,6 @@ struct arm_smccc_quirk {
  	} state;
  };
  
@@ -239,7 +239,7 @@ index f196c19f8e55c..2d1d02eac500c 100644
  /**
   * __arm_smccc_smc() - make SMC calls
   * @a0-a7: arguments passed in registers 0 to 7
-@@ -399,20 +388,6 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
+@@ -381,20 +370,6 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
  
  #endif
  
@@ -260,7 +260,7 @@ index f196c19f8e55c..2d1d02eac500c 100644
  #define ___count_args(_0, _1, _2, _3, _4, _5, _6, _7, _8, x, ...) x
  
  #define __count_args(...)						\
-@@ -480,7 +455,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
+@@ -462,7 +437,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
  
  #define ___constraints(count)						\
  	: __constraint_read_ ## count					\
@@ -269,7 +269,7 @@ index f196c19f8e55c..2d1d02eac500c 100644
  #define __constraints(count)	___constraints(count)
  
  /*
-@@ -495,8 +470,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
+@@ -477,8 +452,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
  		register unsigned long r2 asm("r2");			\
  		register unsigned long r3 asm("r3"); 			\
  		__declare_args(__count_args(__VA_ARGS__), __VA_ARGS__);	\
