@@ -1,78 +1,52 @@
-Return-Path: <stable+bounces-100179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4BC9E9725
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:34:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5E79E96ED
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:31:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A1A9188F6EE
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:29:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4AB1283133
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DED23315E;
-	Mon,  9 Dec 2024 13:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A734B23313F;
+	Mon,  9 Dec 2024 13:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="nQlHcl2f"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="waLb87vr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-ztdg10021801.me.com (pv50p00im-ztdg10021801.me.com [17.58.6.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB4F35945
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24426233159
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:31:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733750904; cv=none; b=MyqfZgnRahZESpyk/U22A/uvEA8T9KOeYF1iH+RZkul1Z1L1JoYx1C7bTtXs9XKA++8M3aOe0MQXIEjr52u+wRYLO97uZf08cq5veNufYYFNhMSXq6bU+nuFuXwXf11yIpAJ9BzQMJlmZEALPoYEtojmdoTH7UwCm9e5G9vKn+E=
+	t=1733751113; cv=none; b=kgUI4KTpg314BP59P/rzOOuKZqRIpw2hBtW5AzZSlHpaGLYQsOpnj4SOKA/KB+vrINH9yDx/wI9rLDQAJul3dYUjSngO10QZbTNikAHHzuyX7Cpf0tCuYXo4iwE2svA2bbA8daOYPuVjD8Z2CJBxRoMWFgx0EbEDYHg8BrrXLFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733750904; c=relaxed/simple;
-	bh=LdtLkb6g5/mYpUpJpgsKBP9UX9MGU4r33wuzmCaef1k=;
+	s=arc-20240116; t=1733751113; c=relaxed/simple;
+	bh=El/wr9Ta3ApQw+PvEw7H3w6sJeAN0lSE1EQ+VbMkzqc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SbHOhbcg2+ah1lIOlNUom7Gm5R7qja10UaqQRNGyE9d0WDpgigoJuWF4JIxpLeGq1RGsRPv7uc++3Me4pcbdMYePnSa7b/PzpgBKiBJSnPmWynr06IC+fEcqaYw8HVhHqbmHP0zoa3bXnSRN3EOpiIt2z8mrcs3U2gXNNYZaFg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=nQlHcl2f; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3862ca8e0bbso2292383f8f.0
-        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 05:28:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1733750899; x=1734355699; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=El/TOZDLV/Adncw2igrq2Gpvgb3sMBAUyZwK9Lxfyn8=;
-        b=nQlHcl2fX30nw3H+df5FwYFuDnEuQXeiO8VEnOiPRwHdiA1GB2jme0K2vpSjg8Hlu1
-         fAWf7Tf1Bm93maXY7Bz3XgRl8nwJ+lNcYDNMuv3pLsfOLUOGIMD+o1vqM/pivWCd0nYM
-         IMdNg1kZBPf/Fa8ArUsTrQAm1s38xN0UHf2GzG7cEfG+T/SwU60OZamOk7sjrr5Bg6du
-         CASaQtghB2Ys+NEW1dk0ClSPgHYqOuunmS1b0XkZEM25vWLWfcScKGw2ijCQKwh/oFwg
-         s4+75N3P3E4agEaXGu+/frPpM5LZMsnFoKSd9QRQ0dspvcxIHIR4y7cPy+7Eye5xZQKR
-         gxOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733750899; x=1734355699;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=El/TOZDLV/Adncw2igrq2Gpvgb3sMBAUyZwK9Lxfyn8=;
-        b=nS8w/a0B44j1VVNHI08VPHVPo/xy1zkbC2CPoJ/m6wpXTKBNSzwVYejPujhALYv4jC
-         GkcNWT9h8MZIcAJ4GeV3LpmBPmiOsY+/NBdhzBqCSQTrWJnxji4lMzOKYBY/10pZyW3K
-         SSzoYxmdMAvmC0UQL1nT6qb92S3WNuKNUPL5x2Jk22bEjRHxPTWIXprwBAQ/J+oFhuWV
-         fpsRvl4xbtcK1nnT1itZdIo+eztlEHEVpVpR3+ennE8iXq83UqdYxgu97wDtl6PrBRrM
-         SPK921J5I0RLRP+pOdIIpsQ+OCeYNgXpnO67Htczr9Y+cwK9dN+VUsQHaCew0fnmioDK
-         ke4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWLUuyoTkHtSioLchipHdR/WSO/X6qjLv4mDwGO+5ptyM6F8wlwm0l9oiPhgUUFeNgQUEUsVNc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyL1WofYGUHrR+cd7x3sMzfEluSvYuo8baNbrgWlpxtltW0L1Aq
-	uPLdLBAF8toF0LJV1cR3xDxM3GroQHuZWXp9ZSPiV4Ir7s5xatlWrAASomCV5UA=
-X-Gm-Gg: ASbGnctgSqm2SjGSE//D37BYYH2awDkg6wrCDypFK7TT6N+l0wTzulC7QRXq4/zThew
-	QcF2ADXwNqvba8O2VUDFDFWtSKw4TGhXtPd7Hze4gWfbu/IJtIDRiQpAOJC3kO0JV8iamQhPUQP
-	UMa1Zk6lMUjJdqCmwOxgdLbbLF6JDVU1Qbk3LHMhkNUpljSgGsp4lie1WxNQU9onxx8v0oC6Pox
-	mtjX3cd0E0qyCvV3YC4RA5/ve72v9fvRmRgRPx2KJxGcppTxQRicZBsjD8=
-X-Google-Smtp-Source: AGHT+IHd1DkHzh1NVNjC22X5kRB98anOoYPZpCUeVEirns6S3aaWq7ub1ihZAzLS2qCt8RPK8fYhhg==
-X-Received: by 2002:a05:6000:1868:b0:385:fd24:3317 with SMTP id ffacd0b85a97d-386453cf868mr528412f8f.1.1733750899061;
-        Mon, 09 Dec 2024 05:28:19 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.161])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa67f4c4ae4sm214590966b.111.2024.12.09.05.28.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Dec 2024 05:28:18 -0800 (PST)
-Message-ID: <c65b8dd7-86e9-4a87-b9ec-bcbaae6dbe98@tuxon.dev>
-Date: Mon, 9 Dec 2024 15:28:14 +0200
+	 In-Reply-To:Content-Type; b=NiL6hgLsWhQLTpr72ysP880HrAvxIAm+xR5H0qt6ATOP5KkbUcTZbVHv6HUfDGo0d4LYIYxEZg+QzTqhuJmrjwmSf3oC/JkPnyAgbADGi3pPz/WjjS7RLv50hJlY6dzs6mkroFWm2MkpexrSoh7BumFo6MYLL6k6Fw0rkxcDM5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=waLb87vr; arc=none smtp.client-ip=17.58.6.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1733751111;
+	bh=tUv/yFFQ6zZdPdRgc4vW/Me53Bsusj+0dw280df3j9I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
+	 x-icloud-hme;
+	b=waLb87vrYBWTOA7QhavjaZBhJ6KykKoDkVygv1FZwPztRi8fV0uyItDRUloCgOTJ1
+	 4OUrP3TjaPcgYCgSLDHboTA0TpS9gogTKNNrPlIPxMisWGsyhqC+67Afj/uTCNkHB9
+	 dxpmgEFvQassyZCBCd0CNcqyz506a1B1m7AW5lV7OgomAoSgHNkToymwRphpW4Z/uU
+	 WiYnl2rJKEMvLnpzB/5EHb4fo+VTrNnHP2Un7HO/RzNGQ8+P8H3BB0030lZNzhj96K
+	 NUp+4sjOTx/uhsAihbsLcbPazxKQmSjJjX/0YuhMjbPBwNhyZTo2fQGghEmkwdnzn8
+	 jAJ1rNO2gkN3Q==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10021801.me.com (Postfix) with ESMTPSA id 5BC912010195;
+	Mon,  9 Dec 2024 13:31:44 +0000 (UTC)
+Message-ID: <8e96f2d7-8ad1-47c9-ba12-49761edb8600@icloud.com>
+Date: Mon, 9 Dec 2024 21:31:37 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,160 +54,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/25] ASoC: renesas: rz-ssi: Terminate all the DMA
- transactions
+Subject: Re: [PATCH 01/10] of: Fix alias name length calculating error in API
+ of_find_node_opts_by_path()
+To: Rob Herring <robh@kernel.org>
+Cc: Saravana Kannan <saravanak@google.com>,
+ Leif Lindholm <leif.lindholm@linaro.org>,
+ Stephen Boyd <stephen.boyd@linaro.org>, Maxime Ripard <mripard@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Grant Likely
+ <grant.likely@secretlab.ca>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
+ stable@vger.kernel.org
+References: <20241206-of_core_fix-v1-0-dc28ed56bec3@quicinc.com>
+ <20241206-of_core_fix-v1-1-dc28ed56bec3@quicinc.com>
+ <CAL_JsqK1gsVeCG29RzWMFycbASAGAsds34Utuoq+Egw3-Afi7g@mail.gmail.com>
 Content-Language: en-US
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, biju.das.jz@bp.renesas.com,
- prabhakar.mahadev-lad.rj@bp.renesas.com, lgirdwood@gmail.com,
- broonie@kernel.org, magnus.damm@gmail.com, linus.walleij@linaro.org,
- perex@perex.cz, tiwai@suse.com, p.zabel@pengutronix.de,
- linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-gpio@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
-References: <20241113133540.2005850-1-claudiu.beznea.uj@bp.renesas.com>
- <20241113133540.2005850-7-claudiu.beznea.uj@bp.renesas.com>
- <CAMuHMdUa9GnzOMOBhpQcX88Yy2qvgKmKMdeEwEVo-OXgr-3SMg@mail.gmail.com>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <CAMuHMdUa9GnzOMOBhpQcX88Yy2qvgKmKMdeEwEVo-OXgr-3SMg@mail.gmail.com>
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <CAL_JsqK1gsVeCG29RzWMFycbASAGAsds34Utuoq+Egw3-Afi7g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: Ffe_gFMUaHt6leimceiHP24n7MdknpME
+X-Proofpoint-GUID: Ffe_gFMUaHt6leimceiHP24n7MdknpME
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-09_10,2024-12-09_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 bulkscore=0 adultscore=0
+ mlxscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2412090106
 
-Hi, Geert,
-
-On 09.12.2024 15:15, Geert Uytterhoeven wrote:
-> Hi Claudiu,
+On 2024/12/9 21:24, Rob Herring wrote:
+> On Thu, Dec 5, 2024 at 6:53 PM Zijun Hu <zijun_hu@icloud.com> wrote:
+>>
+>> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>>
+>> Alias name length calculated by of_find_node_opts_by_path() is wrong as
+>> explained below:
+>>
+>> Take "alias/serial@llc500:115200n8" as its @patch argument for an example
+>>       ^    ^             ^
+>>       0    5             19
+>>
+>> The right length of alias 'alias' is 5, but the API results in 19 which is
+>> obvious wrong.
+>>
+>> The wrong length will cause finding device node failure for such paths.
+>> Fix by using index of either '/' or ':' as the length who comes earlier.
 > 
-> On Wed, Nov 13, 2024 at 2:35 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> Can you add a test case in the unittest for this.
+
+sure. let me try to do it.
+
+> 
 >>
->> In case of full duplex the 1st closed stream doesn't benefit from the
->> dmaengine_terminate_async(). Call it after the companion stream is
->> closed.
->>
->> Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
+>> Fixes: 106937e8ccdc ("of: fix handling of '/' in options for of_find_node_by_path()")
 >> Cc: stable@vger.kernel.org
->> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
->> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> 
-> Thanks for your patch!
-> 
->> Changes in v3:
->> - collected tags
->> - use proper fixes commit SHA1 and description
-> 
-> I am not sure which one is the correct one: the above, or commit> 26ac471c5354583c ("ASoC: sh: rz-ssi: Add SSI DMAC support")...
-
-IIRC, I had this one on the previous version but in the review process it
-has been proposed to used 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex
-support"). I think 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex
-support") is the right one as the issue is related to full duplex.
-
-
-> 
->> --- a/sound/soc/renesas/rz-ssi.c
->> +++ b/sound/soc/renesas/rz-ssi.c
->> @@ -415,8 +415,12 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
->>         rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
+>> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+>> ---
+>>  drivers/of/base.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
 >>
->>         /* Cancel all remaining DMA transactions */
->> -       if (rz_ssi_is_dma_enabled(ssi))
->> -               dmaengine_terminate_async(strm->dma_ch);
->> +       if (rz_ssi_is_dma_enabled(ssi)) {
->> +               if (ssi->playback.dma_ch)
->> +                       dmaengine_terminate_async(ssi->playback.dma_ch);
->> +               if (ssi->capture.dma_ch)
->> +                       dmaengine_terminate_async(ssi->capture.dma_ch);
->> +       }
-> 
-> rz_ssi_stop() is called twice: once for capture, and a second time for
-> playback. How come that doesn't stop both?
-
-It is called from this path:
-
-static int rz_ssi_dai_trigger(struct snd_pcm_substream *substream, int cmd,
-
-                              struct snd_soc_dai *dai)
-
-{
-
-        // ...
-        case SNDRV_PCM_TRIGGER_STOP:
-
-                rz_ssi_stop(ssi, strm);
-
-                rz_ssi_stream_quit(ssi, strm);
-
-
-        // ...
-}
-
-rz_ssi_stop() is as follow:
-
-static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
-
-{
-
-        strm->running = 0;
-
-
-
-        if (rz_ssi_is_stream_running(&ssi->playback) ||
-
-            rz_ssi_is_stream_running(&ssi->capture))
-
-                return 0;
-
-        // ...
-}
-
-rz_ssi_is_stream_running() is as follows:
-
-static inline bool rz_ssi_is_stream_running(struct rz_ssi_stream *strm)
-
-{
-
-        return strm->substream && strm->running;
-
-}
-
-
-The strm->substream is set to NULL in:
-
-static void rz_ssi_stream_quit(struct rz_ssi_priv *ssi,
-
-                               struct rz_ssi_stream *strm)
-
-{
-
-        struct snd_soc_dai *dai = rz_ssi_get_dai(strm->substream);
-
-
-
-        rz_ssi_set_substream(strm, NULL);
-
-
-        // ...
-}
-
-Thus, when the 1st full duplex stream is closed, as the companion stream is
-still running it doesn't benefit from dmaengine_terminate_async().
-
-I'll update the commit description in the next version.
-
-Thank you for your review,
-Claudiu
-
-> Perhaps the checks at the top of rz_ssi_stop() are not correct?
-> Disclaimer: I am no sound expert, so I may be missing something...
-> 
+>> diff --git a/drivers/of/base.c b/drivers/of/base.c
+>> index 7dc394255a0a14cd1aed02ec79c2f787a222b44c..9a9313183d1f1b61918fe7e6fa80c2726b099a1c 100644
+>> --- a/drivers/of/base.c
+>> +++ b/drivers/of/base.c
+>> @@ -893,10 +893,10 @@ struct device_node *of_find_node_opts_by_path(const char *path, const char **opt
+>>         /* The path could begin with an alias */
+>>         if (*path != '/') {
+>>                 int len;
+>> -               const char *p = separator;
+>> +               const char *p = strchrnul(path, '/');
 >>
->>         rz_ssi_set_idle(ssi);
-> 
-> Gr{oetje,eeting}s,
-> 
->                         Geert
-> 
+>> -               if (!p)
+>> -                       p = strchrnul(path, '/');
+>> +               if (separator && separator < p)
+>> +                       p = separator;
+>>                 len = p - path;
+>>
+>>                 /* of_aliases must not be NULL */
+>>
+>> --
+>> 2.34.1
+>>
+
 
