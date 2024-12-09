@@ -1,78 +1,79 @@
-Return-Path: <stable+bounces-100156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82D79E92BE
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 12:50:41 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAA19E92C4
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 12:51:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADC461885160
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 11:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEB6528228E
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 11:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE6D2206A1;
-	Mon,  9 Dec 2024 11:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8FB22145C;
+	Mon,  9 Dec 2024 11:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mOs4K6WK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fQIEc8bu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7993721D008
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 11:50:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340DF21D008
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 11:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733745036; cv=none; b=nMi/1IlgtBOZPL1aAmQedF+njVnzay+O/nURHapZ4Kj3gP1/rYszvQQ/XHCHQsfIUSk1z3CYZbOqWow66E7Af13+59VZ3Tgys8R4wWyO2X/rob7lZ+ohpUX7iZCPDpRX8oxwWsqGz2YHKd4Wo6eAh55e4hJgz7h8t0kj8ssf17A=
+	t=1733745063; cv=none; b=G1lYL7cHvb/lo1A+XOrxm7nTxrC7tnjGWbkNn338ZTdicQ6zpWzP+FLqRXBAWJjBnD/RE2Jd4rfWL4tYQqrowbmykrv4wdCanWuwc1/pkacEEWMSMslGm6+rLqfSwLAvkdRlXPile99jYXd50u+aQ1JJC9R7eDWUFQpRIpA8ric=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733745036; c=relaxed/simple;
-	bh=tRg2JG4yWbf9I5B7TpSxC1gfaa7C/jgTm+c+epd0rvA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=n1pgTgeR7r3TOL+CmWqMNQan1ajGflvcMn5g5ObziAzl2UFkaAQ8WA863Fd0JxmVMVV4fSIYPlkVmuHjAdDoqpE1L7CzkxPfa30QHfdmbE1+/KnhImBGQpV+0pzVBoGkyoeWFVVeG9eUrAoO5Tn+IIIbOsEdie/bpMo9ydkrd5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mOs4K6WK; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1733745063; c=relaxed/simple;
+	bh=hDXV/1bil5Sbip3JdzwU/CVIebPwMcuyT26X0OLgQOY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=I45HBTHezusEqlOfhgT+74e0YQyacPWBtbIg+2LYgAuBsIb4SgoXXvPiGUjtL3HLpGPUhqIOTmyMKaT9AGB23yTMj9oyXEoAioWUxScMlxYIlmmX1Z0hjxaDun7mOVC9F0/RsFCOe0KnmVzEnQ+4pmPr+0En9GPsuRvfflM7tzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fQIEc8bu; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa69077b93fso69013566b.0
-        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 03:50:34 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d3f57582a2so1781850a12.1
+        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 03:51:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733745033; x=1734349833; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1733745059; x=1734349859; darn=vger.kernel.org;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ATPIw4OMF8nAB/PeB65ti7ZSBIJFQfds55Da014vBnU=;
-        b=mOs4K6WKK77THOpTqSZkDQl/Lz7kzvtwMEefQqMLcsjL0jIS51b/9EvcepX6bRhNlB
-         eC6StCJY+QPzu4LQ0kydcf4uWs927Cj5R0ZELooduYc5wrcB83OVgD2tXxPnJ9aQUw2i
-         bYYz5aakyduHFT9CaWN9QM7YQs8V0hzjAkMGrp6EwHkYHMJ0nKHJq6h/fFKJCuFOPf8y
-         uB+/hEHSnzzZd7ZRbiz2SCZOEryyI5iSLIJyB4Jq2SWCUfjXhncIgoWFBD2Bgiu3inj/
-         XvMgPkDCcTZDLiheGa3TbIO2sj6bGmQBjHTIT3GOz08vfHiGIeSbIEvBC6XNwa+UpA9s
-         m92w==
+        bh=2UThATHBfgQMuZzXlZec1zi4mZkLBkE7/Lnp3OOskfs=;
+        b=fQIEc8buKOQ8JDqnJ8j62KqSJOUFvRDl00KSs3bX5Lz7Mmh45Y/FoAtLSN4uMHwof5
+         IbDXVzri46JHO49Cks5v46pQ3QxIJ8nlRckwBkpWRi5XJLiJBvd5ohJCP/ixd/YrhE0q
+         q9H6qhAb+GMApoWyFiZ8oNsC0IXTWyYvMDWjRjBd3tzxZFrLVh6CLoDuNtL3V/pQ1E7M
+         11YhNu9wQmf9ZWDWvpl/6JH+wqCNE0McUDgU0VJrxe2v9AflRCVqziHMpCP/AEdSnOmO
+         Jfx7OkKeWXXOOYg/9XfGJPhGZ2I2sNDeFgC2g+vN4xmPCwYq7weXYvJ32bUhuBXF7ARz
+         DkUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733745033; x=1734349833;
+        d=1e100.net; s=20230601; t=1733745059; x=1734349859;
         h=cc:to:message-id:content-transfer-encoding:mime-version:subject
          :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ATPIw4OMF8nAB/PeB65ti7ZSBIJFQfds55Da014vBnU=;
-        b=WXzsqlo7LzinrauTHF7sk8ekrg0F3zhpi8u5Q8aw2VS7NNtuNU/eoNFfUEV7P4RVGQ
-         O0T4Z7O0asxxj9j6xePzq2bcI67KzvWxtZL+zPSI3RSgds/yRA9EMnUDS85mSlmmpQLf
-         lM6jfio9diW2SIuWOIIxmohJ69hKm0r1B4CEFbuCvFXZEDymsxPXaaDDFq8rhi1aT4am
-         aJ6WgjWfycmPp7Efda5ymNpJyDiFAnaXSrBFDtJnYIeXHoGmDl5pihPQ4aJA03kp7VII
-         WudhtIgZPo2AdbgjKSTzFgMn1AgO64F/AhVdy45IlxJs4T3mGGbeiWMAvA1G9GXJG2t+
-         2+Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvdhsqfs+I42azfDv7k1PGSOduOCi0YreHNy32W7HXuocOPxMAvTdnpXuz+iyGwJ7kSDX+UeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdKvjk8S5+b+XoPh3u2tCQ4WV1jLABQ/AYEfk/X5HiiwlpqP/8
-	+nyDa8FkLGvRFpeO3rTaUYaF8qUoVHXuONcFv2dPGTIHrKW5MZwlSbEq7toY/uE=
-X-Gm-Gg: ASbGncvl2UzlG+hUgeSq+tkf7EMVNz74WfxY0APdlJBgEnh9lsf9e45xnM2xYQRYL2l
-	d3szcqRIUcZsVZNJsBXelx2S0bxVzfZXnQIfPRJ/ZjXpWvny1vJGuH/ayYZdDQtYnpzQfGNBG1D
-	9n3AWw81JzBryOLAFglG5P0atNvzW5MelyZztZNDHSxcIUjaJCT47a0KJj4KBAnR95ddOlPAGvU
-	48ot4fTzxgdg0cYpj45WQAksghfkbH7I8UyftHAOsGJ/a+YUgsQTC3A3n1SyekBIt57opCBn5we
-	rBu4fGMxC26B5i+hUH6050nchsHb6eB3Bg==
-X-Google-Smtp-Source: AGHT+IFO2lGH9JL+bzO4sp55jHNpx9YcfkNNqxmiJ5WgXHLLHG24iRvDXE2YESPMaen0HctcojXtcg==
-X-Received: by 2002:a17:906:3cb1:b0:aa6:7df0:b17a with SMTP id a640c23a62f3a-aa67df0b300mr315812866b.34.1733745032872;
-        Mon, 09 Dec 2024 03:50:32 -0800 (PST)
+        bh=2UThATHBfgQMuZzXlZec1zi4mZkLBkE7/Lnp3OOskfs=;
+        b=FjYQWfL4PUl2OEQFhgFfa4AvzjbmBCDyXS7Q8DILO9SGJfz+KRs3F3HC35CVXI4xdG
+         xCNVaX2om/R9y8CRLNeGMol7Kk8xuj+gM40Bk8BghfmRxeTLXC+HNPnto3PBZX3BMLkF
+         +D9POCiLQpgUP5B+FHN9lU8rPOaLer/uzTJR+oelB5WlIOnswGlrHTKwaACBPZxDkgOV
+         qlfcTjtrqFDDiwkVyXZrxCiS/+5BWZFukUeLklNwbwAX2m0ROgeEz3s6oJcjQeFZPCqV
+         lixzxs/wtejx6hJ5P+N/c/4oEonk/VuCvnflcoj6tkSDMC42/dDGSu5jV9Rc1AbIV3yg
+         jv/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUEIMgm1u+jJzbamSEwyEF2PxoR+60abTeHq7SlNEv0Oy4ifI3u4Yvwb8wZh94h6em5WDAbM9s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL2f9qImWQPngrJr4q+GZsa9ZvIdp545XlTkYHfRYozMWMTcLs
+	cznelrvKnEBUL0hbxYoKVTLUfEEBpf464wEOY8gmcnZh0x6kAmM/sMb8f5KnPJ0=
+X-Gm-Gg: ASbGnctLwJWSB2bN+hhF8tEIwMvzkdyYOJMlZs/USAgSFoMuSKzTQCLGSQhU52wC8CV
+	1YpJ/I63NXDomz00eoxpJizLZPJOzei+RJPgTdwxRtD9+Wxer5KmRIdX3lvLfwIpvdtCH0dMzgC
+	IMdEGNVjVrlFY6Y2ZfDKTt2eRljo6I6JwT9xIsSKEwwH4ePiSeywhzlq9QWXF5a7OTM9ZaZ/TjJ
+	93PcaOWgq+pDfwI5oOoc3xcKDCIHAgsMQ6ZR9Ac4Ux3MuEwMzlDW6nOAEjJ/+SQr3ogzmgUOz7A
+	cXZ+dGHH9fLr2nPOZkqZxVJGuign844biA==
+X-Google-Smtp-Source: AGHT+IHT9zX4Tl6UkHikg9SBri7nnosBVvDw7I1G5fIqMYEisRPhgHI6J/Nc3IpufiZgaCPRxuXJGQ==
+X-Received: by 2002:a17:906:2181:b0:aa6:86d1:c3f0 with SMTP id a640c23a62f3a-aa686d1f281mr342181766b.8.1733745059541;
+        Mon, 09 Dec 2024 03:50:59 -0800 (PST)
 Received: from puffmais.c.googlers.com (64.227.90.34.bc.googleusercontent.com. [34.90.227.64])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa66d479963sm301854966b.106.2024.12.09.03.50.32
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa695c3ac07sm64169866b.66.2024.12.09.03.50.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 03:50:32 -0800 (PST)
+        Mon, 09 Dec 2024 03:50:59 -0800 (PST)
 From: =?utf-8?q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Date: Mon, 09 Dec 2024 11:49:53 +0000
-Subject: [PATCH v2] usb: dwc3: gadget: fix writing NYET threshold
+Date: Mon, 09 Dec 2024 11:50:57 +0000
+Subject: [PATCH for stable 5.4 v2] usb: dwc3: gadget: fix writing NYET
+ threshold
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,10 +82,10 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241209-dwc3-nyet-fix-v2-1-02755683345b@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAGDZVmcC/3WMSw7CIBQAr9K8tc8ARVBX3sN0Ufm0LzFgoEGbh
- ruL3bucSWY2yC6Ry3DtNkiuUKYYGohDB2Yew+SQbGMQTEgumEL7Nj2G1S3o6YOanU9eWc0tk9C
- aV3JN77/70HimvMS07vvCf/bfqXDkKC79w2jplZT+9qQwpniMaYKh1voFKFSnUasAAAA=
+Message-Id: <20241209-dwc3-nyet-fix-5-4-v2-1-66a67836ae70@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAKDZVmcC/x2MQQqEMAwAv1JyNqLdqNSviIeqUQNSpS3qIv59y
+ x6HYeaBwF44QKse8HxKkN0l0JmCcbVuYZQpMehCU6kLg9M1ftB9OeIsN1ZIaImbeiiNMVRD6g7
+ PSf2fHcy7VyHaYWNV5QT9+/4AuLmLdnMAAAA=
 To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -105,27 +106,22 @@ the desired outcome.
 Do so.
 
 Fixes: 80caf7d21adc ("usb: dwc3: add lpm erratum support")
-Cc: stable@vger.kernel.org # 5.10+ (needs adjustment for 5.4)
+Cc: stable@vger.kernel.org # 5.4 (needs adjustment for 5.10+)
 Signed-off-by: André Draszik <andre.draszik@linaro.org>
 ---
-Changes in v2:
-- change mask definitions to be consistent with other masks (Thinh)
-- udpate commit message to clarify that in some cases the reset value
-  is != 0
-- Link to v1: https://lore.kernel.org/r/20241206-dwc3-nyet-fix-v1-1-293bc74f644f@linaro.org
----
-For stable-5.4, the if() test is slightly different, so a separate
-patch will be sent for it for the patch to apply.
+* has been marked as v2, to be in line with the 5.10+ patch
+* for stable-5.10+, the if() test is slightly different, so a separate
+  patch has been sent for it for the patch to apply.
 ---
  drivers/usb/dwc3/core.h   | 1 +
  drivers/usb/dwc3/gadget.c | 4 +++-
  2 files changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index ee73789326bc..f11570c8ffd0 100644
+index 34f3fbba391b..e9835a1a8842 100644
 --- a/drivers/usb/dwc3/core.h
 +++ b/drivers/usb/dwc3/core.h
-@@ -464,6 +464,7 @@
+@@ -413,6 +413,7 @@
  #define DWC3_DCTL_TRGTULST_SS_INACT	(DWC3_DCTL_TRGTULST(6))
  
  /* These apply for core versions 1.94a and later */
@@ -134,25 +130,25 @@ index ee73789326bc..f11570c8ffd0 100644
  
  #define DWC3_DCTL_KEEP_CONNECT		BIT(19)
 diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 83dc7304d701..31a654c6f15b 100644
+index ecb79156351f..e40cba594ba1 100644
 --- a/drivers/usb/dwc3/gadget.c
 +++ b/drivers/usb/dwc3/gadget.c
-@@ -4195,8 +4195,10 @@ static void dwc3_gadget_conndone_interrupt(struct dwc3 *dwc)
- 		WARN_ONCE(DWC3_VER_IS_PRIOR(DWC3, 240A) && dwc->has_lpm_erratum,
+@@ -3273,8 +3273,10 @@ static void dwc3_gadget_conndone_interrupt(struct dwc3 *dwc)
+ 				&& dwc->has_lpm_erratum,
  				"LPM Erratum not available on dwc3 revisions < 2.40a\n");
  
--		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A))
-+		if (dwc->has_lpm_erratum && !DWC3_VER_IS_PRIOR(DWC3, 240A)) {
+-		if (dwc->has_lpm_erratum && dwc->revision >= DWC3_REVISION_240A)
++		if (dwc->has_lpm_erratum && dwc->revision >= DWC3_REVISION_240A) {
 +			reg &= ~DWC3_DCTL_NYET_THRES_MASK;
  			reg |= DWC3_DCTL_NYET_THRES(dwc->lpm_nyet_threshold);
 +		}
  
- 		dwc3_gadget_dctl_write_safe(dwc, reg);
+ 		dwc3_writel(dwc->regs, DWC3_DCTL, reg);
  	} else {
 
 ---
-base-commit: c245a7a79602ccbee780c004c1e4abcda66aec32
-change-id: 20241206-dwc3-nyet-fix-7085f6d71d04
+base-commit: cd5b619ac41b6b1a8167380ca6655df7ccf5b5eb
+change-id: 20241209-dwc3-nyet-fix-5-4-a4e76b199946
 
 Best regards,
 -- 
