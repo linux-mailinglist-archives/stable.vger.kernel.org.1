@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-100085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD2B9E88CA
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 01:57:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E559E88CE
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 02:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0241883DB9
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 00:57:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8B111638AE
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 01:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65268C8DF;
-	Mon,  9 Dec 2024 00:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBD9F4F1;
+	Mon,  9 Dec 2024 01:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KmWQtzYm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxgtJdjm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251FB38F83
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 00:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19544BA3D
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 01:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733705865; cv=none; b=qxqr1kxRuKdOYcwwuvkptPgC9bFvbX89MoBaFyyLQmb20pNK5VD4K0Nt/ew/uC/YtZ8naKdcF52pYrkd/qIfXHdHWAzZ8lYgiO5QUYuwZV8mnvWi96WdyAmwGiQitEoc8qlynX3g+IPDKsNmx87az83O6Po7NlmareXy65Ih35s=
+	t=1733706135; cv=none; b=Q/ngtgR/EzVojmuTOmcWtCPdiJNXQuyNXZU2PC5gDFPiZd58Q0tB3cuIvRNlswHidNKUTHVV1j8NwbdLVlkWBYwsWvb1TdH9W0qh436arldz4uYvZp0XJKRiRvuH0aQySUhcM4hGYr8SgEF6s2IsvWEMUJ++lsGbSzDpV1Yr5Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733705865; c=relaxed/simple;
-	bh=QvSrg+dsZlejdRg2V6nKnmIV2qvtzbJA4VA/yiC03kc=;
+	s=arc-20240116; t=1733706135; c=relaxed/simple;
+	bh=Oitb2wArj09p/H6160f7SI9ohqC/bnw8VukNLlKE45I=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SdYY0sF8J6AXQWGvIRTOIWRxMjNNvJcSGS1meNS86rCv1lwLd2p1/XeMg51hCLIFzPoOrEja3NQew8oXKSBxMsyfTSb6wH5Y1cycicQqhXjZsGk7MOrQGk6hTwhNILGEtBU1CBAURBczjGCWAsA3uJdOMlSwnCmTTnbsmG40zD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KmWQtzYm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EB7C4CED6
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 00:57:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LtqjuIn3E2wCvGR/qaIr4ZHPXvoHAlVunEV2hIEd5KCA35E2I7sF2lRlDgrqhWGVu3kz86H4JW2ZlrEAzl/2YT04/H9NITeYNYzqvAfVduwVcz/R3Ms+5PUZPlXc7NqZhRLYphj/yxVtWqkVTlpDEP0Vc81Hpb2vwdaayfReMtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxgtJdjm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79031C4CED2
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 01:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733705864;
-	bh=QvSrg+dsZlejdRg2V6nKnmIV2qvtzbJA4VA/yiC03kc=;
+	s=k20201202; t=1733706134;
+	bh=Oitb2wArj09p/H6160f7SI9ohqC/bnw8VukNLlKE45I=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=KmWQtzYmFyw7l2TBzt5ljgk+Xfkl8Op0RhxvwfQH8w/Mswcvso6UWh+/Thil3mKQX
-	 a5AGMKY0ivzGlJBQ8ZlmdAUUjIKmY5mih6QiWLV+LYYY+5XnDycq3r2/PejJRHnb5b
-	 +k9ZbyCXq5mOYWt68BVUxgsgGBSDEYMdK3ArgnU3pLLK3halQBv3hwTblgySa5JKIF
-	 H8dRCS1pTczEerc1JUvtg/Up2e3/kA1lLXKn2fpY7EJkE1e0yK8yggJ4RBEXb6iHRb
-	 u6P+H2lMm/oEK/Jivyjnc3TIHEJVqwtTGKRPjakPy4gMMCdLzpySCpDUiCv0UlrwAU
-	 1FIV2DyzROFHQ==
+	b=WxgtJdjmVLhN+5ddOeygDXfiwMCoC0Z2nbU7cwxxgfp1NN5jBSqhB5b+IH/YJ16Et
+	 LSS9PMBP70Pf11TuVydcLMFR7/J4YEq+oa5JZtSafyjfFBnntys+ykQHUBjR0/WHU6
+	 fTiPx5aRsOlK7yoMHDGi34HB5FKY89/QLHJ8EBYjO0G1issKcZmVMO6+fZB5Bz4w83
+	 ibiJ1dh56G6elqIQP5FqK4DwfcBvnuLKY2kMHgQ7zCTHwvGlTgkOtDpr9vlD20Rdv7
+	 NSTk9T7Og2yEp0xui6USIUy0LPSYXuCd6uERnXthz8wkNOaA84scIlMl4ZHU5ivELa
+	 k7YHr5w3HOBqA==
 From: Damien Le Moal <dlemoal@kernel.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.10.y] PCI: rockchip-ep: Fix address translation unit programming
-Date: Mon,  9 Dec 2024 09:57:21 +0900
-Message-ID: <20241209005721.599249-1-dlemoal@kernel.org>
+Subject: [PATCH 5.4.y] PCI: rockchip-ep: Fix address translation unit programming
+Date: Mon,  9 Dec 2024 10:01:51 +0900
+Message-ID: <20241209010151.631762-1-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <2024120621-scoreless-reword-f512@gregkh>
-References: <2024120621-scoreless-reword-f512@gregkh>
+In-Reply-To: <2024120622-undusted-antitrust-7300@gregkh>
+References: <2024120622-undusted-antitrust-7300@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,10 +101,10 @@ Cc: stable@vger.kernel.org
  2 files changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/pci/controller/pcie-rockchip-ep.c b/drivers/pci/controller/pcie-rockchip-ep.c
-index d1b72b704c31..77a2b9700aa9 100644
+index 8f2886ed89d1..8fc8848311ab 100644
 --- a/drivers/pci/controller/pcie-rockchip-ep.c
 +++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -67,18 +67,26 @@ static void rockchip_pcie_clear_ep_ob_atu(struct rockchip_pcie *rockchip,
+@@ -66,18 +66,26 @@ static void rockchip_pcie_clear_ep_ob_atu(struct rockchip_pcie *rockchip,
  			    ROCKCHIP_PCIE_AT_OB_REGION_CPU_ADDR1(region));
  }
  
@@ -137,7 +137,7 @@ index d1b72b704c31..77a2b9700aa9 100644
  	cpu_addr -= rockchip->mem_res->start;
  	addr0 = ((is_nor_msg ? 0x10 : (num_pass_bits - 1)) &
 diff --git a/drivers/pci/controller/pcie-rockchip.h b/drivers/pci/controller/pcie-rockchip.h
-index 76a5f96bfd0a..de78a3091b6a 100644
+index 1c45b3c32151..de24b0488e0b 100644
 --- a/drivers/pci/controller/pcie-rockchip.h
 +++ b/drivers/pci/controller/pcie-rockchip.h
 @@ -241,6 +241,10 @@
