@@ -1,285 +1,139 @@
-Return-Path: <stable+bounces-100184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D8C9E97B4
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:49:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2969E9894
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 15:18:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30552165C1D
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:48:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C31A2283019
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D9F1ACED2;
-	Mon,  9 Dec 2024 13:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D731ACEA3;
+	Mon,  9 Dec 2024 14:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="czuJDqZa"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE401E9B3E
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C246B1798F;
+	Mon,  9 Dec 2024 14:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733751972; cv=none; b=FuFKA9P8JJbpiN8LnyR5QLotonDGp5gKQP1u2KwqF8XyCeCIcEcO1h0Y8UW688YK4bsV6Une5a3ZqhVOqd7s2dIepdcMXB29V0MajeTarseyxr8p7aPON5o/sraLrKRUvg7/Q3tI7//KjZBpIcjKwj4CBou72A1hmZgHvVmKhps=
+	t=1733753926; cv=none; b=WNWA5xaR0HHNx/6oq0ztXfBY+i6iuNB5BIrvBnzsZwHqKLrDharUNCLwrhPxKSteK0eCkY5zTN/f7Shzfdy36FdSI6U/PbMKIUfjztMCpw06gFkBJWZ/La6QlrytwWetgjeDa762KfLoLC92UKvv2q4+kOfIgi0wQH/ZYFNJxS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733751972; c=relaxed/simple;
-	bh=qGPwGZ+UsiOTdf+HoSdnLhNsFKRb2k8G6k1RAZUsDfo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Tl6PT1sYbD+0xO3fZClSvnuw2TkgZ8ODQGHe6Sibfq6d3/DXQbQpkwo1pvPNN+6zDqXDcQnKbrzzwjkeu6NR4iEhH8VpnPfW5w3Cg8Lr6AM4d63Nox2z4fwiq+G7+V3lxi26WHqQ91B2XgEV+A4215UKWNviqr1vwizCBshCwv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BFAC113E;
-	Mon,  9 Dec 2024 05:46:36 -0800 (PST)
-Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 70E813F720;
-	Mon,  9 Dec 2024 05:46:07 -0800 (PST)
-From: Mark Rutland <mark.rutland@arm.com>
-To: stable@vger.kernel.org
-Cc: ardb@kernel.org,
-	broonie@kernel.org,
-	catalin.marinas@arm.com,
-	mark.rutland@arm.com,
-	maz@kernel.org,
-	will@kernel.org
-Subject: [PATCH 5.15.y] arm64: smccc: Remove broken support for SMCCCv1.3 SVE discard hint
-Date: Mon,  9 Dec 2024 13:46:02 +0000
-Message-Id: <20241209134602.2088353-1-mark.rutland@arm.com>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1733753926; c=relaxed/simple;
+	bh=8FsLJNnBvkyb0aie8QpxEfYPGhWI0ZQ/I6okIqIV6dc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HqTxSnv/YbJ5hktPWR1PeeWADBHj2oeQQC7VQCxuvVqFRxWBjovrgLh9wEWrNefKxUr2DKrIBTymZMvZh0LRMhl8TLyCdjJy7oQHV8wp6Tk9iss91EKskAcYVdCXmcy9kSk2mGJDCvbW6si+pUnRQOazMHTa7wGqYR+ztxm6m9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=czuJDqZa; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3862df95f92so2257241f8f.2;
+        Mon, 09 Dec 2024 06:18:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733753923; x=1734358723; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uqQ7Av76sCQ67PddSXj4+y1Hwv1xMZkPsZ7ivaLRViI=;
+        b=czuJDqZa8HdHq8zEHJi/y8mcs2rMV9ytqqtsnlCptdIC9bsKDBBXnCFalh7jzhz35y
+         OmFU+xrBQt9JwCv0ErEZBQmh9KUJZkd1DsosJpq1pJFxDd9Sqqt+2KIdLPjbVo8QW1Lb
+         +iTY4jHiskl1PiFIvWqdcEaF92v5bSAISjFKMdWhGOrbfG8jjUh6IEEGXynS2CU+tB0k
+         EJG/pv9kZYNQ9z4dxqNI3LSR7FofZ3U32bJLuqTq+pt5WJP7REuNCv4Gl5EdCmRHy3ei
+         EQKauPIRgXEpA5K6bgGVXRN4V7xT4EUXG+pMaYOAN/6Fs0Y0Wca7L+B8CvLP85ai0wu2
+         4uVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733753923; x=1734358723;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uqQ7Av76sCQ67PddSXj4+y1Hwv1xMZkPsZ7ivaLRViI=;
+        b=WlN22Ak7Bfn+ViCJVbC1u7/Ck5l+lMMj+Y81eHUPat55eeLa0rQOJ9MZIoHCtacdIh
+         kEKVsSSeHAta+kObUdFw3k1HwHW8n8BJ4T7OMekwMKHoEjnHN1bM7gOggATWCL6j9DCD
+         1CFaZKXkDfTqzufyLiKejRDq8xfe4rW0nwuS4swKnx3T67ZNHnxe0OW2HgoOrYIrtCFt
+         0HeJ4ONOufJcRsOW1gs8BibNqupIEdS1C6dvUdpnW9531qxjfAQsbkUXXc0LjiaOMJkx
+         AnflRL2u3aMNH5knnrAQn+rB0zzeP4/2n7DCDW7Prg95Uxg0hF5zRw+6Vf/KWlVIcUog
+         DlSw==
+X-Forwarded-Encrypted: i=1; AJvYcCURPSwZFb6OwqlZLjJI5BZKH3ME3zqy0C3g3ToM8E6Mf0h/SSrD3lNGQWufPLF/olW3lNBU1aaZ2ggs@vger.kernel.org, AJvYcCV+o9hIg6UlOniZOOSMT1uGj6jD8fnMl8arBN7v9P6D2mhy1z8ZFsRhQrc8TlzIroHy6KKR6k7y@vger.kernel.org, AJvYcCX4iy7C3wgIOIXDMhxHB4IURsRdKmfYJFvV2HJWefUbjiDGiaebXXWvHl7VzfgJUJqPa1nhgXUIDF+ZrMI=@vger.kernel.org, AJvYcCXABmySfnsrT4zszJDLXGqApeFkRknSZqJj4L4d62pEk9H9pHB5mbxaIQwFpDllB0U5sUQz5lABXOA/kI4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydJaAB6bgHpZRp9sdaoMnyRjUTZhzlIfw7qe5bgqVbzbmd38yu
+	L3QsCmuzg/TbSdre6gIuQhyQ+SPzFZGGLnUA45inUQLNYW/kp0EseUp6Ng==
+X-Gm-Gg: ASbGnctTDB/dPHWHeRvcSlI0B2Lw5eXiNc18fZGffr5iI0CHtYExUDE646Thh930MDW
+	eAr3ynnkLv+267v3en7EMnpDvOEcJSLyd3FxllidkXXDjo+eVZl1fJR6lhOkwVoTUkdu6WdmpjB
+	EJ+Y/1l+/PDVgsczPyH+MY3KMXOty2vvn2g7J3sdg5uFIvxZ8Ki6oE3HSOh+wwmtzq3Y8/jCVzS
+	la+F7egzN+7P/XF3Ju6h0HL710gogwDD260eX8pY36Kd6CENB7OQKLyZu4qSUhRdLanHNfyuQLD
+	0J/zCEdBiaZ02WtLkQDnEXV3cZwKgmiaX1Ad
+X-Google-Smtp-Source: AGHT+IFELAj1vgxKLoKs7dlvlEpcB4HXPiDSG1NhOtqIafP5sTUuMLFi7afz0ZNUuel47+Us0guQWQ==
+X-Received: by 2002:a5d:588f:0:b0:385:f9db:3c4c with SMTP id ffacd0b85a97d-3862b33e5c1mr9840966f8f.9.1733753922778;
+        Mon, 09 Dec 2024 06:18:42 -0800 (PST)
+Received: from orome (p200300e41f281900f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1900:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3862a9705dfsm10955582f8f.4.2024.12.09.06.18.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 06:18:41 -0800 (PST)
+Date: Mon, 9 Dec 2024 15:18:40 +0100
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Prathamesh Shete <pshete@nvidia.com>
+Cc: adrian.hunter@intel.com, ulf.hansson@linaro.org, jonathanh@nvidia.com, 
+	linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	anrao@nvidia.com, stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: sdhci-tegra: Remove
+ SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk
+Message-ID: <sxqxmbsdnfieqdrld4xdhwkqngofm6bq64zqwsnpjjweeqkjrn@s7hdf2krdcvq>
+References: <20241209101009.22710-1-pshete@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="wxv6tqvev3dlmdnh"
+Content-Disposition: inline
+In-Reply-To: <20241209101009.22710-1-pshete@nvidia.com>
 
-[ Upstream commit 8c462d56487e3abdbf8a61cedfe7c795a54f4a78 ]
 
-SMCCCv1.3 added a hint bit which callers can set in an SMCCC function ID
-(AKA "FID") to indicate that it is acceptable for the SMCCC
-implementation to discard SVE and/or SME state over a specific SMCCC
-call. The kernel support for using this hint is broken and SMCCC calls
-may clobber the SVE and/or SME state of arbitrary tasks, though FPSIMD
-state is unaffected.
+--wxv6tqvev3dlmdnh
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] mmc: sdhci-tegra: Remove
+ SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk
+MIME-Version: 1.0
 
-The kernel support is intended to use the hint when there is no SVE or
-SME state to save, and to do this it checks whether TIF_FOREIGN_FPSTATE
-is set or TIF_SVE is clear in assembly code:
+On Mon, Dec 09, 2024 at 03:40:09PM +0530, Prathamesh Shete wrote:
+> Value 0 in ADMA length decsriptor is interpretated as 65536 on new Tegra
+> chips, remove SDHCI_QUIRK_BROKEN_ADMA_ZEROLEN_DESC quirk to make sure
+> max ADMA2 length is 65536
+>=20
+> Fixes: 4346b7c7941d ("mmc: tegra: Add Tegra186 support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Prathamesh Shete <pshete@nvidia.com>
+> ---
+>  drivers/mmc/host/sdhci-tegra.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-|        ldr     <flags>, [<current_task>, #TSK_TI_FLAGS]
-|        tbnz    <flags>, #TIF_FOREIGN_FPSTATE, 1f   // Any live FP state?
-|        tbnz    <flags>, #TIF_SVE, 2f               // Does that state include SVE?
-|
-| 1:     orr     <fid>, <fid>, ARM_SMCCC_1_3_SVE_HINT
-| 2:
-|        << SMCCC call using FID >>
+Acked-by: Thierry Reding <treding@nvidia.com>
 
-This is not safe as-is:
+--wxv6tqvev3dlmdnh
+Content-Type: application/pgp-signature; name="signature.asc"
 
-(1) SMCCC calls can be made in a preemptible context and preemption can
-    result in TIF_FOREIGN_FPSTATE being set or cleared at arbitrary
-    points in time. Thus checking for TIF_FOREIGN_FPSTATE provides no
-    guarantee.
+-----BEGIN PGP SIGNATURE-----
 
-(2) TIF_FOREIGN_FPSTATE only indicates that the live FP/SVE/SME state in
-    the CPU does not belong to the current task, and does not indicate
-    that clobbering this state is acceptable.
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmdW/D8ACgkQ3SOs138+
+s6HZ4g//abkNvj5aHoLv/O5qmK6fqI1BCApgACLXu5J9FnwoYqPCe6OwViy4iiP9
+dmmqkBW+/wNrpJZZ3CgK2ZL+opMrC1ZfJLWTqzv3I9gB/EISOObv9JKRklBLMA1K
+0KHSfsHcjHkFJDoGZY60OpkMD62ERvBbcCIz4GDEUtrLeyI75aFuxz6KvCWMupqn
+8sp/p2kzKYamd7XMLsgbbpUH/Ex0l5HADnZBbeIHtV6ZzzyYETWQHKO87Y0baV52
+wJ1kUEVV/mWajDS2NhZuJJDdqvt/DkEHjxu3pDe28ruO59964zZih95pcDwf7C5T
+EEI9vHWsRXGvSCzbf291E5l/8bA/47hyIlmVNtuwUlMaMl+NEurtskYXR7qI1NNM
+WJd+7FzVA/vjcc/l9pI+b7H/yqY8hA2gTsjMbl6qKAPNejhbTFUCjRBOw815+rht
+8Z8JqpnM/aDLnMn4aULxAY1Ll+yhIF7UY4gmpi3R6IcxxuBArselQlnD/blFTFwu
+ac+//nil2fBi5CeLZCjjRhxNrAA1UfGEGVtrBaKPVBS+wglO78yUuJFIQuQmL5GA
+Fgqk8vRROvKH/YGuGNiR+HfVYVJUXVGkq+Sh1GBS97aJmDkAFxNFw/7zd4AwivMB
++jrCwGKSWTBHVTuKpfwtENLNYY/b/tydYmbh0dKK4kbq6hg8yTE=
+=Cl3i
+-----END PGP SIGNATURE-----
 
-    When the live CPU state is clobbered it is necessary to update
-    fpsimd_last_state.st to ensure that a subsequent context switch will
-    reload FP/SVE/SME state from memory rather than consuming the
-    clobbered state. This and the SMCCC call itself must happen in a
-    critical section with preemption disabled to avoid races.
-
-(3) Live SVE/SME state can exist with TIF_SVE clear (e.g. with only
-    TIF_SME set), and checking TIF_SVE alone is insufficient.
-
-Remove the broken support for the SMCCCv1.3 SVE saving hint. This is
-effectively a revert of commits:
-
-* cfa7ff959a78 ("arm64: smccc: Support SMCCC v1.3 SVE register saving hint")
-* a7c3acca5380 ("arm64: smccc: Save lr before calling __arm_smccc_sve_check()")
-
-... leaving behind the ARM_SMCCC_VERSION_1_3 and ARM_SMCCC_1_3_SVE_HINT
-definitions, since these are simply definitions from the SMCCC
-specification, and the latter is used in KVM via ARM_SMCCC_CALL_HINTS.
-
-If we want to bring this back in future, we'll probably want to handle
-this logic in C where we can use all the usual FPSIMD/SVE/SME helper
-functions, and that'll likely require some rework of the SMCCC code
-and/or its callers.
-
-Fixes: cfa7ff959a78 ("arm64: smccc: Support SMCCC v1.3 SVE register saving hint")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: stable@vger.kernel.org
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241106160448.2712997-1-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: fix conflicts in <linux/arm-smccc.h> and drivers/firmware/smccc/smccc.c ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
----
- arch/arm64/kernel/smccc-call.S | 35 +++-------------------------------
- drivers/firmware/smccc/smccc.c |  4 ----
- include/linux/arm-smccc.h      | 30 ++---------------------------
- 3 files changed, 5 insertions(+), 64 deletions(-)
-
-This backport is based on 5.15.173; defconfig builds cleanly and boots
-fine.
-
-Mark.
-
-diff --git a/arch/arm64/kernel/smccc-call.S b/arch/arm64/kernel/smccc-call.S
-index 487381164ff6b..2def9d0dd3ddb 100644
---- a/arch/arm64/kernel/smccc-call.S
-+++ b/arch/arm64/kernel/smccc-call.S
-@@ -7,48 +7,19 @@
- 
- #include <asm/asm-offsets.h>
- #include <asm/assembler.h>
--#include <asm/thread_info.h>
--
--/*
-- * If we have SMCCC v1.3 and (as is likely) no SVE state in
-- * the registers then set the SMCCC hint bit to say there's no
-- * need to preserve it.  Do this by directly adjusting the SMCCC
-- * function value which is already stored in x0 ready to be called.
-- */
--SYM_FUNC_START(__arm_smccc_sve_check)
--
--	ldr_l	x16, smccc_has_sve_hint
--	cbz	x16, 2f
--
--	get_current_task x16
--	ldr	x16, [x16, #TSK_TI_FLAGS]
--	tbnz	x16, #TIF_FOREIGN_FPSTATE, 1f	// Any live FP state?
--	tbnz	x16, #TIF_SVE, 2f		// Does that state include SVE?
--
--1:	orr	x0, x0, ARM_SMCCC_1_3_SVE_HINT
--
--2:	ret
--SYM_FUNC_END(__arm_smccc_sve_check)
--EXPORT_SYMBOL(__arm_smccc_sve_check)
- 
- 	.macro SMCCC instr
--	stp     x29, x30, [sp, #-16]!
--	mov	x29, sp
--alternative_if ARM64_SVE
--	bl	__arm_smccc_sve_check
--alternative_else_nop_endif
- 	\instr	#0
--	ldr	x4, [sp, #16]
-+	ldr	x4, [sp]
- 	stp	x0, x1, [x4, #ARM_SMCCC_RES_X0_OFFS]
- 	stp	x2, x3, [x4, #ARM_SMCCC_RES_X2_OFFS]
--	ldr	x4, [sp, #24]
-+	ldr	x4, [sp, #8]
- 	cbz	x4, 1f /* no quirk structure */
- 	ldr	x9, [x4, #ARM_SMCCC_QUIRK_ID_OFFS]
- 	cmp	x9, #ARM_SMCCC_QUIRK_QCOM_A6
- 	b.ne	1f
- 	str	x6, [x4, ARM_SMCCC_QUIRK_STATE_OFFS]
--1:	ldp     x29, x30, [sp], #16
--	ret
-+1:	ret
- 	.endm
- 
- /*
-diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smccc.c
-index 60ccf3e90d7de..0f3437b4c97e7 100644
---- a/drivers/firmware/smccc/smccc.c
-+++ b/drivers/firmware/smccc/smccc.c
-@@ -16,7 +16,6 @@ static u32 smccc_version = ARM_SMCCC_VERSION_1_0;
- static enum arm_smccc_conduit smccc_conduit = SMCCC_CONDUIT_NONE;
- 
- bool __ro_after_init smccc_trng_available = false;
--u64 __ro_after_init smccc_has_sve_hint = false;
- 
- void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
- {
-@@ -24,9 +23,6 @@ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
- 	smccc_conduit = conduit;
- 
- 	smccc_trng_available = smccc_probe_trng();
--	if (IS_ENABLED(CONFIG_ARM64_SVE) &&
--	    smccc_version >= ARM_SMCCC_VERSION_1_3)
--		smccc_has_sve_hint = true;
- }
- 
- enum arm_smccc_conduit arm_smccc_1_1_get_conduit(void)
-diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
-index 220c8c60e021a..49f66554e4e0b 100644
---- a/include/linux/arm-smccc.h
-+++ b/include/linux/arm-smccc.h
-@@ -224,8 +224,6 @@ u32 arm_smccc_get_version(void);
- 
- void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit);
- 
--extern u64 smccc_has_sve_hint;
--
- /**
-  * struct arm_smccc_res - Result from SMC/HVC call
-  * @a0-a3 result values from registers 0 to 3
-@@ -305,15 +303,6 @@ struct arm_smccc_quirk {
- 	} state;
- };
- 
--/**
-- * __arm_smccc_sve_check() - Set the SVE hint bit when doing SMC calls
-- *
-- * Sets the SMCCC hint bit to indicate if there is live state in the SVE
-- * registers, this modifies x0 in place and should never be called from C
-- * code.
-- */
--asmlinkage unsigned long __arm_smccc_sve_check(unsigned long x0);
--
- /**
-  * __arm_smccc_smc() - make SMC calls
-  * @a0-a7: arguments passed in registers 0 to 7
-@@ -381,20 +370,6 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
- 
- #endif
- 
--/* nVHE hypervisor doesn't have a current thread so needs separate checks */
--#if defined(CONFIG_ARM64_SVE) && !defined(__KVM_NVHE_HYPERVISOR__)
--
--#define SMCCC_SVE_CHECK ALTERNATIVE("nop \n",  "bl __arm_smccc_sve_check \n", \
--				    ARM64_SVE)
--#define smccc_sve_clobbers "x16", "x30", "cc",
--
--#else
--
--#define SMCCC_SVE_CHECK
--#define smccc_sve_clobbers
--
--#endif
--
- #define ___count_args(_0, _1, _2, _3, _4, _5, _6, _7, _8, x, ...) x
- 
- #define __count_args(...)						\
-@@ -462,7 +437,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
- 
- #define ___constraints(count)						\
- 	: __constraint_read_ ## count					\
--	: smccc_sve_clobbers "memory"
-+	: "memory"
- #define __constraints(count)	___constraints(count)
- 
- /*
-@@ -477,8 +452,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
- 		register unsigned long r2 asm("r2");			\
- 		register unsigned long r3 asm("r3"); 			\
- 		__declare_args(__count_args(__VA_ARGS__), __VA_ARGS__);	\
--		asm volatile(SMCCC_SVE_CHECK				\
--			     inst "\n" :				\
-+		asm volatile(inst "\n" :				\
- 			     "=r" (r0), "=r" (r1), "=r" (r2), "=r" (r3)	\
- 			     __constraints(__count_args(__VA_ARGS__)));	\
- 		if (___res)						\
--- 
-2.30.2
-
+--wxv6tqvev3dlmdnh--
 
