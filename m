@@ -1,346 +1,163 @@
-Return-Path: <stable+bounces-100242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241F29E9DFB
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 19:22:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F061B9E9E39
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 19:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23AC2167055
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 18:22:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 783CF164C9F
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 18:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B68916DEDF;
-	Mon,  9 Dec 2024 18:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC03A175D2D;
+	Mon,  9 Dec 2024 18:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u84lBngR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z+OuQpZo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169C9155725
-	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 18:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1EC7080B;
+	Mon,  9 Dec 2024 18:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733768545; cv=none; b=lBh4/zCYRP4m54Ua3KUeZkppzOc6261Zncml9oGT1mzTpfh4tDhEI472qH0ouOQ8Rn+TS45fJzKILZ8Yw76EDNnXE8xd5ot26Jgvn10TqMq0cw+AS7NLPXCr+FitBtFjmvYLhx2YTposCloj7LqVUJRPW3jNpyTU7c/ygUce9yA=
+	t=1733769636; cv=none; b=CrpwZShur6qT6L2BrYQ4eE9x44cAf/tBrdZYu45Wx7XylLSTcGDetk1owjrztpA9+4T3ecXtiH0oU0Pn7+sUffUyq+RQQ7979OcQ7TzY352AmyBs6SJulOCgERdWZxdNLK/tEsj5MnszoG+up4o6y608k0wepWD8cMM0ymBJxKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733768545; c=relaxed/simple;
-	bh=obrA7lID1gFWYDKJMm2TeVpt8h7Ddp8SM5ETW0ucnNE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e+NyD0zVHHhdcdraOx3xNuNjvfnqcJpEI+SImJA/Q4EZtA2QagpvWKQBgDCmnawp4tqboOLAHrRqMC6rAOXLIrCA+/2TRuyZOv7UWwe2wNANdmK3u8DA4GIapcifvrAQ2kHnj6dgVRAuOOwXCpVq8RP4UCjczZUVji+CnU+T9Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u84lBngR; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5d3c2135f61so13966a12.1
-        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 10:22:22 -0800 (PST)
+	s=arc-20240116; t=1733769636; c=relaxed/simple;
+	bh=X+klWZ2YByJdBdyyVPKDTZ78WQEyOGXNmWNHTWhK4/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p//rB0V0/mFxqzCiooKFgxjZBOwpMUridbWxLO5QW8mB/+KZ2PNWdnhelb0Pi9a0EHDeqdtdW+OALsTgYS/dy5pjKWROK7O7+NHQDz1Ug9s5TMMnSd8kEtcsXbnsi3M6446SX0Zu3Iyuo63b2IUvsTX3nDJBW1+IfHDT7pBwE/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z+OuQpZo; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7258bce5289so3679662b3a.0;
+        Mon, 09 Dec 2024 10:40:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733768541; x=1734373341; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6tUQKE2UAVAgxJSPVinR+cC1NkFiAgMKLM+zQJilRu8=;
-        b=u84lBngRDXgDXtGBtkPLmJZamJaSbox/jnObkvjKb1ROS75WJXSuCkbkYHrFwGmym3
-         3S1hGym1u44XSA72QRFNHocaC6f/+IR1EziwJ52hw6giefX3NpZf/V07LaSTDSE8l2bM
-         5CQmAU8xvy6Y0PRGTUOgYufTgRcu9EFSzm+LTTOlx1otmtAe1b0UEerJr+23TlS5CDAe
-         VjwcrUhvupY9GYbFWcoCLgeNA03ZbHA3pJ3zu/LGIYGvAlE7eCB7zhHaI2OjU2COC2b0
-         ghxRNx2k1xnIcV4H2cz0GOjzCfpA8KeH1tmIKdrr7Qi5bhCYrOOdHKlAuv+bKxMtJqtk
-         kQZA==
+        d=gmail.com; s=20230601; t=1733769634; x=1734374434; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1kIxDc4DRvgXZ4xcjfXE+4+mWRgUsmLP5l8Fevcm8+E=;
+        b=Z+OuQpZoPFE6nxCf0qybnZ3cRWYgbRM9yRAr1N/5z0XeYwmwetozkyeD6yvJFCeWc7
+         lhiszN9kPFXGtSymNFui+/62oesQz7/aW16U+ARKi5OjAXY/CIwp8sfM72AjVgDW51qc
+         vOw+TbFi0adoSqEfeS9nhZCr8PYuscFUe/t8Qs1QZhtYqKSvsGs5+ydn+PeHimolrd8b
+         6J8orOfkw5SIGVd7uH3ZnVy3CLSIhLOPQ2W6fmA7wnwSgTPxJvxHMvVatkujseqg+FkM
+         WhLeO/JE/vpuVIdQ8fROKpkPrgCmgQUIQDCOgPGhbrFsn1V5Etd5llC4EhA8qDt4NVVH
+         VIQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733768541; x=1734373341;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6tUQKE2UAVAgxJSPVinR+cC1NkFiAgMKLM+zQJilRu8=;
-        b=pWytcmL1XIu/CJ76DkxC62kBE4FQQkksTJUNOFHCOD3tTPzbrGyOo066Ihj4Zlb23I
-         WMSEJPAgKwJN0F5+EXi2oub7hV2r5CGnefHCegEawzPCzC6AKSSxZjfy7SP0CHZ40R71
-         lbnsMoWN0KLZVD4q2GACskPlil3KAzsWlohcHZwSny/ygUj5dlxuyipzUrTOu97iNaml
-         0FxjgvXvtPHG2ApNX+9IjrDSTDeXP183ts6CMCPYbB1q4cOK27S/0nwAV140h18o6JR2
-         /FZjEYJr2C8EIyb1plvtww+WvnpL0WLMm3fhvZ9ZZfU+62kwXaGnz+/4ztjFrNPb3TZc
-         ijLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUfwz4ngAzRsS1cYhWuBVjV0/IGqShRmDX+KJdc+1Kupqr/6GgaXIRCL81js4nxps/iNpUo5/s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTGjefMwg7W3fOeFUsSem2fJZNT6hk0IGMV3lITHFq2RN/6NhV
-	zJgYa/GIAoZZ8JFz0DxGMcfjE1ImT7wpKspPsznV1QXhbE6EBnRi2DHshHVYEiTQTtOzK5k/v0D
-	6ZkxdWWxKJjUh/SlWcsiAlEam7SQyREx08Q1Q
-X-Gm-Gg: ASbGnctvtMxYmp4x+7a+hgB8iTbyak7OLWcEjDbENF99y1SAQYd0mlHakLKpNxHhfwO
-	v7OR28GNpraxuR2JDUfC9XR4pO8t62h/DguCtUzkoUL+qIG7rHf78ZEm6ywI=
-X-Google-Smtp-Source: AGHT+IGmPKN0EpLP38yrJia+weZldXt3F33PYP8oxMA6FR4C09SQ3gxfPRS4f6CLIqzIE+ydJh1lCkLqvNmJfG/o4BE=
-X-Received: by 2002:aa7:d905:0:b0:5d0:dfe4:488a with SMTP id
- 4fb4d7f45d1cf-5d3dabe79bemr172129a12.2.1733768541030; Mon, 09 Dec 2024
- 10:22:21 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733769634; x=1734374434;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1kIxDc4DRvgXZ4xcjfXE+4+mWRgUsmLP5l8Fevcm8+E=;
+        b=TAMeaH7BnCJ4WunQMfzVdwhlieIBOjO502oYdaNKZqY0fOmlfMbYIH61whRghtErWm
+         WdoELQQpi93AN5Su25FRnJR7v33RBFuM1257ZIuAzBWzyvC9dBgCE231aM2VPleiRHS/
+         qaATyXO2VlPpin6tIBVeRacTvwO/yTGrFI53Fsm29V3MixCQlmxW5HencqCGk64uwWj/
+         22G3wsjwdKE+nxvTtePwa/S2dV0/GfMFxsxm9WPzhS9i8Hi2EPv0QLst6QD3lEbMJbIg
+         sYeC90IApu8HhvfBS7ptIazzgjEw1zI2DD42Yr8+piV45X0UpDdojWemM7LNyeEqD1QI
+         b96Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXtFfNcdT7HCKtkEv6hm/OtwUjQiUSxAO92/PpjgxOeDLipvRzCqXaQcajM1O97nJ7excHuRuM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYl3lFoMiDRwvxAJOqPsq/nW8zadFD+Mw5+Ydf9Tt2ltRe9tgN
+	ZHSHpig8Dn15QssTohIwXXefpVkfP5QZIYxgNBxxyCy4QborxqwK/iW/0Q==
+X-Gm-Gg: ASbGncuqMS9itozIzL62pgC6wg8tQVtu7FB1x/Rt30hl5/luDZu4sYpz2YTsw7mZ9sG
+	egpD7YSoz7BwazL/pSTBDSFS3QsPmJuh2rKVZNX4euNgw79ReDILSXBleK0fDSkh1EJCq78OAoh
+	ihP4If3r/WtnXZcTsyT5zEDiw6K27Yy9gQKNtDyFkvUotJk1z7bU6RHBpNBkkH9vw8rBuWGOL2R
+	wBIxYNLKWoD8vftlmyFBiFR/GCsPw5NIpMEYDbEVYWRhtJKuUVJia1fuqxPZIkx9W/qSvNUZo8+
+	8OO/Kl0VMhW3KB6UZCDmromZ
+X-Google-Smtp-Source: AGHT+IFCwkvMEAzkhUHbm2usKHGCDu3htrs/Xrl8Znw9ppI38NbAqBjiECSMOT3AORWhZhG15HHtxw==
+X-Received: by 2002:a05:6a00:1c85:b0:727:3b77:417c with SMTP id d2e1a72fcca58-7273b774407mr2964128b3a.20.1733769633646;
+        Mon, 09 Dec 2024 10:40:33 -0800 (PST)
+Received: from localhost.localdomain (75-164-192-68.ptld.qwest.net. [75.164.192.68])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd4ec342b2sm2006462a12.70.2024.12.09.10.40.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Dec 2024 10:40:32 -0800 (PST)
+From: "Gerecke, Jason" <killertofu@gmail.com>
+X-Google-Original-From: "Gerecke, Jason" <jason.gerecke@wacom.com>
+To: linux-input@vger.kernel.org,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: Ping Cheng <pinglinux@gmail.com>,
+	Joshua Dickens <Joshua@Joshua-Dickens.com>,
+	Erin Skomra <skomra@gmail.com>,
+	Peter Hutterer <peter.hutterer@who-t.net>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] HID: wacom: Initialize brightness of LED trigger
+Date: Mon,  9 Dec 2024 10:40:29 -0800
+Message-ID: <20241209184029.15101-1-jason.gerecke@wacom.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
- <CAEf4BzYxaKd8Gv5g8PBY6zaQukYKSjjtaSgYMjJxL-PZ0dLrbQ@mail.gmail.com>
- <CAG48ez3i5haHCc8EQMVNjKnd9xYwMcp4sbW_Y8DRpJCidJotjw@mail.gmail.com>
- <CAEf4BzYkGQ0sw9JEeAMLAfcQbzxwg46c487kBD_LcbZSaTKD5Q@mail.gmail.com>
- <CAG48ez1LRsuew4y_KQxPHNipA68hhm+iJohHbk6=1cwv5QPCxQ@mail.gmail.com>
- <CAG48ez2+3TTbWNNO4aqxFAX8Cd4COaayRxoy1V2xvM9oS2_ygQ@mail.gmail.com> <CAEf4BzbhDkFq9DB2VKxsHmffynQBvbD_RVKTUm3zCqvO_e1dug@mail.gmail.com>
-In-Reply-To: <CAEf4BzbhDkFq9DB2VKxsHmffynQBvbD_RVKTUm3zCqvO_e1dug@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Mon, 9 Dec 2024 19:21:45 +0100
-Message-ID: <CAG48ez2LW9zyiptNq8jApD3zeS05wvNPs-jj2zOeaCDQbZnD4g@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] bpf: Fix prog_array UAF in __uprobe_perf_func()
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	John Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Delyan Kratunov <delyank@fb.com>, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Dec 7, 2024 at 12:15=E2=80=AFAM Andrii Nakryiko
-<andrii.nakryiko@gmail.com> wrote:
-> On Fri, Dec 6, 2024 at 3:14=E2=80=AFPM Jann Horn <jannh@google.com> wrote=
-:
-> > On Fri, Dec 6, 2024 at 11:43=E2=80=AFPM Jann Horn <jannh@google.com> wr=
-ote:
-> > > On Fri, Dec 6, 2024 at 11:30=E2=80=AFPM Andrii Nakryiko
-> > > <andrii.nakryiko@gmail.com> wrote:
-> > > > On Fri, Dec 6, 2024 at 2:25=E2=80=AFPM Jann Horn <jannh@google.com>=
- wrote:
-> > > > >
-> > > > > On Fri, Dec 6, 2024 at 11:15=E2=80=AFPM Andrii Nakryiko
-> > > > > <andrii.nakryiko@gmail.com> wrote:
-> > > > > > On Fri, Dec 6, 2024 at 12:45=E2=80=AFPM Jann Horn <jannh@google=
-.com> wrote:
-> > > > > > >
-> > > > > > > Currently, the pointer stored in call->prog_array is loaded i=
-n
-> > > > > > > __uprobe_perf_func(), with no RCU annotation and no RCU prote=
-ction, so the
-> > > > > > > loaded pointer can immediately be dangling. Later,
-> > > > > > > bpf_prog_run_array_uprobe() starts a RCU-trace read-side crit=
-ical section,
-> > > > > > > but this is too late. It then uses rcu_dereference_check(), b=
-ut this use of
-> > > > > > > rcu_dereference_check() does not actually dereference anythin=
-g.
-> > > > > > >
-> > > > > > > It looks like the intention was to pass a pointer to the memb=
-er
-> > > > > > > call->prog_array into bpf_prog_run_array_uprobe() and actuall=
-y dereference
-> > > > > > > the pointer in there. Fix the issue by actually doing that.
-> > > > > > >
-> > > > > > > Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by cha=
-ining gps")
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > Signed-off-by: Jann Horn <jannh@google.com>
-> > > > > > > ---
-> > > > > > > To reproduce, in include/linux/bpf.h, patch in a mdelay(10000=
-) directly
-> > > > > > > before the might_fault() in bpf_prog_run_array_uprobe() and a=
-dd an
-> > > > > > > include of linux/delay.h.
-> > > > > > >
-> > > > > > > Build this userspace program:
-> > > > > > >
-> > > > > > > ```
-> > > > > > > $ cat dummy.c
-> > > > > > > #include <stdio.h>
-> > > > > > > int main(void) {
-> > > > > > >   printf("hello world\n");
-> > > > > > > }
-> > > > > > > $ gcc -o dummy dummy.c
-> > > > > > > ```
-> > > > > > >
-> > > > > > > Then build this BPF program and load it (change the path to p=
-oint to
-> > > > > > > the "dummy" binary you built):
-> > > > > > >
-> > > > > > > ```
-> > > > > > > $ cat bpf-uprobe-kern.c
-> > > > > > > #include <linux/bpf.h>
-> > > > > > > #include <bpf/bpf_helpers.h>
-> > > > > > > #include <bpf/bpf_tracing.h>
-> > > > > > > char _license[] SEC("license") =3D "GPL";
-> > > > > > >
-> > > > > > > SEC("uprobe//home/user/bpf-uprobe-uaf/dummy:main")
-> > > > > > > int BPF_UPROBE(main_uprobe) {
-> > > > > > >   bpf_printk("main uprobe triggered\n");
-> > > > > > >   return 0;
-> > > > > > > }
-> > > > > > > $ clang -O2 -g -target bpf -c -o bpf-uprobe-kern.o bpf-uprobe=
--kern.c
-> > > > > > > $ sudo bpftool prog loadall bpf-uprobe-kern.o uprobe-test aut=
-oattach
-> > > > > > > ```
-> > > > > > >
-> > > > > > > Then run ./dummy in one terminal, and after launching it, run
-> > > > > > > `sudo umount uprobe-test` in another terminal. Once the 10-se=
-cond
-> > > > > > > mdelay() is over, a use-after-free should occur, which may or=
- may
-> > > > > > > not crash your kernel at the `prog->sleepable` check in
-> > > > > > > bpf_prog_run_array_uprobe() depending on your luck.
-> > > > > > > ---
-> > > > > > > Changes in v2:
-> > > > > > > - remove diff chunk in patch notes that confuses git
-> > > > > > > - Link to v1: https://lore.kernel.org/r/20241206-bpf-fix-upro=
-be-uaf-v1-1-6869c8a17258@google.com
-> > > > > > > ---
-> > > > > > >  include/linux/bpf.h         | 4 ++--
-> > > > > > >  kernel/trace/trace_uprobe.c | 2 +-
-> > > > > > >  2 files changed, 3 insertions(+), 3 deletions(-)
-> > > > > > >
-> > > > > >
-> > > > > > Looking at how similar in spirit bpf_prog_run_array() is meant =
-to be
-> > > > > > used, it seems like it is the caller's responsibility to
-> > > > > > RCU-dereference array and keep RCU critical section before call=
-ing
-> > > > > > into bpf_prog_run_array(). So I wonder if it's best to do this =
-instead
-> > > > > > (Gmail will butcher the diff, but it's about the idea):
-> > > > >
-> > > > > Yeah, that's the other option I was considering. That would be mo=
-re
-> > > > > consistent with the existing bpf_prog_run_array(), but has the
-> > > > > downside of unnecessarily pushing responsibility up to the caller=
-...
-> > > > > I'm fine with either.
-> > > >
-> > > > there is really just one caller ("legacy" singular uprobe handler),=
- so
-> > > > I think this should be fine. Unless someone objects I'd keep it
-> > > > consistent with other "prog_array_run" helpers
-> > >
-> > > Ack, I will make it consistent.
-> > >
-> > > > > > diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> > > > > > index eaee2a819f4c..4b8a9edd3727 100644
-> > > > > > --- a/include/linux/bpf.h
-> > > > > > +++ b/include/linux/bpf.h
-> > > > > > @@ -2193,26 +2193,25 @@ bpf_prog_run_array(const struct bpf_pro=
-g_array *array,
-> > > > > >   * rcu-protected dynamically sized maps.
-> > > > > >   */
-> > > > > >  static __always_inline u32
-> > > > > > -bpf_prog_run_array_uprobe(const struct bpf_prog_array __rcu *a=
-rray_rcu,
-> > > > > > +bpf_prog_run_array_uprobe(const struct bpf_prog_array *array,
-> > > > > >                           const void *ctx, bpf_prog_run_fn run_=
-prog)
-> > > > > >  {
-> > > > > >         const struct bpf_prog_array_item *item;
-> > > > > >         const struct bpf_prog *prog;
-> > > > > > -       const struct bpf_prog_array *array;
-> > > > > >         struct bpf_run_ctx *old_run_ctx;
-> > > > > >         struct bpf_trace_run_ctx run_ctx;
-> > > > > >         u32 ret =3D 1;
-> > > > > >
-> > > > > >         might_fault();
-> > > > > > +       RCU_LOCKDEP_WARN(!rcu_read_lock_trace_held(), "no rcu l=
-ock held");
-> > > > > > +
-> > > > > > +       if (unlikely(!array))
-> > > > > > +               goto out;
-> > > > > >
-> > > > > > -       rcu_read_lock_trace();
-> > > > > >         migrate_disable();
-> > > > > >
-> > > > > >         run_ctx.is_uprobe =3D true;
-> > > > > >
-> > > > > > -       array =3D rcu_dereference_check(array_rcu, rcu_read_loc=
-k_trace_held());
-> > > > > > -       if (unlikely(!array))
-> > > > > > -               goto out;
-> > > > > >         old_run_ctx =3D bpf_set_run_ctx(&run_ctx.run_ctx);
-> > > > > >         item =3D &array->items[0];
-> > > > > >         while ((prog =3D READ_ONCE(item->prog))) {
-> > > > > > @@ -2229,7 +2228,6 @@ bpf_prog_run_array_uprobe(const struct
-> > > > > > bpf_prog_array __rcu *array_rcu,
-> > > > > >         bpf_reset_run_ctx(old_run_ctx);
-> > > > > >  out:
-> > > > > >         migrate_enable();
-> > > > > > -       rcu_read_unlock_trace();
-> > > > > >         return ret;
-> > > > > >  }
-> > > > > >
-> > > > > > diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_u=
-probe.c
-> > > > > > index fed382b7881b..87a2b8fefa90 100644
-> > > > > > --- a/kernel/trace/trace_uprobe.c
-> > > > > > +++ b/kernel/trace/trace_uprobe.c
-> > > > > > @@ -1404,7 +1404,9 @@ static void __uprobe_perf_func(struct tra=
-ce_uprobe *tu,
-> > > > > >         if (bpf_prog_array_valid(call)) {
-> > > > > >                 u32 ret;
-> > > > > >
-> > > > > > +               rcu_read_lock_trace();
-> > > > > >                 ret =3D bpf_prog_run_array_uprobe(call->prog_ar=
-ray,
-> > > > > > regs, bpf_prog_run);
-> > > > >
-> > > > > But then this should be something like this (possibly split acros=
-s
-> > > > > multiple lines with a helper variable or such):
-> > > > >
-> > > > > ret =3D bpf_prog_run_array_uprobe(rcu_dereference_check(call->pro=
-g_array,
-> > > > > rcu_read_lock_trace_held()), regs, bpf_prog_run);
-> > > >
-> > > > Yeah, absolutely, forgot to move the RCU dereference part, good cat=
-ch!
-> > > > But I wouldn't do the _check() variant here, literally the previous
-> > > > line does rcu_read_trace_lock(), so this check part seems like just
-> > > > unnecessary verboseness, I'd go with a simple rcu_dereference().
-> > >
-> > > rcu_dereference() is not legal there - that asserts that we are in a
-> > > normal RCU read-side critical section, which we are not.
-> > > rcu_dereference_raw() would be, but I think it is nice to document th=
-e
-> > > semantics to make it explicit under which lock we're operating.
->
-> sure, I don't mind
->
-> > >
-> > > I'll send a v3 in a bit after testing it.
-> >
-> > Actually, now I'm still hitting a page fault with my WIP v3 fix
-> > applied... I'll probably poke at this some more next week.
->
-> OK, that's interesting, keep us posted!
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-If I replace the "uprobe/" in my reproducer with "uprobe.s/", the
-reproducer stops crashing even on bpf/master without this fix -
-because it happens that handle_swbp() is already holding a
-rcu_read_lock_trace() lock way up the stack. So I think this fix
-should still be applied, but it probably doesn't need to go into
-stable unless there is another path to the buggy code that doesn't
-come from handle_swbp(). I guess I probably should resend my patch
-with an updated commit message pointing out this caveat?
+If an LED has a default_trigger set prior to being registered with
+the subsystem, that trigger will be executed with a brightness value
+defined by `trigger->brightness`. Our driver was not setting this
+value, which was causing problems. It would cause the selected LED
+to be turned off, as well as corrupt the hlv/llv values assigned to
+other LEDs (since calling `wacom_led_brightness_set` will overite
+these values).
 
-The problem I'm actually hitting seems to be a use-after-free of a
-"struct bpf_prog" because of mismatching RCU flavors. Uprobes always
-use bpf_prog_run_array_uprobe() under tasks-trace-RCU protection. But
-it is possible to attach a non-sleepable BPF program to a uprobe, and
-non-sleepable BPF programs are freed via normal RCU (see
-__bpf_prog_put_noref()). And that is what happens with the reproducer
-from my initial post
-(https://lore.kernel.org/all/20241206-bpf-fix-uprobe-uaf-v1-1-6869c8a17258@=
-google.com/)
-- I can see that __bpf_prog_put_noref runs with prog->sleepable=3D=3D0.
+This patch sets the value of `trigger->brightness` to an appropriate
+value. We use `wacom_leds_brightness_get` to transform the llv/hlv
+values into a brightness that is understood by the rest of the LED
+subsystem.
 
-So I think that while I am delaying execution in
-bpf_prog_run_array_uprobe(), perf_event_detach_bpf_prog() NULLs out
-the event->tp_event->prog_array pointer and does
-bpf_prog_array_free_sleepable() followed by bpf_prog_put(), and then
-the BPF program can be freed since the reader doesn't hold an RCU read
-lock. This seems a bit annoying to fix - there could legitimately be
-several versions of the bpf_prog_array that are still used by
-tasks-trace-RCU readers, so I think we can't just NULL out the array
-entry and use RCU for the bpf_prog_array access on the reader side. I
-guess we could add another flag on BPF programs that answers "should
-this program be freed via tasks-trace-RCU" (separately from whether
-the program is sleepable)?
+Fixes: 822c91e72eac ("leds: trigger: Store brightness set by led_trigger_event()")
+Cc: stable@vger.kernel.org # v6.10+
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+---
+ drivers/hid/wacom_sys.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
+index 2bc45b24075c3..e60ca39ac7adc 100644
+--- a/drivers/hid/wacom_sys.c
++++ b/drivers/hid/wacom_sys.c
+@@ -1370,17 +1370,6 @@ static int wacom_led_register_one(struct device *dev, struct wacom *wacom,
+ 	if (!name)
+ 		return -ENOMEM;
+ 
+-	if (!read_only) {
+-		led->trigger.name = name;
+-		error = devm_led_trigger_register(dev, &led->trigger);
+-		if (error) {
+-			hid_err(wacom->hdev,
+-				"failed to register LED trigger %s: %d\n",
+-				led->cdev.name, error);
+-			return error;
+-		}
+-	}
+-
+ 	led->group = group;
+ 	led->id = id;
+ 	led->wacom = wacom;
+@@ -1397,6 +1386,19 @@ static int wacom_led_register_one(struct device *dev, struct wacom *wacom,
+ 		led->cdev.brightness_set = wacom_led_readonly_brightness_set;
+ 	}
+ 
++	if (!read_only) {
++		led->trigger.name = name;
++		if (id == wacom->led.groups[group].select)
++			led->trigger.brightness = wacom_leds_brightness_get(led);
++		error = devm_led_trigger_register(dev, &led->trigger);
++		if (error) {
++			hid_err(wacom->hdev,
++				"failed to register LED trigger %s: %d\n",
++				led->cdev.name, error);
++			return error;
++		}
++	}
++
+ 	error = devm_led_classdev_register(dev, &led->cdev);
+ 	if (error) {
+ 		hid_err(wacom->hdev,
+-- 
+2.47.1
+
 
