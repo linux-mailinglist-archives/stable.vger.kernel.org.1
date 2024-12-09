@@ -1,191 +1,174 @@
-Return-Path: <stable+bounces-100219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F7E9E9ABA
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 16:40:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E539E9B4E
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 17:12:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C6E718828A4
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 16:12:34 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FF9139597;
+	Mon,  9 Dec 2024 16:12:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="PRz/0k1r";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="D8qgOeal"
+X-Original-To: stable@vger.kernel.org
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93882286318
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 15:40:47 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068921C5CBD;
-	Mon,  9 Dec 2024 15:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CvhGiT1z"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF95A233139;
+	Mon,  9 Dec 2024 16:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733760748; cv=fail; b=lYTPp4EriP9pbdRYeDMlNFuPtU5eg0MWLerl1q1ZgmB3ojBwqkgTsNVkKT06kP0SxkwMZwMJR05JwY6WJn30gD/Ipk8PxTz3fr7/gXCd5dJaUY8wNVoE/YXbgSEX4JabErvODET1V+8zTcIIlDm9RCYeBRZB9p9/M7lvSCWw1U8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733760748; c=relaxed/simple;
+	bh=s4KoCz75uO+3e9W7SAZg0svC3ypzFsG03CMxh9+nBI8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YYAkWChWmoJxHpO2m6lIQQOskAgkYw1kGKXXLLnogNQqOptTJpgaJdR/fY+8YFfEUoVJI8u16YHDWdOA3pesreeT7+iVHHS/RJhHXdrRUmcyOH3IpauRNCoLuXl5WmyAcFEr3iuhhlw0c+mLSWcG+TQMpWlTAQKZDhyf3+V9+lE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=PRz/0k1r; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=D8qgOeal; arc=fail smtp.client-ip=72.84.236.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from srv8.sapience.com (srv8.sapience.com [x.x.x.x])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FE61C5CBB;
-	Mon,  9 Dec 2024 15:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733758828; cv=none; b=aSw8UYlcf1ikrPTexr48x+YN6xt06n1FJbuiFtHAIIXknWsdBQbmc4LthD3DipjrlXhD72nIxa8keq0lzXsfeBXjjGOTjdXVsiPhw5c1gmiF8Z5GKOSSkdx8vzorJrMjmXXzYhu0jAKuGUvfGqVfL3b6p7BkjFuVa8oHosHtq5U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733758828; c=relaxed/simple;
-	bh=v0qmFEPQJoqN571WZDmp772EQOLt21vXcTNq6l9K+Kw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LV7WQZV9fWxbdDCIp3r5tjgERZ5kNyN5nJ3JIy868b6/MHnuxmT3JHKnJwWxWm3WZ7NsdYMrTzfnsRKDadxvLZ/ne7zN04CohpBTvET1hPHkYiuSpl62SLHkpvtnFHomilkSTRcK+/ls2ufF9fikkDBBZyzYGbFhiJ63uErhPg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CvhGiT1z; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-385d7f19f20so2029400f8f.1;
-        Mon, 09 Dec 2024 07:40:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733758825; x=1734363625; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=THIVVsv4gFsQRzLTlgrKEIh5i75y63FKBQRh6bZVeLo=;
-        b=CvhGiT1zWN8PXImjxswwYJOxGvc/0j+pM5H0ehzvQJq36HuRCXfWBTG1mVllo1k1Jz
-         WOuQxtBSJtb59iFbbhQY1IijqIvlr+oOtTo7hwK87Nw1Zz2ic4+RZ66Jrn1A6s4AiGr9
-         Zm6bCxatCtOs/B4nNt4NzZfIXb1WPHk+1ti/WSVucxE4EbmQ7Nt6e644BFpy1FN+wq7X
-         HYv1ft8UXCZYK4plENMfHRf3AY1bjV0tnYJQqwhUDJhrDPFf1svCzlGEOoi4gLiSMMKS
-         u2YOpMSSJFoEaAlz0rJrrTq1PTlAUdD0VRWiIWV8AZzYkLfWNU8/CZ+Xy6cEgRs31VzM
-         q+PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733758825; x=1734363625;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=THIVVsv4gFsQRzLTlgrKEIh5i75y63FKBQRh6bZVeLo=;
-        b=Hfehq1iYknvMOfTM1Lxj8gl4/SlE0oMs59Y/YLKBkM8sA1A83RIcyslL/bWBo4hou5
-         xSQBhEfZ0hv2jIGJPNKGzPq+Y8mmL20Ms8a7AnnnUfXTb+XHzR48THLfqqgzV+KLyvtb
-         Fz2thEZ59K568WJ700cIEmggY+e2bsuh5t/naYCOKcx6PqqCSGYfb9slIO067ilRGIc2
-         TZdQVVDLaJfZMr0+F5AIATmcnsaDnh/++5cVmAqid+7ROpVYRKhZdX+jQ8HGOa8w8GLI
-         IF+JcgHy8GbOrLBkJhWAcXtRc/wdZ9YpIY52+t9z3+82uX3R0P7XX8xTsVbLVEVfCtYB
-         uKzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkWClbihwdq0MS2A+tjfm2ybXzXZHX4hJhlSoGI5OLCKuHhGCqnhRvvevlypbrkSO02K/zBEE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6ksBuGi5gOnvoAhnyv+xCbDakLIh5gMpjBRld3xE4tAPoSn4J
-	ZpUGxkYCmlZ5wFiNC1CE/Un+cSMaB6LQiYmFX3CLFzZOVZ1ZJNeY
-X-Gm-Gg: ASbGnctzjIZ7iqb4x05Cp2nJFzRzoCG8OSUWyLdLx5CAFupS3c7MhvuXKKbm0ef4xJy
-	Q2y4v6IF3PoyCsma6+1FmJuDGMKaRvyEXKgMY+eicnk36ZlayBVHACaP317FnUkh6kK5oj3Iuzt
-	2GYk4gn5jOHlK+ilDHlZzSOFP/P0H67h6zroO6PQ7R6iLcz6WEh/8agDJAv51yTF6UbTjL8ScH9
-	CJB3byOed3EXo/MLIAzULmrlzBp5VIsc4qL/V3JcSCjvT/GyDuYvHwC3LIq9SYd2UCSzC4fBw==
-X-Google-Smtp-Source: AGHT+IFeayK/zc/dX5+/EUAGweidzTVymFAGnSR21oou+WeC63FyU+XpjumNNG6kz1KYSnELvXtxWA==
-X-Received: by 2002:a5d:47a1:0:b0:385:ec89:2f07 with SMTP id ffacd0b85a97d-3862b38ee31mr9965731f8f.32.1733758824993;
-        Mon, 09 Dec 2024 07:40:24 -0800 (PST)
-Received: from ThinkStation-P340.tmt.telital.com ([2a01:7d0:4800:7:664c:aec9:433c:7b34])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3861f59cd35sm13249681f8f.31.2024.12.09.07.40.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 07:40:24 -0800 (PST)
-From: Daniele Palmas <dnlplm@gmail.com>
-To: Johan Hovold <johan@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org,
-	stable@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>
-Subject: [PATCH 1/1] USB: serial: option: add Telit FE910C04 rmnet compositions
-Date: Mon,  9 Dec 2024 16:32:54 +0100
-Message-Id: <20241209153254.3691495-1-dnlplm@gmail.com>
-X-Mailer: git-send-email 2.37.1
+	by s1.sapience.com (Postfix) with ESMTPS id 75FC0480525;
+	Mon, 09 Dec 2024 11:12:25 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1733760745;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=yCff0reIMkVdZUNSUwuUxWtpDSfpdPI8D8HTB3BQ67s=;
+ b=PRz/0k1r8Ou4MxCbHn1mpP6NjnScRlfnrZDoHq4qDTnUdJZSXrPCKXx8vNkp5DBblARD1
+ jLvOzLdneWQMdNRDw==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1733760745;
+	cv=none; b=LB+H4gXl2zckP53HBPx2DytCxw0XWF1ox8ZSLgWbWeJfff1eDIIJCWn1h5p9EI/cfn1Vpz8wIXJh0NG6OjaOB8ue1WNwpilALTD0UIlBBO0k2a9oS1SaEiAV4UKSD4+c2mvKKFr4jrnAUxZF38pwCPg0NraQc4U1943NKGYY6rSFymElwn+fcf909Su+aJ57PPneHYlkNyaPsLCQyCsZ/cDc+ldc+jzb+S1SVepEg2HLMRqAwCq32l+mDMr2UyqOa1vqP0BwsLrknJczv9OHhUGlZIeZYZmTyLh2b74Y1Z+oltud+Wjn3V1UCCY36eE9BzIakvYc02H3YpXfK1MV7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1733760745; c=relaxed/simple;
+	bh=s4KoCz75uO+3e9W7SAZg0svC3ypzFsG03CMxh9+nBI8=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
+	 MIME-Version; b=nquiQmzc9gPkGJkr2xKxoGF/BsutWBYRsE1C6EIRhjQ/EDB5pz6lr8M/5Xu+ms8Az3v9nr+2icYMSGDuvSu6BgEI/ADirsGPLXya9Hz2eldR5J8Pe2Y1SAdjcOfTdkceuoufSJiEzm9NZxVloF//wIZadFjnj0vbYNjzNmXll3uTc7gwXlrmiYhE66GA3s7rHgsOcE8go2PrlVC1aaqSZWy4FFUd7MWEA2GYy4g0c7bqQ+gw7YesFxHy8tDOkIyZ8D03cWdDI6tfC0EheCA8CkutkERNlh1pMbeWRZ81guAqQRDCvCx0MGzMvM8f3SACyELKBkEu9dLKjeZkdSN5yQ==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1733760745;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=yCff0reIMkVdZUNSUwuUxWtpDSfpdPI8D8HTB3BQ67s=;
+ b=D8qgOealkrIHi51HpuzIqMmYQweAIe2zMIqupR/2dcJeEWCFXYQKrhlUnQyMEc+O80mcV
+ haNEWanUEttPL1af/LMzuTRU2p82jYgJJFkLDHNOL1ISscDNYzsKalWwCfH5mMiyeW/ld5j
+ 3cK1Ff4hUq4b+Fumf9wwXcudU0eqpGz0A3OilgdtfY3hSVfyvUMzHOcNQpdDn45Ywv3hu8F
+ YvKqbxAbwIUbd0YC/MiCjVUZAAIcasqW0PHByZPdbPqpMWBGfly2jCUCcaGN+pZA+bxDXic
+ EFTQfK7Y98Cs4qrArZYhK2oXKVq4Gs1UEbnLdjg9L2xu/kkWjTpHk7HpUSAg==
+Received: from lap7.sapience.com (lap7w.sapience.com [x.x.x.x])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by srv8.sapience.com (Postfix) with ESMTPS id 3DFB0280081;
+	Mon, 09 Dec 2024 11:12:25 -0500 (EST)
+Message-ID: <d2a5d51bd98f167fac6286607f5a56591432114f.camel@sapience.com>
+Subject: Re: Linux 6.12.4 - crash dma_alloc_attrs+0x12b via ipu6
+From: Genes Lists <lists@sapience.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org, 
+	torvalds@linux-foundation.org, stable@vger.kernel.org, 
+	linux-media@vger.kernel.org, sakari.ailus@linux.intel.com,
+ bingbu.cao@intel.com
+Date: Mon, 09 Dec 2024 11:12:24 -0500
+In-Reply-To: <2024120934-wreckage-hazily-166f@gregkh>
+References: <2024120917-vision-outcast-85f2@gregkh>
+	 <c0e94be466b367f1a3cfdc3cb7b1a4f47e5953ae.camel@sapience.com>
+	 <2024120934-wreckage-hazily-166f@gregkh>
+Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
+ keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
+ 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
+ sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
+ vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
+ BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
+Content-Type: multipart/signed; micalg="pgp-sha384";
+	protocol="application/pgp-signature"; boundary="=-+7eX/8a5SmQeZ2CGtJlV"
+User-Agent: Evolution 3.54.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add the following Telit FE910C04 compositions:
 
-0x10c0: rmnet + tty (AT/NMEA) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 13 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c0 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+--=-+7eX/8a5SmQeZ2CGtJlV
+Content-Type: multipart/alternative; boundary="=-Hb4Hp5H/VaGi78DROUsH"
 
-0x10c4: rmnet + tty (AT) + tty (AT) + tty (diag)
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 14 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c4 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+--=-Hb4Hp5H/VaGi78DROUsH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-0x10c8: rmnet + tty (AT) + tty (diag) + DPL (data packet logging) + adb
-T:  Bus=02 Lev=01 Prnt=03 Port=06 Cnt=01 Dev#= 17 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=10c8 Rev=05.15
-S:  Manufacturer=Telit Cinterion
-S:  Product=FE910
-S:  SerialNumber=f71b8b32
-C:  #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+On Mon, 2024-12-09 at 16:18 +0100, Greg Kroah-Hartman wrote:
+>=20
+> Did older kernels work?=C2=A0 Did 6.12.1?=C2=A0 If so, can you do 'git bi=
+sect'
+> to
+> find the offending change?
+>=20
 
-Signed-off-by: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/usb/serial/option.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Yep, I am doing bisect now - will report back when it's completed.
 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 9ba5584061c8..5680bd155a94 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1395,6 +1395,12 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10aa, 0xff),	/* Telit FN920C04 (MBIM) */
- 	  .driver_info = NCTRL(3) | RSVD(4) | RSVD(5) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c0, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c4, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x10c8, 0xff),	/* Telit FE910C04 (rmnet) */
-+	  .driver_info = RSVD(0) | NCTRL(2) | RSVD(3) | RSVD(4) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_ME910_DUAL_MODEM),
--- 
-2.37.1
+gene
 
+--=20
+Gene
+
+
+--=-Hb4Hp5H/VaGi78DROUsH
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><style>pre,code,address {
+  margin: 0px;
+}
+h1,h2,h3,h4,h5,h6 {
+  margin-top: 0.2em;
+  margin-bottom: 0.2em;
+}
+ol,ul {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+blockquote {
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+</style></head><body><div>On Mon, 2024-12-09 at 16:18 +0100, Greg Kroah-Har=
+tman wrote:</div><blockquote type=3D"cite" style=3D"margin:0 0 0 .8ex; bord=
+er-left:2px #729fcf solid;padding-left:1ex"><div><br></div><div>Did older k=
+ernels work?&nbsp; Did 6.12.1?&nbsp; If so, can you do 'git bisect' to<br><=
+/div><div>find the offending change?<br></div><div><br></div></blockquote><=
+div><br></div><div>Yep, I am doing bisect now - will report back when it's =
+completed.</div><div><br></div><div>gene</div><div><br></div><div><span><pr=
+e>-- <br></pre><div><span style=3D"background-color: inherit;">Gene</span><=
+/div><div><br></div></span></div></body></html>
+
+--=-Hb4Hp5H/VaGi78DROUsH--
+
+--=-+7eX/8a5SmQeZ2CGtJlV
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCZ1cW6AAKCRA5BdB0L6Ze
+21fKAPwPbFQhccaZAU2fEhqcRSYTrRRE9ztmMIt0zskMMcwzuAEA+OtQRO81hVpH
+NsCFWxldlE0G/rwnPCYERVYkceD7fAo=
+=LyRZ
+-----END PGP SIGNATURE-----
+
+--=-+7eX/8a5SmQeZ2CGtJlV--
 
