@@ -1,94 +1,239 @@
-Return-Path: <stable+bounces-100177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3479E9717
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:33:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4BC9E9725
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD16D1889DAB
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:29:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A1A9188F6EE
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4451F1E9B0D;
-	Mon,  9 Dec 2024 13:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DED23315E;
+	Mon,  9 Dec 2024 13:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5LNn6Qu"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="nQlHcl2f"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68551ACEC0;
-	Mon,  9 Dec 2024 13:26:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB4F35945
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:28:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733750809; cv=none; b=oGaI3UsQBGHIcT4sGlW1U8XZFKeWaWSfF3vNW6mlNCL7pfo/BZe/u8Ij0S46gw/F/UUgWUaKn9FgRadjs3jiSOWFoI/3NTG/se4h95Dzr8SJ9UDuGaCt62vbDt5f2pmHA3RsY059B8/Zc6eNg1nvDip7+9aXm21kGh1S4BznhpA=
+	t=1733750904; cv=none; b=MyqfZgnRahZESpyk/U22A/uvEA8T9KOeYF1iH+RZkul1Z1L1JoYx1C7bTtXs9XKA++8M3aOe0MQXIEjr52u+wRYLO97uZf08cq5veNufYYFNhMSXq6bU+nuFuXwXf11yIpAJ9BzQMJlmZEALPoYEtojmdoTH7UwCm9e5G9vKn+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733750809; c=relaxed/simple;
-	bh=HrxdnU3SHqNfb11C7hkI7FJu/c2hKnEQalteFfFDM+c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VWp4ud32oBv3p8TS88o5ZrOJJrEtQR+jAQt6oF/HjpmYSpvLQJfw9DsF3jLAhAdTHApAv3TFVdvNGmxbM8Znx/Cc5cSOhhM+n3vT/damvKA6Te/ogDHuYwbTVR80BRnDECSxAiRRvYrqDn0XxptF+mrMeyszC0HYbshah30BAbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5LNn6Qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D923C4CEE6;
-	Mon,  9 Dec 2024 13:26:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733750808;
-	bh=HrxdnU3SHqNfb11C7hkI7FJu/c2hKnEQalteFfFDM+c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=E5LNn6QuOyH8zYg3d+MSlaHyvO/ArHWOQlYckRGfbPtFCaCSw6h5zFqK+NUv/5tYg
-	 KqJKso4dPdageQF9o7p3KdtLaPBvKDkzKg7BZaHNLwEuJblr6SkStEsFid5qXGaHTi
-	 ywQnti0LuiIBilV8ITDpZ5aYTof0UGAiq2i+DprcDk1INxoA5E5W/jgqCuGTKHPcNa
-	 ij+/7kAXoh7PC4Rt8nE43bkwXUhruUKDHWYU2xU+JkLzAxZjIiYIJ5vtykA3MI1wvl
-	 ZQVNVfI8OHNyVOaSfK4VwqvfZ2LEI9EfQfSX289+OAIehN6t7/vpqGldZY6OcCzEJt
-	 MmbLqF6kGDWGw==
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e39f43344c5so4308823276.1;
-        Mon, 09 Dec 2024 05:26:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVImSjiEpu3YZrYlzMdiyZjBcVizszgaps4PXDVW6ncfiYtfvrbptkYQW8/b8lwS84sFP16ElPy7zcq@vger.kernel.org, AJvYcCVedSngUHihW8WI7H0XPtuWKdexm7CCEAalMeRVPbgCiMLT1NRO3i9r6hCpVw7QHaCEp+QrLZ0P@vger.kernel.org, AJvYcCW3K1s4pGHMPs4+fTLwFk6JAWGsrt3ALXx6ko/tkk0P0jd2HiypQRcp+FItG30U4ZfXaxem+BxF1Gt4hU7w@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBFiJ0dxILfZq2jo4ReWutjmBtPH5ulxXKwg4kmbDIk4h3ylOn
-	U8wmhebZWiP1cXAzlVWe8G6Y0yZ6MVVBPJOBdGr8hbqQqQEuQaoEP7J9EUxL6NXXboHFw9RJLFv
-	ch3BNFjfA9sJh10lKxrWIA+5wBA==
-X-Google-Smtp-Source: AGHT+IEuFoUDEMVC4Fc96+M6wpsqZ9pSoqWs9ryP9PAOzxwgyi3vXQId+RgciARGpopRBq57vy6ScMYUwEf1ed9ZI78=
-X-Received: by 2002:a05:6902:2202:b0:e39:8cfe:9d36 with SMTP id
- 3f1490d57ef6-e3a0b0c8440mr10658612276.20.1733750807729; Mon, 09 Dec 2024
- 05:26:47 -0800 (PST)
+	s=arc-20240116; t=1733750904; c=relaxed/simple;
+	bh=LdtLkb6g5/mYpUpJpgsKBP9UX9MGU4r33wuzmCaef1k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SbHOhbcg2+ah1lIOlNUom7Gm5R7qja10UaqQRNGyE9d0WDpgigoJuWF4JIxpLeGq1RGsRPv7uc++3Me4pcbdMYePnSa7b/PzpgBKiBJSnPmWynr06IC+fEcqaYw8HVhHqbmHP0zoa3bXnSRN3EOpiIt2z8mrcs3U2gXNNYZaFg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=nQlHcl2f; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3862ca8e0bbso2292383f8f.0
+        for <stable@vger.kernel.org>; Mon, 09 Dec 2024 05:28:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1733750899; x=1734355699; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=El/TOZDLV/Adncw2igrq2Gpvgb3sMBAUyZwK9Lxfyn8=;
+        b=nQlHcl2fX30nw3H+df5FwYFuDnEuQXeiO8VEnOiPRwHdiA1GB2jme0K2vpSjg8Hlu1
+         fAWf7Tf1Bm93maXY7Bz3XgRl8nwJ+lNcYDNMuv3pLsfOLUOGIMD+o1vqM/pivWCd0nYM
+         IMdNg1kZBPf/Fa8ArUsTrQAm1s38xN0UHf2GzG7cEfG+T/SwU60OZamOk7sjrr5Bg6du
+         CASaQtghB2Ys+NEW1dk0ClSPgHYqOuunmS1b0XkZEM25vWLWfcScKGw2ijCQKwh/oFwg
+         s4+75N3P3E4agEaXGu+/frPpM5LZMsnFoKSd9QRQ0dspvcxIHIR4y7cPy+7Eye5xZQKR
+         gxOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733750899; x=1734355699;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=El/TOZDLV/Adncw2igrq2Gpvgb3sMBAUyZwK9Lxfyn8=;
+        b=nS8w/a0B44j1VVNHI08VPHVPo/xy1zkbC2CPoJ/m6wpXTKBNSzwVYejPujhALYv4jC
+         GkcNWT9h8MZIcAJ4GeV3LpmBPmiOsY+/NBdhzBqCSQTrWJnxji4lMzOKYBY/10pZyW3K
+         SSzoYxmdMAvmC0UQL1nT6qb92S3WNuKNUPL5x2Jk22bEjRHxPTWIXprwBAQ/J+oFhuWV
+         fpsRvl4xbtcK1nnT1itZdIo+eztlEHEVpVpR3+ennE8iXq83UqdYxgu97wDtl6PrBRrM
+         SPK921J5I0RLRP+pOdIIpsQ+OCeYNgXpnO67Htczr9Y+cwK9dN+VUsQHaCew0fnmioDK
+         ke4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWLUuyoTkHtSioLchipHdR/WSO/X6qjLv4mDwGO+5ptyM6F8wlwm0l9oiPhgUUFeNgQUEUsVNc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyL1WofYGUHrR+cd7x3sMzfEluSvYuo8baNbrgWlpxtltW0L1Aq
+	uPLdLBAF8toF0LJV1cR3xDxM3GroQHuZWXp9ZSPiV4Ir7s5xatlWrAASomCV5UA=
+X-Gm-Gg: ASbGnctgSqm2SjGSE//D37BYYH2awDkg6wrCDypFK7TT6N+l0wTzulC7QRXq4/zThew
+	QcF2ADXwNqvba8O2VUDFDFWtSKw4TGhXtPd7Hze4gWfbu/IJtIDRiQpAOJC3kO0JV8iamQhPUQP
+	UMa1Zk6lMUjJdqCmwOxgdLbbLF6JDVU1Qbk3LHMhkNUpljSgGsp4lie1WxNQU9onxx8v0oC6Pox
+	mtjX3cd0E0qyCvV3YC4RA5/ve72v9fvRmRgRPx2KJxGcppTxQRicZBsjD8=
+X-Google-Smtp-Source: AGHT+IHd1DkHzh1NVNjC22X5kRB98anOoYPZpCUeVEirns6S3aaWq7ub1ihZAzLS2qCt8RPK8fYhhg==
+X-Received: by 2002:a05:6000:1868:b0:385:fd24:3317 with SMTP id ffacd0b85a97d-386453cf868mr528412f8f.1.1733750899061;
+        Mon, 09 Dec 2024 05:28:19 -0800 (PST)
+Received: from [192.168.50.4] ([82.78.167.161])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa67f4c4ae4sm214590966b.111.2024.12.09.05.28.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Dec 2024 05:28:18 -0800 (PST)
+Message-ID: <c65b8dd7-86e9-4a87-b9ec-bcbaae6dbe98@tuxon.dev>
+Date: Mon, 9 Dec 2024 15:28:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206-of_core_fix-v1-0-dc28ed56bec3@quicinc.com> <20241206-of_core_fix-v1-2-dc28ed56bec3@quicinc.com>
-In-Reply-To: <20241206-of_core_fix-v1-2-dc28ed56bec3@quicinc.com>
-From: Rob Herring <robh@kernel.org>
-Date: Mon, 9 Dec 2024 07:26:36 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJPBSJSdSW6F9YERGaRZ5bngbZBy8f5SHKTYnyDuZKk4g@mail.gmail.com>
-Message-ID: <CAL_JsqJPBSJSdSW6F9YERGaRZ5bngbZBy8f5SHKTYnyDuZKk4g@mail.gmail.com>
-Subject: Re: [PATCH 02/10] of: Correct return value for API of_parse_phandle_with_args_map()
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Saravana Kannan <saravanak@google.com>, Leif Lindholm <leif.lindholm@linaro.org>, 
-	Stephen Boyd <stephen.boyd@linaro.org>, Maxime Ripard <mripard@kernel.org>, 
-	Robin Murphy <robin.murphy@arm.com>, Grant Likely <grant.likely@secretlab.ca>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/25] ASoC: renesas: rz-ssi: Terminate all the DMA
+ transactions
+Content-Language: en-US
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: mturquette@baylibre.com, sboyd@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, biju.das.jz@bp.renesas.com,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, lgirdwood@gmail.com,
+ broonie@kernel.org, magnus.damm@gmail.com, linus.walleij@linaro.org,
+ perex@perex.cz, tiwai@suse.com, p.zabel@pengutronix.de,
+ linux-renesas-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-gpio@vger.kernel.org,
+ Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, stable@vger.kernel.org
+References: <20241113133540.2005850-1-claudiu.beznea.uj@bp.renesas.com>
+ <20241113133540.2005850-7-claudiu.beznea.uj@bp.renesas.com>
+ <CAMuHMdUa9GnzOMOBhpQcX88Yy2qvgKmKMdeEwEVo-OXgr-3SMg@mail.gmail.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+In-Reply-To: <CAMuHMdUa9GnzOMOBhpQcX88Yy2qvgKmKMdeEwEVo-OXgr-3SMg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 5, 2024 at 6:53=E2=80=AFPM Zijun Hu <zijun_hu@icloud.com> wrote=
-:
->
-> From: Zijun Hu <quic_zijuhu@quicinc.com>
->
-> @ret is used by of_parse_phandle_with_args_map() to record return value
-> and it is preseted with -EINVAL before the outer while loop, but it is
-> changed to 0 by below successful operation within the inner loop:
-> of_property_read_u32(new, cells_name, &new_size)
->
-> So cause 0(success) is returned for all failures which happen after the
-> operation, that is obviously wrong.
->
-> Fix by restoring @ret with preseted -EINVAL after the operation.
+Hi, Geert,
 
-Already have a similar fix queued up.
+On 09.12.2024 15:15, Geert Uytterhoeven wrote:
+> Hi Claudiu,
+> 
+> On Wed, Nov 13, 2024 at 2:35 PM Claudiu <claudiu.beznea@tuxon.dev> wrote:
+>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>>
+>> In case of full duplex the 1st closed stream doesn't benefit from the
+>> dmaengine_terminate_async(). Call it after the companion stream is
+>> closed.
+>>
+>> Fixes: 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex support")
+>> Cc: stable@vger.kernel.org
+>> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+>> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> 
+> Thanks for your patch!
+> 
+>> Changes in v3:
+>> - collected tags
+>> - use proper fixes commit SHA1 and description
+> 
+> I am not sure which one is the correct one: the above, or commit> 26ac471c5354583c ("ASoC: sh: rz-ssi: Add SSI DMAC support")...
 
-Rob
+IIRC, I had this one on the previous version but in the review process it
+has been proposed to used 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex
+support"). I think 4f8cd05a4305 ("ASoC: sh: rz-ssi: Add full duplex
+support") is the right one as the issue is related to full duplex.
+
+
+> 
+>> --- a/sound/soc/renesas/rz-ssi.c
+>> +++ b/sound/soc/renesas/rz-ssi.c
+>> @@ -415,8 +415,12 @@ static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
+>>         rz_ssi_reg_mask_setl(ssi, SSICR, SSICR_TEN | SSICR_REN, 0);
+>>
+>>         /* Cancel all remaining DMA transactions */
+>> -       if (rz_ssi_is_dma_enabled(ssi))
+>> -               dmaengine_terminate_async(strm->dma_ch);
+>> +       if (rz_ssi_is_dma_enabled(ssi)) {
+>> +               if (ssi->playback.dma_ch)
+>> +                       dmaengine_terminate_async(ssi->playback.dma_ch);
+>> +               if (ssi->capture.dma_ch)
+>> +                       dmaengine_terminate_async(ssi->capture.dma_ch);
+>> +       }
+> 
+> rz_ssi_stop() is called twice: once for capture, and a second time for
+> playback. How come that doesn't stop both?
+
+It is called from this path:
+
+static int rz_ssi_dai_trigger(struct snd_pcm_substream *substream, int cmd,
+
+                              struct snd_soc_dai *dai)
+
+{
+
+        // ...
+        case SNDRV_PCM_TRIGGER_STOP:
+
+                rz_ssi_stop(ssi, strm);
+
+                rz_ssi_stream_quit(ssi, strm);
+
+
+        // ...
+}
+
+rz_ssi_stop() is as follow:
+
+static int rz_ssi_stop(struct rz_ssi_priv *ssi, struct rz_ssi_stream *strm)
+
+{
+
+        strm->running = 0;
+
+
+
+        if (rz_ssi_is_stream_running(&ssi->playback) ||
+
+            rz_ssi_is_stream_running(&ssi->capture))
+
+                return 0;
+
+        // ...
+}
+
+rz_ssi_is_stream_running() is as follows:
+
+static inline bool rz_ssi_is_stream_running(struct rz_ssi_stream *strm)
+
+{
+
+        return strm->substream && strm->running;
+
+}
+
+
+The strm->substream is set to NULL in:
+
+static void rz_ssi_stream_quit(struct rz_ssi_priv *ssi,
+
+                               struct rz_ssi_stream *strm)
+
+{
+
+        struct snd_soc_dai *dai = rz_ssi_get_dai(strm->substream);
+
+
+
+        rz_ssi_set_substream(strm, NULL);
+
+
+        // ...
+}
+
+Thus, when the 1st full duplex stream is closed, as the companion stream is
+still running it doesn't benefit from dmaengine_terminate_async().
+
+I'll update the commit description in the next version.
+
+Thank you for your review,
+Claudiu
+
+> Perhaps the checks at the top of rz_ssi_stop() are not correct?
+> Disclaimer: I am no sound expert, so I may be missing something...
+> 
+>>
+>>         rz_ssi_set_idle(ssi);
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
 
