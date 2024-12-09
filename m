@@ -1,96 +1,49 @@
-Return-Path: <stable+bounces-100182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBC49E9764
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:42:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B269E978C
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 14:43:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFA52824E7
-	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:42:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 008D42828DC
+	for <lists+stable@lfdr.de>; Mon,  9 Dec 2024 13:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DBF233156;
-	Mon,  9 Dec 2024 13:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IMAbmhaM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0499E233146;
+	Mon,  9 Dec 2024 13:43:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B86233137;
-	Mon,  9 Dec 2024 13:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10E035953
+	for <stable@vger.kernel.org>; Mon,  9 Dec 2024 13:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733751757; cv=none; b=ttWb18ezTqbcc4jY+aH04vHXL3zQpJjqalSijiRtYidR6AURBJ52VIilkSaGcdiMaS5oEu0q2t03PU+C2ULzBa/KpjmkDHnHbbdb9pPyQukVffn6JVhm5ncAsH0kFaGPxMs+5SaCtyEIuI5VbNFzGk8CuqGW27Ig2gZ/LohKgyM=
+	t=1733751833; cv=none; b=QHSgCAp7Q8qe+/KZ/W499v8ln/thsnBcY3Qx/UtbXvHKkDgkfywC1fFv3i2hJl04u4stb4Zc1LHvcunTsph+V6DaN8loRvuK6HfFd2Edows5PV4eDg55ZWpAJiIVsppNde/Jk3C8cjz+6d3J8Z8Zi7VHsghtzw1ZEA73meDShxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733751757; c=relaxed/simple;
-	bh=03QJGK4Z1yvJAl/3TNKhw/EVpYlKKfAUlrw6poXpiK4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D9sexwR8Zzy+WhBkbGdofs/YsNd/K52LoANcH9g+DBnJsE5gz9YomhL0g5h7pWYL8T2gOYgJ7XGJsXzrzTOT6VRgEQXH4r5JrO5YdL9angL/RoSM6NVVFFcH1uuTzHFW2xIxzFDoMncPDOGftWsmCHIkgFNkF5LtVqrv2ciKvgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IMAbmhaM; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-21628b3fe7dso19938835ad.3;
-        Mon, 09 Dec 2024 05:42:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733751755; x=1734356555; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HRJ9EgO00gvd/eE2hkZ5c1MkBkZAMOXjJaY80cKYo5E=;
-        b=IMAbmhaMOIOPf6Agi//IkKX5zL8GcA/jv54I43kQdo28d0qpX1j/bhGY8u0sN8/x+7
-         ahl91+i+UI24z2HYFDR9nRfvnwoFnk3zYflS3bur7RIni8Hdo8rBdhdOCZvMEmxlQV5j
-         OEAos0pGWaCCGSd7+iDRelQYgWfp9UrAzLpzMdWOm0ICb/xqiCrcbNQ4ccArVqDX91q9
-         yBtIuRM3Rp72+O+7YsgpuRalvTJQ65lG/k18/rg7bksbqpGceWUx/BKWMHYmFn6SYY3M
-         f9tZj5VkzSo6ZbCcc3IaJyqCYsj1ks3YVBKWmDVNbfG/tXD+LCkCyhofCJtgT1mZqqKR
-         UjIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733751755; x=1734356555;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HRJ9EgO00gvd/eE2hkZ5c1MkBkZAMOXjJaY80cKYo5E=;
-        b=s+euU89S5kVk/O0VlPZ96w6FNsCxY4ZULd7TsdNJyqrHHmxuH9Bzte87iDhIXqdZND
-         awA5J9RRgH6XMZqcVECPEbLarJ+afXZdmcL3ClW659rCh3moveZSX5Kg2DXmVoJNXyNX
-         DQbMUI09JJ9SG24PKZpaDfFem09jTaxNRw86FSvM3uOWalnG/hr6EoNbycP4FfywS22q
-         koVEncXNsvIpZbHneoPXha/eup3+W2uP/vES5MgLhuwrTlqB4obzJYIiGoBqoVFZsJ84
-         dlVJ4c32FGFyUSVhVwYRThgLz1O0UyxmLnc0ZS4BPR70YNhWIo3xXEwGVzRdGJzmNU0J
-         WlRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUBzDmGijje276a691+RYILEa5MciQAAd0GIO3fwqp3kSOC3Zz4ELw93CLcFA5JnulkiYO7cHzQzh/E4eaOhEa57Q==@vger.kernel.org, AJvYcCVDGzO/TgDP/gXjgRdNbdBRXL6VLEwQwQ8EbbtpTmk9ONIls/DX5R0asUnbFGuITpsN8odJs8WHTmaIsXQ=@vger.kernel.org, AJvYcCVqN/SD+AcRnRigRJ85KzXvJpPaKnq0OWVA6h/5w+5kDFjVblnaho5b/ZtzHCOwLtyHWxVzf//y@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEMqM5zKzoJslUyTHpwTc0Un6w8Ud1f5eTEVh0s0lIUO7d83k3
-	A15su7tuo0cUN/EOGG4/XLrCT2sDBgOAsgJ5bUlyKntF+m+Ql0kh
-X-Gm-Gg: ASbGncuaY0h62XLoab5L0QcP8lCVXAoWQwswozXsDabNePBQ/XMLYYoiZ+YSxE4Wp0W
-	5Y5Nh7YDCXtSQVU9Y82xWsQqW5+Rwe0Vs0fPftT0kTfXtQzj04tDuvQDWZDgFwu/j3hEd1ycNqH
-	3PsAEtb8XNLx8VheLsSytRqjz0I1JwOQaM1+zd3cFnGnzoA04ukEKcGfyax6e7uGW/zSw0k0Jvt
-	7xLmv0Gsz5GHC+52NMY4vH6Pd6qxR4vB3LAvxlfIq/si6Xg+/ys48rkq8PpB0aDr9nmcCYWLJQV
-	Mo9O
-X-Google-Smtp-Source: AGHT+IHizzILtGkGZld4afmwIQGr0ZCEhjHEDFw/DW/9vITEgpcIGs3KbA21Eq13Yw77XhMITKs3Hw==
-X-Received: by 2002:a17:902:e807:b0:215:6995:1ef3 with SMTP id d9443c01a7336-21614d1d441mr153586085ad.3.1733751754538;
-        Mon, 09 Dec 2024 05:42:34 -0800 (PST)
-Received: from visitorckw-System-Product-Name.. ([140.113.216.168])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21644dcf724sm23863525ad.257.2024.12.09.05.42.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 05:42:33 -0800 (PST)
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org
-Cc: mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org,
-	irogers@google.com,
-	kan.liang@linux.intel.com,
-	adrian.hunter@intel.com,
-	jserv@ccns.ncku.edu.tw,
-	chuang@cs.nycu.edu.tw,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf ftrace: Fix undefined behavior in cmp_profile_data()
-Date: Mon,  9 Dec 2024 21:42:26 +0800
-Message-Id: <20241209134226.1939163-1-visitorckw@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1733751833; c=relaxed/simple;
+	bh=qjkLotXuE+TbpESf7ThjGmZxOeZ1d+FQb9qXxU9w/dI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ENFd/1XQphOQb6mWhi08j+rOquF0hR6kqkHl2ysv6Jsnk4VFsY64ElqhTy79v/3LcD4rUX6xSAob1avqsnV6jhS8rkLKCApTQ6Wv//u697bIXZ63/M0HeRAVtaf0OrW8rMSgkWUGj/QY4Q8TJzbbyre7yI2Q9k4jOlE3Y5+ZQto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2BB30113E;
+	Mon,  9 Dec 2024 05:44:18 -0800 (PST)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CDEBE3F720;
+	Mon,  9 Dec 2024 05:43:48 -0800 (PST)
+From: Mark Rutland <mark.rutland@arm.com>
+To: stable@vger.kernel.org
+Cc: ardb@kernel.org,
+	broonie@kernel.org,
+	catalin.marinas@arm.com,
+	mark.rutland@arm.com,
+	maz@kernel.org,
+	will@kernel.org
+Subject: [PATCH 6.1.y] arm64: smccc: Remove broken support for SMCCCv1.3 SVE discard hint
+Date: Mon,  9 Dec 2024 13:43:39 +0000
+Message-Id: <20241209134339.2088127-1-mark.rutland@arm.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,45 +52,234 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The comparison function cmp_profile_data() violates the C standard's
-requirements for qsort() comparison functions, which mandate symmetry
-and transitivity:
+[ Upstream commit 8c462d56487e3abdbf8a61cedfe7c795a54f4a78 ]
 
-* Symmetry: If x < y, then y > x.
-* Transitivity: If x < y and y < z, then x < z.
+SMCCCv1.3 added a hint bit which callers can set in an SMCCC function ID
+(AKA "FID") to indicate that it is acceptable for the SMCCC
+implementation to discard SVE and/or SME state over a specific SMCCC
+call. The kernel support for using this hint is broken and SMCCC calls
+may clobber the SVE and/or SME state of arbitrary tasks, though FPSIMD
+state is unaffected.
 
-When v1 and v2 are equal, the function incorrectly returns 1, breaking
-symmetry and transitivity. This causes undefined behavior, which can
-lead to memory corruption in certain versions of glibc [1].
+The kernel support is intended to use the hint when there is no SVE or
+SME state to save, and to do this it checks whether TIF_FOREIGN_FPSTATE
+is set or TIF_SVE is clear in assembly code:
 
-Fix the issue by returning 0 when v1 and v2 are equal, ensuring
-compliance with the C standard and preventing undefined behavior.
+|        ldr     <flags>, [<current_task>, #TSK_TI_FLAGS]
+|        tbnz    <flags>, #TIF_FOREIGN_FPSTATE, 1f   // Any live FP state?
+|        tbnz    <flags>, #TIF_SVE, 2f               // Does that state include SVE?
+|
+| 1:     orr     <fid>, <fid>, ARM_SMCCC_1_3_SVE_HINT
+| 2:
+|        << SMCCC call using FID >>
 
-Link: https://www.qualys.com/2024/01/30/qsort.txt [1]
-Fixes: 0f223813edd0 ("perf ftrace: Add 'profile' command")
-Fixes: 74ae366c37b7 ("perf ftrace profile: Add -s/--sort option")
+This is not safe as-is:
+
+(1) SMCCC calls can be made in a preemptible context and preemption can
+    result in TIF_FOREIGN_FPSTATE being set or cleared at arbitrary
+    points in time. Thus checking for TIF_FOREIGN_FPSTATE provides no
+    guarantee.
+
+(2) TIF_FOREIGN_FPSTATE only indicates that the live FP/SVE/SME state in
+    the CPU does not belong to the current task, and does not indicate
+    that clobbering this state is acceptable.
+
+    When the live CPU state is clobbered it is necessary to update
+    fpsimd_last_state.st to ensure that a subsequent context switch will
+    reload FP/SVE/SME state from memory rather than consuming the
+    clobbered state. This and the SMCCC call itself must happen in a
+    critical section with preemption disabled to avoid races.
+
+(3) Live SVE/SME state can exist with TIF_SVE clear (e.g. with only
+    TIF_SME set), and checking TIF_SVE alone is insufficient.
+
+Remove the broken support for the SMCCCv1.3 SVE saving hint. This is
+effectively a revert of commits:
+
+* cfa7ff959a78 ("arm64: smccc: Support SMCCC v1.3 SVE register saving hint")
+* a7c3acca5380 ("arm64: smccc: Save lr before calling __arm_smccc_sve_check()")
+
+... leaving behind the ARM_SMCCC_VERSION_1_3 and ARM_SMCCC_1_3_SVE_HINT
+definitions, since these are simply definitions from the SMCCC
+specification, and the latter is used in KVM via ARM_SMCCC_CALL_HINTS.
+
+If we want to bring this back in future, we'll probably want to handle
+this logic in C where we can use all the usual FPSIMD/SVE/SME helper
+functions, and that'll likely require some rework of the SMCCC code
+and/or its callers.
+
+Fixes: cfa7ff959a78 ("arm64: smccc: Support SMCCC v1.3 SVE register saving hint")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241106160448.2712997-1-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: fix conflicts in <linux/arm-smccc.h> ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 ---
- tools/perf/builtin-ftrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/smccc-call.S | 35 +++-------------------------------
+ drivers/firmware/smccc/smccc.c |  4 ----
+ include/linux/arm-smccc.h      | 30 ++---------------------------
+ 3 files changed, 5 insertions(+), 64 deletions(-)
 
-diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
-index 272d3c70810e..a56cf8b0a7d4 100644
---- a/tools/perf/builtin-ftrace.c
-+++ b/tools/perf/builtin-ftrace.c
-@@ -1151,8 +1151,9 @@ static int cmp_profile_data(const void *a, const void *b)
+This backport is based on 6.1.119; defconfig builds cleanly and boots
+fine.
+
+Mark.
+
+diff --git a/arch/arm64/kernel/smccc-call.S b/arch/arm64/kernel/smccc-call.S
+index 487381164ff6b..2def9d0dd3ddb 100644
+--- a/arch/arm64/kernel/smccc-call.S
++++ b/arch/arm64/kernel/smccc-call.S
+@@ -7,48 +7,19 @@
  
- 	if (v1 > v2)
- 		return -1;
--	else
-+	if (v1 < v2)
- 		return 1;
-+	return 0;
- }
+ #include <asm/asm-offsets.h>
+ #include <asm/assembler.h>
+-#include <asm/thread_info.h>
+-
+-/*
+- * If we have SMCCC v1.3 and (as is likely) no SVE state in
+- * the registers then set the SMCCC hint bit to say there's no
+- * need to preserve it.  Do this by directly adjusting the SMCCC
+- * function value which is already stored in x0 ready to be called.
+- */
+-SYM_FUNC_START(__arm_smccc_sve_check)
+-
+-	ldr_l	x16, smccc_has_sve_hint
+-	cbz	x16, 2f
+-
+-	get_current_task x16
+-	ldr	x16, [x16, #TSK_TI_FLAGS]
+-	tbnz	x16, #TIF_FOREIGN_FPSTATE, 1f	// Any live FP state?
+-	tbnz	x16, #TIF_SVE, 2f		// Does that state include SVE?
+-
+-1:	orr	x0, x0, ARM_SMCCC_1_3_SVE_HINT
+-
+-2:	ret
+-SYM_FUNC_END(__arm_smccc_sve_check)
+-EXPORT_SYMBOL(__arm_smccc_sve_check)
  
- static void print_profile_result(struct perf_ftrace *ftrace)
+ 	.macro SMCCC instr
+-	stp     x29, x30, [sp, #-16]!
+-	mov	x29, sp
+-alternative_if ARM64_SVE
+-	bl	__arm_smccc_sve_check
+-alternative_else_nop_endif
+ 	\instr	#0
+-	ldr	x4, [sp, #16]
++	ldr	x4, [sp]
+ 	stp	x0, x1, [x4, #ARM_SMCCC_RES_X0_OFFS]
+ 	stp	x2, x3, [x4, #ARM_SMCCC_RES_X2_OFFS]
+-	ldr	x4, [sp, #24]
++	ldr	x4, [sp, #8]
+ 	cbz	x4, 1f /* no quirk structure */
+ 	ldr	x9, [x4, #ARM_SMCCC_QUIRK_ID_OFFS]
+ 	cmp	x9, #ARM_SMCCC_QUIRK_QCOM_A6
+ 	b.ne	1f
+ 	str	x6, [x4, ARM_SMCCC_QUIRK_STATE_OFFS]
+-1:	ldp     x29, x30, [sp], #16
+-	ret
++1:	ret
+ 	.endm
+ 
+ /*
+diff --git a/drivers/firmware/smccc/smccc.c b/drivers/firmware/smccc/smccc.c
+index db818f9dcb8ee..105cc7d9f4c35 100644
+--- a/drivers/firmware/smccc/smccc.c
++++ b/drivers/firmware/smccc/smccc.c
+@@ -16,7 +16,6 @@ static u32 smccc_version = ARM_SMCCC_VERSION_1_0;
+ static enum arm_smccc_conduit smccc_conduit = SMCCC_CONDUIT_NONE;
+ 
+ bool __ro_after_init smccc_trng_available = false;
+-u64 __ro_after_init smccc_has_sve_hint = false;
+ s32 __ro_after_init smccc_soc_id_version = SMCCC_RET_NOT_SUPPORTED;
+ s32 __ro_after_init smccc_soc_id_revision = SMCCC_RET_NOT_SUPPORTED;
+ 
+@@ -28,9 +27,6 @@ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit)
+ 	smccc_conduit = conduit;
+ 
+ 	smccc_trng_available = smccc_probe_trng();
+-	if (IS_ENABLED(CONFIG_ARM64_SVE) &&
+-	    smccc_version >= ARM_SMCCC_VERSION_1_3)
+-		smccc_has_sve_hint = true;
+ 
+ 	if ((smccc_version >= ARM_SMCCC_VERSION_1_2) &&
+ 	    (smccc_conduit != SMCCC_CONDUIT_NONE)) {
+diff --git a/include/linux/arm-smccc.h b/include/linux/arm-smccc.h
+index f196c19f8e55c..2d1d02eac500c 100644
+--- a/include/linux/arm-smccc.h
++++ b/include/linux/arm-smccc.h
+@@ -224,8 +224,6 @@ u32 arm_smccc_get_version(void);
+ 
+ void __init arm_smccc_version_init(u32 version, enum arm_smccc_conduit conduit);
+ 
+-extern u64 smccc_has_sve_hint;
+-
+ /**
+  * arm_smccc_get_soc_id_version()
+  *
+@@ -323,15 +321,6 @@ struct arm_smccc_quirk {
+ 	} state;
+ };
+ 
+-/**
+- * __arm_smccc_sve_check() - Set the SVE hint bit when doing SMC calls
+- *
+- * Sets the SMCCC hint bit to indicate if there is live state in the SVE
+- * registers, this modifies x0 in place and should never be called from C
+- * code.
+- */
+-asmlinkage unsigned long __arm_smccc_sve_check(unsigned long x0);
+-
+ /**
+  * __arm_smccc_smc() - make SMC calls
+  * @a0-a7: arguments passed in registers 0 to 7
+@@ -399,20 +388,6 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
+ 
+ #endif
+ 
+-/* nVHE hypervisor doesn't have a current thread so needs separate checks */
+-#if defined(CONFIG_ARM64_SVE) && !defined(__KVM_NVHE_HYPERVISOR__)
+-
+-#define SMCCC_SVE_CHECK ALTERNATIVE("nop \n",  "bl __arm_smccc_sve_check \n", \
+-				    ARM64_SVE)
+-#define smccc_sve_clobbers "x16", "x30", "cc",
+-
+-#else
+-
+-#define SMCCC_SVE_CHECK
+-#define smccc_sve_clobbers
+-
+-#endif
+-
+ #define ___count_args(_0, _1, _2, _3, _4, _5, _6, _7, _8, x, ...) x
+ 
+ #define __count_args(...)						\
+@@ -480,7 +455,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
+ 
+ #define ___constraints(count)						\
+ 	: __constraint_read_ ## count					\
+-	: smccc_sve_clobbers "memory"
++	: "memory"
+ #define __constraints(count)	___constraints(count)
+ 
+ /*
+@@ -495,8 +470,7 @@ asmlinkage void __arm_smccc_hvc(unsigned long a0, unsigned long a1,
+ 		register unsigned long r2 asm("r2");			\
+ 		register unsigned long r3 asm("r3"); 			\
+ 		__declare_args(__count_args(__VA_ARGS__), __VA_ARGS__);	\
+-		asm volatile(SMCCC_SVE_CHECK				\
+-			     inst "\n" :				\
++		asm volatile(inst "\n" :				\
+ 			     "=r" (r0), "=r" (r1), "=r" (r2), "=r" (r3)	\
+ 			     __constraints(__count_args(__VA_ARGS__)));	\
+ 		if (___res)						\
 -- 
-2.34.1
+2.30.2
 
 
