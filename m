@@ -1,98 +1,102 @@
-Return-Path: <stable+bounces-100436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034249EB30E
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:22:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B619EB324
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:26:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95377283560
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 14:22:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0119E164513
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 14:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DBD1AAA3B;
-	Tue, 10 Dec 2024 14:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E7C1B394F;
+	Tue, 10 Dec 2024 14:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjtYPM3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6Wnr/Nk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A567278F4E
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 14:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95871B219F;
+	Tue, 10 Dec 2024 14:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733840539; cv=none; b=abNwgWTZmpV7yk+AwMpz+Mg4HA11cmE4/Ls6bEy5iVFZJaVFYD6veqFTggUn0W/xe9ch4BJJJOSVeYJ4s2D3jZo9EniWP6A+bdY7khRhf3JIS06TNyRaCWtvlz9RrnWZi7BSDvuINlLonb2Z2Saa1ogfMWOl940VTi4fxlDagOI=
+	t=1733840753; cv=none; b=LJZmt0Xx7/5E31+p6AyNfEZsylSIAi9IItcqxYtWPAew7+qEemERlK5bsYaH09qzlBTF5Zu17+HRR1S3TvzufBzSU5c11U7ivPRccBvENyCk84qW8Ug6hFjro5EyCEf1QrClsEP12OWRMrd7FTJza2+HIa1skYoi/1Kp3K7XLUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733840539; c=relaxed/simple;
-	bh=RlkJX0MrhsJeOtYwbzKz9uU11pc4QQCMS9xkZOpuwfo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qSs+C28FXZcMoN/2KIRxcQh3b0qw3ukcEf+nAA4vMpvxugFGrG+r13pCtX6JzxX9BiwN/u7yU3UTOikOaeDno+aA1LOuZBsJaD+AE3yYoBXobDbwKPPP+wMbHcWJrAOlJEKkn4NxBxAkRkMJGMA9Pdelbaighpq6B2+JXNdWlQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjtYPM3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF9AC4CEDF;
-	Tue, 10 Dec 2024 14:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733840539;
-	bh=RlkJX0MrhsJeOtYwbzKz9uU11pc4QQCMS9xkZOpuwfo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjtYPM3LNQc7Zhm7pUf349QMmkZGGYRJo6ajHpjNqMD23JgZ/EZFRef/1nK3ew2qv
-	 unKzTEilzAJDhFUziX/+fx929D0mgrkRQoHlSt6eJF2dYiraDwai1u8I2skVpeIuAo
-	 6YOqeGgq5NCRCLOQbBmUq9kmYdRGZypKcMePWhIlogVfW0LRzysPYEOULGO2MoYm3Y
-	 d/jh++YzoXpHIU7vUqxT/LLjSpuMoGpXHkJwtuoeue5ooXa66+D+bDf+HFEnnDRsWy
-	 Qh2HrWnqPo/MVVel4jZJa49POpjig4HYiOiwc/ZdLbBUNf2K3A8wUe4JAcDQcJ3KCY
-	 MHHH7PXtYlBmQ==
-From: Arnd Bergmann <arnd@kernel.org>
-To: x86@kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
+	s=arc-20240116; t=1733840753; c=relaxed/simple;
+	bh=mlDGfhaWS1q8ZGab27Xs3j9ugz6feCvic5MUD0SxWUk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KqS34335gl5m1YHgI3JiXq3AD2NCzV9Hj6Lyqrv43B6+8tzzU6zMnueIPIfOpAhPBd2MP+n1dZ1JM3gMRfAsf/L1nx1K+34MbLI5pB33dQAKGUppKy0dkJg6wRLx/2ij0creKDhpzk6GnjyPdYV/WpBik+M0rjyyRWFAh1L1TuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6Wnr/Nk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB31C4CEDF;
+	Tue, 10 Dec 2024 14:25:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733840752;
+	bh=mlDGfhaWS1q8ZGab27Xs3j9ugz6feCvic5MUD0SxWUk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T6Wnr/Nk3W+3py0cN+M2G6SP4IVRZ2JlKZzADfNSNiszW1l+u62WdN11yqHbM0qYa
+	 KjK/AgTlhAAsz7jLsxCeIRLyZm5HzXHnrh+O1fNXZDA5/ha63VDZ7zB0Yd+kATftcD
+	 tQZLuC41VXm77LA6/xGXxmeNZV9RAtGCwIm+7SBw=
+Date: Tue, 10 Dec 2024 15:25:16 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Cc: quic_jjohnson@quicinc.com, kees@kernel.org, abdul.rahim@myyahoo.com,
+	m.grzeschik@pengutronix.de, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
+	rc93.raju@samsung.com, taehyun.cho@samsung.com,
+	hongpooh.kim@samsung.com, eomji.oh@samsung.com,
+	shijie.cai@samsung.com, alim.akhtar@samsung.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2 01/11] x86/Kconfig: Geode CPU has cmpxchg8b
-Date: Tue, 10 Dec 2024 15:21:56 +0100
-Message-Id: <20241210142206.2311556-2-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241210142206.2311556-1-arnd@kernel.org>
-References: <20241210142206.2311556-1-arnd@kernel.org>
+Subject: Re: [PATCH] usb: gadget: f_midi: Fixing wMaxPacketSize exceeded
+ issue during MIDI bind retries
+Message-ID: <2024121054-pregnant-verse-d8d5@gregkh>
+References: <CGME20241208152338epcas5p4fde427bb4467414417083221067ac7ab@epcas5p4.samsung.com>
+ <20241208152322.1653-1-selvarasu.g@samsung.com>
+ <6b3b314e-20a3-4b3f-a3ab-bb2df21de4f5@samsung.com>
+ <2024121035-manicure-defiling-e92c@gregkh>
+ <e3f45175-a17d-4b88-b6e4-5c75e91132be@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e3f45175-a17d-4b88-b6e4-5c75e91132be@samsung.com>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Tue, Dec 10, 2024 at 07:41:53PM +0530, Selvarasu Ganesan wrote:
+> 
+> On 12/10/2024 3:48 PM, Greg KH wrote:
+> > On Tue, Dec 10, 2024 at 03:23:22PM +0530, Selvarasu Ganesan wrote:
+> >> Hello Maintainers.
+> >>
+> >> Gentle remainder for review.
+> > You sent this 2 days ago, right?
+> >
+> > Please take the time to review other commits on the miailing list if you
+> > wish to see your patches get reviewed faster, to help reduce the
+> > workload of people reviewing your changes.
+> >
+> > Otherwise just wait for people to get to it, what is the rush here?
+> >
+> > thanks,
+> >
+> > greg k-h
+> 
+> 
+> Hi Greg,
+> 
+> 
+> There is no rush. I understand that the review will take time and I 
+> apologize for any inconvenience caused by sending the reminder email.
 
-An older cleanup of mine inadvertently removed geode-gx1 and geode-lx
-from the list of CPUs that are known to support a working cmpxchg8b.
+Great, during that time, please do some patch reviews of the changes on
+the mailing list to help us out.
 
-Fixes: 88a2b4edda3d ("x86/Kconfig: Rework CONFIG_X86_PAE dependency")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/x86/Kconfig.cpu | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+thanks,
 
-diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
-index 2a7279d80460..42e6a40876ea 100644
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -368,7 +368,7 @@ config X86_HAVE_PAE
- 
- config X86_CMPXCHG64
- 	def_bool y
--	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
-+	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7 || MGEODEGX1 || MGEODE_LX
- 
- # this should be set for all -march=.. options where the compiler
- # generates cmov.
--- 
-2.39.5
-
+greg k-h
 
