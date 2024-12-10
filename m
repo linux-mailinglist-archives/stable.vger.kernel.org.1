@@ -1,96 +1,75 @@
-Return-Path: <stable+bounces-100388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4349EAD1F
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:55:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285F49EAD54
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:59:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EBE3188E21D
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:57:38 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACB1223E9A;
+	Tue, 10 Dec 2024 09:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="bhAYBPqK"
+X-Original-To: stable@vger.kernel.org
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E9B28CAC7
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:55:14 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DAC5223320;
-	Tue, 10 Dec 2024 09:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UilE0GZ3";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="YfXDDCwB";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UilE0GZ3";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="YfXDDCwB"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1370E210F4F;
-	Tue, 10 Dec 2024 09:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0CF223E94
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733824103; cv=none; b=E/nSTWLugMPa57pqIa+DIW0XFe0nvDCf26UA6N/pmYdzXWMTCVgVgOE3qDx5VZYcr0kKQtmD9QZ+Dc3GGkL2TLkl6IxswDYbLJb1QbrNqeR0uDoM54kKGKSDgis+m+Q8Q0PT2hgrnkvsJnhI9Pf1jwF76HSDl9ORc/fL0EN0pzo=
+	t=1733824414; cv=none; b=UourbRHWybTyTGYtWkn+IyOil6liAEn78gEdtxXOi6EefyM7+ap1gRuebhd9I2V/eB/oRVVQTjl7wDtzPDWCw276DNx9AqG2c6FLwbHJgBOqVkR1VT7Km1WGtAJg0jbV9lUq0Nh8zCYXtIQnKeRn6WzcpZFkzrBT0Nhdcqdetsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733824103; c=relaxed/simple;
-	bh=fVy5esvV9BSosUTvXR/q0XhhrqNclabAFPZObccFWMY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h6t+jqkTImgEUOZjszYX/i8N/Ed2wS9yx0GJ+W9wmB+zfJR0qBUj+h3ZRdwFXRbg5oIiMATRinJ5J0020F1Umo1GRDV/oq5w2DWHspNtvMTVCs2O0hvioP/RbVHsYFFGHic/oWOIxs2cdkNf+qXzoVx46bB1xdxg6N20RCBL5MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=UilE0GZ3; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=YfXDDCwB; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=UilE0GZ3; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=YfXDDCwB; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B64E021160;
-	Tue, 10 Dec 2024 09:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1733824095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SeSHlqH8vcO5XpyT7gztV9qNQkgwbz3uC1Ryr71Q4yA=;
-	b=UilE0GZ31kvq3G/OesvFrWwd/TeE4fQ+eovvH7N8InZLigZVQq1zmyHLopnhscrl1Yr2vt
-	sKS7Nsw1BfpiTAT2GpWY1m6fKgCBLrNnNgv27shENUIXtqL6phnyv9vYUxnrqL8FRDvpTa
-	ccHgyaODnl3UYnXB6wSqgdZWUcMo/OA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1733824095;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SeSHlqH8vcO5XpyT7gztV9qNQkgwbz3uC1Ryr71Q4yA=;
-	b=YfXDDCwBLXun5Mdbd4HXhPezB4xZiLJ6ztanzpj3jVBAhDDEejUlFUqUKjknWNC2yPE6M7
-	tIIW/P1WCCYEkUDQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UilE0GZ3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YfXDDCwB
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1733824095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SeSHlqH8vcO5XpyT7gztV9qNQkgwbz3uC1Ryr71Q4yA=;
-	b=UilE0GZ31kvq3G/OesvFrWwd/TeE4fQ+eovvH7N8InZLigZVQq1zmyHLopnhscrl1Yr2vt
-	sKS7Nsw1BfpiTAT2GpWY1m6fKgCBLrNnNgv27shENUIXtqL6phnyv9vYUxnrqL8FRDvpTa
-	ccHgyaODnl3UYnXB6wSqgdZWUcMo/OA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1733824095;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=SeSHlqH8vcO5XpyT7gztV9qNQkgwbz3uC1Ryr71Q4yA=;
-	b=YfXDDCwBLXun5Mdbd4HXhPezB4xZiLJ6ztanzpj3jVBAhDDEejUlFUqUKjknWNC2yPE6M7
-	tIIW/P1WCCYEkUDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9B92E13A15;
-	Tue, 10 Dec 2024 09:48:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ytilJV8OWGdROAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 10 Dec 2024 09:48:15 +0000
-Message-ID: <c06e7552-bcce-49b9-8d77-72de48014a56@suse.cz>
-Date: Tue, 10 Dec 2024 10:48:15 +0100
+	s=arc-20240116; t=1733824414; c=relaxed/simple;
+	bh=f2wXsLu93ld7H5hW2vfOqoFIUWvM4bM6iQGQZM3hGLU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=TsgU779ybLWfMUs3gphNqMHu5XDoJsgtFtZAZmwpC+KsY5C9wofq79UXcgucF3ikI3DnwxlCm+R9YSFQcLvpdJbnAPcbYAYVIiHzNw95hxSbbuk+9p+c69U1AB4LIRwdaNUzSBPG/4RspGqcJsDlmYYJ59Fz2iM3LZ/AVOhTa+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=bhAYBPqK; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20241210095329epoutp0232d232b32a941268eecfa84a2c84d968~PyB0yYPRC1258612586epoutp02r
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:53:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20241210095329epoutp0232d232b32a941268eecfa84a2c84d968~PyB0yYPRC1258612586epoutp02r
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1733824409;
+	bh=Au+as8CBZsENQNOVCtoyLwjUW/xu13aSSffNENYc9/8=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=bhAYBPqKAxcqjBIUnoYjaqYNVklyTd9ERldvwTexbyv++egJNM3TN64hxTaGRClnt
+	 hgOCjLmLrXb3URwYTGrOVvrPbnq0eb66kJeqWej207utU0n7GEq+KQ8VNej3sVIzHa
+	 sx8FKF5al7hl/yKYAFmmsrJyfJE9KEDzHhcmuZIA=
+Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTP id
+	20241210095328epcas5p12771ea8fe08eb534f608317b315752ad~PyB0LS3NP3223232232epcas5p1E;
+	Tue, 10 Dec 2024 09:53:28 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.178]) by
+	epsnrtp4.localdomain (Postfix) with ESMTP id 4Y6vF31Pjsz4x9Q2; Tue, 10 Dec
+	2024 09:53:27 +0000 (GMT)
+Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
+	epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	5B.39.29212.69F08576; Tue, 10 Dec 2024 18:53:27 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20241210095325epcas5p47339f18d446e8da3efa84bbf3c9e10e5~PyBxudcuU2137121371epcas5p4J;
+	Tue, 10 Dec 2024 09:53:25 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20241210095325epsmtrp23baf7b30fd10f3a2528d0145247ec01e~PyBxthtCA1022410224epsmtrp2C;
+	Tue, 10 Dec 2024 09:53:25 +0000 (GMT)
+X-AuditID: b6c32a50-801fa7000000721c-d7-67580f96b568
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	06.3F.18729.59F08576; Tue, 10 Dec 2024 18:53:25 +0900 (KST)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20241210095323epsmtip260b68af7f4d84985d469d96fa5179354~PyBvP-Ak21208112081epsmtip2A;
+	Tue, 10 Dec 2024 09:53:23 +0000 (GMT)
+Message-ID: <6b3b314e-20a3-4b3f-a3ab-bb2df21de4f5@samsung.com>
+Date: Tue, 10 Dec 2024 15:23:22 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,138 +77,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/page_alloc: don't call pfn_to_page() on possibly
- non-existent PFN in split_large_buddy()
+Subject: Re: [PATCH] usb: gadget: f_midi: Fixing wMaxPacketSize exceeded
+ issue during MIDI bind retries
+To: gregkh@linuxfoundation.org, quic_jjohnson@quicinc.com, kees@kernel.org,
+	abdul.rahim@myyahoo.com, m.grzeschik@pengutronix.de,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, dh10.jung@samsung.com, naushad@samsung.com,
+	akash.m5@samsung.com, rc93.raju@samsung.com, taehyun.cho@samsung.com,
+	hongpooh.kim@samsung.com, eomji.oh@samsung.com, shijie.cai@samsung.com,
+	alim.akhtar@samsung.com, stable@vger.kernel.org
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Yu Zhao <yuzhao@google.com>, stable@vger.kernel.org
-References: <20241210093437.174413-1-david@redhat.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- EP+ylKVEKb0Q2A==
-In-Reply-To: <20241210093437.174413-1-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <20241208152322.1653-1-selvarasu.g@samsung.com>
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: B64E021160
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:mid,suse.cz:email];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Tf0wbZRjed3e9Hgzk6KB8YiJdE0yKgfVcC4cpjDCEZjSBhJRM44QLvRSk
+	tE1bdBBiQAcTVn66wEbYZDiYlm0IFhDsWCgpTNycivoHSmk3wsYE3A8cLoDacqj897xPnvfH
+	877fR6CCWTySKNJbWJOe0YnxQGxoQiKJbQs5qpXWegHd1trPo5d/svFoz/khnP61sxWhpy9d
+	QOgPPunD6RbHIEbPef/E6Ksrt3n0zGgHTnf1VKO0veZHhH7s+ptHV9nneLSttgOjZ9ZHULqz
+	/w6gW8bDUwTKAVstrrx+7jJfOXl/iq9s3JIqmx3vKRvsNqB8MvBiNv+NYkUhy2hYk4jVFxg0
+	RXptkjgzJ+9wnjxeSsVSiXSCWKRnStgkcZoqOza9SOczIRa9w+hKfVQ2YzaLDyQrTIZSCysq
+	NJgtSWLWqNEZZcY4M1NiLtVr4/Ss5VVKKn1F7hPmFxcuVb5mHA05fs+7CSqBO6gOBBCQlMFb
+	J1uxOhBICEgHgFtjV3hc8BjAU3cvAS54CuDmoMcnI7ZTusde5/hrALqtHpwLVgCcvFLJ99cN
+	JpPhdye6UT/GyGi44KjGOT4Ufn12AfPjcDIKzs+e2dbvI4vgH211293C/HPcctv5/gAlrQi0
+	Phzn+VUoGQFnFz5G/GPgJAUXbyj8dACpgC1L3QgniYLDKx2oPxeSywRc/n0AcE7ToGfShXJ4
+	H3wwZedzOBI+Wb2Gc7gAOlrWdvhC6LQ5d/SHYG/nTZ6/L0pKYN/oAa7Xc7B+YwHhthIMP6wR
+	cOpoOF01s1PxBei++DOPw0o4XbPO55bVCOBH7f1IExC179pL+y6X7bvstP/fuRNgNhDJGs0l
+	WrZAbqRi9ey7/128wFAyALYfeUz2l6D38604J0AI4ASQQMVhwUSmWisI1jBl5azJkGcq1bFm
+	J5D7LtSMRoYXGHy/RG/Jo2SJUll8fLws8WA8JY4I/q36nEZAahkLW8yyRtb0bx5CBERWIgw1
+	Gw3e5qdjmfvD7vHJNSt/Zv9VRqW6vipVn/9UteVuXO/aW3YyWXE/7a5C/vT7MmJ+8ODY7bEb
+	KUTOnbX31aHCr4Tzw6L0z3pPewWThxQdoUPqwYoMYUJPU6y54uKFJWGKEGa99FCl3XDmbwY1
+	fPNI5ekn38wtU4UkxuHl43vsz6f2h/UJn3kbb1ZUTuUKTkSNLza/NZeQsYZPTOzNdS0es9Sn
+	/rWhri7WZHl+sQe6JAHlEZT0UU7MD64eXsPLw66u1pXS+eOnjzVJquwZ+V2XdbI97iNfdJTE
+	LaaeqjnS9SArKMQqyB3ZOqONqFLX0yLJtz3PVnOoQGzk8NFRMWYuZKgY1GRm/gHosdzCbQQA
+	AA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKIsWRmVeSWpSXmKPExsWy7bCSvO5U/oh0g3+PzSymT9vIavHm6ipW
+	iwfztrFZ3Fkwjcni1PKFTBbNi9ezWUzas5XF4u7DHywW696eZ7W4vGsOm8WiZa3MFlvarjBZ
+	fDr6n9WicctdVotVnXNYLC5/38lssWDjI0aLSQdFHYQ8Nq3qZPPYP3cNu8exF8fZPfr/GnhM
+	3FPn0bdlFaPH501yAexRXDYpqTmZZalF+nYJXBkvG1wLdvFXPH/4h7GB8R5PFyMHh4SAicTS
+	fZFdjFwcQgK7GSU6lq9l72LkBIpLS7ye1cUIYQtLrPz3nB2i6DWjxJrmj2wgCV4BO4kLLUuZ
+	QWwWAVWJJ3taoeKCEidnPmEBsUUF5CXu35oBNlRYIFPi3qmZbCCDRAT2AG1794AFxGEW6GGS
+	uL7mMRvEin5GiTsHv4GNYhYQl7j1ZD4TyK1sAoYSz07YgIQ5BWwkJr1cygRRYibRtRXiVGag
+	bdvfzmGewCg0C8khs5BMmoWkZRaSlgWMLKsYJVMLinPTc4sNCwzzUsv1ihNzi0vz0vWS83M3
+	MYJjVktzB+P2VR/0DjEycTAeYpTgYFYS4eXwDk0X4k1JrKxKLcqPLyrNSS0+xCjNwaIkziv+
+	ojdFSCA9sSQ1OzW1ILUIJsvEwSnVwLR2enIT06wLsW8PlPDlbWILDEl6fvlNTewKm0/N/5+K
+	aszaX7jU8/OuBb/1O951yJ/bXl90Vqx/0dxje7JPL5zTl7Ir8u60bcyXD3nfr3n17pTQl2+N
+	hpILkyb5S9+K32vpfGTe7aZla3heneTViuJ1OBIrP7WVf0ZVaf3ET4wJ2x9tat20KL5jT7fn
+	mYkNEwwjJ9hOOl3xLVJB49L/y3cEF3RmO95wV5Fhvr6uXfy0L8NEPtmsww8ONM2NkgzVyLyU
+	NbvsxbywPVJsOx03vZpZ87T7ye9wLw7z6+m7U27a/b0Y+8Io9vzeaBvWnybvDHg+TNoS8Xvv
+	u+M1fLL7Q5lvP+pvCj4U/58j1bC4ULdDiaU4I9FQi7moOBEAtyi3QkgDAAA=
+X-CMS-MailID: 20241210095325epcas5p47339f18d446e8da3efa84bbf3c9e10e5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20241208152338epcas5p4fde427bb4467414417083221067ac7ab
+References: <CGME20241208152338epcas5p4fde427bb4467414417083221067ac7ab@epcas5p4.samsung.com>
+	<20241208152322.1653-1-selvarasu.g@samsung.com>
 
-On 12/10/24 10:34, David Hildenbrand wrote:
-> In split_large_buddy(), we might call pfn_to_page() on a PFN that might
-> not exist. In corner cases, such as when freeing the highest pageblock in
-> the last memory section, this could result with CONFIG_SPARSEMEM &&
-> !CONFIG_SPARSEMEM_EXTREME in __pfn_to_section() returning NULL and
-> and __section_mem_map_addr() dereferencing that NULL pointer.
-> 
-> Let's fix it, and avoid doing a pfn_to_page() call for the first
-> iteration, where we already have the page.
-> 
-> So far this was found by code inspection, but let's just CC stable as
-> the fix is easy.
-> 
-> Fixes: fd919a85cd55 ("mm: page_isolation: prepare for hygienic freelists")
-> Reported-by: Vlastimil Babka <vbabka@suse.cz>
-> Closes: https://lkml.kernel.org/r/e1a898ba-a717-4d20-9144-29df1a6c8813@suse.cz
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Yu Zhao <yuzhao@google.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Hello Maintainers.
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Gentle remainder for review.
 
-Thanks!
+Thanks,
+Selva
 
+
+On 12/8/2024 8:53 PM, Selvarasu Ganesan wrote:
+> The current implementation sets the wMaxPacketSize of bulk in/out
+> endpoints to 1024 bytes at the end of the f_midi_bind function. However,
+> in cases where there is a failure in the first midi bind attempt,
+> consider rebinding. This scenario may encounter an f_midi_bind issue due
+> to the previous bind setting the bulk endpoint's wMaxPacketSize to 1024
+> bytes, which exceeds the ep->maxpacket_limit where configured TX/RX
+> FIFO's maxpacket size of 512 bytes for IN/OUT endpoints in support HS
+> speed only.
+> This commit addresses this issue by resetting the wMaxPacketSize before
+> endpoint claim.
+>
+> Fixes: 46decc82ffd5 ("usb: gadget: unconditionally allocate hs/ss descriptor in bind operation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 > ---
->  mm/page_alloc.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 48a291c485df4..a52c6022c65cb 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1238,13 +1238,15 @@ static void split_large_buddy(struct zone *zone, struct page *page,
->  	if (order > pageblock_order)
->  		order = pageblock_order;
->  
-> -	while (pfn != end) {
-> +	do {
->  		int mt = get_pfnblock_migratetype(page, pfn);
->  
->  		__free_one_page(page, pfn, zone, order, mt, fpi);
->  		pfn += 1 << order;
-> +		if (pfn == end)
-> +			break;
->  		page = pfn_to_page(pfn);
-> -	}
-> +	} while (1);
->  }
->  
->  static void free_one_page(struct zone *zone, struct page *page,
-
+>   drivers/usb/gadget/function/f_midi.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+>
+> diff --git a/drivers/usb/gadget/function/f_midi.c b/drivers/usb/gadget/function/f_midi.c
+> index 837fcdfa3840..5caa0e4eb07e 100644
+> --- a/drivers/usb/gadget/function/f_midi.c
+> +++ b/drivers/usb/gadget/function/f_midi.c
+> @@ -907,6 +907,15 @@ static int f_midi_bind(struct usb_configuration *c, struct usb_function *f)
+>   
+>   	status = -ENODEV;
+>   
+> +	/*
+> +	 * Reset wMaxPacketSize with maximum packet size of FS bulk transfer before
+> +	 * endpoint claim. This ensures that the wMaxPacketSize does not exceed the
+> +	 * limit during bind retries where configured TX/RX FIFO's maxpacket size
+> +	 * of 512 bytes for IN/OUT endpoints in support HS speed only.
+> +	 */
+> +	bulk_in_desc.wMaxPacketSize = cpu_to_le16(64);
+> +	bulk_out_desc.wMaxPacketSize = cpu_to_le16(64);
+> +
+>   	/* allocate instance-specific endpoints */
+>   	midi->in_ep = usb_ep_autoconfig(cdev->gadget, &bulk_in_desc);
+>   	if (!midi->in_ep)
 
