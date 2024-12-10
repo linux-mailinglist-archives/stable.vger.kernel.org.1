@@ -1,145 +1,252 @@
-Return-Path: <stable+bounces-100281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01719EA3EE
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 01:55:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9E09EA448
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 02:28:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E04F6168D78
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 00:55:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE672841F6
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 01:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED6529CE6;
-	Tue, 10 Dec 2024 00:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395AA70816;
+	Tue, 10 Dec 2024 01:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/2URD3y"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="JxsS4ehI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9D23C0C;
-	Tue, 10 Dec 2024 00:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC9E382;
+	Tue, 10 Dec 2024 01:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733792112; cv=none; b=BW8yl4qq1AqrZdDZYSpxG0gHvQ8IXZV1Qo7PbswGy6yIO9kSK4sqPYLMXD4uRF0/WwYYT6ZXydc3hOzFO7TDNcksL+8Y8aLQFMQ0A0OUPKXXFLwg5ZSZ64iMM7lyWLLyyskdAAfkdk+R5SqzFP6/OqhxyMYc4/mtsKy5YBckrEw=
+	t=1733794098; cv=none; b=qpAM4Y5SWRZnfUEDuthwQamczP0V5KPQkVT4al1qBHkx1a/N5FOuo6oxJx1wL6uO3DDQ+tZ1e2P23TZAXsT4HQU1lngmoJ4kgMt0tNitV6QIAMrIYUPpjyaV7gSjU1dCWAGQN8Qh+00um66xueQKuLKy/ANBBipapI7dyTGWvto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733792112; c=relaxed/simple;
-	bh=boq/ye7PO9PoIgAzqFV+pTvqHtk4MpiX+xbOXYpT+I4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F6YJ7S2AyPOH9qCDdKyetdajSlgi7MWMTkxhB5jON1bnyrTJEdqikPWgmHV9w3EJ/+qNjV5Viy9uSovgwwXRY/PSIuTby5X8MjFj/s/4K2ALg/o6CmYIgW4ogVZl+Ipcl4vQBg1rYdjgsxTuc+bdrZ8DMATmsxzC71spCUlTAKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/2URD3y; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-385e2880606so4122614f8f.3;
-        Mon, 09 Dec 2024 16:55:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733792109; x=1734396909; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=boq/ye7PO9PoIgAzqFV+pTvqHtk4MpiX+xbOXYpT+I4=;
-        b=e/2URD3ytBA6g1LKirtTsE9u16omVlM4FaVjd3GzC1WYzZSb8L4pV79HjzZyYkFeFl
-         mhX+rCJBUdyQ7+WlCzqIIbUqnXg64sL47+JAstUfzWCwIBYxNNopo5EQeFN70tMWj4Wd
-         kUMEytE/Pvr60Dw8WZubsqNr5s65XEZ/grygK7c/5JYIwp0KC/1jXm3xLGJAZvadnzqy
-         +flP0chsDM2AJqqwJxwKqQ0ntSzjFp3HdkjXhiNMEX1dfuN60rGaI/bcFqzKjN51WWvd
-         5V4i1Uo7GtzOPwgkgTJvA5/HdWUMGY1vuQ2uslkzwPUfR/7EhWyVPlT9gPCGRJkE+5O+
-         AGcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733792109; x=1734396909;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=boq/ye7PO9PoIgAzqFV+pTvqHtk4MpiX+xbOXYpT+I4=;
-        b=ZW5ik024QiUGyFOEwnWyGzJoBbGskL8nwehE7wI/KQW7OscR7hMqD23OJe+tC7VMt3
-         mwqofUVLKFP9nvOQyV/AJ2Ib6bISDw9Hx9/gsamAyDYSTAhq72G8rMknLf6PQWev5hU0
-         NQeVZ3KdkwOyeYwnlLldj8K0r41BcwIfz0Ywwhp/pab83ZfYD1PWA9qY9XNztZEfsyn8
-         vHQCl8hRsrGhnPjV8to/fwCSL0ta2Cxn11P3UiNhx8y4Aj714GpB5QUCnq3jJi6hshlA
-         iTXlzha8QkzGrkoYRYlCY3KE65nby8gXZFIO61tkNo+NuXOWUscBiskjNQVvLl6ZsEji
-         CTvg==
-X-Forwarded-Encrypted: i=1; AJvYcCX552uri6c5tanuUnpaPUa9Db24Z/BHfnmBmGjGABygRd52R9DTgcSawf9H0j6sUqzcGg+/Vx7qv4NZF66N@vger.kernel.org, AJvYcCXNQWxLg2O1lgf8yd3zraksVLfgeTP62+u5nmtLnq+0aAVj1bpBlVfPr5zRoE705rmCfV8=@vger.kernel.org, AJvYcCXQ8IRJIQjLKRvmseP9/t/Z+QnAgJJMKC/FSYE552/V31AWh+ciRFQ1t6r5KbzNSPGjQtPDhIKs@vger.kernel.org, AJvYcCXZ9144oMc2vBBlK0r3LurzZ1Ehh4GbtTF+eC2x8iLLGRloq/MKo/4gBcrqzkweYU6LAKoOFTr4zJTG4X99hcc4XgIu@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG+qxEJmu5fDKRiuLMA/8ZmOOAM6KEb7/DGDF7GPCoqsMTcJuF
-	Gvn7X0fUIZ75P9kR5JeSC14/84P4Dpxo5sCPx90pZ5g0187iYdmPPW6vJQmvKYnWG5zoyzLGLRt
-	z1H6uR5cQTG6PF17kbP2ynLXKegA=
-X-Gm-Gg: ASbGncuipN86jIRKpjljilfUpzu58YP91g8koQ3m6Ml/U9iJUrTNEESwS8CYaS5+ixj
-	ywBzHE3baks6T/Aycs0AbQtIOZXCr8+PiA3Mv7Kmv8zk73QNVaak=
-X-Google-Smtp-Source: AGHT+IG8axsEndvXuoPkC8p+vwh99ZMJK/1WzuRhn68RFvJiGxFaSRJKeeUzI7NxPzu+eY7U5xB7avCHwEO3py1fnMk=
-X-Received: by 2002:a05:6000:1868:b0:385:fd24:3317 with SMTP id
- ffacd0b85a97d-386453cf868mr2754572f8f.1.1733792109319; Mon, 09 Dec 2024
- 16:55:09 -0800 (PST)
+	s=arc-20240116; t=1733794098; c=relaxed/simple;
+	bh=0WGDEIBUdYzdvcU7vz5nQuOkZ6/HgJBnZUPutGdPLls=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=YhUv+jIsmD07OsJ6GGRUfXl5TVHck4E3XjYLkZ2zh1mouNaiixW3IbxHW+IPKnrzO+qvBAOh/vukXzimSv0ssp1vKlrEtAifrkUcdlc0a9gBh57VZCOaaBGfYS6hhz1LmU1NON71zIkW19GjpeVcS+c+rwFoPps2817AtaO/SOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=JxsS4ehI; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1733794087; h=Message-ID:Subject:Date:From:To;
+	bh=yBYoMTDeCXIFbr2CWMfboyCFY2eYGLTga/HAl0c5j54=;
+	b=JxsS4ehIVreAytoj6UDvYRG1tuqp07ZAhjwZTVOTxmYmYRMBp35hDLQWshH1TEaOPpwglv3ioHzVEs+XoREt12/edL0MuOcI+9mKl/hcr46QS5CBTJViie+U4TN+ahBe9Rc77W4H9AQJbCy8I6iIMaTEKkDc0XeAqctCk/yjdCA=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WLCv2v2_1733794085 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Dec 2024 09:28:06 +0800
+Message-ID: <1733794074.144948-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net v4 0/6] virtio_net: correct netdev_tx_reset_queue() invocation points
+Date: Tue, 10 Dec 2024 09:27:54 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Koichiro Den <koichiro.den@canonical.com>
+Cc: mst@redhat.com,
+ jasowang@redhat.com,
+ eperezma@redhat.com,
+ andrew+netdev@lunn.ch,
+ davem@davemloft.net,
+ edumazet@google.com,
+ kuba@kernel.org,
+ pabeni@redhat.com,
+ jiri@resnulli.us,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org,
+ virtualization@lists.linux.dev
+References: <20241206011047.923923-1-koichiro.den@canonical.com>
+In-Reply-To: <20241206011047.923923-1-koichiro.den@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
- <CAEf4BzYxaKd8Gv5g8PBY6zaQukYKSjjtaSgYMjJxL-PZ0dLrbQ@mail.gmail.com>
- <CAG48ez3i5haHCc8EQMVNjKnd9xYwMcp4sbW_Y8DRpJCidJotjw@mail.gmail.com>
- <CAEf4BzYkGQ0sw9JEeAMLAfcQbzxwg46c487kBD_LcbZSaTKD5Q@mail.gmail.com>
- <CAG48ez1LRsuew4y_KQxPHNipA68hhm+iJohHbk6=1cwv5QPCxQ@mail.gmail.com>
- <CAG48ez2+3TTbWNNO4aqxFAX8Cd4COaayRxoy1V2xvM9oS2_ygQ@mail.gmail.com>
- <CAEf4BzbhDkFq9DB2VKxsHmffynQBvbD_RVKTUm3zCqvO_e1dug@mail.gmail.com>
- <CAG48ez2LW9zyiptNq8jApD3zeS05wvNPs-jj2zOeaCDQbZnD4g@mail.gmail.com>
- <CAEf4BzbVqfWZUJUkUwJvfaGViwiP8cnVAYAWX67LP-ejPvmAPA@mail.gmail.com> <CAEf4BzbzXT6e-dKtxr6SDzekXC+Zu45uX10dL+DuTA8Xn=cgjw@mail.gmail.com>
-In-Reply-To: <CAEf4BzbzXT6e-dKtxr6SDzekXC+Zu45uX10dL+DuTA8Xn=cgjw@mail.gmail.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Mon, 9 Dec 2024 16:54:57 -0800
-Message-ID: <CAADnVQJ9grJJs4s_eBBk7iL136FNKt3ahhaLLDo1igrBBscxYA@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] bpf: Fix prog_array UAF in __uprobe_perf_func()
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Jann Horn <jannh@google.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Delyan Kratunov <delyank@fb.com>, 
-	bpf <bpf@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 9, 2024 at 2:45=E2=80=AFPM Andrii Nakryiko
-<andrii.nakryiko@gmail.com> wrote:
+
+For the series,
+
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+
+Thanks
+
+
+On Fri,  6 Dec 2024 10:10:41 +0900, Koichiro Den <koichiro.den@canonical.com> wrote:
+> When virtnet_close is followed by virtnet_open, some TX completions can
+> possibly remain unconsumed, until they are finally processed during the
+> first NAPI poll after the netdev_tx_reset_queue(), resulting in a crash
+> [1]. Commit b96ed2c97c79 ("virtio_net: move netdev_tx_reset_queue() call
+> before RX napi enable") was not sufficient to eliminate all BQL crash
+> scenarios for virtio-net.
 >
-> Ok, weeding through the perf/uprobe plumbing for BPF, I think we avoid
-> this problem with uprobe BPF link because uprobe_unregister_sync()
-> waits for RCU Tasks Trace GP, and so once we finish uprobe
-> unregistration, we have a guarantee that there is no more uprobe that
-> might dereference our BPF program. (I might have thought about this
-> problem when fixing BPF link for sleepable tracepoints, but I missed
-> the legacy perf_event attach/detach case).
+> This issue can be reproduced with the latest net-next master by running:
+> `while :; do ip l set DEV down; ip l set DEV up; done` under heavy network
+> TX load from inside the machine.
 >
-> With legacy perf event perf_event_detach_bpf_prog() we don't do any of
-> that, we just NULL out pointer and do bpf_prog_put(), not caring
-> whether this is uprobe, kprobe, or tracepoint...
+> This patch series resolves the issue and also addresses similar existing
+> problems:
 >
-> So one way to solve this is to either teach
-> perf_event_detach_bpf_prog() to delay bpf_prog_put() until after RCU
-> Tasks Trace GP (which is what we do with bpf_prog_array, but not the
-> program itself),
-
-since this is a legacy prog detach api I would just add sync_rcu_tt
-there. It's a backportable one line change.
-
-> or add prog->aux->sleepable_hook flag in addition to
-> prog->aux->sleepable, and then inside bpf_prog_put() check
-> (prog->aux->sleepable || prog->aux->sleepable_hook) and do RCU Tasks
-> Trace delay (in addition to normal call_rcu()).
-
-That sounds like more work and if we introduce sleepable_hook
-we would better generalize it and rely on it everywhere.
-Which makes it even more work and certainly not for stable.
-
-> Third alternative would be to have something like
-> bpf_prog_put_sleepable() (just like we have
-> bpf_prog_array_free_sleepable()), where this would do additional
-> call_rcu_tasks_trace() even if BPF program itself isn't sleepable.
-
-Sounds like less work than 2, but conceptually it's the same as 1.
-Just call_rcu_tt vs sync_rcu_tt.
-And we can wait just fine in that code path.
-So I'd go with 1.
+> (a). Drop netdev_tx_reset_queue() from open/close path. This eliminates the
+>      BQL crashes due to the problematic open/close path.
+>
+> (b). As a result of (a), netdev_tx_reset_queue() is now explicitly required
+>      in freeze/restore path. Add netdev_tx_reset_queue() immediately after
+>      free_unused_bufs() invocation.
+>
+> (c). Fix missing resetting in virtnet_tx_resize().
+>      virtnet_tx_resize() has lacked proper resetting since commit
+>      c8bd1f7f3e61 ("virtio_net: add support for Byte Queue Limits").
+>
+> (d). Fix missing resetting in the XDP_SETUP_XSK_POOL path.
+>      Similar to (c), this path lacked proper resetting. Call
+>      netdev_tx_reset_queue() when virtqueue_reset() has actually recycled
+>      unused buffers.
+>
+> This patch series consists of six commits:
+>   [1/6]: Resolves (a) and (b).                      # also -stable 6.11.y
+>   [2/6]: Minor fix to make [4/6] streamlined.
+>   [3/6]: Prerequisite for (c).                      # also -stable 6.11.y
+>   [4/6]: Resolves (c) (incl. Prerequisite for (d))  # also -stable 6.11.y
+>   [5/6]: Preresuisite for (d).
+>   [6/6]: Resolves (d).
+>
+> Changes for v4:
+>   - move netdev_tx_reset_queue() out of free_unused_bufs()
+>   - submit to net, not net-next
+> Changes for v3:
+>   - replace 'flushed' argument with 'recycle_done'
+> Changes for v2:
+>   - add tx queue resetting for (b) to (d) above
+>
+> v3: https://lore.kernel.org/all/20241204050724.307544-1-koichiro.den@canonical.com/
+> v2: https://lore.kernel.org/all/20241203073025.67065-1-koichiro.den@canonical.com/
+> v1: https://lore.kernel.org/all/20241130181744.3772632-1-koichiro.den@canonical.com/
+>
+> [1]:
+> ------------[ cut here ]------------
+> kernel BUG at lib/dynamic_queue_limits.c:99!
+> Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 7 UID: 0 PID: 1598 Comm: ip Tainted: G    N 6.12.0net-next_main+ #2
+> Tainted: [N]=TEST
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), \
+> BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:dql_completed+0x26b/0x290
+> Code: b7 c2 49 89 e9 44 89 da 89 c6 4c 89 d7 e8 ed 17 47 00 58 65 ff 0d
+> 4d 27 90 7e 0f 85 fd fe ff ff e8 ea 53 8d ff e9 f3 fe ff ff <0f> 0b 01
+> d2 44 89 d1 29 d1 ba 00 00 00 00 0f 48 ca e9 28 ff ff ff
+> RSP: 0018:ffffc900002b0d08 EFLAGS: 00010297
+> RAX: 0000000000000000 RBX: ffff888102398c80 RCX: 0000000080190009
+> RDX: 0000000000000000 RSI: 000000000000006a RDI: 0000000000000000
+> RBP: ffff888102398c00 R08: 0000000000000000 R09: 0000000000000000
+> R10: 00000000000000ca R11: 0000000000015681 R12: 0000000000000001
+> R13: ffffc900002b0d68 R14: ffff88811115e000 R15: ffff8881107aca40
+> FS:  00007f41ded69500(0000) GS:ffff888667dc0000(0000)
+> knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000556ccc2dc1a0 CR3: 0000000104fd8003 CR4: 0000000000772ef0
+> PKRU: 55555554
+> Call Trace:
+>  <IRQ>
+>  ? die+0x32/0x80
+>  ? do_trap+0xd9/0x100
+>  ? dql_completed+0x26b/0x290
+>  ? dql_completed+0x26b/0x290
+>  ? do_error_trap+0x6d/0xb0
+>  ? dql_completed+0x26b/0x290
+>  ? exc_invalid_op+0x4c/0x60
+>  ? dql_completed+0x26b/0x290
+>  ? asm_exc_invalid_op+0x16/0x20
+>  ? dql_completed+0x26b/0x290
+>  __free_old_xmit+0xff/0x170 [virtio_net]
+>  free_old_xmit+0x54/0xc0 [virtio_net]
+>  virtnet_poll+0xf4/0xe30 [virtio_net]
+>  ? __update_load_avg_cfs_rq+0x264/0x2d0
+>  ? update_curr+0x35/0x260
+>  ? reweight_entity+0x1be/0x260
+>  __napi_poll.constprop.0+0x28/0x1c0
+>  net_rx_action+0x329/0x420
+>  ? enqueue_hrtimer+0x35/0x90
+>  ? trace_hardirqs_on+0x1d/0x80
+>  ? kvm_sched_clock_read+0xd/0x20
+>  ? sched_clock+0xc/0x30
+>  ? kvm_sched_clock_read+0xd/0x20
+>  ? sched_clock+0xc/0x30
+>  ? sched_clock_cpu+0xd/0x1a0
+>  handle_softirqs+0x138/0x3e0
+>  do_softirq.part.0+0x89/0xc0
+>  </IRQ>
+>  <TASK>
+>  __local_bh_enable_ip+0xa7/0xb0
+>  virtnet_open+0xc8/0x310 [virtio_net]
+>  __dev_open+0xfa/0x1b0
+>  __dev_change_flags+0x1de/0x250
+>  dev_change_flags+0x22/0x60
+>  do_setlink.isra.0+0x2df/0x10b0
+>  ? rtnetlink_rcv_msg+0x34f/0x3f0
+>  ? netlink_rcv_skb+0x54/0x100
+>  ? netlink_unicast+0x23e/0x390
+>  ? netlink_sendmsg+0x21e/0x490
+>  ? ____sys_sendmsg+0x31b/0x350
+>  ? avc_has_perm_noaudit+0x67/0xf0
+>  ? cred_has_capability.isra.0+0x75/0x110
+>  ? __nla_validate_parse+0x5f/0xee0
+>  ? __pfx___probestub_irq_enable+0x3/0x10
+>  ? __create_object+0x5e/0x90
+>  ? security_capable+0x3b/0x7[I0
+>  rtnl_newlink+0x784/0xaf0
+>  ? avc_has_perm_noaudit+0x67/0xf0
+>  ? cred_has_capability.isra.0+0x75/0x110
+>  ? stack_depot_save_flags+0x24/0x6d0
+>  ? __pfx_rtnl_newlink+0x10/0x10
+>  rtnetlink_rcv_msg+0x34f/0x3f0
+>  ? do_syscall_64+0x6c/0x180
+>  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
+>  netlink_rcv_skb+0x54/0x100
+>  netlink_unicast+0x23e/0x390
+>  netlink_sendmsg+0x21e/0x490
+>  ____sys_sendmsg+0x31b/0x350
+>  ? copy_msghdr_from_user+0x6d/0xa0
+>  ___sys_sendmsg+0x86/0xd0
+>  ? __pte_offset_map+0x17/0x160
+>  ? preempt_count_add+0x69/0xa0
+>  ? __call_rcu_common.constprop.0+0x147/0x610
+>  ? preempt_count_add+0x69/0xa0
+>  ? preempt_count_add+0x69/0xa0
+>  ? _raw_spin_trylock+0x13/0x60
+>  ? trace_hardirqs_on+0x1d/0x80
+>  __sys_sendmsg+0x66/0xc0
+>  do_syscall_64+0x6c/0x180
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x7f41defe5b34
+> Code: 15 e1 12 0f 00 f7 d8 64 89 02 b8 ff ff ff ff eb bf 0f 1f 44 00 00
+> f3 0f 1e fa 80 3d 35 95 0f 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00
+> f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+> RSP: 002b:00007ffe5336ecc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+> RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f41defe5b34
+> RDX: 0000000000000000 RSI: 00007ffe5336ed30 RDI: 0000000000000003
+> RBP: 00007ffe5336eda0 R08: 0000000000000010 R09: 0000000000000001
+> R10: 00007ffe5336f6f9 R11: 0000000000000202 R12: 0000000000000003
+> R13: 0000000067452259 R14: 0000556ccc28b040 R15: 0000000000000000
+>  </TASK>
+> [...]
+> ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+>
+> Koichiro Den (6):
+>   virtio_net: correct netdev_tx_reset_queue() invocation point
+>   virtio_net: replace vq2rxq with vq2txq where appropriate
+>   virtio_ring: add a func argument 'recycle_done' to virtqueue_resize()
+>   virtio_net: ensure netdev_tx_reset_queue is called on tx ring resize
+>   virtio_ring: add a func argument 'recycle_done' to virtqueue_reset()
+>   virtio_net: ensure netdev_tx_reset_queue is called on bind xsk for tx
+>
+>  drivers/net/virtio_net.c     | 31 +++++++++++++++++++++++++------
+>  drivers/virtio/virtio_ring.c | 12 ++++++++++--
+>  include/linux/virtio.h       |  6 ++++--
+>  3 files changed, 39 insertions(+), 10 deletions(-)
+>
+> --
+> 2.43.0
+>
 
