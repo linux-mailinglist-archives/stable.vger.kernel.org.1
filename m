@@ -1,129 +1,148 @@
-Return-Path: <stable+bounces-100495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F18D9EBF13
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 00:12:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F282F9EBF44
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 00:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A632E1610F4
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 23:12:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE71188B0A5
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 23:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C681A204692;
-	Tue, 10 Dec 2024 23:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2226C1A3056;
+	Tue, 10 Dec 2024 23:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LixPXPqC"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Bjb3HzIy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25841EE7DC
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 23:12:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489231A9B46
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 23:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733872355; cv=none; b=VrwqcQszwz0Agjl+z7+JjK20bSXMVvf/1qhdq1ZxVAh0CKBqSpbkCzpNHqFgBDI+MO8nF5en5vMb897YFdOGCACHjV6EyuUK9JaspPt96vSpmUXxoaTfsjILvwvXZRGXr8a2HUuSZCBbAljNRIhbsDvTTrrLEyVCUSVPnSbvuas=
+	t=1733873411; cv=none; b=l+BpwITS87HOj/h0mITwzyo4I6hDM4EJKEgcBpnCt1j+R0DBb95sLPiyXgnJpXohLFqVfvLLcT+Sa6lp1loAk141o0FJlH5zll8rRTkzUGAcTdzb0F/pFWdX8H0eVztb7rPykrcs0mHYzbIAgTZLzvJ32nKtmuN2Jk7R0BK1S+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733872355; c=relaxed/simple;
-	bh=sN8h4y3sL6hRB/FVyLclbUwDfXQNaStYrJ5PxQJ48QE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hRklgZgsAod12CMUdh9WuM6FUCtf8euumMfJxVAxXCwn/vwZ0VO44S/a5Vcm4T6gH01S7/KylfbUWwz4cMiNondq/2RmSWbmhlBk3pxzrPYqYE2Vz5zkT/lIoAxXHST8v56UVbb5lZNFGRA5tCixh5mkI2CNsXecTFVzK6ybGuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LixPXPqC; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5d3e638e1b4so728a12.1
-        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 15:12:33 -0800 (PST)
+	s=arc-20240116; t=1733873411; c=relaxed/simple;
+	bh=xrmZ5sIezSAHLi1oUllKgnFQc6m6O82r/Rtn8Oi+/1Q=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=F90fDi+SONWv8E573gTx8JJWTjj8JKLJiHhSZKSao1sDHpjA5+j69ahwxXJ4PdV2/s350Mu4VKG+W7y+gJzI93CjAGClESFSIrjdcJPpV9YNUtvH1EbEDM1yl8ZmOucxP1I7fEEXWSpxS6YjkwQrEHamNg8aoPzryeUoffHH2kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Bjb3HzIy; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2163dc5155fso26917715ad.0
+        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 15:30:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733872352; x=1734477152; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1733873408; x=1734478208; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8ktWoM2RO50AIk62xE/mUhtdnzdqp6Qodwc9F6o3J3M=;
-        b=LixPXPqCb6DRQxvH43iSPndEZ0NC8e22iIaPrSUq1F7CjZS2CJZWrLhdWLEZbvIeWM
-         Hm/jWBgzjyJipTB4EA3IRXholGu+frPRJwb3FVilVrj0kxXrOQPnqAlmBkHLUEwTvt1C
-         ggdlyX2RlJpgJ4YzXO2jd73Rw8Mxf5FFnI4bUox/SYvSxCkE5Hj1tu4yG+DbPb14vqmX
-         tQ8fT+ynX063ghk8PTezJIIGfZu9O58krJsXg6MuV5XnohUFndOl+kgIQRl4+9vnvBM3
-         FgJOhghluwTbMwyUtBmqBa4cFq557g2h9AbqP6fb+1UmYQryPXecGwqor6KCwwJUuVXt
-         sSIg==
+        bh=MVPsgSTemUzukg9E619CwHnFUeZfQvr0zWgl6blSlvM=;
+        b=Bjb3HzIynZbZTVrxOzgwK91EuxfAUueuWRK6djOz0QWq28gfXFT/+QQcY27N1E2ed8
+         +x9Hl3QLjWkmkZxgm8miCs9RgAcJUEKF8b+uSsmwUmdjnQc1eRz26MblVfbxGyhQ9FMY
+         rvRuxHiQ5GpJup7QSerMSc6i3pZNA+TZqCrSufsFguuz94Dl9qf3NHN7eXY3Blxez6Ls
+         VqJphtjpofSno5ZsHDjDqO9HLJG+vX4hdG7SaBBhN5WdSe6f0Dvz+cc4yIPW5SeTG5CR
+         bEpRvbw1CpMK6yjTvTD29KPdWBt03TR0BOLnHE+ljNeJ0J9xCtc/7rePS0stgcD9xyo/
+         Dvig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733872352; x=1734477152;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8ktWoM2RO50AIk62xE/mUhtdnzdqp6Qodwc9F6o3J3M=;
-        b=kgBqFRZ1TS1vfXa5pce9SedXHYgqGK8ugylFPvDgWcjDusF+4Tt6QpxbFhUQP9zng+
-         5qJB4gyrDXHHKeLW6A5EtiCRZakqYNB7gXJ7guOzNGac4rk3FBL6yzRZy4QYTy/ek7PQ
-         4X2S92kyBlrUKfxtvCcMe4Uw3R4puMzeT7qncqhB08Cd1HqUjsLx8MLa13UwxSYkltgf
-         9ATpsIFiq4Jacur4uQ2srihGR7OlzuzAlEbz/oOy32MQyUcPMiCSmt4/0coe9kGigCKu
-         VjnayhIp4ZfCRhJMUFXsmKBps1lJ8qIA53S+TknFLoUZdPu0UOgUiQ3c4jbfo+gydut4
-         249A==
-X-Forwarded-Encrypted: i=1; AJvYcCVELWJRdyO+tR4ZXiiohpgg4dldLJptn02DrTPjLnM/PXFYoWmwBoJ8ojVa+2rBmAzZj7/G/Lg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8jplnQQKH41w2I9YsPPyVluE1k2XBHWyTwZm/5qZd/DXlvc2e
-	zzLik2fkvgBX7bd8fjyBKro/ER83AqQQnySIzV3ClyjcRRi1BKkNjl//KyTRujLxqnLy00G89Ut
-	MBvTk1cvQ4q8uecp2f98B43ySOOn+njMPMXoh
-X-Gm-Gg: ASbGnctO+WLNBUwQeaEM3Eyj7ldBuunqLrAPqRhlcYW6IlhkxU4yKXkjodY8ADdk6Dm
-	0BkpvFMvHiXoLbvhUzaUvfePYBkBEGejiNGa7qB0KurV3CMlSQXmTMgXX7UW7gH6M
-X-Google-Smtp-Source: AGHT+IFg93uOLvg+U0JqZTijgyGoPZEhO04pg5mVTz8T7IazCzxdGADHif0Wl3o6jYGRQnOjr9uTt6hydMk6lXR7lwc=
-X-Received: by 2002:a05:6402:b8f:b0:5d1:10a4:de9 with SMTP id
- 4fb4d7f45d1cf-5d43423be00mr11289a12.7.1733872351659; Tue, 10 Dec 2024
- 15:12:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733873408; x=1734478208;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=MVPsgSTemUzukg9E619CwHnFUeZfQvr0zWgl6blSlvM=;
+        b=mfFiSuZrj21Jq7fW2IKNAM3aaLSKk/Hpmg6krPRSJgilEEq3izbJitbTIvHXcy1m+6
+         TgDvWV60gos3th5ODH+bU607zVjeceDQW71lqsMPSCd0uOp+3cVyYymHlHdyFrg1BeXM
+         fY9wQJSMHlI0Lb7Gj22saLkRQcbDk8PBma1MaTCDCMZoLDPadi5lCHq3XZ8Mu+jDAvgA
+         U9yW9Z9PlFMxek8RLcpLCTkR9NgWsUnZxLmgWPVHwrV+kcmiBTeJaFVmdOZe8e7PvHZ+
+         SE2VPuRs7dEr8KegBUXi29PW1TxBaUXtXl1xBSed4zOXTKigyzrePW/+H14UeR2qt6qX
+         0lvw==
+X-Gm-Message-State: AOJu0YwX1u3t/hJL8fPzJZ5d7xqdIyEU8A/5GxL4Oe8Or64fCTHgbH/u
+	PP+aiZI1XRD3EQGsvQxxdUys4SqnNf6FPtP9Q1Ao5YXaoclQOTsysYRo9LLvJQ/I6dTHmlVuA5Q
+	T
+X-Gm-Gg: ASbGncsAAiNglcFYlfPr2NNGD+JpDFY6llt23VJLY7wr1KniLwiMQl9wmQBu8nsgrTe
+	t8ITwttFGXfKF+Kbf4gMj4kqVVzUW+XGgy0Ps1WWN8xPr0HfIhRqV4Go5c5W54t9Zo4y8OA1Dr+
+	vC2//KvR8GDxectW40Qevth+NUch6mH1qevCQn5rsocCQ5kLsz0hVN9gduwxCkiACflh6Kc8ILI
+	bp2XVH+IwqWJIRPMoLXMhf0ZTCTJ4H4AqoVbAzp58FG2e7V9HY=
+X-Google-Smtp-Source: AGHT+IGOJfga47ncT4LY1s69AZdSZljDBvbQYGIh68l8m5x83sOBKkfIS0tTC+y0se6366eY/4YKIA==
+X-Received: by 2002:a17:903:2448:b0:215:7b06:90ca with SMTP id d9443c01a7336-217783ab1f5mr13345345ad.17.1733873407237;
+        Tue, 10 Dec 2024 15:30:07 -0800 (PST)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2161fd39ddcsm73683015ad.86.2024.12.10.15.30.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 15:30:06 -0800 (PST)
+Message-ID: <57b048be-31d4-4380-8296-56afc886299a@kernel.dk>
+Date: Tue, 10 Dec 2024 16:30:05 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com>
- <20241204-udmabuf-fixes-v2-1-23887289de1c@google.com> <CAEXW_YRb4PsFgEvHW2QBDY5dxJ+aoMTn3qtj5v9eboxO3SxPLg@mail.gmail.com>
-In-Reply-To: <CAEXW_YRb4PsFgEvHW2QBDY5dxJ+aoMTn3qtj5v9eboxO3SxPLg@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Wed, 11 Dec 2024 00:11:54 +0100
-Message-ID: <CAG48ez2cTrD2_4iKo3+zrPH=e29znYOKLBkC4OLA3yhsu5oMNA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] udmabuf: fix racy memfd sealing check
-To: Joel Fernandes <joel@joelfernandes.org>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Simona Vetter <simona.vetter@ffwll.ch>, John Stultz <jstultz@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, dri-devel@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, Julian Orth <ju.orth@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable <stable@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
+Subject: Stable inclusion
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Dec 10, 2024 at 11:51=E2=80=AFPM Joel Fernandes <joel@joelfernandes=
-.org> wrote:
-> On Wed, Dec 4, 2024 at 11:27=E2=80=AFAM Jann Horn <jannh@google.com> wrot=
-e:
-> > The current check_memfd_seals() is racy: Since we first do
-> > check_memfd_seals() and then udmabuf_pin_folios() without holding any
-> > relevant lock across both, F_SEAL_WRITE can be set in between.
-> > This is problematic because we can end up holding pins to pages in a
-> > write-sealed memfd.
-> >
-> > Fix it using the inode lock, that's probably the easiest way.
-> > In the future, we might want to consider moving this logic into memfd,
-> > especially if anyone else wants to use memfd_pin_folios().
->
-> I am curious, why is it not possible to have a reproducer for this
-> issue, is it not reproducible and is theoretical?
+Hi,
 
-Sorry, I think I must have forgotten about this part when I wrote the
-cover letter: The original bug reporter (Julian) linked to a
-reproducer that is linked in the bugzilla bug report, at
-<https://github.com/mahkoh/udmabuf-seal>. I haven't tried running it
-myself though.
+Can you add the below to 6.1-stable? Thanks!
 
+commit 3181e22fb79910c7071e84a43af93ac89e8a7106
+Author: Pavel Begunkov <asml.silence@gmail.com>
+Date:   Mon Jan 9 14:46:10 2023 +0000
 
-> thanks,
->
->  - Joel
->
-> >
-> > Reported-by: Julian Orth <ju.orth@gmail.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219106
-> > Closes: https://lore.kernel.org/r/CAG48ez0w8HrFEZtJkfmkVKFDhE5aP7nz=3Do=
-brimeTgpD+StkV9w@mail.gmail.com
-> > Fixes: fbb0de795078 ("Add udmabuf misc device")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jann Horn <jannh@google.com>
+    io_uring: wake up optimisations
+
+    Commit 3181e22fb79910c7071e84a43af93ac89e8a7106 upstream.
+    
+    Flush completions is done either from the submit syscall or by the
+    task_work, both are in the context of the submitter task, and when it
+    goes for a single threaded rings like implied by ->task_complete, there
+    won't be any waiters on ->cq_wait but the master task. That means that
+    there can be no tasks sleeping on cq_wait while we run
+    __io_submit_flush_completions() and so waking up can be skipped.
+    
+    Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+    Link: https://lore.kernel.org/r/60ad9768ec74435a0ddaa6eec0ffa7729474f69f.1673274244.git.asml.silence@gmail.com
+    Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 4f0ae938b146..0b1361663267 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -582,6 +582,16 @@ static inline void __io_cq_unlock_post(struct io_ring_ctx *ctx)
+ 	io_cqring_ev_posted(ctx);
+ }
+ 
++static inline void __io_cq_unlock_post_flush(struct io_ring_ctx *ctx)
++	__releases(ctx->completion_lock)
++{
++	io_commit_cqring(ctx);
++	spin_unlock(&ctx->completion_lock);
++	io_commit_cqring_flush(ctx);
++	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
++		__io_cqring_wake(ctx);
++}
++
+ void io_cq_unlock_post(struct io_ring_ctx *ctx)
+ {
+ 	__io_cq_unlock_post(ctx);
+@@ -1339,7 +1349,7 @@ static void __io_submit_flush_completions(struct io_ring_ctx *ctx)
+ 		if (!(req->flags & REQ_F_CQE_SKIP))
+ 			__io_fill_cqe_req(ctx, req);
+ 	}
+-	__io_cq_unlock_post(ctx);
++	__io_cq_unlock_post_flush(ctx);
+ 
+ 	io_free_batch_list(ctx, state->compl_reqs.first);
+ 	INIT_WQ_LIST(&state->compl_reqs);
+
+-- 
+Jens Axboe
+
 
