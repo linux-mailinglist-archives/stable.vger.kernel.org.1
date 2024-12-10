@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-100328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 585C99EAB76
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:10:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B19909EAB9E
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A80188B49F
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:10:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A009318894F0
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FF4231CBE;
-	Tue, 10 Dec 2024 09:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEB9231C82;
+	Tue, 10 Dec 2024 09:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ljkr61ZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiLCGk9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E80231CBB
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0193322CBE9
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733821762; cv=none; b=cSpHDZhd5yg+nXdioU+Ern9NznvS5+UGf6Gd/na/tW1kjH4p9YgbwgaVQxvMHmmEHMmUNPmeaeQRM83ma4ifbUqR5awRsFWzlzacTpKJK8+T/H8Vdo7Lno5xkW6rd49YlgcdNEv9UWPFlfRuPSIeoj6OSJshTJglpCk74w251Dg=
+	t=1733822053; cv=none; b=QlL5Rg+RFOt9NddLBt8alvCYR+fSH25jx6X4esd5Qh/f5E2QReOvxyUzm+3tLeW7UQq09eIkVkBC7+FqrDs+qSFNvhGXRcs/MYVTxpXn62w6CmvN9DVgoMTKC3T9qT6KAkMa07lTFF+w0YJ84OC44RLicqWvzseNnObgg7ijK10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733821762; c=relaxed/simple;
-	bh=w7D2irl5ddrkpz5lCJCzoIjUg8vLF6sRZmismK1onYk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HvYKZuN9ELVwQFUApAvcw+p/GFj+2N0v2ZueEvC3t5uu4rsH1f0tqk8K/dTOopUuD1w5gmJ2daqVvvpxQc6n6X2YTtSYNOklJgJfKEof6FSokpYCvWpW6yhnVnUmJDwh1OE+XK0gYDoxa7ocNNhsPnpAV2l5jdCZBeUlEvA2lIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ljkr61ZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2ECC4CED6;
-	Tue, 10 Dec 2024 09:09:22 +0000 (UTC)
+	s=arc-20240116; t=1733822053; c=relaxed/simple;
+	bh=7B8hLzeP8ljztbI+WDBKH4FiX0zOZFH3kK5L8dyhJrk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rMYTWflmLvl1XOAFPG3+E/bIlEViknkbHjxPMfCYfOHk43znt776KaVC1+zncGcpVKiKGZEatshT8bWIRj5bxQuSj/LC0IHnf4yzUhImhwcE9Kdvs9GcG651T77T7I5qJhssK6MrrMegzBJvMlByz1zH9mE6Czt6CHBcpuwPlaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiLCGk9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F8AC4CEDD;
+	Tue, 10 Dec 2024 09:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733821762;
-	bh=w7D2irl5ddrkpz5lCJCzoIjUg8vLF6sRZmismK1onYk=;
+	s=korg; t=1733822052;
+	bh=7B8hLzeP8ljztbI+WDBKH4FiX0zOZFH3kK5L8dyhJrk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Ljkr61ZYsCgb0vhtg8jZ0lHFUd1arBmEgUGGCQnFYa+3UMK6xQFeHTg3Dn3DFBiXI
-	 xHff26UxAM8je6TbZ9SIftniI+GPG7NYrHrw38FCbNRPJ5qAPSWmNK77zqY7IOJkaR
-	 HS41BB+zry7gXjmPdpgHCOeqU5AC3OCeRzNO7eEE=
-Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix a DMA to stack memory bug" failed to apply to 5.4-stable tree
-To: dan.carpenter@linaro.org,tiwai@suse.de
+	b=JiLCGk9HGaHsY97c0hDWqp0ImaMDYzLfTFRxR7bby5YCm94Q73Tn90ldtyK/qaZr+
+	 ePUSTq0ynmsH414F+GoNOw+epkdzoUjAIX72ZUKcENZ6euNVLRV4EPqLYP5gplQuCb
+	 DyxQ6N9ye1KvozRjmJyXp2Kz/dHPO6mA5tIcvwOI=
+Subject: FAILED: patch "[PATCH] scsi: ufs: qcom: Only free platform MSIs when ESI is enabled" failed to apply to 6.6-stable tree
+To: mani@kernel.org,beanhuo@micron.com,bvanassche@acm.org,manivannan.sadhasivam@linaro.org,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 10 Dec 2024 10:08:41 +0100
-Message-ID: <2024121041-floss-compactor-3b56@gregkh>
+Date: Tue, 10 Dec 2024 10:13:36 +0100
+Message-ID: <2024121036-surround-docile-0043@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f7d306b47a24367302bd4fe846854e07752ffcd9
+git cherry-pick -x 64506b3d23a337e98a74b18dcb10c8619365f2bd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121041-floss-compactor-3b56@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121036-surround-docile-0043@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,124 +77,59 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f7d306b47a24367302bd4fe846854e07752ffcd9 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@linaro.org>
-Date: Mon, 2 Dec 2024 15:57:54 +0300
-Subject: [PATCH] ALSA: usb-audio: Fix a DMA to stack memory bug
+From 64506b3d23a337e98a74b18dcb10c8619365f2bd Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <mani@kernel.org>
+Date: Mon, 11 Nov 2024 23:18:31 +0530
+Subject: [PATCH] scsi: ufs: qcom: Only free platform MSIs when ESI is enabled
 
-The usb_get_descriptor() function does DMA so we're not allowed
-to use a stack buffer for that.  Doing DMA to the stack is not portable
-all architectures.  Move the "new_device_descriptor" from being stored
-on the stack and allocate it with kmalloc() instead.
+Otherwise, it will result in a NULL pointer dereference as below:
 
-Fixes: b909df18ce2a ("ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices")
-Cc: stable@kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/60e3aa09-039d-46d2-934c-6f123026c2eb@stanley.mountain
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000008
+Call trace:
+ mutex_lock+0xc/0x54
+ platform_device_msi_free_irqs_all+0x14/0x20
+ ufs_qcom_remove+0x34/0x48 [ufs_qcom]
+ platform_remove+0x28/0x44
+ device_remove+0x4c/0x80
+ device_release_driver_internal+0xd8/0x178
+ driver_detach+0x50/0x9c
+ bus_remove_driver+0x6c/0xbc
+ driver_unregister+0x30/0x60
+ platform_driver_unregister+0x14/0x20
+ ufs_qcom_pltform_exit+0x18/0xb94 [ufs_qcom]
+ __arm64_sys_delete_module+0x180/0x260
+ invoke_syscall+0x44/0x100
+ el0_svc_common.constprop.0+0xc0/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0xdc
+ el0t_64_sync_handler+0xc0/0xc4
+ el0t_64_sync+0x190/0x194
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 8bc959b60be3..7c9d352864da 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -555,7 +555,7 @@ int snd_usb_create_quirk(struct snd_usb_audio *chip,
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+Cc: stable@vger.kernel.org # 6.3
+Fixes: 519b6274a777 ("scsi: ufs: qcom: Add MCQ ESI config vendor specific ops")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20241111-ufs_bug_fix-v1-2-45ad8b62f02e@linaro.org
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 3b592492e152..5220ec78021d 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -1861,10 +1861,12 @@ static int ufs_qcom_probe(struct platform_device *pdev)
+ static void ufs_qcom_remove(struct platform_device *pdev)
  {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
+ 	struct ufs_hba *hba =  platform_get_drvdata(pdev);
++	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
  
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -566,15 +566,19 @@ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interfac
- 				      0x10, 0x43, 0x0001, 0x000a, NULL, 0);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
-+
-+		new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+		if (!new_device_descriptor)
-+			return -ENOMEM;
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&new_device_descriptor, sizeof(new_device_descriptor));
-+				new_device_descriptor, sizeof(*new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--				new_device_descriptor.bNumConfigurations);
-+				new_device_descriptor->bNumConfigurations);
- 		else
--			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+			memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -906,7 +910,7 @@ static void mbox2_setup_48_24_magic(struct usb_device *dev)
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -941,15 +945,19 @@ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ 	pm_runtime_get_sync(&(pdev)->dev);
+ 	ufshcd_remove(hba);
+-	platform_device_msi_free_irqs_all(hba->dev);
++	if (host->esi_enabled)
++		platform_device_msi_free_irqs_all(hba->dev);
+ }
  
- 	dev_dbg(&dev->dev, "device initialised!\n");
- 
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
-+
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
-@@ -1259,7 +1267,7 @@ static void mbox3_setup_defaults(struct usb_device *dev)
- static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
--	struct usb_device_descriptor new_device_descriptor;
-+	struct usb_device_descriptor *new_device_descriptor __free(kfree) = NULL;
- 	int err;
- 	int descriptor_size;
- 
-@@ -1272,15 +1280,19 @@ static int snd_usb_mbox3_boot_quirk(struct usb_device *dev)
- 
- 	dev_dbg(&dev->dev, "MBOX3: device initialised!\n");
- 
-+	new_device_descriptor = kmalloc(sizeof(*new_device_descriptor), GFP_KERNEL);
-+	if (!new_device_descriptor)
-+		return -ENOMEM;
-+
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&new_device_descriptor, sizeof(new_device_descriptor));
-+		new_device_descriptor, sizeof(*new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "MBOX3: error usb_get_descriptor: %d\n", err);
--	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+	if (new_device_descriptor->bNumConfigurations > dev->descriptor.bNumConfigurations)
- 		dev_dbg(&dev->dev, "MBOX3: error too large bNumConfigurations: %d\n",
--			new_device_descriptor.bNumConfigurations);
-+			new_device_descriptor->bNumConfigurations);
- 	else
--		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
-+		memcpy(&dev->descriptor, new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
+ static const struct of_device_id ufs_qcom_of_match[] __maybe_unused = {
 
 
