@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-100424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C1F9EB1A7
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 14:09:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69AE9EB1AA
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 14:10:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DFF116681A
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:09:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6024E283587
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22741A76AC;
-	Tue, 10 Dec 2024 13:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7980D1A9B2F;
+	Tue, 10 Dec 2024 13:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DNxEx2gX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HEc4BZvH"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E3278F44
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 13:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDA278F44
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 13:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733836186; cv=none; b=JqZo+5suMd4z03p9Lz9Ce2+y7CU1LfEj4M59VcHC23cwGYnANwLIb3uL0qoISDi3bx2hMq83gZHO4+UIef7OdJGqEl7T5sL9kg2uN3S6CQXhgZDHbcEplI+3+pq9BG5LZ5BunyOEme0uxCcNJoqL74m8v4O4gno084yUzOpEhOc=
+	t=1733836189; cv=none; b=sQsubLnQIAfaAMWbk9gFYyW2ETQ91w2YzRhWYqpSRO/kmD6vGQ/Af6xzNYhfL2e8Pxkyfz1/C6H7a4cnQnInEjMQxHknNxpLAVA3c+0sJGRBDzBuzPkLpA3CXG33zeqMoKKTaHauMwyTXZDSQom7BWCGz5NXNZpgQD2e03vsPdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733836186; c=relaxed/simple;
-	bh=Kins5pRBzjG2BfRs5W6rRnhUS4kpsEx0TMCHyLNnups=;
+	s=arc-20240116; t=1733836189; c=relaxed/simple;
+	bh=gs3pQyhAtuTtqsflnavxroyRBi2uR2QXMjWyUdGPln4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4bSJibsfA1fZixBlKj031b56/yEbKS4A706mZHpqaXYxGDPyC2nnvXRNBAy8uSUUxBb2RuVGyuakmkyx70ddSm8zl1qw4fDmXyGmsMjRc8bYqQbr+SCihFc59ULTUrVQ5QHv81ivzzWgCFWzK254i3RwT/J0muglJhWVsicXDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DNxEx2gX; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=pSSIBlTBagPpRP4DaB1IROIVahAtsOypELjnPil64D//HH2SD8LeRQnAjaG9V8k6YmrwVBVeW3KnLdk78gENvuC7w6AjzImjbKlvFKwheRtI+umau4BVohROE2SZJb0+gFUXNZAbr0nWQlzjQS/s9Oy1wqDAy3co6hI+VVqqkRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HEc4BZvH; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733836185; x=1765372185;
+  t=1733836188; x=1765372188;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Kins5pRBzjG2BfRs5W6rRnhUS4kpsEx0TMCHyLNnups=;
-  b=DNxEx2gXp65zW6JFyxgKq0QFVwmf7b6zPMF6ZS8Yu2yJ+k8Bq0m5zK98
-   p+UuePJ8M4orGTn4Z+8mGItYaHS2JKmdl33tKIyYHRsx5A6zXQYAQC1y0
-   iLo3mrOsQv8w0fpn0FD1frTm1cyiKb+koxCBc3ssT/npGBN2pUvDoP/z9
-   PSkxQyw3FR4DLjUl8boEg/idL8QHRtMgBXavJbgMt5UKhFwteCkyEfACO
-   spB4R0MCgCApCaNTGEVwWQDA3h3Z3wRgarNRdoYlq1qvf0Blo6qwFO8UE
-   YBqsyDXe8IdeTKmn3nqPYiLJiJoB3BWj7uycV2B0/byzDOjgl/zGRq9p6
-   A==;
-X-CSE-ConnectionGUID: y7sCbqz0RziQnJNUpnkYRQ==
-X-CSE-MsgGUID: mqszDzW+Sfiig9fhdaBLjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="34080113"
+  bh=gs3pQyhAtuTtqsflnavxroyRBi2uR2QXMjWyUdGPln4=;
+  b=HEc4BZvHwHLcQLQ+7qRUme5banzzMvVCss70Ncx+vUm7c/+Yvw4o2CKq
+   20JK7YdvBTbKu4HB2AVSQMc7QSmud21+foJu7x4YZXnW9s9aiD0nLFdic
+   BHAf+FiQoHvLiYq6CzVK1OT2gTJZW0GHlxZiCVgPv9IBXuIVUYDcrz+rk
+   3aKeB3aVRk1E87EbKPGajRXf36DvG7MZ9LKnhoCSMaT4eeoNjf8Va3R9n
+   kxn6FFvNhtCJdqboWs7AihxMLAwljWMTIU4V9BvxY5lxKcPC8MtYdRGSL
+   S49mqvTrM3YVXZuP2bhJXzYIzapwDKg/1G7Enkz1fBIS/CYaOmrMH3knW
+   w==;
+X-CSE-ConnectionGUID: 4igfJv5OS/OX5rbDPsY0EQ==
+X-CSE-MsgGUID: V5B7ShReReuuTQpK3BC4yw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="34080124"
 X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="34080113"
+   d="scan'208";a="34080124"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 05:09:44 -0800
-X-CSE-ConnectionGUID: NAGnexRgSbeHscYKd9XPmQ==
-X-CSE-MsgGUID: eRmEsOjIQmeP0iafsVh8Cw==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 05:09:48 -0800
+X-CSE-ConnectionGUID: 5X3wo6H4SfqBm5AMrmYskw==
+X-CSE-MsgGUID: 4NWQVyBYTqiXVgqKb+j15w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="95242036"
+   d="scan'208";a="95242050"
 Received: from jlawryno.igk.intel.com ([10.91.220.59])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 05:09:42 -0800
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 05:09:46 -0800
 From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 To: dri-devel@lists.freedesktop.org
 Cc: oded.gabbay@gmail.com,
@@ -65,9 +65,9 @@ Cc: oded.gabbay@gmail.com,
 	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	stable@vger.kernel.org,
 	Karol Wachowski <karol.wachowski@intel.com>
-Subject: [PATCH 1/3] accel/ivpu: Fix general protection fault in ivpu_bo_list()
-Date: Tue, 10 Dec 2024 14:09:37 +0100
-Message-ID: <20241210130939.1575610-2-jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 3/3] accel/ivpu: Fix WARN in ivpu_ipc_send_receive_internal()
+Date: Tue, 10 Dec 2024 14:09:39 +0100
+Message-ID: <20241210130939.1575610-4-jacek.lawrynowicz@linux.intel.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20241210130939.1575610-1-jacek.lawrynowicz@linux.intel.com>
 References: <20241210130939.1575610-1-jacek.lawrynowicz@linux.intel.com>
@@ -79,29 +79,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Check if ctx is not NULL before accessing its fields.
+Move pm_runtime_set_active() to ivpu_pm_inti() so when
+ivpu_ipc_send_receive_internal() is executed before ivpu_pm_enable()
+it already has correct runtime state, even if last resume was
+not successful.
 
-Fixes: 37dee2a2f433 ("accel/ivpu: Improve buffer object debug logs")
-Cc: <stable@vger.kernel.org> # v6.8
+Fixes: 8ed520ff4682 ("accel/ivpu: Move set autosuspend delay to HW specific code")
+Cc: <stable@vger.kernel.org> # v6.7+
 Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 Reviewed-by: Karol Wachowski <karol.wachowski@intel.com>
 ---
- drivers/accel/ivpu/ivpu_gem.c | 2 +-
+ drivers/accel/ivpu/ivpu_pm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-index d8e97a760fbc0..16178054e6296 100644
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -409,7 +409,7 @@ static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
- 	mutex_lock(&bo->lock);
+diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
+index dbc0711e28d13..949f4233946c6 100644
+--- a/drivers/accel/ivpu/ivpu_pm.c
++++ b/drivers/accel/ivpu/ivpu_pm.c
+@@ -378,6 +378,7 @@ void ivpu_pm_init(struct ivpu_device *vdev)
  
- 	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
--		   bo, bo->ctx->id, bo->vpu_addr, bo->base.base.size,
-+		   bo, bo->ctx ? bo->ctx->id : 0, bo->vpu_addr, bo->base.base.size,
- 		   bo->flags, kref_read(&bo->base.base.refcount));
+ 	pm_runtime_use_autosuspend(dev);
+ 	pm_runtime_set_autosuspend_delay(dev, delay);
++	pm_runtime_set_active(dev);
  
- 	if (bo->base.pages)
+ 	ivpu_dbg(vdev, PM, "Autosuspend delay = %d\n", delay);
+ }
+@@ -392,7 +393,6 @@ void ivpu_pm_enable(struct ivpu_device *vdev)
+ {
+ 	struct device *dev = vdev->drm.dev;
+ 
+-	pm_runtime_set_active(dev);
+ 	pm_runtime_allow(dev);
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
 -- 
 2.45.1
 
