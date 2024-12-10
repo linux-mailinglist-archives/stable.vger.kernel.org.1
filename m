@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-100431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F4E9EB279
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:01:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8A79EB27F
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:02:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07A60162804
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 14:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04354288241
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 14:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F3C1AAA02;
-	Tue, 10 Dec 2024 14:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158391AAA38;
+	Tue, 10 Dec 2024 14:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="06CqwVGy"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="UztrZSeK"
 X-Original-To: stable@vger.kernel.org
 Received: from pv50p00im-tydg10011801.me.com (pv50p00im-tydg10011801.me.com [17.58.6.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621481A4F09
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 14:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E6F1AAA04
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 14:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733839273; cv=none; b=kZmTuCXRREWQtIEfd3GDiah4xzTEk/oY4hXyA/BpDJMkbxIjY1+QfpQa+C2z98jMNmCbCnEbTpQ9OtsoHXQV/+88lLv5xHrkrDLhUySj09wpm7ifUFJAARx5U0dG0QAVgpUhfgM64d4VCSNaf+nwt0RYeJyQtVhjtCIeB3+Mf/o=
+	t=1733839292; cv=none; b=BBtWdRtfYu9PgHdvcK1HKsQbz5iqNlMZbep0oD3+IYNXlM1QjNNZzLeigsWrYEhTbYbnOfhjoQq/bBCU42FGrmReGhEpz6J2OoH74UDnl44bcUZlDoUqykQi7cICStXRqVB8I+1VFuuseRl0O+62pvOUmTT8hDKkyHtxNQ2+tLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733839273; c=relaxed/simple;
-	bh=8+e/AA77sYSxm1KAVQfMKzWoogKkDDGjLcjjHsjn3hM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SoYYb0rWCrvPBbxvsBJLqfG/MBXexM/yhiqSX0zC5auQKRhtbgxNuU3iunZgSwynb6DnnO+GEeuBHdxZLbM5qAK+ocfKCbRn79yVbrlvSYsBMLojuQCMJESiCK8uLfyNRJIxG7hq9745qykrI+gPJY80cpnzUDsfFIGynZr+OMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=06CqwVGy; arc=none smtp.client-ip=17.58.6.52
+	s=arc-20240116; t=1733839292; c=relaxed/simple;
+	bh=eYMW9hHwPHqiPLBKFjol8BZpfo0bKQbBb10Nr3+vlqQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rPBc1ZHjMHZR0PCYRns1M1UKBl9hVrqhhoU4z8vn4oZJMUrSyU8Hj+4hj064f29FrvSyvcjampc3ELUgd+5NHRTksBJRubMncYlca+OlG1nr2yxqPZGepNzpwatsdTMuEikzSaQGtW87iAcQODgdBiojjScmRWM1dfw5UXud2tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=UztrZSeK; arc=none smtp.client-ip=17.58.6.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733839272;
-	bh=IJ0i8jvvYtAOUxtHXbbbAA9omlwHVpAhBt6zS/cGok0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:
+	s=1a1hai; t=1733839291;
+	bh=lyLsWjXmuagjO0JYLheAQbjG7pu5wh1gMuC5bWUKHX8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:
 	 x-icloud-hme;
-	b=06CqwVGyBP/w6rUs+gK0Urjtz0AH+L74lcijDxKn1TrbEq/CIrO9WTcFyk6/HGydO
-	 qljcc20+SIOC1oIDZYguTl3GcmGcC8LTBf1LUC0tZ0/bweLh3Z3geRcfX5zKjGfz8P
-	 RtJ6qu2qHzYLwzwuXyuQv4pFoMUI9Yvc6Gius0uoFnFAK9TYxvgfCDCA68/4wOeeP0
-	 RGAXtZ7N+ABmT+O6yYTKPPbvuKh31a4RcUBSwlLVgNiiVd7KkQjFQz/MD1ZYgrEP1J
-	 vlAR/4BqxST8EZcGBCoe0IxV8I2eY/hQh9hmT5BC8ra2VjgFzhYrOp6tlMcs1JlN5h
-	 u6X8/W//Ingpw==
+	b=UztrZSeKMUSDRWGWM1ZaOXqwBHFS3eTzE33De+daZjVDyBRrEG7QQeqcKs2tYf4lX
+	 wTEzhd9HbI9Wj8azKuEDx3NusLBFBNhiTzCyaqxV0lIymvS16y8nQpAbm7x6fk8Tup
+	 f8jXD7BpeeqRt2TAyyPIMlvkm3xo3apKxYP8tisA2sO2tuy3ADBBnr+9p719BLeyPF
+	 yNdhdjzTMvINHOYJ3xxvyrlOQ3ECMODtppWOtvWcfKaWxxECR0NtC4mXHcuVWNXgeb
+	 eTWqMu5M5PkZllJxbB2E+wtjrOMI7zq1oJmpEdVM0afEkaE0j89/oSt/nEVHH6+bJI
+	 Nb/Sv5iA83Dxw==
 Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-tydg10011801.me.com (Postfix) with ESMTPSA id 8281A800438;
-	Tue, 10 Dec 2024 14:00:46 +0000 (UTC)
+	by pv50p00im-tydg10011801.me.com (Postfix) with ESMTPSA id 45A92800391;
+	Tue, 10 Dec 2024 14:01:24 +0000 (UTC)
 From: Zijun Hu <zijun_hu@icloud.com>
-Subject: [PATCH v3 0/3] PCI: endpoint: fix bug for 2 APIs and simplify 1
- API
-Date: Tue, 10 Dec 2024 22:00:17 +0800
-Message-Id: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
+Date: Tue, 10 Dec 2024 22:00:20 +0800
+Subject: [PATCH v3 3/3] PCI: endpoint: Fix API pci_epf_add_vepf() returning
+ -EBUSY error
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,10 +57,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHFJWGcC/32NTQrCMBBGr1Jm7Uh+DDWuvIcUCdOpnYVNTbQoJ
- Xc39gAu34PvfStkTsIZTs0KiRfJEqcKdtcAjWG6MUpfGYwyB62MwpkEeSakmPg6yBuDN06bIfh
- ee6izOXHVW/LSVR4lP2P6bA+L/tk/sUWjRnv0vlWOrbPt+fESkon2FO/QlVK+T7fno7IAAAA=
-X-Change-ID: 20241020-pci-epc-core_fix-a92512fa9d19
+Message-Id: <20241210-pci-epc-core_fix-v3-3-4d86dd573e4b@quicinc.com>
+References: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
+In-Reply-To: <20241210-pci-epc-core_fix-v3-0-4d86dd573e4b@quicinc.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
  =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
  Kishon Vijay Abraham I <kishon@kernel.org>, 
@@ -71,51 +70,48 @@ Cc: Zijun Hu <zijun_hu@icloud.com>, linux-pci@vger.kernel.org,
  linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.14.2
-X-Proofpoint-GUID: 0-lwvZK-LFeQ81EucUeOkBtPxer9kBFy
-X-Proofpoint-ORIG-GUID: 0-lwvZK-LFeQ81EucUeOkBtPxer9kBFy
+X-Proofpoint-GUID: tWbp0T0O1YH03JZBuAhap_YTQqzC8Tu0
+X-Proofpoint-ORIG-GUID: tWbp0T0O1YH03JZBuAhap_YTQqzC8Tu0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2024-12-10_07,2024-12-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 clxscore=1011
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 clxscore=1015
  malwarescore=0 adultscore=0 phishscore=0 spamscore=0 suspectscore=0
- mlxlogscore=528 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=812 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2308100000 definitions=main-2412100105
 X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-This patch series is to fix bug for APIs
-- devm_pci_epc_destroy().
-- pci_epf_remove_vepf().
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-and simplify APIs below:
-- pci_epc_get().
+pci_epf_add_vepf() will suffer -EBUSY error by steps below:
 
+pci_epf_add_vepf(@epf_pf, @epf_vf)       // add
+pci_epf_remove_vepf(@epf_pf, @epf_vf)   // remove
+pci_epf_add_vepf(@epf_pf, @epf_vf)     // add again, -EBUSY error.
+
+Fix by clearing @epf_vf->epf_pf in pci_epf_remove_vepf().
+
+Fixes: 1cf362e907f3 ("PCI: endpoint: Add support to add virtual function in endpoint core")
+Cc: stable@vger.kernel.org
 Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
-Changes in v3:
-- Remove stable tag of patch 1/3
-- Add one more patch 3/3
-- Link to v2: https://lore.kernel.org/all/20241102-pci-epc-core_fix-v2-0-0785f8435be5@quicinc.com
+ drivers/pci/endpoint/pci-epf-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v2:
-- Correct tile and commit message for patch 1/2.
-- Add one more patch 2/2 to simplify API pci_epc_get().
-- Link to v1: https://lore.kernel.org/r/20241020-pci-epc-core_fix-v1-1-3899705e3537@quicinc.com
+diff --git a/drivers/pci/endpoint/pci-epf-core.c b/drivers/pci/endpoint/pci-epf-core.c
+index 8fa2797d4169a9f21136bbf73daa818da6c4ac49..50bc2892a36c54aa82c819ac5a9c99e9155d92c1 100644
+--- a/drivers/pci/endpoint/pci-epf-core.c
++++ b/drivers/pci/endpoint/pci-epf-core.c
+@@ -202,6 +202,7 @@ void pci_epf_remove_vepf(struct pci_epf *epf_pf, struct pci_epf *epf_vf)
+ 
+ 	mutex_lock(&epf_pf->lock);
+ 	clear_bit(epf_vf->vfunc_no, &epf_pf->vfunction_num_map);
++	epf_vf->epf_pf = NULL;
+ 	list_del(&epf_vf->list);
+ 	mutex_unlock(&epf_pf->lock);
+ }
 
----
-Zijun Hu (3):
-      PCI: endpoint: Fix that API devm_pci_epc_destroy() fails to destroy the EPC device
-      PCI: endpoint: Simplify API pci_epc_get() implementation
-      PCI: endpoint: Fix API pci_epf_add_vepf() returning -EBUSY error
-
- drivers/pci/endpoint/pci-epc-core.c | 23 +++++++----------------
- drivers/pci/endpoint/pci-epf-core.c |  1 +
- 2 files changed, 8 insertions(+), 16 deletions(-)
----
-base-commit: 11066801dd4b7c4d75fce65c812723a80c1481ae
-change-id: 20241020-pci-epc-core_fix-a92512fa9d19
-
-Best regards,
 -- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+2.34.1
 
 
