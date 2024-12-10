@@ -1,113 +1,131 @@
-Return-Path: <stable+bounces-100404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD019EAEAF
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:54:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E2A9EAF8C
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:15:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 203AA28AE32
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:54:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DF5A16AC33
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0785215783;
-	Tue, 10 Dec 2024 10:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC77212D86;
+	Tue, 10 Dec 2024 11:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="wPuPnjZ4"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RQpu/ErG"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-tydg10021701.me.com (pv50p00im-tydg10021701.me.com [17.58.6.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D81B2080FE
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 10:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D31A1DC9BD
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 11:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733827747; cv=none; b=Bf6cWGehHnbxuOQTky8tWq6I5QXoqLsqfBH6X/bQLC4qpoA3i/HAUbpdm+JzrEECHcCwHvxkPg7MD8f43mwEit+GJAU8fx9ikRbzXyzE3kxbRDMuRp80KG9fBAJe3vYGau1muqMWVliVkiIL36lpQl3rowJqBnaukRgBLfZGrAE=
+	t=1733829056; cv=none; b=RTeeK9Fmy/koMWRjxSuoeDsOB1f0hE1hJSyO8j2QZpLHDubjbNtcBQGMQs5OecxwTTjWXnJWLzQ8SuTDCDcHnH/oc8yRVVaEE7GQ0mPCxN4uPHE0fgWWMDVldWOi+87R6ITfnHEWYXY9JaU5xTPXNzWzFnrZv14sx21SCq3jNho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733827747; c=relaxed/simple;
-	bh=rCUi7YRbVnOv9RIzb+PDCdMtuonEQTe6dWQvX4EnhBU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SHsvS0vARn0gfmPMnZxqT33K1oYaNxBJdIJxOAQw1APXNbiCqYuDbfVOCCRMoE/mAMxADVNo/cphakZ+KcF9ADKaNixkWZ7OgVxgMFlWOsKLbAmC+jcCnGNmKgdb7TI8QuvteYg/gFScI0mKoKfksuVagS9DtSLvCdqT89P4oI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=wPuPnjZ4; arc=none smtp.client-ip=17.58.6.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1733827740;
-	bh=O4oOUsbjBRsVMugWmEnWjUVb7nrVJHYabFXrGW4IQ3c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:
-	 x-icloud-hme;
-	b=wPuPnjZ4O33udcKvyQgOG/9HBKH4Gjr6h2yI5pQvYv2MKmZGhFfRF0fUchqED+Vtz
-	 kjjshoP2XCVap4k/h5eEDwh+dxU6nSgsZqoMjgkAnzMivV5CJA4h6dxGXHqwe7bPe9
-	 bzAql3opjcYuOoSm8yJIYHlrxZOgsDbj8vmnE4HKM8OjC3mrDbJT7y0VHx9YC2nv5w
-	 prGCsi8X6krXBZpasfej3IBnnOMpX/E6v1rkWt639opPw9pVnmXpubxSpf9tTO9CNO
-	 eoIGIQECo36Rul972DixyV17hMc9F8k/a1K4iInEyvl+oOzaH1p87X1JlKof/6KeVB
-	 FcQYuOGxMEdYA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-tydg10021701.me.com (Postfix) with ESMTPSA id 9A8D83A09FA;
-	Tue, 10 Dec 2024 10:48:52 +0000 (UTC)
-Message-ID: <7bb56d1f-f3e9-4574-b7d5-f99d33fbe998@icloud.com>
-Date: Tue, 10 Dec 2024 18:48:49 +0800
+	s=arc-20240116; t=1733829056; c=relaxed/simple;
+	bh=owTvWL6AADlpZXQCpFXiMeLwthOENU5U7gw8f1CCC+0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UfMS9fy6zPeHzElYbSebArclR5K5vvio1Agft8qXyd6GncLt8McFBNn7v2HbBy7c7KbarTh4eLPMP5tP7MsPb9zdu9vfHguMuDKUynOlbGg12FcDvZUCvO+oTSN69G4PlKjukdal9RwWdCcJKUgMVrp/XJaEecOhvqWmaSvLGo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RQpu/ErG; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-728ea1e0bdbso6616b3a.0
+        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 03:10:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733829054; x=1734433854; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M5zrLc/39AZlyzb39aeGuRl+eLq3lo9ABTDZAWs7vGc=;
+        b=RQpu/ErGCWmyL8NrTqk3A2lcsaD2qzI2pbbsstSCdaRK9u3gC2jUwg9V/+cObmGoxh
+         L5RDWQetzuHA457lpKTbts2+XrOxWIRjiDhTvNTlKlTNEHFRN4ZUWybUUeGdlC4/aS6+
+         MCckc6XmI/sepw7K3akcXE0asS50H+osQHwng=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733829054; x=1734433854;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M5zrLc/39AZlyzb39aeGuRl+eLq3lo9ABTDZAWs7vGc=;
+        b=TO3qGjKDIpAv87wvB/p8aS9kzND/K28R92wQdGj8M5hIBfJT+JT4Mlx/rExycDr7rP
+         Kl1HIFmAAITcYoKWYGhT5oNMadfq7e3B+HyOJDP5Pr9ogQVRUL7S72XYagA81/medJAp
+         gVH+BuY6XvfgXrbyPUyigK7bLhy8ajJ5oJb4ZFSFEVjyau3EcYFmi8QAEJ17376BmwMU
+         NvMnxwHGjrb+kWSrJJ3zWEHUcHmZJvVKdf6AqFr1rTO7OYU/YhP+N5DdeSDg86f/7iG9
+         /xkjWNBNzKbkK4iGTBlwg3Y2nDg1af680Jvtk82S0eVooGMKZV2FMPevBgKqqEHTqYTn
+         3Pow==
+X-Gm-Message-State: AOJu0Yw4WyG7DWzuO/79tNQgh7qGjTCBWX3N3MlBofnVLnXUDW0A50Hg
+	Kb40qoZPOfa0GBWcBYxjfuZyYi/qmOHYs6ikYIOBs21CwjL+KIbkE85dWj8vUnQJtwi5JirVTTg
+	=
+X-Gm-Gg: ASbGncuOW5BFMO5yCBC59S/o8hwEVTbJyVvy5JnhEP5ERym+pL1hHTzF/dtejyctarj
+	tZNv4qrn9Kvn4OoOFySmbJBnG2Nwpoz4XSUz2ffrqVkzZxuzDPEaU4gyT6Vi7rhOCdBJbec4wTt
+	TiVZ1vSF6VPPE4ICJQgT3hZ5R1Gy36ByPJlGY0lWQvgupcZPcwtP8DXjMQ1KKLY4YQACbCevNEy
+	L/jueHgBQhZLM9beNhf4zwnonCoex8p4e0Wjxy/N0A2/uRJNo+UMjMX
+X-Google-Smtp-Source: AGHT+IGAiKC3VKqVq/bNO/7RcCelHBv8DUfSMA/xCt32VdVmJNeLVFIOfoyRCEEk9lYy53JxpiHhFA==
+X-Received: by 2002:a05:6a20:6a20:b0:1e0:c3bf:7909 with SMTP id adf61e73a8af0-1e1b1b98e5emr6786489637.41.1733829053832;
+        Tue, 10 Dec 2024 03:10:53 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:4d97:9dbf:1a3d:bc59])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-725df830510sm4879024b3a.29.2024.12.10.03.10.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 03:10:53 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.15.y] modpost: Add .irqentry.text to OTHER_SECTIONS
+Date: Tue, 10 Dec 2024 20:10:48 +0900
+Message-ID: <20241210111048.1895398-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+In-Reply-To: <2024121042-refined-ducky-6392@gregkh>
+References: <2024121042-refined-ducky-6392@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] of/irq: fix bugs
-To: Rob Herring <robh@kernel.org>
-Cc: Saravana Kannan <saravanak@google.com>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Marc Zyngier <maz@kernel.org>,
- Stefan Wiehler <stefan.wiehler@nokia.com>,
- Grant Likely <grant.likely@linaro.org>, Tony Lindgren <tony@atomide.com>,
- Kumar Gala <galak@codeaurora.org>, Thierry Reding
- <thierry.reding@gmail.com>, Julia Lawall <Julia.Lawall@lip6.fr>,
- Jamie Iles <jamie@jamieiles.com>, Grant Likely <grant.likely@secretlab.ca>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Rob Herring <rob.herring@calxeda.com>, Zijun Hu <quic_zijuhu@quicinc.com>,
- stable@vger.kernel.org
-References: <20241209-of_irq_fix-v1-0-782f1419c8a1@quicinc.com>
- <20241209211532.GC938291-robh@kernel.org>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20241209211532.GC938291-robh@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: gGUpTdhN8F1P2IQ8UBU2LUOxqEiK6X8I
-X-Proofpoint-ORIG-GUID: gGUpTdhN8F1P2IQ8UBU2LUOxqEiK6X8I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-10_04,2024-12-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=796 spamscore=0
- suspectscore=0 malwarescore=0 adultscore=0 phishscore=0 bulkscore=0
- mlxscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412100080
+Content-Transfer-Encoding: 8bit
 
-On 2024/12/10 05:15, Rob Herring wrote:
-> On Mon, Dec 09, 2024 at 09:24:58PM +0800, Zijun Hu wrote:
->> This patch series is to fix bugs in drivers/of/irq.c
->>
->> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->> ---
->> Zijun Hu (8):
->>       of/irq: Fix wrong value of variable @len in of_irq_parse_imap_parent()
->>       of/irq: Correct element count for array @dummy_imask in API of_irq_parse_raw()
->>       of/irq: Fix device node refcount leakage in API of_irq_parse_raw()
->>       of/irq: Fix using uninitialized variable @addr_len in API of_irq_parse_one()
->>       of/irq: Fix device node refcount leakage in API of_irq_parse_one()
->>       of/irq: Fix device node refcount leakages in of_irq_count()
->>       of/irq: Fix device node refcount leakages in of_irq_init()
->>       of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
-> 
-> How did you find these refcount issues? Can we get a unit test for 
-> these.
->
+From: Thomas Gleixner <tglx@linutronix.de>
 
-find them by reading codes.
-yes. let me write some necessary unit tests for them.
+The compiler can fully inline the actual handler function of an interrupt
+entry into the .irqentry.text entry point. If such a function contains an
+access which has an exception table entry, modpost complains about a
+section mismatch:
 
-> Rob
+  WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ...
+
+  The relocation at __ex_table+0x447c references section ".irqentry.text"
+  which is not in the list of authorized sections.
+
+Add .irqentry.text to OTHER_SECTIONS to cure the issue.
+
+Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org # needed for linux-5.4-y
+Link: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+(cherry picked from commit 7912405643a14b527cd4a4f33c1d4392da900888)
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ scripts/mod/modpost.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index c6e655e0ed98..5962c4f94f4f 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -940,7 +940,7 @@ static void check_section(const char *modname, struct elf_info *elf,
+ 		".kprobes.text", ".cpuidle.text", ".noinstr.text"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", ".text.*", \
+-		".coldtext", ".softirqentry.text"
++		".coldtext", ".softirqentry.text", ".irqentry.text"
+ 
+ #define INIT_SECTIONS      ".init.*"
+ #define MEM_INIT_SECTIONS  ".meminit.*"
+-- 
+2.47.1.613.gc27f4b7a9f-goog
 
 
