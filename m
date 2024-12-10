@@ -1,152 +1,183 @@
-Return-Path: <stable+bounces-100375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF14D9EAC6D
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:37:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83032169699
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:37:30 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04DD22330F;
-	Tue, 10 Dec 2024 09:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iR09sli1"
-X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF289EAC9A
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:43:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A54A223300
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53255294AB8
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:42:59 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0851F223318;
+	Tue, 10 Dec 2024 09:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fElInyS"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB87F78F47
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:39:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733823286; cv=none; b=H2tHBV4X5z2b0WlTeg2zcxCumcPiW1bzJpGfUmiek2dU0+j1DzD671zry9icJKDquF/eDYbYledc9KQqfuxlVH7NzqfMCCDXtrKwld38ZjymNMsUZ7n1Eyop+YnYwmNo3wX/GV3yxq6i+wmLnA9sVjDR/HuTFJ3c2zjysl2RF3k=
+	t=1733823546; cv=none; b=hxCRDfWhBy+y6vW4xHg3BPIueuh0yUQvNrVXADmQ6OhCgBvKjlzq7Z7uibl7ruq8FC15sPv2VVGHK/Tzgnu7gt6CyFhlOobyJD/JOW6x5ReQw8OfNWW4MYxiRs+oBi2JLhENVX1jh1mym2qZ73WkUiTVSAy97KPQdVR/FocfuyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733823286; c=relaxed/simple;
-	bh=ElXP8yFZ6wrLbaHVXnASfKVk5yiYGrY60JXxHO8wEt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SARGBCiutFd8pXG6fF5aF552h3b+uZYjz44rCq6xNri3zuNKxEzT75mjxjyhtVcJMxXI3s+HxhJsuEvd5TW/yWg+FuYbFNXiOzoocFSdelGHvEVNuUl2QtMx/sVg+IjH7AjhrxTGOiEw1KYlNBjRTBRxCgTtooICdhOw/8m0fXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iR09sli1; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733823282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aJTE5aAWIDEa6vwoKjHOaUlIQUcp6L018sbCgFuL3Us=;
-	b=iR09sli18370tAwj7rHyxi/Xs5nU8JmBmne4jUOPj64JMAITTJZDiPqxz2FDBHaC5Wk7ZS
-	VcGfK1gh6l0eJ/p75CzVkMOSysUrU3+qVlowDi05KQZJr+BDd3rfREG6fdJM+bbgNrDBsH
-	ahpa4f4mVP5RSQvghdxtj2CIaPHYk4w=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-LRsY3aXbMUicTgwA4mwelQ-1; Tue, 10 Dec 2024 04:34:41 -0500
-X-MC-Unique: LRsY3aXbMUicTgwA4mwelQ-1
-X-Mimecast-MFC-AGG-ID: LRsY3aXbMUicTgwA4mwelQ
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-434f0206a83so15478355e9.3
-        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 01:34:41 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733823280; x=1734428080;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aJTE5aAWIDEa6vwoKjHOaUlIQUcp6L018sbCgFuL3Us=;
-        b=L5G3hn9UNc2gQFAoWOF/5kZbGk7XMJqBEMF88W5mYOeyedYi53312qHd74XPiBwyKy
-         FUkQUfuSTvEY87Q7fiXkH9RHpOaY5cnCDKdHK9OyJWY58SQRi6FCti4RMmwlq4Upw30J
-         89ot3bKUQsAwVuveifsca8FGjlITxsuBS8HF1/gaPxtn8yakw4IYDq6qwGuzGfpLViLL
-         7x1CycO+gs5mimFBvXE165n7ddPduvqsDXtNeEVF7mZux3x+dmqTuPc3z2OsRCzSLYpW
-         JySgsl44hCguhN1B1ekZ+uk/17GR2sS4v+Y2iTzfLc4ELnQEu8HSt0gn/Id9CJAg7KKB
-         lZIw==
-X-Forwarded-Encrypted: i=1; AJvYcCU63eQrujvxBRj4TI18VZoIWR5I6rd1a+wFBqZiVJXPB7rSa+CQegB6x7++DHCQFCyomxE4if8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxphRMi7+ts9k9RZqjS41F9DfrUTeT7IBYZO1zKDLvzBfsci9+s
-	3bjxPFyFRcdc2xtJ0CclmsMKkNqxd+ijpAGJJLbB2zpiQcXGo1+H4+z3cONJVXOhPAnHDiILfIR
-	6WjYuFsNf/2pltaUHuDkfUTU3o28fQHkviBUgcHn2oFEq9qOkwbszkg==
-X-Gm-Gg: ASbGncsbXrbszSYa4irapqrVO7jkXpyeKfbK4u3uJ+x/g0v27lIAFgL6+sAxKe1uSeQ
-	dCWL5jPzzJ0kyDszz20ttSbCUZMh52/M6JZhYwHlnilsPPrX78rbY9aoVmL9eMdVhm6ysJW3uDH
-	NpTc1v6gLhI7emPMP4SsLmz6JMEaUKHjKvWg6hEyh+d87e8UnzR/R45qq+TCpmjJJ0AvDDIKFSr
-	uyjCu3wzYsw1SqJoa96ivgR8phRKmaRmY7Wukuis8mu8GKiK8bYjen4G8Vw4Y9AFyBTJruVFuQ2
-	4TadWbVZyAdBd/xduE7qYCVFYHQ71gZc9orOLzI=
-X-Received: by 2002:a05:600c:46c6:b0:434:fddf:5c13 with SMTP id 5b1f17b1804b1-434fff4b38bmr31213415e9.14.1733823280334;
-        Tue, 10 Dec 2024 01:34:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEiSIcThERj1j+yIda8YMpOdaSblizl8osiTYt8iJ3IApoHVuyuGpAwgTEfZiyREhYWF3Jphg==
-X-Received: by 2002:a05:600c:46c6:b0:434:fddf:5c13 with SMTP id 5b1f17b1804b1-434fff4b38bmr31213175e9.14.1733823279931;
-        Tue, 10 Dec 2024 01:34:39 -0800 (PST)
-Received: from localhost (p200300cbc723b8009a604b4649f987f3.dip0.t-ipconnect.de. [2003:cb:c723:b800:9a60:4b46:49f9:87f3])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-434faeda409sm54729765e9.7.2024.12.10.01.34.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2024 01:34:39 -0800 (PST)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Yu Zhao <yuzhao@google.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1] mm/page_alloc: don't call pfn_to_page() on possibly non-existent PFN in split_large_buddy()
-Date: Tue, 10 Dec 2024 10:34:37 +0100
-Message-ID: <20241210093437.174413-1-david@redhat.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1733823546; c=relaxed/simple;
+	bh=52nl554tA/+UMTN7H/Z4Ex2b2YaZNLJxVom3hc6CQto=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=THrxE1igMQjrtVFrpJpBVHhBAgEPQLyuT6VM/B65h7phTTTPnSYCD8CNJyzFbnkNUISRDKCeO8CrXEj8LOlOX8POcXECMvg7ERAXhI1rarwBvtDnJiIfU8ZG2y7KzWIHKif18rbCHaxt/b25FcNMBQ1SVdq3vFlprNBru6ImDTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fElInyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F315C4CED6;
+	Tue, 10 Dec 2024 09:39:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733823546;
+	bh=52nl554tA/+UMTN7H/Z4Ex2b2YaZNLJxVom3hc6CQto=;
+	h=Subject:To:Cc:From:Date:From;
+	b=1fElInySjAU3VhrFJB4XBQ2o9qV8BplHsfpIy2XJeU8/LnCX0CYtIZqv7uVl0SK0c
+	 knegqxRH4E5JnbhjAF7nKvz8dyh4x3DEuq2Y7Pr99wiej8K8goL4bdkYj5tRbIoigo
+	 fixFoA5DHd392v7uV1rUONPZjtSi9X8h84Jo2T6I=
+Subject: FAILED: patch "[PATCH] sched/numa: fix memory leak due to the overwritten" failed to apply to 6.6-stable tree
+To: ahuang12@lenovo.com,akpm@linux-foundation.org,bsegall@google.com,dietmar.eggemann@arm.com,juri.lelli@redhat.com,mgorman@suse.de,mingo@redhat.com,peterz@infradead.org,raghavendra.kt@amd.com,rostedt@goodmis.org,stable@vger.kernel.org,sunjw10@lenovo.com,vbabka@suse.cz,vincent.guittot@linaro.org,vschneid@redhat.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 10 Dec 2024 10:37:50 +0100
+Message-ID: <2024121049-manhandle-nintendo-724e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-In split_large_buddy(), we might call pfn_to_page() on a PFN that might
-not exist. In corner cases, such as when freeing the highest pageblock in
-the last memory section, this could result with CONFIG_SPARSEMEM &&
-!CONFIG_SPARSEMEM_EXTREME in __pfn_to_section() returning NULL and
-and __section_mem_map_addr() dereferencing that NULL pointer.
 
-Let's fix it, and avoid doing a pfn_to_page() call for the first
-iteration, where we already have the page.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-So far this was found by code inspection, but let's just CC stable as
-the fix is easy.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: fd919a85cd55 ("mm: page_isolation: prepare for hygienic freelists")
-Reported-by: Vlastimil Babka <vbabka@suse.cz>
-Closes: https://lkml.kernel.org/r/e1a898ba-a717-4d20-9144-29df1a6c8813@suse.cz
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Yu Zhao <yuzhao@google.com>
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5f1b64e9a9b7ee9cfd32c6b2fab796e29bfed075
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121049-manhandle-nintendo-724e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 5f1b64e9a9b7ee9cfd32c6b2fab796e29bfed075 Mon Sep 17 00:00:00 2001
+From: Adrian Huang <ahuang12@lenovo.com>
+Date: Wed, 13 Nov 2024 18:21:46 +0800
+Subject: [PATCH] sched/numa: fix memory leak due to the overwritten
+ vma->numab_state
+
+[Problem Description]
+When running the hackbench program of LTP, the following memory leak is
+reported by kmemleak.
+
+  # /opt/ltp/testcases/bin/hackbench 20 thread 1000
+  Running with 20*40 (== 800) tasks.
+
+  # dmesg | grep kmemleak
+  ...
+  kmemleak: 480 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+  kmemleak: 665 new suspected memory leaks (see /sys/kernel/debug/kmemleak)
+
+  # cat /sys/kernel/debug/kmemleak
+  unreferenced object 0xffff888cd8ca2c40 (size 64):
+    comm "hackbench", pid 17142, jiffies 4299780315
+    hex dump (first 32 bytes):
+      ac 74 49 00 01 00 00 00 4c 84 49 00 01 00 00 00  .tI.....L.I.....
+      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    backtrace (crc bff18fd4):
+      [<ffffffff81419a89>] __kmalloc_cache_noprof+0x2f9/0x3f0
+      [<ffffffff8113f715>] task_numa_work+0x725/0xa00
+      [<ffffffff8110f878>] task_work_run+0x58/0x90
+      [<ffffffff81ddd9f8>] syscall_exit_to_user_mode+0x1c8/0x1e0
+      [<ffffffff81dd78d5>] do_syscall_64+0x85/0x150
+      [<ffffffff81e0012b>] entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ...
+
+This issue can be consistently reproduced on three different servers:
+  * a 448-core server
+  * a 256-core server
+  * a 192-core server
+
+[Root Cause]
+Since multiple threads are created by the hackbench program (along with
+the command argument 'thread'), a shared vma might be accessed by two or
+more cores simultaneously. When two or more cores observe that
+vma->numab_state is NULL at the same time, vma->numab_state will be
+overwritten.
+
+Although current code ensures that only one thread scans the VMAs in a
+single 'numa_scan_period', there might be a chance for another thread
+to enter in the next 'numa_scan_period' while we have not gotten till
+numab_state allocation [1].
+
+Note that the command `/opt/ltp/testcases/bin/hackbench 50 process 1000`
+cannot the reproduce the issue. It is verified with 200+ test runs.
+
+[Solution]
+Use the cmpxchg atomic operation to ensure that only one thread executes
+the vma->numab_state assignment.
+
+[1] https://lore.kernel.org/lkml/1794be3c-358c-4cdc-a43d-a1f841d91ef7@amd.com/
+
+Link: https://lkml.kernel.org/r/20241113102146.2384-1-ahuang12@lenovo.com
+Fixes: ef6a22b70f6d ("sched/numa: apply the scan delay to every new vma")
+Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
+Reported-by: Jiwei Sun <sunjw10@lenovo.com>
+Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- mm/page_alloc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 48a291c485df4..a52c6022c65cb 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1238,13 +1238,15 @@ static void split_large_buddy(struct zone *zone, struct page *page,
- 	if (order > pageblock_order)
- 		order = pageblock_order;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index fbdca89c677f..a59ae2e23daf 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3399,11 +3399,17 @@ static void task_numa_work(struct callback_head *work)
  
--	while (pfn != end) {
-+	do {
- 		int mt = get_pfnblock_migratetype(page, pfn);
+ 		/* Initialise new per-VMA NUMAB state. */
+ 		if (!vma->numab_state) {
+-			vma->numab_state = kzalloc(sizeof(struct vma_numab_state),
+-				GFP_KERNEL);
+-			if (!vma->numab_state)
++			struct vma_numab_state *ptr;
++
++			ptr = kzalloc(sizeof(*ptr), GFP_KERNEL);
++			if (!ptr)
+ 				continue;
  
- 		__free_one_page(page, pfn, zone, order, mt, fpi);
- 		pfn += 1 << order;
-+		if (pfn == end)
-+			break;
- 		page = pfn_to_page(pfn);
--	}
-+	} while (1);
- }
++			if (cmpxchg(&vma->numab_state, NULL, ptr)) {
++				kfree(ptr);
++				continue;
++			}
++
+ 			vma->numab_state->start_scan_seq = mm->numa_scan_seq;
  
- static void free_one_page(struct zone *zone, struct page *page,
--- 
-2.47.1
+ 			vma->numab_state->next_scan = now +
 
 
