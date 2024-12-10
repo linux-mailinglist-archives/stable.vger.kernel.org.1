@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5332A9EBA19
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 20:25:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B489EBA1B
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 20:25:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3802283C2C
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 19:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56E6283BD9
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 19:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E325214237;
-	Tue, 10 Dec 2024 19:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88889214232;
+	Tue, 10 Dec 2024 19:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/BxJOq8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7TgPUlL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8EB214227
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 19:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492F023ED63
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 19:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733858711; cv=none; b=OnqQme/JVep85T8AN48rg/41CHJkmWDPBDNT8ooeIVUmlngDzsO8ljwlP4ZSy2huaqrVhiacRbEG7jgafhEAGnOisPFj5IR5kuCD9jEt31JfjABTjEzWf7+3a0xY2nVEkeG+wsvknJwkS8R2WzDRYYY7k1v7fPUxbmCQitDnL2M=
+	t=1733858713; cv=none; b=MWxndc5p7/TQJFjs10UE/x8Cmx76Nst+46AAdJaHX4/mmoX4YuY6H4cVT7YMRzkqXeTuUhIASpCw/6MHiU+DkM0Sk2IKG2Qs1vjN/2hnCNgq4g4KSP9MA2jx2Zrs4CL7xbEEoWtpzYOij2nM2JlyhFF9VtKuhdQQ6hXbIQmy4TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733858711; c=relaxed/simple;
-	bh=BqOkU8QY2B/dU+T8UdgZNLAKtmo/AKl2IaImVZpbwG8=;
+	s=arc-20240116; t=1733858713; c=relaxed/simple;
+	bh=YZxrWfJQ3UmvxR0MUHPZzaQh3ibpMeL691R4nT0rnEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thPGyFiVms2UQiRlxuqCnk+4SZbn/ydla8/KFPFw6RQsQ/OSybVcYW0r3f3gtZn1FkvlcI87lGoSF7aSCpmw2ulGSOFa0ib5qbfCNR1xkVUwZAYGeeEdsXQgGzvUVdj0p6KAwkpDBa/ehWkn1h0R5vffgOYm1z4yrQ+3ZqbmFPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/BxJOq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379ADC4CED6;
-	Tue, 10 Dec 2024 19:25:10 +0000 (UTC)
+	 MIME-Version; b=Sd1uQMtatayDwuCsUOlck2RjiEJMAp3DLqXrqR+Ka9OGa0HiL2Ddom8HfegchxaFQUbO7QbVvpqq1vyTLDUwnFx2UgNF7WPqKMVod0eIqWoMtgB7ZZ6V8P5fGd/GgtY9w9Md+/pe7zD5ijZbUKkSEhWwOmikXyTFpRkGfx8Z1Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7TgPUlL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61675C4CED6;
+	Tue, 10 Dec 2024 19:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733858710;
-	bh=BqOkU8QY2B/dU+T8UdgZNLAKtmo/AKl2IaImVZpbwG8=;
+	s=k20201202; t=1733858712;
+	bh=YZxrWfJQ3UmvxR0MUHPZzaQh3ibpMeL691R4nT0rnEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/BxJOq8pDcyX5r66Xt23lk3pLacIj8zniriVBJGhyIDOTjz9AUFPooHjK+HWIS5A
-	 czZvJxtYNxdYrZbbBAEuPjrmSbCD25+dFa50X0VdRWnPwxZX5L1HgPGFcCWJULWCIF
-	 jDPPSqwOHp7xPy+WflNOlGD7s8a6idnTTJTZKr2DMvLLq+4MsgtXM9qsW4zBWa8EBr
-	 J9YpR3KW6KCIVRgX7+4rZy/alyGcFN5c0U9vjaWIvd40aqqytqlsh+xr5n7Skt5eAS
-	 Rug6ddX2o9DvYtlslShBcIwO9jx7VpwD74aHSGiXAj6s2PHQVUzY9nhE+kQGIF1fsQ
-	 6S8SwQ+RYRGmQ==
+	b=R7TgPUlLLVzYU42I1RVGpxARvR3UoPHCeOJlrrP4Gu5uZHju81No4FL8WtKWLLcv/
+	 M0/59wzXT9b2tE25pB43KuhyjL8ZNX1ml+XTaEXTLMNoiNEskJBUbzZ4sLNTUrbALg
+	 iWxRBSPpA4jQoPFXzefL4q0YOev31NmMS4FtIqi+e+nNg2K3dbG3uzPsxtBX8Hh8Pv
+	 5rLTzWWBHLXfIdGJjh7aAhLEiB6XWD+KNVUnTLZP9dGZfQ4W6Z1KrzTrl8yrPOd5eO
+	 gn+vbdnGC0mIiXGgYlnZn1nYSX0ix9NutgQGE9jkfHwqxtUiidIJcILAhHrHVXOFel
+	 vXg6u4uZnzF8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?J=C3=B6rg=20Sommer?= <joerg@jo-so.de>,
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2] net: dsa: microchip: correct KSZ8795 static MAC table access
-Date: Tue, 10 Dec 2024 14:25:08 -0500
-Message-ID: <20241210135618-f16800a30a827b76@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] modpost: Add .irqentry.text to OTHER_SECTIONS
+Date: Tue, 10 Dec 2024 14:25:11 -0500
+Message-ID: <20241210085807-5a9ba1649dfebfc6@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <8d4be70022292e9db1980a2527c2e5d927643f42.1733849214.git.joerg@jo-so.de>
+In-Reply-To:  <20241210111211.1895944-1-senozhatsky@chromium.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,29 +63,29 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: 4bdf79d686b49ac49373b36466acfb93972c7d7c
+Found matching upstream commit: 7912405643a14b527cd4a4f33c1d4392da900888
 
 WARNING: Author mismatch between patch and found commit:
-Backport author: =?UTF-8?q?J=C3=B6rg=20Sommer?= <joerg@jo-so.de>
-Commit author: Tristram Ha <Tristram.Ha@microchip.com>
+Backport author: Sergey Senozhatsky <senozhatsky@chromium.org>
+Commit author: Thomas Gleixner <tglx@linutronix.de>
 
 
 Status in newer kernel trees:
-6.12.y | Present (exact SHA1)
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-Failed to apply patch cleanly, falling back to interdiff...
+1:  7912405643a14 < -:  ------------- modpost: Add .irqentry.text to OTHER_SECTIONS
+-:  ------------- > 1:  8ccdbcbc2bb4b modpost: Add .irqentry.text to OTHER_SECTIONS
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Failed     |  N/A       |
-| stable/linux-6.6.y        |  Failed     |  N/A       |
-| stable/linux-6.1.y        |  Failed     |  N/A       |
-| stable/linux-5.15.y       |  Success    |  Success   |
-| stable/linux-5.10.y       |  Failed     |  N/A       |
-| stable/linux-5.4.y        |  Failed     |  N/A       |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
