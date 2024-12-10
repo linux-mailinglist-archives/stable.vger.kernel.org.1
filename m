@@ -1,158 +1,150 @@
-Return-Path: <stable+bounces-100460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDAB9EB67F
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:32:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671559EB6A6
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:40:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96FA21889AAF
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D575228339A
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F4A207E0C;
-	Tue, 10 Dec 2024 16:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEDF207E0C;
+	Tue, 10 Dec 2024 16:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fiI5NHGE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aEMgqhoP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCB42116FA
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 16:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773AB1A3BA1
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 16:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733848344; cv=none; b=pDjh4nRLxE4leSBpAyVRfMpPW3NhnS5Xa5SPm8LBo7S3qbgh7WshjMyDeKcWrIm08eQBueRb17JvKZtf565NQzmmploXnaQjxXJix9oawWcHJ8/edqZ9WsXLXLs4y7O5clxkMChXEYjau7VoCh3jHS/B5hdGkOQUfWCSZHm6jTk=
+	t=1733848825; cv=none; b=omVmklVDg+zgFGPbQnyW1+cvYx7gRdCv5d1YuxyIyTn8+y8d4ZEp1yVpcNivJCgCxPCpBIqfXFzOL64yN1GidAMi14/mdcQ/VsCnBMu1d9TfTx86DQcjP+NTU1sv1AZop2PDYIcx7wTig/QndaxGqsZ+UuMXZF05tscDLzZh1Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733848344; c=relaxed/simple;
-	bh=+b7M+jY9PJIO36eSkDLJJ9VE98VsbGgXtmTuW7php98=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=f+3yPNSRRgIX2A0Gz+DtknmQDoAgGsqV6DuTfgRDv+J9UmGxvC8FV2jsnUL1avCLeMmXyYYLXyQ6KOwtrhQTKIketpvcQZ5VDk9+4SEIc9vqUbMGapnO8WkbMUaeeDXfvFLty745vOLi9+1tcp4Cw1YVHRqDrSWn8Xgq62Jq5Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fiI5NHGE; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-434fa6bf6e4so50875e9.1
-        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 08:32:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733848340; x=1734453140; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z/gn1UbKj9vnFhh2xTSV92DWl+lvkKwbOmPeVeHbAqw=;
-        b=fiI5NHGEiO4n+b2sdi8Gn5lluoVlBt0EYv+8yAQM51ewD7whipEJyqx8pTBNBo/N5b
-         5dCPeJ8AlvrcAUq/l72VDUAhn5IpOgVbY4G4dGCUoDjRrE8B2AP7e76QylL/zzkzKV+3
-         /wLk3YJGwSX6ehJXvVSz/uECkydhpeL06lV4jz1cpVZNTje8/nVcAtgF7+NuKU7ISBhD
-         oVVw8yhFp9j1sPw8W5Qf64DJ3w5GfFvi6vugCrdy+ZxpG/m3JnL2TpAr32YRNgu+3n1P
-         +tcmzbMmsUUx2PUjl44EP8mdPcMdt+9dsem4+E/NbQWWnTVe47BN2k0WBGFhGptV8tby
-         95KQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733848340; x=1734453140;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z/gn1UbKj9vnFhh2xTSV92DWl+lvkKwbOmPeVeHbAqw=;
-        b=gqrpHdfykA2BrLt/oU6xL1XrewIigd2CIyPPTs5WoJMZvpAyjDWOWWpYdR223zPdmD
-         eDqac0B65NOuglSwMP+aCULAXW+k6VnTVnvWIk/sg11dLDkLkEvCEcZjAuvbQytjggaL
-         1NWNTJQW2p2wKC1Ce4v2vbC1OjRa++gq/q6871AznddGpq803TprTVSljtJ2sa4NtTAy
-         AB/0KbkPSpOE7sLda51k98ZIulx1Duh/9Ik3cKG1s5Oq8L2pWJZMLpI7+sq8AGWwhUpQ
-         lvg9xJn3Vd/42j9qX8mEEIzn2PspK+z6AQ0TbwAldz8hFjaiIt7vlThKfR3XXmYmtPvr
-         u9FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUiu1QxXOjxk7R9OpfFTh3HrJITdeAJo1kLjoNY2x4b0QSxbSwzn/bhCElA4ds08l9GtwKHIEU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQVOuR4sRyDeZII8zrby/pTLEc68Ls3IJ6CKOLhZXZ+4rAizaF
-	wuDD5uMha60614pO2r4G87WJBbRarNXTWySaA5yYQ9UAGMmHVIh0Wzkk+hsVNQ==
-X-Gm-Gg: ASbGncuTUA959mlaT59UFSuYWO8MLfBOW4Zmt7ESJg6eleMWv++TfdXRKndaEwcTybn
-	5DzLO7r215N3eYjfhJHmIrFhtvQ9wluW5s9oSOv9ZPszDzZRKNqHeijB9b9QbhU6Cg9ENk6eobH
-	tP/0PQMlOzmN+IfhbIhefMKaOmLTrRzW2CFV+AjCPHHjjSKD5SMH/LHpRZdgHQVzCrB7+nSe88V
-	9sI/8eHSEdpwqsfls44/d7tFDuNofJQsR4UL8KpIDk=
-X-Google-Smtp-Source: AGHT+IGJX8Z20qexK7oymokLsdpvHPHCKMTUzEu5sEKq663Uu0XauOt9N9AnILN+AinqcJUc7xO6fg==
-X-Received: by 2002:a05:600c:6b06:b0:434:9e1d:44ef with SMTP id 5b1f17b1804b1-43539dd9773mr1346455e9.7.1733848340098;
-        Tue, 10 Dec 2024 08:32:20 -0800 (PST)
-Received: from localhost ([2a00:79e0:9d:4:deb9:87dc:18b2:3f1c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3862b923419sm13837305f8f.2.2024.12.10.08.32.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 08:32:19 -0800 (PST)
-From: Jann Horn <jannh@google.com>
-Date: Tue, 10 Dec 2024 17:32:13 +0100
-Subject: [PATCH] bpf: Fix UAF via mismatching bpf_prog/attachment RCU
- flavors
+	s=arc-20240116; t=1733848825; c=relaxed/simple;
+	bh=SYKyJEhqW3z/ZZTw0I1rKdIhGgLAIkPPbPOcQL0Xu5g=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cimGQcxWyodUy+imhd6bblAQr7rD/AQFT9oes20tnT1W62WjTUhoadR18spwSHQzz4U5FAIQYA23kdHOTAUNHGsZXSIEgLAONd4lUKoCaGxs0UOw4JOKSLf/X1DdiCDxR/9oq2FR3AF+IIk73J/4S8Xp9F4C6jjPqJ0P0wrq1Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aEMgqhoP; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733848823; x=1765384823;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=SYKyJEhqW3z/ZZTw0I1rKdIhGgLAIkPPbPOcQL0Xu5g=;
+  b=aEMgqhoPncJIxa5T4HI4ciPCYKMF2aL9CGEcCqcwT4QFQ0QBY/DsAjf8
+   xCl/Djxx0r5ZDzcGnjbc4U2q7yTyd+sJTpMj9YzCoMUPcr2Z76i4LdD1N
+   MJH+UfnSDaFMSfPTT3O3m3SMZSqAmNEGKvHyq39adUEBnZIbyeCpdGcsJ
+   eI3zfTQVesofe3v0FARdw0fjsUILhuAflVXDHHUzzLIGqyDajUZCdh8Vs
+   5MzIuACx0sX1XVUWGJlPHGsh1O2AlVtG1FgAPNQ30stH/qfJabJ8PKmLQ
+   F0+6NVuPR4CpN8mSI+f0ajAY7l8BAzz8X86oTyJp/ENHwMVJXdHKPuY2a
+   Q==;
+X-CSE-ConnectionGUID: +xhjEsj8SKmrIRKcAJQ9Yg==
+X-CSE-MsgGUID: UXDYDT9uQI2SzzkJTrnSKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="33538609"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
+   d="scan'208";a="33538609"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 08:40:18 -0800
+X-CSE-ConnectionGUID: Q6h1u1K3SV2WGxKhqTKwKg==
+X-CSE-MsgGUID: 2KgB8T/CRwmU8Kouy+yD4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
+   d="scan'208";a="95660103"
+Received: from mklonows-mobl1.ger.corp.intel.com (HELO [10.245.246.4]) ([10.245.246.4])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 08:40:17 -0800
+Message-ID: <41de753b03bb5e86be011277429649d6d644687f.camel@linux.intel.com>
+Subject: Re: [PATCH v3 2/2] drm/xe: Wait for migration job before unmapping
+ pages
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Nirmoy Das <nirmoy.das@intel.com>, intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>, Lucas De Marchi
+	 <lucas.demarchi@intel.com>, stable@vger.kernel.org, Matthew Auld
+	 <matthew.auld@intel.com>
+Date: Tue, 10 Dec 2024 17:39:58 +0100
+In-Reply-To: <20241210161552.998242-2-nirmoy.das@intel.com>
+References: <20241210161552.998242-1-nirmoy.das@intel.com>
+	 <20241210161552.998242-2-nirmoy.das@intel.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241210-bpf-fix-actual-uprobe-uaf-v1-1-19439849dd44@google.com>
-X-B4-Tracking: v=1; b=H4sIAAxtWGcC/x2MQQqAMAzAviI9W+imXvyKeKiz04Lo2JwI4t8dH
- gNJHkgSVRL01QNRLk167AVMXYFbeV8EdS4MlmxrrCGcgkevN7I7M2+YQzwmwcweidk2rSMh6qD
- 0IUoR//cwvu8Hz4c2zGsAAAA=
-X-Change-ID: 20241210-bpf-fix-actual-uprobe-uaf-0aa234c0e005
-To: Song Liu <song@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
- KP Singh <kpsingh@kernel.org>, Matt Bobrowski <mattbobrowski@google.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, 
- Yonghong Song <yonghong.song@linux.dev>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Delyan Kratunov <delyank@fb.com>
-Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Jann Horn <jannh@google.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733848336; l=1632;
- i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=+b7M+jY9PJIO36eSkDLJJ9VE98VsbGgXtmTuW7php98=;
- b=OzxHpe5WGAO/ha2AVHzpagLfEW5ShM/GDQZc0Eov17h+nQF4RLseZnL3X4yU25WPDp3u+C/Un
- iCw9wAHXoqEBDTg0qeyo6DphEylK0ulrKHqxr3W7mYDWvGNPJ1aRthX
-X-Developer-Key: i=jannh@google.com; a=ed25519;
- pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-Uprobes always use bpf_prog_run_array_uprobe() under tasks-trace-RCU
-protection. But it is possible to attach a non-sleepable BPF program to a
-uprobe, and non-sleepable BPF programs are freed via normal RCU (see
-__bpf_prog_put_noref()). This leads to UAF of the bpf_prog because a normal
-RCU grace period does not imply a tasks-trace-RCU grace period.
+On Tue, 2024-12-10 at 17:15 +0100, Nirmoy Das wrote:
+> Fix a potential GPU page fault during tt -> system moves by waiting
+> for
+> migration jobs to complete before unmapping SG. This ensures that
+> IOMMU
+> mappings are not prematurely torn down while a migration job is still
+> in
+> progress.
+>=20
+> v2: Use intr=3Dfalse(Matt A)
+> v3: Update commit message(Matt A)
+>=20
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3466
+> Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system
+> buffer objects to TT")
+> Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.11+
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> ---
+> =C2=A0drivers/gpu/drm/xe/xe_bo.c | 10 +++++++++-
+> =C2=A01 file changed, 9 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+> index 06931df876ab..0a41b6c0583a 100644
+> --- a/drivers/gpu/drm/xe/xe_bo.c
+> +++ b/drivers/gpu/drm/xe/xe_bo.c
+> @@ -857,8 +857,16 @@ static int xe_bo_move(struct ttm_buffer_object
+> *ttm_bo, bool evict,
+> =C2=A0
+> =C2=A0out:
+> =C2=A0	if ((!ttm_bo->resource || ttm_bo->resource->mem_type =3D=3D
+> XE_PL_SYSTEM) &&
+> -	=C2=A0=C2=A0=C2=A0 ttm_bo->ttm)
+> +	=C2=A0=C2=A0=C2=A0 ttm_bo->ttm) {
+> +		long timeout =3D dma_resv_wait_timeout(ttm_bo-
+> >base.resv,
+> +						=C2=A0=C2=A0=C2=A0=C2=A0
+> DMA_RESV_USAGE_BOOKKEEP,
+> +						=C2=A0=C2=A0=C2=A0=C2=A0 false,
+> +						=C2=A0=C2=A0=C2=A0=C2=A0
+> MAX_SCHEDULE_TIMEOUT);
+> +		if (timeout < 0)
+> +			ret =3D timeout;
+> +
+> =C2=A0		xe_tt_unmap_sg(ttm_bo->ttm);
+> +	}
+> =C2=A0
+> =C2=A0	return ret;
+> =C2=A0}
 
-Fix it by explicitly waiting for a tasks-trace-RCU grace period after
-removing the attachment of a bpf_prog to a perf_event.
+I assume here we're waiting for the move fence, right? However if
+@evict is true, we should hit the ttm_bo_wait_free_node() path. In what
+cases do we hit this without evict being true?
 
-Cc: stable@vger.kernel.org
-Fixes: 8c7dcb84e3b7 ("bpf: implement sleepable uprobes by chaining gps")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Jann Horn <jannh@google.com>
----
- kernel/trace/bpf_trace.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Also, shouldn't it be sufficient to wait for DMA_RESV_USAGE_KERNEL
+here?=20
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 949a3870946c381820e8fa7194851b84593d17d9..a403b05a7091384fb08e8c47ed02fad79c1a4874 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2258,6 +2258,13 @@ void perf_event_detach_bpf_prog(struct perf_event *event)
- 		bpf_prog_array_free_sleepable(old_array);
- 	}
- 
-+	/*
-+	 * It could be that the bpf_prog is not sleepable (and will be freed
-+	 * via normal RCU), but is called from a point that supports sleepable
-+	 * programs and uses tasks-trace-RCU.
-+	 */
-+	synchronize_rcu_tasks_trace();
-+
- 	bpf_prog_put(event->prog);
- 	event->prog = NULL;
- 
+Thanks,
+Thomas
 
----
-base-commit: 509df676c2d79c985ec2eaa3e3a3bbe557645861
-change-id: 20241210-bpf-fix-actual-uprobe-uaf-0aa234c0e005
 
--- 
-Jann Horn <jannh@google.com>
 
 
