@@ -1,148 +1,166 @@
-Return-Path: <stable+bounces-100496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F282F9EBF44
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 00:30:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A549EBFAE
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 00:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE71188B0A5
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 23:30:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3128C1649CF
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 23:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2226C1A3056;
-	Tue, 10 Dec 2024 23:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32F622C366;
+	Tue, 10 Dec 2024 23:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Bjb3HzIy"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WNRmbKM0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489231A9B46
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 23:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD661EE7BE
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 23:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733873411; cv=none; b=l+BpwITS87HOj/h0mITwzyo4I6hDM4EJKEgcBpnCt1j+R0DBb95sLPiyXgnJpXohLFqVfvLLcT+Sa6lp1loAk141o0FJlH5zll8rRTkzUGAcTdzb0F/pFWdX8H0eVztb7rPykrcs0mHYzbIAgTZLzvJ32nKtmuN2Jk7R0BK1S+s=
+	t=1733875084; cv=none; b=CrPFHLscGjzvM8iFla17kIkZIw9hrS2YrbEvxsBrgPm29G60VtCrbraERGWNDSltJf12+dxyCHr4ztbSHxrNgqZd9yzHD47SfZj2zqVvosHqQvGtJbpywMIYPr63ph7RNWyIdm/MjpjojkchuNSNRzlbkZZ/qBexrlTE+T5Vvqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733873411; c=relaxed/simple;
-	bh=xrmZ5sIezSAHLi1oUllKgnFQc6m6O82r/Rtn8Oi+/1Q=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=F90fDi+SONWv8E573gTx8JJWTjj8JKLJiHhSZKSao1sDHpjA5+j69ahwxXJ4PdV2/s350Mu4VKG+W7y+gJzI93CjAGClESFSIrjdcJPpV9YNUtvH1EbEDM1yl8ZmOucxP1I7fEEXWSpxS6YjkwQrEHamNg8aoPzryeUoffHH2kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Bjb3HzIy; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2163dc5155fso26917715ad.0
-        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 15:30:09 -0800 (PST)
+	s=arc-20240116; t=1733875084; c=relaxed/simple;
+	bh=tqi1p481EfAMKfpVHgNxcyotwGGdjeQLH5O3ztzJ89I=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TeaYwdVfKZChTxssqMQHZcFl/kwds1nspMi4YPNWMlUveaEAhNr3wkOwwsgZwD5Bzv0RRVVo6pxkFumFsTaao9NZuRavIfsv0C/CBVmAFkY9eo7yj582MEjOb3Kg1uTYHfxMg2ChNtiBBsT6zDGD5lJWdz6vm9mDAV5Al3By7xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WNRmbKM0; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ziweixiao.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2162259a5dcso59980505ad.3
+        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 15:58:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1733873408; x=1734478208; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MVPsgSTemUzukg9E619CwHnFUeZfQvr0zWgl6blSlvM=;
-        b=Bjb3HzIynZbZTVrxOzgwK91EuxfAUueuWRK6djOz0QWq28gfXFT/+QQcY27N1E2ed8
-         +x9Hl3QLjWkmkZxgm8miCs9RgAcJUEKF8b+uSsmwUmdjnQc1eRz26MblVfbxGyhQ9FMY
-         rvRuxHiQ5GpJup7QSerMSc6i3pZNA+TZqCrSufsFguuz94Dl9qf3NHN7eXY3Blxez6Ls
-         VqJphtjpofSno5ZsHDjDqO9HLJG+vX4hdG7SaBBhN5WdSe6f0Dvz+cc4yIPW5SeTG5CR
-         bEpRvbw1CpMK6yjTvTD29KPdWBt03TR0BOLnHE+ljNeJ0J9xCtc/7rePS0stgcD9xyo/
-         Dvig==
+        d=google.com; s=20230601; t=1733875082; x=1734479882; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=z8c9o7vnCPF/JxiZeI4R1FPJGEXodP+y9ktpIlNTf9s=;
+        b=WNRmbKM0OlHXQPwkGUxB689Ptkn41ylgPOl2Wij55YqZBJA7bZx5A5Nxidse8YmZTR
+         QK2gVTPH6uNpSZMBhDJ+OIlwioWL9oCdZLcO34fUWbYD8qzeiY9eUr2Tb0gPh+sXjAvC
+         O3YnPe7r8hnzDBj3Q3TxoUq8l/w18tRoOKaKB/wcKeRLoaHpPAf1u/xH+C8F48igzVIh
+         oa3gOcTkdzdxCDqhYKSbxpJFzrEQtcEoc3GGslFPTNHqYYMUbnKyZbNQVWXR4FxBQ+Vn
+         IjuqgKt/RyetmFbiSeQyUaNDDJtSpTZUObqshXPzG31F8KXBG+H9mgAnO50X25Ctrg15
+         SsjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733873408; x=1734478208;
-        h=content-transfer-encoding:subject:from:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MVPsgSTemUzukg9E619CwHnFUeZfQvr0zWgl6blSlvM=;
-        b=mfFiSuZrj21Jq7fW2IKNAM3aaLSKk/Hpmg6krPRSJgilEEq3izbJitbTIvHXcy1m+6
-         TgDvWV60gos3th5ODH+bU607zVjeceDQW71lqsMPSCd0uOp+3cVyYymHlHdyFrg1BeXM
-         fY9wQJSMHlI0Lb7Gj22saLkRQcbDk8PBma1MaTCDCMZoLDPadi5lCHq3XZ8Mu+jDAvgA
-         U9yW9Z9PlFMxek8RLcpLCTkR9NgWsUnZxLmgWPVHwrV+kcmiBTeJaFVmdOZe8e7PvHZ+
-         SE2VPuRs7dEr8KegBUXi29PW1TxBaUXtXl1xBSed4zOXTKigyzrePW/+H14UeR2qt6qX
-         0lvw==
-X-Gm-Message-State: AOJu0YwX1u3t/hJL8fPzJZ5d7xqdIyEU8A/5GxL4Oe8Or64fCTHgbH/u
-	PP+aiZI1XRD3EQGsvQxxdUys4SqnNf6FPtP9Q1Ao5YXaoclQOTsysYRo9LLvJQ/I6dTHmlVuA5Q
-	T
-X-Gm-Gg: ASbGncsAAiNglcFYlfPr2NNGD+JpDFY6llt23VJLY7wr1KniLwiMQl9wmQBu8nsgrTe
-	t8ITwttFGXfKF+Kbf4gMj4kqVVzUW+XGgy0Ps1WWN8xPr0HfIhRqV4Go5c5W54t9Zo4y8OA1Dr+
-	vC2//KvR8GDxectW40Qevth+NUch6mH1qevCQn5rsocCQ5kLsz0hVN9gduwxCkiACflh6Kc8ILI
-	bp2XVH+IwqWJIRPMoLXMhf0ZTCTJ4H4AqoVbAzp58FG2e7V9HY=
-X-Google-Smtp-Source: AGHT+IGOJfga47ncT4LY1s69AZdSZljDBvbQYGIh68l8m5x83sOBKkfIS0tTC+y0se6366eY/4YKIA==
-X-Received: by 2002:a17:903:2448:b0:215:7b06:90ca with SMTP id d9443c01a7336-217783ab1f5mr13345345ad.17.1733873407237;
-        Tue, 10 Dec 2024 15:30:07 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2161fd39ddcsm73683015ad.86.2024.12.10.15.30.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2024 15:30:06 -0800 (PST)
-Message-ID: <57b048be-31d4-4380-8296-56afc886299a@kernel.dk>
-Date: Tue, 10 Dec 2024 16:30:05 -0700
+        d=1e100.net; s=20230601; t=1733875082; x=1734479882;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=z8c9o7vnCPF/JxiZeI4R1FPJGEXodP+y9ktpIlNTf9s=;
+        b=PVrfvEkP0mWxO4xJRfS+8T+Sf12Kg5YlAmv3dPFe4xSB5MlApjcx/QnCngQyrWfRAJ
+         q/9xtZcuguefBmNIwFN/gQORHc87nLWJ943g45JIAyJOGtqfAENopDXXCmfypCr1YCnB
+         hZaJPZ8+xxICRey7M9gDjsHOj2EnLr3K2CLhgKRPsp83yPzBln0lP13CwK02LYzNic20
+         /Zo1Rx2AXaeke1iVQtnIKupEl9Cy2dxhS9uRk0lJp9N5kWn54INphsw/n3LAyyPdBmAA
+         Nwd5/vVGoaNn8oDiXB4U9QgYD1T00A5ViJvIny/yr09xhOKwQVPJKJFoFwO8WDjdPtLy
+         Dp3A==
+X-Gm-Message-State: AOJu0YyqYAUM4ezchTXnrncQfbv38aFv4Ke6F1fpDm2B0aL2xlP48tX3
+	T83E4BH9YLz/lm7iwnm62ld7q3QJvA2ceaFU1i9+HcooK5W5hxXbhL9qAAMbXdEvKLvJJ0LiKf3
+	qRBduvMbFALsIfmxDoy8Mxq4ZNSTn06USgFSX0QpAu7ahi/AkNIPQ0z9UgMmWD1PF6kpSpnLpYJ
+	fHsFnH/4XZkqEwim6FDLTGuNMHN7+Fkv5G9VR90Een4fgC56d5
+X-Google-Smtp-Source: AGHT+IE7rE41oArNZFs72PiIrQkaL3pbY78cl6zSladIqwe9ecDJVQGs4HlN8SbkaJFEu5+JUG7tbOlDcemKaD0=
+X-Received: from plfz16.prod.google.com ([2002:a17:902:d550:b0:216:4f2a:7172])
+ (user=ziweixiao job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:d2ce:b0:216:6ef9:621 with SMTP id d9443c01a7336-2177853566cmr14958945ad.31.1733875082230;
+ Tue, 10 Dec 2024 15:58:02 -0800 (PST)
+Date: Tue, 10 Dec 2024 23:57:58 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable <stable@vger.kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>
-From: Jens Axboe <axboe@kernel.dk>
-Subject: Stable inclusion
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+Message-ID: <20241210235758.637910-1-ziweixiao@google.com>
+Subject: [PATCH 6.1 v2] gve: Fixes for napi_poll when budget is 0
+From: Ziwei Xiao <ziweixiao@google.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, pkaligineedi@google.com, 
+	hramamurthy@google.com, ziweixiao@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Netpoll will explicitly pass the polling call with a budget of 0 to
+indicate it's clearing the Tx path only. For the gve_rx_poll and
+gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
+to do all the work. Add check to avoid the rx path and xdp path being
+called when budget is 0. And also avoid napi_complete_done being called
+when budget is 0 for netpoll.
 
-Can you add the below to 6.1-stable? Thanks!
+The original fix was merged here:
+https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
+Resend it since the original one was not cleanly applied to 6.1 kernel.
 
-commit 3181e22fb79910c7071e84a43af93ac89e8a7106
-Author: Pavel Begunkov <asml.silence@gmail.com>
-Date:   Mon Jan 9 14:46:10 2023 +0000
+commit 278a370c1766 ("gve: Fixes for napi_poll when budget is 0")
 
-    io_uring: wake up optimisations
+Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+---
+ Changes in v2:
+ * Add the original git commit id
+---
+ drivers/net/ethernet/google/gve/gve_main.c | 7 +++++++
+ drivers/net/ethernet/google/gve/gve_rx.c   | 4 ----
+ drivers/net/ethernet/google/gve/gve_tx.c   | 4 ----
+ 3 files changed, 7 insertions(+), 8 deletions(-)
 
-    Commit 3181e22fb79910c7071e84a43af93ac89e8a7106 upstream.
-    
-    Flush completions is done either from the submit syscall or by the
-    task_work, both are in the context of the submitter task, and when it
-    goes for a single threaded rings like implied by ->task_complete, there
-    won't be any waiters on ->cq_wait but the master task. That means that
-    there can be no tasks sleeping on cq_wait while we run
-    __io_submit_flush_completions() and so waking up can be skipped.
-    
-    Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-    Link: https://lore.kernel.org/r/60ad9768ec74435a0ddaa6eec0ffa7729474f69f.1673274244.git.asml.silence@gmail.com
-    Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 4f0ae938b146..0b1361663267 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -582,6 +582,16 @@ static inline void __io_cq_unlock_post(struct io_ring_ctx *ctx)
- 	io_cqring_ev_posted(ctx);
- }
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index d3f6ad586ba1..8771ccfc69b4 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -202,6 +202,10 @@ static int gve_napi_poll(struct napi_struct *napi, int budget)
  
-+static inline void __io_cq_unlock_post_flush(struct io_ring_ctx *ctx)
-+	__releases(ctx->completion_lock)
-+{
-+	io_commit_cqring(ctx);
-+	spin_unlock(&ctx->completion_lock);
-+	io_commit_cqring_flush(ctx);
-+	if (!(ctx->flags & IORING_SETUP_DEFER_TASKRUN))
-+		__io_cqring_wake(ctx);
-+}
+ 	if (block->tx)
+ 		reschedule |= gve_tx_poll(block, budget);
 +
- void io_cq_unlock_post(struct io_ring_ctx *ctx)
- {
- 	__io_cq_unlock_post(ctx);
-@@ -1339,7 +1349,7 @@ static void __io_submit_flush_completions(struct io_ring_ctx *ctx)
- 		if (!(req->flags & REQ_F_CQE_SKIP))
- 			__io_fill_cqe_req(ctx, req);
- 	}
--	__io_cq_unlock_post(ctx);
-+	__io_cq_unlock_post_flush(ctx);
++	if (!budget)
++		return 0;
++
+ 	if (block->rx) {
+ 		work_done = gve_rx_poll(block, budget);
+ 		reschedule |= work_done == budget;
+@@ -242,6 +246,9 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
+ 	if (block->tx)
+ 		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
  
- 	io_free_batch_list(ctx, state->compl_reqs.first);
- 	INIT_WQ_LIST(&state->compl_reqs);
-
++	if (!budget)
++		return 0;
++
+ 	if (block->rx) {
+ 		work_done = gve_rx_poll_dqo(block, budget);
+ 		reschedule |= work_done == budget;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index 021bbf308d68..639eb6848c7d 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -778,10 +778,6 @@ int gve_rx_poll(struct gve_notify_block *block, int budget)
+ 
+ 	feat = block->napi.dev->features;
+ 
+-	/* If budget is 0, do all the work */
+-	if (budget == 0)
+-		budget = INT_MAX;
+-
+ 	if (budget > 0)
+ 		work_done = gve_clean_rx_done(rx, budget, feat);
+ 
+diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
+index 5e11b8236754..bf1ac0d1dc6f 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx.c
++++ b/drivers/net/ethernet/google/gve/gve_tx.c
+@@ -725,10 +725,6 @@ bool gve_tx_poll(struct gve_notify_block *block, int budget)
+ 	u32 nic_done;
+ 	u32 to_do;
+ 
+-	/* If budget is 0, do all the work */
+-	if (budget == 0)
+-		budget = INT_MAX;
+-
+ 	/* In TX path, it may try to clean completed pkts in order to xmit,
+ 	 * to avoid cleaning conflict, use spin_lock(), it yields better
+ 	 * concurrency between xmit/clean than netif's lock.
 -- 
-Jens Axboe
+2.47.0.338.g60cca15819-goog
 
 
