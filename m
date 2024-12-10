@@ -1,146 +1,145 @@
-Return-Path: <stable+bounces-100279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205DB9EA3AD
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 01:27:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01719EA3EE
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 01:55:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA7E4282BCF
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 00:27:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E04F6168D78
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 00:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0167D18651;
-	Tue, 10 Dec 2024 00:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED6529CE6;
+	Tue, 10 Dec 2024 00:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="DxP29+ir"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/2URD3y"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403393C0C;
-	Tue, 10 Dec 2024 00:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9D23C0C;
+	Tue, 10 Dec 2024 00:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733790437; cv=none; b=UyjJwIPGbEj7nupSGyp7gUrclgybavodeaKJZWw1cTcNXzHcbNOy9YTE36dJUq8eWCx0R/9PliDmx0gH8EXI+NkjvLFugOojIB7UrkoH9Odr1AN0IbtjguEsQR5lkFJ3SLGyYE0LHBTmrBaWyKm7+z6oROroImjcSA+ZuaGcOjc=
+	t=1733792112; cv=none; b=BW8yl4qq1AqrZdDZYSpxG0gHvQ8IXZV1Qo7PbswGy6yIO9kSK4sqPYLMXD4uRF0/WwYYT6ZXydc3hOzFO7TDNcksL+8Y8aLQFMQ0A0OUPKXXFLwg5ZSZ64iMM7lyWLLyyskdAAfkdk+R5SqzFP6/OqhxyMYc4/mtsKy5YBckrEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733790437; c=relaxed/simple;
-	bh=ek6ouMtERzjgwZhGmlmAV8/bU3B8j04YvwGPt9ZUO6g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uj0HMnF/EFbHoe9bpO+XT5LLcUkPcfgkRH45dKfWddf+ru1wp/cuvapKgc1Rsilz49eegaECP30B+RcKge15fQmjWXI2uJOMfxQY6GqSiCberdEYOzCimKxZX1cdmGEQv5Kui60u64ztoG+jB/IpCwCmlUf99cAnXHo3XWVhZ1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=DxP29+ir; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BA0QqRqA1289184, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1733790412; bh=ek6ouMtERzjgwZhGmlmAV8/bU3B8j04YvwGPt9ZUO6g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=DxP29+irD2kmxQ8sbPnc9YFBjQOkafrnRqXYlqqqagaozRYSVQ/kyUL2/tjm2Pgit
-	 6tZu7kX7nu068eypEBQF8/LNFYxEO62qFxO31wYFI3iLElKLby8jDzqyPXrq8E6OBa
-	 awsm9+ae4dfpnuaXO2W+whpTIx20Fb3pPMKkobL8EzOPxU/TmWv+t1GCWUpVLPlPwN
-	 b1LLhbzOnYxu/xaU0aMc54Dzclbshi4pVNr5vCqbyQN4EDrRG9JPHYJhFH5s9kka/9
-	 p1WVp5eF92ZG6J06eYA7g63Ym8s3Ye6k9OsB2YeOUP3rh/q/UkhROjj2lEkdofEY2i
-	 E5EWZOdNopsVg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BA0QqRqA1289184
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Dec 2024 08:26:52 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 10 Dec 2024 08:26:52 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 10 Dec 2024 08:26:52 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Tue, 10 Dec 2024 08:26:52 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Hans de Goede <hdegoede@redhat.com>, Kalle Valo <kvalo@kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>,
-        Peter Robinson <pbrobinson@gmail.com>
-Subject: RE: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-Thread-Topic: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-Thread-Index: AQHbMR7R6Gvee4SdJkqElRUs0WKrm7K72VoAgCAvYgCAATWcgIAAAo+AgACwZhr//3rOgIABZGXg
-Date: Tue, 10 Dec 2024 00:26:51 +0000
-Message-ID: <5736c7a2cf7843fab0b491d1482bb292@realtek.com>
-References: <20241107140833.274986-1-hdegoede@redhat.com>
- <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
- <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
- <8e0a643ecdc2469f936c607dbd555b4c@realtek.com>
- <1d59a602-053a-47f1-9dac-5c95483d07b6@redhat.com> <87ldwpt90g.fsf@kernel.org>
- <5f0bb4c4-57f0-4976-a6c2-2419500ffe4d@redhat.com>
-In-Reply-To: <5f0bb4c4-57f0-4976-a6c2-2419500ffe4d@redhat.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1733792112; c=relaxed/simple;
+	bh=boq/ye7PO9PoIgAzqFV+pTvqHtk4MpiX+xbOXYpT+I4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F6YJ7S2AyPOH9qCDdKyetdajSlgi7MWMTkxhB5jON1bnyrTJEdqikPWgmHV9w3EJ/+qNjV5Viy9uSovgwwXRY/PSIuTby5X8MjFj/s/4K2ALg/o6CmYIgW4ogVZl+Ipcl4vQBg1rYdjgsxTuc+bdrZ8DMATmsxzC71spCUlTAKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/2URD3y; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-385e2880606so4122614f8f.3;
+        Mon, 09 Dec 2024 16:55:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733792109; x=1734396909; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=boq/ye7PO9PoIgAzqFV+pTvqHtk4MpiX+xbOXYpT+I4=;
+        b=e/2URD3ytBA6g1LKirtTsE9u16omVlM4FaVjd3GzC1WYzZSb8L4pV79HjzZyYkFeFl
+         mhX+rCJBUdyQ7+WlCzqIIbUqnXg64sL47+JAstUfzWCwIBYxNNopo5EQeFN70tMWj4Wd
+         kUMEytE/Pvr60Dw8WZubsqNr5s65XEZ/grygK7c/5JYIwp0KC/1jXm3xLGJAZvadnzqy
+         +flP0chsDM2AJqqwJxwKqQ0ntSzjFp3HdkjXhiNMEX1dfuN60rGaI/bcFqzKjN51WWvd
+         5V4i1Uo7GtzOPwgkgTJvA5/HdWUMGY1vuQ2uslkzwPUfR/7EhWyVPlT9gPCGRJkE+5O+
+         AGcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733792109; x=1734396909;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=boq/ye7PO9PoIgAzqFV+pTvqHtk4MpiX+xbOXYpT+I4=;
+        b=ZW5ik024QiUGyFOEwnWyGzJoBbGskL8nwehE7wI/KQW7OscR7hMqD23OJe+tC7VMt3
+         mwqofUVLKFP9nvOQyV/AJ2Ib6bISDw9Hx9/gsamAyDYSTAhq72G8rMknLf6PQWev5hU0
+         NQeVZ3KdkwOyeYwnlLldj8K0r41BcwIfz0Ywwhp/pab83ZfYD1PWA9qY9XNztZEfsyn8
+         vHQCl8hRsrGhnPjV8to/fwCSL0ta2Cxn11P3UiNhx8y4Aj714GpB5QUCnq3jJi6hshlA
+         iTXlzha8QkzGrkoYRYlCY3KE65nby8gXZFIO61tkNo+NuXOWUscBiskjNQVvLl6ZsEji
+         CTvg==
+X-Forwarded-Encrypted: i=1; AJvYcCX552uri6c5tanuUnpaPUa9Db24Z/BHfnmBmGjGABygRd52R9DTgcSawf9H0j6sUqzcGg+/Vx7qv4NZF66N@vger.kernel.org, AJvYcCXNQWxLg2O1lgf8yd3zraksVLfgeTP62+u5nmtLnq+0aAVj1bpBlVfPr5zRoE705rmCfV8=@vger.kernel.org, AJvYcCXQ8IRJIQjLKRvmseP9/t/Z+QnAgJJMKC/FSYE552/V31AWh+ciRFQ1t6r5KbzNSPGjQtPDhIKs@vger.kernel.org, AJvYcCXZ9144oMc2vBBlK0r3LurzZ1Ehh4GbtTF+eC2x8iLLGRloq/MKo/4gBcrqzkweYU6LAKoOFTr4zJTG4X99hcc4XgIu@vger.kernel.org
+X-Gm-Message-State: AOJu0YwG+qxEJmu5fDKRiuLMA/8ZmOOAM6KEb7/DGDF7GPCoqsMTcJuF
+	Gvn7X0fUIZ75P9kR5JeSC14/84P4Dpxo5sCPx90pZ5g0187iYdmPPW6vJQmvKYnWG5zoyzLGLRt
+	z1H6uR5cQTG6PF17kbP2ynLXKegA=
+X-Gm-Gg: ASbGncuipN86jIRKpjljilfUpzu58YP91g8koQ3m6Ml/U9iJUrTNEESwS8CYaS5+ixj
+	ywBzHE3baks6T/Aycs0AbQtIOZXCr8+PiA3Mv7Kmv8zk73QNVaak=
+X-Google-Smtp-Source: AGHT+IG8axsEndvXuoPkC8p+vwh99ZMJK/1WzuRhn68RFvJiGxFaSRJKeeUzI7NxPzu+eY7U5xB7avCHwEO3py1fnMk=
+X-Received: by 2002:a05:6000:1868:b0:385:fd24:3317 with SMTP id
+ ffacd0b85a97d-386453cf868mr2754572f8f.1.1733792109319; Mon, 09 Dec 2024
+ 16:55:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+References: <20241206-bpf-fix-uprobe-uaf-v2-1-4c75c54fe424@google.com>
+ <CAEf4BzYxaKd8Gv5g8PBY6zaQukYKSjjtaSgYMjJxL-PZ0dLrbQ@mail.gmail.com>
+ <CAG48ez3i5haHCc8EQMVNjKnd9xYwMcp4sbW_Y8DRpJCidJotjw@mail.gmail.com>
+ <CAEf4BzYkGQ0sw9JEeAMLAfcQbzxwg46c487kBD_LcbZSaTKD5Q@mail.gmail.com>
+ <CAG48ez1LRsuew4y_KQxPHNipA68hhm+iJohHbk6=1cwv5QPCxQ@mail.gmail.com>
+ <CAG48ez2+3TTbWNNO4aqxFAX8Cd4COaayRxoy1V2xvM9oS2_ygQ@mail.gmail.com>
+ <CAEf4BzbhDkFq9DB2VKxsHmffynQBvbD_RVKTUm3zCqvO_e1dug@mail.gmail.com>
+ <CAG48ez2LW9zyiptNq8jApD3zeS05wvNPs-jj2zOeaCDQbZnD4g@mail.gmail.com>
+ <CAEf4BzbVqfWZUJUkUwJvfaGViwiP8cnVAYAWX67LP-ejPvmAPA@mail.gmail.com> <CAEf4BzbzXT6e-dKtxr6SDzekXC+Zu45uX10dL+DuTA8Xn=cgjw@mail.gmail.com>
+In-Reply-To: <CAEf4BzbzXT6e-dKtxr6SDzekXC+Zu45uX10dL+DuTA8Xn=cgjw@mail.gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Mon, 9 Dec 2024 16:54:57 -0800
+Message-ID: <CAADnVQJ9grJJs4s_eBBk7iL136FNKt3ahhaLLDo1igrBBscxYA@mail.gmail.com>
+Subject: Re: [PATCH bpf v2] bpf: Fix prog_array UAF in __uprobe_perf_func()
+To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc: Jann Horn <jannh@google.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Delyan Kratunov <delyank@fb.com>, 
+	bpf <bpf@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGFucyBkZSBHb2VkZSA8aGRlZ29lZGVAcmVkaGF0LmNvbT4gd3JvdGU6DQo+IEhpLA0KPiANCj4g
-T24gOS1EZWMtMjQgMTI6MDEgUE0sIEthbGxlIFZhbG8gd3JvdGU6DQo+ID4gSGFucyBkZSBHb2Vk
-ZSA8aGRlZ29lZGVAcmVkaGF0LmNvbT4gd3JpdGVzOg0KPiA+DQo+ID4+IEhpLA0KPiA+Pg0KPiA+
-PiBPbiA5LURlYy0yNCAxOjI2IEFNLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4+PiBIYW5zIGRl
-IEdvZWRlIDxoZGVnb2VkZUByZWRoYXQuY29tPiB3cm90ZToNCj4gPj4+PiBIaSwNCj4gPj4+Pg0K
-PiA+Pj4+IE9uIDE4LU5vdi0yNCAzOjIzIEFNLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4+Pj4+
-IEhhbnMgZGUgR29lZGUgPGhkZWdvZWRlQHJlZGhhdC5jb20+IHdyb3RlOg0KPiA+Pj4+Pg0KPiA+
-Pj4+Pj4gVGhlIHJ0bDh4eHh1IGhhcyBhbGwgdGhlIHJ0bDgxOTJjdSBVU0IgSURzIGZyb20gcnRs
-d2lmaS9ydGw4MTkyY3Uvc3cuYw0KPiA+Pj4+Pj4gZXhjZXB0IGZvciB0aGUgZm9sbG93aW5nIDEw
-LCBhZGQgdGhlc2UgdG8gdGhlIHVudGVzdGVkIHNlY3Rpb24gc28gdGhleQ0KPiA+Pj4+Pj4gY2Fu
-IGJlIHVzZWQgd2l0aCB0aGUgcnRsOHh4eHUgYXMgdGhlIHJ0bDgxOTJjdSBhcmUgd2VsbCBzdXBw
-b3J0ZWQuDQo+ID4+Pj4+Pg0KPiA+Pj4+Pj4gVGhpcyBmaXhlcyB0aGVzZSB3aWZpIG1vZHVsZXMg
-bm90IHdvcmtpbmcgb24gZGlzdHJpYnV0aW9ucyB3aGljaCBoYXZlDQo+ID4+Pj4+PiBkaXNhYmxl
-ZCBDT05GSUdfUlRMODE5MkNVIHJlcGxhY2luZyBpdCB3aXRoIENPTkZJR19SVEw4WFhYVV9VTlRF
-U1RFRCwNCj4gPj4+Pj4+IGxpa2UgRmVkb3JhLg0KPiA+Pj4+Pj4NCj4gPj4+Pj4+IENsb3Nlczog
-aHR0cHM6Ly9idWd6aWxsYS5yZWRoYXQuY29tL3Nob3dfYnVnLmNnaT9pZD0yMzIxNTQwDQo+ID4+
-Pj4+PiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiA+Pj4+Pj4gQ2M6IFBldGVyIFJvYmlu
-c29uIDxwYnJvYmluc29uQGdtYWlsLmNvbT4NCj4gPj4+Pj4+IFNpZ25lZC1vZmYtYnk6IEhhbnMg
-ZGUgR29lZGUgPGhkZWdvZWRlQHJlZGhhdC5jb20+DQo+ID4+Pj4+PiBSZXZpZXdlZC1ieTogUGV0
-ZXIgUm9iaW5zb24gPHBicm9iaW5zb25AZ21haWwuY29tPg0KPiA+Pj4+Pg0KPiA+Pj4+PiAxIHBh
-dGNoKGVzKSBhcHBsaWVkIHRvIHJ0dy1uZXh0IGJyYW5jaCBvZiBydHcuZ2l0LCB0aGFua3MuDQo+
-ID4+Pj4+DQo+ID4+Pj4+IDMxYmUzMTc1YmQ3YiB3aWZpOiBydGw4eHh4dTogYWRkIG1vcmUgbWlz
-c2luZyBydGw4MTkyY3UgVVNCIElEcw0KPiA+Pj4+DQo+ID4+Pj4gVGhhbmsgeW91IGZvciBtZXJn
-aW5nIHRoaXMsIHNpbmNlIHRoaXMgaXMgYSBidWdmaXggcGF0Y2gsIHNlZSBlLmcuIDoNCj4gPj4+
-Pg0KPiA+Pj4+IGh0dHBzOi8vYnVnemlsbGEucmVkaGF0LmNvbS9zaG93X2J1Zy5jZ2k/aWQ9MjMy
-MTU0MA0KPiA+Pj4+DQo+ID4+Pj4gSSB3YXMgZXhwZWN0aW5nIHRoaXMgcGF0Y2ggdG8gc2hvdyB1
-cCBpbiA2LjEzLXJjMSBidXQgaXQgZG9lcw0KPiA+Pj4+IG5vdCBhcHBlYXIgdG8gYmUgdGhlcmUu
-DQo+ID4+Pj4NCj4gPj4+PiBDYW4geW91IHBsZWFzZSBpbmNsdWRlIHRoaXMgaW4gYSBmaXhlcy1w
-dWxsLXJlcXVlc3QgdG8gdGhlIG5ldHdvcmsNCj4gPj4+PiBtYWludGFpbmVyIHNvIHRoYXQgZ2V0
-cyBhZGRlZCB0byBhIDYuMTMtcmMjIHJlbGVhc2Ugc29vbiBhbmQgdGhlbg0KPiA+Pj4+IGNhbiBi
-ZSBiYWNrcG9ydGVkIHRvIHZhcmlvdXMgc3RhYmxlIGtlcm5lbHMgPw0KPiA+Pj4+DQo+ID4+Pg0K
-PiA+Pj4gVGhpcyBwYXRjaCBzdGF5cyBpbiBydHcuZ2l0IGFuZCA2LjE0IHdpbGwgaGF2ZSBpdCwg
-YW5kIHRoZW4gZHJhaW4gdG8gc3RhYmxlDQo+ID4+PiB0cmVlcy4gRm9yIHRoZSByZWRoYXQgdXNl
-cnMsIGNvdWxkIHlvdSBhc2sgdGhlIGRpc3RybyBtYWludGFpbmVyIHRvIHRha2UgdGhpcw0KPiA+
-Pj4gcGF0Y2ggYWhlYWQ/DQo+ID4+DQo+ID4+IFRoYXQgaXMgbm90IGhvdyB0aGluZ3MgYXJlIHN1
-cHBvc2VkIHRvIHdvcmsuIFlvdSBhcmUgc3VwcG9zZWQgdG8gaGF2ZSBhIGZpeGVzDQo+ID4+IHRy
-ZWUvYnJhbmNoIGFuZCBhIG5leHQgdHJlZS9icmFuY2ggYW5kIGZpeGVzIHNob3VsZCBiZSBzZW5k
-IG91dCBBU0FQLg0KPiA+DQo+ID4gUGxlYXNlIHVuZGVyc3RhbmQgdGhhdCB3ZSBhcmUgbW9yZSBv
-ciBsZXNzIHZvbHVudGVlcnMgYW5kIHdvcmtpbmcgd2l0aA0KPiA+IGxpbWl0ZWQgdGltZS4NCj4g
-Pg0KPiA+PiBJZGVhbGx5IHlvdSB3b3VsZCBoYXZlIGFscmVhZHkgc2VuZCB0aGlzIG91dCBhcyBh
-IGZpeGVzIHB1bGwtcmVxdWVzdCBmb3INCj4gPj4gNi4xMiBidXQgd2FpdGluZyB0aWxsIDYuMTQg
-cmVhbGx5IGlzIG5vdCBhY2NlcHRhYmxlIElNSE8uDQo+ID4NCj4gPiBJZiB5b3UgaGF2ZSBhbiBp
-bXBvcnRhbnQgZml4IHBsZWFzZSBkb2N1bWVudCB0aGF0IHNvbWVob3csIGZvciBleGFtcGxlDQo+
-ID4gIltQQVRDSCB3aXJlbGVzc10iIG9yICJbUEFUQ0ggdjYuMTNdIi4gSWYgdGhlcmUncyBub3Ro
-aW5nIGxpa2UgdGhhdCBtb3N0DQo+ID4gbGlrZWx5IHRoZSBwYXRjaCBnb2VzIHRvIC1uZXh0LCB3
-ZSAoaW4gd2lyZWxlc3MpIGRvbid0IHRha2UgZXZlcnkgZml4IHRvDQo+IA0KPiBPaywgc28gaG93
-IGRvIHdlIG1vdmUgZm9yd2FyZCB3aXRoIHRoaXMgcGF0Y2ggbm93ID8NCj4gDQoNCklNSE8gdGhl
-IG1pc3NlZCBJRCBoYXMgYmVlbiBtYW55IHllYXJzLCBsZXQncyB3YWl0IGFkZGl0aW9uYWwgdGhy
-ZWUgbW9udGhzLg0KVGhlIGZsb3cgb2YgcGF0Y2ggcHJvY2VzcyBmb3IgbWFpbnRhaW5lcnMgd2ls
-bCBiZSBtb3JlIHNtb290aC4gDQpGb3IgbmV3bHkgYWRkZWQgSUQgbmV4dCB0aW1lLCBJIHdpbGwg
-Y2hlY2sgcGVvcGxlIGlmIHRoYXQgaXMgdXJnZW50IG9yIG5vdC4NCg0KDQo=
+On Mon, Dec 9, 2024 at 2:45=E2=80=AFPM Andrii Nakryiko
+<andrii.nakryiko@gmail.com> wrote:
+>
+> Ok, weeding through the perf/uprobe plumbing for BPF, I think we avoid
+> this problem with uprobe BPF link because uprobe_unregister_sync()
+> waits for RCU Tasks Trace GP, and so once we finish uprobe
+> unregistration, we have a guarantee that there is no more uprobe that
+> might dereference our BPF program. (I might have thought about this
+> problem when fixing BPF link for sleepable tracepoints, but I missed
+> the legacy perf_event attach/detach case).
+>
+> With legacy perf event perf_event_detach_bpf_prog() we don't do any of
+> that, we just NULL out pointer and do bpf_prog_put(), not caring
+> whether this is uprobe, kprobe, or tracepoint...
+>
+> So one way to solve this is to either teach
+> perf_event_detach_bpf_prog() to delay bpf_prog_put() until after RCU
+> Tasks Trace GP (which is what we do with bpf_prog_array, but not the
+> program itself),
+
+since this is a legacy prog detach api I would just add sync_rcu_tt
+there. It's a backportable one line change.
+
+> or add prog->aux->sleepable_hook flag in addition to
+> prog->aux->sleepable, and then inside bpf_prog_put() check
+> (prog->aux->sleepable || prog->aux->sleepable_hook) and do RCU Tasks
+> Trace delay (in addition to normal call_rcu()).
+
+That sounds like more work and if we introduce sleepable_hook
+we would better generalize it and rely on it everywhere.
+Which makes it even more work and certainly not for stable.
+
+> Third alternative would be to have something like
+> bpf_prog_put_sleepable() (just like we have
+> bpf_prog_array_free_sleepable()), where this would do additional
+> call_rcu_tasks_trace() even if BPF program itself isn't sleepable.
+
+Sounds like less work than 2, but conceptually it's the same as 1.
+Just call_rcu_tt vs sync_rcu_tt.
+And we can wait just fine in that code path.
+So I'd go with 1.
 
