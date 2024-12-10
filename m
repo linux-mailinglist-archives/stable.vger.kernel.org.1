@@ -1,276 +1,261 @@
-Return-Path: <stable+bounces-100302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0679EA986
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 08:27:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517C29EA9B4
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 08:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8EE1661B4
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 07:27:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40B1C18870F9
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 07:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858E122CBFB;
-	Tue, 10 Dec 2024 07:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E252221D9E;
+	Tue, 10 Dec 2024 07:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b="kDUJEZwK"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="dR85Hmiz"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2088.outbound.protection.outlook.com [40.107.105.88])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F901FCCE6;
-	Tue, 10 Dec 2024 07:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733815624; cv=fail; b=Kwv9DqVD/eZn9MfEKwb/Y7q6pMavqex+YVgnhUWV31kMr3/xiGYfLNSezujWP760Q7r0dB00Oe6jTRNJm7RBGoNqmT5CDt+tSCLFM6cBLNM+z6I/w898NWZZUZPdwDE5edqLDb/51EqgtPhiZO0QTWf93k9vJPcIaAfxVhwN9F4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733815624; c=relaxed/simple;
-	bh=yei8gEphDgKRuQ8SygjHtPfV70HusyePHCjE0aSKeRU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=pcRIs50k12CA90yKtTRY3QuH3LnuPlep0uXULvZxRW3O5mj7g5bzG0xzea+/5lk5R4/Ad+MpkyXnBQmNpI4+yLEBBlhqkm19zShPsQDUATeGaJSAutV7Wxg72OD4Q+P5pWdo7io5TsNr1XKDcR+ogb8nTFwBNCfHJBVXVIzzX44=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b=kDUJEZwK; arc=fail smtp.client-ip=40.107.105.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siemens.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KK6QU8CTxMWwHjZBKIUbVETMVqpK5poawbRvJjRRzjCeY8gncbWe9iJhY7hA9phRJK53pJL/+szZykpnh/xVKZkS+09k98Xtt9ZiIZIlfpTZmFz0H8lrIke28B4qqkHR49pJ6c9hfPvkSx1bl1NXXgrzai1uPDv1NDoKEugAnANaQCfOFq57kizxkaujz2S3oo9r3nG6TY9EUJwFqm1Qm0M7BN1KwK95DTD5Wb3mg8fWDlD8UCSHT0IoY7MNVb0/LYV/8A22JTg303gKOR53xwHohlJs6w1OcD742eCjn0+5hZpvYLU8sh6oxTlT5of981NP3BAIDuy6TvBInyUYSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5PhnX+QO8XmXSI2rOpxd3yp2yJX+lpW1qoYoPJhpsDE=;
- b=R50zvDMsf4gMvZ4LKNPm6Lhv51to8avaixDw1o1iAHoh9Yd2cDBiXSDDsy58/0OLWnbCTqnyZyFCc5XuiQQdUxmAM4LVurx7CsTEzcosnYTxYX7JqF0atGEHVBG+dNv0VdF6PdqqEQrXRMI/yUmFV1dIpIXwkG6dRzuVzY4wjwGolXhT7kHCtaYI3uEG90IyBcoc+VrFPx2xKnIA7V9XmIU59xm7/diqXL7rePDnstUMaP3dLCiHxr+NNgslh5SsBP86a04fsWchUs5UpC5cuObM16OqtaYUJmz2OfVziDCRPC/AIJIAGKeG5zwQFWb5YqARYluZe2jHjiuiyeyIfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
- dkim=pass header.d=siemens.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5PhnX+QO8XmXSI2rOpxd3yp2yJX+lpW1qoYoPJhpsDE=;
- b=kDUJEZwKSyDhKqECknyrzEt5w7eMTeeckfaGaFbMrjgkLcacz0rqyzrTc6L/n2YfFa2esD0xX47ujUe/PJ9hwA3CDOCDHUweGTlVGAXJVN3cZHDumfH4c6H0yR8P92A7o31OKwvBc5aIRNVYf3+NfV+tuFQsLmjpmqyHHUIAChH8gU1SXSvi9C2ohsmghdGgsUDbA6i544Wh/Kn9MhekNK5v1itZADX6FX8lDIRynCRlYNl7N/JR4Azdgg479RWQCQUHrlteKvr77T9JeTnLW0PXTakgOYjpfcikjtak6e7qLGzhHRurYU9j9YuUQtsBpv2+8aOFPxMHASx5tcLYIw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siemens.com;
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:588::19)
- by AS8PR10MB7684.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:630::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.14; Tue, 10 Dec
- 2024 07:26:59 +0000
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::8fe1:7e71:cf4a:7408]) by AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::8fe1:7e71:cf4a:7408%6]) with mapi id 15.20.8251.011; Tue, 10 Dec 2024
- 07:26:59 +0000
-Message-ID: <9bd2596b-00f2-4c46-ba1e-f35f2d1eb584@siemens.com>
-Date: Tue, 10 Dec 2024 08:26:58 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: Linux 4.19.325
-To: Pavel Machek <pavel@denx.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, uli@fpond.eu,
- Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
- jslaby@suse.cz, Christoph Steiger <christoph.steiger@siemens.com>,
- cip-dev <cip-dev@lists.cip-project.org>
-References: <2024120520-mashing-facing-6776@gregkh>
- <Z1bX3HioMftPtien@duo.ucw.cz>
-From: Jan Kiszka <jan.kiszka@siemens.com>
-Content-Language: en-US
-Autocrypt: addr=jan.kiszka@siemens.com; keydata=
- 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
-In-Reply-To: <Z1bX3HioMftPtien@duo.ucw.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM4PR0302CA0018.eurprd03.prod.outlook.com
- (2603:10a6:205:2::31) To AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:588::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFD0192D66;
+	Tue, 10 Dec 2024 07:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733816326; cv=none; b=cNUUBhllnzeF82tyQ4GIIRx8FsgURsbaYZKWRTZUpj4Aon7aPr8UMSo4JXy38bv+on3DYtFZnCkvjrLG7ZDk5uj2qTTpeJnN3SLEQsAsmhISWnOv6ChlgBSLUxMNtLrBsNV1xUTBs5c7B4AudqIBg6gi+NN/KrwPZtO1JRQlfXA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733816326; c=relaxed/simple;
+	bh=r8fzQv9DjN663ldyHBwouh1TahRmh7lvUCq/GdTCQt8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o7uMK3hVhpro/SUIZo7AWw167BcyL7pozA4s/wv+DngVbSgQnlifC4wKk5GZke2Y31/ZqQk+dagPf3+Qga/HUo9vTXz8aZTTdyNhwth3LGijwTzgG52BbHVNNCdxyIyyGv0Ji5TPvept7QpSA0tusz+Lk+rVxJjZ5N2v8RAwYKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=dR85Hmiz; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-157-155-49.elisa-laajakaista.fi [91.157.155.49])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2D7226EC;
+	Tue, 10 Dec 2024 08:38:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1733816281;
+	bh=r8fzQv9DjN663ldyHBwouh1TahRmh7lvUCq/GdTCQt8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dR85HmizJW9ubKMFjAPXNcNyNh4rwSW/QcUe4oKyUPkZrd4yNG/cPS7UfWY9Cmahv
+	 zpsQRq2tAgqhimfelS+bXkdeK45H1RJn94Zy6GgL88k5txP2W0cT1liqEwRbyV6o3z
+	 dgN1SBARcl809WOqNHsFpNDccpASgBA0gSFo/LzQ=
+Message-ID: <e53c8964-5373-4c1f-ad48-69a474a997fb@ideasonboard.com>
+Date: Tue, 10 Dec 2024 09:38:30 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR10MB6181:EE_|AS8PR10MB7684:EE_
-X-MS-Office365-Filtering-Correlation-Id: 63418576-f315-4f2f-e402-08dd18ec08c8
-X-MS-Exchange-AtpMessageProperties: SA
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RDR0Q1NtYm16YXV1SGoyak82MWdBUVNYM2JKNkJwb0hEQmZUblovMlVXMThZ?=
- =?utf-8?B?Nnk0SEh3SnFxVEZwNjQ5cXg2NncyVitQaXU1dGdoRFpzUGtXaDVHNlVhV3BC?=
- =?utf-8?B?enpxRUV3cmFqZmM0SmFuRXRHZG1oc200MTNuMnZvTTZDQTNxbEFINnBIWUhT?=
- =?utf-8?B?bmttc3ZWQ045U2ZDekU3cjQvR1VDbnVmRjMrOWZ5NkVTelpxY2xZZlJvdk9Q?=
- =?utf-8?B?SU1DVUdmZmZkQ1JEczJROXV1ZFNWN3lIeFdIY0NwTTVLK1A0Y09lZmV1eFg1?=
- =?utf-8?B?MytGcDRENFZVRFFoNUoxS2E1YkJlUGhKdFhqTUJSMis3RDdtLzNqVWZpS0Zz?=
- =?utf-8?B?VFhxbkl5Qkt4Sm1haG1jc0prUW9KU1BqT1NEMlJMaWxzM0ptUng2L3NaRXlh?=
- =?utf-8?B?RDVIQ1M1aEJiQWQxUC9rRjBSVDhUU0NYOVVpUHZ0N3hBRVdQQnFxQVZHbWpH?=
- =?utf-8?B?YzdXViswRy9qQU1aQ2RTLzBNdzAyV05iUjQ3Z2FjLysxcjdGekRIa1c3S1Zr?=
- =?utf-8?B?T0sxV05ydEFQM05Eb0ZqQWhPdllMblNERGdxelRaNC92ajR6QklmV2FvSXBW?=
- =?utf-8?B?NE9sYjdtSGx5aTZNSzZCMjRYR1lFd1JXU0puUXVwWEtsdFVDbG1hN2hLQWlZ?=
- =?utf-8?B?ZURBN1hGZUJSSUNPc0dCWU5KVHZsaFJONFVYdm9RSlVGVGd6TEFSMlhyRlJy?=
- =?utf-8?B?dWg4ZWlLekpyMmVLMG1ybDlBK2o2eGVuUXJhMjYzcHNReTdyL1B3cnhCWS9B?=
- =?utf-8?B?U0dOM0l5VmlYSlBjT1RWYjY3aENhaFErMlRnSTZuZnJWWENodDdKT3VaR1kx?=
- =?utf-8?B?L09WRDFqMUhGZm83TTFJT01IM21kUjhYWWxpMFF4T3cxeEI1MXRYUlMyeEVs?=
- =?utf-8?B?elBMS09XUmtvQmZMMDRhNU1qMzZIZzlqblVyMGdqcUJSa2tPNC85bnhUMGJI?=
- =?utf-8?B?VGw1RHNBbG5QVk1EZHVIcmpRb1FtYmRDTm4zTmNpdnNpc2xzejBQcEhFZVp5?=
- =?utf-8?B?U1c2cW5NelEvOVpzNUZ4QUl1K2l6YlE4Unk4UlhBQWhRdGNLYzJYUlZlWWtJ?=
- =?utf-8?B?cDl0SFlaenFYbUdiRkVmcU9PMUcrSEJWdUhEeGFzd3ptTUJGckNORFRrQTdp?=
- =?utf-8?B?UHloZ3I1eGIxcWg3djZaL2hQSDQ3UDBYejBoUGZ3NzdtQTNEREpLR1kzQWE1?=
- =?utf-8?B?NVlFa2VISTQ2a1NKeldpZThXcEZxTFdvaFp2RCtaWWw2Uis2UytUWDZBaXFp?=
- =?utf-8?B?TjI3MHE5T08rZndjMkhMWFl0a3RBVEVrUDBySFRNeG1hTTIrS3JsaFNzL2ly?=
- =?utf-8?B?L01GaGJtZEN3WkM1S2taK2h0SUF0dXJPcncxbU5NMXBURmtKR0JKWFhKWEYz?=
- =?utf-8?B?aTl5L0JXTCs2RzFETC9XbHZUYnZkZk1NNjd6alovWjVhRmJMaGhiVCtqWGQr?=
- =?utf-8?B?RFliWWlLZUxvVTlwN1VkYXRncnZkcEhIMStJdEswa0twekx3UTIwRVJYd3dM?=
- =?utf-8?B?MEdDY2pWYnhGRlJudkFVTWZsOFJFSGRpSDFtTDM1SkFlL1YybW91Q3U2a3ND?=
- =?utf-8?B?WWwzSlhCUmtDdGNQUWo5VGhzUHU4VmpHTGthdC9FcGdCeEs3SThNRVplSmgv?=
- =?utf-8?B?cGsvOTlsdVFGL1hwYkVSMGNBOVhJV005MktWeUZzSHVZTElsQ1Uwd2pmckVq?=
- =?utf-8?B?cXdSaGwrNkIyYUlQQmp6QnorRkhUbGFQditaMDZHVmtkaXd6WE02TWFzVUJn?=
- =?utf-8?Q?XfN8EgC/D2phPteuko=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cG9GR3hES29hSEl6TzBmSVBQRzJ3S1VJUjIzYkdGTnRwWURYTHROM3JDeTdy?=
- =?utf-8?B?RmxKMzlwOEQvdlo2d3haeCt3amZEd2dKU1E2QVJzS28yZ08xMGJXWm1URklx?=
- =?utf-8?B?cUcwYWZNdE1vYzQ1ZWpFUGxIQ2NwMVZ5Z0xoTGMyVFR5UEVNbEVPZGdRbkVO?=
- =?utf-8?B?MXBYNFVxNEtpaHNVQ3dhbys3Z2VQR3hadE5mRTUrY0xDcE5HbXB1MmNzZjFl?=
- =?utf-8?B?UVJjOVJnR2NOQnJEZzd5K3RwQ0VKN3pGOUNDRlhoMldCVXlORU5yY1l3NFR5?=
- =?utf-8?B?UjdBZzIzUWNvb2paN3pqM0RkU05ZN2xMOXE3amVEbnZyLy93enZpTXNRaVdv?=
- =?utf-8?B?WVZyaExST2QxR2ZyWWN6T1FGR1U4dVVxSXBUZGhyZXEwK0VVdGFUbjBwZUE3?=
- =?utf-8?B?VGhBWnFxRjdmWkY3bjQwOVZjNFJ0Nm1ucG9NWEsrSzhBakp6M1REQU1Hcnc5?=
- =?utf-8?B?T1JLMzEyaXZhdk9adkRPTHpBNVkwT2hRYXZRWk1Wckp1cVhybkdVdFpFelEx?=
- =?utf-8?B?Q3h2Vyt3amFkQ0RLOGEzeStRY1UrRXBTNTNWSWhCQU01a2RpYmJMTU5ZdXpR?=
- =?utf-8?B?QkVmNHBIZ01yWk1qNU03aEVwNEphMGxnWlgzYTJSZ3VRTXl5WEs5NHNzSVBN?=
- =?utf-8?B?TStMWkFCRnZndTBwSzBwNDZrMldCVzZvM29TWDdwUmhIazZwdHkwQnFLTm51?=
- =?utf-8?B?dzUwY2Q0djB1dVNHT0VnQy9GU2NnenU4ZTZGQU5YdEwzRFc2N1lpSjlvWHZu?=
- =?utf-8?B?c3BIU0M1RE00MHpZZVRZSC9KcklYQ2NGUU43VWdMSktXNk1xNlQxNmcwaGxC?=
- =?utf-8?B?UVdJbXRyZjVVU3BhS0h3ekpTOURVNSs5SFVYT29nVlEwcTRJRW5tWjUxeGNT?=
- =?utf-8?B?TzErdGY5Q0IyNEEzdzhrMVpaalpsd3ZzSm1seTgyZmx5M3BTWFJRRWtJWGxN?=
- =?utf-8?B?Sk56bmZhUGhRQ1VnblNZOGlWWUNyTllvZEV0TUwrZ3ZJWjladzdJRjRHeGhT?=
- =?utf-8?B?cU9IWmJnYzUrVy9tZFJwaDdmOXFScjFPUjJmNU1FWTd5MzFnajRBbmtCaGVV?=
- =?utf-8?B?OUJPZVlSY3B4eXE2TngwZnFBb3lVZVpCajlCOWdyTFdWVmJBd0ZhVWdMcXRR?=
- =?utf-8?B?MmdxejY5TG5paW9RTGlGTVNxMFlGeDl3VkhTK2RLbTF0dWt0a0ExQlk2WEY2?=
- =?utf-8?B?cXNwb1c0NVBDNHBpd0wvbnlJRGZybnd3OHRVbm90VUxkQitKMit2azF5VnJY?=
- =?utf-8?B?QzNQam01RzcvT0ppVmVPSWI0c25YNHhiVG0yVEhnVlZ0V1BodDB4VUxVQ1FF?=
- =?utf-8?B?UVh1bDRPSmxYN1hRWCtuQnhveTRqV2M3ZkQ2Sk5xREpzbkZ4Q2huS24zN2Vh?=
- =?utf-8?B?ZVRNY3FCaCtYMnpoYm15cTVwYS91UDUvL1VZdEs3cWsxTWE2VlJkOVhuVUlU?=
- =?utf-8?B?SzM3ZTBJR3NPY2lrbDhCS0lJMjZBenh0RWpXR0p3Y0g1cDBUWDJUTkVrUHNE?=
- =?utf-8?B?OHhSZ0pPQitkN2E1M0wyVW5CZmRGMVE4cTBFYkVVZFp6NlVqL0EzSmQ2U1Zu?=
- =?utf-8?B?VE9qQlhQdFprSjc2L0crNGEwZ09VZjlZZGZON3JMT1lEMUJDdFhuajg5RkRQ?=
- =?utf-8?B?T2lubkVoQmppYXd6OGJoUWhydnp2aWYzMjltMEYyU3NWa0VoV2FkS1pnQUxw?=
- =?utf-8?B?c0RDYnhoSWhCdTAwR2RMR01PamsyMzhVQ1dvazNOUk5Yc0FkTi9vSCt0OUtV?=
- =?utf-8?B?a0FhdmtrOEk0QWxEN2pGd2IxSmFhMFZDSEZVZnhkbVJlZ0tWTDd6MFY5VnRB?=
- =?utf-8?B?c3V4OHRacVZTdVNvNkRHcGtUTXpzeUR1ZkRaMHR1UmVIdXZ5ZCtHeFFYMk54?=
- =?utf-8?B?VnltTithZno1Ny9vbzE2ZFJiaVNoVEJjMnFlSDMzQ1R6anc4ampOMU9xVXcz?=
- =?utf-8?B?Z1hTSmp5Sm9uZVNaRkJ0bHR3L3hRYWd4YmNpc1V6bzVPNXlSY3AzbHY2LzNE?=
- =?utf-8?B?WnpzYzlpSlNBTUVLVnZJWXNFUkkveFFFUGxpRTJQYTR4bFdsMHN1ZmVGaVZt?=
- =?utf-8?B?ZHVjd3ZnRWp0ZXdrWXBoeENJYVppOUhQRTQvSytGK0o5cnVrWE13YlpGL3R1?=
- =?utf-8?Q?xGjNv01bShjN5gj5vh4TWUhP/?=
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63418576-f315-4f2f-e402-08dd18ec08c8
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 07:26:59.6660
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jqcRwPddk3UM0x52VU9v6/awH0h5JgvsdSb4dory3plm8DByrHWQA7wKP1oymkzyvSojLcnLv61Nh0rjg7kqgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR10MB7684
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/15] media: i2c: ds90ub960: Fix logging SP & EQ
+ status only for UB9702
+To: Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jai Luthra <jai.luthra@ideasonboard.com>, linux-media@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241206-ub9xx-fixes-v4-0-466786eec7cc@ideasonboard.com>
+ <20241206-ub9xx-fixes-v4-4-466786eec7cc@ideasonboard.com>
+ <Z1a0OiRDw92o1w6_@kekkonen.localdomain>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <Z1a0OiRDw92o1w6_@kekkonen.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 09.12.24 12:43, Pavel Machek wrote:
-> Hi!
+Hi,
+
+On 09/12/2024 11:11, Sakari Ailus wrote:
+> Huomenta,
 > 
->> I'm announcing the release of the 4.19.325 kernel.
+> On Fri, Dec 06, 2024 at 10:26:40AM +0200, Tomi Valkeinen wrote:
+>> UB9702 does not have SP and EQ registers, but the driver uses them in
+>> log_status(). Fix this by separating the SP and EQ related log_status()
+>> work into a separate function (for clarity) and calling that function
+>> only for UB960.
 >>
->> It's the last 4.19.y release, please move off to a newer kernel version.
->> This one is finished, it is end-of-life as of right now.
+>> Cc: stable@vger.kernel.org
+>> Fixes: afe267f2d368 ("media: i2c: add DS90UB960 driver")
+>> Reviewed-by: Jai Luthra <jai.luthra@ideasonboard.com>
+>> Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+>> ---
+>>   drivers/media/i2c/ds90ub960.c | 90 ++++++++++++++++++++++++-------------------
+>>   1 file changed, 50 insertions(+), 40 deletions(-)
+>>
+>> diff --git a/drivers/media/i2c/ds90ub960.c b/drivers/media/i2c/ds90ub960.c
+>> index 24198b803eff..94c8acf171b4 100644
+>> --- a/drivers/media/i2c/ds90ub960.c
+>> +++ b/drivers/media/i2c/ds90ub960.c
+>> @@ -2950,6 +2950,54 @@ static const struct v4l2_subdev_pad_ops ub960_pad_ops = {
+>>   	.set_fmt = ub960_set_fmt,
+>>   };
+>>   
+>> +static void ub960_log_status_ub960_sp_eq(struct ub960_data *priv,
+>> +					 unsigned int nport)
+>> +{
+>> +	struct device *dev = &priv->client->dev;
+>> +	u8 eq_level;
+>> +	s8 strobe_pos;
+>> +	u8 v = 0;
+>> +
+>> +	/* Strobe */
+>> +
+>> +	ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
 > 
-> We (as in CIP project) will keep this one maintained for few more
-> years, in a similar way we already maintain 4.4 tree.
+> How about adding __must_check to the ub960_read()?
+
+Actually, this is just moving code around (behind an if), so I'd rather 
+not add more to this patch, especially as this is a fix.
+
+We'll add the error handling separately on top.
+
+  Tomi
+
 > 
-> https://gitlab.com/cip-project/cip-kernel/linux-cip/-/tree/linux-4.4.y-st?ref_type=heads
+>> +
+>> +	dev_info(dev, "\t%s strobe\n",
+>> +		 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
+>> +							  "Manual");
+>> +
+>> +	if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
+>> +		ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
+>> +
+>> +		dev_info(dev, "\tStrobe range [%d, %d]\n",
+>> +			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
+>> +			 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
+>> +	}
+>> +
+>> +	ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
+>> +
+>> +	dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
+>> +
+>> +	/* EQ */
+>> +
+>> +	ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
+>> +
+>> +	dev_info(dev, "\t%s EQ\n",
+>> +		 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
+>> +						    "Adaptive");
+>> +
+>> +	if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
+>> +		ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
+>> +
+>> +		dev_info(dev, "\tEQ range [%u, %u]\n",
+>> +			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
+>> +			 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
+>> +	}
+>> +
+>> +	if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
+>> +		dev_info(dev, "\tEQ level %u\n", eq_level);
+>> +}
+>> +
+>>   static int ub960_log_status(struct v4l2_subdev *sd)
+>>   {
+>>   	struct ub960_data *priv = sd_to_ub960(sd);
+>> @@ -2997,8 +3045,6 @@ static int ub960_log_status(struct v4l2_subdev *sd)
+>>   
+>>   	for (nport = 0; nport < priv->hw_data->num_rxports; nport++) {
+>>   		struct ub960_rxport *rxport = priv->rxports[nport];
+>> -		u8 eq_level;
+>> -		s8 strobe_pos;
+>>   		unsigned int i;
+>>   
+>>   		dev_info(dev, "RX %u\n", nport);
+>> @@ -3034,44 +3080,8 @@ static int ub960_log_status(struct v4l2_subdev *sd)
+>>   		ub960_rxport_read(priv, nport, UB960_RR_CSI_ERR_COUNTER, &v);
+>>   		dev_info(dev, "\tcsi_err_counter %u\n", v);
+>>   
+>> -		/* Strobe */
+>> -
+>> -		ub960_read(priv, UB960_XR_AEQ_CTL1, &v);
+>> -
+>> -		dev_info(dev, "\t%s strobe\n",
+>> -			 (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) ? "Adaptive" :
+>> -								  "Manual");
+>> -
+>> -		if (v & UB960_XR_AEQ_CTL1_AEQ_SFILTER_EN) {
+>> -			ub960_read(priv, UB960_XR_SFILTER_CFG, &v);
+>> -
+>> -			dev_info(dev, "\tStrobe range [%d, %d]\n",
+>> -				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MIN_SHIFT) & 0xf) - 7,
+>> -				 ((v >> UB960_XR_SFILTER_CFG_SFILTER_MAX_SHIFT) & 0xf) - 7);
+>> -		}
+>> -
+>> -		ub960_rxport_get_strobe_pos(priv, nport, &strobe_pos);
+>> -
+>> -		dev_info(dev, "\tStrobe pos %d\n", strobe_pos);
+>> -
+>> -		/* EQ */
+>> -
+>> -		ub960_rxport_read(priv, nport, UB960_RR_AEQ_BYPASS, &v);
+>> -
+>> -		dev_info(dev, "\t%s EQ\n",
+>> -			 (v & UB960_RR_AEQ_BYPASS_ENABLE) ? "Manual" :
+>> -							    "Adaptive");
+>> -
+>> -		if (!(v & UB960_RR_AEQ_BYPASS_ENABLE)) {
+>> -			ub960_rxport_read(priv, nport, UB960_RR_AEQ_MIN_MAX, &v);
+>> -
+>> -			dev_info(dev, "\tEQ range [%u, %u]\n",
+>> -				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_FLOOR_SHIFT) & 0xf,
+>> -				 (v >> UB960_RR_AEQ_MIN_MAX_AEQ_MAX_SHIFT) & 0xf);
+>> -		}
+>> -
+>> -		if (ub960_rxport_get_eq_level(priv, nport, &eq_level) == 0)
+>> -			dev_info(dev, "\tEQ level %u\n", eq_level);
+>> +		if (!priv->hw_data->is_ub9702)
+>> +			ub960_log_status_ub960_sp_eq(priv, nport);
+>>   
+>>   		/* GPIOs */
+>>   		for (i = 0; i < UB960_NUM_BC_GPIOS; i++) {
+>>
 > 
-> There are -st trees, which is simply continued maintainence of 4.4 and
-> 4.19 stable trees. Plus we have -cip trees, which include that and
-> support for boards CIP project cares about. We'll also maintain -rt
-> variants of those trees.
-> 
-> More information is at
-> 
-> https://wiki.linuxfoundation.org/civilinfrastructureplatform/start
-> 
 
-It's likely important to note in this context again that CIP kernels are
-maintained with a focused scope to address the needs of industrial use
-cases. This is guided by input from our project members but also
-includes broader community contributions.
-
-For the 4.19 kernel, we prioritize support for x86, arm, and arm64
-architectures (since 5.10-cip, also riscv). We actively track
-vulnerabilities, fixes, and backports for components identified through
-the selected kernel configurations contributed by our members [1]. This
-configuration-based support already helps to filter out a good share of
-CVEs, and we are working on tooling to further compensate missing fixes
-tags or other lower boundary annotations [2].
-
-
-At this chance: The CIP project has also selected the 6.12 kernel for
-providing extended long-term support of up to 10 years. That will be the
-5th kernel we are maintaining, after 4.4, 4.19, 5.10 and 6.1.
-
-For newer kernels, the CIP maintainers additionally accept backports of
-hardware-enabling commits that went upstream only in later releases and
-that are non-invasive to the surrounding drivers and subsystems.
-
-Contributions are warmly welcome, from test reports, over patches, up to
-joining our project!
-
-Jan
-
-[1] https://gitlab.com/cip-project/cip-kernel/cip-kernel-config
-[2] https://gitlab.com/cip-project/cip-kernel/kernel-cve-triage
-
--- 
-Siemens AG, Foundational Technologies
-Linux Expert Center
 
