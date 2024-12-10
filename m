@@ -1,81 +1,139 @@
-Return-Path: <stable+bounces-100283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705269EA48A
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 02:55:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF769EA494
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 02:57:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2571F282667
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 01:55:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86EDF165F34
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 01:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA2E126F0A;
-	Tue, 10 Dec 2024 01:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8541C7E111;
+	Tue, 10 Dec 2024 01:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Xe/kozEK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8792241C64;
-	Tue, 10 Dec 2024 01:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4020641C64;
+	Tue, 10 Dec 2024 01:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733795697; cv=none; b=KKIoQpqrj046Yy0XsCKCj74ljw8HQ1aED/l+0wLjA1khCr1rycoZ0Fc8jHt1ghaeQjNq4+UhPV1/BL4TumwgpqlD3vPmpnr2I7sdTazmuoE92e8CG9D8HnZL+Kkfgj4rOMxnH8MgmTDx62izjp6VxOVPTSmvMB6zZmz2HQqVc9o=
+	t=1733795869; cv=none; b=YQKW5woMDIcxOfS7Lm93EMz4Ct0ilzq46Dz9lx8McBLkjA+iDVNxGYYlO6PScJ7+o/8xO6cgfGJrasXT7I+MDQa38/dsl+CmJzpK4jBjaNWqLCC2T7DEM1ysn5vny+Xcfq58p4tfe+PaseB3bAJUmLjVXmbAGFlPjGs24jdVS3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733795697; c=relaxed/simple;
-	bh=sXYSKIhuOY9ZOjFEn5L9V3d9sijcrMz82B+9AM5fY44=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fvXCFd+0bGAaMAqUKeIByyF93tTrNk/2T8VyNXraILzfXZFatqPwMglLEvXh/ughIG5dCxeOW1Ijr2za3RoaA4HW6DA9VvmYwqWgzvxYIrf23etafPJK3sx8s0IuKJ6EEBCva1JaOcrS9qHMLgA+OLAz70lCqRnBZubmmFzW2mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEC5C4CEDE;
-	Tue, 10 Dec 2024 01:54:57 +0000 (UTC)
-Received: by mercury (Postfix, from userid 1000)
-	id 4F89A10604D3; Tue, 10 Dec 2024 02:54:54 +0100 (CET)
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@weissschuh.net>, 
- Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
- Sebastian Reichel <sre@kernel.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Thomas Koch <linrunner@gmx.net>, chrome-platform@lists.linux.dev, 
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20241208-cros_charge-control-v2-v1-0-8d168d0f08a3@weissschuh.net>
-References: <20241208-cros_charge-control-v2-v1-0-8d168d0f08a3@weissschuh.net>
-Subject: Re: [PATCH 0/3] power: supply: cros_charge-control: three fixes
-Message-Id: <173379569430.1843885.17567948668257115971.b4-ty@collabora.com>
-Date: Tue, 10 Dec 2024 02:54:54 +0100
+	s=arc-20240116; t=1733795869; c=relaxed/simple;
+	bh=U5ssiB5H02E9VimE9BIqWx26rlVNNDNOjqi4UqsNVd0=;
+	h=Date:To:From:Subject:Message-Id; b=rYip7hw5EQca3IrSVqyHwHJ09+CmU3hFlq++DtnkqPIza+6h2Ns+NaDGUupovFIckF/r9Xy5CZ14gdCNF4x8oFrysYMHe9ZobVlt9FQhve1sqpRJ3lRPYSW2pwfnYWw5RPZXBUXmze/lH6PhlU0tsRHVt1tm7x/d2mhvulH7jj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Xe/kozEK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9181CC4CED1;
+	Tue, 10 Dec 2024 01:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1733795868;
+	bh=U5ssiB5H02E9VimE9BIqWx26rlVNNDNOjqi4UqsNVd0=;
+	h=Date:To:From:Subject:From;
+	b=Xe/kozEKvZmZE6W8WCxSsWjAuSp+ujzFZJCdfU9MRJNG2Sh74OT2QQtJUEgZRGlOc
+	 +zkctyfTN3tabiV7Kd1ilGz+VvLONBXcc1P3ueYMgqYV8EeRwE1uQZvKMq6ack4Fbo
+	 PKW1FPoQpIHH2GktcTEyungDcx8Bv5dzUCYt+hL0=
+Date: Mon, 09 Dec 2024 17:57:47 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,deshengwu@tencent.com,kasong@tencent.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241210015748.9181CC4CED1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.2
 
 
-On Sun, 08 Dec 2024 15:59:25 +0100, Thomas Weißschuh wrote:
-> Three fixes I'd like to get into stable.
-> These conflict with my psy extensions series [0],
-> I'd like to apply the fixes first.
-> 
-> [0] https://lore.kernel.org/lkml/20241205-power-supply-extensions-v5-0-f0f996db4347@weissschuh.net/
-> 
-> 
-> [...]
+The patch titled
+     Subject: zram: refuse to use zero sized block device as backing device
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch
 
-Applied, thanks!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch
 
-[1/3] power: supply: cros_charge-control: add mutex for driver data
-      commit: e5f84d1cf562f7b45e28d6e5f6490626f870f81c
-[2/3] power: supply: cros_charge-control: allow start_threshold == end_threshold
-      commit: e65a1b7fad0e112573eea7d64d4ab4fc513b8695
-[3/3] power: supply: cros_charge-control: hide start threshold on v2 cmd
-      commit: c28dc9fc24f5fa802d44ef7620a511035bdd803e
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Best regards,
--- 
-Sebastian Reichel <sebastian.reichel@collabora.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kairui Song <kasong@tencent.com>
+Subject: zram: refuse to use zero sized block device as backing device
+Date: Tue, 10 Dec 2024 00:57:15 +0800
+
+Patch series "zram: fix backing device setup issue", v2.
+
+This series fixes two bugs of backing device setting:
+
+- ZRAM should reject using a zero sized (or the uninitialized ZRAM
+  device itself) as the backing device.
+- Fix backing device leaking when removing a uninitialized ZRAM
+  device.
+
+
+This patch (of 2):
+
+Setting a zero sized block device as backing device is pointless, and one
+can easily create a recursive loop by setting the uninitialized ZRAM
+device itself as its own backing device by (zram0 is uninitialized):
+
+    echo /dev/zram0 > /sys/block/zram0/backing_dev
+
+It's definitely a wrong config, and the module will pin itself, kernel
+should refuse doing so in the first place.
+
+By refusing to use zero sized device we avoided misuse cases including
+this one above.
+
+Link: https://lkml.kernel.org/r/20241209165717.94215-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20241209165717.94215-2-ryncsn@gmail.com
+Fixes: 013bf95a83ec ("zram: add interface to specif backing device")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reported-by: Desheng Wu <deshengwu@tencent.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/block/zram/zram_drv.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+--- a/drivers/block/zram/zram_drv.c~zram-refuse-to-use-zero-sized-block-device-as-backing-device
++++ a/drivers/block/zram/zram_drv.c
+@@ -614,6 +614,12 @@ static ssize_t backing_dev_store(struct
+ 	}
+ 
+ 	nr_pages = i_size_read(inode) >> PAGE_SHIFT;
++	/* Refuse to use zero sized device (also prevents self reference) */
++	if (!nr_pages) {
++		err = -EINVAL;
++		goto out;
++	}
++
+ 	bitmap_sz = BITS_TO_LONGS(nr_pages) * sizeof(long);
+ 	bitmap = kvzalloc(bitmap_sz, GFP_KERNEL);
+ 	if (!bitmap) {
+_
+
+Patches currently in -mm which might be from kasong@tencent.com are
+
+zram-refuse-to-use-zero-sized-block-device-as-backing-device.patch
+zram-fix-uninitialized-zram-not-releasing-backing-device.patch
 
 
