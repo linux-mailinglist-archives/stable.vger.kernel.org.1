@@ -1,50 +1,56 @@
-Return-Path: <stable+bounces-100468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47BBE9EB952
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 19:30:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 680159EBA0D
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 20:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBFE0280B92
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 18:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5A97283AF5
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 19:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2231991D9;
-	Tue, 10 Dec 2024 18:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29503226194;
+	Tue, 10 Dec 2024 19:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CfICpRmd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uFxRfuRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD5BDF58;
-	Tue, 10 Dec 2024 18:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE70D226186
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 19:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733855416; cv=none; b=tO4q50AiKTfX1bIujygV48ZRxazqVUzMol4RyLlWU5seXh//GkHX2nUTtP5++3SE9VTs2VDisCptEnd2FZPxnq5v5IkKvDBLrqGOKJplLjxUfWvqqbeS6PMXoBiAt9+S4+qrzlqZMXCC5xBLxliPjQf9Bplq3dJi7GeHdCGu/xo=
+	t=1733858684; cv=none; b=YxYTpnbE8ppqOFOelpjaPkjXIeGyjzUDh33HRJ4oEFD/JkplEBV2R9alnn+rmzpz5GiqkFMkJx/5xa+wVaOHF4NB29oi6z91PXNKz1HVjqePgIfWTnDTWaozspovCKZp5IxusBk6x9ySTboRUVd8XRJ52HjrPkBeGw6wEQVrLvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733855416; c=relaxed/simple;
-	bh=jXIPBO8rBfEr3t5k/LZU4uYdY0/haRq+iVX3DtOR7ng=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UcBM/nTIlm06l720sw0M1MLk52omInpqi+vw8nwc3pQy3ZD8ET3sbv2iS3I8qJAcLzExJR9MLpPOK90vJjOxTrdpgNIFigC6Asp/5SzOgQOZc2vwi9/nKhYs/d52/geb27zMYv7ob9VHL84LBhbCHIZrXYGVtUKBUFk2wlj0wLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfICpRmd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BE8C4CED6;
-	Tue, 10 Dec 2024 18:30:16 +0000 (UTC)
+	s=arc-20240116; t=1733858684; c=relaxed/simple;
+	bh=8moO6Mp6TtOnbgeda4ubOAGkhWYOJivrdYnURHytbn4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cUs93SbcVoBj3caovA26LPyfNgLTTTMm/Gxi5nqyY7AzWgpsAzObuNrfZRSyhUQVidGdq4YppYvWm2UuWFp4m6TrE3tY9xMkARGwRR8fDJ4N9XMqCqnBEZoamhaYRt/xKsZk9zArGU8Fhn4PNHMtCo+CNk0Wcm0nMQ+5o3YRV4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uFxRfuRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11C6C4CEE2;
+	Tue, 10 Dec 2024 19:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733855416;
-	bh=jXIPBO8rBfEr3t5k/LZU4uYdY0/haRq+iVX3DtOR7ng=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CfICpRmd3+kThFNnC78wKScvjuU+n14FYthNCXst7wpOvMSFQG5tDMckpsCnQfq/F
-	 yS9CRb8OFjxhtXvXmQMc6uoC8B4MUeCfasMxyWbp38TFCJfDmBMVS54/EKSgrhEre9
-	 gBw0J29/1CN4fUlJtw/MVf76Z0O3T2px6JZm6QzCzmPjEqEjHYdQpKPNtc3IFnBTo3
-	 UIm0nLl6KAlOoV3gcd6hr3JEKzJdti4RObSJknP3GSyabxzR533k7cBkmCkkpjOeYP
-	 Qrlzv9ZifvU0XdtAt44XYDp+eVF0wVUj8F2W4qcBcGtIw3+XqdSOcU5MYRLLCtab1h
-	 mBT+QJ5vzHIew==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB9EE380A954;
-	Tue, 10 Dec 2024 18:30:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1733858684;
+	bh=8moO6Mp6TtOnbgeda4ubOAGkhWYOJivrdYnURHytbn4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uFxRfuRcp9CPxuXlFW1pThuUUgmI/vzS57pBL2tv7tNhHPp2iT0ikWMD6UscBuNn2
+	 7RucwLwdOniYBJS7YNdjFjtwiD13Sx0bnU+N+i0Xid61xKtSWw09H7U1Jj4numW/W8
+	 Yo69TX4knPjt1g4g+R7sml1eCpx1ycUKVL8hFPSB11IazNS9nFRFRR8gBWbLkGIkja
+	 vHleBnDZd0y7rYI7eqxMYKS+JREEM3E8mLNvz/ZMcTURmuZL/fwVk7zwS203U0FvY3
+	 N2YhL2MlSD9aZTTFWy1loSqWkYJnju4o2N/cNbW62hPG43Sy3/9un7Cc3Rfgwpf1lJ
+	 pIDA8fA6Wezow==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: guocai.he.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH] drm/amd/display: Correct the defined value for AMDGPU_DMUB_NOTIFICATION_MAX
+Date: Tue, 10 Dec 2024 14:24:42 -0500
+Message-ID: <20241210085148-a58fb7b371f7d128@stable.kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <20241210080500.1417716-1-guocai.he.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,49 +58,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] bpf: Fix UAF via mismatching bpf_prog/attachment RCU
- flavors
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173385543176.937529.2200344298659513715.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Dec 2024 18:30:31 +0000
-References: <20241210-bpf-fix-actual-uprobe-uaf-v1-1-19439849dd44@google.com>
-In-Reply-To: <20241210-bpf-fix-actual-uprobe-uaf-v1-1-19439849dd44@google.com>
-To: Jann Horn <jannh@google.com>
-Cc: song@kernel.org, jolsa@kernel.org, kpsingh@kernel.org,
- mattbobrowski@google.com, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
- yonghong.song@linux.dev, john.fastabend@gmail.com, sdf@fomichev.me,
- haoluo@google.com, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, delyank@fb.com, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- stable@vger.kernel.org
 
-Hello:
+[ Sasha's backport helper bot ]
 
-This patch was applied to bpf/bpf.git (master)
-by Andrii Nakryiko <andrii@kernel.org>:
+Hi,
 
-On Tue, 10 Dec 2024 17:32:13 +0100 you wrote:
-> Uprobes always use bpf_prog_run_array_uprobe() under tasks-trace-RCU
-> protection. But it is possible to attach a non-sleepable BPF program to a
-> uprobe, and non-sleepable BPF programs are freed via normal RCU (see
-> __bpf_prog_put_noref()). This leads to UAF of the bpf_prog because a normal
-> RCU grace period does not imply a tasks-trace-RCU grace period.
-> 
-> Fix it by explicitly waiting for a tasks-trace-RCU grace period after
-> removing the attachment of a bpf_prog to a perf_event.
-> 
-> [...]
+The upstream commit SHA1 provided is correct: ad28d7c3d989fc5689581664653879d664da76f0
 
-Here is the summary with links:
-  - bpf: Fix UAF via mismatching bpf_prog/attachment RCU flavors
-    https://git.kernel.org/bpf/bpf/c/ef1b808e3b7c
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: guocai.he.cn@windriver.com
+Commit author: Wayne Lin <wayne.lin@amd.com>
 
 
+Status in newer kernel trees:
+6.12.y | Present (exact SHA1)
+
+Note: The patch differs from the upstream commit:
+---
+Failed to apply patch cleanly, falling back to interdiff...
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.12.y       |  Failed     |  N/A       |
+| stable/linux-6.6.y        |  Failed     |  N/A       |
+| stable/linux-6.1.y        |  Failed     |  N/A       |
+| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Failed     |  N/A       |
+| stable/linux-5.4.y        |  Failed     |  N/A       |
 
