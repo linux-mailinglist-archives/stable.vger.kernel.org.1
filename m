@@ -1,99 +1,189 @@
-Return-Path: <stable+bounces-100438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784FA9EB3E7
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:50:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE609EB499
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43FD0188A1FF
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 14:50:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 515BC188D923
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFD71B4240;
-	Tue, 10 Dec 2024 14:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CB71BD9C8;
+	Tue, 10 Dec 2024 15:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tpE22AAz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P9mx7JUH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8971B3924;
-	Tue, 10 Dec 2024 14:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ACE1B425E;
+	Tue, 10 Dec 2024 15:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733842198; cv=none; b=njbq7upODUWwaECIOYKh2k5vGSA2jo5RrCHLeskevn5D6blQtssZC34Sf1wq5c9JAzQvf3kTldwXVfze1yuXo23UbxkPcvyGKNkw8BG31uEgO3U9f5W7g5Zu7njU8eI46IHXvjkfcurEbIY4bAPUvQu0KIGzLg6SgDqijuvfpZc=
+	t=1733843922; cv=none; b=nMzy2rWup13g6TM9/Q/BJh0arVVW1oWSY3r4ZG384oJwtABOGF+JD4JeC+R+Sw7Lv7Qd8/IYFNbguVLqa4gjslIchAuoaEpvx/uspTOUnXalWV/W7ju8zBJPn26OQ3DbVBJ2s2yTh4WUoPknkHmeRXShVHK5bD5TmMocVVwzFAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733842198; c=relaxed/simple;
-	bh=RlkJX0MrhsJeOtYwbzKz9uU11pc4QQCMS9xkZOpuwfo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DkZXskzDVTbw6ZC4F0HqfuBI8q0XzYWSr/Hk4ksV2d3RmS/G0ADPFg7f/vhLEi3kqjj6XXSUBTE6ceM2pQfqGpWBihsfzoZFH1fA3KSTpHutcV5MHChKHNuxXavA3eG4xQnIw6bCwZyduprihWvuTKFIryQd3LmVU3WNLOjjJag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tpE22AAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE3AC4CED6;
-	Tue, 10 Dec 2024 14:49:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733842197;
-	bh=RlkJX0MrhsJeOtYwbzKz9uU11pc4QQCMS9xkZOpuwfo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpE22AAz8JnIoPsTCivKa+MP48cXGfDjPi6iVhnuTX92pP2L1fwFaF74b1AouRM3I
-	 hw8/z2N4/GHt3TxCzaLEefNkLiX4J0GHt7PqbhcWrZlmiHYF4ka7L2RoWqPgPWslTf
-	 ETjvJfCrMRH3W9uWYkTHS0dW6fMRvc43jmxIunnLCll0x6u3twOgvvadqUvUh7Znl4
-	 2HOf4pGw3LfIJN0eI+mRrSKQ7RNA2oqwSfbnzsP1TK7ZkqYIlBxQvMuReZ3U+6Dx53
-	 LFrQcZHE6+dM89gKR/EIsfsel/b+BJU8Yt5zwDE54ZFcDOsyUZjOxXbn/pdXUQDwf3
-	 7I54gtiBA0Yhw==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 01/11] x86/Kconfig: Geode CPU has cmpxchg8b
-Date: Tue, 10 Dec 2024 15:49:35 +0100
-Message-Id: <20241210144945.2325330-2-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241210144945.2325330-1-arnd@kernel.org>
-References: <20241210144945.2325330-1-arnd@kernel.org>
+	s=arc-20240116; t=1733843922; c=relaxed/simple;
+	bh=MyYV/Dq/yh2N0al9eocpkchQGpyiruhLqw5oLkHPoWs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y5AdunRSANsrU7vGr0/ODehPM2+vIBZwVjRHx7vB2hMnSVOk5vIW+4Hu5hfcs43/WDb4WPI60qR6t75fPDSr/x6GirT9D/Hyn+IeMq6C7SUQfPBoVPNXgn+Y0NDSA+kQKT4nxbGJizIf+m7nF9am7BSzdlaynMYRJNhIS9BBYgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P9mx7JUH; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733843921; x=1765379921;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=MyYV/Dq/yh2N0al9eocpkchQGpyiruhLqw5oLkHPoWs=;
+  b=P9mx7JUH8fYsIyMi8jyiMf48uLPOvnd3+4kJ2LquwhfdvKSzmtoAoHUg
+   lHLd96Xs3NY4Jj9uIuPgHMIh0oITQBIJ47oEHa2F9GQJvvcKQ+2aMbZos
+   T1RdJlFVMu1NmcXtnscXEWBwtqHh8EmlNMiejczGCo/13N+O7NZGBEztd
+   T4Xb7nugBBGzk8mvTreLBcV2n73EB6+gTdh/e/6q7k1WIQ8ecAYAoHaMQ
+   KULxJ3EgNQOyJ04GfuG2LNFdMrpPVKfAwx0FmZCr+spqmUpPs8oUcwVac
+   7O7yItWx81DJNkLiqWrcPQFrml3vmr4cbbWg40Ti5WZEDcizNsxcqP6kS
+   g==;
+X-CSE-ConnectionGUID: agL51K1dQZeHzQYg6EUU6A==
+X-CSE-MsgGUID: XdwoLW6TRvipJmUoarH3/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45206208"
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
+   d="scan'208";a="45206208"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 07:18:40 -0800
+X-CSE-ConnectionGUID: A9Ohsn/hQfKsY0TvuxCS3w==
+X-CSE-MsgGUID: WKZB0PDwSvqrhDvuB8FZxw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
+   d="scan'208";a="95255207"
+Received: from sgruszka-mobl.ger.corp.intel.com (HELO localhost) ([10.245.118.67])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 07:18:35 -0800
+Date: Tue, 10 Dec 2024 16:18:32 +0100
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+	Genes Lists <lists@sapience.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	torvalds@linux-foundation.org, stable@vger.kernel.org,
+	linux-media@vger.kernel.org, bingbu.cao@intel.com,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: Re: Linux 6.12.4 - crash dma_alloc_attrs+0x12b via ipu6
+Message-ID: <Z1hbyNXUubokloda@linux.intel.com>
+References: <2024120917-vision-outcast-85f2@gregkh>
+ <c0e94be466b367f1a3cfdc3cb7b1a4f47e5953ae.camel@sapience.com>
+ <Z1fqitbWlmELb5pj@kekkonen.localdomain>
+ <87seqvzzg6.fsf@intel.com>
+ <c1805642a6c5da6fef3927c70358c8cb851d2784.camel@sapience.com>
+ <87bjxjzpwn.fsf@intel.com>
+ <2024121001-senator-raffle-a371@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024121001-senator-raffle-a371@gregkh>
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Tue, Dec 10, 2024 at 01:37:11PM +0100, Greg Kroah-Hartman wrote:
+> On Tue, Dec 10, 2024 at 02:24:56PM +0200, Jani Nikula wrote:
+> > On Tue, 10 Dec 2024, Genes Lists <lists@sapience.com> wrote:
+> > > On Tue, 2024-12-10 at 10:58 +0200, Jani Nikula wrote:
+> > >> On Tue, 10 Dec 2024, Sakari Ailus <sakari.ailus@linux.intel.com>
+> > >> wrote:
+> > >> > Hi,
+> > >> > 
+> > >> > > ...
+> > >> > > FYI 6.12.4 got a crash shortly after booting in dma_alloc_attrs -
+> > >> > > maybe
+> > >> > > triggered in ipu6_probe. Crash only happened on laptop with ipu6.
+> > >> > > All
+> > >> > > other machines are running fine.
+> > >> > 
+> > >> > Have you read the dmesg further than the IPU6 related warning? The
+> > >> > IPU6
+> > >> > driver won't work (maybe not even probe?) but if the system
+> > >> > crashes, it
+> > >> > appears unlikely the IPU6 drivers would have something to do with
+> > >> > that.
+> > >> > Look for warnings on linked list corruption later, they seem to be
+> > >> > coming
+> > >> > from the i915 driver.
+> > >> 
+> > >> And the list corruption is actually happening in
+> > >> cpu_latency_qos_update_request(). I don't see any i915 changes in
+> > >> 6.12.4
+> > >> that could cause it.
+> > >> 
+> > >> I guess the question is, when did it work? Did 6.12.3 work?
+> > >> 
+> > >> 
+> > >> BR,
+> > >> Jani.
+> > >
+> > >
+> > >  - 6.12.1 worked
+> > >
+> > >  - mainline - works (but only with i915 patch set [1] otherwise there
+> > > are no graphics at all)
+> > >
+> > >     [1] https://patchwork.freedesktop.org/series/141911/
+> > >
+> > > - 6.12.3 - crashed (i see i915 not ipu6) and again it has       
+> > >     cpu_latency_qos_update_request+0x61/0xc0
+> > 
+> > Thanks for testing.
+> > 
+> > There are no changes to either i915 or kernel/power between 6.12.1 and
+> > 6.12.4.
+> > 
+> > There are some changes to drm core, but none that could explain this.
+> > 
+> > Maybe try the same kernels a few more times to see if it's really
+> > deterministic? Not that I have obvious ideas where to go from there, but
+> > it's a clue nonetheless.
+> 
+> 'git bisect' would be nice to run if possible...
 
-An older cleanup of mine inadvertently removed geode-gx1 and geode-lx
-from the list of CPUs that are known to support a working cmpxchg8b.
+I've reproduced the issue. It's caused by 6.12.y commit:
 
-Fixes: 88a2b4edda3d ("x86/Kconfig: Rework CONFIG_X86_PAE dependency")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/x86/Kconfig.cpu | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+commit 6ac269abab9ca5ae910deb2d3ca54351c3467e99
+Author: Bingbu Cao <bingbu.cao@intel.com>
+Date:   Wed Oct 16 15:53:01 2024 +0800
 
-diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
-index 2a7279d80460..42e6a40876ea 100644
---- a/arch/x86/Kconfig.cpu
-+++ b/arch/x86/Kconfig.cpu
-@@ -368,7 +368,7 @@ config X86_HAVE_PAE
- 
- config X86_CMPXCHG64
- 	def_bool y
--	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7
-+	depends on X86_HAVE_PAE || M586TSC || M586MMX || MK6 || MK7 || MGEODEGX1 || MGEODE_LX
- 
- # this should be set for all -march=.. options where the compiler
- # generates cmov.
--- 
-2.39.5
+    media: ipu6: not override the dma_ops of device in driver
 
+    [ Upstream commit daabc5c64703432c4a8798421a3588c2c142c51b ]
+
+
+It makes alloc_fw_msg_bufs() fail on isys_probe() 
+
+	cpu_latency_qos_add_request(&isys->pm_qos, PM_QOS_DEFAULT_VALUE);
+
+	ret = alloc_fw_msg_bufs(isys, 20);
+	if (ret < 0)
+		goto out_remove_pkg_dir_shared_buffer;
+
+And on error path we do not call cpu_latency_qos_remove_request() 
+what cause pm_qos_request list corruption (it is memory use
+after free bug).
+
+The problem will disappear after applying:
+https://lore.kernel.org/stable/20241209175416.59433-1-stanislaw.gruszka@linux.intel.com/
+since the allocation will not longer fail.
+
+But we also need to handle fail case correctly by adding
+cpu_latency_qos_remove_request() on error path. This requires
+mainline fix, I'll post it. 
+
+Regards
+Stanislaw
 
