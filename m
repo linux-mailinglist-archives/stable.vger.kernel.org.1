@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B489EBA1B
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 20:25:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44C39EBA1C
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 20:25:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D56E6283BD9
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 19:25:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41074188765C
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 19:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88889214232;
-	Tue, 10 Dec 2024 19:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C182F21423E;
+	Tue, 10 Dec 2024 19:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R7TgPUlL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKobAHkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492F023ED63
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 19:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8132521423A
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 19:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733858713; cv=none; b=MWxndc5p7/TQJFjs10UE/x8Cmx76Nst+46AAdJaHX4/mmoX4YuY6H4cVT7YMRzkqXeTuUhIASpCw/6MHiU+DkM0Sk2IKG2Qs1vjN/2hnCNgq4g4KSP9MA2jx2Zrs4CL7xbEEoWtpzYOij2nM2JlyhFF9VtKuhdQQ6hXbIQmy4TQ=
+	t=1733858715; cv=none; b=Fi7e9bCY9c5/b9s8TdlBv5msAr4m92yeFCxb5WSbDrezBKp73/NcjwhH4XRPBjfZw1wjU1/eql2Uss7uHvzIcqyyZR4V7PHSsZAUh0TAn0E/7N3qRCEWHWAp+D2zGby8tGoW/g2Pv9ZwpMqd+A8fKhQ8xOC8Ve99MWEUzOAV+tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733858713; c=relaxed/simple;
-	bh=YZxrWfJQ3UmvxR0MUHPZzaQh3ibpMeL691R4nT0rnEw=;
+	s=arc-20240116; t=1733858715; c=relaxed/simple;
+	bh=9t2Tf2ZN8jlen0Q6E6wiUicDdpdstkynNC+qBfXkf9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sd1uQMtatayDwuCsUOlck2RjiEJMAp3DLqXrqR+Ka9OGa0HiL2Ddom8HfegchxaFQUbO7QbVvpqq1vyTLDUwnFx2UgNF7WPqKMVod0eIqWoMtgB7ZZ6V8P5fGd/GgtY9w9Md+/pe7zD5ijZbUKkSEhWwOmikXyTFpRkGfx8Z1Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R7TgPUlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61675C4CED6;
-	Tue, 10 Dec 2024 19:25:12 +0000 (UTC)
+	 MIME-Version; b=VUNP29bRtVKdu2K0Il8HGjpdWZ8xR0G+fY1MgD6YC9uem9eK5TiKNx1rfQhLSIk0OBkChDLud7rsRkpGsbXsUEkM1V9yoDu78EEbIuGjHUca1vr5mMBoErVfnPBfHc0Quk6WMZi579ZKtnGnrrNJtNwXnX/zuKDlAvZnShBXVL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKobAHkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F21BC4CED6;
+	Tue, 10 Dec 2024 19:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733858712;
-	bh=YZxrWfJQ3UmvxR0MUHPZzaQh3ibpMeL691R4nT0rnEw=;
+	s=k20201202; t=1733858715;
+	bh=9t2Tf2ZN8jlen0Q6E6wiUicDdpdstkynNC+qBfXkf9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7TgPUlLLVzYU42I1RVGpxARvR3UoPHCeOJlrrP4Gu5uZHju81No4FL8WtKWLLcv/
-	 M0/59wzXT9b2tE25pB43KuhyjL8ZNX1ml+XTaEXTLMNoiNEskJBUbzZ4sLNTUrbALg
-	 iWxRBSPpA4jQoPFXzefL4q0YOev31NmMS4FtIqi+e+nNg2K3dbG3uzPsxtBX8Hh8Pv
-	 5rLTzWWBHLXfIdGJjh7aAhLEiB6XWD+KNVUnTLZP9dGZfQ4W6Z1KrzTrl8yrPOd5eO
-	 gn+vbdnGC0mIiXGgYlnZn1nYSX0ix9NutgQGE9jkfHwqxtUiidIJcILAhHrHVXOFel
-	 vXg6u4uZnzF8Q==
+	b=fKobAHkXJs2wGKJAkUChwiBZsN+264qpgqpX8BS3DO/hfjU03OCzuPjzjJZL4aMIC
+	 BJTWzXKwqY9NrSctE6KSEi1KkXEdcPBVe8Ga8nVZjuIIFN2p89iF4Qy6wbirSiUkj3
+	 M8hvAJ9tn18Y/73YAjd8b2IyN2X0jQkMKrggyS1XVJXhINGZkWkGUsCk/KwrS0K0jE
+	 p98H2+yOuYu6gu+qRVTvX/hsU1bw2+SQTZddR1kuSGxwTPWd+VmxgfVojCjNuLlAoE
+	 ywfqBHU9msF3SvUEEWeOnA6tNJX7O9y46NjLpXacIcakBjCuYTbXoOUEJDESHFaEVi
+	 8gPD2x5dEjfRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
+Cc: Hui Wang <hui.wang@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] modpost: Add .irqentry.text to OTHER_SECTIONS
-Date: Tue, 10 Dec 2024 14:25:11 -0500
-Message-ID: <20241210085807-5a9ba1649dfebfc6@stable.kernel.org>
+Subject: Re: [stble-kernel][5.15.y][5.10.y][PATCH v2] serial: sc16is7xx: the reg needs to shift in regmap_noinc
+Date: Tue, 10 Dec 2024 14:25:13 -0500
+Message-ID: <20241210075831-42e19a5d0ddc1937@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241210111211.1895944-1-senozhatsky@chromium.org>
+In-Reply-To:  <20241210113126.46056-1-hui.wang@canonical.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,29 +63,12 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Found matching upstream commit: 7912405643a14b527cd4a4f33c1d4392da900888
-
-WARNING: Author mismatch between patch and found commit:
-Backport author: Sergey Senozhatsky <senozhatsky@chromium.org>
-Commit author: Thomas Gleixner <tglx@linutronix.de>
-
-
-Status in newer kernel trees:
-6.12.y | Not found
-6.6.y | Not found
-6.1.y | Not found
-5.15.y | Not found
-5.10.y | Not found
-
-Note: The patch differs from the upstream commit:
----
-1:  7912405643a14 < -:  ------------- modpost: Add .irqentry.text to OTHER_SECTIONS
--:  ------------- > 1:  8ccdbcbc2bb4b modpost: Add .irqentry.text to OTHER_SECTIONS
----
+No upstream commit was identified. Using temporary commit for testing.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Success   |
 | stable/linux-5.10.y       |  Success    |  Success   |
 
