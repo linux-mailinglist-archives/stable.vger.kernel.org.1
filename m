@@ -1,40 +1,55 @@
-Return-Path: <stable+bounces-100422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428609EB117
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:44:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B519EB13E
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318A616AD4E
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:44:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 185001883B93
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741261A4E77;
-	Tue, 10 Dec 2024 12:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AEE1A76AC;
+	Tue, 10 Dec 2024 12:52:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="gpXFcbwd"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733AE1CD15;
-	Tue, 10 Dec 2024 12:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072741A3AB8
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 12:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733834664; cv=none; b=fxcQoDApF8v9ZRhHlxYoXSGiJk1k9JuIgQo3GKtF4CZtiyIAmMCCJuYBWXACouxzl7vJjlILNnTRfoX7a+VTqn6/viuijxHlN6+gzcSJhcJhnmiw6u7mdm3XcyooRx/S/IO0w9spFvRJalCSXXXIIdZUVDi+9SFy1bYg9I+isvg=
+	t=1733835131; cv=none; b=qCQt3cQs358HiHdw/DhAQaMbOggspK5mUjxcwMhC4Ny+3TSbWHXA+3fH4OVsdDCDZELNQjlaEVUnEV30vTwuGF51Q5TkQVFo6SwG78HVoEzA2K54fVjdxXm1O7YpLQ69LS8jd6lYaEoU42wdDqE83vfUPnOz9NnlfE6Yw8l4o7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733834664; c=relaxed/simple;
-	bh=bP5eP4t8PpPZ2cJQvIVipwyYHR5VY9ahYWxT7HdzSGQ=;
+	s=arc-20240116; t=1733835131; c=relaxed/simple;
+	bh=OitKjX8hjWp0Ind9KDM0AFf0Pn9LoAnV/IyRUgKi2es=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dpGZjYhiyemhSzfnnbyrhILGr14TpvzT2aJm67WTQuZFLBzxO+sXfCShqkgY68WS0XRiVYhtJ5oKeMp0sHth9Aotb0NDIsFQ4mAboW2hw0Ef2IlgzUqeO8E8Rjs8caTHFuOXPt80hd3wkqOz3uvopHGPJ2CBl7ykNxOphyBxTS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9E17106F;
-	Tue, 10 Dec 2024 04:44:49 -0800 (PST)
-Received: from [10.57.91.204] (unknown [10.57.91.204])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E808E3F5A1;
-	Tue, 10 Dec 2024 04:44:20 -0800 (PST)
-Message-ID: <e3b34cf1-9039-403c-b96b-533d4e1880a9@arm.com>
-Date: Tue, 10 Dec 2024 12:44:19 +0000
+	 In-Reply-To:Content-Type; b=q0B+zR31sg1hDyYmbvZRukWwwsolrCU6X7KBNcTT4z9vPZXCqFUjwMqKkDsepzZNgEvClQV1Q4rI0V06tTQPk7BTJpGmeLogoMq+5zskrGf3h+rDVvlKKBoP+OXQ2aRvfCKFBy6jkX0OQh/x81v/llGDjfp62ghReXWkVjSoyHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=gpXFcbwd; arc=none smtp.client-ip=185.125.188.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from [192.168.5.25] (unknown [120.85.107.173])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id E5C5B3FEC5;
+	Tue, 10 Dec 2024 12:52:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1733835127;
+	bh=2uQSvyYG99Md1d1mi4cGEDNI4JL6b9oPNRCXyTkoRAw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type;
+	b=gpXFcbwdkpwTlV2J5huaB65d5gyrWWbgEYFqbe22Y0ZUut5cZC2L72xYos56tlrXm
+	 SY9x2bo2byTs1C6IQCvCXsDuwRWLWj0j7s37rvsxiWTLsoAvZeq+ZKJ+g2K6Mu8Ib6
+	 B13DdGDyT4rXvo8yl1rL8tLJQmiUCfms9ETRn/RHrfsnp0l1YMM9M29WWpu4fC0M1m
+	 WF9pN/Ui3SQep39bSWH34LaWbUoucq//kSMBxirrkwmBLKBnKnKzWYYAVn/zY0rMTu
+	 mFOgDqRr96vg7m4DFlF6imyIAbL5F62vbADXS+Pt8bVzbsEY0k5Ix/0ObOByRHSWfH
+	 8zBYqc4Ks3B8A==
+Message-ID: <976417ca-51c0-4d31-82dc-95eb28fc299a@canonical.com>
+Date: Tue, 10 Dec 2024 20:51:56 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,85 +57,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "iommu/arm-smmu: Defer probe of clients after smmu device
- bound" has been added to the 6.6-stable tree
+Subject: Re: [stble-kernel][5.15.y][5.10.y][PATCH v2] serial: sc16is7xx: the
+ reg needs to shift in regmap_noinc
 To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- quic_pbrahma@quicinc.com, Will Deacon <will@kernel.org>,
- Joerg Roedel <joro@8bytes.org>
-References: <20241209112749.3166445-1-sashal@kernel.org>
- <7dc48afa-1ea8-4ed4-8e55-7c108299522b@arm.com>
- <2024121030-donated-giggly-0c15@gregkh>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <2024121030-donated-giggly-0c15@gregkh>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, sashal@kernel.org,
+ hvilleneuve@dimonoff.com
+References: <20241210113126.46056-1-hui.wang@canonical.com>
+ <2024121020-abstract-ashy-cbe6@gregkh>
+Content-Language: en-US
+From: Hui Wang <hui.wang@canonical.com>
+In-Reply-To: <2024121020-abstract-ashy-cbe6@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2024-12-10 12:18 pm, Greg KH wrote:
-> On Tue, Dec 10, 2024 at 12:14:44PM +0000, Robin Murphy wrote:
->> On 2024-12-09 11:27 am, Sasha Levin wrote:
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>       iommu/arm-smmu: Defer probe of clients after smmu device bound
->>>
->>> to the 6.6-stable tree which can be found at:
->>>       http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>
->>> The filename of the patch is:
->>>        iommu-arm-smmu-defer-probe-of-clients-after-smmu-dev.patch
->>> and it can be found in the queue-6.6 subdirectory.
->>>
->>> If you, or anyone else, feels it should not be added to the stable tree,
->>> please let <stable@vger.kernel.org> know about it.
+
+On 12/10/24 20:15, Greg KH wrote:
+> On Tue, Dec 10, 2024 at 07:31:26PM +0800, Hui Wang wrote:
+>> Recently we found the fifo_read() and fifo_write() are broken in our
+>> 5.15 and 5.4 kernels after cherry-pick the commit e635f652696e
+>> ("serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions
+>> for FIFO"), that is because the reg needs to shift if we don't
+>> cherry-pick a prerequisite commit 3837a0379533 ("serial: sc16is7xx:
+>> improve regmap debugfs by using one regmap per port").
 >>
->> FWIW the correct resolution for cherry-picking this directly is the
->> logically-straightforward one, as below (git is mostly just confused by
->> the context)
->>
->> Cheers,
->> Robin.
->>
->> ----->8-----
->> diff --cc drivers/iommu/arm/arm-smmu/arm-smmu.c
->> index d6d1a2a55cc0,14618772a3d6..000000000000
->> --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
->> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
->> @@@ -1357,10 -1435,19 +1357,21 @@@ static struct iommu_device *arm_smmu_pr
->>    		fwspec = dev_iommu_fwspec_get(dev);
->>    		if (ret)
->>    			goto out_free;
->>   -	} else {
->>   +	} else if (fwspec && fwspec->ops == &arm_smmu_ops) {
->>    		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
->> +
->> + 		/*
->> + 		 * Defer probe if the relevant SMMU instance hasn't finished
->> + 		 * probing yet. This is a fragile hack and we'd ideally
->> + 		 * avoid this race in the core code. Until that's ironed
->> + 		 * out, however, this is the most pragmatic option on the
->> + 		 * table.
->> + 		 */
->> + 		if (!smmu)
->> + 			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
->> + 						"smmu dev has not bound yet\n"));
->>   +	} else {
->>   +		return ERR_PTR(-ENODEV);
->>    	}
->>    	ret = -EINVAL;a
-> 
-> Can you resend this in a patch that we can apply as-is?
-
-Hope I got the tagging right :)
-
-https://lore.kernel.org/stable/acd8068372673fb881aa9e13531470669c985519.1733834302.git.robin.murphy@arm.com/
-
-Cheers,
-Robin.
-
-> 
-> thanks,
-> 
+>> It is hard to backport the prerequisite commit to 5.15.y and 5.10.y
+>> due to the significant conflict. To be safe, here fix it by shifting
+>> the reg as regmap_volatile() does.
+> Please try, submit the series of upstream commits first and then if it's
+> too rough, we can evaluate it later.  As-is, I can't take this, sorry.
+OK, got it, I will have a try.
 > greg k-h
-
 
