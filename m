@@ -1,131 +1,95 @@
-Return-Path: <stable+bounces-100444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B3E9EB57B
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:57:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EA49EB5E8
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:17:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D32D12830DE
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:57:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B479E16776A
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415EA22FE03;
-	Tue, 10 Dec 2024 15:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0EE22FE03;
+	Tue, 10 Dec 2024 16:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K7nmtRjk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a89O4Bfm"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B4838DEC
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 15:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF9319D06E;
+	Tue, 10 Dec 2024 16:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733846220; cv=none; b=ce0Q5Zd7ZdDw0WHdfoHjGPDmQO1IwFetbeDWwzikDl+0PbAA3JZTvqF83+vzQV8sgLc1RX0VJmFg2dTUFO2BcvRXGB+yWnzh8puBGZ4abzcyKnev7yLRCJqetugkG+nAGqY3hzlQr/9t3nBxvJUyvNjk/7HWXZGri5XE3xf+Kj8=
+	t=1733847393; cv=none; b=lszwN5V1qCAC7z1zYGzfbY+u4LmwrGAEh84RRUMIgIURaFu0NVDO8HcJmNgnyF6e968ofT/J2u6krkdJLJccbvqfUPvLpyB6CU96jlsd3Gt7ZiDXuey+yQDs1iHo/iCy3OI0KBZNV2gSq7ke5KUZxBGsn84tqXVkVQ4sad6KoxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733846220; c=relaxed/simple;
-	bh=mjC+e6gNCU3emBb9QuvtpFcjeRTWGAeStvy+POWh8lo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sNn8H3DylL267Qr4oCThzynKPOzZQthfezgkSfKIScywo+oSr6KT0uKFM8jE61eXUtZm4FNSAvNEHoCEY4MltQUY/nuKyfvx2sXiaE5o9izZbH7Ox0ZFialvURfLyDTOk5iIdoALswZ+mOQKitav9v0pF0ZH+tidBcE+3vPVJ+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K7nmtRjk; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733846218; x=1765382218;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mjC+e6gNCU3emBb9QuvtpFcjeRTWGAeStvy+POWh8lo=;
-  b=K7nmtRjkwSTs7WVE02xG1H/Lj8jXSsOJtsmuko8H86BbGk0L8ocJ+O/e
-   XeKKSrFkNBE5QNFbcHJlRrE51fNIiAD4sAk1/0ylEFdoE7zZZr+Y7Z7l6
-   iHj+iE58NdcmmkxwJEcr4kl+oHp/QlUNylinZ5zPNV7Yzb5pIEZBdWB+/
-   vAl2xWfNdcji4vIfGbf8vUD8v3/c+NIv/F9q5pYjelTv/491jg0Ze3tKl
-   4L3gAOJEzBZCI2scwS79EvWV1vnOOFUXyJ1z9JD7xeTSqTeZGssXu9EQp
-   qiSxldB9KQ/U147PAzrlxjFDRVm7Si4tO1VaZQV6QSayG3ccJ4a5yOp/u
-   A==;
-X-CSE-ConnectionGUID: nDxCZzSRSlmFQN8GN7z3ug==
-X-CSE-MsgGUID: TaZXdlQgSruCzCh0L2yvUw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="34117431"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="34117431"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 07:56:58 -0800
-X-CSE-ConnectionGUID: 3ugKgCagTxyib1MZYBnKKw==
-X-CSE-MsgGUID: vWkfEt9ZSQ+zHjZYy8T8CA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="95261352"
-Received: from nirmoyda-desk.igk.intel.com ([10.211.135.230])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 07:56:55 -0800
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	stable@vger.kernel.org,
-	Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH v3 2/2] drm/xe: Wait for migration job before unmapping pages
-Date: Tue, 10 Dec 2024 17:15:52 +0100
-Message-ID: <20241210161552.998242-2-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241210161552.998242-1-nirmoy.das@intel.com>
-References: <20241210161552.998242-1-nirmoy.das@intel.com>
+	s=arc-20240116; t=1733847393; c=relaxed/simple;
+	bh=rzsJ9NMMTP/m0KBPr+ghsEHE/q4mLK8kQfUUsuyDk1s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WxrquiZ9pYLyWesbRSJwjeCLh4ngZZyuhbr/aI4HmvLFDcIwRiT9P9CFfWbOmGt6xCF6Tr2V4inWyfMeCiTzCcgMpgR83hG9n9B2qHF/I3a2QKBEQgoWlWQQEiUw3XDNMwzcBnHESK+Q0fQd8Mf7Z026QdWmtzPm7KufRQX2rQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a89O4Bfm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B37CC4CEDE;
+	Tue, 10 Dec 2024 16:16:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733847392;
+	bh=rzsJ9NMMTP/m0KBPr+ghsEHE/q4mLK8kQfUUsuyDk1s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a89O4BfmDzVbneHeA9lJ7ce0/9RV85QCJfEd9zoaXsAcOijiRFeiHlJoes6ShV2AW
+	 4zEJU/fu+MrZrtGJ50pWMZTsqryXBDjKBReV3iabg74VpRSU2a+NWR5lpLlSZStJUF
+	 Vi2bbZwxGb8b+HyuC/XJd5Ap9MSvmd7mDiMEEq/cKbSFP2roURj3UIewMAE4fLYuDt
+	 92WB2frvTdYyoSgQr0ZLtSzA8i+QH0XQU7NfxPYsN8prCmVT5fyWu1Zo+k0B2wfAtz
+	 WFHqBC8b+CkbWa2YfKZt9ltUAirwCq4ezeJWkjdcg5lcwiZX2CUec7nkscGVdvq0Js
+	 ojycG3hVQJJFw==
+Date: Tue, 10 Dec 2024 11:16:31 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Troy Hanson <quic_thanson@quicinc.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	ogabbay@kernel.org, corbet@lwn.net, linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.12 033/107] accel/qaic: Add AIC080 support
+Message-ID: <Z1hpX_BduAF4b54s@sashalap>
+References: <20241124133301.3341829-1-sashal@kernel.org>
+ <20241124133301.3341829-33-sashal@kernel.org>
+ <51afee37-2c90-d31a-978c-5681dccd5ccb@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <51afee37-2c90-d31a-978c-5681dccd5ccb@quicinc.com>
 
-Fix a potential GPU page fault during tt -> system moves by waiting for
-migration jobs to complete before unmapping SG. This ensures that IOMMU
-mappings are not prematurely torn down while a migration job is still in
-progress.
+On Sun, Nov 24, 2024 at 12:07:20PM -0700, Jeffrey Hugo wrote:
+>On 11/24/2024 6:28 AM, Sasha Levin wrote:
+>>From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+>>
+>>[ Upstream commit b8128f7815ff135f0333c1b46dcdf1543c41b860 ]
+>>
+>>Add basic support for the new AIC080 product. The PCIe Device ID is
+>>0xa080. AIC080 is a lower cost, lower performance SKU variant of AIC100.
+>> From the qaic perspective, it is the same as AIC100.
+>>
+>>Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+>>Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+>>Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>>Link: https://patchwork.freedesktop.org/patch/msgid/20241004195209.3910996-1-quic_jhugo@quicinc.com
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>Sasha, it feels like autosel was a bit aggressive here.  This is an 
+>enablement patch for new hardware, and not a bug fix.  Therefore, it 
+>does not appear to be stable material to me.
+>
+>Am I missing something?
 
-v2: Use intr=false(Matt A)
-v3: Update commit message(Matt A)
+Yup, we also take patches that enable new hardware by adding PCI/USB/etc
+IDs as well as quirks.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3466
-Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system buffer objects to TT")
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: <stable@vger.kernel.org> # v6.11+
-Cc: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
----
- drivers/gpu/drm/xe/xe_bo.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
-index 06931df876ab..0a41b6c0583a 100644
---- a/drivers/gpu/drm/xe/xe_bo.c
-+++ b/drivers/gpu/drm/xe/xe_bo.c
-@@ -857,8 +857,16 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
- 
- out:
- 	if ((!ttm_bo->resource || ttm_bo->resource->mem_type == XE_PL_SYSTEM) &&
--	    ttm_bo->ttm)
-+	    ttm_bo->ttm) {
-+		long timeout = dma_resv_wait_timeout(ttm_bo->base.resv,
-+						     DMA_RESV_USAGE_BOOKKEEP,
-+						     false,
-+						     MAX_SCHEDULE_TIMEOUT);
-+		if (timeout < 0)
-+			ret = timeout;
-+
- 		xe_tt_unmap_sg(ttm_bo->ttm);
-+	}
- 
- 	return ret;
- }
 -- 
-2.46.0
-
+Thanks,
+Sasha
 
