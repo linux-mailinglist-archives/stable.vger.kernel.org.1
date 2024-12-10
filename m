@@ -1,132 +1,134 @@
-Return-Path: <stable+bounces-100420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C15D9EB0F1
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:37:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3DAE9EB10B
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A778C188C309
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D98FA16AD94
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5D91A3BD7;
-	Tue, 10 Dec 2024 12:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acbzj30F"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3AC1A704B;
+	Tue, 10 Dec 2024 12:42:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ECA91A2860;
-	Tue, 10 Dec 2024 12:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4DE1CD15
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 12:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733834268; cv=none; b=nM/kUfBWXrOwQQeN0WaJsjUQGXJKC9WxtQqErqH3pgwa88/nRy3uer1VTF7VbfNKefBoeoZ8YLu1v/JPR9SYtU9xb7IkVdsO064yYA16xpaDGgOZOj7bMHqzE/U9UhDgIJs4GdMjvBSU3LYKT0KLdm0KzGtljCTHyVCz7gpD82g=
+	t=1733834550; cv=none; b=sRea56C2sW3YUGOD+BpEK1kmIdRm00kEmUe9vSFC8i7pN09H0ensWcXqz3IH7RRskuIjrFn9ZiwAZKmyctN/ixKdTUuV9yRgeJMEYo5nCRmAFe9nwBFOaToNK7FDg9ieoMyJs9OsK1qTu6yFfFOC220BdHT+QkYZKng9cyz+XCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733834268; c=relaxed/simple;
-	bh=yT+2etRjcgkDFWD03R9C8TI0zCspIsiAJ5OYsndSpFA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ppJsrRpG1mMvPcS11M6foPZiB3NrURIt7eEFB6o3IVnTLWDmawNOvBPrKDdhm5HG3e+68Y+l+LTvxV5ifSX/OnJlUadiuC+zSIh3ggNgyIW52rl4yEeiN3bjFWbhDXIU9gDM2cYfqgeS4bn3JSymInbO2UVZ93+1pffEKzNvY38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acbzj30F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AA1C4CED6;
-	Tue, 10 Dec 2024 12:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733834267;
-	bh=yT+2etRjcgkDFWD03R9C8TI0zCspIsiAJ5OYsndSpFA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=acbzj30FlK2EmvlLToH6QFS188H3wkR00SNtGXFoyXfo7grjKoQlB4SrcSoHAL9XJ
-	 9l3MKDEFHD8hdBLasqB681IDSjuNhKX5BhkWKO30ICYOu/pdrsYMLXzzwMUbU2A+VE
-	 8cHX00vEWt10382+pbKfofAHT8L+umujoA21BX/o=
-Date: Tue, 10 Dec 2024 13:37:11 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Genes Lists <lists@sapience.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org,
-	linux-media@vger.kernel.org, bingbu.cao@intel.com,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: Linux 6.12.4 - crash dma_alloc_attrs+0x12b via ipu6
-Message-ID: <2024121001-senator-raffle-a371@gregkh>
-References: <2024120917-vision-outcast-85f2@gregkh>
- <c0e94be466b367f1a3cfdc3cb7b1a4f47e5953ae.camel@sapience.com>
- <Z1fqitbWlmELb5pj@kekkonen.localdomain>
- <87seqvzzg6.fsf@intel.com>
- <c1805642a6c5da6fef3927c70358c8cb851d2784.camel@sapience.com>
- <87bjxjzpwn.fsf@intel.com>
+	s=arc-20240116; t=1733834550; c=relaxed/simple;
+	bh=HY5qPnvmHAweit9LBS7RWv2hkt1myWDIVfznj4ZlsRo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=suVU1NsUJfRdmTr1ZCs7ZOjRS8plHlyj/e72ENpf/7lnQK98oj63r11F0SR6BQbJxvjvmmVyWDXq9rfMITF4YF3Q//X7oIHWzNaz0tS8gLTEC36zVAlcDYsiKbl1bQ+LcQhYdfKGKecGu3QrR1t5puL+XyLZCFnepB/f8MMwDqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36353106F;
+	Tue, 10 Dec 2024 04:42:54 -0800 (PST)
+Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 628FD3F5A1;
+	Tue, 10 Dec 2024 04:42:25 -0800 (PST)
+From: Robin Murphy <robin.murphy@arm.com>
+To: stable@vger.kernel.org
+Cc: Pratyush Brahma <quic_pbrahma@quicinc.com>,
+	Prakash Gupta <quic_guptap@quicinc.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6.y] iommu/arm-smmu: Defer probe of clients after smmu device bound
+Date: Tue, 10 Dec 2024 12:42:16 +0000
+Message-Id: <acd8068372673fb881aa9e13531470669c985519.1733834302.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87bjxjzpwn.fsf@intel.com>
 
-On Tue, Dec 10, 2024 at 02:24:56PM +0200, Jani Nikula wrote:
-> On Tue, 10 Dec 2024, Genes Lists <lists@sapience.com> wrote:
-> > On Tue, 2024-12-10 at 10:58 +0200, Jani Nikula wrote:
-> >> On Tue, 10 Dec 2024, Sakari Ailus <sakari.ailus@linux.intel.com>
-> >> wrote:
-> >> > Hi,
-> >> > 
-> >> > > ...
-> >> > > FYI 6.12.4 got a crash shortly after booting in dma_alloc_attrs -
-> >> > > maybe
-> >> > > triggered in ipu6_probe. Crash only happened on laptop with ipu6.
-> >> > > All
-> >> > > other machines are running fine.
-> >> > 
-> >> > Have you read the dmesg further than the IPU6 related warning? The
-> >> > IPU6
-> >> > driver won't work (maybe not even probe?) but if the system
-> >> > crashes, it
-> >> > appears unlikely the IPU6 drivers would have something to do with
-> >> > that.
-> >> > Look for warnings on linked list corruption later, they seem to be
-> >> > coming
-> >> > from the i915 driver.
-> >> 
-> >> And the list corruption is actually happening in
-> >> cpu_latency_qos_update_request(). I don't see any i915 changes in
-> >> 6.12.4
-> >> that could cause it.
-> >> 
-> >> I guess the question is, when did it work? Did 6.12.3 work?
-> >> 
-> >> 
-> >> BR,
-> >> Jani.
-> >
-> >
-> >  - 6.12.1 worked
-> >
-> >  - mainline - works (but only with i915 patch set [1] otherwise there
-> > are no graphics at all)
-> >
-> >     [1] https://patchwork.freedesktop.org/series/141911/
-> >
-> > - 6.12.3 - crashed (i see i915 not ipu6) and again it has       
-> >     cpu_latency_qos_update_request+0x61/0xc0
-> 
-> Thanks for testing.
-> 
-> There are no changes to either i915 or kernel/power between 6.12.1 and
-> 6.12.4.
-> 
-> There are some changes to drm core, but none that could explain this.
-> 
-> Maybe try the same kernels a few more times to see if it's really
-> deterministic? Not that I have obvious ideas where to go from there, but
-> it's a clue nonetheless.
+From: Pratyush Brahma <quic_pbrahma@quicinc.com>
 
-'git bisect' would be nice to run if possible...
+[ Upstream commit 229e6ee43d2a160a1592b83aad620d6027084aad ]
+
+Null pointer dereference occurs due to a race between smmu
+driver probe and client driver probe, when of_dma_configure()
+for client is called after the iommu_device_register() for smmu driver
+probe has executed but before the driver_bound() for smmu driver
+has been called.
+
+Following is how the race occurs:
+
+T1:Smmu device probe		T2: Client device probe
+
+really_probe()
+arm_smmu_device_probe()
+iommu_device_register()
+					really_probe()
+					platform_dma_configure()
+					of_dma_configure()
+					of_dma_configure_id()
+					of_iommu_configure()
+					iommu_probe_device()
+					iommu_init_device()
+					arm_smmu_probe_device()
+					arm_smmu_get_by_fwnode()
+						driver_find_device_by_fwnode()
+						driver_find_device()
+						next_device()
+						klist_next()
+						    /* null ptr
+						       assigned to smmu */
+					/* null ptr dereference
+					   while smmu->streamid_mask */
+driver_bound()
+	klist_add_tail()
+
+When this null smmu pointer is dereferenced later in
+arm_smmu_probe_device, the device crashes.
+
+Fix this by deferring the probe of the client device
+until the smmu device has bound to the arm smmu driver.
+
+Fixes: 021bb8420d44 ("iommu/arm-smmu: Wire up generic configuration support")
+Cc: stable@vger.kernel.org # 6.6
+Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
+Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
+Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
+Link: https://lore.kernel.org/r/20241004090428.2035-1-quic_pbrahma@quicinc.com
+[will: Add comment]
+Signed-off-by: Will Deacon <will@kernel.org>
+[rm: backport for context conflict prior to 6.8]
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+ drivers/iommu/arm/arm-smmu/arm-smmu.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+index d6d1a2a55cc0..42c5012ba8aa 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@ -1359,6 +1359,17 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
+ 			goto out_free;
+ 	} else if (fwspec && fwspec->ops == &arm_smmu_ops) {
+ 		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
++
++		/*
++		 * Defer probe if the relevant SMMU instance hasn't finished
++		 * probing yet. This is a fragile hack and we'd ideally
++		 * avoid this race in the core code. Until that's ironed
++		 * out, however, this is the most pragmatic option on the
++		 * table.
++		 */
++		if (!smmu)
++			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
++						"smmu dev has not bound yet\n"));
+ 	} else {
+ 		return ERR_PTR(-ENODEV);
+ 	}
+-- 
+2.39.2.101.g768bb238c484.dirty
+
 
