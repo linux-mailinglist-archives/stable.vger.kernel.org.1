@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B299EAC3B
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:35:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99EBF9EAC3E
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDFFB169D06
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:35:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E38FE188B5AF
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20C178F2A;
-	Tue, 10 Dec 2024 09:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E1A78F4E;
+	Tue, 10 Dec 2024 09:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fO91WH4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AknQwyUN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1790223E9F
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188A678F3F
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733823090; cv=none; b=NgFPrro6lUQ6JuTamWwlCKjwALLFyQx2JzNLUlYYl7CJUEkLpiRIKEi2u8VjcWqYrv5rmnuJnfmjoRyK3rnwEck5C4w0tu7yy1VShRxfyCtqm6aBAs+eIP7ZF/CM259jut2vclqNNhjReRIr9dGI6vesy5/CgGAuNPRnob3io9I=
+	t=1733823127; cv=none; b=REp02YFGu3YKNyigZMXo5zF1LXF0mlgssykqSKNeYgGyrymGToqWxEkhxWGmiJlYD3Zp0Xo8RgVDEfgE8Jd1ulCD3hlUiCvJ/1GE/p3bYNQE8iHQrjMTBRgy9jiv0dPrjM5EaFNXElsj/Fze1ITGa0DcahsVo49UxVKvRpCC0ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733823090; c=relaxed/simple;
-	bh=7QI6Y8KlKgm4lt1+mgdxYLIwFnM249TypTXWyz5di74=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Sd61FLBmYzs0+F7TRFYyvWo7Dh/aiWLCmbpIoOgtDoJbKlmg8WsoGAMeQ/hHIL+sbKfGA7dty4PyeI+JoUwXyuzIOvDoRX/5FTURG+UoRM8EwHmfXkKec6SjvhSrKrAg5DWjHcfIM9BtMWJz9BtHQqURXkcnxfeetbYvr5FP6Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fO91WH4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEBDC4CED6;
-	Tue, 10 Dec 2024 09:31:30 +0000 (UTC)
+	s=arc-20240116; t=1733823127; c=relaxed/simple;
+	bh=411XmX8nAtyVavH4LVivf6lqoxzIontGBkHTGoCrc5U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=efO/1tROji3Cdtnv9rnIykhg8k4HGbq7ZtJ2hI9v078JKS5nwS2g5A7gVlrxiZ32026FcU/tbnFhhQGyRq0fgye92RhsdZaJ8ktL9hmX1VfHKEnvZ9Syb/qP6QmpAJMvIIiUj4nhmoyb/IDYnebyVARAzXyjjtyhx4VcTGnPQxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AknQwyUN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883C5C4CED6;
+	Tue, 10 Dec 2024 09:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733823090;
-	bh=7QI6Y8KlKgm4lt1+mgdxYLIwFnM249TypTXWyz5di74=;
+	s=korg; t=1733823126;
+	bh=411XmX8nAtyVavH4LVivf6lqoxzIontGBkHTGoCrc5U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fO91WH4zoE5zWRHyoYQSLh6OcE4X0Z71jb5/7zZne3cKEF70Q3xv1rKUS6NJV6oue
-	 2R4Zs43vJI5U1qw0NJ7bsyJr/P9tFBDLOSRMfk+BgylOKTPXVnanWomdiPHCrvfX1F
-	 tEVoRVHo0Tr4mqua1XtwoOud2W+5MH5dGHSTkFMs=
-Subject: FAILED: patch "[PATCH] modpost: Add .irqentry.text to OTHER_SECTIONS" failed to apply to 5.4-stable tree
-To: tglx@linutronix.de,masahiroy@kernel.org,senozhatsky@chromium.org
+	b=AknQwyUNRw1BvmMvZVYXnRtxXh3wQbsPoKi1K70Za6NAEDUovGpUv922mipFZT09j
+	 LzKNNwx/6GAereitKAa2wJeXStGySsx3Y/um2K1NUeZhoI4ofUykO7r53BFfoeDP8Q
+	 +Qufeo51BjXf5A6/pSiU7Eavm1eNDLpoj+wYYQBI=
+Subject: FAILED: patch "[PATCH] bpf: fix OOB devmap writes when deleting elements" failed to apply to 5.4-stable tree
+To: maciej.fijalkowski@intel.com,ast@kernel.org,john.fastabend@gmail.com,jordyzomer@google.com,toke@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 10 Dec 2024 10:30:44 +0100
-Message-ID: <2024121044-elbow-varmint-5f14@gregkh>
+Date: Tue, 10 Dec 2024 10:31:30 +0100
+Message-ID: <2024121030-verbalize-gossip-5403@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7912405643a14b527cd4a4f33c1d4392da900888
+git cherry-pick -x ab244dd7cf4c291f82faacdc50b45cc0f55b674d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121044-elbow-varmint-5f14@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121030-verbalize-gossip-5403@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,109 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7912405643a14b527cd4a4f33c1d4392da900888 Mon Sep 17 00:00:00 2001
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Sun, 1 Dec 2024 12:17:30 +0100
-Subject: [PATCH] modpost: Add .irqentry.text to OTHER_SECTIONS
+From ab244dd7cf4c291f82faacdc50b45cc0f55b674d Mon Sep 17 00:00:00 2001
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Date: Fri, 22 Nov 2024 13:10:30 +0100
+Subject: [PATCH] bpf: fix OOB devmap writes when deleting elements
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The compiler can fully inline the actual handler function of an interrupt
-entry into the .irqentry.text entry point. If such a function contains an
-access which has an exception table entry, modpost complains about a
-section mismatch:
+Jordy reported issue against XSKMAP which also applies to DEVMAP - the
+index used for accessing map entry, due to being a signed integer,
+causes the OOB writes. Fix is simple as changing the type from int to
+u32, however, when compared to XSKMAP case, one more thing needs to be
+addressed.
 
-  WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ...
+When map is released from system via dev_map_free(), we iterate through
+all of the entries and an iterator variable is also an int, which
+implies OOB accesses. Again, change it to be u32.
 
-  The relocation at __ex_table+0x447c references section ".irqentry.text"
-  which is not in the list of authorized sections.
+Example splat below:
 
-Add .irqentry.text to OTHER_SECTIONS to cure the issue.
+[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
+[  160.731662] #PF: supervisor read access in kernel mode
+[  160.736876] #PF: error_code(0x0000) - not-present page
+[  160.742095] PGD 0 P4D 0
+[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
+[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
+[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
+[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
+[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
+[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
+[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
+[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
+[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
+[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
+[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
+[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
+[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
+[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
+[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  160.874092] PKRU: 55555554
+[  160.876847] Call Trace:
+[  160.879338]  <TASK>
+[  160.881477]  ? __die+0x20/0x60
+[  160.884586]  ? page_fault_oops+0x15a/0x450
+[  160.888746]  ? search_extable+0x22/0x30
+[  160.892647]  ? search_bpf_extables+0x5f/0x80
+[  160.896988]  ? exc_page_fault+0xa9/0x140
+[  160.900973]  ? asm_exc_page_fault+0x22/0x30
+[  160.905232]  ? dev_map_free+0x77/0x170
+[  160.909043]  ? dev_map_free+0x58/0x170
+[  160.912857]  bpf_map_free_deferred+0x51/0x90
+[  160.917196]  process_one_work+0x142/0x370
+[  160.921272]  worker_thread+0x29e/0x3b0
+[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
+[  160.929157]  kthread+0xd4/0x110
+[  160.932355]  ? kthread_park+0x80/0x80
+[  160.936079]  ret_from_fork+0x2d/0x50
+[  160.943396]  ? kthread_park+0x80/0x80
+[  160.950803]  ret_from_fork_asm+0x11/0x20
+[  160.958482]  </TASK>
 
-Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org # needed for linux-5.4-y
-Link: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
+CC: stable@vger.kernel.org
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Suggested-by: Jordy Zomer <jordyzomer@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20241122121030.716788-3-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 0584cbcdbd2d..fb787a5715f5 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -772,7 +772,7 @@ static void check_section(const char *modname, struct elf_info *elf,
- 		".ltext", ".ltext.*"
- #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
- 		".fixup", ".entry.text", ".exception.text", \
--		".coldtext", ".softirqentry.text"
-+		".coldtext", ".softirqentry.text", ".irqentry.text"
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 7878be18e9d2..3aa002a47a96 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -184,7 +184,7 @@ static struct bpf_map *dev_map_alloc(union bpf_attr *attr)
+ static void dev_map_free(struct bpf_map *map)
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+-	int i;
++	u32 i;
  
- #define ALL_TEXT_SECTIONS  ".init.text", ".exit.text", \
- 		TEXT_SECTIONS, OTHER_TEXT_SECTIONS
+ 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
+ 	 * so the programs (can be more than one that used this map) were
+@@ -821,7 +821,7 @@ static long dev_map_delete_elem(struct bpf_map *map, void *key)
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+ 	struct bpf_dtab_netdev *old_dev;
+-	int k = *(u32 *)key;
++	u32 k = *(u32 *)key;
+ 
+ 	if (k >= map->max_entries)
+ 		return -EINVAL;
+@@ -838,7 +838,7 @@ static long dev_map_hash_delete_elem(struct bpf_map *map, void *key)
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+ 	struct bpf_dtab_netdev *old_dev;
+-	int k = *(u32 *)key;
++	u32 k = *(u32 *)key;
+ 	unsigned long flags;
+ 	int ret = -ENOENT;
+ 
 
 
