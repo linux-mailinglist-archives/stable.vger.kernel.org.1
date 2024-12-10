@@ -1,150 +1,198 @@
-Return-Path: <stable+bounces-100384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705C39EACA4
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:43:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BA79EACBC
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:46:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02562295670
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:43:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A503F1889E09
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A17223E97;
-	Tue, 10 Dec 2024 09:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8AB2343B3;
+	Tue, 10 Dec 2024 09:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KNwaPpMe"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="e4dh7uS4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56832223E8E
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749AC2343A0
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733823564; cv=none; b=mA4bplERAz9vOuN8W1DW3S8Jct8fOsl+X3vIhlyOoYamv4nYIVQw/03lNxD8tTYoR2gQ5sdrBTTElwD5jb2hmxTFmHc5QLMwCHJMBiS3s/32Mx7JWvlMKS+qK9p0S7Y/H91oGRLA7d9vTCDSGI4KWRmk9WYi5foZn1ew8DpR97g=
+	t=1733823764; cv=none; b=RhVme4Xs/8XacHyprQOgoqcicI3FDvUXq+YS2hd9qsoQIqvNU8BpyMeNzI7dpC6Sxeg6cT52f7uEfiSukXXvIKxjeQU2HR434rk4PY+LME/UtiM8Ap3TTqkvLg9m7f+mwb9t/uekEcagHHl8wEk1e21s8uUr6BilWiVR98j1v+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733823564; c=relaxed/simple;
-	bh=wxqJTCrJlrtuJ+XG8bhbbGLpjlZB/rUxHGUVxrgmQWo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Su9UIBHq0Bq0ZAHgSE8sDNY5VzewYJrl/M24q/4VBhAx+N0rIiuAACb3pfqbfx5yqWwCTx+8NR8bzkF7uLbiCjkj4bFcCcmMTp1866tUSFJ0DNhZjDtjyTtgUQzt/C2W2dNymP+E5d5gBz8TtmWJCHSIG+V0auYbe7yXdB+N4CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KNwaPpMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD519C4CEE2;
-	Tue, 10 Dec 2024 09:39:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733823564;
-	bh=wxqJTCrJlrtuJ+XG8bhbbGLpjlZB/rUxHGUVxrgmQWo=;
-	h=Subject:To:Cc:From:Date:From;
-	b=KNwaPpMejPfySIZzrMmOtif7cUAotqgdTqUfODjHnUj8/qRFCqfCXCcTvCvtS31ak
-	 wcGUCjcNnpqvo+4WY0CVFA6Y0VSTJPeTpo4fvMr1Lo3uWGHCRDCVUeo/RtCqmE86Is
-	 IO8PxcSQaeS6QRsrwTkrsku6mOCqDY4bcWWqQmPc=
-Subject: FAILED: patch "[PATCH] mm/mempolicy: fix migrate_to_node() assuming there is at" failed to apply to 5.4-stable tree
-To: david@redhat.com,Liam.Howlett@Oracle.com,akpm@linux-foundation.org,cl@linux.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 10 Dec 2024 10:38:36 +0100
-Message-ID: <2024121036-agility-showman-7ed5@gregkh>
+	s=arc-20240116; t=1733823764; c=relaxed/simple;
+	bh=W4n9/zH+C/vvYGNZa9XYCEv4xPGGQ5hRlN9Wv2h4Srg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rpFId1kdj+bJn9HlZzHhacJm+6YYeCX3gVDeAtdfe3cIk3P+L8As1h9KR2hn823ncVvLVziACxqdcubEI5wvzDXEZZK9oAN54pOk0q1GhdDbfaCe3r9cdpB875iK90dAczh4OFagn/LtOvmSFURJ33HYYmc7yXjkMd1eWkzghAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=e4dh7uS4; arc=none smtp.client-ip=209.85.219.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6d896be3992so27168276d6.1
+        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 01:42:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733823761; x=1734428561; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fPMHAf/hxZCUfpZdyOFGEvnrV8VlCcY6UDqHBjaMUmE=;
+        b=e4dh7uS4NWpG2Jt/PABrxPy0qKkGEP58OW/PYAi+wrpQlZ8ifSKI26Yi2UpZxYMbzp
+         j6itFkQ+bCdkRzmL1m6z45IOhx/ZNq7oiERDPY/cjtk+YskaAC+V3J68juu23s3Yt/j5
+         lkGegDbFY7L6MqNDh9jgXCZDcH7HMQ8a3BksM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733823761; x=1734428561;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fPMHAf/hxZCUfpZdyOFGEvnrV8VlCcY6UDqHBjaMUmE=;
+        b=o/isv00B+ijykcpZUl4v8V2Mje20McGbt+UnADDjvSU66qcBg2oMcNO9iGgu3Pty3J
+         uMT/jKgU5q+GSNkjuKjGfQpSRPqEkU6CnSLvaw0Rn9DECjxcjIfgDbTpcbaXgOgmIIHM
+         AFxT+7EvvLRN2PblfB3Q8L0lJ7ELRWEDE/K0QeR6CB8s7fnBDuCudSiTCA7ets00y01D
+         d0QfzjsU9tSDgaFGf5HsGD6ipABcPVt3tRer9acgwkx/MU7kbhCGYdyCyKZGtCZM7Ilm
+         Xq35YwV+CgZDvs1iC1bAM02UHERT7LaMMPaDEe5rez0zL8WcOteUbVPZlMn8LTcPPPZo
+         k+Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1ZZICnDdPHLtMUkLtV4ZuhdArB2fIiSvrYqHAS1gHWt58SrTTqy9qIcCuhUlHRnEBq4IjkE8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyzctQWiZw5fSlL6As2PMugrfhcrqLmx7/Ir+J6OFhvvh8jZthF
+	ePA2YpA2Zv1cR4TPeh6LKNzl3ruACAwcMnB3lyWIgLgmMB31whUGX6pijwDVJlxzxERHrqZhP1M
+	=
+X-Gm-Gg: ASbGncvvszC+1iO+yLphWTMUWD4aNAbJRhfBajGpyrPr83Z6cyPmL3oaVwI0678ICo/
+	9F65Mc/Njrl+wpbLV23FUV//Odw2ImYXSR2qUUVgmeRXRpWhdFiHQHzhJCXKx9rJDOHeAirKmcx
+	skAWBX9t5uGN/29rZUdVlBCfQWkFgKqck4U05+1NA0A86EbDeKWLwuDbsFWCUxx/qSMwViNQDGm
+	orOnfUFzpjMvMPo+GYLs4eptu5c7IxbB5rLUS99FjMrJ7pBkO2svN4/qnwlVjVyG4QOBEEPTePj
+	LmX6KyoVz80NEcSoCUYbZb8x7I0i
+X-Google-Smtp-Source: AGHT+IE9ymMf+noLkzf+qA5yR3o7IoBnW5uGgs2prn2pjidiCE98XTIoDpUPwhIWGAOjLqWqLeFVTw==
+X-Received: by 2002:a05:6214:d8d:b0:6cd:ec00:205e with SMTP id 6a1803df08f44-6d91e161552mr70084316d6.0.1733823761093;
+        Tue, 10 Dec 2024 01:42:41 -0800 (PST)
+Received: from denia.c.googlers.com (5.236.236.35.bc.googleusercontent.com. [35.236.236.5])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d92f7c2bc1sm773326d6.83.2024.12.10.01.42.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2024 01:42:39 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: [PATCH v16 00/18] media: uvcvideo: Implement UVC v1.5 ROI
+Date: Tue, 10 Dec 2024 09:42:36 +0000
+Message-Id: <20241210-uvc-roi-v16-0-e8201f7e8e57@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA0NWGcC/z2MQQ6CMBBFr0JmbQ3FMjGuvIdhAWVKZwE1U2g0p
+ He3kujyvf/zdogkTBFu1Q5CiSOHpYDGUwXW98tEiscioKkbo7W+qC1ZJYEV4jCidb0mNFDeTyH
+ HryP16Ap7jmuQ91FOuv3qX8T8I2VQtUJjHQ0tDuiud+slzLzN5yATdDnnDx9v8bKkAAAA
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Hans Verkuil <hverkuil@xs4all.nl>
+Cc: Yunke Cao <yunkec@chromium.org>, linux-media@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>, 
+ stable@vger.kernel.org, Yunke Cao <yunkec@google.com>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Daniel Scally <dan.scally@ideasonboard.com>, 
+ Hans Verkuil <hverkuil@xs4all.nl>
+X-Mailer: b4 0.13.0
 
+This patchset implements UVC v1.5 region of interest using V4L2
+control API.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+ROI control is consisted two uvc specific controls.
+1. A rectangle control with a newly added type V4L2_CTRL_TYPE_RECT.
+2. An auto control with type bitmask.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+V4L2_CTRL_WHICH_MIN/MAX_VAL is added to support the rectangle control.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 091c1dd2d4df6edd1beebe0e5863d4034ade9572
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121036-agility-showman-7ed5@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+The corresponding v4l-utils series can be found at
+https://patchwork.linuxtv.org/project/linux-media/list/?series=11069 .
 
-Possible dependencies:
+Tested with v4l2-compliance, v4l2-ctl, calling ioctls on usb cameras and
+VIVID with a newly added V4L2_CTRL_TYPE_RECT control.
 
+This set includes also the patch:
+media: uvcvideo: Fix event flags in uvc_ctrl_send_events
+It is not technically part of this change, but we conflict with it.
 
+I am continuing the work that Yunke did.
 
-thanks,
+Changes in v16:
+- add documentation
+- discard re-style
+- refactor -ENOMEM
+- remove "Use the camera to clamp compound controls"
+- move uvc_rect
+- data_out = 0
+- s/max/min in uvc_set_rect()
+- Return -EINVAL in uvc_ioctl_xu_ctrl_map instead of -ENOTTY.
+- Use switch inside uvc_set_le_value.
+- Link to v15: https://lore.kernel.org/r/20241114-uvc-roi-v15-0-64cfeb56b6f8@chromium.org
 
-greg k-h
+Changes in v15:
+- Modify mapping set/get to support any size
+- Remove v4l2_size field. It is not needed, we can use the v4l2_type to
+  infer it.
+- Improve documentation.
+- Lots of refactoring, now adding compound and roi are very small
+  patches.
+- Remove rectangle clamping, not supported by some firmware.
+- Remove init, we can add it later.
+- Move uvc_cid to USER_BASE
 
------------------- original commit in Linus's tree ------------------
+- Link to v14: https://lore.kernel.org/linux-media/20231201071907.3080126-1-yunkec@google.com/
 
-From 091c1dd2d4df6edd1beebe0e5863d4034ade9572 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Wed, 20 Nov 2024 21:11:51 +0100
-Subject: [PATCH] mm/mempolicy: fix migrate_to_node() assuming there is at
- least one VMA in a MM
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Hans Verkuil (1):
+      media: v4l2-ctrls: add support for V4L2_CTRL_WHICH_MIN/MAX_VAL
 
-We currently assume that there is at least one VMA in a MM, which isn't
-true.
+Ricardo Ribalda (11):
+      media: uvcvideo: Fix event flags in uvc_ctrl_send_events
+      media: uvcvideo: Handle uvc menu translation inside uvc_get_le_value
+      media: uvcvideo: Handle uvc menu translation inside uvc_set_le_value
+      media: uvcvideo: refactor uvc_ioctl_g_ext_ctrls
+      media: uvcvideo: uvc_ioctl_(g|s)_ext_ctrls: handle NoP case
+      media: uvcvideo: Support any size for mapping get/set
+      media: uvcvideo: Factor out clamping from uvc_ctrl_set
+      media: uvcvideo: Factor out query_boundaries from query_ctrl
+      media: uvcvideo: let v4l2_query_v4l2_ctrl() work with v4l2_query_ext_ctrl
+      media: uvcvideo: Introduce uvc_mapping_v4l2_size
+      media: uvcvideo: Add sanity check to uvc_ioctl_xu_ctrl_map
 
-So we might end up having find_vma() return NULL, to then de-reference
-NULL.  So properly handle find_vma() returning NULL.
+Yunke Cao (6):
+      media: v4l2_ctrl: Add V4L2_CTRL_TYPE_RECT
+      media: vivid: Add a rectangle control
+      media: uvcvideo: add support for compound controls
+      media: uvcvideo: support V4L2_CTRL_WHICH_MIN/MAX_VAL
+      media: uvcvideo: implement UVC v1.5 ROI
+      media: uvcvideo: document UVC v1.5 ROI
 
-This fixes the report:
+ .../userspace-api/media/drivers/uvcvideo.rst       |  64 ++
+ .../userspace-api/media/v4l/vidioc-g-ext-ctrls.rst |  26 +-
+ .../userspace-api/media/v4l/vidioc-queryctrl.rst   |  14 +
+ .../userspace-api/media/videodev2.h.rst.exceptions |   4 +
+ drivers/media/i2c/imx214.c                         |   4 +-
+ drivers/media/platform/qcom/venus/venc_ctrls.c     |   9 +-
+ drivers/media/test-drivers/vivid/vivid-ctrls.c     |  34 +
+ drivers/media/usb/uvc/uvc_ctrl.c                   | 799 ++++++++++++++++-----
+ drivers/media/usb/uvc/uvc_v4l2.c                   |  77 +-
+ drivers/media/usb/uvc/uvcvideo.h                   |  25 +-
+ drivers/media/v4l2-core/v4l2-ctrls-api.c           |  54 +-
+ drivers/media/v4l2-core/v4l2-ctrls-core.c          | 167 ++++-
+ drivers/media/v4l2-core/v4l2-ioctl.c               |   4 +-
+ include/media/v4l2-ctrls.h                         |  38 +-
+ include/uapi/linux/usb/video.h                     |   1 +
+ include/uapi/linux/uvcvideo.h                      |  13 +
+ include/uapi/linux/v4l2-controls.h                 |   7 +
+ include/uapi/linux/videodev2.h                     |   5 +
+ 18 files changed, 1058 insertions(+), 287 deletions(-)
+---
+base-commit: 5516200c466f92954551406ea641376963c43a92
+change-id: 20241113-uvc-roi-66bd6cfa1e64
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 1 UID: 0 PID: 6021 Comm: syz-executor284 Not tainted 6.12.0-rc7-syzkaller-00187-gf868cd251776 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
-RIP: 0010:migrate_to_node mm/mempolicy.c:1090 [inline]
-RIP: 0010:do_migrate_pages+0x403/0x6f0 mm/mempolicy.c:1194
-Code: ...
-RSP: 0018:ffffc9000375fd08 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffc9000375fd78 RCX: 0000000000000000
-RDX: ffff88807e171300 RSI: dffffc0000000000 RDI: ffff88803390c044
-RBP: ffff88807e171428 R08: 0000000000000014 R09: fffffbfff2039ef1
-R10: ffffffff901cf78f R11: 0000000000000000 R12: 0000000000000003
-R13: ffffc9000375fe90 R14: ffffc9000375fe98 R15: ffffc9000375fdf8
-FS:  00005555919e1380(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005555919e1ca8 CR3: 000000007f12a000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- kernel_migrate_pages+0x5b2/0x750 mm/mempolicy.c:1709
- __do_sys_migrate_pages mm/mempolicy.c:1727 [inline]
- __se_sys_migrate_pages mm/mempolicy.c:1723 [inline]
- __x64_sys_migrate_pages+0x96/0x100 mm/mempolicy.c:1723
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-[akpm@linux-foundation.org: add unlikely()]
-Link: https://lkml.kernel.org/r/20241120201151.9518-1-david@redhat.com
-Fixes: 39743889aaf7 ("[PATCH] Swap Migration V5: sys_migrate_pages interface")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: syzbot+3511625422f7aa637f0d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/673d2696.050a0220.3c9d61.012f.GAE@google.com/T/
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Christoph Lameter <cl@linux.com>
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index bb37cd1a51d8..04f35659717a 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1080,6 +1080,10 @@ static long migrate_to_node(struct mm_struct *mm, int source, int dest,
- 
- 	mmap_read_lock(mm);
- 	vma = find_vma(mm, 0);
-+	if (unlikely(!vma)) {
-+		mmap_read_unlock(mm);
-+		return 0;
-+	}
- 
- 	/*
- 	 * This does not migrate the range, but isolates all pages that
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
 
 
