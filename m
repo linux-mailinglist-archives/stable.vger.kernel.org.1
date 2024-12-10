@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-100350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E96D9EABB7
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:15:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91BA9EABBC
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9376188A0EA
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:15:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ED1D167B00
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F72D232783;
-	Tue, 10 Dec 2024 09:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F6713A41F;
+	Tue, 10 Dec 2024 09:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eI/dLkO4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mplA161m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCE61A0716
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41D32AEE7
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733822122; cv=none; b=VXVa3IHoQ+L+pn1HjO8zLNkBW4cFzLeCuvqPh9zuGX04gT25LUVxUDzJM7nSnyvGPyxm1aTe2fLYB7XYM2HG8i708ytNLew80eojYZozKHdaPVudvTDwDRDglGXuySUvhURtCyWLLSPnFrqhqn0BxShGsZuvyLI5iV0/wDEaGII=
+	t=1733822218; cv=none; b=eCC35IufgycGLvb0lYwn7I4tKNQlwiY1wkSrqzcfKiA62XRwEyZvzKBDlskcQ1wY+3PoX8ukePyum+jCqvdfqD/x7YXgali8yFRmSMamEG4w2cqd69uQye87RIfmKcPTK9Kvrr/KjRVoreDZaltOc+eVTtpgtytONnq4EWVoKVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733822122; c=relaxed/simple;
-	bh=5xoFqVNN2UwLkK7uBUoUDCrnf2SSmn/26zhX4ce9gFQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZZy562ITwFO98Cbl4KUxCFCWi21yGPMFnoff8LrXYcl+LxtGygiUAv4vbb+OLwfR3AXJKYv0eWweyWzaBfHSXKwDlqa0qQNi6EBn3+FJ4cnTajwaVjNHHkTxsrPGhhMhlQpMw+Yj9fNSA9nWJfb0obveGvnTz9oTt8Qs/92WeAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eI/dLkO4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D91C4CEE0;
-	Tue, 10 Dec 2024 09:15:21 +0000 (UTC)
+	s=arc-20240116; t=1733822218; c=relaxed/simple;
+	bh=KFfLyXDWJ0SWAn5EBe76k3ZZoKPHfd62GFZU1it+YC8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ilL0e4TAFBv54Hs2VGzArxCxpzk29gEJi2F+6A6sSbKprJ3rcLaMNsdLGOiDVzELqGRQeNL4BlRQ2auR+PsKu6wy4ISQ326gGdr6uydfGLIcUr1bzMHYEGLUaUUdYHEpqF8qB9w3SnS/9A3E0FPuEtYJefyNH7e5fIJEFW/vyB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mplA161m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494EAC4CEDD;
+	Tue, 10 Dec 2024 09:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733822121;
-	bh=5xoFqVNN2UwLkK7uBUoUDCrnf2SSmn/26zhX4ce9gFQ=;
+	s=korg; t=1733822218;
+	bh=KFfLyXDWJ0SWAn5EBe76k3ZZoKPHfd62GFZU1it+YC8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=eI/dLkO4UBUiJcNKLBE3zCEefPSqFnN7XJ7UWma8wkeciCJP0Alw5n0/gFxEq7T7g
-	 GBR68Kj4kJCF+IZ8Ixcb5uFSTWtFngR9M0cAJGHke5wKmeuP3lXQsVBZKW0AwQhV65
-	 wLKyRxqDIPHtGB9ENu9FpAkIWAVWOVTVDu+qjmhc=
-Subject: FAILED: patch "[PATCH] scsi: ufs: core: Add missing post notify for power mode" failed to apply to 5.4-stable tree
-To: peter.wang@mediatek.com,bvanassche@acm.org,martin.petersen@oracle.com
+	b=mplA161m0bCNh06QnHZlHFFuFEcWdqs5xMn+ri0RX4/hZgGBwChaBzZCwEdA2yv8A
+	 jc/smtlj/p8dHYG1Zz1PNjVKJ7pv+IMRP0Fcqmj/OPK0LJeU8o6tG6ZIaQmm2lN0xg
+	 xUZgpJZEMmj7xuy7bw13Peh7eM0oGGdZuTuL3q3Q=
+Subject: FAILED: patch "[PATCH] io_uring: Change res2 parameter type in io_uring_cmd_done" failed to apply to 6.6-stable tree
+To: bschubert@ddn.com,axboe@kernel.dk,joshi.k@samsung.com,lizetao1@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 10 Dec 2024 10:14:41 +0100
-Message-ID: <2024121041-ample-genetics-3d21@gregkh>
+Date: Tue, 10 Dec 2024 10:16:22 +0100
+Message-ID: <2024121022-craftwork-mummified-add6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7f45ed5f0cd5ccbbec79adc6c48a67d6a85fba56
+git cherry-pick -x a07d2d7930c75e6bf88683b376d09ab1f3fed2aa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121041-ample-genetics-3d21@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121022-craftwork-mummified-add6@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,79 +77,63 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7f45ed5f0cd5ccbbec79adc6c48a67d6a85fba56 Mon Sep 17 00:00:00 2001
-From: Peter Wang <peter.wang@mediatek.com>
-Date: Fri, 22 Nov 2024 10:49:43 +0800
-Subject: [PATCH] scsi: ufs: core: Add missing post notify for power mode
- change
+From a07d2d7930c75e6bf88683b376d09ab1f3fed2aa Mon Sep 17 00:00:00 2001
+From: Bernd Schubert <bschubert@ddn.com>
+Date: Tue, 3 Dec 2024 11:31:05 +0100
+Subject: [PATCH] io_uring: Change res2 parameter type in io_uring_cmd_done
 
-When the power mode change is successful but the power mode hasn't
-actually changed, the post notification was missed.  Similar to the
-approach with hibernate/clock scale/hce enable, having pre/post
-notifications in the same function will make it easier to maintain.
+Change the type of the res2 parameter in io_uring_cmd_done from ssize_t
+to u64. This aligns the parameter type with io_req_set_cqe32_extra,
+which expects u64 arguments.
+The change eliminates potential issues on 32-bit architectures where
+ssize_t might be 32-bit.
 
-Additionally, supplement the description of power parameters for the
-pwr_change_notify callback.
+Only user of passing res2 is drivers/nvme/host/ioctl.c and it actually
+passes u64.
 
-Fixes: 7eb584db73be ("ufs: refactor configuring power mode")
-Cc: stable@vger.kernel.org #6.11.x
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20241122024943.30589-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ee692a21e9bf ("fs,io_uring: add infrastructure for uring-cmd")
+Cc: stable@vger.kernel.org
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Tested-by: Li Zetao <lizetao1@huawei.com>
+Reviewed-by: Li Zetao <lizetao1@huawei.com>
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Link: https://lore.kernel.org/r/20241203-io_uring_cmd_done-res2-as-u64-v2-1-5e59ae617151@ddn.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 25c8b3f57171..b7ec5797d5ba 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -4671,9 +4671,6 @@ static int ufshcd_change_power_mode(struct ufs_hba *hba,
- 		dev_err(hba->dev,
- 			"%s: power mode change failed %d\n", __func__, ret);
- 	} else {
--		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
--								pwr_mode);
--
- 		memcpy(&hba->pwr_info, pwr_mode,
- 			sizeof(struct ufs_pa_layer_attr));
- 	}
-@@ -4702,6 +4699,10 @@ int ufshcd_config_pwr_mode(struct ufs_hba *hba,
+diff --git a/include/linux/io_uring/cmd.h b/include/linux/io_uring/cmd.h
+index 578a3fdf5c71..0d5448c0b86c 100644
+--- a/include/linux/io_uring/cmd.h
++++ b/include/linux/io_uring/cmd.h
+@@ -43,7 +43,7 @@ int io_uring_cmd_import_fixed(u64 ubuf, unsigned long len, int rw,
+  * Note: the caller should never hard code @issue_flags and is only allowed
+  * to pass the mask provided by the core io_uring code.
+  */
+-void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret, ssize_t res2,
++void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret, u64 res2,
+ 			unsigned issue_flags);
  
- 	ret = ufshcd_change_power_mode(hba, &final_params);
- 
-+	if (!ret)
-+		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
-+					&final_params);
-+
- 	return ret;
+ void __io_uring_cmd_do_in_task(struct io_uring_cmd *ioucmd,
+@@ -67,7 +67,7 @@ static inline int io_uring_cmd_import_fixed(u64 ubuf, unsigned long len, int rw,
+ 	return -EOPNOTSUPP;
  }
- EXPORT_SYMBOL_GPL(ufshcd_config_pwr_mode);
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index d7aca9e61684..d650ae6b58d3 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -310,7 +310,9 @@ struct ufs_pwr_mode_info {
-  *                       to allow variant specific Uni-Pro initialization.
-  * @pwr_change_notify: called before and after a power mode change
-  *			is carried out to allow vendor spesific capabilities
-- *			to be set.
-+ *			to be set. PRE_CHANGE can modify final_params based
-+ *			on desired_pwr_mode, but POST_CHANGE must not alter
-+ *			the final_params parameter
-  * @setup_xfer_req: called before any transfer request is issued
-  *                  to set some things
-  * @setup_task_mgmt: called before any task management request is issued
-@@ -353,9 +355,9 @@ struct ufs_hba_variant_ops {
- 	int	(*link_startup_notify)(struct ufs_hba *,
- 				       enum ufs_notify_change_status);
- 	int	(*pwr_change_notify)(struct ufs_hba *,
--					enum ufs_notify_change_status status,
--					struct ufs_pa_layer_attr *,
--					struct ufs_pa_layer_attr *);
-+				enum ufs_notify_change_status status,
-+				struct ufs_pa_layer_attr *desired_pwr_mode,
-+				struct ufs_pa_layer_attr *final_params);
- 	void	(*setup_xfer_req)(struct ufs_hba *hba, int tag,
- 				  bool is_scsi_cmd);
- 	void	(*setup_task_mgmt)(struct ufs_hba *, int, u8);
+ static inline void io_uring_cmd_done(struct io_uring_cmd *cmd, ssize_t ret,
+-		ssize_t ret2, unsigned issue_flags)
++		u64 ret2, unsigned issue_flags)
+ {
+ }
+ static inline void __io_uring_cmd_do_in_task(struct io_uring_cmd *ioucmd,
+diff --git a/io_uring/uring_cmd.c b/io_uring/uring_cmd.c
+index d9fb2143f56f..af842e9b4eb9 100644
+--- a/io_uring/uring_cmd.c
++++ b/io_uring/uring_cmd.c
+@@ -151,7 +151,7 @@ static inline void io_req_set_cqe32_extra(struct io_kiocb *req,
+  * Called by consumers of io_uring_cmd, if they originally returned
+  * -EIOCBQUEUED upon receiving the command.
+  */
+-void io_uring_cmd_done(struct io_uring_cmd *ioucmd, ssize_t ret, ssize_t res2,
++void io_uring_cmd_done(struct io_uring_cmd *ioucmd, ssize_t ret, u64 res2,
+ 		       unsigned issue_flags)
+ {
+ 	struct io_kiocb *req = cmd_to_io_kiocb(ioucmd);
 
 
