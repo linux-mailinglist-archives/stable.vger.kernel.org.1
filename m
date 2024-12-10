@@ -1,173 +1,163 @@
-Return-Path: <stable+bounces-100445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555D69EB58B
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:00:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E219EB58C
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FC8D1641E8
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 15:59:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DC551887FD6
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61620232789;
-	Tue, 10 Dec 2024 15:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B267C1BEF74;
+	Tue, 10 Dec 2024 16:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ROSraWmT"
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="Fl0/100+";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="lPIecjtT"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A03231C8C
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 15:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733846378; cv=none; b=VWQX+sb06sQVYVrjAECib16Gx+ZlHDf/wS1hkiOQkA9Pfz+VP1AtOlUSojJeNf1ggY8ku9c/wtsUIEstSmcbKHVx6j/ptak+TlweYXimwodDebPJarA20h+9r+IBV1py7Fra4MYVRw1Xzu0SCGXbBpdr2Ks6MDlQa8scaykuSBM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733846378; c=relaxed/simple;
-	bh=5pjft/W20eUX8JrsDVRJH6EKsIldtGO+hAWKlGzM3pY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o9ukgSf2ww76XF3zKds80ptDpMcQ4uGsEzLwfDvORl9g0nx24L07PJ12Vg/XQdQG2nSGzT8Yf2cn1K6HLAgAHuTu8GjWeMub9YW345vShSM2Ti0VlAbhKS1FkbcXrmXv7gY6qBlH+gdNUzNsQnqQP5h4/ECuzPVwkN6UPFewgGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ROSraWmT; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733846376; x=1765382376;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=5pjft/W20eUX8JrsDVRJH6EKsIldtGO+hAWKlGzM3pY=;
-  b=ROSraWmTlm7XotSr3uQW5CyL+8WSj1ZG92p8HiAwb2XdjXBGGRvO7yUd
-   /rDc/ZxNaQ61q7QMhVvlr6y6Ha7aurbAcW5ZbhHWo5V8Ae544cYL4PMOv
-   YUqWyQhJbzaD29cSR9u/d+Lk7IMyF/4B5M86AcQRBveXZXR7sukrOrB+z
-   w6TQ4QHH54Lp+SSR1jz+SyQcSjdHC06+HcTT4raEw8yrt+86Jv9J57aui
-   ALmVN3hOoSQG2+67kN3YxGPsZlNho6c2TKOe+/kb1FA9OcHoqyx6K1zFl
-   AOL6xY9gkMwmlx+G+OnZqxejasQnW4n081rwLUBUN378QB1hfq7jTmiro
-   Q==;
-X-CSE-ConnectionGUID: x4X+C6H+QmG6jF7PSEUCTg==
-X-CSE-MsgGUID: crCgG4c5TMCNnCRec9BuAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="51723025"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="51723025"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 07:59:35 -0800
-X-CSE-ConnectionGUID: phBmM0BcQ3OPLrqhoHTywQ==
-X-CSE-MsgGUID: DxftFuYYTbKvD2AFdM8+HQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="100408566"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.192.15]) ([10.245.192.15])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 07:59:33 -0800
-Message-ID: <e9d7a359-2c38-4dab-a56e-b406198cf033@linux.intel.com>
-Date: Tue, 10 Dec 2024 16:59:28 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C2322FE0F;
+	Tue, 10 Dec 2024 16:00:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=72.84.236.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733846410; cv=fail; b=i0llBM+mm7P0xkofDkDwzrDaGgWPXJ1FoAhPBOhad8knC64O7CBwhwVvzsxjMWoqvzCPRxCaXrpZ3EDAfI0Xj61yBrqEfHHsknP+gia8RhGOYvm7eIf5ENLNIDtJCbOUwbDszekGEGsqa5b5FZcMqHtvSVGYDSaewAkpwSkiuXA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733846410; c=relaxed/simple;
+	bh=VC0zDJV/vYeIP47luRbKu1fuLd+MzJmheU3zkCIZfGE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=beqtYGCptg6Bsy8zln6PgbFqaGnzqOU4yh7lXYujL54pqe7ChWZIvnKfbY/0J39IADWl9Y4tN8z5E6h/i/LJE6moH4KLoMzYsSHhBXnDm5bzAP5eCdWcFmltZAk5FDfkbW9X0gmNS++kJ7RXSszeYXuJrbvF53kK85XbLxHX4DM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com; spf=pass smtp.mailfrom=sapience.com; dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b=Fl0/100+; dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b=lPIecjtT; arc=fail smtp.client-ip=72.84.236.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sapience.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sapience.com
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from srv8.sapience.com (srv8.sapience.com [x.x.x.x])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by s1.sapience.com (Postfix) with ESMTPS id DF832480A33;
+	Tue, 10 Dec 2024 11:00:07 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1733846407;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=VC0zDJV/vYeIP47luRbKu1fuLd+MzJmheU3zkCIZfGE=;
+ b=Fl0/100+kzcM3maJThYfKm+VEP1GkfUatTSTBnOsxIGDLoHvinR5Uys4a0grzPHVj6ySL
+ 7pbm1CoNlea5MxzDQ==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1733846407;
+	cv=none; b=upZ4kR+RTnfbkL6ggpnBIDmkepDL0aZbgQ3uWYlF6I1MLwn1gyr0lmHu7xUmRv1k9k25jvROJIgkcivQ1N7cP0KaPZ4pfyYMEgqt4MIXIVVA8s6gtiJtK8d6tD3jNT04jj6CuydBxNIhBFUq3Nw1xAObwUGjth5xRS9KGKzkc9V8gbVZDFDQUGjOuwcxwwuEvGaMPH9NthV3J/TMnjloBno0YI2R9aG/6CR6hBrxgRiiUGShaNJdnsrDtoi64+7hgmQIYAYNvaMUZc/nSdQSFgUej7apulzYrta6oYnySFO9mWlS3iKk6u4fa0SX1XZ2uPuJmQBDaZbh7X1K2HA+WQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1733846407; c=relaxed/simple;
+	bh=VC0zDJV/vYeIP47luRbKu1fuLd+MzJmheU3zkCIZfGE=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Subject:From:To:Cc:Date:
+	 In-Reply-To:References:Autocrypt:Content-Type:User-Agent:
+	 MIME-Version; b=VT0I+SEHbkxirBEBmIlGoyWyP5NpoBiWmr8I1YM1oIONNl9J4h0/N/Z+sUIfHVVpCpbYtlcdz+DHUqQF8qhKfR0wKete2aiebOd7GdNceqVU2ChV033pkMi+yN0t40EYH99sg9V/KmhTckumq/m4qpkHdGUCuaXu0liR1zLgKurVxekgOjd9H/hQxxbvhgkT02Nz6WHDKV1mFNdbzRPNZ/PdgHCenHKp8A/e8DfhAv/EsVU6av/SYTQEQmjilBiA9xMQzVmO1p2liyvk4IxvCl1xmiO/O30Gv76LO0qY5/jSSQnnNTWGi7oZVGPpejOonkc0ngAjNnlNIotBom66nw==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1733846407;
+ h=message-id : subject : from : to : cc : date : in-reply-to :
+ references : content-type : mime-version : from;
+ bh=VC0zDJV/vYeIP47luRbKu1fuLd+MzJmheU3zkCIZfGE=;
+ b=lPIecjtTyeiOLl1qc3E8Vz88FpGOYCFlyB98DDNuLzuaRPGIo7fgEE389/mSaEf+0OqkK
+ gv/7Dme9sTTkl9APDdnLy7DO/tbHoPEFP8sLxcYbK049eOCe7+4peJ8GShXF3R8i7OOpQkD
+ S+v2kfiOndwhD45TDq+nCVgna8Dv7zDxWU8Xoo17BEetU4vJdCPtNC1Bsp45jHgUuBJUFOY
+ +s8+Vl7HJLS4BRmMZaQ9UufX1S19emhyiaJzk3CCdzGrW0igkHkSHfvRXo26izQK38100yy
+ X/9j89So8bL+quggFXsjJKqF4/dvQRIgV08SWq8sZRECsAmeiJDdcsFuRnAA==
+Received: from lap7.sapience.com (lap7w.sapience.com [x.x.x.x])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits))
+	(No client certificate requested)
+	by srv8.sapience.com (Postfix) with ESMTPS id AFF3E280015;
+	Tue, 10 Dec 2024 11:00:07 -0500 (EST)
+Message-ID: <5cf0ddae7351c4e6637ef19c17b98d7505381fd0.camel@sapience.com>
+Subject: Re: Linux 6.12.4 - crash dma_alloc_attrs+0x12b via ipu6
+From: Genes Lists <lists@sapience.com>
+To: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>, Sakari Ailus	
+ <sakari.ailus@linux.intel.com>, linux-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org, torvalds@linux-foundation.org,
+ stable@vger.kernel.org, 	linux-media@vger.kernel.org, bingbu.cao@intel.com,
+ Rodrigo Vivi	 <rodrigo.vivi@intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>,  Tvrtko Ursulin <tursulin@ursulin.net>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org
+Date: Tue, 10 Dec 2024 11:00:06 -0500
+In-Reply-To: <Z1hbyNXUubokloda@linux.intel.com>
+References: <2024120917-vision-outcast-85f2@gregkh>
+	 <c0e94be466b367f1a3cfdc3cb7b1a4f47e5953ae.camel@sapience.com>
+	 <Z1fqitbWlmELb5pj@kekkonen.localdomain> <87seqvzzg6.fsf@intel.com>
+	 <c1805642a6c5da6fef3927c70358c8cb851d2784.camel@sapience.com>
+	 <87bjxjzpwn.fsf@intel.com> <2024121001-senator-raffle-a371@gregkh>
+	 <Z1hbyNXUubokloda@linux.intel.com>
+Autocrypt: addr=lists@sapience.com; prefer-encrypt=mutual;
+ keydata=mDMEXSY9GRYJKwYBBAHaRw8BAQdAwzFfmp+m0ldl2vgmbtPC/XN7/k5vscpADq3BmRy5R
+ 7y0LU1haWwgTGlzdHMgKEwwIDIwMTkwNzEwKSA8bGlzdHNAc2FwaWVuY2UuY29tPoiWBBMWCAA+Ah
+ sBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEE5YMoUxcbEgQOvOMKc+dlCv6PxQAFAmPJfooFCRl
+ vRHEACgkQc+dlCv6PxQAc/wEA/Dbmg91DOGXll0OW1GKaZQGQDl7fHibMOKRGC6X/emoA+wQR5FIz
+ BnV/PrXbao8LS/h0tSkeXgPsYxrzvfZInIAC
+Content-Type: multipart/signed; micalg="pgp-sha384";
+	protocol="application/pgp-signature"; boundary="=-KexgZLu3kFUuTiVHjkds"
+User-Agent: Evolution 3.54.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] drm/xe: Wait for migration job before unmapping
- pages
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matthew Auld <matthew.auld@intel.com>, Nirmoy Das <nirmoy.das@intel.com>,
- intel-xe@lists.freedesktop.org,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>, stable@vger.kernel.org
-References: <20241205120253.2015537-1-nirmoy.das@intel.com>
- <20241205120253.2015537-2-nirmoy.das@intel.com>
- <5eb91aa3-6d84-47a9-9f07-1742fe723c41@intel.com>
- <695c408b-c077-44c1-9861-0af54148cc86@linux.intel.com>
- <6vthulgckq2jpfwn2amux5ssijwhxbjp44g2xwp44r626ttrkh@ofwboiylc7eh>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <6vthulgckq2jpfwn2amux5ssijwhxbjp44g2xwp44r626ttrkh@ofwboiylc7eh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
 
-On 12/10/2024 4:38 PM, Lucas De Marchi wrote:
-> On Thu, Dec 05, 2024 at 03:33:46PM +0100, Nirmoy Das wrote:
->>
->> On 12/5/2024 1:40 PM, Matthew Auld wrote:
->>> On 05/12/2024 12:02, Nirmoy Das wrote:
->>>> There could be still migration job going on while doing
->>>> xe_tt_unmap_sg() which could trigger GPU page faults. Fix this by
->>>> waiting for the migration job to finish.
->>>>
->>>> v2: Use intr=false(Matt A)
->>>>
->>>> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3466
->>>> Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system buffer objects to TT")
->>>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->>>> Cc: Matthew Brost <matthew.brost@intel.com>
->>>> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
->>>> Cc: <stable@vger.kernel.org> # v6.11+
->>>> Cc: Matthew Auld <matthew.auld@intel.com>
->>>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->>>
->>> Ok, so this is something like ttm_bo_move_to_ghost() doing a pipeline move for tt -> system, but we then do xe_tt_unmap_sg() too early which tears down the IOMMU (if enabled) mappings whilst the job is in progress?
->> Yes, this exactly what is happening for this issue.
->>>
->>> Maybe add some more info to the commit message?
->>
->> I will add more details.
->
-> Are you going to send a new version?
+--=-KexgZLu3kFUuTiVHjkds
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Was waiting for more reviews. Sent  out v3 with updated commit message.
+On Tue, 2024-12-10 at 16:18 +0100, Stanislaw Gruszka wrote:
+>=20
+> I've reproduced the issue. It's caused by 6.12.y commit:
+>=20
+> commit 6ac269abab9ca5ae910deb2d3ca54351c3467e99
+> Author: Bingbu Cao <bingbu.cao@intel.com>
+> Date:=C2=A0=C2=A0 Wed Oct 16 15:53:01 2024 +0800
+>=20
+> =C2=A0=C2=A0=C2=A0 media: ipu6: not override the dma_ops of device in dri=
+ver
 
+Terrific - I missed your comment as I was heads down doing git bisect
+which lands on same commit as you - so confirmed.
 
-> Once this is fixed, please also
-> send a revert MR to the kconfig workaround
-> 3940181b1bad @ gitlab.freedesktop.org/drm/xe/ci.git
+> The problem will disappear after applying:
+> https://lore.kernel.org/stable/20241209175416.59433-1-
+> stanislaw.gruszka@linux.intel.com/
+> since the allocation will not longer fail.
+>=20
+> But we also need to handle fail case correctly by adding
+> cpu_latency_qos_remove_request() on error path. This requires
+> mainline fix, I'll post it.=20
+>=20
 
-I will do that.
+Thank you !
 
 
-Thanks,
+Gene
 
-Nirmoy
 
->
-> Lucas De Marchi
->
->>
->>
->>> I think this for sure fixes it. Just wondering if it's somehow possible to keep the mapping until the job is done, since all tt -> sys moves are now synced here?
->>>
->>> Unless Thomas has a better idea here,
->>> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->>
->>
->> Thanks,
->>
->> Nirmoy
->>
->>>
->>>> ---
->>>>   drivers/gpu/drm/xe/xe_bo.c | 10 +++++++++-
->>>>   1 file changed, 9 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
->>>> index b2aa368a23f8..c906a5529db0 100644
->>>> --- a/drivers/gpu/drm/xe/xe_bo.c
->>>> +++ b/drivers/gpu/drm/xe/xe_bo.c
->>>> @@ -857,8 +857,16 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
->>>>     out:
->>>>       if ((!ttm_bo->resource || ttm_bo->resource->mem_type == XE_PL_SYSTEM) &&
->>>> -        ttm_bo->ttm)
->>>> +        ttm_bo->ttm) {
->>>> +        long timeout = dma_resv_wait_timeout(ttm_bo->base.resv,
->>>> +                             DMA_RESV_USAGE_BOOKKEEP,
->>>> +                             false,
->>>> +                             MAX_SCHEDULE_TIMEOUT);
->>>> +        if (timeout < 0)
->>>> +            ret = timeout;
->>>> +
->>>>           xe_tt_unmap_sg(ttm_bo->ttm);
->>>> +    }
->>>>         return ret;
->>>>   }
->>>
+--=-KexgZLu3kFUuTiVHjkds
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYJAB0WIQRByXNdQO2KDRJ2iXo5BdB0L6Ze2wUCZ1hlhwAKCRA5BdB0L6Ze
+2w+DAQCDWvL9tK4fnEqz7gYCMfTN4ufZvQ3nBA76uJSS1IsMEAEAh3m6kC4o++L9
+46h0GWeorYm2u+oLNYk9f82mxfq7Vg4=
+=i4nK
+-----END PGP SIGNATURE-----
+
+--=-KexgZLu3kFUuTiVHjkds--
 
