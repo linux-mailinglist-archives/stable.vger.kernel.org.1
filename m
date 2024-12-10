@@ -1,160 +1,258 @@
-Return-Path: <stable+bounces-100464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA519EB730
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:54:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703511886A90
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:53:41 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C49E233123;
-	Tue, 10 Dec 2024 16:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U+yruYJ6"
-X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C289EB72A
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:53:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10166231CB1
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 16:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733849589; cv=none; b=fd6+9VQRRYPxDJeJNAMRKECEeBjH/gFUCG2NxMr3lRCe6it4ric1mpPCXZCs90tqTvUsGogm0ZLYdS5BQ75PYzQxXOelZs8WlbNW9zp+XseT9yiHCfovfyCAVUi2tVvf+LtXN7HHcaaNxro47NZepOL+CXklB13CSoVC7r5qi/U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733849589; c=relaxed/simple;
-	bh=WIk4Iro2tyildXYSSYnU/2XCwrn6D/eLNO1HQsq+75E=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PUPX2qQqTn36x2bHLqRxAFDJreHvlUB7FQ+cXAPVBv60imQSAwxdfJP1tRpmrE122SNSF7jvood3aeIYSZmzqpv2CGDnGXS4FeUU2zbN6Eoy7QsQ5XiCf/In54ZElHeEDkfMAFRA1Lwr9Y9CnPz20Fl1daxMCXnzU4LLBY7dVNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U+yruYJ6; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733849587; x=1765385587;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=WIk4Iro2tyildXYSSYnU/2XCwrn6D/eLNO1HQsq+75E=;
-  b=U+yruYJ6zo5gByarnbar1TRO8im69RhJiGdmkEQnp7rHO+Dj5gtb1OnQ
-   3pLvBi+jiisxxnZLLz1M32eJES+0uAMSVeIHGbNVNODx2/py5N/JhllkE
-   pF/AvT+7pVPNi7AIisE0O8QpuZZLWTIiPbvb3ssnk1j66n5zJxMhuqMgE
-   /UPH6TqGwtiSXFlYj4OgLDTWdo7RoAeDrJ3+wozVk67M6XzhMc+X4b2fr
-   JQJXuBaf1rf2jSkYLCY1V6R3BWQPHenpWPXqO1HGv4H/56DiZYeOwKnFl
-   wIjd/MPgAPr1Ch/tHdLUvhjlDb4J8wN5C8PCisWuKCMYbCp//ZQWM+mfT
-   g==;
-X-CSE-ConnectionGUID: Arnnv2K4SlGmLrf6jVz82w==
-X-CSE-MsgGUID: cOytpWjFRaq5rV4daZzbCw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="45585210"
-X-IronPort-AV: E=Sophos;i="6.12,214,1728975600"; 
-   d="scan'208";a="45585210"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 08:52:24 -0800
-X-CSE-ConnectionGUID: vmCkeOXRRJK7XhJp+lwmDA==
-X-CSE-MsgGUID: GL3S32auQJm6NkTA0Loa4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,223,1728975600"; 
-   d="scan'208";a="95331898"
-Received: from mklonows-mobl1.ger.corp.intel.com (HELO [10.245.246.4]) ([10.245.246.4])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 08:52:22 -0800
-Message-ID: <c8353a675abd12bbb71c08b208b62b1882eb4c11.camel@linux.intel.com>
-Subject: Re: [PATCH v2 2/2] drm/xe: Wait for migration job before unmapping
- pages
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Matthew Auld <matthew.auld@intel.com>, Nirmoy Das
- <nirmoy.das@intel.com>, 	intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>, Lucas De Marchi
-	 <lucas.demarchi@intel.com>, stable@vger.kernel.org
-Date: Tue, 10 Dec 2024 17:52:18 +0100
-In-Reply-To: <5eb91aa3-6d84-47a9-9f07-1742fe723c41@intel.com>
-References: <20241205120253.2015537-1-nirmoy.das@intel.com>
-	 <20241205120253.2015537-2-nirmoy.das@intel.com>
-	 <5eb91aa3-6d84-47a9-9f07-1742fe723c41@intel.com>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F65A283514
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:53:27 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988EE230D30;
+	Tue, 10 Dec 2024 16:52:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NzFnSgUa"
+X-Original-To: stable@vger.kernel.org
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2073.outbound.protection.outlook.com [40.107.244.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9D122FE1E
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 16:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733849565; cv=fail; b=nkyUtJ7LcHXo8g3nNLTlaGwFWU209qUpdOIpMgyJRf+5yhjTExhEcvz2Sy0dB8kLa2xHOHa+kekU+mVYNBxmEQvjVJAgHop9ulwFnxWJIivDAykDj0vkothSvFkDI81ag5Nr5YQwD3wWkUgV0x0yoZIPs/oz5Ji4WTT1FSU+2rc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733849565; c=relaxed/simple;
+	bh=U6MDnYysJC4dWR1jz05RiUzUUvI17yxA05Z5MMrCVK0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y0MPmAI6fQo2d87mjom2Dq9bwTBR82OWZInzhQqGsAs5M0KAnD9jIJohQdjYnWOOs0lq2Cs/BnQKaiPvpbu35wDfdu/ORfRssjIEJ+z0mr8eoyOVPz2I5D5burR3iHEZ+1kkWqbcti6SfDSNWkA6teV1L3d0ih2fRG06CFeKu2o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NzFnSgUa; arc=fail smtp.client-ip=40.107.244.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JTmqAWze6z3ET3kSeM0o6/WJ+2PyJZcw1pyXwzse9KwADngqSfjyqCaCpy/bkSywRWSrc/JDm4GS1I+ONbRiaXTt9J/j2qE1Bv5q+h9ryvvj2PjNbrCK+vFpW9RvBnCsnOCwZVl9Pmq5h5/gMv4RKMP2Kx8DXtoDymZ3QXPpZ+glCBHZWX2bKrY9dGZsWnCUjIiPGm/OGhzdQH/hZu+LbD39/pmnvMbYO2M9KbQrQQaF3Reob5BpNE/dxFLJF5YwEC6XfUrzDkled28siOZanSeN1j2/2iKcWY8tvRJ/b6w+rcxPMGxsF2GnuHKc5tc0vzXgHPtJOrtcBJpK/3VgdQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aQWWdxCmIre5AblerCTx5dcnZcyl3apgtObyHFZjD3M=;
+ b=o/4sEs3bM2ZWpsBcbP303ss76VQ59WghqcNtdG3tYWoDHtVY+vmMR2cNIbTSbpKsbZ/VaGscL5GYHIkMm1zx6j6Xp1I08P5GNBLPSv+ZbZAbsRmGa7pmuMqvSwP57BYxLijxQMiO610dbih+KleyPy8bgsa/bFiVPDVjhVDrUVQRRCmLw3tmkY7HuZv5NrymdLbCewi9NVvgFkkO8VS+CEdp4XyHKu58V+9NY0xGH7VFxUHnn4u/6K7uNzTOfpTUxNe1O/f2Rh0SAb+NcOZi0rWj7n+OO9fhtbECjoHOCZUHIimPzBQOT2k2XYEI9IwiFteBKkj0NgmtaePQTm9KyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aQWWdxCmIre5AblerCTx5dcnZcyl3apgtObyHFZjD3M=;
+ b=NzFnSgUa8l3WiW2zfmv+rvBjRaPqU67seVSWx6gOETkX16eJITTckFPqyM/J+f4rt9uqZOy6a61bkthnsA2A4Ezaz3TwNsN6mllQxZTOyljZ+dWb9oeamzQjp1rRKe00KcJ4pK3hYqthNxQJdWuTqjCo1CyvLKZ1r1DTZDpU0fk=
+Received: from PH7PR13CA0002.namprd13.prod.outlook.com (2603:10b6:510:174::6)
+ by DS7PR12MB8229.namprd12.prod.outlook.com (2603:10b6:8:ea::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Tue, 10 Dec
+ 2024 16:52:38 +0000
+Received: from MWH0EPF000A672E.namprd04.prod.outlook.com
+ (2603:10b6:510:174:cafe::64) by PH7PR13CA0002.outlook.office365.com
+ (2603:10b6:510:174::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8251.11 via Frontend Transport; Tue,
+ 10 Dec 2024 16:52:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MWH0EPF000A672E.mail.protection.outlook.com (10.167.249.20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8230.7 via Frontend Transport; Tue, 10 Dec 2024 16:52:37 +0000
+Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 10 Dec
+ 2024 10:52:36 -0600
+From: Alex Deucher <alexander.deucher@amd.com>
+To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
+	<sashal@kernel.org>
+CC: Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH] drm/amdgpu: rework resume handling for display (v2)
+Date: Tue, 10 Dec 2024 11:52:19 -0500
+Message-ID: <20241210165219.2865887-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000A672E:EE_|DS7PR12MB8229:EE_
+X-MS-Office365-Filtering-Correlation-Id: acbeb29c-a07d-48e1-a4aa-08dd193b0dc9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SUtBVUc1bjZpSkVDdFVEbVByeDVVQklDN3A1aUVzTnBCSHRvU3dZZzJ1TFRl?=
+ =?utf-8?B?RWJKTkNja3hoODE5b0lycThFZkI0VC9hNUhzLzJiUWVzWmkzQU90M0FyazNh?=
+ =?utf-8?B?Yi9mOVJibTRvUDArVktQcllvTlBuQ0VsRkwwMzNDOVhMaCtlNFVSeEQ5bito?=
+ =?utf-8?B?bmdRWGFzaGVsMnk3NmdTS2Z4QjNCZmFqTlZOZDFpalBIYlI5cS9ZaVp6UStT?=
+ =?utf-8?B?aGNGRVdmR0J0eE5aaExRWXgwR2l6a1V5Z0N5UTh1UmxvUjY2cVBHRjYwallp?=
+ =?utf-8?B?UERJeFhCTVJoT1F2N1JiR1ovTDFMMWthSm8wcTFKT09sOFNmVHBDUGN6TnpC?=
+ =?utf-8?B?SmY2Vko0R0VxdHJTTitlbk5qNUpIOXN3Qk1LZFMxT3B4NXBjbFc4TDBFam5X?=
+ =?utf-8?B?TE52UWpyWWladlBqYWRjSTFnZDVabnMzNlRabFhVVlhxZVRoa0VIVHdCUnNs?=
+ =?utf-8?B?LzhyWWVLd2l1YXZXajQxYnlaUGh6Nkd4OXFJQytQNTdJVHdhR2pFaTRBUzEy?=
+ =?utf-8?B?L2dyTksybytnSnJOVk8rRmM5VDREQk0xbG4zcFova0NUYUM2eFk1QXQ0Vkx0?=
+ =?utf-8?B?TDhETW9sZGhteHVQWHoxcnZta0pGRjBJNTZWWjRvV3dxdTFlelcxY3NTTEVl?=
+ =?utf-8?B?MjVQWTNoUWV3Q3hVOHJSclAxZHAySlNxSHNwZktDdVllL0V1K0xON0Ftd1dH?=
+ =?utf-8?B?dmJ4WHdtclBlSVdpMFgwK2dwL3Erc3duUmFYU1JOMDhoN2ovUlBDMTdaZ3pH?=
+ =?utf-8?B?cnRqaGkvdkVWRG5PaGtoLzdwQi81azAyZnd4dWJNK2J1R0Vra1RpS1oyNVNC?=
+ =?utf-8?B?SHlVaFFGMHRLSG00UjRFWi96c2M3c09BZTZ1dmZ4Z1JRWU1QRzdWdzA4a1lm?=
+ =?utf-8?B?QnBEM3VKZGR2Q2hhcGM1ME0xWmd0UEoyUlVudFdkOVBpdmgySzE1Z3Vnay9L?=
+ =?utf-8?B?Z0pZZGg3eG5MOTV0Wm9HSlB5azRDYlNCU2ptYnQ0NkEvYlRrU1JVZ1ZWUXY5?=
+ =?utf-8?B?R005R1FHZ3dEUllnWUZFaVFvVFlQZWhTSHlRQVFNVkNxNWhZUFJ5VGJ5WWhX?=
+ =?utf-8?B?bjJ3TmoxRU8rREpwd29YSlA3VUU4OXFhemdocVZsL0tpMHl0eUVwVEpHUFQ3?=
+ =?utf-8?B?RVY2M2ZINURTRGxZbGlxK2FwQ3dzNmNacGNYckE5RlRHNktlbkpnVE9uYnNK?=
+ =?utf-8?B?QXA3OFpVZnNLcVVXa0loU3pra2hrbjI5YktGTTEyZ09EcXNxV044T2s2Vk1w?=
+ =?utf-8?B?T2lnZWZJeEEzS0RZSGV5eDdhdnpseXNVdjJuRnJ1RzA2Y0YrQW0vRS9zaFFi?=
+ =?utf-8?B?VDBDcjZRbCt1NVpUMUI2aHpLVElTRFNvQjM1NklnZk0yejdpaXYwSkVOVzNY?=
+ =?utf-8?B?VUJiaFdaVjNVQUhMQUtiQ3ZDSldWbmo4S2o0MFU4NzBPbkVQMFlrUkhaRTBu?=
+ =?utf-8?B?eDBud0xhd2dKc0QzMSthOG5iM3krc3hjaEozM2JDTXMyOE5DQnh3VG9NU21a?=
+ =?utf-8?B?MGEzbmZ6alpoMWcvSThKcFZEU2FZckFMS3Zmc0lFZnFLN2N0VTFld0NsSklv?=
+ =?utf-8?B?T0ZpRmg4bXNlejdaK1Q4R1dJWi9hM2dQYWNRMnBHUWZqZG1FRXk0Zkh2UGw4?=
+ =?utf-8?B?bUtkc0JFL21wZjFhVXp3M3kxTnUvWGpoR1J0NExHMVZFY01pNlNWZm5Jcy94?=
+ =?utf-8?B?dFBzaU95QVFNQklKck85SU1rSERRNER4U2d3Q3RJS1J1N1ZZS05GbFBqT3lC?=
+ =?utf-8?B?MHdMTjlzTjY0MUtCVm13K29tS0JhMFZsNDFKWHl6MTVtOUlGZFB1bGlGWGhU?=
+ =?utf-8?B?YnFCQ1VKK3FsZkJBQ1E5SXY2cFJaai9TRWlKU1V3aHB5TXRWeDlNcWJTRUNZ?=
+ =?utf-8?B?OXhrcFFBQ3cwRWdOZlpEZlVnWHg3U2NtUWllZE9ETnI0cUFxbml5R09wbTNW?=
+ =?utf-8?Q?4wf/c7XoihHxByDrrhi79W2+PitRvOgb?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 16:52:37.9999
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: acbeb29c-a07d-48e1-a4aa-08dd193b0dc9
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000A672E.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8229
 
-On Thu, 2024-12-05 at 12:40 +0000, Matthew Auld wrote:
-> On 05/12/2024 12:02, Nirmoy Das wrote:
-> > There could be still migration job going on while doing
-> > xe_tt_unmap_sg() which could trigger GPU page faults. Fix this by
-> > waiting for the migration job to finish.
-> >=20
-> > v2: Use intr=3Dfalse(Matt A)
-> >=20
-> > Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3466
-> > Fixes: 75521e8b56e8 ("drm/xe: Perform dma_map when moving system
-> > buffer objects to TT")
-> > Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-> > Cc: Matthew Brost <matthew.brost@intel.com>
-> > Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> > Cc: <stable@vger.kernel.org> # v6.11+
-> > Cc: Matthew Auld <matthew.auld@intel.com>
-> > Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
->=20
-> Ok, so this is something like ttm_bo_move_to_ghost() doing a pipeline
-> move for tt -> system, but we then do xe_tt_unmap_sg() too early
-> which=20
-> tears down the IOMMU (if enabled) mappings whilst the job is in
-> progress?
->=20
-> Maybe add some more info to the commit message? I think this for sure
-> fixes it. Just wondering if it's somehow possible to keep the mapping
-> until the job is done, since all tt -> sys moves are now synced here?
->=20
-> Unless Thomas has a better idea here,
+Split resume into a 3rd step to handle displays when DCC is
+enabled on DCN 4.0.1.  Move display after the buffer funcs
+have been re-enabled so that the GPU will do the move and
+properly set the DCC metadata for DCN.
 
-Not at the moment. Ideally we should somehow attach the dma-map to the
-ghost object. Perhaps moving forward we could look at attaching it to
-the XE_PL_TT resource. Then I believe it will get freed with the ghost
-object.
+v2: fix fence irq resume ordering
 
-/Thomas
+Backport to 6.12 and older kernels
 
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.11.x
+(cherry picked from commit 73dae652dcac776296890da215ee7dec357a1032)
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 45 +++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 2 deletions(-)
 
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->=20
-> > ---
-> > =C2=A0 drivers/gpu/drm/xe/xe_bo.c | 10 +++++++++-
-> > =C2=A0 1 file changed, 9 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/gpu/drm/xe/xe_bo.c
-> > b/drivers/gpu/drm/xe/xe_bo.c
-> > index b2aa368a23f8..c906a5529db0 100644
-> > --- a/drivers/gpu/drm/xe/xe_bo.c
-> > +++ b/drivers/gpu/drm/xe/xe_bo.c
-> > @@ -857,8 +857,16 @@ static int xe_bo_move(struct ttm_buffer_object
-> > *ttm_bo, bool evict,
-> > =C2=A0=20
-> > =C2=A0 out:
-> > =C2=A0=C2=A0	if ((!ttm_bo->resource || ttm_bo->resource->mem_type =3D=
-=3D
-> > XE_PL_SYSTEM) &&
-> > -	=C2=A0=C2=A0=C2=A0 ttm_bo->ttm)
-> > +	=C2=A0=C2=A0=C2=A0 ttm_bo->ttm) {
-> > +		long timeout =3D dma_resv_wait_timeout(ttm_bo-
-> > >base.resv,
-> > +						=C2=A0=C2=A0=C2=A0=C2=A0
-> > DMA_RESV_USAGE_BOOKKEEP,
-> > +						=C2=A0=C2=A0=C2=A0=C2=A0 false,
-> > +						=C2=A0=C2=A0=C2=A0=C2=A0
-> > MAX_SCHEDULE_TIMEOUT);
-> > +		if (timeout < 0)
-> > +			ret =3D timeout;
-> > +
-> > =C2=A0=C2=A0		xe_tt_unmap_sg(ttm_bo->ttm);
-> > +	}
-> > =C2=A0=20
-> > =C2=A0=C2=A0	return ret;
-> > =C2=A0 }
->=20
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 1f08cb88d51b..66890f8a7670 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3666,7 +3666,7 @@ static int amdgpu_device_ip_resume_phase1(struct amdgpu_device *adev)
+  *
+  * @adev: amdgpu_device pointer
+  *
+- * First resume function for hardware IPs.  The list of all the hardware
++ * Second resume function for hardware IPs.  The list of all the hardware
+  * IPs that make up the asic is walked and the resume callbacks are run for
+  * all blocks except COMMON, GMC, and IH.  resume puts the hardware into a
+  * functional state after a suspend and updates the software state as
+@@ -3684,6 +3684,7 @@ static int amdgpu_device_ip_resume_phase2(struct amdgpu_device *adev)
+ 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_IH ||
++		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE ||
+ 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_PSP)
+ 			continue;
+ 		r = adev->ip_blocks[i].version->funcs->resume(adev);
+@@ -3698,6 +3699,36 @@ static int amdgpu_device_ip_resume_phase2(struct amdgpu_device *adev)
+ 	return 0;
+ }
+ 
++/**
++ * amdgpu_device_ip_resume_phase3 - run resume for hardware IPs
++ *
++ * @adev: amdgpu_device pointer
++ *
++ * Third resume function for hardware IPs.  The list of all the hardware
++ * IPs that make up the asic is walked and the resume callbacks are run for
++ * all DCE.  resume puts the hardware into a functional state after a suspend
++ * and updates the software state as necessary.  This function is also used
++ * for restoring the GPU after a GPU reset.
++ *
++ * Returns 0 on success, negative error code on failure.
++ */
++static int amdgpu_device_ip_resume_phase3(struct amdgpu_device *adev)
++{
++	int i, r;
++
++	for (i = 0; i < adev->num_ip_blocks; i++) {
++		if (!adev->ip_blocks[i].status.valid || adev->ip_blocks[i].status.hw)
++			continue;
++		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE) {
++			r = adev->ip_blocks[i].version->funcs->resume(adev);
++			if (r)
++				return r;
++		}
++	}
++
++	return 0;
++}
++
+ /**
+  * amdgpu_device_ip_resume - run resume for hardware IPs
+  *
+@@ -3727,6 +3758,13 @@ static int amdgpu_device_ip_resume(struct amdgpu_device *adev)
+ 	if (adev->mman.buffer_funcs_ring->sched.ready)
+ 		amdgpu_ttm_set_buffer_funcs_status(adev, true);
+ 
++	if (r)
++		return r;
++
++	amdgpu_fence_driver_hw_init(adev);
++
++	r = amdgpu_device_ip_resume_phase3(adev);
++
+ 	return r;
+ }
+ 
+@@ -4809,7 +4847,6 @@ int amdgpu_device_resume(struct drm_device *dev, bool fbcon)
+ 		dev_err(adev->dev, "amdgpu_device_ip_resume failed (%d).\n", r);
+ 		goto exit;
+ 	}
+-	amdgpu_fence_driver_hw_init(adev);
+ 
+ 	if (!adev->in_s0ix) {
+ 		r = amdgpu_amdkfd_resume(adev, adev->in_runpm);
+@@ -5431,6 +5468,10 @@ int amdgpu_do_asic_reset(struct list_head *device_list_handle,
+ 				if (tmp_adev->mman.buffer_funcs_ring->sched.ready)
+ 					amdgpu_ttm_set_buffer_funcs_status(tmp_adev, true);
+ 
++				r = amdgpu_device_ip_resume_phase3(tmp_adev);
++				if (r)
++					goto out;
++
+ 				if (vram_lost)
+ 					amdgpu_device_fill_reset_magic(tmp_adev);
+ 
+-- 
+2.47.1
 
 
