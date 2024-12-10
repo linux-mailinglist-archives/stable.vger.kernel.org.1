@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-100357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C169EAC00
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:29:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFA89EAC2C
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 397DB1882165
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:29:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3E918825BE
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 09:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED163DABF2;
-	Tue, 10 Dec 2024 09:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D252500C8;
+	Tue, 10 Dec 2024 09:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MU1P7Bc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BhGmj8s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23A9234989
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6473DAC13
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 09:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733822933; cv=none; b=P7P7MaMSGnIhqaiMTukX0uMy74yLb5fcFT5g6sdPlAaOfoUqU1cnrsHLQjUWLjV6wIlyVNyCoRsKKABycgP3a+aW3NVOUGLH25wCmNZYfcM126SE8nwF3rwwaQkk+m71EfHZ11xTWhzGOU1ZdlE4OS+lve8Geb1nw+Ib1iTaLS8=
+	t=1733823018; cv=none; b=sss4AjDAWCtpOD1GgUd1T7qxDJqjaPhQH/kHtDDCTHZmH8MeRdskYhyRDk6//h6ymiQv4oBkbDe4TJYS03ist96UuO2gK0Jbpo0q5guAXCAr8fb0hiRU2Cafi54RukOcyGlQwwpzudxP7vccq1hFwnW+yTPp53abpj+PF4hPgwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733822933; c=relaxed/simple;
-	bh=3Ae2nUgT/PAmsUmcVVaXRcQL9xvI6kquus/s2alAXUA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oCb28n5H1CAwrUwvdmjtYRrwHmUS2yTOWFDJEBJtKw85KkqS1RQml59bQN9lj+yn1VemSVmvLlwlI5GK3O/AQcTa2e2C0O2i57tVwFcEIeavaMWtZjKYbDsXG6qK6UeLPOWyBO09wpKXJwk0NXS3+L2FxdGtd5CrADksTkW31rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MU1P7Bc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21997C4CEE2;
-	Tue, 10 Dec 2024 09:28:51 +0000 (UTC)
+	s=arc-20240116; t=1733823018; c=relaxed/simple;
+	bh=LOVGsb5s2kqjIXU063zcIrVNiajOZW90lVDqmgv9npM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JPi/Pto20aLMECy8Kuhah2cYMMZf6DG6DQCGeKaJAuifo+jXja1qsC2+143LPmdK6y98OUSXvtoFFYheRcSQEhO391s7KEDcWm3v2+pRAgVOKgKNhvM8GiinHbZfvqyX4mdj5eeyfVxegG5oFyqfJ9q9bPCcRhBUdbwsd7UcGi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BhGmj8s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B97C4CED6;
+	Tue, 10 Dec 2024 09:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733822932;
-	bh=3Ae2nUgT/PAmsUmcVVaXRcQL9xvI6kquus/s2alAXUA=;
+	s=korg; t=1733823017;
+	bh=LOVGsb5s2kqjIXU063zcIrVNiajOZW90lVDqmgv9npM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=MU1P7Bc7gU0UGsw22ZLnSBu7FcMiHABiiTzDpw7zIPvZBvWQx6Hjl3zrDFHFo3qXc
-	 z8uOWZc8BJ3R1GPBi7OjxEYgYvTzmFTVtavr1A3RsiJwQT6JK7y3iMJTYM/beGaaO4
-	 DdxptXGH6SYl6vr8ibROdIW6wfY/09U6oqgDckEM=
-Subject: FAILED: patch "[PATCH] drm/dp_mst: Fix resetting msg rx state after topology removal" failed to apply to 5.10-stable tree
-To: imre.deak@intel.com,lyude@redhat.com,stable@vger.kernel.org
+	b=1BhGmj8sxevJpjgPBMYzKCzObP47S9osn2EOnihlqBXz1jKrTRl1w7/DcSpk/bCjX
+	 UN6HOpv2Lej2eNDvE79pZW90hm5HI4nCaoiJDYNaI1RHVXNEIk7JHJmtiBOPJsHSGp
+	 Cg2C1DzABFfClT4NPRjNpGVh1AHKfrVmIMICjL98=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Add option to retrieve detile buffer size" failed to apply to 6.12-stable tree
+To: Sung.Lee@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,aric.cyr@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 10 Dec 2024 10:28:08 +0100
-Message-ID: <2024121008-justify-kosher-0e66@gregkh>
+Date: Tue, 10 Dec 2024 10:29:41 +0100
+Message-ID: <2024121041-fang-shakable-1a73@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x a6fa67d26de385c3c7a23c1e109a0e23bfda4ec7
+git cherry-pick -x 6a7fd76b949efe40fb6d6677f480e624e0cb6e40
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121008-justify-kosher-0e66@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121041-fang-shakable-1a73@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,108 +77,178 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a6fa67d26de385c3c7a23c1e109a0e23bfda4ec7 Mon Sep 17 00:00:00 2001
-From: Imre Deak <imre.deak@intel.com>
-Date: Tue, 3 Dec 2024 18:02:17 +0200
-Subject: [PATCH] drm/dp_mst: Fix resetting msg rx state after topology removal
+From 6a7fd76b949efe40fb6d6677f480e624e0cb6e40 Mon Sep 17 00:00:00 2001
+From: Sung Lee <Sung.Lee@amd.com>
+Date: Thu, 14 Nov 2024 14:18:13 -0500
+Subject: [PATCH] drm/amd/display: Add option to retrieve detile buffer size
 
-If the MST topology is removed during the reception of an MST down reply
-or MST up request sideband message, the
-drm_dp_mst_topology_mgr::up_req_recv/down_rep_recv states could be reset
-from one thread via drm_dp_mst_topology_mgr_set_mst(false), racing with
-the reading/parsing of the message from another thread via
-drm_dp_mst_handle_down_rep() or drm_dp_mst_handle_up_req(). The race is
-possible since the reader/parser doesn't hold any lock while accessing
-the reception state. This in turn can lead to a memory corruption in the
-reader/parser as described by commit bd2fccac61b4 ("drm/dp_mst: Fix MST
-sideband message body length check").
+[WHY]
+For better power profiling knowing the detile
+buffer size at a given point in time
+would be useful.
 
-Fix the above by resetting the message reception state if needed before
-reading/parsing a message. Another solution would be to hold the
-drm_dp_mst_topology_mgr::lock for the whole duration of the message
-reception/parsing in drm_dp_mst_handle_down_rep() and
-drm_dp_mst_handle_up_req(), however this would require a bigger change.
-Since the fix is also needed for stable, opting for the simpler solution
-in this patch.
+[HOW]
+Add interface to retrieve detile buffer from
+dc state.
 
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: <stable@vger.kernel.org>
-Fixes: 1d082618bbf3 ("drm/display/dp_mst: Fix down/up message handling after sink disconnect")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13056
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-2-imre.deak@intel.com
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Signed-off-by: Sung Lee <Sung.Lee@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index e6ee180815b2..1475aa95ab6b 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3700,8 +3700,7 @@ int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool ms
- 		ret = 0;
- 		mgr->payload_id_table_cleared = false;
- 
--		memset(&mgr->down_rep_recv, 0, sizeof(mgr->down_rep_recv));
--		memset(&mgr->up_req_recv, 0, sizeof(mgr->up_req_recv));
-+		mgr->reset_rx_state = true;
- 	}
- 
- out_unlock:
-@@ -3859,6 +3858,11 @@ int drm_dp_mst_topology_mgr_resume(struct drm_dp_mst_topology_mgr *mgr,
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 1dd26d5df6b9..49fe7dcf9372 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -6109,3 +6109,21 @@ struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state
+ 		profile.power_level = dc->res_pool->funcs->get_power_profile(context);
+ 	return profile;
  }
- EXPORT_SYMBOL(drm_dp_mst_topology_mgr_resume);
- 
-+static void reset_msg_rx_state(struct drm_dp_sideband_msg_rx *msg)
++
++/*
++ **********************************************************************************
++ * dc_get_det_buffer_size_from_state() - extracts detile buffer size from dc state
++ *
++ * Called when DM wants to log detile buffer size from dc_state
++ *
++ **********************************************************************************
++ */
++unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context)
 +{
-+	memset(msg, 0, sizeof(*msg));
++	struct dc *dc = context->clk_mgr->ctx->dc;
++
++	if (dc->res_pool->funcs->get_det_buffer_size)
++		return dc->res_pool->funcs->get_det_buffer_size(context);
++	else
++		return 0;
 +}
-+
- static bool
- drm_dp_get_one_sb_msg(struct drm_dp_mst_topology_mgr *mgr, bool up,
- 		      struct drm_dp_mst_branch **mstb)
-@@ -4141,6 +4145,17 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index 104051935884..49a31598bb88 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -2550,6 +2550,8 @@ struct dc_power_profile {
  
-+static void update_msg_rx_state(struct drm_dp_mst_topology_mgr *mgr)
-+{
-+	mutex_lock(&mgr->lock);
-+	if (mgr->reset_rx_state) {
-+		mgr->reset_rx_state = false;
-+		reset_msg_rx_state(&mgr->down_rep_recv);
-+		reset_msg_rx_state(&mgr->up_req_recv);
-+	}
-+	mutex_unlock(&mgr->lock);
-+}
-+
- /**
-  * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
-  * @mgr: manager to notify irq for.
-@@ -4175,6 +4190,8 @@ int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u
- 		*handled = true;
- 	}
+ struct dc_power_profile dc_get_power_profile_for_dc_state(const struct dc_state *context);
  
-+	update_msg_rx_state(mgr);
++unsigned int dc_get_det_buffer_size_from_state(const struct dc_state *context);
 +
- 	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
- 		ret = drm_dp_mst_handle_down_rep(mgr);
- 		*handled = true;
-diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
-index f6a1cbb0f600..a80ba457a858 100644
---- a/include/drm/display/drm_dp_mst_helper.h
-+++ b/include/drm/display/drm_dp_mst_helper.h
-@@ -699,6 +699,13 @@ struct drm_dp_mst_topology_mgr {
+ /* DSC Interfaces */
+ #include "dc_dsc.h"
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+index 8597e866bfe6..3061dca47dd2 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+@@ -219,6 +219,7 @@ struct resource_funcs {
+ 	 * Get indicator of power from a context that went through full validation
  	 */
- 	bool payload_id_table_cleared : 1;
+ 	int (*get_power_profile)(const struct dc_state *context);
++	unsigned int (*get_det_buffer_size)(const struct dc_state *context);
+ };
  
-+	/**
-+	 * @reset_rx_state: The down request's reply and up request message
-+	 * receiver state must be reset, after the topology manager got
-+	 * removed. Protected by @lock.
-+	 */
-+	bool reset_rx_state : 1;
+ struct audio_support{
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
+index c16cf1c8f7f9..54ec3d8e920c 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
+@@ -1720,6 +1720,12 @@ int dcn31_populate_dml_pipes_from_context(
+ 	return pipe_cnt;
+ }
+ 
++unsigned int dcn31_get_det_buffer_size(
++	const struct dc_state *context)
++{
++	return context->bw_ctx.dml.ip.det_buffer_size_kbytes;
++}
 +
- 	/**
- 	 * @payload_count: The number of currently active payloads in hardware. This value is only
- 	 * intended to be used internally by MST helpers for payload tracking, and is only safe to
+ void dcn31_calculate_wm_and_dlg(
+ 		struct dc *dc, struct dc_state *context,
+ 		display_e2e_pipe_params_st *pipes,
+@@ -1842,6 +1848,7 @@ static struct resource_funcs dcn31_res_pool_funcs = {
+ 	.update_bw_bounding_box = dcn31_update_bw_bounding_box,
+ 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
+ 	.get_panel_config_defaults = dcn31_get_panel_config_defaults,
++	.get_det_buffer_size = dcn31_get_det_buffer_size,
+ };
+ 
+ static struct clock_source *dcn30_clock_source_create(
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h
+index 901436591ed4..551ad912f7be 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.h
+@@ -63,6 +63,9 @@ struct resource_pool *dcn31_create_resource_pool(
+ 		const struct dc_init_data *init_data,
+ 		struct dc *dc);
+ 
++unsigned int dcn31_get_det_buffer_size(
++	const struct dc_state *context);
++
+ /*temp: B0 specific before switch to dcn313 headers*/
+ #ifndef regPHYPLLF_PIXCLK_RESYNC_CNTL
+ #define regPHYPLLF_PIXCLK_RESYNC_CNTL 0x007e
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+index c0f48c78e968..2794473f2aff 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn314/dcn314_resource.c
+@@ -1777,6 +1777,7 @@ static struct resource_funcs dcn314_res_pool_funcs = {
+ 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
+ 	.get_panel_config_defaults = dcn314_get_panel_config_defaults,
+ 	.get_preferred_eng_id_dpia = dcn314_get_preferred_eng_id_dpia,
++	.get_det_buffer_size = dcn31_get_det_buffer_size,
+ };
+ 
+ static struct clock_source *dcn30_clock_source_create(
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
+index 6c3295259a81..4ee33eb3381d 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn315/dcn315_resource.c
+@@ -1845,6 +1845,7 @@ static struct resource_funcs dcn315_res_pool_funcs = {
+ 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
+ 	.get_panel_config_defaults = dcn315_get_panel_config_defaults,
+ 	.get_power_profile = dcn315_get_power_profile,
++	.get_det_buffer_size = dcn31_get_det_buffer_size,
+ };
+ 
+ static bool dcn315_resource_construct(
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
+index 6edaaadcb173..79eddbafe3c2 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn316/dcn316_resource.c
+@@ -1719,6 +1719,7 @@ static struct resource_funcs dcn316_res_pool_funcs = {
+ 	.update_bw_bounding_box = dcn316_update_bw_bounding_box,
+ 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
+ 	.get_panel_config_defaults = dcn316_get_panel_config_defaults,
++	.get_det_buffer_size = dcn31_get_det_buffer_size,
+ };
+ 
+ static bool dcn316_resource_construct(
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+index 6cc2960b6104..09a5a9474903 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -1778,6 +1778,7 @@ static struct resource_funcs dcn35_res_pool_funcs = {
+ 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
+ 	.get_panel_config_defaults = dcn35_get_panel_config_defaults,
+ 	.get_preferred_eng_id_dpia = dcn35_get_preferred_eng_id_dpia,
++	.get_det_buffer_size = dcn31_get_det_buffer_size,
+ };
+ 
+ static bool dcn35_resource_construct(
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
+index d87e2641cda1..fe382f9b6ff2 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
+@@ -1757,6 +1757,7 @@ static struct resource_funcs dcn351_res_pool_funcs = {
+ 	.patch_unknown_plane_state = dcn20_patch_unknown_plane_state,
+ 	.get_panel_config_defaults = dcn35_get_panel_config_defaults,
+ 	.get_preferred_eng_id_dpia = dcn351_get_preferred_eng_id_dpia,
++	.get_det_buffer_size = dcn31_get_det_buffer_size,
+ };
+ 
+ static bool dcn351_resource_construct(
 
 
