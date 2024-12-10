@@ -1,129 +1,153 @@
-Return-Path: <stable+bounces-100492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9EC9EBE09
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 23:47:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3E39EBE8E
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 23:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 030E0188793E
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 22:47:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF0111883BD8
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 22:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7881F1923;
-	Tue, 10 Dec 2024 22:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C30823EA65;
+	Tue, 10 Dec 2024 22:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=joelfernandes.org header.i=@joelfernandes.org header.b="jNh7joti"
+	dkim=pass (1024-bit key) header.d=joelfernandes.org header.i=@joelfernandes.org header.b="P0HPupCZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2F72451F1
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 22:47:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC7B23EA6C
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 22:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733870857; cv=none; b=eNQVyL34r4zhW63Moodr2UBIC/XAna+iBZcmLpT9DQFpULHtt2b6DS/EcxhA0+epnzMatddjlcZ0RGO7CWExLmat08pN9Bqq/76MDeJYda1tdA/vnYcUE46ZTtN8zRB6pDhA8Y5HXasYbHANYoHe0MIxJ4vX3fT402gx9Wuw09o=
+	t=1733871103; cv=none; b=RL80HxLsJzBS3jlVxGdGQcmkoFMPuzDtImb76lYVgY5bG+BEdupW3uRSfbVeg3Cbsef7dxO82SYZn2P/UVbDlxGHuiA01HuNVzVmcdVi07xFxFcVJvDE0rpv6s4TWp4bdrDqk5Vu2GrxsH4EfO+v9eWxbtqVoDTnMDfaYSUU024=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733870857; c=relaxed/simple;
-	bh=4J09Nw/NprO0mzMLrBQrv1UzfclOZD/Gt04pVU1Y7CI=;
+	s=arc-20240116; t=1733871103; c=relaxed/simple;
+	bh=z4+6bpseOOTD/WiP4VJ9xEYcKjeCBnFNzmYMq42PIxA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XLLUAwAf+S2OJLCGCmhj/2mdWq/t0vbmCEX4F+GhsixTFWdKJORErC2/eEc99vqKoGDspljb0B+Sg+d2UuqJSsH+DxgQiFGvImPmwAbqfCq9Quny7Hk9jfXUWUfjuHUQpNL8yS/lf4NlsBHZWxgsApHP6Yy2+KCUKkn9RE4NqE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joelfernandes.org; spf=pass smtp.mailfrom=joelfernandes.org; dkim=pass (1024-bit key) header.d=joelfernandes.org header.i=@joelfernandes.org header.b=jNh7joti; arc=none smtp.client-ip=209.85.128.175
+	 To:Cc:Content-Type; b=SQUZJLmjB++C4b2B4hVixEumI5xtqXhNvicIm9OUqGXaPPsaOb7tDdD3LsNJfsihd4F3k8eE9+G83vhctKyv3xuWFvUu1bKjknaGcUUldaXg0XEfIwomlhEjQT356TdHH5jGK+Q3zIx8jysCxe0Z2boauaUkh57oaHt3C9PECgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joelfernandes.org; spf=pass smtp.mailfrom=joelfernandes.org; dkim=pass (1024-bit key) header.d=joelfernandes.org header.i=@joelfernandes.org header.b=P0HPupCZ; arc=none smtp.client-ip=209.85.219.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joelfernandes.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=joelfernandes.org
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ef81222be7so56898347b3.3
-        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 14:47:35 -0800 (PST)
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e3a5125c024so1872873276.0
+        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 14:51:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1733870854; x=1734475654; darn=vger.kernel.org;
+        d=joelfernandes.org; s=google; t=1733871100; x=1734475900; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TWBkyRYQGMDGc5eLQDuZCpsdffQM6naQ0vYyr7n61vs=;
-        b=jNh7joti2mNXbonLdEDqzPGMd7U6/LzNQTPj90bamPyKjfB16hnNax1kMLGyuvmkjy
-         /g8PwnTGt1V3g1vCwSsAfqJJIRGseiE7upazEHZUphde6jBRYJ3wGfEZuYSQNmUQqrUB
-         clsr9xXmy7PVE8mkpRlu3IY8znxDmJNwVSdOw=
+        bh=Of5DDpOleFOvOX8j9iWLw9UYEkdTXgB6XMX5OY79lzQ=;
+        b=P0HPupCZkL5D1YjvZwGVtDoPiECjiMLZFGtiOYKcHuICyqfBvkqO8Cj+JEGMRzMIrP
+         5OMwVCxbFlq6DYM6sAMtUzzOLRRjWWEdaYhjB0aWHAfj+qlsJ9LY3uTa2+pJ86Y6UohI
+         kYKNbG8ry7WqQeIUqtC3Q7epg2Egdn0INPNOw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733870854; x=1734475654;
+        d=1e100.net; s=20230601; t=1733871100; x=1734475900;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TWBkyRYQGMDGc5eLQDuZCpsdffQM6naQ0vYyr7n61vs=;
-        b=dTDfAP/HfCJ9lrrM4FdsFNjSjdem4PK2EQyR+mGERY0k+GmZzZhu3tk3JJDzwl35IK
-         NS4y8/cJq3+stO09+mQUHa5P15rSXDfPBl419v9uAQ/ev562ZmXXG0EFPm6+AHzKx+nJ
-         aPd2r726zrrzZe6/6eLuzrrdaIUVRiWDRdD0/kvbDxLYxL/9EDZKmrNxvnquWkdfQY9L
-         0u/NS6hK561m3y9V5WfFdQifov+pu50tXQmcDLy4caYCupv3OEdKJTg6WwSH+RHwYMka
-         qtj34XpFdDAQ8g7fKlGJltrfwvi71Q7+aaKEobjjzo9kEh56YxceowoRFt/oCngBHb91
-         RgKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUnUkvHpLaoLpC+jrcuOhQ0fLiMUmBaoSiF7olZJmksSD+rc1wvGvU7Z9BtsBpqy6KrxQ0fOmY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtTUqxkaKkMt+m793nnpKZ1UshIQM58A7MRbnUiiQvLqvXFJHB
-	A1giKMCPBfrPy7BpLhxL4V1jN+qXyHuFs5hiyt3NuMcvtUXk9GXdV/9f9Y+1Vr+pbG1FgeA15V9
-	YllRzzLjN0M2tpNN3ER6fEIhaRV/OpMbzpZZLbA==
-X-Gm-Gg: ASbGncvUaSQN9OXQ28pP5XN3TrCCIKTTjifXoBvGpYjyhDnevZ0QZDMu7gQchZWk7dX
-	kkxCiBMb/mevv5U/Qj/6eawBA6umJD5+Q5y6R
-X-Google-Smtp-Source: AGHT+IELsZuOhax2WDfAjwRl4rtBxQdB85wP9bCDDJ4eUK3hc/wYzDqJhKW371nUrhtu9bZHAkwmulfL19gZbIScI2s=
-X-Received: by 2002:a05:6902:2b85:b0:e39:83ce:6fb3 with SMTP id
- 3f1490d57ef6-e3c8e4252ffmr1233132276.9.1733870854603; Tue, 10 Dec 2024
- 14:47:34 -0800 (PST)
+        bh=Of5DDpOleFOvOX8j9iWLw9UYEkdTXgB6XMX5OY79lzQ=;
+        b=ArIj7yCAeLazPXhjN61JcIaExieDnL/l6kfvvmezgBQCPz6y1ajVEHeIX3LAPqxVUd
+         LVWr2O6jS3zW6nCOdoEr21C3ls0r/80/k6vNCXZ2lBwIEk50yNFNBIIsCKvZi0532wT8
+         eUKf9LydWr8gHI9BZnyVvvhO6Id4yZI3MlgZgA6MWj9pJmEO6GMHlI1c0+Bv9qhReIv8
+         XcoNeMd3f/CBYc/Vjun83URI2Owos5fayU6a07BZar15bn7R60e1oqOu3Obyps3VxSVt
+         OO6kD1dmGPPFWPpX1OiEFiLzvmLysK4NAkF4p/QsXZsLqMKn0SKZiOUPdLCs+RX45FYw
+         Xk0A==
+X-Forwarded-Encrypted: i=1; AJvYcCUa6Y8GarvbNvOGsnYshnHdIAvD8M4J2ItpLGsCu7FCMEbTpemLvIQSdZcGZ+7DTNqi+tqUcDo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz33GeiRjwPeSqU2ybZUzBOLJrxlc0twcWX1OLD71Jv7GklKmJf
+	kXZIaSvOcxioO/1uxOwR6PM5iDZI7xYAangn9mzo0T6/1of84ASzuqNidWTTFH9BQ+HHwK5vUUm
+	Vb+ORCeaWsLkC3SRPKsPtoJsu0LcEAmFXvzO9EQ==
+X-Gm-Gg: ASbGncvVH6Oj4TnG5ezs39polbXLokUQWay3c8j630h9BHo1bh6VI86UIb2oukVVGFN
+	eYDeKsqHRG8tdjCoXGQO27+E6tcdOFyj174ix
+X-Google-Smtp-Source: AGHT+IGbV0oeq+nxJsXu16SzSxYPduPX1VVqzU+lMF3Y51q8XM3CkxJyeEHqg7wjGvxVi7LtqKCG8kkaYpwciZTvMTk=
+X-Received: by 2002:a05:6902:2206:b0:e3a:235a:4da3 with SMTP id
+ 3f1490d57ef6-e3c8e48b8e6mr1094296276.24.1733871100343; Tue, 10 Dec 2024
+ 14:51:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com> <20241204-udmabuf-fixes-v2-2-23887289de1c@google.com>
-In-Reply-To: <20241204-udmabuf-fixes-v2-2-23887289de1c@google.com>
+References: <20241204-udmabuf-fixes-v2-0-23887289de1c@google.com> <20241204-udmabuf-fixes-v2-1-23887289de1c@google.com>
+In-Reply-To: <20241204-udmabuf-fixes-v2-1-23887289de1c@google.com>
 From: Joel Fernandes <joel@joelfernandes.org>
-Date: Tue, 10 Dec 2024 17:47:23 -0500
-Message-ID: <CAEXW_YSd5yv4n4UMDfzKNgVZ_TWikuS_6HHOs0suYwUiVqNnJQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] udmabuf: also check for F_SEAL_FUTURE_WRITE
+Date: Tue, 10 Dec 2024 17:51:29 -0500
+Message-ID: <CAEXW_YRb4PsFgEvHW2QBDY5dxJ+aoMTn3qtj5v9eboxO3SxPLg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] udmabuf: fix racy memfd sealing check
 To: Jann Horn <jannh@google.com>
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
 	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
 	Simona Vetter <simona.vetter@ffwll.ch>, John Stultz <jstultz@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, dri-devel@lists.freedesktop.org, 
 	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+	linux-kernel@vger.kernel.org, Julian Orth <ju.orth@gmail.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Wed, Dec 4, 2024 at 11:27=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
 >
-> When F_SEAL_FUTURE_WRITE was introduced, it was overlooked that udmabuf
-> must reject memfds with this flag, just like ones with F_SEAL_WRITE.
-> Fix it by adding F_SEAL_FUTURE_WRITE to SEALS_DENIED.
+> The current check_memfd_seals() is racy: Since we first do
+> check_memfd_seals() and then udmabuf_pin_folios() without holding any
+> relevant lock across both, F_SEAL_WRITE can be set in between.
+> This is problematic because we can end up holding pins to pages in a
+> write-sealed memfd.
 >
-> Fixes: ab3948f58ff8 ("mm/memfd: add an F_SEAL_FUTURE_WRITE seal to memfd"=
-)
-> Cc: stable@vger.kernel.org
-> Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+> Fix it using the inode lock, that's probably the easiest way.
+> In the future, we might want to consider moving this logic into memfd,
+> especially if anyone else wants to use memfd_pin_folios().
 
-Thanks!
+I am curious, why is it not possible to have a reproducer for this
+issue, is it not reproducible and is theoretical?
 
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+thanks,
 
  - Joel
 
-
-
+>
+> Reported-by: Julian Orth <ju.orth@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D219106
+> Closes: https://lore.kernel.org/r/CAG48ez0w8HrFEZtJkfmkVKFDhE5aP7nz=3Dobr=
+imeTgpD+StkV9w@mail.gmail.com
+> Fixes: fbb0de795078 ("Add udmabuf misc device")
+> Cc: stable@vger.kernel.org
 > Signed-off-by: Jann Horn <jannh@google.com>
 > ---
->  drivers/dma-buf/udmabuf.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/dma-buf/udmabuf.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
 >
 > diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-> index c1d8c2766d6d36fc5fe1b3d73057f6e01ec6678f..b330b99fcc7619a05bb7dc2ae=
-eb9c82faf9a387b 100644
+> index 8ce1f074c2d32a0a9f59ff7184359e37d56548c6..c1d8c2766d6d36fc5fe1b3d73=
+057f6e01ec6678f 100644
 > --- a/drivers/dma-buf/udmabuf.c
 > +++ b/drivers/dma-buf/udmabuf.c
-> @@ -297,7 +297,7 @@ static const struct dma_buf_ops udmabuf_ops =3D {
->  };
+> @@ -436,14 +436,19 @@ static long udmabuf_create(struct miscdevice *devic=
+e,
+>                         goto err;
+>                 }
 >
->  #define SEALS_WANTED (F_SEAL_SHRINK)
-> -#define SEALS_DENIED (F_SEAL_WRITE)
-> +#define SEALS_DENIED (F_SEAL_WRITE|F_SEAL_FUTURE_WRITE)
+> +               /*
+> +                * Take the inode lock to protect against concurrent
+> +                * memfd_add_seals(), which takes this lock in write mode=
+.
+> +                */
+> +               inode_lock_shared(file_inode(memfd));
+>                 ret =3D check_memfd_seals(memfd);
+> -               if (ret < 0) {
+> -                       fput(memfd);
+> -                       goto err;
+> -               }
+> +               if (ret)
+> +                       goto out_unlock;
 >
->  static int check_memfd_seals(struct file *memfd)
->  {
+>                 ret =3D udmabuf_pin_folios(ubuf, memfd, list[i].offset,
+>                                          list[i].size, folios);
+> +out_unlock:
+> +               inode_unlock_shared(file_inode(memfd));
+>                 fput(memfd);
+>                 if (ret)
+>                         goto err;
 >
 > --
 > 2.47.0.338.g60cca15819-goog
