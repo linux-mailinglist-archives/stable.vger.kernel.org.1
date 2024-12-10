@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-100457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28089EB601
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:20:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A6A9EB60F
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 17:21:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52BC228172F
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:20:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5B1B162087
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 16:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245531B4F04;
-	Tue, 10 Dec 2024 16:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D521C57B2;
+	Tue, 10 Dec 2024 16:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5kLzhfj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZUzLO/XA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8C218A94C;
-	Tue, 10 Dec 2024 16:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF791C2DB0;
+	Tue, 10 Dec 2024 16:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733847617; cv=none; b=bug95CS6QBdUK0Ew2oRnXcaGy8o8RofIDqUsi1aVntIvY6vmNpyNKtZwmBm9YQShlBR5jfJ8iPNYN5CeFnU5O3HyZZWEp+i0BxWCmwvA42JJg7+NbEn+0PbkWi3U5e9ytEs2tC534QQfACLN9Em1u1wLYZx/zJdi4ITVUyjY6g8=
+	t=1733847665; cv=none; b=cBgngLBfc40bG0DLcfWqmzAajOHTgjEohhwo4XEDcvEYKBKgk8H1+90iflQ4rQ0ulMOiTl+5wYVDKO/quhUnhC/EIdO684Yrg73h2xD63bWknirA+obMSmbLidAHUAqCgnQ7+4ujJeA1SPDOY66yu2aX2Iz2SWjx0wDebv5Bju4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733847617; c=relaxed/simple;
-	bh=2FFDIyt9HQiwlBcQMtPHa2HROdninP3g8JMDVwboPe8=;
+	s=arc-20240116; t=1733847665; c=relaxed/simple;
+	bh=/tjE32TARFnM3qp++vZVKsPRMBVPqfRnvR/Aq73te3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJZTib8wTPrLNUtZ6tskNFTLijnZEAV8R/mr2ootAxU8YgE/mx39nnZ+OXJL6+Tvs6j7OlHtSufEu40kQ5tcQ/w0FGB9k08Zv1uTkoOV9jhgEPP2+ztWIoPhbfW8xp1Q/leIxxH5ubVfT02Q3sOnS6m1DJCg6t9fyh+z34g8pZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5kLzhfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279E7C4CED6;
-	Tue, 10 Dec 2024 16:20:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=bKaQ/60RuRVxMpv7r+k0U6kp1iRSN5sdQV/Lf0r+eh5Nh0tRlUq9woZasaJbDyXzI+X8JARQS0/zMgVFlk9XnUhjon6wP7bvkihaIqvaeCiM/JWxtKibMom3ztAb2D9wPoIV2nZrzyWlugWBa2xE3Y80MiGhMs9/JHcykQ0PSPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZUzLO/XA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1054DC4CEDD;
+	Tue, 10 Dec 2024 16:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733847617;
-	bh=2FFDIyt9HQiwlBcQMtPHa2HROdninP3g8JMDVwboPe8=;
+	s=k20201202; t=1733847665;
+	bh=/tjE32TARFnM3qp++vZVKsPRMBVPqfRnvR/Aq73te3k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W5kLzhfjyDJ5QKhrmpnJXdPFxNvUjcwziZHIsH1MVTM5JzHFkmxrAa7ZhtYWw+NMi
-	 W2jYvjKVn+WlgQENuhwckkyjOBrKKs6aFontpX3C29ev1ie5Pq5hD0YUkw+iLZZUSr
-	 ZNychqzElSM5Q1c2mw/rdzhXd5K2qNIVezcvo6CUGjPxN+JZhD8S8WPFLuEoKAR1BN
-	 bHe8KTpivqPnouQ3r/yskjq6nh69FvXrNyxgNtWo27I8U/XbhtPtQDyohaVP8rGaXi
-	 +w3C78qq9cO8xxMNPrmIL8wEYPHG0agJVwTUmj8JhsA4912cnnh7TDeNSEjuizlKOb
-	 U4fZvHzWfKXTg==
-Date: Tue, 10 Dec 2024 11:20:15 -0500
+	b=ZUzLO/XAWUnG3spslyUaxdemGuzRKgGn1gJj3G6w6DZHlycUmGAJkp5I1zyNmAA5N
+	 r1kcaITSc2HYDUxTVBLK9C1z73aFCbD8X05hurJ5rKG55VNirBT7k9fNsnbDHObank
+	 63l9dtutx5pmK9rMS1eSBb/Qy2C8RRhzFbt2uxXE+0ZpMTarvpN5GyJU8fRsKMtbwq
+	 sct3vor4rDAdPk5GS1X44T6/7z7qhc6NZyvWrcI9x3pzsaO4OU4nrrVTTtNa4XkDnn
+	 wwET3JO/DieUBMxPno0j2PwiY8sFtymw8aV35qjbV+lAb53uO9PIH32gIzsubJPKZU
+	 SmwVlAniHV1yQ==
+Date: Tue, 10 Dec 2024 11:21:03 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: David Sterba <dsterba@suse.cz>
+To: John Garry <john.g.garry@oracle.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
-	clm@fb.com, josef@toxicpanda.com, linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.12 09/19] btrfs: zlib: make the compression
- path to handle sector size < page size
-Message-ID: <Z1hqP7E_H96rMscS@sashalap>
+	Yu Kuai <yukuai3@huawei.com>, Hannes Reinecke <hare@suse.de>,
+	Jens Axboe <axboe@kernel.dk>, song@kernel.org,
+	linux-raid@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.12 16/19] md/raid1: Handle bio_split() errors
+Message-ID: <Z1hqbxa3PnQ86hs4@sashalap>
 References: <20241124123912.3335344-1-sashal@kernel.org>
- <20241124123912.3335344-9-sashal@kernel.org>
- <20241125152059.GY31418@suse.cz>
+ <20241124123912.3335344-16-sashal@kernel.org>
+ <77b6928d-020a-4df9-93b0-fef8ef38e891@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,44 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20241125152059.GY31418@suse.cz>
+In-Reply-To: <77b6928d-020a-4df9-93b0-fef8ef38e891@oracle.com>
 
-On Mon, Nov 25, 2024 at 04:20:59PM +0100, David Sterba wrote:
->On Sun, Nov 24, 2024 at 07:38:44AM -0500, Sasha Levin wrote:
->> From: Qu Wenruo <wqu@suse.com>
+On Mon, Nov 25, 2024 at 08:55:19AM +0000, John Garry wrote:
+>On 24/11/2024 12:38, Sasha Levin wrote:
+>>From: John Garry<john.g.garry@oracle.com>
 >>
->> [ Upstream commit f6ebedb09bb276256e084196e2322562dc4aac10 ]
+>>[ Upstream commit b1a7ad8b5c4fa28325ee7b369a2d545d3e16ccde ]
 >>
->> Inside zlib_compress_folios(), each time we switch the input page cache,
->> the @start is increased by PAGE_SIZE.
+>>Add proper bio_split() error handling. For any error, call
+>>raid_end_bio_io() and return.
 >>
->> But for the incoming compression support for sector size < page size
->> (previously we support compression only when the range is fully page
->> aligned), this is not going to handle the following case:
+>>For the case of an in the write path, we need to undo the increment in
+>>the rdev pending count and NULLify the r1_bio->bios[] pointers.
 >>
->>     0          32K         64K          96K
->>     |          |///////////||///////////|
+>>For read path failure, we need to undo rdev pending count increment from
+>>the earlier read_balance() call.
 >>
->> @start has the initial value 32K, indicating the start filepos of the
->> to-be-compressed range.
->>
->> And when grabbing the first page as input, we always call "start +=
->> PAGE_SIZE;".
->>
->> But since @start is starting at 32K, it will be increased by 64K,
->> resulting it to be 96K for the next range, causing incorrect input range
->> and corruption for the future subpage compression.
->>
->> Fix it by only increase @start by the input size.
->>
->> Signed-off-by: Qu Wenruo <wqu@suse.com>
->> Signed-off-by: David Sterba <dsterba@suse.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>Reviewed-by: Yu Kuai<yukuai3@huawei.com>
+>>Reviewed-by: Hannes Reinecke<hare@suse.de>
+>>Signed-off-by: John Garry<john.g.garry@oracle.com>
+>>Link:https://urldefense.com/v3/__https://lore.kernel.org/ r/20241111112150.3756529-6-john.g.garry@oracle.com__;!!ACWV5N9M2RV99hQ! 
+>>N4dieLgwxARnrFj9y51O80wHlzi_DtX0LRE- 
+>>kw6X6c0oWji1y3NBy1HIbHaHEkfRZJ57mxEq0kY_YRAnPg$ Signed-off-by: Jens 
+>>Axboe<axboe@kernel.dk>
+>>Signed-off-by: Sasha Levin<sashal@kernel.org>
 >
->Please drop this patch from stable, it's preparatory work and has
->otherwise no effect.
+>I don't think that it is proper to backport this change without 
+>bio_split() error handling update. And I don't think that it is worth 
+>backporting the bio_split() error handling update.
 
-Will do, thanks!
+I'll drop it, thanks!
 
 -- 
 Thanks,
