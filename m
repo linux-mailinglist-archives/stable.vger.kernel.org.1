@@ -1,113 +1,92 @@
-Return-Path: <stable+bounces-100411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0622D9EAFF1
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:32:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBC89EB00E
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FD401882427
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFFFB18884B4
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6257178F57;
-	Tue, 10 Dec 2024 11:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5A32080DD;
+	Tue, 10 Dec 2024 11:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="SWLjclN5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JJ7WDoYJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-canonical-0.canonical.com (smtp-relay-canonical-0.canonical.com [185.125.188.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC6678F5B
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 11:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECA62080D7;
+	Tue, 10 Dec 2024 11:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733830309; cv=none; b=TB/o4Dj5tdsHKpl7kuA/iYyY0H45ab5DBPQaSf7k6pwkR75Z01mQUIh4Yz+MBZqrdIL/KB1Kpg+clEAkPncSr9s4HH39aW3/klP6WWOGjUT6UYbjZ5z7BNQnzBWBiCxy7iy/Eg0b6GMT9vIkt7NSdhBRkP7d4F1I07cfQ1n+82Y=
+	t=1733830946; cv=none; b=LOBLdtEDlPIjPMuDjimslKTBuQWm0bMHs8x1CANHuB4fBdRVZs8sOiIANG1MDoKpP9jnkaF0xMeIR0t/RpVxQbMRpLAtfXVbIo1Bjgjtzr4ePwRKqn/5hBk39qBQGoMAlGV/f2FHOmraitK4JmQyNUFKCpcyxg8ErMUYSO41pDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733830309; c=relaxed/simple;
-	bh=cZ4sSOoGilGIPjML17LHic3HXreLrdsE7CJXpdJ3Wn8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lP8JdmE2FV4+rOpIByTAxYchRmsXEY3/ixVvBGtb/Uow4jjPd/R1IX6cyzd7CtNv5+0kPAF6vfzojOd1X2NnhM+Zys7FZKL5hPo5CUjGXHrvApv5nddnG+JguSbS1Zpk0b9JoONAaowMn4ZtgcjN/GgNRgNrNrrQtykslvyAUrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=SWLjclN5; arc=none smtp.client-ip=185.125.188.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from hwang4-ThinkPad-T14s-Gen-2a.. (unknown [120.85.107.173])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-canonical-0.canonical.com (Postfix) with ESMTPSA id D1B9A3F783;
-	Tue, 10 Dec 2024 11:31:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1733830299;
-	bh=qQ8en6fa7o9vYDJDzDILW8HVhQyOc7wmasOfhV+YsFM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-	b=SWLjclN5JUw1ll+49u6Hyk24/lSGsMUHPBMmlmgp0cxU5+mEjnX/e+FxVlXzb6YgN
-	 n7P+RGoVLKkaQMAV2Q1Pu3Xy0UDFIV8P/A7r5RUiH9jR510etbcGochJo8fhxCDiQU
-	 X0YGvexzJxL5TmJ1vFNjLV27EcutSAePlxNjrVcjiBvOhcUgmnimeLjXMfEtFOaQFc
-	 7+VjbxFyKrVsyi3feBKpemSYBWRbOzgL1/N8KqugvWc10U70OTw10hDesEkmEA/8Lp
-	 EciPIvjhNsa+2yaWJdWUnaRKggiphmIrNasF+DIYL+SW8IZLugV2v+KyAkQ7YaJhku
-	 0X4WPpEFlg6KQ==
-From: Hui Wang <hui.wang@canonical.com>
-To: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: hvilleneuve@dimonoff.com,
-	hui.wang@canonical.com
-Subject: [stble-kernel][5.15.y][5.10.y][PATCH v2] serial: sc16is7xx: the reg needs to shift in regmap_noinc
-Date: Tue, 10 Dec 2024 19:31:26 +0800
-Message-Id: <20241210113126.46056-1-hui.wang@canonical.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1733830946; c=relaxed/simple;
+	bh=QpSPCa3HLk7MLV1ric2+P92d1w9U+ejZO5O2DQ54HVw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=aT1N0m4g2WD8pBfy4CMW4lnOurkVuiJyvyf/1K0iBdU2j0GlPQob19RbKSYBcvG+GApiuuMuECSvAPyeuxIr6olwu7kqOoCN5xwxHeVTMfOcSikDh/e4Aio5bb/fC43hnxTEdz4px2LOhj78AteIyl14HfqrwBPulTJ5c3HLqTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JJ7WDoYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08678C4CEDE;
+	Tue, 10 Dec 2024 11:42:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733830945;
+	bh=QpSPCa3HLk7MLV1ric2+P92d1w9U+ejZO5O2DQ54HVw=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=JJ7WDoYJItFe1PvMj4pPk+JcgGwc9u6XIdHAKn3iNOIX6ihpgPhE7uhK+BhfPPtQh
+	 Nugmo4Zxr1x73lHQKJotoaeZQhgUna9LFGgovOP8sxaNHsPmqVJ/xHgn6lF/gQg1+w
+	 5YbJ1epsTjt+MdsS116OwHdImUBdGxDCVYsmi3zvjC3kb5DuKaMFZ4zX+zCq97/aPW
+	 kM8BPvMxIwj1ux/9pNjNwqlqVtvh9DFFLlLbRV2tnUnp+3KrsIQLE1gpCGiyrsGE+a
+	 k5ssoi5CDOt2lw7RzxbES3ZDkbisQTziyEXBlNNuQ8rzsfvex09N5CSscDwouXe62B
+	 bNZiEVRiiDInA==
+Date: Tue, 10 Dec 2024 12:42:22 +0100 (CET)
+From: Jiri Kosina <jikos@kernel.org>
+To: "Gerecke, Jason" <killertofu@gmail.com>
+cc: linux-input@vger.kernel.org, 
+    Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
+    Ping Cheng <pinglinux@gmail.com>, 
+    Joshua Dickens <Joshua@Joshua-Dickens.com>, Erin Skomra <skomra@gmail.com>, 
+    Peter Hutterer <peter.hutterer@who-t.net>, 
+    Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] HID: wacom: Initialize brightness of LED trigger
+In-Reply-To: <20241209184029.15101-1-jason.gerecke@wacom.com>
+Message-ID: <2on027qp-4q8q-1pqs-1psp-p337010npr36@xreary.bet>
+References: <20241209184029.15101-1-jason.gerecke@wacom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 
-Recently we found the fifo_read() and fifo_write() are broken in our
-5.15 and 5.4 kernels after cherry-pick the commit e635f652696e
-("serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions
-for FIFO"), that is because the reg needs to shift if we don't
-cherry-pick a prerequisite commit 3837a0379533 ("serial: sc16is7xx:
-improve regmap debugfs by using one regmap per port").
+On Mon, 9 Dec 2024, Gerecke, Jason wrote:
 
-It is hard to backport the prerequisite commit to 5.15.y and 5.10.y
-due to the significant conflict. To be safe, here fix it by shifting
-the reg as regmap_volatile() does.
+> From: Jason Gerecke <jason.gerecke@wacom.com>
+> 
+> If an LED has a default_trigger set prior to being registered with
+> the subsystem, that trigger will be executed with a brightness value
+> defined by `trigger->brightness`. Our driver was not setting this
+> value, which was causing problems. It would cause the selected LED
+> to be turned off, as well as corrupt the hlv/llv values assigned to
+> other LEDs (since calling `wacom_led_brightness_set` will overite
+> these values).
+> 
+> This patch sets the value of `trigger->brightness` to an appropriate
+> value. We use `wacom_leds_brightness_get` to transform the llv/hlv
+> values into a brightness that is understood by the rest of the LED
+> subsystem.
+> 
+> Fixes: 822c91e72eac ("leds: trigger: Store brightness set by led_trigger_event()")
+> Cc: stable@vger.kernel.org # v6.10+
+> Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
----
-in the V2:
- add Cc:
- fix a typo on prerequisite
- add explanation for not backporting the prerequisite patch to 5.15.y and 5.10.y
+Applied, thanks.
 
- drivers/tty/serial/sc16is7xx.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index d274a847c6ab..87e34099f369 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -487,7 +487,14 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
- 
- static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
- {
--	return reg == SC16IS7XX_RHR_REG;
-+	switch (reg >> SC16IS7XX_REG_SHIFT) {
-+	case SC16IS7XX_RHR_REG:
-+		return true;
-+	default:
-+		break;
-+	}
-+
-+	return false;
- }
- 
- /*
 -- 
-2.34.1
+Jiri Kosina
+SUSE Labs
 
 
