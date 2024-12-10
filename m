@@ -1,371 +1,192 @@
-Return-Path: <stable+bounces-100393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593EC9EAD8C
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:05:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0DC9EADA0
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05EF8188D6E4
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:02:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9E4C1883179
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 10:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685E123DEA5;
-	Tue, 10 Dec 2024 10:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F204C23DEA2;
+	Tue, 10 Dec 2024 10:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NS9x+ot1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UomKj/Oh"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3622E23DEA7
-	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 10:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034AB23DE8E
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 10:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733824947; cv=none; b=ABS5v6VjqIK8yOl4CD+2GtGHzfVV+MS7lW+NEzBTG7CsHj4Zqf2mAvMangMCaRdPkhAvS8DP7vA0eheJGYhb+D7Zyy0rVvuS6Y1ePxWCLaM0ctkuumr7LS5CvP+Hhu4HMWd6suxry56fETOTQVUeuq60edqlGKiWGMQPG3eqxHM=
+	t=1733825439; cv=none; b=RLjazDSSm37mJdaVuzJ25I3O4k2mP5DilPPiMDY+To6EHkDwW4PqtLtBKEbPP2Tt9VbYCyV3yckdeJ65mXlxAAEZ9ibbsQ+hU2xpRtUuQWdnQ3RCJiNXnR15FLwgK6M6sWprLnMxud4XaBMHehVRYh4VLScwE6P13mvXaCyxTGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733824947; c=relaxed/simple;
-	bh=finQZwOQ1FncqnID3l2DeuXWmOL2OycJDvy4ccAB0JI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=c5cagrInYrVjRY1c2nNss6Hzj6XtDVfyS/ywXV1umVe0qcPNRpIQyXU1VvgosY9BIwBqn1vlXTS+1vhwpQJxJjgLXjvTkP730RJHZys/qReQtofJPYSr3dEmok1ZXkGQ1Hyq5/1jjYbFn8futFC2s4tyefRYJTQjj8N0wo+lJ2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NS9x+ot1; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733824945; x=1765360945;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=finQZwOQ1FncqnID3l2DeuXWmOL2OycJDvy4ccAB0JI=;
-  b=NS9x+ot1po34g50QAJmdO6dsBVC6MvWnTJkQL9icei23qE4dF3YHBcjb
-   NoL0iHS1flUa8DMvwOvPCr3Y+i4W7fI/moi3TbWp9CNJYY1EU9uXVzcb+
-   hvFbrNn19M0sFaIw5Utqg0lOSZPrP4c0Q/g80c+9ldIj6VeEguMQL15Rg
-   ka6gXqwV9qIo1m/0E5LWEJ85kMiUtcxO9iYTCFZg4r0ha3RnKnKhCmNhs
-   ERjgYCxD8CwkTYYWp/pZnCvBrrH4l5q/jhRCzpijLkTk5Du8jD92Ly8fT
-   Y8zRExmPmr5/djfwAetKPFX3H9UElB49YUIbZQ1bjTEqWS4HXi0PzeWM3
-   A==;
-X-CSE-ConnectionGUID: BGSLYwdnRhm+m1efT/3NFA==
-X-CSE-MsgGUID: wIWinyfNRf2T8kJ18IXHgw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11281"; a="56640817"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="56640817"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 02:02:25 -0800
-X-CSE-ConnectionGUID: Xo75gImjQ8OGbNWuFDg3Hg==
-X-CSE-MsgGUID: gJ3+YzP3T2apZ/kMjalJFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="100397876"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by orviesa003.jf.intel.com with ESMTP; 10 Dec 2024 02:02:23 -0800
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: hadrosaur@google.com,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
-Subject: [PATCH v2] xhci: dbc: Fix STALL transfer event handling
-Date: Tue, 10 Dec 2024 12:04:40 +0200
-Message-Id: <20241210100440.3449803-1-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733825439; c=relaxed/simple;
+	bh=HFMbe08H1k1y0mqVM0u4b8h/zU/qVcRKr7WB9uytT8g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SBJdogL729NLEeCoBEGhcxY/Rw/928l7Z4NpR96c1h+6kXSjhSR0XkOoQpLxIQ1aRGgB5QPbo/EeUolTxq1Uu1Zfjc/ntZPHmyMxeQmICNU+ql8R6KV7+sDN047GzMem2rUB3Fn5YLnP17G36fPt4Res/+efDrnNdAKfJlxabXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UomKj/Oh; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733825436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WHKaqHT8TmPKp+vfFyKZV4r9sjaGCxpUSBkDEyH4Mpw=;
+	b=UomKj/Oh2j7xLqZFEUIC20ADp38z7b0nIv+JJuIkM2nH/o2500COwXfMY0SiZjPARcVDJ2
+	vwZtaLsMhUuOQUbgp5+8PhGAkrloM3fXOiPgS3GKtlRMn5oOPWrhxPI3DMCIov8APt8PIN
+	1S3gPMwGIpzs5fDZoCUpDUJYfAeDgso=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-160-gF8mYmS_OzyNOTB_zhG-NA-1; Tue, 10 Dec 2024 05:10:35 -0500
+X-MC-Unique: gF8mYmS_OzyNOTB_zhG-NA-1
+X-Mimecast-MFC-AGG-ID: gF8mYmS_OzyNOTB_zhG-NA
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-385e2579507so3106835f8f.1
+        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 02:10:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733825434; x=1734430234;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WHKaqHT8TmPKp+vfFyKZV4r9sjaGCxpUSBkDEyH4Mpw=;
+        b=Vw1D4s5v0WtdI701SOnWOcz4MLlrqrmfZxRi3KCu4sn4Z4feLNrpFb248hf5P4aLRY
+         449KNDyXhNPEcG++iLGa1Z7IFZPJQ2z//S6p5L/FAk1dQd6rLLxEBAzaptxAzvKSMbGm
+         lmVng4TPs69ggyW/z5b8MvgdaJpN5nT2J1Qb2X9QAaArnvIqlUdE0T8knNt8kvYPFmgl
+         tXWYqk+3pZWw3ik0hQUPLV7fXF8nYVbu2hKg4OKgyvj5XFJixzQryQIvV9RfRWHzeU6m
+         bhs5th62PyDDMKL2XoicseUzdIF6zHKBqtdGzRKc7eMwduCV2gXRP2ZqmFGjpgi05ETY
+         AKhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU5Xxw+Bwtwoj8si51jZXlOi4JeEJAfFXN2HahZuPS656zLApn5BxIlPNzCP7JavRgFnTgVsDI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCMigVuQv2cyj6VoTDcloxb0ZhR0bqu8kIEl9GrlejVzpy8/dL
+	foWQs7uHyjj6kvO+IJ1WU6nZcMFcdv9zHp5jC7gEJtpVFQdHsHB3mtxXk151bHGmSJf0dzn54nd
+	1FY202GeA8laCotta8S4KdtyqF50Ok/KG0cOjhrWbdLNIWNIMD9NQdA==
+X-Gm-Gg: ASbGncv3V1LowmebfiMmcgiLdIpjOdTtpQTJI3A2RjignydEqfSSCzxIZFVapPY5z0q
+	j9j3GOQb4yV7ly/HeQ2z+1iftQ0QLs/t7jyzydj009FtBP19lkrHZcxJlzRt6g6cdBDnpV2MOKb
+	BBiYpakCEgjbUjN2ehRkffHs9zv8jkjdhFEMBmTyqrYf4o5/0CjBKRjzdjIwVVTqkvpELglk2FJ
+	eJy1u6SI/qT4Tban3zJh+AkVL/hIV0VFF5Fc6PKsUyfj8+veC+4IvbmQ73qTqRH6+Nm5JNCBrJe
+	3HjyNgcYpsI68P5eGV/j1KU61AL22oVYWsBESm+hhBET7uU8HLdvSiHSnsy30Z7j97f9SQzRvF9
+	S4SUErg==
+X-Received: by 2002:a5d:5f8e:0:b0:386:3803:bbd8 with SMTP id ffacd0b85a97d-3863803bdc1mr8557224f8f.59.1733825434214;
+        Tue, 10 Dec 2024 02:10:34 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH+VnuFpTTDtc9IBkNAkw6YO/9HOkWYUVF564g0JrmQz1f6HgbOaLN8ZjLolBzYrdtJsxAHDQ==
+X-Received: by 2002:a5d:5f8e:0:b0:386:3803:bbd8 with SMTP id ffacd0b85a97d-3863803bdc1mr8557197f8f.59.1733825433837;
+        Tue, 10 Dec 2024 02:10:33 -0800 (PST)
+Received: from ?IPV6:2003:cb:c723:b800:9a60:4b46:49f9:87f3? (p200300cbc723b8009a604b4649f987f3.dip0.t-ipconnect.de. [2003:cb:c723:b800:9a60:4b46:49f9:87f3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da0d26b0sm190812545e9.9.2024.12.10.02.10.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 02:10:32 -0800 (PST)
+Message-ID: <69d2c332-04f1-43df-950f-931f20ad725e@redhat.com>
+Date: Tue, 10 Dec 2024 11:10:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] mm/page_alloc: don't call pfn_to_page() on possibly
+ non-existent PFN in split_large_buddy()
+To: Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Yu Zhao <yuzhao@google.com>, stable@vger.kernel.org
+References: <20241210093437.174413-1-david@redhat.com>
+ <c06e7552-bcce-49b9-8d77-72de48014a56@suse.cz>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <c06e7552-bcce-49b9-8d77-72de48014a56@suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit 9044ad57b60b0556d42b6f8aa218a68865e810a4 upstream
-Backport targeted specifically for linux-6.6.y stable kernel.
-Resolve minor conflict due to 10-patch dbc cleanup series in 6.8
+On 10.12.24 10:48, Vlastimil Babka wrote:
+> On 12/10/24 10:34, David Hildenbrand wrote:
+>> In split_large_buddy(), we might call pfn_to_page() on a PFN that might
+>> not exist. In corner cases, such as when freeing the highest pageblock in
+>> the last memory section, this could result with CONFIG_SPARSEMEM &&
+>> !CONFIG_SPARSEMEM_EXTREME in __pfn_to_section() returning NULL and
+>> and __section_mem_map_addr() dereferencing that NULL pointer.
+>>
+>> Let's fix it, and avoid doing a pfn_to_page() call for the first
+>> iteration, where we already have the page.
+>>
+>> So far this was found by code inspection, but let's just CC stable as
+>> the fix is easy.
+>>
+>> Fixes: fd919a85cd55 ("mm: page_isolation: prepare for hygienic freelists")
+>> Reported-by: Vlastimil Babka <vbabka@suse.cz>
+>> Closes: https://lkml.kernel.org/r/e1a898ba-a717-4d20-9144-29df1a6c8813@suse.cz
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Johannes Weiner <hannes@cmpxchg.org>
+>> Cc: Zi Yan <ziy@nvidia.com>
+>> Cc: Yu Zhao <yuzhao@google.com>
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+> 
+> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-Don't flush all pending DbC data requests when an endpoint halts.
+BTW, staring at nr_isolate_pageblock accounting, I just stumbled over 
+prep_move_freepages_block(), and I am not sure about the 
+zone_spans_pfn() checks in there.
 
-An endpoint may halt and xHC DbC triggers a STALL error event if there's
-an issue with a bulk data transfer. The transfer should restart once xHC
-DbC receives a ClearFeature(ENDPOINT_HALT) request from the host.
+With overlapping zones, these are not reliably, which makes me believe 
+that maybe these checks are not required at all. Or that there is a bug. 
+Or that there is some implication that these checks are only required on 
+systems without overlapping zones :)
 
-Once xHC DbC restarts it will start from the TRB pointed to by dequeue
-field in the endpoint context, which might be the same TRB we got the
-STALL event for. Turn the TRB to a no-op in this case to make sure xHC
-DbC doesn't reuse and tries to retransmit this same TRB after we already
-handled it, and gave its corresponding data request back.
-
-Other STALL events might be completely bogus.
-Lukasz Bartosik discovered that xHC DbC might issue spurious STALL events
-if hosts sends a ClearFeature(ENDPOINT_HALT) request to non-halted
-endpoints even without any active bulk transfers.
-
-Assume STALL event is spurious if it reports 0 bytes transferred, and
-the endpoint stopped on the STALLED TRB.
-Don't give back the data request corresponding to the TRB in this case.
-
-The halted status is per endpoint. Track it with a per endpoint flag
-instead of the driver invented DbC wide DS_STALLED state.
-DbC remains in DbC-Configured state even if endpoints halt. There is no
-Stalled state in the DbC Port state Machine (xhci section 7.6.6)
-
-Reported-by: Łukasz Bartosik <ukaszb@chromium.org>
-Closes: https://lore.kernel.org/linux-usb/20240725074857.623299-1-ukaszb@chromium.org/
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
-v2: Remove DS_STALLED case when showing dbc status in sysfs.
-    Re-tested by Lukasz on 6.6 stable kernel.
-
- drivers/usb/host/xhci-dbgcap.c | 135 ++++++++++++++++++++-------------
- drivers/usb/host/xhci-dbgcap.h |   2 +-
- 2 files changed, 83 insertions(+), 54 deletions(-)
-
-diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
-index b40d9238d447..fab9e6be4e27 100644
---- a/drivers/usb/host/xhci-dbgcap.c
-+++ b/drivers/usb/host/xhci-dbgcap.c
-@@ -158,16 +158,18 @@ static void xhci_dbc_giveback(struct dbc_request *req, int status)
- 	spin_lock(&dbc->lock);
- }
- 
--static void xhci_dbc_flush_single_request(struct dbc_request *req)
-+static void trb_to_noop(union xhci_trb *trb)
- {
--	union xhci_trb	*trb = req->trb;
--
- 	trb->generic.field[0]	= 0;
- 	trb->generic.field[1]	= 0;
- 	trb->generic.field[2]	= 0;
- 	trb->generic.field[3]	&= cpu_to_le32(TRB_CYCLE);
- 	trb->generic.field[3]	|= cpu_to_le32(TRB_TYPE(TRB_TR_NOOP));
-+}
- 
-+static void xhci_dbc_flush_single_request(struct dbc_request *req)
-+{
-+	trb_to_noop(req->trb);
- 	xhci_dbc_giveback(req, -ESHUTDOWN);
- }
- 
-@@ -637,7 +639,6 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
- 	case DS_DISABLED:
- 		return;
- 	case DS_CONFIGURED:
--	case DS_STALLED:
- 		if (dbc->driver->disconnect)
- 			dbc->driver->disconnect(dbc);
- 		break;
-@@ -657,6 +658,23 @@ static void xhci_dbc_stop(struct xhci_dbc *dbc)
- 	}
- }
- 
-+static void
-+handle_ep_halt_changes(struct xhci_dbc *dbc, struct dbc_ep *dep, bool halted)
-+{
-+	if (halted) {
-+		dev_info(dbc->dev, "DbC Endpoint halted\n");
-+		dep->halted = 1;
-+
-+	} else if (dep->halted) {
-+		dev_info(dbc->dev, "DbC Endpoint halt cleared\n");
-+		dep->halted = 0;
-+
-+		if (!list_empty(&dep->list_pending))
-+			writel(DBC_DOOR_BELL_TARGET(dep->direction),
-+			       &dbc->regs->doorbell);
-+	}
-+}
-+
- static void
- dbc_handle_port_status(struct xhci_dbc *dbc, union xhci_trb *event)
- {
-@@ -685,6 +703,7 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
- 	struct xhci_ring	*ring;
- 	int			ep_id;
- 	int			status;
-+	struct xhci_ep_ctx	*ep_ctx;
- 	u32			comp_code;
- 	size_t			remain_length;
- 	struct dbc_request	*req = NULL, *r;
-@@ -694,8 +713,30 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
- 	ep_id		= TRB_TO_EP_ID(le32_to_cpu(event->generic.field[3]));
- 	dep		= (ep_id == EPID_OUT) ?
- 				get_out_ep(dbc) : get_in_ep(dbc);
-+	ep_ctx		= (ep_id == EPID_OUT) ?
-+				dbc_bulkout_ctx(dbc) : dbc_bulkin_ctx(dbc);
- 	ring		= dep->ring;
- 
-+	/* Match the pending request: */
-+	list_for_each_entry(r, &dep->list_pending, list_pending) {
-+		if (r->trb_dma == event->trans_event.buffer) {
-+			req = r;
-+			break;
-+		}
-+		if (r->status == -COMP_STALL_ERROR) {
-+			dev_warn(dbc->dev, "Give back stale stalled req\n");
-+			ring->num_trbs_free++;
-+			xhci_dbc_giveback(r, 0);
-+		}
-+	}
-+
-+	if (!req) {
-+		dev_warn(dbc->dev, "no matched request\n");
-+		return;
-+	}
-+
-+	trace_xhci_dbc_handle_transfer(ring, &req->trb->generic);
-+
- 	switch (comp_code) {
- 	case COMP_SUCCESS:
- 		remain_length = 0;
-@@ -706,31 +747,49 @@ static void dbc_handle_xfer_event(struct xhci_dbc *dbc, union xhci_trb *event)
- 	case COMP_TRB_ERROR:
- 	case COMP_BABBLE_DETECTED_ERROR:
- 	case COMP_USB_TRANSACTION_ERROR:
--	case COMP_STALL_ERROR:
- 		dev_warn(dbc->dev, "tx error %d detected\n", comp_code);
- 		status = -comp_code;
- 		break;
-+	case COMP_STALL_ERROR:
-+		dev_warn(dbc->dev, "Stall error at bulk TRB %llx, remaining %zu, ep deq %llx\n",
-+			 event->trans_event.buffer, remain_length, ep_ctx->deq);
-+		status = 0;
-+		dep->halted = 1;
-+
-+		/*
-+		 * xHC DbC may trigger a STALL bulk xfer event when host sends a
-+		 * ClearFeature(ENDPOINT_HALT) request even if there wasn't an
-+		 * active bulk transfer.
-+		 *
-+		 * Don't give back this transfer request as hardware will later
-+		 * start processing TRBs starting from this 'STALLED' TRB,
-+		 * causing TRBs and requests to be out of sync.
-+		 *
-+		 * If STALL event shows some bytes were transferred then assume
-+		 * it's an actual transfer issue and give back the request.
-+		 * In this case mark the TRB as No-Op to avoid hw from using the
-+		 * TRB again.
-+		 */
-+
-+		if ((ep_ctx->deq & ~TRB_CYCLE) == event->trans_event.buffer) {
-+			dev_dbg(dbc->dev, "Ep stopped on Stalled TRB\n");
-+			if (remain_length == req->length) {
-+				dev_dbg(dbc->dev, "Spurious stall event, keep req\n");
-+				req->status = -COMP_STALL_ERROR;
-+				req->actual = 0;
-+				return;
-+			}
-+			dev_dbg(dbc->dev, "Give back stalled req, but turn TRB to No-op\n");
-+			trb_to_noop(req->trb);
-+		}
-+		break;
-+
- 	default:
- 		dev_err(dbc->dev, "unknown tx error %d\n", comp_code);
- 		status = -comp_code;
- 		break;
- 	}
- 
--	/* Match the pending request: */
--	list_for_each_entry(r, &dep->list_pending, list_pending) {
--		if (r->trb_dma == event->trans_event.buffer) {
--			req = r;
--			break;
--		}
--	}
--
--	if (!req) {
--		dev_warn(dbc->dev, "no matched request\n");
--		return;
--	}
--
--	trace_xhci_dbc_handle_transfer(ring, &req->trb->generic);
--
- 	ring->num_trbs_free++;
- 	req->actual = req->length - remain_length;
- 	xhci_dbc_giveback(req, status);
-@@ -750,7 +809,6 @@ static void inc_evt_deq(struct xhci_ring *ring)
- static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
- {
- 	dma_addr_t		deq;
--	struct dbc_ep		*dep;
- 	union xhci_trb		*evt;
- 	u32			ctrl, portsc;
- 	bool			update_erdp = false;
-@@ -802,43 +860,17 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
- 			return EVT_DISC;
- 		}
- 
--		/* Handle endpoint stall event: */
-+		/* Check and handle changes in endpoint halt status */
- 		ctrl = readl(&dbc->regs->control);
--		if ((ctrl & DBC_CTRL_HALT_IN_TR) ||
--		    (ctrl & DBC_CTRL_HALT_OUT_TR)) {
--			dev_info(dbc->dev, "DbC Endpoint stall\n");
--			dbc->state = DS_STALLED;
--
--			if (ctrl & DBC_CTRL_HALT_IN_TR) {
--				dep = get_in_ep(dbc);
--				xhci_dbc_flush_endpoint_requests(dep);
--			}
--
--			if (ctrl & DBC_CTRL_HALT_OUT_TR) {
--				dep = get_out_ep(dbc);
--				xhci_dbc_flush_endpoint_requests(dep);
--			}
--
--			return EVT_DONE;
--		}
-+		handle_ep_halt_changes(dbc, get_in_ep(dbc), ctrl & DBC_CTRL_HALT_IN_TR);
-+		handle_ep_halt_changes(dbc, get_out_ep(dbc), ctrl & DBC_CTRL_HALT_OUT_TR);
- 
- 		/* Clear DbC run change bit: */
- 		if (ctrl & DBC_CTRL_DBC_RUN_CHANGE) {
- 			writel(ctrl, &dbc->regs->control);
- 			ctrl = readl(&dbc->regs->control);
- 		}
--
- 		break;
--	case DS_STALLED:
--		ctrl = readl(&dbc->regs->control);
--		if (!(ctrl & DBC_CTRL_HALT_IN_TR) &&
--		    !(ctrl & DBC_CTRL_HALT_OUT_TR) &&
--		    (ctrl & DBC_CTRL_DBC_RUN)) {
--			dbc->state = DS_CONFIGURED;
--			break;
--		}
--
--		return EVT_DONE;
- 	default:
- 		dev_err(dbc->dev, "Unknown DbC state %d\n", dbc->state);
- 		break;
-@@ -941,9 +973,6 @@ static ssize_t dbc_show(struct device *dev,
- 	case DS_CONFIGURED:
- 		p = "configured";
- 		break;
--	case DS_STALLED:
--		p = "stalled";
--		break;
- 	default:
- 		p = "unknown";
- 	}
-diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
-index 76170d7a7e7c..2de0dc49a3e9 100644
---- a/drivers/usb/host/xhci-dbgcap.h
-+++ b/drivers/usb/host/xhci-dbgcap.h
-@@ -81,7 +81,6 @@ enum dbc_state {
- 	DS_ENABLED,
- 	DS_CONNECTED,
- 	DS_CONFIGURED,
--	DS_STALLED,
- };
- 
- struct dbc_ep {
-@@ -89,6 +88,7 @@ struct dbc_ep {
- 	struct list_head		list_pending;
- 	struct xhci_ring		*ring;
- 	unsigned int			direction:1;
-+	unsigned int			halted:1;
- };
- 
- #define DBC_QUEUE_SIZE			16
 -- 
-2.25.1
+Cheers,
+
+David / dhildenb
 
 
