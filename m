@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-100413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D3AB9EB081
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:09:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5829C9EB092
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351BB1889F6E
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:09:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22063161186
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C81E1A2543;
-	Tue, 10 Dec 2024 12:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D6F1A256B;
+	Tue, 10 Dec 2024 12:14:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515A71A0BFB;
-	Tue, 10 Dec 2024 12:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C1E19F13B;
+	Tue, 10 Dec 2024 12:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733832590; cv=none; b=uISrVx8zQvtHL0OlX/R4cXxQzcVRbgvZvuylITcN7ORYX/9Z5iPMX80aX+DeXCkbcfT4RKbdmoHbB7BP3iecVkPwtjn7+awXJz9hIOVDKSIs0vVL+OkjZkmhNBSwvGFQbeT1jyTQOlMSiDfkpT6knAgCv7xtjSDXPkx1OJLwZ7E=
+	t=1733832890; cv=none; b=oR3Ak6Otxsb9wioZBDab9qMdtoHGXcyW4dNiugXn4VD7BbGdk+52ohwE0RuYEPWCCWOvUqbb44ErjBVLK7STFayOh33WzIB3/H3zlwM2vtnbK0H13AFvjeDVXs99ZeDhUYESJIYv/UxkVxJUo3FQJCOuWqb8SCg0Ecvoc0/f2vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733832590; c=relaxed/simple;
-	bh=dWWmt8eL9lAWPMsB8OmsIb0Fd1ntA+doRb3gtxQozm8=;
+	s=arc-20240116; t=1733832890; c=relaxed/simple;
+	bh=vn4DZzOkxHRteqWvMCRUR0+hUhrDn5jRe/hjkhx6U8A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U5wEFGqfZhbwfQ4i277DZ0xe/ctmKls6Vowtd0PD/KPe3UtMMRTQCOHFGbc9QONHQxxQxieffoEiGAPCKgecLTlwhwzcyU7kAd/+83uMI7fGDt2Ab61NR/8SNUo7x8sDxzoA7Woqkr6aQMHxWQvPI4v0pfqzYIpjz/dbkuKtJno=
+	 In-Reply-To:Content-Type; b=JrUosvHqAEcAM7W/I3DzSGqKK9aMEj1Pd2NtPWkFKIijhMaH56ei5Zl8JtUPnmbLrLxxfahZSRkqjZGtDzmylt8xO+7vg35Hk8cdUylmPcu4doLys+DL4DgTn7IOtLD4+eYqqVWlG/7iNPFh/U0As/eMvuMvyMsgWBIHZzo8Ng8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C5DE71063;
-	Tue, 10 Dec 2024 04:10:14 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 248431063;
+	Tue, 10 Dec 2024 04:15:15 -0800 (PST)
 Received: from [10.57.91.204] (unknown [10.57.91.204])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EE44B3F5A1;
-	Tue, 10 Dec 2024 04:09:44 -0800 (PST)
-Message-ID: <cc3b7d5d-bd98-4813-b5ea-71bd019c014e@arm.com>
-Date: Tue, 10 Dec 2024 12:09:42 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3D6933F5A1;
+	Tue, 10 Dec 2024 04:14:46 -0800 (PST)
+Message-ID: <7dc48afa-1ea8-4ed4-8e55-7c108299522b@arm.com>
+Date: Tue, 10 Dec 2024 12:14:44 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,224 +42,150 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "iommu: Clean up open-coded ownership checks" has been
- added to the 6.6-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc: Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- Rob Clark <robdclark@gmail.com>, Yong Wu <yong.wu@mediatek.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20241209112746.3166260-1-sashal@kernel.org>
+Subject: Re: Patch "iommu/arm-smmu: Defer probe of clients after smmu device
+ bound" has been added to the 6.6-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ quic_pbrahma@quicinc.com
+Cc: Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>
+References: <20241209112749.3166445-1-sashal@kernel.org>
 From: Robin Murphy <robin.murphy@arm.com>
 Content-Language: en-GB
-In-Reply-To: <20241209112746.3166260-1-sashal@kernel.org>
+In-Reply-To: <20241209112749.3166445-1-sashal@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 2024-12-09 11:27 am, Sasha Levin wrote:
 > This is a note to let you know that I've just added the patch titled
 > 
->      iommu: Clean up open-coded ownership checks
+>      iommu/arm-smmu: Defer probe of clients after smmu device bound
 > 
 > to the 6.6-stable tree which can be found at:
 >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > 
 > The filename of the patch is:
->       iommu-clean-up-open-coded-ownership-checks.patch
+>       iommu-arm-smmu-defer-probe-of-clients-after-smmu-dev.patch
 > and it can be found in the queue-6.6 subdirectory.
 > 
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
 
-Unless you're also going to backport the rest of the larger redesign 
-which makes this commit message true, I don't think this is appropriate.
+FWIW the correct resolution for cherry-picking this directly is the
+logically-straightforward one, as below (git is mostly just confused by
+the context)
 
-Thanks,
+Cheers,
 Robin.
 
-> commit 302639dd441533017096f8ebccb02440090fb09d
-> Author: Robin Murphy <robin.murphy@arm.com>
-> Date:   Tue Nov 21 18:04:03 2023 +0000
+----->8-----
+diff --cc drivers/iommu/arm/arm-smmu/arm-smmu.c
+index d6d1a2a55cc0,14618772a3d6..000000000000
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@@ -1357,10 -1435,19 +1357,21 @@@ static struct iommu_device *arm_smmu_pr
+   		fwspec = dev_iommu_fwspec_get(dev);
+   		if (ret)
+   			goto out_free;
+  -	} else {
+  +	} else if (fwspec && fwspec->ops == &arm_smmu_ops) {
+   		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
++
++ 		/*
++ 		 * Defer probe if the relevant SMMU instance hasn't finished
++ 		 * probing yet. This is a fragile hack and we'd ideally
++ 		 * avoid this race in the core code. Until that's ironed
++ 		 * out, however, this is the most pragmatic option on the
++ 		 * table.
++ 		 */
++ 		if (!smmu)
++ 			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
++ 						"smmu dev has not bound yet\n"));
+  +	} else {
+  +		return ERR_PTR(-ENODEV);
+   	}
+   
+   	ret = -EINVAL;
+
 > 
->      iommu: Clean up open-coded ownership checks
+> 
+> 
+> commit 62dc845a353efab2254480df8ae7d06175627313
+> Author: Pratyush Brahma <quic_pbrahma@quicinc.com>
+> Date:   Fri Oct 4 14:34:28 2024 +0530
+> 
+>      iommu/arm-smmu: Defer probe of clients after smmu device bound
 >      
->      [ Upstream commit e7080665c977ea1aafb8547a9c7bd08b199311d6 ]
+>      [ Upstream commit 229e6ee43d2a160a1592b83aad620d6027084aad ]
 >      
->      Some drivers already implement their own defence against the possibility
->      of being given someone else's device. Since this is now taken care of by
->      the core code (and via a slightly different path from the original
->      fwspec-based idea), let's clean them up.
+>      Null pointer dereference occurs due to a race between smmu
+>      driver probe and client driver probe, when of_dma_configure()
+>      for client is called after the iommu_device_register() for smmu driver
+>      probe has executed but before the driver_bound() for smmu driver
+>      has been called.
 >      
->      Acked-by: Will Deacon <will@kernel.org>
->      Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
->      Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
->      Signed-off-by: Robin Murphy <robin.murphy@arm.com>
->      Link: https://lore.kernel.org/r/58a9879ce3f03562bb061e6714fe6efb554c3907.1700589539.git.robin.murphy@arm.com
->      Signed-off-by: Joerg Roedel <jroedel@suse.de>
->      Stable-dep-of: 229e6ee43d2a ("iommu/arm-smmu: Defer probe of clients after smmu device bound")
+>      Following is how the race occurs:
+>      
+>      T1:Smmu device probe            T2: Client device probe
+>      
+>      really_probe()
+>      arm_smmu_device_probe()
+>      iommu_device_register()
+>                                              really_probe()
+>                                              platform_dma_configure()
+>                                              of_dma_configure()
+>                                              of_dma_configure_id()
+>                                              of_iommu_configure()
+>                                              iommu_probe_device()
+>                                              iommu_init_device()
+>                                              arm_smmu_probe_device()
+>                                              arm_smmu_get_by_fwnode()
+>                                                      driver_find_device_by_fwnode()
+>                                                      driver_find_device()
+>                                                      next_device()
+>                                                      klist_next()
+>                                                          /* null ptr
+>                                                             assigned to smmu */
+>                                              /* null ptr dereference
+>                                                 while smmu->streamid_mask */
+>      driver_bound()
+>              klist_add_tail()
+>      
+>      When this null smmu pointer is dereferenced later in
+>      arm_smmu_probe_device, the device crashes.
+>      
+>      Fix this by deferring the probe of the client device
+>      until the smmu device has bound to the arm smmu driver.
+>      
+>      Fixes: 021bb8420d44 ("iommu/arm-smmu: Wire up generic configuration support")
+>      Cc: stable@vger.kernel.org
+>      Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
+>      Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
+>      Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
+>      Link: https://lore.kernel.org/r/20241004090428.2035-1-quic_pbrahma@quicinc.com
+>      [will: Add comment]
+>      Signed-off-by: Will Deacon <will@kernel.org>
 >      Signed-off-by: Sasha Levin <sashal@kernel.org>
 > 
-> diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> index 68b81f9c2f4b1..c24584754d252 100644
-> --- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> +++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-> @@ -2658,9 +2658,6 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
->   	struct arm_smmu_master *master;
->   	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
->   
-> -	if (!fwspec || fwspec->ops != &arm_smmu_ops)
-> -		return ERR_PTR(-ENODEV);
-> -
->   	if (WARN_ON_ONCE(dev_iommu_priv_get(dev)))
->   		return ERR_PTR(-EBUSY);
->   
 > diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu.c b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> index d6d1a2a55cc06..8203a06014d71 100644
+> index 8203a06014d71..b40ffa1ec2db6 100644
 > --- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
 > +++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
-> @@ -1116,11 +1116,6 @@ static int arm_smmu_attach_dev(struct iommu_domain *domain, struct device *dev)
->   	struct arm_smmu_device *smmu;
->   	int ret;
->   
-> -	if (!fwspec || fwspec->ops != &arm_smmu_ops) {
-> -		dev_err(dev, "cannot attach to SMMU, is it on the same bus?\n");
-> -		return -ENXIO;
-> -	}
-> -
->   	/*
->   	 * FIXME: The arch/arm DMA API code tries to attach devices to its own
->   	 * domains between of_xlate() and probe_device() - we have no way to cope
-> @@ -1357,10 +1352,8 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
->   		fwspec = dev_iommu_fwspec_get(dev);
->   		if (ret)
+> @@ -1354,6 +1354,17 @@ static struct iommu_device *arm_smmu_probe_device(struct device *dev)
 >   			goto out_free;
-> -	} else if (fwspec && fwspec->ops == &arm_smmu_ops) {
-> -		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
 >   	} else {
-> -		return ERR_PTR(-ENODEV);
-> +		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
+>   		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
+> +
+> +		/*
+> +		 * Defer probe if the relevant SMMU instance hasn't finished
+> +		 * probing yet. This is a fragile hack and we'd ideally
+> +		 * avoid this race in the core code. Until that's ironed
+> +		 * out, however, this is the most pragmatic option on the
+> +		 * table.
+> +		 */
+> +		if (!smmu)
+> +			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
+> +						"smmu dev has not bound yet\n"));
 >   	}
 >   
 >   	ret = -EINVAL;
-> diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-> index bc45d18f350cb..3b8c4b33842d1 100644
-> --- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-> +++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-> @@ -79,16 +79,6 @@ static struct qcom_iommu_domain *to_qcom_iommu_domain(struct iommu_domain *dom)
->   
->   static const struct iommu_ops qcom_iommu_ops;
->   
-> -static struct qcom_iommu_dev * to_iommu(struct device *dev)
-> -{
-> -	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> -
-> -	if (!fwspec || fwspec->ops != &qcom_iommu_ops)
-> -		return NULL;
-> -
-> -	return dev_iommu_priv_get(dev);
-> -}
-> -
->   static struct qcom_iommu_ctx * to_ctx(struct qcom_iommu_domain *d, unsigned asid)
->   {
->   	struct qcom_iommu_dev *qcom_iommu = d->iommu;
-> @@ -374,7 +364,7 @@ static void qcom_iommu_domain_free(struct iommu_domain *domain)
->   
->   static int qcom_iommu_attach_dev(struct iommu_domain *domain, struct device *dev)
->   {
-> -	struct qcom_iommu_dev *qcom_iommu = to_iommu(dev);
-> +	struct qcom_iommu_dev *qcom_iommu = dev_iommu_priv_get(dev);
->   	struct qcom_iommu_domain *qcom_domain = to_qcom_iommu_domain(domain);
->   	int ret;
->   
-> @@ -406,7 +396,7 @@ static int qcom_iommu_identity_attach(struct iommu_domain *identity_domain,
->   	struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
->   	struct qcom_iommu_domain *qcom_domain;
->   	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> -	struct qcom_iommu_dev *qcom_iommu = to_iommu(dev);
-> +	struct qcom_iommu_dev *qcom_iommu = dev_iommu_priv_get(dev);
->   	unsigned int i;
->   
->   	if (domain == identity_domain || !domain)
-> @@ -537,7 +527,7 @@ static bool qcom_iommu_capable(struct device *dev, enum iommu_cap cap)
->   
->   static struct iommu_device *qcom_iommu_probe_device(struct device *dev)
->   {
-> -	struct qcom_iommu_dev *qcom_iommu = to_iommu(dev);
-> +	struct qcom_iommu_dev *qcom_iommu = dev_iommu_priv_get(dev);
->   	struct device_link *link;
->   
->   	if (!qcom_iommu)
-> diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-> index de698463e94ad..23c7eec46fff6 100644
-> --- a/drivers/iommu/mtk_iommu.c
-> +++ b/drivers/iommu/mtk_iommu.c
-> @@ -843,16 +843,11 @@ static phys_addr_t mtk_iommu_iova_to_phys(struct iommu_domain *domain,
->   static struct iommu_device *mtk_iommu_probe_device(struct device *dev)
->   {
->   	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> -	struct mtk_iommu_data *data;
-> +	struct mtk_iommu_data *data = dev_iommu_priv_get(dev);
->   	struct device_link *link;
->   	struct device *larbdev;
->   	unsigned int larbid, larbidx, i;
->   
-> -	if (!fwspec || fwspec->ops != &mtk_iommu_ops)
-> -		return ERR_PTR(-ENODEV); /* Not a iommu client device */
-> -
-> -	data = dev_iommu_priv_get(dev);
-> -
->   	if (!MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
->   		return &data->iommu;
->   
-> diff --git a/drivers/iommu/mtk_iommu_v1.c b/drivers/iommu/mtk_iommu_v1.c
-> index f1754efcfe74e..027b2ff7f33ef 100644
-> --- a/drivers/iommu/mtk_iommu_v1.c
-> +++ b/drivers/iommu/mtk_iommu_v1.c
-> @@ -478,9 +478,6 @@ static struct iommu_device *mtk_iommu_v1_probe_device(struct device *dev)
->   		idx++;
->   	}
->   
-> -	if (!fwspec || fwspec->ops != &mtk_iommu_v1_ops)
-> -		return ERR_PTR(-ENODEV); /* Not a iommu client device */
-> -
->   	data = dev_iommu_priv_get(dev);
->   
->   	/* Link the consumer device with the smi-larb device(supplier) */
-> diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-> index c8e79a2d8b4c6..b5570ef887023 100644
-> --- a/drivers/iommu/sprd-iommu.c
-> +++ b/drivers/iommu/sprd-iommu.c
-> @@ -388,13 +388,7 @@ static phys_addr_t sprd_iommu_iova_to_phys(struct iommu_domain *domain,
->   
->   static struct iommu_device *sprd_iommu_probe_device(struct device *dev)
->   {
-> -	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-> -	struct sprd_iommu_device *sdev;
-> -
-> -	if (!fwspec || fwspec->ops != &sprd_iommu_ops)
-> -		return ERR_PTR(-ENODEV);
-> -
-> -	sdev = dev_iommu_priv_get(dev);
-> +	struct sprd_iommu_device *sdev = dev_iommu_priv_get(dev);
->   
->   	return &sdev->iommu;
->   }
-> diff --git a/drivers/iommu/virtio-iommu.c b/drivers/iommu/virtio-iommu.c
-> index 17dcd826f5c20..bb2e795a80d0f 100644
-> --- a/drivers/iommu/virtio-iommu.c
-> +++ b/drivers/iommu/virtio-iommu.c
-> @@ -969,9 +969,6 @@ static struct iommu_device *viommu_probe_device(struct device *dev)
->   	struct viommu_dev *viommu = NULL;
->   	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
->   
-> -	if (!fwspec || fwspec->ops != &viommu_ops)
-> -		return ERR_PTR(-ENODEV);
-> -
->   	viommu = viommu_get_by_fwnode(fwspec->iommu_fwnode);
->   	if (!viommu)
->   		return ERR_PTR(-ENODEV);
 
 
