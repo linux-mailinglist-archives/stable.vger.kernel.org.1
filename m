@@ -1,153 +1,106 @@
-Return-Path: <stable+bounces-100418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422259EB0BA
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:25:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DBE9EB0C2
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 13:26:50 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BD172844FA
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:25:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC30169E5C
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931561A2C11;
-	Tue, 10 Dec 2024 12:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jhx7NFto"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B15E1A2C0E;
+	Tue, 10 Dec 2024 12:26:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC6D1A2567;
-	Tue, 10 Dec 2024 12:25:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3131A707D;
+	Tue, 10 Dec 2024 12:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733833508; cv=none; b=bvOB/oO3v9pQ2OqYYsbibAKs8rO1yT6KWcuVIzzzoHGFXvMQlu6g26sbzM0mEiYO9jVPdMhFHXQC6yKIxbfm11hUboLPKpR1vI/GgG5e07haUp5J8ZbHeOqJ9E1AzM17/WP/HwEyoiswS1MXsgJlbkyE8W62ZSTcPFVaTnwKf/Y=
+	t=1733833588; cv=none; b=qmmAFtcHOdt8xDkIS/HrFySCzd2bxOi9JAm/POhKggXpnQXxU9CtNlQsehDmUA3m7TN3RvNqDJrbM+5AtAgD9SMbn/NuRhj8g4oPouVSgJCF1eytHoHpvKK/Gh90AMrtFMlB1lc10MMXwrdlZizZcwVnQzTwaStrrkxWSHIIhHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733833508; c=relaxed/simple;
-	bh=PtpvYsMJyPeHOPuFEZLTbXjEUkdt+zwt+rEBAt8uJ3Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LlRmcYgDqIwZ1A0dq8oCmg+FIFxrshEzTkM0ZMkn6AU6+O4YRTtlIdh/ItBPi9calogKGulmRN/fxw41dSfSwEveN0E4qoZKbTsVJYKM2IP4pP5yzCQ2OIIgjTH2IkOwpsP+W559556jMzkgq/8UGHhT2ry/bEJyXCpPokt/hQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jhx7NFto; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733833506; x=1765369506;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=PtpvYsMJyPeHOPuFEZLTbXjEUkdt+zwt+rEBAt8uJ3Y=;
-  b=Jhx7NFtoD8oOjenpzGkRGx0lrQh2+11AMRf7Rz9LgfrQ08N3r6cOF+mt
-   ZUbxd9jbcP4n9t+Z76nwMlK+ZyYajDbcE195wAgQKYXxuurmp+sBoQsVF
-   h4icikCfzd+MUDFYozL4I14lNRC6Hug0LgAADvm4bhwCH8pXF8YVgWdCJ
-   Gesh7Oa5nC+tfzn4JJ39BkHB8rs3xce1/3wx52VjQszN3b9l1WPJcimR2
-   r0V8BEFjwlaOQSDVyfnKdWGkGvYY2IS65hyyqW/b88c8dLSna/GTk3AJ0
-   /+bDRQEF1CgAm6q/FAwkKPb+rOjKygTbaxk6KNZi8ibFcUybw/YXBxZCT
-   Q==;
-X-CSE-ConnectionGUID: +efoj7+5TmGBPqbUZDrADQ==
-X-CSE-MsgGUID: U3h76SIyS8WbH566MOiW+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="44642684"
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="44642684"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 04:25:05 -0800
-X-CSE-ConnectionGUID: kWML3+0tSpilYVrYcaMz1A==
-X-CSE-MsgGUID: 8MwiVfTRSpmx3tv+RKDm8A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,222,1728975600"; 
-   d="scan'208";a="126296168"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.242])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 04:24:59 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Genes Lists <lists@sapience.com>, Sakari Ailus
- <sakari.ailus@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- torvalds@linux-foundation.org, stable@vger.kernel.org,
- linux-media@vger.kernel.org, bingbu.cao@intel.com, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Subject: Re: Linux 6.12.4 - crash dma_alloc_attrs+0x12b via ipu6
-In-Reply-To: <c1805642a6c5da6fef3927c70358c8cb851d2784.camel@sapience.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <2024120917-vision-outcast-85f2@gregkh>
- <c0e94be466b367f1a3cfdc3cb7b1a4f47e5953ae.camel@sapience.com>
- <Z1fqitbWlmELb5pj@kekkonen.localdomain> <87seqvzzg6.fsf@intel.com>
- <c1805642a6c5da6fef3927c70358c8cb851d2784.camel@sapience.com>
-Date: Tue, 10 Dec 2024 14:24:56 +0200
-Message-ID: <87bjxjzpwn.fsf@intel.com>
+	s=arc-20240116; t=1733833588; c=relaxed/simple;
+	bh=1bKp1Azykws4tRv1nJYZOZ53DcWHEwXvVpnb7WdkpS8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b7z18iXbVKyXcDV7woK910zV1ftgJz5ylkUQhVQafry62Xb2mUteC6faPCVu0rWa5LysDd2RAJ8Dv3FoZSFBUUg7uEei+iyFeC4CmfpK/cBrkRhs7cxeVY1hMaXsOeF3GQqZTYEZjGC3+gYnu0yEM5HFkPWgHIowGcJ7yQ0yMsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 564E81063;
+	Tue, 10 Dec 2024 04:26:53 -0800 (PST)
+Received: from [10.57.91.204] (unknown [10.57.91.204])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5EDD53F5A1;
+	Tue, 10 Dec 2024 04:26:23 -0800 (PST)
+Message-ID: <c7446da1-11ca-4621-bc1a-8598e1a5a7fe@arm.com>
+Date: Tue, 10 Dec 2024 12:26:21 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "iommu: Clean up open-coded ownership checks" has been
+ added to the 6.6-stable tree
+To: Greg KH <greg@kroah.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ Rob Clark <robdclark@gmail.com>, Yong Wu <yong.wu@mediatek.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+References: <20241209112746.3166260-1-sashal@kernel.org>
+ <cc3b7d5d-bd98-4813-b5ea-71bd019c014e@arm.com>
+ <2024121015-duke-dispose-ecec@gregkh>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <2024121015-duke-dispose-ecec@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Dec 2024, Genes Lists <lists@sapience.com> wrote:
-> On Tue, 2024-12-10 at 10:58 +0200, Jani Nikula wrote:
->> On Tue, 10 Dec 2024, Sakari Ailus <sakari.ailus@linux.intel.com>
->> wrote:
->> > Hi,
->> >=20
->> > > ...
->> > > FYI 6.12.4 got a crash shortly after booting in dma_alloc_attrs -
->> > > maybe
->> > > triggered in ipu6_probe. Crash only happened on laptop with ipu6.
->> > > All
->> > > other machines are running fine.
->> >=20
->> > Have you read the dmesg further than the IPU6 related warning? The
->> > IPU6
->> > driver won't work (maybe not even probe?) but if the system
->> > crashes, it
->> > appears unlikely the IPU6 drivers would have something to do with
->> > that.
->> > Look for warnings on linked list corruption later, they seem to be
->> > coming
->> > from the i915 driver.
->>=20
->> And the list corruption is actually happening in
->> cpu_latency_qos_update_request(). I don't see any i915 changes in
->> 6.12.4
->> that could cause it.
->>=20
->> I guess the question is, when did it work? Did 6.12.3 work?
->>=20
->>=20
->> BR,
->> Jani.
->
->
->  - 6.12.1 worked
->
->  - mainline - works (but only with i915 patch set [1] otherwise there
-> are no graphics at all)
->
->     [1] https://patchwork.freedesktop.org/series/141911/
->
-> - 6.12.3 - crashed (i see i915 not ipu6) and again it has      =C2=A0
->     cpu_latency_qos_update_request+0x61/0xc0
+On 2024-12-10 12:17 pm, Greg KH wrote:
+> On Tue, Dec 10, 2024 at 12:09:42PM +0000, Robin Murphy wrote:
+>> On 2024-12-09 11:27 am, Sasha Levin wrote:
+>>> This is a note to let you know that I've just added the patch titled
+>>>
+>>>       iommu: Clean up open-coded ownership checks
+>>>
+>>> to the 6.6-stable tree which can be found at:
+>>>       http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>>
+>>> The filename of the patch is:
+>>>        iommu-clean-up-open-coded-ownership-checks.patch
+>>> and it can be found in the queue-6.6 subdirectory.
+>>>
+>>> If you, or anyone else, feels it should not be added to the stable tree,
+>>> please let <stable@vger.kernel.org> know about it.
+>>
+>> Unless you're also going to backport the rest of the larger redesign which
+>> makes this commit message true, I don't think this is appropriate.
+> 
+> It's needed because of:
+> 
+>>>       Stable-dep-of: 229e6ee43d2a ("iommu/arm-smmu: Defer probe of clients after smmu device bound")
+> 
+> That commit.
+> 
+> Is this still not relevant?
 
-Thanks for testing.
+It's not a functional dependency though, just context, and in this case 
+I think a manual resolution is a lot safer to reason about. Lemme just 
+remind myself how to write up a backport patch correctly, and I'll send 
+it out shortly...
 
-There are no changes to either i915 or kernel/power between 6.12.1 and
-6.12.4.
+Cheers,
+Robin.
 
-There are some changes to drm core, but none that could explain this.
+> 
+> thanks,
+> 
+> greg k-h
 
-Maybe try the same kernels a few more times to see if it's really
-deterministic? Not that I have obvious ideas where to go from there, but
-it's a clue nonetheless.
-
-BR,
-Jani.
-
-
---=20
-Jani Nikula, Intel
 
