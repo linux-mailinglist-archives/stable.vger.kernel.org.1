@@ -1,120 +1,131 @@
-Return-Path: <stable+bounces-100407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA3C9EAF94
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:16:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A11A9EAF97
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 12:17:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B443E28A168
-	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:16:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0264B16301E
+	for <lists+stable@lfdr.de>; Tue, 10 Dec 2024 11:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA281215793;
-	Tue, 10 Dec 2024 11:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9F122EA01;
+	Tue, 10 Dec 2024 11:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AmwZR4rj"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EZoLl7eZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A837212D83;
-	Tue, 10 Dec 2024 11:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23A521578E
+	for <stable@vger.kernel.org>; Tue, 10 Dec 2024 11:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733829159; cv=none; b=u8wfxLHBzNoawo+z2ZHlINkDJ3tXU6rP2LgIa/3TR5exkrbssV5OYWZxEWx28/Mthld4cG0rg4bb8kZBMAzS59SHIeW9V6jdzCp8xj45fOsNvvqJBPUjyLfgggLajZcJkiP5vlFRqEqv54b/BDjx5X6WNE/m+T4qnOGwuIWXCXg=
+	t=1733829138; cv=none; b=tvqvtt3RaQ4z1TcNrsDjMqU/dGrBexChqZviNbOQOQ5P3gK/qL+x5PVW5R+SPHjRP432k4JGIk7l0AaCBTosEx/gZBFgARimUDqWXkO0RnI6HqxGWVoz8NsOLjIDjezv5a6wRLx/1z4w28u4G+cBFmyOXqi8riVMG3ce+d05DDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733829159; c=relaxed/simple;
-	bh=O33GV8Sux0/WNmhXmS327Q7pStGSwoMuprQ/gPzNlpE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g5Mh3u444Hy8B3NF1OD7H+qUdHj6BozVL5Ib0XJwv2wPxEAJ/prTAebaEXOsoSxtmqof7yVLPciRoyiTkWvYOUHJlq3caBc0busR/5oA20hi50PxVcY4X8lq8V8Mw9l8luizmVUTorypBII6sc1vfT2q4hOjVvIIO/MvUbshfMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AmwZR4rj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A73C4CED6;
-	Tue, 10 Dec 2024 11:12:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733829158;
-	bh=O33GV8Sux0/WNmhXmS327Q7pStGSwoMuprQ/gPzNlpE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AmwZR4rjcSN0F5zt4czwnZk3TR1G1IPp8cbcK2n6MR+akcq9WILmUtkoG1lgq2AGJ
-	 wKfOHK4VQ2KqzbfvCdqqDpgrMYZqV6rFJB5xnJrB+rrvE8AU6IiAbidBWnd8LnNiTA
-	 41CXjoiF2LwDb+bhcx1V1EOP9cvbSIqjgPyv1bFtvFR3qxMsDH+UMq7m9UfNNR34wx
-	 H5Heumqh4OPPX6GpJk/ILiZ2QxWgNtfKTNhLXScjUsBKBB3Fi3l5ZvDU4GngD+N+Ve
-	 pPsodjDOF43QUwsVcVnVPHCbu7RhuL+aiXMiQW0unsiWvE4wGM7XOEFjlK2852kA6e
-	 kKXTUB2qGfaWg==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5d3d143376dso5087073a12.3;
-        Tue, 10 Dec 2024 03:12:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWJiGcs58X8mLYjuaDFZ6pYakKXfaBrrSehPfGWaSJj4UpsU1gS4DJya06FM8f9yC49U6lItjI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3bHwJNrgWyYu20XiGsKCf0TF4TyrBfBMlavXumftLivXaZCTc
-	wqlLKEN2gfONrjRQt3HCEO4zgqq8DKYEHIQ6pL3OYttX7Kw42ZvYLohzlW/i9prqUHFrc+Q4q/W
-	HF2k2u1MX4yEkZ3bgK+HPGntCtu8=
-X-Google-Smtp-Source: AGHT+IHTarIEHvy+7SBUinFTvo8ADr9FaLU8/YqFdFfqVcpBvLOQaC4xD98d2KrEZ+DMSYy86QHh5dvwzHByv24xmKY=
-X-Received: by 2002:a17:906:308d:b0:aa6:7c36:342d with SMTP id
- a640c23a62f3a-aa69cd3734dmr415162066b.3.1733829157536; Tue, 10 Dec 2024
- 03:12:37 -0800 (PST)
+	s=arc-20240116; t=1733829138; c=relaxed/simple;
+	bh=cdXYw9Tvdme2bWVOGV9Iwh1PzUppg3Era9ijL9C/I1E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=D0gmt/7AoMwDwQ4SIwSZRPhdPjdkWslabPCdryeCajLbm72pNpKSueCwOiT6VM6tIGKF3d6EdXaF8Cul0R3a0dvHwBAFuAHGjp1B65s5ea42Gsygo6cKm89Ww8APxtkPfXe3oxjAx9FHmDIWuLrxCctleMCQ7QHZcPh0/jyJZlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EZoLl7eZ; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21680814d42so415835ad.2
+        for <stable@vger.kernel.org>; Tue, 10 Dec 2024 03:12:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733829136; x=1734433936; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tJaIgxkkHsHoc9bLLW8P0+h7fYufIbJFfYcT4zxXnJo=;
+        b=EZoLl7eZZVzJ7PmLbQ3TQKzmpRiYmOJBoR+6TYYgjAlwF+pMHm/IkWnhXK0chmxwhn
+         TjCgzSH+SzmO0WO8B/HFTB7iHiog13LMp0X/LxA3WG8ux75EguWf71qM00Aqn5HY8OGG
+         3efnqM/CAPvbvEr2VKj9NSyKxGKpdci8HoUt0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733829136; x=1734433936;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tJaIgxkkHsHoc9bLLW8P0+h7fYufIbJFfYcT4zxXnJo=;
+        b=oO2NBf3tr+FG2OVdU74HmQuKcb2FTuMB17/qOZ9SXGiKZK/mD7oDyukJCYwtl7nG4m
+         7/KySUp8XSCx0WOOmq44M7zg+Uz4aEaW3c8MG4qJIApHGFuhuHr5tqMkhS4EsDtvUubU
+         G8PmAzhUAqHdyuCVKVtFI1IHRz2bYshF+wpDroUofrWUC0t9ZpXMmtSijYaibHWKgTUw
+         CgQ+zNrdmN24NDBqVyWzv6B3mSTMCsHugCuNn3vDg2Ama79DUuw0QNeCg8X8kkhowsDn
+         AKC4HOsmdWp+Fr6oT8rx9EL3SoPethGvhe/BfxyQ0BOQbpWgQfcoGiSG/muWusHD5czL
+         2QHA==
+X-Gm-Message-State: AOJu0Ywc3wf+6nlLqwrdG3IMmPnXb6xSoF59w1P6T7lb/c+tGFrtMNJ+
+	7yXVhZr7DY/nniT3kSMqgZIijwM1bHxojh6pnvpaqfii79jeEc+JAAaud95uACJyO8jEjYIzL5w
+	=
+X-Gm-Gg: ASbGncsNnhg8s4nccda5h/sM0HrK+evoXxsjXTZKvOnZ53wU8tBlBo0ivwz68tQOtGb
+	IAcF2dpqyxKzgCJEr10945cUWO0crdUiNgchKqi9ikqU2N4TlOrMrZXFpVex1OajkLy+OQAP555
+	dm3hmi8LwcpBw6SR3BSXQZ6GK1QNup6NggoTiH0/3wGt+wLEySc2d85Q9uWq2YptJefiO8T+Mrb
+	X+pN5O8kMqfAo/MyNMoGGsHk47c7tvzSfCZhugrCo4Y64ODU8oyDqqa
+X-Google-Smtp-Source: AGHT+IH0Zj8QGTOQsI5Ij2Go7AgvGYQL1Y2aqPox5m6XSAOSWnjl/7n2V0IRZzaeCbGPBx35N524XA==
+X-Received: by 2002:a17:902:ec92:b0:215:a172:5fb9 with SMTP id d9443c01a7336-2166a05562cmr61037725ad.48.1733829136152;
+        Tue, 10 Dec 2024 03:12:16 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:4d97:9dbf:1a3d:bc59])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-21659e7b7casm27897715ad.42.2024.12.10.03.12.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Dec 2024 03:12:15 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10.y] modpost: Add .irqentry.text to OTHER_SECTIONS
+Date: Tue, 10 Dec 2024 20:12:11 +0900
+Message-ID: <20241210111211.1895944-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+In-Reply-To: <2024121043-moneyless-stucco-c8f1@gregkh>
+References: <2024121043-moneyless-stucco-c8f1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <037d2532a0f9ef545cf20fee903fc22936ad1bdc.1733806379.git.wqu@suse.com>
-In-Reply-To: <037d2532a0f9ef545cf20fee903fc22936ad1bdc.1733806379.git.wqu@suse.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Tue, 10 Dec 2024 11:12:00 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H5ENE3L126i9uhh2qe_Op1mKeHds6HaQgnUL7F8KS3KAA@mail.gmail.com>
-Message-ID: <CAL3q7H5ENE3L126i9uhh2qe_Op1mKeHds6HaQgnUL7F8KS3KAA@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: output the reason for open_ctree() failure
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, 
-	Christoph Anton Mitterer <calestyo@scientia.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 10, 2024 at 4:53=E2=80=AFAM Qu Wenruo <wqu@suse.com> wrote:
->
-> There is a recent ML report that mounting a large fs backed by hardware
-> RAID56 controller (with one device missing) took too much time, and
-> systemd seems to kill the mount attempt.
->
-> In that case, the only error message is:
->
->   BTRFS error (device sdj): open_ctree failed
->
-> There is no reason on why the failure happened, making it very hard to
-> understand the reason.
->
-> At least output the error number (in the particular case it should be
-> -EINTR) to provide some clue.
->
-> Link: https://lore.kernel.org/linux-btrfs/9b9c4d2810abcca2f9f76e32220ed9a=
-90febb235.camel@scientia.org/
-> Reported-by: Christoph Anton Mitterer <calestyo@scientia.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+The compiler can fully inline the actual handler function of an interrupt
+entry into the .irqentry.text entry point. If such a function contains an
+access which has an exception table entry, modpost complains about a
+section mismatch:
 
-Looks good, thanks.
+  WARNING: vmlinux.o(__ex_table+0x447c): Section mismatch in reference ...
 
-> ---
->  fs/btrfs/super.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
-> index 7dfe5005129a..f6eaaf20229d 100644
-> --- a/fs/btrfs/super.c
-> +++ b/fs/btrfs/super.c
-> @@ -971,7 +971,7 @@ static int btrfs_fill_super(struct super_block *sb,
->
->         err =3D open_ctree(sb, fs_devices);
->         if (err) {
-> -               btrfs_err(fs_info, "open_ctree failed");
-> +               btrfs_err(fs_info, "open_ctree failed: %d", err);
->                 return err;
->         }
->
-> --
-> 2.47.1
->
->
+  The relocation at __ex_table+0x447c references section ".irqentry.text"
+  which is not in the list of authorized sections.
+
+Add .irqentry.text to OTHER_SECTIONS to cure the issue.
+
+Reported-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org # needed for linux-5.4-y
+Link: https://lore.kernel.org/all/20241128111844.GE10431@google.com/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+(cherry picked from commit 7912405643a14b527cd4a4f33c1d4392da900888)
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ scripts/mod/modpost.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 78ac98cfa02d..fd77ac48dcc1 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -951,7 +951,7 @@ static void check_section(const char *modname, struct elf_info *elf,
+ 		".kprobes.text", ".cpuidle.text", ".noinstr.text"
+ #define OTHER_TEXT_SECTIONS ".ref.text", ".head.text", ".spinlock.text", \
+ 		".fixup", ".entry.text", ".exception.text", ".text.*", \
+-		".coldtext"
++		".coldtext", ".irqentry.text"
+ 
+ #define INIT_SECTIONS      ".init.*"
+ #define MEM_INIT_SECTIONS  ".meminit.*"
+-- 
+2.47.1.613.gc27f4b7a9f-goog
+
 
