@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-100553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C92F9EC6C4
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:16:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3907C9EC6C8
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:16:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED5461675B4
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2727188A5DB
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B16D1D8DEA;
-	Wed, 11 Dec 2024 08:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A691D63D6;
+	Wed, 11 Dec 2024 08:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sz2XtYO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfg+iqF8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AB81D6DB6
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991F51C1ADB
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733904945; cv=none; b=jvUBOeT4Jtd4oGD+jcf35eZs2NmdXbhNuKjAc5i4DR9sOnd26bU3r4o7JVMfAeOmlOsTkzd65YjXZqgaoB0ZRlYsNYg0zeDtebLx5pkF7LPXkgL0eBhR61KpFV5aZ9MC5o6HWFIKWbErRz9NofbgqdXtHAWVXRYlOoT+U8UizlA=
+	t=1733904958; cv=none; b=cfZykuqYs6Q2tIgEdiG/ixES48pbjFReHZ08LZGg+1x2Hmip+jWTSPBKFFYqCtG3Su+H2CPF91z19EjqrGSPtnP6FciNbeYI2l2szui+kYtzbhCIX+Cb5qiWfFfMjZyLKcwEW4/jTr48S4AnPIIV0fpjd8uglGB5cbBthuLDOU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733904945; c=relaxed/simple;
-	bh=m2f4m4xbCme+yyX3ZmXYBYJBhLSHYI19qZUwuq6EIrY=;
+	s=arc-20240116; t=1733904958; c=relaxed/simple;
+	bh=eiyPGg+HEjtQ7nC3Q6a1TNQ8wCFZCNLrvy8LsC78rrs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QGYhPwdMXnPrFcnonStBa3ZcNTYyK1MC+fttt1nYnPAyxznMBGS7wn/NQkT7GE/PXue9GzvnwUePzhfjdkA0o6lpuz76+VBJYu1P//VMabFSvih+CtIQFSguNxTTDIpjmNY8O58mOoKKqeVogZsQsQjyqynZj2NAkNr5sz/AzyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sz2XtYO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC3CC4CEEB;
-	Wed, 11 Dec 2024 08:15:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZavQzCotDkn4kdfuszkprBejMfTG/RkEAKMwiRdwtYLHn7r0Y2qKGFhTHZ7XlGVrYj5pW3OikT3tyhPFzmvjZ5kfgHQubic2GwujcSzW6FLFV61fgjOSjQYuDcolX2xlPtJErsjbrFClOWV1zXLI4XHha9NJp3vPK3W01+r/6fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfg+iqF8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23997C4CED2;
+	Wed, 11 Dec 2024 08:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733904944;
-	bh=m2f4m4xbCme+yyX3ZmXYBYJBhLSHYI19qZUwuq6EIrY=;
+	s=korg; t=1733904958;
+	bh=eiyPGg+HEjtQ7nC3Q6a1TNQ8wCFZCNLrvy8LsC78rrs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sz2XtYO5RDWEGa2dWfKBJZr4KwlGkzUKkahiXwIFTrkRcy/LsHVGTZ7GyXGN40P0i
-	 t5geCy4EZ9At88ezn6/zT4qSHTyVuwh7DgDRhPVJMGGt5FtUJi7EqXBXHDAluwv4kM
-	 v3Uzs33fG1+jQ6Qmaf7U5v5GAarnvvXgNB2jcZSc=
-Date: Wed, 11 Dec 2024 09:15:08 +0100
+	b=nfg+iqF80+jA1aF/+hHjhOu+1bhDQ3KU2l08HLvrafG15NIBY38xJnaswZhT8vIWs
+	 ZIbimEQnJeao5qc5SBVgM7yxI63HMu9OeS710cjLd1YOnayyrRBor63y4VTsTqLPVD
+	 iaVXsQBbZeDZO1gldDKImdLu31/dO6LWUeNUMUPg=
+Date: Wed, 11 Dec 2024 09:15:22 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: jianqi.ren.cn@windriver.com
-Cc: rand.sec96@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in
- ssb_device_uevent()
-Message-ID: <2024121104-tweak-recess-1971@gregkh>
-References: <20241206093256.939765-1-jianqi.ren.cn@windriver.com>
+Cc: kory.maincent@bootlin.com, stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] dmaengine: dw-edma: eDMA: Add sync read before
+ starting the DMA transfer in remote setup
+Message-ID: <2024121117-liquefy-unveiling-dad1@gregkh>
+References: <20241206032214.3089315-1-jianqi.ren.cn@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,12 +54,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241206093256.939765-1-jianqi.ren.cn@windriver.com>
+In-Reply-To: <20241206032214.3089315-1-jianqi.ren.cn@windriver.com>
 
-On Fri, Dec 06, 2024 at 05:32:56PM +0800, jianqi.ren.cn@windriver.com wrote:
-> From: Rand Deeb <rand.sec96@gmail.com>
+On Fri, Dec 06, 2024 at 11:22:14AM +0800, jianqi.ren.cn@windriver.com wrote:
+> From: Kory Maincent <kory.maincent@bootlin.com>
 > 
-> [ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
+> [ Upstream commit bbcc1c83f343e580c3aa1f2a8593343bf7b55bba ]
 
 Please cc: all relevant people on backports.
 
