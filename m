@@ -1,115 +1,114 @@
-Return-Path: <stable+bounces-100565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BC49EC72C
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:28:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D6F9EC72F
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:29:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04D77167C52
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:28:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18598188C0C6
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01CA1D89E5;
-	Wed, 11 Dec 2024 08:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41441D89E5;
+	Wed, 11 Dec 2024 08:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QJkA2TBl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VzreI+g9"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF64B1D88D0
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6862451FC
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733905726; cv=none; b=PL/0WBwMGaBeSxbiBcRvUZ0cLkCmhhvJ/kzxr4Havy1oMXKLDUjdqTDv8QMQJ9qurE/WtcWp7UFomjJETxqSfQaGpW01x08WsJQYf1Ns79jzOhbi4FYlJA6Rym1N3gCAVoT/xV7RQ+3kcX3H6e+r+osqFhwoq3Otd0stSPGT2kw=
+	t=1733905764; cv=none; b=js8TakXSgBsl5YBQi16Um+We3fIb1ChQ5LqUljfHj/S5Kdy9Gs0zPicyK031+nv22kNv2TE2pCvL+EWF99JyZoU3HeFgVVukmFmvO9VKOPS5ZQYAVIDsn2QEUihh9e/qqO0tkGYf9+8vPTZqtBKhwkYepDaLZ8UyF+D7bVJBXyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733905726; c=relaxed/simple;
-	bh=BFOYuFhtvtDYWfmlxnI2AY6O2b9ldPllhRIaq/4E4vc=;
+	s=arc-20240116; t=1733905764; c=relaxed/simple;
+	bh=R4szLSg7o9Guxciz1qLpxlC76XLvYyNi0NRgU8nbZf4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uJnsgZKd79WSdtt8OGAlW/2FR2n/xlKDJL/Yv4pOUMpW4ItU5uobKqvX/adhyoN40efmnBO/YPO4IrpotaWJFwfxMdwzoj9UlyfT+EJKHuLXw+3JLVLsOFNL84xiMfewJ5sFT8448Ud9wWceq6YpmDlGDIZVjq4BpSo7pUNq4UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QJkA2TBl; arc=none smtp.client-ip=170.10.133.124
+	 To:Cc:Content-Type; b=ht8jLrUfp42hLbYaLdPkGqS4KOUzZRdrStx733nYQnqASVhtJKtJ4BYh8InfemT7nsTXRC5bLIvemZxeY/Q/tDrNPdGtpbet5lLyvK+1YtJLkIU5zNU5WmwmzDrHk/dbEpHpjJPd0YEr2AiGD+kiic9/G4jYVqD7qL7PnHIBdI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VzreI+g9; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733905724;
+	s=mimecast20190719; t=1733905761;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dOw56W8YxIfiReFZsGYyvJKWKJovUjEOoizfWq5kNBo=;
-	b=QJkA2TBl2JmZfzjVuEPi3ZouHJ/Oxhq3wSzVhwgVu0FxndJVDdD1VMT0GW1juKWbeN/FTy
-	OpN8YEnlcjYOekX0ng5edf6sFJLPt6/wSxC2mlgkpHAsUpaSRtYUnlXCQwp7U4VitNMmGT
-	MRPO6GRsiVQSPXnoy/YwPQFo4jyZ+S4=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=9P8Kl1CUgavUuhBp4A/L0+DJnZZsDfyH+DkoTf/OnNM=;
+	b=VzreI+g93Xk96lLBeKCr8cMbBlEARwyuDv5phJR1bMQNd7MyWwV8JxDJmj71QGi06Fzbvm
+	hfb24is+fmMAoLEFj5LJEbHtom97azsi2voAZPjaeWURBbw4xqD3imZwbsYD54/9BHqnSK
+	Re67hmKhjwpfhwLx7yQLOKWrhvjNryM=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-hAW-mHn6MC2Ru8LTTSobLw-1; Wed, 11 Dec 2024 03:28:42 -0500
-X-MC-Unique: hAW-mHn6MC2Ru8LTTSobLw-1
-X-Mimecast-MFC-AGG-ID: hAW-mHn6MC2Ru8LTTSobLw
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-5d3dbddb891so675840a12.0
-        for <stable@vger.kernel.org>; Wed, 11 Dec 2024 00:28:42 -0800 (PST)
+ us-mta-77-A5jsY-nCO4uZ_NTiDyROOw-1; Wed, 11 Dec 2024 03:29:20 -0500
+X-MC-Unique: A5jsY-nCO4uZ_NTiDyROOw-1
+X-Mimecast-MFC-AGG-ID: A5jsY-nCO4uZ_NTiDyROOw
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5d3f3d6a999so3411891a12.0
+        for <stable@vger.kernel.org>; Wed, 11 Dec 2024 00:29:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733905719; x=1734510519;
+        d=1e100.net; s=20230601; t=1733905757; x=1734510557;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dOw56W8YxIfiReFZsGYyvJKWKJovUjEOoizfWq5kNBo=;
-        b=iKGkNQrEyeaVdFHS+7NCOQvKxhA9Ngnha/X5MIyTcn4PkKWM9E0oicUHr1ZuawoM3G
-         lNoX9yrMuYVVLePlaaTpGiWeTvNPC89oEZ0mODRJR1CpRThXYH4KT57V3fsHnVIxE+ky
-         kRvd2cEL82ulDqxxNAq/oanOYahnoibpTRLPQ6l22gqeRJQUN1m0/lK800Mkwad/hhT2
-         PhPpl2p7/2rILz4/mfK5W1/mUGYG7e9o2Ud/94DXLs8a0RjUuz+aj3F/wSQw1P9AJTt0
-         U3b32eJCO8uDdWmE34eDZedAnQpOYicDWeecixCUYe7rA/sn7gb/oDVUZkAXQsBEH+dT
-         LsIA==
-X-Gm-Message-State: AOJu0YwmEc/e1FoyeZNFEK/bZBbVirMJHwai3QulqD0Q25YkJQ5EP0tC
-	g16cRGDzPmIuLEVky+jCgVp9xW7UCrEaj/+IuHWaNPJ68JYAl5c+u0TqGJCV4l9wmPL/3wmAWzJ
-	x2wPerNJ0RpH7nFh/p9SS2i9gPH81LdHI7+ooJkYVPOo6hwU0aQUq/9cWtWHEmYa/MF2bJRsdA8
-	vFuDVzwAeNFcm9t++qVzSlGDWq/rDroj+C09Zwh+M=
-X-Gm-Gg: ASbGncs14cYDKPA+HTBuzaQx+MGWWSMH39f1b3GasOiJz43JEdlLDIu+SkoiCemxf1+
-	ut6+xNEBSh1adAMr55pzGdVcYm+3I6iEMzipVDTv9By9VqQ==
-X-Received: by 2002:a05:6402:2553:b0:5d0:9c3b:faf4 with SMTP id 4fb4d7f45d1cf-5d4331b139amr1616285a12.7.1733905718582;
-        Wed, 11 Dec 2024 00:28:38 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEeXbRedX1v7marMM6HDegBZwv2e3Vnu601ZHkgRQv9WOeGC+9m9be2NOjhMgjKCuJG+9jWUPsifIZdnqFV4pA=
-X-Received: by 2002:a05:6402:2553:b0:5d0:9c3b:faf4 with SMTP id
- 4fb4d7f45d1cf-5d4331b139amr1616262a12.7.1733905718204; Wed, 11 Dec 2024
- 00:28:38 -0800 (PST)
+        bh=9P8Kl1CUgavUuhBp4A/L0+DJnZZsDfyH+DkoTf/OnNM=;
+        b=DINQy62VrTEL5F/GU8qSIBWXSRhN3UunxVvt6mzW22zaCpTOeOQOcWJdIQRabb5i31
+         0THGjfv5FqlKlw8I6xrgZxUu9cJccx2b8W6UB0B1UptEJVtqXWQY0jwVyqkMTqXHBENm
+         0OP2aY6RyPDoCtIcqOpJm6sTSbNvcoz9UiuvBx14DY0yKSPdd50VVEDxj/yTf3Gmqrtq
+         zYsaoXSxGPkiDY+JJwsWfmoAaWxzqj94my9SZFx1l4/BNGc1CsbpWitTbsfftkKtKDEF
+         kJV+GIGSZFMGXysqWM/9KoO1i2XAFmft4JBNdo0H2UX91LTPsLXrxuHUq6xWDHr++Tjw
+         aZAg==
+X-Gm-Message-State: AOJu0YyyMz5TU2w1JD1Zbp+MX7j1I5QHpoHbKzLcQ+KB9ofUHrqNr6/H
+	v2FB1fQtELuD88dOLG70nAafEt0eQyAPtp08ivwhdsg23dMndanxTcv4q2grpxcux/X/9E+cIIz
+	37feLWL5xOAGGk8ltp1TEVq4HrljnWtYR1mbaZjO22VIzpqWSyA1nhcE3+8RtnPPS9eiF75Pxyy
+	mcrCXe7NfPNwbWDm73FgK7e6FQitYUAIXyVfqKbb4=
+X-Gm-Gg: ASbGncsxiYUaSjNlhPCLRNZVBkbQ0ihMS98amioosJYEzHF88SCnMCvjE3dNnEoavZq
+	NZ7FSxd4+kgz58wrJOo0DvQaC8x2k8/whe2shVc/tpWpIf1Zy
+X-Received: by 2002:a05:6402:280f:b0:5d3:e63c:7d71 with SMTP id 4fb4d7f45d1cf-5d43308c2e0mr1630523a12.11.1733905757086;
+        Wed, 11 Dec 2024 00:29:17 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGEpBTJWl9nKNpWO/b65zMZahOx9Qd+drkXSPRugZYhegQQykHJADfxrolJE7FNyNQCA5jHRITmucSji2cWmlY=
+X-Received: by 2002:a05:6402:280f:b0:5d3:e63c:7d71 with SMTP id
+ 4fb4d7f45d1cf-5d43308c2e0mr1630506a12.11.1733905756685; Wed, 11 Dec 2024
+ 00:29:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210213218.3591826-1-sashal@kernel.org>
-In-Reply-To: <20241210213218.3591826-1-sashal@kernel.org>
+References: <20241210213645.3595558-1-sashal@kernel.org>
+In-Reply-To: <20241210213645.3595558-1-sashal@kernel.org>
 From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date: Wed, 11 Dec 2024 09:28:26 +0100
-Message-ID: <CAO-hwJL4B298XY0Fnhg5R-U7yFQVC3eL0g+5PncTOS0LqymkOQ@mail.gmail.com>
+Date: Wed, 11 Dec 2024 09:29:03 +0100
+Message-ID: <CAO-hwJK_4EXq6GoLx9GGrc4W4rNpcu=iGqfaPjd6M3xs5Vsz7g@mail.gmail.com>
 Subject: Re: Patch "HID: bpf: Fix NKRO on Mistel MD770" has been added to the
- 6.1-stable tree
+ 5.15-stable tree
 To: stable@vger.kernel.org
 Cc: stable-commits@vger.kernel.org, bentiss@kernel.org, 
 	Jiri Kosina <jikos@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 10, 2024 at 10:32=E2=80=AFPM Sasha Levin <sashal@kernel.org> wr=
+On Tue, Dec 10, 2024 at 10:36=E2=80=AFPM Sasha Levin <sashal@kernel.org> wr=
 ote:
 >
 > This is a note to let you know that I've just added the patch titled
 >
 >     HID: bpf: Fix NKRO on Mistel MD770
 >
-> to the 6.1-stable tree which can be found at:
+> to the 5.15-stable tree which can be found at:
 >     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
 it;a=3Dsummary
 >
 > The filename of the patch is:
 >      hid-bpf-fix-nkro-on-mistel-md770.patch
-> and it can be found in the queue-6.1 subdirectory.
+> and it can be found in the queue-5.15 subdirectory.
 >
 > If you, or anyone else, feels it should not be added to the stable tree,
 > please let <stable@vger.kernel.org> know about it.
->
 
 Please drop this patch (and in all previous releases).
 
@@ -118,15 +117,16 @@ drivers/hid/bpf/progs on kernels before 6.11, and even then, it makes
 very little value as they are also tracked in a different userspace
 project (udev-hid-bpf).
 
-FWIW, HID-BPF was introduced in v6.3, so it's even more surprising to
-see such patch added here.
+FWIW, HID-BPF was introduced in v6.3, so it's even more surprisingly
+surprising to see such a patch added here.
 
 Cheers,
 Benjamin
 
 >
 >
-> commit 6801fc048d7f85f5a555f46e1961f9c64e33fd8e
+>
+> commit cd9ab7edb94431f02c68383c089dc12fbbe00475
 > Author: Benjamin Tissoires <bentiss@kernel.org>
 > Date:   Thu Oct 17 18:34:58 2024 +0200
 >
