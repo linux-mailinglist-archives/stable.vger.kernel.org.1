@@ -1,280 +1,324 @@
-Return-Path: <stable+bounces-100566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8409EC72D
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:29:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BC49EC72C
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D912D167BF9
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:29:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04D77167C52
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD4E1D88D3;
-	Wed, 11 Dec 2024 08:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01CA1D89E5;
+	Wed, 11 Dec 2024 08:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QJkA2TBl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A062451FC
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:29:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733905747; cv=fail; b=EJN1c7xR8qhCyad7aHgcfP0kSKIExY9eiEbLXcPQQB1327+u/fdb82f6ZpMS9GoamNrO8LNNfcNGCFxVYJcUZ4nbpv3wHdFxLTedPSrVSAe6pyjXegkU7BDxCpOVxt5wVSlJEAyWJLGVDaomD9kBayPPIPjgevOdB9szHXc5XVo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733905747; c=relaxed/simple;
-	bh=7E5ykwjS72gzTrNmVIoQB7KLF08+kpwvwC3ehdCsVY8=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=hmyP6e9OUF9lP73lvhrLCBGM0djyiTwuiySU8BxvhGZWe9Wf8eXkrCYlJF1xqBxDDlr0fvQE6RA+WPYF857gVsaBRz25HtuYzN1Y3YChVcFaQ8Fg5HNIX6G0499QUpONR93+OHUs8xV/i8NcyUBg7P5g+6SB/u0Nfb6MJ7T6c6Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BB50s9v027438;
-	Wed, 11 Dec 2024 08:28:56 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2171.outbound.protection.outlook.com [104.47.57.171])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cwy3kxj8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Dec 2024 08:28:56 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uJti5hl0BgLo8dY1P9N8c/3WjV2nXGf/8Qv7DNqeJimPFMS9R8DV2nidbywjaQRc7sHkKV0whi7/vPC1sKfNwG+x2d200SZXIBTglXRLXX2M6auWy6hfYkO2rpSK+9WQitZE44MQ0rYoG4hps+mj7Gh04dMj+dBz9U6D4ZW3pZMpVfWuzLM5Jx8ceAc8kHoG9ypQlvlT+JsDcSuO3iWXaYhxAZHFyInTRoeQhc10Y+wQ/mNd5AVDXlTNN7SPB7Ba73rDiRMqxRzdhd4ZMA3EYuEdfJDzddaz927jQ27ArOLf7XittQ8FA4qf4u9pmNotO4Rp3GWZPvKAPv8x+76wFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+E7HrpWVzmb7RjwFrsySjYL91Y7hEGEtIsb2DiNu0Q0=;
- b=ZNbh53Pi3giMNnEbf12Wo25kWV2mShRM+i9iMlWwcP5TdV0pBCvHm1fBtBu1Ebcq2PxGGE4YVE36zYv2Ga3mYwcaKl68h52r2ZCTdSUQwjFlGLBJsmrh9dMJmOy75Pkrtb7ktSvS5keyU99YGIpyQ9GtZkusJkkcSH09qeI+TRdvee/nHoQ5rNk85/6TqmwQ+s2eK707TCVOZEeJEzrOlhvXBaja1lhV3aFLJYqB7ZNxz/LeaQRLF0aQG6uY9esA3sxkF1EY/RBWRKyVjp4nF0C5A3Q1WMYYSsC+dJUIeOHuL3F6+Un+qUKPt4mNKVCtarH25k0jZPLtL/Ch7h2Ozg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
-Received: from BN9PR11MB5354.namprd11.prod.outlook.com (2603:10b6:408:11b::7)
- by CH3PR11MB7179.namprd11.prod.outlook.com (2603:10b6:610:142::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Wed, 11 Dec
- 2024 08:28:51 +0000
-Received: from BN9PR11MB5354.namprd11.prod.outlook.com
- ([fe80::5e9:ab74:5c12:ee2d]) by BN9PR11MB5354.namprd11.prod.outlook.com
- ([fe80::5e9:ab74:5c12:ee2d%4]) with mapi id 15.20.8251.008; Wed, 11 Dec 2024
- 08:28:51 +0000
-From: libo.chen.cn@eng.windriver.com
-To: stable@vger.kernel.org
-Cc: viro@zeniv.linux.org.uk, stefanb@linux.ibm.com, zohar@linux.ibm.com,
-        sashal@kernel.org
-Subject: [PATCH 5.15.y] ima: Fix use-after-free on a dentry's dname.name
-Date: Wed, 11 Dec 2024 16:28:24 +0800
-Message-Id: <20241211082824.228766-1-libo.chen.cn@eng.windriver.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0375.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:79::11) To BN9PR11MB5354.namprd11.prod.outlook.com
- (2603:10b6:408:11b::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF64B1D88D0
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733905726; cv=none; b=PL/0WBwMGaBeSxbiBcRvUZ0cLkCmhhvJ/kzxr4Havy1oMXKLDUjdqTDv8QMQJ9qurE/WtcWp7UFomjJETxqSfQaGpW01x08WsJQYf1Ns79jzOhbi4FYlJA6Rym1N3gCAVoT/xV7RQ+3kcX3H6e+r+osqFhwoq3Otd0stSPGT2kw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733905726; c=relaxed/simple;
+	bh=BFOYuFhtvtDYWfmlxnI2AY6O2b9ldPllhRIaq/4E4vc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uJnsgZKd79WSdtt8OGAlW/2FR2n/xlKDJL/Yv4pOUMpW4ItU5uobKqvX/adhyoN40efmnBO/YPO4IrpotaWJFwfxMdwzoj9UlyfT+EJKHuLXw+3JLVLsOFNL84xiMfewJ5sFT8448Ud9wWceq6YpmDlGDIZVjq4BpSo7pUNq4UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QJkA2TBl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733905724;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dOw56W8YxIfiReFZsGYyvJKWKJovUjEOoizfWq5kNBo=;
+	b=QJkA2TBl2JmZfzjVuEPi3ZouHJ/Oxhq3wSzVhwgVu0FxndJVDdD1VMT0GW1juKWbeN/FTy
+	OpN8YEnlcjYOekX0ng5edf6sFJLPt6/wSxC2mlgkpHAsUpaSRtYUnlXCQwp7U4VitNMmGT
+	MRPO6GRsiVQSPXnoy/YwPQFo4jyZ+S4=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-hAW-mHn6MC2Ru8LTTSobLw-1; Wed, 11 Dec 2024 03:28:42 -0500
+X-MC-Unique: hAW-mHn6MC2Ru8LTTSobLw-1
+X-Mimecast-MFC-AGG-ID: hAW-mHn6MC2Ru8LTTSobLw
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-5d3dbddb891so675840a12.0
+        for <stable@vger.kernel.org>; Wed, 11 Dec 2024 00:28:42 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733905719; x=1734510519;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dOw56W8YxIfiReFZsGYyvJKWKJovUjEOoizfWq5kNBo=;
+        b=iKGkNQrEyeaVdFHS+7NCOQvKxhA9Ngnha/X5MIyTcn4PkKWM9E0oicUHr1ZuawoM3G
+         lNoX9yrMuYVVLePlaaTpGiWeTvNPC89oEZ0mODRJR1CpRThXYH4KT57V3fsHnVIxE+ky
+         kRvd2cEL82ulDqxxNAq/oanOYahnoibpTRLPQ6l22gqeRJQUN1m0/lK800Mkwad/hhT2
+         PhPpl2p7/2rILz4/mfK5W1/mUGYG7e9o2Ud/94DXLs8a0RjUuz+aj3F/wSQw1P9AJTt0
+         U3b32eJCO8uDdWmE34eDZedAnQpOYicDWeecixCUYe7rA/sn7gb/oDVUZkAXQsBEH+dT
+         LsIA==
+X-Gm-Message-State: AOJu0YwmEc/e1FoyeZNFEK/bZBbVirMJHwai3QulqD0Q25YkJQ5EP0tC
+	g16cRGDzPmIuLEVky+jCgVp9xW7UCrEaj/+IuHWaNPJ68JYAl5c+u0TqGJCV4l9wmPL/3wmAWzJ
+	x2wPerNJ0RpH7nFh/p9SS2i9gPH81LdHI7+ooJkYVPOo6hwU0aQUq/9cWtWHEmYa/MF2bJRsdA8
+	vFuDVzwAeNFcm9t++qVzSlGDWq/rDroj+C09Zwh+M=
+X-Gm-Gg: ASbGncs14cYDKPA+HTBuzaQx+MGWWSMH39f1b3GasOiJz43JEdlLDIu+SkoiCemxf1+
+	ut6+xNEBSh1adAMr55pzGdVcYm+3I6iEMzipVDTv9By9VqQ==
+X-Received: by 2002:a05:6402:2553:b0:5d0:9c3b:faf4 with SMTP id 4fb4d7f45d1cf-5d4331b139amr1616285a12.7.1733905718582;
+        Wed, 11 Dec 2024 00:28:38 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEeXbRedX1v7marMM6HDegBZwv2e3Vnu601ZHkgRQv9WOeGC+9m9be2NOjhMgjKCuJG+9jWUPsifIZdnqFV4pA=
+X-Received: by 2002:a05:6402:2553:b0:5d0:9c3b:faf4 with SMTP id
+ 4fb4d7f45d1cf-5d4331b139amr1616262a12.7.1733905718204; Wed, 11 Dec 2024
+ 00:28:38 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5354:EE_|CH3PR11MB7179:EE_
-X-MS-Office365-Filtering-Correlation-Id: a90e3062-2b3c-4a87-a213-08dd19bdd77d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?u+zeJLO29BmLsLkc1YqaS5kafqC2roXcqgM6ITQguTiWGBTeefv/egleKeO/?=
- =?us-ascii?Q?l6T6wXc3TcbZgmLcLKrrceHtFz5QC51FXQYk6Da0lpW6tIA455gYQD9jKEp2?=
- =?us-ascii?Q?HSgdhhAy+LVmzyhDTkXsWPImayqSWUdDdQOWQdxpuFZdMSjxyDVtTTd20I0O?=
- =?us-ascii?Q?BE0jG6of2MccQ0/mWEbd1usQFJtYRPWwuf+6U3rUDm+Olq61Rza9/vEj83Oe?=
- =?us-ascii?Q?bNZ4vWys8eBSGtx+oY28bx5jLh49dWAr5+McD+nsuQL2Yl0fgAWMzB7FuSRP?=
- =?us-ascii?Q?YilDTXjhDelsqtWtNS8kGLzl/SNDP8XZwMST6Mpz3bkfa9+L7HXKuSeLZU5+?=
- =?us-ascii?Q?2VaZcw5NfFXAvHxv33CBVnGRoJlVQYILdWNp6+rO2TEaljWISQE8gotby6hc?=
- =?us-ascii?Q?B9yrmvdAHXM/nEYzE6Ud7K+5K/+mvUYRn/sSWS1Ru+SYlN3X7hDW8eo0vA0L?=
- =?us-ascii?Q?9MlWDJqr8ofXSKC3+4Rw1ifXet8ixhu5IRNXwj+56NOMpXWlXr6415WFWU9q?=
- =?us-ascii?Q?DM58uew4WVvmbWTnwt5mKxk+laNKtvNu4TAx8zYwfi6XllBb0rRkZWZQW0Ij?=
- =?us-ascii?Q?vXfIyaY6pkGsfzgHGgAM8thM1zv7pZ4MbmN3bMB7qoK7EavU/FQPm7FMfOHu?=
- =?us-ascii?Q?Mu/8hmLCovZdml/6xMMxVxM/3OWxEzat5DUSxRvatjPRC7WhBbq6kP7a1jTI?=
- =?us-ascii?Q?AuJ161NZteG8v1seOniYxqQir4rKfY9LeJzC05vn9erP95GbuP80J+XGEjF3?=
- =?us-ascii?Q?632dGid0CVfWAb3oV1iJ7+3EC01hFhNyY+kEmAPLK2DWhvxMphKMPNWKWQEQ?=
- =?us-ascii?Q?5RnEQk5Z+3C1zQcZq4XUZNSqO7f9y6WFFlHhzOmz8uuxrIesmNbdUrbF5eRG?=
- =?us-ascii?Q?VKHD/Mn1Pqg6I0GulDDziByVKj09McSRJbwQ5c+TIby7NOv8YJawT8DnJlki?=
- =?us-ascii?Q?6b5mgtjo2sZxKOpwWXMQPbNGRG1PN+BQ8tsW8jLpn8Md+bFXfV/fCzAcdKD8?=
- =?us-ascii?Q?VmXsYq+H6NB6nAD2XhRQP5yWxUo3eKaAe5+p5akwqsPYS3+1P4Vjlw+Dd2jw?=
- =?us-ascii?Q?YVGIq9xgIaywhlhzcYpP5GU5MZ/6YFB8s2Gx6FxNblXmpXv1LPwuhfYyGFxo?=
- =?us-ascii?Q?oTbMau87Jd1HxlrJvtkPD6/K5sjUSUM2kQanDGYNWg+DnHKXpnzG35XspFLw?=
- =?us-ascii?Q?0Bdp79iSx2l6wd0xRMCGEp55s5d0U6b9L8xHKrHkaPQ7rj9UyzZEcxrK0PLU?=
- =?us-ascii?Q?TI5FgeOI6mcMWb/lMoDgkGAfDADWfk1uszR5ZKSwTbpUWRcLKSXKrktgcClg?=
- =?us-ascii?Q?Bm63xCs98nwVhAb6zDFNbuv+xDMBIh621C/6Zle8/cGx8c5jQOGlo7KVSuns?=
- =?us-ascii?Q?CNI6O5DtPeJrMRQnPubOeeyDrGVUuGI8m+t9pi8yvGVz/LxKeA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5354.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QZt7kCeSWCj/zJXcBAn4osPWER8trM429pUQTfzSridhjQmDZxV4ylHAte5k?=
- =?us-ascii?Q?VTu8Y25XklJgJFieJHmkWIHifjg+vfmlG2nR3PWyArR25fn3ZxhFZCfYJar/?=
- =?us-ascii?Q?oeCbAc3fhEE8SdbVj1hWqEIHwVAl/xc2RFV/k8BysQ4InlmbX/qfA4ZJCE4X?=
- =?us-ascii?Q?eX04HhyMMk602XfPSxM7btbs48LL5MKDeSa9abvGb/sAcQCIrFRdQkMNQwuP?=
- =?us-ascii?Q?5AAUNR4QPU08aDMLJvkucVYVfn1QWwbLVyBRn40qLGaKCOW/t4I+wuW7TW81?=
- =?us-ascii?Q?ICIrFw4Y5z+Lj/n4lWRbxG2e8ZMbrmUJfr3k6GamYUL/jIbzNjF+qF5Rjg8y?=
- =?us-ascii?Q?MNl4RJX5k8fpAQvgcRw44PefFCXg7qixjNrrg3cfKvgOFoCQDNlW8Q3+jIHG?=
- =?us-ascii?Q?gERV2t4zAChZJ/PWJdKqFOSBT0mPlAMVZL77uQ2vBK/TdLDwF3F6fNd0Yu4w?=
- =?us-ascii?Q?zrqJy+AQ2j1dP2CWzTlbmR14CEzjhqDjR1/WqIq+73xDuZaooSL3Jori0yYh?=
- =?us-ascii?Q?vx2U3MK4MQSXe4rqRvz6wu/Zlso5bto5PUeDYBxfFtyJyLbV7ZGAWDn9TbxJ?=
- =?us-ascii?Q?+1w3f/63hvdpJ1ZT/kSCZQHx89ImBM22EGNK+WR6YLi63NKw+GuAjYI0Obik?=
- =?us-ascii?Q?YIyzL+IDtw3aJltQDaCVXnPnErJUSsL6RT+Vr1hm9eEyaDl3Gm2IeTzE8u5g?=
- =?us-ascii?Q?xrWCaD9zqASXiDT5D5gE3uQzLKmvSQHjhHyq+Rot0ZB1qnbIJRoGp+aU7hLJ?=
- =?us-ascii?Q?NmlqLgrCsjVZh+AoqmlqqRhb5uILyTxBmTCwma4lw1uPoJdFg4be9XrHCYyi?=
- =?us-ascii?Q?r9c5o0fOC9NIQLColq4WU0oTHq80S/yTIONXXSj5BiS20PrNhwA1bIbdQhQT?=
- =?us-ascii?Q?W5hL6QuRRdjewvoqe1k5w8CiATnvOVZ3yJPxYh/3ceIu3WGL2tIDnKGWoxDT?=
- =?us-ascii?Q?ZtoH4+KQ2s30ZGKpe8jA1h1skyJKnudwE66ZUmf0wwhQezj8Oe78lIakHMDn?=
- =?us-ascii?Q?4TdHBIpxgrAatSpgOQBYgnCgWgj6sVlk2Rv914kofYfa6R+XyyFblyhl3TZ2?=
- =?us-ascii?Q?qOtKTdrOwXtVpE4GiwGt3Ufd9IuXvmAjRkJt+Ay+68CTqY5tRfiTZDE+rf0K?=
- =?us-ascii?Q?g/souV9mK7CnAQRD9qo+WLH3OzgWxT4W4fKyZqjI3uvWHZ+ke7Z+u55N5Pne?=
- =?us-ascii?Q?3fQb4yc54mVDajhK1WZqK9DCNv/l8yzW27jXqPF6pB1uHtgQDylhHFnl4yUR?=
- =?us-ascii?Q?MtlpJ9RvIIxK3bkMZx03INXcNVMCuz3oISwp/OpxQ/7oh7SL+MBgPKVMxBxA?=
- =?us-ascii?Q?QZejsJVp1T1qPQBFoz/LXap/K6Kj3i1Ql8SDJtFtGUVSghSLViknX9ZmEFIm?=
- =?us-ascii?Q?Xy9xCnI0eFaALdFMY4NYXYDraYJWOWrBtTlXf9MID91U7OIiy6BjBfVfYnxL?=
- =?us-ascii?Q?qorPR1Fna+os9AmmJyQ4b9aQT/ZsFNI8rIIqqStzyrHKNH7oHwWMefDv0e6a?=
- =?us-ascii?Q?DSzLyOAWUfu1oZwVYv0uS9YQusRHFxLT0E0JzITK8gmSSBWV7Zm/pbE1aw2a?=
- =?us-ascii?Q?YKf75ILjL0S69fR8JRUgvFQlb/cEq88thOAQcqt+5XiVpjFiAhQfVPVoXUyq?=
- =?us-ascii?Q?bQ=3D=3D?=
-X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a90e3062-2b3c-4a87-a213-08dd19bdd77d
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5354.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 08:28:51.3357
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7iwJxwEiZDLSI3v0W/pM/l2TuCPD6srU+OITQwvZdQLP4VwFMePWWBbKa2bqQjBvS18rON2QNz07nXh85Ikg/OLfnPh2iu+NYqwZ0FAEWmc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7179
-X-Proofpoint-GUID: Gn_DEhJ7i8B05ZacDUUIjxqNKYmZMt9a
-X-Proofpoint-ORIG-GUID: Gn_DEhJ7i8B05ZacDUUIjxqNKYmZMt9a
-X-Authority-Analysis: v=2.4 cv=D7O9KuRj c=1 sm=1 tr=0 ts=67594d48 cx=c_pps a=gIIqiywzzXYl0XjYY6oQCA==:117 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=RZcAm9yDv7YA:10 a=_Eqp4RXO4fwA:10 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=drOt6m5kAAAA:8 a=t7CeM3EgAAAA:8 a=Ln24RqLUxJUgtsCh-VwA:9 a=RMMjzBEyIzXRtoq5n5K6:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-11_08,2024-12-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
- adultscore=0 priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0
- clxscore=1011 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412110063
+References: <20241210213218.3591826-1-sashal@kernel.org>
+In-Reply-To: <20241210213218.3591826-1-sashal@kernel.org>
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Date: Wed, 11 Dec 2024 09:28:26 +0100
+Message-ID: <CAO-hwJL4B298XY0Fnhg5R-U7yFQVC3eL0g+5PncTOS0LqymkOQ@mail.gmail.com>
+Subject: Re: Patch "HID: bpf: Fix NKRO on Mistel MD770" has been added to the
+ 6.1-stable tree
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, bentiss@kernel.org, 
+	Jiri Kosina <jikos@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+On Tue, Dec 10, 2024 at 10:32=E2=80=AFPM Sasha Levin <sashal@kernel.org> wr=
+ote:
+>
+> This is a note to let you know that I've just added the patch titled
+>
+>     HID: bpf: Fix NKRO on Mistel MD770
+>
+> to the 6.1-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>
+> The filename of the patch is:
+>      hid-bpf-fix-nkro-on-mistel-md770.patch
+> and it can be found in the queue-6.1 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>
 
-[ Upstream commit be84f32bb2c981ca670922e047cdde1488b233de ]
+Please drop this patch (and in all previous releases).
 
-->d_name.name can change on rename and the earlier value can be freed;
-there are conditions sufficient to stabilize it (->d_lock on dentry,
-->d_lock on its parent, ->i_rwsem exclusive on the parent's inode,
-rename_lock), but none of those are met at any of the sites. Take a stable
-snapshot of the name instead.
+Again, it makes no sense to backport any files in
+drivers/hid/bpf/progs on kernels before 6.11, and even then, it makes
+very little value as they are also tracked in a different userspace
+project (udev-hid-bpf).
 
-Link: https://lore.kernel.org/all/20240202182732.GE2087318@ZenIV/
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Libo Chen <libo.chen.cn@windriver.com>
----
- security/integrity/ima/ima_api.c          | 16 ++++++++++++----
- security/integrity/ima/ima_template_lib.c | 17 ++++++++++++++---
- 2 files changed, 26 insertions(+), 7 deletions(-)
+FWIW, HID-BPF was introduced in v6.3, so it's even more surprising to
+see such patch added here.
 
-diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
-index 04b9e465463b..fa7abe4bde61 100644
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -217,7 +217,7 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
- 	struct inode *real_inode = d_real_inode(file_dentry(file));
--	const char *filename = file->f_path.dentry->d_name.name;
-+	struct name_snapshot filename;
- 	int result = 0;
- 	int length;
- 	void *tmpbuf;
-@@ -280,9 +280,13 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
- 		if (file->f_flags & O_DIRECT)
- 			audit_cause = "failed(directio)";
- 
-+		take_dentry_name_snapshot(&filename, file->f_path.dentry);
-+
- 		integrity_audit_msg(AUDIT_INTEGRITY_DATA, inode,
--				    filename, "collect_data", audit_cause,
--				    result, 0);
-+				    filename.name.name, "collect_data",
-+				    audit_cause, result, 0);
-+
-+		release_dentry_name_snapshot(&filename);
- 	}
- 	return result;
- }
-@@ -395,6 +399,7 @@ void ima_audit_measurement(struct integrity_iint_cache *iint,
-  */
- const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
- {
-+	struct name_snapshot filename;
- 	char *pathname = NULL;
- 
- 	*pathbuf = __getname();
-@@ -408,7 +413,10 @@ const char *ima_d_path(const struct path *path, char **pathbuf, char *namebuf)
- 	}
- 
- 	if (!pathname) {
--		strlcpy(namebuf, path->dentry->d_name.name, NAME_MAX);
-+		take_dentry_name_snapshot(&filename, path->dentry);
-+		strscpy(namebuf, filename.name.name, NAME_MAX);
-+		release_dentry_name_snapshot(&filename);
-+
- 		pathname = namebuf;
- 	}
- 
-diff --git a/security/integrity/ima/ima_template_lib.c b/security/integrity/ima/ima_template_lib.c
-index ca017cae73eb..dd7beaa0e787 100644
---- a/security/integrity/ima/ima_template_lib.c
-+++ b/security/integrity/ima/ima_template_lib.c
-@@ -426,7 +426,10 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
- 				     bool size_limit)
- {
- 	const char *cur_filename = NULL;
-+	struct name_snapshot filename;
- 	u32 cur_filename_len = 0;
-+	bool snapshot = false;
-+	int ret;
- 
- 	BUG_ON(event_data->filename == NULL && event_data->file == NULL);
- 
-@@ -439,7 +442,10 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
- 	}
- 
- 	if (event_data->file) {
--		cur_filename = event_data->file->f_path.dentry->d_name.name;
-+		take_dentry_name_snapshot(&filename,
-+					  event_data->file->f_path.dentry);
-+		snapshot = true;
-+		cur_filename = filename.name.name;
- 		cur_filename_len = strlen(cur_filename);
- 	} else
- 		/*
-@@ -448,8 +454,13 @@ static int ima_eventname_init_common(struct ima_event_data *event_data,
- 		 */
- 		cur_filename_len = IMA_EVENT_NAME_LEN_MAX;
- out:
--	return ima_write_template_field_data(cur_filename, cur_filename_len,
--					     DATA_FMT_STRING, field_data);
-+	ret = ima_write_template_field_data(cur_filename, cur_filename_len,
-+					    DATA_FMT_STRING, field_data);
-+
-+	if (snapshot)
-+		release_dentry_name_snapshot(&filename);
-+
-+	return ret;
- }
- 
- /*
--- 
-2.25.1
+Cheers,
+Benjamin
+
+>
+>
+> commit 6801fc048d7f85f5a555f46e1961f9c64e33fd8e
+> Author: Benjamin Tissoires <bentiss@kernel.org>
+> Date:   Thu Oct 17 18:34:58 2024 +0200
+>
+>     HID: bpf: Fix NKRO on Mistel MD770
+>
+>     [ Upstream commit 9bc089307e8dff7797233308372b4a90ce8f79be ]
+>
+>     Mistel MD770 keyboard (using Holtek Semiconductor, Inc. controller) h=
+as
+>     a quirk in report descriptor in one of its interfaces (more detail in
+>     the source file). Fix up the descriptor to allow NKRO to work again.
+>
+>     Tested by loading the BPF program and confirming that 8 simultaneous
+>     keypresses work.
+>
+>     Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218495
+>     Link: https://gitlab.freedesktop.org/libevdev/udev-hid-bpf/-/merge_re=
+quests/122
+>     Signed-off-by: Tatsuyuki Ishi <ishitatsuyuki@gmail.com>
+>     Acked-by: Jiri Kosina <jkosina@suse.com>
+>     Link: https://patch.msgid.link/20241017-import_bpf_6-13-v2-1-6a7acb89=
+a97f@kernel.org
+>     Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/drivers/hid/bpf/progs/Mistel__MD770.bpf.c b/drivers/hid/bpf/=
+progs/Mistel__MD770.bpf.c
+> new file mode 100644
+> index 0000000000000..fb8b5a6968b12
+> --- /dev/null
+> +++ b/drivers/hid/bpf/progs/Mistel__MD770.bpf.c
+> @@ -0,0 +1,154 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Copyright (c) 2024 Tatsuyuki Ishi
+> + */
+> +
+> +#include "vmlinux.h"
+> +#include "hid_bpf.h"
+> +#include "hid_bpf_helpers.h"
+> +#include <bpf/bpf_tracing.h>
+> +
+> +#define VID_HOLTEK     0x04D9
+> +#define PID_MD770      0x0339
+> +#define RDESC_SIZE     203
+> +
+> +HID_BPF_CONFIG(
+> +       HID_DEVICE(BUS_USB, HID_GROUP_GENERIC, VID_HOLTEK, PID_MD770)
+> +);
+> +
+> +/*
+> + * The Mistel MD770 keyboard reports the first 6 simultaneous key presse=
+s
+> + * through the first interface, and anything beyond that through a secon=
+d
+> + * interface. Unfortunately, the second interface's report descriptor ha=
+s an
+> + * error, causing events to be malformed and ignored. This HID-BPF drive=
+r
+> + * fixes the descriptor to allow NKRO to work again.
+> + *
+> + * For reference, this is the original report descriptor:
+> + *
+> + * 0x05, 0x01,        // Usage Page (Generic Desktop)        0
+> + * 0x09, 0x80,        // Usage (System Control)              2
+> + * 0xa1, 0x01,        // Collection (Application)            4
+> + * 0x85, 0x01,        //  Report ID (1)                      6
+> + * 0x19, 0x81,        //  Usage Minimum (129)                8
+> + * 0x29, 0x83,        //  Usage Maximum (131)                10
+> + * 0x15, 0x00,        //  Logical Minimum (0)                12
+> + * 0x25, 0x01,        //  Logical Maximum (1)                14
+> + * 0x95, 0x03,        //  Report Count (3)                   16
+> + * 0x75, 0x01,        //  Report Size (1)                    18
+> + * 0x81, 0x02,        //  Input (Data,Var,Abs)               20
+> + * 0x95, 0x01,        //  Report Count (1)                   22
+> + * 0x75, 0x05,        //  Report Size (5)                    24
+> + * 0x81, 0x01,        //  Input (Cnst,Arr,Abs)               26
+> + * 0xc0,              // End Collection                      28
+> + * 0x05, 0x0c,        // Usage Page (Consumer Devices)       29
+> + * 0x09, 0x01,        // Usage (Consumer Control)            31
+> + * 0xa1, 0x01,        // Collection (Application)            33
+> + * 0x85, 0x02,        //  Report ID (2)                      35
+> + * 0x15, 0x00,        //  Logical Minimum (0)                37
+> + * 0x25, 0x01,        //  Logical Maximum (1)                39
+> + * 0x95, 0x12,        //  Report Count (18)                  41
+> + * 0x75, 0x01,        //  Report Size (1)                    43
+> + * 0x0a, 0x83, 0x01,  //  Usage (AL Consumer Control Config) 45
+> + * 0x0a, 0x8a, 0x01,  //  Usage (AL Email Reader)            48
+> + * 0x0a, 0x92, 0x01,  //  Usage (AL Calculator)              51
+> + * 0x0a, 0x94, 0x01,  //  Usage (AL Local Machine Browser)   54
+> + * 0x09, 0xcd,        //  Usage (Play/Pause)                 57
+> + * 0x09, 0xb7,        //  Usage (Stop)                       59
+> + * 0x09, 0xb6,        //  Usage (Scan Previous Track)        61
+> + * 0x09, 0xb5,        //  Usage (Scan Next Track)            63
+> + * 0x09, 0xe2,        //  Usage (Mute)                       65
+> + * 0x09, 0xea,        //  Usage (Volume Down)                67
+> + * 0x09, 0xe9,        //  Usage (Volume Up)                  69
+> + * 0x0a, 0x21, 0x02,  //  Usage (AC Search)                  71
+> + * 0x0a, 0x23, 0x02,  //  Usage (AC Home)                    74
+> + * 0x0a, 0x24, 0x02,  //  Usage (AC Back)                    77
+> + * 0x0a, 0x25, 0x02,  //  Usage (AC Forward)                 80
+> + * 0x0a, 0x26, 0x02,  //  Usage (AC Stop)                    83
+> + * 0x0a, 0x27, 0x02,  //  Usage (AC Refresh)                 86
+> + * 0x0a, 0x2a, 0x02,  //  Usage (AC Bookmarks)               89
+> + * 0x81, 0x02,        //  Input (Data,Var,Abs)               92
+> + * 0x95, 0x01,        //  Report Count (1)                   94
+> + * 0x75, 0x0e,        //  Report Size (14)                   96
+> + * 0x81, 0x01,        //  Input (Cnst,Arr,Abs)               98
+> + * 0xc0,              // End Collection                      100
+> + * 0x05, 0x01,        // Usage Page (Generic Desktop)        101
+> + * 0x09, 0x02,        // Usage (Mouse)                       103
+> + * 0xa1, 0x01,        // Collection (Application)            105
+> + * 0x09, 0x01,        //  Usage (Pointer)                    107
+> + * 0xa1, 0x00,        //  Collection (Physical)              109
+> + * 0x85, 0x03,        //   Report ID (3)                     111
+> + * 0x05, 0x09,        //   Usage Page (Button)               113
+> + * 0x19, 0x01,        //   Usage Minimum (1)                 115
+> + * 0x29, 0x08,        //   Usage Maximum (8)                 117
+> + * 0x15, 0x00,        //   Logical Minimum (0)               119
+> + * 0x25, 0x01,        //   Logical Maximum (1)               121
+> + * 0x75, 0x01,        //   Report Size (1)                   123
+> + * 0x95, 0x08,        //   Report Count (8)                  125
+> + * 0x81, 0x02,        //   Input (Data,Var,Abs)              127
+> + * 0x05, 0x01,        //   Usage Page (Generic Desktop)      129
+> + * 0x09, 0x30,        //   Usage (X)                         131
+> + * 0x09, 0x31,        //   Usage (Y)                         133
+> + * 0x16, 0x01, 0x80,  //   Logical Minimum (-32767)          135
+> + * 0x26, 0xff, 0x7f,  //   Logical Maximum (32767)           138
+> + * 0x75, 0x10,        //   Report Size (16)                  141
+> + * 0x95, 0x02,        //   Report Count (2)                  143
+> + * 0x81, 0x06,        //   Input (Data,Var,Rel)              145
+> + * 0x09, 0x38,        //   Usage (Wheel)                     147
+> + * 0x15, 0x81,        //   Logical Minimum (-127)            149
+> + * 0x25, 0x7f,        //   Logical Maximum (127)             151
+> + * 0x75, 0x08,        //   Report Size (8)                   153
+> + * 0x95, 0x01,        //   Report Count (1)                  155
+> + * 0x81, 0x06,        //   Input (Data,Var,Rel)              157
+> + * 0x05, 0x0c,        //   Usage Page (Consumer Devices)     159
+> + * 0x0a, 0x38, 0x02,  //   Usage (AC Pan)                    161
+> + * 0x95, 0x01,        //   Report Count (1)                  164
+> + * 0x81, 0x06,        //   Input (Data,Var,Rel)              166
+> + * 0xc0,              //  End Collection                     168
+> + * 0xc0,              // End Collection                      169
+> + * 0x05, 0x01,        // Usage Page (Generic Desktop)        170
+> + * 0x09, 0x06,        // Usage (Keyboard)                    172
+> + * 0xa1, 0x01,        // Collection (Application)            174
+> + * 0x85, 0x04,        //  Report ID (4)                      176
+> + * 0x05, 0x07,        //  Usage Page (Keyboard)              178
+> + * 0x95, 0x01,        //  Report Count (1)                   180
+> + * 0x75, 0x08,        //  Report Size (8)                    182
+> + * 0x81, 0x03,        //  Input (Cnst,Var,Abs)               184
+> + * 0x95, 0xe8,        //  Report Count (232)                 186
+> + * 0x75, 0x01,        //  Report Size (1)                    188
+> + * 0x15, 0x00,        //  Logical Minimum (0)                190
+> + * 0x25, 0x01,        //  Logical Maximum (1)                192
+> + * 0x05, 0x07,        //  Usage Page (Keyboard)              194
+> + * 0x19, 0x00,        //  Usage Minimum (0)                  196
+> + * 0x29, 0xe7,        //  Usage Maximum (231)                198
+> + * 0x81, 0x00,        //  Input (Data,Arr,Abs)               200  <- cha=
+nge to 0x81, 0x02 (Data,Var,Abs)
+> + * 0xc0,              // End Collection                      202
+> + */
+> +
+> +SEC(HID_BPF_RDESC_FIXUP)
+> +int BPF_PROG(hid_rdesc_fixup_mistel_md770, struct hid_bpf_ctx *hctx)
+> +{
+> +       __u8 *data =3D hid_bpf_get_data(hctx, 0, HID_MAX_DESCRIPTOR_SIZE)=
+;
+> +
+> +       if (!data)
+> +               return 0; /* EPERM check */
+> +
+> +       if (data[201] =3D=3D 0x00)
+> +               data[201] =3D 0x02;
+> +
+> +       return 0;
+> +}
+> +
+> +HID_BPF_OPS(mistel_md770) =3D {
+> +       .hid_rdesc_fixup =3D (void *)hid_rdesc_fixup_mistel_md770,
+> +};
+> +
+> +SEC("syscall")
+> +int probe(struct hid_bpf_probe_args *ctx)
+> +{
+> +       ctx->retval =3D ctx->rdesc_size !=3D RDESC_SIZE;
+> +       if (ctx->retval)
+> +               ctx->retval =3D -EINVAL;
+> +
+> +       return 0;
+> +}
+> +
+> +char _license[] SEC("license") =3D "GPL";
+>
 
 
