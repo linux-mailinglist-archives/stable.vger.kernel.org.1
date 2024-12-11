@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-100789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F459ED61D
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 892D59ED620
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D535188D372
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:12:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7EF51886640
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4DA235C4C;
-	Wed, 11 Dec 2024 18:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3FE2583B1;
+	Wed, 11 Dec 2024 18:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gCnVLuhv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZD1viP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D00235C46;
-	Wed, 11 Dec 2024 18:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15026231A55;
+	Wed, 11 Dec 2024 18:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943292; cv=none; b=jyPyY5w2IlFmb3dwT+kSFq+WEADuH7noKQQhHS7/f5gx2EeQBh8VxIDUFALGeD0ZmeWCCx9Du7Q3qrBSnhMHAUkwg73AVj8kUs9mWwzEycE0vJNlmH8Y0cEz6888NG1Dihtmi6JreINTAC8DR5LteUPUpVFDRknvCiuH+YhDuYE=
+	t=1733943294; cv=none; b=q0ACks0aak3zrmvtDZwJhaByr0c9spx26jSVxXhNWs8S8voGYbMPb0479SpNDgnBK/7VwedM0ceUE8TMUIDPIXTP13wSQqJBDM8SvAptN2z95pQhaG2xxGQPSiHhjWfjyao0KO460G2gDPTLQhKQdmNlc2Ba794+YzZW8+2VIz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943292; c=relaxed/simple;
-	bh=3VYmXnMI4su6R0mhdY7vsuCOVCVssqNMN6WEYch34QE=;
+	s=arc-20240116; t=1733943294; c=relaxed/simple;
+	bh=CCDFKS6vMByGtpQTlwrzuoSGCamZCdlwbcG/B6kvv5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VcOrYJY2Wtji8yS4oq/a7jAMKRN+vxDQwV4AUHTIe+W3GHxbeQ4QfRnewe3TJghrE0IVuM9JDRxE8lSh1nQ08KBbb+zKW/xE8YroIMhUDqjzjDjuFdKJIP4TgoFVZ4+17XetIJzi1nwt7tXjhoIz3fnwKSxQEMsIxQ2ftYtpo3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gCnVLuhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F34C4CED4;
-	Wed, 11 Dec 2024 18:54:50 +0000 (UTC)
+	 MIME-Version; b=s/aLh86I6ssGE+tyNtvgOrP8EAnhKuyZ+tPTt+rvDE7s6NCKtM2SUuZIf7pEotUTtF+d9zGxz89d/RAYZzBDFMC/+WAKkOeNcPd6kSKwOnz76O6LYayrhoxqOjFeOZZaCs4gskBmxhdq3v90zmI6vviaS1GLXDlKUU4U275cUmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZD1viP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D4BC4CEDD;
+	Wed, 11 Dec 2024 18:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943291;
-	bh=3VYmXnMI4su6R0mhdY7vsuCOVCVssqNMN6WEYch34QE=;
+	s=k20201202; t=1733943293;
+	bh=CCDFKS6vMByGtpQTlwrzuoSGCamZCdlwbcG/B6kvv5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gCnVLuhveQjxh+uFtEF2FjfHjMlIRh3SrCyC+DZ5D2mwBWmgwE9kT3WiLRNERsl84
-	 VX/thGEW6FxgYdPVVguMTKPTiO420xhAByc8l2C9nS5ivJ4ELVcDWMYrwq3i93YDiN
-	 4/+XJ29BNPHWVRpi+z9DjJGkq/xogJ6zQcr+fm5/AFqsZ7qH/5K0mjx6oUKobYpLky
-	 jDw8BSnNIpZzLSyqvh35dxsa3bdOdvn0kLkyD89DrMJKDq3102gwDD7L9/PzylM58H
-	 wPHKSXUzTq9RsWVCgSbG8jI97CBi5KotZJAz7tidnM63dDyqz9Z14Zs3mf79shvlPO
-	 6m/5Nad7emUAw==
+	b=jZD1viP+kw0HsYfMRSV7mRpynmNmRllGobIktreIQIn+BT2CHeIf7vVH9pElO7PWA
+	 U7oss1t2aanUlRfVeMpIbgj0wzMT2TELzyKfBWs/QP/beHvpPIG0vhb5MqFhwxWB13
+	 Iun9hR+bM6ckDdmB5AXwRKgs/1vcF+C79dzAaNwOHFbsCIExO31SrBTrL4s6ZWQoN2
+	 H9xLQgKDfP5Oxr0yVznoHWdouHHA2pPIzvhYFrKEAVxKGvaDcPqcNoCNW2guNqrQUX
+	 P/eFScMADaH/emzhz8xUTgHiB/B2k7rIU0OTVrEtgSljU39sAUasSGzqLifXyhFrmP
+	 Jb38bgXMNo0Tw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lion Ackermann <nnamrec@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	cake@lists.bufferbloat.net,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/7] net: sched: fix ordering of qlen adjustment
-Date: Wed, 11 Dec 2024 13:54:38 -0500
-Message-ID: <20241211185442.3843374-5-sashal@kernel.org>
+	sathya.prakash@broadcom.com,
+	sreekanth.reddy@broadcom.com,
+	suganath-prabu.subramani@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	MPT-FusionLinux.pdl@broadcom.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 6/7] scsi: mpt3sas: Diag-Reset when Doorbell-In-Use bit is set during driver load time
+Date: Wed, 11 Dec 2024 13:54:39 -0500
+Message-ID: <20241211185442.3843374-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185442.3843374-1-sashal@kernel.org>
 References: <20241211185442.3843374-1-sashal@kernel.org>
@@ -68,65 +65,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.286
 Content-Transfer-Encoding: 8bit
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 ]
+[ Upstream commit 3f5eb062e8aa335643181c480e6c590c6cedfd22 ]
 
-Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-_before_ a call to said function because otherwise it may fail to notify
-parent qdiscs when the child is about to become empty.
+Issue a Diag-Reset when the "Doorbell-In-Use" bit is set during the
+driver load/initialization.
 
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20241110173341.11595-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c  | 2 +-
- net/sched/sch_choke.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index 9b4a9bdbeafd9..f2a49bccb5ef5 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1505,7 +1505,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 	b->backlogs[idx]    -= len;
- 	b->tin_backlog      -= len;
- 	sch->qstats.backlog -= len;
--	qdisc_tree_reduce_backlog(sch, 1, len);
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 1bc23e8ee748a..69023ddceb59f 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -5695,11 +5695,12 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 	int i;
+ 	u8 failed;
+ 	__le32 *mfp;
++	int ret_val;
  
- 	flow->dropped++;
- 	b->tin_dropped++;
-@@ -1516,6 +1515,7 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 	/* make sure doorbell is not in use */
+ 	if ((ioc->base_readl(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
+ 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
+-		return -EFAULT;
++		goto doorbell_diag_reset;
+ 	}
  
- 	__qdisc_drop(skb, to_free);
- 	sch->q.qlen--;
-+	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	cake_heapify(q, 0);
- 
-diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
-index e54f6eabfa0c0..2007bc4f96709 100644
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -124,10 +124,10 @@ static void choke_drop_by_idx(struct Qdisc *sch, unsigned int idx,
- 	if (idx == q->tail)
- 		choke_zap_tail_holes(q);
- 
-+	--sch->q.qlen;
- 	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 	qdisc_drop(skb, sch, to_free);
--	--sch->q.qlen;
+ 	/* clear pending doorbell interrupts from previous state changes */
+@@ -5789,6 +5790,10 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 			    le32_to_cpu(mfp[i]));
+ 	}
+ 	return 0;
++
++doorbell_diag_reset:
++	ret_val = _base_diag_reset(ioc);
++	return ret_val;
  }
  
- struct choke_skb_cb {
+ /**
 -- 
 2.43.0
 
