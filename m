@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-100719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9D49ED539
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:56:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534A29ED540
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:57:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E17CB281BBF
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:56:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2EB188A5BB
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CB3244686;
-	Wed, 11 Dec 2024 18:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F158E244695;
+	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ss9pMnxC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqWAQq30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549442368F2;
-	Wed, 11 Dec 2024 18:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DF32446A4;
+	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943102; cv=none; b=AqbxoikqT6/l9eP3/qUwAdbJCrg9mrpT/rvk0SEO+ko22abwqd1iCe1f4tW1rMh5H1SYj1yl1mXEPDIo1ddfTMSTaxksw5LcmOdSR+w2jI2YH3fwFmktQEKeFykvBay61i/hJd5uS4tiUJaAJzmFrc2wDi5LyY9Y65/jGP7IKuw=
+	t=1733943104; cv=none; b=hF3Gh3cynYOdJcRibvzLDqtuf0R4oPhDldChUBFqu2x5nl8NFua6MQ1mR7ndDJdazKN0D24q23Lc6df+miCbqNmADtHuJoeMerv9HFDjqQ11uXI+NCLr5Yyt6KE1IocWQvYdpjSVmMmN+htfUVa4eJoRfmSn+tG4isUd/8iyvjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943102; c=relaxed/simple;
-	bh=vMNkWgZTfSLfZctclNGDWLQltRThVFLyCU9o/OptEQw=;
+	s=arc-20240116; t=1733943104; c=relaxed/simple;
+	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIT7qwBgnNU1RISc8IBbgeX/OI0ZttUK+LPelaRk+5Lm3uDnZEbRuBvg2kiwGZQB3KPruE5k/4rfEJUu01h2aa8kAt6X7B3r7wffvFdLJIyZwtCQv+qo4RQXY2S4kaoUw4U8R/LtWOx4CmZxA9m50w+5ukUt+LQG9ptC7mucsUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ss9pMnxC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEB8C4CED2;
-	Wed, 11 Dec 2024 18:51:40 +0000 (UTC)
+	 MIME-Version; b=AN/U3mduLkE9g5liCYCOp2lYPDeq22Q0bHI9uuZhNHC/452yuAtRdLVIYQ9+SV20nmhMRZDv4n5lrgr+HZT/T0fQMyBs0WoIUH5mA/iGbAM9XVsl/5i5sP8Ctgg1y3tj9p6kOEea6XB97zUzwVb0CmkBPVCEf8kWZYmHRaR4RC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqWAQq30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B54C4CED2;
+	Wed, 11 Dec 2024 18:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943102;
-	bh=vMNkWgZTfSLfZctclNGDWLQltRThVFLyCU9o/OptEQw=;
+	s=k20201202; t=1733943104;
+	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ss9pMnxCAPdEmRmiDCHOGQ7tWPfoA9N8w1iR8wWXpZR7cQIApXGSAA/on6DToBi7g
-	 aAzNTy0fw6ZeOChkv1CHclXzYRLP11vmPhTL6ZpyCl/+nmU0DmcGTegtNJHZ3o1jj7
-	 N/ljSGBjqueIx2roNh1rk1xt7qvs4fR1feyxroJ56+4ATjTUrvfA6wS1ebBZhm1MYX
-	 b/+VsmhZq20SWgMCntZsL4iWkohdQL7WaAmGd+MASp4e2MRdbtyTfeenbkHvF8uuvP
-	 1521z/deFPz9uo2iKFkMgh+hr/7ipEvrUeIMHBIoQHv01z4Uu4CAAjWXwYJdvFk6Xh
-	 IxWio1+aoS4uA==
+	b=qqWAQq30T4UVCiDAWf7YvHrQJ9frLO9a1Fg87J/j1D8k6KH+CXAF6wn05RkBhRcMY
+	 jDXmFAHaYm7IaKvCkZN6/zf4kB+ZHiy/QTYLyvrbdD4bWleTanXz3KSWOPbtQkP3cG
+	 Vo0yb8rps2+f3hzpw/AxHH0Cim2TlW5XUukTxyQLrEz3hKSmBzlKn7M7NeKi1PG8Xv
+	 SlrDSG6Wfc8zkhi0JbcuIaUhpZwBwXVuBT+G6A/3u22l+dGqQvRmihTARpXpLB+9Ux
+	 0HmXE0conMktH1IWPaD9nisuYWmi8ANJ65TdAl+eYNcSa3B53nRCP4BMQ1T0+MbEVN
+	 casIJpH8VjLgw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cathy Avery <cavery@redhat.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Ewan D . Milne" <emilne@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Qinxin Xia <xiaqinxin@huawei.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-hyperv@vger.kernel.org,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 29/36] scsi: storvsc: Do not flag MAINTENANCE_IN return of SRB_STATUS_DATA_OVERRUN as an error
-Date: Wed, 11 Dec 2024 13:49:45 -0500
-Message-ID: <20241211185028.3841047-29-sashal@kernel.org>
+	will@kernel.org,
+	corbet@lwn.net,
+	lpieralisi@kernel.org,
+	sudeep.holla@arm.com,
+	rafael@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 30/36] ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A
+Date: Wed, 11 Dec 2024 13:49:46 -0500
+Message-ID: <20241211185028.3841047-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -73,69 +74,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.4
 Content-Transfer-Encoding: 8bit
 
-From: Cathy Avery <cavery@redhat.com>
+From: Qinxin Xia <xiaqinxin@huawei.com>
 
-[ Upstream commit b1aee7f034615b6824d2c70ddb37ef9fc23493b7 ]
+[ Upstream commit c2b46ae022704a2d845e59461fa24431ad627022 ]
 
-This partially reverts commit 812fe6420a6e ("scsi: storvsc: Handle
-additional SRB status values").
+HiSilicon HIP09A platforms using the same SMMU PMCG with HIP09
+and thus suffers the same erratum. List them in the PMCG platform
+information list without introducing a new SMMU PMCG Model.
 
-HyperV does not support MAINTENANCE_IN resulting in FC passthrough
-returning the SRB_STATUS_DATA_OVERRUN value. Now that
-SRB_STATUS_DATA_OVERRUN is treated as an error, multipath ALUA paths go
-into a faulty state as multipath ALUA submits RTPG commands via
-MAINTENANCE_IN.
+Update the silicon-errata.rst as well.
 
-[    3.215560] hv_storvsc 1d69d403-9692-4460-89f9-a8cbcc0f94f3:
-tag#230 cmd 0xa3 status: scsi 0x0 srb 0x12 hv 0xc0000001
-[    3.215572] scsi 1:0:0:32: alua: rtpg failed, result 458752
-
-Make MAINTENANCE_IN return success to avoid the error path as is
-currently done with INQUIRY and MODE_SENSE.
-
-Suggested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Cathy Avery <cavery@redhat.com>
-Link: https://lore.kernel.org/r/20241127181324.3318443-1-cavery@redhat.com
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+Link: https://lore.kernel.org/r/20241205013331.1484017-1-xiaqinxin@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ Documentation/arch/arm64/silicon-errata.rst | 5 +++--
+ drivers/acpi/arm64/iort.c                   | 2 ++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 7ceb982040a5d..d0b55c1fa908a 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -149,6 +149,8 @@ struct hv_fc_wwn_packet {
- */
- static int vmstor_proto_version;
- 
-+static bool hv_dev_is_fc(struct hv_device *hv_dev);
-+
- #define STORVSC_LOGGING_NONE	0
- #define STORVSC_LOGGING_ERROR	1
- #define STORVSC_LOGGING_WARN	2
-@@ -1138,6 +1140,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
- 	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
- 	 * We do this so we can distinguish truly fatal failues
-@@ -1145,7 +1148,9 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 */
- 
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
--	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE)) {
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
-+	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
- 		vstor_packet->vm_srb.srb_status = SRB_STATUS_SUCCESS;
- 	}
+diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
+index 65bfab1b18614..a678ea0ae4a00 100644
+--- a/Documentation/arch/arm64/silicon-errata.rst
++++ b/Documentation/arch/arm64/silicon-errata.rst
+@@ -255,8 +255,9 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
+-|                | ,11} SMMU PMCG  |                 |                             |
++| Hisilicon      | Hip{08,09,09A,10| #162001900      | N/A                         |
++|                | ,10C,11}        |                 |                             |
++|                | SMMU PMCG       |                 |                             |
+ +----------------+-----------------+-----------------+-----------------------------+
+ +----------------+-----------------+-----------------+-----------------------------+
+ | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
+diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
+index 4c745a26226b2..bf3be532e0895 100644
+--- a/drivers/acpi/arm64/iort.c
++++ b/drivers/acpi/arm64/iort.c
+@@ -1703,6 +1703,8 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
+ 	/* HiSilicon Hip09 Platform */
+ 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
++	{"HISI  ", "HIP09A  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
++	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+ 	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
+ 	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
+ 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
 -- 
 2.43.0
 
