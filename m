@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-100780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97BE89ED606
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:12:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824CB9ED609
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C7E1188AC9B
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:10:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D148188D7EE
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D732571CE;
-	Wed, 11 Dec 2024 18:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9D82571F5;
+	Wed, 11 Dec 2024 18:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NtLCQA3W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ioI09ZMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570642571C3;
-	Wed, 11 Dec 2024 18:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2DC2571EC;
+	Wed, 11 Dec 2024 18:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943272; cv=none; b=MY//esYkzG2zaEc7o4GUj9HHFo9gcrpXM75jCijedAcjFtXI63lMxtnjiZzQBjkzOXcqXtNNnRjl0+HG6z9hHGyBrtNmlaKFIOHXLu0blgvyCvU/ZXMOs9OQYWzggjPcMSfDZ4BjPfhoZQtBpk/tDA9djPmMhhxtzavH/v/F1UI=
+	t=1733943274; cv=none; b=Kjuh7eYMnDYUZ+bvC0cCau+mVi5g8LdFSRlDaXoTsDmenXGJBg1SvOL23cETkHo8L0m2qJKJFzkt5w02q7u8GpWPodzEd4vnnD2ai8UZvLvRevJkRgoRVczpu6/MxmLxrRFzI9jaWSd2mD1jk6KZoqvbDCuIVXxKMg7A1XE2KQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943272; c=relaxed/simple;
-	bh=7ozMWDrtDMO5SKBOtF4GA6VAsjKod8+uLX4ouEbOVZo=;
+	s=arc-20240116; t=1733943274; c=relaxed/simple;
+	bh=abLzIOoeqegwBKW22/IQl8qmfu8k5E7rnoJ2fhX+uyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SfEgB2R1/1fiYj4jCpj6NevAnceKVRUM8PrLRn69AZc7EFwYFhtyPJlMx9X3UYBkE8Vk6Mmsrs7JtGBm5x1qVPs0QS11/PuHMyxdR/vyd4ibNnrKrLOOMw8JNKfbW7AYyLmyIM+9ScGKeptXwXbSOEAQcZhrJtcrk7crf3EKos8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NtLCQA3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A763DC4CED2;
-	Wed, 11 Dec 2024 18:54:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Gp99PmvwKAVrkczaofFY4dp2h7u7ymo9Ot2Amp4hURDklFGuJKndQDmi8YVVICez2zTEmyq647Bd/aq/7LcLfCvCz3fCuO8pqxkAxUWk+/tTQtNGVX2qnaFVpHLW5kUHUgPpUi+3zEAu/G3XhhMF2xJjv2hR6G8Ilxd+nyZU9+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ioI09ZMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78887C4CED4;
+	Wed, 11 Dec 2024 18:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943271;
-	bh=7ozMWDrtDMO5SKBOtF4GA6VAsjKod8+uLX4ouEbOVZo=;
+	s=k20201202; t=1733943274;
+	bh=abLzIOoeqegwBKW22/IQl8qmfu8k5E7rnoJ2fhX+uyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtLCQA3WBUZbs9cblJQyWGs0vbbDjbaA4RXoU1S8QtKxzscivIr2gYN+D0/kpqTv9
-	 6k5CEcQExVuHKFom7FKB62Tq0KNBKQZPhbBlBXhkH6eZ3yV2YxWqRu/5y6MTbkqWMU
-	 N6AtVQ4/joLDPBuf0d4B6by/2wZShNCdcFm+Lt5tC8+OYfV+SddgVqgdKIwsFuvNMo
-	 icFWoG/rBfzzb34IlbdbbLLu03517nl9cXKr7P85HYsqF4UFpobLvEanXIs7TIF77b
-	 X/ZpaybNfT7GQKF6Zkvsb9L+CS14nz2QkKy0dR+il6JGQs3d2czi/5nwN5oLdft1rD
-	 jklfxkM1v+HQw==
+	b=ioI09ZMXQUsSTeBg+iNt4jGGSkv6HKb9Sk11XkvniiFqHY4cCkjWTFxPkPWa3Phwc
+	 W3LSPfKpSDNv2FYMsHKs9U0uF60TPXJxnJOFwpZeSZuxXdUjtk+LK4oxat842+NJED
+	 1s0B/Cr8Th6/aAYZ2wSJIX6JP9LAgjVjpv5ZL43/YnHSpKyNQF73gkHWGzTRhT/oPM
+	 K2wsWL9XJHAF5IRYW2XvY+oR/PFVTmzhr4K/t5JGLaPk7gyBSMBaTsaNBSHUSORZz3
+	 f0bLAq8SUNUKHGnPaYH92nznlao4xrKe3L2r1woqDLzonzx0dVrOrvn6LY4zPK84or
+	 d6g+gAcBit8GA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	Pau Espin Pedrol <pespin@espeweb.net>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Lion Ackermann <nnamrec@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	corentin.chary@gmail.com,
-	luke@ljones.dev,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 06/10] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
-Date: Wed, 11 Dec 2024 13:54:12 -0500
-Message-ID: <20241211185419.3843138-6-sashal@kernel.org>
+	jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	cake@lists.bufferbloat.net,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 07/10] net: sched: fix ordering of qlen adjustment
+Date: Wed, 11 Dec 2024 13:54:13 -0500
+Message-ID: <20241211185419.3843138-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185419.3843138-1-sashal@kernel.org>
 References: <20241211185419.3843138-1-sashal@kernel.org>
@@ -70,65 +74,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Lion Ackermann <nnamrec@gmail.com>
 
-[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
+[ Upstream commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 ]
 
-On the Asus X541UAK an unknown event 0xCF is emited when the charger
-is plugged in. This is caused by the following AML code:
+Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
+_before_ a call to said function because otherwise it may fail to notify
+parent qdiscs when the child is about to become empty.
 
-    If (ACPS ())
-    {
-        ACPF = One
-        Local0 = 0x58
-        If (ATKP)
-        {
-            ^^^^ATKD.IANE (0xCF)
-        }
-    }
-    Else
-    {
-        ACPF = Zero
-        Local0 = 0x57
-    }
-
-    Notify (AC0, 0x80) // Status Change
-    If (ATKP)
-    {
-        ^^^^ATKD.IANE (Local0)
-    }
-
-    Sleep (0x64)
-    PNOT ()
-    Sleep (0x0A)
-    NBAT (0x80)
-
-Ignore the 0xCF event to silence the unknown event warning.
-
-Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
-Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_cake.c  | 2 +-
+ net/sched/sch_choke.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index 49505939352ae..224c1f1c271bc 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -574,6 +574,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
- 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
- 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
- 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
-+	{ KE_IGNORE, 0xCF, },	/* AC mode */
- 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
- 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
- 	{ KE_END, 0},
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index 4ddb43a6644ab..8d9c0b98a747b 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1541,7 +1541,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 	b->backlogs[idx]    -= len;
+ 	b->tin_backlog      -= len;
+ 	sch->qstats.backlog -= len;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	flow->dropped++;
+ 	b->tin_dropped++;
+@@ -1552,6 +1551,7 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 
+ 	__qdisc_drop(skb, to_free);
+ 	sch->q.qlen--;
++	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
+index 25d2daaa81227..f3805bee995bb 100644
+--- a/net/sched/sch_choke.c
++++ b/net/sched/sch_choke.c
+@@ -124,10 +124,10 @@ static void choke_drop_by_idx(struct Qdisc *sch, unsigned int idx,
+ 	if (idx == q->tail)
+ 		choke_zap_tail_holes(q);
+ 
++	--sch->q.qlen;
+ 	qdisc_qstats_backlog_dec(sch, skb);
+ 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
+ 	qdisc_drop(skb, sch, to_free);
+-	--sch->q.qlen;
+ }
+ 
+ struct choke_skb_cb {
 -- 
 2.43.0
 
