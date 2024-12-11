@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-100689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929B29ED3CE
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:40:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92E89ED3C9
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:40:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01FF4188A05A
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:40:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DBEE282D67
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E3D1FF611;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4CD1FF1DB;
 	Wed, 11 Dec 2024 17:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9ny1rlD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lEPgyLsJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020A61FF1B2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020161FECD6;
 	Wed, 11 Dec 2024 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733938828; cv=none; b=prgqLbpIE96pta4uHZEeSt1/oyMlolv5NU7OKKwbeu8bhIAWb5v+Ha1P1yL5iyOQLtIpjgrkm1N49jdDTvAaDx8DiJT4nlYuQyNarpoS6TlqY53Q+d2cpIEcmpS0jXVvB3f/mRlsAQr3i/OABxzPBbmOYTxCP9rThTfEWlRcVhM=
+	t=1733938828; cv=none; b=eW82S+7mopailZu5GpajYMJ0LoorijwRe63Q6EkReSJcfQ8dfawWPwI/odEAUefw0yY5bC1c6168YWLffCZoVTm/ymyDb7g50zBD1yQR/8VFDaUrRjOXnZzjEzkNlU6JtOsD7UgVfuugD2cFg3cKWoJuLqbxH/u4kNizxqZrqWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733938828; c=relaxed/simple;
-	bh=kVcUHmC67xFFG/+WFbwqNle4x4Yqfux6zFqPlKGT4tA=;
+	bh=//XpFKTWinzR8Hvtule+Stbus3QCr5X6Hs7xeTCg8MA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ANR93LrD3NV/qZSKcK2SQfIHRooJcmrJ19mQRqIhnnyS+h2py4D8y4jbqzd3RUBhoSBLIMF5HytGw3XrVutHHY35rapySPLJ9bdt+6gEIQRmLTwAj/cFkcozft+npGNYL7HBu035RMVEyaSfE/9KAfsk/ioUlo2eM3aQWSO+raE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9ny1rlD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7AA1EC4CEDD;
+	 In-Reply-To:To:Cc; b=J7AWDa+4yiVttBSpGrQzVc/YKmPgs0nDNKWDoy9TPu+qLUTZQTnM2dfJ1YriDk2IxutynYZJT9ikcNKJU2Dj6fUYg3BCI7FvizdFhMVcXeAcgnYexroLacNUhWZyL4nSh5iPbvVgLfVssR6ItodOqcIQPAC7KKb1WY++fnshDeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lEPgyLsJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9D975C4CEE1;
 	Wed, 11 Dec 2024 17:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1733938827;
-	bh=kVcUHmC67xFFG/+WFbwqNle4x4Yqfux6zFqPlKGT4tA=;
+	bh=//XpFKTWinzR8Hvtule+Stbus3QCr5X6Hs7xeTCg8MA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Z9ny1rlDgC+xOIUTJ/oZRIIGFl1A55wjwuJbKuZcHhIcknHDpcSqkjHLyzi2SuSBM
-	 MoTXFoXZBv3xgV7ExICi1CgxUEF71U8s54wad5QqiRBAc/xVHdPHly1Ttu6UaiIDOe
-	 a+oW5C7fD0HajAw+2W1hlC7CLPog1+75aFfGlml6R5UnLfMamr3IR/3I9uS4F26Qzi
-	 M+BGoMn4T3SGjyW+2qL8ObrgA5mpZWiG7uYe7dcK8DZptoSW1atNHiEs4ONQT9fjs4
-	 ZygCd28zDQ55T8MtI9y6kODZUNdlWH0/x69bRQDQffjpBW6KKn1YP4amcpqxxFM9FJ
-	 IVDJRklbMCXbw==
+	b=lEPgyLsJtiho+ts6uvjqZDgX8yDjdRJ+5oaWMTkG0HBh6mGEnKMP7Z8aZDIu2IVgX
+	 csd1LzpqMGYr2zNlJf2+Eu2w0IEM5qC/qu5W4dwKdCtNkorISBjp9S1zByp4pH1S2w
+	 /0fKuFYQGUUGQFSBLPG0666efRaLPWOCTI1vwGRqzu9GzgnIQ3rqJ1jIAcn3iwG/5p
+	 fA+QHYGQ5z8ye8VgXMQrf/xgL1ijLOes+dfI5/rx526AweCFIx8vGM8XQ9hsNQzK7X
+	 vG2sly2MJoul1mpXNFhnFXdXwDwUvxSgWCfUgS4v3pCmFE9dACWv0xv+HZ5JG0vAiX
+	 JBJewxtZwsT/w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 666BAE77180;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90856E7717D;
 	Wed, 11 Dec 2024 17:40:27 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
-Date: Wed, 11 Dec 2024 23:10:16 +0530
-Subject: [PATCH 1/3] scsi: ufs: qcom: Power off the PHY if it was already
- powered on in ufs_qcom_power_up_sequence()
+Date: Wed, 11 Dec 2024 23:10:18 +0530
+Subject: [PATCH 3/3] scsi: ufs: qcom: Power down the controller/device
+ during system suspend for SM8550/SM8650 SoCs
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241211-ufs-qcom-suspend-fix-v1-1-83ebbde76b1c@linaro.org>
+Message-Id: <20241211-ufs-qcom-suspend-fix-v1-3-83ebbde76b1c@linaro.org>
 References: <20241211-ufs-qcom-suspend-fix-v1-0-83ebbde76b1c@linaro.org>
 In-Reply-To: <20241211-ufs-qcom-suspend-fix-v1-0-83ebbde76b1c@linaro.org>
 To: Alim Akhtar <alim.akhtar@samsung.com>, 
@@ -70,18 +70,18 @@ Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-msm@vger.kernel.org, Amit Pundir <amit.pundir@linaro.org>, 
  Nitin Rawat <quic_nitirawa@quicinc.com>, 
  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- stable@vger.kernel.org, Ram Kumar Dwivedi <quic_rdwivedi@quicinc.com>
+ stable@vger.kernel.org
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6152;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3031;
  i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=xhrzNYPSULlJXapKlJ6dtb9q0uMDOQ9cAb170YQPfZ0=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBnWc6IPEgnucJRoa0EXM+AY3yX+GuzERMVeKObz
- 0chiJGruZ6JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZ1nOiAAKCRBVnxHm/pHO
- 9V1HB/9NT4gDekZUDY7HuihUu8qmQEKs1n0GQXewx/1N4ho6Y9wMpLER25A7byMNPGIgtf946GC
- t+TXh1nj+iCgQgh4qVO0q2SPv4gQMB7eNeRJmFeg/ZmCVPitKmwQQR7dLqZtGD2rkG2SaP2iehZ
- mPrhuB5yln/w+hq+kULpECn9mhHoV9CEt70CpTBnUHyghY+fWm+6O0U+C9ZxC3MvVZmASiunpYP
- PyPbPd2NHy+KpwyhP5vLSbfq6NiewoVntIp77b3UOerpkIjcnyVrHu/2wB1DSPASBYFyR0nXs70
- vWjgTok9AnG6wvZlOfDDEZ+sGcQLGQBM+1g9k5y6kUCYWbNX
+ bh=m5hbLz2BGZb5dhnCo0YRsTuGrLlxs9RKo35x8MdorCc=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBnWc6Jug+g5MxE/VtEK2FjzQbk0JDLOIwfZX5Tl
+ Vf22pIM+W+JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCZ1nOiQAKCRBVnxHm/pHO
+ 9ZaeCACitOr4/p3gF5QRQdrXLl85xxdiyVtcay3Km0nrxGt/olEHn09g41akBMRRYCz7KRxHV+o
+ 8ZCk+K7D5TAoKrro2bSxB2+4HOnj+e+1fMcIk0g5kXGR2SEH3duAHwDFIG1lLnaZ+X8yZTG5IXq
+ ClAFlu1QUyMWm5dS/HVj8U3+ozYaBH4j/dBkTfU2zKr2n3JSlFOKfYdFvU1o9IXaFIbQLYwMbv9
+ nAvAAimgyWBXS3549KJVEn0GSekNDL+lWYbdv1ltewh8mRNpUTSHoRezXW/s8IvwOF2/PnXIGU5
+ jsRrfks0BFX/Ol+usp5F+KPrcHrJYJsgO56/SyZqQC6hOsVF
 X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
@@ -91,145 +91,78 @@ Reply-To: manivannan.sadhasivam@linaro.org
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-PHY might already be powered on during ufs_qcom_power_up_sequence() in a
-couple of cases:
+SM8550 and SM8650 SoCs doesn't support UFS PHY retention. So once these
+SoCs reaches the low power state (CX power collapse) during system suspend,
+all the PHY hardware state gets lost. This leads to the UFS resume failure:
 
-1. During UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH quirk
-2. Resuming from spm_lvl = 5 suspend
+ufshcd-qcom 1d84000.ufs: ufshcd_uic_hibern8_exit: hibern8 exit failed. ret = 5
+ufshcd-qcom 1d84000.ufs: __ufshcd_wl_resume: hibern8 exit failed 5
+ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: 5
+ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume+0x0/0x84 returns 5
+ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error 5
 
-In those cases, it is necessary to call phy_power_off() and phy_exit() in
-ufs_qcom_power_up_sequence() function to power off the PHY before calling
-phy_init() and phy_power_on().
+With the default system suspend level of UFS_PM_LVL_3, the power domain for
+UFS PHY needs to be kept always ON to retain the state. But this would
+prevent these SoCs from reaching the CX power collapse state, leading to
+poor power saving during system suspend.
 
-Case (1) is doing it via ufs_qcom_reinit_notify() callback, but case (2) is
-not handled. So to satisfy both cases, call phy_power_off() and phy_exit()
-if the phy_count is non-zero. And with this change, the reinit_notify()
-callback is no longer needed.
-
-This fixes the below UFS resume failure with spm_lvl = 5:
-
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: ufshcd_host_reset_and_restore: Host init failed -5
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: ufshcd_host_reset_and_restore: Host init failed -5
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: ufshcd_host_reset_and_restore: Host init failed -5
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: ufshcd_host_reset_and_restore: Host init failed -5
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: Enabling the controller failed
-ufshcd-qcom 1d84000.ufshc: ufshcd_host_reset_and_restore: Host init failed -5
-ufs_device_wlun 0:0:0:49488: ufshcd_wl_resume failed: -5
-ufs_device_wlun 0:0:0:49488: PM: dpm_run_callback(): scsi_bus_resume returns -5
-ufs_device_wlun 0:0:0:49488: PM: failed to resume async: error -5
+So to fix this issue without affecting the power saving, set
+'ufs_qcom_drvdata::no_phy_retention' to true which sets 'hba->spm_lvl' to
+UFS_PM_LVL_5 to allow both the controller and device (in turn the PHY) to
+be powered down during system suspend for these SoCs by default.
 
 Cc: stable@vger.kernel.org # 6.3
-Fixes: baf5ddac90dc ("scsi: ufs: ufs-qcom: Add support for reinitializing the UFS device")
-Reported-by: Ram Kumar Dwivedi <quic_rdwivedi@quicinc.com>
+Fixes: 35cf1aaab169 ("arm64: dts: qcom: sm8550: Add UFS host controller and phy nodes")
+Fixes: 10e024671295 ("arm64: dts: qcom: sm8650: add interconnect dependent device nodes")
+Reported-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- drivers/ufs/core/ufshcd-priv.h |  6 ------
- drivers/ufs/core/ufshcd.c      |  1 -
- drivers/ufs/host/ufs-qcom.c    | 13 +++++--------
- include/ufs/ufshcd.h           |  2 --
- 4 files changed, 5 insertions(+), 17 deletions(-)
+ drivers/ufs/host/ufs-qcom.c | 5 +++++
+ drivers/ufs/host/ufs-qcom.h | 1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd-priv.h b/drivers/ufs/core/ufshcd-priv.h
-index 7aea8fbaeee8..1f413b3aab5d 100644
---- a/drivers/ufs/core/ufshcd-priv.h
-+++ b/drivers/ufs/core/ufshcd-priv.h
-@@ -236,12 +236,6 @@ static inline void ufshcd_vops_config_scaling_param(struct ufs_hba *hba,
- 		hba->vops->config_scaling_param(hba, p, data);
- }
- 
--static inline void ufshcd_vops_reinit_notify(struct ufs_hba *hba)
--{
--	if (hba->vops && hba->vops->reinit_notify)
--		hba->vops->reinit_notify(hba);
--}
--
- static inline int ufshcd_vops_mcq_config_resource(struct ufs_hba *hba)
- {
- 	if (hba->vops && hba->vops->mcq_config_resource)
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 6a2685333076..7bd0f5482db3 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8820,7 +8820,6 @@ static int ufshcd_probe_hba(struct ufs_hba *hba, bool init_dev_params)
- 		ufshcd_device_reset(hba);
- 		ufs_put_device_desc(hba);
- 		ufshcd_hba_stop(hba);
--		ufshcd_vops_reinit_notify(hba);
- 		ret = ufshcd_hba_enable(hba);
- 		if (ret) {
- 			dev_err(hba->dev, "Host controller enable failed\n");
 diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 3b592492e152..32b0c74437de 100644
+index 35ae8c8fc301..edf62430cabe 100644
 --- a/drivers/ufs/host/ufs-qcom.c
 +++ b/drivers/ufs/host/ufs-qcom.c
-@@ -368,6 +368,11 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
- 	if (ret)
- 		return ret;
+@@ -1069,6 +1069,7 @@ static int ufs_qcom_init(struct ufs_hba *hba)
+ 	struct device *dev = hba->dev;
+ 	struct ufs_qcom_host *host;
+ 	struct ufs_clk_info *clki;
++	const struct ufs_qcom_drvdata *drvdata = of_device_get_match_data(hba->dev);
  
-+	if (phy->power_count) {
-+		phy_power_off(phy);
-+		phy_exit(phy);
-+	}
+ 	host = devm_kzalloc(dev, sizeof(*host), GFP_KERNEL);
+ 	if (!host)
+@@ -1148,6 +1149,9 @@ static int ufs_qcom_init(struct ufs_hba *hba)
+ 		dev_warn(dev, "%s: failed to configure the testbus %d\n",
+ 				__func__, err);
+ 
++	if (drvdata && drvdata->no_phy_retention)
++		hba->spm_lvl = UFS_PM_LVL_5;
 +
- 	/* phy initialization - calibrate the phy */
- 	ret = phy_init(phy);
- 	if (ret) {
-@@ -1579,13 +1584,6 @@ static void ufs_qcom_config_scaling_param(struct ufs_hba *hba,
- }
- #endif
+ 	return 0;
  
--static void ufs_qcom_reinit_notify(struct ufs_hba *hba)
--{
--	struct ufs_qcom_host *host = ufshcd_get_variant(hba);
--
--	phy_power_off(host->generic_phy);
--}
--
- /* Resources */
- static const struct ufshcd_res_info ufs_res_info[RES_MAX] = {
- 	{.name = "ufs_mem",},
-@@ -1825,7 +1823,6 @@ static const struct ufs_hba_variant_ops ufs_hba_qcom_vops = {
- 	.device_reset		= ufs_qcom_device_reset,
- 	.config_scaling_param = ufs_qcom_config_scaling_param,
- 	.program_key		= ufs_qcom_ice_program_key,
--	.reinit_notify		= ufs_qcom_reinit_notify,
- 	.mcq_config_resource	= ufs_qcom_mcq_config_resource,
- 	.get_hba_mac		= ufs_qcom_get_hba_mac,
- 	.op_runtime_config	= ufs_qcom_op_runtime_config,
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index d7aca9e61684..6e40b8e8009b 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -327,7 +327,6 @@ struct ufs_pwr_mode_info {
-  * @program_key: program or evict an inline encryption key
-  * @fill_crypto_prdt: initialize crypto-related fields in the PRDT
-  * @event_notify: called to notify important events
-- * @reinit_notify: called to notify reinit of UFSHCD during max gear switch
-  * @mcq_config_resource: called to configure MCQ platform resources
-  * @get_hba_mac: reports maximum number of outstanding commands supported by
-  *	the controller. Should be implemented for UFSHCI 4.0 or later
-@@ -379,7 +378,6 @@ struct ufs_hba_variant_ops {
- 				    void *prdt, unsigned int num_segments);
- 	void	(*event_notify)(struct ufs_hba *hba,
- 				enum ufs_event_type evt, void *data);
--	void	(*reinit_notify)(struct ufs_hba *);
- 	int	(*mcq_config_resource)(struct ufs_hba *hba);
- 	int	(*get_hba_mac)(struct ufs_hba *hba);
- 	int	(*op_runtime_config)(struct ufs_hba *hba);
+ out_variant_clear:
+@@ -1866,6 +1870,7 @@ static void ufs_qcom_remove(struct platform_device *pdev)
+ 
+ static const struct ufs_qcom_drvdata ufs_qcom_sm8550_drvdata = {
+ 	.quirks = UFSHCD_QUIRK_BROKEN_LSDBS_CAP,
++	.no_phy_retention = true,
+ };
+ 
+ static const struct of_device_id ufs_qcom_of_match[] __maybe_unused = {
+diff --git a/drivers/ufs/host/ufs-qcom.h b/drivers/ufs/host/ufs-qcom.h
+index e85cc6fc072e..5a7b2fe4a7c9 100644
+--- a/drivers/ufs/host/ufs-qcom.h
++++ b/drivers/ufs/host/ufs-qcom.h
+@@ -219,6 +219,7 @@ struct ufs_qcom_host {
+ 
+ struct ufs_qcom_drvdata {
+ 	unsigned int quirks;
++	bool no_phy_retention;
+ };
+ 
+ static inline u32
 
 -- 
 2.25.1
