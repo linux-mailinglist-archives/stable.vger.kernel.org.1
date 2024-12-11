@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-100774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF98E9ED5D9
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:09:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D05D9ED5FD
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:11:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CF0F281AA1
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46FD5188BC32
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7495B23F331;
-	Wed, 11 Dec 2024 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D08F256162;
+	Wed, 11 Dec 2024 18:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DI/1k1BS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWDhM7e7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217AE23F324;
-	Wed, 11 Dec 2024 18:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593FB25615D;
+	Wed, 11 Dec 2024 18:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943256; cv=none; b=ZK8BTNeYfztFxTVZ39h2LJB45bgMLbZsOr8WLuofWD7OHFJi9cRAIjmXbAWrsudROdYgVieg5hSd1x1b71IlH1BYbkUC4C+31K1Jtgr21rkCGG5m2be2HUKr9Wu0rPMgMWZTAhzijJFkXoABex1pKhTZOO/FyPrRbE3psp/XHoQ=
+	t=1733943262; cv=none; b=IA2h0JaTkFQZ118t0hujAFYBithJcBA8oh9luzJXyLWkEqRA4qqS7ocR3FvUCVWyAY9qfTgRBLirN5FzV1WkOa6XFOhd5MjFdAN88c7m7bfs+eaLD5NYYkF8u9lIOfhD3zQX6lyy4YrPA75FvF1a0LGk3fJre2rn9RybBJ58Jv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943256; c=relaxed/simple;
-	bh=NTv52oivVwj3zN4kZCEZcipef87g6n1wz8iSQxvyuq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiAkrkqHMfMh4uIVuYqC/avWBg2Kcr2YJF2tCXeXvZhiUSVskJePgQWwxT7kN8y0A23DSLy7kj9TGkKlC53IgD/YcCLgrTLUJas7QAYgJQ+1QtWY2SX8ZNoQrs6dHq7gqtiQu531lJnuAKrHkiFGn06+CX1rf09kVSpgIFHw6gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DI/1k1BS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E20C4CEDD;
-	Wed, 11 Dec 2024 18:54:13 +0000 (UTC)
+	s=arc-20240116; t=1733943262; c=relaxed/simple;
+	bh=9E/Isbo+FXM6DvwET1ygPqHe/OysEciXdK9fB1gfCps=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qSKodPvqhzxhoJULlRxJjKdBPaWvOHk55a8+9t5qjju5Fc7HKUUXo3eVQOsdVaet877IQxTLw1VlmYzjfPM5DLpNJQ0gA5CLMS7IRTKJrSgdeICt2w6K5EgGn61ZiV5ZpWxvyuNQwPCD5cBmS82Og0eWCzQ+NB9ffmXTefWPVYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWDhM7e7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07DFC4CED2;
+	Wed, 11 Dec 2024 18:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943255;
-	bh=NTv52oivVwj3zN4kZCEZcipef87g6n1wz8iSQxvyuq0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DI/1k1BS2FK8pQmN/XrShblcCUrclLqYQxg8oa2b+gV0FkQ+Z7jdPnmBtPKPzdFmF
-	 4yB8YyA0GJKioYW+9Somj+X9wS7FjLoyIJfECMEW5rO+9TsDAFLlBv4KtSoQM2oGyK
-	 y6eK7Ya9TjjevRjEPLZ1PgfE5dVWjxhfbI+mgoztKIShex+gObBW62vwW142wLNnwV
-	 qAQKkvdyY4zqGqVCj2Xv9uwmbv66+BdEPtqm0D6DJ/qlBM/YIcEeQHzBi43Jq+YKE/
-	 PIvF+nAlQ8a5LKUM8JGOpAgltgI4bD8I72sV5SJCJ8Pz4oQ4wUO4VPaR6q1jcLR98a
-	 HROAC9ZpPgn3Q==
+	s=k20201202; t=1733943261;
+	bh=9E/Isbo+FXM6DvwET1ygPqHe/OysEciXdK9fB1gfCps=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JWDhM7e7oD0nMo3hFWPr8+aoc+17woX2ZUQxr9VjsYk1+3bWsyY5cYple5xfBaXnD
+	 BtuQv/sw8ZxAKjj/Np0tiB4Gc5hcQ44+hGHEK1YsYHb7IKsioc7BwOfP3+q0PhvoaY
+	 kbPOeJ0pGC1utxgPPpTNficC3iAiicGwy3xxpsh9voAfqjbcUJo8LyqJJ/tUbRGKdw
+	 C/8/q3wtU//xBJfl8Q7yM38kPwYAPGH9mXrNK6jeFX1qsA0fnyPxWG+XgCmocsDt72
+	 T7Bm8ySMhisUH9uucv0cBjlD7k2Z64lDTARQuRBNEDLeUyt44eSiEoRyHyLSRCYU5e
+	 rJcPV4+seF63g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ming Lei <ming.lei@redhat.com>,
-	Yi Sun <yi.sun@unisoc.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: James Hilliard <james.hilliard1@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 10/10] virtio-blk: don't keep queue frozen during system suspend
-Date: Wed, 11 Dec 2024 13:53:51 -0500
-Message-ID: <20241211185355.3842902-10-sashal@kernel.org>
+	linux-watchdog@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 01/10] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
+Date: Wed, 11 Dec 2024 13:54:07 -0500
+Message-ID: <20241211185419.3843138-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241211185355.3842902-1-sashal@kernel.org>
-References: <20241211185355.3842902-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,73 +60,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.173
+X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Ming Lei <ming.lei@redhat.com>
+From: James Hilliard <james.hilliard1@gmail.com>
 
-[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
+[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
 
-Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
-deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
-PM callbacks. And the motivation is to drain inflight IOs before suspending.
+For the watchdog timer to work properly on the QCML04 board we need to
+set PWRGD enable in the Environment Controller Configuration Registers
+Special Configuration Register 1 when it is not already set, this may
+be the case when the watchdog is not enabled from within the BIOS.
 
-block layer's queue freeze looks very handy, but it is also easy to cause
-deadlock, such as, any attempt to call into bio_queue_enter() may run into
-deadlock if the queue is frozen in current context. There are all kinds
-of ->suspend() called in suspend context, so keeping queue frozen in the
-whole suspend context isn't one good idea. And Marek reported lockdep
-warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
-
-[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
-
-Given the motivation is to drain in-flight IOs, it can be done by calling
-freeze & unfreeze, meantime restore to previous behavior by keeping queue
-quiesced during suspend.
-
-Cc: Yi Sun <yi.sun@unisoc.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: virtualization@lists.linux.dev
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 7f73e7447ecb5..c1087dfa332e6 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -988,9 +988,12 @@ static void virtblk_remove(struct virtio_device *vdev)
- static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
-+	struct request_queue *q = vblk->disk->queue;
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index 6340ca058f890..da9e24e4a8b60 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -20,6 +20,8 @@
  
- 	/* Ensure no requests in virtqueues before deleting vqs. */
--	blk_mq_freeze_queue(vblk->disk->queue);
-+	blk_mq_freeze_queue(q);
-+	blk_mq_quiesce_queue_nowait(q);
-+	blk_mq_unfreeze_queue(q);
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
-@@ -1014,8 +1017,8 @@ static int virtblk_restore(struct virtio_device *vdev)
- 		return ret;
++#include <linux/bits.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -40,6 +42,7 @@
+ #define VAL		0x2f
  
- 	virtio_device_ready(vdev);
-+	blk_mq_unquiesce_queue(vblk->disk->queue);
+ /* Logical device Numbers LDN */
++#define EC		0x04
+ #define GPIO		0x07
  
--	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
+ /* Configuration Registers and Functions */
+@@ -71,6 +74,12 @@
+ #define IT8784_ID	0x8784
+ #define IT8786_ID	0x8786
+ 
++/* Environment Controller Configuration Registers LDN=0x04 */
++#define SCR1		0xfa
++
++/* Environment Controller Bits SCR1 */
++#define WDT_PWRGD	0x20
++
+ /* GPIO Configuration Registers LDN=0x07 */
+ #define WDTCTRL		0x71
+ #define WDTCFG		0x72
+@@ -241,6 +250,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
+ 	return ret;
  }
- #endif
+ 
++enum {
++	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
++};
++
++static const struct dmi_system_id it87_quirks[] = {
++	{
++		/* Qotom Q30900P (IT8786) */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
++		},
++		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
++	},
++	{}
++};
++
+ static const struct watchdog_info ident = {
+ 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
+ 	.firmware_version = 1,
+@@ -262,8 +286,10 @@ static struct watchdog_device wdt_dev = {
+ 
+ static int __init it87_wdt_init(void)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	u8  chip_rev;
+ 	u8 ctrl;
++	int quirks = 0;
+ 	int rc;
+ 
+ 	rc = superio_enter();
+@@ -274,6 +300,10 @@ static int __init it87_wdt_init(void)
+ 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
+ 	superio_exit();
+ 
++	dmi_id = dmi_first_match(it87_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
+ 	switch (chip_type) {
+ 	case IT8702_ID:
+ 		max_units = 255;
+@@ -334,6 +364,15 @@ static int __init it87_wdt_init(void)
+ 		superio_outb(0x00, WDTCTRL);
+ 	}
+ 
++	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
++		superio_select(EC);
++		ctrl = superio_inb(SCR1);
++		if (!(ctrl & WDT_PWRGD)) {
++			ctrl |= WDT_PWRGD;
++			superio_outb(ctrl, SCR1);
++		}
++	}
++
+ 	superio_exit();
+ 
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.43.0
 
