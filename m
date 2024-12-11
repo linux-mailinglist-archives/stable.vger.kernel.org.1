@@ -1,80 +1,102 @@
-Return-Path: <stable+bounces-100611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFFD9ECBD9
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 13:19:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A94A9ECC02
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 13:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4881888323
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 12:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78B7B161B33
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 12:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0523E225A2A;
-	Wed, 11 Dec 2024 12:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D13A225A54;
+	Wed, 11 Dec 2024 12:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lkYXQQs2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XiTFHF0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38E82210F9;
-	Wed, 11 Dec 2024 12:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970A3238E38;
+	Wed, 11 Dec 2024 12:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733919545; cv=none; b=Er0tGqejmO5XbhjlAKkWY7re5M7cg9HanvuhGWZ4sGt5+L8CIx0Jt1ONNk1Ej8t6GVAQyqENm+6tGNwRG0CPmfbddPbqueZrC3YVW7VyXlZ+yuii75r2E0Cu3il4UAxZvXd8+MlR17LrjwMabADlBUWCtywPdqxMmMNv27xsUbI=
+	t=1733919885; cv=none; b=nuJkCHM4IsY4qfMQbQTnceAMj9Lpe4Douy88RIG5Y+lft0hdGonScMiouXuSvoqt6fIfmAXpI123ptltkHFveoB0n/pLTn5rXTJWLLxiVL5zdPcQuR/p5xN1cLhkAPXRBk6EfQ3lBCG4jrWdK3q9PFkGtyJPwi407McBteolgeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733919545; c=relaxed/simple;
-	bh=EPmzPiwnVNsCM0vJoLZmRSTYKIiK2BeYdwUf/olKMFI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=DWwIWOLcoLjRqT1bcbkG3fjJu3VJWeG5ZBLT9YAp+7B16n/x9mRJChrne6Kn6TJJM/+Vtz8R3S9xoQbIdD4fuv7d5C7aRQEbo/g6XyUI2Pbcyj9NOZqSQySZnUGZqU8/TB1L7LBa2Bwu6CCRboJdWj3ULakZcJjGlRxfft4gj4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lkYXQQs2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C78C4CEDD;
-	Wed, 11 Dec 2024 12:19:03 +0000 (UTC)
+	s=arc-20240116; t=1733919885; c=relaxed/simple;
+	bh=Ixe+0zlB0lslc06XHD6I5fHFiNcsd+/enywfypzEH6o=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=rREqAlxjXHhvV7sJF+nKbafDPAu9Bh+AxEDHJoojDz5IBU91LD84p7eniMM96Bu34tXjt8v5FQdAtbTam+UO98p67pzoBYW7jn1t2ZNYBxHziA4DQVWbKVMVWiaE8fbxNby4TjKUKtGWH7cGwDmq/nGCojECcsNaIoHeEjoUCrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XiTFHF0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D61FC4CEDE;
+	Wed, 11 Dec 2024 12:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733919545;
-	bh=EPmzPiwnVNsCM0vJoLZmRSTYKIiK2BeYdwUf/olKMFI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=lkYXQQs2Ep60qEFWRMR3IlHSJL0YtIoOSfGaiz36gBEC52zUJfBXL/jyYZKO7pgDn
-	 YP2ZkVs0uwIpnZTB8LD+dTf+DLioa0kn9iCKzPAIx63r5FWtnk5jhBhkSfbZG5/DiC
-	 vzZc8it3GJCimZl5vnG884zC6EbuV9j433m09ZJ9kLa6h+JNgtjM+/QaHVgFN0uaZL
-	 qyFHK3AdNMarWGdTJA1thncH7ZaJn5ULMrCLhhxfFZ6kN7j83UMv0A/tERrrRKaJWk
-	 2arDzWcoCCBFFTC6AbbWWtQ/N+nRtz1sAcQmsfLFgIj9VqEc3PUtQosjZP1V1ddCFK
-	 +7eBjvBfx9eFg==
-From: Lee Jones <lee@kernel.org>
-To: linux-leds@vger.kernel.org, 
- "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: Dan Murphy <dmurphy@ti.com>, Pavel Machek <pavel@ucw.cz>, 
- Lee Jones <lee@kernel.org>, stable@vger.kernel.org
-In-Reply-To: <20241114101402.2562878-1-alexander.sverdlin@siemens.com>
-References: <20241114101402.2562878-1-alexander.sverdlin@siemens.com>
-Subject: Re: (subset) [PATCH] leds: lp8860: Write full EEPROM, not only
- half of it
-Message-Id: <173391954341.776404.6679518901303711532.b4-ty@kernel.org>
-Date: Wed, 11 Dec 2024 12:19:03 +0000
+	s=k20201202; t=1733919885;
+	bh=Ixe+0zlB0lslc06XHD6I5fHFiNcsd+/enywfypzEH6o=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=XiTFHF0Gio4QQBgKDhi02XZ6TrhhfqCQ4XjLKCuxPGw8w1e44rrWC56dhj2L5ClFG
+	 uYA5axPUtkLuAJ1YETjMesPjrEuRNplG1r68SDUgie088ONVMUXiniZRhfAv7prR6k
+	 PC8xg96LxqBzejT37TlCFNpoqcOzPVcDEcmgIQg2Ye7jNB88MbtUg0GRLMzny7S5YE
+	 xXhxL3lRE2jmJTnGZtU9vtwCvKucR5rYviNGlUtgA54Dj4sENYskwh3G1o4h4fFll6
+	 9V7fGE7FY74Tb35nlw51qNWXlpRtaqVITWJIt5q1HcyQsqknJmje/ZZxDRbe7Vs8w+
+	 pgBk0Ivd4UKIQ==
+Date: Wed, 11 Dec 2024 13:24:42 +0100 (CET)
+From: Jiri Kosina <jikos@kernel.org>
+To: Lee Jones <lee@kernel.org>
+cc: =?ISO-8859-15?Q?Heiko_St=FCbner?= <heiko@sntech.de>, jic23@kernel.org, 
+    robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+    jdelvare@suse.com, linux@roeck-us.net, srinivas.pandruvada@linux.intel.com, 
+    bentiss@kernel.org, dmitry.torokhov@gmail.com, pavel@ucw.cz, 
+    ukleinek@debian.org, devicetree@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+    linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+    linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+    linux-leds@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v9 1/9] HID: hid-sensor-hub: don't use stale platform-data
+ on remove
+In-Reply-To: <20241211120844.GD7139@google.com>
+Message-ID: <n914pn7o-pr9n-5ss0-p744-73402nnn843p@xreary.bet>
+References: <20241107114712.538976-1-heiko@sntech.de> <20241107114712.538976-2-heiko@sntech.de> <nycvar.YFH.7.76.2411071358210.20286@cbobk.fhfr.pm> <4934964.GXAFRqVoOG@diego> <nycvar.YFH.7.76.2411071534110.20286@cbobk.fhfr.pm> <20241112143732.GG8552@google.com>
+ <20241211120844.GD7139@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, 14 Nov 2024 11:13:59 +0100, A. Sverdlin wrote:
-> I struggle to explain dividing an ARRAY_SIZE() by the size of an element
-> once again. As the latter equals to 2, only the half of EEPROM was ever
-> written. Drop the unexplainable division and write full ARRAY_SIZE().
+On Wed, 11 Dec 2024, Lee Jones wrote:
+
+> > > > This change was more or less a surprise find, because I wanted to make
+> > > > the platform_data pointer in the mfd_cell struct const and this the hid
+> > > > sensor hub stood out as doing something strange ;-) .
+> > > > 
+> > > > So patch 2 of this series actually depends on this change to not cause
+> > > > build errors.
+> > > 
+> > > Ah, right.
+> > > 
+> > > > But seeing that we're after -rc6 alredy, I would assume the brunt of the 
+> > > > mcu series might need to wait after 6.13-rc1 anyway - but I guess that 
+> > > > depends on how Lee sees things ;-) .
+> > > 
+> > > OK, I am keeping my hands off it for the time being.
+> > 
+> > I can take it now with an Ack.
 > 
+> Looking to apply this set now.
 > 
+> Ack please.
 
-Applied, thanks!
+I'd preferer if Srinivas could ack this as the more specific maintainer. 
+Srinivas, please? 
 
-[1/1] leds: lp8860: Write full EEPROM, not only half of it
-      commit: 0d2e820a86793595e2a776855d04701109e46663
+Thanks,
 
---
-Lee Jones [李琼斯]
+-- 
+Jiri Kosina
+SUSE Labs
 
 
