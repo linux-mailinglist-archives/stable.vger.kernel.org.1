@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5549ED200
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:33:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D6E9ED1FE
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6004F18811E3
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:33:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02DBE1662ED
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513431DD9AC;
-	Wed, 11 Dec 2024 16:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AE81D619D;
+	Wed, 11 Dec 2024 16:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s/yfaND4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6+iKf55"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CED1A707A
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8441A707A
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733934803; cv=none; b=o1AQ0hkc3lWCxvCszr7H583zpkr5NtWMv3In8dJZKVtqhvkDX+E2Qx8xOaHVkpVvrWtOjUzWfTM4NrzowNeW2nEVdVsMmzbJigYYki0dCB0fvoxGhpqvXR5bUuHqoVcnW3cyvUGttJ2CJh7bOgQDxpVIZXbiUWsbZQVb3Wg11VU=
+	t=1733934805; cv=none; b=gIqZ9H5KFxSojZNQ0FFMAf/Mg1PQACixRD2Dn+Khx19+yfSZz0GRPpw+loPanjws0AcSccwqG1VZtjQEwyz7XlEMSAzsjgyo2W3LBOUQR9KmhQ85Oqbbos/PJJeuIMzMsFr4LEVHWl5x9/k1xiTxTt7oVLAhjFNx2LJHXu37ohY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733934803; c=relaxed/simple;
-	bh=QSwi8/mND/o85iEd4mg68dFSZGlHm3JrT9gIeeTs2ww=;
+	s=arc-20240116; t=1733934805; c=relaxed/simple;
+	bh=plYolokGNcEF/3TixF8KVmUwyZj7bvNkVBhLjnFFPrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmv7074v3EyoficeUI3RvUXqRfOFKmygDsa6W5XssNJEHIenA4Ud2OKmN33/5TNyO7AQBx9A4FOJ8/YeWLrfX4jyO9wtmBmfq+Gwe+BjMvLvIoeV4aWqlQQOiteZTrymx4rblYPEFwasVMNqjR/HHpNAuEymE25Dn3b+gHwKOsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s/yfaND4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6870BC4CED2;
-	Wed, 11 Dec 2024 16:33:22 +0000 (UTC)
+	 MIME-Version; b=Y9mqLQVJnn33ZujWuhy4Z03shFeEvYCEbL1SEds8GUKcSiYobwNkNvCaVSPe+RNNQEFJRVla3A+w40psDFTeD3hj8m4u5P0/DtAChh9hHpWPngWVo/RGotcFhLguFkM2zvlZW7bQYP0B3YZuzXASR2MxUskhi+653hPdIyTuXI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6+iKf55; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71134C4CED2;
+	Wed, 11 Dec 2024 16:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733934802;
-	bh=QSwi8/mND/o85iEd4mg68dFSZGlHm3JrT9gIeeTs2ww=;
+	s=k20201202; t=1733934804;
+	bh=plYolokGNcEF/3TixF8KVmUwyZj7bvNkVBhLjnFFPrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/yfaND4LTtDPWjx6bh1poUQKoh8TxDfrgPqARUBpa/EgIMWwpfs/N2Jg7LpzufGC
-	 sZSbintV8lkeuke7YlpPYYBBOFTYJ+PDkOs2lpHChRuSjewBS063UTP9Bmo6EPq57b
-	 1tsLo4CijQ1AyL5uW4ERfO2cQq5m1UjMe4M4Yepfr520T8x+NN8yW1xEeW+Jj3xn1j
-	 CxgE2XcHEhHqfJipvIaQMlpFX5nZxqaV1EugbUuNr3YzN8zX6DPAqjgBj1h2eEbc88
-	 JdHdT6s1M67SJ35KyRdRrMWB1rzf93m386z/QQxcF6ZoBUGm6kpNzjBZvpLfd+wiNT
-	 twKzFJ1vr0Ikg==
+	b=H6+iKf55nzCpmOqIXnNLai9PX50Vg3xQrJcjZokSnARoprwyxVl4IL9ePG2PlSQ+f
+	 fKzweS+e+CjOtlZnrvGnAgahjx/0jblEnyFOeYrF/3eOnT9cGCnxg9bNNkH9P9rkb/
+	 tleWQdL1PSk1jxDswEqrMcKqNODUTxMPRBoBW4LjWDBwgSgr0L09JmSA3WfN/xMA3f
+	 9iJSY0apvvkFyAJId/9RckSIMZ6zLJM2BX/ua2lQNd05RYhSucGYGMWfxnywUKAPzk
+	 LCjnBJ/7Rejo/jRAcUBkPCcGAdxUNNS6CizJBcQc6TCnwX4DgpcuL2vtmjoMB/qQEy
+	 L16NbV16X/cwg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: guocai.he.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH V2][5.15.y] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
-Date: Wed, 11 Dec 2024 11:33:21 -0500
-Message-ID: <20241211082241-67951664980563fa@stable.kernel.org>
+Subject: Re: [PATCH][5.15.y] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+Date: Wed, 11 Dec 2024 11:33:23 -0500
+Message-ID: <20241211112920-a74a3c57047e24e5@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241211081023.3365559-1-guocai.he.cn@windriver.com>
+In-Reply-To:  <20241211083954.3406361-1-guocai.he.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,7 +80,7 @@ Status in newer kernel trees:
 Note: The patch differs from the upstream commit:
 ---
 1:  bdcb8aa434c6d < -:  ------------- gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
--:  ------------- > 1:  d18e3dbdba1b2 gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
+-:  ------------- > 1:  0f941fc07b046 gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
 ---
 
 Results of testing on various branches:
