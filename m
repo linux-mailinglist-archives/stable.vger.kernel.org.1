@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-100746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570559ED586
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:02:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC48C9ED591
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:03:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 102F1283120
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:02:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCB641697A5
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC5D24B22B;
-	Wed, 11 Dec 2024 18:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F1224B241;
+	Wed, 11 Dec 2024 18:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ecvZY0FG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gso5fNYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F9C24B226;
-	Wed, 11 Dec 2024 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BBE24B223;
+	Wed, 11 Dec 2024 18:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943181; cv=none; b=qjb+6sbXeK9kBu28ZOjPtU6lhxB44FPpAH5tPe1DfZxwCL0MNXbn4GZXfHB6bQc7wpL9CTmVdT/IdRsSKppZC6wb6mHrP2lWl+TmJ8925XRJ3XgFNZ0HBZ4qMEPe+rRPUJisYqt5GQ5CWhh0KkUdjawiuZX9ZCCmoNa0mhsFDPM=
+	t=1733943183; cv=none; b=Ir5fJzFrWU8LnfNZLuXtu3fr5Ydn3bZCH0mzi5/fLGmB5lPnP6I4/FgFbFj1RmP3V0+Mtiai/J3wc1lrkvd2UKnseE4S0hW7O4kumnP+baYUBdkdT8vAkfM8DHxl4vfHAPYFR5KNypKHaOpwL6LKrNdGXgqoew/pJT5KvnClN1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943181; c=relaxed/simple;
-	bh=PapIcMWuQBW53H0NJkjda0FyjBJnhe9N/rI7amErZe8=;
+	s=arc-20240116; t=1733943183; c=relaxed/simple;
+	bh=8kki7GOkDcpBKwlX5O3xG+axtdzfkUuTvuV/co7Ssn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uITs5T62dtRU0/84O1jxLwnX6X4zYGs03cIj5k0ECQTJEfbJNENrJmu5WFhSsymKOZvPd4o14RSd+RcFSo+QwSIUrmExDmesrIH4jmj3mXDuZSyd/uvvIcTuObECq7LAQ4UAzjr6LCrMuFOmw+CPKVresmIv25rE6k09/q4+6oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ecvZY0FG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60D1C4CEDE;
-	Wed, 11 Dec 2024 18:52:58 +0000 (UTC)
+	 MIME-Version; b=SaPH7r/QRkHHSFxA+UJ/cGwRqQTlK0gXpW2YB5lQG9xn7t415ax/I5eWMTUb5zDDRHn9x5o6v+miMD0jWjPXfWOqjBccasB9Q16XNdmZR8ktXvgT5M+x+Zrzhi8dUVfflKgiCGiE9zAWaUGkEh96cXByBi+GMn25qNA8p9dAEOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gso5fNYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0A0C4CEE2;
+	Wed, 11 Dec 2024 18:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943180;
-	bh=PapIcMWuQBW53H0NJkjda0FyjBJnhe9N/rI7amErZe8=;
+	s=k20201202; t=1733943182;
+	bh=8kki7GOkDcpBKwlX5O3xG+axtdzfkUuTvuV/co7Ssn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecvZY0FGQDtoLcF7KWTvukbjKA3Dt3nfZ1TleP6W4Z9hu4qSn8BqpDX5tvTAgyaG/
-	 Ngvn841fqXfmvTpUJjgZSEsMu9haozYvY5EkhuF3qQGUgDYck4O+DqWsU4PIYZ2pSl
-	 8/GcCoHuclwxt9TsoAd2SngDGfOrfxYD3moS+mnOqvauFMHv3nc/SX64HdyhdTo3Kg
-	 +O8eFWwfGJwOm8/lS6IiOO9V7ibBzxx5pTe8VVGRhrOJr7WACJhYbWnVW4kk1Hpu1G
-	 CHqyGOIzc0FTNmtAs0KRYm4mfrKkhyruxOeTvC4VPFWKfj9PcE34NnzY+DkFRES1vn
-	 +EXtlKGEgRuNw==
+	b=gso5fNYQIO3yFugm47SixGr90SRwZpAyLl67ush1TA8slMPcEfZVlzuqh5XnIeMNF
+	 FygVMS3Sk1ZPPCNEl3gfFax1ueHESf1N7VWPR+2qhTEr89LQ8gg9DoyWLPhS6AhOKH
+	 2fk+lWqX1b0SUqbgMj8gNQXHnyx9I3ceF3nWR7EkG4zlSVDulw6hrA2WQAD3PuqHcB
+	 gOU1JSqH4ng+J0pJ6W9PcuV0g3WsprYg/ZK97QPwd+0gXhNzp1fQSKp/+yJZ/ml6XB
+	 /aku7egXgQAwWiZupXH/UneKRDZiE6L62aCC1l9ZBqrtRzgXrUwtWby6ppm605U66e
+	 N0h8dsMrv2vNA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Imre Deak <imre.deak@intel.com>,
-	Lyude Paul <lyude@redhat.com>,
+Cc: Ming Lei <ming.lei@redhat.com>,
+	Yi Sun <yi.sun@unisoc.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	jani.nikula@intel.com,
-	alexander.deucher@amd.com,
-	harry.wentland@amd.com,
-	Wayne.Lin@amd.com,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 20/23] drm/dp_mst: Reset message rx state after OOM in drm_dp_mst_handle_up_req()
-Date: Wed, 11 Dec 2024 13:51:57 -0500
-Message-ID: <20241211185214.3841978-20-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 21/23] virtio-blk: don't keep queue frozen during system suspend
+Date: Wed, 11 Dec 2024 13:51:58 -0500
+Message-ID: <20241211185214.3841978-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185214.3841978-1-sashal@kernel.org>
 References: <20241211185214.3841978-1-sashal@kernel.org>
@@ -74,58 +71,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.65
 Content-Transfer-Encoding: 8bit
 
-From: Imre Deak <imre.deak@intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 2b245c97b1af5d8f04c359e0826cb5a5c81ef704 ]
+[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
 
-After an out-of-memory error the reception state should be reset, so
-that the next attempt receiving a message doesn't fail (due to getting a
-start-of-message packet, while the reception state has already the
-start-of-message flag set).
+Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
+deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
+PM callbacks. And the motivation is to drain inflight IOs before suspending.
 
-Cc: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-7-imre.deak@intel.com
+block layer's queue freeze looks very handy, but it is also easy to cause
+deadlock, such as, any attempt to call into bio_queue_enter() may run into
+deadlock if the queue is frozen in current context. There are all kinds
+of ->suspend() called in suspend context, so keeping queue frozen in the
+whole suspend context isn't one good idea. And Marek reported lockdep
+warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
+
+[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
+
+Given the motivation is to drain in-flight IOs, it can be done by calling
+freeze & unfreeze, meantime restore to previous behavior by keeping queue
+quiesced during suspend.
+
+Cc: Yi Sun <yi.sun@unisoc.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/block/virtio_blk.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index 4d954e50964f0..b3c613f5e2089 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3996,6 +3996,7 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 997106fe73e49..65a1f1576e55f 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1624,9 +1624,12 @@ static void virtblk_remove(struct virtio_device *vdev)
+ static int virtblk_freeze(struct virtio_device *vdev)
  {
- 	struct drm_dp_pending_up_req *up_req;
- 	struct drm_dp_mst_branch *mst_primary;
-+	int ret = 0;
+ 	struct virtio_blk *vblk = vdev->priv;
++	struct request_queue *q = vblk->disk->queue;
  
- 	if (!drm_dp_get_one_sb_msg(mgr, true, NULL))
- 		goto out_clear_reply;
-@@ -4004,8 +4005,10 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 		return 0;
+ 	/* Ensure no requests in virtqueues before deleting vqs. */
+-	blk_mq_freeze_queue(vblk->disk->queue);
++	blk_mq_freeze_queue(q);
++	blk_mq_quiesce_queue_nowait(q);
++	blk_mq_unfreeze_queue(q);
  
- 	up_req = kzalloc(sizeof(*up_req), GFP_KERNEL);
--	if (!up_req)
--		return -ENOMEM;
-+	if (!up_req) {
-+		ret = -ENOMEM;
-+		goto out_clear_reply;
-+	}
+ 	/* Ensure we don't receive any more interrupts */
+ 	virtio_reset_device(vdev);
+@@ -1650,8 +1653,8 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 		return ret;
  
- 	INIT_LIST_HEAD(&up_req->next);
+ 	virtio_device_ready(vdev);
++	blk_mq_unquiesce_queue(vblk->disk->queue);
  
-@@ -4072,7 +4075,7 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 	drm_dp_mst_topology_put_mstb(mst_primary);
- out_clear_reply:
- 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
--	return 0;
-+	return ret;
+-	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
  }
- 
- /**
+ #endif
 -- 
 2.43.0
 
