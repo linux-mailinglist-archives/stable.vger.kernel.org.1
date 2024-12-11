@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-100695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EB429ED4F1
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:51:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5BE9ED4F4
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F2C284B67
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:51:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06129285129
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791F62288F3;
-	Wed, 11 Dec 2024 18:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0857620A5E4;
+	Wed, 11 Dec 2024 18:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hnYxS5ta"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="COxZQZPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E49B211A14;
-	Wed, 11 Dec 2024 18:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46732288E8;
+	Wed, 11 Dec 2024 18:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943038; cv=none; b=JzuFPjd//fwnZI96evw0bXezuj7jy0C2+11DcOrAldEXBtuVsHXQ/t6DEzXBZWiG2OU+oM5DMmf8BKltJfM4DRHRO5iQuhZO0KmZ5b2WFq4fXQgcp5tfO3+vIRO8vByH4UbpmapFenWPL+5VMwHgm/Jqb35efe3yXNAnAxKw+vk=
+	t=1733943039; cv=none; b=k1OIK5J3rsn9Jk1aIZTomXKgrC2G7aSJ9/fnw5YiNIZrlJeXjrS+6mi3lExD5xuEVr2pF7gscXsXwr3B4yzigH+xvdZJLMVv1p+e9zOeIPn02Sx6U5gkhK5h6y1MuLRLOvxFNa7KfNOj6Alzunx8EE+7OpFL5GwP2Qo5Ez29CR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943038; c=relaxed/simple;
-	bh=qrrMUOSZEfY/cTaNeMEEDWyFjmfOCB6G3PQly+6iqjA=;
+	s=arc-20240116; t=1733943039; c=relaxed/simple;
+	bh=vFIvGMNkyrjmZsY+7V1qYfsRWHk0/Dak7gnHWrmo7Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIXjOlvs74IjDfUYL2eJyu+RvVlYJNk+VFlasYzAI12AM9XXdFfg4L/M50SiRmpqOFp3IPeb+dDxTiX5UGeKtpL8YvPVuYrqRlJrSeot5JNwkaU2yzOUGuOIBzBPsmv22FVHGNZRI+66iWTeWYAescE0wiUw9AdakgCwjT/OnnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hnYxS5ta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9787AC4CED2;
-	Wed, 11 Dec 2024 18:50:36 +0000 (UTC)
+	 MIME-Version; b=bwGyr+hoAnTf8DITriCFkqpdt28mmLjN1SKPjrh3I0HK0UemNdzLEY5awYqKx9zTzF664Pu4WCD4Wj2nHlw5mxtDWs+o/P3PiYC01c8MpvqUH2ngVjrJ41pOwgJtWgmKTXKlMaRD/TWRhKJLAY1RAzFGQF/MEUsnembRmVATk+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=COxZQZPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C99EC4CEDD;
+	Wed, 11 Dec 2024 18:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943038;
-	bh=qrrMUOSZEfY/cTaNeMEEDWyFjmfOCB6G3PQly+6iqjA=;
+	s=k20201202; t=1733943039;
+	bh=vFIvGMNkyrjmZsY+7V1qYfsRWHk0/Dak7gnHWrmo7Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnYxS5tahjnBIDKL6W1G4XMFjoiORdj5TFan4lrQOfPLoYA45Y7lt/JaC6y7PimxK
-	 0tSdwfjIU7RZ00amc17CkJ5qnhyLkVUXkBVX6gRjnoQH39yfUKCjo36Fpjai4aq7Tx
-	 FWDSSWdLPzbDIY+4ZYUD3jy1efqbA5HRICM3M8cxSJfxn+mcN8mave5JHEv4EPLXr8
-	 yBJdJUAeX4Lndx81C+BlMOlFvYxOiRcEWn1yVx5Fp9Yv615kwGrguFOCTWx3gPAYkG
-	 0JmwykS1aH5dE8On76PHWRF5nUynqkuxTxVoTCdTIw/zFGBta7nU1VzRCAZMah5hSh
-	 8hwM0cqlZcSSg==
+	b=COxZQZPtifUdinnBQg4ih93IcdkwV7ebtXnhTbe0cki++bI8c7hl9MpFI6ZKbEVdh
+	 MlEBXjPhOz7Y8c+d1BpCyOvauS3gK6sgECJKh9gajGSVN6sR3/sa2KThZPkZILPmnp
+	 TnGOU6B7mXfoOyPjeQ8/IzweB1zfbYmUsdVIufZQy5mfhQHO4KQl0tyA13UhiWxyPq
+	 vJj/i0s03r7HNLg8iY1BD4BAc4f2KOv1zaHH6ZUXMVWibVmu/8UnwudBr/ZIaTvqk/
+	 HcXB6vnXHLmPsWnirop3jf93JVrpzkjZqiTfyri/Pm79ZrfKJiui67oTUo0z/2rZUv
+	 ohQj/4K/UpLSw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Byoungtae Cho <bt.cho@samsung.com>,
-	Taewan Kim <trunixs.kim@samsung.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+Cc: Magnus Lindholm <linmag7@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	krzk@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-watchdog@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 05/36] watchdog: s3c2410_wdt: add support for exynosautov920 SoC
-Date: Wed, 11 Dec 2024 13:49:21 -0500
-Message-ID: <20241211185028.3841047-5-sashal@kernel.org>
+	mdr@sgi.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 06/36] scsi: qla1280: Fix hw revision numbering for ISP1020/1040
+Date: Wed, 11 Dec 2024 13:49:22 -0500
+Message-ID: <20241211185028.3841047-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -71,103 +68,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.4
 Content-Transfer-Encoding: 8bit
 
-From: Byoungtae Cho <bt.cho@samsung.com>
+From: Magnus Lindholm <linmag7@gmail.com>
 
-[ Upstream commit a5cb13980e00e9c4fbc382d68eda250ab6a14d7c ]
+[ Upstream commit c064de86d2a3909222d5996c5047f64c7a8f791b ]
 
-Adds the compatibles and drvdata for the ExynosAuto V920 SoC. This SoC
-is almost similar to ExynosAutoV9, but some CPU configurations are quite
-different, so it should be added. Plus it also support DBGACK like as
-GS101 SoC.
+Fix the hardware revision numbering for Qlogic ISP1020/1040 boards.  HWMASK
+suggests that the revision number only needs four bits, this is consistent
+with how NetBSD does things in their ISP driver. Verified on a IPS1040B
+which is seen as rev 5 not as BIT_4.
 
-Signed-off-by: Byoungtae Cho <bt.cho@samsung.com>
-Signed-off-by: Taewan Kim <trunixs.kim@samsung.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20241021063903.793166-3-trunixs.kim@samsung.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/20241113225636.2276-1-linmag7@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/s3c2410_wdt.c | 37 +++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ drivers/scsi/qla1280.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/watchdog/s3c2410_wdt.c b/drivers/watchdog/s3c2410_wdt.c
-index 349d30462c8c0..30450e99e5e9d 100644
---- a/drivers/watchdog/s3c2410_wdt.c
-+++ b/drivers/watchdog/s3c2410_wdt.c
-@@ -63,6 +63,10 @@
- #define EXYNOS850_CLUSTER1_NONCPU_INT_EN	0x1644
- #define EXYNOSAUTOV9_CLUSTER1_NONCPU_OUT	0x1520
- #define EXYNOSAUTOV9_CLUSTER1_NONCPU_INT_EN	0x1544
-+#define EXYNOSAUTOV920_CLUSTER0_NONCPU_OUT	0x1420
-+#define EXYNOSAUTOV920_CLUSTER0_NONCPU_INT_EN	0x1444
-+#define EXYNOSAUTOV920_CLUSTER1_NONCPU_OUT	0x1720
-+#define EXYNOSAUTOV920_CLUSTER1_NONCPU_INT_EN	0x1744
- 
- #define EXYNOS850_CLUSTER0_WDTRESET_BIT		24
- #define EXYNOS850_CLUSTER1_WDTRESET_BIT		23
-@@ -303,6 +307,32 @@ static const struct s3c2410_wdt_variant drv_data_gs101_cl1 = {
- 		  QUIRK_HAS_DBGACK_BIT,
- };
- 
-+static const struct s3c2410_wdt_variant drv_data_exynosautov920_cl0 = {
-+	.mask_reset_reg = EXYNOSAUTOV920_CLUSTER0_NONCPU_INT_EN,
-+	.mask_bit = 2,
-+	.mask_reset_inv = true,
-+	.rst_stat_reg = EXYNOS5_RST_STAT_REG_OFFSET,
-+	.rst_stat_bit = EXYNOSAUTOV9_CLUSTER0_WDTRESET_BIT,
-+	.cnt_en_reg = EXYNOSAUTOV920_CLUSTER0_NONCPU_OUT,
-+	.cnt_en_bit = 7,
-+	.quirks = QUIRK_HAS_WTCLRINT_REG | QUIRK_HAS_PMU_MASK_RESET |
-+		  QUIRK_HAS_PMU_RST_STAT | QUIRK_HAS_PMU_CNT_EN |
-+		  QUIRK_HAS_DBGACK_BIT,
-+};
-+
-+static const struct s3c2410_wdt_variant drv_data_exynosautov920_cl1 = {
-+	.mask_reset_reg = EXYNOSAUTOV920_CLUSTER1_NONCPU_INT_EN,
-+	.mask_bit = 2,
-+	.mask_reset_inv = true,
-+	.rst_stat_reg = EXYNOS5_RST_STAT_REG_OFFSET,
-+	.rst_stat_bit = EXYNOSAUTOV9_CLUSTER1_WDTRESET_BIT,
-+	.cnt_en_reg = EXYNOSAUTOV920_CLUSTER1_NONCPU_OUT,
-+	.cnt_en_bit = 7,
-+	.quirks = QUIRK_HAS_WTCLRINT_REG | QUIRK_HAS_PMU_MASK_RESET |
-+		  QUIRK_HAS_PMU_RST_STAT | QUIRK_HAS_PMU_CNT_EN |
-+		  QUIRK_HAS_DBGACK_BIT,
-+};
-+
- static const struct of_device_id s3c2410_wdt_match[] = {
- 	{ .compatible = "google,gs101-wdt",
- 	  .data = &drv_data_gs101_cl0 },
-@@ -320,6 +350,8 @@ static const struct of_device_id s3c2410_wdt_match[] = {
- 	  .data = &drv_data_exynos850_cl0 },
- 	{ .compatible = "samsung,exynosautov9-wdt",
- 	  .data = &drv_data_exynosautov9_cl0 },
-+	{ .compatible = "samsung,exynosautov920-wdt",
-+	  .data = &drv_data_exynosautov920_cl0 },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, s3c2410_wdt_match);
-@@ -643,7 +675,8 @@ s3c2410_get_wdt_drv_data(struct platform_device *pdev, struct s3c2410_wdt *wdt)
- 	/* Choose Exynos850/ExynosAutov9 driver data w.r.t. cluster index */
- 	if (variant == &drv_data_exynos850_cl0 ||
- 	    variant == &drv_data_exynosautov9_cl0 ||
--	    variant == &drv_data_gs101_cl0) {
-+	    variant == &drv_data_gs101_cl0 ||
-+	    variant == &drv_data_exynosautov920_cl0) {
- 		u32 index;
- 		int err;
- 
-@@ -662,6 +695,8 @@ s3c2410_get_wdt_drv_data(struct platform_device *pdev, struct s3c2410_wdt *wdt)
- 				variant = &drv_data_exynosautov9_cl1;
- 			else if (variant == &drv_data_gs101_cl0)
- 				variant = &drv_data_gs101_cl1;
-+			else if (variant == &drv_data_exynosautov920_cl0)
-+				variant = &drv_data_exynosautov920_cl1;
- 			break;
- 		default:
- 			return dev_err_probe(dev, -EINVAL, "wrong cluster index: %u\n", index);
+diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
+index d309e2ca14deb..dea2290b37d4d 100644
+--- a/drivers/scsi/qla1280.h
++++ b/drivers/scsi/qla1280.h
+@@ -116,12 +116,12 @@ struct device_reg {
+ 	uint16_t id_h;		/* ID high */
+ 	uint16_t cfg_0;		/* Configuration 0 */
+ #define ISP_CFG0_HWMSK   0x000f	/* Hardware revision mask */
+-#define ISP_CFG0_1020    BIT_0	/* ISP1020 */
+-#define ISP_CFG0_1020A	 BIT_1	/* ISP1020A */
+-#define ISP_CFG0_1040	 BIT_2	/* ISP1040 */
+-#define ISP_CFG0_1040A	 BIT_3	/* ISP1040A */
+-#define ISP_CFG0_1040B	 BIT_4	/* ISP1040B */
+-#define ISP_CFG0_1040C	 BIT_5	/* ISP1040C */
++#define ISP_CFG0_1020	 1	/* ISP1020 */
++#define ISP_CFG0_1020A	 2	/* ISP1020A */
++#define ISP_CFG0_1040	 3	/* ISP1040 */
++#define ISP_CFG0_1040A	 4	/* ISP1040A */
++#define ISP_CFG0_1040B	 5	/* ISP1040B */
++#define ISP_CFG0_1040C	 6	/* ISP1040C */
+ 	uint16_t cfg_1;		/* Configuration 1 */
+ #define ISP_CFG1_F128    BIT_6  /* 128-byte FIFO threshold */
+ #define ISP_CFG1_F64     BIT_4|BIT_5 /* 128-byte FIFO threshold */
 -- 
 2.43.0
 
