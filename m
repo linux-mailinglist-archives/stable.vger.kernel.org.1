@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-100777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE769ED5E3
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:09:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664DD9ED5F1
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:10:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CD93280A16
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:09:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7528316AB20
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364FE23FD15;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF536256AAA;
 	Wed, 11 Dec 2024 18:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnDbvFtV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kT/2aAKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42D123E6E8;
-	Wed, 11 Dec 2024 18:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79560256AA0;
+	Wed, 11 Dec 2024 18:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943269; cv=none; b=W20jOco+LOYQRaPMbNUD8laHLDWxDDAzeZ8Mwwg6BHlXwl4YdjGV5+D8pqLIXj6ZaiIULfGzWUI4UfRjQK1nHCWui9pzEj/FhEULhykY2hxsgCfQvRaAwfYL98+/eV9GFSxLI2rBH+yPRMaNoIskFhJb/UCTxSv27X96mU4PhNg=
+	t=1733943269; cv=none; b=Cmp5AQ5S9Y4QXslVlvaz++CNHXa5sSuQg9gjj062wvk7+Ot0zK0HVaNsjmC0XOC3TJfeQ1Ql3khVpFlg4owvvSZg7BDWSnAyXMSkbaV89aI5hwbkMmdplox5/4L/Dq97Lbza8ubRNB+d4YL7na8lGDoeYbQIa+D/kR+20yz4jG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733943269; c=relaxed/simple;
-	bh=TmToAHmrV3T65V5SglJTT2b+W8YbFAnlDtctDL1mYRo=;
+	bh=z+TpmQgMLMYduv4l/1NzZ6nIhg46S4NTM6DsCPBzbbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M97N0aIuHsa5s9KPpgA1L1q5gWC1iaLhUcAlyw98Kz9taaXv1Vlz7cmtPzx4+fLtrMglJ+DHS+1zmmPYPGJ0jRNwD+PEAJFX1RzRP5BKF3X7Gw3qzv4qnr1dKUFiFFtvE9eQ9A+69SnT1gvh1YOcQpSFrJZMl1MCrtxhztATWng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnDbvFtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D99C4CED4;
-	Wed, 11 Dec 2024 18:54:23 +0000 (UTC)
+	 MIME-Version; b=VkKwkD9/lDOUVs9070SF+r9AnVUFt5q9jAx+e3gjTRSUMppsdJ3EjJOjaD7fjWPDvhj0cgg7pHCpM9h7N8eHnOGXazqx6IXGrbYcsH1pErLCWyFUruVgdDkNamTyrXzxXOf1pFsKcOdyw5gmu4z6IqLMqrFQ2vYQ8Ttktyo6sOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kT/2aAKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E42C4CED2;
+	Wed, 11 Dec 2024 18:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943265;
-	bh=TmToAHmrV3T65V5SglJTT2b+W8YbFAnlDtctDL1mYRo=;
+	s=k20201202; t=1733943268;
+	bh=z+TpmQgMLMYduv4l/1NzZ6nIhg46S4NTM6DsCPBzbbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JnDbvFtV6egl+euHZFRaV9s0af+pghPU5Ukt3ONW+1pKW6OviGbPBir2EbupXvynK
-	 jAZbzpebnXiEGwKw0fdUQI3CYyi9pCGijk2DdtcyixPh71aNxWKoX4XtqD6qnHpc7U
-	 ajkzh5pRGCZP9gctr2qUkD7Bin/XDv7PYhG7vN2Knq8mjv/5EgG6zDiQPJ6ywGBXJV
-	 XoOBf73FKPa2Z/WOUcHPTT4kk406kWP/+6z3sgdqpg0wi1iStTlg3R7gUrljCPtsqb
-	 SQmtzNNhx0VuGPbKZ1bC/CQIRSQDZ6eyTSyoHcT50GqTREw2C0Nzhx8FzsvitfWD8D
-	 qj5dn1zuF4Zmw==
+	b=kT/2aAKxRoqQEA0vYh/rgcOYm1LqTruzjYQcsWZYMyax7yMN1VzzKloiX1QzQh8Rz
+	 jd7zwtpxqhyKbdacF28MfoAZ3DEjSCanUs9+VXb3pq3T6ITwTlivne7+ciolzTSi0B
+	 FqLG0AVyp1TV2Nr1O9LUSa98sp6KDFPHsdHB4T1Xl3qG0tWO+BAWUc+MQ9RS3RJsPZ
+	 eUaF5sEXcxU4p06sBZ68VnK1BKBtdK8Ae1hWmnMcZsGMwuNW7r/dnFFTCKk6JvBB6g
+	 M9BWzVImTbSJU6unv/6shXGBrJIAoIUCbUlfckwspMe0jyS6y88SlZDuRas6cFNn2t
+	 DJ+uVNZf6k7DA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tomas Henzl <thenzl@redhat.com>,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	kashyap.desai@broadcom.com,
-	sumit.saxena@broadcom.com,
-	shivasharan.srikanteshwara@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	megaraidlinux.pdl@broadcom.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 03/10] scsi: megaraid_sas: Fix for a potential deadlock
-Date: Wed, 11 Dec 2024 13:54:09 -0500
-Message-ID: <20241211185419.3843138-3-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	kovalev@altlinux.org,
+	wse@tuxedocomputers.com,
+	me@oldherl.one,
+	jaroslaw.janik@gmail.com,
+	cs@tuxedo.de,
+	songxiebing@kylinos.cn,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 04/10] ALSA: hda/conexant: fix Z60MR100 startup pop issue
+Date: Wed, 11 Dec 2024 13:54:10 -0500
+Message-ID: <20241211185419.3843138-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185419.3843138-1-sashal@kernel.org>
 References: <20241211185419.3843138-1-sashal@kernel.org>
@@ -71,46 +73,98 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.230
 Content-Transfer-Encoding: 8bit
 
-From: Tomas Henzl <thenzl@redhat.com>
+From: bo liu <bo.liu@senarytech.com>
 
-[ Upstream commit 50740f4dc78b41dec7c8e39772619d5ba841ddd7 ]
+[ Upstream commit 947c4012f8f03a8bb946beb6e5294d5e32817d67 ]
 
-This fixes a 'possible circular locking dependency detected' warning
-      CPU0                    CPU1
-      ----                    ----
- lock(&instance->reset_mutex);
-                              lock(&shost->scan_mutex);
-                              lock(&instance->reset_mutex);
- lock(&shost->scan_mutex);
+When Z60MR100 startup, speaker will output a pop. To fix this issue,
+we mute codec by init verbs in bios when system startup, and set GPIO
+to low to unmute codec in codec driver when it loaded .
 
-Fix this by temporarily releasing the reset_mutex.
+[ white space fixes and compile warning fix by tiwai ]
 
-Signed-off-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://lore.kernel.org/r/20240923174833.45345-1-thenzl@redhat.com
-Acked-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Link: https://patch.msgid.link/20241129014441.437205-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_conexant.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
-index 365279d7c9829..d709d261d0ad1 100644
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -8868,8 +8868,11 @@ megasas_aen_polling(struct work_struct *work)
- 						   (ld_target_id / MEGASAS_MAX_DEV_PER_CHANNEL),
- 						   (ld_target_id - MEGASAS_MAX_DEV_PER_CHANNEL),
- 						   0);
--			if (sdev1)
-+			if (sdev1) {
-+				mutex_unlock(&instance->reset_mutex);
- 				megasas_remove_scsi_device(sdev1);
-+				mutex_lock(&instance->reset_mutex);
-+			}
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 30025716164a0..40853b26a1c3f 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -238,6 +238,7 @@ enum {
+ 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
+ 	CXT_PINCFG_SWS_JS201D,
+ 	CXT_PINCFG_TOP_SPEAKER,
++	CXT_FIXUP_HP_A_U,
+ };
  
- 			event_type = SCAN_VD_CHANNEL;
- 			break;
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -705,6 +706,18 @@ static void cxt_setup_mute_led(struct hda_codec *codec,
+ 	}
+ }
+ 
++static void cxt_setup_gpio_unmute(struct hda_codec *codec,
++				  unsigned int gpio_mute_mask)
++{
++	if (gpio_mute_mask) {
++		// set gpio data to 0.
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DATA, 0);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_MASK, gpio_mute_mask);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_DIRECTION, gpio_mute_mask);
++		snd_hda_codec_write(codec, 0x01, 0, AC_VERB_SET_GPIO_STICKY_MASK, 0);
++	}
++}
++
+ static void cxt_fixup_mute_led_gpio(struct hda_codec *codec,
+ 				const struct hda_fixup *fix, int action)
+ {
+@@ -719,6 +732,15 @@ static void cxt_fixup_hp_zbook_mute_led(struct hda_codec *codec,
+ 		cxt_setup_mute_led(codec, 0x10, 0x20);
+ }
+ 
++static void cxt_fixup_hp_a_u(struct hda_codec *codec,
++			     const struct hda_fixup *fix, int action)
++{
++	// Init vers in BIOS mute the spk/hp by set gpio high to avoid pop noise,
++	// so need to unmute once by clearing the gpio data when runs into the system.
++	if (action == HDA_FIXUP_ACT_INIT)
++		cxt_setup_gpio_unmute(codec, 0x2);
++}
++
+ /* ThinkPad X200 & co with cxt5051 */
+ static const struct hda_pintbl cxt_pincfg_lenovo_x200[] = {
+ 	{ 0x16, 0x042140ff }, /* HP (seq# overridden) */
+@@ -943,6 +965,10 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_sirius_top_speaker,
+ 	},
++	[CXT_FIXUP_HP_A_U] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cxt_fixup_hp_a_u,
++	},
+ };
+ 
+ static const struct snd_pci_quirk cxt5045_fixups[] = {
+@@ -1017,6 +1043,7 @@ static const struct snd_pci_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8457, "HP Z2 G4 mini", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x103c, 0x8458, "HP Z2 G4 mini premium", CXT_FIXUP_HP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x138d, "Asus", CXT_FIXUP_HEADPHONE_MIC_PIN),
++	SND_PCI_QUIRK(0x14f1, 0x0252, "MBX-Z60MR100", CXT_FIXUP_HP_A_U),
+ 	SND_PCI_QUIRK(0x14f1, 0x0265, "SWS JS201D", CXT_PINCFG_SWS_JS201D),
+ 	SND_PCI_QUIRK(0x152d, 0x0833, "OLPC XO-1.5", CXT_FIXUP_OLPC_XO),
+ 	SND_PCI_QUIRK(0x17aa, 0x20f2, "Lenovo T400", CXT_PINCFG_LENOVO_TP410),
+@@ -1062,6 +1089,7 @@ static const struct hda_model_fixup cxt5066_fixup_models[] = {
+ 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
+ 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
+ 	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
++	{ .id = CXT_FIXUP_HP_A_U, .name = "HP-U-support" },
+ 	{}
+ };
+ 
 -- 
 2.43.0
 
