@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-100760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB4C9ED5BD
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:06:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17E6D9ED5B5
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:06:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8799816A30D
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:05:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42D19281EFC
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1E5252AD1;
-	Wed, 11 Dec 2024 18:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CD4253337;
+	Wed, 11 Dec 2024 18:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yg2f8cD/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kS1fNTIg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C169252AC2;
-	Wed, 11 Dec 2024 18:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFB325334C;
+	Wed, 11 Dec 2024 18:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943219; cv=none; b=hKHdNiZIL7OTGQi1C2fejsXPHh7uuSGNGsrqZ4OxAOu5SJYtiaxx6QjrMTzE1woiCE/Ru9g981gl9C5K7i2OpLsKD30N0oAjeOqy9Gk2mIBTcndnRzTL8WiuJgbQA5rysfNeE5kLYNKyXJPQy68JQyod6ZbGhOb47ORTNNgliF8=
+	t=1733943224; cv=none; b=c6kcMR5fzqMXH0FvJMW8H9GAegRIoUZslUJ1QMfKDv9LeWOrL7kNoqVgR4ywwvmug9tSdMhkm6FjJnVLOmQmqh8n6Y0WMUOf3khK2Ua3bPIygJ/Kwmw7L8FzGXOtfMVIoKQmrCuOABQRtJu+9Z4BTRSVlJR2+USFdEbt2wKEQzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943219; c=relaxed/simple;
-	bh=ofsIEy29ubbFNLPNJN3jjLCcavuoGcRjIqL6nJ0peCY=;
+	s=arc-20240116; t=1733943224; c=relaxed/simple;
+	bh=CdwBta4glrSVEnoCJNvCZvrlFcaJGYVQl4DCRaltfhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NuvpdMWR1FztCI2FHfeda9pYGd9JJ58I1OorGgSWqXSiXgK6IxGgrXNBhK9TYhhZ3KM127b8ju6jRsf0tDVBNE3va8dplxSK2Hqc5MHtg6MuF76nFNa08rEIyRdNYCYPbLq6z3m8crALkkyGhQBEQnffNe4BThyXMV/ULubNo7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yg2f8cD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94B8C4CED4;
-	Wed, 11 Dec 2024 18:53:37 +0000 (UTC)
+	 MIME-Version; b=VlcJcNJFL0MW2WeAyn/rv9Yl+11bhvC84MMlywgPXxjzpjHeNPWgUom3Fnz3/SJ76pCCgPOA0fhBeChPbfQESUS7JNxCBfs+1fWr3+eFwZjEN2KAlfWCObE9Zz6ua9Ujfa9r4Ydeji5lqPqLh5r/eqk0iu5m8wcbuEQG8V+qHBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kS1fNTIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACB3C4CEDD;
+	Wed, 11 Dec 2024 18:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943219;
-	bh=ofsIEy29ubbFNLPNJN3jjLCcavuoGcRjIqL6nJ0peCY=;
+	s=k20201202; t=1733943223;
+	bh=CdwBta4glrSVEnoCJNvCZvrlFcaJGYVQl4DCRaltfhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yg2f8cD/JBSCabqTOjkXf4jHAdpsMn7Q4liRgmPFbH7ObiRRSF+esu4abMubtwsVP
-	 kzyb53l4gOJchfIYlf3eKxEel2Txb6KRRDHqFrmjwNt6TeUMigo6jsETNFicWtAPYG
-	 0roBbFX2qT1NThKhR+JWfFNoxhj9wi2Gm83wIWqI2TX89d2MW0ZiYf+niFti0dX44V
-	 1d+MmM23e6D/pesKmEpX2ydUo+VT4HQTuIB2lIeiiW0y3YSXSg/wsDgQP87Uh6qwsC
-	 Gp6Cz1yjSPdK7izJN/L8VhBf4puVArHvxsRA9lVYpkJah/gRA20TCzWUOajqPG1yev
-	 HGkwwzcAUhETQ==
+	b=kS1fNTIgVSKk3kgW5lHcaaD6ABbo6H+y/GwObJePi510305Kii1PB6hkNacuOsYlD
+	 P4HzO5WC0UeZ9nvKF/okAuqWZ+/B51+7K0gbZ2+SGGvxLY81R4mAfpP/eBL9R+/4OF
+	 Ge18Xl4bNOfsI576gh44ALB1BJyEssAx1jenagUqr1JQuLIhgdJAtKOMHuCfDHDPDG
+	 oZ5B7IjyTUELp3ZExv3wYtdUMksM76uTmE3c8W7HwmLnPYpN860LtNq3Tc+n0bWRB2
+	 7DZcj2MVfyele3xs/wfdAJW5lI40bWzoXb7gjX6QR2Kl+g2oiOe/+LUPhthM0iCAx6
+	 7DULd475I5tEw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cathy Avery <cavery@redhat.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Ewan D . Milne" <emilne@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Imre Deak <imre.deak@intel.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-hyperv@vger.kernel.org,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 11/15] scsi: storvsc: Do not flag MAINTENANCE_IN return of SRB_STATUS_DATA_OVERRUN as an error
-Date: Wed, 11 Dec 2024 13:53:03 -0500
-Message-ID: <20241211185316.3842543-11-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	jani.nikula@intel.com,
+	harry.wentland@amd.com,
+	alexander.deucher@amd.com,
+	Wayne.Lin@amd.com,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 12/15] drm/dp_mst: Ensure mst_primary pointer is valid in drm_dp_mst_handle_up_req()
+Date: Wed, 11 Dec 2024 13:53:04 -0500
+Message-ID: <20241211185316.3842543-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185316.3842543-1-sashal@kernel.org>
 References: <20241211185316.3842543-1-sashal@kernel.org>
@@ -73,69 +74,96 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Cathy Avery <cavery@redhat.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit b1aee7f034615b6824d2c70ddb37ef9fc23493b7 ]
+[ Upstream commit e54b00086f7473dbda1a7d6fc47720ced157c6a8 ]
 
-This partially reverts commit 812fe6420a6e ("scsi: storvsc: Handle
-additional SRB status values").
+While receiving an MST up request message from one thread in
+drm_dp_mst_handle_up_req(), the MST topology could be removed from
+another thread via drm_dp_mst_topology_mgr_set_mst(false), freeing
+mst_primary and setting drm_dp_mst_topology_mgr::mst_primary to NULL.
+This could lead to a NULL deref/use-after-free of mst_primary in
+drm_dp_mst_handle_up_req().
 
-HyperV does not support MAINTENANCE_IN resulting in FC passthrough
-returning the SRB_STATUS_DATA_OVERRUN value. Now that
-SRB_STATUS_DATA_OVERRUN is treated as an error, multipath ALUA paths go
-into a faulty state as multipath ALUA submits RTPG commands via
-MAINTENANCE_IN.
+Avoid the above by holding a reference for mst_primary in
+drm_dp_mst_handle_up_req() while it's used.
 
-[    3.215560] hv_storvsc 1d69d403-9692-4460-89f9-a8cbcc0f94f3:
-tag#230 cmd 0xa3 status: scsi 0x0 srb 0x12 hv 0xc0000001
-[    3.215572] scsi 1:0:0:32: alua: rtpg failed, result 458752
+v2: Fix kfreeing the request if getting an mst_primary reference fails.
 
-Make MAINTENANCE_IN return success to avoid the error path as is
-currently done with INQUIRY and MODE_SENSE.
-
-Suggested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Cathy Avery <cavery@redhat.com>
-Link: https://lore.kernel.org/r/20241127181324.3318443-1-cavery@redhat.com
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com> (v1)
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241204132007.3132494-1-imre.deak@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c | 24 ++++++++++++++-----
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 4fad9d85bd6f9..0685cbe7f0eba 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -149,6 +149,8 @@ struct hv_fc_wwn_packet {
- */
- static int vmstor_proto_version;
+diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+index 4204d1f930137..e677a8eb45a4e 100644
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3995,9 +3995,10 @@ static void drm_dp_mst_up_req_work(struct work_struct *work)
+ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ {
+ 	struct drm_dp_pending_up_req *up_req;
++	struct drm_dp_mst_branch *mst_primary;
  
-+static bool hv_dev_is_fc(struct hv_device *hv_dev);
+ 	if (!drm_dp_get_one_sb_msg(mgr, true, NULL))
+-		goto out;
++		goto out_clear_reply;
+ 
+ 	if (!mgr->up_req_recv.have_eomt)
+ 		return 0;
+@@ -4015,10 +4016,19 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 		drm_dbg_kms(mgr->dev, "Received unknown up req type, ignoring: %x\n",
+ 			    up_req->msg.req_type);
+ 		kfree(up_req);
+-		goto out;
++		goto out_clear_reply;
++	}
 +
- #define STORVSC_LOGGING_NONE	0
- #define STORVSC_LOGGING_ERROR	1
- #define STORVSC_LOGGING_WARN	2
-@@ -1129,6 +1131,7 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
- 	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
- 	 * We do this so we can distinguish truly fatal failues
-@@ -1136,7 +1139,9 @@ static void storvsc_on_io_completion(struct storvsc_device *stor_device,
- 	 */
- 
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
--	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE)) {
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
-+	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
- 		vstor_packet->vm_srb.srb_status = SRB_STATUS_SUCCESS;
++	mutex_lock(&mgr->lock);
++	mst_primary = mgr->mst_primary;
++	if (!mst_primary || !drm_dp_mst_topology_try_get_mstb(mst_primary)) {
++		mutex_unlock(&mgr->lock);
++		kfree(up_req);
++		goto out_clear_reply;
  	}
++	mutex_unlock(&mgr->lock);
+ 
+-	drm_dp_send_up_ack_reply(mgr, mgr->mst_primary, up_req->msg.req_type,
++	drm_dp_send_up_ack_reply(mgr, mst_primary, up_req->msg.req_type,
+ 				 false);
+ 
+ 	if (up_req->msg.req_type == DP_CONNECTION_STATUS_NOTIFY) {
+@@ -4035,13 +4045,13 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 			    conn_stat->peer_device_type);
+ 
+ 		mutex_lock(&mgr->probe_lock);
+-		handle_csn = mgr->mst_primary->link_address_sent;
++		handle_csn = mst_primary->link_address_sent;
+ 		mutex_unlock(&mgr->probe_lock);
+ 
+ 		if (!handle_csn) {
+ 			drm_dbg_kms(mgr->dev, "Got CSN before finish topology probing. Skip it.");
+ 			kfree(up_req);
+-			goto out;
++			goto out_put_primary;
+ 		}
+ 	} else if (up_req->msg.req_type == DP_RESOURCE_STATUS_NOTIFY) {
+ 		const struct drm_dp_resource_status_notify *res_stat =
+@@ -4058,7 +4068,9 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+ 	mutex_unlock(&mgr->up_req_lock);
+ 	queue_work(system_long_wq, &mgr->up_req_work);
+ 
+-out:
++out_put_primary:
++	drm_dp_mst_topology_put_mstb(mst_primary);
++out_clear_reply:
+ 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
+ 	return 0;
+ }
 -- 
 2.43.0
 
