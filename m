@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-100737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43EFB9ED56B
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:00:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E289ED574
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:00:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318AA280F66
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:00:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B26A1694D8
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AFC249533;
-	Wed, 11 Dec 2024 18:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DAC237FD9;
+	Wed, 11 Dec 2024 18:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QeIbXk8W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sz7hVOrs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC2624952C;
-	Wed, 11 Dec 2024 18:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A2F24953E;
+	Wed, 11 Dec 2024 18:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943157; cv=none; b=dO7KyFrpK/A8yES0nH82oEYZtLe2I7NmHhcHlk69CDKmCBmNAMeSlsRr9HriPcbe+CC7epsmch3X5P7HzypX4durjTg8/MDY6BySV0Jh7GX2szMHQChfPUWOSNq0C3svYs3LPHr3OaKZehJIfZIP/R5NahBR38DAVN8HDHZfAHE=
+	t=1733943162; cv=none; b=DuJSwMpD32/79D59pZxSEju+m/vNHY0a0oIJqjmDpYTdER1kPPEUUo5KPf4T03r3iocNqzV7jJtHgtXnhD8Zmf4zgIONUhx6qVZ1wAwUKlLlVB7q14pd01CXqZ+I8Ip1U9MWsyIxmZDS62eJQOsAkYsBKsToICVaJj3L/3dYLz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943157; c=relaxed/simple;
-	bh=rqg2w4iPOtxasrBB3O2j/E9Z70zWx/+29wiMZyqRQTA=;
+	s=arc-20240116; t=1733943162; c=relaxed/simple;
+	bh=DhQWIhCHT7+bo6xMT/3tBuVZmITlX74nTga6wJ1INBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uA6I1hfYqWV7rnTfi66X7DurutZ72dJma+c8MjyS8K3iQrs922UF/bOzdZY6UYeQ2uEiloWexRJXPJsSMcERG8/vuswYY9Afl3iOAY2AiLrBstCEEGEOyzH7fj/2rwvnH8QmXawBpelom7+u0coC0L+53O/zJctrcD5frhjRYsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QeIbXk8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF81C4CED2;
-	Wed, 11 Dec 2024 18:52:35 +0000 (UTC)
+	 MIME-Version; b=KV4gxtWKrlg1HedrOYxd2zy5eDRRmhMW6dO9+6gZntgVL4J2/jYE2xY6p0DZoDbeDw466UmpCpsIDNX/wtET1nNqR3eYH/vboBUH7ki3kAA3VBIJBOHOaPbtyFuD5KCsi3xPPZfzMvnpFD9OcspjyqciKBsrypxlCCwH2jdztrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sz7hVOrs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDCCC4CED2;
+	Wed, 11 Dec 2024 18:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943157;
-	bh=rqg2w4iPOtxasrBB3O2j/E9Z70zWx/+29wiMZyqRQTA=;
+	s=k20201202; t=1733943162;
+	bh=DhQWIhCHT7+bo6xMT/3tBuVZmITlX74nTga6wJ1INBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QeIbXk8W6VSvDHJ7BGmK2/rvFEAgB+tuVlR3XI0oXxyaXdCgoaliVbnyw8hanfjq9
-	 WpH2hvEMXj9e2nk2cKjIKCap6qltBEpBRW6IjVDT/A7BSEx9mQMPXDNyJSCG8vXaaH
-	 e97XsfnoQ5bVBGXg/SIyepDx7U4k7A0C0Z81eeZugQaB4gK1K08c5IHzww6iJUUebb
-	 DuFbG4M2IOTVMcAaRKhtz1zPRT8AgM6WL+EBRCyRvopK75pDWjpgq4+qUT8M36/ugb
-	 +hWt282rBV5onrhnnR+kBe3SCpmZRiceBbl2Cs+ekyvqCdkrFSzx3hIJlxcdjU7CrL
-	 23oilv7Rogxmw==
+	b=Sz7hVOrsKdRzs5MNghUHT8XC2H2Xka6Z9bays3fl3XaX4IgOomcj7sYRb/ug9bUui
+	 gh47sUyNzMlAxiqnD/WYLPxG0bJX+KKtbMb5a1jCC9vNM6ZBakfdSn6ZOdjreg0Y99
+	 5Tf6bQFvinZP6o+pQXZkqvb7yi5CJxehDDfRYexAxYhwk56JLmvkwXGBpGCPQYY6Uc
+	 ie+NGTJ8OWCo7UorQD/AhMNqqI2PJcO5Ru3Y+bPp7UUzCDadUVmwQ97m13kpmvmUZD
+	 Qd+cZBdidOpCCOrZorlkDYFcyXaY7fkGEE6mWYFl08Ysj9IjFiOqfAxE8z8J6X6e3U
+	 41pe7G2BxlRdA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Wang <00107082@163.com>,
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>,
 	chenhuacai@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
 	maobibo@loongson.cn,
-	tglx@linutronix.de,
-	lvjianmin@loongson.cn,
-	zhangtianyang@loongson.cn,
-	loongarch@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 11/23] LoongArch/irq: Use seq_put_decimal_ull_width() for decimal values
-Date: Wed, 11 Dec 2024 13:51:48 -0500
-Message-ID: <20241211185214.3841978-11-sashal@kernel.org>
+	oleg@redhat.com,
+	loongarch@lists.linux.dev,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 12/23] LoongArch: BPF: Adjust the parameter of emit_jirl()
+Date: Wed, 11 Dec 2024 13:51:49 -0500
+Message-ID: <20241211185214.3841978-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185214.3841978-1-sashal@kernel.org>
 References: <20241211185214.3841978-1-sashal@kernel.org>
@@ -70,37 +72,101 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.65
 Content-Transfer-Encoding: 8bit
 
-From: David Wang <00107082@163.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit ad2a05a6d287aef7e069c06e329f1355756415c2 ]
+[ Upstream commit c1474bb0b7cff4e8481095bd0618b8f6c2f0aeb4 ]
 
-Performance improvement for reading /proc/interrupts on LoongArch.
+The branch instructions beq, bne, blt, bge, bltu, bgeu and jirl belong
+to the format reg2i16, but the sequence of oprand is different for the
+instruction jirl. So adjust the parameter order of emit_jirl() to make
+it more readable correspond with the Instruction Set Architecture manual.
 
-On a system with n CPUs and m interrupts, there will be n*m decimal
-values yielded via seq_printf(.."%10u "..) which is less efficient than
-seq_put_decimal_ull_width(), stress reading /proc/interrupts indicates
-~30% performance improvement with this patch (and its friends).
+Here are the instruction formats:
 
-Signed-off-by: David Wang <00107082@163.com>
+  beq     rj, rd, offs16
+  bne     rj, rd, offs16
+  blt     rj, rd, offs16
+  bge     rj, rd, offs16
+  bltu    rj, rd, offs16
+  bgeu    rj, rd, offs16
+  jirl    rd, rj, offs16
+
+Link: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#branch-instructions
+Suggested-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/inst.h | 12 +++++++++++-
+ arch/loongarch/kernel/inst.c      |  2 +-
+ arch/loongarch/net/bpf_jit.c      |  6 +++---
+ 3 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index 9dbe7907a9612..a3e154978ac9d 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -83,7 +83,7 @@ void show_ipi_list(struct seq_file *p, int prec)
- 	for (i = 0; i < NR_IPI; i++) {
- 		seq_printf(p, "%*s%u:%s", prec - 1, "IPI", i, prec >= 4 ? " " : "");
- 		for_each_online_cpu(cpu)
--			seq_printf(p, "%10u ", per_cpu(irq_stat, cpu).ipi_irqs[i]);
-+			seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, cpu).ipi_irqs[i], 10);
- 		seq_printf(p, " LoongArch  %d  %s\n", i + 1, ipi_types[i]);
+diff --git a/arch/loongarch/include/asm/inst.h b/arch/loongarch/include/asm/inst.h
+index 71e1ed4165c80..4fa53ad82efb3 100644
+--- a/arch/loongarch/include/asm/inst.h
++++ b/arch/loongarch/include/asm/inst.h
+@@ -655,7 +655,17 @@ DEF_EMIT_REG2I16_FORMAT(blt, blt_op)
+ DEF_EMIT_REG2I16_FORMAT(bge, bge_op)
+ DEF_EMIT_REG2I16_FORMAT(bltu, bltu_op)
+ DEF_EMIT_REG2I16_FORMAT(bgeu, bgeu_op)
+-DEF_EMIT_REG2I16_FORMAT(jirl, jirl_op)
++
++static inline void emit_jirl(union loongarch_instruction *insn,
++			     enum loongarch_gpr rd,
++			     enum loongarch_gpr rj,
++			     int offset)
++{
++	insn->reg2i16_format.opcode = jirl_op;
++	insn->reg2i16_format.immediate = offset;
++	insn->reg2i16_format.rd = rd;
++	insn->reg2i16_format.rj = rj;
++}
+ 
+ #define DEF_EMIT_REG2BSTRD_FORMAT(NAME, OP)				\
+ static inline void emit_##NAME(union loongarch_instruction *insn,	\
+diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
+index 3050329556d11..14d7d700bcb98 100644
+--- a/arch/loongarch/kernel/inst.c
++++ b/arch/loongarch/kernel/inst.c
+@@ -332,7 +332,7 @@ u32 larch_insn_gen_jirl(enum loongarch_gpr rd, enum loongarch_gpr rj, int imm)
+ 		return INSN_BREAK;
+ 	}
+ 
+-	emit_jirl(&insn, rj, rd, imm >> 2);
++	emit_jirl(&insn, rd, rj, imm >> 2);
+ 
+ 	return insn.word;
+ }
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 497f8b0a5f1ef..6595e992fda85 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -181,13 +181,13 @@ static void __build_epilogue(struct jit_ctx *ctx, bool is_tail_call)
+ 		/* Set return value */
+ 		emit_insn(ctx, addiw, LOONGARCH_GPR_A0, regmap[BPF_REG_0], 0);
+ 		/* Return to the caller */
+-		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, LOONGARCH_GPR_ZERO, 0);
++		emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_RA, 0);
+ 	} else {
+ 		/*
+ 		 * Call the next bpf prog and skip the first instruction
+ 		 * of TCC initialization.
+ 		 */
+-		emit_insn(ctx, jirl, LOONGARCH_GPR_T3, LOONGARCH_GPR_ZERO, 1);
++		emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_T3, 1);
  	}
  }
+ 
+@@ -841,7 +841,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx, bool ext
+ 			return ret;
+ 
+ 		move_addr(ctx, t1, func_addr);
+-		emit_insn(ctx, jirl, t1, LOONGARCH_GPR_RA, 0);
++		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
+ 		move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
+ 		break;
+ 
 -- 
 2.43.0
 
