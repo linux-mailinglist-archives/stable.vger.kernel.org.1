@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-100706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FFA9ED50E
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:53:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2326F9ED515
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:53:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11E4285356
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:53:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851F0162811
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853A523A18E;
-	Wed, 11 Dec 2024 18:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7A423A1BC;
+	Wed, 11 Dec 2024 18:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sLg5CNEs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="abKh4clN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C852288C8;
-	Wed, 11 Dec 2024 18:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECAB23A1B1;
+	Wed, 11 Dec 2024 18:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943062; cv=none; b=fMQG5Od5OeH3ra6uLSQoVJGzfXlH4HDP2G3fpIQH6YsPSgOwEV1tH6087MHwat57X8EEH0wTyJA7a5Azx3mypKl28Isb+zdBtOxySuxdAdKeZKr+JTV76aplW6gb/izSHmgfYvI/wMa8ANNCYRfdko+0re+KY8mXcYvUzBGuPDo=
+	t=1733943064; cv=none; b=iwV3ZAYiR8sZga0HSvTE4gpot37m/llg34WAf0yvkcbPu4qd3vtHWXZxlr6LSdhr9EDdv3hQ0BW4JzTyIIhLPeibnb5YekE2hoS8nbQaG2D/9OpNPXtMDSXv9K4Q+sNSvgOds7IYs/iiWODJT1mtG2FjJkV4KJCx98/MW+iDreY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943062; c=relaxed/simple;
-	bh=VQNisN11DKHDGAdOXQZUc6rLA8LP2dJTsux3IK+ROc8=;
+	s=arc-20240116; t=1733943064; c=relaxed/simple;
+	bh=XpjM7a+7izOGlFclTN59w0Ey+CkM7rqzLdE0f8idMNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P3tienhAq6rhWmscXO0Jjf/zBAGpk5GZGH3NCIfNHGi9LQshsX97y+Jd+7WzYSi69rqV6HVc1ZAPux/P8+tRemUNkYdSHKyHK7s2Wm2FwjSowVlriXG5NhqHNg/youYHaoVXZTZI/K9YHPWu+coSFWAmNgJzOI/6B5dJgUKvn1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sLg5CNEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F8DC4CED2;
-	Wed, 11 Dec 2024 18:51:01 +0000 (UTC)
+	 MIME-Version; b=nt7vJs82osF+rdlCaFJoy5sEeA4lYyU6C/AuK6EYdqfbQAnGqwFW/W3h03xRKJ1lf9gM9n4UHkfrb7mqGmeClKEQsZyQ05n/6y9uyPb0aSV2emHK2t8fSzbPm1XQVJD9HoyJpP4fTFsgSR9wWgpcEgrLOoxPaTnTyb+DnO4qxXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=abKh4clN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DE8C4CED4;
+	Wed, 11 Dec 2024 18:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943062;
-	bh=VQNisN11DKHDGAdOXQZUc6rLA8LP2dJTsux3IK+ROc8=;
+	s=k20201202; t=1733943063;
+	bh=XpjM7a+7izOGlFclTN59w0Ey+CkM7rqzLdE0f8idMNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLg5CNEs7JIdQbNp+etRWaal6GnILUphgGmrKGEfMcvRTn0ece+ONRiiKlTpMuf/9
-	 wy2gVZBPs9bKgr7d+SdNckF0mD21JYtOtSpCrwfd/y51HJ/N1wJdOqdVl6HTQDxR0V
-	 xRjAK6vsYWtGTaNDPRtIfPp0Zf885hfUF033PdKsxgc8hI3dPyP15cjVTXIMT6EYXu
-	 rE6VTfxf9yH3vLn1C+AoyPmrIrg0pIGZNjneqvfMvSvBKhhZY6GiD+bZcIcXTTjLe9
-	 UpnGmQyDvV3AxLQaoWLL4znvIHK6MYQXWQgyMhNfOS3Cl90ggvoUWE274oG0HwdFHw
-	 lh7bH5beffnzA==
+	b=abKh4clNNnlpW4MsBsHero2ZTK/YqZLZqlZAGKEkqgWZrRMF4pn2fODlK7n813/WE
+	 /dtLsj3sqv07KIpwcVtW9KEiS6MIwkKlyISkMaep39tfYn/xoAeiGOSydAAfjn3Nos
+	 M+mHE9mrj9tAK3lHtEz+yBOc8oQViLTIElqlb6bzGQ0/etYoMS7yENg25IcgIbS6l+
+	 bno61RayjTIRUN5D+5u5IbkfLGWglpfvV4IUqiZ8FurtXLtMw8C7e0etoUztyx0UD0
+	 peH0wcxdJOrotERLVbRUXXzaldJahbwtomB7JkxZ9Fy1CdOvy8nQ2O8y5ykjK59ceq
+	 POJqj1Uv7IcnA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
+	Xuefeng Zhao <zhaoxuefeng@loongson.cn>,
+	Jianmin Lv <lvjianmin@loongson.cn>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>,
-	gregkh@linuxfoundation.org
-Subject: [PATCH AUTOSEL 6.12 16/36] regmap: Use correct format specifier for logging range errors
-Date: Wed, 11 Dec 2024 13:49:32 -0500
-Message-ID: <20241211185028.3841047-16-sashal@kernel.org>
+	ardb@kernel.org,
+	chenhuacai@kernel.org,
+	linux-efi@vger.kernel.org,
+	loongarch@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.12 17/36] LoongArch: Fix reserving screen info memory for above-4G firmware
+Date: Wed, 11 Dec 2024 13:49:33 -0500
+Message-ID: <20241211185028.3841047-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -64,41 +70,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.4
 Content-Transfer-Encoding: 8bit
 
-From: Mark Brown <broonie@kernel.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 3f1aa0c533d9dd8a835caf9a6824449c463ee7e2 ]
+[ Upstream commit 55dc2f8f263448f1e6c7ef135d08e640d5a4826e ]
 
-The register addresses are unsigned ints so we should use %u not %d to
-log them.
+Since screen_info.lfb_base is a __u32 type, an above-4G address need an
+ext_lfb_base to present its higher 32bits. In init_screen_info() we can
+use __screen_info_lfb_base() to handle this case for reserving screen
+info memory.
 
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20241127-regmap-test-high-addr-v1-1-74a48a9e0dc5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Xuefeng Zhao <zhaoxuefeng@loongson.cn>
+Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/efi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 4ded93687c1f0..d09cda139d219 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1051,13 +1051,13 @@ struct regmap *__regmap_init(struct device *dev,
+diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
+index 2bf86aeda874c..de21e72759eeb 100644
+--- a/arch/loongarch/kernel/efi.c
++++ b/arch/loongarch/kernel/efi.c
+@@ -95,7 +95,7 @@ static void __init init_screen_info(void)
+ 	memset(si, 0, sizeof(*si));
+ 	early_memunmap(si, sizeof(*si));
  
- 		/* Sanity check */
- 		if (range_cfg->range_max < range_cfg->range_min) {
--			dev_err(map->dev, "Invalid range %d: %d < %d\n", i,
-+			dev_err(map->dev, "Invalid range %d: %u < %u\n", i,
- 				range_cfg->range_max, range_cfg->range_min);
- 			goto err_range;
- 		}
+-	memblock_reserve(screen_info.lfb_base, screen_info.lfb_size);
++	memblock_reserve(__screen_info_lfb_base(&screen_info), screen_info.lfb_size);
+ }
  
- 		if (range_cfg->range_max > map->max_register) {
--			dev_err(map->dev, "Invalid range %d: %d > %d\n", i,
-+			dev_err(map->dev, "Invalid range %d: %u > %u\n", i,
- 				range_cfg->range_max, map->max_register);
- 			goto err_range;
- 		}
+ void __init efi_init(void)
 -- 
 2.43.0
 
