@@ -1,371 +1,223 @@
-Return-Path: <stable+bounces-100620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CF39ECDDF
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 15:02:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09F09ECE7A
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 15:22:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D07B188C9EB
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 14:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67AC16A44C
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 14:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11160232379;
-	Wed, 11 Dec 2024 14:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC8338DE9;
+	Wed, 11 Dec 2024 14:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PaguQmRM"
+	dkim=pass (2048-bit key) header.d=digi.com header.i=@digi.com header.b="ZfNKvwa6"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from outbound-ip24a.ess.barracuda.com (outbound-ip24a.ess.barracuda.com [209.222.82.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8148225A56
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 14:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733925680; cv=none; b=RpaLaySgzHl5kZt6Lqp4ghBaZpxx1RZop1KSokbQierlladpiPEXXQi2Ilyd9f5rGJ1QWqfYgMtNOnuq0Luti5/JWZP9wuTuA2js6z+s6iKyklT+P6STrd78Xftz99EUBUuaL5fG3vNGp9s2YHjPauV4KNMWGewB0Mvgb+oehno=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733925680; c=relaxed/simple;
-	bh=5IFeaz2YHkUwph6UDtgpTT6eZgX98wuNPz5AJrxjZQs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cJ07gMFGC0JT1Aek/9VMyeELIvTT0zkPvLA4q5XqwEyWnap8BSr+HrYm5/V0UMr3SO/G/ovrk9OKEX4X6glErJUGdxmMWtubE0kb9qQitau90JTl5wyAoePNwPtUFTnp3HivKL50Hk0qapmYx//W+lXRupWj4ptP3i4Qk4t1Wc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PaguQmRM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733925677;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gwfz6/OfdN4Q2D935AIoJNb36wsbwbsmuPglWOQvFko=;
-	b=PaguQmRM1m+eq1LB2Mi8J8i1bQn38fROA8Z/ZbQ/Fe15Xp0W6HBTSc9cdrFiIHXVSc607H
-	9ffkSVfBFkKVWjkvheJVMCxrIRplf4pjNSHwv3JRHhOVX7EpRrtHVHZ40VKkKFcoYXpl6+
-	JqwIHnGU2M7seksuyxMScPiaWdqJF2k=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-223-hOPYG7lOMPaZp_8JjVk5lw-1; Wed, 11 Dec 2024 09:01:16 -0500
-X-MC-Unique: hOPYG7lOMPaZp_8JjVk5lw-1
-X-Mimecast-MFC-AGG-ID: hOPYG7lOMPaZp_8JjVk5lw
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-aa6732a1af5so59425966b.3
-        for <stable@vger.kernel.org>; Wed, 11 Dec 2024 06:01:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733925675; x=1734530475;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gwfz6/OfdN4Q2D935AIoJNb36wsbwbsmuPglWOQvFko=;
-        b=LqmiCmNWps3HnTbrPwRd+7GTZdL47Y5TVfoT8qHIVCnZhguGEnf/v06sFTFik49YeN
-         0cksHZ9o75UVNzc4oR+nUi3sTwWjHwMY4yMgIsnTc7f90kL95od8ZeG9LCAMPnIRd9d4
-         uIaAKkDzSjPkBd4QLxslQT6C+Burcltp1gXHb8IVWCEp5FDjprhS07ga2cBD+pblYzVz
-         fTQW1NraNH3PJDdoHNqjyl0HZ62Hgk3UkpIHvtDZiw4VspA5q6B4UJ6aqN/bhcaqaAPK
-         GMJkCjP/LFTkl/dszlU0KExq5/Tvvpcz0Bo1i5mlUXK/HvxOg0eGJGEnCVjnFa7dyz/K
-         kHxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWsgl6ssajFeHAb7pyC6B1/HvTrMv3LJLeO6O3Eyun0H81P08vDfFyjPTUybGNioEq2PkZcG1Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyh1OoF1WCJ3pH2Pp9WH0szWSAWrIVLz1nWsAcgR8UmcwgAGEY0
-	5sxxUjG8quZimJ7lecOWo49hmPTwj7cXm4yNpZHWjmB27Y6qeRHKUB/oLCNqse5TnBDOIwhJdXJ
-	ZiUb7QyxiA3EK8tDlLz2FnV/qSPryboV2ixebSnBKIQCSskym2F3lWA==
-X-Gm-Gg: ASbGncsIeTVI/Bd936HGs7ztBtbEtq+p21FQfxl2dvOGUfTYrmZWWYrubkQghk/QLlV
-	TBwxjgEeOQST5jM0i0lKaxqry0E+zhwmZ/u1fNFrF9s4cLufQEe231sZx8Y8ioHiGtAe/PNQOzk
-	drVrANMI/Fxhlv9RmjSKSF/ad3Itd+7NuQqtquunwVtfy1T2Zzn39j2A6sLQ9slIYbZm3B91OBZ
-	fh3zt/2a8jt2WqApNhUGz6+JeY2HpKOPd/lwSvDKbWQiwhIfOZJuN4vVUad1LQQk0Y48LKkUMCk
-	PV+CVmmaj3KsDw3dHDqtLM0S3E66lo6N7Rqu8FMdL70pGD1Za6zGuBUdm4+DqkHEijmH6yazTSY
-	SfXv//kPOoAMKB/+WplnQRu7fwPHP
-X-Received: by 2002:a17:907:7710:b0:aa6:7cae:dba7 with SMTP id a640c23a62f3a-aa6b1141793mr253754166b.4.1733925673189;
-        Wed, 11 Dec 2024 06:01:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHShBsvPaHWhI/8fmw0L3o8/xwvo4/lcquvnrYBPjp46anUggm78B+DFRGSKiA7cO1jdhceCA==
-X-Received: by 2002:a17:907:7710:b0:aa6:7cae:dba7 with SMTP id a640c23a62f3a-aa6b1141793mr253736066b.4.1733925671522;
-        Wed, 11 Dec 2024 06:01:11 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa69afa395csm343450766b.71.2024.12.11.06.01.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Dec 2024 06:01:10 -0800 (PST)
-Message-ID: <17c332ad-a714-4b42-8522-3cd085fb9aca@redhat.com>
-Date: Wed, 11 Dec 2024 15:01:09 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD8C246322;
+	Wed, 11 Dec 2024 14:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=209.222.82.206
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733926965; cv=fail; b=WJnlvNPrtOHXiPWCXg2WcoleQXltSuRd0xLdrbvXA7zx+3fanQc8K4eDX8kBknFI6wDL8gbRFJ5e7/IwqR6dVIiVcobqSQuCZ55EFKtJK0oUUyMBmNvIfaGwaeACQf3TtT5b84wCRUwq9jLOoDtv6XWkqN2nuY1yzKYqIRnwRsw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733926965; c=relaxed/simple;
+	bh=8v7VBtUoH5cEELxwX/PFSKy462E7TrrjoKRQkahKWv0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lXD95GYX/1euVoYiYVUIfFTac2pVuVuJxv/8/O0lgSpK5DYdkg/GrSTCrqLPgGVewSVzEq9jZ7xiqk5/5vWbLi+wzmwWWfm6E8Q2VNldo9ovBbMbNx20NUPC0Jf+REBXvXcxfR6WJEvCZlfWbJHoKB9EpBLw73ncJqhOzPhL6Gw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=digi.com; spf=pass smtp.mailfrom=digi.com; dkim=pass (2048-bit key) header.d=digi.com header.i=@digi.com header.b=ZfNKvwa6; arc=fail smtp.client-ip=209.222.82.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=digi.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digi.com
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2047.outbound.protection.outlook.com [104.47.55.47]) by mx-outbound14-65.us-east-2a.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Wed, 11 Dec 2024 14:22:03 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KzG2Xeku+URuyPVXaRFKQAyADUG5Vkq2fjPfEcwsMyGJaT0KeCTJIqxwhkPgTGiGoFfBoilmBQThmTjb89OLIVR3tp7VPcm5LI60jBy4GayPGWVThsavwqr20xjhGnYX8hqa6oTDNCMLaStoMHIY4wjGvZ47YimSeYuL+XtzgfaeOXMaUjGz64WyURnqGkjJfia4k+29WZo72iU5MK1zQDUvqS9cCzShBw/bP9ajWlFAAz7ATcQ63SqK5mpOBJIolSEFfjRduzVjyqgFjbyLMyRN8e808Cum4JvFsSkdY+RNhR1Zw7OJh1SUyewCAGJkl+5249ymkdqoC2ZimzmQsQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mFd4DPtO3AHP3lrKxL4feGZM+KKgNqzQwsceolPhtU8=;
+ b=TECT4o9cQmVoGRkdf2UCj6Kw8Wrom2I9lG40Xufz2W5OOfMZZ9sfchORkj58jDnsM4XMyvKobBMNks1i0N31BWfb6+nv61ej1LBTcYgsK2lgQeGNA67Eoc+2sr3DrxcoPJK26AhhnSbdGrcw1+ulQumP+2b0QQektZeChN1n6gT6yZTcjnrM6i21v515neyaHrCvewWwcxBF2IyATPsbp96eyi6uVKXRQnZTa8tYaXeow0dCF3xt5dxMPDB7U3h/QZR+oGUHCVirgha/9sw8wgdXKhaORi/YLF8QQ0t3T/FVTpvfDqMeWFr8TlZR4s9ILTlhYZgxvn6QIibtPySArg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=digi.com; dmarc=pass action=none header.from=digi.com;
+ dkim=pass header.d=digi.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digi.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mFd4DPtO3AHP3lrKxL4feGZM+KKgNqzQwsceolPhtU8=;
+ b=ZfNKvwa6viGjsLJYjUnL1e4SE0r/avFO0qMQcow5PrfCraePrkCUv0LWmcU2YLxs2I77VtubkMRb5F15w/h+Sezp+jysF/hbSLWXo7gmYo84/QWsk49pVTkoIJGhaL1oV0vGl88FJ9Cql2SiZymS1AXU3ADi8Wph8IEradQPAW/ZV47vnUji+t0Ma1JAS/TMSIdH38rk28YEWf1vJ8snMQndxTiRHUQxEMW6yop/Gyuv7sW10RuDxZqUwTTJb3v27Vg5voLbCwnwqtEKu848gnvKhAwWUZR9ykVz3vFNbRCKdzuQ1A0WRuIUv20GuGOveqqArIVHCMzQKoNV2IFc6g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=digi.com;
+Received: from CO1PR10MB4561.namprd10.prod.outlook.com (2603:10b6:303:9d::15)
+ by CH0PR10MB4905.namprd10.prod.outlook.com (2603:10b6:610:ca::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.15; Wed, 11 Dec
+ 2024 14:21:58 +0000
+Received: from CO1PR10MB4561.namprd10.prod.outlook.com
+ ([fe80::ecc0:e020:de02:c448]) by CO1PR10MB4561.namprd10.prod.outlook.com
+ ([fe80::ecc0:e020:de02:c448%4]) with mapi id 15.20.8251.008; Wed, 11 Dec 2024
+ 14:21:58 +0000
+Message-ID: <7eafe960-d172-4079-a91e-85e1066c2764@digi.com>
+Date: Wed, 11 Dec 2024 15:21:52 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: dsa: tag_ocelot_8021q: fix broken reception
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
+ alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20241211124657.1357330-1-robert.hodaszi@digi.com>
+ <fe505333-7579-4470-852d-6fddd20197ab@lunn.ch>
+Content-Language: en-US
+From: Robert Hodaszi <robert.hodaszi@digi.com>
+In-Reply-To: <fe505333-7579-4470-852d-6fddd20197ab@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: ZR0P278CA0110.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:20::7) To CO1PR10MB4561.namprd10.prod.outlook.com
+ (2603:10b6:303:9d::15)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12.y] media: ipu6: use the IPU6 DMA mapping APIs to do
- mapping
-To: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
- stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Genes Lists <lists@sapience.com>, linux-media@vger.kernel.org,
- sakari.ailus@linux.intel.com, bingbu.cao@intel.com,
- Hans Verkuil <hverkuil@xs4all.nl>
-References: <20241209175416.59433-1-stanislaw.gruszka@linux.intel.com>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <20241209175416.59433-1-stanislaw.gruszka@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR10MB4561:EE_|CH0PR10MB4905:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43f83d32-692c-46e7-7a25-08dd19ef2bca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?SVRlckZzVWhHVXJuK3ZTZnNLRFhnZHVGemVQaXpVSldsVmZNa2dJSVlWWDZo?=
+ =?utf-8?B?NDF2d2dUU0M0eTJzUmNQejZJaVFqK2hLRzJ6K1l4RWZrcStrRWFEaW5ubDlZ?=
+ =?utf-8?B?VnorTFJVak9lUWI1TWVzN2dxYy9naTlya0daQkUySG5GUzlmbHBrWld6bkFj?=
+ =?utf-8?B?Uityb3ZrczQycnJ3c1krWHIyOS8ya25aV1Q4L3R5c0pLY040MnZjZE5IOXZF?=
+ =?utf-8?B?ZXU0dzc4MzJzRk55SldLZml5TDZqV05PTGhHYU1GMFlBRjR6YTY5M29icmZn?=
+ =?utf-8?B?OGYvYjU5TWt0ZzY5OUV5ODJaNkhkYzg1NDg3UDFoR0RxSkRyN2t6RU9KZ3dM?=
+ =?utf-8?B?VVJmOUFwelNxd3ZSV1RzK0JwR1pmNzRnOVBseWFTTlJyQ0Q0TTRRL2N0VmxM?=
+ =?utf-8?B?TW5zT29QdGRabVBIZk5SL1M0WStxZ0FvWWZBeWpzalh6ek5BSktyOHFFbDE0?=
+ =?utf-8?B?a2lDNC9mZGIvOWNMYzVXZlBCdmpsM3hqdUhzOXF2UDVGdi84QmswVmliUnNH?=
+ =?utf-8?B?U1lUWms4MUxUTlF6dHI4cFZhNkJWTko0d2hZd3k3Q0c5c1lPenQ3Z0gzb2RP?=
+ =?utf-8?B?QzZTUUh4czBSYTNoWkNJTlhPamc1MkJzNDJVM0w1R1Uyc1FFOXYzSk9kTkxX?=
+ =?utf-8?B?NGFLUjA1Skk3UnJGRHFBT3ZSbmEybWlvUzI1STQ3NjBPUlNacVoyY2RWSzZF?=
+ =?utf-8?B?ZTJYWWxkQjl3R0tzUyt6MXhYd0FUMnlOcDhWUGlsaVR1SVhTU0NmV0thdjZC?=
+ =?utf-8?B?b2Y4My9TQW9tRWJJSnFtZkFGS0VLZGdIQmM4MDJ0cUNySm9YVXdFclF2YUE2?=
+ =?utf-8?B?eVRBK3R3T1dER2VmTnprMXIvZGM5YW9nc29ZdEdpeThlY1p2M3p2THEwVEto?=
+ =?utf-8?B?a3NSNXljM2w5TGFGWkFVeHVML1lZK2FuSjJ5aHdZNnAyNWhDeklnTk1kay8x?=
+ =?utf-8?B?b3N0R2NmbjU1bXgzRFlFNWo3MDFsS2tubC92aHB5ZVdRbkQ0TVdKMWtUajVS?=
+ =?utf-8?B?MlV3TGxjbnZkY2s4Qllad3d4ZVRPUnl5VW8rbS93Y1hnbzdmU1V3cW9Mdi9J?=
+ =?utf-8?B?N3ptUkdPZTFBbGFMVnZIcmU3V1Y5SnUrbHJrTTNSSGM4dEt1UUhyT1JXZkdF?=
+ =?utf-8?B?b3o2bDVUU3JoVEIxSVZ3RFFMVVpTZi9BTGNmWmZ2K3FPRGlEYWdaYllIUUJZ?=
+ =?utf-8?B?R1BvVDZiZzl2MWhoN0tqYm5qZ3dZSFB3MFpzcXRhMDRjWkhZK3c1Uk5mekph?=
+ =?utf-8?B?RWVzemFIWTVZS1FHemFNN290SmNlcnZKQzhvKytTT1RyU1d2d1plNE1tOGFN?=
+ =?utf-8?B?T1ZEQ3hwWTNKOXRoUEVianV4a3o4UTR3eWlabVcvckxwS3ZXUHkzYS9jUDBY?=
+ =?utf-8?B?N1hydjFpL2hDRzBMb2dtZzdrclY3blBrVndvMmpDRzRKaXM3dVFZVVhpeXda?=
+ =?utf-8?B?M091elU2UTN5Y3dLd3NXUFVuNWhBRkQxMS9tZENQeFlyWWFPMDBQUUkzQlJ6?=
+ =?utf-8?B?WjVKaktsYjJvdFRKYkMyZkM5R1l4RlluYzRjVy83c1I0MyswOVRNMzJ4eGov?=
+ =?utf-8?B?Uzg0WlBjZjEwSVd3MHZaN1BUS3JueXpjUHZBV2JUMWhZYTdzZ1F6UE9YdnAv?=
+ =?utf-8?B?ZlF4dW5XbVVMc3NZb092MjAyQkVLMjN1b1h4RnNEdzdDYkdXOSt0R0poaHox?=
+ =?utf-8?B?TjNKUkIwM1JtN2M1aTFWbFM3MUFZeWNIUmVRY1M4T3Z4eUNFdTVFL0o3amtr?=
+ =?utf-8?B?YmtDcW5VVnBWZnp1T1pVZXd2QzFYNE5SbUErSGcwanNaRitmL043T3NlcmJ1?=
+ =?utf-8?B?WnFseklhVFBUSTN1VVpxZz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB4561.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NjA4QkN4dWRQZXFJWVNrMXBEKzhWeGtNNWgwa1hSRE05SFBvTndOOWtkVVR0?=
+ =?utf-8?B?cExjbTQ4Mm1DZERRaTBhM2EwY1VOWUo4VVhCZk1QcmxIRHFRaitzZjdnay9p?=
+ =?utf-8?B?bEtUMXBzQ1NnMzFrQ0pYYmdyMjhweVZ1Y2xCNFQ5Q2o0LzhTSllkcFpMQ1dz?=
+ =?utf-8?B?SExWQU5RWVVrd0wxV0dyMjBFUWJpUlFPVWZQWTZINkZFOXNLa2JFQVNmWDRJ?=
+ =?utf-8?B?SVZmS2FCM1VidHM1Wi9HZnRqQWcydkRkeG9MU1ZDSGpRejB5MlZPMG1xQUtC?=
+ =?utf-8?B?MXN0bWFpenlzMkZvdGxvNWI3SHJnYUtZVitxaEJ6NXh1N04rb3lBVVh2S3JW?=
+ =?utf-8?B?cGhEZjhHRlVkN081NUtDd000OXZlQlRBWDlhSU5mSlJvRStiVFpRUmtmcEhU?=
+ =?utf-8?B?TDVNemMyWjhKK3RheGs3M1hOaTNVS0JlSjlkRExmb3oydGpVV0NHQlE5cDRr?=
+ =?utf-8?B?U0N2VWFJUjgxOUtsZGFSUWJ5aEhoTEk0VTlCS1krMUZDaTlNWE95QURYOU1E?=
+ =?utf-8?B?M1pMZ29yUzZONDg4MGhTdGRBOUFOUVhKd0s4aVludjU4Y1orT0c0SmlsV3JI?=
+ =?utf-8?B?TUFheHhTazUzYUtFNWNrUGFUcEtzbVYwbml4Y1doWHczSTNnRHZ0YlhlRE5M?=
+ =?utf-8?B?b3g2ZFliZ1MrZldwWjNuWFpWRDVQWlZaZW1La0kxdllnZHdaeGhZUkcwYUl1?=
+ =?utf-8?B?cnNYMk9tOVpob1BaN2Z1S09OV1ByN2Fqd3ZISTdWZ0dVSnR2V25OQi9KNzd3?=
+ =?utf-8?B?cmxpV0xqei9SUkluRHpTcWN2Snd3Q2w1NGRRbUJKYXA0U2Q2SlhBZWJ4NXZD?=
+ =?utf-8?B?OWJ1YldxYkRhdU9wMUV2MVBUd090YzloUVU3TEh4R1U1TlAzS0lSQkxoOUs1?=
+ =?utf-8?B?Qm55aU5qSWkvNFhtYjhlUzlFTHVWZC9zUy91ay9IS1dLZVFHdkRhdHpxUE1k?=
+ =?utf-8?B?UzlRMWZKZHVQaWdiZWd2WjF6UkpJSUhmc3RCNWp5bUlwZTIxSkpwYUtkMnM5?=
+ =?utf-8?B?MlFwZUhJc2NJWUZaaWR6MmRaM2g4ekpxTlZqai9iQmY5RFJ4dDQvMzlMSHJV?=
+ =?utf-8?B?SU1wNDI2QnBzd3drTWtFcWpRYklkNnpHNzdVOXpmMUtYdzJ3d3h2bEpFZkRk?=
+ =?utf-8?B?M0ZYV3d1aTlLbTB5RUpkVzNUSldpdjZObk0wd0xxMFRlQWtZN1U5QjJtM3Jt?=
+ =?utf-8?B?VVF5emlHYVBUblNlZVVKY3FBK0ZGUk1lVUJNOEF5L1hXN0c3RGRESU5ZUzNm?=
+ =?utf-8?B?YlBPUHduUThEUisrd3k0cGdzaERjL2IzdkJ6SWlneXM2cEdoQzdKSEFLTTRQ?=
+ =?utf-8?B?Q2JuTjJjeDBtK3c5Zk1mL0IyN1BEckJuVGdWb0dYZTROUlovb3JxL0o4L1BE?=
+ =?utf-8?B?TlBpa09pWjlXTTZ2TldrSnZ6QUZsQjdyRlJRdDVDcmtLWjUzeW9Kck9LWWt3?=
+ =?utf-8?B?dEhySDlWUGdPN3J6M1VoVFpuYzFTd2FUaVd6ZVJaOVZ4bEMyS3duQzdlaGpR?=
+ =?utf-8?B?amlxcWtLcVp0cm1VREs5Zmg2Q0VsK3lGaG9kaXdyK0pHSFBBZTBIMGF4cXgz?=
+ =?utf-8?B?SldYQkZmNFNZeE9qYzRjK3JQTk1JY011dmF6NnJWRmhwRGh5YkxybzQ3ODAv?=
+ =?utf-8?B?MVZCdEF1REswYVBaVXFVdkVLNGZ3aVF0dktxZFV1aHdnTUp5L25MWnZaVTZY?=
+ =?utf-8?B?V3lEeXJ5SUszMG8vRW4weElQdWZtRDN6cnFuZFhxUjdFYkxTM0tqR1ZQUldq?=
+ =?utf-8?B?MndGODBzSkxOcWJsWXRRSDJqSklUeVFkSnd0akJJd3lxVTlQL2lRRVBxNzM1?=
+ =?utf-8?B?eFd1Tjl4TmxnRXVmTzk1aWZxNTZUUzBsZXJSMUQrcmU2NHM4VHdxME8rSDRP?=
+ =?utf-8?B?bVNQUjFWdTE4YjVNZVRZZm1BNHozRFhRcTlVSnM1SmZ4eHRlNUxadUhmbWpy?=
+ =?utf-8?B?Qit3d1pzT3NoUGFMTFdHZzRFcHB0NUxxTytSbFlMSlR6VFFQbWZGZWF2SXdL?=
+ =?utf-8?B?enNpOFl2dWFsejJTMXNSUnJGSnNkNWVGNlJPZEIxUW0vdlZWVDNIeUpaQWJ3?=
+ =?utf-8?B?eHlHM0pRdlRBRndtYktoMlJkQTRlNWVhT1BvMDNXOCtJdkk4bEludUtXOXky?=
+ =?utf-8?Q?UdRV76vF7TQzoduvsRKF3s71r?=
+X-OriginatorOrg: digi.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43f83d32-692c-46e7-7a25-08dd19ef2bca
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB4561.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 14:21:58.3307
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: abb4cdb7-1b7e-483e-a143-7ebfd1184b9e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G3jIc7IreFZHEodfCfQXHkpDb9qMaR01MwI5RXpk56VyG4xRj+MEFPou5bOIS1OLZPTUKQDxJGo8f3gU97Fdwg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4905
+X-BESS-ID: 1733926923-103649-13361-10826-1
+X-BESS-VER: 2019.1_20241205.2350
+X-BESS-Apparent-Source-IP: 104.47.55.47
+X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVobGFgZAVgZQMCnNODXFwNgiJS
+	kx1dTEzMLAzCTVOMXC0tjMPDnN2CJRqTYWANhbzNhBAAAA
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.261038 [from 
+	cloudscan23-120.us-east-2b.ess.aws.cudaops.com]
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------
+	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS112744 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status:1
+
+2024. 12. 11. 14:34 keltezéssel, Andrew Lunn írta:
+> [EXTERNAL E-MAIL] Warning! This email originated outside of the organization! Do not click links or open attachments unless you recognize the sender and know the content is safe.
+>
+>
+>
+> On Wed, Dec 11, 2024 at 01:46:56PM +0100, Robert Hodaszi wrote:
+>> Commit dcfe7673787b4bfea2c213df443d312aa754757b ("net: dsa: tag_sja1105:
+>> absorb logic for not overwriting precise info into dsa_8021q_rcv()")
+>> added support to let the DSA switch driver set source_port and
+>> switch_id. tag_8021q's logic overrides the previously set source_port
+>> and switch_id only if they are marked as "invalid" (-1). sja1105 and
+>> vsc73xx drivers are doing that properly, but ocelot_8021q driver doesn't
+>> initialize those variables. That causes dsa_8021q_rcv() doesn't set
+>> them, and they remain unassigned.
+>>
+>> Initialize them as invalid to so dsa_8021q_rcv() can return with the
+>> proper values.
+> Hi Robert
+>
+> Since this is a fix, it needs a Fixes: tag. Please also base it on net.
+>
+> There is more here:
+>
+> https://linkprotect.cudasvc.com/url?a=https%3a%2f%2fwww.kernel.org%2fdoc%2fhtml%2flatest%2fprocess%2fmaintainer-netdev.html&c=E,1,4wyDgaiEANqhFn2GG0tcaR1j57JQtD08e0Ct4VSwo05Uu1yGRm73RMgwy0gs_ClxX5Mmerf2f6bxOoXZF9G_zKOP4Isr6iVcIkPhTzyMVHt9DNUF0KUfXCE,&typo=1
+>
+>         Andrew
 
 Hi,
 
-On 9-Dec-24 6:54 PM, Stanislaw Gruszka wrote:
-> From: Bingbu Cao <bingbu.cao@intel.com>
-> 
-> commit 1d4a000289979cc7f2887c8407b1bfe2a0918354 upstream.
-> 
-> dma_ops is removed from the IPU6 auxiliary device, ISYS driver
-> should use the IPU6 DMA mapping APIs directly instead of depending
-> on the device callbacks.
-> 
-> ISYS driver switch from the videobuf2 DMA contig memory allocator to
-> scatter/gather memory allocator.
-> 
-> Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-> [Sakari Ailus: Rebased on recent videobuf2 wait changes.]
-> Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-> Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-> Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+OK, thanks! Let me try again!
 
-Thanks, patch looks good to me:
-
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-
-Regards,
-
-Hans
-
-
-
-
-> ---
->  drivers/media/pci/intel/ipu6/Kconfig          |  2 +-
->  .../media/pci/intel/ipu6/ipu6-isys-queue.c    | 66 +++++++++++++++----
->  .../media/pci/intel/ipu6/ipu6-isys-queue.h    |  1 +
->  drivers/media/pci/intel/ipu6/ipu6-isys.c      | 19 +++---
->  4 files changed, 64 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/media/pci/intel/ipu6/Kconfig b/drivers/media/pci/intel/ipu6/Kconfig
-> index a4537818a58c..cd1c54529357 100644
-> --- a/drivers/media/pci/intel/ipu6/Kconfig
-> +++ b/drivers/media/pci/intel/ipu6/Kconfig
-> @@ -8,7 +8,7 @@ config VIDEO_INTEL_IPU6
->  	select IOMMU_IOVA
->  	select VIDEO_V4L2_SUBDEV_API
->  	select MEDIA_CONTROLLER
-> -	select VIDEOBUF2_DMA_CONTIG
-> +	select VIDEOBUF2_DMA_SG
->  	select V4L2_FWNODE
->  	help
->  	  This is the 6th Gen Intel Image Processing Unit, found in Intel SoCs
-> diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-queue.c b/drivers/media/pci/intel/ipu6/ipu6-isys-queue.c
-> index 03dbb0e0ea79..bbb66b56ee88 100644
-> --- a/drivers/media/pci/intel/ipu6/ipu6-isys-queue.c
-> +++ b/drivers/media/pci/intel/ipu6/ipu6-isys-queue.c
-> @@ -13,17 +13,48 @@
->  
->  #include <media/media-entity.h>
->  #include <media/v4l2-subdev.h>
-> -#include <media/videobuf2-dma-contig.h>
-> +#include <media/videobuf2-dma-sg.h>
->  #include <media/videobuf2-v4l2.h>
->  
->  #include "ipu6-bus.h"
-> +#include "ipu6-dma.h"
->  #include "ipu6-fw-isys.h"
->  #include "ipu6-isys.h"
->  #include "ipu6-isys-video.h"
->  
-> -static int queue_setup(struct vb2_queue *q, unsigned int *num_buffers,
-> -		       unsigned int *num_planes, unsigned int sizes[],
-> -		       struct device *alloc_devs[])
-> +static int ipu6_isys_buf_init(struct vb2_buffer *vb)
-> +{
-> +	struct ipu6_isys *isys = vb2_get_drv_priv(vb->vb2_queue);
-> +	struct sg_table *sg = vb2_dma_sg_plane_desc(vb, 0);
-> +	struct vb2_v4l2_buffer *vvb = to_vb2_v4l2_buffer(vb);
-> +	struct ipu6_isys_video_buffer *ivb =
-> +		vb2_buffer_to_ipu6_isys_video_buffer(vvb);
-> +	int ret;
-> +
-> +	ret = ipu6_dma_map_sgtable(isys->adev, sg, DMA_TO_DEVICE, 0);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ivb->dma_addr = sg_dma_address(sg->sgl);
-> +
-> +	return 0;
-> +}
-> +
-> +static void ipu6_isys_buf_cleanup(struct vb2_buffer *vb)
-> +{
-> +	struct ipu6_isys *isys = vb2_get_drv_priv(vb->vb2_queue);
-> +	struct sg_table *sg = vb2_dma_sg_plane_desc(vb, 0);
-> +	struct vb2_v4l2_buffer *vvb = to_vb2_v4l2_buffer(vb);
-> +	struct ipu6_isys_video_buffer *ivb =
-> +		vb2_buffer_to_ipu6_isys_video_buffer(vvb);
-> +
-> +	ivb->dma_addr = 0;
-> +	ipu6_dma_unmap_sgtable(isys->adev, sg, DMA_TO_DEVICE, 0);
-> +}
-> +
-> +static int ipu6_isys_queue_setup(struct vb2_queue *q, unsigned int *num_buffers,
-> +				 unsigned int *num_planes, unsigned int sizes[],
-> +				 struct device *alloc_devs[])
->  {
->  	struct ipu6_isys_queue *aq = vb2_queue_to_isys_queue(q);
->  	struct ipu6_isys_video *av = ipu6_isys_queue_to_video(aq);
-> @@ -207,9 +238,11 @@ ipu6_isys_buf_to_fw_frame_buf_pin(struct vb2_buffer *vb,
->  				  struct ipu6_fw_isys_frame_buff_set_abi *set)
->  {
->  	struct ipu6_isys_queue *aq = vb2_queue_to_isys_queue(vb->vb2_queue);
-> +	struct vb2_v4l2_buffer *vvb = to_vb2_v4l2_buffer(vb);
-> +	struct ipu6_isys_video_buffer *ivb =
-> +		vb2_buffer_to_ipu6_isys_video_buffer(vvb);
->  
-> -	set->output_pins[aq->fw_output].addr =
-> -		vb2_dma_contig_plane_dma_addr(vb, 0);
-> +	set->output_pins[aq->fw_output].addr = ivb->dma_addr;
->  	set->output_pins[aq->fw_output].out_buf_id = vb->index + 1;
->  }
->  
-> @@ -332,7 +365,7 @@ static void buf_queue(struct vb2_buffer *vb)
->  
->  	dev_dbg(dev, "queue buffer %u for %s\n", vb->index, av->vdev.name);
->  
-> -	dma = vb2_dma_contig_plane_dma_addr(vb, 0);
-> +	dma = ivb->dma_addr;
->  	dev_dbg(dev, "iova: iova %pad\n", &dma);
->  
->  	spin_lock_irqsave(&aq->lock, flags);
-> @@ -724,10 +757,14 @@ void ipu6_isys_queue_buf_ready(struct ipu6_isys_stream *stream,
->  	}
->  
->  	list_for_each_entry_reverse(ib, &aq->active, head) {
-> +		struct ipu6_isys_video_buffer *ivb;
-> +		struct vb2_v4l2_buffer *vvb;
->  		dma_addr_t addr;
->  
->  		vb = ipu6_isys_buffer_to_vb2_buffer(ib);
-> -		addr = vb2_dma_contig_plane_dma_addr(vb, 0);
-> +		vvb = to_vb2_v4l2_buffer(vb);
-> +		ivb = vb2_buffer_to_ipu6_isys_video_buffer(vvb);
-> +		addr = ivb->dma_addr;
->  
->  		if (info->pin.addr != addr) {
->  			if (first)
-> @@ -766,10 +803,12 @@ void ipu6_isys_queue_buf_ready(struct ipu6_isys_stream *stream,
->  }
->  
->  static const struct vb2_ops ipu6_isys_queue_ops = {
-> -	.queue_setup = queue_setup,
-> +	.queue_setup = ipu6_isys_queue_setup,
->  	.wait_prepare = vb2_ops_wait_prepare,
->  	.wait_finish = vb2_ops_wait_finish,
-> +	.buf_init = ipu6_isys_buf_init,
->  	.buf_prepare = ipu6_isys_buf_prepare,
-> +	.buf_cleanup = ipu6_isys_buf_cleanup,
->  	.start_streaming = start_streaming,
->  	.stop_streaming = stop_streaming,
->  	.buf_queue = buf_queue,
-> @@ -779,16 +818,17 @@ int ipu6_isys_queue_init(struct ipu6_isys_queue *aq)
->  {
->  	struct ipu6_isys *isys = ipu6_isys_queue_to_video(aq)->isys;
->  	struct ipu6_isys_video *av = ipu6_isys_queue_to_video(aq);
-> +	struct ipu6_bus_device *adev = isys->adev;
->  	int ret;
->  
->  	/* no support for userptr */
->  	if (!aq->vbq.io_modes)
->  		aq->vbq.io_modes = VB2_MMAP | VB2_DMABUF;
->  
-> -	aq->vbq.drv_priv = aq;
-> +	aq->vbq.drv_priv = isys;
->  	aq->vbq.ops = &ipu6_isys_queue_ops;
->  	aq->vbq.lock = &av->mutex;
-> -	aq->vbq.mem_ops = &vb2_dma_contig_memops;
-> +	aq->vbq.mem_ops = &vb2_dma_sg_memops;
->  	aq->vbq.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
->  	aq->vbq.min_queued_buffers = 1;
->  	aq->vbq.timestamp_flags = V4L2_BUF_FLAG_TIMESTAMP_MONOTONIC;
-> @@ -797,8 +837,8 @@ int ipu6_isys_queue_init(struct ipu6_isys_queue *aq)
->  	if (ret)
->  		return ret;
->  
-> -	aq->dev = &isys->adev->auxdev.dev;
-> -	aq->vbq.dev = &isys->adev->auxdev.dev;
-> +	aq->dev = &adev->auxdev.dev;
-> +	aq->vbq.dev = &adev->isp->pdev->dev;
->  	spin_lock_init(&aq->lock);
->  	INIT_LIST_HEAD(&aq->active);
->  	INIT_LIST_HEAD(&aq->incoming);
-> diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys-queue.h b/drivers/media/pci/intel/ipu6/ipu6-isys-queue.h
-> index 95cfd4869d93..fe8fc796a58f 100644
-> --- a/drivers/media/pci/intel/ipu6/ipu6-isys-queue.h
-> +++ b/drivers/media/pci/intel/ipu6/ipu6-isys-queue.h
-> @@ -38,6 +38,7 @@ struct ipu6_isys_buffer {
->  struct ipu6_isys_video_buffer {
->  	struct vb2_v4l2_buffer vb_v4l2;
->  	struct ipu6_isys_buffer ib;
-> +	dma_addr_t dma_addr;
->  };
->  
->  #define IPU6_ISYS_BUFFER_LIST_FL_INCOMING	BIT(0)
-> diff --git a/drivers/media/pci/intel/ipu6/ipu6-isys.c b/drivers/media/pci/intel/ipu6/ipu6-isys.c
-> index c4aff2e2009b..c85e056cb904 100644
-> --- a/drivers/media/pci/intel/ipu6/ipu6-isys.c
-> +++ b/drivers/media/pci/intel/ipu6/ipu6-isys.c
-> @@ -34,6 +34,7 @@
->  
->  #include "ipu6-bus.h"
->  #include "ipu6-cpd.h"
-> +#include "ipu6-dma.h"
->  #include "ipu6-isys.h"
->  #include "ipu6-isys-csi2.h"
->  #include "ipu6-mmu.h"
-> @@ -933,29 +934,27 @@ static const struct dev_pm_ops isys_pm_ops = {
->  
->  static void free_fw_msg_bufs(struct ipu6_isys *isys)
->  {
-> -	struct device *dev = &isys->adev->auxdev.dev;
->  	struct isys_fw_msgs *fwmsg, *safe;
->  
->  	list_for_each_entry_safe(fwmsg, safe, &isys->framebuflist, head)
-> -		dma_free_attrs(dev, sizeof(struct isys_fw_msgs), fwmsg,
-> -			       fwmsg->dma_addr, 0);
-> +		ipu6_dma_free(isys->adev, sizeof(struct isys_fw_msgs), fwmsg,
-> +			      fwmsg->dma_addr, 0);
->  
->  	list_for_each_entry_safe(fwmsg, safe, &isys->framebuflist_fw, head)
-> -		dma_free_attrs(dev, sizeof(struct isys_fw_msgs), fwmsg,
-> -			       fwmsg->dma_addr, 0);
-> +		ipu6_dma_free(isys->adev, sizeof(struct isys_fw_msgs), fwmsg,
-> +			      fwmsg->dma_addr, 0);
->  }
->  
->  static int alloc_fw_msg_bufs(struct ipu6_isys *isys, int amount)
->  {
-> -	struct device *dev = &isys->adev->auxdev.dev;
->  	struct isys_fw_msgs *addr;
->  	dma_addr_t dma_addr;
->  	unsigned long flags;
->  	unsigned int i;
->  
->  	for (i = 0; i < amount; i++) {
-> -		addr = dma_alloc_attrs(dev, sizeof(struct isys_fw_msgs),
-> -				       &dma_addr, GFP_KERNEL, 0);
-> +		addr = ipu6_dma_alloc(isys->adev, sizeof(*addr),
-> +				      &dma_addr, GFP_KERNEL, 0);
->  		if (!addr)
->  			break;
->  		addr->dma_addr = dma_addr;
-> @@ -974,8 +973,8 @@ static int alloc_fw_msg_bufs(struct ipu6_isys *isys, int amount)
->  					struct isys_fw_msgs, head);
->  		list_del(&addr->head);
->  		spin_unlock_irqrestore(&isys->listlock, flags);
-> -		dma_free_attrs(dev, sizeof(struct isys_fw_msgs), addr,
-> -			       addr->dma_addr, 0);
-> +		ipu6_dma_free(isys->adev, sizeof(struct isys_fw_msgs), addr,
-> +			      addr->dma_addr, 0);
->  		spin_lock_irqsave(&isys->listlock, flags);
->  	}
->  	spin_unlock_irqrestore(&isys->listlock, flags);
+Robert
 
 
