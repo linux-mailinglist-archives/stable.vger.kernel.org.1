@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-100698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6699ED4FF
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:52:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F14BF9ED4FD
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:52:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AC78164EF9
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:51:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACF342840BA
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F1A236942;
-	Wed, 11 Dec 2024 18:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AA1236F83;
+	Wed, 11 Dec 2024 18:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gFWkbcTa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sMr/SyX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F26F23693E;
-	Wed, 11 Dec 2024 18:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A12223695A;
+	Wed, 11 Dec 2024 18:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943043; cv=none; b=o+9CJBIE/327euowGx5IL+TFe0Qapkeu2ihN47R/aHCIQQMuPUtyVL7nInLRGXa3fPCephVMNUE8MkzfdGF47Rq6KDBe4Ex87maOiFKUn50wYftYOoYNQn2K00wQ7XYZf7S8SaCA4PQ0/UXVEklocHc4hUiUH0WR4phjk0+S9kM=
+	t=1733943044; cv=none; b=RYhELmFjbHJxx6heEfipmekNEVoLJXqdP55g7j2BAbXiGdAUNqPWpE8/+5t/FKo8PDjFuZFgH8bGmdDq7+RoMlMrj6aRdMJfT0yQ4d4l0nK1YuqqvhdiN+JLFqDvNABlCgbac/wGg1OXsxSMpWfN+Vfa3bwmSHmKgpT/DShRudc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943043; c=relaxed/simple;
-	bh=2vb5YGLHDUV5tJMqDZvDzN+Oziahd/J33DB+9fNplFw=;
+	s=arc-20240116; t=1733943044; c=relaxed/simple;
+	bh=XCi09Y8r6HODJn5IXLArntZZI5bskvFmlDyqNcwzYjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DICIp6BfyFyb+0Hqgv3fGKWSuEfo4ZqYaD2SsAmamZbPe0MMzzxGu9yOsOL5CE6zqOpn43XYe3xtpDeHgmzdTfkTwZGdQBSlUP8dWxSfGJ+TB1UKXOnlg2Y7E5rrbo+L5/8bLJg7UJ3GMp+ug4fjvldm6FidhEllmTUO5wYEIEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gFWkbcTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0655AC4CEDD;
-	Wed, 11 Dec 2024 18:50:41 +0000 (UTC)
+	 MIME-Version; b=EQFed+ZiGQrGqOMSMRJu9wcLIXHM+c9fftP06jeqOrZAWTBODj9CkUz+RrH1cEAOtFVyBV/7Y0Le4vz2hdVX7eIrTdSfhSTGvJsK5j4lF4O7WFYzW1SgTKjWGo29Rnt9xbRdyvLY9zR4AFyP9sRiiTCfaecrCeqZnSLUmVy28qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sMr/SyX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346B7C4CEDF;
+	Wed, 11 Dec 2024 18:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943042;
-	bh=2vb5YGLHDUV5tJMqDZvDzN+Oziahd/J33DB+9fNplFw=;
+	s=k20201202; t=1733943044;
+	bh=XCi09Y8r6HODJn5IXLArntZZI5bskvFmlDyqNcwzYjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFWkbcTaJFl2UmwG9o4nLHQDrKb0l6QvWNLJ3C+M8u3xMmPnugxXo+vUptARZQEDY
-	 +mI8T8Of0UVVebMNGiDDiLtGnTpAa8zfkTJt3p19BRZBfueBVDpJkpBVn5WINyS7tR
-	 CecMx5iepZyLyFYFr3QuFHqmg7p78RKmDmLfvO+K2cgMJECgIJNIZt1o6R1CLq/J2Y
-	 Byz6ETTT3rmNNKnFOX8i3foJs7vlzeuyfgMLxs0PUzX2lw+jy99W0hpzL0x79xw2ip
-	 3Jtk5+V0eLJCCFvJg3AK/AMuvdJLpPkYsmZzfqdC3qQeeTz76FWggInl2v71Co1mvu
-	 6yk2noTW+Js7w==
+	b=sMr/SyX2LQ71zBXQ41sTszGsX21Xw3L5S317LLQotAcVtddVrjxTxhAlEr4Zp7DMl
+	 i0HX3ak+f83pLyHNxbuIom64ooFFh4Wm/aq0egxNcSFgXi+2sh2Ttg3j2UIWp3kFlL
+	 LmMdgdwdn+pBdIb5og3OlFb7CwbvnV8cykTc9vor6vqQLnwUJcNIZZ8obfvzXu43Zq
+	 d+cnRGrLJt6gsCtAUx6zkDcV911q+HhPhKj/1N3toHmlWvA6VXU/Z3iYqM5ZYjcVYR
+	 sy46FZW4jj/RjzJkzWPsjkTGAknGLg08940WzIYd/8zwNjVoZmBUBy9SB3nH/PBDSb
+	 1ZlD/kt93srtA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Jan Kara <jack@suse.cz>,
+	syzbot+3ff7365dc04a6bcafa66@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
 	jack@suse.com
-Subject: [PATCH AUTOSEL 6.12 08/36] udf: Skip parent dir link count update if corrupted
-Date: Wed, 11 Dec 2024 13:49:24 -0500
-Message-ID: <20241211185028.3841047-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 09/36] udf: Verify inode link counts before performing rename
+Date: Wed, 11 Dec 2024 13:49:25 -0500
+Message-ID: <20241211185028.3841047-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -66,35 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit c5566903af56dd1abb092f18dcb0c770d6cd8dcb ]
+[ Upstream commit 6756af923e06aa33ad8894aaecbf9060953ba00f ]
 
-If the parent directory link count is too low (likely directory inode
-corruption), just skip updating its link count as if it goes to 0 too
-early it can cause unexpected issues.
+During rename, we are updating link counts of various inodes either when
+rename deletes target or when moving directory across directories.
+Verify involved link counts are sane so that we don't trip warnings in
+VFS.
 
+Reported-by: syzbot+3ff7365dc04a6bcafa66@syzkaller.appspotmail.com
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/namei.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/udf/namei.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/fs/udf/namei.c b/fs/udf/namei.c
-index 78a603129dd58..2be775d30ac10 100644
+index 2be775d30ac10..2cb49b6b07168 100644
 --- a/fs/udf/namei.c
 +++ b/fs/udf/namei.c
-@@ -517,7 +517,11 @@ static int udf_rmdir(struct inode *dir, struct dentry *dentry)
- 			 inode->i_nlink);
- 	clear_nlink(inode);
- 	inode->i_size = 0;
--	inode_dec_link_count(dir);
-+	if (dir->i_nlink >= 3)
-+		inode_dec_link_count(dir);
-+	else
-+		udf_warn(inode->i_sb, "parent dir link count too low (%u)\n",
-+			 dir->i_nlink);
- 	udf_add_fid_counter(dir->i_sb, true, -1);
- 	inode_set_mtime_to_ts(dir,
- 			      inode_set_ctime_to_ts(dir, inode_set_ctime_current(inode)));
+@@ -791,8 +791,18 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 			retval = -ENOTEMPTY;
+ 			if (!empty_dir(new_inode))
+ 				goto out_oiter;
++			retval = -EFSCORRUPTED;
++			if (new_inode->i_nlink != 2)
++				goto out_oiter;
+ 		}
++		retval = -EFSCORRUPTED;
++		if (old_dir->i_nlink < 3)
++			goto out_oiter;
+ 		is_dir = true;
++	} else if (new_inode) {
++		retval = -EFSCORRUPTED;
++		if (new_inode->i_nlink < 1)
++			goto out_oiter;
+ 	}
+ 	if (is_dir && old_dir != new_dir) {
+ 		retval = udf_fiiter_find_entry(old_inode, &dotdot_name,
 -- 
 2.43.0
 
