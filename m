@@ -1,126 +1,146 @@
-Return-Path: <stable+bounces-100812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806D29ED81F
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 22:08:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCE471630C0
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 21:08:41 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69561E9B16;
-	Wed, 11 Dec 2024 21:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="i/aHBbt/"
-X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CAB9ED916
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 22:53:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160286DCE1;
-	Wed, 11 Dec 2024 21:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2ADA2833A9
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 21:53:14 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAD11D8DFE;
+	Wed, 11 Dec 2024 21:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mxyBF2Hd"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4C41A2872;
+	Wed, 11 Dec 2024 21:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733951320; cv=none; b=pQoPwyxl0+qvlyKtolD2iY87Irt4Li9wnfCD+Uwf0hRiAiq50khhf41X1V+8vBDDWTyYubToqL3ym/aCD4zGkW4sxUyrfq94KMlERRmkzQt32ndxtB21M+K9FbXqNNktA7yZXBd50t5uHVynpdFi6tJ+SkMxuOAnrU645oQnMaI=
+	t=1733953993; cv=none; b=eDFJTgH2L1VrPk3VKymuru01KfqFGHY/ukVqiIKnJF2NhJfzyF5VAyWV4HlA49SlTg4GEgD8hT6/3CiuGpYaZcPUUzonYRsqjkQMpaHU8xsYvzKfo0swR+qYnmYKT0jHI5SZivbktrXo7NM0iqiSPyqnST5K5ui6k/b7JP/GfO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733951320; c=relaxed/simple;
-	bh=UO3YXZW47gWv3SCpmfMBDpDp2RV79jQ3vkDyXRysnF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KbEU96OGxX8UNosQ8FG7up+oISfF6halSxrG3+nnJKSiCvXgti1kN8ST9uLqyDMSkfOmvQmWN+PBzkZxd+HfMlLLUu5qlK7j17INF36ozdNYE2kZeQqJlAWRYHnNrrVehNBCXt655tw78bvfYiaiqvDSPIeTA4U3DVBHzDeo0RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=i/aHBbt/; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=T8mUFcmECrP/TteQEvTLst+33uFFcr5m63mDPK2C7ag=; b=i/aHBbt/A3ipc3S0CUjrXE02Ek
-	NM/36ZwFnHhMum1HqAUvD7xs807eOMn8yDHD1fh18M0pFyfa8NhadZE74kGtjp56SssmS1rtri4aJ
-	Ft0Kfp+SV7O8iEYAOBMf4uc0E9PLIj5kZlg13twWxFBBP521xpz2I6VUY5nkQyq3qG9TMngq0HZ25
-	WlzHwno1loUFkGG2SUE6TdJa0emkxw5CGfsXpxzT4hyPQjtVfuPT9jLsJVzYPDKKKGRmtjfMrgPh7
-	dWKwK3aJIr4JtTZ2TkOXLc/rOLayW/C3qYxg44s3fbQrkkupxUxsa3attNbnGxlKDVhsa6JWENx9z
-	XTCoAcDg==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tLTwf-00000000v5U-3ApR;
-	Wed, 11 Dec 2024 21:08:33 +0000
-Date: Wed, 11 Dec 2024 21:08:33 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, linux-mm@kvack.org,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] vmalloc: Account memcg per vmalloc
-Message-ID: <Z1n_UXwvj27-AUHS@casper.infradead.org>
-References: <20241211043252.3295947-1-willy@infradead.org>
- <20241211043252.3295947-2-willy@infradead.org>
- <20241211160956.GB3136251@cmpxchg.org>
- <Z1nC3138biX0J1DJ@casper.infradead.org>
- <keho5no2wg666yjtkb5lflxwezgbzavue5ytydqm7pm7w62ctt@q6zg7t56gf4b>
- <Z1n0FFZ_oMYKcUiP@casper.infradead.org>
- <3bgedgrbu73dovgcy2keqjud6jafqxenceihtyre2hkego7oyb@opc5u53jef5a>
+	s=arc-20240116; t=1733953993; c=relaxed/simple;
+	bh=jyzsBrvMBAr+1bXXKGzPRjnmY8DOIkN9h2Wn+J5W/c4=;
+	h=Date:To:From:Subject:Message-Id; b=nbVhQmoN10sC+6IuGytXatU7pXpblnq/3U+6Xhrkpp1GMGrV3lZMh9whBg1w0O8bC/2v9QzbCk98N9NYIoVmSBgPt43TAbi2GFQ2koizGHANyLivFFdtnM7junBUdqj16WHiJ/U9qaXYL4PJOt8l0WXAyPqF7DhdTL4+XvUf0ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mxyBF2Hd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF75C4CED3;
+	Wed, 11 Dec 2024 21:53:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1733953993;
+	bh=jyzsBrvMBAr+1bXXKGzPRjnmY8DOIkN9h2Wn+J5W/c4=;
+	h=Date:To:From:Subject:From;
+	b=mxyBF2HdeV0WRfaSPw5slIATdB35+EnZmDl5Tdhgo/Vnw/HMCBN2weUpde/DQZNA6
+	 5ft26mz+gPapnskLP9DhWh9x+K/y6S4ud8y4mSnCjEx6B6yR8oFgxFiNeec5ZrMfPp
+	 DZbosNCeaAUkbs1mRwu/sTMglgTPcPRhUE79QcZ8=
+Date: Wed, 11 Dec 2024 13:53:12 -0800
+To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,muchun.song@linux.dev,mhocko@kernel.org,hch@lst.de,hannes@cmpxchg.org,willy@infradead.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + vmalloc-fix-accounting-with-i915.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241211215313.1BF75C4CED3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3bgedgrbu73dovgcy2keqjud6jafqxenceihtyre2hkego7oyb@opc5u53jef5a>
 
-On Wed, Dec 11, 2024 at 12:58:36PM -0800, Shakeel Butt wrote:
-> On Wed, Dec 11, 2024 at 08:20:36PM +0000, Matthew Wilcox wrote:
-> > Umm, I don't think you know which vmalloc allocation a page came from
-> > today?  I've sent patches to add that information before, but they were
-> > rejected. 
-> 
-> Do you have a link handy for that discussion?
 
-It's not really relevant any more ...
+The patch titled
+     Subject: vmalloc: fix accounting with i915
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     vmalloc-fix-accounting-with-i915.patch
 
-https://lore.kernel.org/linux-mm/20180518194519.3820-18-willy@infradead.org/
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/vmalloc-fix-accounting-with-i915.patch
 
-and subsequent discussion:
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-https://lore.kernel.org/linux-mm/20180611121129.GB12912@bombadil.infradead.org/
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-It all predates memdesc.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-> Yes you are correct. At the moment it is a guesswork and exhaustive
-> search into multiple sources.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-At least I should be able to narrow it down somewhat if we have a
-PGTY_vmalloc.
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: vmalloc: fix accounting with i915
+Date: Wed, 11 Dec 2024 20:25:37 +0000
 
-> > I actually want to improve this, without adding additional overhead.
-> > What I'm working on right now (before I got waylaid by this bug) is:
-> > 
-> > +struct choir {
-> > +       struct kref refcount;
-> > +       unsigned int nr;
-> > +       struct page *pages[] __counted_by(nr);
-> > +};
-> > 
-> > and rewriting vmalloc to be based on choirs instead of its own pages.
-> > One thing I've come to realise today is that the obj_cgroup pointer
-> > needs to be in the choir and not in the vm_struct so that we uncharge the
-> > allocation when the choir refcount drops to 0, not when the allocation
-> > is unmapped.
-> 
-> What/who else can take a reference on a choir?
+If the caller of vmap() specifies VM_MAP_PUT_PAGES (currently only the
+i915 driver), we will decrement nr_vmalloc_pages and MEMCG_VMALLOC in
+vfree().  These counters are incremented by vmalloc() but not by vmap() so
+this will cause an underflow.  Check the VM_MAP_PUT_PAGES flag before
+decrementing either counter.
 
-The first user is remap_vmalloc_range() which today takes a
-mapcount+refcount on the page underlying the vmalloc inside
-vm_insert_page().
+Link: https://lkml.kernel.org/r/20241211202538.168311-1-willy@infradead.org
+Fixes: b944afc9d64d (mm: add a VM_MAP_PUT_PAGES flag for vmap)
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-But I see choirs being useful more widely; for example in the XFS buffer
-cache (which wouldn't be mappable to userspace).  They might even be
-the right approach for zswap, replacing zpdesc.  Haven't looked into
-that in enough detail yet.
+ mm/vmalloc.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+--- a/mm/vmalloc.c~vmalloc-fix-accounting-with-i915
++++ a/mm/vmalloc.c
+@@ -3374,7 +3374,8 @@ void vfree(const void *addr)
+ 		struct page *page = vm->pages[i];
+ 
+ 		BUG_ON(!page);
+-		mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
++		if (!(vm->flags & VM_MAP_PUT_PAGES))
++			mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
+ 		/*
+ 		 * High-order allocs for huge vmallocs are split, so
+ 		 * can be freed as an array of order-0 allocations
+@@ -3382,7 +3383,8 @@ void vfree(const void *addr)
+ 		__free_page(page);
+ 		cond_resched();
+ 	}
+-	atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
++	if (!(vm->flags & VM_MAP_PUT_PAGES))
++		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
+ 	kvfree(vm->pages);
+ 	kfree(vm);
+ }
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+vmalloc-fix-accounting-with-i915.patch
+mm-page_alloc-cache-page_zone-result-in-free_unref_page.patch
+mm-make-alloc_pages_mpol-static.patch
+mm-page_alloc-export-free_frozen_pages-instead-of-free_unref_page.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-post_alloc_hook.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-prep_new_page.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-get_page_from_freelist.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_cpuset_fallback.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_may_oom.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_compact.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_direct_reclaim.patch
+mm-page_alloc-move-set_page_refcounted-to-callers-of-__alloc_pages_slowpath.patch
+mm-page_alloc-move-set_page_refcounted-to-end-of-__alloc_pages.patch
+mm-page_alloc-add-__alloc_frozen_pages.patch
+mm-mempolicy-add-alloc_frozen_pages.patch
+slab-allocate-frozen-pages.patch
 
 
