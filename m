@@ -1,222 +1,210 @@
-Return-Path: <stable+bounces-100815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8728B9EDAFD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 00:09:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82CBF1884C73
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 23:08:46 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76E81F238B;
-	Wed, 11 Dec 2024 23:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="c/kE7M0c"
-X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2054.outbound.protection.outlook.com [40.107.236.54])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3AF9EDB08
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 00:13:42 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39C61F237E;
-	Wed, 11 Dec 2024 23:08:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733958500; cv=fail; b=DDLm0mS8lcVLYaDSsb3WPccg3VD7jQGT+XGIgnk4UNfSNiM4vpVdJLMU5HdK2GGuBZTNqE902mV7QUvmpw6tcYAyjVKspJeayArvEJKcws89Ovct6t4YBM6A0yjZucKbQDd5QiQHJ9OqCvLPBl5TKw7hrnFl2yKsc94TQfyg6jY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733958500; c=relaxed/simple;
-	bh=2+eWHsAJr2BKpH9m+ZtUtO/7LyxpUzV/xeyN9GWeNJI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=vD8Ez6jSIUhGOvRnu5z0j8FBTvUZsnjGKTHJhUe2BmWahAvr1+zoy3vQXj5qHAPRuSRl20U+YHx6pFytic0jUCboa+7VC+nydVnLXD8AZm3/+gV6UR6veNNNwVRc4Y74lmIBVw6GDGn0Y1SgAUkI2olME8JSj0MTdKmKIWj32g8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=c/kE7M0c; arc=fail smtp.client-ip=40.107.236.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OZ2ftIRfKXCDPe5DTm64jXI6PzaS0FvqPd1v7LnSjOZPUbR/SojBPNWJe4KfCW4TRtajX6U4iYNhXhnLP94kKX7AJTkJ8T2Nhr/UQn9fFmbFNh6AQnPp/erTj5uuxUuzGiKli8brsMta6Hur2zoq8D9BT4KaquoDYXhXaVMEelcLDSy6ICZvCpavzPxx5PkXIuJzrDp2k6jG5dIilrJ9bjzQRFJdB8xMRuiO3T3DOLwndRe8tYzMD2gcZlKt/khZ4nd1d8twrp2T1AWLyQK8xJtcmb7LCpz9Ar352VsPNoSu1Rx6gKU2+uU3EjKY6p9aHn9MPo+JO9ih54KQnYFmFg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pq3u0rE8omMho86kTd9nHnGIB2NIqj+e4qTBh7OoyIE=;
- b=sba4mS5teIHVEEMIACrjP+dyPSjxBbCmkcBXtzSqK78d9GXihshxaI5ix9XUschYBpHWPrsAQIMdfkcA/sIP2v3V3JLo1/qsS8ZlxcJOaPMNrTc3MTMM83sijlihDyUY9i9nRNzazTG19IfSoQB9usTNeU5lzFFsKuqfeVo8JcZ1dF2HkYk6kn7axYFB9xY3zh4RH+j83SAXMnOrblVMWtawFPnIYHh3nSc7UdD9/G5xYD3aL5ERll9wckH3uY1F48RbOkKXTer0xYcnfysDzw4jCW3B2zRqB1WwJPNAsOQ/Nux92cNaAa7qqt/sKI2ozzSat6/G32afy+hnNJZ9hg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pq3u0rE8omMho86kTd9nHnGIB2NIqj+e4qTBh7OoyIE=;
- b=c/kE7M0c5DNXNnbEIloJGPEomw8I1ORo0KmziyMXV3Yc+e5ODfZ8wdx/l2HpXPTHMZAwIz8Hqt5AbToWnEI1UPlXH4rIQ6QiBHwRiIKjfYWUOdtAHblvrZ7oSy7N5MYt5iuacNN/Svqatc4Zpw8BLjJmXgPi3f7ymkqikGlX5u5XwRvGjR4FKlebw1RpFYJIT5f77fg4jAJqNh8ZGufGW96OsvRNDaYcjaKW85QqMtOimNUnRjrUHeYrsD6ibUgR93/9vbcE82xMaVrReSSePP6YNn7wbL+YEYN8mWboxupWUui889lBk4Lfgdt8EX2PqozM3pbCxMfohpmwAxUt5A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA1PR12MB7272.namprd12.prod.outlook.com (2603:10b6:806:2b6::7)
- by PH8PR12MB6746.namprd12.prod.outlook.com (2603:10b6:510:1c1::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.19; Wed, 11 Dec
- 2024 23:08:13 +0000
-Received: from SA1PR12MB7272.namprd12.prod.outlook.com
- ([fe80::a970:b87e:819a:1868]) by SA1PR12MB7272.namprd12.prod.outlook.com
- ([fe80::a970:b87e:819a:1868%6]) with mapi id 15.20.8230.016; Wed, 11 Dec 2024
- 23:08:13 +0000
-Message-ID: <20ca34f1-9777-4c43-a180-89bef4de1976@nvidia.com>
-Date: Thu, 12 Dec 2024 10:08:07 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] vmalloc: Fix accounting with i915
-Content-Language: en-GB
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@lst.de>, linux-mm@kvack.org,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- cgroups@vger.kernel.org, stable@vger.kernel.org
-References: <20241211202538.168311-1-willy@infradead.org>
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20241211202538.168311-1-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9PR03CA0008.namprd03.prod.outlook.com
- (2603:10b6:806:20::13) To SA1PR12MB7272.namprd12.prod.outlook.com
- (2603:10b6:806:2b6::7)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2A7D28352B
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 23:13:39 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9E11F2392;
+	Wed, 11 Dec 2024 23:13:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IT+nonDH"
+X-Original-To: stable@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D32195;
+	Wed, 11 Dec 2024 23:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733958815; cv=none; b=eC+UPWPhsqrUGxCUP9uJz7Qyx8KbcanoNA5g9vIjwaAKAKPeTJ4Uv2GjuFlEPG/PTdCZysBBIddh+GMGOP0dZ8g8MoJym/LK/7cCCLAznFrCyoRpwNJNVKbkWdv6u6HbRrfX9PBQ9ZTqB2MU/BTyQ0M12wIb1R/gv9pYrjrDRqY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733958815; c=relaxed/simple;
+	bh=Fs0YvPZYFfeum0uMpaC2y/EnUl1y1ZIuYN+2dIo5QeY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TfdHvzB9pnXk/IkCrwcZ7ubHq3nBkp+zwB+mTucdsMfOyPK0PyrGujMN6ojeBwtKDtpSpU+nEitSQylOrLWTZ19V+Bl9e0Zs9RLgmDlJ/pwXghc2VXv03bb3Kl7pHoLAIaNyJQTeR7++QRmFh9g0Cp3Bkp4IawBMOneSWb+sAUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IT+nonDH; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733958814; x=1765494814;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Fs0YvPZYFfeum0uMpaC2y/EnUl1y1ZIuYN+2dIo5QeY=;
+  b=IT+nonDHXkE/IjwH3/1hVLjyzOcgCe0B+FN41NTwIpw+/dd0Sey4eMlb
+   bscur/qI80NXQs8c4rbXbSfXYF5KRyxistCFCJJKEgvLA4Pv445CfNmPt
+   jWsKIUav2xNMUkFDsoqAtlwF/kaXKH2WZuz3BUtKtSNHvG9axa7blpgab
+   TTCTATDjTFctYzHgGAfbdlrxPNJuif7sqAzn4refAAMkH+AegI25HkmtZ
+   dldGIfAL9/HeqlHONtRYyVTnoRiLW6KtNQ9UGDJ1OPPSTpbahq1XD253C
+   v058k51pvmjLqnaO7f6I96ops3RyrRJbhDLW8jnBB0bFHFot9aWHIeeq5
+   Q==;
+X-CSE-ConnectionGUID: dDBtzksxSFuig1a5cZUnDw==
+X-CSE-MsgGUID: 17Ts8s5fSYiYdEYbqhfSkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11283"; a="38046231"
+X-IronPort-AV: E=Sophos;i="6.12,226,1728975600"; 
+   d="scan'208";a="38046231"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 15:13:33 -0800
+X-CSE-ConnectionGUID: GR6vQ/SaRQiFUeoopuAIzQ==
+X-CSE-MsgGUID: nwFvvL8HQwSfClzTThLOiw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="100950648"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 11 Dec 2024 15:13:28 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tLVtV-0007C9-0z;
+	Wed, 11 Dec 2024 23:13:25 +0000
+Date: Thu, 12 Dec 2024 07:12:27 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	linux-efi@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	stable@vger.kernel.org, Tyler Hicks <code@tyhicks.com>,
+	Brian Nguyen <nguyenbrian@microsoft.com>,
+	Jacob Pan <panj@microsoft.com>, Allen Pais <apais@microsoft.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Jonathan Marek <jonathan@marek.ca>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	KONDO =?utf-8?B?S0FaVU1BKOi/keiXpOOAgOWSjOecnyk=?= <kazuma-kondo@nec.com>,
+	Kees Cook <kees@kernel.org>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Aditya Garg <gargaditya08@live.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] efi: make the min and max mmap slack slots configurable
+Message-ID: <202412120620.ZY2X03AR-lkp@intel.com>
+References: <20241209162449.48390-1-hamzamahfooz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB7272:EE_|PH8PR12MB6746:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67550db8-780b-4f73-f96d-08dd1a38b005
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VWs1OHU0WFVYNmEza1NLQ3pWVjAraTcxZGtaQWtZYThOWityaW1BYkdWTVdO?=
- =?utf-8?B?YnVKYy9KVkE3TUxuRWxtLzBjS3QyLy9haVJqOFhhd1kzNFlHaUlRUCsvTHhx?=
- =?utf-8?B?a2dOZXNvbGFvMnRETlp0dHBvTEJQUEU1eVBZNnZoSzJRMThtOCtnbEQwYW9G?=
- =?utf-8?B?Wk9JOS9KVkRYZm5zQUM2dVFzNTVKQjdUSzh4MCt3T0tTSTl4Lzlqd0pqTkxQ?=
- =?utf-8?B?NUpFQVYrZU03MWhBMFZTc0ltUFZOSEVCMEY4ekhFQ250ZHhCSWdCQWE3TmIx?=
- =?utf-8?B?Z2NaeVp4ejhSRTdQOVpNMEU1eTFpUCtYRkpYQW1yQnY3NEhoRkIycjM0ZU9B?=
- =?utf-8?B?M0xoNjczTlgwSW1TZWVDeVF3WkFnL1J0Y2ZmN2t2Yys5OThyNjlGa3NWQWo0?=
- =?utf-8?B?Wk1MNlZla1VNSXI1cnFOSzVHNHludkxVMU1MV3FIWFdNQzdPL0xCMnRxcDdK?=
- =?utf-8?B?eE9zUmJJc1orWVBPb3Qwdy81UG9lMDJXSnA5aE1Wa09Jd1RFSFFKeFZ1cEdh?=
- =?utf-8?B?TndSRk1SL2hidE1TelZ5ZWNncGlrUmE1ek9INnJqQklYTlNaL2pBSkx2NkFL?=
- =?utf-8?B?d3MxRVQrZTd5NTJ0cTNRTTczREtka3FVZnArVkpqZHNBdzlEU3BZZVVzYzFB?=
- =?utf-8?B?MVlURVUyUXVpb1c4WE1Fd0xyR3lYQlBRcUFScmtMRjlWaVA1WThsTk1mU01J?=
- =?utf-8?B?ckFPQkd3UEJtUm9yNFJuZjQ5Tm5yZTJHUXczSTlDOE5TYXZ4dVVZbG9vSTFR?=
- =?utf-8?B?cDBBL1VWSWlIcU4zcERGeHEyMXBla3RSYjJzSzJzU3hSRFE0WXFXRjhxb3dG?=
- =?utf-8?B?ZFJlQ3pNbDBYeFRReDBFMHlobTczZkpTOEE0V0tUS3RVMnhnc3FzZEt0NVRp?=
- =?utf-8?B?Vjlhc0NSOEV6SCtZa0x0ZVEyOVRxeUsrVG9yZGtxMzdjSFh4cis3THB1c3hJ?=
- =?utf-8?B?T2phNmZYaFg3SWtzVEhvUHBKTmlITlc0Vk9TMEpjU05Vam5zZUxuZ1IrY3FY?=
- =?utf-8?B?U3V3MDJRMm1GK3FDSGZEVFlhSGRZOG9TZnBJNWRUdTZQeitXclg3Z09BeXNW?=
- =?utf-8?B?MW93N0pEUXNUUE5ZU0J4SjZ2U2RYZVRGQzdOV2c3S2JPU1FWaWRlYTBKRzRi?=
- =?utf-8?B?MlpVZTlXSnd0enNlMmpVdUEwdzJ5aGJWcVpNeWRDUUszazUyYXlldm9paGRR?=
- =?utf-8?B?WkQ0VFNqeEFaaFhtcmlmVzRvd01kc2NiYmhoM2dJNW9GUzdJZUlHUk5Sdzlm?=
- =?utf-8?B?K0ZPZHhHV0ErTWRwdUVXTG1LeTdGVVUyWWlrZ2FJYjRVMzQxODRLWHhBYmNn?=
- =?utf-8?B?U3B2WGI3TGJDSVY0SW10bjgyS3B3SlN5dG5RZzhHbDRrSWRUemF1c2NKMDcx?=
- =?utf-8?B?VVExU2RaL280Zm1LUE92YXdEeWJ1MERIYWcwNmlSYkkrdTJSTFRXSGgwbUdB?=
- =?utf-8?B?UktXT3o3bmFjLzBlSGRJMU1oQU5MUGlCTVVxeVRlNnVOdWoyMzJCRElzVkwy?=
- =?utf-8?B?dUpycFgvaUl3Rk1tL2luM3ZSWEs1Y1AzTUpPR25NVDUrc1dSaEt2a2VUVnVM?=
- =?utf-8?B?T3E5NmVxa040aFFoK2hBVCtkUEpOdFM4TUhIK3pCVm5BUTRrTEFNMVhFcUd4?=
- =?utf-8?B?djFiS3NWbHROR255VzVOY0x6V293SC9qWTdJampjUzQ1WHM0NjY2YnZUNGhv?=
- =?utf-8?B?MkU0b3ZobnNpbEtPQmNhZlVUSlB2WVFCNWJGYzNucHJmeVRDZ2d0ZzFSby9T?=
- =?utf-8?B?dVRjU0djWnFHWldINkg3d09CeXJZNTFIRHVBNE96VkEwano3RDhycFVUMWZ0?=
- =?utf-8?B?S01UZnVRRFA0SjZhMUNIQT09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB7272.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Ti90OTFCNkpVWHZLbzlkY0lLK1ZPcnI1UDVObHJnL1ZzT2dhQjVybXphM1BN?=
- =?utf-8?B?aGZJbkZLSUNUb1V2MmNyVzdBMko4dlFQdmJad0s3RzErKzlrbFdjWnhZb3Nu?=
- =?utf-8?B?REsrY28valhXNWZ4N2NkZVU1SnAvN0hZY2gxd2VXTDlDZFpVVGtybm5QTnZt?=
- =?utf-8?B?cXV5Rm1NUUY0cHJyanNkUElWelZ0Zkw0QnFzeVNic3dmSzJhcGkwMXNjd2J1?=
- =?utf-8?B?ektIU0xtd1pERXhVYlFHK0NRQitmU1I2M3NzNlF0SFM2N1RIdFkyVDJWTWVl?=
- =?utf-8?B?ODI0a2wwZ2kyZDA5MmszT1VRZmpNMWs3ajd5aytTUDdOaWs0TDM0ZnlXb2VT?=
- =?utf-8?B?cmdybG1RSU5MUXZzKzNJaU5BZzhBWDFFY01oUEx5QnBCM3c0Tm9zaXlhM05V?=
- =?utf-8?B?VjZ4YTEvc2JUbkRMbXJldnVOVWdZQXNxeFZFcnFXYUNES2NyV0pCbHZ4STVu?=
- =?utf-8?B?L3FmaXpuTGZRYVE4cGpCdGRTWkt4aHFOQVNkRE51Njl6TmJsZ2ovRWpScGF3?=
- =?utf-8?B?YURBbGtlTW4rVlZrNVJBc3hSNVdVZ294clpSUVB4RnlJeWc0VWYwVlQwdEhj?=
- =?utf-8?B?Z2xlbnc2YzE5d2dCa0sxYnhyRVVjMkM1dGFNdzJ1a2J1b2x4WDY5UWUvRGsz?=
- =?utf-8?B?NFliczZOTWkzR252Y01NYU1SVTlXb2ErM29UZm9OYlZhMWtLLzlqd2lrTVpv?=
- =?utf-8?B?emNyaU42WGd2Yy9GVmZWbElTeWhYRVFGUFJrUkRaSnRCR2ZJMHk3OU04OEZN?=
- =?utf-8?B?Q1RFVVNlTW1mNC9TNjNRa1A1U09Rb3RGbnpOL2lpYzN6OGE1QTF0SnJPYmdj?=
- =?utf-8?B?SExvOERvVU5jZjl6RDRlUW14NkVNR2dUdmgyVy9aRVdQcUdPSnh2amQ2Zk1r?=
- =?utf-8?B?WUt5RWtTYTRReDYzanhXM3ZZTEEvdlV3K1V4WTk0cVgrNWdEVy9lSWdVNUFv?=
- =?utf-8?B?WjFCMVdpdUgxbU9OOU5yalRTWXZ0b0tMRy9yYjg4SkFDNWdtT0ZsOE1MUmRr?=
- =?utf-8?B?YU9mbHdDeWo2TTE2YlErTFlNWURFK0dFamU4Rmh3YXFrUXdzVjB1Z3pINDhy?=
- =?utf-8?B?U0NCdUFNTytJYzRDYVg4NmZrcVhPSGswSWRmSHowSGNRSVdkSEhKckpoa24w?=
- =?utf-8?B?UDhiUWZ1RDhVZWV5VGlSMVZlSEZObGtBcUdzRzk1VXpzNkxaRDMzR1p0bS8x?=
- =?utf-8?B?UVRJMXhCN0NONTlqUlZ5ZXZxMnVKcnJXRE9JSjlKdzJXNVVaZ1A1RFN6Vklv?=
- =?utf-8?B?TFlNNWdTSFRCYWU1VHh2RnI2TzIzRjZ3dWUyeHJxTHFuSnVqbmRRL2E2QlBS?=
- =?utf-8?B?MFk3OWVFZVhkOHFzVVJ6cWZEaC93QUZLN3JmdkRURmFUWVlmY3NCRjAva0Zq?=
- =?utf-8?B?ZG5JcnRyZ0cvV1Zpb1FKdjRkbGFUdGlxM29ZZzlObThtUzUvZDJrS1IwZE8y?=
- =?utf-8?B?eEtVQjBaVCtXQU1obncxNWtJUWxOditoQ2xTRnlYdW9WWGRZVWlsbDUrWlVZ?=
- =?utf-8?B?cUhjeXFLTGZPZHBOaHBZbHhjaDlFcC85OG0wWkJISnVuU3RoNmVsM0dHUlpB?=
- =?utf-8?B?Qkk5T1p4ZmgxVFkwZ1hxM0ZIOUpMK3pWS2F1NWlMaVdFMTcyMWNHR3cwcmtO?=
- =?utf-8?B?Y2VLRGN0eEUxaFN6SGVvSnJKbEJJc0s4RVdRT05lY290dmFnSDFiemRIT3FB?=
- =?utf-8?B?NDNRUmFtV3NIcVhCZFRjU283M3pWeHFkWVI0QURjcjMrbXZPSzZtSGp2Y0xz?=
- =?utf-8?B?eEhuMlc5TjhoZTlWZFZoNDhIVHcrdmtpOVZSM3dod3YxWit5YnNIWGdjZHF0?=
- =?utf-8?B?YTVPZ3V3K2E5TXdyTVdoT2p3dzVVck1PUGtQV2pJVVYwWlRPZWtzNnVXVDdn?=
- =?utf-8?B?NFowVVBtOGhyRFUyTm1BakZnSkFXMGxWSmRtbEJYcDkzck1rUDRMWTZHdk5K?=
- =?utf-8?B?M0NtWFFmTzJFTkZiZkxoUEN0Z3hjUUNyVzRUejRUTGVjVnZIMU5hdkhSUXVX?=
- =?utf-8?B?dWZ5TXM3bUk2UkZISXYramJsRk9wYXBzb0pxYkUzaFpoME56WkxCN2UreVRN?=
- =?utf-8?B?SE9mUVRDNUhXQkl1Q1pEd0x0emFrckc1M0s4V2ZFd0l3ZmdvQkkyTXRBcnhi?=
- =?utf-8?Q?iXBSRQ6ydUvRS7xH5mAfjrXsH?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67550db8-780b-4f73-f96d-08dd1a38b005
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB7272.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2024 23:08:13.1184
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q2oIPuoyegkG/esfntKvMA7usaOPDYw5mdbw2T5gNj5RPQD00dvyrRHHDTvFvGQCwpISD9oekIDN0qulQxT5PA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6746
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241209162449.48390-1-hamzamahfooz@linux.microsoft.com>
 
-On 12/12/24 07:25, Matthew Wilcox (Oracle) wrote:
-> If the caller of vmap() specifies VM_MAP_PUT_PAGES (currently only the
-> i915 driver), we will decrement nr_vmalloc_pages and MEMCG_VMALLOC in
-> vfree().  These counters are incremented by vmalloc() but not by vmap()
-> so this will cause an underflow.  Check the VM_MAP_PUT_PAGES flag before
-> decrementing either counter.
-> 
-> Fixes: b944afc9d64d (mm: add a VM_MAP_PUT_PAGES flag for vmap)
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> ---
->  mm/vmalloc.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index f009b21705c1..5c88d0e90c20 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -3374,7 +3374,8 @@ void vfree(const void *addr)
->  		struct page *page = vm->pages[i];
->  
->  		BUG_ON(!page);
-> -		mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
-> +		if (!(vm->flags & VM_MAP_PUT_PAGES))
-> +			mod_memcg_page_state(page, MEMCG_VMALLOC, -1);
->  		/*
->  		 * High-order allocs for huge vmallocs are split, so
->  		 * can be freed as an array of order-0 allocations
-> @@ -3382,7 +3383,8 @@ void vfree(const void *addr)
->  		__free_page(page);
->  		cond_resched();
->  	}
-> -	atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
-> +	if (!(vm->flags & VM_MAP_PUT_PAGES))
-> +		atomic_long_sub(vm->nr_pages, &nr_vmalloc_pages);
->  	kvfree(vm->pages);
->  	kfree(vm);
->  }
+Hi Hamza,
 
-I found another user kunit_iov_vector.c, but even it though it uses
-VM_MAP_PUT_PAGES, it does not call into vfree() (which I need to check
-for further bugs)
+kernel test robot noticed the following build warnings:
 
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+[auto build test WARNING on efi/next]
+[also build test WARNING on linus/master v6.13-rc2 next-20241211]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Hamza-Mahfooz/efi-make-the-min-and-max-mmap-slack-slots-configurable/20241210-002724
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/efi/efi.git next
+patch link:    https://lore.kernel.org/r/20241209162449.48390-1-hamzamahfooz%40linux.microsoft.com
+patch subject: [PATCH] efi: make the min and max mmap slack slots configurable
+config: x86_64-buildonly-randconfig-002-20241210 (https://download.01.org/0day-ci/archive/20241212/202412120620.ZY2X03AR-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241212/202412120620.ZY2X03AR-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412120620.ZY2X03AR-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/firmware/efi/libstub/mem.c:23: warning: Function parameter or struct member 'n' not described in 'efi_get_memory_map'
+
+
+vim +23 drivers/firmware/efi/libstub/mem.c
+
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10   7  
+1d9b17683547348 Heinrich Schuchardt 2020-02-18   8  /**
+1d9b17683547348 Heinrich Schuchardt 2020-02-18   9   * efi_get_memory_map() - get memory map
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  10   * @map:		pointer to memory map pointer to which to assign the
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  11   *			newly allocated memory map
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  12   * @install_cfg_tbl:	whether or not to install the boot memory map as a
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  13   *			configuration table
+1d9b17683547348 Heinrich Schuchardt 2020-02-18  14   *
+1d9b17683547348 Heinrich Schuchardt 2020-02-18  15   * Retrieve the UEFI memory map. The allocated memory leaves room for
+8e602989bc52479 Hamza Mahfooz       2024-12-09  16   * up to CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS additional memory map entries.
+1d9b17683547348 Heinrich Schuchardt 2020-02-18  17   *
+1d9b17683547348 Heinrich Schuchardt 2020-02-18  18   * Return:	status code
+1d9b17683547348 Heinrich Schuchardt 2020-02-18  19   */
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  20  efi_status_t efi_get_memory_map(struct efi_boot_memmap **map,
+8e602989bc52479 Hamza Mahfooz       2024-12-09  21  				bool install_cfg_tbl,
+8e602989bc52479 Hamza Mahfooz       2024-12-09  22  				unsigned int *n)
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10 @23  {
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  24  	int memtype = install_cfg_tbl ? EFI_ACPI_RECLAIM_MEMORY
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  25  				      : EFI_LOADER_DATA;
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  26  	efi_guid_t tbl_guid = LINUX_EFI_BOOT_MEMMAP_GUID;
+8e602989bc52479 Hamza Mahfooz       2024-12-09  27  	unsigned int nr = CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS;
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  28  	struct efi_boot_memmap *m, tmp;
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  29  	efi_status_t status;
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  30  	unsigned long size;
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  31  
+8e602989bc52479 Hamza Mahfooz       2024-12-09  32  	BUILD_BUG_ON(!is_power_of_2(CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS) ||
+8e602989bc52479 Hamza Mahfooz       2024-12-09  33  		     !is_power_of_2(CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS) ||
+8e602989bc52479 Hamza Mahfooz       2024-12-09  34  		     CONFIG_EFI_MIN_NR_MMAP_SLACK_SLOTS >=
+8e602989bc52479 Hamza Mahfooz       2024-12-09  35  		     CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS);
+8e602989bc52479 Hamza Mahfooz       2024-12-09  36  
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  37  	tmp.map_size = 0;
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  38  	status = efi_bs_call(get_memory_map, &tmp.map_size, NULL, &tmp.map_key,
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  39  			     &tmp.desc_size, &tmp.desc_ver);
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  40  	if (status != EFI_BUFFER_TOO_SMALL)
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  41  		return EFI_LOAD_ERROR;
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  42  
+8e602989bc52479 Hamza Mahfooz       2024-12-09  43  	do {
+8e602989bc52479 Hamza Mahfooz       2024-12-09  44  		size = tmp.map_size + tmp.desc_size * nr;
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  45  		status = efi_bs_call(allocate_pool, memtype, sizeof(*m) + size,
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  46  				     (void **)&m);
+8e602989bc52479 Hamza Mahfooz       2024-12-09  47  		nr <<= 1;
+8e602989bc52479 Hamza Mahfooz       2024-12-09  48  	} while (status == EFI_BUFFER_TOO_SMALL &&
+8e602989bc52479 Hamza Mahfooz       2024-12-09  49  		 nr <= CONFIG_EFI_MAX_NR_MMAP_SLACK_SLOTS);
+8e602989bc52479 Hamza Mahfooz       2024-12-09  50  
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  51  	if (status != EFI_SUCCESS)
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  52  		return status;
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  53  
+8e602989bc52479 Hamza Mahfooz       2024-12-09  54  	if (n)
+8e602989bc52479 Hamza Mahfooz       2024-12-09  55  		*n = nr;
+8e602989bc52479 Hamza Mahfooz       2024-12-09  56  
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  57  	if (install_cfg_tbl) {
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  58  		/*
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  59  		 * Installing a configuration table might allocate memory, and
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  60  		 * this may modify the memory map. This means we should install
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  61  		 * the configuration table first, and re-install or delete it
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  62  		 * as needed.
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  63  		 */
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  64  		status = efi_bs_call(install_configuration_table, &tbl_guid, m);
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  65  		if (status != EFI_SUCCESS)
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  66  			goto free_map;
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  67  	}
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  68  
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  69  	m->buff_size = m->map_size = size;
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  70  	status = efi_bs_call(get_memory_map, &m->map_size, m->map, &m->map_key,
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  71  			     &m->desc_size, &m->desc_ver);
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  72  	if (status != EFI_SUCCESS)
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  73  		goto uninstall_table;
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  74  
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  75  	*map = m;
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  76  	return EFI_SUCCESS;
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  77  
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  78  uninstall_table:
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  79  	if (install_cfg_tbl)
+171539f5a90e3fd Ard Biesheuvel      2022-09-15  80  		efi_bs_call(install_configuration_table, &tbl_guid, NULL);
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  81  free_map:
+eab3126571ed1e3 Ard Biesheuvel      2022-06-03  82  	efi_bs_call(free_pool, m);
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  83  	return status;
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  84  }
+f57db62c67c1c9d Ard Biesheuvel      2020-02-10  85  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
