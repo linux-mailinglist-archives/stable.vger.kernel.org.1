@@ -1,114 +1,88 @@
-Return-Path: <stable+bounces-100617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2496F9ECD35
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 14:31:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1AC1887CE1
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 13:31:02 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55D4225A36;
-	Wed, 11 Dec 2024 13:30:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MbwbOEz9"
-X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A519ECD42
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 14:34:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8945F7346F;
-	Wed, 11 Dec 2024 13:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16CCB2823B3
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 13:34:25 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3CA22C348;
+	Wed, 11 Dec 2024 13:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ron5fLPA"
+X-Original-To: stable@vger.kernel.org
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1098F23FD1E;
+	Wed, 11 Dec 2024 13:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733923858; cv=none; b=AgvOB6WRInED1BU527Gglx/htkO+V3tP95JN0U1VhBIU6RBTX6mndFJT61cLZAMDATFqR/6meJVJWntrrIL9zOIHuMyy5wAbXZVTd4ZdomvivMf2WcaODnXMLtwjHNeMjrIgULKXAnCETOoQJGQn5IYsiGFb0OB0isDSN3ptMVQ=
+	t=1733924057; cv=none; b=XMqsITALsiZfx0TG79NqPj6AYAlwSDs3MdLOnlS45j/lnn/r+oXmpPBlp5pZSJvYRJ3hDpJE3LGgkbkoBUVduIH6DTdPLo+xnW1l/OsZKzIZ8VYzARNYw5h//WOLe9JQ9TgzM5fmPBqrBwX/RdaZn5uSMMTmzeDGmeAuMbEkIi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733923858; c=relaxed/simple;
-	bh=4w1AmPdI2C4N5nSYsKCE2vUhvsNyStlJiys+pg7vdAM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vu7H2CewTQma0ChxG/yhDHkgJmGhNDEJdFyFGi8pHyQGuSTWCTJi1Lj36lKX63v0u0xaQdc3nUqhvI7sJQ46V5NyE9JlrU7pBBegsQPPzvhWtBL5LI+kBd8dFstskWpKXA3rnopn8WYcBVPjQ7AUy5t/K747y5FC2HIkwSgxMAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MbwbOEz9; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733923856; x=1765459856;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4w1AmPdI2C4N5nSYsKCE2vUhvsNyStlJiys+pg7vdAM=;
-  b=MbwbOEz9y72ZhisjYvFB9RvmVw316yc7+CGitl2Ov3J88Enc7XhnVXcP
-   8GGRMtuW2cOVxll+tPz/CaNvsHpbeINdR+8HmfNutEfF2GjwTYxOleqA+
-   MHg+TM3hTnKHJHRTVOgPCZBjy065YXmXgfICEUq3+l1wN3/gWE8jwIaId
-   mnoSz8kzF9Ek8RtUJR1Wk8mVqXLMlWMl48Ganbhc8H1Qy5h+eOvfBpzcl
-   7J4iXtyqTcRAXErFnuKsITuDlQlpPjFssAkXNz4r0ENtI/l3M5A/V1xO2
-   YgfTnQW6XVI8iw8K67+T6gCVCzJEYxaCKNPaLm3Zhtv02Yoc7hXZLskzZ
-   w==;
-X-CSE-ConnectionGUID: dy7J09UrT0Cy+CR5FCreGA==
-X-CSE-MsgGUID: WU5SBXiwSDqCE+xJP1K/SA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="59693450"
-X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; 
-   d="scan'208";a="59693450"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 05:30:55 -0800
-X-CSE-ConnectionGUID: b5jWgADjS5qLi2GYd7zs2Q==
-X-CSE-MsgGUID: x8g8v2cxQ+KKStStW2BdRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="100344590"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO mdjait-mobl.intel.com) ([10.245.244.213])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 05:30:54 -0800
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
-To: sakari.ailus@linux.intel.com
-Cc: linux-media@vger.kernel.org,
-	Mehdi Djait <mehdi.djait@linux.intel.com>,
+	s=arc-20240116; t=1733924057; c=relaxed/simple;
+	bh=WszZcEp+hm9oobZQ0cpYfNt6xlUzCkv3qvAcbh8jlQY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pkFYOTVNfQd85I6+BsVbA4gG8rl5WHsfB/EIPZqfW+dX5C+n1O7bQsU1Jn3Bef4+5FQdKKX73K0WMi1b/4+7aNIfBzgPOg3HyiDP93VnFzbJFFNLrWisMlkRgaZl47wlkbleeSSSXXnb1zxcMgh1ku9xAaFU4cD9edtM0gJ1XUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ron5fLPA; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=sDFfLRnwNPdpPqXLbuUXlu1XVZL5ZhlVr6oeF4VaGas=; b=ron5fLPA1q7RbMNK3S0gPcITab
+	PTQFbtHPTHB4du9033xdgWbr+uxGrDdCceb6LK/OyZZkfNmehh4eSoWBarXEOPwmgSMpv8EzI0irJ
+	0M0flG2utvVjJLaQGQn3smP6aV8bwqPgCIw7IXtdeNdBtrPqHud5Fv58iJGGNaaZlTm8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1tLMqo-0006Dq-Fk; Wed, 11 Dec 2024 14:34:02 +0100
+Date: Wed, 11 Dec 2024 14:34:02 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Robert Hodaszi <robert.hodaszi@digi.com>
+Cc: netdev@vger.kernel.org, vladimir.oltean@nxp.com, claudiu.manoil@nxp.com,
+	alexandre.belloni@bootlin.com, UNGLinuxDriver@microchip.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] media: ccs: Fix cleanup order in ccs_probe()
-Date: Wed, 11 Dec 2024 14:30:45 +0100
-Message-ID: <20241211133045.85118-1-mehdi.djait@linux.intel.com>
-X-Mailer: git-send-email 2.47.1
+Subject: Re: [PATCH] net: dsa: tag_ocelot_8021q: fix broken reception
+Message-ID: <fe505333-7579-4470-852d-6fddd20197ab@lunn.ch>
+References: <20241211124657.1357330-1-robert.hodaszi@digi.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241211124657.1357330-1-robert.hodaszi@digi.com>
 
-ccs_limits is allocated in ccs_read_all_limits() after the allocation of
-mdata.backing. Ensure that resources are freed in the reverse order of
-their allocation by moving out_free_ccs_limits up.
+On Wed, Dec 11, 2024 at 01:46:56PM +0100, Robert Hodaszi wrote:
+> Commit dcfe7673787b4bfea2c213df443d312aa754757b ("net: dsa: tag_sja1105:
+> absorb logic for not overwriting precise info into dsa_8021q_rcv()")
+> added support to let the DSA switch driver set source_port and
+> switch_id. tag_8021q's logic overrides the previously set source_port
+> and switch_id only if they are marked as "invalid" (-1). sja1105 and
+> vsc73xx drivers are doing that properly, but ocelot_8021q driver doesn't
+> initialize those variables. That causes dsa_8021q_rcv() doesn't set
+> them, and they remain unassigned.
+> 
+> Initialize them as invalid to so dsa_8021q_rcv() can return with the
+> proper values.
 
-Fixes: a11d3d6891f0 ("media: ccs: Read CCS static data from firmware binaries")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mehdi Djait <mehdi.djait@linux.intel.com>
----
- drivers/media/i2c/ccs/ccs-core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Hi Robert
 
-diff --git a/drivers/media/i2c/ccs/ccs-core.c b/drivers/media/i2c/ccs/ccs-core.c
-index 9dfc31afa200..19049f36e041 100644
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3946,15 +3946,15 @@ static int ccs_probe(struct i2c_client *client)
- out_cleanup:
- 	ccs_cleanup(sensor);
- 
-+out_free_ccs_limits:
-+	kfree(sensor->ccs_limits);
-+
- out_release_mdata:
- 	kvfree(sensor->mdata.backing);
- 
- out_release_sdata:
- 	kvfree(sensor->sdata.backing);
- 
--out_free_ccs_limits:
--	kfree(sensor->ccs_limits);
--
- out_power_off:
- 	ccs_power_off(&client->dev);
- 	mutex_destroy(&sensor->mutex);
--- 
-2.47.1
+Since this is a fix, it needs a Fixes: tag. Please also base it on net.
 
+There is more here:
+
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+
+	Andrew
 
