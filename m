@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465039ED202
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:33:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 660169ED205
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:33:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 256C128123F
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:33:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAD9E1889E3A
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF0B1DDA3C;
-	Wed, 11 Dec 2024 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578F11DDC20;
+	Wed, 11 Dec 2024 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PY30/4uG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EvWcSrZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B471DD873
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17ED91DD9A6
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733934812; cv=none; b=ifP0d58pC4axNi7yoL95jwC1Tq74OoaTA7yzPnV6EBfr789IlNGwPxt1eZzFyklHASkufl40shHtILyLbT40wBph0/eHtIsmd8E/F3BIz+O1Pg+jVLmBjWEeymeusfzb0pKvKSHbZuD8qNzZ+zJjj1h23ajUS3KYR4whTUIBjG4=
+	t=1733934814; cv=none; b=t1V+1bORbhmFCEV2/QAd/tB2IuAHqPbTvr+QjyiGqcFR2kja1wZubmsDUOEVulu4GhFBP3u8OadI5+mZ9ORHtBidoK05UhdtaNHlPkkFub/zfjOYXUJH5k0/3YWz7IFVHAGilRnGmWFoSTf3DhGkfKKdwriVhl77VZFVvTSAtv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733934812; c=relaxed/simple;
-	bh=cZWQxkH2V/+P7MM06PxGFKd9rCAD6t7ftzYVUcCG8XU=;
+	s=arc-20240116; t=1733934814; c=relaxed/simple;
+	bh=9ZpvkrOEFPQlV40bKZ5TO8hUH8CUqHpRbswMAkuQo0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POD4mHTJ9L656iHbroleNtc7C0CfmODoBuRY17THCaJ0u7uwqK1T/ZrIjXmCAL1esubV3fjOffm6IDo6B7TcFipWMK+lf8tbSuSwtFVJf88oM4Go9E0htmFtfTEV7WrcO4sYFB290Wjnr9v2Kh0zPZZowuoK2n60qhbSPcTjN8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PY30/4uG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A497C4CED7;
-	Wed, 11 Dec 2024 16:33:31 +0000 (UTC)
+	 MIME-Version; b=sAKSlvUjaVTvLKN/mjv8u76M4Mn9RjeJ+Vc1uAqOhcRJA6Z9l4nonxRlPZCa0Sa4iYxxSGakVqab86yU721I/Ia9JVggYOHzE7X0hoUf9TGeF6xRLmib/2wSfvLwQyCMBBtZ0Z361eCTbP1Dm6mJ6j+gvHMGbiH/2NCRWdxnoY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EvWcSrZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD70C4CED2;
+	Wed, 11 Dec 2024 16:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733934811;
-	bh=cZWQxkH2V/+P7MM06PxGFKd9rCAD6t7ftzYVUcCG8XU=;
+	s=k20201202; t=1733934813;
+	bh=9ZpvkrOEFPQlV40bKZ5TO8hUH8CUqHpRbswMAkuQo0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PY30/4uGH33/4MUVP/Jcjicy+1WIGu1cNsbfnAuppFOlG1erTIQ83a1de/thhe94c
-	 Mgfw9wFZ2iOUFZNo7Iw6Ap5ahW1zRljRk9NRTv1LBrC2HUk79/zOEFZ3Ltj+1ObUwU
-	 uEW0nQPkmhAuZE+A/AFtfM15cMJf3a2eZb5x6/IyfcW87pXasoxbdabKUN+QAUgKod
-	 ODPhUuXCmGEe5rF2zVWa+2Liei2VFnBKw7DjJGQ1ud6lOX8BnBVlG1cMwcYcauMhT0
-	 uuNgjIkMVZAaiyUJ8GNjw9nCkMbemeTJvQyNAKmGT1SIpctoxuc+hHOvs/fz7PEA0/
-	 JZ+3S/tTQk1HA==
+	b=EvWcSrZIOWe4EZbLr+WB54CgsncYJzlZOyuHhcAhcVfNr29YiMSFKpvBf5e63IasY
+	 BO+e5qFabzhNyr1jcpTkdlY3D/Hg4Tybfnfc0mJJEUh0LyBXtzeGfAgNAtwsh2R9gq
+	 aDVOypU8Y+mc0X7aKMs2RXRPvrLfuuSKNgtSJmk1F9r4vrCQmdRQMRBpIUHdFDIwmu
+	 KmbpImbipPsKC4L0O5MgQ6zIFTQmB2VL7ohgSdVwIm2xeboIhaYfXH6Oxsm9S92d7j
+	 ObifLEU/SQXb+N5uQFG2ByEVeOcYb2th5zjX02KftEbyYQu8xKZtPuJbQgJgIOvdOL
+	 dzbxsclES/y6g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: jianqi.ren.cn@windriver.com,
+Cc: Ziwei Xiao <ziweixiao@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] drm/amd/display: Don't refer to dc_sink in is_dsc_need_re_compute
-Date: Wed, 11 Dec 2024 11:33:27 -0500
-Message-ID: <20241211093733-0674d1a310236afb@stable.kernel.org>
+Subject: Re: [PATCH 6.1 v2] gve: Fixes for napi_poll when budget is 0
+Date: Wed, 11 Dec 2024 11:33:32 -0500
+Message-ID: <20241211103629-2d6e9d387278b995@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241211101544.2121147-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20241210235758.637910-1-ziweixiao@google.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,57 +63,78 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: fcf6a49d79923a234844b8efe830a61f3f0584e4
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Wayne Lin <wayne.lin@amd.com>
+Found matching upstream commit: 278a370c1766060d2144d6cf0b06c101e1043b6d
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: c7e65cab54a8)
+6.6.y | Present (different SHA1: ff33be9cecee)
 6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fcf6a49d79923 ! 1:  bb340e15684fc drm/amd/display: Don't refer to dc_sink in is_dsc_need_re_compute
+1:  278a370c17660 ! 1:  68463e6a71027 gve: Fixes for napi_poll when budget is 0
     @@ Metadata
       ## Commit message ##
-         drm/amd/display: Don't refer to dc_sink in is_dsc_need_re_compute
+         gve: Fixes for napi_poll when budget is 0
      
-    +    [ Upstream commit fcf6a49d79923a234844b8efe830a61f3f0584e4 ]
+    -    Netpoll will explicilty pass the polling call with a budget of 0 to
+    +    Netpoll will explicitly pass the polling call with a budget of 0 to
+         indicate it's clearing the Tx path only. For the gve_rx_poll and
+         gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
+         to do all the work. Add check to avoid the rx path and xdp path being
+         called when budget is 0. And also avoid napi_complete_done being called
+         when budget is 0 for netpoll.
+     
+    +    The original fix was merged here:
+    +    https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
+    +    Resend it since the original one was not cleanly applied to 6.1 kernel.
     +
-         [Why]
-         When unplug one of monitors connected after mst hub, encounter null pointer dereference.
+    +    commit 278a370c1766 ("gve: Fixes for napi_poll when budget is 0")
+    +
+         Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
+         Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+    -    Link: https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
+    -    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+    +    Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
      
-    @@ Commit message
-         Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-         Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-     
-      ## drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c ##
-     @@ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c: amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
-    @@ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c: dm_dp_mst_detect(st
+      ## drivers/net/ethernet/google/gve/gve_main.c ##
+     @@ drivers/net/ethernet/google/gve/gve_main.c: static int gve_napi_poll(struct napi_struct *napi, int budget)
+    - 	if (block->tx) {
+    - 		if (block->tx->q_num < priv->tx_cfg.num_queues)
+    - 			reschedule |= gve_tx_poll(block, budget);
+    --		else
+    -+		else if (budget)
+    - 			reschedule |= gve_xdp_poll(block, budget);
+    - 	}
       
-      		amdgpu_dm_set_mst_status(&aconnector->mst_status,
-      			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
-    -@@ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c: static bool is_dsc_need_re_compute(
-    - 		if (!aconnector || !aconnector->dsc_aux)
-    - 			continue;
-    - 
-    --		/*
-    --		 *	check if cached virtual MST DSC caps are available and DSC is supported
-    --		 *	as per specifications in their Virtual DPCD registers.
-    --		*/
-    --		if (!(aconnector->dc_sink->dsc_caps.dsc_dec_caps.is_dsc_supported ||
-    --			aconnector->dc_link->dpcd_caps.dsc_caps.dsc_basic_caps.fields.dsc_support.DSC_PASSTHROUGH_SUPPORT))
-    --			continue;
-    --
-    - 		stream_on_link[new_stream_on_link_num] = aconnector;
-    - 		new_stream_on_link_num++;
-    - 
+    + 	if (block->tx)
+    + 		reschedule |= gve_tx_poll(block, budget);
+    ++
+     +	if (!budget)
+     +		return 0;
+     +
+    @@ drivers/net/ethernet/google/gve/gve_rx.c: int gve_rx_poll(struct gve_notify_bloc
+      
+     
+      ## drivers/net/ethernet/google/gve/gve_tx.c ##
+    -@@ drivers/net/ethernet/google/gve/gve_tx.c: bool gve_xdp_poll(struct gve_notify_block *block, int budget)
+    - 	bool repoll;
+    +@@ drivers/net/ethernet/google/gve/gve_tx.c: bool gve_tx_poll(struct gve_notify_block *block, int budget)
+    + 	u32 nic_done;
+      	u32 to_do;
+      
+     -	/* If budget is 0, do all the work */
+     -	if (budget == 0)
+     -		budget = INT_MAX;
+     -
+    - 	/* Find out how much work there is to be done */
+    - 	nic_done = gve_tx_load_event_counter(priv, tx);
+    - 	to_do = min_t(u32, (nic_done - tx->done), budget);
+    + 	/* In TX path, it may try to clean completed pkts in order to xmit,
+    + 	 * to avoid cleaning conflict, use spin_lock(), it yields better
+    + 	 * concurrency between xmit/clean than netif's lock.
 ---
 
 Results of testing on various branches:
