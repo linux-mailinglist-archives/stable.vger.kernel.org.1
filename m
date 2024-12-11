@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-100712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D250D9ED524
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:55:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77999ED527
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 480BF188AF8A
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:54:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963D118896DB
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D034236FA9;
-	Wed, 11 Dec 2024 18:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9393D243B74;
+	Wed, 11 Dec 2024 18:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btMMI284"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R0hgi7oo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF683231A52;
-	Wed, 11 Dec 2024 18:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB31243B66;
+	Wed, 11 Dec 2024 18:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943089; cv=none; b=ntHZQtpnu+mBOmGeBI1IdeQXw15X+oKhu5+KSua/Li2CCJMwxOL9NVy7Yk3GMtXRvOLCTA44IzoX9F7NOAB4i7xqeWiElk9oeRvuFEeuqRTY7Ro1ML3u3m6QC3N1zRDofAfRAPgLNE3Hc2F5Xy/aGzb30mSqiVqMILTluObtShM=
+	t=1733943090; cv=none; b=X6bx3pASYC2JNhqNYdBMR+rmfxPO8Z+MxEhZpCSNDla5WqvIDLGdLU7pwCxQ2Y4/yvg+hWz3iA6cae8UgwoX0Zpfg0H6B9YVO3u401syPQxpmxw3FrL3md3K0aqY2q/rdsed7De1GsSucWl1WMuEoZlhqBMG9p2GfA2JUgudXaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943089; c=relaxed/simple;
-	bh=96r5ccacfmXcLQnwik2jHbpoWaiE2MrtcAfUX3pATWM=;
+	s=arc-20240116; t=1733943090; c=relaxed/simple;
+	bh=OdvefCJoWaj3RqWLpfvJpNkrDa5VhCq55NCBFCXKcb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lAx/YFV2xhvDaPZeAV++XWihSzlZ0eOxLMz2Io/CqBkAXpsGyI/0Wq+LMo3G61ActLiccw9LdslqpQG3lgPTWkn+73JMuV5MW4q4NNo/D8V6NAg3/NxOzEkk4IW+TZh6yJkNV4IKfzjYjbno0PtOlKPJidGNvrHm1OK5VdB5ArI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btMMI284; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28714C4CEE6;
-	Wed, 11 Dec 2024 18:51:27 +0000 (UTC)
+	 MIME-Version; b=rL/lBTajVVSAJ/XKDBE9IPqWwDnlwgzwmWJ5+nfOovzTP7FfpEFXr/qtpXHWPWKbRE+pTZqqLAFMCOw+gwSMyk1ZeiD4/MmZ0raxYJmElGN1xkBs95HASyauMAmQPdHJbSBKc6kLB04sMK6WbugI9FLNNjWSi1TWjKdQuis4YBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R0hgi7oo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4882BC4CED2;
+	Wed, 11 Dec 2024 18:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943088;
-	bh=96r5ccacfmXcLQnwik2jHbpoWaiE2MrtcAfUX3pATWM=;
+	s=k20201202; t=1733943090;
+	bh=OdvefCJoWaj3RqWLpfvJpNkrDa5VhCq55NCBFCXKcb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=btMMI2844CHpivRupse72R7RZI6KL35EzZIDsrvPxtJBl0vWQW7+r4IBqEBWQOCTB
-	 qnMNlKWMP0h7ZswAF3lkQYXBtGfw/pAhX0mt2dJt1YNdpd9Poow05gg73qYMn6Lzld
-	 yEucXr5zae84/MCneCqZx2lJC4ylQJOXcoGgSMN2ihmaswwoKeAAFl6YGdxzHl+Cvf
-	 2FWFM6DHZ5vG8nAg3imynt2lKBcbjyZgFEsl/G0wxSu1quK3gwcV8o8Az3LN1AbQXq
-	 7b4GKZyoecqejWJTzNcLGTtCAhObCBmKfz9ZMrAZCe1gAW632oyGtSc0pWMDufaEng
-	 TKSp/9zrEEzHA==
+	b=R0hgi7oou1hmKViPZg7C6J08uft9s4g8yS73/NNfdW9EVZBpjcR7c4jfk4OqwyDif
+	 YFoq0cZIjmVuBVbfqHdyqUwWBT4awhmEUgQOzSsundquy+VlBI8qvS4yl0oforqmIb
+	 /Zal6JCJg1K7ZSj4s1gVYWRxXSPovn0PJHN6PmSk6vkmcDEICio1CuhPPRnZuCaW5L
+	 LvgT+e8Y494cLfd6jM7zpA+Hno9azVWVFuiplqTW0HJwxkeO4hMlgXwFtTNIWmatPx
+	 1AhyIXWwSwkx5F8iRPz6AxsPh7NGhc+ksgB83u8ybJMZ0x7jirYnfKHoYzxGhsBfWM
+	 J7QD2jWSwyK/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lion Ackermann <nnamrec@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Aapo Vienamo <aapo.vienamo@iki.fi>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	cake@lists.bufferbloat.net,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 22/36] net: sched: fix ordering of qlen adjustment
-Date: Wed, 11 Dec 2024 13:49:38 -0500
-Message-ID: <20241211185028.3841047-22-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 23/36] spi: intel: Add Panther Lake SPI controller support
+Date: Wed, 11 Dec 2024 13:49:39 -0500
+Message-ID: <20241211185028.3841047-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -68,65 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.4
 Content-Transfer-Encoding: 8bit
 
-From: Lion Ackermann <nnamrec@gmail.com>
+From: Aapo Vienamo <aapo.vienamo@iki.fi>
 
-[ Upstream commit 5eb7de8cd58e73851cd37ff8d0666517d9926948 ]
+[ Upstream commit ceb259e43bf572ba7d766e1679ba73861d16203a ]
 
-Changes to sch->q.qlen around qdisc_tree_reduce_backlog() need to happen
-_before_ a call to said function because otherwise it may fail to notify
-parent qdiscs when the child is about to become empty.
+The Panther Lake SPI controllers are compatible with the Cannon Lake
+controllers. Add support for following SPI controller device IDs:
+ - H-series: 0xe323
+ - P-series: 0xe423
+ - U-series: 0xe423
 
-Signed-off-by: Lion Ackermann <nnamrec@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Aapo Vienamo <aapo.vienamo@iki.fi>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://patch.msgid.link/20241204080208.1036537-1-mika.westerberg@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_cake.c  | 2 +-
- net/sched/sch_choke.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-intel-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index f2f9b75008bb0..8d8b2db4653c0 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -1525,7 +1525,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 	b->backlogs[idx]    -= len;
- 	b->tin_backlog      -= len;
- 	sch->qstats.backlog -= len;
--	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	flow->dropped++;
- 	b->tin_dropped++;
-@@ -1536,6 +1535,7 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 
- 	__qdisc_drop(skb, to_free);
- 	sch->q.qlen--;
-+	qdisc_tree_reduce_backlog(sch, 1, len);
- 
- 	cake_heapify(q, 0);
- 
-diff --git a/net/sched/sch_choke.c b/net/sched/sch_choke.c
-index 91072010923d1..757b89292e7e6 100644
---- a/net/sched/sch_choke.c
-+++ b/net/sched/sch_choke.c
-@@ -123,10 +123,10 @@ static void choke_drop_by_idx(struct Qdisc *sch, unsigned int idx,
- 	if (idx == q->tail)
- 		choke_zap_tail_holes(q);
- 
-+	--sch->q.qlen;
- 	qdisc_qstats_backlog_dec(sch, skb);
- 	qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(skb));
- 	qdisc_drop(skb, sch, to_free);
--	--sch->q.qlen;
- }
- 
- struct choke_skb_cb {
+diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
+index 4337ca51d7aa2..5c0dec90eec1d 100644
+--- a/drivers/spi/spi-intel-pci.c
++++ b/drivers/spi/spi-intel-pci.c
+@@ -86,6 +86,8 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0xa823), (unsigned long)&cnl_info },
++	{ PCI_VDEVICE(INTEL, 0xe323), (unsigned long)&cnl_info },
++	{ PCI_VDEVICE(INTEL, 0xe423), (unsigned long)&cnl_info },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);
 -- 
 2.43.0
 
