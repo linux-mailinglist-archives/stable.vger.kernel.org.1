@@ -1,104 +1,92 @@
-Return-Path: <stable+bounces-100798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2A79ED6A9
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:40:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E009ED6FE
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 21:07:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2735281D34
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:40:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D32CA283001
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072801C5F09;
-	Wed, 11 Dec 2024 19:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DB520CCD6;
+	Wed, 11 Dec 2024 20:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rc5bLUQA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6wVT/HM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B4B1C4612;
-	Wed, 11 Dec 2024 19:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632BA20B81C;
+	Wed, 11 Dec 2024 20:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733946023; cv=none; b=cPY0liOnudAP9nEVZn4uuRV3+9blI6oK/sI7ibv49vd5BZzpyvUUnb1F0o+NCdkZW985f/sIBjvXUk84mGgrJBIHlz3tszAV2rdoF0UKKw4QMO8dfxyIwL8kv2cBGgOv0Dsfnsn+ga3s6V5z7ikPan4+1sXXD4In2NjBLZTbkes=
+	t=1733947649; cv=none; b=XO8og2RoiM5lg/ZkzK/9bjIWdIDyJkO4Cu0L2JffgTNlzmiFobKRdv/PhdqUzUxR2oz7oWtdmZu6Cxls0/Zi1P2vuMIIo7CmWbneeOhRfFP8/jMLjQfKaYqCYCWaBxrhlG4cb1zvktdiHvJcaKBLnyUCL4RlaHvjjp3juhTx1w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733946023; c=relaxed/simple;
-	bh=pF9yeK2U0N4zuHzn6i9qzQDvsoImqm8+N5CgxpYnPzY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LuaMrRSHQ9KaTdoO5oF5OjCNZMUr7VojAWN6GPkKH//s9n2yUjPEKerSr1Tx4mzynW8bZlLlwyrjzFHiNGJbKpGTERCqgpYpgxIbQHxUJXipe1TJiwcYjE7EhjxvxNY7Ro5wrI55LZYjRkzWaUFFQ1744L/6Vb7QjEO/w2k6hBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rc5bLUQA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21279C4CED2;
-	Wed, 11 Dec 2024 19:40:23 +0000 (UTC)
+	s=arc-20240116; t=1733947649; c=relaxed/simple;
+	bh=jrwbiRZ2MfqQp3mW8deFdGU/3LLaO4WI3MTeA0thcIg=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EtQH4PjhwhshzQetCk9DirjusvnK2R268ChYo/3OUVc8bdc8RTgxyC77Trni1kTooQCXGRz7Fe9b8qL8eqEQRl8bWFJG25TK/z5HkOA+pOSfk7YlgK5a+NIT6P6imvuoAXB8/4LxkQa5v/Bo2pCm45CtCbHnZONAKOu9OKJT3Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6wVT/HM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A15C4CED2;
+	Wed, 11 Dec 2024 20:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733946023;
-	bh=pF9yeK2U0N4zuHzn6i9qzQDvsoImqm8+N5CgxpYnPzY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rc5bLUQAActr8VJjzmZKrml9+cWr+D+GwRe9KGWM9jXuPqYxq5uIxHjEl6ycYKIFi
-	 UiicwAJiKp3yZIx4GIz3DNL6woKJcb/xYj22/tCv/AijLdTUElcj67OJ4VqL3eIctW
-	 sIhK1Os9uZ5sYYYc8vEl5CYR6h8pbwJG4HbujZH5dx4cuxcbm02MVSaZqDrIXSkICm
-	 WPYM0KzkFdJJR0DFG1mYuDlpmW10TsiDoOGOxbDB/r3YdIRcvSN67k6UuY3U+q7bv6
-	 V4XQDEVPp0g/m8MS0B+juS0RuRptr3amRvZ7KROA6dKhWnO/nBcFSArxbBd8xsPQ5R
-	 s0maofjTdz7hQ==
-Date: Wed, 11 Dec 2024 11:40:22 -0800
+	s=k20201202; t=1733947647;
+	bh=jrwbiRZ2MfqQp3mW8deFdGU/3LLaO4WI3MTeA0thcIg=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=Q6wVT/HMIrXhy9jP9Uf9bCHvo5UeqCk0OFPkOEKwEqirRDj0C9Ql33yp+isA1nUZL
+	 Tgaccr1bHfq8hXnYfPAx4wo7N6s0rMbQmHmaaXG8eKBLlSIviCBVzh6fWi3Jhmf1HH
+	 AEawrmd1bvJFJhfRNSDzdJ2pNUOIemEBs5U8Jq8uWNlPmWsN64O1jYAvXTCkAE3Yb1
+	 pU08syFP0d7j0tqQUy5NiGaG5sfMqce/cR6vLSTW4K4wDYXOkcMEwpssw/+4xLYiWr
+	 jSKtDZvBofADpm5rwDfM2Sfei6SY93/WJKZrC0rFdpyKW+FzkZxN5XkriwKMldJtxh
+	 anyLe/LvtpnAA==
+Date: Wed, 11 Dec 2024 12:07:27 -0800
+Subject: [PATCHSET v4] xfs: bug fixes for 6.13
 From: "Darrick J. Wong" <djwong@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: aalbersh@kernel.org, dan.carpenter@linaro.org, stable@vger.kernel.org,
-	linux-xfs@vger.kernel.org
-Subject: Re: [PATCHSET 6/9] xfsprogs: bug fixes for 6.13
-Message-ID: <20241211194022.GH6678@frogsfrogsfrogs>
-References: <20241206232259.GO7837@frogsfrogsfrogs>
- <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
- <Z1fQruaMo-kQU6KK@infradead.org>
+To: djwong@kernel.org, cem@kernel.org
+Cc: hch@lst.de, stable@vger.kernel.org, jlayton@kernel.org,
+ linux-xfs@vger.kernel.org, hch@lst.de
+Message-ID: <173394758055.171676.7276594331259256376.stgit@frogsfrogsfrogs>
+In-Reply-To: <20241211200559.GI6678@frogsfrogsfrogs>
+References: <20241211200559.GI6678@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z1fQruaMo-kQU6KK@infradead.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon, Dec 09, 2024 at 09:25:02PM -0800, Christoph Hellwig wrote:
-> Shouldn't the bug fix series go first?
+Hi all,
 
-Something got messed up in the patchbombing sequence.  Patchset 5/9
-should have sorted before this one (6/9) but instead it came at the end.
+This is hopefully the last set of bugfixes that I'll have for 6.13.
 
-Ohhh, right.  Long Li add a "Cc: stable@vger.kernel.org # v4.19+"
-tag.  This isn't rfc2822 compliant, so the stgit subcommand that
-converts Cc: tags in the commit message to actual cc: headers tried to
-put the entire string (minus spaces!) in the cc line, which caused the
-msmtp to reject the cover letter.  I stripped out the stable@ entirely
-and resent just that message, but forgot that my patchbombing script
-always updates the send time for each attempt, so the mutt sort order is
-now incorrect.
+If you're going to start using this code, I strongly recommend pulling
+from my git trees, which are linked below.
 
-String parsing sucks, and our automated tools don't catch it either:
-
-  $ ./scripts/checkpatch.pl ../xfsprogs/patches-djwong-dev10/129*
-  ERROR: Please use git commit description style 'commit <12+ chars of sha1> ("<title line>")'
-  - ie: 'commit 652f03db897b ("xfs: remove unknown compat feature check in superblock write validation")'
-  #4:
-  Source kernel commit: 652f03db897ba24f9c4b269e254ccc6cc01ff1b7
-
-  total: 1 errors, 0 warnings, 13 lines checked
-
-  NOTE: For some of the reported defects, checkpatch may be able to
-        mechanically convert to the typical style using --fix or --fix-inplace.
-
-  ../xfsprogs/patches-djwong-dev10/129-xfs__remove_unknown_compat_feature_check_in_superblock_write_validation.patch has style problems, please review.
-
-  NOTE: If any of the errors are false positives, please report
-        them to the maintainer, see CHECKPATCH in MAINTAINERS.
-
-Yeah, it whines about the commit hash being **too long** which is
-totally inconsequential but totally misses the incorrect Cc: header
-specification that confuses the hyell out of MTAs.
-
-Sorry about that.
+With a bit of luck, this should all go splendidly.
+Comments and questions are, as always, welcome.
 
 --D
+
+kernel git tree:
+https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=fixes-6.13
+---
+Commits in this patchset:
+ * xfs: don't move nondir/nonreg temporary repair files to the metadir namespace
+ * xfs: don't crash on corrupt /quotas dirent
+ * xfs: check pre-metadir fields correctly
+ * xfs: fix zero byte checking in the superblock scrubber
+ * xfs: return from xfs_symlink_verify early on V4 filesystems
+ * xfs: port xfs_ioc_start_commit to multigrain timestamps
+---
+ fs/xfs/libxfs/xfs_symlink_remote.c |    4 ++
+ fs/xfs/scrub/agheader.c            |   71 ++++++++++++++++++++++++++++--------
+ fs/xfs/scrub/tempfile.c            |   12 ++++++
+ fs/xfs/xfs_exchrange.c             |   14 ++++---
+ fs/xfs/xfs_qm.c                    |    7 ++++
+ 5 files changed, 84 insertions(+), 24 deletions(-)
+
 
