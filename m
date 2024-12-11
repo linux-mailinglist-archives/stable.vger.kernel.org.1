@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-100726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D095B9ED54C
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:58:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC29C9ED551
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3398628319A
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:58:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86E29281243
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92E7236944;
-	Wed, 11 Dec 2024 18:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5618247988;
+	Wed, 11 Dec 2024 18:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOpaReZU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnLoHd6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1499246B3C;
-	Wed, 11 Dec 2024 18:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D68924799B;
+	Wed, 11 Dec 2024 18:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943119; cv=none; b=abXGzsoN1G6dI0rLyLu0T7iolEAaGMC/h1VCFmIfVG6uJyOCAWKLDLov9LUKjbaCAdcNlqy1fHk3Pa4iw/WhN6fe0B9r3EeaAgn56UzarLItNcTmcEYBaOzYGnn/QJ9OTFtGepxs1uqdPkJGrTXY4WGsAS/9GDU3n+IDsMxOKaA=
+	t=1733943137; cv=none; b=VV2FNEOdReCD9y9ip6TrB8z5ay7oIAl66TxFe1lDPrST5cE+ugGhC+73R5pYX3TUmJXHohMG1EwfwoY+edvmM0SAnG6X/v+jOL2sApF9nHGaw+vqnlhYvnYgT8e5+eU797O951N66+PbP4QIA+DEtp/uUbMNmNaA4p223+c0+Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943119; c=relaxed/simple;
-	bh=0ApqLa5ohk2HCuhaPK/iP86UCfKeLgHYSZtpGd/yALg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6VLRLQ6l9xKFa3gau7ej1U5RM7aNy2aaZ6cCyzjtqAv/RCuGQqZf8KjsmsXFQQNWGt9QMV4TQBARnPwbeRTI7OxAspEGi1vBnteqy1yVsdgh/mq8xVZNWxyNU/2g3vLEipjbldBe34CsnYlEKjWj07tAM16Rx6kBbnnXmkVJjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOpaReZU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367CDC4CED2;
-	Wed, 11 Dec 2024 18:51:58 +0000 (UTC)
+	s=arc-20240116; t=1733943137; c=relaxed/simple;
+	bh=cMHujGTwR/Y+8zeiO+d9MOKlVyHMMOTiGn/MHw7K/Kg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GHlACVCJl6cpPd0q3AJ9pQZDc/uVxQZChW4UxFNS4uzLND6BxCvHaNu7y6xsPPSD1S4RM2m7R8L0cLG657EZp9ZWEXjYh8a2fOrRvrTWdN0WkA/SEHVAh1fXRoB3o/UBQ7iOLopYvWf/DwhDjKugPTRI02q2aayongRBmRbDs6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnLoHd6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E62C4CED2;
+	Wed, 11 Dec 2024 18:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943119;
-	bh=0ApqLa5ohk2HCuhaPK/iP86UCfKeLgHYSZtpGd/yALg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOpaReZUKhy+fuXAy+2RsPvfXZE6U3+8nqjBozNG560ApGWbQmmIi6Gts6UfKcdAa
-	 VaqTUMZYE0xV13A3Kf4nJAuS9HR07iTlnqo9eIBGB56uxurmSNTVgHZEOqWbWdqJfy
-	 885snMzhfa72aFjp52drRlPg4qLPJibHZBStHt/qvhPW73JG2BseUswGALalaojzG1
-	 2MoxlRXvqzMCnutZlESgp1KBxY45+QZ0PU46XGa0Rn0Gk+PowEXepUBTIu+JuAq/fU
-	 koDFz+HKLlQe4cf0hkYuRLtHu1c56HgHHNn26vFOR7UbKSwqmhtG7EIAsQaW9Jseks
-	 69ZE3Mb8ML2Ow==
+	s=k20201202; t=1733943137;
+	bh=cMHujGTwR/Y+8zeiO+d9MOKlVyHMMOTiGn/MHw7K/Kg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EnLoHd6+vg6kNCXo7K4QwZpTHlX0NLpsUT4/dJ5plVQ1ig7TKr+XXXfmeZOY3R1wH
+	 NHjPmyvlD81XFtSJaAb8aTNJZl9ojD1MEe5jsjpAsJPcVc9/mXQ/BOseyrSvMt8Eri
+	 q4naOUDfo1Su4rPbbsNJEYnnRbdXXK00GNU27C1CS40T3SL5Pd7WsKgpfWD8PCPD21
+	 l/oDttxfYS6CyXLcl0w4C+OwxTvBBKE1VkEGLEoAKP4PfRB+FNksj98lbudVtLVyj0
+	 Wh59YGYJ977BmptbMF25ZcOfCPYnCtgtXmRRcNyvJqLeAQ/JPffgUzUV2/BLSn79Cg
+	 Le1it/891+ItA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ming Lei <ming.lei@redhat.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Peter Newman <peternewman@google.com>,
-	Babu Moger <babu.moger@amd.com>,
-	Luck Tony <tony.luck@intel.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: James Hilliard <james.hilliard1@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 36/36] blk-mq: move cpuhp callback registering out of q->sysfs_lock
-Date: Wed, 11 Dec 2024 13:49:52 -0500
-Message-ID: <20241211185028.3841047-36-sashal@kernel.org>
+	linux-watchdog@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/23] watchdog: it87_wdt: add PWRGD enable quirk for Qotom QCML04
+Date: Wed, 11 Dec 2024 13:51:38 -0500
+Message-ID: <20241211185214.3841978-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
-References: <20241211185028.3841047-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,199 +60,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.4
+X-stable-base: Linux 6.6.65
 Content-Transfer-Encoding: 8bit
 
-From: Ming Lei <ming.lei@redhat.com>
+From: James Hilliard <james.hilliard1@gmail.com>
 
-[ Upstream commit 22465bbac53c821319089016f268a2437de9b00a ]
+[ Upstream commit 43439076383a7611300334d1357c0f8883f40816 ]
 
-Registering and unregistering cpuhp callback requires global cpu hotplug lock,
-which is used everywhere. Meantime q->sysfs_lock is used in block layer
-almost everywhere.
+For the watchdog timer to work properly on the QCML04 board we need to
+set PWRGD enable in the Environment Controller Configuration Registers
+Special Configuration Register 1 when it is not already set, this may
+be the case when the watchdog is not enabled from within the BIOS.
 
-It is easy to trigger lockdep warning[1] by connecting the two locks.
-
-Fix the warning by moving blk-mq's cpuhp callback registering out of
-q->sysfs_lock. Add one dedicated global lock for covering registering &
-unregistering hctx's cpuhp, and it is safe to do so because hctx is
-guaranteed to be live if our request_queue is live.
-
-[1] https://lore.kernel.org/lkml/Z04pz3AlvI4o0Mr8@agluck-desk3/
-
-Cc: Reinette Chatre <reinette.chatre@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Peter Newman <peternewman@google.com>
-Cc: Babu Moger <babu.moger@amd.com>
-Reported-by: Luck Tony <tony.luck@intel.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20241206111611.978870-3-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241025063441.3494837-1-james.hilliard1@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 103 +++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 92 insertions(+), 11 deletions(-)
+ drivers/watchdog/it87_wdt.c | 39 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index c4012cb3adbf1..6dd849d607c03 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -43,6 +43,7 @@
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index 843f9f8e39177..239947df613db 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -20,6 +20,8 @@
  
- static DEFINE_PER_CPU(struct llist_head, blk_cpu_done);
- static DEFINE_PER_CPU(call_single_data_t, blk_cpu_csd);
-+static DEFINE_MUTEX(blk_mq_cpuhp_lock);
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- static void blk_mq_insert_request(struct request *rq, blk_insert_t flags);
- static void blk_mq_request_bypass_insert(struct request *rq,
-@@ -3740,13 +3741,91 @@ static int blk_mq_hctx_notify_dead(unsigned int cpu, struct hlist_node *node)
- 	return 0;
++#include <linux/bits.h>
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -40,6 +42,7 @@
+ #define VAL		0x2f
+ 
+ /* Logical device Numbers LDN */
++#define EC		0x04
+ #define GPIO		0x07
+ 
+ /* Configuration Registers and Functions */
+@@ -71,6 +74,12 @@
+ #define IT8784_ID	0x8784
+ #define IT8786_ID	0x8786
+ 
++/* Environment Controller Configuration Registers LDN=0x04 */
++#define SCR1		0xfa
++
++/* Environment Controller Bits SCR1 */
++#define WDT_PWRGD	0x20
++
+ /* GPIO Configuration Registers LDN=0x07 */
+ #define WDTCTRL		0x71
+ #define WDTCFG		0x72
+@@ -233,6 +242,21 @@ static int wdt_set_timeout(struct watchdog_device *wdd, unsigned int t)
+ 	return ret;
  }
  
--static void blk_mq_remove_cpuhp(struct blk_mq_hw_ctx *hctx)
-+static void __blk_mq_remove_cpuhp(struct blk_mq_hw_ctx *hctx)
++enum {
++	IT87_WDT_OUTPUT_THROUGH_PWRGD	= BIT(0),
++};
++
++static const struct dmi_system_id it87_quirks[] = {
++	{
++		/* Qotom Q30900P (IT8786) */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_NAME, "QCML04"),
++		},
++		.driver_data = (void *)IT87_WDT_OUTPUT_THROUGH_PWRGD,
++	},
++	{}
++};
++
+ static const struct watchdog_info ident = {
+ 	.options = WDIOF_SETTIMEOUT | WDIOF_MAGICCLOSE | WDIOF_KEEPALIVEPING,
+ 	.firmware_version = 1,
+@@ -254,8 +278,10 @@ static struct watchdog_device wdt_dev = {
+ 
+ static int __init it87_wdt_init(void)
  {
--	if (!(hctx->flags & BLK_MQ_F_STACKING))
-+	lockdep_assert_held(&blk_mq_cpuhp_lock);
-+
-+	if (!(hctx->flags & BLK_MQ_F_STACKING) &&
-+	    !hlist_unhashed(&hctx->cpuhp_online)) {
- 		cpuhp_state_remove_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
- 						    &hctx->cpuhp_online);
--	cpuhp_state_remove_instance_nocalls(CPUHP_BLK_MQ_DEAD,
--					    &hctx->cpuhp_dead);
-+		INIT_HLIST_NODE(&hctx->cpuhp_online);
-+	}
-+
-+	if (!hlist_unhashed(&hctx->cpuhp_dead)) {
-+		cpuhp_state_remove_instance_nocalls(CPUHP_BLK_MQ_DEAD,
-+						    &hctx->cpuhp_dead);
-+		INIT_HLIST_NODE(&hctx->cpuhp_dead);
-+	}
-+}
-+
-+static void blk_mq_remove_cpuhp(struct blk_mq_hw_ctx *hctx)
-+{
-+	mutex_lock(&blk_mq_cpuhp_lock);
-+	__blk_mq_remove_cpuhp(hctx);
-+	mutex_unlock(&blk_mq_cpuhp_lock);
-+}
-+
-+static void __blk_mq_add_cpuhp(struct blk_mq_hw_ctx *hctx)
-+{
-+	lockdep_assert_held(&blk_mq_cpuhp_lock);
-+
-+	if (!(hctx->flags & BLK_MQ_F_STACKING) &&
-+	    hlist_unhashed(&hctx->cpuhp_online))
-+		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
-+				&hctx->cpuhp_online);
-+
-+	if (hlist_unhashed(&hctx->cpuhp_dead))
-+		cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD,
-+				&hctx->cpuhp_dead);
-+}
-+
-+static void __blk_mq_remove_cpuhp_list(struct list_head *head)
-+{
-+	struct blk_mq_hw_ctx *hctx;
-+
-+	lockdep_assert_held(&blk_mq_cpuhp_lock);
-+
-+	list_for_each_entry(hctx, head, hctx_list)
-+		__blk_mq_remove_cpuhp(hctx);
-+}
-+
-+/*
-+ * Unregister cpuhp callbacks from exited hw queues
-+ *
-+ * Safe to call if this `request_queue` is live
-+ */
-+static void blk_mq_remove_hw_queues_cpuhp(struct request_queue *q)
-+{
-+	LIST_HEAD(hctx_list);
-+
-+	spin_lock(&q->unused_hctx_lock);
-+	list_splice_init(&q->unused_hctx_list, &hctx_list);
-+	spin_unlock(&q->unused_hctx_lock);
-+
-+	mutex_lock(&blk_mq_cpuhp_lock);
-+	__blk_mq_remove_cpuhp_list(&hctx_list);
-+	mutex_unlock(&blk_mq_cpuhp_lock);
-+
-+	spin_lock(&q->unused_hctx_lock);
-+	list_splice(&hctx_list, &q->unused_hctx_list);
-+	spin_unlock(&q->unused_hctx_lock);
-+}
-+
-+/*
-+ * Register cpuhp callbacks from all hw queues
-+ *
-+ * Safe to call if this `request_queue` is live
-+ */
-+static void blk_mq_add_hw_queues_cpuhp(struct request_queue *q)
-+{
-+	struct blk_mq_hw_ctx *hctx;
-+	unsigned long i;
-+
-+	mutex_lock(&blk_mq_cpuhp_lock);
-+	queue_for_each_hw_ctx(q, hctx, i)
-+		__blk_mq_add_cpuhp(hctx);
-+	mutex_unlock(&blk_mq_cpuhp_lock);
- }
++	const struct dmi_system_id *dmi_id;
+ 	u8  chip_rev;
+ 	u8 ctrl;
++	int quirks = 0;
+ 	int rc;
  
- /*
-@@ -3797,8 +3876,6 @@ static void blk_mq_exit_hctx(struct request_queue *q,
- 	if (set->ops->exit_hctx)
- 		set->ops->exit_hctx(hctx, hctx_idx);
+ 	rc = superio_enter();
+@@ -266,6 +292,10 @@ static int __init it87_wdt_init(void)
+ 	chip_rev  = superio_inb(CHIPREV) & 0x0f;
+ 	superio_exit();
  
--	blk_mq_remove_cpuhp(hctx);
--
- 	xa_erase(&q->hctx_table, hctx_idx);
- 
- 	spin_lock(&q->unused_hctx_lock);
-@@ -3815,6 +3892,7 @@ static void blk_mq_exit_hw_queues(struct request_queue *q,
- 	queue_for_each_hw_ctx(q, hctx, i) {
- 		if (i == nr_queue)
- 			break;
-+		blk_mq_remove_cpuhp(hctx);
- 		blk_mq_exit_hctx(q, set, hctx, i);
++	dmi_id = dmi_first_match(it87_quirks);
++	if (dmi_id)
++		quirks = (long)dmi_id->driver_data;
++
+ 	switch (chip_type) {
+ 	case IT8702_ID:
+ 		max_units = 255;
+@@ -326,6 +356,15 @@ static int __init it87_wdt_init(void)
+ 		superio_outb(0x00, WDTCTRL);
  	}
- }
-@@ -3838,11 +3916,6 @@ static int blk_mq_init_hctx(struct request_queue *q,
- 	if (xa_insert(&q->hctx_table, hctx_idx, hctx, GFP_KERNEL))
- 		goto exit_flush_rq;
  
--	if (!(hctx->flags & BLK_MQ_F_STACKING))
--		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
--				&hctx->cpuhp_online);
--	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
--
- 	return 0;
- 
-  exit_flush_rq:
-@@ -3877,6 +3950,8 @@ blk_mq_alloc_hctx(struct request_queue *q, struct blk_mq_tag_set *set,
- 	INIT_DELAYED_WORK(&hctx->run_work, blk_mq_run_work_fn);
- 	spin_lock_init(&hctx->lock);
- 	INIT_LIST_HEAD(&hctx->dispatch);
-+	INIT_HLIST_NODE(&hctx->cpuhp_dead);
-+	INIT_HLIST_NODE(&hctx->cpuhp_online);
- 	hctx->queue = q;
- 	hctx->flags = set->flags & ~BLK_MQ_F_TAG_QUEUE_SHARED;
- 
-@@ -4415,6 +4490,12 @@ static void blk_mq_realloc_hw_ctxs(struct blk_mq_tag_set *set,
- 	xa_for_each_start(&q->hctx_table, j, hctx, j)
- 		blk_mq_exit_hctx(q, set, hctx, j);
- 	mutex_unlock(&q->sysfs_lock);
++	if (quirks & IT87_WDT_OUTPUT_THROUGH_PWRGD) {
++		superio_select(EC);
++		ctrl = superio_inb(SCR1);
++		if (!(ctrl & WDT_PWRGD)) {
++			ctrl |= WDT_PWRGD;
++			superio_outb(ctrl, SCR1);
++		}
++	}
 +
-+	/* unregister cpuhp callbacks for exited hctxs */
-+	blk_mq_remove_hw_queues_cpuhp(q);
-+
-+	/* register cpuhp for new initialized hctxs */
-+	blk_mq_add_hw_queues_cpuhp(q);
- }
+ 	superio_exit();
  
- int blk_mq_init_allocated_queue(struct blk_mq_tag_set *set,
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.43.0
 
