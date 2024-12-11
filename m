@@ -1,135 +1,83 @@
-Return-Path: <stable+bounces-100582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B039EC853
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 10:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C8F9EC8D5
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 10:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86101888FBF
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:06:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069AC188D0C1
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78061FA8D8;
-	Wed, 11 Dec 2024 09:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1971A83E7;
+	Wed, 11 Dec 2024 09:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpKm2Rk3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF061FA8C9;
-	Wed, 11 Dec 2024 09:06:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE10A2336A4;
+	Wed, 11 Dec 2024 09:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733907992; cv=none; b=uP+j4zQ2FeEEdQFJJHZFXwqOqXLdqrVNUvOODsYvhtF/iaeU9C01PFogyYGiv5h1sFtjq9fCqUOjEaeGwJ/tulMbhYL1vngElNtiYYnB1PQsDjpZWnzOImsm9fRJTTXu9owaepZfMlzJya91nDaYUrPtai7g8xfZscAs0jBOhFI=
+	t=1733908763; cv=none; b=LYLXqYoeAttqrL5pdJb2eMhBJ/Tty+qGtFb02VX8kSnZdLK19KRHTSraEjn1kohXSoTkUxiipJOhgcZ47IVui91zi2O60utT8GCcxU8uq6G08nbRbQ+qtHO2/uqNFnV7Ep5b8sEphOJF7sEA4/IVjrwcuWGyHS30ZGZyIDanR/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733907992; c=relaxed/simple;
-	bh=UoJ6uBPaZ1DKSdoDtMa9yhagX8+MqXBgqPofD+3nzTs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NFYPKvC0oaLj95afWDy57RGEuORnWnmGhO/vAZ7nK1vmAL52GLQZH3VdoN3MVwqTt97/BHJVfrNZB6hgLbkBSmqBzU0eHLzzWJ5eha9OmqoLyzX7keTUkkso20EZAZ3QC0KdJa8sLimyB4U8weiQ5SBHY+isIQbxbi2glqrWllA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BB6LYxG017285;
-	Wed, 11 Dec 2024 09:06:20 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cwy3kyn1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 11 Dec 2024 09:06:19 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Wed, 11 Dec 2024 01:06:18 -0800
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Wed, 11 Dec 2024 01:06:15 -0800
-From: <jianqi.ren.cn@windriver.com>
-To: <kory.maincent@bootlin.com>, <gregkh@linuxfoundation.org>
-CC: <patches@lists.linux.dev>, <fancer.lancer@gmail.com>,
-        <manivannan.sadhasivam@linaro.org>, <vkoul@kernel.org>,
-        <stable@vger.kernel.org>, <gustavo.pimentel@synopsys.com>,
-        <dmaengine@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6.1.y] dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
-Date: Wed, 11 Dec 2024 18:04:09 +0800
-Message-ID: <20241211100409.2069734-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1733908763; c=relaxed/simple;
+	bh=5Zj9F6Cp4uvMjjvZ3FuxT+1lsAKj5je8ROGKo0mRbJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SqasIWTMzx2J3A/lpTfdLjxdHaMI4r3Pxvis2cDUYOlhlJ16eddQFSm0xZdAoVBkVOtoyF0O6qjyZBpKB7nCoj18TuRw0bPdkQmDHQq2qgVIouzhudgnlEDmU7pt7T1xjJjKLgecCWPGqgB0LzykzxiJLJ80mdghsR1d7TjMglg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpKm2Rk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05104C4CED2;
+	Wed, 11 Dec 2024 09:19:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733908762;
+	bh=5Zj9F6Cp4uvMjjvZ3FuxT+1lsAKj5je8ROGKo0mRbJI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mpKm2Rk3FddeI8Ei4uiZbNP7W1JvxK1fjaXlSowmJSskMVf1tZL2SPV1FX+gKZ43s
+	 Td3tN+RR+0gxseyXWQYRmOzGJw91VjqZe2az5MyFaENi5MVyPbsCF7lqUeqMCSVDCx
+	 hr5qo4trOKn6qjN7jfEsS6DWi7iC2RGNmyX37hos=
+Date: Wed, 11 Dec 2024 10:18:46 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: jianqi.ren.cn@windriver.com
+Cc: cratiu@nvidia.com, dtatulea@nvidia.com, tariqt@nvidia.com,
+	pabeni@redhat.com, patches@lists.linux.dev, stable@vger.kernel.org,
+	saeedm@nvidia.com, leon@kernel.org, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, roid@nvidia.com,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] net/mlx5e: Don't call cleanup on profile rollback
+ failure
+Message-ID: <2024121114-subsidize-tattered-dd8c@gregkh>
+References: <20241211100953.2069964-1-jianqi.ren.cn@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: jZc7cSUXkJOlTh9D_w6v2Hvt0JRW_qBj
-X-Proofpoint-ORIG-GUID: jZc7cSUXkJOlTh9D_w6v2Hvt0JRW_qBj
-X-Authority-Analysis: v=2.4 cv=D7O9KuRj c=1 sm=1 tr=0 ts=6759560b cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=VwQbUJbxAAAA:8 a=P-IC7800AAAA:8 a=pGLkceISAAAA:8 a=KKAkSRfTAAAA:8 a=t7CeM3EgAAAA:8
- a=UiR0G8JrladZec7fDzYA:9 a=d3PnA9EDa4IxuAV0gXij:22 a=cvBusfyB2V15izCimMoJ:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-11_08,2024-12-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 malwarescore=0
- adultscore=0 priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0
- clxscore=1011 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.21.0-2411120000 definitions=main-2412110068
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241211100953.2069964-1-jianqi.ren.cn@windriver.com>
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+On Wed, Dec 11, 2024 at 06:09:53PM +0800, jianqi.ren.cn@windriver.com wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
+> 
+> [ Upstream commit 4dbc1d1a9f39c3711ad2a40addca04d07d9ab5d0 ]
 
-[ Upstream commit bbcc1c83f343e580c3aa1f2a8593343bf7b55bba ]
+Please note that we can not apply a commit to an older stable tree that
+is NOT in newer ones as you would obviously have a regression when
+moving to a newer kernel.
 
-The Linked list element and pointer are not stored in the same memory as
-the eDMA controller register. If the doorbell register is toggled before
-the full write of the linked list a race condition error will occur.
-In remote setup we can only use a readl to the memory to assure the full
-write has occurred.
+I am guessing that you are being tasked with backporting CVE fixes to
+older stable kernels, which is great, but please work "down the release
+list" by starting with the newest one, and then moving to the older
+ones.  Otherwise we just can't take these and you are causing a lot of
+extra review/checking time on our side here to verify you are doing it
+all correctly :(
 
-Fixes: 7e4b8a4fbe2c ("dmaengine: Add Synopsys eDMA IP version 0 support")
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-6-8e8c1acb7a46@bootlin.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
----
- drivers/dma/dw-edma/dw-edma-v0-core.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+thanks,
 
-diff --git a/drivers/dma/dw-edma/dw-edma-v0-core.c b/drivers/dma/dw-edma/dw-edma-v0-core.c
-index a3816ba63285..aeaae28fab85 100644
---- a/drivers/dma/dw-edma/dw-edma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-edma-v0-core.c
-@@ -357,6 +357,20 @@ static void dw_edma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
- 	#endif /* CONFIG_64BIT */
- }
- 
-+static void dw_edma_v0_sync_ll_data(struct dw_edma_chunk *chunk)
-+{
-+	/*
-+	 * In case of remote eDMA engine setup, the DW PCIe RP/EP internal
-+	 * configuration registers and application memory are normally accessed
-+	 * over different buses. Ensure LL-data reaches the memory before the
-+	 * doorbell register is toggled by issuing the dummy-read from the remote
-+	 * LL memory in a hope that the MRd TLP will return only after the
-+	 * last MWr TLP is completed
-+	 */
-+	if (!(chunk->chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
-+		readl(chunk->ll_region.vaddr);
-+}
-+
- void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- {
- 	struct dw_edma_chan *chan = chunk->chan;
-@@ -423,6 +437,9 @@ void dw_edma_v0_core_start(struct dw_edma_chunk *chunk, bool first)
- 		SET_CH_32(dw, chan->dir, chan->id, llp.msb,
- 			  upper_32_bits(chunk->ll_region.paddr));
- 	}
-+
-+	dw_edma_v0_sync_ll_data(chunk);
-+
- 	/* Doorbell */
- 	SET_RW_32(dw, chan->dir, doorbell,
- 		  FIELD_PREP(EDMA_V0_DOORBELL_CH_MASK, chan->id));
--- 
-2.39.4
-
+greg k-h
 
