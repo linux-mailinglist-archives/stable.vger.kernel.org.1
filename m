@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 826DB9ED206
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:33:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4069ED207
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:33:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03668188A11E
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:33:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32721188A37F
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0595D38DE9;
-	Wed, 11 Dec 2024 16:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63121DDA3C;
+	Wed, 11 Dec 2024 16:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtr7Nr2r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fjfCiVDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BCC1D9688
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846BF1D9688
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733934816; cv=none; b=cht+r6Q6zvnSiFFZbGoampLlhcTizMmViKqLfxYQrAtL9NPnNFI36VazefcQwhcec5Nlxwxb9sx3ad8xuO2wMC2X86g+6OFeb8ZADcV48zv6SCjSHs5pCpyvzrt6bOP+i7M24+gcllHyQ/Xm2LR6HWAmDAzeOs1MdKhjJLkfDyU=
+	t=1733934818; cv=none; b=Qdz3AwW4vu7o6dcytA3KwLU6Ff7HJzepPASdeQib66G3MtDgrcqEoATNp26hb1Ccj3bgtCK5Y7l4NC2ztz7b0orcnHp9WXD7XEgC6ZneOfh/QD/5l73xFhMvRCbCCvYXrzNFpiHPaidcRKt8nb6UoPtETDRUiSclGKaM5FCMH2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733934816; c=relaxed/simple;
-	bh=jj1qqvdMZGX6GnBv+VggTIvkjExmgipjRjxyy/AmTk4=;
+	s=arc-20240116; t=1733934818; c=relaxed/simple;
+	bh=aDJpOcguRC4/+ClySIJSD37PNwlAnUsBaMXs5SzlZrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5TBL+42I3nj6UiczhOP7qHoSPv4oH/bi9RMVrruOQly2M8c16e0k0r0GHzgsOy4oxF9MCfQHSNc4xyXntwrksQP6YWSUes5dq8ocWqTb+3ojyAk3/Zi1HJMMcl+tWPY6zCEIuP2VXSwMkWfFK5PR95LE0vsfpXCDNup6qH5P4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtr7Nr2r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD920C4CED2;
-	Wed, 11 Dec 2024 16:33:35 +0000 (UTC)
+	 MIME-Version; b=UfUq9HQHoajhQnkoX/OtvYbI5ydsQ27x8QFpqJdq+Bo84EXQl6QCzH7yz0kzcMarakPKhWeRBqqYfSgDg9H83FZj33HSBOl1mdCZb0EmpvZrXpUSRfTE9muafIRT03JIae6qPBa1/ZaURr5rJhjs+iyc6EZZaAPQeQb5yuufEb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fjfCiVDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7A2C4CED2;
+	Wed, 11 Dec 2024 16:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733934816;
-	bh=jj1qqvdMZGX6GnBv+VggTIvkjExmgipjRjxyy/AmTk4=;
+	s=k20201202; t=1733934818;
+	bh=aDJpOcguRC4/+ClySIJSD37PNwlAnUsBaMXs5SzlZrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtr7Nr2rS0/bDoMY6LLUjbatMzJpQDzB60ZzFaO0X/xlgAFKC3MBEQcKGfljJqAzO
-	 ju0Uqvyf/Kya9moM+1/YhqlND1mMGsdlpzDIFCiAbLYePvzRU9tbIKBcmBZMj7lNqB
-	 wsfOYksFpyTClbrnhKNnPZR0ro+jtstvxtb8g5jLlhKWjssEu7UcpUl2rFVHSFsZ/h
-	 A1X8LpZOBe+DIFu7q5vWX7MGTX7npiTZ4ye+H1qnthXXFJkZQXbd2xa9F5Ur4Z8aQT
-	 I+tOJ21QJYmPz2pESjeQxlAYUNxVKePqpX1Mr0TXIDBsOqOlhLQr1YFrzEEePWQL9+
-	 U99G82y2i/n+Q==
+	b=fjfCiVDCNh6o8/jnACqi755P50Fn0iSIqDjk8QECKwgy6p6rFXZnTs8pgo4yAxbzs
+	 zsQ4ZLo7z4Pfa62x7glAw7atClahjFRKifg7UUzOJTqXW9zKuj8YeM5GloBz3ATk5z
+	 7I/p0k4TTuLtiTL347qNTyAqIz5EPAVLUD13wUCdbdNZzZg53XwUJL0jC5DeSoC89/
+	 hPaejbp13WLQRElhuAJ7RdKwTx7P9ep6NGNvtdgQOFkQSSl72C6MiLfIn5yLruhX1h
+	 6puOVXDhACVgJT7LPJS/Eu0bXpR/XogCe8RZ2criPmBFCVyVviNnWXs9LBW8mmxQ07
+	 LGkjqhlZkmyoA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Hui Wang <hui.wang@canonical.com>,
+Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [stable-kernel][5.15.y][PATCH 3/5] serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
-Date: Wed, 11 Dec 2024 11:33:34 -0500
-Message-ID: <20241211110234-6b9a881a3acec4da@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] drm/amd/display: fixed integer types and null check locations
+Date: Wed, 11 Dec 2024 11:33:36 -0500
+Message-ID: <20241211100403-47321dbd344e797c@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241211042545.202482-4-hui.wang@canonical.com>
+In-Reply-To:  <20241211100701.2069799-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,27 +63,58 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The upstream commit SHA1 provided is correct: f6959c5217bd799bcb770b95d3c09b3244e175c6
+The upstream commit SHA1 provided is correct: 0484e05d048b66d01d1f3c1d2306010bb57d8738
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Hui Wang <hui.wang@canonical.com>
-Commit author: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Sohaib Nadeem <sohaib.nadeem@amd.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: fc3de570cb30)
-6.1.y | Present (different SHA1: 6dca71e6e14a)
-5.15.y | Not found
+6.6.y | Present (different SHA1: 71783d1ff652)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-Failed to apply patch cleanly, falling back to interdiff...
+1:  0484e05d048b6 ! 1:  805353a2cf50e drm/amd/display: fixed integer types and null check locations
+    @@ Metadata
+      ## Commit message ##
+         drm/amd/display: fixed integer types and null check locations
+     
+    +    [ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
+    +
+         [why]:
+         issues fixed:
+         - comparison with wider integer type in loop condition which can cause
+    @@ Commit message
+         Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+         Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+     
+      ## drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c ##
+     @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_firmware_info_v3_2(
+    @@ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c: static enum bp_result get_in
+      	info->gpu_cap_info =
+      	le32_to_cpu(info_v2_2->gpucapinfo);
+      	/*
+    -
+    - ## drivers/gpu/drm/amd/display/dc/link/link_validation.c ##
+    -@@ drivers/gpu/drm/amd/display/dc/link/link_validation.c: bool link_validate_dpia_bandwidth(const struct dc_stream_state *stream, const un
+    - 	struct dc_link *dpia_link[MAX_DPIA_NUM] = {0};
+    - 	int num_dpias = 0;
+    - 
+    --	for (uint8_t i = 0; i < num_streams; ++i) {
+    -+	for (unsigned int i = 0; i < num_streams; ++i) {
+    - 		if (stream[i].signal == SIGNAL_TYPE_DISPLAY_PORT) {
+    - 			/* new dpia sst stream, check whether it exceeds max dpia */
+    - 			if (num_dpias >= MAX_DPIA_NUM)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
