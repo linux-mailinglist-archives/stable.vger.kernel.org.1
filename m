@@ -1,177 +1,111 @@
-Return-Path: <stable+bounces-100531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCF79EC416
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 05:42:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC13F9EC41F
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 06:06:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93B1188B093
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 05:06:15 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB38E1BEF74;
+	Wed, 11 Dec 2024 05:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nRHMXtVh"
+X-Original-To: stable@vger.kernel.org
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BAAC2844ED
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 04:42:46 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CCB1BD9C5;
-	Wed, 11 Dec 2024 04:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gTmeQXns"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3291B3B791;
-	Wed, 11 Dec 2024 04:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6D51BD9D8
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 05:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733892161; cv=none; b=DQSL+BQK+Is4WWJlnwJdO8zPssy6panzZ5pzuz02kkTFgzHwtHY1wUGKEWR4FqIndrBYm0Jt1vusklnG5F8xLOX/JANCCi5XA/7U7iOVhu7QEAwZubpKoncaZbvJzcGF0/JPi8b34XTcUwIoeQeJLl6RacjFfqvLxgIewToMh6s=
+	t=1733893570; cv=none; b=CKz15FwcAQCZWCezCqEzLgH+ny+t7EUMvJQVcyffp9llYaRPjYeYF7KZ/VZ11PpR4nwkR6EkAe3spDwXcV1FZI8MwRgFx1vwNU6JrLBTEXLrf6dlDgJdR2USiHxFTsRTta3iagDCVoLQApJ6qo44KDmfedKB/fZPRdyORJaH9Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733892161; c=relaxed/simple;
-	bh=+9p9J1jelSz8duI+gfrRD2u+jGQrZ4/a6LnYZjzdNyA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o2/dwSXDNqMGKDvtVmxfRqkWweGAAOiiKRiV69QoRquOQobOBA4m5z8JzMfdrEYcwluqDCaGjem9iv39KNkCSOpUOfPW0P/KJxO/IJYanP2GIBWrz4zvmqGgxToTOtvQ8+sRpBDb1iU5BSew7XOOxGLU1L8OgV9A0f1SQrrkxlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gTmeQXns; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7f71f2b1370so3963672a12.1;
-        Tue, 10 Dec 2024 20:42:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733892159; x=1734496959; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Osyz45DUr5zikPFMa16MVUwwoDjyzDxn9quKrfwUbdQ=;
-        b=gTmeQXnsQf5voGcTI/jCuL+ahx6FEQ6AxVpT2Vx8RLDqLLwQSA6oaT9EBXBPNCtnpo
-         o6Zl/QTWtgqHCp2sSYwJG+BxQplP8JoJtd3Fom+pfIwgD2J1pS94cuK1zoLRtsFL74QC
-         LShdPDSZ9n4Nz0t/NLTCE9eWQnX+EIzpA2k3d2FurT1ObjokjmsjUCAdvJFfFq5LdqRI
-         LDbIRW19LB2X7p4uI3+4SFKu4CY/r3PThBDg1Asqy+SybjY9z85I82mt0lDbfMm3sKKt
-         aVIIC8lXChL0mgpKobTFKWshealdMsP78V+aOIN+Xv6h2/K8g6rso16nRzncgWUcBPum
-         mxmw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733892159; x=1734496959;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Osyz45DUr5zikPFMa16MVUwwoDjyzDxn9quKrfwUbdQ=;
-        b=gzhsOO5Qg2eqMdt1a/b1jW30R822w5V9/QeBbWvapcqwRt231y5VRZtLdzJvaWATdx
-         4hOMFu2rxiP3Dm9ySiJ8MErlk3YKDoAeBVXhqM9U1bVyKcCRrEz+HRFEjRu2wwNm4sb0
-         oE5+ANf76lYclOewwpnv7noKKcXPybn3lG1cC1fdxj1RKs3U4XUjxOI71phe4Yx4yZBC
-         Nbm7MYq8vmHWW66H7DLHuNWPpFApLT1olnxzhukHB+SvTE3lcn8Ra0RwyI8m54NDYky4
-         P4j4LXY8lkPiZuHkrE6iHjfWsH81iltlf+/B//4G7tEutqGpYYwv/3SUqWFF7C56BcgV
-         G/PA==
-X-Forwarded-Encrypted: i=1; AJvYcCUoOOy6iyK3c6PvZDou1dgzUqWnZq3sDT+G+K+B4UsS9OrUtHuvVB/abIUl9hCt5yx4zeTB1AiJizVcg34=@vger.kernel.org, AJvYcCVK55CIrMhrQWuPrM+gk/3vK6y6SNCub/7AJPBDdaigxCLbs8JutBurWiJF8M0Wx1zaqoXAwj7L@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6XS5asM0E1pfI3SIJj7ztIyUk6FaFZzuyoCsLuRqq9TReog0g
-	rxEpdnAlw/CncSWBmS+YzPvnzs3ebo+YS6EwfaOqXYZ03jsybUzx
-X-Gm-Gg: ASbGncs0R3RxtxG0MVsHblIzAS8CKCsSMozUilMrHLeuYdrwTNVeaSBx4w/+6ZuA+x2
-	eTKicVxnhgSXn0kxGJFK5Y20s0LxrzWA05HN6aZK55Q0xB/ysyX4f2zPMxA5xFNRswv0CqWejxT
-	qqIIRE/ywJ18M5yb4IWRuEToHzTBD6/ipZ6HSvYXU7dejtcDi2oQSwnnK0Esh68guM2EMWGSWwo
-	SwMnImRWA4k3+sgtTnBr/st13HuVtAsqdhys9+so0dPVTz5B9a/QDe+aiX8gJ/WOuWg9LDBCGRZ
-	94oygrYOk1nOsM+R4qRb9ojn01A=
-X-Google-Smtp-Source: AGHT+IE9v9ZJTBOVn10dDLaSi+1GulC4xq+ul1aUbCuFbJ5DhUyCJfD8kxJpL58r21UkNYggt90bEg==
-X-Received: by 2002:a05:6a21:9997:b0:1e1:b404:d854 with SMTP id adf61e73a8af0-1e1c12f3b65mr2720187637.23.1733892159364;
-        Tue, 10 Dec 2024 20:42:39 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fd4e202e9asm4276178a12.72.2024.12.10.20.42.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Dec 2024 20:42:38 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <861fc71e-45ca-405a-9b1e-849cbcb8fcaf@roeck-us.net>
-Date: Tue, 10 Dec 2024 20:42:36 -0800
+	s=arc-20240116; t=1733893570; c=relaxed/simple;
+	bh=o/WWiYugsJIwauItRCFdRG28LLtzcz8vjgTvpF0SxY4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CRWjRfTqCfqA7LCghwCQ2nvlEchAsRQoreaQoNyiFOnZ2kHPfooW3HVdn9W2qPHjUCaBoyuesiXYkrgq3II3KTyDeYUtnoxAxbhcGM0AiD3PFwxYFukptHccFZ4QFOkU56mP9GzDy/dXAy97VoHHPsHYoqXjI1iCBlPEvtD3Ogs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nRHMXtVh; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Tue, 10 Dec 2024 21:06:00 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1733893565;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JPb00wfkIgOVCDhI/4b1eMraMt3MwKHLazM/Qku2T0I=;
+	b=nRHMXtVhDX2vUhA8f9Nf3P8o6/Kz/krM6cQoAEAksxbK8dsoKeNimZPA3sTZ9CEmQerwsY
+	ZMw2aGYVh6tZSyWjTzON9uGhSH8zSeHkpBclvaHQuWchKv/F+mQ0ZzbIF86pY9aJWbh5U6
+	9ZT2kecvbzmllwqqCm90pG5Hyrb7y6A=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Hellwig <hch@lst.de>, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] vmalloc: Account memcg per vmalloc
+Message-ID: <txdwd3r7wwyhdntqfzlqrtyoo4hui2ltlhkzi7ysjvhojtgatu@zsk6dkavlgxz>
+References: <20241211043252.3295947-1-willy@infradead.org>
+ <20241211043252.3295947-2-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hwmon: Check dev_set_name() return value
-To: Ma Ke <make_ruc2021@163.com>, jdelvare@suse.com, jic23@kernel.org,
- punitagrawal@gmail.com
-Cc: linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241211023404.2174629-1-make_ruc2021@163.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20241211023404.2174629-1-make_ruc2021@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241211043252.3295947-2-willy@infradead.org>
+X-Migadu-Flow: FLOW_OUT
 
-On 12/10/24 18:34, Ma Ke wrote:
-> It's possible that dev_set_name() returns -ENOMEM. We could catch and
-> handle it by adding dev_set_name() return value check.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: d560168b5d0f ("hwmon: (core) New hwmon registration API")
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> ---
->   drivers/hwmon/hwmon.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/hwmon.c b/drivers/hwmon/hwmon.c
-> index bbb9cc44e29f..8b9bdb28650d 100644
-> --- a/drivers/hwmon/hwmon.c
-> +++ b/drivers/hwmon/hwmon.c
-> @@ -955,7 +955,10 @@ __hwmon_device_register(struct device *dev, const char *name, void *drvdata,
->   	hdev->of_node = tdev ? tdev->of_node : NULL;
->   	hwdev->chip = chip;
->   	dev_set_drvdata(hdev, drvdata);
-> -	dev_set_name(hdev, HWMON_ID_FORMAT, id);
-> +	err = dev_set_name(hdev, HWMON_ID_FORMAT, id);
-> +	if (err)
-> +		goto free_hwmon;
+On Wed, Dec 11, 2024 at 04:32:50AM +0000, Matthew Wilcox (Oracle) wrote:
+[...]
+> +int obj_cgroup_charge_vmalloc(struct obj_cgroup **objcgp,
+> +		unsigned int nr_pages, gfp_t gfp)
+> +{
+> +	struct obj_cgroup *objcg;
+> +	int err;
 > +
->   	err = device_register(hdev);
->   	if (err) {
->   		put_device(hdev);
+> +	if (mem_cgroup_disabled() || !(gfp & __GFP_ACCOUNT))
+> +		return 0;
+> +
+> +	objcg = current_obj_cgroup();
+> +	if (!objcg)
+> +		return 0;
+> +
+> +	err = obj_cgroup_charge_pages(objcg, gfp, nr_pages);
+> +	if (err)
+> +		return err;
+> +	obj_cgroup_get(objcg);
+> +	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_VMALLOC, nr_pages);
 
-As has been mentioned elsewhere:
+obj_cgroup_memcg() needs to be within rcu. See MEMCG_PERCPU_B as an
+example.
 
-If dev_set_name() fails, device_add() will fail. device_register() calls
-device_add() and will therefore fail as well. For that reason, error
-checking dev_set_name() is unnecessary for hwmon devices.
+> +	*objcgp = objcg;
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * obj_cgroup_uncharge_vmalloc - Uncharge vmalloc memory
+> + * @objcg: The object cgroup
+> + * @nr_pages: Number of pages
+> + */
+> +void obj_cgroup_uncharge_vmalloc(struct obj_cgroup *objcg,
+> +		unsigned int nr_pages)
+> +{
+> +	if (!objcg)
+> +		return;
+> +	mod_memcg_state(objcg->memcg, MEMCG_VMALLOC, 0L - nr_pages);
 
-Guenter
+Please use obj_cgroup_memcg() above instead of objcg->memcg and within
+rcu lock.
 
+Overall the patch looks good.
 
