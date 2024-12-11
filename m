@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-100741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC95F9ED57D
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:01:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B93A29ED588
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98DA3169C34
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41E86188BFF0
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A79C229660;
-	Wed, 11 Dec 2024 18:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A98229684;
+	Wed, 11 Dec 2024 18:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6/En3oH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2eg3W9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8AE237FF2;
-	Wed, 11 Dec 2024 18:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC65D22967C;
+	Wed, 11 Dec 2024 18:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943167; cv=none; b=LpPXAeFhFYgLS1aDwaB/G67mHT4ZxmKLyB/zhfuOYdmQh47NbVOFnHJYJIF9+hVvzmy/bNreaDLivYYOKC5F4HFqzJQTTq6zND0W7PUBR19nYPBA5jGlq62Sr1WzFrdWz5krt49p9CbN6LSt/zdHe9FyHWqABigXZGOOgy/uTJQ=
+	t=1733943169; cv=none; b=U+e+nZk5UXk3eR92WUOf8OHJloIGSU5wmD8+dnSiMaFyhajKMlU+MFhrb/6g0D1xU/AYvnS50tq1Ri+OWcyw+tf6dm0+QEQYOLi2/640A4zjc7+JG21DCthxMmtyjmVIXzPzUTkCGPeZf2Ui7x2VI8OwitQ6jVCqH72JaYAamsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943167; c=relaxed/simple;
-	bh=OdvefCJoWaj3RqWLpfvJpNkrDa5VhCq55NCBFCXKcb8=;
+	s=arc-20240116; t=1733943169; c=relaxed/simple;
+	bh=T2CyAFjapRQwsYCTJENWC+rWbyLUqMcwKWrbwRNy0Ug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmO1V8DdRLa7FPKD0dkOv+d1V512vzxPv3fT1xUw0lHdIIcyMq2dNqfnRehyi5P6qsjkqcYP6eLh9saUe49OPxZS2Gf6gEiECpAoZFdnKPFObX050hWeugWmrGJCjbe97iSlViYZ6Ct/dUKjT4zmOkUMJdNtKyRJ9iSJczbYcyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6/En3oH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F46DC4CED2;
-	Wed, 11 Dec 2024 18:52:46 +0000 (UTC)
+	 MIME-Version; b=c6VOMmgEI1AW+tq2AwQYcTz6wavgXsfgcmj1puI3DumclleUnnX9QNPAlX+MBna47wwtSGJGNsvuP+JpLIo5+s0THoXFINQMQCNwYB0b2Tv5AcwK/tb+FVUW41WJXCncwGTp0jx972aTvoOqfpBeMeEynnGQOZcZm2glxLjpyTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2eg3W9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC98C4CEDD;
+	Wed, 11 Dec 2024 18:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943167;
-	bh=OdvefCJoWaj3RqWLpfvJpNkrDa5VhCq55NCBFCXKcb8=;
+	s=k20201202; t=1733943169;
+	bh=T2CyAFjapRQwsYCTJENWC+rWbyLUqMcwKWrbwRNy0Ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6/En3oHEhT2iZqBs3PTBcC4xDycNyGS6rUYOzIfJ20Rld4muLyp9cDZmWcM3pCwB
-	 d0BTHPqbTLws2JrkMRg5ARDunN03jsvb1RD5SxSgshGd9L+Qqiz7Jerx3+PajeFpaj
-	 GMOLq7nZ58WpZbRF9i8qlXOm2CcMnGLkS9iunhuWdFRSkkaYpWk7yA9UTaBo8xHgmD
-	 4t9nM2f7iinNQtA7GlkeHFvWb6WG2vqqKk6frxvvMlFcxGovYhTWc09wEQISaSFwrX
-	 /si2gybYi4FIOmRuHUlHLei5OW+uRFJqLhZnwOsUXoCMgq4p/eDs8gvdFMvrn/fwj6
-	 dEWInzCmxyvUw==
+	b=F2eg3W9A3wZ2oxiCB2Mf+/M8YaN5FQVcVgVe5ShNo23QDlx3q2G36CjhOiJpR4BzK
+	 ogZOzsfkHftoUCDJOSYa7tTfZQ6n/s7Es+Rnb6f87XMB5j7eipm5y3VtCajSA2C3vT
+	 peSKr7m4Y4VP4RBv299N8p+If7LRqpyFHMHW+Agf+AWEKlajYsvE3cSpEbT0Pn0xpY
+	 1Tit92J69LqG79TJQcPuu9l7PaNsVzbXb98PUcPCHgHsPeSsLLck1dHHwOUwkgCFmz
+	 f1VvlB0dot5V521vEFzV3ADpPIS4U8O+3LKjwO+zucpBcoryOzDIX6vBLVXUrrP8dE
+	 qWgKIEoapVWgA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aapo Vienamo <aapo.vienamo@iki.fi>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 15/23] spi: intel: Add Panther Lake SPI controller support
-Date: Wed, 11 Dec 2024 13:51:52 -0500
-Message-ID: <20241211185214.3841978-15-sashal@kernel.org>
+	sathya.prakash@broadcom.com,
+	sreekanth.reddy@broadcom.com,
+	suganath-prabu.subramani@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	MPT-FusionLinux.pdl@broadcom.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 16/23] scsi: mpt3sas: Diag-Reset when Doorbell-In-Use bit is set during driver load time
+Date: Wed, 11 Dec 2024 13:51:53 -0500
+Message-ID: <20241211185214.3841978-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185214.3841978-1-sashal@kernel.org>
 References: <20241211185214.3841978-1-sashal@kernel.org>
@@ -66,38 +70,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.65
 Content-Transfer-Encoding: 8bit
 
-From: Aapo Vienamo <aapo.vienamo@iki.fi>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit ceb259e43bf572ba7d766e1679ba73861d16203a ]
+[ Upstream commit 3f5eb062e8aa335643181c480e6c590c6cedfd22 ]
 
-The Panther Lake SPI controllers are compatible with the Cannon Lake
-controllers. Add support for following SPI controller device IDs:
- - H-series: 0xe323
- - P-series: 0xe423
- - U-series: 0xe423
+Issue a Diag-Reset when the "Doorbell-In-Use" bit is set during the
+driver load/initialization.
 
-Signed-off-by: Aapo Vienamo <aapo.vienamo@iki.fi>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Link: https://patch.msgid.link/20241204080208.1036537-1-mika.westerberg@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20241110173341.11595-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-intel-pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
-index 4337ca51d7aa2..5c0dec90eec1d 100644
---- a/drivers/spi/spi-intel-pci.c
-+++ b/drivers/spi/spi-intel-pci.c
-@@ -86,6 +86,8 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
- 	{ PCI_VDEVICE(INTEL, 0xa823), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0xe323), (unsigned long)&cnl_info },
-+	{ PCI_VDEVICE(INTEL, 0xe423), (unsigned long)&cnl_info },
- 	{ },
- };
- MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 8acf586dc8b2e..a5d12b95fbd09 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -7050,11 +7050,12 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 	int i;
+ 	u8 failed;
+ 	__le32 *mfp;
++	int ret_val;
+ 
+ 	/* make sure doorbell is not in use */
+ 	if ((ioc->base_readl_ext_retry(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
+ 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
+-		return -EFAULT;
++		goto doorbell_diag_reset;
+ 	}
+ 
+ 	/* clear pending doorbell interrupts from previous state changes */
+@@ -7144,6 +7145,10 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 			    le32_to_cpu(mfp[i]));
+ 	}
+ 	return 0;
++
++doorbell_diag_reset:
++	ret_val = _base_diag_reset(ioc);
++	return ret_val;
+ }
+ 
+ /**
 -- 
 2.43.0
 
