@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-100738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E289ED574
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:00:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45659ED576
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B26A1694D8
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 181F91659C0
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DAC237FD9;
-	Wed, 11 Dec 2024 18:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B025249D41;
+	Wed, 11 Dec 2024 18:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sz7hVOrs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dt+JMIjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A2F24953E;
-	Wed, 11 Dec 2024 18:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE60248F94;
+	Wed, 11 Dec 2024 18:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943162; cv=none; b=DuJSwMpD32/79D59pZxSEju+m/vNHY0a0oIJqjmDpYTdER1kPPEUUo5KPf4T03r3iocNqzV7jJtHgtXnhD8Zmf4zgIONUhx6qVZ1wAwUKlLlVB7q14pd01CXqZ+I8Ip1U9MWsyIxmZDS62eJQOsAkYsBKsToICVaJj3L/3dYLz4=
+	t=1733943164; cv=none; b=DHQN3KKwfXa+COOqCYbKhXKvElo0VGbrol6BKo6IqrfLbzykETt3/K6GbeWcb5SbFdXvfzeWdEAeOk7hANa2+1i/tObldZsdEruvoik/XW5tkVAKFiGbb5zI/NPZAMfC8gAhnOi/ja0XkNY4SUok7yjqSuDQnlBfVeE1VT59RJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943162; c=relaxed/simple;
-	bh=DhQWIhCHT7+bo6xMT/3tBuVZmITlX74nTga6wJ1INBM=;
+	s=arc-20240116; t=1733943164; c=relaxed/simple;
+	bh=AFFFYm0TzJs28HaW0/KZYqN//Zf7bl9GumaR7p3vuws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KV4gxtWKrlg1HedrOYxd2zy5eDRRmhMW6dO9+6gZntgVL4J2/jYE2xY6p0DZoDbeDw466UmpCpsIDNX/wtET1nNqR3eYH/vboBUH7ki3kAA3VBIJBOHOaPbtyFuD5KCsi3xPPZfzMvnpFD9OcspjyqciKBsrypxlCCwH2jdztrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sz7hVOrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FDCCC4CED2;
-	Wed, 11 Dec 2024 18:52:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q2wrpW21cScfbCafYsibymOLHqSAGUyqJSz10TEXTaP4M/ANWGdi+TQNGPK/wk4ciPqwBzjzUEE8sfcwHerygq9Jzj+oechdukqeniroxsvVPYl+3jwHTvWTLkFJL2RglAM8HlKtzmI4XN3jol/fhJ7Pp14c+WnaRpgQloJj04g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dt+JMIjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87723C4AF09;
+	Wed, 11 Dec 2024 18:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943162;
-	bh=DhQWIhCHT7+bo6xMT/3tBuVZmITlX74nTga6wJ1INBM=;
+	s=k20201202; t=1733943163;
+	bh=AFFFYm0TzJs28HaW0/KZYqN//Zf7bl9GumaR7p3vuws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sz7hVOrsKdRzs5MNghUHT8XC2H2Xka6Z9bays3fl3XaX4IgOomcj7sYRb/ug9bUui
-	 gh47sUyNzMlAxiqnD/WYLPxG0bJX+KKtbMb5a1jCC9vNM6ZBakfdSn6ZOdjreg0Y99
-	 5Tf6bQFvinZP6o+pQXZkqvb7yi5CJxehDDfRYexAxYhwk56JLmvkwXGBpGCPQYY6Uc
-	 ie+NGTJ8OWCo7UorQD/AhMNqqI2PJcO5Ru3Y+bPp7UUzCDadUVmwQ97m13kpmvmUZD
-	 Qd+cZBdidOpCCOrZorlkDYFcyXaY7fkGEE6mWYFl08Ysj9IjFiOqfAxE8z8J6X6e3U
-	 41pe7G2BxlRdA==
+	b=dt+JMIjUvANqJ8F4fZUv0lOKaIMzKoRmEXm2NvGMF+vG2Pw+MU5vfs4Ld1rNk7+VT
+	 lovfQ/XbuXZtzQ573BZmVBzxM4/F3kfReO5Lp9nddU9Yxc7PGnxJn3Pd1oead/m3P4
+	 3IvowX8/b9bFF8OpIj9WexpN4rkFSO9DNanWZ+AC+vhqUq0dviloebPNqpVt2YbxsT
+	 4QxgOgpiMELPVJO6K3MLCxxY4pTZiN42R/YZ+VcoI/PAaaJN2R0NqsMP1bs5k+glHz
+	 jT0FjU8wz7RSdhCc6nH8XbJayTdra2/zdKNPtQ8vMArgPui8WT+pb1B88PFHqVhCyO
+	 A4otvMKWnXhfw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	Pau Espin Pedrol <pespin@espeweb.net>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	chenhuacai@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	maobibo@loongson.cn,
-	oleg@redhat.com,
-	loongarch@lists.linux.dev,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 12/23] LoongArch: BPF: Adjust the parameter of emit_jirl()
-Date: Wed, 11 Dec 2024 13:51:49 -0500
-Message-ID: <20241211185214.3841978-12-sashal@kernel.org>
+	corentin.chary@gmail.com,
+	luke@ljones.dev,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 13/23] platform/x86: asus-nb-wmi: Ignore unknown event 0xCF
+Date: Wed, 11 Dec 2024 13:51:50 -0500
+Message-ID: <20241211185214.3841978-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185214.3841978-1-sashal@kernel.org>
 References: <20241211185214.3841978-1-sashal@kernel.org>
@@ -67,106 +64,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.65
 Content-Transfer-Encoding: 8bit
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c1474bb0b7cff4e8481095bd0618b8f6c2f0aeb4 ]
+[ Upstream commit e9fba20c29e27dc99e55e1c550573a114561bf8c ]
 
-The branch instructions beq, bne, blt, bge, bltu, bgeu and jirl belong
-to the format reg2i16, but the sequence of oprand is different for the
-instruction jirl. So adjust the parameter order of emit_jirl() to make
-it more readable correspond with the Instruction Set Architecture manual.
+On the Asus X541UAK an unknown event 0xCF is emited when the charger
+is plugged in. This is caused by the following AML code:
 
-Here are the instruction formats:
+    If (ACPS ())
+    {
+        ACPF = One
+        Local0 = 0x58
+        If (ATKP)
+        {
+            ^^^^ATKD.IANE (0xCF)
+        }
+    }
+    Else
+    {
+        ACPF = Zero
+        Local0 = 0x57
+    }
 
-  beq     rj, rd, offs16
-  bne     rj, rd, offs16
-  blt     rj, rd, offs16
-  bge     rj, rd, offs16
-  bltu    rj, rd, offs16
-  bgeu    rj, rd, offs16
-  jirl    rd, rj, offs16
+    Notify (AC0, 0x80) // Status Change
+    If (ATKP)
+    {
+        ^^^^ATKD.IANE (Local0)
+    }
 
-Link: https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#branch-instructions
-Suggested-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+    Sleep (0x64)
+    PNOT ()
+    Sleep (0x0A)
+    NBAT (0x80)
+
+Ignore the 0xCF event to silence the unknown event warning.
+
+Reported-by: Pau Espin Pedrol <pespin@espeweb.net>
+Closes: https://lore.kernel.org/platform-driver-x86/54d4860b-ec9c-4992-acf6-db3f90388293@espeweb.net
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20241123224700.18530-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/inst.h | 12 +++++++++++-
- arch/loongarch/kernel/inst.c      |  2 +-
- arch/loongarch/net/bpf_jit.c      |  6 +++---
- 3 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/include/asm/inst.h b/arch/loongarch/include/asm/inst.h
-index 71e1ed4165c80..4fa53ad82efb3 100644
---- a/arch/loongarch/include/asm/inst.h
-+++ b/arch/loongarch/include/asm/inst.h
-@@ -655,7 +655,17 @@ DEF_EMIT_REG2I16_FORMAT(blt, blt_op)
- DEF_EMIT_REG2I16_FORMAT(bge, bge_op)
- DEF_EMIT_REG2I16_FORMAT(bltu, bltu_op)
- DEF_EMIT_REG2I16_FORMAT(bgeu, bgeu_op)
--DEF_EMIT_REG2I16_FORMAT(jirl, jirl_op)
-+
-+static inline void emit_jirl(union loongarch_instruction *insn,
-+			     enum loongarch_gpr rd,
-+			     enum loongarch_gpr rj,
-+			     int offset)
-+{
-+	insn->reg2i16_format.opcode = jirl_op;
-+	insn->reg2i16_format.immediate = offset;
-+	insn->reg2i16_format.rd = rd;
-+	insn->reg2i16_format.rj = rj;
-+}
- 
- #define DEF_EMIT_REG2BSTRD_FORMAT(NAME, OP)				\
- static inline void emit_##NAME(union loongarch_instruction *insn,	\
-diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
-index 3050329556d11..14d7d700bcb98 100644
---- a/arch/loongarch/kernel/inst.c
-+++ b/arch/loongarch/kernel/inst.c
-@@ -332,7 +332,7 @@ u32 larch_insn_gen_jirl(enum loongarch_gpr rd, enum loongarch_gpr rj, int imm)
- 		return INSN_BREAK;
- 	}
- 
--	emit_jirl(&insn, rj, rd, imm >> 2);
-+	emit_jirl(&insn, rd, rj, imm >> 2);
- 
- 	return insn.word;
- }
-diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
-index 497f8b0a5f1ef..6595e992fda85 100644
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -181,13 +181,13 @@ static void __build_epilogue(struct jit_ctx *ctx, bool is_tail_call)
- 		/* Set return value */
- 		emit_insn(ctx, addiw, LOONGARCH_GPR_A0, regmap[BPF_REG_0], 0);
- 		/* Return to the caller */
--		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, LOONGARCH_GPR_ZERO, 0);
-+		emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_RA, 0);
- 	} else {
- 		/*
- 		 * Call the next bpf prog and skip the first instruction
- 		 * of TCC initialization.
- 		 */
--		emit_insn(ctx, jirl, LOONGARCH_GPR_T3, LOONGARCH_GPR_ZERO, 1);
-+		emit_insn(ctx, jirl, LOONGARCH_GPR_ZERO, LOONGARCH_GPR_T3, 1);
- 	}
- }
- 
-@@ -841,7 +841,7 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx, bool ext
- 			return ret;
- 
- 		move_addr(ctx, t1, func_addr);
--		emit_insn(ctx, jirl, t1, LOONGARCH_GPR_RA, 0);
-+		emit_insn(ctx, jirl, LOONGARCH_GPR_RA, t1, 0);
- 		move_reg(ctx, regmap[BPF_REG_0], LOONGARCH_GPR_A0);
- 		break;
- 
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index af3da303e2b15..cba515ce3444d 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -590,6 +590,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
+ 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
+ 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
+ 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
++	{ KE_IGNORE, 0xCF, },	/* AC mode */
+ 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
+ 	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
+ 	{ KE_END, 0},
 -- 
 2.43.0
 
