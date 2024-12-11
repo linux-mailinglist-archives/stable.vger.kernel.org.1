@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-100513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC029EC258
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 03:40:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F20B9EC27E
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 03:50:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77ED028470E
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 02:40:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CFC5188B12D
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 02:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA371FCCE1;
-	Wed, 11 Dec 2024 02:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB391FBE87;
+	Wed, 11 Dec 2024 02:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAGueN2B"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Yq1ooxp8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90388C148;
-	Wed, 11 Dec 2024 02:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D181FCFF7
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 02:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733884816; cv=none; b=q1cFM0jJIS7D7kRDQzd7/a4HNoc4z4/FMrQemOeauFwwdHUFUwGxnZcHcBgrjXge4VtXD8XdGSZ/IBYMu87qCzd18m+V7BEaT1GssSWChCZ5eL8kpfvJ1zwRUAoSEcSqfaf29fRtQVRJ6bFuvO+UAtIZUoCx3K9N2Jcz0YO00p8=
+	t=1733885426; cv=none; b=WI1EFXTLpCzTlvrFSRYtLAUqWIr9ckWpyX+cM6BqSxtb1MYE/VVr2s3zUvVXPTDZn+sQonf+GkWj8eTp5oDRwNnaf6NAyJEbmDl6IohMXgi0AdLQd0W9FDIHIxTJL0fDtrR3vDj0t0pWFo5GVuyrIXIiuyXdWUTPaoZneTE3QUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733884816; c=relaxed/simple;
-	bh=KWPTezuc2CnyasfCtn0nr7jKT+1IrhtzhpPoRrDrKO8=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=jwFlZ1nM1rMhDIs+/FRIN9jPkQWdLhSSWNjrWyTwrQczQzuRz2lW3lhJ0gsm6+m8mgOzfJBCiSmQ64MaBkqMP2v9RmekeJE84c+n6sRMt+80yN+fU1k/YpzbK9C2OBuFZQ0dOUZvMJCZXN1q2YGw8bc/oMwlk+U2H63HU0RCkyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAGueN2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21240C4CED6;
-	Wed, 11 Dec 2024 02:40:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733884816;
-	bh=KWPTezuc2CnyasfCtn0nr7jKT+1IrhtzhpPoRrDrKO8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bAGueN2BCe5lnWbHDF8+YApAa15WGLZIoVn/q/WG6lySc/V2KjA2zEHaKaDaDc8to
-	 +P3XK2ggRziEseKWQC+EzhfL6uc1DYzn/mx5PMkgyI48aFbMj4RVTEbpkyFvK7y7ro
-	 wGQlrQwDQLjgDx7epXUvtRMRJKx2nTYOr116Qb3Z42I8IUTvWXj9B5jYEfVf63LDgt
-	 ZY7p7A2ryeqNgDMuH/+eE97SHPU7haIVva7GtG5fbCRSaWFBGiRSzvhpZFOZ/l6D4V
-	 V7M929GbS5XdCwKzEV0L8ZTLKo2FTshabjt1sh+wN1sV08YYP2xLcyUHGTV3i7QAck
-	 Om0oSIXOg4ysw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34213380A954;
-	Wed, 11 Dec 2024 02:40:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1733885426; c=relaxed/simple;
+	bh=Jltp9bnlx2+n18ClWB5oOsVvGL80S3zLfY6neFVpMps=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RZfXE+91MS3g28CcaEJnkmIASqtQg2dQk6gxq+DCRay0hCLsUxcvnS0NOIlVosW87fdbjaTogIn1lYyreWHjgjnto03VjeRm9zCtXHj0pjZBxDTQTiZitkqtux0ja0pvw9MjYcY1tOSLgj16MYULf3gsb9mGS6EW+3OkBoAa3qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Yq1ooxp8; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=G8bXT
+	8guXuEHe3zwPNQ59rUUL4Ht2a1ZJXky8kfhCQA=; b=Yq1ooxp86aX1wk+sPAkvd
+	ZfBdnfnAMWJN05sqDTahndfKWaIuOyWKI+AqF8t/NhTLLDTiuoPG426OD4KbjPSG
+	hKZ+Mlh6c0LO8aNfwNlXrSHr9kAK+rzi5bE02pOFeEF2Xc8eP04CNmG6JBpmqmsB
+	s85Dxq0EU5LWiiLesN8VH4=
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgCnNjHb_VhnpODjFA--.64849S4;
+	Wed, 11 Dec 2024 10:50:19 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: lhx2018202148@ruc.edu.cn
+Cc: Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/komeda: Add check for komeda_get_layer_fourcc_list()
+Date: Wed, 11 Dec 2024 10:50:01 +0800
+Message-Id: <20241211025001.823863-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,44 +52,39 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tcp: check space before adding MPTCP SYN options
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173388483201.1093253.5330438869580330905.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Dec 2024 02:40:32 +0000
-References: <20241209-net-mptcp-check-space-syn-v1-1-2da992bb6f74@kernel.org>
-In-Reply-To: <20241209-net-mptcp-check-space-syn-v1-1-2da992bb6f74@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, edumazet@google.com, davem@davemloft.net,
- dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- fw@strlen.de, cpaasch@apple.com, martineau@kernel.org, geliang@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, moyuanhao3676@163.com,
- stable@vger.kernel.org
+X-CM-TRANSID:PigvCgCnNjHb_VhnpODjFA--.64849S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrKrWDtFyrtry3ZrW3tFykGrg_yoWDKrXEkF
+	1UJr1UXr4UCF9rZw12kw1fX34I9w4ayF4kJr1SqrySvr1xCrsFv3yxXwn8u3WUuay7XF4q
+	k3Z8GF1UA3yxWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xR_yCG7UUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0hmybmdY+pR91AAAsv
 
-Hello:
+Add check for the return value of komeda_get_layer_fourcc_list()
+to catch the potential exception.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Fixes: 5d51f6c0da1b ("drm/komeda: Add writeback support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-On Mon, 09 Dec 2024 13:28:14 +0100 you wrote:
-> From: MoYuanhao <moyuanhao3676@163.com>
-> 
-> Ensure there is enough space before adding MPTCP options in
-> tcp_syn_options().
-> 
-> Without this check, 'remaining' could underflow, and causes issues. If
-> there is not enough space, MPTCP should not be used.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] tcp: check space before adding MPTCP SYN options
-    https://git.kernel.org/netdev/net/c/06d64ab46f19
-
-You are awesome, thank you!
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
+index ebccb74306a7..f30b3d5eeca5 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_wb_connector.c
+@@ -160,6 +160,10 @@ static int komeda_wb_connector_add(struct komeda_kms_dev *kms,
+ 	formats = komeda_get_layer_fourcc_list(&mdev->fmt_tbl,
+ 					       kwb_conn->wb_layer->layer_type,
+ 					       &n_formats);
++	if (!formats) {
++		kfree(kwb_conn);
++		return -ENOMEM;
++	}
+ 
+ 	err = drm_writeback_connector_init(&kms->base, wb_conn,
+ 					   &komeda_wb_connector_funcs,
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.25.1
 
 
