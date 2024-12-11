@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-100661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F412B9ED1EB
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:32:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795A09ED1EC
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 17:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D47B284B37
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 885E4284EF3
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 16:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1CB1DD871;
-	Wed, 11 Dec 2024 16:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057FD1DDC3A;
+	Wed, 11 Dec 2024 16:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nbuz/7EP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BqLxAiva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6461DDC13
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95AB1DDC28
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 16:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733934766; cv=none; b=uymfOB3ljommU/Be3fal5ITYP/MS4UE3FaxmRktFyK7jrSR3C2IVViccBuO+hPrSms7uNg16iCr2h2VoF49bgQEzX2mjf8e+ijssAnLpNG4GIfbcfUPAfOJN8wYhL49xUqTcZvrqYFzc8IHG1O//LTYsRzz9kuc46/baCVYAXF4=
+	t=1733934767; cv=none; b=nEruNX7g9pzi6QtDUeTjOJ39OBcjAaltZe8ofmzrsqCjDmuMLVrl4U6DfJxQZZYKj4a+b0OO60j8W3hhl5hpt2tMaVbGCiNLYPn3eS7B+4alddBlf3nr8yjVH1FRjBpc1+S4SK1lwZEh8gfZjZECLyFHnaP+xO3Fd2C0odXnc4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733934766; c=relaxed/simple;
-	bh=UTan+9vrbO9IlXRRjjaUNuoz6B19pWUYf5s2dNuf9RA=;
+	s=arc-20240116; t=1733934767; c=relaxed/simple;
+	bh=jM+PuwsYkcC4dd6I45wRX+/+VfVNngGoQKn6wnHhelk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TAbJbn+7abYV24xSJD/jjJHTPhGB4d4UhxQAsGVgkxWmrrS0oypIK6Ud9PFvY2sD3iCxXp2p9Po9HYsx8Cmkp39nPlxUxWErhyfuyw8N1MLTWq53DdDGaS0y7gHqmnlYj4HdSL6qczih/ZFiv2g9NPyliFvQAx6+hZSADIPuh4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nbuz/7EP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064E3C4CED2;
-	Wed, 11 Dec 2024 16:32:44 +0000 (UTC)
+	 MIME-Version; b=XaUg+U9Vvzup5Qs3Zn9EpmuTnhaW5DD5syqoOUTGKLArA4LfapoQpzOoXX0zcV2y3Xis7DYOpm9CWC2YeM0vZKWfyuLv1IeipOxWJTKybpZQwpzS695NK5KChsZmdfZBc1wpnDMxLZ4VQBVDtYtk/lcxVcI1KASBbQDsdgh2tVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BqLxAiva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C827C4CED7;
+	Wed, 11 Dec 2024 16:32:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733934765;
-	bh=UTan+9vrbO9IlXRRjjaUNuoz6B19pWUYf5s2dNuf9RA=;
+	s=k20201202; t=1733934767;
+	bh=jM+PuwsYkcC4dd6I45wRX+/+VfVNngGoQKn6wnHhelk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nbuz/7EPQ3Fm8mbN6PDYqaxkJGySPemiFHldelnN5afgjojW+p/wGeW1QnQH9w+/o
-	 q0UvpwwshITOgx0HqmW8gxp6WFKcBAokfVBYFXUY03UwARIM6Rj3TOznZ1JnNxjvEe
-	 qhypgeOrUYeFzvd3Mr4k3HgvgF6TeeHD1xKLZ2sJA6+xkAl0yjfSpHAZDHPmRsKnIN
-	 45ryrw+WawHrOBcxjurfkZGz3V5wlQpHNjcoR/z80kujvLBVLsleKnQNUEzNBFUQIO
-	 VGqVlhLlXFgAac0MfdBlWGNMiVs1BnqxQqUGfjEa6Ed6Ml/p/QXoLvjBY25bUyn2T7
-	 SKSHxZFNEqvHA==
+	b=BqLxAivakCZbaf3S6bYfizFZ1OCFtlLAkVoyYyKCZBIcLs3p+HZ7Q9VuKcT3pXsLZ
+	 sZlgdiQwWwboEreR9pYQ/ZSEUrBI+IvOmpw5ZkOI9qRvq4kY7xRZw22H6gJOxBaqcH
+	 OOyQJ1Ste95eTP4oHc0C+i7AEPy0y53WH4KqE5LbgBUth7JY1NdUZXBItEvHt9ybgv
+	 oGH+2EDmiW4UvNqhoIm1gLidJlOJbZfK3WqSz2TALUvU2BY1kJ4khRrzBqkEigmhrk
+	 s68lrHPAVNwR8gRTxRNdgjZlfZqezIgD8UKN7bu5kc4gqMXYvdNYmYy07qWZ5zmIXR
+	 a9fTp0MPVAHQg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: guocai.he.cn@windriver.com,
+Cc: libo.chen.cn@eng.windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH][5.15.y] bnxt_re: avoid shift undefined behavior in bnxt_qplib_alloc_init_hwq
-Date: Wed, 11 Dec 2024 11:32:43 -0500
-Message-ID: <20241211095907-be78aa4377689fcc@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] fou: remove warn in gue_gro_receive on unsupported protocol
+Date: Wed, 11 Dec 2024 11:32:45 -0500
+Message-ID: <20241211094123-9216e12276833847@stable.kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <20241211101759.3534900-1-guocai.he.cn@windriver.com>
+In-Reply-To:  <20241211083351.235475-1-libo.chen.cn@eng.windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,52 +63,44 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-The claimed upstream commit SHA1 (84d2f29152184f0d72ed7c9648c4ee6927df4e59) was not found.
-However, I found a matching commit: 78cfd17142ef70599d6409cbd709d94b3da58659
+The upstream commit SHA1 provided is correct: dd89a81d850fa9a65f67b4527c0e420d15bf836c
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: guocai.he.cn@windriver.com
-Commit author: Michal Schmidt <mschmidt@redhat.com>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: libo.chen.cn@eng.windriver.com
+Commit author: Willem de Bruijn <willemb@google.com>
 
 
 Status in newer kernel trees:
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: a658f011d89d)
-6.1.y | Present (different SHA1: 84d2f2915218)
+6.6.y | Present (different SHA1: 3db4395332e7)
+6.1.y | Present (different SHA1: 5a2e37bc648a)
 5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  78cfd17142ef7 ! 1:  24ada176cb7fe bnxt_re: avoid shift undefined behavior in bnxt_qplib_alloc_init_hwq
+1:  dd89a81d850fa ! 1:  2115d8ab02118 fou: remove warn in gue_gro_receive on unsupported protocol
     @@ Metadata
       ## Commit message ##
-         bnxt_re: avoid shift undefined behavior in bnxt_qplib_alloc_init_hwq
+         fou: remove warn in gue_gro_receive on unsupported protocol
      
-    +    commit 84d2f29152184f0d72ed7c9648c4ee6927df4e59 upstream.
+    +    [ Upstream commit dd89a81d850fa9a65f67b4527c0e420d15bf836c ]
     +
-         Undefined behavior is triggered when bnxt_qplib_alloc_init_hwq is called
-         with hwq_attr->aux_depth != 0 and hwq_attr->aux_stride == 0.
-         In that case, "roundup_pow_of_two(hwq_attr->aux_stride)" gets called.
-    @@ Commit message
-         Link: https://lore.kernel.org/r/20240507103929.30003-1-mschmidt@redhat.com
-         Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
-         Signed-off-by: Leon Romanovsky <leon@kernel.org>
-    +    Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-    +    Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    Signed-off-by: Guocai He <guocai.he.cn@windriver.com>
+         Drop the WARN_ON_ONCE inn gue_gro_receive if the encapsulated type is
+         not known or does not have a GRO handler.
      
-      ## drivers/infiniband/hw/bnxt_re/qplib_fp.c ##
-     @@ drivers/infiniband/hw/bnxt_re/qplib_fp.c: int bnxt_qplib_create_qp(struct bnxt_qplib_res *res, struct bnxt_qplib_qp *qp)
-    @@ drivers/infiniband/hw/bnxt_re/qplib_fp.c: int bnxt_qplib_create_qp(struct bnxt_q
-     -	hwq_attr.aux_depth = bnxt_qplib_set_sq_size(sq, qp->wqe_mode);
-     +	hwq_attr.aux_depth = psn_sz ? bnxt_qplib_set_sq_size(sq, qp->wqe_mode)
-     +				    : 0;
-    - 	/* Update msn tbl size */
-    - 	if (BNXT_RE_HW_RETX(qp->dev_cap_flags) && psn_sz) {
-    - 		hwq_attr.aux_depth = roundup_pow_of_two(bnxt_qplib_set_sq_size(sq, qp->wqe_mode));
-    + 	hwq_attr.type = HWQ_TYPE_QUEUE;
-    + 	rc = bnxt_qplib_alloc_init_hwq(&sq->hwq, &hwq_attr);
-    + 	if (rc)
+    @@ Commit message
+         Reviewed-by: Eric Dumazet <edumazet@google.com>
+         Link: https://lore.kernel.org/r/20240614122552.1649044-1-willemdebruijn.kernel@gmail.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    Signed-off-by: Libo Chen <libo.chen.cn@windriver.com>
+     
+    - ## net/ipv4/fou_core.c ##
+    -@@ net/ipv4/fou_core.c: static struct sk_buff *gue_gro_receive(struct sock *sk,
+    + ## net/ipv4/fou.c ##
+    +@@ net/ipv4/fou.c: static struct sk_buff *gue_gro_receive(struct sock *sk,
+      
+      	offloads = NAPI_GRO_CB(skb)->is_ipv6 ? inet6_offloads : inet_offloads;
+      	ops = rcu_dereference(offloads[proto]);
 ---
 
 Results of testing on various branches:
