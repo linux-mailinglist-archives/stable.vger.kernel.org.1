@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-100705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB0D9ED50F
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:53:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FFA9ED50E
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:53:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 136CA1880376
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11E4285356
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A18239BCE;
-	Wed, 11 Dec 2024 18:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853A523A18E;
+	Wed, 11 Dec 2024 18:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pjgDrnKW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sLg5CNEs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB5239BC5;
-	Wed, 11 Dec 2024 18:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C852288C8;
+	Wed, 11 Dec 2024 18:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943061; cv=none; b=cV1Pj6wQdAVDfCFqP97+PUXyokGWC8qb9DB2jj0c5XgFt+InNOMgQHmdZ01PP6W7WdnlRfy4TRdoBjumVmHOerSpFfgzNqLtIIOXKEDsC+a0PqcGF7oKaZ+tkspW1gUwYvYJ402TohIc9ingDKz85bsw5CKXBukGfwty+DeFDwU=
+	t=1733943062; cv=none; b=fMQG5Od5OeH3ra6uLSQoVJGzfXlH4HDP2G3fpIQH6YsPSgOwEV1tH6087MHwat57X8EEH0wTyJA7a5Azx3mypKl28Isb+zdBtOxySuxdAdKeZKr+JTV76aplW6gb/izSHmgfYvI/wMa8ANNCYRfdko+0re+KY8mXcYvUzBGuPDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943061; c=relaxed/simple;
-	bh=7Qy4ZhAFYEJeE2aHC5sTXAZwDOO6QBrXQCavMtu5fuI=;
+	s=arc-20240116; t=1733943062; c=relaxed/simple;
+	bh=VQNisN11DKHDGAdOXQZUc6rLA8LP2dJTsux3IK+ROc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOxuPD9+vndRMILU7UYlLikIYWa8eO0htRvxk+tvySLbyQ7tuiObow/Jv3QheIs3EKiowUexcUWBFNQT4bPDoYC3n0QFhKWks6TZ72jYqtGps6AOtyMk3CRQSNkr1R6BH1qP6pqcpnZP2+6kZ6aucGZVCiQDo0ewAgvRCnziSh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pjgDrnKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D58C4CEDF;
-	Wed, 11 Dec 2024 18:50:59 +0000 (UTC)
+	 MIME-Version; b=P3tienhAq6rhWmscXO0Jjf/zBAGpk5GZGH3NCIfNHGi9LQshsX97y+Jd+7WzYSi69rqV6HVc1ZAPux/P8+tRemUNkYdSHKyHK7s2Wm2FwjSowVlriXG5NhqHNg/youYHaoVXZTZI/K9YHPWu+coSFWAmNgJzOI/6B5dJgUKvn1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sLg5CNEs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F8DC4CED2;
+	Wed, 11 Dec 2024 18:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943060;
-	bh=7Qy4ZhAFYEJeE2aHC5sTXAZwDOO6QBrXQCavMtu5fuI=;
+	s=k20201202; t=1733943062;
+	bh=VQNisN11DKHDGAdOXQZUc6rLA8LP2dJTsux3IK+ROc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjgDrnKWBCjZpUS1s8FtHoLRnbFSOTvlgs/is12L9L7Py/wSJrdhhowjH5lTngmJ/
-	 p8TRG4W+pKDM6eTlA81s1wFkIQiBvIcvebU1v95hfLpQWjH9OuWhqgBiaWFZys8dCl
-	 KJwrIbyrUgtBzIR52P14CDc+rn8crTTZKz23rm1yIQtG0g6HBh4HYTvJeh6b1rcIb8
-	 qnFBSCrc6DxbX7mrdKxJG4/mxspFAUI0HBqCKcJ20gDPA8K/cXUCaDocwIUlaqYwQD
-	 Cn/jyvWqHdd3wTLOAzc4La91n3H+EcwUpOaToHIb8K9+YJdqdMU9fNtZQN+Xjy62dv
-	 bXGDl9aIvNGzA==
+	b=sLg5CNEs7JIdQbNp+etRWaal6GnILUphgGmrKGEfMcvRTn0ece+ONRiiKlTpMuf/9
+	 wy2gVZBPs9bKgr7d+SdNckF0mD21JYtOtSpCrwfd/y51HJ/N1wJdOqdVl6HTQDxR0V
+	 xRjAK6vsYWtGTaNDPRtIfPp0Zf885hfUF033PdKsxgc8hI3dPyP15cjVTXIMT6EYXu
+	 rE6VTfxf9yH3vLn1C+AoyPmrIrg0pIGZNjneqvfMvSvBKhhZY6GiD+bZcIcXTTjLe9
+	 UpnGmQyDvV3AxLQaoWLL4znvIHK6MYQXWQgyMhNfOS3Cl90ggvoUWE274oG0HwdFHw
+	 lh7bH5beffnzA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brahmajit Das <brahmajit.xyz@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 15/36] smb: server: Fix building with GCC 15
-Date: Wed, 11 Dec 2024 13:49:31 -0500
-Message-ID: <20241211185028.3841047-15-sashal@kernel.org>
+	gregkh@linuxfoundation.org
+Subject: [PATCH AUTOSEL 6.12 16/36] regmap: Use correct format specifier for logging range errors
+Date: Wed, 11 Dec 2024 13:49:32 -0500
+Message-ID: <20241211185028.3841047-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -67,45 +64,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.4
 Content-Transfer-Encoding: 8bit
 
-From: Brahmajit Das <brahmajit.xyz@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit e18655cf35a5958fbf4ae9ca3ebf28871a3a1801 ]
+[ Upstream commit 3f1aa0c533d9dd8a835caf9a6824449c463ee7e2 ]
 
-GCC 15 introduces -Werror=unterminated-string-initialization by default,
-this results in the following build error
+The register addresses are unsigned ints so we should use %u not %d to
+log them.
 
-fs/smb/server/smb_common.c:21:35: error: initializer-string for array of 'char' is too long [-Werror=unterminated-string-ini
-tialization]
-   21 | static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
-      |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-
-To this we are replacing char basechars[43] with a character pointer
-and then using strlen to get the length.
-
-Signed-off-by: Brahmajit Das <brahmajit.xyz@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/20241127-regmap-test-high-addr-v1-1-74a48a9e0dc5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb_common.c | 4 ++--
+ drivers/base/regmap/regmap.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 75b4eb856d32f..af8e24163bf26 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -18,8 +18,8 @@
- #include "mgmt/share_config.h"
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 4ded93687c1f0..d09cda139d219 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1051,13 +1051,13 @@ struct regmap *__regmap_init(struct device *dev,
  
- /*for shortname implementation */
--static const char basechars[43] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
--#define MANGLE_BASE (sizeof(basechars) / sizeof(char) - 1)
-+static const char *basechars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_-!@#$%";
-+#define MANGLE_BASE (strlen(basechars) - 1)
- #define MAGIC_CHAR '~'
- #define PERIOD '.'
- #define mangle(V) ((char)(basechars[(V) % MANGLE_BASE]))
+ 		/* Sanity check */
+ 		if (range_cfg->range_max < range_cfg->range_min) {
+-			dev_err(map->dev, "Invalid range %d: %d < %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u < %u\n", i,
+ 				range_cfg->range_max, range_cfg->range_min);
+ 			goto err_range;
+ 		}
+ 
+ 		if (range_cfg->range_max > map->max_register) {
+-			dev_err(map->dev, "Invalid range %d: %d > %d\n", i,
++			dev_err(map->dev, "Invalid range %d: %u > %u\n", i,
+ 				range_cfg->range_max, map->max_register);
+ 			goto err_range;
+ 		}
 -- 
 2.43.0
 
