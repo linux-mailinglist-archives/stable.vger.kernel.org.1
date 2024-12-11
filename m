@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-100762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E66A9ED5B8
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:06:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BEE79ED5BC
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E16228352E
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF4D7280F23
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A4823A1A2;
-	Wed, 11 Dec 2024 18:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50730251AED;
+	Wed, 11 Dec 2024 18:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kETN8+Jf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X2dpDUTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD95525335F;
-	Wed, 11 Dec 2024 18:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF65825332C;
+	Wed, 11 Dec 2024 18:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943227; cv=none; b=LCHhPhHJCacANnewQPmDZmqHw4j1XDS2HmQVxc4U0G54gJk9jYkKyVQ9AFJLJv3mv0aQ5ePe7nRMzW9vya7Aav7JiphfwO+4z1fsJFnA5BfEDmNSObF3LYk9IbORd9si4r/C0JxPCeat2Zqn+23Z4P7qYaE024u5CZrzOaUTASY=
+	t=1733943232; cv=none; b=KTiKF6vzAR3sRHrBfhhxA3ib20cANl8fZHUqmFW/XAEcDO2+ZiPst5uTqi6VO2F5Xfwq/wWd+7LccBiERTJ2YooFFz4OqDOF6kZKP/PgHu9HE23iEZpD5gAHGx7Vow210B6ykaUuI/2wcrKKHvmbW4T5PsYXnT60Hml1GaFPKxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943227; c=relaxed/simple;
-	bh=1s1oXBbynOKYRxIx8NkEYOr7+xr9N+ldup6y4maCt6U=;
+	s=arc-20240116; t=1733943232; c=relaxed/simple;
+	bh=OrkWIbXM0KdIPk8HRXIAI3tRb8LvmxPMYzRl1CeF+lI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sePgqQuuCSfU+THv7Vom42iD2uLfYRhAaba7NcNJaAwBdPpa1nHGwue1HASU/GAUDY2ZENbUdqMq69yk6PibIdhjSWwQCyV+MfZ3e0HegGrZRYU8XROnJYVhi10JSXDocOhZzuFh4OENHMnRBFxjYMVIFN8DfHeUQUnClhI/xYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kETN8+Jf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C42C4CED2;
-	Wed, 11 Dec 2024 18:53:45 +0000 (UTC)
+	 MIME-Version; b=S8hVeYR9KJCUqQsw4mRfZzCeEWwbP0ajqweOjEkR+u1tW/o9poJ0xl/2LsAmBz1Ft9ysN6wIM46DXHYQgACLxb48fgIOSU7fPgo4TtfISoq2jHARQ+Z4b9B7NEz9mzxBwGWnP40TNhtJRNkGafR+0mZmHOS8adyZG+9obFU9fDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X2dpDUTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40DFC4CEDD;
+	Wed, 11 Dec 2024 18:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943227;
-	bh=1s1oXBbynOKYRxIx8NkEYOr7+xr9N+ldup6y4maCt6U=;
+	s=k20201202; t=1733943230;
+	bh=OrkWIbXM0KdIPk8HRXIAI3tRb8LvmxPMYzRl1CeF+lI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kETN8+JfnclYCXpEd9SsiTw8Nea19TVvF06/4hZtLJ0kmGA27Q5aXnGdVR3SESOgN
-	 7yCkq3xYIKlB/Yd5mBinOHDmkT3WdkXCafSA8P8w/zCjDonFGxKwUZTrxPfyEWRvhf
-	 0m4em5nZ6oEYJN0fqCHohCxNclUhmQLUEx6vRYfw9CStGt8qf4N4WpI2MYXDMDgDPN
-	 4Y6sNx4+jLt6UojdZL9gkwi0VP9YTTgdBC63K44/RLUDR7PdcCwjY52fxnNOmR9WXX
-	 /rQgjpSi5/fKBVEY4qlODqRAgSb6KTyuP+e+CRztnQ9HOUxkkDwz2Y8oAWVnpS54fr
-	 QmflKLZTDTkMQ==
+	b=X2dpDUTfm92rBgzFiiS/oasqsvuJnwOy3gBZV6xSP8aL+5n8O51FxqF4guMJbmOK3
+	 WlGn/zS50mrgr/5Uy08/CA+Bb1PzBf1f7XJ6R6zextZZFU2lDjaEORUXwONIecxWUn
+	 evWDAitR/Is+R9DclZPC0k7tWUQUNOiwLR2EGd3xz43Y2PXPGkLIyCliSRjKE/q+Ah
+	 cbECsc+pVrOzfL1jy/BSWiEOmjEKh/+shAEJLJwP/5tJMyAqyXU5SgLGjpeb39stHy
+	 D2vetDGhPpOKGPjESSiY3cNDpyLAOLtBYRfmqnqTNgsxsfvDdydB+mhMB5n2w1KoOq
+	 R+oLTCWc0Qo7w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Imre Deak <imre.deak@intel.com>,
-	Lyude Paul <lyude@redhat.com>,
+Cc: Ming Lei <ming.lei@redhat.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Peter Newman <peternewman@google.com>,
+	Babu Moger <babu.moger@amd.com>,
+	Luck Tony <tony.luck@intel.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	jani.nikula@intel.com,
-	harry.wentland@amd.com,
-	alexander.deucher@amd.com,
-	Wayne.Lin@amd.com,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 13/15] drm/dp_mst: Reset message rx state after OOM in drm_dp_mst_handle_up_req()
-Date: Wed, 11 Dec 2024 13:53:05 -0500
-Message-ID: <20241211185316.3842543-13-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 15/15] blk-mq: register cpuhp callback after hctx is added to xarray table
+Date: Wed, 11 Dec 2024 13:53:07 -0500
+Message-ID: <20241211185316.3842543-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185316.3842543-1-sashal@kernel.org>
 References: <20241211185316.3842543-1-sashal@kernel.org>
@@ -74,58 +70,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.119
 Content-Transfer-Encoding: 8bit
 
-From: Imre Deak <imre.deak@intel.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 2b245c97b1af5d8f04c359e0826cb5a5c81ef704 ]
+[ Upstream commit 4bf485a7db5d82ddd0f3ad2b299893199090375e ]
 
-After an out-of-memory error the reception state should be reset, so
-that the next attempt receiving a message doesn't fail (due to getting a
-start-of-message packet, while the reception state has already the
-start-of-message flag set).
+We need to retrieve 'hctx' from xarray table in the cpuhp callback, so the
+callback should be registered after this 'hctx' is added to xarray table.
 
-Cc: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-7-imre.deak@intel.com
+Cc: Reinette Chatre <reinette.chatre@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Peter Newman <peternewman@google.com>
+Cc: Babu Moger <babu.moger@amd.com>
+Cc: Luck Tony <tony.luck@intel.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20241206111611.978870-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_mst_topology.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ block/blk-mq.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-index e677a8eb45a4e..7321dcfb74a9a 100644
---- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-@@ -3996,6 +3996,7 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 542b28a2e6b0f..fd289f2f83db1 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3665,16 +3665,11 @@ static int blk_mq_init_hctx(struct request_queue *q,
  {
- 	struct drm_dp_pending_up_req *up_req;
- 	struct drm_dp_mst_branch *mst_primary;
-+	int ret = 0;
+ 	hctx->queue_num = hctx_idx;
  
- 	if (!drm_dp_get_one_sb_msg(mgr, true, NULL))
- 		goto out_clear_reply;
-@@ -4004,8 +4005,10 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 		return 0;
+-	if (!(hctx->flags & BLK_MQ_F_STACKING))
+-		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
+-				&hctx->cpuhp_online);
+-	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
+-
+ 	hctx->tags = set->tags[hctx_idx];
  
- 	up_req = kzalloc(sizeof(*up_req), GFP_KERNEL);
--	if (!up_req)
--		return -ENOMEM;
-+	if (!up_req) {
-+		ret = -ENOMEM;
-+		goto out_clear_reply;
-+	}
+ 	if (set->ops->init_hctx &&
+ 	    set->ops->init_hctx(hctx, set->driver_data, hctx_idx))
+-		goto unregister_cpu_notifier;
++		goto fail;
  
- 	INIT_LIST_HEAD(&up_req->next);
+ 	if (blk_mq_init_request(set, hctx->fq->flush_rq, hctx_idx,
+ 				hctx->numa_node))
+@@ -3683,6 +3678,11 @@ static int blk_mq_init_hctx(struct request_queue *q,
+ 	if (xa_insert(&q->hctx_table, hctx_idx, hctx, GFP_KERNEL))
+ 		goto exit_flush_rq;
  
-@@ -4072,7 +4075,7 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
- 	drm_dp_mst_topology_put_mstb(mst_primary);
- out_clear_reply:
- 	memset(&mgr->up_req_recv, 0, sizeof(struct drm_dp_sideband_msg_rx));
--	return 0;
-+	return ret;
++	if (!(hctx->flags & BLK_MQ_F_STACKING))
++		cpuhp_state_add_instance_nocalls(CPUHP_AP_BLK_MQ_ONLINE,
++				&hctx->cpuhp_online);
++	cpuhp_state_add_instance_nocalls(CPUHP_BLK_MQ_DEAD, &hctx->cpuhp_dead);
++
+ 	return 0;
+ 
+  exit_flush_rq:
+@@ -3691,8 +3691,7 @@ static int blk_mq_init_hctx(struct request_queue *q,
+  exit_hctx:
+ 	if (set->ops->exit_hctx)
+ 		set->ops->exit_hctx(hctx, hctx_idx);
+- unregister_cpu_notifier:
+-	blk_mq_remove_cpuhp(hctx);
++ fail:
+ 	return -1;
  }
  
- /**
 -- 
 2.43.0
 
