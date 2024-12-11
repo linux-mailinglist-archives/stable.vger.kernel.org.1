@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-100736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7569ED568
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43EFB9ED56B
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:00:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 672ED281203
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:00:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318AA280F66
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AC6249505;
-	Wed, 11 Dec 2024 18:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AFC249533;
+	Wed, 11 Dec 2024 18:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeSLY7T/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QeIbXk8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2AE248FBC;
-	Wed, 11 Dec 2024 18:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC2624952C;
+	Wed, 11 Dec 2024 18:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943154; cv=none; b=X30jD6Bzd03u6t8MbSEWuo6hMWtZzaMTZH4l1OXYF3+Xj8ynOmQkEcdfpXEHkN/lTkhd0oyyRp+oX/c1qeePr91aRmZq0/JziEu7V8F6a5RaYvMjODCNv37kQ5MiSfydSRsFOQ7U3C0JqVQIcz3lnVicVd3+zsoonFcUUOhl7RQ=
+	t=1733943157; cv=none; b=dO7KyFrpK/A8yES0nH82oEYZtLe2I7NmHhcHlk69CDKmCBmNAMeSlsRr9HriPcbe+CC7epsmch3X5P7HzypX4durjTg8/MDY6BySV0Jh7GX2szMHQChfPUWOSNq0C3svYs3LPHr3OaKZehJIfZIP/R5NahBR38DAVN8HDHZfAHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943154; c=relaxed/simple;
-	bh=l/nACr1/gui4Ot7CYT7tF6FVb1oiQZbn/0HryvqdUyg=;
+	s=arc-20240116; t=1733943157; c=relaxed/simple;
+	bh=rqg2w4iPOtxasrBB3O2j/E9Z70zWx/+29wiMZyqRQTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyJ4JYcn6QRs+xVTH9aHWRdTmCUe5M9PP/lr7jXWTOOf7qmgEx7ExHJnu3ZUq6wEsZEqjhOsQoomWadov+3rHsrf0aSW/dOTxsO0hVf9jiq6L77Vx61q/gz9wtUghFEQtO9wpZZhpEFEqLQqyto/Gd4acEeZW+xGcfza54Xu64I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeSLY7T/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0615BC4CED4;
-	Wed, 11 Dec 2024 18:52:32 +0000 (UTC)
+	 MIME-Version; b=uA6I1hfYqWV7rnTfi66X7DurutZ72dJma+c8MjyS8K3iQrs922UF/bOzdZY6UYeQ2uEiloWexRJXPJsSMcERG8/vuswYY9Afl3iOAY2AiLrBstCEEGEOyzH7fj/2rwvnH8QmXawBpelom7+u0coC0L+53O/zJctrcD5frhjRYsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QeIbXk8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF81C4CED2;
+	Wed, 11 Dec 2024 18:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943154;
-	bh=l/nACr1/gui4Ot7CYT7tF6FVb1oiQZbn/0HryvqdUyg=;
+	s=k20201202; t=1733943157;
+	bh=rqg2w4iPOtxasrBB3O2j/E9Z70zWx/+29wiMZyqRQTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aeSLY7T/X80aVW6ZDHkCjgRQllVL9l4w+0Id+sJaS0bgw80fMrfNOiWNJggANV6fh
-	 BmrpuGNvKELwvcGEyFqBZx33Qj5h3dbiG4CDKikUNWCwhVtGFsp7wxEE+Ha3rhBXdM
-	 fjAMhI+moRjtfcaBLPHUn+OvVAUDF3yJ7eOof7AKcTVQI7WfcEt4sk51ej6hm7ZJmf
-	 IhkauyfVbV4bXj7WdDo1wU/Aj7vQfBHUswWq/5KPY5DZGMW7SWJwXzxGabHMCoZCZs
-	 cKtPrcA0d1Ksl83KTM46Br5rL83RcLlVt3DE/DryaAdCOeouZAj1vUDrcKD1/sCaKr
-	 qifCtL+gCg7Rw==
+	b=QeIbXk8W6VSvDHJ7BGmK2/rvFEAgB+tuVlR3XI0oXxyaXdCgoaliVbnyw8hanfjq9
+	 WpH2hvEMXj9e2nk2cKjIKCap6qltBEpBRW6IjVDT/A7BSEx9mQMPXDNyJSCG8vXaaH
+	 e97XsfnoQ5bVBGXg/SIyepDx7U4k7A0C0Z81eeZugQaB4gK1K08c5IHzww6iJUUebb
+	 DuFbG4M2IOTVMcAaRKhtz1zPRT8AgM6WL+EBRCyRvopK75pDWjpgq4+qUT8M36/ugb
+	 +hWt282rBV5onrhnnR+kBe3SCpmZRiceBbl2Cs+ekyvqCdkrFSzx3hIJlxcdjU7CrL
+	 23oilv7Rogxmw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
-	Xuefeng Zhao <zhaoxuefeng@loongson.cn>,
-	Jianmin Lv <lvjianmin@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
+Cc: David Wang <00107082@163.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>,
-	ardb@kernel.org,
 	chenhuacai@kernel.org,
-	linux-efi@vger.kernel.org,
+	maobibo@loongson.cn,
+	tglx@linutronix.de,
+	lvjianmin@loongson.cn,
+	zhangtianyang@loongson.cn,
 	loongarch@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 10/23] LoongArch: Fix reserving screen info memory for above-4G firmware
-Date: Wed, 11 Dec 2024 13:51:47 -0500
-Message-ID: <20241211185214.3841978-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 11/23] LoongArch/irq: Use seq_put_decimal_ull_width() for decimal values
+Date: Wed, 11 Dec 2024 13:51:48 -0500
+Message-ID: <20241211185214.3841978-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185214.3841978-1-sashal@kernel.org>
 References: <20241211185214.3841978-1-sashal@kernel.org>
@@ -70,37 +70,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.65
 Content-Transfer-Encoding: 8bit
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: David Wang <00107082@163.com>
 
-[ Upstream commit 55dc2f8f263448f1e6c7ef135d08e640d5a4826e ]
+[ Upstream commit ad2a05a6d287aef7e069c06e329f1355756415c2 ]
 
-Since screen_info.lfb_base is a __u32 type, an above-4G address need an
-ext_lfb_base to present its higher 32bits. In init_screen_info() we can
-use __screen_info_lfb_base() to handle this case for reserving screen
-info memory.
+Performance improvement for reading /proc/interrupts on LoongArch.
 
-Signed-off-by: Xuefeng Zhao <zhaoxuefeng@loongson.cn>
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+On a system with n CPUs and m interrupts, there will be n*m decimal
+values yielded via seq_printf(.."%10u "..) which is less efficient than
+seq_put_decimal_ull_width(), stress reading /proc/interrupts indicates
+~30% performance improvement with this patch (and its friends).
+
+Signed-off-by: David Wang <00107082@163.com>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/efi.c | 2 +-
+ arch/loongarch/kernel/smp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/efi.c b/arch/loongarch/kernel/efi.c
-index de4f3def4af0b..4ae77e9300d58 100644
---- a/arch/loongarch/kernel/efi.c
-+++ b/arch/loongarch/kernel/efi.c
-@@ -90,7 +90,7 @@ static void __init init_screen_info(void)
- 	memset(si, 0, sizeof(*si));
- 	early_memunmap(si, sizeof(*si));
- 
--	memblock_reserve(screen_info.lfb_base, screen_info.lfb_size);
-+	memblock_reserve(__screen_info_lfb_base(&screen_info), screen_info.lfb_size);
+diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+index 9dbe7907a9612..a3e154978ac9d 100644
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -83,7 +83,7 @@ void show_ipi_list(struct seq_file *p, int prec)
+ 	for (i = 0; i < NR_IPI; i++) {
+ 		seq_printf(p, "%*s%u:%s", prec - 1, "IPI", i, prec >= 4 ? " " : "");
+ 		for_each_online_cpu(cpu)
+-			seq_printf(p, "%10u ", per_cpu(irq_stat, cpu).ipi_irqs[i]);
++			seq_put_decimal_ull_width(p, " ", per_cpu(irq_stat, cpu).ipi_irqs[i], 10);
+ 		seq_printf(p, " LoongArch  %d  %s\n", i + 1, ipi_types[i]);
+ 	}
  }
- 
- void __init efi_init(void)
 -- 
 2.43.0
 
