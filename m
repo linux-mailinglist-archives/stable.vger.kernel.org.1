@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-100790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 892D59ED620
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9905D9ED623
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7EF51886640
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:12:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02DE3188574A
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3FE2583B1;
-	Wed, 11 Dec 2024 18:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F396258DC9;
+	Wed, 11 Dec 2024 18:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZD1viP+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGNwEJRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15026231A55;
-	Wed, 11 Dec 2024 18:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F54258DBE;
+	Wed, 11 Dec 2024 18:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943294; cv=none; b=q0ACks0aak3zrmvtDZwJhaByr0c9spx26jSVxXhNWs8S8voGYbMPb0479SpNDgnBK/7VwedM0ceUE8TMUIDPIXTP13wSQqJBDM8SvAptN2z95pQhaG2xxGQPSiHhjWfjyao0KO460G2gDPTLQhKQdmNlc2Ba794+YzZW8+2VIz0=
+	t=1733943295; cv=none; b=V3NPfCcRQjp7TwYjZ8XjpZMd/6Q6hYFXEAMJVAt6RvJKdJDI3B+SG0cnD/7qkvVcVVbjoeWixElbLkTKC2LH+4T0kBO0Fi2zHlFf9vUMJMYX7W/Kb8xudeTHEFHCbgwGBX36LKkH7AIGi7b4BhU1HYwnolUrB59K1zBghG2+MTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943294; c=relaxed/simple;
-	bh=CCDFKS6vMByGtpQTlwrzuoSGCamZCdlwbcG/B6kvv5Y=;
+	s=arc-20240116; t=1733943295; c=relaxed/simple;
+	bh=jNZQ0zi8NAueW2lyQFKyaIzSOngIk/Se6jwSwXItvds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/aLh86I6ssGE+tyNtvgOrP8EAnhKuyZ+tPTt+rvDE7s6NCKtM2SUuZIf7pEotUTtF+d9zGxz89d/RAYZzBDFMC/+WAKkOeNcPd6kSKwOnz76O6LYayrhoxqOjFeOZZaCs4gskBmxhdq3v90zmI6vviaS1GLXDlKUU4U275cUmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZD1viP+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D4BC4CEDD;
-	Wed, 11 Dec 2024 18:54:52 +0000 (UTC)
+	 MIME-Version; b=alOUYwkSli1qkMDnB8BM2QL51jZ0W0ax7KpiT9k3BHB+CbHIZf6AEHnmIO3YHvpSTVuHImX+5IaNJDzaU9kIC3Pme4x4RSPIS3fCImvUYuTra4uLy500qPdygX3XAMyCIDCiH0zwsVlDTPgURuCUT3Sc/Bb5TC6cTHmCltwQr1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGNwEJRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274F6C4CEE0;
+	Wed, 11 Dec 2024 18:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943293;
-	bh=CCDFKS6vMByGtpQTlwrzuoSGCamZCdlwbcG/B6kvv5Y=;
+	s=k20201202; t=1733943295;
+	bh=jNZQ0zi8NAueW2lyQFKyaIzSOngIk/Se6jwSwXItvds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZD1viP+kw0HsYfMRSV7mRpynmNmRllGobIktreIQIn+BT2CHeIf7vVH9pElO7PWA
-	 U7oss1t2aanUlRfVeMpIbgj0wzMT2TELzyKfBWs/QP/beHvpPIG0vhb5MqFhwxWB13
-	 Iun9hR+bM6ckDdmB5AXwRKgs/1vcF+C79dzAaNwOHFbsCIExO31SrBTrL4s6ZWQoN2
-	 H9xLQgKDfP5Oxr0yVznoHWdouHHA2pPIzvhYFrKEAVxKGvaDcPqcNoCNW2guNqrQUX
-	 P/eFScMADaH/emzhz8xUTgHiB/B2k7rIU0OTVrEtgSljU39sAUasSGzqLifXyhFrmP
-	 Jb38bgXMNo0Tw==
+	b=QGNwEJRPPwlMm+H/cuJPUnjmptLnKTUhwcqI/UUvV3NWjNKRcO12bz8D3g52xf2Nm
+	 YdAUsB2/vszZAANGe1bJCt5eC6P1HfG9HbeyWOTZgdKDVfxreqaThCH3xHTukwO1KU
+	 B20yRT+QVV9+xtST45KkupRCGo8ay9u9b6RtrGXFy4QiDJqqsFehV9EaAqJiaqWcF4
+	 sLwZfjhFUX5yriVXcZvgTq8DZ8qbfPXtC2fx1o1lsV3nVcGJHP69I16/jPUaJf8yyo
+	 jwGn6iTYLtTuRMzU3/SDaF5dtiN5i0Jaox4QJOQDo/8tt1/uX3GrsC/sTc/WlFfJAC
+	 hLcGct4lEACUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Ming Lei <ming.lei@redhat.com>,
+	Yi Sun <yi.sun@unisoc.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	sathya.prakash@broadcom.com,
-	sreekanth.reddy@broadcom.com,
-	suganath-prabu.subramani@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	MPT-FusionLinux.pdl@broadcom.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 6/7] scsi: mpt3sas: Diag-Reset when Doorbell-In-Use bit is set during driver load time
-Date: Wed, 11 Dec 2024 13:54:39 -0500
-Message-ID: <20241211185442.3843374-6-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 7/7] virtio-blk: don't keep queue frozen during system suspend
+Date: Wed, 11 Dec 2024 13:54:40 -0500
+Message-ID: <20241211185442.3843374-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185442.3843374-1-sashal@kernel.org>
 References: <20241211185442.3843374-1-sashal@kernel.org>
@@ -70,50 +71,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.286
 Content-Transfer-Encoding: 8bit
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 3f5eb062e8aa335643181c480e6c590c6cedfd22 ]
+[ Upstream commit 7678abee0867e6b7fb89aa40f6e9f575f755fb37 ]
 
-Issue a Diag-Reset when the "Doorbell-In-Use" bit is set during the
-driver load/initialization.
+Commit 4ce6e2db00de ("virtio-blk: Ensure no requests in virtqueues before
+deleting vqs.") replaces queue quiesce with queue freeze in virtio-blk's
+PM callbacks. And the motivation is to drain inflight IOs before suspending.
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20241110173341.11595-2-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+block layer's queue freeze looks very handy, but it is also easy to cause
+deadlock, such as, any attempt to call into bio_queue_enter() may run into
+deadlock if the queue is frozen in current context. There are all kinds
+of ->suspend() called in suspend context, so keeping queue frozen in the
+whole suspend context isn't one good idea. And Marek reported lockdep
+warning[1] caused by virtio-blk's freeze queue in virtblk_freeze().
+
+[1] https://lore.kernel.org/linux-block/ca16370e-d646-4eee-b9cc-87277c89c43c@samsung.com/
+
+Given the motivation is to drain in-flight IOs, it can be done by calling
+freeze & unfreeze, meantime restore to previous behavior by keeping queue
+quiesced during suspend.
+
+Cc: Yi Sun <yi.sun@unisoc.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: virtualization@lists.linux.dev
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20241112125821.1475793-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_base.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/block/virtio_blk.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index 1bc23e8ee748a..69023ddceb59f 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -5695,11 +5695,12 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
- 	int i;
- 	u8 failed;
- 	__le32 *mfp;
-+	int ret_val;
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 3afc07b59477b..b1c5bcae9b318 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1062,9 +1062,12 @@ static void virtblk_remove(struct virtio_device *vdev)
+ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
++	struct request_queue *q = vblk->disk->queue;
  
- 	/* make sure doorbell is not in use */
- 	if ((ioc->base_readl(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
- 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
--		return -EFAULT;
-+		goto doorbell_diag_reset;
- 	}
+ 	/* Ensure no requests in virtqueues before deleting vqs. */
+-	blk_mq_freeze_queue(vblk->disk->queue);
++	blk_mq_freeze_queue(q);
++	blk_mq_quiesce_queue_nowait(q);
++	blk_mq_unfreeze_queue(q);
  
- 	/* clear pending doorbell interrupts from previous state changes */
-@@ -5789,6 +5790,10 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
- 			    le32_to_cpu(mfp[i]));
- 	}
+ 	/* Ensure we don't receive any more interrupts */
+ 	vdev->config->reset(vdev);
+@@ -1088,8 +1091,8 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 		return ret;
+ 
+ 	virtio_device_ready(vdev);
++	blk_mq_unquiesce_queue(vblk->disk->queue);
+ 
+-	blk_mq_unfreeze_queue(vblk->disk->queue);
  	return 0;
-+
-+doorbell_diag_reset:
-+	ret_val = _base_diag_reset(ioc);
-+	return ret_val;
  }
- 
- /**
+ #endif
 -- 
 2.43.0
 
