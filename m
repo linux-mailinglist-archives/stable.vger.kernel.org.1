@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-100720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534A29ED540
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:57:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82649ED53D
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2EB188A5BB
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:57:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9F741629E6
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 18:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F158E244695;
-	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B72236906;
+	Wed, 11 Dec 2024 18:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqWAQq30"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHnVvbS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4DF32446A4;
-	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B62446BD;
+	Wed, 11 Dec 2024 18:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733943104; cv=none; b=hF3Gh3cynYOdJcRibvzLDqtuf0R4oPhDldChUBFqu2x5nl8NFua6MQ1mR7ndDJdazKN0D24q23Lc6df+miCbqNmADtHuJoeMerv9HFDjqQ11uXI+NCLr5Yyt6KE1IocWQvYdpjSVmMmN+htfUVa4eJoRfmSn+tG4isUd/8iyvjk=
+	t=1733943106; cv=none; b=tOQ0YTdnGQeYppCFrKhESKh9oMcTOki8tSVWgOvMSw+WeXe4rkyxt3ij/0VKflIvIiq8n5Xjm0K9z/Oa4wQ8KGjDtRkkK884ax5gG06lXHUgQjI5L/1ji4dObDC5CflU/yjJnz224sGXW/6CMX7vYRXVwQAXKBpaisd7VUYe9ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733943104; c=relaxed/simple;
-	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
+	s=arc-20240116; t=1733943106; c=relaxed/simple;
+	bh=yLHfV8ngkXxhgtHKKyFXreDxZ0ZXQvQnWW97XSfdb98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AN/U3mduLkE9g5liCYCOp2lYPDeq22Q0bHI9uuZhNHC/452yuAtRdLVIYQ9+SV20nmhMRZDv4n5lrgr+HZT/T0fQMyBs0WoIUH5mA/iGbAM9XVsl/5i5sP8Ctgg1y3tj9p6kOEea6XB97zUzwVb0CmkBPVCEf8kWZYmHRaR4RC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqWAQq30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B54C4CED2;
-	Wed, 11 Dec 2024 18:51:42 +0000 (UTC)
+	 MIME-Version; b=UpUmhP7YikiC6bwB+0knrhAFcbMCLdmP0faVN47rN5+SbcXBH/gzdf3GTvMxMvQr/Up/A1lLEOGgKX1Qj811off0nmo0tUBkhawJWQ4mQJu4++DDcPJhyn2+OnHNvqIDYNE7k0wV6UiI0GbSY0zPywceWQ/UrAIPDyr9KLQpnFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHnVvbS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F6AC4CEDD;
+	Wed, 11 Dec 2024 18:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733943104;
-	bh=Q8NU/o+9jYTC9l0pFFRpT4IbDpPxD0RNgZFIK8z6V8U=;
+	s=k20201202; t=1733943105;
+	bh=yLHfV8ngkXxhgtHKKyFXreDxZ0ZXQvQnWW97XSfdb98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqWAQq30T4UVCiDAWf7YvHrQJ9frLO9a1Fg87J/j1D8k6KH+CXAF6wn05RkBhRcMY
-	 jDXmFAHaYm7IaKvCkZN6/zf4kB+ZHiy/QTYLyvrbdD4bWleTanXz3KSWOPbtQkP3cG
-	 Vo0yb8rps2+f3hzpw/AxHH0Cim2TlW5XUukTxyQLrEz3hKSmBzlKn7M7NeKi1PG8Xv
-	 SlrDSG6Wfc8zkhi0JbcuIaUhpZwBwXVuBT+G6A/3u22l+dGqQvRmihTARpXpLB+9Ux
-	 0HmXE0conMktH1IWPaD9nisuYWmi8ANJ65TdAl+eYNcSa3B53nRCP4BMQ1T0+MbEVN
-	 casIJpH8VjLgw==
+	b=gHnVvbS1XB97kpLzTk+1XMagYUCyxC2XQKdqIPD+YRSyVJeKVVovhWljEs/pmWnCO
+	 7ec/udzdaQpn6H1UDUosbAZ2tP+6uQBXYiQuKmfv1OPlFXChovIEW3GTFX9sWlLdQh
+	 wJ13+Drw8prnjqFCT/WJ3+EA/TyBsTKGlURKa0U+KsRQEpbkobvB/PRtzcoiYSpCA2
+	 FTXc53PgXH4czAxu1NE52q73hJdHmA+qgnTZRBMQ5EN0ewh2ewgL2Hfm1cUYjH+Vl2
+	 HGTym8lptC0FAz6Xya+wNx+QPgjHT6erIUkT5V0JRDagNSXBREVe2/OOMCAZ/x/JQ3
+	 SwEKSfBsIr13Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Qinxin Xia <xiaqinxin@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+Cc: Purushothama Siddaiah <psiddaiah@mvista.com>,
+	Corey Minyard <cminyard@mvista.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	will@kernel.org,
-	corbet@lwn.net,
-	lpieralisi@kernel.org,
-	sudeep.holla@arm.com,
-	rafael@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 30/36] ACPI/IORT: Add PMCG platform information for HiSilicon HIP09A
-Date: Wed, 11 Dec 2024 13:49:46 -0500
-Message-ID: <20241211185028.3841047-30-sashal@kernel.org>
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 31/36] spi: omap2-mcspi: Fix the IS_ERR() bug for devm_clk_get_optional_enabled()
+Date: Wed, 11 Dec 2024 13:49:47 -0500
+Message-ID: <20241211185028.3841047-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241211185028.3841047-1-sashal@kernel.org>
 References: <20241211185028.3841047-1-sashal@kernel.org>
@@ -74,56 +66,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.4
 Content-Transfer-Encoding: 8bit
 
-From: Qinxin Xia <xiaqinxin@huawei.com>
+From: Purushothama Siddaiah <psiddaiah@mvista.com>
 
-[ Upstream commit c2b46ae022704a2d845e59461fa24431ad627022 ]
+[ Upstream commit 4c6ac5446d060f0bf435ccc8bc3aa7b7b5f718ad ]
 
-HiSilicon HIP09A platforms using the same SMMU PMCG with HIP09
-and thus suffers the same erratum. List them in the PMCG platform
-information list without introducing a new SMMU PMCG Model.
+The devm_clk_get_optional_enabled() function returns error
+pointers(PTR_ERR()). So use IS_ERR() to check it.
 
-Update the silicon-errata.rst as well.
+Verified on K3-J7200 EVM board, without clock node mentioned
+in the device tree.
 
-Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
-Link: https://lore.kernel.org/r/20241205013331.1484017-1-xiaqinxin@huawei.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Purushothama Siddaiah <psiddaiah@mvista.com>
+Reviewed-by: Corey Minyard <cminyard@mvista.com>
+Link: https://patch.msgid.link/20241205070426.1861048-1-psiddaiah@mvista.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/arch/arm64/silicon-errata.rst | 5 +++--
- drivers/acpi/arm64/iort.c                   | 2 ++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-omap2-mcspi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/arch/arm64/silicon-errata.rst b/Documentation/arch/arm64/silicon-errata.rst
-index 65bfab1b18614..a678ea0ae4a00 100644
---- a/Documentation/arch/arm64/silicon-errata.rst
-+++ b/Documentation/arch/arm64/silicon-errata.rst
-@@ -255,8 +255,9 @@ stable kernels.
- +----------------+-----------------+-----------------+-----------------------------+
- | Hisilicon      | Hip08 SMMU PMCG | #162001800      | N/A                         |
- +----------------+-----------------+-----------------+-----------------------------+
--| Hisilicon      | Hip{08,09,10,10C| #162001900      | N/A                         |
--|                | ,11} SMMU PMCG  |                 |                             |
-+| Hisilicon      | Hip{08,09,09A,10| #162001900      | N/A                         |
-+|                | ,10C,11}        |                 |                             |
-+|                | SMMU PMCG       |                 |                             |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
- | Qualcomm Tech. | Kryo/Falkor v1  | E1003           | QCOM_FALKOR_ERRATUM_1003    |
-diff --git a/drivers/acpi/arm64/iort.c b/drivers/acpi/arm64/iort.c
-index 4c745a26226b2..bf3be532e0895 100644
---- a/drivers/acpi/arm64/iort.c
-+++ b/drivers/acpi/arm64/iort.c
-@@ -1703,6 +1703,8 @@ static struct acpi_platform_list pmcg_plat_info[] __initdata = {
- 	/* HiSilicon Hip09 Platform */
- 	{"HISI  ", "HIP09   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
- 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
-+	{"HISI  ", "HIP09A  ", 0, ACPI_SIG_IORT, greater_than_or_equal,
-+	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
- 	/* HiSilicon Hip10/11 Platform uses the same SMMU IP with Hip09 */
- 	{"HISI  ", "HIP10   ", 0, ACPI_SIG_IORT, greater_than_or_equal,
- 	 "Erratum #162001900", IORT_SMMU_V3_PMCG_HISI_HIP09},
+diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
+index 2c043817c66a8..4a2f84c4d22e5 100644
+--- a/drivers/spi/spi-omap2-mcspi.c
++++ b/drivers/spi/spi-omap2-mcspi.c
+@@ -1561,10 +1561,10 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	mcspi->ref_clk = devm_clk_get_optional_enabled(&pdev->dev, NULL);
+-	if (mcspi->ref_clk)
+-		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
+-	else
++	if (IS_ERR(mcspi->ref_clk))
+ 		mcspi->ref_clk_hz = OMAP2_MCSPI_MAX_FREQ;
++	else
++		mcspi->ref_clk_hz = clk_get_rate(mcspi->ref_clk);
+ 	ctlr->max_speed_hz = mcspi->ref_clk_hz;
+ 	ctlr->min_speed_hz = mcspi->ref_clk_hz >> 15;
+ 
 -- 
 2.43.0
 
