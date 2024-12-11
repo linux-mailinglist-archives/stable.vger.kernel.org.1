@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-100797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0CB9ED688
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:32:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1804C164E57
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:32:26 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAD91C3F04;
-	Wed, 11 Dec 2024 19:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FgZs5Odf"
-X-Original-To: stable@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D2A79ED6A9
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:40:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE2C259491
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 19:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2735281D34
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 19:40:27 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072801C5F09;
+	Wed, 11 Dec 2024 19:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rc5bLUQA"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B4B1C4612;
+	Wed, 11 Dec 2024 19:40:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733945543; cv=none; b=GX3Ci5WvVYCkpFaT8LMUE7IuFjKoY5129Wc/JfUJi5hP/gtLAmp7PETuYPe4KH/ArzHqOz2DSmsxJ2aQaEw6CByo+FE+ZGw5geyaepx3QRYlJAJAGOl6D1hkjKcBBAh5n0fG1NpnMEPicjhIO+8+JA7DOn2USTyOErcUs1LbOCU=
+	t=1733946023; cv=none; b=cPY0liOnudAP9nEVZn4uuRV3+9blI6oK/sI7ibv49vd5BZzpyvUUnb1F0o+NCdkZW985f/sIBjvXUk84mGgrJBIHlz3tszAV2rdoF0UKKw4QMO8dfxyIwL8kv2cBGgOv0Dsfnsn+ga3s6V5z7ikPan4+1sXXD4In2NjBLZTbkes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733945543; c=relaxed/simple;
-	bh=KcBQsjwz/IUHkE4Zz2lrGKV+2p4KLQ1DMYvlJAaCXMY=;
+	s=arc-20240116; t=1733946023; c=relaxed/simple;
+	bh=pF9yeK2U0N4zuHzn6i9qzQDvsoImqm8+N5CgxpYnPzY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYURciCa4WlzUlg0dQMR4YP46Cd3DFemiy26B/rG+eGHtjkteu2CWvvFUaeSKi/u1J6KiTlNXbixyrv/9FDZORyMF7i/wu4ulzno9ebbz/TaqblA5AlHNBF2P7DbYkAZbS2IHJL+hlmU2jwZgYU4LtYlysa8U3iUfn+qTc3XA/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FgZs5Odf; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 11 Dec 2024 11:32:13 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1733945539;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d6OKcSu+YVbuCISkjoli9i0TNQdc3Qjeu3F6E9XWl5w=;
-	b=FgZs5OdfWb6afsj7/smsy7sJVQABpKNv7zAwZeHzPS3rUpNZFOyrrr5I6xB60xY1IWmtcE
-	MQIqtXpxW0q2ZPiQFH4dzjArfWHI0N1VfA7Jckurbg3LsoXDoFU75LE1MICsfWjKydVqP3
-	/HuIa0o/v1YFR+RZSQM4ODeoEn+jd/0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, linux-mm@kvack.org, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] vmalloc: Account memcg per vmalloc
-Message-ID: <keho5no2wg666yjtkb5lflxwezgbzavue5ytydqm7pm7w62ctt@q6zg7t56gf4b>
-References: <20241211043252.3295947-1-willy@infradead.org>
- <20241211043252.3295947-2-willy@infradead.org>
- <20241211160956.GB3136251@cmpxchg.org>
- <Z1nC3138biX0J1DJ@casper.infradead.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LuaMrRSHQ9KaTdoO5oF5OjCNZMUr7VojAWN6GPkKH//s9n2yUjPEKerSr1Tx4mzynW8bZlLlwyrjzFHiNGJbKpGTERCqgpYpgxIbQHxUJXipe1TJiwcYjE7EhjxvxNY7Ro5wrI55LZYjRkzWaUFFQ1744L/6Vb7QjEO/w2k6hBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rc5bLUQA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21279C4CED2;
+	Wed, 11 Dec 2024 19:40:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733946023;
+	bh=pF9yeK2U0N4zuHzn6i9qzQDvsoImqm8+N5CgxpYnPzY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rc5bLUQAActr8VJjzmZKrml9+cWr+D+GwRe9KGWM9jXuPqYxq5uIxHjEl6ycYKIFi
+	 UiicwAJiKp3yZIx4GIz3DNL6woKJcb/xYj22/tCv/AijLdTUElcj67OJ4VqL3eIctW
+	 sIhK1Os9uZ5sYYYc8vEl5CYR6h8pbwJG4HbujZH5dx4cuxcbm02MVSaZqDrIXSkICm
+	 WPYM0KzkFdJJR0DFG1mYuDlpmW10TsiDoOGOxbDB/r3YdIRcvSN67k6UuY3U+q7bv6
+	 V4XQDEVPp0g/m8MS0B+juS0RuRptr3amRvZ7KROA6dKhWnO/nBcFSArxbBd8xsPQ5R
+	 s0maofjTdz7hQ==
+Date: Wed, 11 Dec 2024 11:40:22 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: aalbersh@kernel.org, dan.carpenter@linaro.org, stable@vger.kernel.org,
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCHSET 6/9] xfsprogs: bug fixes for 6.13
+Message-ID: <20241211194022.GH6678@frogsfrogsfrogs>
+References: <20241206232259.GO7837@frogsfrogsfrogs>
+ <173352751190.126106.5258055486306925523.stgit@frogsfrogsfrogs>
+ <Z1fQruaMo-kQU6KK@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,43 +59,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z1nC3138biX0J1DJ@casper.infradead.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <Z1fQruaMo-kQU6KK@infradead.org>
 
-On Wed, Dec 11, 2024 at 04:50:39PM +0000, Matthew Wilcox wrote:
-> On Wed, Dec 11, 2024 at 11:09:56AM -0500, Johannes Weiner wrote:
-> > This would work, but it seems somewhat complicated. The atomics in
-> > memcg charging and the vmstat updates are batched, and the per-page
-> > overhead is for the most part cheap per-cpu ops. Not an issue per se.
-> 
-> OK, fair enough, I hadn't realised it was a percpu-refcount.  Still,
-> we might consume several batches (batch size of 64) when we could do it
-> all in one shot.
-> 
-> Perhaps you'd be more persuaded by:
-> 
-> (a) If we clear __GFP_ACCOUNT then alloc_pages_bulk() will work, and
-> that's a pretty significant performance win over calling alloc_pages()
-> in a loop.
-> 
-> (b) Once we get to memdescs, calling alloc_pages() with __GFP_ACCOUNT
-> set is going to require allocating a memdesc to store the obj_cgroup
-> in, so in the future we'll save an allocation.
-> 
-> Your proposed alternative will work and is way less churn.  But it's
-> not preparing us for memdescs ;-)
+On Mon, Dec 09, 2024 at 09:25:02PM -0800, Christoph Hellwig wrote:
+> Shouldn't the bug fix series go first?
 
-We can make alloc_pages_bulk() work with __GFP_ACCOUNT but your second
-argument is more compelling.
+Something got messed up in the patchbombing sequence.  Patchset 5/9
+should have sorted before this one (6/9) but instead it came at the end.
 
-I am trying to think of what will we miss if we remove this per-page
-memcg metadata. One thing I can think of is debugging a live system
-or kdump where I need to track where a given page came from. I think
-memory profiling will still be useful in combination with going through
-all vmalloc regions where this page is mapped (is there an easy way to
-tell if a page is from a vmalloc region?). So, for now I think we will
-have alternative way to extract the useful information.
+Ohhh, right.  Long Li add a "Cc: stable@vger.kernel.org # v4.19+"
+tag.  This isn't rfc2822 compliant, so the stgit subcommand that
+converts Cc: tags in the commit message to actual cc: headers tried to
+put the entire string (minus spaces!) in the cc line, which caused the
+msmtp to reject the cover letter.  I stripped out the stable@ entirely
+and resent just that message, but forgot that my patchbombing script
+always updates the send time for each attempt, so the mutt sort order is
+now incorrect.
 
-I think we can go with Johannes' solution for stable and discuss the
-future direction more separately.
+String parsing sucks, and our automated tools don't catch it either:
+
+  $ ./scripts/checkpatch.pl ../xfsprogs/patches-djwong-dev10/129*
+  ERROR: Please use git commit description style 'commit <12+ chars of sha1> ("<title line>")'
+  - ie: 'commit 652f03db897b ("xfs: remove unknown compat feature check in superblock write validation")'
+  #4:
+  Source kernel commit: 652f03db897ba24f9c4b269e254ccc6cc01ff1b7
+
+  total: 1 errors, 0 warnings, 13 lines checked
+
+  NOTE: For some of the reported defects, checkpatch may be able to
+        mechanically convert to the typical style using --fix or --fix-inplace.
+
+  ../xfsprogs/patches-djwong-dev10/129-xfs__remove_unknown_compat_feature_check_in_superblock_write_validation.patch has style problems, please review.
+
+  NOTE: If any of the errors are false positives, please report
+        them to the maintainer, see CHECKPATCH in MAINTAINERS.
+
+Yeah, it whines about the commit hash being **too long** which is
+totally inconsequential but totally misses the incorrect Cc: header
+specification that confuses the hyell out of MTAs.
+
+Sorry about that.
+
+--D
 
