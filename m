@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-100554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3907C9EC6C8
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:16:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F049EC6CC
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2727188A5DB
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:16:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96347188A7DF
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A691D63D6;
-	Wed, 11 Dec 2024 08:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23501D89E5;
+	Wed, 11 Dec 2024 08:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfg+iqF8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjOVgp8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991F51C1ADB
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613FC1D88DC
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733904958; cv=none; b=cfZykuqYs6Q2tIgEdiG/ixES48pbjFReHZ08LZGg+1x2Hmip+jWTSPBKFFYqCtG3Su+H2CPF91z19EjqrGSPtnP6FciNbeYI2l2szui+kYtzbhCIX+Cb5qiWfFfMjZyLKcwEW4/jTr48S4AnPIIV0fpjd8uglGB5cbBthuLDOU0=
+	t=1733904969; cv=none; b=jsWx4owwzmvEG7r7qq8X4sZiFCRC4mUM+qAtj0NAtPT/Kc+4+8U5NcOiMFwTZaEY2iOre/JA3Gbg5AmoidlK7kSfX7vreLz+7FaBtUCUM6P1U7wj98ZI+o/4LH3ShfLSUmsyQoETlRSylIp3BCgo+y4qRShA+8YAKQnOWbInOYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733904958; c=relaxed/simple;
-	bh=eiyPGg+HEjtQ7nC3Q6a1TNQ8wCFZCNLrvy8LsC78rrs=;
+	s=arc-20240116; t=1733904969; c=relaxed/simple;
+	bh=fpx9tGRDfDzZSP3KVuv8D8lgarTge2pCJroUxAPhVGg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZavQzCotDkn4kdfuszkprBejMfTG/RkEAKMwiRdwtYLHn7r0Y2qKGFhTHZ7XlGVrYj5pW3OikT3tyhPFzmvjZ5kfgHQubic2GwujcSzW6FLFV61fgjOSjQYuDcolX2xlPtJErsjbrFClOWV1zXLI4XHha9NJp3vPK3W01+r/6fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfg+iqF8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23997C4CED2;
-	Wed, 11 Dec 2024 08:15:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=KQW2OyNENf8EEvrKS1AC23PRtS1XW3/900cWTcLc6qsbIeNR24MdEMvZdWrxth1VOa2zDnXOpTFOSKjrRGrt63VgxzpJ0i7HtkgIi9ItJvIyLo96cazM8GywGj7twSKUbLC0ZCCGGqjXxHezkwU4NOrzv3zYbNdtYlOvdT3yEBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjOVgp8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A286EC4CED2;
+	Wed, 11 Dec 2024 08:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1733904958;
-	bh=eiyPGg+HEjtQ7nC3Q6a1TNQ8wCFZCNLrvy8LsC78rrs=;
+	s=korg; t=1733904969;
+	bh=fpx9tGRDfDzZSP3KVuv8D8lgarTge2pCJroUxAPhVGg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nfg+iqF80+jA1aF/+hHjhOu+1bhDQ3KU2l08HLvrafG15NIBY38xJnaswZhT8vIWs
-	 ZIbimEQnJeao5qc5SBVgM7yxI63HMu9OeS710cjLd1YOnayyrRBor63y4VTsTqLPVD
-	 iaVXsQBbZeDZO1gldDKImdLu31/dO6LWUeNUMUPg=
-Date: Wed, 11 Dec 2024 09:15:22 +0100
+	b=DjOVgp8NARcTCpTPvsFdRq/J4USwfpttxj+iOcKN5+HvtpNTmDvT3IyeGhOHIIiBk
+	 5FPtfhqo0EYXWe1I1lt6RxIYBZ9KbMsd+s1PTtvlIhbjVBQ6N0/PGdJHIGeYM+A1+J
+	 B60huFdLWEbef/Blh0F8u1XUb61lsDst/ocMhfAA=
+Date: Wed, 11 Dec 2024 09:15:33 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: jianqi.ren.cn@windriver.com
-Cc: kory.maincent@bootlin.com, stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] dmaengine: dw-edma: eDMA: Add sync read before
- starting the DMA transfer in remote setup
-Message-ID: <2024121117-liquefy-unveiling-dad1@gregkh>
-References: <20241206032214.3089315-1-jianqi.ren.cn@windriver.com>
+Cc: pc@manguebit.com, stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] smb: client: fix potential UAF in
+ cifs_dump_full_key()
+Message-ID: <2024121128-padded-favorably-fa13@gregkh>
+References: <20241206081436.110958-1-jianqi.ren.cn@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,12 +54,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241206032214.3089315-1-jianqi.ren.cn@windriver.com>
+In-Reply-To: <20241206081436.110958-1-jianqi.ren.cn@windriver.com>
 
-On Fri, Dec 06, 2024 at 11:22:14AM +0800, jianqi.ren.cn@windriver.com wrote:
-> From: Kory Maincent <kory.maincent@bootlin.com>
+On Fri, Dec 06, 2024 at 04:14:36PM +0800, jianqi.ren.cn@windriver.com wrote:
+> From: Paulo Alcantara <pc@manguebit.com>
 > 
-> [ Upstream commit bbcc1c83f343e580c3aa1f2a8593343bf7b55bba ]
+> [ Upstream commit 58acd1f497162e7d282077f816faa519487be045 ]
+> 
+> Skip sessions that are being teared down (status == SES_EXITING) to
+> avoid UAF.
 
 Please cc: all relevant people on backports.
 
