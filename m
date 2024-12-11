@@ -1,330 +1,83 @@
-Return-Path: <stable+bounces-100569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63F29EC75F
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:32:15 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65436163C7B
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:32:01 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07FD1DC99F;
-	Wed, 11 Dec 2024 08:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y6ctj1cq"
-X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E79E9EC763
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 09:32:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB55ECC
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F4D284A6C
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 08:32:42 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EFF1D88B4;
+	Wed, 11 Dec 2024 08:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvaMl0f0"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0141C4A1B
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 08:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733905896; cv=none; b=ks7gVoekIFHhaB2FrcjpfpXEaNGDPXo+XnIW94So1A2nKst3F4mi/gCpwviAzzgoorbcM0KzgzTh1YvME6XIe/qssJbJgqmw8KlH9/j4PYmquZjs5Tdk2EIVZJh/xHhdlKhHj9VbshwjOB12W0iCFJ8cxljMjmsCeIe0t2aCFXc=
+	t=1733905952; cv=none; b=X+rBuT6AuY86A1279jLHVv3hzRQj2SElIMlJSppZOsOA1Ntc6q7udLd100p0Lnk5cizU9JeDc9bBSAacK7dTkOrgB9GlIaxdJMwP3HkKAb8jqVCWfArwaDHaX7nMDXCvHT+YikjK4wYasN1D39x+rEUmBLRf9mWT+XAu4nOAmGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733905896; c=relaxed/simple;
-	bh=RpeSaQ4Zdj046fBJ74hz2RS4lX82GAUZdSDfqWrQvLs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=epnHOFsR78wHCw/gtlmvJHkOGtzMmOyt7UxP1SiJwttxdt4SDjjaynRJwJ7uWg1nE1ZP1JoiVPKeGA0FxUGF+6CNNtBbUBgLvwmioaBjnSX+JRASvP9/+Hbzm+SHbIh8pkI4UjO/Ku+DtgPhmlfcvS3eh9+KWSbe1Ny/zGyXEHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y6ctj1cq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733905893;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZBWKN4rpUUSFv/YFc9YuLsZpFMyjptlZDXl33OkNcXY=;
-	b=Y6ctj1cqqp7oa7LoYNp8Ng4OnKWvJfxBcrIzxZVspoRsw+JgfcQUQwJqrUnzr37S60outW
-	clwwMf5L1dhkFpAM1s+/oXV+MLuITg3ReQSRzjeJlreGwPo/cqfbCqC+ajN/Kel427w0uT
-	XLouthBG5jVy+H7pFGuhD3HkkO3yEd8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-107-5-1mUuI2ORunoASxD4FYKQ-1; Wed, 11 Dec 2024 03:31:32 -0500
-X-MC-Unique: 5-1mUuI2ORunoASxD4FYKQ-1
-X-Mimecast-MFC-AGG-ID: 5-1mUuI2ORunoASxD4FYKQ
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5d3bf75bbf1so698094a12.1
-        for <stable@vger.kernel.org>; Wed, 11 Dec 2024 00:31:32 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733905889; x=1734510689;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZBWKN4rpUUSFv/YFc9YuLsZpFMyjptlZDXl33OkNcXY=;
-        b=VwID09n3WpDXx69pnsXDIrZTY8gkS9wgCeyaW2ZaMl1P3TfuAuilXO1uqqwvfDmSNN
-         kC4DtGcWf+/3ARrsZ5STm27UxecxpDb/knT+0WB2kE+H5rQyvfr1CrzCxZsxkpfdDiYE
-         4jW5r81oFIhv2HT3QJDFrF/WYlIx4QN3XI+BIHte/Ad5fSN9gKllYnz9gcGS3NBZtnj/
-         xDhhZI03j3BsGu5fIsu4287ZB+rTsEokzoB4RYNjKofGpKvv7byFPJZLaSeSRF7B6ocg
-         CtKRdE+JTboLi6Zz4U9UfzGlof4z4FVMU/H37jlIjgPAuFVfshAG68rqamEHcqmuTXQR
-         umnQ==
-X-Gm-Message-State: AOJu0YyK4SuU/SXQsoChZ+IkkEh8INuzzXWpLaD4Cs6/z3GAr0/KLcuJ
-	yML2ZOjdF1Ql6v/fYDzoFWhB04jl8zcBGdMC0y8bFOsrfU7CjF0LKjcjCP49YiFheGAd0nguLQw
-	ggR51CG+7+hdELYWcx1T1qVbdy9duzKxyKvMj8JsxxFyHciFky9jcvWkr/k71uQ2Y22KSTcq59r
-	V9ouQc7ZYmRP9YYq6F6km+/12u640EIe5LX2SeGvk=
-X-Gm-Gg: ASbGncs1tpKL75ieC0CJdl5azVDHQiJ9nTH5sKRvYoOwOfsbvmuReJ/FlYqvwRxZwGt
-	FsOGQ6raHkkF2rCZQpYgfI9tJtT08II1Y2h0waPPicMcCqw==
-X-Received: by 2002:a05:6402:2553:b0:5d0:9c3b:faf4 with SMTP id 4fb4d7f45d1cf-5d4331b139amr1624771a12.7.1733905888904;
-        Wed, 11 Dec 2024 00:31:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHKISgQexyEm3I2WV4LGziNst5hiymSCbZjU/+XkOMbCZgJ3OjKjVKf8YuV6Jo2N8LhTMAwTbmuAVL35DVg5tA=
-X-Received: by 2002:a05:6402:2553:b0:5d0:9c3b:faf4 with SMTP id
- 4fb4d7f45d1cf-5d4331b139amr1624748a12.7.1733905888549; Wed, 11 Dec 2024
- 00:31:28 -0800 (PST)
+	s=arc-20240116; t=1733905952; c=relaxed/simple;
+	bh=2aMw//SR1aG58G4stVCCsOkOVppdPPp+IHTwUgilzcg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IQJnRPyFTBNqq90Vcylh2mmZOMFCGElRxRLa/6419v/TJ/+i1YmMq34wuT4zQL758yOKbZNF8H0KXZ2tujRfaYyzxcZO9DPZjR16Yp5viASQIbXxN/0YpEeg9YHnPRuUs4hpiDSJNCgS6zP97K8uJQje5tsDaF6qAw4rxTzG2oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvaMl0f0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B7D0C4CED2;
+	Wed, 11 Dec 2024 08:32:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1733905951;
+	bh=2aMw//SR1aG58G4stVCCsOkOVppdPPp+IHTwUgilzcg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xvaMl0f0NKOM6QyYvAJE57uPH94xekeebggysPkN5tOOKvsAJLqFrbBkGPTradzsF
+	 5LVCZC25apLaA2kEwtmhmE+I+gAT+gYRg7H/8qkXJLgr9ceI9wIN9OReYL/Ue7TAur
+	 RYsu29ZrLfPK9cfkKWybtqP07Ae9f3oSv6GAdWOQ=
+Date: Wed, 11 Dec 2024 09:31:55 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Bin Lan <Bin.Lan.CN@windriver.com>
+Cc: bin.lan.cn@eng.windriver.com, stable@vger.kernel.org,
+	irui.wang@mediatek.com
+Subject: Re: [PATCH 6.1 v2] media: mediatek: vcodec: Handle invalid decoder
+ vsi
+Message-ID: <2024121135-unlawful-unrated-acf9@gregkh>
+References: <20241207112042.748861-1-bin.lan.cn@eng.windriver.com>
+ <2024121140-valium-strongbox-04f6@gregkh>
+ <84d56ea4-d239-4eef-8808-2f4260dc0f0d@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210221751.3600788-1-sashal@kernel.org>
-In-Reply-To: <20241210221751.3600788-1-sashal@kernel.org>
-From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date: Wed, 11 Dec 2024 09:31:16 +0100
-Message-ID: <CAO-hwJKoaLOvTE+sV3ijv3BUr5-20v_=1PwxmrgyaKJHYcoNbA@mail.gmail.com>
-Subject: Re: Patch "HID: bpf: Fix NKRO on Mistel MD770" has been added to the
- 5.4-stable tree
-To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, bentiss@kernel.org, 
-	Jiri Kosina <jikos@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <84d56ea4-d239-4eef-8808-2f4260dc0f0d@windriver.com>
 
-On Tue, Dec 10, 2024 at 11:17=E2=80=AFPM Sasha Levin <sashal@kernel.org> wr=
-ote:
->
-> This is a note to let you know that I've just added the patch titled
->
->     HID: bpf: Fix NKRO on Mistel MD770
->
-> to the 5.4-stable tree which can be found at:
->     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
-it;a=3Dsummary
->
-> The filename of the patch is:
->      hid-bpf-fix-nkro-on-mistel-md770.patch
-> and it can be found in the queue-5.4 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+A: http://en.wikipedia.org/wiki/Top_post
+Q: Were do I find info about this thing called top-posting?
+A: Because it messes up the order in which people normally read text.
+Q: Why is top-posting such a bad thing?
+A: Top-posting.
+Q: What is the most annoying thing in e-mail?
+
+A: No.
+Q: Should I include quotations after my reply?
 
 
-Please drop this patch (and in all previous releases).
+http://daringfireball.net/2007/07/on_top
 
-Again, it makes no sense to backport any files in
-drivers/hid/bpf/progs on kernels before 6.11, and even then, it makes
-very little value as they are also tracked in a different userspace
-project (udev-hid-bpf).
+On Wed, Dec 11, 2024 at 04:21:33PM +0800, Bin Lan wrote:
+> V2: Replace mtk_vdec_err with mtk_vcodec_err to make it work on 6.1
 
-FWIW, HID-BPF was introduced in v6.3, so it's even more surprising to
-see such a patch added here.
+Please always document this in the proper place.
 
-Because the patch applied is not a guarantee that it makes sense.
+thanks,
 
-Plus your script is a little bit too greedy: there were no "Fixes" nor
-"stable" tags added...
-
-Cheers,
-Benjamin
-
->
->
->
-> commit 1fbcf8b1b86db5517d82b5ff571a794e64f7098a
-> Author: Benjamin Tissoires <bentiss@kernel.org>
-> Date:   Thu Oct 17 18:34:58 2024 +0200
->
->     HID: bpf: Fix NKRO on Mistel MD770
->
->     [ Upstream commit 9bc089307e8dff7797233308372b4a90ce8f79be ]
->
->     Mistel MD770 keyboard (using Holtek Semiconductor, Inc. controller) h=
-as
->     a quirk in report descriptor in one of its interfaces (more detail in
->     the source file). Fix up the descriptor to allow NKRO to work again.
->
->     Tested by loading the BPF program and confirming that 8 simultaneous
->     keypresses work.
->
->     Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D218495
->     Link: https://gitlab.freedesktop.org/libevdev/udev-hid-bpf/-/merge_re=
-quests/122
->     Signed-off-by: Tatsuyuki Ishi <ishitatsuyuki@gmail.com>
->     Acked-by: Jiri Kosina <jkosina@suse.com>
->     Link: https://patch.msgid.link/20241017-import_bpf_6-13-v2-1-6a7acb89=
-a97f@kernel.org
->     Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/drivers/hid/bpf/progs/Mistel__MD770.bpf.c b/drivers/hid/bpf/=
-progs/Mistel__MD770.bpf.c
-> new file mode 100644
-> index 0000000000000..fb8b5a6968b12
-> --- /dev/null
-> +++ b/drivers/hid/bpf/progs/Mistel__MD770.bpf.c
-> @@ -0,0 +1,154 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/* Copyright (c) 2024 Tatsuyuki Ishi
-> + */
-> +
-> +#include "vmlinux.h"
-> +#include "hid_bpf.h"
-> +#include "hid_bpf_helpers.h"
-> +#include <bpf/bpf_tracing.h>
-> +
-> +#define VID_HOLTEK     0x04D9
-> +#define PID_MD770      0x0339
-> +#define RDESC_SIZE     203
-> +
-> +HID_BPF_CONFIG(
-> +       HID_DEVICE(BUS_USB, HID_GROUP_GENERIC, VID_HOLTEK, PID_MD770)
-> +);
-> +
-> +/*
-> + * The Mistel MD770 keyboard reports the first 6 simultaneous key presse=
-s
-> + * through the first interface, and anything beyond that through a secon=
-d
-> + * interface. Unfortunately, the second interface's report descriptor ha=
-s an
-> + * error, causing events to be malformed and ignored. This HID-BPF drive=
-r
-> + * fixes the descriptor to allow NKRO to work again.
-> + *
-> + * For reference, this is the original report descriptor:
-> + *
-> + * 0x05, 0x01,        // Usage Page (Generic Desktop)        0
-> + * 0x09, 0x80,        // Usage (System Control)              2
-> + * 0xa1, 0x01,        // Collection (Application)            4
-> + * 0x85, 0x01,        //  Report ID (1)                      6
-> + * 0x19, 0x81,        //  Usage Minimum (129)                8
-> + * 0x29, 0x83,        //  Usage Maximum (131)                10
-> + * 0x15, 0x00,        //  Logical Minimum (0)                12
-> + * 0x25, 0x01,        //  Logical Maximum (1)                14
-> + * 0x95, 0x03,        //  Report Count (3)                   16
-> + * 0x75, 0x01,        //  Report Size (1)                    18
-> + * 0x81, 0x02,        //  Input (Data,Var,Abs)               20
-> + * 0x95, 0x01,        //  Report Count (1)                   22
-> + * 0x75, 0x05,        //  Report Size (5)                    24
-> + * 0x81, 0x01,        //  Input (Cnst,Arr,Abs)               26
-> + * 0xc0,              // End Collection                      28
-> + * 0x05, 0x0c,        // Usage Page (Consumer Devices)       29
-> + * 0x09, 0x01,        // Usage (Consumer Control)            31
-> + * 0xa1, 0x01,        // Collection (Application)            33
-> + * 0x85, 0x02,        //  Report ID (2)                      35
-> + * 0x15, 0x00,        //  Logical Minimum (0)                37
-> + * 0x25, 0x01,        //  Logical Maximum (1)                39
-> + * 0x95, 0x12,        //  Report Count (18)                  41
-> + * 0x75, 0x01,        //  Report Size (1)                    43
-> + * 0x0a, 0x83, 0x01,  //  Usage (AL Consumer Control Config) 45
-> + * 0x0a, 0x8a, 0x01,  //  Usage (AL Email Reader)            48
-> + * 0x0a, 0x92, 0x01,  //  Usage (AL Calculator)              51
-> + * 0x0a, 0x94, 0x01,  //  Usage (AL Local Machine Browser)   54
-> + * 0x09, 0xcd,        //  Usage (Play/Pause)                 57
-> + * 0x09, 0xb7,        //  Usage (Stop)                       59
-> + * 0x09, 0xb6,        //  Usage (Scan Previous Track)        61
-> + * 0x09, 0xb5,        //  Usage (Scan Next Track)            63
-> + * 0x09, 0xe2,        //  Usage (Mute)                       65
-> + * 0x09, 0xea,        //  Usage (Volume Down)                67
-> + * 0x09, 0xe9,        //  Usage (Volume Up)                  69
-> + * 0x0a, 0x21, 0x02,  //  Usage (AC Search)                  71
-> + * 0x0a, 0x23, 0x02,  //  Usage (AC Home)                    74
-> + * 0x0a, 0x24, 0x02,  //  Usage (AC Back)                    77
-> + * 0x0a, 0x25, 0x02,  //  Usage (AC Forward)                 80
-> + * 0x0a, 0x26, 0x02,  //  Usage (AC Stop)                    83
-> + * 0x0a, 0x27, 0x02,  //  Usage (AC Refresh)                 86
-> + * 0x0a, 0x2a, 0x02,  //  Usage (AC Bookmarks)               89
-> + * 0x81, 0x02,        //  Input (Data,Var,Abs)               92
-> + * 0x95, 0x01,        //  Report Count (1)                   94
-> + * 0x75, 0x0e,        //  Report Size (14)                   96
-> + * 0x81, 0x01,        //  Input (Cnst,Arr,Abs)               98
-> + * 0xc0,              // End Collection                      100
-> + * 0x05, 0x01,        // Usage Page (Generic Desktop)        101
-> + * 0x09, 0x02,        // Usage (Mouse)                       103
-> + * 0xa1, 0x01,        // Collection (Application)            105
-> + * 0x09, 0x01,        //  Usage (Pointer)                    107
-> + * 0xa1, 0x00,        //  Collection (Physical)              109
-> + * 0x85, 0x03,        //   Report ID (3)                     111
-> + * 0x05, 0x09,        //   Usage Page (Button)               113
-> + * 0x19, 0x01,        //   Usage Minimum (1)                 115
-> + * 0x29, 0x08,        //   Usage Maximum (8)                 117
-> + * 0x15, 0x00,        //   Logical Minimum (0)               119
-> + * 0x25, 0x01,        //   Logical Maximum (1)               121
-> + * 0x75, 0x01,        //   Report Size (1)                   123
-> + * 0x95, 0x08,        //   Report Count (8)                  125
-> + * 0x81, 0x02,        //   Input (Data,Var,Abs)              127
-> + * 0x05, 0x01,        //   Usage Page (Generic Desktop)      129
-> + * 0x09, 0x30,        //   Usage (X)                         131
-> + * 0x09, 0x31,        //   Usage (Y)                         133
-> + * 0x16, 0x01, 0x80,  //   Logical Minimum (-32767)          135
-> + * 0x26, 0xff, 0x7f,  //   Logical Maximum (32767)           138
-> + * 0x75, 0x10,        //   Report Size (16)                  141
-> + * 0x95, 0x02,        //   Report Count (2)                  143
-> + * 0x81, 0x06,        //   Input (Data,Var,Rel)              145
-> + * 0x09, 0x38,        //   Usage (Wheel)                     147
-> + * 0x15, 0x81,        //   Logical Minimum (-127)            149
-> + * 0x25, 0x7f,        //   Logical Maximum (127)             151
-> + * 0x75, 0x08,        //   Report Size (8)                   153
-> + * 0x95, 0x01,        //   Report Count (1)                  155
-> + * 0x81, 0x06,        //   Input (Data,Var,Rel)              157
-> + * 0x05, 0x0c,        //   Usage Page (Consumer Devices)     159
-> + * 0x0a, 0x38, 0x02,  //   Usage (AC Pan)                    161
-> + * 0x95, 0x01,        //   Report Count (1)                  164
-> + * 0x81, 0x06,        //   Input (Data,Var,Rel)              166
-> + * 0xc0,              //  End Collection                     168
-> + * 0xc0,              // End Collection                      169
-> + * 0x05, 0x01,        // Usage Page (Generic Desktop)        170
-> + * 0x09, 0x06,        // Usage (Keyboard)                    172
-> + * 0xa1, 0x01,        // Collection (Application)            174
-> + * 0x85, 0x04,        //  Report ID (4)                      176
-> + * 0x05, 0x07,        //  Usage Page (Keyboard)              178
-> + * 0x95, 0x01,        //  Report Count (1)                   180
-> + * 0x75, 0x08,        //  Report Size (8)                    182
-> + * 0x81, 0x03,        //  Input (Cnst,Var,Abs)               184
-> + * 0x95, 0xe8,        //  Report Count (232)                 186
-> + * 0x75, 0x01,        //  Report Size (1)                    188
-> + * 0x15, 0x00,        //  Logical Minimum (0)                190
-> + * 0x25, 0x01,        //  Logical Maximum (1)                192
-> + * 0x05, 0x07,        //  Usage Page (Keyboard)              194
-> + * 0x19, 0x00,        //  Usage Minimum (0)                  196
-> + * 0x29, 0xe7,        //  Usage Maximum (231)                198
-> + * 0x81, 0x00,        //  Input (Data,Arr,Abs)               200  <- cha=
-nge to 0x81, 0x02 (Data,Var,Abs)
-> + * 0xc0,              // End Collection                      202
-> + */
-> +
-> +SEC(HID_BPF_RDESC_FIXUP)
-> +int BPF_PROG(hid_rdesc_fixup_mistel_md770, struct hid_bpf_ctx *hctx)
-> +{
-> +       __u8 *data =3D hid_bpf_get_data(hctx, 0, HID_MAX_DESCRIPTOR_SIZE)=
-;
-> +
-> +       if (!data)
-> +               return 0; /* EPERM check */
-> +
-> +       if (data[201] =3D=3D 0x00)
-> +               data[201] =3D 0x02;
-> +
-> +       return 0;
-> +}
-> +
-> +HID_BPF_OPS(mistel_md770) =3D {
-> +       .hid_rdesc_fixup =3D (void *)hid_rdesc_fixup_mistel_md770,
-> +};
-> +
-> +SEC("syscall")
-> +int probe(struct hid_bpf_probe_args *ctx)
-> +{
-> +       ctx->retval =3D ctx->rdesc_size !=3D RDESC_SIZE;
-> +       if (ctx->retval)
-> +               ctx->retval =3D -EINVAL;
-> +
-> +       return 0;
-> +}
-> +
-> +char _license[] SEC("license") =3D "GPL";
->
-
+greg k-h
 
