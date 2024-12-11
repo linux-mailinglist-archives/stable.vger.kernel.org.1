@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-100810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E14E9ED76F
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 21:46:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44CCA9ED80B
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 22:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C61391888ED0
-	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 20:46:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9BEF188B5A6
+	for <lists+stable@lfdr.de>; Wed, 11 Dec 2024 21:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B8F204F82;
-	Wed, 11 Dec 2024 20:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094B32288C1;
+	Wed, 11 Dec 2024 20:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MASDn2bT"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Tcu5nZPO"
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1C41BC085
-	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 20:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3113D2288ED
+	for <stable@vger.kernel.org>; Wed, 11 Dec 2024 20:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733949984; cv=none; b=KRmKiqDxMtZq/VoYPuul0CvsOaHmqp/4+CPWtzLeHjRtOJxajOnn16ifitFOKJDR0M2yMbAqGSrmu42aSuq1oNO/sM0Hhwx4sCZeo2MuCsNT3wZGpa+RWFUdINVftau8BSN1IFD8CabNn40t5Jt3uXKzB8vPYxDT5fepjhzw1QI=
+	t=1733950728; cv=none; b=C4mJQFjl7wAWgKHveRC8od2FeQPZ1xdsb0xvYamltqslbENItWXfLtGiLPzdOs8R4LrZedGEf83p+wat64bjeGGQydQEOeNs7TvzjcWwWGq1tICVrIMQAuVNigQz55NhqA79EUq1WG0tnC6UkCMoB6aCXmzOyjxyyJ8s4DoWL0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733949984; c=relaxed/simple;
-	bh=xNBHSTkH3SbV5gXvy0O5x3gd7FEWRoQoi+kl71valAU=;
+	s=arc-20240116; t=1733950728; c=relaxed/simple;
+	bh=rlqXCMPzBxPZUt6pbeibdVcjpDX9gvPTld1bIv9KFqY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dwX142VCrht2h7JZ8wkBISkqrGaROLJCgvEzSIeIprOLy+MEAio+4gj1R2RXsa9pZys5KU6Bbwn0t3qTtFP4yrRofSDXrxIv69Awp8N+8b8HJ+QBu+bWj9+fRnosFAGTbpeYtBWguCGIxUjdUHG7fQkYoMvUwqUXjQy1Jfuur78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MASDn2bT; arc=none smtp.client-ip=91.218.175.173
+	 Content-Type:Content-Disposition:In-Reply-To; b=j9M+ynDxdSueyrKV+ORFB0zJUHo9QIb82HS5IU43xW45envDzCWhLEvbwZE8R/NC84D5JxwwWW6wQS4/AOYbVeOJ4jNSVopiLs5Ogt2qIOjPzZwCJt2MBQIWN3KgOjOdNvO/jAFtErz/RBmbMbIoRGeHyV+3YvQWZ8eiSs8oLe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Tcu5nZPO; arc=none smtp.client-ip=95.215.58.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 11 Dec 2024 12:46:14 -0800
+Date: Wed, 11 Dec 2024 12:58:36 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1733949979;
+	t=1733950723;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DiJApXOAc0hwv3kQaHrLDZZL2Fn5Gj1tPRe5/QNMN1M=;
-	b=MASDn2bT7F57NqmN2d3CBeVlxMXlXeLI2D2oKHwsORwXjWLazM9kvsmJnF1n6nffCRd1h1
-	+nXpHsAaOH7pWYYGPbij5y7dwavnUIzeLUagh0gg8P7vyty1QUiJ7ySHJ/mQ6N84N9vMtU
-	PzDlTD1WvnBCRZtwzXOS7gOATX+ERuk=
+	bh=X3GGTf6dgkL1tJW6zmOq7QwK5jX2MweOMytieQX+f8g=;
+	b=Tcu5nZPO5AXCk9DyAjdioFnIUDL9uFmG5p4w/XtlLc4Lr1Se/sVNFLI8/cpsMd7w3rSpBC
+	V6+SudxpuIl3zzdB7LB0c18Zy0cudfYdFXcSf6eGBUMgnl8VLzixJ3Yg8QQA30sNk009sz
+	/x4qFJT7EKcxf3ew2VchqO2CM3gKkrE=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Hellwig <hch@lst.de>, linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, 
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, linux-mm@kvack.org, 
 	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
 	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] vmalloc: Fix accounting with i915
-Message-ID: <b4fn2tcps75i4uzclwctptxrnutw4bstsfhjgel4sdjsvngdeb@3ilhvvskk2wb>
-References: <20241211202538.168311-1-willy@infradead.org>
+Subject: Re: [PATCH 2/2] vmalloc: Account memcg per vmalloc
+Message-ID: <3bgedgrbu73dovgcy2keqjud6jafqxenceihtyre2hkego7oyb@opc5u53jef5a>
+References: <20241211043252.3295947-1-willy@infradead.org>
+ <20241211043252.3295947-2-willy@infradead.org>
+ <20241211160956.GB3136251@cmpxchg.org>
+ <Z1nC3138biX0J1DJ@casper.infradead.org>
+ <keho5no2wg666yjtkb5lflxwezgbzavue5ytydqm7pm7w62ctt@q6zg7t56gf4b>
+ <Z1n0FFZ_oMYKcUiP@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,22 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241211202538.168311-1-willy@infradead.org>
+In-Reply-To: <Z1n0FFZ_oMYKcUiP@casper.infradead.org>
 X-Migadu-Flow: FLOW_OUT
 
-On Wed, Dec 11, 2024 at 08:25:37PM +0000, Matthew Wilcox (Oracle) wrote:
-> If the caller of vmap() specifies VM_MAP_PUT_PAGES (currently only the
-> i915 driver), we will decrement nr_vmalloc_pages and MEMCG_VMALLOC in
-> vfree().  These counters are incremented by vmalloc() but not by vmap()
-> so this will cause an underflow.  Check the VM_MAP_PUT_PAGES flag before
-> decrementing either counter.
+On Wed, Dec 11, 2024 at 08:20:36PM +0000, Matthew Wilcox wrote:
+> On Wed, Dec 11, 2024 at 11:32:13AM -0800, Shakeel Butt wrote:
+> > On Wed, Dec 11, 2024 at 04:50:39PM +0000, Matthew Wilcox wrote:
+> > > Perhaps you'd be more persuaded by:
+> > > 
+> > > (a) If we clear __GFP_ACCOUNT then alloc_pages_bulk() will work, and
+> > > that's a pretty significant performance win over calling alloc_pages()
+> > > in a loop.
+> > > 
+> > > (b) Once we get to memdescs, calling alloc_pages() with __GFP_ACCOUNT
+> > > set is going to require allocating a memdesc to store the obj_cgroup
+> > > in, so in the future we'll save an allocation.
+> > > 
+> > > Your proposed alternative will work and is way less churn.  But it's
+> > > not preparing us for memdescs ;-)
+> > 
+> > We can make alloc_pages_bulk() work with __GFP_ACCOUNT but your second
+> > argument is more compelling.
+> > 
+> > I am trying to think of what will we miss if we remove this per-page
+> > memcg metadata. One thing I can think of is debugging a live system
+> > or kdump where I need to track where a given page came from. I think
 > 
-> Fixes: b944afc9d64d (mm: add a VM_MAP_PUT_PAGES flag for vmap)
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Umm, I don't think you know which vmalloc allocation a page came from
+> today?  I've sent patches to add that information before, but they were
+> rejected. 
 
-Oh you merged them into one. Good.
+Do you have a link handy for that discussion?
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+> In fact, I don't think we know even _that_ a page belongs to
+> vmalloc today, do we?  Yes, we know that the page is accounted, and
+> which memcg it belongs to ... but nothing more.
+
+Yes you are correct. At the moment it is a guesswork and exhaustive
+search into multiple sources.
+
+> 
+> I actually want to improve this, without adding additional overhead.
+> What I'm working on right now (before I got waylaid by this bug) is:
+> 
+> +struct choir {
+> +       struct kref refcount;
+> +       unsigned int nr;
+> +       struct page *pages[] __counted_by(nr);
+> +};
+> 
+> and rewriting vmalloc to be based on choirs instead of its own pages.
+> One thing I've come to realise today is that the obj_cgroup pointer
+> needs to be in the choir and not in the vm_struct so that we uncharge the
+> allocation when the choir refcount drops to 0, not when the allocation
+> is unmapped.
+
+What/who else can take a reference on a choir?
+
+> 
+> A regular choir allocation will (today) mark the pages in it as being
+> allocated to a choir (and thus not having their own refcount / mapcount),
+> but I'll give vmalloc a way to mark the pages as specifically being
+> from vmalloc.
+
+This sounds good. Thanks for the awesome work.
 
