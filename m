@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-102815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5489EF3AA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:01:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2099EEB7A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBB04289F42
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CD19165259
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A40122333B;
-	Thu, 12 Dec 2024 16:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AC81537C8;
+	Thu, 12 Dec 2024 15:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3n3TNT+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FILyoj1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B9F53365;
-	Thu, 12 Dec 2024 16:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FA92EAE5;
+	Thu, 12 Dec 2024 15:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022596; cv=none; b=YnIcEqF3EWF/pqXqmjBF/K5ntc5vJVSKfck8osyyrQrkuUs2G5cuhTFZDbGgDKEYsTGjp7iGe4UYQ38TE9jYg0PANkhHtyeG1oQ3vsKPwZo4G0mz0qNUzjJPjwTGio6H2x5Ug9JMj+/2VYteiUN1Io8ajBW6UUTyImS0Gv6GtWU=
+	t=1734016827; cv=none; b=FNJOG7QeguS2glZZfmMkqr0teb+lShLq8jN3OFmC+7Y3c5iEFGNr0B+QD5+byLV3sxnwEdRxBFqfHYvB7AiQmMo6DDaIANUPSUMY7KPTnifvILtlw+wQnrGI1wmEP3OPUBvbrZx1aOMHMMb9OpwX3W0lIc4fyLCRymu3cIsV7LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022596; c=relaxed/simple;
-	bh=bxKf3qR3tt9n14pQ4jWXe3YEU4sIE4AvJ6gwQclvpx0=;
+	s=arc-20240116; t=1734016827; c=relaxed/simple;
+	bh=na1GvMrllmTXY4oQYD6aXcJKDqdmAqFAs52npUOrmwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q8ss+A/MpbAR5FmBpWINqgQU8sYnU/p/KJQNB9DOXCT4xccb3O98G/v3RFH0CqpYqiaQ7DoqTaq/DAezr2AKVz4m7uVjJbY+IwdFQmPEvaHN3V4ej3QihD1LKv9hQuV1noQUGjT4vR0JCbyzDQr03/wN3zCg9wcJgtn88Eer0Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3n3TNT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF56C4CECE;
-	Thu, 12 Dec 2024 16:56:33 +0000 (UTC)
+	 MIME-Version; b=ak+7CcQT20/njub1QxTzRTOdMJv06HwC6mjkWBMK458hMmAuk9ggUxc13aU2z6ACU3P5zb3j3u/V71PeH4C/PCBnyz/54n1T/a/eOg9tJk7jjb8hkrRZMh4O3TDevXIgqibclk6aXFELlHPr4Cre+Yf/afr3S3w5/GaPbruIFX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FILyoj1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5FBC4CECE;
+	Thu, 12 Dec 2024 15:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022594;
-	bh=bxKf3qR3tt9n14pQ4jWXe3YEU4sIE4AvJ6gwQclvpx0=;
+	s=korg; t=1734016827;
+	bh=na1GvMrllmTXY4oQYD6aXcJKDqdmAqFAs52npUOrmwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3n3TNT+ErUXa3AD3vdcTWb/iAjxLiKas3Z2gvKYsYdBll+0JpK17sr1MispMUCRj
-	 T5aN6x4Hpa7zfpXPZMl2F7siB9tQEOM3J0wxG0Gugj6LYuU1JKztp9VlqsfMn1pGmQ
-	 q7ht+Yl5/I96baOwhcrn5Wcp+njl+SfXpYk381HM=
+	b=FILyoj1MR0mRRlcjTo3kUKOXAWCc6ZY0E3OBRU0bIlZnTfynZpcfJYklngYysOhyC
+	 kFEZHw2M/dXs3ZmvRf3og1FQP1uTE2Q2VS+NFUCxQ2CFy3xowW34dTnpPaZerq8wjw
+	 WWgE2VZwBFVKIA8iMMQMWy1suC56Rs5dEam8PjLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Leo Chen <leo.chen@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 282/565] spi: atmel-quadspi: Fix register name in verbose logging function
+Subject: [PATCH 6.12 308/466] drm/amd/display: Adding array index check to prevent memory corruption
 Date: Thu, 12 Dec 2024 15:57:57 +0100
-Message-ID: <20241212144322.600013113@linuxfoundation.org>
+Message-ID: <20241212144318.951363624@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Leo Chen <leo.chen@amd.com>
 
-[ Upstream commit 2ac40e6d0ccdd93031f8b1af61b0fe5cdd704923 ]
+[ Upstream commit 2c437d9a0b496168e1a1defd17b531f0a526dbe9 ]
 
-`atmel_qspi_reg_name()` is used for pretty-printing register offsets
-for verbose logging of register accesses. However, due to a typo
-(likely a copy-paste error), QSPI_RD's offset prints as "MR", the
-name of the previous register. Fix this typo.
+[Why & How]
+Array indices out of bound caused memory corruption. Adding checks to
+ensure that array index stays in bound.
 
-Fixes: c528ecfbef04 ("spi: atmel-quadspi: Add verbose debug facilities to monitor register accesses")
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Reviewed-by: Alexander Dahl <ada@thorsis.com>
-Link: https://patch.msgid.link/20241122141302.2599636-1-csokas.bence@prolan.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Leo Chen <leo.chen@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/atmel-quadspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index 938017a60c8ed..0a4d060a71065 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -182,7 +182,7 @@ static const char *atmel_qspi_reg_name(u32 offset, char *tmp, size_t sz)
- 	case QSPI_MR:
- 		return "MR";
- 	case QSPI_RD:
--		return "MR";
-+		return "RD";
- 	case QSPI_TD:
- 		return "TD";
- 	case QSPI_SR:
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index b46a3afe48ca7..7d68006137a97 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -257,11 +257,11 @@ static void dcn35_notify_host_router_bw(struct clk_mgr *clk_mgr_base, struct dc_
+ 	struct clk_mgr_internal *clk_mgr = TO_CLK_MGR_INTERNAL(clk_mgr_base);
+ 	uint32_t host_router_bw_kbps[MAX_HOST_ROUTERS_NUM] = { 0 };
+ 	int i;
+-
+ 	for (i = 0; i < context->stream_count; ++i) {
+ 		const struct dc_stream_state *stream = context->streams[i];
+ 		const struct dc_link *link = stream->link;
+-		uint8_t lowest_dpia_index = 0, hr_index = 0;
++		uint8_t lowest_dpia_index = 0;
++		unsigned int hr_index = 0;
+ 
+ 		if (!link)
+ 			continue;
+@@ -271,6 +271,8 @@ static void dcn35_notify_host_router_bw(struct clk_mgr *clk_mgr_base, struct dc_
+ 			continue;
+ 
+ 		hr_index = (link->link_index - lowest_dpia_index) / 2;
++		if (hr_index >= MAX_HOST_ROUTERS_NUM)
++			continue;
+ 		host_router_bw_kbps[hr_index] += dc_bandwidth_in_kbps_from_timing(
+ 			&stream->timing, dc_link_get_highest_encoding_format(link));
+ 	}
 -- 
 2.43.0
 
