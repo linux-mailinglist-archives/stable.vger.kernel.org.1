@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-101038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49D99EE9FA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:07:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E83FB9EEA00
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75B9A284926
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9FC3285508
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683CE2156EA;
-	Thu, 12 Dec 2024 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E39621660C;
+	Thu, 12 Dec 2024 15:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ec6mpF9T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAKjF/Iw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244472139B2;
-	Thu, 12 Dec 2024 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB002165F0;
+	Thu, 12 Dec 2024 15:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016042; cv=none; b=Qq/knEUib2Ujlroz/B6pK5OXsU//3u/piP1g+GoQJs96VSeQ6K/t5XQ0er/WsshXkCbXFNmQACVSKWkXlUj1KyUDrylac2T3a8S69fvwGT4SxzY9M5NS65+1TqstCCC+hQjLJ6ovXo126oF+k05ZQgy4b3fMiyNN00Wr4iZ54P8=
+	t=1734016059; cv=none; b=W3RaMSn8AfqJa9+he9Guzcdddf/sQQsKRPABSZnBRdm6rpMyRdJIFcz/7GDg0BQ1GCjbxFF+KBS6sSCunJrCiIsRWk7kU5prpMJ/9EE0SHRK6o0vXbMnM0fuFPUaJHAePxloNIZWyez6meIDC9/ClBLx1Xs5xuvsoK4JEOciDP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016042; c=relaxed/simple;
-	bh=GPpK+l7ReW5flqKh9Iyyw9BexN5lENvpS2mA7yMycZ4=;
+	s=arc-20240116; t=1734016059; c=relaxed/simple;
+	bh=biUjPGq3s1SUmj9jpt2+qLOnIaqxEV5gX+Rq3VAEKGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gjv4V5ryKJhHSpiv8kz5YA9N2FDZmdvah4UoyvhlWO2OZXf8Dbh2tCj41by+IkN0w2SnMoC7xGWBHz4Tvdfp7divlQyndGC00PCFmOukcdwnm580L1Jf+YibvracEgFocpaFriBfnlrAGQi7/QdNVNwZmDdE2UvN7f9WtVr/jgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ec6mpF9T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF30C4CECE;
-	Thu, 12 Dec 2024 15:07:21 +0000 (UTC)
+	 MIME-Version; b=UEovyREI1/3VwT8VgXr/93Irw+TOs7OiNXyF7r9rFWg0SdStGV0wST+YVVT/bkq5jnR3IdQtTbk9Kiefk6PsG1xAmLs6gb6T5ZepJLX0Jqp9RmMViwjCR1BFe7t3NPBD5AV+4cE8Oqs/G5Z/gM+Mb5QLk3lHmaaccERcXgPV+do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAKjF/Iw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C39C4CECE;
+	Thu, 12 Dec 2024 15:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016042;
-	bh=GPpK+l7ReW5flqKh9Iyyw9BexN5lENvpS2mA7yMycZ4=;
+	s=korg; t=1734016059;
+	bh=biUjPGq3s1SUmj9jpt2+qLOnIaqxEV5gX+Rq3VAEKGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ec6mpF9TcivDv5hLHQxvLXhh9niTT97C9sJFkQq6NRQI0ZDjmzavt9FcnhwOS4s2+
-	 z82DWGvu6iKoF36ITUJmV2pRGLsKDQFRf85FksYylOOCxx+NTqO0wPs/ZpSQo3v1LX
-	 quc5/EfnpmlB5zEPWhafrJx+291ijwboK+ZC0rmI=
+	b=HAKjF/IwoGydhd3mGbW7PoJxgnkubxlXs3M4fOdmmlvDIeggzFkfcTdlF/vO/kTYM
+	 Ncy/xbj58AvabsPgyhA9JjvUwPS3LercD9XRuUIkYpHU85JNBpJzCAqoC3FMZn8BHC
+	 GPUQOxqrdhSj3JLvYYOiwKWK6k2Cp4HzI9gfkUrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 115/466] smb: client: fix potential race in cifs_put_tcon()
-Date: Thu, 12 Dec 2024 15:54:44 +0100
-Message-ID: <20241212144311.359671156@linuxfoundation.org>
+Subject: [PATCH 6.12 120/466] x86/CPU/AMD: WARN when setting EFER.AUTOIBRS if and only if the WRMSR fails
+Date: Thu, 12 Dec 2024 15:54:49 +0100
+Message-ID: <20241212144311.551750511@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -66,44 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit c32b624fa4f7ca5a2ff217a0b1b2f1352bb4ec11 ]
+[ Upstream commit 492077668fb453b8b16c842fcf3fafc2ebc190e9 ]
 
-dfs_cache_refresh() delayed worker could race with cifs_put_tcon(), so
-make sure to call list_replace_init() on @tcon->dfs_ses_list after
-kworker is cancelled or finished.
+When ensuring EFER.AUTOIBRS is set, WARN only on a negative return code
+from msr_set_bit(), as '1' is used to indicate the WRMSR was successful
+('0' indicates the MSR bit was already set).
 
-Fixes: 4f42a8b54b5c ("smb: client: fix DFS interlink failover")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8cc68c9c9e92 ("x86/CPU/AMD: Make sure EFER[AIBRSE] is set")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/Z1MkNofJjt7Oq0G6@google.com
+Closes: https://lore.kernel.org/all/20241205220604.GA2054199@thelio-3990X
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index a94c538ff8636..feff3324d39c6 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2512,9 +2512,6 @@ cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index d8408aafeed98..79d2e17f6582e 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1065,7 +1065,7 @@ static void init_amd(struct cpuinfo_x86 *c)
+ 	 */
+ 	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
+ 	    cpu_has(c, X86_FEATURE_AUTOIBRS))
+-		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS));
++		WARN_ON_ONCE(msr_set_bit(MSR_EFER, _EFER_AUTOIBRS) < 0);
  
- 	list_del_init(&tcon->tcon_list);
- 	tcon->status = TID_EXITING;
--#ifdef CONFIG_CIFS_DFS_UPCALL
--	list_replace_init(&tcon->dfs_ses_list, &ses_list);
--#endif
- 	spin_unlock(&tcon->tc_lock);
- 	spin_unlock(&cifs_tcp_ses_lock);
- 
-@@ -2522,6 +2519,7 @@ cifs_put_tcon(struct cifs_tcon *tcon, enum smb3_tcon_ref_trace trace)
- 	cancel_delayed_work_sync(&tcon->query_interfaces);
- #ifdef CONFIG_CIFS_DFS_UPCALL
- 	cancel_delayed_work_sync(&tcon->dfs_cache_work);
-+	list_replace_init(&tcon->dfs_ses_list, &ses_list);
- #endif
- 
- 	if (tcon->use_witness) {
+ 	/* AMD CPUs don't need fencing after x2APIC/TSC_DEADLINE MSR writes. */
+ 	clear_cpu_cap(c, X86_FEATURE_APIC_MSRS_FENCE);
 -- 
 2.43.0
 
