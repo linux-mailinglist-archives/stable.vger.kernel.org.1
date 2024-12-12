@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67E39EF5DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27F99EF51F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B1C128D39B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29BE41940D9B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB20216E2D;
-	Thu, 12 Dec 2024 17:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C300223C48;
+	Thu, 12 Dec 2024 16:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlJF47/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGNMzCxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46771F2381;
-	Thu, 12 Dec 2024 17:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A03413792B;
+	Thu, 12 Dec 2024 16:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024017; cv=none; b=c5VRnsTlllA1QnJnpjpGnuxWd4VuTM0NDSgomIxZXiqak+b+b4r51azcFuMxLy6VpfnyyYCp8N37PtNY91hh9Q6QcbLctXahaqe+gAvE7bopz0/zkW/Gfu+msdu6Vn/8RFkDvn50VdFRE4DKDGm3k8Oxhq4RQA1QKdFzeKXiuNo=
+	t=1734022634; cv=none; b=GwpoWmKzkBSY1GvFGSvuZlePdiBHxvkxsJAnOQqBueXfr0VRyMvUVsX30wjppAvGFU2LfyhlYkOhuP1CegzwykFFUdDZoUZl+3RFDbXujK0+GzaSLNlRRvCmEn9JU7JLtG+YZ46efT/9Oulrsg0gQoijT8N18Vunu+dtKZ+AtL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024017; c=relaxed/simple;
-	bh=WXi1VMkCCtQFeZZewDXmuJlHQVQc3+UUMsbwSGRLfDM=;
+	s=arc-20240116; t=1734022634; c=relaxed/simple;
+	bh=fgf4LDeHI0CLEmkkRbSmnniiJuoxfd/Vr2jdszO/ewU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ueA3Ja3C09tidIhiHOwGF2JRL3T//jhALmCUMU95O43EiL91xmRcIwrn7lvPK7/hg9M04oxGh7YhEnDq0AwF8FyOYo+mYnOTIOM9/7aK8IV1HcGbg50ue+NZOSC4XteIgGoY+Eki25OfWvIiQoP/g7oA4nrO/4rAwTL95Xk+f0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlJF47/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AF7C4CECE;
-	Thu, 12 Dec 2024 17:20:16 +0000 (UTC)
+	 MIME-Version; b=JLid1X5tojoTq+1iFOZXgCjTAU7bhUDaf6Ix4ol424IZ+O1FnVeMbgAwKhDOnd9Fr5gGRlJQD6CN/PqlGeFD4p09h+anssntYOw0ZfTeAxzHXYbsbcxCi2ePqCtai4ZaGxgszdzjdsaep1sW4TfeJCqFBvtEhzbS85Ug3FaScGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGNMzCxT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8335BC4CECE;
+	Thu, 12 Dec 2024 16:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024017;
-	bh=WXi1VMkCCtQFeZZewDXmuJlHQVQc3+UUMsbwSGRLfDM=;
+	s=korg; t=1734022634;
+	bh=fgf4LDeHI0CLEmkkRbSmnniiJuoxfd/Vr2jdszO/ewU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LlJF47/fZlIYnBNyG25/gemqvHDzBuX/Qk2Fk7Xt9UNVTVH7SKNe3Cgcz4+Hl1T5T
-	 hV4CXxEwBCTBOmiAbIfvoMdixArhvvMsuqEl4EAVmT67IGEUXqaqo74e6lX7QsrZKI
-	 1wnecRnjHSYa9bHIbWQNy9dU6W/nCeDifV2cbUtU=
+	b=uGNMzCxTCQwxYRycKxvWJC0tIawac4z5dIiIfqZajqg82X2TJg0yHsAIGZ6hkHNkn
+	 xNOKox9Z54TyErxzPRBBiKJ2TMO0EWShehry2I+U05tyk37UscGhh+cJ3nD5X1Xzq0
+	 8cwKkqm2SbjzhDXltfnsajsJZioFEQ+WvENV74pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	chao liu <liuzgyid@outlook.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 151/459] net: rfkill: gpio: Add check for clk_enable()
+Subject: [PATCH 5.15 294/565] apparmor: fix Do simple duplicate message elimination
 Date: Thu, 12 Dec 2024 15:58:09 +0100
-Message-ID: <20241212144259.477390009@linuxfoundation.org>
+Message-ID: <20241212144323.086811278@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingwei Zheng <zmw12306@gmail.com>
+From: chao liu <liuzgyid@outlook.com>
 
-[ Upstream commit 8251e7621b25ccdb689f1dd9553b8789e3745ea1 ]
+[ Upstream commit 9b897132424fe76bf6c61f22f9cf12af7f1d1e6a ]
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+Multiple profiles shared 'ent->caps', so some logs missed.
 
-Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Link: https://patch.msgid.link/20241108195341.1853080-1-zmw12306@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0ed3b28ab8bf ("AppArmor: mediation of non file objects")
+Signed-off-by: chao liu <liuzgyid@outlook.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ security/apparmor/capability.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-index f74baefd855d3..2df5bf240b64a 100644
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -30,8 +30,12 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
- {
- 	struct rfkill_gpio_data *rfkill = data;
- 
--	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
--		clk_enable(rfkill->clk);
-+	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
-+		int ret = clk_enable(rfkill->clk);
-+
-+		if (ret)
-+			return ret;
-+	}
- 
- 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
- 	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
+diff --git a/security/apparmor/capability.c b/security/apparmor/capability.c
+index deccea8654ad8..1b13fd89d5a9f 100644
+--- a/security/apparmor/capability.c
++++ b/security/apparmor/capability.c
+@@ -94,6 +94,8 @@ static int audit_caps(struct common_audit_data *sa, struct aa_profile *profile,
+ 		return error;
+ 	} else {
+ 		aa_put_profile(ent->profile);
++		if (profile != ent->profile)
++			cap_clear(ent->caps);
+ 		ent->profile = aa_get_profile(profile);
+ 		cap_raise(ent->caps, cap);
+ 	}
 -- 
 2.43.0
 
