@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914C89EF3EF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F959EED2C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3612F286BBB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C7A1285305
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F48D2253E0;
-	Thu, 12 Dec 2024 17:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5293622330F;
+	Thu, 12 Dec 2024 15:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXPYoh4a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLNaB3vI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE47622969B;
-	Thu, 12 Dec 2024 17:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7D64F218;
+	Thu, 12 Dec 2024 15:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022861; cv=none; b=BYPRDdM8YQ/xxnbhS4JmXQsqD11Ju8iy8V2cvXo7iF2oUpIufrxvtUenM+QS6rrqJZlMdD0l4wizoHYxX7o5m2qqxQ6A5hbou4+UZf2wR/4Y4HXTyDwNMX+O6ZizBUbxBjdSwLa/xVQK2td/dGeUVPXxWHypPOlyJ50LLLxpu4s=
+	t=1734018110; cv=none; b=mrua77qFnyCmqXgo8u2UWLvQM4wbaf7Y0N3ebxq+7SYPnnIkcTKGFCAaIgF2wWna8lrIVMymykssg0dGyN97eWKLFw/DSNrxZY3ACnPOudU2gTpqDfDaEU/cQCZb2FEm0gr/2/Wqxa+XmkWi8SHsvZC59eOCnvCEyeFTur/tAQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022861; c=relaxed/simple;
-	bh=I2SzrSOhr88tRDOdcrC6N/Lch95PYNhJ6NA/Vn2qPDQ=;
+	s=arc-20240116; t=1734018110; c=relaxed/simple;
+	bh=floRfjyKxfDi6SwAE1+nQrfRcWBFrVY/KVZVgLUXp1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NC96W/oi3vjHFxYvpAO69k9xOSVh3cYoQdcWTEmV7iEnCPmJ+9iKe0ZpdwRMK7mOK/Ay8do6Dzwa51CZnxKMY6yNjVPdyajWNY1dwENghlc5bOCY7dHUD8/WN2RGkES94fjRTAjY7I4QHPBaS9biepUlIuALqD3TDkN1BXxPjWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXPYoh4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC2DC4CECE;
-	Thu, 12 Dec 2024 17:01:00 +0000 (UTC)
+	 MIME-Version; b=G3S7HBjEI4QY5OUMQKRT1QlALSwy4MEiyYZLue4RPBjhwss+c2ucWaZZPRcMZD/LlcOksYKa/rrYk1cZCoEsi2R6TFPtAlx6L7MMNk4KZkwF2guGjsCrp/wAqlt7V2+xbdiyYi3zrWVSmI6pTsfLQbBuHzDyNAGCnBRVlNagv7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLNaB3vI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD47C4CED0;
+	Thu, 12 Dec 2024 15:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022861;
-	bh=I2SzrSOhr88tRDOdcrC6N/Lch95PYNhJ6NA/Vn2qPDQ=;
+	s=korg; t=1734018109;
+	bh=floRfjyKxfDi6SwAE1+nQrfRcWBFrVY/KVZVgLUXp1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXPYoh4atCJopa8Ls4qoYAdbW0dnIasVIhKwTqFxbGoCbHYLiMK4j7iPF+xyHhf49
-	 OL/WMFX2C3c7N2+N+l4NO0Hm/lsOxrzd6OkVl2UY45fmLiK0faaOvBNR57f9XNH9D5
-	 OkXDoaKUB0QxYvcExoDdyegshdqAmUL8glGiEvRo=
+	b=tLNaB3vIbb/5X0VJKnUu73ZckjeA5SvDfAavWEK/d66yM0QquCVrvMECpYFOJ0kNC
+	 evnWOh9mK9HYxngZB9YRgkE2epn3LrXgZ5LpZzRIraqSM/9FWBhVLkeZjWIFJqsPHW
+	 Rzq0gmea5f79RMoBK2wAxZLvtom6DuGsuCEGEKdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew McClain <mmcclain@noprivs.com>,
-	Sai Kumar Cholleti <skmr537@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.15 325/565] gpio: exar: set value when external pull-up or pull-down is present
+	Peng Fan <peng.fan@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 201/356] mmc: sdhci-esdhc-imx: enable quirks SDHCI_QUIRK_NO_LED
 Date: Thu, 12 Dec 2024 15:58:40 +0100
-Message-ID: <20241212144324.447168123@linuxfoundation.org>
+Message-ID: <20241212144252.562158831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sai Kumar Cholleti <skmr537@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 72cef64180de04a7b055b4773c138d78f4ebdb77 upstream.
+[ Upstream commit 4dede2b76f4a760e948e1a49b1520881cb459bd3 ]
 
-Setting GPIO direction = high, sometimes results in GPIO value = 0.
+Enable SDHCI_QUIRK_NO_LED for i.MX7ULP, i.MX8MM, i.MX8QXP and
+i.MXRT1050. Even there is LCTL register bit, there is no IOMUX PAD
+for it. So there is no sense to enable LED for SDHCI for these SoCs.
 
-If a GPIO is pulled high, the following construction results in the
-value being 0 when the desired value is 1:
-
-$ echo "high" > /sys/class/gpio/gpio336/direction
-$ cat /sys/class/gpio/gpio336/value
-0
-
-Before the GPIO direction is changed from an input to an output,
-exar_set_value() is called with value = 1, but since the GPIO is an
-input when exar_set_value() is called, _regmap_update_bits() reads a 1
-due to an external pull-up.  regmap_set_bits() sets force_write =
-false, so the value (1) is not written.  When the direction is then
-changed, the GPIO becomes an output with the value of 0 (the hardware
-default).
-
-regmap_write_bits() sets force_write = true, so the value is always
-written by exar_set_value() and an external pull-up doesn't affect the
-outcome of setting direction = high.
-
-The same can happen when a GPIO is pulled low, but the scenario is a
-little more complicated.
-
-$ echo high > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-1
-
-$ echo in > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-0
-
-$ echo low > /sys/class/gpio/gpio351/direction
-$ cat /sys/class/gpio/gpio351/value
-1
-
-Fixes: 36fb7218e878 ("gpio: exar: switch to using regmap")
-Co-developed-by: Matthew McClain <mmcclain@noprivs.com>
-Signed-off-by: Matthew McClain <mmcclain@noprivs.com>
-Signed-off-by: Sai Kumar Cholleti <skmr537@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20241105071523.2372032-1-skmr537@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240923062016.1165868-1-peng.fan@oss.nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-exar.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci-esdhc-imx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpio/gpio-exar.c
-+++ b/drivers/gpio/gpio-exar.c
-@@ -80,11 +80,13 @@ static void exar_set_value(struct gpio_c
- 	struct exar_gpio_chip *exar_gpio = gpiochip_get_data(chip);
- 	unsigned int addr = exar_offset_to_lvl_addr(exar_gpio, offset);
- 	unsigned int bit = exar_offset_to_bit(exar_gpio, offset);
-+	unsigned int bit_value = value ? BIT(bit) : 0;
+diff --git a/drivers/mmc/host/sdhci-esdhc-imx.c b/drivers/mmc/host/sdhci-esdhc-imx.c
+index 3b8030f3552af..e4e9b84f210b2 100644
+--- a/drivers/mmc/host/sdhci-esdhc-imx.c
++++ b/drivers/mmc/host/sdhci-esdhc-imx.c
+@@ -235,6 +235,7 @@ struct esdhc_platform_data {
  
--	if (value)
--		regmap_set_bits(exar_gpio->regmap, addr, BIT(bit));
--	else
--		regmap_clear_bits(exar_gpio->regmap, addr, BIT(bit));
-+	/*
-+	 * regmap_write_bits() forces value to be written when an external
-+	 * pull up/down might otherwise indicate value was already set.
-+	 */
-+	regmap_write_bits(exar_gpio->regmap, addr, BIT(bit), bit_value);
- }
+ struct esdhc_soc_data {
+ 	u32 flags;
++	u32 quirks;
+ };
  
- static int exar_direction_output(struct gpio_chip *chip, unsigned int offset,
+ static const struct esdhc_soc_data esdhc_imx25_data = {
+@@ -306,10 +307,12 @@ static struct esdhc_soc_data usdhc_imx7ulp_data = {
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+ 			| ESDHC_FLAG_PMQOS | ESDHC_FLAG_HS400
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
+ static struct esdhc_soc_data usdhc_imxrt1050_data = {
+ 	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
+ 
+ static struct esdhc_soc_data usdhc_imx8qxp_data = {
+@@ -318,6 +321,7 @@ static struct esdhc_soc_data usdhc_imx8qxp_data = {
+ 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE
+ 			| ESDHC_FLAG_CLK_RATE_LOST_IN_PM_RUNTIME,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
+ 
+ static struct esdhc_soc_data usdhc_imx8mm_data = {
+@@ -325,6 +329,7 @@ static struct esdhc_soc_data usdhc_imx8mm_data = {
+ 			| ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
+ 			| ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES
+ 			| ESDHC_FLAG_STATE_LOST_IN_LPMODE,
++	.quirks = SDHCI_QUIRK_NO_LED,
+ };
+ 
+ struct pltfm_imx_data {
+@@ -1664,6 +1669,7 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
+ 
+ 	imx_data->socdata = device_get_match_data(&pdev->dev);
+ 
++	host->quirks |= imx_data->socdata->quirks;
+ 	if (imx_data->socdata->flags & ESDHC_FLAG_PMQOS)
+ 		cpu_latency_qos_add_request(&imx_data->pm_qos_req, 0);
+ 
+-- 
+2.43.0
+
 
 
 
