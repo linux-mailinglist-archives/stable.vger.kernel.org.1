@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-101140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DAA9EEA84
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89B39EF08A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 440A7280AAB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:15:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9655928DAD4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC073217F5D;
-	Thu, 12 Dec 2024 15:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7801722FE15;
+	Thu, 12 Dec 2024 16:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcknDqUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8mJNyx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6995C217F40;
-	Thu, 12 Dec 2024 15:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1F6223E62;
+	Thu, 12 Dec 2024 16:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016498; cv=none; b=O7/iC5BdMUVpasLSU8HTquYlpNyyqC+fSghSUhaiI+qe+2iDsgWXYdmCf3SepGZoPt4S9StBRiFq/d4b/j3L46/36MQP+WvbThvX53GK7bEAA/ffugMSF1TBN+EfIX9n6MTZKgppxEL7cEMeqRpsTFp/boa6tvS2d//obAAVOF0=
+	t=1734020333; cv=none; b=EBoCp5GZqP7hWA60/v9IcjFAJBxqIQG8nCuBCe1IbgUplTUmFYGQO320OoIOV+dJpscKD1zFvyESKAoHp70d+0f0UwNuSbSwCnKDpz5OgRcBpIu073slWSc9YrlhI9wIIeplpqP24RvEdp1DCY3kBmRtdq3U2PpMIaqKlng+H/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016498; c=relaxed/simple;
-	bh=BiFtqM/2WTQJcPS42EB4AirtF5iYysIgdwpk4OVNhn4=;
+	s=arc-20240116; t=1734020333; c=relaxed/simple;
+	bh=4as18MFMzWBgKQvaba+uinMTNQB9RVTzoTNKsXs3xfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhWUll4GoQWQ51VmGXy2dIIsShdvx2Whvn3TGG6vbJjA5laDVA5NIkPIVBzbPmyH9n74LgVbsJxVXuId5gm1PUMsBOUo7FmOIELZJoXadmT+HTVzoY/p1XRyw/IhiwnRMrGI2kvwEyo14H8qsRA7djKH/SF+CULeBq2+eKurFn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcknDqUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8EAC4CEDF;
-	Thu, 12 Dec 2024 15:14:57 +0000 (UTC)
+	 MIME-Version; b=ZeuQvvkMJ2F3qx4hLBd642hxEr+Rozu3Ywpb+b2I4r3x/5X6LEAMjO1sauD9fg/nPZXFrmbNq5C6YRJqIq5TBhPWlRd2iI7U5MVsu6OUiApgmRaCJbJanNo03x6Oux0A7aNPC2/OO6T/plJA6uIAoRszSFAxNvbw0squudf/TdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8mJNyx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E14C4CECE;
+	Thu, 12 Dec 2024 16:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016498;
-	bh=BiFtqM/2WTQJcPS42EB4AirtF5iYysIgdwpk4OVNhn4=;
+	s=korg; t=1734020333;
+	bh=4as18MFMzWBgKQvaba+uinMTNQB9RVTzoTNKsXs3xfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bcknDqUQfYLXZXNnuveW8hDadE71G3nAI5g0Iu93Ax8un/PjBu4fFza1cRcoZXvpp
-	 xl899t/3pOudn6/eHSZlTviZvWlXvztkANHLGftkg+BT5bupFcdLTlX9C6VH77RS5C
-	 LWHJkdLlfXXNLH/XnDDjkZfB2BDsNJ52vZaO9zyY=
+	b=N8mJNyx7JChcJ2yGM7BeY1LmasQiecFJmGh4r4zdznJAw+R4anMrzKfAoTJI/qVE5
+	 vRFQIe210UsfrWO+5LeULNJzkmFWswJ2eVxoKssCuQndjhI1CE3zk0nU/jD17Mqltf
+	 hag9cXamAkMGSQmiXbgiP5mtZLw5FFK3ynVXkUBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
+	Alex Zenla <alex@edera.dev>,
+	Alexander Merritt <alexander@edera.dev>,
+	Ariadne Conill <ariadne@ariadne.space>,
+	Juergen Gross <jgross@suse.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/466] epoll: annotate racy check
-Date: Thu, 12 Dec 2024 15:56:24 +0100
-Message-ID: <20241212144315.283393122@linuxfoundation.org>
+Subject: [PATCH 6.1 440/772] 9p/xen: fix init sequence
+Date: Thu, 12 Dec 2024 15:56:25 +0100
+Message-ID: <20241212144408.107039504@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Alex Zenla <alex@edera.dev>
 
-[ Upstream commit 6474353a5e3d0b2cf610153cea0c61f576a36d0a ]
+[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
 
-Epoll relies on a racy fastpath check during __fput() in
-eventpoll_release() to avoid the hit of pointlessly acquiring a
-semaphore. Annotate that race by using WRITE_ONCE() and READ_ONCE().
+Large amount of mount hangs observed during hotplugging of 9pfs devices. The
+9pfs Xen driver attempts to initialize itself more than once, causing the
+frontend and backend to disagree: the backend listens on a channel that the
+frontend does not send on, resulting in stalled processing.
 
-Link: https://lore.kernel.org/r/66edfb3c.050a0220.3195df.001a.GAE@google.com
-Link: https://lore.kernel.org/r/20240925-fungieren-anbauen-79b334b00542@brauner
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reported-by: syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Only allow initialization of 9p frontend once.
+
+Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
+Signed-off-by: Alex Zenla <alex@edera.dev>
+Signed-off-by: Alexander Merritt <alexander@edera.dev>
+Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20241119211633.38321-1-alexander@edera.dev>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c            | 6 ++++--
- include/linux/eventpoll.h | 2 +-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ net/9p/trans_xen.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 1ae4542f0bd88..90fbab6b6f036 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -823,7 +823,8 @@ static bool __ep_remove(struct eventpoll *ep, struct epitem *epi, bool force)
- 	to_free = NULL;
- 	head = file->f_ep;
- 	if (head->first == &epi->fllink && !epi->fllink.next) {
--		file->f_ep = NULL;
-+		/* See eventpoll_release() for details. */
-+		WRITE_ONCE(file->f_ep, NULL);
- 		if (!is_file_epoll(file)) {
- 			struct epitems_head *v;
- 			v = container_of(head, struct epitems_head, epitems);
-@@ -1603,7 +1604,8 @@ static int attach_epitem(struct file *file, struct epitem *epi)
- 			spin_unlock(&file->f_lock);
- 			goto allocate;
- 		}
--		file->f_ep = head;
-+		/* See eventpoll_release() for details. */
-+		WRITE_ONCE(file->f_ep, head);
- 		to_free = NULL;
+diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
+index 68027e4fb4216..f95803736ced0 100644
+--- a/net/9p/trans_xen.c
++++ b/net/9p/trans_xen.c
+@@ -465,6 +465,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
+ 		goto error;
  	}
- 	hlist_add_head_rcu(&epi->fllink, file->f_ep);
-diff --git a/include/linux/eventpoll.h b/include/linux/eventpoll.h
-index 3337745d81bd6..0c0d00fcd131f 100644
---- a/include/linux/eventpoll.h
-+++ b/include/linux/eventpoll.h
-@@ -42,7 +42,7 @@ static inline void eventpoll_release(struct file *file)
- 	 * because the file in on the way to be removed and nobody ( but
- 	 * eventpoll ) has still a reference to this file.
- 	 */
--	if (likely(!file->f_ep))
-+	if (likely(!READ_ONCE(file->f_ep)))
- 		return;
  
- 	/*
++	xenbus_switch_state(dev, XenbusStateInitialised);
+ 	return 0;
+ 
+  error_xenbus:
+@@ -512,8 +513,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
+ 		break;
+ 
+ 	case XenbusStateInitWait:
+-		if (!xen_9pfs_front_init(dev))
+-			xenbus_switch_state(dev, XenbusStateInitialised);
++		if (dev->state != XenbusStateInitialising)
++			break;
++
++		xen_9pfs_front_init(dev);
+ 		break;
+ 
+ 	case XenbusStateConnected:
 -- 
 2.43.0
 
