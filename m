@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE8A9EEC4E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF069EEAB0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6562C1642BD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E2C165982
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F80221B90F;
-	Thu, 12 Dec 2024 15:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B69217739;
+	Thu, 12 Dec 2024 15:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CT3xYFqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BW1CDstB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D02121765E;
-	Thu, 12 Dec 2024 15:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364A3217707;
+	Thu, 12 Dec 2024 15:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017472; cv=none; b=fRN/fod2lKpvsD4bRMj+HCzHJ4Yx8t3ykIAJoWspVxIfhFQG7ZjQU2XNZhKdUTr9yYxZt6kjwT3t6XTzKASTi7yMeEiYL7wW4LAL5yeeyh4Y0WV9FnfqgjjxoJpg1+iivrYc+mO+E2gq/r6DdzquKtnMiR6fIz4BBEyzh9NoG/E=
+	t=1734016342; cv=none; b=ARVNRRKbEWWzBfvKbR/GFIjSyG96tzPKu/ZelUObsCeCWC+vuL8mpC5yb6Aw0QcsVYgADGc5QJQrGYSAc6f7+aM+GUcbvFTE2+RXtTLQ62QvPyJ+qq4ObIWXC6JI2X81hzLBQvxR24oNtD3HIKKt4TzZkE20goG1wfig29hDz8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017472; c=relaxed/simple;
-	bh=Mz0u0Jgp++5M9UGZCMQXySy0zx2rONY+8vNtb4nEsX0=;
+	s=arc-20240116; t=1734016342; c=relaxed/simple;
+	bh=ri8dVpTwz66BpQO3CYvrGsLwHuOdyV+t35zrRuqTUTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNsAv3llaanpNjubPUyTV/twovRqLglmwltkDqFMIa31mlJD78vsmt/6jh15wF2t+YEhfKyCpJNPfX2vIQLF0FE9K7dls3jHJOAXwRMu8LZvVOE3Ab3na6N4Z/ItoZJ/MQAN8Y30rJOfQYg7LN10m/m9D3VXiwH8ETDV84NqzAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CT3xYFqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D1AC4CECE;
-	Thu, 12 Dec 2024 15:31:11 +0000 (UTC)
+	 MIME-Version; b=sF/LHTm3dJwqrbu72OKz8CMZa9cK/25vXVGcP5PIBUFSan2y7IyzdDtgHWKO0YG92PuqYU8RFmsBii9De5Mdhu3ajgZViNPzsJPL1E7gkJ5CY7QtgQmfys1cySqekhN6ACVQamo7YcSVvxqX7/2xbhmVPj8omnQnj7AzIPbG0vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BW1CDstB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0ABC4CEDD;
+	Thu, 12 Dec 2024 15:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017471;
-	bh=Mz0u0Jgp++5M9UGZCMQXySy0zx2rONY+8vNtb4nEsX0=;
+	s=korg; t=1734016342;
+	bh=ri8dVpTwz66BpQO3CYvrGsLwHuOdyV+t35zrRuqTUTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CT3xYFqVbdaN+D3arhc/8c+/F/fDDDmVMiLsnmvUtYhbY9WcZKbZLbWrrOaLIt0Vs
-	 vhlKgTKibtWr3LLXIxGs4/w4QhADJeyRrPw9u80RpULlSca47B9BOrEwrkdWC+oOEu
-	 0vviO3OcyoJmSZiu9G4bCe7m/B6SOd7oIPR2HDOc=
+	b=BW1CDstBTsaCrKkl9Fr5YO72ehxTp3g1LcLNwXwB0Y6iEwR6rDb97TVemJzzY/5gM
+	 GvI58HBGh8OJkIANCsVw//te5uQj06sJrmehQ76ut9XNEPxNCQjtSDT3EKl9E+65lU
+	 /rfJ9s9TLxTTQBG7/atnoA6TiF1/py5XeIEzv8eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/356] ptp: Add error handling for adjfine callback in ptp_clock_adjtime
+	Lyude Paul <lyude@redhat.com>,
+	Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.12 172/466] drm/dp_mst: Verify request type in the corresponding down message reply
 Date: Thu, 12 Dec 2024 15:55:41 +0100
-Message-ID: <20241212144245.496590417@linuxfoundation.org>
+Message-ID: <20241212144313.596710028@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajay Kaher <ajay.kaher@broadcom.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 98337d7c87577ded71114f6976edb70a163e27bc ]
+commit 4d49e77a973d3b5d1881663c3f122906a0702940 upstream.
 
-ptp_clock_adjtime sets ptp->dialed_frequency even when adjfine
-callback returns an error. This causes subsequent reads to return
-an incorrect value.
+After receiving the response for an MST down request message, the
+response should be accepted/parsed only if the response type matches
+that of the request. Ensure this by checking if the request type code
+stored both in the request and the reply match, dropping the reply in
+case of a mismatch.
 
-Fix this by adding error check before ptp->dialed_frequency is set.
+This fixes the topology detection for an MST hub, as described in the
+Closes link below, where the hub sends an incorrect reply message after
+a CLEAR_PAYLOAD_TABLE -> LINK_ADDRESS down request message sequence.
 
-Fixes: 39a8cbd9ca05 ("ptp: remember the adjusted frequency")
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://patch.msgid.link/20241125105954.1509971-1-ajay.kaher@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: <stable@vger.kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12804
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241203160223.2926014-3-imre.deak@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_clock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |   31 ++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index 9a50bfb56453c..b586da2e30023 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -133,7 +133,8 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 		if (ppb > ops->max_adj || ppb < -ops->max_adj)
- 			return -ERANGE;
- 		err = ops->adjfine(ops, tx->freq);
--		ptp->dialed_frequency = tx->freq;
-+		if (!err)
-+			ptp->dialed_frequency = tx->freq;
- 	} else if (tx->modes & ADJ_OFFSET) {
- 		if (ops->adjphase) {
- 			s32 max_phase_adj = ops->getmaxphase(ops);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3937,6 +3937,34 @@ drm_dp_get_one_sb_msg(struct drm_dp_mst_
+ 	return true;
+ }
+ 
++static int get_msg_request_type(u8 data)
++{
++	return data & 0x7f;
++}
++
++static bool verify_rx_request_type(struct drm_dp_mst_topology_mgr *mgr,
++				   const struct drm_dp_sideband_msg_tx *txmsg,
++				   const struct drm_dp_sideband_msg_rx *rxmsg)
++{
++	const struct drm_dp_sideband_msg_hdr *hdr = &rxmsg->initial_hdr;
++	const struct drm_dp_mst_branch *mstb = txmsg->dst;
++	int tx_req_type = get_msg_request_type(txmsg->msg[0]);
++	int rx_req_type = get_msg_request_type(rxmsg->msg[0]);
++	char rad_str[64];
++
++	if (tx_req_type == rx_req_type)
++		return true;
++
++	drm_dp_mst_rad_to_str(mstb->rad, mstb->lct, rad_str, sizeof(rad_str));
++	drm_dbg_kms(mgr->dev,
++		    "Got unexpected MST reply, mstb: %p seqno: %d lct: %d rad: %s rx_req_type: %s (%02x) != tx_req_type: %s (%02x)\n",
++		    mstb, hdr->seqno, mstb->lct, rad_str,
++		    drm_dp_mst_req_type_str(rx_req_type), rx_req_type,
++		    drm_dp_mst_req_type_str(tx_req_type), tx_req_type);
++
++	return false;
++}
++
+ static int drm_dp_mst_handle_down_rep(struct drm_dp_mst_topology_mgr *mgr)
+ {
+ 	struct drm_dp_sideband_msg_tx *txmsg;
+@@ -3966,6 +3994,9 @@ static int drm_dp_mst_handle_down_rep(st
+ 		goto out_clear_reply;
+ 	}
+ 
++	if (!verify_rx_request_type(mgr, txmsg, msg))
++		goto out_clear_reply;
++
+ 	drm_dp_sideband_parse_reply(mgr, msg, &txmsg->reply);
+ 
+ 	if (txmsg->reply.reply_type == DP_SIDEBAND_REPLY_NAK) {
 
 
 
