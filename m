@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C53B9EF21D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE1F9EEB6B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152B81899340
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB89C1888045
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9346B236FA5;
-	Thu, 12 Dec 2024 16:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21862153FC;
+	Thu, 12 Dec 2024 15:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="um6yLWFC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M79eMul3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50009236FA0;
-	Thu, 12 Dec 2024 16:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7D8216E18;
+	Thu, 12 Dec 2024 15:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020540; cv=none; b=KJged3eZ23cdWNjhuess1YULPcmXTt37jgc+/wJ60taLHxam/LL0nt5VSh+iMfIF2RGz658DHpaB6OYrZYWG5GT2dho1VMm7TuUls+JdnkYCJQyGwP3ZkvAspeBuLe+t4tZV8Vo2pbKdMOS2zowb8bCtPwmVaHz1D5w10//rTIQ=
+	t=1734016773; cv=none; b=TbpEn57JxA/Gx1SREBm3wU6Zz0YU88yvCSmx1T1EcAg7OuPvOpmkpyPnbAySNpqcEBIncw/ng/sFhccmGSPnUlHkFPAY1EQUHiFactVXx+dzf188e6eha9pjpkm1TrDgI0qGrKekT7li0VBiYGAdCQRBN50UHBf6/bCZFLiCcaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020540; c=relaxed/simple;
-	bh=L73TAyedVcOCE0Q0a11g/9+FHabz/zbWMBjpwivDTTM=;
+	s=arc-20240116; t=1734016773; c=relaxed/simple;
+	bh=aW314q8mCqkakBxUU5iHrjJrdPgXaYRECHe3/VwQXxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVoA3Uu40su7s3kS5ViGJSb9t1vuR51dLDWXLVn5iZv8M4zT7pwemwHrOzqiOHiCfK3NhpMIqOaO+NxYFG1ywWfbdv5hDEumD+DqPi+7B85U5lODkDnFxWEjQaUsoZVovEHzENBpmzZQjgPkv9fAXxBqC7aAvHx65T1K5qiC2dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=um6yLWFC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2416C4CECE;
-	Thu, 12 Dec 2024 16:22:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OskxZOF3jIEwt4neGOh1CRDsnCITdbROtwn/WVQKKNUeRiFiYP+g8JFFAHSJ9K8Pp8dv7ADHVGZBq1jH7kl6yNpq1GjCNBjDSnv+TgAF9ZUkMdNBhE+Imbgh4g6ff0vIgTSklmDnglqIHoPDIcI9rzbyCrKsGtIY4/JGeQyTaz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M79eMul3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17C7C4CECE;
+	Thu, 12 Dec 2024 15:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020540;
-	bh=L73TAyedVcOCE0Q0a11g/9+FHabz/zbWMBjpwivDTTM=;
+	s=korg; t=1734016773;
+	bh=aW314q8mCqkakBxUU5iHrjJrdPgXaYRECHe3/VwQXxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=um6yLWFCx+CIX5VO5rVJmQgZWMf81nYv431JefOI9t6G16GHtyE9XkMMtfxBrI2o/
-	 lSuA6V9mhyyCIPzRo27FoUFHyoghExznA2NI/y+MCSdHZARMjiRd55yq3shRz3dskW
-	 +/sOO0oxt0T00e+T3ofpG/EwzYPLBc3aYn+wEy0Y=
+	b=M79eMul3KsycVLl1JRzYVNCBq05J4Aq42xHXpljoLXlGOnG323in94ySZARe0wjFF
+	 zEvDFqwPKTnkVF9bW0JhMFLdr7xWDVxafYjaAvcHrX/PY57I7mr2oFwgw6fkJOpFPa
+	 MDLl92xHv1WzzaFVCIQN7O7T2HqEWqkDqi5vvwh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 486/772] i3c: master: svc: Fix pm_runtime_set_suspended() with runtime pm enabled
+	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 262/466] drm: panel-orientation-quirks: Add quirk for AYA NEO GEEK
 Date: Thu, 12 Dec 2024 15:57:11 +0100
-Message-ID: <20241212144410.023185017@linuxfoundation.org>
+Message-ID: <20241212144317.150566389@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
 
-commit 18599e93e4e814ce146186026c6abf83c14d5798 upstream.
+[ Upstream commit 428656feb972ca99200fc127b5aecb574efd9d3d ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+Add quirk orientation for AYA NEO GEEK. The name appears without
+spaces in DMI strings. The board name is completely different to
+the previous models making it difficult to reuse their quirks
+despite being the same resolution and using the same orientation.
 
-Cc: stable@vger.kernel.org # v5.17
-Fixes: 05be23ef78f7 ("i3c: master: svc: add runtime pm support")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20240930091913.2545510-1-ruanjinjie@huawei.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested by the JELOS team that has been patching their own kernel for a
+while now and confirmed by users in the AYA NEO and ChimeraOS discord
+servers.
+
+Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/40350b0d63fe2b54e7cba1e14be50917203f0079.1726492131.git.tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1639,8 +1639,8 @@ static int svc_i3c_master_probe(struct p
- rpm_disable:
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
-+	pm_runtime_set_suspended(&pdev->dev);
- 
- err_disable_clks:
- 	svc_i3c_master_unprepare_clks(master);
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 01a33d33c4aaf..4a73821b81f6f 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_PRODUCT_NAME, "AYA NEO Founder"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* AYA NEO GEEK */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "GEEK"),
++		},
++		.driver_data = (void *)&lcd800x1280_rightside_up,
+ 	}, {	/* AYA NEO NEXT */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+-- 
+2.43.0
+
 
 
 
