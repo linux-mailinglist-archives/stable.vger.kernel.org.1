@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1799EF442
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2109EECAE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62A7C178507
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E40F166C41
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5710231A4C;
-	Thu, 12 Dec 2024 16:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F291216E0B;
+	Thu, 12 Dec 2024 15:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZ38Ykt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+gQP999"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631B4226545;
-	Thu, 12 Dec 2024 16:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B1D2153DF;
+	Thu, 12 Dec 2024 15:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022324; cv=none; b=TDB05LR+Yj68WdTyNVzbQPS15ndcUsEsjg8et0t5QMwJ/VMyEZE5+ra5I3jlkDG3JGDektCI6/heNWZhJLn+VV+R2LBIqK8nncGPSmzBM4qrIpVfcoiA/MFJIcJTJO2j1tcRt0E/1gVzq6ORrwrEHt4ZqOoL0D+fHP9k0YS6CXE=
+	t=1734017696; cv=none; b=Lt90b6YcsmyhrF/6e4e5cOZvJfh/Rwr0ZPx8wPKG/sdGs2O7AHjm1PRzW8tOUXuJCJn8e7bJWaN6csMM+ff7ER4eriyknfCAzZ6SD/ZDq5Ad4C/y7hs7IqPzBh0YxaOGgNweS1u+Ea2+m5yTj/Nsh7cxjFDA5awy65OY9OQIXb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022324; c=relaxed/simple;
-	bh=RJe7bzkSXRrHvZdFtRsHU2UK+6Wsq/zgF9fPDpf4D08=;
+	s=arc-20240116; t=1734017696; c=relaxed/simple;
+	bh=/rAOENTSbDEXg358n0LiqQgL/v86ln6WkwS2xHCzj6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eci25Ma4e08H1SKh2glMOuX8OcoOc461qzoZUXbHn62fJXlxMEyWctuDxKDx1W3n/aWrLMiioW6aJIiNtAR8j/2cZoMl/7+RJq7buI1dADGGfn7nRE7sCjEOYFa3J343JN89sDX6Uuc5vmNljHkM/8wY0UzV+C/KTTtUUyI9t+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZ38Ykt5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91821C4CECE;
-	Thu, 12 Dec 2024 16:52:03 +0000 (UTC)
+	 MIME-Version; b=gBYej3zy/zPSqyqL++LcWlnkQY0KJSrF2DvM8dUzY6MAWUqw0TMrjEF9SIF4RD5/uFbUG2LX4xb+d9BeF/FdV4hQjFSuiELBm4HAXsa0oB+Y7b049A981TvWjz8SPzr2zXiLUAs9A5r8FC+LgloXpHGb9wixV8/ShBGcaOCBqIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+gQP999; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99730C4CECE;
+	Thu, 12 Dec 2024 15:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022324;
-	bh=RJe7bzkSXRrHvZdFtRsHU2UK+6Wsq/zgF9fPDpf4D08=;
+	s=korg; t=1734017696;
+	bh=/rAOENTSbDEXg358n0LiqQgL/v86ln6WkwS2xHCzj6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZ38Ykt58k6r2WXFzoLXIgvLaC6URVOnPUKqv7FLh9mszJhfksGLAn1DUBuSJcZpu
-	 K7/9s+hIDJcQMLYwoQcLyy0BrxW4RGcz0SykxlGvQSV8BjBOWFBLzNYEkomP9BheZX
-	 kT9XVRgZIw4PSoxiSjT2l+5QORK1HmWeXjhVWMjg=
+	b=v+gQP9992hVEp2EOtSoiFH+JUpzacDtbi0qlpkSo0LoKJiNsH6HCSVCtfEWlLSOr3
+	 CxuoyL21b8kGSWOu3PAsqFKrlfOU6Ke6LZSZ4DTTdWUEnJnxx3pbjc8lrMwmDq/jIs
+	 +hKT2R57F4XBS4vWi3WEqM7alrHMEnY4d+27HBE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Levi Yun <yeoreum.yun@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Rosen Penev <rosenp@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 209/565] trace/trace_event_perf: remove duplicate samples on the first tracepoint event
+Subject: [PATCH 6.6 085/356] mmc: mtk-sd: fix devm_clk_get_optional usage
 Date: Thu, 12 Dec 2024 15:56:44 +0100
-Message-ID: <20241212144319.757253208@linuxfoundation.org>
+Message-ID: <20241212144247.981607539@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit afe5960dc208fe069ddaaeb0994d857b24ac19d1 ]
+[ Upstream commit ed299eda8fbb37cb0e05c7001ab6a6b2627ec087 ]
 
-When a tracepoint event is created with attr.freq = 1,
-'hwc->period_left' is not initialized correctly. As a result,
-in the perf_swevent_overflow() function, when the first time the event occurs,
-it calculates the event overflow and the perf_swevent_set_period() returns 3,
-this leads to the event are recorded for three duplicate times.
+This already returns NULL when not found. However, it can return
+EPROBE_DEFER and should thus return here.
 
-Step to reproduce:
-    1. Enable the tracepoint event & starting tracing
-         $ echo 1 > /sys/kernel/tracing/events/module/module_free
-         $ echo 1 > /sys/kernel/tracing/tracing_on
-
-    2. Record with perf
-         $ perf record -a --strict-freq -F 1 -e "module:module_free"
-
-    3. Trigger module_free event.
-         $ modprobe -i sunrpc
-         $ modprobe -r sunrpc
-
-Result:
-     - Trace pipe result:
-         $ cat trace_pipe
-         modprobe-174509  [003] .....  6504.868896: module_free: sunrpc
-
-     - perf sample:
-         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
-         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
-         modprobe  174509 [003]  6504.868980: module:module_free: sunrpc
-
-By setting period_left via perf_swevent_set_period() as other sw_event did,
-This problem could be solved.
-
-After patch:
-     - Trace pipe result:
-         $ cat trace_pipe
-         modprobe 1153096 [068] 613468.867774: module:module_free: xfs
-
-     - perf sample
-         modprobe 1153096 [068] 613468.867794: module:module_free: xfs
-
-Link: https://lore.kernel.org/20240913021347.595330-1-yeoreum.yun@arm.com
-Fixes: bd2b5b12849a ("perf_counter: More aggressive frequency adjustment")
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://lore.kernel.org/r/20240930224919.355359-4-rosenp@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 2508925fb346 ("mmc: mtk-sd: Fix MMC_CAP2_CRYPTO flag setting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_event_perf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mmc/host/mtk-sd.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/trace_event_perf.c b/kernel/trace/trace_event_perf.c
-index 61e3a2620fa3c..f2000cf2b3bba 100644
---- a/kernel/trace/trace_event_perf.c
-+++ b/kernel/trace/trace_event_perf.c
-@@ -356,10 +356,16 @@ void perf_uprobe_destroy(struct perf_event *p_event)
- int perf_trace_add(struct perf_event *p_event, int flags)
- {
- 	struct trace_event_call *tp_event = p_event->tp_event;
-+	struct hw_perf_event *hwc = &p_event->hw;
+diff --git a/drivers/mmc/host/mtk-sd.c b/drivers/mmc/host/mtk-sd.c
+index a97034388cdff..c5e96a2c079e5 100644
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -2711,9 +2711,8 @@ static int msdc_drv_probe(struct platform_device *pdev)
+ 	if (!(mmc->caps2 & MMC_CAP2_NO_MMC)) {
+ 		host->crypto_clk = devm_clk_get_optional(&pdev->dev, "crypto");
+ 		if (IS_ERR(host->crypto_clk))
+-			host->crypto_clk = NULL;
+-		else
+-			mmc->caps2 |= MMC_CAP2_CRYPTO;
++			return PTR_ERR(host->crypto_clk);
++		mmc->caps2 |= MMC_CAP2_CRYPTO;
+ 	}
  
- 	if (!(flags & PERF_EF_START))
- 		p_event->hw.state = PERF_HES_STOPPED;
- 
-+	if (is_sampling_event(p_event)) {
-+		hwc->last_period = hwc->sample_period;
-+		perf_swevent_set_period(p_event);
-+	}
-+
- 	/*
- 	 * If TRACE_REG_PERF_ADD returns false; no custom action was performed
- 	 * and we need to take the default action of enqueueing our event on
+ 	host->irq = platform_get_irq(pdev, 0);
 -- 
 2.43.0
 
