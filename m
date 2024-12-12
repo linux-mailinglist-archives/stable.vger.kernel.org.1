@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A809EEE2B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF949EF2FD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166581882739
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8AC7189DE54
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230592236EB;
-	Thu, 12 Dec 2024 15:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D13823A184;
+	Thu, 12 Dec 2024 16:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mqxapzuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OkJWasZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F522206A5;
-	Thu, 12 Dec 2024 15:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA32623A180;
+	Thu, 12 Dec 2024 16:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018489; cv=none; b=E+5TXc+oLC6Br4mmyx+eD/k6IPEWrpUoQyeTQiGdzq/z9gY43f6MGXv7DRoXPfXHin7QCYk1CpV8i7fJcQwTTMgImPmDbKUI7PDD35RUV3zOULAoeFd6WvpZu8KCLUMC5sGY83Vo69XvsyZqDC+B045r8Zu/nZvCcn2Mh2yOY/4=
+	t=1734021350; cv=none; b=jQnuMjHbGIp+PhBrMuJPktYhdP6tSYLUFAzL+UJXe0Vm0TooyjPLpBmA53StYzSDCU1bD4w6jB20jIt6wSl2VInPQFh6JIfufqKfIQT4EDFKTk+FjLryvbkTJ1ymx8lU4HM3W8VOwZH1rpp3LHuBWsSh3LXQGeHJLh1y4sdTPIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018489; c=relaxed/simple;
-	bh=+UXuSw8QGolWP8dVFndUCnkg3seDLb4Orinn/2Cv19Y=;
+	s=arc-20240116; t=1734021350; c=relaxed/simple;
+	bh=BDiHpkfnH4hpmhbUJ1XLdL+xVa0mbdizKPvN2/vmU3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q8kF6PMX8ZU1LMqJjiWXBVerSrEkX4+bUKdnndYp3huSgNp9rMZRyC5MaYfF0EILtcw3eAAhfOuAjVeMrcKv9d7TB4jXqnsDr4+g/Wun530haEu31Zh26Fy7QkOmOWjaZ6tozVC8Sbf1VyZsHCcoCwMRDzt4zGs6daLCB0yJFpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mqxapzuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBAAC4CECE;
-	Thu, 12 Dec 2024 15:48:08 +0000 (UTC)
+	 MIME-Version; b=e3MiWA533JGUNcZbFrJIbMBkvMr2yXYB6wUeKa0pyaPURG37ZulasR7lwIV9//8MGRcKNnw8YhE2FaZ1ylgnxA5yiumQ/xE2fpag1nG0neZoUA6mBB0Z1mCtYoSi5kPYogYR6d0mT1aghtLS8JQlpOxbAeK1OGZnA3GRPhYx5xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OkJWasZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B40C4CED0;
+	Thu, 12 Dec 2024 16:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018489;
-	bh=+UXuSw8QGolWP8dVFndUCnkg3seDLb4Orinn/2Cv19Y=;
+	s=korg; t=1734021350;
+	bh=BDiHpkfnH4hpmhbUJ1XLdL+xVa0mbdizKPvN2/vmU3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mqxapzuT3/TajBiGmSm/cP+nSd5OwigXigOKof5uoSwT+JGh/9sLggE/9atMRefvT
-	 SGsG0+lqyS101ab90EXfCc5KfD7b7bJsW5NDS6P/Xi/fKtR9DIUjRISVRPyCkSRsc9
-	 qYUP27JQnfu/nOr3TtBA0PB3ow6b4CwAO/jgfls4=
+	b=2OkJWasZTxVI2UVCiNeyAT85Ng4Rq1EK7hLdhF/cFXBHspYIszpu3S367cKufrYDZ
+	 8+yQ2JIEGztoV3BTRjCkLdyVmVWU7gxM1VLzduaPQ7419jR7onTRqgSnt7rq3oFcZd
+	 8lybaDy/jkEz/PcCH6AGQiMOv9zs5eD5zwNmtYyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tova <blueaddagio@laposte.net>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/356] ASoC: amd: yc: Add quirk for microphone on Lenovo Thinkpad T14s Gen 6 21M1CTO1WW
-Date: Thu, 12 Dec 2024 16:00:27 +0100
-Message-ID: <20241212144256.729637285@linuxfoundation.org>
+Subject: [PATCH 6.1 683/772] jfs: array-index-out-of-bounds fix in dtReadFirst
+Date: Thu, 12 Dec 2024 16:00:28 +0100
+Message-ID: <20241212144418.135214728@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <ukleinek@debian.org>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit cbc86dd0a4fe9f8c41075328c2e740b68419d639 ]
+[ Upstream commit ca84a2c9be482836b86d780244f0357e5a778c46 ]
 
-Add a quirk for Tova's Lenovo Thinkpad T14s with product name 21M1.
+The value of stbl can be sometimes out of bounds due
+to a bad filesystem. Added a check with appopriate return
+of error code in that case.
 
-Suggested-by: Tova <blueaddagio@laposte.net>
-Link: https://bugs.debian.org/1087673
-Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
-Link: https://patch.msgid.link/20241122075606.213132-2-ukleinek@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=65fa06e29859e41a83f3
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ fs/jfs/jfs_dtree.c | 7 +++++++
  1 file changed, 7 insertions(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 8a99ba5394b4a..39f151d073a6c 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -220,6 +220,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "21J6"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21M1"),
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 5d3127ca68a42..69fd936fbdb37 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -3086,6 +3086,13 @@ static int dtReadFirst(struct inode *ip, struct btstack * btstack)
+ 
+ 		/* get the leftmost entry */
+ 		stbl = DT_GETSTBL(p);
++
++		if (stbl[0] < 0 || stbl[0] > 127) {
++			DT_PUTPAGE(mp);
++			jfs_error(ip->i_sb, "stbl[0] out of bound\n");
++			return -EIO;
 +		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
++
+ 		xd = (pxd_t *) & p->slot[stbl[0]];
+ 
+ 		/* get the child page block address */
 -- 
 2.43.0
 
