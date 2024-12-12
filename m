@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126D39EF185
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A53639EEC54
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D641786D2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 603E628370E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FB722E9E0;
-	Thu, 12 Dec 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0707B216E0B;
+	Thu, 12 Dec 2024 15:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Tbhr3fw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rh2fRy3E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0053223C48;
-	Thu, 12 Dec 2024 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF8A215774;
+	Thu, 12 Dec 2024 15:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020217; cv=none; b=MxmA+hpApx3Jrj5b5QuwyG9+tw+i+wF3TYLXOnTfg5ntWOBg4D9pleG7jSMSs69OPZsEJZwv0dhWR9fo4UJFcWvqOdFBho8Zcj89a3fOF2+5aDpRja7XnmkD/CpNkNbS7p3dHywZGriZuE0ubdi50tPD1X4iJgib2kCMQjlr17k=
+	t=1734017618; cv=none; b=ZsDfGONhqKCVhcOOSuSPtX+B3DshSlnsymixVTqvDSYn8AyZaGSqSWyJqXXmuYc+KdWTdnnWqBpQ16Kz0IqZ3nJo28ZJ1WqbgFUe0jb2xMtjXB0yi4GBuONQUqHcYoUprXNYsbOBoUy5bZx7CfNF7rdFPgz69cjuk1F15LNzVuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020217; c=relaxed/simple;
-	bh=Pp20x9WpFUTbTg7V6uWg4QKDRQfKiFLy5CBFMEeaEmQ=;
+	s=arc-20240116; t=1734017618; c=relaxed/simple;
+	bh=CgcLavHJlRrQqq4fxqtk9AaBHyCCzhREU9yPltuRlH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4OxeVd/eEWyj/AXq2tVUTLQlyW37qt/h/PAo38r6ZPnPl38xJbLN3UvmTYo4ZWjK6E8nq8Tbljdy1gh9sIFWKX2SQkASJpIOCABI8cf53UEkP0hqvQ4KRtucRIuccm7cEvsvBHHuUd7HSbPeBa3ABzztS1U7u1NfrKTaLM1m5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Tbhr3fw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD7AC4CECE;
-	Thu, 12 Dec 2024 16:16:56 +0000 (UTC)
+	 MIME-Version; b=BG+DoHvIhpbprOp5h7c/kJZOea+1I/taOYFu0otPL+lA+wQJKTbeD2/Whsf/mnsBj2RiwQGtvbMUz3PHpyH3d74iOF8J+02+9pO1cJuWyg6Uqq5KOmo/cN0HWlbiWFL+eo0QrPJDBa5nUmkApU+y4ZKlP2lhdveeUaaUXTc2Tns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rh2fRy3E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B417C4CED0;
+	Thu, 12 Dec 2024 15:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020217;
-	bh=Pp20x9WpFUTbTg7V6uWg4QKDRQfKiFLy5CBFMEeaEmQ=;
+	s=korg; t=1734017618;
+	bh=CgcLavHJlRrQqq4fxqtk9AaBHyCCzhREU9yPltuRlH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Tbhr3fwfUVo9PUSTq3j9++yPFhZG3Knbi4aSRJbnG57P6PUeq+zyhu0ojoG8MRIx
-	 VgGOvaPzKr8VfnGjw1M7WJvsAuhzEVWSOjHJQRt4upgMo5uHebDsFSzANa4CYPOnK4
-	 uhCowJUBBhl7uhOFj4/eV+ud9N1Ox7xvzR68b3Xg=
+	b=rh2fRy3EuuJcK6IQJScYkDysXy20V+X8bbVWnDcLLwQIEf5QBrkof18bA/yP+ic/l
+	 sgnu0IcXLYEUPgIWeSyCzEl0tGbH/6eJUYHySPkp9s23+at3UCfewPYHDRqPw7W9uD
+	 NEzqrZRtj9O1mC1h+Luvz81Z9UMS0Ns5Q22Z3Vp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.1 408/772] HID: wacom: Interpret tilt data from Intuos Pro BT as signed values
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 034/356] net/smc: rename some fce to fce_v2x for clarity
 Date: Thu, 12 Dec 2024 15:55:53 +0100
-Message-ID: <20241212144406.786021896@linuxfoundation.org>
+Message-ID: <20241212144245.972492022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-commit 49a397ad24ee5e2c53a59dada2780d7e71bd3f77 upstream.
+[ Upstream commit ac053a169c71ceb0f25f784fce9ea720455097b4 ]
 
-The tilt data contained in the Bluetooth packets of an Intuos Pro are
-supposed to be interpreted as signed values. Simply casting the values
-to type `char` is not guaranteed to work since it is implementation-
-defined whether it is signed or unsigned. At least one user has noticed
-the data being reported incorrectly on their system. To ensure that the
-data is interpreted properly, we specifically cast to `signed char`
-instead.
+Rename some functions or variables with 'fce' in their name but used in
+SMCv2.1 as 'fce_v2x' for clarity.
 
-Link: https://github.com/linuxwacom/input-wacom/issues/445
-Fixes: 4922cd26f03c ("HID: wacom: Support 2nd-gen Intuos Pro's Bluetooth classic interface")
-CC: stable@vger.kernel.org # 4.11+
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 0541db8ee32c ("net/smc: initialize close_work early to avoid warning")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/smc/smc_clc.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1396,9 +1396,9 @@ static void wacom_intuos_pro2_bt_pen(str
- 					rotation -= 1800;
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index 1489a8421d786..b34aff73ada4c 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -428,15 +428,16 @@ smc_clc_msg_decl_valid(struct smc_clc_msg_decline *dclc)
+ 	return true;
+ }
  
- 				input_report_abs(pen_input, ABS_TILT_X,
--						 (char)frame[7]);
-+						 (signed char)frame[7]);
- 				input_report_abs(pen_input, ABS_TILT_Y,
--						 (char)frame[8]);
-+						 (signed char)frame[8]);
- 				input_report_abs(pen_input, ABS_Z, rotation);
- 				input_report_abs(pen_input, ABS_WHEEL,
- 						 get_unaligned_le16(&frame[11]));
+-static int smc_clc_fill_fce(struct smc_clc_first_contact_ext_v2x *fce,
+-			    struct smc_init_info *ini)
++static int smc_clc_fill_fce_v2x(struct smc_clc_first_contact_ext_v2x *fce_v2x,
++				struct smc_init_info *ini)
+ {
+-	int ret = sizeof(*fce);
++	int ret = sizeof(*fce_v2x);
+ 
+-	memset(fce, 0, sizeof(*fce));
+-	fce->fce_v2_base.os_type = SMC_CLC_OS_LINUX;
+-	fce->fce_v2_base.release = ini->release_nr;
+-	memcpy(fce->fce_v2_base.hostname, smc_hostname, sizeof(smc_hostname));
++	memset(fce_v2x, 0, sizeof(*fce_v2x));
++	fce_v2x->fce_v2_base.os_type = SMC_CLC_OS_LINUX;
++	fce_v2x->fce_v2_base.release = ini->release_nr;
++	memcpy(fce_v2x->fce_v2_base.hostname,
++	       smc_hostname, sizeof(smc_hostname));
+ 	if (ini->is_smcd && ini->release_nr < SMC_RELEASE_1) {
+ 		ret = sizeof(struct smc_clc_first_contact_ext);
+ 		goto out;
+@@ -444,8 +445,8 @@ static int smc_clc_fill_fce(struct smc_clc_first_contact_ext_v2x *fce,
+ 
+ 	if (ini->release_nr >= SMC_RELEASE_1) {
+ 		if (!ini->is_smcd) {
+-			fce->max_conns = ini->max_conns;
+-			fce->max_links = ini->max_links;
++			fce_v2x->max_conns = ini->max_conns;
++			fce_v2x->max_links = ini->max_links;
+ 		}
+ 	}
+ 
+@@ -1012,8 +1013,8 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
+ 				       int first_contact, u8 version,
+ 				       u8 *eid, struct smc_init_info *ini)
+ {
++	struct smc_clc_first_contact_ext_v2x fce_v2x;
+ 	struct smc_connection *conn = &smc->conn;
+-	struct smc_clc_first_contact_ext_v2x fce;
+ 	struct smcd_dev *smcd = conn->lgr->smcd;
+ 	struct smc_clc_msg_accept_confirm *clc;
+ 	struct smc_clc_fce_gid_ext gle;
+@@ -1045,7 +1046,7 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
+ 				memcpy(clc_v2->d1.eid, eid, SMC_MAX_EID_LEN);
+ 			len = SMCD_CLC_ACCEPT_CONFIRM_LEN_V2;
+ 			if (first_contact) {
+-				fce_len = smc_clc_fill_fce(&fce, ini);
++				fce_len = smc_clc_fill_fce_v2x(&fce_v2x, ini);
+ 				len += fce_len;
+ 			}
+ 			clc_v2->hdr.length = htons(len);
+@@ -1091,9 +1092,10 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
+ 				memcpy(clc_v2->r1.eid, eid, SMC_MAX_EID_LEN);
+ 			len = SMCR_CLC_ACCEPT_CONFIRM_LEN_V2;
+ 			if (first_contact) {
+-				fce_len = smc_clc_fill_fce(&fce, ini);
++				fce_len = smc_clc_fill_fce_v2x(&fce_v2x, ini);
+ 				len += fce_len;
+-				fce.fce_v2_base.v2_direct = !link->lgr->uses_gateway;
++				fce_v2x.fce_v2_base.v2_direct =
++					!link->lgr->uses_gateway;
+ 				if (clc->hdr.type == SMC_CLC_CONFIRM) {
+ 					memset(&gle, 0, sizeof(gle));
+ 					gle.gid_cnt = ini->smcrv2.gidlist.len;
+@@ -1120,7 +1122,7 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
+ 						SMCR_CLC_ACCEPT_CONFIRM_LEN) -
+ 				   sizeof(trl);
+ 	if (version > SMC_V1 && first_contact) {
+-		vec[i].iov_base = &fce;
++		vec[i].iov_base = &fce_v2x;
+ 		vec[i++].iov_len = fce_len;
+ 		if (!conn->lgr->is_smcd) {
+ 			if (clc->hdr.type == SMC_CLC_CONFIRM) {
+-- 
+2.43.0
+
 
 
 
