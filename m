@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5896B9EF20A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D8E9EED03
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C2201758C4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46E5B188DFE1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE083225407;
-	Thu, 12 Dec 2024 16:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4112210D6;
+	Thu, 12 Dec 2024 15:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/4XEipN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECUAjRGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC792210E5;
-	Thu, 12 Dec 2024 16:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069ED2135C1;
+	Thu, 12 Dec 2024 15:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020425; cv=none; b=HGXeSSliQ91ZjEbxKOscnBe19a9c13oJ5QXFUmx7MIjL2KXyX+Q9rXAljGa7/byVI1Ej68/qYwnH91WNmmgsG7dkbzBh2sBzSdhjUfKUYKTipHWom9Sbf8ADsqX19UIHePR6HSr1vyE4EBknUL1rMG4nRvHBFjqd3phMKsdQmmA=
+	t=1734017861; cv=none; b=h9ry+vWThwii3WKJxdgASxhgmTBlz+PRkBIPwwEKHjiwjqhC1YPp9mhfR5whW0wwgyJuvFR2aUiFNwgPk3MOgSkfn0jaw+p1osY9EZ3DcMNkVrizAs7mu3MR4Wd8qLYfrelqNBJ9O3ozK1NGgMHXJpgJT7c5p5sWqhq6t54LGKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020425; c=relaxed/simple;
-	bh=M4u4a4KbCrXgV3EPU6+ZSTOnE4YL1VQHARBTSNQK8a0=;
+	s=arc-20240116; t=1734017861; c=relaxed/simple;
+	bh=2W3fTUU7aL2VQI7rRMKoe5+HgfGBRRyQ6y9/kpBx+Bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PENb5ywRXHhuUzXB/tbo1F4w/Y2VRiyEGWVyYpNwinYp+MFk49PIi5MsNYEsPrdkHLMFveYTIJXerMLrZrpeMbdaoPkR7qBpiXQrBd0hW/sdRwSXw6rZ+CSHFGPlcAT+eeMQs95CEdmlUPjjYJ+ZchmwVX8dRZiH5Tb7h+H6WdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/4XEipN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E57C4CED4;
-	Thu, 12 Dec 2024 16:20:24 +0000 (UTC)
+	 MIME-Version; b=We2yPKGX35XRVnegmqxfDY5cOVQh0aMFUN0g0Us9UEddKNArMLM+mXveOVNN68cqyd+UUZhX4b/81HHKpyqxhfDCrRt9pU3Adz5n0gU+QK42WxS/EABSa+WYbbP9oPNY1li3BN6TGC8sP2Odb6zosXDK2oDPUa915ON+57+4o2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECUAjRGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F10AC4CECE;
+	Thu, 12 Dec 2024 15:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020425;
-	bh=M4u4a4KbCrXgV3EPU6+ZSTOnE4YL1VQHARBTSNQK8a0=;
+	s=korg; t=1734017860;
+	bh=2W3fTUU7aL2VQI7rRMKoe5+HgfGBRRyQ6y9/kpBx+Bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/4XEipNyGCTrIPDPgZwMnNHlVu/zAr2SFEgIc89IG+iIfMzEKQ8wDIg2il3Xxe1Z
-	 BPCXD8xIiR66I/s1CA5Ow0hHGM27TaHkdDoyp5Drkpw2Q4DYmZxoevaK6Yg9MI/VRb
-	 mLgU01aIP4PM6MrWhblTCAl43DOYwErEMXTC4z+k=
+	b=ECUAjRGHgqJcs9AXKHBuPZH63SG+nf2xu6Y4WIfwUib36ZfCpLjj+GaQosyNZ1gFb
+	 SH/l8oMx1Zsunptp8laPxHJqVA0xd/PM5wHGVNZOGVBZ8njn8dVCcn+85iy1b+DKFX
+	 rAU5gW3qZtE7Nca+znbuVbURutssTZCbNuxJgxOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 465/772] media: amphion: Fix pm_runtime_set_suspended() with runtime pm enabled
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 091/356] powerpc/vdso: Refactor CFLAGS for CVDSO build
 Date: Thu, 12 Dec 2024 15:56:50 +0100
-Message-ID: <20241212144409.147793367@linuxfoundation.org>
+Message-ID: <20241212144248.210456922@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 316e74500d1c6589cba28cebe2864a0bceeb2396 upstream.
+[ Upstream commit a6b67eb09963af29991625862cbb4f56b85954ed ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+In order to avoid two much duplication when we add new VDSO
+functionnalities in C like getrandom, refactor common CFLAGS.
 
-Cc: stable@vger.kernel.org
-Fixes: b50a64fc54af ("media: amphion: add amphion vpu device driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/vdso/Makefile | 32 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
---- a/drivers/media/platform/amphion/vpu_drv.c
-+++ b/drivers/media/platform/amphion/vpu_drv.c
-@@ -151,8 +151,8 @@ err_add_decoder:
- 	media_device_cleanup(&vpu->mdev);
- 	v4l2_device_unregister(&vpu->v4l2_dev);
- err_vpu_deinit:
--	pm_runtime_set_suspended(dev);
- 	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 0c7d82c270c37..5c7af93018865 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -10,28 +10,11 @@ obj-vdso64 = sigtramp64-64.o gettimeofday-64.o datapage-64.o cacheflush-64.o not
  
- 	return ret;
- }
+ ifneq ($(c-gettimeofday-y),)
+   CFLAGS_vgettimeofday-32.o += -include $(c-gettimeofday-y)
+-  CFLAGS_vgettimeofday-32.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+-  CFLAGS_vgettimeofday-32.o += $(call cc-option, -fno-stack-protector)
+-  CFLAGS_vgettimeofday-32.o += -DDISABLE_BRANCH_PROFILING
+-  CFLAGS_vgettimeofday-32.o += -ffreestanding -fasynchronous-unwind-tables
+-  CFLAGS_REMOVE_vgettimeofday-32.o = $(CC_FLAGS_FTRACE)
+-  CFLAGS_REMOVE_vgettimeofday-32.o += -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
+-  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
+-  # an unused command line flag warning for this file.
+-  ifdef CONFIG_CC_IS_CLANG
+-  CFLAGS_REMOVE_vgettimeofday-32.o += -fno-stack-clash-protection
+-  endif
+-  CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y)
+-  CFLAGS_vgettimeofday-64.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+-  CFLAGS_vgettimeofday-64.o += $(call cc-option, -fno-stack-protector)
+-  CFLAGS_vgettimeofday-64.o += -DDISABLE_BRANCH_PROFILING
+-  CFLAGS_vgettimeofday-64.o += -ffreestanding -fasynchronous-unwind-tables
+-  CFLAGS_REMOVE_vgettimeofday-64.o = $(CC_FLAGS_FTRACE)
+ # Go prior to 1.16.x assumes r30 is not clobbered by any VDSO code. That used to be true
+ # by accident when the VDSO was hand-written asm code, but may not be now that the VDSO is
+ # compiler generated. To avoid breaking Go tell GCC not to use r30. Impact on code
+ # generation is minimal, it will just use r29 instead.
+-  CFLAGS_vgettimeofday-64.o += $(call cc-option, -ffixed-r30)
++  CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y) $(call cc-option, -ffixed-r30)
+ endif
+ 
+ # Build rules
+@@ -54,6 +37,11 @@ KASAN_SANITIZE := n
+ KCSAN_SANITIZE := n
+ 
+ ccflags-y := -fno-common -fno-builtin
++ccflags-y += $(DISABLE_LATENT_ENTROPY_PLUGIN)
++ccflags-y += $(call cc-option, -fno-stack-protector)
++ccflags-y += -DDISABLE_BRANCH_PROFILING
++ccflags-y += -ffreestanding -fasynchronous-unwind-tables
++ccflags-remove-y := $(CC_FLAGS_FTRACE)
+ ldflags-y := -Wl,--hash-style=both -nostdlib -shared -z noexecstack $(CLANG_FLAGS)
+ ldflags-$(CONFIG_LD_IS_LLD) += $(call cc-option,--ld-path=$(LD),-fuse-ld=lld)
+ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WARN_LEVEL)
+@@ -62,6 +50,12 @@ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WAR
+ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
+ 
+ CC32FLAGS := -m32
++CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
++  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
++  # an unused command line flag warning for this file.
++ifdef CONFIG_CC_IS_CLANG
++CC32FLAGSREMOVE += -fno-stack-clash-protection
++endif
+ LD32FLAGS := -Wl,-soname=linux-vdso32.so.1
+ AS32FLAGS := -D__VDSO32__
+ 
+@@ -108,7 +102,7 @@ quiet_cmd_vdso32ld_and_check = VDSO32L $@
+ quiet_cmd_vdso32as = VDSO32A $@
+       cmd_vdso32as = $(VDSOCC) $(a_flags) $(CC32FLAGS) $(AS32FLAGS) -c -o $@ $<
+ quiet_cmd_vdso32cc = VDSO32C $@
+-      cmd_vdso32cc = $(VDSOCC) $(c_flags) $(CC32FLAGS) -c -o $@ $<
++      cmd_vdso32cc = $(VDSOCC) $(filter-out $(CC32FLAGSREMOVE), $(c_flags)) $(CC32FLAGS) -c -o $@ $<
+ 
+ quiet_cmd_vdso64ld_and_check = VDSO64L $@
+       cmd_vdso64ld_and_check = $(VDSOCC) $(ldflags-y) $(LD64FLAGS) -o $@ -Wl,-T$(filter %.lds,$^) $(filter %.o,$^); $(cmd_vdso_check)
+-- 
+2.43.0
+
 
 
 
