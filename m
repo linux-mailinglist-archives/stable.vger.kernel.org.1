@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-103788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C529EF9BB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA9A9EF9C4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDADD189DC8D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56ABC175EEE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B1C226165;
-	Thu, 12 Dec 2024 17:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2BEE22758C;
+	Thu, 12 Dec 2024 17:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSJTDUXH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHHwxuM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6575D22540B;
-	Thu, 12 Dec 2024 17:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F10215041;
+	Thu, 12 Dec 2024 17:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025605; cv=none; b=Qgxbou8bfvlIa6RLb+mKxKlQgQVMb5Di39gUyqD1hQvh/EQL+xAndnc2vW00VcO1G/sFffXQ4Z1AvwEuUizW2Mg5PE6NEnrI4HrwizbQlKiboFTVor6nL7m3CiUOnaWoTFqwzRYU158JnYiS7KW7bRhPnLJpXyMhxgYlCfdaZRg=
+	t=1734025637; cv=none; b=SL53rQv48AkE7yjrJ6LqwGy9OM8g8XWWfJmif09bnLUE0Ov8k2PsEf8stHdvRamKgIEw4/FKagmUOPCtADwxiBbXMVfIEmpVg+Uq3tuj6lLqemnQDDqJ/DetoV/SU/qhgkHzQVHlk0SmZUDp3Y+iQAWwK8+uUWcx/WMrYR9orx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025605; c=relaxed/simple;
-	bh=IYEpBgdG+gwUcdnzEVjhQBc9drW1sweRrohpva0XKu8=;
+	s=arc-20240116; t=1734025637; c=relaxed/simple;
+	bh=bAD5VegBRXsIVOrrRsohWdFEDds97YqqFunpKWNqfc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsU0eS/8r7ZDq6TjT9qTxm8IgqNXdR2CU66OtkBPlEIT09DM8yai2ZhhITwIDuxGD3ULvKZPE7BGH6JDD2uq8XH2/HOzw9cDxMp9toIJiQ84zIEkOa0X4UduL2553RvjraMHL7rZRNzpdLV8D3/7UoOufsBE5V0Az+6FWnJ76M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSJTDUXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF819C4CECE;
-	Thu, 12 Dec 2024 17:46:44 +0000 (UTC)
+	 MIME-Version; b=cJOGshtAGaf4fAzcurYHbGLis5O+6KX7a5bHJyfxbsqluSHMrMlWZeRTrAThRaLPQVY9JjMEN/iORRu6IjrEeE30+sL6egQ2zkRtLZH62yLDuw8EXDJjpx0x8C8WyUmUDUAGoAXyhPT3gVkVFzTFd231ezFUv+muzmbepgD0X6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHHwxuM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD743C4CECE;
+	Thu, 12 Dec 2024 17:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025605;
-	bh=IYEpBgdG+gwUcdnzEVjhQBc9drW1sweRrohpva0XKu8=;
+	s=korg; t=1734025637;
+	bh=bAD5VegBRXsIVOrrRsohWdFEDds97YqqFunpKWNqfc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSJTDUXH3kXVxIXu48JDRohKhY8Ltatibh0zWl0Q44PNE7XQBfQj/kpKgXCL/9oyv
-	 /8u9pYC67cDiPPzhBGQJ3XbIBF/rmBdYGCgsKke7awrOT6BB4HjNiB+VXJCnCKvX90
-	 2F4XPBwW+v8rNjfxNxvlgnLCnkZJMR9BtjIYQeUA=
+	b=JHHwxuM09mFwOct0K8QPw2WsczfZy7N03AsbEnlZ1Ey8u5ylsfU+jNoHQRSwuFt/H
+	 XHJd6wR+WA+7fnusTmrl8Enjj/A+BqEckrlxukiFd6t+KyZCoAl8TSRnKQLgKzmzbv
+	 uozmWbZKfj2RBjT4nXOuL0GeelJ2f03ifgKWQwdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.4 208/321] media: platform: allegro-dvt: Fix possible memory leak in allocate_buffers_internal()
-Date: Thu, 12 Dec 2024 16:02:06 +0100
-Message-ID: <20241212144238.199354634@linuxfoundation.org>
+	syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 5.4 209/321] ovl: Filter invalid inodes with missing lookup function
+Date: Thu, 12 Dec 2024 16:02:07 +0100
+Message-ID: <20241212144238.238473326@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -65,38 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit 0f514068fbc5d4d189c817adc7c4e32cffdc2e47 upstream.
+commit c8b359dddb418c60df1a69beea01d1b3322bfe83 upstream.
 
-The buffer in the loop should be released under the exception path,
-otherwise there may be a memory leak here.
+Add a check to the ovl_dentry_weird() function to prevent the
+processing of directory inodes that lack the lookup function.
+This is important because such inodes can cause errors in overlayfs
+when passed to the lowerstack.
 
-To mitigate this, free the buffer when allegro_alloc_buffer fails.
-
-Fixes: f20387dfd065 ("media: allegro: add Allegro DVT video IP core driver")
+Reported-by: syzbot+a8c9d476508bd14a90e5@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=a8c9d476508bd14a90e5
+Suggested-by: Miklos Szeredi <miklos@szeredi.hu>
+Link: https://lore.kernel.org/linux-unionfs/CAJfpegvx-oS9XGuwpJx=Xe28_jzWx5eRo1y900_ZzWY+=gGzUg@mail.gmail.com/
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/media/allegro-dvt/allegro-core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/overlayfs/util.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/staging/media/allegro-dvt/allegro-core.c
-+++ b/drivers/staging/media/allegro-dvt/allegro-core.c
-@@ -1250,8 +1250,10 @@ static int allocate_buffers_internal(str
- 		INIT_LIST_HEAD(&buffer->head);
+--- a/fs/overlayfs/util.c
++++ b/fs/overlayfs/util.c
+@@ -111,6 +111,9 @@ bool ovl_dentry_remote(struct dentry *de
  
- 		err = allegro_alloc_buffer(dev, buffer, size);
--		if (err)
-+		if (err) {
-+			kfree(buffer);
- 			goto err;
-+		}
- 		list_add(&buffer->head, list);
- 	}
- 
+ bool ovl_dentry_weird(struct dentry *dentry)
+ {
++	if (!d_can_lookup(dentry) && !d_is_file(dentry) && !d_is_symlink(dentry))
++		return true;
++
+ 	return dentry->d_flags & (DCACHE_NEED_AUTOMOUNT |
+ 				  DCACHE_MANAGE_TRANSIT |
+ 				  DCACHE_OP_HASH |
 
 
 
