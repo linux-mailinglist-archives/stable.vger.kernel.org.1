@@ -1,122 +1,139 @@
-Return-Path: <stable+bounces-100858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0E29EE1C6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:48:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19F7B1887E34
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 08:47:58 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97EDC20C499;
-	Thu, 12 Dec 2024 08:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="bkMu+IpR"
-X-Original-To: stable@vger.kernel.org
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E946F9EE1EE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 09:53:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDE820CCF7
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 08:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D673284270
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 08:53:45 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5A320E325;
+	Thu, 12 Dec 2024 08:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="SbEVLHWc"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113CB20E03B
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 08:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733993258; cv=none; b=qaA4+T3wzasZRrN6dq8/R1s9fGD7xS2f+2US2jamdsIQ8EPfeLMvfH4atVuxLFLzjKShL4UqTofSG7SrGyYBLmXpXEmo0BIIzsLp/ZK8eYxB1yb7luqaWiZqzBswPktmv4LOlwswceMo8MdMomlDWOc9uCxBjEvsPqE5WorkOy4=
+	t=1733993614; cv=none; b=P/Kr7AVQJ42kL3YCseCRaxGdLUPzCTmWQsWVeU6S10QERRo+XqtAzYS5duvYbcxY7R5BxMe1M0KpQlZVzN3ZHULvuCe8Ipxdjn95WYmVoGXfB/KsdvxhBqrUDLRo5Gb+Ir1+8vqXrTSVhJctVEgKTSmzA+2Itak1UyZKfckESfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733993258; c=relaxed/simple;
-	bh=QaK94OhTz94Yp3Kfi8VYUuyzcRiOCySfvOSHW+Q2Kso=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHGfgLJJt2YQkx7i1/5cvOt8HiACzATkLWEx7oFfPP07jUoXyYrIRc9ns/pfTPxWXV0fWvpSIOek+QCFpT5y5fGZKGvOgx5bmPcY/a17B1yOp75+lZdxWAYCvReSdujVoqWlJXsq6+xmum4a7qUHB1lq8FzPOf0u4cu/Gz+lsqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=bkMu+IpR; arc=none smtp.client-ip=18.132.163.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1733993174;
-	bh=lxB2DJiSuMaO9kZIbF1vE3sGU0IY6tbMU0+Nk+QNflM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=bkMu+IpRMa6oRr6/WlNDQdDKri83ZGA/egGNSvchEQZM7ey1Lkd3bRgF5FLq7MOE8
-	 0Ck9zEy/1B7K8tr4QL3jwnq18NXmSUW9MB5QtIZDk1+F+ask3uc/BSoBrLfL39/ZfY
-	 uFG4ZzLvs96auMT3lxCK38lP5uNQgssJ5quj5evQ=
-X-QQ-mid: bizesmtpsz9t1733993127t3oniuc
-X-QQ-Originating-IP: aDaLQ1cMAxg82X4ajo0jQTDLp32MsJu0cAM/pN1c9ko=
-Received: from avenger-aosc-laptop.localdomain ( [223.104.122.80])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 12 Dec 2024 16:45:24 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 954694624248184806
-From: WangYuli <wangyuli@uniontech.com>
-To: wangyuli@uniontech.com
-Cc: bentiss@kernel.org,
-	guanwentao@uniontech.com,
-	helugang@uniontech.com,
-	jeffbai@aosc.io,
-	jkosina@suse.com,
-	regressions@leemhuis.info,
-	regressions@lists.linux.dev,
-	stable@vger.kernel.org,
-	ulm@gentoo.org,
-	zhanjun@uniontech.com
-Subject: Re: "[REGRESSION] ThinkPad L15 Gen 4 touchpad no longer works"
-Date: Thu, 12 Dec 2024 16:45:23 +0800
-Message-ID: <586B243DEB263A26+20241212084523.13674-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <7DAFE6DAA470985D+20241210030448.83908-1-wangyuli@uniontech.com>
-References: <7DAFE6DAA470985D+20241210030448.83908-1-wangyuli@uniontech.com>
+	s=arc-20240116; t=1733993614; c=relaxed/simple;
+	bh=w3b8p5pId723s8apGEqRiRPGF/XIl9RTYQEEC3QeUe4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sJbJUe7Cw0JhAkoiMklW4UNyI55/F/p9NYEEreqsjbSeMMc0lWqKzcDOnJepjqhuAQT66zHWGT4LxRzYdDlkmKQF9d+ALsNTFw3VqJIm2aLICyPRjbcZzLG9ZnTS31BBYnOb1Y0q/PC7vJ9HGfIFDm1wfboHTYYtz5Bv0Z0HLIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=SbEVLHWc; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-aa67333f7d2so47487566b.0
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 00:53:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1733993610; x=1734598410; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w3b8p5pId723s8apGEqRiRPGF/XIl9RTYQEEC3QeUe4=;
+        b=SbEVLHWcXutoigyl/7qXFyQbT9DylN3xupgNoOdAyxSOu7lxnUeZOm/sbZ+bAK5OMS
+         RNWJDzQLkm/2cU8qndkclgdG3yWjolK81TcHofz6AaaAd7MuAciAilWXlCt25V1SQzFz
+         +LSv6P56rlX8tYvBEJv1B86Eazlnfzn9sFwLy01CuzEqBYehCHairzWLZB0Y6jOXw3eY
+         Z7sWw5UodWisPWnEJdra0+JSGDt8W5HMKJIigVklB9QSL4eTo3pZWTn42RlusnFC+HIl
+         1Pnzp6leWr0IWIYKAoketeoqhUkHmRznLaJuive/OAyiGLamBSs17e7N6Nv9cyK+jal9
+         Iurg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733993610; x=1734598410;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=w3b8p5pId723s8apGEqRiRPGF/XIl9RTYQEEC3QeUe4=;
+        b=hZVtMeMiuX6OWWMCZg6WK0HeLMrsin/A63W1o4agJYzbjDEsPQr5z+DmOeUEuLjcEl
+         2ZgctROnqzDC/ZEkeKZGrixHvHAvgeJc5SdSKzX4QLgbX/ACSNMIjFefzP+4pU+Jb/44
+         Xg/VAZe8/S/fGT7ZSY431Ab+lIRY3e2iN9Y0sPhOlO4U0Rxp8IqEBXsDCpXwAtZcqkuk
+         TyEJNGxQ+PbcIhXCQep2mffRD2sm/RrsgEXxScR6GLYBtNH0nnuZFfo/ps0+iifBuCgD
+         1rdIU2yoxLy174gTDfm2TvgBAIKDksnTzN6kE2gmrsIsqqdTAPAUwkIcSVDipt+SJsHe
+         0ZlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzT7vkGs9s/JzxpuQ2Q87WspvLOlEyR6MIyYOWhLpiCeWzl/uaVoC1yR7dyBy18VL0Vi7KcS4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOOC8fSsMqNJTqCSS2cUKWKaypygGnlHHTVolWrqT14gfBtgUp
+	KnZfDvLx7B5q+UyKYQrT4zkHP7Qo8ZOwli0xAJ2Ru0HcVcJh72s6x7r1Dl8ppvN9N/euzqDrDsG
+	1Dp0AujOhmXg+tLT66y3J1ozIL9gLMjTMUiP5+Q==
+X-Gm-Gg: ASbGncvinXYxq3lUbb2xA/ceEKHNnrryKd6h+DHk+4Nftq6HbZs6wWPyo7cMm95tC90
+	3HxOruQxNttiBtaHLzuo8GbnbmPfElDU4z7t+
+X-Google-Smtp-Source: AGHT+IGfU6rtOHJOHdj57SSVfLI9f6Fq/2KuTXoPZHJiIsnpZhdomXumhthcwf+ID3geTKkQc3OpcXoAOkvCd9M9EK8=
+X-Received: by 2002:a17:907:b8f:b0:aa6:a9fe:46e5 with SMTP id
+ a640c23a62f3a-aa6b13d1a29mr485360666b.53.1733993610333; Thu, 12 Dec 2024
+ 00:53:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MyhNtuNETreeNIUVRvyeINfg4a9Lh6KUxrfuyELOyxI1IENHhUxkpiQ9
-	4HSnJWba3AkqZm5YK3bapenKwRchgSV5p1iD228G+0tsBu1bfprFG4ve7TnyOksCaptnPom
-	UTKyMHg17eah4AntO14sHItQgKhiVRhVM3MQc+u9xjPzj/GLUkoBOvp2zy1lqyQCTtADtLM
-	dHvzlm/AMRBJXDWxfCbXR7BuaxoK1yEb0GFYBC41gvYTncNfK4AuhwNVKzVx1VIc4cnIfZk
-	0LO5oRPUIsPC0h7MJtgJewPqwdwrgnBbXzZBI4i+f5h+e7pLAICPQ2/GT6ynJsD+8oR8Vle
-	1SZpt+toekVs0k524eVriG77HOKtEHq4YSlKMMCn3WKXvTLzY+8EkhocLJpn2VFemH0mCWR
-	/4B0/g6A2bhdvlmnfnF7XbACrorE26jneI8bnm0vJ4Ut67ExjbZQzkwrcT7rSQjB6GS5zII
-	TPr06NNnw08gy5lfmotQ/FNnodUxycyeswriwtc4bG3/1Pr0dkpZ9+sQlCHhiFnYUvbS4Fy
-	wKXheJS3m3E9OZ4+vQxRLNHpy9nPCppCj/rw0pBJYt532Og/1iBMqBLNaoun748T7LWX+Aq
-	ia15dYYGxs8ZExoEhq/b7PIwHdyu8i+fdiKYjO7yx2offZ2cXC4bgaQ8okWbzMmy50qrdCb
-	KGbtaRUt3I7FOsDujeqWpCN2tywrkSvQQM1H3krqxr/V/xkVN5fCB1RxsQ+jSuB0f1J8cMO
-	AzfYhGp+qxOza6Z+X283qccJZJKCyIJVgyZD/DMMRxEx9hIWBgwIIAoVaT7RRkhHTz5KWdl
-	NJ3vJdH432y2o6A2YE0///hthqoiPkeGOFMVhizPDCtJ17f8e51HPxOmHrPgyEwswz/+DQ2
-	fXSWfkAxLaW+DAd8J7HdgGTJCK7XAs00zLHzJvFt2/5QWBXDfHyrZKXAuR6tsPidsqVKBzP
-	C8o7nlMdaL9BdvxUHAnVR7BIXMpH8eOdaLUd/3CTQvZyoFbL8qYgjrIiRWWMrwFxYxY/cHQ
-	3Xs1PXxfhSy+A7Mjyf
-X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
-X-QQ-RECHKSPAM: 0
+References: <20241212075303.2538880-1-neelx@suse.com> <ac4c4ae5-0890-4f47-8a85-3c4447feaa90@wdc.com>
+In-Reply-To: <ac4c4ae5-0890-4f47-8a85-3c4447feaa90@wdc.com>
+From: Daniel Vacek <neelx@suse.com>
+Date: Thu, 12 Dec 2024 09:53:19 +0100
+Message-ID: <CAPjX3FcAZM4dSbnMkTpJPNJMcPDxKbEMwbg3ScaTWVg+5JqfDg@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: fix a race in encoded read
+To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Omar Sandoval <osandov@fb.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"linux-btrfs@vger.kernel.org" <linux-btrfs@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks to everyone's help, we've been able to determine that the initial
-report about the 27c6:01e0 touchpad was a misunderstanding.
+On Thu, Dec 12, 2024 at 9:35=E2=80=AFAM Johannes Thumshirn
+<Johannes.Thumshirn@wdc.com> wrote:
+>
+> On 12.12.24 09:09, Daniel Vacek wrote:
+> > Hi Johannes,
+> >
+> > On Thu, Dec 12, 2024 at 9:00=E2=80=AFAM Johannes Thumshirn
+> > <Johannes.Thumshirn@wdc.com> wrote:
+> >>
+> >> On 12.12.24 08:54, Daniel Vacek wrote:
+> >>> While testing the encoded read feature the following crash was observ=
+ed
+> >>> and it can be reliably reproduced:
+> >>>
+> >>
+> >>
+> >> Hi Daniel,
+> >>
+> >> This suspiciously looks like '05b36b04d74a ("btrfs: fix use-after-free
+> >> in btrfs_encoded_read_endio()")'. Do you have this patch applied to yo=
+ur
+> >> kernel? IIRC it went upstream with 6.13-rc2.
+> >
+> > Yes, I do. This one is on top of it. The crash happens with
+> > `05b36b04d74a` applied. All the crashes were reproduced with
+> > `feffde684ac2`.
+> >
+> > Honestly, `05b36b04d74a` looks a bit suspicious to me as it really
+> > does not look to deal correctly with the issue to me. I was a bit
+> > surprised/puzzled.
+>
+> Can you elaborate why?
 
-The 27C6:01E0 touchpad doesn't require the workaround and applying it
-would actually break functionality.
+As it only touches one of those four atomic_dec_... lines. In theory
+the issue can happen also on the two async places, IIUC. It's only a
+matter of race probability.
 
-The initial report came from a BBS forum, but we suspect the information
-provided by the forum user may be incorrect which could happen sometimes. [1]
+> > Anyways, I could reproduce the crash in a matter of half an hour. With
+> > this fix the torture is surviving for 22 hours atm.
+>
+> Do you also have '3ff867828e93 ("btrfs: simplify waiting for encoded
+> read endios")'? Looking at the diff it doesn't seems so.
 
-Further investigation showed that the Lenovo Y9000P 2024 doesn't even
-use a Goodix touchpad. [2]
+I cannot find that one. Am I missing something? Which repo are you using?
 
-For the broader issue of 27c6:01e0 being unusable on some devices, it
-just need to address it with a libinput quirk.
-
-In conclusion, we should revert this commit, which is the best solution.
-
-Thank you all again for the bug report and your patience and support.
-
-
-[1]. https://bbs.deepin.org/post/276451
-[2]. https://linux-hardware.org/?probe=35b1e770a7
-
-
-Thanks,
--- 
-WangYuli
+--nX
 
