@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-101217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074659EEAF8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E4F9EECD8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2528282C8F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:19:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640E31888A79
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934E521661F;
-	Thu, 12 Dec 2024 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5CF217F30;
+	Thu, 12 Dec 2024 15:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnkDkHQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8idO4KG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C11215048;
-	Thu, 12 Dec 2024 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772086F2FE;
+	Thu, 12 Dec 2024 15:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016765; cv=none; b=IiYCa71ezrLTT31buQN5Y9MufdgmBp/XPHiivunBZNvIurG/2EX1/sdG1XSEqyn4ZlD7wKKYLf+s3RnPdGIUa2US3knSQIPFjdVX1nDcstT+Y0N4qFtqN9+E6jFGm6RXhRqhCchR0b6bAql6jGfSjsBM4pG7bEo5IfCtGCdiUw0=
+	t=1734017791; cv=none; b=HXybPynOmO3Mvui2t6kZat97gBVBzIG19tYmYJ7n+OWB+LUAd2RpYfhOjqmsyt4YG+H6+jq7IHiAd4ePtIvPXpY+S2o+eiHEWBe1HmyKGFgUHfxFN1T4eQc7DcI281xQC2CNoEtQDtgf4gfFPd4BcLMaP10/GxrOmM85+jO0wqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016765; c=relaxed/simple;
-	bh=huh6WV0s0YAzBbHSKtXxE3iUPQ/YofWIoO6Ch2pkPyI=;
+	s=arc-20240116; t=1734017791; c=relaxed/simple;
+	bh=vtMHDLIDRzbaV524eWvbc4n+iyeyAZdaic7pahJS3ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ctztgzY7T+mk37D07B3NFK3YtRMiSSFCiCbhYtqojgHaHQGazSlbcBc4LFIrAcw27x63If+sbnaiOtQHzVW8lEtCac0H0xhEZY53XarPaqVTTUVo7UBP3EM+kUByKpyEHwZeU/oOljrMMcd+2W36A402Gc7lv6ldvNt8IOTOpRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnkDkHQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE03BC4CECE;
-	Thu, 12 Dec 2024 15:19:24 +0000 (UTC)
+	 MIME-Version; b=ACDEzy+xmNvC1Bhyw9l8eXFrCF6cXuSWGaI85RcAmXaugJlu9T76YL8MuV+upvIyUwcv6md5Sj18up5qJQvx7TXAX9GlVYHopDUiWWd9cvb2Fjmcp/UcZWx8u6YjBaS671kOgQojTUYyymILwkw6KGVoDdJQLw87xnjqzEFXhgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8idO4KG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D8BC4CECE;
+	Thu, 12 Dec 2024 15:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016765;
-	bh=huh6WV0s0YAzBbHSKtXxE3iUPQ/YofWIoO6Ch2pkPyI=;
+	s=korg; t=1734017791;
+	bh=vtMHDLIDRzbaV524eWvbc4n+iyeyAZdaic7pahJS3ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnkDkHQn9EhULBu2qF/dwByMjzEhLb95e3TSOizGOpSCwQMG/EEDPyojEC8OWf77W
-	 ViLLgazCk2K3KqwCGCAXBxQwtV0u3MKV0IaGkVmhqPqPV6cDJXxZ1mC+YxEj3XDh54
-	 SZ4n5ZCY3oMCL5uDBz+QCVFIXrHemqdN5Qv/t6Ac=
+	b=k8idO4KGPrZkCGpHuT5jC4oHRLVF4ZrCwIVTgNS7W2X1qOpxVCC9Y+z842EGAkz55
+	 YikETM+oAO2PAXExfvjUp+HD3GuioZDzPgABZiBgDeWed9328xWR9P5sYQW0uUMip4
+	 oWHDNnuVMcEy3AJQ3J9DzxvsPSrzDaPRHmerlgiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
-	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 261/466] drm: panel-orientation-quirks: Add quirk for AYA NEO Founder edition
+Subject: [PATCH 6.6 111/356] bpf, vsock: Fix poll() missing a queue
 Date: Thu, 12 Dec 2024 15:57:10 +0100
-Message-ID: <20241212144317.111618516@linuxfoundation.org>
+Message-ID: <20241212144249.029061410@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit d7972d735ca80a40a571bf753c138263981a5698 ]
+[ Upstream commit 9f0fc98145218ff8f50d8cfa3b393785056c53e1 ]
 
-Add quirk orientation for AYA NEO Founder. The name appears with spaces in
-DMI strings as other devices of the brand. The panel is the same as the
-NEXT and 2021 models. Those could not be reused as the former has VENDOR
-name as "AYANEO" without spaces and the latter has "AYADEVICE".
+When a verdict program simply passes a packet without redirection, sk_msg
+is enqueued on sk_psock::ingress_msg. Add a missing check to poll().
 
-Tested by the JELOS team that has been patching their own kernel for a
-while now and confirmed by users in the AYA NEO and ChimeraOS discord
-servers.
-
-Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
-Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/f71889a0b39f13f4b78481bd030377ca15035680.1726492131.git.tjakobi@math.uni-bielefeld.de
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://lore.kernel.org/r/20241118-vsock-bpf-poll-close-v1-1-f1b9669cacdc@rbox.co
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/vmw_vsock/af_vsock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 4864d8406db41..01a33d33c4aaf 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -202,6 +202,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
- 		},
- 		.driver_data = (void *)&lcd1080x1920_leftside_up,
-+	}, {	/* AYA NEO Founder */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYA NEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "AYA NEO Founder"),
-+		},
-+		.driver_data = (void *)&lcd800x1280_rightside_up,
- 	}, {	/* AYA NEO NEXT */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index f5eb737a677d9..7ba3357c9882c 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1050,6 +1050,9 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
+ 		mask |= EPOLLRDHUP;
+ 	}
+ 
++	if (sk_is_readable(sk))
++		mask |= EPOLLIN | EPOLLRDNORM;
++
+ 	if (sock->type == SOCK_DGRAM) {
+ 		/* For datagram sockets we can read if there is something in
+ 		 * the queue and write as long as the socket isn't shutdown for
 -- 
 2.43.0
 
