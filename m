@@ -1,225 +1,139 @@
-Return-Path: <stable+bounces-100915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-100916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 284339EE74F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:03:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 503529EE7A9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 14:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D5892828A3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:03:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10542282B2F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 13:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A93F2135DE;
-	Thu, 12 Dec 2024 13:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76352144A6;
+	Thu, 12 Dec 2024 13:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHDuDOUU"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KIFHlZAt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182281EEE6
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 13:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39831EEE6
+	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 13:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734008597; cv=none; b=qjYSh2n7o7Mmk/KUu14fUN3M0Dfae5QEZ3WJoXLm5N8WqqAQblMLDasebNvTOo33rrEHnUci1MsOhv63Q4Ar1penXgPeMZVEkbDyTpwYNM8Uj2h7ObKPK4KY67T4xAfgfrONApLZUSVdGVIonCHgA96zHyId/899XcyKmem+LyE=
+	t=1734010108; cv=none; b=aBw4xQEpU39r/8lGJ6OV58zpqUI6dZT7wrUxaIBqt7IGgRXI2i8V13qIy29y8aAkgnbzwomq6jIoYIw/qV/tgB9oEagajsssrOlzj2BOqhQjQCnqYeVj1+S61xuCFvH3jy/YT+87SzWd7PZSaMj7wXESirJjMwqRp+LKUK6blDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734008597; c=relaxed/simple;
-	bh=G6BeOGeSU5/IyejhSLM+bVz6X5H0OXmY77ctrcM+Sew=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WLgZ7b4hLPcSoWFufdy71rd2JYDB4VceyiX/EWR+Xc7ZoEDmHC8dw4AiWJiGUZluZgDQwOofvDLcK1dEfzU5Z1QYNGdjrNKY/MfwcRXBV233KGhjPiTzRjOktivFl+CpMO0NtTFkpqghyRpLyagPtkx/c5J4xnGK2orptS4hZ6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHDuDOUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EFDC4CECE;
-	Thu, 12 Dec 2024 13:03:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734008596;
-	bh=G6BeOGeSU5/IyejhSLM+bVz6X5H0OXmY77ctrcM+Sew=;
-	h=Subject:To:Cc:From:Date:From;
-	b=sHDuDOUUehU9mStVJENTodWKHnXCEHcN4B2kEyJHU/vV0/1pCw0SUQtbhnWF9O5G6
-	 4we6GRJfgJp9N6RjzJziBZzwZImZlaLaxwxVG1tLBvsVBbEi+Xvlh81ogDKT3zRLIg
-	 5el5o93VHh3FoJNYBRJXLp/oLl6KIZZw7uj/wztE=
-Subject: FAILED: patch "[PATCH] clocksource: Make negative motion detection more robust" failed to apply to 5.15-stable tree
-To: tglx@linutronix.de,linux@roeck-us.net
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 12 Dec 2024 14:03:07 +0100
-Message-ID: <2024121206-varnish-jackpot-7d74@gregkh>
+	s=arc-20240116; t=1734010108; c=relaxed/simple;
+	bh=qB5GHD+TAqQqOCOrGJw29gHTx2AMBPopU5z7hFbX+qQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=I8vGwA7em2j2AXFzwXua8hkq9py9ZHWD+vdQdfacBzQ+2DM5+mGjrRWky4YOtBGdChgwRYsMk49pWBHO01V9onIEzWQ6jwTh4bxeyfp0HOO/FZSTtKld55qeDAG3vBYVzDVO4ww3+qjpbx3v1oDfEncHAx9OD/mVXsStfZFpD7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KIFHlZAt; arc=none smtp.client-ip=209.85.222.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-85c61388e68so162562241.3
+        for <stable@vger.kernel.org>; Thu, 12 Dec 2024 05:28:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734010104; x=1734614904; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CcyvDeMz1OALANvAAZKMBg7sxjfX8hsRqx9cvQFOk1s=;
+        b=KIFHlZAtBTTAgPuwBXm0sleUYoqYD/ZH+QRYSSfgb/fUbi3vngswUkk7fnUjT7b7Vx
+         0YXuDT73H50vkwLfCu+r2yPR3/s+nB9maH8Ro9SMWEaATsVJrDUTxwjiCiwHrGFOWnHX
+         DXw88cnE7XVgp2b9LcXGtS2NWL1lOBkXqW2ek3EfIVBW6dxyI8E7Bwqot8xFtPZ1nKne
+         sIxtLprm7UdIXjDvbUpEOTSaR9z1gJBGUAcgWZJKU6g3rDg2QZdorkQ5F2U+DHwQaA3U
+         yNkgamqHHvj3sJQodYLA5pdRAXqEEOOJwttwLuFZKeK4qrialMM5J4hblYx9+I0zpL1L
+         yQNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734010104; x=1734614904;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CcyvDeMz1OALANvAAZKMBg7sxjfX8hsRqx9cvQFOk1s=;
+        b=WEd+YD6a4nSh47KwuAiJBaXg5wTNsN04eAYQK00cQYk5p5cCsHo38G/yhFuTJKXJzV
+         bsXumBTM1pd9vonjUbkuvqQVTOqlBaIyqVDavE/SEMX3GFSpoHz86N3NC45r8NmxhJm2
+         GEzpaq7dtUNiUeKqFlxD0GsJLukgWb4p55+e6S7v1i9qWIHV4b9WDPVEXiG3D1KBLKY0
+         MfcDyTmYa5xHMP9zBFLSu7nQwxP7zXbwGRig6PB5tVgU/Efsl4A46nWcWngdxPqk9cIt
+         Dff+s6u6eB2ljqm3fqTuXyMk5Ax3CYo6nXt0gCYdCePlk2nbUIYUWxzc3GHZLLGoBrL/
+         IGxw==
+X-Gm-Message-State: AOJu0Yz9UvkLGHRtGx9u2lCmIIdZdc5NM22DuaeuCww6OwvWS2zsWiQp
+	5SEdZPA4PFW42Y8YrJnKrW5EFGM3uZKZHgiqJjn3yju7yAtm31W8v6hUOJKd0CmIEVlzhZyE6mz
+	CAbujFS+AmAL/1pDJGh0zsYusLd/bN0bOeM5od5RoVa70qiiObIk=
+X-Gm-Gg: ASbGncsoixuEk72kaFdrBhqtLpBKo+UmFOgRVJ8PTDxDKepO2mZH8vs1I/hCg1fbKHa
+	fbWGKMNxv7gOZUCpcqkUokLbAhOVGfIIpP/EV
+X-Google-Smtp-Source: AGHT+IGzEL4b6WkVdMy16flT3De7E7bEpOMJbkZMkNdDRIrjLYETlQYnJDqWIV3B8upOWlxVXBABZMEhoBQi0Yjzs5Q=
+X-Received: by 2002:a05:6122:169b:b0:516:1bda:b364 with SMTP id
+ 71dfb90a1353d-518c5761f3dmr550305e0c.3.1734010104033; Thu, 12 Dec 2024
+ 05:28:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 12 Dec 2024 18:58:12 +0530
+Message-ID: <CA+G9fYvkiFZxYFV_jKYOgePNMJDjQHL+BVo8SUWNVS37=aR5ig@mail.gmail.com>
+Subject: stable-rc: queue/6.6: drivers/ufs/host/ufs-qcom.c:1929:13: error:
+ 'host' undeclared (first use in this function)
+To: linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Benjamin Copeland <benjamin.copeland@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+
+The arm64 builds failed on Linux stable-rc queues/6.6 due to following build
+warnings / errors.
+
+arm64:
+  * build/gcc-13-defconfig-lkftconfig
+
+First seen on Linux stable-rc queues/6.6
+  Good: v6.6.65
+  Bad:  v6.6.65-348-g690f793e86f4
+
+Build log:
+-----------
+drivers/ufs/host/ufs-qcom.c: In function 'ufs_qcom_remove':
+drivers/ufs/host/ufs-qcom.c:1929:13: error: 'host' undeclared (first
+use in this function)
+ 1929 |         if (host->esi_enabled)
+      |             ^~~~
+drivers/ufs/host/ufs-qcom.c:1929:13: note: each undeclared identifier
+is reported only once for each function it appears in
+make[6]: *** [scripts/Makefile.build:243: drivers/ufs/host/ufs-qcom.o] Error 1
+
+the commit that causes this build regression is,
+   scsi: ufs: qcom: Only free platform MSIs when ESI is enabled
+   commit 64506b3d23a337e98a74b18dcb10c8619365f2bd upstream.
+
+Links:
+-------
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.65-348-g690f793e86f4/testrun/26279249/suite/build/test/gcc-13-defconfig-lkftconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.65-348-g690f793e86f4/testrun/26279249/suite/build/test/gcc-13-defconfig-lkftconfig/history/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-queues-queue_6.6/build/v6.6.65-348-g690f793e86f4/testrun/26279249/suite/build/test/gcc-13-defconfig-lkftconfig/details/
+
+Steps to reproduce:
+------------
+# tuxmake --runtime podman \
+          --target-arch arm64 \
+          --toolchain gcc-13 \
+          --kconfig
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2q7Ekivz3juYAyrxbUVAOGrVOAe/config
+
+metadata:
+----
+  git describe: v6.6.65-348-g690f793e86f4
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+  git sha: 690f793e86f4efa31ddf26a48f4af8c28d2f8402
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2q7Ekivz3juYAyrxbUVAOGrVOAe/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2q7Ekivz3juYAyrxbUVAOGrVOAe/
+  toolchain: gcc-13
+  config: gcc-13-defconfig-lkftconfig
+  arch: arm64
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 76031d9536a076bf023bedbdb1b4317fc801dd67
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024121206-varnish-jackpot-7d74@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 76031d9536a076bf023bedbdb1b4317fc801dd67 Mon Sep 17 00:00:00 2001
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Tue, 3 Dec 2024 11:16:30 +0100
-Subject: [PATCH] clocksource: Make negative motion detection more robust
-
-Guenter reported boot stalls on a emulated ARM 32-bit platform, which has a
-24-bit wide clocksource.
-
-It turns out that the calculated maximal idle time, which limits idle
-sleeps to prevent clocksource wrap arounds, is close to the point where the
-negative motion detection triggers.
-
-  max_idle_ns:                    597268854 ns
-  negative motion tripping point: 671088640 ns
-
-If the idle wakeup is delayed beyond that point, the clocksource
-advances far enough to trigger the negative motion detection. This
-prevents the clock to advance and in the worst case the system stalls
-completely if the consecutive sleeps based on the stale clock are
-delayed as well.
-
-Cure this by calculating a more robust cut-off value for negative motion,
-which covers 87.5% of the actual clocksource counter width. Compare the
-delta against this value to catch negative motion. This is specifically for
-clock sources with a small counter width as their wrap around time is close
-to the half counter width. For clock sources with wide counters this is not
-a problem because the maximum idle time is far from the half counter width
-due to the math overflow protection constraints.
-
-For the case at hand this results in a tripping point of 1174405120ns.
-
-Note, that this cannot prevent issues when the delay exceeds the 87.5%
-margin, but that's not different from the previous unchecked version which
-allowed arbitrary time jumps.
-
-Systems with small counter width are prone to invalid results, but this
-problem is unlikely to be seen on real hardware. If such a system
-completely stalls for more than half a second, then there are other more
-urgent problems than the counter wrapping around.
-
-Fixes: c163e40af9b2 ("timekeeping: Always check for negative motion")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/all/8734j5ul4x.ffs@tglx
-Closes: https://lore.kernel.org/all/387b120b-d68a-45e8-b6ab-768cd95d11c2@roeck-us.net
-
-diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
-index ef1b16da6ad5..65b7c41471c3 100644
---- a/include/linux/clocksource.h
-+++ b/include/linux/clocksource.h
-@@ -49,6 +49,7 @@ struct module;
-  * @archdata:		Optional arch-specific data
-  * @max_cycles:		Maximum safe cycle value which won't overflow on
-  *			multiplication
-+ * @max_raw_delta:	Maximum safe delta value for negative motion detection
-  * @name:		Pointer to clocksource name
-  * @list:		List head for registration (internal)
-  * @freq_khz:		Clocksource frequency in khz.
-@@ -109,6 +110,7 @@ struct clocksource {
- 	struct arch_clocksource_data archdata;
- #endif
- 	u64			max_cycles;
-+	u64			max_raw_delta;
- 	const char		*name;
- 	struct list_head	list;
- 	u32			freq_khz;
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index aab6472853fa..7304d7cf47f2 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -24,7 +24,7 @@ static void clocksource_enqueue(struct clocksource *cs);
- 
- static noinline u64 cycles_to_nsec_safe(struct clocksource *cs, u64 start, u64 end)
- {
--	u64 delta = clocksource_delta(end, start, cs->mask);
-+	u64 delta = clocksource_delta(end, start, cs->mask, cs->max_raw_delta);
- 
- 	if (likely(delta < cs->max_cycles))
- 		return clocksource_cyc2ns(delta, cs->mult, cs->shift);
-@@ -993,6 +993,15 @@ static inline void clocksource_update_max_deferment(struct clocksource *cs)
- 	cs->max_idle_ns = clocks_calc_max_nsecs(cs->mult, cs->shift,
- 						cs->maxadj, cs->mask,
- 						&cs->max_cycles);
-+
-+	/*
-+	 * Threshold for detecting negative motion in clocksource_delta().
-+	 *
-+	 * Allow for 0.875 of the counter width so that overly long idle
-+	 * sleeps, which go slightly over mask/2, do not trigger the
-+	 * negative motion detection.
-+	 */
-+	cs->max_raw_delta = (cs->mask >> 1) + (cs->mask >> 2) + (cs->mask >> 3);
- }
- 
- static struct clocksource *clocksource_find_best(bool oneshot, bool skipcur)
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 0ca85ff4fbb4..3d128825d343 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -755,7 +755,8 @@ static void timekeeping_forward_now(struct timekeeper *tk)
- 	u64 cycle_now, delta;
- 
- 	cycle_now = tk_clock_read(&tk->tkr_mono);
--	delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask);
-+	delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
-+				  tk->tkr_mono.clock->max_raw_delta);
- 	tk->tkr_mono.cycle_last = cycle_now;
- 	tk->tkr_raw.cycle_last  = cycle_now;
- 
-@@ -2230,7 +2231,8 @@ static bool timekeeping_advance(enum timekeeping_adv_mode mode)
- 		return false;
- 
- 	offset = clocksource_delta(tk_clock_read(&tk->tkr_mono),
--				   tk->tkr_mono.cycle_last, tk->tkr_mono.mask);
-+				   tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
-+				   tk->tkr_mono.clock->max_raw_delta);
- 
- 	/* Check if there's really nothing to do */
- 	if (offset < real_tk->cycle_interval && mode == TK_ADV_TICK)
-diff --git a/kernel/time/timekeeping_internal.h b/kernel/time/timekeeping_internal.h
-index 63e600e943a7..8c9079108ffb 100644
---- a/kernel/time/timekeeping_internal.h
-+++ b/kernel/time/timekeeping_internal.h
-@@ -30,15 +30,15 @@ static inline void timekeeping_inc_mg_floor_swaps(void)
- 
- #endif
- 
--static inline u64 clocksource_delta(u64 now, u64 last, u64 mask)
-+static inline u64 clocksource_delta(u64 now, u64 last, u64 mask, u64 max_delta)
- {
- 	u64 ret = (now - last) & mask;
- 
- 	/*
--	 * Prevent time going backwards by checking the MSB of mask in
--	 * the result. If set, return 0.
-+	 * Prevent time going backwards by checking the result against
-+	 * @max_delta. If greater, return 0.
- 	 */
--	return ret & ~(mask >> 1) ? 0 : ret;
-+	return ret > max_delta ? 0 : ret;
- }
- 
- /* Semi public for serialization of non timekeeper VDSO updates. */
-
+ --
+Linaro LKFT
+https://lkft.linaro.org
 
