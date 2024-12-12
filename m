@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127ED9EEFB1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 383199EF345
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2240297A3B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D60C8189CDE6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86CA2368E5;
-	Thu, 12 Dec 2024 16:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E575722540B;
+	Thu, 12 Dec 2024 16:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rutedWl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6Mm7Rho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1CF235C40;
-	Thu, 12 Dec 2024 16:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B9E2210DA;
+	Thu, 12 Dec 2024 16:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019744; cv=none; b=Zm1R6y1nJWQtyr6t2pLBjpYYBbhcD/Cu0J73ekSU5EHQ+aV0GOLWMzb0Eflmlg12OvDKE7zEha7NSjNRwGZHxamBdhSO3ccBM+mJ8ar88Nb2bXZ5FWLKZNOWY77UFHQNHufoFT7tJE66/0GK2Osgi6S/OjSnsV1DrnYxaiWuuZA=
+	t=1734021691; cv=none; b=g12EOjNAprOWomCzqaY5RdFqfMhI8+wXusBPLdTtnuq0ILow7Z49XT2mqr5XtmlIWNhDqHFsSjvfQoxW4lVcgOAB+0i2dJMWHAaIpe8HqTBskwiy+eOBoFHHAffbOG+XSEnGgprp7p/tTyrZgO8eR2sKkzE9ogAnGZnDqVo/t80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019744; c=relaxed/simple;
-	bh=Ryo1sy9lLLE7zwWVSCfGCak3d/NC75N4h49/hRLV6hE=;
+	s=arc-20240116; t=1734021691; c=relaxed/simple;
+	bh=5uLKOlKm/6IR2dPvNaLT7Pfr85hRXTXxf20AyazI4dM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEy3YbHfHnvVMUMyTX5iNYPAhJKxso17x766/mTIqWokVtwrvg68hRr4YaiPv/8PFf70htQcqpWlrEyNEEhhFw8JWsxGmUQRnp7lYn5qGgCDhOMK76ZawHGRT5X40Yn1C/pnx7YSeRUe0ZYXMnJtfzDwMW3AEVXBqwcOYLErmBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rutedWl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB06C4CECE;
-	Thu, 12 Dec 2024 16:09:03 +0000 (UTC)
+	 MIME-Version; b=D/j9wy0ZZ1o80zp2UVAbIxmmlCE523QGklY/1Il2jhsT68sUBXYxQJXnwrrAk95GU72w1KXE1EDJryqRgA35CoW3uv0S/PzDSoHCM57KWdsSJsu0akJFZkaYeVCjqCKobk3/3AV7CqvlmUObDN78sW2UG5peNgpbveArXm/AyjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6Mm7Rho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE32C4CECE;
+	Thu, 12 Dec 2024 16:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019744;
-	bh=Ryo1sy9lLLE7zwWVSCfGCak3d/NC75N4h49/hRLV6hE=;
+	s=korg; t=1734021691;
+	bh=5uLKOlKm/6IR2dPvNaLT7Pfr85hRXTXxf20AyazI4dM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rutedWl8nCKVsAzDctapA8CyhtuvKp22h/qJQxfTSXfUD5hwADZsfGnq98dt7ILQW
-	 kTtofCAhpq0YuhGe7crtDgD+JrWVPCXb6XgrZGRky8IklDAXDCeBs9xBeJaWI3n+R+
-	 wI5D5lNZkj6gUByo0m3lhnT0cx3xJdqRzZ9uvitE=
+	b=d6Mm7Rho8JztOSmrtsRzqCjpNura+ZxpsDwxCYX/4acoyYUJ0WcKnihdVJgVTzXva
+	 p2tGjU3x6+2QBfuMANRb1t8R0pg1HY08fq1GJdg4KGFcVF+88dmpCbipVfHU8xXn95
+	 d8DoPtbklJjGhtv04FLHW8SHXazS56Lj7m3U9sCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 285/772] remoteproc: qcom: q6v5: Use _clk_get_optional for aggre2_clk
-Date: Thu, 12 Dec 2024 15:53:50 +0100
-Message-ID: <20241212144401.683581669@linuxfoundation.org>
+Subject: [PATCH 5.15 036/565] mmc: sunxi-mmc: Fix A100 compatible description
+Date: Thu, 12 Dec 2024 15:53:51 +0100
+Message-ID: <20241212144312.881666886@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,267 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit 6d967a5a49e8d08d8e4430aadba8d3c903b794a5 ]
+[ Upstream commit 85b580afc2c215394e08974bf033de9face94955 ]
 
-Only msm8996 and msm8998 SLPIs need the RPM_SMD_AGGR2_NOC_CLK
-(as aggre2 clock). None of the other platforms do. Back when the support
-for the mentioned platforms was added to the q6v5 pass driver, the
-devm_clk_get_optional was not available, so the has_aggre2_clk was
-necessary in order to differentiate between plaforms that need this
-clock and those which do not. Now that devm_clk_get_optional is available,
-we can drop the has_aggre2_clk. This makes the adsp_data more cleaner
-and removes the check within adsp_init_clocks.
+It turns out that the Allwinner A100/A133 SoC only supports 8K DMA
+blocks (13 bits wide), for both the SD/SDIO and eMMC instances.
+And while this alone would make a trivial fix, the H616 falls back to
+the A100 compatible string, so we have to now match the H616 compatible
+string explicitly against the description advertising 64K DMA blocks.
 
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20220718121514.2451590-1-abel.vesa@linaro.org
-Stable-dep-of: e8983156d54f ("remoteproc: qcom: pas: add minidump_id to SM8350 resources")
+As the A100 is now compatible with the D1 description, let the A100
+compatible string point to that block instead, and introduce an explicit
+match against the H616 string, pointing to the old description.
+Also remove the redundant setting of clk_delays to NULL on the way.
+
+Fixes: 3536b82e5853 ("mmc: sunxi: add support for A100 mmc controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Tested-by: Parthiban Nallathambi <parthiban@linumiz.com>
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Message-ID: <20241107014240.24669-1-andre.przywara@arm.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_pas.c | 42 +++++-------------------------
- 1 file changed, 7 insertions(+), 35 deletions(-)
+ drivers/mmc/host/sunxi-mmc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
-index dc6f07ca83410..533cee25b18e5 100644
---- a/drivers/remoteproc/qcom_q6v5_pas.c
-+++ b/drivers/remoteproc/qcom_q6v5_pas.c
-@@ -37,7 +37,6 @@ struct adsp_data {
- 	const char *firmware_name;
- 	int pas_id;
- 	unsigned int minidump_id;
--	bool has_aggre2_clk;
- 	bool auto_boot;
- 	bool decrypt_shutdown;
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index cd81f9a79169e..1b6e41d55b622 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -1191,10 +1191,9 @@ static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
+ 	.needs_new_timings = true,
+ };
  
-@@ -68,7 +67,6 @@ struct qcom_adsp {
- 	int pas_id;
- 	unsigned int minidump_id;
- 	int crash_reason_smem;
--	bool has_aggre2_clk;
- 	bool decrypt_shutdown;
- 	const char *info_name;
- 
-@@ -345,15 +343,13 @@ static int adsp_init_clock(struct qcom_adsp *adsp)
- 		return ret;
- 	}
- 
--	if (adsp->has_aggre2_clk) {
--		adsp->aggre2_clk = devm_clk_get(adsp->dev, "aggre2");
--		if (IS_ERR(adsp->aggre2_clk)) {
--			ret = PTR_ERR(adsp->aggre2_clk);
--			if (ret != -EPROBE_DEFER)
--				dev_err(adsp->dev,
--					"failed to get aggre2 clock");
--			return ret;
--		}
-+	adsp->aggre2_clk = devm_clk_get_optional(adsp->dev, "aggre2");
-+	if (IS_ERR(adsp->aggre2_clk)) {
-+		ret = PTR_ERR(adsp->aggre2_clk);
-+		if (ret != -EPROBE_DEFER)
-+			dev_err(adsp->dev,
-+				"failed to get aggre2 clock");
-+		return ret;
- 	}
- 
- 	return 0;
-@@ -505,7 +501,6 @@ static int adsp_probe(struct platform_device *pdev)
- 	adsp->rproc = rproc;
- 	adsp->minidump_id = desc->minidump_id;
- 	adsp->pas_id = desc->pas_id;
--	adsp->has_aggre2_clk = desc->has_aggre2_clk;
- 	adsp->info_name = desc->sysmon_name;
- 	adsp->decrypt_shutdown = desc->decrypt_shutdown;
- 	platform_set_drvdata(pdev, adsp);
-@@ -585,7 +580,6 @@ static const struct adsp_data adsp_resource_init = {
- 		.crash_reason_smem = 423,
- 		.firmware_name = "adsp.mdt",
- 		.pas_id = 1,
--		.has_aggre2_clk = false,
- 		.auto_boot = true,
- 		.ssr_name = "lpass",
- 		.sysmon_name = "adsp",
-@@ -596,7 +590,6 @@ static const struct adsp_data sdm845_adsp_resource_init = {
- 		.crash_reason_smem = 423,
- 		.firmware_name = "adsp.mdt",
- 		.pas_id = 1,
--		.has_aggre2_clk = false,
- 		.auto_boot = true,
- 		.load_state = "adsp",
- 		.ssr_name = "lpass",
-@@ -608,7 +601,6 @@ static const struct adsp_data sm6350_adsp_resource = {
- 	.crash_reason_smem = 423,
- 	.firmware_name = "adsp.mdt",
- 	.pas_id = 1,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"lcx",
-@@ -625,7 +617,6 @@ static const struct adsp_data sm8150_adsp_resource = {
- 		.crash_reason_smem = 423,
- 		.firmware_name = "adsp.mdt",
- 		.pas_id = 1,
--		.has_aggre2_clk = false,
- 		.auto_boot = true,
- 		.proxy_pd_names = (char*[]){
- 			"cx",
-@@ -641,7 +632,6 @@ static const struct adsp_data sm8250_adsp_resource = {
- 	.crash_reason_smem = 423,
- 	.firmware_name = "adsp.mdt",
- 	.pas_id = 1,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"lcx",
-@@ -658,7 +648,6 @@ static const struct adsp_data sm8350_adsp_resource = {
- 	.crash_reason_smem = 423,
- 	.firmware_name = "adsp.mdt",
- 	.pas_id = 1,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"lcx",
-@@ -675,7 +664,6 @@ static const struct adsp_data msm8996_adsp_resource = {
- 		.crash_reason_smem = 423,
- 		.firmware_name = "adsp.mdt",
- 		.pas_id = 1,
--		.has_aggre2_clk = false,
- 		.auto_boot = true,
- 		.proxy_pd_names = (char*[]){
- 			"cx",
-@@ -690,7 +678,6 @@ static const struct adsp_data cdsp_resource_init = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 18,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.ssr_name = "cdsp",
- 	.sysmon_name = "cdsp",
-@@ -701,7 +688,6 @@ static const struct adsp_data sdm845_cdsp_resource_init = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 18,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.load_state = "cdsp",
- 	.ssr_name = "cdsp",
-@@ -713,7 +699,6 @@ static const struct adsp_data sm6350_cdsp_resource = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 18,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"cx",
-@@ -730,7 +715,6 @@ static const struct adsp_data sm8150_cdsp_resource = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 18,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"cx",
-@@ -746,7 +730,6 @@ static const struct adsp_data sm8250_cdsp_resource = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 18,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"cx",
-@@ -762,7 +745,6 @@ static const struct adsp_data sc8280xp_nsp0_resource = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 18,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"nsp",
-@@ -777,7 +759,6 @@ static const struct adsp_data sc8280xp_nsp1_resource = {
- 	.crash_reason_smem = 633,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 30,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"nsp",
-@@ -792,7 +773,6 @@ static const struct adsp_data sm8350_cdsp_resource = {
- 	.crash_reason_smem = 601,
- 	.firmware_name = "cdsp.mdt",
- 	.pas_id = 18,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"cx",
-@@ -810,7 +790,6 @@ static const struct adsp_data mpss_resource_init = {
- 	.firmware_name = "modem.mdt",
- 	.pas_id = 4,
- 	.minidump_id = 3,
--	.has_aggre2_clk = false,
- 	.auto_boot = false,
- 	.proxy_pd_names = (char*[]){
- 		"cx",
-@@ -827,7 +806,6 @@ static const struct adsp_data sc8180x_mpss_resource = {
- 	.crash_reason_smem = 421,
- 	.firmware_name = "modem.mdt",
- 	.pas_id = 4,
--	.has_aggre2_clk = false,
- 	.auto_boot = false,
- 	.proxy_pd_names = (char*[]){
- 		"cx",
-@@ -843,7 +821,6 @@ static const struct adsp_data slpi_resource_init = {
- 		.crash_reason_smem = 424,
- 		.firmware_name = "slpi.mdt",
- 		.pas_id = 12,
--		.has_aggre2_clk = true,
- 		.auto_boot = true,
- 		.proxy_pd_names = (char*[]){
- 			"ssc_cx",
-@@ -858,7 +835,6 @@ static const struct adsp_data sm8150_slpi_resource = {
- 		.crash_reason_smem = 424,
- 		.firmware_name = "slpi.mdt",
- 		.pas_id = 12,
--		.has_aggre2_clk = false,
- 		.auto_boot = true,
- 		.proxy_pd_names = (char*[]){
- 			"lcx",
-@@ -875,7 +851,6 @@ static const struct adsp_data sm8250_slpi_resource = {
- 	.crash_reason_smem = 424,
- 	.firmware_name = "slpi.mdt",
- 	.pas_id = 12,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"lcx",
-@@ -892,7 +867,6 @@ static const struct adsp_data sm8350_slpi_resource = {
- 	.crash_reason_smem = 424,
- 	.firmware_name = "slpi.mdt",
- 	.pas_id = 12,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"lcx",
-@@ -919,7 +893,6 @@ static const struct adsp_data sdx55_mpss_resource = {
- 	.crash_reason_smem = 421,
- 	.firmware_name = "modem.mdt",
- 	.pas_id = 4,
--	.has_aggre2_clk = false,
- 	.auto_boot = true,
- 	.proxy_pd_names = (char*[]){
- 		"cx",
-@@ -936,7 +909,6 @@ static const struct adsp_data sm8450_mpss_resource = {
- 	.firmware_name = "modem.mdt",
- 	.pas_id = 4,
- 	.minidump_id = 3,
--	.has_aggre2_clk = false,
- 	.auto_boot = false,
- 	.decrypt_shutdown = true,
- 	.proxy_pd_names = (char*[]){
+-static const struct sunxi_mmc_cfg sun50i_a100_cfg = {
++static const struct sunxi_mmc_cfg sun50i_h616_cfg = {
+ 	.idma_des_size_bits = 16,
+ 	.idma_des_shift = 2,
+-	.clk_delays = NULL,
+ 	.can_calibrate = true,
+ 	.mask_data0 = true,
+ 	.needs_new_timings = true,
+@@ -1217,8 +1216,9 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
+ 	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
+-	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
++	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun20i_d1_cfg },
+ 	{ .compatible = "allwinner,sun50i-a100-emmc", .data = &sun50i_a100_emmc_cfg },
++	{ .compatible = "allwinner,sun50i-h616-mmc", .data = &sun50i_h616_cfg },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sunxi_mmc_of_match);
 -- 
 2.43.0
 
