@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-103306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB939EF793
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65D49EF8C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AEBB189D5FA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3C4189E15A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B6F21B8E1;
-	Thu, 12 Dec 2024 17:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9528C222D6D;
+	Thu, 12 Dec 2024 17:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUKb+HH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WF1/8hqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830E1215782;
-	Thu, 12 Dec 2024 17:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B202153DD;
+	Thu, 12 Dec 2024 17:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024166; cv=none; b=GvxA6u6pE5Ini0ns3w3TzVGsZiJSHeuYnyzi66kg9OR3o2iKr9ZXRSrrCS7HTRSudJf/4dHtQdO9dGgLl8TTxq3AmDmlACJjG9Sk5jMKomx4uLGN9LW2QstnPXsK49++YOTs0K4h7CgRcNFBOn1BB2BKA0FcHwbSNdJsq7v8Evo=
+	t=1734025015; cv=none; b=k6huyyK66MFg2FWPfYK7ZK9DT9A5Mh/gWtBurMXdq3jbBO2xWj9clEb7c/mWPBUSSJ+PdU/+7q2RpsL0De5iGm3UuzecW+hJ3Io9u8pnM8849FjpGOJyG3PE+knonCD2VhiKFPx6ZCG4d7X2nJ4syc6PCgOpQktdE5M+nOg9u68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024166; c=relaxed/simple;
-	bh=V/xfUCsuDBHWoLjskgwzkz4i5NzfiQ71ZuFSLQFcOGM=;
+	s=arc-20240116; t=1734025015; c=relaxed/simple;
+	bh=vFcQScARS2pxCOlDaGuQFKcjEEpjwJ32x1+09ory8IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cq+9Nm927UI2BR27kODXlfJIg6e8ewHh/smUVJumDkofXSuk16o0oBOLcqLeb3yXGGiH5MKDGqQuAZyF5S6syy4W8EXlktJ0bRjGN2w77dUhh+NDoCfn0jRlrE3LUwbSqq9DPGVOayrQsvDoThWYOcFxJK+3CROOrzFqWQmzMoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUKb+HH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF582C4CECE;
-	Thu, 12 Dec 2024 17:22:45 +0000 (UTC)
+	 MIME-Version; b=XvsE/04LJTeKfPJldYpyXsiKqcIDUBjE2Vjd7ajXRVUDMpBOb0PcHDGBthklqnr7hqXW2SwBybo09FRLy2lOKZuvpOGzZlkokChljT5r3YA64TcXxWAN5zhXA96AoCbjkAYuOETR8ecMQ+ygwP9t9loC7Lw+HyRVw9/5BBHUN/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WF1/8hqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9308C4CECE;
+	Thu, 12 Dec 2024 17:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024166;
-	bh=V/xfUCsuDBHWoLjskgwzkz4i5NzfiQ71ZuFSLQFcOGM=;
+	s=korg; t=1734025015;
+	bh=vFcQScARS2pxCOlDaGuQFKcjEEpjwJ32x1+09ory8IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUKb+HH1vnro0OC0EgilEVKrmUdM6teTV4VCLlSPCLKSmrvExYPsmKFLUz5xpWz+Y
-	 KsSPHP1vsEXn169RIMsgtzhI7sPdu8LRPn4Hy3eNYNBzd7G2nvd7JUSRG+LvKHHgAe
-	 pWTuj47S0gm8mFZnLXNEtXRTGtd0e6lkzX8xE0Vs=
+	b=WF1/8hqCw57ay5cVccnPvJ+5A6Yu+JQl4joSHh1pkor/1fnutjiXze2UIqBGce0W+
+	 4VqMdWIwpGISR/JdT+R/hlCviyS2mK5BCwZSt1iZwbgbJ62OR0oyrdi3fJfu/Rw9p5
+	 vFuNZnOYerighqJzQR3gRv7ygcSsJ/GoC67r9pNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepak Kumar Singh <deesin@codeaurora.org>,
-	Arun Kumar Neelakantam <aneela@codeaurora.org>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Puranjay Mohan <pjy@amazon.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Anuj Gupta <anuj20.g@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Hagar Hemdan <hagarhem@amazon.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/459] rpmsg: glink: Send READ_NOTIFY command in FIFO full case
+Subject: [PATCH 5.4 027/321] nvme: fix metadata handling in nvme-passthrough
 Date: Thu, 12 Dec 2024 15:59:05 +0100
-Message-ID: <20241212144301.745358764@linuxfoundation.org>
+Message-ID: <20241212144231.075907860@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,125 +66,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Kumar Neelakantam <aneela@codeaurora.org>
+From: Puranjay Mohan <pjy@amazon.com>
 
-[ Upstream commit b16a37e1846c9573a847a56fa2f31ba833dae45a ]
+[ Upstream commit 7c2fd76048e95dd267055b5f5e0a48e6e7c81fd9 ]
 
-The current design sleeps unconditionally in TX FIFO full case and
-wakeup only after sleep timer expires which adds random delays in
-clients TX path.
+On an NVMe namespace that does not support metadata, it is possible to
+send an IO command with metadata through io-passthru. This allows issues
+like [1] to trigger in the completion code path.
+nvme_map_user_request() doesn't check if the namespace supports metadata
+before sending it forward. It also allows admin commands with metadata to
+be processed as it ignores metadata when bdev == NULL and may report
+success.
 
-Avoid sleep and use READ_NOTIFY command so that writer can be woken up
-when remote notifies about read completion by sending IRQ.
+Reject an IO command with metadata when the NVMe namespace doesn't
+support it and reject an admin command if it has metadata.
 
-Signed-off-by: Deepak Kumar Singh <deesin@codeaurora.org>
-Signed-off-by: Arun Kumar Neelakantam <aneela@codeaurora.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Link: https://lore.kernel.org/r/1596086296-28529-7-git-send-email-deesin@codeaurora.org
-Stable-dep-of: 06c59d97f63c ("rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length")
+[1] https://lore.kernel.org/all/mb61pcylvnym8.fsf@amazon.com/
+
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Puranjay Mohan <pjy@amazon.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Anuj Gupta <anuj20.g@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[ Move the changes from nvme_map_user_request() to nvme_submit_user_cmd()
+  to make it work on 5.4 ]
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 36 ++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index a8486264f11f3..8128da8646db1 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -92,6 +92,8 @@ struct glink_core_rx_intent {
-  * @rcids:	idr of all channels with a known remote channel id
-  * @features:	remote features
-  * @intentless:	flag to indicate that there is no intent
-+ * @tx_avail_notify: Waitqueue for pending tx tasks
-+ * @sent_read_notify: flag to check cmd sent or not
-  */
- struct qcom_glink {
- 	struct device *dev;
-@@ -118,6 +120,8 @@ struct qcom_glink {
- 	unsigned long features;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 0676637e1eab6..a841fd4929adc 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -921,11 +921,16 @@ static int nvme_submit_user_cmd(struct request_queue *q,
+ 	bool write = nvme_is_write(cmd);
+ 	struct nvme_ns *ns = q->queuedata;
+ 	struct gendisk *disk = ns ? ns->disk : NULL;
++	bool supports_metadata = disk && blk_get_integrity(disk);
++	bool has_metadata = meta_buffer && meta_len;
+ 	struct request *req;
+ 	struct bio *bio = NULL;
+ 	void *meta = NULL;
+ 	int ret;
  
- 	bool intentless;
-+	wait_queue_head_t tx_avail_notify;
-+	bool sent_read_notify;
- };
- 
- enum {
-@@ -305,6 +309,20 @@ static void qcom_glink_tx_write(struct qcom_glink *glink,
- 	glink->tx_pipe->write(glink->tx_pipe, hdr, hlen, data, dlen);
- }
- 
-+static void qcom_glink_send_read_notify(struct qcom_glink *glink)
-+{
-+	struct glink_msg msg;
++	if (has_metadata && !supports_metadata)
++		return -EINVAL;
 +
-+	msg.cmd = cpu_to_le16(RPM_CMD_READ_NOTIF);
-+	msg.param1 = 0;
-+	msg.param2 = 0;
-+
-+	qcom_glink_tx_write(glink, &msg, sizeof(msg), NULL, 0);
-+
-+	mbox_send_message(glink->mbox_chan, NULL);
-+	mbox_client_txdone(glink->mbox_chan, 0);
-+}
-+
- static int qcom_glink_tx(struct qcom_glink *glink,
- 			 const void *hdr, size_t hlen,
- 			 const void *data, size_t dlen, bool wait)
-@@ -325,12 +343,21 @@ static int qcom_glink_tx(struct qcom_glink *glink,
+ 	req = nvme_alloc_request(q, cmd, 0, NVME_QID_ANY);
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+@@ -940,7 +945,7 @@ static int nvme_submit_user_cmd(struct request_queue *q,
  			goto out;
- 		}
- 
-+		if (!glink->sent_read_notify) {
-+			glink->sent_read_notify = true;
-+			qcom_glink_send_read_notify(glink);
-+		}
-+
- 		/* Wait without holding the tx_lock */
- 		spin_unlock_irqrestore(&glink->tx_lock, flags);
- 
--		usleep_range(10000, 15000);
-+		wait_event_timeout(glink->tx_avail_notify,
-+				   qcom_glink_tx_avail(glink) >= tlen, 10 * HZ);
- 
- 		spin_lock_irqsave(&glink->tx_lock, flags);
-+
-+		if (qcom_glink_tx_avail(glink) >= tlen)
-+			glink->sent_read_notify = false;
- 	}
- 
- 	qcom_glink_tx_write(glink, hdr, hlen, data, dlen);
-@@ -991,6 +1018,9 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
- 	unsigned int cmd;
- 	int ret = 0;
- 
-+	/* To wakeup any blocking writers */
-+	wake_up_all(&glink->tx_avail_notify);
-+
- 	for (;;) {
- 		avail = qcom_glink_rx_avail(glink);
- 		if (avail < sizeof(msg))
-@@ -1530,6 +1560,9 @@ static void qcom_glink_rx_close_ack(struct qcom_glink *glink, unsigned int lcid)
- 	struct glink_channel *channel;
- 	unsigned long flags;
- 
-+	/* To wakeup any blocking writers */
-+	wake_up_all(&glink->tx_avail_notify);
-+
- 	spin_lock_irqsave(&glink->idr_lock, flags);
- 	channel = idr_find(&glink->lcids, lcid);
- 	if (WARN(!channel, "close ack on unknown channel\n")) {
-@@ -1691,6 +1724,7 @@ struct qcom_glink *qcom_glink_native_probe(struct device *dev,
- 	spin_lock_init(&glink->rx_lock);
- 	INIT_LIST_HEAD(&glink->rx_queue);
- 	INIT_WORK(&glink->rx_work, qcom_glink_work);
-+	init_waitqueue_head(&glink->tx_avail_notify);
- 
- 	spin_lock_init(&glink->idr_lock);
- 	idr_init(&glink->lcids);
+ 		bio = req->bio;
+ 		bio->bi_disk = disk;
+-		if (disk && meta_buffer && meta_len) {
++		if (has_metadata) {
+ 			meta = nvme_add_user_metadata(bio, meta_buffer, meta_len,
+ 					meta_seed, write);
+ 			if (IS_ERR(meta)) {
 -- 
 2.43.0
 
