@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-102039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AEB9EEFB0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A569EF415
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51DED2977BE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 020EA189D1DF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74FD2253E7;
-	Thu, 12 Dec 2024 16:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32892253F8;
+	Thu, 12 Dec 2024 16:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vO6b1FL3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyUkEDCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627B1235C40;
-	Thu, 12 Dec 2024 16:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928A52153DD;
+	Thu, 12 Dec 2024 16:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019737; cv=none; b=Cnxj3ToyPlIE80sb2QecQFB4N+EsA6n4INxephztlvE6ji4ItwSlGqMqZjyjyNfu+FYfVAOJYOFOeK4cE6OxB1rRSMJKW/sYSEEKh0+PzqFxfYRR8KlnD0jjPMF2zocGv8Syjp1ohPbENe+fya9U9WIOk3Nu8CxqN8COkPCB3PU=
+	t=1734021688; cv=none; b=f6NioEpcfC4jyeK+70kWst5jfod8y6XRIiwrBn6jvUUcAgJF8UiLMHUBcR1KDarFUfdZ3wLUEkxVsP+a0A52QSzU+J32m3NL8rxK7m1pF4/TzBkklxLSn7NdXTfUIUaTDrVcbXLVhKLO0cqzfmmbB0fpwSFNKJJg2e3YIgPUXEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019737; c=relaxed/simple;
-	bh=cbPHxUnXUKDUhVDr6fy+3ZHefuKEOfLQghqaN+wbFI8=;
+	s=arc-20240116; t=1734021688; c=relaxed/simple;
+	bh=dVSZ4e14Qa49MivuvhtviMt1GtqQhMaht4bFLQgSeLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bAZ4nOYARG6RVXc6ourL7nIEatHtlkiy9qvETaIIqSRNsR5hX1jsbrccJtacXXUsQaK6iwxFyLJDPKciCpJbrxuRtwQdkzrcU5hreVw0ERa75XX3vXn/cQzTF0fvqZ2jOogVEGi9nc6XUq2mwlv8YyZsbgbQb3KbmWiacZeax1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vO6b1FL3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80087C4CECE;
-	Thu, 12 Dec 2024 16:08:56 +0000 (UTC)
+	 MIME-Version; b=Qh4/XQKPdiSoun+29gjVhZI5/8gpllAwPPhbcPTtRw1jurBp858XShn8UzgIjiE01Y/x8K1wPTL1+9YCa8w14u2imioAETEaEKEzbFwnkyPkrDqWbGShdSU0waA3oEcDLx8X/k7+gO8Vno++bnsM1+zcV+QYvSHdbwDUEcNZ6co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyUkEDCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC83C4CECE;
+	Thu, 12 Dec 2024 16:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019737;
-	bh=cbPHxUnXUKDUhVDr6fy+3ZHefuKEOfLQghqaN+wbFI8=;
+	s=korg; t=1734021688;
+	bh=dVSZ4e14Qa49MivuvhtviMt1GtqQhMaht4bFLQgSeLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vO6b1FL3eKmWQr42Wj/6ZmSP5vzdq0gLycYEyZPc0ih0wpF3i+izereS4pqAz0A3Q
-	 gt0iPNkZgQjlFl1ixS0ZzEMGfAOp9E7BX3yhjoUTarSljhFgZOLi7WSzD+4ewTvBrN
-	 UXO7m5fJZ3D6jtg51bN0KOM7MDS6RxBECeffNxwo=
+	b=MyUkEDCvC2dFHZWhhtQVi+Y1W69XknldYDjpHlUKZV/dyziA5NQeLfxeYYheL8LPp
+	 atv1Ep695nA1aWcCRa2UXanMhyljVeCsXJt2yVhCU3A4cEUGekE+SaqFx9dAV3mtTF
+	 CO1b4purfAYfzODakp9Uo8I87p3uSIyojME1NhpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Peterson <benjamin@engflow.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Howard Chu <howardchu95@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Maxime Ripard <maxime@cerno.tech>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 284/772] perf trace: Avoid garbage when not printing a syscalls arguments
-Date: Thu, 12 Dec 2024 15:53:49 +0100
-Message-ID: <20241212144401.636526309@linuxfoundation.org>
+Subject: [PATCH 5.15 035/565] mmc: sunxi-mmc: Add D1 MMC variant
+Date: Thu, 12 Dec 2024 15:53:50 +0100
+Message-ID: <20241212144312.841008733@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,65 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Peterson <benjamin@engflow.com>
+From: Samuel Holland <samuel@sholland.org>
 
-[ Upstream commit 1302e352b26f34991b619b5d0b621b76d20a3883 ]
+[ Upstream commit 75a2f412d0aed4a4a80ab2a2d96d040b17acb6d6 ]
 
-syscall__scnprintf_args may not place anything in the output buffer
-(e.g., because the arguments are all zero). If that happened in
-trace__fprintf_sys_enter, its fprintf would receive an unitialized
-buffer leading to garbage output.
+D1's MMC controllers are unique in that they have the DMA address shift
+(like A100) with a 13-bit descriptor size field (like sun4i). Add the
+compatible and parameters for this new variant.
 
-Fix the problem by passing the (possibly zero) bounds of the argument
-buffer to the output fprintf.
-
-Fixes: a98392bb1e169a04 ("perf trace: Use beautifiers on syscalls:sys_enter_ handlers")
-Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Howard Chu <howardchu95@gmail.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20241107232128.108981-2-benjamin@engflow.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Samuel Holland <samuel@sholland.org>
+Acked-by: Maxime Ripard <maxime@cerno.tech>
+Link: https://lore.kernel.org/r/20220203015112.12008-2-samuel@sholland.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 85b580afc2c2 ("mmc: sunxi-mmc: Fix A100 compatible description")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-trace.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sunxi-mmc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
-index 48e101ad13924..441655e659c2b 100644
---- a/tools/perf/builtin-trace.c
-+++ b/tools/perf/builtin-trace.c
-@@ -2385,6 +2385,7 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
- 	char msg[1024];
- 	void *args, *augmented_args = NULL;
- 	int augmented_args_size;
-+	size_t printed = 0;
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index 3c213816db786..cd81f9a79169e 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -1168,6 +1168,14 @@ static const struct sunxi_mmc_cfg sun9i_a80_cfg = {
+ 	.can_calibrate = false,
+ };
  
- 	if (sc == NULL)
- 		return -1;
-@@ -2400,8 +2401,8 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
- 
- 	args = perf_evsel__sc_tp_ptr(evsel, args, sample);
- 	augmented_args = syscall__augmented_args(sc, sample, &augmented_args_size, trace->raw_augmented_syscalls_args_size);
--	syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
--	fprintf(trace->output, "%s", msg);
-+	printed += syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
-+	fprintf(trace->output, "%.*s", (int)printed, msg);
- 	err = 0;
- out_put:
- 	thread__put(thread);
++static const struct sunxi_mmc_cfg sun20i_d1_cfg = {
++	.idma_des_size_bits = 13,
++	.idma_des_shift = 2,
++	.can_calibrate = true,
++	.mask_data0 = true,
++	.needs_new_timings = true,
++};
++
+ static const struct sunxi_mmc_cfg sun50i_a64_cfg = {
+ 	.idma_des_size_bits = 16,
+ 	.clk_delays = NULL,
+@@ -1206,6 +1214,7 @@ static const struct of_device_id sunxi_mmc_of_match[] = {
+ 	{ .compatible = "allwinner,sun7i-a20-mmc", .data = &sun7i_a20_cfg },
+ 	{ .compatible = "allwinner,sun8i-a83t-emmc", .data = &sun8i_a83t_emmc_cfg },
+ 	{ .compatible = "allwinner,sun9i-a80-mmc", .data = &sun9i_a80_cfg },
++	{ .compatible = "allwinner,sun20i-d1-mmc", .data = &sun20i_d1_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+ 	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
+ 	{ .compatible = "allwinner,sun50i-a100-mmc", .data = &sun50i_a100_cfg },
 -- 
 2.43.0
 
