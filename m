@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412429EF41A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F62B9EEC11
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A75B28F815
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 673AB164844
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB2C217679;
-	Thu, 12 Dec 2024 17:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA7820969B;
+	Thu, 12 Dec 2024 15:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/PcOMVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeCdTnaj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2F3213E6B;
-	Thu, 12 Dec 2024 17:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC261487CD;
+	Thu, 12 Dec 2024 15:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023013; cv=none; b=PIv2BWyWIc2z4EMSQky/i8LVQY/6V81/gFNdAGKAJAFgsafeMPKEqRNVrydF/iKEfHL+oIXxsm75Y5gvlCDh2ieFCBNe6/WnWWw0vJLLbBACTm+DsthTlcgOXaK9YvX7cy5N8uIoBPjOTalRADCf4d46dyGaQAqeLm4UZ+Pv2Yc=
+	t=1734017338; cv=none; b=LMohs3wCaBf535NtII4EBnMLOZPfG9R8sG+HHzsW914ebH3MNnn828cepkjKUH55RuI7MK7aQNznhFgrYydhZePdF68FUauij73HX1COhmwZQZCcwm2x4UX5DnzFhapBDiSdZPgOHVDaxqdLtsLjfQFJEE2+L5WWo79ovjpIMQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023013; c=relaxed/simple;
-	bh=Gc+BBNtIrnHIs9x0tWGokBRxVn03Cbs3PxI4MhlaNjY=;
+	s=arc-20240116; t=1734017338; c=relaxed/simple;
+	bh=ELsc0XJZV+YvdzGDDC72YalcTn38mQC6I8+eRWN0PME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0JgAE75CdgWM3SpLZF4XWuZbT/TH2XBsqcQRLlJR7UQFTNckQtxCdpDDz9ZtfOZVImCkUSgzLDQC3CkhjTsQ8cPiuuV679KScgJZ44WFXN20iPpcMX72r454V9hVlOmYshRVSair1LFuH6rhEXASdAYhc1hqz0xQjVRwSzvXFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/PcOMVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A726C4CED0;
-	Thu, 12 Dec 2024 17:03:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VkgNRV3gA3Nsqth4tN6TLWexZrsq4YvOP72EBr6P0UhfW5DarSSJnzcQIaMLYQt/acjrwdmoGuPblXnjHmKyC+vxDUkdjjW95lDmi9LSUczLwM/nyjgv/GmrnXQHUbni5QfuwwBpvku2KpLCHDZr6ZhkpLcTtQf9IONwoojm66g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeCdTnaj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7D1C4CED0;
+	Thu, 12 Dec 2024 15:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023013;
-	bh=Gc+BBNtIrnHIs9x0tWGokBRxVn03Cbs3PxI4MhlaNjY=;
+	s=korg; t=1734017338;
+	bh=ELsc0XJZV+YvdzGDDC72YalcTn38mQC6I8+eRWN0PME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/PcOMVeWMIzNJrcmXzHBmIiHLzPjUCRxkSeVc8tK3erXH18CTPWGT7Ej7L9n2JhN
-	 yi5VQKRdB+lPQbR+drP/fIFLTaxPzHRODRzEiF5rf1+HFYUftS/xp6SlyeEXZRyux3
-	 zF7mbMox0NUlvV5BRzePNzKbauDzkG3qhu+C52VY=
+	b=EeCdTnajyNB64FOHed/sXWwwG9E4TllWiWOV/mQ8iFNbq9A4XYZ58PyIJZ2N2FQ5f
+	 0EQZ51N8ym1RkF2KBEVJZbcuprM+LfAtn+Um6N0D29iDwvP9ec8gZ6rAhfP35mhepH
+	 TjdUghoVVKaDMF/8X4G8ygascxQOBEOY/DvasVmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>
-Subject: [PATCH 5.15 397/565] drm/etnaviv: flush shader L1 cache after user commandstream
-Date: Thu, 12 Dec 2024 15:59:52 +0100
-Message-ID: <20241212144327.341594199@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 424/466] serial: 8250_dw: Add Sophgo SG2044 quirk
+Date: Thu, 12 Dec 2024 15:59:53 +0100
+Message-ID: <20241212144323.505978228@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Inochi Amaoto <inochiama@gmail.com>
 
-commit 4f8dbadef085ab447a01a8d4806a3f629fea05ed upstream.
+[ Upstream commit cad4dda82c7eedcfc22597267e710ccbcf39d572 ]
 
-The shader L1 cache is a writeback cache for shader loads/stores
-and thus must be flushed before any BOs backing the shader buffers
-are potentially freed.
+SG2044 relys on an internal divisor when calculating bitrate, which
+means a wrong clock for the most common bitrates. So add a quirk for
+this uart device to skip the set rate call and only relys on the
+internal UART divisor.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Link: https://lore.kernel.org/r/20241024062105.782330-4-inochiama@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_buffer.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_dw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
-@@ -481,7 +481,8 @@ void etnaviv_buffer_queue(struct etnaviv
- 	} else {
- 		CMD_LOAD_STATE(buffer, VIVS_GL_FLUSH_CACHE,
- 				       VIVS_GL_FLUSH_CACHE_DEPTH |
--				       VIVS_GL_FLUSH_CACHE_COLOR);
-+				       VIVS_GL_FLUSH_CACHE_COLOR |
-+				       VIVS_GL_FLUSH_CACHE_SHADER_L1);
- 		if (has_blt) {
- 			CMD_LOAD_STATE(buffer, VIVS_BLT_ENABLE, 0x1);
- 			CMD_LOAD_STATE(buffer, VIVS_BLT_SET_COMMAND, 0x1);
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index ab9e7f2042602..51894c93c8a31 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -750,7 +750,7 @@ static const struct dw8250_platform_data dw8250_renesas_rzn1_data = {
+ 	.quirks = DW_UART_QUIRK_CPR_VALUE | DW_UART_QUIRK_IS_DMA_FC,
+ };
+ 
+-static const struct dw8250_platform_data dw8250_starfive_jh7100_data = {
++static const struct dw8250_platform_data dw8250_skip_set_rate_data = {
+ 	.usr_reg = DW_UART_USR,
+ 	.quirks = DW_UART_QUIRK_SKIP_SET_RATE,
+ };
+@@ -760,7 +760,8 @@ static const struct of_device_id dw8250_of_match[] = {
+ 	{ .compatible = "cavium,octeon-3860-uart", .data = &dw8250_octeon_3860_data },
+ 	{ .compatible = "marvell,armada-38x-uart", .data = &dw8250_armada_38x_data },
+ 	{ .compatible = "renesas,rzn1-uart", .data = &dw8250_renesas_rzn1_data },
+-	{ .compatible = "starfive,jh7100-uart", .data = &dw8250_starfive_jh7100_data },
++	{ .compatible = "sophgo,sg2044-uart", .data = &dw8250_skip_set_rate_data },
++	{ .compatible = "starfive,jh7100-uart", .data = &dw8250_skip_set_rate_data },
+ 	{ /* Sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, dw8250_of_match);
+-- 
+2.43.0
+
 
 
 
