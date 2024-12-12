@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-103181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5976E9EF62F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D109EF6DB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AC41189CBD9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A359177B86
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C8321576E;
-	Thu, 12 Dec 2024 17:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBDE1F2381;
+	Thu, 12 Dec 2024 17:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZJsVHBN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6793zE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7171F53365;
-	Thu, 12 Dec 2024 17:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873084F218;
+	Thu, 12 Dec 2024 17:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023788; cv=none; b=rD1jZuDEwlcs5z8CUjhTpSr9BByNWrRybTK1+WWoqC0NSN0IXTtIHiJouCaoFyhUvJ99zFoHwN0swdznuXbleGczXQKjcYh8c/3v3hsbNQ2LbNXX7p3i/6ifbTTAmEC9F4apXCD9t+apRwN+P7plDuYgdbanKQnSwBu2uPk8hCI=
+	t=1734023800; cv=none; b=XVDfsZ/7z0FFNEVOmCGEEbs7YyAO8NW9/rm+LVCQksVzOHoyZIqNCJOstqAqG7M5VI0QmPFyZfT+nYIyQdLsLG4uUCYL+wu7onOq+hLpQ6Ju5mdLXRt+RyGfI2iv5o9EuT9h8DszX3nkxeMq4VmAc09kh38+oqG4fmN8NQllwks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023788; c=relaxed/simple;
-	bh=lq3VFfVicyiBw5rhOiFkI8PjqcpXppif1UDLGmgmPWM=;
+	s=arc-20240116; t=1734023800; c=relaxed/simple;
+	bh=tT437XUkV8R24ZV0Yiv30gJ9fIZlns1uwh21usgLKuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sb0smyTFRP7V36dNK40uMfKYJsElxFdoANDc2EcC4J8axHm9M7Roln7eysNvZ3ezddyZ8tiQQ3gQ8ydsMXEfHAkwU4RSDD0zQZ1+Q9BHWGY6o7Piz2eWCT1hSatjki7c/CbhdIRdKuGRUdeh6WbSstwzcX5T6zXb+iZ1OQA1pm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZJsVHBN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9806C4CECE;
-	Thu, 12 Dec 2024 17:16:27 +0000 (UTC)
+	 MIME-Version; b=ApBw91iai1Cl70LPlndmEa4hdbuxP1HJ5oOsdt184/5ryKBkifrqjFvvpacVu1c+wDZtt23nbGPJnkwRelHczb+XcM7PpDGVxqh2sHG0Adbr6ZTdpC6Nb80wJHxFaJZMNkrYr/aAz0/1tQRp4K0pNy0j2NYy8jTxus1ZDlirZKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6793zE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D60C4CECE;
+	Thu, 12 Dec 2024 17:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023788;
-	bh=lq3VFfVicyiBw5rhOiFkI8PjqcpXppif1UDLGmgmPWM=;
+	s=korg; t=1734023800;
+	bh=tT437XUkV8R24ZV0Yiv30gJ9fIZlns1uwh21usgLKuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZJsVHBNvrKuuSfYKII+feKupLeCYKvcpV4ERYWv2qiQMM7KhL8i8ftwJyiuIJsJo
-	 EOptONHIwyw3KvyjqebdmAge6RHyosWiBN3Ok2oBw+Vc961Qz5H3rXh1eAxymaRxeq
-	 OCAIL9BsQnXDKKgOGyol/7XQg5LoBAn3tISVhQAA=
+	b=d6793zE8bpwMXt1IxsSjc4e2O/r+NazVqHmPf4HNsVgv47oc387ducoT3hMPi/JZ9
+	 ghP48wUzPyJxjdij/TKlZFlw4EYFfDHhhSf1N7h3VfoY2svjdPE4Juy4uvBJuVVVAu
+	 kT7+82PVhJPi6Vb6u5rlDwA8B+7xXBu0igV9LiOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andre Przywara <andre.przywara@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Juergen Gross <jgross@suse.com>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/459] kselftest/arm64: mte: fix printf type warnings about longs
-Date: Thu, 12 Dec 2024 15:56:33 +0100
-Message-ID: <20241212144255.693986085@linuxfoundation.org>
+Subject: [PATCH 5.10 056/459] x86/xen/pvh: Annotate indirect branch as safe
+Date: Thu, 12 Dec 2024 15:56:34 +0100
+Message-ID: <20241212144255.733193267@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
 References: <20241212144253.511169641@linuxfoundation.org>
@@ -67,49 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andre Przywara <andre.przywara@arm.com>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
 
-[ Upstream commit 96dddb7b9406259baace9a1831e8da155311be6f ]
+[ Upstream commit 82694854caa8badab7c5d3a19c0139e8b471b1d3 ]
 
-When checking MTE tags, we print some diagnostic messages when the tests
-fail. Some variables uses there are "longs", however we only use "%x"
-for the format specifier.
+This indirect jump is harmless; annotate it to keep objtool's retpoline
+validation happy.
 
-Update the format specifiers to "%lx", to match the variable types they
-are supposed to print.
-
-Fixes: f3b2a26ca78d ("kselftest/arm64: Verify mte tag inclusion via prctl")
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240816153251.2833702-9-andre.przywara@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Juergen Gross <jgross@suse.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/4797c72a258b26e06741c58ccd4a75c42db39c1d.1611263462.git.jpoimboe@redhat.com
+Stable-dep-of: e8fbc0d9cab6 ("x86/pvh: Call C code via the kernel virtual mapping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/arm64/mte/check_tags_inclusion.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/platform/pvh/head.S | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
-index deaef1f610768..74a3727f640de 100644
---- a/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
-+++ b/tools/testing/selftests/arm64/mte/check_tags_inclusion.c
-@@ -57,7 +57,7 @@ static int check_single_included_tags(int mem_type, int mode)
- 			ptr = (char *)mte_insert_tags(ptr, BUFFER_SIZE);
- 			/* Check tag value */
- 			if (MT_FETCH_TAG((uintptr_t)ptr) == tag) {
--				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
-+				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%x\n",
- 					       MT_FETCH_TAG((uintptr_t)ptr),
- 					       MT_INCLUDE_VALID_TAG(tag));
- 				result = KSFT_FAIL;
-@@ -89,7 +89,7 @@ static int check_multiple_included_tags(int mem_type, int mode)
- 			ptr = (char *)mte_insert_tags(ptr, BUFFER_SIZE);
- 			/* Check tag value */
- 			if (MT_FETCH_TAG((uintptr_t)ptr) < tag) {
--				ksft_print_msg("FAIL: wrong tag = 0x%x with include mask=0x%x\n",
-+				ksft_print_msg("FAIL: wrong tag = 0x%lx with include mask=0x%lx\n",
- 					       MT_FETCH_TAG((uintptr_t)ptr),
- 					       MT_INCLUDE_VALID_TAGS(excl_mask));
- 				result = KSFT_FAIL;
+diff --git a/arch/x86/platform/pvh/head.S b/arch/x86/platform/pvh/head.S
+index afbf0bb252da5..b0490701da2ab 100644
+--- a/arch/x86/platform/pvh/head.S
++++ b/arch/x86/platform/pvh/head.S
+@@ -16,6 +16,7 @@
+ #include <asm/boot.h>
+ #include <asm/processor-flags.h>
+ #include <asm/msr.h>
++#include <asm/nospec-branch.h>
+ #include <xen/interface/elfnote.h>
+ 
+ 	__HEAD
+@@ -103,6 +104,7 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
+ 	/* startup_64 expects boot_params in %rsi. */
+ 	mov $_pa(pvh_bootparams), %rsi
+ 	mov $_pa(startup_64), %rax
++	ANNOTATE_RETPOLINE_SAFE
+ 	jmp *%rax
+ 
+ #else /* CONFIG_X86_64 */
 -- 
 2.43.0
 
