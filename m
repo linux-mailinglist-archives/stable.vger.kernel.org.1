@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-103398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CE49EF69B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276749EF451
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFF3128A506
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4DDF2912D1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7F521766D;
-	Thu, 12 Dec 2024 17:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C753D221D9C;
+	Thu, 12 Dec 2024 17:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKvfLIDL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YT5VaC4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E973421660B;
-	Thu, 12 Dec 2024 17:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824A52F44;
+	Thu, 12 Dec 2024 17:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024449; cv=none; b=K3rbMIv9X942Npdv4MQj8IFV/5/4uqE3xwrpQ6Q2mHESPZ6dYbnY3zLXi7UKwBkoOrG9uV4xn8WYRMXvDAdJhgsBGWdgWJbCT3d+8EDi/ZTZLB0w1c6oN6FH1y6ay4eXoSXsVyekO63HrbU2ogo/YPwd0pE7i3SMfx7pWp6YJXg=
+	t=1734023158; cv=none; b=swP2BKnYkPphSgMJNLNYfBg8x0XatFlqJ32yedUySv7dyU+TtH1xXk34jwIXyy8lB0tU+yHVzIOq17rr+ROjn2G+mQAUNFZP2CwaMtkIUUM4nojETE2pdm4PpwTWoFxdglO5jF7KNNplp2X3AFWmJpB4DHNr8ARoaXfPZiRZujs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024449; c=relaxed/simple;
-	bh=MbHDKlleUe/VyjcTpmzmYRRcPQ1XPDxC5UsWrWBHf8E=;
+	s=arc-20240116; t=1734023158; c=relaxed/simple;
+	bh=FHl065Ik+GYKz6vNRcIuzZeLf/i7bMJk5WQf2mZyQqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyObTJ4fCGxsajLevgg+CSQ7aE3dIrj72lbxHVzU3qHZD31vn+x1EkGu3jTdccScKnhyIXKyGaCSbD6BmadxeuCsUVY72SRV01z2AWNTrkfeKHXBiz66DhQdmvuTZXx1ldt/cIy/3BOFnTWam+h49hTDWlAWwvrgNgyEEVVmQpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKvfLIDL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9CAC4CED0;
-	Thu, 12 Dec 2024 17:27:27 +0000 (UTC)
+	 MIME-Version; b=nYOQkLGdDOxTE25OvzqVlzGPTAZ4856aCXlyyjjfHqByV07vA43s/4We5cD76+1YpoXZ/ChtKlWkX/LMHSNgPu157O/A+h+09MnW1/JRV+hJKnDUQ3URDG10FiHh4SCR5hXZyznyd8zoAzO42kCs65MeyoFr2WMHA69/eZEaW0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YT5VaC4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F07C4CECE;
+	Thu, 12 Dec 2024 17:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024448;
-	bh=MbHDKlleUe/VyjcTpmzmYRRcPQ1XPDxC5UsWrWBHf8E=;
+	s=korg; t=1734023158;
+	bh=FHl065Ik+GYKz6vNRcIuzZeLf/i7bMJk5WQf2mZyQqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKvfLIDLHiwduhmEhBAEWi7Op6i9nEDj52v+cGyfBiAHEoi9KuSEB8AqSyEsgiZzx
-	 NkOwn4htpSJwpU2yYfcTnRjE8UtdWF1qkHjNyxpLJhz/3ve4Tao/A6YbMVWPAs9JyI
-	 wVOr93l+Dsi+OSxr9MoAQj3qswZzKXSQbrkloNRk=
+	b=YT5VaC4Mr0aMzA/VY0cscyLyeHTTxU30H4EYHaVFrtDxPLhw5njYIwz/T5+PUnPAI
+	 09gIzHqt3x+jl66tA+Tlmqho8MedxEHfi/m+AqQxQn/m5uLUXcwB2GOu9A4pDTvqWU
+	 zGAM5zaOVKZfzqbXa54sA03KvWKlyfXUQ96T6rn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 299/459] block: return unsigned int from bdev_io_min
+Subject: [PATCH 5.15 442/565] ocfs2: free inode when ocfs2_get_init_inode() fails
 Date: Thu, 12 Dec 2024 16:00:37 +0100
-Message-ID: <20241212144305.452483573@linuxfoundation.org>
+Message-ID: <20241212144329.167810237@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +69,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 46fd48ab3ea3eb3bb215684bd66ea3d260b091a9 ]
+[ Upstream commit 965b5dd1894f4525f38c1b5f99b0106a07dbb5db ]
 
-The underlying limit is defined as an unsigned int, so return that from
-bdev_io_min as well.
+syzbot is reporting busy inodes after unmount, for commit 9c89fe0af826
+("ocfs2: Handle error from dquot_initialize()") forgot to call iput() when
+new_inode() succeeded and dquot_initialize() failed.
 
-Fixes: ac481c20ef8f ("block: Topology ioctls")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241119072602.1059488-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/e68c0224-b7c6-4784-b4fa-a9fc8c675525@I-love.SAKURA.ne.jp
+Fixes: 9c89fe0af826 ("ocfs2: Handle error from dquot_initialize()")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reported-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0af00f6a2cba2058b5db
+Tested-by: syzbot+0af00f6a2cba2058b5db@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/namei.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index e5f11dae208dd..7ad4df2c25255 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1468,7 +1468,7 @@ static inline unsigned int queue_io_min(const struct request_queue *q)
- 	return q->limits.io_min;
- }
+diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+index 69aff1d5946d2..272dbc13d3bc2 100644
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -200,8 +200,10 @@ static struct inode *ocfs2_get_init_inode(struct inode *dir, umode_t mode)
+ 	mode = mode_strip_sgid(&init_user_ns, dir, mode);
+ 	inode_init_owner(&init_user_ns, inode, dir, mode);
+ 	status = dquot_initialize(inode);
+-	if (status)
++	if (status) {
++		iput(inode);
+ 		return ERR_PTR(status);
++	}
  
--static inline int bdev_io_min(struct block_device *bdev)
-+static inline unsigned int bdev_io_min(struct block_device *bdev)
- {
- 	return queue_io_min(bdev_get_queue(bdev));
+ 	return inode;
  }
 -- 
 2.43.0
