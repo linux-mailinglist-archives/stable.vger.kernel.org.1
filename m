@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB589EF7B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6469EF8D7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BC85189FBCE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C84A28CFB1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B1621E086;
-	Thu, 12 Dec 2024 17:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A557223C7D;
+	Thu, 12 Dec 2024 17:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNb4C69U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIiLQn+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41B02206A5;
-	Thu, 12 Dec 2024 17:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F9422332E;
+	Thu, 12 Dec 2024 17:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024581; cv=none; b=Lbehe2OEJkeLYayHSH7n1fNWgrktNI91755lvKb+dDB5+M8El5y9uOLwSHYd7JooaCSXeYzMIiwZNpK2HHIpTzz/0w8UFjlIBf8Wb9Wtwiuk+NTNzu7lFSppUp4o7lPuuzpgv2d+p1Mpq0UrlzHHs6ugatzqBv9cIf/7BuO1wjk=
+	t=1734025420; cv=none; b=NewN3WiASkBA3YnBjKBL72RQmH+SvU25VMOntac6KqXQuxuSio2jAVokqnIIC/Ol8oDNPWsVUhAfQKlXOzFHH23RmXlVRgzEANTwIrLPS7UYlox9d3+UJf+c6VcY6mrLPLOWNFtkxER97ZB5EP7dyposHuzI8SCJkSW1Ms5vJE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024581; c=relaxed/simple;
-	bh=dgsUPlHfw/vh8oIUHJ/ERBDLcDei3VIPoFatt7obm2A=;
+	s=arc-20240116; t=1734025420; c=relaxed/simple;
+	bh=YO6nC/rZPjDnq8zkUkBaIB3/vdZCrTz6koBPjbTHrbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlibMKrmlUlrgBF/GoDhlmkV579n1WU3WTAprW9MFd+TQ9SwqjLWHoYNXVqNnxNv1ziMD6/hkx5ALT1YOnoRC+o/25gxBvD/CdOoDk6nXJdFxLUOP7UneL2VrNR+z7qLQSWjGXpS2vvITdXeMAuMOZcf5QDLPiFLMJXO5jwJd2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNb4C69U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DA4C4CECE;
-	Thu, 12 Dec 2024 17:29:40 +0000 (UTC)
+	 MIME-Version; b=R/g5JmFNlPTh35Gn2kFA3nfOPMilavALD9N6fhbJOWU5W/2MO5vYeggGYS5ZygFQwiqcjU4I/vOnaY+EGhnl2UJRFszbIJEnglgjrcFFg4xN+RTNaaLYQiUts94nWvxm2NrD84SIyQsTjAIhsCCFQ2Xp3RkCn2dkg8Qil55bvDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIiLQn+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653BEC4CECE;
+	Thu, 12 Dec 2024 17:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024580;
-	bh=dgsUPlHfw/vh8oIUHJ/ERBDLcDei3VIPoFatt7obm2A=;
+	s=korg; t=1734025419;
+	bh=YO6nC/rZPjDnq8zkUkBaIB3/vdZCrTz6koBPjbTHrbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNb4C69UVgAwlB84ewhkBlw+N9Chn0dRGvLw9WFp3c5aJHYeMNm9zpVDJr4MXzYtL
-	 MBmM1XJMryuaJustbgmEvnrvJhCuFyHPwetplqktYgWzhOYFbZZDSibdsoQySW1EzZ
-	 rjcyhf97xJK4gdlu0gvxGDNp9ib3ptJ4tuE6ZBdU=
+	b=iIiLQn+qk9FkqzI6chPkfXWy8TccChBSchyXZ7xhdddK7oF1S9zE/4bCGXa9tD6LV
+	 2zgUEtxce1en/akUdL4YRWvM4IM6Lz0uqKDKUPZbfdfdXWmgQFSef0koEKFwrhy4Vk
+	 ig6Op6Zw/WpNFzYcc6precxg46wzytNPXglioPts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Fasnacht <laurent.fasnacht@proton.ch>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 342/459] netfilter: nft_set_hash: skip duplicated elements pending gc run
-Date: Thu, 12 Dec 2024 16:01:20 +0100
-Message-ID: <20241212144307.174997441@linuxfoundation.org>
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 163/321] um: vector: Do not use drvdata in release
+Date: Thu, 12 Dec 2024 16:01:21 +0100
+Message-ID: <20241212144236.419825036@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 7ffc7481153bbabf3332c6a19b289730c7e1edf5 ]
+commit 51b39d741970742a5c41136241a9c48ac607cf82 upstream.
 
-rhashtable does not provide stable walk, duplicated elements are
-possible in case of resizing. I considered that checking for errors when
-calling rhashtable_walk_next() was sufficient to detect the resizing.
-However, rhashtable_walk_next() returns -EAGAIN only at the end of the
-iteration, which is too late, because a gc work containing duplicated
-elements could have been already scheduled for removal to the worker.
+The drvdata is not available in release. Let's just use container_of()
+to get the vector_device instance. Otherwise, removing a vector device
+will result in a crash:
 
-Add a u32 gc worker sequence number per set, bump it on every workqueue
-run. Annotate gc worker sequence number on the expired element. Use it
-to skip those already seen in this gc workqueue run.
+RIP: 0033:vector_device_release+0xf/0x50
+RSP: 00000000e187bc40  EFLAGS: 00010202
+RAX: 0000000060028f61 RBX: 00000000600f1baf RCX: 00000000620074e0
+RDX: 000000006220b9c0 RSI: 0000000060551c80 RDI: 0000000000000000
+RBP: 00000000e187bc50 R08: 00000000603ad594 R09: 00000000e187bb70
+R10: 000000000000135a R11: 00000000603ad422 R12: 00000000623ae028
+R13: 000000006287a200 R14: 0000000062006d30 R15: 00000000623700b6
+Kernel panic - not syncing: Segfault with no mm
+CPU: 0 UID: 0 PID: 16 Comm: kworker/0:1 Not tainted 6.12.0-rc6-g59b723cd2adb #1
+Workqueue: events mc_work_proc
+Stack:
+ 60028f61 623ae028 e187bc80 60276fcd
+ 6220b9c0 603f5820 623ae028 00000000
+ e187bcb0 603a2bcd 623ae000 62370010
+Call Trace:
+ [<60028f61>] ? vector_device_release+0x0/0x50
+ [<60276fcd>] device_release+0x70/0xba
+ [<603a2bcd>] kobject_put+0xba/0xe7
+ [<60277265>] put_device+0x19/0x1c
+ [<60281266>] platform_device_put+0x26/0x29
+ [<60281e5f>] platform_device_unregister+0x2c/0x2e
+ [<60029422>] vector_remove+0x52/0x58
+ [<60031316>] ? mconsole_reply+0x0/0x50
+ [<600310c8>] mconsole_remove+0x160/0x1cc
+ [<603b19f4>] ? strlen+0x0/0x15
+ [<60066611>] ? __dequeue_entity+0x1a9/0x206
+ [<600666a7>] ? set_next_entity+0x39/0x63
+ [<6006666e>] ? set_next_entity+0x0/0x63
+ [<60038fa6>] ? um_set_signals+0x0/0x43
+ [<6003070c>] mc_work_proc+0x77/0x91
+ [<60057664>] process_scheduled_works+0x1b3/0x2dd
+ [<60055f32>] ? assign_work+0x0/0x58
+ [<60057f0a>] worker_thread+0x1e9/0x293
+ [<6005406f>] ? set_pf_worker+0x0/0x64
+ [<6005d65d>] ? arch_local_irq_save+0x0/0x2d
+ [<6005d748>] ? kthread_exit+0x0/0x3a
+ [<60057d21>] ? worker_thread+0x0/0x293
+ [<6005dbf1>] kthread+0x126/0x12b
+ [<600219c5>] new_thread_handler+0x85/0xb6
 
-Note that this new field is never reset in case gc transaction fails, so
-next gc worker run on the expired element overrides it. Wraparound of gc
-worker sequence number should not be an issue with stale gc worker
-sequence number in the element, that would just postpone the element
-removal in one gc run.
-
-Note that it is not possible to use flags to annotate that element is
-pending gc run to detect duplicates, given that gc transaction can be
-invalidated in case of update from the control plane, therefore, not
-allowing to clear such flag.
-
-On x86_64, pahole reports no changes in the size of nft_rhash_elem.
-
-Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
-Reported-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
-Tested-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Link: https://patch.msgid.link/20241104163203.435515-5-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_hash.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/um/drivers/vector_kern.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index 2499d25a5c85f..8656cb61dd211 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -27,10 +27,12 @@ extern unsigned int nf_tables_net_id;
- struct nft_rhash {
- 	struct rhashtable		ht;
- 	struct delayed_work		gc_work;
-+	u32				wq_gc_seq;
- };
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -802,7 +802,8 @@ static struct platform_driver uml_net_dr
  
- struct nft_rhash_elem {
- 	struct rhash_head		node;
-+	u32				wq_gc_seq;
- 	struct nft_set_ext		ext;
- };
+ static void vector_device_release(struct device *dev)
+ {
+-	struct vector_device *device = dev_get_drvdata(dev);
++	struct vector_device *device =
++		container_of(dev, struct vector_device, pdev.dev);
+ 	struct net_device *netdev = device->dev;
  
-@@ -325,6 +327,10 @@ static void nft_rhash_gc(struct work_struct *work)
- 	if (!gc)
- 		goto done;
- 
-+	/* Elements never collected use a zero gc worker sequence number. */
-+	if (unlikely(++priv->wq_gc_seq == 0))
-+		priv->wq_gc_seq++;
-+
- 	rhashtable_walk_enter(&priv->ht, &hti);
- 	rhashtable_walk_start(&hti);
- 
-@@ -342,6 +348,14 @@ static void nft_rhash_gc(struct work_struct *work)
- 			goto try_later;
- 		}
- 
-+		/* rhashtable walk is unstable, already seen in this gc run?
-+		 * Then, skip this element. In case of (unlikely) sequence
-+		 * wraparound and stale element wq_gc_seq, next gc run will
-+		 * just find this expired element.
-+		 */
-+		if (he->wq_gc_seq == priv->wq_gc_seq)
-+			continue;
-+
- 		if (nft_set_elem_is_dead(&he->ext))
- 			goto dead_elem;
- 
-@@ -362,6 +376,8 @@ static void nft_rhash_gc(struct work_struct *work)
- 		if (!gc)
- 			goto try_later;
- 
-+		/* annotate gc sequence for this attempt. */
-+		he->wq_gc_seq = priv->wq_gc_seq;
- 		nft_trans_gc_elem_add(gc, he);
- 	}
- 
--- 
-2.43.0
-
+ 	list_del(&device->list);
 
 
 
