@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-102270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0239EF10B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C379EF1E3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43EC429EECD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9B891884DB2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759702397AF;
-	Thu, 12 Dec 2024 16:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7482397B8;
+	Thu, 12 Dec 2024 16:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9u+HrVp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjtdgpbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BA3226545;
-	Thu, 12 Dec 2024 16:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2815D226545;
+	Thu, 12 Dec 2024 16:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020616; cv=none; b=Vwqe5QcXcJrbAD5zYKcvWnQRerqLY5OVtYZIWWAq5+vN/a1uL2wg+N5IPPfYcGH7lKmnsSJ3LEZx0qB0Jjr/c/74iZfwwP+CUZHDg4crBo3Q5pA98RAfRddADBpDlBjFV6H8YZvrjXs+PrJPffGwzFuFwOEuT3fEFjMV2w45Dko=
+	t=1734020623; cv=none; b=nqBf6V3hW3BRVckOQDSFqunQiNI/3AaSrPrT0MfHZznPvzhWHpbpmcvA1Y0FvfptK8W2/1VxkBi03FJJGBui4DuP4ssHhPkGExjPAiCwIBnH7YqzcUSdO2HHyTTPdbbKwosrofmj25VuIVITJjCzIq0CEpZo/dDzwYvjdyeYqkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020616; c=relaxed/simple;
-	bh=kNI4pf7NgWcNg35TtO23VlMTazaQ8pAKFPPqn+VeLiE=;
+	s=arc-20240116; t=1734020623; c=relaxed/simple;
+	bh=926HJtEn5ky1N9xkhML+tiW1YsQ0jmDttzzywLJoorU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YqFJbJIPNzW9c+sjnRSVkCS6sVKoFnmVybpB0K/yldxgpoLZcRAC4FKv8881ECFXaGuSNAlCcGLBxMChXnZ4vl21Bh0mJTLhwbug2KCKd2ULQ5uSOlgTv9Zap/JrJJperncHFliIeJIInhSiSuZzGG+fMGJm/O/RZbk3bnjZw8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9u+HrVp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04A5C4CECE;
-	Thu, 12 Dec 2024 16:23:35 +0000 (UTC)
+	 MIME-Version; b=DunGyl1UGstiSUcg5S7GXGmcxxFQArdV3E5OUoX283rAOoxN/oEH+QnLBMDhjnu+KP7RKYECnL/RO5yZ2mMs9VS6GD8luc2k+/vz16kEDmsK/KJcsUby+cgVk9OSDbzAHHcUzc+64H9lKeNhFPUpprbMPPnfdnASJxBMh4O+sQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjtdgpbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7293AC4CECE;
+	Thu, 12 Dec 2024 16:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020616;
-	bh=kNI4pf7NgWcNg35TtO23VlMTazaQ8pAKFPPqn+VeLiE=;
+	s=korg; t=1734020623;
+	bh=926HJtEn5ky1N9xkhML+tiW1YsQ0jmDttzzywLJoorU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9u+HrVpd/GZ7Uc7iQbIMlljmogh5uZbW2RmWjtHaomrIsjkzGKLXkgHzb82X+Lrt
-	 Lyu1SP1NnWH9OE1aYS2mURR0PzBKBzU79iIhRQPOFT52t0P3Fx0zd+0URE0vqakk8h
-	 UPNHvVFmVaQ00FJDP8oiluebEmK02Aj0wWnI3oJw=
+	b=jjtdgpbvkb56lRr82awlJr/yxnn4lTsQgK2bsM973J/He/g9agCFUETyClKTUr5l4
+	 5SwS2fIWOJ3h1K4wiorJ+/ywLxKbjNIQcjiLHzm4fFk2d+YS13mH0QZbUnRd/Vqksy
+	 y3YUYEMbQ7gAV17+8Rn0kU1E5AwzfKbtjPuBivuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 514/772] can: gs_usb: add usb endpoint address detection at driver probe step
-Date: Thu, 12 Dec 2024 15:57:39 +0100
-Message-ID: <20241212144411.197917748@linuxfoundation.org>
+Subject: [PATCH 6.1 515/772] can: c_can: c_can_handle_bus_err(): update statistics if skb allocation fails
+Date: Thu, 12 Dec 2024 15:57:40 +0100
+Message-ID: <20241212144411.237609567@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -61,143 +60,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 889b2ae9139a87b3390f7003cb1bb3d65bf90a26 ]
+[ Upstream commit 9e66242504f49e17481d8e197730faba7d99c934 ]
 
-There is an approach made to implement gs_usb firmware/driver based on
-Zephyr RTOS. It was found that USB stack of Zephyr RTOS overwrites USB
-EP addresses, if they have different last 4 bytes in absence of other
-endpoints.
+Ensure that the statistics are always updated, even if the skb
+allocation fails.
 
-For example in case of gs_usb candlelight firmware EP-IN is 0x81 and
-EP-OUT 0x02. If there are no additional USB endpoints, Zephyr RTOS will
-overwrite EP-OUT to 0x01. More information can be found in the
-discussion with Zephyr RTOS USB stack maintainer here:
-
-https://github.com/zephyrproject-rtos/zephyr/issues/67812
-
-There are already two different gs_usb FW driver implementations based
-on Zephyr RTOS:
-
-1. https://github.com/CANnectivity/cannectivity
-   (by: https://github.com/henrikbrixandersen)
-2. https://github.com/zephyrproject-rtos/zephyr/compare/main...KozhinovAlexander:zephyr:gs_usb
-   (by: https://github.com/KozhinovAlexander)
-
-At the moment both Zephyr RTOS implementations use dummy USB endpoint,
-to overcome described USB stack behavior from Zephyr itself. Since
-Zephyr RTOS is intended to be used on microcontrollers with very
-constrained amount of resources (ROM, RAM) and additional endpoint
-requires memory, it is more convenient to update the gs_usb driver in
-the Linux kernel.
-
-To fix this problem, update the gs_usb driver from using hard coded
-endpoint numbers to evaluate the endpoint descriptors and use the
-endpoints provided there.
-
-Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Alexander Kozhinov <ak.alexander.kozhinov@gmail.com>
-Link: https://patch.msgid.link/20241018212450.31746-1-ak.alexander.kozhinov@gmail.com
+Fixes: 4d6d26537940 ("can: c_can: fix {rx,tx}_errors statistics")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-2-dario.binacchi@amarulasolutions.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/net/can/c_can/c_can_main.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index 6dd4665c82900..ec28d504ca666 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -41,9 +41,6 @@
- #define USB_XYLANTA_SAINT3_VENDOR_ID 0x16d0
- #define USB_XYLANTA_SAINT3_PRODUCT_ID 0x0f30
+diff --git a/drivers/net/can/c_can/c_can_main.c b/drivers/net/can/c_can/c_can_main.c
+index 511615dc33419..cc371d0c9f3c7 100644
+--- a/drivers/net/can/c_can/c_can_main.c
++++ b/drivers/net/can/c_can/c_can_main.c
+@@ -1014,49 +1014,57 @@ static int c_can_handle_bus_err(struct net_device *dev,
  
--#define GS_USB_ENDPOINT_IN 1
--#define GS_USB_ENDPOINT_OUT 2
--
- /* Timestamp 32 bit timer runs at 1 MHz (1 µs tick). Worker accounts
-  * for timer overflow (will be after ~71 minutes)
-  */
-@@ -326,6 +323,9 @@ struct gs_usb {
- 	struct usb_device *udev;
- 	unsigned int hf_size_rx;
- 	u8 active_channels;
-+
-+	unsigned int pipe_in;
-+	unsigned int pipe_out;
- };
+ 	/* propagate the error condition to the CAN stack */
+ 	skb = alloc_can_err_skb(dev, &cf);
+-	if (unlikely(!skb))
+-		return 0;
  
- /* 'allocate' a tx context.
-@@ -644,7 +644,7 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	/* check for 'last error code' which tells us the
+ 	 * type of the last error to occur on the CAN bus
+ 	 */
+-	cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
++	if (likely(skb))
++		cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
  
- resubmit_urb:
- 	usb_fill_bulk_urb(urb, parent->udev,
--			  usb_rcvbulkpipe(parent->udev, GS_USB_ENDPOINT_IN),
-+			  parent->pipe_in,
- 			  hf, dev->parent->hf_size_rx,
- 			  gs_usb_receive_bulk_callback, parent);
- 
-@@ -780,7 +780,7 @@ static netdev_tx_t gs_can_start_xmit(struct sk_buff *skb,
+ 	switch (lec_type) {
+ 	case LEC_STUFF_ERROR:
+ 		netdev_dbg(dev, "stuff error\n");
+-		cf->data[2] |= CAN_ERR_PROT_STUFF;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_STUFF;
+ 		stats->rx_errors++;
+ 		break;
+ 	case LEC_FORM_ERROR:
+ 		netdev_dbg(dev, "form error\n");
+-		cf->data[2] |= CAN_ERR_PROT_FORM;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_FORM;
+ 		stats->rx_errors++;
+ 		break;
+ 	case LEC_ACK_ERROR:
+ 		netdev_dbg(dev, "ack error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_ACK;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_ACK;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT1_ERROR:
+ 		netdev_dbg(dev, "bit1 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT1;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT1;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_BIT0_ERROR:
+ 		netdev_dbg(dev, "bit0 error\n");
+-		cf->data[2] |= CAN_ERR_PROT_BIT0;
++		if (likely(skb))
++			cf->data[2] |= CAN_ERR_PROT_BIT0;
+ 		stats->tx_errors++;
+ 		break;
+ 	case LEC_CRC_ERROR:
+ 		netdev_dbg(dev, "CRC error\n");
+-		cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
++		if (likely(skb))
++			cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
+ 		stats->rx_errors++;
+ 		break;
+ 	default:
+ 		break;
  	}
  
- 	usb_fill_bulk_urb(urb, dev->udev,
--			  usb_sndbulkpipe(dev->udev, GS_USB_ENDPOINT_OUT),
-+			  dev->parent->pipe_out,
- 			  hf, dev->hf_size_tx,
- 			  gs_usb_xmit_callback, txc);
- 
-@@ -885,8 +885,7 @@ static int gs_can_open(struct net_device *netdev)
- 			/* fill, anchor, and submit rx urb */
- 			usb_fill_bulk_urb(urb,
- 					  dev->udev,
--					  usb_rcvbulkpipe(dev->udev,
--							  GS_USB_ENDPOINT_IN),
-+					  dev->parent->pipe_in,
- 					  buf,
- 					  dev->parent->hf_size_rx,
- 					  gs_usb_receive_bulk_callback, parent);
-@@ -1330,6 +1329,7 @@ static int gs_usb_probe(struct usb_interface *intf,
- 			const struct usb_device_id *id)
- {
- 	struct usb_device *udev = interface_to_usbdev(intf);
-+	struct usb_endpoint_descriptor *ep_in, *ep_out;
- 	struct gs_host_frame *hf;
- 	struct gs_usb *parent;
- 	struct gs_host_config hconf = {
-@@ -1339,6 +1339,13 @@ static int gs_usb_probe(struct usb_interface *intf,
- 	unsigned int icount, i;
- 	int rc;
- 
-+	rc = usb_find_common_endpoints(intf->cur_altsetting,
-+				       &ep_in, &ep_out, NULL, NULL);
-+	if (rc) {
-+		dev_err(&intf->dev, "Required endpoints not found\n");
-+		return rc;
-+	}
++	if (unlikely(!skb))
++		return 0;
 +
- 	/* send host config */
- 	rc = usb_control_msg_send(udev, 0,
- 				  GS_USB_BREQ_HOST_FORMAT,
-@@ -1383,6 +1390,10 @@ static int gs_usb_probe(struct usb_interface *intf,
- 	usb_set_intfdata(intf, parent);
- 	parent->udev = udev;
- 
-+	/* store the detected endpoints */
-+	parent->pipe_in = usb_rcvbulkpipe(parent->udev, ep_in->bEndpointAddress);
-+	parent->pipe_out = usb_sndbulkpipe(parent->udev, ep_out->bEndpointAddress);
-+
- 	for (i = 0; i < icount; i++) {
- 		unsigned int hf_size_rx = 0;
- 
+ 	netif_receive_skb(skb);
+ 	return 1;
+ }
 -- 
 2.43.0
 
