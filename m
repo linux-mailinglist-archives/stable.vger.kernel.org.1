@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-101590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFDB29EED5E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60249EF1E1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 431D516B6D8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7C9175C43
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00C5222D63;
-	Thu, 12 Dec 2024 15:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5056F2FE;
+	Thu, 12 Dec 2024 16:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDKABozu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypHLxUFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86F5222D58;
-	Thu, 12 Dec 2024 15:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD94F2210CF;
+	Thu, 12 Dec 2024 16:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018092; cv=none; b=FvNaXmAUyQyMw3UsEhZMHbQV6TJOMmsMfuCYA92bUIy1Tw/rJdsVCBo8n0TrOsgqw3wGjDo/3QO1KSD7O1pNudkCFSYj3zgfyAAGY5FAHrPnfQ3gy18/oKSVUlnu6vAdQkdeiK1v69iftf94k/BmjzPOWnqBGdXaqsFH78jNMGY=
+	t=1734020710; cv=none; b=WrJ4eGGr4cBTmS+F2lSVRFCfEc4xvoT9nI21jUe0GDBpbFOvDXt/lsIy5X2PQss3LDYBxoEwI4wnGQtXnyBBQxbp4ttqGW66RWgBQBSqiiQVgTuxqK+naU6MWyKFVO4D7muMCdbMfBnuiffZiO/HEVSAL3ln+0qPrrWYVG7nTZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018092; c=relaxed/simple;
-	bh=7Jd3WHBPl6ENSNdPtTyDOXWvepStNCW1Wrr2AkwrIYQ=;
+	s=arc-20240116; t=1734020710; c=relaxed/simple;
+	bh=QKTdqRGML+RmimJCTglx4JehFbmzQ49KGTVCEzZy2y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibENIM4/gqJUwBaaAAFNsIs9IoaIuOphpAEMNjniHnzUF82T7H/4tuCAKZNsN0zyNEZPJsj2Hli+OyRzPvTazw++JiE+nzVHPGRd/IhCqhi+ETd/Dvl9ju1kRK/TZA7D8Rj2rw3mYVNxfSeKjC8YJpmmeSsRcvvHLcpOgCyfsZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDKABozu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24259C4CECE;
-	Thu, 12 Dec 2024 15:41:31 +0000 (UTC)
+	 MIME-Version; b=GZ4ldkCT+kXpVherWXt03bfyKDGVPzwstMVw1a40/lu4n3wfU752MORT8msaR+hzGJm9jSMrJzQfLUVhpvaBMxlKO078G88yO78msd6jCQHpN39Yj4Cvj6Jx3fZw/Bp1awSkud18WGNF6oDYCZpr0wwmv9ogyz+LnVawhECfR+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypHLxUFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95861C4CED3;
+	Thu, 12 Dec 2024 16:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018092;
-	bh=7Jd3WHBPl6ENSNdPtTyDOXWvepStNCW1Wrr2AkwrIYQ=;
+	s=korg; t=1734020710;
+	bh=QKTdqRGML+RmimJCTglx4JehFbmzQ49KGTVCEzZy2y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDKABozuAAQL9uoyOppYBc3fSxgvYYyi9lyrWaEOhe3ATIHvXmTIbkglGS489Y35S
-	 IDijKWPo4k6HHsaas7ZFN8HN1pGDe+3LFLDb4IrOJ5Vn/yRbDIxY5cjHu3TLrRBbTJ
-	 z6TBU1+B6D43Vcd59JqAwoy/0A1HcmzRLjxyr/JE=
+	b=ypHLxUFb31/yWaA0sut7YrKb3Y8qkmsXAhMDdASWERPTV26ePteBoCFzM905uI+6k
+	 GNJ3I8jkwEbG2B97Fqy7zWf9CjBy+PElWTwdvbOq8V7br0St5OOO/5UjJyvAi2HPZ7
+	 9wNf2u4oiS1QUaxIMI2I8ENV6N2QcYAE6bt4KH3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Radu Rendec <rrendec@redhat.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Andreas Herrmann <aherrmann@suse.de>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.6 165/356] cacheinfo: Allocate memory during CPU hotplug if not done from the primary CPU
+	Yifei Liu <yifei.l.liu@oracle.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 539/772] ixgbe: downgrade logging of unsupported VF API version to debug
 Date: Thu, 12 Dec 2024 15:58:04 +0100
-Message-ID: <20241212144251.153547478@linuxfoundation.org>
+Message-ID: <20241212144412.242715284@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +65,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit b3fce429a1e030b50c1c91351d69b8667eef627b upstream.
+[ Upstream commit 15915b43a7fb938934bb7fc4290127218859d795 ]
 
-Commit
+The ixgbe PF driver logs an info message when a VF attempts to negotiate an
+API version which it does not support:
 
-  5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU")
+  VF 0 requested invalid api version 6
 
-adds functionality that architectures can use to optionally allocate and
-build cacheinfo early during boot. Commit
+The ixgbevf driver attempts to load with mailbox API v1.5, which is
+required for best compatibility with other hosts such as the ESX VMWare PF.
 
-  6539cffa9495 ("cacheinfo: Add arch specific early level initializer")
+The Linux PF only supports API v1.4, and does not currently have support
+for the v1.5 API.
 
-lets secondary CPUs correct (and reallocate memory) cacheinfo data if
-needed.
+The logged message can confuse users, as the v1.5 API is valid, but just
+happens to not currently be supported by the Linux PF.
 
-If the early build functionality is not used and cacheinfo does not need
-correction, memory for cacheinfo is never allocated. x86 does not use
-the early build functionality. Consequently, during the cacheinfo CPU
-hotplug callback, last_level_cache_is_valid() attempts to dereference
-a NULL pointer:
+Downgrade the info message to a debug message, and fix the language to
+use 'unsupported' instead of 'invalid' to improve message clarity.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000100
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEPMT SMP NOPTI
-  CPU: 0 PID 19 Comm: cpuhp/0 Not tainted 6.4.0-rc2 #1
-  RIP: 0010: last_level_cache_is_valid+0x95/0xe0a
+Long term, we should investigate whether the improvements in the v1.5 API
+make sense for the Linux PF, and if so implement them properly. This may
+require yet another API version to resolve issues with negotiating IPSEC
+offload support.
 
-Allocate memory for cacheinfo during the cacheinfo CPU hotplug callback
-if not done earlier.
-
-Moreover, before determining the validity of the last-level cache info,
-ensure that it has been allocated. Simply checking for non-zero
-cache_leaves() is not sufficient, as some architectures (e.g., Intel
-processors) have non-zero cache_leaves() before allocation.
-
-Dereferencing NULL cacheinfo can occur in update_per_cpu_data_slice_size().
-This function iterates over all online CPUs. However, a CPU may have come
-online recently, but its cacheinfo may not have been allocated yet.
-
-While here, remove an unnecessary indentation in allocate_cache_info().
-
-  [ bp: Massage. ]
-
-Fixes: 6539cffa9495 ("cacheinfo: Add arch specific early level initializer")
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Radu Rendec <rrendec@redhat.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Reviewed-by: Andreas Herrmann <aherrmann@suse.de>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Cc: stable@vger.kernel.org # 6.3+
-Link: https://lore.kernel.org/r/20241128002247.26726-2-ricardo.neri-calderon@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 339f28964147 ("ixgbevf: Add support for new mailbox communication between PF and VF")
+Reported-by: Yifei Liu <yifei.l.liu@oracle.com>
+Link: https://lore.kernel.org/intel-wired-lan/20240301235837.3741422-1-yifei.l.liu@oracle.com/
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/cacheinfo.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_common.h | 2 ++
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c  | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -58,7 +58,7 @@ bool last_level_cache_is_valid(unsigned
- {
- 	struct cacheinfo *llc;
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
+index 4b531e8ae38ae..afe8a64dbdd41 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_common.h
+@@ -195,6 +195,8 @@ u32 ixgbe_read_reg(struct ixgbe_hw *hw, u32 reg);
+ 	dev_err(&adapter->pdev->dev, format, ## arg)
+ #define e_dev_notice(format, arg...) \
+ 	dev_notice(&adapter->pdev->dev, format, ## arg)
++#define e_dbg(msglvl, format, arg...) \
++	netif_dbg(adapter, msglvl, adapter->netdev, format, ## arg)
+ #define e_info(msglvl, format, arg...) \
+ 	netif_info(adapter, msglvl, adapter->netdev, format, ## arg)
+ #define e_err(msglvl, format, arg...) \
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+index 198ab9d97618c..9132e73e41829 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+@@ -1051,7 +1051,7 @@ static int ixgbe_negotiate_vf_api(struct ixgbe_adapter *adapter,
+ 		break;
+ 	}
  
--	if (!cache_leaves(cpu))
-+	if (!cache_leaves(cpu) || !per_cpu_cacheinfo(cpu))
- 		return false;
+-	e_info(drv, "VF %d requested invalid api version %u\n", vf, api);
++	e_dbg(drv, "VF %d requested unsupported api version %u\n", vf, api);
  
- 	llc = per_cpu_cacheinfo_idx(cpu, cache_leaves(cpu) - 1);
-@@ -478,11 +478,9 @@ int __weak populate_cache_leaves(unsigne
- 	return -ENOENT;
+ 	return -1;
  }
- 
--static inline
--int allocate_cache_info(int cpu)
-+static inline int allocate_cache_info(int cpu)
- {
--	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu),
--					 sizeof(struct cacheinfo), GFP_ATOMIC);
-+	per_cpu_cacheinfo(cpu) = kcalloc(cache_leaves(cpu), sizeof(struct cacheinfo), GFP_ATOMIC);
- 	if (!per_cpu_cacheinfo(cpu)) {
- 		cache_leaves(cpu) = 0;
- 		return -ENOMEM;
-@@ -554,7 +552,11 @@ static inline int init_level_allocate_ci
- 	 */
- 	ci_cacheinfo(cpu)->early_ci_levels = false;
- 
--	if (cache_leaves(cpu) <= early_leaves)
-+	/*
-+	 * Some architectures (e.g., x86) do not use early initialization.
-+	 * Allocate memory now in such case.
-+	 */
-+	if (cache_leaves(cpu) <= early_leaves && per_cpu_cacheinfo(cpu))
- 		return 0;
- 
- 	kfree(per_cpu_cacheinfo(cpu));
+-- 
+2.43.0
+
 
 
 
