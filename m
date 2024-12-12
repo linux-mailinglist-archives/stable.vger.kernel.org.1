@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750179EF885
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA5139EF507
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0D85189579D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27CA3290848
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48893223313;
-	Thu, 12 Dec 2024 17:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4503223326;
+	Thu, 12 Dec 2024 17:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/MB5qBg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+N6W/1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0269320A5EE;
-	Thu, 12 Dec 2024 17:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D79E22331F;
+	Thu, 12 Dec 2024 17:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024870; cv=none; b=gh3ajIh/cfheKS3egecl/9t/w3SgE+3vTAVl7a1xPkP7MqnQjNPfvd+sq50UO4Gt124Qm9yCDwNdNlg2n/KqOlWorpOk/J7ug2WphvGwBLk5MaJBM/Fke/qK3p8w03YItY5DKY8NBNAnnlKqxvLuNsBTIJ1M4u3wEv96G36uqbQ=
+	t=1734023505; cv=none; b=FFT4HQgItZHr6Nxy2c0M1AVY4EhBd7mkPkOmWgSiMdtE8gIFnc8InE8mHN1cI55lb3+K0JTBcfBbA+S3vIzJwl1Y3k7YDTibCO3zQz7YpEERLM+JECfd/3zT2PygiIFfrPf0iAa+NGP+0peC2V4qGeykZNW0TFCXlhNsf/ncNdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024870; c=relaxed/simple;
-	bh=+c+BzxRrduTvdPPPfwUVI+tGbtwEGxzgKV763BtDnII=;
+	s=arc-20240116; t=1734023505; c=relaxed/simple;
+	bh=KPVgUedjrMapwfSaBnV/rYPUgXeET78+AzqtY2vKL7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1RLzb90FeCwYexQkQs030UrXw5rODSgjVy/ktjQETOBxZPLuYo5T/cQ6GQ/nX92iasvb8SNfwtV36rDMkqb6jq67yJ8NKTnbMosx1FjyfVfBfXKfJ3Rxb1kuNnOjCDtqhaR7owW3voFFe1XK+8j4QlfMlrDqxX2HxQeQBlFgY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/MB5qBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F509C4CECE;
-	Thu, 12 Dec 2024 17:34:29 +0000 (UTC)
+	 MIME-Version; b=uNEPs5GmfR5Pt+6nBFjSGH7zvcScG5+WRYgsNxQIxwNVj/MZ/2DA6ANOF51IPfZcWB02Zfl3xektaKlg/Wza126Pa2Cxv/ARcyg2KPZdmK5YYrVf73oKuvnLzPjq/MFmc7LpzjbEPjL0ppfrTGRxmBdtK3dvm1ygFsF0aRKE8iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+N6W/1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0005C4CED0;
+	Thu, 12 Dec 2024 17:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024869;
-	bh=+c+BzxRrduTvdPPPfwUVI+tGbtwEGxzgKV763BtDnII=;
+	s=korg; t=1734023505;
+	bh=KPVgUedjrMapwfSaBnV/rYPUgXeET78+AzqtY2vKL7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/MB5qBgjLW9ogMHfpMmvwatvC3pw9AV/a/RsrSVWUofzsKyD2DI3VajemOH9ESZS
-	 wlnddG3pvVHYkW8ZU7wECsEbrYhIhnG9ETVuUEHZ4ERVhNt80RtpNVMXLdRSPpgKBe
-	 DZpx6wtyKZdAUkEYxfvFMUXOod6YvOa7eYxk8+NY=
+	b=v+N6W/1rlh0120k36v/0dPO0kLFwWbqhGJoCDd42tZAaFiYRmRWt5qTCkn4+QqKPY
+	 xqw4T6N4XPOiTaMMGkeh6/neaAqyvFlRp1yJMtzNeAaD0WkDBcnMgnABsttKZ0Xi5S
+	 y73zuYRdjVLuK8+D+8yqoEnwQgjCFStH0F2FrpVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 412/459] Bluetooth: btusb: Add RTL8852BE device 0489:e123 to device tables
-Date: Thu, 12 Dec 2024 16:02:30 +0100
-Message-ID: <20241212144310.036814987@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 556/565] arm64/sve: Discard stale CPU state when handling SVE traps
+Date: Thu, 12 Dec 2024 16:02:31 +0100
+Message-ID: <20241212144333.840993605@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 69b84ffce260ff13826dc10aeb3c3e5c2288a552 ]
+commit 751ecf6afd6568adc98f2a6052315552c0483d18 upstream.
 
-Add the support ID 0489:e123 to usb_device_id table for
-Realtek RTL8852B chip.
+The logic for handling SVE traps manipulates saved FPSIMD/SVE state
+incorrectly, and a race with preemption can result in a task having
+TIF_SVE set and TIF_FOREIGN_FPSTATE clear even though the live CPU state
+is stale (e.g. with SVE traps enabled). This has been observed to result
+in warnings from do_sve_acc() where SVE traps are not expected while
+TIF_SVE is set:
 
-The device info from /sys/kernel/debug/usb/devices as below.
+|         if (test_and_set_thread_flag(TIF_SVE))
+|                 WARN_ON(1); /* SVE access shouldn't have trapped */
 
-T:  Bus=01 Lev=01 Prnt=01 Port=07 Cnt=04 Dev#=  7 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e123 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+Warnings of this form have been reported intermittently, e.g.
 
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  https://lore.kernel.org/linux-arm-kernel/CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com/
+  https://lore.kernel.org/linux-arm-kernel/000000000000511e9a060ce5a45c@google.com/
+
+The race can occur when the SVE trap handler is preempted before and
+after manipulating the saved FPSIMD/SVE state, starting and ending on
+the same CPU, e.g.
+
+| void do_sve_acc(unsigned long esr, struct pt_regs *regs)
+| {
+|         // Trap on CPU 0 with TIF_SVE clear, SVE traps enabled
+|         // task->fpsimd_cpu is 0.
+|         // per_cpu_ptr(&fpsimd_last_state, 0) is task.
+|
+|         ...
+|
+|         // Preempted; migrated from CPU 0 to CPU 1.
+|         // TIF_FOREIGN_FPSTATE is set.
+|
+|         get_cpu_fpsimd_context();
+|
+|         if (test_and_set_thread_flag(TIF_SVE))
+|                 WARN_ON(1); /* SVE access shouldn't have trapped */
+|
+|         sve_init_regs() {
+|                 if (!test_thread_flag(TIF_FOREIGN_FPSTATE)) {
+|                         ...
+|                 } else {
+|                         fpsimd_to_sve(current);
+|                         current->thread.fp_type = FP_STATE_SVE;
+|                 }
+|         }
+|
+|         put_cpu_fpsimd_context();
+|
+|         // Preempted; migrated from CPU 1 to CPU 0.
+|         // task->fpsimd_cpu is still 0
+|         // If per_cpu_ptr(&fpsimd_last_state, 0) is still task then:
+|         // - Stale HW state is reused (with SVE traps enabled)
+|         // - TIF_FOREIGN_FPSTATE is cleared
+|         // - A return to userspace skips HW state restore
+| }
+
+Fix the case where the state is not live and TIF_FOREIGN_FPSTATE is set
+by calling fpsimd_flush_task_state() to detach from the saved CPU
+state. This ensures that a subsequent context switch will not reuse the
+stale CPU state, and will instead set TIF_FOREIGN_FPSTATE, forcing the
+new state to be reloaded from memory prior to a return to userspace.
+
+Fixes: cccb78ce89c4 ("arm64/sve: Rework SVE access trap to convert state in registers")
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20241030-arm64-fpsimd-foreign-flush-v1-1-bd7bd66905a2@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/fpsimd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d34c7758b93de..cf0a0b3eaf886 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -430,6 +430,8 @@ static const struct usb_device_id blacklist_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3591), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe123), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe125), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -964,6 +964,7 @@ void do_sve_acc(unsigned long esr, struc
+ 		fpsimd_bind_task_to_cpu();
+ 	} else {
+ 		fpsimd_to_sve(current);
++		fpsimd_flush_task_state(current);
+ 	}
  
--- 
-2.43.0
-
+ 	put_cpu_fpsimd_context();
 
 
 
