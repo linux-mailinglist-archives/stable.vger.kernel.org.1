@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2342A9EEB68
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED209EF407
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75AD283170
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 716E0290180
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BB920969B;
-	Thu, 12 Dec 2024 15:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA466223322;
+	Thu, 12 Dec 2024 17:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qsezbo4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0idbfS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55812054F8;
-	Thu, 12 Dec 2024 15:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681712153DD;
+	Thu, 12 Dec 2024 17:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017092; cv=none; b=Fjvu1O2p+harzVi2hdVPCcNYmyEs3XKHWf56xqOkjtZ18isZ+Msf5DtVZMqbnoctBCzPmQ397Me7Law0MhFJmIPyMV4wbFF8iQL668IdLv2oPOGHTlJSAl+eBv9wkE8B4O9422dNH5MVjEVYjlcs0OXdBQhVEtr/Qpz0QQLwqZM=
+	t=1734022974; cv=none; b=fHZeIQ4KzKCXxrrKTaWMtUeEgTcmfMX3x5jYkrV4DeAelEhX0lbyGBgvHOBZzpPmXzdVluGxidl26QhfNqCsU62L3QP5O7F4c29yVNEkET0vIffOquZT99WQCOODxbW0DiV5dL50VJHG7DUuHquH24fOmthUZzZeUaZCd6krnaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017092; c=relaxed/simple;
-	bh=xnNA6kTDmmurNlEocplvt6KIgCbfb72Nf5SvVLfofEk=;
+	s=arc-20240116; t=1734022974; c=relaxed/simple;
+	bh=o44grWPcIm+29mkfsO/MfdkzYUAFqtoKJ7kOSvlxyqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zu8LTRbOU6RN4Sp0zReDC47JGWRYKotqkL9h+oT8dKfphvKmW0p0JpzSjVxDEd69Gz6mgYB946ymy5m3cB1TuoI6KSe3+uECnvbXnXFzzifexQ6Rl0ug4b92Ea7ZEBGNMjq+MdvcBsijYtoZSzwRe2MSCreYalaXXWXSzyJ60ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qsezbo4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4267BC4CECE;
-	Thu, 12 Dec 2024 15:24:52 +0000 (UTC)
+	 MIME-Version; b=EeJyGdfoHX/lKYOo1SqUrp6ayfP9ql7FZTM9mrJTQ67aSQ1NK68ep79jzu1I75UC9H4PJQ1+czzSdfqsdjm/aFlPI9cZ/fZLfcObzlUAkhhSyHTXFxKdGQ4rXcWX4QjD91LsGrRBLp9sLATljIdXyf6tL/h2+VxiVMcSguR/HiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0idbfS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB98FC4CECE;
+	Thu, 12 Dec 2024 17:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017092;
-	bh=xnNA6kTDmmurNlEocplvt6KIgCbfb72Nf5SvVLfofEk=;
+	s=korg; t=1734022974;
+	bh=o44grWPcIm+29mkfsO/MfdkzYUAFqtoKJ7kOSvlxyqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1qsezbo42PzcQOQiKzQphqENbr8oVIZVki9+EZ01ErvpqWgNhDCXVQ6oOtr53HURF
-	 1Qn2pcGUfv9ddmRK0HIZAWGM0dDH2IVxzg6TZIcMTVArWKm9D6wQ9jtukH5mHr9R7c
-	 vMrWcEXbS1UwN9j9WjElr53griqLTJqath9cc0pA=
+	b=e0idbfS0NqSxRR/zASkqGZlJ1hY6mQnFAzuBlPj555Nu8ykfZbcUVjo0RmgQrJ8ey
+	 xW1jlvseLNxqSgi2Re49R2aamuSV6UbCX/Q+Cl/ujmh+/hKkMZtBVAlluPSWNiFzbt
+	 A4Tqkd1MPiCkChhmSEk50rk6rriBhwQ2bq510VFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 380/466] pinctrl: qcom: spmi-mpp: Add PM8937 compatible
+Subject: [PATCH 5.15 354/565] um: Fix potential integer overflow during physmem setup
 Date: Thu, 12 Dec 2024 15:59:09 +0100
-Message-ID: <20241212144321.785469035@linuxfoundation.org>
+Message-ID: <20241212144325.597178172@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit f755261190e88f5d19fe0a3b762f0bbaff6bd438 ]
+[ Upstream commit a98b7761f697e590ed5d610d87fa12be66f23419 ]
 
-The PM8937 provides 4 MPPs.
-Add a compatible to support them.
+This issue happens when the real map size is greater than LONG_MAX,
+which can be easily triggered on UML/i386.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/20241031-msm8917-v2-4-8a075faa89b1@mainlining.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: fe205bdd1321 ("um: Print minimum physical memory requirement")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20240916045950.508910-3-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-spmi-mpp.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/um/kernel/physmem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-index d16ece90d926c..5fa04e7c1d5c4 100644
---- a/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-+++ b/drivers/pinctrl/qcom/pinctrl-spmi-mpp.c
-@@ -983,6 +983,7 @@ static const struct of_device_id pmic_mpp_of_match[] = {
- 	{ .compatible = "qcom,pm8226-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8841-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8916-mpp", .data = (void *) 4 },
-+	{ .compatible = "qcom,pm8937-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pm8941-mpp", .data = (void *) 8 },
- 	{ .compatible = "qcom,pm8950-mpp", .data = (void *) 4 },
- 	{ .compatible = "qcom,pmi8950-mpp", .data = (void *) 4 },
+diff --git a/arch/um/kernel/physmem.c b/arch/um/kernel/physmem.c
+index e7c7b53a1435b..87b51089b0616 100644
+--- a/arch/um/kernel/physmem.c
++++ b/arch/um/kernel/physmem.c
+@@ -80,10 +80,10 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
+ 			  unsigned long len, unsigned long long highmem)
+ {
+ 	unsigned long reserve = reserve_end - start;
+-	long map_size = len - reserve;
++	unsigned long map_size = len - reserve;
+ 	int err;
+ 
+-	if(map_size <= 0) {
++	if (len <= reserve) {
+ 		os_warn("Too few physical memory! Needed=%lu, given=%lu\n",
+ 			reserve, len);
+ 		exit(1);
+@@ -94,7 +94,7 @@ void __init setup_physmem(unsigned long start, unsigned long reserve_end,
+ 	err = os_map_memory((void *) reserve_end, physmem_fd, reserve,
+ 			    map_size, 1, 1, 1);
+ 	if (err < 0) {
+-		os_warn("setup_physmem - mapping %ld bytes of memory at 0x%p "
++		os_warn("setup_physmem - mapping %lu bytes of memory at 0x%p "
+ 			"failed - errno = %d\n", map_size,
+ 			(void *) reserve_end, err);
+ 		exit(1);
 -- 
 2.43.0
 
