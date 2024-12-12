@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-102097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9090A9EF00A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46269EEA2F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C06F2861DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B33481889C79
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD4723EA77;
-	Thu, 12 Dec 2024 16:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA682139B2;
+	Thu, 12 Dec 2024 15:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MymdMYoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYF1u1F5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F8323EA74;
-	Thu, 12 Dec 2024 16:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDF4213E97;
+	Thu, 12 Dec 2024 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019958; cv=none; b=oVot+lajvAZ6HQY04++OUnM/Bwz//CkLO92BKOaxQLz77TG7yXw1bBzOAcRLhpNZBRBXONn6NOAmjugafcR6xL49LEiCVT1YxbG+2/497ge51wgoaSxPe9qzo6M+eq/aGvfWIAEFPiIbgFRqrY2IpfnOijG+NCWLze73I1yuX5o=
+	t=1734016049; cv=none; b=Lg8JTtXYDQ7l42JftEe0Uj7Ih/fsWbamSFc+wKOIWhVinIZ4RHbjmUpYyko0C4DY4fhkf6LY966ibmIrqmB9neeEUabe6yHLTkXxh2BMRk2t7VSsSyQJoDX4CZ7tmo0S2SZVr+zNxNNktptrbBS0uqMHH4jVB3DgIa9jeWD2Oxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019958; c=relaxed/simple;
-	bh=3s/QD1zigeFqP8z5iDkYvynncDAaKXk0rBemo6jQsLw=;
+	s=arc-20240116; t=1734016049; c=relaxed/simple;
+	bh=CgJ91vbxXck4jTGGS81nzhvFz7unz5aw9+3zHjZx6f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ec5ZbL6Z/E/tlelNWE0IjKrGxPTfa9AGIer7fAMK5v4AuhX7oM+izJ7U4JKDU7V0f/B0SSiXPD1zdOZRkK45wnuj2fWh3IMxc0V7x0NIxvf9K9+V52Yvyh5A8cJ0CWZ1v04yVcauqPw9mBeBeaQqUeZKdyLNrb7lhhoZ5onKhlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MymdMYoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11AAC4CED3;
-	Thu, 12 Dec 2024 16:12:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ljKDuPnxn0KmGLbkJFpIHXgLHn2FnNSB1nXBylk9S2CSgMnLaM+cLF4LHcEVYys9mqw4V7JfNrKrtlZppWd7RIzCWyoiwxv80AA+9Bw5ZTNSGQpFDWl0SX4o1g/IFxmmV/S1ZOJgK4VuFyCuL9/TQtfA8ZyOI5qBMOzagC+xSZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYF1u1F5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A74BC4CECE;
+	Thu, 12 Dec 2024 15:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019958;
-	bh=3s/QD1zigeFqP8z5iDkYvynncDAaKXk0rBemo6jQsLw=;
+	s=korg; t=1734016048;
+	bh=CgJ91vbxXck4jTGGS81nzhvFz7unz5aw9+3zHjZx6f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MymdMYoQnqL10IOt9EsA28VBT/cmCrW69iuyXxn07JHer/yB1EpRMJCZsDQm/G+72
-	 /RhjOSnNj4rIglNiatMcOG+DBmD+EY9f3bn5LdTvyYcEXFhA28hqeDcv3xyyYl3iQY
-	 fJaJ8+pzbVSvhKivJ8d9ekdcQzcz3gJOAGK//Pbg=
+	b=CYF1u1F5oA4qZC3Du/w1kWAG3c5TRWLFipTY2CPUG7Ep7THCiKp99MVOVcqkbTMth
+	 YcVDchnPJsrYXsyPG580EEFCjTdNHx08gsWc56CDJQskB8x4/Y1CJ59+V1XStvDL+c
+	 o8TtMmWmee/vmmqLZpOd1v61W/oDrOd/koSsACrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei lu <llfamsec@gmail.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Bin Lan <bin.lan.cn@windriver.com>
-Subject: [PATCH 6.1 341/772] xfs: add bounds checking to xlog_recover_process_data
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 117/466] bpf: Remove unnecessary kfree(im_node) in lpm_trie_update_elem
 Date: Thu, 12 Dec 2024 15:54:46 +0100
-Message-ID: <20241212144404.004947255@linuxfoundation.org>
+Message-ID: <20241212144311.438252369@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei lu <llfamsec@gmail.com>
+From: Hou Tao <houtao1@huawei.com>
 
-commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
+[ Upstream commit 3d5611b4d7efbefb85a74fcdbc35c603847cc022 ]
 
-There is a lack of verification of the space occupied by fixed members
-of xlog_op_header in the xlog_recover_process_data.
+There is no need to call kfree(im_node) when updating element fails,
+because im_node must be NULL. Remove the unnecessary kfree() for
+im_node.
 
-We can create a crafted image to trigger an out of bounds read by
-following these steps:
-    1) Mount an image of xfs, and do some file operations to leave records
-    2) Before umounting, copy the image for subsequent steps to simulate
-       abnormal exit. Because umount will ensure that tail_blk and
-       head_blk are the same, which will result in the inability to enter
-       xlog_recover_process_data
-    3) Write a tool to parse and modify the copied image in step 2
-    4) Make the end of the xlog_op_header entries only 1 byte away from
-       xlog_rec_header->h_size
-    5) xlog_rec_header->h_num_logops++
-    6) Modify xlog_rec_header->h_crc
-
-Fix:
-Add a check to make sure there is sufficient space to access fixed members
-of xlog_op_header.
-
-Signed-off-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20241206110622.1161752-3-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 532d6b36b2bf ("bpf: Handle in-place update for full LPM trie correctly")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_log_recover.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/lpm_trie.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/xfs/xfs_log_recover.c
-+++ b/fs/xfs/xfs_log_recover.c
-@@ -2439,7 +2439,10 @@ xlog_recover_process_data(
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index a82cf3693778a..8a040f123e04a 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -315,7 +315,7 @@ static long trie_update_elem(struct bpf_map *map,
+ 			     void *_key, void *value, u64 flags)
+ {
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
+-	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
++	struct lpm_trie_node *node, *im_node, *new_node = NULL;
+ 	struct lpm_trie_node *free_node = NULL;
+ 	struct lpm_trie_node __rcu **slot;
+ 	struct bpf_lpm_trie_key_u8 *key = _key;
+@@ -449,9 +449,7 @@ static long trie_update_elem(struct bpf_map *map,
+ 	if (ret) {
+ 		if (new_node)
+ 			trie->n_entries--;
+-
+ 		kfree(new_node);
+-		kfree(im_node);
+ 	}
  
- 		ohead = (struct xlog_op_header *)dp;
- 		dp += sizeof(*ohead);
--		ASSERT(dp <= end);
-+		if (dp > end) {
-+			xfs_warn(log->l_mp, "%s: op header overrun", __func__);
-+			return -EFSCORRUPTED;
-+		}
- 
- 		/* errors will abort recovery */
- 		error = xlog_recover_process_ophdr(log, rhash, rhead, ohead,
+ 	spin_unlock_irqrestore(&trie->lock, irq_flags);
+-- 
+2.43.0
+
 
 
 
