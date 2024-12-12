@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD449EF72F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16589EF52C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E46AD189DE6A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2222119402C0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BAD222D43;
-	Thu, 12 Dec 2024 17:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F25B222D45;
+	Thu, 12 Dec 2024 16:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gt6Lziwr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxbxlmiO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAB82210F8;
-	Thu, 12 Dec 2024 17:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A28214227;
+	Thu, 12 Dec 2024 16:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023686; cv=none; b=Qq5Uj2puABnVsNLCPUGSfj/nD8rAOJLskFg43vdlpu4n5lrZIn0A/kraFio9B769FPAI83YV0E00nIIl8S4U4Qz387kSjyubMN111VAke9OouHbhjJJdreTVlBirjZcj7blWEFd6j9iX7UZVGQj3Vn0T1mJNlSVNla3wODgkdPg=
+	t=1734022367; cv=none; b=irFDo5vsW4I+7VRYlcOGxPsAoyGDqK81BZFBW8rQ686J2UXbjRX4Uz71sq05nqUTPf/slWIj0TzYQ6PIe0/PqUCuyd+KsUj/oskXTUOQJiKxpJbgmbH6mZX0PmfQ7pXW8x7Ory8ATAW+4X2HJnZK3XtwIPpNgcfSuVawwJ6rhmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023686; c=relaxed/simple;
-	bh=HbJDiFsUvcz5OyQ5me0+h60YZA6H8DdiRWvIphtVz4o=;
+	s=arc-20240116; t=1734022367; c=relaxed/simple;
+	bh=qrZpFUdBJNMBK5dnkV33RyjwOgnyYzCapOEIbvpLN78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSf1y/+JUg4ccXeBqwXoMe+DnANUu/0NlYXPQWJ3YE24TnxW+nYFAgwHuMif11sIaxOh1/dxkdXiy4FwwuqPsO39wBtpCfywmUvSNUI+dQw7q+hNk2uIztp9ppHPlYMqPUI5UtnoGfK6jztcM74UoR0O2FYEw11n45IlDJj1u9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gt6Lziwr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91B9C4CECE;
-	Thu, 12 Dec 2024 17:14:45 +0000 (UTC)
+	 MIME-Version; b=uYuIuXVpPSPWkklfeTUnFvTl4zkQ0+N9ACmTzFdU8YFA5TAf4h63R1455GcR4XkyEe5c3eHA+VzUG5PDXw1CdwL5gCS5mHHxGb09SZwCbMJqbC2khrIPceFfBjkrdFufKC1q2BrxHsqimShEsE7qNFOwVV0huXLH2fdbmR80I4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxbxlmiO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89317C4CECE;
+	Thu, 12 Dec 2024 16:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023686;
-	bh=HbJDiFsUvcz5OyQ5me0+h60YZA6H8DdiRWvIphtVz4o=;
+	s=korg; t=1734022367;
+	bh=qrZpFUdBJNMBK5dnkV33RyjwOgnyYzCapOEIbvpLN78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gt6Lziwr9kBQRtnLhANQbIFD/a97CGU9riY7iyjWsWkAzBfK6+msfOhLNLI2Lstf+
-	 Wd4tocdhuORESDcFbxrGsH2ZMB3EzGJOYV0+TFc0bFBwBGxpfYW/3S6u5RMegeGraO
-	 hMVvzxTP+BEkVYuHU08+YxssKwnCjYpz6MPeHosI=
+	b=MxbxlmiOZpoU9DzKqVGzRwtKFUrW7l+GpsM5k5sfwe7YQo27FvGHkQfW5AfNjLx9w
+	 7C02Y2OI0Z+158U0DAnm8DAum9f2gv5a8ZE6UjC2bCCJ2ri1PFw4MsmEGZn9imEriN
+	 +msY/V/E/Dwi1vsDVi8Y2D6BK+TE5zd24EpQQPtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eryk Zagorski <erykzagorski@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Liu Jian <liujian56@huawei.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 048/459] ALSA: usb-audio: Fix Yamaha P-125 Quirk Entry
+Subject: [PATCH 5.15 191/565] selftests, bpf: Add one test for sockmap with strparser
 Date: Thu, 12 Dec 2024 15:56:26 +0100
-Message-ID: <20241212144255.421927766@linuxfoundation.org>
+Message-ID: <20241212144319.031020559@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eryk Zagorski <erykzagorski@gmail.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 6f891ca15b017707840c9e7f5afd9fc6cfd7d8b1 ]
+[ Upstream commit d69672147faa2a7671c0779fa5b9ad99e4fca4e3 ]
 
-This patch switches the P-125 quirk entry to use a composite quirk as the
-P-125 supplies both MIDI and Audio like many of the other Yamaha
-keyboards
+Add the test to check sockmap with strparser is working well.
 
-Signed-off-by: Eryk Zagorski <erykzagorski@gmail.com>
-Link: https://patch.msgid.link/20241111164520.9079-2-erykzagorski@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/bpf/20211029141216.211899-3-liujian56@huawei.com
+Stable-dep-of: 523dffccbade ("selftests/bpf: Fix total_bytes in msg_loop_rx in test_sockmap")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/test_sockmap.c | 33 ++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index c6104523dd79c..119c0bde74464 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -350,7 +350,6 @@ YAMAHA_DEVICE(0x105a, NULL),
- YAMAHA_DEVICE(0x105b, NULL),
- YAMAHA_DEVICE(0x105c, NULL),
- YAMAHA_DEVICE(0x105d, NULL),
--YAMAHA_DEVICE(0x1718, "P-125"),
- {
- 	USB_DEVICE(0x0499, 0x1503),
- 	.driver_info = (unsigned long) & (const struct snd_usb_audio_quirk) {
-@@ -485,6 +484,19 @@ YAMAHA_DEVICE(0x1718, "P-125"),
- 		}
- 	}
- },
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 83a7366c54b51..74cfab7d5eff4 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -141,6 +141,7 @@ struct sockmap_options {
+ 	bool sendpage;
+ 	bool data_test;
+ 	bool drop_expected;
++	bool check_recved_len;
+ 	int iov_count;
+ 	int iov_length;
+ 	int rate;
+@@ -564,8 +565,12 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 	int err, i, flags = MSG_NOSIGNAL;
+ 	bool drop = opt->drop_expected;
+ 	bool data = opt->data_test;
++	int iov_alloc_length = iov_length;
+ 
+-	err = msg_alloc_iov(&msg, iov_count, iov_length, data, tx);
++	if (!tx && opt->check_recved_len)
++		iov_alloc_length *= 2;
++
++	err = msg_alloc_iov(&msg, iov_count, iov_alloc_length, data, tx);
+ 	if (err)
+ 		goto out_errno;
+ 	if (peek_flag) {
+@@ -678,6 +683,13 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 			if (recv > 0)
+ 				s->bytes_recvd += recv;
+ 
++			if (opt->check_recved_len && s->bytes_recvd > total_bytes) {
++				errno = EMSGSIZE;
++				fprintf(stderr, "recv failed(), bytes_recvd:%zd, total_bytes:%f\n",
++						s->bytes_recvd, total_bytes);
++				goto out_errno;
++			}
++
+ 			if (data) {
+ 				int chunk_sz = opt->sendpage ?
+ 						iov_length :
+@@ -759,7 +771,8 @@ static int sendmsg_test(struct sockmap_options *opt)
+ 
+ 	rxpid = fork();
+ 	if (rxpid == 0) {
+-		iov_buf -= (txmsg_pop - txmsg_start_pop + 1);
++		if (txmsg_pop || txmsg_start_pop)
++			iov_buf -= (txmsg_pop - txmsg_start_pop + 1);
+ 		if (opt->drop_expected || txmsg_ktls_skb_drop)
+ 			_exit(0);
+ 
+@@ -1708,6 +1721,19 @@ static void test_txmsg_ingress_parser(int cgrp, struct sockmap_options *opt)
+ 	test_exec(cgrp, opt);
+ }
+ 
++static void test_txmsg_ingress_parser2(int cgrp, struct sockmap_options *opt)
 +{
-+	USB_DEVICE(0x0499, 0x1718),
-+	QUIRK_DRIVER_INFO {
-+		/* .vendor_name = "Yamaha", */
-+		/* .product_name = "P-125", */
-+		QUIRK_DATA_COMPOSITE {
-+			{ QUIRK_DATA_STANDARD_AUDIO(1) },
-+			{ QUIRK_DATA_STANDARD_AUDIO(2) },
-+			{ QUIRK_DATA_MIDI_YAMAHA(3) },
-+			QUIRK_COMPOSITE_END
-+		}
-+	}
-+},
- YAMAHA_DEVICE(0x2000, "DGP-7"),
- YAMAHA_DEVICE(0x2001, "DGP-5"),
- YAMAHA_DEVICE(0x2002, NULL),
++	if (ktls == 1)
++		return;
++	skb_use_parser = 10;
++	opt->iov_length = 20;
++	opt->iov_count = 1;
++	opt->rate = 1;
++	opt->check_recved_len = true;
++	test_exec(cgrp, opt);
++	opt->check_recved_len = false;
++}
++
+ char *map_names[] = {
+ 	"sock_map",
+ 	"sock_map_txmsg",
+@@ -1802,7 +1828,8 @@ struct _test test[] = {
+ 	{"txmsg test pull-data", test_txmsg_pull},
+ 	{"txmsg test pop-data", test_txmsg_pop},
+ 	{"txmsg test push/pop data", test_txmsg_push_pop},
+-	{"txmsg text ingress parser", test_txmsg_ingress_parser},
++	{"txmsg test ingress parser", test_txmsg_ingress_parser},
++	{"txmsg test ingress parser2", test_txmsg_ingress_parser2},
+ };
+ 
+ static int check_whitelist(struct _test *t, struct sockmap_options *opt)
 -- 
 2.43.0
 
