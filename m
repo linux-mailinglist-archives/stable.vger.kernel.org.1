@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E699EF8E8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DABF59EF67D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C12DE1731F9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E3F5172402
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CDB222D67;
-	Thu, 12 Dec 2024 17:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FF12210EA;
+	Thu, 12 Dec 2024 17:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gk93dhzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YcgzU8gN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F9820A5EE;
-	Thu, 12 Dec 2024 17:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B8921CFF0;
+	Thu, 12 Dec 2024 17:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025241; cv=none; b=O5O2AdBxoNYWpKHKU7feMo89WBnTyH1RsWYoyqIKtgUUyCXfXsLPzD8k/lgKBLIvfPtD158RckIwbYazwbnnmHyCDJGS0cJ2akUJKRqEaaYJC+rumBfiuhnwWjztSB3L+6ILPNvcfpSobBHMhl+YVcahzqs6Xl6orhju6ebM1Yg=
+	t=1734023020; cv=none; b=ZLtICrwEe0sNOrjL/irsPtJI5Op12DidR54qooPy6g8GXhG4X1SHuGF4RBg6lt2aTrg92oyd5UAvfF1PSOzh8f2d6wqaDy4ARa/xPLLoeWcJZdNs6+nvUAADxS9RsFbkd41lulp9fKrdJy0Hqfeq4j2nroOP6mBPK2X2Eezr7mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025241; c=relaxed/simple;
-	bh=oPTTpPzd9F7sWdEkUcJLu72/+DS3KSS1mm28xOaLCpM=;
+	s=arc-20240116; t=1734023020; c=relaxed/simple;
+	bh=5kONmg/bP/iRuGYnA4EFDiWRXWMppEwsAyDCdTgTrEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbHH/RHtRDuw8D8H9JxZugP3OVwKwZtA5imAi4YcfNRkCGzeEbKYy2BCawXsIjV8CL86WkhoJ5Q3YiJ0bvWSU9Xou9CMnTrjEQ6LpKQOt8MewZ1GWqqtbdx8BWw4poGGfuCBE+sc7cytWBHsf5z/ECNAsPPnlT724yR84AA9Xzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gk93dhzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 800D1C4CED0;
-	Thu, 12 Dec 2024 17:40:40 +0000 (UTC)
+	 MIME-Version; b=t34t7mBuzoe2lkZftOcKQgQ7kh1DnudfPG0DCdMIzkLQ43KrIS8PnzSeYDEYmdnYYcbqZVU0j0zC1uJAp3XvRuJWuGJsqUbS9qiYoTY4tQsukV6iNJNQXt3LYCPXgS8d96cKSluzO3mk/Z6H04zf4MFih0BLyjLkAVnhe9u0sWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YcgzU8gN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AF0C4CECE;
+	Thu, 12 Dec 2024 17:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025240;
-	bh=oPTTpPzd9F7sWdEkUcJLu72/+DS3KSS1mm28xOaLCpM=;
+	s=korg; t=1734023020;
+	bh=5kONmg/bP/iRuGYnA4EFDiWRXWMppEwsAyDCdTgTrEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gk93dhzVdi4JZvjy12dTQg+m9IHDVF+7H34orMtNVqplLCbGGJ7nYqoYB8Fr9SKRJ
-	 KS7jScJzx3ZFN355so4ZnkenjvMJ/w5HorFNLwEK6UQqwKdUxm4xtRRxi/rzUDwk7y
-	 3c2r0dXLgVnrpAqdvry8AzxFbVLE2XqqGLxLT9QY=
+	b=YcgzU8gNlSQCF+oYAuaUiG0mBFfqH9HB4Iu03Ucp7nyg6+EbuawyfIrpV2CK3K529
+	 v7JRQMKEYhhM8FPGMbivAWZNkH/Pb3Awd3iswb2AyCTySLoSILkRDzBDRa8ALkpkO+
+	 tjGeu/mQXJAHjiL/XIsQ4VNLLFCk6d40VHjFnLaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Gmeiner <cgmeiner@igalia.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Yassine Oudjana <y.oudjana@protonmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/321] drm/etnaviv: hold GPU lock across perfmon sampling
+Subject: [PATCH 5.15 399/565] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
 Date: Thu, 12 Dec 2024 15:59:54 +0100
-Message-ID: <20241212144232.991368892@linuxfoundation.org>
+Message-ID: <20241212144327.422408737@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-[ Upstream commit 37dc4737447a7667f8e9ec790dac251da057eb27 ]
+[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
 
-The perfmon sampling mutates shared GPU state (e.g. VIVS_HI_CLOCK_CONTROL
-to select the pipe for the perf counter reads). To avoid clashing with
-other functions mutating the same state (e.g. etnaviv_gpu_update_clock)
-the perfmon sampling needs to hold the GPU lock.
+Clear the IRQ enable bit of WDT_MODE before asserting software reset
+in order to make TOPRGU issue a system reset signal instead of an IRQ.
 
-Fixes: 68dc0b295dcb ("drm/etnaviv: use 'sync points' for performance monitor requests")
-Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/watchdog/mtk_wdt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index 7b49d3b0840fe..f8e5994bf8161 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -1236,6 +1236,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
+diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
+index 796fbb048cbea..a9d67ead94838 100644
+--- a/drivers/watchdog/mtk_wdt.c
++++ b/drivers/watchdog/mtk_wdt.c
+@@ -164,9 +164,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
  {
- 	u32 val;
+ 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
+ 	void __iomem *wdt_base;
++	u32 reg;
  
-+	mutex_lock(&gpu->lock);
+ 	wdt_base = mtk_wdt->wdt_base;
+ 
++	/* Enable reset in order to issue a system reset instead of an IRQ */
++	reg = readl(wdt_base + WDT_MODE);
++	reg &= ~WDT_MODE_IRQ_EN;
++	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
 +
- 	/* disable clock gating */
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
-@@ -1247,6 +1249,8 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
- 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
- 
- 	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_PRE);
-+
-+	mutex_unlock(&gpu->lock);
- }
- 
- static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
-@@ -1256,13 +1260,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	unsigned int i;
- 	u32 val;
- 
--	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
--
--	for (i = 0; i < submit->nr_pmrs; i++) {
--		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+	mutex_lock(&gpu->lock);
- 
--		*pmr->bo_vma = pmr->sequence;
--	}
-+	sync_point_perfmon_sample(gpu, event, ETNA_PM_PROCESS_POST);
- 
- 	/* disable debug register */
- 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
-@@ -1273,6 +1273,14 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
- 	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
-+
-+	mutex_unlock(&gpu->lock);
-+
-+	for (i = 0; i < submit->nr_pmrs; i++) {
-+		const struct etnaviv_perfmon_request *pmr = submit->pmrs + i;
-+
-+		*pmr->bo_vma = pmr->sequence;
-+	}
- }
- 
- 
+ 	while (1) {
+ 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
+ 		mdelay(5);
 -- 
 2.43.0
 
