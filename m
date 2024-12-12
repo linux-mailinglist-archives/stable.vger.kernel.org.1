@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B8C9EF3D0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0A59EEAD4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D1CC18998B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0667188D775
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979F022A811;
-	Thu, 12 Dec 2024 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643AF216E28;
+	Thu, 12 Dec 2024 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sg16NClA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwkvHao/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5236A22A7FF;
-	Thu, 12 Dec 2024 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE8121578A;
+	Thu, 12 Dec 2024 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022208; cv=none; b=mTNHQUIjUeo01nD398JyYgu8AkuBRxLHIVXQ5lkzD+vbeQ25Sc6BTuqVOR7xmSmkszyE651vty/mPyyWPA8/TTYrSSsM7smu/0ymFHMpxc7M8grRfRTJv9kqz/LlFdbD4K4FJf9juaSf0JY2ydC6RiBRcTTNXUWDeE225IW+bWE=
+	t=1734016451; cv=none; b=ZTjKomJCG/p0kzcHGMkPC5PCD+Q4U2sxwzfWvxWqUviTlTROEMqf3wozemddy11CAnvQdLbHE8jcWaau6L5xdJcnP5uHEHplKWhPv9UvSS3YjTuBq2cfGQuCHfGC0ap3aNycK/TN5GOIjirM+PC2X0002Un4oRgJ1i79+MqCHgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022208; c=relaxed/simple;
-	bh=z7138EPhM47uvTroh1fQx49Wvz2UYnF/hIFBDLcGzhY=;
+	s=arc-20240116; t=1734016451; c=relaxed/simple;
+	bh=+3kUKYTdtrOLB8B/iE1vk3b3BzkE3R7VH/GPeEjcIMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R4PSO4M7Xx7Y1UvWukgrMrYt9+qntkPiA+RL1RFo3Y3Y7N03LmaZIg59iiQbwgTV/nu/6GCN611OSGXQCj0b5M7qUVekq4P7l7LIK1L8IQl5fGzVSR8jqMgw+UM5ZmvIRVHaSOPJlU8IKLSMGKTy4Nm7osNbW5d9HHDWii8xZ24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sg16NClA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C84C4CECE;
-	Thu, 12 Dec 2024 16:50:07 +0000 (UTC)
+	 MIME-Version; b=JWVVrt1yF8gyiR764niacN7zmfhzxG4Y9vh8nB7eS9DTdnM23UN3iMOQvyP4Su3petZT7HK16C3XXzxaKLlSIjepr/eIWzvr2H100cHmfV+ovt0hInE2O6kn/EvawbstL0WVsun6BFJZQXiO4RY+trHAJYyxg5OKzsPL4qbPF7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwkvHao/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B3CC4CED0;
+	Thu, 12 Dec 2024 15:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022208;
-	bh=z7138EPhM47uvTroh1fQx49Wvz2UYnF/hIFBDLcGzhY=;
+	s=korg; t=1734016451;
+	bh=+3kUKYTdtrOLB8B/iE1vk3b3BzkE3R7VH/GPeEjcIMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sg16NClAAGNC+ET4B0a5Bb24vAAsKxykTFLZpKbG9W+Jcrzmy+tMStGph6zzKrUMH
-	 Afsl8dotmuQaq3SJHw9P38OOdmQI19UgALvQK0pAQZxOxTTwWdM7E9XBCdJ30yoLko
-	 3ol1noOPKfWVg1svPsUkUxZjQwvfuhdK9z7F/qBc=
+	b=OwkvHao/tVETOmxwYip8NX1ngPSMPEdPFn4/KSavOOVFwnddpcOCLp+wz1JMm2bEx
+	 v+/IO7WckhV4lqL4MXk2+nbpH+2L4sZ2/oVTJvHAG4WQ+37MayG4lBjpR52j5N8OCz
+	 UkQCzCkPuO1v+oFycqpx3i2YnEg6PxJ9/MATmMR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dipendra Khadka <kdipendra88@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 177/565] octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_ethtool.c
+	Akinobu Mita <akinobu.mita@gmail.com>,
+	SeongJae Park <sj@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 203/466] mm/damon: fix order of arguments in damos_before_apply tracepoint
 Date: Thu, 12 Dec 2024 15:56:12 +0100
-Message-ID: <20241212144318.467668778@linuxfoundation.org>
+Message-ID: <20241212144314.806956260@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipendra Khadka <kdipendra88@gmail.com>
+From: Akinobu Mita <akinobu.mita@gmail.com>
 
-[ Upstream commit e26f8eac6bb20b20fdb8f7dc695711ebce4c7c5c ]
+commit 6535b8669c1a74078098517174e53fc907ce9d56 upstream.
 
-Add error pointer check after calling otx2_mbox_get_rsp().
+Since the order of the scheme_idx and target_idx arguments in TP_ARGS is
+reversed, they are stored in the trace record in reverse.
 
-Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
-Fixes: d0cf9503e908 ("octeontx2-pf: ethtool fec mode support")
-Signed-off-by: Dipendra Khadka <kdipendra88@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241115182023.43118-1-sj@kernel.org
+Link: https://patch.msgid.link/20241112154828.40307-1-akinobu.mita@gmail.com
+Fixes: c603c630b509 ("mm/damon/core: add a tracepoint for damos apply target regions")
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c  | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/trace/events/damon.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index fa4b2d833d77b..db4a9fc399f3f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -326,6 +326,11 @@ static void otx2_get_pauseparam(struct net_device *netdev,
- 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
- 		rsp = (struct cgx_pause_frm_cfg *)
- 		       otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
-+		if (IS_ERR(rsp)) {
-+			mutex_unlock(&pfvf->mbox.lock);
-+			return;
-+		}
-+
- 		pause->rx_pause = rsp->rx_pause;
- 		pause->tx_pause = rsp->tx_pause;
- 	}
-@@ -996,6 +1001,11 @@ static int otx2_set_fecparam(struct net_device *netdev,
+diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
+index 23200aabccac..da4bd9fd1162 100644
+--- a/include/trace/events/damon.h
++++ b/include/trace/events/damon.h
+@@ -15,7 +15,7 @@ TRACE_EVENT_CONDITION(damos_before_apply,
+ 		unsigned int target_idx, struct damon_region *r,
+ 		unsigned int nr_regions, bool do_trace),
  
- 	rsp = (struct fec_mode *)otx2_mbox_get_rsp(&pfvf->mbox.mbox,
- 						   0, &req->hdr);
-+	if (IS_ERR(rsp)) {
-+		err = PTR_ERR(rsp);
-+		goto end;
-+	}
-+
- 	if (rsp->fec >= 0)
- 		pfvf->linfo.fec = rsp->fec;
- 	else
+-	TP_ARGS(context_idx, target_idx, scheme_idx, r, nr_regions, do_trace),
++	TP_ARGS(context_idx, scheme_idx, target_idx, r, nr_regions, do_trace),
+ 
+ 	TP_CONDITION(do_trace),
+ 
 -- 
-2.43.0
+2.47.1
 
 
 
