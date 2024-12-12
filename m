@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-101641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F629EEDB2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 618DC9EEBFD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2950116D826
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56402167209
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31346222D7B;
-	Thu, 12 Dec 2024 15:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975942153DD;
+	Thu, 12 Dec 2024 15:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SquwGQC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJwpMfxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BAA1547F0;
-	Thu, 12 Dec 2024 15:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52635748A;
+	Thu, 12 Dec 2024 15:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018271; cv=none; b=gLJ1Vt5wKsBP7jslUjIaCqGTJK5pVjSvbr67UISB2lFlQfNs4Ux6bqSYW0+GE58CHbt8gSBdZXSX24AAMmeOAyr6z2TsDLePSf0f8NoalvBYdX45I839aZWXFPkdj8wWYvipg4A/24v00v76xsAJAkWsOBvF6s910S3Vvn3roxM=
+	t=1734017256; cv=none; b=HV1ZmT5KIMiLZPVw9Jq8XWJQ53ktVFJBrT2PnR157cR7cxdM+b9+2UamWMZkxEvjAOGUB90gySuKAXk/t1emCDw0SAAVRx7jJ+aoZD7eTNKpeM9RSye9CcHG4OrlbqQGplay2rEqwumdoeQVwxCP/Bv+tqNufDHztWO7hi6umsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018271; c=relaxed/simple;
-	bh=pVePtFmig52YruBYZMr68ffYc3Ux2+e43YsuCViswD4=;
+	s=arc-20240116; t=1734017256; c=relaxed/simple;
+	bh=7Z9QdcPOOXoPdS4LMweCsNlukXU2YE065KXLTpVdBMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N9CS8mJnIWG7XXb1vjOt0T2aogp/+SwmQRMuZTqzU7D3cM2Kr0cGghmFbYwqREHpJavR4dHedQzWtsP7aectig/Fqsym7N8U+Fsdh8G7YMIYYKZbxotvUMx0c5NyTuY6iLlwLBL0QhAXmdlmEXbwupvRzzxGeXkMGjxDR4U56eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SquwGQC+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00816C4CECE;
-	Thu, 12 Dec 2024 15:44:29 +0000 (UTC)
+	 MIME-Version; b=e9k5baKpxirVNcXyTb0u6e0pK/ZXw8dEKT6lW2FUZCxRCuvfZ9KBvRG7+tEQxEipjbZX+dJqR0jGtK2q6F+glULd+ZkMYKpTLUaGk50/h1g2G6+8yDd+hd8usnruimp5PPXfuQwynsmDzL4NqI4A4CODcwvFH3Pif2IId7j4298=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJwpMfxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2F9C4CECE;
+	Thu, 12 Dec 2024 15:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018270;
-	bh=pVePtFmig52YruBYZMr68ffYc3Ux2+e43YsuCViswD4=;
+	s=korg; t=1734017256;
+	bh=7Z9QdcPOOXoPdS4LMweCsNlukXU2YE065KXLTpVdBMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SquwGQC+o2L0tkn+x7Nmti5MsTOsCqXprThamyePhZBFNROI1xX3Py53AIO0C5xXq
-	 Jt5XB7ca5bJPsbQy3qL6VVVhsdUMSeW4D7hrir6DrTqiP6JOYqKDOYsN890Ogii046
-	 GGYZRlpp4/9+oBJFTOClpsGw2fIwR1GIVczOWSig=
+	b=PJwpMfxM+fEXExceHMK8+uQJa38hs0fbISzlGhohzfAdgqGC65y6BFZ9PmJhNBIfr
+	 WTzaYYqiEFvXeKLRiENNO4X9aWIbm8UhbtR5M8HvyTjRIzk9NuBao2IAqWUS7IeVsq
+	 z5tB5kqFTm2jms3mgl60tQqign9dT0rGm8kqvwCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
-	Nihar Chaithanya <niharchaithanya@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Amey Narkhede <ameynarkhede03@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/356] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
+Subject: [PATCH 6.12 396/466] PCI: Add reset_subordinate to reset hierarchy below bridge
 Date: Thu, 12 Dec 2024 15:59:25 +0100
-Message-ID: <20241212144254.328621877@linuxfoundation.org>
+Message-ID: <20241212144322.409785795@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nihar Chaithanya <niharchaithanya@gmail.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
+[ Upstream commit 2fa046449a82a7d0f6d9721dd83e348816038444 ]
 
-When the value of lp is 0 at the beginning of the for loop, it will
-become negative in the next assignment and we should bail out.
+The "bus" and "cxl_bus" reset methods reset a device by asserting Secondary
+Bus Reset on the bridge leading to the device.  These only work if the
+device is the only device below the bridge.
 
-Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
-Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
-Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Add a sysfs 'reset_subordinate' attribute on bridges that can assert
+Secondary Bus Reset regardless of how many devices are below the bridge.
+
+This resets all the devices below a bridge in a single command, including
+the locking and config space save/restore that reset methods normally do.
+
+This may be the only way to reset devices that don't support other reset
+methods (ACPI, FLR, PM reset, etc).
+
+Link: https://lore.kernel.org/r/20241025222755.3756162-1-kbusch@meta.com
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[bhelgaas: commit log, add capable(CAP_SYS_ADMIN) check]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Reviewed-by: Amey Narkhede <ameynarkhede03@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-pci | 11 +++++++++++
+ drivers/pci/pci-sysfs.c                 | 26 +++++++++++++++++++++++++
+ drivers/pci/pci.c                       |  2 +-
+ drivers/pci/pci.h                       |  1 +
+ 4 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 39957361a7eed..f9009e4f9ffd8 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -2891,6 +2891,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
- 	/* bubble the new value up the tree as required.
- 	 */
- 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
-+		if (lp == 0)
-+			break;
+diff --git a/Documentation/ABI/testing/sysfs-bus-pci b/Documentation/ABI/testing/sysfs-bus-pci
+index 7f63c7e977735..5da6a14dc326b 100644
+--- a/Documentation/ABI/testing/sysfs-bus-pci
++++ b/Documentation/ABI/testing/sysfs-bus-pci
+@@ -163,6 +163,17 @@ Description:
+ 		will be present in sysfs.  Writing 1 to this file
+ 		will perform reset.
+ 
++What:		/sys/bus/pci/devices/.../reset_subordinate
++Date:		October 2024
++Contact:	linux-pci@vger.kernel.org
++Description:
++		This is visible only for bridge devices. If you want to reset
++		all devices attached through the subordinate bus of a specific
++		bridge device, writing 1 to this will try to do it.  This will
++		affect all devices attached to the system through this bridge
++		similiar to writing 1 to their individual "reset" file, so use
++		with caution.
 +
- 		/* get the index of the first leaf of the 4 leaf
- 		 * group containing the specified leaf (leafno).
- 		 */
+ What:		/sys/bus/pci/devices/.../vpd
+ Date:		February 2008
+ Contact:	Ben Hutchings <bwh@kernel.org>
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index 5d0f4db1cab78..3e5a117f5b5d6 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -521,6 +521,31 @@ static ssize_t bus_rescan_store(struct device *dev,
+ static struct device_attribute dev_attr_bus_rescan = __ATTR(rescan, 0200, NULL,
+ 							    bus_rescan_store);
+ 
++static ssize_t reset_subordinate_store(struct device *dev,
++				struct device_attribute *attr,
++				const char *buf, size_t count)
++{
++	struct pci_dev *pdev = to_pci_dev(dev);
++	struct pci_bus *bus = pdev->subordinate;
++	unsigned long val;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return -EPERM;
++
++	if (kstrtoul(buf, 0, &val) < 0)
++		return -EINVAL;
++
++	if (val) {
++		int ret = __pci_reset_bus(bus);
++
++		if (ret)
++			return ret;
++	}
++
++	return count;
++}
++static DEVICE_ATTR_WO(reset_subordinate);
++
+ #if defined(CONFIG_PM) && defined(CONFIG_ACPI)
+ static ssize_t d3cold_allowed_store(struct device *dev,
+ 				    struct device_attribute *attr,
+@@ -625,6 +650,7 @@ static struct attribute *pci_dev_attrs[] = {
+ static struct attribute *pci_bridge_attrs[] = {
+ 	&dev_attr_subordinate_bus_number.attr,
+ 	&dev_attr_secondary_bus_number.attr,
++	&dev_attr_reset_subordinate.attr,
+ 	NULL,
+ };
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 08f170fd3efb3..dd3c6dcb47ae4 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5885,7 +5885,7 @@ EXPORT_SYMBOL_GPL(pci_probe_reset_bus);
+  *
+  * Same as above except return -EAGAIN if the bus cannot be locked
+  */
+-static int __pci_reset_bus(struct pci_bus *bus)
++int __pci_reset_bus(struct pci_bus *bus)
+ {
+ 	int rc;
+ 
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 14d00ce45bfa9..1cdc2c9547a7e 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -104,6 +104,7 @@ bool pci_reset_supported(struct pci_dev *dev);
+ void pci_init_reset_methods(struct pci_dev *dev);
+ int pci_bridge_secondary_bus_reset(struct pci_dev *dev);
+ int pci_bus_error_reset(struct pci_dev *dev);
++int __pci_reset_bus(struct pci_bus *bus);
+ 
+ struct pci_cap_saved_data {
+ 	u16		cap_nr;
 -- 
 2.43.0
 
