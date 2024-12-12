@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-101397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7199EEC2C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E1B9EEE28
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5181663E9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0F6716DBCF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D81217F48;
-	Thu, 12 Dec 2024 15:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42412223E60;
+	Thu, 12 Dec 2024 15:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWCM/LrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VLV4OEfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C357A217F29;
-	Thu, 12 Dec 2024 15:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F255F2210CD;
+	Thu, 12 Dec 2024 15:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017413; cv=none; b=Z03n5PVj2GAEBZjelqPBbxUv91EVkho5eet8/ICpQ4vwzHc97HxToakW8xMvNHdxv3e92jhrfbjeseFSjo96pOfH8IgPL+MNiBeEAmUJQwRsqUgKbR4s/XSm5SywXP0XUMMpdpTpvQMk9iW5Msgeqc4iWKlFSub7eAxpKiDuGYM=
+	t=1734018504; cv=none; b=K5ocjRLYFee+KXnAVswqeIA2St1JCFvvdM/HmfIT/QflsmvglfIJ7RhlcMkUojmBPSQrUUTobTHenL378OeW/zyRZED+rnUVGFM3XajQtnpLCv2XW/MvhOyBmXleKDAJ/1wdqZrIxqOuDvpTXXIWkGeYCPmknWRy0qKL78e6qjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017413; c=relaxed/simple;
-	bh=8VSSiezTJ+CGseyN7fCqou2pCfH4YVW8y8umHLCbXAU=;
+	s=arc-20240116; t=1734018504; c=relaxed/simple;
+	bh=lO5l5hS6+puC2D6IeLd2RARTyXt3vHuwpzIg/NaHfLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OJtesK+X2iXDhaubGg6bL+P/rGA2ATKHjRfjP1d+Lmmg8uWG+A0uWHXSd8mHmgfsZf3qObk804gApIbiAnN612xHjOKhfYjpyPvyD5SGD1HUIWSrFyBoVBIzGTMJcpf6bStU2y2cf/Udq/oZfPRoi1cCFSO/lUsRAFYnR0OKbhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWCM/LrM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A28BC4CECE;
-	Thu, 12 Dec 2024 15:30:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S9eWVCB5iHqC+31y+w+knBNqJ/VBCUUbJuQEtrJzvQrJ6hYLds6QUo9lNrVtQhjeVTwgSZgAVxxm+aIwGjDvXRSVoMe6a3eFPm9VF7LaQmDFdx3vqNhr6wGOuRynI8IZ5NWNfFq7CUk8vDRvnK7xou6m+hAwNM8OArpl5sAZ3fI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VLV4OEfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA74C4CECE;
+	Thu, 12 Dec 2024 15:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017413;
-	bh=8VSSiezTJ+CGseyN7fCqou2pCfH4YVW8y8umHLCbXAU=;
+	s=korg; t=1734018503;
+	bh=lO5l5hS6+puC2D6IeLd2RARTyXt3vHuwpzIg/NaHfLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWCM/LrMp7i+qAxosE4HkzAUiUHJO244y4+ZHbLLiFC+4NdFUb7TJGRTQ8zN4yO7d
-	 oWI9rkJJKUu1EPYIY1fEKr789FXBu0eBkTj0/aX3N7KnOwggeDL8/Er1kuQxCeh8d+
-	 An5dWjK0LKJP5kpu8beuZdoAsD3j8nnfFUZ+2RN8=
+	b=VLV4OEfUCowoJPdv4wC077IzzzC2PeQEOkqHp4kcUsyZ3Tg/FQDEd3b56UhZQcOGP
+	 VXESqIFgwaui4Ceqq1VqIJCdKhIjjBBohYZZ2S/cPX8jyfJ16zcoVFfcZ0Onxx9o3M
+	 6cYihSR/3NQpgYHSLf5NpKTw12SLGEreZaKBLCt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 461/466] drm/amdgpu: rework resume handling for display (v2)
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 311/356] rtc: cmos: avoid taking rtc_lock for extended period of time
 Date: Thu, 12 Dec 2024 16:00:30 +0100
-Message-ID: <20241212144325.081964604@linuxfoundation.org>
+Message-ID: <20241212144256.845745620@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +64,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 73dae652dcac776296890da215ee7dec357a1032 upstream.
+[ Upstream commit 0a6efab33eab4e973db26d9f90c3e97a7a82e399 ]
 
-Split resume into a 3rd step to handle displays when DCC is
-enabled on DCN 4.0.1.  Move display after the buffer funcs
-have been re-enabled so that the GPU will do the move and
-properly set the DCC metadata for DCN.
+On my device reading entirety of /sys/devices/pnp0/00:03/cmos_nvram0/nvmem
+takes about 9 msec during which time interrupts are off on the CPU that
+does the read and the thread that performs the read can not be migrated
+or preempted by another higher priority thread (RT or not).
 
-v2: fix fence irq resume ordering
+Allow readers and writers be preempted by taking and releasing rtc_lock
+spinlock for each individual byte read or written rather than once per
+read/write request.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.11.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Link: https://lore.kernel.org/r/Zxv8QWR21AV4ztC5@google.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   45 +++++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+ drivers/rtc/rtc-cmos.c | 31 +++++++++++++++----------------
+ 1 file changed, 15 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3666,7 +3666,7 @@ static int amdgpu_device_ip_resume_phase
-  *
-  * @adev: amdgpu_device pointer
-  *
-- * First resume function for hardware IPs.  The list of all the hardware
-+ * Second resume function for hardware IPs.  The list of all the hardware
-  * IPs that make up the asic is walked and the resume callbacks are run for
-  * all blocks except COMMON, GMC, and IH.  resume puts the hardware into a
-  * functional state after a suspend and updates the software state as
-@@ -3684,6 +3684,7 @@ static int amdgpu_device_ip_resume_phase
- 		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_COMMON ||
- 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_GMC ||
- 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_IH ||
-+		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE ||
- 		    adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_PSP)
- 			continue;
- 		r = adev->ip_blocks[i].version->funcs->resume(adev);
-@@ -3699,6 +3700,36 @@ static int amdgpu_device_ip_resume_phase
- }
+diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
+index 35dca2accbb8d..5849d2970bba4 100644
+--- a/drivers/rtc/rtc-cmos.c
++++ b/drivers/rtc/rtc-cmos.c
+@@ -645,18 +645,17 @@ static int cmos_nvram_read(void *priv, unsigned int off, void *val,
+ 	unsigned char *buf = val;
  
- /**
-+ * amdgpu_device_ip_resume_phase3 - run resume for hardware IPs
-+ *
-+ * @adev: amdgpu_device pointer
-+ *
-+ * Third resume function for hardware IPs.  The list of all the hardware
-+ * IPs that make up the asic is walked and the resume callbacks are run for
-+ * all DCE.  resume puts the hardware into a functional state after a suspend
-+ * and updates the software state as necessary.  This function is also used
-+ * for restoring the GPU after a GPU reset.
-+ *
-+ * Returns 0 on success, negative error code on failure.
-+ */
-+static int amdgpu_device_ip_resume_phase3(struct amdgpu_device *adev)
-+{
-+	int i, r;
-+
-+	for (i = 0; i < adev->num_ip_blocks; i++) {
-+		if (!adev->ip_blocks[i].status.valid || adev->ip_blocks[i].status.hw)
-+			continue;
-+		if (adev->ip_blocks[i].version->type == AMD_IP_BLOCK_TYPE_DCE) {
-+			r = adev->ip_blocks[i].version->funcs->resume(adev);
-+			if (r)
-+				return r;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-  * amdgpu_device_ip_resume - run resume for hardware IPs
-  *
-  * @adev: amdgpu_device pointer
-@@ -3727,6 +3758,13 @@ static int amdgpu_device_ip_resume(struc
- 	if (adev->mman.buffer_funcs_ring->sched.ready)
- 		amdgpu_ttm_set_buffer_funcs_status(adev, true);
- 
-+	if (r)
-+		return r;
-+
-+	amdgpu_fence_driver_hw_init(adev);
-+
-+	r = amdgpu_device_ip_resume_phase3(adev);
-+
- 	return r;
- }
- 
-@@ -4809,7 +4847,6 @@ int amdgpu_device_resume(struct drm_devi
- 		dev_err(adev->dev, "amdgpu_device_ip_resume failed (%d).\n", r);
- 		goto exit;
+ 	off += NVRAM_OFFSET;
+-	spin_lock_irq(&rtc_lock);
+-	for (; count; count--, off++) {
++	for (; count; count--, off++, buf++) {
++		guard(spinlock_irq)(&rtc_lock);
+ 		if (off < 128)
+-			*buf++ = CMOS_READ(off);
++			*buf = CMOS_READ(off);
+ 		else if (can_bank2)
+-			*buf++ = cmos_read_bank2(off);
++			*buf = cmos_read_bank2(off);
+ 		else
+-			break;
++			return -EIO;
  	}
--	amdgpu_fence_driver_hw_init(adev);
+-	spin_unlock_irq(&rtc_lock);
  
- 	if (!adev->in_s0ix) {
- 		r = amdgpu_amdkfd_resume(adev, adev->in_runpm);
-@@ -5431,6 +5468,10 @@ int amdgpu_do_asic_reset(struct list_hea
- 				if (tmp_adev->mman.buffer_funcs_ring->sched.ready)
- 					amdgpu_ttm_set_buffer_funcs_status(tmp_adev, true);
+-	return count ? -EIO : 0;
++	return 0;
+ }
  
-+				r = amdgpu_device_ip_resume_phase3(tmp_adev);
-+				if (r)
-+					goto out;
+ static int cmos_nvram_write(void *priv, unsigned int off, void *val,
+@@ -671,23 +670,23 @@ static int cmos_nvram_write(void *priv, unsigned int off, void *val,
+ 	 * NVRAM to update, updating checksums is also part of its job.
+ 	 */
+ 	off += NVRAM_OFFSET;
+-	spin_lock_irq(&rtc_lock);
+-	for (; count; count--, off++) {
++	for (; count; count--, off++, buf++) {
+ 		/* don't trash RTC registers */
+ 		if (off == cmos->day_alrm
+ 				|| off == cmos->mon_alrm
+ 				|| off == cmos->century)
+-			buf++;
+-		else if (off < 128)
+-			CMOS_WRITE(*buf++, off);
++			continue;
 +
- 				if (vram_lost)
- 					amdgpu_device_fill_reset_magic(tmp_adev);
++		guard(spinlock_irq)(&rtc_lock);
++		if (off < 128)
++			CMOS_WRITE(*buf, off);
+ 		else if (can_bank2)
+-			cmos_write_bank2(*buf++, off);
++			cmos_write_bank2(*buf, off);
+ 		else
+-			break;
++			return -EIO;
+ 	}
+-	spin_unlock_irq(&rtc_lock);
  
+-	return count ? -EIO : 0;
++	return 0;
+ }
+ 
+ /*----------------------------------------------------------------*/
+-- 
+2.43.0
+
 
 
 
