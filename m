@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A8B9EEBFE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DEBD9EF2E4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A649D1882B37
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F103D189CDFA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67C112153DF;
-	Thu, 12 Dec 2024 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647BE2253FB;
+	Thu, 12 Dec 2024 16:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nV5bjKaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5cYnv49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239AE748A;
-	Thu, 12 Dec 2024 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFF722333E;
+	Thu, 12 Dec 2024 16:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017282; cv=none; b=ukCBCGx62xCLVvjn6VIRgcLQImcjkPTpOy6y0d2jvSuQPflNVuYvn0kqie5M1xKzEjrZU5SItCNe6G93nN43dEHatJkn5M9e7RIe7w0D64wdh6HtBj0jDD1gbspWhzKHRqtSZG2mnmwUsRd+9CFbWq6B/Nx+eJvAvbfLi27FEH8=
+	t=1734021150; cv=none; b=aCt8jkJBSxCeo5nfZz+sC6L6Cx7JLX3AaDCgpKQxxY2TidOBZe3mqLuxqnWzV0O2WwCd7mBPbJ2dGgmUd7/XR6KpM3tEgtnzFMDNmY38WVC//6cNJoWaWeXglr7nVa/Qk9nHJXYHthQDvr1C1u80t1kXSvepAo1HtVCq3f9qslI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017282; c=relaxed/simple;
-	bh=5w69gvBC6i5ITaLcJlY38Wz7rCsffOpqsfNqYoxoMjs=;
+	s=arc-20240116; t=1734021150; c=relaxed/simple;
+	bh=79NnoUeh9OBmXuBaGNsYHubYBPhedgFx0sBbM/N3qXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tvg6uVq4pd32N6e4KbVFQEt//LQj8bV9mlzGSo9+ZAPtYVnwv9VclvXg0k424i+YqfjHQWiX1iHm6xLY52YrtKZcZV6eZ3IGiQCTl/3sG13GNJZClH+n5Ahi+f1zfPqVTqhO0qUE33tTLVWpfBns7bUY0QF9RjFKUznzeVCczpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nV5bjKaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8A5C4CECE;
-	Thu, 12 Dec 2024 15:28:01 +0000 (UTC)
+	 MIME-Version; b=c4Wf/zEUueiqJjmihv/4FDU2R+G+s8sRX84CfcwH+r0WwCIHkes7ISxxtHBrCBoX81buoINaCc8bMpc9tGknxb48TPmBme644g2txIuWTalvDrYrAeVfFiAwouD02QicynmMDstWfy8deqfRIKHbRorVwifMFW8A/Df5CE+ou3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5cYnv49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551ABC4CED3;
+	Thu, 12 Dec 2024 16:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017282;
-	bh=5w69gvBC6i5ITaLcJlY38Wz7rCsffOpqsfNqYoxoMjs=;
+	s=korg; t=1734021150;
+	bh=79NnoUeh9OBmXuBaGNsYHubYBPhedgFx0sBbM/N3qXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nV5bjKaNBdXUaA9esbpnahNHgo5c3SxNf9376TIESciqQDzDG/dUIwY1qMyDHm42+
-	 K858iqOAkgxQQM1NdudHMYH5vN/RluCbqACJF2OesgzJVWZb4Igy7+nsFDQSrlD98D
-	 dap6s5i0wf+2vO1PCDIZdDrPTKL36sxTWv4d8kwA=
+	b=p5cYnv49g/KFQ7BBRLKZFR8bGJ3eNRNGtm/yPmH3ftUBJzi4mz0Jy/FWet+hq//ot
+	 GyLy0lu5vzewVHPk+y3ByGjhJhg3GmX3Zxi+5ryMhK3HjulEehePZFq2L9Iif4A3+y
+	 TMIJW/ORUMyNqhE6nqy0+V/oid8AY+P1iBQHS7kA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Liao Chen <liaochen4@huawei.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 435/466] drm/xe/forcewake: Add a helper xe_force_wake_ref_has_domain()
+Subject: [PATCH 6.1 659/772] drm/mcde: Enable module autoloading
 Date: Thu, 12 Dec 2024 16:00:04 +0100
-Message-ID: <20241212144324.053867621@linuxfoundation.org>
+Message-ID: <20241212144417.152875100@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 9d62b07027f0710b7af03d78780d0a6c2425bc1e ]
+[ Upstream commit 8a16b5cdae26207ff4c22834559384ad3d7bc970 ]
 
-The helper xe_force_wake_ref_has_domain() checks if the input domain
-has been successfully reference-counted and awakened in the reference.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-v2
-- Fix commit message and kernel-doc (Michal)
-- Remove unnecessary paranthesis (Michal)
-
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241014075601.2324382-4-himal.prasad.ghimiray@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Stable-dep-of: 5dce85fecb87 ("drm/xe: Move the coredump registration to the worker thread")
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240902113320.903147-4-liaochen4@huawei.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_force_wake.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/mcde/mcde_drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_force_wake.h b/drivers/gpu/drm/xe/xe_force_wake.h
-index a2577672f4e3e..1608a55edc846 100644
---- a/drivers/gpu/drm/xe/xe_force_wake.h
-+++ b/drivers/gpu/drm/xe/xe_force_wake.h
-@@ -46,4 +46,20 @@ xe_force_wake_assert_held(struct xe_force_wake *fw,
- 	xe_gt_assert(fw->gt, fw->awake_domains & domain);
- }
+diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
+index 1c4482ad507d9..78bdfd855d11b 100644
+--- a/drivers/gpu/drm/mcde/mcde_drv.c
++++ b/drivers/gpu/drm/mcde/mcde_drv.c
+@@ -468,6 +468,7 @@ static const struct of_device_id mcde_of_match[] = {
+ 	},
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, mcde_of_match);
  
-+/**
-+ * xe_force_wake_ref_has_domain - verifies if the domains are in fw_ref
-+ * @fw_ref : the force_wake reference
-+ * @domain : forcewake domain to verify
-+ *
-+ * This function confirms whether the @fw_ref includes a reference to the
-+ * specified @domain.
-+ *
-+ * Return: true if domain is refcounted.
-+ */
-+static inline bool
-+xe_force_wake_ref_has_domain(unsigned int fw_ref, enum xe_force_wake_domains domain)
-+{
-+	return fw_ref & domain;
-+}
-+
- #endif
+ static struct platform_driver mcde_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
