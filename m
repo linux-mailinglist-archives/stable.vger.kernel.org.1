@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2019EF3D8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:03:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62F09EEB71
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA30B28EB66
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 687EC283477
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FC921B8E1;
-	Thu, 12 Dec 2024 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBFC212B0F;
+	Thu, 12 Dec 2024 15:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPGQC6tW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjFxMhqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780EB21CFF0;
-	Thu, 12 Dec 2024 16:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5C32054F8;
+	Thu, 12 Dec 2024 15:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022769; cv=none; b=jkPXD1KvVDDf0S5lAsJKaZbMmixikbe6IV5FjGtjvSLKog0RY/tIexanqloHTtbUPTxWWK6SSt5IzH5qsGPBRfbUeuBBu6DWaw1CC3iRXu01a0/iV2VEY5wNsWHuFzXbDeDPmGsR8KRtwIa12ywURgQan3RTI1u/TqJqDKkveUA=
+	t=1734017115; cv=none; b=I2RZuh3IUy6/2EWezj7cfSrbuSphRY+UJfSBozmt7T3Ek2oby/A7Wmd9gcTs60j0HzwHwOOYvh5Vc5lkFw86q05TwvtjKXY8OdDDmZHboB/ucy/V0TbhHLoWBOaShJDFmBFU3Y0ZkUGkAFgOh+0igXkPj247DNyx0NZDwW5LVN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022769; c=relaxed/simple;
-	bh=/dt5IZuSKGZIGeqFtxj9HqjKZPtMzaxPGBLJu/RCWnI=;
+	s=arc-20240116; t=1734017115; c=relaxed/simple;
+	bh=N+pBipm4iyv/dqASkPIEU5gLolWXpPBR+dTq3vmZyaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D99gi4WClStFOhylElP0xn21Ex+vvQdkSQujDrJICqcc7DmznuY65plBAB2BagSBDSPxfqXrn9YIRidaPwLrLzmE7JFor+xE6CU2NgZXLGxMeUtcyFO6LyZyYyjhiEqA2+BTjE4eKp78PFvOWtnOs85X8PuAKKT2uPzb6T+2Oog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPGQC6tW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44BDC4CECE;
-	Thu, 12 Dec 2024 16:59:28 +0000 (UTC)
+	 MIME-Version; b=q+GH34wVLlzNYR8t6D/cUPpMCb1pfYavTKAs64rSXStwODWdsfQ2bctOhttMqwYMAo7IwHUgURwq3TDB1WN6tZEMaeuGIfUjO0ilaFd2ai0Vx+Cv7EsWRzk1BUVnuRjdg+OdgsbIv2vzrpedsBkj0EMaF81WWxzeo743MFy2ab8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjFxMhqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715A2C4CECE;
+	Thu, 12 Dec 2024 15:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022769;
-	bh=/dt5IZuSKGZIGeqFtxj9HqjKZPtMzaxPGBLJu/RCWnI=;
+	s=korg; t=1734017113;
+	bh=N+pBipm4iyv/dqASkPIEU5gLolWXpPBR+dTq3vmZyaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPGQC6tWAM4EBBYhelvYPC3/l76Ni2oVCulgm/JZSYrCNW6s5QrlggVU8E7vk5Kbn
-	 q/1RDiHL4HsHx8ACEApUNvbKODov3ixTkhxXUuUlafzz7uwwMmEKWBaxovVYkubu2G
-	 Eh+LfsaG03ysdK8TlXrNQZZSF1lbBe/f8r93zquw=
+	b=DjFxMhqBs1NAg8G03+IQVA3U06jxUxtEgVm7ffbr6kOMiE5sDAn7bcgcvA26DGEtW
+	 rSEHbT+yVcD6baEWV7rbGzXCl8kvfMXBMkbRK8024Us0lWlVDkusJCKc1mqhurGYEq
+	 XY406LdStH7KQ1HSnnbzlQektxS2ShszrhshyZ+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiwei Bie <tiwei.btw@antgroup.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 332/565] um: ubd: Do not use drvdata in release
-Date: Thu, 12 Dec 2024 15:58:47 +0100
-Message-ID: <20241212144324.719089263@linuxfoundation.org>
+	Attila Fazekas <afazekas@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 359/466] rtla/timerlat: Make timerlat_top_cpu->*_count unsigned long long
+Date: Thu, 12 Dec 2024 15:58:48 +0100
+Message-ID: <20241212144320.965549223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiwei Bie <tiwei.btw@antgroup.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-commit 5bee35e5389f450a7eea7318deb9073e9414d3b1 upstream.
+[ Upstream commit 4eba4723c5254ba8251ecb7094a5078d5c300646 ]
 
-The drvdata is not available in release. Let's just use container_of()
-to get the ubd instance. Otherwise, removing a ubd device will result
-in a crash:
+Most fields of struct timerlat_top_cpu are unsigned long long, but the
+fields {irq,thread,user}_count are int (32-bit signed).
 
-RIP: 0033:blk_mq_free_tag_set+0x1f/0xba
-RSP: 00000000e2083bf0  EFLAGS: 00010246
-RAX: 000000006021463a RBX: 0000000000000348 RCX: 0000000062604d00
-RDX: 0000000004208060 RSI: 00000000605241a0 RDI: 0000000000000348
-RBP: 00000000e2083c10 R08: 0000000062414010 R09: 00000000601603f7
-R10: 000000000000133a R11: 000000006038c4bd R12: 0000000000000000
-R13: 0000000060213a5c R14: 0000000062405d20 R15: 00000000604f7aa0
-Kernel panic - not syncing: Segfault with no mm
-CPU: 0 PID: 17 Comm: kworker/0:1 Not tainted 6.8.0-rc3-00107-gba3f67c11638 #1
-Workqueue: events mc_work_proc
-Stack:
- 00000000 604f7ef0 62c5d000 62405d20
- e2083c30 6002c776 6002c755 600e47ff
- e2083c60 6025ffe3 04208060 603d36e0
-Call Trace:
- [<6002c776>] ubd_device_release+0x21/0x55
- [<6002c755>] ? ubd_device_release+0x0/0x55
- [<600e47ff>] ? kfree+0x0/0x100
- [<6025ffe3>] device_release+0x70/0xba
- [<60381d6a>] kobject_put+0xb5/0xe2
- [<6026027b>] put_device+0x19/0x1c
- [<6026a036>] platform_device_put+0x26/0x29
- [<6026ac5a>] platform_device_unregister+0x2c/0x2e
- [<6002c52e>] ubd_remove+0xb8/0xd6
- [<6002bb74>] ? mconsole_reply+0x0/0x50
- [<6002b926>] mconsole_remove+0x160/0x1cc
- [<6002bbbc>] ? mconsole_reply+0x48/0x50
- [<6003379c>] ? um_set_signals+0x3b/0x43
- [<60061c55>] ? update_min_vruntime+0x14/0x70
- [<6006251f>] ? dequeue_task_fair+0x164/0x235
- [<600620aa>] ? update_cfs_group+0x0/0x40
- [<603a0e77>] ? __schedule+0x0/0x3ed
- [<60033761>] ? um_set_signals+0x0/0x43
- [<6002af6a>] mc_work_proc+0x77/0x91
- [<600520b4>] process_scheduled_works+0x1af/0x2c3
- [<6004ede3>] ? assign_work+0x0/0x58
- [<600527a1>] worker_thread+0x2f7/0x37a
- [<6004ee3b>] ? set_pf_worker+0x0/0x64
- [<6005765d>] ? arch_local_irq_save+0x0/0x2d
- [<60058e07>] ? kthread_exit+0x0/0x3a
- [<600524aa>] ? worker_thread+0x0/0x37a
- [<60058f9f>] kthread+0x130/0x135
- [<6002068e>] new_thread_handler+0x85/0xb6
+This leads to overflow when tracing on a large number of CPUs for a long
+enough time:
+$ rtla timerlat top -a20 -c 1-127 -d 12h
+...
+  0 12:00:00   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+ 1 #43200096  |        0         0         1         2 |        3         2         6        12
+...
+127 #43200096  |        0         0         1         2 |        3         2         5        11
+ALL #119144 e4 |                  0         5         4 |                  2        28        16
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
-Acked-By: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Link: https://patch.msgid.link/20241104163203.435515-3-tiwei.btw@antgroup.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The average latency should be 0-1 for IRQ and 5-6 for thread, but is
+reported as 5 and 28, about 4 to 5 times more, due to the count
+overflowing when summed over all CPUs: 43200096 * 127 = 5486412192,
+however, 1191444898 (= 5486412192 mod MAX_INT) is reported instead, as
+seen on the last line of the output, and the averages are thus ~4.6
+times higher than they should be (5486412192 / 1191444898 = ~4.6).
+
+Fix the issue by changing {irq,thread,user}_count fields to unsigned
+long long, similarly to other fields in struct timerlat_top_cpu and to
+the count variable in timerlat_top_print_sum.
+
+Link: https://lore.kernel.org/20241011121015.2868751-1-tglozar@redhat.com
+Reported-by: Attila Fazekas <afazekas@redhat.com>
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/ubd_kern.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/rtla/src/timerlat_top.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/um/drivers/ubd_kern.c
-+++ b/arch/um/drivers/ubd_kern.c
-@@ -814,7 +814,7 @@ static int ubd_open_dev(struct ubd *ubd_
+diff --git a/tools/tracing/rtla/src/timerlat_top.c b/tools/tracing/rtla/src/timerlat_top.c
+index 3b62519a412fc..ac2ff38a57ee5 100644
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -54,9 +54,9 @@ struct timerlat_top_params {
+ };
  
- static void ubd_device_release(struct device *dev)
- {
--	struct ubd *ubd_dev = dev_get_drvdata(dev);
-+	struct ubd *ubd_dev = container_of(dev, struct ubd, pdev.dev);
+ struct timerlat_top_cpu {
+-	int			irq_count;
+-	int			thread_count;
+-	int			user_count;
++	unsigned long long	irq_count;
++	unsigned long long	thread_count;
++	unsigned long long	user_count;
  
- 	blk_mq_free_tag_set(&ubd_dev->tag_set);
- 	*ubd_dev = ((struct ubd) DEFAULT_UBD);
+ 	unsigned long long	cur_irq;
+ 	unsigned long long	min_irq;
+@@ -280,7 +280,7 @@ static void timerlat_top_print(struct osnoise_tool *top, int cpu)
+ 	/*
+ 	 * Unless trace is being lost, IRQ counter is always the max.
+ 	 */
+-	trace_seq_printf(s, "%3d #%-9d |", cpu, cpu_data->irq_count);
++	trace_seq_printf(s, "%3d #%-9llu |", cpu, cpu_data->irq_count);
+ 
+ 	if (!cpu_data->irq_count) {
+ 		trace_seq_printf(s, "%s %s %s %s |", no_value, no_value, no_value, no_value);
+-- 
+2.43.0
+
 
 
 
