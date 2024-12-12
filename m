@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D369EEDB3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74769EEBF8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38A8B1694FA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A97188B1E5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6156222D7D;
-	Thu, 12 Dec 2024 15:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C3B205ACF;
+	Thu, 12 Dec 2024 15:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/rSTk7Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDhk1Nox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D67221D88;
-	Thu, 12 Dec 2024 15:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37381487CD;
+	Thu, 12 Dec 2024 15:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018274; cv=none; b=EpXZ4nJ6c47D24f0sutBLcn9dVrLCm5P8She02EwYezlR+NtT1VsfZotBlUxjDYpZ4VPh+TCTKT9gvNpAo2lGLmZi7uaeZd+QZypgYNhUVBZkrzpJFZbEfXyHYjQ3CCjJqxVKXDih9DdFqZpRWB02dm7/tUlAenSXZUryUyHqS8=
+	t=1734017259; cv=none; b=tLfGjA8Guwxt2fWP79WVrY0LyxsrNFC00BbylZSOT3O7hhv7khUypNYRfwYLiDR8FRCDlyeKzdxqonP4Jgwo3TCyNCwtHPq9qrXrbYu0OLtwGfOfYXWBFHILhKdn7jnRSjJrMzjFZz7XRYEm3BCVM09nsQ0tE1eChBcbuMj0Td8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018274; c=relaxed/simple;
-	bh=S14lHRhFsNw24nA/hTkY9HKixPZ/McmjNAaMxoR7Gag=;
+	s=arc-20240116; t=1734017259; c=relaxed/simple;
+	bh=njxTDeii+tiUcQWaqUS8HjwJ3Mh3ndPHyZ7mJUFtQTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=equEjoFuELa2T7WU1cs1fH3sQjyhvwxxsV4qsNQNZ/AplgdCutHfR+fXWTS1333NhPux8ACV61j3XzQULhculnt3OsL3sNvjFs6312Z9zxs1qS5Kd+IRtniHEybjszqRauN4Qdn2zneTEMNShEB1l5BACqFO38U03S758JH5WyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/rSTk7Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9908C4CECE;
-	Thu, 12 Dec 2024 15:44:33 +0000 (UTC)
+	 MIME-Version; b=MK0wIqemqr0S4uXeYSYzifVlJlbHSOPoQ/jtr9OCmTZAhbYGYhiU7+rZs2uPs2uwjVNkN02EbaKX/jdEia+Q2sn+C1njuANc2fUqLp5mEcw4vua5Y9Je5+0Z+YOR4L8v63ovMvfqZzEvp22EUyTxpNNeBeHTS9sjbZ08Lewc1X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDhk1Nox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D4CC4CECE;
+	Thu, 12 Dec 2024 15:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018274;
-	bh=S14lHRhFsNw24nA/hTkY9HKixPZ/McmjNAaMxoR7Gag=;
+	s=korg; t=1734017259;
+	bh=njxTDeii+tiUcQWaqUS8HjwJ3Mh3ndPHyZ7mJUFtQTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/rSTk7ZQZKou1MXXFAdAT2VfSXibKuXBE4cHYGkd9v0Ef18Wv8GA9Llt8d43xsoN
-	 NbtqkkvMGo8xJ3bVomtTIb4hFxH638QPhHejOOpprDjK7/KwWxxEaoxRK1mPFVudsM
-	 i1KZajB8cPX9VHGKh0aWXzZpRmgJnBtAUed7Js8Q=
+	b=VDhk1NoxA+qrmnHzy0kGz6Cr3MfcmGXJcrTkckuWtV7HBIHe2F60YF1b+u8+0odA1
+	 zoVOu3zbyf7pZYARrPdeLAAAVDT6xx4WxVHlBCNh97Ywa/SeGVAPCw5X9GSTDjG+eO
+	 Oa+qsGXl243ibn2cTexQthBYJDIFaQFNc2gRbw2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@seco.com>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/356] fsl/fman: Validate cell-index value obtained from Device Tree
+Subject: [PATCH 6.12 397/466] PCI: Add ACS quirk for Wangxun FF5xxx NICs
 Date: Thu, 12 Dec 2024 15:59:26 +0100
-Message-ID: <20241212144254.366497858@linuxfoundation.org>
+Message-ID: <20241212144322.448936777@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
 
-[ Upstream commit bd50c4125c98bd1a86f8e514872159700a9c678c ]
+[ Upstream commit aa46a3736afcb7b0793766d22479b8b99fc1b322 ]
 
-Cell-index value is obtained from Device Tree and then used to calculate
-the index for accessing arrays port_mfl[], mac_mfl[] and intr_mng[].
-In case of broken DT due to any error cell-index can contain any value
-and it is possible to go beyond the array boundaries which can lead
-at least to memory corruption.
+Wangxun FF5xxx NICs are similar to SFxxx, RP1000 and RP2000 NICs.  They may
+be multi-function devices, but they do not advertise an ACS capability.
 
-Validate cell-index value obtained from Device Tree.
+But the hardware does isolate FF5xxx functions as though it had an ACS
+capability and PCI_ACS_RR and PCI_ACS_CR were set in the ACS Control
+register, i.e., all peer-to-peer traffic is directed upstream instead of
+being routed internally.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Add ACS quirk for FF5xxx NICs in pci_quirk_wangxun_nic_acs() so the
+functions can be in independent IOMMU groups.
 
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://patch.msgid.link/20241028065824.15452-1-amishin@t-argos.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/E16053DB2B80E9A5+20241115024604.30493-1-mengyuanlou@net-swift.com
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fman/fman.c | 1 -
- drivers/net/ethernet/freescale/fman/fman.h | 3 +++
- drivers/net/ethernet/freescale/fman/mac.c  | 5 +++++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/pci/quirks.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fman/fman.c b/drivers/net/ethernet/freescale/fman/fman.c
-index d96028f01770c..fb416d60dcd72 100644
---- a/drivers/net/ethernet/freescale/fman/fman.c
-+++ b/drivers/net/ethernet/freescale/fman/fman.c
-@@ -24,7 +24,6 @@
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index dccb60c1d9cc3..8103bc24a54ea 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4996,18 +4996,21 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev, u16 acs_flags)
+ }
  
- /* General defines */
- #define FMAN_LIODN_TBL			64	/* size of LIODN table */
--#define MAX_NUM_OF_MACS			10
- #define FM_NUM_OF_FMAN_CTRL_EVENT_REGS	4
- #define BASE_RX_PORTID			0x08
- #define BASE_TX_PORTID			0x28
-diff --git a/drivers/net/ethernet/freescale/fman/fman.h b/drivers/net/ethernet/freescale/fman/fman.h
-index 2ea575a46675b..74eb62eba0d7f 100644
---- a/drivers/net/ethernet/freescale/fman/fman.h
-+++ b/drivers/net/ethernet/freescale/fman/fman.h
-@@ -74,6 +74,9 @@
- #define BM_MAX_NUM_OF_POOLS		64 /* Buffers pools */
- #define FMAN_PORT_MAX_EXT_POOLS_NUM	8  /* External BM pools per Rx port */
- 
-+/* General defines */
-+#define MAX_NUM_OF_MACS			10
-+
- struct fman; /* FMan data */
- 
- /* Enum for defining port types */
-diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ethernet/freescale/fman/mac.c
-index 11da139082e1b..1916a2ac48b9f 100644
---- a/drivers/net/ethernet/freescale/fman/mac.c
-+++ b/drivers/net/ethernet/freescale/fman/mac.c
-@@ -259,6 +259,11 @@ static int mac_probe(struct platform_device *_of_dev)
- 		err = -EINVAL;
- 		goto _return_dev_put;
+ /*
+- * Wangxun 10G/1G NICs have no ACS capability, and on multi-function
+- * devices, peer-to-peer transactions are not be used between the functions.
+- * So add an ACS quirk for below devices to isolate functions.
++ * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
++ * multi-function devices, the hardware isolates the functions by
++ * directing all peer-to-peer traffic upstream as though PCI_ACS_RR and
++ * PCI_ACS_CR were set.
+  * SFxxx 1G NICs(em).
+  * RP1000/RP2000 10G NICs(sp).
++ * FF5xxx 40G/25G/10G NICs(aml).
+  */
+ static int  pci_quirk_wangxun_nic_acs(struct pci_dev *dev, u16 acs_flags)
+ {
+ 	switch (dev->device) {
+-	case 0x0100 ... 0x010F:
+-	case 0x1001:
+-	case 0x2001:
++	case 0x0100 ... 0x010F: /* EM */
++	case 0x1001: case 0x2001: /* SP */
++	case 0x5010: case 0x5025: case 0x5040: /* AML */
++	case 0x5110: case 0x5125: case 0x5140: /* AML */
+ 		return pci_acs_ctrl_enabled(acs_flags,
+ 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
  	}
-+	if (val >= MAX_NUM_OF_MACS) {
-+		dev_err(dev, "cell-index value is too big for %pOF\n", mac_node);
-+		err = -EINVAL;
-+		goto _return_dev_put;
-+	}
- 	priv->cell_index = (u8)val;
- 
- 	/* Get the MAC address */
 -- 
 2.43.0
 
