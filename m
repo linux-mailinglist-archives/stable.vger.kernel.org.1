@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D989EF351
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C81C9EF05A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A05A189BF60
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDB631892953
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAC922E9EF;
-	Thu, 12 Dec 2024 16:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DF0235C28;
+	Thu, 12 Dec 2024 16:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYnQdH/x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVu/D15Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECBC2144C0;
-	Thu, 12 Dec 2024 16:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBF3223E71;
+	Thu, 12 Dec 2024 16:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021613; cv=none; b=rFnHYq5yoQA40JlWUuet0CwSyP7fdaIDsBHv3kPgFoiosDddWGvvdCh1O9q/dmV65OnJHa9LAw6TNdWZyntc1QrSglv9FGID4k1X34RUcKnxXS60V91COfKuDL3BXNT/tMSGh+KifHhU6EXohocYD7AKYEhpXdhkM9qwve4DMxM=
+	t=1734019659; cv=none; b=Sv90TuS+AEh04uzl01vTlfgzgG06LzY6GF+H1xKZ5ni9zMX9n8+uQ9IG109f8q5POoMDzJ3MWE4mADo2GptVYSUayOPrCWawK4Lpi4vbqMz/wfo6NZr+IVfePcqZgk2FQ0Iuxerl3S6+mPVos1b5b7CBR82ucphPIzIbCzLB25s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021613; c=relaxed/simple;
-	bh=OR5HvGdfiBZUQ085f7e9OhCLkEJNrrK5PLV9DfWKVd4=;
+	s=arc-20240116; t=1734019659; c=relaxed/simple;
+	bh=hJYDUKstk0Dp5mxWZtfeIiqPOFwxl59MJw3jc8uKd6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNEzWrUfmstBc8EifCk4lnaVS1hWJq3GcB8sDQS/Y2v7oM1M6mZMY6wcaqKppRFRJaHo3IiUBnaTrbBXcFe9BLB4ezhOM0yg0OtGYboR2kMKVQBL5Zg8bVmHVd57PYRQdv2tEITf6xxG/k57gojbfKm9049n9ZYFarKlgKh0W24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYnQdH/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5539DC4CED3;
-	Thu, 12 Dec 2024 16:40:12 +0000 (UTC)
+	 MIME-Version; b=VTefGNE6qvX5jGzhsS1qcWJ/DVm5ux8uYVXgizOrP29f0Xs6dfqsqWlY8C/fNxprN6xIdpsFo9l7oCS0aBWk7mQwfJAWXwl/of889Z4QRd4hJEN78gXBS/lS/MUxubG4/VYBMT8eZw4XXwX/Dsjb8s4Jxwvx5fNysF0tIs/NKlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVu/D15Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC81C4CECE;
+	Thu, 12 Dec 2024 16:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021612;
-	bh=OR5HvGdfiBZUQ085f7e9OhCLkEJNrrK5PLV9DfWKVd4=;
+	s=korg; t=1734019658;
+	bh=hJYDUKstk0Dp5mxWZtfeIiqPOFwxl59MJw3jc8uKd6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYnQdH/xdPyKVBrxXQG+ME/Lt5tdsRAi6HNk0/SUetxUEJtfWWaFwl+9iDJWaEWxr
-	 +3mjOf4rFVYjBhA5xi7BuEViN80bZfFbcNXiPtLX9oZz61Z54V1cT2gMsYBYW7eVeo
-	 Q3UZXmGzy3erAXplqszSkqKpWIyWBdoIkFVEPWV0=
+	b=IVu/D15Q/aTon1k2heTei/hms8yH8vxTso7rSKVvtusQzSXr17ZQZMoelFZ7bg6iH
+	 6iCIIN1g3W+ClDNECdYvwfcxMudD0Uc1M5NNClp5mvllOTRcElA67dALZ/d8ntBXlu
+	 YqvO4AIH7BRtv7EloCSIi4ff+EyZONDt9KHPssQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mostafa Saleh <smostafa@google.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15 014/565] iommu/io-pgtable-arm: Fix stage-2 map/unmap for concatenated tables
-Date: Thu, 12 Dec 2024 15:53:29 +0100
-Message-ID: <20241212144312.015081621@linuxfoundation.org>
+	Qi Han <hanqi@vivo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 265/772] f2fs: compress: fix inconsistent update of i_blocks in release_compress_blocks and reserve_compress_blocks
+Date: Thu, 12 Dec 2024 15:53:30 +0100
+Message-ID: <20241212144400.862396912@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Qi Han <hanqi@vivo.com>
 
-commit d71fa842d33c48ac2809ae11d2379b5a788792cb upstream.
+[ Upstream commit 26413ce18e85de3dda2cd3d72c3c3e8ab8f4f996 ]
 
-ARM_LPAE_LVL_IDX() takes into account concatenated PGDs and can return
-an index spanning multiple page-table pages given a sufficiently large
-input address. However, when the resulting index is used to calculate
-the number of remaining entries in the page, the possibility of
-concatenation is ignored and we end up computing a negative upper bound:
+After release a file and subsequently reserve it, the FSCK flag is set
+when the file is deleted, as shown in the following backtrace:
 
-	max_entries = ARM_LPAE_PTES_PER_TABLE(data) - map_idx_start;
+F2FS-fs (dm-48): Inconsistent i_blocks, ino:401231, iblocks:1448, sectors:1472
+fs_rec_info_write_type+0x58/0x274
+f2fs_rec_info_write+0x1c/0x2c
+set_sbi_flag+0x74/0x98
+dec_valid_block_count+0x150/0x190
+f2fs_truncate_data_blocks_range+0x2d4/0x3cc
+f2fs_do_truncate_blocks+0x2fc/0x5f0
+f2fs_truncate_blocks+0x68/0x100
+f2fs_truncate+0x80/0x128
+f2fs_evict_inode+0x1a4/0x794
+evict+0xd4/0x280
+iput+0x238/0x284
+do_unlinkat+0x1ac/0x298
+__arm64_sys_unlinkat+0x48/0x68
+invoke_syscall+0x58/0x11c
 
-On the map path, this results in a negative 'mapped' value being
-returned but on the unmap path we can leak child tables if they are
-skipped in __arm_lpae_free_pgtable().
+For clusters of the following type, i_blocks are decremented by 1 and
+i_compr_blocks are incremented by 7 in release_compress_blocks, while
+updates to i_blocks and i_compr_blocks are skipped in reserve_compress_blocks.
 
-Introduce an arm_lpae_max_entries() helper to convert a table index into
-the remaining number of entries within a single page-table page.
+raw node:
+D D D D D D D D
+after compress:
+C D D D D D D D
+after reserve:
+C D D D D D D D
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20241024162516.2005652-2-smostafa@google.com
-[will: Tweaked comment and commit message]
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's update i_blocks and i_compr_blocks properly in reserve_compress_blocks.
+
+Fixes: eb8fbaa53374 ("f2fs: compress: fix to check unreleased compressed cluster")
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/io-pgtable-arm.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/f2fs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/io-pgtable-arm.c
-+++ b/drivers/iommu/io-pgtable-arm.c
-@@ -183,6 +183,18 @@ static phys_addr_t iopte_to_paddr(arm_lp
- 	return (paddr | (paddr << (48 - 12))) & (ARM_LPAE_PTE_ADDR_MASK << 4);
- }
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 6a2b5fcbe6799..a25b9bff76ffc 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3703,7 +3703,7 @@ static int reserve_compress_blocks(struct dnode_of_data *dn, pgoff_t count,
+ 		to_reserved = cluster_size - compr_blocks - reserved;
  
-+/*
-+ * Convert an index returned by ARM_LPAE_PGD_IDX(), which can point into
-+ * a concatenated PGD, into the maximum number of entries that can be
-+ * mapped in the same table page.
-+ */
-+static inline int arm_lpae_max_entries(int i, struct arm_lpae_io_pgtable *data)
-+{
-+	int ptes_per_table = ARM_LPAE_PTES_PER_TABLE(data);
-+
-+	return ptes_per_table - (i & (ptes_per_table - 1));
-+}
-+
- static bool selftest_running = false;
- 
- static dma_addr_t __arm_lpae_dma_addr(void *pages)
-@@ -361,7 +373,7 @@ static int __arm_lpae_map(struct arm_lpa
- 
- 	/* If we can install a leaf entry at this level, then do so */
- 	if (size == block_size) {
--		max_entries = ARM_LPAE_PTES_PER_TABLE(data) - map_idx_start;
-+		max_entries = arm_lpae_max_entries(map_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
- 		ret = arm_lpae_init_pte(data, iova, paddr, prot, lvl, num_entries, ptep);
- 		if (!ret && mapped)
-@@ -578,7 +590,7 @@ static size_t arm_lpae_split_blk_unmap(s
- 
- 	if (size == split_sz) {
- 		unmap_idx_start = ARM_LPAE_LVL_IDX(iova, lvl, data);
--		max_entries = ptes_per_table - unmap_idx_start;
-+		max_entries = arm_lpae_max_entries(unmap_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
- 	}
- 
-@@ -636,7 +648,7 @@ static size_t __arm_lpae_unmap(struct ar
- 
- 	/* If the size matches this level, we're in the right place */
- 	if (size == ARM_LPAE_BLOCK_SIZE(lvl, data)) {
--		max_entries = ARM_LPAE_PTES_PER_TABLE(data) - unmap_idx_start;
-+		max_entries = arm_lpae_max_entries(unmap_idx_start, data);
- 		num_entries = min_t(int, pgcount, max_entries);
- 
- 		while (i < num_entries) {
+ 		/* for the case all blocks in cluster were reserved */
+-		if (to_reserved == 1) {
++		if (reserved && to_reserved == 1) {
+ 			dn->ofs_in_node += cluster_size;
+ 			goto next;
+ 		}
+-- 
+2.43.0
+
 
 
 
