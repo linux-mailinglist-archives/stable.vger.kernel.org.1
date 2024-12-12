@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABA29EF316
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 010DA9EEA4C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9476628AEE3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5807282592
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB8D222D7C;
-	Thu, 12 Dec 2024 16:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F02E2163AB;
+	Thu, 12 Dec 2024 15:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1gFTVdm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqaanaib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AF5222D52;
-	Thu, 12 Dec 2024 16:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6BC213E97;
+	Thu, 12 Dec 2024 15:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022138; cv=none; b=Tio8rjNUuXahlz0XoARfLCCySHA/b/oKiyKNTJr13kka79hhDFChNgQDAI0bLMV7VhsTWKsMqHvbv58LEErX8WQGbaZa7A6pjC6LRoxvp+EBROC8xVWbMuyngYEvNRz9y6clxUyih6/DNcSl62aaDQPzeB7/CbPmuoTGzvs7qog=
+	t=1734016313; cv=none; b=eCFCBvwhIDzaLxmmvcqAnu33DB4pW6YDoHx4V82LG/B5hQ2KtMz111TxfFDJIRRc6OYK84mu0YBN/RB7UP5GKIvD9DJFKiLiY0It3z3573toWtFFV76yljMDa6ONSlazknEP1k9JgDBgmKbilV/Xb8wKw2coqr8zkDpqSUE4ioY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022138; c=relaxed/simple;
-	bh=OLY1s/2QhWxIhwwRWeWmPB+oG58FOt7TH6a2nrXN4pE=;
+	s=arc-20240116; t=1734016313; c=relaxed/simple;
+	bh=f5+5hlzKu0AYsa+lEOx449azAQ2F6XKGDFBKSwTKpic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmeffSPUBdw3vXyExZwwHCyDUWNiM4xIjh8dtg+rSqgmWB+PBhP+9EmS6RjNi6gD8e3JFdLVb1xveJbrJpkProyREYaIX4nVvDMW9biLUUdxSuKb9Gax9IGqBheqBAHLnknA0qRvq85gRAoWk2H3HFRoEEpbXFKUekzA+vqJxhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1gFTVdm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7354DC4CECE;
-	Thu, 12 Dec 2024 16:48:57 +0000 (UTC)
+	 MIME-Version; b=GW7+pix/VpYVSadF4B8YP6SZrfPJpn+NiJXeXXih8X5Rlwva64E3K7ir1Zc+ApdP2nMbTEnsTeIwx10tpmFXLlVI+n3Gw07gEZmg+5QncBh1AXWqDpN8S4BkSou+yzQz6kETHmeB958f0VdQijvMibcC2aSpQEIKuputswpDo4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqaanaib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796D3C4CED4;
+	Thu, 12 Dec 2024 15:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022138;
-	bh=OLY1s/2QhWxIhwwRWeWmPB+oG58FOt7TH6a2nrXN4pE=;
+	s=korg; t=1734016313;
+	bh=f5+5hlzKu0AYsa+lEOx449azAQ2F6XKGDFBKSwTKpic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1gFTVdmYr1IEBhK6wl/KtY3UXOGZQI5gmZo1G2Wlai34MysnBDEw5W65lwdcpga8
-	 vei+O9VB6Jxi795PCp0A6pYayuqRYp1NJZPZG0ssM/KKbcXplikCjx0CVoFqeW9Yvz
-	 SujOyUpX8vltgh7IPMAfMUB8lV1o053BU+BjKlFw=
+	b=eqaanaiba14Ut8W/pmVKT+mw6vAJqFEag4EZxDP5NYx2iBQe9eQ87B2pyRSu10muB
+	 hy9bPUGGq4Viax4Y/0TLeX5pGdeRsViH24z4CAXFT5VssNo7Lg5W51D9KkoEdQoc9Q
+	 b60bQFG2L7++ap+jdugwt7MAAL2+AiWk5ICsJ+u0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/565] regmap: irq: Set lockdep class for hierarchical IRQ domains
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 155/466] nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
 Date: Thu, 12 Dec 2024 15:55:24 +0100
-Message-ID: <20241212144316.583312174@linuxfoundation.org>
+Message-ID: <20241212144312.921700272@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 953e549471cabc9d4980f1da2e9fa79f4c23da06 ]
+commit 985ebec4ab0a28bb5910c3b1481a40fbf7f9e61d upstream.
 
-Lockdep gives a false positive splat as it can't distinguish the lock
-which is taken by different IRQ descriptors from different IRQ chips
-that are organized in a way of a hierarchy:
+Syzbot reported that when searching for records in a directory where the
+inode's i_size is corrupted and has a large value, memory access outside
+the folio/page range may occur, or a use-after-free bug may be detected if
+KASAN is enabled.
 
-   ======================================================
-   WARNING: possible circular locking dependency detected
-   6.12.0-rc5-next-20241101-00148-g9fabf8160b53 #562 Tainted: G        W
-   ------------------------------------------------------
-   modprobe/141 is trying to acquire lock:
-   ffff899446947868 (intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock){+.+.}-{4:4}, at: regmap_update_bits_base+0x33/0x90
+This is because nilfs_last_byte(), which is called by nilfs_find_entry()
+and others to calculate the number of valid bytes of directory data in a
+page from i_size and the page index, loses the upper 32 bits of the 64-bit
+size information due to an inappropriate type of local variable to which
+the i_size value is assigned.
 
-   but task is already holding lock:
-   ffff899446947c68 (&d->lock){+.+.}-{4:4}, at: __setup_irq+0x682/0x790
+This caused a large byte offset value due to underflow in the end address
+calculation in the calling nilfs_find_entry(), resulting in memory access
+that exceeds the folio/page size.
 
-   which lock already depends on the new lock.
+Fix this issue by changing the type of the local variable causing the bit
+loss from "unsigned int" to "u64".  The return value of nilfs_last_byte()
+is also of type "unsigned int", but it is truncated so as not to exceed
+PAGE_SIZE and no bit loss occurs, so no change is required.
 
-   -> #3 (&d->lock){+.+.}-{4:4}:
-   -> #2 (&desc->request_mutex){+.+.}-{4:4}:
-   -> #1 (ipclock){+.+.}-{4:4}:
-   -> #0 (intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock){+.+.}-{4:4}:
-
-   Chain exists of:
-     intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock --> &desc->request_mutex --> &d->lock
-
-    Possible unsafe locking scenario:
-
-          CPU0                    CPU1
-          ----                    ----
-     lock(&d->lock);
-                                  lock(&desc->request_mutex);
-                                  lock(&d->lock);
-     lock(intel_soc_pmic_bxtwc:502:(&bxtwc_regmap_config)->lock);
-
-    *** DEADLOCK ***
-
-   3 locks held by modprobe/141:
-    #0: ffff8994419368f8 (&dev->mutex){....}-{4:4}, at: __driver_attach+0xf6/0x250
-    #1: ffff89944690b250 (&desc->request_mutex){+.+.}-{4:4}, at: __setup_irq+0x1a2/0x790
-    #2: ffff899446947c68 (&d->lock){+.+.}-{4:4}, at: __setup_irq+0x682/0x790
-
-Set a lockdep class when we map the IRQ so that it doesn't warn about
-a lockdep bug that doesn't exist.
-
-Fixes: 4af8be67fd99 ("regmap: Convert regmap_irq to use irq_domain")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20241101165553.4055617-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20241119172403.9292-1-konishi.ryusuke@gmail.com
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=96d5d14c47d97015c624
+Tested-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap-irq.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nilfs2/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/regmap-irq.c b/drivers/base/regmap/regmap-irq.c
-index 3aac960ae30ab..e3769e70844be 100644
---- a/drivers/base/regmap/regmap-irq.c
-+++ b/drivers/base/regmap/regmap-irq.c
-@@ -587,12 +587,16 @@ static irqreturn_t regmap_irq_thread(int irq, void *d)
- 		return IRQ_NONE;
- }
- 
-+static struct lock_class_key regmap_irq_lock_class;
-+static struct lock_class_key regmap_irq_request_class;
-+
- static int regmap_irq_map(struct irq_domain *h, unsigned int virq,
- 			  irq_hw_number_t hw)
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -70,7 +70,7 @@ static inline unsigned int nilfs_chunk_s
+  */
+ static unsigned int nilfs_last_byte(struct inode *inode, unsigned long page_nr)
  {
- 	struct regmap_irq_chip_data *data = h->host_data;
+-	unsigned int last_byte = inode->i_size;
++	u64 last_byte = inode->i_size;
  
- 	irq_set_chip_data(virq, data);
-+	irq_set_lockdep_class(virq, &regmap_irq_lock_class, &regmap_irq_request_class);
- 	irq_set_chip(virq, &data->irq_chip);
- 	irq_set_nested_thread(virq, 1);
- 	irq_set_parent(virq, data->irq);
--- 
-2.43.0
-
+ 	last_byte -= page_nr << PAGE_SHIFT;
+ 	if (last_byte > PAGE_SIZE)
 
 
 
