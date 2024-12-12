@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1525F9EED27
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BAD9EF443
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17CE918894F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AD74189FC69
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90722135C1;
-	Thu, 12 Dec 2024 15:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A0F22915D;
+	Thu, 12 Dec 2024 16:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7G1+Pec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxZuwQIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659E9217F28;
-	Thu, 12 Dec 2024 15:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D64216E14;
+	Thu, 12 Dec 2024 16:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017979; cv=none; b=XD5tJbToxF646KUAcdTnkOZvTvUyg1iHq4CNHOkeI2FSVU97hzRAjj8z3CXOmt410D3UYGGhjtYBBK8G34WVaMFOAglCHgDC8auVrzTktMUj/VZimKt9xMO1uwa6dd7N+zHbS72xYXsET7GcR2bv7FitOEqxA4kk6chWEdpFgTg=
+	t=1734022472; cv=none; b=lBIjecPPKBOeVmIoMdM+T3oVgx53oj59jqEnp2YLVA9udmaIiU9CDWlppchDqMWPThmfpl0sCucG45qUTODqVK3A2wUY8YJCMmZoXE68BvD9vtk9uunAaeTyvyLRJ/7HaTYHMVdasg7GOll/8568dYWGTmJQAMhsXiVByPfdSH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017979; c=relaxed/simple;
-	bh=VnCIlSTInJPMQGbjzsWVwGMjxFsTjjLAlDm4VB9IiXw=;
+	s=arc-20240116; t=1734022472; c=relaxed/simple;
+	bh=b7N95HF+mJftPkJ9YAUfgh6ltAtM6C/3udkIow/9gK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oazg+4M83/pV/7YTiQwk38hfTiSc0Dbt45Y/nqa6Czde3HOFW/nr6aGhpxH9//iMQidFfIAYCHYxP5yAq790uQgrFCWMka936pcXUmx/HFJa5jUQr8mxHwiPH0NETVtOAiLMZPTGbobFy2o5vazYbAtSsAi6fG2s7N2P3639YLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7G1+Pec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE68EC4CECE;
-	Thu, 12 Dec 2024 15:39:38 +0000 (UTC)
+	 MIME-Version; b=NtdcIOxE5gaVJ35GQkrzKdDPWPRGmNan86/zYa4mY1ePcLHiqwTKI83xtIEbYCZwIWgPIPgbwrrL5MtG7xc/lbsV7dcE0Z0ZZUaXEdx4elcILNw3USPfVcqScXsLfnGTt6KXCiELEb2vURZlCvMINtLbXMZsZjWZnm0kwIwI8Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxZuwQIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B00C4CED0;
+	Thu, 12 Dec 2024 16:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017979;
-	bh=VnCIlSTInJPMQGbjzsWVwGMjxFsTjjLAlDm4VB9IiXw=;
+	s=korg; t=1734022472;
+	bh=b7N95HF+mJftPkJ9YAUfgh6ltAtM6C/3udkIow/9gK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7G1+PecWinG9dOInjdh0DJtAvEdg8XNyWRSU/riLIUJ7QOL3AH76NyDXffmm/2L9
-	 UBUm+63QbIq4AgwmSd0o/vHcDr1Z52vpExGQfUw9rvxzBw4LB1V2SHcMZ8AAI/Xy2m
-	 OdPZJBT6ryRvyYMkS2w9PRRW3frBesZ47znNCkew=
+	b=UxZuwQIT1kfk2AcPkOTp/W6MAzC07l+162ljWsQhwwwqTQp38EeTC4TQLSWyaOE/S
+	 fan7mNASSW+it+uoM7aRTBfllRcfD7+aasu7F0GYPWcVapLAGNk75qnT4rW7q1igpK
+	 0G8nuemUj04Uj4BHLBdbJcSVoduGAQ6d9Aaah1SM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/356] ASoC: SOF: ipc3-topology: fix resource leaks in sof_ipc3_widget_setup_comp_dai()
-Date: Thu, 12 Dec 2024 15:57:23 +0100
-Message-ID: <20241212144249.550144998@linuxfoundation.org>
+Subject: [PATCH 5.15 249/565] f2fs: open code allocate_segment_by_default
+Date: Thu, 12 Dec 2024 15:57:24 +0100
+Message-ID: <20241212144321.321542899@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 6d544ea21d367cbd9746ae882e67a839391a6594 ]
+[ Upstream commit 8442d94b8ac8d5d8300725a9ffa9def526b71170 ]
 
-These error paths should free comp_dai before returning.
+allocate_segment_by_default has just two callers, which use very
+different code pathes inside it based on the force paramter.  Just
+open code the logic in the two callers using a new helper to decided
+if a new segment should be allocated.
 
-Fixes: 909dadf21aae ("ASoC: SOF: topology: Make DAI widget parsing IPC agnostic")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/67d185cf-d139-4f8c-970a-dbf0542246a8@stanley.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 43563069e1c1 ("f2fs: check curseg->inited before write_sum_page in change_curseg")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc3-topology.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/f2fs/segment.c | 50 +++++++++++++++++++++++------------------------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-diff --git a/sound/soc/sof/ipc3-topology.c b/sound/soc/sof/ipc3-topology.c
-index a1eab10211b0e..0e5ae7fa0ef7a 100644
---- a/sound/soc/sof/ipc3-topology.c
-+++ b/sound/soc/sof/ipc3-topology.c
-@@ -1503,14 +1503,14 @@ static int sof_ipc3_widget_setup_comp_dai(struct snd_sof_widget *swidget)
- 	ret = sof_update_ipc_object(scomp, comp_dai, SOF_DAI_TOKENS, swidget->tuples,
- 				    swidget->num_tuples, sizeof(*comp_dai), 1);
- 	if (ret < 0)
--		goto free;
-+		goto free_comp;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 91c7593965c47..cb37c711b1f61 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2922,31 +2922,20 @@ static int get_ssr_segment(struct f2fs_sb_info *sbi, int type,
+ 	return 0;
+ }
  
- 	/* update comp_tokens */
- 	ret = sof_update_ipc_object(scomp, &comp_dai->config, SOF_COMP_TOKENS,
- 				    swidget->tuples, swidget->num_tuples,
- 				    sizeof(comp_dai->config), 1);
- 	if (ret < 0)
--		goto free;
-+		goto free_comp;
+-/*
+- * flush out current segment and replace it with new segment
+- * This function should be returned with success, otherwise BUG
+- */
+-static void allocate_segment_by_default(struct f2fs_sb_info *sbi,
+-						int type, bool force)
++static bool need_new_seg(struct f2fs_sb_info *sbi, int type)
+ {
+ 	struct curseg_info *curseg = CURSEG_I(sbi, type);
  
- 	/* Subtract the base to match the FW dai index. */
- 	if (comp_dai->type == SOF_DAI_INTEL_ALH) {
-@@ -1518,7 +1518,8 @@ static int sof_ipc3_widget_setup_comp_dai(struct snd_sof_widget *swidget)
- 			dev_err(sdev->dev,
- 				"Invalid ALH dai index %d, only Pin numbers >= %d can be used\n",
- 				comp_dai->dai_index, INTEL_ALH_DAI_INDEX_BASE);
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto free_comp;
- 		}
- 		comp_dai->dai_index -= INTEL_ALH_DAI_INDEX_BASE;
+-	if (force)
+-		new_curseg(sbi, type, true);
+-	else if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
+-					curseg->seg_type == CURSEG_WARM_NODE)
+-		new_curseg(sbi, type, false);
+-	else if (curseg->alloc_type == LFS &&
+-			is_next_segment_free(sbi, curseg, type) &&
+-			likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
+-		new_curseg(sbi, type, false);
+-	else if (f2fs_need_SSR(sbi) &&
+-			get_ssr_segment(sbi, type, SSR, 0))
+-		change_curseg(sbi, type, true);
+-	else
+-		new_curseg(sbi, type, false);
+-
+-	stat_inc_seg_type(sbi, curseg);
++	if (!is_set_ckpt_flags(sbi, CP_CRC_RECOVERY_FLAG) &&
++	    curseg->seg_type == CURSEG_WARM_NODE)
++		return true;
++	if (curseg->alloc_type == LFS &&
++	    is_next_segment_free(sbi, curseg, type) &&
++	    likely(!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
++		return true;
++	if (!f2fs_need_SSR(sbi) || !get_ssr_segment(sbi, type, SSR, 0))
++		return true;
++	return false;
+ }
+ 
+ void f2fs_allocate_segment_for_resize(struct f2fs_sb_info *sbi, int type,
+@@ -2999,7 +2988,8 @@ static void __allocate_new_segment(struct f2fs_sb_info *sbi, int type,
+ 		return;
+ alloc:
+ 	old_segno = curseg->segno;
+-	allocate_segment_by_default(sbi, type, true);
++	new_curseg(sbi, type, true);
++	stat_inc_seg_type(sbi, curseg);
+ 	locate_dirty_segment(sbi, old_segno);
+ }
+ 
+@@ -3444,11 +3434,19 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 	update_sit_entry(sbi, old_blkaddr, -1);
+ 
+ 	if (!__has_curseg_space(sbi, curseg)) {
+-		if (from_gc)
++		/*
++		 * Flush out current segment and replace it with new segment.
++		 */
++		if (from_gc) {
+ 			get_atssr_segment(sbi, type, se->type,
+ 						AT_SSR, se->mtime);
+-		else
+-			allocate_segment_by_default(sbi, type, false);
++		} else {
++			if (need_new_seg(sbi, type))
++				new_curseg(sbi, type, false);
++			else
++				change_curseg(sbi, type, true);
++			stat_inc_seg_type(sbi, curseg);
++		}
  	}
+ 	/*
+ 	 * segment dirty status should be updated after segment allocation,
 -- 
 2.43.0
 
