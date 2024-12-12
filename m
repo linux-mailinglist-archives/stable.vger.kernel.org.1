@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-101114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1119EEACC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178729EF07A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B211F16951B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80A3B28C34A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011B221661F;
-	Thu, 12 Dec 2024 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E8C22E9F1;
+	Thu, 12 Dec 2024 16:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGDLOuOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFhCvSU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B114621766D;
-	Thu, 12 Dec 2024 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D8320969B;
+	Thu, 12 Dec 2024 16:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016407; cv=none; b=iXXC9pn6mMI7fGpruKsz89OpjZf0QQTANYdY85RSnWAwDkzCOR+RvYTn5pO01LH/Mg3whb9gZjmqnx5CCLSiJuXXps778URv13Bw804q9AlrsPwDaCDwdxwEVSOB/OENuP05zsV+V91/uH7gJDo/0UJya+qt2XzxCVmOuX6WclU=
+	t=1734020237; cv=none; b=FlV+SYXoeplMzwdwlLkqJL6dV6DWB4vSl3hRYACgTsvGvqLJ+9a29lMEJVIf/akD6BFFb/gXgDHrXqHa0Bw76Qj1q+tq98km3/043x/W8hpQngg7TnHP7lhoO1+HthboR85WVu8rhUFnnwFLU9/H/0T1v4c8q7RufVSoNT3b9PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016407; c=relaxed/simple;
-	bh=E3Y7+o0D0aJXY7do7j5uOGPDeaVgL8+oHq+ny3jKckw=;
+	s=arc-20240116; t=1734020237; c=relaxed/simple;
+	bh=GCST0m+ZjCA3hk39tH8fC9YjLq2w3nQSKQhzq6m/19M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbiWP1RRz2g56U8VPjV/T/InmfebO6Hq8RmcOo78jsPk+rh7K+arVnmO+Tl34fuv8D4bKli/8Nq3Pr8WDYK2HMaNu5h28/XSUMEObET5eYDyFiDfpwu3E/Gh2zXcjGX/V/qYPnJAnr2ZPu7yLhlH8+lxocA97MfjgKGia09I2gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGDLOuOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051EFC4CED4;
-	Thu, 12 Dec 2024 15:13:26 +0000 (UTC)
+	 MIME-Version; b=GWcsyGOJskIRW74r71Hel0IC6u0FtLw5ZkSv4xJ679EhJsxpsbrN1cCKs5SpGxmjltSJ8v3mhBO5VAm/DuYWcPwqn3xg3z8fbGeq7ZzaYHCuacF5bySnTsLqPEFYNv3AtcizG49TdAiFjH7sN7VhxsH6FvsleOWM9JYB4U3Soyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFhCvSU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328B6C4CECE;
+	Thu, 12 Dec 2024 16:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016407;
-	bh=E3Y7+o0D0aJXY7do7j5uOGPDeaVgL8+oHq+ny3jKckw=;
+	s=korg; t=1734020236;
+	bh=GCST0m+ZjCA3hk39tH8fC9YjLq2w3nQSKQhzq6m/19M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGDLOuOJmix80/Jwb/BXuQXPW/6jJpY52izooGZp3jUwHKmlAEl9HK36tx8yiQL02
-	 innPQotDIz1Nx2r21G1JVkRxwHzpOOIfbgkhhRcJtrPqhmgr2uYSKHBnwrKHco4fIu
-	 vMGVPFrsXHxXsC6pKpDNRV9kWmKVKFyLm+zYX7BA=
+	b=JFhCvSU/pyPY5W9g4kDxq8T8qElN3GHiYKHmy7G5VDjo8TDY6wkBLRqSzxDdwZNNh
+	 4rPJ22wwe/0jWAujBGrdtPTnvvDI27JbcMrozTBNdVmPgEemhpcFj40MnKMIQZ/qU/
+	 6Z1gi8n9I3mudyoDlTwB4ZI11uPJYaEDbM+iq96Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 189/466] regmap: detach regmap from dev on regmap_exit
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 413/772] ALSA: hda/realtek: Update ALC225 depop procedure
 Date: Thu, 12 Dec 2024 15:55:58 +0100
-Message-ID: <20241212144314.265070918@linuxfoundation.org>
+Message-ID: <20241212144406.983455297@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 3061e170381af96d1e66799d34264e6414d428a7 upstream.
+commit 1fd50509fe14a9adc9329e0454b986157a4c155a upstream.
 
-At the end of __regmap_init(), if dev is not NULL, regmap_attach_dev()
-is called, which adds a devres reference to the regmap, to be able to
-retrieve a dev's regmap by name using dev_get_regmap().
+Old procedure has a chance to meet Headphone no output.
 
-When calling regmap_exit, the opposite does not happen, and the
-reference is kept until the dev is detached.
-
-Add a regmap_detach_dev() function and call it in regmap_exit() to make
-sure that the devres reference is not kept.
-
-Cc: stable@vger.kernel.org
-Fixes: 72b39f6f2b5a ("regmap: Implement dev_get_regmap()")
-Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20241128130554.362486-1-demonsingur%40gmail.com
-Link: https://patch.msgid.link/20241128131625.363835-1-demonsingur@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: da911b1f5e98 ("ALSA: hda/realtek - update ALC225 depop optimize")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/5a27b016ba9d42b4a4e6dadce50a3ba4@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ sound/pci/hda/patch_realtek.c |   95 +++++++++++++++++++-----------------------
+ 1 file changed, 43 insertions(+), 52 deletions(-)
 
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -598,6 +598,17 @@ int regmap_attach_dev(struct device *dev
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -3754,33 +3754,28 @@ static void alc225_init(struct hda_codec
+ 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
+ 
+-	if (hp1_pin_sense || hp2_pin_sense)
++	if (hp1_pin_sense || hp2_pin_sense) {
+ 		msleep(2);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
+ 
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x1); /* Low power */
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
+ 
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(100);
+-
+-	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+-	alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++		msleep(75);
++		alc_update_coefex_idx(codec, 0x57, 0x04, 0x0007, 0x4); /* Hight power */
++	}
  }
- EXPORT_SYMBOL_GPL(regmap_attach_dev);
  
-+static int dev_get_regmap_match(struct device *dev, void *res, void *data);
-+
-+static int regmap_detach_dev(struct device *dev, struct regmap *map)
-+{
-+	if (!dev)
-+		return 0;
-+
-+	return devres_release(dev, dev_get_regmap_release,
-+			      dev_get_regmap_match, (void *)map->name);
-+}
-+
- static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
- 					const struct regmap_config *config)
- {
-@@ -1444,6 +1455,7 @@ void regmap_exit(struct regmap *map)
- {
- 	struct regmap_async *async;
+ static void alc225_shutup(struct hda_codec *codec)
+@@ -3792,36 +3787,35 @@ static void alc225_shutup(struct hda_cod
+ 	if (!hp_pin)
+ 		hp_pin = 0x21;
  
-+	regmap_detach_dev(map->dev, map);
- 	regcache_exit(map);
+-	alc_disable_headset_jack_key(codec);
+-	/* 3k pull low control for Headset jack. */
+-	alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
+-
+ 	hp1_pin_sense = snd_hda_jack_detect(codec, hp_pin);
+ 	hp2_pin_sense = snd_hda_jack_detect(codec, 0x16);
  
- 	regmap_debugfs_exit(map);
+-	if (hp1_pin_sense || hp2_pin_sense)
++	if (hp1_pin_sense || hp2_pin_sense) {
++		alc_disable_headset_jack_key(codec);
++		/* 3k pull low control for Headset jack. */
++		alc_update_coef_idx(codec, 0x4a, 0, 3 << 10);
+ 		msleep(2);
+ 
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(85);
+-
+-	if (hp1_pin_sense || spec->ultra_low_power)
+-		snd_hda_codec_write(codec, hp_pin, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+-	if (hp2_pin_sense)
+-		snd_hda_codec_write(codec, 0x16, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+-
+-	if (hp1_pin_sense || hp2_pin_sense || spec->ultra_low_power)
+-		msleep(100);
+-
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
++
++		msleep(75);
++
++		if (hp1_pin_sense)
++			snd_hda_codec_write(codec, hp_pin, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++		if (hp2_pin_sense)
++			snd_hda_codec_write(codec, 0x16, 0,
++				    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
++
++		msleep(75);
++		alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
++		alc_enable_headset_jack_key(codec);
++	}
+ 	alc_auto_setup_eapd(codec, false);
+ 	alc_shutup_pins(codec);
+ 	if (spec->ultra_low_power) {
+@@ -3832,9 +3826,6 @@ static void alc225_shutup(struct hda_cod
+ 		alc_update_coef_idx(codec, 0x4a, 3<<4, 2<<4);
+ 		msleep(30);
+ 	}
+-
+-	alc_update_coef_idx(codec, 0x4a, 3 << 10, 0);
+-	alc_enable_headset_jack_key(codec);
+ }
+ 
+ static void alc_default_init(struct hda_codec *codec)
 
 
 
