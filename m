@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4F39EF576
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F13C9EF6E6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:11 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF99176878
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E963E284921
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD98C2165EA;
-	Thu, 12 Dec 2024 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D034222D72;
+	Thu, 12 Dec 2024 17:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0b+Cl/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d28ZiawZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8904220969B;
-	Thu, 12 Dec 2024 17:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD2D221D93;
+	Thu, 12 Dec 2024 17:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023210; cv=none; b=k/94EA75q6TZawGuB/F4kA3/qmF16bEB6u3+1/0v2AFRZpY5US4Kzkqbm7J3sKEz69wS+i96YhVLx+ZmDX1uKdxAta0td7PjrkOfUsG++SXmdV7Pcwz38gk0vdKzG+EHXKkkWLkIutlgQSGP0v6Ibp9xA4bzEAcPLSr41at/N5o=
+	t=1734024596; cv=none; b=aMZtrAaUDhr2eGrcbzvp17XIbZq227mxDfhyTZVYHO0iiGUBD4mWVXqgFFtKHNyKdXS6WL7mDJYdu2MLlDw33wFRzoEn2DgMRa2W1gLfSDsXUSLH1oYcGcN2/XQN5uqB4EEnbcelechz0r4NbZ6xCvWsIJhYzLU1k4UvCAtSihc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023210; c=relaxed/simple;
-	bh=DioWKRJF8g2BrprQAXlS+1neCiXulrLhFll5RU10Noo=;
+	s=arc-20240116; t=1734024596; c=relaxed/simple;
+	bh=DIUdQ2cX/DSvB0Ng1j1dBhtxeuYzkYfEPTKchwRoLnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnpFJZQulJBpTAnv6D54xXgSADIfMn7119HsKu8oQkI8tCfJZcnBul3bV6GbNVAEWtxwkVRJQ7PO2IEvSip9AX1vt1ogqpIKKSnrS0KW6Usf7y2eZiHUaDl9fw5c30yTF3ZBv1lTuuB8vbDTjZExQkRiueQt5v1hRK0NLuy6a98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0b+Cl/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDCEC4CECE;
-	Thu, 12 Dec 2024 17:06:49 +0000 (UTC)
+	 MIME-Version; b=Zdm+WNMEL3FrQmH3rB2ZJZT1ndRhv0u55INhzfKJCzwpiNqEb0THgRUS1XJjFJyvHtcKHfkRWGMoeyH41kOQ+h+Xh9KOLOr+Ic7troF+Ltq+0mN0c0IeSttbh7KcbXDP02YKb/N+VDbkYlosumlXnYyIaAmfKC/0rO4BnKZP+i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d28ZiawZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81445C4CECE;
+	Thu, 12 Dec 2024 17:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023210;
-	bh=DioWKRJF8g2BrprQAXlS+1neCiXulrLhFll5RU10Noo=;
+	s=korg; t=1734024595;
+	bh=DIUdQ2cX/DSvB0Ng1j1dBhtxeuYzkYfEPTKchwRoLnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0b+Cl/d/Tl9Ijkc0A+vOy1xyYXF7Hwfn1v+8pUhqjeCrDis6mqTQkCtXGCulJOEL
-	 4CqcKPkOBVTfwehxhtUxtgf+bK7MBxiY1JbbuwD4W+dD4cMgbuYs/15m2ht0WVU5w9
-	 77copvDQoHbPGgblCjl0hmVjt6G5BjQpmVJb0tBw=
+	b=d28ZiawZIH4lKoHHfABAeDUiKbcyJvTU0rQDAs5QnJ8jBRyhiu76IpXI2Y/Hh6q+J
+	 cS7ua2cMxoOap/xqimytGDBrUBfqnByzmCZ4to81gT3Js9eXop8b7TLc9W2hmhshrM
+	 4ksg9/zgr5FcjR2Sz8aeLxvcqmwoB8njFWCHhU7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liequan Che <cheliequan@inspur.com>,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 460/565] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR again
-Date: Thu, 12 Dec 2024 16:00:55 +0100
-Message-ID: <20241212144329.913861386@linuxfoundation.org>
+	stable@kernel.org,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.10 318/459] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
+Date: Thu, 12 Dec 2024 16:00:56 +0100
+Message-ID: <20241212144306.216291603@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liequan Che <cheliequan@inspur.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit b2e382ae12a63560fca35050498e19e760adf8c0 upstream.
+commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") leads a NULL pointer deference in cache_set_flush().
+if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+                                      ^^^ here check "init_dyn_addr"
+	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
+						             ^^^^
+							free "dyn_addr"
+Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
 
-1721         if (!IS_ERR_OR_NULL(c->root))
-1722                 list_add(&c->root->list, &c->btree_cache);
-
->From the above code in cache_set_flush(), if previous registration code
-fails before allocating c->root, it is possible c->root is NULL as what
-it is initialized. __bch_btree_node_alloc() never returns NULL but
-c->root is possible to be NULL at above line 1721.
-
-This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
-Signed-off-by: Liequan Che <cheliequan@inspur.com>
-Cc: stable@vger.kernel.org
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Reviewed-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20241202115638.28957-1-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@kernel.org
+Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/super.c |    2 +-
+ drivers/i3c/master.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1731,7 +1731,7 @@ static void cache_set_flush(struct closu
- 	if (!IS_ERR_OR_NULL(c->gc_thread))
- 		kthread_stop(c->gc_thread);
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -1285,7 +1285,7 @@ static void i3c_master_put_i3c_addrs(str
+ 					     I3C_ADDR_SLOT_FREE);
  
--	if (!IS_ERR(c->root))
-+	if (!IS_ERR_OR_NULL(c->root))
- 		list_add(&c->root->list, &c->btree_cache);
+ 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
+-		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
++		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
+ 					     I3C_ADDR_SLOT_FREE);
+ }
  
- 	/*
 
 
 
