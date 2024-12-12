@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-102646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20C79EF2F2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:54:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB069EF0F3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40E12282B83
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:54:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CC06177FF8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61D2238E13;
-	Thu, 12 Dec 2024 16:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12638222D4F;
+	Thu, 12 Dec 2024 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqvvPqFy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGl/Qk4U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F9D238E00;
-	Thu, 12 Dec 2024 16:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C3C222D42;
+	Thu, 12 Dec 2024 16:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021981; cv=none; b=k/1t44aU2Y+QvqgM1rvHVpaiq+JYlxXU/IJcu9LeFcsE/OOFfwF0HIih5tgXxmXNH5bLIs8STyDVx9TTXS16XkZF6S94lq/++mjuqSZX+IdTaLz05GhEG2L3pQKklcAtFSvBzyG8Gt6FZyP88er4nFswg5HZ+lVPXYNTsbee8dA=
+	t=1734020043; cv=none; b=VRKqMpLZruEZwW2qaVgFH4M9gzNaijug+yx93iyiX+cK6CrPC0LvDqu6ZRLYkOa8b5nzrUbwxQuAF6jTn6hw0EeYxSiyj7NexHh6NzzzDqgf7MUBJGJOSy8BMSPi9lYMSsJFdIaoOX/tH5a3Py/b0d36QlEgPyGswVMZx4Um6Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021981; c=relaxed/simple;
-	bh=V9FRkc7JoiULywehn9WzemtagfEWPXNtw/e69bc8Q0c=;
+	s=arc-20240116; t=1734020043; c=relaxed/simple;
+	bh=YANjzD71qaSvARY7FwoUPa3m6XrR8lYNgHYuVFlN1YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cudnEjCbmwiXQ/aVgY3UzmT8GMQshMcvmztOj98yqfLzfsxn3qgF7w53bAdGJ/K9tT0kelx2+qQxClT6aWTAWSGMVQ9f51PbEULCyW0HGTVc/WHNaF1a0a82zZ5PI9nSJdoSV0elMDdPzUVUKEVBLHYZ4bEmjxoe6K9bUo/AWfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqvvPqFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6530DC4CECE;
-	Thu, 12 Dec 2024 16:46:20 +0000 (UTC)
+	 MIME-Version; b=MVeVOoxk9iDsgHLzIOEbDMsJYV5hL4i3LI2qu9BsboiNZDvVZOzHwl4xrNR/Qn89j+m8HNZ912hW3CXmmW+Sp9ysCHXDbJDhBtwnOMJ6z7XiyLbl/SpUcQW2SPKm9RsHyYv9GGC7uUzs0LcG0I5dlkX2acAdphA7wuYaSNRRT9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGl/Qk4U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C90C4CECE;
+	Thu, 12 Dec 2024 16:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021981;
-	bh=V9FRkc7JoiULywehn9WzemtagfEWPXNtw/e69bc8Q0c=;
+	s=korg; t=1734020043;
+	bh=YANjzD71qaSvARY7FwoUPa3m6XrR8lYNgHYuVFlN1YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqvvPqFyLyBtzQ08DhesNGxIvqBZJis0r/5OEdb4YrxoOAt9KAI7Uwpdm+ONrldiL
-	 0ZjoZmBcyMpUoz+RX3W0QRkfMqXNui1NpZ2+H6zbh6KT1Zc+n3lv1JEbpVDHeMXqtU
-	 DoQT4Po3p3oo8IkqSKWP0ExhW8IKFsAS+ZE5ySIg=
+	b=zGl/Qk4UPYBreYmwaGZdj4FifFnQNIiaxA4jTeAQnk8+BhFbk2OVgQ6jMiksT+fku
+	 1CcO1i7YpFj5mZTTUQp5AtdVdJ+cGK3Bq1F+4zNpvUnb0CEk6bZJnAQR9P6ubI3u+s
+	 QbhD+nY6DZxsXMCzzl90N0hwEBnOPHFra+BlxETQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/565] mmc: mmc_spi: drop buggy snprintf()
+	Artem Sadovnikov <ancowi69@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>
+Subject: [PATCH 6.1 364/772] jfs: xattr: check invalid xattr size more strictly
 Date: Thu, 12 Dec 2024 15:55:09 +0100
-Message-ID: <20241212144315.990106799@linuxfoundation.org>
+Message-ID: <20241212144404.955183132@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Artem Sadovnikov <ancowi69@gmail.com>
 
-[ Upstream commit 328bda09cc91b3d93bc64f4a4dadc44313dd8140 ]
+commit d9f9d96136cba8fedd647d2c024342ce090133c2 upstream.
 
-GCC 13 complains about the truncated output of snprintf():
+Commit 7c55b78818cf ("jfs: xattr: fix buffer overflow for invalid xattr")
+also addresses this issue but it only fixes it for positive values, while
+ea_size is an integer type and can take negative values, e.g. in case of
+a corrupted filesystem. This still breaks validation and would overflow
+because of implicit conversion from int to size_t in print_hex_dump().
 
-drivers/mmc/host/mmc_spi.c: In function ‘mmc_spi_response_get’:
-drivers/mmc/host/mmc_spi.c:227:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
-      |                                                                ^
-drivers/mmc/host/mmc_spi.c:227:9: note: ‘snprintf’ output between 26 and 43 bytes into a destination of size 32
-  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  228 |                 cmd->opcode, maptype(cmd));
+Fix this issue by clamping the ea_size value instead.
 
-Drop it and fold the string it generates into the only place where it's
-emitted - the dev_dbg() call at the end of the function.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Fixes: 15a0580ced08 ("mmc_spi host driver")
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20241008160134.69934-1-brgl@bgdev.pl
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mmc_spi.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ fs/jfs/xattr.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 05990cebafaa1..888909b4f9a38 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -223,10 +223,6 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
- 	u8 	leftover = 0;
- 	unsigned short rotator;
- 	int 	i;
--	char	tag[32];
--
--	snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
--		cmd->opcode, maptype(cmd));
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -559,7 +559,7 @@ static int ea_get(struct inode *inode, s
  
- 	/* Except for data block reads, the whole response will already
- 	 * be stored in the scratch buffer.  It's somewhere after the
-@@ -379,8 +375,9 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
- 	}
+       size_check:
+ 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
+-		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
++		int size = clamp_t(int, ea_size, 0, EALIST_SIZE(ea_buf->xattr));
  
- 	if (value < 0)
--		dev_dbg(&host->spi->dev, "%s: resp %04x %08x\n",
--			tag, cmd->resp[0], cmd->resp[1]);
-+		dev_dbg(&host->spi->dev,
-+			"  ... CMD%d response SPI_%s: resp %04x %08x\n",
-+			cmd->opcode, maptype(cmd), cmd->resp[0], cmd->resp[1]);
- 
- 	/* disable chipselect on errors and some success cases */
- 	if (value >= 0 && cs_on)
--- 
-2.43.0
-
+ 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+ 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
 
 
 
