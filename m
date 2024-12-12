@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-102021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714EF9EF071
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C6A9EF297
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65197172878
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B54212919E6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D682223E8E;
-	Thu, 12 Dec 2024 16:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE24C223E8D;
+	Thu, 12 Dec 2024 16:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/oCQIoZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWzzlQUI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB25321E085;
-	Thu, 12 Dec 2024 16:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F61223E90;
+	Thu, 12 Dec 2024 16:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019665; cv=none; b=bi3Xrt2NNnJzxYrY6hGt6P5royehEViY25hsuNRkEVXHzmtEucrpgMDrgO3lpDvsbW6ZAzhe5e4S6r9Nc6zwbYG7vaq5/ko9PYQKDctZxgukEgFIuokEcauCqyVExvA+FqCyVwHRGbLFKupNi9N5skM9szF79lYKtBHBXdRsus0=
+	t=1734021628; cv=none; b=jxfk4wbkaYCE+4/DDbVdEmHxXpJJTxflNW6yyH1gIAR0Z3VMcI6ffo6oWX5L2zBbbiTHWMPCuHTqDuR+2XOBgMbza6tz9lt9FYqXLtMPrAVxNd4QsGiYX1tl6W1cpa+wFHBQsfXVC4vOLyoH/0WZ07zE3PgWwRt79IlnQ4p5wcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019665; c=relaxed/simple;
-	bh=gsIVNYW5APV1uyKCKO9+mQd4g997yFkMAJM1rLeaiJQ=;
+	s=arc-20240116; t=1734021628; c=relaxed/simple;
+	bh=L2FQ91vA3uwptVgjWu3oEECwj8CuVpDgJxB+eT5+jKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPtt/S5f8D7SPgDGO4qHYfFM3tvkoMnwWVjBylKQxoVay/2LJJjhO4q34jOibY5sw0HfAksXGKUccsrWUzdYsrhT8sZ3r4GdKiwvwfB+VBDIFLGiLm/zIHVlxQ1xiZ34HG3nfBOC9EJSGqZyYRVJO+d3eGNQyIbdMkrTPORmIYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/oCQIoZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7E6C4CECE;
-	Thu, 12 Dec 2024 16:07:45 +0000 (UTC)
+	 MIME-Version; b=Df9SKlHK1CrkL/NeBAoG2tozEPx7FEg9fVrHCEoqq4JxD7Rc23qn5JjcowdDzgM+ONg6iNQWyf5nNWhKp7nVDqn5d4Z2fiuB2BE/T+mjZTQ8aJbxyJJaVcYFkXaVH9qudBrzBQQsP37SqjLOdFxxAemrBrEW06uD5CBudvKi7aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWzzlQUI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6481EC4CECE;
+	Thu, 12 Dec 2024 16:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019665;
-	bh=gsIVNYW5APV1uyKCKO9+mQd4g997yFkMAJM1rLeaiJQ=;
+	s=korg; t=1734021627;
+	bh=L2FQ91vA3uwptVgjWu3oEECwj8CuVpDgJxB+eT5+jKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/oCQIoZzC1qkJdJtHC5yLDVknAMJlTnzRhu+NxqlJY/VZ9QIy7BmwINii/IQmaQI
-	 2PamgisoV9Z5B14t4r6Y6Ww/uEHXC82n+KQRgR5htGXstupg8/6L4EGGyNCbuPj2cC
-	 313Gl1hW4x+nLu3NGsrO+XRvRUVLlG3o5viqHh/E=
+	b=MWzzlQUIa4gUgpl6CEhh9guSzlZTeLR575900sb7/a+qKl4jZW3/Xv2LVcKEztkqv
+	 aVw4SI84W3juuzPXPRYB8gnl9OnlVyDgvUzKE9nxY7K63wSGSe7ox2BiMKnpU9UxVd
+	 bC/UfVCX3/l/Uhb6TZ43j2PMJDuPsF7NlQQGMrGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Steinar H. Gunderson" <sesse@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Hemant Kumar <hemant@linux.vnet.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 267/772] perf probe: Fix libdw memory leak
-Date: Thu, 12 Dec 2024 15:53:32 +0100
-Message-ID: <20241212144400.946461819@linuxfoundation.org>
+Subject: [PATCH 5.15 018/565] drm/rockchip: vop: Fix a dereferenced before check warning
+Date: Thu, 12 Dec 2024 15:53:33 +0100
+Message-ID: <20241212144312.171486851@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 4585038b8e186252141ef86e9f0d8e97f11dce8d ]
+[ Upstream commit ab1c793f457f740ab7108cc0b1340a402dbf484d ]
 
-Add missing dwarf_cfi_end to free memory associated with probe_finder
-cfi_eh which is allocated and owned via a call to
-dwarf_getcfi_elf. Confusingly cfi_dbg shouldn't be freed as its memory
-is owned by the passed in debuginfo struct. Add comments to highlight
-this.
+The 'state' can't be NULL, we should check crtc_state.
 
-This addresses leak sanitizer issues seen in:
-tools/perf/tests/shell/test_uprobe_from_different_cu.sh
+Fix warning:
+drivers/gpu/drm/rockchip/rockchip_drm_vop.c:1096
+vop_plane_atomic_async_check() warn: variable dereferenced before check
+'state' (see line 1077)
 
-Fixes: 270bde1e76f4 ("perf probe: Search both .eh_frame and .debug_frame sections for probe location")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Steinar H. Gunderson <sesse@google.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Hemant Kumar <hemant@linux.vnet.ibm.com>
-Link: https://lore.kernel.org/r/20241016235622.52166-3-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 5ddb0bd4ddc3 ("drm/atomic: Pass the full state to planes async atomic check and update")
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241021072818.61621-1-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/probe-finder.c | 4 ++++
- tools/perf/util/probe-finder.h | 4 ++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 50d861a80f572..2f86103761ab2 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -1490,6 +1490,10 @@ int debuginfo__find_trace_events(struct debuginfo *dbg,
- 	if (ret >= 0 && tf.pf.skip_empty_arg)
- 		ret = fill_empty_trace_arg(pev, tf.tevs, tf.ntevs);
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index 40e733fd8862a..ef1f5da600d8c 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1065,10 +1065,10 @@ static int vop_plane_atomic_async_check(struct drm_plane *plane,
+ 	if (!plane->state->fb)
+ 		return -EINVAL;
  
-+#if _ELFUTILS_PREREQ(0, 142)
-+	dwarf_cfi_end(tf.pf.cfi_eh);
-+#endif
+-	if (state)
+-		crtc_state = drm_atomic_get_existing_crtc_state(state,
+-								new_plane_state->crtc);
+-	else /* Special case for asynchronous cursor updates. */
++	crtc_state = drm_atomic_get_existing_crtc_state(state, new_plane_state->crtc);
 +
- 	if (ret < 0 || tf.ntevs == 0) {
- 		for (i = 0; i < tf.ntevs; i++)
- 			clear_probe_trace_event(&tf.tevs[i]);
-diff --git a/tools/perf/util/probe-finder.h b/tools/perf/util/probe-finder.h
-index 8bc1c80d3c1c0..1f4650b955094 100644
---- a/tools/perf/util/probe-finder.h
-+++ b/tools/perf/util/probe-finder.h
-@@ -81,9 +81,9 @@ struct probe_finder {
++	/* Special case for asynchronous cursor updates. */
++	if (!crtc_state)
+ 		crtc_state = plane->crtc->state;
  
- 	/* For variable searching */
- #if _ELFUTILS_PREREQ(0, 142)
--	/* Call Frame Information from .eh_frame */
-+	/* Call Frame Information from .eh_frame. Owned by this struct. */
- 	Dwarf_CFI		*cfi_eh;
--	/* Call Frame Information from .debug_frame */
-+	/* Call Frame Information from .debug_frame. Not owned. */
- 	Dwarf_CFI		*cfi_dbg;
- #endif
- 	Dwarf_Op		*fb_ops;	/* Frame base attribute */
+ 	return drm_atomic_helper_check_plane_state(plane->state, crtc_state,
 -- 
 2.43.0
 
