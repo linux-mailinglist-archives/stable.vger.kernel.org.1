@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D0B9EF760
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1AC9EF54A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A9D17873B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9919179E96
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4262217F34;
-	Thu, 12 Dec 2024 17:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0181223E65;
+	Thu, 12 Dec 2024 17:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8mCYd+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFxrHy8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80602215764;
-	Thu, 12 Dec 2024 17:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B60F223E61;
+	Thu, 12 Dec 2024 17:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024508; cv=none; b=eMM9/0bX8wqUynm0EHV1tAyPWRD49/d38OSoVv0FFrFeWB/YnEs9DTvSiYbt3jeV/6lYTMAXAM0N/nOROz5k7aaf7MUdDyc3nDhKEh0+wpR5C1LOQ6q99grFYTunbuYlCUlke9KNT0cv8+iwHoCWLdIAhIiCv7PGZdRnOHEBD/w=
+	t=1734023192; cv=none; b=fGemlqJ/D9LfdCuAeeiklbOK5xf/i9miQAzeBnLAfdwSIh0eO7X7zviJHaTpK/DX9TJIbn+hVivEUdpiyAg4vtCtqo7ZR6tEiwvmfuNp975KjJQFE/AUegniBcdVf7zrQnxMK6ztKo9O0Qv7Cv4fYiCnRMlfBF3snPtwYLyq4EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024508; c=relaxed/simple;
-	bh=BesJ8ZbA2EZlLxV+vAhzuzoaGtp8QrRaiTcxbPWDwLA=;
+	s=arc-20240116; t=1734023192; c=relaxed/simple;
+	bh=W3dtg41gl1RqXEuFDprQ0PKIe0YsEvp5azCofufmcPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFTngVLbtavwJDQT5uxgsrxQDekfC3Vk+//valY9j5XATnoUx/ftGq5IsQ7WdL/eOafaWrH02x/Piuddz2StMRag4L1yNoYVvvcYuZCgw/5BPzfe2HWqFHDNfvYFVDXjSwB8nypKTeRbVuBxrZcEyCmvXEuRPpnSRXIZS/pzupM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8mCYd+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071AEC4CED0;
-	Thu, 12 Dec 2024 17:28:27 +0000 (UTC)
+	 MIME-Version; b=kDUs2kSuVbkh0cPf3m/Igh9CThgKd07lvOfkWLtt2Q0CvQNsAaM5+DB6jcnyOnKMX8nlz1qc99Wkc1H+LwMZVBz7o3ulhFyRySTgP26/fBLnEllHlcpH+emAEx1lSxSRR63UOvlfuvpVJJdjMalXdxGem71VAXkMK90ktqZr7Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFxrHy8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD912C4CECE;
+	Thu, 12 Dec 2024 17:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024508;
-	bh=BesJ8ZbA2EZlLxV+vAhzuzoaGtp8QrRaiTcxbPWDwLA=;
+	s=korg; t=1734023192;
+	bh=W3dtg41gl1RqXEuFDprQ0PKIe0YsEvp5azCofufmcPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q8mCYd+lC6mUYu4Wm5xWNDNg73hCX6O6zC+aCrWCSMsOUnkmh1zsxutVcNfND7/4J
-	 R9zZ0ZQ+N3HzjSRVmrVCafz2c3J+yDO4r0zyM2mQ/D+aUfSsd+LrPLiK2mU8YevCiC
-	 +LP+Os6TNCLswH5f84J1n9Wjof1dj5hRjCYp5xcY=
+	b=TFxrHy8rigckOtl5kc9ZFW4lvDv+HW+ztAcsWFebHDHz+VH83nXkdMMLSY1KW8fqp
+	 2epL/vxAHztzRrz4ywRfgUJZKsejyar51G9/3BzCkRm1Pt0x6ltL3KdkoO3Ugak8Ub
+	 4dld4cy1wk9IHamLcVctEvpTRVLXpamASDCu/YF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 279/459] ALSA: hda/realtek: Set PCBeep to default value for ALC274
-Date: Thu, 12 Dec 2024 16:00:17 +0100
-Message-ID: <20241212144304.648642646@linuxfoundation.org>
+	Laurent Fasnacht <laurent.fasnacht@proton.ch>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 423/565] netfilter: nft_set_hash: skip duplicated elements pending gc run
+Date: Thu, 12 Dec 2024 16:00:18 +0100
+Message-ID: <20241212144328.385003929@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 155699ccab7c78cbba69798242b68bc8ac66d5d2 upstream.
+[ Upstream commit 7ffc7481153bbabf3332c6a19b289730c7e1edf5 ]
 
-BIOS Enable PC beep path cause pop noise via speaker during boot time.
-Set to default value from driver will solve the issue.
+rhashtable does not provide stable walk, duplicated elements are
+possible in case of resizing. I considered that checking for errors when
+calling rhashtable_walk_next() was sufficient to detect the resizing.
+However, rhashtable_walk_next() returns -EAGAIN only at the end of the
+iteration, which is too late, because a gc work containing duplicated
+elements could have been already scheduled for removal to the worker.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/2721bb57e20a44c3826c473e933f9105@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a u32 gc worker sequence number per set, bump it on every workqueue
+run. Annotate gc worker sequence number on the expired element. Use it
+to skip those already seen in this gc workqueue run.
+
+Note that this new field is never reset in case gc transaction fails, so
+next gc worker run on the expired element overrides it. Wraparound of gc
+worker sequence number should not be an issue with stale gc worker
+sequence number in the element, that would just postpone the element
+removal in one gc run.
+
+Note that it is not possible to use flags to annotate that element is
+pending gc run to detect duplicates, given that gc transaction can be
+invalidated in case of update from the control plane, therefore, not
+allowing to clear such flag.
+
+On x86_64, pahole reports no changes in the size of nft_rhash_elem.
+
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Reported-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
+Tested-by: Laurent Fasnacht <laurent.fasnacht@proton.ch>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nft_set_hash.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -464,6 +464,8 @@ static void alc_fill_eapd_coef(struct hd
- 		break;
- 	case 0x10ec0234:
- 	case 0x10ec0274:
-+		alc_write_coef_idx(codec, 0x6e, 0x0c25);
-+		fallthrough;
- 	case 0x10ec0294:
- 	case 0x10ec0700:
- 	case 0x10ec0701:
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index 1fd3b413350dc..5c4209b49bda7 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -24,10 +24,12 @@
+ struct nft_rhash {
+ 	struct rhashtable		ht;
+ 	struct delayed_work		gc_work;
++	u32				wq_gc_seq;
+ };
+ 
+ struct nft_rhash_elem {
+ 	struct rhash_head		node;
++	u32				wq_gc_seq;
+ 	struct nft_set_ext		ext;
+ };
+ 
+@@ -339,6 +341,10 @@ static void nft_rhash_gc(struct work_struct *work)
+ 	if (!gc)
+ 		goto done;
+ 
++	/* Elements never collected use a zero gc worker sequence number. */
++	if (unlikely(++priv->wq_gc_seq == 0))
++		priv->wq_gc_seq++;
++
+ 	rhashtable_walk_enter(&priv->ht, &hti);
+ 	rhashtable_walk_start(&hti);
+ 
+@@ -356,6 +362,14 @@ static void nft_rhash_gc(struct work_struct *work)
+ 			goto try_later;
+ 		}
+ 
++		/* rhashtable walk is unstable, already seen in this gc run?
++		 * Then, skip this element. In case of (unlikely) sequence
++		 * wraparound and stale element wq_gc_seq, next gc run will
++		 * just find this expired element.
++		 */
++		if (he->wq_gc_seq == priv->wq_gc_seq)
++			continue;
++
+ 		if (nft_set_elem_is_dead(&he->ext))
+ 			goto dead_elem;
+ 
+@@ -372,6 +386,8 @@ static void nft_rhash_gc(struct work_struct *work)
+ 		if (!gc)
+ 			goto try_later;
+ 
++		/* annotate gc sequence for this attempt. */
++		he->wq_gc_seq = priv->wq_gc_seq;
+ 		nft_trans_gc_elem_add(gc, he);
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
