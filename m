@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-103832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AD79EF9F1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5EC9EF6FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB730189AEC2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8683340247
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563BE225413;
-	Thu, 12 Dec 2024 17:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C79E223C48;
+	Thu, 12 Dec 2024 17:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eH+iTB/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbjnPRKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129DE223E8D;
-	Thu, 12 Dec 2024 17:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC37E222D62;
+	Thu, 12 Dec 2024 17:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025734; cv=none; b=cw8uub46kHMAJAf80ERcd42rz7Fz/1yAKbOrdaB7ow6H6/RW1CX/zRdJCWSfslPecyRADzVABzDet+4/qTI+WptDDe9E2N5jtnKCcCaYVvazVZRTQqFtxaoITopLEcyj2sCp0qmEM/Rup4V1MyLHooZJ4z8lUeqNCcgDxGdeANA=
+	t=1734023536; cv=none; b=KjL3hJ1YTWEBU1eXUWUbqy4+s0P9Jr26Y+Pi6g4mUTZPzAgW8xh8C7VgkItA4rby2+qODeDbRgsoBVW5F4VFQxFyH4s9BE/VCM1Yr/IGAtq8oEc6RXLWdX/EIYea2o1fPcp8DRDalokruIXSPBPwx4Kb5EfJ4w2jhdrXI9nZ8zI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025734; c=relaxed/simple;
-	bh=SSlEWGdS+Hd1jocAN+CkZb9FS6K8aYSlGefZKKZ9tr4=;
+	s=arc-20240116; t=1734023536; c=relaxed/simple;
+	bh=YG1HSts7AT2Z+UeMBY/7KBtK7k01Hq/kgMjfYVihIJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQ/JwWgcG3nxZKc8dJ00h9Dn4O3gmu2/Luid1fzz+RL/LL4HvtlZNeHem47Jw8ex+MSrrBKJ1lFfRPBQ+9vUVuhiIYDKnTwJrr0xZTHcGAHPKXpMvpFyVbUdsO1mc6lbDleTCepV5gT4Tx3/GmYB+dcNXuMJZhKy41fnWmq4jRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eH+iTB/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8F2C4CECE;
-	Thu, 12 Dec 2024 17:48:53 +0000 (UTC)
+	 MIME-Version; b=X7T2wo1y2Xe28sjq8WRk0seeAs2bDP1DOhva8PkO8zAJ8+3S2/MnSJuK3k8z8LKNAaLIdYvo2w6la4f7k9KvX8QX8Hsj+KgUYIOjajVn/qDIh3lqFOOls2LPUrlko0QeG1mX2f9jLVaJjVzIHsc2Z0WzoQt7UE3K/hX7e4RcUws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbjnPRKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64021C4CED0;
+	Thu, 12 Dec 2024 17:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025733;
-	bh=SSlEWGdS+Hd1jocAN+CkZb9FS6K8aYSlGefZKKZ9tr4=;
+	s=korg; t=1734023535;
+	bh=YG1HSts7AT2Z+UeMBY/7KBtK7k01Hq/kgMjfYVihIJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eH+iTB/hirxJrfpEEUpVqmwqfr5yBCQkJ1KLwGfpctpICp4cAxYBF0g3cxmYV9yCc
-	 x/m1BMZsgco6U0ACKxZBjBUf/g3Q/NsG55JKO0M4vZcVtNe3iu7r10SAMAZdaCYC7I
-	 bCTC4SL8/7KUuhBMGdcXX2dW/merV2ttBnGUHJLs=
+	b=TbjnPRKUbUmUyUXGNrZPgIcwLNLV5MYti5qscccZA5udAXvj6tAl5Ze0eNyNJ1HqZ
+	 fhbv7KCZJbSZHpt3hzqswx70rWqN6AYLe3zvgyXMb4//kT3frWKVRhvvKlnbo7KJPs
+	 gCllE8GAp4cOg8J1Ntls7rlNCsl7AIid3Ucf9xDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jslaby@suse.cz>,
-	Borislav Petkov <bp@suse.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	x86-ml <x86@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 242/321] x86/asm: Reorder early variables
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 565/565] Bluetooth: hci_core: Fix calling mgmt_device_connected
 Date: Thu, 12 Dec 2024 16:02:40 +0100
-Message-ID: <20241212144239.534882826@linuxfoundation.org>
+Message-ID: <20241212144334.225704824@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,114 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby <jslaby@suse.cz>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 1a8770b746bd05ef68217989cd723b2c24d2208d ]
+commit 7967dc8f797f454d4f4acec15c7df0cdf4801617 upstream.
 
-Moving early_recursion_flag (4 bytes) after early_level4_pgt (4k) and
-early_dynamic_pgts (256k) saves 4k which are used for alignment of
-early_level4_pgt after early_recursion_flag.
+Since 61a939c68ee0 ("Bluetooth: Queue incoming ACL data until
+BT_CONNECTED state is reached") there is no long the need to call
+mgmt_device_connected as ACL data will be queued until BT_CONNECTED
+state.
 
-The real improvement is merely on the source code side. Previously it
-was:
-* __INITDATA + .balign
-* early_recursion_flag variable
-* a ton of CPP MACROS
-* __INITDATA (again)
-* early_top_pgt and early_recursion_flag variables
-* .data
-
-Now, it is a bit simpler:
-* a ton of CPP MACROS
-* __INITDATA + .balign
-* early_top_pgt and early_recursion_flag variables
-* early_recursion_flag variable
-* .data
-
-On the binary level the change looks like this:
-Before:
- (sections)
-  12 .init.data    00042000  0000000000000000  0000000000000000 00008000  2**12
- (symbols)
-  000000       4 OBJECT  GLOBAL DEFAULT   22 early_recursion_flag
-  001000    4096 OBJECT  GLOBAL DEFAULT   22 early_top_pgt
-  002000 0x40000 OBJECT  GLOBAL DEFAULT   22 early_dynamic_pgts
-
-After:
- (sections)
-  12 .init.data    00041004  0000000000000000  0000000000000000 00008000  2**12
- (symbols)
-  000000    4096 OBJECT  GLOBAL DEFAULT   22 early_top_pgt
-  001000 0x40000 OBJECT  GLOBAL DEFAULT   22 early_dynamic_pgts
-  041000       4 OBJECT  GLOBAL DEFAULT   22 early_recursion_flag
-
-So the resulting vmlinux is smaller by 4k with my toolchain as many
-other variables can be placed after early_recursion_flag to fill the
-rest of the page. Note that this is only .init data, so it is freed
-right after being booted anyway. Savings on-disk are none -- compression
-of zeros is easy, so the size of bzImage is the same pre and post the
-change.
-
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: x86-ml <x86@kernel.org>
-Link: https://lkml.kernel.org/r/20191003095238.29831-1-jslaby@suse.cz
-Stable-dep-of: 3b2f2d22fb42 ("crypto: x86/aegis128 - access 32-bit arguments as 32-bit")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219458
+Link: https://github.com/bluez/bluez/issues/1014
+Fixes: 333b4fd11e89 ("Bluetooth: L2CAP: Fix uaf in l2cap_connect")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/head_64.S | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ net/bluetooth/hci_core.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index f3d3e9646a99b..f00d7c0c1c86b 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -335,12 +335,6 @@ early_idt_handler_common:
- 	jmp restore_regs_and_return_to_kernel
- END(early_idt_handler_common)
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4964,8 +4964,6 @@ static void hci_acldata_packet(struct hc
  
--	__INITDATA
--
--	.balign 4
--GLOBAL(early_recursion_flag)
--	.long 0
--
- #define NEXT_PAGE(name) \
- 	.balign	PAGE_SIZE; \
- GLOBAL(name)
-@@ -375,6 +369,8 @@ GLOBAL(name)
- 	.endr
+ 	hci_dev_lock(hdev);
+ 	conn = hci_conn_hash_lookup_handle(hdev, handle);
+-	if (conn && hci_dev_test_flag(hdev, HCI_MGMT))
+-		mgmt_device_connected(hdev, conn, NULL, 0);
+ 	hci_dev_unlock(hdev);
  
- 	__INITDATA
-+	.balign 4
-+
- NEXT_PGD_PAGE(early_top_pgt)
- 	.fill	512,8,0
- 	.fill	PTI_USER_PGD_FILL,8,0
-@@ -382,6 +378,9 @@ NEXT_PGD_PAGE(early_top_pgt)
- NEXT_PAGE(early_dynamic_pgts)
- 	.fill	512*EARLY_DYNAMIC_PAGE_TABLES,8,0
- 
-+GLOBAL(early_recursion_flag)
-+	.long 0
-+
- 	.data
- 
- #if defined(CONFIG_XEN_PV) || defined(CONFIG_PVH)
--- 
-2.43.0
-
+ 	if (conn) {
 
 
 
