@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-103816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9074F9EF945
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944169EF776
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50EC028E6A3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54FBD28D3EC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F095C22333E;
-	Thu, 12 Dec 2024 17:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F16215710;
+	Thu, 12 Dec 2024 17:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnpEq/NM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1vQQvaA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED1B2210F1;
-	Thu, 12 Dec 2024 17:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0641315696E;
+	Thu, 12 Dec 2024 17:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025686; cv=none; b=Yrp73e3jndlp0dvOOIq1q6E5ImBM1p49E5SjII/ZpPL5a27XMPccmmypMq8Ux1X8RMWB8KZN43whr0AuhcDlK+x7zJeidOSitloNFz7Bxb6wUodXdLV7M46+XVqN1zoRw9eabn2KYa2VrDq7ItpHjt0p3edET8CZK2dFBo9VIXc=
+	t=1734024858; cv=none; b=bWfI6rQ7WB4SVCl8g4VuobadyfXRHhd8mRFSL3p/HsbyxNCryG8KrTRfEeb0Q8kYXheK6TpKmvkNlPKJB3wv+ctyxX9PG1FH7bwdNzCdUKRrSQYp2rhXeZZQQbFlOe8BB/f3GD14N0snGU7bXofJEpQF2lhkkw9/ai7juQTWdbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025686; c=relaxed/simple;
-	bh=EWYXLk9kBKIvGt7mgjhmKAG+0A5AcNnZATOzqJ9BFuo=;
+	s=arc-20240116; t=1734024858; c=relaxed/simple;
+	bh=0Le5+qRjJ7mVV5MCIyFwW5QFPY9NOoAiseepq3gHT0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAKqex4oM0669BLxGImSItzEYD/wGXxxHcRn6o1R/x0+lvM8FDkr6qScB4oNlKp9HgtLTEv+of0qVDkOmniIn2TDABf4OJ3iofp4exqadWuh2lxsteH7A+1HVSoAy2EaJ7jnwzt6dNa2S2I3k8uDWKrrRUXFAenruh434J4m2Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnpEq/NM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CE3C4CED1;
-	Thu, 12 Dec 2024 17:48:06 +0000 (UTC)
+	 MIME-Version; b=hh0y2BKjEMbbo4TJS8VcJfzZTaLTtLqCXXDDMGPrY98qKynxRurW/8ys6pLJYWMRdQd+Bz3som4iSd/FtyFfZ/U+sSTHQErRcHZFBiDYlr+A9xTCBZ9mycdm3psMsBonw8mb4Z+Pow0HQiWt+2UCLjTd1sebnLdpSRgbBioMlZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1vQQvaA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9E4C4CECE;
+	Thu, 12 Dec 2024 17:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025686;
-	bh=EWYXLk9kBKIvGt7mgjhmKAG+0A5AcNnZATOzqJ9BFuo=;
+	s=korg; t=1734024857;
+	bh=0Le5+qRjJ7mVV5MCIyFwW5QFPY9NOoAiseepq3gHT0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnpEq/NMTF7eMHKr/ZjO65V3xO5lDeL1ARPsc0ztEHWaIDDW4i2Ulbf6nH/Cr501l
-	 RuOXbALUGXZuZihHtL+8WpXYVfZU392OTkeYv+BnLjVEcHn4v8hi+QqkiZSQj3OfWJ
-	 JQi4uH9+HnLJ2MiFrMMtGtcrYSQvrdSYg27PFATs=
+	b=P1vQQvaAOwm+Nyvbbmr5ZSd9oXeXrtJHJSpsHtP0nAS84tHxPqHMRr4zoFYW7JeXq
+	 aD/49TkY9jBPMTprbE6O/pRAAvjlefkAIKptMleQjQBrx4v19bVNKynNn6K5wYmab9
+	 cQP31pmaO2NLyeJR11nJWJ/KySLiH8aKvJMIofCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.4 254/321] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
-Date: Thu, 12 Dec 2024 16:02:52 +0100
-Message-ID: <20241212144240.002294947@linuxfoundation.org>
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Valentin Schneider <valentin.schneider@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 435/459] sched/fair: Remove unused parameter of update_nohz_stats
+Date: Thu, 12 Dec 2024 16:02:53 +0100
+Message-ID: <20241212144310.939207476@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Vincent Guittot <vincent.guittot@linaro.org>
 
-commit e63fbd5f6810ed756bbb8a1549c7d4132968baa9 upstream.
+[ Upstream commit 64f84f273592d17dcdca20244168ad9f525a39c3 ]
 
-The cmp_entries_dup() function used as the comparator for sort()
-violated the symmetry and transitivity properties required by the
-sorting algorithm. Specifically, it returned 1 whenever memcmp() was
-non-zero, which broke the following expectations:
+idle load balance is the only user of update_nohz_stats and doesn't use
+force parameter. Remove it
 
-* Symmetry: If x < y, then y > x.
-* Transitivity: If x < y and y < z, then x < z.
-
-These violations could lead to incorrect sorting and failure to
-correctly identify duplicate elements.
-
-Fix the issue by directly returning the result of memcmp(), which
-adheres to the required comparison properties.
-
-Cc: stable@vger.kernel.org
-Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
-Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Valentin Schneider <valentin.schneider@arm.com>
+Link: https://lkml.kernel.org/r/20210224133007.28644-4-vincent.guittot@linaro.org
+Stable-dep-of: ff47a0acfcce ("sched/fair: Check idle_cpu() before need_resched() to detect ilb CPU turning busy")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/tracing_map.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ kernel/sched/fair.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/tracing_map.c
-+++ b/kernel/trace/tracing_map.c
-@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map
- static int cmp_entries_dup(const void *A, const void *B)
- {
- 	const struct tracing_map_sort_entry *a, *b;
--	int ret = 0;
- 
- 	a = *(const struct tracing_map_sort_entry **)A;
- 	b = *(const struct tracing_map_sort_entry **)B;
- 
--	if (memcmp(a->key, b->key, a->elt->map->key_size))
--		ret = 1;
--
--	return ret;
-+	return memcmp(a->key, b->key, a->elt->map->key_size);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index a6e34c58cee92..0af373c4d7450 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8650,7 +8650,7 @@ group_type group_classify(unsigned int imbalance_pct,
+ 	return group_has_spare;
  }
  
- static int cmp_entries_sum(const void *A, const void *B)
+-static bool update_nohz_stats(struct rq *rq, bool force)
++static bool update_nohz_stats(struct rq *rq)
+ {
+ #ifdef CONFIG_NO_HZ_COMMON
+ 	unsigned int cpu = rq->cpu;
+@@ -8661,7 +8661,7 @@ static bool update_nohz_stats(struct rq *rq, bool force)
+ 	if (!cpumask_test_cpu(cpu, nohz.idle_cpus_mask))
+ 		return false;
+ 
+-	if (!force && !time_after(jiffies, rq->last_blocked_load_update_tick))
++	if (!time_after(jiffies, rq->last_blocked_load_update_tick))
+ 		return true;
+ 
+ 	update_blocked_averages(cpu);
+@@ -10690,7 +10690,7 @@ static bool _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
+ 
+ 		rq = cpu_rq(balance_cpu);
+ 
+-		has_blocked_load |= update_nohz_stats(rq, true);
++		has_blocked_load |= update_nohz_stats(rq);
+ 
+ 		/*
+ 		 * If time for next balance is due,
+-- 
+2.43.0
+
 
 
 
