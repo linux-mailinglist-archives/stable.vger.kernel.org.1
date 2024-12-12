@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-103597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C39589EF7D1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC5B9EF7DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B6E028E623
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B602852BF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795612210EA;
-	Thu, 12 Dec 2024 17:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477B2216E2D;
+	Thu, 12 Dec 2024 17:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLKGLa6X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpGY9c8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358B720A5EE;
-	Thu, 12 Dec 2024 17:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0483415696E;
+	Thu, 12 Dec 2024 17:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025045; cv=none; b=VxP8+19uFC0/vqdCpFcXsc5q1IkIsJMo60B8OVotMA+vbvgXAXL6ywiWCMKiBD8+sLYR+xGW6NnKSUviDN8tgNHW008IX5+y2VXFtkD1yJeqms8R4YAo3aKso7pmabYB4J2fdygkUhFKKIGu//HEreKIdoWIGe9Kxkp3xmD1nsc=
+	t=1734025057; cv=none; b=RdOq34o+TrkqumDKxozL9LUF2dD/zWqG7n6lTv3cZNQeq2pBtdZ7KMsfo2jEo4rutb8mgn/JMXiphMGkF7QshsZkulT9iFKNLrAY64nq3ItjH4XrlzgL5ka1yQUU40G6OrvHeXsu5eIZaM8tDV/Tpqz78EGJLYn5MFzsKIXyrTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025045; c=relaxed/simple;
-	bh=nv/ia1enaYT/771fxRb7R7qddBYw1czBP8ByUyJp46U=;
+	s=arc-20240116; t=1734025057; c=relaxed/simple;
+	bh=XF78K/OpJC6b7MBW2Py19Wda77QU0OLrYFKZXr+c37k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXvZSwhgUGDq9mzhoyTcYjaAVunFR5SS2CRErC+tdI9jWF9uFxCBAlutzN/7qMFaFHPYO7arnon4MqJIHKuQ6fkKeWpx+bcupLVtUZYj1lR0ztpzCEkBn63P/Kz+K4bf05SBdXtvt3d/5502Gqj9WKTUdksNDvkp9zBjXJHnu2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLKGLa6X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E3EC4CECE;
-	Thu, 12 Dec 2024 17:37:24 +0000 (UTC)
+	 MIME-Version; b=PneaA6PTTIpEbtT6oxn58v48EL3dqmeT4mxwB6B1hXfG7G6YBG4v0Yos7xuuHVpxATF7UdlICO+B7k/r1/wAy/6blIQQ6AyPor5iHC1b7BnVmHJsm/5z1PmBuH1dO2PAJrcBmjQedcfNzbPYlo8DOSu5zv21KYaur9vqN+2jS84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpGY9c8e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4B0C4CECE;
+	Thu, 12 Dec 2024 17:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025045;
-	bh=nv/ia1enaYT/771fxRb7R7qddBYw1czBP8ByUyJp46U=;
+	s=korg; t=1734025056;
+	bh=XF78K/OpJC6b7MBW2Py19Wda77QU0OLrYFKZXr+c37k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLKGLa6XXUGbNeRGSEN1VTv3oK7n4D47xKpVUEcGY4isyYN4m/OnHG9H1R5GK/VXQ
-	 vvhMFcgswxFzpu3NBScQWFjhIhAqZaTzk24Y23xJC3XzwczbCaivf0Vte8+s3gMb/P
-	 GMkFTy4ooOJbfZtt1OSdkcfeW3GBUdOXt5+WFlhE=
+	b=YpGY9c8ekXktjwcLFLrG/0ZKejFR6bQpH/xpqaA/CmEwfRp3UXN7eS+X+EL1jGzdj
+	 /Jw5ituH8tJ+OL38k1iBsXpgXMDQT+lqIy0VZTHxwXBNEpVOLuqklxLVdNaxeEnXhU
+	 5MJHA7GLPh0uHONz5BHO/EOCx8b8Ai5oI0AMtpnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 010/321] media: dvbdev: fix the logic when DVB_DYNAMIC_MINORS is not set
-Date: Thu, 12 Dec 2024 15:58:48 +0100
-Message-ID: <20241212144230.053945943@linuxfoundation.org>
+	Chris Down <chris@chrisdown.name>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.4 011/321] kbuild: Use uname for LINUX_COMPILE_HOST detection
+Date: Thu, 12 Dec 2024 15:58:49 +0100
+Message-ID: <20241212144230.093284824@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -67,58 +65,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Chris Down <chris@chrisdown.name>
 
-commit a4aebaf6e6efff548b01a3dc49b4b9074751c15b upstream.
+commit 1e66d50ad3a1dbf0169b14d502be59a4b1213149 upstream.
 
-When CONFIG_DVB_DYNAMIC_MINORS, ret is not initialized, and a
-semaphore is left at the wrong state, in case of errors.
+`hostname` may not be present on some systems as it's not mandated by
+POSIX/SUSv4. This isn't just a theoretical problem: on Arch Linux,
+`hostname` is provided by `inetutils`, which isn't part of the base
+distribution.
 
-Make the code simpler and avoid mistakes by having just one error
-check logic used weather DVB_DYNAMIC_MINORS is used or not.
+    ./scripts/mkcompile_h: line 38: hostname: command not found
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202410201717.ULWWdJv8-lkp@intel.com/
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Link: https://lore.kernel.org/r/9e067488d8935b8cf00959764a1fa5de85d65725.1730926254.git.mchehab+huawei@kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>
+Use `uname -n` instead, which is more likely to be available (and
+mandated by standards).
+
+Signed-off-by: Chris Down <chris@chrisdown.name>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvbdev.c |   15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ scripts/mkcompile_h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -544,6 +544,9 @@ int dvb_register_device(struct dvb_adapt
- 	for (minor = 0; minor < MAX_DVB_MINORS; minor++)
- 		if (dvb_minors[minor] == NULL)
- 			break;
-+#else
-+	minor = nums2minor(adap->num, type, id);
-+#endif
- 	if (minor >= MAX_DVB_MINORS) {
- 		if (new_node) {
- 			list_del (&new_node->list_head);
-@@ -557,17 +560,7 @@ int dvb_register_device(struct dvb_adapt
- 		mutex_unlock(&dvbdev_register_lock);
- 		return -EINVAL;
- 	}
--#else
--	minor = nums2minor(adap->num, type, id);
--	if (minor >= MAX_DVB_MINORS) {
--		dvb_media_device_free(dvbdev);
--		list_del(&dvbdev->list_head);
--		kfree(dvbdev);
--		*pdvbdev = NULL;
--		mutex_unlock(&dvbdev_register_lock);
--		return ret;
--	}
--#endif
-+
- 	dvbdev->minor = minor;
- 	dvb_minors[minor] = dvb_device_get(dvbdev);
- 	up_write(&minor_rwsem);
+--- a/scripts/mkcompile_h
++++ b/scripts/mkcompile_h
+@@ -45,7 +45,7 @@ else
+ 	LINUX_COMPILE_BY=$KBUILD_BUILD_USER
+ fi
+ if test -z "$KBUILD_BUILD_HOST"; then
+-	LINUX_COMPILE_HOST=`hostname`
++	LINUX_COMPILE_HOST=`uname -n`
+ else
+ 	LINUX_COMPILE_HOST=$KBUILD_BUILD_HOST
+ fi
 
 
 
