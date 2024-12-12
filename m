@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-101811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AF19EEEC2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A76B29EEF08
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B868C16EC6C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 879CF1637DB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394862236EB;
-	Thu, 12 Dec 2024 15:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35738229673;
+	Thu, 12 Dec 2024 15:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hk5psoCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBZZ8OTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6452210DE;
-	Thu, 12 Dec 2024 15:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E565E22966D;
+	Thu, 12 Dec 2024 15:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018883; cv=none; b=Aab7RLLeQW7/3e4jVrYAIor7e5EVKgvUDDXJvM1fSsF030lTtZCAHQLxd9SdO7z/mPwWE9j+w7oZmF45DRBc6JPYPHieE9qq6r/MLsXNBq15YW85w3tsJhfg40JG9XeWo5E3DmEQ+URzqn8fLTXnTJAD2SV1TdaO7EPKkMx5EY0=
+	t=1734019030; cv=none; b=GyNSkBVjyVEZCz7kpfuQ5gs4+VKEMY72RJHgoywLvoQim1bObrbNgNLzuwZL1IfAlkhjM2NVifjLNgCu+zWpGUOMS3p8Pl0beV6cGQ3a0vvrIK+sxYdM2VPux6xn6KR43kYo2XuzsQmAAaIc+TyG1W1Tx56uKn/Vnek8W5uVQ0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018883; c=relaxed/simple;
-	bh=iI/n5CVPO+3djMn0bPGbH5hEk38kUKo4RRiNvHh3VHU=;
+	s=arc-20240116; t=1734019030; c=relaxed/simple;
+	bh=j8nNUYg8iWsHefrfGA7QEHHrMmg2Sh3ALrVNRyihPBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGVyGLJJNfxP2OJW+ew7hA9VR39dHRLlxijdtwgcyD9kzltU1MswA74KFswZRQW/54QRSX+1eHlxzvCZsYNQkqOcjfGTKpM1pN1iakgGu2XFC8VYBKgV/kC3PbrrDq7zmhzA2ADiPadKF49SedHyPQHw25WOEaBaYnttpPgdTNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hk5psoCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58426C4CECE;
-	Thu, 12 Dec 2024 15:54:42 +0000 (UTC)
+	 MIME-Version; b=Ul/d28P5+fRbdqw4cGIbBm/Pm2ko53RiUOugPK8cyV52qrV3sV4rht9/G4BxIoYpST2NpwI6nnaJ8nKl3UL5qNEdiFc+z439c2vPUA7d1iLdN0whJbXmOb+6jjgYZXGT4N5/qH/iDrLDN2mQfgFw4Ow1AQ7qo7i3IE5czOBtBUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBZZ8OTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B3BC4CED0;
+	Thu, 12 Dec 2024 15:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018882;
-	bh=iI/n5CVPO+3djMn0bPGbH5hEk38kUKo4RRiNvHh3VHU=;
+	s=korg; t=1734019029;
+	bh=j8nNUYg8iWsHefrfGA7QEHHrMmg2Sh3ALrVNRyihPBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hk5psoCRNW3t0mS9Mre6zRbBg1eJrvXDTvNpF+YLpDk8gr6y7OKvSUkvE7GyN7kEu
-	 wzvynC6gzkJi/Ri/AZSeWrkMXCR9W1TQV5c4ovz3pAnBlBnOM8LcAyPtluGpkPlI+s
-	 F2x9vP6Uhxt3h1Nz47RefkXHXhpUMSe51i3v55Vc=
+	b=XBZZ8OTdBSwUjWgtWKiN+k5R1T45gPeTOKMfuMbfQ9Pv1/ZogS879P90PZthnXmsq
+	 JjLOxxjgGN6wtMbYxr/X7BHLrSQ/4i4MV0PY37z/4GdhvEjAcdj4fjFh/ae1+Q/FF9
+	 IU6Rb8HEzpdMPe7BxMvWMRjLSCSp+dnoOgJJ8dbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/772] arm64: fix .data.rel.ro size assertion when CONFIG_LTO_CLANG
-Date: Thu, 12 Dec 2024 15:50:03 +0100
-Message-ID: <20241212144352.341137776@linuxfoundation.org>
+Subject: [PATCH 6.1 059/772] acpi/arm64: Adjust error handling procedure in gtdt_parse_timer_block()
+Date: Thu, 12 Dec 2024 15:50:04 +0100
+Message-ID: <20241212144352.387990448@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,54 +68,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 340fd66c856651d8c1d29f392dd26ad674d2db0e ]
+[ Upstream commit 1a9de2f6fda69d5f105dd8af776856a66abdaa64 ]
 
-Commit be2881824ae9 ("arm64/build: Assert for unwanted sections")
-introduced an assertion to ensure that the .data.rel.ro section does
-not exist.
+In case of error in gtdt_parse_timer_block() invalid 'gtdt_frame'
+will be used in 'do {} while (i-- >= 0 && gtdt_frame--);' statement block
+because do{} block will be executed even if 'i == 0'.
 
-However, this check does not work when CONFIG_LTO_CLANG is enabled,
-because .data.rel.ro matches the .data.[0-9a-zA-Z_]* pattern in the
-DATA_MAIN macro.
+Adjust error handling procedure by replacing 'i-- >= 0' with 'i-- > 0'.
 
-Move the ASSERT() above the RW_DATA() line.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: be2881824ae9 ("arm64/build: Assert for unwanted sections")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20241106161843.189927-1-masahiroy@kernel.org
+Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Acked-by: Hanjun Guo <guohanjun@huawei.com>
+Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+Acked-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240827101239.22020-1-amishin@t-argos.ru
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/vmlinux.lds.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/arm64/gtdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/vmlinux.lds.S b/arch/arm64/kernel/vmlinux.lds.S
-index 45131e354e27f..b0226eac7bda8 100644
---- a/arch/arm64/kernel/vmlinux.lds.S
-+++ b/arch/arm64/kernel/vmlinux.lds.S
-@@ -272,6 +272,9 @@ SECTIONS
- 	__initdata_end = .;
- 	__init_end = .;
+diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
+index c0e77c1c8e09d..eb6c2d3603874 100644
+--- a/drivers/acpi/arm64/gtdt.c
++++ b/drivers/acpi/arm64/gtdt.c
+@@ -283,7 +283,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
+ 		if (frame->virt_irq > 0)
+ 			acpi_unregister_gsi(gtdt_frame->virtual_timer_interrupt);
+ 		frame->virt_irq = 0;
+-	} while (i-- >= 0 && gtdt_frame--);
++	} while (i-- > 0 && gtdt_frame--);
  
-+	.data.rel.ro : { *(.data.rel.ro) }
-+	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
-+
- 	_data = .;
- 	_sdata = .;
- 	RW_DATA(L1_CACHE_BYTES, PAGE_SIZE, THREAD_ALIGN)
-@@ -323,9 +326,6 @@ SECTIONS
- 		*(.plt) *(.plt.*) *(.iplt) *(.igot .igot.plt)
- 	}
- 	ASSERT(SIZEOF(.plt) == 0, "Unexpected run-time procedure linkages detected!")
--
--	.data.rel.ro : { *(.data.rel.ro) }
--	ASSERT(SIZEOF(.data.rel.ro) == 0, "Unexpected RELRO detected!")
+ 	return -EINVAL;
  }
- 
- #include "image-vars.h"
 -- 
 2.43.0
 
