@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122449EF712
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D151A9EF903
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3462C1889E40
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE1F8188C9B6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2302165F0;
-	Thu, 12 Dec 2024 17:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFBB2216E2D;
+	Thu, 12 Dec 2024 17:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtDHbTBl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHr3WEGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3CC211493;
-	Thu, 12 Dec 2024 17:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D06615696E;
+	Thu, 12 Dec 2024 17:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024372; cv=none; b=kPvD6xahX2fw3nRIbJxA68b3tAvxjh3djficSylAjmD03tTGfAGn5+igaMb/Yin9zQxRzg8uCd/QRBSU1lBfSC895BG1drihNH+wzCaH1jBfGuv/ccfoHOkqsUIHEYuDOcTB37fJLWP+P8QGx/zsZ97phbCna/xsN81kPJEz10c=
+	t=1734025214; cv=none; b=OwELBZeNIXZQ2zDrG9cwrL9qdhOwUQL6QZdvBDgPKeqAF14v0cFGjzJoCBol+1dx2smbVL9K530I5oEzvpv2m3CO9sEn+Rl3lsMZPI6iM1hYa8UbBhlkpSj1os+7Xgy5BhN6xzn2RlHOM75suww4ICd0MLusmKgHiv7pK+ETd6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024372; c=relaxed/simple;
-	bh=CR/VQRnGAanIkmjhNo12Th7p0dmtpXfaI9i05JsWJ24=;
+	s=arc-20240116; t=1734025214; c=relaxed/simple;
+	bh=RcfVm5RNbvcUJhCHy79NCep43y8XgXa6Hylw4lCQAqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giPrL0zDaPEECKca9mqcNCfCjkL10NqQwQqdKAiDaZWjvTRO2+CGmB3/JS/Fs0w2dlicpd+9RT6puLpu0ogvNe4YpOZIt44c5eaaPKC3k47K8IlKn4fvcmEaieUspVEoEmJzxoN/IHo0zkLRMAlfrxrpOoFTMVwfU3UFDT2VJs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtDHbTBl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D37C4CECE;
-	Thu, 12 Dec 2024 17:26:12 +0000 (UTC)
+	 MIME-Version; b=QeJ+k/av6uKZ01xwH7pX6NNKqpyw8tmx9g43/OH/QRTqFDZcxKe42d/XQ6ZDDgSusJ4vTQTlFv4fFxMaaRBmpJnzPA1/qcOSnMubMDFgzCe6iB5s+4rH4sssONoRHUAaO8nNj1TOsyo7c6yaYjVvrUY/lr0atri4LNcbo1ISW0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHr3WEGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15555C4CECE;
+	Thu, 12 Dec 2024 17:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024372;
-	bh=CR/VQRnGAanIkmjhNo12Th7p0dmtpXfaI9i05JsWJ24=;
+	s=korg; t=1734025214;
+	bh=RcfVm5RNbvcUJhCHy79NCep43y8XgXa6Hylw4lCQAqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtDHbTBlY3Sl93AcH3zKq7juAUkMqL4IRRiSS7z08V/rhmbpQn9h2Z7ZAmjXwdJwX
-	 yRoD6wP9NWRm7Z6OmJmJo5XuIpMW5Kg9y9aNV6UjAhu00A2s1yyb8ijPGQZ8JSEz9m
-	 hwJ0yVR7sgWpp26AYeRrF54TZ0zyFOgPH+nWK0Zc=
+	b=AHr3WEGj8neMtn/5xrdr4jcasGSn7Orn24GPU6xKg/u+NvVpQqdkbfxgKQo5Q6VNO
+	 bMzM1Kt3f5UrXFM0FCj1IB7gh32UN1hgtY/DgBW87P800vvKlCpOlkuLXbCPz1wmj5
+	 IgAVOUAs4KOa25XyDHXkSaillSJclH/IG8VUKWrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <muchun.song@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 274/459] block: fix ordering between checking BLK_MQ_S_STOPPED request adding
+	Yuan Can <yuancan@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 094/321] cpufreq: loongson2: Unregister platform_driver on failure
 Date: Thu, 12 Dec 2024 16:00:12 +0100
-Message-ID: <20241212144304.428473546@linuxfoundation.org>
+Message-ID: <20241212144233.703801189@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: Yuan Can <yuancan@huawei.com>
 
-commit 96a9fe64bfd486ebeeacf1e6011801ffe89dae18 upstream.
+[ Upstream commit 5f856d71ccdf89b4bac0ff70ebb0bb582e7f7f18 ]
 
-Supposing first scenario with a virtio_blk driver.
+When cpufreq_register_driver() returns error, the cpufreq_init() returns
+without unregister platform_driver, fix by add missing
+platform_driver_unregister() when cpufreq_register_driver() failed.
 
-CPU0                        CPU1
-
-blk_mq_try_issue_directly()
-  __blk_mq_issue_directly()
-    q->mq_ops->queue_rq()
-      virtio_queue_rq()
-        blk_mq_stop_hw_queue()
-                            virtblk_done()
-  blk_mq_request_bypass_insert()  1) store
-                              blk_mq_start_stopped_hw_queue()
-                                clear_bit(BLK_MQ_S_STOPPED)       3) store
-                                blk_mq_run_hw_queue()
-                                  if (!blk_mq_hctx_has_pending()) 4) load
-                                    return
-                                  blk_mq_sched_dispatch_requests()
-  blk_mq_run_hw_queue()
-    if (!blk_mq_hctx_has_pending())
-      return
-    blk_mq_sched_dispatch_requests()
-      if (blk_mq_hctx_stopped())  2) load
-        return
-      __blk_mq_sched_dispatch_requests()
-
-Supposing another scenario.
-
-CPU0                        CPU1
-
-blk_mq_requeue_work()
-  blk_mq_insert_request() 1) store
-                            virtblk_done()
-                              blk_mq_start_stopped_hw_queue()
-  blk_mq_run_hw_queues()        clear_bit(BLK_MQ_S_STOPPED)       3) store
-                                blk_mq_run_hw_queue()
-                                  if (!blk_mq_hctx_has_pending()) 4) load
-                                    return
-                                  blk_mq_sched_dispatch_requests()
-    if (blk_mq_hctx_stopped())  2) load
-      continue
-    blk_mq_run_hw_queue()
-
-Both scenarios are similar, the full memory barrier should be inserted
-between 1) and 2), as well as between 3) and 4) to make sure that either
-CPU0 sees BLK_MQ_S_STOPPED is cleared or CPU1 sees dispatch list.
-Otherwise, either CPU will not rerun the hardware queue causing
-starvation of the request.
-
-The easy way to fix it is to add the essential full memory barrier into
-helper of blk_mq_hctx_stopped(). In order to not affect the fast path
-(hardware queue is not stopped most of the time), we only insert the
-barrier into the slow path. Actually, only slow path needs to care about
-missing of dispatching the request to the low-level device driver.
-
-Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
-Cc: stable@vger.kernel.org
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241014092934.53630-4-songmuchun@bytedance.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f8ede0f700f5 ("MIPS: Loongson 2F: Add CPU frequency scaling support")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c |    6 ++++++
- block/blk-mq.h |   13 +++++++++++++
- 2 files changed, 19 insertions(+)
+ drivers/cpufreq/loongson2_cpufreq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -1787,6 +1787,12 @@ void blk_mq_start_stopped_hw_queue(struc
- 		return;
+diff --git a/drivers/cpufreq/loongson2_cpufreq.c b/drivers/cpufreq/loongson2_cpufreq.c
+index 890813e0bb768..9685c35c0cfad 100644
+--- a/drivers/cpufreq/loongson2_cpufreq.c
++++ b/drivers/cpufreq/loongson2_cpufreq.c
+@@ -167,7 +167,9 @@ static int __init cpufreq_init(void)
  
- 	clear_bit(BLK_MQ_S_STOPPED, &hctx->state);
-+	/*
-+	 * Pairs with the smp_mb() in blk_mq_hctx_stopped() to order the
-+	 * clearing of BLK_MQ_S_STOPPED above and the checking of dispatch
-+	 * list in the subsequent routine.
-+	 */
-+	smp_mb__after_atomic();
- 	blk_mq_run_hw_queue(hctx, async);
- }
- EXPORT_SYMBOL_GPL(blk_mq_start_stopped_hw_queue);
---- a/block/blk-mq.h
-+++ b/block/blk-mq.h
-@@ -175,6 +175,19 @@ static inline struct blk_mq_tags *blk_mq
+ 	ret = cpufreq_register_driver(&loongson2_cpufreq_driver);
  
- static inline bool blk_mq_hctx_stopped(struct blk_mq_hw_ctx *hctx)
- {
-+	/* Fast path: hardware queue is not stopped most of the time. */
-+	if (likely(!test_bit(BLK_MQ_S_STOPPED, &hctx->state)))
-+		return false;
-+
-+	/*
-+	 * This barrier is used to order adding of dispatch list before and
-+	 * the test of BLK_MQ_S_STOPPED below. Pairs with the memory barrier
-+	 * in blk_mq_start_stopped_hw_queue() so that dispatch code could
-+	 * either see BLK_MQ_S_STOPPED is cleared or dispatch list is not
-+	 * empty to avoid missing dispatching requests.
-+	 */
-+	smp_mb();
-+
- 	return test_bit(BLK_MQ_S_STOPPED, &hctx->state);
- }
- 
+-	if (!ret && !nowait) {
++	if (ret) {
++		platform_driver_unregister(&platform_driver);
++	} else if (!nowait) {
+ 		saved_cpu_wait = cpu_wait;
+ 		cpu_wait = loongson2_cpu_wait;
+ 	}
+-- 
+2.43.0
+
 
 
 
