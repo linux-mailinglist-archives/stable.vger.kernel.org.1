@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-101196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A009EEB4A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDCC9EF1E6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78083188D50D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81DBC16E970
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3332080FC;
-	Thu, 12 Dec 2024 15:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F92622653B;
+	Thu, 12 Dec 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4jum9ba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PkVmbETv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1822EAE5;
-	Thu, 12 Dec 2024 15:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1F0236FBB;
+	Thu, 12 Dec 2024 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016693; cv=none; b=rBUMOp8C9GnsEA7qCM1d52htqQDxkef33Y/AYTXl9sQ9fVF3S6vMKdV3Rtqro0T20cdw7bwOkojQG+ic9gPp1Jz3gpyKoiVJ9yUcpZgofXaQ2CcXxWqM1yfq55xN91Y5N5QoXX8M/EAiF6vs8ipHkCm80X0wVFRPu+LNDz14M2c=
+	t=1734020551; cv=none; b=p9MlPctpV1zfE2rqVnJxyHnIPiz8njG/asnaltRkp9ZdpYLJzMsY8zV3ZLg2gRjw79mZjHPpKuGjywzu57SxnF8q0yRcLaxZtzUM41ikyD+ik2Wm5T1oF0JdIMv0y0dAwKMbhfGRgrKp00SDnH7pi0XMBnascGiaeJK7J6GOuvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016693; c=relaxed/simple;
-	bh=DK3bgaD58HRnjAO/tqIbkzFu1YHhwwbhTayuWcplncs=;
+	s=arc-20240116; t=1734020551; c=relaxed/simple;
+	bh=wIELYbxNZIe6V9iYPdDVPl1r/hBeXGDhz1yu+t7O7UQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOT3A7Xq5Be1h2aAYd5V1jRGodPscokA0fPSFMFnwCBeo+laUMEupi6D1kktwE8E0Dd/WJwYGQkdmAj2hTlsxgnhV3HCmA0uH+0koJul5cQFkB/pAD8E5PVlm0Dy9MyOGLssSLjnUCA9L3Gfoo7h5BwBLXhndZxXdfCw80+KHKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4jum9ba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6E2C4CECE;
-	Thu, 12 Dec 2024 15:18:12 +0000 (UTC)
+	 MIME-Version; b=DGfioj4sfWeer9UM+INb2J+PPvMhmTrf8rmxgSqkGdL6uQ80tVJU1i62RKUC9eQ4RI8U/7Sp7lCbriNtQLRCpAF39k0INqacUIkHQrCFj7kZWmIpAA8HWg4TgzryGOSKXwAopz8NwC8cD8jf2CJ6ZM0e5M6lA5egWoO/wAey27M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PkVmbETv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D804C4CED0;
+	Thu, 12 Dec 2024 16:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016692;
-	bh=DK3bgaD58HRnjAO/tqIbkzFu1YHhwwbhTayuWcplncs=;
+	s=korg; t=1734020551;
+	bh=wIELYbxNZIe6V9iYPdDVPl1r/hBeXGDhz1yu+t7O7UQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4jum9baEtRwiMnJQ99XPZnGzcucA5zDCdtNaIWM2IW2hCrQqeOVOMTtRAGRF795x
-	 1QruyNXR3uwkx2jiAvQniXM0LltHdhyFbTYxMVBIAxDwG5VsN7b6TjkP8YQukY/kjs
-	 bjx7dZiINkImvShrozNcD8QSXWDdGWtpSV93fPlw=
+	b=PkVmbETv6gNz8nVg+7JvmYZ5eIcbj716fTLJDr5I5T7wpvOKIIdUiv79iL6qkg3rC
+	 PlZ3xFno77CSOx10Eltr2l+uOmqZDEDCdZFv5w6x9Ja+ssmc/625L09mDaQ7n1NGRV
+	 hMX8mLVDjC0B4m1jTnJM+Wek9DlQrty1GUErSsh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/466] drm/amd/display: disable SG displays on cyan skillfish
-Date: Thu, 12 Dec 2024 15:57:21 +0100
-Message-ID: <20241212144317.530066541@linuxfoundation.org>
+	Zicheng Qu <quzicheng@huawei.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 497/772] iio: Fix fwnode_handle in __fwnode_iio_channel_get_by_name()
+Date: Thu, 12 Dec 2024 15:57:22 +0100
+Message-ID: <20241212144410.487650251@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zicheng Qu <quzicheng@huawei.com>
 
-[ Upstream commit 66369db7fdd7d58d78673bf83d2b87ea623efb63 ]
+commit 3993ca4add248f0f853f54f9273a7de850639f33 upstream.
 
-These parts were mainly for compute workloads, but they have
-a display that was available for the console.  These chips
-should support SG display, but I don't know that the support
-was ever validated on Linux so disable it by default. It can
-still be enabled by setting sg_display=1 for those that
-want to play with it.  These systems also generally had large
-carve outs so SG display was less of a factor.
+In the fwnode_iio_channel_get_by_name(), iterating over parent nodes to
+acquire IIO channels via fwnode_for_each_parent_node(). The variable
+chan was mistakenly attempted on the original node instead of the
+current parent node. This patch corrects the logic to ensure that
+__fwnode_iio_channel_get_by_name() is called with the correct parent
+node.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3356
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: 1e64b9c5f9a0 ("iio: inkern: move to fwnode properties")
+Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
+Link: https://patch.msgid.link/20241102092525.2389952-1-quzicheng@huawei.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/inkern.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 24fbde7dd1c42..8c3db8346f300 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1910,7 +1910,11 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
- 		else
- 			init_data.flags.gpu_vm_support = (amdgpu_sg_display != 0);
- 	} else {
--		init_data.flags.gpu_vm_support = (amdgpu_sg_display != 0) && (adev->flags & AMD_IS_APU);
-+		if (amdgpu_ip_version(adev, DCE_HWIP, 0) == IP_VERSION(2, 0, 3))
-+			init_data.flags.gpu_vm_support = (amdgpu_sg_display == 1);
-+		else
-+			init_data.flags.gpu_vm_support =
-+				(amdgpu_sg_display != 0) && (adev->flags & AMD_IS_APU);
- 	}
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -276,7 +276,7 @@ struct iio_channel *fwnode_iio_channel_g
+ 			return ERR_PTR(-ENODEV);
+ 		}
  
- 	adev->mode_info.gpu_vm_support = init_data.flags.gpu_vm_support;
--- 
-2.43.0
-
+-		chan = __fwnode_iio_channel_get_by_name(fwnode, name);
++		chan = __fwnode_iio_channel_get_by_name(parent, name);
+ 		if (!IS_ERR(chan) || PTR_ERR(chan) != -ENODEV) {
+ 			fwnode_handle_put(parent);
+  			return chan;
 
 
 
