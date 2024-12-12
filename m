@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-103511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFC79EF744
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0EED9EF911
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B370E28721A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 623892891DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F0220A5EE;
-	Thu, 12 Dec 2024 17:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0F922652A;
+	Thu, 12 Dec 2024 17:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mq8sYYwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TK+3ePMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE712153DD;
-	Thu, 12 Dec 2024 17:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566D6223C55;
+	Thu, 12 Dec 2024 17:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024790; cv=none; b=PG6ebaTKrNS4nQ51tXcWb5IVfPYGO/eFYJNTFlGuuJHfTAH3fzASh1ArhyGRyVggs2Qz77unlZmZK4iu5RbTsmNdiIAC0FAyeNlWbBqqk8T8tyEZcKvEH9PTT1XxrrTxCOmfImOpLAls0KmQJvDq+AXitaZBaH4TtYYPdBequvo=
+	t=1734025547; cv=none; b=aKLWPnIHdpL4d69llXg1L47FLxZ2Tzii7fJx4ygdMGME/UwkYhOAqRJ9vcijCy1yq6/AVlDIjUfTqitSLpWx5EMOAZEi3K2xk670ZYldUBFfh2RCnaulysLsSztBkmEOiqe20PXVRAM+tJxzj7TsaCkhBPUdW0u90zpOPzveVtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024790; c=relaxed/simple;
-	bh=L4yZyW6sHeMeOVygIneMCQggCm0JKK+YvTN2XzsAxgM=;
+	s=arc-20240116; t=1734025547; c=relaxed/simple;
+	bh=47JOvJv401l7UQB0QcxaNz8RlqLdggecYM8UdVBy4nU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLFZaX+U5Lby7NQKncQGvL4MihVTiguncb8ftlGbEsNINzceFGru9gYIuUzHWOnNX8BO2MJEJRPPHaB3kPp/plfqbM/IC1o9L4+pM319cmtifmAQ1dQiHPk372CuDGIEKWq5RCNVuMCokac3GC4Vjwwrvz6irT+CLpUwUezn0uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mq8sYYwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFEFC4CECE;
-	Thu, 12 Dec 2024 17:33:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eTtdLS4uvy4ihpxVcoGEmpjCotcvUN0q9+rcvWaZFKcHxgeS/TKBJEsKWwIWNsHtSGyKKQDTishsVX09g5umZ5o+0wMoh4h0E971zQy2lq9U6g2RxGLiRaOiCsf7Zh7lh0FG9akmTRwZIlYZK9kvP1LdaexIFAOVeTGmJWRBo3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TK+3ePMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D23FCC4CECE;
+	Thu, 12 Dec 2024 17:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024790;
-	bh=L4yZyW6sHeMeOVygIneMCQggCm0JKK+YvTN2XzsAxgM=;
+	s=korg; t=1734025547;
+	bh=47JOvJv401l7UQB0QcxaNz8RlqLdggecYM8UdVBy4nU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mq8sYYwfsR/tRwVN4BrBl+Pc2NwyRrBZjIR4oOxId4aR2OY6sfV1y/UW7LvUEU47K
-	 DuwBDyyDdMqLaJngG9Io28oKdNJ1GBI+oSy6TeNvGTnlPjCIbY0pyWJTLTcmgiiUS3
-	 3PkbaxCLl9xBTunLqaxTCiSsV3MeEvzhSJh2V/28=
+	b=TK+3ePMNzrekL5zqQSOTPWUjJ/ckF8eqo6MzclT8oaZNhRoejXdvRNiYl7hVp4POI
+	 xvKHztE2bDHrGqBB4eiRr0+zV21mqM8H7zgckicJaww/31hgd1BYaVNvTIIID+vfs/
+	 WjKQPrC0lLYtELebYyFMattEfuyW2e9pZkeF3E38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Given <dg@cowlark.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 383/459] media: uvcvideo: Add a quirk for the Kaiweets KTI-W02 infrared camera
-Date: Thu, 12 Dec 2024 16:02:01 +0100
-Message-ID: <20241212144308.901816080@linuxfoundation.org>
+	Alexander Shiyan <eagle.alexander923@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.4 204/321] media: i2c: tc358743: Fix crash in the probe error path when using polling
+Date: Thu, 12 Dec 2024 16:02:02 +0100
+Message-ID: <20241212144238.037619779@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,252 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Given <dg@cowlark.com>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
 
-[ Upstream commit b2ec92bb5605452d539a7aa1e42345b95acd8583 ]
+commit 869f38ae07f7df829da4951c3d1f7a2be09c2e9a upstream.
 
-Adds a quirk to make the NXP Semiconductors 1fc9:009b chipset work.
+If an error occurs in the probe() function, we should remove the polling
+timer that was alarmed earlier, otherwise the timer is called with
+arguments that are already freed, which results in a crash.
 
-lsusb for the device reports:
+------------[ cut here ]------------
+WARNING: CPU: 3 PID: 0 at kernel/time/timer.c:1830 __run_timers+0x244/0x268
+Modules linked in:
+CPU: 3 UID: 0 PID: 0 Comm: swapper/3 Not tainted 6.11.0 #226
+Hardware name: Diasom DS-RK3568-SOM-EVB (DT)
+pstate: 804000c9 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __run_timers+0x244/0x268
+lr : __run_timers+0x1d4/0x268
+sp : ffffff80eff2baf0
+x29: ffffff80eff2bb50 x28: 7fffffffffffffff x27: ffffff80eff2bb00
+x26: ffffffc080f669c0 x25: ffffff80efef6bf0 x24: ffffff80eff2bb00
+x23: 0000000000000000 x22: dead000000000122 x21: 0000000000000000
+x20: ffffff80efef6b80 x19: ffffff80041c8bf8 x18: ffffffffffffffff
+x17: ffffffc06f146000 x16: ffffff80eff27dc0 x15: 000000000000003e
+x14: 0000000000000000 x13: 00000000000054da x12: 0000000000000000
+x11: 00000000000639c0 x10: 000000000000000c x9 : 0000000000000009
+x8 : ffffff80eff2cb40 x7 : ffffff80eff2cb40 x6 : ffffff8002bee480
+x5 : ffffffc080cb2220 x4 : ffffffc080cb2150 x3 : 00000000000f4240
+x2 : 0000000000000102 x1 : ffffff80eff2bb00 x0 : ffffff80041c8bf0
+Call trace:
+ __run_timers+0x244/0x268
+ timer_expire_remote+0x50/0x68
+ tmigr_handle_remote+0x388/0x39c
+ run_timer_softirq+0x38/0x44
+ handle_softirqs+0x138/0x298
+ __do_softirq+0x14/0x20
+ ____do_softirq+0x10/0x1c
+ call_on_irq_stack+0x24/0x4c
+ do_softirq_own_stack+0x1c/0x2c
+ irq_exit_rcu+0x9c/0xcc
+ el1_interrupt+0x48/0xc0
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x7c/0x80
+ default_idle_call+0x34/0x68
+ do_idle+0x23c/0x294
+ cpu_startup_entry+0x38/0x3c
+ secondary_start_kernel+0x128/0x160
+ __secondary_switched+0xb8/0xbc
+---[ end trace 0000000000000000 ]---
 
-Bus 003 Device 011: ID 1fc9:009b NXP Semiconductors IR VIDEO
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.00
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2 [unknown]
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x1fc9 NXP Semiconductors
-  idProduct          0x009b IR VIDEO
-  bcdDevice            1.01
-  iManufacturer           1 Guide sensmart
-  iProduct                2 IR VIDEO
-  iSerial                 0
-  bNumConfigurations      1
-  Configuration Descriptor:
-    bLength                 9
-    bDescriptorType         2
-    wTotalLength       0x00c2
-    bNumInterfaces          2
-    bConfigurationValue     1
-    iConfiguration          0
-    bmAttributes         0xc0
-      Self Powered
-    MaxPower              100mA
-    Interface Association:
-      bLength                 8
-      bDescriptorType        11
-      bFirstInterface         0
-      bInterfaceCount         2
-      bFunctionClass         14 Video
-      bFunctionSubClass       3 Video Interface Collection
-      bFunctionProtocol       0
-      iFunction               3 IR Camera
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        0
-      bAlternateSetting       0
-      bNumEndpoints           1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      1 Video Control
-      bInterfaceProtocol      0
-      iInterface              0
-      VideoControl Interface Descriptor:
-        bLength                13
-        bDescriptorType        36
-        bDescriptorSubtype      1 (HEADER)
-        bcdUVC               1.00
-        wTotalLength       0x0033
-        dwClockFrequency        6.000000MHz
-        bInCollection           1
-        baInterfaceNr( 0)       1
-      VideoControl Interface Descriptor:
-        bLength                18
-        bDescriptorType        36
-        bDescriptorSubtype      2 (INPUT_TERMINAL)
-        bTerminalID             1
-        wTerminalType      0x0201 Camera Sensor
-        bAssocTerminal          0
-        iTerminal               0
-        wObjectiveFocalLengthMin      0
-        wObjectiveFocalLengthMax      0
-        wOcularFocalLength            0
-        bControlSize                  3
-        bmControls           0x00000000
-      VideoControl Interface Descriptor:
-        bLength                 9
-        bDescriptorType        36
-        bDescriptorSubtype      3 (OUTPUT_TERMINAL)
-        bTerminalID             2
-        wTerminalType      0x0101 USB Streaming
-        bAssocTerminal          0
-        bSourceID               1
-        iTerminal               0
-      VideoControl Interface Descriptor:
-        bLength                11
-        bDescriptorType        36
-        bDescriptorSubtype      5 (PROCESSING_UNIT)
-      Warning: Descriptor too short
-        bUnitID                 3
-        bSourceID               1
-        wMaxMultiplier          0
-        bControlSize            2
-        bmControls     0x00000000
-        iProcessing             0
-        bmVideoStandards     0x62
-          NTSC - 525/60
-          PAL - 525/60
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x81  EP 1 IN
-        bmAttributes            3
-          Transfer Type            Interrupt
-          Synch Type               None
-          Usage Type               Data
-        wMaxPacketSize     0x0008  1x 8 bytes
-        bInterval               1
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       0
-      bNumEndpoints           0
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0
-      iInterface              0
-      VideoStreaming Interface Descriptor:
-        bLength                            14
-        bDescriptorType                    36
-        bDescriptorSubtype                  1 (INPUT_HEADER)
-        bNumFormats                         1
-        wTotalLength                   0x0055
-        bEndpointAddress                 0x82  EP 2 IN
-        bmInfo                              0
-        bTerminalLink                       2
-        bStillCaptureMethod                 2
-        bTriggerSupport                     0
-        bTriggerUsage                       0
-        bControlSize                        1
-        bmaControls( 0)                     0
-      VideoStreaming Interface Descriptor:
-        bLength                            27
-        bDescriptorType                    36
-        bDescriptorSubtype                  4 (FORMAT_UNCOMPRESSED)
-        bFormatIndex                        1
-        bNumFrameDescriptors                1
-        guidFormat                            {e436eb7b-524f-11ce-9f53-0020af0ba770}
-        bBitsPerPixel                      16
-        bDefaultFrameIndex                  1
-        bAspectRatioX                       0
-        bAspectRatioY                       0
-        bmInterlaceFlags                 0x00
-          Interlaced stream or variable: No
-          Fields per frame: 2 fields
-          Field 1 first: No
-          Field pattern: Field 1 only
-        bCopyProtect                        0
-      VideoStreaming Interface Descriptor:
-        bLength                            34
-        bDescriptorType                    36
-        bDescriptorSubtype                  5 (FRAME_UNCOMPRESSED)
-        bFrameIndex                         1
-        bmCapabilities                   0x00
-          Still image unsupported
-        wWidth                            240
-        wHeight                           322
-        dwMinBitRate                 12364800
-        dwMaxBitRate                 30912000
-        dwMaxVideoFrameBufferSize      154560
-        dwDefaultFrameInterval         400000
-        bFrameIntervalType                  2
-        dwFrameInterval( 0)            400000
-        dwFrameInterval( 1)           1000000
-      VideoStreaming Interface Descriptor:
-        bLength                            10
-        bDescriptorType                    36
-        bDescriptorSubtype                  3 (STILL_IMAGE_FRAME)
-        bEndpointAddress                 0x00  EP 0 OUT
-        bNumImageSizePatterns               1
-        wWidth( 0)                        240
-        wHeight( 0)                       322
-        bNumCompressionPatterns             0
-    Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        1
-      bAlternateSetting       1
-      bNumEndpoints           1
-      bInterfaceClass        14 Video
-      bInterfaceSubClass      2 Video Streaming
-      bInterfaceProtocol      0
-      iInterface              0
-      Endpoint Descriptor:
-        bLength                 7
-        bDescriptorType         5
-        bEndpointAddress     0x82  EP 2 IN
-        bmAttributes            5
-          Transfer Type            Isochronous
-          Synch Type               Asynchronous
-          Usage Type               Data
-        wMaxPacketSize     0x0400  1x 1024 bytes
-        bInterval               1
-Device Status:     0x0001
-  Self Powered
-
-Signed-off-by: David Given <dg@cowlark.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Link: https://lore.kernel.org/r/20240918180540.10830-2-dg@cowlark.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Fixes: 4e66a52a2e4c ("[media] tc358743: Add support for platforms without IRQ line")
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/media/i2c/tc358743.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index da1bccaab1319..f3f91635d67b6 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2548,6 +2548,8 @@ static const struct uvc_device_info uvc_quirk_force_y8 = {
-  * The Logitech cameras listed below have their interface class set to
-  * VENDOR_SPEC because they don't announce themselves as UVC devices, even
-  * though they are compliant.
-+ *
-+ * Sort these by vendor/product ID.
-  */
- static const struct usb_device_id uvc_ids[] = {
- 	/* LogiLink Wireless Webcam */
-@@ -3016,6 +3018,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_PROBE_MINMAX
- 					| UVC_QUIRK_IGNORE_SELECTOR_UNIT) },
-+	/* NXP Semiconductors IR VIDEO */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x1fc9,
-+	  .idProduct		= 0x009b,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= (kernel_ulong_t)&uvc_quirk_probe_minmax },
- 	/* Oculus VR Positional Tracker DK2 */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
--- 
-2.43.0
-
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -2175,8 +2175,10 @@ static int tc358743_probe(struct i2c_cli
+ 
+ err_work_queues:
+ 	cec_unregister_adapter(state->cec_adap);
+-	if (!state->i2c_client->irq)
++	if (!state->i2c_client->irq) {
++		del_timer(&state->timer);
+ 		flush_work(&state->work_i2c_poll);
++	}
+ 	cancel_delayed_work(&state->delayed_work_enable_hotplug);
+ 	mutex_destroy(&state->confctl_mutex);
+ err_hdl:
 
 
 
