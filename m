@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-102255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D0C9EF26F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A529EEADA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27F35175BEA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA6922829B3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92078237FD9;
-	Thu, 12 Dec 2024 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD412080FC;
+	Thu, 12 Dec 2024 15:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JM568JEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OtuNHskm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4D3237FD8;
-	Thu, 12 Dec 2024 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90B22AF0E;
+	Thu, 12 Dec 2024 15:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020561; cv=none; b=OgFph5pbjbBpfbA8E3opweF352XzuKU/UaJu7TVjHnBAH8oE3QApu9QohMBXtosHwMUwRHZ+/XGCJete/5ry4G0htBr/sxEPv7qk+fFRUD4OERDJT7JNufx4HFOv7hrUx+yEH7HgSXKcsw6y0aC0p6+VRdGw8ERmdQ/pJRaAldk=
+	t=1734016712; cv=none; b=PGJdYD/0Q96js9QvJrmVR2z9VlJi3NLYNrpiiYeux1l/epq8CeLZpp5HvNw4o5ezgBKjxe9lopxdHBWNhduWJiwGA2m2zatGG/d06QUZevPvCmrCgkzN8tMjVw9Vqr+TgHvo0/JYB/RfCYrl9gjYqCxaFWGplLbNfVSD2YSRNCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020561; c=relaxed/simple;
-	bh=qTSvxEFyP8KtiFXqjZjI3JlW9BFVj2TcDkYFsxsVSK0=;
+	s=arc-20240116; t=1734016712; c=relaxed/simple;
+	bh=lO7ytba74JbcTjNb7az6EqGpswuymYGe3DwUI2S9oWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVh09H/Fe/pQM6qIwJlT4vG65XdjIYu3t/+WonWKl6dDwerztrd5D2j1BkHmU1N4Ga7EskwT1uPe652/kPXqH8YPu5ZJOdEpwxrUovMNVfL3EXXea1Ni9Q5PhFjLzuVaZqii9S5SwfI6ia8CrB1YHZ6m2gOemHUNXOXeaxlfeX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JM568JEi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0735C4CECE;
-	Thu, 12 Dec 2024 16:22:40 +0000 (UTC)
+	 MIME-Version; b=dthpKFajxczGsCMwzQxMoxNa22KxfkG4o10P48Ide8OOvBkmmOoHrQ/ZcIrAX/HQ7/nWt4V4qUzU7AFh7C5c19dbb52hnTN91zeZfrtZEbFfBOn+fgPsExFlKZSP9dBO0M4SarJKFhwg/9gHZ5NU8u4FDEWpsX048g111Aj/C5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OtuNHskm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EF6C4CECE;
+	Thu, 12 Dec 2024 15:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020561;
-	bh=qTSvxEFyP8KtiFXqjZjI3JlW9BFVj2TcDkYFsxsVSK0=;
+	s=korg; t=1734016712;
+	bh=lO7ytba74JbcTjNb7az6EqGpswuymYGe3DwUI2S9oWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JM568JEi+paKwGjJbI4KihPRlwtdzo+GPyFwa2JguieqxuaDXNJObPQak2SoD/5kZ
-	 WT3uT0zOH77z2+F0zijRetgUjIJLVrNMymzJoQp0dIfEdMYd6RczcUVEgArzOWy9iv
-	 2NdLNzkezOV8QzzXrZl7tApHMe/RZAm8FDl1HIKs=
+	b=OtuNHskm7yNAWbhLim8+IpXsh5hCSfmn7TK1oPy1Wb50shHDtjlp8w1arpdfrN/LH
+	 6Kz12gktL8m9nSajhDRWpsYaxovyp6CcdPikKTcBT+Q7wk9hgJg0UG7z+047gzo56v
+	 wkuKKBg8SR+gqF8miUYdJAbPslA+27u94DFzhPI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Packard <keithp@keithp.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.1 500/772] powerpc: Adjust adding stack protector flags to KBUILD_CLAGS for clang
-Date: Thu, 12 Dec 2024 15:57:25 +0100
-Message-ID: <20241212144410.622206896@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 277/466] ALSA: hda/conexant: Use the new codec SSID matching
+Date: Thu, 12 Dec 2024 15:57:26 +0100
+Message-ID: <20241212144317.730929628@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit bee08a9e6ab03caf14481d97b35a258400ffab8f upstream.
+[ Upstream commit 1f55e3699fc9ced72400cdca39fe248bf2b288a2 ]
 
-After fixing the HAVE_STACKPROTECTER checks for clang's in-progress
-per-task stack protector support [1], the build fails during prepare0
-because '-mstack-protector-guard-offset' has not been added to
-KBUILD_CFLAGS yet but the other '-mstack-protector-guard' flags have.
+Now we can perform the codec ID matching primarily, and reduce the
+conditional application of the quirk for conflicting PCI SSID between
+System76 and Tuxedo devices.
 
-  clang: error: '-mstack-protector-guard=tls' is used without '-mstack-protector-guard-offset', and there is no default
-  clang: error: '-mstack-protector-guard=tls' is used without '-mstack-protector-guard-offset', and there is no default
-  make[4]: *** [scripts/Makefile.build:229: scripts/mod/empty.o] Error 1
-  make[4]: *** [scripts/Makefile.build:102: scripts/mod/devicetable-offsets.s] Error 1
-
-Mirror other architectures and add all '-mstack-protector-guard' flags
-to KBUILD_CFLAGS atomically during stack_protector_prepare, which
-resolves the issue and allows clang's implementation to fully work with
-the kernel.
-
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://github.com/llvm/llvm-project/pull/110928 [1]
-Reviewed-by: Keith Packard <keithp@keithp.com>
-Tested-by: Keith Packard <keithp@keithp.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/20241009-powerpc-fix-stackprotector-test-clang-v2-2-12fb86b31857@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20241008120233.7154-3-tiwai@suse.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Makefile |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ sound/pci/hda/patch_conexant.c | 28 +++++++---------------------
+ 1 file changed, 7 insertions(+), 21 deletions(-)
 
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -89,13 +89,6 @@ KBUILD_AFLAGS	+= -m$(BITS)
- KBUILD_LDFLAGS	+= -m elf$(BITS)$(LDEMULATION)
- endif
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 4df30976b73a2..2e9f817b948eb 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -828,23 +828,6 @@ static const struct hda_pintbl cxt_pincfg_sws_js201d[] = {
+ 	{}
+ };
  
--cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard=tls
--ifdef CONFIG_PPC64
--cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard-reg=r13
--else
--cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard-reg=r2
--endif
+-/* pincfg quirk for Tuxedo Sirius;
+- * unfortunately the (PCI) SSID conflicts with System76 Pangolin pang14,
+- * which has incompatible pin setup, so we check the codec SSID (luckily
+- * different one!) and conditionally apply the quirk here
+- */
+-static void cxt_fixup_sirius_top_speaker(struct hda_codec *codec,
+-					 const struct hda_fixup *fix,
+-					 int action)
+-{
+-	/* ignore for incorrectly picked-up pang14 */
+-	if (codec->core.subsystem_id == 0x278212b3)
+-		return;
+-	/* set up the top speaker pin */
+-	if (action == HDA_FIXUP_ACT_PRE_PROBE)
+-		snd_hda_codec_set_pincfg(codec, 0x1d, 0x82170111);
+-}
 -
- LDFLAGS_vmlinux-y := -Bstatic
- LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) := -pie
- LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) += -z notext
-@@ -383,9 +376,11 @@ prepare: stack_protector_prepare
- PHONY += stack_protector_prepare
- stack_protector_prepare: prepare0
- ifdef CONFIG_PPC64
--	$(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "PACA_CANARY") print $$3;}' include/generated/asm-offsets.h))
-+	$(eval KBUILD_CFLAGS += -mstack-protector-guard=tls -mstack-protector-guard-reg=r13 \
-+				-mstack-protector-guard-offset=$(shell awk '{if ($$2 == "PACA_CANARY") print $$3;}' include/generated/asm-offsets.h))
- else
--	$(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
-+	$(eval KBUILD_CFLAGS += -mstack-protector-guard=tls -mstack-protector-guard-reg=r2 \
-+				-mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
- endif
- endif
+ static const struct hda_fixup cxt_fixups[] = {
+ 	[CXT_PINCFG_LENOVO_X200] = {
+ 		.type = HDA_FIXUP_PINS,
+@@ -1009,8 +992,11 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.v.pins = cxt_pincfg_sws_js201d,
+ 	},
+ 	[CXT_PINCFG_TOP_SPEAKER] = {
+-		.type = HDA_FIXUP_FUNC,
+-		.v.func = cxt_fixup_sirius_top_speaker,
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x1d, 0x82170111 },
++			{ }
++		},
+ 	},
+ };
  
+@@ -1109,8 +1095,8 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
+ 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
+-	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
+-	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
++	HDA_CODEC_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
++	HDA_CODEC_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
+ 	{}
+ };
+ 
+-- 
+2.43.0
+
 
 
 
