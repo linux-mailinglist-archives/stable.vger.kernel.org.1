@@ -1,70 +1,57 @@
-Return-Path: <stable+bounces-101660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D320D9EEDD2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A359EF319
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FAD51882521
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1106C177E20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA85222D43;
-	Thu, 12 Dec 2024 15:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3B1232377;
+	Thu, 12 Dec 2024 16:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmoPJHtc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiQ5Y/RQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9612814A82;
-	Thu, 12 Dec 2024 15:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D0F223E71;
+	Thu, 12 Dec 2024 16:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018339; cv=none; b=I7pZxIHCotbATPOYICE6TbhCb/eVrtF+Au0AFBjIn5+QBUUww4rMK5oTyOsCtc9PJ2Jr3gj//65EGBimIzSFuq89DN2MTe2+LiAlTQI3YMFtNHPLybUn/UY+R6137QKK01AO4LtMzanwhL0UZhgfkjmTemGGbkD9TjBkCleTtWI=
+	t=1734021083; cv=none; b=DgBfFTuohwolXZCttqWWg6/yKYdq5tab1I5pR/d7DyK4+OIq+kqrOCjPikdWtAqhGovRuIEmZaReDdCY9PARAc5QX91Hjw5cn0EmyXiRkenfWow9JsX6mwMmao1TB0Ej4cyUhfUWj/hgWBY8nCU5cL1PoH7Zm4R+wT7pcnB4Ikk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018339; c=relaxed/simple;
-	bh=/2N1SQjInvbz4DIky4O9YmfcFq726Z8eYoysWQ+D0GY=;
+	s=arc-20240116; t=1734021083; c=relaxed/simple;
+	bh=gllV5/YkJQrqTvug+6HvCNVEAAuUwANpATpTkoOkvbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxHuq1H1Vl4WCgI1izM8aRcY/hWIYOH899kc5++swQiajxDtqyCigpkzaFQgaJ/sLCJLPHYNN7XkMIudIjjIv1Q46CZujkoqrBIw7UIwfoyOff1O6XuFKc8uN6GbgcRxBnwJfPBQDzdhYZvFqo/P1pnhQWHIE/fAKD0EqhRvFSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmoPJHtc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90A8C4CECE;
-	Thu, 12 Dec 2024 15:45:38 +0000 (UTC)
+	 MIME-Version; b=Rv36Ql7Zlm2avRGtAPxdegl+2S3suZ9lKZjXY3bt7XGe+kX9MrdBvWEoHfpAwTyGWTicQdi8trE5PWcCuWXpZoNZanhezxfP6xu7apbrBAqXSf12tzkvK/Utlk+0ujffLE4ivFn+1zm8z40AwJd22Q0wXIO2DIJIH/Tpy3WSXPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiQ5Y/RQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E3CC4CECE;
+	Thu, 12 Dec 2024 16:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018339;
-	bh=/2N1SQjInvbz4DIky4O9YmfcFq726Z8eYoysWQ+D0GY=;
+	s=korg; t=1734021083;
+	bh=gllV5/YkJQrqTvug+6HvCNVEAAuUwANpATpTkoOkvbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmoPJHtckwRdvMKWJElVT/uBYQks+rUn36aSXxK6scdyaSsRDvOv3QtqlESGtTpem
-	 4LkfV74y2h4AGHEQE1Kos+jee5A5XupjXs2aaYxNE94fuUgr6K/yMFAKAbj7TKJPW/
-	 P2S51U8S6W8p3I8jOwojD/2dB2ckWClyvg188gVk=
+	b=wiQ5Y/RQcnuxQmnGiWB0Ql+slygOgWL+rEhD8I84LgdFXamyRClsEWfjlJoCqnhnu
+	 aPWgIJWGd3DZpPPIHhFuZyJOs+Slc7e34ry/ENB3GV2kNf9VzlJBCbkdqJoNOwIa/D
+	 wWqF/ldc0hwbJtdEywJaezbNnQSRFlOg6m6Dd5ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Jeanson <mjeanson@efficios.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Yonghong Song <yhs@fb.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	bpf@vger.kernel.org,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/356] tracing/ftrace: disable preemption in syscall probe
+	Prakash Gupta <quic_guptap@quicinc.com>,
+	Pratyush Brahma <quic_pbrahma@quicinc.com>,
+	Will Deacon <will@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>
+Subject: [PATCH 6.1 640/772] iommu/arm-smmu: Defer probe of clients after smmu device bound
 Date: Thu, 12 Dec 2024 15:59:45 +0100
-Message-ID: <20241212144255.100642783@linuxfoundation.org>
+Message-ID: <20241212144416.377889099@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,150 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Pratyush Brahma <quic_pbrahma@quicinc.com>
 
-[ Upstream commit 13d750c2c03e9861e15268574ed2c239cca9c9d5 ]
+commit 229e6ee43d2a160a1592b83aad620d6027084aad upstream.
 
-In preparation for allowing system call enter/exit instrumentation to
-handle page faults, make sure that ftrace can handle this change by
-explicitly disabling preemption within the ftrace system call tracepoint
-probes to respect the current expectations within ftrace ring buffer
-code.
+Null pointer dereference occurs due to a race between smmu
+driver probe and client driver probe, when of_dma_configure()
+for client is called after the iommu_device_register() for smmu driver
+probe has executed but before the driver_bound() for smmu driver
+has been called.
 
-This change does not yet allow ftrace to take page faults per se within
-its probe, but allows its existing probes to adapt to the upcoming
-change.
+Following is how the race occurs:
 
-Cc: Michael Jeanson <mjeanson@efficios.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: bpf@vger.kernel.org
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Link: https://lore.kernel.org/20241009010718.2050182-3-mathieu.desnoyers@efficios.com
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T1:Smmu device probe		T2: Client device probe
+
+really_probe()
+arm_smmu_device_probe()
+iommu_device_register()
+					really_probe()
+					platform_dma_configure()
+					of_dma_configure()
+					of_dma_configure_id()
+					of_iommu_configure()
+					iommu_probe_device()
+					iommu_init_device()
+					arm_smmu_probe_device()
+					arm_smmu_get_by_fwnode()
+						driver_find_device_by_fwnode()
+						driver_find_device()
+						next_device()
+						klist_next()
+						    /* null ptr
+						       assigned to smmu */
+					/* null ptr dereference
+					   while smmu->streamid_mask */
+driver_bound()
+	klist_add_tail()
+
+When this null smmu pointer is dereferenced later in
+arm_smmu_probe_device, the device crashes.
+
+Fix this by deferring the probe of the client device
+until the smmu device has bound to the arm smmu driver.
+
+Fixes: 021bb8420d44 ("iommu/arm-smmu: Wire up generic configuration support")
+Cc: stable@vger.kernel.org
+Co-developed-by: Prakash Gupta <quic_guptap@quicinc.com>
+Signed-off-by: Prakash Gupta <quic_guptap@quicinc.com>
+Signed-off-by: Pratyush Brahma <quic_pbrahma@quicinc.com>
+Link: https://lore.kernel.org/r/20241004090428.2035-1-quic_pbrahma@quicinc.com
+[will: Add comment]
+Signed-off-by: Will Deacon <will@kernel.org>
+[rm: backport for context conflict prior to 6.8]
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/trace_events.h  | 36 +++++++++++++++++++++++++++++++----
- kernel/trace/trace_syscalls.c | 12 ++++++++++++
- 2 files changed, 44 insertions(+), 4 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/trace/trace_events.h b/include/trace/trace_events.h
-index c2f9cabf154d1..fa0d51cad57a8 100644
---- a/include/trace/trace_events.h
-+++ b/include/trace/trace_events.h
-@@ -244,6 +244,9 @@ static struct trace_event_fields trace_event_fields_##call[] = {	\
- 	tstruct								\
- 	{} };
- 
-+#undef DECLARE_EVENT_SYSCALL_CLASS
-+#define DECLARE_EVENT_SYSCALL_CLASS DECLARE_EVENT_CLASS
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu.c
+@@ -1363,6 +1363,17 @@ static struct iommu_device *arm_smmu_pro
+ 			goto out_free;
+ 	} else if (fwspec && fwspec->ops == &arm_smmu_ops) {
+ 		smmu = arm_smmu_get_by_fwnode(fwspec->iommu_fwnode);
 +
- #undef DEFINE_EVENT_PRINT
- #define DEFINE_EVENT_PRINT(template, name, proto, args, print)
- 
-@@ -374,11 +377,11 @@ static inline notrace int trace_event_get_offsets_##call(		\
- 
- #include "stages/stage6_event_callback.h"
- 
--#undef DECLARE_EVENT_CLASS
--#define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
--									\
-+
-+#undef __DECLARE_EVENT_CLASS
-+#define __DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print) \
- static notrace void							\
--trace_event_raw_event_##call(void *__data, proto)			\
-+do_trace_event_raw_event_##call(void *__data, proto)			\
- {									\
- 	struct trace_event_file *trace_file = __data;			\
- 	struct trace_event_data_offsets_##call __maybe_unused __data_offsets;\
-@@ -403,6 +406,29 @@ trace_event_raw_event_##call(void *__data, proto)			\
- 									\
- 	trace_event_buffer_commit(&fbuffer);				\
- }
-+
-+#undef DECLARE_EVENT_CLASS
-+#define DECLARE_EVENT_CLASS(call, proto, args, tstruct, assign, print)	\
-+__DECLARE_EVENT_CLASS(call, PARAMS(proto), PARAMS(args), PARAMS(tstruct), \
-+		      PARAMS(assign), PARAMS(print))			\
-+static notrace void							\
-+trace_event_raw_event_##call(void *__data, proto)			\
-+{									\
-+	do_trace_event_raw_event_##call(__data, args);			\
-+}
-+
-+#undef DECLARE_EVENT_SYSCALL_CLASS
-+#define DECLARE_EVENT_SYSCALL_CLASS(call, proto, args, tstruct, assign, print) \
-+__DECLARE_EVENT_CLASS(call, PARAMS(proto), PARAMS(args), PARAMS(tstruct), \
-+		      PARAMS(assign), PARAMS(print))			\
-+static notrace void							\
-+trace_event_raw_event_##call(void *__data, proto)			\
-+{									\
-+	preempt_disable_notrace();					\
-+	do_trace_event_raw_event_##call(__data, args);			\
-+	preempt_enable_notrace();					\
-+}
-+
- /*
-  * The ftrace_test_probe is compiled out, it is only here as a build time check
-  * to make sure that if the tracepoint handling changes, the ftrace probe will
-@@ -418,6 +444,8 @@ static inline void ftrace_test_probe_##call(void)			\
- 
- #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
- 
-+#undef __DECLARE_EVENT_CLASS
-+
- #include "stages/stage7_class_define.h"
- 
- #undef DECLARE_EVENT_CLASS
-diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
-index de753403cdafb..9508d9022940f 100644
---- a/kernel/trace/trace_syscalls.c
-+++ b/kernel/trace/trace_syscalls.c
-@@ -299,6 +299,12 @@ static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
- 	int syscall_nr;
- 	int size;
- 
-+	/*
-+	 * Syscall probe called with preemption enabled, but the ring
-+	 * buffer and per-cpu data require preemption to be disabled.
-+	 */
-+	guard(preempt_notrace)();
-+
- 	syscall_nr = trace_get_syscall_nr(current, regs);
- 	if (syscall_nr < 0 || syscall_nr >= NR_syscalls)
- 		return;
-@@ -338,6 +344,12 @@ static void ftrace_syscall_exit(void *data, struct pt_regs *regs, long ret)
- 	struct trace_event_buffer fbuffer;
- 	int syscall_nr;
- 
-+	/*
-+	 * Syscall probe called with preemption enabled, but the ring
-+	 * buffer and per-cpu data require preemption to be disabled.
-+	 */
-+	guard(preempt_notrace)();
-+
- 	syscall_nr = trace_get_syscall_nr(current, regs);
- 	if (syscall_nr < 0 || syscall_nr >= NR_syscalls)
- 		return;
--- 
-2.43.0
-
++		/*
++		 * Defer probe if the relevant SMMU instance hasn't finished
++		 * probing yet. This is a fragile hack and we'd ideally
++		 * avoid this race in the core code. Until that's ironed
++		 * out, however, this is the most pragmatic option on the
++		 * table.
++		 */
++		if (!smmu)
++			return ERR_PTR(dev_err_probe(dev, -EPROBE_DEFER,
++						"smmu dev has not bound yet\n"));
+ 	} else {
+ 		return ERR_PTR(-ENODEV);
+ 	}
 
 
 
