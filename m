@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-103063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AE89EF4E8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E619EF874
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AADB284F50
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A0351757B8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812D4225412;
-	Thu, 12 Dec 2024 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D8A221D93;
+	Thu, 12 Dec 2024 17:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8JjCXG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb7Pol3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A5F223C48;
-	Thu, 12 Dec 2024 17:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F383215710;
+	Thu, 12 Dec 2024 17:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023430; cv=none; b=GBiw53Q2KU8qkMXBZ+0rKvtUF0wtHr3SlwDfrvYHsHvWt6m6st7e9wRjJA10UDLmMMDspxCtQqkiPIwQ+9HILax+OqUkWXac8WGnBliir1LrTJsNCdjaxDaV+lQVF/2ie8qT/RPAkOM3C5dmRIdR49YS4IhUq21UOv/lkvwcJ0w=
+	t=1734024669; cv=none; b=ks8n3uhwdyLCYYffj9JizmNCmooYIXNX4Z1hfJYhYevrpYqOwPHPuSsVcZgglw05zVxy1FmM/VvZOWQLJyvkF2kqE1JSq1ZzMowsTKK4iD3OmsL5oSwHEhkXdFma0hAO+1YIhHE+NsG8JrKcTIJwHi6Il3OVh6n4IQCbKhOZ4GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023430; c=relaxed/simple;
-	bh=8Mf/hwWS32SYbNB+cM+IBobhMRcZlUhNSLfcRshp9Cs=;
+	s=arc-20240116; t=1734024669; c=relaxed/simple;
+	bh=J9baUNug9xr5agMVykVtyHvbUQlM1QZvIDocJK4lvaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAhUfMaRWZIOjt3jPp7tnH0ZrA1NrDbG8BWMZUkw9DDBh1dUXXKZQPwW1naInOggC2kr9ePM9dUTsJr0pixGoeqWAjsymgC4rc3yEp7JEpZ6Epk2poCCAjzJ2WBILFCmM5dIRZq6huRV3ovsmDqCYV1Z4T+1oxaSvoQdhauy2YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8JjCXG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC4FC4CECE;
-	Thu, 12 Dec 2024 17:10:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EduhtkCXoNgNsKnYrh69DBUXl2r3B2nWmxjCycWVQ4BYAFfPdXpzoza/3DYfx3oCJxWN+ZOXhtrbzuKkMjMZBl7qGqfdPGUkaM9XuJ9rM9D3CrqmEE2ef7DdQnFZ/ob88omKyGvGRA0PonVJdjP3X4F9hT7cplhiUyzZYspmDdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb7Pol3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0737C4CECE;
+	Thu, 12 Dec 2024 17:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023430;
-	bh=8Mf/hwWS32SYbNB+cM+IBobhMRcZlUhNSLfcRshp9Cs=;
+	s=korg; t=1734024669;
+	bh=J9baUNug9xr5agMVykVtyHvbUQlM1QZvIDocJK4lvaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8JjCXG7Vnj3/q/w9/hi930ZQ9A3v2xwNbnFAyXqAZdKEWu1CMvF1tp0sjPTnuMbo
-	 wxs8rHCE6c3Ur/Re5PrxEZpsyuHDFJaFWEvqSsyXzl+yzwTudVTZdJTHD4ZwsYAdHs
-	 DATZgdx8XIxMTxmjEmHn6y6mOiAyQKbjMClA82Uc=
+	b=Fb7Pol3kNC74XyyX1t3ampWk3LBuwBYnvStxR0wW5W58OrNitQTeTFDHQKxe+wGJy
+	 dsCrjd0G0DYvA7SRzG/ajMTYJVv/bcOWNPvgHPlfHe/tr5xVDbfulsWUVRQd28TeI+
+	 DUoX9pG8599EirmWWs6kyRxr0IjJ0TfDwzGiWQys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 514/565] scsi: hisi_sas: Add cond_resched() for no forced preemption model
-Date: Thu, 12 Dec 2024 16:01:49 +0100
-Message-ID: <20241212144332.102371270@linuxfoundation.org>
+	Jordy Zomer <jordyzomer@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 5.10 372/459] bpf: fix OOB devmap writes when deleting elements
+Date: Thu, 12 Dec 2024 16:01:50 +0100
+Message-ID: <20241212144308.365048115@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +62,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 2233c4a0b948211743659b24c13d6bd059fa75fc ]
+commit ab244dd7cf4c291f82faacdc50b45cc0f55b674d upstream.
 
-For no forced preemption model kernel, in the scenario where the
-expander is connected to 12 high performance SAS SSDs, the following
-call trace may occur:
+Jordy reported issue against XSKMAP which also applies to DEVMAP - the
+index used for accessing map entry, due to being a signed integer,
+causes the OOB writes. Fix is simple as changing the type from int to
+u32, however, when compared to XSKMAP case, one more thing needs to be
+addressed.
 
-[  214.409199][  C240] watchdog: BUG: soft lockup - CPU#240 stuck for 22s! [irq/149-hisi_sa:3211]
-[  214.568533][  C240] pstate: 60400009 (nZCv daif +PAN -UAO -TCO BTYPE=--)
-[  214.575224][  C240] pc : fput_many+0x8c/0xdc
-[  214.579480][  C240] lr : fput+0x1c/0xf0
-[  214.583302][  C240] sp : ffff80002de2b900
-[  214.587298][  C240] x29: ffff80002de2b900 x28: ffff1082aa412000
-[  214.593291][  C240] x27: ffff3062a0348c08 x26: ffff80003a9f6000
-[  214.599284][  C240] x25: ffff1062bbac5c40 x24: 0000000000001000
-[  214.605277][  C240] x23: 000000000000000a x22: 0000000000000001
-[  214.611270][  C240] x21: 0000000000001000 x20: 0000000000000000
-[  214.617262][  C240] x19: ffff3062a41ae580 x18: 0000000000010000
-[  214.623255][  C240] x17: 0000000000000001 x16: ffffdb3a6efe5fc0
-[  214.629248][  C240] x15: ffffffffffffffff x14: 0000000003ffffff
-[  214.635241][  C240] x13: 000000000000ffff x12: 000000000000029c
-[  214.641234][  C240] x11: 0000000000000006 x10: ffff80003a9f7fd0
-[  214.647226][  C240] x9 : ffffdb3a6f0482fc x8 : 0000000000000001
-[  214.653219][  C240] x7 : 0000000000000002 x6 : 0000000000000080
-[  214.659212][  C240] x5 : ffff55480ee9b000 x4 : fffffde7f94c6554
-[  214.665205][  C240] x3 : 0000000000000002 x2 : 0000000000000020
-[  214.671198][  C240] x1 : 0000000000000021 x0 : ffff3062a41ae5b8
-[  214.677191][  C240] Call trace:
-[  214.680320][  C240]  fput_many+0x8c/0xdc
-[  214.684230][  C240]  fput+0x1c/0xf0
-[  214.687707][  C240]  aio_complete_rw+0xd8/0x1fc
-[  214.692225][  C240]  blkdev_bio_end_io+0x98/0x140
-[  214.696917][  C240]  bio_endio+0x160/0x1bc
-[  214.701001][  C240]  blk_update_request+0x1c8/0x3bc
-[  214.705867][  C240]  scsi_end_request+0x3c/0x1f0
-[  214.710471][  C240]  scsi_io_completion+0x7c/0x1a0
-[  214.715249][  C240]  scsi_finish_command+0x104/0x140
-[  214.720200][  C240]  scsi_softirq_done+0x90/0x180
-[  214.724892][  C240]  blk_mq_complete_request+0x5c/0x70
-[  214.730016][  C240]  scsi_mq_done+0x48/0xac
-[  214.734194][  C240]  sas_scsi_task_done+0xbc/0x16c [libsas]
-[  214.739758][  C240]  slot_complete_v3_hw+0x260/0x760 [hisi_sas_v3_hw]
-[  214.746185][  C240]  cq_thread_v3_hw+0xbc/0x190 [hisi_sas_v3_hw]
-[  214.752179][  C240]  irq_thread_fn+0x34/0xa4
-[  214.756435][  C240]  irq_thread+0xc4/0x130
-[  214.760520][  C240]  kthread+0x108/0x13c
-[  214.764430][  C240]  ret_from_fork+0x10/0x18
+When map is released from system via dev_map_free(), we iterate through
+all of the entries and an iterator variable is also an int, which
+implies OOB accesses. Again, change it to be u32.
 
-This is because in the hisi_sas driver, both the hardware interrupt
-handler and the interrupt thread are executed on the same CPU. In the
-performance test scenario, function irq_wait_for_interrupt() will always
-return 0 if lots of interrupts occurs and the CPU will be continuously
-consumed. As a result, the CPU cannot run the watchdog thread. When the
-watchdog time exceeds the specified time, call trace occurs.
+Example splat below:
 
-To fix it, add cond_resched() to execute the watchdog thread.
+[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
+[  160.731662] #PF: supervisor read access in kernel mode
+[  160.736876] #PF: error_code(0x0000) - not-present page
+[  160.742095] PGD 0 P4D 0
+[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
+[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
+[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
+[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
+[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
+[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
+[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
+[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
+[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
+[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
+[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
+[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
+[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
+[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
+[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[  160.874092] PKRU: 55555554
+[  160.876847] Call Trace:
+[  160.879338]  <TASK>
+[  160.881477]  ? __die+0x20/0x60
+[  160.884586]  ? page_fault_oops+0x15a/0x450
+[  160.888746]  ? search_extable+0x22/0x30
+[  160.892647]  ? search_bpf_extables+0x5f/0x80
+[  160.896988]  ? exc_page_fault+0xa9/0x140
+[  160.900973]  ? asm_exc_page_fault+0x22/0x30
+[  160.905232]  ? dev_map_free+0x77/0x170
+[  160.909043]  ? dev_map_free+0x58/0x170
+[  160.912857]  bpf_map_free_deferred+0x51/0x90
+[  160.917196]  process_one_work+0x142/0x370
+[  160.921272]  worker_thread+0x29e/0x3b0
+[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
+[  160.929157]  kthread+0xd4/0x110
+[  160.932355]  ? kthread_park+0x80/0x80
+[  160.936079]  ret_from_fork+0x2d/0x50
+[  160.943396]  ? kthread_park+0x80/0x80
+[  160.950803]  ret_from_fork_asm+0x11/0x20
+[  160.958482]  </TASK>
 
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20241008021822.2617339-8-liyihang9@huawei.com
-Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
+CC: stable@vger.kernel.org
+Reported-by: Jordy Zomer <jordyzomer@google.com>
+Suggested-by: Jordy Zomer <jordyzomer@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20241122121030.716788-3-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/devmap.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 1651d03d3b463..3f3d768548c57 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -2402,6 +2402,7 @@ static irqreturn_t  cq_thread_v3_hw(int irq_no, void *p)
- 	/* update rd_point */
- 	cq->rd_point = rd_point;
- 	hisi_sas_write32(hisi_hba, COMPL_Q_0_RD_PTR + (0x14 * queue), rd_point);
-+	cond_resched();
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -198,7 +198,7 @@ static struct bpf_map *dev_map_alloc(uni
+ static void dev_map_free(struct bpf_map *map)
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+-	int i;
++	u32 i;
  
- 	return IRQ_HANDLED;
- }
--- 
-2.43.0
-
+ 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
+ 	 * so the programs (can be more than one that used this map) were
+@@ -557,7 +557,7 @@ static int dev_map_delete_elem(struct bp
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+ 	struct bpf_dtab_netdev *old_dev;
+-	int k = *(u32 *)key;
++	u32 k = *(u32 *)key;
+ 
+ 	if (k >= map->max_entries)
+ 		return -EINVAL;
+@@ -579,7 +579,7 @@ static int dev_map_hash_delete_elem(stru
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+ 	struct bpf_dtab_netdev *old_dev;
+-	int k = *(u32 *)key;
++	u32 k = *(u32 *)key;
+ 	unsigned long flags;
+ 	int ret = -ENOENT;
+ 
 
 
 
