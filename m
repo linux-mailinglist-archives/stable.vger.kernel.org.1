@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8C39EF2A2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D773A9EEB85
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD9C4189291B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B138188B9D1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE7C23EA86;
-	Thu, 12 Dec 2024 16:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE8B21639E;
+	Thu, 12 Dec 2024 15:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmsJNviT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bw183Xkv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEDF23EA7F;
-	Thu, 12 Dec 2024 16:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3336D2AF0E;
+	Thu, 12 Dec 2024 15:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020774; cv=none; b=TNOTrVMn2nrMv0S1eF9IFsy9BjnkKwySUGNqtKdC67M+TAgOnk9TpMEIbhpsg500aQH9diBRMfTf9YIU0G+oEhb/wPmNm9a08Dslumpd6ge2L5x9x4/W1hVY5k9s0Qrnf6CLKLAWegpRqiw3A1EnOoF1abGktAVfg03xgACxiWE=
+	t=1734016872; cv=none; b=b6sezzTPgDdKTkO3G+XOZw00QF2Vm2rWqa/GXYcIISBBVzAnNlTa/FtYwGDCTwZnwnZ4rYhWCn32v/cNnMFllxxCo9Hr9Gl7f9I2BbYhNYQqlxqM77c17BRMircFpvgtMDIsOUkU9j9s0oQqAHOHgKrZu3PsDXlWg8YTNkCgKYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020774; c=relaxed/simple;
-	bh=EzVD0XXWuU0UwdD88ve0SmrJRywOYqnY0l6kx0KUqUQ=;
+	s=arc-20240116; t=1734016872; c=relaxed/simple;
+	bh=7mY8VWk+36opfDQEaHPS9D4kSVs1Kk0w/i0Rxp9Om6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBCcLn7y8fD72QYPcSfOQ8GJP2icT/crt8zTGGd7Jd+yZc092MH51JlaQn54FZ5Kr1G07vLrEv3dd3Dtgph59rl0hd3k+mF1Vi2FKO5xf4mJQki3AjOonIqcOBocmK8zTOhZuAVG3UcTLODwxM+XhXLJxNARD92lmtAZ62GHLgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QmsJNviT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31931C4CED0;
-	Thu, 12 Dec 2024 16:26:12 +0000 (UTC)
+	 MIME-Version; b=BUuyHSorqG2m8CPj3wA6c7AzMfShtTGK/Ljw3H8t+H1H48U1gfSa/kPoZUE01fssVQOD57Wb93C9iKIHpiSCYnx56sKDgrb94AfNXtRN5qyEkzjsBQkoVtpZO9L9c2HGq/5lKa9QDRYGa6EbCnQTbnPA6emo5AEYGXtY6+srsfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bw183Xkv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9374BC4CED7;
+	Thu, 12 Dec 2024 15:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020773;
-	bh=EzVD0XXWuU0UwdD88ve0SmrJRywOYqnY0l6kx0KUqUQ=;
+	s=korg; t=1734016872;
+	bh=7mY8VWk+36opfDQEaHPS9D4kSVs1Kk0w/i0Rxp9Om6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmsJNviTUnCPkwhpLYiVHAFmtWVy3FuJTju9g4WiJCZSwuEQ+OYaEkp0Ap8qhcOkq
-	 RVUl22E7hR4EIrCd9lGI9EFVs3MaOLLP70uLe8JzsT4Rs/wEWpx2wV9CI2Vwx/TH4L
-	 i7qqiHAtIitWS0/5HQrBCQNaUuSafaD8L0tIuhmY=
+	b=Bw183XkvBrLoKh0/+8Hud6Qdh8LrrnGnoIkgj3Rl7SiVLvbwFvpcNHSzyYznf5pGt
+	 NA3ZQxR/qTdpy9K/zU/0z+7ZKVsAG8aRwr9PYb6ztZoCVq5dVPIlr8s9CS9+abt1of
+	 sMTGHPfyGyvu/ClGRvvfBVgozLrLk5o1cv5Q57wM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 517/772] can: hi311x: hi3110_can_ist(): fix potential use-after-free
+Subject: [PATCH 6.12 293/466] net: inet6: do not leave a dangling sk pointer in inet6_create()
 Date: Thu, 12 Dec 2024 15:57:42 +0100
-Message-ID: <20241212144411.327934833@linuxfoundation.org>
+Message-ID: <20241212144318.361942994@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 9ad86d377ef4a19c75a9c639964879a5b25a433b ]
+[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
 
-The commit a22bd630cfff ("can: hi311x: do not report txerr and rxerr
-during bus-off") removed the reporting of rxerr and txerr even in case
-of correct operation (i. e. not bus-off).
+sock_init_data() attaches the allocated sk pointer to the provided sock
+object. If inet6_create() fails later, the sk object is released, but the
+sock object retains the dangling sk pointer, which may cause use-after-free
+later.
 
-The error count information added to the CAN frame after netif_rx() is
-a potential use after free, since there is no guarantee that the skb
-is in the same state. It might be freed or reused.
+Clear the sock sk pointer on error.
 
-Fix the issue by postponing the netif_rx() call in case of txerr and
-rxerr reporting.
-
-Fixes: a22bd630cfff ("can: hi311x: do not report txerr and rxerr during bus-off")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-5-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/hi311x.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/af_inet6.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index e1b8533a602e2..fb58e294f7b79 100644
---- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -671,9 +671,9 @@ static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
- 			tx_state = txerr >= rxerr ? new_state : 0;
- 			rx_state = txerr <= rxerr ? new_state : 0;
- 			can_change_state(net, cf, tx_state, rx_state);
--			netif_rx(skb);
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index ba69b86f1c7d5..f60ec8b0f8ea4 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -252,31 +252,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 		 */
+ 		inet->inet_sport = htons(inet->inet_num);
+ 		err = sk->sk_prot->hash(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ 	if (sk->sk_prot->init) {
+ 		err = sk->sk_prot->init(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
  
- 			if (new_state == CAN_STATE_BUS_OFF) {
-+				netif_rx(skb);
- 				can_bus_off(net);
- 				if (priv->can.restart_ms == 0) {
- 					priv->force_quit = 1;
-@@ -684,6 +684,7 @@ static irqreturn_t hi3110_can_ist(int irq, void *dev_id)
- 				cf->can_id |= CAN_ERR_CNT;
- 				cf->data[6] = txerr;
- 				cf->data[7] = rxerr;
-+				netif_rx(skb);
- 			}
- 		}
+ 	if (!kern) {
+ 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ out:
+ 	return err;
+ out_rcu_unlock:
+ 	rcu_read_unlock();
+ 	goto out;
++out_sk_release:
++	sk_common_release(sk);
++	sock->sk = NULL;
++	goto out;
+ }
  
+ static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
 -- 
 2.43.0
 
