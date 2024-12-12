@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B6C9EF9BA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 676E79EF8AD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0024F178F80
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 410E3171ADB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C454E211493;
-	Thu, 12 Dec 2024 17:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F7815696E;
+	Thu, 12 Dec 2024 17:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0hducaT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaJ77B2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6E5223C51;
-	Thu, 12 Dec 2024 17:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C3120A5EE;
+	Thu, 12 Dec 2024 17:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025704; cv=none; b=RyOHjldLcEqk2kXt7uLBI4WrDLzDiaoAiAt6kcEZ6Lj5sVa1+bJwEgEzsjyMmEGEx36/qleSGITcAK1vKnoGeSBOtapj7tqRhlBofawP+6ryvUmrpn2TjXOCioorvEl940VlJclVVhwN2+2ck2gqP2gmFhuNAcD4jVIhfgCccgg=
+	t=1734024873; cv=none; b=cxtsmZDCkgSkWdlch7MAQvXotPOfvA1yR3ZsR8eLYczguCmFt1yhiYaC4szTuGhs+Xabyvk6S+ygB0xhJVl4ZDU+/L+L6prmjN3yFFocj0zH4G1T0H6ZKQ7a0Ejdz8WfiVcxos6HpSw1XOcvM5xTpyQBNKkoZD2dIIoAzwDSPOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025704; c=relaxed/simple;
-	bh=R9JsiXqWanI8JQHT6vdgqshz2Tv5ywGM/T+DQuhDLnM=;
+	s=arc-20240116; t=1734024873; c=relaxed/simple;
+	bh=rucVEOSOx43JWNRcCbYWX0uvUmUyxVUIuU1P3dfly3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pa5hTUrG0DaXeen93rcwWIipZrJIJvWM7JRYuzupqEzj2TTdX/dvwCsgpUHyAR3kgtappZSd1F4G3RemH/eS81lsuLHv4MGwCCmPwk/LGZw5sgU/zNYN6kP0YDRcsEnCuCoJImH8+pRhcEegyEXjpQkGIS/V9Aj91nZQqyRii+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0hducaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7D4C4CEDE;
-	Thu, 12 Dec 2024 17:48:23 +0000 (UTC)
+	 MIME-Version; b=nlQnxzGmLTfzP4/7VLfuPY5dEuzEWBdoJ08FOJc+cGgw9LNfG5//g7JnU06LfO0+OYhYCUAt1+Q3oplr/GT5by6Ly/Le7Xku+DF6pB4hdZ45+JevFDDet4t8A1ikgBX8bAMlxf8hb8fI8/kuEHcGNc5ULC2uUmYSLphpH9AH2+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaJ77B2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF30C4CECE;
+	Thu, 12 Dec 2024 17:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025704;
-	bh=R9JsiXqWanI8JQHT6vdgqshz2Tv5ywGM/T+DQuhDLnM=;
+	s=korg; t=1734024872;
+	bh=rucVEOSOx43JWNRcCbYWX0uvUmUyxVUIuU1P3dfly3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0hducaT+XPQU9m5a1l52T+r+qopxtCwvCuGFsk1xbLNr82TQ0XK7zOuPutjHXWAa
-	 1DhrRQzBPG3gBWCvbH8hI9vbJB/0fkn8ln0Y4kjuyHyY/ctusjPz8iceFb7fHOc7d3
-	 E5YzdCQycsIOB+9sP3G6PM9iDykAPJTnpHiUsm94=
+	b=iaJ77B2Nq8wpBujblKpoSnzC7QZ2PGbXBmDEND1OctmOcc6HsYZB0blASWy/lVQKx
+	 eV5GzCyGD2wYvW69hkLdAPP8z501P8clWtNcbFP3LOCB2nmhnYLe0Zpo8JmCfdOxez
+	 x58p+7zVw8HQy75h5OEaXSb76jbUpX4O6HWFdV/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 259/321] nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 439/459] sched/fair: Check idle_cpu() before need_resched() to detect ilb CPU turning busy
 Date: Thu, 12 Dec 2024 16:02:57 +0100
-Message-ID: <20241212144240.197583741@linuxfoundation.org>
+Message-ID: <20241212144311.094133604@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-commit 985ebec4ab0a28bb5910c3b1481a40fbf7f9e61d upstream.
+[ Upstream commit ff47a0acfcce309cf9e175149c75614491953c8f ]
 
-Syzbot reported that when searching for records in a directory where the
-inode's i_size is corrupted and has a large value, memory access outside
-the folio/page range may occur, or a use-after-free bug may be detected if
-KASAN is enabled.
+Commit b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+optimizes IPIs to idle CPUs in TIF_POLLING_NRFLAG mode by setting the
+TIF_NEED_RESCHED flag in idle task's thread info and relying on
+flush_smp_call_function_queue() in idle exit path to run the
+call-function. A softirq raised by the call-function is handled shortly
+after in do_softirq_post_smp_call_flush() but the TIF_NEED_RESCHED flag
+remains set and is only cleared later when schedule_idle() calls
+__schedule().
 
-This is because nilfs_last_byte(), which is called by nilfs_find_entry()
-and others to calculate the number of valid bytes of directory data in a
-page from i_size and the page index, loses the upper 32 bits of the 64-bit
-size information due to an inappropriate type of local variable to which
-the i_size value is assigned.
+need_resched() check in _nohz_idle_balance() exists to bail out of load
+balancing if another task has woken up on the CPU currently in-charge of
+idle load balancing which is being processed in SCHED_SOFTIRQ context.
+Since the optimization mentioned above overloads the interpretation of
+TIF_NEED_RESCHED, check for idle_cpu() before going with the existing
+need_resched() check which can catch a genuine task wakeup on an idle
+CPU processing SCHED_SOFTIRQ from do_softirq_post_smp_call_flush(), as
+well as the case where ksoftirqd needs to be preempted as a result of
+new task wakeup or slice expiry.
 
-This caused a large byte offset value due to underflow in the end address
-calculation in the calling nilfs_find_entry(), resulting in memory access
-that exceeds the folio/page size.
+In case of PREEMPT_RT or threadirqs, although the idle load balancing
+may be inhibited in some cases on the ilb CPU, the fact that ksoftirqd
+is the only fair task going back to sleep will trigger a newidle balance
+on the CPU which will alleviate some imbalance if it exists if idle
+balance fails to do so.
 
-Fix this issue by changing the type of the local variable causing the bit
-loss from "unsigned int" to "u64".  The return value of nilfs_last_byte()
-is also of type "unsigned int", but it is truncated so as not to exceed
-PAGE_SIZE and no bit loss occurs, so no change is required.
-
-Link: https://lkml.kernel.org/r/20241119172403.9292-1-konishi.ryusuke@gmail.com
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96d5d14c47d97015c624
-Tested-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241119054432.6405-4-kprateek.nayak@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c |    2 +-
+ kernel/sched/fair.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -76,7 +76,7 @@ static inline void nilfs_put_page(struct
-  */
- static unsigned int nilfs_last_byte(struct inode *inode, unsigned long page_nr)
- {
--	unsigned int last_byte = inode->i_size;
-+	u64 last_byte = inode->i_size;
- 
- 	last_byte -= page_nr << PAGE_SHIFT;
- 	if (last_byte > PAGE_SIZE)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index e2116e3d593ec..9f8cb265589b3 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10675,7 +10675,7 @@ static bool _nohz_idle_balance(struct rq *this_rq, unsigned int flags,
+ 		 * work being done for other CPUs. Next load
+ 		 * balancing owner will pick it up.
+ 		 */
+-		if (need_resched()) {
++		if (!idle_cpu(this_cpu) && need_resched()) {
+ 			if (flags & NOHZ_STATS_KICK)
+ 				has_blocked_load = true;
+ 			goto abort;
+-- 
+2.43.0
+
 
 
 
