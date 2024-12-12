@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2031E9EF44F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6699EF807
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADD5228A533
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83B9189A50F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE32F2210E1;
-	Thu, 12 Dec 2024 17:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C032121766D;
+	Thu, 12 Dec 2024 17:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5E1p3fJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rs5R5FpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677422144C4;
-	Thu, 12 Dec 2024 17:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1BE13CA93;
+	Thu, 12 Dec 2024 17:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023155; cv=none; b=k13cmtl/CLBH+bqiZgJ7MoMVK5RuXzLwrJSU3U2Jd7hyMd9dGTVM1R2L4G3WVSBsYC+Y88fbZ6H5SHG4hQaU8q/K/lEugdpqBto6A2S0KvgvOTQ78oNY73i7YnWQu3YqFaBZuXZEVQCm5vCjanyEkV3sdrKoSheeFHR+xxpXSCA=
+	t=1734024442; cv=none; b=rtmfQXmULK8tvufMASg6KVufcOk/lr3/vzG6m/JyZ23ZgWcPZmKlnQAiuHyLDbWhjGQvCucao6IrCod/xe8Y2s3xEmCbfi6Se4NOstol9yvcWo1phxl4S07A9R++3N15jYZ8ypo231AXc6CHpexu2MpJ9Kau+Mkpheh7e2EctRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023155; c=relaxed/simple;
-	bh=7BPw0P9PDJyXbBPWT7DJcIJw8fNc9SuD3s2XC9tQ2s8=;
+	s=arc-20240116; t=1734024442; c=relaxed/simple;
+	bh=5NGBwdTsU/h9e8CO/7oXUaQ0c/S415CkXe+RV19WNDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AZmK8Ctyzt7LmX7CDtXeTZBevFXbBC3VSZU/jFsSQt2d1445XTRRnhLy8WcDDLUsAipqPQ7bsATW7E/TgoUdH0T6ceqS9C7m4zCc5Q6mWsCR5obSSGjWbWycRbIVgGO7W45depSQaIIYxNm6436y7N3Cfh+anglNkiPbJLKxEHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5E1p3fJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C97C4CECE;
-	Thu, 12 Dec 2024 17:05:54 +0000 (UTC)
+	 MIME-Version; b=SzR6JSjkaLVM+/FGEqrtSu1Rz+4t29T1FJmyKIVNgmyGmPVyQJb6oNlE2cEIDwV+MkBazfp2koKbF0nJ/P3MDsH+0pAr5Ez+U17KleDQFTA+LiGUAjsP9c2OnixfLuqo7rezQdtbecqUWa8nKJQU6xp7aO54YGC5gi217SUVKMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rs5R5FpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3993C4CED0;
+	Thu, 12 Dec 2024 17:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023155;
-	bh=7BPw0P9PDJyXbBPWT7DJcIJw8fNc9SuD3s2XC9tQ2s8=;
+	s=korg; t=1734024442;
+	bh=5NGBwdTsU/h9e8CO/7oXUaQ0c/S415CkXe+RV19WNDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5E1p3fJXthOXsppodZ6tAxsRucG001XJh8APzZCK1WGxmGItgBdzMNY+GqTOra4e
-	 +sFiDVbcSLB70hnLASC99JqyNurfMTEXYEVPtgT+OcMnM+rWwZfQKomSKSa2Ocy/qM
-	 YY0Bhiz0iYPLOncHWex2eKDDcxi9WLmgs8YmN6VU=
+	b=Rs5R5FpXiZR5hgZP4TLEWNrFaQsnh7FzuN5ifOLShHMe+KinjRyyozmACPdmdMfSF
+	 zpLFFj/12W3+Nr3k+765aBFDcMWy5e3Oyii6ImmI7y00S/jWIven1Rjq0Q3BmIsdxS
+	 s/ME56amBoy/VgiIc/NgsBow5qnaiSYe8c15skSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
+	Qingfang Deng <qingfang.deng@siflower.com.cn>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 441/565] drm/v3d: Enable Performance Counters before clearing them
+Subject: [PATCH 5.10 298/459] jffs2: fix use of uninitialized variable
 Date: Thu, 12 Dec 2024 16:00:36 +0100
-Message-ID: <20241212144329.125574745@linuxfoundation.org>
+Message-ID: <20241212144305.414282345@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Qingfang Deng <qingfang.deng@siflower.com.cn>
 
-[ Upstream commit c98b10496b2f3c4f576af3482c71aadcfcbf765e ]
+[ Upstream commit 3ba44ee966bc3c41dd8a944f963466c8fcc60dc8 ]
 
-On the Raspberry Pi 5, performance counters are not being cleared
-when `v3d_perfmon_start()` is called, even though we write to the
-CLR register. As a result, their values accumulate until they
-overflow.
+When building the kernel with -Wmaybe-uninitialized, the compiler
+reports this warning:
 
-The expected behavior is for performance counters to reset to zero
-at the start of a job. When the job finishes and the perfmon is
-stopped, the counters should accurately reflect the values for that
-specific job.
+In function 'jffs2_mark_erased_block',
+    inlined from 'jffs2_erase_pending_blocks' at fs/jffs2/erase.c:116:4:
+fs/jffs2/erase.c:474:9: warning: 'bad_offset' may be used uninitialized [-Wmaybe-uninitialized]
+  474 |         jffs2_erase_failed(c, jeb, bad_offset);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fs/jffs2/erase.c: In function 'jffs2_erase_pending_blocks':
+fs/jffs2/erase.c:402:18: note: 'bad_offset' was declared here
+  402 |         uint32_t bad_offset;
+      |                  ^~~~~~~~~~
 
-To ensure this behavior, the performance counters are now enabled
-before being cleared. This allows the CLR register to function as
-intended, zeroing the counter values when the job begins.
+When mtd->point() is used, jffs2_erase_pending_blocks can return -EIO
+without initializing bad_offset, which is later used at the filebad
+label in jffs2_mark_erased_block.
+Fix it by initializing this variable.
 
-Fixes: 26a4dc29b74a ("drm/v3d: Expose performance counters to userspace")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241204122831.17015-1-mcanal@igalia.com
+Fixes: 8a0f572397ca ("[JFFS2] Return values of jffs2_block_check_erase error paths")
+Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_perfmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jffs2/erase.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_perfmon.c b/drivers/gpu/drm/v3d/v3d_perfmon.c
-index b74b537e620fc..3de4cc692f44d 100644
---- a/drivers/gpu/drm/v3d/v3d_perfmon.c
-+++ b/drivers/gpu/drm/v3d/v3d_perfmon.c
-@@ -49,9 +49,9 @@ void v3d_perfmon_start(struct v3d_dev *v3d, struct v3d_perfmon *perfmon)
- 		V3D_CORE_WRITE(0, V3D_V4_PCTR_0_SRC_X(source), channel);
- 	}
- 
-+	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
- 	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_CLR, mask);
- 	V3D_CORE_WRITE(0, V3D_PCTR_0_OVERFLOW, mask);
--	V3D_CORE_WRITE(0, V3D_V4_PCTR_0_EN, mask);
- 
- 	v3d->active_perfmon = perfmon;
- }
+diff --git a/fs/jffs2/erase.c b/fs/jffs2/erase.c
+index 7e9abdb897122..5fbaf6ab9f482 100644
+--- a/fs/jffs2/erase.c
++++ b/fs/jffs2/erase.c
+@@ -340,10 +340,9 @@ static int jffs2_block_check_erase(struct jffs2_sb_info *c, struct jffs2_erasebl
+ 		} while(--retlen);
+ 		mtd_unpoint(c->mtd, jeb->offset, c->sector_size);
+ 		if (retlen) {
+-			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08tx\n",
+-				*wordebuf,
+-				jeb->offset +
+-				c->sector_size-retlen * sizeof(*wordebuf));
++			*bad_offset = jeb->offset + c->sector_size - retlen * sizeof(*wordebuf);
++			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08x\n",
++				*wordebuf, *bad_offset);
+ 			return -EIO;
+ 		}
+ 		return 0;
 -- 
 2.43.0
 
