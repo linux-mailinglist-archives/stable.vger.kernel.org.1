@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B0B9EF66D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B399EF993
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C041170A9F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C0DD162E6C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D898222D74;
-	Thu, 12 Dec 2024 17:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F86E22A7E7;
+	Thu, 12 Dec 2024 17:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfEkYPz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQXOsgPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A74E222D62;
-	Thu, 12 Dec 2024 17:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C67D168C3F;
+	Thu, 12 Dec 2024 17:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023323; cv=none; b=EgImP/2n8lQw+yTl2BX+ZOiouuC1eECh46yMj5TU/bqxwmNREdwhbI519VeOaQwR/du9a0zpkE52YYZasjHLA3mmtpMspm8YZ5Um+nsqtVd+1Z+aPwk18rPh8CK24WOk6ekazNPzDIz9JXtavKhy6p0UfB/Ay/yAghhyfoOBPwE=
+	t=1734025506; cv=none; b=XNzjkx2B8BIfPlejXeB8RpSO2zdkm9Xu0LrYVTxT2tdwYcS+vuasOwzH3SAWB5Y9RP4yGq+ByFw9NDeeXF6DwxtgeCqOnteE577j3CN4jG5UCcgGxr9OekSRpzH7rpMLzEs+oGjrIQq72+OGbN3ir5AnOATLJJQLaeweOzntoJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023323; c=relaxed/simple;
-	bh=5Lz6BXWHVULL91ddyhYThyMssHDf/LBVYwrnqmWV4NA=;
+	s=arc-20240116; t=1734025506; c=relaxed/simple;
+	bh=FWpu0a2KpvG4/z6ipzsavYle9JlpQBR+/8emFzwD83U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKHYr1OcB5UNf/vlzVAfANhwzKiWRIYpi60XAM5l+0l8IeQ5PkjjlCmqwkxqCr+BUFUSjtQjUYoV7/AlPgFtd3N5Jg/VAMatNqL0SgEf15v9yiyH7mg9cnBXPU5W++/DTZZQfmHQzRCkrnE2qt7IDSw2cUzw7UVVf7RJXHy0lcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfEkYPz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD45C4CECE;
-	Thu, 12 Dec 2024 17:08:42 +0000 (UTC)
+	 MIME-Version; b=Ps9enxXlR6gtYcHzRWsv+7+bBchUxgLO1vDheEebSNGvQr30DpeWc1+bnM17vU6ZELkpA6JBAwY5v9Y6uFNT0RhQJgXfCgfZpqRT5GE5IyP8o1HlEfq5axqN13FxtwVC+Ddopdjw0ej5S88B5yn/LYAuDfUw003W80/IfVA2uJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQXOsgPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5333C4CED0;
+	Thu, 12 Dec 2024 17:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023322;
-	bh=5Lz6BXWHVULL91ddyhYThyMssHDf/LBVYwrnqmWV4NA=;
+	s=korg; t=1734025506;
+	bh=FWpu0a2KpvG4/z6ipzsavYle9JlpQBR+/8emFzwD83U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfEkYPz1SePR3Rw2ym6+TsATjLxjAEZnZ2QIXkFKctGxk0uK25yYiMMFyIgCeLuNI
-	 3YImSFQIVcii1fsUpO90rMmFd+711734OO9xlNXZ/oRksXDbSDL/9b94I27eIyEOzN
-	 TH4PMPi25rvnbR8I682ClQO8Alv4Dh+kxEU74Sl8=
+	b=aQXOsgPId0XqsR3O6l8d3sv7wF1qOKSlHFofwVUaJORcNPnsHwUSJ6E6B6CApfLBw
+	 cXpqTF7xoaLfNwU87Y/zAie3+Jzok+/Db4nNA2Lwvo1MmznG7paJcWxqcPdtgTytPP
+	 CHovOWWElw9G6xv7qmJd0FidKw1rfp/sTyuJTcMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lang Yu <lang.yu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 497/565] drm/amdgpu: refine error handling in amdgpu_ttm_tt_pin_userptr
-Date: Thu, 12 Dec 2024 16:01:32 +0100
-Message-ID: <20241212144331.413554394@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.4 175/321] NFSD: Prevent a potential integer overflow
+Date: Thu, 12 Dec 2024 16:01:33 +0100
+Message-ID: <20241212144236.896635325@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lang Yu <lang.yu@amd.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 46186667f98fb7158c98f4ff5da62c427761ffcd ]
+commit 7f33b92e5b18e904a481e6e208486da43e4dc841 upstream.
 
-Free sg table when dma_map_sgtable() failed to avoid memory leak.
+If the tag length is >= U32_MAX - 3 then the "length + 4" addition
+can result in an integer overflow. Address this by splitting the
+decoding into several steps so that decode_cb_compound4res() does
+not have to perform arithmetic on the unsafe length value.
 
-Signed-off-by: Lang Yu <lang.yu@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4callback.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 9a1b19e3d4378..ca00a2d5e38b5 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -775,7 +775,7 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
- 	/* Map SG to device */
- 	r = dma_map_sgtable(adev->dev, ttm->sg, direction, 0);
- 	if (r)
--		goto release_sg;
-+		goto release_sg_table;
+--- a/fs/nfsd/nfs4callback.c
++++ b/fs/nfsd/nfs4callback.c
+@@ -285,17 +285,17 @@ static int decode_cb_compound4res(struct
+ 	u32 length;
+ 	__be32 *p;
  
- 	/* convert SG to linear array of pages and dma addresses */
- 	drm_prime_sg_to_dma_addr_array(ttm->sg, gtt->ttm.dma_address,
-@@ -783,6 +783,8 @@ static int amdgpu_ttm_tt_pin_userptr(struct ttm_device *bdev,
- 
+-	p = xdr_inline_decode(xdr, 4 + 4);
++	p = xdr_inline_decode(xdr, XDR_UNIT);
+ 	if (unlikely(p == NULL))
+ 		goto out_overflow;
+-	hdr->status = be32_to_cpup(p++);
++	hdr->status = be32_to_cpup(p);
+ 	/* Ignore the tag */
+-	length = be32_to_cpup(p++);
+-	p = xdr_inline_decode(xdr, length + 4);
+-	if (unlikely(p == NULL))
++	if (xdr_stream_decode_u32(xdr, &length) < 0)
++		goto out_overflow;
++	if (xdr_inline_decode(xdr, length) == NULL)
++		goto out_overflow;
++	if (xdr_stream_decode_u32(xdr, &hdr->nops) < 0)
+ 		goto out_overflow;
+-	p += XDR_QUADLEN(length);
+-	hdr->nops = be32_to_cpup(p);
  	return 0;
- 
-+release_sg_table:
-+	sg_free_table(ttm->sg);
- release_sg:
- 	kfree(ttm->sg);
- 	ttm->sg = NULL;
--- 
-2.43.0
-
+ out_overflow:
+ 	return -EIO;
 
 
 
