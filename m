@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-103769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0289EF9A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F059EF4E5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5901918927A5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 923292910C6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA52225403;
-	Thu, 12 Dec 2024 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E772210DE;
+	Thu, 12 Dec 2024 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMNPDQ4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFYm//zN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463CC216E2D;
-	Thu, 12 Dec 2024 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB0F223C43;
+	Thu, 12 Dec 2024 17:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025550; cv=none; b=hYlIp9fc1rTe+VPZeaKnrwAwJ2F3iP0FXd1/gwndAr6LdjYjqsGWfCbcFWYXA/8BinUGEO7hGSWxA7ANheBNA8AMnL4Zeg5S7g3js0LorIYZaihFHT/x+tuljnzhgTBsN4wJLLFYBN/heSVkhfn/87yMJ1AviN43OljOfazSBfg=
+	t=1734023419; cv=none; b=VSScTwx/l02txq+8fj1fhPb2gBcr3aQFbsdZjjcPmaXv5leb+4WeC8hm2JirRBV3GjW/TrQwAZQnx+e9aMa0I3EjZLg1ZFFglyDz+6055pLiW+O1HmMSC3lYCZcekIdNRgjvVr5Qfx2CzYaz9ppi3RUfgJRLxVKBv3Ni4G3Q2Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025550; c=relaxed/simple;
-	bh=9Dr9qgnoIyBqrAjJUtYrT9sCCtvnGlTefEmdGFHvekU=;
+	s=arc-20240116; t=1734023419; c=relaxed/simple;
+	bh=FI/01iQT490cff99WYciOvrfHCFUAXeD3QLAFfTEFAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQJDXSlqBtlTjEmb2odsEOsdlGL5nR0/vvsCm7YmTwznohI8adoOwJjNDxIboH8I9F4CBZSzLiAfBTuPMmIuSTuMNN+tdBJDMA6lTfazeO9Y+vh9IaTz46gZNh38BaRjpiIfD8zUIO+D2nCsRsXCGzWpzqF08GitbRn41WcrXZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMNPDQ4Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF0FC4CECE;
-	Thu, 12 Dec 2024 17:45:49 +0000 (UTC)
+	 MIME-Version; b=ReuPIPmvbU+jYzPQoKlbEZeA6V0/rz5FoxrZfI4uSRtSBgH7lQ4kldz4/16xXtJjYPsq2nw0YshEfYNtIYfffcXXXhDL8bYlYYrT5QI+N0jPcZulYbX23OZpQzWonCzOkFcNhEUDsX4A/ctZHLjR8rAQNXKq7Fo8MgY51huMZF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFYm//zN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F501C4CED0;
+	Thu, 12 Dec 2024 17:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025550;
-	bh=9Dr9qgnoIyBqrAjJUtYrT9sCCtvnGlTefEmdGFHvekU=;
+	s=korg; t=1734023417;
+	bh=FI/01iQT490cff99WYciOvrfHCFUAXeD3QLAFfTEFAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMNPDQ4ZXBztVDaPWEIuRP4+16Zbe212MAuj+dWcNoQHuHyS4WwO7oOBwXHiXMgSH
-	 /nwK65VOMAuL5JBnkQazA4NDXL3gA3+ftnPlbtddkvuNCff40/G140ut8Zx3gYXD4d
-	 g7778Y1pNmN2Byi/0ICv5M3gha92nH9e6jaXh8rU=
+	b=SFYm//zNJHlGfaGRIJ4GLr+RRFphMKI4zqyVGZ3WgYop9Aci35R3n4UWi12tiOo/J
+	 5gMMNvNfrNYHFIe9UFF3KY5tJSK0OcWsZiFy+Zi/e2YRDatSNi/dAHHRpTv2Hxla5j
+	 GzgmpsVDzrgF+9VIvNzHKVl2T/9laE8s/hB/vTVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zetao <lizetao1@huawei.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.4 205/321] media: ts2020: fix null-ptr-deref in ts2020_probe()
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Rob Herring <robh@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 528/565] powerpc/prom_init: Fixup missing powermac #size-cells
 Date: Thu, 12 Dec 2024 16:02:03 +0100
-Message-ID: <20241212144238.078671719@linuxfoundation.org>
+Message-ID: <20241212144332.676047184@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 4a058b34b52ed3feb1f3ff6fd26aefeeeed20cba upstream.
+[ Upstream commit cf89c9434af122f28a3552e6f9cc5158c33ce50a ]
 
-KASAN reported a null-ptr-deref issue when executing the following
-command:
+On some powermacs `escc` nodes are missing `#size-cells` properties,
+which is deprecated and now triggers a warning at boot since commit
+045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
+handling").
 
-  # echo ts2020 0x20 > /sys/bus/i2c/devices/i2c-0/new_device
-    KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-    CPU: 53 UID: 0 PID: 970 Comm: systemd-udevd Not tainted 6.12.0-rc2+ #24
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009)
-    RIP: 0010:ts2020_probe+0xad/0xe10 [ts2020]
-    RSP: 0018:ffffc9000abbf598 EFLAGS: 00010202
-    RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffffc0714809
-    RDX: 0000000000000002 RSI: ffff88811550be00 RDI: 0000000000000010
-    RBP: ffff888109868800 R08: 0000000000000001 R09: fffff52001577eb6
-    R10: 0000000000000000 R11: ffffc9000abbff50 R12: ffffffffc0714790
-    R13: 1ffff92001577eb8 R14: ffffffffc07190d0 R15: 0000000000000001
-    FS:  00007f95f13b98c0(0000) GS:ffff888149280000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: 0000555d2634b000 CR3: 0000000152236000 CR4: 00000000000006f0
-    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-    Call Trace:
-     <TASK>
-     ts2020_probe+0xad/0xe10 [ts2020]
-     i2c_device_probe+0x421/0xb40
-     really_probe+0x266/0x850
-    ...
+For example:
 
-The cause of the problem is that when using sysfs to dynamically register
-an i2c device, there is no platform data, but the probe process of ts2020
-needs to use platform data, resulting in a null pointer being accessed.
+  Missing '#size-cells' in /pci@f2000000/mac-io@c/escc@13000
+  WARNING: CPU: 0 PID: 0 at drivers/of/base.c:133 of_bus_n_size_cells+0x98/0x108
+  Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
+  ...
+  Call Trace:
+    of_bus_n_size_cells+0x98/0x108 (unreliable)
+    of_bus_default_count_cells+0x40/0x60
+    __of_get_address+0xc8/0x21c
+    __of_address_to_resource+0x5c/0x228
+    pmz_init_port+0x5c/0x2ec
+    pmz_probe.isra.0+0x144/0x1e4
+    pmz_console_init+0x10/0x48
+    console_init+0xcc/0x138
+    start_kernel+0x5c4/0x694
 
-Solve this problem by adding checks to platform data.
+As powermacs boot via prom_init it's possible to add the missing
+properties to the device tree during boot, avoiding the warning. Note
+that `escc-legacy` nodes are also missing `#size-cells` properties, but
+they are skipped by the macio driver, so leave them alone.
 
-Fixes: dc245a5f9b51 ("[media] ts2020: implement I2C client bindings")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Depends-on: 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20241126025710.591683-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/ts2020.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/prom_init.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
---- a/drivers/media/dvb-frontends/ts2020.c
-+++ b/drivers/media/dvb-frontends/ts2020.c
-@@ -554,13 +554,19 @@ static int ts2020_probe(struct i2c_clien
- 		const struct i2c_device_id *id)
- {
- 	struct ts2020_config *pdata = client->dev.platform_data;
--	struct dvb_frontend *fe = pdata->fe;
-+	struct dvb_frontend *fe;
- 	struct ts2020_priv *dev;
- 	int ret;
- 	u8 u8tmp;
- 	unsigned int utmp;
- 	char *chip_str;
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index f845065c860e3..302c2acc8dcbf 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2928,7 +2928,7 @@ static void __init fixup_device_tree_chrp(void)
+ #endif
  
-+	if (!pdata) {
-+		dev_err(&client->dev, "platform data is mandatory\n");
-+		return -EINVAL;
-+	}
+ #if defined(CONFIG_PPC64) && defined(CONFIG_PPC_PMAC)
+-static void __init fixup_device_tree_pmac(void)
++static void __init fixup_device_tree_pmac64(void)
+ {
+ 	phandle u3, i2c, mpic;
+ 	u32 u3_rev;
+@@ -2968,7 +2968,31 @@ static void __init fixup_device_tree_pmac(void)
+ 		     &parent, sizeof(parent));
+ }
+ #else
+-#define fixup_device_tree_pmac()
++#define fixup_device_tree_pmac64()
++#endif
 +
-+	fe = pdata->fe;
- 	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
- 	if (!dev) {
- 		ret = -ENOMEM;
++#ifdef CONFIG_PPC_PMAC
++static void __init fixup_device_tree_pmac(void)
++{
++	__be32 val = 1;
++	char type[8];
++	phandle node;
++
++	// Some pmacs are missing #size-cells on escc nodes
++	for (node = 0; prom_next_node(&node); ) {
++		type[0] = '\0';
++		prom_getprop(node, "device_type", type, sizeof(type));
++		if (prom_strcmp(type, "escc"))
++			continue;
++
++		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
++			continue;
++
++		prom_setprop(node, NULL, "#size-cells", &val, sizeof(val));
++	}
++}
++#else
++static inline void fixup_device_tree_pmac(void) { }
+ #endif
+ 
+ #ifdef CONFIG_PPC_EFIKA
+@@ -3193,6 +3217,7 @@ static void __init fixup_device_tree(void)
+ 	fixup_device_tree_maple_memory_controller();
+ 	fixup_device_tree_chrp();
+ 	fixup_device_tree_pmac();
++	fixup_device_tree_pmac64();
+ 	fixup_device_tree_efika();
+ 	fixup_device_tree_pasemi();
+ }
+-- 
+2.43.0
+
 
 
 
