@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DAD9EF55D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:16:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CAA9EF8A1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28216175F11
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:06:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B99C1897B07
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0559A216E2D;
-	Thu, 12 Dec 2024 17:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE9C216E2D;
+	Thu, 12 Dec 2024 17:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQB60SmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LS+ly5wn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EF51487CD;
-	Thu, 12 Dec 2024 17:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E142820A5EE;
+	Thu, 12 Dec 2024 17:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023090; cv=none; b=pz9Xkozn8mdfqOFMEea7dTQobQEWKKJwSVq8arfw0wNkru+CofChMBX6J2Wal+ZW48Ge7ip0yrcRc+7emay2K+xSMIhL0KrlZflToanBbFGLW0lqQKRjePH8V3E9UTf1v0sR5PS0uBB9nTBX7TlOzD/p644UOlDz51SagXcvGAY=
+	t=1734025137; cv=none; b=M+/Wp1UeG5EXpMSGIFCZNRWybrmFQD8RfWzGjr5bOdf2HhKH+ei8VkuqflocSHvvyXo2Xtlo3y/xygVpLQA6zLKfQzF8XM8krNR7+8AkoNlUilE74fL71ToenC68RYEDlbAbI45SfgnW76DTRNAVrI7LdaRTczPcviWcSZtqEHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023090; c=relaxed/simple;
-	bh=3+ElpqkLZMb3NRcsERLLsc7E6XsjlXa7KSBScZ2xPvU=;
+	s=arc-20240116; t=1734025137; c=relaxed/simple;
+	bh=nktHyDt0hVA4qDZhgRI2+b0QEmjQOvZPhrDc0wg+TOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYguZhUdInQe06HQtE4GpiPrnCGuXmiHHJ7TQi8tKQb11ZSIdpMV8ZeuRg1ojwx+usnVQslHmV03f6ZxD1rL63NTilf0eucNy9dHirHd3SjH7VQI9D9qoZWhhFJna1F8Tcx8baZsCmKv4y1BO1JKV6t436eCHnzkGsB6SfRN7jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQB60SmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375A3C4CECE;
-	Thu, 12 Dec 2024 17:04:50 +0000 (UTC)
+	 MIME-Version; b=X6usztI9spGUz4BqVP58PLeixk9nwG1Cg6FgCZ+vltDxGHFDNGo1l8VzNCnjuv+L9Zf8qAub7WdZIdzJnB/6Vxbul+xOB7TOIOzNKtHRQ5R8/QJDu1StWL5rKwwc+I71YvC+70JRxtbzgzdANEM4bzNdsTFmFiiJ5Vff5PP7fD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LS+ly5wn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68343C4CED3;
+	Thu, 12 Dec 2024 17:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023090;
-	bh=3+ElpqkLZMb3NRcsERLLsc7E6XsjlXa7KSBScZ2xPvU=;
+	s=korg; t=1734025136;
+	bh=nktHyDt0hVA4qDZhgRI2+b0QEmjQOvZPhrDc0wg+TOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQB60SmRRAYF5suaxTraybKFxVHv6u7/CBBY0bDC38N/UM6ojE/ZmOHtbrncrRdvc
-	 0RZig+e+oLU6F56JShCR4pAN9q+KXLDSp8YQu+Ckugd7DRul1kBIuEWYaSjJUoXArq
-	 yn4NxDKoGGZIjPeDqKP1ZdHEJO+yaBlwS+vyNkiw=
+	b=LS+ly5wnawV9h8Yui6dMTIH9dqDpziZWFzXbXFdKI+DJGYOV3SfvGL/TnXhG6vhD5
+	 OtD4IXJIPC+N9lpp+Z/UdcGio7xd6ZwZRS3jHmVsIU2wQyxRnf6/RT2RaChvTYx5WA
+	 uE5IL0fhpDp9vDLtPmg1wxJ1hgRuANcoxcGRDwe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 391/565] nfsd: make sure exp active before svc_export_show
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Emil Velikov <emil.velikov@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 068/321] drm/fsl-dcu: Use GEM CMA object functions
 Date: Thu, 12 Dec 2024 15:59:46 +0100
-Message-ID: <20241212144327.098307540@linuxfoundation.org>
+Message-ID: <20241212144232.677744948@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit be8f982c369c965faffa198b46060f8853e0f1f0 upstream.
+[ Upstream commit 929027087f527ef1d9e906e4ebeca7eb3a36042e ]
 
-The function `e_show` was called with protection from RCU. This only
-ensures that `exp` will not be freed. Therefore, the reference count for
-`exp` can drop to zero, which will trigger a refcount use-after-free
-warning when `exp_get` is called. To resolve this issue, use
-`cache_get_rcu` to ensure that `exp` remains active.
+Create GEM objects with drm_gem_cma_create_object_default_funcs(), which
+allocates the object and sets CMA's default object functions. Corresponding
+callbacks in struct drm_driver are cleared. No functional changes are made.
 
-------------[ cut here ]------------
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 3 PID: 819 at lib/refcount.c:25
-refcount_warn_saturate+0xb1/0x120
-CPU: 3 UID: 0 PID: 819 Comm: cat Not tainted 6.12.0-rc3+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xb1/0x120
-...
-Call Trace:
- <TASK>
- e_show+0x20b/0x230 [nfsd]
- seq_read_iter+0x589/0x770
- seq_read+0x1e5/0x270
- vfs_read+0x125/0x530
- ksys_read+0xc1/0x160
- do_syscall_64+0x5f/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Driver and object-function instances use the same callback functions, with
+the exception of vunmap. The implementation of vunmap is empty and left out
+in CMA's default object functions.
 
-Fixes: bf18f163e89c ("NFSD: Using exp_get for export getting")
-Cc: stable@vger.kernel.org # 4.20+
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v3:
+	* convert to DRIVER_OPS macro in a separate patch
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20200605073247.4057-11-tzimmermann@suse.de
+Stable-dep-of: ffcde9e44d3e ("drm: fsl-dcu: enable PIXCLK on LS1021A")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -1324,9 +1324,12 @@ static int e_show(struct seq_file *m, vo
- 		return 0;
- 	}
- 
--	exp_get(exp);
-+	if (!cache_get_rcu(&exp->h))
-+		return 0;
-+
- 	if (cache_check(cd, &exp->h, NULL))
- 		return 0;
-+
- 	exp_put(exp);
- 	return svc_export_show(m, cd, cp);
- }
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+index f15d2e7967a3e..113d2e30cf952 100644
+--- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+@@ -141,14 +141,10 @@ static struct drm_driver fsl_dcu_drm_driver = {
+ 	.irq_handler		= fsl_dcu_drm_irq,
+ 	.irq_preinstall		= fsl_dcu_irq_uninstall,
+ 	.irq_uninstall		= fsl_dcu_irq_uninstall,
+-	.gem_free_object_unlocked = drm_gem_cma_free_object,
+-	.gem_vm_ops		= &drm_gem_cma_vm_ops,
++	.gem_create_object	= drm_gem_cma_create_object_default_funcs,
+ 	.prime_handle_to_fd	= drm_gem_prime_handle_to_fd,
+ 	.prime_fd_to_handle	= drm_gem_prime_fd_to_handle,
+-	.gem_prime_get_sg_table	= drm_gem_cma_prime_get_sg_table,
+ 	.gem_prime_import_sg_table = drm_gem_cma_prime_import_sg_table,
+-	.gem_prime_vmap		= drm_gem_cma_prime_vmap,
+-	.gem_prime_vunmap	= drm_gem_cma_prime_vunmap,
+ 	.gem_prime_mmap		= drm_gem_cma_prime_mmap,
+ 	.dumb_create		= drm_gem_cma_dumb_create,
+ 	.fops			= &fsl_dcu_drm_fops,
+-- 
+2.43.0
+
 
 
 
