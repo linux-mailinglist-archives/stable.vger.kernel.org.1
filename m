@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-102755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57199EF4F8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5769EF54F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CA2317945E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A36FF289BE9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D90222D4E;
-	Thu, 12 Dec 2024 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9CB223338;
+	Thu, 12 Dec 2024 17:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEE0vfoi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npwn1hDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842FE218592;
-	Thu, 12 Dec 2024 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEED22332E;
+	Thu, 12 Dec 2024 17:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022374; cv=none; b=bBKjGSNyvZ1LuWEbbjbB+6n9MkXKRfiCGJvt6tE/LTPBEt+XvIXfJcZDeT92fwg2jwBLHj+tCB8HU7W74qgd+sUhKE+nL3HdBQniyyr1cAkKy+L5wUUEnKrZV2GRm9H0b9O77MS2zfqihC7JGa4iIX1ISVC8E0n6frIrzRG7QBw=
+	t=1734023695; cv=none; b=A7xNHUFLwedaq+Rv6FH1dAcuA5ZPqfk/FJb3fDgGQFYRbXpGF3nAUO0GHziIzBNzsv2JESpzFE1wL8lMwagc8sC5uthSfbaPa32bl1ECsMf/EnB2gSOQCqoBo8eBs0i/w9HX24WdySRzYSToLy8fkc4woMgP20S2iBcpCyx0XHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022374; c=relaxed/simple;
-	bh=zrqz1IuCpAQ+ztgZk8J8p+msZpFSsTzESS5mOeKdAc8=;
+	s=arc-20240116; t=1734023695; c=relaxed/simple;
+	bh=Ygk9ijJtZxCCDHEvLRTBaMM0XwsyRSv9qq2DTG7qHcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NJiHoEUt6T/ZaWlTyFIGDeddZHB1dLEmEt0bDnNDZktmTEG5zIwEE1PqOdsgtZdkhs6jbBd88KmDAciJYxZkzE/8Tj8q673jJaQ3rlAPAmkCeE8vf1nyCWU5FBidULgF1gYQ6Zj6f2vhazuHE1zbWwqIi3qVVR27HaOIwFEj31o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEE0vfoi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096FEC4CECE;
-	Thu, 12 Dec 2024 16:52:53 +0000 (UTC)
+	 MIME-Version; b=PMHG6GsMCnhM2CUDGI8xr6D7nl/I2t9QC81V4KHJNPBnC63LTF0xqfusNx+BF20eRiUH5biV9vVlCAKE3D0LDaClooGFQwvEr6nkdAr/o5NJBLo513f3UY6wAsjfXbEw6nVJa0OS6Yw6/v7Cyy13pNnpC9lVA8jB1eRPquUklGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npwn1hDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E58C4CECE;
+	Thu, 12 Dec 2024 17:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022374;
-	bh=zrqz1IuCpAQ+ztgZk8J8p+msZpFSsTzESS5mOeKdAc8=;
+	s=korg; t=1734023695;
+	bh=Ygk9ijJtZxCCDHEvLRTBaMM0XwsyRSv9qq2DTG7qHcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yEE0vfoiVTeP5kKZZfj4nmVGamqQrkVrNEiRak/N1Tkegysxz4bVELW6U3l9VgEnL
-	 1I7gszNhPDr5GspW8J9OQ6Chbcq/vCRwzJ10m4NPOy3V4RyPkhDwXtFZTAsKki6klN
-	 nC2oIeWFndpI8F4RhOEZ6KrXGukJBBrHh4YofcaY=
+	b=npwn1hDxw4SkrS+mNCGtnYzUfdKwm1OsneWVBanIoKsvpgS/ozrBwUX57OMT4zJGB
+	 YdfBNx8S7SmCmPf6AP+MxMGPljAcwuGlCh597f+IeVOYoB3eVUnVwYanjVC782SiBi
+	 9FMK5O+MGyaDmMcVYYF38iPfs0+ZAzhEs3UmbyzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Krister Johansen <kjlx@templeofstupid.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 193/565] selftests/bpf: Add push/pop checking for msg_verify_data in test_sockmap
+Subject: [PATCH 5.10 050/459] rcu-tasks: Idle tasks on offline CPUs are in quiescent states
 Date: Thu, 12 Dec 2024 15:56:28 +0100
-Message-ID: <20241212144319.108694208@linuxfoundation.org>
+Message-ID: <20241212144255.498259854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,247 +68,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 862087c3d36219ed44569666eb263efc97f00c9a ]
+commit 5c9a9ca44fda41c5e82f50efced5297a9c19760d upstream.
 
-Add push/pop checking for msg_verify_data in test_sockmap, except for
-pop/push with cork tests, in these tests the logic will be different.
-1. With corking, pop/push might not be invoked in each sendmsg, it makes
-the layout of the received data difficult
-2. It makes it hard to calculate the total_bytes in the recvmsg
-Temporarily skip the data integrity test for these cases now, added a TODO
+Any idle task corresponding to an offline CPU is in an RCU Tasks Trace
+quiescent state.  This commit causes rcu_tasks_trace_postscan() to ignore
+idle tasks for offline CPUs, which it can do safely due to CPU-hotplug
+operations being disabled.
 
-Fixes: ee9b352ce465 ("selftests/bpf: Fix msg_verify_data in test_sockmap")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-5-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: Neeraj Upadhyay <quic_neeraju@quicinc.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Martin KaFai Lau <kafai@fb.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 106 ++++++++++++++++++++-
- 1 file changed, 101 insertions(+), 5 deletions(-)
+ kernel/rcu/tasks.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index 2705cd6c41143..2cecd6cd647b0 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -89,6 +89,10 @@ int ktls;
- int peek_flag;
- int skb_use_parser;
- int txmsg_omit_skb_parser;
-+int verify_push_start;
-+int verify_push_len;
-+int verify_pop_start;
-+int verify_pop_len;
- 
- static const struct option long_options[] = {
- 	{"help",	no_argument,		NULL, 'h' },
-@@ -514,12 +518,41 @@ static int msg_alloc_iov(struct msghdr *msg,
- 	return -ENOMEM;
- }
- 
--/* TODO: Add verification logic for push, pull and pop data */
-+/* In push or pop test, we need to do some calculations for msg_verify_data */
-+static void msg_verify_date_prep(void)
-+{
-+	int push_range_end = txmsg_start_push + txmsg_end_push - 1;
-+	int pop_range_end = txmsg_start_pop + txmsg_pop - 1;
-+
-+	if (txmsg_end_push && txmsg_pop &&
-+	    txmsg_start_push <= pop_range_end && txmsg_start_pop <= push_range_end) {
-+		/* The push range and the pop range overlap */
-+		int overlap_len;
-+
-+		verify_push_start = txmsg_start_push;
-+		verify_pop_start = txmsg_start_pop;
-+		if (txmsg_start_push < txmsg_start_pop)
-+			overlap_len = min(push_range_end - txmsg_start_pop + 1, txmsg_pop);
-+		else
-+			overlap_len = min(pop_range_end - txmsg_start_push + 1, txmsg_end_push);
-+		verify_push_len = max(txmsg_end_push - overlap_len, 0);
-+		verify_pop_len = max(txmsg_pop - overlap_len, 0);
-+	} else {
-+		/* Otherwise */
-+		verify_push_start = txmsg_start_push;
-+		verify_pop_start = txmsg_start_pop;
-+		verify_push_len = txmsg_end_push;
-+		verify_pop_len = txmsg_pop;
-+	}
-+}
-+
- static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz,
--				 unsigned char *k_p, int *bytes_cnt_p)
-+			   unsigned char *k_p, int *bytes_cnt_p,
-+			   int *check_cnt_p, int *push_p)
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index bede3a4f108e3..ea45a2d53a99e 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -1007,7 +1007,7 @@ static void rcu_tasks_trace_postscan(struct list_head *hop)
  {
--	int i, j, bytes_cnt = *bytes_cnt_p;
-+	int bytes_cnt = *bytes_cnt_p, check_cnt = *check_cnt_p, push = *push_p;
- 	unsigned char k = *k_p;
-+	int i, j;
+ 	int cpu;
  
- 	for (i = 0, j = 0; i < msg->msg_iovlen && size; i++, j = 0) {
- 		unsigned char *d = msg->msg_iov[i].iov_base;
-@@ -538,6 +571,37 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz,
- 		}
+-	for_each_possible_cpu(cpu)
++	for_each_online_cpu(cpu)
+ 		rcu_tasks_trace_pertask(idle_task(cpu), hop);
  
- 		for (; j < msg->msg_iov[i].iov_len && size; j++) {
-+			if (push > 0 &&
-+			    check_cnt == verify_push_start + verify_push_len - push) {
-+				int skipped;
-+revisit_push:
-+				skipped = push;
-+				if (j + push >= msg->msg_iov[i].iov_len)
-+					skipped = msg->msg_iov[i].iov_len - j;
-+				push -= skipped;
-+				size -= skipped;
-+				j += skipped - 1;
-+				check_cnt += skipped;
-+				continue;
-+			}
-+
-+			if (verify_pop_len > 0 && check_cnt == verify_pop_start) {
-+				bytes_cnt += verify_pop_len;
-+				check_cnt += verify_pop_len;
-+				k += verify_pop_len;
-+
-+				if (bytes_cnt == chunk_sz) {
-+					k = 0;
-+					bytes_cnt = 0;
-+					check_cnt = 0;
-+					push = verify_push_len;
-+				}
-+
-+				if (push > 0 &&
-+				    check_cnt == verify_push_start + verify_push_len - push)
-+					goto revisit_push;
-+			}
-+
- 			if (d[j] != k++) {
- 				fprintf(stderr,
- 					"detected data corruption @iov[%i]:%i %02x != %02x, %02x ?= %02x\n",
-@@ -545,15 +609,20 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz,
- 				return -EDATAINTEGRITY;
- 			}
- 			bytes_cnt++;
-+			check_cnt++;
- 			if (bytes_cnt == chunk_sz) {
- 				k = 0;
- 				bytes_cnt = 0;
-+				check_cnt = 0;
-+				push = verify_push_len;
- 			}
- 			size--;
- 		}
- 	}
- 	*k_p = k;
- 	*bytes_cnt_p = bytes_cnt;
-+	*check_cnt_p = check_cnt;
-+	*push_p = push;
- 	return 0;
- }
- 
-@@ -608,6 +677,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		struct timeval timeout;
- 		unsigned char k = 0;
- 		int bytes_cnt = 0;
-+		int check_cnt = 0;
-+		int push = 0;
- 		fd_set w;
- 
- 		fcntl(fd, fd_flags);
-@@ -633,6 +704,10 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 		}
- 		total_bytes += txmsg_push_total;
- 		total_bytes -= txmsg_pop_total;
-+		if (data) {
-+			msg_verify_date_prep();
-+			push = verify_push_len;
-+		}
- 		err = clock_gettime(CLOCK_MONOTONIC, &s->start);
- 		if (err < 0)
- 			perror("recv start time");
-@@ -699,7 +774,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 						iov_length :
- 						iov_length * iov_count;
- 
--				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt);
-+				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt,
-+							&check_cnt, &push);
- 				if (errno) {
- 					perror("data verify msg failed");
- 					goto out_errno;
-@@ -709,7 +785,9 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
- 								recvp,
- 								chunk_sz,
- 								&k,
--								&bytes_cnt);
-+								&bytes_cnt,
-+								&check_cnt,
-+								&push);
- 					if (errno) {
- 						perror("data verify msg_peek failed");
- 						goto out_errno;
-@@ -1600,6 +1678,8 @@ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
- 
- static void test_txmsg_pop(int cgrp, struct sockmap_options *opt)
- {
-+	bool data = opt->data_test;
-+
- 	/* Test basic pop */
- 	txmsg_pass = 1;
- 	txmsg_start_pop = 1;
-@@ -1618,6 +1698,12 @@ static void test_txmsg_pop(int cgrp, struct sockmap_options *opt)
- 	txmsg_pop = 2;
- 	test_send_many(opt, cgrp);
- 
-+	/* TODO: Test for pop + cork should be different,
-+	 * - It makes the layout of the received data difficult
-+	 * - It makes it hard to calculate the total_bytes in the recvmsg
-+	 * Temporarily skip the data integrity test for this case now.
-+	 */
-+	opt->data_test = false;
- 	/* Test pop + cork */
- 	txmsg_redir = 0;
- 	txmsg_cork = 512;
-@@ -1631,10 +1717,13 @@ static void test_txmsg_pop(int cgrp, struct sockmap_options *opt)
- 	txmsg_start_pop = 1;
- 	txmsg_pop = 2;
- 	test_send_many(opt, cgrp);
-+	opt->data_test = data;
- }
- 
- static void test_txmsg_push(int cgrp, struct sockmap_options *opt)
- {
-+	bool data = opt->data_test;
-+
- 	/* Test basic push */
- 	txmsg_pass = 1;
- 	txmsg_start_push = 1;
-@@ -1653,12 +1742,19 @@ static void test_txmsg_push(int cgrp, struct sockmap_options *opt)
- 	txmsg_end_push = 2;
- 	test_send_many(opt, cgrp);
- 
-+	/* TODO: Test for push + cork should be different,
-+	 * - It makes the layout of the received data difficult
-+	 * - It makes it hard to calculate the total_bytes in the recvmsg
-+	 * Temporarily skip the data integrity test for this case now.
-+	 */
-+	opt->data_test = false;
- 	/* Test push + cork */
- 	txmsg_redir = 0;
- 	txmsg_cork = 512;
- 	txmsg_start_push = 1;
- 	txmsg_end_push = 2;
- 	test_send_many(opt, cgrp);
-+	opt->data_test = data;
- }
- 
- static void test_txmsg_push_pop(int cgrp, struct sockmap_options *opt)
+ 	// Re-enable CPU hotplug now that the tasklist scan has completed.
 -- 
 2.43.0
 
