@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E015D9EEABF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3806C9EEC7D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD6E7168C60
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3362F188559D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27DD21639F;
-	Thu, 12 Dec 2024 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0A5215774;
+	Thu, 12 Dec 2024 15:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOjjkmBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlKXoR2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E67F21171A;
-	Thu, 12 Dec 2024 15:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34C66F2FE;
+	Thu, 12 Dec 2024 15:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016376; cv=none; b=NzCKTarcFDSxNkrk4xu88t/U9vy1KlHTFA2I2Xc6IHlXZskmJl2KjMVB9NJNwaBVPvPzaHvPkw2cOfIoa6NJxbsCxZqjY9St2g4ig0iTXxaOyXJytMwJqoUggpY/yC9XsBOnhEhkNq49SM0w4lLqoErPw832sPsNF2NQ3dt9URw=
+	t=1734017608; cv=none; b=ZE0Kywx2nwqxfLb/vMHZ+lwK1aiE04SMg3GwHoK+xqeQ5DVRfRtN+tOtXv///XYyZjzD/Bm9nDZullDrz7rfOscG9WW2jV4dQmU9YN+Rj/SxT574gyYX1lPpPsGQ+oYN3Ch/4oGYcJPuMfqSkvCeb5RIJgTAagQORqEE65+oo5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016376; c=relaxed/simple;
-	bh=cO47pyqaWym4Ef55F/95+K3BxeH5YDPQI08Ae39D1ZM=;
+	s=arc-20240116; t=1734017608; c=relaxed/simple;
+	bh=iPAvPRZpAsXK5tWJlqtTe/Y0m4SQoLJuKIs0GQc4URk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGg12ty3ygPf8i+H+NVtg53MsAANoSkdwL5W528CfQ9ugzA0MeUoTgy66JmzIQWaEkm39+Ms9GjI5B6/Kc+XvKQ1wRTNRhz0ppZ+jFGoeV6iXy60XQRI6we3myjkNDEM+NxErTGdnefN4lFfN7xRihz+LK1NnZ8E19HXFsIdWMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOjjkmBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F21F5C4CED0;
-	Thu, 12 Dec 2024 15:12:55 +0000 (UTC)
+	 MIME-Version; b=UI1vA8drRtT76UirY7aMCsEGfSf1kJHoSuC1OtPR8lW5PoLd4QaIU3C+yNgFU9slGpqcOHKKL9UhrvjieF6ct6auvQkdRh01P0tjHs27BwemQi/gWLwpejSwd/LON8xajqqUSwonKOh09163bjV3bQrl31SBsJ01+q29QRFmG5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlKXoR2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DFEC4CECE;
+	Thu, 12 Dec 2024 15:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016376;
-	bh=cO47pyqaWym4Ef55F/95+K3BxeH5YDPQI08Ae39D1ZM=;
+	s=korg; t=1734017608;
+	bh=iPAvPRZpAsXK5tWJlqtTe/Y0m4SQoLJuKIs0GQc4URk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOjjkmBKcquNBn1gMaRYc2VXooSBw+JwxKfQ963EA96H64H1jwpjKsUmalool7d3+
-	 ayxBpdq5tMDVET4bobRhaC6sMuEgDNz5MrgY+pE+dLwj2S7WZp46vQPRi8DxgBE5x/
-	 KofkbngWYJmoQu1KjqOUl0jlGzwNIj1foQuGe7+0=
+	b=XlKXoR2QPEZbDWYq8AYkb7XAKyFzoOMVgw5FGohOFaCgthwRKSi3qB1PJiYWKJ/jS
+	 aHA1O+lSZ/BcsWgF2brySFVeSto+4MilprrQOhwh5nQMJDDFAW3cvOw0xcpI29JdOf
+	 RGwUw+FsS8YFIqiZhGuIh2kQhdWBdjv1fgg1+9yA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Belanger <david.belanger@amd.com>,
-	Frank Min <frank.min@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 181/466] drm/amdgpu/hdp5.2: do a posting read when flushing HDP
+	Jiri Wiesner <jwiesner@suse.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 031/356] net/ipv6: release expired exception dst cached in socket
 Date: Thu, 12 Dec 2024 15:55:50 +0100
-Message-ID: <20241212144313.943157847@linuxfoundation.org>
+Message-ID: <20241212144245.856525646@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jiri Wiesner <jwiesner@suse.de>
 
-commit f756dbac1ce1d5f9a2b35e3b55fa429cf6336437 upstream.
+[ Upstream commit 3301ab7d5aeb0fe270f73a3d4810c9d1b6a9f045 ]
 
-Need to read back to make sure the write goes through.
+Dst objects get leaked in ip6_negative_advice() when this function is
+executed for an expired IPv6 route located in the exception table. There
+are several conditions that must be fulfilled for the leak to occur:
+* an ICMPv6 packet indicating a change of the MTU for the path is received,
+  resulting in an exception dst being created
+* a TCP connection that uses the exception dst for routing packets must
+  start timing out so that TCP begins retransmissions
+* after the exception dst expires, the FIB6 garbage collector must not run
+  before TCP executes ip6_negative_advice() for the expired exception dst
 
-Cc: David Belanger <david.belanger@amd.com>
-Reviewed-by: Frank Min <frank.min@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When TCP executes ip6_negative_advice() for an exception dst that has
+expired and if no other socket holds a reference to the exception dst, the
+refcount of the exception dst is 2, which corresponds to the increment
+made by dst_init() and the increment made by the TCP socket for which the
+connection is timing out. The refcount made by the socket is never
+released. The refcount of the dst is decremented in sk_dst_reset() but
+that decrement is counteracted by a dst_hold() intentionally placed just
+before the sk_dst_reset() in ip6_negative_advice(). After
+ip6_negative_advice() has finished, there is no other object tied to the
+dst. The socket lost its reference stored in sk_dst_cache and the dst is
+no longer in the exception table. The exception dst becomes a leaked
+object.
+
+As a result of this dst leak, an unbalanced refcount is reported for the
+loopback device of a net namespace being destroyed under kernels that do
+not contain e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev"):
+unregister_netdevice: waiting for lo to become free. Usage count = 2
+
+Fix the dst leak by removing the dst_hold() in ip6_negative_advice(). The
+patch that introduced the dst_hold() in ip6_negative_advice() was
+92f1655aa2b22 ("net: fix __dst_negative_advice() race"). But 92f1655aa2b22
+merely refactored the code with regards to the dst refcount so the issue
+was present even before 92f1655aa2b22. The bug was introduced in
+54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually
+expired.") where the expired cached route is deleted and the sk_dst_cache
+member of the socket is set to NULL by calling dst_negative_advice() but
+the refcount belonging to the socket is left unbalanced.
+
+The IPv4 version - ipv4_negative_advice() - is not affected by this bug.
+When the TCP connection times out ipv4_negative_advice() merely resets the
+sk_dst_cache of the socket while decrementing the refcount of the
+exception dst.
+
+Fixes: 92f1655aa2b22 ("net: fix __dst_negative_advice() race")
+Fixes: 54c1a859efd9f ("ipv6: Don't drop cache route entry unless timer actually expired.")
+Link: https://lore.kernel.org/netdev/20241113105611.GA6723@incl/T/#u
+Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241128085950.GA4505@incl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv6/route.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
-@@ -31,13 +31,15 @@
- static void hdp_v5_2_flush_hdp(struct amdgpu_device *adev,
- 				struct amdgpu_ring *ring)
- {
--	if (!ring || !ring->funcs->emit_wreg)
-+	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
- 			0);
--	else
-+		RREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
-+	} else {
- 		amdgpu_ring_emit_wreg(ring,
- 			(adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
- 			0);
-+	}
- }
- 
- static void hdp_v5_2_update_mem_power_gating(struct amdgpu_device *adev,
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 0fdd062d4b05b..fc5c534620253 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -2772,10 +2772,10 @@ static void ip6_negative_advice(struct sock *sk,
+ 	if (rt->rt6i_flags & RTF_CACHE) {
+ 		rcu_read_lock();
+ 		if (rt6_check_expired(rt)) {
+-			/* counteract the dst_release() in sk_dst_reset() */
+-			dst_hold(dst);
++			/* rt/dst can not be destroyed yet,
++			 * because of rcu_read_lock()
++			 */
+ 			sk_dst_reset(sk);
+-
+ 			rt6_remove_exception_rt(rt);
+ 		}
+ 		rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
