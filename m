@@ -1,115 +1,128 @@
-Return-Path: <stable+bounces-103932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9189EFC30
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 20:16:26 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AD1D1890032
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:16:26 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F03219D074;
-	Thu, 12 Dec 2024 19:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="J1cc5F/S"
-X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 650BB9EFC8A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 20:34:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9EB18A95E
-	for <stable@vger.kernel.org>; Thu, 12 Dec 2024 19:16:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23D3928AB86
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:34:19 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F94183CD9;
+	Thu, 12 Dec 2024 19:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="TCh4l4Qc"
+X-Original-To: stable@vger.kernel.org
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AD722611;
+	Thu, 12 Dec 2024 19:34:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734030977; cv=none; b=MOEet16RMUHOzWOdC9nHUSIXCfTby8vifIofvQtnyN39mTWGi37RymFp1BD/AjI8iu/NoZFx2pxsqqp1Rvpk+zyISmalkYSAUAVXcwl1dAwLfHlZ2BMkw8enLsW1XqCet0SKt7y5B4jCKB6GEYZifJWT+l4m2KIhMTZ5o22cFPE=
+	t=1734032055; cv=none; b=RgMoY8dmzUoFvfhIUF5XfC/6sqZXtsWcLATOrmhlYmDPufzPTdBPU0ibUZ8wMX3VV2BkjlShf4KaQ5/YON6HS09mle/2ccz6fkfId3ATNJuIcpbhYe2owVlextXi8ZVkIugcOfaST7pQraS1/b8GsEMSJSxemhe+HqWF8XCxHqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734030977; c=relaxed/simple;
-	bh=skFXEL+76fVYihCVs35mdgzhvYE7ko0uc9dr8XUt/+k=;
+	s=arc-20240116; t=1734032055; c=relaxed/simple;
+	bh=hR2aHX6iduIH4HEz94GvOPpN8FCi1xvTaAhMX30cTXI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDuZvNLXrE1gZtWFWDev5vNfEAApOlB7zirHvCjFhJxCH7kBnafPLkdBUSJaFxgxfJwTXXtBRCY8NA1Jd6qMpM9u4W8P1SBzjZf66KCGLoT2p0Vl9ucDod7z5WehMGHoPbkXYsrf2J6y0rflMRUV8AyMgM7bqy4Pbnz4J7U368Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=J1cc5F/S; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from cwcc.thunk.org (pool-173-48-82-226.bstnma.fios.verizon.net [173.48.82.226])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 4BCJG3PQ030704
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Dec 2024 14:16:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1734030965; bh=1/K7UU6w6q8URFOfA+h9O8es187FoqkuT4UwjnFhREI=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=J1cc5F/S6r4ewPx4wx11OO/yUhwFd7clXo1lQJHsVk5sRdppkHMehYMtMLOYJ38BE
-	 5ekavEUDDYPUlattBs2umwb8PHH/uPiOafi5Oev8ZVV3UweSjCDn4NzeQwFY/5+vig
-	 veBS5LzFBy216eZRIFtuj+9igycjddnIS0IFSpzSDWx2fHlZdrlUyDFtCT7xv89PP8
-	 cTXlOOPnwQE/S7zweU94TST0ZhjXQSjY87+oN8H3ofSbObT6t3xJdigTsG8BjwCB8X
-	 /wioPFiWTIp5IAKI8/u5jFTUf/N8isOFY9z7Y4bQKdXHQa6PQn4FApDtIDtBnrnR7E
-	 nf0+w0LucUVfQ==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id CD98015C028A; Thu, 12 Dec 2024 14:16:03 -0500 (EST)
-Date: Thu, 12 Dec 2024 14:16:03 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Nikolai Zhubr <zhubr.2@gmail.com>
-Cc: linux-ext4@vger.kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jack@suse.cz
-Subject: Re: ext4 damage suspected in between 5.15.167 - 5.15.170
-Message-ID: <20241212191603.GA2158320@mit.edu>
-References: <CALQo8TpjoV8JtuYDH_nBU5i4e-iuCQ1-NORAE8uobpDD_yYBTA@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qhNOgT0MoNLRk7qncl4mq2zAtFMg8u7IJrYZSQo+dDbpOcUCh5jnq2ampd/JLzb8eOmmzXTqKeyfLtRccXaVKNvAyEOmMZKbYlm3AmBmoUpPhJkzUHX6vkNudQZl7WpE6G4twPYfHyz5jMNjlFMe+KNBROtQC4rFJzObuS4XSig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=TCh4l4Qc; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6ADB510485596;
+	Thu, 12 Dec 2024 20:34:01 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1734032044;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jpTFBO1ExhIv3n22Yk/fm+v3aff/PUI/VG7AXOrSz6U=;
+	b=TCh4l4QcqRVziRuOy34IAXZonv66oz6MByYkOMq0/nfRzqEMNm10ZlMlJxdYBRCTyF73jB
+	cD7kIEjOTYov9k3u1lu+Fhc3iDxoExEeWyEwpWQd5gTaBmrMv1PzMBTQm1SOQI0eayi9kK
+	wsrlbWyd/ym66YZOqYTKBgpctJ/9H/X3Eb2cLsCBfW47WCgoaYIG5PHlRAXA81Z8gNUmQC
+	JQc6HwDO6KXk5NMQKED1xZJqY24r/LdrLW8SUj9/wVhOMH5hTJrs9ZSMzMtTem157njPda
+	E8ps7/Y0ndb0h82a40Tpsd18Zx1Y6vz9yn1ED8vqAqi/mRM+qvXa9qvaLWQFjw==
+Date: Thu, 12 Dec 2024 20:33:59 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 5.4 000/321] 5.4.287-rc1 review
+Message-ID: <Z1s6p2QR+PwcnNYV@duo.ucw.cz>
+References: <20241212144229.291682835@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="OytnDsTlQTgfYOum"
+Content-Disposition: inline
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
+
+
+--OytnDsTlQTgfYOum
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CALQo8TpjoV8JtuYDH_nBU5i4e-iuCQ1-NORAE8uobpDD_yYBTA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 12, 2024 at 09:31:05PM +0300, Nikolai Zhubr wrote:
-> This is to report that after jumping from generic kernel 5.15.167 to
-> 5.15.170 I apparently observe ext4 damage.
+Hi!
 
-Hi Nick,
+> This is the start of the stable review cycle for the 5.4.287 release.
+> There are 321 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-In general this is not something that upstream kernel developers will
-pay a lot of attention to try to root cause.  If you can come up with
-a reliable reproducer, not just a single one-off, it's much more
-likely that people will pay attention.  If you can demonstrate that
-the reliable reproducer shows the issue on the latest development HEAD
-of the upstream kernel, they will definitely pay attention.
+We are getting build failures here on arm_v7:
 
-People will also pay more attention if you give more detail in your
-message.  Not just some vague "ext4 damage" (where 99% of time, these
-sorts of things happen due to hardware-induced corruption), but the
-exact message when mount failed.
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1=
+586057341
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/862548=
+6171
 
-Also helpful when reporting ext4 issues, it's helpful to include
-information about the file system configuration using "dumpe2fs -h
-/dev/XXX".  Extracting kernel log messages that include the string
-"EXT4-fs", via commands like "sudo dmesg | grep EXT4-fs", or "sudo
-journalctl | grep EXT4-fs", or "grep EXT4-fs /var/log/messages" are
-also helpful, as is getting a report from fsck via a command like
-"fsck.ext4 -fn /dev/XXX >& /tmp/fsck.out"
+drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c:173:2: error: 'DRM_GEM_CMA_DRIVER=
+_OPS' undeclared here (not in a function); did you mean 'DRM_GEM_CMA_VMAP_D=
+RIVER_OPS'?
+6367
+  173 |  DRM_GEM_CMA_DRIVER_OPS,
+6368
+      |  ^~~~~~~~~~~~~~~~~~~~~~
+6369
+      |  DRM_GEM_CMA_VMAP_DRIVER_OPS
+6370
+make[4]: *** [scripts/Makefile.build:262: drivers/gpu/drm/fsl-dcu/fsl_dcu_d=
+rm_drv.o] Error 1
+6371
+make[3]: *** [scripts/Makefile.build:497: drivers/gpu/drm/fsl-dcu] Error 2
+6372
+make[3]: *** Waiting for unfinished jobs....
+6373
 
-That way they can take a quick look the information and do an initial
-triage over the most likely cause.
+Best regards,
+								Pavel
 
-> And because there are apparently 0 commits to ext4 in 5.15 since
-> 5.15.168 at the moment, I thought I'd report.
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Did you check for any changes to the md/dm code, or the block layer?
-Also, if you checked for I/O errors in the system logs, or run
-"smartctl" on the block devices, please say so.  (And if there are
-indications of I/O errors or storage device issues, please do
-immediate backups and make plans to replace your hardware before you
-suffer more serious data loss.)
+--OytnDsTlQTgfYOum
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Finally, if you want more support than what volunteers in the upstream
-linux kernel community can provide, this is what paid support from
-companies like SuSE, or Red Hat, can provide.
+-----BEGIN PGP SIGNATURE-----
 
-Cheers,
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZ1s6pwAKCRAw5/Bqldv6
+8uDVAKCQMr06BQihfqDvQF5/RGSNoCMGhQCeL/PJOcUcb9x7ASANZoW2cUeJM24=
+=yl5D
+-----END PGP SIGNATURE-----
 
-							- Ted
+--OytnDsTlQTgfYOum--
 
