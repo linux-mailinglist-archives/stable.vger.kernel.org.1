@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-102700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EED9EF43D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BB09EF22A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A780194152A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A30EF17B2F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5A822A7F2;
-	Thu, 12 Dec 2024 16:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1257F235C40;
+	Thu, 12 Dec 2024 16:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6jKObp+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xuRC3WNe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF32229696;
-	Thu, 12 Dec 2024 16:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C496E2368E0;
+	Thu, 12 Dec 2024 16:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022175; cv=none; b=D9GQHQgaKvcvGLl+Fti0I3DUWbJo914dcjcSmV6FKrv+Ru5PA/5MdNBM3jf0Tiv07GSjmoZVYrQnwZsLZPsLHSm+SEBPUnQgrk3r8fzrkvmYTblBJDhe4F31ZZIg+2Su/4BaMOBLM7ijbxoZIX+08oHf6yI0PHKgm1Kh+ZELKFk=
+	t=1734020406; cv=none; b=Xqe40rEm5YX6s5UTLRlAPzqE4GPwcjdV2w67h9P1gzsajurRkbpIMcLjbpHbVcn+w+IGro2+7C8mTZ6UrtNJM8OcQJBhbhdMUP4rU7dB2gQQkDBM88hpvN0sFxrrbQK72xfIOQIdwtJrAU1WkYjYUGIiJ+HSr5dEYVbR9NAH1rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022175; c=relaxed/simple;
-	bh=lDTGMk+l4Dx7Ate3TDj6yY/32uVqTjDKlDmOZGeYYTo=;
+	s=arc-20240116; t=1734020406; c=relaxed/simple;
+	bh=e+MsuQxXgF+CJZNzGEDhQ8PE97qON8hSnFA0Adol1t4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miqBeFnEdG6p/Edr+OVz5j4QSkyR5cquF8j8YHjyIIm92ClzjBxlh5r7zDWVWEWnvjDtqIexSfrVpV7zgu5On6JhVdxBpLD0SeJoa3gSbet9GriqsTpXcdrEUtaENwoAX9eWARCI0l/rIPPL/FBY0pUllqR+wZkxGwlSSVU0Sgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6jKObp+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A42EC4CECE;
-	Thu, 12 Dec 2024 16:49:34 +0000 (UTC)
+	 MIME-Version; b=HKrMZ7eBQQ5ADcHPaEmyfRaMXblvAQvRfFXp+7EUs4laVuvC93S2tLDkeLLUTv/j/fkcELwktep3ccPp91UT0f8BIhnhPx702VeBEHMzfaxsB3ZDxQU6uqTTdx5v2HRhGq/cZLhxLTxsHtIjAr9nA51QaRzK3s9dKvghUC56N38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xuRC3WNe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17117C4CECE;
+	Thu, 12 Dec 2024 16:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022175;
-	bh=lDTGMk+l4Dx7Ate3TDj6yY/32uVqTjDKlDmOZGeYYTo=;
+	s=korg; t=1734020406;
+	bh=e+MsuQxXgF+CJZNzGEDhQ8PE97qON8hSnFA0Adol1t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6jKObp++1nG9ydUYmN5gnR+lF51vn2iPOVHVeRGCk8dqFbpJG9j36sbsMpDy8zSe
-	 JHOrKN5SBFayDugsUuZRANkC6zccG5FMhDa3CUTXGSF0CUDhqsV+1j2yKVpXSTCCJG
-	 Hpk2nLGItoDn06gnWbFBDsW/+UUu0/IK4qPeakcs=
+	b=xuRC3WNeFdThAFFqWm6odogYa1JeMnLWQNQ8+n1q80vG8ESXmTmYAVY0vhPFBWK/5
+	 qZkvtAM3pc+at2UoXWLvMe2arQV5MCcMiUmVcxx5EpvEkvdER/crmabsEHCSv2Y/E2
+	 oxY9OE5IUyQR8YPOfyu254QKrLEvhfdpu2MfdVCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raed Salem <raeds@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/565] netdevsim: rely on XFRM state direction instead of flags
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 419/772] usb: dwc3: gadget: Fix checking for number of TRBs left
 Date: Thu, 12 Dec 2024 15:56:04 +0100
-Message-ID: <20241212144318.155079396@linuxfoundation.org>
+Message-ID: <20241212144407.224671360@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 55e2f83afb1c142885da63c5a9ce2998b6f6ab21 ]
+commit 02a6982b0ccfcdc39e20016f5fc9a1b7826a6ee7 upstream.
 
-Make sure that netdevsim relies on direction and not on flags.
+The check whether the TRB ring is full or empty in dwc3_calc_trbs_left()
+is insufficient. It assumes there are active TRBs if there's any request
+in the started_list. However, that's not the case for requests with a
+large SG list.
 
-Reviewed-by: Raed Salem <raeds@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Stable-dep-of: 2cf567f421db ("netdevsim: copy addresses for both in and out paths")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That is, if we have a single usb request that requires more TRBs than
+the total TRBs in the TRB ring, the queued TRBs will be available when
+all the TRBs in the ring are completed. But the request is only
+partially completed and remains in the started_list. With the current
+logic, the TRB ring is empty, but dwc3_calc_trbs_left() returns 0.
+
+Fix this by additionally checking for the request->num_trbs for active
+TRB count.
+
+Cc: stable@vger.kernel.org
+Fixes: 51f1954ad853 ("usb: dwc3: gadget: Fix dwc3_calc_trbs_left()")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/708dc62b56b77da1f704cc2ae9b6ddb1f2dbef1f.1731545781.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/netdevsim/ipsec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/gadget.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
-index b80ed2ffd45eb..386336a38f349 100644
---- a/drivers/net/netdevsim/ipsec.c
-+++ b/drivers/net/netdevsim/ipsec.c
-@@ -171,7 +171,7 @@ static int nsim_ipsec_add_sa(struct xfrm_state *xs)
- 		return ret;
- 	}
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1203,11 +1203,14 @@ static u32 dwc3_calc_trbs_left(struct dw
+ 	 * pending to be processed by the driver.
+ 	 */
+ 	if (dep->trb_enqueue == dep->trb_dequeue) {
++		struct dwc3_request *req;
++
+ 		/*
+-		 * If there is any request remained in the started_list at
+-		 * this point, that means there is no TRB available.
++		 * If there is any request remained in the started_list with
++		 * active TRBs at this point, then there is no TRB available.
+ 		 */
+-		if (!list_empty(&dep->started_list))
++		req = next_request(&dep->started_list);
++		if (req && req->num_trbs)
+ 			return 0;
  
--	if (xs->xso.flags & XFRM_OFFLOAD_INBOUND) {
-+	if (xs->xso.dir == XFRM_DEV_OFFLOAD_IN) {
- 		sa.rx = true;
- 
- 		if (xs->props.family == AF_INET6)
--- 
-2.43.0
-
+ 		return DWC3_TRB_NUM - 1;
 
 
 
