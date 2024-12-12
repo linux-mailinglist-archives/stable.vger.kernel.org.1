@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3F89EF5BD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA6A9EF6AB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 439A817AE26
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B65691762DF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC042358AF;
-	Thu, 12 Dec 2024 16:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E2E211493;
+	Thu, 12 Dec 2024 17:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZozhzXUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cyi2Qgrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB618229690;
-	Thu, 12 Dec 2024 16:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83C41F2381;
+	Thu, 12 Dec 2024 17:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022512; cv=none; b=OxI4o7qBHXfSmuUQOzF3rFbdd89zOzFakZZ7pWsBuRtrZ1lqWwWZuyOVlIsEV7PvyJ63TcqKI8Mv/7z2UOqavKcmfhEZabJ45AwpCbRO+YA1cb6MFyxZbn5gQMkRrn9FsVHzD/CU+W9VvpRpTfdo+JQtK6OLxn/YN1cY95ybeTg=
+	t=1734023953; cv=none; b=JzLZl2KwfBFRZJ5H4Zy6vo20LrPnCHdy/trbOcLXDijWSoBlOU4v0tcpaqpHxdEcDix3YICDiHwdwAiOhfygRM0bfXZtjIhcNcm4HWt1MQ1ZjkvlOOmHOOSfwTdzxRgUNJp5MzZbheb2pWEJ3OVj/rAg4Jq0BNWV+//hBd5GwyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022512; c=relaxed/simple;
-	bh=2WLacbY3ikgI7nR3ElLSDzMCyvOsPg2BUD5H9BunSIU=;
+	s=arc-20240116; t=1734023953; c=relaxed/simple;
+	bh=1MfwhM3pUyyeDYLoT5TgG1KBTqWrjkElLLM233Q+H5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpYJtgDcwmrk/Ug+JnAjWyCjdS764DdkmtBlB50EevbcAJq++KZHcvsvj6vIypJIrLVfGObcK5tw4noHR6+3oj5wPNfSCk2jM6s6gbjCK1gtTyMq+MjIuvPTrjKixtqK4AZCaYSqGKHnkdAlk32NrJAD7N/drJIWadrc831HMCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZozhzXUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567ACC4CED0;
-	Thu, 12 Dec 2024 16:55:11 +0000 (UTC)
+	 MIME-Version; b=OTaYNwV1NCWDTE9db6ZMA68/PHx3EUcB+sgqh+tB13M7AaJZ//18GelCbYyZ3UGgPsNIH10+iZm+d2YQnlEBENshTrw+B6S38Gb48wgiTMG+BgO/QGC/iE5YqCunLU4BjY/o0I90MPnTczjk0OhKQKZMP8/n0Vxw2ZS/y+llpdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cyi2Qgrc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35873C4CED0;
+	Thu, 12 Dec 2024 17:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022511;
-	bh=2WLacbY3ikgI7nR3ElLSDzMCyvOsPg2BUD5H9BunSIU=;
+	s=korg; t=1734023953;
+	bh=1MfwhM3pUyyeDYLoT5TgG1KBTqWrjkElLLM233Q+H5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZozhzXUstjumsehSm+M3TuY8P4W8GfZqHAXUOaGYg6sLBRu5+Jl69x95/AwBzNp1H
-	 KnAvxyWxRBfK3pMKURzm8p3h/nMVYnfdUSuYjAbvfHsaFzfCdE0ql0wIzJa9XRsGZI
-	 M2Gq976OFCQWXLF8Exwtlcd85gWv5uooHzsckITU=
+	b=cyi2QgrcQrAf9xrZXv6M9hF6C/zS1AZmgGd6o6VWokLu64DbVyPYjdAaDxvIv5Et+
+	 oFeeFqdOg8Z0oVM0d5T4Ffce01Q788L9kOXtwb9wOu9YvLUqUIBNWN3uUkbJ4c6u+S
+	 0tQQ+vyCl4ggHP1r8V7WQY87K1CnSlcvh4uVGgJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Zijian Zhang <zijianzhang@bytedance.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 262/565] remoteproc: qcom_q6v5_mss: Re-order writes to the IMEM region
-Date: Thu, 12 Dec 2024 15:57:37 +0100
-Message-ID: <20241212144321.824779666@linuxfoundation.org>
+Subject: [PATCH 5.10 120/459] selftests/bpf: Fix msg_verify_data in test_sockmap
+Date: Thu, 12 Dec 2024 15:57:38 +0100
+Message-ID: <20241212144258.250319409@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Zijian Zhang <zijianzhang@bytedance.com>
 
-[ Upstream commit 7b22b7719fc17d5979a991c918c868ab041be5c8 ]
+[ Upstream commit ee9b352ce4650ffc0d8ca0ac373d7c009c7e561e ]
 
-Any write access to the IMEM region when the Q6 is setting up XPU
-protection on it will result in a XPU violation. Fix this by ensuring
-IMEM writes related to the MBA post-mortem logs happen before the Q6
-is brought out of reset.
+Function msg_verify_data should have context of bytes_cnt and k instead of
+assuming they are zero. Otherwise, test_sockmap with data integrity test
+will report some errors. I also fix the logic related to size and index j
 
-Fixes: 318130cc9362 ("remoteproc: qcom_q6v5_mss: Add MBA log extraction support")
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240819073020.3291287-1-quic_sibis@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+1/ 6  sockmap::txmsg test passthrough:FAIL
+2/ 6  sockmap::txmsg test redirect:FAIL
+7/12  sockmap::txmsg test apply:FAIL
+10/11  sockmap::txmsg test push_data:FAIL
+11/17  sockmap::txmsg test pull-data:FAIL
+12/ 9  sockmap::txmsg test pop-data:FAIL
+13/ 1  sockmap::txmsg test push/pop data:FAIL
+...
+Pass: 24 Fail: 52
+
+After applying this patch, some of the errors are solved, but for push,
+pull and pop, we may need more fixes to msg_verify_data, added a TODO
+
+10/11  sockmap::txmsg test push_data:FAIL
+11/17  sockmap::txmsg test pull-data:FAIL
+12/ 9  sockmap::txmsg test pop-data:FAIL
+...
+Pass: 37 Fail: 15
+
+Besides, added a custom errno EDATAINTEGRITY for msg_verify_data, we
+shall not ignore the error in txmsg_cork case.
+
+Fixes: 753fb2ee0934 ("bpf: sockmap, add msg_peek tests to test_sockmap")
+Fixes: 16edddfe3c5d ("selftests/bpf: test_sockmap, check test failure")
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
+Link: https://lore.kernel.org/r/20241012203731.1248619-2-zijianzhang@bytedance.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_mss.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/bpf/test_sockmap.c | 30 ++++++++++++++--------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_mss.c b/drivers/remoteproc/qcom_q6v5_mss.c
-index 93eefefd514c7..7fe1f2c5480af 100644
---- a/drivers/remoteproc/qcom_q6v5_mss.c
-+++ b/drivers/remoteproc/qcom_q6v5_mss.c
-@@ -1003,6 +1003,9 @@ static int q6v5_mba_load(struct q6v5 *qproc)
- 		goto disable_active_clks;
- 	}
+diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
+index 61be5993416e9..48c8f24cf9964 100644
+--- a/tools/testing/selftests/bpf/test_sockmap.c
++++ b/tools/testing/selftests/bpf/test_sockmap.c
+@@ -58,6 +58,8 @@ static void running_handler(int a);
+ #define BPF_SOCKHASH_FILENAME "test_sockhash_kern.o"
+ #define CG_PATH "/sockmap"
  
-+	if (qproc->has_mba_logs)
-+		qcom_pil_info_store("mba", qproc->mba_phys, MBA_LOG_SIZE);
++#define EDATAINTEGRITY 2001
 +
- 	writel(qproc->mba_phys, qproc->rmb_base + RMB_MBA_IMAGE_REG);
- 	if (qproc->dp_size) {
- 		writel(qproc->mba_phys + SZ_1M, qproc->rmb_base + RMB_PMI_CODE_START_REG);
+ /* global sockets */
+ int s1, s2, c1, c2, p1, p2;
+ int test_cnt;
+@@ -509,23 +511,25 @@ static int msg_alloc_iov(struct msghdr *msg,
+ 	return -ENOMEM;
+ }
+ 
+-static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
++/* TODO: Add verification logic for push, pull and pop data */
++static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz,
++				 unsigned char *k_p, int *bytes_cnt_p)
+ {
+-	int i, j = 0, bytes_cnt = 0;
+-	unsigned char k = 0;
++	int i, j, bytes_cnt = *bytes_cnt_p;
++	unsigned char k = *k_p;
+ 
+-	for (i = 0; i < msg->msg_iovlen; i++) {
++	for (i = 0, j = 0; i < msg->msg_iovlen && size; i++, j = 0) {
+ 		unsigned char *d = msg->msg_iov[i].iov_base;
+ 
+ 		/* Special case test for skb ingress + ktls */
+ 		if (i == 0 && txmsg_ktls_skb) {
+ 			if (msg->msg_iov[i].iov_len < 4)
+-				return -EIO;
++				return -EDATAINTEGRITY;
+ 			if (memcmp(d, "PASS", 4) != 0) {
+ 				fprintf(stderr,
+ 					"detected skb data error with skb ingress update @iov[%i]:%i \"%02x %02x %02x %02x\" != \"PASS\"\n",
+ 					i, 0, d[0], d[1], d[2], d[3]);
+-				return -EIO;
++				return -EDATAINTEGRITY;
+ 			}
+ 			j = 4; /* advance index past PASS header */
+ 		}
+@@ -535,7 +539,7 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
+ 				fprintf(stderr,
+ 					"detected data corruption @iov[%i]:%i %02x != %02x, %02x ?= %02x\n",
+ 					i, j, d[j], k - 1, d[j+1], k);
+-				return -EIO;
++				return -EDATAINTEGRITY;
+ 			}
+ 			bytes_cnt++;
+ 			if (bytes_cnt == chunk_sz) {
+@@ -545,6 +549,8 @@ static int msg_verify_data(struct msghdr *msg, int size, int chunk_sz)
+ 			size--;
+ 		}
+ 	}
++	*k_p = k;
++	*bytes_cnt_p = bytes_cnt;
+ 	return 0;
+ }
+ 
+@@ -593,6 +599,8 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 		float total_bytes, txmsg_pop_total;
+ 		int fd_flags = O_NONBLOCK;
+ 		struct timeval timeout;
++		unsigned char k = 0;
++		int bytes_cnt = 0;
+ 		fd_set w;
+ 
+ 		fcntl(fd, fd_flags);
+@@ -671,7 +679,7 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 						iov_length * cnt :
+ 						iov_length * iov_count;
+ 
+-				errno = msg_verify_data(&msg, recv, chunk_sz);
++				errno = msg_verify_data(&msg, recv, chunk_sz, &k, &bytes_cnt);
+ 				if (errno) {
+ 					perror("data verify msg failed");
+ 					goto out_errno;
+@@ -679,7 +687,9 @@ static int msg_loop(int fd, int iov_count, int iov_length, int cnt,
+ 				if (recvp) {
+ 					errno = msg_verify_data(&msg_peek,
+ 								recvp,
+-								chunk_sz);
++								chunk_sz,
++								&k,
++								&bytes_cnt);
+ 					if (errno) {
+ 						perror("data verify msg_peek failed");
+ 						goto out_errno;
+@@ -770,7 +780,7 @@ static int sendmsg_test(struct sockmap_options *opt)
+ 				s.bytes_sent, sent_Bps, sent_Bps/giga,
+ 				s.bytes_recvd, recvd_Bps, recvd_Bps/giga,
+ 				peek_flag ? "(peek_msg)" : "");
+-		if (err && txmsg_cork)
++		if (err && err != -EDATAINTEGRITY && txmsg_cork)
+ 			err = 0;
+ 		exit(err ? 1 : 0);
+ 	} else if (rxpid == -1) {
 -- 
 2.43.0
 
