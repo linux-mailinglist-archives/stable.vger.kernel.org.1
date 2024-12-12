@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-101145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F629EEB0D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACC09EEB12
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2A716BB37
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6D5516BE40
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6205F2210C6;
-	Thu, 12 Dec 2024 15:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8295021770A;
+	Thu, 12 Dec 2024 15:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNfl+yH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/eDr63A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FFF1212D6A;
-	Thu, 12 Dec 2024 15:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DCD621766D;
+	Thu, 12 Dec 2024 15:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016515; cv=none; b=iMLwdI1dPWJThXchg00RtcaHVAXPoqMnKBuxUEOAxDPN+wujNH1kZDe7Sm6A4CgGX/YNJRC00LqWNRH2IMqQ7W89sn8WRRf389Aj26OfVqNiY3xLa7dGZv21y7YWRAvmJT/cthz9W5Qm5iBZ1R7a52rPxiMtdimn2vBZqHmr/us=
+	t=1734016531; cv=none; b=DsZ1gXTYKExoVA8StVT4Hi3nGzc1ojXSSybaQyYJHocYJpa8PWMOaB8ZxguLNWWSwXBL1BMHXhHss2VtyagFpSwoRdmCMirLqrrz4KiAVBWmfKRV46mSS5EbH2YFeO4QVVHoHWiVpowey5nTbJs+kNg01PK+N2etGC2BewBusX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016515; c=relaxed/simple;
-	bh=3ljR3H2VnuxQyp5T4zHF+YTSvDxMv+XGY9QUVF39xqw=;
+	s=arc-20240116; t=1734016531; c=relaxed/simple;
+	bh=6n7Ckx8U0DHzePhIjlpIdBCzie84j9ldr3eDvEL2T7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RisYdLekYVngJ8qSU2kaezhZgp0SZM9x+uftcoSKtYIQgVQ7chGhF4CM7J/QsA+9K4vEN9N4ibjEr9iz+nppOeWXOyJBTeTmJmG9Js0TSDlT2N0+Prbju8dYfcAqb32yjNI0RnVX5liQmpdnb297YKxmnOAjm5akfonuE/Equ6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNfl+yH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BE9C4CED4;
-	Thu, 12 Dec 2024 15:15:14 +0000 (UTC)
+	 MIME-Version; b=jmDI9WWwUyu2YD/1QdOEyD1BVfUMnNOhZyrCxuWNYlLzuKR0oIpfWkWjKRs3foDswRcLrwQb0MlomszXE7KDBN0lRCyfiV5U5U7f3Y57VloeB+WM/rQ9SHE46XDyh0ngAhOyN8o3lsgrImbc1q/5nprtnWEpQzOX/NZTn2xSvDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/eDr63A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947E8C4CECE;
+	Thu, 12 Dec 2024 15:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016515;
-	bh=3ljR3H2VnuxQyp5T4zHF+YTSvDxMv+XGY9QUVF39xqw=;
+	s=korg; t=1734016531;
+	bh=6n7Ckx8U0DHzePhIjlpIdBCzie84j9ldr3eDvEL2T7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNfl+yH8FXncpPKm5abImr1PsF/aiYiFO3elq+alFGaj1Dx8gLTXHDNPUmhaB4t53
-	 7vfjxXK0goKeAo2+VRkUEcLJiTG1ohl2HVIqi6KYL0zVzgIP3FtExG2ipmoLwemjeg
-	 spSvpo+DyTS9FbAurqoJ7lM7bauNFPG+cf981XxU=
+	b=N/eDr63A63Jt8h3kFqyaZ5XQkTECyr04vendWhhYDFDmkjCCWr7rirBZDxde5I2hw
+	 fajXDcwW708AJfTAC8MQAJeI1xdK6hSl1b0ui+2Xha5cPaCIdnhSVTRVF0fAkzujFs
+	 ydprWjRPUIWiUlQgh3JeMWnKGl+ugkZRC2CqoekY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <len.brown@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 193/466] x86/cpu: Add Lunar Lake to list of CPUs with a broken MONITOR implementation
-Date: Thu, 12 Dec 2024 15:56:02 +0100
-Message-ID: <20241212144314.419843609@linuxfoundation.org>
+	Wengang Wang <wen.gang.wang@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 194/466] ocfs2: update seq_file index in ocfs2_dlm_seq_next
+Date: Thu, 12 Dec 2024 15:56:03 +0100
+Message-ID: <20241212144314.459361308@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -66,45 +71,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Len Brown <len.brown@intel.com>
+From: Wengang Wang <wen.gang.wang@oracle.com>
 
-commit c9a4b55431e5220347881e148725bed69c84e037 upstream.
+commit 914eec5e980171bc128e7e24f7a22aa1d803570e upstream.
 
-Under some conditions, MONITOR wakeups on Lunar Lake processors
-can be lost, resulting in significant user-visible delays.
+The following INFO level message was seen:
 
-Add Lunar Lake to X86_BUG_MONITOR so that wake_up_idle_cpu()
-always sends an IPI, avoiding this potential delay.
+seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
+update position index
 
-Reported originally here:
+Fix:
+Update *pos (so m->index) to make seq_read_iter happy though the index its
+self makes no sense to ocfs2_dlm_seq_next.
 
-	https://bugzilla.kernel.org/show_bug.cgi?id=219364
-
-[ dhansen: tweak subject ]
-
-Signed-off-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/a4aa8842a3c3bfdb7fe9807710eef159cbf0e705.1731463305.git.len.brown%40intel.com
+Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
+Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/intel.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ocfs2/dlmglue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -586,7 +586,9 @@ static void init_intel(struct cpuinfo_x8
- 	     c->x86_vfm == INTEL_WESTMERE_EX))
- 		set_cpu_bug(c, X86_BUG_CLFLUSH_MONITOR);
+--- a/fs/ocfs2/dlmglue.c
++++ b/fs/ocfs2/dlmglue.c
+@@ -3110,6 +3110,7 @@ static void *ocfs2_dlm_seq_next(struct s
+ 	struct ocfs2_lock_res *iter = v;
+ 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
  
--	if (boot_cpu_has(X86_FEATURE_MWAIT) && c->x86_vfm == INTEL_ATOM_GOLDMONT)
-+	if (boot_cpu_has(X86_FEATURE_MWAIT) &&
-+	    (c->x86_vfm == INTEL_ATOM_GOLDMONT ||
-+	     c->x86_vfm == INTEL_LUNARLAKE_M))
- 		set_cpu_bug(c, X86_BUG_MONITOR);
- 
- #ifdef CONFIG_X86_64
++	(*pos)++;
+ 	spin_lock(&ocfs2_dlm_tracking_lock);
+ 	iter = ocfs2_dlm_next_res(iter, priv);
+ 	list_del_init(&dummy->l_debug_list);
 
 
 
