@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-102610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A9B9EF2CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCF59EEA31
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4367E28562A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8A2E16852A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943ED2358AF;
-	Thu, 12 Dec 2024 16:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3737C21578C;
+	Thu, 12 Dec 2024 15:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLPrzBkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbI85SEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4974A22967A;
-	Thu, 12 Dec 2024 16:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E747321576C;
+	Thu, 12 Dec 2024 15:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021848; cv=none; b=JvwbhXvRKbp4TrN1qQ6EF0A6WBlUq9O4kAJ3ORXQt7AHLMaG3gQOmKo3PSn4zqPkUXJ/DpYpVpjMROggHrKrg5Fr+Z4jqGkMoUscBBDloGtUnMEOd1uSsOkF6lNhmCKEBLVKsZvd6NeuiC1Qzh9CZnOY7bd8R9WMiDDicMhdars=
+	t=1734016004; cv=none; b=q1D5hOrifMQC5Ye7tQ2uSpY3hgzoz3tn+psMXP8zIxibLQk2LxV1zhhSTGZGE+d3S3mCTMBwerwJpMD+WfHmp0T1bSF1Q4UmQud3+aGbE9jik8sSCTO6c8UEKystMBeGa0Z1DzbtNtvZ0hLEdNe8gFLOJaqu7mN8URRbH5UK86Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021848; c=relaxed/simple;
-	bh=jHp742mg6rJW8jZlTpyPCEt5nSEVM/DAq93hTU5WF/Y=;
+	s=arc-20240116; t=1734016004; c=relaxed/simple;
+	bh=0hPJ8J68dfzh5vzjzOO5QMv5REGXmxQb8FI4OUArdAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7DEC6rCRztjQAeQQSoPGHAjZof6IlAjlRckha9RrLcnxwsG1kar7YLD0+4sdQ08u3dqnyNX0JhjH30epWlLxP+am0UswQZ9n6pqLvxSWs5sJ3axCO3OuzOZ7GQX5W66MAuxUhfaD1SXQ+Dx92VcfNSg0zUn+0fXK4m4nQ3dUNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLPrzBkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C41C4CECE;
-	Thu, 12 Dec 2024 16:44:07 +0000 (UTC)
+	 MIME-Version; b=aXv3NDeMHlRr+rziW/+a0UGP314ny3UBe6qpehoa9i/zHk3ppUiYb0Wr41vODh706QGq58ChfpmxSdHBWhCCmP/JbR47ZQIUYGStoOMM2Io7hPZZdBA08/5niozTPyceSUjTyVDfM0OIgYZS3DKg+9nmFMlmEoLheUTUT3gYNhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbI85SEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7DFC4CED7;
+	Thu, 12 Dec 2024 15:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021848;
-	bh=jHp742mg6rJW8jZlTpyPCEt5nSEVM/DAq93hTU5WF/Y=;
+	s=korg; t=1734016003;
+	bh=0hPJ8J68dfzh5vzjzOO5QMv5REGXmxQb8FI4OUArdAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLPrzBkqkUAAcoHE5JYjcjmbTuME+OzWBQk+Zks8UlCercjU5Jwpi5UHpuOmGjqc1
-	 OK6c0bzb17t3e2aifgP+BIR1AU+U6o6sR3uHVwpM60ndKp/M5Ss/Qg/gLVq/rWGCRZ
-	 HtCzCy6kLrRr4B/SSyGyFpEWnLBR6maGxpSUi2ow=
+	b=VbI85SEIWG9RU/19qyUzLWjLYNVJozq9jX7BGW1V74kcecivRQiQRI7/E3hCMG8Yy
+	 wVY9gK/6kKj7SABIEvOyIlGYd1WXz8xEDPxaiScJa1z3abuvtaEKAzyqim+qMN++t/
+	 YC/GWBCx9AIAqRHYgIia9yvRw1ZaJHcbPbqG6C/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/565] brd: remove brd_devices_mutex mutex
+Subject: [PATCH 6.12 105/466] nvme-fabrics: handle zero MAXCMD without closing the connection
 Date: Thu, 12 Dec 2024 15:54:34 +0100
-Message-ID: <20241212144314.610521563@linuxfoundation.org>
+Message-ID: <20241212144310.964726207@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,176 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit 00358933f66c44d511368a57eb421e172447cfb9 ]
+[ Upstream commit 88c23a32b851e36adc4ab36f796d9b711f47e2bb ]
 
-If brd_alloc() from brd_probe() is called before brd_alloc() from
-brd_init() is called, module loading will fail with -EEXIST error.
-To close this race, call __register_blkdev() just before leaving
-brd_init().
+The NVMe specification states that MAXCMD is mandatory
+for NVMe-over-Fabrics implementations. However, some NVMe/TCP
+and NVMe/FC arrays from major vendors have buggy firmware
+that reports MAXCMD as zero in the Identify Controller data structure.
 
-Then, we can remove brd_devices_mutex mutex, for brd_device list
-will no longer be accessed concurrently.
+Currently, the implementation closes the connection in such cases,
+completely preventing the host from connecting to the target.
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Fix the issue by printing a clear error message about the firmware bug
+and allowing the connection to proceed. It assumes that the
+target supports a MAXCMD value of SQSIZE + 1. If any issues arise,
+the user can manually adjust SQSIZE to mitigate them.
+
+Fixes: 4999568184e5 ("nvme-fabrics: check max outstanding commands")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/6b074af7-c165-4fab-b7da-8270a4f6f6cd@i-love.sakura.ne.jp
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 826cc42adf44 ("brd: defer automatic disk creation until module initialization succeeds")
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/brd.c | 73 +++++++++++++++++++--------------------------
- 1 file changed, 30 insertions(+), 43 deletions(-)
+ drivers/nvme/host/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-index 76ce6f766d55e..db816baca5567 100644
---- a/drivers/block/brd.c
-+++ b/drivers/block/brd.c
-@@ -362,7 +362,6 @@ __setup("ramdisk_size=", ramdisk_size);
-  * (should share code eventually).
-  */
- static LIST_HEAD(brd_devices);
--static DEFINE_MUTEX(brd_devices_mutex);
- static struct dentry *brd_debugfs_dir;
- 
- static int brd_alloc(int i)
-@@ -372,21 +371,14 @@ static int brd_alloc(int i)
- 	char buf[DISK_NAME_LEN];
- 	int err = -ENOMEM;
- 
--	mutex_lock(&brd_devices_mutex);
--	list_for_each_entry(brd, &brd_devices, brd_list) {
--		if (brd->brd_number == i) {
--			mutex_unlock(&brd_devices_mutex);
-+	list_for_each_entry(brd, &brd_devices, brd_list)
-+		if (brd->brd_number == i)
- 			return -EEXIST;
--		}
--	}
- 	brd = kzalloc(sizeof(*brd), GFP_KERNEL);
--	if (!brd) {
--		mutex_unlock(&brd_devices_mutex);
-+	if (!brd)
- 		return -ENOMEM;
--	}
- 	brd->brd_number		= i;
- 	list_add_tail(&brd->brd_list, &brd_devices);
--	mutex_unlock(&brd_devices_mutex);
- 
- 	spin_lock_init(&brd->brd_lock);
- 	INIT_RADIX_TREE(&brd->brd_pages, GFP_ATOMIC);
-@@ -431,9 +423,7 @@ static int brd_alloc(int i)
- out_cleanup_disk:
- 	blk_cleanup_disk(disk);
- out_free_dev:
--	mutex_lock(&brd_devices_mutex);
- 	list_del(&brd->brd_list);
--	mutex_unlock(&brd_devices_mutex);
- 	kfree(brd);
- 	return err;
- }
-@@ -443,15 +433,19 @@ static void brd_probe(dev_t dev)
- 	brd_alloc(MINOR(dev) / max_part);
- }
- 
--static void brd_del_one(struct brd_device *brd)
-+static void brd_cleanup(void)
- {
--	del_gendisk(brd->brd_disk);
--	blk_cleanup_disk(brd->brd_disk);
--	brd_free_pages(brd);
--	mutex_lock(&brd_devices_mutex);
--	list_del(&brd->brd_list);
--	mutex_unlock(&brd_devices_mutex);
--	kfree(brd);
-+	struct brd_device *brd, *next;
-+
-+	debugfs_remove_recursive(brd_debugfs_dir);
-+
-+	list_for_each_entry_safe(brd, next, &brd_devices, brd_list) {
-+		del_gendisk(brd->brd_disk);
-+		blk_cleanup_disk(brd->brd_disk);
-+		brd_free_pages(brd);
-+		list_del(&brd->brd_list);
-+		kfree(brd);
-+	}
- }
- 
- static inline void brd_check_and_reset_par(void)
-@@ -475,9 +469,18 @@ static inline void brd_check_and_reset_par(void)
- 
- static int __init brd_init(void)
- {
--	struct brd_device *brd, *next;
- 	int err, i;
- 
-+	brd_check_and_reset_par();
-+
-+	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
-+
-+	for (i = 0; i < rd_nr; i++) {
-+		err = brd_alloc(i);
-+		if (err)
-+			goto out_free;
-+	}
-+
- 	/*
- 	 * brd module now has a feature to instantiate underlying device
- 	 * structure on-demand, provided that there is an access dev node.
-@@ -493,28 +496,16 @@ static int __init brd_init(void)
- 	 *	dynamically.
- 	 */
- 
--	if (__register_blkdev(RAMDISK_MAJOR, "ramdisk", brd_probe))
--		return -EIO;
--
--	brd_check_and_reset_par();
--
--	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
--
--	for (i = 0; i < rd_nr; i++) {
--		err = brd_alloc(i);
--		if (err)
--			goto out_free;
-+	if (__register_blkdev(RAMDISK_MAJOR, "ramdisk", brd_probe)) {
-+		err = -EIO;
-+		goto out_free;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index fe83d31ac928b..ec03b25eacbbc 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3251,8 +3251,9 @@ static int nvme_check_ctrl_fabric_info(struct nvme_ctrl *ctrl, struct nvme_id_ct
  	}
  
- 	pr_info("brd: module loaded\n");
+ 	if (!ctrl->maxcmd) {
+-		dev_err(ctrl->device, "Maximum outstanding commands is 0\n");
+-		return -EINVAL;
++		dev_warn(ctrl->device,
++			"Firmware bug: maximum outstanding commands is 0\n");
++		ctrl->maxcmd = ctrl->sqsize + 1;
+ 	}
+ 
  	return 0;
- 
- out_free:
--	unregister_blkdev(RAMDISK_MAJOR, "ramdisk");
--	debugfs_remove_recursive(brd_debugfs_dir);
--
--	list_for_each_entry_safe(brd, next, &brd_devices, brd_list)
--		brd_del_one(brd);
-+	brd_cleanup();
- 
- 	pr_info("brd: module NOT loaded !!!\n");
- 	return err;
-@@ -522,13 +513,9 @@ static int __init brd_init(void)
- 
- static void __exit brd_exit(void)
- {
--	struct brd_device *brd, *next;
- 
- 	unregister_blkdev(RAMDISK_MAJOR, "ramdisk");
--	debugfs_remove_recursive(brd_debugfs_dir);
--
--	list_for_each_entry_safe(brd, next, &brd_devices, brd_list)
--		brd_del_one(brd);
-+	brd_cleanup();
- 
- 	pr_info("brd: module unloaded\n");
- }
 -- 
 2.43.0
 
