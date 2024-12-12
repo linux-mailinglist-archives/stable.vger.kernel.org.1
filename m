@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-101851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76B29EEF08
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:08:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 542A79EEE58
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:56:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 879CF1637DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:00:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1021728598D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35738229673;
-	Thu, 12 Dec 2024 15:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE6E2210DA;
+	Thu, 12 Dec 2024 15:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBZZ8OTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I/FxCOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E565E22966D;
-	Thu, 12 Dec 2024 15:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380C2213E6B;
+	Thu, 12 Dec 2024 15:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019030; cv=none; b=GyNSkBVjyVEZCz7kpfuQ5gs4+VKEMY72RJHgoywLvoQim1bObrbNgNLzuwZL1IfAlkhjM2NVifjLNgCu+zWpGUOMS3p8Pl0beV6cGQ3a0vvrIK+sxYdM2VPux6xn6KR43kYo2XuzsQmAAaIc+TyG1W1Tx56uKn/Vnek8W5uVQ0s=
+	t=1734018911; cv=none; b=dUCNM+ox+ACDRSjyGRXTGZsMVB4nMwbaaU0qZsJct4CiftHqDKX19/JlHBvHBM4zMrcfN922O3Ztp+bKV8RyiBkoBGCrnEOvhkkQcB39PBGEkp7W6+hbFrmY4Az5ZGUPy9B1P9KMjj/eEgTfYrifmsEF91W4jfAuhZWpeorLFXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019030; c=relaxed/simple;
-	bh=j8nNUYg8iWsHefrfGA7QEHHrMmg2Sh3ALrVNRyihPBc=;
+	s=arc-20240116; t=1734018911; c=relaxed/simple;
+	bh=l2703YuL4XgbXL98QG1+7i0+BwY/6/Zgqz6TaOW1Gxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ul/d28P5+fRbdqw4cGIbBm/Pm2ko53RiUOugPK8cyV52qrV3sV4rht9/G4BxIoYpST2NpwI6nnaJ8nKl3UL5qNEdiFc+z439c2vPUA7d1iLdN0whJbXmOb+6jjgYZXGT4N5/qH/iDrLDN2mQfgFw4Ow1AQ7qo7i3IE5czOBtBUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBZZ8OTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B3BC4CED0;
-	Thu, 12 Dec 2024 15:57:08 +0000 (UTC)
+	 MIME-Version; b=auEDSxG/XP3ftA06VBZ03oX9quyk2uvMbBV7uPqDgcFZeaQk0Wnn18iblSbZVvZyY6eniBLAHec2ogU91xDB3CzPSb5EQCg+FQJ7Bot/c6QjVm9cltfFpmvQ7Hv2pVQ0XMVFlMdxVgwn5akYOLFkAyFZ8pcVpyYDNFWwl0nGE9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I/FxCOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99053C4CECE;
+	Thu, 12 Dec 2024 15:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019029;
-	bh=j8nNUYg8iWsHefrfGA7QEHHrMmg2Sh3ALrVNRyihPBc=;
+	s=korg; t=1734018911;
+	bh=l2703YuL4XgbXL98QG1+7i0+BwY/6/Zgqz6TaOW1Gxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBZZ8OTdBSwUjWgtWKiN+k5R1T45gPeTOKMfuMbfQ9Pv1/ZogS879P90PZthnXmsq
-	 JjLOxxjgGN6wtMbYxr/X7BHLrSQ/4i4MV0PY37z/4GdhvEjAcdj4fjFh/ae1+Q/FF9
-	 IU6Rb8HEzpdMPe7BxMvWMRjLSCSp+dnoOgJJ8dbc=
+	b=0I/FxCOjTizphmSg8GtwF99Oakw29h28R0hH2i7l+s/vtP6dVUMZWmu3faXGPEefh
+	 Y34yGOCBmdTRX4tswQgGfgwuHT4kclz7Ng5qA6IJfl02cjXKrhACcNnfG84rRlL/7L
+	 NFdtdYrNIA0NVg38iHD8gxFpmnKQA78a6F7EpTNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Zizhi Wo <wozizhi@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/772] acpi/arm64: Adjust error handling procedure in gtdt_parse_timer_block()
-Date: Thu, 12 Dec 2024 15:50:04 +0100
-Message-ID: <20241212144352.387990448@linuxfoundation.org>
+Subject: [PATCH 6.1 060/772] cachefiles: Fix missing pos updates in cachefiles_ondemand_fd_write_iter()
+Date: Thu, 12 Dec 2024 15:50:05 +0100
+Message-ID: <20241212144352.428669960@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -68,42 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Zizhi Wo <wozizhi@huawei.com>
 
-[ Upstream commit 1a9de2f6fda69d5f105dd8af776856a66abdaa64 ]
+[ Upstream commit 56f4856b425a30e1d8b3e41e6cde8bfba90ba5f8 ]
 
-In case of error in gtdt_parse_timer_block() invalid 'gtdt_frame'
-will be used in 'do {} while (i-- >= 0 && gtdt_frame--);' statement block
-because do{} block will be executed even if 'i == 0'.
+In the erofs on-demand loading scenario, read and write operations are
+usually delivered through "off" and "len" contained in read req in user
+mode. Naturally, pwrite is used to specify a specific offset to complete
+write operations.
 
-Adjust error handling procedure by replacing 'i-- >= 0' with 'i-- > 0'.
+However, if the write(not pwrite) syscall is called multiple times in the
+read-ahead scenario, we need to manually update ki_pos after each write
+operation to update file->f_pos.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This step is currently missing from the cachefiles_ondemand_fd_write_iter
+function, added to address this issue.
 
-Fixes: a712c3ed9b8a ("acpi/arm64: Add memory-mapped timer support in GTDT driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Acked-by: Hanjun Guo <guohanjun@huawei.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Acked-by: Aleksandr Mishin <amishin@t-argos.ru>
-Link: https://lore.kernel.org/r/20240827101239.22020-1-amishin@t-argos.ru
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+Link: https://lore.kernel.org/r/20241107110649.3980193-3-wozizhi@huawei.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/arm64/gtdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cachefiles/ondemand.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/arm64/gtdt.c b/drivers/acpi/arm64/gtdt.c
-index c0e77c1c8e09d..eb6c2d3603874 100644
---- a/drivers/acpi/arm64/gtdt.c
-+++ b/drivers/acpi/arm64/gtdt.c
-@@ -283,7 +283,7 @@ static int __init gtdt_parse_timer_block(struct acpi_gtdt_timer_block *block,
- 		if (frame->virt_irq > 0)
- 			acpi_unregister_gsi(gtdt_frame->virtual_timer_interrupt);
- 		frame->virt_irq = 0;
--	} while (i-- >= 0 && gtdt_frame--);
-+	} while (i-- > 0 && gtdt_frame--);
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 2185e2908dba8..d1a0264b08a6c 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -78,8 +78,10 @@ static ssize_t cachefiles_ondemand_fd_write_iter(struct kiocb *kiocb,
  
- 	return -EINVAL;
+ 	trace_cachefiles_ondemand_fd_write(object, file_inode(file), pos, len);
+ 	ret = __cachefiles_write(object, file, pos, iter, NULL, NULL);
+-	if (!ret)
++	if (!ret) {
+ 		ret = len;
++		kiocb->ki_pos += ret;
++	}
+ 
+ 	return ret;
  }
 -- 
 2.43.0
