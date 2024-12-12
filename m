@@ -1,173 +1,120 @@
-Return-Path: <stable+bounces-103911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FA29EFACB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:23:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F00E09EFAE3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 19:29:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A6FD1896960
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B124E28980F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23407223C59;
-	Thu, 12 Dec 2024 18:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DD5215776;
+	Thu, 12 Dec 2024 18:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Lo1ganxf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qg0hTqLi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-29.smtpout.orange.fr [80.12.242.29])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEE129A9;
-	Thu, 12 Dec 2024 18:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842D61547F5;
+	Thu, 12 Dec 2024 18:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734027351; cv=none; b=GOHV16TDd8TgmsmDIUM3nQAbUkTcUEHkivsIA/8KYGMwjiDRmRKGHty/KTkcQAV2ymbX7+qjWljozo37NrPrVdI01lm80D5+hZpV8ZTW1QgKB6/S1YfUfQl2CMZb3sYaE1BLb/+ZaQWkrnSPi87bynLMDyxcYS0chaBFORxnIjw=
+	t=1734028138; cv=none; b=Yy+16BclE3p6jcJ5123wSdxJzazbnSA8c0A3rMEp3BNlFUf83cBZo3G58vDj0MQuz4x7oqkb6fPN2vDGGfeUzbh8v4cCqmkL6xCQDPu5GmO77nig5+TGtLtV/Yx90mBpEqZH1bB/SRpBWBuNT8qxpPEtqKvnHLA/0XVzTnrrROk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734027351; c=relaxed/simple;
-	bh=NonqIIpR2rZqfuU/6o62PeGLSlzdLle31fGOi6fT5zg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hcfl/vYHRYWPbTPv2QsVfKy96uyJ0lOBC9jiIANAgIMkhFS+164LpypLvIxMVuBiHCnHZ4oWg5MYvV5QTl2rLDzxsjkXAmqG0DqpvUdfcsUPcb40JVKu2fzyVA19yhq5IEUD7HX9VAcG7v4Vi9EhLPlDRecBVnuIdsTY7cQNqSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Lo1ganxf; arc=none smtp.client-ip=80.12.242.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id Lnirtq7nnaH0QLnistCYQy; Thu, 12 Dec 2024 19:15:40 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1734027340;
-	bh=CTi2UNElzpzeGsPWf9yWpV5Gm1O9oqnXVg6317n4Hhw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=Lo1ganxfVOLwGMLUOoC/RZqOizklywFG503w2dQXXbYAJxhSoKv2gOmte9/A5UCVP
-	 OHXhKRuWV8St9+lAneGVDnzdN4JZpFdtwcFx5GnZyh2W+RzQWasRRrDRG5FHiGxewh
-	 5gCHYCxmimVmIuSMunzVj+JOp8aFC7ntBdieHqFyRz6HFu5ZUJ1Q8ysSl6vjILZFzk
-	 TlDlZwc16vHQGUTmTJsHQEWmHs5h4a/ZC2taawez3qwxPth8SEJ/eqLJr4sJ7IL2g/
-	 zsoVVvX6E/v+ysellVnGS+rIVzDcnHKJxIMqVT3lNQCq7K1FABuEWYZJ2VUvJO3wy2
-	 IrSrp1tGjKl4g==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Thu, 12 Dec 2024 19:15:40 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <e8564c63-0c2b-4327-8e39-767530b29b11@wanadoo.fr>
-Date: Thu, 12 Dec 2024 19:15:37 +0100
+	s=arc-20240116; t=1734028138; c=relaxed/simple;
+	bh=KuZi5uOGUo7WkDSMczDqEF1ggsJGATM0BMmMUjUwwyw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Koot2d2Ot3q9BOGCM6/PrFNQhZ+VBpsuOTquvlNQS+tfY+NytkHhM1MiuwZ2Y+tyeLDWu/kkgetvU6FiWP+F7r8Tx7Z+fBDeMM1CbytmVtQEGRICy21CTHjH7/revyGPKv+wO+LfDK91+h2Pvs73FgcxaJqBh01FsOQeTlR6SFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qg0hTqLi; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7fd35b301bdso831357a12.2;
+        Thu, 12 Dec 2024 10:28:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734028136; x=1734632936; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KuZi5uOGUo7WkDSMczDqEF1ggsJGATM0BMmMUjUwwyw=;
+        b=Qg0hTqLikHDkGbbg40BmICGkWYsidcdxvwrruUb9hCpT1w5IwTzzPJNZlYeWGxOs64
+         wSm3D+WZZdgpl8dNxhNG/MNtjficSRrYNorebzx2qxSfGePFYIHV1ojylzf9FAi97bu1
+         BsYJFSQ2A/ikXasm95CX47css0TO3gmlXRrrs8Os/+MmQ0tIx3/1xvK0EHqnYbiYadj5
+         f4Tg9KOI3z8Dv5qIaN2eSEsv2jcvEXXutnc5s8kC6haiMgetqpx8BfRTV0PBcmDvsdaE
+         lhjHFO7BlovVRf8ZinJ0Cn+dclSeOjrvi4+KgNxFxsMS5wMwfsM8mUFQC1/nAKJwklau
+         oeFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734028136; x=1734632936;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KuZi5uOGUo7WkDSMczDqEF1ggsJGATM0BMmMUjUwwyw=;
+        b=ELI62oFwy2vHGipX97tdr/bCnxpX677if7OzwWspAH0P01yYiKP8fbbzAlN2Z//YPv
+         l6e6v3g27gstMOyzwUAkk+EHbnCR+G0fcg8DVi5gvEl8lTLW4unJQDJpmZLp5GMmE+Az
+         tDFlzUPGMmPE8bja61K2s9jpiJhlUMQit4lLM+mw9xwesu++Fek2KXqJaR7OON3r1r13
+         BRe0K2b1bMp7aXqH41MBhf7lY4Gu1NoSvgCoT512n9V332iKaAdFjt0g+rZ4H9FZ1y+7
+         ORvROMRD5mlG7JRm8PKNOCiXyGZyorNTDlyYyvEfsZWWc35cYne5/xUNRmHlcwV+uUpn
+         ZRzw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFsX5Ov2RGwbPTFof5DLeAqjHByHOfPsaXHXh3T2YvnoW7i+cV6+kgpVyAQq3cMmUQ8WtqYYOjaqOel1M=@vger.kernel.org, AJvYcCXtZvxcghyk8a659WLLFmNlUK37kEPjg9fWYFLYCQvwuod4lRSoX/4z5o0NVEyZ55kx4pKEuXkG@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLzCeLfD9L1Q/oCPMahY0R+BI7B1jHRcwTiL9Umkd4rWZP/GLE
+	UxvdAcdo4o4wNEAANUO7u6G1QUciFZE53XvHKGBQeAb1R1p3QvHmXDETaKvdz+wuEFkeWG7nE0B
+	BpvBCUfBugnfK+LQo6FThUUnScI7yt5c41GPQSg==
+X-Gm-Gg: ASbGncvJyewo1oTjwYVvTEWYVN0kVkOqEJh/SMTSnwE+At3+DM8QvLNV1utryaaqBek
+	Kq26//HmAW0Wbpjm4niSt8+yX+so7unDZDMVsEQ==
+X-Google-Smtp-Source: AGHT+IEZvkWt55ItNFxmCGiDc0Fwp4AOUwVuF9GHmlJwzHDmGUHGrK9VebUoiZtmrbAvKaxJmI6WdL+rbTHn0Lq69cI=
+X-Received: by 2002:a17:90b:4ace:b0:2ea:498d:809f with SMTP id
+ 98e67ed59e1d1-2f12802cf23mr10521820a91.26.1734028136317; Thu, 12 Dec 2024
+ 10:28:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] iio: light: as73211: fix channel handling in
- only-color triggered buffer
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Christian Eggers <ceggers@arri.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Nikolai Zhubr <zhubr.2@gmail.com>
+Date: Thu, 12 Dec 2024 21:31:05 +0300
+Message-ID: <CALQo8TpjoV8JtuYDH_nBU5i4e-iuCQ1-NORAE8uobpDD_yYBTA@mail.gmail.com>
+Subject: ext4 damage suspected in between 5.15.167 - 5.15.170
+To: linux-ext4@vger.kernel.org, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, jack@suse.cz, Nikolai Zhubr <zhubr.2@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Le 12/12/2024 à 18:56, Javier Carrasco a écrit :
-> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-> set (optimized path for color channel readings), and it must be shifted
-> instead of leaving an empty channel for the temperature when it is off.
-> 
-> Once the channel index is fixed, the uninitialized channel must be set
-> to zero to avoid pushing uninitialized data.
-> 
-> Add available_scan_masks for all channels and only-color channels to let
-> the IIO core demux and repack the enabled channels.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-> Tested-by: Christian Eggers <ceggers@arri.de>
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Hi,
 
-...
+This is to report that after jumping from generic kernel 5.15.167 to
+5.15.170 I apparently observe ext4 damage.
 
-> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> index be0068081ebb..4be2e349a068 100644
-> --- a/drivers/iio/light/as73211.c
-> +++ b/drivers/iio/light/as73211.c
-> @@ -177,6 +177,12 @@ struct as73211_data {
->   	BIT(AS73211_SCAN_INDEX_TEMP) | \
->   	AS73211_SCAN_MASK_COLOR)
->   
-> +static const unsigned long as73211_scan_masks[] = {
-> +	AS73211_SCAN_MASK_ALL,
-> +	AS73211_SCAN_MASK_COLOR,
-> +	0,
-> +};
-> +
->   static const struct iio_chan_spec as73211_channels[] = {
->   	{
->   		.type = IIO_TEMP,
-> @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->   
->   		/* AS73211 starts reading at address 2 */
+After some few days of regular daily use of 5.15.170, one morning my
+ext4 partition refused to mount complaining about corrupted system
+area (-117).
+There were no unusual events preceding this. The device in question is
+a laptop with healthy battery, also connected to AC permanently.
+The laptop is privately owned by me, in daily use at home, so I am
+100% aware of everything happening with it.
+The filesystem in question lives on md raid1 with very assymmetric
+members (ssd+hdd) so one would not possibly expect that in the event
+of emergency cpu halt or some other abnormal stop while filesystem was
+actively writing data, raid members could stay in perfect sync.
+After the incident, I've run raid1 check multiple times and run
+memtest multiple times from different boot media and certainly
+consulted startctl.
+Nothing. No issues whatsoever except for this spontaneous ext4 damage.
 
-Should this comment be updated?
+Looking at git log for ext4 changes between 5.15.167 and 5.15.170
+shows a few commits. All landed in 5.15.168.
+Interestingly, one of them is a comeback of the (in)famous
+91562895f803 "properly sync file size update after O_SYNC ..." which
+caused some blowup 1 year ago due to "subtle interaction".
+I've no idea if 91562895f803 is related to damage this time or not,
+but most definitely it looks like some problem was introduced between
+5.15.167 and 5.15.170 anyway.
+And because there are apparently 0 commits to ext4 in 5.15 since
+5.15.168 at the moment, I thought I'd report.
 
-Or maybe moved close to "if (*indio_dev->active_scan_mask == 
-AS73211_SCAN_MASK_ALL)" below?
+Please CC me if you want me to see your reply and/or need more info
+(I'm not subscribed to the normal flow).
 
->   		ret = i2c_master_recv(data->client,
-> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
->   		if (ret < 0)
->   			goto done;
-> +
-> +		/* Avoid pushing uninitialized data */
-> +		scan.chan[3] = 0;
->   	}
->   
->   	if (data_result) {
-> @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->   		 * Saturate all channels (in case of overflows). Temperature channel
->   		 * is not affected by overflows.
->   		 */
-> -		scan.chan[1] = cpu_to_le16(U16_MAX);
-> -		scan.chan[2] = cpu_to_le16(U16_MAX);
-> -		scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
 
-Should [0]...
+Take care,
 
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +			scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		} else {
-> +			scan.chan[0] = cpu_to_le16(U16_MAX);
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-
-... and [3] be forced as-well?
-(just a blind guess)
-
-CJ
-
-> +		}
->   	}
->   
->   	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> @@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
->   	indio_dev->channels = data->spec_dev->channels;
->   	indio_dev->num_channels = data->spec_dev->num_channels;
->   	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->available_scan_masks = as73211_scan_masks;
->   
->   	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
->   	if (ret < 0)
-> 
-> ---
-> base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
-> change-id: 20241123-iio_memset_scan_holes-a673833ef932
-> 
-> Best regards,
-
+Nick
 
