@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D609EF4D4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C23A9EF5E5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DF416F5DB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAA712871EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FB713792B;
-	Thu, 12 Dec 2024 16:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F61211493;
+	Thu, 12 Dec 2024 17:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRUQTTOB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvCb6KjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DBE223E65;
-	Thu, 12 Dec 2024 16:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF1A4F218;
+	Thu, 12 Dec 2024 17:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022672; cv=none; b=jrohmYs5Ont9Al/G36a4tY+9ChxSLNzjw87GWNAfRxiOw9mqpmzd6GWunGCLGMN8eZhTPKz882FpzhByu6nI1dEpO//+pjFP1IzkD3lc/n48Nk8zr/RzFEXmMfSk0369AXC+UVIJUi+1sZibn/sS3Uz7HmtISZ9FpKv5M+SkVW4=
+	t=1734024028; cv=none; b=G9QYOIYKoMqCYqUpmxn27HpBpLnWfWoBY4ywuKe9Yp9z5rX2TSDPcca11tiZIo1SHifo8UBHKoA8ZN6QycY7sclfyFzqBF12GFheYUH3x6E8BK3O/Um6mn7mdORCNXEnPvixeZDM6LRwNG9zmiaQ2vJXKTuIeO2EZIIuWOpKYgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022672; c=relaxed/simple;
-	bh=RB76g3gKi60qy9CGzom6y/kNS/mpd2/XYYkrbPyAudA=;
+	s=arc-20240116; t=1734024028; c=relaxed/simple;
+	bh=p5AybDFq6SO27z7homJIvaCMimggntxJdNL/CfGazqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrfawKWvv/hMUPUUk4C3jmHEIQXa4xjQoonFSSGNkmFsCnxBH3co4dMYBF2nhJUiK8Wtcn1ZwdBrK3IoBaBpeXq0fF1IXdIG+M6ZYuc28EfC47SaF4Ryyky8VXutYrVGSFCSMjhBQa2DdSOjQQj5sWZCNcYNr1Si9RqbnbnwFTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRUQTTOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EB5C4CECE;
-	Thu, 12 Dec 2024 16:57:52 +0000 (UTC)
+	 MIME-Version; b=mH3/4CQJBtVLU4EwphHhFzXWNUK+7Ywi3gisoyFgI/+nehM6eTEA+tQ5VAtl96OC1Ir82ZqFbDDen0T5mjj9Qse+9muzF6iSxHtAxuJkm0wh4TbxyHqMhd4dqVsz6u6cMyd2jXJaCJ4ZqSKOiKSVBFAysr3OJAAfcecg24CUUV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvCb6KjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2126DC4CED3;
+	Thu, 12 Dec 2024 17:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022672;
-	bh=RB76g3gKi60qy9CGzom6y/kNS/mpd2/XYYkrbPyAudA=;
+	s=korg; t=1734024026;
+	bh=p5AybDFq6SO27z7homJIvaCMimggntxJdNL/CfGazqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRUQTTOBSef7hADu4YQAaLeLGkZpGh+yqwoxtniBE0whSy2pmUeo17epHkLErnR/a
-	 v6SKNJ19brfWYCoaHP3/rzQ4/PJsm+CaQE92gNtvVv5PrpC9PEHlyo+I730QF1QpQY
-	 8vqbLKsnpdRUfHLFCkooMd/gl8VgfrSPbu8hHfk8=
+	b=wvCb6KjVi3TD8OLEJAVA1tBf5Fcna4g/bigETYWh1jnj6HaB75y99/FH9lhG7VYY4
+	 PbTwkoLaS7MxQaVHMi/76mvryfV//CxmZlIv+0vjfh5h22PVnzKJWY7s1UfYMQxChh
+	 ApSCs8hzjo0ZrYwOwIWbt1wIcOdFIkS76TOe/8G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Andreas Dilger <adilger@dilger.ca>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 304/565] ext4: supress data-race warnings in ext4_free_inodes_{count,set}()
-Date: Thu, 12 Dec 2024 15:58:19 +0100
-Message-ID: <20241212144323.485982420@linuxfoundation.org>
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 162/459] wireguard: selftests: load nf_conntrack if not present
+Date: Thu, 12 Dec 2024 15:58:20 +0100
+Message-ID: <20241212144259.916233570@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 902cc179c931a033cd7f4242353aa2733bf8524c upstream.
+[ Upstream commit 0290abc9860917f1ee8b58309c2bbd740a39ee8e ]
 
-find_group_other() and find_group_orlov() read *_lo, *_hi with
-ext4_free_inodes_count without additional locking. This can cause
-data-race warning, but since the lock is held for most writes and free
-inodes value is generally not a problem even if it is incorrect, it is
-more appropriate to use READ_ONCE()/WRITE_ONCE() than to add locking.
+Some distros may not load nf_conntrack by default, which will cause
+subsequent nf_conntrack sets to fail. Load this module if it is not
+already loaded.
 
-==================================================================
-BUG: KCSAN: data-race in ext4_free_inodes_count / ext4_free_inodes_set
-
-write to 0xffff88810404300e of 2 bytes by task 6254 on cpu 1:
- ext4_free_inodes_set+0x1f/0x80 fs/ext4/super.c:405
- __ext4_new_inode+0x15ca/0x2200 fs/ext4/ialloc.c:1216
- ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
- vfs_symlink+0xca/0x1d0 fs/namei.c:4615
- do_symlinkat+0xe3/0x340 fs/namei.c:4641
- __do_sys_symlinkat fs/namei.c:4657 [inline]
- __se_sys_symlinkat fs/namei.c:4654 [inline]
- __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
- x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-read to 0xffff88810404300e of 2 bytes by task 6257 on cpu 0:
- ext4_free_inodes_count+0x1c/0x80 fs/ext4/super.c:349
- find_group_other fs/ext4/ialloc.c:594 [inline]
- __ext4_new_inode+0x6ec/0x2200 fs/ext4/ialloc.c:1017
- ext4_symlink+0x242/0x5a0 fs/ext4/namei.c:3391
- vfs_symlink+0xca/0x1d0 fs/namei.c:4615
- do_symlinkat+0xe3/0x340 fs/namei.c:4641
- __do_sys_symlinkat fs/namei.c:4657 [inline]
- __se_sys_symlinkat fs/namei.c:4654 [inline]
- __x64_sys_symlinkat+0x5e/0x70 fs/namei.c:4654
- x64_sys_call+0x1dda/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:267
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x54/0x120 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Andreas Dilger <adilger@dilger.ca>
-Link: https://patch.msgid.link/20241003125337.47283-1-aha310510@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+[ Jason: add [[ -e ... ]] check so this works in the qemu harness. ]
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20241117212030.629159-4-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/wireguard/netns.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -320,9 +320,9 @@ __u32 ext4_free_group_clusters(struct su
- __u32 ext4_free_inodes_count(struct super_block *sb,
- 			      struct ext4_group_desc *bg)
- {
--	return le16_to_cpu(bg->bg_free_inodes_count_lo) |
-+	return le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_lo)) |
- 		(EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT ?
--		 (__u32)le16_to_cpu(bg->bg_free_inodes_count_hi) << 16 : 0);
-+		 (__u32)le16_to_cpu(READ_ONCE(bg->bg_free_inodes_count_hi)) << 16 : 0);
- }
+diff --git a/tools/testing/selftests/wireguard/netns.sh b/tools/testing/selftests/wireguard/netns.sh
+index 93e44410f170e..4732c23e35ee5 100755
+--- a/tools/testing/selftests/wireguard/netns.sh
++++ b/tools/testing/selftests/wireguard/netns.sh
+@@ -320,6 +320,7 @@ waitiface $netns1 vethc
+ waitiface $netns2 veths
  
- __u32 ext4_used_dirs_count(struct super_block *sb,
-@@ -376,9 +376,9 @@ void ext4_free_group_clusters_set(struct
- void ext4_free_inodes_set(struct super_block *sb,
- 			  struct ext4_group_desc *bg, __u32 count)
- {
--	bg->bg_free_inodes_count_lo = cpu_to_le16((__u16)count);
-+	WRITE_ONCE(bg->bg_free_inodes_count_lo, cpu_to_le16((__u16)count));
- 	if (EXT4_DESC_SIZE(sb) >= EXT4_MIN_DESC_SIZE_64BIT)
--		bg->bg_free_inodes_count_hi = cpu_to_le16(count >> 16);
-+		WRITE_ONCE(bg->bg_free_inodes_count_hi, cpu_to_le16(count >> 16));
- }
- 
- void ext4_used_dirs_set(struct super_block *sb,
+ n0 bash -c 'printf 1 > /proc/sys/net/ipv4/ip_forward'
++[[ -e /proc/sys/net/netfilter/nf_conntrack_udp_timeout ]] || modprobe nf_conntrack
+ n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout'
+ n0 bash -c 'printf 2 > /proc/sys/net/netfilter/nf_conntrack_udp_timeout_stream'
+ n0 iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -d 10.0.0.0/24 -j SNAT --to 10.0.0.1
+-- 
+2.43.0
+
 
 
 
