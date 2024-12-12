@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6CB9EF539
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7259EF71B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EEFD340ADF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02D801896B5E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D362223C5F;
-	Thu, 12 Dec 2024 17:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A012165F0;
+	Thu, 12 Dec 2024 17:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOrx/SJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2Nu0zrA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B445176AA1;
-	Thu, 12 Dec 2024 17:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815BE2144C4;
+	Thu, 12 Dec 2024 17:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023047; cv=none; b=k04oO3GFY6Rswjk0a+bVJ0lBUMicvxVbKl/Sg4yBVOUenIUriStgfqrZOGrVBz68F4R4zfDkvc1d71nJs21oKc1lbUExqx+N5vJ1H9YVu2lyn7HIAKS68+7OzF2pSzDPTKdky1PyJfVE9Ms37riso6ZmWX0pJ5lkahiSUlee0LA=
+	t=1734024339; cv=none; b=jL2/vF+eUqWhu3d0G6y4TF0yNGi3jL/STAmmYfGD7DkmR4Tx1QKqN8HIE2Dmo82DLz1Vjj4DdnpkIiPIV759dGtHbDkA2Rql8xs55ip94V+rmJBxNy0g5NEdJ2JINf/PahHNvt6CjJOee7RJEwZo/u0KEYPrTnmroR5mAHxjvKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023047; c=relaxed/simple;
-	bh=Pafk+zLs7KxTMR+EVdP9NodIdw4+UkpACOPMjmBnbCw=;
+	s=arc-20240116; t=1734024339; c=relaxed/simple;
+	bh=2HC5Xax6AdfbIZq7nXgsS2DSQ50ykdjsKgn+466bCFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=owIpEMKuDGZDJqOFp2ZndO0qtUzUSt1dfYSAPo4+jB9yLtUrD59PsPWijLFvt64jLYNmVIOhKwdMTT9sBj/0pbG+Nly5T4nFsw9w5KEQ7r9GhjMHPOrVSE3KEBsjeTwbeNaXc6oe6DvqZrsQe4D6BiSAfcaI5lNfyxbPDowZa/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AOrx/SJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DB6C4CECE;
-	Thu, 12 Dec 2024 17:04:06 +0000 (UTC)
+	 MIME-Version; b=Wp9EVGGqzI9hi2Qq5F2B3tm7TM6y0hUuhFPgKU79Njvzf7gITbKIw13y59aUyoNy61cVz4AIsJAOi0UeBtG2R8z34VtOA2aJaRwsz6yacgngWU1Wm3PLHB2Omkh0qO/YMmbqFeMTqsOFcAHvXev8JC8eLFUw4DLn7gQszYFSjOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2Nu0zrA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037E2C4CECE;
+	Thu, 12 Dec 2024 17:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023047;
-	bh=Pafk+zLs7KxTMR+EVdP9NodIdw4+UkpACOPMjmBnbCw=;
+	s=korg; t=1734024339;
+	bh=2HC5Xax6AdfbIZq7nXgsS2DSQ50ykdjsKgn+466bCFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AOrx/SJBA/Edm9hgsmIvdk5JzgbG560JNOuJq9GbpI+cSvnU5QpN4iGcVz6wUmp7W
-	 ZOkIkCGHWk5InQNLu1sxfsgFnhv2ljlb+AyFL0/d8tUEEL49kzgc/R0sqgpymU03KX
-	 E5cqRiefizGcR77T5H1rSBBA6rQ1kmVBZX8GTlXQ=
+	b=T2Nu0zrAmJuPfiiILvVK/OX2XqQybh63Fh/glyjEepeng6qXwMdQB3kljpxntlo9A
+	 u6alBxK0dQkbHo61uTHPM1RUUFVMxVPuGc4BRtfAQugYQoLQ7vLlc3TeYcD7UM5hXe
+	 Ll0K4dSrIT1j7tJXeVYKYgBgg/c+GZtkMRLLGQfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 406/565] can: sun4i_can: sun4i_can_err(): fix {rx,tx}_errors statistics
-Date: Thu, 12 Dec 2024 16:00:01 +0100
-Message-ID: <20241212144327.707856268@linuxfoundation.org>
+	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 264/459] netfilter: ipset: add missing range check in bitmap_ip_uadt
+Date: Thu, 12 Dec 2024 16:00:02 +0100
+Message-ID: <20241212144304.031728478@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 595a81988a6fe06eb5849e972c8b9cb21c4e0d54 ]
+commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
 
-The sun4i_can_err() function only incremented the receive error counter
-and never the transmit error counter, even if the STA_ERR_DIR flag
-reported that an error had occurred during transmission.
+When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+the values of ip and ip_to are slightly swapped. Therefore, the range check
+for ip should be done later, but this part is missing and it seems that the
+vulnerability occurs.
 
-Increment the receive/transmit error counter based on the value of the
-STA_ERR_DIR flag.
+So we should add missing range checks and remove unnecessary range checks.
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-11-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/sun4i_can.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index aad1882a9be11..3e5aa2e0ea66e 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -563,11 +563,9 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 		/* bus error interrupt */
- 		netdev_dbg(dev, "bus error interrupt\n");
- 		priv->can.can_stats.bus_error++;
--		stats->rx_errors++;
-+		ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
+--- a/net/netfilter/ipset/ip_set_bitmap_ip.c
++++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
+ 		if (ret)
+ 			return ret;
+-		if (ip > ip_to) {
++		if (ip > ip_to)
+ 			swap(ip, ip_to);
+-			if (ip < map->first_ip)
+-				return -IPSET_ERR_BITMAP_RANGE;
+-		}
+ 	} else if (tb[IPSET_ATTR_CIDR]) {
+ 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
  
- 		if (likely(skb)) {
--			ecc = readl(priv->base + SUN4I_REG_STA_ADDR);
--
- 			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
- 
- 			switch (ecc & SUN4I_STA_MASK_ERR) {
-@@ -585,9 +583,15 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 					       >> 16;
- 				break;
- 			}
--			/* error occurred during transmission? */
--			if ((ecc & SUN4I_STA_ERR_DIR) == 0)
-+		}
-+
-+		/* error occurred during transmission? */
-+		if ((ecc & SUN4I_STA_ERR_DIR) == 0) {
-+			if (likely(skb))
- 				cf->data[2] |= CAN_ERR_PROT_TX;
-+			stats->tx_errors++;
-+		} else {
-+			stats->rx_errors++;
- 		}
+@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ip_to = ip;
  	}
- 	if (isrc & SUN4I_INT_ERR_PASSIVE) {
--- 
-2.43.0
-
+ 
+-	if (ip_to > map->last_ip)
++	if (ip < map->first_ip || ip_to > map->last_ip)
+ 		return -IPSET_ERR_BITMAP_RANGE;
+ 
+ 	for (; !before(ip_to, ip); ip += map->hosts) {
 
 
 
