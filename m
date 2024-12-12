@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179109EF309
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207299EEC48
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB9192892CE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69CE91636DE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5DE23A582;
-	Thu, 12 Dec 2024 16:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454512210DF;
+	Thu, 12 Dec 2024 15:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czm52eZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1f0/F1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB44422A7E4;
-	Thu, 12 Dec 2024 16:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DA3217707;
+	Thu, 12 Dec 2024 15:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022075; cv=none; b=ds5R/i5k5gfxWlJh4mtHLOHApB2n8teSzusAoyb+0caYhHeMkcgSer8Ivws1xGYFHXYSFD1b6W1ozmIqzMy4E3J9LxPZmhFCPOEHaNIt3zjxtZlPEdIGRIqOiX4NN2TTMiDBGXJe/QQkeUqu37GdMbxy6N7OjZIFm5pJ7hfqlGY=
+	t=1734017448; cv=none; b=jhrWdfFjA9t2tGanSotoYZal5BiUNOYKGugPZjbWpbhCVYR9xx+1IEw8qXEqti1352mIQ9ZPkz22AzF213uJiaz9kagY8qA26o9NH5tBZvGIvAkgMcNnHPpNWmrFT9xtByq69d/1JdRZtR1RxKOlmWgwwqrJjQ2ArqzZWuWQ2TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022075; c=relaxed/simple;
-	bh=viBTxaL9O+/m9oKG143gxEJ1lkmYZkRvNZ1Ae3GJOgo=;
+	s=arc-20240116; t=1734017448; c=relaxed/simple;
+	bh=Qp3tkI5E/R9a3wADCsnthJdkrgF9Ds0r+4RwWx4HuMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFbqBeSBkugct6H9nE8hzBoLexjoztY2ao2FP7LsZ8EfolayKpY7Fk0xCVeZiBhpZok7L8zIbbX6kGXXNMBExePRejVBd5qUqz37v+TVghNVDI7aj2g2qq8jTne6tjVDGqMVId/NjHVayGwl95lOA08pEy4u0DIkaqeIkK7WqBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czm52eZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A510C4CECE;
-	Thu, 12 Dec 2024 16:47:55 +0000 (UTC)
+	 MIME-Version; b=VlGnIJupjW441Txbjg0WtQcJLRVzDnhfEXl7PtSKx9+HkDeIMXk6Ttmr6ZEcG9UhNEeBbljUTe9T0Ny94w3z+MeSXWgIdShep9YBkd06LNKXDryjRj3mpvQG0f95rS81PS5KSXAeHOctfOO7V3FKuznUSU05epXywSuhDHGBUK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1f0/F1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DACAC4CECE;
+	Thu, 12 Dec 2024 15:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022075;
-	bh=viBTxaL9O+/m9oKG143gxEJ1lkmYZkRvNZ1Ae3GJOgo=;
+	s=korg; t=1734017447;
+	bh=Qp3tkI5E/R9a3wADCsnthJdkrgF9Ds0r+4RwWx4HuMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czm52eZzBZTbVwUx0PRCyFUbSOlEXApw8qRh74pxJvxpQS2Mpoi55OUYIy3w1cse4
-	 RySAxDxW7WSwEBUGgsp4AhSUANS8nlj+1LvViET3WGXNToQdNlE+g8i814/szNtiC6
-	 /4qtMvaKDmNWzcBzBw8lWebcTyItENdIhhIhscMc=
+	b=Z1f0/F1gCKbNs5fZT2VAiuVonAyGhEobKaUBDIM55nTludl/roZZXc3OzEzrzTmXJ
+	 V/NfuqIOHdI6P0ulSq7NpEp1hxkG3nU/zRTgk52cRt0Bl9yDiHWNc1lSlQDEDMm4st
+	 DLwIyajAWh0KADvZuDGRA4rTOrsiF84EPRoPNEUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/565] venus: venc: add handling for VIDIOC_ENCODER_CMD
+Subject: [PATCH 6.6 016/356] can: f81604: f81604_handle_can_bus_errors(): fix {rx,tx}_errors statistics
 Date: Thu, 12 Dec 2024 15:55:35 +0100
-Message-ID: <20241212144317.014033018@linuxfoundation.org>
+Message-ID: <20241212144245.263910270@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,180 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 7493db46e4c4aa5126dd32f8eae12a4cdcf7a401 ]
+[ Upstream commit d7b916540c2ba3d2a88c27b2a6287b39d8eac052 ]
 
-Add handling for below commands in encoder:
-1. V4L2_ENC_CMD_STOP
-2. V4L2_ENC_CMD_START
+The f81604_handle_can_bus_errors() function only incremented the receive
+error counter and never the transmit error counter, even if the ECC_DIR
+flag reported that an error had occurred during transmission.
 
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: 6c9934c5a00a ("media: venus: fix enc/dec destruction order")
+Increment the receive/transmit error counter based on the value of the
+ECC_DIR flag.
+
+Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Link: https://patch.msgid.link/20241122221650.633981-13-dario.binacchi@amarulasolutions.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.h |  9 ++++
- drivers/media/platform/qcom/venus/venc.c | 68 ++++++++++++++++++++++++
- 2 files changed, 77 insertions(+)
+ drivers/net/can/usb/f81604.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/core.h b/drivers/media/platform/qcom/venus/core.h
-index 6869f0d06b774..cf9d2dd265f7d 100644
---- a/drivers/media/platform/qcom/venus/core.h
-+++ b/drivers/media/platform/qcom/venus/core.h
-@@ -310,6 +310,14 @@ enum venus_dec_state {
- 	VENUS_DEC_STATE_DRC		= 7,
- };
+diff --git a/drivers/net/can/usb/f81604.c b/drivers/net/can/usb/f81604.c
+index ec8cef7fd2d53..fb9fb16507f0b 100644
+--- a/drivers/net/can/usb/f81604.c
++++ b/drivers/net/can/usb/f81604.c
+@@ -526,7 +526,6 @@ static void f81604_handle_can_bus_errors(struct f81604_port_priv *priv,
+ 		netdev_dbg(netdev, "bus error interrupt\n");
  
-+enum venus_enc_state {
-+	VENUS_ENC_STATE_DEINIT		= 0,
-+	VENUS_ENC_STATE_INIT		= 1,
-+	VENUS_ENC_STATE_ENCODING	= 2,
-+	VENUS_ENC_STATE_STOPPED		= 3,
-+	VENUS_ENC_STATE_DRAIN		= 4,
-+};
-+
- struct venus_ts_metadata {
- 	bool used;
- 	u64 ts_ns;
-@@ -415,6 +423,7 @@ struct venus_inst {
- 	u8 quantization;
- 	u8 xfer_func;
- 	enum venus_dec_state codec_state;
-+	enum venus_enc_state enc_state;
- 	wait_queue_head_t reconf_wait;
- 	unsigned int subscriptions;
- 	int buf_count;
-diff --git a/drivers/media/platform/qcom/venus/venc.c b/drivers/media/platform/qcom/venus/venc.c
-index 52a7366d7a5fc..ae47535168d12 100644
---- a/drivers/media/platform/qcom/venus/venc.c
-+++ b/drivers/media/platform/qcom/venus/venc.c
-@@ -522,6 +522,51 @@ static int venc_subscribe_event(struct v4l2_fh *fh,
- 	}
- }
+ 		priv->can.can_stats.bus_error++;
+-		stats->rx_errors++;
  
-+static int
-+venc_encoder_cmd(struct file *file, void *fh, struct v4l2_encoder_cmd *cmd)
-+{
-+	struct venus_inst *inst = to_inst(file);
-+	struct hfi_frame_data fdata = {0};
-+	int ret = 0;
-+
-+	ret = v4l2_m2m_ioctl_try_encoder_cmd(file, fh, cmd);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&inst->lock);
-+
-+	if (cmd->cmd == V4L2_ENC_CMD_STOP &&
-+	    inst->enc_state == VENUS_ENC_STATE_ENCODING) {
-+		/*
-+		 * Implement V4L2_ENC_CMD_STOP by enqueue an empty buffer on
-+		 * encoder input to signal EOS.
-+		 */
-+		if (!(inst->streamon_out && inst->streamon_cap))
-+			goto unlock;
-+
-+		fdata.buffer_type = HFI_BUFFER_INPUT;
-+		fdata.flags |= HFI_BUFFERFLAG_EOS;
-+		fdata.device_addr = 0xdeadb000;
-+
-+		ret = hfi_session_process_buf(inst, &fdata);
-+
-+		inst->enc_state = VENUS_ENC_STATE_DRAIN;
-+	} else if (cmd->cmd == V4L2_ENC_CMD_START) {
-+		if (inst->enc_state == VENUS_ENC_STATE_DRAIN) {
-+			ret = -EBUSY;
-+			goto unlock;
+ 		if (skb) {
+ 			cf->can_id |= CAN_ERR_PROT | CAN_ERR_BUSERROR;
+@@ -548,10 +547,15 @@ static void f81604_handle_can_bus_errors(struct f81604_port_priv *priv,
+ 
+ 			/* set error location */
+ 			cf->data[3] = data->ecc & F81604_SJA1000_ECC_SEG;
 +		}
-+		if (inst->enc_state == VENUS_ENC_STATE_STOPPED) {
-+			vb2_clear_last_buffer_dequeued(&inst->fh.m2m_ctx->cap_q_ctx.q);
-+			inst->enc_state = VENUS_ENC_STATE_ENCODING;
-+		}
-+	}
-+
-+unlock:
-+	mutex_unlock(&inst->lock);
-+	return ret;
-+}
-+
- static const struct v4l2_ioctl_ops venc_ioctl_ops = {
- 	.vidioc_querycap = venc_querycap,
- 	.vidioc_enum_fmt_vid_cap = venc_enum_fmt,
-@@ -550,6 +595,7 @@ static const struct v4l2_ioctl_ops venc_ioctl_ops = {
- 	.vidioc_subscribe_event = venc_subscribe_event,
- 	.vidioc_unsubscribe_event = v4l2_event_unsubscribe,
- 	.vidioc_try_encoder_cmd = v4l2_m2m_ioctl_try_encoder_cmd,
-+	.vidioc_encoder_cmd = venc_encoder_cmd,
- };
  
- static int venc_pm_get(struct venus_inst *inst)
-@@ -1182,6 +1228,8 @@ static int venc_start_streaming(struct vb2_queue *q, unsigned int count)
- 	if (ret)
- 		goto error;
+-			/* Error occurred during transmission? */
+-			if ((data->ecc & F81604_SJA1000_ECC_DIR) == 0)
++		/* Error occurred during transmission? */
++		if ((data->ecc & F81604_SJA1000_ECC_DIR) == 0) {
++			stats->tx_errors++;
++			if (skb)
+ 				cf->data[2] |= CAN_ERR_PROT_TX;
++		} else {
++			stats->rx_errors++;
+ 		}
  
-+	inst->enc_state = VENUS_ENC_STATE_ENCODING;
-+
- 	mutex_unlock(&inst->lock);
- 
- 	return 0;
-@@ -1201,10 +1249,21 @@ static int venc_start_streaming(struct vb2_queue *q, unsigned int count)
- static void venc_vb2_buf_queue(struct vb2_buffer *vb)
- {
- 	struct venus_inst *inst = vb2_get_drv_priv(vb->vb2_queue);
-+	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
- 
- 	venc_pm_get_put(inst);
- 
- 	mutex_lock(&inst->lock);
-+
-+	if (inst->enc_state == VENUS_ENC_STATE_STOPPED) {
-+		vbuf->sequence = inst->sequence_cap++;
-+		vbuf->field = V4L2_FIELD_NONE;
-+		vb2_set_plane_payload(vb, 0, 0);
-+		v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_DONE);
-+		mutex_unlock(&inst->lock);
-+		return;
-+	}
-+
- 	venus_helper_vb2_buf_queue(vb);
- 	mutex_unlock(&inst->lock);
- }
-@@ -1246,6 +1305,10 @@ static void venc_buf_done(struct venus_inst *inst, unsigned int buf_type,
- 		vb->planes[0].data_offset = data_offset;
- 		vb->timestamp = timestamp_us * NSEC_PER_USEC;
- 		vbuf->sequence = inst->sequence_cap++;
-+		if ((vbuf->flags & V4L2_BUF_FLAG_LAST) &&
-+		    inst->enc_state == VENUS_ENC_STATE_DRAIN) {
-+			inst->enc_state = VENUS_ENC_STATE_STOPPED;
-+		}
- 	} else {
- 		vbuf->sequence = inst->sequence_out++;
- 	}
-@@ -1346,6 +1409,9 @@ static int venc_open(struct file *file)
- 	inst->clk_data.core_id = VIDC_CORE_ID_DEFAULT;
- 	inst->core_acquired = false;
- 
-+	if (inst->enc_state == VENUS_ENC_STATE_DEINIT)
-+		inst->enc_state = VENUS_ENC_STATE_INIT;
-+
- 	venus_helper_init_instance(inst);
- 
- 	ret = venc_ctrl_init(inst);
-@@ -1408,6 +1474,8 @@ static int venc_close(struct file *file)
- 	v4l2_fh_del(&inst->fh);
- 	v4l2_fh_exit(&inst->fh);
- 
-+	inst->enc_state = VENUS_ENC_STATE_DEINIT;
-+
- 	venc_pm_put(inst, false);
- 
- 	kfree(inst);
+ 		set_bit(F81604_CLEAR_ECC, &priv->clear_flags);
 -- 
 2.43.0
 
