@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67659EEB2C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A4A9EF1D2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 708F4188C22E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2843189C26C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875AC21504F;
-	Thu, 12 Dec 2024 15:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80FB225A2C;
+	Thu, 12 Dec 2024 16:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NODnfPTH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZDxJo+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AA12054F8;
-	Thu, 12 Dec 2024 15:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648F42210DE;
+	Thu, 12 Dec 2024 16:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016602; cv=none; b=FVIJ7HdGRHTnS8WflivwPaYGjYppfRWA6kKIIgvlgsMTaj3aMEJf9PETMRfhANbRyr/adp0cYuJ3Zv6+0Qd78Hd7+gCXKadE9E5bO6yc0mPVwMXR4KgwrwaHu6pxNTBJflu37kKEDXE5muHOEIanGYIDIGWlaNlW8GywW4Oki4s=
+	t=1734020441; cv=none; b=Y4F7W2MvnZDxt7nT9Es9aphHIM1XlrTD2VN+QyFh3O7Tmif0h8OXYYIfc6XnrBQh4HBK+681Z0ovQifmdpccPU8FllClQfu2L0h832hDHpxIoOOpwAqjMG/KGFPLRAn8Rq7j9ZhORRydEGhrtXEVED7TluB3NVDm2UaEJWS2r+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016602; c=relaxed/simple;
-	bh=Fidz5wYtwvBomorVxCCp+ayqvoKMEdwI4LI9umy2w3c=;
+	s=arc-20240116; t=1734020441; c=relaxed/simple;
+	bh=0IHJOOqWqjKNyb+JotBGkrvJAFJx/+DQJWGkuG0fQv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqdibR7/R/3j/SuvqdY73vlxg9JUUVYSOezUx1nv5eK4Me2Xco3nDjUmec1gqvXaXSkCP2FASTVXRueuU2TQB9xSk8wbXh8Gjc01uj8+bzXFKCzNSoUdwatBxtQB4+PvvuksdLINZBu+IuvPqt0OrZxJff5i7sk1C/eSGuKeZkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NODnfPTH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BCE8C4CECE;
-	Thu, 12 Dec 2024 15:16:41 +0000 (UTC)
+	 MIME-Version; b=oHRl4LMN8etKx6hoPOQZLNhhjNjCsfn9haz34ShNxQfiLqNfXSYPAsMq1iSou0yf2MnCIN+KUOkMZb04UgVgwm83lmBssfEbmOLngeb//oJpbnlRRrXoR4SoNkgzlHyR4oqBU2nTqkc9qzDs1mbH+6kopQ3tM4DWhTKtbImvmo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZDxJo+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADB8C4CECE;
+	Thu, 12 Dec 2024 16:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016602;
-	bh=Fidz5wYtwvBomorVxCCp+ayqvoKMEdwI4LI9umy2w3c=;
+	s=korg; t=1734020439;
+	bh=0IHJOOqWqjKNyb+JotBGkrvJAFJx/+DQJWGkuG0fQv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NODnfPTH/93+Z/vhWXgxL+JMCzOAhX2T8fCeYt4k4N9QkHSApmiHpbeLLRKMkPWbd
-	 hyq1Ashp2OKycXkurH5RE1oqL6NsFkXROzUmoEn/XofgzTGNSrLHpB8FTbzJXsKG2V
-	 J6jutiBmXH9xToup+5fQ4+BdUzbCnP1AxpCWbH08=
+	b=IZDxJo+j4jzaXXtHyh80qI4UqYklmuo1nBhgzCuyJoPo48Yt6TiP41ZRicf0tTdc5
+	 Zab4CPKThiejNTyBhZzk+oaAhkduBW36MT0gHGmKccL1zPMFE4lyVXsTfrdGDqDaFz
+	 ME3FP43IknM+s7y/oSX4solwqEA6zvpAbsGuvG7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rohan Barar <rohan.barar@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 244/466] media: cx231xx: Add support for Dexatek USB Video Grabber 1d19:6108
-Date: Thu, 12 Dec 2024 15:56:53 +0100
-Message-ID: <20241212144316.427536600@linuxfoundation.org>
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.1 469/772] media: uvcvideo: Stop stream during unregister
+Date: Thu, 12 Dec 2024 15:56:54 +0100
+Message-ID: <20241212144409.312181245@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohan Barar <rohan.barar@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 61a830bc0ea69a05d8a4534f825c6aa618263649 ]
+commit c9ec6f1736363b2b2bb4e266997389740f628441 upstream.
 
-Add Dexatek Technology Ltd USB Video Grabber 1d19:6108 to the cx231xx
-driver. This device is sold under the name "BAUHN DVD Maker (DK8723)" by
-ALDI in Australia.
+uvc_unregister_video() can be called asynchronously from
+uvc_disconnect(). If the device is still streaming when that happens, a
+plethora of race conditions can occur.
 
-This device is similar to 1d19:6109, which is already included in cx231xx.
+Make sure that the device has stopped streaming before exiting this
+function.
 
-Both video and audio capture function correctly after installing the
-patched cx231xx driver.
+If the user still holds handles to the driver's file descriptors, any
+ioctl will return -ENODEV from the v4l2 core.
 
-Patch Changelog
-v1:
- - Initial submission.
-v2:
- - Fix SoB + Improve subject.
-v3:
- - Rephrase message to not exceed 75 characters per line.
- - Removed reference to external GitHub URL.
+This change makes uvc more consistent with the rest of the v4l2 drivers
+using the vb2_fop_* and vb2_ioctl_* helpers.
 
-Signed-off-by: Rohan Barar <rohan.barar@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This driver (and many other usb drivers) always had this problem, but it
+wasn't possible to easily fix this until the vb2_video_unregister_device()
+helper was added. So the Fixes tag points to the creation of that helper.
+
+Reviewed-by: Hans Verkuil <hverkuil@xs4all.nl>
+Suggested-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: f729ef5796d8 ("media: videobuf2-v4l2.c: add vb2_video_unregister_device helper function")
+Cc: stable@vger.kernel.org # 5.10.x
+[hverkuil: add note regarding Fixes version]
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/cx231xx/cx231xx-cards.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/usb/uvc/uvc_driver.c |   32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/cx231xx/cx231xx-cards.c b/drivers/media/usb/cx231xx/cx231xx-cards.c
-index 92efe6c1f47ba..bda729b42d05f 100644
---- a/drivers/media/usb/cx231xx/cx231xx-cards.c
-+++ b/drivers/media/usb/cx231xx/cx231xx-cards.c
-@@ -994,6 +994,8 @@ const unsigned int cx231xx_bcount = ARRAY_SIZE(cx231xx_boards);
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -1886,11 +1886,41 @@ static void uvc_unregister_video(struct
+ 	struct uvc_streaming *stream;
  
- /* table of devices that work with this driver */
- struct usb_device_id cx231xx_id_table[] = {
-+	{USB_DEVICE(0x1D19, 0x6108),
-+	.driver_info = CX231XX_BOARD_PV_XCAPTURE_USB},
- 	{USB_DEVICE(0x1D19, 0x6109),
- 	.driver_info = CX231XX_BOARD_PV_XCAPTURE_USB},
- 	{USB_DEVICE(0x0572, 0x5A3C),
--- 
-2.43.0
-
+ 	list_for_each_entry(stream, &dev->streams, list) {
++		/* Nothing to do here, continue. */
+ 		if (!video_is_registered(&stream->vdev))
+ 			continue;
+ 
++		/*
++		 * For stream->vdev we follow the same logic as:
++		 * vb2_video_unregister_device().
++		 */
++
++		/* 1. Take a reference to vdev */
++		get_device(&stream->vdev.dev);
++
++		/* 2. Ensure that no new ioctls can be called. */
+ 		video_unregister_device(&stream->vdev);
+-		video_unregister_device(&stream->meta.vdev);
++
++		/* 3. Wait for old ioctls to finish. */
++		mutex_lock(&stream->mutex);
++
++		/* 4. Stop streaming. */
++		uvc_queue_release(&stream->queue);
++
++		mutex_unlock(&stream->mutex);
++
++		put_device(&stream->vdev.dev);
++
++		/*
++		 * For stream->meta.vdev we can directly call:
++		 * vb2_video_unregister_device().
++		 */
++		vb2_video_unregister_device(&stream->meta.vdev);
++
++		/*
++		 * Now both vdevs are not streaming and all the ioctls will
++		 * return -ENODEV.
++		 */
+ 
+ 		uvc_debugfs_cleanup_stream(stream);
+ 	}
 
 
 
