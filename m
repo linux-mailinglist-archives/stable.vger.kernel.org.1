@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17BD9EEB33
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEA69EF17E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2903D1658DC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:16:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37510176CDF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7AD2165F0;
-	Thu, 12 Dec 2024 15:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D0822540B;
+	Thu, 12 Dec 2024 16:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lc/5qCfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVNqz3IM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A5321504F;
-	Thu, 12 Dec 2024 15:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9862253EB;
+	Thu, 12 Dec 2024 16:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016584; cv=none; b=gF4TSHQDAumVYxig6o3FO16G1KOcCIIYifoU0hvetYc9xZhP/O5Pai70SqDi9ElYqIpjsUDNmkhRhTcIRXPS9BA/Cb1NEjo0hma7CRrlXEDDGMWTks71l/Bzatst1IVeN8VBNh1PbyaVvCkAtNA3dW6f/XpDnGtMSAT4JXl84bU=
+	t=1734020421; cv=none; b=ur8I26mUQFlavoflWDbkVf87R+Q4QgkMBm0mlS9Cwa43AW4YaqRGON6Tk0uu3FJ1X9L8HobVd86iB+YZcQHWFiWYzvSPk+y5xKpvIktjh8khNKGvlKLCJb94Mo67EJPf6rbcjSM60wyYDlPIZVQX5RQz04Jr81wX2GZuf8/4UwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016584; c=relaxed/simple;
-	bh=cl7nXJA+xbMol58vR7uT71yHhlFEsdtCtWIyHSzpQ1Q=;
+	s=arc-20240116; t=1734020421; c=relaxed/simple;
+	bh=LUb+3qtXbBmw/8523krhXWAcZ6n9iZA+0AHa4cyp+7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtIlagk2yq7jhE2ED9KUot7Nkzr9dYyHF9mMeQ5lXOPyqa9uTpc8CGJbXVAvh0F61kLCQFyuXFOBBfjWTSlKQPdhSA2Nu/GG6HBzlbw147vVU1EyYV2F6Hlfu5EOVRNljGeW/LOO36suNiedjTKF75SwULhIIyVdJurx1Ud0ips=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lc/5qCfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB083C4CECE;
-	Thu, 12 Dec 2024 15:16:23 +0000 (UTC)
+	 MIME-Version; b=av7mQnX8cUKHXy0tzZvg8ZTfrom+WPy2KE/GqWXY6I1VGyBi6GEOloyq1zlKjFxIZOYxt7Dv+m1dNQe8HopgrHsDpLh3ajTt0i6PFeIQO5RHLxmmRtCd7ahv8iUnan+5SEtvZcynOhoYmKF2VEBhnfjGXZRPM/dZXqhyPfrYtLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVNqz3IM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4272C4CECE;
+	Thu, 12 Dec 2024 16:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016584;
-	bh=cl7nXJA+xbMol58vR7uT71yHhlFEsdtCtWIyHSzpQ1Q=;
+	s=korg; t=1734020421;
+	bh=LUb+3qtXbBmw/8523krhXWAcZ6n9iZA+0AHa4cyp+7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lc/5qCfZF4WMjfKU9u0P0tq9bPxtRVS8So2NEgaRe3/FF63+zebyJYf5c3tAgtKqj
-	 NdbGDq4NJ2WELRkzyom0lUn68x4Qi89QpEFWX8gDkN6E7BUXC9DUQZILOTTY2iMQ0K
-	 viy91W/hxnHejhcfyNzYyrd+2kxmeL3IaiT7SKfM=
+	b=aVNqz3IMW2VAjSIAJN01gPlZusUDzJbLkbfOcxZ6mY0mFJ896KYr5oZB89FkhLv+i
+	 MoKPMfRpWdZSSVBfLTHTl6IVq1dii5H6YqcSDGO7on5zLYY1UqzizE6+9B4m2LmnVu
+	 0yzCsRBJGP8SHh7vX2e30E5Gbqywn+kAQiXgOOwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/466] soc: qcom: pd-mapper: Add QCM6490 PD maps
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 464/772] media: platform: exynos4-is: Fix an OF node reference leak in fimc_md_is_isp_available
 Date: Thu, 12 Dec 2024 15:56:49 +0100
-Message-ID: <20241212144316.264491313@linuxfoundation.org>
+Message-ID: <20241212144409.107129854@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 
-[ Upstream commit 31a95fe0851afbbc697b6be96c8a81a01d65aa5f ]
+commit 8964eb23408243ae0016d1f8473c76f64ff25d20 upstream.
 
-The QCM6490 is a variant of SC7280, with the usual set of protection
-domains, and hence the need for a PD-mapper. In particular USB Type-C
-port management and battery management is pmic_glink based.
+In fimc_md_is_isp_available(), of_get_child_by_name() is called to check
+if FIMC-IS is available. Current code does not decrement the refcount of
+the returned device node, which causes an OF node reference leak. Fix it
+by calling of_node_put() at the end of the variable scope.
 
-Add an entry to the kernel, to avoid the need for userspace to provide
-this service.
-
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20241004-qcm6490-pd-mapper-v1-1-d6f4bc3bffa3@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Fixes: e781bbe3fecf ("[media] exynos4-is: Add fimc-is subdevs registration")
+Cc: stable@vger.kernel.org
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: added CC to stable]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/qcom_pd_mapper.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/samsung/exynos4-is/media-dev.h |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
-index c940f4da28ed5..6e30f08761aa4 100644
---- a/drivers/soc/qcom/qcom_pd_mapper.c
-+++ b/drivers/soc/qcom/qcom_pd_mapper.c
-@@ -540,6 +540,7 @@ static const struct of_device_id qcom_pdm_domains[] __maybe_unused = {
- 	{ .compatible = "qcom,msm8996", .data = msm8996_domains, },
- 	{ .compatible = "qcom,msm8998", .data = msm8998_domains, },
- 	{ .compatible = "qcom,qcm2290", .data = qcm2290_domains, },
-+	{ .compatible = "qcom,qcm6490", .data = sc7280_domains, },
- 	{ .compatible = "qcom,qcs404", .data = qcs404_domains, },
- 	{ .compatible = "qcom,sc7180", .data = sc7180_domains, },
- 	{ .compatible = "qcom,sc7280", .data = sc7280_domains, },
--- 
-2.43.0
-
+--- a/drivers/media/platform/samsung/exynos4-is/media-dev.h
++++ b/drivers/media/platform/samsung/exynos4-is/media-dev.h
+@@ -179,8 +179,9 @@ int fimc_md_set_camclk(struct v4l2_subde
+ #ifdef CONFIG_OF
+ static inline bool fimc_md_is_isp_available(struct device_node *node)
+ {
+-	node = of_get_child_by_name(node, FIMC_IS_OF_NODE_NAME);
+-	return node ? of_device_is_available(node) : false;
++	struct device_node *child __free(device_node) =
++		of_get_child_by_name(node, FIMC_IS_OF_NODE_NAME);
++	return child ? of_device_is_available(child) : false;
+ }
+ #else
+ #define fimc_md_is_isp_available(node) (false)
 
 
 
