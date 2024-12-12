@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B459EEDB9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 182139EF1BB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F8F5188EF12
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC9528DFB2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B62222D67;
-	Thu, 12 Dec 2024 15:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42933223E93;
+	Thu, 12 Dec 2024 16:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWYykP82"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFUWnkbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3DE21CFF0;
-	Thu, 12 Dec 2024 15:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0080C213E99;
+	Thu, 12 Dec 2024 16:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018263; cv=none; b=sxThv7oo0AjaDs71jzLyM2/0/MPjZw02RhZag1cQqZq5nRuk7lbEjuOzv3IpV+i5SMw8ya8+9OdavSIX9TfuRYViUVXtO9njSG3DyyceZuBnPftT0zlUt3rdbkfm8DgNBscO3v4B8jMrqAcNSYYbJKYtaLR2XLIAtHmGo4rfTfc=
+	t=1734021102; cv=none; b=s9p1TfwwdKYBAImXFBmW0TIZX16OEOd8ujN/4X7H3LVhAVMyMcHyqXQZqluUUYnlir6/EFZlHcG0nekC04VWI95G09GclWH6cM5JbYlFUQWqR7t5fG3/ERNCr+xRfpNnctlxn23Hc4ofo+eS2cwmPWkxH8uvdR2LS5nTU7pPCLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018263; c=relaxed/simple;
-	bh=FOh1CZcR++iyJs8+chJiVSTa2LUWPYATIwNz3p1GohA=;
+	s=arc-20240116; t=1734021102; c=relaxed/simple;
+	bh=e+7WKT9sSoirNc8A5mFCSgijNhwX2CGt/q/4GmyytXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPhFYUD8aLgaHL9/a6efSLfofKMj56UhzblN9C8x4Xcw3BVSDO2QKBriF/HUeS1Op/BIC6dmY5js1e3RF7NZwm0mJG3PqEI0OSaB5znSI+FrCvJO3xWVtVqYOenp4JLULbtftFPV9k+CIJ/4wNwyw8M3jFmxhILxPONtDmgSIsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWYykP82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF974C4CECE;
-	Thu, 12 Dec 2024 15:44:22 +0000 (UTC)
+	 MIME-Version; b=R2tuyYdGqSLdXoEGJv4Slyse/1Qodqc2xB2YZLri4pGC7oKDQsrwqkv3L9ah/1uEBi2f0kJASoZA+JaRbgQBgbkEv0WwZNQVU3lno1o5cZoWkqlUHTGvSFgHbTXnLEIlTGOfpsisjgL4+ip1NmL6SEQ8DT0XAdKGWJWgTGjlRJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFUWnkbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F88C4CECE;
+	Thu, 12 Dec 2024 16:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018263;
-	bh=FOh1CZcR++iyJs8+chJiVSTa2LUWPYATIwNz3p1GohA=;
+	s=korg; t=1734021101;
+	bh=e+7WKT9sSoirNc8A5mFCSgijNhwX2CGt/q/4GmyytXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWYykP82U8lZhSvVl7Z5xcm8jdCxhtKkTX6pKvc6dkLYilxc3dRwWAIIoEjP3eLCS
-	 iNfGKhBSvYQUE16cO681jwHeqbcxAIMv3LxjBzXo99G22kWdjMLmMcNjQqWNxIP3++
-	 9q3o9akeK0ok7N9iIEWRsseCII4Yx8BcA44piro0=
+	b=zFUWnkbeyYBtN4MSq5Dd6Tl4jyP3VOnMgYs9IeMrufivhaQg1awZdE7Qd/BnfCofx
+	 FVSu8UGL41achYzEIzUMYGpT/hZKTb2si5KRQhUbGOK310av3UqIkZJHCgPkWfV5jM
+	 pUqKdfH7nmHg+OUypPG3QG8PXeCrruQTpH8PN5+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/356] jfs: fix shift-out-of-bounds in dbSplit
+	Anil Gurumurthy <agurumurthy@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 618/772] scsi: qla2xxx: Supported speed displayed incorrectly for VPorts
 Date: Thu, 12 Dec 2024 15:59:23 +0100
-Message-ID: <20241212144254.249952345@linuxfoundation.org>
+Message-ID: <20241212144415.464733556@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Anil Gurumurthy <agurumurthy@marvell.com>
 
-[ Upstream commit a5f5e4698f8abbb25fe4959814093fb5bfa1aa9d ]
+commit e4e268f898c8a08f0a1188677e15eadbc06e98f6 upstream.
 
-When dmt_budmin is less than zero, it causes errors
-in the later stages. Added a check to return an error beforehand
-in dbAllocCtl itself.
+The fc_function_template for vports was missing the
+.show_host_supported_speeds. The base port had the same.
 
-Reported-by: syzbot+b5ca8a249162c4b9a7d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b5ca8a249162c4b9a7d0
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add .show_host_supported_speeds to the vport template as well.
+
+Cc: stable@vger.kernel.org
+Fixes: 2c3dfe3f6ad8 ("[SCSI] qla2xxx: add support for NPIV")
+Signed-off-by: Anil Gurumurthy <agurumurthy@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-7-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/qla2xxx/qla_attr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 3ab410059dc20..39957361a7eed 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -1820,6 +1820,9 @@ dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno, s64 * results)
- 			return -EIO;
- 		dp = (struct dmap *) mp->data;
+--- a/drivers/scsi/qla2xxx/qla_attr.c
++++ b/drivers/scsi/qla2xxx/qla_attr.c
+@@ -3312,6 +3312,7 @@ struct fc_function_template qla2xxx_tran
+ 	.show_host_node_name = 1,
+ 	.show_host_port_name = 1,
+ 	.show_host_supported_classes = 1,
++	.show_host_supported_speeds = 1,
  
-+		if (dp->tree.budmin < 0)
-+			return -EIO;
-+
- 		/* try to allocate the blocks.
- 		 */
- 		rc = dbAllocDmapLev(bmp, dp, (int) nblocks, l2nb, results);
--- 
-2.43.0
-
+ 	.get_host_port_id = qla2x00_get_host_port_id,
+ 	.show_host_port_id = 1,
 
 
 
