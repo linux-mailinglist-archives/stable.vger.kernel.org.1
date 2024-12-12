@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-102611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7962B9EF4B3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5A49EF478
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527331899C20
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D6B717B5D0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886412358A6;
-	Thu, 12 Dec 2024 16:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F61B229680;
+	Thu, 12 Dec 2024 16:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxVYbvf0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iG1sUNzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4569922967A;
-	Thu, 12 Dec 2024 16:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D670229145;
+	Thu, 12 Dec 2024 16:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021852; cv=none; b=AyRw78rVBfhEHBNixjwFeTPc7H9N85qVcWmIoi71Zf/Oh4hrkQdlt5rQW/FAN1ybV7ORlcXVRVY0UxXCzDcFai31PLrQ/iJFr1YjO8JgUPLBuTHibg6hAonKfJO/dR7vAAJLlunAA61eP3OXupSFwUEoCfVPmDR1LhogVqvm7p4=
+	t=1734021859; cv=none; b=qOkaSyM4e+2sfPsQSLynvLh/Ub3lVV/ES3JK4DIBauPl2vFwTfan44aVEJhhkN47ckSFGQtNizVR3bzMFfr4mL4m3CZ54XQsncSwYFdqY7Mbip5G+ziZurNYijS0qYYH7tMsrT+T0n4pGKRddLkWmGnUtLLEwwntfiNuX9L6n2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021852; c=relaxed/simple;
-	bh=0yqBnj0Y99D6qCQb9QRxxXoykw9/PSFixnPQNuKZGp4=;
+	s=arc-20240116; t=1734021859; c=relaxed/simple;
+	bh=ZlwKkSJsFYaWK7W0cM/ySMVJuO5n3gvZVF2n7i44xsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O57NxVSfJbBj2t1nCtTTo0d7L/GRSCNeFd9DO4bUz0IzQc5PthL1c419FgFgBCOqt50zUFeMc4tVPAUu7DXULDkkPYx12Qfp76427xyh38vIoM9PS6NFGx7raA7HAGXwInlVTy3xtwN6k3OG1m7G94Uy7qLExqTUQD+OPYzbwTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bxVYbvf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917B3C4CECE;
-	Thu, 12 Dec 2024 16:44:11 +0000 (UTC)
+	 MIME-Version; b=AU/pPs80tU7lYfpG3+XgWV0rorvdEucADJ0yMT9IQaL8TyUIVFn/pH1X240LNDYzGjNENz9u4Mq2EIO89BSIrhaA1CKspl3yWv2ptJh7IcAz+iZ77q1jJzreb8Lvz7Kzh8r7rWp+LM1oftUYIYbx/az2B+ogb6KBI4PPga2o8+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iG1sUNzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853B3C4CECE;
+	Thu, 12 Dec 2024 16:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021852;
-	bh=0yqBnj0Y99D6qCQb9QRxxXoykw9/PSFixnPQNuKZGp4=;
+	s=korg; t=1734021858;
+	bh=ZlwKkSJsFYaWK7W0cM/ySMVJuO5n3gvZVF2n7i44xsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxVYbvf0umwj9VUF0YwEpGgLHGmN+nYEVEDy1mA5B+WZYoSW9nV/0H2Ve9znvPbGe
-	 dKWwA7j1zols9AOX9mttvdmqtGIgCTSI8+ibzevzt7Cre4FUyuxxD5Ce4HLbXSCh6/
-	 SCdETaeICMIx9yCaUDXIpRVNDuFiU4+JNsPLeiPk=
+	b=iG1sUNztTdnU9vfS1/fldwrrzQ62dvSeO4K7QZV8tspvy6Ktdd/Vh8nPol/LufP0s
+	 MemBM/gm31j2fF3qsLxOzy+/3t/k486aFWGhXJl3+5ucTLD64nY1S+1rQ2jl96/wda
+	 5OxwF3Ujo8cJjymrgYtvZn6rhMvb+njZZ4VFFkgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	Yang Erkun <yangerkun@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	David Disseldorp <ddiss@suse.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/565] brd: defer automatic disk creation until module initialization succeeds
-Date: Thu, 12 Dec 2024 15:54:35 +0100
-Message-ID: <20241212144314.649965673@linuxfoundation.org>
+Subject: [PATCH 5.15 082/565] initramfs: avoid filename buffer overrun
+Date: Thu, 12 Dec 2024 15:54:37 +0100
+Message-ID: <20241212144314.725477806@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -68,206 +66,116 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yang Erkun <yangerkun@huawei.com>
+From: David Disseldorp <ddiss@suse.de>
 
-[ Upstream commit 826cc42adf44930a633d11a5993676d85ddb0842 ]
+[ Upstream commit e017671f534dd3f568db9e47b0583e853d2da9b5 ]
 
-My colleague Wupeng found the following problems during fault injection:
+The initramfs filename field is defined in
+Documentation/driver-api/early-userspace/buffer-format.rst as:
 
-BUG: unable to handle page fault for address: fffffbfff809d073
-PGD 6e648067 P4D 123ec8067 PUD 123ec4067 PMD 100e38067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 5 UID: 0 PID: 755 Comm: modprobe Not tainted 6.12.0-rc3+ #17
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-1.16.1-2.fc37 04/01/2014
-RIP: 0010:__asan_load8+0x4c/0xa0
+ 37 cpio_file := ALGN(4) + cpio_header + filename + "\0" + ALGN(4) + data
 ...
-Call Trace:
- <TASK>
- blkdev_put_whole+0x41/0x70
- bdev_release+0x1a3/0x250
- blkdev_release+0x11/0x20
- __fput+0x1d7/0x4a0
- task_work_run+0xfc/0x180
- syscall_exit_to_user_mode+0x1de/0x1f0
- do_syscall_64+0x6b/0x170
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ 55 ============= ================== =========================
+ 56 Field name    Field size         Meaning
+ 57 ============= ================== =========================
+...
+ 70 c_namesize    8 bytes            Length of filename, including final \0
 
-loop_init() is calling loop_add() after __register_blkdev() succeeds and
-is ignoring disk_add() failure from loop_add(), for loop_add() failure
-is not fatal and successfully created disks are already visible to
-bdev_open().
+When extracting an initramfs cpio archive, the kernel's do_name() path
+handler assumes a zero-terminated path at @collected, passing it
+directly to filp_open() / init_mkdir() / init_mknod().
 
-brd_init() is currently calling brd_alloc() before __register_blkdev()
-succeeds and is releasing successfully created disks when brd_init()
-returns an error. This can cause UAF for the latter two case:
+If a specially crafted cpio entry carries a non-zero-terminated filename
+and is followed by uninitialized memory, then a file may be created with
+trailing characters that represent the uninitialized memory. The ability
+to create an initramfs entry would imply already having full control of
+the system, so the buffer overrun shouldn't be considered a security
+vulnerability.
 
-case 1:
-    T1:
-modprobe brd
-  brd_init
-    brd_alloc(0) // success
-      add_disk
-        disk_scan_partitions
-          bdev_file_open_by_dev // alloc file
-          fput // won't free until back to userspace
-    brd_alloc(1) // failed since mem alloc error inject
-  // error path for modprobe will release code segment
-  // back to userspace
-  __fput
-    blkdev_release
-      bdev_release
-        blkdev_put_whole
-          bdev->bd_disk->fops->release // fops is freed now, UAF!
+Append the output of the following bash script to an existing initramfs
+and observe any created /initramfs_test_fname_overrunAA* path. E.g.
+  ./reproducer.sh | gzip >> /myinitramfs
 
-case 2:
-    T1:                            T2:
-modprobe brd
-  brd_init
-    brd_alloc(0) // success
-                                   open(/dev/ram0)
-    brd_alloc(1) // fail
-  // error path for modprobe
+It's easiest to observe non-zero uninitialized memory when the output is
+gzipped, as it'll overflow the heap allocated @out_buf in __gunzip(),
+rather than the initrd_start+initrd_size block.
 
-                                   close(/dev/ram0)
-                                   ...
-                                   /* UAF! */
-                                   bdev->bd_disk->fops->release
+---- reproducer.sh ----
+nilchar="A"	# change to "\0" to properly zero terminate / pad
+magic="070701"
+ino=1
+mode=$(( 0100777 ))
+uid=0
+gid=0
+nlink=1
+mtime=1
+filesize=0
+devmajor=0
+devminor=1
+rdevmajor=0
+rdevminor=0
+csum=0
+fname="initramfs_test_fname_overrun"
+namelen=$(( ${#fname} + 1 ))	# plus one to account for terminator
 
-Fix this problem by following what loop_init() does. Besides,
-reintroduce brd_devices_mutex to help serialize modifications to
-brd_list.
+printf "%s%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%08x%s" \
+	$magic $ino $mode $uid $gid $nlink $mtime $filesize \
+	$devmajor $devminor $rdevmajor $rdevminor $namelen $csum $fname
 
-Fixes: 7f9b348cb5e9 ("brd: convert to blk_alloc_disk/blk_cleanup_disk")
-Reported-by: Wupeng Ma <mawupeng1@huawei.com>
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241030034914.907829-1-yangerkun@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+termpadlen=$(( 1 + ((4 - ((110 + $namelen) & 3)) % 4) ))
+printf "%.s${nilchar}" $(seq 1 $termpadlen)
+---- reproducer.sh ----
+
+Symlink filename fields handled in do_symlink() won't overrun past the
+data segment, due to the explicit zero-termination of the symlink
+target.
+
+Fix filename buffer overrun by aborting the initramfs FSM if any cpio
+entry doesn't carry a zero-terminator at the expected (name_len - 1)
+offset.
+
+Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
+Signed-off-by: David Disseldorp <ddiss@suse.de>
+Link: https://lore.kernel.org/r/20241030035509.20194-2-ddiss@suse.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/brd.c | 66 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 44 insertions(+), 22 deletions(-)
+ init/initramfs.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-index db816baca5567..e4f470cc702f9 100644
---- a/drivers/block/brd.c
-+++ b/drivers/block/brd.c
-@@ -362,8 +362,40 @@ __setup("ramdisk_size=", ramdisk_size);
-  * (should share code eventually).
-  */
- static LIST_HEAD(brd_devices);
-+static DEFINE_MUTEX(brd_devices_mutex);
- static struct dentry *brd_debugfs_dir;
- 
-+static struct brd_device *brd_find_or_alloc_device(int i)
-+{
-+	struct brd_device *brd;
+diff --git a/init/initramfs.c b/init/initramfs.c
+index f153fb505781b..4e92cff3e8665 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -338,6 +338,15 @@ static int __init do_name(void)
+ {
+ 	state = SkipIt;
+ 	next_state = Reset;
 +
-+	mutex_lock(&brd_devices_mutex);
-+	list_for_each_entry(brd, &brd_devices, brd_list) {
-+		if (brd->brd_number == i) {
-+			mutex_unlock(&brd_devices_mutex);
-+			return ERR_PTR(-EEXIST);
-+		}
++	/* name_len > 0 && name_len <= PATH_MAX checked in do_header */
++	if (collected[name_len - 1] != '\0') {
++		pr_err("initramfs name without nulterm: %.*s\n",
++		       (int)name_len, collected);
++		error("malformed archive");
++		return 1;
 +	}
 +
-+	brd = kzalloc(sizeof(*brd), GFP_KERNEL);
-+	if (!brd) {
-+		mutex_unlock(&brd_devices_mutex);
-+		return ERR_PTR(-ENOMEM);
+ 	if (strcmp(collected, "TRAILER!!!") == 0) {
+ 		free_hash();
+ 		return 0;
+@@ -403,6 +412,12 @@ static int __init do_copy(void)
+ 
+ static int __init do_symlink(void)
+ {
++	if (collected[name_len - 1] != '\0') {
++		pr_err("initramfs symlink without nulterm: %.*s\n",
++		       (int)name_len, collected);
++		error("malformed archive");
++		return 1;
 +	}
-+	brd->brd_number	= i;
-+	list_add_tail(&brd->brd_list, &brd_devices);
-+	mutex_unlock(&brd_devices_mutex);
-+	return brd;
-+}
-+
-+static void brd_free_device(struct brd_device *brd)
-+{
-+	mutex_lock(&brd_devices_mutex);
-+	list_del(&brd->brd_list);
-+	mutex_unlock(&brd_devices_mutex);
-+	kfree(brd);
-+}
-+
- static int brd_alloc(int i)
- {
- 	struct brd_device *brd;
-@@ -371,14 +403,9 @@ static int brd_alloc(int i)
- 	char buf[DISK_NAME_LEN];
- 	int err = -ENOMEM;
- 
--	list_for_each_entry(brd, &brd_devices, brd_list)
--		if (brd->brd_number == i)
--			return -EEXIST;
--	brd = kzalloc(sizeof(*brd), GFP_KERNEL);
--	if (!brd)
--		return -ENOMEM;
--	brd->brd_number		= i;
--	list_add_tail(&brd->brd_list, &brd_devices);
-+	brd = brd_find_or_alloc_device(i);
-+	if (IS_ERR(brd))
-+		return PTR_ERR(brd);
- 
- 	spin_lock_init(&brd->brd_lock);
- 	INIT_RADIX_TREE(&brd->brd_pages, GFP_ATOMIC);
-@@ -423,8 +450,7 @@ static int brd_alloc(int i)
- out_cleanup_disk:
- 	blk_cleanup_disk(disk);
- out_free_dev:
--	list_del(&brd->brd_list);
--	kfree(brd);
-+	brd_free_device(brd);
- 	return err;
- }
- 
-@@ -443,8 +469,7 @@ static void brd_cleanup(void)
- 		del_gendisk(brd->brd_disk);
- 		blk_cleanup_disk(brd->brd_disk);
- 		brd_free_pages(brd);
--		list_del(&brd->brd_list);
--		kfree(brd);
-+		brd_free_device(brd);
- 	}
- }
- 
-@@ -471,16 +496,6 @@ static int __init brd_init(void)
- {
- 	int err, i;
- 
--	brd_check_and_reset_par();
--
--	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
--
--	for (i = 0; i < rd_nr; i++) {
--		err = brd_alloc(i);
--		if (err)
--			goto out_free;
--	}
--
- 	/*
- 	 * brd module now has a feature to instantiate underlying device
- 	 * structure on-demand, provided that there is an access dev node.
-@@ -496,11 +511,18 @@ static int __init brd_init(void)
- 	 *	dynamically.
- 	 */
- 
-+	brd_check_and_reset_par();
-+
-+	brd_debugfs_dir = debugfs_create_dir("ramdisk_pages", NULL);
-+
- 	if (__register_blkdev(RAMDISK_MAJOR, "ramdisk", brd_probe)) {
- 		err = -EIO;
- 		goto out_free;
- 	}
- 
-+	for (i = 0; i < rd_nr; i++)
-+		brd_alloc(i);
-+
- 	pr_info("brd: module loaded\n");
- 	return 0;
- 
+ 	collected[N_ALIGN(name_len) + body_len] = '\0';
+ 	clean_path(collected, 0);
+ 	init_symlink(collected + N_ALIGN(name_len), collected);
 -- 
 2.43.0
 
