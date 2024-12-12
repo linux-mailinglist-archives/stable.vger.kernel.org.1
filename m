@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B399EED69
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:46:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE149EEBA7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9562F1885632
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:43:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BDBE168785
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346B622331C;
-	Thu, 12 Dec 2024 15:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5AA2153F4;
+	Thu, 12 Dec 2024 15:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y85EnDE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvLIiqBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43A4223302;
-	Thu, 12 Dec 2024 15:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED09D1487CD;
+	Thu, 12 Dec 2024 15:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018117; cv=none; b=IfbJ0SxJ7uNkXrd7lNJyRsFbYMR6uoLcj/yMevxc578+hn8TLgS0PSvOdNmwB1sy2+JGxy9ge+1bkxR19ECKbFieJMR3dLLotqM+2gm+YCvnccqP1wffVv9p5QnwpjGh81RbahGE1OtJxg4buVDBMBSu7W/9PtSolQSqWc+Uu/A=
+	t=1734017004; cv=none; b=XU3ROhE7rRx/7sSw3fbkpuW+bkxw5PSGAljKznYlf39h8q326MKrmhPVQlr687Cd5tPa9uuQSYRBro5V9yvNbaicqpS8D/Lh3hxMP9SaNnflKDvvplz7zPi26q9RmwbImkVtDTV+mbo5K6+CZX2AcQxQ1kgx3mfFrwU7KEsM2/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018117; c=relaxed/simple;
-	bh=0cs0Sm5D2q8DNCFhNqLoUwBy5rmkBLbev/H9mz3ryTs=;
+	s=arc-20240116; t=1734017004; c=relaxed/simple;
+	bh=yw1re266byPeuRLYpPRugrxbz80IF+2G4j7RHzlvkKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qw56sDTCFuvt4koLIOQK81jwIaAEXKw1vN/Uh6sMwpN2kqT8He9l6jRgCigJ4M7G72S/f9TvGbOknQi9F/6yKnNDd/Q871cpv+0UZSfpgmq1xN8pgJpW5aWa/iixlkLbQk9kL+ruIHwaWT1vn+l8AS4dzRQ/DLK5tKlhflM+y04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y85EnDE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4801DC4CECE;
-	Thu, 12 Dec 2024 15:41:56 +0000 (UTC)
+	 MIME-Version; b=XgLxWpiPIcwSQDYILifrM/6F3SXofgnjQ0YWxDEofd1roq/e1vYtluA926iubG1iUffbjruxkwzyGBBFJ2k6Suah6QVFt+5B1Ia03W1HeEVr4ugKnuqaacZqInN3xWQilGysqO+u5Q0yDhpVRl7q0Ek6n4VG8FA4JOqKJhgCIco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NvLIiqBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C6FC4CECE;
+	Thu, 12 Dec 2024 15:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018116;
-	bh=0cs0Sm5D2q8DNCFhNqLoUwBy5rmkBLbev/H9mz3ryTs=;
+	s=korg; t=1734017003;
+	bh=yw1re266byPeuRLYpPRugrxbz80IF+2G4j7RHzlvkKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y85EnDE6FIXgiB7GOa/l972vjk92qD//PU1JbMyua5Wbb5NQR4lf3oLTxTdAtvGpu
-	 hrJCwXR1lQiDwOVO9atHwIMcrOnLvt3tj54LW5htSQ9LgVDdy+bQWBbByYFAWdHw6F
-	 jFI4c+mzyHQE21BeZDMrZAzE1xZFNRMsuLS+Hmi0=
+	b=NvLIiqBRBpjAdNSpcN3Xxj6KqhtZ3pKRlGFXHHiNkOpIalWhpHx72dgv1ya8G53CM
+	 faoWV5x4nPKhz8ZM/4f6ggt3hn2EpVdUP643nu6gUO1e+W7zeRSpmG8OWwpuJxcrSV
+	 af52Mqoj1ipH5ed1whQupgqArLd3l5LGAyQiMQ8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/356] regmap: maple: Provide lockdep (sub)class for maple trees internal lock
+Subject: [PATCH 6.12 353/466] netpoll: Use rcu_access_pointer() in __netpoll_setup
 Date: Thu, 12 Dec 2024 15:58:42 +0100
-Message-ID: <20241212144252.637829193@linuxfoundation.org>
+Message-ID: <20241212144320.730219512@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 1ed9b927e7dd8b8cff13052efe212a8ff72ec51d ]
+[ Upstream commit c69c5e10adb903ae2438d4f9c16eccf43d1fcbc1 ]
 
-In some cases when using the maple tree register cache, the lockdep
-validator might complain about invalid deadlocks:
+The ndev->npinfo pointer in __netpoll_setup() is RCU-protected but is being
+accessed directly for a NULL check. While no RCU read lock is held in this
+context, we should still use proper RCU primitives for consistency and
+correctness.
 
-[7.131886]  Possible interrupt unsafe locking scenario:
+Replace the direct NULL check with rcu_access_pointer(), which is the
+appropriate primitive when only checking for NULL without dereferencing
+the pointer. This function provides the necessary ordering guarantees
+without requiring RCU read-side protection.
 
-[7.131890]        CPU0                    CPU1
-[7.131893]        ----                    ----
-[7.131896]   lock(&mt->ma_lock);
-[7.131904]                                local_irq_disable();
-[7.131907]                                lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
-[7.131916]                                lock(&mt->ma_lock);
-[7.131925]   <Interrupt>
-[7.131928]     lock(rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock);
-[7.131936]
-                *** DEADLOCK ***
-
-[7.131939] no locks held by swapper/0/0.
-[7.131944]
-               the shortest dependencies between 2nd lock and 1st lock:
-[7.131950]  -> (&mt->ma_lock){+.+.}-{2:2} {
-[7.131966]     HARDIRQ-ON-W at:
-[7.131973]                       lock_acquire+0x200/0x330
-[7.131986]                       _raw_spin_lock+0x50/0x70
-[7.131998]                       regcache_maple_write+0x68/0xe0
-[7.132010]                       regcache_write+0x6c/0x90
-[7.132019]                       _regmap_read+0x19c/0x1d0
-[7.132029]                       _regmap_update_bits+0xc0/0x148
-[7.132038]                       regmap_update_bits_base+0x6c/0xa8
-[7.132048]                       rk8xx_probe+0x22c/0x3d8
-[7.132057]                       rk8xx_spi_probe+0x74/0x88
-[7.132065]                       spi_probe+0xa8/0xe0
-
-[...]
-
-[7.132675]   }
-[7.132678]   ... key      at: [<ffff800082943c20>] __key.0+0x0/0x10
-[7.132691]   ... acquired at:
-[7.132695]    _raw_spin_lock+0x50/0x70
-[7.132704]    regcache_maple_write+0x68/0xe0
-[7.132714]    regcache_write+0x6c/0x90
-[7.132724]    _regmap_read+0x19c/0x1d0
-[7.132732]    _regmap_update_bits+0xc0/0x148
-[7.132741]    regmap_field_update_bits_base+0x74/0xb8
-[7.132751]    vop2_plane_atomic_update+0x480/0x14d8 [rockchipdrm]
-[7.132820]    drm_atomic_helper_commit_planes+0x1a0/0x320 [drm_kms_helper]
-
-[...]
-
-[7.135112] -> (rockchip_drm_vop2:3114:(&vop2_regmap_config)->lock){-...}-{2:2} {
-[7.135130]    IN-HARDIRQ-W at:
-[7.135136]                     lock_acquire+0x200/0x330
-[7.135147]                     _raw_spin_lock_irqsave+0x6c/0x98
-[7.135157]                     regmap_lock_spinlock+0x20/0x40
-[7.135166]                     regmap_read+0x44/0x90
-[7.135175]                     vop2_isr+0x90/0x290 [rockchipdrm]
-[7.135225]                     __handle_irq_event_percpu+0x124/0x2d0
-
-In the example above, the validator seems to get the scope of
-dependencies wrong, since the regmap instance used in rk8xx-spi driver
-has nothing to do with the instance from vop2.
-
-Improve validation by sharing the regmap's lockdep class with the maple
-tree's internal lock, while also providing a subclass for the latter.
-
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://patch.msgid.link/20241031-regmap-maple-lockdep-fix-v2-1-06a3710f3623@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20241118-netpoll_rcu-v1-1-a1888dcb4a02@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/internal.h       | 1 +
- drivers/base/regmap/regcache-maple.c | 3 +++
- drivers/base/regmap/regmap.c         | 1 +
- 3 files changed, 5 insertions(+)
+ net/core/netpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
-index 9a9ea514c2d81..a29f24b15928c 100644
---- a/drivers/base/regmap/internal.h
-+++ b/drivers/base/regmap/internal.h
-@@ -59,6 +59,7 @@ struct regmap {
- 			unsigned long raw_spinlock_flags;
- 		};
- 	};
-+	struct lock_class_key *lock_key;
- 	regmap_lock lock;
- 	regmap_unlock unlock;
- 	void *lock_arg; /* This is passed to lock/unlock functions */
-diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
-index 0b6c2277128b4..fb5761a5ef6ee 100644
---- a/drivers/base/regmap/regcache-maple.c
-+++ b/drivers/base/regmap/regcache-maple.c
-@@ -356,6 +356,9 @@ static int regcache_maple_init(struct regmap *map)
- 
- 	mt_init(mt);
- 
-+	if (!mt_external_lock(mt) && map->lock_key)
-+		lockdep_set_class_and_subclass(&mt->ma_lock, map->lock_key, 1);
-+
- 	if (!map->num_reg_defaults)
- 		return 0;
- 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index b2b26e44b8842..1db04886def61 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -756,6 +756,7 @@ struct regmap *__regmap_init(struct device *dev,
- 						   lock_key, lock_name);
- 		}
- 		map->lock_arg = map;
-+		map->lock_key = lock_key;
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index aa49b92e9194b..45fb60bc48039 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -626,7 +626,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
+ 		goto out;
  	}
  
- 	/*
+-	if (!ndev->npinfo) {
++	if (!rcu_access_pointer(ndev->npinfo)) {
+ 		npinfo = kmalloc(sizeof(*npinfo), GFP_KERNEL);
+ 		if (!npinfo) {
+ 			err = -ENOMEM;
 -- 
 2.43.0
 
