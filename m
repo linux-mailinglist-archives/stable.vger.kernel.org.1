@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695F59EF722
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68BB9EF5A1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCAC16B3B5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:18:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F6931942059
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C756217664;
-	Thu, 12 Dec 2024 17:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC5F223704;
+	Thu, 12 Dec 2024 16:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpnwfEno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xlygmb6I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A78E53365;
-	Thu, 12 Dec 2024 17:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1CF213E9F;
+	Thu, 12 Dec 2024 16:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023894; cv=none; b=OMtkUYMeFxhkzpKXdDQyWEEKu4p5GeoSsHeW+nKiek7QSqY2KQbu8Ne12yHML0bW3BbcOPlIBJ0wLSIqU2ie5D/F8CYoaeA6E/drYEAUBKXQUqXH+CFUiLApdi84I3KUN4MJMCefWdXuwOAdhCSPZmlQd5WZbsTDTdgpqyRc1u4=
+	t=1734022616; cv=none; b=IfosR7Syn5+KA5x7qDgaUJGeUDvJZS30WcPe4TjV9Ar+ojJXhBjFzZ2URL01BBmOzaVeg2kqyBW6prqtO0uiYPwJJx6P7T/8cO3yyXHYkxxHSDdxmtSKpWGMTbLITPgOfuSw4Fx0bcSkeK4klo8sBx1YPHzJaFhspbKtUL8gYos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023894; c=relaxed/simple;
-	bh=T5s6RwOR1w5e9eqYCNi7IOOBGEJ7eInVKqRpJ3sCPWw=;
+	s=arc-20240116; t=1734022616; c=relaxed/simple;
+	bh=SHn+UWEATIqGCXy6w5RSrU4AcBX/C7YXRWoePqEbkb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z26uwAXDG/i9gQFBKwkBgQCf6kcYsplzZ5ZonuH3PnTDmwsXJZ8LMQ2AFiHSEp1NzSOHID9z3KDDmWpuvyT3WBjX5HCb7+IceYUgJZ/Fj40X1QFdbxDF54PLVZ/a5pBW157y14u4pe99p9It7FF5lW28iT8FGyYZ6GBkqhaat1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpnwfEno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71436C4CECE;
-	Thu, 12 Dec 2024 17:18:13 +0000 (UTC)
+	 MIME-Version; b=LgH32Y/zCY87SADrYdSkW/I82rzvDGrktX8N8xmcTYlsK86TdeI1QzgLUZCwW6h6/VK20OTK0Hna7m+WNSU9gETQdzMcQWsZUFqP4SerX5gGf56qDpjUAc4ANPXyHJeckllrRzuuDxdvQbMUh87AGNZLdZHrvih598shvbIAu4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xlygmb6I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B3D0C4CECE;
+	Thu, 12 Dec 2024 16:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023893;
-	bh=T5s6RwOR1w5e9eqYCNi7IOOBGEJ7eInVKqRpJ3sCPWw=;
+	s=korg; t=1734022616;
+	bh=SHn+UWEATIqGCXy6w5RSrU4AcBX/C7YXRWoePqEbkb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpnwfEnohUiO3HbgAwWYiSUt6TzpIGyYFHVpwq8dxHGk9hsAird3AbEi1JFzBXZxH
-	 p6ZkAHuQ4UyYjSqcdg1MAPzJfRKgTZNG7XfLWpRH0vYWSj1AfRvb2V3VbyHGHDloo7
-	 IDeUdiwICt7c85B/+LW87FPnSiAafaaNOBlScEy8=
+	b=Xlygmb6I91GxPu2xzRSSvHBSQghbiBWrUJclxUJd82Oeu914rs1E0+XFzC3HvgqkT
+	 HEMBkYM+7OvVdr/k61o1lZU/YVyHkeqFYYsD0pjFxhr3GqERWRb2Xl+5NJxWN8BXpw
+	 4hh6BMlFo8v9iNQsG8WhnNrIlTVKf7QQK9ZpRdI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raed Salem <raeds@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/459] xfrm: store and rely on direction to construct offload flags
-Date: Thu, 12 Dec 2024 15:57:34 +0100
-Message-ID: <20241212144258.095201112@linuxfoundation.org>
+Subject: [PATCH 5.15 260/565] rpmsg: glink: Fix GLINK command prefix
+Date: Thu, 12 Dec 2024 15:57:35 +0100
+Message-ID: <20241212144321.747594475@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,286 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 482db2f1dd211f73ad9d71e33ae15c1df6379982 ]
+[ Upstream commit 4e816d0318fdfe8932da80dbf04ba318b13e4b3a ]
 
-XFRM state doesn't need anything from flags except to understand
-direction, so store it separately. For future patches, such change
-will allow us to reuse xfrm_dev_offload for policy offload too, which
-has three possible directions instead of two.
+The upstream GLINK driver was first introduced to communicate with the
+RPM on MSM8996, presumably as an artifact from that era the command
+defines was prefixed RPM_CMD, while they actually are GLINK_CMDs.
 
-Reviewed-by: Raed Salem <raeds@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Stable-dep-of: 2cf567f421db ("netdevsim: copy addresses for both in and out paths")
+Let's rename these, to keep things tidy. No functional change.
+
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230214225933.2025595-1-quic_bjorande@quicinc.com
+Stable-dep-of: 06c59d97f63c ("rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h     | 6 ++++++
- net/xfrm/xfrm_device.c | 8 +++++++-
- net/xfrm/xfrm_user.c   | 3 ++-
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/rpmsg/qcom_glink_native.c | 98 +++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 987c603806aee..2c1feca282036 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -126,12 +126,18 @@ struct xfrm_state_walk {
- 	struct xfrm_address_filter *filter;
- };
+diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
+index cbc0f64587f3e..49f08c0fdf975 100644
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -191,20 +191,20 @@ struct glink_channel {
  
-+enum {
-+	XFRM_DEV_OFFLOAD_IN = 1,
-+	XFRM_DEV_OFFLOAD_OUT,
-+};
-+
- struct xfrm_dev_offload {
- 	struct net_device	*dev;
- 	struct net_device	*real_dev;
- 	unsigned long		offload_handle;
- 	unsigned int		num_exthdrs;
- 	u8			flags;
-+	u8			dir : 2;
- };
+ static const struct rpmsg_endpoint_ops glink_endpoint_ops;
  
- struct xfrm_mode {
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 61aa0fd9d2a0c..7690d23bcf8bb 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -129,7 +129,7 @@ struct sk_buff *validate_xmit_xfrm(struct sk_buff *skb, netdev_features_t featur
+-#define RPM_CMD_VERSION			0
+-#define RPM_CMD_VERSION_ACK		1
+-#define RPM_CMD_OPEN			2
+-#define RPM_CMD_CLOSE			3
+-#define RPM_CMD_OPEN_ACK		4
+-#define RPM_CMD_INTENT			5
+-#define RPM_CMD_RX_DONE			6
+-#define RPM_CMD_RX_INTENT_REQ		7
+-#define RPM_CMD_RX_INTENT_REQ_ACK	8
+-#define RPM_CMD_TX_DATA			9
+-#define RPM_CMD_CLOSE_ACK		11
+-#define RPM_CMD_TX_DATA_CONT		12
+-#define RPM_CMD_READ_NOTIF		13
+-#define RPM_CMD_RX_DONE_W_REUSE		14
++#define GLINK_CMD_VERSION		0
++#define GLINK_CMD_VERSION_ACK		1
++#define GLINK_CMD_OPEN			2
++#define GLINK_CMD_CLOSE			3
++#define GLINK_CMD_OPEN_ACK		4
++#define GLINK_CMD_INTENT		5
++#define GLINK_CMD_RX_DONE		6
++#define GLINK_CMD_RX_INTENT_REQ		7
++#define GLINK_CMD_RX_INTENT_REQ_ACK	8
++#define GLINK_CMD_TX_DATA		9
++#define GLINK_CMD_CLOSE_ACK		11
++#define GLINK_CMD_TX_DATA_CONT		12
++#define GLINK_CMD_READ_NOTIF		13
++#define GLINK_CMD_RX_DONE_W_REUSE	14
  
- 	sp = skb_sec_path(skb);
- 	x = sp->xvec[sp->len - 1];
--	if (xo->flags & XFRM_GRO || x->xso.flags & XFRM_OFFLOAD_INBOUND)
-+	if (xo->flags & XFRM_GRO || x->xso.dir == XFRM_DEV_OFFLOAD_IN)
- 		return skb;
+ #define GLINK_FEATURE_INTENTLESS	BIT(1)
  
- 	/* This skb was already validated on the upper/virtual dev */
-@@ -285,11 +285,17 @@ int xfrm_dev_state_add(struct net *net, struct xfrm_state *x,
- 	/* Don't forward bit that is not implemented */
- 	xso->flags = xuo->flags & ~XFRM_OFFLOAD_IPV6;
+@@ -313,7 +313,7 @@ static void qcom_glink_send_read_notify(struct qcom_glink *glink)
+ {
+ 	struct glink_msg msg;
  
-+	if (xuo->flags & XFRM_OFFLOAD_INBOUND)
-+		xso->dir = XFRM_DEV_OFFLOAD_IN;
-+	else
-+		xso->dir = XFRM_DEV_OFFLOAD_OUT;
-+
- 	err = dev->xfrmdev_ops->xdo_dev_state_add(x);
- 	if (err) {
- 		xso->num_exthdrs = 0;
- 		xso->flags = 0;
- 		xso->dev = NULL;
-+		xso->dir = 0;
- 		xso->real_dev = NULL;
- 		dev_put(dev);
+-	msg.cmd = cpu_to_le16(RPM_CMD_READ_NOTIF);
++	msg.cmd = cpu_to_le16(GLINK_CMD_READ_NOTIF);
+ 	msg.param1 = 0;
+ 	msg.param2 = 0;
  
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index b12a305a2d7a4..aa509857b6660 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -855,7 +855,8 @@ static int copy_user_offload(struct xfrm_dev_offload *xso, struct sk_buff *skb)
- 	xuo = nla_data(attr);
- 	memset(xuo, 0, sizeof(*xuo));
- 	xuo->ifindex = xso->dev->ifindex;
--	xuo->flags = xso->flags;
-+	if (xso->dir == XFRM_DEV_OFFLOAD_IN)
-+		xuo->flags = XFRM_OFFLOAD_INBOUND;
+@@ -375,7 +375,7 @@ static int qcom_glink_send_version(struct qcom_glink *glink)
+ {
+ 	struct glink_msg msg;
  
- 	return 0;
+-	msg.cmd = cpu_to_le16(RPM_CMD_VERSION);
++	msg.cmd = cpu_to_le16(GLINK_CMD_VERSION);
+ 	msg.param1 = cpu_to_le16(GLINK_VERSION_1);
+ 	msg.param2 = cpu_to_le32(glink->features);
+ 
+@@ -386,7 +386,7 @@ static void qcom_glink_send_version_ack(struct qcom_glink *glink)
+ {
+ 	struct glink_msg msg;
+ 
+-	msg.cmd = cpu_to_le16(RPM_CMD_VERSION_ACK);
++	msg.cmd = cpu_to_le16(GLINK_CMD_VERSION_ACK);
+ 	msg.param1 = cpu_to_le16(GLINK_VERSION_1);
+ 	msg.param2 = cpu_to_le32(glink->features);
+ 
+@@ -398,7 +398,7 @@ static void qcom_glink_send_open_ack(struct qcom_glink *glink,
+ {
+ 	struct glink_msg msg;
+ 
+-	msg.cmd = cpu_to_le16(RPM_CMD_OPEN_ACK);
++	msg.cmd = cpu_to_le16(GLINK_CMD_OPEN_ACK);
+ 	msg.param1 = cpu_to_le16(channel->rcid);
+ 	msg.param2 = cpu_to_le32(0);
+ 
+@@ -424,11 +424,11 @@ static void qcom_glink_handle_intent_req_ack(struct qcom_glink *glink,
  }
+ 
+ /**
+- * qcom_glink_send_open_req() - send a RPM_CMD_OPEN request to the remote
++ * qcom_glink_send_open_req() - send a GLINK_CMD_OPEN request to the remote
+  * @glink: Ptr to the glink edge
+  * @channel: Ptr to the channel that the open req is sent
+  *
+- * Allocates a local channel id and sends a RPM_CMD_OPEN message to the remote.
++ * Allocates a local channel id and sends a GLINK_CMD_OPEN message to the remote.
+  * Will return with refcount held, regardless of outcome.
+  *
+  * Returns 0 on success, negative errno otherwise.
+@@ -457,7 +457,7 @@ static int qcom_glink_send_open_req(struct qcom_glink *glink,
+ 
+ 	channel->lcid = ret;
+ 
+-	req.msg.cmd = cpu_to_le16(RPM_CMD_OPEN);
++	req.msg.cmd = cpu_to_le16(GLINK_CMD_OPEN);
+ 	req.msg.param1 = cpu_to_le16(channel->lcid);
+ 	req.msg.param2 = cpu_to_le32(name_len);
+ 	strcpy(req.name, channel->name);
+@@ -482,7 +482,7 @@ static void qcom_glink_send_close_req(struct qcom_glink *glink,
+ {
+ 	struct glink_msg req;
+ 
+-	req.cmd = cpu_to_le16(RPM_CMD_CLOSE);
++	req.cmd = cpu_to_le16(GLINK_CMD_CLOSE);
+ 	req.param1 = cpu_to_le16(channel->lcid);
+ 	req.param2 = 0;
+ 
+@@ -494,7 +494,7 @@ static void qcom_glink_send_close_ack(struct qcom_glink *glink,
+ {
+ 	struct glink_msg req;
+ 
+-	req.cmd = cpu_to_le16(RPM_CMD_CLOSE_ACK);
++	req.cmd = cpu_to_le16(GLINK_CMD_CLOSE_ACK);
+ 	req.param1 = cpu_to_le16(rcid);
+ 	req.param2 = 0;
+ 
+@@ -525,7 +525,7 @@ static void qcom_glink_rx_done_work(struct work_struct *work)
+ 		iid = intent->id;
+ 		reuse = intent->reuse;
+ 
+-		cmd.id = reuse ? RPM_CMD_RX_DONE_W_REUSE : RPM_CMD_RX_DONE;
++		cmd.id = reuse ? GLINK_CMD_RX_DONE_W_REUSE : GLINK_CMD_RX_DONE;
+ 		cmd.lcid = cid;
+ 		cmd.liid = iid;
+ 
+@@ -637,7 +637,7 @@ static int qcom_glink_send_intent_req_ack(struct qcom_glink *glink,
+ {
+ 	struct glink_msg msg;
+ 
+-	msg.cmd = cpu_to_le16(RPM_CMD_RX_INTENT_REQ_ACK);
++	msg.cmd = cpu_to_le16(GLINK_CMD_RX_INTENT_REQ_ACK);
+ 	msg.param1 = cpu_to_le16(channel->lcid);
+ 	msg.param2 = cpu_to_le32(granted);
+ 
+@@ -668,7 +668,7 @@ static int qcom_glink_advertise_intent(struct qcom_glink *glink,
+ 	} __packed;
+ 	struct command cmd;
+ 
+-	cmd.id = cpu_to_le16(RPM_CMD_INTENT);
++	cmd.id = cpu_to_le16(GLINK_CMD_INTENT);
+ 	cmd.lcid = cpu_to_le16(channel->lcid);
+ 	cmd.count = cpu_to_le32(1);
+ 	cmd.size = cpu_to_le32(intent->size);
+@@ -1033,42 +1033,42 @@ static irqreturn_t qcom_glink_native_intr(int irq, void *data)
+ 		param2 = le32_to_cpu(msg.param2);
+ 
+ 		switch (cmd) {
+-		case RPM_CMD_VERSION:
+-		case RPM_CMD_VERSION_ACK:
+-		case RPM_CMD_CLOSE:
+-		case RPM_CMD_CLOSE_ACK:
+-		case RPM_CMD_RX_INTENT_REQ:
++		case GLINK_CMD_VERSION:
++		case GLINK_CMD_VERSION_ACK:
++		case GLINK_CMD_CLOSE:
++		case GLINK_CMD_CLOSE_ACK:
++		case GLINK_CMD_RX_INTENT_REQ:
+ 			ret = qcom_glink_rx_defer(glink, 0);
+ 			break;
+-		case RPM_CMD_OPEN_ACK:
++		case GLINK_CMD_OPEN_ACK:
+ 			ret = qcom_glink_rx_open_ack(glink, param1);
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 			break;
+-		case RPM_CMD_OPEN:
++		case GLINK_CMD_OPEN:
+ 			ret = qcom_glink_rx_defer(glink, param2);
+ 			break;
+-		case RPM_CMD_TX_DATA:
+-		case RPM_CMD_TX_DATA_CONT:
++		case GLINK_CMD_TX_DATA:
++		case GLINK_CMD_TX_DATA_CONT:
+ 			ret = qcom_glink_rx_data(glink, avail);
+ 			break;
+-		case RPM_CMD_READ_NOTIF:
++		case GLINK_CMD_READ_NOTIF:
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 
+ 			mbox_send_message(glink->mbox_chan, NULL);
+ 			mbox_client_txdone(glink->mbox_chan, 0);
+ 			break;
+-		case RPM_CMD_INTENT:
++		case GLINK_CMD_INTENT:
+ 			qcom_glink_handle_intent(glink, param1, param2, avail);
+ 			break;
+-		case RPM_CMD_RX_DONE:
++		case GLINK_CMD_RX_DONE:
+ 			qcom_glink_handle_rx_done(glink, param1, param2, false);
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 			break;
+-		case RPM_CMD_RX_DONE_W_REUSE:
++		case GLINK_CMD_RX_DONE_W_REUSE:
+ 			qcom_glink_handle_rx_done(glink, param1, param2, true);
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 			break;
+-		case RPM_CMD_RX_INTENT_REQ_ACK:
++		case GLINK_CMD_RX_INTENT_REQ_ACK:
+ 			qcom_glink_handle_intent_req_ack(glink, param1, param2);
+ 			qcom_glink_rx_advance(glink, ALIGN(sizeof(msg), 8));
+ 			break;
+@@ -1271,7 +1271,7 @@ static int qcom_glink_request_intent(struct qcom_glink *glink,
+ 
+ 	reinit_completion(&channel->intent_req_comp);
+ 
+-	cmd.id = RPM_CMD_RX_INTENT_REQ;
++	cmd.id = GLINK_CMD_RX_INTENT_REQ;
+ 	cmd.cid = channel->lcid;
+ 	cmd.size = size;
+ 
+@@ -1345,7 +1345,7 @@ static int __qcom_glink_send(struct glink_channel *channel,
+ 		chunk_size = SZ_8K;
+ 		left_size = len - chunk_size;
+ 	}
+-	req.msg.cmd = cpu_to_le16(RPM_CMD_TX_DATA);
++	req.msg.cmd = cpu_to_le16(GLINK_CMD_TX_DATA);
+ 	req.msg.param1 = cpu_to_le16(channel->lcid);
+ 	req.msg.param2 = cpu_to_le32(iid);
+ 	req.chunk_size = cpu_to_le32(chunk_size);
+@@ -1366,7 +1366,7 @@ static int __qcom_glink_send(struct glink_channel *channel,
+ 			chunk_size = SZ_8K;
+ 		left_size -= chunk_size;
+ 
+-		req.msg.cmd = cpu_to_le16(RPM_CMD_TX_DATA_CONT);
++		req.msg.cmd = cpu_to_le16(GLINK_CMD_TX_DATA_CONT);
+ 		req.msg.param1 = cpu_to_le16(channel->lcid);
+ 		req.msg.param2 = cpu_to_le32(iid);
+ 		req.chunk_size = cpu_to_le32(chunk_size);
+@@ -1621,22 +1621,22 @@ static void qcom_glink_work(struct work_struct *work)
+ 		param2 = le32_to_cpu(msg->param2);
+ 
+ 		switch (cmd) {
+-		case RPM_CMD_VERSION:
++		case GLINK_CMD_VERSION:
+ 			qcom_glink_receive_version(glink, param1, param2);
+ 			break;
+-		case RPM_CMD_VERSION_ACK:
++		case GLINK_CMD_VERSION_ACK:
+ 			qcom_glink_receive_version_ack(glink, param1, param2);
+ 			break;
+-		case RPM_CMD_OPEN:
++		case GLINK_CMD_OPEN:
+ 			qcom_glink_rx_open(glink, param1, msg->data);
+ 			break;
+-		case RPM_CMD_CLOSE:
++		case GLINK_CMD_CLOSE:
+ 			qcom_glink_rx_close(glink, param1);
+ 			break;
+-		case RPM_CMD_CLOSE_ACK:
++		case GLINK_CMD_CLOSE_ACK:
+ 			qcom_glink_rx_close_ack(glink, param1);
+ 			break;
+-		case RPM_CMD_RX_INTENT_REQ:
++		case GLINK_CMD_RX_INTENT_REQ:
+ 			qcom_glink_handle_intent_req(glink, param1, param2);
+ 			break;
+ 		default:
 -- 
 2.43.0
 
