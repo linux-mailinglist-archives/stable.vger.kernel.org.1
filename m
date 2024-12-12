@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-102895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329469EF516
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08EA69EF75F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAFA317CE3D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1095189BC32
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E782210F2;
-	Thu, 12 Dec 2024 17:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910B72165F0;
+	Thu, 12 Dec 2024 17:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tYuAtta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/gjXYSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50295215762;
-	Thu, 12 Dec 2024 17:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCFB176AA1;
+	Thu, 12 Dec 2024 17:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022898; cv=none; b=dqtc5ZFswg4rxVZb5Puy89VPiIfxtkOxu6x7rztDzfDC2Ril4paLvKliOaJv4ljJuSIM4tVHtaSuFLkQSchOBv3ULdla17bJ0kBNJ7arPnXKVLRrYheFVr6pAzg25YZLIcpxsfZTn1kQn9mc4hjquFeTyT6It7a7ImYt4Y6pxg0=
+	t=1734024303; cv=none; b=CRWeVg+J+NYZmMVa2y0NG1q7CwfL3VybhWuFys4jlfPiVhQWfdnN/uWJ4mBMwC6bgzCb/5YZqd+O0pTNVpxNior5vuhqTeaTXG1Kj/ZCh6bEpvs68mY+cppwf0d6zgeP8Hyk+2Pm78cA8UjSZpdVyxrPTJL5X5k9Ei1MBAKyJeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022898; c=relaxed/simple;
-	bh=nUoBFGNgl+IW8JqGtWTnfwrsBVX/3TOl/Tv5FDCJAcw=;
+	s=arc-20240116; t=1734024303; c=relaxed/simple;
+	bh=CamiNhI/AsA6FxShs8t9bsDpX5LL2hJxE9nsKckhg8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlOjH0l8+iljYI9gcAnKWswy7k0ppqfgwTLbGKcADcec8MAgTm1Gi6sE0sbIOvt3nZE4v9wl1tRI3Ibazl9umbgMpC7jaqxCzNtLTxFxEUf9oeRetxm4Ghg+/+NRzoLYtqCSHmXVkGlLpfILDans+XLTba7SUnOcwjh7VP7qO3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tYuAtta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17D2C4CECE;
-	Thu, 12 Dec 2024 17:01:37 +0000 (UTC)
+	 MIME-Version; b=ImchI1XECGsHquEqw2DS0jN3kMhysrR5McO1zrNmlvTh8CmbD/DWsQd/Zxmop6smY6SGFXnHEpqpjxVUFBxNsc/zO3b2byadGnDMXM2/W/atIAMjfWD+tBmtT2xlY6ZRLbVrnTH9bB+8+nQcS+jPqvq2Ql3ySXwfFdhK6aFQe08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/gjXYSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6212C4CEDE;
+	Thu, 12 Dec 2024 17:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022898;
-	bh=nUoBFGNgl+IW8JqGtWTnfwrsBVX/3TOl/Tv5FDCJAcw=;
+	s=korg; t=1734024303;
+	bh=CamiNhI/AsA6FxShs8t9bsDpX5LL2hJxE9nsKckhg8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tYuAtta6HyR3lwCM5gO4ueCcH+KQequbHyWRuVd3BOlpEW2y48NWGbXJy1ANjVHz
-	 JUWc6LqvnZZxGMgNw2BDODqORJONBslizkaavdoO2/Q7NmC+ELS1KfDh394R+CxTc3
-	 /cw7hSJ8QImRzzu/zO/txkvEcBbD9VAmCnqrxGi8=
+	b=H/gjXYSbF0ICP6h6IcIgRJJPJpUr4sQXySnxQ9Nw0tSbSmJVFjnm+yVh0eVthkcCn
+	 onvM95BW7qBF2C+OZf7Ss9XGYfhzLJSIlqwdgylenDLwp78COrs5Fir4q2efZChPME
+	 qPtA22HTWnoi2A/vn8xbc7PVtEY1k5Ko/bVswTRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
+	Salam Noureddine <noureddine@arista.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 364/565] jffs2: fix use of uninitialized variable
+Subject: [PATCH 5.10 221/459] tg3: Set coherent DMA mask bits to 31 for BCM57766 chipsets
 Date: Thu, 12 Dec 2024 15:59:19 +0100
-Message-ID: <20241212144326.004344512@linuxfoundation.org>
+Message-ID: <20241212144302.302657614@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@siflower.com.cn>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit 3ba44ee966bc3c41dd8a944f963466c8fcc60dc8 ]
+[ Upstream commit 614f4d166eeeb9bd709b0ad29552f691c0f45776 ]
 
-When building the kernel with -Wmaybe-uninitialized, the compiler
-reports this warning:
+The hardware on Broadcom 1G chipsets have a known limitation
+where they cannot handle DMA addresses that cross over 4GB.
+When such an address is encountered, the hardware sets the
+address overflow error bit in the DMA status register and
+triggers a reset.
 
-In function 'jffs2_mark_erased_block',
-    inlined from 'jffs2_erase_pending_blocks' at fs/jffs2/erase.c:116:4:
-fs/jffs2/erase.c:474:9: warning: 'bad_offset' may be used uninitialized [-Wmaybe-uninitialized]
-  474 |         jffs2_erase_failed(c, jeb, bad_offset);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-fs/jffs2/erase.c: In function 'jffs2_erase_pending_blocks':
-fs/jffs2/erase.c:402:18: note: 'bad_offset' was declared here
-  402 |         uint32_t bad_offset;
-      |                  ^~~~~~~~~~
+However, BCM57766 hardware is setting the overflow bit and
+triggering a reset in some cases when there is no actual
+underlying address overflow. The hardware team analyzed the
+issue and concluded that it is happening when the status
+block update has an address with higher (b16 to b31) bits
+as 0xffff following a previous update that had lowest bits
+as 0xffff.
 
-When mtd->point() is used, jffs2_erase_pending_blocks can return -EIO
-without initializing bad_offset, which is later used at the filebad
-label in jffs2_mark_erased_block.
-Fix it by initializing this variable.
+To work around this bug in the BCM57766 hardware, set the
+coherent dma mask from the current 64b to 31b. This will
+ensure that upper bits of the status block DMA address are
+always at most 0x7fff, thus avoiding the improper overflow
+check described above. This work around is intended for only
+status block and ring memories and has no effect on TX and
+RX buffers as they do not require coherent memory.
 
-Fixes: 8a0f572397ca ("[JFFS2] Return values of jffs2_block_check_erase error paths")
-Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: 72f2afb8a685 ("[TG3]: Add DMA address workaround")
+Reported-by: Salam Noureddine <noureddine@arista.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://patch.msgid.link/20241119055741.147144-1-pavan.chebbi@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/erase.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/jffs2/erase.c b/fs/jffs2/erase.c
-index 7e9abdb897122..5fbaf6ab9f482 100644
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -340,10 +340,9 @@ static int jffs2_block_check_erase(struct jffs2_sb_info *c, struct jffs2_erasebl
- 		} while(--retlen);
- 		mtd_unpoint(c->mtd, jeb->offset, c->sector_size);
- 		if (retlen) {
--			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08tx\n",
--				*wordebuf,
--				jeb->offset +
--				c->sector_size-retlen * sizeof(*wordebuf));
-+			*bad_offset = jeb->offset + c->sector_size - retlen * sizeof(*wordebuf);
-+			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08x\n",
-+				*wordebuf, *bad_offset);
- 			return -EIO;
- 		}
- 		return 0;
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index fe2c9b110e606..937579817f226 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -17807,6 +17807,9 @@ static int tg3_init_one(struct pci_dev *pdev,
+ 	} else
+ 		persist_dma_mask = dma_mask = DMA_BIT_MASK(64);
+ 
++	if (tg3_asic_rev(tp) == ASIC_REV_57766)
++		persist_dma_mask = DMA_BIT_MASK(31);
++
+ 	/* Configure DMA attributes. */
+ 	if (dma_mask > DMA_BIT_MASK(32)) {
+ 		err = pci_set_dma_mask(pdev, dma_mask);
 -- 
 2.43.0
 
