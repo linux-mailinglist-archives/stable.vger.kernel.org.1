@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23EF9EF5DD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2839EF88A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F22A71898BFD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 964AC188B623
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE17D225409;
-	Thu, 12 Dec 2024 17:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71141222D72;
+	Thu, 12 Dec 2024 17:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwYAqUtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAnJ4Eml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90183223C42;
-	Thu, 12 Dec 2024 17:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE73222D70;
+	Thu, 12 Dec 2024 17:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023421; cv=none; b=cCtC0dyEx7pzVOFvfhxdiowK1E+Un0j+6zgwrjsVF7SI0IsVWBAoaVnABnm5C0ghIi+3yrERq3qTEgwiXPy2/rR/Gf4NUKHlmkh0P23unkwRdc2tHA1b9jSmxThKKgVBfDwyD7O2E/l8KVVHzlPKRTD6u6VPFCRlVy4kR24S364=
+	t=1734024799; cv=none; b=hNUIL9uYeHNdY4ZuhOgOwqiDMdFEw+gZczyUQySd8O9caEXSoCgZ6Xbe/m+2WGWtNhjWMrGbtK+B5/q2ocQn7MZoXdefgnUCKJjVy+zpsKoJn9iK5au2rnFkNIlKdpweaQZr/RbzHiVgY6oClt9MeuU5bgiOTrIzNszBio5RV1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023421; c=relaxed/simple;
-	bh=n9ZLcGcY0ECnuVKdilhkvuiiHbW+z47o3h371rvIm/U=;
+	s=arc-20240116; t=1734024799; c=relaxed/simple;
+	bh=ha2XWZFhEq/gJj3nvxP+GGgHIs8azvtN4E4HNFoZ9Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBFmii2SxXre9S7Ib2LlcI59hmTuOCOE68KTXECGDRJN5QnQEcqYR405KHLNVrdue6dZLog2DDvugVl8go1Zc84yAfht3RDssufqlmNnNv7eHIMNMe87ddDKK4f61IAtPs7CvCXd0VNUvFC2NYAnAeEyfdSXeShtww+LO62DwTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwYAqUtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911CFC4CECE;
-	Thu, 12 Dec 2024 17:10:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PJT3DA1Th/5TP0y7b842qkdvbPQjMD8DH9y4jBsv7uE5K0wLFMiTDE9dw2QK3waJw31MwNcwOIXv0oeS7mO00O/Eg0QSrzLjGhlZJtHyFSVvY3Gkbk/DPwZum43OoRsH3KnXxInwAgnBAIh+kvRp4Lg/EyesRtFzXVqlC6ckgV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAnJ4Eml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86B5C4CED0;
+	Thu, 12 Dec 2024 17:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023421;
-	bh=n9ZLcGcY0ECnuVKdilhkvuiiHbW+z47o3h371rvIm/U=;
+	s=korg; t=1734024799;
+	bh=ha2XWZFhEq/gJj3nvxP+GGgHIs8azvtN4E4HNFoZ9Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwYAqUtH60i5vkBpqMXxqyuQa19dqR9P5s7vSveF4jgBbdf2uwdkkm8BzQ0kcVgp6
-	 RY4BkcHcgaQs+D3SeBCJcYfbayhuhbFjs+IbmnAxUAQLVOqLvWNjB+Phyra6QZ3KYV
-	 odcU2Uh1ifdcMx45ahixiMyyoOwMrUjjRN8j2daA=
+	b=eAnJ4EmlwLchSAWUcBTs1bygea7fNUEzAgV1901wbwf4mSmdVtfOfW5e8v3rd/d/H
+	 K+JoQxIfdT9b9y70CoGTMBc8DiCChoODUn8HE9j6gHYlGLGTKlycWd0PO9HfxYy6gv
+	 39TnWpW9h2OsG6zDRcFPFmIT06+C8lBcE65kMZMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Parker Newman <pnewman@connecttech.com>,
+	=?UTF-8?q?Joaqu=C3=ADn=20Ignacio=20Aramend=C3=ADa?= <samsagax@gmail.com>,
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 529/565] misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle
+Subject: [PATCH 5.10 386/459] drm: panel-orientation-quirks: Add quirk for AYA NEO 2 model
 Date: Thu, 12 Dec 2024 16:02:04 +0100
-Message-ID: <20241212144332.723313923@linuxfoundation.org>
+Message-ID: <20241212144309.017561948@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,123 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parker Newman <pnewman@connecttech.com>
+From: Joaquín Ignacio Aramendía <samsagax@gmail.com>
 
-[ Upstream commit 7738a7ab9d12c5371ed97114ee2132d4512e9fd5 ]
+[ Upstream commit 361ebf5ef843b0aa1704c72eb26b91cf76c3c5b7 ]
 
-Add a quirk similar to eeprom_93xx46 to add an extra clock cycle before
-reading data from the EEPROM.
+Add quirk orientation for AYA NEO 2. The name appears without spaces in
+DMI strings. That made it difficult to reuse the 2021 match. Also the
+display is larger in resolution.
 
-The 93Cx6 family of EEPROMs output a "dummy 0 bit" between the writing
-of the op-code/address from the host to the EEPROM and the reading of
-the actual data from the EEPROM.
+Tested by the JELOS team that has been patching their own kernel for a
+while now and confirmed by users in the AYA NEO and ChimeraOS discord
+servers.
 
-More info can be found on page 6 of the AT93C46 datasheet (linked below).
-Similar notes are found in other 93xx6 datasheets.
-
-In summary the read operation for a 93Cx6 EEPROM is:
-Write to EEPROM:	110[A5-A0]	(9 bits)
-Read from EEPROM:	0[D15-D0]	(17 bits)
-
-Where:
-	110 is the start bit and READ OpCode
-	[A5-A0] is the address to read from
-	0 is a "dummy bit" preceding the actual data
-	[D15-D0] is the actual data.
-
-Looking at the READ timing diagrams in the 93Cx6 datasheets the dummy
-bit should be clocked out on the last address bit clock cycle meaning it
-should be discarded naturally.
-
-However, depending on the hardware configuration sometimes this dummy
-bit is not discarded. This is the case with Exar PCI UARTs which require
-an extra clock cycle between sending the address and reading the data.
-
-Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-5193-SEEPROM-AT93C46D-Datasheet.pdf
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Parker Newman <pnewman@connecttech.com>
-Link: https://lore.kernel.org/r/0f23973efefccd2544705a0480b4ad4c2353e407.1727880931.git.pnewman@connecttech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Joaquín Ignacio Aramendía <samsagax@gmail.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/2b35545b77a9fd8c9699b751ca282226dcecb1dd.1726492131.git.tjakobi@math.uni-bielefeld.de
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/eeprom_93cx6.c | 10 ++++++++++
- include/linux/eeprom_93cx6.h       | 11 +++++++++++
- 2 files changed, 21 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/misc/eeprom/eeprom_93cx6.c b/drivers/misc/eeprom/eeprom_93cx6.c
-index 9627294fe3e95..4c9827fe92173 100644
---- a/drivers/misc/eeprom/eeprom_93cx6.c
-+++ b/drivers/misc/eeprom/eeprom_93cx6.c
-@@ -186,6 +186,11 @@ void eeprom_93cx6_read(struct eeprom_93cx6 *eeprom, const u8 word,
- 	eeprom_93cx6_write_bits(eeprom, command,
- 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width);
- 
-+	if (has_quirk_extra_read_cycle(eeprom)) {
-+		eeprom_93cx6_pulse_high(eeprom);
-+		eeprom_93cx6_pulse_low(eeprom);
-+	}
-+
- 	/*
- 	 * Read the requested 16 bits.
- 	 */
-@@ -252,6 +257,11 @@ void eeprom_93cx6_readb(struct eeprom_93cx6 *eeprom, const u8 byte,
- 	eeprom_93cx6_write_bits(eeprom, command,
- 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width + 1);
- 
-+	if (has_quirk_extra_read_cycle(eeprom)) {
-+		eeprom_93cx6_pulse_high(eeprom);
-+		eeprom_93cx6_pulse_low(eeprom);
-+	}
-+
- 	/*
- 	 * Read the requested 8 bits.
- 	 */
-diff --git a/include/linux/eeprom_93cx6.h b/include/linux/eeprom_93cx6.h
-index c860c72a921d0..3a485cc0e0fa0 100644
---- a/include/linux/eeprom_93cx6.h
-+++ b/include/linux/eeprom_93cx6.h
-@@ -11,6 +11,8 @@
- 	Supported chipsets: 93c46, 93c56 and 93c66.
-  */
- 
-+#include <linux/bits.h>
-+
- /*
-  * EEPROM operation defines.
-  */
-@@ -34,6 +36,7 @@
-  * @register_write(struct eeprom_93cx6 *eeprom): handler to
-  * write to the eeprom register by using all reg_* fields.
-  * @width: eeprom width, should be one of the PCI_EEPROM_WIDTH_* defines
-+ * @quirks: eeprom or controller quirks
-  * @drive_data: Set if we're driving the data line.
-  * @reg_data_in: register field to indicate data input
-  * @reg_data_out: register field to indicate data output
-@@ -50,6 +53,9 @@ struct eeprom_93cx6 {
- 	void (*register_write)(struct eeprom_93cx6 *eeprom);
- 
- 	int width;
-+	unsigned int quirks;
-+/* Some EEPROMs require an extra clock cycle before reading */
-+#define PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE	BIT(0)
- 
- 	char drive_data;
- 	char reg_data_in;
-@@ -71,3 +77,8 @@ extern void eeprom_93cx6_wren(struct eeprom_93cx6 *eeprom, bool enable);
- 
- extern void eeprom_93cx6_write(struct eeprom_93cx6 *eeprom,
- 			       u8 addr, u16 data);
-+
-+static inline bool has_quirk_extra_read_cycle(struct eeprom_93cx6 *eeprom)
-+{
-+	return eeprom->quirks & PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE;
-+}
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index f1091cb87de0c..bf90a5be956fe 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -166,6 +166,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* AYA NEO AYANEO 2 */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
++		},
++		.driver_data = (void *)&lcd1200x1920_rightside_up,
+ 	}, {	/* AYA NEO 2021 */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYADEVICE"),
 -- 
 2.43.0
 
