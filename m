@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF949EF2FD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DD8B9EEBF9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8AC7189DE54
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:44:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E09B283AD0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D13823A184;
-	Thu, 12 Dec 2024 16:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D54215799;
+	Thu, 12 Dec 2024 15:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OkJWasZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HehYiYow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA32623A180;
-	Thu, 12 Dec 2024 16:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5120B215798;
+	Thu, 12 Dec 2024 15:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021350; cv=none; b=jQnuMjHbGIp+PhBrMuJPktYhdP6tSYLUFAzL+UJXe0Vm0TooyjPLpBmA53StYzSDCU1bD4w6jB20jIt6wSl2VInPQFh6JIfufqKfIQT4EDFKTk+FjLryvbkTJ1ymx8lU4HM3W8VOwZH1rpp3LHuBWsSh3LXQGeHJLh1y4sdTPIE=
+	t=1734017407; cv=none; b=Fdd7IONdtwwcfYWtf9LaVOJP5LCKuDBQ0hra1OdkMShP8b3aTP6TsjqDghyUwx7z+tcMEPFeIwjLQs+DK6os6LPmLFhqQRe3D5aZ313AHqroHVkRkLnUguz5yiz2zXCn/PGRGbEBxZRkb9Inz/RMWgiOGczRlIfHOGXz1ibFVGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021350; c=relaxed/simple;
-	bh=BDiHpkfnH4hpmhbUJ1XLdL+xVa0mbdizKPvN2/vmU3g=;
+	s=arc-20240116; t=1734017407; c=relaxed/simple;
+	bh=NwR7/7lQDzNwZhBYIVn54iYOOg9AQ5FlDSK1L8D1CTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3MiWA533JGUNcZbFrJIbMBkvMr2yXYB6wUeKa0pyaPURG37ZulasR7lwIV9//8MGRcKNnw8YhE2FaZ1ylgnxA5yiumQ/xE2fpag1nG0neZoUA6mBB0Z1mCtYoSi5kPYogYR6d0mT1aghtLS8JQlpOxbAeK1OGZnA3GRPhYx5xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OkJWasZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B40C4CED0;
-	Thu, 12 Dec 2024 16:35:49 +0000 (UTC)
+	 MIME-Version; b=Rut0Ee8wRiEQPA/CGGu7c7Y3O0Ruk7gU9MnQ4TCstv6KrIpGJiIEr1gVzIKQGsvVXX03i3pLPMA6HjNRVRhxs7MjwHvF+I2XrljhHAX2Mqsdp3ZjunUNr1YHWGBfc9t2nTgfQg2ckqMO5V8vVr/Kq6bEeEmXdzPlWbbhY4Jaah4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HehYiYow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9F6C4CECE;
+	Thu, 12 Dec 2024 15:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021350;
-	bh=BDiHpkfnH4hpmhbUJ1XLdL+xVa0mbdizKPvN2/vmU3g=;
+	s=korg; t=1734017406;
+	bh=NwR7/7lQDzNwZhBYIVn54iYOOg9AQ5FlDSK1L8D1CTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OkJWasZTxVI2UVCiNeyAT85Ng4Rq1EK7hLdhF/cFXBHspYIszpu3S367cKufrYDZ
-	 8+yQ2JIEGztoV3BTRjCkLdyVmVWU7gxM1VLzduaPQ7419jR7onTRqgSnt7rq3oFcZd
-	 8lybaDy/jkEz/PcCH6AGQiMOv9zs5eD5zwNmtYyo=
+	b=HehYiYowSD2+3zzl1t8y6qI61pinKZk3DoVvhzlGqSwDKckVUM7lFKWrg0NSMcSMj
+	 z9PUKGbN9R/xXYJwwRIM3ChVYDIxj4NFtzy7IgfSNBh63eb2YjdaqEKEPlaph6zj5x
+	 JlvCmJzH/2TMO3rx6kmfNYprhEJ00NM8j6SU1aHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 683/772] jfs: array-index-out-of-bounds fix in dtReadFirst
+	Sebastian Ott <sebott@redhat.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Matt Fleming <mfleming@cloudflare.com>
+Subject: [PATCH 6.12 459/466] net/mlx5: unique names for per device caches
 Date: Thu, 12 Dec 2024 16:00:28 +0100
-Message-ID: <20241212144418.135214728@linuxfoundation.org>
+Message-ID: <20241212144325.000168582@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Sebastian Ott <sebott@redhat.com>
 
-[ Upstream commit ca84a2c9be482836b86d780244f0357e5a778c46 ]
+commit 25872a079bbbe952eb660249cc9f40fa75623e68 upstream.
 
-The value of stbl can be sometimes out of bounds due
-to a bad filesystem. Added a check with appopriate return
-of error code in that case.
+Add the device name to the per device kmem_cache names to
+ensure their uniqueness. This fixes warnings like this:
+"kmem_cache of name 'mlx5_fs_fgs' already exists".
 
-Reported-by: syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=65fa06e29859e41a83f3
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20241023134146.28448-1-sebott@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matt Fleming <mfleming@cloudflare.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 5d3127ca68a42..69fd936fbdb37 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -3086,6 +3086,13 @@ static int dtReadFirst(struct inode *ip, struct btstack * btstack)
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -3698,6 +3698,7 @@ void mlx5_fs_core_free(struct mlx5_core_
+ int mlx5_fs_core_alloc(struct mlx5_core_dev *dev)
+ {
+ 	struct mlx5_flow_steering *steering;
++	char name[80];
+ 	int err = 0;
  
- 		/* get the leftmost entry */
- 		stbl = DT_GETSTBL(p);
-+
-+		if (stbl[0] < 0 || stbl[0] > 127) {
-+			DT_PUTPAGE(mp);
-+			jfs_error(ip->i_sb, "stbl[0] out of bound\n");
-+			return -EIO;
-+		}
-+
- 		xd = (pxd_t *) & p->slot[stbl[0]];
+ 	err = mlx5_init_fc_stats(dev);
+@@ -3722,10 +3723,12 @@ int mlx5_fs_core_alloc(struct mlx5_core_
+ 	else
+ 		steering->mode = MLX5_FLOW_STEERING_MODE_DMFS;
  
- 		/* get the child page block address */
--- 
-2.43.0
-
+-	steering->fgs_cache = kmem_cache_create("mlx5_fs_fgs",
++	snprintf(name, sizeof(name), "%s-mlx5_fs_fgs", dev_name(dev->device));
++	steering->fgs_cache = kmem_cache_create(name,
+ 						sizeof(struct mlx5_flow_group), 0,
+ 						0, NULL);
+-	steering->ftes_cache = kmem_cache_create("mlx5_fs_ftes", sizeof(struct fs_fte), 0,
++	snprintf(name, sizeof(name), "%s-mlx5_fs_ftes", dev_name(dev->device));
++	steering->ftes_cache = kmem_cache_create(name, sizeof(struct fs_fte), 0,
+ 						 0, NULL);
+ 	if (!steering->ftes_cache || !steering->fgs_cache) {
+ 		err = -ENOMEM;
 
 
 
