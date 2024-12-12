@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987559EF34F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD0F9EEC9F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F9D328B40C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0927A16A86F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACDB222D70;
-	Thu, 12 Dec 2024 16:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FA2217739;
+	Thu, 12 Dec 2024 15:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnPxV1Th"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NSjJbIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F462210E2;
-	Thu, 12 Dec 2024 16:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1163921765E;
+	Thu, 12 Dec 2024 15:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022277; cv=none; b=j94ervY3URC+5Vk6EjVYnofXE+dxzmDKpUgJlTGvbZyrYzk9kV8Y/t00j2izttXRCvApyNeHxpDgXOUYkjSfq9SL1mQqNVymyBVurp/wNywhkI52EephwAESvr56YK1CURljZDv4foRQb8l6Ei0k0a7GRMqX07aVFWCVCzVo5Ss=
+	t=1734017651; cv=none; b=d5RPOn7Ogi+ac0aTojfMRXRxNyqRveASNVznYA985fuONOTvAiJjT5Zk8+XlM+6ckO36pQRl0GFb9avPoYXzxob310houBnMOoRfE64cM+hJAZd7jmRbcFovKPoc60gVDpqOx/n/5Ryt2uiKSsCV3uKLNGZMHOL2rDb4lBBDtnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022277; c=relaxed/simple;
-	bh=MAYYOnI+WIlV+eiteJnWevrswNY7rt6GJ/+8VXq5wsM=;
+	s=arc-20240116; t=1734017651; c=relaxed/simple;
+	bh=0EIzCWmAMei+HYe4zNCPlH1KH07UjIg8+IISAOfM5ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BZ9nTklPeegkNwxyazSu21yBWtdsg3yVcsBLZjg6PnWw3G141j82KmOD12LEz7oyvsqMyIEj3YuE393VPNJMIahsnosvlTRovrVhX5hXcHflkLcdgVcrGG/4uhZfMAjTHxKf5tbYYo+1ZAK7MBNYbU+nf+W2lZDMqhcGTANOzsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnPxV1Th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFD4C4CECE;
-	Thu, 12 Dec 2024 16:51:16 +0000 (UTC)
+	 MIME-Version; b=IqHfabfDd+wEYxW75QfwHHKBnm5AR9ybwUGduksYHIhBn2yY2NcWD4clp87YI+a/y0zJjCycTlabVIdOqwy8fCTsvWIuNDP8062c6Q8MA18gH4GVhbPwOo8HZu0QOh75DYlFKtnd50kyGwCVYugyl9zW2ZchHg5iT/gHpx1ZYdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NSjJbIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293F5C4CECE;
+	Thu, 12 Dec 2024 15:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022277;
-	bh=MAYYOnI+WIlV+eiteJnWevrswNY7rt6GJ/+8VXq5wsM=;
+	s=korg; t=1734017650;
+	bh=0EIzCWmAMei+HYe4zNCPlH1KH07UjIg8+IISAOfM5ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnPxV1ThnUEk2p7Mh6Jzthr4o/JxMd391SxO+z943/DgYNqehkGD3S82M8E/V0SSo
-	 IM/QP1IjvS1rctBFuJqwhP/rPWjQD+2+K9E0hrjfzxqj5arjwe6doZ8mTljcn/xeA6
-	 WaVL9uHM/Avo9poyGEvTSjbWdMKWeQHbaXFxubIc=
+	b=2NSjJbIGyCpGVTV6xLP9is70pw6WcUnyHQzbBlLEqm75EU1ASpdEmBVLQ/D9Rx2jL
+	 qrz27k3fKXID6c98Du9/WtuN5MF2MvrH2dim102HPzwYXJrXCwE9To7z7NiJxx2nVo
+	 VADc0QnOwEviYgvY3MkRcjflQNj5TpHsO/g6iYA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kartik Rajput <kkartik@nvidia.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 197/565] selftests: net: really check for bg process completion
+Subject: [PATCH 6.6 073/356] serial: amba-pl011: Fix RX stall when DMA is used
 Date: Thu, 12 Dec 2024 15:56:32 +0100
-Message-ID: <20241212144319.274481686@linuxfoundation.org>
+Message-ID: <20241212144247.514807793@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Kartik Rajput <kkartik@nvidia.com>
 
-[ Upstream commit 52ed077aa6336dbef83a2d6d21c52d1706fb7f16 ]
+[ Upstream commit 2bcacc1c87acf9a8ebc17de18cb2b3cfeca547cf ]
 
-A recent refactor transformed the check for process completion
-in a true statement, due to a typo.
+Function pl011_throttle_rx() calls pl011_stop_rx() to disable RX, which
+also disables the RX DMA by clearing the RXDMAE bit of the DMACR
+register. However, to properly unthrottle RX when DMA is used, the
+function pl011_unthrottle_rx() is expected to set the RXDMAE bit of
+the DMACR register, which it currently lacks. This causes RX to stall
+after the throttle API is called.
 
-As a result, the relevant test-case is unable to catch the
-regression it was supposed to detect.
+Set RXDMAE bit in the DMACR register while unthrottling RX if RX DMA is
+used.
 
-Restore the correct condition.
-
-Fixes: 691bb4e49c98 ("selftests: net: avoid just another constant wait")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/0e6f213811f8e93a235307e683af8225cc6277ae.1730828007.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 211565b10099 ("serial: pl011: UPSTAT_AUTORTS requires .throttle/unthrottle")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20241113092629.60226-1-kkartik@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/pmtu.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/amba-pl011.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 31e3d0db7a12e..84c05e533056d 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -1799,7 +1799,7 @@ check_running() {
- 	pid=${1}
- 	cmd=${2}
+diff --git a/drivers/tty/serial/amba-pl011.c b/drivers/tty/serial/amba-pl011.c
+index 16c7703110694..08f80188f73dd 100644
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1837,6 +1837,11 @@ static void pl011_unthrottle_rx(struct uart_port *port)
  
--	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "{cmd}" ]
-+	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "${cmd}" ]
+ 	pl011_write(uap->im, uap, REG_IMSC);
+ 
++	if (uap->using_rx_dma) {
++		uap->dmacr |= UART011_RXDMAE;
++		pl011_write(uap->dmacr, uap, REG_DMACR);
++	}
++
+ 	uart_port_unlock_irqrestore(&uap->port, flags);
  }
  
- test_cleanup_vxlanX_exception() {
 -- 
 2.43.0
 
