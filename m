@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-103069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F65A9EF69A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A2A9EF82A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAE3E3608AA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2538D1897489
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE3E21660B;
-	Thu, 12 Dec 2024 17:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0064B213E6F;
+	Thu, 12 Dec 2024 17:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQ8zIz2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ipzaMDLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982C12139C9;
-	Thu, 12 Dec 2024 17:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B76215710;
+	Thu, 12 Dec 2024 17:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023448; cv=none; b=oIMBQnRcfH2rdim7LnbprnDrJeRgyGU/6NKrgLjH0xZwdw6AypZ39CvUlB2KMPl+2oktS5JJ8HZ1C+WZpYHIDJTTSElSDFCK0uK1hlzV9ouaI06AeI9rvRkYPT9IDdXk7kpFCS7o/nOJAC8Gn9oMaN3KUjd7XspV/AS+kug/7WE=
+	t=1734024732; cv=none; b=fbGX7qEivUsM5YVgQziEYYIjXC1myLc6ImBdDTqCZdRCDxfSUNJ3J2OOVcyC2sxeLEVTVkULy30BrR3kUf07hYzCYgChgE/sqtkOx8dexwcp1s2bTp5Ad39C7tjSuJHx/yuSHjgtUikbueIjjRq0a1gjQUk0n156ETFdkyLm0K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023448; c=relaxed/simple;
-	bh=Ib3Et3x/ijc8A2t8430+bMIcRXqahfOxW1YbLF9bk7A=;
+	s=arc-20240116; t=1734024732; c=relaxed/simple;
+	bh=S2Q4vfhm9hYL7w5Grrp69UKIFGL43vPPCgIJmqT+Wa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqa9RjadfvA5Vc8AKeZ+k8Xzhv4dSBfXQyEFHzujmlIDma9/F7836xd9HDe7dMxH5dnhIGRodrr4ur+ToPyV6S1xWmEDFfPM19tbnQ6DaFJrzJVSHm6r2hcnKl6oZ5wx3UXwORBwn7ggeptyX1UKuDwGJhST72w+rBZ2goNyYuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQ8zIz2S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064BCC4CECE;
-	Thu, 12 Dec 2024 17:10:47 +0000 (UTC)
+	 MIME-Version; b=eyGXz3Nso5it7DQv9yxhe9B7estbwaQmEu6oaQ9knYzEBgT8EvVkiOBDZy36bcP3H0dKrOnheWMogQXkb8WBxfB5DKLz4rORisuGagYDkn67NAybaJdrUR90r/kqencp7jgBgpb53QVpgZOaqizBurSY12bNLF+q4BR+7tOoV3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ipzaMDLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A28C4CECE;
+	Thu, 12 Dec 2024 17:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023448;
-	bh=Ib3Et3x/ijc8A2t8430+bMIcRXqahfOxW1YbLF9bk7A=;
+	s=korg; t=1734024732;
+	bh=S2Q4vfhm9hYL7w5Grrp69UKIFGL43vPPCgIJmqT+Wa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQ8zIz2SP9uUjEgv4FZyZhuOzSKvgI6yY0Q4aFP9aQvhljjTnLOBmrwQscLTNWIJn
-	 E6Jyo6D5bYR3QclgpU3Mc6hCuX2QiuX8njU8QtrNEz8LOvvMHAWobRGXRcVAIOh/S/
-	 KB5o8YP7IL9yuoAi4tHtZ8mUh6XJAbzwk6NnjlCQ=
+	b=ipzaMDLl6yIBsnVXCMMXGFCyS27O03lqqxMLMaovJ4BbdgEaiEYbYrNBRfhKxuAl5
+	 bxF0K0cArRA8GS7WzdoKnCMnbsChKfagIi63A1ukWH0UoToAg96EJTb4HbXWOkZrqX
+	 je1MDvM5dsjyY9uJ7Q1r+HCJRchWW1SaECF3apWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 537/565] tracing/eprobe: Fix to release eprobe when failed to add dyn_event
+Subject: [PATCH 5.10 394/459] af_packet: avoid erroring out after sock_init_data() in packet_create()
 Date: Thu, 12 Dec 2024 16:02:12 +0100
-Message-ID: <20241212144333.063161936@linuxfoundation.org>
+Message-ID: <20241212144309.327496547@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 494b332064c0ce2f7392fa92632bc50191c1b517 ]
+[ Upstream commit 46f2a11cb82b657fd15bab1c47821b635e03838b ]
 
-Fix eprobe event to unregister event call and release eprobe when it fails
-to add dynamic event correctly.
+After sock_init_data() the allocated sk object is attached to the provided
+sock object. On error, packet_create() frees the sk object leaving the
+dangling pointer in the sock object on return. Some other code may try
+to use this pointer and cause use-after-free.
 
-Link: https://lore.kernel.org/all/173289886698.73724.1959899350183686006.stgit@devnote2/
-
-Fixes: 7491e2c44278 ("tracing: Add a probe that attaches to trace events")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-2-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_eprobe.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/packet/af_packet.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/trace_eprobe.c b/kernel/trace/trace_eprobe.c
-index 085f056e66f19..6ba95e32df388 100644
---- a/kernel/trace/trace_eprobe.c
-+++ b/kernel/trace/trace_eprobe.c
-@@ -979,6 +979,11 @@ static int __trace_eprobe_create(int argc, const char *argv[])
- 		goto error;
- 	}
- 	ret = dyn_event_add(&ep->devent, &ep->tp.event->call);
-+	if (ret < 0) {
-+		trace_probe_unregister_event_call(&ep->tp);
-+		mutex_unlock(&event_mutex);
-+		goto error;
-+	}
- 	mutex_unlock(&event_mutex);
- 	return ret;
- parse_error:
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index ce3e20bcde4ab..01a191c8194b4 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3386,18 +3386,18 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	if (sock->type == SOCK_PACKET)
+ 		sock->ops = &packet_ops_spkt;
+ 
++	po = pkt_sk(sk);
++	err = packet_alloc_pending(po);
++	if (err)
++		goto out_sk_free;
++
+ 	sock_init_data(sock, sk);
+ 
+-	po = pkt_sk(sk);
+ 	init_completion(&po->skb_completion);
+ 	sk->sk_family = PF_PACKET;
+ 	po->num = proto;
+ 	po->xmit = dev_queue_xmit;
+ 
+-	err = packet_alloc_pending(po);
+-	if (err)
+-		goto out2;
+-
+ 	packet_cached_dev_reset(po);
+ 
+ 	sk->sk_destruct = packet_sock_destruct;
+@@ -3432,7 +3432,7 @@ static int packet_create(struct net *net, struct socket *sock, int protocol,
+ 	preempt_enable();
+ 
+ 	return 0;
+-out2:
++out_sk_free:
+ 	sk_free(sk);
+ out:
+ 	return err;
 -- 
 2.43.0
 
