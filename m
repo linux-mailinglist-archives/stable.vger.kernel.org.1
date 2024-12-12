@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB649EEA0F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:08:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA0D9EE9E8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F6952835F2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CEB728392B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DA021660B;
-	Thu, 12 Dec 2024 15:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4020215F6A;
+	Thu, 12 Dec 2024 15:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCCOTOe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vMoElA52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F314C215F48;
-	Thu, 12 Dec 2024 15:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7652EAE5;
+	Thu, 12 Dec 2024 15:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016088; cv=none; b=ZMZqZNgj883HU1ECoLC5tekQ+jYKW7CdqMGJyn4tUDcoBBF04J3vkOsYrCMaIzMX83u1+NLfeXf7sOAbNRD+vkYW1cKH/EfgpE/Jk4yKEPADXEv7rcx1wwUBFo1jfTqU7rlv7IPoKjrCpJvmS+n+pUf1BvDLth5ODxGLrLlNqQs=
+	t=1734015989; cv=none; b=CJGQbQ8aQuM7ucBetGvTAdk09z4VLfqG6bsl1TCDlpiJ/Ch6eoWU2hUx3DWCfrZwF1cAwfg82Qy8qTpIMhIsHGJnFcv6Nmha5Rsu9pQbj15DILFu67PFewSSwowKRLdyTBeFEI1hevW+fuV58TX/9CGqEzcpspogbeQg7MDOJ6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016088; c=relaxed/simple;
-	bh=DsHTaQyuZRGQe6cVfLvuaap5ew4kmg73Zxeq30Wgmdw=;
+	s=arc-20240116; t=1734015989; c=relaxed/simple;
+	bh=5aTEZC0G98TI5ce2GfaZZJAEanR0jzP8Xth/0cekz18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezwkdUF0p3rC9U+rv5RQUPBLjqORbarrCuv+RyOgnStRjU2R2jHOGAIZSanV8tUBJASX7pJZ9JzqkGJUIJLK4ql07B6ujtO4fhrsBiv5IlQT3HrwMkizqll7BUV85IjOlcfS/8Et5d4LhoDeHZBUYmc1+gWzV0H7+8nbtYuXhM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCCOTOe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33983C4CECE;
-	Thu, 12 Dec 2024 15:08:07 +0000 (UTC)
+	 MIME-Version; b=AZLmEgqv0n/RnbCnLCljIpDkKSH5ffpc9i3qIw/YvgW7H/SUrc3VlxDmnvmLqrASvn04LHgUXlbbTD8XKCBuqZqD/kuxZPufiENoFXaTEWtVD80zvdx91NhFSXPKB/ZqeaKD8mVRHCRyI3g9UFDmEaFQNCfWkiyu+FgxfxnMWhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vMoElA52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE581C4CECE;
+	Thu, 12 Dec 2024 15:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016087;
-	bh=DsHTaQyuZRGQe6cVfLvuaap5ew4kmg73Zxeq30Wgmdw=;
+	s=korg; t=1734015989;
+	bh=5aTEZC0G98TI5ce2GfaZZJAEanR0jzP8Xth/0cekz18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FCCOTOe9YQ6fJIJFceL6JDatWuG30rhUF7DRHGVQEqmkV6mMi9X53Mo2VUpZhs12y
-	 MX4Y+QXeffeI1AaYlPVUn+gEHzpzIcUJNBg6w8Cq9omcfYqovuI/Und/4awiPkDqW8
-	 fwbeeWQOun6vGEt3fHYiGvNaQewAO+OPIHLide6w=
+	b=vMoElA52yEeyyx01wLmH6OD3cqtLDzxGZC82hfoXNUbjZmzalK+XAfwakaA0YadfR
+	 PtunUbao2fY3fjMVilXwXr/R4gJzshVg94IGKbbkFSHqnW2FNyJnSFAzOyRihf07Jc
+	 +LS/qj2UaEQajXaZVVieu5Aw/8970Wmg4nbmQ6Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aruna Ramakrishna <aruna.ramakrishna@oracle.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/466] x86/pkeys: Change caller of update_pkru_in_sigframe()
-Date: Thu, 12 Dec 2024 15:54:27 +0100
-Message-ID: <20241212144310.689011423@linuxfoundation.org>
+Subject: [PATCH 6.12 101/466] irqchip/stm32mp-exti: CONFIG_STM32MP_EXTI should not default to y when compile-testing
+Date: Thu, 12 Dec 2024 15:54:30 +0100
+Message-ID: <20241212144310.804308534@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -66,105 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 6a1853bdf17874392476b552398df261f75503e0 ]
+[ Upstream commit 9151299ee5101e03eeed544c1280b0e14b89a8a4 ]
 
-update_pkru_in_sigframe() will shortly need some information which
-is only available inside xsave_to_user_sigframe(). Move
-update_pkru_in_sigframe() inside the other function to make it
-easier to provide it that information.
+Merely enabling compile-testing should not enable additional functionality.
 
-No functional changes.
-
-Signed-off-by: Aruna Ramakrishna <aruna.ramakrishna@oracle.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20241119174520.3987538-2-aruna.ramakrishna%40oracle.com
-Stable-dep-of: ae6012d72fa6 ("x86/pkeys: Ensure updated PKRU value is XRSTOR'd")
+Fixes: 0be58e0553812fcb ("irqchip/stm32mp-exti: Allow building as module")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/ef5ec063b23522058f92087e072419ea233acfe9.1733243115.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/signal.c | 20 ++------------------
- arch/x86/kernel/fpu/xstate.h | 15 ++++++++++++++-
- 2 files changed, 16 insertions(+), 19 deletions(-)
+ drivers/irqchip/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index 1065ab995305c..8f62e0666dea5 100644
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -63,16 +63,6 @@ static inline bool check_xstate_in_sigframe(struct fxregs_state __user *fxbuf,
- 	return true;
- }
- 
--/*
-- * Update the value of PKRU register that was already pushed onto the signal frame.
-- */
--static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u32 pkru)
--{
--	if (unlikely(!cpu_feature_enabled(X86_FEATURE_OSPKE)))
--		return 0;
--	return __put_user(pkru, (unsigned int __user *)get_xsave_addr_user(buf, XFEATURE_PKRU));
--}
--
- /*
-  * Signal frame handlers.
-  */
-@@ -168,14 +158,8 @@ static inline bool save_xstate_epilog(void __user *buf, int ia32_frame,
- 
- static inline int copy_fpregs_to_sigframe(struct xregs_state __user *buf, u32 pkru)
- {
--	int err = 0;
--
--	if (use_xsave()) {
--		err = xsave_to_user_sigframe(buf);
--		if (!err)
--			err = update_pkru_in_sigframe(buf, pkru);
--		return err;
--	}
-+	if (use_xsave())
-+		return xsave_to_user_sigframe(buf, pkru);
- 
- 	if (use_fxsr())
- 		return fxsave_to_user_sigframe((struct fxregs_state __user *) buf);
-diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.h
-index 0b86a5002c846..6b2924fbe5b8d 100644
---- a/arch/x86/kernel/fpu/xstate.h
-+++ b/arch/x86/kernel/fpu/xstate.h
-@@ -69,6 +69,16 @@ static inline u64 xfeatures_mask_independent(void)
- 	return fpu_kernel_cfg.independent_features;
- }
- 
-+/*
-+ * Update the value of PKRU register that was already pushed onto the signal frame.
-+ */
-+static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u32 pkru)
-+{
-+	if (unlikely(!cpu_feature_enabled(X86_FEATURE_OSPKE)))
-+		return 0;
-+	return __put_user(pkru, (unsigned int __user *)get_xsave_addr_user(buf, XFEATURE_PKRU));
-+}
-+
- /* XSAVE/XRSTOR wrapper functions */
- 
- #ifdef CONFIG_X86_64
-@@ -256,7 +266,7 @@ static inline u64 xfeatures_need_sigframe_write(void)
-  * The caller has to zero buf::header before calling this because XSAVE*
-  * does not touch the reserved fields in the header.
-  */
--static inline int xsave_to_user_sigframe(struct xregs_state __user *buf)
-+static inline int xsave_to_user_sigframe(struct xregs_state __user *buf, u32 pkru)
- {
- 	/*
- 	 * Include the features which are not xsaved/rstored by the kernel
-@@ -281,6 +291,9 @@ static inline int xsave_to_user_sigframe(struct xregs_state __user *buf)
- 	XSTATE_OP(XSAVE, buf, lmask, hmask, err);
- 	clac();
- 
-+	if (!err)
-+		err = update_pkru_in_sigframe(buf, pkru);
-+
- 	return err;
- }
- 
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index d82bcab233a1b..66ce15027f28d 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -407,7 +407,7 @@ config PARTITION_PERCPU
+ config STM32MP_EXTI
+ 	tristate "STM32MP extended interrupts and event controller"
+ 	depends on (ARCH_STM32 && !ARM_SINGLE_ARMV7M) || COMPILE_TEST
+-	default y
++	default ARCH_STM32 && !ARM_SINGLE_ARMV7M
+ 	select IRQ_DOMAIN_HIERARCHY
+ 	select GENERIC_IRQ_CHIP
+ 	help
 -- 
 2.43.0
 
