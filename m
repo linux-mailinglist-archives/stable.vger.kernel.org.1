@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-101189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E929EEB52
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 840B39EECD3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D13E16CE6D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1770518885DD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10A2165F0;
-	Thu, 12 Dec 2024 15:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2B2217F28;
+	Thu, 12 Dec 2024 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCTb6PMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKphNoV3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E2C2EAE5;
-	Thu, 12 Dec 2024 15:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672386F2FE;
+	Thu, 12 Dec 2024 15:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016670; cv=none; b=Szi8AtamdFdNjr7CFOHiU1TmeaSJMs310nqbEdwnQtnL6XyGQL2ujBfji+1rHtBf+GpiZvXazLbtfi4VTd0c0HFJtQeUqAaFLgH5vz8xZ4kx4Nnyqv2vqv6YVpkusIV4VYB4L/uZoZzBh4rAEDch2rZtnBVyhdSR4cV869eJNFc=
+	t=1734017777; cv=none; b=d1skODxraRXc0PVZTXu1RBWH621u6XVZfODk2ZxcN6ev9jObjhu6xjc2FXugpkw9H5MRj2wwPXXm6/B8wu5tBPU8RgxcSAjc4p9LuM+DeE1GoUggU9MTWgttEzQXhSaNAnKUdLdvaO3sJ6Jz4KfOBbIExpBJv28uEgyeHtbLvsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016670; c=relaxed/simple;
-	bh=OrSZ6/+FhjevnbPH5BOGSzTR1hpyJqIdmtDyrrL9yfM=;
+	s=arc-20240116; t=1734017777; c=relaxed/simple;
+	bh=1KtkCpTod7W/5RU8GSTWvPVYq6dodiMC6tS4ZJONzzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I8c8MV3umeCbKbZY3xqNtp/qVgYGPD3Vs6Ykb2/GzL2Lx/ZfpKDV8yH0VaaSxHQJaiIzgmWNYSzFClFBAbTy4KgcGZPkPi2dGeGt+xp7c3g1HAFqZp1b09Ba5mi7Nu8juP3BkGCQZBxQ8mHd32a0OxO5Ts4Yrn1V4brljg1ZXcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCTb6PMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA0DC4CECE;
-	Thu, 12 Dec 2024 15:17:49 +0000 (UTC)
+	 MIME-Version; b=OssaHKlitVG+7lQGNh75xnfbIMh7sQenJsONyAxxa+uNJZaV8WS4MaXZIfX9MLKcfYex6w9Ryz+OZ4QLA3cqyMbmB1OlH7qfelX3ccgmzW7kUrH1WKiM8lOc6fIAjx1HTZrbA+7IG6GQ6vqHFKfboLGgImPvH917XtCnQzQaHlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKphNoV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E7AC4CECE;
+	Thu, 12 Dec 2024 15:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016670;
-	bh=OrSZ6/+FhjevnbPH5BOGSzTR1hpyJqIdmtDyrrL9yfM=;
+	s=korg; t=1734017777;
+	bh=1KtkCpTod7W/5RU8GSTWvPVYq6dodiMC6tS4ZJONzzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCTb6PMYjV7TcaRRnKvs1g1bydHNoZQCroZZ6mANJIgyJwufIlvAxfh9s/GpEAV6I
-	 3VTuYIBv6euE4ILMwyDFKnJlrhboQLgUccimCQ0wNR+4Pp2YxqovpZrAoz3E5WBb8L
-	 PoVUlSiU+7Z7HUyan+jAs7woG4r0IwFlsGroId0E=
+	b=DKphNoV3vQmPnNjLVVFSlOb9V/3P6nALQYFbl8Rjpyw3kenEtbuBShBKOn4mNsm9+
+	 ZorlzrFHyR7qgCV13xQfjXa8eclGeUf/qw3PlMMG7YxcxfxocSiLrL2atJA7vqhT6q
+	 jeHjuxf4z4yC65AOh1F4sE5sPxWIIndk/Hx8yIs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 257/466] drm/xe/pciids: Add PVCs PCI device ID macros
-Date: Thu, 12 Dec 2024 15:57:06 +0100
-Message-ID: <20241212144316.953724605@linuxfoundation.org>
+Subject: [PATCH 6.6 108/356] drm/bridge: it6505: Fix inverted reset polarity
+Date: Thu, 12 Dec 2024 15:57:07 +0100
+Message-ID: <20241212144248.903219559@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 5b40191152282e1f25d7b9826bcda41be927b39f ]
+[ Upstream commit c5f3f21728b069412e8072b8b1d0a3d9d3ab0265 ]
 
-Add PVC PCI IDs to the xe_pciids.h header. They're not yet used in the
-driver.
+The IT6505 bridge chip has a active low reset line. Since it is a
+"reset" and not an "enable" line, the GPIO should be asserted to
+put it in reset and deasserted to bring it out of reset during
+the power on sequence.
 
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/6ac1829493a53a3fec889c746648d627a0296892.1725624296.git.jani.nikula@intel.com
+The polarity was inverted when the driver was first introduced, likely
+because the device family that was targeted had an inverting level
+shifter on the reset line.
+
+The MT8186 Corsola devices already have the IT6505 in their device tree,
+but the whole display pipeline is actually disabled and won't be enabled
+until some remaining issues are sorted out. The other known user is
+the MT8183 Kukui / Jacuzzi family; their device trees currently do not
+have the IT6505 included.
+
+Fix the polarity in the driver while there are no actual users.
+
+Fixes: b5c84a9edcd4 ("drm/bridge: add it6505 driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241029095411.657616-1-wenst@chromium.org
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/intel/xe_pciids.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/bridge/ite-it6505.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/drm/intel/xe_pciids.h b/include/drm/intel/xe_pciids.h
-index 67dad09e62bc8..59233eb008628 100644
---- a/include/drm/intel/xe_pciids.h
-+++ b/include/drm/intel/xe_pciids.h
-@@ -189,6 +189,22 @@
- 	MACRO__(0x7D60, ## __VA_ARGS__),	\
- 	MACRO__(0x7DD5, ## __VA_ARGS__)
+diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
+index fda2c565fdb31..2a7c620626a03 100644
+--- a/drivers/gpu/drm/bridge/ite-it6505.c
++++ b/drivers/gpu/drm/bridge/ite-it6505.c
+@@ -2611,9 +2611,9 @@ static int it6505_poweron(struct it6505 *it6505)
+ 	/* time interval between OVDD and SYSRSTN at least be 10ms */
+ 	if (pdata->gpiod_reset) {
+ 		usleep_range(10000, 20000);
+-		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
+-		usleep_range(1000, 2000);
+ 		gpiod_set_value_cansleep(pdata->gpiod_reset, 1);
++		usleep_range(1000, 2000);
++		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
+ 		usleep_range(25000, 35000);
+ 	}
  
-+/* PVC */
-+#define XE_PVC_IDS(MACRO__, ...)		\
-+	MACRO__(0x0B69, ## __VA_ARGS__),	\
-+	MACRO__(0x0B6E, ## __VA_ARGS__),	\
-+	MACRO__(0x0BD4, ## __VA_ARGS__),	\
-+	MACRO__(0x0BD5, ## __VA_ARGS__),	\
-+	MACRO__(0x0BD6, ## __VA_ARGS__),	\
-+	MACRO__(0x0BD7, ## __VA_ARGS__),	\
-+	MACRO__(0x0BD8, ## __VA_ARGS__),	\
-+	MACRO__(0x0BD9, ## __VA_ARGS__),	\
-+	MACRO__(0x0BDA, ## __VA_ARGS__),	\
-+	MACRO__(0x0BDB, ## __VA_ARGS__),	\
-+	MACRO__(0x0BE0, ## __VA_ARGS__),	\
-+	MACRO__(0x0BE1, ## __VA_ARGS__),	\
-+	MACRO__(0x0BE5, ## __VA_ARGS__)
-+
- #define XE_LNL_IDS(MACRO__, ...) \
- 	MACRO__(0x6420, ## __VA_ARGS__), \
- 	MACRO__(0x64A0, ## __VA_ARGS__), \
+@@ -2640,7 +2640,7 @@ static int it6505_poweroff(struct it6505 *it6505)
+ 	}
+ 
+ 	if (pdata->gpiod_reset)
+-		gpiod_set_value_cansleep(pdata->gpiod_reset, 0);
++		gpiod_set_value_cansleep(pdata->gpiod_reset, 1);
+ 
+ 	if (pdata->pwr18) {
+ 		err = regulator_disable(pdata->pwr18);
+@@ -3132,7 +3132,7 @@ static int it6505_init_pdata(struct it6505 *it6505)
+ 		return PTR_ERR(pdata->ovdd);
+ 	}
+ 
+-	pdata->gpiod_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
++	pdata->gpiod_reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(pdata->gpiod_reset)) {
+ 		dev_err(dev, "gpiod_reset gpio not found");
+ 		return PTR_ERR(pdata->gpiod_reset);
 -- 
 2.43.0
 
