@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-102460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CBF9EF313
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:55:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9EB9EEE76
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40A37189FAB1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:42:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8FE71886539
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0709F236F85;
-	Thu, 12 Dec 2024 16:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909B12210D8;
+	Thu, 12 Dec 2024 15:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CifB7XHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gKCYWgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B116723695D;
-	Thu, 12 Dec 2024 16:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7CA4F218;
+	Thu, 12 Dec 2024 15:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021308; cv=none; b=Zmp5iLLa3n5zh5FYP5Z768vQDPkgRBHedlFjv/lrgI3Corsbv6eGu9/9KY46CEot5jQyc8sqLdpHctc/gQH7ubqEwbXE6K+iD03fa8L+5EfGYAcoKVzIeID4+Z+avBAGxZS+0V5Pty1A1EjRJcAg2ux5oXm8CQRBvLaf0FdMwVc=
+	t=1734018676; cv=none; b=YhN21ZnLgGpWr6LH6LNLeqVcTUUb59otilBWJcJNIoVkJMrWDsT74XCOxtoKj/COsavmZTM7ki/omheprf97CIC0/TxAasCdLS87CxQrL7SIOjBgk9huq2CvOuQ3X8FAJe+OhXnH7LLSL87AHBc0JKIDzTuNxC0XfCKMGtwD2uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021308; c=relaxed/simple;
-	bh=mI5rrJmEzzD3koz9wPQV3eCb/p8TDs15vuDbS20WHYM=;
+	s=arc-20240116; t=1734018676; c=relaxed/simple;
+	bh=WeIFl99f5cteLA1czzNjHW+DRDkSV7D3rsOX7D/AVUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gbQn+WJe4Gl5SbxrMzpX8PQptvoZdLH/wXA/+gvUlP8mldl64cTXj46dTo3S7wSGgLGtnQYibJE1GoLwdNuDoNRGFvEdtI42RMiLe+Ofo3l8E4m9xQYlP7cGcxM/0H9P2Xr7ovmoB+R1vVstHnMNqdTFQPxILhv4qla6EZit1RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CifB7XHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EA7C4CEE1;
-	Thu, 12 Dec 2024 16:35:07 +0000 (UTC)
+	 MIME-Version; b=TkxMGXfRL+r3Lo3Qn0XEVZPazNjfZFFsb5tOymTIeFGIqVv8lqYqk6LTIcN/97O6eZY87Ma+GVh6K4+cBH4v2zq1ZgxdaP1UdhFiNfZdvAktn+1CPuY1DAUZbD1zqgQ0CljUPWQLz3Bp0KSxohhUrUME1FdbCkblryK6NP1CGx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gKCYWgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659ADC4CECE;
+	Thu, 12 Dec 2024 15:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021308;
-	bh=mI5rrJmEzzD3koz9wPQV3eCb/p8TDs15vuDbS20WHYM=;
+	s=korg; t=1734018675;
+	bh=WeIFl99f5cteLA1czzNjHW+DRDkSV7D3rsOX7D/AVUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CifB7XHLncQR7fKv3BNBi9zcpoXk4r1U9xVEiiy7VSGxf8g6Z3nNjgGIug4xBTZ9F
-	 L1oDxlYGI/6EKwg+3XDNDQyjkz04VGTamN0O7d07rB5qP6ZHWhE++N1O4euP0CxbtP
-	 bpzV5VuZ62KDfNWmaARlj9pdk0Cc30UmD3ndM1e4=
+	b=2gKCYWgGjN76qjKOJoS8frosMRdXFcjvqgG69zLKH4Q2S4gHrQiHf+69suREECQo2
+	 CTOG8krvsmBscKZe3LrJ+VJtCnTvQ2suNU78gpUNgIM2SYJ6BJx/uDDXEUOmcEijj3
+	 aHaMbsGBad3w2ymAkWJsC+6jHI3PALim5uLQi0/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Stancek <jstancek@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 702/772] tools/rtla: fix collision with glibc sched_attr/sched_set_attr
+Subject: [PATCH 6.6 328/356] sched: Unify more update_curr*()
 Date: Thu, 12 Dec 2024 16:00:47 +0100
-Message-ID: <20241212144418.904020641@linuxfoundation.org>
+Message-ID: <20241212144257.521999286@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +59,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Stancek <jstancek@redhat.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 0eecee340672c4b512f6f4a8c6add26df05d130c ]
+[ Upstream commit c708a4dc5ab547edc3d6537233ca9e79ea30ce47 ]
 
-glibc commit 21571ca0d703 ("Linux: Add the sched_setattr
-and sched_getattr functions") now also provides 'struct sched_attr'
-and sched_setattr() which collide with the ones from rtla.
+Now that trace_sched_stat_runtime() no longer takes a vruntime
+argument, the task specific bits are identical between
+update_curr_common() and update_curr().
 
-  In file included from src/trace.c:11:
-  src/utils.h:49:8: error: redefinition of ‘struct sched_attr’
-     49 | struct sched_attr {
-        |        ^~~~~~~~~~
-  In file included from /usr/include/bits/sched.h:60,
-                   from /usr/include/sched.h:43,
-                   from /usr/include/tracefs/tracefs.h:10,
-                   from src/trace.c:4:
-  /usr/include/linux/sched/types.h:98:8: note: originally defined here
-     98 | struct sched_attr {
-        |        ^~~~~~~~~~
-
-Define 'struct sched_attr' conditionally, similar to what strace did:
-  https://lore.kernel.org/all/20240930222913.3981407-1-raj.khem@gmail.com/
-and rename rtla's version of sched_setattr() to avoid collision.
-
-Link: https://lore.kernel.org/8088f66a7a57c1b209cd8ae0ae7c336a7f8c930d.1728572865.git.jstancek@redhat.com
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Stable-dep-of: 0664e2c311b9 ("sched/deadline: Fix warning in migrate_enable for boosted tasks")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/utils.c | 4 ++--
- tools/tracing/rtla/src/utils.h | 2 ++
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
-index 8c8d63c7196cf..02194773ef12d 100644
---- a/tools/tracing/rtla/src/utils.c
-+++ b/tools/tracing/rtla/src/utils.c
-@@ -238,7 +238,7 @@ long parse_ns_duration(char *val)
- 
- #define SCHED_DEADLINE		6
- 
--static inline int sched_setattr(pid_t pid, const struct sched_attr *attr,
-+static inline int syscall_sched_setattr(pid_t pid, const struct sched_attr *attr,
- 				unsigned int flags) {
- 	return syscall(__NR_sched_setattr, pid, attr, flags);
- }
-@@ -248,7 +248,7 @@ int __set_sched_attr(int pid, struct sched_attr *attr)
- 	int flags = 0;
- 	int retval;
- 
--	retval = sched_setattr(pid, attr, flags);
-+	retval = syscall_sched_setattr(pid, attr, flags);
- 	if (retval < 0) {
- 		err_msg("Failed to set sched attributes to the pid %d: %s\n",
- 			pid, strerror(errno));
-diff --git a/tools/tracing/rtla/src/utils.h b/tools/tracing/rtla/src/utils.h
-index 92da41aaf4c4c..e445ccf15e701 100644
---- a/tools/tracing/rtla/src/utils.h
-+++ b/tools/tracing/rtla/src/utils.h
-@@ -44,6 +44,7 @@ update_sum(unsigned long long *a, unsigned long long *b)
- 	*a += *b;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 062447861d8e6..3b2cfdb8d788d 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1173,6 +1173,13 @@ static s64 update_curr_se(struct rq *rq, struct sched_entity *curr)
+ 	return delta_exec;
  }
  
-+#ifndef SCHED_ATTR_SIZE_VER0
- struct sched_attr {
- 	uint32_t size;
- 	uint32_t sched_policy;
-@@ -54,6 +55,7 @@ struct sched_attr {
- 	uint64_t sched_deadline;
- 	uint64_t sched_period;
- };
-+#endif /* SCHED_ATTR_SIZE_VER0 */
++static inline void update_curr_task(struct task_struct *p, s64 delta_exec)
++{
++	trace_sched_stat_runtime(p, delta_exec);
++	account_group_exec_runtime(p, delta_exec);
++	cgroup_account_cputime(p, delta_exec);
++}
++
+ /*
+  * Used by other classes to account runtime.
+  */
+@@ -1182,12 +1189,8 @@ s64 update_curr_common(struct rq *rq)
+ 	s64 delta_exec;
  
- int parse_prio(char *arg, struct sched_attr *sched_param);
- int set_comm_sched_attr(const char *comm_prefix, struct sched_attr *attr);
+ 	delta_exec = update_curr_se(rq, &curr->se);
+-	if (unlikely(delta_exec <= 0))
+-		return delta_exec;
+-
+-	trace_sched_stat_runtime(curr, delta_exec);
+-	account_group_exec_runtime(curr, delta_exec);
+-	cgroup_account_cputime(curr, delta_exec);
++	if (likely(delta_exec > 0))
++		update_curr_task(curr, delta_exec);
+ 
+ 	return delta_exec;
+ }
+@@ -1211,13 +1214,8 @@ static void update_curr(struct cfs_rq *cfs_rq)
+ 	update_deadline(cfs_rq, curr);
+ 	update_min_vruntime(cfs_rq);
+ 
+-	if (entity_is_task(curr)) {
+-		struct task_struct *curtask = task_of(curr);
+-
+-		trace_sched_stat_runtime(curtask, delta_exec);
+-		cgroup_account_cputime(curtask, delta_exec);
+-		account_group_exec_runtime(curtask, delta_exec);
+-	}
++	if (entity_is_task(curr))
++		update_curr_task(task_of(curr), delta_exec);
+ 
+ 	account_cfs_rq_runtime(cfs_rq, delta_exec);
+ }
 -- 
 2.43.0
 
