@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-101136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC449EEAEE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155DD9EF375
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A22A169C55
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6BF291D03
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB45216E28;
-	Thu, 12 Dec 2024 15:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F28223C5F;
+	Thu, 12 Dec 2024 16:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="manFJElg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjcJbKib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC07221578A;
-	Thu, 12 Dec 2024 15:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30835214227;
+	Thu, 12 Dec 2024 16:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016483; cv=none; b=mPuwj/gFn3BfbXTTkx6IXnCmXF3RYUrp52TxYBfDWgWh5nBf/4rhTXW8B1ESB7Mjxk7lfJHHfIyKhW+2aX8g6nLn1SuIgPGHBvcMyaG26twvspUTD5pF7A2jO98k0NN7KG/aC0HBdC1tdoHUzy/2GO2gvjf54WW756o0k/1soqo=
+	t=1734022381; cv=none; b=AOPMQDUlK+vnaLAVJWuYmIOHRAwO9K9ZldeBuiG7Rec0R9qhPjmZvIQfjwZ945VBR5IqhILPbxfVzThWUpWBZ5WfsC0lv3RHhJ4FXBrkreyfZWP3Ylo4hSXGrPFpnvjISm3IRgwy8uK6yBuvNDqkuH2wKI7yAfLxNkLwCPFNhyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016483; c=relaxed/simple;
-	bh=rHOmSHKtj7Fhf6ocDBQFZyzwf7NQ+HJxWafr2ha9S0o=;
+	s=arc-20240116; t=1734022381; c=relaxed/simple;
+	bh=7NBp9oFchpyxiMO3BB1Y9jIF1GLbiTsSxSpmsw3BOGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLvPOq1POnUER8qqQ0QsFdkq/bY+BwFoOrlz9iWiJ4orGAI7602BX9NJOC/WIMjfHOA5alwfqi0luJczOxKxMrT/GNGtXQWMtG/UAH4NrpnkBJ1ZW67qqWx7z74jwPYRDU6CUq978ZSLkOnzD4BCRoE7OnAi6TNkk2ffhSsQIXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=manFJElg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BECC4CECE;
-	Thu, 12 Dec 2024 15:14:42 +0000 (UTC)
+	 MIME-Version; b=EdSV2KQL8xmMnodGjY1NrikCWZRpjP6GPn1tMPvFBLibRhynnQk3eXgVMEYq8C7QO5/jii/0V0S48d+SDbcU81M3LXTmLwCQVyGl2BqvyYUJCZcpWNemJTbwiA1y6xWNn3hPbRvjZukb3Zqp+U2Pw/zgF8SHIevFvAJ64jQoS2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GjcJbKib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB67C4CECE;
+	Thu, 12 Dec 2024 16:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016483;
-	bh=rHOmSHKtj7Fhf6ocDBQFZyzwf7NQ+HJxWafr2ha9S0o=;
+	s=korg; t=1734022381;
+	bh=7NBp9oFchpyxiMO3BB1Y9jIF1GLbiTsSxSpmsw3BOGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=manFJElg4zS2FsUVQW/tBWJPusTC7KEtt88co9eQfyD/xEiYyyu9ICV7BqQndblA9
-	 QOqqOXBT/uMxnnNsAM3wlL9ym74C8xxrY8QOP5r3PYwNkWQtE0VzoKMT9+UZ5hj6By
-	 3dfutRHx2ZO0ZYiajRW5MBOI/i1+OB9mhl8RJ4IM=
+	b=GjcJbKibjQHv8wXtM43u3kjy15JaU49jAhm1aQh5nOktXDz3TRI1j07Nn6sPkSEPW
+	 PnjhvQbYWQMVqWgK5n+Rpp9hIyzqCnRU77Ltw1yqbiTG+9wV0d4/dd3Rji67e9BNtc
+	 8+yBte9kaGNgdCS8OUl+Gg1QzlGvpz+uI1v8RvaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Taylor <ade@hohum.me.uk>,
-	Gary Guo <gary@garyguo.net>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 211/466] rust: enable arbitrary_self_types and remove `Receiver`
+	Zichen Xie <zichenxie0106@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 185/565] drm/msm/dpu: cast crtc_clk calculation to u64 in _dpu_core_perf_calc_clk()
 Date: Thu, 12 Dec 2024 15:56:20 +0100
-Message-ID: <20241212144315.125422372@linuxfoundation.org>
+Message-ID: <20241212144318.790194844@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gary Guo <gary@garyguo.net>
+From: Zichen Xie <zichenxie0106@gmail.com>
 
-commit c95bbb59a9b22f9b838b15d28319185c1c884329 upstream.
+[ Upstream commit 20c7b42d9dbd048019bfe0af39229e3014007a98 ]
 
-The term "receiver" means that a type can be used as the type of `self`,
-and thus enables method call syntax `foo.bar()` instead of
-`Foo::bar(foo)`. Stable Rust as of today (1.81) enables a limited
-selection of types (primitives and types in std, e.g. `Box` and `Arc`)
-to be used as receivers, while custom types cannot.
+There may be a potential integer overflow issue in
+_dpu_core_perf_calc_clk(). crtc_clk is defined as u64, while
+mode->vtotal, mode->hdisplay, and drm_mode_vrefresh(mode) are defined as
+a smaller data type. The result of the calculation will be limited to
+"int" in this case without correct casting. In screen with high
+resolution and high refresh rate, integer overflow may happen.
+So, we recommend adding an extra cast to prevent potential
+integer overflow.
 
-We want the kernel `Arc` type to have the same functionality as the Rust
-std `Arc`, so we use the `Receiver` trait (gated behind `receiver_trait`
-unstable feature) to gain the functionality.
-
-The `arbitrary_self_types` RFC [1] (tracking issue [2]) is accepted and
-it will allow all types that implement a new `Receiver` trait (different
-from today's unstable trait) to be used as receivers. This trait will be
-automatically implemented for all `Deref` types, which include our `Arc`
-type, so we no longer have to opt-in to be used as receiver. To prepare
-us for the change, remove the `Receiver` implementation and the
-associated feature. To still allow `Arc` and others to be used as method
-receivers, turn on `arbitrary_self_types` feature instead.
-
-This feature gate is introduced in 1.23.0. It used to enable both
-`Deref` types and raw pointer types to be used as receivers, but the
-latter is now split into a different feature gate in Rust 1.83 nightly.
-We do not need receivers on raw pointers so this change would not affect
-us and usage of `arbitrary_self_types` feature would work for all Rust
-versions that we support (>=1.78).
-
-Cc: Adrian Taylor <ade@hohum.me.uk>
-Link: https://github.com/rust-lang/rfcs/pull/3519 [1]
-Link: https://github.com/rust-lang/rust/issues/44874 [2]
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20240915132734.1653004-1-gary@garyguo.net
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c33b7c0389e1 ("drm/msm/dpu: add support for clk and bw scaling for display")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/622206/
+Link: https://lore.kernel.org/r/20241029194209.23684-1-zichenxie0106@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/lib.rs      |    2 +-
- rust/kernel/list/arc.rs |    3 ---
- rust/kernel/sync/arc.rs |    6 ------
- scripts/Makefile.build  |    2 +-
- 4 files changed, 2 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -12,10 +12,10 @@
- //! do so first instead of bypassing this crate.
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+index 60fe06018581c..32dc298eb593e 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_core_perf.c
+@@ -80,7 +80,7 @@ static u64 _dpu_core_perf_calc_clk(struct dpu_kms *kms,
  
- #![no_std]
-+#![feature(arbitrary_self_types)]
- #![feature(coerce_unsized)]
- #![feature(dispatch_from_dyn)]
- #![feature(new_uninit)]
--#![feature(receiver_trait)]
- #![feature(unsize)]
+ 	mode = &state->adjusted_mode;
  
- // Ensure conditional compilation based on the kernel configuration works;
---- a/rust/kernel/list/arc.rs
-+++ b/rust/kernel/list/arc.rs
-@@ -441,9 +441,6 @@ where
-     }
- }
+-	crtc_clk = mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
++	crtc_clk = (u64)mode->vtotal * mode->hdisplay * drm_mode_vrefresh(mode);
  
--// This is to allow [`ListArc`] (and variants) to be used as the type of `self`.
--impl<T, const ID: u64> core::ops::Receiver for ListArc<T, ID> where T: ListArcSafe<ID> + ?Sized {}
--
- // This is to allow coercion from `ListArc<T>` to `ListArc<U>` if `T` can be converted to the
- // dynamically-sized type (DST) `U`.
- impl<T, U, const ID: u64> core::ops::CoerceUnsized<ListArc<U, ID>> for ListArc<T, ID>
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -171,9 +171,6 @@ impl<T: ?Sized> ArcInner<T> {
-     }
- }
- 
--// This is to allow [`Arc`] (and variants) to be used as the type of `self`.
--impl<T: ?Sized> core::ops::Receiver for Arc<T> {}
--
- // This is to allow coercion from `Arc<T>` to `Arc<U>` if `T` can be converted to the
- // dynamically-sized type (DST) `U`.
- impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::CoerceUnsized<Arc<U>> for Arc<T> {}
-@@ -480,9 +477,6 @@ pub struct ArcBorrow<'a, T: ?Sized + 'a>
-     _p: PhantomData<&'a ()>,
- }
- 
--// This is to allow [`ArcBorrow`] (and variants) to be used as the type of `self`.
--impl<T: ?Sized> core::ops::Receiver for ArcBorrow<'_, T> {}
--
- // This is to allow `ArcBorrow<U>` to be dispatched on when `ArcBorrow<T>` can be coerced into
- // `ArcBorrow<U>`.
- impl<T: ?Sized + Unsize<U>, U: ?Sized> core::ops::DispatchFromDyn<ArcBorrow<'_, U>>
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -248,7 +248,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
- # Compile Rust sources (.rs)
- # ---------------------------------------------------------------------------
- 
--rust_allowed_features := new_uninit
-+rust_allowed_features := arbitrary_self_types,new_uninit
- 
- # `--out-dir` is required to avoid temporaries being created by `rustc` in the
- # current working directory, which may be not accessible in the out-of-tree
+ 	drm_atomic_crtc_for_each_plane(plane, crtc) {
+ 		pstate = to_dpu_plane_state(plane->state);
+-- 
+2.43.0
+
 
 
 
