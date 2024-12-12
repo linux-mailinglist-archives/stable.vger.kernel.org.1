@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-101373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F499EEC0D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D8C9EF1CB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:26 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC25916910B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94D7E287F76
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A532153F4;
-	Thu, 12 Dec 2024 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11122153DD;
+	Thu, 12 Dec 2024 16:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VMJShUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b70myRwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F73620969B;
-	Thu, 12 Dec 2024 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE15213E6B;
+	Thu, 12 Dec 2024 16:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017328; cv=none; b=pw5OvD4hT4k/A1hGFFAcPnVMuqBnceUN0Su3P76eA6XxDVZBXJ7CXeXwZOk8pc5rW1N6vYPHrnYj4rjBliqseZF7pxntf630bjacnkodeSpeg4skjFYqiXjePgZlKXmcQAwe2LE+ojEyfYS+N2sDVKD81thJdrl4qj/V7swkdtw=
+	t=1734021201; cv=none; b=tiQmmN4tJg6oPJtzeJFKmREbZJcCYzKEiCNrjS12bcnFp61YiLfvS1VMWVdF3r+XcNqsTG6nYCr6xfywiP11MEJc8afHeaSUE7VxuFJjd6ZSO+osfWiuOdxOx8ByCCnOs0wyR212zvTltYBTD941qRapOdbFBbmHEBSLc8JRPTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017328; c=relaxed/simple;
-	bh=L5a08zkpsaY5jyQNzoDL/1bNNQRQzL0hSut9eD64YUc=;
+	s=arc-20240116; t=1734021201; c=relaxed/simple;
+	bh=Kz0LCkisVAqN/ZiKoRETA05EiNhwppXORm7ycy+F2W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vB6O+r++UjYkPMNx+orNhmWNGeSaRlYtwxcycL+ePtLpQGfaRRzwVbNasH0O0JuQ9utJCZy2rZXo0qvFUydNR58Be8qAdYhR33XqNkbA3YOoqddf6wYOzGJfY4EiZBkXOS0eQMVPQY1vOzvz2D5AfBGvUlafGVtX8XncMOcJJjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VMJShUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D40C4CECE;
-	Thu, 12 Dec 2024 15:28:47 +0000 (UTC)
+	 MIME-Version; b=lKpGgHTC4T/Cz6wZr5ipdnGeOPWPwZKqPK/1LJkcGYc0mbO63I84mzWkFqWvCHFlrQ9yL/+rMIKmfuH3ccwoPiOTWk35Xn4/nyR6lBKfF5m53AG5WHw0OGrskhheatMmP76R2PCGBE2Xn/YEJbjSHyHZ5bPREoyYAOZRaZVhjEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b70myRwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7ABC4CECE;
+	Thu, 12 Dec 2024 16:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017328;
-	bh=L5a08zkpsaY5jyQNzoDL/1bNNQRQzL0hSut9eD64YUc=;
+	s=korg; t=1734021201;
+	bh=Kz0LCkisVAqN/ZiKoRETA05EiNhwppXORm7ycy+F2W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VMJShUd/GskLtuL0rgvNMMM5FNIQv8IsNP7IrG2lEO1/9pI/0/MkxU9cALVGPPwg
-	 JNndRs9Wvp3YED+ufN5Di48qVJSNmkwpjWc0oYnVMKzIOcoYSnXcdBbQ6AgFPrZztX
-	 hOUrLVrFR0Bx/ZWI75+MgQTEnoKXuTrlYY/t9LGo=
+	b=b70myRwalgGWEkg/PAzuuU4wymYVMpD7kbQd+aog3HOSJOQtQMQCjd893xbwjDKwD
+	 vptnzCGzfmRo23PN+LNJ+HRXn2XKu4jOs+4qsGSRQLXOyYkgoFpyhiwt+BtzwyOdhU
+	 rvSuST5EpbhrgPLHcgfInlnFexQahyAUIxU4Ec9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoyu Li <lihaoyu499@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 448/466] clk: en7523: Initialize num before accessing hws in en7523_register_clocks()
-Date: Thu, 12 Dec 2024 16:00:17 +0100
-Message-ID: <20241212144324.557011480@linuxfoundation.org>
+Subject: [PATCH 6.1 673/772] net: inet6: do not leave a dangling sk pointer in inet6_create()
+Date: Thu, 12 Dec 2024 16:00:18 +0100
+Message-ID: <20241212144417.724458150@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoyu Li <lihaoyu499@gmail.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit 52fd1709e41d3a85b48bcfe2404a024ebaf30c3b ]
+[ Upstream commit 9df99c395d0f55fb444ef39f4d6f194ca437d884 ]
 
-With the new __counted_by annotation in clk_hw_onecell_data, the "num"
-struct member must be set before accessing the "hws" array. Failing to
-do so will trigger a runtime warning when enabling CONFIG_UBSAN_BOUNDS
-and CONFIG_FORTIFY_SOURCE.
+sock_init_data() attaches the allocated sk pointer to the provided sock
+object. If inet6_create() fails later, the sk object is released, but the
+sock object retains the dangling sk pointer, which may cause use-after-free
+later.
 
-Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
-Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
-Link: https://lore.kernel.org/r/20241203142915.345523-1-lihaoyu499@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Clear the sock sk pointer on error.
+
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-8-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-en7523.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/af_inet6.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/clk/clk-en7523.c b/drivers/clk/clk-en7523.c
-index fdd8ea989ed24..bc21b29214492 100644
---- a/drivers/clk/clk-en7523.c
-+++ b/drivers/clk/clk-en7523.c
-@@ -508,6 +508,8 @@ static void en7523_register_clocks(struct device *dev, struct clk_hw_onecell_dat
- 	u32 rate;
- 	int i;
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index ea16c40cfb211..49031e40551f7 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -260,31 +260,29 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 		 */
+ 		inet->inet_sport = htons(inet->inet_num);
+ 		err = sk->sk_prot->hash(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ 	if (sk->sk_prot->init) {
+ 		err = sk->sk_prot->init(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
  
-+	clk_data->num = EN7523_NUM_CLOCKS;
-+
- 	for (i = 0; i < ARRAY_SIZE(en7523_base_clks); i++) {
- 		const struct en_clk_desc *desc = &en7523_base_clks[i];
- 		u32 reg = desc->div_reg ? desc->div_reg : desc->base_reg;
-@@ -529,8 +531,6 @@ static void en7523_register_clocks(struct device *dev, struct clk_hw_onecell_dat
- 
- 	hw = en7523_register_pcie_clk(dev, np_base);
- 	clk_data->hws[EN7523_CLK_PCIE] = hw;
--
--	clk_data->num = EN7523_NUM_CLOCKS;
+ 	if (!kern) {
+ 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ out:
+ 	return err;
+ out_rcu_unlock:
+ 	rcu_read_unlock();
+ 	goto out;
++out_sk_release:
++	sk_common_release(sk);
++	sock->sk = NULL;
++	goto out;
  }
  
- static int en7523_clk_hw_init(struct platform_device *pdev,
+ static int __inet6_bind(struct sock *sk, struct sockaddr *uaddr, int addr_len,
 -- 
 2.43.0
 
