@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB2E9EF5A6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7809EF6D5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A57340299
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:03:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE88F170DFD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6D322145E;
-	Thu, 12 Dec 2024 17:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AE1215762;
+	Thu, 12 Dec 2024 17:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QtoPRqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iU8XRmJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9E92153C1;
-	Thu, 12 Dec 2024 16:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0253113CA93;
+	Thu, 12 Dec 2024 17:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022800; cv=none; b=ESR7sz0ozTfDtoUtq7KYRjEvnU0jVAFJ62cC/mqE/UMT+V+m37aBTSc+fvw5mg1FcuR1ci4RWqkC9q9h/qDfECTbjFDkRdavoHv8cWkeuFtPYe/uNBg/jZ93D3lT3RvLWsZLYdT9ZlLLfQ/Sygu99kQRNfjsAnAxmoXNtrT5dB8=
+	t=1734024127; cv=none; b=pHOaiq5KsIfjNq65V/E3u5MuMi3mSW4Cf1tUdPTBZ1juP4KFJeIkxfSFSQ4MqKA39SkjAU49tgqzf0GCuYkyQjPMl6uxGIycl5NrgYtt3NdEGW2pcZrzxKrtPgEEwSJTI4pqxVfgXYKQpoodjFOi0GJX5DIzBYRH6/13XoMqYVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022800; c=relaxed/simple;
-	bh=RsK917zXAp13wGpmFmkH4TiAJ9yvtqAuBlh/m6TsfIU=;
+	s=arc-20240116; t=1734024127; c=relaxed/simple;
+	bh=dnxX8ymgGZt4+djkZmV6y6dHaRwqX5Av/rep8Yu45BI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqI/YnyO/8rS870vB5mFaA6RaewMJ9BE4iloxGxeSfFAD3TihjeS5bZ6pZGAp4qJbGUTofB1+iCrXIxbXsMddvy/46p9ZpsD9yMUr2Ws29ffGQMRxRH00dtp7rHJJaQZc8dcGFwYyUFOo0W+s8PYh0DcwvO+QJked0ZLlGdptfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QtoPRqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C673C4CECE;
-	Thu, 12 Dec 2024 16:59:59 +0000 (UTC)
+	 MIME-Version; b=nhmoQ2++H61s/6PyDtrgwJka//yEFS1IeXmwFXepHDpCMDUQ7+/y4z3o++nylvJb9HKRYmOIVhEQyf/Pt4UL2V8sGRIe/FyQwBKujLMvYv6vRIUYwaiy076MWs4nsdYX2guc8acKSx9lqKXCkADHcDtVzFp0LeWmuzuFfnpUZxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iU8XRmJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B50EC4CECE;
+	Thu, 12 Dec 2024 17:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022799;
-	bh=RsK917zXAp13wGpmFmkH4TiAJ9yvtqAuBlh/m6TsfIU=;
+	s=korg; t=1734024126;
+	bh=dnxX8ymgGZt4+djkZmV6y6dHaRwqX5Av/rep8Yu45BI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0QtoPRqMjxors/M9qGO4cu2/e0JjcU4anwHVM8Z2CwXnQGjn3K/SRK2bkM7dyMTbM
-	 ckOLBT9U1yj8kD8Z7OkTDuSl+dqsjtB+hoYGZLnB0Uavyp1Uetf95rB3b0QyehNQzK
-	 BKc+pstI36MIAthaPQU+u7wMBst/1ww/5Q9QnEN8=
+	b=iU8XRmJVGJykuYetpq+bSDJIl1QfaThVNx69aJyiPr9eEDF6odZTeZif8/t4hcmkH
+	 7OYBroEOsLydRpaIbIuI5pcrx4I3TReoEl3inRrY/Zoup1wZiRx5ypfY9rlj1LkUoi
+	 ZN/WcasLhOdUhEl88Ki8X49ZeMdwwoH2MnJEh9cw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muchun Song <muchun.song@linux.dev>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 338/565] block: fix ordering between checking BLK_MQ_S_STOPPED request adding
+	LongPing Wei <weilongping@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 195/459] f2fs: fix the wrong f2fs_bug_on condition in f2fs_do_replace_block
 Date: Thu, 12 Dec 2024 15:58:53 +0100
-Message-ID: <20241212144324.957206015@linuxfoundation.org>
+Message-ID: <20241212144301.270568141@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muchun Song <songmuchun@bytedance.com>
+From: LongPing Wei <weilongping@oppo.com>
 
-commit 96a9fe64bfd486ebeeacf1e6011801ffe89dae18 upstream.
+[ Upstream commit c3af1f13476ec23fd99c98d060a89be28c1e8871 ]
 
-Supposing first scenario with a virtio_blk driver.
+This f2fs_bug_on was introduced by commit 2c1905042c8c ("f2fs: check
+segment type in __f2fs_replace_block") when there were only 6 curseg types.
+After commit d0b9e42ab615 ("f2fs: introduce inmem curseg") was introduced,
+the condition should be changed to checking curseg->seg_type.
 
-CPU0                        CPU1
-
-blk_mq_try_issue_directly()
-  __blk_mq_issue_directly()
-    q->mq_ops->queue_rq()
-      virtio_queue_rq()
-        blk_mq_stop_hw_queue()
-                            virtblk_done()
-  blk_mq_request_bypass_insert()  1) store
-                              blk_mq_start_stopped_hw_queue()
-                                clear_bit(BLK_MQ_S_STOPPED)       3) store
-                                blk_mq_run_hw_queue()
-                                  if (!blk_mq_hctx_has_pending()) 4) load
-                                    return
-                                  blk_mq_sched_dispatch_requests()
-  blk_mq_run_hw_queue()
-    if (!blk_mq_hctx_has_pending())
-      return
-    blk_mq_sched_dispatch_requests()
-      if (blk_mq_hctx_stopped())  2) load
-        return
-      __blk_mq_sched_dispatch_requests()
-
-Supposing another scenario.
-
-CPU0                        CPU1
-
-blk_mq_requeue_work()
-  blk_mq_insert_request() 1) store
-                            virtblk_done()
-                              blk_mq_start_stopped_hw_queue()
-  blk_mq_run_hw_queues()        clear_bit(BLK_MQ_S_STOPPED)       3) store
-                                blk_mq_run_hw_queue()
-                                  if (!blk_mq_hctx_has_pending()) 4) load
-                                    return
-                                  blk_mq_sched_dispatch_requests()
-    if (blk_mq_hctx_stopped())  2) load
-      continue
-    blk_mq_run_hw_queue()
-
-Both scenarios are similar, the full memory barrier should be inserted
-between 1) and 2), as well as between 3) and 4) to make sure that either
-CPU0 sees BLK_MQ_S_STOPPED is cleared or CPU1 sees dispatch list.
-Otherwise, either CPU will not rerun the hardware queue causing
-starvation of the request.
-
-The easy way to fix it is to add the essential full memory barrier into
-helper of blk_mq_hctx_stopped(). In order to not affect the fast path
-(hardware queue is not stopped most of the time), we only insert the
-barrier into the slow path. Actually, only slow path needs to care about
-missing of dispatching the request to the low-level device driver.
-
-Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
-Cc: stable@vger.kernel.org
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20241014092934.53630-4-songmuchun@bytedance.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d0b9e42ab615 ("f2fs: introduce inmem curseg")
+Signed-off-by: LongPing Wei <weilongping@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c |    6 ++++++
- block/blk-mq.h |   13 +++++++++++++
- 2 files changed, 19 insertions(+)
+ fs/f2fs/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -1813,6 +1813,12 @@ void blk_mq_start_stopped_hw_queue(struc
- 		return;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 6fcc83637b153..a37f88cc7c485 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -3617,8 +3617,8 @@ void f2fs_do_replace_block(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+ 		}
+ 	}
  
- 	clear_bit(BLK_MQ_S_STOPPED, &hctx->state);
-+	/*
-+	 * Pairs with the smp_mb() in blk_mq_hctx_stopped() to order the
-+	 * clearing of BLK_MQ_S_STOPPED above and the checking of dispatch
-+	 * list in the subsequent routine.
-+	 */
-+	smp_mb__after_atomic();
- 	blk_mq_run_hw_queue(hctx, async);
- }
- EXPORT_SYMBOL_GPL(blk_mq_start_stopped_hw_queue);
---- a/block/blk-mq.h
-+++ b/block/blk-mq.h
-@@ -177,6 +177,19 @@ static inline struct blk_mq_tags *blk_mq
+-	f2fs_bug_on(sbi, !IS_DATASEG(type));
+ 	curseg = CURSEG_I(sbi, type);
++	f2fs_bug_on(sbi, !IS_DATASEG(curseg->seg_type));
  
- static inline bool blk_mq_hctx_stopped(struct blk_mq_hw_ctx *hctx)
- {
-+	/* Fast path: hardware queue is not stopped most of the time. */
-+	if (likely(!test_bit(BLK_MQ_S_STOPPED, &hctx->state)))
-+		return false;
-+
-+	/*
-+	 * This barrier is used to order adding of dispatch list before and
-+	 * the test of BLK_MQ_S_STOPPED below. Pairs with the memory barrier
-+	 * in blk_mq_start_stopped_hw_queue() so that dispatch code could
-+	 * either see BLK_MQ_S_STOPPED is cleared or dispatch list is not
-+	 * empty to avoid missing dispatching requests.
-+	 */
-+	smp_mb();
-+
- 	return test_bit(BLK_MQ_S_STOPPED, &hctx->state);
- }
- 
+ 	mutex_lock(&curseg->curseg_mutex);
+ 	down_write(&sit_i->sentry_lock);
+-- 
+2.43.0
+
 
 
 
