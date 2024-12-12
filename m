@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D049EF6F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E119EF920
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 326942887FE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19F2328CE8B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6432222D45;
-	Thu, 12 Dec 2024 17:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF28223C54;
+	Thu, 12 Dec 2024 17:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh+z4n3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEhWx/Hm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A71213E6F;
-	Thu, 12 Dec 2024 17:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9630C2153EC;
+	Thu, 12 Dec 2024 17:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024635; cv=none; b=WggFAkNoQzTsxR5nM1H0ZXmTNABtFjNmta0smMVy7e4NXBf7kHYSzAPolnT6NNAn3ng7lvhGjb5gARLjQzIowyQk5xfzG6xpmQJQnkcXclwaONueqgrvKvXq+w3kycqXSgF/OXsJlJbw2Unwmp4CUmUv0JyZaSDgTYlpZ9l47cY=
+	t=1734025568; cv=none; b=iiNV2gJo3HY3G6MfsgW2ML2g87uwIB2r75u/Tf3GZpu4Q4JIiv9CYX7DSDJVLfx/E7r6pb01AEVpH8yrb5dqsYrxJek6aRMrTgIrEVIV1zLgrvXiPA9WbXU5rcD15G55ZAuQsEwPORsDpwBrT4w3xdCz08rxppFSowpBTB1b+pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024635; c=relaxed/simple;
-	bh=bfrG3dl8bh45ZGrM8htbXNasL/jDAHAtHxwrbG7i1/I=;
+	s=arc-20240116; t=1734025568; c=relaxed/simple;
+	bh=AjVOy3Qtcs3W8BigIcFTdTw1JHSlfcBQ+jV+kcXqxV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kt1WrfNNrdAt42RbaTd+pcp7prts9lWma5T8Hk2qtVp5kV0QQJwUAyTHrz+j7UP101HaooXhs+vAUT60nfO9uWXjHoRirHX81SidYcuTM3j8QeMVe6eSiCi7oYif1BxxP428WSQhEvZ1/Vzp5/AuKB7ziQfFFrNOpAFM5zWB/9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh+z4n3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130FFC4CECE;
-	Thu, 12 Dec 2024 17:30:34 +0000 (UTC)
+	 MIME-Version; b=Rj2z7jf6JAZ7ji+j7Ov5IDg/zce3zVaEFFVpa4RGi49yJya1+DGnrQd8Dd9/tLvzAWGI2wc9bN7DH6y2+VFBM9uVYcVWYV+6lCi0YmUIXsDMpus7ZwsIaVmbI6VvWCNmaD3hk1izg+HFJsf5egWT/soelxUrSeBZW0mxpySN8uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEhWx/Hm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0647C4CECE;
+	Thu, 12 Dec 2024 17:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024635;
-	bh=bfrG3dl8bh45ZGrM8htbXNasL/jDAHAtHxwrbG7i1/I=;
+	s=korg; t=1734025568;
+	bh=AjVOy3Qtcs3W8BigIcFTdTw1JHSlfcBQ+jV+kcXqxV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fh+z4n3l3VBtMGQyTRofLpw1A2P2BOCCTwoptiQKqHr5hoVg14M5mIPOVYVSZSbR+
-	 sDKD2Fb71gBHsXbVzJv3aH/v1o9J9zUFfJFcOfh1SngH1UnVtZJSE1qG55aW/gHQxR
-	 CeKkA5mD4XZBCSDkAhTZdfwXbF5F/vRK5jQ4IMhY=
+	b=cEhWx/Hm4wYlGnJW3lDovWDzNLCsY9y7ubMSXYcrUKu99x7ReKCOo6V8k1NAhxBeg
+	 kujPxlPn2gDN69cRoYj5IcSOFK8PHiWC2Z//N5DENul7BJV2p2E9yTjRPdvpHWd3UV
+	 I3NOh8WPU9ITh2k5YYuxX41nKMCfLhvoG1yXdl7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.10 362/459] arm64: ptrace: fix partial SETREGSET for NT_ARM_TAGGED_ADDR_CTRL
+	Johannes Berg <johannes.berg@intel.com>,
+	Richard Weinberger <richard@nod.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 182/321] um: Clean up stacktrace dump
 Date: Thu, 12 Dec 2024 16:01:40 +0100
-Message-ID: <20241212144307.971953023@linuxfoundation.org>
+Message-ID: <20241212144237.179967669@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit ca62d90085f4af36de745883faab9f8a7cbb45d3 upstream.
+[ Upstream commit 273fe1b676cb59d41e177980a981e27806872954 ]
 
-Currently tagged_addr_ctrl_set() doesn't initialize the temporary 'ctrl'
-variable, and a SETREGSET call with a length of zero will leave this
-uninitialized. Consequently tagged_addr_ctrl_set() will consume an
-arbitrary value, potentially leaking up to 64 bits of memory from the
-kernel stack. The read is limited to a specific slot on the stack, and
-the issue does not provide a write mechanism.
+We currently get a few stray newlines, due to the interaction
+between printk() and the code here. Remove a few explicit
+newline prints to neaten the output.
 
-As set_tagged_addr_ctrl() only accepts values where bits [63:4] zero and
-rejects other values, a partial SETREGSET attempt will randomly succeed
-or fail depending on the value of the uninitialized value, and the
-exposure is significantly limited.
-
-Fix this by initializing the temporary value before copying the regset
-from userspace, as for other regsets (e.g. NT_PRSTATUS, NT_PRFPREG,
-NT_ARM_SYSTEM_CALL). In the case of a zero-length write, the existing
-value of the tagged address ctrl will be retained.
-
-The NT_ARM_TAGGED_ADDR_CTRL regset is only visible in the
-user_aarch64_view used by a native AArch64 task to manipulate another
-native AArch64 task. As get_tagged_addr_ctrl() only returns an error
-value when called for a compat task, tagged_addr_ctrl_get() and
-tagged_addr_ctrl_set() should never observe an error value from
-get_tagged_addr_ctrl(). Add a WARN_ON_ONCE() to both to indicate that
-such an error would be unexpected, and error handlnig is not missing in
-either case.
-
-Fixes: 2200aa7154cb ("arm64: mte: ptrace: Add NT_ARM_TAGGED_ADDR_CTRL regset")
-Cc: <stable@vger.kernel.org> # 5.10.x
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20241205121655.1824269-2-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Stable-dep-of: 0f659ff362ea ("um: Always dump trace for specified task in show_stack")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/ptrace.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/um/kernel/sysrq.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -1040,7 +1040,7 @@ static int tagged_addr_ctrl_get(struct t
- {
- 	long ctrl = get_tagged_addr_ctrl(target);
+diff --git a/arch/um/kernel/sysrq.c b/arch/um/kernel/sysrq.c
+index 1b54b6431499b..47f20304af26a 100644
+--- a/arch/um/kernel/sysrq.c
++++ b/arch/um/kernel/sysrq.c
+@@ -47,14 +47,12 @@ void show_stack_loglvl(struct task_struct *task, unsigned long *stack,
+ 		if (kstack_end(stack))
+ 			break;
+ 		if (i && ((i % STACKSLOTS_PER_LINE) == 0))
+-			printk("%s\n", loglvl);
++			pr_cont("\n");
+ 		pr_cont(" %08lx", *stack++);
+ 	}
+-	printk("%s\n", loglvl);
  
--	if (IS_ERR_VALUE(ctrl))
-+	if (WARN_ON_ONCE(IS_ERR_VALUE(ctrl)))
- 		return ctrl;
+ 	printk("%sCall Trace:\n", loglvl);
+ 	dump_trace(current, &stackops, (void *)loglvl);
+-	printk("%s\n", loglvl);
+ }
  
- 	return membuf_write(&to, &ctrl, sizeof(ctrl));
-@@ -1054,6 +1054,10 @@ static int tagged_addr_ctrl_set(struct t
- 	int ret;
- 	long ctrl;
- 
-+	ctrl = get_tagged_addr_ctrl(target);
-+	if (WARN_ON_ONCE(IS_ERR_VALUE(ctrl)))
-+		return ctrl;
-+
- 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &ctrl, 0, -1);
- 	if (ret)
- 		return ret;
+ void show_stack(struct task_struct *task, unsigned long *stack)
+-- 
+2.43.0
+
 
 
 
