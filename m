@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-102273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 389059EF10C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF559EEB75
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDEC329EED2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E823E188ABAC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35262397BE;
-	Thu, 12 Dec 2024 16:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC7120E034;
+	Thu, 12 Dec 2024 15:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smunRdkc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpozNx6X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C33D2397AD;
-	Thu, 12 Dec 2024 16:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982EC1537C8;
+	Thu, 12 Dec 2024 15:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020626; cv=none; b=RiayHWivzn46Smy+Tgjy6/kJngatidI1N0zuzDUka3mnjC2kg9E/NQv7DbCR6zFm9+ZkLb6j5yw0Cx5A92jjb3pYkt4UuDjNbcEzaHbtbgKWrz5xr05k+27Cugp90MiL2hiSSoK6L/9CggCEtEHsf8IKJjZZZx1P4Wt0qvr0Dfk=
+	t=1734016834; cv=none; b=HUgY4rmXSTjiqxQYHxMw6O1XZWAVyha08rLIUwVVOqCTXAPWz/UvOCa0W6SQlD9ny7ULvPSuFNBxsS2UJLQLOHpHR/wPUM7pxD+pV/PbPg9KO5CoYOjI4Fuyle6IwBgfH8fMBg9jhDbjv2bkTtrYsQ9Wm0LhLFwBqeP6pR62dCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020626; c=relaxed/simple;
-	bh=OK1cr0ehcQXYqenS2UxXjnQQOjUpUifIHLJOED4bhxo=;
+	s=arc-20240116; t=1734016834; c=relaxed/simple;
+	bh=epHdGEASkMmKwlMes/M/cbqWIhKkmhTQXnzA3j7YNGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ul9cgz33QVMw+0ZhJnVa8ZyAAZG9CZKM0Aa/J24l2FFGoaW4+Tg8oEbcHYiaBS2ZhIGv0lI6Edlz5zXGaWAQhsjDK860xsMOn4vW4HjLdp7A8GZEX84uZtcFtb9hrGdUKO72AJ6IpmiNePNC8j5iKEee8Nt7Nb+NcculHXCuPOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smunRdkc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE610C4CECE;
-	Thu, 12 Dec 2024 16:23:45 +0000 (UTC)
+	 MIME-Version; b=SetmKCEkmLh4DtPckWUBxLnElwK6z85Kh5sIVk3o2ixQSOaWGoefW8Ft3CdnOnQu9nsnhu3AysApCsV+xJBsCNj5LzYncXgPC3hg51q+OvjqQA1MiqIusNt+ejAH3mY1z4xWLohMWIUYhRFgW/Jy6BvpdNkD1K5WIfmK4BIjWKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpozNx6X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FADC4CECE;
+	Thu, 12 Dec 2024 15:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020626;
-	bh=OK1cr0ehcQXYqenS2UxXjnQQOjUpUifIHLJOED4bhxo=;
+	s=korg; t=1734016834;
+	bh=epHdGEASkMmKwlMes/M/cbqWIhKkmhTQXnzA3j7YNGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smunRdkcaOUrc0O/pshkFdUYWGI1In4lbADCVXh5PvwS+gP95sDq6Ni3adQUn1hwr
-	 pdek0JofPVWaGJXAtKweYKKcKT5678I5EPUTi9R9/bDuqaBmtHC1WxQcleqGosIoXp
-	 30yRBFOXVYPNX/AABQgvx0HRM9V8BvFREea0Xc9c=
+	b=YpozNx6X13OPCE8ESMjsbvXcW2tA9+EY6n0Ni4u6Ziwnfvl1/ti+S6YN69eCvjvHW
+	 8qzDaQaai2sr0mLXqIWquwkg+CSEGuRKPPL4i9s8mYcF82Nf/5RHGe3CeUlLJeYLDM
+	 4Pf1drLWurHcm3f+YBr5LF10sC1e/eUpr9wv3mmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 516/772] can: sun4i_can: sun4i_can_err(): call can_change_state() even if cf is NULL
+Subject: [PATCH 6.12 292/466] net: inet: do not leave a dangling sk pointer in inet_create()
 Date: Thu, 12 Dec 2024 15:57:41 +0100
-Message-ID: <20241212144411.280763023@linuxfoundation.org>
+Message-ID: <20241212144318.323045870@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit ee6bf3677ae03569d833795064e17f605c2163c7 ]
+[ Upstream commit 9365fa510c6f82e3aa550a09d0c5c6b44dbc78ff ]
 
-Call the function can_change_state() if the allocation of the skb
-fails, as it handles the cf parameter when it is null.
+sock_init_data() attaches the allocated sk object to the provided sock
+object. If inet_create() fails later, the sk object is freed, but the
+sock object retains the dangling pointer, which may create use-after-free
+later.
 
-Additionally, this ensures that the statistics related to state error
-counters (i. e. warning, passive, and bus-off) are updated.
+Clear the sk pointer in the sock object on error.
 
-Fixes: 0738eff14d81 ("can: Allwinner A10/A20 CAN Controller support - Kernel module")
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://patch.msgid.link/20241122221650.633981-3-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20241014153808.51894-7-ignat@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/sun4i_can.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/af_inet.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/can/sun4i_can.c b/drivers/net/can/sun4i_can.c
-index c3a6b028ea4d6..6bf721eda65d2 100644
---- a/drivers/net/can/sun4i_can.c
-+++ b/drivers/net/can/sun4i_can.c
-@@ -630,10 +630,10 @@ static int sun4i_can_err(struct net_device *dev, u8 isrc, u8 status)
- 		tx_state = txerr >= rxerr ? state : 0;
- 		rx_state = txerr <= rxerr ? state : 0;
- 
--		if (likely(skb))
--			can_change_state(dev, cf, tx_state, rx_state);
--		else
--			priv->can.state = state;
-+		/* The skb allocation might fail, but can_change_state()
-+		 * handles cf == NULL.
-+		 */
-+		can_change_state(dev, cf, tx_state, rx_state);
- 		if (state == CAN_STATE_BUS_OFF)
- 			can_bus_off(dev);
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index b24d74616637a..8095e82de8083 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -376,32 +376,30 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ 		inet->inet_sport = htons(inet->inet_num);
+ 		/* Add to protocol hash chains. */
+ 		err = sk->sk_prot->hash(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
  	}
+ 
+ 	if (sk->sk_prot->init) {
+ 		err = sk->sk_prot->init(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ 
+ 	if (!kern) {
+ 		err = BPF_CGROUP_RUN_PROG_INET_SOCK(sk);
+-		if (err) {
+-			sk_common_release(sk);
+-			goto out;
+-		}
++		if (err)
++			goto out_sk_release;
+ 	}
+ out:
+ 	return err;
+ out_rcu_unlock:
+ 	rcu_read_unlock();
+ 	goto out;
++out_sk_release:
++	sk_common_release(sk);
++	sock->sk = NULL;
++	goto out;
+ }
+ 
+ 
 -- 
 2.43.0
 
