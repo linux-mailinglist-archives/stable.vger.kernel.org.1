@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F479EF8ED
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997C59EF7AB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C90A1898038
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74461178732
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9135C216E2D;
-	Thu, 12 Dec 2024 17:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F3F222D57;
+	Thu, 12 Dec 2024 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cexMjhx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td1aTrdZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FAA913CA81;
-	Thu, 12 Dec 2024 17:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCA3222D4E;
+	Thu, 12 Dec 2024 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025297; cv=none; b=b9HnzM79+vjgqSfRRdFiYrP6htQLoBjbbo5H9jpV8UzPfd1O5QW8KL/tbvVEPhq8R/CfILYKS3zPqMvmFzK70ljd5bOQZ6hj/QQd/TDfHqCWYjnOnd29AkLCryOh3YqzdMw8uF3WLmoWw3/ZdxoVWC2U48jY8DnWaapGN6Qj7PA=
+	t=1734024460; cv=none; b=AwfOCKItG1xwV5dTkq+ngVv+46qWdcxanqoy4rtiWix5zRLOP3sq88OyZtQGGfDNrzSK/spWKXckuQJ/1kDdkCu4RuTHaj0Wxp3f/bhLG+pOwBExqccKXP/G5Fjhsp45ZaCkJJVDdH0y3iwBCftLeNQgvVokjCEO14uTteHGd48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025297; c=relaxed/simple;
-	bh=5K5lxpcui7L8JC+Tni81wG8azZrEX2w0Rr9LrcTmL2o=;
+	s=arc-20240116; t=1734024460; c=relaxed/simple;
+	bh=rmbDZVV8bbZP9VpKEogTRl6tPRIZckccCEbybGBo0kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yf49DftmhA+PRGx0nAEzzxQQOHUkChTIqTlD2c9Aw2gvKqRsdZdBLyCXRYkScAfhUJgEieyDtLCfePWNOeLw53HmucJN1NtJqSbH0YlrGRHmHv2Ny4YASeGZVDBX+n7feO5V2w3AiYLsOvjVXlqXI1IiP6/L7s9eM37EW3qkAT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cexMjhx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767BAC4CECE;
-	Thu, 12 Dec 2024 17:41:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lN4AkIXf+NGMprBX3J6//WhkLOC1Ba63aiQyhS7N7iT9w9ny4EjUCQ6ixIVV8TYXyXU8rmJvslcyjjC0Hgk+nubjluUXBBQZeqTZGg6bTHZt6VVlIhLEg0Ofae/ajmstMLfrowSD+Q8PzOWMxYau8U2bBGFP5vLp67Cb8fuvkGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td1aTrdZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C45C4CED3;
+	Thu, 12 Dec 2024 17:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025296;
-	bh=5K5lxpcui7L8JC+Tni81wG8azZrEX2w0Rr9LrcTmL2o=;
+	s=korg; t=1734024460;
+	bh=rmbDZVV8bbZP9VpKEogTRl6tPRIZckccCEbybGBo0kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cexMjhxMEEsiWHnSJLEHL9iIMwrgcOp9Eeh4yJgS6PzD5il0H/zVEwKFwhKVdUpr
-	 9kNaNoRgg0Nz89EdChgsvKqUaiuyyr0s7hhN0qAYDnau50uD8lvCwY6wkQ1kC9PkYG
-	 ZyikSwplyMtso1IG5wM1QTOHdi2EFXg+sQE+Ihos=
+	b=Td1aTrdZIBMGSwVraQfM9RQB6p5YTgD+qcxGrNoZbGtOurZtmwf2/I02nr69HuDd1
+	 dHdACv/50bcE56Whx3Z7PryynleIylA7BaAH1oLDdQzEr8klvQPMx0cP0sTttuEPLT
+	 NuaXaGC24IRrO3h4AbLz73gxy3khRBXTWSX5MSmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 123/321] NFSD: Cap the number of bytes copied by nfs4_reset_recoverydir()
+Subject: [PATCH 5.10 303/459] modpost: remove incorrect code in do_eisa_entry()
 Date: Thu, 12 Dec 2024 16:00:41 +0100
-Message-ID: <20241212144234.836544216@linuxfoundation.org>
+Message-ID: <20241212144305.616510802@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +59,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit f64ea4af43161bb86ffc77e6aeb5bcf5c3229df0 ]
+[ Upstream commit 0c3e091319e4748cb36ac9a50848903dc6f54054 ]
 
-It's only current caller already length-checks the string, but let's
-be safe.
+This function contains multiple bugs after the following commits:
 
-Fixes: 0964a3d3f1aa ("[PATCH] knfsd: nfsd4 reboot dirname fix")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+ - ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+ - 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+
+Commit ac551828993e inserted the following code to do_eisa_entry():
+
+    else
+            strcat(alias, "*");
+
+This is incorrect because 'alias' is uninitialized. If it is not
+NULL-terminated, strcat() could cause a buffer overrun.
+
+Even if 'alias' happens to be zero-filled, it would output:
+
+    MODULE_ALIAS("*");
+
+This would match anything. As a result, the module could be loaded by
+any unrelated uevent from an unrelated subsystem.
+
+Commit ac551828993e introduced another bug.            
+
+Prior to that commit, the conditional check was:
+
+    if (eisa->sig[0])
+
+This checked if the first character of eisa_device_id::sig was not '\0'.
+
+However, commit ac551828993e changed it as follows:
+
+    if (sig[0])
+
+sig[0] is NOT the first character of the eisa_device_id::sig. The
+type of 'sig' is 'char (*)[8]', meaning that the type of 'sig[0]' is
+'char [8]' instead of 'char'. 'sig[0]' and 'symval' refer to the same
+address, which never becomes NULL.
+
+The correct conversion would have been:
+
+    if ((*sig)[0])
+
+However, this if-conditional was meaningless because the earlier change
+in commit ac551828993e was incorrect.
+
+This commit removes the entire incorrect code, which should never have
+been executed.
+
+Fixes: ac551828993e ("modpost: i2c aliases need no trailing wildcard")
+Fixes: 6543becf26ff ("mod/file2alias: make modalias generation safe for cross compiling")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4recover.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/mod/file2alias.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
-index 1abddad2b7ae7..594db9085b24a 100644
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -666,7 +666,8 @@ nfs4_reset_recoverydir(char *recdir)
- 		return status;
- 	status = -ENOTDIR;
- 	if (d_is_dir(path.dentry)) {
--		strcpy(user_recovery_dirname, recdir);
-+		strscpy(user_recovery_dirname, recdir,
-+			sizeof(user_recovery_dirname));
- 		status = 0;
- 	}
- 	path_put(&path);
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 7154df094f40b..1c9c33f491e64 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -786,10 +786,7 @@ static int do_eisa_entry(const char *filename, void *symval,
+ 		char *alias)
+ {
+ 	DEF_FIELD_ADDR(symval, eisa_device_id, sig);
+-	if (sig[0])
+-		sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+-	else
+-		strcat(alias, "*");
++	sprintf(alias, EISA_DEVICE_MODALIAS_FMT "*", *sig);
+ 	return 1;
+ }
+ 
 -- 
 2.43.0
 
