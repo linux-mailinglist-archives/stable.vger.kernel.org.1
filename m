@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-102205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431049EF0C0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:31:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0D89EF210
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0325029C075
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA01617480C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43EF2248B8;
-	Thu, 12 Dec 2024 16:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27954242F0B;
+	Thu, 12 Dec 2024 16:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNLv4Ez6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT2vS8PC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F32223E9D;
-	Thu, 12 Dec 2024 16:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A87242F07;
+	Thu, 12 Dec 2024 16:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020369; cv=none; b=bnQhQkthiPAZawvPjCbuB3Uad0+U4lAhlv+GUKP/4glczxowQi2hla3nxNcKhW4irHWSmYfFy1BuWltLwaJWVBfU4tEcC1WupqPS+raihgJpoX8OeTOTk8rBPUXjm57itHDXNGTgsONXAFuwHt3sbqbJ7WxkWTUSzf1rqZzqkvg=
+	t=1734020384; cv=none; b=RyPRxZypuTML4a1xwweTrKZD8HfW32949+uZSCeyEIDJRRPY7oReki+WjkMu9ojTlz5DBYEImFJniu2Uxt8cVIBsBkUGg7jWDq9uP2yl4QgI0ReQaHl4Poedn5EA7qP8PslYebWlKgYlIjIIEaBXbhyamwaG93k9LxJiSEeJ3fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020369; c=relaxed/simple;
-	bh=zRx4iQUZROuHTEF16Yv6NLu8LDk8ueMdTOhMrlWY28E=;
+	s=arc-20240116; t=1734020384; c=relaxed/simple;
+	bh=/Kw01WspyqulwhkfUPX31RjFlwecJTPj/h5op6223Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fj0CWzwb+fuUkGlfWb6IAG10cuiauu2xFkqrE5HwMdrSN3HM79E2Rau5rd0TyhXM18UbLnSHs1cdHi8eHNrCRq7DY3zYX2LTWz2nWjb6cYqVca19vNpXumGJmYKlZfFS6cuu3PD1JoSvwzo/Bch8QLvmKNqd6z9/9OdjmoUptR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNLv4Ez6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEE5C4CED3;
-	Thu, 12 Dec 2024 16:19:28 +0000 (UTC)
+	 MIME-Version; b=V6ZY48SBG4sgUMW+aUFgJolcVnDyszkD/fqOh3QM360+z7BW9E92i5fZXsPtsfr3hgM3ClzO1XjcOWaDSRGxU6KpEHd3l9ixefSDawVIwVDyA57v8tbhFHDF0GGpg3A/9HE/fvjdDjh4+ECsZCP0MTuq4sfSCp1KO5P0xSZH8cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT2vS8PC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD07C4CECE;
+	Thu, 12 Dec 2024 16:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020369;
-	bh=zRx4iQUZROuHTEF16Yv6NLu8LDk8ueMdTOhMrlWY28E=;
+	s=korg; t=1734020384;
+	bh=/Kw01WspyqulwhkfUPX31RjFlwecJTPj/h5op6223Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNLv4Ez6yj0O4uhDmypYTcvnoGJ3O48mIN1sn3e3RK3Qhfhtn5bawbI3+z9b3Shbf
-	 WQjtpg9zg8xWSg0sF1GUyDfOQadB44RXaP3YQMxHnmsNdVWQMyrD/OTgUQhHdUGc6y
-	 sSEQ7tScFaU5rC+93+LNEeolkgFFMFUFoeNdyZ7Y=
+	b=WT2vS8PCLnKKDALkku4tTi3Qd6NlLn2J1ndh7fAK0UHDYY9nnrIUEOCtFMu1TJ84I
+	 wXTo/zyOtkV6t4BYQRjVNIy2RgxkRLS+wKPPysHRnsmltG5t7fkRntuZU00YavgKhs
+	 mhpVrCvlkUS3hhnPDQzVx8z6bPoof0CkCT+Bso2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Kees Cook <kees@kernel.org>,
+	Ma Wupeng <mawupeng1@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 422/772] lib: string_helpers: silence snprintf() output truncation warning
-Date: Thu, 12 Dec 2024 15:56:07 +0100
-Message-ID: <20241212144407.350896810@linuxfoundation.org>
+Subject: [PATCH 6.1 423/772] ipc: fix memleak if msg_init_ns failed in create_ipc_ns
+Date: Thu, 12 Dec 2024 15:56:08 +0100
+Message-ID: <20241212144407.392511086@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -68,41 +65,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Ma Wupeng <mawupeng1@huawei.com>
 
-commit a508ef4b1dcc82227edc594ffae583874dd425d7 upstream.
+commit bc8f5921cd69188627c08041276238de222ab466 upstream.
 
-The output of ".%03u" with the unsigned int in range [0, 4294966295] may
-get truncated if the target buffer is not 12 bytes. This can't really
-happen here as the 'remainder' variable cannot exceed 999 but the
-compiler doesn't know it. To make it happy just increase the buffer to
-where the warning goes away.
+Percpu memory allocation may failed during create_ipc_ns however this
+fail is not handled properly since ipc sysctls and mq sysctls is not
+released properly. Fix this by release these two resource when failure.
 
-Fixes: 3c9f3681d0b4 ("[SCSI] lib: add generic helper to print sizes rounded to the correct SI range")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org
+Here is the kmemleak stack when percpu failed:
+
+unreferenced object 0xffff88819de2a600 (size 512):
+  comm "shmem_2nstest", pid 120711, jiffies 4300542254
+  hex dump (first 32 bytes):
+    60 aa 9d 84 ff ff ff ff fc 18 48 b2 84 88 ff ff  `.........H.....
+    04 00 00 00 a4 01 00 00 20 e4 56 81 ff ff ff ff  ........ .V.....
+  backtrace (crc be7cba35):
+    [<ffffffff81b43f83>] __kmalloc_node_track_caller_noprof+0x333/0x420
+    [<ffffffff81a52e56>] kmemdup_noprof+0x26/0x50
+    [<ffffffff821b2f37>] setup_mq_sysctls+0x57/0x1d0
+    [<ffffffff821b29cc>] copy_ipcs+0x29c/0x3b0
+    [<ffffffff815d6a10>] create_new_namespaces+0x1d0/0x920
+    [<ffffffff815d7449>] copy_namespaces+0x2e9/0x3e0
+    [<ffffffff815458f3>] copy_process+0x29f3/0x7ff0
+    [<ffffffff8154b080>] kernel_clone+0xc0/0x650
+    [<ffffffff8154b6b1>] __do_sys_clone+0xa1/0xe0
+    [<ffffffff843df8ff>] do_syscall_64+0xbf/0x1c0
+    [<ffffffff846000b0>] entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Link: https://lkml.kernel.org/r/20241023093129.3074301-1-mawupeng1@huawei.com
+Fixes: 72d1e611082e ("ipc/msg: mitigate the lock contention with percpu counter")
+Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/r/20241101205453.9353-1-brgl@bgdev.pl
-Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/string_helpers.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ipc/namespace.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/lib/string_helpers.c
-+++ b/lib/string_helpers.c
-@@ -52,7 +52,7 @@ void string_get_size(u64 size, u64 blk_s
- 	static const unsigned int rounding[] = { 500, 50, 5 };
- 	int i = 0, j;
- 	u32 remainder = 0, sf_cap;
--	char tmp[8];
-+	char tmp[12];
- 	const char *unit;
+--- a/ipc/namespace.c
++++ b/ipc/namespace.c
+@@ -68,13 +68,15 @@ static struct ipc_namespace *create_ipc_
  
- 	tmp[0] = '\0';
+ 	err = msg_init_ns(ns);
+ 	if (err)
+-		goto fail_put;
++		goto fail_ipc;
+ 
+ 	sem_init_ns(ns);
+ 	shm_init_ns(ns);
+ 
+ 	return ns;
+ 
++fail_ipc:
++	retire_ipc_sysctls(ns);
+ fail_mq:
+ 	retire_mq_sysctls(ns);
+ 
 
 
 
