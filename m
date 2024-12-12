@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-102636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7298F9EF2E1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE729EEA83
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3AC128C3FF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54B4716C4CF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4850823694B;
-	Thu, 12 Dec 2024 16:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81E2217656;
+	Thu, 12 Dec 2024 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSbjRfAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duRl2bnK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040F5236938;
-	Thu, 12 Dec 2024 16:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E6A215F5A;
+	Thu, 12 Dec 2024 15:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021943; cv=none; b=b8U6ZGvSvFQnRYK9il/XlRu4Sj3260eBDNHiCqYt4MM2+aF0OBApAA8XSpX786V6/Nm5PFhNIc4TXSVpU+yskFEeehTaTsbQAqFeUYv+5JIsWd/bGDblOPB06+2TunT/rPLYDfBrRlzHoiTXCoypx2qsuEgpupR7qhirsvMv8qo=
+	t=1734016166; cv=none; b=aRoLrH7YqDv0w3EJSL2Cibmyi2tvJkoHDVlMnDllCdShHP9nGoldrf3u/TqVZfl9iSM3veYQAIv/GweKzQKWmZ8E7Fl1vA+qfUExpvwO2AU5CQnfd+Od8PEPvNOWP5n6tUHrCd2dZtw9Hu8KyVQ2Npc9/cFXWXdCG8geP2VJPgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021943; c=relaxed/simple;
-	bh=7pWATYix23j5YJnrvGP6VkNvBbElK0xKwYgmVldAeI8=;
+	s=arc-20240116; t=1734016166; c=relaxed/simple;
+	bh=7CTzYORPT/jt9qUceaWlujAS/81gWEd99vrGHq2if6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoIbZQO+dgSzCMcMuHqId0TNBb4Gp1CVg3g/RFonUjTwiIQZGvQPVikVZZDz0CECZwFhso9QaEdhF0a6l/wXZ7gaC+S+H+OM+tU078yEuMilRvyB47oZKIZhpSmJxDdquv5ffwFOxU4F/uAzLjEcnvX+h+2vfgpdrgJdflYDv+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSbjRfAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65694C4CECE;
-	Thu, 12 Dec 2024 16:45:42 +0000 (UTC)
+	 MIME-Version; b=dp6wIiW0iBTdbw/2kXBijqtFKbQdjpVbfBBG5MxdylVd7zKi+mqipdyOn9wCzWvbnk9aG0p4RcpJ8Ax2OywL5Xua6JN67CdN2J6NNtB6/e23akPyhHIZsYSuQfXVyZc9DA1S2B8sF35OLVxNiP/6w8gzMGaT+leG56SqZ/dPLqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duRl2bnK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101B5C4CECE;
+	Thu, 12 Dec 2024 15:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021942;
-	bh=7pWATYix23j5YJnrvGP6VkNvBbElK0xKwYgmVldAeI8=;
+	s=korg; t=1734016166;
+	bh=7CTzYORPT/jt9qUceaWlujAS/81gWEd99vrGHq2if6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSbjRfAsSo4RtiVLPIEJp1T72f+PeJgpFN3D/e34d4InQr5smS54IxOg5q0CI0cwx
-	 lv6+D6W21DRWM9kbCoQ1aZoHCPqdj9yB4qSqlS+VVGgdOu9A8oMv/HB1g0E+QFPebG
-	 t1cFzGasy8LYt6uCEkHyrfwVzNs4rCCVErOQG2RQ=
+	b=duRl2bnKAs8yrsGFSY+26NQmHhh1DK7VZWv5F8vq/Lrq8a0D8fRPE/cR8VIiwZaLH
+	 N2njBDcWXu2wVbOE/PazbYT/uWQqZfIiWkpCKjBqtyzd+JVKjy9brFgiKQY2697yR7
+	 ejNLV06JolMxoWL3lfl+3YFVgWldpa3qJuOpp8aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/565] timekeeping: Consolidate fast timekeeper
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 131/466] tracing: Fix cmp_entries_dup() to respect sort() comparison rules
 Date: Thu, 12 Dec 2024 15:55:00 +0100
-Message-ID: <20241212144315.629803112@linuxfoundation.org>
+Message-ID: <20241212144311.978300514@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 90be8d6c1f91e1e5121c219726524c91b52bfc20 ]
+commit e63fbd5f6810ed756bbb8a1549c7d4132968baa9 upstream.
 
-Provide a inline function which replaces the copy & pasta.
+The cmp_entries_dup() function used as the comparator for sort()
+violated the symmetry and transitivity properties required by the
+sorting algorithm. Specifically, it returned 1 whenever memcmp() was
+non-zero, which broke the following expectations:
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220415091921.072296632@linutronix.de
-Stable-dep-of: 5c1806c41ce0 ("kcsan, seqlock: Support seqcount_latch_t")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* Symmetry: If x < y, then y > x.
+* Transitivity: If x < y and y < z, then x < z.
+
+These violations could lead to incorrect sorting and failure to
+correctly identify duplicate elements.
+
+Fix the issue by directly returning the result of memcmp(), which
+adheres to the required comparison properties.
+
+Cc: stable@vger.kernel.org
+Fixes: 08d43a5fa063 ("tracing: Add lock-free tracing_map")
+Link: https://lore.kernel.org/20241203202228.1274403-1-visitorckw@gmail.com
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/timekeeping.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ kernel/trace/tracing_map.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index ce3d1377cbc7a..7f755127bee41 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -431,6 +431,14 @@ static void update_fast_timekeeper(const struct tk_read_base *tkr,
- 	memcpy(base + 1, base, sizeof(*base));
+--- a/kernel/trace/tracing_map.c
++++ b/kernel/trace/tracing_map.c
+@@ -845,15 +845,11 @@ int tracing_map_init(struct tracing_map
+ static int cmp_entries_dup(const void *A, const void *B)
+ {
+ 	const struct tracing_map_sort_entry *a, *b;
+-	int ret = 0;
+ 
+ 	a = *(const struct tracing_map_sort_entry **)A;
+ 	b = *(const struct tracing_map_sort_entry **)B;
+ 
+-	if (memcmp(a->key, b->key, a->elt->map->key_size))
+-		ret = 1;
+-
+-	return ret;
++	return memcmp(a->key, b->key, a->elt->map->key_size);
  }
  
-+static __always_inline u64 fast_tk_get_delta_ns(struct tk_read_base *tkr)
-+{
-+	u64 delta, cycles = tk_clock_read(tkr);
-+
-+	delta = clocksource_delta(cycles, tkr->cycle_last, tkr->mask);
-+	return timekeeping_delta_to_ns(tkr, delta);
-+}
-+
- static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
- {
- 	struct tk_read_base *tkr;
-@@ -441,12 +449,7 @@ static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
- 		seq = raw_read_seqcount_latch(&tkf->seq);
- 		tkr = tkf->base + (seq & 0x01);
- 		now = ktime_to_ns(tkr->base);
--
--		now += timekeeping_delta_to_ns(tkr,
--				clocksource_delta(
--					tk_clock_read(tkr),
--					tkr->cycle_last,
--					tkr->mask));
-+		now += fast_tk_get_delta_ns(tkr);
- 	} while (read_seqcount_latch_retry(&tkf->seq, seq));
- 
- 	return now;
-@@ -545,10 +548,7 @@ static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
- 		tkr = tkf->base + (seq & 0x01);
- 		basem = ktime_to_ns(tkr->base);
- 		baser = ktime_to_ns(tkr->base_real);
--
--		delta = timekeeping_delta_to_ns(tkr,
--				clocksource_delta(tk_clock_read(tkr),
--				tkr->cycle_last, tkr->mask));
-+		delta = fast_tk_get_delta_ns(tkr);
- 	} while (read_seqcount_latch_retry(&tkf->seq, seq));
- 
- 	if (mono)
--- 
-2.43.0
-
+ static int cmp_entries_sum(const void *A, const void *B)
 
 
 
