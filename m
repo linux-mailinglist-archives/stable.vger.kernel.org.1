@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9B09EF6CF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A9E9EF71C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA59288B8C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 479E6177357
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277E7221D9F;
-	Thu, 12 Dec 2024 17:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DFD223E77;
+	Thu, 12 Dec 2024 17:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irhom9gS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZD+7eA+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92A021660B;
-	Thu, 12 Dec 2024 17:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DE0222D7B;
+	Thu, 12 Dec 2024 17:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024565; cv=none; b=LaqloDKUZTmMIY6FR1CN7Zhbr6x3RRF3xDycDHvFzhJtmr4lVS7zzVRwznqA64uDiS1OCJqI5O1rm15boFmuXInOjLpXwtX17wMsZWoV2UPBd6NE76nxuUnzLNLnZY9r/tKiSFXXCOPNrkXo+sDdmWKdmpw9jkcLkyWFSBkEarM=
+	t=1734023361; cv=none; b=b9SJ1nm3BvSn83mBiWwrzNNN3O6rBpl9MMYTHCb2T88AeYhDeHKitdOBCuqFf3tXpsOUEFGNuROazg4/ASItm7MCtaHlqBQ5iucwIwub+TGK2yODNq5uYqBtHQjYfs8IKmuK7FKDOX1Rg7sNfCaMC1C2GbZP/n6musNG7o0W6YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024565; c=relaxed/simple;
-	bh=cgOggIt8dmFMtb0BYarIgRkuR//zBvvoQK9hXgC2ujM=;
+	s=arc-20240116; t=1734023361; c=relaxed/simple;
+	bh=bRzXEkuXEKxzAijG/LnGsUus7BMwcFG8auODbBu5pcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBQbNtsyq+KirV39kU2eCW6K9VEC0yadPu01qdrMPwgipcNQ/TKxNtLEF/83JAStr8TWXQD6K/Ua57ry4vH1r/MuVEl5/iiJNkiLlDCnc6LIEf6swpwnje4M3axMWgr5jgYD951GSbk48raZoBIP9FIMp4CUtsu6Y3YxFva3vus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irhom9gS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1092C4CED0;
-	Thu, 12 Dec 2024 17:29:24 +0000 (UTC)
+	 MIME-Version; b=j0Wxdhqli+WAjxGFHpuhXMeZ49p1R2wXjgwNIl71waui1gHcPkDU2R2weBO+AavMPPYsz7bTnWuaWTq6bsqMNWgxCDcWrTNLe2WDxEKd1bSM3eVzcHUTMaZ/fgvw+dzcE740THAB4g14GWHbTJ5MUHlY3JwJ1ZiAmtcscVP7xlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZD+7eA+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5179DC4CECE;
+	Thu, 12 Dec 2024 17:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024565;
-	bh=cgOggIt8dmFMtb0BYarIgRkuR//zBvvoQK9hXgC2ujM=;
+	s=korg; t=1734023361;
+	bh=bRzXEkuXEKxzAijG/LnGsUus7BMwcFG8auODbBu5pcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=irhom9gS/VmQ/oA4uPtcIQftrskqnHiUzJL07jfhDdMIfUGA2bB9SslH1n7CDDDDP
-	 XSdPnJXM48H2TTakSRbYjEWTAZNQCd9AB8j113noOACzAPOXS3yfhSspvsPxAgD2jB
-	 c8gbI5JNGKwMX1ZZDp33Bhpomb6BG+qGt+JA902Y=
+	b=ZD+7eA+t3w96NsrxXqATwUnpgUUhK/a3alYNH4MNkxLccqM81GFskINNsCbhUpyTl
+	 yy9VkcDrJn2oc1DPpY9+pJUCxyNHUU6kPCISnJGbFr04O6og7Q6IMwG3weCzZFccMT
+	 J8iLCZalqH59cYUX1cUAW3by7JGmMr+oDvA4KGN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Forestier <florian@forestier.re>,
-	Louis Leseur <louis.leseur@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhu Jun <zhujun2@cmss.chinamobile.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 338/459] net/qed: allow old cards not supporting "num_images" to work
-Date: Thu, 12 Dec 2024 16:01:16 +0100
-Message-ID: <20241212144307.012994117@linuxfoundation.org>
+Subject: [PATCH 5.15 482/565] samples/bpf: Fix a resource leak
+Date: Thu, 12 Dec 2024 16:01:17 +0100
+Message-ID: <20241212144330.815053194@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis Leseur <louis.leseur@gmail.com>
+From: Zhu Jun <zhujun2@cmss.chinamobile.com>
 
-[ Upstream commit 7a0ea70da56ee8c2716d0b79e9959d3c47efab62 ]
+[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
 
-Commit 43645ce03e00 ("qed: Populate nvm image attribute shadow.")
-added support for populating flash image attributes, notably
-"num_images". However, some cards were not able to return this
-information. In such cases, the driver would return EINVAL, causing the
-driver to exit.
+The opened file should be closed in show_sockopts(), otherwise resource
+leak will occur that this problem was discovered by reading code
 
-Add check to return EOPNOTSUPP instead of EINVAL when the card is not
-able to return these information. The caller function already handles
-EOPNOTSUPP without error.
-
-Fixes: 43645ce03e00 ("qed: Populate nvm image attribute shadow.")
-Co-developed-by: Florian Forestier <florian@forestier.re>
-Signed-off-by: Florian Forestier <florian@forestier.re>
-Signed-off-by: Louis Leseur <louis.leseur@gmail.com>
-Link: https://patch.msgid.link/20241128083633.26431-1-louis.leseur@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_mcp.c | 4 +++-
+ samples/bpf/test_cgrp2_sock.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_mcp.c b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
-index 2cd14ee95c1ff..a0c09a9172dc0 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_mcp.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
-@@ -3262,7 +3262,9 @@ int qed_mcp_bist_nvm_get_num_images(struct qed_hwfn *p_hwfn,
- 	if (rc)
- 		return rc;
+diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
+index b0811da5a00f3..3f56519a1ccd7 100644
+--- a/samples/bpf/test_cgrp2_sock.c
++++ b/samples/bpf/test_cgrp2_sock.c
+@@ -174,8 +174,10 @@ static int show_sockopts(int family)
+ 		return 1;
+ 	}
  
--	if (((rsp & FW_MSG_CODE_MASK) != FW_MSG_CODE_OK))
-+	if (((rsp & FW_MSG_CODE_MASK) == FW_MSG_CODE_UNSUPPORTED))
-+		rc = -EOPNOTSUPP;
-+	else if (((rsp & FW_MSG_CODE_MASK) != FW_MSG_CODE_OK))
- 		rc = -EINVAL;
+-	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
++	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
++		close(sd);
+ 		return 1;
++	}
  
- 	return rc;
+ 	mark = get_somark(sd);
+ 	prio = get_priority(sd);
 -- 
 2.43.0
 
