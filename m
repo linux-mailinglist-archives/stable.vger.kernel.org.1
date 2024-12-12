@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-102972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D489EF583
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34539EF936
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64AA118896B9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63CB516228B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30C32165F0;
-	Thu, 12 Dec 2024 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5E0222D6A;
+	Thu, 12 Dec 2024 17:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmX0h+yg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5PmC7yE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F71C2F44;
-	Thu, 12 Dec 2024 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9883A20A5EE;
+	Thu, 12 Dec 2024 17:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023152; cv=none; b=I3jDME8VgC8prX/Fv+pCutfMe7INljfFNtPTizbrAsrP++ZSoOvVpK8sk0MautMRqUOP0ELVIOhK1xBIiipPIvaI5HGy5lVwdnD5kj/qURDavegocFBViGisTGS4d/LpQVt+MDL+f/y9V7rw6+9/AFTJknbzL4VdN7srMepWKKg=
+	t=1734025280; cv=none; b=qPI2tHUulckY+g6722wm6HeFrI4VSOBPm7RMio5GpIlDcw+bd1ONvcEzxZNRtd3pYxCWuS+zjbrxx5ArWpvo5o9wFO096deiPmiUBcrhczafdxBcAFYbTclUBNR8kRV3p6HmyeoPhU0uXrIyKn33VzJugAA21/to6j628eZGwjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023152; c=relaxed/simple;
-	bh=aWPkycsT/i/TEEyYJVnQaT40eNOotZ1gStlJRSFzTfY=;
+	s=arc-20240116; t=1734025280; c=relaxed/simple;
+	bh=fWLg77dSQjQWGc9vwXLnjFNJmI3kvtfjHuEr6tPp17w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=agYOstHoCxymmzwaacQThsEfuNDPwrW2RnyMTbBqDtYqEnLmv2CKk62RkuFH3x7NoaTpc2C07XNVn2WHPAoxyaZbpbDciGfVBDHYvycz2skSY01CGyKZkPFgVv70w+IWyAuHnXfjd4PR/CFaOYOuxb2+pFt4Plr93ZU97fI2cMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmX0h+yg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E252AC4CECE;
-	Thu, 12 Dec 2024 17:05:51 +0000 (UTC)
+	 MIME-Version; b=T5Ns11NBLHaStsc7kz9GkKew6GI4V0sXyMBWN/RUCh5YX/soPS6gbHuKQUTPoRNdcYh809O14ZGx0mEcAnaknxI4OXnfTMhpF+oJLHX+f6U3ze8kD5eaQWAoazrb1JBKH3BVBs8RQPJyOlyBddO56aBq/CUCOqZ6Yp+8BH5sD/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5PmC7yE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940ECC4CECE;
+	Thu, 12 Dec 2024 17:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023152;
-	bh=aWPkycsT/i/TEEyYJVnQaT40eNOotZ1gStlJRSFzTfY=;
+	s=korg; t=1734025279;
+	bh=fWLg77dSQjQWGc9vwXLnjFNJmI3kvtfjHuEr6tPp17w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmX0h+ygpmrZEhwBRGt73Jvk3T+MUKn2C0620unw3geq1w0GqryyapVQnS6s1PCJp
-	 KR9Sw2hpM5Q710QIHNrv9HhTQblK/oTNevw81TaeQR4DcjSvr2b+gNO6RxpdKhPlMU
-	 vnHg4yCP7V2jHZZY8p5GrybepWv4vFuZO9DbFj1A=
+	b=m5PmC7yEGGxnldORGWooS8Aa3Ha8BdcZ1yksDhiSXWB+QRp1ukoY81B4JAmOVEdRr
+	 wM7CrsMXvgPYn8B8QJ6VpbuWtTKJuRObSzUHkrNWKGLaqSD66Ta3zSroDCQVjny0qX
+	 4J1CL6kuxV4ONwkn8yBlmBTyF2/Dc+ekl9fC0Xh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Benjamin Peterson <benjamin@engflow.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 440/565] spi: mpc52xx: Add cancel_work_sync before module remove
+Subject: [PATCH 5.4 117/321] perf trace: Avoid garbage when not printing a syscalls arguments
 Date: Thu, 12 Dec 2024 16:00:35 +0100
-Message-ID: <20241212144329.078345336@linuxfoundation.org>
+Message-ID: <20241212144234.603028885@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +72,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Benjamin Peterson <benjamin@engflow.com>
 
-[ Upstream commit 984836621aad98802d92c4a3047114cf518074c8 ]
+[ Upstream commit 1302e352b26f34991b619b5d0b621b76d20a3883 ]
 
-If we remove the module which will call mpc52xx_spi_remove
-it will free 'ms' through spi_unregister_controller.
-while the work ms->work will be used. The sequence of operations
-that may lead to a UAF bug.
+syscall__scnprintf_args may not place anything in the output buffer
+(e.g., because the arguments are all zero). If that happened in
+trace__fprintf_sys_enter, its fprintf would receive an unitialized
+buffer leading to garbage output.
 
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in mpc52xx_spi_remove.
+Fix the problem by passing the (possibly zero) bounds of the argument
+buffer to the output fprintf.
 
-Fixes: ca632f556697 ("spi: reorganize drivers")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/1f16f8ae0e50ca9adb1dc849bf2ac65a40c9ceb9.1732783000.git.xiaopei01@kylinos.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a98392bb1e169a04 ("perf trace: Use beautifiers on syscalls:sys_enter_ handlers")
+Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Howard Chu <howardchu95@gmail.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241107232128.108981-2-benjamin@engflow.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mpc52xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/builtin-trace.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-mpc52xx.c b/drivers/spi/spi-mpc52xx.c
-index 51041526546dd..fa49e899f2b2e 100644
---- a/drivers/spi/spi-mpc52xx.c
-+++ b/drivers/spi/spi-mpc52xx.c
-@@ -521,6 +521,7 @@ static int mpc52xx_spi_remove(struct platform_device *op)
- 	struct mpc52xx_spi *ms = spi_master_get_devdata(master);
- 	int i;
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 745ea920eca98..c8c01e706118e 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2079,6 +2079,7 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
+ 	char msg[1024];
+ 	void *args, *augmented_args = NULL;
+ 	int augmented_args_size;
++	size_t printed = 0;
  
-+	cancel_work_sync(&ms->work);
- 	free_irq(ms->irq0, ms);
- 	free_irq(ms->irq1, ms);
+ 	if (sc == NULL)
+ 		return -1;
+@@ -2094,8 +2095,8 @@ static int trace__fprintf_sys_enter(struct trace *trace, struct evsel *evsel,
  
+ 	args = perf_evsel__sc_tp_ptr(evsel, args, sample);
+ 	augmented_args = syscall__augmented_args(sc, sample, &augmented_args_size, trace->raw_augmented_syscalls_args_size);
+-	syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
+-	fprintf(trace->output, "%s", msg);
++	printed += syscall__scnprintf_args(sc, msg, sizeof(msg), args, augmented_args, augmented_args_size, trace, thread);
++	fprintf(trace->output, "%.*s", (int)printed, msg);
+ 	err = 0;
+ out_put:
+ 	thread__put(thread);
 -- 
 2.43.0
 
