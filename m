@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-102829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2899EF58A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9D79EF7E9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFF6170B0B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1130A17D528
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDB4213E99;
-	Thu, 12 Dec 2024 16:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534AC217F34;
+	Thu, 12 Dec 2024 17:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avuoOEFf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFt3qbc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698BE22333E;
-	Thu, 12 Dec 2024 16:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB22176AA1;
+	Thu, 12 Dec 2024 17:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022649; cv=none; b=uwQdFn6qgQqIiGCGy+uazYhdnmSAUG6nbzrpta5y9dm8eUMFXc0MwHpUdARlbcQZw5qpDvXOeQ+QSHnyXRokPW+XOMTyJnoYUleP6yY7nBvDDNm2CoMsiq5OKsL1y340kszE7vVkVX65Qx3Yt8RwUwbsl9sK6P4N4lTgfF5aguw=
+	t=1734024097; cv=none; b=CV30Zzy7THIbglmTGmfk941NuMnXrwX7je4wxJWWMa+30K7nCfjXinvZ4kU2hv2qaSCorkbO9CmWVaVugh+/nL4CrFYDZqTDxT4gux1uHbbX6kP7B6BpPYxDGV3mAjQCGn70PH9nW8jeyjWvG+os9e/1GPQNTOt/kzeZJlmYL7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022649; c=relaxed/simple;
-	bh=z5raXxXZR1+7KYOAYku4RvGdix8UCe3cJJ330Zc5Hvo=;
+	s=arc-20240116; t=1734024097; c=relaxed/simple;
+	bh=sGriJpqdwVvOZZeM7p6BZOfsCcj+p1Hpcyu3n/V0T6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MgMACWXw62r9LYmhJvnI7s2Is+TkloOCU1UNxujruxQ2lsLh+Ke0zZ1RMGn+1Lh2x8Db4NBFb/13cJ7ZQt+qXtf3T1Z1eck3Z5wzkU1bE9b5PHZzV6c/JHFAyKE+FUNO4bU1nhUmmyedsN5KFbp6Ziz8AYgiGiTwLuHfLi0jGYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avuoOEFf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB09C4CECE;
-	Thu, 12 Dec 2024 16:57:28 +0000 (UTC)
+	 MIME-Version; b=gwybRzx2i4SiKfOuTlPBaUybqeDwLfPXwg6y5M48tdWGrjANTTfsRflILVHCNLkcJnwvUf2s+hO0wIPzHy9HmrOTpWyBGiIv7udRbO032rsJmvjTfApqW0AUWuQuIvAi2i0wDaDbWD2tTX55iNHJ7txAr9LUsoLzliICePUKi98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFt3qbc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83702C4CECE;
+	Thu, 12 Dec 2024 17:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022649;
-	bh=z5raXxXZR1+7KYOAYku4RvGdix8UCe3cJJ330Zc5Hvo=;
+	s=korg; t=1734024096;
+	bh=sGriJpqdwVvOZZeM7p6BZOfsCcj+p1Hpcyu3n/V0T6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avuoOEFfwDHhNspdl7NqoGxJZNIfRUi1yeIVHMOngnLKvDYz8MdbvjRKfRZ6TMWxr
-	 D+D1Nk0PQu18ogLl4q2BYnMHuU3W1jbseCLavMmuDvgx3bJfQb1gVNj+HcOW6XiyF1
-	 FcXRb9Q2P6rSKTJvIpzWgcPBVT3pkiFQvYJIBjnA=
+	b=kFt3qbc0rP2W12ynepX4Rqh0Xd1agCX442OwNCfUnHfT949y6pjkhNM3wOW50rDwW
+	 W0hjeSxtcw4EG8hDOe3epyC4N+KsNWrj+t5aN4VMmQxFeRvAiT1EyJaTrE9xyYhrFx
+	 IvJADS10X4789qSRY9f3e7MPVPh7KKk5q1go7how=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 298/565] ALSA: usb-audio: Fix out of bounds reads when finding clock sources
+	syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 155/459] ALSA: usx2y: Use snd_card_free_when_closed() at disconnection
 Date: Thu, 12 Dec 2024 15:58:13 +0100
-Message-ID: <20241212144323.247206912@linuxfoundation.org>
+Message-ID: <20241212144259.640539865@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,95 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Takashi Iwai <tiwai@suse.de>
 
-commit a3dd4d63eeb452cfb064a13862fb376ab108f6a6 upstream.
+[ Upstream commit dafb28f02be407e07a6f679e922a626592b481b0 ]
 
-The current USB-audio driver code doesn't check bLength of each
-descriptor at traversing for clock descriptors.  That is, when a
-device provides a bogus descriptor with a shorter bLength, the driver
-might hit out-of-bounds reads.
+The USB disconnect callback is supposed to be short and not too-long
+waiting.  OTOH, the current code uses snd_card_free() at
+disconnection, but this waits for the close of all used fds, hence it
+can take long.  It eventually blocks the upper layer USB ioctls, which
+may trigger a soft lockup.
 
-For addressing it, this patch adds sanity checks to the validator
-functions for the clock descriptor traversal.  When the descriptor
-length is shorter than expected, it's skipped in the loop.
+An easy workaround is to replace snd_card_free() with
+snd_card_free_when_closed().  This variant returns immediately while
+the release of resources is done asynchronously by the card device
+release at the last close.
 
-For the clock source and clock multiplier descriptors, we can just
-check bLength against the sizeof() of each descriptor type.
-OTOH, the clock selector descriptor of UAC2 and UAC3 has an array
-of bNrInPins elements and two more fields at its tail, hence those
-have to be checked in addition to the sizeof() check.
-
-Reported-by: Benoît Sevens <bsevens@google.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/20241121140613.3651-1-bsevens@google.com
-Link: https://patch.msgid.link/20241125144629.20757-1-tiwai@suse.de
+Fixes: 230cd5e24853 ("[ALSA] prevent oops & dead keyboard on usb unplugging while the device is be ing used")
+Reported-by: syzbot+73582d08864d8268b6fd@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=73582d08864d8268b6fd
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20241113111042.15058-2-tiwai@suse.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/clock.c |   24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ sound/usb/usx2y/usbusx2y.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/clock.c
-+++ b/sound/usb/clock.c
-@@ -36,6 +36,12 @@ union uac23_clock_multiplier_desc {
- 	struct uac_clock_multiplier_descriptor v3;
- };
- 
-+/* check whether the descriptor bLength has the minimal length */
-+#define DESC_LENGTH_CHECK(p, proto) \
-+	((proto) == UAC_VERSION_3 ? \
-+	 ((p)->v3.bLength >= sizeof((p)->v3)) :	\
-+	 ((p)->v2.bLength >= sizeof((p)->v2)))
-+
- #define GET_VAL(p, proto, field) \
- 	((proto) == UAC_VERSION_3 ? (p)->v3.field : (p)->v2.field)
- 
-@@ -58,6 +64,8 @@ static bool validate_clock_source(void *
- {
- 	union uac23_clock_source_desc *cs = p;
- 
-+	if (!DESC_LENGTH_CHECK(cs, proto))
-+		return false;
- 	return GET_VAL(cs, proto, bClockID) == id;
+diff --git a/sound/usb/usx2y/usbusx2y.c b/sound/usb/usx2y/usbusx2y.c
+index 9d5a33c4ff2f3..c567e58ceb4fd 100644
+--- a/sound/usb/usx2y/usbusx2y.c
++++ b/sound/usb/usx2y/usbusx2y.c
+@@ -396,7 +396,7 @@ static void snd_usx2y_disconnect(struct usb_interface *intf)
+ 	}
+ 	if (usx2y->us428ctls_sharedmem)
+ 		wake_up(&usx2y->us428ctls_wait_queue_head);
+-	snd_card_free(card);
++	snd_card_free_when_closed(card);
  }
  
-@@ -65,13 +73,27 @@ static bool validate_clock_selector(void
- {
- 	union uac23_clock_selector_desc *cs = p;
- 
--	return GET_VAL(cs, proto, bClockID) == id;
-+	if (!DESC_LENGTH_CHECK(cs, proto))
-+		return false;
-+	if (GET_VAL(cs, proto, bClockID) != id)
-+		return false;
-+	/* additional length check for baCSourceID array (in bNrInPins size)
-+	 * and two more fields (which sizes depend on the protocol)
-+	 */
-+	if (proto == UAC_VERSION_3)
-+		return cs->v3.bLength >= sizeof(cs->v3) + cs->v3.bNrInPins +
-+			4 /* bmControls */ + 2 /* wCSelectorDescrStr */;
-+	else
-+		return cs->v2.bLength >= sizeof(cs->v2) + cs->v2.bNrInPins +
-+			1 /* bmControls */ + 1 /* iClockSelector */;
- }
- 
- static bool validate_clock_multiplier(void *p, int id, int proto)
- {
- 	union uac23_clock_multiplier_desc *cs = p;
- 
-+	if (!DESC_LENGTH_CHECK(cs, proto))
-+		return false;
- 	return GET_VAL(cs, proto, bClockID) == id;
- }
- 
+ static int snd_usx2y_probe(struct usb_interface *intf,
+-- 
+2.43.0
+
 
 
 
