@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B18D9EF3FD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:04:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8147D9EEBD9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4074B29070F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:04:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E134E18899C2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E3D222D75;
-	Thu, 12 Dec 2024 17:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765CE20969B;
+	Thu, 12 Dec 2024 15:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CedcCwea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igGsxJvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8B3222D72;
-	Thu, 12 Dec 2024 17:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3517213792B;
+	Thu, 12 Dec 2024 15:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022932; cv=none; b=hWeRiW0jt+DFA6oPIXIWTRmVxE5JEFjE4HYxzmWkccpdAvUxpbOXALF3MPTtMm+HZYLE1ZXNWgvhtIeD7aYbahioRcHbVIWoQgBIPm4ZeSFbcnO/AOk62LyoDUbZI4Ea7Zr2uXMxtqOvawmJU8A+Yg6svABhJY8q1QU5+JWucsc=
+	t=1734017153; cv=none; b=Pem4irtkF+Q2ibU9aurU6Dtm4tivf79eBfb3RHc7Xbp+ZGnQ7gAkgyFcbyayzUtlZPp2qPx2ZH31Ngh5IO7j4PkqQ8y7Qc82e6pVVJmFjqBU0uw7SGwgZef0q7VmgnZ3i5PwUdkTwJY0wdATz5J+6OE0PT7F+7b5edonh7LEWLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022932; c=relaxed/simple;
-	bh=jRDZW6kSo2OBSaDtqhKmq7TFzsmRarhmhoS7dKDzvcA=;
+	s=arc-20240116; t=1734017153; c=relaxed/simple;
+	bh=8Xig4ZtKgtvzl06w8O1ubjeJQ6PFhry+a0znc8bbVW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCVoH5wkmy72vDwSv9Auy0rfuVWZh1O5SHsTXjQPcO5Mc3+hQZu6Ha8kWGctKcxvUTS/39cxLZ9bE+W1CegkCyldvzTzYhag6poJzn/G3hMN+IdaNp309FuoxrVqRBfUjkDsjPLpURqeQ8vfuxm6q1kMs6LXa0qfMGsPG/3JB1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CedcCwea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9634C4CECE;
-	Thu, 12 Dec 2024 17:02:11 +0000 (UTC)
+	 MIME-Version; b=pGlKqC4ExGV3MTHPtzzJmlo0fL/C/dI6+LVIcPHY79aC5Lx5qtln8X9GKfs0uKdZHxyw/ZPwCkDdiV8h1NvXRQHYXrOTCHZe3l9v/3BoIb8vuDekOKdLubWQjgVt1aDzQ3f6rEhFa1mvt7yHGBrI2/S5ehTE+lhzGwwgLUpXbY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igGsxJvg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795B7C4CECE;
+	Thu, 12 Dec 2024 15:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022932;
-	bh=jRDZW6kSo2OBSaDtqhKmq7TFzsmRarhmhoS7dKDzvcA=;
+	s=korg; t=1734017153;
+	bh=8Xig4ZtKgtvzl06w8O1ubjeJQ6PFhry+a0znc8bbVW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CedcCweaSdQsLk/m8DG/WiEGwdoVJT9rZ5DZZgP+cOnW4pQ12MQSRWMYzPS3Kfqxq
-	 QfXL0btjIARObrtQKHCwMKtp46iP58qw8VQCudmUyP/2qfJXQhcIjq0J/Za++q+Nhu
-	 kTD+G/2BolzxUXc9k0Z735Xd6rcg9WZW2/dQduOk=
+	b=igGsxJvgdkcyoVI+PSgVahSjjYRPiq8+REVX98sMejJj4cqLtWqazbgjP0t6ANkik
+	 lfbUtydDdtILLaBtUtdH2flyXXzX9JP0cpwPlDxvlNgJ0cmERQQZewIxKOs4Wj+RZ4
+	 sW7hcL1DbD7OrusLUetzb3y2OehcoiUkBHCJ6tRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 372/565] SUNRPC: Replace internal use of SOCKWQ_ASYNC_NOSPACE
+Subject: [PATCH 6.12 398/466] remoteproc: qcom: pas: enable SAR2130P audio DSP support
 Date: Thu, 12 Dec 2024 15:59:27 +0100
-Message-ID: <20241212144326.329008874@linuxfoundation.org>
+Message-ID: <20241212144322.486754088@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 2790a624d43084de590884934969e19c7a82316a ]
+[ Upstream commit 009e288c989b3fe548a45c82da407d7bd00418a9 ]
 
-The socket's SOCKWQ_ASYNC_NOSPACE can be cleared by various actors in
-the socket layer, so replace it with our own flag in the transport
-sock_state field.
+Enable support for the Audio DSP on the Qualcomm SAR2130P platform,
+reusing the SM8350 resources.
 
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: 4db9ad82a6c8 ("sunrpc: clear XPRT_SOCK_UPD_TIMEOUT when reset transport")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20241027-sar2130p-adsp-v1-3-bd204e39d24e@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/xprtsock.h |  1 +
- net/sunrpc/xprtsock.c           | 22 ++++------------------
- 2 files changed, 5 insertions(+), 18 deletions(-)
+ drivers/remoteproc/qcom_q6v5_pas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/sunrpc/xprtsock.h b/include/linux/sunrpc/xprtsock.h
-index 689062afdd610..3eb0079669c50 100644
---- a/include/linux/sunrpc/xprtsock.h
-+++ b/include/linux/sunrpc/xprtsock.h
-@@ -90,5 +90,6 @@ struct sock_xprt {
- #define XPRT_SOCK_WAKE_PENDING	(6)
- #define XPRT_SOCK_WAKE_DISCONNECT	(7)
- #define XPRT_SOCK_CONNECT_SENT	(8)
-+#define XPRT_SOCK_NOSPACE	(9)
- 
- #endif /* _LINUX_SUNRPC_XPRTSOCK_H */
-diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
-index 5601217febaa3..06ea4fb2d4532 100644
---- a/net/sunrpc/xprtsock.c
-+++ b/net/sunrpc/xprtsock.c
-@@ -779,14 +779,8 @@ static int xs_nospace(struct rpc_rqst *req, struct sock_xprt *transport)
- 
- 	/* Don't race with disconnect */
- 	if (xprt_connected(xprt)) {
--		struct socket_wq *wq;
--
--		rcu_read_lock();
--		wq = rcu_dereference(sk->sk_wq);
--		set_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags);
--		rcu_read_unlock();
--
- 		/* wait for more buffer space */
-+		set_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
- 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- 		sk->sk_write_pending++;
- 		xprt_wait_for_buffer_space(xprt);
-@@ -1148,6 +1142,7 @@ static void xs_sock_reset_state_flags(struct rpc_xprt *xprt)
- 	clear_bit(XPRT_SOCK_WAKE_ERROR, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_WRITE, &transport->sock_state);
- 	clear_bit(XPRT_SOCK_WAKE_DISCONNECT, &transport->sock_state);
-+	clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state);
- }
- 
- static void xs_run_error_worker(struct sock_xprt *transport, unsigned int nr)
-@@ -1511,7 +1506,6 @@ static void xs_tcp_state_change(struct sock *sk)
- 
- static void xs_write_space(struct sock *sk)
- {
--	struct socket_wq *wq;
- 	struct sock_xprt *transport;
- 	struct rpc_xprt *xprt;
- 
-@@ -1522,15 +1516,10 @@ static void xs_write_space(struct sock *sk)
- 	if (unlikely(!(xprt = xprt_from_sock(sk))))
- 		return;
- 	transport = container_of(xprt, struct sock_xprt, xprt);
--	rcu_read_lock();
--	wq = rcu_dereference(sk->sk_wq);
--	if (!wq || test_and_clear_bit(SOCKWQ_ASYNC_NOSPACE, &wq->flags) == 0)
--		goto out;
--
-+	if (!test_and_clear_bit(XPRT_SOCK_NOSPACE, &transport->sock_state))
-+		return;
- 	xs_run_error_worker(transport, XPRT_SOCK_WAKE_WRITE);
- 	sk->sk_write_pending--;
--out:
--	rcu_read_unlock();
- }
- 
- /**
-@@ -1874,7 +1863,6 @@ static int xs_local_finish_connecting(struct rpc_xprt *xprt,
- 		sk->sk_user_data = xprt;
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_write_space = xs_udp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 		sk->sk_error_report = xs_error_report;
- 
- 		xprt_clear_connected(xprt);
-@@ -2072,7 +2060,6 @@ static void xs_udp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
- 		sk->sk_user_data = xprt;
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_write_space = xs_udp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 
- 		xprt_set_connected(xprt);
- 
-@@ -2237,7 +2224,6 @@ static int xs_tcp_finish_connecting(struct rpc_xprt *xprt, struct socket *sock)
- 		sk->sk_data_ready = xs_data_ready;
- 		sk->sk_state_change = xs_tcp_state_change;
- 		sk->sk_write_space = xs_tcp_write_space;
--		sock_set_flag(sk, SOCK_FASYNC);
- 		sk->sk_error_report = xs_error_report;
- 
- 		/* socket options */
+diff --git a/drivers/remoteproc/qcom_q6v5_pas.c b/drivers/remoteproc/qcom_q6v5_pas.c
+index 793b1d274be33..1a2d08ec9de9e 100644
+--- a/drivers/remoteproc/qcom_q6v5_pas.c
++++ b/drivers/remoteproc/qcom_q6v5_pas.c
+@@ -1433,6 +1433,7 @@ static const struct of_device_id adsp_of_match[] = {
+ 	{ .compatible = "qcom,sa8775p-cdsp1-pas", .data = &sa8775p_cdsp1_resource},
+ 	{ .compatible = "qcom,sa8775p-gpdsp0-pas", .data = &sa8775p_gpdsp0_resource},
+ 	{ .compatible = "qcom,sa8775p-gpdsp1-pas", .data = &sa8775p_gpdsp1_resource},
++	{ .compatible = "qcom,sar2130p-adsp-pas", .data = &sm8350_adsp_resource},
+ 	{ .compatible = "qcom,sc7180-adsp-pas", .data = &sm8250_adsp_resource},
+ 	{ .compatible = "qcom,sc7180-mpss-pas", .data = &mpss_resource_init},
+ 	{ .compatible = "qcom,sc7280-adsp-pas", .data = &sm8350_adsp_resource},
 -- 
 2.43.0
 
