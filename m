@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-103118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD8019EF5B7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 201419EF4F7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81534189F2E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:14:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 831F7179665
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE5322332E;
-	Thu, 12 Dec 2024 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D376229679;
+	Thu, 12 Dec 2024 16:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu27zejT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b6EX57G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B01E215762;
-	Thu, 12 Dec 2024 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0971F1F2381;
+	Thu, 12 Dec 2024 16:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023601; cv=none; b=FTn1nR9uNbNzDW80+BgtOcr9AB6P1pP0uX1kSq1fLK10DvSGDBqvvA8qqec9uaMbxC2KJvTaJ/qRURgSrx4lcnPqViifAhtRnzmD56rW9IstUO1kHk+S4A24ZdoHbYnfiNBXcB9FSZm8fC+prhFvFsezbyEaSKRRrFYUTRxmEvo=
+	t=1734022100; cv=none; b=EF99smoOyNJkyp3/aosI85sXNmplai+8G0A/xIpmJS50HA2EGRIyE9zdwIAwuXd/wVcpc3N7CCjHovJg/zMf2CWAeQZrwYvxvQDVW8k4H8OfZmuC/2L0pdWH6MCL4b7QXClPzSfZvfaujcOB7hFmh9v1YFZujfgbkVjssOCpgPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023601; c=relaxed/simple;
-	bh=OhlX+Ve/JpmX9jERcFKkILSdftjqahxh+Q/4zNV3nWo=;
+	s=arc-20240116; t=1734022100; c=relaxed/simple;
+	bh=qukogJ/rOocff9o3xeA43bTJvDurvOvKOckuFk9K4Zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uLr7OvaleoCVHx++2Prq7ztZzcZd4nHluL9814YjnbGnwii+Bs5HAHl+7RvSylxsd7nrSezVMhYkmViOmIsfVmPRrc1mLbMs44uSrKyOqb5/c9LcdDuYzrFq5a+aMFLK8xbQSONkbJ6Q7rRXhI/LDXtKedZDf2qMUQ1v2+ygvWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu27zejT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C07C4CED4;
-	Thu, 12 Dec 2024 17:13:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SRCrKibq+tM6jolBbpyrRP2tKV12/gmGgLmyR8Iva8NBZiHEkjCJSQLNEnpyOsoXfboMzU7T+KEC+6KwO+jZkbcEGGAysqBYUw4qYurX02zADc+NCh2T5sVRxF2ojBthvJ37kysgHUoWzzp/geLz5U+Xq5khLXzmqjUIMJSPTuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b6EX57G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D7EC4CECE;
+	Thu, 12 Dec 2024 16:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023601;
-	bh=OhlX+Ve/JpmX9jERcFKkILSdftjqahxh+Q/4zNV3nWo=;
+	s=korg; t=1734022099;
+	bh=qukogJ/rOocff9o3xeA43bTJvDurvOvKOckuFk9K4Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qu27zejTUGJUZHlvx+sfaxALkFK3NraGSUxctFuTJ8+pidzlvPt4jWB46hLlxotI8
-	 NM7BtOZIF+kv1GR0RGE4AoXMCB50yQucj5ATZGIKByYilOl4O7748XszY8j+8wrqEG
-	 YDNr0sJc0rK+fahPtnmCTNcOQzJ+mOBvVtwWk868=
+	b=0b6EX57GBgl9cw9GKy4sZ+GhzPgnEjs88VsC0eR8h6G5Zc2JU1HC/tCaSlP9RnHq5
+	 oMIfP+R7vXrRetObRuZDhcqW+uf2/DhbQ+nTPPYoQn9rxsaBRVEiQAPRRbX/4znHt6
+	 zdcXqLe+nl70+eoJbtG57dbo2vkhM5zFB909T2aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 004/459] media: venus: Fix pm_runtime_set_suspended() with runtime pm enabled
+	Jeongjun Park <aha310510@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 147/565] wifi: ath9k: add range check for conn_rsp_epid in htc_connect_service()
 Date: Thu, 12 Dec 2024 15:55:42 +0100
-Message-ID: <20241212144253.700405865@linuxfoundation.org>
+Message-ID: <20241212144317.297574712@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 2a20869f7d798aa2b69e45b863eaf1b1ecf98278 upstream.
+[ Upstream commit 8619593634cbdf5abf43f5714df49b04e4ef09ab ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+I found the following bug in my fuzzer:
 
-Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Acked-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc_hst.c:26:51
+  index 255 is out of range for type 'htc_endpoint [22]'
+  CPU: 0 UID: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.11.0-rc6-dirty #14
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  Workqueue: events request_firmware_work_func
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x180/0x1b0
+   __ubsan_handle_out_of_bounds+0xd4/0x130
+   htc_issue_send.constprop.0+0x20c/0x230
+   ? _raw_spin_unlock_irqrestore+0x3c/0x70
+   ath9k_wmi_cmd+0x41d/0x610
+   ? mark_held_locks+0x9f/0xe0
+   ...
+
+Since this bug has been confirmed to be caused by insufficient verification
+of conn_rsp_epid, I think it would be appropriate to add a range check for
+conn_rsp_epid to htc_connect_service() to prevent the bug from occurring.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240909103855.68006-1-aha310510@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/htc_hst.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -348,8 +348,8 @@ err_of_depopulate:
- 	of_platform_depopulate(dev);
- err_runtime_disable:
- 	pm_runtime_put_noidle(dev);
--	pm_runtime_set_suspended(dev);
- 	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
- 	hfi_destroy(core);
- err_core_deinit:
- 	hfi_core_deinit(core, false);
+diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+index 99667aba289df..00dc97ac53b9d 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_hst.c
++++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+@@ -294,6 +294,9 @@ int htc_connect_service(struct htc_target *target,
+ 		return -ETIMEDOUT;
+ 	}
+ 
++	if (target->conn_rsp_epid < 0 || target->conn_rsp_epid >= ENDPOINT_MAX)
++		return -EINVAL;
++
+ 	*conn_rsp_epid = target->conn_rsp_epid;
+ 	return 0;
+ err:
+-- 
+2.43.0
+
 
 
 
