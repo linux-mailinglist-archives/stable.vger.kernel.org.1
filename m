@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074359EF733
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F879EF826
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095F5189859A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:26:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F197F293B01
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8116216E3B;
-	Thu, 12 Dec 2024 17:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E481222D6A;
+	Thu, 12 Dec 2024 17:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n74gd7EZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yl5nUAPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EFD215762;
-	Thu, 12 Dec 2024 17:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DB020A5EE;
+	Thu, 12 Dec 2024 17:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024360; cv=none; b=gNEXiGJZj6L+mzeKjh/U5C8GkK8FcEiB37YU5haKCjy9SVgDsVlXysyU8GbggQE2YrvX+cG3p7KqlOMoOXiOQIpxpIWqB5P9mSpFAI6LmiIVPJLOJgAP9NUw1zZgoxqL1BlbFF6oZX9d4n4gmtxXwszz1xJDte8U2jxhiSnWqBI=
+	t=1734025199; cv=none; b=drr36mBUEhnxqvj31LcJ9F1+sYh2naFmdgEkRYWik2/1FQ1rMVbi/5A9SAAk97lNuNhg+fLJabAiVtS65NYkAa9eyJMPHCvDyoICT592uPU2rzgFVxHY/vtbNJ0jVugW3/be2zymYh7OsYrorKnXirQ38IApZCsSLcae8qkPsJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024360; c=relaxed/simple;
-	bh=JHtv/OSvnseLZlHRWuShsskSTLsc5Uqd52E62f+oxeI=;
+	s=arc-20240116; t=1734025199; c=relaxed/simple;
+	bh=sWtXtd1ICaDwaISL+DWQ6lObhTFJ44Cv3rPGpE7WsOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYtiegeym63rfV9STXOpPubWrf/enNCAAeQzV97hbfIck44FANCYCnHvHce6a41KqNW9tJ1yglMPr1n0/3rK5315Ok6bZxTkvX3cY66PYwt2+7V7lDG+S3n0eeXI43wlP/SiN2ErjqJ4k4lcAY5cMOe+ukqUXA8tBcPQmnIPIbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n74gd7EZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B73C4CECE;
-	Thu, 12 Dec 2024 17:25:59 +0000 (UTC)
+	 MIME-Version; b=NIAawwfVHJgxcJImcpCAkAFoR3OakO+j7lDXjJVQvp3FsM6/CxktaXXaIEBJHngd3EmdAvdwf7dcW6cq58RpjiWxyCNMPEA5cQo/qR5slwMkfvBNIffwE/dV3zDQciUmin0zlyT2z4IlzPm7WLYLvyvbw9fbaeOFNEgifQ02MU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yl5nUAPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32C0C4CECE;
+	Thu, 12 Dec 2024 17:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024360;
-	bh=JHtv/OSvnseLZlHRWuShsskSTLsc5Uqd52E62f+oxeI=;
+	s=korg; t=1734025199;
+	bh=sWtXtd1ICaDwaISL+DWQ6lObhTFJ44Cv3rPGpE7WsOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n74gd7EZ2NVa3Ib7uFLJcPwpBHbE0TeeBdVRJzS0DTChcHvnC86LD6jMgU3oe+Sak
-	 iNzEEnFMLaLRpVCKNdzi4do4kaGuEyyd6OjGVNzbOl52v3Woy8QDhycbeoX7GyAfO6
-	 kuh6OkP2sMifv3YIMThLWdG9y+n/5B2GrOEAzJp0=
+	b=yl5nUAPk7pZ/sj1sQsiy3+bGMz5DQT/86nAyT1grJq/4xIQlY9CqcKElB0921BoGG
+	 JR73IeYv+Ez8QiQIXVDMKY4PWl6UWj70lgVNhAjyLYmqhTxIzOXY7xsf+Yo85BJHqO
+	 9BoY2W+jtF/Hk0NvIXNQeTT3bUgwuVaSMte1UxhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Liu <b-liu@ti.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>
-Subject: [PATCH 5.10 270/459] serial: 8250: omap: Move pm_runtime_get_sync
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee.jones@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 090/321] mfd: intel_soc_pmic_bxtwc: Use dev_err_probe()
 Date: Thu, 12 Dec 2024 16:00:08 +0100
-Message-ID: <20241212144304.270453976@linuxfoundation.org>
+Message-ID: <20241212144233.545023524@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Liu <b-liu@ti.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit bcc7ba668818dcadd2f1db66b39ed860a63ecf97 upstream.
+[ Upstream commit d30e2c30a43de950cfd3690f24342a39034221c4 ]
 
-Currently in omap_8250_shutdown, the dma->rx_running flag is
-set to zero in omap_8250_rx_dma_flush. Next pm_runtime_get_sync
-is called, which is a runtime resume call stack which can
-re-set the flag. When the call omap_8250_shutdown returns, the
-flag is expected to be UN-SET, but this is not the case. This
-is causing issues the next time UART is re-opened and
-omap_8250_rx_dma is called. Fix by moving pm_runtime_get_sync
-before the omap_8250_rx_dma_flush.
+Simplify the mux error path a bit by using dev_err_probe().
 
-cc: stable@vger.kernel.org
-Fixes: 0e31c8d173ab ("tty: serial: 8250_omap: add custom DMA-RX callback")
-Signed-off-by: Bin Liu <b-liu@ti.com>
-[Judith: Add commit message]
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Tested-by: Kevin Hilman <khilman@baylibre.com>
-Link: https://lore.kernel.org/r/20241031172315.453750-1-jm@ti.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Link: https://lore.kernel.org/r/20220628221747.33956-4-andriy.shevchenko@linux.intel.com
+Stable-dep-of: 686fb77712a4 ("mfd: intel_soc_pmic_bxtwc: Use IRQ domain for USB Type-C device")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mfd/intel_soc_pmic_bxtwc.c | 86 +++++++++---------------------
+ 1 file changed, 26 insertions(+), 60 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -768,12 +768,12 @@ static void omap_8250_shutdown(struct ua
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	struct omap8250_priv *priv = port->private_data;
+diff --git a/drivers/mfd/intel_soc_pmic_bxtwc.c b/drivers/mfd/intel_soc_pmic_bxtwc.c
+index 739cfb5b69fe7..072ed3226a83f 100644
+--- a/drivers/mfd/intel_soc_pmic_bxtwc.c
++++ b/drivers/mfd/intel_soc_pmic_bxtwc.c
+@@ -414,12 +414,9 @@ static int bxtwc_add_chained_irq_chip(struct intel_soc_pmic *pmic,
+ 	int irq;
  
-+	pm_runtime_get_sync(port->dev);
-+
- 	flush_work(&priv->qos_work);
- 	if (up->dma)
- 		omap_8250_rx_dma_flush(up);
+ 	irq = regmap_irq_get_virq(pdata, pirq);
+-	if (irq < 0) {
+-		dev_err(pmic->dev,
+-			"Failed to get parent vIRQ(%d) for chip %s, ret:%d\n",
+-			pirq, chip->name, irq);
+-		return irq;
+-	}
++	if (irq < 0)
++		return dev_err_probe(pmic->dev, irq, "Failed to get parent vIRQ(%d) for chip %s\n",
++				     pirq, chip->name);
  
--	pm_runtime_get_sync(port->dev);
+ 	return devm_regmap_add_irq_chip(pmic->dev, pmic->regmap, irq, irq_flags,
+ 					0, chip, data);
+@@ -427,6 +424,7 @@ static int bxtwc_add_chained_irq_chip(struct intel_soc_pmic *pmic,
+ 
+ static int bxtwc_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
+ 	int ret;
+ 	acpi_handle handle;
+ 	acpi_status status;
+@@ -435,15 +433,10 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 
+ 	handle = ACPI_HANDLE(&pdev->dev);
+ 	status = acpi_evaluate_integer(handle, "_HRV", NULL, &hrv);
+-	if (ACPI_FAILURE(status)) {
+-		dev_err(&pdev->dev, "Failed to get PMIC hardware revision\n");
+-		return -ENODEV;
+-	}
+-	if (hrv != BROXTON_PMIC_WC_HRV) {
+-		dev_err(&pdev->dev, "Invalid PMIC hardware revision: %llu\n",
+-			hrv);
+-		return -ENODEV;
+-	}
++	if (ACPI_FAILURE(status))
++		return dev_err_probe(dev, -ENODEV, "Failed to get PMIC hardware revision\n");
++	if (hrv != BROXTON_PMIC_WC_HRV)
++		return dev_err_probe(dev, -ENODEV, "Invalid PMIC hardware revision: %llu\n", hrv);
+ 
+ 	pmic = devm_kzalloc(&pdev->dev, sizeof(*pmic), GFP_KERNEL);
+ 	if (!pmic)
+@@ -459,40 +452,31 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 
+ 	pmic->regmap = devm_regmap_init(&pdev->dev, NULL, pmic,
+ 					&bxtwc_regmap_config);
+-	if (IS_ERR(pmic->regmap)) {
+-		ret = PTR_ERR(pmic->regmap);
+-		dev_err(&pdev->dev, "Failed to initialise regmap: %d\n", ret);
+-		return ret;
+-	}
++	if (IS_ERR(pmic->regmap))
++		return dev_err_probe(dev, PTR_ERR(pmic->regmap), "Failed to initialise regmap\n");
+ 
+ 	ret = devm_regmap_add_irq_chip(&pdev->dev, pmic->regmap, pmic->irq,
+ 				       IRQF_ONESHOT | IRQF_SHARED,
+ 				       0, &bxtwc_regmap_irq_chip,
+ 				       &pmic->irq_chip_data);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add IRQ chip\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add IRQ chip\n");
+ 
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+ 					 BXTWC_PWRBTN_LVL1_IRQ,
+ 					 IRQF_ONESHOT,
+ 					 &bxtwc_regmap_irq_chip_pwrbtn,
+ 					 &pmic->irq_chip_data_pwrbtn);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add PWRBTN IRQ chip\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add PWRBTN IRQ chip\n");
+ 
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+ 					 BXTWC_TMU_LVL1_IRQ,
+ 					 IRQF_ONESHOT,
+ 					 &bxtwc_regmap_irq_chip_tmu,
+ 					 &pmic->irq_chip_data_tmu);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add TMU IRQ chip\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add TMU IRQ chip\n");
+ 
+ 	/* Add chained IRQ handler for BCU IRQs */
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+@@ -500,12 +484,8 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 					 IRQF_ONESHOT,
+ 					 &bxtwc_regmap_irq_chip_bcu,
+ 					 &pmic->irq_chip_data_bcu);
 -
- 	serial_out(up, UART_OMAP_WER, 0);
- 	if (priv->habit & UART_HAS_EFR2)
- 		serial_out(up, UART_OMAP_EFR2, 0x0);
+-
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add BUC IRQ chip\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add BUC IRQ chip\n");
+ 
+ 	/* Add chained IRQ handler for ADC IRQs */
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+@@ -513,12 +493,8 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 					 IRQF_ONESHOT,
+ 					 &bxtwc_regmap_irq_chip_adc,
+ 					 &pmic->irq_chip_data_adc);
+-
+-
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add ADC IRQ chip\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add ADC IRQ chip\n");
+ 
+ 	/* Add chained IRQ handler for CHGR IRQs */
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+@@ -526,12 +502,8 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 					 IRQF_ONESHOT,
+ 					 &bxtwc_regmap_irq_chip_chgr,
+ 					 &pmic->irq_chip_data_chgr);
+-
+-
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add CHGR IRQ chip\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add CHGR IRQ chip\n");
+ 
+ 	/* Add chained IRQ handler for CRIT IRQs */
+ 	ret = bxtwc_add_chained_irq_chip(pmic, pmic->irq_chip_data,
+@@ -539,19 +511,13 @@ static int bxtwc_probe(struct platform_device *pdev)
+ 					 IRQF_ONESHOT,
+ 					 &bxtwc_regmap_irq_chip_crit,
+ 					 &pmic->irq_chip_data_crit);
+-
+-
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add CRIT IRQ chip\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add CRIT IRQ chip\n");
+ 
+ 	ret = devm_mfd_add_devices(&pdev->dev, PLATFORM_DEVID_NONE, bxt_wc_dev,
+ 				   ARRAY_SIZE(bxt_wc_dev), NULL, 0, NULL);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to add devices\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to add devices\n");
+ 
+ 	ret = sysfs_create_group(&pdev->dev.kobj, &bxtwc_group);
+ 	if (ret) {
+-- 
+2.43.0
+
 
 
 
