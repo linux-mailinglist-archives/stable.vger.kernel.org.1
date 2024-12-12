@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE6B9EEA2C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:10:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1089EF2D1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:14 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA691188CD4C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EF142872C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395E321578A;
-	Thu, 12 Dec 2024 15:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A302358BB;
+	Thu, 12 Dec 2024 16:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q2DjHoh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KssDAllM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EA42156FF;
-	Thu, 12 Dec 2024 15:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900B9229145;
+	Thu, 12 Dec 2024 16:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016021; cv=none; b=BD6/W0qadgyxtSY2mKeB//bGe0uvCvzygV31IwwaEf15csW5sq4ceiDzWcIyFfDuTBvnoiIOrf5vizTxrvyNu+ckYM7iaIkNQ5vpZrhUBgaI5/+1YYerpJOlEmKU0Z/JuNb+hcx5AjojKYdnPeJkX09LbPuGq1Ts2F5VaeZkSmE=
+	t=1734021869; cv=none; b=GuxjkOm/2csUeYVRTR0jMkNznuRgFyPHlK6aEOtAo7217Ib0WbleQgozDVwLVuH1kLcEQBg4e370BwRUNzNH5MT30HGVOfhmFI27UBwYRI/X3dc3cSO31gyMf5zDsxFO3q7tCx6q2gAudCaoGjXHN5PlLZGnYPul2IdCq3O6Y2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016021; c=relaxed/simple;
-	bh=eVXmPmI44n9+i/GQlD5bbFqbR2SrFZQin2QURVEvm4s=;
+	s=arc-20240116; t=1734021869; c=relaxed/simple;
+	bh=hWGaWrXlGhwZ5QHxAFP4sppVM3KlBqcn8tnfd4ROf5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nZj3tZgbPjnCK6abs3Iwrehtu4IoIltVA9KUdhCw6fv8G7XIbjvz7uF76oluTjtbexmmGTuP1lqHuN7sgX+mhUt0KrYAPiDDLuncY+8H2WLDUDPmHwusywsYZvC5LFnqTK51X5+586T4MTEfee6UrwXLDy4WKOVU/9367wQlFOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q2DjHoh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676F8C4CECE;
-	Thu, 12 Dec 2024 15:07:00 +0000 (UTC)
+	 MIME-Version; b=K9SefbcFeSJpNAeaLH1i6fxwTliNx1LKHpwtbKnNO3vPnzWn1exN8UDW4uQAEQrN0tvJi5c4eMsiyTAjL3Zd3wP0qRGIYCuE/PHoAGfgQexzJeDP5IFQ5z/QoBSX3CAFm1eSasW2ZOenkblT8NNrOIxuKK0HJwL40mSJWSOZ1eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KssDAllM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22B2C4CED0;
+	Thu, 12 Dec 2024 16:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016020;
-	bh=eVXmPmI44n9+i/GQlD5bbFqbR2SrFZQin2QURVEvm4s=;
+	s=korg; t=1734021869;
+	bh=hWGaWrXlGhwZ5QHxAFP4sppVM3KlBqcn8tnfd4ROf5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1q2DjHohiCduaf70+BOMmmbdyEM4b8U/vRVMZlz9TiLjmyRz0gjcxEN+fz+1UVybf
-	 7qmWqMTs7C60tWuDud2BGICDEXXz3vtpJx8dqygePxUdwSX9rndKqNxRN4HMopvyYJ
-	 al62m3DFHhG1WTalfhMe4hIU0njXuD1j+4hFkyzc=
+	b=KssDAllMMTAwDKWVUwEEPYYoKz69qdnSEa5GM5pELyLtyIoine8JbsjGw6zOlgzcc
+	 e50T8MXNt+cFRgeqddYfGCwV5hvDh4StaEis8azbaseHpzsRkxaA9gXjWxDoflLUN5
+	 ct38Jgfz0LM8qSIwiqAd/rSbDmXCpflzZUDii6vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Palmer <daniel@0x0f.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/466] ASoC: mediatek: mt8188-mt6359: Remove hardcoded dmic codec
+Subject: [PATCH 5.15 084/565] m68k: mvme147: Fix SCSI controller IRQ numbers
 Date: Thu, 12 Dec 2024 15:54:39 +0100
-Message-ID: <20241212144311.164064924@linuxfoundation.org>
+Message-ID: <20241212144314.810008879@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Daniel Palmer <daniel@0x0f.com>
 
-[ Upstream commit ec16a3cdf37e507013062f9c4a2067eacdd12b62 ]
+[ Upstream commit 47bc874427382018fa2e3e982480e156271eee70 ]
 
-Remove hardcoded dmic codec from the UL_SRC dai link to avoid requiring
-a dmic codec to be present for the driver to probe, as not every
-MT8188-based platform might need a dmic codec. The codec can be assigned
-to the dai link through the dai-link property in Devicetree on the
-platforms where it is needed.
+Sometime long ago the m68k IRQ code was refactored and the interrupt
+numbers for SCSI controller on this board ended up wrong, and it hasn't
+worked since.
 
-No Devicetree currently relies on it so it is safe to remove without
-worrying about backward compatibility.
+The PCC adds 0x40 to the vector for its interrupts so they end up in
+the user interrupt range. Hence, the kernel number should be the kernel
+offset for user interrupt range + the PCC interrupt number.
 
-Fixes: 9f08dcbddeb3 ("ASoC: mediatek: mt8188-mt6359: support new board with nau88255")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20241203-mt8188-6359-unhardcode-dmic-v1-1-346e3e5cbe6d@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 200a3d352cd5 ("[PATCH] m68k: convert VME irq code")
+Signed-off-by: Daniel Palmer <daniel@0x0f.com>
+Reviewed-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/0e7636a21a0274eea35bfd5d874459d5078e97cc.1727926187.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-mt6359.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/m68k/include/asm/mvme147hw.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-mt6359.c b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-index 4eed90d13a532..62429e8e57b55 100644
---- a/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-@@ -188,9 +188,7 @@ SND_SOC_DAILINK_DEFS(pcm1,
- SND_SOC_DAILINK_DEFS(ul_src,
- 		     DAILINK_COMP_ARRAY(COMP_CPU("UL_SRC")),
- 		     DAILINK_COMP_ARRAY(COMP_CODEC("mt6359-sound",
--						   "mt6359-snd-codec-aif1"),
--					COMP_CODEC("dmic-codec",
--						   "dmic-hifi")),
-+						   "mt6359-snd-codec-aif1")),
- 		     DAILINK_COMP_ARRAY(COMP_EMPTY()));
+diff --git a/arch/m68k/include/asm/mvme147hw.h b/arch/m68k/include/asm/mvme147hw.h
+index e28eb1c0e0bfb..dbf88059e47a4 100644
+--- a/arch/m68k/include/asm/mvme147hw.h
++++ b/arch/m68k/include/asm/mvme147hw.h
+@@ -93,8 +93,8 @@ struct pcc_regs {
+ #define M147_SCC_B_ADDR		0xfffe3000
+ #define M147_SCC_PCLK		5000000
  
- SND_SOC_DAILINK_DEFS(AFE_SOF_DL2,
+-#define MVME147_IRQ_SCSI_PORT	(IRQ_USER+0x45)
+-#define MVME147_IRQ_SCSI_DMA	(IRQ_USER+0x46)
++#define MVME147_IRQ_SCSI_PORT	(IRQ_USER + 5)
++#define MVME147_IRQ_SCSI_DMA	(IRQ_USER + 6)
+ 
+ /* SCC interrupts, for MVME147 */
+ 
 -- 
 2.43.0
 
