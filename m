@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638449EFA08
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842669EF837
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68D3317AF97
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BA6E189F240
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF46222541E;
-	Thu, 12 Dec 2024 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6B3223C50;
+	Thu, 12 Dec 2024 17:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5PRDxNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+EQ5v5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B86D221DA4;
-	Thu, 12 Dec 2024 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599AB2236EB;
+	Thu, 12 Dec 2024 17:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025748; cv=none; b=Q4QQQG0H3d32u7PYewWhA3YI5Zi+NaVUJCb16PqARseq3z8GOUxN/mDCQNKGYkFasVDxDBoYoFZr5Q3Vql0PTrczG48ZNLjmr6yVIW3ZSRCPXsEJ5q4UZ+hyI1QwWINmNSyQ+NXhsS2Za+oZ53Q+M6+jujlnyqGcpJ/cVFnE/zY=
+	t=1734024826; cv=none; b=AMGUjvu+qncbRxBGINPGdPIimEGBbLcSUpoln8pkK4OaFNEkjqkuNXg9j14jLPQgpsZ+rFEgJzdspIXgY451/jw40BVxWLmYd/Lt1u9uNmtXWQz/2BWho+PakxjfpiWFT3cTpPCg8zW3XAtdYKtSG0Xh6Tn5fVDPGySG+wSQhiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025748; c=relaxed/simple;
-	bh=T398Q6XmdGD4VamuqF2YDiuAWZdrrjgqCEIw+w/yopw=;
+	s=arc-20240116; t=1734024826; c=relaxed/simple;
+	bh=b7+NAydOgXuVLQ3PH1VOty9u4v85+pz7zItGkYYEQj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFAd3CjuXFRHSTtyjVb8Z44kKs4Dorcqf5aprT+0W+vXgtmhTJjA5gxsC7AZfJ0ZhXgqvDq6A6BAG5ckgCMUtDsoJmBE3ezj+RH+Rd+8rpXETE0oSAKPh5rQZWHuZEDhrREbabIE2Qu/xX7xHtPEW6YuBnZGWy6h4/At7Anq7Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5PRDxNf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02999C4CED1;
-	Thu, 12 Dec 2024 17:49:07 +0000 (UTC)
+	 MIME-Version; b=gkwSJydR9LFQ1auNSndZ/wUL5tE+RxIxjy9PWng1qzQXqnbppYmUfZcG3HTDg01fcxwkaeIDHsBNicpYzFgtVcYvRpVG18Dt6+GbNyqezmLUNBQiuiwf2AzBKRRXH6MEKnQQ4JOzpzskwVuYRTtj2b8ZOyK+dOb94HwVBDuicLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+EQ5v5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72711C4CED0;
+	Thu, 12 Dec 2024 17:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025748;
-	bh=T398Q6XmdGD4VamuqF2YDiuAWZdrrjgqCEIw+w/yopw=;
+	s=korg; t=1734024825;
+	bh=b7+NAydOgXuVLQ3PH1VOty9u4v85+pz7zItGkYYEQj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5PRDxNfodGGW/Dsh8INjsFrPBOEqqpXcoqDtkf97FG2sT2QmXvCP/BcLJVC0iMtn
-	 eTUlMdqNkLnW/NEnWW23UI31lWskrH2DIu6aegDjS9YafaQql/LPCkFYuLdj9dBYL1
-	 LVqjEYPJwPEYkwEX8Q42FjizB7xHKP8qkqZ0D/Ac=
+	b=e+EQ5v5iYKcTSgtajQrPMpZD2FVSNlXgf3tFcj13e2wZKhRRSp13G3r9xR0pvXdVy
+	 HsCCY9bnj7aSoCTy8yaMW6y8IXT4HPFCmZ+hh/wFO3f4jKqjsbfb/c8HvDU70/+uNR
+	 T31gegdVgp5MlAyDckhm6kfViX56bg/2kny462/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Qi Han <hanqi@vivo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 244/321] crypto: x86/aegis128 - access 32-bit arguments as 32-bit
-Date: Thu, 12 Dec 2024 16:02:42 +0100
-Message-ID: <20241212144239.612367366@linuxfoundation.org>
+Subject: [PATCH 5.10 425/459] f2fs: fix f2fs_bug_on when uninstalling filesystem call f2fs_evict_inode.
+Date: Thu, 12 Dec 2024 16:02:43 +0100
+Message-ID: <20241212144310.550331665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Qi Han <hanqi@vivo.com>
 
-[ Upstream commit 3b2f2d22fb424e9bebda4dbf6676cbfc7f9f62cd ]
+[ Upstream commit d5c367ef8287fb4d235c46a2f8c8d68715f3a0ca ]
 
-Fix the AEGIS assembly code to access 'unsigned int' arguments as 32-bit
-values instead of 64-bit, since the upper bits of the corresponding
-64-bit registers are not guaranteed to be zero.
+creating a large files during checkpoint disable until it runs out of
+space and then delete it, then remount to enable checkpoint again, and
+then unmount the filesystem triggers the f2fs_bug_on as below:
 
-Note: there haven't been any reports of this bug actually causing
-incorrect behavior.  Neither gcc nor clang guarantee zero-extension to
-64 bits, but zero-extension is likely to happen in practice because most
-instructions that operate on 32-bit registers zero-extend to 64 bits.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/inode.c:896!
+CPU: 2 UID: 0 PID: 1286 Comm: umount Not tainted 6.11.0-rc7-dirty #360
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+RIP: 0010:f2fs_evict_inode+0x58c/0x610
+Call Trace:
+ __die_body+0x15/0x60
+ die+0x33/0x50
+ do_trap+0x10a/0x120
+ f2fs_evict_inode+0x58c/0x610
+ do_error_trap+0x60/0x80
+ f2fs_evict_inode+0x58c/0x610
+ exc_invalid_op+0x53/0x60
+ f2fs_evict_inode+0x58c/0x610
+ asm_exc_invalid_op+0x16/0x20
+ f2fs_evict_inode+0x58c/0x610
+ evict+0x101/0x260
+ dispose_list+0x30/0x50
+ evict_inodes+0x140/0x190
+ generic_shutdown_super+0x2f/0x150
+ kill_block_super+0x11/0x40
+ kill_f2fs_super+0x7d/0x140
+ deactivate_locked_super+0x2a/0x70
+ cleanup_mnt+0xb3/0x140
+ task_work_run+0x61/0x90
 
-Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The root cause is: creating large files during disable checkpoint
+period results in not enough free segments, so when writing back root
+inode will failed in f2fs_enable_checkpoint. When umount the file
+system after enabling checkpoint, the root inode is dirty in
+f2fs_evict_inode function, which triggers BUG_ON. The steps to
+reproduce are as follows:
+
+dd if=/dev/zero of=f2fs.img bs=1M count=55
+mount f2fs.img f2fs_dir -o checkpoint=disable:10%
+dd if=/dev/zero of=big bs=1M count=50
+sync
+rm big
+mount -o remount,checkpoint=enable f2fs_dir
+umount f2fs_dir
+
+Let's redirty inode when there is not free segments during checkpoint
+is disable.
+
+Signed-off-by: Qi Han <hanqi@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/aegis128-aesni-asm.S | 29 ++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ fs/f2fs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/crypto/aegis128-aesni-asm.S b/arch/x86/crypto/aegis128-aesni-asm.S
-index b7026fdef4ff2..6c5048605a664 100644
---- a/arch/x86/crypto/aegis128-aesni-asm.S
-+++ b/arch/x86/crypto/aegis128-aesni-asm.S
-@@ -20,7 +20,7 @@
- #define T1	%xmm7
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index b23e6a848e9b7..452c0240cc11e 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -701,8 +701,10 @@ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc)
+ 		!is_inode_flag_set(inode, FI_DIRTY_INODE))
+ 		return 0;
  
- #define STATEP	%rdi
--#define LEN	%rsi
-+#define LEN	%esi
- #define SRC	%rdx
- #define DST	%rcx
+-	if (!f2fs_is_checkpoint_ready(sbi))
++	if (!f2fs_is_checkpoint_ready(sbi)) {
++		f2fs_mark_inode_dirty_sync(inode, true);
+ 		return -ENOSPC;
++	}
  
-@@ -75,32 +75,32 @@ SYM_FUNC_START_LOCAL(__load_partial)
- 	xor %r9d, %r9d
- 	pxor MSG, MSG
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1, %r8
- 	jz .Lld_partial_1
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1E, %r8
- 	add SRC, %r8
- 	mov (%r8), %r9b
- 
- .Lld_partial_1:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x2, %r8
- 	jz .Lld_partial_2
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1C, %r8
- 	add SRC, %r8
- 	shl $0x10, %r9
- 	mov (%r8), %r9w
- 
- .Lld_partial_2:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x4, %r8
- 	jz .Lld_partial_4
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x18, %r8
- 	add SRC, %r8
- 	shl $32, %r9
-@@ -110,11 +110,11 @@ SYM_FUNC_START_LOCAL(__load_partial)
- .Lld_partial_4:
- 	movq %r9, MSG
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x8, %r8
- 	jz .Lld_partial_8
- 
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x10, %r8
- 	add SRC, %r8
- 	pslldq $8, MSG
-@@ -138,7 +138,7 @@ SYM_FUNC_END(__load_partial)
-  *   %r10
-  */
- SYM_FUNC_START_LOCAL(__store_partial)
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	mov DST, %r9
- 
- 	movq T0, %r10
-@@ -676,7 +676,7 @@ ENTRY(crypto_aegis128_aesni_dec_tail)
- 	call __store_partial
- 
- 	/* mask with byte count: */
--	movq LEN, T0
-+	movd LEN, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
-@@ -701,7 +701,8 @@ ENDPROC(crypto_aegis128_aesni_dec_tail)
- 
- /*
-  * void crypto_aegis128_aesni_final(void *state, void *tag_xor,
-- *                                  u64 assoclen, u64 cryptlen);
-+ *                                  unsigned int assoclen,
-+ *                                  unsigned int cryptlen);
-  */
- ENTRY(crypto_aegis128_aesni_final)
- 	FRAME_BEGIN
-@@ -714,8 +715,8 @@ ENTRY(crypto_aegis128_aesni_final)
- 	movdqu 0x40(STATEP), STATE4
- 
- 	/* prepare length block: */
--	movq %rdx, MSG
--	movq %rcx, T0
-+	movd %edx, MSG
-+	movd %ecx, T0
- 	pslldq $8, T0
- 	pxor T0, MSG
- 	psllq $3, MSG /* multiply by 8 (to get bit count) */
+ 	/*
+ 	 * We need to balance fs here to prevent from producing dirty node pages
 -- 
 2.43.0
 
