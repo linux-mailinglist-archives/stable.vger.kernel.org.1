@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-102556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D799EF365
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5649E9EF031
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6176417EA42
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DE4A1898BF9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584F02253F9;
-	Thu, 12 Dec 2024 16:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BD8235C25;
+	Thu, 12 Dec 2024 16:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFvjMshg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbEnUBA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1364C223E71;
-	Thu, 12 Dec 2024 16:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B68B21E085;
+	Thu, 12 Dec 2024 16:07:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021655; cv=none; b=A636ywt43O/WtmAwZRURGt+XiB+ANDA3ghQqHhyWRziKL0/qiM6Ccp2vawNG3Mu1FWUPgjr+Hy3cfFgKa3m5e5SKekWGCwd4VhY3PI5/XByJqKrIUsczMmF7l7nHiOR2uA36cWI93X/0NgEKk3AA2J7BV2lEyY5xtF1CdrxOziY=
+	t=1734019655; cv=none; b=MBEXKJoc+dhU1jh9LhVIJXWpqKJk00hCnZsu9Hdubxlhk2fqnjZQDHTmQhGbwQMy6WX0wPeWmDWZ3k9z4pWorPmW9zc6G445G7jb3iax29TUwFopp+WGZIzsY8utYhsAUqWeDCYFJMkuRCrX36tMHgaa6t8RewhEQeKvlnGegv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021655; c=relaxed/simple;
-	bh=XIl1vjO8OTfqaJ+io6lgqHkTAEO+n/GGP6y3gpKdjRA=;
+	s=arc-20240116; t=1734019655; c=relaxed/simple;
+	bh=1LSG3thOsG0B4uNnVnOti/l5D5a57JO+RtLH/AYP2tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrhYlxUg9vjkca9amgTNH6BxCse8GxwjubAbenxo345A3Lq72F0+H0RBCnEn4tGwq+FArjBemEu8BZ2naWZIL5ucUbGLO1EXUhDODAuW1BzWLAhh2CJScNQ/SCn2jPIYVhnuMWliaY4nMOBauhqKp0dbBSQqx/berXUat7d2w08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFvjMshg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B964C4CED4;
-	Thu, 12 Dec 2024 16:40:54 +0000 (UTC)
+	 MIME-Version; b=tmm4JZhX1J45u5QhGHxb9xOZ5gjdfBcrEhYqpgE37748AoL2JbDO5NlBkCsnEFL4/4+bPi1BJL8cnFyLRKru2AO0ek++0KA4TUABx9H3MzrPtOc5ISKhS2ts8h1NICdWXZ+aQvevCfXS2OfF1MBMpUZSNGa+gXKx4ReoYIc+ugU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbEnUBA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7492EC4CECE;
+	Thu, 12 Dec 2024 16:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021654;
-	bh=XIl1vjO8OTfqaJ+io6lgqHkTAEO+n/GGP6y3gpKdjRA=;
+	s=korg; t=1734019655;
+	bh=1LSG3thOsG0B4uNnVnOti/l5D5a57JO+RtLH/AYP2tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFvjMshgXVkt6lajLASXz32pKJYC2mf4daumsR73euOyJpu5MWuDO0pJnWmlLp/A5
-	 UB/l2vKEPhEIBD8YTUDTNumho21Tl6DlAHYYlcps764iUw7UxOtFKySy5OOtUxnXiN
-	 4jYVfjeDW8LdrBiqyJk8eGmFAqKKbEC+E4RS/Q+4=
+	b=hbEnUBA9SBoxyANAV3IPriWiCUNaQBF+IO+0KofKBD9Qot2OhAUYnBTdTQixcedlV
+	 07UPAUgGwGI7s8hPrQHdqqF6aa5hS4YTRXtfMgW8VJmZGGtYnNx9w3B4PBr2Sff66L
+	 r9WHDRy+UxhQ/SONb29ESoC1qtsZZr1dYKHaxiRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 006/565] media: venus: Fix pm_runtime_set_suspended() with runtime pm enabled
+	Nuno Sa <nuno.sa@analog.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 256/772] dt-bindings: clock: axi-clkgen: include AXI clk
 Date: Thu, 12 Dec 2024 15:53:21 +0100
-Message-ID: <20241212144311.696155141@linuxfoundation.org>
+Message-ID: <20241212144400.494539623@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit 2a20869f7d798aa2b69e45b863eaf1b1ecf98278 upstream.
+[ Upstream commit 47f3f5a82a31527e027929c5cec3dd1ef5ef30f5 ]
 
-It is not valid to call pm_runtime_set_suspended() for devices
-with runtime PM enabled because it returns -EAGAIN if it is enabled
-already and working. So, call pm_runtime_disable() before to fix it.
+In order to access the registers of the HW, we need to make sure that
+the AXI bus clock is enabled. Hence let's increase the number of clocks
+by one and add clock-names to differentiate between parent clocks and
+the bus clock.
 
-Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Acked-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e646c52cf0e ("clk: Add axi-clkgen driver")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20241029-axi-clkgen-fix-axiclk-v2-1-bc5e0733ad76@analog.com
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bindings/clock/adi,axi-clkgen.yaml        | 22 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -391,8 +391,8 @@ err_of_depopulate:
- 	of_platform_depopulate(dev);
- err_runtime_disable:
- 	pm_runtime_put_noidle(dev);
--	pm_runtime_set_suspended(dev);
- 	pm_runtime_disable(dev);
-+	pm_runtime_set_suspended(dev);
- 	hfi_destroy(core);
- err_core_deinit:
- 	hfi_core_deinit(core, false);
+diff --git a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+index 983033fe5b177..592285f616f57 100644
+--- a/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
++++ b/Documentation/devicetree/bindings/clock/adi,axi-clkgen.yaml
+@@ -26,9 +26,21 @@ properties:
+     description:
+       Specifies the reference clock(s) from which the output frequency is
+       derived. This must either reference one clock if only the first clock
+-      input is connected or two if both clock inputs are connected.
+-    minItems: 1
+-    maxItems: 2
++      input is connected or two if both clock inputs are connected. The last
++      clock is the AXI bus clock that needs to be enabled so we can access the
++      core registers.
++    minItems: 2
++    maxItems: 3
++
++  clock-names:
++    oneOf:
++      - items:
++          - const: clkin1
++          - const: s_axi_aclk
++      - items:
++          - const: clkin1
++          - const: clkin2
++          - const: s_axi_aclk
+ 
+   '#clock-cells':
+     const: 0
+@@ -40,6 +52,7 @@ required:
+   - compatible
+   - reg
+   - clocks
++  - clock-names
+   - '#clock-cells'
+ 
+ additionalProperties: false
+@@ -50,5 +63,6 @@ examples:
+       compatible = "adi,axi-clkgen-2.00.a";
+       #clock-cells = <0>;
+       reg = <0xff000000 0x1000>;
+-      clocks = <&osc 1>;
++      clocks = <&osc 1>, <&clkc 15>;
++      clock-names = "clkin1", "s_axi_aclk";
+     };
+-- 
+2.43.0
+
 
 
 
