@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D809EF35B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E5C9EEA55
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBA83189B94A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A55751671B1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211C922ACFA;
-	Thu, 12 Dec 2024 16:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F9A21B1BE;
+	Thu, 12 Dec 2024 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vt+1tPtI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xqw5JRYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33122288FB;
-	Thu, 12 Dec 2024 16:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55D0218AA3;
+	Thu, 12 Dec 2024 15:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021816; cv=none; b=dTTpOLWCI0+cos9SxQNumyoBOs+WQU5bKuZqVdg4Nb9pmRM7KpNNsGduU5fMGN4BEyxDZkiZeLcfd7AgsmAj9zsdYNoW1aFb/ZdTGcSQIzo+WaKEuvUAiiRL4FFKf2OnVGInAbQhv8zd13bPeaVOJ5KN/TyZOReUnAGXrWI8mBU=
+	t=1734016085; cv=none; b=HgfjyNUVCPplLlDnvz6YQ1LafjSQcjX6/uQAD8QJvk2ICvc3+9vIeCUmfZTuuuLblAAo7KK0QKNiUnpGgqGSSvPS+9n901tQN6U8eYNp7SciWZ4EsEcHPW3B4HoSJplTEjGPmA8sTLF4ESMNNNqbCLqDiJ6XbHp4rcsPn+5ICwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021816; c=relaxed/simple;
-	bh=P91mshPhloQ4Cthv50blWwqQpkx7DeYBIkc5TNy63Vw=;
+	s=arc-20240116; t=1734016085; c=relaxed/simple;
+	bh=w2lRu6GUYUvBCNh24rL0WlvZ5aQADrpPjBPpGJuwwQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Higg2flangf1OAlRugyt2qTXOXu5Ej8uE39Gu4V7kneZQkhU+s2itPv30Qrd6+7mPUvPUn/qv7o/sXswZnf8TeqcJZrpShIjwzu7K1l4z2/FfEB8IDjO7RMn0wJodPYZALJS4yzUKXrDynd3j8DO/XfNLChr6oxnSBeAZEPjTIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vt+1tPtI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D6BC4CECE;
-	Thu, 12 Dec 2024 16:43:36 +0000 (UTC)
+	 MIME-Version; b=ZEAyAfb68O6OMpNlAJqIFhwCcEF2zI26TqJidN5xPQCk6Y4SVe5FFhj816xhJxXAsb28TEIV/d34aIB/ke2QXnjSa0fGxnWMALaTwU0NR0mLM8JshKZkpI78Q+jOARa8h8wCHodn1pginAHlQ7exNATuSDtog0xP7kzZloQxDLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xqw5JRYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBA9C4CECE;
+	Thu, 12 Dec 2024 15:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021816;
-	bh=P91mshPhloQ4Cthv50blWwqQpkx7DeYBIkc5TNy63Vw=;
+	s=korg; t=1734016084;
+	bh=w2lRu6GUYUvBCNh24rL0WlvZ5aQADrpPjBPpGJuwwQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vt+1tPtIyu4qWmKgleMjpcC/G6noeaDhyWvwzNadh2rxNL6Iwf/+pZN00QGNNKtB/
-	 qJVMspEBjKAD/srt1Nrb27QshGiAQjiCWTQyM9ehGxC4odlCU9M3vmF5MI4BGBPXeW
-	 d0jNbPopuoeAJKUaYnSnhgRF+fOmCbIYKNsrYMSA=
+	b=Xqw5JRYPxRg2LYFQfB/AZPbUorS9KZgrnP4zP2DtKadHukvaWdaZYdGyQPRgHspRG
+	 8kkonG1+EKQE4Vxr0ueZb45vAu1Y+pgQqct+bvYoP480EM+nVKEI6iM2rloDjAHxTC
+	 Jio5Ftxr0GLVDZE99dR5qk2qYQc1UjwQVD+xjo3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/565] ipmr: Fix access to mfc_cache_list without lock held
+Subject: [PATCH 6.12 097/466] nvme: dont apply NVME_QUIRK_DEALLOCATE_ZEROES when DSM is not supported
 Date: Thu, 12 Dec 2024 15:54:26 +0100
-Message-ID: <20241212144314.298850995@linuxfoundation.org>
+Message-ID: <20241212144310.645811767@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit e28acc9c1ccfcb24c08e020828f69d0a915b06ae ]
+[ Upstream commit 58a0c875ce028678c9594c7bdf3fe33462392808 ]
 
-Accessing `mr_table->mfc_cache_list` is protected by an RCU lock. In the
-following code flow, the RCU read lock is not held, causing the
-following error when `RCU_PROVE` is not held. The same problem might
-show up in the IPv6 code path.
+Commit 63dfa1004322 ("nvme: move NVME_QUIRK_DEALLOCATE_ZEROES out of
+nvme_config_discard") started applying the NVME_QUIRK_DEALLOCATE_ZEROES
+quirk even then the Dataset Management is not supported.  It turns out
+that there versions of these old Intel SSDs that have DSM support
+disabled in the firmware, which will now lead to errors everytime
+a Write Zeroes command is issued.  Fix this by checking for DSM support
+before applying the quirk.
 
-	6.12.0-rc5-kbuilder-01145-gbac17284bdcb #33 Tainted: G            E    N
-	-----------------------------
-	net/ipv4/ipmr_base.c:313 RCU-list traversed in non-reader section!!
-
-	rcu_scheduler_active = 2, debug_locks = 1
-		   2 locks held by RetransmitAggre/3519:
-		    #0: ffff88816188c6c0 (nlk_cb_mutex-ROUTE){+.+.}-{3:3}, at: __netlink_dump_start+0x8a/0x290
-		    #1: ffffffff83fcf7a8 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_dumpit+0x6b/0x90
-
-	stack backtrace:
-		    lockdep_rcu_suspicious
-		    mr_table_dump
-		    ipmr_rtm_dumproute
-		    rtnl_dump_all
-		    rtnl_dumpit
-		    netlink_dump
-		    __netlink_dump_start
-		    rtnetlink_rcv_msg
-		    netlink_rcv_skb
-		    netlink_unicast
-		    netlink_sendmsg
-
-This is not a problem per see, since the RTNL lock is held here, so, it
-is safe to iterate in the list without the RCU read lock, as suggested
-by Eric.
-
-To alleviate the concern, modify the code to use
-list_for_each_entry_rcu() with the RTNL-held argument.
-
-The annotation will raise an error only if RTNL or RCU read lock are
-missing during iteration, signaling a legitimate problem, otherwise it
-will avoid this false positive.
-
-This will solve the IPv6 case as well, since ip6mr_rtm_dumproute() calls
-this function as well.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20241108-ipmr_rcu-v2-1-c718998e209b@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+Fixes: 63dfa1004322 ("nvme: move NVME_QUIRK_DEALLOCATE_ZEROES out of nvme_config_discard")
+Tested-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ipmr_base.c | 3 ++-
+ drivers/nvme/host/core.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
-index aa8738a91210a..c45cb7cb57590 100644
---- a/net/ipv4/ipmr_base.c
-+++ b/net/ipv4/ipmr_base.c
-@@ -301,7 +301,8 @@ int mr_table_dump(struct mr_table *mrt, struct sk_buff *skb,
- 	if (filter->filter_set)
- 		flags |= NLM_F_DUMP_FILTERED;
- 
--	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list) {
-+	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list,
-+				lockdep_rtnl_is_held()) {
- 		if (e < s_e)
- 			goto next_entry;
- 		if (filter->dev &&
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index f0d4c6f3cb055..fe83d31ac928b 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2064,7 +2064,8 @@ static bool nvme_update_disk_info(struct nvme_ns *ns, struct nvme_id_ns *id,
+ 	lim->physical_block_size = min(phys_bs, atomic_bs);
+ 	lim->io_min = phys_bs;
+ 	lim->io_opt = io_opt;
+-	if (ns->ctrl->quirks & NVME_QUIRK_DEALLOCATE_ZEROES)
++	if ((ns->ctrl->quirks & NVME_QUIRK_DEALLOCATE_ZEROES) &&
++	    (ns->ctrl->oncs & NVME_CTRL_ONCS_DSM))
+ 		lim->max_write_zeroes_sectors = UINT_MAX;
+ 	else
+ 		lim->max_write_zeroes_sectors = ns->ctrl->max_zeroes_sectors;
 -- 
 2.43.0
 
