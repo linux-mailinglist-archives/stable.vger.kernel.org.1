@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-101108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAC19EEAC2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 126D39EF185
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB4916700B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D641786D2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8ED2165F0;
-	Thu, 12 Dec 2024 15:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FB722E9E0;
+	Thu, 12 Dec 2024 16:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRi/JP8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Tbhr3fw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCCD213E97;
-	Thu, 12 Dec 2024 15:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0053223C48;
+	Thu, 12 Dec 2024 16:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016386; cv=none; b=YflqnEDxftRQ/9lhHHEpCkG6bePmdS4PmCceFMvjcslqrCyBtiwMkUVwqCctQ6Cc5ojSWSaDe8Y/1KLsX5vnkjRbLRTucdEkpb7DtGpgsCfFdsLL2uqFp1ovR8cuAt8Vf6ZeQLP/ezITdG4du1BRTXmbYCtvx9RNgH0BEMEdWLU=
+	t=1734020217; cv=none; b=MxmA+hpApx3Jrj5b5QuwyG9+tw+i+wF3TYLXOnTfg5ntWOBg4D9pleG7jSMSs69OPZsEJZwv0dhWR9fo4UJFcWvqOdFBho8Zcj89a3fOF2+5aDpRja7XnmkD/CpNkNbS7p3dHywZGriZuE0ubdi50tPD1X4iJgib2kCMQjlr17k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016386; c=relaxed/simple;
-	bh=qpTD9hpD2I9AsVMKYwuhTHQIRjy5pm6nKX4+8zFP8aI=;
+	s=arc-20240116; t=1734020217; c=relaxed/simple;
+	bh=Pp20x9WpFUTbTg7V6uWg4QKDRQfKiFLy5CBFMEeaEmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MiulQK8qW+Es5Gw1qgYyjC/YWfbfoDsZQw/mHlnhR3BuIXn5ie93Av07RjunVEJBkVjfCHUNvNydfCDsTSV2kDyl2bJVShvI0O5VGIpLpIyw/PzdfsYzday78uiN1/tpS0aVnS4LWkedNp/wFqZnla4USSvzbCOB/wvsp+3c88k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRi/JP8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0230C4CED0;
-	Thu, 12 Dec 2024 15:13:05 +0000 (UTC)
+	 MIME-Version; b=Q4OxeVd/eEWyj/AXq2tVUTLQlyW37qt/h/PAo38r6ZPnPl38xJbLN3UvmTYo4ZWjK6E8nq8Tbljdy1gh9sIFWKX2SQkASJpIOCABI8cf53UEkP0hqvQ4KRtucRIuccm7cEvsvBHHuUd7HSbPeBa3ABzztS1U7u1NfrKTaLM1m5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Tbhr3fw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD7AC4CECE;
+	Thu, 12 Dec 2024 16:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016386;
-	bh=qpTD9hpD2I9AsVMKYwuhTHQIRjy5pm6nKX4+8zFP8aI=;
+	s=korg; t=1734020217;
+	bh=Pp20x9WpFUTbTg7V6uWg4QKDRQfKiFLy5CBFMEeaEmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRi/JP8DVGk3w0jYnYwfrZd/9MAyqtfWwFhvI2I+QoY5bB5MEwL9rc5J23+LtC8Iy
-	 k7GdsJ4FmqkiPDtGFfs9dQIDLBuur/NJj9m9ehKuumCaBzzqgVN5rlkyle/Xgwr8HX
-	 ShWSC+noVwNfXj1TCE51wvegPBAl6X5YRaD0ldcA=
+	b=0Tbhr3fwfUVo9PUSTq3j9++yPFhZG3Knbi4aSRJbnG57P6PUeq+zyhu0ojoG8MRIx
+	 VgGOvaPzKr8VfnGjw1M7WJvsAuhzEVWSOjHJQRt4upgMo5uHebDsFSzANa4CYPOnK4
+	 uhCowJUBBhl7uhOFj4/eV+ud9N1Ox7xvzR68b3Xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordy Zomer <jordyzomer@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.12 184/466] bpf: fix OOB devmap writes when deleting elements
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.1 408/772] HID: wacom: Interpret tilt data from Intuos Pro BT as signed values
 Date: Thu, 12 Dec 2024 15:55:53 +0100
-Message-ID: <20241212144314.073183750@linuxfoundation.org>
+Message-ID: <20241212144406.786021896@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-commit ab244dd7cf4c291f82faacdc50b45cc0f55b674d upstream.
+commit 49a397ad24ee5e2c53a59dada2780d7e71bd3f77 upstream.
 
-Jordy reported issue against XSKMAP which also applies to DEVMAP - the
-index used for accessing map entry, due to being a signed integer,
-causes the OOB writes. Fix is simple as changing the type from int to
-u32, however, when compared to XSKMAP case, one more thing needs to be
-addressed.
+The tilt data contained in the Bluetooth packets of an Intuos Pro are
+supposed to be interpreted as signed values. Simply casting the values
+to type `char` is not guaranteed to work since it is implementation-
+defined whether it is signed or unsigned. At least one user has noticed
+the data being reported incorrectly on their system. To ensure that the
+data is interpreted properly, we specifically cast to `signed char`
+instead.
 
-When map is released from system via dev_map_free(), we iterate through
-all of the entries and an iterator variable is also an int, which
-implies OOB accesses. Again, change it to be u32.
-
-Example splat below:
-
-[  160.724676] BUG: unable to handle page fault for address: ffffc8fc2c001000
-[  160.731662] #PF: supervisor read access in kernel mode
-[  160.736876] #PF: error_code(0x0000) - not-present page
-[  160.742095] PGD 0 P4D 0
-[  160.744678] Oops: Oops: 0000 [#1] PREEMPT SMP
-[  160.749106] CPU: 1 UID: 0 PID: 520 Comm: kworker/u145:12 Not tainted 6.12.0-rc1+ #487
-[  160.757050] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-[  160.767642] Workqueue: events_unbound bpf_map_free_deferred
-[  160.773308] RIP: 0010:dev_map_free+0x77/0x170
-[  160.777735] Code: 00 e8 fd 91 ed ff e8 b8 73 ed ff 41 83 7d 18 19 74 6e 41 8b 45 24 49 8b bd f8 00 00 00 31 db 85 c0 74 48 48 63 c3 48 8d 04 c7 <48> 8b 28 48 85 ed 74 30 48 8b 7d 18 48 85 ff 74 05 e8 b3 52 fa ff
-[  160.796777] RSP: 0018:ffffc9000ee1fe38 EFLAGS: 00010202
-[  160.802086] RAX: ffffc8fc2c001000 RBX: 0000000080000000 RCX: 0000000000000024
-[  160.809331] RDX: 0000000000000000 RSI: 0000000000000024 RDI: ffffc9002c001000
-[  160.816576] RBP: 0000000000000000 R08: 0000000000000023 R09: 0000000000000001
-[  160.823823] R10: 0000000000000001 R11: 00000000000ee6b2 R12: dead000000000122
-[  160.831066] R13: ffff88810c928e00 R14: ffff8881002df405 R15: 0000000000000000
-[  160.838310] FS:  0000000000000000(0000) GS:ffff8897e0c40000(0000) knlGS:0000000000000000
-[  160.846528] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  160.852357] CR2: ffffc8fc2c001000 CR3: 0000000005c32006 CR4: 00000000007726f0
-[  160.859604] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  160.866847] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  160.874092] PKRU: 55555554
-[  160.876847] Call Trace:
-[  160.879338]  <TASK>
-[  160.881477]  ? __die+0x20/0x60
-[  160.884586]  ? page_fault_oops+0x15a/0x450
-[  160.888746]  ? search_extable+0x22/0x30
-[  160.892647]  ? search_bpf_extables+0x5f/0x80
-[  160.896988]  ? exc_page_fault+0xa9/0x140
-[  160.900973]  ? asm_exc_page_fault+0x22/0x30
-[  160.905232]  ? dev_map_free+0x77/0x170
-[  160.909043]  ? dev_map_free+0x58/0x170
-[  160.912857]  bpf_map_free_deferred+0x51/0x90
-[  160.917196]  process_one_work+0x142/0x370
-[  160.921272]  worker_thread+0x29e/0x3b0
-[  160.925082]  ? rescuer_thread+0x4b0/0x4b0
-[  160.929157]  kthread+0xd4/0x110
-[  160.932355]  ? kthread_park+0x80/0x80
-[  160.936079]  ret_from_fork+0x2d/0x50
-[  160.943396]  ? kthread_park+0x80/0x80
-[  160.950803]  ret_from_fork_asm+0x11/0x20
-[  160.958482]  </TASK>
-
-Fixes: 546ac1ffb70d ("bpf: add devmap, a map for storing net device references")
-CC: stable@vger.kernel.org
-Reported-by: Jordy Zomer <jordyzomer@google.com>
-Suggested-by: Jordy Zomer <jordyzomer@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20241122121030.716788-3-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Link: https://github.com/linuxwacom/input-wacom/issues/445
+Fixes: 4922cd26f03c ("HID: wacom: Support 2nd-gen Intuos Pro's Bluetooth classic interface")
+CC: stable@vger.kernel.org # 4.11+
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/devmap.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/wacom_wac.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/bpf/devmap.c
-+++ b/kernel/bpf/devmap.c
-@@ -184,7 +184,7 @@ static struct bpf_map *dev_map_alloc(uni
- static void dev_map_free(struct bpf_map *map)
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
--	int i;
-+	u32 i;
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1396,9 +1396,9 @@ static void wacom_intuos_pro2_bt_pen(str
+ 					rotation -= 1800;
  
- 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
- 	 * so the programs (can be more than one that used this map) were
-@@ -821,7 +821,7 @@ static long dev_map_delete_elem(struct b
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
- 
- 	if (k >= map->max_entries)
- 		return -EINVAL;
-@@ -838,7 +838,7 @@ static long dev_map_hash_delete_elem(str
- {
- 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
- 	struct bpf_dtab_netdev *old_dev;
--	int k = *(u32 *)key;
-+	u32 k = *(u32 *)key;
- 	unsigned long flags;
- 	int ret = -ENOENT;
- 
+ 				input_report_abs(pen_input, ABS_TILT_X,
+-						 (char)frame[7]);
++						 (signed char)frame[7]);
+ 				input_report_abs(pen_input, ABS_TILT_Y,
+-						 (char)frame[8]);
++						 (signed char)frame[8]);
+ 				input_report_abs(pen_input, ABS_Z, rotation);
+ 				input_report_abs(pen_input, ABS_WHEEL,
+ 						 get_unaligned_le16(&frame[11]));
 
 
 
