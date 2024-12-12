@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-103737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F999EF98E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A8E9EF4A8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AEA317D40A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A026A29168C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D2C2288EF;
-	Thu, 12 Dec 2024 17:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB9822370C;
+	Thu, 12 Dec 2024 17:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zz1lxiFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4uuzCOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256C42253FD;
-	Thu, 12 Dec 2024 17:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3621422A7FA;
+	Thu, 12 Dec 2024 17:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025456; cv=none; b=lNRLDcU3DKqFUvoujnJvYo/Eqa0YH8ji/jbxAb8Bpra2L/KQnqziM+bh7ZNWbwWlonElZAgy7vfhnI3SoaL2knkUQEFE60lODw8o0BzV3KGpe81u6+QswKi7dur18VHGe+53H2deNWbP0AV/U9lUgJRI8DFyajkQ7Tt2lquulDM=
+	t=1734023235; cv=none; b=mq1cg4pykTiWNg3MasliOuRX6mJNx5UyCadSlceExaRJQq0OmMFi+BF8qGLdKIbpX/3K0AiOEDNOx6pr6+J441I/bVUUCBSsUMxP+bhGsojjaxpMhz9A5nx2gLsrLRglFpiMzAr7h81UwLjsBSevJQRGQq9sdJhrgDSvIWM5fGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025456; c=relaxed/simple;
-	bh=BUbDxmIS+3+LVDNt4gXFdc162Im7Vb/lYJE8YBnUZLc=;
+	s=arc-20240116; t=1734023235; c=relaxed/simple;
+	bh=jVqOU+R72Z/FfK5G0//xhb08Hru5DmBqwec881aW/NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=En2hHRfReplPgZeKQviIbBwsbnyDG5X18C8o/UoYx2P9yh5YXZbBoNcRzOhQF3yca9P8kFbkfii6WxHBpOFxa+STAR8BwPn2zJI8K2e2MUfbAuYElnDnMUvm49mzLwmOxiMY/jzEx98vGOtPAUSfr2UTPrrwhEtN31rajlmN1uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz1lxiFJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98224C4CECE;
-	Thu, 12 Dec 2024 17:44:15 +0000 (UTC)
+	 MIME-Version; b=OQZSxnEcBR9aZqHMAcNZe/eZqQh8xZhiB7kPlUaEIb3mYcmJxdvC/FDA22gYEjpuBcxkd+kKd/iga4nfcw3ScBdI1384Vg9KGQ6+sSFB88vBypa6gHd2vNZqSODmV5EOHYxvpKrXh7FjCo6MQOMjJzMkRePoWzpnUtOh+MLOAa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4uuzCOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B06EC4CECE;
+	Thu, 12 Dec 2024 17:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025456;
-	bh=BUbDxmIS+3+LVDNt4gXFdc162Im7Vb/lYJE8YBnUZLc=;
+	s=korg; t=1734023234;
+	bh=jVqOU+R72Z/FfK5G0//xhb08Hru5DmBqwec881aW/NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zz1lxiFJS/1T2TT99lAGKqjI0uTgeHC66Kpee9RAyhndcYJo4MPsODY5kzvvGliJx
-	 PTw0JLD6Ynz5laq0HRv5L6d3gGqpOAjPsDiRMttQDZCjGlCtLe2G0DTFoqYOsznUW2
-	 I7LlkF9ifyLOoY78Q6I+ZLQFa24Qb1IxH0KMR698=
+	b=Z4uuzCORmWRDX1bUst86T9VqMwmOafigv3exLPU28kKk9uXvnE5cfnIevMb/1wYNQ
+	 zQeWRmIB+4gnjStgZ7vyImq/QWsuvclSrKBW0xZiZNWl1L3rBoTZKjsV3BTrMxHjzE
+	 QoQNdvkiIimtq7KNhvdBfUTyohmm7sozovRC3xRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikanta Mylavarapu <quic_mmanikan@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.4 144/321] soc: qcom: socinfo: fix revision check in qcom_socinfo_probe()
+	Wengang Wang <wen.gang.wang@oracle.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 467/565] ocfs2: update seq_file index in ocfs2_dlm_seq_next
 Date: Thu, 12 Dec 2024 16:01:02 +0100
-Message-ID: <20241212144235.668512506@linuxfoundation.org>
+Message-ID: <20241212144330.196932763@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +67,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
+From: Wengang Wang <wen.gang.wang@oracle.com>
 
-commit 128fdbf36cddc2a901c4889ba1c89fa9f2643f2c upstream.
+commit 914eec5e980171bc128e7e24f7a22aa1d803570e upstream.
 
-In success case, the revision holds a non-null pointer. The current
-logic incorrectly returns an error for a non-null pointer, whereas
-it should return an error for a null pointer.
+The following INFO level message was seen:
 
-The socinfo driver for IPQ9574 and IPQ5332 is currently broken,
-resulting in the following error message
-qcom-socinfo qcom-socinfo: probe with driver qcom-socinfo failed with
-error -12
+seq_file: buggy .next function ocfs2_dlm_seq_next [ocfs2] did not
+update position index
 
-Add a null check for the revision to ensure it returns an error only in
-failure case (null pointer).
+Fix:
+Update *pos (so m->index) to make seq_read_iter happy though the index its
+self makes no sense to ocfs2_dlm_seq_next.
 
-Fixes: e694d2b5c58b ("soc: qcom: Add check devm_kasprintf() returned value")
-Signed-off-by: Manikanta Mylavarapu <quic_mmanikan@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20241016144852.2888679-1-quic_mmanikan@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lkml.kernel.org/r/20241119174500.9198-1-wen.gang.wang@oracle.com
+Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/qcom/socinfo.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/dlmglue.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/soc/qcom/socinfo.c
-+++ b/drivers/soc/qcom/socinfo.c
-@@ -433,7 +433,7 @@ static int qcom_socinfo_probe(struct pla
- 	qs->attr.revision = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%u.%u",
- 					   SOCINFO_MAJOR(le32_to_cpu(info->ver)),
- 					   SOCINFO_MINOR(le32_to_cpu(info->ver)));
--	if (!qs->attr.soc_id || qs->attr.revision)
-+	if (!qs->attr.soc_id || !qs->attr.revision)
- 		return -ENOMEM;
+--- a/fs/ocfs2/dlmglue.c
++++ b/fs/ocfs2/dlmglue.c
+@@ -3108,6 +3108,7 @@ static void *ocfs2_dlm_seq_next(struct s
+ 	struct ocfs2_lock_res *iter = v;
+ 	struct ocfs2_lock_res *dummy = &priv->p_iter_res;
  
- 	if (offsetof(struct socinfo, serial_num) <= item_size) {
++	(*pos)++;
+ 	spin_lock(&ocfs2_dlm_tracking_lock);
+ 	iter = ocfs2_dlm_next_res(iter, priv);
+ 	list_del_init(&dummy->l_debug_list);
 
 
 
