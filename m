@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30299EF2AC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9869EEBB7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E1B2188194F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D5D1283967
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192D7235C2A;
-	Thu, 12 Dec 2024 16:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C452153DF;
+	Thu, 12 Dec 2024 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9VTPmNl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUEr0DTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B102210DB;
-	Thu, 12 Dec 2024 16:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423361487CD;
+	Thu, 12 Dec 2024 15:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021169; cv=none; b=HmCVk7M2sFpB0LTKPtdI7886Xwf/o0fKLA7jqCxO9GxnpJIC4eaRs5hECf9lap0VbCNW7JZs7FTBoQP3zHlnjLlDZdqiXy8SOLdysbeoZurvNeYNjk6i+Zl/hpRhHwGbnX/MJMz47z9nhLLgXgkkhj8W6GMy6fvXzrRfY6LLDHA=
+	t=1734017305; cv=none; b=IeP5AK0R0GVMl4vkzTziMs+WU2ioGv2Pva6RiY5kwHB4uRnMcKOM8Jh4kSkUR+AFCgZoHHCB8CLI94x41aq3DXa7HWLTpq17ss+Hert7Cv67YuF4hmKjPfILcgcoS0h6AoHf39AVwgXV6ELUWwNa/3MGbb/c7cVYiLDtzM6UsGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021169; c=relaxed/simple;
-	bh=7C5+z8Q+8X3OCo4OYXhEPIOImEdrkcBK5t00MS/kkMU=;
+	s=arc-20240116; t=1734017305; c=relaxed/simple;
+	bh=R8yBiiFGEdiiPcl8FEj2x65iu8LAyFncdEYsa6ZgHUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCs20pf1wZr0k/yB0Ro4BLDdRCb5SMLMItYE/BscElSpGh0NPd22o4917iJx838/Neto91A2EfbvsCWLi3KfpljgXM1SPXWoHLGD+LqIHnYX/rKUu83vKjmLiQXnXpo04wj99CdOBulrm3Q8nJXA7NZbji3OaeKLhN1inh+NmBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9VTPmNl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1525DC4CECE;
-	Thu, 12 Dec 2024 16:32:48 +0000 (UTC)
+	 MIME-Version; b=UYn691WxtQ8Ek//VK9sNLgEruiS8/lCeiZLP9wXGb3AGroFGfDHmEKkdFXWCaXVcY8Ivav39xU4SD1GDwX3HWANpX5SWp6yPixLojS1EfpJUGnzsnWRFHS/zAeXDfR6MUuH02csoXNMbBgNWMExFP+9XbGkzCscZUy0C/MoUSKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUEr0DTf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33F4C4CECE;
+	Thu, 12 Dec 2024 15:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021169;
-	bh=7C5+z8Q+8X3OCo4OYXhEPIOImEdrkcBK5t00MS/kkMU=;
+	s=korg; t=1734017305;
+	bh=R8yBiiFGEdiiPcl8FEj2x65iu8LAyFncdEYsa6ZgHUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9VTPmNl+MKqGalynC9HAwsCcL2MaQRTw5CiNcCmjEue36ekV0WU31sMx3MbMJSTl
-	 yrKl+kba6TR9VYqxlh8767sJinTi5BiLJh7JTmY7dqcECS8d/eJxtxam+ICfiyjkEb
-	 kUtIwLIEDn3zjvE9wPa3GvJOFO7+qCIuFjP2VyBU=
+	b=cUEr0DTfKPAhNFZ082JU5RFdjuAlC0yhylg4am2ocenCcnPLB+1NmQuzwqfLpU7/j
+	 PDqBLPfOb1RD+RMHuAtoyJ5OzNIevOLD9l/x02mkWxRVAGKcq3Yd4SCHOE5yqFOnM1
+	 d4wkxM0dWpZ0WhczuEUGXydl1fs5qt+sMEOaGlqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Simon Horman <horms@kernel.org>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 665/772] net: ethernet: fs_enet: Use %pa to format resource_size_t
+Subject: [PATCH 6.12 441/466] sched/fair: Check idle_cpu() before need_resched() to detect ilb CPU turning busy
 Date: Thu, 12 Dec 2024 16:00:10 +0100
-Message-ID: <20241212144417.397961858@linuxfoundation.org>
+Message-ID: <20241212144324.281630922@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit 45fe45fada261e1e83fce2a07fa22835aec1cf0a ]
+[ Upstream commit ff47a0acfcce309cf9e175149c75614491953c8f ]
 
-The correct format string for resource_size_t is %pa which
-acts on the address of the variable to be formatted [1].
+Commit b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+optimizes IPIs to idle CPUs in TIF_POLLING_NRFLAG mode by setting the
+TIF_NEED_RESCHED flag in idle task's thread info and relying on
+flush_smp_call_function_queue() in idle exit path to run the
+call-function. A softirq raised by the call-function is handled shortly
+after in do_softirq_post_smp_call_flush() but the TIF_NEED_RESCHED flag
+remains set and is only cleared later when schedule_idle() calls
+__schedule().
 
-[1] https://elixir.bootlin.com/linux/v6.11.3/source/Documentation/core-api/printk-formats.rst#L229
+need_resched() check in _nohz_idle_balance() exists to bail out of load
+balancing if another task has woken up on the CPU currently in-charge of
+idle load balancing which is being processed in SCHED_SOFTIRQ context.
+Since the optimization mentioned above overloads the interpretation of
+TIF_NEED_RESCHED, check for idle_cpu() before going with the existing
+need_resched() check which can catch a genuine task wakeup on an idle
+CPU processing SCHED_SOFTIRQ from do_softirq_post_smp_call_flush(), as
+well as the case where ksoftirqd needs to be preempted as a result of
+new task wakeup or slice expiry.
 
-Introduced by commit 9d9326d3bc0e ("phy: Change mii_bus id field to a string")
+In case of PREEMPT_RT or threadirqs, although the idle load balancing
+may be inhibited in some cases on the ilb CPU, the fact that ksoftirqd
+is the only fair task going back to sleep will trigger a newidle balance
+on the CPU which will alleviate some imbalance if it exists if idle
+balance fails to do so.
 
-Flagged by gcc-14 as:
-
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c: In function 'fs_mii_bitbang_init':
-drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c:126:46: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'resource_size_t' {aka 'long long unsigned int'} [-Wformat=]
-  126 |         snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-      |                                             ~^   ~~~~~~~~~
-      |                                              |      |
-      |                                              |      resource_size_t {aka long long unsigned int}
-      |                                              unsigned int
-      |                                             %llx
-
-No functional change intended.
-Compile tested only.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/netdev/711d7f6d-b785-7560-f4dc-c6aad2cce99@linux-m68k.org/
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-Link: https://patch.msgid.link/20241014-net-pa-fmt-v1-2-dcc9afb8858b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b2a02fc43a1f ("smp: Optimize send_call_function_single_ipi()")
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241119054432.6405-4-kprateek.nayak@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c | 2 +-
+ kernel/sched/fair.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-index 21de56345503f..f743112730194 100644
---- a/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-+++ b/drivers/net/ethernet/freescale/fs_enet/mii-bitbang.c
-@@ -126,7 +126,7 @@ static int fs_mii_bitbang_init(struct mii_bus *bus, struct device_node *np)
- 	 * we get is an int, and the odds of multiple bitbang mdio buses
- 	 * is low enough that it's not worth going too crazy.
- 	 */
--	snprintf(bus->id, MII_BUS_ID_SIZE, "%x", res.start);
-+	snprintf(bus->id, MII_BUS_ID_SIZE, "%pa", &res.start);
- 
- 	data = of_get_property(np, "fsl,mdio-pin", &len);
- 	if (!data || len != 4)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 49fa456cd3320..782ce70ebd1b0 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12580,7 +12580,7 @@ static void _nohz_idle_balance(struct rq *this_rq, unsigned int flags)
+ 		 * work being done for other CPUs. Next load
+ 		 * balancing owner will pick it up.
+ 		 */
+-		if (need_resched()) {
++		if (!idle_cpu(this_cpu) && need_resched()) {
+ 			if (flags & NOHZ_STATS_KICK)
+ 				has_blocked_load = true;
+ 			if (flags & NOHZ_NEXT_KICK)
 -- 
 2.43.0
 
