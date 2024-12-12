@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FB79EF0A2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A4C9EF34E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D77189B6F4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E2F9188413B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BAD235C2E;
-	Thu, 12 Dec 2024 16:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CC222488E;
+	Thu, 12 Dec 2024 16:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o1K0VGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XY6h5S37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93216223E81;
-	Thu, 12 Dec 2024 16:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96DC222D72;
+	Thu, 12 Dec 2024 16:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019681; cv=none; b=nQbSre1wfQxf4OK3G6wt8Ko9+sgOED4QKV6PWJGVzaOW9wZA1QoeqmBtZpYmBwTo/u8XLoYoUgfsT05Bi/+/vdDfHPYqm4yVtRNKpGt8t8Y92zTldfeySOLBepXsJqf/y2UqHEzgSJc7x360wJopY+WK9IkrdAlLpZxTaJa/BB8=
+	t=1734021640; cv=none; b=ZWbIOWHbXS1pjHHzUnFtRLWm1Pn60BKlz8OPs9nZxC0u/n9zv/eYgZvWu+qNGughcd9zGzKCVKeuAws3gU4G1LFPHN5Rmjz/xgIsQm7HWG4/NtdolypI8xTiJ3kcCra4h9twUdwkW1xg8G7UG8Zga+bh6kE6Kk5SaRMdOsnnWjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019681; c=relaxed/simple;
-	bh=PUj7ddEPQ4brmZvcnHwucz10oOBAZ+3Nb7ycdmqJCRQ=;
+	s=arc-20240116; t=1734021640; c=relaxed/simple;
+	bh=wWQzVaRKv2zcPVFflLTkc19v27/6XCVvNY+FWMPuluo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSYBVoxYHvzd0vptCfYltPtVsWN1s5eOegUDXjZM+1mIoimOtyVeOYkDIYYVttTCmqNBEIUtuiD9m4W/Su38thXrhvRtsqG9K35HzTs01cK5qwCvM8dpDLd8pxKOGhduiOkYQoZBmx+CO2s2tn7Kp0a2FEU+GlyPqrvD6ca7rx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o1K0VGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1047C4CECE;
-	Thu, 12 Dec 2024 16:08:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cWSci4LBR5Et1MpyOTzFRl1HZFfDcV9vrgWcXPqcgMIMmTJhIknpbdDTkfNCHdNS7QvJgvqwYCreGGVvmgVEPQUTxOtUDLeK29xyX4W2YjKKFA9M5N2g9VXxUXSVwunkcFQsorxv5UWMC1vS3N5VIcw8+yIv1WnhnIVz0JPwOeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XY6h5S37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3823EC4CECE;
+	Thu, 12 Dec 2024 16:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019681;
-	bh=PUj7ddEPQ4brmZvcnHwucz10oOBAZ+3Nb7ycdmqJCRQ=;
+	s=korg; t=1734021640;
+	bh=wWQzVaRKv2zcPVFflLTkc19v27/6XCVvNY+FWMPuluo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1o1K0VGCvmozNgF4b6SDEy3qNxVZCUvTIXmoz+juiTeU5jPCY+w0JBQYa8Yy07t4d
-	 dShd18wcQFHe4rzoRrE8jYru7PdJiMkP7M7olcEIZkRHc4i8lSjxLlJAwM+zSCs8tB
-	 iU12tzmw+bSMOtIDFBYvQWpDvMHo/Io6RztUxNMo=
+	b=XY6h5S37Vn2NBEOlVef1K12ACniJxcqksn0feLbSraFZwImR7WGLHjbeHvthZPEhR
+	 dGpJIEREhoTAjOm9E+ZQjB+CxqF1H3m0WAbVCswese/6f9SIaa88piK1eNL35TDJ2M
+	 7C93V+nTIt357Qu0Tf0tEd/IDH4EH6LvwI6cNFIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 271/772] perf ftrace latency: Fix unit on histogram first entry when using --use-nsec
+Subject: [PATCH 5.15 021/565] net/mlx5e: CT: Fix null-ptr-deref in add rule err flow
 Date: Thu, 12 Dec 2024 15:53:36 +0100
-Message-ID: <20241212144401.113346501@linuxfoundation.org>
+Message-ID: <20241212144312.288351782@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 064d569e20e82c065b1dec9d20c29c7087bb1a00 ]
+[ Upstream commit e99c6873229fe0482e7ceb7d5600e32d623ed9d9 ]
 
-The use_nsec arg wasn't being taken into account when printing the first
-histogram entry, fix it:
+In error flow of mlx5_tc_ct_entry_add_rule(), in case ct_rule_add()
+callback returns error, zone_rule->attr is used uninitiated. Fix it to
+use attr which has the needed pointer value.
 
-  root@number:~# perf ftrace latency --use-nsec -T switch_mm_irqs_off -a sleep 2
-  #   DURATION     |      COUNT | GRAPH                                          |
-       0 - 1    us |          0 |                                                |
-       1 - 2    ns |          0 |                                                |
-       2 - 4    ns |          0 |                                                |
-       4 - 8    ns |          0 |                                                |
-       8 - 16   ns |          0 |                                                |
-      16 - 32   ns |          0 |                                                |
-      32 - 64   ns |        125 |                                                |
-      64 - 128  ns |        335 |                                                |
-     128 - 256  ns |       2155 | ####                                           |
-     256 - 512  ns |       9996 | ###################                            |
-     512 - 1024 ns |       4958 | #########                                      |
-       1 - 2    us |       4636 | #########                                      |
-       2 - 4    us |       1053 | ##                                             |
-       4 - 8    us |         15 |                                                |
-       8 - 16   us |          1 |                                                |
-      16 - 32   us |          0 |                                                |
-      32 - 64   us |          0 |                                                |
-      64 - 128  us |          0 |                                                |
-     128 - 256  us |          0 |                                                |
-     256 - 512  us |          0 |                                                |
-     512 - 1024 us |          0 |                                                |
-       1 - ...  ms |          0 |                                                |
-  root@number:~#
+Kernel log:
+ BUG: kernel NULL pointer dereference, address: 0000000000000110
+ RIP: 0010:mlx5_tc_ct_entry_add_rule+0x2b1/0x2f0 [mlx5_core]
+…
+ Call Trace:
+  <TASK>
+  ? __die+0x20/0x70
+  ? page_fault_oops+0x150/0x3e0
+  ? exc_page_fault+0x74/0x140
+  ? asm_exc_page_fault+0x22/0x30
+  ? mlx5_tc_ct_entry_add_rule+0x2b1/0x2f0 [mlx5_core]
+  ? mlx5_tc_ct_entry_add_rule+0x1d5/0x2f0 [mlx5_core]
+  mlx5_tc_ct_block_flow_offload+0xc6a/0xf90 [mlx5_core]
+  ? nf_flow_offload_tuple+0xd8/0x190 [nf_flow_table]
+  nf_flow_offload_tuple+0xd8/0x190 [nf_flow_table]
+  flow_offload_work_handler+0x142/0x320 [nf_flow_table]
+  ? finish_task_switch.isra.0+0x15b/0x2b0
+  process_one_work+0x16c/0x320
+  worker_thread+0x28c/0x3a0
+  ? __pfx_worker_thread+0x10/0x10
+  kthread+0xb8/0xf0
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork+0x2d/0x50
+  ? __pfx_kthread+0x10/0x10
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
 
-After:
-
-  root@number:~# perf ftrace latency --use-nsec -T switch_mm_irqs_off -a sleep 2
-  #   DURATION     |      COUNT | GRAPH                                          |
-       0 - 1    ns |          0 |                                                |
-       1 - 2    ns |          0 |                                                |
-       2 - 4    ns |          0 |                                                |
-       4 - 8    ns |          0 |                                                |
-       8 - 16   ns |          0 |                                                |
-      16 - 32   ns |          0 |                                                |
-      32 - 64   ns |         19 |                                                |
-      64 - 128  ns |         94 |                                                |
-     128 - 256  ns |       2191 | ####                                           |
-     256 - 512  ns |       9719 | ####################                           |
-     512 - 1024 ns |       5330 | ###########                                    |
-       1 - 2    us |       4104 | ########                                       |
-       2 - 4    us |        807 | #                                              |
-       4 - 8    us |          9 |                                                |
-       8 - 16   us |          0 |                                                |
-      16 - 32   us |          0 |                                                |
-      32 - 64   us |          0 |                                                |
-      64 - 128  us |          0 |                                                |
-     128 - 256  us |          0 |                                                |
-     256 - 512  us |          0 |                                                |
-     512 - 1024 us |          0 |                                                |
-       1 - ...  ms |          0 |                                                |
-  root@number:~#
-
-Fixes: 84005bb6148618cc ("perf ftrace latency: Add -n/--use-nsec option")
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
-Link: https://lore.kernel.org/r/ZyE3frB-hMXHCnMO@x1
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 7fac5c2eced3 ("net/mlx5: CT: Avoid reusing modify header context for natted entries")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20241107183527.676877-7-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-ftrace.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
-index 1d40f9bcb63bc..86597f6119003 100644
---- a/tools/perf/builtin-ftrace.c
-+++ b/tools/perf/builtin-ftrace.c
-@@ -769,7 +769,7 @@ static void display_histogram(int buckets[], bool use_nsec)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+index 80a49d7af05d6..3d4495ca8aa23 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_ct.c
+@@ -784,7 +784,7 @@ mlx5_tc_ct_entry_add_rule(struct mlx5_tc_ct_priv *ct_priv,
+ 	return 0;
  
- 	bar_len = buckets[0] * bar_total / total;
- 	printf("  %4d - %-4d %s | %10d | %.*s%*s |\n",
--	       0, 1, "us", buckets[0], bar_len, bar, bar_total - bar_len, "");
-+	       0, 1, use_nsec ? "ns" : "us", buckets[0], bar_len, bar, bar_total - bar_len, "");
- 
- 	for (i = 1; i < NUM_BUCKET - 1; i++) {
- 		int start = (1 << (i - 1));
+ err_rule:
+-	mlx5_tc_ct_entry_destroy_mod_hdr(ct_priv, zone_rule->attr, zone_rule->mh);
++	mlx5_tc_ct_entry_destroy_mod_hdr(ct_priv, attr, zone_rule->mh);
+ 	mlx5_put_label_mapping(ct_priv, attr->ct_attr.ct_labels_id);
+ err_mod_hdr:
+ 	kfree(attr);
 -- 
 2.43.0
 
