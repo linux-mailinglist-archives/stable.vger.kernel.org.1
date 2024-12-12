@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-103755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F529EF9BC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED819EF9B9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D909A16DC7A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E9E16FCF4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF21122B58A;
-	Thu, 12 Dec 2024 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065F822A7FD;
+	Thu, 12 Dec 2024 17:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cATcRSTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeJv7ZtI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C96C22A81B;
-	Thu, 12 Dec 2024 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72752236EB;
+	Thu, 12 Dec 2024 17:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025510; cv=none; b=NvJYOGVFn82urynXY4oDaZiGJEwKH/dsNkWULKOKt0SzEAdwmNHVwFBFk8CjKaMeGFMzJCXYZ+7d35M/sijPyqzqQ2WXf7ZxESrVeIYgxCkGf4gfKVLCkGU7i2FtPmOmSRq1sDjFtL5dkFvwQQn3OKqxkC6QYyD3igG8v1xC9gI=
+	t=1734025513; cv=none; b=EX6MH4uUQ0OocNuYjE7jFsnxDddUn0+d8qyfpGqa5p4N51/3Rfh4H93XXnkqXYjbGidLfZp8XfUyYU2LhK/s3mvtQ9cROavC40Am4/lRDP9ttrqMrwIMrV5xWaE/yjw2r2VJv7/DlYhDFYo8+dfWb0frWrLiaz4BsxtLsxjrP/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025510; c=relaxed/simple;
-	bh=DXsn0FbtWQnxXSkHpdgcmFKZxBpgazyrreYgW8WkVJo=;
+	s=arc-20240116; t=1734025513; c=relaxed/simple;
+	bh=rzzRR1Dk9KGSkqfIN27XMWCZlA0okrDpmSzNMj+bNUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+6HyC1qL2Dzt7pvrxegvsjmNsRNrhPed1fF/HW19lkgDVS7Oy+guhr7NmOWdFMLD87GUbuZvt5EZnf9Aur6JSP0MOpULNuKb4haOqz+FK0WFMJOZAMT8Je3t1uReJsukyTuz8LbWYlwJQnLJ9wzu47J1bOkuok+KZQ/q6/ZOkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cATcRSTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C00C4CECE;
-	Thu, 12 Dec 2024 17:45:09 +0000 (UTC)
+	 MIME-Version; b=PyHVjty3PbD/YyeriTFckeIInrq55aUE6DARmn0njpucXPx9UYmCjwEGZNB8dNctERAFNF84FY/YAalPDgLI5V3p4PDaGUvugJTSRtHyU8xMwJUeRwhjGSTajAiE9yMDgC2ZLq8V01q+b2m6S8NjFKFItiuljf8gjSKaMLRgNVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeJv7ZtI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F971C4CECE;
+	Thu, 12 Dec 2024 17:45:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025510;
-	bh=DXsn0FbtWQnxXSkHpdgcmFKZxBpgazyrreYgW8WkVJo=;
+	s=korg; t=1734025513;
+	bh=rzzRR1Dk9KGSkqfIN27XMWCZlA0okrDpmSzNMj+bNUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cATcRSTUK/Eqc0O3Jf+8SXGHXw3Uv76W4fArcGs2gJ5aHDyu127T3mEVczzim9TTQ
-	 CHoIs5MIwQicXABlzHs82QtQmV9hmtmdrrb8ENe37vVDfmdv5w5RWdyCHT2K9Qrs+M
-	 n9bDTA9QcBdHUnLJBSbsOKYVW4q5kIJ559qPQEXM=
+	b=YeJv7ZtIXq2NRuCxHOZOtjb8nm+Wj+LaHogRcwmVTC3ui6MIZRbqcNH03XeN9YET7
+	 n/wry9I2NSqJvNwS3ygvasAHFlHN92JUUu3kvQHfkMSNWjw8B65y8Rh6w2Uko8mlfC
+	 yuvqED3HYl3QM6c2TigJBbdyx9fIkXqVAw23e/wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Juergen Gross <jgross@suse.com>,
 	Dominique Martinet <asmadeus@codewreck.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 193/321] 9p/xen: fix init sequence
-Date: Thu, 12 Dec 2024 16:01:51 +0100
-Message-ID: <20241212144237.607027615@linuxfoundation.org>
+Subject: [PATCH 5.4 194/321] 9p/xen: fix release of IRQ
+Date: Thu, 12 Dec 2024 16:01:52 +0100
+Message-ID: <20241212144237.645488302@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -71,52 +71,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Zenla <alex@edera.dev>
 
-[ Upstream commit 7ef3ae82a6ebbf4750967d1ce43bcdb7e44ff74b ]
+[ Upstream commit e43c608f40c065b30964f0a806348062991b802d ]
 
-Large amount of mount hangs observed during hotplugging of 9pfs devices. The
-9pfs Xen driver attempts to initialize itself more than once, causing the
-frontend and backend to disagree: the backend listens on a channel that the
-frontend does not send on, resulting in stalled processing.
+Kernel logs indicate an IRQ was double-freed.
 
-Only allow initialization of 9p frontend once.
+Pass correct device ID during IRQ release.
 
-Fixes: c15fe55d14b3b ("9p/xen: fix connection sequence")
+Fixes: 71ebd71921e45 ("xen/9pfs: connect to the backend")
 Signed-off-by: Alex Zenla <alex@edera.dev>
 Signed-off-by: Alexander Merritt <alexander@edera.dev>
 Signed-off-by: Ariadne Conill <ariadne@ariadne.space>
 Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20241119211633.38321-1-alexander@edera.dev>
+Message-ID: <20241121225100.5736-1-alexander@edera.dev>
+[Dominique: remove confusing variable reset to 0]
 Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_xen.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/9p/trans_xen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/9p/trans_xen.c b/net/9p/trans_xen.c
-index 4a16c5dd1576d..f5b8f009b8a95 100644
+index f5b8f009b8a95..9328de8a5567e 100644
 --- a/net/9p/trans_xen.c
 +++ b/net/9p/trans_xen.c
-@@ -480,6 +480,7 @@ static int xen_9pfs_front_init(struct xenbus_device *dev)
- 		goto error;
- 	}
- 
-+	xenbus_switch_state(dev, XenbusStateInitialised);
- 	return 0;
- 
-  error_xenbus:
-@@ -527,8 +528,10 @@ static void xen_9pfs_front_changed(struct xenbus_device *dev,
- 		break;
- 
- 	case XenbusStateInitWait:
--		if (!xen_9pfs_front_init(dev))
--			xenbus_switch_state(dev, XenbusStateInitialised);
-+		if (dev->state != XenbusStateInitialising)
-+			break;
-+
-+		xen_9pfs_front_init(dev);
- 		break;
- 
- 	case XenbusStateConnected:
+@@ -306,7 +306,7 @@ static void xen_9pfs_front_free(struct xen_9pfs_front_priv *priv)
+ 		if (!priv->rings[i].intf)
+ 			break;
+ 		if (priv->rings[i].irq > 0)
+-			unbind_from_irqhandler(priv->rings[i].irq, priv->dev);
++			unbind_from_irqhandler(priv->rings[i].irq, ring);
+ 		if (priv->rings[i].data.in) {
+ 			for (j = 0; j < (1 << XEN_9PFS_RING_ORDER); j++) {
+ 				grant_ref_t ref;
 -- 
 2.43.0
 
