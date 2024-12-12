@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-101929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5709EF010
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9E89EEFC4
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:20:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 397C01899F65
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D14316B86B
 	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480D222A810;
-	Thu, 12 Dec 2024 16:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E56322A818;
+	Thu, 12 Dec 2024 16:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wi25sNDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToNxkb5s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F9B222D79;
-	Thu, 12 Dec 2024 16:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFC422330D;
+	Thu, 12 Dec 2024 16:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019318; cv=none; b=FGPsYh6SlLthfDyevaK3+7Jia4eBnG0Zy1sc/fA64MLrGTa9VwUvsBAXamQr7tZ3qn59vbyf1958rgyAjsiZvMa1Zakm7oOgQRp2gqXQ1pnhirovVxyQPoWNzcxZM1NF9CU0rdxMdy2y3f1rTgvesWDSgjJArmMfkzynEh0yU7w=
+	t=1734019325; cv=none; b=UBLY0QKvkJEcAbahw7zekuVy6Zd4Ju3YuQl2HPNpXg5vhuMGPmylCpjYDmCt7XoJdK4fCz0hQV462AYEq+cBcE8j+5Sl+3BBIk95dzUVP+hwD9DgQwzHHxyaVlEz6V+I7DpM7CCjASTVT0rdNWwMw+fleGxUhEiHNbZ1gg43H1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019318; c=relaxed/simple;
-	bh=9UzXBAtNBFvfefy3Fa2evB3I2XDY8fCSgEBsNkZRXh4=;
+	s=arc-20240116; t=1734019325; c=relaxed/simple;
+	bh=cxPsyrDTtMeSVNYIKIZK8SCa7MXVQY0Gh2Mi4GWid78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+t/cfX4tqTQLsmqPpOoyS/ovTS/PAwtLLj/RA38C/YGQZqPYjsOKlb7nnvjPsebhVL3xo+zIFLXwb9DTixuTB35qVXVwjoamp3kJ8hJowMojhYTf0r4a2Qmztorp5aqdHbN2aaM34EVzoDtw+SF53AMa17Bh44+wc9GueetB4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wi25sNDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E03FC4CECE;
-	Thu, 12 Dec 2024 16:01:56 +0000 (UTC)
+	 MIME-Version; b=EeHgSOvwz0qd990n7eMmIa69OEsoIsWbSjIIIifdFpwgwyWn29ZpJYAaB0plxMvxV4c0zL/dUbc/QsZWns7tJK/mmIp5KuCpQ+ouyXm65mwHQvuSRSyHZOxFuOdRI3QJ0EGQ9oiF1iBdzZpyTXxkErAmvEuHSh7Ehg3XhIJXlBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToNxkb5s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EC0C4CED0;
+	Thu, 12 Dec 2024 16:02:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019317;
-	bh=9UzXBAtNBFvfefy3Fa2evB3I2XDY8fCSgEBsNkZRXh4=;
+	s=korg; t=1734019324;
+	bh=cxPsyrDTtMeSVNYIKIZK8SCa7MXVQY0Gh2Mi4GWid78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wi25sNDJd6sE/U57NBpACKtGzz1zC/OmlfNcpBxh5smGKhnr1GgpOSemWeLWUQvuS
-	 BKZ78g39D+GENs01IAtdibLZjQRORyPd18G6BnyKTvfgQUTjaXjQsyfjlJFz2Qmxkr
-	 BoHT4zLKpkJlAJxLQfD5qIYhiGJDFaj5m0qeZTZc=
+	b=ToNxkb5sVsgzG7YgfMLFyEuPYyDwwnYThk4ZyVLUN7U4NE/axDoQW32OLOaTMR3Re
+	 Hvt5Lw0PifaIQsvVnjGLLGJSXG6WXYtqfMulbnOg4F5pzTGcXqggVx+ypxPM5rwQ6p
+	 0DdJOnL89I4yqw0CS5ekD511Bxo+ykMfndXgYX+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Maurice Lambert <mauricelambert434@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/772] netfilter: nf_tables: must hold rcu read lock while iterating object type list
-Date: Thu, 12 Dec 2024 15:52:01 +0100
-Message-ID: <20241212144357.216174606@linuxfoundation.org>
+Subject: [PATCH 6.1 177/772] netlink: typographical error in nlmsg_type constants definition
+Date: Thu, 12 Dec 2024 15:52:02 +0100
+Message-ID: <20241212144357.256645839@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -66,72 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Maurice Lambert <mauricelambert434@gmail.com>
 
-[ Upstream commit cddc04275f95ca3b18da5c0fb111705ac173af89 ]
+[ Upstream commit 84bfbfbbd32aee136afea4b6bf82581dce79c305 ]
 
-Update of stateful object triggers:
-WARNING: suspicious RCU usage
-net/netfilter/nf_tables_api.c:7759 RCU-list traversed in non-reader section!!
+This commit fix a typographical error in netlink nlmsg_type constants definition in the include/uapi/linux/rtnetlink.h at line 177. The definition is RTM_NEWNVLAN RTM_NEWVLAN instead of RTM_NEWVLAN RTM_NEWVLAN.
 
-other info that might help us debug this:
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by nft/3060:
- #0: ffff88810f0578c8 (&nft_net->commit_mutex){+.+.}-{4:4}, [..]
-
-... but this list is not protected by the transaction mutex but the
-nfnl nftables subsystem mutex.
-
-Switch to nft_obj_type_get which will acquire rcu read lock,
-bump refcount, and returns the result.
-
-v3: Dan Carpenter points out nft_obj_type_get returns error pointer, not
-NULL, on error.
-
-Fixes: dad3bdeef45f ("netfilter: nf_tables: fix memory leak during stateful obj update").
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Maurice Lambert <mauricelambert434@gmail.com>
+Fixes: 8dcea187088b ("net: bridge: vlan: add rtm definitions and dump support")
+Link: https://patch.msgid.link/20241103223950.230300-1-mauricelambert434@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ include/uapi/linux/rtnetlink.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index d7a628e2c2493..07bcf9b7d779b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7239,9 +7239,7 @@ static int nf_tables_updobj(const struct nft_ctx *ctx,
- 	struct nft_trans *trans;
- 	int err = -ENOMEM;
+diff --git a/include/uapi/linux/rtnetlink.h b/include/uapi/linux/rtnetlink.h
+index 51c13cf9c5aee..63a0922937e72 100644
+--- a/include/uapi/linux/rtnetlink.h
++++ b/include/uapi/linux/rtnetlink.h
+@@ -174,7 +174,7 @@ enum {
+ #define RTM_GETLINKPROP	RTM_GETLINKPROP
  
--	if (!try_module_get(type->owner))
--		return -ENOENT;
--
-+	/* caller must have obtained type->owner reference. */
- 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWOBJ,
- 				sizeof(struct nft_trans_obj));
- 	if (!trans)
-@@ -7309,15 +7307,16 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (info->nlh->nlmsg_flags & NLM_F_REPLACE)
- 			return -EOPNOTSUPP;
- 
--		type = __nft_obj_type_get(objtype, family);
--		if (WARN_ON_ONCE(!type))
--			return -ENOENT;
--
- 		if (!obj->ops->update)
- 			return 0;
- 
-+		type = nft_obj_type_get(net, objtype, family);
-+		if (WARN_ON_ONCE(IS_ERR(type)))
-+			return PTR_ERR(type);
-+
- 		nft_ctx_init(&ctx, net, skb, info->nlh, family, table, NULL, nla);
- 
-+		/* type->owner reference is put when transaction object is released. */
- 		return nf_tables_updobj(&ctx, type, nla[NFTA_OBJ_DATA], obj);
- 	}
- 
+ 	RTM_NEWVLAN = 112,
+-#define RTM_NEWNVLAN	RTM_NEWVLAN
++#define RTM_NEWVLAN	RTM_NEWVLAN
+ 	RTM_DELVLAN,
+ #define RTM_DELVLAN	RTM_DELVLAN
+ 	RTM_GETVLAN,
 -- 
 2.43.0
 
