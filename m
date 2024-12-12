@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3239EF053
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E448B9EEA19
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1F68291E27
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A617F2844C2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9686A222D79;
-	Thu, 12 Dec 2024 16:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8752021639E;
+	Thu, 12 Dec 2024 15:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPwi4413"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5FgVP6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D42211A34;
-	Thu, 12 Dec 2024 16:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437CF215764;
+	Thu, 12 Dec 2024 15:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020151; cv=none; b=LEvx58VoigOteExb7tKvMu7+7SMsgULmptvO79Eq5EXSb8Sj2vJ6+CtDNyP5YZ72wHXMQIp827DMLG4JGNpiUr3Tomy8Tz+Ifd2vKKHSWV7FsbV/TTHKX8d1M4zr4RiGLUEMvKQ6GEbmob3qo7OmjbY/Vq1k/AtRimIvwmuuA64=
+	t=1734016111; cv=none; b=SxEQSpvMc2VImPVlRkb/gpL2QDNbYTUjcdtpBCJwabHEGO0/Nxf6+NlnhQ7DmyVkjvUmesrCMC7fEbXM6nLFDeQoWHF/H3msonbJ2A6L9T+JYp4btJjigC3GAANTjtSm9WutmLUu/SaCQu68Q3Y+Dxjkj4DA25kBAd404KMPBCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020151; c=relaxed/simple;
-	bh=u70sL5l5/WE9bTbxsLZN8bQP0O+TYVg1OY6Wq9YVsFo=;
+	s=arc-20240116; t=1734016111; c=relaxed/simple;
+	bh=QzoyGwvv/yXauVkYfmF12bwlwJP+eFtSghGKCldoJjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nyiU3mTTDQvhVd3+HtYaUvFis6kfYWRooRVmh4wk/4RVx4QbnzpDV2WwfG1086cYbCH/5rrBoBESisUlKDr+A0uvPCZ4/zInQIr+S65N/6zDUNEdjS5feZ6hiPH67/Y2TWdSOYUcpsDKfC9+8Ufb7/xrvPxeKu++WzDZaoMgCV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPwi4413; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933AAC4CECE;
-	Thu, 12 Dec 2024 16:15:50 +0000 (UTC)
+	 MIME-Version; b=fQCRPebKD+6pvW+hzel+CzotMq1hL1vNhVNDlNqmKp7RzBeO5ushkapVUgcx441r3N8YV3bIbwEBQdJV7E3ajbDMChdDligq6ZsinJoIR+QrRfT2Me+g3TE8xW+DVmXhD6gR3M8ZeJ4Qd1qRiWHCr2beD94oFapo2xUnhP3ogdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5FgVP6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A202AC4CECE;
+	Thu, 12 Dec 2024 15:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020151;
-	bh=u70sL5l5/WE9bTbxsLZN8bQP0O+TYVg1OY6Wq9YVsFo=;
+	s=korg; t=1734016111;
+	bh=QzoyGwvv/yXauVkYfmF12bwlwJP+eFtSghGKCldoJjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPwi44131HEi0SjOct3M5mDEDw0AnYi2khl/eaUEux1vzZYJETkNpiial5kG9tXwI
-	 LUwKsTkq3KOtKHXBpmmz18WTJPR3VYzUnkx8U+Ezhc4MGLCMLZ7KPWZ2O4/9gdccuR
-	 P6ZEge/CaRoMzbUPlTBMpzzh7HFvd1PsD46yUz50=
+	b=h5FgVP6rAz1+GeFvRTowLFekvspdyxNd5wAQC9zv7LXFJwcvgAsIYIEtkslAdqS9Y
+	 8EWnykeBFeUE3nWu08XWHvY7onCt6zCTLvEqnQPKtNyIhaVhqZ6JeenGl1ReS0onZX
+	 EDWrdtc9N959J/NEfeGONcRYiAy6xptQgFLCt3f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 360/772] ASoC: Intel: sst: Fix used of uninitialized ctx to log an error
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 136/466] arm64: ptrace: fix partial SETREGSET for NT_ARM_TAGGED_ADDR_CTRL
 Date: Thu, 12 Dec 2024 15:55:05 +0100
-Message-ID: <20241212144404.790917603@linuxfoundation.org>
+Message-ID: <20241212144312.175620394@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit c1895ba181e560144601fafe46aeedbafdf4dbc4 upstream.
+commit ca62d90085f4af36de745883faab9f8a7cbb45d3 upstream.
 
-Fix the new "LPE0F28" code path using the uninitialized ctx variable
-to log an error.
+Currently tagged_addr_ctrl_set() doesn't initialize the temporary 'ctrl'
+variable, and a SETREGSET call with a length of zero will leave this
+uninitialized. Consequently tagged_addr_ctrl_set() will consume an
+arbitrary value, potentially leaking up to 64 bits of memory from the
+kernel stack. The read is limited to a specific slot on the stack, and
+the issue does not provide a write mechanism.
 
-Fixes: 6668610b4d8c ("ASoC: Intel: sst: Support LPE0F28 ACPI HID")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202410261106.EBx49ssy-lkp@intel.com/
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/20241026143615.171821-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+As set_tagged_addr_ctrl() only accepts values where bits [63:4] zero and
+rejects other values, a partial SETREGSET attempt will randomly succeed
+or fail depending on the value of the uninitialized value, and the
+exposure is significantly limited.
+
+Fix this by initializing the temporary value before copying the regset
+from userspace, as for other regsets (e.g. NT_PRSTATUS, NT_PRFPREG,
+NT_ARM_SYSTEM_CALL). In the case of a zero-length write, the existing
+value of the tagged address ctrl will be retained.
+
+The NT_ARM_TAGGED_ADDR_CTRL regset is only visible in the
+user_aarch64_view used by a native AArch64 task to manipulate another
+native AArch64 task. As get_tagged_addr_ctrl() only returns an error
+value when called for a compat task, tagged_addr_ctrl_get() and
+tagged_addr_ctrl_set() should never observe an error value from
+get_tagged_addr_ctrl(). Add a WARN_ON_ONCE() to both to indicate that
+such an error would be unexpected, and error handlnig is not missing in
+either case.
+
+Fixes: 2200aa7154cb ("arm64: mte: ptrace: Add NT_ARM_TAGGED_ADDR_CTRL regset")
+Cc: <stable@vger.kernel.org> # 5.10.x
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20241205121655.1824269-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/atom/sst/sst_acpi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/ptrace.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/sound/soc/intel/atom/sst/sst_acpi.c
-+++ b/sound/soc/intel/atom/sst/sst_acpi.c
-@@ -309,7 +309,7 @@ static int sst_acpi_probe(struct platfor
- 		rsrc = platform_get_resource(pdev, IORESOURCE_MEM,
- 					     pdata->res_info->acpi_lpe_res_index);
- 		if (!rsrc) {
--			dev_err(ctx->dev, "Invalid SHIM base\n");
-+			dev_err(dev, "Invalid SHIM base\n");
- 			return -EIO;
- 		}
- 		rsrc->start -= pdata->res_info->shim_offset;
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -1418,7 +1418,7 @@ static int tagged_addr_ctrl_get(struct t
+ {
+ 	long ctrl = get_tagged_addr_ctrl(target);
+ 
+-	if (IS_ERR_VALUE(ctrl))
++	if (WARN_ON_ONCE(IS_ERR_VALUE(ctrl)))
+ 		return ctrl;
+ 
+ 	return membuf_write(&to, &ctrl, sizeof(ctrl));
+@@ -1432,6 +1432,10 @@ static int tagged_addr_ctrl_set(struct t
+ 	int ret;
+ 	long ctrl;
+ 
++	ctrl = get_tagged_addr_ctrl(target);
++	if (WARN_ON_ONCE(IS_ERR_VALUE(ctrl)))
++		return ctrl;
++
+ 	ret = user_regset_copyin(&pos, &count, &kbuf, &ubuf, &ctrl, 0, -1);
+ 	if (ret)
+ 		return ret;
 
 
 
