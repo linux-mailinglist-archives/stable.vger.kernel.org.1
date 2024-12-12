@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54099EF4C7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A6D9EF7A9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C0D28C5D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611F6174F85
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED90222D4B;
-	Thu, 12 Dec 2024 17:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EB9216E3B;
+	Thu, 12 Dec 2024 17:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSFFaDZ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUn37oV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3A82F44;
-	Thu, 12 Dec 2024 17:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9631513CA81;
+	Thu, 12 Dec 2024 17:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023284; cv=none; b=MQ3Y+2tWqS5ygOGye9yuzcklGsS8qBlUMqzvtAE1IYbmIzdokicLcCrBOErFxTZe5IKv6/cudEGaUfgZotH+XQ0HwclbB7kticzHf8n5DovuqLHeLGlbAZhScEZwn6DQcZ120IgLHhRSJ1Bccya1fOM4mLGwOe9l8vyEqW8MF2U=
+	t=1734024487; cv=none; b=cAB60OLyBNM3Ac5a7Z3QszRAKusdqNTs8r0pg7Lkfwkoa6XJ4B39dqNkahT2AYl0aO36eB6hxa1q29fcAR1Dds3ah2mnIOdI1TSiiaLFG3UJ+8UjMKq6wxV8gfncWoKQgpmt1a4zyLVR8uChNubFHogB7sNklUC9cryD3B9qeTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023284; c=relaxed/simple;
-	bh=rRh5oBnR9t95VW+7TWamTONGSSZp3DveQnNNHinv8AA=;
+	s=arc-20240116; t=1734024487; c=relaxed/simple;
+	bh=SuiL67DWljFw828X0+bRxXT2u2pQK/u3qW+7KgE14ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GEWWSFnkuKh19FaZr6/FymbhBn5yXCzWxVHxsbUWC9OqIzqllZg03tp5aaEOz4IfgtQMXCdgvs8IleQCVN8u6T5H9IXOAbgsL879Np7JePojf0Vi670fzYMq3YtOnofXHPHkbJIxtXDTC176nPwtDNHH5TfrPckqQW/MySuUZhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSFFaDZ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FB8C4CECE;
-	Thu, 12 Dec 2024 17:08:03 +0000 (UTC)
+	 MIME-Version; b=Wq8oG8QV/Ofxdh7Npl7+Lv92DrLC0FI2L5J6qT4Dh7xYJKsXpQ08Q3slARVmCNGrtd/IlIFR/Su9uoN+lCxq5BL529acclsdivxM385KOioK2f9bHJMvjaiNzsL8i7j8mO8gsEM77mq5kextQSFZJKBUXyMbkcbBL6E3l+Se4sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUn37oV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112C0C4CED3;
+	Thu, 12 Dec 2024 17:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023283;
-	bh=rRh5oBnR9t95VW+7TWamTONGSSZp3DveQnNNHinv8AA=;
+	s=korg; t=1734024487;
+	bh=SuiL67DWljFw828X0+bRxXT2u2pQK/u3qW+7KgE14ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSFFaDZ7YRwAmSh2iD/KpXJMphSOc+rRdp6IOcHb/u2jR2mArTdXMKLrGYESymrwz
-	 vsJ95S5uoTc5CyF/FdyuT8AlCpXJL77w8XIWwISP1McmNatU22ZTRCN4o5Oevxixjx
-	 8bS43upjaLgjBLBoHNv4Mw6XbHwV+sl+LKszetQ8=
+	b=eUn37oV1oho8yvD2Ig9dnvRDK9RPEdlx69+BhUAXPfu50JARaxyjD0as7UzsWyuX/
+	 acn8IdTi3SM/xOTrb+TgBFrGUmW3ly74f/WCMxPVdFqvZEbFgpiJA7f5dtPh7CRLTr
+	 Ruxnab0Oj7niMeYW16VuUXEunM0vPat1XnBm54CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quinn Tran <qutran@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 454/565] scsi: qla2xxx: Fix NVMe and NPIV connect issue
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 311/459] ASoC: fsl_micfil: fix the naming style for mask definition
 Date: Thu, 12 Dec 2024 16:00:49 +0100
-Message-ID: <20241212144329.669962861@linuxfoundation.org>
+Message-ID: <20241212144305.930142487@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quinn Tran <qutran@marvell.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit 4812b7796c144f63a1094f79a5eb8fbdad8d7ebc upstream.
+commit 101b096bc2549618f18bc08ae3a0e364b3c8fff1 upstream.
 
-NVMe controller fails to send connect command due to failure to locate
-hw context buffer for NVMe queue 0 (blk_mq_hw_ctx, hctx_idx=0). The
-cause of the issue is NPIV host did not initialize the vha->irq_offset
-field.  This field is given to blk-mq (blk_mq_pci_map_queues) to help
-locate the beginning of IO Queues which in turn help locate NVMe queue
-0.
+Remove the _SHIFT for the mask definition.
 
-Initialize this field to allow NVMe to work properly with NPIV host.
-
- kernel: nvme nvme5: Connect command failed, errno: -18
- kernel: nvme nvme5: qid 0: secure concatenation is not supported
- kernel: nvme nvme5: NVME-FC{5}: create_assoc failed, assoc_id 2e9100 ret 401
- kernel: nvme nvme5: NVME-FC{5}: reset: Reconnect attempt failed (401)
- kernel: nvme nvme5: NVME-FC{5}: Reconnect attempt in 2 seconds
-
-Cc: stable@vger.kernel.org
-Fixes: f0783d43dde4 ("scsi: qla2xxx: Use correct number of vectors for online CPUs")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20241115130313.46826-6-njavali@marvell.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 17f2142bae4b ("ASoC: fsl_micfil: use GENMASK to define register bit fields")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/r/1651736047-28809-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_mid.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/fsl/fsl_micfil.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/qla2xxx/qla_mid.c
-+++ b/drivers/scsi/qla2xxx/qla_mid.c
-@@ -515,6 +515,7 @@ qla24xx_create_vhost(struct fc_vport *fc
- 		return(NULL);
- 	}
+--- a/sound/soc/fsl/fsl_micfil.h
++++ b/sound/soc/fsl/fsl_micfil.h
+@@ -75,9 +75,9 @@
+ #define MICFIL_FIFO_STAT_FIFOX_UNDER(ch)	BIT((ch) + 8)
  
-+	vha->irq_offset = QLA_BASE_VECTORS;
- 	host = vha->host;
- 	fc_vport->dd_data = vha;
- 	/* New host info */
+ /* MICFIL HWVAD0 Control 1 Register -- REG_MICFIL_VAD0_CTRL1*/
+-#define MICFIL_VAD0_CTRL1_CHSEL_SHIFT	GENMASK(26, 24)
+-#define MICFIL_VAD0_CTRL1_CICOSR_SHIFT	GENMASK(19, 16)
+-#define MICFIL_VAD0_CTRL1_INITT_SHIFT	GENMASK(12, 8)
++#define MICFIL_VAD0_CTRL1_CHSEL		GENMASK(26, 24)
++#define MICFIL_VAD0_CTRL1_CICOSR	GENMASK(19, 16)
++#define MICFIL_VAD0_CTRL1_INITT		GENMASK(12, 8)
+ #define MICFIL_VAD0_CTRL1_ST10		BIT(4)
+ #define MICFIL_VAD0_CTRL1_ERIE		BIT(3)
+ #define MICFIL_VAD0_CTRL1_IE		BIT(2)
+@@ -107,7 +107,7 @@
+ 
+ /* MICFIL HWVAD0 Zero-Crossing Detector - REG_MICFIL_VAD0_ZCD */
+ #define MICFIL_VAD0_ZCD_ZCDTH		GENMASK(25, 16)
+-#define MICFIL_VAD0_ZCD_ZCDADJ_SHIFT	GENMASK(11, 8)
++#define MICFIL_VAD0_ZCD_ZCDADJ		GENMASK(11, 8)
+ #define MICFIL_VAD0_ZCD_ZCDAND		BIT(4)
+ #define MICFIL_VAD0_ZCD_ZCDAUT		BIT(2)
+ #define MICFIL_VAD0_ZCD_ZCDEN		BIT(0)
 
 
 
