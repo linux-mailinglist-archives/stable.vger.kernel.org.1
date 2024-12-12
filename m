@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-102031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8DE9EEFA8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C1A9EF2BE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EC19297A01
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7F7D289F11
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5384235C34;
-	Thu, 12 Dec 2024 16:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2790D226866;
+	Thu, 12 Dec 2024 16:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bM+rHbfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1l3kSCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924F4222D68;
-	Thu, 12 Dec 2024 16:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D856B216E3B;
+	Thu, 12 Dec 2024 16:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019703; cv=none; b=mruUcLb/ynXFBnMCWgk0JxeWFvG0inCJzfl20R0M9yPNfR3bykyNQuRoJfY/3ZZz8jNY0+MWQlvwgY52cXeJNUYRca33pqIxrz9DVPKOVnApjeSAldXV5pbxV8UpTKE6jAgbfyQ4nvv40SV7U9MiDrDIDVOdw+NpJLYUnlTnD6c=
+	t=1734021763; cv=none; b=QXJwtLGRsS26hH/MBLMyFMtdAd/fY89beZdZ52yoTCjlm86iipK6wao8ajuo8od20367K8xijXm8PopWri67wUBvfW3yZVQ/1soOWPN7Pqo2U6HFtda5u6b7jkSRisM255VVHc12KWH8VTZTTL16kZ1tBPIUadm3IqS7S14V6pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019703; c=relaxed/simple;
-	bh=KZswlLjyVgSstdDZvwzdP3K/xVqU3YsrDEth47rwqUs=;
+	s=arc-20240116; t=1734021763; c=relaxed/simple;
+	bh=PB5SQZgsx0EBOsDMIN/QDrnn1Wkg7LgBuEP9VA+HReI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VYHGGAHiD7mTHodzXgISmsYMaCey9kAhlAK6rvm93ZdpbzWnzOg3x8h4CbuDgq36pjMI9RPNIywveFOy43Xs7PrcN/XxpUzhHv5u3GhEkfmYGdSfW6TqoIsxdd66CiEyNk3jrqrLBaVClsfNcEmhnUHvdEAEh+hGy4dpi0WLs2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bM+rHbfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A81C4CED3;
-	Thu, 12 Dec 2024 16:08:22 +0000 (UTC)
+	 MIME-Version; b=as31uPgwld6JfZ1aDqBNbHcxMMfngQEeHBYy9hQ8v9hNoVt0uXt7xc2bYpa3mivHbOPjpe9kVkRHN17HvwqkhfNCQmdNgHslyiQCGaKooMFAyfFjqQNU+J43ue44m9FPjXaF4uZU2Pk62vtlbo/sojWEiZPck4td33m1yV47UgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1l3kSCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0378DC4CECE;
+	Thu, 12 Dec 2024 16:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019703;
-	bh=KZswlLjyVgSstdDZvwzdP3K/xVqU3YsrDEth47rwqUs=;
+	s=korg; t=1734021763;
+	bh=PB5SQZgsx0EBOsDMIN/QDrnn1Wkg7LgBuEP9VA+HReI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bM+rHbfrObTZVtwggPVDEE+gHkttCw8h/OiIyPtREUiqm6pph+zx63W1VQvNrH0ta
-	 excCaJ2O8QNNZ1DUs8Lya4U6VvWeTR7BUfy24N4tah52kyWyn8ex7sZ6h/YewZiQ9o
-	 9puoZCpXFda0nHjTXcCmA6D3k5QAMMOzOijFjy7Y=
+	b=P1l3kSCs4EMe3mM9xm7mzP2XX8H6Jkg6snBUoJElV7S3RsVPgX1+V8ZBEr3EJC97p
+	 waKayu4DJV4bGXdEbVAGjlQG2KmBSnARFE4ILLIEi4OYq5NIjpS2p/VDbDYxP2aHAo
+	 ItqDo97EMs777CQDvWTiMESVZs+JpS+vFj7ei34I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongpeng Yang <yangyongpeng1@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 276/772] f2fs: check curseg->inited before write_sum_page in change_curseg
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Mark Fasheh <mark@fasheh.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 026/565] ocfs2: uncache inode which has failed entering the group
 Date: Thu, 12 Dec 2024 15:53:41 +0100
-Message-ID: <20241212144401.315950558@linuxfoundation.org>
+Message-ID: <20241212144312.481864358@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongpeng Yang <yangyongpeng1@oppo.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 43563069e1c1df417d2eed6eca8a22fc6b04691d ]
+commit 737f34137844d6572ab7d473c998c7f977ff30eb upstream.
 
-In the __f2fs_init_atgc_curseg->get_atssr_segment calling,
-curseg->segno is NULL_SEGNO, indicating that there is no summary
-block that needs to be written.
+Syzbot has reported the following BUG:
 
-Fixes: 093749e296e2 ("f2fs: support age threshold based garbage collection")
-Signed-off-by: Yongpeng Yang <yangyongpeng1@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel BUG at fs/ocfs2/uptodate.c:509!
+...
+Call Trace:
+ <TASK>
+ ? __die_body+0x5f/0xb0
+ ? die+0x9e/0xc0
+ ? do_trap+0x15a/0x3a0
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ? do_error_trap+0x1dc/0x2c0
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ? __pfx_do_error_trap+0x10/0x10
+ ? handle_invalid_op+0x34/0x40
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ? exc_invalid_op+0x38/0x50
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? ocfs2_set_new_buffer_uptodate+0x2e/0x160
+ ? ocfs2_set_new_buffer_uptodate+0x144/0x160
+ ? ocfs2_set_new_buffer_uptodate+0x145/0x160
+ ocfs2_group_add+0x39f/0x15a0
+ ? __pfx_ocfs2_group_add+0x10/0x10
+ ? __pfx_lock_acquire+0x10/0x10
+ ? mnt_get_write_access+0x68/0x2b0
+ ? __pfx_lock_release+0x10/0x10
+ ? rcu_read_lock_any_held+0xb7/0x160
+ ? __pfx_rcu_read_lock_any_held+0x10/0x10
+ ? smack_log+0x123/0x540
+ ? mnt_get_write_access+0x68/0x2b0
+ ? mnt_get_write_access+0x68/0x2b0
+ ? mnt_get_write_access+0x226/0x2b0
+ ocfs2_ioctl+0x65e/0x7d0
+ ? __pfx_ocfs2_ioctl+0x10/0x10
+ ? smack_file_ioctl+0x29e/0x3a0
+ ? __pfx_smack_file_ioctl+0x10/0x10
+ ? lockdep_hardirqs_on_prepare+0x43d/0x780
+ ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
+ ? __pfx_ocfs2_ioctl+0x10/0x10
+ __se_sys_ioctl+0xfb/0x170
+ do_syscall_64+0xf3/0x230
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+ </TASK>
+
+When 'ioctl(OCFS2_IOC_GROUP_ADD, ...)' has failed for the particular
+inode in 'ocfs2_verify_group_and_input()', corresponding buffer head
+remains cached and subsequent call to the same 'ioctl()' for the same
+inode issues the BUG() in 'ocfs2_set_new_buffer_uptodate()' (trying
+to cache the same buffer head of that inode). Fix this by uncaching
+the buffer head with 'ocfs2_remove_from_cache()' on error path in
+'ocfs2_group_add()'.
+
+Link: https://lkml.kernel.org/r/20241114043844.111847-1-dmantipov@yandex.ru
+Fixes: 7909f2bf8353 ("[PATCH 2/2] ocfs2: Implement group add for online resize")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+453873f1588c2d75b447@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=453873f1588c2d75b447
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/segment.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ocfs2/resize.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 884b3d9d1de62..72bbdb29e8381 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2674,7 +2674,8 @@ static void change_curseg(struct f2fs_sb_info *sbi, int type)
- 	struct f2fs_summary_block *sum_node;
- 	struct page *sum_page;
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -566,6 +566,8 @@ out_commit:
+ 	ocfs2_commit_trans(osb, handle);
  
--	write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
-+	if (curseg->inited)
-+		write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
+ out_free_group_bh:
++	if (ret < 0)
++		ocfs2_remove_from_cache(INODE_CACHE(inode), group_bh);
+ 	brelse(group_bh);
  
- 	__set_test_and_inuse(sbi, new_segno);
- 
--- 
-2.43.0
-
+ out_unlock:
 
 
 
