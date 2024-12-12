@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6699EF807
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B2529EF8E0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83B9189A50F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECD281893A54
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C032121766D;
-	Thu, 12 Dec 2024 17:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81861222D59;
+	Thu, 12 Dec 2024 17:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rs5R5FpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhJlrZfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1BE13CA93;
-	Thu, 12 Dec 2024 17:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3C313CA81;
+	Thu, 12 Dec 2024 17:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024442; cv=none; b=rtmfQXmULK8tvufMASg6KVufcOk/lr3/vzG6m/JyZ23ZgWcPZmKlnQAiuHyLDbWhjGQvCucao6IrCod/xe8Y2s3xEmCbfi6Se4NOstol9yvcWo1phxl4S07A9R++3N15jYZ8ypo231AXc6CHpexu2MpJ9Kau+Mkpheh7e2EctRQ=
+	t=1734025282; cv=none; b=Yb/VPaBp6MqeWhZ08yPE4ynFjWLuOd4l67MwcBBxvfwmUOk5hCFBYFN784SshNwRGt25L6T77VLh0K9nIqj+v4KFQY5LkhoPK0X01jpi2mGtT38EDWgEA+2bC/E6MrJmAW/Y70kK/31r4zRRNn79QSbn6Pe25TWC1eArmkta1s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024442; c=relaxed/simple;
-	bh=5NGBwdTsU/h9e8CO/7oXUaQ0c/S415CkXe+RV19WNDQ=;
+	s=arc-20240116; t=1734025282; c=relaxed/simple;
+	bh=EYd0wh+ocM+NGzhkBPxy+9vo8t8/rMBcSWgvCjmmLCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzR6JSjkaLVM+/FGEqrtSu1Rz+4t29T1FJmyKIVNgmyGmPVyQJb6oNlE2cEIDwV+MkBazfp2koKbF0nJ/P3MDsH+0pAr5Ez+U17KleDQFTA+LiGUAjsP9c2OnixfLuqo7rezQdtbecqUWa8nKJQU6xp7aO54YGC5gi217SUVKMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rs5R5FpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3993C4CED0;
-	Thu, 12 Dec 2024 17:27:21 +0000 (UTC)
+	 MIME-Version; b=AjvXL8kWqxseP6CYeuyx8zy2ptmpcA/2rBMyr5TnNZi1i5jfBy0kjUm4KhF5nWgqUzFAfc0FLKXe1jI9g4LFm9aOk9ts3htOcwN9D9G3rKIwCnCq43Yw6mBxyQRnPy4bt9h5iGj+LLhIa9L/Txe/n5e/Y8D5uhyBnDqSWahxEEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhJlrZfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B9DC4CECE;
+	Thu, 12 Dec 2024 17:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024442;
-	bh=5NGBwdTsU/h9e8CO/7oXUaQ0c/S415CkXe+RV19WNDQ=;
+	s=korg; t=1734025282;
+	bh=EYd0wh+ocM+NGzhkBPxy+9vo8t8/rMBcSWgvCjmmLCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rs5R5FpXiZR5hgZP4TLEWNrFaQsnh7FzuN5ifOLShHMe+KinjRyyozmACPdmdMfSF
-	 zpLFFj/12W3+Nr3k+765aBFDcMWy5e3Oyii6ImmI7y00S/jWIven1Rjq0Q3BmIsdxS
-	 s/ME56amBoy/VgiIc/NgsBow5qnaiSYe8c15skSM=
+	b=hhJlrZfs0W8vVLc4kzpzjjJrA1gRzQEg1w3TXPMDMdz/hPRGFCW8td+QIhzf4RayE
+	 10maNQsvjJFGOyV9X3sqPm0N4Z9TBl36m2XdbBfzWy15pCXDlhgmP1wJEztmPXRSzw
+	 8UZRnEF47RoKBKwwvRTZrNJojai/7J2AIfdGBfVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
+	Arun Kumar Neelakantam <aneela@codeaurora.org>,
+	Deepak Kumar Singh <deesin@codeaurora.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 298/459] jffs2: fix use of uninitialized variable
+Subject: [PATCH 5.4 118/321] rpmsg: glink: Add TX_DATA_CONT command while sending
 Date: Thu, 12 Dec 2024 16:00:36 +0100
-Message-ID: <20241212144305.414282345@linuxfoundation.org>
+Message-ID: <20241212144234.642514855@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@siflower.com.cn>
+From: Arun Kumar Neelakantam <aneela@codeaurora.org>
 
-[ Upstream commit 3ba44ee966bc3c41dd8a944f963466c8fcc60dc8 ]
+[ Upstream commit 8956927faed366b60b0355f4a4317a10e281ced7 ]
 
-When building the kernel with -Wmaybe-uninitialized, the compiler
-reports this warning:
+With current design the transport can send packets of size upto
+FIFO_SIZE which is 16k and return failure for all packets above 16k.
 
-In function 'jffs2_mark_erased_block',
-    inlined from 'jffs2_erase_pending_blocks' at fs/jffs2/erase.c:116:4:
-fs/jffs2/erase.c:474:9: warning: 'bad_offset' may be used uninitialized [-Wmaybe-uninitialized]
-  474 |         jffs2_erase_failed(c, jeb, bad_offset);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-fs/jffs2/erase.c: In function 'jffs2_erase_pending_blocks':
-fs/jffs2/erase.c:402:18: note: 'bad_offset' was declared here
-  402 |         uint32_t bad_offset;
-      |                  ^~~~~~~~~~
+Add TX_DATA_CONT command to send packets greater than 16k by splitting
+into 8K chunks.
 
-When mtd->point() is used, jffs2_erase_pending_blocks can return -EIO
-without initializing bad_offset, which is later used at the filebad
-label in jffs2_mark_erased_block.
-Fix it by initializing this variable.
-
-Fixes: 8a0f572397ca ("[JFFS2] Return values of jffs2_block_check_erase error paths")
-Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Arun Kumar Neelakantam <aneela@codeaurora.org>
+Signed-off-by: Deepak Kumar Singh <deesin@codeaurora.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Link: https://lore.kernel.org/r/1596086296-28529-4-git-send-email-deesin@codeaurora.org
+Stable-dep-of: 06c59d97f63c ("rpmsg: glink: use only lower 16-bits of param2 for CMD_OPEN name length")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/erase.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/rpmsg/qcom_glink_native.c | 38 +++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/fs/jffs2/erase.c b/fs/jffs2/erase.c
-index 7e9abdb897122..5fbaf6ab9f482 100644
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -340,10 +340,9 @@ static int jffs2_block_check_erase(struct jffs2_sb_info *c, struct jffs2_erasebl
- 		} while(--retlen);
- 		mtd_unpoint(c->mtd, jeb->offset, c->sector_size);
- 		if (retlen) {
--			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08tx\n",
--				*wordebuf,
--				jeb->offset +
--				c->sector_size-retlen * sizeof(*wordebuf));
-+			*bad_offset = jeb->offset + c->sector_size - retlen * sizeof(*wordebuf);
-+			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08x\n",
-+				*wordebuf, *bad_offset);
- 			return -EIO;
- 		}
- 		return 0;
+diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
+index 2dea1e7487bb4..421ed358ad9cd 100644
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1276,6 +1276,8 @@ static int __qcom_glink_send(struct glink_channel *channel,
+ 	} __packed req;
+ 	int ret;
+ 	unsigned long flags;
++	int chunk_size = len;
++	int left_size = 0;
+ 
+ 	if (!glink->intentless) {
+ 		while (!intent) {
+@@ -1309,18 +1311,46 @@ static int __qcom_glink_send(struct glink_channel *channel,
+ 		iid = intent->id;
+ 	}
+ 
++	if (wait && chunk_size > SZ_8K) {
++		chunk_size = SZ_8K;
++		left_size = len - chunk_size;
++	}
+ 	req.msg.cmd = cpu_to_le16(RPM_CMD_TX_DATA);
+ 	req.msg.param1 = cpu_to_le16(channel->lcid);
+ 	req.msg.param2 = cpu_to_le32(iid);
+-	req.chunk_size = cpu_to_le32(len);
+-	req.left_size = cpu_to_le32(0);
++	req.chunk_size = cpu_to_le32(chunk_size);
++	req.left_size = cpu_to_le32(left_size);
+ 
+-	ret = qcom_glink_tx(glink, &req, sizeof(req), data, len, wait);
++	ret = qcom_glink_tx(glink, &req, sizeof(req), data, chunk_size, wait);
+ 
+ 	/* Mark intent available if we failed */
+-	if (ret && intent)
++	if (ret && intent) {
+ 		intent->in_use = false;
++		return ret;
++	}
+ 
++	while (left_size > 0) {
++		data = (void *)((char *)data + chunk_size);
++		chunk_size = left_size;
++		if (chunk_size > SZ_8K)
++			chunk_size = SZ_8K;
++		left_size -= chunk_size;
++
++		req.msg.cmd = cpu_to_le16(RPM_CMD_TX_DATA_CONT);
++		req.msg.param1 = cpu_to_le16(channel->lcid);
++		req.msg.param2 = cpu_to_le32(iid);
++		req.chunk_size = cpu_to_le32(chunk_size);
++		req.left_size = cpu_to_le32(left_size);
++
++		ret = qcom_glink_tx(glink, &req, sizeof(req), data,
++				    chunk_size, wait);
++
++		/* Mark intent available if we failed */
++		if (ret && intent) {
++			intent->in_use = false;
++			break;
++		}
++	}
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
