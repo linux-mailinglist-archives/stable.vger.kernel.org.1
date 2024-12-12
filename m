@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-102769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E709EF4E3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BCA9EF45B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFB54189DFA2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA44116D07D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538A32288DD;
-	Thu, 12 Dec 2024 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B4022967A;
+	Thu, 12 Dec 2024 16:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyPc0G+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQHSq7Tg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDD0216E14;
-	Thu, 12 Dec 2024 16:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A87216E14;
+	Thu, 12 Dec 2024 16:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022427; cv=none; b=Wax+sjpp7hG6UahslsTeYyHf8n1Oy0qGx4EgCR0GcZ5MR68JF9AUHSEKHH0e6rxnFUgLAgcM7/SeC3Bm7PHDRY2P5M6GE4MNEl9+P+NyADqP0ZPvUQcF8fl7gc7AFT8g342q9ATjyCwwNsXEsPTrJhn2ZA3Kizc4U3XkCB4MIA8=
+	t=1734022465; cv=none; b=DxRGr8DmPmYSa0oRInElvkeIjJ/vQQ7GeI2c4w3/ihZGZFooYx7MgjVpKfjWXlrJ16ZgtjbcztdmTQUwwvlOOS2W+oZOGUXSf+QA+3WkprP0PW7tiInSnA3lazvfNpl10lVN58+1t+qgnAq4FJeNRFz1471mPAWGm311s6SJ+OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022427; c=relaxed/simple;
-	bh=QJSzcQx/a0A3uq8agX1tvy2icS6pEVgtn8wFehXr0eQ=;
+	s=arc-20240116; t=1734022465; c=relaxed/simple;
+	bh=lL+6md4a9c9kIUM6AoJPldqdMqgCjxCa8boSzPK1/e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQAwEWG0DCQ/HphLv+bBp0VRcaUVi25vPAwOMrjG786OPOWs7z7Sq1rdwESki6TX51h3BfkT+8WepS8ftTxajWvpnop5xypobu7Ht647T6MKoG/SieyOc2069irc88/PcX/+H3AW1zcckyDc51ZeMVKdJE2h42Kbh5sbq5ArIPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyPc0G+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A31C4CECE;
-	Thu, 12 Dec 2024 16:53:46 +0000 (UTC)
+	 MIME-Version; b=krer7jmFu12AXIU59IA4u+4WKDpA/0lN7Hh55BN495FN4LWhoWV5HNytGHb2psuVUwZAF+bIByzaCxlEk6zf1rB/3f1rfjfgUkifNxiXSOGukUiyJ+E9M/Nhg98HapLG8DN4aa6r3h3EQ+tZ1fcHGckNN82dj4npm2wwN1Ndols=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQHSq7Tg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A01C4CECE;
+	Thu, 12 Dec 2024 16:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022426;
-	bh=QJSzcQx/a0A3uq8agX1tvy2icS6pEVgtn8wFehXr0eQ=;
+	s=korg; t=1734022465;
+	bh=lL+6md4a9c9kIUM6AoJPldqdMqgCjxCa8boSzPK1/e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyPc0G+zvfHMJa8KhqA+xlJ+SwITdedKCiIXxgGjp5t1hpQnhdmWKjKRmIdClLYM7
-	 c8GzfZLGimGGwTytTpgSdci/9qU5eXk/tCgY8BLB1mNukdacDjlWb0aLs/P40pSMnu
-	 nJuj50L2k7QALSdg8UblkB4+79LMLMf1i2AQoLYQ=
+	b=vQHSq7TgK09ig79aLtJl1uecFeLAbJj/5B59b+XL0OFzxw8+12dWanNvALBndoRjK
+	 wiEPZBjDpnG8PcM8CxPkX2Wu8dYN01Yo6McVZFPqg9zhlSEj0AkmUDI5xjzBot7In2
+	 wxz41HZBdV7cUnkesH52BXdrWX5CJEEYMTV5zhOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	"Nysal Jan K.A" <nysal@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 220/565] powerpc/mm/fault: Fix kfence page fault reporting
-Date: Thu, 12 Dec 2024 15:56:55 +0100
-Message-ID: <20241212144320.188498938@linuxfoundation.org>
+Subject: [PATCH 5.15 221/565] powerpc/pseries: Fix dtl_access_lock to be a rw_semaphore
+Date: Thu, 12 Dec 2024 15:56:56 +0100
+Message-ID: <20241212144320.226968796@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
 References: <20241212144311.432886635@linuxfoundation.org>
@@ -68,83 +67,151 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 06dbbb4d5f7126b6307ab807cbf04ecfc459b933 ]
+[ Upstream commit cadae3a45d23aa4f6485938a67cbc47aaaa25e38 ]
 
-copy_from_kernel_nofault() can be called when doing read of /proc/kcore.
-/proc/kcore can have some unmapped kfence objects which when read via
-copy_from_kernel_nofault() can cause page faults. Since *_nofault()
-functions define their own fixup table for handling fault, use that
-instead of asking kfence to handle such faults.
+The dtl_access_lock needs to be a rw_sempahore, a sleeping lock, because
+the code calls kmalloc() while holding it, which can sleep:
 
-Hence we search the exception tables for the nip which generated the
-fault. If there is an entry then we let the fixup table handler handle the
-page fault by returning an error from within ___do_page_fault().
+  # echo 1 > /proc/powerpc/vcpudispatch_stats
+  BUG: sleeping function called from invalid context at include/linux/sched/mm.h:337
+  in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 199, name: sh
+  preempt_count: 1, expected: 0
+  3 locks held by sh/199:
+   #0: c00000000a0743f8 (sb_writers#3){.+.+}-{0:0}, at: vfs_write+0x324/0x438
+   #1: c0000000028c7058 (dtl_enable_mutex){+.+.}-{3:3}, at: vcpudispatch_stats_write+0xd4/0x5f4
+   #2: c0000000028c70b8 (dtl_access_lock){+.+.}-{2:2}, at: vcpudispatch_stats_write+0x220/0x5f4
+  CPU: 0 PID: 199 Comm: sh Not tainted 6.10.0-rc4 #152
+  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
+  Call Trace:
+    dump_stack_lvl+0x130/0x148 (unreliable)
+    __might_resched+0x174/0x410
+    kmem_cache_alloc_noprof+0x340/0x3d0
+    alloc_dtl_buffers+0x124/0x1ac
+    vcpudispatch_stats_write+0x2a8/0x5f4
+    proc_reg_write+0xf4/0x150
+    vfs_write+0xfc/0x438
+    ksys_write+0x88/0x148
+    system_call_exception+0x1c4/0x5a0
+    system_call_common+0xf4/0x258
 
-This can be easily triggered if someone tries to do dd from /proc/kcore.
-eg. dd if=/proc/kcore of=/dev/null bs=1M
-
-Some example false negatives:
-
-  ===============================
-  BUG: KFENCE: invalid read in copy_from_kernel_nofault+0x9c/0x1a0
-  Invalid read at 0xc0000000fdff0000:
-   copy_from_kernel_nofault+0x9c/0x1a0
-   0xc00000000665f950
-   read_kcore_iter+0x57c/0xa04
-   proc_reg_read_iter+0xe4/0x16c
-   vfs_read+0x320/0x3ec
-   ksys_read+0x90/0x154
-   system_call_exception+0x120/0x310
-   system_call_vectored_common+0x15c/0x2ec
-
-  BUG: KFENCE: use-after-free read in copy_from_kernel_nofault+0x9c/0x1a0
-  Use-after-free read at 0xc0000000fe050000 (in kfence-#2):
-   copy_from_kernel_nofault+0x9c/0x1a0
-   0xc00000000665f950
-   read_kcore_iter+0x57c/0xa04
-   proc_reg_read_iter+0xe4/0x16c
-   vfs_read+0x320/0x3ec
-   ksys_read+0x90/0x154
-   system_call_exception+0x120/0x310
-   system_call_vectored_common+0x15c/0x2ec
-
-Fixes: 90cbac0e995d ("powerpc: Enable KFENCE for PPC32")
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Fixes: 06220d78f24a ("powerpc/pseries: Introduce rwlock to gatekeep DTLB usage")
+Tested-by: Kajol Jain <kjain@linux.ibm.com>
+Reviewed-by: Nysal Jan K.A <nysal@linux.ibm.com>
+Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://patch.msgid.link/a411788081d50e3b136c6270471e35aba3dfafa3.1729271995.git.ritesh.list@gmail.com
+Link: https://patch.msgid.link/20240819122401.513203-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/fault.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/dtl.h        | 4 ++--
+ arch/powerpc/platforms/pseries/dtl.c  | 8 ++++----
+ arch/powerpc/platforms/pseries/lpar.c | 8 ++++----
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index 4a15172dfef29..1e5fbef64076d 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -412,10 +412,16 @@ static int ___do_page_fault(struct pt_regs *regs, unsigned long address,
- 	/*
- 	 * The kernel should never take an execute fault nor should it
- 	 * take a page fault to a kernel address or a page fault to a user
--	 * address outside of dedicated places
-+	 * address outside of dedicated places.
-+	 *
-+	 * Rather than kfence directly reporting false negatives, search whether
-+	 * the NIP belongs to the fixup table for cases where fault could come
-+	 * from functions like copy_from_kernel_nofault().
- 	 */
- 	if (unlikely(!is_user && bad_kernel_fault(regs, error_code, address, is_write))) {
--		if (kfence_handle_page_fault(address, is_write, regs))
-+		if (is_kfence_address((void *)address) &&
-+		    !search_exception_tables(instruction_pointer(regs)) &&
-+		    kfence_handle_page_fault(address, is_write, regs))
- 			return 0;
+diff --git a/arch/powerpc/include/asm/dtl.h b/arch/powerpc/include/asm/dtl.h
+index 1625888f27ef6..5e40f27aa76e5 100644
+--- a/arch/powerpc/include/asm/dtl.h
++++ b/arch/powerpc/include/asm/dtl.h
+@@ -1,8 +1,8 @@
+ #ifndef _ASM_POWERPC_DTL_H
+ #define _ASM_POWERPC_DTL_H
  
- 		return SIGSEGV;
++#include <linux/rwsem.h>
+ #include <asm/lppaca.h>
+-#include <linux/spinlock_types.h>
+ 
+ /*
+  * Layout of entries in the hypervisor's dispatch trace log buffer.
+@@ -35,7 +35,7 @@ struct dtl_entry {
+ #define DTL_LOG_ALL		(DTL_LOG_CEDE | DTL_LOG_PREEMPT | DTL_LOG_FAULT)
+ 
+ extern struct kmem_cache *dtl_cache;
+-extern rwlock_t dtl_access_lock;
++extern struct rw_semaphore dtl_access_lock;
+ 
+ /*
+  * When CONFIG_VIRT_CPU_ACCOUNTING_NATIVE = y, the cpu accounting code controls
+diff --git a/arch/powerpc/platforms/pseries/dtl.c b/arch/powerpc/platforms/pseries/dtl.c
+index 352af5b14a0f7..b9096e343ffb8 100644
+--- a/arch/powerpc/platforms/pseries/dtl.c
++++ b/arch/powerpc/platforms/pseries/dtl.c
+@@ -181,7 +181,7 @@ static int dtl_enable(struct dtl *dtl)
+ 		return -EBUSY;
+ 
+ 	/* ensure there are no other conflicting dtl users */
+-	if (!read_trylock(&dtl_access_lock))
++	if (!down_read_trylock(&dtl_access_lock))
+ 		return -EBUSY;
+ 
+ 	n_entries = dtl_buf_entries;
+@@ -189,7 +189,7 @@ static int dtl_enable(struct dtl *dtl)
+ 	if (!buf) {
+ 		printk(KERN_WARNING "%s: buffer alloc failed for cpu %d\n",
+ 				__func__, dtl->cpu);
+-		read_unlock(&dtl_access_lock);
++		up_read(&dtl_access_lock);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -207,7 +207,7 @@ static int dtl_enable(struct dtl *dtl)
+ 	spin_unlock(&dtl->lock);
+ 
+ 	if (rc) {
+-		read_unlock(&dtl_access_lock);
++		up_read(&dtl_access_lock);
+ 		kmem_cache_free(dtl_cache, buf);
+ 	}
+ 
+@@ -222,7 +222,7 @@ static void dtl_disable(struct dtl *dtl)
+ 	dtl->buf = NULL;
+ 	dtl->buf_entries = 0;
+ 	spin_unlock(&dtl->lock);
+-	read_unlock(&dtl_access_lock);
++	up_read(&dtl_access_lock);
+ }
+ 
+ /* file interface */
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index c2fff9a339285..49aaa5a6d165d 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -167,7 +167,7 @@ struct vcpu_dispatch_data {
+  */
+ #define NR_CPUS_H	NR_CPUS
+ 
+-DEFINE_RWLOCK(dtl_access_lock);
++DECLARE_RWSEM(dtl_access_lock);
+ static DEFINE_PER_CPU(struct vcpu_dispatch_data, vcpu_disp_data);
+ static DEFINE_PER_CPU(u64, dtl_entry_ridx);
+ static DEFINE_PER_CPU(struct dtl_worker, dtl_workers);
+@@ -461,7 +461,7 @@ static int dtl_worker_enable(unsigned long *time_limit)
+ {
+ 	int rc = 0, state;
+ 
+-	if (!write_trylock(&dtl_access_lock)) {
++	if (!down_write_trylock(&dtl_access_lock)) {
+ 		rc = -EBUSY;
+ 		goto out;
+ 	}
+@@ -477,7 +477,7 @@ static int dtl_worker_enable(unsigned long *time_limit)
+ 		pr_err("vcpudispatch_stats: unable to setup workqueue for DTL processing\n");
+ 		free_dtl_buffers(time_limit);
+ 		reset_global_dtl_mask();
+-		write_unlock(&dtl_access_lock);
++		up_write(&dtl_access_lock);
+ 		rc = -EINVAL;
+ 		goto out;
+ 	}
+@@ -492,7 +492,7 @@ static void dtl_worker_disable(unsigned long *time_limit)
+ 	cpuhp_remove_state(dtl_worker_state);
+ 	free_dtl_buffers(time_limit);
+ 	reset_global_dtl_mask();
+-	write_unlock(&dtl_access_lock);
++	up_write(&dtl_access_lock);
+ }
+ 
+ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
 -- 
 2.43.0
 
