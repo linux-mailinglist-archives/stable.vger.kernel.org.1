@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11249EF5DC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:20:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC85B9EF930
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8D251892D19
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C78828C631
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DB922332E;
-	Thu, 12 Dec 2024 17:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EDC2253FE;
+	Thu, 12 Dec 2024 17:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJirw5d+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zv9Ng97X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C21222D62;
-	Thu, 12 Dec 2024 17:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C341C222D59;
+	Thu, 12 Dec 2024 17:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023533; cv=none; b=JSOv2AhZiB6O1nVGeB3fxmH4KdrKQGbkz6O+G1zJ+/JansIzzeXBcK0mM3pCt4gQkIyL9zOmwvuRucIXI2cvLCSTGbYr5Mmh72/y2MqoLWHZdOw78t9fDB1qD6OWlYE36U8JdhIHrOfWkCiNhU64y33zjaBysHapCzwzqyifh28=
+	t=1734025599; cv=none; b=dYWn9Ra0febQ1Qu6ahLa5ttfnFn/bVdDMctt/JlrLTsTna6W9e8RRuSysHOvGGQ/s6LemEuo+oCA3n0wGD7JD+2NCBKaigO03QkACdWDqAP59rJxTz3WYr8lXv8VkWA/91E1qV7Y8v29a1hhbp2kEL6vS9B/ZVK5Gc474vKRLLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023533; c=relaxed/simple;
-	bh=pt7mVEovaL36Kn+UuWrxFAYdd6gW1NwUraD+awE7dmE=;
+	s=arc-20240116; t=1734025599; c=relaxed/simple;
+	bh=qztOIygnxnECAQm/R1SIht4dhev17/r4a1wXTA5wLIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAHGfXSzm2SvTnWuBa/Uv53U+fov/8T2lBJWbkhaWIEaiXf26fOYDlXxdKY8bogEbQxxxPq2c7ixSoRXY+n+3AVVWWhHLR3c2MEu8Ew+Ym7YHH0paV7FxYXm802bNwebxAVmxB1f/901hWCsX6imRTg+7QxpUb1fdzlgUQTLH+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJirw5d+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66397C4CED0;
-	Thu, 12 Dec 2024 17:12:12 +0000 (UTC)
+	 MIME-Version; b=CEAHCpgSXLb5SoC576FtM6EggmnwUVvJsjZ2BpbUHW6ulL5/bJRcwNVyqnzb0sioBTJaYgNg8i8GqVhGNAhAwhqnjuIlHtAXH/WkxCmKYRuZ8SIH7HwDZ+CVo+Uf1lwyXPpq0Oz79ETpg1hYUpAG8/Z8pgx+eeRag0cumjzxbOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zv9Ng97X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C075C4CED0;
+	Thu, 12 Dec 2024 17:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023532;
-	bh=pt7mVEovaL36Kn+UuWrxFAYdd6gW1NwUraD+awE7dmE=;
+	s=korg; t=1734025599;
+	bh=qztOIygnxnECAQm/R1SIht4dhev17/r4a1wXTA5wLIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJirw5d+0ZnGIqtSoilPfajuo60F1hL0KAK368kkuaPycQn1EcBzFlv23PhoGaMFd
-	 CAjfRI3KiPBLsHIL/ut/kXI2lYFmoToUbfVwW3YKV9fQCZZhvLZqf0qMgGCtRWhEvz
-	 6DqgsFHoUvi1KwBX8kHbaETDSNPzD1VhDrdjvAL0=
+	b=Zv9Ng97XVW9Dqhim/hiKFGOs1mmuQCvBbuDWMygRRbZ4kkaDB8abhs1u2HLWNZMxf
+	 sjVijLVr4ezDe0c3koMy7Vjbst4HyvLnwsX88Ivs2an5jbTdo2vxQ2fTO6o39vWGbv
+	 GHggb8qEtOT8rf5bRCerySu1hI0SjrDZve4Y8EQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy-ld Lu <andy-ld.lu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 547/565] mmc: mtk-sd: Fix error handle of probe function
+	syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 224/321] netfilter: x_tables: fix LED ID check in led_tg_check()
 Date: Thu, 12 Dec 2024 16:02:22 +0100
-Message-ID: <20241212144333.477850486@linuxfoundation.org>
+Message-ID: <20241212144238.825426430@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy-ld Lu <andy-ld.lu@mediatek.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 291220451c775a054cedc4fab4578a1419eb6256 upstream.
+[ Upstream commit 04317f4eb2aad312ad85c1a17ad81fe75f1f9bc7 ]
 
-In the probe function, it goes to 'release_mem' label and returns after
-some procedure failure. But if the clocks (partial or all) have been
-enabled previously, they would not be disabled in msdc_runtime_suspend,
-since runtime PM is not yet enabled for this case.
+Syzbot has reported the following BUG detected by KASAN:
 
-That cause mmc related clocks always on during system suspend and block
-suspend flow. Below log is from a SDCard issue of MT8196 chromebook, it
-returns -ETIMEOUT while polling clock stable in the msdc_ungate_clock()
-and probe failed, but the enabled clocks could not be disabled anyway.
+BUG: KASAN: slab-out-of-bounds in strlen+0x58/0x70
+Read of size 1 at addr ffff8881022da0c8 by task repro/5879
+...
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x241/0x360
+ ? __pfx_dump_stack_lvl+0x10/0x10
+ ? __pfx__printk+0x10/0x10
+ ? _printk+0xd5/0x120
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ print_report+0x169/0x550
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x45f/0x530
+ ? __phys_addr+0xba/0x170
+ ? strlen+0x58/0x70
+ kasan_report+0x143/0x180
+ ? strlen+0x58/0x70
+ strlen+0x58/0x70
+ kstrdup+0x20/0x80
+ led_tg_check+0x18b/0x3c0
+ xt_check_target+0x3bb/0xa40
+ ? __pfx_xt_check_target+0x10/0x10
+ ? stack_depot_save_flags+0x6e4/0x830
+ ? nft_target_init+0x174/0xc30
+ nft_target_init+0x82d/0xc30
+ ? __pfx_nft_target_init+0x10/0x10
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? rcu_is_watching+0x15/0xb0
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? __kmalloc_noprof+0x21a/0x400
+ nf_tables_newrule+0x1860/0x2980
+ ? __pfx_nf_tables_newrule+0x10/0x10
+ ? __nla_parse+0x40/0x60
+ nfnetlink_rcv+0x14e5/0x2ab0
+ ? __pfx_validate_chain+0x10/0x10
+ ? __pfx_nfnetlink_rcv+0x10/0x10
+ ? __lock_acquire+0x1384/0x2050
+ ? netlink_deliver_tap+0x2e/0x1b0
+ ? __pfx_lock_release+0x10/0x10
+ ? netlink_deliver_tap+0x2e/0x1b0
+ netlink_unicast+0x7f8/0x990
+ ? __pfx_netlink_unicast+0x10/0x10
+ ? __virt_addr_valid+0x183/0x530
+ ? __check_object_size+0x48e/0x900
+ netlink_sendmsg+0x8e4/0xcb0
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ ? aa_sock_msg_perm+0x91/0x160
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ __sock_sendmsg+0x223/0x270
+ ____sys_sendmsg+0x52a/0x7e0
+ ? __pfx_____sys_sendmsg+0x10/0x10
+ __sys_sendmsg+0x292/0x380
+ ? __pfx___sys_sendmsg+0x10/0x10
+ ? lockdep_hardirqs_on_prepare+0x43d/0x780
+ ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
+ ? exc_page_fault+0x590/0x8c0
+ ? do_syscall_64+0xb6/0x230
+ do_syscall_64+0xf3/0x230
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+ </TASK>
 
-[  129.059253] clk_chk_dev_pm_suspend()
-[  129.350119] suspend warning: msdcpll is on
-[  129.354494] [ck_msdc30_1_sel : enabled, 1, 1, 191999939,   ck_msdcpll_d2]
-[  129.362787] [ck_msdcpll_d2   : enabled, 1, 1, 191999939,         msdcpll]
-[  129.371041] [ck_msdc30_1_ck  : enabled, 1, 1, 191999939, ck_msdc30_1_sel]
-[  129.379295] [msdcpll         : enabled, 1, 1, 383999878,          clk26m]
+Since an invalid (without '\0' byte at all) byte sequence may be passed
+from userspace, add an extra check to ensure that such a sequence is
+rejected as possible ID and so never passed to 'kstrdup()' and further.
 
-Add a new 'release_clk' label and reorder the error handle functions to
-make sure the clocks be disabled after probe failure.
-
-Fixes: ffaea6ebfe9c ("mmc: mtk-sd: Use readl_poll_timeout instead of open-coded polling")
-Fixes: 7a2fa8eed936 ("mmc: mtk-sd: use devm_mmc_alloc_host")
-Signed-off-by: Andy-ld Lu <andy-ld.lu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: stable@vger.kernel.org
-Message-ID: <20241107121215.5201-1-andy-ld.lu@mediatek.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c8215822f35fdb35667
+Fixes: 268cb38e1802 ("netfilter: x_tables: add LED trigger target")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/netfilter/xt_LED.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -2612,7 +2612,7 @@ static int msdc_drv_probe(struct platfor
- 	ret = msdc_ungate_clock(host);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Cannot ungate clocks!\n");
--		goto release_mem;
-+		goto release_clk;
- 	}
- 	msdc_init_hw(host);
+diff --git a/net/netfilter/xt_LED.c b/net/netfilter/xt_LED.c
+index 0371c387b0d1f..13a2b5820b34b 100644
+--- a/net/netfilter/xt_LED.c
++++ b/net/netfilter/xt_LED.c
+@@ -97,7 +97,9 @@ static int led_tg_check(const struct xt_tgchk_param *par)
+ 	struct xt_led_info_internal *ledinternal;
+ 	int err;
  
-@@ -2622,14 +2622,14 @@ static int msdc_drv_probe(struct platfor
- 					     GFP_KERNEL);
- 		if (!host->cq_host) {
- 			ret = -ENOMEM;
--			goto host_free;
-+			goto release;
- 		}
- 		host->cq_host->caps |= CQHCI_TASK_DESC_SZ_128;
- 		host->cq_host->mmio = host->base + 0x800;
- 		host->cq_host->ops = &msdc_cmdq_ops;
- 		ret = cqhci_init(host->cq_host, mmc, true);
- 		if (ret)
--			goto host_free;
-+			goto release;
- 		mmc->max_segs = 128;
- 		/* cqhci 16bit length */
- 		/* 0 size, means 65536 so we don't have to -1 here */
-@@ -2654,9 +2654,10 @@ static int msdc_drv_probe(struct platfor
- end:
- 	pm_runtime_disable(host->dev);
- release:
--	platform_set_drvdata(pdev, NULL);
- 	msdc_deinit_hw(host);
-+release_clk:
- 	msdc_gate_clock(host);
-+	platform_set_drvdata(pdev, NULL);
- release_mem:
- 	if (host->dma.gpd)
- 		dma_free_coherent(&pdev->dev,
+-	if (ledinfo->id[0] == '\0')
++	/* Bail out if empty string or not a string at all. */
++	if (ledinfo->id[0] == '\0' ||
++	    !memchr(ledinfo->id, '\0', sizeof(ledinfo->id)))
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&xt_led_mutex);
+-- 
+2.43.0
+
 
 
 
