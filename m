@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B369EF6CE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22EC69EF8D2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:46:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52C6F2842AE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71E528AD51
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA6A2210F8;
-	Thu, 12 Dec 2024 17:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A008B22331C;
+	Thu, 12 Dec 2024 17:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="for/88Na"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR55Bk9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583A321E085;
-	Thu, 12 Dec 2024 17:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAA9222D59;
+	Thu, 12 Dec 2024 17:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024562; cv=none; b=Z+7paNAg+j0LGTTsrXOw362OlTEgf5IUkbdX0ExWnn5iquLdzbDQfpPSdG/1RhxUzbx17XmqpM0WWIDhdhOhsn9rmqD5eHs95ByfKNZlcvucKXkxD+ejmO4winM+RJpjc9ZX/NBrvHGIeft6Z2vNJYHx8+7embRe+I+cvLt6lMU=
+	t=1734025401; cv=none; b=R5kQNb4EXEXfmGRqGqaBdwEFBIu/zTnFtzePz5MHbYCunMqiKlIV7SX3r+5yAN9Xu+Bk70yzeuY3Y91bV34i6uqvdgtx2Spu/3e+5p9oWVP8yWBcOqdFu1AOVY7b5R9P/VC1KQvHSQ56J12tq9v7OBK2UHnCtI58a6vwDyHPJgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024562; c=relaxed/simple;
-	bh=KwB/D6hOG986RsVf/V6TFsNHRO+YOfHIZeunxJKMKz8=;
+	s=arc-20240116; t=1734025401; c=relaxed/simple;
+	bh=uw/qVCadR1wE0ynQ95bWfxXiq0u45sBq+uq/spTO0Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgHy4Vt8+fmZG/9xBIlVgu8sW+FLCkORkd9QD13b3zZTSHcf2qjLymiLfyLI4ko9C+qO3w2y20uYDSMS95nFYtTYY9PDrHN0McXs2k3qh8UmNYG/0wR/uhQNBBhsAUtpaTD29zYd4rdm40X+GlH9lLffAb3L6KHRkZOqxUubwKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=for/88Na; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0005C4CED4;
-	Thu, 12 Dec 2024 17:29:21 +0000 (UTC)
+	 MIME-Version; b=XFUt6cGWLliycsb7mwUTATTSE6atlmMmK0PpkrUBatApo2Y3tQRfTj38CXBTCyVKHhnXEmM3bFdfubWRqckvzome18Fzi33TrFVPwSNTAVfyeXlxVn2aAY5UvVwsv67a0JG3nxXuuG60xJMBZ56bRJouJN8MH6BDP2KiqalT3qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR55Bk9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 841FBC4CED0;
+	Thu, 12 Dec 2024 17:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024562;
-	bh=KwB/D6hOG986RsVf/V6TFsNHRO+YOfHIZeunxJKMKz8=;
+	s=korg; t=1734025398;
+	bh=uw/qVCadR1wE0ynQ95bWfxXiq0u45sBq+uq/spTO0Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=for/88NaD50yQlPQoFQO/oUD8AsKkSkMdKEMBhghxgA+cswHAsibyEglfELpctaIL
-	 HaVhfckV/5BBYrB2q4bCqyYFvyJ2kipbGMmhIM9FQZJX2KB0gTZ7wzOaEAmudEsvMm
-	 adzK7DhCEDtDFdBIWTkkZOI3pURhJOFgnCT4sopQ=
+	b=SR55Bk9MbP0OjMtg9LO28gFgSwrzv654SN6lekU6vlhjzfuSOCrO8Tb6jeh2ZyNYg
+	 suHx3Gv/6yf0yeLLOegaEp7PMTq9Vzr1EJk0FeOkaT9EkTSB+lI7PV2d0veX906QsY
+	 5zcaLUgJSemrEsUhVPMvTbuanGQgaeRgxNPViWT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 337/459] tipc: Fix use-after-free of kernel socket in cleanup_bearer().
+	syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 157/321] netfilter: ipset: add missing range check in bitmap_ip_uadt
 Date: Thu, 12 Dec 2024 16:01:15 +0100
-Message-ID: <20241212144306.974809038@linuxfoundation.org>
+Message-ID: <20241212144236.179129451@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 6a2fa13312e51a621f652d522d7e2df7066330b6 ]
+commit 35f56c554eb1b56b77b3cf197a6b00922d49033d upstream.
 
-syzkaller reported a use-after-free of UDP kernel socket
-in cleanup_bearer() without repro. [0][1]
+When tb[IPSET_ATTR_IP_TO] is not present but tb[IPSET_ATTR_CIDR] exists,
+the values of ip and ip_to are slightly swapped. Therefore, the range check
+for ip should be done later, but this part is missing and it seems that the
+vulnerability occurs.
 
-When bearer_disable() calls tipc_udp_disable(), cleanup
-of the UDP kernel socket is deferred by work calling
-cleanup_bearer().
+So we should add missing range checks and remove unnecessary range checks.
 
-tipc_net_stop() waits for such works to finish by checking
-tipc_net(net)->wq_count.  However, the work decrements the
-count too early before releasing the kernel socket,
-unblocking cleanup_net() and resulting in use-after-free.
-
-Let's move the decrement after releasing the socket in
-cleanup_bearer().
-
-[0]:
-ref_tracker: net notrefcnt@000000009b3d1faf has 1/1 users at
-     sk_alloc+0x438/0x608
-     inet_create+0x4c8/0xcb0
-     __sock_create+0x350/0x6b8
-     sock_create_kern+0x58/0x78
-     udp_sock_create4+0x68/0x398
-     udp_sock_create+0x88/0xc8
-     tipc_udp_enable+0x5e8/0x848
-     __tipc_nl_bearer_enable+0x84c/0xed8
-     tipc_nl_bearer_enable+0x38/0x60
-     genl_family_rcv_msg_doit+0x170/0x248
-     genl_rcv_msg+0x400/0x5b0
-     netlink_rcv_skb+0x1dc/0x398
-     genl_rcv+0x44/0x68
-     netlink_unicast+0x678/0x8b0
-     netlink_sendmsg+0x5e4/0x898
-     ____sys_sendmsg+0x500/0x830
-
-[1]:
-BUG: KMSAN: use-after-free in udp_hashslot include/net/udp.h:85 [inline]
-BUG: KMSAN: use-after-free in udp_lib_unhash+0x3b8/0x930 net/ipv4/udp.c:1979
- udp_hashslot include/net/udp.h:85 [inline]
- udp_lib_unhash+0x3b8/0x930 net/ipv4/udp.c:1979
- sk_common_release+0xaf/0x3f0 net/core/sock.c:3820
- inet_release+0x1e0/0x260 net/ipv4/af_inet.c:437
- inet6_release+0x6f/0xd0 net/ipv6/af_inet6.c:489
- __sock_release net/socket.c:658 [inline]
- sock_release+0xa0/0x210 net/socket.c:686
- cleanup_bearer+0x42d/0x4c0 net/tipc/udp_media.c:819
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xcaf/0x1c90 kernel/workqueue.c:3310
- worker_thread+0xf6c/0x1510 kernel/workqueue.c:3391
- kthread+0x531/0x6b0 kernel/kthread.c:389
- ret_from_fork+0x60/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:244
-
-Uninit was created at:
- slab_free_hook mm/slub.c:2269 [inline]
- slab_free mm/slub.c:4580 [inline]
- kmem_cache_free+0x207/0xc40 mm/slub.c:4682
- net_free net/core/net_namespace.c:454 [inline]
- cleanup_net+0x16f2/0x19d0 net/core/net_namespace.c:647
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xcaf/0x1c90 kernel/workqueue.c:3310
- worker_thread+0xf6c/0x1510 kernel/workqueue.c:3391
- kthread+0x531/0x6b0 kernel/kthread.c:389
- ret_from_fork+0x60/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:244
-
-CPU: 0 UID: 0 PID: 54 Comm: kworker/0:2 Not tainted 6.12.0-rc1-00131-gf66ebf37d69c #7 91723d6f74857f70725e1583cba3cf4adc716cfa
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Workqueue: events cleanup_bearer
-
-Fixes: 26abe14379f8 ("net: Modify sk_alloc to not reference count the netns of kernel sockets.")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241127050512.28438-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+58c872f7790a4d2ac951@syzkaller.appspotmail.com
+Fixes: 72205fc68bd1 ("netfilter: ipset: bitmap:ip set type support")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Acked-by: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/udp_media.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_bitmap_ip.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index ec6d7730b8522..d54b5c1d3c83c 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -810,10 +810,10 @@ static void cleanup_bearer(struct work_struct *work)
- 		kfree_rcu(rcast, rcu);
+--- a/net/netfilter/ipset/ip_set_bitmap_ip.c
++++ b/net/netfilter/ipset/ip_set_bitmap_ip.c
+@@ -163,11 +163,8 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ret = ip_set_get_hostipaddr4(tb[IPSET_ATTR_IP_TO], &ip_to);
+ 		if (ret)
+ 			return ret;
+-		if (ip > ip_to) {
++		if (ip > ip_to)
+ 			swap(ip, ip_to);
+-			if (ip < map->first_ip)
+-				return -IPSET_ERR_BITMAP_RANGE;
+-		}
+ 	} else if (tb[IPSET_ATTR_CIDR]) {
+ 		u8 cidr = nla_get_u8(tb[IPSET_ATTR_CIDR]);
+ 
+@@ -178,7 +175,7 @@ bitmap_ip_uadt(struct ip_set *set, struc
+ 		ip_to = ip;
  	}
  
--	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
- 	dst_cache_destroy(&ub->rcast.dst_cache);
- 	udp_tunnel_sock_release(ub->ubsock);
- 	synchronize_net();
-+	atomic_dec(&tipc_net(sock_net(ub->ubsock->sk))->wq_count);
- 	kfree(ub);
- }
+-	if (ip_to > map->last_ip)
++	if (ip < map->first_ip || ip_to > map->last_ip)
+ 		return -IPSET_ERR_BITMAP_RANGE;
  
--- 
-2.43.0
-
+ 	for (; !before(ip_to, ip); ip += map->hosts) {
 
 
 
