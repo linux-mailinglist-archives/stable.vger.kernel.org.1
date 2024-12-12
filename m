@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A169EEB91
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA1C9EED2E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18717163379
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0B6B188A613
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748B22080FC;
-	Thu, 12 Dec 2024 15:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9641D21E0BC;
+	Thu, 12 Dec 2024 15:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEYz2YV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rrki6gPd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B1A1487CD;
-	Thu, 12 Dec 2024 15:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6A121CFEA;
+	Thu, 12 Dec 2024 15:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016884; cv=none; b=g+PKQYvcKbkdXombM/QQUOgAKWA5lWWHDoKUBlJcbls1TzTdpgt5ODhvEMQyoaNoaSV0pUCl8Q/2REMOZ2WhBJsMo4WD0EQlfu6OrjI2HOjZ4oW/mvOBGgxwUbApxBWkR1UJbVBoaK7fuvgDc8isze9bDvUIavDFLg2HgSWkq1I=
+	t=1734018005; cv=none; b=K8iDBnsidSOnwV5urht2ELqwZ05YrLp/KcdBQlFkg3jMToRtPF2LO2/b94+fPRXtoVj/wg5mBSTKsaeHm5biUiJNTgR6xiRwdEHzuCMptApbjibpuNh1dZNtVks2WnUUTCFX0KzPsbuHR45fX1zTfTjuEUVtt0uQKJM1AHipze8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016884; c=relaxed/simple;
-	bh=P7ym09U9iISElfv6t6WxqNV3GN+AwbAViihv75nl+yk=;
+	s=arc-20240116; t=1734018005; c=relaxed/simple;
+	bh=0wnz53vN/UgV7QxvEJguY4ERtQOnpivkqC3kfgIGLwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MP9UPqd+v+xhxUb0usUSA6TZbaMpG9WO68g8LdP/5y9cudOWAJS59iJ56VxVArlaDMhPYnbEDgLV80htPmbCUeogjSsXdxZ2cehBbexJD/w58QBTkLoQ3Bzw/G+EV/WbXbu8yK4htoFSPPqd5JyQdnyncbciMF9qAvus3VnL6bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEYz2YV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9063FC4CECE;
-	Thu, 12 Dec 2024 15:21:23 +0000 (UTC)
+	 MIME-Version; b=g0q1pKZqsPSJmmNGtK1fVWMhD9XqtehIdo2jvyPfjT7YLAXgoXyCKwzfxB9CjoU1PuaVIJtE5U5yJfRfkvahankKOsGomdKxJBO/1N/Jqm1YswcCJ6EGFs99UPENpDSgK3qKQ4WXF7rC4MaqaIGCVH+pQaetHnjLvMVwL7Xv4As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rrki6gPd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69DDC4CED0;
+	Thu, 12 Dec 2024 15:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016884;
-	bh=P7ym09U9iISElfv6t6WxqNV3GN+AwbAViihv75nl+yk=;
+	s=korg; t=1734018005;
+	bh=0wnz53vN/UgV7QxvEJguY4ERtQOnpivkqC3kfgIGLwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEYz2YV0416pXVqCVrkC/3UInwTGIASqXwVOuNRngQs3bjHt7M7ptYQeg8uG3fcJ5
-	 RGXTbyIyGEE++hCYfqW2wE7ldE73718SgW1a9ZA5yScjZYLAvlF7TPE8xeioJUza/V
-	 3TQWWDU/dTTX93YadA6GvnUg4k48c5wsPaE8t0e4=
+	b=Rrki6gPdbeDaQXyd0zISQhLNG93RsOFyIdP3ynfECqoJigVuatUDIoulsPu6EAZuf
+	 55kYmopHEcHVTvSJMV5YIJk8KHdVnCy3/7EPWD0fhBsTT2hW2mxzEMPqsIBv+EDH2e
+	 rZHFQTvqSfbQBSykdwBXQOZRsvvAIvW/9qu/JbPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 321/466] jfs: fix array-index-out-of-bounds in jfs_readdir
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.6 171/356] x86/kexec: Restore GDT on return from ::preserve_context kexec
 Date: Thu, 12 Dec 2024 15:58:10 +0100
-Message-ID: <20241212144319.477849877@linuxfoundation.org>
+Message-ID: <20241212144251.392375675@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 839f102efb168f02dfdd46717b7c6dddb26b015e ]
+commit 07fa619f2a40c221ea27747a3323cabc59ab25eb upstream.
 
-The stbl might contain some invalid values. Added a check to
-return error code in that case.
+The restore_processor_state() function explicitly states that "the asm code
+that gets us here will have restored a usable GDT". That wasn't true in the
+case of returning from a ::preserve_context kexec. Make it so.
 
-Reported-by: syzbot+0315f8fe99120601ba88@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0315f8fe99120601ba88
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without this, the kernel was depending on the called function to reload a
+GDT which is appropriate for the kernel before returning.
+
+Test program:
+
+ #include <unistd.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <linux/kexec.h>
+ #include <linux/reboot.h>
+ #include <sys/reboot.h>
+ #include <sys/syscall.h>
+
+ int main (void)
+ {
+        struct kexec_segment segment = {};
+	unsigned char purgatory[] = {
+		0x66, 0xba, 0xf8, 0x03,	// mov $0x3f8, %dx
+		0xb0, 0x42,		// mov $0x42, %al
+		0xee,			// outb %al, (%dx)
+		0xc3,			// ret
+	};
+	int ret;
+
+	segment.buf = &purgatory;
+	segment.bufsz = sizeof(purgatory);
+	segment.mem = (void *)0x400000;
+	segment.memsz = 0x1000;
+	ret = syscall(__NR_kexec_load, 0x400000, 1, &segment, KEXEC_PRESERVE_CONTEXT);
+	if (ret) {
+		perror("kexec_load");
+		exit(1);
+	}
+
+	ret = syscall(__NR_reboot, LINUX_REBOOT_MAGIC1, LINUX_REBOOT_MAGIC2, LINUX_REBOOT_CMD_KEXEC);
+	if (ret) {
+		perror("kexec reboot");
+		exit(1);
+	}
+	printf("Success\n");
+	return 0;
+ }
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20241205153343.3275139-2-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kernel/relocate_kernel_64.S |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 69fd936fbdb37..8f85177f284b5 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -2891,6 +2891,14 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
- 		stbl = DT_GETSTBL(p);
- 
- 		for (i = index; i < p->header.nextindex; i++) {
-+			if (stbl[i] < 0 || stbl[i] > 127) {
-+				jfs_err("JFS: Invalid stbl[%d] = %d for inode %ld, block = %lld",
-+					i, stbl[i], (long)ip->i_ino, (long long)bn);
-+				free_page(dirent_buf);
-+				DT_PUTPAGE(mp);
-+				return -EIO;
-+			}
+--- a/arch/x86/kernel/relocate_kernel_64.S
++++ b/arch/x86/kernel/relocate_kernel_64.S
+@@ -240,6 +240,13 @@ SYM_CODE_START_LOCAL_NOALIGN(virtual_map
+ 	movq	CR0(%r8), %r8
+ 	movq	%rax, %cr3
+ 	movq	%r8, %cr0
 +
- 			d = (struct ldtentry *) & p->slot[stbl[i]];
++#ifdef CONFIG_KEXEC_JUMP
++	/* Saved in save_processor_state. */
++	movq    $saved_context, %rax
++	lgdt    saved_context_gdt_desc(%rax)
++#endif
++
+ 	movq	%rbp, %rax
  
- 			if (((long) jfs_dirent + d->namlen + 1) >
--- 
-2.43.0
-
+ 	popf
 
 
 
