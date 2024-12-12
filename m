@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 027709EEDD8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FE39EEBEB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4169189081F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96A1F1889B37
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7A6221DBE;
-	Thu, 12 Dec 2024 15:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1272F2153D9;
+	Thu, 12 Dec 2024 15:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHYrFo5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFGdbTnO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67668212B0A;
-	Thu, 12 Dec 2024 15:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E1F748A;
+	Thu, 12 Dec 2024 15:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018343; cv=none; b=Q4NJ6BScyxD4wWh8GQdY+6NqdTizeIiPVPnPcyfxnF1MrJZrQgjEU79FsDn8xmffJY1ZaJdN92CnhMUEMaY5/VLw9aX5vLJozv4XRr0BTg3vJPzbov66ugoja1zdhpFeQ3HzH7aJAvaGAim+n9JzI81J6DCxT6Q7dbrCx3I4mLY=
+	t=1734017224; cv=none; b=PRgGBprSfjs6jF5yJUpGijIVZFX4XMnWM2Xd4ElOWBK54DnYsRAhLthbxKs84jFKjwhsFV2af5mxfoZ8sQbypHoGYdXEXK/w4OcoulgC/WsyqzNRykM8iFE7bVFP4NC30R/DYEQuHiLhb2tHz5LNZn4YBdrmqiW/aZ1vZRROKKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018343; c=relaxed/simple;
-	bh=J1MK2LIvzdvTyKRPULMROd/nBO5O74ntdfU8If71dR4=;
+	s=arc-20240116; t=1734017224; c=relaxed/simple;
+	bh=ZTJfR4Yf7gEDF4myWI1PqLy01pWS2ULkkzLZx9h6rn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFkDtpdWyYFt1B2SrfMsAC8uPWS3JGUox7TxNVG8zIY633wGY8tSL9caHyL0EWfYBOzA+/aPBMb/NyC8pyDytv3Ig4iB+3SDlmjYRmCIZORQJRhOew8JxhlEqbE9YgZFIkOiuNnGYb0vYkYQOAF0mr7hUNPmTetN7iTab6oUNaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHYrFo5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACE5C4CECE;
-	Thu, 12 Dec 2024 15:45:42 +0000 (UTC)
+	 MIME-Version; b=JEXKmpaAsCOWBzjsQjssAd3gUDeNBo1rnv1MyBOcGYNbH/5IPmqvakgnmN5S3mIpHNE7amX/hZH+BWtAVkIyhFwDl6P6PRbZv8uLhegX/S4xK1nUWS5IcuQvuyli3QtJbwPG4lczNM/DObK2Neq92cBjRegsgYFeiilDsZ54FNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFGdbTnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED94CC4CECE;
+	Thu, 12 Dec 2024 15:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018343;
-	bh=J1MK2LIvzdvTyKRPULMROd/nBO5O74ntdfU8If71dR4=;
+	s=korg; t=1734017224;
+	bh=ZTJfR4Yf7gEDF4myWI1PqLy01pWS2ULkkzLZx9h6rn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHYrFo5pHdKpSrHzEdRR7psGvoqoNjP7NAi0dytfeAp9XSo76C20218Mdx35DTLVf
-	 cs0yoeIIT8MoGtssIwmgJdA94tta4kgMhrbZ6WDEpuUmNdJgnpiC4y0l8cbSQjrYFg
-	 FGV24AR+Uud2bu+nkUfiuKr04sZTAhYjNrl483xQ=
+	b=rFGdbTnO8YulfHs43DE3uPSkY+PnbMDHtP5cWF60qBBAEsdfhk4wUEbxYSvzHWQGg
+	 CDkJDrnbnTIuSLdanE3Qssebi8D5vp54Bw5EsO+qeaFYkg9qRbUqS7CaoXE/sbeIQV
+	 k0vBS5ocT5BRClrT+3TuSBAaiPKaNtewhOJ2ynqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
+	Alex Far <anf1980@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/356] tracing: Use atomic64_inc_return() in trace_clock_counter()
+Subject: [PATCH 6.12 417/466] ASoC: amd: yc: fix internal mic on Redmi G 2022
 Date: Thu, 12 Dec 2024 15:59:46 +0100
-Message-ID: <20241212144255.140039293@linuxfoundation.org>
+Message-ID: <20241212144323.230826030@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Alex Far <anf1980@gmail.com>
 
-[ Upstream commit eb887c4567d1b0e7684c026fe7df44afa96589e6 ]
+[ Upstream commit 67a0463d339059eeeead9cd015afa594659cfdaf ]
 
-Use atomic64_inc_return(&ref) instead of atomic64_add_return(1, &ref)
-to use optimized implementation and ease register pressure around
-the primitive for targets that implement optimized variant.
+This laptop model requires an additional detection quirk to enable the
+internal microphone
 
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20241007085651.48544-1-ubizjak@gmail.com
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Alex Far <anf1980@gmail.com>
+Link: https://patch.msgid.link/ZzjrZY3sImcqTtGx@RedmiG
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_clock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
-index 4702efb00ff21..4cb2ebc439be6 100644
---- a/kernel/trace/trace_clock.c
-+++ b/kernel/trace/trace_clock.c
-@@ -154,5 +154,5 @@ static atomic64_t trace_counter;
-  */
- u64 notrace trace_clock_counter(void)
- {
--	return atomic64_add_return(1, &trace_counter);
-+	return atomic64_inc_return(&trace_counter);
- }
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 5153a68d8c079..37820753ab09c 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -416,6 +416,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Xiaomi Book Pro 14 2022"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "TIMI"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Redmi G 2022"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
