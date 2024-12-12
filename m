@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701329EF66B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2E99EF852
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07E07179B00
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF2A1764E6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89012223C4E;
-	Thu, 12 Dec 2024 17:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C212210F1;
+	Thu, 12 Dec 2024 17:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pk0w9bvV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrOxyKMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A1E21660C;
-	Thu, 12 Dec 2024 17:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311DB2153EC;
+	Thu, 12 Dec 2024 17:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023545; cv=none; b=ZuLPTLQDS+txUFIFmjx2zyI1NzYMw1jboNQQVuUqLgaY8WQn7fXDHNSdAOApI0GxhGlcx137xm7Mebi3E1b4U8bcnL93y1rKaKSsslrk7ZXRBLjFnc/ckeozTnkAc+BV9p6UZBwm2FqaPdUTB9OrCzggh0iW8wFNBIsjS6rP4qI=
+	t=1734024778; cv=none; b=iuBuHP+ZSGuUy2ov71js1ovrwhhkVEJN0/MBd90iuysKEiNiW5QdS40W5PLj6t71QQJQbe8496sLNINI7/q7rlKhS9TFOQ54TRTujYSuojKhqpwEqYLBl0Nj24Up+hnWtz/idRATPhK580aI/RhTcOWYritTcuN5kUVgmDrxDjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023545; c=relaxed/simple;
-	bh=29BQ+L2cp1U7p4CrujCp26fje9SjKwTr2+Jgb9M4wHY=;
+	s=arc-20240116; t=1734024778; c=relaxed/simple;
+	bh=9sDrmI/02x1zisZCOAWX3wZBZu5pO/00Wn0TpO1EM2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lS+b+CO8dIIIEBmzqZqFqkPN0m4+hPMaPjmxUHYJ2ycpGDhuhr54y+GVOGDtHI58csg5EDNTpyMkXOzSog/yRP67Iaeoqf5+s/5c8QJ9jRuSbARZbGWtM98sJJDtUmeyZ2VuIdtcDA00XuQcKgfVRfh3UgSpPq4Flr6BFPMK2AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pk0w9bvV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7A5C4CED0;
-	Thu, 12 Dec 2024 17:12:24 +0000 (UTC)
+	 MIME-Version; b=lbRluxOnquBK4Iv1g4ABIHrAScXjeLZaKMd9CQ/6+IR5ChNKeYAmc0MZ8HwwDPRnWypVs6Q4W0jWaAN0zUEUTeOfTYvhvm8+5Mk4nPBnBEeW7ZsJsF18Ex9UltoD/2w41iApZ3wJUrNGzOP6Zdz2gCVQPdJcsvc89G8f9KcSaUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrOxyKMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3728C4CECE;
+	Thu, 12 Dec 2024 17:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023545;
-	bh=29BQ+L2cp1U7p4CrujCp26fje9SjKwTr2+Jgb9M4wHY=;
+	s=korg; t=1734024778;
+	bh=9sDrmI/02x1zisZCOAWX3wZBZu5pO/00Wn0TpO1EM2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pk0w9bvVFW125ibquJbOzN9z2fD4Yhp7XOzh9gZuVRKw0UDl1MpsrrofFAi5/Ydus
-	 0aYhqjJdMyrlqP0TlKMZkej26gEgGIBgqA4oUZMhLY546+CuZD3QR8BwoJdqDCkWzS
-	 b/OhRFwSj5NiGZWzHWuCfyp9wqPxk5tzMVE3lOUE=
+	b=BrOxyKMu7XuoBuPDEVqAYOnMc8/useQ3TDift6Uy5gY7I2oJnNX2YGX8ozzy3crR7
+	 4lbtDsGRuG6bzcXv///jssuRM+wVBuOLiyHPxdK9nYQKyl3PS0MKsc/CEzBo+tbcfc
+	 jJxi0L2QwTiAympeWOPf26ketTiLEyOV4bXUxhPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weili Qian <qianweili@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Libo Chen <libo.chen.cn@windriver.com>
-Subject: [PATCH 5.15 550/565] crypto: hisilicon/qm - inject error before stopping queue
+	syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com,
+	Nihar Chaithanya <niharchaithanya@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 407/459] jfs: add a check to prevent array-index-out-of-bounds in dbAdjTree
 Date: Thu, 12 Dec 2024 16:02:25 +0100
-Message-ID: <20241212144333.597529158@linuxfoundation.org>
+Message-ID: <20241212144309.843666779@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weili Qian <qianweili@huawei.com>
+From: Nihar Chaithanya <niharchaithanya@gmail.com>
 
-commit b04f06fc0243600665b3b50253869533b7938468 upstream.
+[ Upstream commit a174706ba4dad895c40b1d2277bade16dfacdcd9 ]
 
-The master ooo cannot be completely closed when the
-accelerator core reports memory error. Therefore, the driver
-needs to inject the qm error to close the master ooo. Currently,
-the qm error is injected after stopping queue, memory may be
-released immediately after stopping queue, causing the device to
-access the released memory. Therefore, error is injected to close master
-ooo before stopping queue to ensure that the device does not access
-the released memory.
+When the value of lp is 0 at the beginning of the for loop, it will
+become negative in the next assignment and we should bail out.
 
-Fixes: 6c6dd5802c2d ("crypto: hisilicon/qm - add controller reset interface")
-Signed-off-by: Weili Qian <qianweili@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Libo Chen <libo.chen.cn@windriver.com>
+Reported-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=412dea214d8baa3f7483
+Tested-by: syzbot+412dea214d8baa3f7483@syzkaller.appspotmail.com
+Signed-off-by: Nihar Chaithanya <niharchaithanya@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c |   51 +++++++++++++++++++-----------------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+ fs/jfs/jfs_dmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -4638,6 +4638,28 @@ static int qm_set_vf_mse(struct hisi_qm
- 	return -ETIMEDOUT;
- }
- 
-+static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
-+{
-+	u32 nfe_enb = 0;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index c61fcf0e88d29..ef220709c7f51 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2953,6 +2953,9 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ 	/* bubble the new value up the tree as required.
+ 	 */
+ 	for (k = 0; k < le32_to_cpu(tp->dmt_height); k++) {
++		if (lp == 0)
++			break;
 +
-+	/* Kunpeng930 hardware automatically close master ooo when NFE occurs */
-+	if (qm->ver >= QM_HW_V3)
-+		return;
-+
-+	if (!qm->err_status.is_dev_ecc_mbit &&
-+	    qm->err_status.is_qm_ecc_mbit &&
-+	    qm->err_ini->close_axi_master_ooo) {
-+		qm->err_ini->close_axi_master_ooo(qm);
-+	} else if (qm->err_status.is_dev_ecc_mbit &&
-+		   !qm->err_status.is_qm_ecc_mbit &&
-+		   !qm->err_ini->close_axi_master_ooo) {
-+		nfe_enb = readl(qm->io_base + QM_RAS_NFE_ENABLE);
-+		writel(nfe_enb & QM_RAS_NFE_MBIT_DISABLE,
-+		       qm->io_base + QM_RAS_NFE_ENABLE);
-+		writel(QM_ECC_MBIT, qm->io_base + QM_ABNORMAL_INT_SET);
-+	}
-+}
-+
- static int qm_vf_reset_prepare(struct hisi_qm *qm,
- 			       enum qm_stop_reason stop_reason)
- {
-@@ -4742,6 +4764,8 @@ static int qm_controller_reset_prepare(s
- 		return ret;
- 	}
- 
-+	qm_dev_ecc_mbit_handle(qm);
-+
- 	/* PF obtains the information of VF by querying the register. */
- 	qm_cmd_uninit(qm);
- 
-@@ -4766,31 +4790,6 @@ static int qm_controller_reset_prepare(s
- 	return 0;
- }
- 
--static void qm_dev_ecc_mbit_handle(struct hisi_qm *qm)
--{
--	u32 nfe_enb = 0;
--
--	/* Kunpeng930 hardware automatically close master ooo when NFE occurs */
--	if (qm->ver >= QM_HW_V3)
--		return;
--
--	if (!qm->err_status.is_dev_ecc_mbit &&
--	    qm->err_status.is_qm_ecc_mbit &&
--	    qm->err_ini->close_axi_master_ooo) {
--
--		qm->err_ini->close_axi_master_ooo(qm);
--
--	} else if (qm->err_status.is_dev_ecc_mbit &&
--		   !qm->err_status.is_qm_ecc_mbit &&
--		   !qm->err_ini->close_axi_master_ooo) {
--
--		nfe_enb = readl(qm->io_base + QM_RAS_NFE_ENABLE);
--		writel(nfe_enb & QM_RAS_NFE_MBIT_DISABLE,
--		       qm->io_base + QM_RAS_NFE_ENABLE);
--		writel(QM_ECC_MBIT, qm->io_base + QM_ABNORMAL_INT_SET);
--	}
--}
--
- static int qm_soft_reset(struct hisi_qm *qm)
- {
- 	struct pci_dev *pdev = qm->pdev;
-@@ -4816,8 +4815,6 @@ static int qm_soft_reset(struct hisi_qm
- 		return ret;
- 	}
- 
--	qm_dev_ecc_mbit_handle(qm);
--
- 	/* OOO register set and check */
- 	writel(ACC_MASTER_GLOBAL_CTRL_SHUTDOWN,
- 	       qm->io_base + ACC_MASTER_GLOBAL_CTRL);
+ 		/* get the index of the first leaf of the 4 leaf
+ 		 * group containing the specified leaf (leafno).
+ 		 */
+-- 
+2.43.0
+
 
 
 
