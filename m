@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE61A9EF4BF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:10:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50999EF757
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:45 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4040828CA3B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097BC1700D3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B582206A5;
-	Thu, 12 Dec 2024 17:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C2C2210E1;
+	Thu, 12 Dec 2024 17:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsAWtt7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOxX5NgM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3459353365;
-	Thu, 12 Dec 2024 17:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C00216E2D;
+	Thu, 12 Dec 2024 17:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023254; cv=none; b=I7reYOWkYXF0ZQf9I1TwCsdn0s124yyio49H0zsInVK78/xxTLq9m3W1MR3HRBhCXmbWLbB7kKyuNxK58L5hAQcYwoHWvVYfm6otemI5riz545/z5O6UcidSBDV1SZ2ApRnXOduf9Yd0lh4bokQVgz9potmxRhnS4thC6UrzzjI=
+	t=1734024538; cv=none; b=QlRzQoDZPcKap2wVW0FJRXSC2frWiH/iil9T4pC6bRNsz064fikS44BCNl2Htc2j+bc8kilbfSQXAA7dMYBwbIyeQ6Kfxmbso0fqRXBGdzLULq12Rmgd8L5qXanby5zSjoMf7WifL3fhkk93+LeoupThqyx4s0SfY86YeCYIJyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023254; c=relaxed/simple;
-	bh=l+uf3VCIf9yIZTfQs4LDSKIfFWFLk23bkcwii7QyBII=;
+	s=arc-20240116; t=1734024538; c=relaxed/simple;
+	bh=RpEpWgywSi7cdIWTSsvcYbA6xPlL7mK35aGEYaGTEx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BU7iMQeQISC5UGEDNTZMSouQ3f8APCYVgex0LcLldnZpwvpE+8168B/TuQUlqZatyNlYNFjEYhUEBbCj54Ahr2A4wgLfGbKstbqfz5gwvKJSELqEangBwMWzNYjMcq839MrTEFLmZNxtG2ZrmR1s39Cyzf9Oim2AfnzHeQ1S8Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsAWtt7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5511BC4CECE;
-	Thu, 12 Dec 2024 17:07:33 +0000 (UTC)
+	 MIME-Version; b=cTASqwQ9HeZiasuuEBCkY738DlCcrRHHLJ4Ev+wFbWItoHQIaBIN+fABcx7mA2vQnr0seNgaoS2ngHWFlASw14idNt+8qAzJv155yvyyMFiD/YHERuYDCyKbNmkhhitXqKZdD9k1K19sf+nPMkcs185BWNBoAeCstLVQll4eTpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOxX5NgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05F6C4CED0;
+	Thu, 12 Dec 2024 17:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023253;
-	bh=l+uf3VCIf9yIZTfQs4LDSKIfFWFLk23bkcwii7QyBII=;
+	s=korg; t=1734024538;
+	bh=RpEpWgywSi7cdIWTSsvcYbA6xPlL7mK35aGEYaGTEx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsAWtt7YjwvmgixpdixhpTQSGKGoax/pAj3h0PWeMit3RFRsw6YuRP4MTv6tZZ5Fx
-	 JOnRCbVGVEfSAPAduQL98KotTwRZMz1PLxQmYI6zUrszJ2sj5Olj2d4rVnrdcBFiw2
-	 nEw2OxPbBCggO9Z+WE+FA3w0AAQMZfLYSbedx2Lc=
+	b=nOxX5NgMQpLbrfxbQ7bgYm51qy2OmmzOH7ql90DkB/9ImRmMwOWqUmxE6rujLRUt2
+	 Q2q1q95x0W3UeYcm6SMBF1Tc6r4uo9add1l95qdEV45uxiTVoRx4R5CUaaDPiVMQ/x
+	 aHixph0b+K362aXlcY5T80Vqqmz354Q4V1LBKtY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Marco Elver <elver@google.com>,
+	syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 473/565] kcsan: Turn report_filterlist_lock into a raw_spinlock
+Subject: [PATCH 5.10 330/459] netfilter: x_tables: fix LED ID check in led_tg_check()
 Date: Thu, 12 Dec 2024 16:01:08 +0100
-Message-ID: <20241212144330.444925050@linuxfoundation.org>
+Message-ID: <20241212144306.699508141@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,214 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 59458fa4ddb47e7891c61b4a928d13d5f5b00aa0 ]
+[ Upstream commit 04317f4eb2aad312ad85c1a17ad81fe75f1f9bc7 ]
 
-Ran Xiaokai reports that with a KCSAN-enabled PREEMPT_RT kernel, we can see
-splats like:
+Syzbot has reported the following BUG detected by KASAN:
 
-| BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-| in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-| preempt_count: 10002, expected: 0
-| RCU nest depth: 0, expected: 0
-| no locks held by swapper/1/0.
-| irq event stamp: 156674
-| hardirqs last  enabled at (156673): [<ffffffff81130bd9>] do_idle+0x1f9/0x240
-| hardirqs last disabled at (156674): [<ffffffff82254f84>] sysvec_apic_timer_interrupt+0x14/0xc0
-| softirqs last  enabled at (0): [<ffffffff81099f47>] copy_process+0xfc7/0x4b60
-| softirqs last disabled at (0): [<0000000000000000>] 0x0
-| Preemption disabled at:
-| [<ffffffff814a3e2a>] paint_ptr+0x2a/0x90
-| CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.11.0+ #3
-| Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-0-ga698c8995f-prebuilt.qemu.org 04/01/2014
-| Call Trace:
-|  <IRQ>
-|  dump_stack_lvl+0x7e/0xc0
-|  dump_stack+0x1d/0x30
-|  __might_resched+0x1a2/0x270
-|  rt_spin_lock+0x68/0x170
-|  kcsan_skip_report_debugfs+0x43/0xe0
-|  print_report+0xb5/0x590
-|  kcsan_report_known_origin+0x1b1/0x1d0
-|  kcsan_setup_watchpoint+0x348/0x650
-|  __tsan_unaligned_write1+0x16d/0x1d0
-|  hrtimer_interrupt+0x3d6/0x430
-|  __sysvec_apic_timer_interrupt+0xe8/0x3a0
-|  sysvec_apic_timer_interrupt+0x97/0xc0
-|  </IRQ>
+BUG: KASAN: slab-out-of-bounds in strlen+0x58/0x70
+Read of size 1 at addr ffff8881022da0c8 by task repro/5879
+...
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x241/0x360
+ ? __pfx_dump_stack_lvl+0x10/0x10
+ ? __pfx__printk+0x10/0x10
+ ? _printk+0xd5/0x120
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ print_report+0x169/0x550
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x183/0x530
+ ? __virt_addr_valid+0x45f/0x530
+ ? __phys_addr+0xba/0x170
+ ? strlen+0x58/0x70
+ kasan_report+0x143/0x180
+ ? strlen+0x58/0x70
+ strlen+0x58/0x70
+ kstrdup+0x20/0x80
+ led_tg_check+0x18b/0x3c0
+ xt_check_target+0x3bb/0xa40
+ ? __pfx_xt_check_target+0x10/0x10
+ ? stack_depot_save_flags+0x6e4/0x830
+ ? nft_target_init+0x174/0xc30
+ nft_target_init+0x82d/0xc30
+ ? __pfx_nft_target_init+0x10/0x10
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? rcu_is_watching+0x15/0xb0
+ ? nf_tables_newrule+0x1609/0x2980
+ ? nf_tables_newrule+0x1609/0x2980
+ ? __kmalloc_noprof+0x21a/0x400
+ nf_tables_newrule+0x1860/0x2980
+ ? __pfx_nf_tables_newrule+0x10/0x10
+ ? __nla_parse+0x40/0x60
+ nfnetlink_rcv+0x14e5/0x2ab0
+ ? __pfx_validate_chain+0x10/0x10
+ ? __pfx_nfnetlink_rcv+0x10/0x10
+ ? __lock_acquire+0x1384/0x2050
+ ? netlink_deliver_tap+0x2e/0x1b0
+ ? __pfx_lock_release+0x10/0x10
+ ? netlink_deliver_tap+0x2e/0x1b0
+ netlink_unicast+0x7f8/0x990
+ ? __pfx_netlink_unicast+0x10/0x10
+ ? __virt_addr_valid+0x183/0x530
+ ? __check_object_size+0x48e/0x900
+ netlink_sendmsg+0x8e4/0xcb0
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ ? aa_sock_msg_perm+0x91/0x160
+ ? __pfx_netlink_sendmsg+0x10/0x10
+ __sock_sendmsg+0x223/0x270
+ ____sys_sendmsg+0x52a/0x7e0
+ ? __pfx_____sys_sendmsg+0x10/0x10
+ __sys_sendmsg+0x292/0x380
+ ? __pfx___sys_sendmsg+0x10/0x10
+ ? lockdep_hardirqs_on_prepare+0x43d/0x780
+ ? __pfx_lockdep_hardirqs_on_prepare+0x10/0x10
+ ? exc_page_fault+0x590/0x8c0
+ ? do_syscall_64+0xb6/0x230
+ do_syscall_64+0xf3/0x230
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+ </TASK>
 
-On a detected data race, KCSAN's reporting logic checks if it should
-filter the report. That list is protected by the report_filterlist_lock
-*non-raw* spinlock which may sleep on RT kernels.
+Since an invalid (without '\0' byte at all) byte sequence may be passed
+from userspace, add an extra check to ensure that such a sequence is
+rejected as possible ID and so never passed to 'kstrdup()' and further.
 
-Since KCSAN may report data races in any context, convert it to a
-raw_spinlock.
-
-This requires being careful about when to allocate memory for the filter
-list itself which can be done via KCSAN's debugfs interface. Concurrent
-modification of the filter list via debugfs should be rare: the chosen
-strategy is to optimistically pre-allocate memory before the critical
-section and discard if unused.
-
-Link: https://lore.kernel.org/all/20240925143154.2322926-1-ranxiaokai627@163.com/
-Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Tested-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Signed-off-by: Marco Elver <elver@google.com>
+Reported-by: syzbot+6c8215822f35fdb35667@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6c8215822f35fdb35667
+Fixes: 268cb38e1802 ("netfilter: x_tables: add LED trigger target")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kcsan/debugfs.c | 74 ++++++++++++++++++++----------------------
- 1 file changed, 36 insertions(+), 38 deletions(-)
+ net/netfilter/xt_LED.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
-index 1d1d1b0e42489..f4623910fb1f2 100644
---- a/kernel/kcsan/debugfs.c
-+++ b/kernel/kcsan/debugfs.c
-@@ -46,14 +46,8 @@ static struct {
- 	int		used;		/* number of elements used */
- 	bool		sorted;		/* if elements are sorted */
- 	bool		whitelist;	/* if list is a blacklist or whitelist */
--} report_filterlist = {
--	.addrs		= NULL,
--	.size		= 8,		/* small initial size */
--	.used		= 0,
--	.sorted		= false,
--	.whitelist	= false,	/* default is blacklist */
--};
--static DEFINE_SPINLOCK(report_filterlist_lock);
-+} report_filterlist;
-+static DEFINE_RAW_SPINLOCK(report_filterlist_lock);
+diff --git a/net/netfilter/xt_LED.c b/net/netfilter/xt_LED.c
+index 0371c387b0d1f..13a2b5820b34b 100644
+--- a/net/netfilter/xt_LED.c
++++ b/net/netfilter/xt_LED.c
+@@ -97,7 +97,9 @@ static int led_tg_check(const struct xt_tgchk_param *par)
+ 	struct xt_led_info_internal *ledinternal;
+ 	int err;
  
- /*
-  * The microbenchmark allows benchmarking KCSAN core runtime only. To run
-@@ -110,7 +104,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		return false;
- 	func_addr -= offset; /* Get function start */
+-	if (ledinfo->id[0] == '\0')
++	/* Bail out if empty string or not a string at all. */
++	if (ledinfo->id[0] == '\0' ||
++	    !memchr(ledinfo->id, '\0', sizeof(ledinfo->id)))
+ 		return -EINVAL;
  
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	if (report_filterlist.used == 0)
- 		goto out;
- 
-@@ -127,7 +121,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
- 		ret = !ret;
- 
- out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 	return ret;
- }
- 
-@@ -135,9 +129,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
- {
- 	unsigned long flags;
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	report_filterlist.whitelist = whitelist;
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- }
- 
- /* Returns 0 on success, error-code otherwise. */
-@@ -145,6 +139,9 @@ static ssize_t insert_report_filterlist(const char *func)
- {
- 	unsigned long flags;
- 	unsigned long addr = kallsyms_lookup_name(func);
-+	unsigned long *delay_free = NULL;
-+	unsigned long *new_addrs = NULL;
-+	size_t new_size = 0;
- 	ssize_t ret = 0;
- 
- 	if (!addr) {
-@@ -152,32 +149,33 @@ static ssize_t insert_report_filterlist(const char *func)
- 		return -ENOENT;
- 	}
- 
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+retry_alloc:
-+	/*
-+	 * Check if we need an allocation, and re-validate under the lock. Since
-+	 * the report_filterlist_lock is a raw, cannot allocate under the lock.
-+	 */
-+	if (data_race(report_filterlist.used == report_filterlist.size)) {
-+		new_size = (report_filterlist.size ?: 4) * 2;
-+		delay_free = new_addrs = kmalloc_array(new_size, sizeof(unsigned long), GFP_KERNEL);
-+		if (!new_addrs)
-+			return -ENOMEM;
-+	}
- 
--	if (report_filterlist.addrs == NULL) {
--		/* initial allocation */
--		report_filterlist.addrs =
--			kmalloc_array(report_filterlist.size,
--				      sizeof(unsigned long), GFP_ATOMIC);
--		if (report_filterlist.addrs == NULL) {
--			ret = -ENOMEM;
--			goto out;
--		}
--	} else if (report_filterlist.used == report_filterlist.size) {
--		/* resize filterlist */
--		size_t new_size = report_filterlist.size * 2;
--		unsigned long *new_addrs =
--			krealloc(report_filterlist.addrs,
--				 new_size * sizeof(unsigned long), GFP_ATOMIC);
--
--		if (new_addrs == NULL) {
--			/* leave filterlist itself untouched */
--			ret = -ENOMEM;
--			goto out;
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
-+	if (report_filterlist.used == report_filterlist.size) {
-+		/* Check we pre-allocated enough, and retry if not. */
-+		if (report_filterlist.used >= new_size) {
-+			raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+			kfree(new_addrs); /* kfree(NULL) is safe */
-+			delay_free = new_addrs = NULL;
-+			goto retry_alloc;
- 		}
- 
-+		if (report_filterlist.used)
-+			memcpy(new_addrs, report_filterlist.addrs, report_filterlist.used * sizeof(unsigned long));
-+		delay_free = report_filterlist.addrs; /* free the old list */
-+		report_filterlist.addrs = new_addrs;  /* switch to the new list */
- 		report_filterlist.size = new_size;
--		report_filterlist.addrs = new_addrs;
- 	}
- 
- 	/* Note: deduplicating should be done in userspace. */
-@@ -185,9 +183,9 @@ static ssize_t insert_report_filterlist(const char *func)
- 		kallsyms_lookup_name(func);
- 	report_filterlist.sorted = false;
- 
--out:
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 
-+	kfree(delay_free);
- 	return ret;
- }
- 
-@@ -204,13 +202,13 @@ static int show_info(struct seq_file *file, void *v)
- 	}
- 
- 	/* show filter functions, and filter type */
--	spin_lock_irqsave(&report_filterlist_lock, flags);
-+	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
- 	seq_printf(file, "\n%s functions: %s\n",
- 		   report_filterlist.whitelist ? "whitelisted" : "blacklisted",
- 		   report_filterlist.used == 0 ? "none" : "");
- 	for (i = 0; i < report_filterlist.used; ++i)
- 		seq_printf(file, " %ps\n", (void *)report_filterlist.addrs[i]);
--	spin_unlock_irqrestore(&report_filterlist_lock, flags);
-+	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
- 
- 	return 0;
- }
+ 	mutex_lock(&xt_led_mutex);
 -- 
 2.43.0
 
