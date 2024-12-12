@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBD39EF2C7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:52:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E9E9EEBD0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BEE17B5A7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CE10166C56
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965A122EA05;
-	Thu, 12 Dec 2024 16:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D839020969B;
+	Thu, 12 Dec 2024 15:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzT0SMpk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWm8xz7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C4822E9F7;
-	Thu, 12 Dec 2024 16:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F7313792B;
+	Thu, 12 Dec 2024 15:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020984; cv=none; b=M5yz8YjrBFciOgVPEsrrJGORru0/4J44EH2i2XsmN+ema3TXnphpMJTyaPA2H9Jt75mB63kdXF7hoRhe6ZhQB0MsQH345E8pp+djugaTNeNsFLEquOfoeZxDgzShtDeHcf4js7DfMu+EKw2VUmvyLutDzMu9hkpmsC5+KaIuJRo=
+	t=1734017149; cv=none; b=fXMdhslQdtLtHYWKFOhshTZjlLwKx4XvIDX9811oP3TEXTC51Y4dPNRPa9VCZAZ/RP073LrUs6xhkv6B2F+2pj4bM9PoY7GKhA/MYthMpgMbZkMIr5mWDYobnoF6U0hUpWZRK2idowro9BB+OqEXlsJON7mojw1QeBEWOiZ2diU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020984; c=relaxed/simple;
-	bh=7sicUKyAIBCmoPfoP3zkVTNkkYEBfLHDbb0et+AoGLs=;
+	s=arc-20240116; t=1734017149; c=relaxed/simple;
+	bh=ZO43cznYBHTHlfdYf44pQFblYoLKWyLWVPxf60GmDxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S2AjZnW3WCffKDXUFbjQ7zOruS892NZtZtHanCAsB6tpMUJT2lSHppGvchtkngKfabV7UtF5yB6zjiAzb74xiL309Qu06XFKVoISnVZvGF2wY1F9Eh6vuihsyED+F/2qyzIrcfWzwAYxLinhUsdUX5h2lQ/slOKI6m2aVsctMhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzT0SMpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38237C4CED0;
-	Thu, 12 Dec 2024 16:29:42 +0000 (UTC)
+	 MIME-Version; b=eDAzkH5WD/EpZ52EqiEDofTMnuL9jCDLcJ8Gu7KdBN6oR8Ei1K+LDkbR+bm/aVEVC9w4xFRLEiIStfpY/ysR88zXzYkMUusFpkTv5q/y3wluJ6Elw1uLTSTA65YDVmCbhb/DUY9ge1JC31keDiYj+Vq19R0OXEYX91+JX0gKWgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWm8xz7i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A97C4CECE;
+	Thu, 12 Dec 2024 15:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020983;
-	bh=7sicUKyAIBCmoPfoP3zkVTNkkYEBfLHDbb0et+AoGLs=;
+	s=korg; t=1734017149;
+	bh=ZO43cznYBHTHlfdYf44pQFblYoLKWyLWVPxf60GmDxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZzT0SMpkxM+AUsmx+ud/1rWuD76Edegn6uBvXNzeocRxHzXOuqzHFrdBrlLV0GkY5
-	 ffU6Iwvo6UqNQjbbkShcDipeChdC5tcsUEs2YUpD1XckasGw8ZGcXPS3tcSXusuR04
-	 T0n6B/gfLSSeR00HGWW/ffniUg1R1ZPh63YgB8I0=
+	b=yWm8xz7i5rRtCIICJ3IkmocI3e6hzpW6+KdNhI0gIfy0E6qESPeHXYmLFE1gA6NhM
+	 7gRb+6+kCrST5sV0j+06sLt3OgbeptN/vihbpEPF0T5xIdlSXId/E6bh+BVa9ShFKh
+	 tlIJvsfZ3d5W4iS6UIEFz/0XJKNJgQrRoDoZvQx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marie Ramlow <me@nycode.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 613/772] ALSA: usb-audio: add mixer mapping for Corsair HS80
+	syzbot+aa0730b0a42646eb1359@syzkaller.appspotmail.com,
+	Qianqiang Liu <qianqiang.liu@163.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 389/466] KMSAN: uninit-value in inode_go_dump (5)
 Date: Thu, 12 Dec 2024 15:59:18 +0100
-Message-ID: <20241212144415.263592009@linuxfoundation.org>
+Message-ID: <20241212144322.141423582@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marie Ramlow <me@nycode.dev>
+From: Qianqiang Liu <qianqiang.liu@163.com>
 
-commit a7de2b873f3dbcda02d504536f1ec6dc50e3f6c4 upstream.
+[ Upstream commit f9417fcfca3c5e30a0b961e7250fab92cfa5d123 ]
 
-The Corsair HS80 RGB Wireless is a USB headset with a mic and a sidetone
-feature. It has the same quirk as the Virtuoso series.
-This labels the mixers appropriately, so applications don't
-move the sidetone volume when they actually intend to move the main
-headset volume.
+When mounting of a corrupted disk image fails, the error message printed
+can reference uninitialized inode fields.  To prevent that from happening,
+always initialize those fields.
 
-Signed-off-by: Marie Ramlow <me@nycode.dev>
-cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20241130165240.17838-1-me@nycode.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+aa0730b0a42646eb1359@syzkaller.appspotmail.com
+Signed-off-by: Qianqiang Liu <qianqiang.liu@163.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_maps.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/gfs2/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/usb/mixer_maps.c
-+++ b/sound/usb/mixer_maps.c
-@@ -621,6 +621,16 @@ static const struct usbmix_ctl_map usbmi
- 		.id = USB_ID(0x1b1c, 0x0a42),
- 		.map = corsair_virtuoso_map,
- 	},
-+	{
-+		/* Corsair HS80 RGB Wireless (wired mode) */
-+		.id = USB_ID(0x1b1c, 0x0a6a),
-+		.map = corsair_virtuoso_map,
-+	},
-+	{
-+		/* Corsair HS80 RGB Wireless (wireless mode) */
-+		.id = USB_ID(0x1b1c, 0x0a6b),
-+		.map = corsair_virtuoso_map,
-+	},
- 	{	/* Gigabyte TRX40 Aorus Master (rear panel + front mic) */
- 		.id = USB_ID(0x0414, 0xa001),
- 		.map = aorus_master_alc1220vb_map,
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index e22c1edc32b39..b9cef63c78717 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1537,11 +1537,13 @@ static struct inode *gfs2_alloc_inode(struct super_block *sb)
+ 	if (!ip)
+ 		return NULL;
+ 	ip->i_no_addr = 0;
++	ip->i_no_formal_ino = 0;
+ 	ip->i_flags = 0;
+ 	ip->i_gl = NULL;
+ 	gfs2_holder_mark_uninitialized(&ip->i_iopen_gh);
+ 	memset(&ip->i_res, 0, sizeof(ip->i_res));
+ 	RB_CLEAR_NODE(&ip->i_res.rs_node);
++	ip->i_diskflags = 0;
+ 	ip->i_rahead = 0;
+ 	return &ip->i_inode;
+ }
+-- 
+2.43.0
+
 
 
 
