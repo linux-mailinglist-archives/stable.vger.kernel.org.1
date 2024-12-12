@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84ABE9EF526
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1128E9EF476
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:08:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 222F8290C7C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D01188ED84
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED390222D4E;
-	Thu, 12 Dec 2024 17:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A02322FDE6;
+	Thu, 12 Dec 2024 16:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8265hfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Niw0qlPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B22222D67;
-	Thu, 12 Dec 2024 17:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E945622FDE1;
+	Thu, 12 Dec 2024 16:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023588; cv=none; b=Th9xVWvGt1WKZpWy79ou99fYperUnYywwdsvs+mZZoYE/L4+T0F6nUAPzwciwxNqhlqvZIYxhckQcId/g+OFlF/grwFSVkn9y1dIxgtlIRb2ZiseJFWRH3nJHA1hACWI3dfpCSRAv0Q9Jsh07fV0wMyyHm84lL+sRFfhq+Mitm8=
+	t=1734022260; cv=none; b=VFCeqnWEvapUmZr0tc9P674uX6CCDH/VlxpS0BNi7Mepq8+Io8kVTgW6sPD/brhA/N3HFMpEtpBlrxwFuk5/3hw8Yc5S3lVyw0DuexzgVdz6H1V+pUGUPdO1KM6AkAnMJClyQOsMtyqtGZucS1VLiGq8I42Gk/j9RPssJN+xgjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023588; c=relaxed/simple;
-	bh=/GErDjmzF5BjtRWgC+eeU3kVp9Hk0pNk1qyAui6cdww=;
+	s=arc-20240116; t=1734022260; c=relaxed/simple;
+	bh=biGtUnGTNkVY2HG50fTxHHp9HeYEYn7rWK1971TJruc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1FMF11BnpXWWViJGC6hyYtRsMhpPOLLnKH65UNUIG/fmh8/ypg+biyAjoRP3vHvCCihvHZCSL2wIc5OmB/h52P7uS0Mysz4eMLqhfvHuWyP6n9jPds15z/EYzxFTIZ0mqNc0arpF0lFSaS7wbXOpdyWGLyGD+lq22C+/426bXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8265hfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C87C4CED0;
-	Thu, 12 Dec 2024 17:13:07 +0000 (UTC)
+	 MIME-Version; b=GTBQfhUZndmwKwM9kws0K7JRvLpp6XPz/IPdEtDBHKDlCx+Xsxm4xOXrWxt0EP44oagfBLw7NIqVINMH9F0tTyPGo8u85Y/EgY8eJDAYZe+GCbENCT7IQoP0HpRiC0HifBL4pK2tHdspe+KgFI+35moDGZGWZpwLK/hDxuHPsLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Niw0qlPc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA5CC4CECE;
+	Thu, 12 Dec 2024 16:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023588;
-	bh=/GErDjmzF5BjtRWgC+eeU3kVp9Hk0pNk1qyAui6cdww=;
+	s=korg; t=1734022259;
+	bh=biGtUnGTNkVY2HG50fTxHHp9HeYEYn7rWK1971TJruc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8265hfB/NatrsSghLce0G5V/2XqB1ECta0RdoEyc1q5rIzWvq4ljMmfhf7+ijiWo
-	 Z71bxUApQyQUEtQY/VeEHGbFFIicVWRrXWnDiUzQ7PCPAmkmzyWc80j9W6VW563jHo
-	 ozLy3CGVpacbt0Oe+JuxSH0erB9y4HT8RK5DTTeg=
+	b=Niw0qlPcbTHFrCnNOAP11+RLRP3EKuHgpX8yhdXZuhvKWkgSWm5FX8Dgdd6R4ABDE
+	 XPkPzD9DWa32FCxO38RWQ7Db/yS3vZE0LUg7RH45GnntB47Aii6ctRQ6wZ10CXRNEW
+	 U5UXhuZ5m8fC7+OoCaHgoXHQhH9XUx3Az4TOI35w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 5.10 017/459] vdpa/mlx5: Fix PA offset with unaligned starting iotlb map
-Date: Thu, 12 Dec 2024 15:55:55 +0100
-Message-ID: <20241212144254.209861629@linuxfoundation.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 161/565] ASoC: fsl_micfil: fix regmap_write_bits usage
+Date: Thu, 12 Dec 2024 15:55:56 +0100
+Message-ID: <20241212144317.840110050@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit 29ce8b8a4fa74e841342c8b8f8941848a3c6f29f upstream.
+[ Upstream commit 06df673d20230afb0e383e39235a4fa8b9a62464 ]
 
-When calculating the physical address range based on the iotlb and mr
-[start,end) ranges, the offset of mr->start relative to map->start
-is not taken into account. This leads to some incorrect and duplicate
-mappings.
+The last parameter 1 means BIT(0), which should be the
+correct BIT(X).
 
-For the case when mr->start < map->start the code is already correct:
-the range in [mr->start, map->start) was handled by a different
-iteration.
-
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Message-Id: <20241021134040.975221-2-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 47a70e6fc9a8 ("ASoC: Add MICFIL SoC Digital Audio Interface driver.")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://patch.msgid.link/1727424031-19551-2-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/core/mr.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -231,7 +231,7 @@ static int map_direct_mr(struct mlx5_vdp
- 	struct page *pg;
- 	unsigned int nsg;
- 	int sglen;
--	u64 pa;
-+	u64 pa, offset;
- 	u64 paend;
- 	struct scatterlist *sg;
- 	struct device *dma = mvdev->mdev->device;
-@@ -254,8 +254,10 @@ static int map_direct_mr(struct mlx5_vdp
- 	sg = mr->sg_head.sgl;
- 	for (map = vhost_iotlb_itree_first(iotlb, mr->start, mr->end - 1);
- 	     map; map = vhost_iotlb_itree_next(map, mr->start, mr->end - 1)) {
--		paend = map->addr + maplen(map, mr);
--		for (pa = map->addr; pa < paend; pa += sglen) {
-+		offset = mr->start > map->start ? mr->start - map->start : 0;
-+		pa = map->addr + offset;
-+		paend = map->addr + offset + maplen(map, mr);
-+		for (; pa < paend; pa += sglen) {
- 			pg = pfn_to_page(__phys_to_pfn(pa));
- 			if (!sg) {
- 				mlx5_vdpa_warn(mvdev, "sg null. start 0x%llx, end 0x%llx\n",
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index 6e5025b15ac63..ccf66f59a8314 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -609,7 +609,7 @@ static irqreturn_t micfil_isr(int irq, void *devid)
+ 			regmap_write_bits(micfil->regmap,
+ 					  REG_MICFIL_STAT,
+ 					  MICFIL_STAT_CHXF(i),
+-					  1);
++					  MICFIL_STAT_CHXF(i));
+ 	}
+ 
+ 	for (i = 0; i < MICFIL_FIFO_NUM; i++) {
+@@ -644,7 +644,7 @@ static irqreturn_t micfil_err_isr(int irq, void *devid)
+ 	if (stat_reg & MICFIL_STAT_LOWFREQF) {
+ 		dev_dbg(&pdev->dev, "isr: ipg_clk_app is too low\n");
+ 		regmap_write_bits(micfil->regmap, REG_MICFIL_STAT,
+-				  MICFIL_STAT_LOWFREQF, 1);
++				  MICFIL_STAT_LOWFREQF, MICFIL_STAT_LOWFREQF);
+ 	}
+ 
+ 	return IRQ_HANDLED;
+-- 
+2.43.0
+
 
 
 
