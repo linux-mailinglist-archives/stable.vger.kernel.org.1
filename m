@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-103765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFC69EF90D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D8D9EF7F9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DFD528BE62
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15CD81714CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD22A22331E;
-	Thu, 12 Dec 2024 17:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16B222D45;
+	Thu, 12 Dec 2024 17:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hh4GpyeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mngeG9TX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0CE223C55;
-	Thu, 12 Dec 2024 17:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A1F20A5EE;
+	Thu, 12 Dec 2024 17:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025538; cv=none; b=OXRLsNKpOOjowNM5ld35pwTpZyIt7ktwKAazeErWgnZutbsRo/FC39eBIXULiqr8R/hYbuwTAE0uWMP3DxmaU6/VLhLCBWuc/uNfmF4r0D+c52sEZGj1apmsuQA1dJ4Rx5hGWvEpAKz0GP5LN6+SETAtOlsECCyK3Pg3ElD2qs4=
+	t=1734024787; cv=none; b=vC20w8qA6iMMOxG3lel4DaW0Vx4Nhi9Y8RC4p+botSgqeEdUEcfILR8ITp2cioc0SRNGS0Fe0qrW5U8dwZtZ7u83fvLgWqukifiGcwrlELk6JcQ6c78ytg6/j0hkwvulKc3Le8bifu+KFPqEa1G+NuGH1jHWnWTm/DretYOku04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025538; c=relaxed/simple;
-	bh=n8C0TOess7nUBYbBQxU7/r98/O5okIe6HWsfVjRAdJw=;
+	s=arc-20240116; t=1734024787; c=relaxed/simple;
+	bh=YkSo0gtJFHEpPr32fx9W9RRTjoPEy9DEYVtSawiEuII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qhz7y57P1zeLK9rcJ8FZBVyQXoE2ky3W2dwZYHdmTIB0TiEXF8/HqRIVHLACUIRQoKfDYXpWgoVB2DprCb/60J5b2SwjLug7iAY13jOPE8yj1Jo2yJoc2jCqTS4BvDbIw/eiflvbb0GO8hrt63zCsrdcYlAEpMfMh00l3tEnnpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hh4GpyeL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8536C4CECE;
-	Thu, 12 Dec 2024 17:45:37 +0000 (UTC)
+	 MIME-Version; b=MRlvvDWronV7eukmWfZENOpqg1QS+N+wNg+kdHARGh3vbf/QHYH2mS0uxyMmbOyR2+hgG+rHsw0wGgQDXWi66Y926rs3bsUIPPqQoYwlnu42iJ77XVeD29LgZ1cont1FydzSN9h79Gs8O1lWSTSaOQNeQMQweKAeC2eNTiU7PwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mngeG9TX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE18C4CECE;
+	Thu, 12 Dec 2024 17:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025538;
-	bh=n8C0TOess7nUBYbBQxU7/r98/O5okIe6HWsfVjRAdJw=;
+	s=korg; t=1734024787;
+	bh=YkSo0gtJFHEpPr32fx9W9RRTjoPEy9DEYVtSawiEuII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hh4GpyeLLQjYXzGAtytB5JaPln9f3T/midJuvL9SbZ2D+cgVma/PY0DwXJ0HVv6nN
-	 oRe/3em/mcfUimQbalmPQ+dzk4Mmm+Y+LDcrhkzZOSFEmys7y+g/EUN+X/xJnc+haC
-	 e27S7M6pAJ2AyOFbxlelbeZVYlzfqYJhxV3STDBs=
+	b=mngeG9TXUQWHcnTYgWXhWnoPk6tijIuroELl8BaO1skhPnZF6pDSrd9gxFFPpXPB8
+	 hkpKocjHnxkOTzI1J3heHX0BPVkvnIbn9Buw4PAOcyhDzyMC3eh4CiQ2a2j0yDi/9M
+	 KHHkhA8lTgvviTJmlCxwUZWZf0pmfLTfa/LZrq2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Jan Kara <jack@suse.cz>,
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+	Marco Elver <elver@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 202/321] quota: flush quota_release_work upon quota writeback
+Subject: [PATCH 5.10 382/459] kcsan: Turn report_filterlist_lock into a raw_spinlock
 Date: Thu, 12 Dec 2024 16:02:00 +0100
-Message-ID: <20241212144237.959751462@linuxfoundation.org>
+Message-ID: <20241212144308.863139865@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Marco Elver <elver@google.com>
 
-[ Upstream commit ac6f420291b3fee1113f21d612fa88b628afab5b ]
+[ Upstream commit 59458fa4ddb47e7891c61b4a928d13d5f5b00aa0 ]
 
-One of the paths quota writeback is called from is:
+Ran Xiaokai reports that with a KCSAN-enabled PREEMPT_RT kernel, we can see
+splats like:
 
-freeze_super()
-  sync_filesystem()
-    ext4_sync_fs()
-      dquot_writeback_dquots()
+| BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+| in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+| preempt_count: 10002, expected: 0
+| RCU nest depth: 0, expected: 0
+| no locks held by swapper/1/0.
+| irq event stamp: 156674
+| hardirqs last  enabled at (156673): [<ffffffff81130bd9>] do_idle+0x1f9/0x240
+| hardirqs last disabled at (156674): [<ffffffff82254f84>] sysvec_apic_timer_interrupt+0x14/0xc0
+| softirqs last  enabled at (0): [<ffffffff81099f47>] copy_process+0xfc7/0x4b60
+| softirqs last disabled at (0): [<0000000000000000>] 0x0
+| Preemption disabled at:
+| [<ffffffff814a3e2a>] paint_ptr+0x2a/0x90
+| CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.11.0+ #3
+| Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-0-ga698c8995f-prebuilt.qemu.org 04/01/2014
+| Call Trace:
+|  <IRQ>
+|  dump_stack_lvl+0x7e/0xc0
+|  dump_stack+0x1d/0x30
+|  __might_resched+0x1a2/0x270
+|  rt_spin_lock+0x68/0x170
+|  kcsan_skip_report_debugfs+0x43/0xe0
+|  print_report+0xb5/0x590
+|  kcsan_report_known_origin+0x1b1/0x1d0
+|  kcsan_setup_watchpoint+0x348/0x650
+|  __tsan_unaligned_write1+0x16d/0x1d0
+|  hrtimer_interrupt+0x3d6/0x430
+|  __sysvec_apic_timer_interrupt+0xe8/0x3a0
+|  sysvec_apic_timer_interrupt+0x97/0xc0
+|  </IRQ>
 
-Since we currently don't always flush the quota_release_work queue in
-this path, we can end up with the following race:
+On a detected data race, KCSAN's reporting logic checks if it should
+filter the report. That list is protected by the report_filterlist_lock
+*non-raw* spinlock which may sleep on RT kernels.
 
- 1. dquot are added to releasing_dquots list during regular operations.
- 2. FS Freeze starts, however, this does not flush the quota_release_work queue.
- 3. Freeze completes.
- 4. Kernel eventually tries to flush the workqueue while FS is frozen which
-    hits a WARN_ON since transaction gets started during frozen state:
+Since KCSAN may report data races in any context, convert it to a
+raw_spinlock.
 
-  ext4_journal_check_start+0x28/0x110 [ext4] (unreliable)
-  __ext4_journal_start_sb+0x64/0x1c0 [ext4]
-  ext4_release_dquot+0x90/0x1d0 [ext4]
-  quota_release_workfn+0x43c/0x4d0
+This requires being careful about when to allocate memory for the filter
+list itself which can be done via KCSAN's debugfs interface. Concurrent
+modification of the filter list via debugfs should be rare: the chosen
+strategy is to optimistically pre-allocate memory before the critical
+section and discard if unused.
 
-Which is the following line:
-
-  WARN_ON(sb->s_writers.frozen == SB_FREEZE_COMPLETE);
-
-Which ultimately results in generic/390 failing due to dmesg
-noise. This was detected on powerpc machine 15 cores.
-
-To avoid this, make sure to flush the workqueue during
-dquot_writeback_dquots() so we dont have any pending workitems after
-freeze.
-
-Reported-by: Disha Goel <disgoel@linux.ibm.com>
-CC: stable@vger.kernel.org
-Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241121123855.645335-2-ojaswin@linux.ibm.com
+Link: https://lore.kernel.org/all/20240925143154.2322926-1-ranxiaokai627@163.com/
+Reported-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Tested-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/kcsan/debugfs.c | 74 ++++++++++++++++++++----------------------
+ 1 file changed, 36 insertions(+), 38 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 14c0dd5b65a43..42c2ac0cc8fc9 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -681,6 +681,8 @@ int dquot_writeback_dquots(struct super_block *sb, int type)
+diff --git a/kernel/kcsan/debugfs.c b/kernel/kcsan/debugfs.c
+index 62a52be8f6ba9..6a4ecd1a6fa5b 100644
+--- a/kernel/kcsan/debugfs.c
++++ b/kernel/kcsan/debugfs.c
+@@ -41,14 +41,8 @@ static struct {
+ 	int		used;		/* number of elements used */
+ 	bool		sorted;		/* if elements are sorted */
+ 	bool		whitelist;	/* if list is a blacklist or whitelist */
+-} report_filterlist = {
+-	.addrs		= NULL,
+-	.size		= 8,		/* small initial size */
+-	.used		= 0,
+-	.sorted		= false,
+-	.whitelist	= false,	/* default is blacklist */
+-};
+-static DEFINE_SPINLOCK(report_filterlist_lock);
++} report_filterlist;
++static DEFINE_RAW_SPINLOCK(report_filterlist_lock);
  
- 	WARN_ON_ONCE(!rwsem_is_locked(&sb->s_umount));
+ /*
+  * The microbenchmark allows benchmarking KCSAN core runtime only. To run
+@@ -105,7 +99,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
+ 		return false;
+ 	func_addr -= offset; /* Get function start */
  
-+	flush_delayed_work(&quota_release_work);
-+
- 	for (cnt = 0; cnt < MAXQUOTAS; cnt++) {
- 		if (type != -1 && cnt != type)
- 			continue;
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
+ 	if (report_filterlist.used == 0)
+ 		goto out;
+ 
+@@ -122,7 +116,7 @@ bool kcsan_skip_report_debugfs(unsigned long func_addr)
+ 		ret = !ret;
+ 
+ out:
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ 	return ret;
+ }
+ 
+@@ -130,9 +124,9 @@ static void set_report_filterlist_whitelist(bool whitelist)
+ {
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
+ 	report_filterlist.whitelist = whitelist;
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ }
+ 
+ /* Returns 0 on success, error-code otherwise. */
+@@ -140,6 +134,9 @@ static ssize_t insert_report_filterlist(const char *func)
+ {
+ 	unsigned long flags;
+ 	unsigned long addr = kallsyms_lookup_name(func);
++	unsigned long *delay_free = NULL;
++	unsigned long *new_addrs = NULL;
++	size_t new_size = 0;
+ 	ssize_t ret = 0;
+ 
+ 	if (!addr) {
+@@ -147,32 +144,33 @@ static ssize_t insert_report_filterlist(const char *func)
+ 		return -ENOENT;
+ 	}
+ 
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++retry_alloc:
++	/*
++	 * Check if we need an allocation, and re-validate under the lock. Since
++	 * the report_filterlist_lock is a raw, cannot allocate under the lock.
++	 */
++	if (data_race(report_filterlist.used == report_filterlist.size)) {
++		new_size = (report_filterlist.size ?: 4) * 2;
++		delay_free = new_addrs = kmalloc_array(new_size, sizeof(unsigned long), GFP_KERNEL);
++		if (!new_addrs)
++			return -ENOMEM;
++	}
+ 
+-	if (report_filterlist.addrs == NULL) {
+-		/* initial allocation */
+-		report_filterlist.addrs =
+-			kmalloc_array(report_filterlist.size,
+-				      sizeof(unsigned long), GFP_ATOMIC);
+-		if (report_filterlist.addrs == NULL) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
+-	} else if (report_filterlist.used == report_filterlist.size) {
+-		/* resize filterlist */
+-		size_t new_size = report_filterlist.size * 2;
+-		unsigned long *new_addrs =
+-			krealloc(report_filterlist.addrs,
+-				 new_size * sizeof(unsigned long), GFP_ATOMIC);
+-
+-		if (new_addrs == NULL) {
+-			/* leave filterlist itself untouched */
+-			ret = -ENOMEM;
+-			goto out;
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
++	if (report_filterlist.used == report_filterlist.size) {
++		/* Check we pre-allocated enough, and retry if not. */
++		if (report_filterlist.used >= new_size) {
++			raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
++			kfree(new_addrs); /* kfree(NULL) is safe */
++			delay_free = new_addrs = NULL;
++			goto retry_alloc;
+ 		}
+ 
++		if (report_filterlist.used)
++			memcpy(new_addrs, report_filterlist.addrs, report_filterlist.used * sizeof(unsigned long));
++		delay_free = report_filterlist.addrs; /* free the old list */
++		report_filterlist.addrs = new_addrs;  /* switch to the new list */
+ 		report_filterlist.size = new_size;
+-		report_filterlist.addrs = new_addrs;
+ 	}
+ 
+ 	/* Note: deduplicating should be done in userspace. */
+@@ -180,9 +178,9 @@ static ssize_t insert_report_filterlist(const char *func)
+ 		kallsyms_lookup_name(func);
+ 	report_filterlist.sorted = false;
+ 
+-out:
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ 
++	kfree(delay_free);
+ 	return ret;
+ }
+ 
+@@ -199,13 +197,13 @@ static int show_info(struct seq_file *file, void *v)
+ 	}
+ 
+ 	/* show filter functions, and filter type */
+-	spin_lock_irqsave(&report_filterlist_lock, flags);
++	raw_spin_lock_irqsave(&report_filterlist_lock, flags);
+ 	seq_printf(file, "\n%s functions: %s\n",
+ 		   report_filterlist.whitelist ? "whitelisted" : "blacklisted",
+ 		   report_filterlist.used == 0 ? "none" : "");
+ 	for (i = 0; i < report_filterlist.used; ++i)
+ 		seq_printf(file, " %ps\n", (void *)report_filterlist.addrs[i]);
+-	spin_unlock_irqrestore(&report_filterlist_lock, flags);
++	raw_spin_unlock_irqrestore(&report_filterlist_lock, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
