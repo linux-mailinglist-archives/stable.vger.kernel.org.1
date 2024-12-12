@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-103365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F4909EF677
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:25:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF4CA9EF8AB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:44:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FF74286CB4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3132172B73
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE50B2165F0;
-	Thu, 12 Dec 2024 17:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295DE222D59;
+	Thu, 12 Dec 2024 17:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fepPHPsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1g+N3/Sy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7197E211493;
-	Thu, 12 Dec 2024 17:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D726F213E6F;
+	Thu, 12 Dec 2024 17:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024348; cv=none; b=ZvLmVpzfMIyaerDsa/izEEZVOPTP3Hwtaak83FxT5AnK4Tc1wJ7RFxzUy48Z2P+F3XJTOJM8Ehsv8969A6cBWPlDorfFQ9lx3JzXblmN+FMvQby/h2tPEYHN1hnk5Z1qJNE1od5BHh1T/wpxYcHP9O1bqjh2xdV1+9y55EUrk5M=
+	t=1734025145; cv=none; b=lDQiu+uBZzMPkJEPbr5YqOTIAF6nhhsMI4ctPildsnNlhmIw9sxhL0Y6+9mhA5yFgvWTvDAzO5uhkezItCvgy24VUExVU4O+l2HJ9Jfg06J/h3kChXum8yamPEUkCaClhZmP9HPTlb+TkQGyBRtD8fqNoKqXzYbpPzuqHtFDPro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024348; c=relaxed/simple;
-	bh=hRiPN7sGHU8CR6JcxoWKd1TTk9E01agh3r984+cctIo=;
+	s=arc-20240116; t=1734025145; c=relaxed/simple;
+	bh=/KwVildUdTHqesczAR0tgs0ZWvrpoEjFBbs5wUyH+QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jd6EQolWG5Vp/F0ukFxYjXM228ntUbLxBZe4rQwoLyuqKWZfT9I8WM2uP/a7N9FRVK8/w2PMF7Qj1pATus2iQT5jmIW2HJhwPui6hFR8SoOvvYwGrjud7u1RGJvPGnWRw7nYclmWieeQq8jgsL8QircahL49rTPmdcb4q9Xm1IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fepPHPsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB93C4CECE;
-	Thu, 12 Dec 2024 17:25:47 +0000 (UTC)
+	 MIME-Version; b=m+OcHdTWP7hKNQDY/d4Tv5UZsTXQNm285f5hobPSr0ovILO6aMPa5hT4MZubHXdSp16on8ey/AdtjAmey3hfHlkO5Qlw3kcteR3qhwJxN/B1e9QsQ9qR6jtq/Y3f9z6N16l3mR7VL1KCbQA1C7SW2mDDd2xyFXhvHf4anq9BN4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1g+N3/Sy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B2AC4CEDE;
+	Thu, 12 Dec 2024 17:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024348;
-	bh=hRiPN7sGHU8CR6JcxoWKd1TTk9E01agh3r984+cctIo=;
+	s=korg; t=1734025145;
+	bh=/KwVildUdTHqesczAR0tgs0ZWvrpoEjFBbs5wUyH+QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fepPHPsnASza+ch2c/NDc1K1ldzGWb/5gyKaGYFURWKrdG98Bg7eUe4O6W704m2bM
-	 LL2fbgjSrVIXWu4x/sB6N8/mK7wks1/9kx/kx6J4Wcst4WTdZvpIb4QJ9++XBqBH3H
-	 Hmtdotv1+DS+E5xk49RuvJLlALTE7ILSyRe0QVno=
+	b=1g+N3/SyA1sg7EAfRhClMsjfjF1p5W5MgJrRySceRgofh7pX0hzJntbRBb6Gjrid2
+	 W+VjnHjpUiBGL/pZ9UD96QCcrdejQQQYja2083HMnQhv9LBJMQ5qOYDwNOObuSGt7e
+	 Xxo4AeEItkpG/FUZ3IReRfBobLc7Xy2nigA0KGhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.10 249/459] perf/x86/intel/pt: Fix buffer full but size is 0 case
-Date: Thu, 12 Dec 2024 15:59:47 +0100
-Message-ID: <20241212144303.429928891@linuxfoundation.org>
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 070/321] drm/fsl-dcu: Convert to Linux IRQ interfaces
+Date: Thu, 12 Dec 2024 15:59:48 +0100
+Message-ID: <20241212144232.755831133@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +62,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit 5b590160d2cf776b304eb054afafea2bd55e3620 upstream.
+[ Upstream commit 03ac16e584e496230903ba20f2b4bbfd942a16b4 ]
 
-If the trace data buffer becomes full, a truncated flag [T] is reported
-in PERF_RECORD_AUX.  In some cases, the size reported is 0, even though
-data must have been added to make the buffer full.
+Drop the DRM IRQ midlayer in favor of Linux IRQ interfaces. DRM's
+IRQ helpers are mostly useful for UMS drivers. Modern KMS drivers
+don't benefit from using it. DRM IRQ callbacks are now being called
+directly or inlined.
 
-That happens when the buffer fills up from empty to full before the
-Intel PT driver has updated the buffer position.  Then the driver
-calculates the new buffer position before calculating the data size.
-If the old and new positions are the same, the data size is reported
-as 0, even though it is really the whole buffer size.
-
-Fix by detecting when the buffer position is wrapped, and adjust the
-data size calculation accordingly.
-
-Example
-
-  Use a very small buffer size (8K) and observe the size of truncated [T]
-  data. Before the fix, it is possible to see records of 0 size.
-
-  Before:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 2 times to write data ]
-    [ perf record: Captured and wrote 0.105 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    5 19462712368111 0x19710 [0x40]: PERF_RECORD_AUX offset: 0 size: 0 flags: 0x1 [T]
-    5 19462712700046 0x19ba8 [0x40]: PERF_RECORD_AUX offset: 0x170 size: 0xe90 flags: 0x1 [T]
-
- After:
-
-    $ perf record -m,8K -e intel_pt// uname
-    Linux
-    [ perf record: Woken up 3 times to write data ]
-    [ perf record: Captured and wrote 0.040 MB perf.data ]
-    $ perf script -D --no-itrace | grep AUX | grep -F '[T]'
-    Warning:
-    AUX data lost 2 times out of 3!
-
-    1 113720802995 0x4948 [0x40]: PERF_RECORD_AUX offset: 0 size: 0x2000 flags: 0x1 [T]
-    1 113720979812 0x6b10 [0x40]: PERF_RECORD_AUX offset: 0x2000 size: 0x2000 flags: 0x1 [T]
-
-Fixes: 52ca9ced3f70 ("perf/x86/intel/pt: Add Intel PT PMU driver")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20241022155920.17511-2-adrian.hunter@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20210803090704.32152-5-tzimmermann@suse.de
+Stable-dep-of: ffcde9e44d3e ("drm: fsl-dcu: enable PIXCLK on LS1021A")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/pt.c |   11 ++++++++---
- arch/x86/events/intel/pt.h |    2 ++
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c | 78 +++++++++++++----------
+ 1 file changed, 46 insertions(+), 32 deletions(-)
 
---- a/arch/x86/events/intel/pt.c
-+++ b/arch/x86/events/intel/pt.c
-@@ -811,11 +811,13 @@ static void pt_buffer_advance(struct pt_
- 	buf->cur_idx++;
+diff --git a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+index abbc1ddbf27f0..11b4a81bacc68 100644
+--- a/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
++++ b/drivers/gpu/drm/fsl-dcu/fsl_dcu_drm_drv.c
+@@ -23,7 +23,6 @@
+ #include <drm/drm_fb_cma_helper.h>
+ #include <drm/drm_fb_helper.h>
+ #include <drm/drm_gem_cma_helper.h>
+-#include <drm/drm_irq.h>
+ #include <drm/drm_modeset_helper.h>
+ #include <drm/drm_probe_helper.h>
+ #include <drm/drm_vblank.h>
+@@ -51,7 +50,7 @@ static const struct regmap_config fsl_dcu_regmap_config = {
+ 	.volatile_reg = fsl_dcu_drm_is_volatile_reg,
+ };
  
- 	if (buf->cur_idx == buf->cur->last) {
--		if (buf->cur == buf->last)
-+		if (buf->cur == buf->last) {
- 			buf->cur = buf->first;
--		else
-+			buf->wrapped = true;
-+		} else {
- 			buf->cur = list_entry(buf->cur->list.next, struct topa,
- 					      list);
-+		}
- 		buf->cur_idx = 0;
- 	}
- }
-@@ -829,8 +831,11 @@ static void pt_buffer_advance(struct pt_
- static void pt_update_head(struct pt *pt)
+-static void fsl_dcu_irq_uninstall(struct drm_device *dev)
++static void fsl_dcu_irq_reset(struct drm_device *dev)
  {
- 	struct pt_buffer *buf = perf_get_aux(&pt->handle);
-+	bool wrapped = buf->wrapped;
- 	u64 topa_idx, base, old;
+ 	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
  
-+	buf->wrapped = false;
+@@ -59,6 +58,45 @@ static void fsl_dcu_irq_uninstall(struct drm_device *dev)
+ 	regmap_write(fsl_dev->regmap, DCU_INT_MASK, ~0);
+ }
+ 
++static irqreturn_t fsl_dcu_drm_irq(int irq, void *arg)
++{
++	struct drm_device *dev = arg;
++	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
++	unsigned int int_status;
++	int ret;
 +
- 	if (buf->single) {
- 		local_set(&buf->data_size, buf->output_off);
- 		return;
-@@ -848,7 +853,7 @@ static void pt_update_head(struct pt *pt
- 	} else {
- 		old = (local64_xchg(&buf->head, base) &
- 		       ((buf->nr_pages << PAGE_SHIFT) - 1));
--		if (base < old)
-+		if (base < old || (base == old && wrapped))
- 			base += buf->nr_pages << PAGE_SHIFT;
++	ret = regmap_read(fsl_dev->regmap, DCU_INT_STATUS, &int_status);
++	if (ret) {
++		dev_err(dev->dev, "read DCU_INT_STATUS failed\n");
++		return IRQ_NONE;
++	}
++
++	if (int_status & DCU_INT_STATUS_VBLANK)
++		drm_handle_vblank(dev, 0);
++
++	regmap_write(fsl_dev->regmap, DCU_INT_STATUS, int_status);
++
++	return IRQ_HANDLED;
++}
++
++static int fsl_dcu_irq_install(struct drm_device *dev, unsigned int irq)
++{
++	if (irq == IRQ_NOTCONNECTED)
++		return -ENOTCONN;
++
++	fsl_dcu_irq_reset(dev);
++
++	return request_irq(irq, fsl_dcu_drm_irq, 0, dev->driver->name, dev);
++}
++
++static void fsl_dcu_irq_uninstall(struct drm_device *dev)
++{
++	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
++
++	fsl_dcu_irq_reset(dev);
++	free_irq(fsl_dev->irq, dev);
++}
++
+ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ {
+ 	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
+@@ -73,13 +111,13 @@ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ 	ret = drm_vblank_init(dev, dev->mode_config.num_crtc);
+ 	if (ret < 0) {
+ 		dev_err(dev->dev, "failed to initialize vblank\n");
+-		goto done;
++		goto done_vblank;
+ 	}
  
- 		local_add(base - old, &buf->data_size);
---- a/arch/x86/events/intel/pt.h
-+++ b/arch/x86/events/intel/pt.h
-@@ -65,6 +65,7 @@ struct pt_pmu {
-  * @head:	logical write offset inside the buffer
-  * @snapshot:	if this is for a snapshot/overwrite counter
-  * @single:	use Single Range Output instead of ToPA
-+ * @wrapped:	buffer advance wrapped back to the first topa table
-  * @stop_pos:	STOP topa entry index
-  * @intr_pos:	INT topa entry index
-  * @stop_te:	STOP topa entry pointer
-@@ -82,6 +83,7 @@ struct pt_buffer {
- 	local64_t		head;
- 	bool			snapshot;
- 	bool			single;
-+	bool			wrapped;
- 	long			stop_pos, intr_pos;
- 	struct topa_entry	*stop_te, *intr_te;
- 	void			**data_pages;
+-	ret = drm_irq_install(dev, fsl_dev->irq);
++	ret = fsl_dcu_irq_install(dev, fsl_dev->irq);
+ 	if (ret < 0) {
+ 		dev_err(dev->dev, "failed to install IRQ handler\n");
+-		goto done;
++		goto done_irq;
+ 	}
+ 
+ 	if (legacyfb_depth != 16 && legacyfb_depth != 24 &&
+@@ -90,11 +128,11 @@ static int fsl_dcu_load(struct drm_device *dev, unsigned long flags)
+ 	}
+ 
+ 	return 0;
+-done:
++done_irq:
+ 	drm_kms_helper_poll_fini(dev);
+ 
+ 	drm_mode_config_cleanup(dev);
+-	drm_irq_uninstall(dev);
++done_vblank:
+ 	dev->dev_private = NULL;
+ 
+ 	return ret;
+@@ -106,41 +144,17 @@ static void fsl_dcu_unload(struct drm_device *dev)
+ 	drm_kms_helper_poll_fini(dev);
+ 
+ 	drm_mode_config_cleanup(dev);
+-	drm_irq_uninstall(dev);
++	fsl_dcu_irq_uninstall(dev);
+ 
+ 	dev->dev_private = NULL;
+ }
+ 
+-static irqreturn_t fsl_dcu_drm_irq(int irq, void *arg)
+-{
+-	struct drm_device *dev = arg;
+-	struct fsl_dcu_drm_device *fsl_dev = dev->dev_private;
+-	unsigned int int_status;
+-	int ret;
+-
+-	ret = regmap_read(fsl_dev->regmap, DCU_INT_STATUS, &int_status);
+-	if (ret) {
+-		dev_err(dev->dev, "read DCU_INT_STATUS failed\n");
+-		return IRQ_NONE;
+-	}
+-
+-	if (int_status & DCU_INT_STATUS_VBLANK)
+-		drm_handle_vblank(dev, 0);
+-
+-	regmap_write(fsl_dev->regmap, DCU_INT_STATUS, int_status);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ DEFINE_DRM_GEM_CMA_FOPS(fsl_dcu_drm_fops);
+ 
+ static struct drm_driver fsl_dcu_drm_driver = {
+ 	.driver_features	= DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
+ 	.load			= fsl_dcu_load,
+ 	.unload			= fsl_dcu_unload,
+-	.irq_handler		= fsl_dcu_drm_irq,
+-	.irq_preinstall		= fsl_dcu_irq_uninstall,
+-	.irq_uninstall		= fsl_dcu_irq_uninstall,
+ 	DRM_GEM_CMA_DRIVER_OPS,
+ 	.fops			= &fsl_dcu_drm_fops,
+ 	.name			= "fsl-dcu-drm",
+-- 
+2.43.0
+
 
 
 
