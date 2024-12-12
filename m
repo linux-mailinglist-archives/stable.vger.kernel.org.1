@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-101518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC229EECB4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013C69EEB55
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:55 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703AE2823BA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CCA4168D6E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D814921E0AA;
-	Thu, 12 Dec 2024 15:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D37212B0F;
+	Thu, 12 Dec 2024 15:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DY844Rkf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBTvbxiN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95ABF2185A0;
-	Thu, 12 Dec 2024 15:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0A213CA93;
+	Thu, 12 Dec 2024 15:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017836; cv=none; b=d33WKj9aDV68Wwc1fIAKrnW/c7DY5fGQTFWE+BlyJ6tzKVO6oSMFYzR9HWr+VX0gFELFr0l3+Cnhe1Uc2QQc9Y1y9CzP9rCbIBS1F2JcPC9UbtIi29mZeLDdBremKHprAvmIVryrH+TWLln/3qUgbKRhhh/fgy/p8KtOmtVJazc=
+	t=1734016699; cv=none; b=aLXFca3SboU0hSjkJeW7ZFCdUr6DT9+CyhFce6KPC4Xh8R885OmGO235URNAoAmEwSDKDvJ+Fa6Ko0FScjwf95dXTZUlc/ZPP6hpJlXdwSsoCHDggHSQ85ZUesp3xI8m0vys87MY8xPsvZCtG/x+eA5UyCkHD8nh5oVrahZ+1Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017836; c=relaxed/simple;
-	bh=fhp052IMS7XQju/F4YLNwrN31hYJMsoFAKd/wWPTwhM=;
+	s=arc-20240116; t=1734016699; c=relaxed/simple;
+	bh=lSQ7Rodpw941diqsV6/NML/WYSbty7tAHt+ljOf1Nhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mDd9ZnSVBubblqOMQXIBqqLh9jKeDja7k4lIT67BaYrKYbh5fDwxdQJYdDsZqMtIc5oJlMk/52sp+J0dNp13WefnCLOT1uemHJdVAMZMBenT34smNy4x8/nfQfK3VhBbAEOuG9aXeDBVubqtcdulBMEVzZNG1CXV/FRXzZZz26c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DY844Rkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E007C4CECE;
-	Thu, 12 Dec 2024 15:37:15 +0000 (UTC)
+	 MIME-Version; b=DWWeFFIaJe7X7SVvkJ/u8WJgZe7aKqlu0y7vwPxLnH6QFTYNhaS3+zBR7z5WV5jTwF69m3XyC+mLT3eQMDDm0Hbuc6k2K+QPp8Tc0ze+BH6aiaBmeaGPmJuGO1un2aAeg+9Q7MMlSxlSRn7QiFSxGBI0RsLDYHo7JuMcmge5DhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBTvbxiN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411C3C4CECE;
+	Thu, 12 Dec 2024 15:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017836;
-	bh=fhp052IMS7XQju/F4YLNwrN31hYJMsoFAKd/wWPTwhM=;
+	s=korg; t=1734016699;
+	bh=lSQ7Rodpw941diqsV6/NML/WYSbty7tAHt+ljOf1Nhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DY844RkfV8VsttNR0xE2UNpB47do321DQrB4du2kTXpnUT2XlyTVlDudhuUALlLNd
-	 gqT1mrHCoJFtzy/vuoa/7AQxCvwO/Shd7+7/oloxDR2WbXpqrJnqdcIxie88eVl4zd
-	 wWNzoesyXAnzaSE1HwaRKh3KqVE0c9q2fvCrurYw=
+	b=kBTvbxiNtc0JdMLNOQzVAUDRWuMU62xfAWPOEl5Zl7Qv/IDhgGK+yQ915J+qm5lVi
+	 IjKvffE6Pw6ndZxttlxqnzsNR0bdUvjotr6+S3dFW+1A6swoNUI5DvzPI66WC8wt8Y
+	 rS0n9V7zkYKiKlyQQWpt/nDbTrZvVCelyP9SkKxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Liam Girdwood <liam.r.girdwood@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Gustavo Sousa <gustavo.sousa@intel.com>,
+	Matt Atwood <matthew.s.atwood@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/356] ASoC: SOF: ipc3-topology: Convert the topology pin index to ALH dai index
-Date: Thu, 12 Dec 2024 15:57:22 +0100
-Message-ID: <20241212144249.510971426@linuxfoundation.org>
+Subject: [PATCH 6.12 274/466] drm/xe/xe3: Add initial set of workarounds
+Date: Thu, 12 Dec 2024 15:57:23 +0100
+Message-ID: <20241212144317.610779960@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +61,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Gustavo Sousa <gustavo.sousa@intel.com>
 
-[ Upstream commit e9db1b551774037ebe39dde4a658d89ba95e260b ]
+[ Upstream commit 081cb8948cfe322076cd23f22f85ba68f73e2c4b ]
 
-Intel SoundWire machine driver always uses Pin number 2 and above.
-Currently, the pin number is used as the FW DAI index directly. As a
-result, FW DAI 0 and 1 are never used. That worked fine because we use
-up to 2 DAIs in a SDW link. Convert the topology pin index to ALH dai
-index, the mapping is using 2-off indexing, iow, pin #2 is ALH dai #0.
+Implement the initial set of workarounds for Xe3 IPs.
 
-The issue exists since beginning. And the Fixes tag is the first commit
-that this commit can be applied.
-
-Fixes: b66bfc3a9810 ("ASoC: SOF: sof-audio: Fix broken early bclk feature for SSP")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Liam Girdwood <liam.r.girdwood@intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://patch.msgid.link/20241127092955.20026-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Signed-off-by: Matt Atwood <matthew.s.atwood@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241008204626.55802-2-matthew.s.atwood@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc3-topology.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/regs/xe_engine_regs.h |  1 +
+ drivers/gpu/drm/xe/regs/xe_gt_regs.h     |  3 ++
+ drivers/gpu/drm/xe/xe_wa.c               | 47 ++++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_wa_oob.rules       |  1 +
+ 4 files changed, 52 insertions(+)
 
-diff --git a/sound/soc/sof/ipc3-topology.c b/sound/soc/sof/ipc3-topology.c
-index d96555438c6bf..a1eab10211b0e 100644
---- a/sound/soc/sof/ipc3-topology.c
-+++ b/sound/soc/sof/ipc3-topology.c
-@@ -20,6 +20,9 @@
- /* size of tplg ABI in bytes */
- #define SOF_IPC3_TPLG_ABI_SIZE 3
+diff --git a/drivers/gpu/drm/xe/regs/xe_engine_regs.h b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
+index 81b71903675e0..7c78496e6213c 100644
+--- a/drivers/gpu/drm/xe/regs/xe_engine_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_engine_regs.h
+@@ -186,6 +186,7 @@
  
-+/* Base of SOF_DAI_INTEL_ALH, this should be aligned with SOC_SDW_INTEL_BIDIR_PDI_BASE */
-+#define INTEL_ALH_DAI_INDEX_BASE 2
-+
- struct sof_widget_data {
- 	int ctrl_type;
- 	int ipc_cmd;
-@@ -1509,6 +1512,17 @@ static int sof_ipc3_widget_setup_comp_dai(struct snd_sof_widget *swidget)
- 	if (ret < 0)
- 		goto free;
+ #define VDBOX_CGCTL3F10(base)			XE_REG((base) + 0x3f10)
+ #define   IECPUNIT_CLKGATE_DIS			REG_BIT(22)
++#define   RAMDFTUNIT_CLKGATE_DIS		REG_BIT(9)
  
-+	/* Subtract the base to match the FW dai index. */
-+	if (comp_dai->type == SOF_DAI_INTEL_ALH) {
-+		if (comp_dai->dai_index < INTEL_ALH_DAI_INDEX_BASE) {
-+			dev_err(sdev->dev,
-+				"Invalid ALH dai index %d, only Pin numbers >= %d can be used\n",
-+				comp_dai->dai_index, INTEL_ALH_DAI_INDEX_BASE);
-+			return -EINVAL;
-+		}
-+		comp_dai->dai_index -= INTEL_ALH_DAI_INDEX_BASE;
-+	}
+ #define VDBOX_CGCTL3F18(base)			XE_REG((base) + 0x3f18)
+ #define   ALNUNIT_CLKGATE_DIS			REG_BIT(13)
+diff --git a/drivers/gpu/drm/xe/regs/xe_gt_regs.h b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+index bd604b9f08e4f..5404de2aea545 100644
+--- a/drivers/gpu/drm/xe/regs/xe_gt_regs.h
++++ b/drivers/gpu/drm/xe/regs/xe_gt_regs.h
+@@ -286,6 +286,9 @@
+ #define   GAMTLBVEBOX0_CLKGATE_DIS		REG_BIT(16)
+ #define   LTCDD_CLKGATE_DIS			REG_BIT(10)
+ 
++#define UNSLCGCTL9454				XE_REG(0x9454)
++#define   LSCFE_CLKGATE_DIS			REG_BIT(4)
 +
- 	dev_dbg(scomp->dev, "dai %s: type %d index %d\n",
- 		swidget->widget->name, comp_dai->type, comp_dai->dai_index);
- 	sof_dbg_comp_config(scomp, &comp_dai->config);
-@@ -2076,8 +2090,16 @@ static int sof_ipc3_dai_config(struct snd_sof_dev *sdev, struct snd_sof_widget *
- 	case SOF_DAI_INTEL_ALH:
- 		if (data) {
- 			/* save the dai_index during hw_params and reuse it for hw_free */
--			if (flags & SOF_DAI_CONFIG_FLAGS_HW_PARAMS)
--				config->dai_index = data->dai_index;
-+			if (flags & SOF_DAI_CONFIG_FLAGS_HW_PARAMS) {
-+				/* Subtract the base to match the FW dai index. */
-+				if (data->dai_index < INTEL_ALH_DAI_INDEX_BASE) {
-+					dev_err(sdev->dev,
-+						"Invalid ALH dai index %d, only Pin numbers >= %d can be used\n",
-+						config->dai_index, INTEL_ALH_DAI_INDEX_BASE);
-+					return -EINVAL;
-+				}
-+				config->dai_index = data->dai_index - INTEL_ALH_DAI_INDEX_BASE;
-+			}
- 			config->alh.stream_id = data->dai_data;
- 		}
- 		break;
+ #define XEHP_SLICE_UNIT_LEVEL_CLKGATE		XE_REG_MCR(0x94d4)
+ #define   L3_CR2X_CLKGATE_DIS			REG_BIT(17)
+ #define   L3_CLKGATE_DIS			REG_BIT(16)
+diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
+index 353936a0f877d..37e592b2bf062 100644
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -251,6 +251,34 @@ static const struct xe_rtp_entry_sr gt_was[] = {
+ 	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
+ 	},
+ 
++	/* Xe3_LPG */
++
++	{ XE_RTP_NAME("14021871409"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(3000), GRAPHICS_STEP(A0, B0)),
++	  XE_RTP_ACTIONS(SET(UNSLCGCTL9454, LSCFE_CLKGATE_DIS))
++	},
++
++	/* Xe3_LPM */
++
++	{ XE_RTP_NAME("16021867713"),
++	  XE_RTP_RULES(MEDIA_VERSION(3000),
++		       ENGINE_CLASS(VIDEO_DECODE)),
++	  XE_RTP_ACTIONS(SET(VDBOX_CGCTL3F1C(0), MFXPIPE_CLKGATE_DIS)),
++	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
++	},
++	{ XE_RTP_NAME("16021865536"),
++	  XE_RTP_RULES(MEDIA_VERSION(3000),
++		       ENGINE_CLASS(VIDEO_DECODE)),
++	  XE_RTP_ACTIONS(SET(VDBOX_CGCTL3F10(0), IECPUNIT_CLKGATE_DIS)),
++	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
++	},
++	{ XE_RTP_NAME("14021486841"),
++	  XE_RTP_RULES(MEDIA_VERSION(3000), MEDIA_STEP(A0, B0),
++		       ENGINE_CLASS(VIDEO_DECODE)),
++	  XE_RTP_ACTIONS(SET(VDBOX_CGCTL3F10(0), RAMDFTUNIT_CLKGATE_DIS)),
++	  XE_RTP_ENTRY_FLAG(FOREACH_ENGINE),
++	},
++
+ 	{}
+ };
+ 
+@@ -567,6 +595,13 @@ static const struct xe_rtp_entry_sr engine_was[] = {
+ 			     XE_RTP_ACTION_FLAG(ENGINE_BASE)))
+ 	},
+ 
++	/* Xe3_LPG */
++
++	{ XE_RTP_NAME("14021402888"),
++	  XE_RTP_RULES(GRAPHICS_VERSION_RANGE(3000, 3001), FUNC(xe_rtp_match_first_render_or_compute)),
++	  XE_RTP_ACTIONS(SET(HALF_SLICE_CHICKEN7, CLEAR_OPTIMIZATION_DISABLE))
++	},
++
+ 	{}
+ };
+ 
+@@ -742,6 +777,18 @@ static const struct xe_rtp_entry_sr lrc_was[] = {
+ 	  XE_RTP_ACTIONS(SET(CHICKEN_RASTER_1, DIS_CLIP_NEGATIVE_BOUNDING_BOX))
+ 	},
+ 
++	/* Xe3_LPG */
++	{ XE_RTP_NAME("14021490052"),
++	  XE_RTP_RULES(GRAPHICS_VERSION(3000), GRAPHICS_STEP(A0, B0),
++		       ENGINE_CLASS(RENDER)),
++	  XE_RTP_ACTIONS(SET(FF_MODE,
++			     DIS_MESH_PARTIAL_AUTOSTRIP |
++			     DIS_MESH_AUTOSTRIP),
++			 SET(VFLSKPD,
++			     DIS_PARTIAL_AUTOSTRIP |
++			     DIS_AUTOSTRIP))
++	},
++
+ 	{}
+ };
+ 
+diff --git a/drivers/gpu/drm/xe/xe_wa_oob.rules b/drivers/gpu/drm/xe/xe_wa_oob.rules
+index 0154fbe154e9a..264d6e116499c 100644
+--- a/drivers/gpu/drm/xe/xe_wa_oob.rules
++++ b/drivers/gpu/drm/xe/xe_wa_oob.rules
+@@ -33,6 +33,7 @@
+ 		GRAPHICS_VERSION(2004)
+ 22019338487	MEDIA_VERSION(2000)
+ 		GRAPHICS_VERSION(2001)
++		MEDIA_VERSION(3000), MEDIA_STEP(A0, B0)
+ 22019338487_display	PLATFORM(LUNARLAKE)
+ 16023588340	GRAPHICS_VERSION(2001)
+ 14019789679	GRAPHICS_VERSION(1255)
 -- 
 2.43.0
 
