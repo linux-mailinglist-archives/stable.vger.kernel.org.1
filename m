@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-102712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34169EF520
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF679EF70E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0FE1891E86
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 387F81943FD1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E4813792B;
-	Thu, 12 Dec 2024 16:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211BC213E99;
+	Thu, 12 Dec 2024 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IC35xOhm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6pH3sXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC2F2144C0;
-	Thu, 12 Dec 2024 16:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D146213CA93;
+	Thu, 12 Dec 2024 17:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022220; cv=none; b=YG4VUDCL6BmYcGRICVqB0F695veqR78hrCH1AcbNwq1155NruhY2NxXStDMmWlZV3qYjwB4/OsPwsDAA7Ady6LUNHn5hd3BSX2IM3ba2LvABQ4HA6vROMSRUjLAUKgP/ZNA+scoal5v8yEB6yo7EYmcNDGQU613hyaTNJQPi1Sw=
+	t=1734023653; cv=none; b=Ferl2CQzoo3+8uhZMR46jLiAvvA5c7tvnpXwKqAfQrH4T42a5heVSQDqq2HvkxC0poDEXwlpeHsEXIsiU1+BdbZkWZYBrgNIducVyq1S2sicgVUBJkVfHDROAPQM/abDYKjmt8WS6NRVeHnaL8I5bE7WYPBchz+9OibNMKaTD8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022220; c=relaxed/simple;
-	bh=absL+8Quhk587pYSIqmRIVmq3APmsA3lBdBUfd8wLNQ=;
+	s=arc-20240116; t=1734023653; c=relaxed/simple;
+	bh=oExNaZldSXpeKNjc9AoSkW2hjtEMRid1TlEoF4CpNYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3II2Xr3QuP8oncPW/2VqVYKAvXtn64w2CLFSDPt7CNrlWBGHnk5ueCxltaGsyBncqhf63lzy9Jns7Rm+QqBgxDxN5PJM3xfHa7jDIxgByXhC39sq3U8ZpFzR0lbn8UDD7cuJp7eJIBf1X/mLCi9It2tpqtPNxG+F1ghVTNKgzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IC35xOhm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982A0C4CECE;
-	Thu, 12 Dec 2024 16:50:19 +0000 (UTC)
+	 MIME-Version; b=nbEbl/yxsGech8fIFfx6DQ6/GfyQNuzJ5kSV+o8/BF3TsqWvgOytGRot/JmFuOjrbJ576qMjwZ6usK7M74GA+7E4i3gu4prmC1eNjVyrMVOicw9+mZ36C5Tg5l2jH1h7AQ62h+nYQCe6/Ixba8MC+rFXDF3AY27HiNcmbMIz8AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6pH3sXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C20C4CECE;
+	Thu, 12 Dec 2024 17:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022220;
-	bh=absL+8Quhk587pYSIqmRIVmq3APmsA3lBdBUfd8wLNQ=;
+	s=korg; t=1734023653;
+	bh=oExNaZldSXpeKNjc9AoSkW2hjtEMRid1TlEoF4CpNYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IC35xOhmTGtbcYui1mnd/AMfxmvI3pLZL0+3GvafYGuIh5FONGyrUmANnyi2JGXPC
-	 dbok41AelunDxODcrbO+4Nzh2L5Jj1idVMftXUj2t6vWrGP9djMOnnPZsP4zZnsjNQ
-	 rJLqRmgy7JEYm/l/W5431MuafUlspeds+14uhW/k=
+	b=Z6pH3sXV7MXFn1U1nobK7dIhZ21ZSeU8Zyt+kU1i68ze/YxvdDsDpWXmJK3nBPQDk
+	 MA1gCZ04RHzhWeoMmTPw7HwpuT1OTfECbouiFU9hk5PYavI1gtDBqsSPe4gd6qHvnd
+	 qh3EJM17Cyqn3i5gFi0HXDvRydKQ3Mt2pfzkp7OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Rob Clark <robdclark@chromium.org>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 180/565] drm/msm/adreno: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Thu, 12 Dec 2024 15:56:15 +0100
-Message-ID: <20241212144318.589327057@linuxfoundation.org>
+Subject: [PATCH 5.10 038/459] selftests/watchdog-test: Fix system accidentally reset after watchdog-test
+Date: Thu, 12 Dec 2024 15:56:16 +0100
+Message-ID: <20241212144255.030971151@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 394679f322649d06fea3c646ba65f5a0887f52c3 ]
+[ Upstream commit dc1308bee1ed03b4d698d77c8bd670d399dcd04d ]
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+When running watchdog-test with 'make run_tests', the watchdog-test will
+be terminated by a timeout signal(SIGTERM) due to the test timemout.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Patchwork: https://patchwork.freedesktop.org/patch/614075/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+And then, a system reboot would happen due to watchdog not stop. see
+the dmesg as below:
+```
+[ 1367.185172] watchdog: watchdog0: watchdog did not stop!
+```
+
+Fix it by registering more signals(including SIGTERM) in watchdog-test,
+where its signal handler will stop the watchdog.
+
+After that
+ # timeout 1 ./watchdog-test
+ Watchdog Ticking Away!
+ .
+ Stopping watchdog ticks...
+
+Link: https://lore.kernel.org/all/20241029031324.482800-1-lizhijian@fujitsu.com/
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ tools/testing/selftests/watchdog/watchdog-test.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 4347a104755a9..8b6fc1b26f049 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1432,15 +1432,13 @@ static int a6xx_gmu_get_irq(struct a6xx_gmu *gmu, struct platform_device *pdev,
+diff --git a/tools/testing/selftests/watchdog/watchdog-test.c b/tools/testing/selftests/watchdog/watchdog-test.c
+index f45e510500c0d..09773695d219f 100644
+--- a/tools/testing/selftests/watchdog/watchdog-test.c
++++ b/tools/testing/selftests/watchdog/watchdog-test.c
+@@ -242,7 +242,13 @@ int main(int argc, char *argv[])
  
- 	irq = platform_get_irq_byname(pdev, name);
+ 	printf("Watchdog Ticking Away!\n");
  
--	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH, name, gmu);
-+	ret = request_irq(irq, handler, IRQF_TRIGGER_HIGH | IRQF_NO_AUTOEN, name, gmu);
- 	if (ret) {
- 		DRM_DEV_ERROR(&pdev->dev, "Unable to get interrupt %s %d\n",
- 			      name, ret);
- 		return ret;
- 	}
++	/*
++	 * Register the signals
++	 */
+ 	signal(SIGINT, term);
++	signal(SIGTERM, term);
++	signal(SIGKILL, term);
++	signal(SIGQUIT, term);
  
--	disable_irq(irq);
--
- 	return irq;
- }
- 
+ 	while (1) {
+ 		keep_alive();
 -- 
 2.43.0
 
