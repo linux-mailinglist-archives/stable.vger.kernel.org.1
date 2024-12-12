@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1469EF692
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5ECF9EF6F2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68DD63605D1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58BB2287B23
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44302223338;
-	Thu, 12 Dec 2024 17:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA000215710;
+	Thu, 12 Dec 2024 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdRczyNm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f64tSEto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0146722330D;
-	Thu, 12 Dec 2024 17:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A55213E6F;
+	Thu, 12 Dec 2024 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023344; cv=none; b=KtQECusg4K9inFo9W6Lm/d0MsmBUhRKnXYL1DnhAc5AX2AT7rLJ6p0SXRdpVgLyMZMe1VIzC6QO6MLf+C1F80sS4zwbF/5MY/9wkt0we/yJ1u1o213QFVQo5HbOkpC9nZ8F45sF/4l4N0VPKnFR6CHYMX/y6VpBdqHvDNphW9L0=
+	t=1734024629; cv=none; b=uAUeUEzPFR8w2U4R9AsaWZx5m/yQqZKDttTZ5x8DPb4s9nM/+Tic2tuUCWw0Vfy0U3whfEWvOMlAJVPi0uBRNvk/xLmj6n9myqG8q2/VDr+iS8/MZ0k+vJzWPC+BN+UwzbKMKsdObH+sTaEq7VwRsQNm6wmuNOh/YTZ/uEdciOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023344; c=relaxed/simple;
-	bh=xtaoOQPygjRaBte3GrmT1da+qzifchKK1P6r25azNEs=;
+	s=arc-20240116; t=1734024629; c=relaxed/simple;
+	bh=YxQgEahaLy3HYli1NljqEBcY3Gc483eZ4nGaHGl9eSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oK3TyjUx3GuZck7+1WjxnVuO0CdPynb2j23+8mbPlNiNNEz/RYXPFQZ4BB6FH5Fdxopuo57/4VRSoBpRxeHZmYUmoYjp4pmTA52SWdX66ywFFSajKl9HwjDd2EA2QauFUFz6VFWP7P+/JNav4wjmci7w2THwMoRGKoShjcDNZf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdRczyNm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C3FC4CECE;
-	Thu, 12 Dec 2024 17:09:03 +0000 (UTC)
+	 MIME-Version; b=KxP+Sj2DqO9RY4immtqW/Cxck9FkucP5JAOgG29mvJbPsdHf5X4Zqy7TWekzOs7c9Q+C3kFx7dHRNW6k9UZR21k912syqpiuiSA0+nKYxvN5BuFaqDjtdL96zxaT6pzjeCev2apMBGK/o1jyEb5XktKpkMhoQguKXTJH8tROVRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f64tSEto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C2AC4CECE;
+	Thu, 12 Dec 2024 17:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023343;
-	bh=xtaoOQPygjRaBte3GrmT1da+qzifchKK1P6r25azNEs=;
+	s=korg; t=1734024629;
+	bh=YxQgEahaLy3HYli1NljqEBcY3Gc483eZ4nGaHGl9eSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdRczyNmHFtmkG63pp14JHjGfmungzNISgwFLrJwbSCL6uaPUSLCRfi7cRkmArb0e
-	 hADQ4beLNyl23RVP8XGJXj6SyO27msRroI824PLUzpHCZhPtY0dfKYFOgLAKoOb/XX
-	 V55LMsvNN4htWPD6m0aA61hsgoRK/ldFxQclgfhE=
+	b=f64tSEtoD2xjiDkzn29m+motBVw/eZb6TtKPx7Mrwb7kWiNrYihYM9FDKeaxsC+EJ
+	 JYOKQhzm0+o6S/nHMg5BjjlqsTzzhXrd48GwkgEGFAFYGJtMBamYEx4ozgMeegYfQH
+	 7HwjHmReenWsIwuJpOgFT8gwqelVk2V8N5nwSywM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Zhao <Victor.Zhao@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 503/565] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>
+Subject: [PATCH 5.10 360/459] watchdog: rti: of: honor timeout-sec property
 Date: Thu, 12 Dec 2024 16:01:38 +0100
-Message-ID: <20241212144331.645985064@linuxfoundation.org>
+Message-ID: <20241212144307.895469637@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Zhao <Victor.Zhao@amd.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
+commit 4962ee045d8f06638714d801ab0fb72f89c16690 upstream.
 
-Under sriov, host driver will save and restore vf pci cfg space during
-reset. And during device init, under sriov, pci_restore_state happens after
-fullaccess released, and it can have race condition with mmio protection
-enable from host side leading to missing interrupts.
+Currently "timeout-sec" Device Tree property is being silently ignored:
+even though watchdog_init_timeout() is being used, the driver always passes
+"heartbeat" == DEFAULT_HEARTBEAT == 60 as argument.
 
-So skip amdgpu_device_cache_pci_state for sriov.
+Fix this by setting struct watchdog_device::timeout to DEFAULT_HEARTBEAT
+and passing real module parameter value to watchdog_init_timeout() (which
+may now be 0 if not specified).
 
-Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
-Acked-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241107203830.1068456-1-alexander.sverdlin@siemens.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/watchdog/rti_wdt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 042f27af6856c..4be8d2ca50f3a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5743,6 +5743,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
- 	struct amdgpu_device *adev = drm_to_adev(dev);
- 	int r;
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -54,7 +54,7 @@
  
-+	if (amdgpu_sriov_vf(adev))
-+		return false;
-+
- 	r = pci_save_state(pdev);
- 	if (!r) {
- 		kfree(adev->pci_state);
--- 
-2.43.0
-
+ #define MAX_HW_ERROR		250
+ 
+-static int heartbeat = DEFAULT_HEARTBEAT;
++static int heartbeat;
+ 
+ /*
+  * struct to hold data for each WDT device
+@@ -242,6 +242,7 @@ static int rti_wdt_probe(struct platform
+ 	wdd->min_timeout = 1;
+ 	wdd->max_hw_heartbeat_ms = (WDT_PRELOAD_MAX << WDT_PRELOAD_SHIFT) /
+ 		wdt->freq * 1000;
++	wdd->timeout = DEFAULT_HEARTBEAT;
+ 	wdd->parent = dev;
+ 
+ 	watchdog_set_drvdata(wdd, wdt);
 
 
 
