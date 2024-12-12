@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-103109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1E89EF5C7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C2199EF4C5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A34D17F35A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B440517735C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7B2222D52;
-	Thu, 12 Dec 2024 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42A222B581;
+	Thu, 12 Dec 2024 16:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r86j6b5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7dFBwsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D27222D44;
-	Thu, 12 Dec 2024 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F81822A81A;
+	Thu, 12 Dec 2024 16:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023573; cv=none; b=DzjOOjHbzNnY6n1yOx/GlgbqhcIQ3miSZxHNfQS57mzpY53NHgvEqjN3F7x4ph9RKHMgJOtypcymsv/zUdJzNmMkrLsOM42r+djzxHSKWjq4azxtUjIKYHInzGgY9u29jpVZ7QQ06Vg/Ny73ndOqfqSkpOYalhUXq+oyAQczp4w=
+	t=1734022228; cv=none; b=kl9YUyGjr+i4JRfgpRXGN+vmbEspenwSFFi418xZabe9sDwZKHnUTnSYmP/aFcCqf0b3wWZ6xii+Tw/oHwPPc8H/JrZ6qwZNm6a0c6B3FNkrI3/AE0ESI/Pz5S1/JYDZQkrcuDRmjUfkZGNS0Husd3LgXdYXqAplEYUXcMZ5hQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023573; c=relaxed/simple;
-	bh=lt/U0x6DsW0TDjoEBadDuC/jZJ2KaIn3Aqgr44w6wKw=;
+	s=arc-20240116; t=1734022228; c=relaxed/simple;
+	bh=jMgPekBpSOBrTLfQux4pVcZ3Ixu3bAou0zM83q+OQKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fzV5Wv7LtxUHhA9gXZgezoc76PM42tAcU6TnnHJboUYuycgLEgODSrs1hu8RiAlrIORwVClFQugv+vN8Inr/xR1vICQ4GCQ2qlzkrUHVZDE/n1Ig1hixoxC58d75dEznRUiknaHumlAFhEv/1ozNTrqOSSWYJTrTt1Xvn+bs8Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r86j6b5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADD9C4CED0;
-	Thu, 12 Dec 2024 17:12:52 +0000 (UTC)
+	 MIME-Version; b=dfRT/bGXzwC7Fpf2rHCtYCRJEUResPq+h+K6rsQIAFUbJnLP37OQr9OepK2PZT2vvrn0FqAQdoJReqSTNR3vKmKdgJY0L39Tepqv2jYfK8UsIm9B3cj47tLDFrgUb8qgiTooDy/9ZQo7NA2k5ya1bzVg0G1vFA6zcJgWCyO9iRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7dFBwsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F008C4CECE;
+	Thu, 12 Dec 2024 16:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023573;
-	bh=lt/U0x6DsW0TDjoEBadDuC/jZJ2KaIn3Aqgr44w6wKw=;
+	s=korg; t=1734022227;
+	bh=jMgPekBpSOBrTLfQux4pVcZ3Ixu3bAou0zM83q+OQKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r86j6b5nxhCXI+S0HRAM29qDQezDaLRw7wBswAyPuqL/paL0k9bHQNAobccUNMxjw
-	 r/LrDcoPVd8wyVrCFY9ZPb8Cj8353PP56Q76w5+hVp3iyy/d5WOQiTeu1XJMCLP4uO
-	 pw13vXaWjFtHDOp3PMAT2oW6znkqlUmglJ5cCJg4=
+	b=a7dFBwsznLCqTnlJOX8wJ6h82tucw/OgtDPgdWM/PzomZ/rrsrivgaGCF2XQkfoor
+	 OeDzDAOlLXxFrIk2TxpO4CEE54E60D7bpLRp1OEGYmJ2oHIMkWPNXQH9jXxcJQ/RHo
+	 S6AF38eGEgFPsyymn1tAjvKvTCwWmuAoTHXHaFZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 012/459] netlink: terminate outstanding dump on socket close
+Subject: [PATCH 5.15 155/565] wifi: ath10k: fix invalid VHT parameters in supported_vht_mcs_rate_nss1
 Date: Thu, 12 Dec 2024 15:55:50 +0100
-Message-ID: <20241212144254.013038636@linuxfoundation.org>
+Message-ID: <20241212144317.607223022@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 1904fb9ebf911441f90a68e96b22aa73e4410505 ]
+[ Upstream commit d50886b27850447d90c0cd40c725238097909d1e ]
 
-Netlink supports iterative dumping of data. It provides the families
-the following ops:
- - start - (optional) kicks off the dumping process
- - dump  - actual dump helper, keeps getting called until it returns 0
- - done  - (optional) pairs with .start, can be used for cleanup
-The whole process is asynchronous and the repeated calls to .dump
-don't actually happen in a tight loop, but rather are triggered
-in response to recvmsg() on the socket.
+In supported_vht_mcs_rate_nss1, the rate for MCS9 & VHT20 is defined as
+{780,  867}, this does not align with firmware's definition and therefore
+fails the verification in ath10k_mac_get_rate_flags_vht():
 
-This gives the user full control over the dump, but also means that
-the user can close the socket without getting to the end of the dump.
-To make sure .start is always paired with .done we check if there
-is an ongoing dump before freeing the socket, and if so call .done.
+	invalid vht params rate 960 100kbps nss 1 mcs 9
 
-The complication is that sockets can get freed from BH and .done
-is allowed to sleep. So we use a workqueue to defer the call, when
-needed.
+Change it to {865,  960} to align with firmware, so this issue could be
+fixed.
 
-Unfortunately this does not work correctly. What we defer is not
-the cleanup but rather releasing a reference on the socket.
-We have no guarantee that we own the last reference, if someone
-else holds the socket they may release it in BH and we're back
-to square one.
+Since ath10k_hw_params::supports_peer_stats_info is enabled only for
+QCA6174, this change does not affect other chips.
 
-The whole dance, however, appears to be unnecessary. Only the user
-can interact with dumps, so we can clean up when socket is closed.
-And close always happens in process context. Some async code may
-still access the socket after close, queue notification skbs to it etc.
-but no dumps can start, end or otherwise make progress.
+Tested-on: QCA6174 hw3.2 PCI WLAN.RM.4.4.1-00309-QCARMSWPZ-1
 
-Delete the workqueue and flush the dump state directly from the release
-handler. Note that further cleanup is possible in -next, for instance
-we now always call .done before releasing the main module reference,
-so dump doesn't have to take a reference of its own.
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Fixes: ed5d7788a934 ("netlink: Do not schedule work from sk_destruct")
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241106015235.2458807-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3344b99d69ab ("ath10k: add bitrate parse for peer stats info")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/lkml/fba24cd3-4a1e-4072-8585-8402272788ff@molgen.mpg.de/
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240711020344.98040-2-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 31 ++++++++-----------------------
- net/netlink/af_netlink.h |  2 --
- 2 files changed, 8 insertions(+), 25 deletions(-)
+ drivers/net/wireless/ath/ath10k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index bda604b37db0a..4da043d9f2c7a 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -385,15 +385,6 @@ static void netlink_skb_set_owner_r(struct sk_buff *skb, struct sock *sk)
- 
- static void netlink_sock_destruct(struct sock *sk)
- {
--	struct netlink_sock *nlk = nlk_sk(sk);
--
--	if (nlk->cb_running) {
--		if (nlk->cb.done)
--			nlk->cb.done(&nlk->cb);
--		module_put(nlk->cb.module);
--		kfree_skb(nlk->cb.skb);
--	}
--
- 	skb_queue_purge(&sk->sk_receive_queue);
- 
- 	if (!sock_flag(sk, SOCK_DEAD)) {
-@@ -406,14 +397,6 @@ static void netlink_sock_destruct(struct sock *sk)
- 	WARN_ON(nlk_sk(sk)->groups);
- }
- 
--static void netlink_sock_destruct_work(struct work_struct *work)
--{
--	struct netlink_sock *nlk = container_of(work, struct netlink_sock,
--						work);
--
--	sk_free(&nlk->sk);
--}
--
- /* This lock without WQ_FLAG_EXCLUSIVE is good on UP and it is _very_ bad on
-  * SMP. Look, when several writers sleep and reader wakes them up, all but one
-  * immediately hit write lock and grab all the cpus. Exclusive sleep solves
-@@ -730,12 +713,6 @@ static void deferred_put_nlk_sk(struct rcu_head *head)
- 	if (!refcount_dec_and_test(&sk->sk_refcnt))
- 		return;
- 
--	if (nlk->cb_running && nlk->cb.done) {
--		INIT_WORK(&nlk->work, netlink_sock_destruct_work);
--		schedule_work(&nlk->work);
--		return;
--	}
--
- 	sk_free(sk);
- }
- 
-@@ -785,6 +762,14 @@ static int netlink_release(struct socket *sock)
- 				NETLINK_URELEASE, &n);
- 	}
- 
-+	/* Terminate any outstanding dump */
-+	if (nlk->cb_running) {
-+		if (nlk->cb.done)
-+			nlk->cb.done(&nlk->cb);
-+		module_put(nlk->cb.module);
-+		kfree_skb(nlk->cb.skb);
-+	}
-+
- 	module_put(nlk->module);
- 
- 	if (netlink_is_kernel(sk)) {
-diff --git a/net/netlink/af_netlink.h b/net/netlink/af_netlink.h
-index 5f454c8de6a4d..fca9556848885 100644
---- a/net/netlink/af_netlink.h
-+++ b/net/netlink/af_netlink.h
-@@ -4,7 +4,6 @@
- 
- #include <linux/rhashtable.h>
- #include <linux/atomic.h>
--#include <linux/workqueue.h>
- #include <net/sock.h>
- 
- /* flags */
-@@ -46,7 +45,6 @@ struct netlink_sock {
- 
- 	struct rhash_head	node;
- 	struct rcu_head		rcu;
--	struct work_struct	work;
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index 8208434d7d2b2..f91251770250f 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -9066,7 +9066,7 @@ static const struct ath10k_index_vht_data_rate_type supported_vht_mcs_rate_nss1[
+ 	{6,  {2633, 2925}, {1215, 1350}, {585,  650} },
+ 	{7,  {2925, 3250}, {1350, 1500}, {650,  722} },
+ 	{8,  {3510, 3900}, {1620, 1800}, {780,  867} },
+-	{9,  {3900, 4333}, {1800, 2000}, {780,  867} }
++	{9,  {3900, 4333}, {1800, 2000}, {865,  960} }
  };
  
- static inline struct netlink_sock *nlk_sk(struct sock *sk)
+ /*MCS parameters with Nss = 2 */
 -- 
 2.43.0
 
