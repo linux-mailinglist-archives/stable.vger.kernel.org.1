@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E5A9EF4F2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCA19EF9A6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:52:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAC2A28B9F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E29E718953C8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5C02144C4;
-	Thu, 12 Dec 2024 17:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CF122488E;
+	Thu, 12 Dec 2024 17:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRQB9CBT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrHma+9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DC06F2FE;
-	Thu, 12 Dec 2024 17:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3AB222D59;
+	Thu, 12 Dec 2024 17:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023461; cv=none; b=doXhmCVd0eY94CFSKL3NG78eDFwyxHYmpbx37vYnMGDWjLxjpD5l/c+GETok0PNGManFXmmKRF4jD1D2VknJ5y5ufyC5ANl9Z59ZuB87T+Pl9NXL5UHg14tItaIhOeR/hcWDkAOgV4nHiKyh7GhuAf7VGEBdC6J6sewCpZVwGZU=
+	t=1734025582; cv=none; b=U4nde7SLpootMqqYs+nA1Cuf02ABh2M6s92Kzh6UNDVYrEX+ljnGsM2wqru5PI2IBcvrCVCjvojsE4TiUvZEfaaaT1rAtl9xN/m7t02m2SyYvyhLKPuPbs3zwRRDBSfuFlJv1Dnph9S+ZN7JnCYe32+sMnME3pzMpOiQlQ6Q2IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023461; c=relaxed/simple;
-	bh=rXI1lycVqAYoMjEO0H/xmssX2o8bxtO8Or0zd68frY4=;
+	s=arc-20240116; t=1734025582; c=relaxed/simple;
+	bh=hk4BRVrMEYLqLrLleHPT/HVWT5mcbXplL/rAPwpI9l4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHhDw6uk8LR3GDHZW0uXB317ziBFlIgJ1yCCBdIIXnnuqquA4Oyv/lRkk27uOKY56ZUCYlZVnGi3UQ7Y/fruFDWYk5MuY/b//6tihSdJb+HwG/h0R6tVOerrXbIMBv7w4WWh/eutwSzOzHouFZOjG62z9PbZQyGZK2mtIya7Txk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRQB9CBT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF56FC4CECE;
-	Thu, 12 Dec 2024 17:11:00 +0000 (UTC)
+	 MIME-Version; b=aWzbT/HO8AnQQj4sNVSMMpedz37R0Su505FP199RajI6A6h1bkDHQZTQu8/jQ+ZX8ZZ2iZTwqkQfoMIoHioiwdMLfiJxufVZfK19Rb8requNFuCkrHn1NacEAsoW9vpyJU6MiV6h6Hwg3wNjtggtDGaP7DH0G7p2uSq6sEmO9m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrHma+9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6188C4CECE;
+	Thu, 12 Dec 2024 17:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023461;
-	bh=rXI1lycVqAYoMjEO0H/xmssX2o8bxtO8Or0zd68frY4=;
+	s=korg; t=1734025582;
+	bh=hk4BRVrMEYLqLrLleHPT/HVWT5mcbXplL/rAPwpI9l4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRQB9CBTJG8IzMNDIqlnoNzupA9lBA82lGYF6i/V5pJuklBMwrucBsG4e5IgDdzLy
-	 Q3qGLqkquEHqmVd3N0JXysLFS2QvFC5yS8oKlKel0tDV8lQsacO/wuRfSvYjAJIcjx
-	 2aUhETfdvkg6ZXSd81MkCC/MC+5zcbrdU1F84ebY=
+	b=xrHma+9yXsr7J24DZDuf2WSdpCIUsYRbmv4aNlpBU46nVQIx6ZnQgewNXDbMdjp0R
+	 xmBipKRNbVgbot+tdD692ZC9UbyvWgzSMLNGz2eJS/ZBuBTsGyq1BNiPQTis1JMxAG
+	 Bz5HPFLqDGxxPjA5lVf8S4wbbzyQ/K8mszOYLJII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Jing Zhang <jingzhangos@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 5.15 541/565] KVM: arm64: vgic-its: Clear ITE when DISCARD frees an ITE
+	Christian Gmeiner <cgmeiner@igalia.com>,
+	Lucas Stach <l.stach@pengutronix.de>
+Subject: [PATCH 5.4 218/321] drm/etnaviv: flush shader L1 cache after user commandstream
 Date: Thu, 12 Dec 2024 16:02:16 +0100
-Message-ID: <20241212144333.237346449@linuxfoundation.org>
+Message-ID: <20241212144238.590804655@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunkun Jiang <jiangkunkun@huawei.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-commit 7602ffd1d5e8927fadd5187cb4aed2fdc9c47143 upstream.
+commit 4f8dbadef085ab447a01a8d4806a3f629fea05ed upstream.
 
-When DISCARD frees an ITE, it does not invalidate the
-corresponding ITE. In the scenario of continuous saves and
-restores, there may be a situation where an ITE is not saved
-but is restored. This is unreasonable and may cause restore
-to fail. This patch clears the corresponding ITE when DISCARD
-frees an ITE.
+The shader L1 cache is a writeback cache for shader loads/stores
+and thus must be flushed before any BOs backing the shader buffers
+are potentially freed.
 
 Cc: stable@vger.kernel.org
-Fixes: eff484e0298d ("KVM: arm64: vgic-its: ITT save and restore")
-Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-[Jing: Update with entry write helper]
-Signed-off-by: Jing Zhang <jingzhangos@google.com>
-Link: https://lore.kernel.org/r/20241107214137.428439-6-jingzhangos@google.com
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Christian Gmeiner <cgmeiner@igalia.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_buffer.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -855,6 +855,9 @@ static int vgic_its_cmd_handle_discard(s
- 
- 	ite = find_ite(its, device_id, event_id);
- 	if (ite && its_is_collection_mapped(ite->collection)) {
-+		struct its_device *device = find_its_device(its, device_id);
-+		int ite_esz = vgic_its_get_abi(its)->ite_esz;
-+		gpa_t gpa = device->itt_addr + ite->event_id * ite_esz;
- 		/*
- 		 * Though the spec talks about removing the pending state, we
- 		 * don't bother here since we clear the ITTE anyway and the
-@@ -863,7 +866,8 @@ static int vgic_its_cmd_handle_discard(s
- 		vgic_its_invalidate_cache(kvm);
- 
- 		its_free_ite(kvm, ite);
--		return 0;
-+
-+		return vgic_its_write_entry_lock(its, gpa, 0, ite_esz);
- 	}
- 
- 	return E_ITS_DISCARD_UNMAPPED_INTERRUPT;
+--- a/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_buffer.c
+@@ -481,7 +481,8 @@ void etnaviv_buffer_queue(struct etnaviv
+ 	} else {
+ 		CMD_LOAD_STATE(buffer, VIVS_GL_FLUSH_CACHE,
+ 				       VIVS_GL_FLUSH_CACHE_DEPTH |
+-				       VIVS_GL_FLUSH_CACHE_COLOR);
++				       VIVS_GL_FLUSH_CACHE_COLOR |
++				       VIVS_GL_FLUSH_CACHE_SHADER_L1);
+ 		if (has_blt) {
+ 			CMD_LOAD_STATE(buffer, VIVS_BLT_ENABLE, 0x1);
+ 			CMD_LOAD_STATE(buffer, VIVS_BLT_SET_COMMAND, 0x1);
 
 
 
