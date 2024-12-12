@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-103640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E754B9EF91C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:48:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063099EF74A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:33:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2B7F179AE5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:39:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8997F18945ED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D002222D68;
-	Thu, 12 Dec 2024 17:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE5D13CA93;
+	Thu, 12 Dec 2024 17:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9z6HMM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LuWWyVrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2880A2210F1;
-	Thu, 12 Dec 2024 17:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC8E176AA1;
+	Thu, 12 Dec 2024 17:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025170; cv=none; b=cSY5kDNvwUmzS51Xz0nt3vl65qYBz0f8t03hOCUrS/o0VmmAH4QIH1mnAGmt37FX0/AGUlu+kiseTin435ytxz5FBN6L2n++M8Y6L8S/dxDgxZKObnBOMgl7kIayjld1jaOw++wKnmZT0X08K2c+VZ8A/5dX8BFvSZr3Q3O76XI=
+	t=1734024232; cv=none; b=Ec2S4ZnHR5P0JaCZnG3BTvG3cT9X7iE9foLM/wlEkaSzjSFJ+nhcPBkbG2M7SLFCxoRz6qr94O0+PAVDmKAwwZYTiQUQdq4D8KgV92wECJEhHC/CqSktyKodAKE9rFtI4cVFjchDHVuwTO1UQop8k0MyiO+Ca38PoRDC6Asgshc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025170; c=relaxed/simple;
-	bh=9TrfIawr1is2Hfs5ZHxhoBHFsBcnEg1DFbxsrCkVgq8=;
+	s=arc-20240116; t=1734024232; c=relaxed/simple;
+	bh=HYpZzqZ6CWivLGa+PvvEPonv8jJ8CV6GzOCOcLqMwho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e1sCul0sh0gfu3jEr6jAUOha9RxTjgmH2JcNUWE78XPiLoM0caFTnobn0BFqjv2GDRbTNkFmOzhCbABY1ztITK3VWplm0FXrwj3/Bl5nUVnkrjjSOWUClJMFKCUDBGNWgRx2eDehUExxjhCSzuh6R149FpSVFzB7cVRNjbiKils=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9z6HMM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA2FC4CED0;
-	Thu, 12 Dec 2024 17:39:29 +0000 (UTC)
+	 MIME-Version; b=fTpmKM0sxKgj69P3H+GyhWTpn93BIFdVV+daKcSgNIOMByM9y4JgUMOtfgwrWwZV2Tmi2z5/h8f+dLszlGy6hlJjTCwDIYd+aPFIjyU0FNPwG8+uuoXuJR3Gzr8jYNQ+xJBYaA/JbVelqVykA/zkTQVpSIO0fzPFjXLhHyx+al0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LuWWyVrT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50FFFC4CED3;
+	Thu, 12 Dec 2024 17:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025169;
-	bh=9TrfIawr1is2Hfs5ZHxhoBHFsBcnEg1DFbxsrCkVgq8=;
+	s=korg; t=1734024231;
+	bh=HYpZzqZ6CWivLGa+PvvEPonv8jJ8CV6GzOCOcLqMwho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9z6HMM/GFcPIwmPmFqpjx8cetOhj5u9WWwtztQ1oeBWkPzpSQXSYSz4hsCet8yBv
-	 yHv1YOkGN8JXEkKBpHwVKr+A9SSY685/mvyF336xVlHCPJOlHeloszaCpRptuEtT1O
-	 xrWyHRgjNXmkzHCPRwVdha7Q7ILwCxSUjjXhr3vY=
+	b=LuWWyVrTUgDBj9cM8PlGPcIJYbc+jpVcabi4/rS72Ply827aiVegKRXqrXA42LH3P
+	 M+i4W9IU0i9x/m7PGoZvPJw33ZsTi4nin/GEiyUyBQTGmYT+T2hrqHWZyEgCxtf34Q
+	 JtCQ/HFcZ9OoNcrdjIzYXOB/LE6OJ6YmsFYg5+Y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/321] mmc: mmc_spi: drop buggy snprintf()
+Subject: [PATCH 5.10 229/459] ipmr: convert /proc handlers to rcu_read_lock()
 Date: Thu, 12 Dec 2024 15:59:27 +0100
-Message-ID: <20241212144231.932223959@linuxfoundation.org>
+Message-ID: <20241212144302.615058767@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 328bda09cc91b3d93bc64f4a4dadc44313dd8140 ]
+[ Upstream commit b96ef16d2f837870daaea51c38cd50458b95ad5c ]
 
-GCC 13 complains about the truncated output of snprintf():
+We can use standard rcu_read_lock(), to get rid
+of last read_lock(&mrt_lock) call points.
 
-drivers/mmc/host/mmc_spi.c: In function ‘mmc_spi_response_get’:
-drivers/mmc/host/mmc_spi.c:227:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
-      |                                                                ^
-drivers/mmc/host/mmc_spi.c:227:9: note: ‘snprintf’ output between 26 and 43 bytes into a destination of size 32
-  227 |         snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  228 |                 cmd->opcode, maptype(cmd));
-
-Drop it and fold the string it generates into the only place where it's
-emitted - the dev_dbg() call at the end of the function.
-
-Fixes: 15a0580ced08 ("mmc_spi host driver")
-Suggested-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20241008160134.69934-1-brgl@bgdev.pl
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fc9c273d6daa ("ipmr: fix tables suspicious RCU usage")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mmc_spi.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/ipv4/ipmr.c  | 8 ++++----
+ net/ipv6/ip6mr.c | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mmc/host/mmc_spi.c b/drivers/mmc/host/mmc_spi.c
-index 7874b266a4448..e8937d8166fb4 100644
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -255,10 +255,6 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
- 	u8 	leftover = 0;
- 	unsigned short rotator;
- 	int 	i;
--	char	tag[32];
--
--	snprintf(tag, sizeof(tag), "  ... CMD%d response SPI_%s",
--		cmd->opcode, maptype(cmd));
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index db184cb826b95..fe3d23611a297 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -2896,7 +2896,7 @@ static int ipmr_rtm_dumplink(struct sk_buff *skb, struct netlink_callback *cb)
+  */
  
- 	/* Except for data block reads, the whole response will already
- 	 * be stored in the scratch buffer.  It's somewhere after the
-@@ -408,8 +404,9 @@ static int mmc_spi_response_get(struct mmc_spi_host *host,
- 	}
+ static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+-	__acquires(mrt_lock)
++	__acquires(RCU)
+ {
+ 	struct mr_vif_iter *iter = seq->private;
+ 	struct net *net = seq_file_net(seq);
+@@ -2908,14 +2908,14 @@ static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
  
- 	if (value < 0)
--		dev_dbg(&host->spi->dev, "%s: resp %04x %08x\n",
--			tag, cmd->resp[0], cmd->resp[1]);
-+		dev_dbg(&host->spi->dev,
-+			"  ... CMD%d response SPI_%s: resp %04x %08x\n",
-+			cmd->opcode, maptype(cmd), cmd->resp[0], cmd->resp[1]);
+ 	iter->mrt = mrt;
  
- 	/* disable chipselect on errors and some success cases */
- 	if (value >= 0 && cs_on)
+-	read_lock(&mrt_lock);
++	rcu_read_lock();
+ 	return mr_vif_seq_start(seq, pos);
+ }
+ 
+ static void ipmr_vif_seq_stop(struct seq_file *seq, void *v)
+-	__releases(mrt_lock)
++	__releases(RCU)
+ {
+-	read_unlock(&mrt_lock);
++	rcu_read_unlock();
+ }
+ 
+ static int ipmr_vif_seq_show(struct seq_file *seq, void *v)
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index c758d0cc6146d..926baaf8661cc 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -405,7 +405,7 @@ static void ip6mr_free_table(struct mr_table *mrt)
+  */
+ 
+ static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+-	__acquires(mrt_lock)
++	__acquires(RCU)
+ {
+ 	struct mr_vif_iter *iter = seq->private;
+ 	struct net *net = seq_file_net(seq);
+@@ -417,14 +417,14 @@ static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+ 
+ 	iter->mrt = mrt;
+ 
+-	read_lock(&mrt_lock);
++	rcu_read_lock();
+ 	return mr_vif_seq_start(seq, pos);
+ }
+ 
+ static void ip6mr_vif_seq_stop(struct seq_file *seq, void *v)
+-	__releases(mrt_lock)
++	__releases(RCU)
+ {
+-	read_unlock(&mrt_lock);
++	rcu_read_unlock();
+ }
+ 
+ static int ip6mr_vif_seq_show(struct seq_file *seq, void *v)
 -- 
 2.43.0
 
