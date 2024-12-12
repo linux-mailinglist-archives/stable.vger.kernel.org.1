@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C418F9EF5C8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:19:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2B89EF504
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A9D42887D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:19:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F408F189A78B
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F76211A34;
-	Thu, 12 Dec 2024 17:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC734F218;
+	Thu, 12 Dec 2024 16:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3tCq0aC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4h/C+u7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021FE4F218;
-	Thu, 12 Dec 2024 17:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860012210DE;
+	Thu, 12 Dec 2024 16:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023981; cv=none; b=m2ir0adwrs9ekPIZ/eD8yTlUehNcA++d6gmccbZAFxj5siiC12DFWOXvz/LG7NVWPsJXJA/JfGhVn+XZuf+RsgzoiZmRqWfWkoOwc19TZdY6C7fZgSZuxHI0hp2IsWhLTjZ7wT5AWiaU/cHC20xAObzOWm9+lCERJoUcFQxupiU=
+	t=1734022724; cv=none; b=Nlxae2c57daYlxUhOOQNeHmx9GRw1f9UMAcIw9zrRxMm2NVhRQkA4yU7e9WLlvVZi1YK9+qYY0igZ+vIbi/4DwghQErfILJH5tHpbb/AW08p5krrJf3vs2SYMJu8XkymX0JrUD6auK9ks/NghuH+PiCJRrFeoExRj6uiYgEknMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023981; c=relaxed/simple;
-	bh=StoWf+SU9xgNmpQT76ZrOCwfiKY1bavjMRqSyUyVl04=;
+	s=arc-20240116; t=1734022724; c=relaxed/simple;
+	bh=RfFNHfGoCRc+CP38Fg+cJewHpX+8Iut4l7mISnhZw6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lb6rqBxORDejcGKJdQPB08cAcDdboHS9iL6ukKAzTgvs7GuTChgDlDAwVENYyWEiNa2a+dJ/FiK5m6GePhJnTM+5lA0kwrNZ+84R1wBsQRsI1h3EWunOwCAL8HHjzTnPLMNaxKa5Ez7stiMv5enuU0q5hDaQgUpoXNKN7oi4SSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3tCq0aC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B046C4CECE;
-	Thu, 12 Dec 2024 17:19:40 +0000 (UTC)
+	 MIME-Version; b=lHElIEsXKFHxgh1QKwssYq5r7iHxXasYiFvUVNkwZ3kY5V0MyT9AUc8cMlZnDl67y7RBc61e1o77j0mTngO16uX4K6T3T8FBgUFo1S+9MMp6hPiM7jOBUK78jfMmkECi9l15cPJC02pZuV8kQ24anlsP0R9BK/QA66VDKa8gEU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4h/C+u7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D32AC4CECE;
+	Thu, 12 Dec 2024 16:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023980;
-	bh=StoWf+SU9xgNmpQT76ZrOCwfiKY1bavjMRqSyUyVl04=;
+	s=korg; t=1734022724;
+	bh=RfFNHfGoCRc+CP38Fg+cJewHpX+8Iut4l7mISnhZw6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3tCq0aCgLAsG0UsUsWL4P0Z+vvp5qMeJWr7jLn7e4NtvLLEwhHOcuakJQBaZ9I9G
-	 nN6EO/Sp2eB8x1FPidxO4BqmlCOoCHxvLBqoE7K2LIusK/E7nQYDPevMaFh27t4i/s
-	 3XGE/v18Vqve0bjhjfsxBo5SNjmrWqlxAyvq4Zoo=
+	b=M4h/C+u7J0pwidV0r2Yg4JkwBmlvitKTlGQ0wrmK3mpa7YyLspi/pARqqHutW+My2
+	 s4j1O0/X8BNNOhnT0lLwPfej+PYfuO66p/RazN8Hqo3XuaEa4PkPjIkW1UtFq2ajiZ
+	 MLn6k2H7sswlzTL+2FS0rOFLSnXEo4uIxMEdwN6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	syzbot+422188bce66e76020e55@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/459] bpf, sockmap: Several fixes to bpf_msg_push_data
+Subject: [PATCH 5.15 289/565] USB: chaoskey: fail open after removal
 Date: Thu, 12 Dec 2024 15:58:04 +0100
-Message-ID: <20241212144259.279063475@linuxfoundation.org>
+Message-ID: <20241212144322.885261775@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 15ab0548e3107665c34579ae523b2b6e7c22082a ]
+[ Upstream commit 422dc0a4d12d0b80dd3aab3fe5943f665ba8f041 ]
 
-Several fixes to bpf_msg_push_data,
-1. test_sockmap has tests where bpf_msg_push_data is invoked to push some
-data at the end of a message, but -EINVAL is returned. In this case, in
-bpf_msg_push_data, after the first loop, i will be set to msg->sg.end, add
-the logic to handle it.
-2. In the code block of "if (start - offset)", it's possible that "i"
-points to the last of sk_msg_elem. In this case, "sk_msg_iter_next(msg,
-end)" might still be called twice, another invoking is in "if (!copy)"
-code block, but actually only one is needed. Add the logic to handle it,
-and reconstruct the code to make the logic more clear.
+chaoskey_open() takes the lock only to increase the
+counter of openings. That means that the mutual exclusion
+with chaoskey_disconnect() cannot prevent an increase
+of the counter and chaoskey_open() returning a success.
 
-Fixes: 6fff607e2f14 ("bpf: sk_msg program helper bpf_msg_push_data")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-7-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+If that race is hit, chaoskey_disconnect() will happily
+free all resources associated with the device after
+it has dropped the lock, as it has read the counter
+as zero.
+
+To prevent this race chaoskey_open() has to check
+the presence of the device under the lock.
+However, the current per device lock cannot be used,
+because it is a part of the data structure to be
+freed. Hence an additional global mutex is needed.
+The issue is as old as the driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Reported-by: syzbot+422188bce66e76020e55@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=422188bce66e76020e55
+Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
+Rule: add
+Link: https://lore.kernel.org/stable/20241002132201.552578-1-oneukum%40suse.com
+Link: https://lore.kernel.org/r/20241002132201.552578-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 53 +++++++++++++++++++++++++++++------------------
- 1 file changed, 33 insertions(+), 20 deletions(-)
+ drivers/usb/misc/chaoskey.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 99fdd8afeeda3..0ef77fb72af78 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2774,7 +2774,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		sk_msg_iter_var_next(i);
- 	} while (i != msg->sg.end);
+diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
+index 87067c3d6109b..32fa7fd50c380 100644
+--- a/drivers/usb/misc/chaoskey.c
++++ b/drivers/usb/misc/chaoskey.c
+@@ -27,6 +27,8 @@ static struct usb_class_driver chaoskey_class;
+ static int chaoskey_rng_read(struct hwrng *rng, void *data,
+ 			     size_t max, bool wait);
  
--	if (start >= offset + l)
-+	if (start > offset + l)
- 		return -EINVAL;
- 
- 	space = MAX_MSG_FRAGS - sk_msg_elem_used(msg);
-@@ -2799,6 +2799,8 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 
- 		raw = page_address(page);
- 
-+		if (i == msg->sg.end)
-+			sk_msg_iter_var_prev(i);
- 		psge = sk_msg_elem(msg, i);
- 		front = start - offset;
- 		back = psge->length - front;
-@@ -2815,7 +2817,13 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		}
- 
- 		put_page(sg_page(psge));
--	} else if (start - offset) {
-+		new = i;
-+		goto place_new;
-+	}
++static DEFINE_MUTEX(chaoskey_list_lock);
 +
-+	if (start - offset) {
-+		if (i == msg->sg.end)
-+			sk_msg_iter_var_prev(i);
- 		psge = sk_msg_elem(msg, i);
- 		rsge = sk_msg_elem_cpy(msg, i);
+ #define usb_dbg(usb_if, format, arg...) \
+ 	dev_dbg(&(usb_if)->dev, format, ## arg)
  
-@@ -2826,39 +2834,44 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		sk_msg_iter_var_next(i);
- 		sg_unmark_end(psge);
- 		sg_unmark_end(&rsge);
--		sk_msg_iter_next(msg, end);
+@@ -231,6 +233,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
+ 	if (dev->hwrng_registered)
+ 		hwrng_unregister(&dev->hwrng);
+ 
++	mutex_lock(&chaoskey_list_lock);
+ 	usb_deregister_dev(interface, &chaoskey_class);
+ 
+ 	usb_set_intfdata(interface, NULL);
+@@ -245,6 +248,7 @@ static void chaoskey_disconnect(struct usb_interface *interface)
+ 	} else
+ 		mutex_unlock(&dev->lock);
+ 
++	mutex_unlock(&chaoskey_list_lock);
+ 	usb_dbg(interface, "disconnect done");
+ }
+ 
+@@ -252,6 +256,7 @@ static int chaoskey_open(struct inode *inode, struct file *file)
+ {
+ 	struct chaoskey *dev;
+ 	struct usb_interface *interface;
++	int rv = 0;
+ 
+ 	/* get the interface from minor number and driver information */
+ 	interface = usb_find_interface(&chaoskey_driver, iminor(inode));
+@@ -267,18 +272,23 @@ static int chaoskey_open(struct inode *inode, struct file *file)
  	}
  
- 	/* Slot(s) to place newly allocated data */
-+	sk_msg_iter_next(msg, end);
- 	new = i;
-+	sk_msg_iter_var_next(i);
-+
-+	if (i == msg->sg.end) {
-+		if (!rsge.length)
-+			goto place_new;
-+		sk_msg_iter_next(msg, end);
-+		goto place_new;
-+	}
+ 	file->private_data = dev;
++	mutex_lock(&chaoskey_list_lock);
+ 	mutex_lock(&dev->lock);
+-	++dev->open;
++	if (dev->present)
++		++dev->open;
++	else
++		rv = -ENODEV;
+ 	mutex_unlock(&dev->lock);
++	mutex_unlock(&chaoskey_list_lock);
  
- 	/* Shift one or two slots as needed */
--	if (!copy) {
--		sge = sk_msg_elem_cpy(msg, i);
-+	sge = sk_msg_elem_cpy(msg, new);
-+	sg_unmark_end(&sge);
+-	usb_dbg(interface, "open success");
+-	return 0;
++	return rv;
+ }
  
-+	nsge = sk_msg_elem_cpy(msg, i);
-+	if (rsge.length) {
- 		sk_msg_iter_var_next(i);
--		sg_unmark_end(&sge);
-+		nnsge = sk_msg_elem_cpy(msg, i);
- 		sk_msg_iter_next(msg, end);
-+	}
+ static int chaoskey_release(struct inode *inode, struct file *file)
+ {
+ 	struct chaoskey *dev = file->private_data;
+ 	struct usb_interface *interface;
++	int rv = 0;
  
--		nsge = sk_msg_elem_cpy(msg, i);
-+	while (i != msg->sg.end) {
-+		msg->sg.data[i] = sge;
-+		sge = nsge;
-+		sk_msg_iter_var_next(i);
- 		if (rsge.length) {
--			sk_msg_iter_var_next(i);
-+			nsge = nnsge;
- 			nnsge = sk_msg_elem_cpy(msg, i);
--		}
+ 	if (dev == NULL)
+ 		return -ENODEV;
+@@ -287,14 +297,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
+ 
+ 	usb_dbg(interface, "release");
+ 
++	mutex_lock(&chaoskey_list_lock);
+ 	mutex_lock(&dev->lock);
+ 
+ 	usb_dbg(interface, "open count at release is %d", dev->open);
+ 
+ 	if (dev->open <= 0) {
+ 		usb_dbg(interface, "invalid open count (%d)", dev->open);
+-		mutex_unlock(&dev->lock);
+-		return -ENODEV;
++		rv = -ENODEV;
++		goto bail;
+ 	}
+ 
+ 	--dev->open;
+@@ -303,13 +314,15 @@ static int chaoskey_release(struct inode *inode, struct file *file)
+ 		if (dev->open == 0) {
+ 			mutex_unlock(&dev->lock);
+ 			chaoskey_free(dev);
+-		} else
+-			mutex_unlock(&dev->lock);
+-	} else
+-		mutex_unlock(&dev->lock);
 -
--		while (i != msg->sg.end) {
--			msg->sg.data[i] = sge;
--			sge = nsge;
--			sk_msg_iter_var_next(i);
--			if (rsge.length) {
--				nsge = nnsge;
--				nnsge = sk_msg_elem_cpy(msg, i);
--			} else {
--				nsge = sk_msg_elem_cpy(msg, i);
--			}
-+		} else {
-+			nsge = sk_msg_elem_cpy(msg, i);
- 		}
- 	}
++			goto destruction;
++		}
++	}
++bail:
++	mutex_unlock(&dev->lock);
++destruction:
++	mutex_lock(&chaoskey_list_lock);
+ 	usb_dbg(interface, "release success");
+-	return 0;
++	return rv;
+ }
  
-+place_new:
- 	/* Place newly allocated data buffer */
- 	sk_mem_charge(msg->sk, len);
- 	msg->sg.size += len;
+ static void chaos_read_callback(struct urb *urb)
 -- 
 2.43.0
 
