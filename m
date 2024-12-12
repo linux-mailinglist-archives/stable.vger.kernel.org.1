@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEAF9EF575
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:17:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308189EF710
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1764176BB3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C29A16EA78
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03332210EA;
-	Thu, 12 Dec 2024 16:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593702153DD;
+	Thu, 12 Dec 2024 17:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arAqXFos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V3O2tl5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BDEE217F46;
-	Thu, 12 Dec 2024 16:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5142210F2;
+	Thu, 12 Dec 2024 17:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022339; cv=none; b=Cl9+9+4GqW4Ow13y4xuVrVtwCCimIAFmgua1Y5jiS0pfq++jCtDaWd36g/4QK9bBuMvXQmCWi4S4J+zkEgF2athrHAXb09ZOpgbDFz5qYkLxDF6kW24TQAJ50z2UDUo+gDrxS/rTqHaMeKGikgv2YXKg3ylPEoAXSEDmh7wo4P0=
+	t=1734023753; cv=none; b=XaThK+CyE8pPTfKzqfBW741mKplo+PYIliASSo1naGb1sxo8ODPbv21VC/R+PK65gxGuo/ysTTg5/BGsy4FevZsXD3CuqHGN3DNvFT6ERmHrTUSplOFVEDo1WehPSFFrUcR3Dx2uCwpku8zZSxX56783GsRD1dQMfj9X+An0Krk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022339; c=relaxed/simple;
-	bh=kKbTNOXleBrJ4HJ686xq28GnWOaEGHVeh14VZaL04+E=;
+	s=arc-20240116; t=1734023753; c=relaxed/simple;
+	bh=jNdcefpTRRhwVQeCjvR0ef83DtXAGw1xYfYQegO+uxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMG39iy1yxAjBKhvLqQ1G8XmKaPxaR7RB8BuMRjz71NjUWb9Jy2M6CPB/bGqaxa5dWng/TtbQnnYQmHmckSZDw3P3R9vClZfVc+UQLXezkO1/igHan0H2ONJIwHbWo8bddcuC7YGDnwar1uKaZFkfOKdC5dbq/A01yH8FcmJTyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arAqXFos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D5C4CECE;
-	Thu, 12 Dec 2024 16:52:17 +0000 (UTC)
+	 MIME-Version; b=LgxRDnI3ha8xty6RJXF28aRemkeZmyHCY4TOkXMA+2OCptrTG4+3wS6Nuf83HhuQJnMYCI+jVddDnL28iFqv9jZpaNbDHhsATU6388vmeMpLX0xaCthXnU8HBcqutQbKt96IV0uqIRtG3siSRKx04gAvWV++aQmD920ZFcc+4aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V3O2tl5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB63C4CECE;
+	Thu, 12 Dec 2024 17:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022338;
-	bh=kKbTNOXleBrJ4HJ686xq28GnWOaEGHVeh14VZaL04+E=;
+	s=korg; t=1734023752;
+	bh=jNdcefpTRRhwVQeCjvR0ef83DtXAGw1xYfYQegO+uxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arAqXFoshTl5z+S3VA3B9C39YgjU7rxEqnf8UdlKS1+0/pNfK4pGTjYtoVGdtodZM
-	 gqHe/yKjaKXuO3Tq+svsSYcVRUkJnlv8/qWCm6Lf7CiLwq4BSZ+3Vur+yBWBAU58Gl
-	 vn1Z5+yC+JDlTLnlH3f/scNPB1h3Z6HSUm53zleA=
+	b=V3O2tl5FGBIYZrecd19FNccLAxokEcvdMhGPl43fnAvooR+Er6hen8OadL7OY5Mz5
+	 u6bPdLgYfEUNuEA6dkJ5oSW+Jd0jBE9wC5aq5UgjCZslCKcrU3NHIVaMB4CTAfwsCa
+	 GIegYBFA70Mu7H2qKDaQobHHHWEoZbbe3n4AELpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Yi Yang <yiyang13@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 213/565] mfd: da9052-spi: Change read-mask to write-mask
-Date: Thu, 12 Dec 2024 15:56:48 +0100
-Message-ID: <20241212144319.914932530@linuxfoundation.org>
+Subject: [PATCH 5.10 071/459] crypto: pcrypt - Call crypto layer directly when padata_do_parallel() return -EBUSY
+Date: Thu, 12 Dec 2024 15:56:49 +0100
+Message-ID: <20241212144256.327915210@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 2e3378f6c79a1b3f7855ded1ef306ea4406352ed ]
+[ Upstream commit 662f2f13e66d3883b9238b0b96b17886179e60e2 ]
 
-Driver has mixed up the R/W bit.
-The LSB bit is set on write rather than read.
-Change it to avoid nasty things to happen.
+Since commit 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for
+PADATA_RESET"), the pcrypt encryption and decryption operations return
+-EAGAIN when the CPU goes online or offline. In alg_test(), a WARN is
+generated when pcrypt_aead_decrypt() or pcrypt_aead_encrypt() returns
+-EAGAIN, the unnecessary panic will occur when panic_on_warn set 1.
+Fix this issue by calling crypto layer directly without parallelization
+in that case.
 
-Fixes: e9e9d3973594 ("mfd: da9052: Avoid setting read_flag_mask for da9052-i2c driver")
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Link: https://lore.kernel.org/r/20240925-da9052-v2-1-f243e4505b07@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for PADATA_RESET")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/da9052-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/pcrypt.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mfd/da9052-spi.c b/drivers/mfd/da9052-spi.c
-index 5faf3766a5e20..06c500bf4d57e 100644
---- a/drivers/mfd/da9052-spi.c
-+++ b/drivers/mfd/da9052-spi.c
-@@ -37,7 +37,7 @@ static int da9052_spi_probe(struct spi_device *spi)
- 	spi_set_drvdata(spi, da9052);
+diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
+index 005a36cb21bc4..2d7f98709e97c 100644
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -117,8 +117,10 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
+-	if (err == -EBUSY)
+-		return -EAGAIN;
++	if (err == -EBUSY) {
++		/* try non-parallel mode */
++		return crypto_aead_encrypt(creq);
++	}
  
- 	config = da9052_regmap_config;
--	config.read_flag_mask = 1;
-+	config.write_flag_mask = 1;
- 	config.reg_bits = 7;
- 	config.pad_bits = 1;
- 	config.val_bits = 8;
+ 	return err;
+ }
+@@ -166,8 +168,10 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
+-	if (err == -EBUSY)
+-		return -EAGAIN;
++	if (err == -EBUSY) {
++		/* try non-parallel mode */
++		return crypto_aead_decrypt(creq);
++	}
+ 
+ 	return err;
+ }
 -- 
 2.43.0
 
