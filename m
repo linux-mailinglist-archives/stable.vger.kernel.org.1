@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-101878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22339EEF5D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 651169EF015
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6E1173DC9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:09:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58A5B17339C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD292253EF;
-	Thu, 12 Dec 2024 15:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011CD222D52;
+	Thu, 12 Dec 2024 16:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r51Oz3VU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0l5fn9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC77E23EA9F;
-	Thu, 12 Dec 2024 15:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B413822A7E7;
+	Thu, 12 Dec 2024 16:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019124; cv=none; b=pTfAhWrkVWI41WA27l1EZwf5T1tzyPulPT/fp1hcJso2vLc4p1I1SHMqQqwVtVGsoHn27CZkcuzbyWoVcWvEkTOJZ42cCZZBP/9A84Rs8qSd6bJ41YQHsI57f+LQyRsv3IBF0LN6tMf9DvwSd9wUDwqWf2oHLjZ5mADCHjRzA6w=
+	t=1734019275; cv=none; b=RqhW8be0LHyK1PAx5bBlD8xrTZaRjc7ji/caC5rr7kIaSkXy5CyJrRCI7pVPueOnipaUlygu3x0kE35TiScWd+T3y28GT4uz6nylCsPVGAcQqn3bZiNvYw4rRIEFLt9zt8f9EjC9IVNaJGtvuWFe3/3CEilm3J2JWQRje6ADnFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019124; c=relaxed/simple;
-	bh=33LF8wwrzjuwh7lGnjsOWuBTwW5YDkbI2k5Z475Ealw=;
+	s=arc-20240116; t=1734019275; c=relaxed/simple;
+	bh=BI2U117lATGRu4W+d3xrSaGSZCMDRDzR7EXjw7PcQPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIGee7Uu8V959sTeyaYduTiy1MosZd8nlTBmmlTNhqcvOthHsj1E1LzKe3gYNBSXyluba5hT1giNuyUBXmWoSDzMt1uyRikSWT8BJ+PDN6xXFNMGu7WHJkb7kgKQ40mAGCiOI6j1TgU8f7kyFBDF0oW1NAkq4fSS46yS4UtMeR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r51Oz3VU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B3BC4CEDF;
-	Thu, 12 Dec 2024 15:58:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dQuudyKnHQbG0QRtypStbKlqunrLQJ9WXEBqjn/LqustHggYODvwR49hejEdclYx0wxGGwQJAaVh1BXXoFQ0HlPHz4LhMg5Nc1rPp8zyJTMu69hwNc8DLagAfdeAukJP8qUjzMFa4i4jS5WyqrJHsDHPYbv52dQNyt1jg1F1VAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0l5fn9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E5BC4CEDD;
+	Thu, 12 Dec 2024 16:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019124;
-	bh=33LF8wwrzjuwh7lGnjsOWuBTwW5YDkbI2k5Z475Ealw=;
+	s=korg; t=1734019274;
+	bh=BI2U117lATGRu4W+d3xrSaGSZCMDRDzR7EXjw7PcQPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r51Oz3VUjW8b0gCH/iE5yb7Cvl3omyQqojaStKt3KdQ+a3ww7KMkI2Uz61rfYvU0O
-	 1RvZKyjorrHCkP1Akp4KUjU7iM4S6E5j9VRthofX9tE53a1venKK5YDdFCkebogMwm
-	 OFHU1r9QznXApMQIBjQNeHunEMxGFWybYWQYaVaI=
+	b=T0l5fn9I3cLxDWx6X5cU6zJpEfDrbeVyfjDKEQPN+/tP9M5IYo282F9zyAFlghZlf
+	 524m8jQxOaVeDOniHR/J++4qqygjTigLGRZF0wUF9b9bGHdlOrvZu2I7bjtMIOwAsi
+	 bpgHez2l12aS7ZyiU5Ss/8mhgE8Iavpq30+gPWpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Huafei <lihuafei1@huawei.com>,
-	Andy Shevchenko <andy@kernel.org>,
+	Yao Zi <ziyao@disroot.org>,
 	Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/772] media: atomisp: Add check for rgby_data memory allocation failure
-Date: Thu, 12 Dec 2024 15:51:08 +0100
-Message-ID: <20241212144355.006929733@linuxfoundation.org>
+Subject: [PATCH 6.1 124/772] platform/x86: panasonic-laptop: Return errno correctly in show callback
+Date: Thu, 12 Dec 2024 15:51:09 +0100
+Message-ID: <20241212144355.048584870@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -62,46 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Huafei <lihuafei1@huawei.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit ed61c59139509f76d3592683c90dc3fdc6e23cd6 ]
+[ Upstream commit 5c7bebc1a3f0661db558d60e14dde27fc216d9dc ]
 
-In ia_css_3a_statistics_allocate(), there is no check on the allocation
-result of the rgby_data memory. If rgby_data is not successfully
-allocated, it may trigger the assert(host_stats->rgby_data) assertion in
-ia_css_s3a_hmem_decode(). Adding a check to fix this potential issue.
+When an error occurs in sysfs show callback, we should return the errno
+directly instead of formatting it as the result, which produces
+meaningless output and doesn't inform the userspace of the error.
 
-Fixes: a49d25364dfb ("staging/atomisp: Add support for the Intel IPU v2")
-Signed-off-by: Li Huafei <lihuafei1@huawei.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20241104145051.3088231-1-lihuafei1@huawei.com
+Fixes: 468f96bfa3a0 ("platform/x86: panasonic-laptop: Add support for battery charging threshold (eco mode)")
+Fixes: d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Link: https://lore.kernel.org/r/20241118064637.61832-3-ziyao@disroot.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/atomisp/pci/sh_css_params.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/panasonic-laptop.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/media/atomisp/pci/sh_css_params.c b/drivers/staging/media/atomisp/pci/sh_css_params.c
-index 67915d76a87f2..34113bea31d58 100644
---- a/drivers/staging/media/atomisp/pci/sh_css_params.c
-+++ b/drivers/staging/media/atomisp/pci/sh_css_params.c
-@@ -4137,6 +4137,8 @@ ia_css_3a_statistics_allocate(const struct ia_css_3a_grid_info *grid)
- 		goto err;
- 	/* No weighted histogram, no structure, treat the histogram data as a byte dump in a byte array */
- 	me->rgby_data = kvmalloc(sizeof_hmem(HMEM0_ID), GFP_KERNEL);
-+	if (!me->rgby_data)
-+		goto err;
+diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
+index ac7fb7a8fd592..e9bee5f6ec8d0 100644
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -602,8 +602,7 @@ static ssize_t eco_mode_show(struct device *dev, struct device_attribute *attr,
+ 		result = 1;
+ 		break;
+ 	default:
+-		result = -EIO;
+-		break;
++		return -EIO;
+ 	}
+ 	return sysfs_emit(buf, "%u\n", result);
+ }
+@@ -749,7 +748,12 @@ static ssize_t current_brightness_store(struct device *dev, struct device_attrib
+ static ssize_t cdpower_show(struct device *dev, struct device_attribute *attr,
+ 			    char *buf)
+ {
+-	return sysfs_emit(buf, "%d\n", get_optd_power_state());
++	int state = get_optd_power_state();
++
++	if (state < 0)
++		return state;
++
++	return sysfs_emit(buf, "%d\n", state);
+ }
  
- 	IA_CSS_LEAVE("return=%p", me);
- 	return me;
+ static ssize_t cdpower_store(struct device *dev, struct device_attribute *attr,
 -- 
 2.43.0
 
