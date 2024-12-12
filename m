@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-101099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845E69EEAA8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:16:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2629EF15F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DBEF1885E8B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:12:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BA4A18999DB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B2021661F;
-	Thu, 12 Dec 2024 15:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377B2223C40;
+	Thu, 12 Dec 2024 16:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq3Pqshs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xur1fsir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ABA21504F;
-	Thu, 12 Dec 2024 15:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EA12210F2;
+	Thu, 12 Dec 2024 16:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016356; cv=none; b=h8nHaHiH6w8vpteUK6PL8Rcc/2fOwco1TEuSVYqmgXAf41IwcREOS+9ixONznwb56S8UaIoQVpMur0/qHSZaR4D0nk4fZkZGakbrH2Ox00djoo2uQ3CJNhWDJJ5Vtx3UtQg73vEJR8H8sCLm48Vikpe4s+XZomBvam233VoK7h4=
+	t=1734020188; cv=none; b=iViU3gNu2E9EyN2VQCjZoELtv3ZfPmhH8Ih2KzfoajaOet1B18Lz6w4fFhZjFM34OOlg+T9SfR6t9bwnSn3HkwI6mP57cw0ou7abSpWTn97jRk55Pr4P+CxDE+o0dYaA0jJVeSNXXV95t2VsZAp9sRIsYo+SKBqIhonV4uaZbQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016356; c=relaxed/simple;
-	bh=1QQgA6NWX6rwgx4dsp54WmcHhCT0eF5Cli4/OVFDRTc=;
+	s=arc-20240116; t=1734020188; c=relaxed/simple;
+	bh=p3wc7KMPmbmkijJo5Y7p/i4F5JDnowj6dyAT4VAw5qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojyNIooCz9gwOnFrlrGHlMJORSyV1ldVyyQiaXqTOkFVFavrgiBnB16xUmLa450MvIoO4I1JglkL4aHj5gqWHDfZpYQ4Fbor5W7if3TjpyLbBIS8QJ0XFkXt/JPehPTa0CachCqtXSdfgKCVtutNuJvEIlsq6AQA6YJmGpH5gmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq3Pqshs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3680C4CED4;
-	Thu, 12 Dec 2024 15:12:34 +0000 (UTC)
+	 MIME-Version; b=gqX3/hGB+JR6wYbTMF24+vv2iVfDucbVuZjm/BA5axtXDFrRAV2OMS8O3BrAX8U0P2kJMWCD8n4wlw+1S1oNJ7WEXNKJoiVfvqrq3aPu75rifiHCORunDGmJqUKszWFxHvYsS3U8edOgVTAozarSx2hQKdStC76X4mh5Yy7EOsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xur1fsir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593E3C4CECE;
+	Thu, 12 Dec 2024 16:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016355;
-	bh=1QQgA6NWX6rwgx4dsp54WmcHhCT0eF5Cli4/OVFDRTc=;
+	s=korg; t=1734020187;
+	bh=p3wc7KMPmbmkijJo5Y7p/i4F5JDnowj6dyAT4VAw5qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qq3Pqshsgh2+o7i98aQhPrEqGYpo3DRdaDooP+gvLJWHzyxrn4To7rzJ9wY+qMzow
-	 I6alx/Z2RSFkAvf810KlYZxA6laaFZ5llIabOOGnUBzcO1+BZcW2nNlX6d+v2GML0a
-	 GXaPgGbbLuDPdNTV5KV77AXgxH6OKYEbv0N+g/HE=
+	b=xur1fsirvaxuk9dERDozGjGhmBHo+4J/NiI7C3BDolGCl18bRqFN81b4L2oylpEF5
+	 xqH5yiPqZvnW0f7PoT2YUOT7XgYZkUG+5sX9OeCOZpx02bR6TGD7KESAqMEwmZA9XL
+	 rsVNdi5aLTckga3RaJMZywwCe/E1ij42fQzz5rNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Peterson Guo <peterson.guo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 176/466] drm/amd/display: Add a left edge pixel if in YCbCr422 or YCbCr420 and odm
-Date: Thu, 12 Dec 2024 15:55:45 +0100
-Message-ID: <20241212144313.749459172@linuxfoundation.org>
+	Filip Brozovic <fbrozovic@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 401/772] serial: 8250_fintek: Add support for F81216E
+Date: Thu, 12 Dec 2024 15:55:46 +0100
+Message-ID: <20241212144406.486614046@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peterson Guo <peterson.guo@amd.com>
+From: Filip Brozovic <fbrozovic@gmail.com>
 
-commit 63e7ee677c74e981257cedfdd8543510d09096ba upstream.
+commit 166105c9030a30ba08574a9998afc7b60bc72dd7 upstream.
 
-[WHY]
-On some cards when odm is used, the monitor will have 2 separate pipes
-split vertically. When compression is used on the YCbCr colour space on
-the second pipe to have correct colours, we need to read a pixel from the
-end of first pipe to accurately display colours. Hardware was programmed
-properly to account for this extra pixel but it was not calculated
-properly in software causing a split screen on some monitors.
+The F81216E is a LPC/eSPI to 4 UART Super I/O and is mostly compatible with
+the F81216H, but does not support RS-485 auto-direction delays on any port.
 
-[HOW]
-The fix adjusts the second pipe's viewport and timings if the pixel
-encoding is YCbCr422 or YCbCr420.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: George Shen <george.shen@amd.com>
-Signed-off-by: Peterson Guo <peterson.guo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Filip Brozovic <fbrozovic@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20241110111703.15494-1-fbrozovic@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c |   23 ++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/tty/serial/8250/8250_fintek.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn20/dcn20_resource.c
-@@ -1511,6 +1511,7 @@ bool dcn20_split_stream_for_odm(
+--- a/drivers/tty/serial/8250/8250_fintek.c
++++ b/drivers/tty/serial/8250/8250_fintek.c
+@@ -21,6 +21,7 @@
+ #define CHIP_ID_F81866 0x1010
+ #define CHIP_ID_F81966 0x0215
+ #define CHIP_ID_F81216AD 0x1602
++#define CHIP_ID_F81216E 0x1617
+ #define CHIP_ID_F81216H 0x0501
+ #define CHIP_ID_F81216 0x0802
+ #define VENDOR_ID1 0x23
+@@ -158,6 +159,7 @@ static int fintek_8250_check_id(struct f
+ 	case CHIP_ID_F81866:
+ 	case CHIP_ID_F81966:
+ 	case CHIP_ID_F81216AD:
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81216:
+ 		break;
+@@ -181,6 +183,7 @@ static int fintek_8250_get_ldn_range(str
+ 		return 0;
  
- 	if (prev_odm_pipe->plane_state) {
- 		struct scaler_data *sd = &prev_odm_pipe->plane_res.scl_data;
-+		struct output_pixel_processor *opp = next_odm_pipe->stream_res.opp;
- 		int new_width;
+ 	case CHIP_ID_F81216AD:
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81216:
+ 		*min = F81216_LDN_LOW;
+@@ -250,6 +253,7 @@ static void fintek_8250_set_irq_mode(str
+ 		break;
  
- 		/* HACTIVE halved for odm combine */
-@@ -1544,7 +1545,28 @@ bool dcn20_split_stream_for_odm(
- 		sd->viewport_c.x += dc_fixpt_floor(dc_fixpt_mul_int(
- 				sd->ratios.horz_c, sd->h_active - sd->recout.x));
- 		sd->recout.x = 0;
+ 	case CHIP_ID_F81216AD:
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81216:
+ 		sio_write_mask_reg(pdata, FINTEK_IRQ_MODE, IRQ_SHARE,
+@@ -263,7 +267,8 @@ static void fintek_8250_set_irq_mode(str
+ static void fintek_8250_set_max_fifo(struct fintek_8250 *pdata)
+ {
+ 	switch (pdata->pid) {
+-	case CHIP_ID_F81216H: /* 128Bytes FIFO */
++	case CHIP_ID_F81216E: /* 128Bytes FIFO */
++	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81966:
+ 	case CHIP_ID_F81866:
+ 		sio_write_mask_reg(pdata, FIFO_CTRL,
+@@ -297,6 +302,7 @@ static void fintek_8250_set_termios(stru
+ 		goto exit;
+ 
+ 	switch (pdata->pid) {
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 		reg = RS485;
+ 		break;
+@@ -346,6 +352,7 @@ static void fintek_8250_set_termios_hand
+ 	struct fintek_8250 *pdata = uart->port.private_data;
+ 
+ 	switch (pdata->pid) {
++	case CHIP_ID_F81216E:
+ 	case CHIP_ID_F81216H:
+ 	case CHIP_ID_F81966:
+ 	case CHIP_ID_F81866:
+@@ -438,6 +445,11 @@ static void fintek_8250_set_rs485_handle
+ 			uart->port.rs485_supported = fintek_8250_rs485_supported;
+ 		break;
+ 
++	case CHIP_ID_F81216E: /* F81216E does not support RS485 delays */
++		uart->port.rs485_config = fintek_8250_rs485_config;
++		uart->port.rs485_supported = fintek_8250_rs485_supported;
++		break;
 +
-+		/*
-+		 * When odm is used in YcbCr422 or 420 colour space, a split screen
-+		 * will be seen with the previous calculations since the extra left
-+		 *  edge pixel is accounted for in fmt but not in viewport.
-+		 *
-+		 * Below are calculations which fix the split by fixing the calculations
-+		 * if there is an extra left edge pixel.
-+		 */
-+		if (opp && opp->funcs->opp_get_left_edge_extra_pixel_count
-+				&& opp->funcs->opp_get_left_edge_extra_pixel_count(
-+					opp, next_odm_pipe->stream->timing.pixel_encoding,
-+					resource_is_pipe_type(next_odm_pipe, OTG_MASTER)) == 1) {
-+			sd->h_active += 1;
-+			sd->recout.width += 1;
-+			sd->viewport.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+			sd->viewport_c.x -= dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+			sd->viewport_c.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+			sd->viewport.width += dc_fixpt_ceil(dc_fixpt_mul_int(sd->ratios.horz, 1));
-+		}
+ 	default: /* No RS485 Auto direction functional */
+ 		break;
  	}
-+
- 	if (!next_odm_pipe->top_pipe)
- 		next_odm_pipe->stream_res.opp = pool->opps[next_odm_pipe->pipe_idx];
- 	else
-@@ -2133,6 +2155,7 @@ bool dcn20_fast_validate_bw(
- 			ASSERT(0);
- 		}
- 	}
-+
- 	/* Actual dsc count per stream dsc validation*/
- 	if (!dcn20_validate_dsc(dc, context)) {
- 		context->bw_ctx.dml.vba.ValidationStatus[context->bw_ctx.dml.vba.soc.num_states] =
 
 
 
