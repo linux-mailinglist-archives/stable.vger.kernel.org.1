@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-101109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08239EEA5A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:13:11 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E25A9EF133
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90AA6280D3B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:13:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C506189577D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B472163AB;
-	Thu, 12 Dec 2024 15:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72BC22E9E5;
+	Thu, 12 Dec 2024 16:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVlz6DRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydfpLtlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EB521171A;
-	Thu, 12 Dec 2024 15:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CD7215764;
+	Thu, 12 Dec 2024 16:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016390; cv=none; b=A3loYUlgZDwIByY7JY1gGwW6J3+h2yZR1aT0UylHu0xTcWIebzLfTaDHbcBftWNCTQsb/HlSSleSREWV5wIjIE0G4nf0uqF7Aa3DFLM3H4LSje6GjfXJ4ATg57ww2N3yUqMPPzybZEgtu8KueHqrqsr9hsD4dqZmzwAakaM/vIg=
+	t=1734020221; cv=none; b=pYDNq1GtiWCdZB2VaPNwwIJIkXBEU02+fJdH6hUPng/uFqQldIfeE6r2cFNiBxRCxxY5qStSTG6ZYIZux2ZyYurryC8mSBQXXI9vUPmgd8Q6KEI3xDrnTSozn/2IdiNl8gWKYgQJdV2rB8MJJ62e3TmV29Y0fl/omH/rITgg+3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016390; c=relaxed/simple;
-	bh=TIxr09cVMGH6U+V8XWvLTtn0OMwI2SXRkPWHr+i8f/Q=;
+	s=arc-20240116; t=1734020221; c=relaxed/simple;
+	bh=SWzy5k3QxZKdGRHa3D6FOqMbmYHjjW7zv1UdkQP+Qi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ab4yjp5ZdtYInnfJb+8FdxhW5Lyk2Vk1Qlu9eK75hCr2rjVMKHj74xH11NsB3VX/sdJ4YT5LR7Gm2ZOyIFXOgyAjQ6lH17NXPSPUNKj4bmEykNGY15e2jb9ShkG408r7OtocAdYcz+WCLpFrnsy4sDSnXY5cN5ZYDDbF+diA4cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVlz6DRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6302FC4CEE0;
-	Thu, 12 Dec 2024 15:13:09 +0000 (UTC)
+	 MIME-Version; b=AhzvoSh+5VH/ydozNO9V26BLw0+U1B22RrfTrO9337RtzZuKi1FhlD4MVkVFgZ2TdeoFUuBibnphfgxmfou3ZkwnFHk07PRG/Oy9gk21fjC2cIKvKAR1WcKh75vX5tgj02YWVL9qbKKCe+OYe0lueUD1Gkb3lesXDEPROqIaGx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydfpLtlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E619DC4CECE;
+	Thu, 12 Dec 2024 16:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016389;
-	bh=TIxr09cVMGH6U+V8XWvLTtn0OMwI2SXRkPWHr+i8f/Q=;
+	s=korg; t=1734020221;
+	bh=SWzy5k3QxZKdGRHa3D6FOqMbmYHjjW7zv1UdkQP+Qi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVlz6DRcS0ZAgbt8Jua5nC/x2ylOWXTPPpV5/dK4wl4KUrPKjhHnrUH5AvyUy1RAU
-	 OkMcd09/cteG6UHYFZt9vB4ks2xacV0ji2q6Jr3a6jGu2EByeF/6J2rjrgHL06wa4B
-	 /2FxMLkPgubbOicTF3vX/+iooHeECAM6laqoP/9U=
+	b=ydfpLtlwZwo8pOoqs8evbmKRvhN2GOhPcgNAOx7UQ22iSObLkGCwLtxgiSuOgVVCU
+	 WG4q51P/q2GXemT0owaec5vMJLd5rJAX4L5qvolv34KkK8fR3S4z1/ntYpVydP+ALh
+	 liBtmafUPed24HMZnJJIPRIc4+ti/IDd5DvMeSSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Chia-I Wu <olvaffe@gmail.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH 6.12 185/466] dma-buf: fix dma_fence_array_signaled v4
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 409/772] media: wl128x: Fix atomicity violation in fmc_send_cmd()
 Date: Thu, 12 Dec 2024 15:55:54 +0100
-Message-ID: <20241212144314.110518155@linuxfoundation.org>
+Message-ID: <20241212144406.826515269@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
 
-commit 78ac1c3558810486d90aa533b0039aa70487a3da upstream.
+commit ca59f9956d4519ab18ab2270be47c6b8c6ced091 upstream.
 
-The function silently assumed that signaling was already enabled for the
-dma_fence_array. This meant that without enabling signaling first we would
-never see forward progress.
+Atomicity violation occurs when the fmc_send_cmd() function is executed
+simultaneously with the modification of the fmdev->resp_skb value.
+Consider a scenario where, after passing the validity check within the
+function, a non-null fmdev->resp_skb variable is assigned a null value.
+This results in an invalid fmdev->resp_skb variable passing the validity
+check. As seen in the later part of the function, skb = fmdev->resp_skb;
+when the invalid fmdev->resp_skb passes the check, a null pointer
+dereference error may occur at line 478, evt_hdr = (void *)skb->data;
 
-Fix that by falling back to testing each individual fence when signaling
-isn't enabled yet.
+To address this issue, it is recommended to include the validity check of
+fmdev->resp_skb within the locked section of the function. This
+modification ensures that the value of fmdev->resp_skb does not change
+during the validation process, thereby maintaining its validity.
 
-v2: add the comment suggested by Boris why this is done this way
-v3: fix the underflow pointed out by Tvrtko
-v4: atomic_read_acquire() as suggested by Tvrtko
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Tested-by: Chia-I Wu <olvaffe@gmail.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12094
-Cc: <stable@vger.kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241112121925.18464-1-christian.koenig@amd.com
+Fixes: e8454ff7b9a4 ("[media] drivers:media:radio: wl128x: FM Driver Common sources")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/dma-fence-array.c |   28 +++++++++++++++++++++++++++-
- 1 file changed, 27 insertions(+), 1 deletion(-)
+ drivers/media/radio/wl128x/fmdrv_common.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/dma-buf/dma-fence-array.c
-+++ b/drivers/dma-buf/dma-fence-array.c
-@@ -103,10 +103,36 @@ static bool dma_fence_array_enable_signa
- static bool dma_fence_array_signaled(struct dma_fence *fence)
- {
- 	struct dma_fence_array *array = to_dma_fence_array(fence);
-+	int num_pending;
-+	unsigned int i;
- 
--	if (atomic_read(&array->num_pending) > 0)
-+	/*
-+	 * We need to read num_pending before checking the enable_signal bit
-+	 * to avoid racing with the enable_signaling() implementation, which
-+	 * might decrement the counter, and cause a partial check.
-+	 * atomic_read_acquire() pairs with atomic_dec_and_test() in
-+	 * dma_fence_array_enable_signaling()
-+	 *
-+	 * The !--num_pending check is here to account for the any_signaled case
-+	 * if we race with enable_signaling(), that means the !num_pending check
-+	 * in the is_signalling_enabled branch might be outdated (num_pending
-+	 * might have been decremented), but that's fine. The user will get the
-+	 * right value when testing again later.
-+	 */
-+	num_pending = atomic_read_acquire(&array->num_pending);
-+	if (test_bit(DMA_FENCE_FLAG_ENABLE_SIGNAL_BIT, &array->base.flags)) {
-+		if (num_pending <= 0)
-+			goto signal;
- 		return false;
-+	}
- 
-+	for (i = 0; i < array->num_fences; ++i) {
-+		if (dma_fence_is_signaled(array->fences[i]) && !--num_pending)
-+			goto signal;
-+	}
-+	return false;
-+
-+signal:
- 	dma_fence_array_clear_pending_error(array);
- 	return true;
- }
+--- a/drivers/media/radio/wl128x/fmdrv_common.c
++++ b/drivers/media/radio/wl128x/fmdrv_common.c
+@@ -466,11 +466,12 @@ int fmc_send_cmd(struct fmdev *fmdev, u8
+ 			   jiffies_to_msecs(FM_DRV_TX_TIMEOUT) / 1000);
+ 		return -ETIMEDOUT;
+ 	}
++	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	if (!fmdev->resp_skb) {
++		spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
+ 		fmerr("Response SKB is missing\n");
+ 		return -EFAULT;
+ 	}
+-	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
+ 	skb = fmdev->resp_skb;
+ 	fmdev->resp_skb = NULL;
+ 	spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
 
 
 
