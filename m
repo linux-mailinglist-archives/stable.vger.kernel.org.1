@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-102420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460279EF2A1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E89E99EEC03
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABADB17629C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5FA51883B50
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D34B2358BA;
-	Thu, 12 Dec 2024 16:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DF42153DF;
+	Thu, 12 Dec 2024 15:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyHHCmP1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBa6G4wb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B16C2210DB;
-	Thu, 12 Dec 2024 16:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AFF748A;
+	Thu, 12 Dec 2024 15:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021163; cv=none; b=OtgBV2cjE4d1J1tIMJtyZyeOS0mLkYfNw6TMaV1qRo6d6WTsgiI64wuCqZG/XChCnxJi0GPE3ZwexfxaxpWbSRvVTa5yKWzatpTGwPXQ9kgUoYlbkXm1qKfoBeTqS/FxxxRhUwHyJcXl+xbleRzveXveld3Jb8zli3fnmbTmrqg=
+	t=1734017295; cv=none; b=C6qRYV3JBIVNMifoXZ6mf+Aoor/otsZUCCwr20ngrDc4keXweLWtY0y65alRohpu4zX9P3J9eVD2x0FvMyDm9YU44EKOB81CG1X735zh9xuhiRmoJbhqris//rvSpLIL1fJmRprtap5/iU+6moiSdyCMCY8B+Vql/Ai2f3i8olM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021163; c=relaxed/simple;
-	bh=+nUdeA8gIhlGFfX2tFaALBlDzbcShm6WNq4r/L+SX8o=;
+	s=arc-20240116; t=1734017295; c=relaxed/simple;
+	bh=bS6MDndiC+oVXKDLoNw6R4ERuytx4rQam+SlscLwHMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlOOs8nuIdqvuhIWPu//oQTo9ZJKpyQS+5q6OntEz/IsC5ggplf/zeL4fggGEP4QSY0yfcN5CBZf+yZEqQOqYa5zw7ME0jI2gcpIHzDccn5WKZys8hRnL0/tIwERFnTLprXbLJiOGjTPMyoOm5NgxOBleUoo9/V1riyPD7C4iBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyHHCmP1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D948C4CED0;
-	Thu, 12 Dec 2024 16:32:42 +0000 (UTC)
+	 MIME-Version; b=Tl3Ctv4LnwlpQL05lbPV9t68wqshi9wPDuVeUX0MpnF8DvjTOsNztRHgJX0l30Qz8RQuGa/8FGYBqRt6ibgBA5b3YI6pshFYIowL5Z8LUtPjJFy2bS9f5k2sdHM7tyIZ7KOfonZ2+U2+1pGxNn2pOdQA79rMmQk3ZNLWCN3VPjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBa6G4wb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3F9C4CED4;
+	Thu, 12 Dec 2024 15:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021163;
-	bh=+nUdeA8gIhlGFfX2tFaALBlDzbcShm6WNq4r/L+SX8o=;
+	s=korg; t=1734017295;
+	bh=bS6MDndiC+oVXKDLoNw6R4ERuytx4rQam+SlscLwHMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyHHCmP1e+i/zRBAMwchiYR821Zn0Sd0CWPHNDf2rjjraTqCOS+DLHZa8I8F5NpQz
-	 uohWt/ZC+g+0gqnOBGvIrbjLhNUUIGkomX3sDDtnKRZc11lKBlGnXY7B2IOzY+P0HQ
-	 OghBhskXjnj40l6Re5BVmFZ65uR1M5wZfJFiuoKs=
+	b=gBa6G4wb2Ijz9Z3TYe7f5uX6QSxyXkOwKbrdQ3uVF2C8qga29VL8PMXUlRAur0gew
+	 E+IEfkfbU7jUAZt7rYlUpKya/O47nQ/qkNZeFBCjFsBTQEgeOHn1UAv7aO29meXiyj
+	 /mFCBWBiQYJg+y2rnsocnSG6dWRQNXl2I7+iOFao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Jun <zhujun2@cmss.chinamobile.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 663/772] samples/bpf: Fix a resource leak
+	Josh Don <joshdon@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Waiman Long <longman@redhat.com>,
+	Madadi Vineeth Reddy <vineethr@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: [PATCH 6.12 439/466] sched: fix warning in sched_setaffinity
 Date: Thu, 12 Dec 2024 16:00:08 +0100
-Message-ID: <20241212144417.311475037@linuxfoundation.org>
+Message-ID: <20241212144324.204301372@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Jun <zhujun2@cmss.chinamobile.com>
+From: Josh Don <joshdon@google.com>
 
-[ Upstream commit f3ef53174b23246fe9bc2bbc2542f3a3856fa1e2 ]
+[ Upstream commit 70ee7947a29029736a1a06c73a48ff37674a851b ]
 
-The opened file should be closed in show_sockopts(), otherwise resource
-leak will occur that this problem was discovered by reading code
+Commit 8f9ea86fdf99b added some logic to sched_setaffinity that included
+a WARN when a per-task affinity assignment races with a cpuset update.
 
-Signed-off-by: Zhu Jun <zhujun2@cmss.chinamobile.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241010014126.2573-1-zhujun2@cmss.chinamobile.com
+Specifically, we can have a race where a cpuset update results in the
+task affinity no longer being a subset of the cpuset. That's fine; we
+have a fallback to instead use the cpuset mask. However, we have a WARN
+set up that will trigger if the cpuset mask has no overlap at all with
+the requested task affinity. This shouldn't be a warning condition; its
+trivial to create this condition.
+
+Reproduced the warning by the following setup:
+
+- $PID inside a cpuset cgroup
+- another thread repeatedly switching the cpuset cpus from 1-2 to just 1
+- another thread repeatedly setting the $PID affinity (via taskset) to 2
+
+Fixes: 8f9ea86fdf99b ("sched: Always preserve the user requested cpumask")
+Signed-off-by: Josh Don <joshdon@google.com>
+Acked-and-tested-by: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Tested-by: Madadi Vineeth Reddy <vineethr@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20241111182738.1832953-1-joshdon@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/test_cgrp2_sock.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/sched/syscalls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/samples/bpf/test_cgrp2_sock.c b/samples/bpf/test_cgrp2_sock.c
-index a0811df888f45..8ca2a445ffa15 100644
---- a/samples/bpf/test_cgrp2_sock.c
-+++ b/samples/bpf/test_cgrp2_sock.c
-@@ -178,8 +178,10 @@ static int show_sockopts(int family)
- 		return 1;
- 	}
+diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
+index 24f9f90b6574e..1784ed1fb3fe5 100644
+--- a/kernel/sched/syscalls.c
++++ b/kernel/sched/syscalls.c
+@@ -1238,7 +1238,7 @@ int __sched_setaffinity(struct task_struct *p, struct affinity_context *ctx)
+ 			bool empty = !cpumask_and(new_mask, new_mask,
+ 						  ctx->user_mask);
  
--	if (get_bind_to_device(sd, name, sizeof(name)) < 0)
-+	if (get_bind_to_device(sd, name, sizeof(name)) < 0) {
-+		close(sd);
- 		return 1;
-+	}
- 
- 	mark = get_somark(sd);
- 	prio = get_priority(sd);
+-			if (WARN_ON_ONCE(empty))
++			if (empty)
+ 				cpumask_copy(new_mask, cpus_allowed);
+ 		}
+ 		__set_cpus_allowed_ptr(p, ctx);
 -- 
 2.43.0
 
