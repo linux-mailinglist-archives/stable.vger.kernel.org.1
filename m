@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191FF9EF422
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:06:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7AE9EEC87
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6D3B16DC13
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF995284597
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE113218594;
-	Thu, 12 Dec 2024 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B500B217F29;
+	Thu, 12 Dec 2024 15:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIgdDhSv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJfp+Dx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C953205501;
-	Thu, 12 Dec 2024 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CE82153C4;
+	Thu, 12 Dec 2024 15:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022360; cv=none; b=U+v2CEdSbEUTJkneOK3i3npFk00QaW+VSuThtLlZH/WkjbN1JgVofxVlWS3bnE3KMV7dIA3wTqpi5qxcOxYID4vKgayo9SdjhlaaI6WOd10YHh4iNzVP0EWNsl/pSgmMOFQ07nQYzZ82G6oxkoUht47j0SIL0KfoA9y2nxIvxj4=
+	t=1734017727; cv=none; b=dMvKzQHQyDEqpLX9nXe4i1iD44n85GiUgv1KQVWY+4yszg7XADJi9ofbNoaPShb8cUQTvU9Jx8NrIVbd7qcPhiUrPNRT13Z07rk8khrRmMlG7zCsRf4BGOHCugXx53jVXjMdpm3IsIi36wG/2f9wkq9FmhMySLKG+Mh37svbLI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022360; c=relaxed/simple;
-	bh=vJcFbpP6wJeHxhnJUSBs3FgWtLS9xQkk/I0QxS1Ws8s=;
+	s=arc-20240116; t=1734017727; c=relaxed/simple;
+	bh=sdr5WuFWABjpNLnHpmIQL9p8hrRm+dN6jhvF7+26rAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzc4yWjKKEJZYMCmJkJdDCDblBZVT2N8AngsbFXimn6jW9FSjenAJA9vQMsgtLqTkeyiYzPnUIRsZq+CbkcfL6XnjoGiy5VIloxiJOmg/y3NKH3RBvCgzkZQMYrF+ltkwKb+bHqUAc9+wjDRPv7+LvAYOCIAFVxBwurZ2/XxC0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIgdDhSv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF609C4CECE;
-	Thu, 12 Dec 2024 16:52:39 +0000 (UTC)
+	 MIME-Version; b=j9zo1Hb0rsZsK+wcgcMEKVu43zkBemWpoFeLdehJ+pvcdzxIydbA9pFkVDt8mcbG3l46sWupFHhYVzEk5fFKGGDvs9m3vryIRY8hRG+VczCRESNp5ulR3k1T2wlEug3h6FAoSKTKSdw3QZ2dTYzGnHkywejT0Gu7d08r4BVPKT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJfp+Dx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34EEC4CECE;
+	Thu, 12 Dec 2024 15:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022360;
-	bh=vJcFbpP6wJeHxhnJUSBs3FgWtLS9xQkk/I0QxS1Ws8s=;
+	s=korg; t=1734017727;
+	bh=sdr5WuFWABjpNLnHpmIQL9p8hrRm+dN6jhvF7+26rAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HIgdDhSvs23OyNewvKTGpC75SWa0MQyBBusKbDlz7PwvvTOzPf5KcmvKi31l3AvKf
-	 jOWVnRGoW+vCHmOR22m4AzVK+AqMakpUpN6AR+RcXAN14rQkdmtgVEEZrtlEN5s3xG
-	 YgpAn78rhy/4FwMrv+fnOpfI3H0UitnJtjdDo3uA=
+	b=yJfp+Dx2Lbl2x5aYoMPZepB2fFCr8x+y3Zr9qwynJqPRzOZYgZhdROjfEa2AiNcH+
+	 DjY8c2i2Ll+FTtAkVRGTiVEZGFtLhRA89YPyNqgWXh19dBAGQJfvAjGZbbBFoiGB81
+	 0i53u61Aq4R+Cp1cLn2ofXxWR8gNnSWE3ZWytJMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijian Zhang <zijianzhang@bytedance.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 189/565] selftests/bpf: Add txmsg_pass to pull/push/pop in test_sockmap
+Subject: [PATCH 6.6 065/356] xhci: Allow RPM on the USB controller (1022:43f7) by default
 Date: Thu, 12 Dec 2024 15:56:24 +0100
-Message-ID: <20241212144318.951782311@linuxfoundation.org>
+Message-ID: <20241212144247.199336511@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijian Zhang <zijianzhang@bytedance.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 66c54c20408d994be34be2c070fba08472f69eee ]
+[ Upstream commit 28cbed496059fe1868203b76e9e0ef285733524d ]
 
-Add txmsg_pass to test_txmsg_pull/push/pop. If txmsg_pass is missing,
-tx_prog will be NULL, and no program will be attached to the sockmap.
-As a result, pull/push/pop are never invoked.
+Enable runtime PM by default for older AMD 1022:43f7 xHCI 1.1 host as it
+is proven to work.
+Driver enables runtime PM by default for newer xHCI 1.2 host.
 
-Fixes: 328aa08a081b ("bpf: Selftests, break down test_sockmap into subtests")
-Signed-off-by: Zijian Zhang <zijianzhang@bytedance.com>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20241106222520.527076-2-zijianzhang@bytedance.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/all/12335218.O9o76ZdvQC@natalenko.name/
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240304054327.2564500-1-Basavaraj.Natikar@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: d7b11fe57902 ("xhci: Combine two if statements for Etron xHCI host")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_sockmap.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/host/xhci-pci.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/test_sockmap.c b/tools/testing/selftests/bpf/test_sockmap.c
-index b17250c41d691..58db1c4a572fa 100644
---- a/tools/testing/selftests/bpf/test_sockmap.c
-+++ b/tools/testing/selftests/bpf/test_sockmap.c
-@@ -1547,11 +1547,13 @@ static void test_txmsg_cork_hangs(int cgrp, struct sockmap_options *opt)
- static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
- {
- 	/* Test basic start/end */
-+	txmsg_pass = 1;
- 	txmsg_start = 1;
- 	txmsg_end = 2;
- 	test_send(opt, cgrp);
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index c2b37aa2cdfca..3a2a0d8f7af86 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -374,8 +374,11 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
+ 	}
  
- 	/* Test >4k pull */
-+	txmsg_pass = 1;
- 	txmsg_start = 4096;
- 	txmsg_end = 9182;
- 	test_send_large(opt, cgrp);
-@@ -1580,11 +1582,13 @@ static void test_txmsg_pull(int cgrp, struct sockmap_options *opt)
- static void test_txmsg_pop(int cgrp, struct sockmap_options *opt)
- {
- 	/* Test basic pop */
-+	txmsg_pass = 1;
- 	txmsg_start_pop = 1;
- 	txmsg_pop = 2;
- 	test_send_many(opt, cgrp);
+-	if (pdev->vendor == PCI_VENDOR_ID_AMD)
++	if (pdev->vendor == PCI_VENDOR_ID_AMD) {
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
++		if (pdev->device == 0x43f7)
++			xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
++	}
  
- 	/* Test pop with >4k */
-+	txmsg_pass = 1;
- 	txmsg_start_pop = 4096;
- 	txmsg_pop = 4096;
- 	test_send_large(opt, cgrp);
-@@ -1613,11 +1617,13 @@ static void test_txmsg_pop(int cgrp, struct sockmap_options *opt)
- static void test_txmsg_push(int cgrp, struct sockmap_options *opt)
- {
- 	/* Test basic push */
-+	txmsg_pass = 1;
- 	txmsg_start_push = 1;
- 	txmsg_end_push = 1;
- 	test_send(opt, cgrp);
- 
- 	/* Test push 4kB >4k */
-+	txmsg_pass = 1;
- 	txmsg_start_push = 4096;
- 	txmsg_end_push = 4096;
- 	test_send_large(opt, cgrp);
-@@ -1638,6 +1644,7 @@ static void test_txmsg_push(int cgrp, struct sockmap_options *opt)
- 
- static void test_txmsg_push_pop(int cgrp, struct sockmap_options *opt)
- {
-+	txmsg_pass = 1;
- 	txmsg_start_push = 1;
- 	txmsg_end_push = 10;
- 	txmsg_start_pop = 5;
+ 	if ((pdev->vendor == PCI_VENDOR_ID_AMD) &&
+ 		((pdev->device == PCI_DEVICE_ID_AMD_PROMONTORYA_4) ||
 -- 
 2.43.0
 
