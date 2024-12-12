@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B525C9EED8C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:01 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDAF9EEB42
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 863541882800
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:44:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1AF0281F9D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD622210DE;
-	Thu, 12 Dec 2024 15:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3AC212B0F;
+	Thu, 12 Dec 2024 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAdmSXK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW1INakK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAF51547F0;
-	Thu, 12 Dec 2024 15:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDF42AF0E;
+	Thu, 12 Dec 2024 15:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018204; cv=none; b=hMs8eS99hHsCW7NcC1d/jrZEONhYD6qgaPvzPI8O0OUrGaVTIUcNv+G07a6UJzqKXRN6hEFDzzQu3/R3Tw6mUjFu+Ik8AvZNRmsCNhXrkUow+LyG60rtbWEF7b692PHt5n6nvvFgVHexup8/voFwI1ID7BNVkOMmJu5eoYN9iBs=
+	t=1734016975; cv=none; b=QTYgvn21Eimz/H50LFYbIeUad1mzvnH0NPfpVEaExSuy2AQKa7H7t/0oOhTUo4nAU/g4JHQkwe7Ei/a+RZPbLSIaZrBupM82aX1rIhzJUwmlVoSpeLEa01NJVw0vr4FdUXy7bMIU2M9sRjg3hYCbdDdNfXD9r5RGlenaXtNySvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018204; c=relaxed/simple;
-	bh=SgEtKWQa3Q/0HLnB9OUxee6wRevaRy7cjSSVa2xuQqk=;
+	s=arc-20240116; t=1734016975; c=relaxed/simple;
+	bh=/GBSPLpD7o0CDUU2jGkrXYoDE9DY35MEzkUMzIjRzlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dtx3Na47fZu7YJ/F34ikt2DAw9xuzNrzMT6PePt4b4DS29Wz/RpnevP0Z3ebfPoXG8+FKZwZyR5+w8erzlUeQpn+wtz2qga388VL5Wa4N3QdzNmVm9WKCF0+OMnS1Ny6LMCLwpS7ua20qPYZv4HZfRD5kVGPAjfMxigUaLp4Q2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAdmSXK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8442AC4CECE;
-	Thu, 12 Dec 2024 15:43:23 +0000 (UTC)
+	 MIME-Version; b=TRxCwCsPqAks76Nbww6neOfHlDRODKmzb0e8SYuKaCw3RCNFMYjtPnKNY8NqTjCDbstnfkZEarDLxJunH2eh5+bwaQCxu47ShI55TLk0cPqegGvRdsHETCavCrGrRyy4fHnBLiKiYXOjxaghEl/rygI7bqpd1/TariFVZwZsbvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW1INakK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF5FC4CECE;
+	Thu, 12 Dec 2024 15:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018203;
-	bh=SgEtKWQa3Q/0HLnB9OUxee6wRevaRy7cjSSVa2xuQqk=;
+	s=korg; t=1734016975;
+	bh=/GBSPLpD7o0CDUU2jGkrXYoDE9DY35MEzkUMzIjRzlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAdmSXK+W50a+Pfe43AVaEzkKUYGRPgMnYwDdGPcLUmat/HqQoUNExcJ4k24HRQNR
-	 mAf1j2z/zMPAvJRjlwzXmFlb8SQgITMSpYtwo9Mdc+NFIFyr1bLvs3UiHQXCk/SJyi
-	 kCuD9UiMmcj/c2GNEZE3CrTPlauEsG6ekhjFrSng=
+	b=qW1INakKCTQnMbLZguxa6AOdWkMYTsMwR/qFuHzsWgYnoa4LrxiPibp4jUkSkeAut
+	 ROy57rx6cyeinCCJlKjVFFwG/W+jpn+gqk5pfe/B3SiG6kn6ZQyHIKfO8W4LKBskNJ
+	 J85oXYQozrWZfAJmn1OeOJfcLUuK2JNn+4TIoiTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Danil Pylaev <danstiv404@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/356] HID: add per device quirk to force bind to hid-generic
+Subject: [PATCH 6.12 346/466] Bluetooth: Set quirks for ATS2851
 Date: Thu, 12 Dec 2024 15:58:35 +0100
-Message-ID: <20241212144252.366959027@linuxfoundation.org>
+Message-ID: <20241212144320.458063694@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Danil Pylaev <danstiv404@gmail.com>
 
-[ Upstream commit 645c224ac5f6e0013931c342ea707b398d24d410 ]
+[ Upstream commit 677a55ba11a82c2835550a82324cec5fcb2f9e2d ]
 
-We already have the possibility to force not binding to hid-generic and
-rely on a dedicated driver, but we couldn't do the other way around.
+This adds quirks for broken ats2851 features.
 
-This is useful for BPF programs where we are fixing the report descriptor
-and the events, but want to avoid a specialized driver to come after BPF
-which would unwind everything that is done there.
-
-Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-Link: https://patch.msgid.link/20241001-hid-bpf-hid-generic-v3-8-2ef1019468df@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Danil Pylaev <danstiv404@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c    | 5 +++--
- drivers/hid/hid-generic.c | 3 +++
- include/linux/hid.h       | 2 ++
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 1467c5a732db4..558f3988fb2cf 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2607,9 +2607,10 @@ static bool hid_check_device_match(struct hid_device *hdev,
- 	/*
- 	 * hid-generic implements .match(), so we must be dealing with a
- 	 * different HID driver here, and can simply check if
--	 * hid_ignore_special_drivers is set or not.
-+	 * hid_ignore_special_drivers or HID_QUIRK_IGNORE_SPECIAL_DRIVER
-+	 * are set or not.
- 	 */
--	return !hid_ignore_special_drivers;
-+	return !hid_ignore_special_drivers && !(hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER);
- }
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index b44c990bab422..2a8fe85371804 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3911,6 +3911,8 @@ static int btusb_probe(struct usb_interface *intf,
+ 		set_bit(HCI_QUIRK_BROKEN_SET_RPA_TIMEOUT, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
+ 		set_bit(HCI_QUIRK_BROKEN_READ_ENC_KEY_SIZE, &hdev->quirks);
++		set_bit(HCI_QUIRK_BROKEN_EXT_CREATE_CONN, &hdev->quirks);
++		set_bit(HCI_QUIRK_BROKEN_WRITE_AUTH_PAYLOAD_TIMEOUT, &hdev->quirks);
+ 	}
  
- static int __hid_device_probe(struct hid_device *hdev, struct hid_driver *hdrv)
-diff --git a/drivers/hid/hid-generic.c b/drivers/hid/hid-generic.c
-index f9db991d3c5a2..88882c1bfffe7 100644
---- a/drivers/hid/hid-generic.c
-+++ b/drivers/hid/hid-generic.c
-@@ -40,6 +40,9 @@ static bool hid_generic_match(struct hid_device *hdev,
- 	if (ignore_special_driver)
- 		return true;
- 
-+	if (hdev->quirks & HID_QUIRK_IGNORE_SPECIAL_DRIVER)
-+		return true;
-+
- 	if (hdev->quirks & HID_QUIRK_HAVE_SPECIAL_DRIVER)
- 		return false;
- 
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 3b08a29572298..af55a25db91b0 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -359,6 +359,7 @@ struct hid_item {
-  * | @HID_QUIRK_NO_OUTPUT_REPORTS_ON_INTR_EP:
-  * | @HID_QUIRK_HAVE_SPECIAL_DRIVER:
-  * | @HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE:
-+ * | @HID_QUIRK_IGNORE_SPECIAL_DRIVER
-  * | @HID_QUIRK_FULLSPEED_INTERVAL:
-  * | @HID_QUIRK_NO_INIT_REPORTS:
-  * | @HID_QUIRK_NO_IGNORE:
-@@ -384,6 +385,7 @@ struct hid_item {
- #define HID_QUIRK_HAVE_SPECIAL_DRIVER		BIT(19)
- #define HID_QUIRK_INCREMENT_USAGE_ON_DUPLICATE	BIT(20)
- #define HID_QUIRK_NOINVERT			BIT(21)
-+#define HID_QUIRK_IGNORE_SPECIAL_DRIVER		BIT(22)
- #define HID_QUIRK_FULLSPEED_INTERVAL		BIT(28)
- #define HID_QUIRK_NO_INIT_REPORTS		BIT(29)
- #define HID_QUIRK_NO_IGNORE			BIT(30)
+ 	if (!reset)
 -- 
 2.43.0
 
