@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552AC9EF2CD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2FB9EEDF0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93519189FBBB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:43:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65B7D286648
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5143217679;
-	Thu, 12 Dec 2024 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56B8222D66;
+	Thu, 12 Dec 2024 15:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lkp7hO7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L78Rn9WT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F282288ED;
-	Thu, 12 Dec 2024 16:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C21217F34;
+	Thu, 12 Dec 2024 15:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734021319; cv=none; b=DcQLTsxPzXei0FaDbM2qShUSJdnRXLvfAynGaFdZaHf7VhWQ9QhjYUQx2QOIzeJx9cpORqPeFSd/HOvATni12ZHvR72bmOFC/B9oHS6k+WIZ/5MuHlDMCOPHRuk787tvBU+vDgh1YiWZjn8BRTHpvVhQo+0miCPx2lNyMN123jM=
+	t=1734018686; cv=none; b=FYjDZXhTMUN/p8EmV9X4l/KrTI9t4WGKnf8qpbX8IvlQHoWqzc5DUm3qr+b638KVC7eyEmzXi1Yy8oVlDPsBf9U9hT7QNbx7i6KGEu83smaKCV2Tz1XypcP+3JrmbIGfT0VtVEnQIyCJiBD98kbfnE3zC26GcqRkL/G7AwRQ3Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734021319; c=relaxed/simple;
-	bh=05FO52jTC14MWjN+Ab8/HN4Kaq1Y7CD1BJzyRTZFbGE=;
+	s=arc-20240116; t=1734018686; c=relaxed/simple;
+	bh=iO8/4uM+46q2yPKilqqbfFFpgj5c99YMhb+ZuM7/PPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbOUayD1+NAzzZOZFWApL5RC6YiPyKOXv26NkUOiezAhpy0GVOc6wbCZB3BwfDf8NdUmjl23u1Z9ZpCuwEfg0A4y5bSeac/V4j0/mLFSXtiYY1DGdRHmqwbDncA4KHDjUZFtvtLZn9ycPYCh3UoRuQj/rh0fjH2du/iMlp+XZkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lkp7hO7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC4BC4CED3;
-	Thu, 12 Dec 2024 16:35:18 +0000 (UTC)
+	 MIME-Version; b=VQnz8+gcnFagEVUtBEfvdcon5/bcbRowIA41dD9LRmZCwjd8dd5kOK2rHp6XvYSZ0VX48npMiD3TMiJllP8RY3IeqZfJh5U7Ud9n1gMPAJTPxCkEWoGyRvBtfKiPRqbpzUVhfR5g90hJ7fZvnotobCpqIjxMlOyfcA7vXWgSdEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L78Rn9WT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E73CC4CECE;
+	Thu, 12 Dec 2024 15:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734021319;
-	bh=05FO52jTC14MWjN+Ab8/HN4Kaq1Y7CD1BJzyRTZFbGE=;
+	s=korg; t=1734018686;
+	bh=iO8/4uM+46q2yPKilqqbfFFpgj5c99YMhb+ZuM7/PPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lkp7hO7tjYS2thKRAiQm+cl8DNcLkAhGqm3WAymwr6Od3AWYPrahErPfVnW6TF3Ji
-	 N+r6O+yuprkz3kymHs+mpZ+KfRfYAi/RHokMkh8WUOzZUj6bdbJwPUhgkbofY9XQqI
-	 3suaEpXRM5+DJxPkHBc2KE0UL/xa+0WHvEaiwaxU=
+	b=L78Rn9WTj9X7f7AmZ2LC1QxZN+GUCa/lUiREFKr2OdGPy80tZWOZdeFIm19df8/NQ
+	 Lj39GVrjnnO3eJgh9DV2GnSnOD98LZo9P/ruy0MIU7mygaFT85X6FCyuJpRsoVuOTT
+	 dpHGWY94NWW1cFe6JFewAJ/6m0Nsb05zS4k9GPf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Anish Kumar <yesanishhere@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Wander Lairson Costa <wander@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 705/772] leds: class: Protect brightness_show() with led_cdev->led_access mutex
+Subject: [PATCH 6.6 331/356] sched/deadline: Fix warning in migrate_enable for boosted tasks
 Date: Thu, 12 Dec 2024 16:00:50 +0100
-Message-ID: <20241212144419.024430068@linuxfoundation.org>
+Message-ID: <20241212144257.639344223@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit 4ca7cd938725a4050dcd62ae9472e931d603118d ]
+[ Upstream commit 0664e2c311b9fa43b33e3e81429cd0c2d7f9c638 ]
 
-There is NULL pointer issue observed if from Process A where hid device
-being added which results in adding a led_cdev addition and later a
-another call to access of led_cdev attribute from Process B can result
-in NULL pointer issue.
+When running the following command:
 
-Use mutex led_cdev->led_access to protect access to led->cdev and its
-attribute inside brightness_show() and max_brightness_show() and also
-update the comment for mutex that it should be used to protect the led
-class device fields.
+while true; do
+    stress-ng --cyclic 30 --timeout 30s --minimize --quiet
+done
 
-	Process A 				Process B
+a warning is eventually triggered:
 
- kthread+0x114
- worker_thread+0x244
- process_scheduled_works+0x248
- uhid_device_add_worker+0x24
- hid_add_device+0x120
- device_add+0x268
- bus_probe_device+0x94
- device_initial_probe+0x14
- __device_attach+0xfc
- bus_for_each_drv+0x10c
- __device_attach_driver+0x14c
- driver_probe_device+0x3c
- __driver_probe_device+0xa0
- really_probe+0x190
- hid_device_probe+0x130
- ps_probe+0x990
- ps_led_register+0x94
- devm_led_classdev_register_ext+0x58
- led_classdev_register_ext+0x1f8
- device_create_with_groups+0x48
- device_create_groups_vargs+0xc8
- device_add+0x244
- kobject_uevent+0x14
- kobject_uevent_env[jt]+0x224
- mutex_unlock[jt]+0xc4
- __mutex_unlock_slowpath+0xd4
- wake_up_q+0x70
- try_to_wake_up[jt]+0x48c
- preempt_schedule_common+0x28
- __schedule+0x628
- __switch_to+0x174
-						el0t_64_sync+0x1a8/0x1ac
-						el0t_64_sync_handler+0x68/0xbc
-						el0_svc+0x38/0x68
-						do_el0_svc+0x1c/0x28
-						el0_svc_common+0x80/0xe0
-						invoke_syscall+0x58/0x114
-						__arm64_sys_read+0x1c/0x2c
-						ksys_read+0x78/0xe8
-						vfs_read+0x1e0/0x2c8
-						kernfs_fop_read_iter+0x68/0x1b4
-						seq_read_iter+0x158/0x4ec
-						kernfs_seq_show+0x44/0x54
-						sysfs_kf_seq_show+0xb4/0x130
-						dev_attr_show+0x38/0x74
-						brightness_show+0x20/0x4c
-						dualshock4_led_get_brightness+0xc/0x74
+WARNING: CPU: 43 PID: 2848 at kernel/sched/deadline.c:794
+setup_new_dl_entity+0x13e/0x180
+...
+Call Trace:
+ <TASK>
+ ? show_trace_log_lvl+0x1c4/0x2df
+ ? enqueue_dl_entity+0x631/0x6e0
+ ? setup_new_dl_entity+0x13e/0x180
+ ? __warn+0x7e/0xd0
+ ? report_bug+0x11a/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x14/0x70
+ ? asm_exc_invalid_op+0x16/0x20
+ enqueue_dl_entity+0x631/0x6e0
+ enqueue_task_dl+0x7d/0x120
+ __do_set_cpus_allowed+0xe3/0x280
+ __set_cpus_allowed_ptr_locked+0x140/0x1d0
+ __set_cpus_allowed_ptr+0x54/0xa0
+ migrate_enable+0x7e/0x150
+ rt_spin_unlock+0x1c/0x90
+ group_send_sig_info+0xf7/0x1a0
+ ? kill_pid_info+0x1f/0x1d0
+ kill_pid_info+0x78/0x1d0
+ kill_proc_info+0x5b/0x110
+ __x64_sys_kill+0x93/0xc0
+ do_syscall_64+0x5c/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+ RIP: 0033:0x7f0dab31f92b
 
-[ 3313.874295][ T4013] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000060
-[ 3313.874301][ T4013] Mem abort info:
-[ 3313.874303][ T4013]   ESR = 0x0000000096000006
-[ 3313.874305][ T4013]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 3313.874307][ T4013]   SET = 0, FnV = 0
-[ 3313.874309][ T4013]   EA = 0, S1PTW = 0
-[ 3313.874311][ T4013]   FSC = 0x06: level 2 translation fault
-[ 3313.874313][ T4013] Data abort info:
-[ 3313.874314][ T4013]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
-[ 3313.874316][ T4013]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[ 3313.874318][ T4013]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[ 3313.874320][ T4013] user pgtable: 4k pages, 39-bit VAs, pgdp=00000008f2b0a000
-..
+This warning occurs because set_cpus_allowed dequeues and enqueues tasks
+with the ENQUEUE_RESTORE flag set. If the task is boosted, the warning
+is triggered. A boosted task already had its parameters set by
+rt_mutex_setprio, and a new call to setup_new_dl_entity is unnecessary,
+hence the WARN_ON call.
 
-[ 3313.874332][ T4013] Dumping ftrace buffer:
-[ 3313.874334][ T4013]    (ftrace buffer empty)
-..
-..
-[ dd3313.874639][ T4013] CPU: 6 PID: 4013 Comm: InputReader
-[ 3313.874648][ T4013] pc : dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874653][ T4013] lr : led_update_brightness+0x38/0x60
-[ 3313.874656][ T4013] sp : ffffffc0b910bbd0
-..
-..
-[ 3313.874685][ T4013] Call trace:
-[ 3313.874687][ T4013]  dualshock4_led_get_brightness+0xc/0x74
-[ 3313.874690][ T4013]  brightness_show+0x20/0x4c
-[ 3313.874692][ T4013]  dev_attr_show+0x38/0x74
-[ 3313.874696][ T4013]  sysfs_kf_seq_show+0xb4/0x130
-[ 3313.874700][ T4013]  kernfs_seq_show+0x44/0x54
-[ 3313.874703][ T4013]  seq_read_iter+0x158/0x4ec
-[ 3313.874705][ T4013]  kernfs_fop_read_iter+0x68/0x1b4
-[ 3313.874708][ T4013]  vfs_read+0x1e0/0x2c8
-[ 3313.874711][ T4013]  ksys_read+0x78/0xe8
-[ 3313.874714][ T4013]  __arm64_sys_read+0x1c/0x2c
-[ 3313.874718][ T4013]  invoke_syscall+0x58/0x114
-[ 3313.874721][ T4013]  el0_svc_common+0x80/0xe0
-[ 3313.874724][ T4013]  do_el0_svc+0x1c/0x28
-[ 3313.874727][ T4013]  el0_svc+0x38/0x68
-[ 3313.874730][ T4013]  el0t_64_sync_handler+0x68/0xbc
-[ 3313.874732][ T4013]  el0t_64_sync+0x1a8/0x1ac
+Check if we are requeueing a boosted task and avoid calling
+setup_new_dl_entity if that's the case.
 
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Anish Kumar <yesanishhere@gmail.com>
-Link: https://lore.kernel.org/r/20241103160527.82487-1-quic_mojha@quicinc.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 295d6d5e3736 ("sched/deadline: Fix switching to -deadline")
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Link: https://lore.kernel.org/r/20240724142253.27145-2-wander@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-class.c | 14 +++++++++++---
- include/linux/leds.h     |  2 +-
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ kernel/sched/deadline.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
-index 7391d2cf1370a..93fdca5c7dc5d 100644
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -28,11 +28,14 @@ static ssize_t brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int brightness;
- 
--	/* no lock needed for this */
-+	mutex_lock(&led_cdev->led_access);
- 	led_update_brightness(led_cdev);
-+	brightness = led_cdev->brightness;
-+	mutex_unlock(&led_cdev->led_access);
- 
--	return sprintf(buf, "%u\n", led_cdev->brightness);
-+	return sprintf(buf, "%u\n", brightness);
- }
- 
- static ssize_t brightness_store(struct device *dev,
-@@ -69,8 +72,13 @@ static ssize_t max_brightness_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
- 	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-+	unsigned int max_brightness;
-+
-+	mutex_lock(&led_cdev->led_access);
-+	max_brightness = led_cdev->max_brightness;
-+	mutex_unlock(&led_cdev->led_access);
- 
--	return sprintf(buf, "%u\n", led_cdev->max_brightness);
-+	return sprintf(buf, "%u\n", max_brightness);
- }
- static DEVICE_ATTR_RO(max_brightness);
- 
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index 79ab2dfd3c72f..01fccb1c50010 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -161,7 +161,7 @@ struct led_classdev {
- 	struct kernfs_node	*brightness_hw_changed_kn;
- #endif
- 
--	/* Ensures consistent access to the LED Flash Class device */
-+	/* Ensures consistent access to the LED class device */
- 	struct mutex		led_access;
- };
- 
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index aacd3bf9fa4e7..b9e99bc3b1cf2 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1674,6 +1674,7 @@ enqueue_dl_entity(struct sched_dl_entity *dl_se, int flags)
+ 	} else if (flags & ENQUEUE_REPLENISH) {
+ 		replenish_dl_entity(dl_se);
+ 	} else if ((flags & ENQUEUE_RESTORE) &&
++		  !is_dl_boosted(dl_se) &&
+ 		  dl_time_before(dl_se->deadline,
+ 				 rq_clock(rq_of_dl_rq(dl_rq_of_se(dl_se))))) {
+ 		setup_new_dl_entity(dl_se);
 -- 
 2.43.0
 
