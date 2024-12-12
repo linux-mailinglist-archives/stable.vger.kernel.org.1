@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B1C9EF9C1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:53:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B03C99EF68D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AC66189D98E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 650001943DF5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4770D225A2C;
-	Thu, 12 Dec 2024 17:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8489C20969B;
+	Thu, 12 Dec 2024 17:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl+Xfw14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tY8vL8qP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0185A223E69;
-	Thu, 12 Dec 2024 17:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4058A205501;
+	Thu, 12 Dec 2024 17:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025614; cv=none; b=hMVu8yLIt1HYpG/F0MbRmLkJOvoFbM1XoHBAuPSFmlItlBNnl/AhYWZx841cpzyNkE7GXCWbcdmyC5hE78009AW1OH4n9b+GLHQn+pSFayX3vxeoQDxf+BebTJas8JlngJa6S/2bVbXqDhQ9I3HO4B2lTKxmOFW3FsxCl8yV7DQ=
+	t=1734023551; cv=none; b=b29zGkY4QHBQDlk8T7tYB2PGZd7EvTELGmEs+1uiL8WMcnXoalSZGazUPGVEtCWQak1A7L5NdGrMPvnQQnsQX8lPKd7oULRPyH29VZo4Mks8MgEQgEGh1sZwn6Mvb/RBEgssu65JqeW4DGzZlSbj7EGmGSpFsok1XTAffTU8GoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025614; c=relaxed/simple;
-	bh=4WIXS27e7dcO08HI7B4MQagWKAAC29aCtvByWSTQpYI=;
+	s=arc-20240116; t=1734023551; c=relaxed/simple;
+	bh=eL7vu4UMtqu8S9yOH7e4B96cH94JlR+RMhbFHQQQeA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkhyA2pKmVDgaYeMGz+I0ExKId5zPVt3jHZ1W/u2JNGRQOLISSV9xqgdF4a5l8SIqBgaqAhE9DoPw7hdAHbMBZN/PXkPTp2ELLIKWu/HDjQTYuUPKmhLlwU+BQaaow7rv08m0GWkRDKW1x+U89Z9fU81h82gtJFBm6G8C90nTvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl+Xfw14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83281C4CECE;
-	Thu, 12 Dec 2024 17:46:53 +0000 (UTC)
+	 MIME-Version; b=ctkBjombdT/qojkao5UwFjSVmZnicK6MlcxiuB1tcWybko0zmLkvne6/3bYFXB2GB+PXha+U4iq3+UW1ag/JCsu89NTo80Tc/QgXf8H/5jbpfShtrIH0WhtSHGxW4qsugZalHTMHHtbfOo4Wg420rrbdcEFDYcmHH4/UO/sA9Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tY8vL8qP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF947C4CED0;
+	Thu, 12 Dec 2024 17:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025613;
-	bh=4WIXS27e7dcO08HI7B4MQagWKAAC29aCtvByWSTQpYI=;
+	s=korg; t=1734023551;
+	bh=eL7vu4UMtqu8S9yOH7e4B96cH94JlR+RMhbFHQQQeA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zl+Xfw14s/q6wzzXZCn7BO75iz33ht7nuBdoK6+WPfGpfh2iBv9RpjVGf9dfwC98J
-	 /hjsjxkcS5nXNlLo2hDxqs+mWx1aNU6Z6SHxwHSMe+mwpG97OBzEhQZ+WBPviEO7dl
-	 ucEU2/42y+E01+4v09AbeDv99W5xRaH86gmll7gM=
+	b=tY8vL8qPKdTt+0St4WDKhpsnEuoxu43JdU8uwY0JU+bSyf1Bhkr1w7skLOksKpdlA
+	 p7XDSyU78twGWS33pcI/PHIaB1uA2hziF29mt447W4lf++d1/Uoib1T4+SNgb8BbvW
+	 jU+KBfd9YmRynASNXIXEuAXQZkgdFo5vd3FnwyhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Solodovnikov <solodovnikov.ia@phystech.edu>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 228/321] dccp: Fix memory leak in dccp_feat_change_recv
-Date: Thu, 12 Dec 2024 16:02:26 +0100
-Message-ID: <20241212144238.984118894@linuxfoundation.org>
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Libo Chen <libo.chen.cn@windriver.com>
+Subject: [PATCH 5.15 552/565] fou: remove warn in gue_gro_receive on unsupported protocol
+Date: Thu, 12 Dec 2024 16:02:27 +0100
+Message-ID: <20241212144333.677176813@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 22be4727a8f898442066bcac34f8a1ad0bc72e14 ]
+commit dd89a81d850fa9a65f67b4527c0e420d15bf836c upstream.
 
-If dccp_feat_push_confirm() fails after new value for SP feature was accepted
-without reconciliation ('entry == NULL' branch), memory allocated for that value
-with dccp_feat_clone_sp_val() is never freed.
+Drop the WARN_ON_ONCE inn gue_gro_receive if the encapsulated type is
+not known or does not have a GRO handler.
 
-Here is the kmemleak stack for this:
+Such a packet is easily constructed. Syzbot generates them and sets
+off this warning.
 
-unreferenced object 0xffff88801d4ab488 (size 8):
-  comm "syz-executor310", pid 1127, jiffies 4295085598 (age 41.666s)
-  hex dump (first 8 bytes):
-    01 b4 4a 1d 80 88 ff ff                          ..J.....
-  backtrace:
-    [<00000000db7cabfe>] kmemdup+0x23/0x50 mm/util.c:128
-    [<0000000019b38405>] kmemdup include/linux/string.h:465 [inline]
-    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:371 [inline]
-    [<0000000019b38405>] dccp_feat_clone_sp_val net/dccp/feat.c:367 [inline]
-    [<0000000019b38405>] dccp_feat_change_recv net/dccp/feat.c:1145 [inline]
-    [<0000000019b38405>] dccp_feat_parse_options+0x1196/0x2180 net/dccp/feat.c:1416
-    [<00000000b1f6d94a>] dccp_parse_options+0xa2a/0x1260 net/dccp/options.c:125
-    [<0000000030d7b621>] dccp_rcv_state_process+0x197/0x13d0 net/dccp/input.c:650
-    [<000000001f74c72e>] dccp_v4_do_rcv+0xf9/0x1a0 net/dccp/ipv4.c:688
-    [<00000000a6c24128>] sk_backlog_rcv include/net/sock.h:1041 [inline]
-    [<00000000a6c24128>] __release_sock+0x139/0x3b0 net/core/sock.c:2570
-    [<00000000cf1f3a53>] release_sock+0x54/0x1b0 net/core/sock.c:3111
-    [<000000008422fa23>] inet_wait_for_connect net/ipv4/af_inet.c:603 [inline]
-    [<000000008422fa23>] __inet_stream_connect+0x5d0/0xf70 net/ipv4/af_inet.c:696
-    [<0000000015b6f64d>] inet_stream_connect+0x53/0xa0 net/ipv4/af_inet.c:735
-    [<0000000010122488>] __sys_connect_file+0x15c/0x1a0 net/socket.c:1865
-    [<00000000b4b70023>] __sys_connect+0x165/0x1a0 net/socket.c:1882
-    [<00000000f4cb3815>] __do_sys_connect net/socket.c:1892 [inline]
-    [<00000000f4cb3815>] __se_sys_connect net/socket.c:1889 [inline]
-    [<00000000f4cb3815>] __x64_sys_connect+0x6e/0xb0 net/socket.c:1889
-    [<00000000e7b1e839>] do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
-    [<0000000055e91434>] entry_SYSCALL_64_after_hwframe+0x67/0xd1
+Remove the warning as it is expected and not actionable.
 
-Clean up the allocated memory in case of dccp_feat_push_confirm() failure
-and bail out with an error reset code.
+The warning was previously reduced from WARN_ON to WARN_ON_ONCE in
+commit 270136613bf7 ("fou: Do WARN_ON_ONCE in gue_gro_receive for bad
+proto callbacks").
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: e77b8363b2ea ("dccp: Process incoming Change feature-negotiation options")
-Signed-off-by: Ivan Solodovnikov <solodovnikov.ia@phystech.edu>
-Link: https://patch.msgid.link/20241126143902.190853-1-solodovnikov.ia@phystech.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240614122552.1649044-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Libo Chen <libo.chen.cn@windriver.com>
 ---
- net/dccp/feat.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv4/fou.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/dccp/feat.c b/net/dccp/feat.c
-index 9c3b5e0562342..7647306802f1e 100644
---- a/net/dccp/feat.c
-+++ b/net/dccp/feat.c
-@@ -1156,8 +1156,12 @@ static u8 dccp_feat_change_recv(struct list_head *fn, u8 is_mandatory, u8 opt,
- 			goto not_valid_or_not_known;
- 		}
+--- a/net/ipv4/fou.c
++++ b/net/ipv4/fou.c
+@@ -453,7 +453,7 @@ next_proto:
  
--		return dccp_feat_push_confirm(fn, feat, local, &fval);
-+		if (dccp_feat_push_confirm(fn, feat, local, &fval)) {
-+			kfree(fval.sp.vec);
-+			return DCCP_RESET_CODE_TOO_BUSY;
-+		}
+ 	offloads = NAPI_GRO_CB(skb)->is_ipv6 ? inet6_offloads : inet_offloads;
+ 	ops = rcu_dereference(offloads[proto]);
+-	if (WARN_ON_ONCE(!ops || !ops->callbacks.gro_receive))
++	if (!ops || !ops->callbacks.gro_receive)
+ 		goto out;
  
-+		return 0;
- 	} else if (entry->state == FEAT_UNSTABLE) {	/* 6.6.2 */
- 		return 0;
- 	}
--- 
-2.43.0
-
+ 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
 
 
 
