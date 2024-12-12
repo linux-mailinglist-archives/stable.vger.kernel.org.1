@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-103874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC1D9EF977
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E1BD9EFA09
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:56:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C53E28AED5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83CAB16BA90
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A8E221DA4;
-	Thu, 12 Dec 2024 17:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0295522331C;
+	Thu, 12 Dec 2024 17:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnIzQuph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Owlkurx1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8CD2210DE;
-	Thu, 12 Dec 2024 17:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41C3215710;
+	Thu, 12 Dec 2024 17:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025860; cv=none; b=Q+GtLRB0cUpsyxv98hc8BRpanp5H8v7dEA6ShBKY8o1I7YQ2w3BJ6kljzrqwBW4srbznrRqLNrJ0b32emjeM4sG3jRd9MdNYmznLHP2xAo6WxDe2xkSimxKJPbZ9cJQs1aFmmphoRsxkkk8CtzDipjUgnpTh1e2RbBB5GQTMNtw=
+	t=1734025768; cv=none; b=gR6Mb1GIUjRKvaXCKIJmZzCSVcjc/dc+pVD4rOpbT3xwrDRgYy7PNw6Ei/wg1Kec5wE8V6tpKVHK6QN7rpVMagthdBH+K0RICGkJs9VUWV4TXEQuPd5GbdsuBGxZwbkJNfsyUH1LW57Q1RcXvBaI7xgZ3/INpG6DORut4/cC+uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025860; c=relaxed/simple;
-	bh=y08me7rYqSAlulE/wUUXqAEqQ5QV7WM5RjC3VFvrKS4=;
+	s=arc-20240116; t=1734025768; c=relaxed/simple;
+	bh=snVZxWQQzPywS8swnHcNGKC8tkHpvYUS9F+2B0JBcHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBV0A5GAYfUYAL8rncXbQnzX+Wyok3OBci2JT7Ri6LSsDpysg7F6AEK8AKAxHQT7cYaWsYhtuzJX9vrmPD8rBwW9mXmPw7zlig5slG7gHnN3KnVajrCepHUC62FTCszsoXp6ebsKqCob2hGsLBm7k6Y3cN4KLriuekiC250IO/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnIzQuph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC5AC4CECE;
-	Thu, 12 Dec 2024 17:50:59 +0000 (UTC)
+	 MIME-Version; b=hhJL6LJmhC2FLDG/7PPWArLqMbnOm39y98/VdyV8XFx/TD+N5zP1b6EMrPyfAVW0CjHQSl3poEik40s2QgJIVoNYdMLxPltlCz2jRi5jHctPzWc+7MCDUR/sA/yiVIYDkyiJIFfiM8R5JtKcR/9yEnYDkljehrtpi+ewwrGO6Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Owlkurx1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC3DC4CECE;
+	Thu, 12 Dec 2024 17:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025859;
-	bh=y08me7rYqSAlulE/wUUXqAEqQ5QV7WM5RjC3VFvrKS4=;
+	s=korg; t=1734025768;
+	bh=snVZxWQQzPywS8swnHcNGKC8tkHpvYUS9F+2B0JBcHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnIzQuphDx1F7Z2DP+Wi+XnDNezTI2BgjSPOCVC0oFvxNHFN5F4yxfTi74W4KKG+c
-	 mmeAPPA2smEObcoAvxkko5+Y8i0gRlu1QgpVX5ufb/EkBinucZ7VyR+q6B0m1VslF+
-	 vd/f80wdJycJje5pcagSsCPuX8wr0YwVhUljgil8=
+	b=Owlkurx1mu3UminEal5VCWrlMpBsqwMOBov3j7khqx6P6VNHfat8hjcEwKKK4IxDe
+	 YzzZ/+KYWs2AvTF/4oEWbM2/F/sIo+JEec4DC2HOVptQqKVymZEUeVgD+sUf6MeS/Y
+	 SskoW8GvLy8P89MN7vunek4whxGRx/TMLo3Jqeac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 281/321] wifi: ath5k: add PCI ID for Arcadyan devices
-Date: Thu, 12 Dec 2024 16:03:19 +0100
-Message-ID: <20241212144241.081193060@linuxfoundation.org>
+Subject: [PATCH 5.4 282/321] jfs: array-index-out-of-bounds fix in dtReadFirst
+Date: Thu, 12 Dec 2024 16:03:20 +0100
+Message-ID: <20241212144241.119851365@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -66,32 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
+[ Upstream commit ca84a2c9be482836b86d780244f0357e5a778c46 ]
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+The value of stbl can be sometimes out of bounds due
+to a bad filesystem. Added a check with appopriate return
+of error code in that case.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Reported-by: syzbot+65fa06e29859e41a83f3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=65fa06e29859e41a83f3
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_dtree.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index b7f62c472b879..e58da21b28ef5 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 077a87e530205..bd198b04c388f 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -3382,6 +3382,13 @@ static int dtReadFirst(struct inode *ip, struct btstack * btstack)
+ 
+ 		/* get the leftmost entry */
+ 		stbl = DT_GETSTBL(p);
++
++		if (stbl[0] < 0 || stbl[0] > 127) {
++			DT_PUTPAGE(mp);
++			jfs_error(ip->i_sb, "stbl[0] out of bound\n");
++			return -EIO;
++		}
++
+ 		xd = (pxd_t *) & p->slot[stbl[0]];
+ 
+ 		/* get the child page block address */
 -- 
 2.43.0
 
