@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69599EF411
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D292D9EEBC6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:48 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6525329090D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0E11886C81
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF28223C6F;
-	Thu, 12 Dec 2024 17:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FE620969B;
+	Thu, 12 Dec 2024 15:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rg9f/wYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ev72Gob7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3442153DD;
-	Thu, 12 Dec 2024 17:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848C613792B;
+	Thu, 12 Dec 2024 15:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022984; cv=none; b=Ge6mYWnOgGIHZ4IaXNQ0mkfzZhWWnCiVhp2tHJ/oDtSL1w05gbcPzRj3T0WVRm4eRHzSCbYeXTT279/33qyvX0p44mpNHGJ0w/VrIlax3N+4tK31z8zJQxl5PLbR2NlInc9P8dzoVeWIw0sZyzXEHnrNQ4yPpdcRoOLgjh5jgLg=
+	t=1734017103; cv=none; b=QVdCea+nL4lfvuNZIwgF0bmjIOuhXx7t4AISETH+uHqF9dJF+MUXSPX/70IRDKbjqFAncTqRy2DooZkHZMStEnQEvDId1ljJxwAf1hkQ/e9T4trtMxmDRvKSNv3osEP8u1NNRDs7lu2rNnJMVleSIRnBJBPUAmBryr2C2GrbG/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022984; c=relaxed/simple;
-	bh=pPGD3p+vJQihMhus/ebdbn2SjF8vM0lx923pWnVa7EM=;
+	s=arc-20240116; t=1734017103; c=relaxed/simple;
+	bh=m4m3EPgE1YVS7dBpLSo/pLsvuOGHt97UzbqshcFedKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8wv4GjV7Rd2W7ttjIFfp4G2z6bNCR+VXeR9Hn4Nktj+fGAaF0QQgg1mQSZYQNz3Cc44smymbFhwVonWBhj/pNglaTuhhQHJhRDL7Pq+LmX01Vunmiqycu2JDcqYUnqzeAzgB3uOyzqkpz+EWO/Zwv95u0b24rBMIoKbJNnvYOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rg9f/wYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9BCC4CECE;
-	Thu, 12 Dec 2024 17:03:03 +0000 (UTC)
+	 MIME-Version; b=PZiLZrRWD1NM/nb0PKjeQyRL1ZRsaE0uQBqR5DQ6xl31Iu19xek1OWa+U0W4ITBJcjGCOvNXFfifsUDREHKgc8CULgVKvcLaSJiCjPprHN/oHCOUv0SZUvKL7AQ6D967er1CGL4otVLOI5uyd+UuGjlFSUHxX6RK/cF7V2yDfVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ev72Gob7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DAFC4CECE;
+	Thu, 12 Dec 2024 15:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022984;
-	bh=pPGD3p+vJQihMhus/ebdbn2SjF8vM0lx923pWnVa7EM=;
+	s=korg; t=1734017103;
+	bh=m4m3EPgE1YVS7dBpLSo/pLsvuOGHt97UzbqshcFedKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rg9f/wYoBBXm9zkdjiCg4wVE4sAhlARr0KdQIBiJCxSekT3ywfhMd7wshYG3HW9at
-	 br1MNL3fd95J+zbz8/3Op+9mz2RFyeh3K901TE9PUJD0Mivqm4ySTLbEk8Kae5vhTR
-	 CUVef2Ur3wP2rS6u6QetzjCw+CKpcu2Vhmj5xwqk=
+	b=ev72Gob75RV2VumLs5U420pgmgq1po+2p/C2GsoVsm7rCCFjpQMREvAQwp+aqOS55
+	 ECbvwpeHBUmGsI26AmeO7NubMJYNUfXMLCTTPRyoESaOCNx1trNnaY1j5Tr1/Cpbd+
+	 aeHdPtlCy6Egxjdw+FxKwMF8PaAIs0uT61MutgXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Erkun <yangerkun@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 357/565] NFSv4.0: Fix a use-after-free problem in the asynchronous open()
+Subject: [PATCH 6.12 383/466] smb: client: memcpy() with surrounding object base address
 Date: Thu, 12 Dec 2024 15:59:12 +0100
-Message-ID: <20241212144325.717651159@linuxfoundation.org>
+Message-ID: <20241212144321.904994069@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 2fdb05dc0931250574f0cb0ebeb5ed8e20f4a889 ]
+[ Upstream commit f69b0187f8745a7a9584f6b13f5e792594b88b2e ]
 
-Yang Erkun reports that when two threads are opening files at the same
-time, and are forced to abort before a reply is seen, then the call to
-nfs_release_seqid() in nfs4_opendata_free() can result in a
-use-after-free of the pointer to the defunct rpc task of the other
-thread.
-The fix is to ensure that if the RPC call is aborted before the call to
-nfs_wait_on_sequence() is complete, then we must call nfs_release_seqid()
-in nfs4_open_release() before the rpc_task is freed.
+Like commit f1f047bd7ce0 ("smb: client: Fix -Wstringop-overflow issues"),
+adjust the memcpy() destination address to be based off the surrounding
+object rather than based off the 4-byte "Protocol" member. This avoids a
+build-time warning when compiling under CONFIG_FORTIFY_SOURCE with GCC 15:
 
-Reported-by: Yang Erkun <yangerkun@huawei.com>
-Fixes: 24ac23ab88df ("NFSv4: Convert open() into an asynchronous RPC call")
-Reviewed-by: Yang Erkun <yangerkun@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+In function 'fortify_memcpy_chk',
+    inlined from 'CIFSSMBSetPathInfo' at ../fs/smb/client/cifssmb.c:5358:2:
+../include/linux/fortify-string.h:571:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  571 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/smb/client/cifssmb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index f1c351e40c7a5..4a0691aeb7c1d 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -2537,12 +2537,14 @@ static void nfs4_open_release(void *calldata)
- 	struct nfs4_opendata *data = calldata;
- 	struct nfs4_state *state = NULL;
- 
-+	/* In case of error, no cleanup! */
-+	if (data->rpc_status != 0 || !data->rpc_done) {
-+		nfs_release_seqid(data->o_arg.seqid);
-+		goto out_free;
-+	}
- 	/* If this request hasn't been cancelled, do nothing */
- 	if (!data->cancelled)
- 		goto out_free;
--	/* In case of error, no cleanup! */
--	if (data->rpc_status != 0 || !data->rpc_done)
--		goto out_free;
- 	/* In case we need an open_confirm, no cleanup! */
- 	if (data->o_res.rflags & NFS4_OPEN_RESULT_CONFIRM)
- 		goto out_free;
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index c6f15dbe860a4..0eae60731c20c 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -5406,7 +5406,7 @@ CIFSSMBSetPathInfo(const unsigned int xid, struct cifs_tcon *tcon,
+ 	param_offset = offsetof(struct smb_com_transaction2_spi_req,
+ 				InformationLevel) - 4;
+ 	offset = param_offset + params;
+-	data_offset = (char *) (&pSMB->hdr.Protocol) + offset;
++	data_offset = (char *)pSMB + offsetof(typeof(*pSMB), hdr.Protocol) + offset;
+ 	pSMB->ParameterOffset = cpu_to_le16(param_offset);
+ 	pSMB->DataOffset = cpu_to_le16(offset);
+ 	pSMB->SetupCount = 1;
 -- 
 2.43.0
 
