@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F0A9EEE70
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C36D9EF31D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC5D188ABC3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:52:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1C641940845
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409B0223E7D;
-	Thu, 12 Dec 2024 15:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AB822333F;
+	Thu, 12 Dec 2024 16:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMBtM0Xu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7YU1iB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFE7223E60;
-	Thu, 12 Dec 2024 15:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EEF223320;
+	Thu, 12 Dec 2024 16:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018640; cv=none; b=SvSfG2Ie1aXjE3n+lIph/3ALE3BTi+waANQyDe7oWQ1u9dIx6A9ikdeDH3xc+3B1cMUTRYF/Rz19VwGvvSup+qq/G0OnVT5D+6cLkWBkM+uCogGtF7CaKf1e4SbKbMQkTRZI/djAEG7eFMPwsX39aXbYGu4HoEgTZ0j+zCZCQEc=
+	t=1734021485; cv=none; b=BeMYZgE3Le97cxLt2InTD5Dd1NftgUpCWZWi4ji83RYY9VRZZXm1mPYySGaHLG+DT8RS9qWg4S/M9wTDc2o5S2n90aVD16oSLnUa0amNTCVRSLowYNd/VaCDPfQy2tXg6JH07/14kol4NSVXtcseL7BP6QcvM8P8XczR6b92CAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018640; c=relaxed/simple;
-	bh=0tUHNEknCgRhvL0YPGz6vlKpXdl0em0XfGjfBd8yf10=;
+	s=arc-20240116; t=1734021485; c=relaxed/simple;
+	bh=Lj82KgxOiOwgH/ouPoCMGUgUmv4BaZ8NglmcIgGOSLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mjX8rk2uRFlOIdeBJoHevBwIUg3wE101Su6+pF+nH5/jX4laHfDXzNtfMi1n+iRyMm1Ujqx8kazPh4bCZSEfVbs1uQLkUVF83QyMCu0FFAuP1xNMt17qqMurBLdwizKOfHmsT/wdk4npKYFxfW0NjzvYILDo0pikHuxpczfKhpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMBtM0Xu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40565C4CECE;
-	Thu, 12 Dec 2024 15:50:38 +0000 (UTC)
+	 MIME-Version; b=ujuNX8qmRD/v1SXPcYf1WF4Cq1/yzolfR6vHVhxtLqNuq0pUuXtNVp/FxaSmK5b/QHbuH640IxO6atJdpBSle1pCr6uOgHlBgVlR77AvjH1vQTnoNmbAT9HcC/1baYyRjJXMXW24L1/TKC34koo8vSBt9nMFAyWsS3bhVR0wfPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p7YU1iB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F355EC4CECE;
+	Thu, 12 Dec 2024 16:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018639;
-	bh=0tUHNEknCgRhvL0YPGz6vlKpXdl0em0XfGjfBd8yf10=;
+	s=korg; t=1734021485;
+	bh=Lj82KgxOiOwgH/ouPoCMGUgUmv4BaZ8NglmcIgGOSLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMBtM0XurF9dXOQ5uaXiALxk/a6i9jWvNEdEoWzi0YaHDzO5eN7iZewntif1KlFHC
-	 Kmuc5wx1cQyeMhUyeHGVNHukjhoCB/6QNTS547Y/WPeriegv8BYr4Dk3pF0c1jKEfv
-	 SKZVydu7YI3fFxn/Zzl5G46DQMKF+Ww05mFf2Vww=
+	b=p7YU1iB97744R1M+8M+sVdtnOSiDI1+Vox1Ho8KGlFBx39B/Gjrhv3UCZGnsNz5xN
+	 CKMaJI/PaM7p7iF0jQT1Bs95M43yps65L3EyJ4bVSwvyo9hoE+0DjAGaGqG0JFdOkw
+	 V+vWPuW+RLtdEs6XbvMVthzGyJuXthcPw4CQxB98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 347/356] ASoC: Intel: avs: Fix return status of avs_pcm_hw_constraints_init()
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 721/772] iio: light: ltr501: Add LTER0303 to the supported devices
 Date: Thu, 12 Dec 2024 16:01:06 +0100
-Message-ID: <20241212144258.276928665@linuxfoundation.org>
+Message-ID: <20241212144419.683516332@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit a0aae96be5ffc5b456ca07bfe1385b721c20e184 upstream.
+[ Upstream commit c26acb09ccbef47d1fddaf0783c1392d0462122c ]
 
-Check for return code from avs_pcm_hw_constraints_init() in
-avs_dai_fe_startup() only checks if value is different from 0. Currently
-function can return positive value, change it to return 0 on success.
+It has been found that the (non-vendor issued) ACPI ID for Lite-On
+LTR303 is present in Microsoft catalog. Add it to the list of the
+supported devices.
 
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-I've observed KASAN on our setups and while patch itself is correct
-regardless. Problem seems to be caused by recent changes to rates, as
-this started happening after recent patchsets and doesn't reproduce with
-those reverted
-https://lore.kernel.org/linux-sound/20240905-alsa-12-24-128-v1-0-8371948d3921@baylibre.com/
-https://lore.kernel.org/linux-sound/20240911135756.24434-1-tiwai@suse.de/
-I've tested using Mark tree, where they are both applied and for some
-reason snd_pcm_hw_constraint_minmax() started returning positive value,
-while previously it returned 0. I'm bit worried if it signals some
-potential deeper problem regarding constraints with above changes.
-
-Link: https://patch.msgid.link/20241010112008.545526-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303
+Closes: https://lore.kernel.org/r/9cdda3e0-d56e-466f-911f-96ffd6f602c8@redhat.com
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20241024191200.229894-24-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/pcm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/ltr501.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/intel/avs/pcm.c
-+++ b/sound/soc/intel/avs/pcm.c
-@@ -424,7 +424,7 @@ static int avs_dai_hda_be_trigger(struct
- 		break;
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- static const struct snd_soc_dai_ops avs_dai_hda_be_ops = {
+diff --git a/drivers/iio/light/ltr501.c b/drivers/iio/light/ltr501.c
+index 74a1ccda8b9c4..49f293232a709 100644
+--- a/drivers/iio/light/ltr501.c
++++ b/drivers/iio/light/ltr501.c
+@@ -1631,6 +1631,8 @@ static const struct acpi_device_id ltr_acpi_match[] = {
+ 	{ "LTER0501", ltr501 },
+ 	{ "LTER0559", ltr559 },
+ 	{ "LTER0301", ltr301 },
++	/* https://www.catalog.update.microsoft.com/Search.aspx?q=lter0303 */
++	{ "LTER0303", ltr303 },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, ltr_acpi_match);
+-- 
+2.43.0
+
 
 
 
