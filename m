@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBE59EF409
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:05:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DF59EEC21
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0937189EE39
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EF6284690
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B17522A7F4;
-	Thu, 12 Dec 2024 16:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293E5217F28;
+	Thu, 12 Dec 2024 15:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R90kBZoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHUe8DWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0962223C5C;
-	Thu, 12 Dec 2024 16:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEB4217707;
+	Thu, 12 Dec 2024 15:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022107; cv=none; b=MI5VfFWX5lmQPUX0fElGPoG+EOUg6loxrACUAwzQVUPkSGt9v/WE+7A2Obj4N3sAgD9yzUoQMV/2PdAQa/NO9O8hCYHaQWbrbJbZN1crBK6HTAmHtjPMQL9jtbpYnA3AhJk0e1dBdDWDNLAnIHd+RitQC2Y6z+dCUZCvEGy2dGk=
+	t=1734017482; cv=none; b=ZR/ve1rWxGWdpbwGPJ/Cy43Kf2/convFmSxFiUroE2dBHmD56JNFsjejluanWrbuWW8WQor8HTXH7fp1PcGbCZbLDgrAnEmCpsFflEKHq5KgYxKjwoYpTQuxyXTPEcju8ZopLESnokKqkh55YlnTGFBYt5Z0Txt5U5XoDHxinfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022107; c=relaxed/simple;
-	bh=UDKMsbPpWQgA3S+BhiVFZ9ZbUKieecG/BHCcV6akSCs=;
+	s=arc-20240116; t=1734017482; c=relaxed/simple;
+	bh=xK4+KTNgN/GgQW7K+IEjBGtCOgGiPeCphuq6qOWO+Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBobr5WDXqlhD05UjPGnV3P2brP6c0lvcONkhqSCzMFMm9jMaCvqKqbgYeZM5dNC7Fstyc+rOxSeDuuPN2m/z2MyEWCygWIqXr23iKV6bMYbWrl9XRZSgjS9ARErqKm+iDANeKhrtWWK5FTtf7U8i+CiHPmkXZRDhBiuODxtmS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R90kBZoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B73C4CECE;
-	Thu, 12 Dec 2024 16:48:26 +0000 (UTC)
+	 MIME-Version; b=el76AdlTFL8kqiEDtI8k4Lfa7R2cd0s6A5ryvmADg5l5dpU7T2VXyFihAtOJmg7nJIejmHdxN6kWpVcEcpevHJHlmVIAZdgKX0I6rzLo1OvnCxhqdhFgGEEMmGL+PJB79RTZg0Mbr88MC2tC5urOioslAzsBa//1ul/tBSXs2KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHUe8DWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D80C4CECE;
+	Thu, 12 Dec 2024 15:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022106;
-	bh=UDKMsbPpWQgA3S+BhiVFZ9ZbUKieecG/BHCcV6akSCs=;
+	s=korg; t=1734017482;
+	bh=xK4+KTNgN/GgQW7K+IEjBGtCOgGiPeCphuq6qOWO+Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R90kBZoDtmOI2Cl0ZWYxIqJT7ghKn3R+vjXSCHbWXFA5FcrQlcx+AhzSR6NfQjzal
-	 QFMwypUi+Mtz7XrPQXP1/jFyR7XEmYoFxC8wT44uCJwPXU5PNsEBUFYxoxaEApWD0u
-	 AFFedE6a1HuNWp79NaPbLWtGSKSu1Ho7m28pZptQ=
+	b=nHUe8DWp6ncisTgb/ID42F1D7DHUq/tG/iBY/VY7xhhxX+cHHszkB9zgs1ipibPy1
+	 pZ3O3IFmHaz76SZ+fXL18TUOv/1GqZhsY8FhJ7zpOl3ZmIvJpRMtLGba1MAxf5He/D
+	 zwG3yXucxz+NKmQrLW9ZMUkvwD3iDzcmZMTb01gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/565] drm/omap: Fix locking in omap_gem_new_dmabuf()
+Subject: [PATCH 6.6 025/356] can: j1939: j1939_session_new(): fix skb reference counting
 Date: Thu, 12 Dec 2024 15:55:44 +0100
-Message-ID: <20241212144317.375182551@linuxfoundation.org>
+Message-ID: <20241212144245.624833652@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit e6a1c4037227539373c8cf484ace83833e2ad6a2 ]
+[ Upstream commit a8c695005bfe6569acd73d777ca298ddddd66105 ]
 
-omap_gem_new_dmabuf() creates the new gem object, and then takes and
-holds the omap_obj->lock for the rest of the function. This has two
-issues:
+Since j1939_session_skb_queue() does an extra skb_get() for each new
+skb, do the same for the initial one in j1939_session_new() to avoid
+refcount underflow.
 
-- omap_gem_free_object(), which is called in the error paths, also takes
-  the same lock, leading to deadlock
-- Even if the above wouldn't happen, in the error cases
-  omap_gem_new_dmabuf() still unlocks omap_obj->lock, even after the
-  omap_obj has already been freed.
-
-Furthermore, I don't think there's any reason to take the lock at all,
-as the object was just created and not yet shared with anyone else.
-
-To fix all this, drop taking the lock.
-
-Fixes: 3cbd0c587b12 ("drm/omap: gem: Replace struct_mutex usage with omap_obj private lock")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/511b99d7-aade-4f92-bd3e-63163a13d617@stanley.mountain/
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240806-omapdrm-misc-fixes-v1-3-15d31aea0831@ideasonboard.com
+Reported-by: syzbot+d4e8dc385d9258220c31@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d4e8dc385d9258220c31
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20241105094823.2403806-1-dmantipov@yandex.ru
+[mkl: clean up commit message]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/omapdrm/omap_gem.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ net/can/j1939/transport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-index 38af6195d9593..ed206312ab426 100644
---- a/drivers/gpu/drm/omapdrm/omap_gem.c
-+++ b/drivers/gpu/drm/omapdrm/omap_gem.c
-@@ -1303,8 +1303,6 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 319f47df33300..95f7a7e65a73f 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1505,7 +1505,7 @@ static struct j1939_session *j1939_session_new(struct j1939_priv *priv,
+ 	session->state = J1939_SESSION_NEW;
  
- 	omap_obj = to_omap_bo(obj);
+ 	skb_queue_head_init(&session->skb_queue);
+-	skb_queue_tail(&session->skb_queue, skb);
++	skb_queue_tail(&session->skb_queue, skb_get(skb));
  
--	mutex_lock(&omap_obj->lock);
--
- 	omap_obj->sgt = sgt;
- 
- 	if (sgt->orig_nents == 1) {
-@@ -1319,21 +1317,17 @@ struct drm_gem_object *omap_gem_new_dmabuf(struct drm_device *dev, size_t size,
- 		pages = kcalloc(npages, sizeof(*pages), GFP_KERNEL);
- 		if (!pages) {
- 			omap_gem_free_object(obj);
--			obj = ERR_PTR(-ENOMEM);
--			goto done;
-+			return ERR_PTR(-ENOMEM);
- 		}
- 
- 		omap_obj->pages = pages;
- 		ret = drm_prime_sg_to_page_array(sgt, pages, npages);
- 		if (ret) {
- 			omap_gem_free_object(obj);
--			obj = ERR_PTR(-ENOMEM);
--			goto done;
-+			return ERR_PTR(-ENOMEM);
- 		}
- 	}
- 
--done:
--	mutex_unlock(&omap_obj->lock);
- 	return obj;
- }
- 
+ 	skcb = j1939_skb_to_cb(skb);
+ 	memcpy(&session->skcb, skcb, sizeof(session->skcb));
 -- 
 2.43.0
 
