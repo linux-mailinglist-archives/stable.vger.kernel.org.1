@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4199EF523
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16C339EF536
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:14:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB4B5288221
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:13:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A48B175547
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814151487CD;
-	Thu, 12 Dec 2024 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEA92253E4;
+	Thu, 12 Dec 2024 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoEIbBuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7IahncE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF40222D4E;
-	Thu, 12 Dec 2024 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386412210E1;
+	Thu, 12 Dec 2024 16:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023582; cv=none; b=DKVHAijSMWcMghfp556i8orI1jI1x2HxApul/ltVWlxkQ6YjH46TwEWOVsM3y/66e00CczqHXj0m0+fMyVAjfSJM9HeptM4bEX+J4oA0ihUj+M/4rn213PgEmbhA38HHhi7Z56k70jy/kLTTiqVatQpcXe0DkyKQXzfifezroGk=
+	t=1734022249; cv=none; b=gEZhZbwQTUwTVe4dtEUB9by6kbnUSaEWYUSDP+T0SWIgYjK0TFhngEwnKybYI4MpLsKErGhE1AZP3LdBAmgNPQDGot5o8zkqWjhIBTo2oFCQ9E8KC329fi/zLUre5KnNGex1uov9/lNFlucyFGYSQIhdWrmbqfjbd4JsybIPLB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023582; c=relaxed/simple;
-	bh=Vwp3OH8nFNJw1xn5nCs5OlT6JvzgNSN67SIcRhePkTk=;
+	s=arc-20240116; t=1734022249; c=relaxed/simple;
+	bh=+jexRusRw4Uk5r0lr9B55GCaFBZvPp1l3jfZvAi6QCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PFbBmeowlGzz8cnUtWUrRphy5QCie6wF51vjRw+89rjlJoW76HrjAelVxpFqI7zpBKYPisiJDL700TreXrt+nu6pAjrJ76Rwyywo9cfxAIP36aL41TFYapRypCf02V/uRS42RyZjeMwNPW0oevwylRUcIrCaEP9rWOFyom72CmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoEIbBuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A12C4CED0;
-	Thu, 12 Dec 2024 17:13:01 +0000 (UTC)
+	 MIME-Version; b=YeJ4M431d2XgVBuDifZOqnPXRJzp0CCSOfZkxq6w3e0gp2J68miyrH6ZxK1heRFEE21aGGlGIqGh9wT1cx+sNOBF+OVpl5lNzR1pSZESkZuVpsOxDg/GDguuxdnA/6b4fE6Zx2pqP9y7pKZpiJM8L+JDGsFjpP2g9HltnwsX+pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7IahncE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CA4C4CECE;
+	Thu, 12 Dec 2024 16:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023582;
-	bh=Vwp3OH8nFNJw1xn5nCs5OlT6JvzgNSN67SIcRhePkTk=;
+	s=korg; t=1734022249;
+	bh=+jexRusRw4Uk5r0lr9B55GCaFBZvPp1l3jfZvAi6QCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PoEIbBuhpcSGjR3dyY0FLO9q2arjUsqnKGs3MeruJcsAEw3ghZplBDetCyfwIHiKg
-	 uJx246B7YJTDKaDDBY3vUUe9qrMeq8ZuwE2gqeadDdZGyomvARpSWxJfNcts40P1pa
-	 5xzIH3w1LwKXzhb4RBufM3fOExzzkkh1j4BsmXAI=
+	b=v7IahncER2xDW8PZHyuApA4tkt7DJetg9+jZMtCdg3nvH4AcMHsAUqQZbY5oTnGXE
+	 jGfxdlO1sgEi1CSP1efByVKArhl6HwUeKaSDBlG7E5f1rPzRxGQnG2VyLJ+SQNCRIK
+	 vmpaPblbfQIvj0fbw+n6VdmJagl8nJdTthS8AJNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baoquan He <bhe@redhat.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	stable@kernel.org
-Subject: [PATCH 5.10 015/459] x86/mm: Fix a kdump kernel failure on SME system when CONFIG_IMA_KEXEC=y
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 158/565] ASoC: fsl_micfil: Drop unnecessary register read
 Date: Thu, 12 Dec 2024 15:55:53 +0100
-Message-ID: <20241212144254.130774620@linuxfoundation.org>
+Message-ID: <20241212144317.723640966@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baoquan He <bhe@redhat.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 8d9ffb2fe65a6c4ef114e8d4f947958a12751bbe upstream.
+[ Upstream commit c808e277bcdfce37aed80a443be305ac1aec1623 ]
 
-The kdump kernel is broken on SME systems with CONFIG_IMA_KEXEC=y enabled.
-Debugging traced the issue back to
+in get_pdm_clk() REG_MICFIL_CTRL2 is read twice. Drop second read.
 
-  b69a2afd5afc ("x86/kexec: Carry forward IMA measurement log on kexec").
-
-Testing was previously not conducted on SME systems with CONFIG_IMA_KEXEC
-enabled, which led to the oversight, with the following incarnation:
-
-...
-  ima: No TPM chip found, activating TPM-bypass!
-  Loading compiled-in module X.509 certificates
-  Loaded X.509 cert 'Build time autogenerated kernel key: 18ae0bc7e79b64700122bb1d6a904b070fef2656'
-  ima: Allocated hash algorithm: sha256
-  Oops: general protection fault, probably for non-canonical address 0xcfacfdfe6660003e: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.11.0-rc2+ #14
-  Hardware name: Dell Inc. PowerEdge R7425/02MJ3T, BIOS 1.20.0 05/03/2023
-  RIP: 0010:ima_restore_measurement_list
-  Call Trace:
-   <TASK>
-   ? show_trace_log_lvl
-   ? show_trace_log_lvl
-   ? ima_load_kexec_buffer
-   ? __die_body.cold
-   ? die_addr
-   ? exc_general_protection
-   ? asm_exc_general_protection
-   ? ima_restore_measurement_list
-   ? vprintk_emit
-   ? ima_load_kexec_buffer
-   ima_load_kexec_buffer
-   ima_init
-   ? __pfx_init_ima
-   init_ima
-   ? __pfx_init_ima
-   do_one_initcall
-   do_initcalls
-   ? __pfx_kernel_init
-   kernel_init_freeable
-   kernel_init
-   ret_from_fork
-   ? __pfx_kernel_init
-   ret_from_fork_asm
-   </TASK>
-  Modules linked in:
-  ---[ end trace 0000000000000000 ]---
-  ...
-  Kernel panic - not syncing: Fatal exception
-  Kernel Offset: disabled
-  Rebooting in 10 seconds..
-
-Adding debug printks showed that the stored addr and size of ima_kexec buffer
-are not decrypted correctly like:
-
-  ima: ima_load_kexec_buffer, buffer:0xcfacfdfe6660003e, size:0xe48066052d5df359
-
-Three types of setup_data info
-
-  — SETUP_EFI,
-  - SETUP_IMA, and
-  - SETUP_RNG_SEED
-
-are passed to the kexec/kdump kernel. Only the ima_kexec buffer
-experienced incorrect decryption. Debugging identified a bug in
-early_memremap_is_setup_data(), where an incorrect range calculation
-occurred due to the len variable in struct setup_data ended up only
-representing the length of the data field, excluding the struct's size,
-and thus leading to miscalculation.
-
-Address a similar issue in memremap_is_setup_data() while at it.
-
-  [ bp: Heavily massage. ]
-
-Fixes: b3c72fc9a78e ("x86/boot: Introduce setup_indirect")
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240911081615.262202-3-bhe@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://lore.kernel.org/r/20220414162249.3934543-2-s.hauer@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 06df673d2023 ("ASoC: fsl_micfil: fix regmap_write_bits usage")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/ioremap.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_micfil.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -660,7 +660,8 @@ static bool memremap_is_setup_data(resou
- 		paddr_next = data->next;
- 		len = data->len;
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index acc820da46ebf..36e422f6d4622 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -118,8 +118,6 @@ static inline int get_pdm_clk(struct fsl_micfil *micfil,
+ 	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
+ 	osr = 16 - ((ctrl2_reg & MICFIL_CTRL2_CICOSR_MASK)
+ 		    >> MICFIL_CTRL2_CICOSR_SHIFT);
+-
+-	regmap_read(micfil->regmap, REG_MICFIL_CTRL2, &ctrl2_reg);
+ 	qsel = ctrl2_reg & MICFIL_CTRL2_QSEL_MASK;
  
--		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
-+		if ((phys_addr > paddr) &&
-+		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
- 			memunmap(data);
- 			return true;
- 		}
-@@ -722,7 +723,8 @@ static bool __init early_memremap_is_set
- 		paddr_next = data->next;
- 		len = data->len;
- 
--		if ((phys_addr > paddr) && (phys_addr < (paddr + len))) {
-+		if ((phys_addr > paddr) &&
-+		    (phys_addr < (paddr + sizeof(struct setup_data) + len))) {
- 			early_memunmap(data, sizeof(*data));
- 			return true;
- 		}
+ 	switch (qsel) {
+-- 
+2.43.0
+
 
 
 
