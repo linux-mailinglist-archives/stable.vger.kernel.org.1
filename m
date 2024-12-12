@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0239C9EF4D7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:11:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6DBC9EF8F6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CEA928ECBB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:11:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A64E1289D20
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C139223E65;
-	Thu, 12 Dec 2024 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CD72253F9;
+	Thu, 12 Dec 2024 17:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6evQ3IC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6xDp3x1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1993022333E;
-	Thu, 12 Dec 2024 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116862236F0;
+	Thu, 12 Dec 2024 17:44:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023353; cv=none; b=QKfSdlE1t4C/bmIR+6JCQh+Vki4HANRPYJCNGLc+apppvGjJWMlZG04bdxC5EbnU9BNI9hItbgA9XnJSWIHyPGog8MSgibgfyzDo+9KImLxkKn5cyHhi30zD4nRSuAZnAE7uqCPV4guXPIjaOq81gr7UFS1KTe1e0tVRTK09syc=
+	t=1734025477; cv=none; b=QpKQuXPrIX0rVU28y4+niXFIBlt+d+dCOb7xAr2L6YKS+tkGlTJ5mg+G/rND42xDEzsxGw/5tJqzqYb5P3raK7BQ6P+pZVLyNg3MNBsj4hlFjrAMvRPxRi3NrKbvTgYbYX+xt19iCTFFmqU/rYvp+ox5wWguTmK6HUNGM7MVdK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023353; c=relaxed/simple;
-	bh=SPjHnO4De2tZOPS/e/IKcnhlZ6YyzrQUqgIICWl+sNA=;
+	s=arc-20240116; t=1734025477; c=relaxed/simple;
+	bh=VhR9US1kWbwC2JREwjwGV6wXhN4NFoIrzhVFZly66DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iw+PAl9/dYnO9dzyDVIZ6QPPUIuzlKXJcmdf5Vo7UbMOKoxnJww20pB0RSe47Bx+r44x2Aafh+bTiw7guT85dGPr3iSxEUaGDPkiW0mD9aJKquIjjkdfvr56O5O02jrb4HiPDf5ByAxDa7syXkA2VDZW0q2VgalaXNwQFiCJGf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6evQ3IC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BC2C4CECE;
-	Thu, 12 Dec 2024 17:09:12 +0000 (UTC)
+	 MIME-Version; b=cYieWzr5sOv/CV/TV21SqWv4KTHhSDYKJxKcMcw3lqq9/n9eYrOkca9SCCfeu9dMAE9Omg/0g3HFnA4sfSiAtEj9L48yRPImlO75zYerc0dta/TSOgkjWZToadivhw6DbmlY+fbkyVQfw+z/x+8PKSJloJ5DpIjJlUEozPVNO8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6xDp3x1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474F0C4CECE;
+	Thu, 12 Dec 2024 17:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023353;
-	bh=SPjHnO4De2tZOPS/e/IKcnhlZ6YyzrQUqgIICWl+sNA=;
+	s=korg; t=1734025476;
+	bh=VhR9US1kWbwC2JREwjwGV6wXhN4NFoIrzhVFZly66DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6evQ3ICdLHs5etGv/lOLpm55PqW1h89np2Iju+M+Tyz7j4jCQxp17je9bO+QSoeG
-	 eHZiRWiOa42l5eqL8rksb5rDNeplhrAJB1Ns1HkJPeF9uk+5H9S7+1CXcNENAjTTPL
-	 YNLnRaEcEj2oDT80jL1AsYE5WzTRiu8cC+jUhKSI=
+	b=e6xDp3x1myFd0Hz5S9h372TonP1OtAUhbX94LOWbpCPtxp2+pXjjaIKHx0k6JIclb
+	 +mWbib+QMtYaSu0B9hZ0b4FlJVfeGkyKysNTqoJ2ULFj5Q4aAfPEQDDr9+/3nJhaPH
+	 GNWAvqsbPXDOy/BoBv3V+76ddmFRDry35GdfGS/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert van Bolhuis <nvbolhuis@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Tiwei Bie <tiwei.btw@antgroup.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 506/565] wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
+Subject: [PATCH 5.4 183/321] um: Always dump trace for specified task in show_stack
 Date: Thu, 12 Dec 2024 16:01:41 +0100
-Message-ID: <20241212144331.771772156@linuxfoundation.org>
+Message-ID: <20241212144237.217467831@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+From: Tiwei Bie <tiwei.btw@antgroup.com>
 
-[ Upstream commit 857282b819cbaa0675aaab1e7542e2c0579f52d7 ]
+[ Upstream commit 0f659ff362eac69777c4c191b7e5ccb19d76c67d ]
 
-This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
-when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
-are sent from the pkt queue.
+Currently, show_stack() always dumps the trace of the current task.
+However, it should dump the trace of the specified task if one is
+provided. Otherwise, things like running "echo t > sysrq-trigger"
+won't work as expected.
 
-The problem is the number of entries in the pre-allocated sgtable, it is
-nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
-Given the default [rt]xglom_size=32 it's actually 35 which is too small.
-Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
-is added for each original SKB if tailroom isn't enough to hold tail_pad.
-At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
-in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
-NULL and this causes the oops.
-
-The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
-the worst-case.
-Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
-additional bytes of memory.
-
-Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241107132903.13513-1-nvbolhuis@gmail.com
+Fixes: 970e51feaddb ("um: Add support for CONFIG_STACKTRACE")
+Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+Link: https://patch.msgid.link/20241106103933.1132365-1-tiwei.btw@antgroup.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
+ arch/um/kernel/sysrq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-index ac02244a6fdf1..16c46845566ef 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-@@ -770,7 +770,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
+diff --git a/arch/um/kernel/sysrq.c b/arch/um/kernel/sysrq.c
+index 47f20304af26a..c4667a94eefa3 100644
+--- a/arch/um/kernel/sysrq.c
++++ b/arch/um/kernel/sysrq.c
+@@ -52,7 +52,7 @@ void show_stack_loglvl(struct task_struct *task, unsigned long *stack,
+ 	}
  
- 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
- 		      sdiodev->settings->bus.sdio.txglomsz);
--	nents += (nents >> 4) + 1;
-+	nents *= 2;
+ 	printk("%sCall Trace:\n", loglvl);
+-	dump_trace(current, &stackops, (void *)loglvl);
++	dump_trace(task ?: current, &stackops, (void *)loglvl);
+ }
  
- 	WARN_ON(nents > sdiodev->max_segment_count);
- 
+ void show_stack(struct task_struct *task, unsigned long *stack)
 -- 
 2.43.0
 
