@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-102970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F2E9EF44C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CAB39EF90A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:47:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 211842912ED
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50081177445
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A006F205501;
-	Thu, 12 Dec 2024 17:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6DE2210EA;
+	Thu, 12 Dec 2024 17:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMuPVOce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9q5WaEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1E453365;
-	Thu, 12 Dec 2024 17:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD1D6F2FE;
+	Thu, 12 Dec 2024 17:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023146; cv=none; b=DAWzZU6nRp5c8CeVaX6u0msBfxp4iIwAgBxwjAoxqyk01031Eu6B7XYEKU3Z8FXZl7x1haaNPaUcs++GDKD/FgLCx+QHKvhz7IPZZM6ZesFBpR9I+OlthPoWji38sVmIxmGMoAmltwtyxbHnaR67ITHnkKgl3UFH7QjZuyb4Oas=
+	t=1734025363; cv=none; b=PWKMjwBb11J4MrNvQXMiIeBWExFEi7b6JOtTrswKzLFngfH8dqCbaLxK8n8lylv8+btmQZR6roP5q/LRzDLfQDwHSyAoaS1v61D6Q7Omz7VuRaM7dFX++r3uomHEQKVop3fvNBNCMDS1G+sICb9iI8592pDZiBrUZRm8kuwSOBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023146; c=relaxed/simple;
-	bh=pTFRLH13LsArmnnBjBkPPNXdLtAARccbHyN38oAv2AM=;
+	s=arc-20240116; t=1734025363; c=relaxed/simple;
+	bh=2yrqFAHmR5ADfFhpjc73IVMjazkT07/zF0cVb67vR1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEiY20dUaJKblo9iwrp3n4DO9iSi1Hf/qdNU+DkWaNHAHZmxwNVfbTQ1uJNgHdwF2F/KCQrs6D7O7UkSWnuOXV4bmkAf46Uzdso26gPpWmgJ6YGq/jTRBQ6Xjwig2+DqNEsMBgmixG/nw7I028J9wXCgfdBaaYGxygqI7b1RamY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMuPVOce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC499C4CECE;
-	Thu, 12 Dec 2024 17:05:45 +0000 (UTC)
+	 MIME-Version; b=Ehh7ZeXdKogBvbDn9+0JsGRtS0RXpIoamk9Vn6CTugI22jkJUPDBDRX71ySRJBmxPtBR22HCfgTQmUwdyzDDfWcCNKtN3ynnJEH3dRr69UNuXswvs6k8yLQ8CHY6hKRnWamwIWN1yjUmg97x99RXS2jkzvw19qhNNUchTTrfq44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9q5WaEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54012C4CED3;
+	Thu, 12 Dec 2024 17:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023146;
-	bh=pTFRLH13LsArmnnBjBkPPNXdLtAARccbHyN38oAv2AM=;
+	s=korg; t=1734025363;
+	bh=2yrqFAHmR5ADfFhpjc73IVMjazkT07/zF0cVb67vR1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMuPVOceGtxqmt82ng2vanL+TL8CcDSNLLnTCdMClQ17MJu3r6db89Uw7Zy/WsjQe
-	 e7hpifyzkMzF92SRpMMosbH7dCrf1xid1M/mHRHrFJqJPGAh+JVD5XArMxx1vIKQE0
-	 YGfcltWXNsSyPv107rNF3/yw7WtfZAJg+ICLR+CQ=
+	b=o9q5WaEG+ochLOt7FiHShHUjrBRVlJSNnOsje3ODHcMTQKvl5a1rbL0VatbJAnFAZ
+	 oPEnGcxYgen6LVDoln5/GpVjvOpxHf/r1TKmmV6byW5KIqp7eIPucjOuAM/GfWv0+9
+	 OeCQywokGgN7rza/bkUWLG4aDH/EJNsCdMu5ZkHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Greg Ungerer <gerg@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonard Crestez <cdleonard@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	linux-m68k@lists.linux-m68k.org,
+	linux-kernel@vger.kernel.org,
+	Antonio Quartulli <antonio@mandelbit.com>,
+	Greg Ungerer <gerg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 438/565] ALSA: usb-audio: Notify xrun for low-latency mode
+Subject: [PATCH 5.4 115/321] m68k: coldfire/device.c: only build FEC when HW macros are defined
 Date: Thu, 12 Dec 2024 16:00:33 +0100
-Message-ID: <20241212144328.997417839@linuxfoundation.org>
+Message-ID: <20241212144234.525717733@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +66,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Antonio Quartulli <antonio@mandelbit.com>
 
-[ Upstream commit 4f9d674377d090e38d93360bd4df21b67534d622 ]
+[ Upstream commit 63a24cf8cc330e5a68ebd2e20ae200096974c475 ]
 
-The low-latency mode of USB-audio driver uses a similar approach like
-the implicit feedback mode but it has an explicit queuing at the
-trigger start time.  The difference is, however, that no packet will
-be handled any longer after all queued packets are handled but no
-enough data is fed.  In the case of implicit feedback mode, the
-capture-side packet handling triggers the re-queuing, and this checks
-the XRUN.  OTOH, in the low-latency mode, it just stops without XRUN
-notification unless any new action is taken from user-space via ack
-callback.  For example, when you stop the stream in aplay, no XRUN is
-reported.
+When CONFIG_FEC is set (due to COMPILE_TEST) along with
+CONFIG_M54xx, coldfire/device.c has compile errors due to
+missing MCFEC_* and MCF_IRQ_FEC_* symbols.
 
-This patch adds the XRUN check at the packet complete callback in the
-case all pending URBs are exhausted.  Strictly speaking, this state
-doesn't match really with XRUN; in theory the application may queue
-immediately after this happens.  But such behavior is only for
-1-period configuration, which the USB-audio driver doesn't support.
-So we may conclude that this situation leads certainly to XRUN.
+Make the whole FEC blocks dependent on having the HW macros
+defined, rather than on CONFIG_FEC itself.
 
-A caveat is that the XRUN should be triggered only for the PCM RUNNING
-state, and not during DRAINING.  This additional state check is put in
-notify_xrun(), too.
+This fix is very similar to commit e6e1e7b19fa1 ("m68k: coldfire/device.c: only build for MCF_EDMA when h/w macros are defined")
 
-Fixes: d5f871f89e21 ("ALSA: usb-audio: Improved lowlatency playback support")
-Reported-by: Leonard Crestez <cdleonard@gmail.com>
-Link: https://lore.kernel.org/25d5b0d8-4efd-4630-9d33-7a9e3fa9dc2b@gmail.com
-Link: https://patch.msgid.link/20241128080446.1181-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: b7ce7f0d0efc ("m68knommu: merge common ColdFire FEC platform setup code")
+To: Greg Ungerer <gerg@linux-m68k.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Antonio Quartulli <antonio@mandelbit.com>
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/endpoint.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/m68k/coldfire/device.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/usb/endpoint.c b/sound/usb/endpoint.c
-index 8188113ca83f2..6b5480b325518 100644
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -402,10 +402,15 @@ static int prepare_inbound_urb(struct snd_usb_endpoint *ep,
- static void notify_xrun(struct snd_usb_endpoint *ep)
- {
- 	struct snd_usb_substream *data_subs;
-+	struct snd_pcm_substream *psubs;
+diff --git a/arch/m68k/coldfire/device.c b/arch/m68k/coldfire/device.c
+index b4103b6bfdeb6..6b676965495fa 100644
+--- a/arch/m68k/coldfire/device.c
++++ b/arch/m68k/coldfire/device.c
+@@ -92,7 +92,7 @@ static struct platform_device mcf_uart = {
+ 	.dev.platform_data	= mcf_uart_platform_data,
+ };
  
- 	data_subs = READ_ONCE(ep->data_subs);
--	if (data_subs && data_subs->pcm_substream)
--		snd_pcm_stop_xrun(data_subs->pcm_substream);
-+	if (!data_subs)
-+		return;
-+	psubs = data_subs->pcm_substream;
-+	if (psubs && psubs->runtime &&
-+	    psubs->runtime->state == SNDRV_PCM_STATE_RUNNING)
-+		snd_pcm_stop_xrun(psubs);
- }
+-#if IS_ENABLED(CONFIG_FEC)
++#ifdef MCFFEC_BASE0
  
- static struct snd_usb_packet_info *
-@@ -556,7 +561,10 @@ static void snd_complete_urb(struct urb *urb)
- 			push_back_to_ready_list(ep, ctx);
- 			clear_bit(ctx->index, &ep->active_mask);
- 			snd_usb_queue_pending_output_urbs(ep, false);
--			atomic_dec(&ep->submitted_urbs); /* decrement at last */
-+			/* decrement at last, and check xrun */
-+			if (atomic_dec_and_test(&ep->submitted_urbs) &&
-+			    !snd_usb_endpoint_implicit_feedback_sink(ep))
-+				notify_xrun(ep);
- 			return;
- 		}
+ #ifdef CONFIG_M5441x
+ #define FEC_NAME	"enet-fec"
+@@ -144,6 +144,7 @@ static struct platform_device mcf_fec0 = {
+ 		.platform_data		= FEC_PDATA,
+ 	}
+ };
++#endif /* MCFFEC_BASE0 */
  
+ #ifdef MCFFEC_BASE1
+ static struct resource mcf_fec1_resources[] = {
+@@ -181,7 +182,6 @@ static struct platform_device mcf_fec1 = {
+ 	}
+ };
+ #endif /* MCFFEC_BASE1 */
+-#endif /* CONFIG_FEC */
+ 
+ #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
+ /*
+@@ -556,12 +556,12 @@ static struct platform_device mcf_edma = {
+ 
+ static struct platform_device *mcf_devices[] __initdata = {
+ 	&mcf_uart,
+-#if IS_ENABLED(CONFIG_FEC)
++#ifdef MCFFEC_BASE0
+ 	&mcf_fec0,
++#endif
+ #ifdef MCFFEC_BASE1
+ 	&mcf_fec1,
+ #endif
+-#endif
+ #if IS_ENABLED(CONFIG_SPI_COLDFIRE_QSPI)
+ 	&mcf_qspi,
+ #endif
 -- 
 2.43.0
 
