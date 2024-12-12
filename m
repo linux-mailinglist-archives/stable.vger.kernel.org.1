@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-103853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E4B9EF9F6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266DB9EF9F0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D6B9179F36
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 932B51898E7A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919F52210DE;
-	Thu, 12 Dec 2024 17:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C8A222D68;
+	Thu, 12 Dec 2024 17:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlYrPww4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlNVZQrO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCE0209695;
-	Thu, 12 Dec 2024 17:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD341209695;
+	Thu, 12 Dec 2024 17:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025798; cv=none; b=B9Tgqh0BJLGXRFrb1seMLPYsDcy7sBGPxUYV2dT6cX48H18O4iP3C6gM24HqjbK5Hg1jCxBDShmrHqYO6/a3wHk0fh6woSONRykiN5Y5QBM38FWWIoGnrCcH5+c1GCHlYFQnSZm7/VMy4VC8VwaUDggXfgDVPUw5qM4e0NNDfus=
+	t=1734025804; cv=none; b=jVu8yaBhxPwmaTIz4FucLma+tKZCaKHTH+6T0jzyBNGjST0DzLI6fWo1Bab1VM2ZZ72sH74ycOo//04FuNE7qmST57A/hffV7g1VtdclHDs7l08FY13Yva+e2FtYDyqwsOO3EErKvrSfI5hvcd60FmlujB+IVEKTq9xyJkjEsVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025798; c=relaxed/simple;
-	bh=G3EeNrpolzR8vRMLL+m4x6Z3yaRs4rhYyVh/+ZG0aB0=;
+	s=arc-20240116; t=1734025804; c=relaxed/simple;
+	bh=2EWKsV7sdQNV5OMA8kRdvw/HGA6/lwVCu+6yL+bgkgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GK1UpqX7Gmg+xUU1lWFTe3MIc5WhIFMVefcbl7eDeuaWlEDcPQW8eBzmVLrW06rMgm5zTTCicnvTfLHYehtsWioWB6m9Tjwfg1G6m6NSrliAMpFGlYW1NaAA36Q9Xi7dg6BAxzuKXr79UneraiGx7RrkjAaUrCmPBKPZT01slLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlYrPww4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27615C4CECE;
-	Thu, 12 Dec 2024 17:49:53 +0000 (UTC)
+	 MIME-Version; b=gCFVZjv8mv20LhPMLrhD/hWsczi67jLDA0U3nk4qunA3ejFuqMFx/DFdr7Kqlfz5k3pVIghpR/trDraF3xyPsahxugiKzJNyUBA2/X7EeZd10ciub0CS3XfiWFwkFtRPhRr3Z4jONmJrbVQlK2MPyVvjTWK8tEPgs/5rRpZkSUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlNVZQrO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30093C4CECE;
+	Thu, 12 Dec 2024 17:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025798;
-	bh=G3EeNrpolzR8vRMLL+m4x6Z3yaRs4rhYyVh/+ZG0aB0=;
+	s=korg; t=1734025804;
+	bh=2EWKsV7sdQNV5OMA8kRdvw/HGA6/lwVCu+6yL+bgkgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlYrPww42qR76EnMSvORpTM0+VuHK5/AsGGtduiROCLDHCZLh5ZBGpw5tZa3ohVGV
-	 IFYRb5xwGMUAqwBot2CxNZdiL0ur4uxW/qGIGXU7TAMftRG9PKAPK13uAtVferGopT
-	 IBgsdRI1OSqac+nTIByCsip3j1o/9jf2rqjl8bTA=
+	b=jlNVZQrOQ4HxndvDQz9XWO9NSxMsF6UMjk8mfV575E8z/gSfiYe1KYGfrBi2I+LCN
+	 19ete2jPbZ4qM3E0p7Laz/kzT34ht1GY8DDI50DHaDeHC1ulLo2G6xJUqlpWWIE1+k
+	 uLqc3NESf8QzpJpa00E9nO7CM29F4dMFBQhUgyA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 291/321] rocker: fix link status detection in rocker_carrier_init()
-Date: Thu, 12 Dec 2024 16:03:29 +0100
-Message-ID: <20241212144241.476309588@linuxfoundation.org>
+Subject: [PATCH 5.4 292/321] net/neighbor: clear error in case strict check is not set
+Date: Thu, 12 Dec 2024 16:03:30 +0100
+Message-ID: <20241212144241.516774361@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -66,37 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit e64285ff41bb7a934bd815bd38f31119be62ac37 ]
+[ Upstream commit 0de6a472c3b38432b2f184bd64eb70d9ea36d107 ]
 
-Since '1 << rocker_port->pport' may be undefined for port >= 32,
-cast the left operand to 'unsigned long long' like it's done in
-'rocker_port_set_enable()' above. Compile tested only.
+Commit 51183d233b5a ("net/neighbor: Update neigh_dump_info for strict
+data checking") added strict checking. The err variable is not cleared,
+so if we find no table to dump we will return the validation error even
+if user did not want strict checking.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+I think the only way to hit this is to send an buggy request, and ask
+for a table which doesn't exist, so there's no point treating this
+as a real fix. I only noticed it because a syzbot repro depended on it
+to trigger another bug.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20241114151946.519047-1-dmantipov@yandex.ru
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20241115003221.733593-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/rocker/rocker_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/neighbour.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/rocker/rocker_main.c b/drivers/net/ethernet/rocker/rocker_main.c
-index 5abb3f9684ffd..6bee5055559fe 100644
---- a/drivers/net/ethernet/rocker/rocker_main.c
-+++ b/drivers/net/ethernet/rocker/rocker_main.c
-@@ -2542,7 +2542,7 @@ static void rocker_carrier_init(const struct rocker_port *rocker_port)
- 	u64 link_status = rocker_read64(rocker, PORT_PHYS_LINK_STATUS);
- 	bool link_up;
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index e571007d083cc..4dfe17f1a76aa 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -2734,6 +2734,7 @@ static int neigh_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
+ 	err = neigh_valid_dump_req(nlh, cb->strict_check, &filter, cb->extack);
+ 	if (err < 0 && cb->strict_check)
+ 		return err;
++	err = 0;
  
--	link_up = link_status & (1 << rocker_port->pport);
-+	link_up = link_status & (1ULL << rocker_port->pport);
- 	if (link_up)
- 		netif_carrier_on(rocker_port->dev);
- 	else
+ 	s_t = cb->args[0];
+ 
 -- 
 2.43.0
 
