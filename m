@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-101259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1739D9EEB94
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:26:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B0439EF24E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF27E188C322
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:22:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC38718974B7
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF0F209693;
-	Thu, 12 Dec 2024 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA79B2054EF;
+	Thu, 12 Dec 2024 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5Ck6CAY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdg9GMSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771EA2AF0E;
-	Thu, 12 Dec 2024 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656F022A803;
+	Thu, 12 Dec 2024 16:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016926; cv=none; b=EizZiTTaoSK2S42z0U0MLmQHuVoAZm7PwqW5tMJjDM6SBz3um9XjH48nSMw7OYydziDOrSrNsCFVnp9AocKDJCtxW+wg+DYt20n6sygF3ZlZi302zS0UapSlR9a4JpmJ05FtyiACeWTbrTvukSxQniR+sduOvupKKZV7x0IqP6I=
+	t=1734020782; cv=none; b=QjZxvT88ArUd0XADrhtQRxMAF5bnqcD9+GSjoU3XgtV8C3ueKXzGXCWCqIqEj7OXV1D3z42Jt+HX+XpVnLYedclHfRYr6h0CMRrO0+rfXQ9ZVxkSUgx9Nt9wY9R+WWm+ProFGGu/mbsJnVM1YjHXe/XRr20TB6Fpk28ledwakv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016926; c=relaxed/simple;
-	bh=0wEjx7hUAIJ/QxYG/XGzWao8N9JK6P69+b+fj6kxnLg=;
+	s=arc-20240116; t=1734020782; c=relaxed/simple;
+	bh=QSvtpMEiATseWQOoa/p1//zeh74G0UPozH+2yIvtVj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oyh58qFUgxuM77AkUx4XKHs4dRoAWNx3gAm7FKcAuxdyRbX2vOV942h5igEmTuVMukQTufrCX8RpIUk92IwEJZ1LTUBG5yXHISJS2xLQS4H3yxpB1DenHDhcLKqqw7706w32j9zq6ibZHB9wamu73C5dxV0jKZx6Cixm7q4jQ6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5Ck6CAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A537CC4CECE;
-	Thu, 12 Dec 2024 15:22:05 +0000 (UTC)
+	 MIME-Version; b=McZUWR2+xiHZOK+HPQOU4Y2ZDAYakHtCU+O1VHnckUrKvc5sVpew/g+kG5gahmduqHGF/OlCJCLYcjRwGqUVhGaQpZOSP8SR9ASmwZvrc9yRk6usG94upKD3OwlMpJxPwTuiGrZAP9Roi14lLyS14Xu66e3pZE7VLoaOkgoC2OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdg9GMSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5EFC4CECE;
+	Thu, 12 Dec 2024 16:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016926;
-	bh=0wEjx7hUAIJ/QxYG/XGzWao8N9JK6P69+b+fj6kxnLg=;
+	s=korg; t=1734020782;
+	bh=QSvtpMEiATseWQOoa/p1//zeh74G0UPozH+2yIvtVj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5Ck6CAYRPTkesIKHww6qb6wny05C1g1hhIAdxLA3PtCMwJARm1PTAq/5QRZKBscy
-	 AtG9MlBeBHw9mAMcs9+HPkcfNiOrLDGP8/fY7K/oftZDfjdU7wPy7X66m8v79kv8bT
-	 Wniy8kveBWc5FJEUEIzGqXHNnZNRLxOOEGuV3cjQ=
+	b=fdg9GMSi38kspiDFUXs6cvuZMw58MSFYv8R1j9WuhduWae7yNIQLBqlsSfnt3hFqb
+	 IMjsH/Nj2egQIxfa94GzhyGGfD3h3A90vWZzS4seNmxFMGsskOW9UtLxOiBDxIsEhH
+	 dU0KtMsgokCjzj5NjcVaHqKetusu24BjRxhKzd+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 335/466] bpf: Call free_htab_elem() after htab_unlock_bucket()
+Subject: [PATCH 6.1 559/772] powerpc/vdso: Remove an unsupported flag from vgettimeofday-32.o with clang
 Date: Thu, 12 Dec 2024 15:58:24 +0100
-Message-ID: <20241212144320.021558348@linuxfoundation.org>
+Message-ID: <20241212144413.062784249@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,246 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit b9e9ed90b10c82a4e9d4d70a2890f06bfcdd3b78 ]
+[ Upstream commit 05e05bfc92d196669a3d087fc34d3998b6ddb758 ]
 
-For htab of maps, when the map is removed from the htab, it may hold the
-last reference of the map. bpf_map_fd_put_ptr() will invoke
-bpf_map_free_id() to free the id of the removed map element. However,
-bpf_map_fd_put_ptr() is invoked while holding a bucket lock
-(raw_spin_lock_t), and bpf_map_free_id() attempts to acquire map_idr_lock
-(spinlock_t), triggering the following lockdep warning:
+When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
+warns:
 
-  =============================
-  [ BUG: Invalid wait context ]
-  6.11.0-rc4+ #49 Not tainted
-  -----------------------------
-  test_maps/4881 is trying to lock:
-  ffffffff84884578 (map_idr_lock){+...}-{3:3}, at: bpf_map_free_id.part.0+0x21/0x70
-  other info that might help us debug this:
-  context-{5:5}
-  2 locks held by test_maps/4881:
-   #0: ffffffff846caf60 (rcu_read_lock){....}-{1:3}, at: bpf_fd_htab_map_update_elem+0xf9/0x270
-   #1: ffff888149ced148 (&htab->lockdep_key#2){....}-{2:2}, at: htab_map_update_elem+0x178/0xa80
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 4881 Comm: test_maps Not tainted 6.11.0-rc4+ #49
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), ...
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x6e/0xb0
-   dump_stack+0x10/0x20
-   __lock_acquire+0x73e/0x36c0
-   lock_acquire+0x182/0x450
-   _raw_spin_lock_irqsave+0x43/0x70
-   bpf_map_free_id.part.0+0x21/0x70
-   bpf_map_put+0xcf/0x110
-   bpf_map_fd_put_ptr+0x9a/0xb0
-   free_htab_elem+0x69/0xe0
-   htab_map_update_elem+0x50f/0xa80
-   bpf_fd_htab_map_update_elem+0x131/0x270
-   htab_map_update_elem+0x50f/0xa80
-   bpf_fd_htab_map_update_elem+0x131/0x270
-   bpf_map_update_value+0x266/0x380
-   __sys_bpf+0x21bb/0x36b0
-   __x64_sys_bpf+0x45/0x60
-   x64_sys_call+0x1b2a/0x20d0
-   do_syscall_64+0x5d/0x100
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  clang-16: error: argument unused during compilation: '-fno-stack-clash-protection' [-Werror,-Wunused-command-line-argument]
 
-One way to fix the lockdep warning is using raw_spinlock_t for
-map_idr_lock as well. However, bpf_map_alloc_id() invokes
-idr_alloc_cyclic() after acquiring map_idr_lock, it will trigger a
-similar lockdep warning because the slab's lock (s->cpu_slab->lock) is
-still a spinlock.
+This warning happens because vgettimeofday-32.c gets its base CFLAGS
+from the main kernel, which may contain flags that are only supported on
+a 64-bit target but not a 32-bit one, which is the case here.
+-fstack-clash-protection and its negation are only suppported by the
+64-bit powerpc target but that flag is included in an invocation for a
+32-bit powerpc target, so clang points out that while the flag is one
+that it recognizes, it is not actually used by this compiler job.
 
-Instead of changing map_idr_lock's type, fix the issue by invoking
-htab_put_fd_value() after htab_unlock_bucket(). However, only deferring
-the invocation of htab_put_fd_value() is not enough, because the old map
-pointers in htab of maps can not be saved during batched deletion.
-Therefore, also defer the invocation of free_htab_elem(), so these
-to-be-freed elements could be linked together similar to lru map.
+To eliminate the warning, remove -fno-stack-clash-protection from
+vgettimeofday-32.c's CFLAGS when using clang, as has been done for other
+flags previously.
 
-There are four callers for ->map_fd_put_ptr:
-
-(1) alloc_htab_elem() (through htab_put_fd_value())
-It invokes ->map_fd_put_ptr() under a raw_spinlock_t. The invocation of
-htab_put_fd_value() can not simply move after htab_unlock_bucket(),
-because the old element has already been stashed in htab->extra_elems.
-It may be reused immediately after htab_unlock_bucket() and the
-invocation of htab_put_fd_value() after htab_unlock_bucket() may release
-the newly-added element incorrectly. Therefore, saving the map pointer
-of the old element for htab of maps before unlocking the bucket and
-releasing the map_ptr after unlock. Beside the map pointer in the old
-element, should do the same thing for the special fields in the old
-element as well.
-
-(2) free_htab_elem() (through htab_put_fd_value())
-Its caller includes __htab_map_lookup_and_delete_elem(),
-htab_map_delete_elem() and __htab_map_lookup_and_delete_batch().
-
-For htab_map_delete_elem(), simply invoke free_htab_elem() after
-htab_unlock_bucket(). For __htab_map_lookup_and_delete_batch(), just
-like lru map, linking the to-be-freed element into node_to_free list
-and invoking free_htab_elem() for these element after unlock. It is safe
-to reuse batch_flink as the link for node_to_free, because these
-elements have been removed from the hash llist.
-
-Because htab of maps doesn't support lookup_and_delete operation,
-__htab_map_lookup_and_delete_elem() doesn't have the problem, so kept
-it as is.
-
-(3) fd_htab_map_free()
-It invokes ->map_fd_put_ptr without raw_spinlock_t.
-
-(4) bpf_fd_htab_map_update_elem()
-It invokes ->map_fd_put_ptr without raw_spinlock_t.
-
-After moving free_htab_elem() outside htab bucket lock scope, using
-pcpu_freelist_push() instead of __pcpu_freelist_push() to disable
-the irq before freeing elements, and protecting the invocations of
-bpf_mem_cache_free() with migrate_{disable|enable} pair.
-
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241106063542.357743-2-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: d677ce521334 ("powerpc/vdso: Drop -mstack-protector-guard flags in 32-bit files with clang")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/hashtab.c | 56 ++++++++++++++++++++++++++++++--------------
- 1 file changed, 39 insertions(+), 17 deletions(-)
+ arch/powerpc/kernel/vdso/Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index b14b87463ee04..3ec941a0ea41c 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -896,9 +896,12 @@ static int htab_map_get_next_key(struct bpf_map *map, void *key, void *next_key)
- static void htab_elem_free(struct bpf_htab *htab, struct htab_elem *l)
- {
- 	check_and_free_fields(htab, l);
-+
-+	migrate_disable();
- 	if (htab->map.map_type == BPF_MAP_TYPE_PERCPU_HASH)
- 		bpf_mem_cache_free(&htab->pcpu_ma, l->ptr_to_pptr);
- 	bpf_mem_cache_free(&htab->ma, l);
-+	migrate_enable();
- }
- 
- static void htab_put_fd_value(struct bpf_htab *htab, struct htab_elem *l)
-@@ -948,7 +951,7 @@ static void free_htab_elem(struct bpf_htab *htab, struct htab_elem *l)
- 	if (htab_is_prealloc(htab)) {
- 		bpf_map_dec_elem_count(&htab->map);
- 		check_and_free_fields(htab, l);
--		__pcpu_freelist_push(&htab->freelist, &l->fnode);
-+		pcpu_freelist_push(&htab->freelist, &l->fnode);
- 	} else {
- 		dec_elem_count(htab);
- 		htab_elem_free(htab, l);
-@@ -1018,7 +1021,6 @@ static struct htab_elem *alloc_htab_elem(struct bpf_htab *htab, void *key,
- 			 */
- 			pl_new = this_cpu_ptr(htab->extra_elems);
- 			l_new = *pl_new;
--			htab_put_fd_value(htab, old_elem);
- 			*pl_new = old_elem;
- 		} else {
- 			struct pcpu_freelist_node *l;
-@@ -1105,6 +1107,7 @@ static long htab_map_update_elem(struct bpf_map *map, void *key, void *value,
- 	struct htab_elem *l_new = NULL, *l_old;
- 	struct hlist_nulls_head *head;
- 	unsigned long flags;
-+	void *old_map_ptr;
- 	struct bucket *b;
- 	u32 key_size, hash;
- 	int ret;
-@@ -1183,12 +1186,27 @@ static long htab_map_update_elem(struct bpf_map *map, void *key, void *value,
- 	hlist_nulls_add_head_rcu(&l_new->hash_node, head);
- 	if (l_old) {
- 		hlist_nulls_del_rcu(&l_old->hash_node);
-+
-+		/* l_old has already been stashed in htab->extra_elems, free
-+		 * its special fields before it is available for reuse. Also
-+		 * save the old map pointer in htab of maps before unlock
-+		 * and release it after unlock.
-+		 */
-+		old_map_ptr = NULL;
-+		if (htab_is_prealloc(htab)) {
-+			if (map->ops->map_fd_put_ptr)
-+				old_map_ptr = fd_htab_map_get_ptr(map, l_old);
-+			check_and_free_fields(htab, l_old);
-+		}
-+	}
-+	htab_unlock_bucket(htab, b, hash, flags);
-+	if (l_old) {
-+		if (old_map_ptr)
-+			map->ops->map_fd_put_ptr(map, old_map_ptr, true);
- 		if (!htab_is_prealloc(htab))
- 			free_htab_elem(htab, l_old);
--		else
--			check_and_free_fields(htab, l_old);
- 	}
--	ret = 0;
-+	return 0;
- err:
- 	htab_unlock_bucket(htab, b, hash, flags);
- 	return ret;
-@@ -1432,15 +1450,15 @@ static long htab_map_delete_elem(struct bpf_map *map, void *key)
- 		return ret;
- 
- 	l = lookup_elem_raw(head, hash, key, key_size);
--
--	if (l) {
-+	if (l)
- 		hlist_nulls_del_rcu(&l->hash_node);
--		free_htab_elem(htab, l);
--	} else {
-+	else
- 		ret = -ENOENT;
--	}
- 
- 	htab_unlock_bucket(htab, b, hash, flags);
-+
-+	if (l)
-+		free_htab_elem(htab, l);
- 	return ret;
- }
- 
-@@ -1853,13 +1871,14 @@ __htab_map_lookup_and_delete_batch(struct bpf_map *map,
- 			 * may cause deadlock. See comments in function
- 			 * prealloc_lru_pop(). Let us do bpf_lru_push_free()
- 			 * after releasing the bucket lock.
-+			 *
-+			 * For htab of maps, htab_put_fd_value() in
-+			 * free_htab_elem() may acquire a spinlock with bucket
-+			 * lock being held and it violates the lock rule, so
-+			 * invoke free_htab_elem() after unlock as well.
- 			 */
--			if (is_lru_map) {
--				l->batch_flink = node_to_free;
--				node_to_free = l;
--			} else {
--				free_htab_elem(htab, l);
--			}
-+			l->batch_flink = node_to_free;
-+			node_to_free = l;
- 		}
- 		dst_key += key_size;
- 		dst_val += value_size;
-@@ -1871,7 +1890,10 @@ __htab_map_lookup_and_delete_batch(struct bpf_map *map,
- 	while (node_to_free) {
- 		l = node_to_free;
- 		node_to_free = node_to_free->batch_flink;
--		htab_lru_push_free(htab, l);
-+		if (is_lru_map)
-+			htab_lru_push_free(htab, l);
-+		else
-+			free_htab_elem(htab, l);
- 	}
- 
- next_batch:
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index d4023bceec348..7e69e87fbf744 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -16,6 +16,11 @@ ifneq ($(c-gettimeofday-y),)
+   CFLAGS_vgettimeofday-32.o += -ffreestanding -fasynchronous-unwind-tables
+   CFLAGS_REMOVE_vgettimeofday-32.o = $(CC_FLAGS_FTRACE)
+   CFLAGS_REMOVE_vgettimeofday-32.o += -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
++  # This flag is supported by clang for 64-bit but not 32-bit so it will cause
++  # an unused command line flag warning for this file.
++  ifdef CONFIG_CC_IS_CLANG
++  CFLAGS_REMOVE_vgettimeofday-32.o += -fno-stack-clash-protection
++  endif
+   CFLAGS_vgettimeofday-64.o += -include $(c-gettimeofday-y)
+   CFLAGS_vgettimeofday-64.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+   CFLAGS_vgettimeofday-64.o += $(call cc-option, -fno-stack-protector)
 -- 
 2.43.0
 
