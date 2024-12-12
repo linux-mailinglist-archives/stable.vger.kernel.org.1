@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 887EE9EF0FC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:33:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF169EEA76
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5F4177702
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 239BC16BDCE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F44F229136;
-	Thu, 12 Dec 2024 16:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC16E218EB5;
+	Thu, 12 Dec 2024 15:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="to2q4X9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP66DAgN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C371218592;
-	Thu, 12 Dec 2024 16:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D41218587;
+	Thu, 12 Dec 2024 15:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020059; cv=none; b=KTgDd3zXHoo4fYJLI1HbYh71qKsaHAYaY0LwR/+8hhf/DPl2nAmaCalRNo+OEVWka0aJAR+DagAee8azCX+FaupPHApdyh0ZtaZXH5npiSKTPjEC3s+PQR0D3A90n88be/M9oXJfgUhuFzXIrmn7TKyd1a9NukLngUOr/dmwCV0=
+	t=1734016145; cv=none; b=uqotZfZsBg5yml5ZfgSDHr7Jg9CoDagI2vHab+HPyR1jzsZbJjB32aA+dcPiZkMl5oe2VhEMD6/f+U6I9miEggzVd0+2EvN5Cp3pl2xGR2MZVSTCCT7NC7akLzJr7DnjhyMd5krOwmTFGgvTyZg7mfQl2CuLYqQHfANVwsnDm8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020059; c=relaxed/simple;
-	bh=6xGh4HoOBz0JeA5ktC01p2WQcPkZPgfdqsVyiiS0SnE=;
+	s=arc-20240116; t=1734016145; c=relaxed/simple;
+	bh=OKuHh8HENHJsMxuSSPhOmRA1MFExL0CKdoB1CaU1Dww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HuVOMuPiPD/h+A6KX24tFTibtbZzWnj/93fDYxFTU45lJOusmLeDFfZE9Hmecvr8W15/EPYV4Luj+MOtiYAo4K+/YndQmKmnEqGJCQu1g434Hzid3bfkH0rUunLMZQH4OBO1Y2h+CtF+kkiD/t1dnnVJqzUJl1WUVljV2wuV98c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=to2q4X9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B69C4CED0;
-	Thu, 12 Dec 2024 16:14:18 +0000 (UTC)
+	 MIME-Version; b=CQfx/mDSlnJNzSqy2q4UpugkOy7vBdvA7qcE0PdWgvZXowfTTYV3VMQ73zKeffbhKZJO/OgbL3g18QNeOdE/rCTHTfjekanbBzjd64mj3ktOubY6qjelmjlXuvU2cDUDz22lkRMpiRe834KKqTbMfsUUelQm7myYX5NzaetpOms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP66DAgN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F99DC4CECE;
+	Thu, 12 Dec 2024 15:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020059;
-	bh=6xGh4HoOBz0JeA5ktC01p2WQcPkZPgfdqsVyiiS0SnE=;
+	s=korg; t=1734016144;
+	bh=OKuHh8HENHJsMxuSSPhOmRA1MFExL0CKdoB1CaU1Dww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=to2q4X9QHTPs/rssAe852c924cua5BcgYsQitZlsYG6ruvHaENui0068R50kLhGqo
-	 StfYndn8X6rRKgrJ3JQJNBqEXSvCwEmqzdvpLsfaKZBbDt5aDAqvKmO50xr4J9d/Qd
-	 3gJ08aRj38pAhGRYUT8AQkd832n49MLl4xPOGxuc=
+	b=tP66DAgNNlMogtM5kGcF8dQ7/cex4WVfvqBxdj6lolf1yz9as0/zw4BHRpc4xEJ2F
+	 wJLZFx/Y9IMSvHoA53Pk1csC/nLoXB7AaOt7NAfkTW8An4njN6K6PXCKO7M1wtBZo4
+	 ulAoPMNqk+Nst4J+Qs3G2oxPSrYOqvPhsIeb3/IY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 368/772] crypto: x86/aegis128 - access 32-bit arguments as 32-bit
-Date: Thu, 12 Dec 2024 15:55:13 +0100
-Message-ID: <20241212144405.112193149@linuxfoundation.org>
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 145/466] scsi: qla2xxx: Fix abort in bsg timeout
+Date: Thu, 12 Dec 2024 15:55:14 +0100
+Message-ID: <20241212144312.526031157@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,136 +63,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Quinn Tran <qutran@marvell.com>
 
-commit 3b2f2d22fb424e9bebda4dbf6676cbfc7f9f62cd upstream.
+commit c423263082ee8ccfad59ab33e3d5da5dc004c21e upstream.
 
-Fix the AEGIS assembly code to access 'unsigned int' arguments as 32-bit
-values instead of 64-bit, since the upper bits of the corresponding
-64-bit registers are not guaranteed to be zero.
+Current abort of bsg on timeout prematurely clears the
+outstanding_cmds[]. Abort does not allow FW to return the IOCB/SRB. In
+addition, bsg_job_done() is not called to return the BSG (i.e. leak).
 
-Note: there haven't been any reports of this bug actually causing
-incorrect behavior.  Neither gcc nor clang guarantee zero-extension to
-64 bits, but zero-extension is likely to happen in practice because most
-instructions that operate on 32-bit registers zero-extend to 64 bits.
+Abort the outstanding bsg/SRB and wait for the completion. The
+completion IOCB will wake up the bsg_timeout thread. If abort is not
+successful, then driver will forcibly call bsg_job_done() and free the
+srb.
 
-Fixes: 1d373d4e8e15 ("crypto: x86 - Add optimized AEGIS implementations")
+Err Inject:
+
+ - qaucli -z
+ - assign CT Passthru IOCB's NportHandle with another initiator
+   nport handle to trigger timeout.  Remote port will drop CT request.
+ - bsg_job_done is properly called as part of cleanup
+
+kernel: qla2xxx [0000:21:00.1]-7012:7: qla2x00_process_ct : 286 : Error Inject.
+kernel: qla2xxx [0000:21:00.1]-7016:7: bsg rqst type: FC_BSG_HST_CT else type: 101 - loop-id=1 portid=fffffa.
+kernel: qla2xxx [0000:21:00.1]-70bb:7: qla24xx_bsg_timeout CMD timeout. bsg ptr ffff9971a42f0838 msgcode 80000004 vendor cmd fa010000
+kernel: qla2xxx [0000:21:00.1]-507c:7: Abort command issued - hdl=4b, type=5
+kernel: qla2xxx [0000:21:00.1]-5040:7: ELS-CT pass-through-ct pass-through error hdl=4b comp_status-status=0x5 error subcode 1=0x0 error subcode 2=0xaf882e80.
+kernel: qla2xxx [0000:21:00.1]-7009:7: qla2x00_bsg_job_done: sp hdl 4b, result=70000 bsg ptr ffff9971a42f0838
+kernel: qla2xxx [0000:21:00.1]-802c:7: Aborting bsg ffff9971a42f0838 sp=ffff99760b87ba80 handle=4b rval=0
+kernel: qla2xxx [0000:21:00.1]-708a:7: bsg abort success. bsg ffff9971a42f0838 sp=ffff99760b87ba80 handle=0x4b
+kernel: qla2xxx [0000:21:00.1]-7012:7: qla2x00_process_ct : 286 : Error Inject.
+kernel: qla2xxx [0000:21:00.1]-7016:7: bsg rqst type: FC_BSG_HST_CT else type: 101 - loop-id=1 portid=fffffa.
+kernel: qla2xxx [0000:21:00.1]-70bb:7: qla24xx_bsg_timeout CMD timeout. bsg ptr ffff9971a42f43b8 msgcode 80000004 vendor cmd fa010000
+kernel: qla2xxx [0000:21:00.1]-7012:7: qla_bsg_found : 2206 : Error Inject 2.
+kernel: qla2xxx [0000:21:00.1]-802c:7: Aborting bsg ffff9971a42f43b8 sp=ffff99762c304440 handle=5e rval=5
+kernel: qla2xxx [0000:21:00.1]-704f:7: bsg abort fail.  bsg=ffff9971a42f43b8 sp=ffff99762c304440 rval=5.
+kernel: qla2xxx [0000:21:00.1]-7051:7: qla_bsg_found bsg_job_done : bsg ffff9971a42f43b8 result 0xfffffffa sp ffff99762c304440.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c449b4198701 ("scsi: qla2xxx: Use QP lock to search for bsg")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20241115130313.46826-2-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/crypto/aegis128-aesni-asm.S |   29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ drivers/scsi/qla2xxx/qla_bsg.c |  114 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 92 insertions(+), 22 deletions(-)
 
---- a/arch/x86/crypto/aegis128-aesni-asm.S
-+++ b/arch/x86/crypto/aegis128-aesni-asm.S
-@@ -21,7 +21,7 @@
- #define T1	%xmm7
+--- a/drivers/scsi/qla2xxx/qla_bsg.c
++++ b/drivers/scsi/qla2xxx/qla_bsg.c
+@@ -24,6 +24,7 @@ void qla2x00_bsg_job_done(srb_t *sp, int
+ {
+ 	struct bsg_job *bsg_job = sp->u.bsg_job;
+ 	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
++	struct completion *comp = sp->comp;
  
- #define STATEP	%rdi
--#define LEN	%rsi
-+#define LEN	%esi
- #define SRC	%rdx
- #define DST	%rcx
+ 	ql_dbg(ql_dbg_user, sp->vha, 0x7009,
+ 	    "%s: sp hdl %x, result=%x bsg ptr %p\n",
+@@ -35,6 +36,9 @@ void qla2x00_bsg_job_done(srb_t *sp, int
+ 	bsg_reply->result = res;
+ 	bsg_job_done(bsg_job, bsg_reply->result,
+ 		       bsg_reply->reply_payload_rcv_len);
++
++	if (comp)
++		complete(comp);
+ }
  
-@@ -76,32 +76,32 @@ SYM_FUNC_START_LOCAL(__load_partial)
- 	xor %r9d, %r9d
- 	pxor MSG, MSG
+ void qla2x00_bsg_sp_free(srb_t *sp)
+@@ -3061,7 +3065,7 @@ skip_chip_chk:
  
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1, %r8
- 	jz .Lld_partial_1
+ static bool qla_bsg_found(struct qla_qpair *qpair, struct bsg_job *bsg_job)
+ {
+-	bool found = false;
++	bool found, do_bsg_done;
+ 	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
+ 	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
+ 	struct qla_hw_data *ha = vha->hw;
+@@ -3069,6 +3073,11 @@ static bool qla_bsg_found(struct qla_qpa
+ 	int cnt;
+ 	unsigned long flags;
+ 	struct req_que *req;
++	int rval;
++	DECLARE_COMPLETION_ONSTACK(comp);
++	uint32_t ratov_j;
++
++	found = do_bsg_done = false;
  
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1E, %r8
- 	add SRC, %r8
- 	mov (%r8), %r9b
+ 	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
+ 	req = qpair->req;
+@@ -3080,42 +3089,104 @@ static bool qla_bsg_found(struct qla_qpa
+ 		     sp->type == SRB_ELS_CMD_HST ||
+ 		     sp->type == SRB_ELS_CMD_HST_NOLOGIN) &&
+ 		    sp->u.bsg_job == bsg_job) {
+-			req->outstanding_cmds[cnt] = NULL;
+-			spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
+-
+-			if (!ha->flags.eeh_busy && ha->isp_ops->abort_command(sp)) {
+-				ql_log(ql_log_warn, vha, 0x7089,
+-						"mbx abort_command failed.\n");
+-				bsg_reply->result = -EIO;
+-			} else {
+-				ql_dbg(ql_dbg_user, vha, 0x708a,
+-						"mbx abort_command success.\n");
+-				bsg_reply->result = 0;
+-			}
+-			/* ref: INIT */
+-			kref_put(&sp->cmd_kref, qla2x00_sp_release);
  
- .Lld_partial_1:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x2, %r8
- 	jz .Lld_partial_2
+ 			found = true;
+-			goto done;
++			sp->comp = &comp;
++			break;
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
  
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x1C, %r8
- 	add SRC, %r8
- 	shl $0x10, %r9
- 	mov (%r8), %r9w
+-done:
+-	return found;
++	if (!found)
++		return false;
++
++	if (ha->flags.eeh_busy) {
++		/* skip over abort.  EEH handling will return the bsg. Wait for it */
++		rval = QLA_SUCCESS;
++		ql_dbg(ql_dbg_user, vha, 0x802c,
++			"eeh encounter. bsg %p sp=%p handle=%x \n",
++			bsg_job, sp, sp->handle);
++	} else {
++		rval = ha->isp_ops->abort_command(sp);
++		ql_dbg(ql_dbg_user, vha, 0x802c,
++			"Aborting bsg %p sp=%p handle=%x rval=%x\n",
++			bsg_job, sp, sp->handle, rval);
++	}
++
++	switch (rval) {
++	case QLA_SUCCESS:
++		/* Wait for the command completion. */
++		ratov_j = ha->r_a_tov / 10 * 4 * 1000;
++		ratov_j = msecs_to_jiffies(ratov_j);
++
++		if (!wait_for_completion_timeout(&comp, ratov_j)) {
++			ql_log(ql_log_info, vha, 0x7089,
++				"bsg abort timeout.  bsg=%p sp=%p handle %#x .\n",
++				bsg_job, sp, sp->handle);
++
++			do_bsg_done = true;
++		} else {
++			/* fw had returned the bsg */
++			ql_dbg(ql_dbg_user, vha, 0x708a,
++				"bsg abort success. bsg %p sp=%p handle=%#x\n",
++				bsg_job, sp, sp->handle);
++			do_bsg_done = false;
++		}
++		break;
++	default:
++		ql_log(ql_log_info, vha, 0x704f,
++			"bsg abort fail.  bsg=%p sp=%p rval=%x.\n",
++			bsg_job, sp, rval);
++
++		do_bsg_done = true;
++		break;
++	}
++
++	if (!do_bsg_done)
++		return true;
++
++	spin_lock_irqsave(qpair->qp_lock_ptr, flags);
++	/*
++	 * recheck to make sure it's still the same bsg_job due to
++	 * qp_lock_ptr was released earlier.
++	 */
++	if (req->outstanding_cmds[cnt] &&
++	    req->outstanding_cmds[cnt]->u.bsg_job != bsg_job) {
++		/* fw had returned the bsg */
++		spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
++		return true;
++	}
++	req->outstanding_cmds[cnt] = NULL;
++	spin_unlock_irqrestore(qpair->qp_lock_ptr, flags);
++
++	/* ref: INIT */
++	sp->comp = NULL;
++	kref_put(&sp->cmd_kref, qla2x00_sp_release);
++	bsg_reply->result = -ENXIO;
++	bsg_reply->reply_payload_rcv_len = 0;
++
++	ql_dbg(ql_dbg_user, vha, 0x7051,
++	       "%s bsg_job_done : bsg %p result %#x sp %p.\n",
++	       __func__, bsg_job, bsg_reply->result, sp);
++
++	bsg_job_done(bsg_job, bsg_reply->result, bsg_reply->reply_payload_rcv_len);
++
++	return true;
+ }
  
- .Lld_partial_2:
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x4, %r8
- 	jz .Lld_partial_4
+ int
+ qla24xx_bsg_timeout(struct bsg_job *bsg_job)
+ {
+-	struct fc_bsg_reply *bsg_reply = bsg_job->reply;
++	struct fc_bsg_request *bsg_request = bsg_job->request;
+ 	scsi_qla_host_t *vha = shost_priv(fc_bsg_to_shost(bsg_job));
+ 	struct qla_hw_data *ha = vha->hw;
+ 	int i;
+ 	struct qla_qpair *qpair;
  
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x18, %r8
- 	add SRC, %r8
- 	shl $32, %r9
-@@ -111,11 +111,11 @@ SYM_FUNC_START_LOCAL(__load_partial)
- .Lld_partial_4:
- 	movq %r9, MSG
+-	ql_log(ql_log_info, vha, 0x708b, "%s CMD timeout. bsg ptr %p.\n",
+-	    __func__, bsg_job);
++	ql_log(ql_log_info, vha, 0x708b,
++	       "%s CMD timeout. bsg ptr %p msgcode %x vendor cmd %x\n",
++	       __func__, bsg_job, bsg_request->msgcode,
++	       bsg_request->rqst_data.h_vendor.vendor_cmd[0]);
  
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x8, %r8
- 	jz .Lld_partial_8
+ 	if (qla2x00_isp_reg_stat(ha)) {
+ 		ql_log(ql_log_info, vha, 0x9007,
+@@ -3136,7 +3207,6 @@ qla24xx_bsg_timeout(struct bsg_job *bsg_
+ 	}
  
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	and $0x10, %r8
- 	add SRC, %r8
- 	pslldq $8, MSG
-@@ -139,7 +139,7 @@ SYM_FUNC_END(__load_partial)
-  *   %r10
-  */
- SYM_FUNC_START_LOCAL(__store_partial)
--	mov LEN, %r8
-+	mov LEN, %r8d
- 	mov DST, %r9
+ 	ql_log(ql_log_info, vha, 0x708b, "SRB not found to abort.\n");
+-	bsg_reply->result = -ENXIO;
  
- 	movq T0, %r10
-@@ -677,7 +677,7 @@ SYM_TYPED_FUNC_START(crypto_aegis128_aes
- 	call __store_partial
- 
- 	/* mask with byte count: */
--	movq LEN, T0
-+	movd LEN, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
- 	punpcklbw T0, T0
-@@ -702,7 +702,8 @@ SYM_FUNC_END(crypto_aegis128_aesni_dec_t
- 
- /*
-  * void crypto_aegis128_aesni_final(void *state, void *tag_xor,
-- *                                  u64 assoclen, u64 cryptlen);
-+ *                                  unsigned int assoclen,
-+ *                                  unsigned int cryptlen);
-  */
- SYM_FUNC_START(crypto_aegis128_aesni_final)
- 	FRAME_BEGIN
-@@ -715,8 +716,8 @@ SYM_FUNC_START(crypto_aegis128_aesni_fin
- 	movdqu 0x40(STATEP), STATE4
- 
- 	/* prepare length block: */
--	movq %rdx, MSG
--	movq %rcx, T0
-+	movd %edx, MSG
-+	movd %ecx, T0
- 	pslldq $8, T0
- 	pxor T0, MSG
- 	psllq $3, MSG /* multiply by 8 (to get bit count) */
+ done:
+ 	return 0;
 
 
 
