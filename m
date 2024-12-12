@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-102338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88E689EF16E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F129EEBB0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4121528BF2B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:38:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E984D188260D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3C253365;
-	Thu, 12 Dec 2024 16:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23D82054F8;
+	Thu, 12 Dec 2024 15:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDACpUdk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlYdpLZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0975B215764;
-	Thu, 12 Dec 2024 16:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE32F2080FC;
+	Thu, 12 Dec 2024 15:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020866; cv=none; b=cfS1kFEp21aTRQJ0nLSHycKoVS/rpnbCplwz2zkSGPUD7+XYWO0wTswGRuKK8Wt04P04d+bmRnFBpcFjDuSLOaF8O3LgA1KJLmwu4wujZrQ7/FuExDyMRNkBKNXcbRxi2gY00kwR23fkq7rfEv84xP4/6XrT2qzD1x4fIgQCKq0=
+	t=1734017038; cv=none; b=Y6MKQyHbyDSsfwBPvUZ0/i3Sj7baJACBswHgAwQe4gklKIaTiTvXrpehzMp7kILMvJN7CadNoJAxUbwgi5QsfzzNgD7e8k36ELe3Ntld2TK7VrfvE9a27aCLq58itP6RyHfQiEqtlv9rLVzR9qe8bW3Qdm+vFILkJFe2qZGuTnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020866; c=relaxed/simple;
-	bh=nFt+80rmsQjxPP74OBaZ8BXrzALvMpOYMgsGYBXIp7A=;
+	s=arc-20240116; t=1734017038; c=relaxed/simple;
+	bh=uYxU5l50oQjHKlDT80qsGx9ihPQCq3dnh/9S1pfY9IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyXCCfbzLAS724mVohyIE/HRHNk9wDBpN4fP6DJ61Sy/7FuBydzpAwV6Ew8zrWNxDtEIFQ9RNtRNKdiopjayHZCTv2+4GCYubRM1XhdniyS+3nd4rHcHqs1MfIFB0UiH6jHVkLP6B9ToZ2rUILSoqBfpxBILSpxpMZZb90muPbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDACpUdk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 704AFC4CECE;
-	Thu, 12 Dec 2024 16:27:45 +0000 (UTC)
+	 MIME-Version; b=QyL+jVQllGUpZ7DBibnDFn3o48aHrpY+uKo8H7nB7mkemROErE81QExY0tQoR15JhbCjECDI9SQqRnD/hkFAHJghqfR2xH5dY+h/9TMMNdp9fVnaXiEqB6PBYKyr6OMGx7R4WKrf+/JttjWvqMz661sWWEQqbPpm1Yzn80xnvhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlYdpLZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1932DC4CECE;
+	Thu, 12 Dec 2024 15:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020865;
-	bh=nFt+80rmsQjxPP74OBaZ8BXrzALvMpOYMgsGYBXIp7A=;
+	s=korg; t=1734017038;
+	bh=uYxU5l50oQjHKlDT80qsGx9ihPQCq3dnh/9S1pfY9IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDACpUdkBrn/gSOZ3K3DncoWOiFyNylpyTiKU3ftOEQL4x2S69dY4TwtFGvmmDAkh
-	 Wyh5JGwe45txFryw3LPCkWW/yqtBx0uZrRArCpyQDo+MSlitKZ0w0f2gA2QLRoG1uQ
-	 n/OUi1+CPP+wN64LZcJkQVPdsJQ+NM6hWV8iVcaw=
+	b=nlYdpLZVOOn4loEJtcJYP2KYqFufHL+XRpssSNMkhJLdlbEsrdPMVHRg9YkilyxhY
+	 4zd42csyPeQ9H8KvqhUII6tsfT0QBUDQYRENqZZg4Su3oMJWJnA3ImZJjziw2BFeAj
+	 b+PC6hk2jCkc7sYpg5ZILhEhnR3ZahE3SaUC6tA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 580/772] device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
-Date: Thu, 12 Dec 2024 15:58:45 +0100
-Message-ID: <20241212144413.911378385@linuxfoundation.org>
+Subject: [PATCH 6.12 357/466] tracing: Use atomic64_inc_return() in trace_clock_counter()
+Date: Thu, 12 Dec 2024 15:58:46 +0100
+Message-ID: <20241212144320.889259255@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit 59ed5e2d505bf5f9b4af64d0021cd0c96aec1f7c ]
+[ Upstream commit eb887c4567d1b0e7684c026fe7df44afa96589e6 ]
 
-Useful where the fwnode_handle was obtained from a call such as
-fwnode_find_reference() as it will safely do nothing if IS_ERR() is true
-and will automatically release the reference on the variable leaving
-scope.
+Use atomic64_inc_return(&ref) instead of atomic64_add_return(1, &ref)
+to use optimized implementation and ease register pressure around
+the primitive for targets that implement optimized variant.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240217164249.921878-3-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 73b03b27736e ("leds: flash: mt6360: Fix device_for_each_child_node() refcounting in error paths")
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20241007085651.48544-1-ubizjak@gmail.com
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/property.h | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/property.h b/include/linux/property.h
-index ec3490591f934..f2e8590cefd89 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -11,6 +11,7 @@
- #define _LINUX_PROPERTY_H_
- 
- #include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/fwnode.h>
- #include <linux/types.h>
- 
-@@ -129,6 +130,8 @@ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
- struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
- void fwnode_handle_put(struct fwnode_handle *fwnode);
- 
-+DEFINE_FREE(fwnode_handle, struct fwnode_handle *, fwnode_handle_put(_T))
-+
- int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
- int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
- 
+diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
+index 4702efb00ff21..4cb2ebc439be6 100644
+--- a/kernel/trace/trace_clock.c
++++ b/kernel/trace/trace_clock.c
+@@ -154,5 +154,5 @@ static atomic64_t trace_counter;
+  */
+ u64 notrace trace_clock_counter(void)
+ {
+-	return atomic64_add_return(1, &trace_counter);
++	return atomic64_inc_return(&trace_counter);
+ }
 -- 
 2.43.0
 
