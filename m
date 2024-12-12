@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-103807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671489EF93F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:49:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F65A9EF69A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28D3E28DEBE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAE3E3608AA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC362288F5;
-	Thu, 12 Dec 2024 17:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE3E21660B;
+	Thu, 12 Dec 2024 17:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IofeZOqq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQ8zIz2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A728B205E2E;
-	Thu, 12 Dec 2024 17:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982C12139C9;
+	Thu, 12 Dec 2024 17:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025660; cv=none; b=oeK5+3097NPX34t4x1Cz23LzurqCRgBFlM3VvZfu2edNzRMLJrv2y0wWa+S1AdnHVchKQZMiNzlhijaRTixRnxJ8jy1sgqA1kKItnN5JeyLw463mYi0ANFo5D0msppuHDfDxmxhD1RR+A2+ztu8P5ImRFp4ub3twleJgw4yx2+Q=
+	t=1734023448; cv=none; b=oIMBQnRcfH2rdim7LnbprnDrJeRgyGU/6NKrgLjH0xZwdw6AypZ39CvUlB2KMPl+2oktS5JJ8HZ1C+WZpYHIDJTTSElSDFCK0uK1hlzV9ouaI06AeI9rvRkYPT9IDdXk7kpFCS7o/nOJAC8Gn9oMaN3KUjd7XspV/AS+kug/7WE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025660; c=relaxed/simple;
-	bh=D/s36In1HlVmWM8h9hZrw/p/oQ/7LV55kO0SohU9gIE=;
+	s=arc-20240116; t=1734023448; c=relaxed/simple;
+	bh=Ib3Et3x/ijc8A2t8430+bMIcRXqahfOxW1YbLF9bk7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M1YY87ELsYp6Q6Ug6nxGbs7msoskmJuzV0NHYnWLgYjV49qjx6Og/MrmzVF6Gu5+urtLEv6DlDGMt+90u10WR0uyPC2nBBFO3EI0UxXT4kdEw+0geyLfwRqxXF1P0D1BS5uUj8Bz/1vmSYwl8gLY6SKGGw3bW9EZuY8/uegK6Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IofeZOqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D26FC4CECE;
-	Thu, 12 Dec 2024 17:47:39 +0000 (UTC)
+	 MIME-Version; b=sqa9RjadfvA5Vc8AKeZ+k8Xzhv4dSBfXQyEFHzujmlIDma9/F7836xd9HDe7dMxH5dnhIGRodrr4ur+ToPyV6S1xWmEDFfPM19tbnQ6DaFJrzJVSHm6r2hcnKl6oZ5wx3UXwORBwn7ggeptyX1UKuDwGJhST72w+rBZ2goNyYuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQ8zIz2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064BCC4CECE;
+	Thu, 12 Dec 2024 17:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025660;
-	bh=D/s36In1HlVmWM8h9hZrw/p/oQ/7LV55kO0SohU9gIE=;
+	s=korg; t=1734023448;
+	bh=Ib3Et3x/ijc8A2t8430+bMIcRXqahfOxW1YbLF9bk7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IofeZOqq7wEXw/6Y5k2TF0mPElip3RtcrjeunDPrcjMLjtfV9/usYddY/OlCLNwwm
-	 FCAZOEA1G8gAxLNZu/ifANVC2quzbJXc2NcF2v4eew4npZkiN7/mBHgTwoqIzMvX6u
-	 sks/5R6IF2EbSkVILmZaZWU5lLbjLMzG0Mknz5mw=
+	b=qQ8zIz2SP9uUjEgv4FZyZhuOzSKvgI6yY0Q4aFP9aQvhljjTnLOBmrwQscLTNWIJn
+	 E6Jyo6D5bYR3QclgpU3Mc6hCuX2QiuX8njU8QtrNEz8LOvvMHAWobRGXRcVAIOh/S/
+	 KB5o8YP7IL9yuoAi4tHtZ8mUh6XJAbzwk6NnjlCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.4 214/321] i3c: master: Fix miss free init_dyn_addr at i3c_master_put_i3c_addrs()
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 537/565] tracing/eprobe: Fix to release eprobe when failed to add dyn_event
 Date: Thu, 12 Dec 2024 16:02:12 +0100
-Message-ID: <20241212144238.432028781@linuxfoundation.org>
+Message-ID: <20241212144333.063161936@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 3082990592f7c6d7510a9133afa46e31bbe26533 upstream.
+[ Upstream commit 494b332064c0ce2f7392fa92632bc50191c1b517 ]
 
-if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
-                                      ^^^ here check "init_dyn_addr"
-	i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr, ...)
-						             ^^^^
-							free "dyn_addr"
-Fix copy/paste error "dyn_addr" by replacing it with "init_dyn_addr".
+Fix eprobe event to unregister event call and release eprobe when it fails
+to add dynamic event correctly.
 
-Cc: stable@kernel.org
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241001162608.224039-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/173289886698.73724.1959899350183686006.stgit@devnote2/
+
+Fixes: 7491e2c44278 ("tracing: Add a probe that attaches to trace events")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_eprobe.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -1263,7 +1263,7 @@ static void i3c_master_put_i3c_addrs(str
- 					     I3C_ADDR_SLOT_FREE);
- 
- 	if (dev->boardinfo && dev->boardinfo->init_dyn_addr)
--		i3c_bus_set_addr_slot_status(&master->bus, dev->info.dyn_addr,
-+		i3c_bus_set_addr_slot_status(&master->bus, dev->boardinfo->init_dyn_addr,
- 					     I3C_ADDR_SLOT_FREE);
- }
- 
+diff --git a/kernel/trace/trace_eprobe.c b/kernel/trace/trace_eprobe.c
+index 085f056e66f19..6ba95e32df388 100644
+--- a/kernel/trace/trace_eprobe.c
++++ b/kernel/trace/trace_eprobe.c
+@@ -979,6 +979,11 @@ static int __trace_eprobe_create(int argc, const char *argv[])
+ 		goto error;
+ 	}
+ 	ret = dyn_event_add(&ep->devent, &ep->tp.event->call);
++	if (ret < 0) {
++		trace_probe_unregister_event_call(&ep->tp);
++		mutex_unlock(&event_mutex);
++		goto error;
++	}
+ 	mutex_unlock(&event_mutex);
+ 	return ret;
+ parse_error:
+-- 
+2.43.0
+
 
 
 
