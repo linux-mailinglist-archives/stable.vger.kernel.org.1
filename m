@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AA09EECDC
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D19B9EF389
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E06284227
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:39:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA329291F39
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63630217F46;
-	Thu, 12 Dec 2024 15:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D757D22ACFA;
+	Thu, 12 Dec 2024 16:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysijjgog"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxHY4dqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8696F2FE;
-	Thu, 12 Dec 2024 15:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93663229687;
+	Thu, 12 Dec 2024 16:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017943; cv=none; b=Wil5HTQpRSdG//X4uTEancbujZReJEIS5PsmWkWdJ7OL9/3psNttvyJXxHlsSzW6KhUA4C8+CQ+ni7m1qwYMJe1pWlnFMZxVO+MOK3M7N6VzA3Mqpm5DuJd9g0kUXxeveSLJzkNL22TP6SEi/S3NGNQd0gKIDZ2zPg4HpYmh7u4=
+	t=1734022479; cv=none; b=dloostu6qk+C8hS1nRHbWkzm/3p45IftUntPO/YllOxb+YGVFchLfb0lfPBpSbZa6gjq4aMOOGCCyCj3JXUwuQEQj+5PyhtxhOziB0a25AjNd9atkjjOYAG2WG1y1JvEFmpCLQnNA3reeCTlw9Ik0dXRfzIq+7rkR7gXHZLVuLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017943; c=relaxed/simple;
-	bh=VDIVKRPu4nEUvruy7X+lWwItgNP0uHHi1sfSDarG4wg=;
+	s=arc-20240116; t=1734022479; c=relaxed/simple;
+	bh=GV031yMwLCnx0Coq/RK4Q/0D448hBuy5wKlTeyyugqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1R9fPvY1reuOQK8YSkGnjrC5Xc9ubxUgQWtZppeT+GmXpog2U2biQEihSEc7Rm7WCSpQ8r2WTPHU+5Ls7moZbhPRTPawmOCMeaijZlP+W2weJpNha185w7hu3in2b+Y+OZ7H5AsYKfvcfVLftbWIJd/t7jSHBKvnHGvzLuJDZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysijjgog; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80340C4CECE;
-	Thu, 12 Dec 2024 15:39:02 +0000 (UTC)
+	 MIME-Version; b=G4WbiaTcs0UMpwnRSnKSpkXjnFe+HPwrQzhtFm0x+V7iVfySZglASs/BPjhuA8g8mngcP7Po1QJP5fjWX0ar7rtvPkSkaDF9/e4dZTisjhmtdC6VuE+uvO0UF6SrSy4l4vyqu8ZQX1EDDVpdN54ohJsMHyJ5cXJj7sQMEWuSjvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxHY4dqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132CCC4CED0;
+	Thu, 12 Dec 2024 16:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017943;
-	bh=VDIVKRPu4nEUvruy7X+lWwItgNP0uHHi1sfSDarG4wg=;
+	s=korg; t=1734022479;
+	bh=GV031yMwLCnx0Coq/RK4Q/0D448hBuy5wKlTeyyugqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysijjgogiTGepmiGREfARYfrZ5UOkvTkp4znET/TbVSWUKAPCgC3ov6iwR2xwQdXT
-	 Cafw61lEIjkIl9VZCZFPhCdSRhT84RDbt1vNqUReneZoiYFP6DgS8426CCTkrNcGmU
-	 r69qtwweeNpKSNELHRsRmJ5CpF7JCThHY5vaIGBM=
+	b=rxHY4dqaDFs7EjWtPc22GI2RR4/kPs2tkErG7WGQKCrvZ8N+sz2XJeWhnAqh+Uikq
+	 SwhzxdcPeSjjxGXLc7S0fY6oIliIJtFA4oNFDUSwbs++TEye7oGE/wLjRCGGVsKbV1
+	 ZvIwY6es5Gv+/D4BvJ2Y8CMy51Kc1JKhr0w8g7iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yongpeng Yang <yangyongpeng1@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/356] scsi: scsi_debug: Fix hrtimer support for ndelay
+Subject: [PATCH 5.15 251/565] f2fs: check curseg->inited before write_sum_page in change_curseg
 Date: Thu, 12 Dec 2024 15:57:26 +0100
-Message-ID: <20241212144249.672561722@linuxfoundation.org>
+Message-ID: <20241212144321.399350467@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Yongpeng Yang <yangyongpeng1@oppo.com>
 
-[ Upstream commit 6918141d815acef056a0d10e966a027d869a922d ]
+[ Upstream commit 43563069e1c1df417d2eed6eca8a22fc6b04691d ]
 
-Since commit 771f712ba5b0 ("scsi: scsi_debug: Fix cmd duration
-calculation"), ns_from_boot value is only evaluated in schedule_resp()
-for polled requests.
+In the __f2fs_init_atgc_curseg->get_atssr_segment calling,
+curseg->segno is NULL_SEGNO, indicating that there is no summary
+block that needs to be written.
 
-However, ns_from_boot is also required for hrtimer support for when
-ndelay is less than INCLUSIVE_TIMING_MAX_NS, so fix up the logic to
-decide when to evaluate ns_from_boot.
-
-Fixes: 771f712ba5b0 ("scsi: scsi_debug: Fix cmd duration calculation")
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241202130045.2335194-1-john.g.garry@oracle.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 093749e296e2 ("f2fs: support age threshold based garbage collection")
+Signed-off-by: Yongpeng Yang <yangyongpeng1@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/segment.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_debug.c b/drivers/scsi/scsi_debug.c
-index 9c0af50501f9a..841f924746781 100644
---- a/drivers/scsi/scsi_debug.c
-+++ b/drivers/scsi/scsi_debug.c
-@@ -5583,7 +5583,7 @@ static int schedule_resp(struct scsi_cmnd *cmnd, struct sdebug_dev_info *devip,
- 	}
- 	sd_dp = &sqcp->sd_dp;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 3e5900ddb92b0..0b284a28afeda 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2737,7 +2737,8 @@ static void change_curseg(struct f2fs_sb_info *sbi, int type)
+ 	struct f2fs_summary_block *sum_node;
+ 	struct page *sum_page;
  
--	if (polled)
-+	if (polled || (ndelay > 0 && ndelay < INCLUSIVE_TIMING_MAX_NS))
- 		ns_from_boot = ktime_get_boottime_ns();
+-	write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
++	if (curseg->inited)
++		write_sum_page(sbi, curseg->sum_blk, GET_SUM_BLOCK(sbi, curseg->segno));
  
- 	/* one of the resp_*() response functions is called here */
+ 	__set_test_and_inuse(sbi, new_segno);
+ 
 -- 
 2.43.0
 
