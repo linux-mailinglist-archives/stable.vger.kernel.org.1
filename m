@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-101818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1079EEEC3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4D09EEEA8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C94A0188FD46
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:56:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77DD118885B2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDCA2210F2;
-	Thu, 12 Dec 2024 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85A02185A0;
+	Thu, 12 Dec 2024 15:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wo/ObH+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmoIs2Ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A73A2210D8;
-	Thu, 12 Dec 2024 15:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947DA21CFF0;
+	Thu, 12 Dec 2024 15:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018907; cv=none; b=IZ9UZGnBUHq1eczq0yIyHJGI+Ck17kDer6P0FI/XVX/7ghA8i4H2GfEPcoPL5rW14HvBeDWcbCvvKhhLklk5n1oLQkzNMWwUnCn2G5s48QGUm1A26Et6x61OjawKBGPT01Wm2IXZhwuMwo4OcKd+lbAzVgLbTlNI3yT9k7FbUcM=
+	t=1734018795; cv=none; b=KpKmnbm6XfcolJSXU7S94h+IlJwLUVlwDF+m5d4ql2z8A7Wcs9FpixBozQBdfdR+ZLWIR9xjHegwX0UEawgeCAH6WptICWPD3JjoZaYXAe5SyCWy5oszadzLReLFL5olWqka5LN2DE6sHqO4RzmPwTlawtfb7uCjY8YASz9jXfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018907; c=relaxed/simple;
-	bh=QOfkT+d8j+ULBltKbTxVwEa7PkpLu1af+o6jsnb9L4M=;
+	s=arc-20240116; t=1734018795; c=relaxed/simple;
+	bh=amRXUgy2G+9/g1zEGQW1snwY7b7KlYe4QGvIlnhZLtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUQ+nQxx8q74QEQyUT4sIk2mxm5DD0n8PWVfns+bE6TGJaq3TZPpr+ncVKn3x7fc8W5hvCtUqlzNLOoMQZO5BV5VKeWR/2eGb+40ofEoFRuDP9rupp/X1eTFuw5xLKgMR+4JiBdW7/SQD1jLWuhyh/ZKQIvZJZMBlOPH8hyHKRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wo/ObH+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088DDC4CECE;
-	Thu, 12 Dec 2024 15:55:06 +0000 (UTC)
+	 MIME-Version; b=of1oypY6boO3JSApdNHhqYIUJvRI3uElivws6g21jSwLwV1lGVwFlenSxWL5rZsHfP4bskdMIcjQjqXxNheGRfex4ukpKOH3gfbSbpoy4G/8CaXyUleT55yAjQyCdNHKoeqWvrK+a0XNofbQANk3Yqf/KvMtCPTJoKe18R/s830=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmoIs2Ae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DECC4CEE3;
+	Thu, 12 Dec 2024 15:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018907;
-	bh=QOfkT+d8j+ULBltKbTxVwEa7PkpLu1af+o6jsnb9L4M=;
+	s=korg; t=1734018795;
+	bh=amRXUgy2G+9/g1zEGQW1snwY7b7KlYe4QGvIlnhZLtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wo/ObH+N+XYfud2SfR7VoK4Zc3ffaGBwJRskrrYZvt5j13S79RspldYWGpYAqRd80
-	 5hZkcZ7uMnw0xCqbTNaQanPtL9vijhjLd7nIlZZLznVpwt0ZXJB6EKRrMJe0EXwihL
-	 u+di3RyI0nlfOi4i/BiG5h9hFs9xl+gptWMKghJo=
+	b=xmoIs2AeyYaRTxO9IzYm5KRsBa7KzlscMwohor3ZyE+n2k5LWGCCJOzRJeMxjPjUs
+	 gVdKRPmILZDjOYYQqvFX1sltw+pgw3A/B+CdJnBHhLBE7VT5kUVvbqTbYKp5JpAYFN
+	 GYJPAt+4cv/Ri58lXMQ0W18EbAe09XqKU5KHdakQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harith George <harith.g@alifsemi.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Breno Leitao <leitao@debian.org>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/772] ARM: 9420/1: smp: Fix SMP for xip kernels
-Date: Thu, 12 Dec 2024 15:49:32 +0100
-Message-ID: <20241212144351.070461377@linuxfoundation.org>
+Subject: [PATCH 6.1 028/772] ipmr: Fix access to mfc_cache_list without lock held
+Date: Thu, 12 Dec 2024 15:49:33 +0100
+Message-ID: <20241212144351.110531335@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
 References: <20241212144349.797589255@linuxfoundation.org>
@@ -67,82 +67,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Harith G <harith.g@alifsemi.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 9e9b0cf9319b4db143014477b0bc4b39894248f1 ]
+[ Upstream commit e28acc9c1ccfcb24c08e020828f69d0a915b06ae ]
 
-Fix the physical address calculation of the following to get smp working
-on xip kernels.
-- secondary_data needed for secondary cpu bootup.
-- secondary_startup address passed through psci.
-- identity mapped code region needed for enabling mmu for secondary cpus.
+Accessing `mr_table->mfc_cache_list` is protected by an RCU lock. In the
+following code flow, the RCU read lock is not held, causing the
+following error when `RCU_PROVE` is not held. The same problem might
+show up in the IPv6 code path.
 
-Signed-off-by: Harith George <harith.g@alifsemi.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+	6.12.0-rc5-kbuilder-01145-gbac17284bdcb #33 Tainted: G            E    N
+	-----------------------------
+	net/ipv4/ipmr_base.c:313 RCU-list traversed in non-reader section!!
+
+	rcu_scheduler_active = 2, debug_locks = 1
+		   2 locks held by RetransmitAggre/3519:
+		    #0: ffff88816188c6c0 (nlk_cb_mutex-ROUTE){+.+.}-{3:3}, at: __netlink_dump_start+0x8a/0x290
+		    #1: ffffffff83fcf7a8 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_dumpit+0x6b/0x90
+
+	stack backtrace:
+		    lockdep_rcu_suspicious
+		    mr_table_dump
+		    ipmr_rtm_dumproute
+		    rtnl_dump_all
+		    rtnl_dumpit
+		    netlink_dump
+		    __netlink_dump_start
+		    rtnetlink_rcv_msg
+		    netlink_rcv_skb
+		    netlink_unicast
+		    netlink_sendmsg
+
+This is not a problem per see, since the RTNL lock is held here, so, it
+is safe to iterate in the list without the RCU read lock, as suggested
+by Eric.
+
+To alleviate the concern, modify the code to use
+list_for_each_entry_rcu() with the RTNL-held argument.
+
+The annotation will raise an error only if RTNL or RCU read lock are
+missing during iteration, signaling a legitimate problem, otherwise it
+will avoid this false positive.
+
+This will solve the IPv6 case as well, since ip6mr_rtm_dumproute() calls
+this function as well.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20241108-ipmr_rcu-v2-1-c718998e209b@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/head.S     | 4 ++++
- arch/arm/kernel/psci_smp.c | 7 +++++++
- arch/arm/mm/idmap.c        | 7 +++++++
- 3 files changed, 18 insertions(+)
+ net/ipv4/ipmr_base.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/kernel/head.S b/arch/arm/kernel/head.S
-index b97da9e069a06..21930b9ac1c4c 100644
---- a/arch/arm/kernel/head.S
-+++ b/arch/arm/kernel/head.S
-@@ -411,7 +411,11 @@ ENTRY(secondary_startup)
- 	/*
- 	 * Use the page tables supplied from  __cpu_up.
- 	 */
-+#ifdef CONFIG_XIP_KERNEL
-+	ldr	r3, =(secondary_data + PLAT_PHYS_OFFSET - PAGE_OFFSET)
-+#else
- 	adr_l	r3, secondary_data
-+#endif
- 	mov_l	r12, __secondary_switched
- 	ldrd	r4, r5, [r3, #0]		@ get secondary_data.pgdir
- ARM_BE8(eor	r4, r4, r5)			@ Swap r5 and r4 in BE:
-diff --git a/arch/arm/kernel/psci_smp.c b/arch/arm/kernel/psci_smp.c
-index d4392e1774848..3bb0c4dcfc5c9 100644
---- a/arch/arm/kernel/psci_smp.c
-+++ b/arch/arm/kernel/psci_smp.c
-@@ -45,8 +45,15 @@ extern void secondary_startup(void);
- static int psci_boot_secondary(unsigned int cpu, struct task_struct *idle)
- {
- 	if (psci_ops.cpu_on)
-+#ifdef CONFIG_XIP_KERNEL
-+		return psci_ops.cpu_on(cpu_logical_map(cpu),
-+			((phys_addr_t)(&secondary_startup)
-+			- XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+			+ CONFIG_XIP_PHYS_ADDR));
-+#else
- 		return psci_ops.cpu_on(cpu_logical_map(cpu),
- 					virt_to_idmap(&secondary_startup));
-+#endif
- 	return -ENODEV;
- }
+diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
+index 271dc03fc6dbd..f0af12a2f70bc 100644
+--- a/net/ipv4/ipmr_base.c
++++ b/net/ipv4/ipmr_base.c
+@@ -310,7 +310,8 @@ int mr_table_dump(struct mr_table *mrt, struct sk_buff *skb,
+ 	if (filter->filter_set)
+ 		flags |= NLM_F_DUMP_FILTERED;
  
-diff --git a/arch/arm/mm/idmap.c b/arch/arm/mm/idmap.c
-index 448e57c6f6534..4a833e89782aa 100644
---- a/arch/arm/mm/idmap.c
-+++ b/arch/arm/mm/idmap.c
-@@ -84,8 +84,15 @@ static void identity_mapping_add(pgd_t *pgd, const char *text_start,
- 	unsigned long addr, end;
- 	unsigned long next;
- 
-+#ifdef CONFIG_XIP_KERNEL
-+	addr = (phys_addr_t)(text_start) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+		+ CONFIG_XIP_PHYS_ADDR;
-+	end = (phys_addr_t)(text_end) - XIP_VIRT_ADDR(CONFIG_XIP_PHYS_ADDR)
-+		+ CONFIG_XIP_PHYS_ADDR;
-+#else
- 	addr = virt_to_idmap(text_start);
- 	end = virt_to_idmap(text_end);
-+#endif
- 	pr_info("Setting up static identity map for 0x%lx - 0x%lx\n", addr, end);
- 
- 	prot |= PMD_TYPE_SECT | PMD_SECT_AP_WRITE | PMD_SECT_AF;
+-	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list) {
++	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list,
++				lockdep_rtnl_is_held()) {
+ 		if (e < s_e)
+ 			goto next_entry;
+ 		if (filter->dev &&
 -- 
 2.43.0
 
