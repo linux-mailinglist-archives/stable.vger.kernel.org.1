@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-101319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00409EEBCD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC879EEBB2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D3E416521A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:25:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE6F31882966
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BF020969B;
-	Thu, 12 Dec 2024 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C936A2153F4;
+	Thu, 12 Dec 2024 15:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrkn6iyf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0W92gGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8549F13792B;
-	Thu, 12 Dec 2024 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DF62080FC;
+	Thu, 12 Dec 2024 15:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017142; cv=none; b=ntohvlc/D0Etmt2eMqg0obssUWD/02DpIqOc0Ch0mLC7M7aIDiq1p0pdE7gYzr/cCJwg4vhYLbTI7jh9H0BQUmZBldcjn1RfR49pIkfih53ngq+oni20WG447XA3r0hidfyV/LAZ/mYRAqJ7I6hCMmX28cJIEUXVP59IpX9DWQQ=
+	t=1734017042; cv=none; b=tOxKZHaQNPlV9jn2qmFprcdA89v+paNbeM5gbCKcA33K8UrF7FX9FzBsaGvqPGPzrzoMwTK118g6ru8zg4iKUU4aRZxDO/hnMJWVCI684xq/AdzWVaU+hR6NM+yibwNb+9+3GvmfnAAvd7UPmnSJNRSmKx3eQzHkXf2zNtKJhmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017142; c=relaxed/simple;
-	bh=iNzbhSh2BUdyKG6GZOGfJjIEIFeuXDgOOuIwcR5ycjg=;
+	s=arc-20240116; t=1734017042; c=relaxed/simple;
+	bh=iGoN12MLWWHpGBrnP6UmWIMeJKC5IftWuosEudDSjz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=noj9JuFM6uWQpuEIFxbHoJax3F0b1Jj/YWb+n8uU1norvT5cdIg0tnPdDGXXV1mC9pXuxxRfkeVpD0DBYY9/kdxYoaJCFql1VV2gMCLgV0YyDBuzGs7HKTuXLvT9k5in/siYlqKzZmQwjNDqAdQbX1XLtT8N0UOyE7r2Sw8/fiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrkn6iyf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FBFC4CECE;
-	Thu, 12 Dec 2024 15:25:41 +0000 (UTC)
+	 MIME-Version; b=iqcethZXX0BDVU0PLJ9x6G5H9gQzOCNgT1UV+VWLy/+42iur5sZut88/Fa0R/M9v3FWTCzXoGTcqK1LQ74cxNf0+0paPLtZnc0/0tTfAFSaHJXSjeUUDYfVRHQCDZ866I1r1UPspr3kSHTd5UDhln1rChY4ZfYxTlOWFjEIykho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0W92gGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91502C4CECE;
+	Thu, 12 Dec 2024 15:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017142;
-	bh=iNzbhSh2BUdyKG6GZOGfJjIEIFeuXDgOOuIwcR5ycjg=;
+	s=korg; t=1734017042;
+	bh=iGoN12MLWWHpGBrnP6UmWIMeJKC5IftWuosEudDSjz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrkn6iyfnSt+w9bLi2Mp9vjG5jElCv8avNXQjsKhyUKL7sJ31XZy2eCXTW450WlOc
-	 4kEmQGSpfnqHhEP6pv01E57OOySbN7L1YxF7+hugf2l1VjSkYWyNiM+M9t7ODJVTOj
-	 xRyrUOZmm7KPFGrMZo20QCjasrol0LTp+nfW1nTs=
+	b=H0W92gGHJ8cVKbCVRWVQwNsd4SqQjd8EmwJvMzMcMahil8yDK9/qR8sX9bZrcIZVc
+	 pN+OTtMRh0FBUXrc4qM4p7gwf6z+N7oGFgaBEXRRJxoZbtlvUJrIRSj0kXA57JH7I/
+	 OQZVzjxAzpfGqjFMn87vVnTPxQvVHxH/BVg7WGCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Avri Altman <Avri.Altman@wdc.com>,
-	Peter Wang <peter.wang@mediatek.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Alejandro Jimenez <alejandro.j.jimenez@oracle.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 365/466] scsi: ufs: core: Make DMA mask configuration more flexible
-Date: Thu, 12 Dec 2024 15:58:54 +0100
-Message-ID: <20241212144321.197424836@linuxfoundation.org>
+Subject: [PATCH 6.12 366/466] iommu/amd: Fix corruption when mapping large pages from 0
+Date: Thu, 12 Dec 2024 15:58:55 +0100
+Message-ID: <20241212144321.237726470@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
 References: <20241212144306.641051666@linuxfoundation.org>
@@ -68,117 +67,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 78bc671bd1501e2f6c571e063301a4fdc5db53b2 ]
+[ Upstream commit e3a682eaf2af51a83f5313145ef592ce50fa787f ]
 
-Replace UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS with
-ufs_hba_variant_ops::set_dma_mask.  Update the Renesas driver
-accordingly.  This patch enables supporting other configurations than
-32-bit or 64-bit DMA addresses, e.g. 36-bit DMA addresses.
+If a page is mapped starting at 0 that is equal to or larger than can fit
+in the current mode (number of table levels) it results in corrupting the
+mapping as the following logic assumes the mode is correct for the page
+size being requested.
 
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20241018194753.775074-1-bvanassche@acm.org
-Reviewed-by: Avri Altman <Avri.Altman@wdc.com>
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+There are two issues here, the check if the address fits within the table
+uses the start address, it should use the last address to ensure that last
+byte of the mapping fits within the current table mode.
+
+The second is if the mapping is exactly the size of the full page table it
+has to add another level to instead hold a single IOPTE for the large
+size.
+
+Since both corner cases require a 0 IOVA to be hit and doesn't start until
+a page size of 2^48 it is unlikely to ever hit in a real system.
+
+Reported-by: Alejandro Jimenez <alejandro.j.jimenez@oracle.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/0-v1-27ab08d646a1+29-amd_0map_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c      | 4 ++--
- drivers/ufs/host/ufs-renesas.c | 9 ++++++++-
- include/ufs/ufshcd.h           | 9 +++------
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ drivers/iommu/amd/io_pgtable.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index b09198c69766b..cfebe4a1af9e8 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -2411,8 +2411,6 @@ static inline int ufshcd_hba_capabilities(struct ufs_hba *hba)
- 	int err;
- 
- 	hba->capabilities = ufshcd_readl(hba, REG_CONTROLLER_CAPABILITIES);
--	if (hba->quirks & UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS)
--		hba->capabilities &= ~MASK_64_ADDRESSING_SUPPORT;
- 
- 	/* nutrs and nutmrs are 0 based values */
- 	hba->nutrs = (hba->capabilities & MASK_TRANSFER_REQUESTS_SLOTS_SDB) + 1;
-@@ -10344,6 +10342,8 @@ EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
+diff --git a/drivers/iommu/amd/io_pgtable.c b/drivers/iommu/amd/io_pgtable.c
+index 804b788f3f167..f3399087859fd 100644
+--- a/drivers/iommu/amd/io_pgtable.c
++++ b/drivers/iommu/amd/io_pgtable.c
+@@ -118,6 +118,7 @@ static void free_sub_pt(u64 *root, int mode, struct list_head *freelist)
   */
- static int ufshcd_set_dma_mask(struct ufs_hba *hba)
+ static bool increase_address_space(struct amd_io_pgtable *pgtable,
+ 				   unsigned long address,
++				   unsigned int page_size_level,
+ 				   gfp_t gfp)
  {
-+	if (hba->vops && hba->vops->set_dma_mask)
-+		return hba->vops->set_dma_mask(hba);
- 	if (hba->capabilities & MASK_64_ADDRESSING_SUPPORT) {
- 		if (!dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(64)))
- 			return 0;
-diff --git a/drivers/ufs/host/ufs-renesas.c b/drivers/ufs/host/ufs-renesas.c
-index b3a5fc2d44e72..21a64b34397d8 100644
---- a/drivers/ufs/host/ufs-renesas.c
-+++ b/drivers/ufs/host/ufs-renesas.c
-@@ -7,6 +7,7 @@
+ 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
+@@ -133,7 +134,8 @@ static bool increase_address_space(struct amd_io_pgtable *pgtable,
  
- #include <linux/clk.h>
- #include <linux/delay.h>
-+#include <linux/dma-mapping.h>
- #include <linux/err.h>
- #include <linux/iopoll.h>
- #include <linux/kernel.h>
-@@ -364,14 +365,20 @@ static int ufs_renesas_init(struct ufs_hba *hba)
- 		return -ENOMEM;
- 	ufshcd_set_variant(hba, priv);
+ 	spin_lock_irqsave(&domain->lock, flags);
  
--	hba->quirks |= UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS | UFSHCD_QUIRK_HIBERN_FASTAUTO;
-+	hba->quirks |= UFSHCD_QUIRK_HIBERN_FASTAUTO;
+-	if (address <= PM_LEVEL_SIZE(pgtable->mode))
++	if (address <= PM_LEVEL_SIZE(pgtable->mode) &&
++	    pgtable->mode - 1 >= page_size_level)
+ 		goto out;
  
- 	return 0;
- }
+ 	ret = false;
+@@ -163,18 +165,21 @@ static u64 *alloc_pte(struct amd_io_pgtable *pgtable,
+ 		      gfp_t gfp,
+ 		      bool *updated)
+ {
++	unsigned long last_addr = address + (page_size - 1);
+ 	struct io_pgtable_cfg *cfg = &pgtable->pgtbl.cfg;
+ 	int level, end_lvl;
+ 	u64 *pte, *page;
  
-+static int ufs_renesas_set_dma_mask(struct ufs_hba *hba)
-+{
-+	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
-+}
-+
- static const struct ufs_hba_variant_ops ufs_renesas_vops = {
- 	.name		= "renesas",
- 	.init		= ufs_renesas_init,
-+	.set_dma_mask	= ufs_renesas_set_dma_mask,
- 	.setup_clocks	= ufs_renesas_setup_clocks,
- 	.hce_enable_notify = ufs_renesas_hce_enable_notify,
- 	.dbg_register_dump = ufs_renesas_dbg_register_dump,
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 1db754b4a4d62..8932ec5bd7c02 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -299,6 +299,8 @@ struct ufs_pwr_mode_info {
-  * @max_num_rtt: maximum RTT supported by the host
-  * @init: called when the driver is initialized
-  * @exit: called to cleanup everything done in init
-+ * @set_dma_mask: For setting another DMA mask than indicated by the 64AS
-+ *	capability bit.
-  * @get_ufs_hci_version: called to get UFS HCI version
-  * @clk_scale_notify: notifies that clks are scaled up/down
-  * @setup_clocks: called before touching any of the controller registers
-@@ -343,6 +345,7 @@ struct ufs_hba_variant_ops {
- 	int	(*init)(struct ufs_hba *);
- 	void    (*exit)(struct ufs_hba *);
- 	u32	(*get_ufs_hci_version)(struct ufs_hba *);
-+	int	(*set_dma_mask)(struct ufs_hba *);
- 	int	(*clk_scale_notify)(struct ufs_hba *, bool,
- 				    enum ufs_notify_change_status);
- 	int	(*setup_clocks)(struct ufs_hba *, bool,
-@@ -625,12 +628,6 @@ enum ufshcd_quirks {
- 	 */
- 	UFSHCD_QUIRK_SKIP_PH_CONFIGURATION		= 1 << 16,
+ 	BUG_ON(!is_power_of_2(page_size));
  
--	/*
--	 * This quirk needs to be enabled if the host controller has
--	 * 64-bit addressing supported capability but it doesn't work.
--	 */
--	UFSHCD_QUIRK_BROKEN_64BIT_ADDRESS		= 1 << 17,
--
- 	/*
- 	 * This quirk needs to be enabled if the host controller has
- 	 * auto-hibernate capability but it's FASTAUTO only.
+-	while (address > PM_LEVEL_SIZE(pgtable->mode)) {
++	while (last_addr > PM_LEVEL_SIZE(pgtable->mode) ||
++	       pgtable->mode - 1 < PAGE_SIZE_LEVEL(page_size)) {
+ 		/*
+ 		 * Return an error if there is no memory to update the
+ 		 * page-table.
+ 		 */
+-		if (!increase_address_space(pgtable, address, gfp))
++		if (!increase_address_space(pgtable, last_addr,
++					    PAGE_SIZE_LEVEL(page_size), gfp))
+ 			return NULL;
+ 	}
+ 
 -- 
 2.43.0
 
