@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-102081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7576C9EF081
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752FB9EF3B5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E271F16A118
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C959A17D2EA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB88217F34;
-	Thu, 12 Dec 2024 16:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B649B22654C;
+	Thu, 12 Dec 2024 16:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiCoez64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lArMEaYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A13239BB3;
-	Thu, 12 Dec 2024 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7112421B90F;
+	Thu, 12 Dec 2024 16:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019896; cv=none; b=TS4QLdnrUaWE6lJKGIFAemlRTpWlP9NJupbYs/oc+y362gy2lcR2iq72UZC4ZGr1wQ7niiYyI4sCqh+mFQs/qYMtJ8/BkCsXrCkaCNm/gK9Q6Ph9tytTQCs4kk7RwXFQH3RoO2ilxJlGrJJF/D5jFgWpxL032Wc1nRzhPe4XerY=
+	t=1734021731; cv=none; b=sh75Z4PlrCDhhqSVq24UH/9xkPnfhAJHzoHCf1vv8AQS8H4dEdF8quSR939KKCP40ReK70qL66zD7CV/LL2hSp4wMHiTRvPZm6BHVglIx0hHS7aYj7Y8kBNTWBidrmc9vcRZX2WkqiUCZRhL+rVc1BIqFwmNMjK5g2ffrFIp1Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019896; c=relaxed/simple;
-	bh=LnzWhiq09mY6/AAc/B8wqfC1lb2AOwDRDPxMIF/9//A=;
+	s=arc-20240116; t=1734021731; c=relaxed/simple;
+	bh=/ellpx5kprHizFvTOFj8sqiC+EWByHevVAN5joDWesk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vtm7i6mGNVbp/TIdr10edwXPLBbOg45aSRrGljQXq+dI4voJ6KsC3IG6dClzeJY6+wLsuHXK10HU0PIFvwOehdfA8Y9aJS7cTrtBU0brS4TyxyEwEqvF+LdmV174WQaOVfkijmxFERxecFpuEkx9BStUv8K3cdUrScXEdGqYt2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiCoez64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DB9C4CECE;
-	Thu, 12 Dec 2024 16:11:35 +0000 (UTC)
+	 MIME-Version; b=uhtpra3haXnS/a1nZXwQQSw/p2rTr5BeaownbqR+dHAQf0fZjJVD6Z+qLrQrtkRMa0xiYX7LcharFgaPEz1TlJzgzuCo9sjsaAkzt0hYdk4cRwtzgeSdLpYJ/Lw9Kz8wuyTFbdDX7PNlAyTnrSgOTgR3zIBfwYduwIW+i+q+Kzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lArMEaYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A174CC4CECE;
+	Thu, 12 Dec 2024 16:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019896;
-	bh=LnzWhiq09mY6/AAc/B8wqfC1lb2AOwDRDPxMIF/9//A=;
+	s=korg; t=1734021731;
+	bh=/ellpx5kprHizFvTOFj8sqiC+EWByHevVAN5joDWesk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YiCoez64b+g5QwhiZ9krjMBgOGDMQ8JrBQtFFmr/fqAq4VQnNL1ADUK0nMyhsWe8z
-	 cLNNEV5fgm6zEPpoFshVMW++3O//rmdipzEsvFxBwmevK5oMu9TWT9VX4fMye75tHS
-	 TuKP5S1cJh7WQ3QxsYc6YX4MZ0qMePmIyKIfEwQY=
+	b=lArMEaYe22orJsgYKtJzO8rxPW23xOkmA5tNwkjVFzbMI7g7GWFU0O36Mdt/cKvtH
+	 JggNpNlkWvwYJM/uQVotA1FUXzWw9Shw/DepOmThl4bl9poKmEhjIdXIbXH0wXHQeE
+	 CtHPO2/s45pi4wxITyPlv+XhYFhzB+n2vm+twpWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 296/772] vdpa/mlx5: Fix suboptimal range on iotlb iteration
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Helge Deller <deller@gmx.de>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 046/565] mm: avoid unsafe VMA hook invocation when error arises on mmap hook
 Date: Thu, 12 Dec 2024 15:54:01 +0100
-Message-ID: <20241212144402.136796657@linuxfoundation.org>
+Message-ID: <20241212144313.303218750@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +73,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit 35025963326e44d8bced3eecd42d2f040f4f0024 ]
+[ Upstream commit 3dd6ed34ce1f2356a77fb88edafb5ec96784e3cf ]
 
-The starting iova address to iterate iotlb map entry within a range
-was set to an irrelevant value when passing to the itree_next()
-iterator, although luckily it doesn't affect the outcome of finding
-out the granule of the smallest iotlb map size. Fix the code to make
-it consistent with the following for-loop.
+Patch series "fix error handling in mmap_region() and refactor
+(hotfixes)", v4.
 
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Message-Id: <20241021134040.975221-3-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+mmap_region() is somewhat terrifying, with spaghetti-like control flow and
+numerous means by which issues can arise and incomplete state, memory
+leaks and other unpleasantness can occur.
+
+A large amount of the complexity arises from trying to handle errors late
+in the process of mapping a VMA, which forms the basis of recently
+observed issues with resource leaks and observable inconsistent state.
+
+This series goes to great lengths to simplify how mmap_region() works and
+to avoid unwinding errors late on in the process of setting up the VMA for
+the new mapping, and equally avoids such operations occurring while the
+VMA is in an inconsistent state.
+
+The patches in this series comprise the minimal changes required to
+resolve existing issues in mmap_region() error handling, in order that
+they can be hotfixed and backported.  There is additionally a follow up
+series which goes further, separated out from the v1 series and sent and
+updated separately.
+
+This patch (of 5):
+
+After an attempted mmap() fails, we are no longer in a situation where we
+can safely interact with VMA hooks.  This is currently not enforced,
+meaning that we need complicated handling to ensure we do not incorrectly
+call these hooks.
+
+We can avoid the whole issue by treating the VMA as suspect the moment
+that the file->f_ops->mmap() function reports an error by replacing
+whatever VMA operations were installed with a dummy empty set of VMA
+operations.
+
+We do so through a new helper function internal to mm - mmap_file() -
+which is both more logically named than the existing call_mmap() function
+and correctly isolates handling of the vm_op reassignment to mm.
+
+All the existing invocations of call_mmap() outside of mm are ultimately
+nested within the call_mmap() from mm, which we now replace.
+
+It is therefore safe to leave call_mmap() in place as a convenience
+    function (and to avoid churn).  The invokers are:
+
+     ovl_file_operations -> mmap -> ovl_mmap() -> backing_file_mmap()
+    coda_file_operations -> mmap -> coda_file_mmap()
+     shm_file_operations -> shm_mmap()
+shm_file_operations_huge -> shm_mmap()
+            dma_buf_fops -> dma_buf_mmap_internal -> i915_dmabuf_ops
+                            -> i915_gem_dmabuf_mmap()
+
+None of these callers interact with vm_ops or mappings in a problematic
+way on error, quickly exiting out.
+
+Link: https://lkml.kernel.org/r/cover.1730224667.git.lorenzo.stoakes@oracle.com
+Link: https://lkml.kernel.org/r/d41fd763496fd0048a962f3fd9407dc72dd4fd86.1730224667.git.lorenzo.stoakes@oracle.com
+Fixes: deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: Jann Horn <jannh@google.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Jann Horn <jannh@google.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Helge Deller <deller@gmx.de>
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/mlx5/core/mr.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ mm/internal.h |   12 ++++++++++++
+ mm/mmap.c     |    4 ++--
+ mm/nommu.c    |    4 ++--
+ mm/util.c     |   18 ++++++++++++++++++
+ 4 files changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vdpa/mlx5/core/mr.c b/drivers/vdpa/mlx5/core/mr.c
-index 4f0a2edc2333d..b6ac21b0322d7 100644
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -227,7 +227,6 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
- 	unsigned long lgcd = 0;
- 	int log_entity_size;
- 	unsigned long size;
--	u64 start = 0;
- 	int err;
- 	struct page *pg;
- 	unsigned int nsg;
-@@ -238,10 +237,9 @@ static int map_direct_mr(struct mlx5_vdpa_dev *mvdev, struct mlx5_vdpa_direct_mr
- 	struct device *dma = mvdev->vdev.dma_dev;
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -34,6 +34,18 @@
  
- 	for (map = vhost_iotlb_itree_first(iotlb, mr->start, mr->end - 1);
--	     map; map = vhost_iotlb_itree_next(map, start, mr->end - 1)) {
-+	     map; map = vhost_iotlb_itree_next(map, mr->start, mr->end - 1)) {
- 		size = maplen(map, mr);
- 		lgcd = gcd(lgcd, size);
--		start += size;
- 	}
- 	log_entity_size = ilog2(lgcd);
+ void page_writeback_init(void);
  
--- 
-2.43.0
-
++/*
++ * This is a file-backed mapping, and is about to be memory mapped - invoke its
++ * mmap hook and safely handle error conditions. On error, VMA hooks will be
++ * mutated.
++ *
++ * @file: File which backs the mapping.
++ * @vma:  VMA which we are mapping.
++ *
++ * Returns: 0 if success, error otherwise.
++ */
++int mmap_file(struct file *file, struct vm_area_struct *vma);
++
+ vm_fault_t do_swap_page(struct vm_fault *vmf);
+ 
+ void free_pgtables(struct mmu_gather *tlb, struct vm_area_struct *start_vma,
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -1788,7 +1788,7 @@ unsigned long mmap_region(struct file *f
+ 		}
+ 
+ 		vma->vm_file = get_file(file);
+-		error = call_mmap(file, vma);
++		error = mmap_file(file, vma);
+ 		if (error)
+ 			goto unmap_and_free_vma;
+ 
+@@ -1803,7 +1803,7 @@ unsigned long mmap_region(struct file *f
+ 
+ 		addr = vma->vm_start;
+ 
+-		/* If vm_flags changed after call_mmap(), we should try merge vma again
++		/* If vm_flags changed after mmap_file(), we should try merge vma again
+ 		 * as we may succeed this time.
+ 		 */
+ 		if (unlikely(vm_flags != vma->vm_flags && prev)) {
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -942,7 +942,7 @@ static int do_mmap_shared_file(struct vm
+ {
+ 	int ret;
+ 
+-	ret = call_mmap(vma->vm_file, vma);
++	ret = mmap_file(vma->vm_file, vma);
+ 	if (ret == 0) {
+ 		vma->vm_region->vm_top = vma->vm_region->vm_end;
+ 		return 0;
+@@ -973,7 +973,7 @@ static int do_mmap_private(struct vm_are
+ 	 * - VM_MAYSHARE will be set if it may attempt to share
+ 	 */
+ 	if (capabilities & NOMMU_MAP_DIRECT) {
+-		ret = call_mmap(vma->vm_file, vma);
++		ret = mmap_file(vma->vm_file, vma);
+ 		if (ret == 0) {
+ 			/* shouldn't return success if we're not sharing */
+ 			BUG_ON(!(vma->vm_flags & VM_MAYSHARE));
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -1086,6 +1086,24 @@ int __weak memcmp_pages(struct page *pag
+ 	return ret;
+ }
+ 
++int mmap_file(struct file *file, struct vm_area_struct *vma)
++{
++	static const struct vm_operations_struct dummy_vm_ops = {};
++	int err = call_mmap(file, vma);
++
++	if (likely(!err))
++		return 0;
++
++	/*
++	 * OK, we tried to call the file hook for mmap(), but an error
++	 * arose. The mapping is in an inconsistent state and we most not invoke
++	 * any further hooks on it.
++	 */
++	vma->vm_ops = &dummy_vm_ops;
++
++	return err;
++}
++
+ #ifdef CONFIG_PRINTK
+ /**
+  * mem_dump_obj - Print available provenance information
 
 
 
