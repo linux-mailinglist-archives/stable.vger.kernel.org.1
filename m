@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DE59EEDBB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:50:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42319EF1BD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B0BF1889F94
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:46:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6476A2918D5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8974421B91D;
-	Thu, 12 Dec 2024 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB773234963;
+	Thu, 12 Dec 2024 16:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnQsO2Nr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOUGQabo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472141547F0;
-	Thu, 12 Dec 2024 15:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81E222EA0A;
+	Thu, 12 Dec 2024 16:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018278; cv=none; b=MLv9kf8+tqGCuEXpjjAmaycaqHn9/GxB7RICZss+B4GEytgD3VzH/k1v6+Yc6ofCbqaidEf78WyXV0/31SZxIX+OJc8ChEPrZJC42h3lTWhRgbvW3vsuHe5LyimrIEQeKyyho1pyKI9km/PSbMzj39AMFBbHHgGrbkJtBmio180=
+	t=1734021127; cv=none; b=N3nbpdmHwnoKk1kgEPbWnHBR/GNT1zO+LGh9DpfEKGHMxceVcOgodvnTq14w+Z1GV2nJFqocJM0QamV8GteIuJvFHChPG2u763mWaeB0qsE73gfdjfEYXbFqvgrGO+dtBF9ef6wCX48UW3YxxNqzsU4sPnaabbQvGvT6czpHxT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018278; c=relaxed/simple;
-	bh=QMOkB67lsbq5zxA6O0+4PFXHYsrHWmdHodwfe05dRNo=;
+	s=arc-20240116; t=1734021127; c=relaxed/simple;
+	bh=bsJaaKjcuf5wE894BCs6t1gw4f9sSRv8WBQzuCgoFls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFnGbKuCIh10MXLY3GAykbWYFNrZVD9zQiM772yFHgKuxFFWyq3yMfKWsPtQQX/SHxGcE0/8tvsrN15svvbFSriOg67vt4hemT4ZpeB9Bw8XE+5zU0aSaOLgXNqGdy3agCl0w8sR1LViikw2eUFTXSzy/rbHhknQVR5iGiNHors=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnQsO2Nr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A797EC4CECE;
-	Thu, 12 Dec 2024 15:44:37 +0000 (UTC)
+	 MIME-Version; b=hRBEKEYfQmH0eSmhCOhT8JC5TK8RcmWsDACeviO36XFFx+Nh2Ds52X71HPvdPd7c7LGsL2l6vZ7E8PBC9NSvv0YxhEii43VUFS3lFdF+0axJG1bwM2sKIkpVjGN0QmDRN888tNGGyE//idC9Qg54C9JXxfoGH/fco7lb8FyJUYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOUGQabo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D6FC4CECE;
+	Thu, 12 Dec 2024 16:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018278;
-	bh=QMOkB67lsbq5zxA6O0+4PFXHYsrHWmdHodwfe05dRNo=;
+	s=korg; t=1734021127;
+	bh=bsJaaKjcuf5wE894BCs6t1gw4f9sSRv8WBQzuCgoFls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnQsO2NrJ0vzcHMU6j9W12W+mJZx7WcrPgpvjVH4qgyG4TNIUAabf7Pxcyxy+LhCt
-	 mk9r0zju38b9QbdXvqBSSEhTB5YtNzT6TCJbOP1vLL3jtHiYT6d4Wlif3YTKxhvZdL
-	 fmnk4/TJ08lxaondWI+cd6PiN7VhbyJVTBt6utgw=
+	b=xOUGQabo/aHs2fvLVlQVmY/0ZtbmurK8J3GRJnDxmebMrqGxXrCCJZF15GCcHgDH0
+	 trFPLOaVg3Gi1fgFAF6SekT70vhC98S0wkv2coFlWXnugpF41PjTBTSBKUk0FAWSKA
+	 4SpYEI207Agkrs9PyVNgzF5g2WIT/pFLA5SGp+1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Zhao <Victor.Zhao@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 248/356] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
-Date: Thu, 12 Dec 2024 15:59:27 +0100
-Message-ID: <20241212144254.404591506@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 623/772] nilfs2: fix potential out-of-bounds memory access in nilfs_find_entry()
+Date: Thu, 12 Dec 2024 15:59:28 +0100
+Message-ID: <20241212144415.666105962@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Zhao <Victor.Zhao@amd.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
+commit 985ebec4ab0a28bb5910c3b1481a40fbf7f9e61d upstream.
 
-Under sriov, host driver will save and restore vf pci cfg space during
-reset. And during device init, under sriov, pci_restore_state happens after
-fullaccess released, and it can have race condition with mmio protection
-enable from host side leading to missing interrupts.
+Syzbot reported that when searching for records in a directory where the
+inode's i_size is corrupted and has a large value, memory access outside
+the folio/page range may occur, or a use-after-free bug may be detected if
+KASAN is enabled.
 
-So skip amdgpu_device_cache_pci_state for sriov.
+This is because nilfs_last_byte(), which is called by nilfs_find_entry()
+and others to calculate the number of valid bytes of directory data in a
+page from i_size and the page index, loses the upper 32 bits of the 64-bit
+size information due to an inappropriate type of local variable to which
+the i_size value is assigned.
 
-Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
-Acked-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This caused a large byte offset value due to underflow in the end address
+calculation in the calling nilfs_find_entry(), resulting in memory access
+that exceeds the folio/page size.
+
+Fix this issue by changing the type of the local variable causing the bit
+loss from "unsigned int" to "u64".  The return value of nilfs_last_byte()
+is also of type "unsigned int", but it is truncated so as not to exceed
+PAGE_SIZE and no bit loss occurs, so no change is required.
+
+Link: https://lkml.kernel.org/r/20241119172403.9292-1-konishi.ryusuke@gmail.com
+Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=96d5d14c47d97015c624
+Tested-by: syzbot+96d5d14c47d97015c624@syzkaller.appspotmail.com
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index cd2d99e00b5d9..2e739b80cfccf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5841,6 +5841,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
- 	struct amdgpu_device *adev = drm_to_adev(dev);
- 	int r;
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -76,7 +76,7 @@ static inline void nilfs_put_page(struct
+  */
+ static unsigned int nilfs_last_byte(struct inode *inode, unsigned long page_nr)
+ {
+-	unsigned int last_byte = inode->i_size;
++	u64 last_byte = inode->i_size;
  
-+	if (amdgpu_sriov_vf(adev))
-+		return false;
-+
- 	r = pci_save_state(pdev);
- 	if (!r) {
- 		kfree(adev->pci_state);
--- 
-2.43.0
-
+ 	last_byte -= page_nr << PAGE_SHIFT;
+ 	if (last_byte > PAGE_SIZE)
 
 
 
