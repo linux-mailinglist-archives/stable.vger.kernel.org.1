@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-102114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5FA9EF156
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:28 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1559EF2CE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:06 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 091421896F93
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE2C28643C
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470B122689C;
-	Thu, 12 Dec 2024 16:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C6E226863;
+	Thu, 12 Dec 2024 16:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12glVAgy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEIWZxhV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032A2226864;
-	Thu, 12 Dec 2024 16:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66B022967A;
+	Thu, 12 Dec 2024 16:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020025; cv=none; b=VDw9tDjNNJ/ssS2ti1WDsZ83V1jS+9AJggVRnEhTajtoLIRHdwpl1UsifEp6Q3EaP9zPwuMsMLLNDTZ9vL46oAjmU5/rciNWG28ksamSltdcHn1hGsa1xxWN3PLY2tCEha+i8JyfTMxppIzYRyczwp4G1AR+CjhuLpRcWA3u9lA=
+	t=1734021844; cv=none; b=t+3ZJQT+WDR421oYPngVDbNlYLrDArk/UKH8Au/wLhYsSrb4a9lcR1g+kz3axKUSnCK374djwXL+IU9hIOJMPUuq+eJs8kVQJhPb90niodEMgqHw70PRwmHk0408Njp+mQTsEMWSixzBzb6d6CRgF6GNeTNY6FsNwiJ34K0UbJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020025; c=relaxed/simple;
-	bh=7IyJJW/2Yn4McdpotqLvU76TjzHuhdkxAKjys5ZF8dA=;
+	s=arc-20240116; t=1734021844; c=relaxed/simple;
+	bh=R/agaCc8CIO4yLeePRukWe55V6Ee+ul/kwmZxYNKC2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHYOT4zTnNebDMnz9+y5JfINIGrllZKEbt4IVNdt0plBFVdgnBk0MOqyXYbLeUtXwWcvBxotyBkS2uBMuijkYOTFOgVkRsqxBw1N6y3gRHMRZB5gzz6mL+HjHQznJR+CUt9viPPEJVt11To60F425lagD8SYN2KGSdNCpuT2nn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12glVAgy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E266AC4CECE;
-	Thu, 12 Dec 2024 16:13:43 +0000 (UTC)
+	 MIME-Version; b=fygfW50Bix4aLsgrrIILW4NZdw/36QXKxzPcQLL7OiM45PW7Puij6vxUKvC8J53Cg86hmuUfdCFkImQ8jABEgL4iu7k8h2lpDA1XXF/K7fK9NB07Aqvk8pT8g7puAtAjqReYukH67hzP05w1bEBGUNnXIlxjfSRKyhTf4gpN38s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEIWZxhV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3516EC4CECE;
+	Thu, 12 Dec 2024 16:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020024;
-	bh=7IyJJW/2Yn4McdpotqLvU76TjzHuhdkxAKjys5ZF8dA=;
+	s=korg; t=1734021844;
+	bh=R/agaCc8CIO4yLeePRukWe55V6Ee+ul/kwmZxYNKC2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12glVAgyLtzp0zhvWqT5p3LELdZj9cbsiPKYDueyzziDS2aN8eQEc7QGEhOdOLi3Y
-	 mVjIHuw0iX9BQtwsZsSH8sELxmsYRoz/Q4Ytli+R2XvFfxDnU3zkQP+INd1QLKU2jb
-	 fX1V2VptUL+AJW2PRmCzf1E0e2I7rKNq9UMAfUtk=
+	b=UEIWZxhVIeQf7WwX4ei5jTimgg8QsnuTLDGivyAb3HVfz4wFHHAcEAEwppyD2221r
+	 IF0t5iqfFv9axqfvBfiRIWCcijwaY9TSe3GztMDtPwsaq4VJEsz/zTWqTbq2h+D2a3
+	 hx2GgQ17MT75/0jQ8a0eUhqhw8j/VnTssc9bkymQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 328/772] usb: yurex: make waiting on yurex_write interruptible
+Subject: [PATCH 5.15 078/565] s390/cio: Do not unregister the subchannel based on DNV
 Date: Thu, 12 Dec 2024 15:54:33 +0100
-Message-ID: <20241212144403.461326491@linuxfoundation.org>
+Message-ID: <20241212144314.572404674@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Vineeth Vijayan <vneethv@linux.ibm.com>
 
-[ Upstream commit e0aa9614ab0fd35b404e4b16ebe879f9fc152591 ]
+[ Upstream commit 8c58a229688ce3a097b3b1a2efe1b4f5508c2123 ]
 
-The IO yurex_write() needs to wait for in order to have a device
-ready for writing again can take a long time time.
-Consequently the sleep is done in an interruptible state.
-Therefore others waiting for yurex_write() itself to finish should
-use mutex_lock_interruptible.
+Starting with commit 2297791c92d0 ("s390/cio: dont unregister
+subchannel from child-drivers"), CIO does not unregister subchannels
+when the attached device is invalid or unavailable. Instead, it
+allows subchannels to exist without a connected device. However, if
+the DNV value is 0, such as, when all the CHPIDs of a subchannel are
+configured in standby state, the subchannel is unregistered, which
+contradicts the current subchannel specification.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 6bc235a2e24a5 ("USB: add driver for Meywa-Denki & Kayac YUREX")
-Rule: add
-Link: https://lore.kernel.org/stable/20240924084415.300557-1-oneukum%40suse.com
-Link: https://lore.kernel.org/r/20240924084415.300557-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update the logic so that subchannels are not unregistered based
+on the DNV value. Also update the SCHIB information even if the
+DNV bit is zero.
+
+Suggested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/iowarrior.c | 4 ----
- drivers/usb/misc/yurex.c     | 5 ++++-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/s390/cio/cio.c    |  6 +++++-
+ drivers/s390/cio/device.c | 18 +++++++++++++++++-
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
-index 2fde8dd0b3e21..5606c5a2624a7 100644
---- a/drivers/usb/misc/iowarrior.c
-+++ b/drivers/usb/misc/iowarrior.c
-@@ -912,7 +912,6 @@ static int iowarrior_probe(struct usb_interface *interface,
- static void iowarrior_disconnect(struct usb_interface *interface)
+diff --git a/drivers/s390/cio/cio.c b/drivers/s390/cio/cio.c
+index 923f5ca4f5e6b..54bfa9fe3031b 100644
+--- a/drivers/s390/cio/cio.c
++++ b/drivers/s390/cio/cio.c
+@@ -459,10 +459,14 @@ int cio_update_schib(struct subchannel *sch)
  {
- 	struct iowarrior *dev = usb_get_intfdata(interface);
--	int minor = dev->minor;
+ 	struct schib schib;
  
- 	usb_deregister_dev(interface, &iowarrior_class);
+-	if (stsch(sch->schid, &schib) || !css_sch_is_valid(&schib))
++	if (stsch(sch->schid, &schib))
+ 		return -ENODEV;
  
-@@ -936,9 +935,6 @@ static void iowarrior_disconnect(struct usb_interface *interface)
- 		mutex_unlock(&dev->mutex);
- 		iowarrior_delete(dev);
- 	}
--
--	dev_info(&interface->dev, "I/O-Warror #%d now disconnected\n",
--		 minor - IOWARRIOR_MINOR_BASE);
- }
- 
- /* usb specific object needed to register this driver with the usb subsystem */
-diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
-index c313cd41f7a5a..0eed614ac1273 100644
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -441,7 +441,10 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
- 	if (count == 0)
- 		goto error;
- 
--	mutex_lock(&dev->io_mutex);
-+	retval = mutex_lock_interruptible(&dev->io_mutex);
-+	if (retval < 0)
-+		return -EINTR;
+ 	memcpy(&sch->schib, &schib, sizeof(schib));
 +
- 	if (dev->disconnected) {		/* already disconnected */
- 		mutex_unlock(&dev->io_mutex);
- 		retval = -ENODEV;
++	if (!css_sch_is_valid(&schib))
++		return -EACCES;
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(cio_update_schib);
+diff --git a/drivers/s390/cio/device.c b/drivers/s390/cio/device.c
+index c16f18cfeed72..c2ed91b69f079 100644
+--- a/drivers/s390/cio/device.c
++++ b/drivers/s390/cio/device.c
+@@ -1390,14 +1390,18 @@ enum io_sch_action {
+ 	IO_SCH_VERIFY,
+ 	IO_SCH_DISC,
+ 	IO_SCH_NOP,
++	IO_SCH_ORPH_CDEV,
+ };
+ 
+ static enum io_sch_action sch_get_action(struct subchannel *sch)
+ {
+ 	struct ccw_device *cdev;
++	int rc;
+ 
+ 	cdev = sch_get_cdev(sch);
+-	if (cio_update_schib(sch)) {
++	rc = cio_update_schib(sch);
++
++	if (rc == -ENODEV) {
+ 		/* Not operational. */
+ 		if (!cdev)
+ 			return IO_SCH_UNREG;
+@@ -1405,6 +1409,16 @@ static enum io_sch_action sch_get_action(struct subchannel *sch)
+ 			return IO_SCH_UNREG;
+ 		return IO_SCH_ORPH_UNREG;
+ 	}
++
++	/* Avoid unregistering subchannels without working device. */
++	if (rc == -EACCES) {
++		if (!cdev)
++			return IO_SCH_NOP;
++		if (ccw_device_notify(cdev, CIO_GONE) != NOTIFY_OK)
++			return IO_SCH_UNREG_CDEV;
++		return IO_SCH_ORPH_CDEV;
++	}
++
+ 	/* Operational. */
+ 	if (!cdev)
+ 		return IO_SCH_ATTACH;
+@@ -1474,6 +1488,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
+ 		rc = 0;
+ 		goto out_unlock;
+ 	case IO_SCH_ORPH_UNREG:
++	case IO_SCH_ORPH_CDEV:
+ 	case IO_SCH_ORPH_ATTACH:
+ 		ccw_device_set_disconnected(cdev);
+ 		break;
+@@ -1505,6 +1520,7 @@ static int io_subchannel_sch_event(struct subchannel *sch, int process)
+ 	/* Handle attached ccw device. */
+ 	switch (action) {
+ 	case IO_SCH_ORPH_UNREG:
++	case IO_SCH_ORPH_CDEV:
+ 	case IO_SCH_ORPH_ATTACH:
+ 		/* Move ccw device to orphanage. */
+ 		rc = ccw_device_move_to_orph(cdev);
 -- 
 2.43.0
 
