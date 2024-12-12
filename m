@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-101527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3669EED04
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:40:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757F69EF23E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AB6A188E01B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:37:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6BF4189A9C5
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137EF218587;
-	Thu, 12 Dec 2024 15:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22247238E0D;
+	Thu, 12 Dec 2024 16:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exxhVCBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrN5JwNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C0E2135C1;
-	Thu, 12 Dec 2024 15:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FE022652A;
+	Thu, 12 Dec 2024 16:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017867; cv=none; b=gzx7uaT0fgu8kjBEZi4CrqwKLRL1bRDtPbigwoMwiPBh2E9TJGtbiEE4qEoQrsi894BjGnISesgeWmXEatFiRkiIMhkAvFfDLxZVNPY71hhANNEEOYydWrCEVxAFDeSW+a7JUbNr6Cuo8Au0EUefyUUO7IbDjdar69WF3zABGAQ=
+	t=1734020596; cv=none; b=macgk5w5MAtsv7Dtvtb+gVlN1EkOd73b8Ycy14PoKMSmE6HCT3hSDgZQnQSUk972RcLaSTPn4CCIEh0FDwoI4RL6/WVBF05ge9AQN94iFss2hcU9CMXbkH2vHTzv8jpPdws6uV+uH8COLak3qB0SnOYZCLjHiin44B+TILcrUGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017867; c=relaxed/simple;
-	bh=edYa0bbFZ/UIQcrgirKfVNiNuOEySc/iCg8pz1FvgGo=;
+	s=arc-20240116; t=1734020596; c=relaxed/simple;
+	bh=ldKvYzMjHa82Q3UF9LMriaHRVTOrPsxv3OiGiSa/O9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OgPlxLDy1bjnNKXTjDUgyYlaQzBzjpzLFDHmbWFrWJS64mmPDVr65SH/F7h5pdYhzaIEcOz49NE4J/o+k/p6jdzhNYLneSO32oeb+wDRF4jMlx1T//g73rS9rS1J0MlJOXqt278wTE7nNI6mKNynvuQcwGFwf2ZW7Bdu5CfSi6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exxhVCBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39125C4CECE;
-	Thu, 12 Dec 2024 15:37:47 +0000 (UTC)
+	 MIME-Version; b=VuRF/CuN0gOHSuACPuGG/O7L+nH4rpkqf/iLu4dE/TMjhFBB4mgzAz0UX9VvIXOq2I6qB3xclurWVuxt35Ah3sa0LV1CPfnTcxi2JxuZbP/iU7cSRQmyctOT0UcrORHzS9DrCr3bRHTYOUgwAOUJ8RkvOv+dGVPxxxI1cGMEBSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrN5JwNM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7E4C4CED0;
+	Thu, 12 Dec 2024 16:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017867;
-	bh=edYa0bbFZ/UIQcrgirKfVNiNuOEySc/iCg8pz1FvgGo=;
+	s=korg; t=1734020596;
+	bh=ldKvYzMjHa82Q3UF9LMriaHRVTOrPsxv3OiGiSa/O9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exxhVCBAaxmTObBQFPw7cbSxG+XdV/zcU21dizSJ21Olg+k+LoSSaHlwK7aSlywFn
-	 qJwk/NkiU/qkYAmvvv7hL+MPUDO2KQeydomcZ0JaClac9dP7csfWJ+hxzytHZ2Gfah
-	 rwrIDgIHvpwweiFcn2EJk+c5WSsHNo46ckT7VRQI=
+	b=lrN5JwNMr68abFIZx6LrAP/nb0pIC4ot8hyEQWRzkVIutz179jvnJb7jDGpdB3ooq
+	 JfwtESHkaG64WdanxrjqT0vdusS+Cd5sRJ/9oxmOTo2mBLsmTePHOFadlIF4ZHPsJB
+	 O+jB02RrwGOR19y2q0QOiamFonWt24YcTfoE8oDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yassine Oudjana <y.oudjana@protonmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/356] bpf: Remove unnecessary kfree(im_node) in lpm_trie_update_elem
-Date: Thu, 12 Dec 2024 15:57:33 +0100
-Message-ID: <20241212144249.943139570@linuxfoundation.org>
+Subject: [PATCH 6.1 509/772] watchdog: mediatek: Make sure system reset gets asserted in mtk_wdt_restart()
+Date: Thu, 12 Dec 2024 15:57:34 +0100
+Message-ID: <20241212144410.986119242@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Yassine Oudjana <y.oudjana@protonmail.com>
 
-[ Upstream commit 3d5611b4d7efbefb85a74fcdbc35c603847cc022 ]
+[ Upstream commit a1495a21e0b8aad92132dfcf9c6fffc1bde9d5b2 ]
 
-There is no need to call kfree(im_node) when updating element fails,
-because im_node must be NULL. Remove the unnecessary kfree() for
-im_node.
+Clear the IRQ enable bit of WDT_MODE before asserting software reset
+in order to make TOPRGU issue a system reset signal instead of an IRQ.
 
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20241206110622.1161752-3-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 532d6b36b2bf ("bpf: Handle in-place update for full LPM trie correctly")
+Fixes: a44a45536f7b ("watchdog: Add driver for Mediatek watchdog")
+Signed-off-by: Yassine Oudjana <y.oudjana@protonmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241106104738.195968-2-y.oudjana@protonmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/lpm_trie.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/watchdog/mtk_wdt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 0b1931ad3b1dd..db1b36c09eafa 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -307,7 +307,7 @@ static long trie_update_elem(struct bpf_map *map,
- 			     void *_key, void *value, u64 flags)
+diff --git a/drivers/watchdog/mtk_wdt.c b/drivers/watchdog/mtk_wdt.c
+index e977875367926..08763ff950c6d 100644
+--- a/drivers/watchdog/mtk_wdt.c
++++ b/drivers/watchdog/mtk_wdt.c
+@@ -175,9 +175,15 @@ static int mtk_wdt_restart(struct watchdog_device *wdt_dev,
  {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
--	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
-+	struct lpm_trie_node *node, *im_node, *new_node = NULL;
- 	struct lpm_trie_node *free_node = NULL;
- 	struct lpm_trie_node __rcu **slot;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
-@@ -441,9 +441,7 @@ static long trie_update_elem(struct bpf_map *map,
- 	if (ret) {
- 		if (new_node)
- 			trie->n_entries--;
--
- 		kfree(new_node);
--		kfree(im_node);
- 	}
+ 	struct mtk_wdt_dev *mtk_wdt = watchdog_get_drvdata(wdt_dev);
+ 	void __iomem *wdt_base;
++	u32 reg;
  
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
+ 	wdt_base = mtk_wdt->wdt_base;
+ 
++	/* Enable reset in order to issue a system reset instead of an IRQ */
++	reg = readl(wdt_base + WDT_MODE);
++	reg &= ~WDT_MODE_IRQ_EN;
++	writel(reg | WDT_MODE_KEY, wdt_base + WDT_MODE);
++
+ 	while (1) {
+ 		writel(WDT_SWRST_KEY, wdt_base + WDT_SWRST);
+ 		mdelay(5);
 -- 
 2.43.0
 
