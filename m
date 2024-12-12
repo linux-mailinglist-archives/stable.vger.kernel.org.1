@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-102966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D809EF544
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:15:30 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851719EF694
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:27:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 409183410AF
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FAAA289DA6
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D69E223C58;
-	Thu, 12 Dec 2024 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C551C21660C;
+	Thu, 12 Dec 2024 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMpnYZHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZhkB5L1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D0053365;
-	Thu, 12 Dec 2024 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844B913CA93;
+	Thu, 12 Dec 2024 17:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023133; cv=none; b=QqM3A8mlY1Bgv6tHGp000PYsaFVr+pjxTqeOqv4AD8RuBfkyW4BsKW2WkIdyWdp+3UETvPytYpjMdPywbL9gB17luP8F+56Tesl1s4C1y9MiaLmCwKmkGjXjkv7k6eDzQT2Hh7ER2stfc30uWhZSScyiJvwL6QTZuJAuRAkx31o=
+	t=1734024424; cv=none; b=m54adlGoxiDM1Yk9ZRN32bJo332tD/VbB0fVOLK4chssd8qvJAkbawo7dzVV4UW6lE5mhVYFBiuQHMLTYU6alrQU7ZVn3REuqFYpOIvdxjGNTkwaJ7K+y0QT8CvUuDn+GlinBjNzmsoi31UZKQE3hzLzBsD44Cx2fnadyTzxKtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023133; c=relaxed/simple;
-	bh=upcIhJYceZKRwOyEyllusoaKePEh0EaGJ0ueVoiqDBc=;
+	s=arc-20240116; t=1734024424; c=relaxed/simple;
+	bh=1NRM0Sk4+/NgvR94uJTFsNBdC4SH6Tah/+pv1+U3vyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqDfMQ71afLYaWJncsNkvokd3L+uoWmyIdSLRJ4ZAyIHE9AuC0lhWDyt7+96vKNHJFihdJdz7MeKK5OL4UGfRTw+JdaN1kgBZUQYVY82NlVTvocWGKM6GfpdlZfq/siacdc4onFmAgjPi3YzAIoA7fLGfcAHI7j78sWdV/wg7Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMpnYZHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD4AC4CECE;
-	Thu, 12 Dec 2024 17:05:32 +0000 (UTC)
+	 MIME-Version; b=N9jZ1lRUTMWTZyyvR5lQ01zBPyxVllB/YJvu7ypZ/pU9ukYFcsNs+dlmKogxVOgq8hGVBRW19TmngKrP2UkctUgFVovQ9dlH5esd+rop7JMot8kCGyTuZIMxW5gBFOKa33v8dXwPBXNrW4aFIUZa2mfRCkc8x5RB9G/ICIIOSwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gZhkB5L1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE01C4CED4;
+	Thu, 12 Dec 2024 17:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023133;
-	bh=upcIhJYceZKRwOyEyllusoaKePEh0EaGJ0ueVoiqDBc=;
+	s=korg; t=1734024424;
+	bh=1NRM0Sk4+/NgvR94uJTFsNBdC4SH6Tah/+pv1+U3vyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMpnYZHLpj4wHM2pzKX2Vu35+u7k4ZvPhIv9uY732yD++zVlHZyCDvytkbg30NUck
-	 xO67+53t2Yis23KaC3IaZUcbf0O2mKXnLD8mmjMJtsruDjTQIdqKiYEDeyuYWVvzzP
-	 iWOCijnIiVVsF/FAO6bkAvIzi+/YUuSo6vKCy/PM=
+	b=gZhkB5L1qCb7rTsVVnocFam+urDy+zpuDXQ2SKHdp5yUPUMZ2XpbK4civC448XpYI
+	 MLcflaCZnDpJCsKNUDVfFmWK1luTnt6BzqzlJZGM17akoFiNKGnv510evbEShUWhG7
+	 PC0FaJ8M+tnjNSz56l36IpbWJbYM2No2MtWctvP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Raphael Gallais-Pou <rgallaispou@gmail.com>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 434/565] drm/sti: Add __iomem for mixer_dbg_mxns parameter
-Date: Thu, 12 Dec 2024 16:00:29 +0100
-Message-ID: <20241212144328.839523078@linuxfoundation.org>
+Subject: [PATCH 5.10 292/459] rtc: st-lpc: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Thu, 12 Dec 2024 16:00:30 +0100
+Message-ID: <20241212144305.167095192@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 86e8f94789dd6f3e705bfa821e1e416f97a2f863 ]
+[ Upstream commit b6cd7adec0cf03f0aefc55676e71dd721cbc71a8 ]
 
-Sparse complains about incorrect type in argument 1.
-expected void const volatile  __iomem *ptr but got void *.
-so modify mixer_dbg_mxn's addr parameter.
+If request_irq() fails in st_rtc_probe(), there is no need to enable
+the irq, and if it succeeds, disable_irq() after request_irq() still has
+a time gap in which interrupts can come.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411191809.6V3c826r-lkp@intel.com/
-Fixes: a5f81078a56c ("drm/sti: add debugfs entries for MIXER crtc")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c28f0dcb6a4526721d83ba1f659bba30564d3d54.1732087094.git.xiaopei01@kylinos.cn
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+request_irq() with IRQF_NO_AUTOEN flag will disable IRQ auto-enable when
+request IRQ.
+
+Fixes: b5b2bdfc2893 ("rtc: st: Add new driver for ST's LPC RTC")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20240912033727.3013951-1-ruanjinjie@huawei.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/sti/sti_mixer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rtc/rtc-st-lpc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/sti/sti_mixer.c b/drivers/gpu/drm/sti/sti_mixer.c
-index 7e5f14646625b..06c1b81912f79 100644
---- a/drivers/gpu/drm/sti/sti_mixer.c
-+++ b/drivers/gpu/drm/sti/sti_mixer.c
-@@ -137,7 +137,7 @@ static void mixer_dbg_crb(struct seq_file *s, int val)
+diff --git a/drivers/rtc/rtc-st-lpc.c b/drivers/rtc/rtc-st-lpc.c
+index c4ea3f3f08844..f9a2d745a568d 100644
+--- a/drivers/rtc/rtc-st-lpc.c
++++ b/drivers/rtc/rtc-st-lpc.c
+@@ -218,15 +218,14 @@ static int st_rtc_probe(struct platform_device *pdev)
+ 		return -EINVAL;
  	}
- }
  
--static void mixer_dbg_mxn(struct seq_file *s, void *addr)
-+static void mixer_dbg_mxn(struct seq_file *s, void __iomem *addr)
- {
- 	int i;
+-	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler, 0,
+-			       pdev->name, rtc);
++	ret = devm_request_irq(&pdev->dev, rtc->irq, st_rtc_handler,
++			       IRQF_NO_AUTOEN, pdev->name, rtc);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to request irq %i\n", rtc->irq);
+ 		return ret;
+ 	}
  
+ 	enable_irq_wake(rtc->irq);
+-	disable_irq(rtc->irq);
+ 
+ 	rtc->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (IS_ERR(rtc->clk)) {
 -- 
 2.43.0
 
