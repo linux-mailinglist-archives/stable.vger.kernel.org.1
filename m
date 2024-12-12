@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-103197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6287E9EF73A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:32:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837489EF511
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:13:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05575162F7C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:17:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DB6A1890F4F
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC191F2381;
-	Thu, 12 Dec 2024 17:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278AB22914B;
+	Thu, 12 Dec 2024 16:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRZj+Ici"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5xwBrVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FE84F218;
-	Thu, 12 Dec 2024 17:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AED216E14;
+	Thu, 12 Dec 2024 16:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734023838; cv=none; b=JGPACu5/jYua8kfdLUimWaacVVw3pxpyAloRUouGIgy8T8VorxfXigK4cioendOXlmBLNrfBE+HwtZudPn5SbmUxzU9EQ38eMWdKitdGYPOE0s1hotAM/HGZMV4g4h9SINI6ZVq3Y1ldTOYeuprLnykkxV40gVCTNyxZhII2D30=
+	t=1734022447; cv=none; b=l3Qw+J7TMZDW1K+KtMv8KT4/q6AGOL8SofeyziyLk9x/sfG+RvJeOut8LFmHYs8ejXHEIp3JnyLNYg/TC1WtzMs+vneduMk8XG85ERHHJfhhWAUd1mHNcOaBmlM37N6iVTHp7aEqEePTzGSPtK1UX62CQtOnxiih6oNlap1IWg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734023838; c=relaxed/simple;
-	bh=5Zu92DBGnlT6z8I95VYWhuQGAGLRmc32xFVz2Vsnsfc=;
+	s=arc-20240116; t=1734022447; c=relaxed/simple;
+	bh=evQ5CjMV8/CAV6hLpnZd7h9JUku/UHScOywszyjYBBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gGkMzpSps3Q5Ca7Ze7QdnePYURq3KIO+3E2iwwgpbBqeHBx9sq4xH3g+wdRamC0qg5zWrTZK61HNEd0s1WI6hpzgDDeZHO4PX1fPufh1ehnmzC+Yf/r0/b7NKJGnUTZogh5PAqfGJG3FJRpCT4i+LYc5/G7fz8jwYHbl8UIyopg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRZj+Ici; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60ACBC4CECE;
-	Thu, 12 Dec 2024 17:17:16 +0000 (UTC)
+	 MIME-Version; b=gwClVno06Ol4A/bYxki/eirbitaq2kNg/ouxpa2XSSBbZDoFozl30o1Q0UBVE5pEMuPzeZdVTFhxYgkkx8o6r7VjRMrl6xnfJkPAXJmQdhfeK0xlPl0Rd+DauBalwAAi3o6QAavjJEaIA6AjPP0mUPuToP/YAwvDKCf8b3HMifc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5xwBrVK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5273C4CED3;
+	Thu, 12 Dec 2024 16:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734023836;
-	bh=5Zu92DBGnlT6z8I95VYWhuQGAGLRmc32xFVz2Vsnsfc=;
+	s=korg; t=1734022447;
+	bh=evQ5CjMV8/CAV6hLpnZd7h9JUku/UHScOywszyjYBBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sRZj+IcigQWmxMhfs/8Tcgc6Nxh+tnTINVqUC/ZsU1FJQRYxzddW5aeH5cVRhuTJf
-	 hYIVQRM+Vhl+6rL6BTKitNuIizgGO3FNCv1RboAUxdG5exAlqyKDCiXOw9CZqN9+QC
-	 1O1hCxXhNqwiXvvHqt1Jtb0H7hw3oEoAtKqJ5l6s=
+	b=D5xwBrVK4AvhOiZITTqvuFpF68+ijuS3l8bAriayITX1FPk/v5nZl8oTMOjzBr2UV
+	 oFXXe54Qtf5Ys27Moj9YiDuZQOo/gOtH6wUyOjK0hUfxl6q8gPjj55AKjirWI9fHev
+	 hCI58CXNSoXL6rZXpGCc8A5GOJUG2YmBCPkrfbUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Ian Rogers <irogers@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Steinar H. Gunderson" <sesse@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Hemant Kumar <hemant@linux.vnet.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 099/459] wifi: ath9k: add range check for conn_rsp_epid in htc_connect_service()
-Date: Thu, 12 Dec 2024 15:57:17 +0100
-Message-ID: <20241212144257.421705857@linuxfoundation.org>
+Subject: [PATCH 5.15 243/565] perf probe: Fix libdw memory leak
+Date: Thu, 12 Dec 2024 15:57:18 +0100
+Message-ID: <20241212144321.083866334@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +67,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 8619593634cbdf5abf43f5714df49b04e4ef09ab ]
+[ Upstream commit 4585038b8e186252141ef86e9f0d8e97f11dce8d ]
 
-I found the following bug in my fuzzer:
+Add missing dwarf_cfi_end to free memory associated with probe_finder
+cfi_eh which is allocated and owned via a call to
+dwarf_getcfi_elf. Confusingly cfi_dbg shouldn't be freed as its memory
+is owned by the passed in debuginfo struct. Add comments to highlight
+this.
 
-  UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc_hst.c:26:51
-  index 255 is out of range for type 'htc_endpoint [22]'
-  CPU: 0 UID: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.11.0-rc6-dirty #14
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  Workqueue: events request_firmware_work_func
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x180/0x1b0
-   __ubsan_handle_out_of_bounds+0xd4/0x130
-   htc_issue_send.constprop.0+0x20c/0x230
-   ? _raw_spin_unlock_irqrestore+0x3c/0x70
-   ath9k_wmi_cmd+0x41d/0x610
-   ? mark_held_locks+0x9f/0xe0
-   ...
+This addresses leak sanitizer issues seen in:
+tools/perf/tests/shell/test_uprobe_from_different_cu.sh
 
-Since this bug has been confirmed to be caused by insufficient verification
-of conn_rsp_epid, I think it would be appropriate to add a range check for
-conn_rsp_epid to htc_connect_service() to prevent the bug from occurring.
-
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240909103855.68006-1-aha310510@gmail.com
+Fixes: 270bde1e76f4 ("perf probe: Search both .eh_frame and .debug_frame sections for probe location")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Steinar H. Gunderson <sesse@google.com>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Hemant Kumar <hemant@linux.vnet.ibm.com>
+Link: https://lore.kernel.org/r/20241016235622.52166-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_hst.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/util/probe-finder.c | 4 ++++
+ tools/perf/util/probe-finder.h | 4 ++--
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
-index 99667aba289df..00dc97ac53b9d 100644
---- a/drivers/net/wireless/ath/ath9k/htc_hst.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
-@@ -294,6 +294,9 @@ int htc_connect_service(struct htc_target *target,
- 		return -ETIMEDOUT;
- 	}
+diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+index 50d861a80f572..2f86103761ab2 100644
+--- a/tools/perf/util/probe-finder.c
++++ b/tools/perf/util/probe-finder.c
+@@ -1490,6 +1490,10 @@ int debuginfo__find_trace_events(struct debuginfo *dbg,
+ 	if (ret >= 0 && tf.pf.skip_empty_arg)
+ 		ret = fill_empty_trace_arg(pev, tf.tevs, tf.ntevs);
  
-+	if (target->conn_rsp_epid < 0 || target->conn_rsp_epid >= ENDPOINT_MAX)
-+		return -EINVAL;
++#if _ELFUTILS_PREREQ(0, 142)
++	dwarf_cfi_end(tf.pf.cfi_eh);
++#endif
 +
- 	*conn_rsp_epid = target->conn_rsp_epid;
- 	return 0;
- err:
+ 	if (ret < 0 || tf.ntevs == 0) {
+ 		for (i = 0; i < tf.ntevs; i++)
+ 			clear_probe_trace_event(&tf.tevs[i]);
+diff --git a/tools/perf/util/probe-finder.h b/tools/perf/util/probe-finder.h
+index 8bc1c80d3c1c0..1f4650b955094 100644
+--- a/tools/perf/util/probe-finder.h
++++ b/tools/perf/util/probe-finder.h
+@@ -81,9 +81,9 @@ struct probe_finder {
+ 
+ 	/* For variable searching */
+ #if _ELFUTILS_PREREQ(0, 142)
+-	/* Call Frame Information from .eh_frame */
++	/* Call Frame Information from .eh_frame. Owned by this struct. */
+ 	Dwarf_CFI		*cfi_eh;
+-	/* Call Frame Information from .debug_frame */
++	/* Call Frame Information from .debug_frame. Not owned. */
+ 	Dwarf_CFI		*cfi_dbg;
+ #endif
+ 	Dwarf_Op		*fb_ops;	/* Frame base attribute */
 -- 
 2.43.0
 
