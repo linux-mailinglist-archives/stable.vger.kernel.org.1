@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369AE9EF0A0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6ED9EF378
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9449A1657BA
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A2EA17B5F2
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBE923694B;
-	Thu, 12 Dec 2024 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADB72139D2;
+	Thu, 12 Dec 2024 16:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6wHBueG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpcdO6sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC342210DE;
-	Thu, 12 Dec 2024 16:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0DB235C5A;
+	Thu, 12 Dec 2024 16:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019809; cv=none; b=W3+G46oPRzNoT8V4XksU9ms1697BNlUyAOSL29RhXHnSkjKnwckMm8rRpph3aETg0MUoqJ7vb9exa6H2SQs6lo0bAKkgLdCmt2WiWh1GMV3GsMP6bgYgjYjt7tRXbxbmFJscIsBuPVzap+PwoHmygNcN886XfCLrmygYJqLqxrQ=
+	t=1734021902; cv=none; b=NFx3E2UxeanxaBXOAzue8ZrcYN4ITH3u3TD6groV8OHZJ6ULvXoCmiIBJTLDuYERodzRYfXC18lTpf2pTMyv40J0JZn3RquNzU1CM/RhqzaEPb28uCI6BkZ/PY+DtdeNPaQXhE7tdf19SbSLys2CbWBYhoJdAa/sHKj1sm0Fwe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019809; c=relaxed/simple;
-	bh=uVpbopaGhCx+D0Os9V0RgGVwf3yxYi1utbCOXH3i944=;
+	s=arc-20240116; t=1734021902; c=relaxed/simple;
+	bh=Vgcyw1Brz+MchrMBvbiZkyc7vx/h27Z9Y1uEjOvx3Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VFgtt07xkiLA5siVltBBOSuKWaChRFR/uaBOM9U4UgeRYlBrQUa9k9pCwEMdAd7FV7mEA7w/xLT9nt6/x9LbUWn/XGoAZpHh6O3qbOHZE3tz+hzgSGjOqsf783dRmeYnBLXPtVYRclKFqkv3aDByYHC2fYVVG+jC0wHQvvMeedk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6wHBueG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B195C4CECE;
-	Thu, 12 Dec 2024 16:10:08 +0000 (UTC)
+	 MIME-Version; b=ZADXZSH/2XYwJmLydUweWHKCVaYXU14jp6NuMh2UFpMnvLD0qxu+ymR9HlshGnlhYxaucSUuo5JMp+5LRkkiAP4gUFOpo/k8fYt2HkJAqNNwE1lZPzJIcCWtPdent9NaoFpfPpzcvIT7OImmTR3AosuGD43nwL4f7E17a3AYE6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpcdO6sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E35FC4CECE;
+	Thu, 12 Dec 2024 16:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019808;
-	bh=uVpbopaGhCx+D0Os9V0RgGVwf3yxYi1utbCOXH3i944=;
+	s=korg; t=1734021901;
+	bh=Vgcyw1Brz+MchrMBvbiZkyc7vx/h27Z9Y1uEjOvx3Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6wHBueGapuHMwYHWWGXJCfnFSn5VwlYhHehh/1XGdjyaGlxyxdJi6mhAuCcnlD+4
-	 Hh7knrYaimcrprkj9KMMteM1SOs9X6aVgUfzpOkpV6G2aSpff1N98p3d6Ec/E31q6F
-	 39Qij5GqElkRWowI/QQyuMqtSAD3QtJXkUBX6dug=
+	b=tpcdO6skdyShFSqYfAEZg5lhBTnLln2jESY/9GT46HMdwp+/Bzy+5EiJLrVjI7uVZ
+	 3owAFUf/6wFjMga3Mm/UlKqSwVPoPrw+8ST2PUJT5vVjGdeS/nuRYU9d6QW+b2jayF
+	 veTqyXyoVJ0to3qfOZpceqyYnRSlvJaE7J6ZN0s4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <barnabas.czeman@mainlining.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 304/772] power: supply: bq27xxx: Fix registers of bq27426
+Subject: [PATCH 5.15 054/565] wifi: iwlwifi: mvm: Use the sync timepoint API in suspend
 Date: Thu, 12 Dec 2024 15:54:09 +0100
-Message-ID: <20241212144402.461952587@linuxfoundation.org>
+Message-ID: <20241212144313.633695754@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +61,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barnabás Czémán <barnabas.czeman@mainlining.org>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 34f99d3b706a519e556841f405c224ca708b1f54 ]
+[ Upstream commit 9715246ca0bfc9feaec1b4ff5b3d38de65a7025d ]
 
-Correct bq27426 registers, according to technical reference manual
-it does not have Design Capacity register so it is not register
-compatible with bq27421.
+When starting the suspend flow, HOST_D3_START triggers an _async_
+firmware dump collection for debugging purposes. The async worker
+may race with suspend flow and fail to get NIC access, resulting in
+the following warning:
+"Timeout waiting for hardware access (CSR_GP_CNTRL 0xffffffff)"
 
-Fixes: 5ef6a16033b47 ("power: supply: bq27xxx: Add support for BQ27426")
-Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-Link: https://lore.kernel.org/r/20241016-fix_bq27426-v2-1-aa6c0f51a9f6@mainlining.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fix this by switching to the sync version to ensure the dump
+completes before proceeding with the suspend flow, avoiding
+potential race issues.
+
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20241010140328.9aae318cd593.I4b322009f39489c0b1d8893495c887870f73ed9c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 37 ++++++++++++++++++++++++--
- 1 file changed, 35 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/init.c | 4 +++-
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c  | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 4a5371a3a5313..2868dcf3f96dc 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -449,9 +449,29 @@ static u8
- 		[BQ27XXX_REG_AP] = 0x18,
- 		BQ27XXX_DM_REG_ROWS,
- 	},
-+	bq27426_regs[BQ27XXX_REG_MAX] = {
-+		[BQ27XXX_REG_CTRL] = 0x00,
-+		[BQ27XXX_REG_TEMP] = 0x02,
-+		[BQ27XXX_REG_INT_TEMP] = 0x1e,
-+		[BQ27XXX_REG_VOLT] = 0x04,
-+		[BQ27XXX_REG_AI] = 0x10,
-+		[BQ27XXX_REG_FLAGS] = 0x06,
-+		[BQ27XXX_REG_TTE] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_TTF] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_TTES] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_TTECP] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_NAC] = 0x08,
-+		[BQ27XXX_REG_RC] = 0x0c,
-+		[BQ27XXX_REG_FCC] = 0x0e,
-+		[BQ27XXX_REG_CYCT] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_AE] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_SOC] = 0x1c,
-+		[BQ27XXX_REG_DCAP] = INVALID_REG_ADDR,
-+		[BQ27XXX_REG_AP] = 0x18,
-+		BQ27XXX_DM_REG_ROWS,
-+	},
- #define bq27411_regs bq27421_regs
- #define bq27425_regs bq27421_regs
--#define bq27426_regs bq27421_regs
- #define bq27441_regs bq27421_regs
- #define bq27621_regs bq27421_regs
- 	bq27z561_regs[BQ27XXX_REG_MAX] = {
-@@ -769,10 +789,23 @@ static enum power_supply_property bq27421_props[] = {
- };
- #define bq27411_props bq27421_props
- #define bq27425_props bq27421_props
--#define bq27426_props bq27421_props
- #define bq27441_props bq27421_props
- #define bq27621_props bq27421_props
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/init.c b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+index 2ecec00db9da7..263560f259778 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/init.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/init.c
+@@ -35,10 +35,12 @@ void iwl_fw_runtime_init(struct iwl_fw_runtime *fwrt, struct iwl_trans *trans,
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_runtime_init);
  
-+static enum power_supply_property bq27426_props[] = {
-+	POWER_SUPPLY_PROP_STATUS,
-+	POWER_SUPPLY_PROP_PRESENT,
-+	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-+	POWER_SUPPLY_PROP_CURRENT_NOW,
-+	POWER_SUPPLY_PROP_CAPACITY,
-+	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-+	POWER_SUPPLY_PROP_TEMP,
-+	POWER_SUPPLY_PROP_TECHNOLOGY,
-+	POWER_SUPPLY_PROP_CHARGE_FULL,
-+	POWER_SUPPLY_PROP_CHARGE_NOW,
-+	POWER_SUPPLY_PROP_MANUFACTURER,
-+};
-+
- static enum power_supply_property bq27z561_props[] = {
- 	POWER_SUPPLY_PROP_STATUS,
- 	POWER_SUPPLY_PROP_PRESENT,
++/* Assumes the appropriate lock is held by the caller */
+ void iwl_fw_runtime_suspend(struct iwl_fw_runtime *fwrt)
+ {
+ 	iwl_fw_suspend_timestamp(fwrt);
+-	iwl_dbg_tlv_time_point(fwrt, IWL_FW_INI_TIME_POINT_HOST_D3_START, NULL);
++	iwl_dbg_tlv_time_point_sync(fwrt, IWL_FW_INI_TIME_POINT_HOST_D3_START,
++				    NULL);
+ }
+ IWL_EXPORT_SYMBOL(iwl_fw_runtime_suspend);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 24c1666b2c88a..80b6e646abe18 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -1380,7 +1380,9 @@ int iwl_mvm_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wowlan)
+ 
+ 	iwl_mvm_pause_tcm(mvm, true);
+ 
++	mutex_lock(&mvm->mutex);
+ 	iwl_fw_runtime_suspend(&mvm->fwrt);
++	mutex_unlock(&mvm->mutex);
+ 
+ 	return __iwl_mvm_suspend(hw, wowlan, false);
+ }
 -- 
 2.43.0
 
