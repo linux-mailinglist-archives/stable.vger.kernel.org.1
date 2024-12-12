@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-101695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD879EEDA1
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE939EF1CD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:41:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9E228B4E6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28CE928AE45
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38F1222D46;
-	Thu, 12 Dec 2024 15:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF431217F34;
+	Thu, 12 Dec 2024 16:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ld5zsQo8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z20i9TmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E48F21CFF0;
-	Thu, 12 Dec 2024 15:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB184F218;
+	Thu, 12 Dec 2024 16:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018465; cv=none; b=Iz85dDFA2Z064OYKG43PTGmiNjpqKfxkhCwuBN8c9pC+lOAbRHcueQMY503wOBKMZ2hOVY8LGuS7rV1JMmsSmv0M4F6qDDG1ZYR5nwb60TuM6fiPUrPVTItaCMNwY8AG2TjScCI7ugLyWJlVJ1v3YKlmvytM1pAGjtQN+Ts+Ezw=
+	t=1734021208; cv=none; b=rjqJPni+SryvMMKwWznVrx/ne3mmk4zz4vyA6On0oer1Py5Dj4WLZcjfjFrrZ1SEn6YNKhQQ18dk58wQhl8edhzqDrqL8lPK/TyS0BJ/DTD6Ko/3rWl3EhTC8XC1aEhzmpctkJP2HruuFca859useXQjrGZkm9xN6g9FJiMp5wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018465; c=relaxed/simple;
-	bh=fISr+SCVxhb2eV/5sGHuFFHbnQJmf6TZ+qlmcZjss/Y=;
+	s=arc-20240116; t=1734021208; c=relaxed/simple;
+	bh=UI3CpgTB+NPMtBsn65XKctQm6b79vgf5gwB/PJ0yy5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iliaAOgKi2HDvilVuzrwHWM0UV0RJVGJe/4ESbPgyeg+is7AXHi9YWnOH3Cb6ECsiDG3DJ3ZhO9XyoFzIABOmgxpJkKcSs4SGosHfOXHZss2rLNJcOusOFwAr1p5HsSTgDT7maQR37EfW+zoKtbvYU14lNDLIAgVxI6m9He9pas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ld5zsQo8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D520FC4CECE;
-	Thu, 12 Dec 2024 15:47:44 +0000 (UTC)
+	 MIME-Version; b=s9SEgY1aUu/vfUdWVlks9kAaHho0cWHRR86othwRHPCJkTe7ki1eFv7zZBzlhqiZO0pTHELjEMzjO/VHtfNgsWe84P9V45eH+S1pmA6zrmLDRhKFn8qvKiQhbKaKZJs1GtkseegeAcXF6ovMXiAlm5kOM7lzjxOg9NBSGBUGVtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z20i9TmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBBAC4CECE;
+	Thu, 12 Dec 2024 16:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018465;
-	bh=fISr+SCVxhb2eV/5sGHuFFHbnQJmf6TZ+qlmcZjss/Y=;
+	s=korg; t=1734021208;
+	bh=UI3CpgTB+NPMtBsn65XKctQm6b79vgf5gwB/PJ0yy5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ld5zsQo8mZT6O06MXSm3C1vu/A2wctedf72jClww2qz4KDNMARQ3uQQN9yBt5yPPQ
-	 XNPlCwZT2eFCMGdMu5Blz83I5g7JspvEzupYiRFw8PfAAw5Rptrj8X6AMB9W5+UwA5
-	 CRzd51Zd3ELjsJwiseVQJzFXhWbu0Tc8dXnq21iY=
+	b=Z20i9TmT8rwsAfPQIxKNDRJr4ZrcFzhE5hGtkakwIiM2CFVC2pT4LuUKFcJmz4aqU
+	 C7EjhLrbUbun49OgPPsTGawazMLKnGLprBWILMYyVpazvntYC3ncSeDoxf1TDbF9z0
+	 tVQLOMfgaqyrbh5JtP4+t0xWVKJb8uyA4NTODG2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Rosen Penev <rosenp@gmail.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/356] LoongArch: Fix sleeping in atomic context for PREEMPT_RT
+Subject: [PATCH 6.1 675/772] wifi: ath5k: add PCI ID for Arcadyan devices
 Date: Thu, 12 Dec 2024 16:00:20 +0100
-Message-ID: <20241212144256.458457760@linuxfoundation.org>
+Message-ID: <20241212144417.809964387@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 88fd2b70120d52c1010257d36776876941375490 ]
+[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
 
-Commit bab1c299f3945ffe79 ("LoongArch: Fix sleeping in atomic context in
-setup_tlb_handler()") changes the gfp flag from GFP_KERNEL to GFP_ATOMIC
-for alloc_pages_node(). However, for PREEMPT_RT kernels we can still get
-a "sleeping in atomic context" error:
+Arcadyan made routers with this PCI ID containing an AR2417.
 
-[    0.372259] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-[    0.372266] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-[    0.372268] preempt_count: 1, expected: 0
-[    0.372270] RCU nest depth: 1, expected: 1
-[    0.372272] 3 locks held by swapper/1/0:
-[    0.372274]  #0: 900000000c9f5e60 (&pcp->lock){+.+.}-{3:3}, at: get_page_from_freelist+0x524/0x1c60
-[    0.372294]  #1: 90000000087013b8 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x50/0x140
-[    0.372305]  #2: 900000047fffd388 (&zone->lock){+.+.}-{3:3}, at: __rmqueue_pcplist+0x30c/0xea0
-[    0.372314] irq event stamp: 0
-[    0.372316] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-[    0.372322] hardirqs last disabled at (0): [<9000000005947320>] copy_process+0x9c0/0x26e0
-[    0.372329] softirqs last  enabled at (0): [<9000000005947320>] copy_process+0x9c0/0x26e0
-[    0.372335] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[    0.372341] CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.12.0-rc7+ #1891
-[    0.372346] Hardware name: Loongson Loongson-3A5000-7A1000-1w-CRB/Loongson-LS3A5000-7A1000-1w-CRB, BIOS vUDK2018-LoongArch-V2.0.0-prebeta9 10/21/2022
-[    0.372349] Stack : 0000000000000089 9000000005a0db9c 90000000071519c8 9000000100388000
-[    0.372486]         900000010038b890 0000000000000000 900000010038b898 9000000007e53788
-[    0.372492]         900000000815bcc8 900000000815bcc0 900000010038b700 0000000000000001
-[    0.372498]         0000000000000001 4b031894b9d6b725 00000000055ec000 9000000100338fc0
-[    0.372503]         00000000000000c4 0000000000000001 000000000000002d 0000000000000003
-[    0.372509]         0000000000000030 0000000000000003 00000000055ec000 0000000000000003
-[    0.372515]         900000000806d000 9000000007e53788 00000000000000b0 0000000000000004
-[    0.372521]         0000000000000000 0000000000000000 900000000c9f5f10 0000000000000000
-[    0.372526]         90000000076f12d8 9000000007e53788 9000000005924778 0000000000000000
-[    0.372532]         00000000000000b0 0000000000000004 0000000000000000 0000000000070000
-[    0.372537]         ...
-[    0.372540] Call Trace:
-[    0.372542] [<9000000005924778>] show_stack+0x38/0x180
-[    0.372548] [<90000000071519c4>] dump_stack_lvl+0x94/0xe4
-[    0.372555] [<900000000599b880>] __might_resched+0x1a0/0x260
-[    0.372561] [<90000000071675cc>] rt_spin_lock+0x4c/0x140
-[    0.372565] [<9000000005cbb768>] __rmqueue_pcplist+0x308/0xea0
-[    0.372570] [<9000000005cbed84>] get_page_from_freelist+0x564/0x1c60
-[    0.372575] [<9000000005cc0d98>] __alloc_pages_noprof+0x218/0x1820
-[    0.372580] [<900000000593b36c>] tlb_init+0x1ac/0x298
-[    0.372585] [<9000000005924b74>] per_cpu_trap_init+0x114/0x140
-[    0.372589] [<9000000005921964>] cpu_probe+0x4e4/0xa60
-[    0.372592] [<9000000005934874>] start_secondary+0x34/0xc0
-[    0.372599] [<900000000715615c>] smpboot_entry+0x64/0x6c
-
-This is because in PREEMPT_RT kernels normal spinlocks are replaced by
-rt spinlocks and rt_spin_lock() will cause sleeping. Fix it by disabling
-NUMA optimization completely for PREEMPT_RT kernels.
-
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/tlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath5k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
-index 56bf1dd5358aa..526310ec73c7e 100644
---- a/arch/loongarch/mm/tlb.c
-+++ b/arch/loongarch/mm/tlb.c
-@@ -292,7 +292,7 @@ static void setup_tlb_handler(int cpu)
- 		/* Avoid lockdep warning */
- 		rcu_cpu_starting(cpu);
- 
--#ifdef CONFIG_NUMA
-+#if defined(CONFIG_NUMA) && !defined(CONFIG_PREEMPT_RT)
- 		vec_sz = sizeof(exception_handlers);
- 
- 		if (pcpu_handlers[cpu])
+diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
+index 35a6a7b1047a3..f583e0f3932b8 100644
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
+ 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
++	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
+ 	{ 0 }
+ };
 -- 
 2.43.0
 
