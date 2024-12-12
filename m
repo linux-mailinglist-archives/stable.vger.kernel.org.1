@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-103339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5EF9EF769
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8231D9EF4FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8906017CB86
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:24:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3191894BFF
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC97215764;
-	Thu, 12 Dec 2024 17:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C83223E82;
+	Thu, 12 Dec 2024 17:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAA8Prn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGILp30X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5725C2144C4;
-	Thu, 12 Dec 2024 17:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84395223E7B;
+	Thu, 12 Dec 2024 17:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024269; cv=none; b=EUiD49ZYlA9x39fqjxD0HSfcf4i6GEGsZu07nCvgjAi6mtiKEWE5HyoCeI7nLWTjYBdDrGl0iySFCLQsMPjnAYM9P6dWsTkvoAK5vkemi+Zx5t2x2AtaT8vMK8YrPEzBmE3uE7Qem1NoKmhBZqtepRBjvhPZ0hcLbtbyIXUkeVc=
+	t=1734022993; cv=none; b=KsLNIx06xJKOweHZRA6M9ALxHs6l2lRkWDPt13QP0C1yx82tmerpaXcp1aVrTU2Zue3BHSS1ZDcM+ggf2MdyPwAsz97WU1i+dR8SMYsoQ1p3ghV6OO3JyOUHsME8JzpMkPl/hr1idMcuSOmjlzrjg5oVuqGJ4IgZvzg7pPpFqJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024269; c=relaxed/simple;
-	bh=4DJ1F8K4jk21OW/eE0QXOymxqbdEVDb+LlMvxzV96pU=;
+	s=arc-20240116; t=1734022993; c=relaxed/simple;
+	bh=bzuF+JqDGd+q/JmTm0CCnusbNOj/gqtK297xn/YM1ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKJ7TTqdKCN7ymp8g4HaeQRoNPpy0X4lxc0lwG1ZN6AKSD3VR4k6nBRWFGtpTQBblQtcjxn448j9EH6BaiLn4rydpQoZXn/QahiZPMvtbe5bpmTzLur39YUOzOcTFiTgPR9RJ/XHTeWG2QDobDoE2Jry4e9k0E4C4PEllP7pKxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAA8Prn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D32BC4CECE;
-	Thu, 12 Dec 2024 17:24:28 +0000 (UTC)
+	 MIME-Version; b=LKWky50hlfWdtzuze/wbQDpTJQnapebwchR21B9Co/sKQubXBUaIXPUVOX2++fUun1CjRKWjOGKOMET+jXO2m4c/+FmKX9W9YS0VclGtqtGh7YXXBPwDrasWO5t2Zd2su5FPZ3JRR0LFfDpxZnNZQ+xOx5ZtgbYERpPzNErtPrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGILp30X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB04EC4CED0;
+	Thu, 12 Dec 2024 17:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024268;
-	bh=4DJ1F8K4jk21OW/eE0QXOymxqbdEVDb+LlMvxzV96pU=;
+	s=korg; t=1734022993;
+	bh=bzuF+JqDGd+q/JmTm0CCnusbNOj/gqtK297xn/YM1ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAA8Prn3s504r3Z2JuSAlUtdAFNkdQSqCyP4xBpiEU/q5fx07Dywr5hjbJ+sPGwH3
-	 6jC1tEuTRfZxcaoPMdUaedJBT+3MJ4ixkCHUo6aNpgMvIz7VgiRNB5uujqGrttQCTv
-	 D3Nt3c+pY7BTeFT+ZHuipA1Kbwmpv8jYU9m3ZwRs=
+	b=TGILp30XljNVbieOrNG2eBT5E0CMNn0RrjN6nBI39+LzixEzkw0XgNDKjezQH3dMa
+	 kaul/DIoE3vqp0vwHdpWQwGMmv1kkCulcC2xvjiZsscj+wBq8JZ7Dg35RsSwvWLFb5
+	 4tSXtDxVlvkr9Ji9iOD8HOVMcbaNu0R4ia1//+PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	chao liu <liuzgyid@outlook.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/459] apparmor: fix Do simple duplicate message elimination
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 5.15 383/565] s390/entry: Mark IRQ entries to fix stack depot warnings
 Date: Thu, 12 Dec 2024 15:59:38 +0100
-Message-ID: <20241212144303.062512321@linuxfoundation.org>
+Message-ID: <20241212144326.774822439@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: chao liu <liuzgyid@outlook.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-[ Upstream commit 9b897132424fe76bf6c61f22f9cf12af7f1d1e6a ]
+commit 45c9f2b856a075a34873d00788d2e8a250c1effd upstream.
 
-Multiple profiles shared 'ent->caps', so some logs missed.
+The stack depot filters out everything outside of the top interrupt
+context as an uninteresting or irrelevant part of the stack traces. This
+helps with stack trace de-duplication, avoiding an explosion of saved
+stack traces that share the same IRQ context code path but originate
+from different randomly interrupted points, eventually exhausting the
+stack depot.
 
-Fixes: 0ed3b28ab8bf ("AppArmor: mediation of non file objects")
-Signed-off-by: chao liu <liuzgyid@outlook.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Filtering uses in_irqentry_text() to identify functions within the
+.irqentry.text and .softirqentry.text sections, which then become the
+last stack trace entries being saved.
+
+While __do_softirq() is placed into the .softirqentry.text section by
+common code, populating .irqentry.text is architecture-specific.
+
+Currently, the .irqentry.text section on s390 is empty, which prevents
+stack depot filtering and de-duplication and could result in warnings
+like:
+
+Stack depot reached limit capacity
+WARNING: CPU: 0 PID: 286113 at lib/stackdepot.c:252 depot_alloc_stack+0x39a/0x3c8
+
+with PREEMPT and KASAN enabled.
+
+Fix this by moving the IO/EXT interrupt handlers from .kprobes.text into
+the .irqentry.text section and updating the kprobes blacklist to include
+the .irqentry.text section.
+
+This is done only for asynchronous interrupts and explicitly not for
+program checks, which are synchronous and where the context beyond the
+program check is important to preserve. Despite machine checks being
+somewhat in between, they are extremely rare, and preserving context
+when possible is also of value.
+
+SVCs and Restart Interrupts are not relevant, one being always at the
+boundary to user space and the other being a one-time thing.
+
+IRQ entries filtering is also optionally used in ftrace function graph,
+where the same logic applies.
+
+Cc: stable@vger.kernel.org # 5.15+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/capability.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/kernel/entry.S   |    4 ++++
+ arch/s390/kernel/kprobes.c |    6 ++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/security/apparmor/capability.c b/security/apparmor/capability.c
-index deccea8654ad8..1b13fd89d5a9f 100644
---- a/security/apparmor/capability.c
-+++ b/security/apparmor/capability.c
-@@ -94,6 +94,8 @@ static int audit_caps(struct common_audit_data *sa, struct aa_profile *profile,
- 		return error;
- 	} else {
- 		aa_put_profile(ent->profile);
-+		if (profile != ent->profile)
-+			cap_clear(ent->caps);
- 		ent->profile = aa_get_profile(profile);
- 		cap_raise(ent->caps, cap);
- 	}
--- 
-2.43.0
-
+--- a/arch/s390/kernel/entry.S
++++ b/arch/s390/kernel/entry.S
+@@ -474,9 +474,13 @@ ENTRY(\name)
+ ENDPROC(\name)
+ .endm
+ 
++	.section .irqentry.text, "ax"
++
+ INT_HANDLER ext_int_handler,__LC_EXT_OLD_PSW,do_ext_irq
+ INT_HANDLER io_int_handler,__LC_IO_OLD_PSW,do_io_irq
+ 
++	.section .kprobes.text, "ax"
++
+ /*
+  * Load idle PSW.
+  */
+--- a/arch/s390/kernel/kprobes.c
++++ b/arch/s390/kernel/kprobes.c
+@@ -518,6 +518,12 @@ int __init arch_init_kprobes(void)
+ 	return register_kprobe(&trampoline);
+ }
+ 
++int __init arch_populate_kprobe_blacklist(void)
++{
++	return kprobe_add_area_blacklist((unsigned long)__irqentry_text_start,
++					 (unsigned long)__irqentry_text_end);
++}
++
+ int arch_trampoline_kprobe(struct kprobe *p)
+ {
+ 	return p->addr == (kprobe_opcode_t *) &kretprobe_trampoline;
 
 
 
