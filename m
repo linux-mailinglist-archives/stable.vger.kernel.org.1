@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849639EEDE7
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1479D9EF2CC
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D47516D8C5
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:47:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30B2C173AE1
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:41:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB51222D7E;
-	Thu, 12 Dec 2024 15:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E1A226194;
+	Thu, 12 Dec 2024 16:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+4lHQAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynjmPUfN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAD1221D88;
-	Thu, 12 Dec 2024 15:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E62205501;
+	Thu, 12 Dec 2024 16:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018390; cv=none; b=r/X8VowuMIAyIv2WnEUStyHPUcT2ozsEGJI1FZhTjJArZ/HpYIKGvvQmPKIfJvd/o08uPnkmfT5F1ly/N5HCfAxUW1OO7yqITWYWOVftrB4F2BPE+bUkfBpdZOiJEZO7zkfGpyPXbKRndRaUjisireg1o5qry+++L7xe7nQrKDE=
+	t=1734021234; cv=none; b=RyrqAP4S7AuE/Cjy5ofVr2l9xpDAzhvyVCA9aZxLyvcYx8OKufjrNrMW9zvPqTZB3/oVCdqPgFqdLAbcm/skAuIQ7nCwLWUzzfgZqcOwLy6bh6b6mpoHlHvPaKoA1NnSbpgt4908lbUKY8HUtqylc6MGSF5XHUVq7Y430sBy0Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018390; c=relaxed/simple;
-	bh=AYzzhv64X5kJdXf1kHDVRH3tmcDBbFCxw8egReGTy6g=;
+	s=arc-20240116; t=1734021234; c=relaxed/simple;
+	bh=lkLoE4zVZW9XeO9QzMvQKBnJu9p3basbAEeuhBO9TAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=epEgd7tHw3JhzZ0Vs1D+MwQNY6BNZfOR4YTCV+hTdY13Ns/6cWYag9aX6+KNBBlmL4VgQaDu2xwsafv8wwZ20DU7Oo+tp5JjuIw6uWOWobUF5weNFI/16Z/gkVNbFVdWPc3iT8wUFxw81rOFW6aJLsd/vxHipsS+17K6JlZGLfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+4lHQAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B2BC4CECE;
-	Thu, 12 Dec 2024 15:46:28 +0000 (UTC)
+	 MIME-Version; b=l5ShN+egtEKLK4eISfHjKpyicxjgtj3QrLIwnvgs/b3BvlcM1bHkpxw/PxPfYkh+Wc9dDCNZx+OcghUlNq3HIeVMci+99Tg1qbQqSGFqkbFOjBJeMFuzmNWXSSpEN1RuRxc8FP896JsV9aFxK9cBcnVWnN5AgWq/pmVFoUrtXOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynjmPUfN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D66C4CECE;
+	Thu, 12 Dec 2024 16:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018389;
-	bh=AYzzhv64X5kJdXf1kHDVRH3tmcDBbFCxw8egReGTy6g=;
+	s=korg; t=1734021234;
+	bh=lkLoE4zVZW9XeO9QzMvQKBnJu9p3basbAEeuhBO9TAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+4lHQARbiijCo50dONDlxN5GoG5ck3d0BfaO3mKnftA7F8FMEE38ySxR2SZz9qsz
-	 BDRlOc+DKfEllIaN4a+gRdXr2d5Uj6zTU6I88D3vXgfKEyxciqGaDic+fpRd3aE7CB
-	 h+izj9hNAOWlJbMgbd4V2stZDA6w7wVvehjnyyDY=
+	b=ynjmPUfNVvcMp3sDh9eGoDNbmQ31mrB1WLNEBC6xJp/tKPrNrh62JT/I//md1U98+
+	 c51o57ycOlQED+7TNyik1jqwBMFCeZ5fdiRJi8Xwo5wPLgUo6xu+AL/Ry3aBz42+rK
+	 O03BtM/kVJ/xB1+wEWcmW386BH5tuHTvvKSaxdIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dom Cobley <popcornmix@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dave Stevenson <dave.stevenson@raspberrypi.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/356] scsi: st: Dont modify unknown block number in MTIOCGET
+Subject: [PATCH 6.1 653/772] drm/vc4: hdmi: Avoid log spam for audio start failure
 Date: Thu, 12 Dec 2024 15:59:58 +0100
-Message-ID: <20241212144255.606039144@linuxfoundation.org>
+Message-ID: <20241212144416.900242192@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Dom Cobley <popcornmix@gmail.com>
 
-[ Upstream commit 5bb2d6179d1a8039236237e1e94cfbda3be1ed9e ]
+[ Upstream commit b4e5646178e86665f5caef2894578600f597098a ]
 
-Struct mtget field mt_blkno -1 means it is unknown. Don't add anything to
-it.
+We regularly get dmesg error reports of:
+[   18.184066] hdmi-audio-codec hdmi-audio-codec.3.auto: ASoC: error at snd_soc_dai_startup on i2s-hifi: -19
+[   18.184098]  MAI: soc_pcm_open() failed (-19)
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219419#c14
-Link: https://lore.kernel.org/r/20241106095723.63254-2-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+These are generated for any disconnected hdmi interface when pulseaudio
+attempts to open the associated ALSA device (numerous times). Each open
+generates a kernel error message, generating general log spam.
+
+The error messages all come from _soc_pcm_ret in sound/soc/soc-pcm.c#L39
+which suggests returning ENOTSUPP, rather that ENODEV will be quiet.
+And indeed it is.
+
+Signed-off-by: Dom Cobley <popcornmix@gmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240621152055.4180873-5-dave.stevenson@raspberrypi.com
+Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 2 +-
+ drivers/gpu/drm/vc4/vc4_hdmi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 212a402e75358..1537f4a9347f9 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -3757,7 +3757,7 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 		    ((STp->density << MT_ST_DENSITY_SHIFT) & MT_ST_DENSITY_MASK);
- 		mt_status.mt_blkno = STps->drv_block;
- 		mt_status.mt_fileno = STps->drv_file;
--		if (STp->block_size != 0) {
-+		if (STp->block_size != 0 && mt_status.mt_blkno >= 0) {
- 			if (STps->rw == ST_WRITING)
- 				mt_status.mt_blkno +=
- 				    (STp->buffer)->buffer_bytes / STp->block_size;
+diff --git a/drivers/gpu/drm/vc4/vc4_hdmi.c b/drivers/gpu/drm/vc4/vc4_hdmi.c
+index 649fd5c03f21d..3573db34a26b7 100644
+--- a/drivers/gpu/drm/vc4/vc4_hdmi.c
++++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
+@@ -2160,7 +2160,7 @@ static int vc4_hdmi_audio_startup(struct device *dev, void *data)
+ 	}
+ 
+ 	if (!vc4_hdmi_audio_can_stream(vc4_hdmi)) {
+-		ret = -ENODEV;
++		ret = -ENOTSUPP;
+ 		goto out_dev_exit;
+ 	}
+ 
 -- 
 2.43.0
 
