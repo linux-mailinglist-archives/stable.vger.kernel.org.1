@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-101285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189D99EEB54
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:23:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441F89EF3BB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD31728249E
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:23:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B172890AD
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EACB212B0F;
-	Thu, 12 Dec 2024 15:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC299223C7B;
+	Thu, 12 Dec 2024 16:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ud4qHIH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1llVgOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F061F1487CD;
-	Thu, 12 Dec 2024 15:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E4422333E;
+	Thu, 12 Dec 2024 16:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017025; cv=none; b=KnQHDjrse5zLrX+uiM0RNXXLsiT5FwCfg+qkD/jodK9H54xpNKQ2wUHQxTPXbEPTOgy5hfpSnzSnvm9QWOtppdPCCQ/Qm/BMo+4JaN3z5d8p1RQjeXKIwev3evNKrCzrEKHq7uykbqJwPOsDiK1dKvfzUE4CuERWRpFbTwvKQv0=
+	t=1734022665; cv=none; b=RVK+0ufIRjV//jMXGxTJ313T75qBMW4OfDPpMJ3XfKMezaTSSU/tlFFEvEVu0dcp+M0p0Brjb/FG+Bdr01pRqrhMcNZoO1DFIO0oNqrhI/+DvXRahbq1eM0dy36rUc+Mrb7Nmc6oKKEAfqEz/0mHCCyFxZla4Daw4M1cOyxvHAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017025; c=relaxed/simple;
-	bh=raxPzSrD7nan+hwRnbRQjS16W7Z5UnAZEpA4qFlpcqM=;
+	s=arc-20240116; t=1734022665; c=relaxed/simple;
+	bh=oTwi6xK2ZhCA4IAtCNQufSVgdk4yI1b78ihAuuuUPyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ln/qSYsZSzQXR0lSmO7umq+MSgW69Osb4TAeooRFIc+UKNKaIZ11yQqitRkVVWyoDnkAiMeegHY+uzgjIZ+gM38EydQ3zMSasvCPT7i098Kn9vflmc1POWmIbxFwUB7G12HgDOK0j3dKKoPPBcMWTrGos6X7oaj4k+c3GkoxC0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ud4qHIH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D340C4CECE;
-	Thu, 12 Dec 2024 15:23:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r9ZAo7DGtAk0+7W6e+nANmuNqYoBLkK+mdaU6QVtFS7WHyHZqSO9GDx0ogI+pHOoH/wMKjCq0DcuUkouLzNqjx+VqX2RQIEXKGaZyzuFo52vjSb0SGiRecFXQrnH8BDrHXinzdB1VyXK43FCiH24RaZ+c5dI2VfjKJDIFygNFag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1llVgOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5490C4CED0;
+	Thu, 12 Dec 2024 16:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017024;
-	bh=raxPzSrD7nan+hwRnbRQjS16W7Z5UnAZEpA4qFlpcqM=;
+	s=korg; t=1734022665;
+	bh=oTwi6xK2ZhCA4IAtCNQufSVgdk4yI1b78ihAuuuUPyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ud4qHIH2RmszFyfyL8WDuDvwPUpgfAS65a8/Ms3GWAresf5lKIC1H0ytdQYK2fU4Z
-	 k4yY5sV0bSp35o5su8MM3W0BghXKoLTyOLdPJRrfHXchJo8zEeRKNK0cWyOijNouqP
-	 9M9wkTrsBvFmvSeAXOjjcYDmC5HH585FpbfdsxyU=
+	b=t1llVgOr+uZ9mTIg9nCCCEf5YmNQdmjuRnHdZT6Bhzh2fXy7Rxz9DaxajhxLq96xe
+	 xDSELE8WRwYAy9SNcVuWlWgWlJOy2+JxfGxuHye0vlbThX9j1+wUc9d460nopgCCVX
+	 4p/P9s7WBws9T6sl0tfgLND/Gxic4+bvut5GiCXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Zhao <Victor.Zhao@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 329/466] drm/amdgpu: skip amdgpu_device_cache_pci_state under sriov
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	stable@kernel.org,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 303/565] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
 Date: Thu, 12 Dec 2024 15:58:18 +0100
-Message-ID: <20241212144319.784754757@linuxfoundation.org>
+Message-ID: <20241212144323.444764471@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Zhao <Victor.Zhao@amd.com>
+From: Benoît Sevens <bsevens@google.com>
 
-[ Upstream commit afe260df55ac280cd56306248cb6d8a6b0db095c ]
+commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
 
-Under sriov, host driver will save and restore vf pci cfg space during
-reset. And during device init, under sriov, pci_restore_state happens after
-fullaccess released, and it can have race condition with mmio protection
-enable from host side leading to missing interrupts.
+A bogus device can provide a bNumConfigurations value that exceeds the
+initial value used in usb_get_configuration for allocating dev->config.
 
-So skip amdgpu_device_cache_pci_state for sriov.
+This can lead to out-of-bounds accesses later, e.g. in
+usb_destroy_configuration.
 
-Signed-off-by: Victor Zhao <Victor.Zhao@amd.com>
-Acked-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/quirks.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 1f08cb88d51be..07f93f77de7dc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -6344,6 +6344,9 @@ bool amdgpu_device_cache_pci_state(struct pci_dev *pdev)
- 	struct amdgpu_device *adev = drm_to_adev(dev);
- 	int r;
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -591,6 +591,7 @@ int snd_usb_create_quirk(struct snd_usb_
+ static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
  
-+	if (amdgpu_sriov_vf(adev))
-+		return false;
-+
- 	r = pci_save_state(pdev);
- 	if (!r) {
- 		kfree(adev->pci_state);
--- 
-2.43.0
-
+ 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
+@@ -602,10 +603,14 @@ static int snd_usb_extigy_boot_quirk(str
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
+ 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-				&dev->descriptor, sizeof(dev->descriptor));
+-		config = dev->actconfig;
++				&new_device_descriptor, sizeof(new_device_descriptor));
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++				new_device_descriptor.bNumConfigurations);
++		else
++			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 		err = usb_reset_configuration(dev);
+ 		if (err < 0)
+ 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
+@@ -937,6 +942,7 @@ static void mbox2_setup_48_24_magic(stru
+ static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
+ {
+ 	struct usb_host_config *config = dev->actconfig;
++	struct usb_device_descriptor new_device_descriptor;
+ 	int err;
+ 	u8 bootresponse[0x12];
+ 	int fwsize;
+@@ -972,10 +978,14 @@ static int snd_usb_mbox2_boot_quirk(stru
+ 	dev_dbg(&dev->dev, "device initialised!\n");
+ 
+ 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
+-		&dev->descriptor, sizeof(dev->descriptor));
+-	config = dev->actconfig;
++		&new_device_descriptor, sizeof(new_device_descriptor));
+ 	if (err < 0)
+ 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
++	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
++		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
++			new_device_descriptor.bNumConfigurations);
++	else
++		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
+ 
+ 	err = usb_reset_configuration(dev);
+ 	if (err < 0)
+@@ -1020,7 +1030,6 @@ static int snd_usb_axefx3_boot_quirk(str
+ 	return 0;
+ }
+ 
+-
+ #define MICROBOOK_BUF_SIZE 128
+ 
+ static int snd_usb_motu_microbookii_communicate(struct usb_device *dev, u8 *buf,
 
 
 
