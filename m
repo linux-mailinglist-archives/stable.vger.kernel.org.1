@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-102079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62FB9EF08D
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7349EF392
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F71189C2AE
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:21:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FDC3174125
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98CB2397B2;
-	Thu, 12 Dec 2024 16:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB192210F1;
+	Thu, 12 Dec 2024 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3gWk0R4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iS1Hj8hk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7273E239BAC;
-	Thu, 12 Dec 2024 16:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FEA218594;
+	Thu, 12 Dec 2024 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734019889; cv=none; b=gItfBwQb8q8fxYEdguclOMFFwTl/mf0F9V7JJnpK8RTa564cAsNXIOLNZDDxZ35Lumm3c6pLGeQZmeB7ZetFEzQvYn1h/f1TVR2eS5QuQkg/MloJOdJRXYRUQRWT7dlGZ25pOyRztkvy4i2ejZoYL9eimNHQ3e/KDn4IaPKLWRc=
+	t=1734021724; cv=none; b=b33Th9VCCUYZIU7YbGDOiDz80Py7h0gDsaUEd31Wcq/PFdUDJB234tsmkE4Z+Puo00UdcdqNV75OaKzvvWXoREYzk6n1XRpTgOWUfF3fA7AewcqImxXzGAkrM5ES7SeJu4lkzdsisdbbEeoqH+PX2PTdTT6qm2r/dqTEZGAV3WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734019889; c=relaxed/simple;
-	bh=qSwUugO20KoDHBUGPpABB04FVbmiQ8zs5B5lBryhqDk=;
+	s=arc-20240116; t=1734021724; c=relaxed/simple;
+	bh=y3W63cNpyYYPPacEylSM2pC7zGXA9YSd6kRK/oNZz9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+0W8QWp3Jkbe07Lf00Hi3ZJUSls4gnQcwfb9K21Fx8DnWFZQIIxuKdLKN8pRFJkyYOko9LN58qFyqmjg01nYbml7X11vtZcX8WfSv4lznWk8PayliVpLq4rTbR6KXR0Xf1+Qkw1UTO7SFcwTT6JtUjof1ceOcPf6ANCpEyZ6yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3gWk0R4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3810C4CECE;
-	Thu, 12 Dec 2024 16:11:28 +0000 (UTC)
+	 MIME-Version; b=JOel9GYmO53mlYnQA8SWhSyG0ci2EIF1DzkxvfFzK1ua02O+fqrIwgDhk4q4DrDw1NPMvvy7FozJzoR/UphHoNhnRUD9ugqaCyumw0rLG+Q0MQBMQsLqJ5Hb15sefIp8OIYPvWFifP/ilN5zZW9Kn7mE5Pz7I8OjnXk3TVy5+u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iS1Hj8hk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BDFC4CECE;
+	Thu, 12 Dec 2024 16:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734019889;
-	bh=qSwUugO20KoDHBUGPpABB04FVbmiQ8zs5B5lBryhqDk=;
+	s=korg; t=1734021724;
+	bh=y3W63cNpyYYPPacEylSM2pC7zGXA9YSd6kRK/oNZz9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3gWk0R43SbTEIwCKLNIFpFTCg7R+Mnr8EpzFBHIJTT0//1jIdL9DgGe1y8g36mh8
-	 dmulr97OMJyxUeygTsrzMNeiVpr2DX8UETxM8u1NQCNaYXcguZAQnu9BjFRBujw4lL
-	 ShoqCyyDBb4yTlqAfWD0ZA9JT7t8emDfu1W4FOJw=
+	b=iS1Hj8hk0pHNW2ugDhAT7PDAwV8Tjwwux8WjTjIyHeif77yM3KespOEZi5i5vDwFw
+	 /htxjKaSzN0dTGSU5b7bi8QXyc1OKTmcah44PhkkcFYbzKKhDzRFrx624e4gUsBl+g
+	 i7CbOD5bV+1ODMsIVt3ZqnKUQ2wYsZYtGEKC/V/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 294/772] NFSD: Fix nfsd4_shutdown_copy()
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 044/565] mptcp: cope racing subflow creation in mptcp_rcv_space_adjust
 Date: Thu, 12 Dec 2024 15:53:59 +0100
-Message-ID: <20241212144402.049885289@linuxfoundation.org>
+Message-ID: <20241212144313.216736139@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 62a8642ba00aa8ceb0a02ade942f5ec52e877c95 ]
+commit ce7356ae35943cc6494cc692e62d51a734062b7d upstream.
 
-nfsd4_shutdown_copy() is just this:
+Additional active subflows - i.e. created by the in kernel path
+manager - are included into the subflow list before starting the
+3whs.
 
-	while ((copy = nfsd4_get_copy(clp)) != NULL)
-		nfsd4_stop_copy(copy);
+A racing recvmsg() spooling data received on an already established
+subflow would unconditionally call tcp_cleanup_rbuf() on all the
+current subflows, potentially hitting a divide by zero error on
+the newly created ones.
 
-nfsd4_get_copy() bumps @copy's reference count, preventing
-nfsd4_stop_copy() from releasing @copy.
+Explicitly check that the subflow is in a suitable state before
+invoking tcp_cleanup_rbuf().
 
-A while loop like this usually works by removing the first element
-of the list, but neither nfsd4_get_copy() nor nfsd4_stop_copy()
-alters the async_copies list.
-
-Best I can tell, then, is that nfsd4_shutdown_copy() continues to
-loop until other threads manage to remove all the items from this
-list. The spinning loop blocks shutdown until these items are gone.
-
-Possibly the reason we haven't seen this issue in the field is
-because client_has_state() prevents __destroy_client() from calling
-nfsd4_shutdown_copy() if there are any items on this list. In a
-subsequent patch I plan to remove that restriction.
-
-Fixes: e0639dc5805a ("NFSD introduce async copy feature")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c76c6956566f ("mptcp: call tcp_cleanup_rbuf on subflows")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/02374660836e1b52afc91966b7535c8c5f7bafb0.1731060874.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in protocol.c, because commit f410cbea9f3d ("tcp: annotate
+  data-races around tp->window_clamp") has not been backported to this
+  version. The conflict is easy to resolve, because only the context is
+  different, but not the line to modify. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 0aebb2dc57761..6eb02390bd427 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1255,7 +1255,7 @@ static void nfsd4_stop_copy(struct nfsd4_copy *copy)
- 	nfs4_put_copy(copy);
- }
- 
--static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
-+static struct nfsd4_copy *nfsd4_unhash_copy(struct nfs4_client *clp)
- {
- 	struct nfsd4_copy *copy = NULL;
- 
-@@ -1264,6 +1264,9 @@ static struct nfsd4_copy *nfsd4_get_copy(struct nfs4_client *clp)
- 		copy = list_first_entry(&clp->async_copies, struct nfsd4_copy,
- 					copies);
- 		refcount_inc(&copy->refcount);
-+		copy->cp_clp = NULL;
-+		if (!list_empty(&copy->copies))
-+			list_del_init(&copy->copies);
- 	}
- 	spin_unlock(&clp->async_lock);
- 	return copy;
-@@ -1273,7 +1276,7 @@ void nfsd4_shutdown_copy(struct nfs4_client *clp)
- {
- 	struct nfsd4_copy *copy;
- 
--	while ((copy = nfsd4_get_copy(clp)) != NULL)
-+	while ((copy = nfsd4_unhash_copy(clp)) != NULL)
- 		nfsd4_stop_copy(copy);
- }
- #ifdef CONFIG_NFSD_V4_2_INTER_SSC
--- 
-2.43.0
-
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1986,7 +1986,8 @@ static void mptcp_rcv_space_adjust(struc
+ 				slow = lock_sock_fast(ssk);
+ 				WRITE_ONCE(ssk->sk_rcvbuf, rcvbuf);
+ 				tcp_sk(ssk)->window_clamp = window_clamp;
+-				tcp_cleanup_rbuf(ssk, 1);
++				if (tcp_can_send_ack(ssk))
++					tcp_cleanup_rbuf(ssk, 1);
+ 				unlock_sock_fast(ssk, slow);
+ 			}
+ 		}
 
 
 
