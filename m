@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-103657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521749EF831
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:40:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B2219EF5FA
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:21:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 142CB293CA6
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:40:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88D8919432B9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9488222D59;
-	Thu, 12 Dec 2024 17:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3AC6223C6A;
+	Thu, 12 Dec 2024 17:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGomdR14"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVLF3JJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7564F20A5EE;
-	Thu, 12 Dec 2024 17:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6267B223C62;
+	Thu, 12 Dec 2024 17:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025220; cv=none; b=B23gAvbjD0A9lVhZX2HV89f+Y+SN5E2zMcBwYwYMxri6OloDmi9Y+xfvoGf3+O5lQBPVIai2DB1lgDgkgsXRAPhRTL0X8bcbbM6VB+RgaAgY5AhzRx0DctuBztuPLlszsp5ubsXB0yfmUVL480cERCtmnfEYmtV4vSur6Wc2IPQ=
+	t=1734023180; cv=none; b=i5k3Gt0FcfuhbIdkweuM4wAaiNiAwROSZVw1ASvd+4FFdjqXodE9VEI3DuCtQr0fjRefur7k7GNTGvFbutFM3tvn5+ELrKiqBGPodb5SxIAHz2BagdBOTctaFhGQdUVckW827VOgHYjWL52EUTqmoK7/Wd6oYvrL051bNTevvgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025220; c=relaxed/simple;
-	bh=yWGTSweGMh8m4iGOdmyuidU9qWehICKYPaUt4sLb4EI=;
+	s=arc-20240116; t=1734023180; c=relaxed/simple;
+	bh=uy1CCFBL+GY7cjPf11mfORWKXTT4FArCWusrItKk3qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FiYArcip+5piAl0bd84hmSm+f4/hMCuojLrTxOl7MVqyoicXhny3RRyFeXkLKd1GuPVi/uk12PPFopcsEY9o15wP2U8ah97bYXyrD4lVAXxQf+gmLq5WcsHTC3/HWTRBrMJgMTdhC5e/F/L7OXYKYq7hst58JPo3FaeJzpYciVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGomdR14; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAEDC4CECE;
-	Thu, 12 Dec 2024 17:40:19 +0000 (UTC)
+	 MIME-Version; b=ADZLxKvIBpYXjp/7B/mIuXbrFag33DjisrmZbiBS1v3dLG78MWmSSiUsuqM8QuJ0e5Ayj4uHYN9lAaGa5jxzzalW+2TLVbyAm3nd8jx7S+Umy4v05I9POEWpgtPdE4aftcGjWdsxpkhasA3HEJIbuSl8xCeSmfBS0VoRJx1nVBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVLF3JJA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A587C4CED3;
+	Thu, 12 Dec 2024 17:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025220;
-	bh=yWGTSweGMh8m4iGOdmyuidU9qWehICKYPaUt4sLb4EI=;
+	s=korg; t=1734023180;
+	bh=uy1CCFBL+GY7cjPf11mfORWKXTT4FArCWusrItKk3qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGomdR14MJIcaFpknkZ9hWapNQtU2D6HW/8oSPt0TNj9BchwKAhDr0TG78mC3mETn
-	 ue9j4TH7WDCwZaFc97bNpGNurkRiew7GV9QedDdAkTlDc5bDOCN3g8Qwih33pEXyWz
-	 8kDeFcsetrpctoGcjvF9V36C1x+J0iTnxARn1p1M=
+	b=MVLF3JJAf74ZEXSJr7WYb+JslG0+WzEXXSMfdt4zUuOTO4Tb5ScLrnVAuG9VFIW9V
+	 o6UAspp12q7xaw4BFSE+HtLjNgJQlbxCf9ImJr/jA9IXqRFuVKVatlVrHkyN6eBvCJ
+	 yTd3aX86+W5WSiKGlaQhErgvZNghxSfBc+rip6ZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kashyap Desai <kashyap.desai@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Florian Forestier <florian@forestier.re>,
+	Louis Leseur <louis.leseur@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 096/321] RDMA/bnxt_re: Check cqe flags to know imm_data vs inv_irkey
+Subject: [PATCH 5.15 419/565] net/qed: allow old cards not supporting "num_images" to work
 Date: Thu, 12 Dec 2024 16:00:14 +0100
-Message-ID: <20241212144233.781895134@linuxfoundation.org>
+Message-ID: <20241212144328.228045903@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kashyap Desai <kashyap.desai@broadcom.com>
+From: Louis Leseur <louis.leseur@gmail.com>
 
-[ Upstream commit 808ca6de989c598bc5af1ae0ad971a66077efac0 ]
+[ Upstream commit 7a0ea70da56ee8c2716d0b79e9959d3c47efab62 ]
 
-Invalidate rkey is cpu endian and immediate data is in big endian format.
-Both immediate data and invalidate the remote key returned by
-HW is in little endian format.
+Commit 43645ce03e00 ("qed: Populate nvm image attribute shadow.")
+added support for populating flash image attributes, notably
+"num_images". However, some cards were not able to return this
+information. In such cases, the driver would return EINVAL, causing the
+driver to exit.
 
-While handling the commit in fixes tag, the difference between
-immediate data and invalidate rkey endianness was not considered.
+Add check to return EOPNOTSUPP instead of EINVAL when the card is not
+able to return these information. The caller function already handles
+EOPNOTSUPP without error.
 
-Without changes of this patch, Kernel ULP was failing while processing
-inv_rkey.
-
-dmesg log snippet -
-nvme nvme0: Bogus remote invalidation for rkey 0x2000019Fix in this patch
-
-Do endianness conversion based on completion queue entry flag.
-Also, the HW completions are already converted to host endianness in
-bnxt_qplib_cq_process_res_rc and bnxt_qplib_cq_process_res_ud and there
-is no need to convert it again in bnxt_re_poll_cq. Modified the union to
-hold the correct data type.
-
-Fixes: 95b087f87b78 ("bnxt_re: Fix imm_data endianness")
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://patch.msgid.link/1730110014-20755-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 43645ce03e00 ("qed: Populate nvm image attribute shadow.")
+Co-developed-by: Florian Forestier <florian@forestier.re>
+Signed-off-by: Florian Forestier <florian@forestier.re>
+Signed-off-by: Louis Leseur <louis.leseur@gmail.com>
+Link: https://patch.msgid.link/20241128083633.26431-1-louis.leseur@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +++++--
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 2 +-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_mcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 4a1c11bdc4adc..eca36da7f9d4b 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3250,7 +3250,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *gsi_sqp,
- 	wc->byte_len = orig_cqe->length;
- 	wc->qp = &gsi_qp->ib_qp;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_mcp.c b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
+index b734c120d508f..1f3834c6c5878 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_mcp.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_mcp.c
+@@ -3253,7 +3253,9 @@ int qed_mcp_bist_nvm_get_num_images(struct qed_hwfn *p_hwfn,
+ 	if (rc)
+ 		return rc;
  
--	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
-+	wc->ex.imm_data = cpu_to_be32(orig_cqe->immdata);
- 	wc->src_qp = orig_cqe->src_qp;
- 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
- 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
-@@ -3391,7 +3391,10 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
- 				continue;
- 			}
- 			wc->qp = &qp->ib_qp;
--			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
-+			if (cqe->flags & CQ_RES_RC_FLAGS_IMM)
-+				wc->ex.imm_data = cpu_to_be32(cqe->immdata);
-+			else
-+				wc->ex.invalidate_rkey = cqe->invrkey;
- 			wc->src_qp = cqe->src_qp;
- 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
- 			wc->port_num = 1;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index bdc3a4f969c7e..a40f8cd8860a7 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -350,7 +350,7 @@ struct bnxt_qplib_cqe {
- 	u16				cfa_meta;
- 	u64				wr_id;
- 	union {
--		__le32			immdata;
-+		u32			immdata;
- 		u32			invrkey;
- 	};
- 	u64				qp_handle;
+-	if (((rsp & FW_MSG_CODE_MASK) != FW_MSG_CODE_OK))
++	if (((rsp & FW_MSG_CODE_MASK) == FW_MSG_CODE_UNSUPPORTED))
++		rc = -EOPNOTSUPP;
++	else if (((rsp & FW_MSG_CODE_MASK) != FW_MSG_CODE_OK))
+ 		rc = -EINVAL;
+ 
+ 	return rc;
 -- 
 2.43.0
 
