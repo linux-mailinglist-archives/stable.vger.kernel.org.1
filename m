@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-102192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36959EF088
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:29:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A193A9EECBB
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:37:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A54F3289453
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026BA169F27
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29738223E70;
-	Thu, 12 Dec 2024 16:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95AB21578B;
+	Thu, 12 Dec 2024 15:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKuDnput"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoCHjxzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD8E222D77;
-	Thu, 12 Dec 2024 16:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A669D1547F0;
+	Thu, 12 Dec 2024 15:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734020317; cv=none; b=gZw72kNbZsB/mjGaMQkN5eChc//pv+41FT5tr+dRKNjgBQJQ6dATPjU9l+L6E0P0Co+axMrSbFFI/7FTY+hwonFsIzN91CDfnYjC2LNnpYQH+y3NlF9JCKYP9cToTYUy3rRQJb1mkL3ceuMkRhfqKbmvt6VRwrH+B4KisXHUBHc=
+	t=1734017720; cv=none; b=FF2TWxdGeFdH5WHTN53OSoNX6HRANCceeaL7bBzEVtrI/s+nJM9i39ibDj/WrJiOQYflq9n4iOOTmKw++cdEOWEG/WNrV6+UnMl/VCPN8wnS3Onc08uYb4lgqHC+FhV1sCjiYnNMlwnxagvYcCw+5/TXQbsfe1BZ+v+yE7s1rF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734020317; c=relaxed/simple;
-	bh=iObcVONDUgovw4BUOwgvnXae9VSkHVIjz9Yak2qZMjA=;
+	s=arc-20240116; t=1734017720; c=relaxed/simple;
+	bh=mWmetXH5/JDX+Q4Az2s6DsOXKsXM2gnTV1eu7rGIRlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNyb0D16aHXEZYxSjIbJuZdVk2WgPSSdbatFYv7xBnSrOgL0A9aS4PXXAtKS6CTii96Q89d6N6i187Fu0ELFaH6cDNoDfoZLM0RaTqguX2/NvXU1RsOpcE/wmMQnVl4fphJGuEr8oIpKG2VwqMdRFYEsIKXuGebzAvEYSG4FMOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKuDnput; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E868C4CECE;
-	Thu, 12 Dec 2024 16:18:37 +0000 (UTC)
+	 MIME-Version; b=KGBxZYUKbWOm+nhJ4KhtJNjASZs2qSsSNRzbqv+2UFdaw+9oFMc50VSLj9NxZFGoWXJBXqIx41kbvw+DDaf1rJRgM+1wAMoboPIgDg7ToIQ1x1RciGQ828P3UnwvrmewyXzrPgJaI627WD7Rk5lsl1wwa5hkATDDfVjSbIa+bAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoCHjxzi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19987C4CECE;
+	Thu, 12 Dec 2024 15:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734020317;
-	bh=iObcVONDUgovw4BUOwgvnXae9VSkHVIjz9Yak2qZMjA=;
+	s=korg; t=1734017720;
+	bh=mWmetXH5/JDX+Q4Az2s6DsOXKsXM2gnTV1eu7rGIRlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKuDnputdBxuyDkiyG0DqrGy418XIwpm5qyvZRxRNlGvYitUoneMnGJQ9AssvZL+2
-	 SXHFNF5lHbggcuCnwPELSz8OJi0rDFVFPDtrZJuBuameAQ44g0UO3Cp39LtI7AYVxW
-	 VMfWrLgH6mSeVnpz/UTpZw5vdPVMG4couPzbUmG8=
+	b=CoCHjxziH7HBTxwbzGdg7/RGllWDyjDTzU8kaXCgEye1jIo38A6jxm+cRu2iNuPPT
+	 gmA9I5unmktCzOTv3T2h2QRyM65z04Nd9DquaK1B5R++6lcz1966z9ZWBihjaMqTWS
+	 juI4LAkm1MJm9PXI2TZbwV4Fy3ccCZcSJXrJnVKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <qingfang.deng@siflower.com.cn>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
+	Fuad Tabba <tabba@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/772] jffs2: fix use of uninitialized variable
+Subject: [PATCH 6.6 063/356] KVM: arm64: Change kvm_handle_mmio_return() return polarity
 Date: Thu, 12 Dec 2024 15:56:22 +0100
-Message-ID: <20241212144407.986967074@linuxfoundation.org>
+Message-ID: <20241212144247.121438665@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
-References: <20241212144349.797589255@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingfang Deng <qingfang.deng@siflower.com.cn>
+From: Fuad Tabba <tabba@google.com>
 
-[ Upstream commit 3ba44ee966bc3c41dd8a944f963466c8fcc60dc8 ]
+[ Upstream commit cc81b6dfc3bc82c3a2600eefbd3823bdb2190197 ]
 
-When building the kernel with -Wmaybe-uninitialized, the compiler
-reports this warning:
+Most exit handlers return <= 0 to indicate that the host needs to
+handle the exit. Make kvm_handle_mmio_return() consistent with
+the exit handlers in handle_exit(). This makes the code easier to
+reason about, and makes it easier to add other handlers in future
+patches.
 
-In function 'jffs2_mark_erased_block',
-    inlined from 'jffs2_erase_pending_blocks' at fs/jffs2/erase.c:116:4:
-fs/jffs2/erase.c:474:9: warning: 'bad_offset' may be used uninitialized [-Wmaybe-uninitialized]
-  474 |         jffs2_erase_failed(c, jeb, bad_offset);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-fs/jffs2/erase.c: In function 'jffs2_erase_pending_blocks':
-fs/jffs2/erase.c:402:18: note: 'bad_offset' was declared here
-  402 |         uint32_t bad_offset;
-      |                  ^~~~~~~~~~
+No functional change intended.
 
-When mtd->point() is used, jffs2_erase_pending_blocks can return -EIO
-without initializing bad_offset, which is later used at the filebad
-label in jffs2_mark_erased_block.
-Fix it by initializing this variable.
-
-Fixes: 8a0f572397ca ("[JFFS2] Return values of jffs2_block_check_erase error paths")
-Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Fuad Tabba <tabba@google.com>
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240423150538.2103045-15-tabba@google.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Stable-dep-of: e735a5da6442 ("KVM: arm64: Don't retire aborted MMIO instruction")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/erase.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/arm64/kvm/arm.c  | 2 +-
+ arch/arm64/kvm/mmio.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/jffs2/erase.c b/fs/jffs2/erase.c
-index acd32f05b5198..ef3a1e1b6cb06 100644
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -338,10 +338,9 @@ static int jffs2_block_check_erase(struct jffs2_sb_info *c, struct jffs2_erasebl
- 		} while(--retlen);
- 		mtd_unpoint(c->mtd, jeb->offset, c->sector_size);
- 		if (retlen) {
--			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08tx\n",
--				*wordebuf,
--				jeb->offset +
--				c->sector_size-retlen * sizeof(*wordebuf));
-+			*bad_offset = jeb->offset + c->sector_size - retlen * sizeof(*wordebuf);
-+			pr_warn("Newly-erased block contained word 0x%lx at offset 0x%08x\n",
-+				*wordebuf, *bad_offset);
- 			return -EIO;
- 		}
- 		return 0;
+diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
+index 4742e6c5ea7a0..ffdc2c4d07ee8 100644
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -900,7 +900,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 
+ 	if (run->exit_reason == KVM_EXIT_MMIO) {
+ 		ret = kvm_handle_mmio_return(vcpu);
+-		if (ret)
++		if (ret <= 0)
+ 			return ret;
+ 	}
+ 
+diff --git a/arch/arm64/kvm/mmio.c b/arch/arm64/kvm/mmio.c
+index 3dd38a151d2a6..886ef30e12196 100644
+--- a/arch/arm64/kvm/mmio.c
++++ b/arch/arm64/kvm/mmio.c
+@@ -86,7 +86,7 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
+ 
+ 	/* Detect an already handled MMIO return */
+ 	if (unlikely(!vcpu->mmio_needed))
+-		return 0;
++		return 1;
+ 
+ 	vcpu->mmio_needed = 0;
+ 
+@@ -117,7 +117,7 @@ int kvm_handle_mmio_return(struct kvm_vcpu *vcpu)
+ 	 */
+ 	kvm_incr_pc(vcpu);
+ 
+-	return 0;
++	return 1;
+ }
+ 
+ int io_mem_abort(struct kvm_vcpu *vcpu, phys_addr_t fault_ipa)
 -- 
 2.43.0
 
