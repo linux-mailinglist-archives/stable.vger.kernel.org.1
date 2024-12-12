@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-102767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7BA9EF37C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:59:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E979EECD9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:39:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A518287F13
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:59:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F05E18815F3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3AA2139D2;
-	Thu, 12 Dec 2024 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42488217707;
+	Thu, 12 Dec 2024 15:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Gx1uZqZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YqMuvas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A106223C5E;
-	Thu, 12 Dec 2024 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62302139CB;
+	Thu, 12 Dec 2024 15:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022420; cv=none; b=sAdwHnN3OVxSnHrTdbt9PZ1+4q/vEkYS3h0cc6zAFg2boFr7WpqZKuJHrj7fnxeDE6sLUKV/fE0Uptou7wjCPpk3W7EeJk66nLpQ9HWc+rve1gOsD2074z71Nkj8gQbmWdSghcQaaGq6dL8dobSz6Or8iVArpOkes6/TQeD6z+8=
+	t=1734017795; cv=none; b=E30cq8p8nYcN1K5sXm/Qyv6xsx+xUKDt6zD6Skbya+0fthzNF82JUv6arGYgr/CnVtpO7k/r4pCjOCf5MRe/6ycaVHIz5EW7KUA1w7DDuaHHP4OAAqjtI/hmmnxMo51dm3O88X8HinaJCfwnjOp0bJAmy539dAiPCYjE1NmLUyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022420; c=relaxed/simple;
-	bh=ds5W2oOkguem4g1A6muxtJXqcD/X8y+IGep99baELgM=;
+	s=arc-20240116; t=1734017795; c=relaxed/simple;
+	bh=/xQpd/eXhx01JIKslRIjLzPmxzeFJ0RtIPUJNAiQZW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSRVMjZNdqOkYGKSytspV4llgSfT9iwnWPcZSVqtSuMMEt1/KQvS8/7qc9O1UeHaaOARmTYC+qErzeslI6RLPaVtxfJfz6MpIDZ3/S9dIIJFjKsx2oORzBRwUxmAxj8L3iPNHh07QlaRvuGdGAo+nEdhLOK8Ek6jwvCDPUlLirM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Gx1uZqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E148C4CECE;
-	Thu, 12 Dec 2024 16:53:39 +0000 (UTC)
+	 MIME-Version; b=oJ1wASNXKYh3j/hCwvIDq01v4Qn14PPoeVauSclOHka+Rz19p3Y1bF8sJrY5ay+eqHddl7Y3hNYah6NPEbmX4WEaKqjLiKqXFn29f1VTaLNta/18tDVKDr6L16YduJt4LiYZ0ZkfPwwuvOveMttfWR+k3WhpDSaCEOZRZSw4HWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YqMuvas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55845C4CECE;
+	Thu, 12 Dec 2024 15:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022420;
-	bh=ds5W2oOkguem4g1A6muxtJXqcD/X8y+IGep99baELgM=;
+	s=korg; t=1734017794;
+	bh=/xQpd/eXhx01JIKslRIjLzPmxzeFJ0RtIPUJNAiQZW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Gx1uZqZF/8wgLcGOIZa3st58JPiVOukHlIYJzy0yRL4vA29mSZGf/1FG7POI2LcY
-	 XTxm9YrgVMNjIhZcgu5sJ/xys/rSLo7F3HY7ZRZQdYOaMWvTnV2IHbmdDZqpi6b3Pz
-	 KPkXRyC7FjxOZbsBsEDYA00wuJDoVpSBNS6V7xzo=
+	b=2YqMuvasYvy1WGsaWHpXsBNcgTdfMk3jlN4/Co5fbL/9ZVoEk77/f4VnvNu4D6cUw
+	 TZXwTGfNi30i9ugXiIgBP+nDBzECHrW8W/HXwlBLH00aS4IOrQU7ise74pzOhSCQcZ
+	 5mNVfjJgSjDLGJvKJHXdKBjSnJrqoQClk5TDRYm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Helge Deller <deller@gmx.de>,
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 236/565] fbdev: sh7760fb: Fix a possible memory leak in sh7760fb_alloc_mem()
+Subject: [PATCH 6.6 112/356] bpf, vsock: Invoke proto::close on close()
 Date: Thu, 12 Dec 2024 15:57:11 +0100
-Message-ID: <20241212144320.811973524@linuxfoundation.org>
+Message-ID: <20241212144249.069980381@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
+References: <20241212144244.601729511@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +65,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit f89d17ae2ac42931be2a0153fecbf8533280c927 ]
+[ Upstream commit 135ffc7becc82cfb84936ae133da7969220b43b2 ]
 
-When information such as info->screen_base is not ready, calling
-sh7760fb_free_mem() does not release memory correctly. Call
-dma_free_coherent() instead.
+vsock defines a BPF callback to be invoked when close() is called. However,
+this callback is never actually executed. As a result, a closed vsock
+socket is not automatically removed from the sockmap/sockhash.
 
-Fixes: 4a25e41831ee ("video: sh7760fb: SH7760/SH7763 LCDC framebuffer driver")
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Introduce a dummy vsock_close() and make vsock_release() call proto::close.
+
+Note: changes in __vsock_release() look messy, but it's only due to indent
+level reduction and variables xmas tree reorder.
+
+Fixes: 634f1a7110b4 ("vsock: support sockmap")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://lore.kernel.org/r/20241118-vsock-bpf-poll-close-v1-3-f1b9669cacdc@rbox.co
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sh7760fb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/vmw_vsock/af_vsock.c | 67 ++++++++++++++++++++++++----------------
+ 1 file changed, 40 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/video/fbdev/sh7760fb.c b/drivers/video/fbdev/sh7760fb.c
-index 6adf048c1bae8..62e28d315d815 100644
---- a/drivers/video/fbdev/sh7760fb.c
-+++ b/drivers/video/fbdev/sh7760fb.c
-@@ -409,12 +409,11 @@ static int sh7760fb_alloc_mem(struct fb_info *info)
- 		vram = PAGE_SIZE;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 7ba3357c9882c..6e1cd71d33a59 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -116,12 +116,14 @@
+ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr);
+ static void vsock_sk_destruct(struct sock *sk);
+ static int vsock_queue_rcv_skb(struct sock *sk, struct sk_buff *skb);
++static void vsock_close(struct sock *sk, long timeout);
  
- 	fbmem = dma_alloc_coherent(info->device, vram, &par->fbdma, GFP_KERNEL);
+ /* Protocol family. */
+ struct proto vsock_proto = {
+ 	.name = "AF_VSOCK",
+ 	.owner = THIS_MODULE,
+ 	.obj_size = sizeof(struct vsock_sock),
++	.close = vsock_close,
+ #ifdef CONFIG_BPF_SYSCALL
+ 	.psock_update_sk_prot = vsock_bpf_update_proto,
+ #endif
+@@ -796,39 +798,37 @@ static bool sock_type_connectible(u16 type)
+ 
+ static void __vsock_release(struct sock *sk, int level)
+ {
+-	if (sk) {
+-		struct sock *pending;
+-		struct vsock_sock *vsk;
 -
- 	if (!fbmem)
- 		return -ENOMEM;
+-		vsk = vsock_sk(sk);
+-		pending = NULL;	/* Compiler warning. */
++	struct vsock_sock *vsk;
++	struct sock *pending;
  
- 	if ((par->fbdma & SH7760FB_DMA_MASK) != SH7760FB_DMA_MASK) {
--		sh7760fb_free_mem(info);
-+		dma_free_coherent(info->device, vram, fbmem, par->fbdma);
- 		dev_err(info->device, "kernel gave me memory at 0x%08lx, which is"
- 			"unusable for the LCDC\n", (unsigned long)par->fbdma);
- 		return -ENOMEM;
+-		/* When "level" is SINGLE_DEPTH_NESTING, use the nested
+-		 * version to avoid the warning "possible recursive locking
+-		 * detected". When "level" is 0, lock_sock_nested(sk, level)
+-		 * is the same as lock_sock(sk).
+-		 */
+-		lock_sock_nested(sk, level);
++	vsk = vsock_sk(sk);
++	pending = NULL;	/* Compiler warning. */
+ 
+-		if (vsk->transport)
+-			vsk->transport->release(vsk);
+-		else if (sock_type_connectible(sk->sk_type))
+-			vsock_remove_sock(vsk);
++	/* When "level" is SINGLE_DEPTH_NESTING, use the nested
++	 * version to avoid the warning "possible recursive locking
++	 * detected". When "level" is 0, lock_sock_nested(sk, level)
++	 * is the same as lock_sock(sk).
++	 */
++	lock_sock_nested(sk, level);
+ 
+-		sock_orphan(sk);
+-		sk->sk_shutdown = SHUTDOWN_MASK;
++	if (vsk->transport)
++		vsk->transport->release(vsk);
++	else if (sock_type_connectible(sk->sk_type))
++		vsock_remove_sock(vsk);
+ 
+-		skb_queue_purge(&sk->sk_receive_queue);
++	sock_orphan(sk);
++	sk->sk_shutdown = SHUTDOWN_MASK;
+ 
+-		/* Clean up any sockets that never were accepted. */
+-		while ((pending = vsock_dequeue_accept(sk)) != NULL) {
+-			__vsock_release(pending, SINGLE_DEPTH_NESTING);
+-			sock_put(pending);
+-		}
++	skb_queue_purge(&sk->sk_receive_queue);
+ 
+-		release_sock(sk);
+-		sock_put(sk);
++	/* Clean up any sockets that never were accepted. */
++	while ((pending = vsock_dequeue_accept(sk)) != NULL) {
++		__vsock_release(pending, SINGLE_DEPTH_NESTING);
++		sock_put(pending);
+ 	}
++
++	release_sock(sk);
++	sock_put(sk);
+ }
+ 
+ static void vsock_sk_destruct(struct sock *sk)
+@@ -897,9 +897,22 @@ void vsock_data_ready(struct sock *sk)
+ }
+ EXPORT_SYMBOL_GPL(vsock_data_ready);
+ 
++/* Dummy callback required by sockmap.
++ * See unconditional call of saved_close() in sock_map_close().
++ */
++static void vsock_close(struct sock *sk, long timeout)
++{
++}
++
+ static int vsock_release(struct socket *sock)
+ {
+-	__vsock_release(sock->sk, 0);
++	struct sock *sk = sock->sk;
++
++	if (!sk)
++		return 0;
++
++	sk->sk_prot->close(sk, 0);
++	__vsock_release(sk, 0);
+ 	sock->sk = NULL;
+ 	sock->state = SS_FREE;
+ 
 -- 
 2.43.0
 
