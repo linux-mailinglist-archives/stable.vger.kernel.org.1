@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-103876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AD69EF9FD
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2459EF983
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:51:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B33A1893376
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C87728A5BE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846FB2210DE;
-	Thu, 12 Dec 2024 17:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD3C223C48;
+	Thu, 12 Dec 2024 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKBaWWTg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmut9HJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4253D2080D9;
-	Thu, 12 Dec 2024 17:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C204209695;
+	Thu, 12 Dec 2024 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025867; cv=none; b=PiNZ6y/bk+Ss7mgMSEVmVat/iGTbBh1f8na15U79lNryefx3uJYsz2FauRADubXDMhcNoFciC3FsN41T8yT4j90hkypF7OLecELi9Hz0K9xuZ/tJjlPwr3sv+8LTNMxJC78zacYG8sYQsDPPKoEkioztNwkiL4sLcVpFp6JICX4=
+	t=1734025889; cv=none; b=KLVKVNWmUrOow7AqrfMssTLRgga8M/GvnAXE5mkb5WSyEU5cNecysjCK7eF005tP0/AHGSeEEcErnGMNpxjIMbRPRvx7Q/enktoYo5Qrn1BLGai96hJxMyoPWv5tu87qp+trNGIIqWkqYocmn+7NFeF9mqSZtUEUSdK2TCnby7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025867; c=relaxed/simple;
-	bh=6i8g3MAAo5+zl6+YeVWW7HUuxYb7O784+GoqLOW/hwE=;
+	s=arc-20240116; t=1734025889; c=relaxed/simple;
+	bh=LCBznP0wUkuXhYSOXsekiFPdus3gKILF1jV7924ulvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jieNUY9uVMMyB9PLMxtr1Ua1cdLWOVUhgI+T1B3uw52Kzo2aDTY4gpHWujSsgdLD3jMb5YDgCvX/fRLWqBNVNnZUhfHcxZNtKAIVID5wcxcoOzFT4R/NnHcsmAhKyglZg9y0qs+1d/aQsLSZpPPqLTWstAhcp56OyKSf9/CS5wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKBaWWTg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726A7C4CECE;
-	Thu, 12 Dec 2024 17:51:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cQlXiYj3jk4A2hNhnpe0rhAkpoS5b+7RWkAgoH5dlOQ4P1jubjNTb8XWy28QmJWpFwDQ6jBVha6nkQ8BZvPqn0KEFbYI9e3OnGrUgFlWQ+FY3QAKq05Hdxsir+Aw6P51neqbRvBXBV1Gpq2yc9ZOUvgcHrXmqzmBr50GTCzIllw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmut9HJd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A84C4CED1;
+	Thu, 12 Dec 2024 17:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025865;
-	bh=6i8g3MAAo5+zl6+YeVWW7HUuxYb7O784+GoqLOW/hwE=;
+	s=korg; t=1734025889;
+	bh=LCBznP0wUkuXhYSOXsekiFPdus3gKILF1jV7924ulvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKBaWWTgtqm803BYXJ/EsXcB6s2NYYfYGQDSfZTjVchsiijBFiCclbIb+SzHMRBeF
-	 ggvtvawoJpYi6X2Vb1FCSiKYfBKk5CNxNHUqCG17re2iEGFKyeEYeesTOEZ/yU1rEl
-	 hNHa9+6e+ToU8jJrdE+QmjJjwh3jaTCmy8ddsrYs=
+	b=tmut9HJdw0hTqoN+RbW221MqNTL4LYT5pj3yYyVWq5I+MYrwh3BEJsvu/UlyySoEH
+	 TGwkZ5Jioskp9endi6VBTVKhZwOa5/WEY0YMxsDSvEZP7W1aLoa8kh4tbCAPFxDlcn
+	 3Wj9sK426Y82bPErv225H16EY9oibk5eVjaubCQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Parker Newman <pnewman@connecttech.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 306/321] misc: eeprom: eeprom_93cx6: Add quirk for extra read clock cycle
-Date: Thu, 12 Dec 2024 16:03:44 +0100
-Message-ID: <20241212144242.064946561@linuxfoundation.org>
+Subject: [PATCH 5.4 307/321] xdp: Simplify devmap cleanup
+Date: Thu, 12 Dec 2024 16:03:45 +0100
+Message-ID: <20241212144242.103610166@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
 References: <20241212144229.291682835@linuxfoundation.org>
@@ -60,123 +61,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parker Newman <pnewman@connecttech.com>
+From: Björn Töpel <bjorn.topel@intel.com>
 
-[ Upstream commit 7738a7ab9d12c5371ed97114ee2132d4512e9fd5 ]
+[ Upstream commit 0536b85239b8440735cdd910aae0eb076ebbb439 ]
 
-Add a quirk similar to eeprom_93xx46 to add an extra clock cycle before
-reading data from the EEPROM.
+After the RCU flavor consolidation [1], call_rcu() and
+synchronize_rcu() waits for preempt-disable regions (NAPI) in addition
+to the read-side critical sections. As a result of this, the cleanup
+code in devmap can be simplified
 
-The 93Cx6 family of EEPROMs output a "dummy 0 bit" between the writing
-of the op-code/address from the host to the EEPROM and the reading of
-the actual data from the EEPROM.
+* There is no longer a need to flush in __dev_map_entry_free, since we
+  know that this has been done when the call_rcu() callback is
+  triggered.
 
-More info can be found on page 6 of the AT93C46 datasheet (linked below).
-Similar notes are found in other 93xx6 datasheets.
+* When freeing the map, there is no need to explicitly wait for a
+  flush. It's guaranteed to be done after the synchronize_rcu() call
+  in dev_map_free(). The rcu_barrier() is still needed, so that the
+  map is not freed prior the elements.
 
-In summary the read operation for a 93Cx6 EEPROM is:
-Write to EEPROM:	110[A5-A0]	(9 bits)
-Read from EEPROM:	0[D15-D0]	(17 bits)
+[1] https://lwn.net/Articles/777036/
 
-Where:
-	110 is the start bit and READ OpCode
-	[A5-A0] is the address to read from
-	0 is a "dummy bit" preceding the actual data
-	[D15-D0] is the actual data.
-
-Looking at the READ timing diagrams in the 93Cx6 datasheets the dummy
-bit should be clocked out on the last address bit clock cycle meaning it
-should be discarded naturally.
-
-However, depending on the hardware configuration sometimes this dummy
-bit is not discarded. This is the case with Exar PCI UARTs which require
-an extra clock cycle between sending the address and reading the data.
-
-Datasheet: https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-5193-SEEPROM-AT93C46D-Datasheet.pdf
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Parker Newman <pnewman@connecttech.com>
-Link: https://lore.kernel.org/r/0f23973efefccd2544705a0480b4ad4c2353e407.1727880931.git.pnewman@connecttech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Björn Töpel <bjorn.topel@intel.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://lore.kernel.org/bpf/20191219061006.21980-2-bjorn.topel@gmail.com
+Stable-dep-of: ab244dd7cf4c ("bpf: fix OOB devmap writes when deleting elements")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/eeprom_93cx6.c | 10 ++++++++++
- include/linux/eeprom_93cx6.h       | 11 +++++++++++
- 2 files changed, 21 insertions(+)
+ kernel/bpf/devmap.c | 43 +++++--------------------------------------
+ 1 file changed, 5 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/misc/eeprom/eeprom_93cx6.c b/drivers/misc/eeprom/eeprom_93cx6.c
-index 36a2eb837371b..6b42ba6705d3f 100644
---- a/drivers/misc/eeprom/eeprom_93cx6.c
-+++ b/drivers/misc/eeprom/eeprom_93cx6.c
-@@ -186,6 +186,11 @@ void eeprom_93cx6_read(struct eeprom_93cx6 *eeprom, const u8 word,
- 	eeprom_93cx6_write_bits(eeprom, command,
- 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width);
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 2370fc31169f5..e63ecb21e0554 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -206,7 +206,7 @@ static struct bpf_map *dev_map_alloc(union bpf_attr *attr)
+ static void dev_map_free(struct bpf_map *map)
+ {
+ 	struct bpf_dtab *dtab = container_of(map, struct bpf_dtab, map);
+-	int i, cpu;
++	int i;
  
-+	if (has_quirk_extra_read_cycle(eeprom)) {
-+		eeprom_93cx6_pulse_high(eeprom);
-+		eeprom_93cx6_pulse_low(eeprom);
-+	}
-+
- 	/*
- 	 * Read the requested 16 bits.
- 	 */
-@@ -252,6 +257,11 @@ void eeprom_93cx6_readb(struct eeprom_93cx6 *eeprom, const u8 byte,
- 	eeprom_93cx6_write_bits(eeprom, command,
- 		PCI_EEPROM_WIDTH_OPCODE + eeprom->width + 1);
+ 	/* At this point bpf_prog->aux->refcnt == 0 and this map->refcnt == 0,
+ 	 * so the programs (can be more than one that used this map) were
+@@ -226,18 +226,6 @@ static void dev_map_free(struct bpf_map *map)
+ 	/* Make sure prior __dev_map_entry_free() have completed. */
+ 	rcu_barrier();
  
-+	if (has_quirk_extra_read_cycle(eeprom)) {
-+		eeprom_93cx6_pulse_high(eeprom);
-+		eeprom_93cx6_pulse_low(eeprom);
-+	}
-+
- 	/*
- 	 * Read the requested 8 bits.
- 	 */
-diff --git a/include/linux/eeprom_93cx6.h b/include/linux/eeprom_93cx6.h
-index c860c72a921d0..3a485cc0e0fa0 100644
---- a/include/linux/eeprom_93cx6.h
-+++ b/include/linux/eeprom_93cx6.h
-@@ -11,6 +11,8 @@
- 	Supported chipsets: 93c46, 93c56 and 93c66.
-  */
+-	/* To ensure all pending flush operations have completed wait for flush
+-	 * list to empty on _all_ cpus.
+-	 * Because the above synchronize_rcu() ensures the map is disconnected
+-	 * from the program we can assume no new items will be added.
+-	 */
+-	for_each_online_cpu(cpu) {
+-		struct list_head *flush_list = per_cpu_ptr(dtab->flush_list, cpu);
+-
+-		while (!list_empty(flush_list))
+-			cond_resched();
+-	}
+-
+ 	if (dtab->map.map_type == BPF_MAP_TYPE_DEVMAP_HASH) {
+ 		for (i = 0; i < dtab->n_buckets; i++) {
+ 			struct bpf_dtab_netdev *dev;
+@@ -351,8 +339,7 @@ static int dev_map_hash_get_next_key(struct bpf_map *map, void *key,
+ 	return -ENOENT;
+ }
  
-+#include <linux/bits.h>
-+
- /*
-  * EEPROM operation defines.
-  */
-@@ -34,6 +36,7 @@
-  * @register_write(struct eeprom_93cx6 *eeprom): handler to
-  * write to the eeprom register by using all reg_* fields.
-  * @width: eeprom width, should be one of the PCI_EEPROM_WIDTH_* defines
-+ * @quirks: eeprom or controller quirks
-  * @drive_data: Set if we're driving the data line.
-  * @reg_data_in: register field to indicate data input
-  * @reg_data_out: register field to indicate data output
-@@ -50,6 +53,9 @@ struct eeprom_93cx6 {
- 	void (*register_write)(struct eeprom_93cx6 *eeprom);
+-static int bq_xmit_all(struct xdp_bulk_queue *bq, u32 flags,
+-		       bool in_napi_ctx)
++static int bq_xmit_all(struct xdp_bulk_queue *bq, u32 flags)
+ {
+ 	struct bpf_dtab_netdev *obj = bq->obj;
+ 	struct net_device *dev = obj->dev;
+@@ -390,11 +377,7 @@ static int bq_xmit_all(struct xdp_bulk_queue *bq, u32 flags,
+ 	for (i = 0; i < bq->count; i++) {
+ 		struct xdp_frame *xdpf = bq->q[i];
  
- 	int width;
-+	unsigned int quirks;
-+/* Some EEPROMs require an extra clock cycle before reading */
-+#define PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE	BIT(0)
+-		/* RX path under NAPI protection, can return frames faster */
+-		if (likely(in_napi_ctx))
+-			xdp_return_frame_rx_napi(xdpf);
+-		else
+-			xdp_return_frame(xdpf);
++		xdp_return_frame_rx_napi(xdpf);
+ 		drops++;
+ 	}
+ 	goto out;
+@@ -415,7 +398,7 @@ void __dev_map_flush(struct bpf_map *map)
  
- 	char drive_data;
- 	char reg_data_in;
-@@ -71,3 +77,8 @@ extern void eeprom_93cx6_wren(struct eeprom_93cx6 *eeprom, bool enable);
+ 	rcu_read_lock();
+ 	list_for_each_entry_safe(bq, tmp, flush_list, flush_node)
+-		bq_xmit_all(bq, XDP_XMIT_FLUSH, true);
++		bq_xmit_all(bq, XDP_XMIT_FLUSH);
+ 	rcu_read_unlock();
+ }
  
- extern void eeprom_93cx6_write(struct eeprom_93cx6 *eeprom,
- 			       u8 addr, u16 data);
-+
-+static inline bool has_quirk_extra_read_cycle(struct eeprom_93cx6 *eeprom)
-+{
-+	return eeprom->quirks & PCI_EEPROM_QUIRK_EXTRA_READ_CYCLE;
-+}
+@@ -446,7 +429,7 @@ static int bq_enqueue(struct bpf_dtab_netdev *obj, struct xdp_frame *xdpf,
+ 	struct xdp_bulk_queue *bq = this_cpu_ptr(obj->bulkq);
+ 
+ 	if (unlikely(bq->count == DEV_MAP_BULK_SIZE))
+-		bq_xmit_all(bq, 0, true);
++		bq_xmit_all(bq, 0);
+ 
+ 	/* Ingress dev_rx will be the same for all xdp_frame's in
+ 	 * bulk_queue, because bq stored per-CPU and must be flushed
+@@ -515,27 +498,11 @@ static void *dev_map_hash_lookup_elem(struct bpf_map *map, void *key)
+ 	return dev ? &dev->ifindex : NULL;
+ }
+ 
+-static void dev_map_flush_old(struct bpf_dtab_netdev *dev)
+-{
+-	if (dev->dev->netdev_ops->ndo_xdp_xmit) {
+-		struct xdp_bulk_queue *bq;
+-		int cpu;
+-
+-		rcu_read_lock();
+-		for_each_online_cpu(cpu) {
+-			bq = per_cpu_ptr(dev->bulkq, cpu);
+-			bq_xmit_all(bq, XDP_XMIT_FLUSH, false);
+-		}
+-		rcu_read_unlock();
+-	}
+-}
+-
+ static void __dev_map_entry_free(struct rcu_head *rcu)
+ {
+ 	struct bpf_dtab_netdev *dev;
+ 
+ 	dev = container_of(rcu, struct bpf_dtab_netdev, rcu);
+-	dev_map_flush_old(dev);
+ 	free_percpu(dev->bulkq);
+ 	dev_put(dev->dev);
+ 	kfree(dev);
 -- 
 2.43.0
 
