@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-101243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD8E9EEB82
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:25:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6769EF126
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:35:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02833188297A
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0660B29F2FE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55912153FC;
-	Thu, 12 Dec 2024 15:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F08F223C56;
+	Thu, 12 Dec 2024 16:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3T/dtvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QND/qGGC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6207621504F;
-	Thu, 12 Dec 2024 15:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D07A2210CA;
+	Thu, 12 Dec 2024 16:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016865; cv=none; b=Qp4obbRr0eG3WdFPwt4N8Z7e5/MhmDaszqQPjf7xgPFIZcZ+UAS9KibZVJldjZKATfJSCWSaa3wZBg/zKkh50n8zygtR4J5EzEyQGRuzXv0jUrj29/ZUxceSYzBxeIInkYDj0DVwdJSKfuf++NnlXCu1nwrIjLFpJfKH2Kbd0D0=
+	t=1734020722; cv=none; b=WaosGyA9MYjDffpR4TVUSlz+hPTBueebikOb/MYHMndWMbXKAoHC4go2cbG5xmM0xkQ0FI40xKWhgO+4ZkKMz/3mTFF4POGgxvTidnMrr3LI0PhJ6j0Sw0PKJV2FsC/qrYUzRFrzUr9U6vWnJNsvjHU62xD8281r7Q/yjQVfER8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016865; c=relaxed/simple;
-	bh=Jb7PuwLpVwuVk6oM7htss90ZrQ6Q8jz66p/bK/put0Y=;
+	s=arc-20240116; t=1734020722; c=relaxed/simple;
+	bh=oy/2a1AJW8dXFBOdNQT1EMGgQc7PNJyuBgGuzMov9pI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scOEhPIxtKwiPzn7srDjK2x0EA8SvvMNglBdb95OxqhW4ovJqt1otkpOJTdHKlmEcLrWf4WUf93hBdgLkSFr9AjdW69959O7RxXUHO/4/ajWikUJS074/ntVbKcltGQctuC4Ehn2xxYE+hZzwBFP/XrmYkv9GJkJsylCDrnOgf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3T/dtvL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB42C4CEE8;
-	Thu, 12 Dec 2024 15:21:04 +0000 (UTC)
+	 MIME-Version; b=A4gqdyJOtX04O8l+46FakSd7W+66/8OMGsOl4rPb+RyWs/2yJ5+q10q8cFQy7QIUQXCTauhFbEXf2GqhcMBimqwkGpHLJwdV+O/SUMxX1QLce4rfLIIk25IIiE1CE8ADKE2q6aIcy0z1xECYJemK6Q4Oyz+WDOgTGYmKspt5DEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QND/qGGC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7E4C4CECE;
+	Thu, 12 Dec 2024 16:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016865;
-	bh=Jb7PuwLpVwuVk6oM7htss90ZrQ6Q8jz66p/bK/put0Y=;
+	s=korg; t=1734020722;
+	bh=oy/2a1AJW8dXFBOdNQT1EMGgQc7PNJyuBgGuzMov9pI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3T/dtvL2VKfDOaCrBIXZftre5x+CwMWSeqweBjws2co9Js/2BUp5MczB05t8hKmI
-	 IhKvXetOT1/O8NnB/8EX8ugxAusiJ35usVBFgXJG4GXM0xue5VZ8b1z0P6eIB9O5hi
-	 2ZQrvgHjhFcih4QQdlBrxYEXiwWc4GNXzNGvcIBI=
+	b=QND/qGGCvVishI0kJ5d4SkE9Amv7CLyLQCt2CoL3ass0bwVCqMxVAEXIqS6b7Z4tx
+	 IKXBcgGQJZQGnVEysyDvU+rulE02hyIiaBXic2ZJcR6iNip9TD5tKGBKS4bB3S77YP
+	 QLTd+rZ3TGqi4PE71jDg9Z5c3hXP83jQdQGO0Sjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Nikitin <denik@chromium.org>,
-	Levi Yun <yeoreum.yun@arm.com>,
-	Christoph Hellwig <hch@lst.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 318/466] dma-debug: fix a possible deadlock on radix_lock
+Subject: [PATCH 6.1 542/772] netfilter: ipset: Hold module reference while requesting a module
 Date: Thu, 12 Dec 2024 15:58:07 +0100
-Message-ID: <20241212144319.360065363@linuxfoundation.org>
+Message-ID: <20241212144412.361092405@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Levi Yun <yeoreum.yun@arm.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 7543c3e3b9b88212fcd0aaf5cab5588797bdc7de ]
+[ Upstream commit 456f010bfaefde84d3390c755eedb1b0a5857c3c ]
 
-radix_lock() shouldn't be held while holding dma_hash_entry[idx].lock
-otherwise, there's a possible deadlock scenario when
-dma debug API is called holding rq_lock():
+User space may unload ip_set.ko while it is itself requesting a set type
+backend module, leading to a kernel crash. The race condition may be
+provoked by inserting an mdelay() right after the nfnl_unlock() call.
 
-CPU0                   CPU1                       CPU2
-dma_free_attrs()
-check_unmap()          add_dma_entry()            __schedule() //out
-                                                  (A) rq_lock()
-get_hash_bucket()
-(A) dma_entry_hash
-                                                  check_sync()
-                       (A) radix_lock()           (W) dma_entry_hash
-dma_entry_free()
-(W) radix_lock()
-                       // CPU2's one
-                       (W) rq_lock()
-
-CPU1 situation can happen when it extending radix tree and
-it tries to wake up kswapd via wake_all_kswapd().
-
-CPU2 situation can happen while perf_event_task_sched_out()
-(i.e. dma sync operation is called while deleting perf_event using
- etm and etr tmc which are Arm Coresight hwtracing driver backends).
-
-To remove this possible situation, call dma_entry_free() after
-put_hash_bucket() in check_unmap().
-
-Reported-by: Denis Nikitin <denik@chromium.org>
-Closes: https://lists.linaro.org/archives/list/coresight@lists.linaro.org/thread/2WMS7BBSF5OZYB63VT44U5YWLFP5HL6U/#RWM6MLQX5ANBTEQ2PRM7OXCBGCE6NPWU
-Signed-off-by: Levi Yun <yeoreum.yun@arm.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/netfilter/ipset/ip_set_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index d570535342cb7..f6f0387761d05 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -1052,9 +1052,13 @@ static void check_unmap(struct dma_debug_entry *ref)
- 	}
- 
- 	hash_bucket_del(entry);
--	dma_entry_free(entry);
--
- 	put_hash_bucket(bucket, flags);
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 0b24b638bfd2e..56215fb63b645 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -104,14 +104,19 @@ find_set_type(const char *name, u8 family, u8 revision)
+ static bool
+ load_settype(const char *name)
+ {
++	if (!try_module_get(THIS_MODULE))
++		return false;
 +
-+	/*
-+	 * Free the entry outside of bucket_lock to avoid ABBA deadlocks
-+	 * between that and radix_lock.
-+	 */
-+	dma_entry_free(entry);
+ 	nfnl_unlock(NFNL_SUBSYS_IPSET);
+ 	pr_debug("try to load ip_set_%s\n", name);
+ 	if (request_module("ip_set_%s", name) < 0) {
+ 		pr_warn("Can't find ip_set type %s\n", name);
+ 		nfnl_lock(NFNL_SUBSYS_IPSET);
++		module_put(THIS_MODULE);
+ 		return false;
+ 	}
+ 	nfnl_lock(NFNL_SUBSYS_IPSET);
++	module_put(THIS_MODULE);
+ 	return true;
  }
  
- static void check_for_stack(struct device *dev,
 -- 
 2.43.0
 
