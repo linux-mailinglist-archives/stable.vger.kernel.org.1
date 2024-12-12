@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-103411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A6D9EF7A9
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:36:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2245C9EF86E
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:42:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611F6174F85
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7DC2294EE3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EB9216E3B;
-	Thu, 12 Dec 2024 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160D215710;
+	Thu, 12 Dec 2024 17:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUn37oV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKXuiTcO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9631513CA81;
-	Thu, 12 Dec 2024 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3C36F2FE;
+	Thu, 12 Dec 2024 17:42:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024487; cv=none; b=cAB60OLyBNM3Ac5a7Z3QszRAKusdqNTs8r0pg7Lkfwkoa6XJ4B39dqNkahT2AYl0aO36eB6hxa1q29fcAR1Dds3ah2mnIOdI1TSiiaLFG3UJ+8UjMKq6wxV8gfncWoKQgpmt1a4zyLVR8uChNubFHogB7sNklUC9cryD3B9qeTg=
+	t=1734025326; cv=none; b=IdYwzbS/BzLmrveS12VAIXUePM0Jw3M+Ki7dIyu0dJDVxQZqySLaIkYhiO3t4KGm7guNPDYMcRx8LtP9OpcWybksdTX9KfZ3zqUrlrPHm5qqpXLVFRbwBwt9lDwChLNx003z5VQZF50Y61Jxe81UbaBgxPaY+O7PeUYH85VXFws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024487; c=relaxed/simple;
-	bh=SuiL67DWljFw828X0+bRxXT2u2pQK/u3qW+7KgE14ck=;
+	s=arc-20240116; t=1734025326; c=relaxed/simple;
+	bh=siL1ryzAkhzKB5YjZs8svtoWTBdz9lfz/jasZcOsezs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wq8oG8QV/Ofxdh7Npl7+Lv92DrLC0FI2L5J6qT4Dh7xYJKsXpQ08Q3slARVmCNGrtd/IlIFR/Su9uoN+lCxq5BL529acclsdivxM385KOioK2f9bHJMvjaiNzsL8i7j8mO8gsEM77mq5kextQSFZJKBUXyMbkcbBL6E3l+Se4sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUn37oV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112C0C4CED3;
-	Thu, 12 Dec 2024 17:28:06 +0000 (UTC)
+	 MIME-Version; b=aRXPiBu/mOGt0pKFWyDEhhOSFy9fKBiS10fF1bz/ivJ0yRlydLP3bCAkYV1KwRPX6EAq096EXPn4kSXIT3/Satx+c8oW9Gx94x79qB2N8UAJ6RpF7W7WtAe1CXJXK3yCuTTa6RJmvOe3d8TdPvAhU+KvzEpqw1qbBO1SCZ+4Ijk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKXuiTcO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6557C4CED3;
+	Thu, 12 Dec 2024 17:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024487;
-	bh=SuiL67DWljFw828X0+bRxXT2u2pQK/u3qW+7KgE14ck=;
+	s=korg; t=1734025326;
+	bh=siL1ryzAkhzKB5YjZs8svtoWTBdz9lfz/jasZcOsezs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUn37oV1oho8yvD2Ig9dnvRDK9RPEdlx69+BhUAXPfu50JARaxyjD0as7UzsWyuX/
-	 acn8IdTi3SM/xOTrb+TgBFrGUmW3ly74f/WCMxPVdFqvZEbFgpiJA7f5dtPh7CRLTr
-	 Ruxnab0Oj7niMeYW16VuUXEunM0vPat1XnBm54CU=
+	b=OKXuiTcO+S4zRRs7N9hKni3UzH8ELHFFeJ4qCqodTQxeaFg7vb6jd/+xCVWeRQZgh
+	 U5RV5zUtT5ijTSYc1IKWEE8cy4gjiz+NyR/IKgwT7t0bHflxoFMwJoOe+U3wkoQ2as
+	 coEA/kxCBAlqVEr13Q4gM9TUDYoFugX396Yo09oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 311/459] ASoC: fsl_micfil: fix the naming style for mask definition
-Date: Thu, 12 Dec 2024 16:00:49 +0100
-Message-ID: <20241212144305.930142487@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 132/321] ipmr: convert /proc handlers to rcu_read_lock()
+Date: Thu, 12 Dec 2024 16:00:50 +0100
+Message-ID: <20241212144235.191848295@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 101b096bc2549618f18bc08ae3a0e364b3c8fff1 upstream.
+[ Upstream commit b96ef16d2f837870daaea51c38cd50458b95ad5c ]
 
-Remove the _SHIFT for the mask definition.
+We can use standard rcu_read_lock(), to get rid
+of last read_lock(&mrt_lock) call points.
 
-Fixes: 17f2142bae4b ("ASoC: fsl_micfil: use GENMASK to define register bit fields")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/r/1651736047-28809-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: fc9c273d6daa ("ipmr: fix tables suspicious RCU usage")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_micfil.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv4/ipmr.c  | 8 ++++----
+ net/ipv6/ip6mr.c | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/sound/soc/fsl/fsl_micfil.h
-+++ b/sound/soc/fsl/fsl_micfil.h
-@@ -75,9 +75,9 @@
- #define MICFIL_FIFO_STAT_FIFOX_UNDER(ch)	BIT((ch) + 8)
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 2da6896080363..11f916646d34d 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -2916,7 +2916,7 @@ static int ipmr_rtm_dumplink(struct sk_buff *skb, struct netlink_callback *cb)
+  */
  
- /* MICFIL HWVAD0 Control 1 Register -- REG_MICFIL_VAD0_CTRL1*/
--#define MICFIL_VAD0_CTRL1_CHSEL_SHIFT	GENMASK(26, 24)
--#define MICFIL_VAD0_CTRL1_CICOSR_SHIFT	GENMASK(19, 16)
--#define MICFIL_VAD0_CTRL1_INITT_SHIFT	GENMASK(12, 8)
-+#define MICFIL_VAD0_CTRL1_CHSEL		GENMASK(26, 24)
-+#define MICFIL_VAD0_CTRL1_CICOSR	GENMASK(19, 16)
-+#define MICFIL_VAD0_CTRL1_INITT		GENMASK(12, 8)
- #define MICFIL_VAD0_CTRL1_ST10		BIT(4)
- #define MICFIL_VAD0_CTRL1_ERIE		BIT(3)
- #define MICFIL_VAD0_CTRL1_IE		BIT(2)
-@@ -107,7 +107,7 @@
+ static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+-	__acquires(mrt_lock)
++	__acquires(RCU)
+ {
+ 	struct mr_vif_iter *iter = seq->private;
+ 	struct net *net = seq_file_net(seq);
+@@ -2928,14 +2928,14 @@ static void *ipmr_vif_seq_start(struct seq_file *seq, loff_t *pos)
  
- /* MICFIL HWVAD0 Zero-Crossing Detector - REG_MICFIL_VAD0_ZCD */
- #define MICFIL_VAD0_ZCD_ZCDTH		GENMASK(25, 16)
--#define MICFIL_VAD0_ZCD_ZCDADJ_SHIFT	GENMASK(11, 8)
-+#define MICFIL_VAD0_ZCD_ZCDADJ		GENMASK(11, 8)
- #define MICFIL_VAD0_ZCD_ZCDAND		BIT(4)
- #define MICFIL_VAD0_ZCD_ZCDAUT		BIT(2)
- #define MICFIL_VAD0_ZCD_ZCDEN		BIT(0)
+ 	iter->mrt = mrt;
+ 
+-	read_lock(&mrt_lock);
++	rcu_read_lock();
+ 	return mr_vif_seq_start(seq, pos);
+ }
+ 
+ static void ipmr_vif_seq_stop(struct seq_file *seq, void *v)
+-	__releases(mrt_lock)
++	__releases(RCU)
+ {
+-	read_unlock(&mrt_lock);
++	rcu_read_unlock();
+ }
+ 
+ static int ipmr_vif_seq_show(struct seq_file *seq, void *v)
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 6642bc7b9870f..33c5974d467dd 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -401,7 +401,7 @@ static void ip6mr_free_table(struct mr_table *mrt)
+  */
+ 
+ static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+-	__acquires(mrt_lock)
++	__acquires(RCU)
+ {
+ 	struct mr_vif_iter *iter = seq->private;
+ 	struct net *net = seq_file_net(seq);
+@@ -413,14 +413,14 @@ static void *ip6mr_vif_seq_start(struct seq_file *seq, loff_t *pos)
+ 
+ 	iter->mrt = mrt;
+ 
+-	read_lock(&mrt_lock);
++	rcu_read_lock();
+ 	return mr_vif_seq_start(seq, pos);
+ }
+ 
+ static void ip6mr_vif_seq_stop(struct seq_file *seq, void *v)
+-	__releases(mrt_lock)
++	__releases(RCU)
+ {
+-	read_unlock(&mrt_lock);
++	rcu_read_unlock();
+ }
+ 
+ static int ip6mr_vif_seq_show(struct seq_file *seq, void *v)
+-- 
+2.43.0
+
 
 
 
