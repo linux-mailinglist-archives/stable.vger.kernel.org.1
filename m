@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93AA19EF802
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:38:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 713B69EF779
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:35:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C0D292704
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2E721655ED
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0342A216E0B;
-	Thu, 12 Dec 2024 17:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777AB215764;
+	Thu, 12 Dec 2024 17:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxgAhvQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+oEONXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A49213E6F;
-	Thu, 12 Dec 2024 17:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C13211493;
+	Thu, 12 Dec 2024 17:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025110; cv=none; b=bgR1YTd1Y2Z1nNnxdb0H8Od8PltwN4MkaXefZUC5d4PKsG1UFq82yAidQo7lrIj6tjJlHpfXYHaixQiaXuVg0cSj6UAFmK4QWtzBk6UR5Wtssvm+d39CGk/R74JdBlENE3rqp3t9DpqsB/IzFniZKunTY85hbX69JRxEmkuFe5E=
+	t=1734024306; cv=none; b=ASSXK5RsDw+0nUCjRSHBNAEaX1Wq59YMKxeGixBOp4cPRctqZWe3vQ2FNj9FxYctspu/YRt0ALmfBbZDFR3EV6DIRBCl+XRJ1MBDBeq/GGxqf3pYwACb+sxzB1RWD8VKPWDFmtqbrVy+ukGKjblEenIjnP4/4tiZ6uyqGUW2mec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025110; c=relaxed/simple;
-	bh=s6vmPcXochGrHCjnt7iJ3HOTN3Q65YLNUJ2i77x/hbU=;
+	s=arc-20240116; t=1734024306; c=relaxed/simple;
+	bh=BoCAE6y8R6zoDSXNVR4Jv10MDzsLbt03GCXsdOpqtig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYdilJighZCe4KDzddO63Olx7q0RKdsIpkMPUS2CJaXOsOFdOtbiWMnj8sTOEyv49G4DpB+kpWL/UxujR9iGmLm3lHWZqDEV9BVTu9aSmZ1Ep7XA5NORBLoCCr1XPqF9xnygKCUFwvzY/PXwCOVBEGFKgUwEkpn1xQrpLTFdpD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxgAhvQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3372BC4CECE;
-	Thu, 12 Dec 2024 17:38:30 +0000 (UTC)
+	 MIME-Version; b=fxK9i4EoI0Dx1ycljshazTRXR8MYOVf2ywx56689cSRKBKoQT8wKp8aKIlgM1cE/xKxY6TkvS1UGtqXKEzMBzd49xVdI015uNwGZ7LGPqv+CG5TPD8/A51D1tRRiJDsnP5r1v0tx9aSxjMTJEDd/gIPk4pzyLJGGGJh47XqykG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+oEONXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FD5C4CED0;
+	Thu, 12 Dec 2024 17:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025110;
-	bh=s6vmPcXochGrHCjnt7iJ3HOTN3Q65YLNUJ2i77x/hbU=;
+	s=korg; t=1734024306;
+	bh=BoCAE6y8R6zoDSXNVR4Jv10MDzsLbt03GCXsdOpqtig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxgAhvQmtl3u865GnHuF5UmQawybE7qQ1IoDZVi/ZE1KMANrRkjbJb13tXk5vcnsX
-	 pNJC7MQxjEyCA0lPSbXclrLPqyctu6DBK510zycZw/E2YZA3vzZzNolZrSmivUnWGD
-	 Zo+wuzJ6kjTlIBgVqDF2QDkM/MJPkMqY9mGEdPm0=
+	b=u+oEONXOp8VXkNO9q10wBjr91vIyI9/pWa8c7WanB4oovCfCdnANRASq/QGzSar88
+	 5wSkVG5Pa5Yhf0C/m/JpDTugMuYbZe1qB2sq8bpMpmciUaphA718xDf/05SP9JtKIo
+	 24UaFvN5R3k0xHxUZiWnGR/8wjhRD8ZZhjK9ccJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/321] crypto: pcrypt - Call crypto layer directly when padata_do_parallel() return -EBUSY
+Subject: [PATCH 5.10 222/459] net: usb: lan78xx: Fix refcounting and autosuspend on invalid WoL configuration
 Date: Thu, 12 Dec 2024 15:59:20 +0100
-Message-ID: <20241212144231.656713905@linuxfoundation.org>
+Message-ID: <20241212144302.342382522@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 662f2f13e66d3883b9238b0b96b17886179e60e2 ]
+[ Upstream commit e863ff806f72098bccaf8fa89c80d9ad6187c3b0 ]
 
-Since commit 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for
-PADATA_RESET"), the pcrypt encryption and decryption operations return
--EAGAIN when the CPU goes online or offline. In alg_test(), a WARN is
-generated when pcrypt_aead_decrypt() or pcrypt_aead_encrypt() returns
--EAGAIN, the unnecessary panic will occur when panic_on_warn set 1.
-Fix this issue by calling crypto layer directly without parallelization
-in that case.
+Validate Wake-on-LAN (WoL) options in `lan78xx_set_wol` before calling
+`usb_autopm_get_interface`. This prevents USB autopm refcounting issues
+and ensures the adapter can properly enter autosuspend when invalid WoL
+options are provided.
 
-Fixes: 8f4f68e788c3 ("crypto: pcrypt - Fix hungtask for PADATA_RESET")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: eb9ad088f966 ("lan78xx: Check for supported Wake-on-LAN modes")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+Link: https://patch.msgid.link/20241118140351.2398166-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/pcrypt.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/usb/lan78xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
-index 63e64164900e8..9e4179f5717e6 100644
---- a/crypto/pcrypt.c
-+++ b/crypto/pcrypt.c
-@@ -118,8 +118,10 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
--	if (err == -EBUSY)
--		return -EAGAIN;
-+	if (err == -EBUSY) {
-+		/* try non-parallel mode */
-+		return crypto_aead_encrypt(creq);
-+	}
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 757d5c82f3f09..cabe6cdd6903a 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1428,13 +1428,13 @@ static int lan78xx_set_wol(struct net_device *netdev,
+ 	struct lan78xx_priv *pdata = (struct lan78xx_priv *)(dev->data[0]);
+ 	int ret;
  
- 	return err;
- }
-@@ -167,8 +169,10 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
--	if (err == -EBUSY)
--		return -EAGAIN;
-+	if (err == -EBUSY) {
-+		/* try non-parallel mode */
-+		return crypto_aead_decrypt(creq);
-+	}
++	if (wol->wolopts & ~WAKE_ALL)
++		return -EINVAL;
++
+ 	ret = usb_autopm_get_interface(dev->intf);
+ 	if (ret < 0)
+ 		return ret;
  
- 	return err;
- }
+-	if (wol->wolopts & ~WAKE_ALL)
+-		return -EINVAL;
+-
+ 	pdata->wol = wol->wolopts;
+ 
+ 	device_set_wakeup_enable(&dev->udev->dev, (bool)wol->wolopts);
 -- 
 2.43.0
 
