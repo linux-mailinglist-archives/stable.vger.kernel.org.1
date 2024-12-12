@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-101467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27BE9EECA0
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:36:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FEE9EF352
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:58:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3F37188482C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:34:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFFCF288B5A
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C97217F46;
-	Thu, 12 Dec 2024 15:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A6B23098A;
+	Thu, 12 Dec 2024 16:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPU+cIEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BRso1Ja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F002153DF;
-	Thu, 12 Dec 2024 15:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CEE215799;
+	Thu, 12 Dec 2024 16:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734017655; cv=none; b=J3ORiZBlKm8ooAHCZeNZ2424tOfYKOSGRG9TpBZHNgtW4YeqHVPuOeX2ZqLiLyq6Bp36Jj1KGiLuAwIxtEiRqzg93tc9v6oELswevcrampIWGG5tC0TMLRWJ7kG9aE9un7A1F44W7kl3q9kF4iWPHZbp7H1qRNIytkvbto9xqUc=
+	t=1734022281; cv=none; b=bi0CQnGYOYg6Gutf2OQQcdNNQpXr1jDd/agZvm1Pge0vXJnyNH57slcL83FchgvFUae8eLAunA8bHJT8T+QFGxcPAeQ0+nSHPC4FcABYMKJApvvct0jZ7MFttXxHOsMvPKsPRKCSPO6xEaIWbosJp6vkM5WrlJpPy5zg6LoZR6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734017655; c=relaxed/simple;
-	bh=ZxffZ5XhvQjuqB610Ar/DgLm2UzhhbOLHm7PjFJJwqc=;
+	s=arc-20240116; t=1734022281; c=relaxed/simple;
+	bh=3lNxiGEJ7KkmRYPElCAU8H1ak7/gmAX5lTyRFb1F6NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zcbi8riWnf735s+QoB8lQsqEa/8w/73UZIJdNlm/IVUZbs5uhgTltWrYuDCramu73QsSKEI46oz6ZoyV39ivM/8I4jkvKDtM8wzp+0TxKYPvdX1P983fQclgDcgz+8F7W2CTjcAu3y+9m+sXe8BdyH/+Fs5ZDju2GS6tfgAkynI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPU+cIEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F096C4CECE;
-	Thu, 12 Dec 2024 15:34:13 +0000 (UTC)
+	 MIME-Version; b=knBPDoDgO5y2A0Ws77htj3skYLPB874VpfxaYNJrHtJuJe/jA4i7RQ3MQmOPy6PGKY7/uhPhj90r9zkFPitClrz/UZ8L/67klU1D2PD2aQxt55TCXV1GUYYI/boAdV10zelc9Ml72DtZ1s//xrQp+r9+f5piDExv5HbEAJT7WAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BRso1Ja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1B8C4CED0;
+	Thu, 12 Dec 2024 16:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734017654;
-	bh=ZxffZ5XhvQjuqB610Ar/DgLm2UzhhbOLHm7PjFJJwqc=;
+	s=korg; t=1734022280;
+	bh=3lNxiGEJ7KkmRYPElCAU8H1ak7/gmAX5lTyRFb1F6NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPU+cIEVMUsUGf7M2aZVcCGT2rmmd27WuQXrUbQpuWrQgAkNkzdcF+PXcyQAGMa0E
-	 VZzBoJ9qazyV50Oc6Xw0NWcrlq3zcFvXIFzAYzN7ivvuPRczCNB3FyWeakZbvlHw/7
-	 HZFwxXvQ5M9S9GZbeFUt0RBQQ3QFZY2Z52xgXb/I=
+	b=1BRso1JaCRhRqRTZn/eD+dBfLlMAPgFs2avXxjLIhXUaAVL+W6eQHEmKqaGi7axIl
+	 4XrfKk6nC/sAGGslIp+uuchghM+sRT/YhLlOPDDoLt50/Yjd87jFz7AdLLa76jTyjR
+	 9nIiR5RNgtSTJNXfAk1CPBPJM5aBiMfA3fO2zc5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Yuan Can <yuancan@huawei.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/356] soc/fsl: cpm: qmc: Convert to platform remove callback returning void
+Subject: [PATCH 5.15 198/565] drm/amdkfd: Fix wrong usage of INIT_WORK()
 Date: Thu, 12 Dec 2024 15:56:33 +0100
-Message-ID: <20241212144247.553431899@linuxfoundation.org>
+Message-ID: <20241212144319.315204058@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Yuan Can <yuancan@huawei.com>
 
-[ Upstream commit 14914a115e807aa2f8025e451133627a64120ac3 ]
+[ Upstream commit 21cae8debc6a1d243f64fa82cd1b41cb612b5c61 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is ignored (apart
-from emitting a warning) and this typically results in resource leaks.
-To improve here there is a quest to make the remove callback return
-void. In the first step of this quest all drivers are converted to
-.remove_new() which already returns void. Eventually after all drivers
-are converted, .remove_new() will be renamed to .remove().
+In kfd_procfs_show(), the sdma_activity_work_handler is a local variable
+and the sdma_activity_work_handler.sdma_activity_work should initialize
+with INIT_WORK_ONSTACK() instead of INIT_WORK().
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20230925095532.1984344-7-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Stable-dep-of: cb3daa51db81 ("soc: fsl: cpm1: qmc: Set the ret error code on platform_get_irq() failure")
+Fixes: 32cb59f31362 ("drm/amdkfd: Track SDMA utilization per process")
+Signed-off-by: Yuan Can <yuancan@huawei.com>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qe/qmc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-index 8dc73cc1a83b1..2312152a44b3e 100644
---- a/drivers/soc/fsl/qe/qmc.c
-+++ b/drivers/soc/fsl/qe/qmc.c
-@@ -1414,7 +1414,7 @@ static int qmc_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 7f69031f2b61a..49810642bc2b8 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -311,8 +311,8 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
+ 							      attr_sdma);
+ 		struct kfd_sdma_activity_handler_workarea sdma_activity_work_handler;
  
--static int qmc_remove(struct platform_device *pdev)
-+static void qmc_remove(struct platform_device *pdev)
- {
- 	struct qmc *qmc = platform_get_drvdata(pdev);
+-		INIT_WORK(&sdma_activity_work_handler.sdma_activity_work,
+-					kfd_sdma_activity_worker);
++		INIT_WORK_ONSTACK(&sdma_activity_work_handler.sdma_activity_work,
++				  kfd_sdma_activity_worker);
  
-@@ -1426,8 +1426,6 @@ static int qmc_remove(struct platform_device *pdev)
+ 		sdma_activity_work_handler.pdd = pdd;
+ 		sdma_activity_work_handler.sdma_activity_counter = 0;
+@@ -320,6 +320,7 @@ static ssize_t kfd_procfs_show(struct kobject *kobj, struct attribute *attr,
+ 		schedule_work(&sdma_activity_work_handler.sdma_activity_work);
  
- 	/* Disconnect the serial from TSA */
- 	tsa_serial_disconnect(qmc->tsa_serial);
--
--	return 0;
- }
+ 		flush_work(&sdma_activity_work_handler.sdma_activity_work);
++		destroy_work_on_stack(&sdma_activity_work_handler.sdma_activity_work);
  
- static const struct of_device_id qmc_id_table[] = {
-@@ -1442,7 +1440,7 @@ static struct platform_driver qmc_driver = {
- 		.of_match_table = of_match_ptr(qmc_id_table),
- 	},
- 	.probe = qmc_probe,
--	.remove = qmc_remove,
-+	.remove_new = qmc_remove,
- };
- module_platform_driver(qmc_driver);
- 
+ 		return snprintf(buffer, PAGE_SIZE, "%llu\n",
+ 				(sdma_activity_work_handler.sdma_activity_counter)/
 -- 
 2.43.0
 
