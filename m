@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-102715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB8D9EF448
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:07:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB13F9EF6EE
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87CB3189F18F
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:57:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E613F178287
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B5822B8D7;
-	Thu, 12 Dec 2024 16:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F5E2144C0;
+	Thu, 12 Dec 2024 17:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdi1cjCu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3q9a82w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B668A2144C0;
-	Thu, 12 Dec 2024 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FD1216E2D;
+	Thu, 12 Dec 2024 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022230; cv=none; b=cXIwR7lM4SQa8kdW1aPsEG4doVSIdLJbaDDY8b0F51/IXI07UyKDrphb8v+c0KPhLgNzPZFbOGe0qws8NxRRk3HN/1SLW2TvCkuDxBQ7zHR62fNyfEsOMjnIMTHFhnpMNFWkivAsyrwNuKnetF3CVMvDbT/NJ0db0bWYcSR15cU=
+	t=1734023663; cv=none; b=arHK5Hlfi0MNkBa9Ohi07A6742O41a0C9jgOLFCNid6ORrWnO0lnuZoJ/xsVsbKy5A3jsZi2y3x5cCH6iCsnQKA2ImUqn24xcjFl9VTt8TYm5Ng3ZPGLGzoMJUP4H2hnF+ubGoWu/8Q9nE4gWY1YGSDVoGfqB/J9ZhJNQR4dIzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022230; c=relaxed/simple;
-	bh=WQRDlbpqmwPHyjHhil4UkkoDyI7DBjvrqYpBj/IhQBw=;
+	s=arc-20240116; t=1734023663; c=relaxed/simple;
+	bh=/Sk/KzHskv6mcG8MXSMnEPwEZM7i0uNxfKllwwNIx6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IMOmWFJd13YFV8xHKVpCJtK42mgigz30kR4ZSMTKCroC+PCcBUaxXffUeser9xwhrSsx6zVeee9mxgVQezqXZEEZdpuy3VMC8rVbXPgpcK6+BV3twnvxTeDUqtCgFX/IYBeWmi++mvZGLTxwwMllS4WZAu/WzoWElg1usYDS4B8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdi1cjCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104F7C4CECE;
-	Thu, 12 Dec 2024 16:50:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tnnf53bgNLUX3uYZUnHz7pju7zhV9LVyamemP6LzXLJ/z8y/1tsNLEgJb6tyAv0T6oM6iN+8BhMyHZF9QGcpC0wo4+kIm+2F2dmnzy67ebGEVOUn6kqbpjhtgamoeC4PYg2H83V6+VjutfuJ1COheWvlHNsDUkTxIpj42gqycQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3q9a82w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236E6C4CECE;
+	Thu, 12 Dec 2024 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734022230;
-	bh=WQRDlbpqmwPHyjHhil4UkkoDyI7DBjvrqYpBj/IhQBw=;
+	s=korg; t=1734023662;
+	bh=/Sk/KzHskv6mcG8MXSMnEPwEZM7i0uNxfKllwwNIx6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pdi1cjCuNiZtAkR79nIqzcTU+lwR3IYvr0DM1KjHeZ78R/C8o9o7dkPv+p+2RDorr
-	 uVjjOPm7txnZKJxH0NM1hFPTBswVEGGg4VUzC0SYJOUFt+31gZ3x2SDUhCIO8bY7yz
-	 yYtu4ZO7a03yH9kLX4Exv9dxvucdokA+ZroFfctQ=
+	b=z3q9a82wChJsAxI2jifucZ1Uu1iyJP1LjZ+n1h8094np/Lt5xITk3ONtPJXFsoZBT
+	 AwfzO5hGh4r0gttBb2/2knUiFBdlFnLfC6MP11yhabY9r1jeO0Q4yfwURfhVo0GHgO
+	 nd5ynwBYeN38M95LpHHEP8z6xG7F62TbPQ0GzN7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Brown <doug@schmorgal.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 182/565] drm/etnaviv: fix power register offset on GC300
-Date: Thu, 12 Dec 2024 15:56:17 +0100
-Message-ID: <20241212144318.667912230@linuxfoundation.org>
+Subject: [PATCH 5.10 040/459] x86/amd_nb: Fix compile-testing without CONFIG_AMD_NB
+Date: Thu, 12 Dec 2024 15:56:18 +0100
+Message-ID: <20241212144255.111783429@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
-References: <20241212144311.432886635@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,162 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Brown <doug@schmorgal.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 61a6920bb604df3a0e389a2a9479e1e233e4461d ]
+[ Upstream commit fce9642c765a18abd1db0339a7d832c29b68456a ]
 
-Older GC300 revisions have their power registers at an offset of 0x200
-rather than 0x100. Add new gpu_read_power and gpu_write_power functions
-to encapsulate accesses to the power addresses and fix the addresses.
+node_to_amd_nb() is defined to NULL in non-AMD configs:
 
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Stable-dep-of: 37dc4737447a ("drm/etnaviv: hold GPU lock across perfmon sampling")
+  drivers/platform/x86/amd/hsmp/plat.c: In function 'init_platform_device':
+  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: dereferencing 'void *' pointer [-Werror]
+    165 |                 sock->root                      = node_to_amd_nb(i)->root;
+        |                                                                    ^~
+  drivers/platform/x86/amd/hsmp/plat.c:165:68: error: request for member 'root' in something not a structure or union
+
+Users of the interface who also allow COMPILE_TEST will cause the above build
+error so provide an inline stub to fix that.
+
+  [ bp: Massage commit message. ]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20241029092329.3857004-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_dump.c |  7 ++++++-
- drivers/gpu/drm/etnaviv/etnaviv_gpu.c  | 20 ++++++++++----------
- drivers/gpu/drm/etnaviv/etnaviv_gpu.h  | 21 +++++++++++++++++++++
- 3 files changed, 37 insertions(+), 11 deletions(-)
+ arch/x86/include/asm/amd_nb.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_dump.c b/drivers/gpu/drm/etnaviv/etnaviv_dump.c
-index 0edcf8ceb4a78..898f84a0fc30c 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_dump.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_dump.c
-@@ -83,10 +83,15 @@ static void etnaviv_core_dump_registers(struct core_dump_iterator *iter,
- {
- 	struct etnaviv_dump_registers *reg = iter->data;
- 	unsigned int i;
-+	u32 read_addr;
+diff --git a/arch/x86/include/asm/amd_nb.h b/arch/x86/include/asm/amd_nb.h
+index 455066a06f607..d561f7866fa16 100644
+--- a/arch/x86/include/asm/amd_nb.h
++++ b/arch/x86/include/asm/amd_nb.h
+@@ -118,7 +118,10 @@ static inline bool amd_gart_present(void)
  
- 	for (i = 0; i < ARRAY_SIZE(etnaviv_dump_registers); i++, reg++) {
-+		read_addr = etnaviv_dump_registers[i];
-+		if (read_addr >= VIVS_PM_POWER_CONTROLS &&
-+		    read_addr <= VIVS_PM_PULSE_EATER)
-+			read_addr = gpu_fix_power_address(gpu, read_addr);
- 		reg->reg = cpu_to_le32(etnaviv_dump_registers[i]);
--		reg->value = cpu_to_le32(gpu_read(gpu, etnaviv_dump_registers[i]));
-+		reg->value = cpu_to_le32(gpu_read(gpu, read_addr));
- 	}
- 
- 	etnaviv_core_dump_header(iter, ETDUMP_BUF_REG, reg);
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-index 123c8263d27fd..9def75f04e5b6 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.c
-@@ -590,7 +590,7 @@ static void etnaviv_gpu_enable_mlcg(struct etnaviv_gpu *gpu)
- 	u32 pmc, ppc;
- 
- 	/* enable clock gating */
--	ppc = gpu_read(gpu, VIVS_PM_POWER_CONTROLS);
-+	ppc = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	ppc |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
- 
- 	/* Disable stall module clock gating for 4.3.0.1 and 4.3.0.2 revs */
-@@ -598,9 +598,9 @@ static void etnaviv_gpu_enable_mlcg(struct etnaviv_gpu *gpu)
- 	    gpu->identity.revision == 0x4302)
- 		ppc |= VIVS_PM_POWER_CONTROLS_DISABLE_STALL_MODULE_CLOCK_GATING;
- 
--	gpu_write(gpu, VIVS_PM_POWER_CONTROLS, ppc);
-+	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, ppc);
- 
--	pmc = gpu_read(gpu, VIVS_PM_MODULE_CONTROLS);
-+	pmc = gpu_read_power(gpu, VIVS_PM_MODULE_CONTROLS);
- 
- 	/* Disable PA clock gating for GC400+ without bugfix except for GC420 */
- 	if (gpu->identity.model >= chipModel_GC400 &&
-@@ -635,7 +635,7 @@ static void etnaviv_gpu_enable_mlcg(struct etnaviv_gpu *gpu)
- 	pmc |= VIVS_PM_MODULE_CONTROLS_DISABLE_MODULE_CLOCK_GATING_RA_HZ;
- 	pmc |= VIVS_PM_MODULE_CONTROLS_DISABLE_MODULE_CLOCK_GATING_RA_EZ;
- 
--	gpu_write(gpu, VIVS_PM_MODULE_CONTROLS, pmc);
-+	gpu_write_power(gpu, VIVS_PM_MODULE_CONTROLS, pmc);
- }
- 
- void etnaviv_gpu_start_fe(struct etnaviv_gpu *gpu, u32 address, u16 prefetch)
-@@ -695,11 +695,11 @@ static void etnaviv_gpu_setup_pulse_eater(struct etnaviv_gpu *gpu)
- 	    (gpu->identity.features & chipFeatures_PIPE_3D))
- 	{
- 		/* Performance fix: disable internal DFS */
--		pulse_eater = gpu_read(gpu, VIVS_PM_PULSE_EATER);
-+		pulse_eater = gpu_read_power(gpu, VIVS_PM_PULSE_EATER);
- 		pulse_eater |= BIT(18);
- 	}
- 
--	gpu_write(gpu, VIVS_PM_PULSE_EATER, pulse_eater);
-+	gpu_write_power(gpu, VIVS_PM_PULSE_EATER, pulse_eater);
- }
- 
- static void etnaviv_gpu_hw_init(struct etnaviv_gpu *gpu)
-@@ -1293,9 +1293,9 @@ static void sync_point_perfmon_sample_pre(struct etnaviv_gpu *gpu,
- 	u32 val;
- 
- 	/* disable clock gating */
--	val = gpu_read(gpu, VIVS_PM_POWER_CONTROLS);
-+	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val &= ~VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
--	gpu_write(gpu, VIVS_PM_POWER_CONTROLS, val);
-+	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
- 
- 	/* enable debug register */
- 	val = gpu_read(gpu, VIVS_HI_CLOCK_CONTROL);
-@@ -1326,9 +1326,9 @@ static void sync_point_perfmon_sample_post(struct etnaviv_gpu *gpu,
- 	gpu_write(gpu, VIVS_HI_CLOCK_CONTROL, val);
- 
- 	/* enable clock gating */
--	val = gpu_read(gpu, VIVS_PM_POWER_CONTROLS);
-+	val = gpu_read_power(gpu, VIVS_PM_POWER_CONTROLS);
- 	val |= VIVS_PM_POWER_CONTROLS_ENABLE_MODULE_CLOCK_GATING;
--	gpu_write(gpu, VIVS_PM_POWER_CONTROLS, val);
-+	gpu_write_power(gpu, VIVS_PM_POWER_CONTROLS, val);
- }
- 
- 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gpu.h b/drivers/gpu/drm/etnaviv/etnaviv_gpu.h
-index 85eddd492774d..39f1e83d3cc7d 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_gpu.h
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gpu.h
-@@ -10,6 +10,7 @@
- #include "etnaviv_gem.h"
- #include "etnaviv_mmu.h"
- #include "etnaviv_drv.h"
-+#include "common.xml.h"
- 
- struct etnaviv_gem_submit;
- struct etnaviv_vram_mapping;
-@@ -159,6 +160,26 @@ static inline u32 gpu_read(struct etnaviv_gpu *gpu, u32 reg)
- 	return readl(gpu->mmio + reg);
- }
- 
-+static inline u32 gpu_fix_power_address(struct etnaviv_gpu *gpu, u32 reg)
+ #define amd_nb_num(x)		0
+ #define amd_nb_has_feature(x)	false
+-#define node_to_amd_nb(x)	NULL
++static inline struct amd_northbridge *node_to_amd_nb(int node)
 +{
-+	/* Power registers in GC300 < 2.0 are offset by 0x100 */
-+	if (gpu->identity.model == chipModel_GC300 &&
-+	    gpu->identity.revision < 0x2000)
-+		reg += 0x100;
-+
-+	return reg;
++	return NULL;
 +}
-+
-+static inline void gpu_write_power(struct etnaviv_gpu *gpu, u32 reg, u32 data)
-+{
-+	writel(data, gpu->mmio + gpu_fix_power_address(gpu, reg));
-+}
-+
-+static inline u32 gpu_read_power(struct etnaviv_gpu *gpu, u32 reg)
-+{
-+	return readl(gpu->mmio + gpu_fix_power_address(gpu, reg));
-+}
-+
- int etnaviv_gpu_get_param(struct etnaviv_gpu *gpu, u32 param, u64 *value);
+ #define amd_gart_present(x)	false
  
- int etnaviv_gpu_init(struct etnaviv_gpu *gpu);
+ #endif
 -- 
 2.43.0
 
