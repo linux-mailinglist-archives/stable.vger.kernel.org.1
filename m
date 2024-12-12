@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-103583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D404D9EF7CB
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:37:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9BA9EF626
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:23:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 946F528B309
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:37:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E66E428EBD8
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63B1223C50;
-	Thu, 12 Dec 2024 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DEA21660C;
+	Thu, 12 Dec 2024 17:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuqCapKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GzOzbPu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722692210EA;
-	Thu, 12 Dec 2024 17:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326612165F0;
+	Thu, 12 Dec 2024 17:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025003; cv=none; b=H9ExYNGBya8TGa87eA4j2iE7aWgsbqTunBo4WFsY4MK/GY70PbtVIWXk6Dy0h6fSOjRbHm/OIzvIq60VtzcoyyB5Vbq6XiOak6w0FcgLAJ/xwlYUWPg2CEAkZ60b1Q9Dh2lO9MYDIbXs6Y9D0i9nY9EJojPunpN1cxEELTivAFU=
+	t=1734024157; cv=none; b=EQeoAgYsfIHQbe1zePdNj+mtwypOb/puaroSEhA/DagwWrhssXYMLIRGkGPtuM3+y7XojmeBIsADchwfpuPpOHf16LNBnW654Hsxe1hpGRIQdPZFCnLC0qhkVzSKXihQJQYp0QoNxeQtDUJOBQPHT3aFG6hMzWIZKiGsMV63vr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025003; c=relaxed/simple;
-	bh=cjc/6+19se+a2T17air/4nAb0ZpGzj/vr92NLbOtIB0=;
+	s=arc-20240116; t=1734024157; c=relaxed/simple;
+	bh=PHmNu5yNG9D0kIaTLKBohK34zONaef+AXhslrtDja+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWw2ccR8IgmhUQV9Rtcxk0om8RJ7ZpghnQEClyst+UbyjMUBWNIPBGJcKRUkKOdsQ0TNDg1RRB5zFl54/BJKubiJUXd6h3Ojx6FAwZ02VjITDC8k5VrXX3xDp6OAeHOMBbe2vbaORqCQ2diG7wLnTdgluvErnbVxOJ6AJlVkT/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tuqCapKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB372C4CECE;
-	Thu, 12 Dec 2024 17:36:42 +0000 (UTC)
+	 MIME-Version; b=PYg1T1Cv6X94gN051czF//H3cumXhTDJhgCNuBPnJkW68JgbahaidB/uw6+lyijzXZb+No8O8UlVrZ1cLVcetAZRdV0zjysHW2mhJZ9/lGsEBd3RhaGNfS9InTpX7UAzvfCBK13ZjEr0bSJVejJpFI5cSzT7TR680jDz8z8qnyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GzOzbPu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81690C4CECE;
+	Thu, 12 Dec 2024 17:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025003;
-	bh=cjc/6+19se+a2T17air/4nAb0ZpGzj/vr92NLbOtIB0=;
+	s=korg; t=1734024157;
+	bh=PHmNu5yNG9D0kIaTLKBohK34zONaef+AXhslrtDja+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tuqCapKv3msQnnIUd3VuBImvP1EQ1UgMdf6Ze8O+tSOA3IDkkpfhu0H1v0NEPZ5ba
-	 kFmkJEEXnCeValvERsL+s4/TZj0tv7mI8jH8pLSjkNLT3H/xesjL7Tnjxao69/MQzJ
-	 smaEXj1VgLoNZHdAQoqzZNl+zYZ1or2leSzO4k1s=
+	b=GzOzbPu4s/yK79hpRMQjIMwMDh7mhGSRZMccxj8bKE/wqg+y4hiSf7hPAlAcoG1Eb
+	 f5I2dU42KZwsvkVId/xaQzAFVZe0E/ta0u80OURK92G1XyXt3CQiffHrK2yFb7PDlU
+	 cDokRpPrBgUW8WY6GkJyjt8Z5Ui57V/Q5sbstu3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Peterson <benjamin@engflow.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 024/321] ipmr: Fix access to mfc_cache_list without lock held
+Subject: [PATCH 5.10 204/459] perf trace: Do not lose last events in a race
 Date: Thu, 12 Dec 2024 15:59:02 +0100
-Message-ID: <20241212144230.864274225@linuxfoundation.org>
+Message-ID: <20241212144301.625648152@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
+References: <20241212144253.511169641@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +72,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Benjamin Peterson <benjamin@engflow.com>
 
-[ Upstream commit e28acc9c1ccfcb24c08e020828f69d0a915b06ae ]
+[ Upstream commit 3fd7c36973a250e17a4ee305a31545a9426021f4 ]
 
-Accessing `mr_table->mfc_cache_list` is protected by an RCU lock. In the
-following code flow, the RCU read lock is not held, causing the
-following error when `RCU_PROVE` is not held. The same problem might
-show up in the IPv6 code path.
+If a perf trace event selector specifies a maximum number of events to output
+(i.e., "/nr=N/" syntax), the event printing handler, trace__event_handler,
+disables the event selector after the maximum number events are
+printed.
 
-	6.12.0-rc5-kbuilder-01145-gbac17284bdcb #33 Tainted: G            E    N
-	-----------------------------
-	net/ipv4/ipmr_base.c:313 RCU-list traversed in non-reader section!!
+Furthermore, trace__event_handler checked if the event selector was
+disabled before doing any work. This avoided exceeding the maximum
+number of events to print if more events were in the buffer before the
+selector was disabled.
 
-	rcu_scheduler_active = 2, debug_locks = 1
-		   2 locks held by RetransmitAggre/3519:
-		    #0: ffff88816188c6c0 (nlk_cb_mutex-ROUTE){+.+.}-{3:3}, at: __netlink_dump_start+0x8a/0x290
-		    #1: ffffffff83fcf7a8 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_dumpit+0x6b/0x90
+However, the event selector can be disabled for reasons other than
+exceeding the maximum number of events. In particular, when the traced
+subprocess exits, the main loop disables all event selectors. This meant
+the last events of a traced subprocess might be lost to the printing
+handler's short-circuiting logic.
 
-	stack backtrace:
-		    lockdep_rcu_suspicious
-		    mr_table_dump
-		    ipmr_rtm_dumproute
-		    rtnl_dump_all
-		    rtnl_dumpit
-		    netlink_dump
-		    __netlink_dump_start
-		    rtnetlink_rcv_msg
-		    netlink_rcv_skb
-		    netlink_unicast
-		    netlink_sendmsg
+This nondeterministic problem could be seen by running the following many times:
 
-This is not a problem per see, since the RTNL lock is held here, so, it
-is safe to iterate in the list without the RCU read lock, as suggested
-by Eric.
+  $ perf trace -e syscalls:sys_enter_exit_group true
 
-To alleviate the concern, modify the code to use
-list_for_each_entry_rcu() with the RTNL-held argument.
+trace__event_handler should simply check for exceeding the maximum number of
+events to print rather than the state of the event selector.
 
-The annotation will raise an error only if RTNL or RCU read lock are
-missing during iteration, signaling a legitimate problem, otherwise it
-will avoid this false positive.
-
-This will solve the IPv6 case as well, since ip6mr_rtm_dumproute() calls
-this function as well.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20241108-ipmr_rcu-v2-1-c718998e209b@debian.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a9c5e6c1e9bff42c ("perf trace: Introduce per-event maximum number of events property")
+Signed-off-by: Benjamin Peterson <benjamin@engflow.com>
+Tested-by: Howard Chu <howardchu95@gmail.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241107232128.108981-1-benjamin@engflow.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ipmr_base.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/perf/builtin-trace.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
-index ea48bd15a575b..4a1a90a135406 100644
---- a/net/ipv4/ipmr_base.c
-+++ b/net/ipv4/ipmr_base.c
-@@ -301,7 +301,8 @@ int mr_table_dump(struct mr_table *mrt, struct sk_buff *skb,
- 	if (filter->filter_set)
- 		flags |= NLM_F_DUMP_FILTERED;
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index 3143601c1cb1f..6fbdabd902802 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -2757,13 +2757,8 @@ static int trace__event_handler(struct trace *trace, struct evsel *evsel,
+ {
+ 	struct thread *thread;
+ 	int callchain_ret = 0;
+-	/*
+-	 * Check if we called perf_evsel__disable(evsel) due to, for instance,
+-	 * this event's max_events having been hit and this is an entry coming
+-	 * from the ring buffer that we should discard, since the max events
+-	 * have already been considered/printed.
+-	 */
+-	if (evsel->disabled)
++
++	if (evsel->nr_events_printed >= evsel->max_events)
+ 		return 0;
  
--	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list) {
-+	list_for_each_entry_rcu(mfc, &mrt->mfc_cache_list, list,
-+				lockdep_rtnl_is_held()) {
- 		if (e < s_e)
- 			goto next_entry;
- 		if (filter->dev &&
+ 	thread = machine__findnew_thread(trace->host, sample->pid, sample->tid);
 -- 
 2.43.0
 
