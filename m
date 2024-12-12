@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-101710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-101389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C7F9EEE42
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:55:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CAE9EEC29
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:31:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D146D1889AA3
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:50:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5282B188657D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11A6223E99;
-	Thu, 12 Dec 2024 15:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810DD21578F;
+	Thu, 12 Dec 2024 15:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWlYAPJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgbXPwQu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8CA2210CD;
-	Thu, 12 Dec 2024 15:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF591487CD;
+	Thu, 12 Dec 2024 15:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018517; cv=none; b=VXUQ6j5hwql8cGELXBJUybsDQ4uopF0OJZ0KeR+V/xEz/79IuoaXKcOg+4ROaExWk1MU8zkXzZ2wwL8RPPaREMlMLfZSD7XhrVYScTENNDse2ytjMyvKYy5+satgWCOQcBGLZtqXO6bbVcXy1ChM960jhRTu4CZwmff7yuLsqNM=
+	t=1734017386; cv=none; b=nDsGNLIPf1o6xzyXamFYlJ9LwirKhwaZzsWT8T9T1jLP1RhRi08AivQKxEdFeSl+xbizPEMm6Hjo2N4/y7AOfwnH+7ZmhfBFiRfh4xuK8wMMZeRNqgan0GDDPo0Pxvm1u4g49A8sjr+Xr3bE4tetLyO6Z1pwtDkbcbklVRfZb6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018517; c=relaxed/simple;
-	bh=INCrCIPJdA/5twJt9g+afD7VPO/7ZIpc2k76ojYPaJ0=;
+	s=arc-20240116; t=1734017386; c=relaxed/simple;
+	bh=EGu6xzX878jpmugpFSAcBj/JqdpLC9buPQIWDpAno2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EriotCvMYINl6vJXQHkwHslRZDevOen4nl/oSI/H+2hSJo++Y/ME3sV1aSnZ976a0k48B5EbXxKABdPXYclW0pZt+aRSqyd+PobG2I8n809tKFHL2WvQ1OvWFbe+fmS73LD6/Rd/lwwMEvDwiKFf/BgzECMe3jeP/xxZBXbEKfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWlYAPJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CECC4CECE;
-	Thu, 12 Dec 2024 15:48:36 +0000 (UTC)
+	 MIME-Version; b=R0RYeNmSFbUjxIDgCW4jQIbw/bt2A8WmGVsGxi3B/Oi3CCwc8sHOCiVToM+MEy1M3XsQmMDELCqxvFvg39bmAKgFmeCpQNxnpHDIAMbxeR+IeAYpN2uAYwfYDD0TrHee9MAqtvqp1GlPVDaz6C8+xBpr/wQPKZrHVDN395qh9Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgbXPwQu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25BEC4CECE;
+	Thu, 12 Dec 2024 15:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018517;
-	bh=INCrCIPJdA/5twJt9g+afD7VPO/7ZIpc2k76ojYPaJ0=;
+	s=korg; t=1734017386;
+	bh=EGu6xzX878jpmugpFSAcBj/JqdpLC9buPQIWDpAno2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWlYAPJwAH/B6nqODik0es3Q8wbAn0U1ZIo2WJQjzydsdJF5t8FpYMvukBdppp4jF
-	 WwV3E9mYeo4NXA04b8brL6BwxjBfc6wcC3r/SPb/oB4Kc9GGOvTppauDF9xhvcjfRc
-	 rR+5/l9Bd9U9i6duVwaF+NNnmvKbL7alsJUIY2z8=
+	b=rgbXPwQuLYUAw8jWht97EWLqQ16lK54vWrIYHgnn9wzZ+Gp4CqH3vEmNStjYTJJjt
+	 8qgLIv0Z3BjDxsULYubNpFm+WZnapgaTTpTGHmOjr+i4kzOPrIfSGhw16u9WKOAnZA
+	 lvxSv0d55NwhqZZdQ2nI9UZEKHEWgDCk14VqJZHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc36d44ec9f368e443d3@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 315/356] io_uring/tctx: work around xa_store() allocation error issue
+	Colin Ian King <colin.i.king@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 465/466] ALSA: hda/realtek: Fix spelling mistake "Firelfy" -> "Firefly"
 Date: Thu, 12 Dec 2024 16:00:34 +0100
-Message-ID: <20241212144257.000003854@linuxfoundation.org>
+Message-ID: <20241212144325.239277898@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
+References: <20241212144306.641051666@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 7eb75ce7527129d7f1fee6951566af409a37a1c4 ]
+commit 20c3b3e5f2641eff3d85f33e6a468ac052b169bd upstream.
 
-syzbot triggered the following WARN_ON:
+There is a spelling mistake in a literal string in the alc269_fixup_tbl
+quirk table. Fix it.
 
-WARNING: CPU: 0 PID: 16 at io_uring/tctx.c:51 __io_uring_free+0xfa/0x140 io_uring/tctx.c:51
-
-which is the
-
-WARN_ON_ONCE(!xa_empty(&tctx->xa));
-
-sanity check in __io_uring_free() when a io_uring_task is going through
-its final put. The syzbot test case includes injecting memory allocation
-failures, and it very much looks like xa_store() can fail one of its
-memory allocations and end up with ->head being non-NULL even though no
-entries exist in the xarray.
-
-Until this issue gets sorted out, work around it by attempting to
-iterate entries in our xarray, and WARN_ON_ONCE() if one is found.
-
-Reported-by: syzbot+cc36d44ec9f368e443d3@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/io-uring/673c1643.050a0220.87769.0066.GAE@google.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0d08f0eec961 ("ALSA: hda/realtek: fix micmute LEDs don't work on HP Laptops")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://patch.msgid.link/20241205102833.476190-1-colin.i.king@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/tctx.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/tctx.c b/io_uring/tctx.c
-index c043fe93a3f23..84f6a83857204 100644
---- a/io_uring/tctx.c
-+++ b/io_uring/tctx.c
-@@ -47,8 +47,19 @@ static struct io_wq *io_init_wq_offload(struct io_ring_ctx *ctx,
- void __io_uring_free(struct task_struct *tsk)
- {
- 	struct io_uring_task *tctx = tsk->io_uring;
-+	struct io_tctx_node *node;
-+	unsigned long index;
- 
--	WARN_ON_ONCE(!xa_empty(&tctx->xa));
-+	/*
-+	 * Fault injection forcing allocation errors in the xa_store() path
-+	 * can lead to xa_empty() returning false, even though no actual
-+	 * node is stored in the xarray. Until that gets sorted out, attempt
-+	 * an iteration here and warn if any entries are found.
-+	 */
-+	xa_for_each(&tctx->xa, index, node) {
-+		WARN_ON_ONCE(1);
-+		break;
-+	}
- 	WARN_ON_ONCE(tctx->io_wq);
- 	WARN_ON_ONCE(tctx->cached_refs);
- 
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10512,7 +10512,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e18, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+-	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firelfy 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8e19, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8e1a, "HP ZBook Firefly 14 G12A", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
 
 
 
