@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-103738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EEB9EF9D2
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:54:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCC99EF6E0
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F297176797
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:47:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96F1E17F3B3
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458B6229123;
-	Thu, 12 Dec 2024 17:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD1F223C4E;
+	Thu, 12 Dec 2024 17:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYz+YZl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWuKm0Ji"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020AF2253FD;
-	Thu, 12 Dec 2024 17:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEA722C354;
+	Thu, 12 Dec 2024 17:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734025459; cv=none; b=C47qyygtA/btfqI3zNgLnDpvkwIn7TD8g5n/cdKsDjlB54vW44CfMUWz/l/uEW0iJbWwg0At4esALyki+NGfEwRukSgnFXyBXbh1Ed6m2uUhgMU8pfcIlbZSJEKLljjfIVX7oQ110xp1oENWNLpOjGy0wam7Y5s++cpA+TV1I2g=
+	t=1734023241; cv=none; b=WBjV1El784WqPOtLmzouvmu/Gd+SDX/Ewyz0V4lmJaA2yLfG6Wtb8CFN5JQsHFInj93C16uudRhMBTYgDxcO08ATZczg9YRiBdoFWpmtnWR+wxLmA5G1RucJ/SOE/WNEGLJJP9YsYl1jX8njikDgItHjB/gCzvyVbojhDtNEDqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734025459; c=relaxed/simple;
-	bh=D7XeO9Y1Y/c08XLLanwTaLHAlyg9hVFVUxB+ymapqnU=;
+	s=arc-20240116; t=1734023241; c=relaxed/simple;
+	bh=DBpuPMklBVzc9rq6D0L8yF9vAjB2mcm1slIaCk6FhUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iU3X5rPaoaWPPtQDium+5zn0FusT7oBfZ4g2LOy8qWuA2Rlx+kd7q3dyHqQ3ur/Do4UOpS6HANuTQExTR2FUGS2GLncnAZ2EP0EQkXjash4DU7cq6iGvGKIt+U+E59i4zB1IcMsAbsDwscHQd60b5qwrOwx8bvDAW1Bi9nxm6wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYz+YZl4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824E4C4CED0;
-	Thu, 12 Dec 2024 17:44:18 +0000 (UTC)
+	 MIME-Version; b=OhzQwU+nUoZz4j/HKC17QXdc8mR1wKkc1ilTztjFYE8B3HBVkpzxgBYy3TWgKLS6AO7XKepL3UOMYl+G+jZAc1OuyUEED0C4O+NPcu+wuC2qD89M9CfSFQ6euuXTzjwoeF9imFAMimRxP4/ePKCjk1aI9jcJUcWYFPaFysOjvMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWuKm0Ji; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89592C4CEDF;
+	Thu, 12 Dec 2024 17:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734025458;
-	bh=D7XeO9Y1Y/c08XLLanwTaLHAlyg9hVFVUxB+ymapqnU=;
+	s=korg; t=1734023241;
+	bh=DBpuPMklBVzc9rq6D0L8yF9vAjB2mcm1slIaCk6FhUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vYz+YZl4EnVAisRXUwRYA9uMp80clYjgG9gGYgWqLKy7jyoNx/tSFO97fLpGluJ/e
-	 S3VdbeOnb6sGj7huFuwJrJy2EJPXkyIcotdpvIdHEiiIuMBkBPofeIjzW7LEYC920Z
-	 3lVSsf/pzi4r6f1rHZxNao8n6NNX+Ro3y/AY6tAM=
+	b=jWuKm0Ji/j+/WXHVcMWyUqYppu1Ez/1TvaJhW92vVk7BrnpZXGUpUkyZc23Hb0s+4
+	 uxODgeFOGSpqapMTATIxMdimQ60BK9KXMIzKjx7AB3lytsraJiZuIEcPFe91ihxZD5
+	 Q5qttYU+UODdUd6PGk4sdhdSYToqR9qS3eGpHVF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	stable@kernel.org,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 145/321] ALSA: usb-audio: Fix potential out-of-bound accesses for Extigy and Mbox devices
-Date: Thu, 12 Dec 2024 16:01:03 +0100
-Message-ID: <20241212144235.708094475@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 469/565] epoll: annotate racy check
+Date: Thu, 12 Dec 2024 16:01:04 +0100
+Message-ID: <20241212144330.274908250@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
-References: <20241212144229.291682835@linuxfoundation.org>
+In-Reply-To: <20241212144311.432886635@linuxfoundation.org>
+References: <20241212144311.432886635@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Sevens <bsevens@google.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit b909df18ce2a998afef81d58bbd1a05dc0788c40 upstream.
+[ Upstream commit 6474353a5e3d0b2cf610153cea0c61f576a36d0a ]
 
-A bogus device can provide a bNumConfigurations value that exceeds the
-initial value used in usb_get_configuration for allocating dev->config.
+Epoll relies on a racy fastpath check during __fput() in
+eventpoll_release() to avoid the hit of pointlessly acquiring a
+semaphore. Annotate that race by using WRITE_ONCE() and READ_ONCE().
 
-This can lead to out-of-bounds accesses later, e.g. in
-usb_destroy_configuration.
-
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20241120124144.3814457-1-bsevens@google.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/66edfb3c.050a0220.3195df.001a.GAE@google.com
+Link: https://lore.kernel.org/r/20240925-fungieren-anbauen-79b334b00542@brauner
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reported-by: syzbot+3b6b32dc50537a49bb4a@syzkaller.appspotmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ fs/eventpoll.c            | 6 ++++--
+ include/linux/eventpoll.h | 2 +-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -585,6 +585,7 @@ int snd_usb_create_quirk(struct snd_usb_
- static int snd_usb_extigy_boot_quirk(struct usb_device *dev, struct usb_interface *intf)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index b60edddf17870..7413b4a6ba282 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -696,7 +696,8 @@ static int ep_remove(struct eventpoll *ep, struct epitem *epi)
+ 	to_free = NULL;
+ 	head = file->f_ep;
+ 	if (head->first == &epi->fllink && !epi->fllink.next) {
+-		file->f_ep = NULL;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, NULL);
+ 		if (!is_file_epoll(file)) {
+ 			struct epitems_head *v;
+ 			v = container_of(head, struct epitems_head, epitems);
+@@ -1460,7 +1461,8 @@ static int attach_epitem(struct file *file, struct epitem *epi)
+ 			spin_unlock(&file->f_lock);
+ 			goto allocate;
+ 		}
+-		file->f_ep = head;
++		/* See eventpoll_release() for details. */
++		WRITE_ONCE(file->f_ep, head);
+ 		to_free = NULL;
+ 	}
+ 	hlist_add_head_rcu(&epi->fllink, file->f_ep);
+diff --git a/include/linux/eventpoll.h b/include/linux/eventpoll.h
+index 3337745d81bd6..0c0d00fcd131f 100644
+--- a/include/linux/eventpoll.h
++++ b/include/linux/eventpoll.h
+@@ -42,7 +42,7 @@ static inline void eventpoll_release(struct file *file)
+ 	 * because the file in on the way to be removed and nobody ( but
+ 	 * eventpoll ) has still a reference to this file.
+ 	 */
+-	if (likely(!file->f_ep))
++	if (likely(!READ_ONCE(file->f_ep)))
+ 		return;
  
- 	if (le16_to_cpu(get_cfg_desc(config)->wTotalLength) == EXTIGY_FIRMWARE_SIZE_OLD ||
-@@ -596,10 +597,14 @@ static int snd_usb_extigy_boot_quirk(str
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error sending boot message: %d\n", err);
- 		err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--				&dev->descriptor, sizeof(dev->descriptor));
--		config = dev->actconfig;
-+				&new_device_descriptor, sizeof(new_device_descriptor));
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+		if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+			dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+				new_device_descriptor.bNumConfigurations);
-+		else
-+			memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 		err = usb_reset_configuration(dev);
- 		if (err < 0)
- 			dev_dbg(&dev->dev, "error usb_reset_configuration: %d\n", err);
-@@ -933,6 +938,7 @@ static void mbox2_setup_48_24_magic(stru
- static int snd_usb_mbox2_boot_quirk(struct usb_device *dev)
- {
- 	struct usb_host_config *config = dev->actconfig;
-+	struct usb_device_descriptor new_device_descriptor;
- 	int err;
- 	u8 bootresponse[0x12];
- 	int fwsize;
-@@ -968,10 +974,14 @@ static int snd_usb_mbox2_boot_quirk(stru
- 	dev_dbg(&dev->dev, "device initialised!\n");
- 
- 	err = usb_get_descriptor(dev, USB_DT_DEVICE, 0,
--		&dev->descriptor, sizeof(dev->descriptor));
--	config = dev->actconfig;
-+		&new_device_descriptor, sizeof(new_device_descriptor));
- 	if (err < 0)
- 		dev_dbg(&dev->dev, "error usb_get_descriptor: %d\n", err);
-+	if (new_device_descriptor.bNumConfigurations > dev->descriptor.bNumConfigurations)
-+		dev_dbg(&dev->dev, "error too large bNumConfigurations: %d\n",
-+			new_device_descriptor.bNumConfigurations);
-+	else
-+		memcpy(&dev->descriptor, &new_device_descriptor, sizeof(dev->descriptor));
- 
- 	err = usb_reset_configuration(dev);
- 	if (err < 0)
-@@ -1018,7 +1028,6 @@ static int snd_usb_axefx3_boot_quirk(str
- 	return 0;
- }
- 
--
- #define MICROBOOK_BUF_SIZE 128
- 
- static int snd_usb_motu_microbookii_communicate(struct usb_device *dev, u8 *buf,
+ 	/*
+-- 
+2.43.0
+
 
 
 
