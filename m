@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-101129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BF29EEAD8
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:18:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4859EF175
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70FCD188D83C
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:14:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24EF617722D
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9427216E28;
-	Thu, 12 Dec 2024 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155AB22EA1A;
+	Thu, 12 Dec 2024 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS4hoB2D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1Gzoj0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669A421504F;
-	Thu, 12 Dec 2024 15:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E9A21766D;
+	Thu, 12 Dec 2024 16:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734016458; cv=none; b=d0jCh5M2p5re+ff6DvV+0sn7OkNqZ/NxUxe5F5QJMDsr/lpEL89VHaNb8RzGpHGnenNfX82W3/Q2Qje65336MUpDL5RCweaiYuGolpvngXkh+wJSAzBY0r5l0Ry966q72K43a4FjU/F6FC1dX+0CxCF+APdAFJ5fzZzqFcC0AT0=
+	t=1734020289; cv=none; b=QXq7WPDZltDw8lmlszTbIP2XWh85Be60N/jQy7Ydf++uFwfDZgY7pyTbu7PibkxOZXhOxEIFlmYNEXZEpVZL8Ex9LvjcQEaOy3zaPIUpgz9xs5HvDA1wrN/PJ5Y0wGPRp33ju6cX9i1yVxoswRpBLEYsDrKebQ+mNmq5Qv3+CEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734016458; c=relaxed/simple;
-	bh=XlFwrZGGrpOebLfzA3FuPrPmPZEnPVlu5vnyQi9NGwU=;
+	s=arc-20240116; t=1734020289; c=relaxed/simple;
+	bh=qKc9JtP28tVSGIBUa1YjsPyZlrtz4epLIWb3xtX3zlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Twy/7shcYsCHgZ1EwNnzSMORehfDyfwIaJbo7nkK6Uyzm8acp8NG0AL4A1f3mDzmSL3sw7Hq5qq3Z8tKDiHTRyUQsyhN2I/B8MHWFsNMoMi2kvIMisWARi9hNxfPhjvJcem9pVk+QEbHEdVIFslpX7WUH+eCdZGBSzFVskAIU/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hS4hoB2D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C603BC4CED0;
-	Thu, 12 Dec 2024 15:14:17 +0000 (UTC)
+	 MIME-Version; b=Zdm+ptiZ0ofycWzj8eA8jZxDhkjg5E9KfuiUaZiShycc6cWqwAJMv+QMeBBPKpjtNr3pZOR9Bq/o7QBrgArp0E93lcBeoWtKW/aXUHKD9Iz+O1Ty6M5IFYEDYOOlHI4SPEQR5o8p6w1CUgpqkMXoO61IO8vMlt6bNrzLfycxoGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1Gzoj0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D464C4CED3;
+	Thu, 12 Dec 2024 16:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734016458;
-	bh=XlFwrZGGrpOebLfzA3FuPrPmPZEnPVlu5vnyQi9NGwU=;
+	s=korg; t=1734020289;
+	bh=qKc9JtP28tVSGIBUa1YjsPyZlrtz4epLIWb3xtX3zlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hS4hoB2DeyLRABR3MaoER2PfNaEzAQmiZoTaZYDB7n+JRygvfGdHcvH+A7k0gJxv3
-	 XnDdMLKIJfsMQC47Aiw/hf5Zxq5p1jo64F5ObG+iUAaMEreN8QD53QtR+wStV4pwnd
-	 94qGwzLEuu9hkICvGvemTqt/B53lUGwUHQVWDwCY=
+	b=J1Gzoj0WFss8RUAECT+JlDL5ehRd3rvn/IXxqVBibgUHekPN/uTTYb8gaAJ6r7IwV
+	 9fFbgGcKUJaQjQG7LbJ9t1375qr97Mo9WoFFfWoDHn2LQPzeKTZlHteZ7Xi2kfsTzQ
+	 qbNx7CXNT7lrPer9VJjIx8DezT/sDDfvVuyPTUCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 205/466] mm: open-code PageTail in folio_flags() and const_folio_flags()
+	Yang Erkun <yangerkun@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 429/772] NFSv4.0: Fix a use-after-free problem in the asynchronous open()
 Date: Thu, 12 Dec 2024 15:56:14 +0100
-Message-ID: <20241212144314.888291794@linuxfoundation.org>
+Message-ID: <20241212144407.657785059@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144306.641051666@linuxfoundation.org>
-References: <20241212144306.641051666@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 4de22b2a6a7477d84d9a01eb6b62a9117309d722 upstream.
+[ Upstream commit 2fdb05dc0931250574f0cb0ebeb5ed8e20f4a889 ]
 
-It is unsafe to call PageTail() in dump_page() as page_is_fake_head() will
-almost certainly return true when called on a head page that is copied to
-the stack.  That will cause the VM_BUG_ON_PGFLAGS() in const_folio_flags()
-to trigger when it shouldn't.  Fortunately, we don't need to call
-PageTail() here; it's fine to have a pointer to a virtual alias of the
-page's flag word rather than the real page's flag word.
+Yang Erkun reports that when two threads are opening files at the same
+time, and are forced to abort before a reply is seen, then the call to
+nfs_release_seqid() in nfs4_opendata_free() can result in a
+use-after-free of the pointer to the defunct rpc task of the other
+thread.
+The fix is to ensure that if the RPC call is aborted before the call to
+nfs_wait_on_sequence() is complete, then we must call nfs_release_seqid()
+in nfs4_open_release() before the rpc_task is freed.
 
-Link: https://lkml.kernel.org/r/20241125201721.2963278-1-willy@infradead.org
-Fixes: fae7d834c43c ("mm: add __dump_folio()")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yang Erkun <yangerkun@huawei.com>
+Fixes: 24ac23ab88df ("NFSv4: Convert open() into an asynchronous RPC call")
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/page-flags.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/nfs4proc.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -306,7 +306,7 @@ static const unsigned long *const_folio_
- {
- 	const struct page *page = &folio->page;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 1e97de7c8c204..5b06b8d4e0147 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -2528,12 +2528,14 @@ static void nfs4_open_release(void *calldata)
+ 	struct nfs4_opendata *data = calldata;
+ 	struct nfs4_state *state = NULL;
  
--	VM_BUG_ON_PGFLAGS(PageTail(page), page);
-+	VM_BUG_ON_PGFLAGS(page->compound_head & 1, page);
- 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags), page);
- 	return &page[n].flags;
- }
-@@ -315,7 +315,7 @@ static unsigned long *folio_flags(struct
- {
- 	struct page *page = &folio->page;
- 
--	VM_BUG_ON_PGFLAGS(PageTail(page), page);
-+	VM_BUG_ON_PGFLAGS(page->compound_head & 1, page);
- 	VM_BUG_ON_PGFLAGS(n > 0 && !test_bit(PG_head, &page->flags), page);
- 	return &page[n].flags;
- }
++	/* In case of error, no cleanup! */
++	if (data->rpc_status != 0 || !data->rpc_done) {
++		nfs_release_seqid(data->o_arg.seqid);
++		goto out_free;
++	}
+ 	/* If this request hasn't been cancelled, do nothing */
+ 	if (!data->cancelled)
+ 		goto out_free;
+-	/* In case of error, no cleanup! */
+-	if (data->rpc_status != 0 || !data->rpc_done)
+-		goto out_free;
+ 	/* In case we need an open_confirm, no cleanup! */
+ 	if (data->o_res.rflags & NFS4_OPEN_RESULT_CONFIRM)
+ 		goto out_free;
+-- 
+2.43.0
+
 
 
 
