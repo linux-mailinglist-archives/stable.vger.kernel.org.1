@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-101732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-102509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD029EEDD4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:51:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977D59EF341
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:57:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D53B285BD4
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 15:51:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED91B1889230
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 16:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC022236FA;
-	Thu, 12 Dec 2024 15:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D6722332B;
+	Thu, 12 Dec 2024 16:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRrEKxmS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zl3pRAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B2A2210FB;
-	Thu, 12 Dec 2024 15:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C7C223320;
+	Thu, 12 Dec 2024 16:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734018604; cv=none; b=u4B+fSYR3l6ybek30Yx0wss87j61xGV5U+QZQZ4OlBbIaWsJ78L/zldTTZyNL7sFZ9PY4sv+a3/cOS5xw1FNq2HBTVhaylgs8XkfhEb0HXgystxL8Mj7Fz8Gmfneg1CPUuTDGtT5H1NbJz5zDGGh9CseDoKL0qkOVk5pP7ULLqU=
+	t=1734021489; cv=none; b=ME7pO3dthN0S7GxS8K447tJnjMBRwTgNJzWTrlz+1xJRDjDrURcuSiuNb1/NCegDLSfHUlcNV8veY6iQC3yFEdAfRyQtTRDYaNIPKjvsebeLVcYy9lx1Zt2ErjEMMkQwp4fD3UzLCDzvvZPhuIaO73TwjCxf/oZ0p5J2YJRuR+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734018604; c=relaxed/simple;
-	bh=Swk5Oe0srqZl8Fo/vHZ2nHRwJ7WOc2jLWRJ1esbIwrw=;
+	s=arc-20240116; t=1734021489; c=relaxed/simple;
+	bh=qPEf6Pke8uiOepmv0PDEv79gAOag3OTKaWNoYZUiYns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbe/lXS7ZXRwpgyLhKXbnUBMmwcQkL6DNVF5O4yd8x9iasnFXoCVVjkLcjadNcdZrmGv+2dio7fD6faPi0Rz4ey/Wuv5UFYnaenU2QW4Spi4NZbXHy9UOIAOs7Eg4p/S2UmL1TZgGZWjRmKK5uB+DQhaFRE94cSg/JLxmObVxss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRrEKxmS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AD4C4CECE;
-	Thu, 12 Dec 2024 15:50:03 +0000 (UTC)
+	 MIME-Version; b=qFesVA2ciFHxdDqFiAA1IfZTi4J5eIMjhJr7UvLB4H/+LBzF++ZiPnx1FubMf8dTvzy4q+NlJMrqRM3xh1E7G/OuqVMGONqbF3RVHOKcIA0ZhZlNHhnaBQV8K0jZYirhNX1WLOB7jFxisB0UMk5jPP+HOFf+ICfuPGuqgwQTlII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zl3pRAA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB4BC4CECE;
+	Thu, 12 Dec 2024 16:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734018604;
-	bh=Swk5Oe0srqZl8Fo/vHZ2nHRwJ7WOc2jLWRJ1esbIwrw=;
+	s=korg; t=1734021489;
+	bh=qPEf6Pke8uiOepmv0PDEv79gAOag3OTKaWNoYZUiYns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRrEKxmSzQxYacgyS1VQ2X2bu8C6YKjVvCKKZBl4KKt1MHrXtP38GTdck3lvoFVGy
-	 uW+yV+KCwu76Qt8YembfamAY/cnwJXatEVK9wVejQsE1PFT3Yh3N45W8c41Zgd0vQt
-	 IBi0oErOjhG6uiiUSuAocMaSvnfO8+2AVINJQ7Fs=
+	b=1zl3pRAAPMw9ki84N3IluBn26uHf3tz6/b0IKrD2l23YBC4KpTUtQkB8g1gmzY4Ln
+	 K0pJvr4lFDjde7HaU64W0uvbf1HVn4GTZBWpkck/Ah0jnBWT6L7y7YaAM6fLb9+nOn
+	 jjOchZnXs8FF2DTvSsu6YVtPZbgYVV/92agmqErk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Hari Bathini <hbathini@linux.ibm.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/356] selftests/ftrace: adjust offset for kprobe syntax error test
+Subject: [PATCH 6.1 712/772] verification/dot2: Improve dot parser robustness
 Date: Thu, 12 Dec 2024 16:00:57 +0100
-Message-ID: <20241212144257.921564055@linuxfoundation.org>
+Message-ID: <20241212144419.316451617@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144244.601729511@linuxfoundation.org>
-References: <20241212144244.601729511@linuxfoundation.org>
+In-Reply-To: <20241212144349.797589255@linuxfoundation.org>
+References: <20241212144349.797589255@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Gabriele Monaco <gmonaco@redhat.com>
 
-[ Upstream commit 777f290ab328de333b85558bb6807a69a59b36ba ]
+[ Upstream commit 571f8b3f866a6d990a50fe5c89fe0ea78784d70b ]
 
-In 'NOFENTRY_ARGS' test case for syntax check, any offset X of
-`vfs_read+X` except function entry offset (0) fits the criterion,
-even if that offset is not at instruction boundary, as the parser
-comes before probing. But with "ENDBR64" instruction on x86, offset
-4 is treated as function entry. So, X can't be 4 as well. Thus, 8
-was used as offset for the test case. On 64-bit powerpc though, any
-offset <= 16 can be considered function entry depending on build
-configuration (see arch_kprobe_on_func_entry() for implementation
-details). So, use `vfs_read+20` to accommodate that scenario too.
+This patch makes the dot parser used by dot2c and dot2k slightly more
+robust, namely:
+* allows parsing files with the gv extension (GraphViz)
+* correctly parses edges with any indentation
+    * used to work only with a single character (e.g. '\t')
+Additionally it fixes a couple of warnings reported by pylint such as
+wrong indentation and comparison to False instead of `not ...`
 
-Link: https://lore.kernel.org/r/20241129202621.721159-1-hbathini@linux.ibm.com
-Fixes: 4231f30fcc34a ("selftests/ftrace: Add BTF arguments test cases")
-Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/20241017064238.41394-2-gmonaco@redhat.com
+Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/verification/dot2/automata.py | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-@@ -111,7 +111,7 @@ check_error 'p vfs_read $arg* ^$arg*'		#
- if !grep -q 'kernel return probes support:' README; then
- check_error 'r vfs_read ^$arg*'			# NOFENTRY_ARGS
- fi
--check_error 'p vfs_read+8 ^$arg*'		# NOFENTRY_ARGS
-+check_error 'p vfs_read+20 ^$arg*'		# NOFENTRY_ARGS
- check_error 'p vfs_read ^hoge'			# NO_BTFARG
- check_error 'p kfree ^$arg10'			# NO_BTFARG (exceed the number of parameters)
- check_error 'r kfree ^$retval'			# NO_RETVAL
+diff --git a/tools/verification/dot2/automata.py b/tools/verification/dot2/automata.py
+index baffeb960ff0b..bdeb98baa8b06 100644
+--- a/tools/verification/dot2/automata.py
++++ b/tools/verification/dot2/automata.py
+@@ -29,11 +29,11 @@ class Automata:
+ 
+     def __get_model_name(self):
+         basename = ntpath.basename(self.__dot_path)
+-        if basename.endswith(".dot") == False:
++        if not basename.endswith(".dot") and not basename.endswith(".gv"):
+             print("not a dot file")
+             raise Exception("not a dot file: %s" % self.__dot_path)
+ 
+-        model_name = basename[0:-4]
++        model_name = ntpath.splitext(basename)[0]
+         if model_name.__len__() == 0:
+             raise Exception("not a dot file: %s" % self.__dot_path)
+ 
+@@ -68,9 +68,9 @@ class Automata:
+     def __get_cursor_begin_events(self):
+         cursor = 0
+         while self.__dot_lines[cursor].split()[0] != "{node":
+-           cursor += 1
++            cursor += 1
+         while self.__dot_lines[cursor].split()[0] == "{node":
+-           cursor += 1
++            cursor += 1
+         # skip initial state transition
+         cursor += 1
+         return cursor
+@@ -94,11 +94,11 @@ class Automata:
+                 initial_state = state[7:]
+             else:
+                 states.append(state)
+-                if self.__dot_lines[cursor].__contains__("doublecircle") == True:
++                if "doublecircle" in self.__dot_lines[cursor]:
+                     final_states.append(state)
+                     has_final_states = True
+ 
+-                if self.__dot_lines[cursor].__contains__("ellipse") == True:
++                if "ellipse" in self.__dot_lines[cursor]:
+                     final_states.append(state)
+                     has_final_states = True
+ 
+@@ -110,7 +110,7 @@ class Automata:
+         # Insert the initial state at the bein og the states
+         states.insert(0, initial_state)
+ 
+-        if has_final_states == False:
++        if not has_final_states:
+             final_states.append(initial_state)
+ 
+         return states, initial_state, final_states
+@@ -120,7 +120,7 @@ class Automata:
+         cursor = self.__get_cursor_begin_events()
+ 
+         events = []
+-        while self.__dot_lines[cursor][1] == '"':
++        while self.__dot_lines[cursor].lstrip()[0] == '"':
+             # transitions have the format:
+             # "all_fired" -> "both_fired" [ label = "disable_irq" ];
+             #  ------------ event is here ------------^^^^^
+@@ -161,7 +161,7 @@ class Automata:
+         # and we are back! Let's fill the matrix
+         cursor = self.__get_cursor_begin_events()
+ 
+-        while self.__dot_lines[cursor][1] == '"':
++        while self.__dot_lines[cursor].lstrip()[0] == '"':
+             if self.__dot_lines[cursor].split()[1] == "->":
+                 line = self.__dot_lines[cursor].split()
+                 origin_state = line[0].replace('"','').replace(',','_')
+-- 
+2.43.0
+
 
 
 
