@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-103525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-103840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233B49EF76B
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:34:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FD59EF9E9
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 18:55:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D61FB28CE12
-	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79A62177E48
+	for <lists+stable@lfdr.de>; Thu, 12 Dec 2024 17:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127B3223C59;
-	Thu, 12 Dec 2024 17:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81EB722331E;
+	Thu, 12 Dec 2024 17:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLky57F7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGDs2TFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46052236EB;
-	Thu, 12 Dec 2024 17:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDAB205E2E;
+	Thu, 12 Dec 2024 17:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024831; cv=none; b=rYr+OWK/syTA7YE/jruLE+I4yadKkgeYTLBiaj+mkpbKiXhG7OODByXwZCzKbb+ICbeQAW3cW2I/x3AF1YzADUS5JEFg32VzhA5uRGuLDYwLODJxVbQkkncQANBU0mLIfZXS0bfsdZHuQeBzKT5dJF8X32/Lp0+4FcnAdSsoA8U=
+	t=1734025757; cv=none; b=WACzdd7+KjGbNiXX0X50k+YTdtI5OWBw69dTBmV7dwqR7AlndMbR4WcMxHiWeJ3MLjZUxQ54FVP1fvt8JsmQzgWounPP8HTuWfes+kzTbd6ClwLTVuQvakDIaF2IR8DGNuysWma0M9yUSZ+uAphV+Yuk+UK49xlO0dNHbmfsoWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024831; c=relaxed/simple;
-	bh=LzONuZuY/HMtvW+IdGleFParhwIHzqZIY2YUCsFpdEM=;
+	s=arc-20240116; t=1734025757; c=relaxed/simple;
+	bh=3ZU/sJaWd78E7ySiXWa9TespZfDg1vlrUei85MKhQTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qVcZJ/wL5vYkAxT0pdokdRVxXCVWyqYvu3N11sLtpFe4dicTppAxDAzoYsVGaOogurIL+PRECw7uZfMOGjk8Pvkv3pNtR5EmCRR0upTxu/7K9W6kuQsR17hE+4XrNtRDDXApbcdgrW1nHV38quj8WnV63tyC/2Eqh9h6vGwBwow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLky57F7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A320C4CECE;
-	Thu, 12 Dec 2024 17:33:51 +0000 (UTC)
+	 MIME-Version; b=Xg3A51u6XCHQL38QdRPvt6ctvWFBoh+6nQiX99vvbJDEyGB2U081SEzP78iAe1xA8WflD/cAIcmTwztpiL5JSwP1JkynAmBp4E3prrjnM802dbF5ehhTzcpzbnSeEusoH0y65hEISXl9XA4HawDZviJoIh+cL94JondCrUOaADA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGDs2TFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE186C4CECE;
+	Thu, 12 Dec 2024 17:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734024831;
-	bh=LzONuZuY/HMtvW+IdGleFParhwIHzqZIY2YUCsFpdEM=;
+	s=korg; t=1734025757;
+	bh=3ZU/sJaWd78E7ySiXWa9TespZfDg1vlrUei85MKhQTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLky57F7MRzlhXuutmsiXDnqeRTE50LPNidWqsv9Ymd4JYDPO87H/i9VZFW4gHhzd
-	 fhypGq8paRvdtQoNKvZ+Fs4FmHc7bx6lSk9Q8lrCP8S52ct4i5RbVpXxdp2Z93OSGA
-	 Vs7b/7ZAoM/bgn/Uelw/IPS0bi6VAwHa1uQeSiPQ=
+	b=HGDs2TFYkKlAzrtrUPJMP+yK7XT2QtOy7z3KrqLHGeB9Q8cYlGJdSAJTbdV7tR7o4
+	 4p3npcZ88TFzQDFkkLaqBoUKHm+9E3BiE9rEHZAbWJWpAX8NC0YakdMto89eqJAJ1c
+	 QxbS9I2QT5AkkCqWqigU/gIVHB3ueUzRRXCUeYcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	kernel test robot <lkp@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Raphael Gallais-Pou <rgallaispou@gmail.com>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 427/459] PCI: Add ACS quirk for Wangxun FF5xxx NICs
+Subject: [PATCH 5.4 247/321] drm/sti: Add __iomem for mixer_dbg_mxns parameter
 Date: Thu, 12 Dec 2024 16:02:45 +0100
-Message-ID: <20241212144310.630944955@linuxfoundation.org>
+Message-ID: <20241212144239.731435982@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212144253.511169641@linuxfoundation.org>
-References: <20241212144253.511169641@linuxfoundation.org>
+In-Reply-To: <20241212144229.291682835@linuxfoundation.org>
+References: <20241212144229.291682835@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit aa46a3736afcb7b0793766d22479b8b99fc1b322 ]
+[ Upstream commit 86e8f94789dd6f3e705bfa821e1e416f97a2f863 ]
 
-Wangxun FF5xxx NICs are similar to SFxxx, RP1000 and RP2000 NICs.  They may
-be multi-function devices, but they do not advertise an ACS capability.
+Sparse complains about incorrect type in argument 1.
+expected void const volatile  __iomem *ptr but got void *.
+so modify mixer_dbg_mxn's addr parameter.
 
-But the hardware does isolate FF5xxx functions as though it had an ACS
-capability and PCI_ACS_RR and PCI_ACS_CR were set in the ACS Control
-register, i.e., all peer-to-peer traffic is directed upstream instead of
-being routed internally.
-
-Add ACS quirk for FF5xxx NICs in pci_quirk_wangxun_nic_acs() so the
-functions can be in independent IOMMU groups.
-
-Link: https://lore.kernel.org/r/E16053DB2B80E9A5+20241115024604.30493-1-mengyuanlou@net-swift.com
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202411191809.6V3c826r-lkp@intel.com/
+Fixes: a5f81078a56c ("drm/sti: add debugfs entries for MIXER crtc")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Acked-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/c28f0dcb6a4526721d83ba1f659bba30564d3d54.1732087094.git.xiaopei01@kylinos.cn
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/sti/sti_mixer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 86b91f8da1caa..37cc08d706367 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4829,18 +4829,21 @@ static int pci_quirk_brcm_acs(struct pci_dev *dev, u16 acs_flags)
+diff --git a/drivers/gpu/drm/sti/sti_mixer.c b/drivers/gpu/drm/sti/sti_mixer.c
+index c3a3e1e5fc8ab..21cbb4d0ee4ac 100644
+--- a/drivers/gpu/drm/sti/sti_mixer.c
++++ b/drivers/gpu/drm/sti/sti_mixer.c
+@@ -137,7 +137,7 @@ static void mixer_dbg_crb(struct seq_file *s, int val)
+ 	}
  }
  
- /*
-- * Wangxun 10G/1G NICs have no ACS capability, and on multi-function
-- * devices, peer-to-peer transactions are not be used between the functions.
-- * So add an ACS quirk for below devices to isolate functions.
-+ * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
-+ * multi-function devices, the hardware isolates the functions by
-+ * directing all peer-to-peer traffic upstream as though PCI_ACS_RR and
-+ * PCI_ACS_CR were set.
-  * SFxxx 1G NICs(em).
-  * RP1000/RP2000 10G NICs(sp).
-+ * FF5xxx 40G/25G/10G NICs(aml).
-  */
- static int  pci_quirk_wangxun_nic_acs(struct pci_dev *dev, u16 acs_flags)
+-static void mixer_dbg_mxn(struct seq_file *s, void *addr)
++static void mixer_dbg_mxn(struct seq_file *s, void __iomem *addr)
  {
- 	switch (dev->device) {
--	case 0x0100 ... 0x010F:
--	case 0x1001:
--	case 0x2001:
-+	case 0x0100 ... 0x010F: /* EM */
-+	case 0x1001: case 0x2001: /* SP */
-+	case 0x5010: case 0x5025: case 0x5040: /* AML */
-+	case 0x5110: case 0x5125: case 0x5140: /* AML */
- 		return pci_acs_ctrl_enabled(acs_flags,
- 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
- 	}
+ 	int i;
+ 
 -- 
 2.43.0
 
